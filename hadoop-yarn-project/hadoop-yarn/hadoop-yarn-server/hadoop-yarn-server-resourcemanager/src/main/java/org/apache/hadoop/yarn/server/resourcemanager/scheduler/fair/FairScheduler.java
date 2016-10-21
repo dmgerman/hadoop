@@ -4225,6 +4225,30 @@ block|}
 block|}
 catch|catch
 parameter_list|(
+name|IllegalStateException
+name|se
+parameter_list|)
+block|{
+name|appRejectMsg
+operator|=
+literal|"Unable to match app "
+operator|+
+name|rmApp
+operator|.
+name|getApplicationId
+argument_list|()
+operator|+
+literal|" to a queue placement policy, and no valid terminal queue "
+operator|+
+literal|" placement rule is configured. Please contact an administrator "
+operator|+
+literal|" to confirm that the fair scheduler configuration contains a "
+operator|+
+literal|" valid terminal queue placement rule."
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
 name|InvalidQueueNameException
 name|qne
 parameter_list|)

@@ -829,7 +829,7 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"<rule name='default' create='false'/>"
+literal|"<rule name='default' queue='otherdefault' create='false'/>"
 argument_list|)
 expr_stmt|;
 name|sb
@@ -839,6 +839,9 @@ argument_list|(
 literal|"</queuePlacementPolicy>"
 argument_list|)
 expr_stmt|;
+name|QueuePlacementPolicy
+name|policy
+init|=
 name|parse
 argument_list|(
 name|sb
@@ -846,7 +849,30 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+decl_stmt|;
+try|try
+block|{
+name|policy
+operator|.
+name|assignAppToQueue
+argument_list|(
+literal|"root.otherdefault"
+argument_list|,
+literal|"user1"
+argument_list|)
 expr_stmt|;
+name|fail
+argument_list|(
+literal|"Expect exception from having default rule with create=\'false\'"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalStateException
+name|se
+parameter_list|)
+block|{     }
 block|}
 annotation|@
 name|Test
