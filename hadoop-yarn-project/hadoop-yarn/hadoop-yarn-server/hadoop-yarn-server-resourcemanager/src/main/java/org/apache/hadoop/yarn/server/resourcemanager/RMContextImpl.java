@@ -340,6 +340,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|resource
+operator|.
+name|ResourceProfilesManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|rmapp
 operator|.
 name|RMApp
@@ -665,6 +685,11 @@ DECL|field|activeServiceContext
 specifier|private
 name|RMActiveServiceContext
 name|activeServiceContext
+decl_stmt|;
+DECL|field|resourceProfilesManager
+specifier|private
+name|ResourceProfilesManager
+name|resourceProfilesManager
 decl_stmt|;
 comment|/**    * Default constructor. To be used in conjunction with setter methods for    * individual fields.    */
 DECL|method|RMContextImpl ()
@@ -2151,6 +2176,38 @@ operator|.
 name|getRMAppLifetimeMonitor
 argument_list|()
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getResourceProfilesManager ()
+specifier|public
+name|ResourceProfilesManager
+name|getResourceProfilesManager
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|resourceProfilesManager
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setResourceProfilesManager (ResourceProfilesManager mgr)
+specifier|public
+name|void
+name|setResourceProfilesManager
+parameter_list|(
+name|ResourceProfilesManager
+name|mgr
+parameter_list|)
+block|{
+name|this
+operator|.
+name|resourceProfilesManager
+operator|=
+name|mgr
+expr_stmt|;
 block|}
 comment|// Note: Read java doc before adding any services over here.
 block|}

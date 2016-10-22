@@ -310,6 +310,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|resource
+operator|.
+name|ResourceProfilesManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|rmapp
 operator|.
 name|RMApp
@@ -894,6 +914,19 @@ DECL|method|getResourceManager ()
 name|ResourceManager
 name|getResourceManager
 parameter_list|()
+function_decl|;
+DECL|method|getResourceProfilesManager ()
+name|ResourceProfilesManager
+name|getResourceProfilesManager
+parameter_list|()
+function_decl|;
+DECL|method|setResourceProfilesManager (ResourceProfilesManager mgr)
+name|void
+name|setResourceProfilesManager
+parameter_list|(
+name|ResourceProfilesManager
+name|mgr
+parameter_list|)
 function_decl|;
 block|}
 end_interface

@@ -726,6 +726,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|Resource
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|SignalContainerCommand
 import|;
 end_import
@@ -1729,6 +1747,38 @@ literal|" is expected to implement this !"
 argument_list|)
 throw|;
 block|}
+comment|/**    *<p>    * Get the resource profiles available in the RM.    *</p>    * @return a Map of the resource profile names to their capabilities    * @throws YarnException if resource profiles are not enabled    * @throws IOException in case of other errors    */
+DECL|method|getResourceProfiles ()
+specifier|public
+specifier|abstract
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Resource
+argument_list|>
+name|getResourceProfiles
+parameter_list|()
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+function_decl|;
+comment|/**    *<p>    * Get the details of a specific resource profile from the RM.    *</p>    * @param profile the profile name    * @return the capabilities of the resource profile    * @throws YarnException if resource profiles are not enabled or the profile    *         cannot be found    * @throws IOException in case of other others    */
+DECL|method|getResourceProfile (String profile)
+specifier|public
+specifier|abstract
+name|Resource
+name|getResourceProfile
+parameter_list|(
+name|String
+name|profile
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+function_decl|;
 block|}
 end_class
 
