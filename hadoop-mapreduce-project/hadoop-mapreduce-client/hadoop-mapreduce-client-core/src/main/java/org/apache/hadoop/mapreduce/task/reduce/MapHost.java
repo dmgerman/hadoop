@@ -292,20 +292,6 @@ operator|.
 name|BUSY
 expr_stmt|;
 block|}
-DECL|method|markPenalized ()
-specifier|public
-specifier|synchronized
-name|void
-name|markPenalized
-parameter_list|()
-block|{
-name|state
-operator|=
-name|State
-operator|.
-name|PENALIZED
-expr_stmt|;
-block|}
 DECL|method|getNumKnownMapOutputs ()
 specifier|public
 specifier|synchronized

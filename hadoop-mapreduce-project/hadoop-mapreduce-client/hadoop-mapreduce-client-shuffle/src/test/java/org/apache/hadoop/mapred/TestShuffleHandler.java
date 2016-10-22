@@ -264,16 +264,6 @@ name|java
 operator|.
 name|net
 operator|.
-name|SocketException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
 name|URL
 import|;
 end_import
@@ -871,20 +861,6 @@ operator|.
 name|channel
 operator|.
 name|ChannelHandlerContext
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|jboss
-operator|.
-name|netty
-operator|.
-name|channel
-operator|.
-name|ChannelStateEvent
 import|;
 end_import
 
@@ -4020,14 +3996,6 @@ expr_stmt|;
 comment|// This connection should be closed because it to above the limit
 try|try
 block|{
-name|conns
-index|[
-literal|2
-index|]
-operator|.
-name|getInputStream
-argument_list|()
-expr_stmt|;
 name|rc
 operator|=
 name|conns
@@ -4040,16 +4008,71 @@ argument_list|()
 expr_stmt|;
 name|Assert
 operator|.
+name|assertEquals
+argument_list|(
+literal|"Expected a too-many-requests response code"
+argument_list|,
+name|ShuffleHandler
+operator|.
+name|TOO_MANY_REQ_STATUS
+operator|.
+name|getCode
+argument_list|()
+argument_list|,
+name|rc
+argument_list|)
+expr_stmt|;
+name|long
+name|backoff
+init|=
+name|Long
+operator|.
+name|valueOf
+argument_list|(
+name|conns
+index|[
+literal|2
+index|]
+operator|.
+name|getHeaderField
+argument_list|(
+name|ShuffleHandler
+operator|.
+name|RETRY_AFTER_HEADER
+argument_list|)
+argument_list|)
+decl_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+literal|"The backoff value cannot be negative."
+argument_list|,
+name|backoff
+operator|>
+literal|0
+argument_list|)
+expr_stmt|;
+name|conns
+index|[
+literal|2
+index|]
+operator|.
+name|getInputStream
+argument_list|()
+expr_stmt|;
+name|Assert
+operator|.
 name|fail
 argument_list|(
-literal|"Expected a SocketException"
+literal|"Expected an IOException"
 argument_list|)
 expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|SocketException
-name|se
+name|IOException
+name|ioe
 parameter_list|)
 block|{
 name|LOG
@@ -4057,6 +4080,20 @@ operator|.
 name|info
 argument_list|(
 literal|"Expected - connection should not be open"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|NumberFormatException
+name|ne
+parameter_list|)
+block|{
+name|Assert
+operator|.
+name|fail
+argument_list|(
+literal|"Expected a numerical value for RETRY_AFTER header field"
 argument_list|)
 expr_stmt|;
 block|}
@@ -4070,7 +4107,7 @@ name|Assert
 operator|.
 name|fail
 argument_list|(
-literal|"Expected a SocketException"
+literal|"Expected a IOException"
 argument_list|)
 expr_stmt|;
 block|}
