@@ -11578,6 +11578,13 @@ literal|"other group"
 block|}
 argument_list|)
 expr_stmt|;
+name|UserGroupInformation
+operator|.
+name|setLoginUser
+argument_list|(
+name|otherUgi
+argument_list|)
+expr_stmt|;
 block|}
 try|try
 block|{
@@ -13470,6 +13477,13 @@ operator|.
 name|createRemoteUser
 argument_list|(
 literal|"client"
+argument_list|)
+expr_stmt|;
+name|UserGroupInformation
+operator|.
+name|setLoginUser
+argument_list|(
+name|proxyUgi
 argument_list|)
 expr_stmt|;
 block|}
