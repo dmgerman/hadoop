@@ -264,6 +264,26 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|FSDirectory
+operator|.
+name|DirOp
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|FSEditLogOp
 operator|.
 name|MkdirOp
@@ -945,7 +965,9 @@ name|getINode
 argument_list|(
 name|path
 argument_list|,
-literal|false
+name|DirOp
+operator|.
+name|READ
 argument_list|)
 expr_stmt|;
 block|}
@@ -962,6 +984,17 @@ argument_list|(
 literal|"Lease manager should not support symlinks"
 argument_list|)
 throw|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+return|return
+literal|null
+return|;
+comment|// unresolvable path, ex. parent dir is a file
 block|}
 return|return
 name|inode

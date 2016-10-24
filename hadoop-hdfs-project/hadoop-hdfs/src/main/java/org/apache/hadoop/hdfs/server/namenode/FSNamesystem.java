@@ -3042,6 +3042,26 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|FSDirectory
+operator|.
+name|DirOp
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|FsImageProto
 operator|.
 name|SecretManagerSection
@@ -10191,6 +10211,10 @@ argument_list|(
 name|pc
 argument_list|,
 name|srcArg
+argument_list|,
+name|DirOp
+operator|.
+name|READ
 argument_list|)
 decl_stmt|;
 name|src
@@ -12254,27 +12278,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-operator|!
-name|DFSUtil
-operator|.
-name|isValidName
-argument_list|(
-name|src
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Invalid file name: "
-operator|+
-name|src
-argument_list|)
-throw|;
-block|}
 name|boolean
 name|skipSync
 init|=
@@ -12318,11 +12321,15 @@ name|iip
 init|=
 name|dir
 operator|.
-name|resolvePathForWrite
+name|resolvePath
 argument_list|(
 name|pc
 argument_list|,
 name|src
+argument_list|,
+name|DirOp
+operator|.
+name|WRITE
 argument_list|)
 decl_stmt|;
 name|src
@@ -16842,6 +16849,10 @@ operator|.
 name|getINode
 argument_list|(
 name|fullName
+argument_list|,
+name|DirOp
+operator|.
+name|READ
 argument_list|)
 operator|==
 name|bc
@@ -16855,15 +16866,17 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|UnresolvedLinkException
+name|IOException
 name|e
 parameter_list|)
 block|{
+comment|// the snapshot path and current path may contain symlinks, ancestor
+comment|// dirs replaced by files, etc.
 name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Error while resolving the link : "
+literal|"Error while resolving the path : "
 operator|+
 name|fullName
 argument_list|,
@@ -26843,7 +26856,9 @@ name|getINode
 argument_list|(
 name|snap
 argument_list|,
-literal|false
+name|DirOp
+operator|.
+name|READ_LINK
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -31675,6 +31690,10 @@ argument_list|(
 name|pc
 argument_list|,
 name|src
+argument_list|,
+name|DirOp
+operator|.
+name|READ
 argument_list|)
 decl_stmt|;
 name|src

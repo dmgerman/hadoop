@@ -749,7 +749,9 @@ parameter_list|)
 block|{
 name|assertTrue
 argument_list|(
-literal|"Wrong exception for invalid file name"
+literal|"Wrong exception for invalid file name: "
+operator|+
+name|re
 argument_list|,
 name|re
 operator|.
@@ -758,7 +760,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Invalid file name"
+literal|"Absolute path required"
 argument_list|)
 argument_list|)
 expr_stmt|;

@@ -208,20 +208,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
-operator|.
-name|UnresolvedLinkException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|hdfs
 operator|.
 name|protocol
@@ -357,6 +343,26 @@ operator|.
 name|namenode
 operator|.
 name|FSDirectory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|FSDirectory
+operator|.
+name|DirOp
 import|;
 end_import
 
@@ -529,10 +535,6 @@ operator|.
 name|Preconditions
 import|;
 end_import
-
-begin_empty_stmt
-empty_stmt|;
-end_empty_stmt
 
 begin_comment
 comment|/**  * Scans the namesystem, scheduling blocks to be cached as appropriate.  *  * The CacheReplicationMonitor does a full scan when the NameNode first  * starts up, and at configurable intervals afterwards.  */
@@ -1481,23 +1483,25 @@ operator|.
 name|getINode
 argument_list|(
 name|path
+argument_list|,
+name|DirOp
+operator|.
+name|READ
 argument_list|)
 expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|UnresolvedLinkException
+name|IOException
 name|e
 parameter_list|)
 block|{
-comment|// We don't cache through symlinks
+comment|// We don't cache through symlinks or invalid paths
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Directive {}: got UnresolvedLinkException while resolving "
-operator|+
-literal|"path {}"
+literal|"Directive {}: Failed to resolve path {} ({})"
 argument_list|,
 name|directive
 operator|.
@@ -1505,6 +1509,11 @@ name|getId
 argument_list|()
 argument_list|,
 name|path
+argument_list|,
+name|e
+operator|.
+name|getMessage
+argument_list|()
 argument_list|)
 expr_stmt|;
 continue|continue;

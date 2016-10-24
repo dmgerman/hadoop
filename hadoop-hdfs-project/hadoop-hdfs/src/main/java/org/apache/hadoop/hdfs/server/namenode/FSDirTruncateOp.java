@@ -268,6 +268,26 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|FSDirectory
+operator|.
+name|DirOp
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|FSNamesystem
 operator|.
 name|RecoverLeaseOp
@@ -409,11 +429,15 @@ name|iip
 operator|=
 name|fsd
 operator|.
-name|resolvePathForWrite
+name|resolvePath
 argument_list|(
 name|pc
 argument_list|,
 name|srcArg
+argument_list|,
+name|DirOp
+operator|.
+name|WRITE
 argument_list|)
 expr_stmt|;
 name|src
@@ -815,8 +839,8 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Unprotected truncate implementation. Unlike    * {@link FSDirTruncateOp#truncate}, this will not schedule block recovery.    *    * @param fsn namespace    * @param src path name    * @param clientName client name    * @param clientMachine client machine info    * @param newLength the target file size    * @param mtime modified time    * @param truncateBlock truncate block    * @throws IOException    */
-DECL|method|unprotectedTruncate (final FSNamesystem fsn, final String src, final String clientName, final String clientMachine, final long newLength, final long mtime, final Block truncateBlock)
+comment|/**    * Unprotected truncate implementation. Unlike    * {@link FSDirTruncateOp#truncate}, this will not schedule block recovery.    *    * @param fsn namespace    * @param iip path name    * @param clientName client name    * @param clientMachine client machine info    * @param newLength the target file size    * @param mtime modified time    * @param truncateBlock truncate block    * @throws IOException    */
+DECL|method|unprotectedTruncate (final FSNamesystem fsn, final INodesInPath iip, final String clientName, final String clientMachine, final long newLength, final long mtime, final Block truncateBlock)
 specifier|static
 name|void
 name|unprotectedTruncate
@@ -826,8 +850,8 @@ name|FSNamesystem
 name|fsn
 parameter_list|,
 specifier|final
-name|String
-name|src
+name|INodesInPath
+name|iip
 parameter_list|,
 specifier|final
 name|String
@@ -871,18 +895,6 @@ name|fsn
 operator|.
 name|getFSDirectory
 argument_list|()
-decl_stmt|;
-name|INodesInPath
-name|iip
-init|=
-name|fsd
-operator|.
-name|getINodesInPath
-argument_list|(
-name|src
-argument_list|,
-literal|true
-argument_list|)
 decl_stmt|;
 name|INodeFile
 name|file
