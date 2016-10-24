@@ -166,20 +166,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|FileStatus
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|FileSystem
 import|;
 end_import
@@ -255,6 +241,20 @@ operator|.
 name|mapreduce
 operator|.
 name|Mapper
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|tools
+operator|.
+name|CopyListingFileStatus
 import|;
 end_import
 
@@ -499,11 +499,11 @@ literal|4
 operator|:
 literal|"Unexpected argument list."
 assert|;
-name|FileStatus
+name|CopyListingFileStatus
 name|source
 init|=
 operator|(
-name|FileStatus
+name|CopyListingFileStatus
 operator|)
 name|arguments
 index|[
@@ -575,13 +575,13 @@ name|fileAttributes
 argument_list|)
 return|;
 block|}
-DECL|method|doCopy (FileStatus sourceFileStatus, Path target, Mapper.Context context, EnumSet<FileAttribute> fileAttributes)
+DECL|method|doCopy (CopyListingFileStatus source, Path target, Mapper.Context context, EnumSet<FileAttribute> fileAttributes)
 specifier|private
 name|long
 name|doCopy
 parameter_list|(
-name|FileStatus
-name|sourceFileStatus
+name|CopyListingFileStatus
+name|source
 parameter_list|,
 name|Path
 name|target
@@ -659,7 +659,7 @@ name|debug
 argument_list|(
 literal|"Copying "
 operator|+
-name|sourceFileStatus
+name|source
 operator|.
 name|getPath
 argument_list|()
@@ -683,7 +683,7 @@ specifier|final
 name|Path
 name|sourcePath
 init|=
-name|sourceFileStatus
+name|source
 operator|.
 name|getPath
 argument_list|()
@@ -752,7 +752,7 @@ name|targetPath
 argument_list|,
 name|targetFS
 argument_list|,
-name|sourceFileStatus
+name|source
 argument_list|,
 name|offset
 argument_list|,
@@ -765,7 +765,7 @@ argument_list|)
 decl_stmt|;
 name|compareFileLengths
 argument_list|(
-name|sourceFileStatus
+name|source
 argument_list|,
 name|targetPath
 argument_list|,
@@ -795,7 +795,7 @@ name|compareCheckSums
 argument_list|(
 name|sourceFS
 argument_list|,
-name|sourceFileStatus
+name|source
 operator|.
 name|getPath
 argument_list|()
@@ -903,7 +903,7 @@ return|return
 literal|null
 return|;
 block|}
-DECL|method|copyToFile (Path targetPath, FileSystem targetFS, FileStatus sourceFileStatus, long sourceOffset, Mapper.Context context, EnumSet<FileAttribute> fileAttributes, final FileChecksum sourceChecksum)
+DECL|method|copyToFile (Path targetPath, FileSystem targetFS, CopyListingFileStatus source, long sourceOffset, Mapper.Context context, EnumSet<FileAttribute> fileAttributes, final FileChecksum sourceChecksum)
 specifier|private
 name|long
 name|copyToFile
@@ -914,8 +914,8 @@ parameter_list|,
 name|FileSystem
 name|targetFS
 parameter_list|,
-name|FileStatus
-name|sourceFileStatus
+name|CopyListingFileStatus
+name|source
 parameter_list|,
 name|long
 name|sourceOffset
@@ -980,7 +980,7 @@ name|getReplicationFactor
 argument_list|(
 name|fileAttributes
 argument_list|,
-name|sourceFileStatus
+name|source
 argument_list|,
 name|targetFS
 argument_list|,
@@ -995,7 +995,7 @@ name|getBlockSize
 argument_list|(
 name|fileAttributes
 argument_list|,
-name|sourceFileStatus
+name|source
 argument_list|,
 name|targetFS
 argument_list|,
@@ -1072,7 +1072,7 @@ block|}
 return|return
 name|copyBytes
 argument_list|(
-name|sourceFileStatus
+name|source
 argument_list|,
 name|sourceOffset
 argument_list|,
@@ -1084,13 +1084,13 @@ name|context
 argument_list|)
 return|;
 block|}
-DECL|method|compareFileLengths (FileStatus sourceFileStatus, Path target, Configuration configuration, long targetLen)
+DECL|method|compareFileLengths (CopyListingFileStatus source, Path target, Configuration configuration, long targetLen)
 specifier|private
 name|void
 name|compareFileLengths
 parameter_list|(
-name|FileStatus
-name|sourceFileStatus
+name|CopyListingFileStatus
+name|source
 parameter_list|,
 name|Path
 name|target
@@ -1108,7 +1108,7 @@ specifier|final
 name|Path
 name|sourcePath
 init|=
-name|sourceFileStatus
+name|source
 operator|.
 name|getPath
 argument_list|()
@@ -1466,12 +1466,12 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|copyBytes (FileStatus sourceFileStatus, long sourceOffset, OutputStream outStream, int bufferSize, Mapper.Context context)
+DECL|method|copyBytes (CopyListingFileStatus source2, long sourceOffset, OutputStream outStream, int bufferSize, Mapper.Context context)
 name|long
 name|copyBytes
 parameter_list|(
-name|FileStatus
-name|sourceFileStatus
+name|CopyListingFileStatus
+name|source2
 parameter_list|,
 name|long
 name|sourceOffset
@@ -1493,7 +1493,7 @@ block|{
 name|Path
 name|source
 init|=
-name|sourceFileStatus
+name|source2
 operator|.
 name|getPath
 argument_list|()
@@ -1586,7 +1586,7 @@ name|totalBytesRead
 argument_list|,
 name|context
 argument_list|,
-name|sourceFileStatus
+name|source2
 argument_list|)
 expr_stmt|;
 name|bytesRead
@@ -1629,7 +1629,7 @@ return|return
 name|totalBytesRead
 return|;
 block|}
-DECL|method|updateContextStatus (long totalBytesRead, Mapper.Context context, FileStatus sourceFileStatus)
+DECL|method|updateContextStatus (long totalBytesRead, Mapper.Context context, CopyListingFileStatus source2)
 specifier|private
 name|void
 name|updateContextStatus
@@ -1642,8 +1642,8 @@ operator|.
 name|Context
 name|context
 parameter_list|,
-name|FileStatus
-name|sourceFileStatus
+name|CopyListingFileStatus
+name|source2
 parameter_list|)
 block|{
 name|StringBuilder
@@ -1663,7 +1663,7 @@ name|totalBytesRead
 operator|*
 literal|100.0f
 operator|/
-name|sourceFileStatus
+name|source2
 operator|.
 name|getLen
 argument_list|()
@@ -1708,7 +1708,7 @@ name|DistCpUtils
 operator|.
 name|getStringDescriptionFor
 argument_list|(
-name|sourceFileStatus
+name|source2
 operator|.
 name|getLen
 argument_list|()
@@ -1885,7 +1885,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|getReplicationFactor ( EnumSet<FileAttribute> fileAttributes, FileStatus sourceFile, FileSystem targetFS, Path tmpTargetPath)
+DECL|method|getReplicationFactor ( EnumSet<FileAttribute> fileAttributes, CopyListingFileStatus source, FileSystem targetFS, Path tmpTargetPath)
 specifier|private
 specifier|static
 name|short
@@ -1897,8 +1897,8 @@ name|FileAttribute
 argument_list|>
 name|fileAttributes
 parameter_list|,
-name|FileStatus
-name|sourceFile
+name|CopyListingFileStatus
+name|source
 parameter_list|,
 name|FileSystem
 name|targetFS
@@ -1917,7 +1917,7 @@ operator|.
 name|REPLICATION
 argument_list|)
 condition|?
-name|sourceFile
+name|source
 operator|.
 name|getReplication
 argument_list|()
@@ -1931,7 +1931,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * @return the block size of the source file if we need to preserve either    *         the block size or the checksum type. Otherwise the default block    *         size of the target FS.    */
-DECL|method|getBlockSize ( EnumSet<FileAttribute> fileAttributes, FileStatus sourceFile, FileSystem targetFS, Path tmpTargetPath)
+DECL|method|getBlockSize ( EnumSet<FileAttribute> fileAttributes, CopyListingFileStatus source, FileSystem targetFS, Path tmpTargetPath)
 specifier|private
 specifier|static
 name|long
@@ -1943,8 +1943,8 @@ name|FileAttribute
 argument_list|>
 name|fileAttributes
 parameter_list|,
-name|FileStatus
-name|sourceFile
+name|CopyListingFileStatus
+name|source
 parameter_list|,
 name|FileSystem
 name|targetFS
@@ -1977,7 +1977,7 @@ decl_stmt|;
 return|return
 name|preserve
 condition|?
-name|sourceFile
+name|source
 operator|.
 name|getBlockSize
 argument_list|()
@@ -1991,6 +1991,11 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Special subclass of IOException. This is used to distinguish read-operation    * failures from other kinds of IOExceptions.    * The failure to read from source is dealt with specially, in the CopyMapper.    * Such failures may be skipped if the DistCpOptions indicate so.    * Write failures are intolerable, and amount to CopyMapper failure.    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"serial"
+argument_list|)
 DECL|class|CopyReadException
 specifier|public
 specifier|static

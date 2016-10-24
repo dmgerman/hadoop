@@ -1128,6 +1128,37 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+DECL|method|getFileType (CopyListingFileStatus fileStatus)
+specifier|private
+name|String
+name|getFileType
+parameter_list|(
+name|CopyListingFileStatus
+name|fileStatus
+parameter_list|)
+block|{
+if|if
+condition|(
+literal|null
+operator|==
+name|fileStatus
+condition|)
+block|{
+return|return
+literal|"N/A"
+return|;
+block|}
+return|return
+name|fileStatus
+operator|.
+name|isDirectory
+argument_list|()
+condition|?
+literal|"dir"
+else|:
+literal|"file"
+return|;
+block|}
 DECL|method|getFileType (FileStatus fileStatus)
 specifier|private
 name|String
@@ -1137,14 +1168,18 @@ name|FileStatus
 name|fileStatus
 parameter_list|)
 block|{
-return|return
-name|fileStatus
-operator|==
+if|if
+condition|(
 literal|null
-condition|?
+operator|==
+name|fileStatus
+condition|)
+block|{
+return|return
 literal|"N/A"
-else|:
-operator|(
+return|;
+block|}
+return|return
 name|fileStatus
 operator|.
 name|isDirectory
@@ -1153,7 +1188,6 @@ condition|?
 literal|"dir"
 else|:
 literal|"file"
-operator|)
 return|;
 block|}
 specifier|private
@@ -1200,7 +1234,7 @@ name|attributeString
 argument_list|)
 return|;
 block|}
-DECL|method|copyFileWithRetry (String description, FileStatus sourceFileStatus, Path target, Context context, FileAction action, EnumSet<DistCpOptions.FileAttribute> fileAttributes)
+DECL|method|copyFileWithRetry (String description, CopyListingFileStatus sourceFileStatus, Path target, Context context, FileAction action, EnumSet<DistCpOptions.FileAttribute> fileAttributes)
 specifier|private
 name|void
 name|copyFileWithRetry
@@ -1208,7 +1242,7 @@ parameter_list|(
 name|String
 name|description
 parameter_list|,
-name|FileStatus
+name|CopyListingFileStatus
 name|sourceFileStatus
 parameter_list|,
 name|Path
@@ -1404,7 +1438,7 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|updateSkipCounters (Context context, FileStatus sourceFile)
+DECL|method|updateSkipCounters (Context context, CopyListingFileStatus sourceFile)
 specifier|private
 specifier|static
 name|void
@@ -1413,7 +1447,7 @@ parameter_list|(
 name|Context
 name|context
 parameter_list|,
-name|FileStatus
+name|CopyListingFileStatus
 name|sourceFile
 parameter_list|)
 block|{
@@ -1443,7 +1477,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|handleFailures (IOException exception, FileStatus sourceFileStatus, Path target, Context context)
+DECL|method|handleFailures (IOException exception, CopyListingFileStatus sourceFileStatus, Path target, Context context)
 specifier|private
 name|void
 name|handleFailures
@@ -1451,7 +1485,7 @@ parameter_list|(
 name|IOException
 name|exception
 parameter_list|,
-name|FileStatus
+name|CopyListingFileStatus
 name|sourceFileStatus
 parameter_list|,
 name|Path
@@ -1589,7 +1623,7 @@ name|value
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|checkUpdate (FileSystem sourceFS, FileStatus source, Path target, FileStatus targetFileStatus)
+DECL|method|checkUpdate (FileSystem sourceFS, CopyListingFileStatus source, Path target, FileStatus targetFileStatus)
 specifier|private
 name|FileAction
 name|checkUpdate
@@ -1597,7 +1631,7 @@ parameter_list|(
 name|FileSystem
 name|sourceFS
 parameter_list|,
-name|FileStatus
+name|CopyListingFileStatus
 name|source
 parameter_list|,
 name|Path
@@ -1712,7 +1746,7 @@ operator|.
 name|OVERWRITE
 return|;
 block|}
-DECL|method|canSkip (FileSystem sourceFS, FileStatus source, FileStatus target)
+DECL|method|canSkip (FileSystem sourceFS, CopyListingFileStatus source, FileStatus target)
 specifier|private
 name|boolean
 name|canSkip
@@ -1720,7 +1754,7 @@ parameter_list|(
 name|FileSystem
 name|sourceFS
 parameter_list|,
-name|FileStatus
+name|CopyListingFileStatus
 name|source
 parameter_list|,
 name|FileStatus
