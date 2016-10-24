@@ -239,6 +239,12 @@ name|toString
 argument_list|()
 argument_list|)
 decl_stmt|;
+DECL|field|keyStoreDir
+specifier|private
+specifier|static
+name|String
+name|keyStoreDir
+decl_stmt|;
 DECL|field|sslConf
 specifier|private
 specifier|static
@@ -342,9 +348,8 @@ operator|.
 name|mkdirs
 parameter_list|()
 constructor_decl|;
-name|String
 name|keyStoreDir
-init|=
+operator|=
 operator|new
 name|File
 argument_list|(
@@ -353,7 +358,7 @@ argument_list|)
 operator|.
 name|getAbsolutePath
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 try|try
 block|{
 name|sslConf
@@ -413,6 +418,8 @@ specifier|static
 name|void
 name|cleanUp
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 operator|new
 name|File
@@ -435,6 +442,15 @@ argument_list|)
 operator|.
 name|delete
 argument_list|()
+expr_stmt|;
+name|KeyStoreTestUtil
+operator|.
+name|cleanupSSLConfig
+argument_list|(
+name|keyStoreDir
+argument_list|,
+name|classpathDir
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|TestHttpFSFWithSWebhdfsFileSystem (Operation operation)
