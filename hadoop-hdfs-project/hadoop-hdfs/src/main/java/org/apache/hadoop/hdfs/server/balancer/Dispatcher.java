@@ -1053,6 +1053,12 @@ specifier|final
 name|long
 name|getBlocksMinBlockSize
 decl_stmt|;
+DECL|field|blockMoveTimeout
+specifier|private
+specifier|final
+name|long
+name|blockMoveTimeout
+decl_stmt|;
 DECL|field|ioFileBufferSize
 specifier|private
 specifier|final
@@ -2028,6 +2034,21 @@ operator|.
 name|READ_TIMEOUT
 argument_list|)
 expr_stmt|;
+comment|// Set read timeout so that it doesn't hang forever against
+comment|// unresponsive nodes. Datanode normally sends IN_PROGRESS response
+comment|// twice within the client read timeout period (every 30 seconds by
+comment|// default). Here, we make it give up after 5 minutes of no response.
+name|sock
+operator|.
+name|setSoTimeout
+argument_list|(
+name|HdfsConstants
+operator|.
+name|READ_TIMEOUT
+operator|*
+literal|5
+argument_list|)
+expr_stmt|;
 name|sock
 operator|.
 name|setKeepAlive
@@ -2362,6 +2383,40 @@ name|datanode
 argument_list|)
 expr_stmt|;
 block|}
+comment|/** Check whether to continue waiting for response */
+DECL|method|stopWaitingForResponse (long startTime)
+specifier|private
+name|boolean
+name|stopWaitingForResponse
+parameter_list|(
+name|long
+name|startTime
+parameter_list|)
+block|{
+return|return
+name|source
+operator|.
+name|isIterationOver
+argument_list|()
+operator|||
+operator|(
+name|blockMoveTimeout
+operator|>
+literal|0
+operator|&&
+operator|(
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+operator|-
+name|startTime
+operator|>
+name|blockMoveTimeout
+operator|)
+operator|)
+return|;
+block|}
 comment|/** Receive a reportedBlock copy response from the input stream */
 DECL|method|receiveResponse (DataInputStream in)
 specifier|private
@@ -2374,6 +2429,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|long
+name|startTime
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+decl_stmt|;
 name|BlockOpResponseProto
 name|response
 init|=
@@ -2412,6 +2475,24 @@ name|in
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// Stop waiting for slow block moves. Even if it stops waiting,
+comment|// the actual move may continue.
+if|if
+condition|(
+name|stopWaitingForResponse
+argument_list|(
+name|startTime
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Block move timed out"
+argument_list|)
+throw|;
+block|}
 block|}
 name|String
 name|logInfo
@@ -3639,6 +3720,17 @@ name|blocksToReceive
 init|=
 literal|0L
 decl_stmt|;
+DECL|field|startTime
+specifier|private
+specifier|final
+name|long
+name|startTime
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+decl_stmt|;
 comment|/**      * Source blocks point to the objects in {@link Dispatcher#globalBlocks}      * because we want to keep one copy of a block and be aware that the      * locations are changing over time.      */
 DECL|field|srcBlocks
 specifier|private
@@ -3679,6 +3771,26 @@ argument_list|,
 name|maxSize2Move
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**      * Check if the iteration is over      */
+DECL|method|isIterationOver ()
+specifier|public
+name|boolean
+name|isIterationOver
+parameter_list|()
+block|{
+return|return
+operator|(
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+operator|-
+name|startTime
+operator|>
+name|MAX_ITERATION_TIME
+operator|)
+return|;
 block|}
 comment|/** Add a task */
 DECL|method|addTask (Task task)
@@ -4398,15 +4510,6 @@ name|void
 name|dispatchBlocks
 parameter_list|()
 block|{
-specifier|final
-name|long
-name|startTime
-init|=
-name|Time
-operator|.
-name|monotonicNow
-argument_list|()
-decl_stmt|;
 name|this
 operator|.
 name|blocksToReceive
@@ -4416,11 +4519,6 @@ operator|*
 name|getScheduledSize
 argument_list|()
 expr_stmt|;
-name|boolean
-name|isTimeUp
-init|=
-literal|false
-decl_stmt|;
 name|int
 name|noPendingMoveIteration
 init|=
@@ -4428,13 +4526,14 @@ literal|0
 decl_stmt|;
 while|while
 condition|(
-operator|!
-name|isTimeUp
-operator|&&
 name|getScheduledSize
 argument_list|()
 operator|>
 literal|0
+operator|&&
+operator|!
+name|isIterationOver
+argument_list|()
 operator|&&
 operator|(
 operator|!
@@ -4480,40 +4579,6 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
-comment|// check if time is up or not
-if|if
-condition|(
-name|Time
-operator|.
-name|monotonicNow
-argument_list|()
-operator|-
-name|startTime
-operator|>
-name|MAX_ITERATION_TIME
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Time up (max time="
-operator|+
-name|MAX_ITERATION_TIME
-operator|/
-literal|1000
-operator|+
-literal|" seconds).  Skipping "
-operator|+
-name|this
-argument_list|)
-expr_stmt|;
-name|isTimeUp
-operator|=
-literal|true
-expr_stmt|;
-continue|continue;
 block|}
 specifier|final
 name|PendingMove
@@ -4660,6 +4725,28 @@ name|ignored
 parameter_list|)
 block|{         }
 block|}
+if|if
+condition|(
+name|isIterationOver
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"The maximum iteration time ("
+operator|+
+name|MAX_ITERATION_TIME
+operator|/
+literal|1000
+operator|+
+literal|" seconds) has been reached. Stopping "
+operator|+
+name|this
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -4753,11 +4840,13 @@ literal|0L
 argument_list|,
 literal|0L
 argument_list|,
+literal|0
+argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|Dispatcher (NameNodeConnector nnc, Set<String> includedNodes, Set<String> excludedNodes, long movedWinWidth, int moverThreads, int dispatcherThreads, int maxConcurrentMovesPerNode, long getBlocksSize, long getBlocksMinBlockSize, Configuration conf)
+DECL|method|Dispatcher (NameNodeConnector nnc, Set<String> includedNodes, Set<String> excludedNodes, long movedWinWidth, int moverThreads, int dispatcherThreads, int maxConcurrentMovesPerNode, long getBlocksSize, long getBlocksMinBlockSize, int blockMoveTimeout, Configuration conf)
 name|Dispatcher
 parameter_list|(
 name|NameNodeConnector
@@ -4792,6 +4881,9 @@ name|getBlocksSize
 parameter_list|,
 name|long
 name|getBlocksMinBlockSize
+parameter_list|,
+name|int
+name|blockMoveTimeout
 parameter_list|,
 name|Configuration
 name|conf
@@ -4883,6 +4975,12 @@ operator|.
 name|getBlocksMinBlockSize
 operator|=
 name|getBlocksMinBlockSize
+expr_stmt|;
+name|this
+operator|.
+name|blockMoveTimeout
+operator|=
+name|blockMoveTimeout
 expr_stmt|;
 name|this
 operator|.
