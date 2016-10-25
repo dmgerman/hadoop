@@ -24,6 +24,32 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|erasurecode
+operator|.
+name|ErasureCodeNative
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Assume
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|Before
@@ -31,14 +57,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Test pure Java XOR encoding and decoding.  */
+comment|/**  * Test raw XOR coder implemented in Java.  */
 end_comment
 
 begin_class
-DECL|class|TestXORRawCoder
+DECL|class|TestXORRawCoderInteroperable1
 specifier|public
 class|class
-name|TestXORRawCoder
+name|TestXORRawCoderInteroperable1
 extends|extends
 name|TestXORRawCoderBase
 block|{
@@ -50,6 +76,16 @@ name|void
 name|setup
 parameter_list|()
 block|{
+name|Assume
+operator|.
+name|assumeTrue
+argument_list|(
+name|ErasureCodeNative
+operator|.
+name|isNativeCodeLoaded
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|encoderClass
@@ -62,9 +98,14 @@ name|this
 operator|.
 name|decoderClass
 operator|=
-name|XORRawDecoder
+name|NativeXORRawDecoder
 operator|.
 name|class
+expr_stmt|;
+name|setAllowDump
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 block|}
 block|}
