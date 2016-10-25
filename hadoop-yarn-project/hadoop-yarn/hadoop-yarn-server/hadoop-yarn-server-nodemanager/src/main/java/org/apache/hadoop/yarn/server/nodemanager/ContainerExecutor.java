@@ -1347,15 +1347,6 @@ name|whitelist
 operator|.
 name|add
 argument_list|(
-name|YarnConfiguration
-operator|.
-name|NM_DOCKER_CONTAINER_EXECUTOR_IMAGE_NAME
-argument_list|)
-expr_stmt|;
-name|whitelist
-operator|.
-name|add
-argument_list|(
 name|ApplicationConstants
 operator|.
 name|Environment
