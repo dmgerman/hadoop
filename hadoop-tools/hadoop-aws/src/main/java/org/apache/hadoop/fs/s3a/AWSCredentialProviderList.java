@@ -66,6 +66,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -482,6 +496,21 @@ argument_list|,
 name|lastException
 argument_list|)
 throw|;
+block|}
+comment|/**    * Returns the underlying list of providers.    *    * @return providers    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getProviders ()
+name|List
+argument_list|<
+name|AWSCredentialsProvider
+argument_list|>
+name|getProviders
+parameter_list|()
+block|{
+return|return
+name|providers
+return|;
 block|}
 comment|/**    * Verify that the provider list is not empty.    * @throws AmazonClientException if there are no providers.    */
 DECL|method|checkNotEmpty ()

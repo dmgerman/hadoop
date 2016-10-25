@@ -131,6 +131,16 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -191,6 +201,7 @@ end_comment
 begin_class
 DECL|class|S3ATestUtils
 specifier|public
+specifier|final
 class|class
 name|S3ATestUtils
 block|{
@@ -1250,7 +1261,7 @@ name|diff
 argument_list|()
 return|;
 block|}
-comment|/**      * Get the statistic      * @return the statistic      */
+comment|/**      * Get the statistic.      * @return the statistic      */
 DECL|method|getStatistic ()
 specifier|public
 name|Statistic
@@ -1273,6 +1284,144 @@ name|startingValue
 return|;
 block|}
 block|}
+comment|/**    * Asserts that {@code obj} is an instance of {@code expectedClass} using a    * descriptive assertion message.    * @param expectedClass class    * @param obj object to check    */
+DECL|method|assertInstanceOf (Class<?> expectedClass, Object obj)
+specifier|public
+specifier|static
+name|void
+name|assertInstanceOf
+parameter_list|(
+name|Class
+argument_list|<
+name|?
+argument_list|>
+name|expectedClass
+parameter_list|,
+name|Object
+name|obj
+parameter_list|)
+block|{
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Expected instance of class %s, but is %s."
+argument_list|,
+name|expectedClass
+argument_list|,
+name|obj
+operator|.
+name|getClass
+argument_list|()
+argument_list|)
+argument_list|,
+name|expectedClass
+operator|.
+name|isAssignableFrom
+argument_list|(
+name|obj
+operator|.
+name|getClass
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Builds a comma-separated list of class names.    * @param classes list of classes    * @return comma-separated list of class names    */
+DECL|method|buildClassListString ( List<T> classes)
+specifier|public
+specifier|static
+parameter_list|<
+name|T
+extends|extends
+name|Class
+argument_list|<
+name|?
+argument_list|>
+parameter_list|>
+name|String
+name|buildClassListString
+parameter_list|(
+name|List
+argument_list|<
+name|T
+argument_list|>
+name|classes
+parameter_list|)
+block|{
+name|StringBuilder
+name|sb
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|classes
+operator|.
+name|size
+argument_list|()
+condition|;
+operator|++
+name|i
+control|)
+block|{
+if|if
+condition|(
+name|i
+operator|>
+literal|0
+condition|)
+block|{
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|','
+argument_list|)
+expr_stmt|;
+block|}
+name|sb
+operator|.
+name|append
+argument_list|(
+name|classes
+operator|.
+name|get
+argument_list|(
+name|i
+argument_list|)
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|sb
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
+comment|/**    * This class should not be instantiated.    */
+DECL|method|S3ATestUtils ()
+specifier|private
+name|S3ATestUtils
+parameter_list|()
+block|{   }
 block|}
 end_class
 
