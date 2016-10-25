@@ -582,6 +582,10 @@ name|when
 import|;
 end_import
 
+begin_comment
+comment|/**  * set/clrSpaceQuote are tested in {@link org.apache.hadoop.hdfs.TestQuota}.  */
+end_comment
+
 begin_class
 DECL|class|TestDFSAdmin
 specifier|public
