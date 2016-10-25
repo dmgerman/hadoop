@@ -87,7 +87,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A BlockStorageMovementCommand is an instruction to a DataNode to move the  * given set of blocks to specified target DataNodes to fulfill the block  * storage policy.  *  * Upon receiving this command, this DataNode coordinates all the block movement  * by passing the details to  * {@link org.apache.hadoop.hdfs.server.datanode.StoragePolicySatisfyWorker}  * service. After the block movement this DataNode sends response back to the  * NameNode about the movement status.  *  * The coordinator datanode will use 'trackId' identifier to coordinate the block  * movement of the given set of blocks. TrackId is a unique identifier that  * represents a group of blocks. Namenode will generate this unique value and  * send it to the coordinator datanode along with the  * BlockStorageMovementCommand. Datanode will monitor the completion of the  * block movements that grouped under this trackId and notifies Namenode about  * the completion status.  */
+comment|/**  * A BlockStorageMovementCommand is an instruction to a DataNode to move the  * given set of blocks to specified target DataNodes to fulfill the block  * storage policy.  *  * Upon receiving this command, this DataNode coordinates all the block movement  * by passing the details to  * {@link org.apache.hadoop.hdfs.server.datanode.StoragePolicySatisfyWorker}  * service. After the block movement this DataNode sends response back to the  * NameNode about the movement status.  *  * The coordinator datanode will use 'trackId' identifier to coordinate the  * block movement of the given set of blocks. TrackId is a unique identifier  * that represents a group of blocks. Namenode will generate this unique value  * and send it to the coordinator datanode along with the  * BlockStorageMovementCommand. Datanode will monitor the completion of the  * block movements that grouped under this trackId and notifies Namenode about  * the completion status.  */
 end_comment
 
 begin_class
@@ -424,7 +424,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|")\n"
+literal|"\n  "
 argument_list|)
 operator|.
 name|append
@@ -455,6 +455,11 @@ name|toString
 argument_list|(
 name|targetStorageTypes
 argument_list|)
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|")"
 argument_list|)
 operator|.
 name|toString
