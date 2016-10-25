@@ -66,16 +66,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Collection
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Collections
 import|;
 end_import
@@ -745,16 +735,13 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Load one storage directory. Recover from previous transitions if required.    *    * @param nsInfo namespace information    * @param dataDir the root path of the storage directory    * @param startOpt startup option    * @return the StorageDirectory successfully loaded.    * @throws IOException    */
-DECL|method|loadStorageDirectory (NamespaceInfo nsInfo, File dataDir, StorageLocation location, StartupOption startOpt, List<Callable<StorageDirectory>> callables, Configuration conf)
+DECL|method|loadStorageDirectory (NamespaceInfo nsInfo, StorageLocation location, StartupOption startOpt, List<Callable<StorageDirectory>> callables, Configuration conf)
 specifier|private
 name|StorageDirectory
 name|loadStorageDirectory
 parameter_list|(
 name|NamespaceInfo
 name|nsInfo
-parameter_list|,
-name|File
-name|dataDir
 parameter_list|,
 name|StorageLocation
 name|location
@@ -783,7 +770,10 @@ init|=
 operator|new
 name|StorageDirectory
 argument_list|(
-name|dataDir
+name|nsInfo
+operator|.
+name|getBlockPoolID
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -825,9 +815,16 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Block pool storage directory "
+literal|"Block pool storage directory for location "
 operator|+
-name|dataDir
+name|location
+operator|+
+literal|" and block pool id "
+operator|+
+name|nsInfo
+operator|.
+name|getBlockPoolID
+argument_list|()
 operator|+
 literal|" does not exist"
 argument_list|)
@@ -836,9 +833,16 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Storage directory "
+literal|"Storage directory for location "
 operator|+
-name|dataDir
+name|location
+operator|+
+literal|" and block pool id "
+operator|+
+name|nsInfo
+operator|.
+name|getBlockPoolID
+argument_list|()
 operator|+
 literal|" does not exist"
 argument_list|)
@@ -851,9 +855,16 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Block pool storage directory "
+literal|"Block pool storage directory for location "
 operator|+
-name|dataDir
+name|location
+operator|+
+literal|" and block pool id "
+operator|+
+name|nsInfo
+operator|.
+name|getBlockPoolID
+argument_list|()
 operator|+
 literal|" is not formatted for "
 operator|+
@@ -969,7 +980,7 @@ throw|;
 block|}
 block|}
 comment|/**    * Analyze and load storage directories. Recover from previous transitions if    * required.    *    * The block pool storages are either all analyzed or none of them is loaded.    * Therefore, a failure on loading any block pool storage results a faulty    * data volume.    *    * @param nsInfo namespace information    * @param dataDirs storage directories of block pool    * @param startOpt startup option    * @return an array of loaded block pool directories.    * @throws IOException on error    */
-DECL|method|loadBpStorageDirectories (NamespaceInfo nsInfo, Collection<File> dataDirs, StorageLocation location, StartupOption startOpt, List<Callable<StorageDirectory>> callables, Configuration conf)
+DECL|method|loadBpStorageDirectories (NamespaceInfo nsInfo, StorageLocation location, StartupOption startOpt, List<Callable<StorageDirectory>> callables, Configuration conf)
 name|List
 argument_list|<
 name|StorageDirectory
@@ -978,12 +989,6 @@ name|loadBpStorageDirectories
 parameter_list|(
 name|NamespaceInfo
 name|nsInfo
-parameter_list|,
-name|Collection
-argument_list|<
-name|File
-argument_list|>
-name|dataDirs
 parameter_list|,
 name|StorageLocation
 name|location
@@ -1019,19 +1024,16 @@ argument_list|()
 decl_stmt|;
 try|try
 block|{
-for|for
-control|(
-name|File
-name|dataDir
-range|:
-name|dataDirs
-control|)
-block|{
 if|if
 condition|(
 name|containsStorageDir
 argument_list|(
-name|dataDir
+name|location
+argument_list|,
+name|nsInfo
+operator|.
+name|getBlockPoolID
+argument_list|()
 argument_list|)
 condition|)
 block|{
@@ -1043,7 +1045,7 @@ literal|"BlockPoolSliceStorage.recoverTransitionRead: "
 operator|+
 literal|"attempt to load an used block storage: "
 operator|+
-name|dataDir
+name|location
 argument_list|)
 throw|;
 block|}
@@ -1054,8 +1056,6 @@ init|=
 name|loadStorageDirectory
 argument_list|(
 name|nsInfo
-argument_list|,
-name|dataDir
 argument_list|,
 name|location
 argument_list|,
@@ -1073,7 +1073,6 @@ argument_list|(
 name|sd
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 catch|catch
 parameter_list|(
@@ -1104,7 +1103,7 @@ name|succeedDirs
 return|;
 block|}
 comment|/**    * Analyze storage directories. Recover from previous transitions if required.    *    * The block pool storages are either all analyzed or none of them is loaded.    * Therefore, a failure on loading any block pool storage results a faulty    * data volume.    *    * @param nsInfo namespace information    * @param dataDirs storage directories of block pool    * @param startOpt startup option    * @throws IOException on error    */
-DECL|method|recoverTransitionRead (NamespaceInfo nsInfo, Collection<File> dataDirs, StorageLocation location, StartupOption startOpt, List<Callable<StorageDirectory>> callables, Configuration conf)
+DECL|method|recoverTransitionRead (NamespaceInfo nsInfo, StorageLocation location, StartupOption startOpt, List<Callable<StorageDirectory>> callables, Configuration conf)
 name|List
 argument_list|<
 name|StorageDirectory
@@ -1113,12 +1112,6 @@ name|recoverTransitionRead
 parameter_list|(
 name|NamespaceInfo
 name|nsInfo
-parameter_list|,
-name|Collection
-argument_list|<
-name|File
-argument_list|>
-name|dataDirs
 parameter_list|,
 name|StorageLocation
 name|location
@@ -1163,8 +1156,6 @@ init|=
 name|loadBpStorageDirectories
 argument_list|(
 name|nsInfo
-argument_list|,
-name|dataDirs
 argument_list|,
 name|location
 argument_list|,

@@ -949,6 +949,9 @@ expr_stmt|;
 name|String
 name|validDir
 init|=
+operator|new
+name|File
+argument_list|(
 name|checkedLocations
 operator|.
 name|iterator
@@ -957,8 +960,9 @@ operator|.
 name|next
 argument_list|()
 operator|.
-name|getFile
+name|getUri
 argument_list|()
+argument_list|)
 operator|.
 name|getPath
 argument_list|()

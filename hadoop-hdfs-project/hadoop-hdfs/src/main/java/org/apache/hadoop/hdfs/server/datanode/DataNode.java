@@ -4821,10 +4821,10 @@ name|put
 argument_list|(
 name|loc
 operator|.
-name|getFile
+name|getNormalizedUri
 argument_list|()
 operator|.
-name|getCanonicalPath
+name|toString
 argument_list|()
 argument_list|,
 name|loc
@@ -4918,21 +4918,9 @@ if|if
 condition|(
 name|location
 operator|.
-name|getFile
-argument_list|()
-operator|.
-name|getCanonicalPath
-argument_list|()
-operator|.
-name|equals
+name|matchesStorageDirectory
 argument_list|(
 name|dir
-operator|.
-name|getRoot
-argument_list|()
-operator|.
-name|getCanonicalPath
-argument_list|()
 argument_list|)
 condition|)
 block|{
@@ -4950,10 +4938,10 @@ name|get
 argument_list|(
 name|location
 operator|.
-name|getFile
+name|getNormalizedUri
 argument_list|()
 operator|.
-name|getCanonicalPath
+name|toString
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -13209,9 +13197,6 @@ operator|+
 literal|" "
 operator|+
 name|location
-operator|.
-name|getFile
-argument_list|()
 operator|+
 literal|" : "
 argument_list|,

@@ -1458,10 +1458,7 @@ operator|.
 name|getStorageLocation
 argument_list|()
 operator|.
-name|getFile
-argument_list|()
-operator|.
-name|toURI
+name|getUri
 argument_list|()
 decl_stmt|;
 name|URI
@@ -1472,10 +1469,7 @@ operator|.
 name|getStorageLocation
 argument_list|()
 operator|.
-name|getFile
-argument_list|()
-operator|.
-name|toURI
+name|getUri
 argument_list|()
 decl_stmt|;
 name|String

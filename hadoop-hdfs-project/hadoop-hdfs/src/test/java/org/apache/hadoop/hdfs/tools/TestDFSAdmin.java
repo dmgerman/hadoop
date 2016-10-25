@@ -1904,6 +1904,9 @@ argument_list|)
 expr_stmt|;
 name|assertThat
 argument_list|(
+operator|new
+name|File
+argument_list|(
 name|locations
 operator|.
 name|get
@@ -1911,8 +1914,9 @@ argument_list|(
 literal|0
 argument_list|)
 operator|.
-name|getFile
+name|getUri
 argument_list|()
+argument_list|)
 argument_list|,
 name|is
 argument_list|(

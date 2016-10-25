@@ -654,10 +654,14 @@ init|=
 operator|new
 name|File
 argument_list|(
+operator|new
+name|File
+argument_list|(
 name|sl
 operator|.
-name|getFile
+name|getUri
 argument_list|()
+argument_list|)
 argument_list|,
 name|Storage
 operator|.
