@@ -1122,8 +1122,8 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    * Create a files status instance from a listing.    * @param keyPath path to entry    * @param summary summary from AWS    * @param blockSize block size to declare.    * @return a status entry    */
-DECL|method|createFileStatus (Path keyPath, S3ObjectSummary summary, long blockSize)
+comment|/**    * Create a files status instance from a listing.    * @param keyPath path to entry    * @param summary summary from AWS    * @param blockSize block size to declare.    * @param owner owner of the file    * @return a status entry    */
+DECL|method|createFileStatus (Path keyPath, S3ObjectSummary summary, long blockSize, String owner)
 specifier|public
 specifier|static
 name|S3AFileStatus
@@ -1137,6 +1137,9 @@ name|summary
 parameter_list|,
 name|long
 name|blockSize
+parameter_list|,
+name|String
+name|owner
 parameter_list|)
 block|{
 if|if
@@ -1161,9 +1164,9 @@ name|S3AFileStatus
 argument_list|(
 literal|true
 argument_list|,
-literal|true
-argument_list|,
 name|keyPath
+argument_list|,
+name|owner
 argument_list|)
 return|;
 block|}
@@ -1189,6 +1192,8 @@ argument_list|,
 name|keyPath
 argument_list|,
 name|blockSize
+argument_list|,
+name|owner
 argument_list|)
 return|;
 block|}

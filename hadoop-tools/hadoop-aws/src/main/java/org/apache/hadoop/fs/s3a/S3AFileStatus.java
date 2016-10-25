@@ -99,26 +99,26 @@ specifier|private
 name|boolean
 name|isEmptyDirectory
 decl_stmt|;
-comment|// Directories
-DECL|method|S3AFileStatus (boolean isdir, boolean isemptydir, Path path)
+comment|/**    * Create a directory status.    * @param isemptydir is this an empty directory?    * @param path the path    * @param owner the owner    */
+DECL|method|S3AFileStatus (boolean isemptydir, Path path, String owner)
 specifier|public
 name|S3AFileStatus
 parameter_list|(
-name|boolean
-name|isdir
-parameter_list|,
 name|boolean
 name|isemptydir
 parameter_list|,
 name|Path
 name|path
+parameter_list|,
+name|String
+name|owner
 parameter_list|)
 block|{
 name|super
 argument_list|(
 literal|0
 argument_list|,
-name|isdir
+literal|true
 argument_list|,
 literal|1
 argument_list|,
@@ -132,10 +132,20 @@ expr_stmt|;
 name|isEmptyDirectory
 operator|=
 name|isemptydir
+expr_stmt|;
+name|setOwner
+argument_list|(
+name|owner
+argument_list|)
+expr_stmt|;
+name|setGroup
+argument_list|(
+name|owner
+argument_list|)
 expr_stmt|;
 block|}
-comment|// Files
-DECL|method|S3AFileStatus (long length, long modification_time, Path path, long blockSize)
+comment|/**    * A simple file.    * @param length file length    * @param modification_time mod time    * @param path path    * @param blockSize block size    * @param owner owner    */
+DECL|method|S3AFileStatus (long length, long modification_time, Path path, long blockSize, String owner)
 specifier|public
 name|S3AFileStatus
 parameter_list|(
@@ -150,6 +160,9 @@ name|path
 parameter_list|,
 name|long
 name|blockSize
+parameter_list|,
+name|String
+name|owner
 parameter_list|)
 block|{
 name|super
@@ -170,6 +183,16 @@ expr_stmt|;
 name|isEmptyDirectory
 operator|=
 literal|false
+expr_stmt|;
+name|setOwner
+argument_list|(
+name|owner
+argument_list|)
+expr_stmt|;
+name|setGroup
+argument_list|(
+name|owner
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|isEmptyDirectory ()
@@ -180,23 +203,6 @@ parameter_list|()
 block|{
 return|return
 name|isEmptyDirectory
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|getOwner ()
-specifier|public
-name|String
-name|getOwner
-parameter_list|()
-block|{
-return|return
-name|System
-operator|.
-name|getProperty
-argument_list|(
-literal|"user.name"
-argument_list|)
 return|;
 block|}
 comment|/** Compare if this object is equal to another object.    * @param   o the object to be compared.    * @return  true if two file status has the same path name; false if not.    */

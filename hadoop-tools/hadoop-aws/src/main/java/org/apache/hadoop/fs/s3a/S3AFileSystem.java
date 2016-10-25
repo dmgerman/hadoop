@@ -948,6 +948,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|Progressable
@@ -1103,6 +1117,11 @@ DECL|field|workingDir
 specifier|private
 name|Path
 name|workingDir
+decl_stmt|;
+DECL|field|username
+specifier|private
+name|String
+name|username
 decl_stmt|;
 DECL|field|s3
 specifier|private
@@ -1306,6 +1325,17 @@ argument_list|(
 name|name
 argument_list|)
 expr_stmt|;
+comment|// Username is the current user at the time the FS was instantiated.
+name|username
+operator|=
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+operator|.
+name|getShortUserName
+argument_list|()
+expr_stmt|;
 name|workingDir
 operator|=
 operator|new
@@ -1313,12 +1343,7 @@ name|Path
 argument_list|(
 literal|"/user"
 argument_list|,
-name|System
-operator|.
-name|getProperty
-argument_list|(
-literal|"user.name"
-argument_list|)
+name|username
 argument_list|)
 operator|.
 name|makeQualified
@@ -5622,6 +5647,17 @@ return|return
 name|workingDir
 return|;
 block|}
+comment|/**    * Get the username of the FS.    * @return the short name of the user who instantiated the FS    */
+DECL|method|getUsername ()
+specifier|public
+name|String
+name|getUsername
+parameter_list|()
+block|{
+return|return
+name|username
+return|;
+block|}
 comment|/**    *    * Make the given path and all non-existent parents into    * directories. Has the semantics of Unix {@code 'mkdir -p'}.    * Existence of the directory hierarchy is not an error.    * @param path path to create    * @param permission to apply to f    * @return true if a directory was created    * @throws FileAlreadyExistsException there is a file at the path specified    * @throws IOException other IO problems    */
 comment|// TODO: If we have created an empty file at /foo/bar and we then call
 comment|// mkdirs for /foo/bar/baz/roo what happens to the empty file /foo/bar/?
@@ -5937,9 +5973,9 @@ name|S3AFileStatus
 argument_list|(
 literal|true
 argument_list|,
-literal|true
-argument_list|,
 name|path
+argument_list|,
+name|username
 argument_list|)
 return|;
 block|}
@@ -5975,6 +6011,8 @@ name|getDefaultBlockSize
 argument_list|(
 name|path
 argument_list|)
+argument_list|,
+name|username
 argument_list|)
 return|;
 block|}
@@ -6079,9 +6117,9 @@ name|S3AFileStatus
 argument_list|(
 literal|true
 argument_list|,
-literal|true
-argument_list|,
 name|path
+argument_list|,
+name|username
 argument_list|)
 return|;
 block|}
@@ -6119,6 +6157,8 @@ name|getDefaultBlockSize
 argument_list|(
 name|path
 argument_list|)
+argument_list|,
+name|username
 argument_list|)
 return|;
 block|}
@@ -6329,11 +6369,11 @@ return|return
 operator|new
 name|S3AFileStatus
 argument_list|(
-literal|true
-argument_list|,
 literal|false
 argument_list|,
 name|path
+argument_list|,
+name|username
 argument_list|)
 return|;
 block|}
@@ -6359,9 +6399,9 @@ name|S3AFileStatus
 argument_list|(
 literal|true
 argument_list|,
-literal|true
-argument_list|,
 name|path
+argument_list|,
+name|username
 argument_list|)
 return|;
 block|}
