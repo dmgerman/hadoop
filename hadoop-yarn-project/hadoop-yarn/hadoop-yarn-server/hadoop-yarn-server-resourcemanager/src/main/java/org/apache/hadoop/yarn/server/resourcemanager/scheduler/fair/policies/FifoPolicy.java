@@ -501,6 +501,13 @@ name|schedulable
 expr_stmt|;
 block|}
 block|}
+if|if
+condition|(
+name|earliest
+operator|!=
+literal|null
+condition|)
+block|{
 name|earliest
 operator|.
 name|setFairShare
@@ -513,6 +520,7 @@ name|totalResources
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
