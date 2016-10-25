@@ -3418,6 +3418,26 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+name|logDirIOError
+argument_list|(
+name|remoteAppLogDir
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|ioe
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|nodeFiles
 return|;
@@ -3643,6 +3663,35 @@ operator|+
 literal|". Error message found: "
 operator|+
 name|errorMessage
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|logDirIOError (String remoteAppLogDir, String errMsg)
+specifier|private
+specifier|static
+name|void
+name|logDirIOError
+parameter_list|(
+name|String
+name|remoteAppLogDir
+parameter_list|,
+name|String
+name|errMsg
+parameter_list|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Cannot access to "
+operator|+
+name|remoteAppLogDir
+operator|+
+literal|". Error message found: "
+operator|+
+name|errMsg
 argument_list|)
 expr_stmt|;
 block|}
