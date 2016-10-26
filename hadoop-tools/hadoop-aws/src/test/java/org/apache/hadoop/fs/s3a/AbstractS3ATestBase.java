@@ -140,9 +140,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|junit
+name|slf4j
 operator|.
-name|Rule
+name|Logger
 import|;
 end_import
 
@@ -150,11 +150,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|junit
+name|slf4j
 operator|.
-name|rules
-operator|.
-name|TestName
+name|LoggerFactory
 import|;
 end_import
 
@@ -219,6 +217,22 @@ name|AbstractFSContractTestBase
 implements|implements
 name|S3ATestConstants
 block|{
+DECL|field|LOG
+specifier|protected
+specifier|static
+specifier|final
+name|Logger
+name|LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|AbstractS3ATestBase
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 annotation|@
 name|Override
 DECL|method|createContract (Configuration conf)
@@ -268,17 +282,6 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
-name|Rule
-DECL|field|methodName
-specifier|public
-name|TestName
-name|methodName
-init|=
-operator|new
-name|TestName
-argument_list|()
-decl_stmt|;
-annotation|@
 name|Before
 DECL|method|nameThread ()
 specifier|public
@@ -301,6 +304,18 @@ name|getMethodName
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getTestTimeoutMillis ()
+specifier|protected
+name|int
+name|getTestTimeoutMillis
+parameter_list|()
+block|{
+return|return
+name|S3A_TEST_TIMEOUT
+return|;
 block|}
 DECL|method|getConfiguration ()
 specifier|protected
@@ -334,6 +349,42 @@ operator|.
 name|getFileSystem
 argument_list|()
 return|;
+block|}
+comment|/**    * Describe a test in the logs.    * @param text text to print    * @param args arguments to format in the printing    */
+DECL|method|describe (String text, Object... args)
+specifier|protected
+name|void
+name|describe
+parameter_list|(
+name|String
+name|text
+parameter_list|,
+name|Object
+modifier|...
+name|args
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"\n\n{}: {}\n"
+argument_list|,
+name|methodName
+operator|.
+name|getMethodName
+argument_list|()
+argument_list|,
+name|String
+operator|.
+name|format
+argument_list|(
+name|text
+argument_list|,
+name|args
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Write a file, read it back, validate the dataset. Overwrites the file    * if it is present    * @param name filename (will have the test path prepended to it)    * @param len length of file    * @return the full path to the file    * @throws IOException any IO problem    */
 DECL|method|writeThenReadFile (String name, int len)

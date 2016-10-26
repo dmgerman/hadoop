@@ -3052,6 +3052,13 @@ name|nextExpectedNumber
 init|=
 literal|0
 decl_stmt|;
+name|NanoTimer
+name|timer
+init|=
+operator|new
+name|NanoTimer
+argument_list|()
+decl_stmt|;
 try|try
 init|(
 name|InputStream
@@ -3175,6 +3182,22 @@ argument_list|)
 throw|;
 block|}
 block|}
+name|timer
+operator|.
+name|end
+argument_list|(
+literal|"Time to read %d bytes"
+argument_list|,
+name|expectedSize
+argument_list|)
+expr_stmt|;
+name|bandwidth
+argument_list|(
+name|timer
+argument_list|,
+name|expectedSize
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Generates test data of the given size according to some specific pattern    * and writes it to the provided output file.    *    * @param fs FileSystem    * @param path Test file to be generated    * @param size The size of the test data to be generated in bytes    * @param bufferLen Pattern length    * @param modulus   Pattern modulus    * @throws IOException    *         thrown if an error occurs while writing the data    */
 DECL|method|generateTestFile (FileSystem fs, Path path, final long size, final int bufferLen, final int modulus)
@@ -3407,6 +3430,13 @@ name|objectName
 argument_list|)
 decl_stmt|;
 comment|// Write test file in a specific pattern
+name|NanoTimer
+name|timer
+init|=
+operator|new
+name|NanoTimer
+argument_list|()
+decl_stmt|;
 name|assertEquals
 argument_list|(
 name|fileSize
@@ -3432,6 +3462,22 @@ argument_list|,
 literal|"not created successful"
 argument_list|,
 name|objectPath
+argument_list|)
+expr_stmt|;
+name|timer
+operator|.
+name|end
+argument_list|(
+literal|"Time to write %d bytes"
+argument_list|,
+name|fileSize
+argument_list|)
+expr_stmt|;
+name|bandwidth
+argument_list|(
+name|timer
+argument_list|,
+name|fileSize
 argument_list|)
 expr_stmt|;
 comment|// Now read the same file back and verify its content

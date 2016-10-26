@@ -70,6 +70,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|s3a
 operator|.
 name|scale
@@ -233,7 +247,7 @@ name|createTestFileSystem
 argument_list|(
 name|conf
 argument_list|,
-literal|true
+literal|false
 argument_list|)
 return|;
 block|}
@@ -835,6 +849,47 @@ literal|"Skipping encryption tests"
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|/**    * Create a test path, using the value of    * {@link S3ATestConstants#TEST_UNIQUE_FORK_ID} if it is set.    * @param defVal default value    * @return a path    */
+DECL|method|createTestPath (Path defVal)
+specifier|public
+specifier|static
+name|Path
+name|createTestPath
+parameter_list|(
+name|Path
+name|defVal
+parameter_list|)
+block|{
+name|String
+name|testUniqueForkId
+init|=
+name|System
+operator|.
+name|getProperty
+argument_list|(
+name|S3ATestConstants
+operator|.
+name|TEST_UNIQUE_FORK_ID
+argument_list|)
+decl_stmt|;
+return|return
+name|testUniqueForkId
+operator|==
+literal|null
+condition|?
+name|defVal
+else|:
+operator|new
+name|Path
+argument_list|(
+literal|"/"
+operator|+
+name|testUniqueForkId
+argument_list|,
+literal|"test"
+argument_list|)
+return|;
 block|}
 comment|/**    * Reset all metrics in a list.    * @param metrics metrics to reset    */
 DECL|method|reset (S3ATestUtils.MetricDiff... metrics)

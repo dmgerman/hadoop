@@ -260,6 +260,22 @@ name|fs
 operator|.
 name|s3a
 operator|.
+name|S3AFileSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
 name|Statistic
 import|;
 end_import
@@ -417,17 +433,17 @@ name|partitionSize
 decl_stmt|;
 annotation|@
 name|Override
-DECL|method|setUp ()
+DECL|method|setup ()
 specifier|public
 name|void
-name|setUp
+name|setup
 parameter_list|()
 throws|throws
 name|Exception
 block|{
 name|super
 operator|.
-name|setUp
+name|setup
 argument_list|()
 expr_stmt|;
 specifier|final
@@ -468,25 +484,13 @@ literal|"hugefileRenamed"
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Override
-DECL|method|tearDown ()
-specifier|public
-name|void
-name|tearDown
-parameter_list|()
-throws|throws
-name|Exception
-block|{
-comment|// do nothing. Specifically: do not delete the test dir
-block|}
 comment|/**    * Note that this can get called before test setup.    * @return the configuration to use.    */
 annotation|@
 name|Override
-DECL|method|createConfiguration ()
+DECL|method|createScaleConfiguration ()
 specifier|protected
 name|Configuration
-name|createConfiguration
+name|createScaleConfiguration
 parameter_list|()
 block|{
 name|Configuration
@@ -494,7 +498,7 @@ name|conf
 init|=
 name|super
 operator|.
-name|createConfiguration
+name|createScaleConfiguration
 argument_list|()
 decl_stmt|;
 name|partitionSize
@@ -787,6 +791,12 @@ decl_stmt|;
 comment|// perform the upload.
 comment|// there's lots of logging here, so that a tail -f on the output log
 comment|// can give a view of what is happening.
+name|S3AFileSystem
+name|fs
+init|=
+name|getFileSystem
+argument_list|()
+decl_stmt|;
 name|StorageStatistics
 name|storageStatistics
 init|=
@@ -1461,6 +1471,12 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|S3AFileSystem
+name|fs
+init|=
+name|getFileSystem
+argument_list|()
+decl_stmt|;
 name|ContractTestUtils
 operator|.
 name|assertPathExists
@@ -1494,7 +1510,8 @@ name|info
 argument_list|(
 literal|"File System state after operation:\n{}"
 argument_list|,
-name|fs
+name|getFileSystem
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1563,6 +1580,12 @@ argument_list|,
 name|hugefile
 argument_list|)
 expr_stmt|;
+name|S3AFileSystem
+name|fs
+init|=
+name|getFileSystem
+argument_list|()
+decl_stmt|;
 name|S3AFileStatus
 name|status
 init|=
@@ -1803,6 +1826,12 @@ argument_list|,
 name|hugefile
 argument_list|)
 expr_stmt|;
+name|S3AFileSystem
+name|fs
+init|=
+name|getFileSystem
+argument_list|()
+decl_stmt|;
 name|S3AFileStatus
 name|status
 init|=
@@ -1970,6 +1999,12 @@ argument_list|,
 name|hugefileRenamed
 argument_list|)
 expr_stmt|;
+name|S3AFileSystem
+name|fs
+init|=
+name|getFileSystem
+argument_list|()
+decl_stmt|;
 name|S3AFileStatus
 name|status
 init|=
@@ -2164,6 +2199,12 @@ operator|.
 name|NanoTimer
 argument_list|()
 decl_stmt|;
+name|S3AFileSystem
+name|fs
+init|=
+name|getFileSystem
+argument_list|()
+decl_stmt|;
 name|fs
 operator|.
 name|delete
@@ -2219,7 +2260,8 @@ operator|new
 name|NanoTimer
 argument_list|()
 decl_stmt|;
-name|fs
+name|getFileSystem
+argument_list|()
 operator|.
 name|delete
 argument_list|(

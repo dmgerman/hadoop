@@ -39,6 +39,24 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3ATestConstants
+operator|.
+name|SCALE_TEST_TIMEOUT_MILLIS
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -89,6 +107,18 @@ name|MULTIPART_SETTING
 init|=
 name|MULTIPART_MIN_SIZE
 decl_stmt|;
+annotation|@
+name|Override
+DECL|method|getTestTimeoutMillis ()
+specifier|protected
+name|int
+name|getTestTimeoutMillis
+parameter_list|()
+block|{
+return|return
+name|SCALE_TEST_TIMEOUT_MILLIS
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|createConfiguration ()

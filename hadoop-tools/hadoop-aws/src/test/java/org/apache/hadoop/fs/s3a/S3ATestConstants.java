@@ -196,21 +196,66 @@ name|DEFAULT_DIRECTORY_COUNT
 init|=
 literal|2
 decl_stmt|;
-comment|/**    * Default scale test timeout in seconds: {@value}.    */
-DECL|field|DEFAULT_TEST_TIMEOUT
-name|int
-name|DEFAULT_TEST_TIMEOUT
-init|=
-literal|30
-operator|*
-literal|60
-decl_stmt|;
 comment|/**    * Default policy on scale tests: {@value}.    */
 DECL|field|DEFAULT_SCALE_TESTS_ENABLED
 name|boolean
 name|DEFAULT_SCALE_TESTS_ENABLED
 init|=
 literal|false
+decl_stmt|;
+comment|/**    * Fork ID passed down from maven if the test is running in parallel.    */
+DECL|field|TEST_UNIQUE_FORK_ID
+name|String
+name|TEST_UNIQUE_FORK_ID
+init|=
+literal|"test.unique.fork.id"
+decl_stmt|;
+DECL|field|TEST_STS_ENABLED
+name|String
+name|TEST_STS_ENABLED
+init|=
+literal|"test.fs.s3a.sts.enabled"
+decl_stmt|;
+DECL|field|TEST_STS_ENDPOINT
+name|String
+name|TEST_STS_ENDPOINT
+init|=
+literal|"test.fs.s3a.sts.endpoint"
+decl_stmt|;
+comment|/**    * Timeout in Milliseconds for standard tests: {@value}.    */
+DECL|field|S3A_TEST_TIMEOUT
+name|int
+name|S3A_TEST_TIMEOUT
+init|=
+literal|10
+operator|*
+literal|60
+operator|*
+literal|1000
+decl_stmt|;
+comment|/**    * Timeout in Seconds for Scale Tests: {@value}.    */
+DECL|field|SCALE_TEST_TIMEOUT_SECONDS
+name|int
+name|SCALE_TEST_TIMEOUT_SECONDS
+init|=
+literal|30
+operator|*
+literal|60
+decl_stmt|;
+DECL|field|SCALE_TEST_TIMEOUT_MILLIS
+name|int
+name|SCALE_TEST_TIMEOUT_MILLIS
+init|=
+name|SCALE_TEST_TIMEOUT_SECONDS
+operator|*
+literal|1000
+decl_stmt|;
+comment|/**    * Optional custom endpoint for S3A configuration tests.    * This does<i>not</i> set the endpoint for s3 access elsewhere.    */
+DECL|field|CONFIGURATION_TEST_ENDPOINT
+name|String
+name|CONFIGURATION_TEST_ENDPOINT
+init|=
+literal|"test.fs.s3a.endpoint"
 decl_stmt|;
 block|}
 end_interface

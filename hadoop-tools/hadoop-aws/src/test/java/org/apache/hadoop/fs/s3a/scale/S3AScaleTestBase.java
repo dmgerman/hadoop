@@ -72,25 +72,9 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|contract
-operator|.
-name|ContractTestUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|s3a
 operator|.
-name|S3AFileSystem
+name|AbstractS3ATestBase
 import|;
 end_import
 
@@ -180,16 +164,6 @@ name|org
 operator|.
 name|junit
 operator|.
-name|After
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
 name|Assert
 import|;
 end_import
@@ -201,50 +175,6 @@ operator|.
 name|junit
 operator|.
 name|Assume
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Before
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Rule
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|rules
-operator|.
-name|TestName
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|rules
-operator|.
-name|Timeout
 import|;
 end_import
 
@@ -297,7 +227,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Base class for scale tests; here is where the common scale configuration  * keys are defined.  */
+comment|/**  * Base class for scale tests; here is where the common scale configuration  * keys are defined.  *<p>  * Configuration setup is a bit more complex than in the parent classes,  * as the test timeout is desired prior to the {@link #getTestTimeoutMillis()}  * being called to set the test timeout rule; this happens before any of  * the methods tagged with {@code @Before} are invoked.  *<p>  * The algorithm is:  *<ol>  *<li>Create a configuration on demand, via  *   {@link #demandCreateConfiguration()}</li>  *<li>Have that return the value of {@link #conf} or create a new one  *   if that field is null (and set the field to the created value).</li>  *<li>Override the superclasses {@link #createConfiguration()}  *   to return the demand created value; make that method final so that  *   subclasses don't break things by overridding it.</li>  *<li>Add a new override point {@link #createScaleConfiguration()}  *   to create the config, one which subclasses can (and do) override.</li>  *</ol>  * Bear in mind that this process also takes place during initialization  * of the superclass; the overridden methods are being invoked before  * their instances are fully configured. This is considered  *<i>very bad form</i> in Java code (indeed, in C++ it is actually permitted;  * the base class implementations get invoked instead).  */
 end_comment
 
 begin_class
@@ -306,51 +236,8 @@ specifier|public
 class|class
 name|S3AScaleTestBase
 extends|extends
-name|Assert
-implements|implements
-name|S3ATestConstants
+name|AbstractS3ATestBase
 block|{
-annotation|@
-name|Rule
-DECL|field|methodName
-specifier|public
-specifier|final
-name|TestName
-name|methodName
-init|=
-operator|new
-name|TestName
-argument_list|()
-decl_stmt|;
-annotation|@
-name|Rule
-DECL|field|testTimeout
-specifier|public
-name|Timeout
-name|testTimeout
-init|=
-name|createTestTimeout
-argument_list|()
-decl_stmt|;
-annotation|@
-name|Before
-DECL|method|nameThread ()
-specifier|public
-name|void
-name|nameThread
-parameter_list|()
-block|{
-name|Thread
-operator|.
-name|currentThread
-argument_list|()
-operator|.
-name|setName
-argument_list|(
-literal|"JUnit"
-argument_list|)
-expr_stmt|;
-block|}
 DECL|field|_1KB
 specifier|public
 specifier|static
@@ -370,11 +257,6 @@ init|=
 name|_1KB
 operator|*
 name|_1KB
-decl_stmt|;
-DECL|field|fs
-specifier|protected
-name|S3AFileSystem
-name|fs
 decl_stmt|;
 DECL|field|LOG
 specifier|protected
@@ -402,19 +284,11 @@ specifier|private
 name|boolean
 name|enabled
 decl_stmt|;
-comment|/**    * Configuration generator. May be overridden to inject    * some custom options.    * @return a configuration with which to create FS instances    */
-DECL|method|createConfiguration ()
-specifier|protected
-name|Configuration
-name|createConfiguration
-parameter_list|()
-block|{
-return|return
-operator|new
-name|Configuration
-argument_list|()
-return|;
-block|}
+DECL|field|testPath
+specifier|private
+name|Path
+name|testPath
+decl_stmt|;
 comment|/**    * Get the configuration used to set up the FS.    * @return the configuration    */
 DECL|method|getConf ()
 specifier|public
@@ -426,19 +300,27 @@ return|return
 name|conf
 return|;
 block|}
-comment|/**    * Setup. This triggers creation of the configuration.    */
 annotation|@
-name|Before
-DECL|method|setUp ()
+name|Override
+DECL|method|setup ()
 specifier|public
 name|void
-name|setUp
+name|setup
 parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|demandCreateConfiguration
+name|super
+operator|.
+name|setup
 argument_list|()
+expr_stmt|;
+name|testPath
+operator|=
+name|path
+argument_list|(
+literal|"/tests3ascale"
+argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
@@ -451,15 +333,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// multipart purges are disabled on the scale tests
-name|fs
-operator|=
-name|createTestFileSystem
-argument_list|(
-name|conf
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
 comment|// check for the test being enabled
 name|enabled
 operator|=
@@ -481,11 +354,12 @@ literal|"Scale test disabled: to enable set property "
 operator|+
 name|KEY_SCALE_TESTS_ENABLED
 argument_list|,
-name|enabled
+name|isEnabled
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create the configuration if it is not already set up.    * @return the configuration.    */
+comment|/**    * Create the configuration if it is not already set up, calling    * {@link #createScaleConfiguration()} to do so.    * @return the configuration.    */
 DECL|method|demandCreateConfiguration ()
 specifier|private
 specifier|synchronized
@@ -502,7 +376,7 @@ condition|)
 block|{
 name|conf
 operator|=
-name|createConfiguration
+name|createScaleConfiguration
 argument_list|()
 expr_stmt|;
 block|}
@@ -510,30 +384,31 @@ return|return
 name|conf
 return|;
 block|}
-annotation|@
-name|After
-DECL|method|tearDown ()
-specifier|public
-name|void
-name|tearDown
+comment|/**    * Returns the config created with {@link #demandCreateConfiguration()}.    * Subclasses must override {@link #createScaleConfiguration()}    * in order to customize their configurations.    * @return a configuration with which to create FS instances    */
+DECL|method|createConfiguration ()
+specifier|protected
+specifier|final
+name|Configuration
+name|createConfiguration
 parameter_list|()
-throws|throws
-name|Exception
 block|{
-name|ContractTestUtils
-operator|.
-name|rm
-argument_list|(
-name|fs
-argument_list|,
-name|getTestPath
+return|return
+name|demandCreateConfiguration
 argument_list|()
-argument_list|,
-literal|true
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
+return|;
+block|}
+comment|/**    * Override point: create a configuration.    * @return a configuration with which to create FS instances    */
+DECL|method|createScaleConfiguration ()
+specifier|protected
+name|Configuration
+name|createScaleConfiguration
+parameter_list|()
+block|{
+return|return
+operator|new
+name|Configuration
+argument_list|()
+return|;
 block|}
 DECL|method|getTestPath ()
 specifier|protected
@@ -541,36 +416,8 @@ name|Path
 name|getTestPath
 parameter_list|()
 block|{
-name|String
-name|testUniqueForkId
-init|=
-name|System
-operator|.
-name|getProperty
-argument_list|(
-literal|"test.unique.fork.id"
-argument_list|)
-decl_stmt|;
 return|return
-name|testUniqueForkId
-operator|==
-literal|null
-condition|?
-operator|new
-name|Path
-argument_list|(
-literal|"/tests3a"
-argument_list|)
-else|:
-operator|new
-name|Path
-argument_list|(
-literal|"/"
-operator|+
-name|testUniqueForkId
-argument_list|,
-literal|"tests3a"
-argument_list|)
+name|testPath
 return|;
 block|}
 DECL|method|getOperationCount ()
@@ -591,31 +438,9 @@ name|DEFAULT_OPERATION_COUNT
 argument_list|)
 return|;
 block|}
-comment|/**    * Create the timeout for tests. Some large tests may need a larger value.    * @return the test timeout to use    */
-DECL|method|createTestTimeout ()
-specifier|protected
-name|Timeout
-name|createTestTimeout
-parameter_list|()
-block|{
-name|demandCreateConfiguration
-argument_list|()
-expr_stmt|;
-return|return
-operator|new
-name|Timeout
-argument_list|(
-name|getTestTimeoutSeconds
-argument_list|()
-operator|*
-literal|1000
-argument_list|)
-return|;
-block|}
 comment|/**    * Get the test timeout in seconds.    * @return the test timeout as set in system properties or the default.    */
 DECL|method|getTestTimeoutSeconds ()
 specifier|protected
-specifier|static
 name|int
 name|getTestTimeoutSeconds
 parameter_list|()
@@ -623,49 +448,29 @@ block|{
 return|return
 name|getTestPropertyInt
 argument_list|(
-literal|null
+name|demandCreateConfiguration
+argument_list|()
 argument_list|,
 name|KEY_TEST_TIMEOUT
 argument_list|,
-name|DEFAULT_TEST_TIMEOUT
+name|SCALE_TEST_TIMEOUT_SECONDS
 argument_list|)
 return|;
 block|}
-comment|/**    * Describe a test in the logs.    * @param text text to print    * @param args arguments to format in the printing    */
-DECL|method|describe (String text, Object... args)
+annotation|@
+name|Override
+DECL|method|getTestTimeoutMillis ()
 specifier|protected
-name|void
-name|describe
-parameter_list|(
-name|String
-name|text
-parameter_list|,
-name|Object
-modifier|...
-name|args
-parameter_list|)
+name|int
+name|getTestTimeoutMillis
+parameter_list|()
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"\n\n{}: {}\n"
-argument_list|,
-name|methodName
-operator|.
-name|getMethodName
+return|return
+name|getTestTimeoutSeconds
 argument_list|()
-argument_list|,
-name|String
-operator|.
-name|format
-argument_list|(
-name|text
-argument_list|,
-name|args
-argument_list|)
-argument_list|)
-expr_stmt|;
+operator|*
+literal|1000
+return|;
 block|}
 comment|/**    * Get the input stream statistics of an input stream.    * Raises an exception if the inner stream is not an S3A input stream    * @param in wrapper    * @return the statistics for the inner stream    */
 DECL|method|getInputStreamStatistics ( FSDataInputStream in)
@@ -739,7 +544,8 @@ block|{
 name|S3AInstrumentation
 name|instrumentation
 init|=
-name|fs
+name|getFileSystem
+argument_list|()
 operator|.
 name|getInstrumentation
 argument_list|()
@@ -788,8 +594,10 @@ name|value
 argument_list|()
 return|;
 block|}
+comment|/**    * Is the test enabled; this is controlled by the configuration    * and the {@code -Dscale} maven option.    * @return true if the scale tests are enabled.    */
 DECL|method|isEnabled ()
 specifier|protected
+specifier|final
 name|boolean
 name|isEnabled
 parameter_list|()
@@ -798,7 +606,7 @@ return|return
 name|enabled
 return|;
 block|}
-comment|/**    * Flag to indicate that this test is being used sequentially. This    * is used by some of the scale tests to validate test time expectations.    * @return true if the build indicates this test is being run in parallel.    */
+comment|/**    * Flag to indicate that this test is being executed in parallel.    * This is used by some of the scale tests to validate test time expectations.    * @return true if the build indicates this test is being run in parallel.    */
 DECL|method|isParallelExecution ()
 specifier|protected
 name|boolean

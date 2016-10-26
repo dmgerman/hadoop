@@ -50,26 +50,6 @@ name|Constants
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Test
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
 begin_comment
 comment|/**  * Tests file deletion with multi-delete disabled.  */
 end_comment
@@ -84,10 +64,10 @@ name|ITestS3ADeleteManyFiles
 block|{
 annotation|@
 name|Override
-DECL|method|createConfiguration ()
+DECL|method|createScaleConfiguration ()
 specifier|protected
 name|Configuration
-name|createConfiguration
+name|createScaleConfiguration
 parameter_list|()
 block|{
 name|Configuration
@@ -95,7 +75,7 @@ name|configuration
 init|=
 name|super
 operator|.
-name|createConfiguration
+name|createScaleConfiguration
 argument_list|()
 decl_stmt|;
 name|configuration
@@ -113,18 +93,6 @@ return|return
 name|configuration
 return|;
 block|}
-annotation|@
-name|Override
-annotation|@
-name|Test
-DECL|method|testOpenCreate ()
-specifier|public
-name|void
-name|testOpenCreate
-parameter_list|()
-throws|throws
-name|IOException
-block|{    }
 block|}
 end_class
 

@@ -64,10 +64,10 @@ name|AbstractSTestS3AHugeFiles
 block|{
 annotation|@
 name|Override
-DECL|method|createConfiguration ()
+DECL|method|createScaleConfiguration ()
 specifier|protected
 name|Configuration
-name|createConfiguration
+name|createScaleConfiguration
 parameter_list|()
 block|{
 specifier|final
@@ -76,7 +76,7 @@ name|conf
 init|=
 name|super
 operator|.
-name|createConfiguration
+name|createScaleConfiguration
 argument_list|()
 decl_stmt|;
 name|conf

@@ -466,15 +466,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|TEST_ENDPOINT
-specifier|private
-specifier|static
-specifier|final
-name|String
-name|TEST_ENDPOINT
-init|=
-literal|"test.fs.s3a.endpoint"
-decl_stmt|;
 annotation|@
 name|Rule
 DECL|field|testTimeout
@@ -485,11 +476,9 @@ init|=
 operator|new
 name|Timeout
 argument_list|(
-literal|30
-operator|*
-literal|60
-operator|*
-literal|1000
+name|S3ATestConstants
+operator|.
+name|S3A_TEST_TIMEOUT
 argument_list|)
 decl_stmt|;
 annotation|@
@@ -504,7 +493,7 @@ operator|new
 name|TemporaryFolder
 argument_list|()
 decl_stmt|;
-comment|/**    * Test if custom endpoint is picked up.    *<p/>    * The test expects TEST_ENDPOINT to be defined in the Configuration    * describing the endpoint of the bucket to which TEST_FS_S3A_NAME points    * (f.i. "s3-eu-west-1.amazonaws.com" if the bucket is located in Ireland).    * Evidently, the bucket has to be hosted in the region denoted by the    * endpoint for the test to succeed.    *<p/>    * More info and the list of endpoint identifiers:    * http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region    *    * @throws Exception    */
+comment|/**    * Test if custom endpoint is picked up.    *<p>    * The test expects {@link S3ATestConstants#CONFIGURATION_TEST_ENDPOINT}    * to be defined in the Configuration    * describing the endpoint of the bucket to which TEST_FS_S3A_NAME points    * (i.e. "s3-eu-west-1.amazonaws.com" if the bucket is located in Ireland).    * Evidently, the bucket has to be hosted in the region denoted by the    * endpoint for the test to succeed.    *<p>    * More info and the list of endpoint identifiers:    * @see<a href="http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region">endpoint list</a>.    *    * @throws Exception    */
 annotation|@
 name|Test
 DECL|method|testEndpoint ()
@@ -528,7 +517,9 @@ name|conf
 operator|.
 name|getTrimmed
 argument_list|(
-name|TEST_ENDPOINT
+name|S3ATestConstants
+operator|.
+name|CONFIGURATION_TEST_ENDPOINT
 argument_list|,
 literal|""
 argument_list|)
@@ -547,7 +538,9 @@ name|warn
 argument_list|(
 literal|"Custom endpoint test skipped as "
 operator|+
-name|TEST_ENDPOINT
+name|S3ATestConstants
+operator|.
+name|CONFIGURATION_TEST_ENDPOINT
 operator|+
 literal|"config "
 operator|+
