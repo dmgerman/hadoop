@@ -1513,6 +1513,41 @@ name|length
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|src
+operator|.
+name|equals
+argument_list|(
+name|SlashPath
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedFileSystemException
+argument_list|(
+literal|"Unexpected mount table "
+operator|+
+literal|"link entry '"
+operator|+
+name|key
+operator|+
+literal|"'. "
+operator|+
+name|Constants
+operator|.
+name|CONFIG_VIEWFS_LINK_MERGE_SLASH
+operator|+
+literal|" is not "
+operator|+
+literal|"supported yet."
+argument_list|)
+throw|;
+block|}
 block|}
 elseif|else
 if|if
