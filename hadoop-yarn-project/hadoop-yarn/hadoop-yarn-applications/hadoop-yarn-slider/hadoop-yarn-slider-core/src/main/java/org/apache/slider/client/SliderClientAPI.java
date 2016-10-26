@@ -886,6 +886,19 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
+comment|/**    * Status operation which returns the status object as a string instead of    * printing it to the console or file.    *    * @param clustername cluster name    * @return cluster status details    * @throws YarnException    * @throws IOException    */
+DECL|method|actionStatus (String clustername)
+name|String
+name|actionStatus
+parameter_list|(
+name|String
+name|clustername
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+function_decl|;
 comment|/**    * Version Details    * @return exit code    */
 DECL|method|actionVersion ()
 name|int

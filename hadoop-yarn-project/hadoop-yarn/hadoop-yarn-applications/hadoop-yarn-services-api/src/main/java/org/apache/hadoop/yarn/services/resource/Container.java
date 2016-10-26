@@ -343,7 +343,7 @@ literal|"launch_time"
 argument_list|)
 DECL|method|getLaunchTime ()
 specifier|public
-name|String
+name|Date
 name|getLaunchTime
 parameter_list|()
 block|{
@@ -354,9 +354,12 @@ literal|null
 condition|?
 literal|null
 else|:
+operator|(
+name|Date
+operator|)
 name|launchTime
 operator|.
-name|toString
+name|clone
 argument_list|()
 return|;
 block|}

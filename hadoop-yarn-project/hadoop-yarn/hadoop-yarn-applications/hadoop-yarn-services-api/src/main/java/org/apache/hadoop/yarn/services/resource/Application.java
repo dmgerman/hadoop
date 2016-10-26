@@ -220,7 +220,17 @@ annotation|@
 name|JsonPropertyOrder
 argument_list|(
 block|{
-literal|" name, state, resource, numberOfContainers, lifetime, containers "
+literal|"name"
+block|,
+literal|"state"
+block|,
+literal|"resource"
+block|,
+literal|"number_of_containers"
+block|,
+literal|"lifetime"
+block|,
+literal|"containers"
 block|}
 argument_list|)
 DECL|class|Application
@@ -737,7 +747,7 @@ literal|"launch_time"
 argument_list|)
 DECL|method|getLaunchTime ()
 specifier|public
-name|String
+name|Date
 name|getLaunchTime
 parameter_list|()
 block|{
@@ -748,9 +758,12 @@ literal|null
 condition|?
 literal|null
 else|:
+operator|(
+name|Date
+operator|)
 name|launchTime
 operator|.
-name|toString
+name|clone
 argument_list|()
 return|;
 block|}
