@@ -484,6 +484,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|BeforeClass
 import|;
 end_import
@@ -640,6 +650,57 @@ operator|.
 name|waitActive
 argument_list|()
 expr_stmt|;
+block|}
+annotation|@
+name|Before
+DECL|method|resetCluster ()
+specifier|public
+name|void
+name|resetCluster
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+if|if
+condition|(
+operator|!
+name|cluster
+operator|.
+name|isClusterUp
+argument_list|()
+condition|)
+block|{
+comment|// Previous test seems to have left cluster in a bad state;
+comment|// recreate the cluster to protect subsequent tests
+name|cluster
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+name|cluster
+operator|=
+operator|new
+name|MiniDFSCluster
+operator|.
+name|Builder
+argument_list|(
+name|conf
+argument_list|)
+operator|.
+name|numDataNodes
+argument_list|(
+name|REPLICATION
+argument_list|)
+operator|.
+name|build
+argument_list|()
+expr_stmt|;
+name|cluster
+operator|.
+name|waitActive
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|AfterClass
@@ -1845,8 +1906,10 @@ argument_list|)
 expr_stmt|;
 name|cluster
 operator|.
-name|restartNameNodes
-argument_list|()
+name|restartNameNode
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test append over a specific type of storage quota does not mark file as    * UC or create a lease    */
@@ -2103,8 +2166,10 @@ argument_list|)
 expr_stmt|;
 name|cluster
 operator|.
-name|restartNameNodes
-argument_list|()
+name|restartNameNode
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test truncate over quota does not mark file as UC or create a lease    */
@@ -2364,8 +2429,10 @@ argument_list|)
 expr_stmt|;
 name|cluster
 operator|.
-name|restartNameNodes
-argument_list|()
+name|restartNameNode
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Check whether the quota is initialized correctly.    */
