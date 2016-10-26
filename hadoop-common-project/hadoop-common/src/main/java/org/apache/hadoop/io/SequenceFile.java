@@ -72,6 +72,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -559,7 +573,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**   *<code>SequenceFile</code>s are flat files consisting of binary key/value   * pairs.  *   *<p><code>SequenceFile</code> provides {@link SequenceFile.Writer},  * {@link SequenceFile.Reader} and {@link Sorter} classes for writing,  * reading and sorting respectively.</p>  *   * There are three<code>SequenceFile</code><code>Writer</code>s based on the   * {@link CompressionType} used to compress key/value pairs:  *<ol>  *<li>  *<code>Writer</code> : Uncompressed records.  *</li>  *<li>  *<code>RecordCompressWriter</code> : Record-compressed files, only compress   *                                       values.  *</li>  *<li>  *<code>BlockCompressWriter</code> : Block-compressed files, both keys&   *                                      values are collected in 'blocks'   *                                      separately and compressed. The size of   *                                      the 'block' is configurable.  *</ol>  *   *<p>The actual compression algorithm used to compress key and/or values can be  * specified by using the appropriate {@link CompressionCodec}.</p>  *   *<p>The recommended way is to use the static<tt>createWriter</tt> methods  * provided by the<code>SequenceFile</code> to chose the preferred format.</p>  *  *<p>The {@link SequenceFile.Reader} acts as the bridge and can read any of the  * above<code>SequenceFile</code> formats.</p>  *  *<h4 id="Formats">SequenceFile Formats</h4>  *   *<p>Essentially there are 3 different formats for<code>SequenceFile</code>s  * depending on the<code>CompressionType</code> specified. All of them share a  *<a href="#Header">common header</a> described below.  *   *<h5 id="Header">SequenceFile Header</h5>  *<ul>  *<li>  *   version - 3 bytes of magic header<b>SEQ</b>, followed by 1 byte of actual   *             version number (e.g. SEQ4 or SEQ6)  *</li>  *<li>  *   keyClassName -key class  *</li>  *<li>  *   valueClassName - value class  *</li>  *<li>  *   compression - A boolean which specifies if compression is turned on for   *                 keys/values in this file.  *</li>  *<li>  *   blockCompression - A boolean which specifies if block-compression is   *                      turned on for keys/values in this file.  *</li>  *<li>  *   compression codec -<code>CompressionCodec</code> class which is used for    *                       compression of keys and/or values (if compression is   *                       enabled).  *</li>  *<li>  *   metadata - {@link Metadata} for this file.  *</li>  *<li>  *   sync - A sync marker to denote end of the header.  *</li>  *</ul>  *   *<h5 id="#UncompressedFormat">Uncompressed SequenceFile Format</h5>  *<ul>  *<li>  *<a href="#Header">Header</a>  *</li>  *<li>  * Record  *<ul>  *<li>Record length</li>  *<li>Key length</li>  *<li>Key</li>  *<li>Value</li>  *</ul>  *</li>  *<li>  * A sync-marker every few<code>100</code> bytes or so.  *</li>  *</ul>  *  *<h5 id="#RecordCompressedFormat">Record-Compressed SequenceFile Format</h5>  *<ul>  *<li>  *<a href="#Header">Header</a>  *</li>  *<li>  * Record  *<ul>  *<li>Record length</li>  *<li>Key length</li>  *<li>Key</li>  *<li><i>Compressed</i> Value</li>  *</ul>  *</li>  *<li>  * A sync-marker every few<code>100</code> bytes or so.  *</li>  *</ul>  *   *<h5 id="#BlockCompressedFormat">Block-Compressed SequenceFile Format</h5>  *<ul>  *<li>  *<a href="#Header">Header</a>  *</li>  *<li>  * Record<i>Block</i>  *<ul>  *<li>Uncompressed number of records in the block</li>  *<li>Compressed key-lengths block-size</li>  *<li>Compressed key-lengths block</li>  *<li>Compressed keys block-size</li>  *<li>Compressed keys block</li>  *<li>Compressed value-lengths block-size</li>  *<li>Compressed value-lengths block</li>  *<li>Compressed values block-size</li>  *<li>Compressed values block</li>  *</ul>  *</li>  *<li>  * A sync-marker every block.  *</li>  *</ul>  *   *<p>The compressed blocks of key lengths and value lengths consist of the   * actual lengths of individual keys/values encoded in ZeroCompressedInteger   * format.</p>  *   * @see CompressionCodec  */
+comment|/**   *<code>SequenceFile</code>s are flat files consisting of binary key/value   * pairs.  *   *<p><code>SequenceFile</code> provides {@link SequenceFile.Writer},  * {@link SequenceFile.Reader} and {@link Sorter} classes for writing,  * reading and sorting respectively.</p>  *   * There are three<code>SequenceFile</code><code>Writer</code>s based on the   * {@link CompressionType} used to compress key/value pairs:  *<ol>  *<li>  *<code>Writer</code> : Uncompressed records.  *</li>  *<li>  *<code>RecordCompressWriter</code> : Record-compressed files, only compress   *                                       values.  *</li>  *<li>  *<code>BlockCompressWriter</code> : Block-compressed files, both keys&   *                                      values are collected in 'blocks'   *                                      separately and compressed. The size of   *                                      the 'block' is configurable.  *</ol>  *   *<p>The actual compression algorithm used to compress key and/or values can be  * specified by using the appropriate {@link CompressionCodec}.</p>  *   *<p>The recommended way is to use the static<tt>createWriter</tt> methods  * provided by the<code>SequenceFile</code> to chose the preferred format.</p>  *  *<p>The {@link SequenceFile.Reader} acts as the bridge and can read any of the  * above<code>SequenceFile</code> formats.</p>  *  *<h4 id="Formats">SequenceFile Formats</h4>  *   *<p>Essentially there are 3 different formats for<code>SequenceFile</code>s  * depending on the<code>CompressionType</code> specified. All of them share a  *<a href="#Header">common header</a> described below.  *   *<h5 id="Header">SequenceFile Header</h5>  *<ul>  *<li>  *   version - 3 bytes of magic header<b>SEQ</b>, followed by 1 byte of actual   *             version number (e.g. SEQ4 or SEQ6)  *</li>  *<li>  *   keyClassName -key class  *</li>  *<li>  *   valueClassName - value class  *</li>  *<li>  *   compression - A boolean which specifies if compression is turned on for   *                 keys/values in this file.  *</li>  *<li>  *   blockCompression - A boolean which specifies if block-compression is   *                      turned on for keys/values in this file.  *</li>  *<li>  *   compression codec -<code>CompressionCodec</code> class which is used for    *                       compression of keys and/or values (if compression is   *                       enabled).  *</li>  *<li>  *   metadata - {@link Metadata} for this file.  *</li>  *<li>  *   sync - A sync marker to denote end of the header.  *</li>  *</ul>  *   *<h5 id="#UncompressedFormat">Uncompressed SequenceFile Format</h5>  *<ul>  *<li>  *<a href="#Header">Header</a>  *</li>  *<li>  * Record  *<ul>  *<li>Record length</li>  *<li>Key length</li>  *<li>Key</li>  *<li>Value</li>  *</ul>  *</li>  *<li>  * A sync-marker every few<code>100</code> kilobytes or so.  *</li>  *</ul>  *  *<h5 id="#RecordCompressedFormat">Record-Compressed SequenceFile Format</h5>  *<ul>  *<li>  *<a href="#Header">Header</a>  *</li>  *<li>  * Record  *<ul>  *<li>Record length</li>  *<li>Key length</li>  *<li>Key</li>  *<li><i>Compressed</i> Value</li>  *</ul>  *</li>  *<li>  * A sync-marker every few<code>100</code> kilobytes or so.  *</li>  *</ul>  *   *<h5 id="#BlockCompressedFormat">Block-Compressed SequenceFile Format</h5>  *<ul>  *<li>  *<a href="#Header">Header</a>  *</li>  *<li>  * Record<i>Block</i>  *<ul>  *<li>Uncompressed number of records in the block</li>  *<li>Compressed key-lengths block-size</li>  *<li>Compressed key-lengths block</li>  *<li>Compressed keys block-size</li>  *<li>Compressed keys block</li>  *<li>Compressed value-lengths block-size</li>  *<li>Compressed value-lengths block</li>  *<li>Compressed values block-size</li>  *<li>Compressed values block</li>  *</ul>  *</li>  *<li>  * A sync-marker every block.  *</li>  *</ul>  *   *<p>The compressed blocks of key lengths and value lengths consist of the   * actual lengths of individual keys/values encoded in ZeroCompressedInteger   * format.</p>  *   * @see CompressionCodec  */
 end_comment
 
 begin_class
@@ -696,7 +710,7 @@ operator|+
 name|SYNC_HASH_SIZE
 decl_stmt|;
 comment|// escape + hash
-comment|/** The number of bytes between sync points.*/
+comment|/**    * The number of bytes between sync points. 100 KB, default.    * Computed as 5 KB * 20 = 100 KB    */
 DECL|field|SYNC_INTERVAL
 specifier|public
 specifier|static
@@ -704,10 +718,13 @@ specifier|final
 name|int
 name|SYNC_INTERVAL
 init|=
-literal|100
+literal|5
+operator|*
+literal|1024
 operator|*
 name|SYNC_SIZE
 decl_stmt|;
+comment|// 5KB*(16+4)
 comment|/**     * The compression type used to compress key/value pairs in the     * {@link SequenceFile}.    *     * @see SequenceFile.Writer    */
 DECL|enum|CompressionType
 specifier|public
@@ -3233,6 +3250,12 @@ index|[]
 name|sync
 decl_stmt|;
 comment|// 16 random bytes
+annotation|@
+name|VisibleForTesting
+DECL|field|syncInterval
+name|int
+name|syncInterval
+decl_stmt|;
 block|{
 try|try
 block|{
@@ -3752,6 +3775,40 @@ name|fs
 argument_list|)
 return|;
 block|}
+DECL|class|SyncIntervalOption
+specifier|private
+specifier|static
+class|class
+name|SyncIntervalOption
+extends|extends
+name|Options
+operator|.
+name|IntegerOption
+implements|implements
+name|Option
+block|{
+DECL|method|SyncIntervalOption (int val)
+name|SyncIntervalOption
+parameter_list|(
+name|int
+name|val
+parameter_list|)
+block|{
+comment|// If a negative sync interval is provided,
+comment|// fall back to the default sync interval.
+name|super
+argument_list|(
+name|val
+operator|<
+literal|0
+condition|?
+name|SYNC_INTERVAL
+else|:
+name|val
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 DECL|method|bufferSize (int value)
 specifier|public
 specifier|static
@@ -3961,7 +4018,25 @@ name|codec
 argument_list|)
 return|;
 block|}
-comment|/**      * Construct a uncompressed writer from a set of options.      * @param conf the configuration to use      * @param options the options used when creating the writer      * @throws IOException if it fails      */
+DECL|method|syncInterval (int value)
+specifier|public
+specifier|static
+name|Option
+name|syncInterval
+parameter_list|(
+name|int
+name|value
+parameter_list|)
+block|{
+return|return
+operator|new
+name|SyncIntervalOption
+argument_list|(
+name|value
+argument_list|)
+return|;
+block|}
+comment|/**      * Construct a uncompressed writer from a set of options.      * @param conf the configuration to use      * @param opts the options used when creating the writer      * @throws IOException if it fails      */
 DECL|method|Writer (Configuration conf, Option... opts)
 name|Writer
 parameter_list|(
@@ -4137,6 +4212,20 @@ operator|.
 name|getOption
 argument_list|(
 name|CompressionOption
+operator|.
+name|class
+argument_list|,
+name|opts
+argument_list|)
+decl_stmt|;
+name|SyncIntervalOption
+name|syncIntervalOption
+init|=
+name|Options
+operator|.
+name|getOption
+argument_list|(
+name|SyncIntervalOption
 operator|.
 name|class
 argument_list|,
@@ -4710,6 +4799,23 @@ literal|"code!"
 argument_list|)
 throw|;
 block|}
+name|this
+operator|.
+name|syncInterval
+operator|=
+operator|(
+name|syncIntervalOption
+operator|==
+literal|null
+operator|)
+condition|?
+name|SYNC_INTERVAL
+else|:
+name|syncIntervalOption
+operator|.
+name|getValue
+argument_list|()
+expr_stmt|;
 name|init
 argument_list|(
 name|conf
@@ -4725,6 +4831,8 @@ argument_list|,
 name|codec
 argument_list|,
 name|metadata
+argument_list|,
+name|syncInterval
 argument_list|)
 expr_stmt|;
 block|}
@@ -4783,6 +4891,8 @@ argument_list|,
 operator|new
 name|Metadata
 argument_list|()
+argument_list|,
+name|SYNC_INTERVAL
 argument_list|)
 expr_stmt|;
 block|}
@@ -4847,6 +4957,8 @@ argument_list|,
 literal|null
 argument_list|,
 name|metadata
+argument_list|,
+name|SYNC_INTERVAL
 argument_list|)
 expr_stmt|;
 block|}
@@ -4928,6 +5040,8 @@ argument_list|,
 literal|null
 argument_list|,
 name|metadata
+argument_list|,
+name|SYNC_INTERVAL
 argument_list|)
 expr_stmt|;
 block|}
@@ -5088,30 +5202,33 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|init (Configuration conf, FSDataOutputStream out, boolean ownStream, Class keyClass, Class valClass, CompressionCodec codec, Metadata metadata)
+DECL|method|init (Configuration config, FSDataOutputStream outStream, boolean ownStream, Class key, Class val, CompressionCodec compCodec, Metadata meta, int syncIntervalVal)
 name|void
 name|init
 parameter_list|(
 name|Configuration
-name|conf
+name|config
 parameter_list|,
 name|FSDataOutputStream
-name|out
+name|outStream
 parameter_list|,
 name|boolean
 name|ownStream
 parameter_list|,
 name|Class
-name|keyClass
+name|key
 parameter_list|,
 name|Class
-name|valClass
+name|val
 parameter_list|,
 name|CompressionCodec
-name|codec
+name|compCodec
 parameter_list|,
 name|Metadata
-name|metadata
+name|meta
+parameter_list|,
+name|int
+name|syncIntervalVal
 parameter_list|)
 throws|throws
 name|IOException
@@ -5120,13 +5237,13 @@ name|this
 operator|.
 name|conf
 operator|=
-name|conf
+name|config
 expr_stmt|;
 name|this
 operator|.
 name|out
 operator|=
-name|out
+name|outStream
 expr_stmt|;
 name|this
 operator|.
@@ -5138,25 +5255,31 @@ name|this
 operator|.
 name|keyClass
 operator|=
-name|keyClass
+name|key
 expr_stmt|;
 name|this
 operator|.
 name|valClass
 operator|=
-name|valClass
+name|val
 expr_stmt|;
 name|this
 operator|.
 name|codec
 operator|=
-name|codec
+name|compCodec
 expr_stmt|;
 name|this
 operator|.
 name|metadata
 operator|=
-name|metadata
+name|meta
+expr_stmt|;
+name|this
+operator|.
+name|syncInterval
+operator|=
+name|syncIntervalVal
 expr_stmt|;
 name|SerializationFactory
 name|serializationFactory
@@ -5164,7 +5287,7 @@ init|=
 operator|new
 name|SerializationFactory
 argument_list|(
-name|conf
+name|config
 argument_list|)
 decl_stmt|;
 name|this
@@ -5682,7 +5805,9 @@ argument_list|()
 operator|>=
 name|lastSyncPos
 operator|+
-name|SYNC_INTERVAL
+name|this
+operator|.
+name|syncInterval
 condition|)
 block|{
 comment|// time to emit sync
