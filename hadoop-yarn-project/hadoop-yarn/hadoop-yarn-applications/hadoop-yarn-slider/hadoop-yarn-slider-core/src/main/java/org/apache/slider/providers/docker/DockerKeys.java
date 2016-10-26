@@ -74,6 +74,12 @@ name|DEFAULT_DOCKER_NETWORK
 init|=
 literal|"bridge"
 decl_stmt|;
+DECL|field|DEFAULT_DOCKER_USE_PRIVILEGED
+name|Boolean
+name|DEFAULT_DOCKER_USE_PRIVILEGED
+init|=
+literal|false
+decl_stmt|;
 DECL|field|OUT_FILE
 name|String
 name|OUT_FILE

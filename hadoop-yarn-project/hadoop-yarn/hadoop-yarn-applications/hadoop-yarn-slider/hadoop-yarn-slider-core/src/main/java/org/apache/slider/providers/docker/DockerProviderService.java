@@ -986,7 +986,7 @@ name|roleGroup
 argument_list|,
 name|DOCKER_USE_PRIVILEGED
 argument_list|,
-literal|false
+name|DEFAULT_DOCKER_USE_PRIVILEGED
 argument_list|)
 argument_list|)
 expr_stmt|;
