@@ -482,7 +482,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|debug
+name|warn
 argument_list|(
 literal|"Cannot load customized ssl related configuration. Fallback to"
 operator|+
