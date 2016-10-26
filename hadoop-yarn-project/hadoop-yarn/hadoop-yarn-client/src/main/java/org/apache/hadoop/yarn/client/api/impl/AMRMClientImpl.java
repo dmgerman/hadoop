@@ -4068,6 +4068,13 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+literal|null
+operator|!=
+name|remoteRequestsTable
+condition|)
+block|{
 name|List
 argument_list|<
 name|ResourceRequestInfo
@@ -4090,6 +4097,13 @@ argument_list|,
 name|capability
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+literal|null
+operator|!=
+name|matchingRequests
+condition|)
+block|{
 comment|// If no exact match. Container may be larger than what was requested.
 comment|// get all resources<= capability. map is reverse sorted.
 for|for
@@ -4135,6 +4149,8 @@ operator|.
 name|containerRequests
 argument_list|)
 expr_stmt|;
+block|}
+block|}
 block|}
 block|}
 comment|// no match found
