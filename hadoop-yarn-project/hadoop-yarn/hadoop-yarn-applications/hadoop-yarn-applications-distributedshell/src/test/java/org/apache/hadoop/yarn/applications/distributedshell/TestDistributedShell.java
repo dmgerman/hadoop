@@ -1847,7 +1847,9 @@ name|yarnClusterConfig
 operator|.
 name|set
 argument_list|(
-literal|"yarn.application.classpath"
+name|YarnConfiguration
+operator|.
+name|YARN_APPLICATION_CLASSPATH
 argument_list|,
 operator|new
 name|File
@@ -1935,7 +1937,9 @@ name|conf
 operator|.
 name|get
 argument_list|(
-literal|"yarn.timeline-service.leveldb-timeline-store.path"
+name|YarnConfiguration
+operator|.
+name|TIMELINE_SERVICE_LEVELDB_PATH
 argument_list|)
 argument_list|)
 argument_list|,
@@ -2047,7 +2051,9 @@ name|conf
 operator|.
 name|get
 argument_list|(
-literal|"yarn.timeline-service.leveldb-timeline-store.path"
+name|YarnConfiguration
+operator|.
+name|TIMELINE_SERVICE_LEVELDB_PATH
 argument_list|)
 argument_list|)
 argument_list|,

@@ -251,7 +251,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"yarn.scheduler.fair.event-log-enabled"
+name|FairSchedulerConfiguration
+operator|.
+name|EVENT_LOG_ENABLED
 argument_list|,
 literal|"true"
 argument_list|)

@@ -438,7 +438,9 @@ name|csConf
 operator|.
 name|set
 argument_list|(
-literal|"yarn.resourcemanager.scheduler.class"
+name|YarnConfiguration
+operator|.
+name|RM_SCHEDULER
 argument_list|,
 name|CapacityScheduler
 operator|.

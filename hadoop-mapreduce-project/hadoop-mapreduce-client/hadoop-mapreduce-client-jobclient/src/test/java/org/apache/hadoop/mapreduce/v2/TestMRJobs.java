@@ -1608,7 +1608,9 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-literal|"yarn.cluster.max-application-priority"
+name|YarnConfiguration
+operator|.
+name|MAX_CLUSTER_LEVEL_APPLICATION_PRIORITY
 argument_list|,
 literal|10
 argument_list|)
@@ -2974,7 +2976,9 @@ name|sleepConf
 operator|.
 name|setInt
 argument_list|(
-literal|"yarn.app.mapreduce.am.scheduler.heartbeat.interval-ms"
+name|MRJobConfig
+operator|.
+name|MR_AM_TO_RM_HEARTBEAT_INTERVAL_MS
 argument_list|,
 literal|5
 argument_list|)

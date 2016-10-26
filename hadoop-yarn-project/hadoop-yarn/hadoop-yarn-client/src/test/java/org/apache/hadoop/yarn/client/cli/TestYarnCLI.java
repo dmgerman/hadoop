@@ -939,6 +939,30 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|capacity
+operator|.
+name|CapacitySchedulerConfiguration
+operator|.
+name|PREFIX
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -14119,7 +14143,9 @@ name|conf
 operator|.
 name|setBoolean
 argument_list|(
-literal|"yarn.scheduler.capacity.root.a.a1.disable_preemption"
+name|PREFIX
+operator|+
+literal|"root.a.a1.disable_preemption"
 argument_list|,
 literal|true
 argument_list|)

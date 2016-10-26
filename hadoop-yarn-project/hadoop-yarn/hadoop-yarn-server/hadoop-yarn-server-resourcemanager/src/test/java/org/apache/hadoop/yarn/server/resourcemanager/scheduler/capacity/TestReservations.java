@@ -1077,7 +1077,9 @@ name|csConf
 operator|.
 name|setBoolean
 argument_list|(
-literal|"yarn.scheduler.capacity.user-metrics.enable"
+name|CapacitySchedulerConfiguration
+operator|.
+name|ENABLE_USER_METRICS
 argument_list|,
 literal|true
 argument_list|)
@@ -4442,7 +4444,9 @@ name|csConf
 operator|.
 name|setBoolean
 argument_list|(
-literal|"yarn.scheduler.capacity.reservations-continue-look-all-nodes"
+name|CapacitySchedulerConfiguration
+operator|.
+name|RESERVE_CONT_LOOK_ALL_NODES
 argument_list|,
 literal|false
 argument_list|)

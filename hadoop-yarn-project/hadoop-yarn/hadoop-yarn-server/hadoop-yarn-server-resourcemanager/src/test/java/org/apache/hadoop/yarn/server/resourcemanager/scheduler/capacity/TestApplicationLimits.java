@@ -677,6 +677,30 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|capacity
+operator|.
+name|CapacitySchedulerConfiguration
+operator|.
+name|PREFIX
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -2552,7 +2576,7 @@ name|csConf
 operator|.
 name|setFloat
 argument_list|(
-literal|"yarn.scheduler.capacity."
+name|PREFIX
 operator|+
 name|queue
 operator|.
@@ -2688,7 +2712,7 @@ name|csConf
 operator|.
 name|setInt
 argument_list|(
-literal|"yarn.scheduler.capacity."
+name|PREFIX
 operator|+
 name|queue
 operator|.

@@ -117,6 +117,24 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|conf
+operator|.
+name|YarnConfiguration
+operator|.
+name|RM_PROXY_USER_PREFIX
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -327,7 +345,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"yarn.resourcemanager.proxyuser.foo.hosts"
+name|RM_PROXY_USER_PREFIX
+operator|+
+literal|"foo.hosts"
 argument_list|,
 name|ipAddress
 argument_list|)
@@ -336,7 +356,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"yarn.resourcemanager.proxyuser.foo.users"
+name|RM_PROXY_USER_PREFIX
+operator|+
+literal|"foo.users"
 argument_list|,
 literal|"bar"
 argument_list|)
@@ -345,7 +367,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"yarn.resourcemanager.proxyuser.foo.groups"
+name|RM_PROXY_USER_PREFIX
+operator|+
+literal|"foo.groups"
 argument_list|,
 literal|"bar_group"
 argument_list|)
@@ -387,7 +411,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"yarn.resourcemanager.proxyuser.foo.hosts"
+name|RM_PROXY_USER_PREFIX
+operator|+
+literal|"foo.hosts"
 argument_list|,
 name|ipAddress
 argument_list|)
@@ -396,7 +422,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"yarn.resourcemanager.proxyuser.foo.users"
+name|RM_PROXY_USER_PREFIX
+operator|+
+literal|"foo.users"
 argument_list|,
 literal|"bar"
 argument_list|)
@@ -405,7 +433,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"yarn.resourcemanager.proxyuser.foo.groups"
+name|RM_PROXY_USER_PREFIX
+operator|+
+literal|"foo.groups"
 argument_list|,
 literal|"bar_group"
 argument_list|)

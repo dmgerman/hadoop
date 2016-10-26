@@ -175,6 +175,30 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|capacity
+operator|.
+name|CapacitySchedulerConfiguration
+operator|.
+name|PREFIX
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -297,7 +321,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"yarn.scheduler.capacity.root.queues"
+name|PREFIX
+operator|+
+literal|"root.queues"
 argument_list|,
 literal|"default"
 argument_list|)
@@ -306,7 +332,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"yarn.scheduler.capacity.root.default.capacity"
+name|PREFIX
+operator|+
+literal|"root.default.capacity"
 argument_list|,
 literal|"100.0"
 argument_list|)

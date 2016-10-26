@@ -985,6 +985,30 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|capacity
+operator|.
+name|CapacitySchedulerConfiguration
+operator|.
+name|PREFIX
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -2110,7 +2134,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"yarn.scheduler.capacity.root.acl_submit_applications"
+name|PREFIX
+operator|+
+literal|"root.acl_submit_applications"
 argument_list|,
 literal|" "
 argument_list|)
@@ -2119,7 +2145,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"yarn.scheduler.capacity.root.acl_administer_queue"
+name|PREFIX
+operator|+
+literal|"root.acl_administer_queue"
 argument_list|,
 literal|" "
 argument_list|)
@@ -2128,7 +2156,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"yarn.scheduler.capacity.root.default.acl_submit_applications"
+name|PREFIX
+operator|+
+literal|"root.default.acl_submit_applications"
 argument_list|,
 literal|" "
 argument_list|)
@@ -2137,7 +2167,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"yarn.scheduler.capacity.root.default.acl_administer_queue"
+name|PREFIX
+operator|+
+literal|"root.default.acl_administer_queue"
 argument_list|,
 literal|" "
 argument_list|)

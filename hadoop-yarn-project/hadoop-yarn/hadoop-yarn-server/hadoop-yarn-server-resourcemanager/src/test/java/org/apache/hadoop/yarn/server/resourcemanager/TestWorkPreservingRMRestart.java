@@ -1310,6 +1310,30 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|capacity
+operator|.
+name|CapacitySchedulerConfiguration
+operator|.
+name|PREFIX
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -4725,7 +4749,9 @@ name|csConf
 operator|.
 name|set
 argument_list|(
-literal|"yarn.scheduler.capacity.root.Default.QueueB.state"
+name|PREFIX
+operator|+
+literal|"root.Default.QueueB.state"
 argument_list|,
 literal|"STOPPED"
 argument_list|)

@@ -77,6 +77,28 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timeline
+operator|.
+name|security
+operator|.
+name|TimelineAuthenticationFilterInitializer
+operator|.
+name|PREFIX
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -189,7 +211,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"yarn.timeline-service.http-authentication.proxyuser.foo.hosts"
+name|PREFIX
+operator|+
+literal|"proxyuser.foo.hosts"
 argument_list|,
 literal|"*"
 argument_list|)
@@ -198,7 +222,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"yarn.timeline-service.http-authentication.proxyuser.foo.users"
+name|PREFIX
+operator|+
+literal|"proxyuser.foo.users"
 argument_list|,
 literal|"*"
 argument_list|)
@@ -207,7 +233,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"yarn.timeline-service.http-authentication.proxyuser.foo.groups"
+name|PREFIX
+operator|+
+literal|"proxyuser.foo.groups"
 argument_list|,
 literal|"*"
 argument_list|)
@@ -249,7 +277,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"yarn.timeline-service.http-authentication.proxyuser.foo.hosts"
+name|PREFIX
+operator|+
+literal|"proxyuser.foo.hosts"
 argument_list|,
 literal|"*"
 argument_list|)
@@ -258,7 +288,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"yarn.timeline-service.http-authentication.proxyuser.foo.users"
+name|PREFIX
+operator|+
+literal|"proxyuser.foo.users"
 argument_list|,
 literal|"*"
 argument_list|)
@@ -267,7 +299,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"yarn.timeline-service.http-authentication.proxyuser.foo.groups"
+name|PREFIX
+operator|+
+literal|"proxyuser.foo.groups"
 argument_list|,
 literal|"*"
 argument_list|)

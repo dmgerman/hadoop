@@ -167,6 +167,30 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|capacity
+operator|.
+name|CapacitySchedulerConfiguration
+operator|.
+name|PREFIX
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -334,7 +358,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"yarn.scheduler.capacity.root.accessible-node-labels"
+name|PREFIX
+operator|+
+literal|"root.accessible-node-labels"
 argument_list|,
 literal|"x"
 argument_list|)
@@ -345,7 +371,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"yarn.scheduler.capacity.root.accessible-node-labels.x.capacity"
+name|PREFIX
+operator|+
+literal|"root.accessible-node-labels.x.capacity"
 argument_list|,
 literal|"100"
 argument_list|)
@@ -356,7 +384,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"yarn.scheduler.capacity.root.default.accessible-node-labels"
+name|PREFIX
+operator|+
+literal|"root.default.accessible-node-labels"
 argument_list|,
 literal|"x"
 argument_list|)
@@ -367,7 +397,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"yarn.scheduler.capacity.root.default.accessible-node-labels.x.capacity"
+name|PREFIX
+operator|+
+literal|"root.default.accessible-node-labels.x.capacity"
 argument_list|,
 literal|"100"
 argument_list|)

@@ -620,7 +620,9 @@ name|rmconf
 operator|.
 name|set
 argument_list|(
-literal|"yarn.resourcemanager.principal"
+name|YarnConfiguration
+operator|.
+name|RM_PRINCIPAL
 argument_list|,
 name|spnegoPrincipal
 argument_list|)
@@ -629,7 +631,9 @@ name|rmconf
 operator|.
 name|set
 argument_list|(
-literal|"yarn.resourcemanager.keytab"
+name|YarnConfiguration
+operator|.
+name|RM_KEYTAB
 argument_list|,
 name|spnegoKeytabFile
 operator|.
