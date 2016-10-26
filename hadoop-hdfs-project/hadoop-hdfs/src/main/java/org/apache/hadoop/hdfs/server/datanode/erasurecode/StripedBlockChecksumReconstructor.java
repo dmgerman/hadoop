@@ -620,6 +620,12 @@ decl_stmt|;
 name|getChecksum
 argument_list|()
 operator|.
+name|reset
+argument_list|()
+expr_stmt|;
+name|getChecksum
+argument_list|()
+operator|.
 name|update
 argument_list|(
 name|outputData
