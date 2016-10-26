@@ -696,7 +696,7 @@ if|if
 condition|(
 name|isSupported
 argument_list|(
-name|IS_BLOBSTORE
+name|CREATE_OVERWRITES_DIRECTORY
 argument_list|)
 condition|)
 block|{
@@ -801,15 +801,15 @@ name|isDir
 operator|&&
 name|isSupported
 argument_list|(
-name|IS_BLOBSTORE
+name|CREATE_OVERWRITES_DIRECTORY
 argument_list|)
 condition|)
 block|{
-comment|// object store: downgrade to a skip so that the failure is visible
-comment|// in test results
+comment|// For some file systems, downgrade to a skip so that the failure is
+comment|// visible in test results.
 name|skip
 argument_list|(
-literal|"Object store allows a file to overwrite a directory"
+literal|"This Filesystem allows a file to overwrite a directory"
 argument_list|)
 expr_stmt|;
 block|}
@@ -939,15 +939,15 @@ if|if
 condition|(
 name|isSupported
 argument_list|(
-name|IS_BLOBSTORE
+name|CREATE_VISIBILITY_DELAYED
 argument_list|)
 condition|)
 block|{
-comment|// object store: downgrade to a skip so that the failure is visible
-comment|// in test results
+comment|// For some file systems, downgrade to a skip so that the failure is
+comment|// visible in test results.
 name|skip
 argument_list|(
-literal|"Filesystem is an object store and newly created files are not immediately visible"
+literal|"This Filesystem delays visibility of newly created files"
 argument_list|)
 expr_stmt|;
 block|}

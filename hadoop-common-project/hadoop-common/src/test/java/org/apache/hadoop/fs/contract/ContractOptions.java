@@ -42,14 +42,28 @@ name|FS_CONTRACT_KEY
 init|=
 literal|"fs.contract."
 decl_stmt|;
-comment|/**    * Is a filesystem case sensitive.    * Some of the filesystems that say "no" here may mean    * that it varies from platform to platform -the localfs being the key    * example.    */
+comment|/**    * Flag to indicate that a newly created file may overwrite a pre-existing    * directory.    * {@value}    */
+DECL|field|CREATE_OVERWRITES_DIRECTORY
+name|String
+name|CREATE_OVERWRITES_DIRECTORY
+init|=
+literal|"create-overwrites-directory"
+decl_stmt|;
+comment|/**    * Flag to indicate that a newly created file is not made visible in the    * namespace immediately.  Instead, the file becomes visible at a later point    * in the file creation lifecycle, such as when the client closes it.    * {@value}    */
+DECL|field|CREATE_VISIBILITY_DELAYED
+name|String
+name|CREATE_VISIBILITY_DELAYED
+init|=
+literal|"create-visibility-delayed"
+decl_stmt|;
+comment|/**    * Is a filesystem case sensitive.    * Some of the filesystems that say "no" here may mean    * that it varies from platform to platform -the localfs being the key    * example.    * {@value}    */
 DECL|field|IS_CASE_SENSITIVE
 name|String
 name|IS_CASE_SENSITIVE
 init|=
 literal|"is-case-sensitive"
 decl_stmt|;
-comment|/**    * Blobstore flag. Implies it's not a real directory tree and    * consistency is below that which Hadoop expects    */
+comment|/**    * Blobstore flag. Implies it's not a real directory tree and    * consistency is below that which Hadoop expects    * {@value}    */
 DECL|field|IS_BLOBSTORE
 name|String
 name|IS_BLOBSTORE
@@ -210,7 +224,7 @@ name|TEST_ROOT_TESTS_ENABLED
 init|=
 literal|"test.root-tests-enabled"
 decl_stmt|;
-comment|/**    * Limit for #of random seeks to perform.    * Keep low for remote filesystems for faster tests    */
+comment|/**    * Limit for #of random seeks to perform.    * Keep low for remote filesystems for faster tests    * {@value}    */
 DECL|field|TEST_RANDOM_SEEK_COUNT
 name|String
 name|TEST_RANDOM_SEEK_COUNT
