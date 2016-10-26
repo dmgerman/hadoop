@@ -4899,9 +4899,17 @@ operator|==
 literal|null
 condition|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|warn
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"No excess replica can be found. excessTypes: {}."
 operator|+
@@ -4914,6 +4922,7 @@ argument_list|,
 name|exactlyOne
 argument_list|)
 expr_stmt|;
+block|}
 break|break;
 block|}
 comment|// adjust rackmap, moreThanOne, and exactlyOne
