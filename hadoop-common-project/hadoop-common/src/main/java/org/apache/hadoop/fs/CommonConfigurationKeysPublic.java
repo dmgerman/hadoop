@@ -527,7 +527,7 @@ name|IO_SKIP_CHECKSUM_ERRORS_DEFAULT
 init|=
 literal|false
 decl_stmt|;
-comment|/**    * @deprecated Moved to mapreduce, see mapreduce.task.io.sort.mb    * in mapred-default.xml    * See https://issues.apache.org/jira/browse/HADOOP-6801    */
+comment|/**    * @deprecated Moved to mapreduce, see mapreduce.task.io.sort.mb    * in mapred-default.xml    * See https://issues.apache.org/jira/browse/HADOOP-6801    *    * For {@link org.apache.hadoop.io.SequenceFile.Sorter} control    * instead, see {@link #SEQ_IO_SORT_MB_KEY}.    */
 DECL|field|IO_SORT_MB_KEY
 specifier|public
 specifier|static
@@ -537,7 +537,7 @@ name|IO_SORT_MB_KEY
 init|=
 literal|"io.sort.mb"
 decl_stmt|;
-comment|/** Default value for IO_SORT_MB_DEFAULT */
+comment|/** Default value for {@link #IO_SORT_MB_KEY}. */
 DECL|field|IO_SORT_MB_DEFAULT
 specifier|public
 specifier|static
@@ -547,7 +547,7 @@ name|IO_SORT_MB_DEFAULT
 init|=
 literal|100
 decl_stmt|;
-comment|/**    * @deprecated Moved to mapreduce, see mapreduce.task.io.sort.factor    * in mapred-default.xml    * See https://issues.apache.org/jira/browse/HADOOP-6801    */
+comment|/**    * @deprecated Moved to mapreduce, see mapreduce.task.io.sort.factor    * in mapred-default.xml    * See https://issues.apache.org/jira/browse/HADOOP-6801    *    * For {@link org.apache.hadoop.io.SequenceFile.Sorter} control    * instead, see {@link #SEQ_IO_SORT_FACTOR_KEY}.    */
 DECL|field|IO_SORT_FACTOR_KEY
 specifier|public
 specifier|static
@@ -557,13 +557,53 @@ name|IO_SORT_FACTOR_KEY
 init|=
 literal|"io.sort.factor"
 decl_stmt|;
-comment|/** Default value for IO_SORT_FACTOR_DEFAULT */
+comment|/** Default value for {@link #IO_SORT_FACTOR_KEY}. */
 DECL|field|IO_SORT_FACTOR_DEFAULT
 specifier|public
 specifier|static
 specifier|final
 name|int
 name|IO_SORT_FACTOR_DEFAULT
+init|=
+literal|100
+decl_stmt|;
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
+DECL|field|SEQ_IO_SORT_MB_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SEQ_IO_SORT_MB_KEY
+init|=
+literal|"seq.io.sort.mb"
+decl_stmt|;
+comment|/** Default value for {@link #SEQ_IO_SORT_MB_KEY}. */
+DECL|field|SEQ_IO_SORT_MB_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|SEQ_IO_SORT_MB_DEFAULT
+init|=
+literal|100
+decl_stmt|;
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
+DECL|field|SEQ_IO_SORT_FACTOR_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SEQ_IO_SORT_FACTOR_KEY
+init|=
+literal|"seq.io.sort.factor"
+decl_stmt|;
+comment|/** Default value for {@link #SEQ_IO_SORT_FACTOR_KEY}. */
+DECL|field|SEQ_IO_SORT_FACTOR_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|SEQ_IO_SORT_FACTOR_DEFAULT
 init|=
 literal|100
 decl_stmt|;
