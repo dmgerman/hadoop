@@ -10341,6 +10341,17 @@ literal|"Stream closed"
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
+name|len
+operator|==
+literal|0
+condition|)
+block|{
+return|return
+literal|0
+return|;
+block|}
 comment|// Before the first read, pos and fileLength will be 0 and readBuffer
 comment|// will all be null. They will be initialized once the first connection
 comment|// is made. Only after that it makes sense to compare pos and fileLength.

@@ -829,6 +829,17 @@ name|IOException
 block|{
 if|if
 condition|(
+name|len
+operator|==
+literal|0
+condition|)
+block|{
+return|return
+literal|0
+return|;
+block|}
+if|if
+condition|(
 operator|!
 name|useWrap
 condition|)

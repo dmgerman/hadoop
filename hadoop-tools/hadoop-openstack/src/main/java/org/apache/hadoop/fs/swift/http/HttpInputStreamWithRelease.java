@@ -711,6 +711,17 @@ argument_list|,
 name|len
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|len
+operator|==
+literal|0
+condition|)
+block|{
+return|return
+literal|0
+return|;
+block|}
 comment|//if the stream is already closed, then report an exception.
 name|assumeNotReleased
 argument_list|()
