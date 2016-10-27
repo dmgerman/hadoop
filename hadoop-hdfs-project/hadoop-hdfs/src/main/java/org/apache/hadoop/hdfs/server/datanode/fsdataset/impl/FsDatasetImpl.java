@@ -4411,7 +4411,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|FileNotFoundException
 argument_list|(
 literal|"BlockId "
 operator|+
