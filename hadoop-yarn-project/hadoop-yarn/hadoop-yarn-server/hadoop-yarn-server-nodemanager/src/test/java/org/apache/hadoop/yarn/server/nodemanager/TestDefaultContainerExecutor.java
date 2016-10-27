@@ -1865,6 +1865,15 @@ name|String
 argument_list|>
 argument_list|()
 decl_stmt|;
+name|env
+operator|.
+name|put
+argument_list|(
+literal|"LANG"
+argument_list|,
+literal|"C"
+argument_list|)
+expr_stmt|;
 name|when
 argument_list|(
 name|container
