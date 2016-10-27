@@ -7182,7 +7182,7 @@ name|TIMELINE_SERVICE_ENTITYGROUP_FS_STORE_PREFIX
 operator|+
 literal|"with-user-dir"
 decl_stmt|;
-comment|/**    * Settings for timeline service v2.0    */
+comment|/**    * Settings for timeline service v2.0.    */
 DECL|field|TIMELINE_SERVICE_WRITER_CLASS
 specifier|public
 specifier|static
@@ -7226,6 +7226,28 @@ init|=
 literal|"org.apache.hadoop.yarn.server.timelineservice"
 operator|+
 literal|".storage.HBaseTimelineReaderImpl"
+decl_stmt|;
+comment|/**    * default schema prefix for hbase tables.    */
+DECL|field|DEFAULT_TIMELINE_SERVICE_HBASE_SCHEMA_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_TIMELINE_SERVICE_HBASE_SCHEMA_PREFIX
+init|=
+literal|"prod."
+decl_stmt|;
+comment|/**    * config param name to override schema prefix.    */
+DECL|field|TIMELINE_SERVICE_HBASE_SCHEMA_PREFIX_NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_HBASE_SCHEMA_PREFIX_NAME
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"hbase-schema.prefix"
 decl_stmt|;
 comment|/** The setting that controls how often the timeline collector flushes the    * timeline writer.    */
 DECL|field|TIMELINE_SERVICE_WRITER_FLUSH_INTERVAL_SECONDS

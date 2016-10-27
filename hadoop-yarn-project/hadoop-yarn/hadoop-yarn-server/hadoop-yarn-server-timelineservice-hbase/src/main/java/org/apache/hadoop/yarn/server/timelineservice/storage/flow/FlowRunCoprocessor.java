@@ -582,7 +582,7 @@ argument_list|()
 expr_stmt|;
 name|isFlowRunRegion
 operator|=
-name|HBaseTimelineStorageUtils
+name|FlowRunTable
 operator|.
 name|isFlowRunTable
 argument_list|(
