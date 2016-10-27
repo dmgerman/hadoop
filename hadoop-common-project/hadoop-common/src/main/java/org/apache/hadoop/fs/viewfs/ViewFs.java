@@ -2345,7 +2345,11 @@ throw|throw
 operator|new
 name|AccessControlException
 argument_list|(
-literal|"Cannot Rename within internal dirs of mount table: it is readOnly"
+literal|"Cannot Rename within internal dirs of mount table: src="
+operator|+
+name|src
+operator|+
+literal|" is readOnly"
 argument_list|)
 throw|;
 block|}
@@ -2381,7 +2385,11 @@ throw|throw
 operator|new
 name|AccessControlException
 argument_list|(
-literal|"Cannot Rename within internal dirs of mount table: it is readOnly"
+literal|"Cannot Rename within internal dirs of mount table: dest="
+operator|+
+name|dst
+operator|+
+literal|" is readOnly"
 argument_list|)
 throw|;
 block|}
