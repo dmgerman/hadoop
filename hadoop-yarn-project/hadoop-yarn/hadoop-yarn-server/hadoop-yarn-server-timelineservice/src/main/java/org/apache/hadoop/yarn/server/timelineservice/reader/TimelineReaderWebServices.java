@@ -318,6 +318,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|http
+operator|.
+name|JettyUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|UserGroupInformation
@@ -1175,6 +1189,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|about ( @ontext HttpServletRequest req, @Context HttpServletResponse res)
 specifier|public
@@ -1220,6 +1240,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|getEntities ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String uId, @PathParam(R) String entityType, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String confsToRetrieve, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields, @QueryParam(R) String metricsLimit)
 specifier|public
@@ -1608,6 +1634,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|getEntities ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String appId, @PathParam(R) String entityType, @QueryParam(R) String userId, @QueryParam(R) String flowName, @QueryParam(R) String flowRunId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String confsToRetrieve, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields, @QueryParam(R) String metricsLimit)
 specifier|public
@@ -1833,6 +1865,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|getEntities ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @PathParam(R) String appId, @PathParam(R) String entityType, @QueryParam(R) String userId, @QueryParam(R) String flowName, @QueryParam(R) String flowRunId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String confsToRetrieve, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields, @QueryParam(R) String metricsLimit)
 specifier|public
@@ -2229,6 +2267,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|getEntity ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String uId, @QueryParam(R) String confsToRetrieve, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields, @QueryParam(R) String metricsLimit)
 specifier|public
@@ -2521,6 +2565,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|getEntity ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String appId, @PathParam(R) String entityType, @PathParam(R) String entityId, @QueryParam(R) String userId, @QueryParam(R) String flowName, @QueryParam(R) String flowRunId, @QueryParam(R) String confsToRetrieve, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields, @QueryParam(R) String metricsLimit)
 specifier|public
@@ -2663,6 +2713,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|getEntity ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @PathParam(R) String appId, @PathParam(R) String entityType, @PathParam(R) String entityId, @QueryParam(R) String userId, @QueryParam(R) String flowName, @QueryParam(R) String flowRunId, @QueryParam(R) String confsToRetrieve, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields, @QueryParam(R) String metricsLimit)
 specifier|public
@@ -2995,6 +3051,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|getFlowRun ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String uId, @QueryParam(R) String metricsToRetrieve)
 specifier|public
@@ -3273,6 +3335,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|getFlowRun ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String flowName, @PathParam(R) String flowRunId, @QueryParam(R) String metricsToRetrieve)
 specifier|public
@@ -3357,6 +3425,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|getFlowRun ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @PathParam(R) String userId, @PathParam(R) String flowName, @PathParam(R) String flowRunId, @QueryParam(R) String metricsToRetrieve)
 specifier|public
@@ -3654,6 +3728,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|getFlowRuns ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String uId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields)
 specifier|public
@@ -3970,6 +4050,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|getFlowRuns ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String flowName, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields)
 specifier|public
@@ -4085,6 +4171,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|getFlowRuns ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @PathParam(R) String userId, @PathParam(R) String flowName, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields)
 specifier|public
@@ -4398,6 +4490,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|getFlows ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @QueryParam(R) String limit, @QueryParam(R) String dateRange)
 specifier|public
@@ -4463,6 +4561,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|getFlows ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @QueryParam(R) String limit, @QueryParam(R) String dateRange)
 specifier|public
@@ -4767,6 +4871,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|getApp ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String uId, @QueryParam(R) String confsToRetrieve, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields, @QueryParam(R) String metricsLimit)
 specifier|public
@@ -5071,6 +5181,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|getApp ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String appId, @QueryParam(R) String flowName, @QueryParam(R) String flowRunId, @QueryParam(R) String userId, @QueryParam(R) String confsToRetrieve, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields, @QueryParam(R) String metricsLimit)
 specifier|public
@@ -5193,6 +5309,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|getApp ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @PathParam(R) String appId, @QueryParam(R) String flowName, @QueryParam(R) String flowRunId, @QueryParam(R) String userId, @QueryParam(R) String confsToRetrieve, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields, @QueryParam(R) String metricsLimit)
 specifier|public
@@ -5510,6 +5632,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|getFlowRunApps ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String uId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String confsToRetrieve, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields, @QueryParam(R) String metricsLimit)
 specifier|public
@@ -5890,6 +6018,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|getFlowRunApps ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String flowName, @PathParam(R) String flowRunId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String confsToRetrieve, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields, @QueryParam(R) String metricsLimit)
 specifier|public
@@ -6106,6 +6240,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|getFlowRunApps ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @PathParam(R) String userId, @PathParam(R) String flowName, @PathParam(R) String flowRunId, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String confsToRetrieve, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields, @QueryParam(R) String metricsLimit)
 specifier|public
@@ -6328,6 +6468,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|getFlowApps ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String userId, @PathParam(R) String flowName, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String confsToRetrieve, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields, @QueryParam(R) String metricsLimit)
 specifier|public
@@ -6534,6 +6680,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|getFlowApps ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @PathParam(R) String userId, @PathParam(R) String flowName, @QueryParam(R) String limit, @QueryParam(R) String createdTimeStart, @QueryParam(R) String createdTimeEnd, @QueryParam(R) String relatesTo, @QueryParam(R) String isRelatedTo, @QueryParam(R) String infofilters, @QueryParam(R) String conffilters, @QueryParam(R) String metricfilters, @QueryParam(R) String eventfilters, @QueryParam(R) String confsToRetrieve, @QueryParam(R) String metricsToRetrieve, @QueryParam(R) String fields, @QueryParam(R) String metricsLimit)
 specifier|public

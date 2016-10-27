@@ -40,6 +40,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|http
+operator|.
+name|JettyUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|codehaus
 operator|.
 name|jackson
@@ -239,6 +253,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 annotation|@
 name|InterfaceAudience

@@ -616,9 +616,11 @@ begin_import
 import|import
 name|org
 operator|.
-name|mortbay
+name|eclipse
 operator|.
 name|jetty
+operator|.
+name|server
 operator|.
 name|Server
 import|;
@@ -628,7 +630,7 @@ begin_import
 import|import
 name|org
 operator|.
-name|mortbay
+name|eclipse
 operator|.
 name|jetty
 operator|.
@@ -1340,7 +1342,7 @@ argument_list|()
 decl_stmt|;
 name|server
 operator|.
-name|addHandler
+name|setHandler
 argument_list|(
 name|context
 argument_list|)

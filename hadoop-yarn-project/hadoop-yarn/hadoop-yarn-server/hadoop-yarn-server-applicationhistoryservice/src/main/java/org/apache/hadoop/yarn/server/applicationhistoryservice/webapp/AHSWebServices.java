@@ -374,6 +374,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|http
+operator|.
+name|JettyUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|StringUtils
@@ -877,10 +891,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|about ( @ontext HttpServletRequest req, @Context HttpServletResponse res)
@@ -922,10 +948,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|get (@ontext HttpServletRequest req, @Context HttpServletResponse res)
@@ -1001,10 +1039,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 annotation|@
@@ -1178,10 +1228,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 annotation|@
@@ -1242,10 +1304,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 annotation|@
@@ -1306,10 +1380,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 annotation|@
@@ -1380,10 +1466,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 annotation|@
@@ -1454,10 +1552,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 annotation|@
@@ -1637,6 +1747,12 @@ block|{
 name|MediaType
 operator|.
 name|TEXT_PLAIN
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 annotation|@

@@ -3055,6 +3055,27 @@ operator|=
 operator|new
 name|TimelineReaderServer
 argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|protected
+name|void
+name|setupOptions
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+comment|// The parent code tries to use HttpServer2 from this version of
+comment|// Hadoop, but the tests are loading in HttpServer2 from
+comment|// ${hbase-compatible-hadoop.version}.  This version uses Jetty 9
+comment|// while ${hbase-compatible-hadoop.version} uses Jetty 6, and there
+comment|// are many differences, including classnames and packages.
+comment|// We do nothing here, so that we don't cause a NoSuchMethodError.
+comment|// Once ${hbase-compatible-hadoop.version} is changed to Hadoop 3,
+comment|// we should be able to remove this @Override.
+block|}
+block|}
 expr_stmt|;
 name|server
 operator|.
@@ -3694,10 +3715,15 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON_TYPE
+operator|+
+literal|"; charset=utf-8"
 argument_list|,
 name|resp
 operator|.
 name|getType
+argument_list|()
+operator|.
+name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4043,10 +4069,15 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON_TYPE
+operator|+
+literal|"; charset=utf-8"
 argument_list|,
 name|resp
 operator|.
 name|getType
+argument_list|()
+operator|.
+name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4203,10 +4234,15 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON_TYPE
+operator|+
+literal|"; charset=utf-8"
 argument_list|,
 name|resp
 operator|.
 name|getType
+argument_list|()
+operator|.
+name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4325,10 +4361,15 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON_TYPE
+operator|+
+literal|"; charset=utf-8"
 argument_list|,
 name|resp
 operator|.
 name|getType
+argument_list|()
+operator|.
+name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4447,10 +4488,15 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON_TYPE
+operator|+
+literal|"; charset=utf-8"
 argument_list|,
 name|resp
 operator|.
 name|getType
+argument_list|()
+operator|.
+name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4609,10 +4655,15 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON_TYPE
+operator|+
+literal|"; charset=utf-8"
 argument_list|,
 name|resp
 operator|.
 name|getType
+argument_list|()
+operator|.
+name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4731,10 +4782,15 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON_TYPE
+operator|+
+literal|"; charset=utf-8"
 argument_list|,
 name|resp
 operator|.
 name|getType
+argument_list|()
+operator|.
+name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4968,10 +5024,15 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON_TYPE
+operator|+
+literal|"; charset=utf-8"
 argument_list|,
 name|resp
 operator|.
 name|getType
+argument_list|()
+operator|.
+name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5105,10 +5166,15 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON_TYPE
+operator|+
+literal|"; charset=utf-8"
 argument_list|,
 name|resp
 operator|.
 name|getType
+argument_list|()
+operator|.
+name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -14950,10 +15016,15 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON_TYPE
+operator|+
+literal|"; charset=utf-8"
 argument_list|,
 name|resp
 operator|.
 name|getType
+argument_list|()
+operator|.
+name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -15110,10 +15181,15 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON_TYPE
+operator|+
+literal|"; charset=utf-8"
 argument_list|,
 name|resp
 operator|.
 name|getType
+argument_list|()
+operator|.
+name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -15213,10 +15289,15 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON_TYPE
+operator|+
+literal|"; charset=utf-8"
 argument_list|,
 name|resp
 operator|.
 name|getType
+argument_list|()
+operator|.
+name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;

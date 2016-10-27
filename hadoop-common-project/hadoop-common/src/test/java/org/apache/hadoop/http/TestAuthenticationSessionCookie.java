@@ -140,7 +140,11 @@ begin_import
 import|import
 name|org
 operator|.
-name|mortbay
+name|eclipse
+operator|.
+name|jetty
+operator|.
+name|util
 operator|.
 name|log
 operator|.
@@ -227,6 +231,16 @@ operator|.
 name|net
 operator|.
 name|HttpCookie
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|HashMap
 import|;
 end_import
 
@@ -432,7 +446,10 @@ operator|.
 name|getName
 argument_list|()
 argument_list|,
-literal|null
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -516,7 +533,10 @@ operator|.
 name|getName
 argument_list|()
 argument_list|,
-literal|null
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -871,6 +891,9 @@ argument_list|)
 expr_stmt|;
 name|Log
 operator|.
+name|getLog
+argument_list|()
+operator|.
 name|info
 argument_list|(
 name|header
@@ -1013,6 +1036,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 name|Log
+operator|.
+name|getLog
+argument_list|()
 operator|.
 name|info
 argument_list|(

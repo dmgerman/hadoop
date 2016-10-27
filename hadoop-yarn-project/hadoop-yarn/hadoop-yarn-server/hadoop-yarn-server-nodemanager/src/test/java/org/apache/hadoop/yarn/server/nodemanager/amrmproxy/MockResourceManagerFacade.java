@@ -1656,7 +1656,11 @@ begin_import
 import|import
 name|org
 operator|.
-name|mortbay
+name|eclipse
+operator|.
+name|jetty
+operator|.
+name|util
 operator|.
 name|log
 operator|.
@@ -1862,6 +1866,9 @@ argument_list|()
 decl_stmt|;
 name|Log
 operator|.
+name|getLog
+argument_list|()
+operator|.
 name|info
 argument_list|(
 literal|"Registering application attempt: "
@@ -1952,6 +1959,9 @@ name|getAppIdentifier
 argument_list|()
 decl_stmt|;
 name|Log
+operator|.
+name|getLog
+argument_list|()
 operator|.
 name|info
 argument_list|(
@@ -2381,6 +2391,9 @@ condition|)
 block|{
 name|Log
 operator|.
+name|getLog
+argument_list|()
+operator|.
 name|info
 argument_list|(
 literal|"Releasing containers: "
@@ -2548,6 +2561,9 @@ block|}
 block|}
 block|}
 name|Log
+operator|.
+name|getLog
+argument_list|()
 operator|.
 name|info
 argument_list|(

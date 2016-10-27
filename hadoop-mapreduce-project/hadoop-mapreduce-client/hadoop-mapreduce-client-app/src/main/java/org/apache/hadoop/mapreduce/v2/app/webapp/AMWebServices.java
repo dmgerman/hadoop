@@ -250,6 +250,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|http
+operator|.
+name|JettyUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|mapreduce
 operator|.
 name|JobACL
@@ -1617,10 +1631,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|get ()
@@ -1648,10 +1674,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|getAppInfo ()
@@ -1693,10 +1731,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|getBlacklistedNodes ()
@@ -1734,10 +1784,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|getJobs (@ontext HttpServletRequest hsr)
@@ -1835,10 +1897,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|getJob (@ontext HttpServletRequest hsr, @PathParam(R) String jid)
@@ -1902,10 +1976,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|getJobAttempts (@athParamR) String jid)
@@ -2003,10 +2089,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|getJobCounters (@ontext HttpServletRequest hsr, @PathParam(R) String jid)
@@ -2074,10 +2172,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|getJobConf (@ontext HttpServletRequest hsr, @PathParam(R) String jid)
@@ -2167,10 +2277,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|getJobTasks (@ontext HttpServletRequest hsr, @PathParam(R) String jid, @QueryParam(R) String type)
@@ -2332,10 +2454,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|getJobTask (@ontext HttpServletRequest hsr, @PathParam(R) String jid, @PathParam(R) String tid)
@@ -2417,10 +2551,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|getSingleTaskCounters ( @ontext HttpServletRequest hsr, @PathParam(R) String jid, @PathParam(R) String tid)
@@ -2502,10 +2648,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|getJobTaskAttempts (@ontext HttpServletRequest hsr, @PathParam(R) String jid, @PathParam(R) String tid)
@@ -2663,10 +2821,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|getJobTaskAttemptId (@ontext HttpServletRequest hsr, @PathParam(R) String jid, @PathParam(R) String tid, @PathParam(R) String attId)
@@ -2801,10 +2971,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|getJobTaskAttemptState ( @ontext HttpServletRequest hsr, @PathParam(R) String jid, @PathParam(R) String tid, @PathParam(R) String attId)
@@ -2914,10 +3096,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 annotation|@
@@ -3166,10 +3360,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|getJobTaskAttemptIdCounters ( @ontext HttpServletRequest hsr, @PathParam(R) String jid, @PathParam(R) String tid, @PathParam(R) String attId)

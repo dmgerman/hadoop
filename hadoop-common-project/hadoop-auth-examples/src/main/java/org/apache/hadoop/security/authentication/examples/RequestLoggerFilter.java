@@ -813,8 +813,16 @@ operator|=
 name|sc
 expr_stmt|;
 block|}
+comment|/**      * Calls setStatus(int sc, String msg) on the wrapped      * {@link HttpServletResponseWrapper} object.      *      * @param sc the status code      * @param msg the status message      * @deprecated {@link HttpServletResponseWrapper#setStatus(int, String)} is      * deprecated. To set a status code use {@link #setStatus(int)}, to send an      * error with a description use {@link #sendError(int, String)}      */
 annotation|@
 name|Override
+annotation|@
+name|Deprecated
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|setStatus (int sc, String msg)
 specifier|public
 name|void

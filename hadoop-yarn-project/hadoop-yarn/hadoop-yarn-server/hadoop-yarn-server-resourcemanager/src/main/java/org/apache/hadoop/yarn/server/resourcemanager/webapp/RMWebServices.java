@@ -506,6 +506,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|http
+operator|.
+name|JettyUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|DataOutputBuffer
@@ -3412,10 +3426,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|get ()
@@ -3443,10 +3469,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|getClusterInfo ()
@@ -3482,10 +3520,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|getClusterMetricsInfo ()
@@ -3521,10 +3571,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|getSchedulerInfo ()
@@ -3657,10 +3719,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|dumpSchedulerLogs (@ormParamR) String time, @Context HttpServletRequest hsr)
@@ -3853,10 +3927,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|getNodes (@ueryParamR) String states)
@@ -4079,10 +4165,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|getNode (@athParamR) String nodeId)
@@ -4274,10 +4372,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|getApps (@ontext HttpServletRequest hsr, @QueryParam(R) String stateQuery, @QueryParam(R) Set<String> statesQuery, @QueryParam(R) String finalStatusQuery, @QueryParam(R) String userQuery, @QueryParam(R) String queueQuery, @QueryParam(R) String count, @QueryParam(R) String startedBegin, @QueryParam(R) String startedEnd, @QueryParam(R) String finishBegin, @QueryParam(R) String finishEnd, @QueryParam(R) Set<String> applicationTypes, @QueryParam(R) Set<String> applicationTags)
@@ -5232,10 +5342,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|getActivities (@ontext HttpServletRequest hsr, @QueryParam(R) String nodeId)
@@ -5581,10 +5703,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|getAppActivities (@ontext HttpServletRequest hsr, @QueryParam(R) String appId, @QueryParam(R) String time)
@@ -5816,10 +5950,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|getAppStatistics ( @ontext HttpServletRequest hsr, @QueryParam(R) Set<String> stateQueries, @QueryParam(R) Set<String> typeQueries)
@@ -6401,10 +6547,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|getApp (@ontext HttpServletRequest hsr, @PathParam(R) String appId)
@@ -6514,10 +6672,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|getAppAttempts (@ontext HttpServletRequest hsr, @PathParam(R) String appId)
@@ -6659,10 +6829,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 annotation|@
@@ -6747,10 +6929,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 annotation|@
@@ -6821,10 +7015,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 annotation|@
@@ -6905,10 +7111,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|getAppState (@ontext HttpServletRequest hsr, @PathParam(R) String appId)
@@ -7050,10 +7268,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 annotation|@
@@ -7347,10 +7577,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|getNodeToLabels (@ontext HttpServletRequest hsr)
@@ -7488,10 +7730,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|getLabelsToNodes ( @ueryParamR) Set<String> labels)
@@ -7688,10 +7942,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|replaceLabelsOnNodes (final NodeToLabelsEntryList newNodeToLabels, @Context HttpServletRequest hsr)
@@ -7798,10 +8064,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|replaceLabelsOnNode ( @ueryParamR) Set<String> newNodeLabelsName, @Context HttpServletRequest hsr, @PathParam(R) String nodeId)
@@ -8066,10 +8344,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|getClusterNodeLabels (@ontext HttpServletRequest hsr)
@@ -8132,10 +8422,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|addToClusterNodeLabels (final NodeLabelsInfo newNodeLabels, @Context HttpServletRequest hsr)
@@ -8290,10 +8592,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|removeFromCluserNodeLabels ( @ueryParamR) Set<String> oldNodeLabels, @Context HttpServletRequest hsr)
@@ -8459,10 +8773,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|getLabelsOnNode (@ontext HttpServletRequest hsr, @PathParam(R) String nodeId)
@@ -8866,10 +9192,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|getAppPriority (@ontext HttpServletRequest hsr, @PathParam(R) String appId)
@@ -9011,10 +9349,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 annotation|@
@@ -9535,10 +9885,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|getAppQueue (@ontext HttpServletRequest hsr, @PathParam(R) String appId)
@@ -9674,10 +10036,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 annotation|@
@@ -10385,10 +10759,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|createNewApplication (@ontext HttpServletRequest hsr)
@@ -10518,10 +10904,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 annotation|@
@@ -11861,10 +12259,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 annotation|@
@@ -11971,10 +12381,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 annotation|@
@@ -12671,10 +13093,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|cancelDelegationToken (@ontext HttpServletRequest hsr)
@@ -13129,10 +13563,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|createNewReservation (@ontext HttpServletRequest hsr)
@@ -13347,10 +13793,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 annotation|@
@@ -13855,10 +14313,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 annotation|@
@@ -14385,10 +14855,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 annotation|@
@@ -14659,10 +15141,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|listReservation ( @ueryParamR) @efaultValueR) String queue, @QueryParam(R) @DefaultValue(R) String reservationId, @QueryParam(R) @DefaultValue(R) long startTime, @QueryParam(R) @DefaultValue(R) long endTime, @QueryParam(R) @DefaultValue(R) boolean includeResourceAllocations, @Context HttpServletRequest hsr)

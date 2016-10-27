@@ -924,6 +924,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|http
+operator|.
+name|JettyUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|Text
@@ -2627,10 +2641,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_OCTET_STREAM
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|putRoot ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @QueryParam(UserParam.NAME) @DefaultValue(UserParam.DEFAULT) final UserParam username, @QueryParam(DoAsParam.NAME) @DefaultValue(DoAsParam.DEFAULT) final DoAsParam doAsUser, @QueryParam(PutOpParam.NAME) @DefaultValue(PutOpParam.DEFAULT) final PutOpParam op, @QueryParam(DestinationParam.NAME) @DefaultValue(DestinationParam.DEFAULT) final DestinationParam destination, @QueryParam(OwnerParam.NAME) @DefaultValue(OwnerParam.DEFAULT) final OwnerParam owner, @QueryParam(GroupParam.NAME) @DefaultValue(GroupParam.DEFAULT) final GroupParam group, @QueryParam(PermissionParam.NAME) @DefaultValue(PermissionParam.DEFAULT) final PermissionParam permission, @QueryParam(UnmaskedPermissionParam.NAME) @DefaultValue(UnmaskedPermissionParam.DEFAULT) final UnmaskedPermissionParam unmaskedPermission, @QueryParam(OverwriteParam.NAME) @DefaultValue(OverwriteParam.DEFAULT) final OverwriteParam overwrite, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize, @QueryParam(ReplicationParam.NAME) @DefaultValue(ReplicationParam.DEFAULT) final ReplicationParam replication, @QueryParam(BlockSizeParam.NAME) @DefaultValue(BlockSizeParam.DEFAULT) final BlockSizeParam blockSize, @QueryParam(ModificationTimeParam.NAME) @DefaultValue(ModificationTimeParam.DEFAULT) final ModificationTimeParam modificationTime, @QueryParam(AccessTimeParam.NAME) @DefaultValue(AccessTimeParam.DEFAULT) final AccessTimeParam accessTime, @QueryParam(RenameOptionSetParam.NAME) @DefaultValue(RenameOptionSetParam.DEFAULT) final RenameOptionSetParam renameOptions, @QueryParam(CreateParentParam.NAME) @DefaultValue(CreateParentParam.DEFAULT) final CreateParentParam createParent, @QueryParam(TokenArgumentParam.NAME) @DefaultValue(TokenArgumentParam.DEFAULT) final TokenArgumentParam delegationTokenArgument, @QueryParam(AclPermissionParam.NAME) @DefaultValue(AclPermissionParam.DEFAULT) final AclPermissionParam aclPermission, @QueryParam(XAttrNameParam.NAME) @DefaultValue(XAttrNameParam.DEFAULT) final XAttrNameParam xattrName, @QueryParam(XAttrValueParam.NAME) @DefaultValue(XAttrValueParam.DEFAULT) final XAttrValueParam xattrValue, @QueryParam(XAttrSetFlagParam.NAME) @DefaultValue(XAttrSetFlagParam.DEFAULT) final XAttrSetFlagParam xattrSetFlag, @QueryParam(SnapshotNameParam.NAME) @DefaultValue(SnapshotNameParam.DEFAULT) final SnapshotNameParam snapshotName, @QueryParam(OldSnapshotNameParam.NAME) @DefaultValue(OldSnapshotNameParam.DEFAULT) final OldSnapshotNameParam oldSnapshotName, @QueryParam(ExcludeDatanodesParam.NAME) @DefaultValue(ExcludeDatanodesParam.DEFAULT) final ExcludeDatanodesParam excludeDatanodes, @QueryParam(CreateFlagParam.NAME) @DefaultValue(CreateFlagParam.DEFAULT) final CreateFlagParam createFlagParam, @QueryParam(NoRedirectParam.NAME) @DefaultValue(NoRedirectParam.DEFAULT) final NoRedirectParam noredirect )
@@ -3226,10 +3252,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_OCTET_STREAM
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|put ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @QueryParam(UserParam.NAME) @DefaultValue(UserParam.DEFAULT) final UserParam username, @QueryParam(DoAsParam.NAME) @DefaultValue(DoAsParam.DEFAULT) final DoAsParam doAsUser, @PathParam(UriFsPathParam.NAME) final UriFsPathParam path, @QueryParam(PutOpParam.NAME) @DefaultValue(PutOpParam.DEFAULT) final PutOpParam op, @QueryParam(DestinationParam.NAME) @DefaultValue(DestinationParam.DEFAULT) final DestinationParam destination, @QueryParam(OwnerParam.NAME) @DefaultValue(OwnerParam.DEFAULT) final OwnerParam owner, @QueryParam(GroupParam.NAME) @DefaultValue(GroupParam.DEFAULT) final GroupParam group, @QueryParam(PermissionParam.NAME) @DefaultValue(PermissionParam.DEFAULT) final PermissionParam permission, @QueryParam(UnmaskedPermissionParam.NAME) @DefaultValue(UnmaskedPermissionParam.DEFAULT) final UnmaskedPermissionParam unmaskedPermission, @QueryParam(OverwriteParam.NAME) @DefaultValue(OverwriteParam.DEFAULT) final OverwriteParam overwrite, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize, @QueryParam(ReplicationParam.NAME) @DefaultValue(ReplicationParam.DEFAULT) final ReplicationParam replication, @QueryParam(BlockSizeParam.NAME) @DefaultValue(BlockSizeParam.DEFAULT) final BlockSizeParam blockSize, @QueryParam(ModificationTimeParam.NAME) @DefaultValue(ModificationTimeParam.DEFAULT) final ModificationTimeParam modificationTime, @QueryParam(AccessTimeParam.NAME) @DefaultValue(AccessTimeParam.DEFAULT) final AccessTimeParam accessTime, @QueryParam(RenameOptionSetParam.NAME) @DefaultValue(RenameOptionSetParam.DEFAULT) final RenameOptionSetParam renameOptions, @QueryParam(CreateParentParam.NAME) @DefaultValue(CreateParentParam.DEFAULT) final CreateParentParam createParent, @QueryParam(TokenArgumentParam.NAME) @DefaultValue(TokenArgumentParam.DEFAULT) final TokenArgumentParam delegationTokenArgument, @QueryParam(AclPermissionParam.NAME) @DefaultValue(AclPermissionParam.DEFAULT) final AclPermissionParam aclPermission, @QueryParam(XAttrNameParam.NAME) @DefaultValue(XAttrNameParam.DEFAULT) final XAttrNameParam xattrName, @QueryParam(XAttrValueParam.NAME) @DefaultValue(XAttrValueParam.DEFAULT) final XAttrValueParam xattrValue, @QueryParam(XAttrSetFlagParam.NAME) @DefaultValue(XAttrSetFlagParam.DEFAULT) final XAttrSetFlagParam xattrSetFlag, @QueryParam(SnapshotNameParam.NAME) @DefaultValue(SnapshotNameParam.DEFAULT) final SnapshotNameParam snapshotName, @QueryParam(OldSnapshotNameParam.NAME) @DefaultValue(OldSnapshotNameParam.DEFAULT) final OldSnapshotNameParam oldSnapshotName, @QueryParam(ExcludeDatanodesParam.NAME) @DefaultValue(ExcludeDatanodesParam.DEFAULT) final ExcludeDatanodesParam excludeDatanodes, @QueryParam(CreateFlagParam.NAME) @DefaultValue(CreateFlagParam.DEFAULT) final CreateFlagParam createFlagParam, @QueryParam(NoRedirectParam.NAME) @DefaultValue(NoRedirectParam.DEFAULT) final NoRedirectParam noredirect )
@@ -5188,10 +5226,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_OCTET_STREAM
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|postRoot ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @QueryParam(UserParam.NAME) @DefaultValue(UserParam.DEFAULT) final UserParam username, @QueryParam(DoAsParam.NAME) @DefaultValue(DoAsParam.DEFAULT) final DoAsParam doAsUser, @QueryParam(PostOpParam.NAME) @DefaultValue(PostOpParam.DEFAULT) final PostOpParam op, @QueryParam(ConcatSourcesParam.NAME) @DefaultValue(ConcatSourcesParam.DEFAULT) final ConcatSourcesParam concatSrcs, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize, @QueryParam(ExcludeDatanodesParam.NAME) @DefaultValue(ExcludeDatanodesParam.DEFAULT) final ExcludeDatanodesParam excludeDatanodes, @QueryParam(NewLengthParam.NAME) @DefaultValue(NewLengthParam.DEFAULT) final NewLengthParam newLength, @QueryParam(NoRedirectParam.NAME) @DefaultValue(NoRedirectParam.DEFAULT) final NoRedirectParam noredirect )
@@ -5427,10 +5477,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_OCTET_STREAM
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|post ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @QueryParam(UserParam.NAME) @DefaultValue(UserParam.DEFAULT) final UserParam username, @QueryParam(DoAsParam.NAME) @DefaultValue(DoAsParam.DEFAULT) final DoAsParam doAsUser, @PathParam(UriFsPathParam.NAME) final UriFsPathParam path, @QueryParam(PostOpParam.NAME) @DefaultValue(PostOpParam.DEFAULT) final PostOpParam op, @QueryParam(ConcatSourcesParam.NAME) @DefaultValue(ConcatSourcesParam.DEFAULT) final ConcatSourcesParam concatSrcs, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize, @QueryParam(ExcludeDatanodesParam.NAME) @DefaultValue(ExcludeDatanodesParam.DEFAULT) final ExcludeDatanodesParam excludeDatanodes, @QueryParam(NewLengthParam.NAME) @DefaultValue(NewLengthParam.DEFAULT) final NewLengthParam newLength, @QueryParam(NoRedirectParam.NAME) @DefaultValue(NoRedirectParam.DEFAULT) final NoRedirectParam noredirect )
@@ -6025,10 +6087,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_OCTET_STREAM
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|getRoot ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @QueryParam(UserParam.NAME) @DefaultValue(UserParam.DEFAULT) final UserParam username, @QueryParam(DoAsParam.NAME) @DefaultValue(DoAsParam.DEFAULT) final DoAsParam doAsUser, @QueryParam(GetOpParam.NAME) @DefaultValue(GetOpParam.DEFAULT) final GetOpParam op, @QueryParam(OffsetParam.NAME) @DefaultValue(OffsetParam.DEFAULT) final OffsetParam offset, @QueryParam(LengthParam.NAME) @DefaultValue(LengthParam.DEFAULT) final LengthParam length, @QueryParam(RenewerParam.NAME) @DefaultValue(RenewerParam.DEFAULT) final RenewerParam renewer, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize, @QueryParam(XAttrNameParam.NAME) @DefaultValue(XAttrNameParam.DEFAULT) final List<XAttrNameParam> xattrNames, @QueryParam(XAttrEncodingParam.NAME) @DefaultValue(XAttrEncodingParam.DEFAULT) final XAttrEncodingParam xattrEncoding, @QueryParam(ExcludeDatanodesParam.NAME) @DefaultValue(ExcludeDatanodesParam.DEFAULT) final ExcludeDatanodesParam excludeDatanodes, @QueryParam(FsActionParam.NAME) @DefaultValue(FsActionParam.DEFAULT) final FsActionParam fsAction, @QueryParam(TokenKindParam.NAME) @DefaultValue(TokenKindParam.DEFAULT) final TokenKindParam tokenKind, @QueryParam(TokenServiceParam.NAME) @DefaultValue(TokenServiceParam.DEFAULT) final TokenServiceParam tokenService, @QueryParam(NoRedirectParam.NAME) @DefaultValue(NoRedirectParam.DEFAULT) final NoRedirectParam noredirect, @QueryParam(StartAfterParam.NAME) @DefaultValue(StartAfterParam.DEFAULT) final StartAfterParam startAfter )
@@ -6400,10 +6474,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_OCTET_STREAM
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|get ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @QueryParam(UserParam.NAME) @DefaultValue(UserParam.DEFAULT) final UserParam username, @QueryParam(DoAsParam.NAME) @DefaultValue(DoAsParam.DEFAULT) final DoAsParam doAsUser, @PathParam(UriFsPathParam.NAME) final UriFsPathParam path, @QueryParam(GetOpParam.NAME) @DefaultValue(GetOpParam.DEFAULT) final GetOpParam op, @QueryParam(OffsetParam.NAME) @DefaultValue(OffsetParam.DEFAULT) final OffsetParam offset, @QueryParam(LengthParam.NAME) @DefaultValue(LengthParam.DEFAULT) final LengthParam length, @QueryParam(RenewerParam.NAME) @DefaultValue(RenewerParam.DEFAULT) final RenewerParam renewer, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize, @QueryParam(XAttrNameParam.NAME) @DefaultValue(XAttrNameParam.DEFAULT) final List<XAttrNameParam> xattrNames, @QueryParam(XAttrEncodingParam.NAME) @DefaultValue(XAttrEncodingParam.DEFAULT) final XAttrEncodingParam xattrEncoding, @QueryParam(ExcludeDatanodesParam.NAME) @DefaultValue(ExcludeDatanodesParam.DEFAULT) final ExcludeDatanodesParam excludeDatanodes, @QueryParam(FsActionParam.NAME) @DefaultValue(FsActionParam.DEFAULT) final FsActionParam fsAction, @QueryParam(TokenKindParam.NAME) @DefaultValue(TokenKindParam.DEFAULT) final TokenKindParam tokenKind, @QueryParam(TokenServiceParam.NAME) @DefaultValue(TokenServiceParam.DEFAULT) final TokenServiceParam tokenService, @QueryParam(NoRedirectParam.NAME) @DefaultValue(NoRedirectParam.DEFAULT) final NoRedirectParam noredirect, @QueryParam(StartAfterParam.NAME) @DefaultValue(StartAfterParam.DEFAULT) final StartAfterParam startAfter )
@@ -8279,6 +8365,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|deleteRoot ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @QueryParam(UserParam.NAME) @DefaultValue(UserParam.DEFAULT) final UserParam username, @QueryParam(DoAsParam.NAME) @DefaultValue(DoAsParam.DEFAULT) final DoAsParam doAsUser, @QueryParam(DeleteOpParam.NAME) @DefaultValue(DeleteOpParam.DEFAULT) final DeleteOpParam op, @QueryParam(RecursiveParam.NAME) @DefaultValue(RecursiveParam.DEFAULT) final RecursiveParam recursive, @QueryParam(SnapshotNameParam.NAME) @DefaultValue(SnapshotNameParam.DEFAULT) final SnapshotNameParam snapshotName )
 specifier|public
@@ -8445,6 +8537,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|delete ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @QueryParam(UserParam.NAME) @DefaultValue(UserParam.DEFAULT) final UserParam username, @QueryParam(DoAsParam.NAME) @DefaultValue(DoAsParam.DEFAULT) final DoAsParam doAsUser, @PathParam(UriFsPathParam.NAME) final UriFsPathParam path, @QueryParam(DeleteOpParam.NAME) @DefaultValue(DeleteOpParam.DEFAULT) final DeleteOpParam op, @QueryParam(RecursiveParam.NAME) @DefaultValue(RecursiveParam.DEFAULT) final RecursiveParam recursive, @QueryParam(SnapshotNameParam.NAME) @DefaultValue(SnapshotNameParam.DEFAULT) final SnapshotNameParam snapshotName )
 specifier|public

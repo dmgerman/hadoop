@@ -777,6 +777,14 @@ name|ErrorFilter
 extends|extends
 name|SimpleFilter
 block|{
+DECL|field|EXCEPTION_MESSAGE
+specifier|static
+specifier|final
+name|String
+name|EXCEPTION_MESSAGE
+init|=
+literal|"Throwing the exception from Filter init"
+decl_stmt|;
 annotation|@
 name|Override
 DECL|method|init (FilterConfig arg0)
@@ -794,7 +802,7 @@ throw|throw
 operator|new
 name|ServletException
 argument_list|(
-literal|"Throwing the exception from Filter init"
+name|EXCEPTION_MESSAGE
 argument_list|)
 throw|;
 block|}
@@ -908,17 +916,29 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-name|assertTrue
+name|assertEquals
 argument_list|(
+literal|"Problem starting http server"
+argument_list|,
 name|e
 operator|.
 name|getMessage
 argument_list|()
-operator|.
-name|contains
-argument_list|(
-literal|"Problem in starting http server. Server handlers failed"
 argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|ErrorFilter
+operator|.
+name|EXCEPTION_MESSAGE
+argument_list|,
+name|e
+operator|.
+name|getCause
+argument_list|()
+operator|.
+name|getMessage
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

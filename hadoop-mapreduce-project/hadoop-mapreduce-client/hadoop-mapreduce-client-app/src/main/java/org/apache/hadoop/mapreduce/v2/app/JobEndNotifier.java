@@ -160,7 +160,11 @@ begin_import
 import|import
 name|org
 operator|.
-name|mortbay
+name|eclipse
+operator|.
+name|jetty
+operator|.
+name|util
 operator|.
 name|log
 operator|.
@@ -519,6 +523,9 @@ argument_list|)
 expr_stmt|;
 name|Log
 operator|.
+name|getLog
+argument_list|()
+operator|.
 name|info
 argument_list|(
 literal|"Job end notification using proxy type \""
@@ -545,9 +552,14 @@ parameter_list|)
 block|{
 name|Log
 operator|.
+name|getLog
+argument_list|()
+operator|.
 name|warn
 argument_list|(
-literal|"Job end notification couldn't parse configured proxy's port "
+literal|"Job end notification couldn't parse configured"
+operator|+
+literal|"proxy's port "
 operator|+
 name|portConf
 operator|+
@@ -582,6 +594,9 @@ decl_stmt|;
 try|try
 block|{
 name|Log
+operator|.
+name|getLog
+argument_list|()
 operator|.
 name|info
 argument_list|(
@@ -638,6 +653,9 @@ condition|)
 block|{
 name|Log
 operator|.
+name|getLog
+argument_list|()
+operator|.
 name|warn
 argument_list|(
 literal|"Job end notification to "
@@ -670,6 +688,9 @@ literal|true
 expr_stmt|;
 name|Log
 operator|.
+name|getLog
+argument_list|()
+operator|.
 name|info
 argument_list|(
 literal|"Job end notification to "
@@ -688,6 +709,9 @@ name|ioe
 parameter_list|)
 block|{
 name|Log
+operator|.
+name|getLog
+argument_list|()
 operator|.
 name|warn
 argument_list|(
@@ -726,6 +750,9 @@ literal|null
 condition|)
 block|{
 name|Log
+operator|.
+name|getLog
+argument_list|()
 operator|.
 name|info
 argument_list|(
@@ -811,6 +838,9 @@ parameter_list|)
 block|{
 name|Log
 operator|.
+name|getLog
+argument_list|()
+operator|.
 name|warn
 argument_list|(
 literal|"Job end notification couldn't parse "
@@ -840,6 +870,9 @@ name|success
 condition|)
 block|{
 name|Log
+operator|.
+name|getLog
+argument_list|()
 operator|.
 name|info
 argument_list|(
@@ -876,6 +909,9 @@ condition|)
 block|{
 name|Log
 operator|.
+name|getLog
+argument_list|()
+operator|.
 name|warn
 argument_list|(
 literal|"Job end notification failed to notify : "
@@ -887,6 +923,9 @@ block|}
 else|else
 block|{
 name|Log
+operator|.
+name|getLog
+argument_list|()
 operator|.
 name|info
 argument_list|(

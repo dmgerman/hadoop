@@ -180,7 +180,23 @@ begin_import
 import|import
 name|org
 operator|.
-name|mortbay
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|http
+operator|.
+name|JettyUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|eclipse
+operator|.
+name|jetty
 operator|.
 name|util
 operator|.
@@ -256,6 +272,12 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|get ( @athParamPATH) @efaultValueR + PATH) final String path, @QueryParam(OP) @DefaultValue(R + OP) final String op )

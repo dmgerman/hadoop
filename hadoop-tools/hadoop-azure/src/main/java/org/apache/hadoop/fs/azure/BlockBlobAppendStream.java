@@ -264,7 +264,11 @@ begin_import
 import|import
 name|org
 operator|.
-name|mortbay
+name|eclipse
+operator|.
+name|jetty
+operator|.
+name|util
 operator|.
 name|log
 operator|.
@@ -2712,6 +2716,9 @@ parameter_list|)
 block|{
 name|Log
 operator|.
+name|getLog
+argument_list|()
+operator|.
 name|debug
 argument_list|(
 literal|"Encountered exception during uploading block for Blob : {} Exception : {}"
@@ -2884,6 +2891,9 @@ argument_list|()
 expr_stmt|;
 block|}
 name|Log
+operator|.
+name|getLog
+argument_list|()
 operator|.
 name|debug
 argument_list|(

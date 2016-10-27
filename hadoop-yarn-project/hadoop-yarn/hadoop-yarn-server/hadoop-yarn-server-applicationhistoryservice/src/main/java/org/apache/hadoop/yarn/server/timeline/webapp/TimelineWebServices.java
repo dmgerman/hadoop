@@ -322,6 +322,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|http
+operator|.
+name|JettyUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|UserGroupInformation
@@ -742,6 +756,12 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 comment|/* , MediaType.APPLICATION_XML */
 block|}
 argument_list|)
@@ -790,6 +810,12 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 comment|/* , MediaType.APPLICATION_XML */
 block|}
 argument_list|)
@@ -1030,6 +1056,12 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 comment|/* , MediaType.APPLICATION_XML */
 block|}
 argument_list|)
@@ -1208,6 +1240,12 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 comment|/* , MediaType.APPLICATION_XML */
 block|}
 argument_list|)
@@ -1393,6 +1431,22 @@ name|APPLICATION_JSON
 comment|/* , MediaType.APPLICATION_XML */
 block|}
 argument_list|)
+annotation|@
+name|Produces
+argument_list|(
+block|{
+name|MediaType
+operator|.
+name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
+comment|/* , MediaType.APPLICATION_XML */
+block|}
+argument_list|)
 DECL|method|postEntities ( @ontext HttpServletRequest req, @Context HttpServletResponse res, TimelineEntities entities)
 specifier|public
 name|TimelinePutResponse
@@ -1520,6 +1574,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+comment|/* , MediaType.APPLICATION_XML */
+block|}
+argument_list|)
+annotation|@
+name|Produces
+argument_list|(
+block|{
+name|MediaType
+operator|.
+name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 comment|/* , MediaType.APPLICATION_XML */
 block|}
 argument_list|)
@@ -1681,6 +1751,12 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 comment|/* , MediaType.APPLICATION_XML */
 block|}
 argument_list|)
@@ -1834,6 +1910,12 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 comment|/* , MediaType.APPLICATION_XML */
 block|}
 argument_list|)

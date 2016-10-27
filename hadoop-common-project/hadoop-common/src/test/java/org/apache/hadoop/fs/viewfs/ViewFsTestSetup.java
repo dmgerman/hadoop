@@ -132,7 +132,11 @@ begin_import
 import|import
 name|org
 operator|.
-name|mortbay
+name|eclipse
+operator|.
+name|jetty
+operator|.
+name|util
 operator|.
 name|log
 operator|.
@@ -311,6 +315,9 @@ expr_stmt|;
 comment|// in case testdir relative to wd.
 name|Log
 operator|.
+name|getLog
+argument_list|()
+operator|.
 name|info
 argument_list|(
 literal|"Working dir is: "
@@ -458,6 +465,9 @@ argument_list|)
 expr_stmt|;
 name|Log
 operator|.
+name|getLog
+argument_list|()
+operator|.
 name|info
 argument_list|(
 literal|"Added link for home dir "
@@ -498,6 +508,9 @@ name|homeDirRoot
 argument_list|)
 expr_stmt|;
 name|Log
+operator|.
+name|getLog
+argument_list|()
 operator|.
 name|info
 argument_list|(
@@ -600,6 +613,9 @@ name|linkTarget
 argument_list|)
 expr_stmt|;
 name|Log
+operator|.
+name|getLog
+argument_list|()
 operator|.
 name|info
 argument_list|(

@@ -122,6 +122,20 @@ name|Singleton
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|http
+operator|.
+name|JettyUtils
+import|;
+end_import
+
 begin_class
 annotation|@
 name|Singleton
@@ -144,6 +158,12 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|get ()

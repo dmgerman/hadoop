@@ -666,7 +666,11 @@ begin_import
 import|import
 name|org
 operator|.
-name|mortbay
+name|eclipse
+operator|.
+name|jetty
+operator|.
+name|util
 operator|.
 name|log
 operator|.
@@ -822,6 +826,9 @@ name|seed
 argument_list|)
 expr_stmt|;
 name|Log
+operator|.
+name|getLog
+argument_list|()
 operator|.
 name|info
 argument_list|(

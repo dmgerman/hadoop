@@ -588,6 +588,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|http
+operator|.
+name|JettyUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|lib
 operator|.
 name|service
@@ -1302,6 +1316,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|getRoot (@ueryParamOperationParam.NAME) OperationParam op, @Context Parameters params, @Context HttpServletRequest request)
 specifier|public
@@ -1386,10 +1406,22 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_OCTET_STREAM
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|,
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|get (@athParamR) String path, @QueryParam(OperationParam.NAME) OperationParam op, @Context Parameters params, @Context HttpServletRequest request)
@@ -2502,6 +2534,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|delete (@athParamR) String path, @QueryParam(OperationParam.NAME) OperationParam op, @Context Parameters params, @Context HttpServletRequest request)
 specifier|public
@@ -2720,6 +2758,12 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|post (InputStream is, @Context UriInfo uriInfo, @PathParam(R) String path, @QueryParam(OperationParam.NAME) OperationParam op, @Context Parameters params, @Context HttpServletRequest request)
@@ -3191,6 +3235,12 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 block|}
 argument_list|)
 DECL|method|put (InputStream is, @Context UriInfo uriInfo, @PathParam(R) String path, @QueryParam(OperationParam.NAME) OperationParam op, @Context Parameters params, @Context HttpServletRequest request)

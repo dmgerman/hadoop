@@ -146,6 +146,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|http
+operator|.
+name|JettyUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|AccessControlException
@@ -716,6 +730,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 annotation|@
 name|SuppressWarnings
@@ -1446,6 +1466,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|rolloverKey (@athParamR) final String name, Map jsonMaterial)
 specifier|public
@@ -1765,6 +1791,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|getKeysMetadata (@ueryParamKMSRESTConstants.KEY) List<String> keyNamesList)
 specifier|public
@@ -1979,6 +2011,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|getKeyNames ()
 specifier|public
@@ -2232,6 +2270,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|getMetadata (@athParamR) final String name)
 specifier|public
@@ -2448,6 +2492,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|getCurrentVersion (@athParamR) final String name)
 specifier|public
@@ -2652,6 +2702,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|getKeyVersion ( @athParamR) final String versionName)
 specifier|public
@@ -2878,6 +2934,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|generateEncryptedKeys ( @athParamR) final String name, @QueryParam(KMSRESTConstants.EEK_OP) String edekOp, @DefaultValue(R) @QueryParam(KMSRESTConstants.EEK_NUM_KEYS) final int numKeys)
 specifier|public
@@ -3321,6 +3383,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|decryptEncryptedKey ( @athParamR) final String versionName, @QueryParam(KMSRESTConstants.EEK_OP) String eekOp, Map jsonPayload)
 specifier|public
@@ -3753,6 +3821,12 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|)
 DECL|method|getKeyVersions (@athParamR) final String name)
 specifier|public

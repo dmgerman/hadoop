@@ -4533,7 +4533,7 @@ operator|.
 name|toString
 argument_list|()
 operator|.
-name|equals
+name|contains
 argument_list|(
 name|MediaType
 operator|.
@@ -5012,7 +5012,7 @@ if|if
 condition|(
 name|mediaType
 operator|.
-name|equals
+name|contains
 argument_list|(
 name|MediaType
 operator|.

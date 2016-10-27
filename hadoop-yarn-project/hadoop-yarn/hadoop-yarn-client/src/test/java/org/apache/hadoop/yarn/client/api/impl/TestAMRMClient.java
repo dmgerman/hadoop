@@ -1218,7 +1218,11 @@ begin_import
 import|import
 name|org
 operator|.
-name|mortbay
+name|eclipse
+operator|.
+name|jetty
+operator|.
+name|util
 operator|.
 name|log
 operator|.
@@ -4717,15 +4721,22 @@ condition|)
 block|{
 name|Log
 operator|.
+name|getLog
+argument_list|()
+operator|.
 name|info
 argument_list|(
-literal|" == alloc "
+literal|"Allocated "
 operator|+
 name|allocatedContainerCount
 operator|+
-literal|" it left "
+literal|" containers"
+operator|+
+literal|" with "
 operator|+
 name|iterationsLeft
+operator|+
+literal|" iterations left"
 argument_list|)
 expr_stmt|;
 name|AllocateResponse
@@ -5758,15 +5769,22 @@ condition|)
 block|{
 name|Log
 operator|.
+name|getLog
+argument_list|()
+operator|.
 name|info
 argument_list|(
-literal|" == alloc "
+literal|"Allocated "
 operator|+
 name|allocatedContainerCount
 operator|+
-literal|" it left "
+literal|" containers"
+operator|+
+literal|" with "
 operator|+
 name|iterationsLeft
+operator|+
+literal|" iterations left"
 argument_list|)
 expr_stmt|;
 name|AllocateResponse

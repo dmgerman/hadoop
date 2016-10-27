@@ -162,6 +162,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|http
+operator|.
+name|JettyUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|webapp
@@ -1780,11 +1794,20 @@ name|assertEquals
 argument_list|(
 name|MediaType
 operator|.
-name|APPLICATION_JSON_TYPE
+name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|,
 name|response
 operator|.
 name|getType
+argument_list|()
+operator|.
+name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1862,11 +1885,20 @@ name|assertEquals
 argument_list|(
 name|MediaType
 operator|.
-name|APPLICATION_JSON_TYPE
+name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|,
 name|response
 operator|.
 name|getType
+argument_list|()
+operator|.
+name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1938,11 +1970,20 @@ name|assertEquals
 argument_list|(
 name|MediaType
 operator|.
-name|APPLICATION_JSON_TYPE
+name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|,
 name|response
 operator|.
 name|getType
+argument_list|()
+operator|.
+name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2025,11 +2066,20 @@ name|assertEquals
 argument_list|(
 name|MediaType
 operator|.
-name|APPLICATION_JSON_TYPE
+name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|,
 name|response
 operator|.
 name|getType
+argument_list|()
+operator|.
+name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2112,11 +2162,20 @@ name|assertEquals
 argument_list|(
 name|MediaType
 operator|.
-name|APPLICATION_JSON_TYPE
+name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|,
 name|response
 operator|.
 name|getType
+argument_list|()
+operator|.
+name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2193,11 +2252,20 @@ name|assertEquals
 argument_list|(
 name|MediaType
 operator|.
-name|APPLICATION_JSON_TYPE
+name|APPLICATION_JSON
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|,
 name|response
 operator|.
 name|getType
+argument_list|()
+operator|.
+name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2280,11 +2348,20 @@ name|assertEquals
 argument_list|(
 name|MediaType
 operator|.
-name|APPLICATION_XML_TYPE
+name|APPLICATION_XML
+operator|+
+literal|"; "
+operator|+
+name|JettyUtils
+operator|.
+name|UTF_8
 argument_list|,
 name|response
 operator|.
 name|getType
+argument_list|()
+operator|.
+name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3084,7 +3161,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"text/plain"
+literal|"text/plain; charset=utf-8"
 argument_list|,
 name|response
 operator|.
@@ -3175,7 +3252,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"application/octet-stream"
+literal|"application/octet-stream; charset=utf-8"
 argument_list|,
 name|response
 operator|.
