@@ -2234,6 +2234,22 @@ return|return
 name|scheduledRequests
 return|;
 block|}
+annotation|@
+name|Private
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumOfPendingReduces ()
+name|int
+name|getNumOfPendingReduces
+parameter_list|()
+block|{
+return|return
+name|pendingReduces
+operator|.
+name|size
+argument_list|()
+return|;
+block|}
 DECL|method|getIsReduceStarted ()
 specifier|public
 name|boolean
@@ -3164,12 +3180,38 @@ return|;
 block|}
 block|}
 comment|// The pending mappers haven't been waiting for too long. Let us see if
-comment|// the headroom can fit a mapper.
+comment|// there are enough resources for a mapper to run. This is calculated by
+comment|// excluding scheduled reducers from headroom and comparing it against
+comment|// resources required to run one mapper.
+name|Resource
+name|scheduledReducesResource
+init|=
+name|Resources
+operator|.
+name|multiply
+argument_list|(
+name|reduceResourceRequest
+argument_list|,
+name|scheduledRequests
+operator|.
+name|reduces
+operator|.
+name|size
+argument_list|()
+argument_list|)
+decl_stmt|;
 name|Resource
 name|availableResourceForMap
 init|=
+name|Resources
+operator|.
+name|subtract
+argument_list|(
 name|getAvailableResources
 argument_list|()
+argument_list|,
+name|scheduledReducesResource
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
@@ -3188,12 +3230,12 @@ operator|>
 literal|0
 condition|)
 block|{
-comment|// the available headroom is enough to run a mapper
+comment|// Enough room to run a mapper
 return|return
 literal|false
 return|;
 block|}
-comment|// Available headroom is not enough to run mapper. See if we should hold
+comment|// Available resources are not enough to run mapper. See if we should hold
 comment|// off before preempting reducers and preempt if okay.
 return|return
 name|preemptReducersForHangingMapRequests
@@ -5440,21 +5482,6 @@ argument_list|,
 name|assignedReduceResource
 argument_list|)
 argument_list|)
-return|;
-block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|getNumOfPendingReduces ()
-specifier|public
-name|int
-name|getNumOfPendingReduces
-parameter_list|()
-block|{
-return|return
-name|pendingReduces
-operator|.
-name|size
-argument_list|()
 return|;
 block|}
 annotation|@
