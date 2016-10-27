@@ -500,7 +500,7 @@ name|output
 operator|.
 name|contains
 argument_list|(
-literal|"<configuration><property><name>key1</name><value>val1</value><source/></property></configuration>"
+literal|"<name>key1</name><value>val1</value>"
 argument_list|)
 assert|;
 name|File
@@ -539,7 +539,7 @@ argument_list|)
 operator|.
 name|contains
 argument_list|(
-literal|"<configuration><property><name>key1</name><value>val1</value><source/></property></configuration>"
+literal|"<name>key1</name><value>val1</value>"
 argument_list|)
 assert|;
 block|}
@@ -596,7 +596,7 @@ name|output
 operator|.
 name|contains
 argument_list|(
-literal|"<configuration><property><name>key1</name><value>val1</value><source/></property></configuration>"
+literal|"<name>key1</name><value>val1</value>"
 argument_list|)
 assert|;
 name|File
@@ -635,7 +635,7 @@ argument_list|)
 operator|.
 name|contains
 argument_list|(
-literal|"<configuration><property><name>key1</name><value>val1</value><source/></property></configuration>"
+literal|"<name>key1</name><value>val1</value>"
 argument_list|)
 assert|;
 block|}

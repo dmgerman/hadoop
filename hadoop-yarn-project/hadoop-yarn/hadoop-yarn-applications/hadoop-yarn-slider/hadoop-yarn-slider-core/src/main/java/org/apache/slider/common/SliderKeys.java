@@ -343,7 +343,7 @@ DECL|field|LOG4J_SERVER_PROP_FILENAME
 name|String
 name|LOG4J_SERVER_PROP_FILENAME
 init|=
-literal|"log4j-server.properties"
+literal|"slideram-log4j.properties"
 decl_stmt|;
 comment|/**    * Standard log4j file name  : {@value}    */
 DECL|field|LOG4J_PROP_FILENAME

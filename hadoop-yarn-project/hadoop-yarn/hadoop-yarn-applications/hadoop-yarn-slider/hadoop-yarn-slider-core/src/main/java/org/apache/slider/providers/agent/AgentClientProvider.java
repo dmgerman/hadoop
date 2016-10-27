@@ -3521,12 +3521,10 @@ block|{
 name|String
 name|libDirProp
 init|=
-name|System
+name|SliderUtils
 operator|.
-name|getProperty
-argument_list|(
-name|PROPERTY_LIB_DIR
-argument_list|)
+name|getLibDir
+argument_list|()
 decl_stmt|;
 name|File
 name|tarFile
