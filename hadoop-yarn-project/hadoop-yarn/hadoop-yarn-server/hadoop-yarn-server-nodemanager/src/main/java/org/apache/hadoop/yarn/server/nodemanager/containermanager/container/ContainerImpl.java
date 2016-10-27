@@ -7638,6 +7638,25 @@ name|ContainerEvent
 name|event
 parameter_list|)
 block|{
+if|if
+condition|(
+name|container
+operator|.
+name|recoveredStatus
+operator|==
+name|RecoveredContainerStatus
+operator|.
+name|COMPLETED
+condition|)
+block|{
+name|container
+operator|.
+name|sendFinishedEvents
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
 name|ContainerKillEvent
 name|killEvent
 init|=
@@ -7719,6 +7738,7 @@ argument_list|,
 name|event
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * Handle the following transition:    * - LOCALIZATION_FAILED -> DONE upon CONTAINER_RESOURCES_CLEANEDUP    */
