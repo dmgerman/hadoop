@@ -435,21 +435,6 @@ name|String
 argument_list|>
 argument_list|()
 expr_stmt|;
-comment|// Should probably be moved from yarn-default.xml to mapred-default.xml
-name|xmlPropsToSkipCompare
-operator|.
-name|add
-argument_list|(
-literal|"mapreduce.job.hdfs-servers"
-argument_list|)
-expr_stmt|;
-name|xmlPropsToSkipCompare
-operator|.
-name|add
-argument_list|(
-literal|"mapreduce.job.jar"
-argument_list|)
-expr_stmt|;
 comment|// Possibly obsolete, but unable to verify 100%
 name|xmlPropsToSkipCompare
 operator|.
