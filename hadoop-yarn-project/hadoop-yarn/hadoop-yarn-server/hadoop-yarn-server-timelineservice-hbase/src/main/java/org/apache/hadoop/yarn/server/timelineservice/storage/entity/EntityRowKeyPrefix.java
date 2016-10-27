@@ -87,6 +87,7 @@ name|String
 name|entityType
 parameter_list|)
 block|{
+comment|// TODO YARN-5585, change prefix id from 0L
 name|super
 argument_list|(
 name|clusterId
@@ -100,6 +101,8 @@ argument_list|,
 name|appId
 argument_list|,
 name|entityType
+argument_list|,
+literal|0L
 argument_list|,
 literal|null
 argument_list|)
@@ -126,6 +129,7 @@ name|String
 name|appId
 parameter_list|)
 block|{
+comment|// TODO YARN-5585, change prefix id from 0L
 name|super
 argument_list|(
 name|clusterId
@@ -139,6 +143,8 @@ argument_list|,
 name|appId
 argument_list|,
 literal|null
+argument_list|,
+literal|0L
 argument_list|,
 literal|null
 argument_list|)

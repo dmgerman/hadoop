@@ -2689,10 +2689,13 @@ operator|.
 name|getAppId
 argument_list|()
 argument_list|,
+comment|// TODO YARN-5585, change prefix id from 0L
 name|context
 operator|.
 name|getEntityType
 argument_list|()
+argument_list|,
+literal|0L
 argument_list|,
 name|context
 operator|.

@@ -174,6 +174,12 @@ specifier|final
 name|String
 name|entityType
 decl_stmt|;
+DECL|field|entityIdPrefix
+specifier|private
+specifier|final
+name|long
+name|entityIdPrefix
+decl_stmt|;
 DECL|field|entityId
 specifier|private
 specifier|final
@@ -193,7 +199,7 @@ operator|new
 name|EntityRowKeyConverter
 argument_list|()
 decl_stmt|;
-DECL|method|EntityRowKey (String clusterId, String userId, String flowName, Long flowRunId, String appId, String entityType, String entityId)
+DECL|method|EntityRowKey (String clusterId, String userId, String flowName, Long flowRunId, String appId, String entityType, long entityIdPrefix, String entityId)
 specifier|public
 name|EntityRowKey
 parameter_list|(
@@ -214,6 +220,9 @@ name|appId
 parameter_list|,
 name|String
 name|entityType
+parameter_list|,
+name|long
+name|entityIdPrefix
 parameter_list|,
 name|String
 name|entityId
@@ -254,6 +263,12 @@ operator|.
 name|entityType
 operator|=
 name|entityType
+expr_stmt|;
+name|this
+operator|.
+name|entityIdPrefix
+operator|=
+name|entityIdPrefix
 expr_stmt|;
 name|this
 operator|.
@@ -330,6 +345,16 @@ parameter_list|()
 block|{
 return|return
 name|entityId
+return|;
+block|}
+DECL|method|getEntityIdPrefix ()
+specifier|public
+name|long
+name|getEntityIdPrefix
+parameter_list|()
+block|{
+return|return
+name|entityIdPrefix
 return|;
 block|}
 comment|/**    * Constructs a row key for the entity table as follows:    * {@code userName!clusterId!flowName!flowRunId!AppId!entityType!entityId}.    * Typically used while querying a specific entity.    *    * @return byte array with the row key.    */
@@ -434,6 +459,10 @@ block|,
 name|Separator
 operator|.
 name|VARIABLE_SIZE
+block|,
+name|Bytes
+operator|.
+name|SIZEOF_LONG
 block|,
 name|Separator
 operator|.
@@ -640,6 +669,20 @@ argument_list|)
 decl_stmt|;
 name|byte
 index|[]
+name|enitityIdPrefix
+init|=
+name|Bytes
+operator|.
+name|toBytes
+argument_list|(
+name|rowKey
+operator|.
+name|getEntityIdPrefix
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|byte
+index|[]
 name|entityId
 init|=
 name|rowKey
@@ -686,6 +729,8 @@ operator|.
 name|join
 argument_list|(
 name|entityType
+argument_list|,
+name|enitityIdPrefix
 argument_list|,
 name|entityId
 argument_list|)
@@ -742,7 +787,7 @@ name|rowKeyComponents
 operator|.
 name|length
 operator|!=
-literal|7
+literal|8
 condition|)
 block|{
 throw|throw
@@ -906,6 +951,19 @@ operator|.
 name|SPACE
 argument_list|)
 decl_stmt|;
+name|long
+name|entityPrefixId
+init|=
+name|Bytes
+operator|.
+name|toLong
+argument_list|(
+name|rowKeyComponents
+index|[
+literal|6
+index|]
+argument_list|)
+decl_stmt|;
 name|String
 name|entityId
 init|=
@@ -919,7 +977,7 @@ name|toString
 argument_list|(
 name|rowKeyComponents
 index|[
-literal|6
+literal|7
 index|]
 argument_list|)
 argument_list|,
@@ -951,6 +1009,8 @@ argument_list|,
 name|appId
 argument_list|,
 name|entityType
+argument_list|,
+name|entityPrefixId
 argument_list|,
 name|entityId
 argument_list|)

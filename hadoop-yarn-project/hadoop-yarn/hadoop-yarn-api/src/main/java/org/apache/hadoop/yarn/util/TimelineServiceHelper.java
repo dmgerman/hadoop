@@ -140,6 +140,25 @@ name|originalMap
 argument_list|)
 return|;
 block|}
+comment|/**    * Inverts the given key.    * @param key value to be inverted .    * @return inverted long    */
+DECL|method|invertLong (long key)
+specifier|public
+specifier|static
+name|long
+name|invertLong
+parameter_list|(
+name|long
+name|key
+parameter_list|)
+block|{
+return|return
+name|Long
+operator|.
+name|MAX_VALUE
+operator|-
+name|key
+return|;
+block|}
 block|}
 end_class
 
