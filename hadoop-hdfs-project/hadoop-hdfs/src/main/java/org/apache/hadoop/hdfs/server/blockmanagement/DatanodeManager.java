@@ -3510,6 +3510,7 @@ block|}
 block|}
 block|}
 block|}
+comment|/**    * Will return true for all Datanodes which have a non-null software    * version and are considered alive (by {@link DatanodeDescriptor#isAlive()}),    * indicating the node has not yet been removed. Use {@code isAlive}    * rather than {@link DatanodeManager#isDatanodeDead(DatanodeDescriptor)}    * to ensure that the version is decremented even if the datanode    * hasn't issued a heartbeat recently.    *    * @param node The datanode in question    * @return True iff its version count should be decremented    */
 DECL|method|shouldCountVersion (DatanodeDescriptor node)
 specifier|private
 name|boolean
@@ -3531,12 +3532,6 @@ name|node
 operator|.
 name|isAlive
 argument_list|()
-operator|&&
-operator|!
-name|isDatanodeDead
-argument_list|(
-name|node
-argument_list|)
 return|;
 block|}
 DECL|method|countSoftwareVersions ()
@@ -3566,8 +3561,6 @@ name|values
 argument_list|()
 control|)
 block|{
-comment|// Check isAlive too because right after removeDatanode(),
-comment|// isDatanodeDead() is still true
 if|if
 condition|(
 name|shouldCountVersion
