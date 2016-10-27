@@ -2264,9 +2264,7 @@ block|,
 name|DFS_HA_FENCE_METHODS_KEY
 block|,
 name|DFS_HA_ZKFC_PORT_KEY
-block|,
-name|DFS_HA_FENCE_METHODS_KEY
-block|}
+block|,   }
 decl_stmt|;
 comment|/**    * @see #NAMENODE_SPECIFIC_KEYS    * These keys are specific to a nameservice, but may not be overridden    * for a specific namenode.    */
 DECL|field|NAMESERVICE_SPECIFIC_KEYS
