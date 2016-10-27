@@ -5398,6 +5398,18 @@ operator|.
 name|SUCCEEDED
 argument_list|)
 expr_stmt|;
+comment|// make sure job history events are handled
+name|app
+operator|.
+name|waitForState
+argument_list|(
+name|Service
+operator|.
+name|STATE
+operator|.
+name|STOPPED
+argument_list|)
+expr_stmt|;
 name|JobHistory
 name|jobHistory
 init|=
