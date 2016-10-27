@@ -1147,7 +1147,7 @@ name|VolumeFailureSummary
 name|getVolumeFailureSummary
 parameter_list|()
 function_decl|;
-comment|/** @return a list of finalized blocks for the given block pool. */
+comment|/**    * Gets a list of references to the finalized blocks for the given block pool.    *<p>    * Callers of this function should call    * {@link FsDatasetSpi#acquireDatasetLock} to avoid blocks' status being    * changed during list iteration.    *</p>    * @return a list of references to the finalized blocks for the given block    *         pool.    */
 DECL|method|getFinalizedBlocks (String bpid)
 name|List
 argument_list|<

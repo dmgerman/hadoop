@@ -9227,7 +9227,7 @@ return|return
 name|blockReportsMap
 return|;
 block|}
-comment|/**    * Get the list of finalized blocks from in-memory blockmap for a block pool.    */
+comment|/**    * Gets a list of references to the finalized blocks for the given block pool.    *<p>    * Callers of this function should call    * {@link FsDatasetSpi#acquireDatasetLock} to avoid blocks' status being    * changed during list iteration.    *</p>    * @return a list of references to the finalized blocks for the given block    *         pool.    */
 annotation|@
 name|Override
 DECL|method|getFinalizedBlocks (String bpid)
@@ -9253,7 +9253,8 @@ name|acquire
 argument_list|()
 init|)
 block|{
-name|ArrayList
+specifier|final
+name|List
 argument_list|<
 name|ReplicaInfo
 argument_list|>
@@ -9302,21 +9303,7 @@ name|finalized
 operator|.
 name|add
 argument_list|(
-operator|new
-name|ReplicaBuilder
-argument_list|(
-name|ReplicaState
-operator|.
-name|FINALIZED
-argument_list|)
-operator|.
-name|from
-argument_list|(
 name|b
-argument_list|)
-operator|.
-name|build
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
