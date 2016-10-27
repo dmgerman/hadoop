@@ -635,6 +635,16 @@ operator|.
 name|LAST_RESERVED_BLOCK_ID
 argument_list|)
 expr_stmt|;
+name|getBlockGroupIdGenerator
+argument_list|()
+operator|.
+name|setCurrentValue
+argument_list|(
+name|Long
+operator|.
+name|MIN_VALUE
+argument_list|)
+expr_stmt|;
 name|legacyGenerationStampLimit
 operator|=
 name|HdfsConstants

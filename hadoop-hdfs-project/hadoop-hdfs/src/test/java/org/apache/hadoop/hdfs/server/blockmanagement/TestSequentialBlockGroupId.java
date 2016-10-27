@@ -855,6 +855,35 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|// verify that the blockGroupId resets on #clear call.
+name|cluster
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getBlockManager
+argument_list|()
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|assertThat
+argument_list|(
+literal|"BlockGrpId mismatches!"
+argument_list|,
+name|blockGrpIdGenerator
+operator|.
+name|getCurrentValue
+argument_list|()
+argument_list|,
+name|is
+argument_list|(
+name|Long
+operator|.
+name|MIN_VALUE
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Test that collisions in the blockGroup ID space are handled gracefully.    */
 annotation|@
