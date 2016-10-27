@@ -478,6 +478,10 @@ name|ConcurrentHashMap
 import|;
 end_import
 
+begin_comment
+comment|/**  * Monitors containers collecting resource usage and preempting the container  * if it exceeds its limits.  */
+end_comment
+
 begin_class
 DECL|class|ContainersMonitorImpl
 specifier|public
@@ -489,6 +493,7 @@ implements|implements
 name|ContainersMonitor
 block|{
 DECL|field|LOG
+specifier|private
 specifier|final
 specifier|static
 name|Log
@@ -558,7 +563,7 @@ name|Dispatcher
 name|eventDispatcher
 decl_stmt|;
 DECL|field|context
-specifier|protected
+specifier|private
 specifier|final
 name|Context
 name|context
@@ -638,11 +643,11 @@ specifier|private
 name|int
 name|nodeCpuPercentageForYARN
 decl_stmt|;
+comment|/**    * Type of container metric.    */
 annotation|@
 name|Private
 DECL|enum|ContainerMetric
 specifier|public
-specifier|static
 enum|enum
 name|ContainerMetric
 block|{
@@ -661,6 +666,7 @@ comment|// Tracks the aggregated allocation of the currently allocated container
 comment|// when queuing of containers at the NMs is enabled.
 DECL|field|containersAllocation
 specifier|private
+specifier|final
 name|ResourceUtilization
 name|containersAllocation
 decl_stmt|;
@@ -750,21 +756,29 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|serviceInit (Configuration conf)
+DECL|method|serviceInit (Configuration myConf)
 specifier|protected
 name|void
 name|serviceInit
 parameter_list|(
 name|Configuration
-name|conf
+name|myConf
 parameter_list|)
 throws|throws
 name|Exception
 block|{
 name|this
 operator|.
+name|conf
+operator|=
+name|myConf
+expr_stmt|;
+name|this
+operator|.
 name|monitoringInterval
 operator|=
+name|this
+operator|.
 name|conf
 operator|.
 name|getLong
@@ -773,6 +787,8 @@ name|YarnConfiguration
 operator|.
 name|NM_CONTAINER_MON_INTERVAL_MS
 argument_list|,
+name|this
+operator|.
 name|conf
 operator|.
 name|getLong
@@ -795,6 +811,8 @@ name|ResourceCalculatorPlugin
 argument_list|>
 name|clazz
 init|=
+name|this
+operator|.
 name|conf
 operator|.
 name|getClass
@@ -803,6 +821,8 @@ name|YarnConfiguration
 operator|.
 name|NM_CONTAINER_MON_RESOURCE_CALCULATOR
 argument_list|,
+name|this
+operator|.
 name|conf
 operator|.
 name|getClass
@@ -833,6 +853,8 @@ name|getResourceCalculatorPlugin
 argument_list|(
 name|clazz
 argument_list|,
+name|this
+operator|.
 name|conf
 argument_list|)
 expr_stmt|;
@@ -849,6 +871,8 @@ argument_list|)
 expr_stmt|;
 name|processTreeClass
 operator|=
+name|this
+operator|.
 name|conf
 operator|.
 name|getClass
@@ -863,12 +887,6 @@ name|ResourceCalculatorProcessTree
 operator|.
 name|class
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|conf
-operator|=
-name|conf
 expr_stmt|;
 name|LOG
 operator|.
@@ -885,6 +903,8 @@ name|this
 operator|.
 name|containerMetricsEnabled
 operator|=
+name|this
+operator|.
 name|conf
 operator|.
 name|getBoolean
@@ -902,6 +922,8 @@ name|this
 operator|.
 name|containerMetricsPeriodMs
 operator|=
+name|this
+operator|.
 name|conf
 operator|.
 name|getLong
@@ -919,6 +941,8 @@ name|this
 operator|.
 name|containerMetricsUnregisterDelayMs
 operator|=
+name|this
+operator|.
 name|conf
 operator|.
 name|getLong
@@ -943,6 +967,8 @@ name|this
 operator|.
 name|resourceCalculatorPlugin
 argument_list|,
+name|this
+operator|.
 name|conf
 argument_list|)
 operator|*
@@ -961,6 +987,8 @@ name|this
 operator|.
 name|resourceCalculatorPlugin
 argument_list|,
+name|this
+operator|.
 name|conf
 argument_list|)
 decl_stmt|;
@@ -982,6 +1010,8 @@ expr_stmt|;
 comment|// ///////// Virtual memory configuration //////
 name|vmemRatio
 operator|=
+name|this
+operator|.
 name|conf
 operator|.
 name|getFloat
@@ -1025,6 +1055,8 @@ argument_list|)
 expr_stmt|;
 name|pmemCheckEnabled
 operator|=
+name|this
+operator|.
 name|conf
 operator|.
 name|getBoolean
@@ -1040,6 +1072,8 @@ argument_list|)
 expr_stmt|;
 name|vmemCheckEnabled
 operator|=
+name|this
+operator|.
 name|conf
 operator|.
 name|getBoolean
@@ -1091,6 +1125,8 @@ name|NodeManagerHardwareUtils
 operator|.
 name|getNodeCpuPercentage
 argument_list|(
+name|this
+operator|.
 name|conf
 argument_list|)
 expr_stmt|;
@@ -1203,6 +1239,8 @@ name|super
 operator|.
 name|serviceInit
 argument_list|(
+name|this
+operator|.
 name|conf
 argument_list|)
 expr_stmt|;
@@ -1374,7 +1412,13 @@ name|InterruptedException
 name|e
 parameter_list|)
 block|{
-empty_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"ContainersMonitorImpl monitoring thread interrupted"
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 name|super
@@ -1383,6 +1427,7 @@ name|serviceStop
 argument_list|()
 expr_stmt|;
 block|}
+comment|/**    * Encapsulates resource requirements of a process and its tree.    */
 DECL|class|ProcessTreeInfo
 specifier|public
 specifier|static
@@ -1520,7 +1565,6 @@ name|pid
 expr_stmt|;
 block|}
 DECL|method|getProcessTree ()
-specifier|public
 name|ResourceCalculatorProcessTree
 name|getProcessTree
 parameter_list|()
@@ -1531,25 +1575,23 @@ operator|.
 name|pTree
 return|;
 block|}
-DECL|method|setProcessTree (ResourceCalculatorProcessTree pTree)
-specifier|public
+DECL|method|setProcessTree (ResourceCalculatorProcessTree mypTree)
 name|void
 name|setProcessTree
 parameter_list|(
 name|ResourceCalculatorProcessTree
-name|pTree
+name|mypTree
 parameter_list|)
 block|{
 name|this
 operator|.
 name|pTree
 operator|=
-name|pTree
+name|mypTree
 expr_stmt|;
 block|}
 comment|/**      * @return Virtual memory limit for the process tree in bytes      */
 DECL|method|getVmemLimit ()
-specifier|public
 specifier|synchronized
 name|long
 name|getVmemLimit
@@ -1563,7 +1605,6 @@ return|;
 block|}
 comment|/**      * @return Physical memory limit for the process tree in bytes      */
 DECL|method|getPmemLimit ()
-specifier|public
 specifier|synchronized
 name|long
 name|getPmemLimit
@@ -1577,7 +1618,6 @@ return|;
 block|}
 comment|/**      * @return Number of cpu vcores assigned      */
 DECL|method|getCpuVcores ()
-specifier|public
 specifier|synchronized
 name|int
 name|getCpuVcores
@@ -1589,45 +1629,45 @@ operator|.
 name|cpuVcores
 return|;
 block|}
-comment|/**      * Set resource limit for enforcement      * @param pmemLimit      *          Physical memory limit for the process tree in bytes      * @param vmemLimit      *          Virtual memory limit for the process tree in bytes      * @param cpuVcores      *          Number of cpu vcores assigned      */
-DECL|method|setResourceLimit ( long pmemLimit, long vmemLimit, int cpuVcores)
-specifier|public
+comment|/**      * Set resource limit for enforcement.      * @param myPmemLimit      *          Physical memory limit for the process tree in bytes      * @param myVmemLimit      *          Virtual memory limit for the process tree in bytes      * @param myCpuVcores      *          Number of cpu vcores assigned      */
+DECL|method|setResourceLimit ( long myPmemLimit, long myVmemLimit, int myCpuVcores)
 specifier|synchronized
 name|void
 name|setResourceLimit
 parameter_list|(
 name|long
-name|pmemLimit
+name|myPmemLimit
 parameter_list|,
 name|long
-name|vmemLimit
+name|myVmemLimit
 parameter_list|,
 name|int
-name|cpuVcores
+name|myCpuVcores
 parameter_list|)
 block|{
 name|this
 operator|.
 name|pmemLimit
 operator|=
-name|pmemLimit
+name|myPmemLimit
 expr_stmt|;
 name|this
 operator|.
 name|vmemLimit
 operator|=
-name|vmemLimit
+name|myVmemLimit
 expr_stmt|;
 name|this
 operator|.
 name|cpuVcores
 operator|=
-name|cpuVcores
+name|myCpuVcores
 expr_stmt|;
 block|}
 block|}
 comment|/**    * Check whether a container's process tree's current memory usage is over    * limit.    *    * When a java process exec's a program, it could momentarily account for    * double the size of it's memory, because the JVM does a fork()+exec()    * which at fork time creates a copy of the parent's memory. If the    * monitoring thread detects the memory used by the container tree at the    * same instance, it could assume it is over limit and kill the tree, for no    * fault of the process itself.    *    * We counter this problem by employing a heuristic check: - if a process    * tree exceeds the memory limit by more than twice, it is killed    * immediately - if a process tree has processes older than the monitoring    * interval exceeding the memory limit by even 1 time, it is killed. Else it    * is given the benefit of doubt to lie around for one more iteration.    *    * @param containerId    *          Container Id for the container tree    * @param currentMemUsage    *          Memory usage of a container tree    * @param curMemUsageOfAgedProcesses    *          Memory usage of processes older than an iteration in a container    *          tree    * @param vmemLimit    *          The limit specified for the container    * @return true if the memory usage is more than twice the specified limit,    *         or if processes in the tree, older than this thread's monitoring    *         interval, exceed the memory limit. False, otherwise.    */
 DECL|method|isProcessTreeOverLimit (String containerId, long currentMemUsage, long curMemUsageOfAgedProcesses, long vmemLimit)
+specifier|private
 name|boolean
 name|isProcessTreeOverLimit
 parameter_list|(
@@ -1776,7 +1816,6 @@ extends|extends
 name|Thread
 block|{
 DECL|method|MonitoringThread ()
-specifier|public
 name|MonitoringThread
 parameter_list|()
 block|{
@@ -1950,6 +1989,296 @@ argument_list|()
 decl_stmt|;
 try|try
 block|{
+name|String
+name|pId
+init|=
+name|ptInfo
+operator|.
+name|getPID
+argument_list|()
+decl_stmt|;
+comment|// Initialize uninitialized process trees
+name|initializeProcessTrees
+argument_list|(
+name|entry
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|pId
+operator|==
+literal|null
+operator|||
+operator|!
+name|isResourceCalculatorAvailable
+argument_list|()
+condition|)
+block|{
+continue|continue;
+comment|// processTree cannot be tracked
+block|}
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Constructing ProcessTree for : PID = "
+operator|+
+name|pId
+operator|+
+literal|" ContainerId = "
+operator|+
+name|containerId
+argument_list|)
+expr_stmt|;
+name|ResourceCalculatorProcessTree
+name|pTree
+init|=
+name|ptInfo
+operator|.
+name|getProcessTree
+argument_list|()
+decl_stmt|;
+name|pTree
+operator|.
+name|updateProcessTree
+argument_list|()
+expr_stmt|;
+comment|// update process-tree
+name|long
+name|currentVmemUsage
+init|=
+name|pTree
+operator|.
+name|getVirtualMemorySize
+argument_list|()
+decl_stmt|;
+name|long
+name|currentPmemUsage
+init|=
+name|pTree
+operator|.
+name|getRssMemorySize
+argument_list|()
+decl_stmt|;
+comment|// if machine has 6 cores and 3 are used,
+comment|// cpuUsagePercentPerCore should be 300% and
+comment|// cpuUsageTotalCoresPercentage should be 50%
+name|float
+name|cpuUsagePercentPerCore
+init|=
+name|pTree
+operator|.
+name|getCpuUsagePercent
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|cpuUsagePercentPerCore
+operator|<
+literal|0
+condition|)
+block|{
+comment|// CPU usage is not available likely because the container just
+comment|// started. Let us skip this turn and consider this container
+comment|// in the next iteration.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Skipping monitoring container "
+operator|+
+name|containerId
+operator|+
+literal|" since CPU usage is not yet available."
+argument_list|)
+expr_stmt|;
+continue|continue;
+block|}
+name|recordUsage
+argument_list|(
+name|containerId
+argument_list|,
+name|pId
+argument_list|,
+name|pTree
+argument_list|,
+name|ptInfo
+argument_list|,
+name|currentVmemUsage
+argument_list|,
+name|currentPmemUsage
+argument_list|,
+name|trackedContainersUtilization
+argument_list|)
+expr_stmt|;
+name|checkLimit
+argument_list|(
+name|containerId
+argument_list|,
+name|pId
+argument_list|,
+name|pTree
+argument_list|,
+name|ptInfo
+argument_list|,
+name|currentVmemUsage
+argument_list|,
+name|currentPmemUsage
+argument_list|)
+expr_stmt|;
+comment|// Accounting the total memory in usage for all containers
+name|vmemUsageByAllContainers
+operator|+=
+name|currentVmemUsage
+expr_stmt|;
+name|pmemByAllContainers
+operator|+=
+name|currentPmemUsage
+expr_stmt|;
+comment|// Accounting the total cpu usage for all containers
+name|cpuUsagePercentPerCoreByAllContainers
+operator|+=
+name|cpuUsagePercentPerCore
+expr_stmt|;
+name|cpuUsageTotalCoresByAllContainers
+operator|+=
+name|cpuUsagePercentPerCore
+expr_stmt|;
+name|reportResourceUsage
+argument_list|(
+name|containerId
+argument_list|,
+name|currentPmemUsage
+argument_list|,
+name|cpuUsagePercentPerCore
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+comment|// Log the exception and proceed to the next container.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Uncaught exception in ContainersMonitorImpl "
+operator|+
+literal|"while monitoring resource of "
+operator|+
+name|containerId
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Total Resource Usage stats in NM by all containers : "
+operator|+
+literal|"Virtual Memory= "
+operator|+
+name|vmemUsageByAllContainers
+operator|+
+literal|", Physical Memory= "
+operator|+
+name|pmemByAllContainers
+operator|+
+literal|", Total CPU usage= "
+operator|+
+name|cpuUsageTotalCoresByAllContainers
+operator|+
+literal|", Total CPU(% per core) usage"
+operator|+
+name|cpuUsagePercentPerCoreByAllContainers
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Save the aggregated utilization of the containers
+name|setContainersUtilization
+argument_list|(
+name|trackedContainersUtilization
+argument_list|)
+expr_stmt|;
+try|try
+block|{
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+name|monitoringInterval
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|ContainersMonitorImpl
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|" is interrupted. Exiting."
+argument_list|)
+expr_stmt|;
+break|break;
+block|}
+block|}
+block|}
+comment|/**      * Initialize any uninitialized processTrees.      * @param entry process tree entry to fill in      */
+DECL|method|initializeProcessTrees ( Entry<ContainerId, ProcessTreeInfo> entry)
+specifier|private
+name|void
+name|initializeProcessTrees
+parameter_list|(
+name|Entry
+argument_list|<
+name|ContainerId
+argument_list|,
+name|ProcessTreeInfo
+argument_list|>
+name|entry
+parameter_list|)
+block|{
+name|ContainerId
+name|containerId
+init|=
+name|entry
+operator|.
+name|getKey
+argument_list|()
+decl_stmt|;
+name|ProcessTreeInfo
+name|ptInfo
+init|=
+name|entry
+operator|.
+name|getValue
+argument_list|()
+decl_stmt|;
 name|String
 name|pId
 init|=
@@ -2148,66 +2477,35 @@ block|}
 block|}
 block|}
 comment|// End of initializing any uninitialized processTrees
-if|if
-condition|(
-name|pId
-operator|==
-literal|null
-operator|||
-operator|!
-name|isResourceCalculatorAvailable
-argument_list|()
-condition|)
-block|{
-continue|continue;
-comment|// processTree cannot be tracked
 block|}
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Constructing ProcessTree for : PID = "
-operator|+
-name|pId
-operator|+
-literal|" ContainerId = "
-operator|+
+comment|/**      * Record usage metrics.      * @param containerId container id      * @param pId process id      * @param pTree valid process tree entry with CPU measurement      * @param ptInfo process tree info with limit information      * @param currentVmemUsage virtual memory measurement      * @param currentPmemUsage physical memory measurement      * @param trackedContainersUtilization utilization tracker to update      */
+DECL|method|recordUsage (ContainerId containerId, String pId, ResourceCalculatorProcessTree pTree, ProcessTreeInfo ptInfo, long currentVmemUsage, long currentPmemUsage, ResourceUtilization trackedContainersUtilization)
+specifier|private
+name|void
+name|recordUsage
+parameter_list|(
+name|ContainerId
 name|containerId
-argument_list|)
-expr_stmt|;
+parameter_list|,
+name|String
+name|pId
+parameter_list|,
 name|ResourceCalculatorProcessTree
 name|pTree
-init|=
+parameter_list|,
+name|ProcessTreeInfo
 name|ptInfo
-operator|.
-name|getProcessTree
-argument_list|()
-decl_stmt|;
-name|pTree
-operator|.
-name|updateProcessTree
-argument_list|()
-expr_stmt|;
-comment|// update process-tree
+parameter_list|,
 name|long
 name|currentVmemUsage
-init|=
-name|pTree
-operator|.
-name|getVirtualMemorySize
-argument_list|()
-decl_stmt|;
+parameter_list|,
 name|long
 name|currentPmemUsage
-init|=
-name|pTree
-operator|.
-name|getRssMemorySize
-argument_list|()
-decl_stmt|;
-comment|// if machine has 6 cores and 3 are used,
-comment|// cpuUsagePercentPerCore should be 300% and
-comment|// cpuUsageTotalCoresPercentage should be 50%
+parameter_list|,
+name|ResourceUtilization
+name|trackedContainersUtilization
+parameter_list|)
+block|{
 name|float
 name|cpuUsagePercentPerCore
 init|=
@@ -2216,29 +2514,6 @@ operator|.
 name|getCpuUsagePercent
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|cpuUsagePercentPerCore
-operator|<
-literal|0
-condition|)
-block|{
-comment|// CPU usage is not available likely because the container just
-comment|// started. Let us skip this turn and consider this container
-comment|// in the next iteration.
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Skipping monitoring container "
-operator|+
-name|containerId
-operator|+
-literal|" since CPU usage is not yet available."
-argument_list|)
-expr_stmt|;
-continue|continue;
-block|}
 name|float
 name|cpuUsageTotalCoresPercentage
 init|=
@@ -2264,28 +2539,6 @@ operator|*
 name|maxVCoresAllottedForContainers
 operator|/
 name|nodeCpuPercentageForYARN
-argument_list|)
-decl_stmt|;
-comment|// as processes begin with an age 1, we want to see if there
-comment|// are processes more than 1 iteration old.
-name|long
-name|curMemUsageOfAgedProcesses
-init|=
-name|pTree
-operator|.
-name|getVirtualMemorySize
-argument_list|(
-literal|1
-argument_list|)
-decl_stmt|;
-name|long
-name|curRssMemUsageOfAgedProcesses
-init|=
-name|pTree
-operator|.
-name|getRssMemorySize
-argument_list|(
-literal|1
 argument_list|)
 decl_stmt|;
 name|long
@@ -2422,10 +2675,79 @@ name|milliVcoresUsed
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|/**      * Check resource limits and take actions if the limit is exceeded.      * @param containerId container id      * @param pId process id      * @param pTree valid process tree entry with CPU measurement      * @param ptInfo process tree info with limit information      * @param currentVmemUsage virtual memory measurement      * @param currentPmemUsage physical memory measurement      */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+DECL|method|checkLimit (ContainerId containerId, String pId, ResourceCalculatorProcessTree pTree, ProcessTreeInfo ptInfo, long currentVmemUsage, long currentPmemUsage)
+specifier|private
+name|void
+name|checkLimit
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|String
+name|pId
+parameter_list|,
+name|ResourceCalculatorProcessTree
+name|pTree
+parameter_list|,
+name|ProcessTreeInfo
+name|ptInfo
+parameter_list|,
+name|long
+name|currentVmemUsage
+parameter_list|,
+name|long
+name|currentPmemUsage
+parameter_list|)
+block|{
 name|boolean
 name|isMemoryOverLimit
 init|=
 literal|false
+decl_stmt|;
+name|long
+name|vmemLimit
+init|=
+name|ptInfo
+operator|.
+name|getVmemLimit
+argument_list|()
+decl_stmt|;
+name|long
+name|pmemLimit
+init|=
+name|ptInfo
+operator|.
+name|getPmemLimit
+argument_list|()
+decl_stmt|;
+comment|// as processes begin with an age 1, we want to see if there
+comment|// are processes more than 1 iteration old.
+name|long
+name|curMemUsageOfAgedProcesses
+init|=
+name|pTree
+operator|.
+name|getVirtualMemorySize
+argument_list|(
+literal|1
+argument_list|)
+decl_stmt|;
+name|long
+name|curRssMemUsageOfAgedProcesses
+init|=
+name|pTree
+operator|.
+name|getRssMemorySize
+argument_list|(
+literal|1
+argument_list|)
 decl_stmt|;
 name|String
 name|msg
@@ -2468,6 +2790,8 @@ name|formatErrorMessage
 argument_list|(
 literal|"virtual"
 argument_list|,
+name|formatUsageString
+argument_list|(
 name|currentVmemUsage
 argument_list|,
 name|vmemLimit
@@ -2475,6 +2799,7 @@ argument_list|,
 name|currentPmemUsage
 argument_list|,
 name|pmemLimit
+argument_list|)
 argument_list|,
 name|pId
 argument_list|,
@@ -2524,6 +2849,8 @@ name|formatErrorMessage
 argument_list|(
 literal|"physical"
 argument_list|,
+name|formatUsageString
+argument_list|(
 name|currentVmemUsage
 argument_list|,
 name|vmemLimit
@@ -2531,6 +2858,7 @@ argument_list|,
 name|currentPmemUsage
 argument_list|,
 name|pmemLimit
+argument_list|)
 argument_list|,
 name|pId
 argument_list|,
@@ -2550,24 +2878,6 @@ operator|.
 name|KILLED_EXCEEDED_PMEM
 expr_stmt|;
 block|}
-comment|// Accounting the total memory in usage for all containers
-name|vmemUsageByAllContainers
-operator|+=
-name|currentVmemUsage
-expr_stmt|;
-name|pmemByAllContainers
-operator|+=
-name|currentPmemUsage
-expr_stmt|;
-comment|// Accounting the total cpu usage for all containers
-name|cpuUsagePercentPerCoreByAllContainers
-operator|+=
-name|cpuUsagePercentPerCore
-expr_stmt|;
-name|cpuUsageTotalCoresByAllContainers
-operator|+=
-name|cpuUsagePercentPerCore
-expr_stmt|;
 if|if
 condition|(
 name|isMemoryOverLimit
@@ -2641,6 +2951,23 @@ name|pId
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|/**      * Report usage metrics to the timeline service.      * @param containerId container id      * @param currentPmemUsage physical memory measurement      * @param cpuUsagePercentPerCore CPU usage      */
+DECL|method|reportResourceUsage (ContainerId containerId, long currentPmemUsage, float cpuUsagePercentPerCore)
+specifier|private
+name|void
+name|reportResourceUsage
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|long
+name|currentPmemUsage
+parameter_list|,
+name|float
+name|cpuUsagePercentPerCore
+parameter_list|)
+block|{
 name|ContainerImpl
 name|container
 init|=
@@ -2685,101 +3012,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|e
-parameter_list|)
-block|{
-comment|// Log the exception and proceed to the next container.
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Uncaught exception in ContainersMonitorImpl "
-operator|+
-literal|"while monitoring resource of "
-operator|+
-name|containerId
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Total Resource Usage stats in NM by all containers : "
-operator|+
-literal|"Virtual Memory= "
-operator|+
-name|vmemUsageByAllContainers
-operator|+
-literal|", Physical Memory= "
-operator|+
-name|pmemByAllContainers
-operator|+
-literal|", Total CPU usage= "
-operator|+
-name|cpuUsageTotalCoresByAllContainers
-operator|+
-literal|", Total CPU(% per core) usage"
-operator|+
-name|cpuUsagePercentPerCoreByAllContainers
-argument_list|)
-expr_stmt|;
-block|}
-comment|// Save the aggregated utilization of the containers
-name|setContainersUtilization
-argument_list|(
-name|trackedContainersUtilization
-argument_list|)
-expr_stmt|;
-try|try
-block|{
-name|Thread
-operator|.
-name|sleep
-argument_list|(
-name|monitoringInterval
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-name|ContainersMonitorImpl
-operator|.
-name|class
-operator|.
-name|getName
-argument_list|()
-operator|+
-literal|" is interrupted. Exiting."
-argument_list|)
-expr_stmt|;
-break|break;
-block|}
-block|}
-block|}
-DECL|method|formatErrorMessage (String memTypeExceeded, long currentVmemUsage, long vmemLimit, long currentPmemUsage, long pmemLimit, String pId, ContainerId containerId, ResourceCalculatorProcessTree pTree)
+comment|/**      * Format string when memory limit has been exceeded.      * @param memTypeExceeded type of memory      * @param usageString general memory usage information string      * @param pId process id      * @param containerId container id      * @param pTree process tree to dump full resource utilization graph      * @return formatted resource usage information      */
+DECL|method|formatErrorMessage (String memTypeExceeded, String usageString, String pId, ContainerId containerId, ResourceCalculatorProcessTree pTree)
 specifier|private
 name|String
 name|formatErrorMessage
@@ -2787,17 +3021,8 @@ parameter_list|(
 name|String
 name|memTypeExceeded
 parameter_list|,
-name|long
-name|currentVmemUsage
-parameter_list|,
-name|long
-name|vmemLimit
-parameter_list|,
-name|long
-name|currentPmemUsage
-parameter_list|,
-name|long
-name|pmemLimit
+name|String
+name|usageString
 parameter_list|,
 name|String
 name|pId
@@ -2814,7 +3039,9 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"Container [pid=%s,containerID=%s] is running beyond %s memory limits. "
+literal|"Container [pid=%s,containerID=%s] is "
+operator|+
+literal|"running beyond %s memory limits. "
 argument_list|,
 name|pId
 argument_list|,
@@ -2825,16 +3052,7 @@ argument_list|)
 operator|+
 literal|"Current usage: "
 operator|+
-name|formatUsageString
-argument_list|(
-name|currentVmemUsage
-argument_list|,
-name|vmemLimit
-argument_list|,
-name|currentPmemUsage
-argument_list|,
-name|pmemLimit
-argument_list|)
+name|usageString
 operator|+
 literal|". Killing container.\n"
 operator|+
@@ -2850,6 +3068,7 @@ name|getProcessTreeDump
 argument_list|()
 return|;
 block|}
+comment|/**      * Format memory usage string for reporting.      * @param currentVmemUsage virtual memory usage      * @param vmemLimit virtual memory limit      * @param currentPmemUsage physical memory usage      * @param pmemLimit physical memory limit      * @return formatted memory information      */
 DECL|method|formatUsageString (long currentVmemUsage, long vmemLimit, long currentPmemUsage, long pmemLimit)
 specifier|private
 name|String
@@ -3305,7 +3524,7 @@ name|containersUtilization
 return|;
 block|}
 DECL|method|setContainersUtilization (ResourceUtilization utilization)
-specifier|public
+specifier|private
 name|void
 name|setContainersUtilization
 parameter_list|(
@@ -3783,7 +4002,7 @@ comment|// TODO: Wrong event.
 block|}
 block|}
 DECL|method|onChangeMonitoringContainerResource ( ContainersMonitorEvent monitoringEvent, ContainerId containerId)
-specifier|protected
+specifier|private
 name|void
 name|onChangeMonitoringContainerResource
 parameter_list|(
@@ -3910,7 +4129,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|onStopMonitoringContainer ( ContainersMonitorEvent monitoringEvent, ContainerId containerId)
-specifier|protected
+specifier|private
 name|void
 name|onStopMonitoringContainer
 parameter_list|(
@@ -3944,7 +4163,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|onStartMonitoringContainer ( ContainersMonitorEvent monitoringEvent, ContainerId containerId)
-specifier|protected
+specifier|private
 name|void
 name|onStartMonitoringContainer
 parameter_list|(
