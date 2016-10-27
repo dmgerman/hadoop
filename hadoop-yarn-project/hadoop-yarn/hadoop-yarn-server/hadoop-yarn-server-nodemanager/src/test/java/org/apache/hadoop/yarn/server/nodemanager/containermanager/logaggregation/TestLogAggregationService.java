@@ -13234,7 +13234,12 @@ argument_list|)
 expr_stmt|;
 name|reset
 argument_list|(
+operator|new
+name|EventHandler
+index|[]
+block|{
 name|appEventHandler
+block|}
 argument_list|)
 expr_stmt|;
 name|logAggregationService
