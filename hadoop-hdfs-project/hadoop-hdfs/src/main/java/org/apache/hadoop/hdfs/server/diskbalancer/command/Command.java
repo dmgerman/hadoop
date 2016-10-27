@@ -518,6 +518,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|Closeable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -710,6 +720,8 @@ class|class
 name|Command
 extends|extends
 name|Configured
+implements|implements
+name|Closeable
 block|{
 DECL|field|READER
 specifier|private
@@ -854,6 +866,31 @@ name|ps
 operator|=
 name|ps
 expr_stmt|;
+block|}
+comment|/**    * Cleans any resources held by this command.    *<p>    * The main goal is to delete id file created in    * {@link org.apache.hadoop.hdfs.server.balancer    * .NameNodeConnector#checkAndMarkRunning}    * , otherwise, it's not allowed to run multiple commands in a row.    *</p>    */
+annotation|@
+name|Override
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|fs
+operator|!=
+literal|null
+condition|)
+block|{
+name|fs
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Gets printing stream.    * @return print stream    */
 DECL|method|getPrintStream ()

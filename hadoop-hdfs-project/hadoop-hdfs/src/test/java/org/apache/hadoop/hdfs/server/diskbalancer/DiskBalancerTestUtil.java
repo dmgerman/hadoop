@@ -415,7 +415,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Helper class to create various cluster configrations at run time.  */
+comment|/**  * Helper class to create various cluster configurations at run time.  */
 end_comment
 
 begin_class
