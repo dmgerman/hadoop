@@ -428,6 +428,22 @@ name|*
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|PlatformName
+operator|.
+name|IBM_JAVA
+import|;
+end_import
+
 begin_comment
 comment|/**  * Implement the registry security ... a self contained service for  * testability.  *<p>  * This class contains:  *<ol>  *<li>  *     The registry security policy implementation, configuration reading, ACL  * setup and management  *</li>  *<li>Lots of static helper methods to aid security setup and debugging</li>  *</ol>  */
 end_comment
@@ -2160,6 +2176,25 @@ specifier|final
 name|String
 name|JAAS_ENTRY
 init|=
+operator|(
+name|IBM_JAVA
+condition|?
+literal|"%s { %n"
+operator|+
+literal|" %s required%n"
+operator|+
+literal|" useKeytab=\"%s\"%n"
+operator|+
+literal|" debug=true%n"
+operator|+
+literal|" principal=\"%s\"%n"
+operator|+
+literal|" credsType=both%n"
+operator|+
+literal|" refreshKrb5Config=true;%n"
+operator|+
+literal|"}; %n"
+else|:
 literal|"%s { %n"
 operator|+
 literal|" %s required%n"
@@ -2180,6 +2215,7 @@ operator|+
 literal|" storeKey=true;%n"
 operator|+
 literal|"}; %n"
+operator|)
 decl_stmt|;
 comment|/**    * Create a JAAS entry for insertion    * @param context context of the entry    * @param principal kerberos principal    * @param keytab keytab    * @return a context    */
 DECL|method|createJAASEntry ( String context, String principal, File keytab)
