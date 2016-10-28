@@ -543,8 +543,9 @@ specifier|final
 name|Dispatcher
 name|dispatcher
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
 DECL|field|localrsrc
-specifier|private
 specifier|final
 name|ConcurrentMap
 argument_list|<
