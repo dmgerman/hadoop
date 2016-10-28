@@ -2505,7 +2505,9 @@ literal|"The -x option excludes snapshots from being calculated. \n"
 operator|+
 literal|"The -t option displays quota by storage types.\n"
 operator|+
-literal|"It must be used with -q option.\n"
+literal|"It should be used with -q or -u option, "
+operator|+
+literal|"otherwise it will be ignored.\n"
 operator|+
 literal|"If a comma-separated list of storage types is given after the -t option, \n"
 operator|+
@@ -2513,7 +2515,15 @@ literal|"it displays the quota and usage for the specified types. \n"
 operator|+
 literal|"Otherwise, it displays the quota and usage for all the storage \n"
 operator|+
-literal|"types that support quota \n"
+literal|"types that support quota. The list of possible storage "
+operator|+
+literal|"types(case insensitive):\n"
+operator|+
+literal|"ram_disk, ssd, disk and archive.\n"
+operator|+
+literal|"It can also pass the value '', 'all' or 'ALL' to specify all the "
+operator|+
+literal|"storage types.\n"
 operator|+
 literal|"The -u option shows the quota and \n"
 operator|+

@@ -408,11 +408,15 @@ name|OPTION_TYPE
 operator|+
 literal|" option displays quota by storage types.\n"
 operator|+
-literal|"It must be used with -"
+literal|"It should be used with -"
 operator|+
 name|OPTION_QUOTA
 operator|+
-literal|" option.\n"
+literal|" or -"
+operator|+
+name|OPTION_QUOTA_AND_USAGE
+operator|+
+literal|" option, otherwise it will be ignored.\n"
 operator|+
 literal|"If a comma-separated list of storage types is given after the -"
 operator|+
@@ -424,7 +428,15 @@ literal|"it displays the quota and usage for the specified types. \n"
 operator|+
 literal|"Otherwise, it displays the quota and usage for all the storage \n"
 operator|+
-literal|"types that support quota \n"
+literal|"types that support quota. The list of possible storage "
+operator|+
+literal|"types(case insensitive):\n"
+operator|+
+literal|"ram_disk, ssd, disk and archive.\n"
+operator|+
+literal|"It can also pass the value '', 'all' or 'ALL' to specify all "
+operator|+
+literal|"the storage types.\n"
 operator|+
 literal|"The -"
 operator|+
