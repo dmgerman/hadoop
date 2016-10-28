@@ -3915,7 +3915,8 @@ condition|(
 operator|!
 name|Shell
 operator|.
-name|isBashSupported
+name|checkIsBashSupported
+argument_list|()
 condition|)
 block|{
 name|String
