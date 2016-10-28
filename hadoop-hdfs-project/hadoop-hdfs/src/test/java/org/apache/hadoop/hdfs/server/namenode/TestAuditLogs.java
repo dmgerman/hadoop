@@ -1750,6 +1750,49 @@ name|webOpenPattern
 argument_list|)
 expr_stmt|;
 block|}
+comment|/** make sure that "\r\n" isn't made into a newline in audit log */
+annotation|@
+name|Test
+DECL|method|testAuditCharacterEscape ()
+specifier|public
+name|void
+name|testAuditCharacterEscape
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+specifier|final
+name|Path
+name|file
+init|=
+operator|new
+name|Path
+argument_list|(
+literal|"foo"
+operator|+
+literal|"\r\n"
+operator|+
+literal|"bar"
+argument_list|)
+decl_stmt|;
+name|setupAuditLogs
+argument_list|()
+expr_stmt|;
+name|fs
+operator|.
+name|create
+argument_list|(
+name|file
+argument_list|)
+expr_stmt|;
+name|verifyAuditLogsRepeat
+argument_list|(
+literal|true
+argument_list|,
+literal|1
+argument_list|)
+expr_stmt|;
+block|}
 comment|/** Sets up log4j logger for auditlogs */
 DECL|method|setupAuditLogs ()
 specifier|private
