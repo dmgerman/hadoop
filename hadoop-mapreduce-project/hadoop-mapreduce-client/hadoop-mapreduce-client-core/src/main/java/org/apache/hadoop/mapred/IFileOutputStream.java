@@ -82,6 +82,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|IOUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|DataChecksum
@@ -199,14 +213,22 @@ name|closed
 operator|=
 literal|true
 expr_stmt|;
+try|try
+block|{
 name|finish
 argument_list|()
 expr_stmt|;
-name|out
+block|}
+finally|finally
+block|{
+name|IOUtils
 operator|.
-name|close
-argument_list|()
+name|closeStream
+argument_list|(
+name|out
+argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Finishes writing data to the output stream, by writing    * the checksum bytes to the end. The underlying stream is not closed.    * @throws IOException    */
 DECL|method|finish ()
