@@ -212,23 +212,34 @@ name|NodeAction
 import|;
 end_import
 
-begin_interface
-DECL|interface|NodeHeartbeatResponse
+begin_comment
+comment|/**  * Node Manager's heartbeat response.  */
+end_comment
+
+begin_class
+DECL|class|NodeHeartbeatResponse
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|NodeHeartbeatResponse
 block|{
 DECL|method|getResponseId ()
+specifier|public
+specifier|abstract
 name|int
 name|getResponseId
 parameter_list|()
 function_decl|;
 DECL|method|getNodeAction ()
+specifier|public
+specifier|abstract
 name|NodeAction
 name|getNodeAction
 parameter_list|()
 function_decl|;
 DECL|method|getContainersToCleanup ()
+specifier|public
+specifier|abstract
 name|List
 argument_list|<
 name|ContainerId
@@ -237,6 +248,8 @@ name|getContainersToCleanup
 parameter_list|()
 function_decl|;
 DECL|method|getContainersToBeRemovedFromNM ()
+specifier|public
+specifier|abstract
 name|List
 argument_list|<
 name|ContainerId
@@ -245,6 +258,8 @@ name|getContainersToBeRemovedFromNM
 parameter_list|()
 function_decl|;
 DECL|method|getApplicationsToCleanup ()
+specifier|public
+specifier|abstract
 name|List
 argument_list|<
 name|ApplicationId
@@ -254,6 +269,8 @@ parameter_list|()
 function_decl|;
 comment|// This tells NM the collectors' address info of related apps
 DECL|method|getAppCollectorsMap ()
+specifier|public
+specifier|abstract
 name|Map
 argument_list|<
 name|ApplicationId
@@ -263,7 +280,9 @@ argument_list|>
 name|getAppCollectorsMap
 parameter_list|()
 function_decl|;
-DECL|method|setAppCollectorsMap (Map<ApplicationId, String> appCollectorsMap)
+DECL|method|setAppCollectorsMap ( Map<ApplicationId, String> appCollectorsMap)
+specifier|public
+specifier|abstract
 name|void
 name|setAppCollectorsMap
 parameter_list|(
@@ -277,6 +296,8 @@ name|appCollectorsMap
 parameter_list|)
 function_decl|;
 DECL|method|setResponseId (int responseId)
+specifier|public
+specifier|abstract
 name|void
 name|setResponseId
 parameter_list|(
@@ -285,6 +306,8 @@ name|responseId
 parameter_list|)
 function_decl|;
 DECL|method|setNodeAction (NodeAction action)
+specifier|public
+specifier|abstract
 name|void
 name|setNodeAction
 parameter_list|(
@@ -293,11 +316,15 @@ name|action
 parameter_list|)
 function_decl|;
 DECL|method|getContainerTokenMasterKey ()
+specifier|public
+specifier|abstract
 name|MasterKey
 name|getContainerTokenMasterKey
 parameter_list|()
 function_decl|;
 DECL|method|setContainerTokenMasterKey (MasterKey secretKey)
+specifier|public
+specifier|abstract
 name|void
 name|setContainerTokenMasterKey
 parameter_list|(
@@ -306,11 +333,15 @@ name|secretKey
 parameter_list|)
 function_decl|;
 DECL|method|getNMTokenMasterKey ()
+specifier|public
+specifier|abstract
 name|MasterKey
 name|getNMTokenMasterKey
 parameter_list|()
 function_decl|;
 DECL|method|setNMTokenMasterKey (MasterKey secretKey)
+specifier|public
+specifier|abstract
 name|void
 name|setNMTokenMasterKey
 parameter_list|(
@@ -319,6 +350,8 @@ name|secretKey
 parameter_list|)
 function_decl|;
 DECL|method|addAllContainersToCleanup (List<ContainerId> containers)
+specifier|public
+specifier|abstract
 name|void
 name|addAllContainersToCleanup
 parameter_list|(
@@ -332,7 +365,9 @@ function_decl|;
 comment|// This tells NM to remove finished containers from its context. Currently, NM
 comment|// will remove finished containers from its context only after AM has actually
 comment|// received the finished containers in a previous allocate response
-DECL|method|addContainersToBeRemovedFromNM (List<ContainerId> containers)
+DECL|method|addContainersToBeRemovedFromNM ( List<ContainerId> containers)
+specifier|public
+specifier|abstract
 name|void
 name|addContainersToBeRemovedFromNM
 parameter_list|(
@@ -343,7 +378,9 @@ argument_list|>
 name|containers
 parameter_list|)
 function_decl|;
-DECL|method|addAllApplicationsToCleanup (List<ApplicationId> applications)
+DECL|method|addAllApplicationsToCleanup ( List<ApplicationId> applications)
+specifier|public
+specifier|abstract
 name|void
 name|addAllApplicationsToCleanup
 parameter_list|(
@@ -355,6 +392,8 @@ name|applications
 parameter_list|)
 function_decl|;
 DECL|method|getContainersToSignalList ()
+specifier|public
+specifier|abstract
 name|List
 argument_list|<
 name|SignalContainerRequest
@@ -362,7 +401,9 @@ argument_list|>
 name|getContainersToSignalList
 parameter_list|()
 function_decl|;
-DECL|method|addAllContainersToSignal (List<SignalContainerRequest> containers)
+DECL|method|addAllContainersToSignal ( List<SignalContainerRequest> containers)
+specifier|public
+specifier|abstract
 name|void
 name|addAllContainersToSignal
 parameter_list|(
@@ -374,11 +415,15 @@ name|containers
 parameter_list|)
 function_decl|;
 DECL|method|getNextHeartBeatInterval ()
+specifier|public
+specifier|abstract
 name|long
 name|getNextHeartBeatInterval
 parameter_list|()
 function_decl|;
 DECL|method|setNextHeartBeatInterval (long nextHeartBeatInterval)
+specifier|public
+specifier|abstract
 name|void
 name|setNextHeartBeatInterval
 parameter_list|(
@@ -387,11 +432,15 @@ name|nextHeartBeatInterval
 parameter_list|)
 function_decl|;
 DECL|method|getDiagnosticsMessage ()
+specifier|public
+specifier|abstract
 name|String
 name|getDiagnosticsMessage
 parameter_list|()
 function_decl|;
 DECL|method|setDiagnosticsMessage (String diagnosticsMessage)
+specifier|public
+specifier|abstract
 name|void
 name|setDiagnosticsMessage
 parameter_list|(
@@ -402,6 +451,8 @@ function_decl|;
 comment|// Credentials (i.e. hdfs tokens) needed by NodeManagers for application
 comment|// localizations and logAggreations.
 DECL|method|getSystemCredentialsForApps ()
+specifier|public
+specifier|abstract
 name|Map
 argument_list|<
 name|ApplicationId
@@ -412,6 +463,8 @@ name|getSystemCredentialsForApps
 parameter_list|()
 function_decl|;
 DECL|method|setSystemCredentialsForApps ( Map<ApplicationId, ByteBuffer> systemCredentials)
+specifier|public
+specifier|abstract
 name|void
 name|setSystemCredentialsForApps
 parameter_list|(
@@ -425,11 +478,15 @@ name|systemCredentials
 parameter_list|)
 function_decl|;
 DECL|method|getAreNodeLabelsAcceptedByRM ()
+specifier|public
+specifier|abstract
 name|boolean
 name|getAreNodeLabelsAcceptedByRM
 parameter_list|()
 function_decl|;
-DECL|method|setAreNodeLabelsAcceptedByRM (boolean areNodeLabelsAcceptedByRM)
+DECL|method|setAreNodeLabelsAcceptedByRM ( boolean areNodeLabelsAcceptedByRM)
+specifier|public
+specifier|abstract
 name|void
 name|setAreNodeLabelsAcceptedByRM
 parameter_list|(
@@ -438,11 +495,15 @@ name|areNodeLabelsAcceptedByRM
 parameter_list|)
 function_decl|;
 DECL|method|getResource ()
+specifier|public
+specifier|abstract
 name|Resource
 name|getResource
 parameter_list|()
 function_decl|;
 DECL|method|setResource (Resource resource)
+specifier|public
+specifier|abstract
 name|void
 name|setResource
 parameter_list|(
@@ -451,6 +512,8 @@ name|resource
 parameter_list|)
 function_decl|;
 DECL|method|getContainersToDecrease ()
+specifier|public
+specifier|abstract
 name|List
 argument_list|<
 name|Container
@@ -458,7 +521,9 @@ argument_list|>
 name|getContainersToDecrease
 parameter_list|()
 function_decl|;
-DECL|method|addAllContainersToDecrease (Collection<Container> containersToDecrease)
+DECL|method|addAllContainersToDecrease ( Collection<Container> containersToDecrease)
+specifier|public
+specifier|abstract
 name|void
 name|addAllContainersToDecrease
 parameter_list|(
@@ -470,11 +535,15 @@ name|containersToDecrease
 parameter_list|)
 function_decl|;
 DECL|method|getContainerQueuingLimit ()
+specifier|public
+specifier|abstract
 name|ContainerQueuingLimit
 name|getContainerQueuingLimit
 parameter_list|()
 function_decl|;
-DECL|method|setContainerQueuingLimit (ContainerQueuingLimit containerQueuingLimit)
+DECL|method|setContainerQueuingLimit ( ContainerQueuingLimit containerQueuingLimit)
+specifier|public
+specifier|abstract
 name|void
 name|setContainerQueuingLimit
 parameter_list|(
@@ -483,7 +552,7 @@ name|containerQueuingLimit
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

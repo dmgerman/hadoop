@@ -80,18 +80,27 @@ name|NodeAction
 import|;
 end_import
 
-begin_interface
-DECL|interface|RegisterNodeManagerResponse
+begin_comment
+comment|/**  * Node Manager's register response.  */
+end_comment
+
+begin_class
+DECL|class|RegisterNodeManagerResponse
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|RegisterNodeManagerResponse
 block|{
 DECL|method|getContainerTokenMasterKey ()
+specifier|public
+specifier|abstract
 name|MasterKey
 name|getContainerTokenMasterKey
 parameter_list|()
 function_decl|;
 DECL|method|setContainerTokenMasterKey (MasterKey secretKey)
+specifier|public
+specifier|abstract
 name|void
 name|setContainerTokenMasterKey
 parameter_list|(
@@ -100,11 +109,15 @@ name|secretKey
 parameter_list|)
 function_decl|;
 DECL|method|getNMTokenMasterKey ()
+specifier|public
+specifier|abstract
 name|MasterKey
 name|getNMTokenMasterKey
 parameter_list|()
 function_decl|;
 DECL|method|setNMTokenMasterKey (MasterKey secretKey)
+specifier|public
+specifier|abstract
 name|void
 name|setNMTokenMasterKey
 parameter_list|(
@@ -113,11 +126,15 @@ name|secretKey
 parameter_list|)
 function_decl|;
 DECL|method|getNodeAction ()
+specifier|public
+specifier|abstract
 name|NodeAction
 name|getNodeAction
 parameter_list|()
 function_decl|;
 DECL|method|setNodeAction (NodeAction nodeAction)
+specifier|public
+specifier|abstract
 name|void
 name|setNodeAction
 parameter_list|(
@@ -126,11 +143,15 @@ name|nodeAction
 parameter_list|)
 function_decl|;
 DECL|method|getRMIdentifier ()
+specifier|public
+specifier|abstract
 name|long
 name|getRMIdentifier
 parameter_list|()
 function_decl|;
 DECL|method|setRMIdentifier (long rmIdentifier)
+specifier|public
+specifier|abstract
 name|void
 name|setRMIdentifier
 parameter_list|(
@@ -139,11 +160,15 @@ name|rmIdentifier
 parameter_list|)
 function_decl|;
 DECL|method|getDiagnosticsMessage ()
+specifier|public
+specifier|abstract
 name|String
 name|getDiagnosticsMessage
 parameter_list|()
 function_decl|;
 DECL|method|setDiagnosticsMessage (String diagnosticsMessage)
+specifier|public
+specifier|abstract
 name|void
 name|setDiagnosticsMessage
 parameter_list|(
@@ -152,6 +177,8 @@ name|diagnosticsMessage
 parameter_list|)
 function_decl|;
 DECL|method|setRMVersion (String version)
+specifier|public
+specifier|abstract
 name|void
 name|setRMVersion
 parameter_list|(
@@ -160,16 +187,22 @@ name|version
 parameter_list|)
 function_decl|;
 DECL|method|getRMVersion ()
+specifier|public
+specifier|abstract
 name|String
 name|getRMVersion
 parameter_list|()
 function_decl|;
 DECL|method|getResource ()
+specifier|public
+specifier|abstract
 name|Resource
 name|getResource
 parameter_list|()
 function_decl|;
 DECL|method|setResource (Resource resource)
+specifier|public
+specifier|abstract
 name|void
 name|setResource
 parameter_list|(
@@ -178,11 +211,15 @@ name|resource
 parameter_list|)
 function_decl|;
 DECL|method|getAreNodeLabelsAcceptedByRM ()
+specifier|public
+specifier|abstract
 name|boolean
 name|getAreNodeLabelsAcceptedByRM
 parameter_list|()
 function_decl|;
-DECL|method|setAreNodeLabelsAcceptedByRM (boolean areNodeLabelsAcceptedByRM)
+DECL|method|setAreNodeLabelsAcceptedByRM ( boolean areNodeLabelsAcceptedByRM)
+specifier|public
+specifier|abstract
 name|void
 name|setAreNodeLabelsAcceptedByRM
 parameter_list|(
@@ -191,7 +228,7 @@ name|areNodeLabelsAcceptedByRM
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 
