@@ -790,6 +790,11 @@ name|needToResortQueuesAtNextAllocation
 init|=
 literal|false
 decl_stmt|;
+DECL|field|offswitchPerHeartbeatLimit
+specifier|private
+name|int
+name|offswitchPerHeartbeatLimit
+decl_stmt|;
 DECL|field|recordFactory
 specifier|private
 specifier|final
@@ -1064,6 +1069,16 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+name|offswitchPerHeartbeatLimit
+operator|=
+name|csContext
+operator|.
+name|getConfiguration
+argument_list|()
+operator|.
+name|getOffSwitchPerHeartbeatLimit
+argument_list|()
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -1122,6 +1137,11 @@ name|toString
 argument_list|()
 operator|+
 literal|"\n"
+operator|+
+literal|", offswitchPerHeartbeatLimit = "
+operator|+
+name|getOffSwitchPerHeartbeatLimit
+argument_list|()
 operator|+
 literal|", reservationsContinueLooking="
 operator|+
@@ -1525,6 +1545,18 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Private
+DECL|method|getOffSwitchPerHeartbeatLimit ()
+specifier|public
+name|int
+name|getOffSwitchPerHeartbeatLimit
+parameter_list|()
+block|{
+return|return
+name|offswitchPerHeartbeatLimit
+return|;
 block|}
 DECL|method|getUserAclInfo ( UserGroupInformation user)
 specifier|private
@@ -2441,6 +2473,11 @@ name|SchedulingMode
 name|schedulingMode
 parameter_list|)
 block|{
+name|int
+name|offswitchCount
+init|=
+literal|0
+decl_stmt|;
 try|try
 block|{
 name|writeLock
@@ -3210,13 +3247,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Do not assign more than one container if this isn't the root queue
-comment|// or if we've already assigned an off-switch container
 if|if
 condition|(
-operator|!
-name|rootQueue
-operator|||
 name|assignment
 operator|.
 name|getType
@@ -3225,6 +3257,24 @@ operator|==
 name|NodeType
 operator|.
 name|OFF_SWITCH
+condition|)
+block|{
+name|offswitchCount
+operator|++
+expr_stmt|;
+block|}
+comment|// Do not assign more containers if this isn't the root queue
+comment|// or if we've already assigned enough OFF_SWITCH containers in
+comment|// this pass
+if|if
+condition|(
+operator|!
+name|rootQueue
+operator|||
+name|offswitchCount
+operator|>=
+name|getOffSwitchPerHeartbeatLimit
+argument_list|()
 condition|)
 block|{
 if|if
@@ -3239,23 +3289,21 @@ if|if
 condition|(
 name|rootQueue
 operator|&&
-name|assignment
-operator|.
-name|getType
+name|offswitchCount
+operator|>=
+name|getOffSwitchPerHeartbeatLimit
 argument_list|()
-operator|==
-name|NodeType
-operator|.
-name|OFF_SWITCH
 condition|)
 block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Not assigning more than one off-switch container,"
+literal|"Assigned maximum number of off-switch containers: "
 operator|+
-literal|" assignments so far: "
+name|offswitchCount
+operator|+
+literal|", assignments so far: "
 operator|+
 name|assignment
 argument_list|)
