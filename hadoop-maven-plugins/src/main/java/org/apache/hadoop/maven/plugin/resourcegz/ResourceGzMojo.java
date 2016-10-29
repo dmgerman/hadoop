@@ -158,6 +158,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|nio
 operator|.
 name|file
@@ -197,6 +207,18 @@ operator|.
 name|function
 operator|.
 name|Consumer
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|regex
+operator|.
+name|Matcher
 import|;
 end_import
 
@@ -557,10 +579,15 @@ argument_list|()
 operator|.
 name|replaceFirst
 argument_list|(
+name|Matcher
+operator|.
+name|quoteReplacement
+argument_list|(
 name|inputDir
 operator|.
 name|getCanonicalPath
 argument_list|()
+argument_list|)
 argument_list|,
 literal|""
 argument_list|)
@@ -568,6 +595,16 @@ operator|+
 literal|".gz"
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|outFile
+operator|.
+name|getParentFile
+argument_list|()
+operator|.
+name|isDirectory
+argument_list|()
+operator|||
 name|outFile
 operator|.
 name|getParentFile
@@ -575,7 +612,8 @@ argument_list|()
 operator|.
 name|mkdirs
 argument_list|()
-expr_stmt|;
+condition|)
+block|{
 try|try
 init|(
 name|GZIPOutputStream
@@ -590,17 +628,8 @@ argument_list|(
 name|outFile
 argument_list|)
 argument_list|)
-init|;
-name|BufferedReader
-name|is
-operator|=
-name|Files
-operator|.
-name|newBufferedReader
-argument_list|(
-name|path
-argument_list|)
-init|)
+init|;               BufferedReader is = Files.newBufferedReader(path)
+block|)
 block|{
 name|getLog
 argument_list|()
@@ -626,18 +655,23 @@ name|os
 argument_list|)
 expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|Throwable
-name|t
-parameter_list|)
+block|}
+else|else
 block|{
-name|this
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Directory "
+operator|+
+name|outFile
 operator|.
-name|throwable
-operator|=
-name|t
-expr_stmt|;
+name|getParent
+argument_list|()
+operator|+
+literal|" does not exist or was unable to be created"
+argument_list|)
+throw|;
 block|}
 block|}
 catch|catch
@@ -665,8 +699,8 @@ name|throwable
 return|;
 block|}
 block|}
-block|}
 end_class
 
+unit|}
 end_unit
 
