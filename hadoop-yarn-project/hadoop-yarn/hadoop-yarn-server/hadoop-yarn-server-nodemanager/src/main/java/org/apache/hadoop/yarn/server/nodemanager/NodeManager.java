@@ -2466,11 +2466,6 @@ name|context
 operator|.
 name|getContainerTokenSecretManager
 argument_list|()
-argument_list|,
-name|webServer
-operator|.
-name|getPort
-argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;

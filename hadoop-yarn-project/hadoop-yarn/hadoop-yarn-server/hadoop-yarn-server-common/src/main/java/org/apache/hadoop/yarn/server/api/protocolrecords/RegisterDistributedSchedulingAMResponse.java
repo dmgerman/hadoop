@@ -86,24 +86,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|NodeId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|Resource
 import|;
 end_import
@@ -340,7 +322,7 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|setNodesForScheduling (List<NodeId> nodesForScheduling)
+DECL|method|setNodesForScheduling ( List<RemoteNode> nodesForScheduling)
 specifier|public
 specifier|abstract
 name|void
@@ -348,7 +330,7 @@ name|setNodesForScheduling
 parameter_list|(
 name|List
 argument_list|<
-name|NodeId
+name|RemoteNode
 argument_list|>
 name|nodesForScheduling
 parameter_list|)
@@ -362,7 +344,7 @@ specifier|public
 specifier|abstract
 name|List
 argument_list|<
-name|NodeId
+name|RemoteNode
 argument_list|>
 name|getNodesForScheduling
 parameter_list|()

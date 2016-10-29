@@ -124,24 +124,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|NodeId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|Priority
 import|;
 end_import
@@ -179,6 +161,26 @@ operator|.
 name|records
 operator|.
 name|ResourceRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|RemoteNode
 import|;
 end_import
 
@@ -396,7 +398,7 @@ specifier|private
 specifier|volatile
 name|List
 argument_list|<
-name|NodeId
+name|RemoteNode
 argument_list|>
 name|nodeList
 init|=
@@ -412,7 +414,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|NodeId
+name|RemoteNode
 argument_list|>
 name|nodeMap
 init|=
@@ -515,7 +517,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|NodeId
+name|RemoteNode
 argument_list|>
 name|getNodeMap
 parameter_list|()
@@ -529,7 +531,7 @@ name|nodeMap
 argument_list|)
 return|;
 block|}
-DECL|method|updateNodeList (List<NodeId> newNodeList)
+DECL|method|updateNodeList (List<RemoteNode> newNodeList)
 specifier|public
 specifier|synchronized
 name|void
@@ -537,7 +539,7 @@ name|updateNodeList
 parameter_list|(
 name|List
 argument_list|<
-name|NodeId
+name|RemoteNode
 argument_list|>
 name|newNodeList
 parameter_list|)
@@ -564,7 +566,7 @@ argument_list|()
 expr_stmt|;
 for|for
 control|(
-name|NodeId
+name|RemoteNode
 name|n
 range|:
 name|nodeList
@@ -575,6 +577,9 @@ operator|.
 name|put
 argument_list|(
 name|n
+operator|.
+name|getNodeId
+argument_list|()
 operator|.
 name|getHost
 argument_list|()

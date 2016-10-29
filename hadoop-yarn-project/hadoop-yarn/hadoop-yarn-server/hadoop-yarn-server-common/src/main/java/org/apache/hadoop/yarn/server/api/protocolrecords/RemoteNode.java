@@ -34,7 +34,7 @@ name|classification
 operator|.
 name|InterfaceAudience
 operator|.
-name|Public
+name|Private
 import|;
 end_import
 
@@ -66,9 +66,9 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|protocolrecords
+name|records
 operator|.
-name|AllocateResponse
+name|NodeId
 import|;
 end_import
 
@@ -88,124 +88,155 @@ name|Records
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
 begin_comment
-comment|/**  * This is the response of the Resource Manager to the  * {@link DistributedSchedulingAllocateRequest}, when distributed scheduling is  * enabled. It includes the {@link AllocateResponse} for the GUARANTEED  * containers allocated by the Resource Manager. Moreover, it includes a list  * with the nodes that can be used by the Distributed Scheduler when allocating  * containers.  */
+comment|/**  * This class is used to encapsulate the {@link NodeId} as well as the HTTP  * address that can be used to communicate with the Node.  */
 end_comment
 
 begin_class
 annotation|@
-name|Public
+name|Private
 annotation|@
 name|Unstable
-DECL|class|DistributedSchedulingAllocateResponse
+DECL|class|RemoteNode
 specifier|public
 specifier|abstract
 class|class
-name|DistributedSchedulingAllocateResponse
+name|RemoteNode
+implements|implements
+name|Comparable
+argument_list|<
+name|RemoteNode
+argument_list|>
 block|{
+comment|/**    * Create new Instance.    * @param nodeId NodeId.    * @param httpAddress Http address.    * @return RemoteNode instance.    */
 annotation|@
-name|Public
+name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance ( AllocateResponse allResp)
+DECL|method|newInstance (NodeId nodeId, String httpAddress)
 specifier|public
 specifier|static
-name|DistributedSchedulingAllocateResponse
+name|RemoteNode
 name|newInstance
 parameter_list|(
-name|AllocateResponse
-name|allResp
+name|NodeId
+name|nodeId
+parameter_list|,
+name|String
+name|httpAddress
 parameter_list|)
 block|{
-name|DistributedSchedulingAllocateResponse
-name|response
+name|RemoteNode
+name|remoteNode
 init|=
 name|Records
 operator|.
 name|newRecord
 argument_list|(
-name|DistributedSchedulingAllocateResponse
+name|RemoteNode
 operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|response
+name|remoteNode
 operator|.
-name|setAllocateResponse
+name|setNodeId
 argument_list|(
-name|allResp
+name|nodeId
+argument_list|)
+expr_stmt|;
+name|remoteNode
+operator|.
+name|setHttpAddress
+argument_list|(
+name|httpAddress
 argument_list|)
 expr_stmt|;
 return|return
-name|response
+name|remoteNode
 return|;
 block|}
+comment|/**    * Get {@link NodeId}.    * @return NodeId.    */
 annotation|@
-name|Public
+name|Private
 annotation|@
 name|Unstable
-DECL|method|setAllocateResponse (AllocateResponse response)
+DECL|method|getNodeId ()
+specifier|public
+specifier|abstract
+name|NodeId
+name|getNodeId
+parameter_list|()
+function_decl|;
+comment|/**    * Set {@link NodeId}.    * @param nodeId NodeId.    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setNodeId (NodeId nodeId)
 specifier|public
 specifier|abstract
 name|void
-name|setAllocateResponse
+name|setNodeId
 parameter_list|(
-name|AllocateResponse
-name|response
+name|NodeId
+name|nodeId
 parameter_list|)
 function_decl|;
+comment|/**    * Get HTTP address.    * @return Http Address.    */
 annotation|@
-name|Public
+name|Private
 annotation|@
 name|Unstable
-DECL|method|getAllocateResponse ()
+DECL|method|getHttpAddress ()
 specifier|public
 specifier|abstract
-name|AllocateResponse
-name|getAllocateResponse
+name|String
+name|getHttpAddress
 parameter_list|()
 function_decl|;
+comment|/**    * Set HTTP address.    * @param httpAddress HTTP address.    */
 annotation|@
-name|Public
+name|Private
 annotation|@
 name|Unstable
-DECL|method|setNodesForScheduling ( List<RemoteNode> nodesForScheduling)
+DECL|method|setHttpAddress (String httpAddress)
 specifier|public
 specifier|abstract
 name|void
-name|setNodesForScheduling
+name|setHttpAddress
 parameter_list|(
-name|List
-argument_list|<
-name|RemoteNode
-argument_list|>
-name|nodesForScheduling
+name|String
+name|httpAddress
 parameter_list|)
 function_decl|;
+comment|/**    * Use the underlying {@link NodeId} comparator.    * @param other RemoteNode.    * @return Comparison.    */
 annotation|@
-name|Public
-annotation|@
-name|Unstable
-DECL|method|getNodesForScheduling ()
+name|Override
+DECL|method|compareTo (RemoteNode other)
 specifier|public
-specifier|abstract
-name|List
-argument_list|<
+name|int
+name|compareTo
+parameter_list|(
 name|RemoteNode
-argument_list|>
-name|getNodesForScheduling
-parameter_list|()
-function_decl|;
+name|other
+parameter_list|)
+block|{
+return|return
+name|this
+operator|.
+name|getNodeId
+argument_list|()
+operator|.
+name|compareTo
+argument_list|(
+name|other
+operator|.
+name|getNodeId
+argument_list|()
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 

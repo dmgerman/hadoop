@@ -190,6 +190,26 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|RemoteNode
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|security
 operator|.
 name|BaseContainerTokenSecretManager
@@ -661,21 +681,13 @@ specifier|final
 name|BaseContainerTokenSecretManager
 name|tokenSecretManager
 decl_stmt|;
-DECL|field|webpagePort
-specifier|private
-name|int
-name|webpagePort
-decl_stmt|;
-comment|/**    * Create a new Opportunistic Container Allocator.    * @param tokenSecretManager TokenSecretManager    * @param webpagePort Webpage Port    */
-DECL|method|OpportunisticContainerAllocator ( BaseContainerTokenSecretManager tokenSecretManager, int webpagePort)
+comment|/**    * Create a new Opportunistic Container Allocator.    * @param tokenSecretManager TokenSecretManager    */
+DECL|method|OpportunisticContainerAllocator ( BaseContainerTokenSecretManager tokenSecretManager)
 specifier|public
 name|OpportunisticContainerAllocator
 parameter_list|(
 name|BaseContainerTokenSecretManager
 name|tokenSecretManager
-parameter_list|,
-name|int
-name|webpagePort
 parameter_list|)
 block|{
 name|this
@@ -683,12 +695,6 @@ operator|.
 name|tokenSecretManager
 operator|=
 name|tokenSecretManager
-expr_stmt|;
-name|this
-operator|.
-name|webpagePort
-operator|=
-name|webpagePort
 expr_stmt|;
 block|}
 comment|/**    * Entry point into the Opportunistic Container Allocator.    * @param request AllocateRequest    * @param applicationAttemptId ApplicationAttemptId    * @param appContext App Specific OpportunisticContainerContext    * @param rmIdentifier RM Identifier    * @param appSubmitter App Submitter    * @return List of Containers.    * @throws YarnException YarnException    */
@@ -1119,7 +1125,7 @@ return|return
 name|containers
 return|;
 block|}
-DECL|method|allocateContainersInternal (long rmIdentifier, AllocationParams appParams, ContainerIdGenerator idCounter, Set<String> blacklist, ApplicationAttemptId id, Map<String, NodeId> allNodes, String userName, Map<Resource, List<Container>> containers, ResourceRequest anyAsk)
+DECL|method|allocateContainersInternal (long rmIdentifier, AllocationParams appParams, ContainerIdGenerator idCounter, Set<String> blacklist, ApplicationAttemptId id, Map<String, RemoteNode> allNodes, String userName, Map<Resource, List<Container>> containers, ResourceRequest anyAsk)
 specifier|private
 name|void
 name|allocateContainersInternal
@@ -1146,7 +1152,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|NodeId
+name|RemoteNode
 argument_list|>
 name|allNodes
 parameter_list|,
@@ -1202,7 +1208,7 @@ operator|)
 decl_stmt|;
 name|List
 argument_list|<
-name|NodeId
+name|RemoteNode
 argument_list|>
 name|nodesForScheduling
 init|=
@@ -1217,7 +1223,7 @@ name|Entry
 argument_list|<
 name|String
 argument_list|,
-name|NodeId
+name|RemoteNode
 argument_list|>
 name|nodeEntry
 range|:
@@ -1306,8 +1312,8 @@ operator|.
 name|size
 argument_list|()
 expr_stmt|;
-name|NodeId
-name|nodeId
+name|RemoteNode
+name|node
 init|=
 name|nodesForScheduling
 operator|.
@@ -1333,7 +1339,7 @@ name|id
 argument_list|,
 name|userName
 argument_list|,
-name|nodeId
+name|node
 argument_list|)
 decl_stmt|;
 name|List
@@ -1416,7 +1422,7 @@ literal|" opportunistic containers."
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|buildContainer (long rmIdentifier, AllocationParams appParams, ContainerIdGenerator idCounter, ResourceRequest rr, ApplicationAttemptId id, String userName, NodeId nodeId)
+DECL|method|buildContainer (long rmIdentifier, AllocationParams appParams, ContainerIdGenerator idCounter, ResourceRequest rr, ApplicationAttemptId id, String userName, RemoteNode node)
 specifier|private
 name|Container
 name|buildContainer
@@ -1439,8 +1445,8 @@ parameter_list|,
 name|String
 name|userName
 parameter_list|,
-name|NodeId
-name|nodeId
+name|RemoteNode
+name|node
 parameter_list|)
 throws|throws
 name|YarnException
@@ -1490,16 +1496,12 @@ name|cId
 argument_list|,
 literal|0
 argument_list|,
-name|nodeId
+name|node
 operator|.
-name|getHost
+name|getNodeId
 argument_list|()
-operator|+
-literal|":"
-operator|+
-name|nodeId
 operator|.
-name|getPort
+name|toString
 argument_list|()
 argument_list|,
 name|userName
@@ -1560,7 +1562,10 @@ name|containerToken
 init|=
 name|newContainerToken
 argument_list|(
-name|nodeId
+name|node
+operator|.
+name|getNodeId
+argument_list|()
 argument_list|,
 name|pwd
 argument_list|,
@@ -1576,16 +1581,15 @@ name|newContainer
 argument_list|(
 name|cId
 argument_list|,
-name|nodeId
-argument_list|,
-name|nodeId
+name|node
 operator|.
-name|getHost
+name|getNodeId
 argument_list|()
-operator|+
-literal|":"
-operator|+
-name|webpagePort
+argument_list|,
+name|node
+operator|.
+name|getHttpAddress
+argument_list|()
 argument_list|,
 name|capability
 argument_list|,

@@ -378,6 +378,26 @@ name|server
 operator|.
 name|api
 operator|.
+name|protocolrecords
+operator|.
+name|RemoteNode
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
 name|records
 operator|.
 name|MasterKey
@@ -696,6 +716,10 @@ name|Arrays
 operator|.
 name|asList
 argument_list|(
+name|RemoteNode
+operator|.
+name|newInstance
+argument_list|(
 name|NodeId
 operator|.
 name|newInstance
@@ -705,6 +729,13 @@ argument_list|,
 literal|1
 argument_list|)
 argument_list|,
+literal|"http://a:1"
+argument_list|)
+argument_list|,
+name|RemoteNode
+operator|.
+name|newInstance
+argument_list|(
 name|NodeId
 operator|.
 name|newInstance
@@ -712,6 +743,9 @@ argument_list|(
 literal|"b"
 argument_list|,
 literal|2
+argument_list|)
+argument_list|,
+literal|"http://b:2"
 argument_list|)
 argument_list|)
 argument_list|)
@@ -792,6 +826,10 @@ name|Arrays
 operator|.
 name|asList
 argument_list|(
+name|RemoteNode
+operator|.
+name|newInstance
+argument_list|(
 name|NodeId
 operator|.
 name|newInstance
@@ -801,6 +839,13 @@ argument_list|,
 literal|3
 argument_list|)
 argument_list|,
+literal|"http://c:3"
+argument_list|)
+argument_list|,
+name|RemoteNode
+operator|.
+name|newInstance
+argument_list|(
 name|NodeId
 operator|.
 name|newInstance
@@ -808,6 +853,9 @@ argument_list|(
 literal|"d"
 argument_list|,
 literal|4
+argument_list|)
+argument_list|,
+literal|"http://d:4"
 argument_list|)
 argument_list|)
 argument_list|)
@@ -822,6 +870,10 @@ name|Arrays
 operator|.
 name|asList
 argument_list|(
+name|RemoteNode
+operator|.
+name|newInstance
+argument_list|(
 name|NodeId
 operator|.
 name|newInstance
@@ -831,6 +883,13 @@ argument_list|,
 literal|4
 argument_list|)
 argument_list|,
+literal|"http://d:4"
+argument_list|)
+argument_list|,
+name|RemoteNode
+operator|.
+name|newInstance
+argument_list|(
 name|NodeId
 operator|.
 name|newInstance
@@ -838,6 +897,9 @@ argument_list|(
 literal|"c"
 argument_list|,
 literal|3
+argument_list|)
+argument_list|,
+literal|"http://c:3"
 argument_list|)
 argument_list|)
 argument_list|)
@@ -1438,7 +1500,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|registerAM (DistributedScheduler distributedScheduler, RequestInterceptor finalReqIntcptr, List<NodeId> nodeList)
+DECL|method|registerAM (DistributedScheduler distributedScheduler, RequestInterceptor finalReqIntcptr, List<RemoteNode> nodeList)
 specifier|private
 name|void
 name|registerAM
@@ -1451,7 +1513,7 @@ name|finalReqIntcptr
 parameter_list|,
 name|List
 argument_list|<
-name|NodeId
+name|RemoteNode
 argument_list|>
 name|nodeList
 parameter_list|)
@@ -1690,8 +1752,6 @@ operator|new
 name|OpportunisticContainerAllocator
 argument_list|(
 name|nmContainerTokenSecretManager
-argument_list|,
-literal|77
 argument_list|)
 decl_stmt|;
 name|NMTokenSecretManagerInNM
@@ -1852,14 +1912,14 @@ return|return
 name|opportunisticReq
 return|;
 block|}
-DECL|method|createAllocateResponse ( List<NodeId> nodes)
+DECL|method|createAllocateResponse ( List<RemoteNode> nodes)
 specifier|private
 name|DistributedSchedulingAllocateResponse
 name|createAllocateResponse
 parameter_list|(
 name|List
 argument_list|<
-name|NodeId
+name|RemoteNode
 argument_list|>
 name|nodes
 parameter_list|)

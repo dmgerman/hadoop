@@ -356,6 +356,26 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|RemoteNode
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|nodemanager
 operator|.
 name|amrmproxy
@@ -1038,14 +1058,14 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|setNodeList (List<NodeId> nodeList)
+DECL|method|setNodeList (List<RemoteNode> nodeList)
 specifier|private
 name|void
 name|setNodeList
 parameter_list|(
 name|List
 argument_list|<
-name|NodeId
+name|RemoteNode
 argument_list|>
 name|nodeList
 parameter_list|)
