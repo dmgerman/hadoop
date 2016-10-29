@@ -70,6 +70,12 @@ name|LAST_NODE_PROCESSED_MSG
 init|=
 literal|" Last Node which was processed for the application : "
 decl_stmt|;
+DECL|field|CLUSTER_RESOURCE_EMPTY
+name|String
+name|CLUSTER_RESOURCE_EMPTY
+init|=
+literal|"Skipping AM assignment as cluster resource is empty. "
+decl_stmt|;
 block|}
 end_interface
 

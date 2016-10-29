@@ -12240,6 +12240,15 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
+name|rm
+operator|.
+name|registerNode
+argument_list|(
+literal|"host1:1234"
+argument_list|,
+literal|1024
+argument_list|)
+expr_stmt|;
 comment|// Start app1 with appPriority 5
 name|RMApp
 name|app1

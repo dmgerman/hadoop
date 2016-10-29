@@ -19402,6 +19402,17 @@ init|=
 name|setUpMove
 argument_list|()
 decl_stmt|;
+name|rm
+operator|.
+name|registerNode
+argument_list|(
+literal|"127.0.0.1:1234"
+argument_list|,
+literal|4
+operator|*
+name|GB
+argument_list|)
+expr_stmt|;
 name|Configuration
 name|conf
 init|=
@@ -19433,7 +19444,7 @@ literal|50
 decl_stmt|;
 name|assertTrue
 argument_list|(
-literal|"AM memory is greater than or equql to minAllocation"
+literal|"AM memory is greater than or equal to minAllocation"
 argument_list|,
 name|amMemory
 operator|<
@@ -21770,6 +21781,17 @@ argument_list|(
 name|config
 argument_list|)
 decl_stmt|;
+name|rm
+operator|.
+name|registerNode
+argument_list|(
+literal|"127.0.0.1:1234"
+argument_list|,
+literal|2
+operator|*
+name|GB
+argument_list|)
+expr_stmt|;
 name|String
 name|queueName
 init|=

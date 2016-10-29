@@ -4485,30 +4485,17 @@ literal|500
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Before NM registration, AMResourceLimit threshold is 0. So 1st
-comment|// applications get activated nevertheless of AMResourceLimit threshold
-comment|// Two applications are in pending
+comment|// Before NM registration, AMResourceLimit threshold is 0. So no
+comment|// applications get activated.
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|1
+literal|0
 argument_list|,
 name|defaultQueue
 operator|.
 name|getNumActiveApplications
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|2
-argument_list|,
-name|defaultQueue
-operator|.
-name|getNumPendingApplications
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4522,6 +4509,30 @@ name|dispatcher1
 operator|.
 name|await
 argument_list|()
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|2
+argument_list|,
+name|defaultQueue
+operator|.
+name|getNumActiveApplications
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|1
+argument_list|,
+name|defaultQueue
+operator|.
+name|getNumPendingApplications
+argument_list|()
+argument_list|)
 expr_stmt|;
 comment|// wait for activating one applications
 name|count
