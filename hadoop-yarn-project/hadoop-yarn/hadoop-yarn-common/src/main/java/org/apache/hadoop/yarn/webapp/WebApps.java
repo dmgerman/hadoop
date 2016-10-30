@@ -308,7 +308,7 @@ begin_import
 import|import
 name|org
 operator|.
-name|mortbay
+name|eclipse
 operator|.
 name|jetty
 operator|.
@@ -2100,11 +2100,9 @@ condition|)
 block|{
 name|httpServer
 operator|.
-name|addContext
+name|addHandlerAtFront
 argument_list|(
 name|ui2Context
-argument_list|,
-literal|true
 argument_list|)
 expr_stmt|;
 block|}
