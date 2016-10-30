@@ -2338,7 +2338,7 @@ argument_list|()
 argument_list|,
 name|startsWith
 argument_list|(
-literal|"User does not belong to"
+literal|"User null does not belong to"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2522,7 +2522,11 @@ argument_list|()
 argument_list|,
 name|startsWith
 argument_list|(
-literal|"Non-super user cannot change owner"
+literal|"User "
+operator|+
+name|NOUSER
+operator|+
+literal|" is not a super user (non-super user cannot change owner)"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2664,7 +2668,11 @@ argument_list|()
 argument_list|,
 name|startsWith
 argument_list|(
-literal|"Non-super user cannot change owner"
+literal|"User "
+operator|+
+name|NOUSER
+operator|+
+literal|" is not a super user (non-super user cannot change owner)"
 argument_list|)
 argument_list|)
 expr_stmt|;

@@ -665,7 +665,11 @@ throw|throw
 operator|new
 name|AccessControlException
 argument_list|(
-literal|"Non-super user cannot change owner"
+literal|"User "
+operator|+
+name|username
+operator|+
+literal|" is not a super user (non-super user cannot change owner)."
 argument_list|)
 throw|;
 block|}
@@ -688,7 +692,11 @@ throw|throw
 operator|new
 name|AccessControlException
 argument_list|(
-literal|"User does not belong to "
+literal|"User "
+operator|+
+name|username
+operator|+
+literal|" does not belong to "
 operator|+
 name|group
 argument_list|)
