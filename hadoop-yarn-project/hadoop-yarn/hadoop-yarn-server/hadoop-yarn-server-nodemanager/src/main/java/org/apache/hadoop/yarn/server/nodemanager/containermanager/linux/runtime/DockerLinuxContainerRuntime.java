@@ -1009,7 +1009,7 @@ name|asList
 argument_list|(
 name|conf
 operator|.
-name|getStrings
+name|getTrimmedStrings
 argument_list|(
 name|YarnConfiguration
 operator|.
@@ -1026,7 +1026,7 @@ name|defaultNetwork
 operator|=
 name|conf
 operator|.
-name|get
+name|getTrimmed
 argument_list|(
 name|YarnConfiguration
 operator|.
@@ -1094,7 +1094,7 @@ name|AccessControlList
 argument_list|(
 name|conf
 operator|.
-name|get
+name|getTrimmed
 argument_list|(
 name|YarnConfiguration
 operator|.
@@ -1945,7 +1945,7 @@ name|asList
 argument_list|(
 name|conf
 operator|.
-name|getStrings
+name|getTrimmedStrings
 argument_list|(
 name|YarnConfiguration
 operator|.
