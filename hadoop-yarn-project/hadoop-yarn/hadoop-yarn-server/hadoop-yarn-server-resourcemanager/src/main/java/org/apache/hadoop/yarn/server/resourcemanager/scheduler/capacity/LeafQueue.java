@@ -5889,6 +5889,9 @@ argument_list|,
 name|computeUserLimit
 argument_list|(
 name|application
+operator|.
+name|getUser
+argument_list|()
 argument_list|,
 name|clusterResource
 argument_list|,
@@ -6133,6 +6136,9 @@ init|=
 name|computeUserLimit
 argument_list|(
 name|application
+operator|.
+name|getUser
+argument_list|()
 argument_list|,
 name|clusterResource
 argument_list|,
@@ -6285,13 +6291,13 @@ name|NoLock
 operator|.
 name|class
 argument_list|)
-DECL|method|computeUserLimit (FiCaSchedulerApp application, Resource clusterResource, User user, String nodePartition, SchedulingMode schedulingMode)
+DECL|method|computeUserLimit (String userName, Resource clusterResource, User user, String nodePartition, SchedulingMode schedulingMode)
 specifier|private
 name|Resource
 name|computeUserLimit
 parameter_list|(
-name|FiCaSchedulerApp
-name|application
+name|String
+name|userName
 parameter_list|,
 name|Resource
 name|clusterResource
@@ -6561,14 +6567,6 @@ name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
-name|String
-name|userName
-init|=
-name|application
-operator|.
-name|getUser
-argument_list|()
-decl_stmt|;
 name|LOG
 operator|.
 name|debug
@@ -9404,6 +9402,53 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+comment|/**    * Obtain (read-only) collection of all applications.    */
+DECL|method|getAllApplications ()
+specifier|public
+name|Collection
+argument_list|<
+name|FiCaSchedulerApp
+argument_list|>
+name|getAllApplications
+parameter_list|()
+block|{
+name|Collection
+argument_list|<
+name|FiCaSchedulerApp
+argument_list|>
+name|apps
+init|=
+operator|new
+name|HashSet
+argument_list|<
+name|FiCaSchedulerApp
+argument_list|>
+argument_list|(
+name|pendingOrderingPolicy
+operator|.
+name|getSchedulableEntities
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|apps
+operator|.
+name|addAll
+argument_list|(
+name|orderingPolicy
+operator|.
+name|getSchedulableEntities
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|Collections
+operator|.
+name|unmodifiableCollection
+argument_list|(
+name|apps
+argument_list|)
+return|;
+block|}
 comment|// Consider the headroom for each user in the queue.
 comment|// Total pending for the queue =
 comment|//   sum(for each user(min((user's headroom), sum(user's pending requests))))
@@ -9498,6 +9543,9 @@ argument_list|(
 name|computeUserLimit
 argument_list|(
 name|app
+operator|.
+name|getUser
+argument_list|()
 argument_list|,
 name|resources
 argument_list|,
@@ -9604,6 +9652,48 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+DECL|method|getUserLimitPerUser (String userName, Resource resources, String partition)
+specifier|public
+specifier|synchronized
+name|Resource
+name|getUserLimitPerUser
+parameter_list|(
+name|String
+name|userName
+parameter_list|,
+name|Resource
+name|resources
+parameter_list|,
+name|String
+name|partition
+parameter_list|)
+block|{
+comment|// Check user resource limit
+name|User
+name|user
+init|=
+name|getUser
+argument_list|(
+name|userName
+argument_list|)
+decl_stmt|;
+return|return
+name|computeUserLimit
+argument_list|(
+name|userName
+argument_list|,
+name|resources
+argument_list|,
+name|user
+argument_list|,
+name|partition
+argument_list|,
+name|SchedulingMode
+operator|.
+name|RESPECT_PARTITION_EXCLUSIVITY
+argument_list|)
+return|;
 block|}
 annotation|@
 name|Override
@@ -9936,7 +10026,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * return all ignored partition exclusivity RMContainers in the LeafQueue, this    * will be used by preemption policy.    */
+comment|/**    * @return all ignored partition exclusivity RMContainers in the LeafQueue,    *         this will be used by preemption policy.    */
 specifier|public
 name|Map
 argument_list|<

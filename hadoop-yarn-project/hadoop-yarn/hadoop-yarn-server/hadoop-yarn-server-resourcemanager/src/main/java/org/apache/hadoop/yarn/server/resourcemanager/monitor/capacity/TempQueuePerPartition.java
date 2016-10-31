@@ -132,6 +132,16 @@ name|ArrayList
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Collection
+import|;
+end_import
+
 begin_comment
 comment|/**  * Temporary data-structure tracking resource availability, pending resource  * need, current utilization. This is per-queue-per-partition data structure  */
 end_comment
@@ -141,40 +151,20 @@ DECL|class|TempQueuePerPartition
 specifier|public
 class|class
 name|TempQueuePerPartition
+extends|extends
+name|AbstractPreemptionEntity
 block|{
 comment|// Following fields are copied from scheduler
-DECL|field|queueName
-specifier|final
-name|String
-name|queueName
-decl_stmt|;
 DECL|field|partition
 specifier|final
 name|String
 name|partition
-decl_stmt|;
-DECL|field|pending
-specifier|final
-name|Resource
-name|pending
-decl_stmt|;
-DECL|field|current
-specifier|private
-specifier|final
-name|Resource
-name|current
 decl_stmt|;
 DECL|field|killable
 specifier|private
 specifier|final
 name|Resource
 name|killable
-decl_stmt|;
-DECL|field|reserved
-specifier|private
-specifier|final
-name|Resource
-name|reserved
 decl_stmt|;
 DECL|field|absCapacity
 specifier|private
@@ -193,15 +183,7 @@ specifier|final
 name|Resource
 name|totalPartitionResource
 decl_stmt|;
-comment|// Following fields are setted and used by candidate selection policies
-DECL|field|idealAssigned
-name|Resource
-name|idealAssigned
-decl_stmt|;
-DECL|field|toBePreempted
-name|Resource
-name|toBePreempted
-decl_stmt|;
+comment|// Following fields are settled and used by candidate selection policies
 DECL|field|untouchableExtra
 name|Resource
 name|untouchableExtra
@@ -209,11 +191,6 @@ decl_stmt|;
 DECL|field|preemptableExtra
 name|Resource
 name|preemptableExtra
-decl_stmt|;
-DECL|field|actuallyToBePreempted
-specifier|private
-name|Resource
-name|actuallyToBePreempted
 decl_stmt|;
 DECL|field|normalizedGuarantee
 name|double
@@ -226,6 +203,14 @@ argument_list|<
 name|TempQueuePerPartition
 argument_list|>
 name|children
+decl_stmt|;
+DECL|field|apps
+specifier|private
+name|Collection
+argument_list|<
+name|TempAppPerPartition
+argument_list|>
+name|apps
 decl_stmt|;
 DECL|field|leafQueue
 name|LeafQueue
@@ -269,17 +254,32 @@ name|CSQueue
 name|queue
 parameter_list|)
 block|{
-name|this
-operator|.
+name|super
+argument_list|(
 name|queueName
-operator|=
-name|queueName
-expr_stmt|;
-name|this
+argument_list|,
+name|current
+argument_list|,
+name|Resource
 operator|.
-name|current
-operator|=
-name|current
+name|newInstance
+argument_list|(
+literal|0
+argument_list|,
+literal|0
+argument_list|)
+argument_list|,
+name|reserved
+argument_list|,
+name|Resource
+operator|.
+name|newInstance
+argument_list|(
+literal|0
+argument_list|,
+literal|0
+argument_list|)
+argument_list|)
 expr_stmt|;
 if|if
 condition|(
@@ -326,45 +326,6 @@ expr_stmt|;
 block|}
 name|this
 operator|.
-name|idealAssigned
-operator|=
-name|Resource
-operator|.
-name|newInstance
-argument_list|(
-literal|0
-argument_list|,
-literal|0
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|actuallyToBePreempted
-operator|=
-name|Resource
-operator|.
-name|newInstance
-argument_list|(
-literal|0
-argument_list|,
-literal|0
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|toBePreempted
-operator|=
-name|Resource
-operator|.
-name|newInstance
-argument_list|(
-literal|0
-argument_list|,
-literal|0
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
 name|normalizedGuarantee
 operator|=
 name|Float
@@ -374,6 +335,15 @@ expr_stmt|;
 name|this
 operator|.
 name|children
+operator|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|apps
 operator|=
 operator|new
 name|ArrayList
@@ -442,12 +412,6 @@ name|totalPartitionResource
 operator|=
 name|totalPartitionResource
 expr_stmt|;
-name|this
-operator|.
-name|reserved
-operator|=
-name|reserved
-expr_stmt|;
 block|}
 DECL|method|setLeafQueue (LeafQueue l)
 specifier|public
@@ -473,7 +437,7 @@ operator|=
 name|l
 expr_stmt|;
 block|}
-comment|/**    * When adding a child we also aggregate its pending resource needs.    * @param q the child queue to add to this queue    */
+comment|/**    * When adding a child we also aggregate its pending resource needs.    *    * @param q    *          the child queue to add to this queue    */
 DECL|method|addChild (TempQueuePerPartition q)
 specifier|public
 name|void
@@ -518,16 +482,6 @@ parameter_list|()
 block|{
 return|return
 name|children
-return|;
-block|}
-DECL|method|getUsed ()
-specifier|public
-name|Resource
-name|getUsed
-parameter_list|()
-block|{
-return|return
-name|current
 return|;
 block|}
 DECL|method|getUsedDeductReservd ()
@@ -593,7 +547,8 @@ literal|0
 argument_list|)
 argument_list|)
 decl_stmt|;
-comment|// remain = avail - min(avail, (max - assigned), (current + pending - assigned))
+comment|// remain = avail - min(avail, (max - assigned), (current + pending -
+comment|// assigned))
 name|Resource
 name|accepted
 init|=
@@ -618,7 +573,7 @@ argument_list|,
 name|avail
 argument_list|,
 name|Resources
-comment|/*                  * When we're using FifoPreemptionSelector                  * (considerReservedResource = false).                  *                  * We should deduct reserved resource to avoid excessive preemption:                  *                  * For example, if an under-utilized queue has used = reserved = 20.                  * Preemption policy will try to preempt 20 containers                  * (which is not satisfied) from different hosts.                  *                  * In FifoPreemptionSelector, there's no guarantee that preempted                  * resource can be used by pending request, so policy will preempt                  * resources repeatly.                  */
+comment|/*              * When we're using FifoPreemptionSelector (considerReservedResource              * = false).              *              * We should deduct reserved resource to avoid excessive preemption:              *              * For example, if an under-utilized queue has used = reserved = 20.              * Preemption policy will try to preempt 20 containers (which is not              * satisfied) from different hosts.              *              * In FifoPreemptionSelector, there's no guarantee that preempted              * resource can be used by pending request, so policy will preempt              * resources repeatly.              */
 operator|.
 name|subtract
 argument_list|(
@@ -996,7 +951,8 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|actuallyToBePreempted
+name|getActuallyToBePreempted
+argument_list|()
 argument_list|)
 operator|.
 name|append
@@ -1077,7 +1033,8 @@ comment|// max(idealAssigned, min(used + pending, guaranteed)).
 comment|//
 comment|// Doing this because when we calculate ideal allocation doesn't consider
 comment|// reserved resource, ideal-allocation calculated could be less than
-comment|// guaranteed and total. We should avoid preempt from a queue if it is already
+comment|// guaranteed and total. We should avoid preempt from a queue if it is
+comment|// already
 comment|//<= its guaranteed resource.
 name|Resource
 name|minimumQueueResource
@@ -1153,32 +1110,6 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|getActuallyToBePreempted ()
-specifier|public
-name|Resource
-name|getActuallyToBePreempted
-parameter_list|()
-block|{
-return|return
-name|actuallyToBePreempted
-return|;
-block|}
-DECL|method|setActuallyToBePreempted (Resource res)
-specifier|public
-name|void
-name|setActuallyToBePreempted
-parameter_list|(
-name|Resource
-name|res
-parameter_list|)
-block|{
-name|this
-operator|.
-name|actuallyToBePreempted
-operator|=
-name|res
-expr_stmt|;
-block|}
 DECL|method|deductActuallyToBePreempted (ResourceCalculator rc, Resource cluster, Resource toBeDeduct)
 specifier|public
 name|void
@@ -1204,7 +1135,8 @@ name|rc
 argument_list|,
 name|cluster
 argument_list|,
-name|actuallyToBePreempted
+name|getActuallyToBePreempted
+argument_list|()
 argument_list|,
 name|toBeDeduct
 argument_list|)
@@ -1214,14 +1146,15 @@ name|Resources
 operator|.
 name|subtractFrom
 argument_list|(
-name|actuallyToBePreempted
+name|getActuallyToBePreempted
+argument_list|()
 argument_list|,
 name|toBeDeduct
 argument_list|)
 expr_stmt|;
 block|}
-name|actuallyToBePreempted
-operator|=
+name|setActuallyToBePreempted
+argument_list|(
 name|Resources
 operator|.
 name|max
@@ -1230,12 +1163,14 @@ name|rc
 argument_list|,
 name|cluster
 argument_list|,
-name|actuallyToBePreempted
+name|getActuallyToBePreempted
+argument_list|()
 argument_list|,
 name|Resources
 operator|.
 name|none
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1393,7 +1328,8 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|actuallyToBePreempted
+name|getActuallyToBePreempted
+argument_list|()
 operator|.
 name|getMemorySize
 argument_list|()
@@ -1406,12 +1342,45 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|actuallyToBePreempted
+name|getActuallyToBePreempted
+argument_list|()
 operator|.
 name|getVirtualCores
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|addAllApps (Collection<TempAppPerPartition> orderedApps)
+specifier|public
+name|void
+name|addAllApps
+parameter_list|(
+name|Collection
+argument_list|<
+name|TempAppPerPartition
+argument_list|>
+name|orderedApps
+parameter_list|)
+block|{
+name|this
+operator|.
+name|apps
+operator|=
+name|orderedApps
+expr_stmt|;
+block|}
+DECL|method|getApps ()
+specifier|public
+name|Collection
+argument_list|<
+name|TempAppPerPartition
+argument_list|>
+name|getApps
+parameter_list|()
+block|{
+return|return
+name|apps
+return|;
 block|}
 block|}
 end_class

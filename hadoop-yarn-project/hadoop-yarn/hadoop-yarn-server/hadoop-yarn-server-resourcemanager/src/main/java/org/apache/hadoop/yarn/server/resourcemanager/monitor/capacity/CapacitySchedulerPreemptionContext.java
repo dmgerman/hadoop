@@ -52,6 +52,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Resource
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -107,6 +125,16 @@ operator|.
 name|util
 operator|.
 name|Collection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|LinkedHashSet
 import|;
 end_import
 
@@ -199,6 +227,51 @@ argument_list|<
 name|String
 argument_list|>
 name|getAllPartitions
+parameter_list|()
+function_decl|;
+DECL|method|getClusterMaxApplicationPriority ()
+name|int
+name|getClusterMaxApplicationPriority
+parameter_list|()
+function_decl|;
+DECL|method|getPartitionResource (String partition)
+name|Resource
+name|getPartitionResource
+parameter_list|(
+name|String
+name|partition
+parameter_list|)
+function_decl|;
+DECL|method|getUnderServedQueuesPerPartition (String partition)
+name|LinkedHashSet
+argument_list|<
+name|String
+argument_list|>
+name|getUnderServedQueuesPerPartition
+parameter_list|(
+name|String
+name|partition
+parameter_list|)
+function_decl|;
+DECL|method|addPartitionToUnderServedQueues (String queueName, String partition)
+name|void
+name|addPartitionToUnderServedQueues
+parameter_list|(
+name|String
+name|queueName
+parameter_list|,
+name|String
+name|partition
+parameter_list|)
+function_decl|;
+DECL|method|getMinimumThresholdForIntraQueuePreemption ()
+name|float
+name|getMinimumThresholdForIntraQueuePreemption
+parameter_list|()
+function_decl|;
+DECL|method|getMaxAllowableLimitForIntraQueuePreemption ()
+name|float
+name|getMaxAllowableLimitForIntraQueuePreemption
 parameter_list|()
 function_decl|;
 block|}
