@@ -1564,10 +1564,7 @@ argument_list|(
 name|conf
 argument_list|)
 argument_list|,
-name|UserGroupInformation
-operator|.
-name|getCurrentUser
-argument_list|()
+name|daemonUser
 argument_list|)
 expr_stmt|;
 name|rmId
@@ -3256,10 +3253,7 @@ argument_list|(
 name|conf
 argument_list|)
 argument_list|,
-name|UserGroupInformation
-operator|.
-name|getCurrentUser
-argument_list|()
+name|daemonUser
 argument_list|)
 expr_stmt|;
 name|RMAuditLogger
