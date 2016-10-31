@@ -1704,18 +1704,26 @@ else|:
 name|rackLocalityThreshold
 decl_stmt|;
 comment|// Relax locality constraints once we've surpassed threshold.
-if|if
-condition|(
+name|int
+name|schedulingOpportunities
+init|=
 name|getSchedulingOpportunities
 argument_list|(
 name|schedulerKey
 argument_list|)
-operator|>
-operator|(
+decl_stmt|;
+name|double
+name|thresholdNum
+init|=
 name|numNodes
 operator|*
 name|threshold
-operator|)
+decl_stmt|;
+if|if
+condition|(
+name|schedulingOpportunities
+operator|>
+name|thresholdNum
 condition|)
 block|{
 if|if
@@ -1730,6 +1738,43 @@ name|NODE_LOCAL
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"SchedulingOpportunities: "
+operator|+
+name|schedulingOpportunities
+operator|+
+literal|", nodeLocalityThreshold: "
+operator|+
+name|thresholdNum
+operator|+
+literal|", change allowedLocality from NODE_LOCAL to RACK_LOCAL"
+operator|+
+literal|", priority: "
+operator|+
+name|schedulerKey
+operator|.
+name|getPriority
+argument_list|()
+operator|+
+literal|", app attempt id: "
+operator|+
+name|this
+operator|.
+name|attemptId
+argument_list|)
+expr_stmt|;
+block|}
 name|allowedLocalityLevel
 operator|.
 name|put
@@ -1760,6 +1805,43 @@ name|RACK_LOCAL
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"SchedulingOpportunities: "
+operator|+
+name|schedulingOpportunities
+operator|+
+literal|", rackLocalityThreshold: "
+operator|+
+name|thresholdNum
+operator|+
+literal|", change allowedLocality from RACK_LOCAL to OFF_SWITCH"
+operator|+
+literal|", priority: "
+operator|+
+name|schedulerKey
+operator|.
+name|getPriority
+argument_list|()
+operator|+
+literal|", app attempt id: "
+operator|+
+name|this
+operator|.
+name|attemptId
+argument_list|)
+expr_stmt|;
+block|}
 name|allowedLocalityLevel
 operator|.
 name|put
@@ -2002,6 +2084,45 @@ name|NODE_LOCAL
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Waiting time: "
+operator|+
+name|waitTime
+operator|+
+literal|" ms, nodeLocalityDelay time: "
+operator|+
+name|nodeLocalityDelayMs
+operator|+
+literal|" ms"
+operator|+
+literal|", change allowedLocality from NODE_LOCAL to RACK_LOCAL"
+operator|+
+literal|", priority: "
+operator|+
+name|schedulerKey
+operator|.
+name|getPriority
+argument_list|()
+operator|+
+literal|", app attempt id: "
+operator|+
+name|this
+operator|.
+name|attemptId
+argument_list|)
+expr_stmt|;
+block|}
 name|allowedLocalityLevel
 operator|.
 name|put
@@ -2034,6 +2155,45 @@ name|RACK_LOCAL
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Waiting time: "
+operator|+
+name|waitTime
+operator|+
+literal|" ms, nodeLocalityDelay time: "
+operator|+
+name|nodeLocalityDelayMs
+operator|+
+literal|" ms"
+operator|+
+literal|", change allowedLocality from RACK_LOCAL to OFF_SWITCH"
+operator|+
+literal|", priority: "
+operator|+
+name|schedulerKey
+operator|.
+name|getPriority
+argument_list|()
+operator|+
+literal|", app attempt id: "
+operator|+
+name|this
+operator|.
+name|attemptId
+argument_list|)
+expr_stmt|;
+block|}
 name|allowedLocalityLevel
 operator|.
 name|put
@@ -4010,6 +4170,46 @@ operator|!=
 literal|0
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Assign container on "
+operator|+
+name|node
+operator|.
+name|getNodeName
+argument_list|()
+operator|+
+literal|" node, assignType: NODE_LOCAL"
+operator|+
+literal|", allowedLocality: "
+operator|+
+name|allowedLocality
+operator|+
+literal|", priority: "
+operator|+
+name|schedulerKey
+operator|.
+name|getPriority
+argument_list|()
+operator|+
+literal|", app attempt id: "
+operator|+
+name|this
+operator|.
+name|attemptId
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|assignContainer
 argument_list|(
@@ -4076,6 +4276,46 @@ argument_list|)
 operator|)
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Assign container on "
+operator|+
+name|node
+operator|.
+name|getNodeName
+argument_list|()
+operator|+
+literal|" node, assignType: RACK_LOCAL"
+operator|+
+literal|", allowedLocality: "
+operator|+
+name|allowedLocality
+operator|+
+literal|", priority: "
+operator|+
+name|schedulerKey
+operator|.
+name|getPriority
+argument_list|()
+operator|+
+literal|", app attempt id: "
+operator|+
+name|this
+operator|.
+name|attemptId
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|assignContainer
 argument_list|(
@@ -4152,6 +4392,46 @@ name|OFF_SWITCH
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Assign container on "
+operator|+
+name|node
+operator|.
+name|getNodeName
+argument_list|()
+operator|+
+literal|" node, assignType: OFF_SWITCH"
+operator|+
+literal|", allowedLocality: "
+operator|+
+name|allowedLocality
+operator|+
+literal|", priority: "
+operator|+
+name|schedulerKey
+operator|.
+name|getPriority
+argument_list|()
+operator|+
+literal|", app attempt id: "
+operator|+
+name|this
+operator|.
+name|attemptId
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|assignContainer
 argument_list|(
@@ -4169,6 +4449,44 @@ name|schedulerKey
 argument_list|)
 return|;
 block|}
+block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Can't assign container on "
+operator|+
+name|node
+operator|.
+name|getNodeName
+argument_list|()
+operator|+
+literal|" node, allowedLocality: "
+operator|+
+name|allowedLocality
+operator|+
+literal|", priority: "
+operator|+
+name|schedulerKey
+operator|.
+name|getPriority
+argument_list|()
+operator|+
+literal|", app attempt id: "
+operator|+
+name|this
+operator|.
+name|attemptId
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 block|}
