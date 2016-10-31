@@ -2137,6 +2137,63 @@ return|return
 name|v
 return|;
 block|}
+comment|/**    * Get a long option>= the minimum allowed value, supporting memory    * prefixes K,M,G,T,P.    * @param conf configuration    * @param key key to look up    * @param defVal default value    * @param min minimum value    * @return the value    * @throws IllegalArgumentException if the value is below the minimum    */
+DECL|method|longBytesOption (Configuration conf, String key, long defVal, long min)
+specifier|static
+name|long
+name|longBytesOption
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|String
+name|key
+parameter_list|,
+name|long
+name|defVal
+parameter_list|,
+name|long
+name|min
+parameter_list|)
+block|{
+name|long
+name|v
+init|=
+name|conf
+operator|.
+name|getLongBytes
+argument_list|(
+name|key
+argument_list|,
+name|defVal
+argument_list|)
+decl_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|v
+operator|>=
+name|min
+argument_list|,
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Value of %s: %d is below the minimum value %d"
+argument_list|,
+name|key
+argument_list|,
+name|v
+argument_list|,
+name|min
+argument_list|)
+argument_list|)
+expr_stmt|;
+return|return
+name|v
+return|;
+block|}
 comment|/**    * Get a size property from the configuration: this property must    * be at least equal to {@link Constants#MULTIPART_MIN_SIZE}.    * If it is too small, it is rounded up to that minimum, and a warning    * printed.    * @param conf configuration    * @param property property name    * @param defVal default value    * @return the value, guaranteed to be above the minimum size    */
 DECL|method|getMultipartSizeProperty (Configuration conf, String property, long defVal)
 specifier|public
@@ -2159,7 +2216,7 @@ name|partSize
 init|=
 name|conf
 operator|.
-name|getLong
+name|getLongBytes
 argument_list|(
 name|property
 argument_list|,

@@ -1448,7 +1448,7 @@ name|DEFAULT_MIN_MULTIPART_THRESHOLD
 argument_list|)
 expr_stmt|;
 comment|//check but do not store the block size
-name|longOption
+name|longBytesOption
 argument_list|(
 name|conf
 argument_list|,
@@ -1472,7 +1472,7 @@ argument_list|)
 expr_stmt|;
 name|readAhead
 operator|=
-name|longOption
+name|longBytesOption
 argument_list|(
 name|conf
 argument_list|,
@@ -2167,6 +2167,18 @@ parameter_list|()
 block|{
 return|return
 name|s3
+return|;
+block|}
+comment|/**    * Returns the read ahead range value used by this filesystem    * @return    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getReadAheadRange ()
+name|long
+name|getReadAheadRange
+parameter_list|()
+block|{
+return|return
+name|readAhead
 return|;
 block|}
 comment|/**    * Get the input policy for this FS instance.    * @return the input policy    */
@@ -7737,7 +7749,7 @@ return|return
 name|getConf
 argument_list|()
 operator|.
-name|getLong
+name|getLongBytes
 argument_list|(
 name|FS_S3A_BLOCK_SIZE
 argument_list|,
