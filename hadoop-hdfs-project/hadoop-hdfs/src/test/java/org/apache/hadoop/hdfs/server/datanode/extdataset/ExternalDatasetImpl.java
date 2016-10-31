@@ -638,24 +638,6 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getFinalizedBlocksOnPersistentStorage (String bpid)
-specifier|public
-name|List
-argument_list|<
-name|ReplicaInfo
-argument_list|>
-name|getFinalizedBlocksOnPersistentStorage
-parameter_list|(
-name|String
-name|bpid
-parameter_list|)
-block|{
-return|return
-literal|null
-return|;
-block|}
-annotation|@
-name|Override
 DECL|method|checkAndUpdate (String bpid, long blockId, File diskFile, File diskMetaFile, FsVolumeSpi vol)
 specifier|public
 name|void

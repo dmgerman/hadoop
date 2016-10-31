@@ -1159,18 +1159,6 @@ name|String
 name|bpid
 parameter_list|)
 function_decl|;
-comment|/** @return a list of finalized blocks for the given block pool. */
-DECL|method|getFinalizedBlocksOnPersistentStorage (String bpid)
-name|List
-argument_list|<
-name|ReplicaInfo
-argument_list|>
-name|getFinalizedBlocksOnPersistentStorage
-parameter_list|(
-name|String
-name|bpid
-parameter_list|)
-function_decl|;
 comment|/**    * Check whether the in-memory block record matches the block on the disk,    * and, in case that they are not matched, update the record or mark it    * as corrupted.    */
 DECL|method|checkAndUpdate (String bpid, long blockId, File diskFile, File diskMetaFile, FsVolumeSpi vol)
 name|void
