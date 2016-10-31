@@ -2130,9 +2130,16 @@ parameter_list|)
 throws|throws
 name|InterruptedException
 block|{
+name|int
+name|timeWaiting
+init|=
+literal|0
+decl_stmt|;
 while|while
 condition|(
-literal|true
+name|timeWaiting
+operator|<
+name|TIMEOUT_MS_FOR_CONTAINER_AND_NODE
 condition|)
 block|{
 name|List
@@ -2146,11 +2153,9 @@ operator|.
 name|getJustFinishedContainers
 argument_list|()
 decl_stmt|;
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
 literal|"Received completed containers "
 operator|+
@@ -2190,6 +2195,10 @@ name|sleep
 argument_list|(
 name|WAIT_MS_PER_LOOP
 argument_list|)
+expr_stmt|;
+name|timeWaiting
+operator|+=
+name|WAIT_MS_PER_LOOP
 expr_stmt|;
 block|}
 block|}
@@ -2231,6 +2240,11 @@ argument_list|(
 name|app
 argument_list|)
 expr_stmt|;
+name|int
+name|timeWaiting
+init|=
+literal|0
+decl_stmt|;
 while|while
 condition|(
 name|app
@@ -2244,11 +2258,18 @@ operator|!=
 name|attemptSize
 condition|)
 block|{
-name|System
+if|if
+condition|(
+name|timeWaiting
+operator|>=
+name|TIMEOUT_MS_FOR_ATTEMPT
+condition|)
+block|{
+break|break;
+block|}
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
 literal|"Application "
 operator|+
@@ -2273,6 +2294,10 @@ name|sleep
 argument_list|(
 name|WAIT_MS_PER_LOOP
 argument_list|)
+expr_stmt|;
+name|timeWaiting
+operator|+=
+name|WAIT_MS_PER_LOOP
 expr_stmt|;
 block|}
 return|return
@@ -2474,11 +2499,9 @@ argument_list|(
 name|containerId
 argument_list|)
 expr_stmt|;
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
 literal|"Waiting for container "
 operator|+
@@ -2528,11 +2551,9 @@ return|return
 literal|false
 return|;
 block|}
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
 literal|"Container : "
 operator|+
@@ -2578,11 +2599,9 @@ operator|+=
 name|WAIT_MS_PER_LOOP
 expr_stmt|;
 block|}
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
 literal|"Container State is : "
 operator|+
@@ -4915,11 +4934,9 @@ condition|)
 block|{
 break|break;
 block|}
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
 literal|"Node State is : "
 operator|+
@@ -4945,11 +4962,9 @@ operator|+=
 name|WAIT_MS_PER_LOOP
 expr_stmt|;
 block|}
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
 literal|"Node "
 operator|+
@@ -5843,11 +5858,9 @@ operator|==
 literal|0
 condition|)
 block|{
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
 literal|"waiting for SchedulerApplicationAttempt="
 operator|+
@@ -5917,11 +5930,9 @@ argument_list|,
 name|rm
 argument_list|)
 decl_stmt|;
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
 literal|"Launch AM "
 operator|+
@@ -6020,11 +6031,9 @@ argument_list|,
 name|rm
 argument_list|)
 expr_stmt|;
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|info
 argument_list|(
 literal|"Launch AM "
 operator|+
@@ -6377,29 +6386,6 @@ parameter_list|)
 throws|throws
 name|InterruptedException
 block|{
-name|waitForAppRemovedFromScheduler
-argument_list|(
-name|appId
-argument_list|,
-name|TIMEOUT_MS_FOR_APP_REMOVED
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Wait until an app is removed from scheduler.    * @param appId the id of an app    * @param timeoutMsecs the length of timeout in milliseconds    * @throws InterruptedException    *         if interrupted while waiting for app removed    */
-DECL|method|waitForAppRemovedFromScheduler (ApplicationId appId, long timeoutMsecs)
-specifier|public
-name|void
-name|waitForAppRemovedFromScheduler
-parameter_list|(
-name|ApplicationId
-name|appId
-parameter_list|,
-name|long
-name|timeoutMsecs
-parameter_list|)
-throws|throws
-name|InterruptedException
-block|{
 name|int
 name|timeWaiting
 init|=
@@ -6438,7 +6424,7 @@ if|if
 condition|(
 name|timeWaiting
 operator|>=
-name|timeoutMsecs
+name|TIMEOUT_MS_FOR_APP_REMOVED
 condition|)
 block|{
 break|break;
