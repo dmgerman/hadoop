@@ -923,6 +923,10 @@ operator|==
 literal|false
 condition|)
 block|{
+name|stopped
+operator|=
+literal|true
+expr_stmt|;
 name|Thread
 name|shutDownThread
 init|=
