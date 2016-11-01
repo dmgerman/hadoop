@@ -52,6 +52,24 @@ name|ERROR_APPLICATION_DOES_NOT_EXIST
 init|=
 literal|"Application not found"
 decl_stmt|;
+DECL|field|ERROR_APPLICATION_IN_USE
+name|String
+name|ERROR_APPLICATION_IN_USE
+init|=
+literal|"Application already exists in started"
+operator|+
+literal|" state"
+decl_stmt|;
+DECL|field|ERROR_APPLICATION_INSTANCE_EXISTS
+name|String
+name|ERROR_APPLICATION_INSTANCE_EXISTS
+init|=
+literal|"Application already exists in"
+operator|+
+literal|" stopped/failed state (either restart with PUT or destroy with DELETE"
+operator|+
+literal|" before creating a new one)"
+decl_stmt|;
 DECL|field|ERROR_SUFFIX_FOR_COMPONENT
 name|String
 name|ERROR_SUFFIX_FOR_COMPONENT
@@ -180,12 +198,6 @@ literal|"Resource profile is not "
 operator|+
 literal|"supported yet. Please specify cpus/memory."
 decl_stmt|;
-DECL|field|ERROR_APPLICATION_IN_USE
-name|String
-name|ERROR_APPLICATION_IN_USE
-init|=
-literal|"Application name is already in use"
-decl_stmt|;
 DECL|field|ERROR_NULL_ARTIFACT_ID
 name|String
 name|ERROR_NULL_ARTIFACT_ID
@@ -208,7 +220,9 @@ DECL|field|ERROR_QUICKLINKS_FOR_COMP_INVALID
 name|String
 name|ERROR_QUICKLINKS_FOR_COMP_INVALID
 init|=
-literal|"Quicklinks specified at component level, needs corresponding values set at application level"
+literal|"Quicklinks specified at"
+operator|+
+literal|" component level, needs corresponding values set at application level"
 decl_stmt|;
 block|}
 end_interface

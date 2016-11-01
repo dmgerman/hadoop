@@ -144,7 +144,7 @@ block|{
 DECL|enumConstant|HTTP
 name|HTTP
 argument_list|(
-literal|"http"
+literal|"HTTP"
 argument_list|)
 block|;
 DECL|field|value
