@@ -3173,9 +3173,11 @@ literal|"<\"label1(exclusive=true),label2(exclusive=false),label3\">] "
 operator|+
 literal|"[-removeFromClusterNodeLabels<label1,label2,label3>] "
 operator|+
-literal|"[-replaceLabelsOnNode [-failOnUnknownNodes] "
+literal|"[-replaceLabelsOnNode "
 operator|+
-literal|"<\"node1[:port]=label1,label2 node2[:port]=label1\">] "
+literal|"<\"node1[:port]=label1,label2 node2[:port]=label1\"> "
+operator|+
+literal|"[-failOnUnknownNodes]] "
 operator|+
 literal|"[-directlyAccessNodeLabelStore] [-refreshClusterMaxPriority] "
 operator|+
@@ -3621,9 +3623,9 @@ literal|"label2(exclusive=false),label3\">]"
 operator|+
 literal|" [-removeFromClusterNodeLabels<label1,label2,label3>] [-replaceLabelsOnNode "
 operator|+
-literal|"[-failOnUnknownNodes] "
+literal|"<\"node1[:port]=label1,label2 node2[:port]=label1\"> "
 operator|+
-literal|"<\"node1[:port]=label1,label2 node2[:port]=label1\">] [-directlyAccessNodeLabelStore] "
+literal|"[-failOnUnknownNodes]] [-directlyAccessNodeLabelStore] "
 operator|+
 literal|"[-refreshClusterMaxPriority] "
 operator|+
@@ -3898,7 +3900,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// change the sequence of "-directlyAccessNodeLabelStore" and labels,
-comment|// should not matter
+comment|// should fail
 name|args
 operator|=
 operator|new
@@ -3914,33 +3916,14 @@ block|}
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|0
+operator|-
+literal|1
 argument_list|,
 name|rmAdminCLI
 operator|.
 name|run
 argument_list|(
 name|args
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|assertTrue
-argument_list|(
-name|dummyNodeLabelsManager
-operator|.
-name|getClusterNodeLabelNames
-argument_list|()
-operator|.
-name|containsAll
-argument_list|(
-name|ImmutableSet
-operator|.
-name|of
-argument_list|(
-literal|"x"
-argument_list|,
-literal|"y"
-argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4725,6 +4708,30 @@ name|String
 index|[]
 block|{
 literal|"-replaceLabelsOnNode"
+block|}
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|0
+operator|!=
+name|rmAdminCLI
+operator|.
+name|run
+argument_list|(
+name|args
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// no labels, should fail
+name|args
+operator|=
+operator|new
+name|String
+index|[]
+block|{
+literal|"-replaceLabelsOnNode"
+block|,
+literal|"-failOnUnknownNodes"
 block|}
 expr_stmt|;
 name|assertTrue
