@@ -2708,6 +2708,14 @@ operator|.
 name|getSignal
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -2728,6 +2736,7 @@ operator|+
 name|user
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 operator|!

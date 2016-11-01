@@ -3695,6 +3695,14 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -3706,6 +3714,7 @@ operator|+
 literal|" as inactive"
 argument_list|)
 expr_stmt|;
+block|}
 comment|// this should ensure that if the container process has not launched
 comment|// by this time, it will never be launched
 name|exec
@@ -3791,6 +3800,14 @@ operator|.
 name|getUser
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -3808,6 +3825,7 @@ operator|+
 name|containerIdStr
 argument_list|)
 expr_stmt|;
+block|}
 specifier|final
 name|Signal
 name|signal
@@ -3861,6 +3879,14 @@ name|build
 argument_list|()
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -3892,6 +3918,7 @@ literal|"failed"
 operator|)
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|sleepDelayBeforeSigKill
@@ -4448,6 +4475,14 @@ name|processId
 init|=
 literal|null
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -4461,6 +4496,7 @@ operator|+
 name|pidFilePath
 argument_list|)
 expr_stmt|;
+block|}
 name|int
 name|sleepCounter
 init|=
@@ -4495,6 +4531,14 @@ operator|!=
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -4508,6 +4552,7 @@ operator|+
 name|containerIdStr
 argument_list|)
 expr_stmt|;
+block|}
 break|break;
 block|}
 elseif|else

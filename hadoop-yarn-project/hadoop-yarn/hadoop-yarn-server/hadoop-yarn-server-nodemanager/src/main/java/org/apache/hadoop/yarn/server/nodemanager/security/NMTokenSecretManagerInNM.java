@@ -1126,6 +1126,14 @@ operator|!=
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1135,6 +1143,7 @@ operator|+
 name|appId
 argument_list|)
 expr_stmt|;
+block|}
 for|for
 control|(
 name|ApplicationAttemptId
@@ -1293,6 +1302,14 @@ argument_list|()
 condition|)
 block|{
 comment|// Update key only if it is modified.
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1308,6 +1325,7 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|identifier
@@ -1383,6 +1401,14 @@ name|NodeId
 name|nodeId
 parameter_list|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1392,6 +1418,7 @@ operator|+
 name|nodeId
 argument_list|)
 expr_stmt|;
+block|}
 name|this
 operator|.
 name|nodeId

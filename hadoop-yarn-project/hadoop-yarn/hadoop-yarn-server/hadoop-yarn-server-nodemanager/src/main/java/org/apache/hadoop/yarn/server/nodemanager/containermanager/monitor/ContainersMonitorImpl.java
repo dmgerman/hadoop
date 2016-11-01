@@ -2017,6 +2017,14 @@ block|{
 continue|continue;
 comment|// processTree cannot be tracked
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -2030,6 +2038,7 @@ operator|+
 name|containerId
 argument_list|)
 expr_stmt|;
+block|}
 name|ResourceCalculatorProcessTree
 name|pTree
 init|=
@@ -2317,6 +2326,14 @@ condition|)
 block|{
 comment|// pId will be null, either if the container is not spawned yet
 comment|// or if the container's pid is removed from ContainerExecutor
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -2328,6 +2345,7 @@ operator|+
 literal|" for the first time"
 argument_list|)
 expr_stmt|;
+block|}
 name|ResourceCalculatorProcessTree
 name|pt
 init|=

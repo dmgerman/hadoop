@@ -203,6 +203,14 @@ range|:
 name|tokens
 control|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -217,6 +225,7 @@ operator|+
 literal|" is found"
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|LocalizerTokenIdentifier

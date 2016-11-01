@@ -2701,6 +2701,14 @@ argument_list|)
 expr_stmt|;
 break|break;
 default|default:
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -2713,6 +2721,7 @@ name|getType
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 break|break;
 block|}
 block|}

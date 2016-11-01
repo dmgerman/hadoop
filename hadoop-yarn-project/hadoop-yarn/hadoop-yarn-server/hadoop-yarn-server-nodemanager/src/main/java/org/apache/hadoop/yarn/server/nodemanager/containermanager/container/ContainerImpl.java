@@ -8234,6 +8234,14 @@ operator|.
 name|getContainerID
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -8250,6 +8258,7 @@ name|getType
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|ContainerState
 name|oldState
 init|=

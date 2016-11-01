@@ -216,6 +216,14 @@ literal|"Trying to access process id from a null path"
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -225,6 +233,7 @@ operator|+
 name|path
 argument_list|)
 expr_stmt|;
+block|}
 name|String
 name|processId
 init|=
@@ -410,6 +419,14 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -431,6 +448,7 @@ operator|+
 name|path
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|processId
 return|;
