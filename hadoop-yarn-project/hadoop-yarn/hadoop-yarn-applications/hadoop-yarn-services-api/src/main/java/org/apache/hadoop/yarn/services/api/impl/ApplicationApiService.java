@@ -396,20 +396,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
-operator|.
-name|PathNotFoundException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|security
 operator|.
 name|UserGroupInformation
@@ -6001,6 +5987,26 @@ argument_list|,
 literal|"state"
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|appState
+operator|==
+literal|null
+condition|)
+block|{
+comment|// consider that app is still in ACCEPTED state
+name|appState
+operator|=
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|StateValues
+operator|.
+name|STATE_INCOMPLETE
+argument_list|)
+expr_stmt|;
+block|}
 switch|switch
 condition|(
 name|Integer
@@ -7001,6 +7007,25 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
+name|BadClusterStateException
+name|e
+parameter_list|)
+block|{
+name|logger
+operator|.
+name|warn
+argument_list|(
+literal|"Application not running yet"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+return|return
+name|EMPTY_JSON_OBJECT
+return|;
+block|}
+catch|catch
+parameter_list|(
 name|Exception
 name|e
 parameter_list|)
@@ -7152,7 +7177,7 @@ catch|catch
 parameter_list|(
 name|FileNotFoundException
 decl||
-name|PathNotFoundException
+name|NotFoundException
 name|e
 parameter_list|)
 block|{
@@ -7666,29 +7691,34 @@ comment|// Although slider client stop returns immediately, it usually takes a
 comment|// little longer for it to stop from YARN point of view. Slider destroy
 comment|// fails if the application is not completely stopped. Hence the need to
 comment|// call destroy in a controlled loop few times (only if exit code is
-comment|// EXIT_APPLICATION_IN_USE), before giving up.
+comment|// EXIT_APPLICATION_IN_USE or EXIT_INSTANCE_EXISTS), before giving up.
 name|boolean
 name|keepTrying
 init|=
 literal|true
 decl_stmt|;
 name|int
-name|maxDeleteAttempt
+name|maxDeleteAttempts
 init|=
 literal|5
 decl_stmt|;
 name|int
-name|deleteAttempt
+name|deleteAttempts
 init|=
 literal|0
+decl_stmt|;
+name|int
+name|sleepIntervalInMillis
+init|=
+literal|500
 decl_stmt|;
 while|while
 condition|(
 name|keepTrying
 operator|&&
-name|deleteAttempt
+name|deleteAttempts
 operator|<
-name|maxDeleteAttempt
+name|maxDeleteAttempts
 condition|)
 block|{
 try|try
@@ -7709,15 +7739,6 @@ name|SliderException
 name|e
 parameter_list|)
 block|{
-name|logger
-operator|.
-name|error
-argument_list|(
-literal|"Delete application threw exception"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|e
@@ -7728,18 +7749,60 @@ operator|==
 name|SliderExitCodes
 operator|.
 name|EXIT_APPLICATION_IN_USE
+operator|||
+name|e
+operator|.
+name|getExitCode
+argument_list|()
+operator|==
+name|SliderExitCodes
+operator|.
+name|EXIT_INSTANCE_EXISTS
 condition|)
 block|{
-name|deleteAttempt
+name|deleteAttempts
 operator|++
 expr_stmt|;
+comment|// If we used up all the allowed delete attempts, let's log it as
+comment|// error before giving up. Otherwise log as warn.
+if|if
+condition|(
+name|deleteAttempts
+operator|<
+name|maxDeleteAttempts
+condition|)
+block|{
+name|logger
+operator|.
+name|warn
+argument_list|(
+literal|"Application not in stopped state, waiting for {}ms"
+operator|+
+literal|" before trying delete again"
+argument_list|,
+name|sleepIntervalInMillis
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|logger
+operator|.
+name|error
+argument_list|(
+literal|"Delete application failed"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 try|try
 block|{
 name|Thread
 operator|.
 name|sleep
 argument_list|(
-literal|500
+name|sleepIntervalInMillis
 argument_list|)
 expr_stmt|;
 block|}
@@ -7752,6 +7815,15 @@ block|{           }
 block|}
 else|else
 block|{
+name|logger
+operator|.
+name|error
+argument_list|(
+literal|"Delete application threw exception"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 return|return
 name|Response
 operator|.
