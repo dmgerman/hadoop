@@ -154,7 +154,7 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-DECL|method|FederationPolicyInitializationContext ( SubClusterPolicyConfiguration policy, SubClusterResolver resolver, FederationStateStoreFacade storeFacade)
+DECL|method|FederationPolicyInitializationContext ( SubClusterPolicyConfiguration policy, SubClusterResolver resolver, FederationStateStoreFacade storeFacade, SubClusterId home)
 specifier|public
 name|FederationPolicyInitializationContext
 parameter_list|(
@@ -166,6 +166,9 @@ name|resolver
 parameter_list|,
 name|FederationStateStoreFacade
 name|storeFacade
+parameter_list|,
+name|SubClusterId
+name|home
 parameter_list|)
 block|{
 name|this
@@ -185,6 +188,12 @@ operator|.
 name|federationStateStoreFacade
 operator|=
 name|storeFacade
+expr_stmt|;
+name|this
+operator|.
+name|homeSubcluster
+operator|=
+name|home
 expr_stmt|;
 block|}
 comment|/**    * Getter for the {@link SubClusterPolicyConfiguration}.    *    * @return the {@link SubClusterPolicyConfiguration} to be used for    *         initialization.    */

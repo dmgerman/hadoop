@@ -959,6 +959,13 @@ argument_list|()
 argument_list|,
 name|initFacade
 argument_list|()
+argument_list|,
+name|SubClusterId
+operator|.
+name|newInstance
+argument_list|(
+literal|"homesubcluster"
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|initializePolicyContext
