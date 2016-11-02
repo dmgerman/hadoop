@@ -12446,6 +12446,13 @@ name|HashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|lifetime
+operator|>=
+literal|0
+condition|)
+block|{
 name|appTimeout
 operator|.
 name|put
@@ -12457,6 +12464,7 @@ argument_list|,
 name|lifetime
 argument_list|)
 expr_stmt|;
+block|}
 name|amLauncher
 operator|.
 name|submissionContext
