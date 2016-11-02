@@ -322,6 +322,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|slf4j
@@ -356,6 +370,20 @@ end_import
 
 begin_import
 import|import static
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+import|;
+end_import
+
+begin_import
+import|import static
 name|org
 operator|.
 name|apache
@@ -367,6 +395,22 @@ operator|.
 name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_REPL_QUEUE_THRESHOLD_PCT_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_SAFEMODE_EXTENSION_DEFAULT
 import|;
 end_import
 
@@ -609,10 +653,11 @@ name|long
 name|blockReplQueueThreshold
 decl_stmt|;
 comment|/** How long (in ms) is the extension period. */
+annotation|@
+name|VisibleForTesting
 DECL|field|extension
-specifier|private
 specifier|final
-name|int
+name|long
 name|extension
 decl_stmt|;
 comment|/** Timestamp of the first time when thresholds are met. */
@@ -815,11 +860,13 @@ name|extension
 operator|=
 name|conf
 operator|.
-name|getInt
+name|getTimeDuration
 argument_list|(
 name|DFS_NAMENODE_SAFEMODE_EXTENSION_KEY
 argument_list|,
-literal|0
+name|DFS_NAMENODE_SAFEMODE_EXTENSION_DEFAULT
+argument_list|,
+name|MILLISECONDS
 argument_list|)
 expr_stmt|;
 name|this
