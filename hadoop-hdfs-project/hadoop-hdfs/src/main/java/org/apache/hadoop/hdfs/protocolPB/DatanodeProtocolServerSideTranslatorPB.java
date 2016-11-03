@@ -1125,6 +1125,16 @@ operator|.
 name|getSlowDisksList
 argument_list|()
 argument_list|)
+argument_list|,
+name|PBHelper
+operator|.
+name|convertBlksMovResults
+argument_list|(
+name|request
+operator|.
+name|getBlksMovementResultsList
+argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

@@ -23366,6 +23366,16 @@ name|id
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|getStoragePolicySatisfier ()
+specifier|public
+name|StoragePolicySatisfier
+name|getStoragePolicySatisfier
+parameter_list|()
+block|{
+return|return
+name|sps
+return|;
+block|}
 block|}
 end_class
 

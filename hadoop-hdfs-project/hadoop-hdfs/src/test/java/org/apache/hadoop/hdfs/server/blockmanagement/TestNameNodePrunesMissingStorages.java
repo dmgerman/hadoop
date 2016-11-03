@@ -336,6 +336,24 @@ name|server
 operator|.
 name|protocol
 operator|.
+name|BlocksStorageMovementResult
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
 name|DatanodeRegistration
 import|;
 end_import
@@ -941,6 +959,12 @@ argument_list|,
 name|SlowDiskReports
 operator|.
 name|EMPTY_REPORT
+argument_list|,
+operator|new
+name|BlocksStorageMovementResult
+index|[
+literal|0
+index|]
 argument_list|)
 expr_stmt|;
 comment|// Check that the missing storage was pruned.

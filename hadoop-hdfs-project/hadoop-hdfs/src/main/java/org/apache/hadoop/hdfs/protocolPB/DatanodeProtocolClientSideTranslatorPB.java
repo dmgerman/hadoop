@@ -532,6 +532,24 @@ name|server
 operator|.
 name|protocol
 operator|.
+name|BlocksStorageMovementResult
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
 name|DatanodeCommand
 import|;
 end_import
@@ -1175,7 +1193,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|sendHeartbeat (DatanodeRegistration registration, StorageReport[] reports, long cacheCapacity, long cacheUsed, int xmitsInProgress, int xceiverCount, int failedVolumes, VolumeFailureSummary volumeFailureSummary, boolean requestFullBlockReportLease, @Nonnull SlowPeerReports slowPeers, @Nonnull SlowDiskReports slowDisks)
+DECL|method|sendHeartbeat (DatanodeRegistration registration, StorageReport[] reports, long cacheCapacity, long cacheUsed, int xmitsInProgress, int xceiverCount, int failedVolumes, VolumeFailureSummary volumeFailureSummary, boolean requestFullBlockReportLease, @Nonnull SlowPeerReports slowPeers, @Nonnull SlowDiskReports slowDisks, BlocksStorageMovementResult[] blksMovementResults)
 specifier|public
 name|HeartbeatResponse
 name|sendHeartbeat
@@ -1217,6 +1235,10 @@ annotation|@
 name|Nonnull
 name|SlowDiskReports
 name|slowDisks
+parameter_list|,
+name|BlocksStorageMovementResult
+index|[]
+name|blksMovementResults
 parameter_list|)
 throws|throws
 name|IOException
@@ -1365,6 +1387,19 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Adding blocks movement results to the heart beat request.
+name|builder
+operator|.
+name|addAllBlksMovementResults
+argument_list|(
+name|PBHelper
+operator|.
+name|convertBlksMovResults
+argument_list|(
+name|blksMovementResults
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|HeartbeatResponseProto
 name|resp
 decl_stmt|;
