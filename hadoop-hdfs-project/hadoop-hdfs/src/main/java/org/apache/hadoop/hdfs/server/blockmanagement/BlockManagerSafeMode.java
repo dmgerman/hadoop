@@ -336,6 +336,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|slf4j
@@ -782,7 +796,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"The threshold value should't be greater than 1, threshold: {}"
+literal|"The threshold value shouldn't be greater than 1, "
+operator|+
+literal|"threshold: {}"
 argument_list|,
 name|threshold
 argument_list|)
@@ -955,9 +971,21 @@ name|areThresholdsMet
 argument_list|()
 condition|)
 block|{
+name|boolean
+name|exitResult
+init|=
 name|leaveSafeMode
 argument_list|(
-literal|true
+literal|false
+argument_list|)
+decl_stmt|;
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|exitResult
+argument_list|,
+literal|"Failed to leave safe mode."
 argument_list|)
 expr_stmt|;
 block|}
