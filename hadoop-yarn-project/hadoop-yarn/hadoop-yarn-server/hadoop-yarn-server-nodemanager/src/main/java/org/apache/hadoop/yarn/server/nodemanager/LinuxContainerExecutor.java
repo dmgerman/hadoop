@@ -1536,6 +1536,15 @@ name|ContainerExecutionException
 name|e
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Failed to initialize linux container runtime(s)!"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 throw|throw
 operator|new
 name|IOException
