@@ -170,6 +170,31 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|testGlobStatusThrowsExceptionForUnreadableDir ()
+specifier|public
+name|void
+name|testGlobStatusThrowsExceptionForUnreadableDir
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Skipping testGlobStatusThrowsExceptionForUnreadableDir since WASB"
+operator|+
+literal|" doesn't honor directory permissions."
+argument_list|)
+expr_stmt|;
+name|assumeNotWindows
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|getTestRootDir ()
 specifier|public
 name|String
