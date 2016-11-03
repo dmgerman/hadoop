@@ -7282,6 +7282,18 @@ name|TIMELINE_SERVICE_PREFIX
 operator|+
 literal|"hbase.coprocessor.app-final-value-retention-milliseconds"
 decl_stmt|;
+comment|/**    * The name for setting that points to an optional HBase configuration    * (hbase-site.xml file) with settings that will override the ones found on    * the classpath.    */
+DECL|field|TIMELINE_SERVICE_HBASE_CONFIGURATION_FILE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_HBASE_CONFIGURATION_FILE
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"hbase.configuration.file"
+decl_stmt|;
 comment|/**    * The setting that controls how long the final value of a metric of a    * completed app is retained before merging into the flow sum. Up to this time    * after an application is completed out-of-order values that arrive can be    * recognized and discarded at the cost of increased storage.    */
 DECL|field|DEFAULT_APP_FINAL_VALUE_RETENTION_THRESHOLD
 specifier|public
