@@ -16154,6 +16154,35 @@ block|{
 name|checkSuperuserPrivilege
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|getStartupOption
+argument_list|(
+name|getConf
+argument_list|()
+argument_list|)
+operator|!=
+name|StartupOption
+operator|.
+name|REGULAR
+condition|)
+block|{
+throw|throw
+operator|new
+name|DiskBalancerException
+argument_list|(
+literal|"Datanode is in special state, e.g. Upgrade/Rollback etc."
+operator|+
+literal|" Disk balancing not permitted."
+argument_list|,
+name|DiskBalancerException
+operator|.
+name|Result
+operator|.
+name|DATANODE_STATUS_NOT_REGULAR
+argument_list|)
+throw|;
+block|}
 comment|// TODO : Support force option
 name|this
 operator|.
