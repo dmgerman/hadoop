@@ -5625,7 +5625,11 @@ block|{
 operator|new
 name|StorageReceivedDeletedBlocks
 argument_list|(
+operator|new
+name|DatanodeStorage
+argument_list|(
 name|targetStorageID
+argument_list|)
 argument_list|,
 name|rdBlocks
 argument_list|)
@@ -6436,6 +6440,9 @@ block|{
 operator|new
 name|StorageReceivedDeletedBlocks
 argument_list|(
+operator|new
+name|DatanodeStorage
+argument_list|(
 name|datanodes
 index|[
 name|dnIdx
@@ -6445,6 +6452,7 @@ name|storage
 operator|.
 name|getStorageID
 argument_list|()
+argument_list|)
 argument_list|,
 name|rdBlocks
 argument_list|)

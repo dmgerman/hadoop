@@ -748,10 +748,14 @@ block|{
 operator|new
 name|StorageReceivedDeletedBlocks
 argument_list|(
+operator|new
+name|DatanodeStorage
+argument_list|(
 name|reg
 operator|.
 name|getDatanodeUuid
 argument_list|()
+argument_list|)
 argument_list|,
 name|blocks
 argument_list|)

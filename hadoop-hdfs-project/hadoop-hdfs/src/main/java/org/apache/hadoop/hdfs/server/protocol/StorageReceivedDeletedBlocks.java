@@ -52,6 +52,7 @@ name|ReceivedDeletedBlockInfo
 index|[]
 name|blocks
 decl_stmt|;
+comment|/**    * @deprecated Use {@link #getStorage()} instead    */
 annotation|@
 name|Deprecated
 DECL|method|getStorageID ()
@@ -88,6 +89,7 @@ return|return
 name|blocks
 return|;
 block|}
+comment|/**    * @deprecated Use {@link #StorageReceivedDeletedBlocks(    * DatanodeStorage, ReceivedDeletedBlockInfo[])} instead    */
 annotation|@
 name|Deprecated
 DECL|method|StorageReceivedDeletedBlocks (final String storageID, final ReceivedDeletedBlockInfo[] blocks)
