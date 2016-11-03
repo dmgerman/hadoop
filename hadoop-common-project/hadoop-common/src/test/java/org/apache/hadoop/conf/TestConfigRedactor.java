@@ -137,6 +137,8 @@ literal|"ssl.server.keystore.keypassword"
 argument_list|,
 literal|"ssl.server.keystore.password"
 argument_list|,
+literal|"httpfs.ssl.keystore.pass"
+argument_list|,
 literal|"hadoop.security.sensitive-config-keys"
 argument_list|)
 decl_stmt|;
@@ -188,6 +190,8 @@ argument_list|,
 literal|"dfs.replication"
 argument_list|,
 literal|"ssl.server.keystore.location"
+argument_list|,
+literal|"httpfs.config.dir"
 argument_list|,
 literal|"hadoop.security.credstore.java-keystore-provider.password-file"
 argument_list|)

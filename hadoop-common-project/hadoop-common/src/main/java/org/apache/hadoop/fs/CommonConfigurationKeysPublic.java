@@ -1597,7 +1597,15 @@ specifier|final
 name|String
 name|HADOOP_SECURITY_SENSITIVE_CONFIG_KEYS_DEFAULT
 init|=
+literal|"secret$"
+operator|+
+literal|","
+operator|+
 literal|"password$"
+operator|+
+literal|","
+operator|+
+literal|"ssl.keystore.pass$"
 operator|+
 literal|","
 operator|+
