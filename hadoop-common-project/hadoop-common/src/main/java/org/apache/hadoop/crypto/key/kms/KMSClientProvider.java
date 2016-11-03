@@ -893,7 +893,9 @@ specifier|final
 name|String
 name|TOKEN_KIND_STR
 init|=
-literal|"kms-dt"
+name|KMSDelegationToken
+operator|.
+name|TOKEN_KIND_STR
 decl_stmt|;
 DECL|field|TOKEN_KIND
 specifier|public
@@ -902,11 +904,9 @@ specifier|final
 name|Text
 name|TOKEN_KIND
 init|=
-operator|new
-name|Text
-argument_list|(
-name|TOKEN_KIND_STR
-argument_list|)
+name|KMSDelegationToken
+operator|.
+name|TOKEN_KIND
 decl_stmt|;
 DECL|field|SCHEME_NAME
 specifier|public

@@ -64,7 +64,7 @@ name|key
 operator|.
 name|kms
 operator|.
-name|KMSClientProvider
+name|KMSDelegationToken
 import|;
 end_import
 
@@ -497,7 +497,7 @@ name|DelegationTokenAuthenticationHandler
 operator|.
 name|TOKEN_KIND
 argument_list|,
-name|KMSClientProvider
+name|KMSDelegationToken
 operator|.
 name|TOKEN_KIND_STR
 argument_list|)

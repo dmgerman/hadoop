@@ -218,6 +218,24 @@ name|key
 operator|.
 name|kms
 operator|.
+name|KMSDelegationToken
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|crypto
+operator|.
+name|key
+operator|.
+name|kms
+operator|.
 name|LoadBalancingKMSClientProvider
 import|;
 end_import
@@ -11421,7 +11439,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-name|KMSClientProvider
+name|KMSDelegationToken
 operator|.
 name|TOKEN_KIND
 argument_list|,
@@ -11464,7 +11482,7 @@ argument_list|()
 operator|.
 name|equals
 argument_list|(
-name|KMSClientProvider
+name|KMSDelegationToken
 operator|.
 name|TOKEN_KIND
 argument_list|)
@@ -11636,7 +11654,7 @@ argument_list|()
 operator|.
 name|equals
 argument_list|(
-name|KMSClientProvider
+name|KMSDelegationToken
 operator|.
 name|TOKEN_KIND
 argument_list|)
@@ -11766,7 +11784,7 @@ argument_list|()
 operator|.
 name|equals
 argument_list|(
-name|KMSClientProvider
+name|KMSDelegationToken
 operator|.
 name|TOKEN_KIND
 argument_list|)
@@ -12114,7 +12132,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-name|KMSClientProvider
+name|KMSDelegationToken
 operator|.
 name|TOKEN_KIND
 argument_list|,
@@ -12391,7 +12409,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-name|KMSClientProvider
+name|KMSDelegationToken
 operator|.
 name|TOKEN_KIND
 argument_list|,
@@ -12440,7 +12458,7 @@ argument_list|()
 operator|.
 name|equals
 argument_list|(
-name|KMSClientProvider
+name|KMSDelegationToken
 operator|.
 name|TOKEN_KIND
 argument_list|)
@@ -12541,7 +12559,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-name|KMSClientProvider
+name|KMSDelegationToken
 operator|.
 name|TOKEN_KIND
 argument_list|,
