@@ -1075,7 +1075,9 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
-return|return
+name|URI
+name|uri
+init|=
 name|URI
 operator|.
 name|create
@@ -1092,6 +1094,29 @@ name|DEFAULT_FS
 argument_list|)
 argument_list|)
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|uri
+operator|.
+name|getScheme
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"No scheme in default FS: "
+operator|+
+name|uri
+argument_list|)
+throw|;
+block|}
+return|return
+name|uri
 return|;
 block|}
 comment|/** Set the default filesystem URI in a configuration.    * @param conf the configuration to alter    * @param uri the new default filesystem uri    */
