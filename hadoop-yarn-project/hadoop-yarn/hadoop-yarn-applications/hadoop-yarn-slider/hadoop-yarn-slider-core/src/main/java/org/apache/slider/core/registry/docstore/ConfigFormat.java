@@ -20,6 +20,16 @@ name|docstore
 package|;
 end_package
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Locale
+import|;
+end_import
+
 begin_enum
 DECL|enum|ConfigFormat
 specifier|public
@@ -140,6 +150,13 @@ operator|.
 name|equals
 argument_list|(
 name|type
+operator|.
+name|toLowerCase
+argument_list|(
+name|Locale
+operator|.
+name|ENGLISH
+argument_list|)
 argument_list|)
 condition|)
 block|{

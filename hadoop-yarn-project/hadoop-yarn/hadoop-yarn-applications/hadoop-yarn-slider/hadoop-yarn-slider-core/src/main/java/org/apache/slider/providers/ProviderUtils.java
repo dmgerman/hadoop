@@ -2977,7 +2977,7 @@ name|BadConfigException
 argument_list|(
 literal|"Config format "
 operator|+
-name|configFormat
+name|configFileType
 operator|+
 literal|" doesn't exist"
 argument_list|)
