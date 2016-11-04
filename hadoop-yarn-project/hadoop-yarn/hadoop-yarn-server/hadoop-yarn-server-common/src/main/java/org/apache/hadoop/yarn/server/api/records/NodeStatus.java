@@ -510,25 +510,25 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|getQueuedContainersStatus ()
 specifier|public
 specifier|abstract
-name|QueuedContainersStatus
-name|getQueuedContainersStatus
+name|OpportunisticContainersStatus
+DECL|method|getOpportunisticContainersStatus ()
+name|getOpportunisticContainersStatus
 parameter_list|()
 function_decl|;
 annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|setQueuedContainersStatus ( QueuedContainersStatus queuedContainersStatus)
+DECL|method|setOpportunisticContainersStatus ( OpportunisticContainersStatus opportunisticContainersStatus)
 specifier|public
 specifier|abstract
 name|void
-name|setQueuedContainersStatus
+name|setOpportunisticContainersStatus
 parameter_list|(
-name|QueuedContainersStatus
-name|queuedContainersStatus
+name|OpportunisticContainersStatus
+name|opportunisticContainersStatus
 parameter_list|)
 function_decl|;
 block|}

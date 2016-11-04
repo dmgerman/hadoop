@@ -1814,6 +1814,20 @@ name|DEFAULT_MR_NUM_OPPORTUNISTIC_MAPS_PER_100
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|this
+operator|.
+name|scheduledRequests
+operator|.
+name|getNumOpportunisticMapsPer100
+argument_list|()
+operator|+
+literal|"% of the mappers will be scheduled using OPPORTUNISTIC containers"
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -5745,6 +5759,17 @@ name|numOpportunisticMapsPer100
 operator|=
 name|numMaps
 expr_stmt|;
+block|}
+DECL|method|getNumOpportunisticMapsPer100 ()
+name|int
+name|getNumOpportunisticMapsPer100
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|numOpportunisticMapsPer100
+return|;
 block|}
 annotation|@
 name|VisibleForTesting

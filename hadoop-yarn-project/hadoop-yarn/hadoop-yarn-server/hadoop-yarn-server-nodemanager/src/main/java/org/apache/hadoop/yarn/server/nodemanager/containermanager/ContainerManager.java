@@ -100,6 +100,26 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|OpportunisticContainersStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|nodemanager
 operator|.
 name|ContainerManagerEvent
@@ -150,6 +170,11 @@ block|{
 DECL|method|getContainersMonitor ()
 name|ContainersMonitor
 name|getContainersMonitor
+parameter_list|()
+function_decl|;
+DECL|method|getOpportunisticContainersStatus ()
+name|OpportunisticContainersStatus
+name|getOpportunisticContainersStatus
 parameter_list|()
 function_decl|;
 DECL|method|updateQueuingLimit (ContainerQueuingLimit queuingLimit)

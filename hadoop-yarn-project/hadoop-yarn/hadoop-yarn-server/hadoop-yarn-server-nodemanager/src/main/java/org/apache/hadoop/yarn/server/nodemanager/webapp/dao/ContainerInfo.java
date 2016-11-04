@@ -291,6 +291,11 @@ specifier|protected
 name|long
 name|totalVCoresNeeded
 decl_stmt|;
+DECL|field|executionType
+specifier|private
+name|String
+name|executionType
+decl_stmt|;
 DECL|field|containerLogsLink
 specifier|protected
 name|String
@@ -531,6 +536,21 @@ expr_stmt|;
 block|}
 name|this
 operator|.
+name|executionType
+operator|=
+name|container
+operator|.
+name|getContainerTokenIdentifier
+argument_list|()
+operator|.
+name|getExecutionType
+argument_list|()
+operator|.
+name|name
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
 name|containerLogsShortLink
 operator|=
 name|ujoin
@@ -733,6 +753,18 @@ return|return
 name|this
 operator|.
 name|totalVCoresNeeded
+return|;
+block|}
+DECL|method|getExecutionType ()
+specifier|public
+name|String
+name|getExecutionType
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|executionType
 return|;
 block|}
 DECL|method|getContainerLogFiles ()

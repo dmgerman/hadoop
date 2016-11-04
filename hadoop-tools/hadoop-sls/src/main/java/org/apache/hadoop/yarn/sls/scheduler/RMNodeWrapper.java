@@ -228,7 +228,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|QueuedContainersStatus
+name|OpportunisticContainersStatus
 import|;
 end_import
 
@@ -788,10 +788,10 @@ operator|.
 name|EMPTY_LIST
 return|;
 block|}
-DECL|method|getQueuedContainersStatus ()
+DECL|method|getOpportunisticContainersStatus ()
 specifier|public
-name|QueuedContainersStatus
-name|getQueuedContainersStatus
+name|OpportunisticContainersStatus
+name|getOpportunisticContainersStatus
 parameter_list|()
 block|{
 return|return

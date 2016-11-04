@@ -872,7 +872,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|QueuedContainersStatus
+name|OpportunisticContainersStatus
 import|;
 end_import
 
@@ -3072,9 +3072,9 @@ argument_list|)
 decl_stmt|;
 name|nodeStatus
 operator|.
-name|setQueuedContainersStatus
+name|setOpportunisticContainersStatus
 argument_list|(
-name|getQueuedContainerStatus
+name|getOpportunisticContainersStatus
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3082,38 +3082,26 @@ return|return
 name|nodeStatus
 return|;
 block|}
-DECL|method|getQueuedContainerStatus ()
+comment|/**    * Get the status of the OPPORTUNISTIC containers.    * @return the status of the OPPORTUNISTIC containers.    */
+DECL|method|getOpportunisticContainersStatus ()
 specifier|private
-name|QueuedContainersStatus
-name|getQueuedContainerStatus
+name|OpportunisticContainersStatus
+name|getOpportunisticContainersStatus
 parameter_list|()
 block|{
-name|QueuedContainersStatus
+name|OpportunisticContainersStatus
 name|status
 init|=
-name|QueuedContainersStatus
-operator|.
-name|newInstance
-argument_list|()
-decl_stmt|;
-name|status
-operator|.
-name|setWaitQueueLength
-argument_list|(
 name|this
 operator|.
 name|context
 operator|.
-name|getQueuingContext
+name|getContainerManager
 argument_list|()
 operator|.
-name|getQueuedContainers
+name|getOpportunisticContainersStatus
 argument_list|()
-operator|.
-name|size
-argument_list|()
-argument_list|)
-expr_stmt|;
+decl_stmt|;
 return|return
 name|status
 return|;

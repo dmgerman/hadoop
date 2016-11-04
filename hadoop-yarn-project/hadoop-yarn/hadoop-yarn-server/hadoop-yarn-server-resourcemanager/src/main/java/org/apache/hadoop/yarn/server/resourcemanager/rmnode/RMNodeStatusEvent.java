@@ -188,7 +188,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|QueuedContainersStatus
+name|OpportunisticContainersStatus
 import|;
 end_import
 
@@ -442,10 +442,10 @@ operator|.
 name|logAggregationReportsForApps
 return|;
 block|}
-DECL|method|getContainerQueueInfo ()
+DECL|method|getOpportunisticContainersStatus ()
 specifier|public
-name|QueuedContainersStatus
-name|getContainerQueueInfo
+name|OpportunisticContainersStatus
+name|getOpportunisticContainersStatus
 parameter_list|()
 block|{
 return|return
@@ -453,7 +453,7 @@ name|this
 operator|.
 name|nodeStatus
 operator|.
-name|getQueuedContainersStatus
+name|getOpportunisticContainersStatus
 argument_list|()
 return|;
 block|}

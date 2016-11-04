@@ -78,7 +78,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|QueuedContainersStatus
+name|OpportunisticContainersStatus
 import|;
 end_import
 
@@ -1440,14 +1440,14 @@ argument_list|(
 name|nID1
 argument_list|)
 expr_stmt|;
-name|QueuedContainersStatus
+name|OpportunisticContainersStatus
 name|status1
 init|=
 name|Mockito
 operator|.
 name|mock
 argument_list|(
-name|QueuedContainersStatus
+name|OpportunisticContainersStatus
 operator|.
 name|class
 argument_list|)
@@ -1488,7 +1488,7 @@ name|when
 argument_list|(
 name|node1
 operator|.
-name|getQueuedContainersStatus
+name|getOpportunisticContainersStatus
 argument_list|()
 argument_list|)
 operator|.

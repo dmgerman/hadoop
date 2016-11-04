@@ -660,7 +660,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|QueuedContainersStatus
+name|OpportunisticContainersStatus
 import|;
 end_import
 
@@ -1317,10 +1317,10 @@ name|ResourceUtilization
 name|nodeUtilization
 decl_stmt|;
 comment|/* Container Queue Information for the node.. Used by Distributed Scheduler */
-DECL|field|queuedContainersStatus
+DECL|field|opportunisticContainersStatus
 specifier|private
-name|QueuedContainersStatus
-name|queuedContainersStatus
+name|OpportunisticContainersStatus
+name|opportunisticContainersStatus
 decl_stmt|;
 DECL|field|containerAllocationExpirer
 specifier|private
@@ -6214,11 +6214,11 @@ name|event
 decl_stmt|;
 name|rmNode
 operator|.
-name|setQueuedContainersStatus
+name|setOpportunisticContainersStatus
 argument_list|(
 name|statusEvent
 operator|.
-name|getContainerQueueInfo
+name|getOpportunisticContainersStatus
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -7650,10 +7650,10 @@ operator|.
 name|originalTotalCapability
 return|;
 block|}
-DECL|method|getQueuedContainersStatus ()
+DECL|method|getOpportunisticContainersStatus ()
 specifier|public
-name|QueuedContainersStatus
-name|getQueuedContainersStatus
+name|OpportunisticContainersStatus
+name|getOpportunisticContainersStatus
 parameter_list|()
 block|{
 name|this
@@ -7668,7 +7668,7 @@ block|{
 return|return
 name|this
 operator|.
-name|queuedContainersStatus
+name|opportunisticContainersStatus
 return|;
 block|}
 finally|finally
@@ -7682,13 +7682,13 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|setQueuedContainersStatus (QueuedContainersStatus queuedContainersStatus)
+DECL|method|setOpportunisticContainersStatus ( OpportunisticContainersStatus opportunisticContainersStatus)
 specifier|public
 name|void
-name|setQueuedContainersStatus
+name|setOpportunisticContainersStatus
 parameter_list|(
-name|QueuedContainersStatus
-name|queuedContainersStatus
+name|OpportunisticContainersStatus
+name|opportunisticContainersStatus
 parameter_list|)
 block|{
 name|this
@@ -7702,9 +7702,9 @@ try|try
 block|{
 name|this
 operator|.
-name|queuedContainersStatus
+name|opportunisticContainersStatus
 operator|=
-name|queuedContainersStatus
+name|opportunisticContainersStatus
 expr_stmt|;
 block|}
 finally|finally

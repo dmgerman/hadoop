@@ -576,6 +576,16 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
+literal|"ExecutionType"
+argument_list|,
+name|info
+operator|.
+name|getExecutionType
+argument_list|()
+argument_list|)
+operator|.
+name|_
+argument_list|(
 literal|"logs"
 argument_list|,
 name|info

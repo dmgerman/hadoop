@@ -1218,6 +1218,26 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|OpportunisticContainersStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|nodemanager
 operator|.
 name|CMgrCompletedAppsEvent
@@ -9333,6 +9353,18 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getOpportunisticContainersStatus ()
+specifier|public
+name|OpportunisticContainersStatus
+name|getOpportunisticContainersStatus
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|updateQueuingLimit (ContainerQueuingLimit queuingLimit)
 specifier|public
 name|void
@@ -9346,7 +9378,7 @@ name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"Implementation does not support queuing of Containers !!"
+literal|"Implementation does not support queuing of Containers!!"
 argument_list|)
 expr_stmt|;
 block|}

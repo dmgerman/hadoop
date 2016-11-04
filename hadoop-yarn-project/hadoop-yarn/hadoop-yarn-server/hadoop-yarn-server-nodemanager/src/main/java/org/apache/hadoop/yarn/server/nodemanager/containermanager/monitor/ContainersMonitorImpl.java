@@ -1592,6 +1592,7 @@ expr_stmt|;
 block|}
 comment|/**      * @return Virtual memory limit for the process tree in bytes      */
 DECL|method|getVmemLimit ()
+specifier|public
 specifier|synchronized
 name|long
 name|getVmemLimit
@@ -1605,6 +1606,7 @@ return|;
 block|}
 comment|/**      * @return Physical memory limit for the process tree in bytes      */
 DECL|method|getPmemLimit ()
+specifier|public
 specifier|synchronized
 name|long
 name|getPmemLimit
@@ -1618,6 +1620,7 @@ return|;
 block|}
 comment|/**      * @return Number of cpu vcores assigned      */
 DECL|method|getCpuVcores ()
+specifier|public
 specifier|synchronized
 name|int
 name|getCpuVcores

@@ -138,7 +138,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|QueuedContainersStatus
+name|OpportunisticContainersStatus
 import|;
 end_import
 
@@ -999,18 +999,18 @@ name|getNodeID
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|QueuedContainersStatus
-name|queuedContainersStatus
+name|OpportunisticContainersStatus
+name|opportunisticContainersStatus
 init|=
 name|rmNode
 operator|.
-name|getQueuedContainersStatus
+name|getOpportunisticContainersStatus
 argument_list|()
 decl_stmt|;
 name|int
 name|estimatedQueueWaitTime
 init|=
-name|queuedContainersStatus
+name|opportunisticContainersStatus
 operator|.
 name|getEstimatedQueueWaitTime
 argument_list|()
@@ -1018,7 +1018,7 @@ decl_stmt|;
 name|int
 name|waitQueueLength
 init|=
-name|queuedContainersStatus
+name|opportunisticContainersStatus
 operator|.
 name|getWaitQueueLength
 argument_list|()

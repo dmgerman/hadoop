@@ -1664,6 +1664,15 @@ name|NullRMNodeLabelsManager
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|rmContext
+operator|.
+name|setYarnConfiguration
+argument_list|(
+operator|new
+name|YarnConfiguration
+argument_list|()
+argument_list|)
+expr_stmt|;
 return|return
 name|rmContext
 return|;

@@ -913,7 +913,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The OpportunisticContainerAllocatorAMService is started instead of the  * ApplicationMasterService if distributed scheduling is enabled for the YARN  * cluster.  * It extends the functionality of the ApplicationMasterService by servicing  * clients (AMs and AMRMProxy request interceptors) that understand the  * DistributedSchedulingProtocol.  */
+comment|/**  * The OpportunisticContainerAllocatorAMService is started instead of the  * ApplicationMasterService if opportunistic scheduling is enabled for the YARN  * cluster (either centralized or distributed opportunistic scheduling).  *  * It extends the functionality of the ApplicationMasterService by servicing  * clients (AMs and AMRMProxy request interceptors) that understand the  * DistributedSchedulingProtocol.  */
 end_comment
 
 begin_class

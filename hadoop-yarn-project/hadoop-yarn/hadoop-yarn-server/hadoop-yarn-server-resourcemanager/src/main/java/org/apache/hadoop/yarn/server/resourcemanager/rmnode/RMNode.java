@@ -218,7 +218,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|QueuedContainersStatus
+name|OpportunisticContainersStatus
 import|;
 end_import
 
@@ -423,9 +423,9 @@ argument_list|>
 name|pullNewlyIncreasedContainers
 parameter_list|()
 function_decl|;
-DECL|method|getQueuedContainersStatus ()
-name|QueuedContainersStatus
-name|getQueuedContainersStatus
+DECL|method|getOpportunisticContainersStatus ()
+name|OpportunisticContainersStatus
+name|getOpportunisticContainersStatus
 parameter_list|()
 function_decl|;
 DECL|method|getUntrackedTimeStamp ()

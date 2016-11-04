@@ -412,7 +412,7 @@ name|proto
 operator|.
 name|YarnServerCommonProtos
 operator|.
-name|QueuedContainersStatusProto
+name|OpportunisticContainersStatusProto
 import|;
 end_import
 
@@ -432,7 +432,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|QueuedContainersStatus
+name|OpportunisticContainersStatus
 import|;
 end_import
 
@@ -2000,11 +2000,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getQueuedContainersStatus ()
 specifier|public
 specifier|synchronized
-name|QueuedContainersStatus
-name|getQueuedContainersStatus
+name|OpportunisticContainersStatus
+DECL|method|getOpportunisticContainersStatus ()
+name|getOpportunisticContainersStatus
 parameter_list|()
 block|{
 name|NodeStatusProtoOrBuilder
@@ -2027,7 +2027,7 @@ condition|(
 operator|!
 name|p
 operator|.
-name|hasQueuedContainerStatus
+name|hasOpportunisticContainersStatus
 argument_list|()
 condition|)
 block|{
@@ -2040,21 +2040,21 @@ name|convertFromProtoFormat
 argument_list|(
 name|p
 operator|.
-name|getQueuedContainerStatus
+name|getOpportunisticContainersStatus
 argument_list|()
 argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setQueuedContainersStatus ( QueuedContainersStatus queuedContainersStatus)
+DECL|method|setOpportunisticContainersStatus ( OpportunisticContainersStatus opportunisticContainersStatus)
 specifier|public
 specifier|synchronized
 name|void
-name|setQueuedContainersStatus
+name|setOpportunisticContainersStatus
 parameter_list|(
-name|QueuedContainersStatus
-name|queuedContainersStatus
+name|OpportunisticContainersStatus
+name|opportunisticContainersStatus
 parameter_list|)
 block|{
 name|maybeInitBuilder
@@ -2062,7 +2062,7 @@ argument_list|()
 expr_stmt|;
 if|if
 condition|(
-name|queuedContainersStatus
+name|opportunisticContainersStatus
 operator|==
 literal|null
 condition|)
@@ -2071,7 +2071,7 @@ name|this
 operator|.
 name|builder
 operator|.
-name|clearQueuedContainerStatus
+name|clearOpportunisticContainersStatus
 argument_list|()
 expr_stmt|;
 return|return;
@@ -2080,11 +2080,11 @@ name|this
 operator|.
 name|builder
 operator|.
-name|setQueuedContainerStatus
+name|setOpportunisticContainersStatus
 argument_list|(
 name|convertToProtoFormat
 argument_list|(
-name|queuedContainersStatus
+name|opportunisticContainersStatus
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2283,19 +2283,19 @@ name|p
 argument_list|)
 return|;
 block|}
-DECL|method|convertToProtoFormat ( QueuedContainersStatus r)
+DECL|method|convertToProtoFormat ( OpportunisticContainersStatus r)
 specifier|private
-name|QueuedContainersStatusProto
+name|OpportunisticContainersStatusProto
 name|convertToProtoFormat
 parameter_list|(
-name|QueuedContainersStatus
+name|OpportunisticContainersStatus
 name|r
 parameter_list|)
 block|{
 return|return
 operator|(
 operator|(
-name|QueuedContainersStatusPBImpl
+name|OpportunisticContainersStatusPBImpl
 operator|)
 name|r
 operator|)
@@ -2304,18 +2304,18 @@ name|getProto
 argument_list|()
 return|;
 block|}
-DECL|method|convertFromProtoFormat ( QueuedContainersStatusProto p)
+DECL|method|convertFromProtoFormat ( OpportunisticContainersStatusProto p)
 specifier|private
-name|QueuedContainersStatus
+name|OpportunisticContainersStatus
 name|convertFromProtoFormat
 parameter_list|(
-name|QueuedContainersStatusProto
+name|OpportunisticContainersStatusProto
 name|p
 parameter_list|)
 block|{
 return|return
 operator|new
-name|QueuedContainersStatusPBImpl
+name|OpportunisticContainersStatusPBImpl
 argument_list|(
 name|p
 argument_list|)
