@@ -1753,6 +1753,16 @@ return|return
 name|vCores
 return|;
 block|}
+DECL|method|getVersion ()
+specifier|public
+name|String
+name|getVersion
+parameter_list|()
+block|{
+return|return
+name|version
+return|;
+block|}
 block|}
 end_class
 
