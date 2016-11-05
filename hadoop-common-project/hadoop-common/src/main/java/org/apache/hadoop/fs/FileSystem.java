@@ -842,6 +842,15 @@ name|TRASH_PREFIX
 init|=
 literal|".Trash"
 decl_stmt|;
+DECL|field|USER_HOME_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|USER_HOME_PREFIX
+init|=
+literal|"/user"
+decl_stmt|;
 comment|/** FileSystem cache */
 DECL|field|CACHE
 specifier|static
@@ -6218,7 +6227,9 @@ argument_list|(
 operator|new
 name|Path
 argument_list|(
-literal|"/user/"
+name|USER_HOME_PREFIX
+operator|+
+literal|"/"
 operator|+
 name|System
 operator|.

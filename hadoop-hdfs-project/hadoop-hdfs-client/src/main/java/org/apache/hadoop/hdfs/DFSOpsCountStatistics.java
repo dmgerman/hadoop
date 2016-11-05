@@ -292,6 +292,12 @@ argument_list|(
 literal|"op_get_storage_policy"
 argument_list|)
 operator|,
+DECL|enumConstant|GET_TRASH_ROOT
+name|GET_TRASH_ROOT
+argument_list|(
+literal|"op_get_trash_root"
+argument_list|)
+operator|,
 DECL|enumConstant|GET_XATTR
 name|GET_XATTR
 argument_list|(

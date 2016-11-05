@@ -160,6 +160,16 @@ operator|.
 name|HTTP_OK
 argument_list|)
 block|,
+DECL|enumConstant|GETTRASHROOT
+name|GETTRASHROOT
+argument_list|(
+literal|false
+argument_list|,
+name|HttpURLConnection
+operator|.
+name|HTTP_OK
+argument_list|)
+block|,
 DECL|enumConstant|LISTXATTRS
 name|LISTXATTRS
 argument_list|(
