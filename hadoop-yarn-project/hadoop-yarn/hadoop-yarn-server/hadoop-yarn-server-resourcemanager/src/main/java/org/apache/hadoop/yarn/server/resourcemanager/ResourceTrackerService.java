@@ -3927,6 +3927,11 @@ expr_stmt|;
 block|}
 else|else
 block|{
+synchronized|synchronized
+init|(
+name|rmApp
+init|)
+block|{
 name|AppCollectorData
 name|previousCollectorData
 init|=
@@ -3966,6 +3971,20 @@ name|collectorData
 operator|.
 name|getCollectorAddr
 argument_list|()
+operator|+
+literal|" timestamp: "
+operator|+
+name|collectorData
+operator|.
+name|getRMIdentifier
+argument_list|()
+operator|+
+literal|", "
+operator|+
+name|collectorData
+operator|.
+name|getVersion
+argument_list|()
 argument_list|)
 expr_stmt|;
 operator|(
@@ -3980,6 +3999,7 @@ argument_list|(
 name|collectorData
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}
