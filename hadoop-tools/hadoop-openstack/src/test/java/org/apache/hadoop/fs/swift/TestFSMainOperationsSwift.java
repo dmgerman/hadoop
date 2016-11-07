@@ -380,6 +380,29 @@ name|SWIFT_TEST_TIMEOUT
 argument_list|)
 annotation|@
 name|Override
+DECL|method|testGlobStatusThrowsExceptionForUnreadableDir ()
+specifier|public
+name|void
+name|testGlobStatusThrowsExceptionForUnreadableDir
+parameter_list|()
+block|{
+name|SwiftTestUtils
+operator|.
+name|skip
+argument_list|(
+literal|"unsupported"
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+name|SWIFT_TEST_TIMEOUT
+argument_list|)
+annotation|@
+name|Override
 DECL|method|testFsStatus ()
 specifier|public
 name|void
