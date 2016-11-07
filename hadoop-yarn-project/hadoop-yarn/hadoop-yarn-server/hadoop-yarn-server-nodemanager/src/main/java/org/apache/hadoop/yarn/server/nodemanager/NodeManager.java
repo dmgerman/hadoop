@@ -2891,7 +2891,7 @@ condition|)
 block|{
 return|return;
 block|}
-name|Map
+name|ConcurrentMap
 argument_list|<
 name|ApplicationId
 argument_list|,
@@ -3139,19 +3139,19 @@ name|Container
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|field|registeringCollectors
 specifier|private
-name|Map
+name|ConcurrentMap
 argument_list|<
 name|ApplicationId
 argument_list|,
 name|AppCollectorData
 argument_list|>
+DECL|field|registeringCollectors
 name|registeringCollectors
 decl_stmt|;
 DECL|field|knownCollectors
 specifier|private
-name|Map
+name|ConcurrentMap
 argument_list|<
 name|ApplicationId
 argument_list|,
@@ -3871,14 +3871,14 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getRegisteringCollectors ()
 specifier|public
-name|Map
+name|ConcurrentMap
 argument_list|<
 name|ApplicationId
 argument_list|,
 name|AppCollectorData
 argument_list|>
+DECL|method|getRegisteringCollectors ()
 name|getRegisteringCollectors
 parameter_list|()
 block|{
@@ -3892,7 +3892,7 @@ annotation|@
 name|Override
 DECL|method|getKnownCollectors ()
 specifier|public
-name|Map
+name|ConcurrentMap
 argument_list|<
 name|ApplicationId
 argument_list|,

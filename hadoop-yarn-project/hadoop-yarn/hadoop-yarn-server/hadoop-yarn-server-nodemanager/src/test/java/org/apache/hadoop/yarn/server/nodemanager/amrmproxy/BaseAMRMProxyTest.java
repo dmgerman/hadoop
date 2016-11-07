@@ -3419,14 +3419,16 @@ return|return
 literal|null
 return|;
 block|}
-DECL|method|getRegisteringCollectors ()
+annotation|@
+name|Override
 specifier|public
-name|Map
+name|ConcurrentMap
 argument_list|<
 name|ApplicationId
 argument_list|,
 name|AppCollectorData
 argument_list|>
+DECL|method|getRegisteringCollectors ()
 name|getRegisteringCollectors
 parameter_list|()
 block|{
@@ -3434,11 +3436,11 @@ return|return
 literal|null
 return|;
 block|}
-DECL|method|getKnownCollectors ()
 annotation|@
 name|Override
+DECL|method|getKnownCollectors ()
 specifier|public
-name|Map
+name|ConcurrentMap
 argument_list|<
 name|ApplicationId
 argument_list|,

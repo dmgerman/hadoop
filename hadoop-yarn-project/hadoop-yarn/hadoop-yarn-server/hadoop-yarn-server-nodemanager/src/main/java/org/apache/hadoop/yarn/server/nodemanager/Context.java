@@ -420,7 +420,7 @@ parameter_list|()
 function_decl|;
 comment|/**    * Get the list of collectors that are registering with the RM from this node.    * @return registering collectors, or null if the timeline service v.2 is not    * enabled    */
 DECL|method|getRegisteringCollectors ()
-name|Map
+name|ConcurrentMap
 argument_list|<
 name|ApplicationId
 argument_list|,
@@ -431,7 +431,7 @@ parameter_list|()
 function_decl|;
 comment|/**    * Get the list of collectors registered with the RM and known by this node.    * @return known collectors, or null if the timeline service v.2 is not    * enabled.    */
 DECL|method|getKnownCollectors ()
-name|Map
+name|ConcurrentMap
 argument_list|<
 name|ApplicationId
 argument_list|,
