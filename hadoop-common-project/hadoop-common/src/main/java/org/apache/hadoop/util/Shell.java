@@ -993,7 +993,7 @@ operator|new
 name|String
 index|[]
 block|{
-literal|"/bin/ls"
+literal|"ls"
 block|,
 literal|"-ld"
 block|}
