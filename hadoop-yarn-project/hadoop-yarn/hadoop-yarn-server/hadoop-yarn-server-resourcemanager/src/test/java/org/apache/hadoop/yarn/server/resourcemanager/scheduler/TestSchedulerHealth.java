@@ -1734,11 +1734,13 @@ operator|.
 name|getSchedulerHealth
 argument_list|()
 decl_stmt|;
+comment|// Now SchedulerHealth records last container allocated, aggregated
+comment|// allocation account will not be changed
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|2
+literal|1
 argument_list|,
 name|sh
 operator|.
@@ -1757,11 +1759,11 @@ name|Resource
 operator|.
 name|newInstance
 argument_list|(
-literal|3
+literal|1
 operator|*
 literal|1024
 argument_list|,
-literal|2
+literal|1
 argument_list|)
 argument_list|,
 name|sh

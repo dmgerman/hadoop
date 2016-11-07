@@ -36,6 +36,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ConcurrentSkipListSet
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -131,7 +143,7 @@ operator|.
 name|schedulableEntities
 operator|=
 operator|new
-name|TreeSet
+name|ConcurrentSkipListSet
 argument_list|<
 name|S
 argument_list|>

@@ -338,6 +338,28 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|placement
+operator|.
+name|PlacementSet
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|util
 operator|.
 name|resource
@@ -551,6 +573,15 @@ name|getContainerToBeUnreserved
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|assignment
+operator|.
+name|setRequestLocalityType
+argument_list|(
+name|result
+operator|.
+name|requestLocalityType
+argument_list|)
+expr_stmt|;
 comment|// If we allocated something
 if|if
 condition|(
@@ -582,7 +613,7 @@ operator|.
 name|getResourceToBeAllocated
 argument_list|()
 decl_stmt|;
-name|Container
+name|RMContainer
 name|updatedContainer
 init|=
 name|result
@@ -657,9 +688,6 @@ operator|.
 name|addReservationDetails
 argument_list|(
 name|updatedContainer
-operator|.
-name|getId
-argument_list|()
 argument_list|,
 name|application
 operator|.
@@ -778,7 +806,7 @@ argument_list|()
 argument_list|,
 name|updatedContainer
 operator|.
-name|getId
+name|getContainerId
 argument_list|()
 argument_list|,
 name|ActivityState
@@ -824,7 +852,7 @@ literal|" container="
 operator|+
 name|updatedContainer
 operator|.
-name|getId
+name|getContainerId
 argument_list|()
 operator|+
 literal|" queue="
@@ -843,29 +871,6 @@ name|getType
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|application
-operator|.
-name|getCSLeafQueue
-argument_list|()
-operator|.
-name|getOrderingPolicy
-argument_list|()
-operator|.
-name|containerAllocated
-argument_list|(
-name|application
-argument_list|,
-name|application
-operator|.
-name|getRMContainer
-argument_list|(
-name|updatedContainer
-operator|.
-name|getId
-argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
 name|assignment
 operator|.
 name|getAssignmentInformation
@@ -874,9 +879,6 @@ operator|.
 name|addAllocationDetails
 argument_list|(
 name|updatedContainer
-operator|.
-name|getId
-argument_list|()
 argument_list|,
 name|application
 operator|.
@@ -924,6 +926,13 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
+name|assignment
+operator|.
+name|setFulfilledReservedContainer
+argument_list|(
+name|rmContainer
+argument_list|)
+expr_stmt|;
 block|}
 name|ActivitiesLogger
 operator|.
@@ -959,7 +968,7 @@ argument_list|()
 argument_list|,
 name|updatedContainer
 operator|.
-name|getId
+name|getContainerId
 argument_list|()
 argument_list|,
 name|ActivityState
@@ -969,6 +978,14 @@ argument_list|,
 name|ActivityDiagnosticConstant
 operator|.
 name|EMPTY
+argument_list|)
+expr_stmt|;
+comment|// Update unformed resource
+name|application
+operator|.
+name|incUnconfirmedRes
+argument_list|(
+name|allocatedResource
 argument_list|)
 expr_stmt|;
 block|}
@@ -1014,8 +1031,8 @@ return|return
 name|assignment
 return|;
 block|}
-comment|/**    * allocate needs to handle following stuffs:    *    *<ul>    *<li>Select request: Select a request to allocate. E.g. select a resource    * request based on requirement/priority/locality.</li>    *<li>Check if a given resource can be allocated based on resource    * availability</li>    *<li>Do allocation: this will decide/create allocated/reserved    * container, this will also update metrics</li>    *</ul>    */
-DECL|method|assignContainers (Resource clusterResource, FiCaSchedulerNode node, SchedulingMode schedulingMode, ResourceLimits resourceLimits, RMContainer reservedContainer)
+comment|/**    * allocate needs to handle following stuffs:    *    *<ul>    *<li>Select request: Select a request to allocate. E.g. select a resource    * request based on requirement/priority/locality.</li>    *<li>Check if a given resource can be allocated based on resource    * availability</li>    *<li>Do allocation: this will decide/create allocated/reserved    * container, this will also update metrics</li>    *</ul>    *    * @param clusterResource clusterResource    * @param ps PlacementSet    * @param schedulingMode scheduling mode (exclusive or nonexclusive)    * @param resourceLimits resourceLimits    * @param reservedContainer reservedContainer    * @return CSAssignemnt proposal    */
+DECL|method|assignContainers (Resource clusterResource, PlacementSet<FiCaSchedulerNode> ps, SchedulingMode schedulingMode, ResourceLimits resourceLimits, RMContainer reservedContainer)
 specifier|public
 specifier|abstract
 name|CSAssignment
@@ -1024,8 +1041,11 @@ parameter_list|(
 name|Resource
 name|clusterResource
 parameter_list|,
+name|PlacementSet
+argument_list|<
 name|FiCaSchedulerNode
-name|node
+argument_list|>
+name|ps
 parameter_list|,
 name|SchedulingMode
 name|schedulingMode

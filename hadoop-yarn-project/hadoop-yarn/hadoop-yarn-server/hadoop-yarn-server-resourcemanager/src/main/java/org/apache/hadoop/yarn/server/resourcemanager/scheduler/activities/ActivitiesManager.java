@@ -1188,14 +1188,14 @@ block|}
 block|}
 comment|// Add queue, application or container activity into specific application
 comment|// allocation.
-DECL|method|addSchedulingActivityForApp (ApplicationId applicationId, String containerId, String priority, ActivityState state, String diagnostic, String type)
+DECL|method|addSchedulingActivityForApp (ApplicationId applicationId, ContainerId containerId, String priority, ActivityState state, String diagnostic, String type)
 name|void
 name|addSchedulingActivityForApp
 parameter_list|(
 name|ApplicationId
 name|applicationId
 parameter_list|,
-name|String
+name|ContainerId
 name|containerId
 parameter_list|,
 name|String
@@ -1234,6 +1234,15 @@ operator|.
 name|addAppAllocationActivity
 argument_list|(
 name|containerId
+operator|==
+literal|null
+condition|?
+literal|"Container-Id-Not-Assigned"
+else|:
+name|containerId
+operator|.
+name|toString
+argument_list|()
 argument_list|,
 name|priority
 argument_list|,

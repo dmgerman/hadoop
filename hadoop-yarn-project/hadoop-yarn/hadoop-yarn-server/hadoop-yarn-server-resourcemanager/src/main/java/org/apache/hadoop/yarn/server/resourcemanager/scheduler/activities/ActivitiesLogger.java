@@ -156,6 +156,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|rmcontainer
+operator|.
+name|RMContainer
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|scheduler
 operator|.
 name|SchedulerApplicationAttempt
@@ -184,6 +204,10 @@ end_import
 
 begin_comment
 comment|/**  * Utility for logging scheduler activities  */
+end_comment
+
+begin_comment
+comment|// FIXME: make sure PlacementSet works with this class
 end_comment
 
 begin_class
@@ -512,7 +536,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/*      * Record application activity when container allocated / reserved /      * re-reserved      */
-DECL|method|recordAppActivityWithAllocation ( ActivitiesManager activitiesManager, SchedulerNode node, SchedulerApplicationAttempt application, Container updatedContainer, ActivityState activityState)
+DECL|method|recordAppActivityWithAllocation ( ActivitiesManager activitiesManager, SchedulerNode node, SchedulerApplicationAttempt application, RMContainer updatedContainer, ActivityState activityState)
 specifier|public
 specifier|static
 name|void
@@ -527,7 +551,7 @@ parameter_list|,
 name|SchedulerApplicationAttempt
 name|application
 parameter_list|,
-name|Container
+name|RMContainer
 name|updatedContainer
 parameter_list|,
 name|ActivityState
@@ -581,13 +605,16 @@ argument_list|()
 argument_list|,
 name|updatedContainer
 operator|.
-name|getId
+name|getContainer
 argument_list|()
 operator|.
 name|toString
 argument_list|()
 argument_list|,
 name|updatedContainer
+operator|.
+name|getContainer
+argument_list|()
 operator|.
 name|getPriority
 argument_list|()
@@ -681,13 +708,13 @@ argument_list|()
 argument_list|,
 name|updatedContainer
 operator|.
-name|getId
-argument_list|()
-operator|.
-name|toString
+name|getContainerId
 argument_list|()
 argument_list|,
 name|updatedContainer
+operator|.
+name|getContainer
+argument_list|()
 operator|.
 name|getPriority
 argument_list|()

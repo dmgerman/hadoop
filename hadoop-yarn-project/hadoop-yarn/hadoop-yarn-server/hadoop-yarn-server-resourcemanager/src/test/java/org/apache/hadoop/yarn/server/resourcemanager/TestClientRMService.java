@@ -8585,13 +8585,13 @@ name|when
 argument_list|(
 name|containerimpl
 operator|.
-name|getFinishedStatus
+name|completed
 argument_list|()
 argument_list|)
 operator|.
 name|thenReturn
 argument_list|(
-name|cs
+literal|false
 argument_list|)
 expr_stmt|;
 name|when

@@ -246,6 +246,28 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|placement
+operator|.
+name|PlacementSet
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|util
 operator|.
 name|resource
@@ -281,10 +303,12 @@ extends|extends
 name|AbstractContainerAllocator
 block|{
 DECL|field|increaseContainerAllocator
+specifier|private
 name|AbstractContainerAllocator
 name|increaseContainerAllocator
 decl_stmt|;
 DECL|field|regularContainerAllocator
+specifier|private
 name|AbstractContainerAllocator
 name|regularContainerAllocator
 decl_stmt|;
@@ -369,7 +393,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|assignContainers (Resource clusterResource, FiCaSchedulerNode node, SchedulingMode schedulingMode, ResourceLimits resourceLimits, RMContainer reservedContainer)
+DECL|method|assignContainers (Resource clusterResource, PlacementSet<FiCaSchedulerNode> ps, SchedulingMode schedulingMode, ResourceLimits resourceLimits, RMContainer reservedContainer)
 specifier|public
 name|CSAssignment
 name|assignContainers
@@ -377,8 +401,11 @@ parameter_list|(
 name|Resource
 name|clusterResource
 parameter_list|,
+name|PlacementSet
+argument_list|<
 name|FiCaSchedulerNode
-name|node
+argument_list|>
+name|ps
 parameter_list|,
 name|SchedulingMode
 name|schedulingMode
@@ -417,7 +444,7 @@ name|assignContainers
 argument_list|(
 name|clusterResource
 argument_list|,
-name|node
+name|ps
 argument_list|,
 name|schedulingMode
 argument_list|,
@@ -437,7 +464,7 @@ name|assignContainers
 argument_list|(
 name|clusterResource
 argument_list|,
-name|node
+name|ps
 argument_list|,
 name|schedulingMode
 argument_list|,
@@ -460,7 +487,7 @@ name|assignContainers
 argument_list|(
 name|clusterResource
 argument_list|,
-name|node
+name|ps
 argument_list|,
 name|schedulingMode
 argument_list|,
@@ -502,7 +529,7 @@ name|assignContainers
 argument_list|(
 name|clusterResource
 argument_list|,
-name|node
+name|ps
 argument_list|,
 name|schedulingMode
 argument_list|,

@@ -179,6 +179,11 @@ specifier|static
 class|class
 name|AssignmentDetails
 block|{
+DECL|field|rmContainer
+specifier|public
+name|RMContainer
+name|rmContainer
+decl_stmt|;
 DECL|field|containerId
 specifier|public
 name|ContainerId
@@ -189,12 +194,12 @@ specifier|public
 name|String
 name|queue
 decl_stmt|;
-DECL|method|AssignmentDetails (ContainerId containerId, String queue)
+DECL|method|AssignmentDetails (RMContainer rmContainer, String queue)
 specifier|public
 name|AssignmentDetails
 parameter_list|(
-name|ContainerId
-name|containerId
+name|RMContainer
+name|rmContainer
 parameter_list|,
 name|String
 name|queue
@@ -204,7 +209,16 @@ name|this
 operator|.
 name|containerId
 operator|=
-name|containerId
+name|rmContainer
+operator|.
+name|getContainerId
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|rmContainer
+operator|=
+name|rmContainer
 expr_stmt|;
 name|this
 operator|.
@@ -326,9 +340,7 @@ name|op
 argument_list|,
 operator|new
 name|ArrayList
-argument_list|<
-name|AssignmentDetails
-argument_list|>
+argument_list|<>
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -501,7 +513,7 @@ name|RESERVATION
 argument_list|)
 return|;
 block|}
-DECL|method|addAssignmentDetails (Operation op, ContainerId containerId, String queue)
+DECL|method|addAssignmentDetails (Operation op, RMContainer rmContainer, String queue)
 specifier|private
 name|void
 name|addAssignmentDetails
@@ -509,8 +521,8 @@ parameter_list|(
 name|Operation
 name|op
 parameter_list|,
-name|ContainerId
-name|containerId
+name|RMContainer
+name|rmContainer
 parameter_list|,
 name|String
 name|queue
@@ -528,20 +540,20 @@ argument_list|(
 operator|new
 name|AssignmentDetails
 argument_list|(
-name|containerId
+name|rmContainer
 argument_list|,
 name|queue
 argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addAllocationDetails (ContainerId containerId, String queue)
+DECL|method|addAllocationDetails (RMContainer rmContainer, String queue)
 specifier|public
 name|void
 name|addAllocationDetails
 parameter_list|(
-name|ContainerId
-name|containerId
+name|RMContainer
+name|rmContainer
 parameter_list|,
 name|String
 name|queue
@@ -553,19 +565,19 @@ name|Operation
 operator|.
 name|ALLOCATION
 argument_list|,
-name|containerId
+name|rmContainer
 argument_list|,
 name|queue
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addReservationDetails (ContainerId containerId, String queue)
+DECL|method|addReservationDetails (RMContainer rmContainer, String queue)
 specifier|public
 name|void
 name|addReservationDetails
 parameter_list|(
-name|ContainerId
-name|containerId
+name|RMContainer
+name|rmContainer
 parameter_list|,
 name|String
 name|queue
@@ -577,7 +589,7 @@ name|Operation
 operator|.
 name|RESERVATION
 argument_list|,
-name|containerId
+name|rmContainer
 argument_list|,
 name|queue
 argument_list|)
@@ -623,10 +635,10 @@ name|RESERVATION
 argument_list|)
 return|;
 block|}
-DECL|method|getFirstContainerIdFromOperation (Operation op)
+DECL|method|getFirstRMContainerFromOperation (Operation op)
 specifier|private
-name|ContainerId
-name|getFirstContainerIdFromOperation
+name|RMContainer
+name|getFirstRMContainerFromOperation
 parameter_list|(
 name|Operation
 name|op
@@ -674,7 +686,7 @@ argument_list|(
 literal|0
 argument_list|)
 operator|.
-name|containerId
+name|rmContainer
 return|;
 block|}
 block|}
@@ -682,18 +694,18 @@ return|return
 literal|null
 return|;
 block|}
-DECL|method|getFirstAllocatedOrReservedContainerId ()
+DECL|method|getFirstAllocatedOrReservedRMContainer ()
 specifier|public
-name|ContainerId
-name|getFirstAllocatedOrReservedContainerId
+name|RMContainer
+name|getFirstAllocatedOrReservedRMContainer
 parameter_list|()
 block|{
-name|ContainerId
-name|containerId
+name|RMContainer
+name|rmContainer
 decl_stmt|;
-name|containerId
+name|rmContainer
 operator|=
-name|getFirstContainerIdFromOperation
+name|getFirstRMContainerFromOperation
 argument_list|(
 name|Operation
 operator|.
@@ -704,20 +716,50 @@ if|if
 condition|(
 literal|null
 operator|!=
-name|containerId
+name|rmContainer
 condition|)
 block|{
 return|return
-name|containerId
+name|rmContainer
 return|;
 block|}
 return|return
-name|getFirstContainerIdFromOperation
+name|getFirstRMContainerFromOperation
 argument_list|(
 name|Operation
 operator|.
 name|RESERVATION
 argument_list|)
+return|;
+block|}
+DECL|method|getFirstAllocatedOrReservedContainerId ()
+specifier|public
+name|ContainerId
+name|getFirstAllocatedOrReservedContainerId
+parameter_list|()
+block|{
+name|RMContainer
+name|rmContainer
+init|=
+name|getFirstAllocatedOrReservedRMContainer
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+literal|null
+operator|!=
+name|rmContainer
+condition|)
+block|{
+return|return
+name|rmContainer
+operator|.
+name|getContainerId
+argument_list|()
+return|;
+block|}
+return|return
+literal|null
 return|;
 block|}
 block|}

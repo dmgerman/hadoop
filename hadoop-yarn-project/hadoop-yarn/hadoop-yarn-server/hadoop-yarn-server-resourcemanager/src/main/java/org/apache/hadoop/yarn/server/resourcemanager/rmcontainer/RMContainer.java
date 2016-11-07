@@ -136,6 +136,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ContainerStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ExecutionType
 import|;
 end_import
@@ -267,6 +285,14 @@ DECL|method|getContainerId ()
 name|ContainerId
 name|getContainerId
 parameter_list|()
+function_decl|;
+DECL|method|setContainerId (ContainerId containerId)
+name|void
+name|setContainerId
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|)
 function_decl|;
 DECL|method|getApplicationAttemptId ()
 name|ApplicationAttemptId
@@ -405,6 +431,22 @@ comment|/**    * If the container was allocated by a container other than the Re
 DECL|method|isRemotelyAllocated ()
 name|boolean
 name|isRemotelyAllocated
+parameter_list|()
+function_decl|;
+comment|/*    * Return reserved resource for reserved containers, return allocated resource    * for other container    */
+DECL|method|getAllocatedOrReservedResource ()
+name|Resource
+name|getAllocatedOrReservedResource
+parameter_list|()
+function_decl|;
+DECL|method|completed ()
+name|boolean
+name|completed
+parameter_list|()
+function_decl|;
+DECL|method|getNodeId ()
+name|NodeId
+name|getNodeId
 parameter_list|()
 function_decl|;
 block|}

@@ -54,6 +54,18 @@ name|RMContainer
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ConcurrentSkipListSet
+import|;
+end_import
+
 begin_comment
 comment|/**  * This ordering policy is used for pending applications only.  * An OrderingPolicy which orders SchedulableEntities by  *<ul>  *<li>Recovering application  *<li>Priority of an application  *<li>Input order  *</ul>  *<p>  * Example : If schedulableEntities with E1(true,1,1) E2(true,2,2) E3(true,3,3)  * E4(false,4,4) E5(false,4,5) are added. The ordering policy assignment  * iterator is in the order of E3(true,3,3) E2(true,2,2) E1(true,1,1)  * E5(false,5,5) E4(false,4,4)  */
 end_comment
@@ -140,7 +152,7 @@ operator|.
 name|schedulableEntities
 operator|=
 operator|new
-name|TreeSet
+name|ConcurrentSkipListSet
 argument_list|<
 name|S
 argument_list|>

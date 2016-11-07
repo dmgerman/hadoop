@@ -242,10 +242,17 @@ specifier|private
 name|Resource
 name|resource
 decl_stmt|;
+comment|// Container allocation locality type
 DECL|field|type
 specifier|private
 name|NodeType
 name|type
+decl_stmt|;
+comment|// Pending request locality type
+DECL|field|requestLocalityType
+specifier|private
+name|NodeType
+name|requestLocalityType
 decl_stmt|;
 DECL|field|excessReservation
 specifier|private
@@ -300,6 +307,17 @@ argument_list|<
 name|RMContainer
 argument_list|>
 name|containersToKill
+decl_stmt|;
+comment|// Set when fulfilledReservation = true
+DECL|field|fulfilledReservedContainer
+specifier|private
+name|RMContainer
+name|fulfilledReservedContainer
+decl_stmt|;
+DECL|field|schedulingMode
+specifier|private
+name|SchedulingMode
+name|schedulingMode
 decl_stmt|;
 DECL|method|CSAssignment (Resource resource, NodeType type)
 specifier|public
@@ -795,6 +813,84 @@ block|{
 return|return
 name|containersToKill
 return|;
+block|}
+DECL|method|getFulfilledReservedContainer ()
+specifier|public
+name|RMContainer
+name|getFulfilledReservedContainer
+parameter_list|()
+block|{
+return|return
+name|fulfilledReservedContainer
+return|;
+block|}
+DECL|method|setFulfilledReservedContainer ( RMContainer fulfilledReservedContainer)
+specifier|public
+name|void
+name|setFulfilledReservedContainer
+parameter_list|(
+name|RMContainer
+name|fulfilledReservedContainer
+parameter_list|)
+block|{
+name|this
+operator|.
+name|fulfilledReservedContainer
+operator|=
+name|fulfilledReservedContainer
+expr_stmt|;
+block|}
+DECL|method|getSchedulingMode ()
+specifier|public
+name|SchedulingMode
+name|getSchedulingMode
+parameter_list|()
+block|{
+return|return
+name|schedulingMode
+return|;
+block|}
+DECL|method|setSchedulingMode (SchedulingMode schedulingMode)
+specifier|public
+name|void
+name|setSchedulingMode
+parameter_list|(
+name|SchedulingMode
+name|schedulingMode
+parameter_list|)
+block|{
+name|this
+operator|.
+name|schedulingMode
+operator|=
+name|schedulingMode
+expr_stmt|;
+block|}
+DECL|method|getRequestLocalityType ()
+specifier|public
+name|NodeType
+name|getRequestLocalityType
+parameter_list|()
+block|{
+return|return
+name|requestLocalityType
+return|;
+block|}
+DECL|method|setRequestLocalityType (NodeType requestLocalityType)
+specifier|public
+name|void
+name|setRequestLocalityType
+parameter_list|(
+name|NodeType
+name|requestLocalityType
+parameter_list|)
+block|{
+name|this
+operator|.
+name|requestLocalityType
+operator|=
+name|requestLocalityType
+expr_stmt|;
 block|}
 block|}
 end_class
