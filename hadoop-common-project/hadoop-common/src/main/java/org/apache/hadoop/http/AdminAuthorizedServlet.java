@@ -32,6 +32,16 @@ name|javax
 operator|.
 name|servlet
 operator|.
+name|ServletContext
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|servlet
+operator|.
 name|ServletException
 import|;
 end_import
@@ -113,15 +123,32 @@ name|ServletException
 throws|,
 name|IOException
 block|{
-comment|// Do the authorization
+comment|// If user is a static user and auth Type is null, that means
+comment|// there is a non-security environment and no need authorization,
+comment|// otherwise, do the authorization.
+specifier|final
+name|ServletContext
+name|servletContext
+init|=
+name|getServletContext
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|HttpServer2
 operator|.
+name|isStaticUserAndNoneAuthType
+argument_list|(
+name|servletContext
+argument_list|,
+name|request
+argument_list|)
+operator|||
+name|HttpServer2
+operator|.
 name|hasAdministratorAccess
 argument_list|(
-name|getServletContext
-argument_list|()
+name|servletContext
 argument_list|,
 name|request
 argument_list|,
