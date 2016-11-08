@@ -2172,6 +2172,14 @@ operator|.
 name|getNMVersion
 argument_list|()
 decl_stmt|;
+name|Resource
+name|physicalResource
+init|=
+name|request
+operator|.
+name|getPhysicalResource
+argument_list|()
+decl_stmt|;
 name|RegisterNodeManagerResponse
 name|response
 init|=
@@ -2499,6 +2507,8 @@ argument_list|,
 name|capability
 argument_list|,
 name|nodeManagerVersion
+argument_list|,
+name|physicalResource
 argument_list|)
 decl_stmt|;
 name|RMNode

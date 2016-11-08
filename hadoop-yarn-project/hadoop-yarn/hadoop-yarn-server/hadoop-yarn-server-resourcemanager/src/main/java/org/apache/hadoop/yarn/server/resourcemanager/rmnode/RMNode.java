@@ -316,6 +316,12 @@ name|ResourceUtilization
 name|getNodeUtilization
 parameter_list|()
 function_decl|;
+comment|/**    * the physical resources in the node.    * @return the physical resources in the node.    */
+DECL|method|getPhysicalResource ()
+name|Resource
+name|getPhysicalResource
+parameter_list|()
+function_decl|;
 comment|/**    * The rack name for this node manager.    * @return the rack name.    */
 DECL|method|getRackName ()
 specifier|public

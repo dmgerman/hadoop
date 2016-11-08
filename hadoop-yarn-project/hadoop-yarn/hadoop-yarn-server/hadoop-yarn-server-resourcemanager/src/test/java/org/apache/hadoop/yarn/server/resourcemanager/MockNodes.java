@@ -827,7 +827,12 @@ specifier|private
 name|ResourceUtilization
 name|nodeUtilization
 decl_stmt|;
-DECL|method|MockRMNodeImpl (NodeId nodeId, String nodeAddr, String httpAddress, Resource perNode, String rackName, String healthReport, long lastHealthReportTime, int cmdPort, String hostName, NodeState state, Set<String> labels, ResourceUtilization containersUtilization, ResourceUtilization nodeUtilization)
+DECL|field|physicalResource
+specifier|private
+name|Resource
+name|physicalResource
+decl_stmt|;
+DECL|method|MockRMNodeImpl (NodeId nodeId, String nodeAddr, String httpAddress, Resource perNode, String rackName, String healthReport, long lastHealthReportTime, int cmdPort, String hostName, NodeState state, Set<String> labels, ResourceUtilization containersUtilization, ResourceUtilization nodeUtilization, Resource pPhysicalResource)
 specifier|public
 name|MockRMNodeImpl
 parameter_list|(
@@ -872,6 +877,9 @@ name|containersUtilization
 parameter_list|,
 name|ResourceUtilization
 name|nodeUtilization
+parameter_list|,
+name|Resource
+name|pPhysicalResource
 parameter_list|)
 block|{
 name|this
@@ -951,6 +959,12 @@ operator|.
 name|nodeUtilization
 operator|=
 name|nodeUtilization
+expr_stmt|;
+name|this
+operator|.
+name|physicalResource
+operator|=
+name|pPhysicalResource
 expr_stmt|;
 block|}
 annotation|@
@@ -1355,6 +1369,20 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getPhysicalResource ()
+specifier|public
+name|Resource
+name|getPhysicalResource
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|physicalResource
+return|;
+block|}
 block|}
 empty_stmt|;
 DECL|method|buildRMNode (int rack, final Resource perNode, NodeState state, String httpAddr)
@@ -1441,6 +1469,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
@@ -1495,10 +1525,12 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
-DECL|method|buildRMNode (int rack, final Resource perNode, NodeState state, String httpAddr, int hostnum, String hostName, int port, Set<String> labels, ResourceUtilization containersUtilization, ResourceUtilization nodeUtilization)
+DECL|method|buildRMNode (int rack, final Resource perNode, NodeState state, String httpAddr, int hostnum, String hostName, int port, Set<String> labels, ResourceUtilization containersUtilization, ResourceUtilization nodeUtilization, Resource physicalResource)
 specifier|private
 specifier|static
 name|RMNode
@@ -1537,6 +1569,9 @@ name|containersUtilization
 parameter_list|,
 name|ResourceUtilization
 name|nodeUtilization
+parameter_list|,
+name|Resource
+name|physicalResource
 parameter_list|)
 block|{
 specifier|final
@@ -1640,6 +1675,8 @@ argument_list|,
 name|containersUtilization
 argument_list|,
 name|nodeUtilization
+argument_list|,
+name|physicalResource
 argument_list|)
 return|;
 block|}

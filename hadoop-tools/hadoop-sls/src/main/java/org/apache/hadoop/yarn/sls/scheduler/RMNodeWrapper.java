@@ -863,6 +863,18 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getPhysicalResource ()
+specifier|public
+name|Resource
+name|getPhysicalResource
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
 block|}
 end_class
 
