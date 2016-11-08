@@ -48,6 +48,24 @@ name|server
 operator|.
 name|datanode
 operator|.
+name|StorageLocation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
 name|fsdataset
 operator|.
 name|FsDatasetSpi
@@ -304,18 +322,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|nio
-operator|.
-name|file
-operator|.
-name|Paths
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|LinkedList
@@ -329,18 +335,6 @@ operator|.
 name|util
 operator|.
 name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|nio
-operator|.
-name|file
-operator|.
-name|Path
 import|;
 end_import
 
@@ -375,17 +369,6 @@ specifier|private
 specifier|final
 name|Configuration
 name|ozoneConfig
-decl_stmt|;
-DECL|field|dataSet
-specifier|private
-specifier|final
-name|FsDatasetSpi
-argument_list|<
-name|?
-extends|extends
-name|FsVolumeSpi
-argument_list|>
-name|dataSet
 decl_stmt|;
 DECL|field|dispatcher
 specifier|private
@@ -438,7 +421,7 @@ name|Exception
 block|{
 name|List
 argument_list|<
-name|Path
+name|StorageLocation
 argument_list|>
 name|locations
 init|=
@@ -485,9 +468,9 @@ name|locations
 operator|.
 name|add
 argument_list|(
-name|Paths
+name|StorageLocation
 operator|.
-name|get
+name|parse
 argument_list|(
 name|p
 argument_list|)
@@ -511,12 +494,6 @@ name|ozoneConfig
 operator|=
 name|ozoneConfig
 expr_stmt|;
-name|this
-operator|.
-name|dataSet
-operator|=
-name|dataSet
-expr_stmt|;
 name|manager
 operator|=
 operator|new
@@ -532,10 +509,6 @@ operator|.
 name|ozoneConfig
 argument_list|,
 name|locations
-argument_list|,
-name|this
-operator|.
-name|dataSet
 argument_list|)
 expr_stmt|;
 name|this
@@ -687,7 +660,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Returns a paths to data dirs.    * @param dataset - FSDataset.    * @param pathList - List of paths.    * @throws IOException    */
-DECL|method|getDataDir ( FsDatasetSpi<? extends FsVolumeSpi> dataset, List<Path> pathList)
+DECL|method|getDataDir ( FsDatasetSpi<? extends FsVolumeSpi> dataset, List<StorageLocation> pathList)
 specifier|private
 name|void
 name|getDataDir
@@ -702,7 +675,7 @@ name|dataset
 parameter_list|,
 name|List
 argument_list|<
-name|Path
+name|StorageLocation
 argument_list|>
 name|pathList
 parameter_list|)
@@ -760,9 +733,9 @@ name|pathList
 operator|.
 name|add
 argument_list|(
-name|Paths
+name|StorageLocation
 operator|.
-name|get
+name|parse
 argument_list|(
 name|vol
 operator|.
