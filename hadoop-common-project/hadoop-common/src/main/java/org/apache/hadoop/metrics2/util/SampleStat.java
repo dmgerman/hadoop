@@ -67,6 +67,7 @@ DECL|field|a0
 DECL|field|a1
 DECL|field|s0
 DECL|field|s1
+DECL|field|total
 specifier|private
 name|double
 name|a0
@@ -76,6 +77,8 @@ decl_stmt|,
 name|s0
 decl_stmt|,
 name|s1
+decl_stmt|,
+name|total
 decl_stmt|;
 comment|/**    * Construct a new running sample stat    */
 DECL|method|SampleStat ()
@@ -86,6 +89,10 @@ block|{
 name|a0
 operator|=
 name|s0
+operator|=
+literal|0.0
+expr_stmt|;
+name|total
 operator|=
 literal|0.0
 expr_stmt|;
@@ -106,6 +113,10 @@ name|s0
 operator|=
 literal|0.0
 expr_stmt|;
+name|total
+operator|=
+literal|0.0
+expr_stmt|;
 name|minmax
 operator|.
 name|reset
@@ -113,7 +124,7 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|// We want to reuse the object, sometimes.
-DECL|method|reset (long numSamples, double a0, double a1, double s0, double s1, MinMax minmax)
+DECL|method|reset (long numSamples, double a0, double a1, double s0, double s1, double total, MinMax minmax)
 name|void
 name|reset
 parameter_list|(
@@ -131,6 +142,9 @@ name|s0
 parameter_list|,
 name|double
 name|s1
+parameter_list|,
+name|double
+name|total
 parameter_list|,
 name|MinMax
 name|minmax
@@ -168,6 +182,12 @@ name|s1
 expr_stmt|;
 name|this
 operator|.
+name|total
+operator|=
+name|total
+expr_stmt|;
+name|this
+operator|.
 name|minmax
 operator|.
 name|reset
@@ -199,6 +219,8 @@ argument_list|,
 name|s0
 argument_list|,
 name|s1
+argument_list|,
+name|total
 argument_list|,
 name|minmax
 argument_list|)
@@ -246,6 +268,10 @@ block|{
 name|numSamples
 operator|+=
 name|nSamples
+expr_stmt|;
+name|total
+operator|+=
+name|x
 expr_stmt|;
 if|if
 condition|(
@@ -320,6 +346,17 @@ return|return
 name|numSamples
 return|;
 block|}
+comment|/**    * @return the total of all samples added    */
+DECL|method|total ()
+specifier|public
+name|double
+name|total
+parameter_list|()
+block|{
+return|return
+name|total
+return|;
+block|}
 comment|/**    * @return  the arithmetic mean of the samples    */
 DECL|method|mean ()
 specifier|public
@@ -332,7 +369,11 @@ name|numSamples
 operator|>
 literal|0
 condition|?
-name|a1
+operator|(
+name|total
+operator|/
+name|numSamples
+operator|)
 else|:
 literal|0.0
 return|;
