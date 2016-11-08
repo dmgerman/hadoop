@@ -533,7 +533,9 @@ literal|"var asInitVals = new Array();\n"
 operator|+
 literal|"$('tfoot input').keyup( function () \n{"
 operator|+
-literal|"  tasksDataTable.fnFilter( this.value, $('tfoot input').index(this) );\n"
+literal|"  $('.dt-tasks').dataTable().fnFilter("
+operator|+
+literal|" this.value, $('tfoot input').index(this) );\n"
 operator|+
 literal|"} );\n"
 operator|+
