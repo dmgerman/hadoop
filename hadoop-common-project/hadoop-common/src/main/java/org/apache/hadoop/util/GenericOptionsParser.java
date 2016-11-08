@@ -2398,79 +2398,101 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"Generic options supported are"
+literal|"Generic options supported are:"
 argument_list|)
 expr_stmt|;
 name|out
 operator|.
 name|println
 argument_list|(
-literal|"-conf<configuration file>     specify an application configuration file"
-argument_list|)
-expr_stmt|;
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"-D<property=value>            use value for given property"
-argument_list|)
-expr_stmt|;
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"-fs<local|namenode:port>      specify a namenode"
-argument_list|)
-expr_stmt|;
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"-jt<local|resourcemanager:port>    specify a ResourceManager"
-argument_list|)
-expr_stmt|;
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"-files<comma separated list of files>    "
+literal|"-conf<configuration file>        "
 operator|+
-literal|"specify comma separated files to be copied to the map reduce cluster"
+literal|"specify an application configuration file"
 argument_list|)
 expr_stmt|;
 name|out
 operator|.
 name|println
 argument_list|(
-literal|"-libjars<comma separated list of jars>    "
+literal|"-D<property=value>               "
 operator|+
-literal|"specify comma separated jar files to include in the classpath."
+literal|"define a value for a given property"
 argument_list|)
 expr_stmt|;
 name|out
 operator|.
 name|println
 argument_list|(
-literal|"-archives<comma separated list of archives>    "
+literal|"-fs<local|namenode:port>         "
 operator|+
-literal|"specify comma separated archives to be unarchived"
+literal|"specify a namenode"
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"-jt<local|resourcemanager:port>  "
 operator|+
-literal|" on the compute machines.\n"
+literal|"specify a ResourceManager"
 argument_list|)
 expr_stmt|;
 name|out
 operator|.
 name|println
 argument_list|(
-literal|"The general command line syntax is"
+literal|"-files<file1,...>                "
+operator|+
+literal|"specify a comma-separated list of files to be copied to the map "
+operator|+
+literal|"reduce cluster"
 argument_list|)
 expr_stmt|;
 name|out
 operator|.
 name|println
 argument_list|(
-literal|"command [genericOptions] [commandOptions]\n"
+literal|"-libjars<jar1,...>               "
+operator|+
+literal|"specify a comma-separated list of jar files to be included in the "
+operator|+
+literal|"classpath"
 argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"-archives<archive1,...>          "
+operator|+
+literal|"specify a comma-separated list of archives to be unarchived on the "
+operator|+
+literal|"compute machines"
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|println
+argument_list|()
+expr_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"The general command line syntax is:"
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"command [genericOptions] [commandOptions]"
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|println
+argument_list|()
 expr_stmt|;
 block|}
 block|}
