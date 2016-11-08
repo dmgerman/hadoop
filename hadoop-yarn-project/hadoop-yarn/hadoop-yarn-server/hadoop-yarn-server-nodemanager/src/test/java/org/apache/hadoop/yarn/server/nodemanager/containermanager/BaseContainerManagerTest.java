@@ -2073,7 +2073,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|waitForContainerState (ContainerManagementProtocol containerManager, ContainerId containerID, ContainerState finalState)
+DECL|method|waitForContainerState ( ContainerManagementProtocol containerManager, ContainerId containerID, ContainerState finalState)
 specifier|public
 specifier|static
 name|void
@@ -2107,7 +2107,7 @@ literal|20
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|waitForContainerState (ContainerManagementProtocol containerManager, ContainerId containerID, ContainerState finalState, int timeOutMax)
+DECL|method|waitForContainerState ( ContainerManagementProtocol containerManager, ContainerId containerID, ContainerState finalState, int timeOutMax)
 specifier|public
 specifier|static
 name|void
@@ -2264,7 +2264,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|waitForApplicationState (ContainerManagerImpl containerManager, ApplicationId appID, ApplicationState finalState)
+DECL|method|waitForApplicationState ( ContainerManagerImpl containerManager, ApplicationId appID, ApplicationState finalState)
+specifier|public
 specifier|static
 name|void
 name|waitForApplicationState
@@ -2461,6 +2462,67 @@ name|YarnException
 throws|,
 name|IOException
 block|{
+name|waitForNMContainerState
+argument_list|(
+name|containerManager
+argument_list|,
+name|containerID
+argument_list|,
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|finalState
+argument_list|)
+argument_list|,
+name|timeOutMax
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|waitForNMContainerState (ContainerManagerImpl containerManager, ContainerId containerID, List<org.apache.hadoop.yarn.server.nodemanager.containermanager .container.ContainerState> finalStates, int timeOutMax)
+specifier|public
+specifier|static
+name|void
+name|waitForNMContainerState
+parameter_list|(
+name|ContainerManagerImpl
+name|containerManager
+parameter_list|,
+name|ContainerId
+name|containerID
+parameter_list|,
+name|List
+argument_list|<
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|container
+operator|.
+name|ContainerState
+argument_list|>
+name|finalStates
+parameter_list|,
+name|int
+name|timeOutMax
+parameter_list|)
+throws|throws
+name|InterruptedException
+throws|,
+name|YarnException
+throws|,
+name|IOException
+block|{
 name|Container
 name|container
 init|=
@@ -2542,9 +2604,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Waiting for NM container to get into state "
+literal|"Waiting for NM container to get into one of the following "
 operator|+
-name|finalState
+literal|"states: "
+operator|+
+name|finalStates
 operator|+
 literal|". Current state is "
 operator|+
@@ -2560,11 +2624,11 @@ block|}
 do|while
 condition|(
 operator|!
-name|currentState
+name|finalStates
 operator|.
-name|equals
+name|contains
 argument_list|(
-name|finalState
+name|currentState
 argument_list|)
 operator|&&
 name|timeoutSecs
@@ -2584,13 +2648,16 @@ argument_list|)
 expr_stmt|;
 name|Assert
 operator|.
-name|assertEquals
+name|assertTrue
 argument_list|(
 literal|"ContainerState is not correct (timedout)"
 argument_list|,
-name|finalState
-argument_list|,
+name|finalStates
+operator|.
+name|contains
+argument_list|(
 name|currentState
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
