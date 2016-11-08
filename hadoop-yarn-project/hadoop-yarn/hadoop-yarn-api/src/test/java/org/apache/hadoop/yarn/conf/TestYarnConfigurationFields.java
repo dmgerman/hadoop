@@ -474,6 +474,25 @@ argument_list|(
 literal|"hadoop.registry"
 argument_list|)
 expr_stmt|;
+comment|// Add the filters used for checking for collision of default values.
+name|initDefaultValueCollisionCheck
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Add filters used to perform the check of default values collision by    * {@link TestConfigurationFieldsBase#filtersForDefaultValueCollisionCheck}.    */
+DECL|method|initDefaultValueCollisionCheck ()
+specifier|private
+name|void
+name|initDefaultValueCollisionCheck
+parameter_list|()
+block|{
+name|filtersForDefaultValueCollisionCheck
+operator|.
+name|add
+argument_list|(
+literal|"_PORT"
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

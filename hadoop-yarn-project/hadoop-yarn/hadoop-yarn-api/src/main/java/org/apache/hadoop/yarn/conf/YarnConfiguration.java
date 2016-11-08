@@ -6052,7 +6052,7 @@ specifier|final
 name|int
 name|DEFAULT_AMRM_PROXY_PORT
 init|=
-literal|8048
+literal|8049
 decl_stmt|;
 DECL|field|DEFAULT_AMRM_PROXY_ADDRESS
 specifier|public
