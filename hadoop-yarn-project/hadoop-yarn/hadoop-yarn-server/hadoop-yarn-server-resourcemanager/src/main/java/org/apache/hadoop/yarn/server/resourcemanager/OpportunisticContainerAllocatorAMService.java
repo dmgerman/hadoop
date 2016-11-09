@@ -1538,6 +1538,33 @@ name|YarnException
 throws|,
 name|IOException
 block|{
+comment|// Partition requests to GUARANTEED and OPPORTUNISTIC.
+name|OpportunisticContainerAllocator
+operator|.
+name|PartitionedResourceRequests
+name|partitionedAsks
+init|=
+name|oppContainerAllocator
+operator|.
+name|partitionAskList
+argument_list|(
+name|request
+operator|.
+name|getAskList
+argument_list|()
+argument_list|)
+decl_stmt|;
+comment|// Allocate OPPORTUNISTIC containers.
+name|request
+operator|.
+name|setAskList
+argument_list|(
+name|partitionedAsks
+operator|.
+name|getOpportunistic
+argument_list|()
+argument_list|)
+expr_stmt|;
 specifier|final
 name|ApplicationAttemptId
 name|appAttemptId
@@ -1606,6 +1633,7 @@ name|getUser
 argument_list|()
 argument_list|)
 decl_stmt|;
+comment|// Create RMContainers and update the NMTokens.
 if|if
 condition|(
 operator|!
@@ -1630,7 +1658,17 @@ name|oppContainers
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Allocate all guaranteed containers
+comment|// Allocate GUARANTEED containers.
+name|request
+operator|.
+name|setAskList
+argument_list|(
+name|partitionedAsks
+operator|.
+name|getGuaranteed
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|AllocateResponse
 name|allocateResp
 init|=
@@ -1641,14 +1679,16 @@ argument_list|(
 name|request
 argument_list|)
 decl_stmt|;
-name|oppCtx
+comment|// Add allocated OPPORTUNISTIC containers to the AllocateResponse.
+if|if
+condition|(
+operator|!
+name|oppContainers
 operator|.
-name|updateCompletedContainers
-argument_list|(
-name|allocateResp
-argument_list|)
-expr_stmt|;
-comment|// Add all opportunistic containers
+name|isEmpty
+argument_list|()
+condition|)
+block|{
 name|allocateResp
 operator|.
 name|getAllocatedContainers
@@ -1659,6 +1699,17 @@ argument_list|(
 name|oppContainers
 argument_list|)
 expr_stmt|;
+block|}
+comment|// Update opportunistic container context with the allocated GUARANTEED
+comment|// containers.
+name|oppCtx
+operator|.
+name|updateCompletedContainers
+argument_list|(
+name|allocateResp
+argument_list|)
+expr_stmt|;
+comment|// Add all opportunistic containers
 return|return
 name|allocateResp
 return|;

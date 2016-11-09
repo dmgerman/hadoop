@@ -1137,24 +1137,39 @@ name|YarnException
 throws|,
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
+comment|// Partition requests to GUARANTEED and OPPORTUNISTIC.
+name|OpportunisticContainerAllocator
 operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
+name|PartitionedResourceRequests
+name|partitionedAsks
+init|=
+name|containerAllocator
 operator|.
-name|debug
+name|partitionAskList
 argument_list|(
-literal|"Forwarding allocate request to the"
-operator|+
-literal|"Distributed Scheduler Service on YARN RM"
+name|request
+operator|.
+name|getAllocateRequest
+argument_list|()
+operator|.
+name|getAskList
+argument_list|()
+argument_list|)
+decl_stmt|;
+comment|// Allocate OPPORTUNISTIC containers.
+name|request
+operator|.
+name|getAllocateRequest
+argument_list|()
+operator|.
+name|setAskList
+argument_list|(
+name|partitionedAsks
+operator|.
+name|getOpportunistic
+argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|List
 argument_list|<
 name|Container
@@ -1179,6 +1194,7 @@ argument_list|,
 name|appSubmitter
 argument_list|)
 decl_stmt|;
+comment|// Prepare request for sending to RM for scheduling GUARANTEED containers.
 name|request
 operator|.
 name|setAllocatedContainers
@@ -1186,6 +1202,37 @@ argument_list|(
 name|allocatedContainers
 argument_list|)
 expr_stmt|;
+name|request
+operator|.
+name|getAllocateRequest
+argument_list|()
+operator|.
+name|setAskList
+argument_list|(
+name|partitionedAsks
+operator|.
+name|getGuaranteed
+argument_list|()
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Forwarding allocate request to the"
+operator|+
+literal|"Distributed Scheduler Service on YARN RM"
+argument_list|)
+expr_stmt|;
+block|}
 name|DistributedSchedulingAllocateResponse
 name|dsResp
 init|=

@@ -314,16 +314,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Collections
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|HashMap
 import|;
 end_import
@@ -590,7 +580,9 @@ argument_list|()
 return|;
 block|}
 block|}
+comment|/**    * Class that includes two lists of {@link ResourceRequest}s: one for    * GUARANTEED and one for OPPORTUNISTIC {@link ResourceRequest}s.    */
 DECL|class|PartitionedResourceRequests
+specifier|public
 specifier|static
 class|class
 name|PartitionedResourceRequests
@@ -697,8 +689,8 @@ operator|=
 name|tokenSecretManager
 expr_stmt|;
 block|}
-comment|/**    * Entry point into the Opportunistic Container Allocator.    * @param request AllocateRequest    * @param applicationAttemptId ApplicationAttemptId    * @param appContext App Specific OpportunisticContainerContext    * @param rmIdentifier RM Identifier    * @param appSubmitter App Submitter    * @return List of Containers.    * @throws YarnException YarnException    */
-DECL|method|allocateContainers ( AllocateRequest request, ApplicationAttemptId applicationAttemptId, OpportunisticContainerContext appContext, long rmIdentifier, String appSubmitter)
+comment|/**    * Allocate OPPORTUNISTIC containers.    * @param request AllocateRequest    * @param applicationAttemptId ApplicationAttemptId    * @param opportContext App specific OpportunisticContainerContext    * @param rmIdentifier RM Identifier    * @param appSubmitter App Submitter    * @return List of Containers.    * @throws YarnException YarnException    */
+DECL|method|allocateContainers ( AllocateRequest request, ApplicationAttemptId applicationAttemptId, OpportunisticContainerContext opportContext, long rmIdentifier, String appSubmitter)
 specifier|public
 name|List
 argument_list|<
@@ -713,7 +705,7 @@ name|ApplicationAttemptId
 name|applicationAttemptId
 parameter_list|,
 name|OpportunisticContainerContext
-name|appContext
+name|opportContext
 parameter_list|,
 name|long
 name|rmIdentifier
@@ -724,36 +716,7 @@ parameter_list|)
 throws|throws
 name|YarnException
 block|{
-comment|// Partition requests into GUARANTEED and OPPORTUNISTIC reqs
-name|PartitionedResourceRequests
-name|partitionedAsks
-init|=
-name|partitionAskList
-argument_list|(
-name|request
-operator|.
-name|getAskList
-argument_list|()
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|partitionedAsks
-operator|.
-name|getOpportunistic
-argument_list|()
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-return|return
-name|Collections
-operator|.
-name|emptyList
-argument_list|()
-return|;
-block|}
+comment|// Update released containers.
 name|List
 argument_list|<
 name|ContainerId
@@ -793,7 +756,7 @@ operator|+
 name|numReleasedContainers
 argument_list|)
 expr_stmt|;
-name|appContext
+name|opportContext
 operator|.
 name|getContainersAllocated
 argument_list|()
@@ -804,7 +767,7 @@ name|releasedContainers
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Also, update black list
+comment|// Update black list.
 name|ResourceBlacklistRequest
 name|rbr
 init|=
@@ -820,7 +783,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|appContext
+name|opportContext
 operator|.
 name|getBlacklist
 argument_list|()
@@ -833,7 +796,7 @@ name|getBlacklistRemovals
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|appContext
+name|opportContext
 operator|.
 name|getBlacklist
 argument_list|()
@@ -847,17 +810,18 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Add OPPORTUNISTIC reqs to the outstanding reqs
-name|appContext
+comment|// Add OPPORTUNISTIC requests to the outstanding ones.
+name|opportContext
 operator|.
 name|addToOutstandingReqs
 argument_list|(
-name|partitionedAsks
+name|request
 operator|.
-name|getOpportunistic
+name|getAskList
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Satisfy the outstanding OPPORTUNISTIC requests.
 name|List
 argument_list|<
 name|Container
@@ -874,7 +838,7 @@ control|(
 name|Priority
 name|priority
 range|:
-name|appContext
+name|opportContext
 operator|.
 name|getOutstandingOpReqs
 argument_list|()
@@ -904,7 +868,7 @@ name|allocate
 argument_list|(
 name|rmIdentifier
 argument_list|,
-name|appContext
+name|opportContext
 argument_list|,
 name|priority
 argument_list|,
@@ -934,7 +898,7 @@ name|entrySet
 argument_list|()
 control|)
 block|{
-name|appContext
+name|opportContext
 operator|.
 name|matchAllocationToOutstandingRequest
 argument_list|(
@@ -961,17 +925,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// Send all the GUARANTEED Reqs to RM
-name|request
-operator|.
-name|setAskList
-argument_list|(
-name|partitionedAsks
-operator|.
-name|getGuaranteed
-argument_list|()
-argument_list|)
-expr_stmt|;
 return|return
 name|allocatedContainers
 return|;
@@ -1726,8 +1679,9 @@ return|return
 name|containerToken
 return|;
 block|}
-DECL|method|partitionAskList (List<ResourceRequest> askList)
-specifier|private
+comment|/**    * Partitions a list of ResourceRequest to two separate lists, one for    * GUARANTEED and one for OPPORTUNISTIC ResourceRequests.    * @param askList the list of ResourceRequests to be partitioned    * @return the partitioned ResourceRequests    */
+DECL|method|partitionAskList ( List<ResourceRequest> askList)
+specifier|public
 name|PartitionedResourceRequests
 name|partitionAskList
 parameter_list|(
