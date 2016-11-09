@@ -741,6 +741,8 @@ DECL|field|resourceInfo
 specifier|protected
 name|ResourcesInfo
 name|resourceInfo
+init|=
+literal|null
 decl_stmt|;
 DECL|method|AppInfo ()
 specifier|public
@@ -1531,9 +1533,7 @@ name|getSchedulingResourceUsage
 argument_list|()
 argument_list|)
 else|:
-operator|new
-name|ResourcesInfo
-argument_list|()
+literal|null
 expr_stmt|;
 block|}
 block|}

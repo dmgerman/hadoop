@@ -35,6 +35,30 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -51,16 +75,6 @@ operator|.
 name|util
 operator|.
 name|HashSet
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Iterator
 import|;
 end_import
 
@@ -1140,9 +1154,8 @@ name|length
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|JSONObject
-name|jsonObject
-init|=
+try|try
+block|{
 name|apps
 operator|.
 name|getJSONArray
@@ -1159,30 +1172,27 @@ name|getJSONObject
 argument_list|(
 literal|"resourceInfo"
 argument_list|)
-decl_stmt|;
-name|Iterator
-argument_list|<
-name|?
-argument_list|>
-name|keys
-init|=
-name|jsonObject
-operator|.
-name|keys
-argument_list|()
-decl_stmt|;
-name|assertEquals
+expr_stmt|;
+name|fail
 argument_list|(
-literal|"For finshed app no values expected"
-argument_list|,
-literal|false
-argument_list|,
-name|keys
-operator|.
-name|hasNext
-argument_list|()
+literal|"resourceInfo object shouldnt be available for finished apps"
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|assertTrue
+argument_list|(
+literal|"resourceInfo shouldn't be available for finished apps"
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
 name|rm
 operator|.
 name|stop
