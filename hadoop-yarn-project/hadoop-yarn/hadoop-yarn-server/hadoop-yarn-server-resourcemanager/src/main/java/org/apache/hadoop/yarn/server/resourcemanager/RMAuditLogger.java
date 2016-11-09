@@ -418,7 +418,16 @@ specifier|final
 name|String
 name|UPDATE_APP_PRIORITY
 init|=
-literal|"Update Application Priority Request"
+literal|"Update Application Priority"
+decl_stmt|;
+DECL|field|UPDATE_APP_TIMEOUTS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|UPDATE_APP_TIMEOUTS
+init|=
+literal|"Update Application Timeouts"
 decl_stmt|;
 DECL|field|CHANGE_CONTAINER_RESOURCE
 specifier|public

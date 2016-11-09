@@ -44,6 +44,22 @@ name|ApplicationStateData
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|SettableFuture
+import|;
+end_import
+
 begin_class
 DECL|class|RMStateUpdateAppEvent
 specifier|public
@@ -64,6 +80,14 @@ DECL|field|notifyApplication
 specifier|private
 name|boolean
 name|notifyApplication
+decl_stmt|;
+DECL|field|future
+specifier|private
+name|SettableFuture
+argument_list|<
+name|Object
+argument_list|>
+name|future
 decl_stmt|;
 DECL|method|RMStateUpdateAppEvent (ApplicationStateData appState)
 specifier|public
@@ -92,8 +116,14 @@ name|notifyApplication
 operator|=
 literal|true
 expr_stmt|;
+name|this
+operator|.
+name|future
+operator|=
+literal|null
+expr_stmt|;
 block|}
-DECL|method|RMStateUpdateAppEvent (ApplicationStateData appState, boolean notifyApp)
+DECL|method|RMStateUpdateAppEvent (ApplicationStateData appState, boolean notifyApp, SettableFuture<Object> future)
 specifier|public
 name|RMStateUpdateAppEvent
 parameter_list|(
@@ -102,18 +132,38 @@ name|appState
 parameter_list|,
 name|boolean
 name|notifyApp
+parameter_list|,
+name|SettableFuture
+argument_list|<
+name|Object
+argument_list|>
+name|future
 parameter_list|)
 block|{
-name|this
+name|super
 argument_list|(
-name|appState
+name|RMStateStoreEventType
+operator|.
+name|UPDATE_APP
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|appState
+operator|=
+name|appState
 expr_stmt|;
 name|this
 operator|.
 name|notifyApplication
 operator|=
 name|notifyApp
+expr_stmt|;
+name|this
+operator|.
+name|future
+operator|=
+name|future
 expr_stmt|;
 block|}
 DECL|method|getAppState ()
@@ -134,6 +184,19 @@ parameter_list|()
 block|{
 return|return
 name|notifyApplication
+return|;
+block|}
+DECL|method|getResult ()
+specifier|public
+name|SettableFuture
+argument_list|<
+name|Object
+argument_list|>
+name|getResult
+parameter_list|()
+block|{
+return|return
+name|future
 return|;
 block|}
 block|}

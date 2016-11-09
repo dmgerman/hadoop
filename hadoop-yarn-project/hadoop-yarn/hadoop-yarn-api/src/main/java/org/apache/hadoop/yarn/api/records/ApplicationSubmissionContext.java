@@ -1438,7 +1438,7 @@ argument_list|>
 name|getApplicationTimeouts
 parameter_list|()
 function_decl|;
-comment|/**    * Set the<code>ApplicationTimeouts</code> for the application in seconds.    * All pre-existing Map entries are cleared before adding the new Map.    * @param applicationTimeouts<code>ApplicationTimeouts</code>s for the    *          application    */
+comment|/**    * Set the<code>ApplicationTimeouts</code> for the application in seconds.    * All pre-existing Map entries are cleared before adding the new Map.    *<p>    *<b>Note:</b> If application timeout value is less than or equal to zero    * then application submission will throw an exception.    *</p>    * @param applicationTimeouts<code>ApplicationTimeouts</code>s for the    *          application    */
 annotation|@
 name|Public
 annotation|@

@@ -201,6 +201,14 @@ name|expireInterval
 operator|/
 literal|3
 decl_stmt|;
+DECL|field|resetTimerOnStart
+specifier|private
+specifier|volatile
+name|boolean
+name|resetTimerOnStart
+init|=
+literal|true
+decl_stmt|;
 DECL|field|clock
 specifier|private
 specifier|final
@@ -461,7 +469,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|register (O ob, long monitorStartTime)
+DECL|method|register (O ob, long expireTime)
 specifier|public
 specifier|synchronized
 name|void
@@ -471,7 +479,7 @@ name|O
 name|ob
 parameter_list|,
 name|long
-name|monitorStartTime
+name|expireTime
 parameter_list|)
 block|{
 name|running
@@ -480,7 +488,7 @@ name|put
 argument_list|(
 name|ob
 argument_list|,
-name|monitorStartTime
+name|expireTime
 argument_list|)
 expr_stmt|;
 block|}
@@ -508,6 +516,11 @@ specifier|synchronized
 name|void
 name|resetTimer
 parameter_list|()
+block|{
+if|if
+condition|(
+name|resetTimerOnStart
+condition|)
 block|{
 name|long
 name|time
@@ -538,6 +551,23 @@ name|time
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+block|}
+DECL|method|setResetTimeOnStart (boolean resetTimeOnStart)
+specifier|protected
+name|void
+name|setResetTimeOnStart
+parameter_list|(
+name|boolean
+name|resetTimeOnStart
+parameter_list|)
+block|{
+name|this
+operator|.
+name|resetTimerOnStart
+operator|=
+name|resetTimeOnStart
+expr_stmt|;
 block|}
 DECL|class|PingChecker
 specifier|private

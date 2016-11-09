@@ -170,6 +170,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ApplicationTimeoutType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|FinalApplicationStatus
 import|;
 end_import
@@ -608,6 +626,16 @@ function_decl|;
 DECL|method|getCallerContext ()
 name|CallerContext
 name|getCallerContext
+parameter_list|()
+function_decl|;
+DECL|method|getApplicationTimeouts ()
+name|Map
+argument_list|<
+name|ApplicationTimeoutType
+argument_list|,
+name|Long
+argument_list|>
+name|getApplicationTimeouts
 parameter_list|()
 function_decl|;
 block|}

@@ -12699,6 +12699,16 @@ name|getCallerContext
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|appState
+operator|.
+name|setApplicationTimeouts
+argument_list|(
+name|rmApp
+operator|.
+name|getApplicationTimeouts
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|rmContext
 operator|.
 name|getStateStore
@@ -12709,6 +12719,8 @@ argument_list|(
 name|appState
 argument_list|,
 literal|false
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// As we use iterator over a TreeSet for OrderingPolicy, once we change
