@@ -136,7 +136,7 @@ name|metrics2
 operator|.
 name|lib
 operator|.
-name|MutableRates
+name|MutableRatesWithAggregation
 import|;
 end_import
 
@@ -168,7 +168,7 @@ block|{
 DECL|field|rates
 annotation|@
 name|Metric
-name|MutableRates
+name|MutableRatesWithAggregation
 name|rates
 decl_stmt|;
 DECL|field|LOG

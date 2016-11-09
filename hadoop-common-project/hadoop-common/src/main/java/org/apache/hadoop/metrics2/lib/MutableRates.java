@@ -141,7 +141,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Helper class to manage a group of mutable rate metrics  */
+comment|/**  * Helper class to manage a group of mutable rate metrics  *  * This class synchronizes all accesses to the metrics it  * contains, so it should not be used in situations where  * there is high contention on the metrics.  * {@link MutableRatesWithAggregation} is preferable in that  * situation.  */
 end_comment
 
 begin_class
