@@ -154,6 +154,28 @@ name|ListMultimap
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|SchedulerApplicationAttempt
+operator|.
+name|AMState
+import|;
+end_import
+
 begin_comment
 comment|/**  * Handles tracking and enforcement for user and queue maxRunningApps  * constraints  */
 end_comment
@@ -247,8 +269,8 @@ name|create
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Checks whether making the application runnable would exceed any    * maxRunningApps limits.    */
-DECL|method|canAppBeRunnable (FSQueue queue, String user)
+comment|/**    * Checks whether making the application runnable would exceed any    * maxRunningApps limits.    *    * @param queue the current queue    * @param attempt the app attempt being checked    * @return true if the application is runnable; false otherwise    */
+DECL|method|canAppBeRunnable (FSQueue queue, FSAppAttempt attempt)
 specifier|public
 name|boolean
 name|canAppBeRunnable
@@ -256,6 +278,95 @@ parameter_list|(
 name|FSQueue
 name|queue
 parameter_list|,
+name|FSAppAttempt
+name|attempt
+parameter_list|)
+block|{
+name|boolean
+name|ret
+init|=
+literal|true
+decl_stmt|;
+if|if
+condition|(
+name|exceedUserMaxApps
+argument_list|(
+name|attempt
+operator|.
+name|getUser
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|attempt
+operator|.
+name|updateAMContainerDiagnostics
+argument_list|(
+name|AMState
+operator|.
+name|INACTIVATED
+argument_list|,
+literal|"The user \""
+operator|+
+name|attempt
+operator|.
+name|getUser
+argument_list|()
+operator|+
+literal|"\" has reached the maximum limit"
+operator|+
+literal|" of runnable applications."
+argument_list|)
+expr_stmt|;
+name|ret
+operator|=
+literal|false
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|exceedQueueMaxRunningApps
+argument_list|(
+name|queue
+argument_list|)
+condition|)
+block|{
+name|attempt
+operator|.
+name|updateAMContainerDiagnostics
+argument_list|(
+name|AMState
+operator|.
+name|INACTIVATED
+argument_list|,
+literal|"The queue \""
+operator|+
+name|queue
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|"\" has reached the maximum limit"
+operator|+
+literal|" of runnable applications."
+argument_list|)
+expr_stmt|;
+name|ret
+operator|=
+literal|false
+expr_stmt|;
+block|}
+return|return
+name|ret
+return|;
+block|}
+comment|/**    * Checks whether the number of user runnable apps exceeds the limitation.    *    * @param user the user name    * @return true if the number hits the limit; false otherwise    */
+DECL|method|exceedUserMaxApps (String user)
+specifier|public
+name|boolean
+name|exceedUserMaxApps
+parameter_list|(
 name|String
 name|user
 parameter_list|)
@@ -303,9 +414,23 @@ argument_list|)
 condition|)
 block|{
 return|return
+literal|true
+return|;
+block|}
+return|return
 literal|false
 return|;
 block|}
+comment|/**    * Recursively checks whether the number of queue runnable apps exceeds the    * limitation.    *    * @param queue the current queue    * @return true if the number hits the limit; false otherwise    */
+DECL|method|exceedQueueMaxRunningApps (FSQueue queue)
+specifier|public
+name|boolean
+name|exceedQueueMaxRunningApps
+parameter_list|(
+name|FSQueue
+name|queue
+parameter_list|)
+block|{
 comment|// Check queue and all parent queues
 while|while
 condition|(
@@ -328,7 +453,7 @@ argument_list|()
 condition|)
 block|{
 return|return
-literal|false
+literal|true
 return|;
 block|}
 name|queue
@@ -340,7 +465,7 @@ argument_list|()
 expr_stmt|;
 block|}
 return|return
-literal|true
+literal|false
 return|;
 block|}
 comment|/**    * Tracks the given new runnable app for purposes of maintaining max running    * app limits.    */
@@ -810,9 +935,6 @@ name|getQueue
 argument_list|()
 argument_list|,
 name|next
-operator|.
-name|getUser
-argument_list|()
 argument_list|)
 condition|)
 block|{

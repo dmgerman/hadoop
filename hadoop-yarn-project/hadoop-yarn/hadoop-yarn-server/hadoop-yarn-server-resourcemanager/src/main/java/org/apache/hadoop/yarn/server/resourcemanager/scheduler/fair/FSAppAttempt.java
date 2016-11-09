@@ -3778,6 +3778,22 @@ name|schedulerKey
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|isWaitingForAMContainer
+argument_list|()
+condition|)
+block|{
+name|updateAMDiagnosticMsg
+argument_list|(
+name|capability
+argument_list|,
+literal|" exceed the available resources of the node and the request is"
+operator|+
+literal|" reserved"
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|FairScheduler
 operator|.
@@ -3786,6 +3802,22 @@ return|;
 block|}
 else|else
 block|{
+if|if
+condition|(
+name|isWaitingForAMContainer
+argument_list|()
+condition|)
+block|{
+name|updateAMDiagnosticMsg
+argument_list|(
+name|capability
+argument_list|,
+literal|" exceed the available resources of the node and the request cannot"
+operator|+
+literal|" be reserved"
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|LOG
@@ -4556,7 +4588,15 @@ name|getNodeName
 argument_list|()
 argument_list|)
 decl_stmt|;
-return|return
+name|boolean
+name|ret
+init|=
+literal|true
+decl_stmt|;
+if|if
+condition|(
+operator|!
+operator|(
 comment|// There must be outstanding requests at the given priority:
 name|anyRequest
 operator|!=
@@ -4639,8 +4679,18 @@ operator|.
 name|getTotalCapability
 argument_list|()
 argument_list|)
-operator|&&
-comment|// The requested container must fit in queue maximum share:
+operator|)
+condition|)
+block|{
+name|ret
+operator|=
+literal|false
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+operator|!
 name|getQueue
 argument_list|()
 operator|.
@@ -4651,6 +4701,33 @@ operator|.
 name|getCapability
 argument_list|()
 argument_list|)
+condition|)
+block|{
+comment|// The requested container must fit in queue maximum share
+if|if
+condition|(
+name|isWaitingForAMContainer
+argument_list|()
+condition|)
+block|{
+name|updateAMDiagnosticMsg
+argument_list|(
+name|anyRequest
+operator|.
+name|getCapability
+argument_list|()
+argument_list|,
+literal|" exceeds current queue or its parents maximum resource allowed)."
+argument_list|)
+expr_stmt|;
+block|}
+name|ret
+operator|=
+literal|false
+expr_stmt|;
+block|}
+return|return
+name|ret
 return|;
 block|}
 DECL|method|isValidReservation (FSSchedulerNode node)
@@ -5170,6 +5247,41 @@ condition|)
 block|{
 if|if
 condition|(
+name|isWaitingForAMContainer
+argument_list|()
+condition|)
+block|{
+name|List
+argument_list|<
+name|ResourceRequest
+argument_list|>
+name|ask
+init|=
+name|appSchedulingInfo
+operator|.
+name|getAllResourceRequests
+argument_list|()
+decl_stmt|;
+name|updateAMDiagnosticMsg
+argument_list|(
+name|ask
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|getCapability
+argument_list|()
+argument_list|,
+literal|" exceeds maximum "
+operator|+
+literal|"AM resource allowed)."
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
 name|LOG
 operator|.
 name|isDebugEnabled
@@ -5201,6 +5313,60 @@ argument_list|,
 literal|false
 argument_list|)
 return|;
+block|}
+comment|/**    * Build the diagnostic message and update it.    *    * @param resource resource request    * @param reason the reason why AM doesn't get the resource    */
+DECL|method|updateAMDiagnosticMsg (Resource resource, String reason)
+specifier|private
+name|void
+name|updateAMDiagnosticMsg
+parameter_list|(
+name|Resource
+name|resource
+parameter_list|,
+name|String
+name|reason
+parameter_list|)
+block|{
+name|StringBuilder
+name|diagnosticMessageBldr
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+name|diagnosticMessageBldr
+operator|.
+name|append
+argument_list|(
+literal|" (Resource request: "
+argument_list|)
+expr_stmt|;
+name|diagnosticMessageBldr
+operator|.
+name|append
+argument_list|(
+name|resource
+argument_list|)
+expr_stmt|;
+name|diagnosticMessageBldr
+operator|.
+name|append
+argument_list|(
+name|reason
+argument_list|)
+expr_stmt|;
+name|updateAMContainerDiagnostics
+argument_list|(
+name|AMState
+operator|.
+name|INACTIVATED
+argument_list|,
+name|diagnosticMessageBldr
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Preempt a running container according to the priority    */
 annotation|@

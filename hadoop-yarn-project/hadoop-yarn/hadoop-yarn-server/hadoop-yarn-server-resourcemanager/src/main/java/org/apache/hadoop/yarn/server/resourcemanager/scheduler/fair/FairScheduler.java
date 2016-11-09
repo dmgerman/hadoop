@@ -3889,7 +3889,7 @@ name|canAppBeRunnable
 argument_list|(
 name|queue
 argument_list|,
-name|user
+name|attempt
 argument_list|)
 decl_stmt|;
 name|queue
@@ -8516,9 +8516,6 @@ argument_list|(
 name|newQueue
 argument_list|,
 name|attempt
-operator|.
-name|getUser
-argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
