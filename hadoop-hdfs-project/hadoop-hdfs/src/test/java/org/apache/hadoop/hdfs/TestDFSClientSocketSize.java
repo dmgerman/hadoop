@@ -43,6 +43,8 @@ operator|.
 name|protocol
 operator|.
 name|DatanodeInfo
+operator|.
+name|DatanodeInfoBuilder
 import|;
 end_import
 
@@ -436,7 +438,10 @@ operator|.
 name|createSocketForPipeline
 argument_list|(
 operator|new
-name|DatanodeInfo
+name|DatanodeInfoBuilder
+argument_list|()
+operator|.
+name|setNodeID
 argument_list|(
 name|cluster
 operator|.
@@ -452,6 +457,9 @@ operator|.
 name|getDatanodeId
 argument_list|()
 argument_list|)
+operator|.
+name|build
+argument_list|()
 argument_list|,
 literal|1
 argument_list|,
