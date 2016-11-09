@@ -1220,16 +1220,6 @@ literal|null
 condition|)
 block|{
 comment|// Cleanup working directory
-if|if
-condition|(
-name|fs
-operator|.
-name|exists
-argument_list|(
-name|workingDir
-argument_list|)
-condition|)
-block|{
 name|fs
 operator|.
 name|delete
@@ -1239,7 +1229,6 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-block|}
 name|fs
 operator|.
 name|close

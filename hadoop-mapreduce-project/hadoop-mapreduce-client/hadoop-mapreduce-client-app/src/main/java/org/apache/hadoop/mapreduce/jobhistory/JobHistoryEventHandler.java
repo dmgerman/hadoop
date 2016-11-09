@@ -9839,16 +9839,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// TODO temporarily removing the existing dst
-if|if
-condition|(
-name|doneDirFS
-operator|.
-name|exists
-argument_list|(
-name|toPath
-argument_list|)
-condition|)
-block|{
 name|doneDirFS
 operator|.
 name|delete
@@ -9858,7 +9848,6 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-block|}
 name|boolean
 name|copied
 init|=
@@ -9917,28 +9906,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-DECL|method|pathExists (FileSystem fileSys, Path path)
-name|boolean
-name|pathExists
-parameter_list|(
-name|FileSystem
-name|fileSys
-parameter_list|,
-name|Path
-name|path
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-name|fileSys
-operator|.
-name|exists
-argument_list|(
-name|path
-argument_list|)
-return|;
 block|}
 DECL|method|getTempFileName (String srcFile)
 specifier|private

@@ -839,13 +839,6 @@ if|if
 condition|(
 operator|!
 name|toAppend
-operator|&&
-name|targetFS
-operator|.
-name|exists
-argument_list|(
-name|targetPath
-argument_list|)
 condition|)
 block|{
 name|targetFS

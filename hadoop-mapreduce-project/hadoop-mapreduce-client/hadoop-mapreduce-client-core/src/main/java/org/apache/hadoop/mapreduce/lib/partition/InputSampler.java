@@ -1748,16 +1748,6 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|fs
-operator|.
-name|exists
-argument_list|(
-name|dst
-argument_list|)
-condition|)
-block|{
 name|fs
 operator|.
 name|delete
@@ -1767,7 +1757,6 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-block|}
 name|SequenceFile
 operator|.
 name|Writer

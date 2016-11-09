@@ -401,17 +401,6 @@ argument_list|(
 name|bootstrapConf
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-operator|!
-name|fs
-operator|.
-name|exists
-argument_list|(
-name|configDir
-argument_list|)
-condition|)
-block|{
 name|fs
 operator|.
 name|mkdirs
@@ -419,7 +408,6 @@ argument_list|(
 name|configDir
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 annotation|@
 name|Override

@@ -308,6 +308,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|FileSystem
 import|;
 end_import
@@ -1250,29 +1264,13 @@ name|fileName
 argument_list|)
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-operator|!
 name|localFs
 operator|.
-name|exists
+name|getFileStatus
 argument_list|(
 name|p
 argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|FileNotFoundException
-argument_list|(
-literal|"File "
-operator|+
-name|fileName
-operator|+
-literal|" does not exist."
-argument_list|)
-throw|;
-block|}
+expr_stmt|;
 if|if
 condition|(
 name|LOG
@@ -1731,29 +1729,13 @@ condition|)
 block|{
 comment|//default to the local file system
 comment|//check if the file exists or not first
-if|if
-condition|(
-operator|!
 name|localFs
 operator|.
-name|exists
+name|getFileStatus
 argument_list|(
 name|path
 argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|FileNotFoundException
-argument_list|(
-literal|"File "
-operator|+
-name|tmp
-operator|+
-literal|" does not exist."
-argument_list|)
-throw|;
-block|}
+expr_stmt|;
 if|if
 condition|(
 name|isWildcard
@@ -1812,29 +1794,14 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-operator|!
+comment|// existence check
 name|fs
 operator|.
-name|exists
+name|getFileStatus
 argument_list|(
 name|path
 argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|FileNotFoundException
-argument_list|(
-literal|"File "
-operator|+
-name|tmp
-operator|+
-literal|" does not exist."
-argument_list|)
-throw|;
-block|}
+expr_stmt|;
 if|if
 condition|(
 name|isWildcard
@@ -1967,15 +1934,23 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-operator|!
+name|FileStatus
+name|status
+init|=
 name|fs
 operator|.
-name|isDirectory
+name|getFileStatus
 argument_list|(
 name|path
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|status
+operator|.
+name|isDirectory
+argument_list|()
 condition|)
 block|{
 throw|throw

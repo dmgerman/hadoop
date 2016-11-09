@@ -104,6 +104,18 @@ name|mockito
 operator|.
 name|Mockito
 operator|.
+name|never
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
 name|spy
 import|;
 end_import
@@ -1705,10 +1717,8 @@ name|verify
 argument_list|(
 name|fs
 argument_list|,
-name|times
-argument_list|(
-literal|1
-argument_list|)
+name|never
+argument_list|()
 argument_list|)
 operator|.
 name|isDirectory
@@ -1727,7 +1737,7 @@ name|fs
 argument_list|,
 name|times
 argument_list|(
-literal|0
+literal|1
 argument_list|)
 argument_list|)
 operator|.
@@ -1843,10 +1853,8 @@ name|verify
 argument_list|(
 name|fs
 argument_list|,
-name|times
-argument_list|(
-literal|1
-argument_list|)
+name|never
+argument_list|()
 argument_list|)
 operator|.
 name|isDirectory

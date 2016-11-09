@@ -1113,13 +1113,6 @@ condition|(
 name|tempPath
 operator|!=
 literal|null
-operator|&&
-name|fs
-operator|.
-name|exists
-argument_list|(
-name|tempPath
-argument_list|)
 condition|)
 block|{
 name|fs
@@ -1136,9 +1129,19 @@ block|}
 catch|catch
 parameter_list|(
 name|IOException
-name|ignore
+name|ioe
 parameter_list|)
-block|{}
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Exception received while deleting temp files"
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Checks that the (original) remote file is either owned by the user who    * started the app or public.    */
 annotation|@

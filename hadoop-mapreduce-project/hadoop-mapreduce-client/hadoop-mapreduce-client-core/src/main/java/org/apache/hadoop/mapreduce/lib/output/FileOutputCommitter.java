@@ -2656,16 +2656,6 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|fs
-operator|.
-name|exists
-argument_list|(
-name|committedTaskPath
-argument_list|)
-condition|)
-block|{
-if|if
-condition|(
 operator|!
 name|fs
 operator|.
@@ -2674,6 +2664,13 @@ argument_list|(
 name|committedTaskPath
 argument_list|,
 literal|true
+argument_list|)
+operator|&&
+name|fs
+operator|.
+name|exists
+argument_list|(
+name|committedTaskPath
 argument_list|)
 condition|)
 block|{
@@ -2686,7 +2683,6 @@ operator|+
 name|committedTaskPath
 argument_list|)
 throw|;
-block|}
 block|}
 comment|//Rename can fail if the parent directory does not yet exist.
 name|Path
@@ -2750,16 +2746,18 @@ block|{
 comment|// essentially a no-op, but for backwards compatibility
 comment|// after upgrade to the new fileOutputCommitter,
 comment|// check if there are any output left in committedTaskPath
-if|if
-condition|(
+try|try
+block|{
+name|FileStatus
+name|from
+init|=
 name|fs
 operator|.
-name|exists
+name|getFileStatus
 argument_list|(
 name|previousCommittedTaskPath
 argument_list|)
-condition|)
-block|{
+decl_stmt|;
 name|LOG
 operator|.
 name|info
@@ -2773,16 +2771,6 @@ operator|+
 name|outputPath
 argument_list|)
 expr_stmt|;
-name|FileStatus
-name|from
-init|=
-name|fs
-operator|.
-name|getFileStatus
-argument_list|(
-name|previousCommittedTaskPath
-argument_list|)
-decl_stmt|;
 name|mergePaths
 argument_list|(
 name|fs
@@ -2793,6 +2781,12 @@ name|outputPath
 argument_list|)
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|ignored
+parameter_list|)
+block|{         }
 name|LOG
 operator|.
 name|info

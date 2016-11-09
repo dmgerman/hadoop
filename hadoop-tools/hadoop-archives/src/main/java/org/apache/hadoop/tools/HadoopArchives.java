@@ -42,16 +42,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileNotFoundException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|IOException
 import|;
 end_import
@@ -1105,29 +1095,13 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-operator|!
 name|fs
 operator|.
-name|exists
+name|getFileStatus
 argument_list|(
 name|p
 argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|FileNotFoundException
-argument_list|(
-literal|"Source "
-operator|+
-name|p
-operator|+
-literal|" does not exist."
-argument_list|)
-throw|;
-block|}
+expr_stmt|;
 block|}
 block|}
 comment|/**    * this assumes that there are two types of files file/dir    * @param fs the input filesystem    * @param fdir the filestatusdir of the path      * @param out the list of paths output of recursive ls    * @throws IOException    */
@@ -3615,16 +3589,6 @@ name|conf
 argument_list|)
 expr_stmt|;
 comment|//this was a stale copy
-if|if
-condition|(
-name|destFs
-operator|.
-name|exists
-argument_list|(
-name|tmpOutput
-argument_list|)
-condition|)
-block|{
 name|destFs
 operator|.
 name|delete
@@ -3634,7 +3598,6 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-block|}
 name|partStream
 operator|=
 name|destFs
@@ -4388,16 +4351,6 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|fs
-operator|.
-name|exists
-argument_list|(
-name|masterIndex
-argument_list|)
-condition|)
-block|{
 name|fs
 operator|.
 name|delete
@@ -4407,17 +4360,6 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-block|}
-if|if
-condition|(
-name|fs
-operator|.
-name|exists
-argument_list|(
-name|index
-argument_list|)
-condition|)
-block|{
 name|fs
 operator|.
 name|delete
@@ -4427,7 +4369,6 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-block|}
 name|indexStream
 operator|=
 name|fs

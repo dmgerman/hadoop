@@ -647,8 +647,10 @@ name|verify
 argument_list|(
 name|fs
 argument_list|,
-name|never
-argument_list|()
+name|times
+argument_list|(
+literal|1
+argument_list|)
 argument_list|)
 operator|.
 name|delete

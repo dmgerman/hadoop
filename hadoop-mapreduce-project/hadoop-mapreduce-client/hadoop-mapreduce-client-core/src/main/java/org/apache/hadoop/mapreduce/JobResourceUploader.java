@@ -2416,16 +2416,21 @@ operator|.
 name|JOB_DIR_PERMISSION
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-operator|!
+try|try
+block|{
 name|jtFs
 operator|.
-name|exists
+name|getFileStatus
 argument_list|(
 name|submitJobDir
 argument_list|)
-condition|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|e
+parameter_list|)
 block|{
 throw|throw
 operator|new
@@ -2434,6 +2439,8 @@ argument_list|(
 literal|"Cannot find job submission directory! "
 operator|+
 literal|"It should just be created, so something wrong here."
+argument_list|,
+name|e
 argument_list|)
 throw|;
 block|}
@@ -2644,29 +2651,13 @@ condition|)
 block|{
 comment|// default to the local file system
 comment|// check if the file exists or not first
-if|if
-condition|(
-operator|!
 name|localFs
 operator|.
-name|exists
+name|getFileStatus
 argument_list|(
 name|path
 argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|FileNotFoundException
-argument_list|(
-literal|"File "
-operator|+
-name|file
-operator|+
-literal|" does not exist."
-argument_list|)
-throw|;
-block|}
+expr_stmt|;
 name|finalPath
 operator|=
 name|path
@@ -2704,29 +2695,13 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-operator|!
 name|fs
 operator|.
-name|exists
+name|getFileStatus
 argument_list|(
 name|path
 argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|FileNotFoundException
-argument_list|(
-literal|"File "
-operator|+
-name|file
-operator|+
-literal|" does not exist."
-argument_list|)
-throw|;
-block|}
+expr_stmt|;
 name|finalPath
 operator|=
 name|path

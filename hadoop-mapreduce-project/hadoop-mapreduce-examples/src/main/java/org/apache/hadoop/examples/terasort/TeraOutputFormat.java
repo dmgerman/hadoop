@@ -24,6 +24,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|FileNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -606,15 +616,7 @@ argument_list|(
 name|jobConf
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|fs
-operator|.
-name|exists
-argument_list|(
-name|outDir
-argument_list|)
-condition|)
+try|try
 block|{
 comment|// existing output dir is considered empty iff its only content is the
 comment|// partition file.
@@ -714,6 +716,12 @@ argument_list|)
 throw|;
 block|}
 block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|ignored
+parameter_list|)
+block|{     }
 block|}
 DECL|method|getRecordWriter (TaskAttemptContext job )
 specifier|public

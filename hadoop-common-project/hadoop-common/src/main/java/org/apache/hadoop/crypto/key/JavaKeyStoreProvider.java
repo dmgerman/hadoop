@@ -226,6 +226,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|FileNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -886,7 +896,9 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Can't create keystore"
+literal|"Can't create keystore: "
+operator|+
+name|e
 argument_list|,
 name|e
 argument_list|)
@@ -905,6 +917,10 @@ argument_list|(
 literal|"Can't load keystore "
 operator|+
 name|path
+operator|+
+literal|" : "
+operator|+
+name|e
 argument_list|,
 name|e
 argument_list|)
@@ -947,16 +963,6 @@ name|password
 argument_list|)
 expr_stmt|;
 comment|// Remove _OLD if exists
-if|if
-condition|(
-name|fs
-operator|.
-name|exists
-argument_list|(
-name|backupPath
-argument_list|)
-condition|)
-block|{
 name|fs
 operator|.
 name|delete
@@ -966,7 +972,6 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-block|}
 name|LOG
 operator|.
 name|debug
@@ -1245,16 +1250,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|fs
-operator|.
-name|exists
-argument_list|(
-name|pathToDelete
-argument_list|)
-condition|)
-block|{
 name|fs
 operator|.
 name|delete
@@ -1264,7 +1259,6 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 catch|catch
 parameter_list|(
@@ -2801,15 +2795,7 @@ block|{
 return|return;
 block|}
 comment|// Might exist if a backup has been restored etc.
-if|if
-condition|(
-name|fs
-operator|.
-name|exists
-argument_list|(
-name|newPath
-argument_list|)
-condition|)
+try|try
 block|{
 name|renameOrFail
 argument_list|(
@@ -2833,15 +2819,13 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|fs
-operator|.
-name|exists
-argument_list|(
-name|oldPath
-argument_list|)
-condition|)
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|ignored
+parameter_list|)
+block|{       }
+try|try
 block|{
 name|renameOrFail
 argument_list|(
@@ -2865,6 +2849,12 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|ignored
+parameter_list|)
+block|{       }
 comment|// put all of the updates into the keystore
 for|for
 control|(
@@ -3102,16 +3092,6 @@ name|path
 argument_list|)
 expr_stmt|;
 comment|// Delete _OLD
-if|if
-condition|(
-name|fs
-operator|.
-name|exists
-argument_list|(
-name|oldPath
-argument_list|)
-condition|)
-block|{
 name|fs
 operator|.
 name|delete
@@ -3121,7 +3101,6 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 DECL|method|writeToNew (Path newPath)
 specifier|protected
@@ -3228,20 +3207,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|boolean
-name|fileExisted
-init|=
-literal|false
-decl_stmt|;
-if|if
-condition|(
-name|fs
-operator|.
-name|exists
-argument_list|(
-name|path
-argument_list|)
-condition|)
+try|try
 block|{
 name|renameOrFail
 argument_list|(
@@ -3250,14 +3216,20 @@ argument_list|,
 name|oldPath
 argument_list|)
 expr_stmt|;
-name|fileExisted
-operator|=
-literal|true
-expr_stmt|;
-block|}
 return|return
-name|fileExisted
+literal|true
 return|;
+block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|e
+parameter_list|)
+block|{
+return|return
+literal|false
+return|;
+block|}
 block|}
 DECL|method|revertFromOld (Path oldPath, boolean fileExisted)
 specifier|private

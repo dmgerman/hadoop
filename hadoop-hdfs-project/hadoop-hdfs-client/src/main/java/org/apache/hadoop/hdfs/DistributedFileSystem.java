@@ -12609,13 +12609,7 @@ literal|"user.name"
 argument_list|)
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|exists
-argument_list|(
-name|userTrash
-argument_list|)
-condition|)
+try|try
 block|{
 name|ret
 operator|.
@@ -12628,6 +12622,12 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|ignored
+parameter_list|)
+block|{           }
 block|}
 block|}
 block|}

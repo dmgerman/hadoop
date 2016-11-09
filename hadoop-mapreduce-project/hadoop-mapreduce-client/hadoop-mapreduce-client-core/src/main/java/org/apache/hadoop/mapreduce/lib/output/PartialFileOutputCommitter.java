@@ -530,13 +530,6 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|fs
-operator|.
-name|exists
-argument_list|(
-name|pTask
-argument_list|)
-operator|&&
 operator|!
 name|fs
 operator|.
@@ -545,6 +538,13 @@ argument_list|(
 name|pTask
 argument_list|,
 literal|true
+argument_list|)
+operator|&&
+name|fs
+operator|.
+name|exists
+argument_list|(
+name|pTask
 argument_list|)
 condition|)
 block|{

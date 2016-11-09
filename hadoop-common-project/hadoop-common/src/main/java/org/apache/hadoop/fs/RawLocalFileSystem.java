@@ -1083,26 +1083,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-operator|!
-name|exists
+name|getFileStatus
 argument_list|(
 name|f
 argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|FileNotFoundException
-argument_list|(
-name|f
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-throw|;
-block|}
+expr_stmt|;
 return|return
 operator|new
 name|FSDataInputStream
@@ -1446,27 +1431,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-operator|!
-name|exists
-argument_list|(
-name|f
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|FileNotFoundException
-argument_list|(
-literal|"File "
-operator|+
-name|f
-operator|+
-literal|" not found"
-argument_list|)
-throw|;
-block|}
 name|FileStatus
 name|status
 init|=
@@ -2077,15 +2041,7 @@ comment|// platforms, this is already handled by the Java API call above. Some
 comment|// platforms (notably Windows) do not provide this behavior, so the Java API
 comment|// call renameTo(dstFile) fails. Delete destination and attempt rename
 comment|// again.
-if|if
-condition|(
-name|this
-operator|.
-name|exists
-argument_list|(
-name|dst
-argument_list|)
-condition|)
+try|try
 block|{
 name|FileStatus
 name|sdst
@@ -2161,6 +2117,12 @@ return|;
 block|}
 block|}
 block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|ignored
+parameter_list|)
+block|{     }
 return|return
 literal|false
 return|;

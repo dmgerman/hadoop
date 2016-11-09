@@ -52,16 +52,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileNotFoundException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|IOException
 import|;
 end_import
@@ -410,9 +400,6 @@ control|)
 block|{
 try|try
 block|{
-if|if
-condition|(
-operator|!
 name|p
 operator|.
 name|getFileSystem
@@ -420,28 +407,11 @@ argument_list|(
 name|conf
 argument_list|)
 operator|.
-name|exists
+name|getFileStatus
 argument_list|(
 name|p
-argument_list|)
-condition|)
-block|{
-name|ioes
-operator|.
-name|add
-argument_list|(
-operator|new
-name|FileNotFoundException
-argument_list|(
-literal|"Source "
-operator|+
-name|p
-operator|+
-literal|" does not exist."
-argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 catch|catch
 parameter_list|(

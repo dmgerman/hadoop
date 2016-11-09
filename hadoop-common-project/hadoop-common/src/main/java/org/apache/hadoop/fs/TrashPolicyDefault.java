@@ -651,27 +651,14 @@ argument_list|,
 name|path
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-operator|!
+comment|// check that path exists
 name|fs
 operator|.
-name|exists
+name|getFileStatus
 argument_list|(
 name|path
 argument_list|)
-condition|)
-comment|// check that path exists
-throw|throw
-operator|new
-name|FileNotFoundException
-argument_list|(
-name|path
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-throw|;
+expr_stmt|;
 name|String
 name|qpath
 init|=

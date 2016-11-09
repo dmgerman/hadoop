@@ -1068,7 +1068,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|FileAlreadyExistsException
 argument_list|(
 name|keyPath
 operator|+

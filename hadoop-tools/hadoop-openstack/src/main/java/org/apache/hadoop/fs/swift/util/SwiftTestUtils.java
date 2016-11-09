@@ -1888,19 +1888,29 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-operator|!
+try|try
+block|{
 name|fileSystem
 operator|.
-name|exists
+name|getFileStatus
 argument_list|(
 name|path
 argument_list|)
-condition|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|e
+parameter_list|)
 block|{
 comment|//failure, report it
-name|fail
+throw|throw
+operator|(
+name|IOException
+operator|)
+operator|new
+name|FileNotFoundException
 argument_list|(
 name|message
 operator|+
@@ -1914,8 +1924,13 @@ name|path
 operator|.
 name|getParent
 argument_list|()
-argument_list|)
-expr_stmt|;
+operator|+
+literal|": "
+operator|+
+name|e
+operator|+
+literal|" -- "
+operator|+
 name|ls
 argument_list|(
 name|fileSystem
@@ -1925,7 +1940,13 @@ operator|.
 name|getParent
 argument_list|()
 argument_list|)
-expr_stmt|;
+argument_list|)
+operator|.
+name|initCause
+argument_list|(
+name|e
+argument_list|)
+throw|;
 block|}
 block|}
 comment|/**    * Assert that a path does not exist    *    * @param fileSystem filesystem to examine    * @param message message to include in the assertion failure message    * @param path path in the filesystem    * @throws IOException IO problems    */
