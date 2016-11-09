@@ -135,7 +135,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Mojo to generate java classes from .proto files using protoc.  * See package info for examples of use in a maven pom.  */
+comment|/**  * Mojo to generate java test classes from .proto files using protoc.  * See package info for examples of use in a maven pom.  */
 end_comment
 
 begin_class
@@ -144,18 +144,18 @@ name|Mojo
 argument_list|(
 name|name
 operator|=
-literal|"protoc"
+literal|"test-protoc"
 argument_list|,
 name|defaultPhase
 operator|=
 name|LifecyclePhase
 operator|.
-name|GENERATE_SOURCES
+name|GENERATE_TEST_SOURCES
 argument_list|)
-DECL|class|ProtocMojo
+DECL|class|ProtocTestMojo
 specifier|public
 class|class
-name|ProtocMojo
+name|ProtocTestMojo
 extends|extends
 name|AbstractMojo
 block|{
@@ -188,7 +188,7 @@ name|Parameter
 argument_list|(
 name|defaultValue
 operator|=
-literal|"${project.build.directory}/generated-sources/java"
+literal|"${project.build.directory}/generated-test-sources/java"
 argument_list|)
 DECL|field|output
 specifier|private
@@ -274,7 +274,7 @@ name|checksumPath
 argument_list|,
 name|this
 argument_list|,
-literal|false
+literal|true
 argument_list|)
 decl_stmt|;
 name|protoc
