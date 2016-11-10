@@ -119,7 +119,7 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance ( int numUsedContainers, int numReservedContainers, Resource usedResources, Resource reservedResources, Resource neededResources, long memorySeconds, long vcoreSeconds, float queueUsagePerc, float clusterUsagePerc)
+DECL|method|newInstance ( int numUsedContainers, int numReservedContainers, Resource usedResources, Resource reservedResources, Resource neededResources, long memorySeconds, long vcoreSeconds, float queueUsagePerc, float clusterUsagePerc, long preemptedMemorySeconds, long preemptedVcoresSeconds)
 specifier|public
 specifier|static
 name|ApplicationResourceUsageReport
@@ -151,6 +151,12 @@ name|queueUsagePerc
 parameter_list|,
 name|float
 name|clusterUsagePerc
+parameter_list|,
+name|long
+name|preemptedMemorySeconds
+parameter_list|,
+name|long
+name|preemptedVcoresSeconds
 parameter_list|)
 block|{
 name|ApplicationResourceUsageReport
@@ -226,6 +232,20 @@ operator|.
 name|setClusterUsagePercentage
 argument_list|(
 name|clusterUsagePerc
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setPreemptedMemorySeconds
+argument_list|(
+name|preemptedMemorySeconds
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setPreemptedVcoreSeconds
+argument_list|(
+name|preemptedVcoresSeconds
 argument_list|)
 expr_stmt|;
 return|return
@@ -471,6 +491,60 @@ parameter_list|(
 name|float
 name|clusterUsagePerc
 parameter_list|)
+function_decl|;
+comment|/**    * Set the aggregated amount of memory preempted (in megabytes)    * the application has allocated times the number of seconds    * the application has been running.    * @param memorySeconds the aggregated amount of memory seconds    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setPreemptedMemorySeconds (long memorySeconds)
+specifier|public
+specifier|abstract
+name|void
+name|setPreemptedMemorySeconds
+parameter_list|(
+name|long
+name|memorySeconds
+parameter_list|)
+function_decl|;
+comment|/**    * Get the aggregated amount of memory preempted(in megabytes)    * the application has allocated times the number of    * seconds the application has been running.    * @return the aggregated amount of memory seconds    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getPreemptedMemorySeconds ()
+specifier|public
+specifier|abstract
+name|long
+name|getPreemptedMemorySeconds
+parameter_list|()
+function_decl|;
+comment|/**    * Set the aggregated number of vcores preempted that the application has    * allocated times the number of seconds the application has been running.    * @param vcoreSeconds the aggregated number of vcore seconds    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setPreemptedVcoreSeconds (long vcoreSeconds)
+specifier|public
+specifier|abstract
+name|void
+name|setPreemptedVcoreSeconds
+parameter_list|(
+name|long
+name|vcoreSeconds
+parameter_list|)
+function_decl|;
+comment|/**    * Get the aggregated number of vcores preempted that the application has    * allocated times the number of seconds the application has been running.    * @return the aggregated number of vcore seconds    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getPreemptedVcoreSeconds ()
+specifier|public
+specifier|abstract
+name|long
+name|getPreemptedVcoreSeconds
+parameter_list|()
 function_decl|;
 block|}
 end_class

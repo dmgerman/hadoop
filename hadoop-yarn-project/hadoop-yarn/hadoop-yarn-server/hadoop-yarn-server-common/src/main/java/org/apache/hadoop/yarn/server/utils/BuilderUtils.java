@@ -3181,7 +3181,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-DECL|method|newApplicationResourceUsageReport ( int numUsedContainers, int numReservedContainers, Resource usedResources, Resource reservedResources, Resource neededResources, long memorySeconds, long vcoreSeconds)
+DECL|method|newApplicationResourceUsageReport ( int numUsedContainers, int numReservedContainers, Resource usedResources, Resource reservedResources, Resource neededResources, long memorySeconds, long vcoreSeconds, long preemptedMemorySeconds, long preemptedVcoreSeconds)
 specifier|public
 specifier|static
 name|ApplicationResourceUsageReport
@@ -3207,6 +3207,12 @@ name|memorySeconds
 parameter_list|,
 name|long
 name|vcoreSeconds
+parameter_list|,
+name|long
+name|preemptedMemorySeconds
+parameter_list|,
+name|long
+name|preemptedVcoreSeconds
 parameter_list|)
 block|{
 name|ApplicationResourceUsageReport
@@ -3268,6 +3274,20 @@ operator|.
 name|setVcoreSeconds
 argument_list|(
 name|vcoreSeconds
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setPreemptedMemorySeconds
+argument_list|(
+name|preemptedMemorySeconds
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setPreemptedVcoreSeconds
+argument_list|(
+name|preemptedVcoreSeconds
 argument_list|)
 expr_stmt|;
 return|return

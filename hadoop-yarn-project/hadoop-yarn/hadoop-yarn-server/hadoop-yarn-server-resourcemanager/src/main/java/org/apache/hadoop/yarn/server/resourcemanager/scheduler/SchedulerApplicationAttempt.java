@@ -4570,6 +4570,10 @@ argument_list|,
 name|queueUsagePerc
 argument_list|,
 name|clusterUsagePerc
+argument_list|,
+literal|0
+argument_list|,
+literal|0
 argument_list|)
 return|;
 block|}

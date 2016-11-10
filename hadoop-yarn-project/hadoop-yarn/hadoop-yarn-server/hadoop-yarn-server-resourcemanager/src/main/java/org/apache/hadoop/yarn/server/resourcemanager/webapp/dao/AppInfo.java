@@ -694,6 +694,16 @@ specifier|protected
 name|int
 name|numAMContainerPreempted
 decl_stmt|;
+DECL|field|preemptedMemorySeconds
+specifier|private
+name|long
+name|preemptedMemorySeconds
+decl_stmt|;
+DECL|field|preemptedVcoreSeconds
+specifier|private
+name|long
+name|preemptedVcoreSeconds
+decl_stmt|;
 comment|// list of resource requests
 annotation|@
 name|XmlElement
@@ -1433,6 +1443,20 @@ operator|.
 name|getVcoreSeconds
 argument_list|()
 expr_stmt|;
+name|preemptedMemorySeconds
+operator|=
+name|appMetrics
+operator|.
+name|getPreemptedMemorySeconds
+argument_list|()
+expr_stmt|;
+name|preemptedVcoreSeconds
+operator|=
+name|appMetrics
+operator|.
+name|getPreemptedVcoreSeconds
+argument_list|()
+expr_stmt|;
 name|unmanagedApplication
 operator|=
 name|appSubmissionContext
@@ -1988,6 +2012,26 @@ parameter_list|()
 block|{
 return|return
 name|vcoreSeconds
+return|;
+block|}
+DECL|method|getPreemptedMemorySeconds ()
+specifier|public
+name|long
+name|getPreemptedMemorySeconds
+parameter_list|()
+block|{
+return|return
+name|preemptedMemorySeconds
+return|;
+block|}
+DECL|method|getPreemptedVcoreSeconds ()
+specifier|public
+name|long
+name|getPreemptedVcoreSeconds
+parameter_list|()
+block|{
+return|return
+name|preemptedVcoreSeconds
 return|;
 block|}
 DECL|method|getResourceRequests ()

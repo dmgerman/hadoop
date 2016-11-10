@@ -1585,7 +1585,7 @@ name|ApplicationMetricsConstants
 operator|.
 name|CREATED_EVENT_TYPE
 argument_list|,
-literal|6
+literal|8
 argument_list|)
 expr_stmt|;
 block|}
@@ -2532,6 +2532,10 @@ argument_list|,
 name|Long
 operator|.
 name|MAX_VALUE
+argument_list|,
+literal|0
+argument_list|,
+literal|0
 argument_list|)
 argument_list|)
 expr_stmt|;

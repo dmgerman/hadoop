@@ -2503,6 +2503,10 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|0
 argument_list|)
 decl_stmt|;
 comment|/**    * Find all configs whose name starts with    * YarnConfiguration.RM_PROXY_USER_PREFIX, and add a record for each one by    * replacing the prefix with ProxyUsers.CONF_HADOOP_PROXYUSER    */

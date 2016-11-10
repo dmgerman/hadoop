@@ -4087,9 +4087,54 @@ operator|+
 literal|" vcore-seconds"
 argument_list|)
 expr_stmt|;
+name|appReportStr
+operator|.
+name|print
+argument_list|(
+literal|"\tAggregate Resource Preempted : "
+argument_list|)
+expr_stmt|;
+name|appReportStr
+operator|.
+name|print
+argument_list|(
+name|usageReport
+operator|.
+name|getPreemptedMemorySeconds
+argument_list|()
+operator|+
+literal|" MB-seconds, "
+argument_list|)
+expr_stmt|;
+name|appReportStr
+operator|.
+name|println
+argument_list|(
+name|usageReport
+operator|.
+name|getPreemptedVcoreSeconds
+argument_list|()
+operator|+
+literal|" vcore-seconds"
+argument_list|)
+expr_stmt|;
 block|}
 else|else
 block|{
+name|appReportStr
+operator|.
+name|println
+argument_list|(
+literal|"N/A"
+argument_list|)
+expr_stmt|;
+name|appReportStr
+operator|.
+name|print
+argument_list|(
+literal|"\tAggregate Resource Preempted : "
+argument_list|)
+expr_stmt|;
 name|appReportStr
 operator|.
 name|println

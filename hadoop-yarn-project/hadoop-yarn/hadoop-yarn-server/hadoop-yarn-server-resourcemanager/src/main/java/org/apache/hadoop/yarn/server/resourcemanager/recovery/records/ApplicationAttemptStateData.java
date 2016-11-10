@@ -213,7 +213,7 @@ specifier|abstract
 class|class
 name|ApplicationAttemptStateData
 block|{
-DECL|method|newInstance ( ApplicationAttemptId attemptId, Container container, Credentials attemptTokens, long startTime, RMAppAttemptState finalState, String finalTrackingUrl, String diagnostics, FinalApplicationStatus amUnregisteredFinalStatus, int exitStatus, long finishTime, long memorySeconds, long vcoreSeconds)
+DECL|method|newInstance ( ApplicationAttemptId attemptId, Container container, Credentials attemptTokens, long startTime, RMAppAttemptState finalState, String finalTrackingUrl, String diagnostics, FinalApplicationStatus amUnregisteredFinalStatus, int exitStatus, long finishTime, long memorySeconds, long vcoreSeconds, long preemptedMemorySeconds, long preemptedVcoreSeconds)
 specifier|public
 specifier|static
 name|ApplicationAttemptStateData
@@ -254,6 +254,12 @@ name|memorySeconds
 parameter_list|,
 name|long
 name|vcoreSeconds
+parameter_list|,
+name|long
+name|preemptedMemorySeconds
+parameter_list|,
+name|long
+name|preemptedVcoreSeconds
 parameter_list|)
 block|{
 name|ApplicationAttemptStateData
@@ -358,11 +364,25 @@ argument_list|(
 name|vcoreSeconds
 argument_list|)
 expr_stmt|;
+name|attemptStateData
+operator|.
+name|setPreemptedMemorySeconds
+argument_list|(
+name|preemptedMemorySeconds
+argument_list|)
+expr_stmt|;
+name|attemptStateData
+operator|.
+name|setPreemptedVcoreSeconds
+argument_list|(
+name|preemptedVcoreSeconds
+argument_list|)
+expr_stmt|;
 return|return
 name|attemptStateData
 return|;
 block|}
-DECL|method|newInstance ( ApplicationAttemptId attemptId, Container masterContainer, Credentials attemptTokens, long startTime, long memorySeconds, long vcoreSeconds)
+DECL|method|newInstance ( ApplicationAttemptId attemptId, Container masterContainer, Credentials attemptTokens, long startTime, long memorySeconds, long vcoreSeconds, long preemptedMemorySeconds, long preemptedVcoreSeconds)
 specifier|public
 specifier|static
 name|ApplicationAttemptStateData
@@ -385,6 +405,12 @@ name|memorySeconds
 parameter_list|,
 name|long
 name|vcoreSeconds
+parameter_list|,
+name|long
+name|preemptedMemorySeconds
+parameter_list|,
+name|long
+name|preemptedVcoreSeconds
 parameter_list|)
 block|{
 return|return
@@ -415,6 +441,10 @@ argument_list|,
 name|memorySeconds
 argument_list|,
 name|vcoreSeconds
+argument_list|,
+name|preemptedMemorySeconds
+argument_list|,
+name|preemptedVcoreSeconds
 argument_list|)
 return|;
 block|}
@@ -664,6 +694,58 @@ specifier|public
 specifier|abstract
 name|void
 name|setVcoreSeconds
+parameter_list|(
+name|long
+name|vcoreSeconds
+parameter_list|)
+function_decl|;
+comment|/**    * Get the<em>preempted memory seconds</em>    * (in MB seconds) of the application.    * @return<em>preempted memory seconds</em>    * (in MB seconds) of the application    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getPreemptedMemorySeconds ()
+specifier|public
+specifier|abstract
+name|long
+name|getPreemptedMemorySeconds
+parameter_list|()
+function_decl|;
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|setPreemptedMemorySeconds (long memorySeconds)
+specifier|public
+specifier|abstract
+name|void
+name|setPreemptedMemorySeconds
+parameter_list|(
+name|long
+name|memorySeconds
+parameter_list|)
+function_decl|;
+comment|/**    * Get the<em>preempted vcore seconds</em>    * of the application.    * @return<em>preempted vcore seconds</em>    * of the application    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getPreemptedVcoreSeconds ()
+specifier|public
+specifier|abstract
+name|long
+name|getPreemptedVcoreSeconds
+parameter_list|()
+function_decl|;
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|setPreemptedVcoreSeconds (long vcoreSeconds)
+specifier|public
+specifier|abstract
+name|void
+name|setPreemptedVcoreSeconds
 parameter_list|(
 name|long
 name|vcoreSeconds

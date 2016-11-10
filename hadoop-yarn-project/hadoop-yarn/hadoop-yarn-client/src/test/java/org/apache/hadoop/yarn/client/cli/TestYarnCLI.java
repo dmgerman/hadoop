@@ -1209,6 +1209,10 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|1111
+argument_list|,
+literal|2222
 argument_list|)
 decl_stmt|;
 name|ApplicationReport
@@ -1505,6 +1509,23 @@ condition|?
 literal|"N/A"
 else|:
 literal|"123456 MB-seconds, 4567 vcore-seconds"
+operator|)
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tAggregate Resource Preempted : "
+operator|+
+operator|(
+name|i
+operator|==
+literal|0
+condition|?
+literal|"N/A"
+else|:
+literal|"1111 MB-seconds, 2222 vcore-seconds"
 operator|)
 argument_list|)
 expr_stmt|;
