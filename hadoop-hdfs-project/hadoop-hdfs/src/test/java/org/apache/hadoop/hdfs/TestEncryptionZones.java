@@ -1066,7 +1066,29 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Rule
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|rules
+operator|.
+name|Timeout
 import|;
 end_import
 
@@ -1489,6 +1511,21 @@ argument_list|()
 return|;
 block|}
 annotation|@
+name|Rule
+DECL|field|globalTimeout
+specifier|public
+name|Timeout
+name|globalTimeout
+init|=
+operator|new
+name|Timeout
+argument_list|(
+literal|120
+operator|*
+literal|1000
+argument_list|)
+decl_stmt|;
+annotation|@
 name|Before
 DECL|method|setup ()
 specifier|public
@@ -1581,6 +1618,11 @@ literal|1
 argument_list|)
 operator|.
 name|build
+argument_list|()
+expr_stmt|;
+name|cluster
+operator|.
+name|waitActive
 argument_list|()
 expr_stmt|;
 name|Logger
@@ -1919,11 +1961,6 @@ block|}
 comment|/**    * Make sure hdfs crypto -createZone command creates a trash directory    * with sticky bits.    * @throws Exception    */
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testTrashStickyBit ()
 specifier|public
 name|void
@@ -2327,11 +2364,6 @@ block|}
 comment|/**    * Make sure hdfs crypto -provisionTrash command creates a trash directory    * with sticky bits.    * @throws Exception    */
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testProvisionTrash ()
 specifier|public
 name|void
@@ -2573,13 +2605,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|// CHECKSTYLE:OFF:MethodLengthCheck
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testBasicOperations ()
 specifier|public
 name|void
@@ -3476,13 +3504,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|// CHECKSTYLE:ON:MethodLengthCheck
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testBasicOperationsRootDir ()
 specifier|public
 name|void
@@ -3597,11 +3621,6 @@ block|}
 comment|/**    * Test listing encryption zones as a non super user.    */
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testListEncryptionZonesAsNonSuperUser ()
 specifier|public
 name|void
@@ -3790,11 +3809,6 @@ block|}
 comment|/**    * Test getEncryptionZoneForPath as a non super user.    */
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testGetEZAsNonSuperUser ()
 specifier|public
 name|void
@@ -4731,11 +4745,6 @@ block|}
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testRenameFileSystem ()
 specifier|public
 name|void
@@ -4752,11 +4761,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testRenameFileContext ()
 specifier|public
 name|void
@@ -4809,11 +4813,6 @@ return|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|120000
-argument_list|)
 DECL|method|testReadWrite ()
 specifier|public
 name|void
@@ -5170,11 +5169,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|120000
-argument_list|)
 DECL|method|testReadWriteUsingWebHdfs ()
 specifier|public
 name|void
@@ -5494,11 +5488,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testVersionAndSuiteNegotiation ()
 specifier|public
 name|void
@@ -6344,11 +6333,6 @@ block|}
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|120000
-argument_list|)
 DECL|method|testCreateEZWithNoProvider ()
 specifier|public
 name|void
@@ -6384,11 +6368,6 @@ name|restartNameNode
 argument_list|(
 literal|true
 argument_list|)
-expr_stmt|;
-name|cluster
-operator|.
-name|waitActive
-argument_list|()
 expr_stmt|;
 specifier|final
 name|Path
@@ -6491,11 +6470,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|120000
-argument_list|)
 DECL|method|testIsEncryptedMethod ()
 specifier|public
 name|void
@@ -7305,11 +7279,6 @@ block|}
 comment|/**    * Tests the retry logic in startFile. We release the lock while generating    * an EDEK, so tricky things can happen in the intervening time.    */
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|120000
-argument_list|)
 DECL|method|testStartFileRetry ()
 specifier|public
 name|void
@@ -7833,11 +7802,6 @@ block|}
 comment|/**    * Tests obtaining delegation token from stored key    */
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|120000
-argument_list|)
 DECL|method|testDelegationToken ()
 specifier|public
 name|void
@@ -8069,11 +8033,6 @@ end_comment
 begin_function
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testFsckOnEncryptionZones ()
 specifier|public
 name|void
@@ -8303,11 +8262,6 @@ end_comment
 begin_function
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testSnapshotsOnEncryptionZones ()
 specifier|public
 name|void
@@ -8934,11 +8888,6 @@ end_comment
 begin_function
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testEncryptionZonesWithSymlinks ()
 specifier|public
 name|void
@@ -9228,11 +9177,6 @@ end_function
 begin_function
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testConcatFailsInEncryptionZones ()
 specifier|public
 name|void
@@ -9422,11 +9366,6 @@ end_comment
 begin_function
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testOfflineImageViewerOnEncryptionZones ()
 specifier|public
 name|void
@@ -9667,11 +9606,6 @@ end_comment
 begin_function
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testEncryptionZonesOnRootPath ()
 specifier|public
 name|void
@@ -9819,11 +9753,6 @@ end_function
 begin_function
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testEncryptionZonesOnRelativePath ()
 specifier|public
 name|void
@@ -9949,11 +9878,6 @@ end_function
 begin_function
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testGetEncryptionZoneOnANonExistentPaths ()
 specifier|public
 name|void
@@ -10060,11 +9984,6 @@ end_function
 begin_function
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|120000
-argument_list|)
 DECL|method|testEncryptionZoneWithTrash ()
 specifier|public
 name|void
@@ -10498,11 +10417,6 @@ end_function
 begin_function
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|120000
-argument_list|)
 DECL|method|testRootDirEZTrash ()
 specifier|public
 name|void
@@ -10753,11 +10667,6 @@ end_function
 begin_function
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|120000
-argument_list|)
 DECL|method|testGetTrashRoots ()
 specifier|public
 name|void
