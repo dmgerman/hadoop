@@ -9224,7 +9224,7 @@ operator|(
 name|duration
 operator|<
 operator|(
-name|connectionWaitMs
+name|nmRmConnectionWaitMs
 operator|+
 name|delta
 operator|)
@@ -9245,14 +9245,14 @@ literal|"NM should have tried re-connecting to RM during "
 operator|+
 literal|"period of at least "
 operator|+
-name|connectionWaitMs
+name|nmRmConnectionWaitMs
 operator|+
 literal|" ms, but "
 operator|+
 literal|"stopped retrying within "
 operator|+
 operator|(
-name|connectionWaitMs
+name|nmRmConnectionWaitMs
 operator|+
 name|delta
 operator|)
