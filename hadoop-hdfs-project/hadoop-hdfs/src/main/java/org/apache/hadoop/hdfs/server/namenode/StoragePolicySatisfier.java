@@ -465,6 +465,12 @@ specifier|final
 name|BlockStorageMovementNeeded
 name|storageMovementNeeded
 decl_stmt|;
+DECL|field|storageMovementsMonitor
+specifier|private
+specifier|final
+name|BlockStorageMovementAttemptedItems
+name|storageMovementsMonitor
+decl_stmt|;
 DECL|method|StoragePolicySatisfier (final Namesystem namesystem, final BlockStorageMovementNeeded storageMovementNeeded, final BlockManager blkManager)
 specifier|public
 name|StoragePolicySatisfier
@@ -500,8 +506,33 @@ name|blockManager
 operator|=
 name|blkManager
 expr_stmt|;
+comment|// TODO: below selfRetryTimeout and checkTimeout can be configurable later
+comment|// Now, the default values of selfRetryTimeout and checkTimeout are 30mins
+comment|// and 5mins respectively
+name|this
+operator|.
+name|storageMovementsMonitor
+operator|=
+operator|new
+name|BlockStorageMovementAttemptedItems
+argument_list|(
+literal|5
+operator|*
+literal|60
+operator|*
+literal|1000
+argument_list|,
+literal|30
+operator|*
+literal|60
+operator|*
+literal|1000
+argument_list|,
+name|storageMovementNeeded
+argument_list|)
+expr_stmt|;
 block|}
-comment|/**    * Start storage policy satisfier demon thread.    */
+comment|/**    * Start storage policy satisfier demon thread. Also start block storage    * movements monitor for retry the attempts if needed.    */
 DECL|method|start ()
 specifier|public
 name|void
@@ -524,6 +555,13 @@ literal|"StoragePolicySatisfier"
 argument_list|)
 expr_stmt|;
 name|storagePolicySatisfierThread
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|storageMovementsMonitor
 operator|.
 name|start
 argument_list|()
@@ -566,6 +604,13 @@ name|InterruptedException
 name|ie
 parameter_list|)
 block|{     }
+name|this
+operator|.
+name|storageMovementsMonitor
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -601,6 +646,15 @@ literal|null
 condition|)
 block|{
 name|computeAndAssignStorageMismatchedBlocksToDNs
+argument_list|(
+name|blockCollectionID
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|storageMovementsMonitor
+operator|.
+name|add
 argument_list|(
 name|blockCollectionID
 argument_list|)
@@ -2049,22 +2103,6 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|// TODO: Temporarily keeping the results for assertion. This has to be
-comment|// revisited as part of HDFS-11029.
-annotation|@
-name|VisibleForTesting
-DECL|field|results
-name|List
-argument_list|<
-name|BlocksStorageMovementResult
-argument_list|>
-name|results
-init|=
-operator|new
-name|ArrayList
-argument_list|<>
-argument_list|()
-decl_stmt|;
 comment|/**    * Receives the movement results of collection of blocks associated to a    * trackId.    *    * @param blksMovementResults    *          movement status of the set of blocks associated to a trackId.    */
 DECL|method|handleBlocksStorageMovementResults ( BlocksStorageMovementResult[] blksMovementResults)
 name|void
@@ -2086,18 +2124,24 @@ condition|)
 block|{
 return|return;
 block|}
-name|results
+name|storageMovementsMonitor
 operator|.
-name|addAll
-argument_list|(
-name|Arrays
-operator|.
-name|asList
+name|addResults
 argument_list|(
 name|blksMovementResults
 argument_list|)
-argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getAttemptedItemsMonitor ()
+name|BlockStorageMovementAttemptedItems
+name|getAttemptedItemsMonitor
+parameter_list|()
+block|{
+return|return
+name|storageMovementsMonitor
+return|;
 block|}
 block|}
 end_class

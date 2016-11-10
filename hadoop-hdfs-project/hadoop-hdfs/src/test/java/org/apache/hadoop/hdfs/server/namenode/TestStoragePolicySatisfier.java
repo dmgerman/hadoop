@@ -1027,8 +1027,6 @@ argument_list|,
 literal|30000
 argument_list|)
 expr_stmt|;
-comment|// TODO: Temporarily using the results from StoragePolicySatisfier class.
-comment|// This has to be revisited as part of HDFS-11029.
 name|waitForBlocksMovementResult
 argument_list|(
 literal|1
@@ -1110,9 +1108,10 @@ name|expectedResultsCount
 argument_list|,
 name|sps
 operator|.
-name|results
+name|getAttemptedItemsMonitor
+argument_list|()
 operator|.
-name|size
+name|resultsCount
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1121,9 +1120,10 @@ name|expectedResultsCount
 operator|==
 name|sps
 operator|.
-name|results
+name|getAttemptedItemsMonitor
+argument_list|()
 operator|.
-name|size
+name|resultsCount
 argument_list|()
 return|;
 block|}
