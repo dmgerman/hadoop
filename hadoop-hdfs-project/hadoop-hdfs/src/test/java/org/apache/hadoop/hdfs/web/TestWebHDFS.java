@@ -796,6 +796,20 @@ name|hadoop
 operator|.
 name|ipc
 operator|.
+name|RemoteException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
 name|RetriableException
 import|;
 end_import
@@ -3804,6 +3818,45 @@ name|s1path
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// delete operation snapshot name as null
+try|try
+block|{
+name|webHdfs
+operator|.
+name|deleteSnapshot
+argument_list|(
+name|foo
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"Expected IllegalArgumentException"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|RemoteException
+name|e
+parameter_list|)
+block|{
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"Required param snapshotname for "
+operator|+
+literal|"op: DELETESNAPSHOT is null or empty"
+argument_list|,
+name|e
+operator|.
+name|getLocalizedMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|// delete the two snapshots
 name|webHdfs
 operator|.
@@ -4098,6 +4151,47 @@ name|s1path
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// rename s1 to s2 with oldsnapshotName as null
+try|try
+block|{
+name|webHdfs
+operator|.
+name|renameSnapshot
+argument_list|(
+name|foo
+argument_list|,
+literal|null
+argument_list|,
+literal|"s2"
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"Expected IllegalArgumentException"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|RemoteException
+name|e
+parameter_list|)
+block|{
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"Required param oldsnapshotname for "
+operator|+
+literal|"op: RENAMESNAPSHOT is null or empty"
+argument_list|,
+name|e
+operator|.
+name|getLocalizedMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|// rename s1 to s2
 name|webHdfs
 operator|.

@@ -2126,7 +2126,9 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"XAttr name cannot be null"
+literal|"Required param xattr.name for "
+operator|+
+literal|"op: SETXATTR is null or empty"
 argument_list|,
 name|e
 argument_list|)
