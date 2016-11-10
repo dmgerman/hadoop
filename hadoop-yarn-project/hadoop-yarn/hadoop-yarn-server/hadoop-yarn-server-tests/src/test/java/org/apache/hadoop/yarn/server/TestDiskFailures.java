@@ -1349,8 +1349,14 @@ operator|.
 name|iterator
 argument_list|()
 decl_stmt|;
+comment|// RMNode # might be zero because of timing related issue.
 if|if
 condition|(
+name|iter
+operator|.
+name|hasNext
+argument_list|()
+operator|&&
 operator|(
 name|iter
 operator|.
