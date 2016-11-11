@@ -66,6 +66,20 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|locks
+operator|.
+name|ReentrantReadWriteLock
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -1058,6 +1072,15 @@ name|FiCaSchedulerNode
 argument_list|>
 name|request
 parameter_list|)
+function_decl|;
+comment|/**    * Get readLock associated with the Queue.    * @return readLock of corresponding queue.    */
+DECL|method|getReadLock ()
+specifier|public
+name|ReentrantReadWriteLock
+operator|.
+name|ReadLock
+name|getReadLock
+parameter_list|()
 function_decl|;
 block|}
 end_interface

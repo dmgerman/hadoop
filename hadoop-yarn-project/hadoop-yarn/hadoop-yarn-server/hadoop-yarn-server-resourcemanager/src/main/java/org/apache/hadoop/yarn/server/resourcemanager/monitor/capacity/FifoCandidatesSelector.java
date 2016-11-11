@@ -501,11 +501,16 @@ argument_list|,
 name|clusterResource
 argument_list|)
 decl_stmt|;
-synchronized|synchronized
-init|(
-name|leafQueue
-init|)
+try|try
 block|{
+name|leafQueue
+operator|.
+name|getReadLock
+argument_list|()
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 comment|// go through all ignore-partition-exclusivity containers first to make
 comment|// sure such containers will be preemptionCandidates first
 name|Map
@@ -737,6 +742,17 @@ name|maxAMCapacityForThisQueue
 argument_list|,
 name|totalPreemptionAllowed
 argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|leafQueue
+operator|.
+name|getReadLock
+argument_list|()
+operator|.
+name|unlock
+argument_list|()
 expr_stmt|;
 block|}
 block|}

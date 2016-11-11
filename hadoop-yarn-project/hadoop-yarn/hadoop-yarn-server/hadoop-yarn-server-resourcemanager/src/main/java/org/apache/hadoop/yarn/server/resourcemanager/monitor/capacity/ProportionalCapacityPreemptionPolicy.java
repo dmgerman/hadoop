@@ -628,6 +628,22 @@ name|Set
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|locks
+operator|.
+name|ReentrantReadWriteLock
+operator|.
+name|ReadLock
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class implement a {@link SchedulingEditPolicy} that is designed to be  * paired with the {@code CapacityScheduler}. At every invocation of {@code  * editSchedule()} it computes the ideal amount of resources assigned to each  * queue (for each queue in the hierarchy), and determines whether preemption  * is needed. Overcapacity is distributed among queues in a weighted fair manner,  * where the weight is the amount of guaranteed capacity for the queue.  * Based on this ideal assignment it determines whether preemption is required  * and select a set of containers from each application that would be killed if  * the corresponding amount of resources is not freed up by the application.  *  * If not in {@code observeOnly} mode, it triggers preemption requests via a  * {@link ContainerPreemptEvent} that the {@code ResourceManager} will ensure  * to deliver to the application (or to execute).  *  * If the deficit of resources is persistent over a long enough period of time  * this policy will trigger forced termination of containers (again by generating  * {@link ContainerPreemptEvent}).  */
 end_comment
@@ -2130,11 +2146,22 @@ block|{
 name|TempQueuePerPartition
 name|ret
 decl_stmt|;
-synchronized|synchronized
-init|(
+name|ReadLock
+name|readLock
+init|=
 name|curQueue
-init|)
+operator|.
+name|getReadLock
+argument_list|()
+decl_stmt|;
+try|try
 block|{
+comment|// Acquire a read lock from Parent/LeafQueue.
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|String
 name|queueName
 init|=
@@ -2357,6 +2384,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
 block|}
 name|addTempQueuePartition
 argument_list|(

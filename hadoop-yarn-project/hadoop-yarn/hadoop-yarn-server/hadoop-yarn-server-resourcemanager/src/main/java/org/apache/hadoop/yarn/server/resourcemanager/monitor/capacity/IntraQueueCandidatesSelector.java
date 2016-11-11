@@ -594,11 +594,16 @@ argument_list|)
 decl_stmt|;
 comment|// 6. Based on the selected resource demand per partition, select
 comment|// containers with known policy from inter-queue preemption.
-synchronized|synchronized
-init|(
-name|leafQueue
-init|)
+try|try
 block|{
+name|leafQueue
+operator|.
+name|getReadLock
+argument_list|()
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|Iterator
 argument_list|<
 name|FiCaSchedulerApp
@@ -645,6 +650,17 @@ name|app
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+finally|finally
+block|{
+name|leafQueue
+operator|.
+name|getReadLock
+argument_list|()
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 block|}

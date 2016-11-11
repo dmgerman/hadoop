@@ -2448,6 +2448,20 @@ return|return
 name|queueUsage
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getReadLock ()
+specifier|public
+name|ReentrantReadWriteLock
+operator|.
+name|ReadLock
+name|getReadLock
+parameter_list|()
+block|{
+return|return
+name|readLock
+return|;
+block|}
 comment|/**    * The specified queue is preemptable if system-wide preemption is turned on    * unless any queue in the<em>qPath</em> hierarchy has explicitly turned    * preemption off.    * NOTE: Preemptability is inherited from a queue's parent.    *     * @return true if queue has preemption disabled, false otherwise    */
 DECL|method|isQueueHierarchyPreemptionDisabled (CSQueue q)
 specifier|private
