@@ -478,6 +478,14 @@ name|testFileDir
 operator|+
 literal|"testFileStatusSerialziation"
 decl_stmt|;
+DECL|field|NOT_IN_MOUNTPOINT_FILENAME
+specifier|static
+specifier|final
+name|String
+name|NOT_IN_MOUNTPOINT_FILENAME
+init|=
+literal|"/NotInMountpointFile"
+decl_stmt|;
 DECL|field|cluster
 specifier|private
 specifier|static
@@ -529,6 +537,13 @@ specifier|private
 specifier|static
 name|Path
 name|testFileDirPath
+decl_stmt|;
+comment|// Use NotInMountpoint path to trigger the exception
+DECL|field|notInMountpointPath
+specifier|private
+specifier|static
+name|Path
+name|notInMountpointPath
 decl_stmt|;
 annotation|@
 name|BeforeClass
@@ -633,6 +648,15 @@ argument_list|,
 name|testFileName
 argument_list|)
 expr_stmt|;
+name|fileSystemTestHelper
+operator|.
+name|createFile
+argument_list|(
+name|fHdfs
+argument_list|,
+name|NOT_IN_MOUNTPOINT_FILENAME
+argument_list|)
+expr_stmt|;
 name|Configuration
 name|conf
 init|=
@@ -693,6 +717,14 @@ argument_list|(
 name|testFileName
 argument_list|)
 expr_stmt|;
+name|notInMountpointPath
+operator|=
+operator|new
+name|Path
+argument_list|(
+name|NOT_IN_MOUNTPOINT_FILENAME
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Test that default blocksize values can be retrieved on the client side.    */
 annotation|@
@@ -715,7 +747,9 @@ block|{
 name|vfs
 operator|.
 name|getDefaultBlockSize
-argument_list|()
+argument_list|(
+name|notInMountpointPath
+argument_list|)
 expr_stmt|;
 name|fail
 argument_list|(
@@ -761,7 +795,9 @@ block|{
 name|vfs
 operator|.
 name|getDefaultReplication
-argument_list|()
+argument_list|(
+name|notInMountpointPath
+argument_list|)
 expr_stmt|;
 name|fail
 argument_list|(
@@ -804,14 +840,13 @@ name|IOException
 block|{
 try|try
 block|{
-name|FsServerDefaults
-name|serverDefaults
-init|=
 name|vfs
 operator|.
 name|getServerDefaults
-argument_list|()
-decl_stmt|;
+argument_list|(
+name|notInMountpointPath
+argument_list|)
+expr_stmt|;
 name|fail
 argument_list|(
 literal|"getServerDefaults on viewFs did not throw excetion!"
@@ -1300,6 +1335,15 @@ name|Path
 argument_list|(
 name|testFileName
 argument_list|)
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|fHdfs
+operator|.
+name|delete
+argument_list|(
+name|notInMountpointPath
 argument_list|,
 literal|true
 argument_list|)
