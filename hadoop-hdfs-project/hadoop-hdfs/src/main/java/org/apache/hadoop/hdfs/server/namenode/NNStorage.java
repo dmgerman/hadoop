@@ -1507,6 +1507,7 @@ block|}
 block|}
 comment|/**    * Return the storage directory corresponding to the passed URI.    * @param uri URI of a storage directory    * @return The matching storage directory or null if none found    */
 DECL|method|getStorageDirectory (URI uri)
+specifier|public
 name|StorageDirectory
 name|getStorageDirectory
 parameter_list|(
