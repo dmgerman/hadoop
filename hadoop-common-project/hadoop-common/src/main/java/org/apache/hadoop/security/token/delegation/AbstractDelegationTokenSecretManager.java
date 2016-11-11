@@ -342,6 +342,23 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|method|formatTokenId (TokenIdent id)
+specifier|private
+name|String
+name|formatTokenId
+parameter_list|(
+name|TokenIdent
+name|id
+parameter_list|)
+block|{
+return|return
+literal|"("
+operator|+
+name|id
+operator|+
+literal|")"
+return|;
+block|}
 comment|/**     * Cache of currently valid tokens, mapping from DelegationTokenIdentifier     * to DelegationTokenInformation. Protected by this object lock.    */
 DECL|field|currentTokens
 specifier|protected
@@ -1065,10 +1082,10 @@ name|warn
 argument_list|(
 literal|"No KEY found for persisted identifier "
 operator|+
+name|formatTokenId
+argument_list|(
 name|identifier
-operator|.
-name|toString
-argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 return|return;
@@ -1147,7 +1164,12 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Same delegation token being added twice."
+literal|"Same delegation token being added twice: "
+operator|+
+name|formatTokenId
+argument_list|(
+name|identifier
+argument_list|)
 argument_list|)
 throw|;
 block|}
@@ -1438,7 +1460,10 @@ name|info
 argument_list|(
 literal|"Creating password for identifier: "
 operator|+
+name|formatTokenId
+argument_list|(
 name|identifier
+argument_list|)
 operator|+
 literal|", currentKey: "
 operator|+
@@ -1503,7 +1528,14 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Could not store token !!"
+literal|"Could not store token "
+operator|+
+name|formatTokenId
+argument_list|(
+name|identifier
+argument_list|)
+operator|+
+literal|"!!"
 argument_list|,
 name|ioe
 argument_list|)
@@ -1552,17 +1584,25 @@ throw|throw
 operator|new
 name|InvalidToken
 argument_list|(
-literal|"token ("
+literal|"token "
 operator|+
+name|formatTokenId
+argument_list|(
 name|identifier
-operator|.
-name|toString
-argument_list|()
+argument_list|)
 operator|+
-literal|") can't be found in cache"
+literal|" can't be found in cache"
 argument_list|)
 throw|;
 block|}
+name|long
+name|now
+init|=
+name|Time
+operator|.
+name|now
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|info
@@ -1570,24 +1610,42 @@ operator|.
 name|getRenewDate
 argument_list|()
 operator|<
-name|Time
-operator|.
 name|now
-argument_list|()
 condition|)
 block|{
 throw|throw
 operator|new
 name|InvalidToken
 argument_list|(
-literal|"token ("
+literal|"token "
 operator|+
+name|formatTokenId
+argument_list|(
 name|identifier
-operator|.
-name|toString
-argument_list|()
+argument_list|)
 operator|+
-literal|") is expired"
+literal|" is "
+operator|+
+literal|"expired, current time: "
+operator|+
+name|Time
+operator|.
+name|formatTime
+argument_list|(
+name|now
+argument_list|)
+operator|+
+literal|" expected renewal time: "
+operator|+
+name|Time
+operator|.
+name|formatTime
+argument_list|(
+name|info
+operator|.
+name|getRenewDate
+argument_list|()
+argument_list|)
 argument_list|)
 throw|;
 block|}
@@ -1724,11 +1782,14 @@ throw|throw
 operator|new
 name|InvalidToken
 argument_list|(
-literal|"token ("
+literal|"token "
 operator|+
+name|formatTokenId
+argument_list|(
 name|identifier
+argument_list|)
 operator|+
-literal|") is invalid, password doesn't match"
+literal|" is invalid, password doesn't match"
 argument_list|)
 throw|;
 block|}
@@ -1794,7 +1855,10 @@ name|info
 argument_list|(
 literal|"Token renewal for identifier: "
 operator|+
+name|formatTokenId
+argument_list|(
 name|id
+argument_list|)
 operator|+
 literal|"; total currentTokens "
 operator|+
@@ -1828,7 +1892,33 @@ name|InvalidToken
 argument_list|(
 name|renewer
 operator|+
-literal|" tried to renew an expired token"
+literal|" tried to renew an expired token "
+operator|+
+name|formatTokenId
+argument_list|(
+name|id
+argument_list|)
+operator|+
+literal|" max expiration date: "
+operator|+
+name|Time
+operator|.
+name|formatTime
+argument_list|(
+name|id
+operator|.
+name|getMaxDate
+argument_list|()
+argument_list|)
+operator|+
+literal|" currentTime: "
+operator|+
+name|Time
+operator|.
+name|formatTime
+argument_list|(
+name|now
+argument_list|)
 argument_list|)
 throw|;
 block|}
@@ -1863,7 +1953,14 @@ name|AccessControlException
 argument_list|(
 name|renewer
 operator|+
-literal|" tried to renew a token without a renewer"
+literal|" tried to renew a token "
+operator|+
+name|formatTokenId
+argument_list|(
+name|id
+argument_list|)
+operator|+
+literal|" without a renewer"
 argument_list|)
 throw|;
 block|}
@@ -1890,7 +1987,14 @@ name|AccessControlException
 argument_list|(
 name|renewer
 operator|+
-literal|" tries to renew a token with renewer "
+literal|" tries to renew a token "
+operator|+
+name|formatTokenId
+argument_list|(
+name|id
+argument_list|)
+operator|+
+literal|" with non-matching renewer "
 operator|+
 name|id
 operator|.
@@ -1928,7 +2032,12 @@ operator|.
 name|getMasterKeyId
 argument_list|()
 operator|+
-literal|" from cache. Failed to renew an unexpired token"
+literal|" from cache. Failed to renew an unexpired token "
+operator|+
+name|formatTokenId
+argument_list|(
+name|id
+argument_list|)
 operator|+
 literal|" with sequenceNumber="
 operator|+
@@ -1978,7 +2087,14 @@ name|AccessControlException
 argument_list|(
 name|renewer
 operator|+
-literal|" is trying to renew a token with wrong password"
+literal|" is trying to renew a token "
+operator|+
+name|formatTokenId
+argument_list|(
+name|id
+argument_list|)
+operator|+
+literal|" with wrong password"
 argument_list|)
 throw|;
 block|}
@@ -2034,7 +2150,12 @@ throw|throw
 operator|new
 name|InvalidToken
 argument_list|(
-literal|"Renewal request for unknown token"
+literal|"Renewal request for unknown token "
+operator|+
+name|formatTokenId
+argument_list|(
+name|id
+argument_list|)
 argument_list|)
 throw|;
 block|}
@@ -2108,7 +2229,10 @@ name|info
 argument_list|(
 literal|"Token cancellation requested for identifier: "
 operator|+
+name|formatTokenId
+argument_list|(
 name|id
+argument_list|)
 argument_list|)
 expr_stmt|;
 if|if
@@ -2125,7 +2249,12 @@ throw|throw
 operator|new
 name|InvalidToken
 argument_list|(
-literal|"Token with no owner"
+literal|"Token with no owner "
+operator|+
+name|formatTokenId
+argument_list|(
+name|id
+argument_list|)
 argument_list|)
 throw|;
 block|}
@@ -2207,7 +2336,12 @@ name|AccessControlException
 argument_list|(
 name|canceller
 operator|+
-literal|" is not authorized to cancel the token"
+literal|" is not authorized to cancel the token "
+operator|+
+name|formatTokenId
+argument_list|(
+name|id
+argument_list|)
 argument_list|)
 throw|;
 block|}
@@ -2232,7 +2366,12 @@ throw|throw
 operator|new
 name|InvalidToken
 argument_list|(
-literal|"Token not found"
+literal|"Token not found "
+operator|+
+name|formatTokenId
+argument_list|(
+name|id
+argument_list|)
 argument_list|)
 throw|;
 block|}

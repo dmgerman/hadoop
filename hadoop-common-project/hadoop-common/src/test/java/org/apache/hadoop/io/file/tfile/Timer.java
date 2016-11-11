@@ -32,26 +32,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|text
-operator|.
-name|DateFormat
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|text
-operator|.
-name|SimpleDateFormat
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -81,17 +61,6 @@ decl_stmt|;
 DECL|field|finishTimeEpoch
 name|long
 name|finishTimeEpoch
-decl_stmt|;
-DECL|field|formatter
-specifier|private
-name|DateFormat
-name|formatter
-init|=
-operator|new
-name|SimpleDateFormat
-argument_list|(
-literal|"yyyy-MM-dd HH:mm:ss"
-argument_list|)
 decl_stmt|;
 DECL|method|startTime ()
 specifier|public
@@ -175,9 +144,9 @@ name|millis
 parameter_list|)
 block|{
 return|return
-name|formatter
+name|Time
 operator|.
-name|format
+name|formatTime
 argument_list|(
 name|millis
 argument_list|)

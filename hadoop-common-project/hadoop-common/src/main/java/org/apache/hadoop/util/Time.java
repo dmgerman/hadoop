@@ -18,6 +18,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|text
+operator|.
+name|SimpleDateFormat
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -80,6 +90,40 @@ name|NANOSECONDS_PER_MILLISECOND
 init|=
 literal|1000000
 decl_stmt|;
+DECL|field|DATE_FORMAT
+specifier|private
+specifier|static
+specifier|final
+name|ThreadLocal
+argument_list|<
+name|SimpleDateFormat
+argument_list|>
+name|DATE_FORMAT
+init|=
+operator|new
+name|ThreadLocal
+argument_list|<
+name|SimpleDateFormat
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|protected
+name|SimpleDateFormat
+name|initialValue
+parameter_list|()
+block|{
+return|return
+operator|new
+name|SimpleDateFormat
+argument_list|(
+literal|"yyyy-MM-dd HH:mm:ss,SSSZ"
+argument_list|)
+return|;
+block|}
+block|}
+decl_stmt|;
 comment|/**    * Current system time.  Do not use this to calculate a duration or interval    * to sleep, because it will be broken by settimeofday.  Instead, use    * monotonicNow.    * @return current time in msec.    */
 DECL|method|now ()
 specifier|public
@@ -110,6 +154,29 @@ name|nanoTime
 argument_list|()
 operator|/
 name|NANOSECONDS_PER_MILLISECOND
+return|;
+block|}
+comment|/**    * Convert time in millisecond to human readable format.    * @return a human readable string for the input time    */
+DECL|method|formatTime (long millis)
+specifier|public
+specifier|static
+name|String
+name|formatTime
+parameter_list|(
+name|long
+name|millis
+parameter_list|)
+block|{
+return|return
+name|DATE_FORMAT
+operator|.
+name|get
+argument_list|()
+operator|.
+name|format
+argument_list|(
+name|millis
+argument_list|)
 return|;
 block|}
 block|}
