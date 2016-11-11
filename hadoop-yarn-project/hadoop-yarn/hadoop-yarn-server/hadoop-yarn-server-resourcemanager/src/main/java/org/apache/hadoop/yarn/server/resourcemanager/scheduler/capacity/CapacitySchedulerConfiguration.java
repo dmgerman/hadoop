@@ -5364,6 +5364,43 @@ name|DEFAULT_INTRAQUEUE_PREEMPTION_MAX_ALLOWABLE_LIMIT
 init|=
 literal|0.2f
 decl_stmt|;
+comment|/**    * Maximum application for a queue to be used when application per queue is    * not defined.To be consistent with previous version the default value is set    * as UNDEFINED.    */
+annotation|@
+name|Private
+DECL|field|QUEUE_GLOBAL_MAX_APPLICATION
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|QUEUE_GLOBAL_MAX_APPLICATION
+init|=
+name|PREFIX
+operator|+
+literal|"global-queue-max-application"
+decl_stmt|;
+DECL|method|getGlobalMaximumApplicationsPerQueue ()
+specifier|public
+name|int
+name|getGlobalMaximumApplicationsPerQueue
+parameter_list|()
+block|{
+name|int
+name|maxApplicationsPerQueue
+init|=
+name|getInt
+argument_list|(
+name|QUEUE_GLOBAL_MAX_APPLICATION
+argument_list|,
+operator|(
+name|int
+operator|)
+name|UNDEFINED
+argument_list|)
+decl_stmt|;
+return|return
+name|maxApplicationsPerQueue
+return|;
+block|}
 block|}
 end_class
 
