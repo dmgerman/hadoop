@@ -15419,28 +15419,6 @@ argument_list|(
 name|block
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isTraceEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|trace
-argument_list|(
-literal|"block "
-operator|+
-name|block
-operator|+
-literal|": "
-operator|+
-name|res
-argument_list|)
-expr_stmt|;
-block|}
 switch|switch
 condition|(
 name|res
@@ -15449,6 +15427,17 @@ block|{
 case|case
 name|UNDER_REPLICATED
 case|:
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"under replicated block {}: {}"
+argument_list|,
+name|block
+argument_list|,
+name|res
+argument_list|)
+expr_stmt|;
 name|nrUnderReplicated
 operator|++
 expr_stmt|;
@@ -15456,6 +15445,17 @@ break|break;
 case|case
 name|OVER_REPLICATED
 case|:
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"over replicated block {}: {}"
+argument_list|,
+name|block
+argument_list|,
+name|res
+argument_list|)
+expr_stmt|;
 name|nrOverReplicated
 operator|++
 expr_stmt|;
@@ -15463,6 +15463,17 @@ break|break;
 case|case
 name|INVALID
 case|:
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"invalid block {}: {}"
+argument_list|,
+name|block
+argument_list|,
+name|res
+argument_list|)
+expr_stmt|;
 name|nrInvalid
 operator|++
 expr_stmt|;
@@ -15470,6 +15481,17 @@ break|break;
 case|case
 name|POSTPONE
 case|:
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"postpone block {}: {}"
+argument_list|,
+name|block
+argument_list|,
+name|res
+argument_list|)
+expr_stmt|;
 name|nrPostponed
 operator|++
 expr_stmt|;
@@ -15482,6 +15504,17 @@ break|break;
 case|case
 name|UNDER_CONSTRUCTION
 case|:
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"under construction block {}: {}"
+argument_list|,
+name|block
+argument_list|,
+name|res
+argument_list|)
+expr_stmt|;
 name|nrUnderConstruction
 operator|++
 expr_stmt|;
