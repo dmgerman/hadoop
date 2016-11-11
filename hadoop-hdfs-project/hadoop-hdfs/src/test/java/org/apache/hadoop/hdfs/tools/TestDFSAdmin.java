@@ -208,6 +208,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|ChecksumException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|FileSystem
 import|;
 end_import
@@ -433,6 +447,20 @@ operator|.
 name|namenode
 operator|.
 name|NameNode
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|IOUtils
 import|;
 end_import
 
@@ -671,6 +699,18 @@ operator|.
 name|Assert
 operator|.
 name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
 import|;
 end_import
 
@@ -3187,7 +3227,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|30000
+literal|120000
 argument_list|)
 DECL|method|testReportCommand ()
 specifier|public
@@ -3544,6 +3584,44 @@ argument_list|,
 name|blockFilesCorrupted
 argument_list|)
 expr_stmt|;
+try|try
+block|{
+name|IOUtils
+operator|.
+name|copyBytes
+argument_list|(
+name|fs
+operator|.
+name|open
+argument_list|(
+name|file
+argument_list|)
+argument_list|,
+operator|new
+name|IOUtils
+operator|.
+name|NullOutputStream
+argument_list|()
+argument_list|,
+name|conf
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"Should have failed to read the file with corrupted blocks."
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|ChecksumException
+name|ignored
+parameter_list|)
+block|{
+comment|// expected exception reading corrupt blocks
+block|}
 comment|/*        * Increase replication factor, this should invoke transfer request.        * Receiving datanode fails on checksum and reports it to namenode        */
 name|fs
 operator|.
@@ -3587,6 +3665,11 @@ literal|null
 decl_stmt|;
 try|try
 block|{
+name|miniCluster
+operator|.
+name|triggerBlockReports
+argument_list|()
+expr_stmt|;
 name|blocks
 operator|=
 name|client
@@ -3637,7 +3720,7 @@ return|;
 block|}
 block|}
 argument_list|,
-literal|100
+literal|1000
 argument_list|,
 literal|60000
 argument_list|)
