@@ -392,7 +392,7 @@ name|fs
 operator|=
 name|AdlStorageConfiguration
 operator|.
-name|createAdlStorageConnector
+name|createStorageConnector
 argument_list|()
 expr_stmt|;
 block|}

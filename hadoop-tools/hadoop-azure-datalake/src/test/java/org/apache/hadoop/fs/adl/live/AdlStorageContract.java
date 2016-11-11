@@ -98,13 +98,8 @@ name|URISyntaxException
 import|;
 end_import
 
-begin_comment
-comment|/**  * Extension of AbstractFSContract representing a filesystem contract that  * a Adls filesystem implementation is expected implement.  */
-end_comment
-
 begin_class
 DECL|class|AdlStorageContract
-specifier|public
 class|class
 name|AdlStorageContract
 extends|extends
@@ -134,7 +129,7 @@ name|fs
 operator|=
 name|AdlStorageConfiguration
 operator|.
-name|createAdlStorageConnector
+name|createStorageConnector
 argument_list|()
 expr_stmt|;
 block|}
@@ -150,7 +145,7 @@ name|IllegalStateException
 argument_list|(
 literal|"Can not initialize ADL FileSystem. "
 operator|+
-literal|"Please check fs.defaultFS property."
+literal|"Please check test.fs.adl.name property."
 argument_list|,
 name|e
 argument_list|)
@@ -219,17 +214,27 @@ name|Path
 name|getTestPath
 parameter_list|()
 block|{
-name|Path
-name|path
-init|=
+return|return
 operator|new
 name|Path
 argument_list|(
 literal|"/test"
 argument_list|)
-decl_stmt|;
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|isEnabled ()
+specifier|public
+name|boolean
+name|isEnabled
+parameter_list|()
+block|{
 return|return
-name|path
+name|AdlStorageConfiguration
+operator|.
+name|isContractTestEnabled
+argument_list|()
 return|;
 block|}
 block|}

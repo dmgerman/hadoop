@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.fs.common
+DECL|package|org.apache.hadoop.fs.adl.common
 package|package
 name|org
 operator|.
@@ -13,6 +13,8 @@ operator|.
 name|hadoop
 operator|.
 name|fs
+operator|.
+name|adl
 operator|.
 name|common
 package|;
@@ -86,6 +88,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|util
@@ -119,7 +141,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Supporting class for mock test to validate Adls read operation using  * BufferManager.java and BatchByteArrayInputStream implementation.  */
+comment|/**  * Supporting class for mock test to validate Adls read operation.  */
 end_comment
 
 begin_class
@@ -128,6 +150,22 @@ specifier|public
 class|class
 name|TestDataForRead
 block|{
+DECL|field|LOG
+specifier|private
+specifier|static
+specifier|final
+name|Logger
+name|LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|TestDataForRead
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 DECL|field|actualData
 specifier|private
 name|byte
@@ -236,26 +274,6 @@ if|if
 condition|(
 name|recordedRequest
 operator|.
-name|getPath
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-literal|"/refresh"
-argument_list|)
-condition|)
-block|{
-return|return
-name|AdlMockWebServer
-operator|.
-name|getTokenResponse
-argument_list|()
-return|;
-block|}
-if|if
-condition|(
-name|recordedRequest
-operator|.
 name|getRequestLine
 argument_list|()
 operator|.
@@ -347,11 +365,9 @@ name|find
 argument_list|()
 condition|)
 block|{
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|debug
 argument_list|(
 name|matcher
 operator|.
@@ -402,11 +418,9 @@ name|find
 argument_list|()
 condition|)
 block|{
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|debug
 argument_list|(
 name|matcher
 operator|.
@@ -446,7 +460,18 @@ name|actualData
 argument_list|,
 name|offset
 argument_list|,
+name|Math
+operator|.
+name|min
+argument_list|(
+name|actualData
+operator|.
+name|length
+operator|-
+name|offset
+argument_list|,
 name|byteCount
+argument_list|)
 argument_list|)
 expr_stmt|;
 return|return

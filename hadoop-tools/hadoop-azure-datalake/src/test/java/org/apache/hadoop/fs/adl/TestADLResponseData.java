@@ -43,7 +43,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class is responsible to provide generic test methods for mock up test  * to generate stub response for a network request.  */
+comment|/**  * Mock up response data returned from Adl storage account.  */
 end_comment
 
 begin_class
@@ -57,7 +57,7 @@ DECL|method|TestADLResponseData ()
 specifier|private
 name|TestADLResponseData
 parameter_list|()
-block|{}
+block|{    }
 DECL|method|getGetFileStatusJSONResponse (FileStatus status)
 specifier|public
 specifier|static
@@ -68,9 +68,7 @@ name|FileStatus
 name|status
 parameter_list|)
 block|{
-name|String
-name|str
-init|=
+return|return
 literal|"{\"FileStatus\":{\"length\":"
 operator|+
 name|status
@@ -147,9 +145,6 @@ name|getGroup
 argument_list|()
 operator|+
 literal|"\"}}"
-decl_stmt|;
-return|return
-name|str
 return|;
 block|}
 DECL|method|getGetFileStatusJSONResponse ()
@@ -166,6 +161,39 @@ literal|4194304
 argument_list|)
 return|;
 block|}
+DECL|method|getGetAclStatusJSONResponse ()
+specifier|public
+specifier|static
+name|String
+name|getGetAclStatusJSONResponse
+parameter_list|()
+block|{
+return|return
+literal|"{\n"
+operator|+
+literal|"    \"AclStatus\": {\n"
+operator|+
+literal|"        \"entries\": [\n"
+operator|+
+literal|"            \"user:carla:rw-\", \n"
+operator|+
+literal|"            \"group::r-x\"\n"
+operator|+
+literal|"        ], \n"
+operator|+
+literal|"        \"group\": \"supergroup\", \n"
+operator|+
+literal|"        \"owner\": \"hadoop\", \n"
+operator|+
+literal|"        \"permission\":\"775\",\n"
+operator|+
+literal|"        \"stickyBit\": false\n"
+operator|+
+literal|"    }\n"
+operator|+
+literal|"}"
+return|;
+block|}
 DECL|method|getGetFileStatusJSONResponse (long length)
 specifier|public
 specifier|static
@@ -176,9 +204,7 @@ name|long
 name|length
 parameter_list|)
 block|{
-name|String
-name|str
-init|=
+return|return
 literal|"{\"FileStatus\":{\"length\":"
 operator|+
 name|length
@@ -192,9 +218,6 @@ operator|+
 literal|"\"replication\":0,\"permission\":\"777\","
 operator|+
 literal|"\"owner\":\"NotSupportYet\",\"group\":\"NotSupportYet\"}}"
-decl_stmt|;
-return|return
-name|str
 return|;
 block|}
 DECL|method|getListFileStatusJSONResponse (int dirSize)
@@ -267,17 +290,12 @@ operator|-
 literal|1
 argument_list|)
 expr_stmt|;
-name|String
-name|str
-init|=
+return|return
 literal|"{\"FileStatuses\":{\"FileStatus\":["
 operator|+
 name|list
 operator|+
 literal|"]}}"
-decl_stmt|;
-return|return
-name|str
 return|;
 block|}
 DECL|method|getJSONResponse (boolean status)
@@ -290,17 +308,12 @@ name|boolean
 name|status
 parameter_list|)
 block|{
-name|String
-name|str
-init|=
+return|return
 literal|"{\"boolean\":"
 operator|+
 name|status
 operator|+
 literal|"}"
-decl_stmt|;
-return|return
-name|str
 return|;
 block|}
 DECL|method|getErrorIllegalArgumentExceptionJSONResponse ()
@@ -310,9 +323,7 @@ name|String
 name|getErrorIllegalArgumentExceptionJSONResponse
 parameter_list|()
 block|{
-name|String
-name|str
-init|=
+return|return
 literal|"{\n"
 operator|+
 literal|"  \"RemoteException\":\n"
@@ -323,14 +334,38 @@ literal|"    \"exception\"    : \"IllegalArgumentException\",\n"
 operator|+
 literal|"    \"javaClassName\": \"java.lang.IllegalArgumentException\",\n"
 operator|+
-literal|"    \"message\"      : \"Bad Offset 0x83090015\""
+literal|"    \"message\"      : \"Invalid\""
 operator|+
 literal|"  }\n"
 operator|+
 literal|"}"
-decl_stmt|;
+return|;
+block|}
+DECL|method|getErrorBadOffsetExceptionJSONResponse ()
+specifier|public
+specifier|static
+name|String
+name|getErrorBadOffsetExceptionJSONResponse
+parameter_list|()
+block|{
 return|return
-name|str
+literal|"{\n"
+operator|+
+literal|"  \"RemoteException\":\n"
+operator|+
+literal|"  {\n"
+operator|+
+literal|"    \"exception\"    : \"BadOffsetException\",\n"
+operator|+
+literal|"    \"javaClassName\": \"org.apache.hadoop.fs.adl"
+operator|+
+literal|".BadOffsetException\",\n"
+operator|+
+literal|"    \"message\"      : \"Invalid\""
+operator|+
+literal|"  }\n"
+operator|+
+literal|"}"
 return|;
 block|}
 DECL|method|getErrorInternalServerExceptionJSONResponse ()
@@ -340,27 +375,74 @@ name|String
 name|getErrorInternalServerExceptionJSONResponse
 parameter_list|()
 block|{
-name|String
-name|str
-init|=
+return|return
 literal|"{\n"
 operator|+
 literal|"  \"RemoteException\":\n"
 operator|+
 literal|"  {\n"
 operator|+
-literal|"    \"exception\"    : \"RumtimeException\",\n"
+literal|"    \"exception\"    : \"RuntimeException\",\n"
 operator|+
-literal|"    \"javaClassName\": \"java.lang.RumtimeException\",\n"
+literal|"    \"javaClassName\": \"java.lang.RuntimeException\",\n"
 operator|+
 literal|"    \"message\"      : \"Internal Server Error\""
 operator|+
 literal|"  }\n"
 operator|+
 literal|"}"
-decl_stmt|;
+return|;
+block|}
+DECL|method|getAccessControlException ()
+specifier|public
+specifier|static
+name|String
+name|getAccessControlException
+parameter_list|()
+block|{
 return|return
-name|str
+literal|"{\n"
+operator|+
+literal|"  \"RemoteException\":\n"
+operator|+
+literal|"  {\n"
+operator|+
+literal|"    \"exception\"    : \"AccessControlException\",\n"
+operator|+
+literal|"    \"javaClassName\": \"org.apache.hadoop.security"
+operator|+
+literal|".AccessControlException\",\n"
+operator|+
+literal|"    \"message\"      : \"Permission denied: ...\"\n"
+operator|+
+literal|"  }\n"
+operator|+
+literal|"}"
+return|;
+block|}
+DECL|method|getFileNotFoundException ()
+specifier|public
+specifier|static
+name|String
+name|getFileNotFoundException
+parameter_list|()
+block|{
+return|return
+literal|"{\n"
+operator|+
+literal|"  \"RemoteException\":\n"
+operator|+
+literal|"  {\n"
+operator|+
+literal|"    \"exception\"    : \"FileNotFoundException\",\n"
+operator|+
+literal|"    \"javaClassName\": \"java.io.FileNotFoundException\",\n"
+operator|+
+literal|"    \"message\"      : \"File does not exist\"\n"
+operator|+
+literal|"  }\n"
+operator|+
+literal|"}"
 return|;
 block|}
 DECL|method|getRandomByteArrayData ()

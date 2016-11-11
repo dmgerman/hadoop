@@ -68,22 +68,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
-operator|.
-name|common
-operator|.
-name|AdlMockWebServer
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|Time
@@ -112,6 +96,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -132,6 +136,22 @@ name|TestListStatus
 extends|extends
 name|AdlMockWebServer
 block|{
+DECL|field|LOG
+specifier|private
+specifier|static
+specifier|final
+name|Logger
+name|LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|TestListStatus
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 annotation|@
 name|Test
 DECL|method|listStatusReturnsAsExpected ()
@@ -199,11 +219,9 @@ operator|.
 name|monotonicNow
 argument_list|()
 decl_stmt|;
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|debug
 argument_list|(
 literal|"Time : "
 operator|+
@@ -278,11 +296,9 @@ operator|.
 name|monotonicNow
 argument_list|()
 expr_stmt|;
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|debug
 argument_list|(
 literal|"Time : "
 operator|+
@@ -357,11 +373,9 @@ operator|.
 name|monotonicNow
 argument_list|()
 expr_stmt|;
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|debug
 argument_list|(
 literal|"Time : "
 operator|+
@@ -386,10 +400,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|listStatusonFailure ()
+DECL|method|listStatusOnFailure ()
 specifier|public
 name|void
-name|listStatusonFailure
+name|listStatusOnFailure
 parameter_list|()
 throws|throws
 name|IOException
@@ -465,7 +479,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Bad Offset 0x83090015"
+literal|"Invalid"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -478,11 +492,9 @@ operator|.
 name|monotonicNow
 argument_list|()
 decl_stmt|;
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|debug
 argument_list|(
 literal|"Time : "
 operator|+
@@ -493,6 +505,23 @@ name|startTime
 operator|)
 argument_list|)
 expr_stmt|;
+comment|// SDK may increase number of retry attempts before error is propagated
+comment|// to caller. Adding max 10 error responses in the queue to align with SDK.
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+literal|10
+condition|;
+operator|++
+name|i
+control|)
+block|{
 name|getMockServer
 argument_list|()
 operator|.
@@ -516,6 +545,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 name|startTime
 operator|=
 name|Time
@@ -569,11 +599,9 @@ operator|.
 name|monotonicNow
 argument_list|()
 expr_stmt|;
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|debug
 argument_list|(
 literal|"Time : "
 operator|+

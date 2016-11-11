@@ -19,7 +19,7 @@ package|;
 end_package
 
 begin_comment
-comment|/**  * This class overrides AdlFileSystem to change transport scheme to http instead  * of https to run against Mock Server.  */
+comment|/**  * Mock adl file storage subclass to mock adl storage on local http service.  */
 end_comment
 
 begin_class
