@@ -1143,10 +1143,14 @@ comment|// be implemented. Idea is, if some files are not getting storage moveme
 comment|// chances, then we can just retry limited number of times and exit.
 return|return;
 block|}
+comment|// 'BlockCollectionId' is used as the tracking ID. All the blocks under this
+comment|// blockCollectionID will be added to this datanode.
 name|coordinatorNode
 operator|.
 name|addBlocksToMoveStorage
 argument_list|(
+name|blockCollectionID
+argument_list|,
 name|blockMovingInfos
 argument_list|)
 expr_stmt|;

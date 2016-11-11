@@ -364,6 +364,24 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|BlockStorageMovementInfosBatch
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|CachedBlock
 import|;
 end_import
@@ -479,26 +497,6 @@ operator|.
 name|BlockRecoveryCommand
 operator|.
 name|RecoveringStripedBlock
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|protocol
-operator|.
-name|BlockStorageMovementCommand
-operator|.
-name|BlockMovingInfo
 import|;
 end_import
 
@@ -7618,11 +7616,8 @@ expr_stmt|;
 block|}
 block|}
 comment|// check pending block storage movement tasks
-name|List
-argument_list|<
-name|BlockMovingInfo
-argument_list|>
-name|pendingBlockMovementList
+name|BlockStorageMovementInfosBatch
+name|blkStorageMovementInfosBatch
 init|=
 name|nodeinfo
 operator|.
@@ -7631,20 +7626,11 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|pendingBlockMovementList
+name|blkStorageMovementInfosBatch
 operator|!=
 literal|null
 condition|)
 block|{
-comment|// TODO: trackID is used to track the block movement sends to coordinator
-comment|// datanode. Need to implement tracking logic. Temporarily, using a
-comment|// constant value -1.
-name|long
-name|trackID
-init|=
-operator|-
-literal|1
-decl_stmt|;
 name|cmds
 operator|.
 name|add
@@ -7656,11 +7642,17 @@ name|DatanodeProtocol
 operator|.
 name|DNA_BLOCK_STORAGE_MOVEMENT
 argument_list|,
-name|trackID
+name|blkStorageMovementInfosBatch
+operator|.
+name|getTrackID
+argument_list|()
 argument_list|,
 name|blockPoolId
 argument_list|,
-name|pendingBlockMovementList
+name|blkStorageMovementInfosBatch
+operator|.
+name|getBlockMovingInfo
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;

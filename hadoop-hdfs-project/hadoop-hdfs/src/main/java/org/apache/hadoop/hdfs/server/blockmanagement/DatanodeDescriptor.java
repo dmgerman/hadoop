@@ -308,6 +308,24 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|BlockStorageMovementInfosBatch
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|CachedBlock
 import|;
 end_import
@@ -329,24 +347,6 @@ operator|.
 name|BlockECReconstructionCommand
 operator|.
 name|BlockECReconstructionInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|protocol
-operator|.
-name|BlockReportContext
 import|;
 end_import
 
@@ -1095,16 +1095,13 @@ name|LightWeightHashSet
 argument_list|<>
 argument_list|()
 decl_stmt|;
-comment|/** A queue of blocks for moving its storage placements by this datanode. */
+comment|/**    * A queue of blocks corresponding to trackID for moving its storage    * placements by this datanode.    */
 DECL|field|storageMovementBlocks
 specifier|private
 specifier|final
 name|Queue
 argument_list|<
-name|List
-argument_list|<
-name|BlockMovingInfo
-argument_list|>
+name|BlockStorageMovementInfosBatch
 argument_list|>
 name|storageMovementBlocks
 init|=
@@ -4701,12 +4698,15 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * Add the block infos which needs to move its storage locations.    *    * @param storageMismatchedBlocks    *          - storage mismatched block infos    */
-DECL|method|addBlocksToMoveStorage ( List<BlockMovingInfo> storageMismatchedBlocks)
+comment|/**    * Add the block infos which needs to move its storage locations.    *    * @param trackID    *          - unique identifier which will be used for tracking the given set    *          of blocks movement completion.    * @param storageMismatchedBlocks    *          - storage mismatched block infos    */
+DECL|method|addBlocksToMoveStorage (long trackID, List<BlockMovingInfo> storageMismatchedBlocks)
 specifier|public
 name|void
 name|addBlocksToMoveStorage
 parameter_list|(
+name|long
+name|trackID
+parameter_list|,
 name|List
 argument_list|<
 name|BlockMovingInfo
@@ -4714,30 +4714,48 @@ argument_list|>
 name|storageMismatchedBlocks
 parameter_list|)
 block|{
+synchronized|synchronized
+init|(
+name|storageMovementBlocks
+init|)
+block|{
 name|storageMovementBlocks
 operator|.
 name|offer
 argument_list|(
+operator|new
+name|BlockStorageMovementInfosBatch
+argument_list|(
+name|trackID
+argument_list|,
 name|storageMismatchedBlocks
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * @return block infos which needs to move its storage locations.    */
+block|}
+comment|/**    * @return block infos which needs to move its storage locations. This returns    *         list of blocks under one trackId.    */
 DECL|method|getBlocksToMoveStorages ()
 specifier|public
-name|List
-argument_list|<
-name|BlockMovingInfo
-argument_list|>
+name|BlockStorageMovementInfosBatch
 name|getBlocksToMoveStorages
 parameter_list|()
 block|{
+synchronized|synchronized
+init|(
+name|storageMovementBlocks
+init|)
+block|{
+comment|// TODO: Presently returning the list of blocks under one trackId.
+comment|// Need to limit the list of items into small batches with in trackId
+comment|// itself if blocks are many(For example: a file contains many blocks).
 return|return
 name|storageMovementBlocks
 operator|.
 name|poll
 argument_list|()
 return|;
+block|}
 block|}
 block|}
 end_class

@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.protocol
+DECL|package|org.apache.hadoop.hdfs.server.namenode
 package|package
 name|org
 operator|.
@@ -16,88 +16,112 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|protocol
+name|namenode
 package|;
 end_package
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|BlockStorageMovementCommand
+operator|.
+name|BlockMovingInfo
+import|;
+end_import
+
 begin_comment
-comment|/**  * This class represents, movement status of a set of blocks associated to a  * track Id.  */
+comment|/**  * This class represents a batch of blocks under one trackId which needs to move  * its storage locations to satisfy the storage policy.  */
 end_comment
 
 begin_class
-DECL|class|BlocksStorageMovementResult
+DECL|class|BlockStorageMovementInfosBatch
 specifier|public
 class|class
-name|BlocksStorageMovementResult
+name|BlockStorageMovementInfosBatch
 block|{
-DECL|field|trackId
+DECL|field|trackID
 specifier|private
-specifier|final
 name|long
-name|trackId
+name|trackID
 decl_stmt|;
-DECL|field|status
+DECL|field|blockMovingInfos
 specifier|private
-specifier|final
-name|Status
-name|status
+name|List
+argument_list|<
+name|BlockMovingInfo
+argument_list|>
+name|blockMovingInfos
 decl_stmt|;
-comment|/**    * SUCCESS - If all the blocks associated to track id has moved successfully    * or maximum possible movements done.    *    *<p>    * FAILURE - If any of its(trackId) blocks movement failed and requires to    * retry these failed blocks movements. Example selected target node is no    * more running or no space. So, retrying by selecting new target node might    * work.    */
-DECL|enum|Status
+comment|/**    * Constructor to create the block storage movement infos batch.    *    * @param trackID    *          - unique identifier which will be used for tracking the given set    *          of blocks movement.    * @param blockMovingInfos    *          - list of block to storage infos.    */
+DECL|method|BlockStorageMovementInfosBatch (long trackID, List<BlockMovingInfo> blockMovingInfos)
 specifier|public
-specifier|static
-enum|enum
-name|Status
-block|{
-DECL|enumConstant|SUCCESS
-DECL|enumConstant|FAILURE
-name|SUCCESS
-block|,
-name|FAILURE
-block|;   }
-comment|/**    * BlocksStorageMovementResult constructor.    *    * @param trackId    *          tracking identifier    * @param status    *          block movement status    */
-DECL|method|BlocksStorageMovementResult (long trackId, Status status)
-specifier|public
-name|BlocksStorageMovementResult
+name|BlockStorageMovementInfosBatch
 parameter_list|(
 name|long
-name|trackId
+name|trackID
 parameter_list|,
-name|Status
-name|status
+name|List
+argument_list|<
+name|BlockMovingInfo
+argument_list|>
+name|blockMovingInfos
 parameter_list|)
 block|{
 name|this
 operator|.
-name|trackId
+name|trackID
 operator|=
-name|trackId
+name|trackID
 expr_stmt|;
 name|this
 operator|.
-name|status
+name|blockMovingInfos
 operator|=
-name|status
+name|blockMovingInfos
 expr_stmt|;
 block|}
-DECL|method|getTrackId ()
+DECL|method|getTrackID ()
 specifier|public
 name|long
-name|getTrackId
+name|getTrackID
 parameter_list|()
 block|{
 return|return
-name|trackId
+name|trackID
 return|;
 block|}
-DECL|method|getStatus ()
+DECL|method|getBlockMovingInfo ()
 specifier|public
-name|Status
-name|getStatus
+name|List
+argument_list|<
+name|BlockMovingInfo
+argument_list|>
+name|getBlockMovingInfo
 parameter_list|()
 block|{
 return|return
-name|status
+name|blockMovingInfos
 return|;
 block|}
 annotation|@
@@ -115,27 +139,27 @@ argument_list|()
 operator|.
 name|append
 argument_list|(
-literal|"BlocksStorageMovementResult(\n  "
+literal|"BlockStorageMovementInfosBatch(\n  "
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"track id: "
+literal|"TrackID: "
 argument_list|)
 operator|.
 name|append
 argument_list|(
-name|trackId
+name|trackID
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"  status: "
+literal|"  BlockMovingInfos: "
 argument_list|)
 operator|.
 name|append
 argument_list|(
-name|status
+name|blockMovingInfos
 argument_list|)
 operator|.
 name|append
