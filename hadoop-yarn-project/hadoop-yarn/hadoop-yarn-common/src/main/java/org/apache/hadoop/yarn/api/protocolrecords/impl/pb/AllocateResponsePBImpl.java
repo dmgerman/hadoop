@@ -1728,6 +1728,15 @@ operator|==
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|this
+operator|.
+name|updateErrors
+operator|!=
+literal|null
+condition|)
+block|{
 name|this
 operator|.
 name|updateErrors
@@ -1735,6 +1744,7 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
+block|}
 return|return;
 block|}
 name|this
