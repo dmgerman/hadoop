@@ -130,6 +130,18 @@ begin_import
 import|import
 name|java
 operator|.
+name|nio
+operator|.
+name|file
+operator|.
+name|AccessDeniedException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -5148,7 +5160,7 @@ return|return
 name|files
 return|;
 block|}
-comment|/**    * A wrapper for {@link File#list()}. This java.io API returns null    * when a dir is not a directory or for any I/O error. Instead of having    * null check everywhere File#list() is used, we will add utility API    * to get around this problem. For the majority of cases where we prefer    * an IOException to be thrown.    * @param dir directory for which listing should be performed    * @return list of file names or empty string list    * @exception IOException for invalid directory or for a bad disk.    */
+comment|/**    * A wrapper for {@link File#list()}. This java.io API returns null    * when a dir is not a directory or for any I/O error. Instead of having    * null check everywhere File#list() is used, we will add utility API    * to get around this problem. For the majority of cases where we prefer    * an IOException to be thrown.    * @param dir directory for which listing should be performed    * @return list of file names or empty string list    * @exception AccessDeniedException for unreadable directory    * @exception IOException for invalid directory or for bad disk    */
 DECL|method|list (File dir)
 specifier|public
 specifier|static
@@ -5162,6 +5174,32 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+operator|!
+name|canRead
+argument_list|(
+name|dir
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|AccessDeniedException
+argument_list|(
+name|dir
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+literal|null
+argument_list|,
+name|FSExceptionMessages
+operator|.
+name|PERMISSION_DENIED
+argument_list|)
+throw|;
+block|}
 name|String
 index|[]
 name|fileNames

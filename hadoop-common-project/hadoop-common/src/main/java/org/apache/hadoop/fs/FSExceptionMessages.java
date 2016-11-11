@@ -74,6 +74,15 @@ name|TOO_MANY_BYTES_FOR_DEST_BUFFER
 init|=
 literal|"Requested more bytes than destination buffer size"
 decl_stmt|;
+DECL|field|PERMISSION_DENIED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|PERMISSION_DENIED
+init|=
+literal|"Permission denied"
+decl_stmt|;
 block|}
 end_class
 
