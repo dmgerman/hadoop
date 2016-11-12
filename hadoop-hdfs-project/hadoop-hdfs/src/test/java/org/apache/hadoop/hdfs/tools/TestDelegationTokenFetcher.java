@@ -990,14 +990,20 @@ name|hasNext
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertNotNull
-argument_list|(
-literal|"Token should be there without renewer"
-argument_list|,
+specifier|final
+name|Token
+name|token
+init|=
 name|itr
 operator|.
 name|next
 argument_list|()
+decl_stmt|;
+name|assertNotNull
+argument_list|(
+literal|"Token should be there without renewer"
+argument_list|,
+name|token
 argument_list|)
 expr_stmt|;
 comment|// Test compatibility of DelegationTokenFetcher.printTokensToString
@@ -1096,7 +1102,14 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"tried to renew a token without a renewer"
+literal|"tried to renew a token ("
+operator|+
+name|token
+operator|.
+name|decodeIdentifier
+argument_list|()
+operator|+
+literal|") without a renewer"
 argument_list|,
 name|e
 argument_list|)
