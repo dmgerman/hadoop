@@ -2430,7 +2430,6 @@ operator|.
 name|stop
 argument_list|()
 expr_stmt|;
-block|}
 name|FileUtil
 operator|.
 name|fullyDelete
@@ -2447,6 +2446,7 @@ argument_list|,
 name|sslConfDir
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/* create a file with a length of<code>fileLen</code> */
 DECL|method|createFile (MiniDFSCluster cluster, Path filePath, long fileLen, short replicationFactor, int nnIndex)
