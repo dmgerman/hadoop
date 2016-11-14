@@ -5159,7 +5159,9 @@ expr_stmt|;
 name|namesystem
 operator|.
 name|writeUnlock
-argument_list|()
+argument_list|(
+literal|"processCacheReport"
+argument_list|)
 expr_stmt|;
 block|}
 comment|// Log the block report processing stats from Namenode perspective

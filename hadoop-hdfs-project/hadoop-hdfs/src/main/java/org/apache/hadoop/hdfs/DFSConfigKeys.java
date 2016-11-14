@@ -2592,6 +2592,24 @@ name|DFS_NAMENODE_MAX_LOCK_HOLD_TO_RELEASE_LEASE_MS_DEFAULT
 init|=
 literal|25
 decl_stmt|;
+DECL|field|DFS_NAMENODE_LOCK_DETAILED_METRICS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NAMENODE_LOCK_DETAILED_METRICS_KEY
+init|=
+literal|"dfs.namenode.lock.detailed-metrics.enabled"
+decl_stmt|;
+DECL|field|DFS_NAMENODE_LOCK_DETAILED_METRICS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_NAMENODE_LOCK_DETAILED_METRICS_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 comment|// Threshold for how long namenode locks must be held for the
 comment|// event to be logged
 DECL|field|DFS_NAMENODE_WRITE_LOCK_REPORTING_THRESHOLD_MS_KEY

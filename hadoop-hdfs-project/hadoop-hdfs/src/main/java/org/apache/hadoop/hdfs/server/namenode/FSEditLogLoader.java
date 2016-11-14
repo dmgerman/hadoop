@@ -1891,7 +1891,9 @@ expr_stmt|;
 name|fsNamesys
 operator|.
 name|writeUnlock
-argument_list|()
+argument_list|(
+literal|"loadFSEdits"
+argument_list|)
 expr_stmt|;
 name|prog
 operator|.
@@ -2664,7 +2666,9 @@ expr_stmt|;
 name|fsNamesys
 operator|.
 name|writeUnlock
-argument_list|()
+argument_list|(
+literal|"loadEditRecords"
+argument_list|)
 expr_stmt|;
 if|if
 condition|(

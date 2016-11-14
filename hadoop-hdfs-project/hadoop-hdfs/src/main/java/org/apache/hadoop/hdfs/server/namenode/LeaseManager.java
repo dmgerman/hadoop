@@ -1402,7 +1402,9 @@ block|{
 name|fsnamesystem
 operator|.
 name|writeUnlock
-argument_list|()
+argument_list|(
+literal|"leaseManager"
+argument_list|)
 expr_stmt|;
 comment|// lease reassignments should to be sync'ed.
 if|if

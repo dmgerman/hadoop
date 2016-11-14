@@ -3474,7 +3474,9 @@ block|{
 name|fsn
 operator|.
 name|readUnlock
-argument_list|()
+argument_list|(
+literal|"fsckGetBlockLocations"
+argument_list|)
 expr_stmt|;
 block|}
 return|return

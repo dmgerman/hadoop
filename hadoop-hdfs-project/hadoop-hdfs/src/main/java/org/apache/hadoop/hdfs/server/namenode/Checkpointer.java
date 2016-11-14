@@ -1303,7 +1303,9 @@ operator|.
 name|namesystem
 operator|.
 name|writeUnlock
-argument_list|()
+argument_list|(
+literal|"doCheckpoint"
+argument_list|)
 expr_stmt|;
 block|}
 if|if
