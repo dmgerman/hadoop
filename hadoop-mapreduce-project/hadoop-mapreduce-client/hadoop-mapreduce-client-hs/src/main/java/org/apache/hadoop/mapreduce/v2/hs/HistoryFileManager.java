@@ -1534,11 +1534,6 @@ operator|!=
 literal|null
 condition|)
 block|{
-synchronized|synchronized
-init|(
-name|firstValue
-init|)
-block|{
 if|if
 condition|(
 name|firstValue
@@ -1571,7 +1566,7 @@ argument_list|(
 name|key
 argument_list|)
 expr_stmt|;
-comment|//Now lets try to delete it
+comment|// Now lets try to delete it
 try|try
 block|{
 name|firstValue
@@ -1656,7 +1651,6 @@ argument_list|(
 name|key
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}
