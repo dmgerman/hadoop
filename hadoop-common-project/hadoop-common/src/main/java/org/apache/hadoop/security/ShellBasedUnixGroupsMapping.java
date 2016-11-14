@@ -32,6 +32,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|LinkedList
 import|;
 end_import
@@ -58,6 +68,46 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Joiner
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -67,34 +117,6 @@ operator|.
 name|lang
 operator|.
 name|StringUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
 import|;
 end_import
 
@@ -123,6 +145,48 @@ operator|.
 name|classification
 operator|.
 name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configured
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeys
 import|;
 end_import
 
@@ -172,6 +236,26 @@ name|ShellCommandExecutor
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/**  * A simple shell-based implementation of {@link GroupMappingServiceProvider}   * that exec's the<code>groups</code> shell command to fetch the group  * memberships of a given user.  */
 end_comment
@@ -196,25 +280,97 @@ DECL|class|ShellBasedUnixGroupsMapping
 specifier|public
 class|class
 name|ShellBasedUnixGroupsMapping
+extends|extends
+name|Configured
 implements|implements
 name|GroupMappingServiceProvider
 block|{
+annotation|@
+name|VisibleForTesting
 DECL|field|LOG
-specifier|private
+specifier|protected
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|ShellBasedUnixGroupsMapping
 operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|timeout
+specifier|private
+name|long
+name|timeout
+init|=
+literal|0L
+decl_stmt|;
+DECL|field|EMPTY_GROUPS
+specifier|private
+specifier|static
+specifier|final
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|EMPTY_GROUPS
+init|=
+operator|new
+name|LinkedList
+argument_list|<>
+argument_list|()
+decl_stmt|;
+annotation|@
+name|Override
+DECL|method|setConf (Configuration conf)
+specifier|public
+name|void
+name|setConf
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|super
+operator|.
+name|setConf
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|conf
+operator|!=
+literal|null
+condition|)
+block|{
+name|timeout
+operator|=
+name|conf
+operator|.
+name|getTimeDuration
+argument_list|(
+name|CommonConfigurationKeys
+operator|.
+name|HADOOP_SECURITY_GROUP_SHELL_COMMAND_TIMEOUT_SECS
+argument_list|,
+name|CommonConfigurationKeys
+operator|.
+name|HADOOP_SECURITY_GROUP_SHELL_COMMAND_TIMEOUT_SECS_DEFAULT
+argument_list|,
+name|TimeUnit
+operator|.
+name|SECONDS
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -367,8 +523,6 @@ return|return
 operator|new
 name|ShellCommandExecutor
 argument_list|(
-name|Shell
-operator|.
 name|getGroupsForUserCommand
 argument_list|(
 name|userName
@@ -378,7 +532,27 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|0L
+name|timeout
+argument_list|)
+return|;
+block|}
+comment|/**    * Returns just the shell command to be used to fetch a user's groups list.    * This is mainly separate to make some tests easier.    * @param userName The username that needs to be passed into the command built    * @return An appropriate shell command with arguments    */
+DECL|method|getGroupsForUserCommand (String userName)
+specifier|protected
+name|String
+index|[]
+name|getGroupsForUserCommand
+parameter_list|(
+name|String
+name|userName
+parameter_list|)
+block|{
+return|return
+name|Shell
+operator|.
+name|getGroupsForUserCommand
+argument_list|(
+name|userName
 argument_list|)
 return|;
 block|}
@@ -396,8 +570,6 @@ return|return
 operator|new
 name|ShellCommandExecutor
 argument_list|(
-name|Shell
-operator|.
 name|getGroupsIDForUserCommand
 argument_list|(
 name|userName
@@ -407,7 +579,27 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|0L
+name|timeout
+argument_list|)
+return|;
+block|}
+comment|/**    * Returns just the shell command to be used to fetch a user's group IDs list.    * This is mainly separate to make some tests easier.    * @param userName The username that needs to be passed into the command built    * @return An appropriate shell command with arguments    */
+DECL|method|getGroupsIDForUserCommand (String userName)
+specifier|protected
+name|String
+index|[]
+name|getGroupsIDForUserCommand
+parameter_list|(
+name|String
+name|userName
+parameter_list|)
+block|{
+return|return
+name|Shell
+operator|.
+name|getGroupsIDForUserCommand
+argument_list|(
+name|userName
 argument_list|)
 return|;
 block|}
@@ -494,19 +686,75 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"unable to return groups for user "
-operator|+
+literal|"unable to return groups for user {}"
+argument_list|,
 name|user
 argument_list|,
 name|pge
 argument_list|)
 expr_stmt|;
 return|return
-operator|new
-name|LinkedList
-argument_list|<>
-argument_list|()
+name|EMPTY_GROUPS
 return|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+comment|// If its a shell executor timeout, indicate so in the message
+comment|// but treat the result as empty instead of throwing it up,
+comment|// similar to how partial resolution failures are handled above
+if|if
+condition|(
+name|executor
+operator|.
+name|isTimedOut
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Unable to return groups for user '{}' as shell group lookup "
+operator|+
+literal|"command '{}' ran longer than the configured timeout limit of "
+operator|+
+literal|"{} seconds."
+argument_list|,
+name|user
+argument_list|,
+name|Joiner
+operator|.
+name|on
+argument_list|(
+literal|' '
+argument_list|)
+operator|.
+name|join
+argument_list|(
+name|executor
+operator|.
+name|getExecString
+argument_list|()
+argument_list|)
+argument_list|,
+name|timeout
+argument_list|)
+expr_stmt|;
+return|return
+name|EMPTY_GROUPS
+return|;
+block|}
+else|else
+block|{
+comment|// If its not an executor timeout, we should let the caller handle it
+throw|throw
+name|ioe
+throw|;
 block|}
 block|}
 comment|// remove duplicated primary group
@@ -716,7 +964,7 @@ return|return
 name|groups
 return|;
 block|}
-comment|/**    * Attempt to partially resolve group names.    *    * @param userName the user's name    * @param errMessage error message from the shell command    * @param groupNames the incomplete list of group names    * @return a list of resolved group names    * @throws PartialGroupNameException    */
+comment|/**    * Attempt to partially resolve group names.    *    * @param userName the user's name    * @param errMessage error message from the shell command    * @param groupNames the incomplete list of group names    * @return a list of resolved group names    * @throws PartialGroupNameException if the resolution fails or times out    */
 DECL|method|resolvePartialGroupNames (String userName, String errMessage, String groupNames)
 specifier|private
 name|List
@@ -788,27 +1036,25 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Some group names for '"
-operator|+
+literal|"Some group names for '{}' are not resolvable. {}"
+argument_list|,
 name|userName
-operator|+
-literal|"' are not resolvable. "
-operator|+
+argument_list|,
 name|errMessage
 argument_list|)
 expr_stmt|;
 comment|// attempt to partially resolve group names
-try|try
-block|{
 name|ShellCommandExecutor
-name|exec2
+name|partialResolver
 init|=
 name|createGroupIDExecutor
 argument_list|(
 name|userName
 argument_list|)
 decl_stmt|;
-name|exec2
+try|try
+block|{
+name|partialResolver
 operator|.
 name|execute
 argument_list|()
@@ -818,7 +1064,7 @@ name|parsePartialGroupNames
 argument_list|(
 name|groupNames
 argument_list|,
-name|exec2
+name|partialResolver
 operator|.
 name|getOutput
 argument_list|()
@@ -837,9 +1083,7 @@ throw|throw
 operator|new
 name|PartialGroupNameException
 argument_list|(
-literal|"failed to get group id list for "
-operator|+
-literal|"user '"
+literal|"failed to get group id list for user '"
 operator|+
 name|userName
 operator|+
@@ -855,17 +1099,41 @@ name|IOException
 name|ioe
 parameter_list|)
 block|{
-throw|throw
-operator|new
-name|PartialGroupNameException
-argument_list|(
-literal|"can't execute the shell command to"
+name|String
+name|message
+init|=
+literal|"Can't execute the shell command to "
 operator|+
-literal|" get the list of group id for user '"
+literal|"get the list of group id for user '"
 operator|+
 name|userName
 operator|+
 literal|"'"
+decl_stmt|;
+if|if
+condition|(
+name|partialResolver
+operator|.
+name|isTimedOut
+argument_list|()
+condition|)
+block|{
+name|message
+operator|+=
+literal|" because of the command taking longer than "
+operator|+
+literal|"the configured timeout: "
+operator|+
+name|timeout
+operator|+
+literal|" seconds"
+expr_stmt|;
+block|}
+throw|throw
+operator|new
+name|PartialGroupNameException
+argument_list|(
+name|message
 argument_list|,
 name|ioe
 argument_list|)
@@ -874,8 +1142,10 @@ block|}
 block|}
 block|}
 comment|/**    * Split group names into a linked list.    *    * @param groupNames a string representing the user's group names    * @return a linked list of group names    */
+annotation|@
+name|VisibleForTesting
 DECL|method|resolveFullGroupNames (String groupNames)
-specifier|private
+specifier|protected
 name|List
 argument_list|<
 name|String

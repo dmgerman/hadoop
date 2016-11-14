@@ -3508,6 +3508,16 @@ name|IOException
 name|ioe
 parameter_list|)
 block|{
+comment|// Its normal to observe a "Stream closed" I/O error on
+comment|// command timeouts destroying the underlying process
+comment|// so only log a WARN if the command didn't time out
+if|if
+condition|(
+operator|!
+name|isTimedOut
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|warn
@@ -3517,6 +3527,21 @@ argument_list|,
 name|ioe
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Error reading the error stream due to shell "
+operator|+
+literal|"command timeout"
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 block|}
@@ -4277,6 +4302,19 @@ name|inheritParentEnv
 operator|=
 name|inheritParentEnv
 expr_stmt|;
+block|}
+comment|/**      * Returns the timeout value set for the executor's sub-commands.      * @return The timeout value in seconds      */
+annotation|@
+name|VisibleForTesting
+DECL|method|getTimeoutInterval ()
+specifier|public
+name|long
+name|getTimeoutInterval
+parameter_list|()
+block|{
+return|return
+name|timeOutInterval
+return|;
 block|}
 comment|/**      * Execute the shell command.      * @throws IOException if the command fails, or if the command is      * not well constructed.      */
 DECL|method|execute ()

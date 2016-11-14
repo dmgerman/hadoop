@@ -310,12 +310,12 @@ specifier|public
 class|class
 name|TestGroupsCaching
 block|{
-DECL|field|LOG
+DECL|field|TESTLOG
 specifier|public
 specifier|static
 specifier|final
 name|Log
-name|LOG
+name|TESTLOG
 init|=
 name|LogFactory
 operator|.
@@ -476,7 +476,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|LOG
+name|TESTLOG
 operator|.
 name|info
 argument_list|(
@@ -609,7 +609,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|LOG
+name|TESTLOG
 operator|.
 name|info
 argument_list|(
@@ -630,7 +630,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|LOG
+name|TESTLOG
 operator|.
 name|info
 argument_list|(
@@ -652,7 +652,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|LOG
+name|TESTLOG
 operator|.
 name|info
 argument_list|(
@@ -702,7 +702,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|LOG
+name|TESTLOG
 operator|.
 name|info
 argument_list|(
@@ -733,7 +733,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|LOG
+name|TESTLOG
 operator|.
 name|info
 argument_list|(
@@ -1020,7 +1020,7 @@ expr_stmt|;
 comment|// ask for a negative entry
 try|try
 block|{
-name|LOG
+name|TESTLOG
 operator|.
 name|error
 argument_list|(
@@ -1061,7 +1061,7 @@ literal|"No groups found"
 argument_list|)
 condition|)
 block|{
-name|LOG
+name|TESTLOG
 operator|.
 name|error
 argument_list|(
