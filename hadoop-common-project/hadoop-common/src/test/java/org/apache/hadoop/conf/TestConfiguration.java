@@ -502,6 +502,16 @@ literal|"<?xml version=\"1.0\" encoding=\"UTF-8\"?><configuration>"
 else|:
 literal|"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><configuration>"
 decl_stmt|;
+comment|/** Four apostrophes. */
+DECL|field|ESCAPED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ESCAPED
+init|=
+literal|"&apos;&#39;&#0039;&#x27;"
+decl_stmt|;
 annotation|@
 name|Override
 DECL|method|setUp ()
@@ -2569,6 +2579,69 @@ comment|//two spaces one after "this", one before "contains"
 name|assertEquals
 argument_list|(
 literal|"this  contains a comment"
+argument_list|,
+name|conf
+operator|.
+name|get
+argument_list|(
+literal|"my.comment"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|testEscapedCharactersInValue ()
+specifier|public
+name|void
+name|testEscapedCharactersInValue
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|out
+operator|=
+operator|new
+name|BufferedWriter
+argument_list|(
+operator|new
+name|FileWriter
+argument_list|(
+name|CONFIG
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|startConfig
+argument_list|()
+expr_stmt|;
+name|appendProperty
+argument_list|(
+literal|"my.comment"
+argument_list|,
+name|ESCAPED
+argument_list|)
+expr_stmt|;
+name|endConfig
+argument_list|()
+expr_stmt|;
+name|Path
+name|fileResource
+init|=
+operator|new
+name|Path
+argument_list|(
+name|CONFIG
+argument_list|)
+decl_stmt|;
+name|conf
+operator|.
+name|addResource
+argument_list|(
+name|fileResource
+argument_list|)
+expr_stmt|;
+comment|//two spaces one after "this", one before "contains"
+name|assertEquals
+argument_list|(
+literal|"''''"
 argument_list|,
 name|conf
 operator|.
