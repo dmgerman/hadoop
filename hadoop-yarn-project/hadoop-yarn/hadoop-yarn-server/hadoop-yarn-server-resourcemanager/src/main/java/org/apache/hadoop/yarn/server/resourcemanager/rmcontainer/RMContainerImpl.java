@@ -1894,6 +1894,16 @@ operator|.
 name|DEFAULT_APPLICATION_HISTORY_SAVE_NON_AM_CONTAINER_META_INFO
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|container
+operator|.
+name|getId
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
 name|rmContext
 operator|.
 name|getRMApplicationHistoryWriter
@@ -1904,6 +1914,7 @@ argument_list|(
 name|this
 argument_list|)
 expr_stmt|;
+block|}
 comment|// If saveNonAMContainerMetaInfo is true, store system metrics for all
 comment|// containers. If false, and if this container is marked as the AM, metrics
 comment|// will still be published for this container, but that calculation happens
@@ -4440,6 +4451,24 @@ argument_list|(
 name|containerId
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|containerId
+operator|!=
+literal|null
+condition|)
+block|{
+name|rmContext
+operator|.
+name|getRMApplicationHistoryWriter
+argument_list|()
+operator|.
+name|containerStarted
+argument_list|(
+name|this
+argument_list|)
+expr_stmt|;
+block|}
 comment|// If saveNonAMContainerMetaInfo is true, store system metrics for all
 comment|// containers. If false, and if this container is marked as the AM, metrics
 comment|// will still be published for this container, but that calculation happens
