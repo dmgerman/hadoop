@@ -583,6 +583,22 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
+name|key
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Name of resource profile cannot be an empty string"
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
 name|entry
 operator|.
 name|getValue

@@ -816,6 +816,12 @@ argument_list|,
 name|value
 argument_list|,
 name|type
+argument_list|,
+literal|0L
+argument_list|,
+name|Long
+operator|.
+name|MAX_VALUE
 argument_list|)
 decl_stmt|;
 if|if

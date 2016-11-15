@@ -578,6 +578,41 @@ argument_list|>
 name|types
 parameter_list|)
 function_decl|;
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getResourceProfiles ()
+specifier|public
+specifier|abstract
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Resource
+argument_list|>
+name|getResourceProfiles
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setResourceProfiles (Map<String, Resource> profiles)
+specifier|public
+specifier|abstract
+name|void
+name|setResourceProfiles
+parameter_list|(
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Resource
+argument_list|>
+name|profiles
+parameter_list|)
+function_decl|;
 block|}
 end_class
 

@@ -118,7 +118,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|Resource
+name|ProfileCapability
 import|;
 end_import
 
@@ -250,7 +250,7 @@ name|impl
 operator|.
 name|AMRMClientImpl
 operator|.
-name|ResourceReverseMemoryThenCpuComparator
+name|ProfileCapabilityComparator
 import|;
 end_import
 
@@ -284,13 +284,9 @@ name|class
 argument_list|)
 decl_stmt|;
 DECL|field|resourceComparator
-specifier|static
-name|ResourceReverseMemoryThenCpuComparator
+specifier|private
+name|ProfileCapabilityComparator
 name|resourceComparator
-init|=
-operator|new
-name|ResourceReverseMemoryThenCpuComparator
-argument_list|()
 decl_stmt|;
 comment|/**    * Nested Iterator that iterates over just the ResourceRequestInfo    * object.    */
 DECL|class|RequestInfoIterator
@@ -315,7 +311,7 @@ name|ExecutionType
 argument_list|,
 name|TreeMap
 argument_list|<
-name|Resource
+name|ProfileCapability
 argument_list|,
 DECL|field|iLocMap
 name|ResourceRequestInfo
@@ -334,7 +330,7 @@ name|ExecutionType
 argument_list|,
 name|TreeMap
 argument_list|<
-name|Resource
+name|ProfileCapability
 argument_list|,
 DECL|field|iExecTypeMap
 name|ResourceRequestInfo
@@ -349,7 +345,7 @@ name|Iterator
 argument_list|<
 name|TreeMap
 argument_list|<
-name|Resource
+name|ProfileCapability
 argument_list|,
 name|ResourceRequestInfo
 argument_list|>
@@ -364,7 +360,7 @@ name|ResourceRequestInfo
 argument_list|>
 name|iResReqInfo
 decl_stmt|;
-DECL|method|RequestInfoIterator (Iterator<Map<String, Map<ExecutionType, TreeMap<Resource, ResourceRequestInfo>>>> iLocationMap)
+DECL|method|RequestInfoIterator (Iterator<Map<String, Map<ExecutionType, TreeMap<ProfileCapability, ResourceRequestInfo>>>> iLocationMap)
 specifier|public
 name|RequestInfoIterator
 parameter_list|(
@@ -380,7 +376,7 @@ name|ExecutionType
 argument_list|,
 name|TreeMap
 argument_list|<
-name|Resource
+name|ProfileCapability
 argument_list|,
 name|ResourceRequestInfo
 argument_list|>
@@ -431,7 +427,7 @@ name|ExecutionType
 argument_list|,
 name|TreeMap
 argument_list|<
-name|Resource
+name|ProfileCapability
 argument_list|,
 name|ResourceRequestInfo
 argument_list|>
@@ -474,7 +470,7 @@ name|LinkedList
 argument_list|<
 name|TreeMap
 argument_list|<
-name|Resource
+name|ProfileCapability
 argument_list|,
 name|ResourceRequestInfo
 argument_list|>
@@ -674,7 +670,7 @@ name|ExecutionType
 argument_list|,
 name|TreeMap
 argument_list|<
-name|Resource
+name|ProfileCapability
 argument_list|,
 DECL|field|remoteRequestsTable
 name|ResourceRequestInfo
@@ -714,7 +710,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|get (Priority priority, String location, ExecutionType execType, Resource capability)
+DECL|method|get (Priority priority, String location, ExecutionType execType, ProfileCapability capability)
 name|ResourceRequestInfo
 name|get
 parameter_list|(
@@ -727,13 +723,13 @@ parameter_list|,
 name|ExecutionType
 name|execType
 parameter_list|,
-name|Resource
+name|ProfileCapability
 name|capability
 parameter_list|)
 block|{
 name|TreeMap
 argument_list|<
-name|Resource
+name|ProfileCapability
 argument_list|,
 name|ResourceRequestInfo
 argument_list|>
@@ -768,7 +764,12 @@ name|capability
 argument_list|)
 return|;
 block|}
-DECL|method|put (Priority priority, String resourceName, ExecutionType execType, Resource capability, ResourceRequestInfo resReqInfo)
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+DECL|method|put (Priority priority, String resourceName, ExecutionType execType, ProfileCapability capability, ResourceRequestInfo resReqInfo)
 name|void
 name|put
 parameter_list|(
@@ -781,7 +782,7 @@ parameter_list|,
 name|ExecutionType
 name|execType
 parameter_list|,
-name|Resource
+name|ProfileCapability
 name|capability
 parameter_list|,
 name|ResourceRequestInfo
@@ -798,7 +799,7 @@ name|ExecutionType
 argument_list|,
 name|TreeMap
 argument_list|<
-name|Resource
+name|ProfileCapability
 argument_list|,
 name|ResourceRequestInfo
 argument_list|>
@@ -863,7 +864,7 @@ name|ExecutionType
 argument_list|,
 name|TreeMap
 argument_list|<
-name|Resource
+name|ProfileCapability
 argument_list|,
 name|ResourceRequestInfo
 argument_list|>
@@ -921,7 +922,7 @@ block|}
 block|}
 name|TreeMap
 argument_list|<
-name|Resource
+name|ProfileCapability
 argument_list|,
 name|ResourceRequestInfo
 argument_list|>
@@ -941,6 +942,27 @@ operator|==
 literal|null
 condition|)
 block|{
+comment|// this can happen if the user doesn't register with the RM before
+comment|// calling addResourceRequest
+if|if
+condition|(
+name|resourceComparator
+operator|==
+literal|null
+condition|)
+block|{
+name|resourceComparator
+operator|=
+operator|new
+name|ProfileCapabilityComparator
+argument_list|(
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|capabilityMap
 operator|=
 operator|new
@@ -988,7 +1010,7 @@ name|resReqInfo
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|remove (Priority priority, String resourceName, ExecutionType execType, Resource capability)
+DECL|method|remove (Priority priority, String resourceName, ExecutionType execType, ProfileCapability capability)
 name|ResourceRequestInfo
 name|remove
 parameter_list|(
@@ -1001,7 +1023,7 @@ parameter_list|,
 name|ExecutionType
 name|execType
 parameter_list|,
-name|Resource
+name|ProfileCapability
 name|capability
 parameter_list|)
 block|{
@@ -1020,7 +1042,7 @@ name|ExecutionType
 argument_list|,
 name|TreeMap
 argument_list|<
-name|Resource
+name|ProfileCapability
 argument_list|,
 name|ResourceRequestInfo
 argument_list|>
@@ -1070,7 +1092,7 @@ name|ExecutionType
 argument_list|,
 name|TreeMap
 argument_list|<
-name|Resource
+name|ProfileCapability
 argument_list|,
 name|ResourceRequestInfo
 argument_list|>
@@ -1115,7 +1137,7 @@ return|;
 block|}
 name|TreeMap
 argument_list|<
-name|Resource
+name|ProfileCapability
 argument_list|,
 name|ResourceRequestInfo
 argument_list|>
@@ -1236,7 +1258,7 @@ name|ExecutionType
 argument_list|,
 name|TreeMap
 argument_list|<
-name|Resource
+name|ProfileCapability
 argument_list|,
 DECL|method|getLocationMap (Priority priority)
 name|ResourceRequestInfo
@@ -1264,7 +1286,7 @@ name|ExecutionType
 argument_list|,
 name|TreeMap
 argument_list|<
-name|Resource
+name|ProfileCapability
 argument_list|,
 name|ResourceRequestInfo
 argument_list|>
@@ -1289,7 +1311,7 @@ name|ExecutionType
 argument_list|,
 name|TreeMap
 argument_list|<
-name|Resource
+name|ProfileCapability
 argument_list|,
 name|ResourceRequestInfo
 argument_list|>
@@ -1325,7 +1347,7 @@ block|}
 DECL|method|getCapabilityMap (Priority priority, String location, ExecutionType execType)
 name|TreeMap
 argument_list|<
-name|Resource
+name|ProfileCapability
 argument_list|,
 name|ResourceRequestInfo
 argument_list|>
@@ -1347,7 +1369,7 @@ name|ExecutionType
 argument_list|,
 name|TreeMap
 argument_list|<
-name|Resource
+name|ProfileCapability
 argument_list|,
 name|ResourceRequestInfo
 argument_list|>
@@ -1432,7 +1454,7 @@ control|)
 block|{
 name|TreeMap
 argument_list|<
-name|Resource
+name|ProfileCapability
 argument_list|,
 name|ResourceRequestInfo
 argument_list|>
@@ -1471,7 +1493,7 @@ return|return
 name|retList
 return|;
 block|}
-DECL|method|getMatchingRequests ( Priority priority, String resourceName, ExecutionType executionType, Resource capability)
+DECL|method|getMatchingRequests ( Priority priority, String resourceName, ExecutionType executionType, ProfileCapability capability)
 name|List
 argument_list|<
 name|ResourceRequestInfo
@@ -1487,7 +1509,7 @@ parameter_list|,
 name|ExecutionType
 name|executionType
 parameter_list|,
-name|Resource
+name|ProfileCapability
 name|capability
 parameter_list|)
 block|{
@@ -1504,7 +1526,7 @@ argument_list|()
 decl_stmt|;
 name|TreeMap
 argument_list|<
-name|Resource
+name|ProfileCapability
 argument_list|,
 name|ResourceRequestInfo
 argument_list|>
@@ -1579,7 +1601,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|addResourceRequest (Long allocationRequestId, Priority priority, String resourceName, ExecutionTypeRequest execTypeReq, Resource capability, T req, boolean relaxLocality, String labelExpression)
+DECL|method|addResourceRequest (Long allocationRequestId, Priority priority, String resourceName, ExecutionTypeRequest execTypeReq, ProfileCapability capability, T req, boolean relaxLocality, String labelExpression)
 name|ResourceRequestInfo
 name|addResourceRequest
 parameter_list|(
@@ -1595,7 +1617,7 @@ parameter_list|,
 name|ExecutionTypeRequest
 name|execTypeReq
 parameter_list|,
-name|Resource
+name|ProfileCapability
 name|capability
 parameter_list|,
 name|T
@@ -1644,8 +1666,16 @@ argument_list|,
 name|resourceName
 argument_list|,
 name|capability
+operator|.
+name|getProfileCapabilityOverride
+argument_list|()
 argument_list|,
 name|relaxLocality
+argument_list|,
+name|capability
+operator|.
+name|getProfileName
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|put
@@ -1727,11 +1757,31 @@ name|labelExpression
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Adding request to ask "
+operator|+
+name|resourceRequestInfo
+operator|.
+name|remoteRequest
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|resourceRequestInfo
 return|;
 block|}
-DECL|method|decResourceRequest (Priority priority, String resourceName, ExecutionTypeRequest execTypeReq, Resource capability, T req)
+DECL|method|decResourceRequest (Priority priority, String resourceName, ExecutionTypeRequest execTypeReq, ProfileCapability capability, T req)
 name|ResourceRequestInfo
 name|decResourceRequest
 parameter_list|(
@@ -1744,7 +1794,7 @@ parameter_list|,
 name|ExecutionTypeRequest
 name|execTypeReq
 parameter_list|,
-name|Resource
+name|ProfileCapability
 name|capability
 parameter_list|,
 name|T
@@ -1920,6 +1970,182 @@ operator|.
 name|isEmpty
 argument_list|()
 return|;
+block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+DECL|method|setResourceComparator (ProfileCapabilityComparator comparator)
+specifier|public
+name|void
+name|setResourceComparator
+parameter_list|(
+name|ProfileCapabilityComparator
+name|comparator
+parameter_list|)
+block|{
+name|ProfileCapabilityComparator
+name|old
+init|=
+name|this
+operator|.
+name|resourceComparator
+decl_stmt|;
+name|this
+operator|.
+name|resourceComparator
+operator|=
+name|comparator
+expr_stmt|;
+if|if
+condition|(
+name|old
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// we've already set a resource comparator - re-create the maps with the
+comment|// new one. this is needed in case someone adds container requests before
+comment|// registering with the RM. In such a case, the comparator won't have
+comment|// the resource profiles map. After registration, the map is available
+comment|// so re-create the capabilities maps
+for|for
+control|(
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|Priority
+argument_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Map
+argument_list|<
+name|ExecutionType
+argument_list|,
+name|TreeMap
+argument_list|<
+name|ProfileCapability
+argument_list|,
+name|ResourceRequestInfo
+argument_list|>
+argument_list|>
+argument_list|>
+argument_list|>
+name|priEntry
+range|:
+name|remoteRequestsTable
+operator|.
+name|entrySet
+argument_list|()
+control|)
+block|{
+for|for
+control|(
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|String
+argument_list|,
+name|Map
+argument_list|<
+name|ExecutionType
+argument_list|,
+name|TreeMap
+argument_list|<
+name|ProfileCapability
+argument_list|,
+name|ResourceRequestInfo
+argument_list|>
+argument_list|>
+argument_list|>
+name|nameEntry
+range|:
+name|priEntry
+operator|.
+name|getValue
+argument_list|()
+operator|.
+name|entrySet
+argument_list|()
+control|)
+block|{
+for|for
+control|(
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|ExecutionType
+argument_list|,
+name|TreeMap
+argument_list|<
+name|ProfileCapability
+argument_list|,
+name|ResourceRequestInfo
+argument_list|>
+argument_list|>
+name|execEntry
+range|:
+name|nameEntry
+operator|.
+name|getValue
+argument_list|()
+operator|.
+name|entrySet
+argument_list|()
+control|)
+block|{
+name|Map
+argument_list|<
+name|ProfileCapability
+argument_list|,
+name|ResourceRequestInfo
+argument_list|>
+name|capabilityMap
+init|=
+name|execEntry
+operator|.
+name|getValue
+argument_list|()
+decl_stmt|;
+name|TreeMap
+argument_list|<
+name|ProfileCapability
+argument_list|,
+name|ResourceRequestInfo
+argument_list|>
+name|newCapabiltyMap
+init|=
+operator|new
+name|TreeMap
+argument_list|<>
+argument_list|(
+name|resourceComparator
+argument_list|)
+decl_stmt|;
+name|newCapabiltyMap
+operator|.
+name|putAll
+argument_list|(
+name|capabilityMap
+argument_list|)
+expr_stmt|;
+name|execEntry
+operator|.
+name|setValue
+argument_list|(
+name|newCapabiltyMap
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+block|}
 block|}
 block|}
 end_class

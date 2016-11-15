@@ -89,6 +89,16 @@ specifier|private
 name|Long
 name|value
 decl_stmt|;
+DECL|field|minimumAllocation
+specifier|private
+name|Long
+name|minimumAllocation
+decl_stmt|;
+DECL|field|maximumAllocation
+specifier|private
+name|Long
+name|maximumAllocation
+decl_stmt|;
 DECL|field|MEMORY_URI
 specifier|private
 specifier|static
@@ -278,6 +288,62 @@ operator|=
 name|rValue
 expr_stmt|;
 block|}
+comment|/**    * Get the minimum allocation for the resource.    *    * @return the minimum allocation for the resource    */
+DECL|method|getMinimumAllocation ()
+specifier|public
+name|Long
+name|getMinimumAllocation
+parameter_list|()
+block|{
+return|return
+name|minimumAllocation
+return|;
+block|}
+comment|/**    * Set the minimum allocation for the resource.    *    * @param minimumAllocation the minimum allocation for the resource    */
+DECL|method|setMinimumAllocation (Long minimumAllocation)
+specifier|public
+name|void
+name|setMinimumAllocation
+parameter_list|(
+name|Long
+name|minimumAllocation
+parameter_list|)
+block|{
+name|this
+operator|.
+name|minimumAllocation
+operator|=
+name|minimumAllocation
+expr_stmt|;
+block|}
+comment|/**    * Get the maximum allocation for the resource.    *    * @return the maximum allocation for the resource    */
+DECL|method|getMaximumAllocation ()
+specifier|public
+name|Long
+name|getMaximumAllocation
+parameter_list|()
+block|{
+return|return
+name|maximumAllocation
+return|;
+block|}
+comment|/**    * Set the maximum allocation for the resource.    *    * @param maximumAllocation the maximum allocation for the resource    */
+DECL|method|setMaximumAllocation (Long maximumAllocation)
+specifier|public
+name|void
+name|setMaximumAllocation
+parameter_list|(
+name|Long
+name|maximumAllocation
+parameter_list|)
+block|{
+name|this
+operator|.
+name|maximumAllocation
+operator|=
+name|maximumAllocation
+expr_stmt|;
+block|}
 comment|/**    * Create a new instance of ResourceInformation from another object.    *    * @param other the object from which the new object should be created    * @return the new ResourceInformation object    */
 DECL|method|newInstance (ResourceInformation other)
 specifier|public
@@ -336,11 +402,31 @@ name|getValue
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|ret
+operator|.
+name|setMinimumAllocation
+argument_list|(
+name|other
+operator|.
+name|getMinimumAllocation
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|ret
+operator|.
+name|setMaximumAllocation
+argument_list|(
+name|other
+operator|.
+name|getMaximumAllocation
+argument_list|()
+argument_list|)
+expr_stmt|;
 return|return
 name|ret
 return|;
 block|}
-DECL|method|newInstance (String name, String units, Long value, ResourceTypes type)
+DECL|method|newInstance (String name, String units, Long value, ResourceTypes type, Long minimumAllocation, Long maximumAllocation)
 specifier|public
 specifier|static
 name|ResourceInformation
@@ -357,6 +443,12 @@ name|value
 parameter_list|,
 name|ResourceTypes
 name|type
+parameter_list|,
+name|Long
+name|minimumAllocation
+parameter_list|,
+name|Long
+name|maximumAllocation
 parameter_list|)
 block|{
 name|ResourceInformation
@@ -394,6 +486,20 @@ argument_list|(
 name|value
 argument_list|)
 expr_stmt|;
+name|ret
+operator|.
+name|setMinimumAllocation
+argument_list|(
+name|minimumAllocation
+argument_list|)
+expr_stmt|;
+name|ret
+operator|.
+name|setMaximumAllocation
+argument_list|(
+name|maximumAllocation
+argument_list|)
+expr_stmt|;
 return|return
 name|ret
 return|;
@@ -428,6 +534,12 @@ argument_list|,
 name|ResourceTypes
 operator|.
 name|COUNTABLE
+argument_list|,
+literal|0L
+argument_list|,
+name|Long
+operator|.
+name|MAX_VALUE
 argument_list|)
 return|;
 block|}
@@ -458,6 +570,12 @@ argument_list|,
 name|ResourceTypes
 operator|.
 name|COUNTABLE
+argument_list|,
+literal|0L
+argument_list|,
+name|Long
+operator|.
+name|MAX_VALUE
 argument_list|)
 return|;
 block|}
@@ -488,6 +606,12 @@ argument_list|,
 name|ResourceTypes
 operator|.
 name|COUNTABLE
+argument_list|,
+literal|0L
+argument_list|,
+name|Long
+operator|.
+name|MAX_VALUE
 argument_list|)
 return|;
 block|}
@@ -540,6 +664,14 @@ operator|+
 literal|", value: "
 operator|+
 name|value
+operator|+
+literal|", minimum allocation: "
+operator|+
+name|minimumAllocation
+operator|+
+literal|", maximum allocation: "
+operator|+
+name|maximumAllocation
 return|;
 block|}
 DECL|method|getShorthandRepresentation ()
