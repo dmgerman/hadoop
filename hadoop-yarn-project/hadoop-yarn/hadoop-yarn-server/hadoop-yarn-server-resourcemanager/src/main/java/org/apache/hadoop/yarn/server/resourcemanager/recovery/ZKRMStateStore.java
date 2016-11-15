@@ -951,8 +951,10 @@ name|RM_DT_MASTER_KEYS_ROOT_ZNODE_NAME
 init|=
 literal|"RMDTMasterKeysRoot"
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
 DECL|field|ROOT_ZNODE_NAME
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|String

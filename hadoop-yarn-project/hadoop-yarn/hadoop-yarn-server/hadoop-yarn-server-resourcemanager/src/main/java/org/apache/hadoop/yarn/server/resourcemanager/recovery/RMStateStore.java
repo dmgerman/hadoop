@@ -915,8 +915,10 @@ extends|extends
 name|AbstractService
 block|{
 comment|// constants for RM App state and RMDTSecretManagerState.
+annotation|@
+name|VisibleForTesting
 DECL|field|RM_APP_ROOT
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|String

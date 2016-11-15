@@ -7603,8 +7603,9 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Deletes the RMStateStore    *    * @param conf    * @throws Exception    */
+annotation|@
+name|VisibleForTesting
 DECL|method|deleteRMStateStore (Configuration conf)
-specifier|private
 specifier|static
 name|void
 name|deleteRMStateStore
@@ -7625,6 +7626,15 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
+name|rmStore
+operator|.
+name|setResourceManager
+argument_list|(
+operator|new
+name|ResourceManager
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|rmStore
 operator|.
 name|init
@@ -7668,8 +7678,9 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|removeApplication (Configuration conf, String applicationId)
-specifier|private
 specifier|static
 name|void
 name|removeApplication
@@ -7693,6 +7704,15 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
+name|rmStore
+operator|.
+name|setResourceManager
+argument_list|(
+operator|new
+name|ResourceManager
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|rmStore
 operator|.
 name|init
