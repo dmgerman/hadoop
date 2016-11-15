@@ -799,7 +799,22 @@ operator|.
 name|getUserName
 argument_list|()
 operator|+
-literal|" tries to renew a token with renewer "
+literal|" tries to renew a token"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|ex
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"with non-matching renewer "
 operator|+
 name|other
 operator|.
