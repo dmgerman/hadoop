@@ -394,6 +394,11 @@ name|boolean
 name|isReInitializing
 parameter_list|()
 function_decl|;
+DECL|method|isMarkedForKilling ()
+name|boolean
+name|isMarkedForKilling
+parameter_list|()
+function_decl|;
 DECL|method|canRollback ()
 name|boolean
 name|canRollback
@@ -403,6 +408,22 @@ DECL|method|commitUpgrade ()
 name|void
 name|commitUpgrade
 parameter_list|()
+function_decl|;
+DECL|method|sendLaunchEvent ()
+name|void
+name|sendLaunchEvent
+parameter_list|()
+function_decl|;
+DECL|method|sendKillEvent (int exitStatus, String description)
+name|void
+name|sendKillEvent
+parameter_list|(
+name|int
+name|exitStatus
+parameter_list|,
+name|String
+name|description
+parameter_list|)
 function_decl|;
 block|}
 end_interface

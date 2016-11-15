@@ -1536,7 +1536,7 @@ name|NM_CONTAINER_QUEUING_LIMIT_STDEV_DEFAULT
 init|=
 literal|1.0f
 decl_stmt|;
-comment|/** Min length of container queue at NodeManager. */
+comment|/** Min length of container queue at NodeManager. This is a cluster-wide    * configuration that acts as the lower-bound of optimal queue length    * calculated by the NodeQueueLoadMonitor */
 DECL|field|NM_CONTAINER_QUEUING_MIN_QUEUE_LENGTH
 specifier|public
 specifier|static
@@ -1557,7 +1557,7 @@ name|NM_CONTAINER_QUEUING_MIN_QUEUE_LENGTH_DEFAULT
 init|=
 literal|1
 decl_stmt|;
-comment|/** Max length of container queue at NodeManager. */
+comment|/** Max length of container queue at NodeManager. This is a cluster-wide    * configuration that acts as the upper-bound of optimal queue length    * calculated by the NodeQueueLoadMonitor */
 DECL|field|NM_CONTAINER_QUEUING_MAX_QUEUE_LENGTH
 specifier|public
 specifier|static
@@ -3124,26 +3124,26 @@ name|NM_PREFIX
 init|=
 literal|"yarn.nodemanager."
 decl_stmt|;
-comment|/** Enable Queuing of<code>OPPORTUNISTIC</code> containers. */
-DECL|field|NM_CONTAINER_QUEUING_ENABLED
+comment|/** Max Queue length of<code>OPPORTUNISTIC</code> containers on the NM. */
+DECL|field|NM_OPPORTUNISTIC_CONTAINERS_MAX_QUEUE_LENGTH
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|NM_CONTAINER_QUEUING_ENABLED
+name|NM_OPPORTUNISTIC_CONTAINERS_MAX_QUEUE_LENGTH
 init|=
 name|NM_PREFIX
 operator|+
-literal|"container-queuing-enabled"
+literal|"opportunistic-containers-max-queue-length"
 decl_stmt|;
-DECL|field|NM_CONTAINER_QUEUING_ENABLED_DEFAULT
+DECL|field|NM_OPPORTUNISTIC_CONTAINERS_MAX_QUEUE_LENGTH_DEFAULT
 specifier|public
 specifier|static
 specifier|final
-name|boolean
-name|NM_CONTAINER_QUEUING_ENABLED_DEFAULT
+name|int
+name|NM_OPPORTUNISTIC_CONTAINERS_MAX_QUEUE_LENGTH_DEFAULT
 init|=
-literal|false
+literal|0
 decl_stmt|;
 comment|/** Environment variables that will be sent to containers.*/
 DECL|field|NM_ADMIN_USER_ENV

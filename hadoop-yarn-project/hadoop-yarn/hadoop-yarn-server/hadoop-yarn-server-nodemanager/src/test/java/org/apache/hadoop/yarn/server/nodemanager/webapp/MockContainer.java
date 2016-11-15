@@ -1022,6 +1022,40 @@ name|void
 name|commitUpgrade
 parameter_list|()
 block|{    }
+annotation|@
+name|Override
+DECL|method|isMarkedForKilling ()
+specifier|public
+name|boolean
+name|isMarkedForKilling
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|sendLaunchEvent ()
+specifier|public
+name|void
+name|sendLaunchEvent
+parameter_list|()
+block|{    }
+annotation|@
+name|Override
+DECL|method|sendKillEvent (int exitStatus, String description)
+specifier|public
+name|void
+name|sendKillEvent
+parameter_list|(
+name|int
+name|exitStatus
+parameter_list|,
+name|String
+name|description
+parameter_list|)
+block|{    }
 block|}
 end_class
 

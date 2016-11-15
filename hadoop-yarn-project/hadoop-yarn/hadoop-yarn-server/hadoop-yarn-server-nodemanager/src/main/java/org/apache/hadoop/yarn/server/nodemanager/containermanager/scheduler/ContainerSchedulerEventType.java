@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.api.records
+DECL|package|org.apache.hadoop.yarn.server.nodemanager.containermanager.scheduler
 package|package
 name|org
 operator|.
@@ -14,74 +14,36 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|api
+name|server
 operator|.
-name|records
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|scheduler
 package|;
 end_package
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-operator|.
-name|Public
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceStability
-operator|.
-name|Stable
-import|;
-end_import
-
 begin_comment
-comment|/**  *<p>State of a<code>Container</code>.</p>  */
+comment|/**  * Event types associated with {@link ContainerSchedulerEvent}.  */
 end_comment
 
 begin_enum
-annotation|@
-name|Public
-annotation|@
-name|Stable
-DECL|enum|ContainerState
+DECL|enum|ContainerSchedulerEventType
 specifier|public
 enum|enum
-name|ContainerState
+name|ContainerSchedulerEventType
 block|{
-comment|/** New container */
-DECL|enumConstant|NEW
-name|NEW
+DECL|enumConstant|SCHEDULE_CONTAINER
+name|SCHEDULE_CONTAINER
 block|,
-comment|/** Running container */
-DECL|enumConstant|RUNNING
-name|RUNNING
+DECL|enumConstant|CONTAINER_COMPLETED
+name|CONTAINER_COMPLETED
 block|,
-comment|/** Completed container */
-DECL|enumConstant|COMPLETE
-name|COMPLETE
-block|,
-comment|/** Scheduled (awaiting resources) at the NM. */
-DECL|enumConstant|SCHEDULED
-name|SCHEDULED
-block|}
+comment|// Producer: Node HB response - RM has asked to shed the queue
+DECL|enumConstant|SHED_QUEUED_CONTAINERS
+name|SHED_QUEUED_CONTAINERS
+block|, }
 end_enum
 
 end_unit

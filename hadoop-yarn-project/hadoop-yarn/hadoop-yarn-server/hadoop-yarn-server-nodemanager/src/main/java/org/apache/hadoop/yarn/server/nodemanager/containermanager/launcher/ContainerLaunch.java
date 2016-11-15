@@ -1138,10 +1138,10 @@ specifier|final
 name|ContainerManagerImpl
 name|containerManager
 decl_stmt|;
-DECL|field|shouldLaunchContainer
+DECL|field|containerAlreadyLaunched
 specifier|protected
 name|AtomicBoolean
-name|shouldLaunchContainer
+name|containerAlreadyLaunched
 init|=
 operator|new
 name|AtomicBoolean
@@ -1159,6 +1159,14 @@ name|AtomicBoolean
 argument_list|(
 literal|false
 argument_list|)
+decl_stmt|;
+DECL|field|killedBeforeStart
+specifier|private
+specifier|volatile
+name|boolean
+name|killedBeforeStart
+init|=
+literal|false
 decl_stmt|;
 DECL|field|sleepDelayBeforeSigKill
 specifier|private
@@ -2767,6 +2775,42 @@ operator|.
 name|getContainerId
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|container
+operator|.
+name|isMarkedForKilling
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Container "
+operator|+
+name|containerId
+operator|+
+literal|" not launched as it has already "
+operator|+
+literal|"been marked for Killing"
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|killedBeforeStart
+operator|=
+literal|true
+expr_stmt|;
+return|return
+name|ExitCode
+operator|.
+name|TERMINATED
+operator|.
+name|getExitCode
+argument_list|()
+return|;
+block|}
 comment|// LaunchContainer is a blocking call. We are here almost means the
 comment|// container is launched, so send out the event.
 name|dispatcher
@@ -2801,7 +2845,7 @@ comment|// Check if the container is signalled to be killed.
 if|if
 condition|(
 operator|!
-name|shouldLaunchContainer
+name|containerAlreadyLaunched
 operator|.
 name|compareAndSet
 argument_list|(
@@ -3022,6 +3066,13 @@ condition|)
 block|{
 comment|// If the process was killed, Send container_cleanedup_after_kill and
 comment|// just break out of this method.
+comment|// If Container was killed before starting... NO need to do this.
+if|if
+condition|(
+operator|!
+name|killedBeforeStart
+condition|)
+block|{
 name|dispatcher
 operator|.
 name|getEventHandler
@@ -3047,6 +3098,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 elseif|else
 if|if
@@ -3665,7 +3717,7 @@ name|boolean
 name|alreadyLaunched
 init|=
 operator|!
-name|shouldLaunchContainer
+name|containerAlreadyLaunched
 operator|.
 name|compareAndSet
 argument_list|(
@@ -4133,7 +4185,7 @@ name|boolean
 name|alreadyLaunched
 init|=
 operator|!
-name|shouldLaunchContainer
+name|containerAlreadyLaunched
 operator|.
 name|compareAndSet
 argument_list|(

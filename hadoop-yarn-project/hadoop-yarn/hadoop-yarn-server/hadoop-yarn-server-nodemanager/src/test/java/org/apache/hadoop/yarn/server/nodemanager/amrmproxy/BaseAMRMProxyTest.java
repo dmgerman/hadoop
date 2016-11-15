@@ -1180,7 +1180,7 @@ return|return
 name|svc
 return|;
 block|}
-comment|/**    * This helper method will invoke the specified function in parallel for each    * end point in the specified list using a thread pool and return the    * responses received from the function. It implements the logic required for    * dispatching requests in parallel and waiting for the responses. If any of    * the function call fails or times out, it will ignore and proceed with the    * rest. So the responses returned can be less than the number of end points    * specified    *     * @param testContext    * @param func    * @return    */
+comment|/**    * This helper method will invoke the specified function in parallel for each    * end point in the specified list using a thread pool and return the    * responses received from the function. It implements the logic required for    * dispatching requests in parallel and waiting for the responses. If any of    * the function call fails or times out, it will ignore and proceed with the    * rest. So the responses returned can be less than the number of end points    * specified    *     * @param testContexts    * @param func    * @return    */
 DECL|method|runInParallel (List<T> testContexts, final Function<T, R> func)
 specifier|protected
 parameter_list|<
@@ -3355,18 +3355,6 @@ DECL|method|getNodeStatusUpdater ()
 specifier|public
 name|NodeStatusUpdater
 name|getNodeStatusUpdater
-parameter_list|()
-block|{
-return|return
-literal|null
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|getQueuingContext ()
-specifier|public
-name|QueuingContext
-name|getQueuingContext
 parameter_list|()
 block|{
 return|return

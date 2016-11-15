@@ -1024,13 +1024,13 @@ argument_list|)
 expr_stmt|;
 name|conf
 operator|.
-name|setBoolean
+name|setInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|NM_CONTAINER_QUEUING_ENABLED
+name|NM_OPPORTUNISTIC_CONTAINERS_MAX_QUEUE_LENGTH
 argument_list|,
-literal|true
+literal|10
 argument_list|)
 expr_stmt|;
 name|cluster

@@ -7212,19 +7212,15 @@ operator|==
 name|ContainerState
 operator|.
 name|RUNNING
-condition|)
-block|{
-comment|// Process only GUARANTEED containers in the RM.
-if|if
-condition|(
+operator|||
 name|remoteContainer
 operator|.
-name|getExecutionType
+name|getState
 argument_list|()
 operator|==
-name|ExecutionType
+name|ContainerState
 operator|.
-name|GUARANTEED
+name|SCHEDULED
 condition|)
 block|{
 operator|++
@@ -7270,20 +7266,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-block|}
 else|else
-block|{
-if|if
-condition|(
-name|remoteContainer
-operator|.
-name|getExecutionType
-argument_list|()
-operator|==
-name|ExecutionType
-operator|.
-name|GUARANTEED
-condition|)
 block|{
 comment|// A finished container
 name|launchedContainers
@@ -7293,21 +7276,6 @@ argument_list|(
 name|containerId
 argument_list|)
 expr_stmt|;
-comment|// Unregister from containerAllocationExpirer.
-name|containerAllocationExpirer
-operator|.
-name|unregister
-argument_list|(
-operator|new
-name|AllocationExpirationInfo
-argument_list|(
-name|containerId
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-comment|// Completed containers should also include the OPPORTUNISTIC containers
-comment|// so that the AM gets properly notified.
 if|if
 condition|(
 name|completedContainers
@@ -7326,6 +7294,18 @@ name|remoteContainer
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Unregister from containerAllocationExpirer.
+name|containerAllocationExpirer
+operator|.
+name|unregister
+argument_list|(
+operator|new
+name|AllocationExpirationInfo
+argument_list|(
+name|containerId
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 name|List

@@ -148,6 +148,28 @@ name|ContainersMonitor
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|scheduler
+operator|.
+name|ContainerScheduler
+import|;
+end_import
+
 begin_comment
 comment|/**  * The ContainerManager is an entity that manages the life cycle of Containers.  */
 end_comment
@@ -192,6 +214,11 @@ parameter_list|(
 name|boolean
 name|blockNewContainerRequests
 parameter_list|)
+function_decl|;
+DECL|method|getContainerScheduler ()
+name|ContainerScheduler
+name|getContainerScheduler
+parameter_list|()
 function_decl|;
 block|}
 end_interface

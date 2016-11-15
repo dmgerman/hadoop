@@ -33,7 +33,7 @@ block|{
 DECL|enumConstant|NEW
 DECL|enumConstant|LOCALIZING
 DECL|enumConstant|LOCALIZATION_FAILED
-DECL|enumConstant|LOCALIZED
+DECL|enumConstant|SCHEDULED
 DECL|enumConstant|RUNNING
 DECL|enumConstant|RELAUNCHING
 name|NEW
@@ -42,7 +42,7 @@ name|LOCALIZING
 block|,
 name|LOCALIZATION_FAILED
 block|,
-name|LOCALIZED
+name|SCHEDULED
 block|,
 name|RUNNING
 block|,

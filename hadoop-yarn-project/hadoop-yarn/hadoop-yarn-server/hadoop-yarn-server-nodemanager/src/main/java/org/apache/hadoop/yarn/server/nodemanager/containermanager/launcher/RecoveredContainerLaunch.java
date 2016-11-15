@@ -368,22 +368,6 @@ name|ContainerReacquisitionContext
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|ConverterUtils
-import|;
-end_import
-
 begin_comment
 comment|/**  * This is a ContainerLaunch which has been recovered after an NM restart (for  * rolling upgrades)  */
 end_comment
@@ -462,7 +446,7 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|shouldLaunchContainer
+name|containerAlreadyLaunched
 operator|.
 name|set
 argument_list|(

@@ -173,6 +173,17 @@ init|=
 operator|-
 literal|107
 decl_stmt|;
+comment|/**    * Container was terminated by the ContainerScheduler to make room    * for another container...    */
+DECL|field|KILLED_BY_CONTAINER_SCHEDULER
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|KILLED_BY_CONTAINER_SCHEDULER
+init|=
+operator|-
+literal|108
+decl_stmt|;
 block|}
 end_class
 

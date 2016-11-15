@@ -867,11 +867,15 @@ name|NEW
 argument_list|,
 name|RMContainerState
 operator|.
-name|RUNNING
+name|ACQUIRED
 argument_list|,
 name|RMContainerEventType
 operator|.
-name|LAUNCHED
+name|ACQUIRED
+argument_list|,
+operator|new
+name|AcquiredTransition
+argument_list|()
 argument_list|)
 operator|.
 name|addTransition

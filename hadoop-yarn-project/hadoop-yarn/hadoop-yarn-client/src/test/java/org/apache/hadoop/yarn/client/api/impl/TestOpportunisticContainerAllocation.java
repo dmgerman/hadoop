@@ -1052,6 +1052,17 @@ argument_list|)
 expr_stmt|;
 name|conf
 operator|.
+name|setInt
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_OPPORTUNISTIC_CONTAINERS_MAX_QUEUE_LENGTH
+argument_list|,
+literal|10
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
 name|setLong
 argument_list|(
 name|YarnConfiguration

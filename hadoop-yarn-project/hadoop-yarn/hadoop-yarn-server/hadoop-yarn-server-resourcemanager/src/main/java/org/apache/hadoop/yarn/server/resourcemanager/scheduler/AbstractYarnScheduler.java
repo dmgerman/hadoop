@@ -3320,6 +3320,22 @@ name|event
 argument_list|)
 expr_stmt|;
 block|}
+name|getSchedulerNode
+argument_list|(
+name|rmContainer
+operator|.
+name|getNodeId
+argument_list|()
+argument_list|)
+operator|.
+name|releaseContainer
+argument_list|(
+name|rmContainer
+operator|.
+name|getContainer
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 comment|// If the container is getting killed in ACQUIRED state, the requester (AM
 comment|// for regular containers and RM itself for AM container) will not know what

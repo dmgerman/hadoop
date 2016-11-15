@@ -988,6 +988,50 @@ name|server
 operator|.
 name|nodemanager
 operator|.
+name|containermanager
+operator|.
+name|scheduler
+operator|.
+name|ContainerSchedulerEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|scheduler
+operator|.
+name|ContainerSchedulerEventType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
 name|metrics
 operator|.
 name|NodeManagerMetrics
@@ -1568,6 +1612,14 @@ specifier|private
 specifier|volatile
 name|boolean
 name|isReInitializing
+init|=
+literal|false
+decl_stmt|;
+DECL|field|isMarkeForKilling
+specifier|private
+specifier|volatile
+name|boolean
+name|isMarkeForKilling
 init|=
 literal|false
 decl_stmt|;
@@ -2251,7 +2303,7 @@ name|LOCALIZING
 argument_list|,
 name|ContainerState
 operator|.
-name|LOCALIZED
+name|SCHEDULED
 argument_list|,
 name|ContainerState
 operator|.
@@ -2324,7 +2376,7 @@ name|LOCALIZING
 argument_list|,
 name|ContainerState
 operator|.
-name|LOCALIZED
+name|SCHEDULED
 argument_list|)
 argument_list|,
 name|ContainerEventType
@@ -2387,7 +2439,7 @@ operator|.
 name|KILL_CONTAINER
 argument_list|,
 operator|new
-name|KillDuringLocalizationTransition
+name|KillBeforeRunningTransition
 argument_list|()
 argument_list|)
 comment|// From LOCALIZATION_FAILED State
@@ -2476,13 +2528,13 @@ name|ContainerEventType
 operator|.
 name|RESOURCE_FAILED
 argument_list|)
-comment|// From LOCALIZED State
+comment|// From SCHEDULED State
 operator|.
 name|addTransition
 argument_list|(
 name|ContainerState
 operator|.
-name|LOCALIZED
+name|SCHEDULED
 argument_list|,
 name|ContainerState
 operator|.
@@ -2501,7 +2553,7 @@ name|addTransition
 argument_list|(
 name|ContainerState
 operator|.
-name|LOCALIZED
+name|SCHEDULED
 argument_list|,
 name|ContainerState
 operator|.
@@ -2522,11 +2574,11 @@ name|addTransition
 argument_list|(
 name|ContainerState
 operator|.
-name|LOCALIZED
+name|SCHEDULED
 argument_list|,
 name|ContainerState
 operator|.
-name|LOCALIZED
+name|SCHEDULED
 argument_list|,
 name|ContainerEventType
 operator|.
@@ -2539,7 +2591,7 @@ name|addTransition
 argument_list|(
 name|ContainerState
 operator|.
-name|LOCALIZED
+name|SCHEDULED
 argument_list|,
 name|ContainerState
 operator|.
@@ -2550,7 +2602,7 @@ operator|.
 name|KILL_CONTAINER
 argument_list|,
 operator|new
-name|KillTransition
+name|KillBeforeRunningTransition
 argument_list|()
 argument_list|)
 comment|// From RUNNING State
@@ -2592,7 +2644,7 @@ name|RELAUNCHING
 argument_list|,
 name|ContainerState
 operator|.
-name|LOCALIZED
+name|SCHEDULED
 argument_list|,
 name|ContainerState
 operator|.
@@ -2864,7 +2916,7 @@ name|REINITIALIZING
 argument_list|,
 name|ContainerState
 operator|.
-name|LOCALIZED
+name|SCHEDULED
 argument_list|,
 name|ContainerEventType
 operator|.
@@ -3422,13 +3474,33 @@ case|case
 name|LOCALIZATION_FAILED
 case|:
 case|case
-name|LOCALIZED
+name|SCHEDULED
 case|:
+return|return
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ContainerState
+operator|.
+name|SCHEDULED
+return|;
 case|case
 name|RUNNING
 case|:
 case|case
 name|RELAUNCHING
+case|:
+case|case
+name|REINITIALIZING
 case|:
 case|case
 name|EXITED_WITH_SUCCESS
@@ -3561,7 +3633,7 @@ if|if
 condition|(
 name|ContainerState
 operator|.
-name|LOCALIZED
+name|SCHEDULED
 operator|==
 name|getContainerState
 argument_list|()
@@ -4117,6 +4189,22 @@ name|containerStatus
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// Tell the scheduler the container is Done
+name|eventHandler
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|ContainerSchedulerEvent
+argument_list|(
+name|this
+argument_list|,
+name|ContainerSchedulerEventType
+operator|.
+name|CONTAINER_COMPLETED
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// Remove the container from the resource-monitor
 name|eventHandler
 operator|.
@@ -4150,8 +4238,10 @@ argument_list|(
 literal|"unchecked"
 argument_list|)
 comment|// dispatcher not typed
+annotation|@
+name|Override
 DECL|method|sendLaunchEvent ()
-specifier|private
+specifier|public
 name|void
 name|sendLaunchEvent
 parameter_list|()
@@ -4200,6 +4290,82 @@ argument_list|(
 name|this
 argument_list|,
 name|launcherEvent
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+comment|// dispatcher not typed
+DECL|method|sendScheduleEvent ()
+specifier|private
+name|void
+name|sendScheduleEvent
+parameter_list|()
+block|{
+name|dispatcher
+operator|.
+name|getEventHandler
+argument_list|()
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|ContainerSchedulerEvent
+argument_list|(
+name|this
+argument_list|,
+name|ContainerSchedulerEventType
+operator|.
+name|SCHEDULE_CONTAINER
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+comment|// dispatcher not typed
+annotation|@
+name|Override
+DECL|method|sendKillEvent (int exitStatus, String description)
+specifier|public
+name|void
+name|sendKillEvent
+parameter_list|(
+name|int
+name|exitStatus
+parameter_list|,
+name|String
+name|description
+parameter_list|)
+block|{
+name|this
+operator|.
+name|isMarkeForKilling
+operator|=
+literal|true
+expr_stmt|;
+name|dispatcher
+operator|.
+name|getEventHandler
+argument_list|()
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|ContainerKillEvent
+argument_list|(
+name|containerId
+argument_list|,
+name|exitStatus
+argument_list|,
+name|description
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4511,7 +4677,7 @@ block|{
 comment|// Just drain the event and change the state.
 block|}
 block|}
-comment|/**    * State transition when a NEW container receives the INIT_CONTAINER    * message.    *     * If there are resources to localize, sends a    * ContainerLocalizationRequest (LOCALIZE_CONTAINER_RESOURCES)    * to the ResourceLocalizationManager and enters LOCALIZING state.    *     * If there are no resources to localize, sends LAUNCH_CONTAINER event    * and enters LOCALIZED state directly.    *     * If there are any invalid resources specified, enters LOCALIZATION_FAILED    * directly.    */
+comment|/**    * State transition when a NEW container receives the INIT_CONTAINER    * message.    *     * If there are resources to localize, sends a    * ContainerLocalizationRequest (LOCALIZE_CONTAINER_RESOURCES)    * to the ResourceLocalizationManager and enters LOCALIZING state.    *     * If there are no resources to localize, sends LAUNCH_CONTAINER event    * and enters SCHEDULED state directly.    *     * If there are any invalid resources specified, enters LOCALIZATION_FAILED    * directly.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -4886,7 +5052,7 @@ else|else
 block|{
 name|container
 operator|.
-name|sendLaunchEvent
+name|sendScheduleEvent
 argument_list|()
 expr_stmt|;
 name|container
@@ -4899,7 +5065,7 @@ expr_stmt|;
 return|return
 name|ContainerState
 operator|.
-name|LOCALIZED
+name|SCHEDULED
 return|;
 block|}
 block|}
@@ -5076,7 +5242,7 @@ argument_list|)
 expr_stmt|;
 name|container
 operator|.
-name|sendLaunchEvent
+name|sendScheduleEvent
 argument_list|()
 expr_stmt|;
 name|container
@@ -5152,7 +5318,7 @@ block|}
 return|return
 name|ContainerState
 operator|.
-name|LOCALIZED
+name|SCHEDULED
 return|;
 block|}
 block|}
@@ -5949,7 +6115,7 @@ literal|null
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Transition from LOCALIZED state to RUNNING state upon receiving    * a CONTAINER_LAUNCHED event.    */
+comment|/**    * Transition from SCHEDULED state to RUNNING state upon receiving    * a CONTAINER_LAUNCHED event.    */
 DECL|class|LaunchTransition
 specifier|static
 class|class
@@ -6647,7 +6813,7 @@ expr_stmt|;
 return|return
 name|ContainerState
 operator|.
-name|LOCALIZED
+name|SCHEDULED
 return|;
 block|}
 else|else
@@ -6982,7 +7148,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Transition to LOCALIZED and wait for RE-LAUNCH    */
+comment|/**    * Transition to SCHEDULED and wait for RE-LAUNCH    */
 DECL|class|KilledForReInitializationTransition
 specifier|static
 class|class
@@ -7093,7 +7259,13 @@ argument_list|)
 expr_stmt|;
 name|container
 operator|.
-name|sendLaunchEvent
+name|isMarkeForKilling
+operator|=
+literal|false
+expr_stmt|;
+name|container
+operator|.
+name|sendScheduleEvent
 argument_list|()
 expr_stmt|;
 block|}
@@ -7162,10 +7334,10 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Transition from LOCALIZING to KILLING upon receiving    * KILL_CONTAINER event.    */
-DECL|class|KillDuringLocalizationTransition
+DECL|class|KillBeforeRunningTransition
 specifier|static
 class|class
-name|KillDuringLocalizationTransition
+name|KillBeforeRunningTransition
 implements|implements
 name|SingleArcTransition
 argument_list|<
@@ -7294,7 +7466,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Transitions upon receiving KILL_CONTAINER.    * - LOCALIZED -> KILLING.    * - RUNNING -> KILLING.    * - REINITIALIZING -> KILLING.    */
+comment|/**    * Transitions upon receiving KILL_CONTAINER.    * - SCHEDULED -> KILLING.    * - RUNNING -> KILLING.    * - REINITIALIZING -> KILLING.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -8310,6 +8482,12 @@ operator|.
 name|getType
 argument_list|()
 operator|+
+literal|"],"
+operator|+
+literal|" container: ["
+operator|+
+name|containerID
+operator|+
 literal|"]"
 argument_list|,
 name|e
@@ -8525,6 +8703,20 @@ return|return
 name|this
 operator|.
 name|isReInitializing
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|isMarkedForKilling ()
+specifier|public
+name|boolean
+name|isMarkedForKilling
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|isMarkeForKilling
 return|;
 block|}
 annotation|@
