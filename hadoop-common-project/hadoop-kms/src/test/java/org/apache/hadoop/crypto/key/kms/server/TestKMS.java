@@ -11538,11 +11538,27 @@ name|Exception
 name|e
 parameter_list|)
 block|{
+specifier|final
+name|DelegationTokenIdentifier
+name|identifier
+init|=
+operator|(
+name|DelegationTokenIdentifier
+operator|)
+name|token
+operator|.
+name|decodeIdentifier
+argument_list|()
+decl_stmt|;
 name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"tries to renew a token with renewer"
+literal|"tries to renew a token ("
+operator|+
+name|identifier
+operator|+
+literal|") with non-matching renewer"
 argument_list|,
 name|e
 argument_list|)
