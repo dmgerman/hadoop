@@ -2643,15 +2643,6 @@ range|:
 name|dataLocations
 control|)
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Adding to failedLocationSet "
-operator|+
-name|sl
-argument_list|)
-expr_stmt|;
 name|failedLocationSet
 operator|.
 name|add
@@ -2696,18 +2687,6 @@ name|failedLocationSet
 operator|.
 name|remove
 argument_list|(
-name|sd
-operator|.
-name|getStorageLocation
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Removing from failedLocationSet "
-operator|+
 name|sd
 operator|.
 name|getStorageLocation
