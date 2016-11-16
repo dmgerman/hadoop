@@ -1989,7 +1989,9 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"-conf<configuration file>     specify an application configuration file"
+literal|"-conf<configuration file>        specify an application "
+operator|+
+literal|"configuration file"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2002,7 +2004,9 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"-D<property=value>            use value for given property"
+literal|"-D<property=value>               define a value for a given "
+operator|+
+literal|"property"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2015,7 +2019,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"-fs<local|namenode:port>      specify a namenode"
+literal|"-fs<local|namenode:port>         specify a namenode"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2028,7 +2032,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"-jt<local|resourcemanager:port>    specify a ResourceManager"
+literal|"-jt<local|resourcemanager:port>  specify a ResourceManager"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2041,7 +2045,9 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"-files<comma separated list of files>    specify comma separated files to be copied to the map reduce cluster"
+literal|"-files<file1,...>                specify a comma-separated list of "
+operator|+
+literal|"files to be copied to the map reduce cluster"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2054,7 +2060,9 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"-libjars<comma separated list of jars>    specify comma separated jar files to include in the classpath."
+literal|"-libjars<jar1,...>               specify a comma-separated list of "
+operator|+
+literal|"jar files to be included in the classpath"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2067,7 +2075,9 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"-archives<comma separated list of archives>    specify comma separated archives to be unarchived on the compute machines."
+literal|"-archives<archive1,...>          specify a comma-separated list of "
+operator|+
+literal|"archives to be unarchived on the compute machines"
 argument_list|)
 argument_list|)
 expr_stmt|;
