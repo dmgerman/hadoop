@@ -36,8 +36,6 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMCommandResponseProto
-operator|.
 name|Type
 import|;
 end_import

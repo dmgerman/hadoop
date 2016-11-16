@@ -222,7 +222,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|RegisteredCmdResponseProto
+name|SCMRegisteredCmdResponseProto
 operator|.
 name|ErrorCode
 import|;
@@ -357,16 +357,6 @@ operator|.
 name|util
 operator|.
 name|Queue
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|UUID
 import|;
 end_import
 
@@ -2166,7 +2156,7 @@ name|datanodeID
 parameter_list|)
 block|{
 name|SCMCommand
-name|errorCode
+name|responseCommand
 init|=
 name|verifyDatanodeUUID
 argument_list|(
@@ -2175,42 +2165,25 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|errorCode
+name|responseCommand
 operator|!=
 literal|null
 condition|)
 block|{
 return|return
-name|errorCode
+name|responseCommand
 return|;
 block|}
-name|DatanodeID
-name|newDatanodeID
-init|=
-operator|new
-name|DatanodeID
-argument_list|(
-name|UUID
-operator|.
-name|randomUUID
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-argument_list|,
-name|datanodeID
-argument_list|)
-decl_stmt|;
 name|nodes
 operator|.
 name|put
 argument_list|(
-name|newDatanodeID
+name|datanodeID
 operator|.
 name|getDatanodeUuid
 argument_list|()
 argument_list|,
-name|newDatanodeID
+name|datanodeID
 argument_list|)
 expr_stmt|;
 name|totalNodes
@@ -2222,7 +2195,7 @@ name|healthyNodes
 operator|.
 name|put
 argument_list|(
-name|newDatanodeID
+name|datanodeID
 operator|.
 name|getDatanodeUuid
 argument_list|()
@@ -2242,7 +2215,7 @@ name|info
 argument_list|(
 literal|"Data node with ID: {} Registered."
 argument_list|,
-name|newDatanodeID
+name|datanodeID
 operator|.
 name|getDatanodeUuid
 argument_list|()
@@ -2263,7 +2236,7 @@ argument_list|)
 operator|.
 name|setDatanodeUUID
 argument_list|(
-name|newDatanodeID
+name|datanodeID
 operator|.
 name|getDatanodeUuid
 argument_list|()
@@ -2290,13 +2263,6 @@ name|DatanodeID
 name|datanodeID
 parameter_list|)
 block|{
-comment|// Make sure that we return the right error code, so that
-comment|// data node can log the correct error. if it is already registered then
-comment|// datanode should move to heartbeat state. It implies that somehow we
-comment|// have an error where the data node is trying to re-register.
-comment|//
-comment|// We are going to let the datanode know that there is an error but allow it
-comment|// to recover by sending it the right info that is needed for recovery.
 if|if
 condition|(
 name|datanodeID
@@ -2319,7 +2285,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|error
+name|trace
 argument_list|(
 literal|"Datanode is already registered. Datanode: {}"
 argument_list|,
@@ -2339,7 +2305,7 @@ name|setErrorCode
 argument_list|(
 name|ErrorCode
 operator|.
-name|errorNodeAlreadyRegistered
+name|success
 argument_list|)
 operator|.
 name|setClusterID

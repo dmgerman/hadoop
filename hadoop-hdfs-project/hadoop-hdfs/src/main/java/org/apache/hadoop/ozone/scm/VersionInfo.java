@@ -48,6 +48,15 @@ literal|1
 argument_list|)
 block|}
 decl_stmt|;
+DECL|field|DESCRIPTION_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DESCRIPTION_KEY
+init|=
+literal|"Description"
+decl_stmt|;
 DECL|field|description
 specifier|private
 specifier|final

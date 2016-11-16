@@ -153,14 +153,14 @@ name|OZONE_TRACE_ENABLED_DEFAULT
 init|=
 literal|false
 decl_stmt|;
-DECL|field|OZONE_METADATA_DIRS
+DECL|field|OZONE_CONTAINER_METADATA_DIRS
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|OZONE_METADATA_DIRS
+name|OZONE_CONTAINER_METADATA_DIRS
 init|=
-literal|"ozone.metadata.dirs"
+literal|"ozone.container.metadata.dirs"
 decl_stmt|;
 DECL|field|OZONE_KEY_CACHE
 specifier|public
@@ -367,6 +367,130 @@ operator|*
 literal|1000L
 operator|*
 literal|3L
+decl_stmt|;
+DECL|field|OZONE_SCM_CONTAINER_THREADS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_SCM_CONTAINER_THREADS
+init|=
+literal|"ozone.scm.container.threads"
+decl_stmt|;
+DECL|field|OZONE_SCM_CONTAINER_THREADS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|OZONE_SCM_CONTAINER_THREADS_DEFAULT
+init|=
+name|Runtime
+operator|.
+name|getRuntime
+argument_list|()
+operator|.
+name|availableProcessors
+argument_list|()
+operator|*
+literal|2
+decl_stmt|;
+DECL|field|OZONE_SCM_HEARTBEAT_RPC_TIMEOUT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_SCM_HEARTBEAT_RPC_TIMEOUT
+init|=
+literal|"ozone.scm.heartbeat.rpc-timeout"
+decl_stmt|;
+DECL|field|OZONE_SCM_HEARTBEAT_RPC_TIMEOUT_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|OZONE_SCM_HEARTBEAT_RPC_TIMEOUT_DEFAULT
+init|=
+literal|100
+decl_stmt|;
+comment|/**    * Defines how frequently we will log the missing of heartbeat to a specific    * SCM. In the default case we will write a warning message for each 10    * sequential heart beats that we miss to a specific SCM. This is to avoid    * overrunning the log with lots of HB missed Log statements.    */
+DECL|field|OZONE_SCM_HEARTBEAT_LOG_WARN_INTERVAL_COUNT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_SCM_HEARTBEAT_LOG_WARN_INTERVAL_COUNT
+init|=
+literal|"ozone.scm.heartbeat.log.warn.interval.count"
+decl_stmt|;
+DECL|field|OZONE_SCM_HEARTBEAT_LOG_WARN_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|OZONE_SCM_HEARTBEAT_LOG_WARN_DEFAULT
+init|=
+literal|10
+decl_stmt|;
+DECL|field|OZONE_CONTAINER_TASK_WAIT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_CONTAINER_TASK_WAIT
+init|=
+literal|"ozone.container.task.wait.seconds"
+decl_stmt|;
+DECL|field|OZONE_CONTAINER_TASK_WAIT_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|OZONE_CONTAINER_TASK_WAIT_DEFAULT
+init|=
+literal|5
+decl_stmt|;
+comment|// ozone.scm.names key is a set of DNS | DNS:PORT | IP Address | IP:PORT.
+comment|// Written as a comma separated string. e.g. scm1, scm2:8020, 7.7.7.7:7777
+comment|//
+comment|// If this key is not specified datanodes will not be able to find
+comment|// SCM. The SCM membership can be dynamic, so this key should contain
+comment|// all possible SCM names. Once the SCM leader is discovered datanodes will
+comment|// get the right list of SCMs to heartbeat to from the leader.
+comment|// While it is good for the datanodes to know the names of all SCM nodes,
+comment|// it is sufficient to actually know the name of on working SCM. That SCM
+comment|// will be able to return the information about other SCMs that are part of
+comment|// the SCM replicated Log.
+comment|//
+comment|//In case of a membership change, any one of the SCM machines will be
+comment|// able to send back a new list to the datanodes.
+DECL|field|OZONE_SCM_NAMES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_SCM_NAMES
+init|=
+literal|"ozone.scm.names"
+decl_stmt|;
+DECL|field|OZONE_SCM_DEFAULT_PORT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|OZONE_SCM_DEFAULT_PORT
+init|=
+literal|9862
+decl_stmt|;
+comment|// File Name and path where datanode ID is to written to.
+comment|// if this value is not set then container startup will fail.
+DECL|field|OZONE_SCM_DATANODE_ID
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_SCM_DATANODE_ID
+init|=
+literal|"ozone.scm.datanode.id"
 decl_stmt|;
 comment|/**    * There is no need to instantiate this class.    */
 DECL|method|OzoneConfigKeys ()

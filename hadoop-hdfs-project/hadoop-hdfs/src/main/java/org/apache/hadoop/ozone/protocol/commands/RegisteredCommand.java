@@ -50,7 +50,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|RegisteredCmdResponseProto
+name|SCMRegisteredCmdResponseProto
 import|;
 end_import
 
@@ -70,7 +70,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|RegisteredCmdResponseProto
+name|SCMRegisteredCmdResponseProto
 operator|.
 name|ErrorCode
 import|;
@@ -92,8 +92,6 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|SCMCommandResponseProto
-operator|.
 name|Type
 import|;
 end_import
@@ -110,7 +108,7 @@ name|RegisteredCommand
 extends|extends
 name|SCMCommand
 argument_list|<
-name|RegisteredCmdResponseProto
+name|SCMRegisteredCmdResponseProto
 argument_list|>
 block|{
 DECL|field|datanodeUUID
@@ -189,10 +187,10 @@ block|{
 return|return
 name|Type
 operator|.
-name|registeredCmd
+name|registeredCommand
 return|;
 block|}
-comment|/**    * Returns datanode UUID.    * @return - Datanode ID.    */
+comment|/**    * Returns datanode UUID.    *    * @return - Datanode ID.    */
 DECL|method|getDatanodeUUID ()
 specifier|public
 name|String
@@ -203,7 +201,7 @@ return|return
 name|datanodeUUID
 return|;
 block|}
-comment|/**    * Returns cluster ID.    * @return -- ClusterID    */
+comment|/**    * Returns cluster ID.    *    * @return -- ClusterID    */
 DECL|method|getClusterID ()
 specifier|public
 name|String
@@ -214,7 +212,7 @@ return|return
 name|clusterID
 return|;
 block|}
-comment|/**    * Returns ErrorCode.    * @return - ErrorCode    */
+comment|/**    * Returns ErrorCode.    *    * @return - ErrorCode    */
 DECL|method|getError ()
 specifier|public
 name|ErrorCode
@@ -229,12 +227,12 @@ comment|/**    * Gets the protobuf message of this object.    *    * @return A p
 annotation|@
 name|Override
 DECL|method|getProtoBufMessage ()
-name|RegisteredCmdResponseProto
+name|SCMRegisteredCmdResponseProto
 name|getProtoBufMessage
 parameter_list|()
 block|{
 return|return
-name|RegisteredCmdResponseProto
+name|SCMRegisteredCmdResponseProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -307,12 +305,12 @@ name|this
 return|;
 block|}
 comment|/**      * Create this object from a Protobuf message.      *      * @param response - RegisteredCmdResponseProto      * @return RegisteredCommand      */
-DECL|method|getFromProtobuf (RegisteredCmdResponseProto response)
+DECL|method|getFromProtobuf (SCMRegisteredCmdResponseProto response)
 specifier|public
 name|RegisteredCommand
 name|getFromProtobuf
 parameter_list|(
-name|RegisteredCmdResponseProto
+name|SCMRegisteredCmdResponseProto
 name|response
 parameter_list|)
 block|{
