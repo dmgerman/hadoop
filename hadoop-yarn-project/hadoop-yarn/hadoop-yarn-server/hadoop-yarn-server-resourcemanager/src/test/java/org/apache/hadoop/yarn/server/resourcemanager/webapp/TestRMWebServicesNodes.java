@@ -949,6 +949,11 @@ operator|.
 name|rollMasterKey
 argument_list|()
 expr_stmt|;
+name|rm
+operator|.
+name|disableDrainEventsImplicitly
+argument_list|()
+expr_stmt|;
 name|bind
 argument_list|(
 name|ResourceManager

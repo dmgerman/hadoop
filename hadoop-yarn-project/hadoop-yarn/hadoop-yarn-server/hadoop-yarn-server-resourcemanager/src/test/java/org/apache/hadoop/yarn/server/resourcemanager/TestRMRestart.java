@@ -10604,6 +10604,11 @@ argument_list|)
 decl_stmt|;
 name|rm1
 operator|.
+name|disableDrainEventsImplicitly
+argument_list|()
+expr_stmt|;
+name|rm1
+operator|.
 name|start
 argument_list|()
 expr_stmt|;

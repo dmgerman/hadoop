@@ -20,6 +20,20 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|util
@@ -131,6 +145,38 @@ operator|=
 name|this
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|serviceInit (Configuration conf)
+specifier|public
+name|void
+name|serviceInit
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|Dispatcher
+operator|.
+name|DISPATCHER_EXIT_ON_ERROR_KEY
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+name|super
+operator|.
+name|serviceInit
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    *  Wait till event thread enters WAITING state (i.e. waiting for new events).    */
 DECL|method|waitForEventThreadToWait ()
 specifier|public
@@ -162,7 +208,8 @@ block|{
 while|while
 condition|(
 operator|!
-name|drained
+name|isDrained
+argument_list|()
 condition|)
 block|{
 name|Thread
@@ -325,9 +372,15 @@ name|boolean
 name|isDrained
 parameter_list|()
 block|{
+synchronized|synchronized
+init|(
+name|mutex
+init|)
+block|{
 return|return
 name|drained
 return|;
+block|}
 block|}
 annotation|@
 name|Override

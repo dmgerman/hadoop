@@ -29924,6 +29924,26 @@ argument_list|,
 name|resourceManager
 argument_list|)
 decl_stmt|;
+comment|// after YARN-5375, scheduler event is processed in rm main dispatcher,
+comment|// wait it processed, or may lead dead lock
+if|if
+condition|(
+name|resourceManager
+operator|instanceof
+name|MockRM
+condition|)
+block|{
+operator|(
+operator|(
+name|MockRM
+operator|)
+name|resourceManager
+operator|)
+operator|.
+name|drainEvents
+argument_list|()
+expr_stmt|;
+block|}
 name|NodeAddedSchedulerEvent
 name|nodeAddEvent1
 init|=
