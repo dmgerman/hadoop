@@ -1145,7 +1145,7 @@ literal|""
 argument_list|,
 literal|"Reload the service-level authorization policy file. \n\t\t"
 operator|+
-literal|"ResoureceManager will reload the authorization policy file."
+literal|"ResourceManager will reload the authorization policy file."
 argument_list|)
 argument_list|)
 decl|.
