@@ -774,6 +774,48 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|testUnauthorizedRequests ()
+specifier|public
+name|void
+name|testUnauthorizedRequests
+parameter_list|()
+throws|throws
+name|IOException
+throws|,
+name|YarnException
+block|{
+comment|// Don't run the test if the binary is not available.
+if|if
+condition|(
+operator|!
+name|shouldRunTest
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"LCE binary path is not passed. Not running the test"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Running testUnauthorizedRequests"
+argument_list|)
+expr_stmt|;
+name|super
+operator|.
+name|testUnauthorizedRequests
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|testStartContainerFailureWithUnknownAuxService ()
 specifier|public
 name|void

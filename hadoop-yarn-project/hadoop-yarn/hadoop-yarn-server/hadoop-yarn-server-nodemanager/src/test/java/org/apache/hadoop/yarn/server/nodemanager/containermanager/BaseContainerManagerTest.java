@@ -3037,6 +3037,29 @@ name|int
 name|id
 parameter_list|)
 block|{
+comment|// Use default appId = 0
+return|return
+name|createContainerId
+argument_list|(
+name|id
+argument_list|,
+literal|0
+argument_list|)
+return|;
+block|}
+DECL|method|createContainerId (int cId, int aId)
+specifier|public
+specifier|static
+name|ContainerId
+name|createContainerId
+parameter_list|(
+name|int
+name|cId
+parameter_list|,
+name|int
+name|aId
+parameter_list|)
+block|{
 name|ApplicationId
 name|appId
 init|=
@@ -3046,7 +3069,7 @@ name|newInstance
 argument_list|(
 literal|0
 argument_list|,
-literal|0
+name|aId
 argument_list|)
 decl_stmt|;
 name|ApplicationAttemptId
@@ -3070,7 +3093,7 @@ name|newContainerId
 argument_list|(
 name|appAttemptId
 argument_list|,
-name|id
+name|cId
 argument_list|)
 decl_stmt|;
 return|return
