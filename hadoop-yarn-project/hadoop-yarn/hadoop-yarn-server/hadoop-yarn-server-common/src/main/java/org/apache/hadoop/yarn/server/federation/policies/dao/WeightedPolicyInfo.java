@@ -62,7 +62,7 @@ name|nio
 operator|.
 name|charset
 operator|.
-name|Charset
+name|StandardCharsets
 import|;
 end_import
 
@@ -533,12 +533,9 @@ name|String
 argument_list|(
 name|bytes
 argument_list|,
-name|Charset
+name|StandardCharsets
 operator|.
-name|forName
-argument_list|(
-literal|"UTF-8"
-argument_list|)
+name|UTF_8
 argument_list|)
 decl_stmt|;
 name|WeightedPolicyInfo
@@ -697,12 +694,9 @@ name|s
 operator|.
 name|getBytes
 argument_list|(
-name|Charset
+name|StandardCharsets
 operator|.
-name|forName
-argument_list|(
-literal|"UTF-8"
-argument_list|)
+name|UTF_8
 argument_list|)
 argument_list|)
 return|;
