@@ -204,6 +204,42 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
+name|GetApplicationsRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|GetNewApplicationRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
 name|GetNewReservationResponse
 import|;
 end_import
@@ -1156,6 +1192,40 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
+comment|/**    *<p>    * Get a list of ApplicationReports that match the given    * {@link GetApplicationsRequest}.    *</p>    *    *<p>    * If the user does not have<code>VIEW_APP</code> access for an application    * then the corresponding report will be filtered as described in    * {@link #getApplicationReport(ApplicationId)}.    *</p>    *    * @param request the request object to get the list of applications.    * @return The list of ApplicationReports that match the request    * @throws YarnException Exception specific to YARN.    * @throws IOException Exception mostly related to connection errors.    */
+DECL|method|getApplications (GetApplicationsRequest request)
+specifier|public
+name|List
+argument_list|<
+name|ApplicationReport
+argument_list|>
+name|getApplications
+parameter_list|(
+name|GetApplicationsRequest
+name|request
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"The sub-class extending "
+operator|+
+name|YarnClient
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|" is expected to implement this !"
+argument_list|)
+throw|;
+block|}
 comment|/**    *<p>    * Get metrics ({@link YarnClusterMetrics}) about the cluster.    *</p>    *     * @return cluster metrics    * @throws YarnException    * @throws IOException    */
 DECL|method|getYarnClusterMetrics ()
 specifier|public
