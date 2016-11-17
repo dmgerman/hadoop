@@ -12595,6 +12595,63 @@ name|auditStat
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Satisfy the storage policy for a file or a directory.    *    * @param src file/directory path    */
+DECL|method|satisfyStoragePolicy (String src)
+name|void
+name|satisfyStoragePolicy
+parameter_list|(
+name|String
+name|src
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
+name|writeLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
+name|checkNameNodeSafeMode
+argument_list|(
+literal|"Cannot satisfy storage policy for "
+operator|+
+name|src
+argument_list|)
+expr_stmt|;
+comment|// TODO: need to update editlog for persistence.
+name|FSDirAttrOp
+operator|.
+name|satisfyStoragePolicy
+argument_list|(
+name|dir
+argument_list|,
+name|blockManager
+argument_list|,
+name|src
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 comment|/**    * unset storage policy set for a given file or a directory.    *    * @param src file/directory path    */
 DECL|method|unsetStoragePolicy (String src)
 name|void

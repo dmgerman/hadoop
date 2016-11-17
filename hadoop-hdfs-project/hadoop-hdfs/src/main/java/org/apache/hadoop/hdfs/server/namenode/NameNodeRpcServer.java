@@ -8728,6 +8728,31 @@ block|}
 annotation|@
 name|Override
 comment|// ClientProtocol
+DECL|method|satisfyStoragePolicy (String src)
+specifier|public
+name|void
+name|satisfyStoragePolicy
+parameter_list|(
+name|String
+name|src
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
+name|namesystem
+operator|.
+name|satisfyStoragePolicy
+argument_list|(
+name|src
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|setQuota (String path, long namespaceQuota, long storagespaceQuota, StorageType type)
 specifier|public
 name|void

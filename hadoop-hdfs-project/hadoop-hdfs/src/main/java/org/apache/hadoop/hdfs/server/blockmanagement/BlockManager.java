@@ -23365,6 +23365,26 @@ argument_list|(
 name|id
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Added block collection id {} to block "
+operator|+
+literal|"storageMovementNeeded queue"
+argument_list|,
+name|id
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|getStoragePolicySatisfier ()
 specifier|public

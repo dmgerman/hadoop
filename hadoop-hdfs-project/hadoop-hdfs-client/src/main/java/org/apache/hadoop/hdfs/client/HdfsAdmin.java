@@ -1460,6 +1460,27 @@ name|path
 argument_list|)
 return|;
 block|}
+comment|/**    * Set the source path to the specified storage policy.    *    * @param path The source path referring to either a directory or a file.    * @throws IOException    */
+DECL|method|satisfyStoragePolicy (final Path path)
+specifier|public
+name|void
+name|satisfyStoragePolicy
+parameter_list|(
+specifier|final
+name|Path
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|dfs
+operator|.
+name|satisfyStoragePolicy
+argument_list|(
+name|path
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Get the Erasure coding policies supported.    *    * @throws IOException    */
 DECL|method|getErasureCodingPolicies ()
 specifier|public
