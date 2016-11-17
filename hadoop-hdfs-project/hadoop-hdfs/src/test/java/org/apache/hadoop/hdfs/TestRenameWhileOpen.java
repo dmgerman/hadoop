@@ -374,15 +374,6 @@ argument_list|,
 name|spyLog
 argument_list|)
 expr_stmt|;
-specifier|final
-name|int
-name|nnport
-init|=
-name|cluster
-operator|.
-name|getNameNodePort
-argument_list|()
-decl_stmt|;
 comment|// create file1.
 name|Path
 name|dir1
@@ -597,7 +588,7 @@ operator|.
 name|stop
 argument_list|()
 expr_stmt|;
-comment|// Restart cluster with the same namenode port as before.
+comment|// Restart cluster.
 name|cluster
 operator|.
 name|shutdown
@@ -629,11 +620,6 @@ operator|.
 name|Builder
 argument_list|(
 name|conf
-argument_list|)
-operator|.
-name|nameNodePort
-argument_list|(
-name|nnport
 argument_list|)
 operator|.
 name|format
@@ -680,11 +666,6 @@ operator|.
 name|Builder
 argument_list|(
 name|conf
-argument_list|)
-operator|.
-name|nameNodePort
-argument_list|(
-name|nnport
 argument_list|)
 operator|.
 name|format
@@ -881,15 +862,6 @@ operator|.
 name|getFileSystem
 argument_list|()
 expr_stmt|;
-specifier|final
-name|int
-name|nnport
-init|=
-name|cluster
-operator|.
-name|getNameNodePort
-argument_list|()
-decl_stmt|;
 comment|// create file1.
 name|Path
 name|dir1
@@ -1029,7 +1001,7 @@ argument_list|,
 name|dir3
 argument_list|)
 expr_stmt|;
-comment|// restart cluster with the same namenode port as before.
+comment|// restart cluster.
 comment|// This ensures that leases are persisted in fsimage.
 name|cluster
 operator|.
@@ -1062,11 +1034,6 @@ operator|.
 name|Builder
 argument_list|(
 name|conf
-argument_list|)
-operator|.
-name|nameNodePort
-argument_list|(
-name|nnport
 argument_list|)
 operator|.
 name|format
@@ -1113,11 +1080,6 @@ operator|.
 name|Builder
 argument_list|(
 name|conf
-argument_list|)
-operator|.
-name|nameNodePort
-argument_list|(
-name|nnport
 argument_list|)
 operator|.
 name|format
@@ -1314,15 +1276,6 @@ operator|.
 name|getFileSystem
 argument_list|()
 expr_stmt|;
-specifier|final
-name|int
-name|nnport
-init|=
-name|cluster
-operator|.
-name|getNameNodePort
-argument_list|()
-decl_stmt|;
 comment|// create file1.
 name|Path
 name|dir1
@@ -1408,7 +1361,7 @@ argument_list|,
 name|dir2
 argument_list|)
 expr_stmt|;
-comment|// restart cluster with the same namenode port as before.
+comment|// restart cluster.
 comment|// This ensures that leases are persisted in fsimage.
 name|cluster
 operator|.
@@ -1441,11 +1394,6 @@ operator|.
 name|Builder
 argument_list|(
 name|conf
-argument_list|)
-operator|.
-name|nameNodePort
-argument_list|(
-name|nnport
 argument_list|)
 operator|.
 name|format
@@ -1492,11 +1440,6 @@ operator|.
 name|Builder
 argument_list|(
 name|conf
-argument_list|)
-operator|.
-name|nameNodePort
-argument_list|(
-name|nnport
 argument_list|)
 operator|.
 name|format
@@ -1683,15 +1626,6 @@ operator|.
 name|getFileSystem
 argument_list|()
 expr_stmt|;
-specifier|final
-name|int
-name|nnport
-init|=
-name|cluster
-operator|.
-name|getNameNodePort
-argument_list|()
-decl_stmt|;
 comment|// create file1.
 name|Path
 name|dir1
@@ -1770,7 +1704,7 @@ argument_list|,
 name|dir2
 argument_list|)
 expr_stmt|;
-comment|// restart cluster with the same namenode port as before.
+comment|// restart cluster.
 comment|// This ensures that leases are persisted in fsimage.
 name|cluster
 operator|.
@@ -1803,11 +1737,6 @@ operator|.
 name|Builder
 argument_list|(
 name|conf
-argument_list|)
-operator|.
-name|nameNodePort
-argument_list|(
-name|nnport
 argument_list|)
 operator|.
 name|format
@@ -1854,11 +1783,6 @@ operator|.
 name|Builder
 argument_list|(
 name|conf
-argument_list|)
-operator|.
-name|nameNodePort
-argument_list|(
-name|nnport
 argument_list|)
 operator|.
 name|format
