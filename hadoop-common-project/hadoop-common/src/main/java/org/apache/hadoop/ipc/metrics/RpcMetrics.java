@@ -661,6 +661,24 @@ name|getNumOpenConnections
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Metric
+argument_list|(
+literal|"Number of open connections per user"
+argument_list|)
+DECL|method|numOpenConnectionsPerUser ()
+specifier|public
+name|String
+name|numOpenConnectionsPerUser
+parameter_list|()
+block|{
+return|return
+name|server
+operator|.
+name|getNumOpenConnectionsPerUser
+argument_list|()
+return|;
+block|}
 DECL|method|callQueueLength ()
 annotation|@
 name|Metric
