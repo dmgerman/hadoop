@@ -412,6 +412,22 @@ name|TimeoutException
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_DATA_DIR_KEY
+import|;
+end_import
+
 begin_comment
 comment|/**  * Tests the datanode state machine class and its states.  */
 end_comment
@@ -422,6 +438,22 @@ specifier|public
 class|class
 name|TestDatanodeStateMachine
 block|{
+DECL|field|LOG
+specifier|private
+specifier|static
+specifier|final
+name|Logger
+name|LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|TestDatanodeStateMachine
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 DECL|field|scmServerCount
 specifier|private
 specifier|final
@@ -465,22 +497,6 @@ DECL|field|conf
 specifier|private
 name|Configuration
 name|conf
-decl_stmt|;
-DECL|field|LOG
-specifier|private
-specifier|static
-specifier|final
-name|Logger
-name|LOG
-init|=
-name|LoggerFactory
-operator|.
-name|getLogger
-argument_list|(
-name|TestDatanodeStateMachine
-operator|.
-name|class
-argument_list|)
 decl_stmt|;
 annotation|@
 name|Before
@@ -678,6 +694,15 @@ literal|"Required directories already exist."
 argument_list|)
 expr_stmt|;
 block|}
+name|conf
+operator|.
+name|set
+argument_list|(
+name|DFS_DATANODE_DATA_DIR_KEY
+argument_list|,
+name|path
+argument_list|)
+expr_stmt|;
 name|path
 operator|=
 name|Paths
@@ -794,7 +819,7 @@ block|{
 comment|//ignore all execption from the shutdown
 block|}
 block|}
-comment|/**    * Assert that starting statemachine executes the Init State.    *    * @throws IOException    * @throws InterruptedException    */
+comment|/**    * Assert that starting statemachine executes the Init State.    *    * @throws InterruptedException    */
 annotation|@
 name|Test
 DECL|method|testDatanodeStateMachineStartThread ()
@@ -835,7 +860,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
+name|Exception
 name|ex
 parameter_list|)
 block|{       }

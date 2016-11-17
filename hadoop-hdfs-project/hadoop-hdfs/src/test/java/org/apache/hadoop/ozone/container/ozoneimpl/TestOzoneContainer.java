@@ -202,6 +202,10 @@ name|URL
 import|;
 end_import
 
+begin_comment
+comment|/**  * Tests ozone containers.  */
+end_comment
+
 begin_class
 DECL|class|TestOzoneContainer
 specifier|public
@@ -359,19 +363,6 @@ operator|new
 name|OzoneContainer
 argument_list|(
 name|conf
-argument_list|,
-name|cluster
-operator|.
-name|getDataNodes
-argument_list|()
-operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
-operator|.
-name|getFSDataset
-argument_list|()
 argument_list|)
 decl_stmt|;
 name|container

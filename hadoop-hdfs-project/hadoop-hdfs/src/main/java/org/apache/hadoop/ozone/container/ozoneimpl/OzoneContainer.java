@@ -1,6 +1,6 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/**  * Licensed to the Apache Software Foundation (ASF) under one or more  * contributor license agreements.  See the NOTICE file distributed with this  * work for additional information regarding copyright ownership.  The ASF  * licenses this file to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance with the License.  * You may obtain a copy of the License at  *<p/>  * http://www.apache.org/licenses/LICENSE-2.0  *<p/>  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the  * License for the specific language governing permissions and limitations under  * the License.  */
+comment|/**  * Licensed to the Apache Software Foundation (ASF) under one or more  * contributor license agreements.  See the NOTICE file distributed with this  * work for additional information regarding copyright ownership.  The ASF  * licenses this file to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance with the License.  * You may obtain a copy of the License at  *<p>  * http://www.apache.org/licenses/LICENSE-2.0  *<p>  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the  * License for the specific language governing permissions and limitations under  * the License.  */
 end_comment
 
 begin_package
@@ -49,46 +49,6 @@ operator|.
 name|datanode
 operator|.
 name|StorageLocation
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|fsdataset
-operator|.
-name|FsDatasetSpi
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|fsdataset
-operator|.
-name|FsVolumeSpi
 import|;
 end_import
 
@@ -338,6 +298,22 @@ name|List
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_DATA_DIR_KEY
+import|;
+end_import
+
 begin_comment
 comment|/**  * Ozone main class sets up the network server and initializes the container  * layer.  */
 end_comment
@@ -400,25 +376,23 @@ specifier|final
 name|KeyManager
 name|keyManager
 decl_stmt|;
-comment|/**    * Creates a network endpoint and enables Ozone container.    *    * @param ozoneConfig - Config    * @param dataSet     - FsDataset.    * @throws IOException    */
-DECL|method|OzoneContainer ( Configuration ozoneConfig, FsDatasetSpi<? extends FsVolumeSpi> dataSet)
+comment|/**    * Creates a network endpoint and enables Ozone container.    *    * @param ozoneConfig - Config    * @throws IOException    */
+DECL|method|OzoneContainer ( Configuration ozoneConfig)
 specifier|public
 name|OzoneContainer
 parameter_list|(
 name|Configuration
 name|ozoneConfig
-parameter_list|,
-name|FsDatasetSpi
-argument_list|<
-name|?
-extends|extends
-name|FsVolumeSpi
-argument_list|>
-name|dataSet
 parameter_list|)
 throws|throws
-name|Exception
+name|IOException
 block|{
+name|this
+operator|.
+name|ozoneConfig
+operator|=
+name|ozoneConfig
+expr_stmt|;
 name|List
 argument_list|<
 name|StorageLocation
@@ -482,18 +456,10 @@ else|else
 block|{
 name|getDataDir
 argument_list|(
-name|dataSet
-argument_list|,
 name|locations
 argument_list|)
 expr_stmt|;
 block|}
-name|this
-operator|.
-name|ozoneConfig
-operator|=
-name|ozoneConfig
-expr_stmt|;
 name|manager
 operator|=
 operator|new
@@ -576,14 +542,14 @@ name|dispatcher
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Starts serving requests to ozone container.    * @throws Exception    */
+comment|/**    * Starts serving requests to ozone container.    *    * @throws IOException    */
 DECL|method|start ()
 specifier|public
 name|void
 name|start
 parameter_list|()
 throws|throws
-name|Exception
+name|IOException
 block|{
 name|server
 operator|.
@@ -591,7 +557,7 @@ name|start
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Stops the ozone container.    *    * Shutdown logic is not very obvious from the following code.    * if you need to  modify the logic, please keep these comments in mind.    * Here is the shutdown sequence.    *    * 1. We shutdown the network ports.    *    * 2. Now we need to wait for all requests in-flight to finish.    *    * 3. The container manager lock is a read-write lock with "Fairness" enabled.    *    * 4. This means that the waiting threads are served in a "first-come-first    * -served" manner. Please note that this applies to waiting threads only.    *    * 5. Since write locks are exclusive, if we are waiting to get a lock it    * implies that we are waiting for in-flight operations to complete.    *    * 6. if there are other write operations waiting on the reader-writer lock,    * fairness guarantees that they will proceed before the shutdown lock    * request.    *    * 7. Since all operations either take a reader or writer lock of container    * manager, we are guaranteed that we are the last operation since we have    * closed the network port, and we wait until close is successful.    *    * 8. We take the writer lock and call shutdown on each of the managers in    * reverse order. That is chunkManager, keyManager and containerManager is    * shutdown.    *    */
+comment|/**    * Stops the ozone container.    *<p>    * Shutdown logic is not very obvious from the following code. if you need to    * modify the logic, please keep these comments in mind. Here is the shutdown    * sequence.    *<p>    * 1. We shutdown the network ports.    *<p>    * 2. Now we need to wait for all requests in-flight to finish.    *<p>    * 3. The container manager lock is a read-write lock with "Fairness"    * enabled.    *<p>    * 4. This means that the waiting threads are served in a "first-come-first    * -served" manner. Please note that this applies to waiting threads only.    *<p>    * 5. Since write locks are exclusive, if we are waiting to get a lock it    * implies that we are waiting for in-flight operations to complete.    *<p>    * 6. if there are other write operations waiting on the reader-writer lock,    * fairness guarantees that they will proceed before the shutdown lock    * request.    *<p>    * 7. Since all operations either take a reader or writer lock of container    * manager, we are guaranteed that we are the last operation since we have    * closed the network port, and we wait until close is successful.    *<p>    * 8. We take the writer lock and call shutdown on each of the managers in    * reverse order. That is chunkManager, keyManager and containerManager is    * shutdown.    */
 DECL|method|stop ()
 specifier|public
 name|void
@@ -659,20 +625,12 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Returns a paths to data dirs.    * @param dataset - FSDataset.    * @param pathList - List of paths.    * @throws IOException    */
-DECL|method|getDataDir ( FsDatasetSpi<? extends FsVolumeSpi> dataset, List<StorageLocation> pathList)
+comment|/**    * Returns a paths to data dirs.    *    * @param pathList - List of paths.    * @throws IOException    */
+DECL|method|getDataDir (List<StorageLocation> pathList)
 specifier|private
 name|void
 name|getDataDir
 parameter_list|(
-name|FsDatasetSpi
-argument_list|<
-name|?
-extends|extends
-name|FsVolumeSpi
-argument_list|>
-name|dataset
-parameter_list|,
 name|List
 argument_list|<
 name|StorageLocation
@@ -682,103 +640,36 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|FsDatasetSpi
-operator|.
-name|FsVolumeReferences
-name|references
-decl_stmt|;
-try|try
-block|{
-synchronized|synchronized
-init|(
-name|dataset
-init|)
-block|{
-name|references
-operator|=
-name|dataset
-operator|.
-name|getFsVolumeReferences
-argument_list|()
-expr_stmt|;
 for|for
 control|(
-name|int
-name|ndx
-init|=
-literal|0
-init|;
-name|ndx
-operator|<
-name|references
+name|String
+name|dir
+range|:
+name|ozoneConfig
 operator|.
-name|size
-argument_list|()
-condition|;
-name|ndx
-operator|++
+name|getStrings
+argument_list|(
+name|DFS_DATANODE_DATA_DIR_KEY
+argument_list|)
 control|)
 block|{
-name|FsVolumeSpi
-name|vol
+name|StorageLocation
+name|location
 init|=
-name|references
+name|StorageLocation
 operator|.
-name|get
+name|parse
 argument_list|(
-name|ndx
+name|dir
 argument_list|)
 decl_stmt|;
 name|pathList
 operator|.
 name|add
 argument_list|(
-name|StorageLocation
-operator|.
-name|parse
-argument_list|(
-name|vol
-operator|.
-name|getBaseURI
-argument_list|()
-operator|.
-name|getPath
-argument_list|()
-argument_list|)
+name|location
 argument_list|)
 expr_stmt|;
-block|}
-name|references
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ex
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Unable to get volume paths."
-argument_list|,
-name|ex
-argument_list|)
-expr_stmt|;
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Internal error"
-argument_list|,
-name|ex
-argument_list|)
-throw|;
 block|}
 block|}
 block|}

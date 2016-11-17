@@ -180,6 +180,16 @@ name|ContainerDispatcher
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
 begin_comment
 comment|/**  * Creates a netty server endpoint that acts as the communication layer for  * Ozone containers.  */
 end_comment
@@ -261,14 +271,14 @@ operator|=
 name|dispatcher
 expr_stmt|;
 block|}
-comment|/**    * Starts running the server.    *    * @throws Exception    */
+comment|/**    * Starts running the server.    *    * @throws IOException    */
 DECL|method|start ()
 specifier|public
 name|void
 name|start
 parameter_list|()
 throws|throws
-name|Exception
+name|IOException
 block|{
 name|bossGroup
 operator|=
