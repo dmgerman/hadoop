@@ -90,7 +90,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|configuration
+name|configuration2
 operator|.
 name|SubsetConfiguration
 import|;

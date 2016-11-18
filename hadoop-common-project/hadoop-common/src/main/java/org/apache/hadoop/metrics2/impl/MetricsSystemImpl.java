@@ -212,7 +212,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|configuration
+name|configuration2
 operator|.
 name|PropertiesConfiguration
 import|;
@@ -2218,7 +2218,7 @@ try|try
 block|{
 name|saver
 operator|.
-name|save
+name|write
 argument_list|(
 name|writer
 argument_list|)

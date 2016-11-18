@@ -24,7 +24,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|PrintStream
+name|PrintWriter
 import|;
 end_import
 
@@ -58,7 +58,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|configuration
+name|configuration2
 operator|.
 name|Configuration
 import|;
@@ -72,7 +72,7 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|configuration
+name|configuration2
 operator|.
 name|PropertiesConfiguration
 import|;
@@ -102,9 +102,13 @@ literal|null
 argument_list|,
 name|c
 argument_list|,
+operator|new
+name|PrintWriter
+argument_list|(
 name|System
 operator|.
 name|out
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -126,13 +130,17 @@ name|header
 argument_list|,
 name|c
 argument_list|,
+operator|new
+name|PrintWriter
+argument_list|(
 name|System
 operator|.
 name|out
 argument_list|)
+argument_list|)
 expr_stmt|;
 block|}
-DECL|method|dump (String header, Configuration c, PrintStream out)
+DECL|method|dump (String header, Configuration c, PrintWriter out)
 specifier|static
 name|void
 name|dump
@@ -143,7 +151,7 @@ parameter_list|,
 name|Configuration
 name|c
 parameter_list|,
-name|PrintStream
+name|PrintWriter
 name|out
 parameter_list|)
 block|{
@@ -180,7 +188,7 @@ try|try
 block|{
 name|p
 operator|.
-name|save
+name|write
 argument_list|(
 name|out
 argument_list|)
