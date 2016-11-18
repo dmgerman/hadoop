@@ -1904,6 +1904,8 @@ name|DEFAULT_TIMELINE_SERVICE_ENABLED
 argument_list|)
 condition|)
 block|{
+try|try
+block|{
 name|timelineServiceEnabled
 operator|=
 literal|true
@@ -1936,6 +1938,36 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|NoClassDefFoundError
+name|error
+parameter_list|)
+block|{
+comment|// When attempt to initiate the timeline client with
+comment|// different set of dependencies, it may fail with
+comment|// NoClassDefFoundError. When some of them are not compatible
+comment|// with timeline server. This is not necessarily a fatal error
+comment|// to the client.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Timeline client could not be initialized "
+operator|+
+literal|"because dependency missing or incompatible,"
+operator|+
+literal|" disabling timeline client."
+argument_list|,
+name|error
+argument_list|)
+expr_stmt|;
+name|timelineServiceEnabled
+operator|=
+literal|false
+expr_stmt|;
+block|}
 block|}
 comment|// The AHSClientService is enabled by default when we start the
 comment|// TimelineServer which means we are able to get history information
