@@ -174,6 +174,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|ErasureCodingPolicy
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|HdfsConstants
 operator|.
 name|DatanodeReportType
@@ -324,6 +340,24 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|ErasureCodingPolicyManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|NameNode
 import|;
 end_import
@@ -441,6 +475,16 @@ operator|.
 name|junit
 operator|.
 name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Assume
 import|;
 end_import
 
@@ -572,6 +616,10 @@ name|assertTrue
 import|;
 end_import
 
+begin_comment
+comment|/**  * Test striped file write operation with data node failures.  */
+end_comment
+
 begin_class
 DECL|class|TestDFSStripedOutputStreamWithFailure
 specifier|public
@@ -660,69 +708,77 @@ name|ALL
 argument_list|)
 expr_stmt|;
 block|}
-DECL|field|NUM_DATA_BLOCKS
+DECL|field|ecPolicy
 specifier|private
-specifier|static
 specifier|final
-name|int
-name|NUM_DATA_BLOCKS
+name|ErasureCodingPolicy
+name|ecPolicy
 init|=
-name|StripedFileTestUtil
+name|ErasureCodingPolicyManager
 operator|.
-name|NUM_DATA_BLOCKS
+name|getSystemDefaultPolicy
+argument_list|()
 decl_stmt|;
-DECL|field|NUM_PARITY_BLOCKS
+DECL|field|dataBlocks
 specifier|private
-specifier|static
 specifier|final
 name|int
-name|NUM_PARITY_BLOCKS
+name|dataBlocks
 init|=
-name|StripedFileTestUtil
+name|ecPolicy
 operator|.
-name|NUM_PARITY_BLOCKS
+name|getNumDataUnits
+argument_list|()
 decl_stmt|;
-DECL|field|CELL_SIZE
+DECL|field|parityBlocks
 specifier|private
-specifier|static
 specifier|final
 name|int
-name|CELL_SIZE
+name|parityBlocks
 init|=
-name|StripedFileTestUtil
+name|ecPolicy
 operator|.
-name|BLOCK_STRIPED_CELL_SIZE
+name|getNumParityUnits
+argument_list|()
 decl_stmt|;
-DECL|field|STRIPES_PER_BLOCK
+DECL|field|cellSize
 specifier|private
-specifier|static
 specifier|final
 name|int
-name|STRIPES_PER_BLOCK
+name|cellSize
+init|=
+name|ecPolicy
+operator|.
+name|getCellSize
+argument_list|()
+decl_stmt|;
+DECL|field|stripesPerBlock
+specifier|private
+specifier|final
+name|int
+name|stripesPerBlock
 init|=
 literal|4
 decl_stmt|;
-DECL|field|BLOCK_SIZE
+DECL|field|blockSize
 specifier|private
-specifier|static
 specifier|final
 name|int
-name|BLOCK_SIZE
+name|blockSize
 init|=
-name|CELL_SIZE
+name|cellSize
 operator|*
-name|STRIPES_PER_BLOCK
+name|stripesPerBlock
 decl_stmt|;
-DECL|field|BLOCK_GROUP_SIZE
+DECL|field|blockGroupSize
 specifier|private
-specifier|static
 specifier|final
 name|int
-name|BLOCK_GROUP_SIZE
+name|blockGroupSize
 init|=
-name|BLOCK_SIZE
+name|blockSize
 operator|*
-name|NUM_DATA_BLOCKS
+name|dataBlocks
 decl_stmt|;
 DECL|field|FLUSH_POS
 specifier|private
@@ -739,117 +795,7 @@ name|DFS_BYTES_PER_CHECKSUM_DEFAULT
 operator|+
 literal|1
 decl_stmt|;
-static|static
-block|{
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"NUM_DATA_BLOCKS  = "
-operator|+
-name|NUM_DATA_BLOCKS
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"NUM_PARITY_BLOCKS= "
-operator|+
-name|NUM_PARITY_BLOCKS
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"CELL_SIZE        = "
-operator|+
-name|CELL_SIZE
-operator|+
-literal|" (="
-operator|+
-name|StringUtils
-operator|.
-name|TraditionalBinaryPrefix
-operator|.
-name|long2String
-argument_list|(
-name|CELL_SIZE
-argument_list|,
-literal|"B"
-argument_list|,
-literal|2
-argument_list|)
-operator|+
-literal|")"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"BLOCK_SIZE       = "
-operator|+
-name|BLOCK_SIZE
-operator|+
-literal|" (="
-operator|+
-name|StringUtils
-operator|.
-name|TraditionalBinaryPrefix
-operator|.
-name|long2String
-argument_list|(
-name|BLOCK_SIZE
-argument_list|,
-literal|"B"
-argument_list|,
-literal|2
-argument_list|)
-operator|+
-literal|")"
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"BLOCK_GROUP_SIZE = "
-operator|+
-name|BLOCK_GROUP_SIZE
-operator|+
-literal|" (="
-operator|+
-name|StringUtils
-operator|.
-name|TraditionalBinaryPrefix
-operator|.
-name|long2String
-argument_list|(
-name|BLOCK_GROUP_SIZE
-argument_list|,
-literal|"B"
-argument_list|,
-literal|2
-argument_list|)
-operator|+
-literal|")"
-argument_list|)
-expr_stmt|;
-block|}
 DECL|method|newLengths ()
-specifier|static
 name|List
 argument_list|<
 name|Integer
@@ -862,14 +808,14 @@ name|List
 argument_list|<
 name|Integer
 argument_list|>
-name|lengths
+name|lens
 init|=
 operator|new
 name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
-name|lengths
+name|lens
 operator|.
 name|add
 argument_list|(
@@ -902,9 +848,9 @@ literal|0
 init|;
 name|c
 operator|<
-name|STRIPES_PER_BLOCK
+name|stripesPerBlock
 operator|*
-name|NUM_DATA_BLOCKS
+name|dataBlocks
 condition|;
 name|c
 operator|++
@@ -932,11 +878,11 @@ name|length
 init|=
 name|b
 operator|*
-name|BLOCK_GROUP_SIZE
+name|blockGroupSize
 operator|+
 name|c
 operator|*
-name|CELL_SIZE
+name|cellSize
 operator|+
 name|delta
 decl_stmt|;
@@ -946,7 +892,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-name|lengths
+name|lens
 operator|.
 name|size
 argument_list|()
@@ -970,7 +916,7 @@ operator|+
 literal|")"
 argument_list|)
 expr_stmt|;
-name|lengths
+name|lens
 operator|.
 name|add
 argument_list|(
@@ -981,12 +927,11 @@ block|}
 block|}
 block|}
 return|return
-name|lengths
+name|lens
 return|;
 block|}
 DECL|field|dnIndexSuite
 specifier|private
-specifier|static
 specifier|final
 name|int
 index|[]
@@ -998,7 +943,6 @@ argument_list|()
 decl_stmt|;
 DECL|method|getDnIndexSuite ()
 specifier|private
-specifier|static
 name|int
 index|[]
 index|[]
@@ -1034,7 +978,7 @@ decl_stmt|;
 name|int
 name|numIndex
 init|=
-name|NUM_PARITY_BLOCKS
+name|parityBlocks
 decl_stmt|;
 for|for
 control|(
@@ -1066,9 +1010,9 @@ name|lists
 init|=
 name|combinations
 argument_list|(
-name|NUM_DATA_BLOCKS
+name|dataBlocks
 operator|+
-name|NUM_PARITY_BLOCKS
+name|parityBlocks
 argument_list|,
 name|numIndex
 argument_list|)
@@ -1116,7 +1060,7 @@ block|}
 name|int
 index|[]
 index|[]
-name|dnIndexSuite
+name|dnIndexArray
 init|=
 operator|new
 name|int
@@ -1137,7 +1081,7 @@ literal|0
 init|;
 name|i
 operator|<
-name|dnIndexSuite
+name|dnIndexArray
 operator|.
 name|length
 condition|;
@@ -1198,7 +1142,7 @@ name|j
 argument_list|)
 expr_stmt|;
 block|}
-name|dnIndexSuite
+name|dnIndexArray
 index|[
 name|i
 index|]
@@ -1207,7 +1151,7 @@ name|list
 expr_stmt|;
 block|}
 return|return
-name|dnIndexSuite
+name|dnIndexArray
 return|;
 block|}
 comment|// get all combinations of k integers from {0,...,n-1}
@@ -1469,21 +1413,19 @@ return|return
 name|positions
 return|;
 block|}
-DECL|field|LENGTHS
+DECL|field|lengths
 specifier|private
-specifier|static
 specifier|final
 name|List
 argument_list|<
 name|Integer
 argument_list|>
-name|LENGTHS
+name|lengths
 init|=
 name|newLengths
 argument_list|()
 decl_stmt|;
 DECL|method|getLength (int i)
-specifier|static
 name|Integer
 name|getLength
 parameter_list|(
@@ -1498,12 +1440,12 @@ literal|0
 operator|&&
 name|i
 operator|<
-name|LENGTHS
+name|lengths
 operator|.
 name|size
 argument_list|()
 condition|?
-name|LENGTHS
+name|lengths
 operator|.
 name|get
 argument_list|(
@@ -1564,13 +1506,119 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"NUM_DATA_BLOCKS  = "
+operator|+
+name|dataBlocks
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"NUM_PARITY_BLOCKS= "
+operator|+
+name|parityBlocks
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"CELL_SIZE        = "
+operator|+
+name|cellSize
+operator|+
+literal|" (="
+operator|+
+name|StringUtils
+operator|.
+name|TraditionalBinaryPrefix
+operator|.
+name|long2String
+argument_list|(
+name|cellSize
+argument_list|,
+literal|"B"
+argument_list|,
+literal|2
+argument_list|)
+operator|+
+literal|")"
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"BLOCK_SIZE       = "
+operator|+
+name|blockSize
+operator|+
+literal|" (="
+operator|+
+name|StringUtils
+operator|.
+name|TraditionalBinaryPrefix
+operator|.
+name|long2String
+argument_list|(
+name|blockSize
+argument_list|,
+literal|"B"
+argument_list|,
+literal|2
+argument_list|)
+operator|+
+literal|")"
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"BLOCK_GROUP_SIZE = "
+operator|+
+name|blockGroupSize
+operator|+
+literal|" (="
+operator|+
+name|StringUtils
+operator|.
+name|TraditionalBinaryPrefix
+operator|.
+name|long2String
+argument_list|(
+name|blockGroupSize
+argument_list|,
+literal|"B"
+argument_list|,
+literal|2
+argument_list|)
+operator|+
+literal|")"
+argument_list|)
+expr_stmt|;
 specifier|final
 name|int
 name|numDNs
 init|=
-name|NUM_DATA_BLOCKS
+name|dataBlocks
 operator|+
-name|NUM_PARITY_BLOCKS
+name|parityBlocks
 decl_stmt|;
 if|if
 condition|(
@@ -1640,7 +1688,7 @@ name|setErasureCodingPolicy
 argument_list|(
 name|dir
 argument_list|,
-literal|null
+name|ecPolicy
 argument_list|)
 expr_stmt|;
 block|}
@@ -1686,7 +1734,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_BLOCK_SIZE_KEY
 argument_list|,
-name|BLOCK_SIZE
+name|blockSize
 argument_list|)
 expr_stmt|;
 name|conf
@@ -1750,7 +1798,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Randomly pick a length and run tests with multiple data failures    * TODO: enable this later    */
+comment|/**    * Randomly pick a length and run tests with multiple data failures.    * TODO: enable this later    */
 comment|//@Test(timeout=240000)
 DECL|method|testMultipleDatanodeFailureRandomLength ()
 specifier|public
@@ -1767,7 +1815,7 @@ name|RANDOM
 operator|.
 name|nextInt
 argument_list|(
-name|LENGTHS
+name|lengths
 operator|.
 name|size
 argument_list|()
@@ -1810,12 +1858,12 @@ specifier|final
 name|int
 name|length
 init|=
-name|NUM_DATA_BLOCKS
+name|dataBlocks
 operator|*
 operator|(
-name|BLOCK_SIZE
+name|blockSize
 operator|-
-name|CELL_SIZE
+name|cellSize
 operator|)
 decl_stmt|;
 specifier|final
@@ -1870,9 +1918,9 @@ literal|0
 init|;
 name|dn
 operator|<
-name|NUM_DATA_BLOCKS
+name|dataBlocks
 operator|+
-name|NUM_PARITY_BLOCKS
+name|parityBlocks
 condition|;
 name|dn
 operator|+=
@@ -1971,7 +2019,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_BLOCK_SIZE_KEY
 argument_list|,
-name|BLOCK_SIZE
+name|blockSize
 argument_list|)
 expr_stmt|;
 try|try
@@ -2006,7 +2054,7 @@ while|while
 condition|(
 name|numDatanodes
 operator|>=
-name|NUM_DATA_BLOCKS
+name|dataBlocks
 condition|)
 block|{
 name|cluster
@@ -2126,14 +2174,14 @@ name|assertExceptionContains
 argument_list|(
 literal|"Failed to get "
 operator|+
-name|NUM_DATA_BLOCKS
+name|dataBlocks
 operator|+
 literal|" nodes from namenode: blockGroupSize= "
 operator|+
 operator|(
-name|NUM_DATA_BLOCKS
+name|dataBlocks
 operator|+
-name|NUM_PARITY_BLOCKS
+name|parityBlocks
 operator|)
 operator|+
 literal|", blocks.length= "
@@ -2182,7 +2230,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_BLOCK_SIZE_KEY
 argument_list|,
-name|BLOCK_SIZE
+name|blockSize
 argument_list|)
 expr_stmt|;
 try|try
@@ -2208,7 +2256,7 @@ name|int
 name|killDns
 init|=
 operator|(
-name|NUM_PARITY_BLOCKS
+name|parityBlocks
 operator|-
 literal|1
 operator|)
@@ -2297,9 +2345,7 @@ decl_stmt|;
 name|int
 name|fileLength
 init|=
-name|StripedFileTestUtil
-operator|.
-name|BLOCK_STRIPED_CELL_SIZE
+name|cellSize
 operator|-
 literal|1000
 decl_stmt|;
@@ -2346,6 +2392,10 @@ argument_list|,
 name|srcPath
 argument_list|,
 name|fileLength
+argument_list|,
+name|ecPolicy
+argument_list|,
+name|blockGroupSize
 argument_list|)
 expr_stmt|;
 block|}
@@ -2381,9 +2431,9 @@ literal|0
 init|;
 name|dn
 operator|<
-name|NUM_DATA_BLOCKS
+name|dataBlocks
 operator|+
-name|NUM_PARITY_BLOCKS
+name|parityBlocks
 condition|;
 name|dn
 operator|++
@@ -2618,7 +2668,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * runTest implementation    * @param length file length    * @param killPos killing positions in ascending order    * @param dnIndex DN index to kill when meets killing positions    * @param tokenExpire wait token to expire when kill a DN    * @throws Exception    */
+comment|/**    * runTest implementation.    * @param length file length    * @param killPos killing positions in ascending order    * @param dnIndex DN index to kill when meets killing positions    * @param tokenExpire wait token to expire when kill a DN    * @throws Exception    */
 DECL|method|runTest (final int length, final int[] killPos, final int[] dnIndex, final boolean tokenExpire)
 specifier|private
 name|void
@@ -2847,13 +2897,13 @@ operator|.
 name|getWrappedStream
 argument_list|()
 decl_stmt|;
+comment|// first GS of this block group which never proceeds blockRecovery
 name|long
 name|firstGS
 init|=
 operator|-
 literal|1
 decl_stmt|;
-comment|// first GS of this block group which never proceeds blockRecovery
 name|long
 name|oldGS
 init|=
@@ -3025,7 +3075,7 @@ if|if
 condition|(
 name|i
 operator|%
-name|BLOCK_GROUP_SIZE
+name|blockGroupSize
 operator|==
 name|FLUSH_POS
 condition|)
@@ -3054,7 +3104,7 @@ operator|+
 literal|1
 operator|)
 operator|%
-name|BLOCK_GROUP_SIZE
+name|blockGroupSize
 operator|==
 literal|0
 condition|)
@@ -3118,6 +3168,8 @@ argument_list|,
 name|killedDN
 argument_list|,
 name|gsList
+argument_list|,
+name|blockGroupSize
 argument_list|)
 expr_stmt|;
 block|}
@@ -3463,21 +3515,6 @@ parameter_list|)
 block|{       }
 block|}
 block|}
-DECL|class|TestBase
-specifier|public
-specifier|static
-specifier|abstract
-class|class
-name|TestBase
-block|{
-DECL|field|TIMEOUT
-specifier|static
-specifier|final
-name|long
-name|TIMEOUT
-init|=
-literal|240000
-decl_stmt|;
 DECL|method|getBase ()
 name|int
 name|getBase
@@ -3522,15 +3559,15 @@ name|i
 argument_list|)
 argument_list|)
 condition|;
+control|)
+block|{
 name|i
 operator|--
-control|)
-empty_stmt|;
-return|return
-name|Integer
-operator|.
-name|parseInt
-argument_list|(
+expr_stmt|;
+block|}
+name|String
+name|number
+init|=
 name|name
 operator|.
 name|substring
@@ -3539,19 +3576,30 @@ name|i
 operator|+
 literal|1
 argument_list|)
+decl_stmt|;
+try|try
+block|{
+return|return
+name|Integer
+operator|.
+name|parseInt
+argument_list|(
+name|number
 argument_list|)
 return|;
 block|}
-DECL|field|test
-specifier|private
-specifier|final
-name|TestDFSStripedOutputStreamWithFailure
-name|test
-init|=
-operator|new
-name|TestDFSStripedOutputStreamWithFailure
-argument_list|()
-decl_stmt|;
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+return|return
+operator|-
+literal|1
+return|;
+block|}
+block|}
 DECL|method|run (int offset)
 specifier|private
 name|void
@@ -3561,14 +3609,28 @@ name|int
 name|offset
 parameter_list|)
 block|{
+name|int
+name|base
+init|=
+name|getBase
+argument_list|()
+decl_stmt|;
+name|Assume
+operator|.
+name|assumeTrue
+argument_list|(
+name|base
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
 specifier|final
 name|int
 name|i
 init|=
 name|offset
 operator|+
-name|getBase
-argument_list|()
+name|base
 decl_stmt|;
 specifier|final
 name|Integer
@@ -3647,22 +3709,20 @@ operator|+
 name|length
 argument_list|)
 expr_stmt|;
-name|test
-operator|.
 name|runTest
 argument_list|(
 name|length
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|test0 ()
 annotation|@
 name|Test
 argument_list|(
 name|timeout
 operator|=
-name|TIMEOUT
+literal|240000
 argument_list|)
+DECL|method|test0 ()
 specifier|public
 name|void
 name|test0
@@ -3674,14 +3734,14 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|test1 ()
 annotation|@
 name|Test
 argument_list|(
 name|timeout
 operator|=
-name|TIMEOUT
+literal|240000
 argument_list|)
+DECL|method|test1 ()
 specifier|public
 name|void
 name|test1
@@ -3693,14 +3753,14 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|test2 ()
 annotation|@
 name|Test
 argument_list|(
 name|timeout
 operator|=
-name|TIMEOUT
+literal|240000
 argument_list|)
+DECL|method|test2 ()
 specifier|public
 name|void
 name|test2
@@ -3712,14 +3772,14 @@ literal|2
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|test3 ()
 annotation|@
 name|Test
 argument_list|(
 name|timeout
 operator|=
-name|TIMEOUT
+literal|240000
 argument_list|)
+DECL|method|test3 ()
 specifier|public
 name|void
 name|test3
@@ -3731,14 +3791,14 @@ literal|3
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|test4 ()
 annotation|@
 name|Test
 argument_list|(
 name|timeout
 operator|=
-name|TIMEOUT
+literal|240000
 argument_list|)
+DECL|method|test4 ()
 specifier|public
 name|void
 name|test4
@@ -3750,14 +3810,14 @@ literal|4
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|test5 ()
 annotation|@
 name|Test
 argument_list|(
 name|timeout
 operator|=
-name|TIMEOUT
+literal|240000
 argument_list|)
+DECL|method|test5 ()
 specifier|public
 name|void
 name|test5
@@ -3769,14 +3829,14 @@ literal|5
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|test6 ()
 annotation|@
 name|Test
 argument_list|(
 name|timeout
 operator|=
-name|TIMEOUT
+literal|240000
 argument_list|)
+DECL|method|test6 ()
 specifier|public
 name|void
 name|test6
@@ -3788,14 +3848,14 @@ literal|6
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|test7 ()
 annotation|@
 name|Test
 argument_list|(
 name|timeout
 operator|=
-name|TIMEOUT
+literal|240000
 argument_list|)
+DECL|method|test7 ()
 specifier|public
 name|void
 name|test7
@@ -3807,14 +3867,14 @@ literal|7
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|test8 ()
 annotation|@
 name|Test
 argument_list|(
 name|timeout
 operator|=
-name|TIMEOUT
+literal|240000
 argument_list|)
+DECL|method|test8 ()
 specifier|public
 name|void
 name|test8
@@ -3826,14 +3886,14 @@ literal|8
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|test9 ()
 annotation|@
 name|Test
 argument_list|(
 name|timeout
 operator|=
-name|TIMEOUT
+literal|240000
 argument_list|)
+DECL|method|test9 ()
 specifier|public
 name|void
 name|test9
@@ -3844,7 +3904,6 @@ argument_list|(
 literal|9
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 end_class

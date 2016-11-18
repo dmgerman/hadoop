@@ -16,21 +16,9 @@ name|hdfs
 package|;
 end_package
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|TestDFSStripedOutputStreamWithFailure
-operator|.
-name|TestBase
-import|;
-end_import
+begin_comment
+comment|/**  * Test striped file write operation with data node failures.  */
+end_comment
 
 begin_class
 DECL|class|TestDFSStripedOutputStreamWithFailure060
@@ -38,7 +26,7 @@ specifier|public
 class|class
 name|TestDFSStripedOutputStreamWithFailure060
 extends|extends
-name|TestBase
+name|TestDFSStripedOutputStreamWithFailure
 block|{}
 end_class
 
