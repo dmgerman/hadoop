@@ -6083,7 +6083,7 @@ specifier|final
 name|int
 name|DEFAULT_AMRM_PROXY_CLIENT_THREAD_COUNT
 init|=
-literal|25
+literal|3
 decl_stmt|;
 DECL|field|AMRM_PROXY_INTERCEPTOR_CLASS_PIPELINE
 specifier|public
