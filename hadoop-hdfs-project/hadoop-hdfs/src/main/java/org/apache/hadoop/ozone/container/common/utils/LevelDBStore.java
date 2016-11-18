@@ -186,6 +186,55 @@ operator|=
 name|dbPath
 expr_stmt|;
 block|}
+comment|/**    * Opens a DB file.    *    * @param dbPath          - DB File path    * @throws IOException    */
+DECL|method|LevelDBStore (File dbPath, Options options)
+specifier|public
+name|LevelDBStore
+parameter_list|(
+name|File
+name|dbPath
+parameter_list|,
+name|Options
+name|options
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|db
+operator|=
+name|JniDBFactory
+operator|.
+name|factory
+operator|.
+name|open
+argument_list|(
+name|dbPath
+argument_list|,
+name|options
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|db
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Db is null"
+argument_list|)
+throw|;
+block|}
+name|this
+operator|.
+name|dbFile
+operator|=
+name|dbPath
+expr_stmt|;
+block|}
 comment|/**    * Puts a Key into file.    *    * @param key   - key    * @param value - value    */
 DECL|method|put (byte[] key, byte[] value)
 specifier|public

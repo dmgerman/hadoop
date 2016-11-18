@@ -52,6 +52,26 @@ name|InterfaceAudience
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|Pipeline
+import|;
+end_import
+
 begin_comment
 comment|/**  * ContainerLocationProtocol is used by an HDFS node to find the set of nodes  * that currently host a container.  */
 end_comment
@@ -79,6 +99,17 @@ argument_list|<
 name|String
 argument_list|>
 name|keys
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Asks SCM where a container should be allocated. SCM responds with the    * set of datanodes that should be used creating this container.    * @param containerName - Name of the container.    * @return Pipeline.    * @throws IOException    */
+DECL|method|allocateContainer (String containerName)
+name|Pipeline
+name|allocateContainer
+parameter_list|(
+name|String
+name|containerName
 parameter_list|)
 throws|throws
 name|IOException

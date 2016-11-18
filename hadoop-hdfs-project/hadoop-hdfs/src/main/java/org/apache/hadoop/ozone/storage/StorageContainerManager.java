@@ -1497,6 +1497,26 @@ return|return
 name|locatedContainers
 return|;
 block|}
+comment|/**    * Asks SCM where a container should be allocated. SCM responds with the set    * of datanodes that should be used creating this container.    *    * @param containerName - Name of the container.    * @return Pipeline.    * @throws IOException    */
+annotation|@
+name|Override
+DECL|method|allocateContainer (String containerName)
+specifier|public
+name|Pipeline
+name|allocateContainer
+parameter_list|(
+name|String
+name|containerName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// TODO : This whole file will be replaced when we switch over to using
+comment|// the new protocol. So skipping connecting this code for now.
+return|return
+literal|null
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|registerDatanode ( DatanodeRegistration registration)
