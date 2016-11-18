@@ -56,6 +56,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|service
+operator|.
+name|Service
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -599,11 +613,14 @@ decl_stmt|;
 comment|//wait and vailidate for Job to become RUNNING
 name|app
 operator|.
-name|waitForState
+name|waitForInternalState
 argument_list|(
+operator|(
+name|JobImpl
+operator|)
 name|job
 argument_list|,
-name|JobState
+name|JobStateInternal
 operator|.
 name|RUNNING
 argument_list|)
@@ -649,6 +666,19 @@ argument_list|,
 name|JobState
 operator|.
 name|KILLED
+argument_list|)
+expr_stmt|;
+comment|// make sure all events are processed. The AM is stopped
+comment|// only when all tasks and task attempts have been killed
+name|app
+operator|.
+name|waitForState
+argument_list|(
+name|Service
+operator|.
+name|STATE
+operator|.
+name|STOPPED
 argument_list|)
 expr_stmt|;
 name|Map
