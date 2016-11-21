@@ -5743,7 +5743,7 @@ name|HdfsClientConfigKeys
 operator|.
 name|DFS_NAMENODE_RPC_PORT_DEFAULT
 argument_list|,
-literal|10
+literal|60
 argument_list|)
 argument_list|)
 operator|.
