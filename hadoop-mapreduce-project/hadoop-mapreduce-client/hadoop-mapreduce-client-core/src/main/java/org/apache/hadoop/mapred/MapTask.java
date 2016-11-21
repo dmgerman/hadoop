@@ -5878,11 +5878,13 @@ name|job
 operator|.
 name|getInt
 argument_list|(
-name|JobContext
+name|MRJobConfig
 operator|.
 name|IO_SORT_MB
 argument_list|,
-literal|100
+name|MRJobConfig
+operator|.
+name|DEFAULT_IO_SORT_MB
 argument_list|)
 decl_stmt|;
 name|indexCacheMemoryLimit
@@ -10841,11 +10843,13 @@ name|job
 operator|.
 name|getInt
 argument_list|(
-name|JobContext
+name|MRJobConfig
 operator|.
 name|IO_SORT_FACTOR
 argument_list|,
-literal|100
+name|MRJobConfig
+operator|.
+name|DEFAULT_IO_SORT_FACTOR
 argument_list|)
 decl_stmt|;
 comment|// sort the segments only if there are intermediate merges

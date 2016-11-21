@@ -1171,7 +1171,9 @@ name|MRJobConfig
 operator|.
 name|IO_SORT_FACTOR
 argument_list|,
-literal|100
+name|MRJobConfig
+operator|.
+name|DEFAULT_IO_SORT_FACTOR
 argument_list|)
 expr_stmt|;
 specifier|final
