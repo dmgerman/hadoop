@@ -108,6 +108,12 @@ name|HdfsClientConfigKeys
 operator|.
 name|class
 block|,
+name|HdfsClientConfigKeys
+operator|.
+name|StripedRead
+operator|.
+name|class
+block|,
 name|DFSConfigKeys
 operator|.
 name|class
