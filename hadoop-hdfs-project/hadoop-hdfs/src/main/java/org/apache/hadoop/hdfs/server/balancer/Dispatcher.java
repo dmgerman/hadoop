@@ -1059,6 +1059,13 @@ specifier|final
 name|long
 name|blockMoveTimeout
 decl_stmt|;
+comment|/**    * If no block can be moved out of a {@link Source} after this configured    * amount of time, the Source should give up choosing the next possible move.    */
+DECL|field|maxNoMoveInterval
+specifier|private
+specifier|final
+name|int
+name|maxNoMoveInterval
+decl_stmt|;
 DECL|field|ioFileBufferSize
 specifier|private
 specifier|final
@@ -4519,10 +4526,13 @@ operator|*
 name|getScheduledSize
 argument_list|()
 expr_stmt|;
-name|int
-name|noPendingMoveIteration
+name|long
+name|previousMoveTimestamp
 init|=
-literal|0
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
 decl_stmt|;
 while|while
 condition|(
@@ -4594,10 +4604,13 @@ operator|!=
 literal|null
 condition|)
 block|{
-comment|// Reset no pending move counter
-name|noPendingMoveIteration
+comment|// Reset previous move timestamp
+name|previousMoveTimestamp
 operator|=
-literal|0
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
 expr_stmt|;
 name|executePendingMove
 argument_list|(
@@ -4664,28 +4677,33 @@ block|}
 block|}
 else|else
 block|{
-comment|// source node cannot find a pending block to move, iteration +1
-name|noPendingMoveIteration
-operator|++
-expr_stmt|;
-comment|// in case no blocks can be moved for source node's task,
-comment|// jump out of while-loop after 5 iterations.
+comment|// jump out of while-loop after the configured timeout.
+name|long
+name|noMoveInterval
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+operator|-
+name|previousMoveTimestamp
+decl_stmt|;
 if|if
 condition|(
-name|noPendingMoveIteration
-operator|>=
-name|MAX_NO_PENDING_MOVE_ITERATIONS
+name|noMoveInterval
+operator|>
+name|maxNoMoveInterval
 condition|)
 block|{
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Failed to find a pending move "
+literal|"Failed to find a pending move for "
 operator|+
-name|noPendingMoveIteration
+name|noMoveInterval
 operator|+
-literal|" times.  Skipping "
+literal|" ms.  Skipping "
 operator|+
 name|this
 argument_list|)
@@ -4717,6 +4735,15 @@ argument_list|)
 expr_stmt|;
 comment|// wait for targets/sources to be idle
 block|}
+comment|// Didn't find a possible move in this iteration of the while loop,
+comment|// adding a small delay before choosing next move again.
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|100
+argument_list|)
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -4785,7 +4812,7 @@ return|;
 block|}
 block|}
 comment|/** Constructor called by Mover. */
-DECL|method|Dispatcher (NameNodeConnector nnc, Set<String> includedNodes, Set<String> excludedNodes, long movedWinWidth, int moverThreads, int dispatcherThreads, int maxConcurrentMovesPerNode, Configuration conf)
+DECL|method|Dispatcher (NameNodeConnector nnc, Set<String> includedNodes, Set<String> excludedNodes, long movedWinWidth, int moverThreads, int dispatcherThreads, int maxConcurrentMovesPerNode, int maxNoMoveInterval, Configuration conf)
 specifier|public
 name|Dispatcher
 parameter_list|(
@@ -4816,6 +4843,9 @@ parameter_list|,
 name|int
 name|maxConcurrentMovesPerNode
 parameter_list|,
+name|int
+name|maxNoMoveInterval
+parameter_list|,
 name|Configuration
 name|conf
 parameter_list|)
@@ -4842,11 +4872,13 @@ literal|0L
 argument_list|,
 literal|0
 argument_list|,
+name|maxNoMoveInterval
+argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|Dispatcher (NameNodeConnector nnc, Set<String> includedNodes, Set<String> excludedNodes, long movedWinWidth, int moverThreads, int dispatcherThreads, int maxConcurrentMovesPerNode, long getBlocksSize, long getBlocksMinBlockSize, int blockMoveTimeout, Configuration conf)
+DECL|method|Dispatcher (NameNodeConnector nnc, Set<String> includedNodes, Set<String> excludedNodes, long movedWinWidth, int moverThreads, int dispatcherThreads, int maxConcurrentMovesPerNode, long getBlocksSize, long getBlocksMinBlockSize, int blockMoveTimeout, int maxNoMoveInterval, Configuration conf)
 name|Dispatcher
 parameter_list|(
 name|NameNodeConnector
@@ -4884,6 +4916,9 @@ name|getBlocksMinBlockSize
 parameter_list|,
 name|int
 name|blockMoveTimeout
+parameter_list|,
+name|int
+name|maxNoMoveInterval
 parameter_list|,
 name|Configuration
 name|conf
@@ -4981,6 +5016,12 @@ operator|.
 name|blockMoveTimeout
 operator|=
 name|blockMoveTimeout
+expr_stmt|;
+name|this
+operator|.
+name|maxNoMoveInterval
+operator|=
+name|maxNoMoveInterval
 expr_stmt|;
 name|this
 operator|.
