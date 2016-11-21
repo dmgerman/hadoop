@@ -210,6 +210,22 @@ name|TimelineMetric
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|SystemClock
+import|;
+end_import
+
 begin_comment
 comment|/**  * Event to record the failure of a task  *  */
 end_comment
@@ -272,6 +288,11 @@ specifier|private
 name|Counters
 name|counters
 decl_stmt|;
+DECL|field|startTime
+specifier|private
+name|long
+name|startTime
+decl_stmt|;
 DECL|field|EMPTY_COUNTERS
 specifier|private
 specifier|static
@@ -283,8 +304,8 @@ operator|new
 name|Counters
 argument_list|()
 decl_stmt|;
-comment|/**    * Create an event to record task failure    * @param id Task ID    * @param finishTime Finish time of the task    * @param taskType Type of the task    * @param error Error String    * @param status Status    * @param failedDueToAttempt The attempt id due to which the task failed    * @param counters Counters for the task    */
-DECL|method|TaskFailedEvent (TaskID id, long finishTime, TaskType taskType, String error, String status, TaskAttemptID failedDueToAttempt, Counters counters)
+comment|/**    * Create an event to record task failure.    * @param id Task ID    * @param finishTime Finish time of the task    * @param taskType Type of the task    * @param error Error String    * @param status Status    * @param failedDueToAttempt The attempt id due to which the task failed    * @param counters Counters for the task    * @param startTs task start time.    */
+DECL|method|TaskFailedEvent (TaskID id, long finishTime, TaskType taskType, String error, String status, TaskAttemptID failedDueToAttempt, Counters counters, long startTs)
 specifier|public
 name|TaskFailedEvent
 parameter_list|(
@@ -308,6 +329,9 @@ name|failedDueToAttempt
 parameter_list|,
 name|Counters
 name|counters
+parameter_list|,
+name|long
+name|startTs
 parameter_list|)
 block|{
 name|this
@@ -351,6 +375,64 @@ operator|.
 name|counters
 operator|=
 name|counters
+expr_stmt|;
+name|this
+operator|.
+name|startTime
+operator|=
+name|startTs
+expr_stmt|;
+block|}
+DECL|method|TaskFailedEvent (TaskID id, long finishTime, TaskType taskType, String error, String status, TaskAttemptID failedDueToAttempt, Counters counters)
+specifier|public
+name|TaskFailedEvent
+parameter_list|(
+name|TaskID
+name|id
+parameter_list|,
+name|long
+name|finishTime
+parameter_list|,
+name|TaskType
+name|taskType
+parameter_list|,
+name|String
+name|error
+parameter_list|,
+name|String
+name|status
+parameter_list|,
+name|TaskAttemptID
+name|failedDueToAttempt
+parameter_list|,
+name|Counters
+name|counters
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|id
+argument_list|,
+name|finishTime
+argument_list|,
+name|taskType
+argument_list|,
+name|error
+argument_list|,
+name|status
+argument_list|,
+name|failedDueToAttempt
+argument_list|,
+name|counters
+argument_list|,
+name|SystemClock
+operator|.
+name|getInstance
+argument_list|()
+operator|.
+name|getTime
+argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|TaskFailedEvent (TaskID id, long finishTime, TaskType taskType, String error, String status, TaskAttemptID failedDueToAttempt)
@@ -637,7 +719,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Get the task id */
+comment|/** Gets the task id. */
 DECL|method|getTaskId ()
 specifier|public
 name|TaskID
@@ -648,7 +730,7 @@ return|return
 name|id
 return|;
 block|}
-comment|/** Get the error string */
+comment|/** Gets the error string. */
 DECL|method|getError ()
 specifier|public
 name|String
@@ -659,7 +741,7 @@ return|return
 name|error
 return|;
 block|}
-comment|/** Get the finish time of the attempt */
+comment|/** Gets the finish time of the attempt. */
 DECL|method|getFinishTime ()
 specifier|public
 name|long
@@ -670,7 +752,18 @@ return|return
 name|finishTime
 return|;
 block|}
-comment|/** Get the task type */
+comment|/**    * Gets the task start time to be reported to ATSv2.    * @return task start time.    */
+DECL|method|getStartTime ()
+specifier|public
+name|long
+name|getStartTime
+parameter_list|()
+block|{
+return|return
+name|startTime
+return|;
+block|}
+comment|/** Gets the task type. */
 DECL|method|getTaskType ()
 specifier|public
 name|TaskType
@@ -681,7 +774,7 @@ return|return
 name|taskType
 return|;
 block|}
-comment|/** Get the attempt id due to which the task failed */
+comment|/** Gets the attempt id due to which the task failed. */
 DECL|method|getFailedAttemptID ()
 specifier|public
 name|TaskAttemptID
@@ -692,7 +785,7 @@ return|return
 name|failedDueToAttempt
 return|;
 block|}
-comment|/** Get the task status */
+comment|/**    * Gets the task status.    * @return task status    */
 DECL|method|getTaskStatus ()
 specifier|public
 name|String
@@ -703,7 +796,7 @@ return|return
 name|status
 return|;
 block|}
-comment|/** Get task counters */
+comment|/** Gets task counters. */
 DECL|method|getCounters ()
 specifier|public
 name|Counters
@@ -714,7 +807,7 @@ return|return
 name|counters
 return|;
 block|}
-comment|/** Get the event type */
+comment|/** Gets the event type. */
 DECL|method|getEventType ()
 specifier|public
 name|EventType

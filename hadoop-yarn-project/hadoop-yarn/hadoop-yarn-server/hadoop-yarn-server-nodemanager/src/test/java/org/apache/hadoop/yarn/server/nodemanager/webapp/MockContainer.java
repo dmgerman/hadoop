@@ -1068,6 +1068,16 @@ return|return
 literal|false
 return|;
 block|}
+DECL|method|getContainerStartTime ()
+specifier|public
+name|long
+name|getContainerStartTime
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
 block|}
 end_class
 

@@ -2169,6 +2169,8 @@ argument_list|,
 literal|false
 argument_list|,
 literal|null
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|Set
@@ -2201,6 +2203,8 @@ argument_list|,
 literal|true
 argument_list|,
 name|cfgsToCheck
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// for this test, we expect MR job metrics are published in YARN_APPLICATION
@@ -2299,6 +2303,8 @@ argument_list|,
 literal|false
 argument_list|,
 literal|null
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|verifyEntity
@@ -2312,6 +2318,8 @@ argument_list|,
 literal|true
 argument_list|,
 name|cfgsToCheck
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// check for task event file
@@ -2424,6 +2432,8 @@ argument_list|,
 literal|false
 argument_list|,
 literal|null
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 comment|// check for task attempt event file
@@ -2536,11 +2546,13 @@ argument_list|,
 literal|false
 argument_list|,
 literal|null
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Verifies entity by reading the entity file written via FS impl.    * @param entityFile File to be read.    * @param eventId Event to be checked.    * @param chkMetrics If event is not null, this flag determines if metrics    *     exist when the event is encountered. If event is null, we merely check    *     if metrics exist in the entity file.    * @param chkCfg If event is not null, this flag determines if configs    *     exist when the event is encountered. If event is null, we merely check    *     if configs exist in the entity file.    * @param cfgsToVerify a set of configs which should exist in the entity file.    * @throws IOException    */
-DECL|method|verifyEntity (File entityFile, String eventId, boolean chkMetrics, boolean chkCfg, Set<String> cfgsToVerify)
+DECL|method|verifyEntity (File entityFile, String eventId, boolean chkMetrics, boolean chkCfg, Set<String> cfgsToVerify, boolean checkIdPrefix)
 specifier|private
 name|void
 name|verifyEntity
@@ -2562,6 +2574,9 @@ argument_list|<
 name|String
 argument_list|>
 name|cfgsToVerify
+parameter_list|,
+name|boolean
+name|checkIdPrefix
 parameter_list|)
 throws|throws
 name|IOException
@@ -2588,6 +2603,12 @@ name|entityFile
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|long
+name|idPrefix
+init|=
+operator|-
+literal|1
+decl_stmt|;
 while|while
 condition|(
 operator|(
@@ -2660,6 +2681,73 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"strLine.trim()= "
+operator|+
+name|strLine
+operator|.
+name|trim
+argument_list|()
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|checkIdPrefix
+condition|)
+block|{
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+literal|"Entity ID prefix expected to be> 0"
+argument_list|,
+name|entity
+operator|.
+name|getIdPrefix
+argument_list|()
+operator|>
+literal|0
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|idPrefix
+operator|==
+operator|-
+literal|1
+condition|)
+block|{
+name|idPrefix
+operator|=
+name|entity
+operator|.
+name|getIdPrefix
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"Entity ID prefix should be same across "
+operator|+
+literal|"each publish of same entity"
+argument_list|,
+name|idPrefix
+argument_list|,
+name|entity
+operator|.
+name|getIdPrefix
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 if|if
 condition|(
 name|eventId

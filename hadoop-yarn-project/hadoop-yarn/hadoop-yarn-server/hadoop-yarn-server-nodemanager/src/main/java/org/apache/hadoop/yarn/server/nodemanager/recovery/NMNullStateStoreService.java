@@ -380,7 +380,7 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|storeContainer (ContainerId containerId, int version, StartContainerRequest startRequest)
+DECL|method|storeContainer (ContainerId containerId, int version, long startTime, StartContainerRequest startRequest)
 specifier|public
 name|void
 name|storeContainer
@@ -390,6 +390,9 @@ name|containerId
 parameter_list|,
 name|int
 name|version
+parameter_list|,
+name|long
+name|startTime
 parameter_list|,
 name|StartContainerRequest
 name|startRequest

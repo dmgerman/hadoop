@@ -73,12 +73,21 @@ specifier|private
 name|ContainerStatus
 name|containerStatus
 decl_stmt|;
-DECL|method|ApplicationContainerFinishedEvent (ContainerStatus containerStatus)
+comment|// Required by NMTimelinePublisher.
+DECL|field|containerStartTime
+specifier|private
+name|long
+name|containerStartTime
+decl_stmt|;
+DECL|method|ApplicationContainerFinishedEvent (ContainerStatus containerStatus, long containerStartTs)
 specifier|public
 name|ApplicationContainerFinishedEvent
 parameter_list|(
 name|ContainerStatus
 name|containerStatus
+parameter_list|,
+name|long
+name|containerStartTs
 parameter_list|)
 block|{
 name|super
@@ -105,6 +114,12 @@ name|containerStatus
 operator|=
 name|containerStatus
 expr_stmt|;
+name|this
+operator|.
+name|containerStartTime
+operator|=
+name|containerStartTs
+expr_stmt|;
 block|}
 DECL|method|getContainerID ()
 specifier|public
@@ -127,6 +142,16 @@ parameter_list|()
 block|{
 return|return
 name|containerStatus
+return|;
+block|}
+DECL|method|getContainerStartTime ()
+specifier|public
+name|long
+name|getContainerStartTime
+parameter_list|()
+block|{
+return|return
+name|containerStartTime
 return|;
 block|}
 block|}

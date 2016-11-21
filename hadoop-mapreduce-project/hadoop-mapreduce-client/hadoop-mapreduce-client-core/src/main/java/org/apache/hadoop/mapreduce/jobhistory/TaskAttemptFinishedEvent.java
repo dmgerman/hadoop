@@ -196,6 +196,22 @@ name|TimelineMetric
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|SystemClock
+import|;
+end_import
+
 begin_comment
 comment|/**  * Event to record successful task completion  *  */
 end_comment
@@ -263,8 +279,13 @@ specifier|private
 name|Counters
 name|counters
 decl_stmt|;
-comment|/**    * Create an event to record successful finishes for setup and cleanup     * attempts    * @param id Attempt ID    * @param taskType Type of task    * @param taskStatus Status of task    * @param finishTime Finish time of attempt    * @param hostname Host where the attempt executed    * @param state State string    * @param counters Counters for the attempt    */
-DECL|method|TaskAttemptFinishedEvent (TaskAttemptID id, TaskType taskType, String taskStatus, long finishTime, String rackName, String hostname, String state, Counters counters)
+DECL|field|startTime
+specifier|private
+name|long
+name|startTime
+decl_stmt|;
+comment|/**    * Create an event to record successful finishes for setup and cleanup    * attempts.    * @param id Attempt ID    * @param taskType Type of task    * @param taskStatus Status of task    * @param finishTime Finish time of attempt    * @param hostname Host where the attempt executed    * @param state State string    * @param counters Counters for the attempt    * @param startTs Task start time to be used for writing entity to ATSv2.    */
+DECL|method|TaskAttemptFinishedEvent (TaskAttemptID id, TaskType taskType, String taskStatus, long finishTime, String rackName, String hostname, String state, Counters counters, long startTs)
 specifier|public
 name|TaskAttemptFinishedEvent
 parameter_list|(
@@ -291,6 +312,9 @@ name|state
 parameter_list|,
 name|Counters
 name|counters
+parameter_list|,
+name|long
+name|startTs
 parameter_list|)
 block|{
 name|this
@@ -340,6 +364,69 @@ operator|.
 name|counters
 operator|=
 name|counters
+expr_stmt|;
+name|this
+operator|.
+name|startTime
+operator|=
+name|startTs
+expr_stmt|;
+block|}
+DECL|method|TaskAttemptFinishedEvent (TaskAttemptID id, TaskType taskType, String taskStatus, long finishTime, String rackName, String hostname, String state, Counters counters)
+specifier|public
+name|TaskAttemptFinishedEvent
+parameter_list|(
+name|TaskAttemptID
+name|id
+parameter_list|,
+name|TaskType
+name|taskType
+parameter_list|,
+name|String
+name|taskStatus
+parameter_list|,
+name|long
+name|finishTime
+parameter_list|,
+name|String
+name|rackName
+parameter_list|,
+name|String
+name|hostname
+parameter_list|,
+name|String
+name|state
+parameter_list|,
+name|Counters
+name|counters
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|id
+argument_list|,
+name|taskType
+argument_list|,
+name|taskStatus
+argument_list|,
+name|finishTime
+argument_list|,
+name|rackName
+argument_list|,
+name|hostname
+argument_list|,
+name|state
+argument_list|,
+name|counters
+argument_list|,
+name|SystemClock
+operator|.
+name|getInstance
+argument_list|()
+operator|.
+name|getTime
+argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|TaskAttemptFinishedEvent ()
@@ -610,7 +697,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Get the task ID */
+comment|/** Gets the task ID. */
 DECL|method|getTaskId ()
 specifier|public
 name|TaskID
@@ -624,7 +711,7 @@ name|getTaskID
 argument_list|()
 return|;
 block|}
-comment|/** Get the task attempt id */
+comment|/** Gets the task attempt id. */
 DECL|method|getAttemptId ()
 specifier|public
 name|TaskAttemptID
@@ -635,7 +722,7 @@ return|return
 name|attemptId
 return|;
 block|}
-comment|/** Get the task type */
+comment|/** Gets the task type. */
 DECL|method|getTaskType ()
 specifier|public
 name|TaskType
@@ -646,7 +733,7 @@ return|return
 name|taskType
 return|;
 block|}
-comment|/** Get the task status */
+comment|/** Gets the task status. */
 DECL|method|getTaskStatus ()
 specifier|public
 name|String
@@ -660,7 +747,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/** Get the attempt finish time */
+comment|/** Gets the attempt finish time. */
 DECL|method|getFinishTime ()
 specifier|public
 name|long
@@ -671,7 +758,18 @@ return|return
 name|finishTime
 return|;
 block|}
-comment|/** Get the host where the attempt executed */
+comment|/**    * Gets the task attempt start time to be used while publishing to ATSv2.    * @return task attempt start time.    */
+DECL|method|getStartTime ()
+specifier|public
+name|long
+name|getStartTime
+parameter_list|()
+block|{
+return|return
+name|startTime
+return|;
+block|}
+comment|/** Gets the host where the attempt executed. */
 DECL|method|getHostname ()
 specifier|public
 name|String
@@ -685,7 +783,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/** Get the rackname where the attempt executed */
+comment|/** Gets the rackname where the attempt executed. */
 DECL|method|getRackName ()
 specifier|public
 name|String
@@ -705,7 +803,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/** Get the state string */
+comment|/**    * Gets the state string.    * @return task attempt state.    */
 DECL|method|getState ()
 specifier|public
 name|String
@@ -719,7 +817,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/** Get the counters for the attempt */
+comment|/** Gets the counters for the attempt. */
 DECL|method|getCounters ()
 name|Counters
 name|getCounters
@@ -729,7 +827,7 @@ return|return
 name|counters
 return|;
 block|}
-comment|/** Get the event type */
+comment|/** Gets the event type. */
 DECL|method|getEventType ()
 specifier|public
 name|EventType

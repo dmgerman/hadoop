@@ -1503,6 +1503,12 @@ name|historyTaskStartGenerated
 init|=
 literal|false
 decl_stmt|;
+comment|// Launch time reported in history events.
+DECL|field|launchTime
+specifier|private
+name|long
+name|launchTime
+decl_stmt|;
 specifier|private
 specifier|static
 specifier|final
@@ -4219,6 +4225,11 @@ name|void
 name|sendTaskStartedEvent
 parameter_list|()
 block|{
+name|launchTime
+operator|=
+name|getLaunchTime
+argument_list|()
+expr_stmt|;
 name|TaskStartedEvent
 name|tse
 init|=
@@ -4232,8 +4243,7 @@ argument_list|(
 name|taskId
 argument_list|)
 argument_list|,
-name|getLaunchTime
-argument_list|()
+name|launchTime
 argument_list|,
 name|TypeConverter
 operator|.
@@ -4337,6 +4347,10 @@ name|task
 operator|.
 name|getCounters
 argument_list|()
+argument_list|,
+name|task
+operator|.
+name|launchTime
 argument_list|)
 decl_stmt|;
 return|return
@@ -4461,6 +4475,10 @@ name|task
 operator|.
 name|getCounters
 argument_list|()
+argument_list|,
+name|task
+operator|.
+name|launchTime
 argument_list|)
 decl_stmt|;
 return|return
@@ -5013,6 +5031,8 @@ name|taskInfo
 operator|.
 name|getCounters
 argument_list|()
+argument_list|,
+name|launchTime
 argument_list|)
 decl_stmt|;
 name|eventHandler

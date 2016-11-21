@@ -384,6 +384,8 @@ argument_list|,
 literal|"STATUS"
 argument_list|,
 name|counters
+argument_list|,
+literal|234
 argument_list|)
 decl_stmt|;
 name|assertEquals
@@ -482,6 +484,16 @@ argument_list|,
 name|TaskType
 operator|.
 name|REDUCE
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|234
+argument_list|,
+name|test
+operator|.
+name|getStartTime
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

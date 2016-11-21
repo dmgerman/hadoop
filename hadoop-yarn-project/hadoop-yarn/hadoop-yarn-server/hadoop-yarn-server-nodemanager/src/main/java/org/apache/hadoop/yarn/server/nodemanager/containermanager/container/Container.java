@@ -252,6 +252,11 @@ name|ContainerId
 name|getContainerId
 parameter_list|()
 function_decl|;
+DECL|method|getContainerStartTime ()
+name|long
+name|getContainerStartTime
+parameter_list|()
+function_decl|;
 DECL|method|getResource ()
 name|Resource
 name|getResource

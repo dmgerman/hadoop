@@ -210,6 +210,22 @@ name|TimelineMetric
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|SystemClock
+import|;
+end_import
+
 begin_comment
 comment|/**  * Event to record successful completion of a reduce attempt  *  */
 end_comment
@@ -318,8 +334,13 @@ name|int
 index|[]
 name|physMemKbytes
 decl_stmt|;
-comment|/**    * Create an event to record completion of a reduce attempt    * @param id Attempt Id    * @param taskType Type of task    * @param taskStatus Status of the task    * @param shuffleFinishTime Finish time of the shuffle phase    * @param sortFinishTime Finish time of the sort phase    * @param finishTime Finish time of the attempt    * @param hostname Name of the host where the attempt executed    * @param port RPC port for the tracker host.    * @param rackName Name of the rack where the attempt executed    * @param state State of the attempt    * @param counters Counters for the attempt    * @param allSplits the "splits", or a pixelated graph of various    *        measurable worker node state variables against progress.    *        Currently there are four; wallclock time, CPU time,    *        virtual memory and physical memory.      */
-DECL|method|ReduceAttemptFinishedEvent (TaskAttemptID id, TaskType taskType, String taskStatus, long shuffleFinishTime, long sortFinishTime, long finishTime, String hostname, int port, String rackName, String state, Counters counters, int[][] allSplits)
+DECL|field|startTime
+specifier|private
+name|long
+name|startTime
+decl_stmt|;
+comment|/**    * Create an event to record completion of a reduce attempt    * @param id Attempt Id    * @param taskType Type of task    * @param taskStatus Status of the task    * @param shuffleFinishTime Finish time of the shuffle phase    * @param sortFinishTime Finish time of the sort phase    * @param finishTime Finish time of the attempt    * @param hostname Name of the host where the attempt executed    * @param port RPC port for the tracker host.    * @param rackName Name of the rack where the attempt executed    * @param state State of the attempt    * @param counters Counters for the attempt    * @param allSplits the "splits", or a pixelated graph of various    *        measurable worker node state variables against progress.    *        Currently there are four; wallclock time, CPU time,    *        virtual memory and physical memory.    * @param startTs Task start time to be used for writing entity to ATSv2.    */
+DECL|method|ReduceAttemptFinishedEvent (TaskAttemptID id, TaskType taskType, String taskStatus, long shuffleFinishTime, long sortFinishTime, long finishTime, String hostname, int port, String rackName, String state, Counters counters, int[][] allSplits, long startTs)
 specifier|public
 name|ReduceAttemptFinishedEvent
 parameter_list|(
@@ -360,6 +381,9 @@ name|int
 index|[]
 index|[]
 name|allSplits
+parameter_list|,
+name|long
+name|startTs
 parameter_list|)
 block|{
 name|this
@@ -476,6 +500,91 @@ operator|.
 name|arrayGetPhysMemKbytes
 argument_list|(
 name|allSplits
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|startTime
+operator|=
+name|startTs
+expr_stmt|;
+block|}
+DECL|method|ReduceAttemptFinishedEvent (TaskAttemptID id, TaskType taskType, String taskStatus, long shuffleFinishTime, long sortFinishTime, long finishTime, String hostname, int port, String rackName, String state, Counters counters, int[][] allSplits)
+specifier|public
+name|ReduceAttemptFinishedEvent
+parameter_list|(
+name|TaskAttemptID
+name|id
+parameter_list|,
+name|TaskType
+name|taskType
+parameter_list|,
+name|String
+name|taskStatus
+parameter_list|,
+name|long
+name|shuffleFinishTime
+parameter_list|,
+name|long
+name|sortFinishTime
+parameter_list|,
+name|long
+name|finishTime
+parameter_list|,
+name|String
+name|hostname
+parameter_list|,
+name|int
+name|port
+parameter_list|,
+name|String
+name|rackName
+parameter_list|,
+name|String
+name|state
+parameter_list|,
+name|Counters
+name|counters
+parameter_list|,
+name|int
+index|[]
+index|[]
+name|allSplits
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|id
+argument_list|,
+name|taskType
+argument_list|,
+name|taskStatus
+argument_list|,
+name|shuffleFinishTime
+argument_list|,
+name|sortFinishTime
+argument_list|,
+name|finishTime
+argument_list|,
+name|hostname
+argument_list|,
+name|port
+argument_list|,
+name|rackName
+argument_list|,
+name|state
+argument_list|,
+name|counters
+argument_list|,
+name|allSplits
+argument_list|,
+name|SystemClock
+operator|.
+name|getInstance
+argument_list|()
+operator|.
+name|getTime
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -981,7 +1090,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Get the Task ID */
+comment|/** Gets the Task ID. */
 DECL|method|getTaskId ()
 specifier|public
 name|TaskID
@@ -995,7 +1104,7 @@ name|getTaskID
 argument_list|()
 return|;
 block|}
-comment|/** Get the attempt id */
+comment|/** Gets the attempt id. */
 DECL|method|getAttemptId ()
 specifier|public
 name|TaskAttemptID
@@ -1006,7 +1115,7 @@ return|return
 name|attemptId
 return|;
 block|}
-comment|/** Get the task type */
+comment|/** Gets the task type. */
 DECL|method|getTaskType ()
 specifier|public
 name|TaskType
@@ -1017,7 +1126,7 @@ return|return
 name|taskType
 return|;
 block|}
-comment|/** Get the task status */
+comment|/** Gets the task status. */
 DECL|method|getTaskStatus ()
 specifier|public
 name|String
@@ -1031,7 +1140,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/** Get the finish time of the sort phase */
+comment|/** Gets the finish time of the sort phase. */
 DECL|method|getSortFinishTime ()
 specifier|public
 name|long
@@ -1042,7 +1151,7 @@ return|return
 name|sortFinishTime
 return|;
 block|}
-comment|/** Get the finish time of the shuffle phase */
+comment|/** Gets the finish time of the shuffle phase. */
 DECL|method|getShuffleFinishTime ()
 specifier|public
 name|long
@@ -1053,7 +1162,7 @@ return|return
 name|shuffleFinishTime
 return|;
 block|}
-comment|/** Get the finish time of the attempt */
+comment|/** Gets the finish time of the attempt. */
 DECL|method|getFinishTime ()
 specifier|public
 name|long
@@ -1064,7 +1173,18 @@ return|return
 name|finishTime
 return|;
 block|}
-comment|/** Get the name of the host where the attempt ran */
+comment|/**    * Gets the start time.    * @return task attempt start time.    */
+DECL|method|getStartTime ()
+specifier|public
+name|long
+name|getStartTime
+parameter_list|()
+block|{
+return|return
+name|startTime
+return|;
+block|}
+comment|/** Gets the name of the host where the attempt ran. */
 DECL|method|getHostname ()
 specifier|public
 name|String
@@ -1078,7 +1198,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/** Get the tracker rpc port */
+comment|/** Gets the tracker rpc port. */
 DECL|method|getPort ()
 specifier|public
 name|int
@@ -1089,7 +1209,7 @@ return|return
 name|port
 return|;
 block|}
-comment|/** Get the rack name of the node where the attempt ran */
+comment|/** Gets the rack name of the node where the attempt ran. */
 DECL|method|getRackName ()
 specifier|public
 name|String
@@ -1109,7 +1229,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/** Get the state string */
+comment|/**    * Gets the state string.    * @return reduce attempt state    */
 DECL|method|getState ()
 specifier|public
 name|String
@@ -1123,7 +1243,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/** Get the counters for the attempt */
+comment|/**    * Gets the counters.    * @return counters    */
 DECL|method|getCounters ()
 name|Counters
 name|getCounters
@@ -1133,7 +1253,7 @@ return|return
 name|counters
 return|;
 block|}
-comment|/** Get the event type */
+comment|/** Gets the event type. */
 DECL|method|getEventType ()
 specifier|public
 name|EventType

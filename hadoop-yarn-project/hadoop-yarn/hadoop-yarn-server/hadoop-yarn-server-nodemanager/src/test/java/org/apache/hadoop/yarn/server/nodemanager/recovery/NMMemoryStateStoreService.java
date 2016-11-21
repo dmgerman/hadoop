@@ -811,7 +811,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|storeContainer (ContainerId containerId, int version, StartContainerRequest startRequest)
+DECL|method|storeContainer (ContainerId containerId, int version, long startTime, StartContainerRequest startRequest)
 specifier|public
 specifier|synchronized
 name|void
@@ -822,6 +822,9 @@ name|containerId
 parameter_list|,
 name|int
 name|version
+parameter_list|,
+name|long
+name|startTime
 parameter_list|,
 name|StartContainerRequest
 name|startRequest
@@ -847,6 +850,13 @@ operator|.
 name|version
 operator|=
 name|version
+expr_stmt|;
+name|rcs
+operator|.
+name|setStartTime
+argument_list|(
+name|startTime
+argument_list|)
 expr_stmt|;
 name|containerStates
 operator|.

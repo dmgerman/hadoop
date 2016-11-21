@@ -3268,29 +3268,6 @@ name|message
 argument_list|)
 return|;
 block|}
-name|boolean
-name|timelineV2Enabled
-init|=
-name|YarnConfiguration
-operator|.
-name|timelineServiceV2Enabled
-argument_list|(
-name|getConfig
-argument_list|()
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|timelineV2Enabled
-condition|)
-block|{
-comment|// Check& update collectors info from request.
-name|updateAppCollectorsMap
-argument_list|(
-name|request
-argument_list|)
-expr_stmt|;
-block|}
 comment|// Evaluate whether a DECOMMISSIONING node is ready to be DECOMMISSIONED.
 if|if
 condition|(
@@ -3374,6 +3351,29 @@ argument_list|,
 name|message
 argument_list|)
 return|;
+block|}
+name|boolean
+name|timelineV2Enabled
+init|=
+name|YarnConfiguration
+operator|.
+name|timelineServiceV2Enabled
+argument_list|(
+name|getConfig
+argument_list|()
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|timelineV2Enabled
+condition|)
+block|{
+comment|// Check& update collectors info from request.
+name|updateAppCollectorsMap
+argument_list|(
+name|request
+argument_list|)
+expr_stmt|;
 block|}
 comment|// Heartbeat response
 name|NodeHeartbeatResponse
