@@ -322,6 +322,34 @@ block|}
 block|}
 annotation|@
 name|Test
+DECL|method|testGetFileStatusRoot ()
+specifier|public
+name|void
+name|testGetFileStatusRoot
+parameter_list|()
+throws|throws
+name|Throwable
+block|{
+name|ContractTestUtils
+operator|.
+name|assertIsDirectory
+argument_list|(
+name|getFileSystem
+argument_list|()
+operator|.
+name|getFileStatus
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+literal|"/"
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
 DECL|method|testListStatusEmptyDirectory ()
 specifier|public
 name|void
