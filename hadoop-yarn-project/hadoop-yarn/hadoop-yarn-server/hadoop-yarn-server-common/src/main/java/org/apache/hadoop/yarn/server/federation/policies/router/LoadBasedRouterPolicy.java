@@ -332,6 +332,12 @@ parameter_list|)
 throws|throws
 name|YarnException
 block|{
+comment|// null checks and default-queue behavior
+name|validate
+argument_list|(
+name|appSubmissionContext
+argument_list|)
+expr_stmt|;
 name|Map
 argument_list|<
 name|SubClusterId

@@ -8733,7 +8733,9 @@ name|DEFAULT_FEDERATION_POLICY_MANAGER
 init|=
 literal|"org.apache"
 operator|+
-literal|".hadoop.yarn.server.federation.policies.UniformBroadcastPolicyManager"
+literal|".hadoop.yarn.server.federation.policies"
+operator|+
+literal|".manager.UniformBroadcastPolicyManager"
 decl_stmt|;
 DECL|field|FEDERATION_POLICY_MANAGER_PARAMS
 specifier|public

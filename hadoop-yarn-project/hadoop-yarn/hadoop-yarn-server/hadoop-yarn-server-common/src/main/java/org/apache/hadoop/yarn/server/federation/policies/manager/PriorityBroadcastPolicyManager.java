@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one or mor
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.federation.policies
+DECL|package|org.apache.hadoop.yarn.server.federation.policies.manager
 package|package
 name|org
 operator|.
@@ -19,20 +19,18 @@ operator|.
 name|federation
 operator|.
 name|policies
+operator|.
+name|manager
 package|;
 end_package
 
 begin_import
 import|import
-name|com
+name|java
 operator|.
-name|google
+name|nio
 operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
+name|ByteBuffer
 import|;
 end_import
 
@@ -54,7 +52,7 @@ name|policies
 operator|.
 name|amrmproxy
 operator|.
-name|LocalityMulticastAMRMProxyPolicy
+name|BroadcastAMRMProxyPolicy
 import|;
 end_import
 
@@ -120,7 +118,7 @@ name|policies
 operator|.
 name|router
 operator|.
-name|WeightedRandomRouterPolicy
+name|PriorityRouterPolicy
 import|;
 end_import
 
@@ -148,23 +146,27 @@ end_import
 
 begin_import
 import|import
-name|java
+name|com
 operator|.
-name|nio
+name|google
 operator|.
-name|ByteBuffer
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
 import|;
 end_import
 
 begin_comment
-comment|/**  * Policy that allows operator to configure "weights" for routing. This picks a  * {@link WeightedRandomRouterPolicy} for the router and a {@link  * LocalityMulticastAMRMProxyPolicy} for the amrmproxy as they are designed to  * work together.  */
+comment|/**  * Policy that allows operator to configure "weights" for routing. This picks a  * {@link PriorityRouterPolicy} for the router and a  * {@link BroadcastAMRMProxyPolicy} for the amrmproxy as they are designed to  * work together.  */
 end_comment
 
 begin_class
-DECL|class|WeightedLocalityPolicyManager
+DECL|class|PriorityBroadcastPolicyManager
 specifier|public
 class|class
-name|WeightedLocalityPolicyManager
+name|PriorityBroadcastPolicyManager
 extends|extends
 name|AbstractPolicyManager
 block|{
@@ -173,22 +175,22 @@ specifier|private
 name|WeightedPolicyInfo
 name|weightedPolicyInfo
 decl_stmt|;
-DECL|method|WeightedLocalityPolicyManager ()
+DECL|method|PriorityBroadcastPolicyManager ()
 specifier|public
-name|WeightedLocalityPolicyManager
+name|PriorityBroadcastPolicyManager
 parameter_list|()
 block|{
-comment|//this structurally hard-codes two compatible policies for Router and
+comment|// this structurally hard-codes two compatible policies for Router and
 comment|// AMRMProxy.
 name|routerFederationPolicy
 operator|=
-name|WeightedRandomRouterPolicy
+name|PriorityRouterPolicy
 operator|.
 name|class
 expr_stmt|;
 name|amrmProxyFederationPolicy
 operator|=
-name|LocalityMulticastAMRMProxyPolicy
+name|BroadcastAMRMProxyPolicy
 operator|.
 name|class
 expr_stmt|;
@@ -251,7 +253,7 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|setWeightedPolicyInfo ( WeightedPolicyInfo weightedPolicyInfo)
+DECL|method|setWeightedPolicyInfo (WeightedPolicyInfo weightedPolicyInfo)
 specifier|public
 name|void
 name|setWeightedPolicyInfo

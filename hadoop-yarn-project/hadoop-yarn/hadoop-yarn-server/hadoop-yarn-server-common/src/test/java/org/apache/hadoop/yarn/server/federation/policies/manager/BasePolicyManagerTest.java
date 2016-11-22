@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one or mor
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.federation.policies
+DECL|package|org.apache.hadoop.yarn.server.federation.policies.manager
 package|package
 name|org
 operator|.
@@ -19,8 +19,30 @@ operator|.
 name|federation
 operator|.
 name|policies
+operator|.
+name|manager
 package|;
 end_package
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|federation
+operator|.
+name|policies
+operator|.
+name|FederationPolicyInitializationContext
+import|;
+end_import
 
 begin_import
 import|import
@@ -466,7 +488,7 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
-comment|//needed only for tests (getARMRMPolicy change the "type" in conf)
+comment|// needed only for tests (getARMRMPolicy change the "type" in conf)
 name|fpc
 operator|.
 name|setType

@@ -40,6 +40,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -51,16 +61,6 @@ operator|.
 name|util
 operator|.
 name|Map
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Random
 import|;
 end_import
 
@@ -205,48 +205,26 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This simple policy picks at uniform random among any of the currently active  * subclusters. This policy is easy to use and good for testing.  *  * NOTE: this is "almost" subsumed by the {@code WeightedRandomRouterPolicy}.  * Behavior only diverges when there are active sub-clusters that are not part  * of the "weights", in which case the {@link UniformRandomRouterPolicy} send  * load to them, while {@code WeightedRandomRouterPolicy} does not.  */
+comment|/**  * This {@link FederationRouterPolicy} pick a subcluster based on the hash of  * the job's queue name. Useful to provide a default behavior when too many  * queues exist in a system. This also ensures that all jobs belonging to a  * queue are mapped to the same sub-cluster (likely help with locality).  */
 end_comment
 
 begin_class
-DECL|class|UniformRandomRouterPolicy
+DECL|class|HashBasedRouterPolicy
 specifier|public
 class|class
-name|UniformRandomRouterPolicy
+name|HashBasedRouterPolicy
 extends|extends
 name|AbstractRouterPolicy
 block|{
-DECL|field|rand
-specifier|private
-name|Random
-name|rand
-decl_stmt|;
-DECL|method|UniformRandomRouterPolicy ()
-specifier|public
-name|UniformRandomRouterPolicy
-parameter_list|()
-block|{
-name|rand
-operator|=
-operator|new
-name|Random
-argument_list|(
-name|System
-operator|.
-name|currentTimeMillis
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 annotation|@
 name|Override
-DECL|method|reinitialize (FederationPolicyInitializationContext policyContext)
+DECL|method|reinitialize ( FederationPolicyInitializationContext federationPolicyContext)
 specifier|public
 name|void
 name|reinitialize
 parameter_list|(
 name|FederationPolicyInitializationContext
-name|policyContext
+name|federationPolicyContext
 parameter_list|)
 throws|throws
 name|FederationPolicyInitializationException
@@ -255,7 +233,7 @@ name|FederationPolicyInitializationContextValidator
 operator|.
 name|validate
 argument_list|(
-name|policyContext
+name|federationPolicyContext
 argument_list|,
 name|this
 operator|.
@@ -266,14 +244,14 @@ name|getCanonicalName
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// note: this overrides AbstractRouterPolicy and ignores the weights
+comment|// note: this overrides BaseRouterPolicy and ignores the weights
 name|setPolicyContext
 argument_list|(
-name|policyContext
+name|federationPolicyContext
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Simply picks a random active subcluster to start the AM (this does NOT    * depend on the weights in the policy).    *    * @param appSubmissionContext the context for the app being submitted    *          (ignored).    *    * @return a randomly chosen subcluster.    *    * @throws YarnException if there are no active subclusters.    */
+comment|/**    * Simply picks from alphabetically-sorted active subclusters based on the    * hash of quey name. Jobs of the same queue will all be routed to the same    * sub-cluster, as far as the number of active sub-cluster and their names    * remain the same.    *    * @param appSubmissionContext the context for the app being submitted.    *    * @return a hash-based chosen subcluster.    *    * @throws YarnException if there are no active subclusters.    */
 DECL|method|getHomeSubcluster ( ApplicationSubmissionContext appSubmissionContext)
 specifier|public
 name|SubClusterId
@@ -285,12 +263,7 @@ parameter_list|)
 throws|throws
 name|YarnException
 block|{
-comment|// null checks and default-queue behavior
-name|validate
-argument_list|(
-name|appSubmissionContext
-argument_list|)
-expr_stmt|;
+comment|// throws if no active subclusters available
 name|Map
 argument_list|<
 name|SubClusterId
@@ -301,6 +274,32 @@ name|activeSubclusters
 init|=
 name|getActiveSubclusters
 argument_list|()
+decl_stmt|;
+name|validate
+argument_list|(
+name|appSubmissionContext
+argument_list|)
+expr_stmt|;
+name|int
+name|chosenPosition
+init|=
+name|Math
+operator|.
+name|abs
+argument_list|(
+name|appSubmissionContext
+operator|.
+name|getQueue
+argument_list|()
+operator|.
+name|hashCode
+argument_list|()
+operator|%
+name|activeSubclusters
+operator|.
+name|size
+argument_list|()
+argument_list|)
 decl_stmt|;
 name|List
 argument_list|<
@@ -318,20 +317,19 @@ name|keySet
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|Collections
+operator|.
+name|sort
+argument_list|(
+name|list
+argument_list|)
+expr_stmt|;
 return|return
 name|list
 operator|.
 name|get
 argument_list|(
-name|rand
-operator|.
-name|nextInt
-argument_list|(
-name|list
-operator|.
-name|size
-argument_list|()
-argument_list|)
+name|chosenPosition
 argument_list|)
 return|;
 block|}

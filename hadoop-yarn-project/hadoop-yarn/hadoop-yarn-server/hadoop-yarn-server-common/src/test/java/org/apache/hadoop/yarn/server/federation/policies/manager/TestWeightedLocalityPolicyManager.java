@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one or mor
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.federation.policies
+DECL|package|org.apache.hadoop.yarn.server.federation.policies.manager
 package|package
 name|org
 operator|.
@@ -19,6 +19,8 @@ operator|.
 name|federation
 operator|.
 name|policies
+operator|.
+name|manager
 package|;
 end_package
 

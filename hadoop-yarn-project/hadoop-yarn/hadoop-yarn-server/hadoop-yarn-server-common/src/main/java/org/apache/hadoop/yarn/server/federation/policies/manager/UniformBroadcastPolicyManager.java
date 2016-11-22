@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one or mor
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.federation.policies
+DECL|package|org.apache.hadoop.yarn.server.federation.policies.manager
 package|package
 name|org
 operator|.
@@ -19,6 +19,8 @@ operator|.
 name|federation
 operator|.
 name|policies
+operator|.
+name|manager
 package|;
 end_package
 
@@ -66,66 +68,34 @@ name|UniformRandomRouterPolicy
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Before
-import|;
-end_import
-
 begin_comment
-comment|/**  * Simple test of {@link UniformBroadcastPolicyManager}.  */
+comment|/**  * This class represents a simple implementation of a {@code  * FederationPolicyManager}.  *  * It combines the basic policies: {@link UniformRandomRouterPolicy} and  * {@link BroadcastAMRMProxyPolicy}, which are designed to work together and  * "spread" the load among sub-clusters uniformly.  *  * This simple policy might impose heavy load on the RMs and return more  * containers than a job requested as all requests are (replicated and)  * broadcasted.  */
 end_comment
 
 begin_class
-DECL|class|TestUniformBroadcastPolicyManager
+DECL|class|UniformBroadcastPolicyManager
 specifier|public
 class|class
-name|TestUniformBroadcastPolicyManager
+name|UniformBroadcastPolicyManager
 extends|extends
-name|BasePolicyManagerTest
+name|AbstractPolicyManager
 block|{
-annotation|@
-name|Before
-DECL|method|setup ()
+DECL|method|UniformBroadcastPolicyManager ()
 specifier|public
-name|void
-name|setup
+name|UniformBroadcastPolicyManager
 parameter_list|()
 block|{
-comment|//config policy
-name|wfp
-operator|=
-operator|new
-name|UniformBroadcastPolicyManager
-argument_list|()
-expr_stmt|;
-name|wfp
-operator|.
-name|setQueue
-argument_list|(
-literal|"queue1"
-argument_list|)
-expr_stmt|;
-comment|//set expected params that the base test class will use for tests
-name|expectedPolicyManager
-operator|=
-name|UniformBroadcastPolicyManager
-operator|.
-name|class
-expr_stmt|;
-name|expectedAMRMProxyPolicy
-operator|=
-name|BroadcastAMRMProxyPolicy
-operator|.
-name|class
-expr_stmt|;
-name|expectedRouterPolicy
+comment|// this structurally hard-codes two compatible policies for Router and
+comment|// AMRMProxy.
+name|routerFederationPolicy
 operator|=
 name|UniformRandomRouterPolicy
+operator|.
+name|class
+expr_stmt|;
+name|amrmProxyFederationPolicy
+operator|=
+name|BroadcastAMRMProxyPolicy
 operator|.
 name|class
 expr_stmt|;
