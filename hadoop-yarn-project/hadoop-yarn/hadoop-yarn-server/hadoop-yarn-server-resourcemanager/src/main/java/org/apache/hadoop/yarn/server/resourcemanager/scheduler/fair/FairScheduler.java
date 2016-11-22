@@ -4138,11 +4138,15 @@ name|IOException
 name|ioe
 parameter_list|)
 block|{
+comment|// IOException should only happen for a user without groups
 name|appRejectMsg
 operator|=
-literal|"Error assigning app to queue "
+literal|"Error assigning app to a queue: "
 operator|+
-name|queueName
+name|ioe
+operator|.
+name|getMessage
+argument_list|()
 expr_stmt|;
 block|}
 if|if
