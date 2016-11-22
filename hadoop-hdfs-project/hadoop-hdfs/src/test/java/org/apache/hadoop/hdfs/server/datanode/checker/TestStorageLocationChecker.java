@@ -226,22 +226,6 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_DATANODE_DATA_DIR_KEY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
 name|DFS_DATANODE_DISK_CHECK_TIMEOUT_KEY
 import|;
 end_import
@@ -569,7 +553,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Test handling when the number of failed locations is above the    * max volume failure threshold.    *    * @throws Exception    */
+comment|/**    * Test handling when the number of volume failures tolerated is the    * same as the number of volumes.    *    * @throws Exception    */
 annotation|@
 name|Test
 argument_list|(
@@ -666,10 +650,10 @@ name|timeout
 operator|=
 literal|30000
 argument_list|)
-DECL|method|testAllFailedLocations ()
+DECL|method|testBadConfiguration ()
 specifier|public
 name|void
-name|testAllFailedLocations
+name|testBadConfiguration
 parameter_list|()
 throws|throws
 name|Exception
@@ -683,11 +667,11 @@ name|locations
 init|=
 name|makeMockLocations
 argument_list|(
-name|FAILED
+name|HEALTHY
 argument_list|,
-name|FAILED
+name|HEALTHY
 argument_list|,
-name|FAILED
+name|HEALTHY
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -720,11 +704,7 @@ name|thrown
 operator|.
 name|expectMessage
 argument_list|(
-literal|"All directories in "
-operator|+
-name|DFS_DATANODE_DATA_DIR_KEY
-operator|+
-literal|" are invalid"
+literal|"Invalid value configured"
 argument_list|)
 expr_stmt|;
 name|StorageLocationChecker

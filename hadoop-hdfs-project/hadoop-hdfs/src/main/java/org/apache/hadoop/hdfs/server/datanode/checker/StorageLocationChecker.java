@@ -232,6 +232,22 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|DiskChecker
+operator|.
+name|DiskErrorException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|Timer
 import|;
 end_import
@@ -292,7 +308,27 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|LinkedHashMap
 import|;
 end_import
 
@@ -456,6 +492,8 @@ parameter_list|,
 name|Timer
 name|timer
 parameter_list|)
+throws|throws
+name|DiskErrorException
 block|{
 name|maxAllowedTimeForCheckMs
 operator|=
@@ -463,12 +501,8 @@ name|conf
 operator|.
 name|getTimeDuration
 argument_list|(
-name|DFSConfigKeys
-operator|.
 name|DFS_DATANODE_DISK_CHECK_TIMEOUT_KEY
 argument_list|,
-name|DFSConfigKeys
-operator|.
 name|DFS_DATANODE_DISK_CHECK_TIMEOUT_DEFAULT
 argument_list|,
 name|TimeUnit
@@ -476,6 +510,29 @@ operator|.
 name|MILLISECONDS
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|maxAllowedTimeForCheckMs
+operator|<=
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|DiskErrorException
+argument_list|(
+literal|"Invalid value configured for "
+operator|+
+name|DFS_DATANODE_DISK_CHECK_TIMEOUT_KEY
+operator|+
+literal|" - "
+operator|+
+name|maxAllowedTimeForCheckMs
+operator|+
+literal|" (should be> 0)"
+argument_list|)
+throw|;
+block|}
 name|expectedPermission
 operator|=
 operator|new
@@ -502,6 +559,29 @@ argument_list|,
 name|DFS_DATANODE_FAILED_VOLUMES_TOLERATED_DEFAULT
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|maxVolumeFailuresTolerated
+operator|<
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|DiskErrorException
+argument_list|(
+literal|"Invalid value configured for "
+operator|+
+name|DFS_DATANODE_FAILED_VOLUMES_TOLERATED_KEY
+operator|+
+literal|" - "
+operator|+
+name|maxVolumeFailuresTolerated
+operator|+
+literal|" (should be non-negative)"
+argument_list|)
+throw|;
+block|}
 name|this
 operator|.
 name|timer
@@ -557,7 +637,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Initiate a check of the supplied storage volumes and return    * a list of failed volumes.    *    * @param conf HDFS configuration.    * @param dataDirs list of volumes to check.    * @return returns a list of failed volumes. Returns the empty list if    *         there are no failed volumes.    *    * @throws InterruptedException if the check was interrupted.    * @throws IOException if the number of failed volumes exceeds the    *                     maximum allowed or if there are no good    *                     volumes.    */
+comment|/**    * Initiate a check of the supplied storage volumes and return    * a list of failed volumes.    *    * StorageLocations are returned in the same order as the input    * for compatibility with existing unit tests.    *    * @param conf HDFS configuration.    * @param dataDirs list of volumes to check.    * @return returns a list of failed volumes. Returns the empty list if    *         there are no failed volumes.    *    * @throws InterruptedException if the check was interrupted.    * @throws IOException if the number of failed volumes exceeds the    *                     maximum allowed or if there are no good    *                     volumes.    */
 DECL|method|check ( final Configuration conf, final Collection<StorageLocation> dataDirs)
 specifier|public
 name|List
@@ -583,14 +663,16 @@ throws|,
 name|IOException
 block|{
 specifier|final
-name|ArrayList
+name|HashMap
 argument_list|<
 name|StorageLocation
+argument_list|,
+name|Boolean
 argument_list|>
 name|goodLocations
 init|=
 operator|new
-name|ArrayList
+name|LinkedHashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
@@ -655,6 +737,15 @@ range|:
 name|dataDirs
 control|)
 block|{
+name|goodLocations
+operator|.
+name|put
+argument_list|(
+name|location
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 name|futures
 operator|.
 name|put
@@ -671,6 +762,41 @@ name|context
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+if|if
+condition|(
+name|maxVolumeFailuresTolerated
+operator|>=
+name|dataDirs
+operator|.
+name|size
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|DiskErrorException
+argument_list|(
+literal|"Invalid value configured for "
+operator|+
+name|DFS_DATANODE_FAILED_VOLUMES_TOLERATED_KEY
+operator|+
+literal|" - "
+operator|+
+name|maxVolumeFailuresTolerated
+operator|+
+literal|". Value configured is>= "
+operator|+
+literal|"to the number of configured volumes ("
+operator|+
+name|dataDirs
+operator|.
+name|size
+argument_list|()
+operator|+
+literal|")."
+argument_list|)
+throw|;
 block|}
 specifier|final
 name|long
@@ -770,16 +896,6 @@ block|{
 case|case
 name|HEALTHY
 case|:
-name|goodLocations
-operator|.
-name|add
-argument_list|(
-name|entry
-operator|.
-name|getKey
-argument_list|()
-argument_list|)
-expr_stmt|;
 break|break;
 case|case
 name|DEGRADED
@@ -813,6 +929,13 @@ argument_list|(
 name|location
 argument_list|)
 expr_stmt|;
+name|goodLocations
+operator|.
+name|remove
+argument_list|(
+name|location
+argument_list|)
+expr_stmt|;
 break|break;
 default|default:
 name|LOG
@@ -824,16 +947,6 @@ argument_list|,
 name|result
 argument_list|,
 name|location
-argument_list|)
-expr_stmt|;
-name|goodLocations
-operator|.
-name|add
-argument_list|(
-name|entry
-operator|.
-name|getKey
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -863,6 +976,13 @@ expr_stmt|;
 name|failedLocations
 operator|.
 name|add
+argument_list|(
+name|location
+argument_list|)
+expr_stmt|;
+name|goodLocations
+operator|.
+name|remove
 argument_list|(
 name|location
 argument_list|)
@@ -923,7 +1043,15 @@ argument_list|)
 throw|;
 block|}
 return|return
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|(
 name|goodLocations
+operator|.
+name|keySet
+argument_list|()
+argument_list|)
 return|;
 block|}
 DECL|method|shutdownAndWait (int gracePeriod, TimeUnit timeUnit)

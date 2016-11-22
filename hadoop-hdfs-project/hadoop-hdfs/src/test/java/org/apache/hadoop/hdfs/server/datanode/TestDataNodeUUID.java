@@ -306,6 +306,8 @@ argument_list|,
 name|locations
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 comment|//Assert that Node iD is null
