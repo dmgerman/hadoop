@@ -840,6 +840,25 @@ argument_list|(
 literal|"\t"
 argument_list|)
 decl_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Not enough tokens in in string \" "
+operator|+
+name|line
+operator|+
+literal|"\" from output \""
+operator|+
+name|outputAsStr
+operator|+
+literal|"\""
+argument_list|,
+name|tokens
+operator|.
+name|length
+operator|>
+literal|1
+argument_list|)
+expr_stmt|;
 name|result
 operator|.
 name|put
