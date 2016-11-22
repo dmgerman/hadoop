@@ -3171,18 +3171,6 @@ name|getApplicationPriority
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// get scheduler
-name|CapacityScheduler
-name|cs
-init|=
-operator|(
-name|CapacityScheduler
-operator|)
-name|rm
-operator|.
-name|getResourceScheduler
-argument_list|()
-decl_stmt|;
 comment|// Change the priority of App1 to 8
 name|Priority
 name|appPriority2
@@ -3194,16 +3182,19 @@ argument_list|(
 literal|8
 argument_list|)
 decl_stmt|;
-name|cs
+name|rm
+operator|.
+name|getRMAppManager
+argument_list|()
 operator|.
 name|updateApplicationPriority
 argument_list|(
-name|appPriority2
-argument_list|,
 name|app1
 operator|.
 name|getApplicationId
 argument_list|()
+argument_list|,
+name|appPriority2
 argument_list|)
 expr_stmt|;
 name|AllocateResponse

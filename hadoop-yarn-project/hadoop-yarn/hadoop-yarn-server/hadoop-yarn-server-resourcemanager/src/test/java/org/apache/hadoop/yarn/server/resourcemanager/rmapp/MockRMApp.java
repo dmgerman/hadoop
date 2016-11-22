@@ -1470,6 +1470,30 @@ literal|"Not supported yet."
 argument_list|)
 throw|;
 block|}
+annotation|@
+name|Override
+DECL|method|getApplicationPriority ()
+specifier|public
+name|Priority
+name|getApplicationPriority
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|isAppInCompletedStates ()
+specifier|public
+name|boolean
+name|isAppInCompletedStates
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
 block|}
 end_class
 

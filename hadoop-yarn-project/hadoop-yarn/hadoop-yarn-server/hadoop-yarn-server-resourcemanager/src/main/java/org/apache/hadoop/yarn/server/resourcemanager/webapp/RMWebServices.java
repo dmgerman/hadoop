@@ -9321,10 +9321,7 @@ name|setPriority
 argument_list|(
 name|app
 operator|.
-name|getApplicationSubmissionContext
-argument_list|()
-operator|.
-name|getPriority
+name|getApplicationPriority
 argument_list|()
 operator|.
 name|getPriority
@@ -9542,10 +9539,7 @@ name|priority
 init|=
 name|app
 operator|.
-name|getApplicationSubmissionContext
-argument_list|()
-operator|.
-name|getPriority
+name|getApplicationPriority
 argument_list|()
 decl_stmt|;
 if|if
@@ -9842,10 +9836,7 @@ name|AppPriority
 argument_list|(
 name|app
 operator|.
-name|getApplicationSubmissionContext
-argument_list|()
-operator|.
-name|getPriority
+name|getApplicationPriority
 argument_list|()
 operator|.
 name|getPriority

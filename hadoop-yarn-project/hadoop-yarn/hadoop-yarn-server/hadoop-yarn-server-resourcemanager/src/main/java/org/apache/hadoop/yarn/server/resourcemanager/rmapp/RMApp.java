@@ -242,6 +242,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|Priority
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ReservationId
 import|;
 end_import
@@ -636,6 +654,18 @@ argument_list|,
 name|Long
 argument_list|>
 name|getApplicationTimeouts
+parameter_list|()
+function_decl|;
+comment|/**    * Get priority of the application.    * @return priority    */
+DECL|method|getApplicationPriority ()
+name|Priority
+name|getApplicationPriority
+parameter_list|()
+function_decl|;
+comment|/**    * To verify whether app has reached in its completing/completed states.    *    * @return True/False to confirm whether app is in final states    */
+DECL|method|isAppInCompletedStates ()
+name|boolean
+name|isAppInCompletedStates
 parameter_list|()
 function_decl|;
 block|}

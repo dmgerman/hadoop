@@ -536,6 +536,22 @@ name|ResourceCalculator
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|SettableFuture
+import|;
+end_import
+
 begin_comment
 comment|/**  * This interface is used by the components to talk to the  * scheduler for allocating of resources, cleaning up resources.  *  */
 end_comment
@@ -949,10 +965,10 @@ parameter_list|)
 throws|throws
 name|YarnException
 function_decl|;
-comment|/**    *    * Change application priority of a submitted application at runtime    *    * @param newPriority Submitted Application priority.    *    * @param applicationId Application ID    */
-DECL|method|updateApplicationPriority (Priority newPriority, ApplicationId applicationId)
+comment|/**    *    * Change application priority of a submitted application at runtime    *    * @param newPriority Submitted Application priority.    *    * @param applicationId Application ID    *    * @param future Sets any type of exception happened from StateStore    *    * @return updated priority    */
+DECL|method|updateApplicationPriority (Priority newPriority, ApplicationId applicationId, SettableFuture<Object> future)
 specifier|public
-name|void
+name|Priority
 name|updateApplicationPriority
 parameter_list|(
 name|Priority
@@ -960,6 +976,12 @@ name|newPriority
 parameter_list|,
 name|ApplicationId
 name|applicationId
+parameter_list|,
+name|SettableFuture
+argument_list|<
+name|Object
+argument_list|>
+name|future
 parameter_list|)
 throws|throws
 name|YarnException

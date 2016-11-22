@@ -2557,6 +2557,8 @@ name|app1
 operator|.
 name|getApplicationId
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// get scheduler app
@@ -2744,6 +2746,8 @@ name|app1
 operator|.
 name|getApplicationId
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// get scheduler app
@@ -3023,6 +3027,8 @@ name|app1
 operator|.
 name|getApplicationId
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// let things settle down
@@ -3110,13 +3116,7 @@ name|appPriority2
 argument_list|,
 name|loadedApp
 operator|.
-name|getCurrentAppAttempt
-argument_list|()
-operator|.
-name|getSubmissionContext
-argument_list|()
-operator|.
-name|getPriority
+name|getApplicationPriority
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3843,6 +3843,8 @@ name|app2
 operator|.
 name|getApplicationId
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// add request for containers App2
@@ -5141,6 +5143,8 @@ name|app
 operator|.
 name|getApplicationId
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|SchedulerEvent

@@ -711,10 +711,7 @@ name|APPLICATION_PRIORITY_INFO
 argument_list|,
 name|app
 operator|.
-name|getApplicationSubmissionContext
-argument_list|()
-operator|.
-name|getPriority
+name|getApplicationPriority
 argument_list|()
 operator|.
 name|getPriority
@@ -1230,10 +1227,7 @@ name|APPLICATION_PRIORITY_INFO
 argument_list|,
 name|app
 operator|.
-name|getApplicationSubmissionContext
-argument_list|()
-operator|.
-name|getPriority
+name|getApplicationPriority
 argument_list|()
 operator|.
 name|getPriority

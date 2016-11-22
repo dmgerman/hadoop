@@ -211,7 +211,7 @@ name|appPriority
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|AppAddedSchedulerEvent (String user, ApplicationSubmissionContext submissionContext, boolean isAppRecovering)
+DECL|method|AppAddedSchedulerEvent (String user, ApplicationSubmissionContext submissionContext, boolean isAppRecovering, Priority appPriority)
 specifier|public
 name|AppAddedSchedulerEvent
 parameter_list|(
@@ -223,6 +223,9 @@ name|submissionContext
 parameter_list|,
 name|boolean
 name|isAppRecovering
+parameter_list|,
+name|Priority
+name|appPriority
 parameter_list|)
 block|{
 name|this
@@ -246,10 +249,7 @@ operator|.
 name|getReservationID
 argument_list|()
 argument_list|,
-name|submissionContext
-operator|.
-name|getPriority
-argument_list|()
+name|appPriority
 argument_list|)
 expr_stmt|;
 block|}

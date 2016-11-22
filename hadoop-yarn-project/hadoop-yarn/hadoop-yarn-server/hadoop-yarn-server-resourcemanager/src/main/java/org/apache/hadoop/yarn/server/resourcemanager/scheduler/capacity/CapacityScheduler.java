@@ -2298,6 +2298,22 @@ name|Preconditions
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|SettableFuture
+import|;
+end_import
+
 begin_class
 annotation|@
 name|LimitedPrivate
@@ -12625,9 +12641,9 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|updateApplicationPriority (Priority newPriority, ApplicationId applicationId)
+DECL|method|updateApplicationPriority (Priority newPriority, ApplicationId applicationId, SettableFuture<Object> future)
 specifier|public
-name|void
+name|Priority
 name|updateApplicationPriority
 parameter_list|(
 name|Priority
@@ -12635,6 +12651,12 @@ name|newPriority
 parameter_list|,
 name|ApplicationId
 name|applicationId
+parameter_list|,
+name|SettableFuture
+argument_list|<
+name|Object
+argument_list|>
+name|future
 parameter_list|)
 throws|throws
 name|YarnException
@@ -12721,9 +12743,18 @@ name|appPriority
 argument_list|)
 condition|)
 block|{
-return|return;
+name|future
+operator|.
+name|set
+argument_list|(
+literal|null
+argument_list|)
+expr_stmt|;
+return|return
+name|appPriority
+return|;
 block|}
-comment|// Update new priority in Submission Context to keep track in HA
+comment|// Update new priority in Submission Context to update to StateStore.
 name|rmApp
 operator|.
 name|getApplicationSubmissionContext
@@ -12789,7 +12820,7 @@ name|appState
 argument_list|,
 literal|false
 argument_list|,
-literal|null
+name|future
 argument_list|)
 expr_stmt|;
 comment|// As we use iterator over a TreeSet for OrderingPolicy, once we change
@@ -12815,22 +12846,6 @@ argument_list|(
 name|application
 argument_list|,
 name|appPriority
-argument_list|)
-expr_stmt|;
-comment|// Update the changed application state to timeline server
-name|rmContext
-operator|.
-name|getSystemMetricsPublisher
-argument_list|()
-operator|.
-name|appUpdated
-argument_list|(
-name|rmApp
-argument_list|,
-name|System
-operator|.
-name|currentTimeMillis
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -12860,6 +12875,9 @@ name|getUser
 argument_list|()
 argument_list|)
 expr_stmt|;
+return|return
+name|appPriority
+return|;
 block|}
 annotation|@
 name|Override
