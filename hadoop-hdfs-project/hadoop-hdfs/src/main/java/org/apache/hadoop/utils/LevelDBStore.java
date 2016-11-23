@@ -4,19 +4,13 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.container.common.utils
+DECL|package|org.apache.hadoop.utils
 package|package
 name|org
 operator|.
 name|apache
 operator|.
 name|hadoop
-operator|.
-name|ozone
-operator|.
-name|container
-operator|.
-name|common
 operator|.
 name|utils
 package|;
@@ -123,6 +117,12 @@ specifier|final
 name|File
 name|dbFile
 decl_stmt|;
+DECL|field|dbOptions
+specifier|private
+specifier|final
+name|Options
+name|dbOptions
+decl_stmt|;
 comment|/**    * Opens a DB file.    *    * @param dbPath          - DB File path    * @param createIfMissing - Create if missing    * @throws IOException    */
 DECL|method|LevelDBStore (File dbPath, boolean createIfMissing)
 specifier|public
@@ -137,14 +137,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|Options
-name|options
-init|=
+name|dbOptions
+operator|=
 operator|new
 name|Options
 argument_list|()
-decl_stmt|;
-name|options
+expr_stmt|;
+name|dbOptions
 operator|.
 name|createIfMissing
 argument_list|(
@@ -161,7 +160,7 @@ name|open
 argument_list|(
 name|dbPath
 argument_list|,
-name|options
+name|dbOptions
 argument_list|)
 expr_stmt|;
 if|if
@@ -200,6 +199,10 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|dbOptions
+operator|=
+name|options
+expr_stmt|;
 name|db
 operator|=
 name|JniDBFactory
@@ -392,6 +395,40 @@ block|{
 return|return
 name|db
 return|;
+block|}
+comment|/**    * Returns an iterator on all the key-value pairs in the DB.    * @return an iterator on DB entries.    */
+DECL|method|getIterator ()
+specifier|public
+name|DBIterator
+name|getIterator
+parameter_list|()
+block|{
+return|return
+name|db
+operator|.
+name|iterator
+argument_list|()
+return|;
+block|}
+DECL|method|destroy ()
+specifier|public
+name|void
+name|destroy
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|JniDBFactory
+operator|.
+name|factory
+operator|.
+name|destroy
+argument_list|(
+name|dbFile
+argument_list|,
+name|dbOptions
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

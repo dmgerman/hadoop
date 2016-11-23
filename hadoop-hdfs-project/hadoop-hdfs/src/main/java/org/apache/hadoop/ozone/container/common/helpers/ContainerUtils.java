@@ -126,12 +126,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
-operator|.
-name|container
-operator|.
-name|common
-operator|.
 name|utils
 operator|.
 name|LevelDBStore

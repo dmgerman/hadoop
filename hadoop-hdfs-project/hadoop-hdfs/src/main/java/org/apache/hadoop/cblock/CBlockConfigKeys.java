@@ -154,6 +154,25 @@ name|DFS_CBLOCK_SERVICERPC_HANDLER_COUNT_DEFAULT
 init|=
 literal|10
 decl_stmt|;
+DECL|field|DFS_CBLOCK_SERVICE_LEVELDB_PATH_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_CBLOCK_SERVICE_LEVELDB_PATH_KEY
+init|=
+literal|"dfs.cblock.service.leveldb.path"
+decl_stmt|;
+comment|//TODO : find a better place
+DECL|field|DFS_CBLOCK_SERVICE_LEVELDB_PATH_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_CBLOCK_SERVICE_LEVELDB_PATH_DEFAULT
+init|=
+literal|"/tmp/cblock_levelDB.dat"
+decl_stmt|;
 DECL|method|CBlockConfigKeys ()
 specifier|private
 name|CBlockConfigKeys
