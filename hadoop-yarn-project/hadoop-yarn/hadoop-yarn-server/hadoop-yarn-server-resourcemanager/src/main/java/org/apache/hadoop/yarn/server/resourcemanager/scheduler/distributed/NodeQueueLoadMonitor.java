@@ -849,6 +849,14 @@ name|RMNode
 name|rmNode
 parameter_list|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -864,6 +872,7 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Ignoring this currently : at least one NODE_UPDATE heartbeat is
 comment|// required to ensure node eligibility.
 block|}
