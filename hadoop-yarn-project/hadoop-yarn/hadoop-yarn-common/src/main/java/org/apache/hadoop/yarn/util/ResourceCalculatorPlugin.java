@@ -467,6 +467,25 @@ return|;
 block|}
 catch|catch
 parameter_list|(
+name|UnsupportedOperationException
+name|ue
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to instantiate default resource calculator. "
+operator|+
+name|ue
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
 name|Throwable
 name|t
 parameter_list|)

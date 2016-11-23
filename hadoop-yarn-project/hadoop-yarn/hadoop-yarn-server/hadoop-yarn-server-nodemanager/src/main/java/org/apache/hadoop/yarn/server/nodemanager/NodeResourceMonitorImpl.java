@@ -268,6 +268,36 @@ parameter_list|()
 block|{
 if|if
 condition|(
+name|this
+operator|.
+name|monitoringInterval
+operator|<=
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Node Resource monitoring interval is<=0. "
+operator|+
+name|this
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|" is disabled."
+argument_list|)
+expr_stmt|;
+return|return
+literal|false
+return|;
+block|}
+if|if
+condition|(
 name|resourceCalculatorPlugin
 operator|==
 literal|null

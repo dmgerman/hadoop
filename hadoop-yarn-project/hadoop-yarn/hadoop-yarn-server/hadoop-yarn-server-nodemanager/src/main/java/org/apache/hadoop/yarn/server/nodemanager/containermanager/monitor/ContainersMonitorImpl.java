@@ -1044,6 +1044,10 @@ name|containersMonitorEnabled
 operator|=
 name|isContainerMonitorEnabled
 argument_list|()
+operator|&&
+name|monitoringInterval
+operator|>
+literal|0
 expr_stmt|;
 name|LOG
 operator|.
