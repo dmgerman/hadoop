@@ -717,7 +717,7 @@ name|waitForDrained
 operator|.
 name|wait
 argument_list|(
-literal|1000
+literal|100
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -1405,6 +1405,16 @@ parameter_list|()
 block|{
 return|return
 name|drained
+return|;
+block|}
+DECL|method|isStopped ()
+specifier|protected
+name|boolean
+name|isStopped
+parameter_list|()
+block|{
+return|return
+name|stopped
 return|;
 block|}
 block|}
