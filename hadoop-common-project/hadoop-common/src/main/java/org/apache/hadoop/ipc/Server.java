@@ -2774,7 +2774,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|updateMetrics (String name, int queueTime, int processingTime)
+DECL|method|updateMetrics (String name, int queueTime, int processingTime, boolean deferredCall)
 name|void
 name|updateMetrics
 parameter_list|(
@@ -2786,6 +2786,9 @@ name|queueTime
 parameter_list|,
 name|int
 name|processingTime
+parameter_list|,
+name|boolean
+name|deferredCall
 parameter_list|)
 block|{
 name|rpcMetrics
@@ -2795,6 +2798,12 @@ argument_list|(
 name|queueTime
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|deferredCall
+condition|)
+block|{
 name|rpcMetrics
 operator|.
 name|addRpcProcessingTime
@@ -2839,6 +2848,35 @@ name|processingTime
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+block|}
+DECL|method|updateDeferredMetrics (String name, long processingTime)
+name|void
+name|updateDeferredMetrics
+parameter_list|(
+name|String
+name|name
+parameter_list|,
+name|long
+name|processingTime
+parameter_list|)
+block|{
+name|rpcMetrics
+operator|.
+name|addDeferredRpcProcessingTime
+argument_list|(
+name|processingTime
+argument_list|)
+expr_stmt|;
+name|rpcDetailedMetrics
+operator|.
+name|addDeferredProcessingTime
+argument_list|(
+name|name
+argument_list|,
+name|processingTime
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * A convenience method to bind to a given address and report     * better exceptions if the address is not a valid host.    * @param socket the socket to bind    * @param address the address to bind to    * @param backlog the number of connections allowed in the queue    * @throws BindException if the address can't be bound    * @throws UnknownHostException if the address isn't a valid host name    * @throws IOException other random errors from bind    */
 DECL|method|bind (ServerSocket socket, InetSocketAddress address, int backlog)
@@ -3560,6 +3598,13 @@ name|CallerContext
 name|callerContext
 decl_stmt|;
 comment|// the call context
+DECL|field|deferredResponse
+specifier|private
+name|boolean
+name|deferredResponse
+init|=
+literal|false
+decl_stmt|;
 DECL|field|priorityLevel
 specifier|private
 name|int
@@ -4056,6 +4101,57 @@ operator|=
 name|priorityLevel
 expr_stmt|;
 block|}
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|method|deferResponse ()
+specifier|public
+name|void
+name|deferResponse
+parameter_list|()
+block|{
+name|this
+operator|.
+name|deferredResponse
+operator|=
+literal|true
+expr_stmt|;
+block|}
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|method|isResponseDeferred ()
+specifier|public
+name|boolean
+name|isResponseDeferred
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|deferredResponse
+return|;
+block|}
+DECL|method|setDeferredResponse (Writable response)
+specifier|public
+name|void
+name|setDeferredResponse
+parameter_list|(
+name|Writable
+name|response
+parameter_list|)
+block|{     }
+DECL|method|setDeferredError (Throwable t)
+specifier|public
+name|void
+name|setDeferredError
+parameter_list|(
+name|Throwable
+name|t
+parameter_list|)
+block|{     }
 block|}
 comment|/** A RPC extended call queued for handling. */
 DECL|class|RpcCall
@@ -4316,32 +4412,17 @@ return|return
 literal|null
 return|;
 block|}
-name|String
-name|errorClass
-init|=
-literal|null
-decl_stmt|;
-name|String
-name|error
-init|=
-literal|null
-decl_stmt|;
-name|RpcStatusProto
-name|returnStatus
-init|=
-name|RpcStatusProto
-operator|.
-name|SUCCESS
-decl_stmt|;
-name|RpcErrorCodeProto
-name|detailedErr
-init|=
-literal|null
-decl_stmt|;
 name|Writable
 name|value
 init|=
 literal|null
+decl_stmt|;
+name|ResponseParams
+name|responseParams
+init|=
+operator|new
+name|ResponseParams
+argument_list|()
 decl_stmt|;
 try|try
 block|{
@@ -4367,16 +4448,98 @@ name|Throwable
 name|e
 parameter_list|)
 block|{
+name|populateResponseParamsOnError
+argument_list|(
+name|e
+argument_list|,
+name|responseParams
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
-name|e
+operator|!
+name|isResponseDeferred
+argument_list|()
+condition|)
+block|{
+name|setupResponse
+argument_list|(
+name|this
+argument_list|,
+name|responseParams
+operator|.
+name|returnStatus
+argument_list|,
+name|responseParams
+operator|.
+name|detailedErr
+argument_list|,
+name|value
+argument_list|,
+name|responseParams
+operator|.
+name|errorClass
+argument_list|,
+name|responseParams
+operator|.
+name|error
+argument_list|)
+expr_stmt|;
+name|sendResponse
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Deferring response for callId: "
+operator|+
+name|this
+operator|.
+name|callId
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+return|return
+literal|null
+return|;
+block|}
+comment|/**      * @param t              the {@link java.lang.Throwable} to use to set      *                       errorInfo      * @param responseParams the {@link ResponseParams} instance to populate      */
+DECL|method|populateResponseParamsOnError (Throwable t, ResponseParams responseParams)
+specifier|private
+name|void
+name|populateResponseParamsOnError
+parameter_list|(
+name|Throwable
+name|t
+parameter_list|,
+name|ResponseParams
+name|responseParams
+parameter_list|)
+block|{
+if|if
+condition|(
+name|t
 operator|instanceof
 name|UndeclaredThrowableException
 condition|)
 block|{
-name|e
+name|t
 operator|=
-name|e
+name|t
 operator|.
 name|getCause
 argument_list|()
@@ -4388,14 +4551,14 @@ name|Server
 operator|.
 name|LOG
 argument_list|,
-name|e
+name|t
 argument_list|,
 name|this
 argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|e
+name|t
 operator|instanceof
 name|RpcServerException
 condition|)
@@ -4407,9 +4570,11 @@ operator|(
 operator|(
 name|RpcServerException
 operator|)
-name|e
+name|t
 operator|)
 decl_stmt|;
+name|responseParams
+operator|.
 name|returnStatus
 operator|=
 name|rse
@@ -4417,6 +4582,8 @@ operator|.
 name|getRpcStatusProto
 argument_list|()
 expr_stmt|;
+name|responseParams
+operator|.
 name|detailedErr
 operator|=
 name|rse
@@ -4427,12 +4594,16 @@ expr_stmt|;
 block|}
 else|else
 block|{
+name|responseParams
+operator|.
 name|returnStatus
 operator|=
 name|RpcStatusProto
 operator|.
 name|ERROR
 expr_stmt|;
+name|responseParams
+operator|.
 name|detailedErr
 operator|=
 name|RpcErrorCodeProto
@@ -4440,9 +4611,11 @@ operator|.
 name|ERROR_APPLICATION
 expr_stmt|;
 block|}
+name|responseParams
+operator|.
 name|errorClass
 operator|=
-name|e
+name|t
 operator|.
 name|getClass
 argument_list|()
@@ -4450,13 +4623,15 @@ operator|.
 name|getName
 argument_list|()
 expr_stmt|;
+name|responseParams
+operator|.
 name|error
 operator|=
 name|StringUtils
 operator|.
 name|stringifyException
 argument_list|(
-name|e
+name|t
 argument_list|)
 expr_stmt|;
 comment|// Remove redundant error class name from the beginning of the
@@ -4464,12 +4639,16 @@ comment|// stack trace
 name|String
 name|exceptionHdr
 init|=
+name|responseParams
+operator|.
 name|errorClass
 operator|+
 literal|": "
 decl_stmt|;
 if|if
 condition|(
+name|responseParams
+operator|.
 name|error
 operator|.
 name|startsWith
@@ -4478,8 +4657,12 @@ name|exceptionHdr
 argument_list|)
 condition|)
 block|{
+name|responseParams
+operator|.
 name|error
 operator|=
+name|responseParams
+operator|.
 name|error
 operator|.
 name|substring
@@ -4491,28 +4674,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-name|setupResponse
-argument_list|(
-name|this
-argument_list|,
-name|returnStatus
-argument_list|,
-name|detailedErr
-argument_list|,
-name|value
-argument_list|,
-name|errorClass
-argument_list|,
-name|error
-argument_list|)
-expr_stmt|;
-name|sendResponse
-argument_list|()
-expr_stmt|;
-return|return
-literal|null
-return|;
 block|}
 DECL|method|setResponse (ByteBuffer response)
 name|void
@@ -4604,6 +4765,285 @@ argument_list|(
 name|call
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**      * Send a deferred response, ignoring errors.      */
+DECL|method|sendDeferedResponse ()
+specifier|private
+name|void
+name|sendDeferedResponse
+parameter_list|()
+block|{
+try|try
+block|{
+name|connection
+operator|.
+name|sendResponse
+argument_list|(
+name|this
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+comment|// For synchronous calls, application code is done once it's returned
+comment|// from a method. It does not expect to receive an error.
+comment|// This is equivalent to what happens in synchronous calls when the
+comment|// Responder is not able to send out the response.
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Failed to send deferred response. ThreadName="
+operator|+
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|", CallId="
+operator|+
+name|callId
+operator|+
+literal|", hostname="
+operator|+
+name|getHostAddress
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|Override
+DECL|method|setDeferredResponse (Writable response)
+specifier|public
+name|void
+name|setDeferredResponse
+parameter_list|(
+name|Writable
+name|response
+parameter_list|)
+block|{
+if|if
+condition|(
+name|this
+operator|.
+name|connection
+operator|.
+name|getServer
+argument_list|()
+operator|.
+name|running
+condition|)
+block|{
+try|try
+block|{
+name|setupResponse
+argument_list|(
+name|this
+argument_list|,
+name|RpcStatusProto
+operator|.
+name|SUCCESS
+argument_list|,
+literal|null
+argument_list|,
+name|response
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+comment|// For synchronous calls, application code is done once it has
+comment|// returned from a method. It does not expect to receive an error.
+comment|// This is equivalent to what happens in synchronous calls when the
+comment|// response cannot be sent.
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Failed to setup deferred successful response. ThreadName="
+operator|+
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|", Call="
+operator|+
+name|this
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+name|sendDeferedResponse
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|Override
+DECL|method|setDeferredError (Throwable t)
+specifier|public
+name|void
+name|setDeferredError
+parameter_list|(
+name|Throwable
+name|t
+parameter_list|)
+block|{
+if|if
+condition|(
+name|this
+operator|.
+name|connection
+operator|.
+name|getServer
+argument_list|()
+operator|.
+name|running
+condition|)
+block|{
+if|if
+condition|(
+name|t
+operator|==
+literal|null
+condition|)
+block|{
+name|t
+operator|=
+operator|new
+name|IOException
+argument_list|(
+literal|"User code indicated an error without an exception"
+argument_list|)
+expr_stmt|;
+block|}
+try|try
+block|{
+name|ResponseParams
+name|responseParams
+init|=
+operator|new
+name|ResponseParams
+argument_list|()
+decl_stmt|;
+name|populateResponseParamsOnError
+argument_list|(
+name|t
+argument_list|,
+name|responseParams
+argument_list|)
+expr_stmt|;
+name|setupResponse
+argument_list|(
+name|this
+argument_list|,
+name|responseParams
+operator|.
+name|returnStatus
+argument_list|,
+name|responseParams
+operator|.
+name|detailedErr
+argument_list|,
+literal|null
+argument_list|,
+name|responseParams
+operator|.
+name|errorClass
+argument_list|,
+name|responseParams
+operator|.
+name|error
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+comment|// For synchronous calls, application code is done once it has
+comment|// returned from a method. It does not expect to receive an error.
+comment|// This is equivalent to what happens in synchronous calls when the
+comment|// response cannot be sent.
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Failed to setup deferred error response. ThreadName="
+operator|+
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|", Call="
+operator|+
+name|this
+argument_list|)
+expr_stmt|;
+block|}
+name|sendDeferedResponse
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+comment|/**      * Holds response parameters. Defaults set to work for successful      * invocations      */
+DECL|class|ResponseParams
+specifier|private
+class|class
+name|ResponseParams
+block|{
+DECL|field|errorClass
+name|String
+name|errorClass
+init|=
+literal|null
+decl_stmt|;
+DECL|field|error
+name|String
+name|error
+init|=
+literal|null
+decl_stmt|;
+DECL|field|detailedErr
+name|RpcErrorCodeProto
+name|detailedErr
+init|=
+literal|null
+decl_stmt|;
+DECL|field|returnStatus
+name|RpcStatusProto
+name|returnStatus
+init|=
+name|RpcStatusProto
+operator|.
+name|SUCCESS
+decl_stmt|;
 block|}
 annotation|@
 name|Override
@@ -7856,6 +8296,18 @@ return|return
 name|lastContact
 return|;
 block|}
+DECL|method|getServer ()
+specifier|public
+name|Server
+name|getServer
+parameter_list|()
+block|{
+return|return
+name|Server
+operator|.
+name|this
+return|;
+block|}
 comment|/* Return true if the connection has no outstanding rpc */
 DECL|method|isIdle ()
 specifier|private
@@ -10001,7 +10453,7 @@ name|sendResponse
 argument_list|()
 expr_stmt|;
 block|}
-comment|/** Reads the connection context following the connection header      * @param dis - DataInputStream from which to read the header       * @throws WrappedRpcServerException - if the header cannot be      *         deserialized, or the user is not authorized      */
+comment|/** Reads the connection context following the connection header      * @throws WrappedRpcServerException - if the header cannot be      *         deserialized, or the user is not authorized      */
 DECL|method|processConnectionContext (RpcWritable.Buffer buffer)
 specifier|private
 name|void
@@ -10408,7 +10860,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**      * Process one RPC Request from buffer read from socket stream       *  - decode rpc in a rpc-Call      *  - handle out-of-band RPC requests such as the initial connectionContext      *  - A successfully decoded RpcCall will be deposited in RPC-Q and      *    its response will be sent later when the request is processed.      *       * Prior to this call the connectionHeader ("hrpc...") has been handled and      * if SASL then SASL has been established and the buf we are passed      * has been unwrapped from SASL.      *       * @param buf - contains the RPC request header and the rpc request      * @throws IOException - internal error that should not be returned to      *         client, typically failure to respond to client      * @throws WrappedRpcServerException - an exception that is sent back to the      *         client in this method and does not require verbose logging by the      *         Listener thread      * @throws InterruptedException      */
+comment|/**      * Process one RPC Request from buffer read from socket stream       *  - decode rpc in a rpc-Call      *  - handle out-of-band RPC requests such as the initial connectionContext      *  - A successfully decoded RpcCall will be deposited in RPC-Q and      *    its response will be sent later when the request is processed.      *       * Prior to this call the connectionHeader ("hrpc...") has been handled and      * if SASL then SASL has been established and the buf we are passed      * has been unwrapped from SASL.      *       * @param bb - contains the RPC request header and the rpc request      * @throws IOException - internal error that should not be returned to      *         client, typically failure to respond to client      * @throws WrappedRpcServerException - an exception that is sent back to the      *         client in this method and does not require verbose logging by the      *         Listener thread      * @throws InterruptedException      */
 DECL|method|processOneRpc (ByteBuffer bb)
 specifier|private
 name|void
@@ -10723,7 +11175,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**      * Process an RPC Request       *   - the connection headers and context must have been already read.      *   - Based on the rpcKind, decode the rpcRequest.      *   - A successfully decoded RpcCall will be deposited in RPC-Q and      *     its response will be sent later when the request is processed.      * @param header - RPC request header      * @param dis - stream to request payload      * @throws WrappedRpcServerException - due to fatal rpc layer issues such      *   as invalid header or deserialization error. In this case a RPC fatal      *   status response will later be sent back to client.      * @throws InterruptedException      */
+comment|/**      * Process an RPC Request       *   - the connection headers and context must have been already read.      *   - Based on the rpcKind, decode the rpcRequest.      *   - A successfully decoded RpcCall will be deposited in RPC-Q and      *     its response will be sent later when the request is processed.      * @param header - RPC request header      * @param buffer - stream to request payload      * @throws WrappedRpcServerException - due to fatal rpc layer issues such      *   as invalid header or deserialization error. In this case a RPC fatal      *   status response will later be sent back to client.      * @throws InterruptedException      */
 DECL|method|processRpcRequest (RpcRequestHeaderProto header, RpcWritable.Buffer buffer)
 specifier|private
 name|void
@@ -11082,7 +11534,7 @@ argument_list|()
 expr_stmt|;
 comment|// Increment the rpc count
 block|}
-comment|/**      * Establish RPC connection setup by negotiating SASL if required, then      * reading and authorizing the connection header      * @param header - RPC header      * @param dis - stream to request payload      * @throws WrappedRpcServerException - setup failed due to SASL      *         negotiation failure, premature or invalid connection context,      *         or other state errors. This exception needs to be sent to the       *         client.      * @throws IOException - failed to send a response back to the client      * @throws InterruptedException      */
+comment|/**      * Establish RPC connection setup by negotiating SASL if required, then      * reading and authorizing the connection header      * @param header - RPC header      * @param buffer - stream to request payload      * @throws WrappedRpcServerException - setup failed due to SASL      *         negotiation failure, premature or invalid connection context,      *         or other state errors. This exception needs to be sent to the       *         client.      * @throws IOException - failed to send a response back to the client      * @throws InterruptedException      */
 DECL|method|processRpcOutOfBandRequest (RpcRequestHeaderProto header, RpcWritable.Buffer buffer)
 specifier|private
 name|void
@@ -11352,7 +11804,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**      * Decode the a protobuf from the given input stream       * @param builder - Builder of the protobuf to decode      * @param dis - DataInputStream to read the protobuf      * @return Message - decoded protobuf      * @throws WrappedRpcServerException - deserialization failed      */
+comment|/**      * Decode the a protobuf from the given input stream       * @return Message - decoded protobuf      * @throws WrappedRpcServerException - deserialization failed      */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -12961,7 +13413,7 @@ name|connection
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Setup response for the IPC Call.    *     * @param responseBuf buffer to serialize the response into    * @param call {@link Call} to which we are setting up the response    * @param status of the IPC call    * @param rv return value for the IPC Call, if the call was successful    * @param errorClass error class, if the the call failed    * @param error error message, if the call failed    * @throws IOException    */
+comment|/**    * Setup response for the IPC Call.    *     * @param call {@link Call} to which we are setting up the response    * @param status of the IPC call    * @param rv return value for the IPC Call, if the call was successful    * @param errorClass error class, if the the call failed    * @param error error message, if the call failed    * @throws IOException    */
 DECL|method|setupResponse ( RpcCall call, RpcStatusProto status, RpcErrorCodeProto erCode, Writable rv, String errorClass, String error)
 specifier|private
 name|void

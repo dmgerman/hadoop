@@ -171,6 +171,12 @@ name|Metric
 name|MutableRatesWithAggregation
 name|rates
 decl_stmt|;
+DECL|field|deferredRpcRates
+annotation|@
+name|Metric
+name|MutableRatesWithAggregation
+name|deferredRpcRates
+decl_stmt|;
 DECL|field|LOG
 specifier|static
 specifier|final
@@ -309,6 +315,13 @@ argument_list|(
 name|protocol
 argument_list|)
 expr_stmt|;
+name|deferredRpcRates
+operator|.
+name|init
+argument_list|(
+name|protocol
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Add an RPC processing time sample    * @param name  of the RPC call    * @param processingTime  the processing time    */
 comment|//@Override // some instrumentation interface
@@ -325,6 +338,28 @@ name|processingTime
 parameter_list|)
 block|{
 name|rates
+operator|.
+name|add
+argument_list|(
+name|name
+argument_list|,
+name|processingTime
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|addDeferredProcessingTime (String name, long processingTime)
+specifier|public
+name|void
+name|addDeferredProcessingTime
+parameter_list|(
+name|String
+name|name
+parameter_list|,
+name|long
+name|processingTime
+parameter_list|)
+block|{
+name|deferredRpcRates
 operator|.
 name|add
 argument_list|(
