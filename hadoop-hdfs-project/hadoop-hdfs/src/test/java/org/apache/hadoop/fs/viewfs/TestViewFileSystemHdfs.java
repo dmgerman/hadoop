@@ -1106,6 +1106,161 @@ operator|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
+DECL|method|testDf ()
+specifier|public
+name|void
+name|testDf
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|Configuration
+name|newConf
+init|=
+operator|new
+name|Configuration
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+comment|// Verify if DF on non viewfs produces output as before, that is
+comment|// without "Mounted On" header.
+name|DFSTestUtil
+operator|.
+name|FsShellRun
+argument_list|(
+literal|"-df"
+argument_list|,
+literal|0
+argument_list|,
+literal|"Use%"
+operator|+
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
+argument_list|,
+name|newConf
+argument_list|)
+expr_stmt|;
+comment|// Setting the default Fs to viewfs
+name|newConf
+operator|.
+name|set
+argument_list|(
+literal|"fs.default.name"
+argument_list|,
+literal|"viewfs:///"
+argument_list|)
+expr_stmt|;
+comment|// Verify if DF on viewfs produces a new header "Mounted on"
+name|DFSTestUtil
+operator|.
+name|FsShellRun
+argument_list|(
+literal|"-df /user"
+argument_list|,
+literal|0
+argument_list|,
+literal|"Mounted on"
+argument_list|,
+name|newConf
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|FsShellRun
+argument_list|(
+literal|"-df viewfs:///user"
+argument_list|,
+literal|0
+argument_list|,
+literal|"/user"
+argument_list|,
+name|newConf
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|FsShellRun
+argument_list|(
+literal|"-df /user3"
+argument_list|,
+literal|1
+argument_list|,
+literal|"/user3"
+argument_list|,
+name|newConf
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|FsShellRun
+argument_list|(
+literal|"-df /user2/abc"
+argument_list|,
+literal|1
+argument_list|,
+literal|"No such file or directory"
+argument_list|,
+name|newConf
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|FsShellRun
+argument_list|(
+literal|"-df /user2/"
+argument_list|,
+literal|0
+argument_list|,
+literal|"/user2"
+argument_list|,
+name|newConf
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|FsShellRun
+argument_list|(
+literal|"-df /internalDir"
+argument_list|,
+literal|0
+argument_list|,
+literal|"/internalDir"
+argument_list|,
+name|newConf
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|FsShellRun
+argument_list|(
+literal|"-df /"
+argument_list|,
+literal|0
+argument_list|,
+literal|null
+argument_list|,
+name|newConf
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|FsShellRun
+argument_list|(
+literal|"-df"
+argument_list|,
+literal|0
+argument_list|,
+literal|null
+argument_list|,
+name|newConf
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

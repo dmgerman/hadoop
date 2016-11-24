@@ -170,20 +170,6 @@ end_import
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -389,6 +375,20 @@ operator|.
 name|fs
 operator|.
 name|FsServerDefaults
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|FsStatus
 import|;
 end_import
 
@@ -752,26 +752,29 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+comment|/**    * MountPoint representation built from the configuration.    */
 DECL|class|MountPoint
-specifier|static
 specifier|public
+specifier|static
 class|class
 name|MountPoint
 block|{
-comment|/**      *  The source of the mount.      */
-DECL|field|src
+comment|/**      * The mounted on path location.      */
+DECL|field|mountedOnPath
 specifier|private
+specifier|final
 name|Path
-name|src
+name|mountedOnPath
 decl_stmt|;
-comment|/**      * One or more targets of the mount.      * Multiple targets imply MergeMount.      */
-DECL|field|targets
+comment|/**      * Array of target FileSystem URIs.      */
+DECL|field|targetFileSystemURIs
 specifier|private
+specifier|final
 name|URI
 index|[]
-name|targets
+name|targetFileSystemURIs
 decl_stmt|;
-DECL|method|MountPoint (Path srcPath, URI[] targetURIs)
+DECL|method|MountPoint (Path srcPath, URI[] targetFs)
 name|MountPoint
 parameter_list|(
 name|Path
@@ -779,39 +782,37 @@ name|srcPath
 parameter_list|,
 name|URI
 index|[]
-name|targetURIs
+name|targetFs
 parameter_list|)
 block|{
-name|src
+name|mountedOnPath
 operator|=
 name|srcPath
 expr_stmt|;
-name|targets
+name|targetFileSystemURIs
 operator|=
-name|targetURIs
+name|targetFs
 expr_stmt|;
 block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|getSrc ()
+DECL|method|getMountedOnPath ()
+specifier|public
 name|Path
-name|getSrc
+name|getMountedOnPath
 parameter_list|()
 block|{
 return|return
-name|src
+name|mountedOnPath
 return|;
 block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|getTargets ()
+DECL|method|getTargetFileSystemURIs ()
+specifier|public
 name|URI
 index|[]
-name|getTargets
+name|getTargetFileSystemURIs
 parameter_list|()
 block|{
 return|return
-name|targets
+name|targetFileSystemURIs
 return|;
 block|}
 block|}
@@ -856,7 +857,6 @@ literal|null
 decl_stmt|;
 comment|/**    * Make the path Absolute and get the path-part of a pathname.    * Checks that URI matches this file system     * and that the path-part is a valid name.    *     * @param p path    * @return path-part of the Path p    */
 DECL|method|getUriPath (final Path p)
-specifier|private
 name|String
 name|getUriPath
 parameter_list|(
@@ -4683,6 +4683,81 @@ expr_stmt|;
 block|}
 return|return
 name|trashRoots
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getStatus ()
+specifier|public
+name|FsStatus
+name|getStatus
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|getStatus
+argument_list|(
+literal|null
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getStatus (Path p)
+specifier|public
+name|FsStatus
+name|getStatus
+parameter_list|(
+name|Path
+name|p
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|p
+operator|==
+literal|null
+condition|)
+block|{
+name|p
+operator|=
+name|InodeTree
+operator|.
+name|SlashPath
+expr_stmt|;
+block|}
+name|InodeTree
+operator|.
+name|ResolveResult
+argument_list|<
+name|FileSystem
+argument_list|>
+name|res
+init|=
+name|fsState
+operator|.
+name|resolve
+argument_list|(
+name|getUriPath
+argument_list|(
+name|p
+argument_list|)
+argument_list|,
+literal|true
+argument_list|)
+decl_stmt|;
+return|return
+name|res
+operator|.
+name|targetFileSystem
+operator|.
+name|getStatus
+argument_list|(
+name|p
+argument_list|)
 return|;
 block|}
 comment|/**    * An instance of this class represents an internal dir of the viewFs    * that is internal dir of the mount table.    * It is a read only mount tables and create, mkdir or delete operations    * are not allowed.    * If called on create or mkdir then this target is the parent of the    * directory in which one is trying to create or mkdir; hence    * in this case the path name passed in is the last component.     * Otherwise this target is the end point of the path and hence    * the path name passed in is null.     */
