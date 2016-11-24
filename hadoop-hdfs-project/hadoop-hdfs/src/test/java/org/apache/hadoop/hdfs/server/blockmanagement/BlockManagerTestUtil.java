@@ -597,12 +597,12 @@ name|size
 argument_list|()
 return|;
 block|}
-comment|/**    * @return replication monitor thread instance from block manager.    */
-DECL|method|getReplicationThread (final BlockManager blockManager)
+comment|/**    * @return redundancy monitor thread instance from block manager.    */
+DECL|method|getRedundancyThread (final BlockManager blockManager)
 specifier|public
 specifier|static
 name|Daemon
-name|getReplicationThread
+name|getRedundancyThread
 parameter_list|(
 specifier|final
 name|BlockManager
@@ -612,15 +612,16 @@ block|{
 return|return
 name|blockManager
 operator|.
-name|replicationThread
+name|getRedundancyThread
+argument_list|()
 return|;
 block|}
-comment|/**    * Stop the replication monitor thread    */
-DECL|method|stopReplicationThread (final BlockManager blockManager)
+comment|/**    * Stop the redundancy monitor thread.    */
+DECL|method|stopRedundancyThread (final BlockManager blockManager)
 specifier|public
 specifier|static
 name|void
-name|stopReplicationThread
+name|stopRedundancyThread
 parameter_list|(
 specifier|final
 name|BlockManager
@@ -636,7 +637,8 @@ argument_list|()
 expr_stmt|;
 name|blockManager
 operator|.
-name|replicationThread
+name|getRedundancyThread
+argument_list|()
 operator|.
 name|interrupt
 argument_list|()
@@ -645,7 +647,8 @@ try|try
 block|{
 name|blockManager
 operator|.
-name|replicationThread
+name|getRedundancyThread
+argument_list|()
 operator|.
 name|join
 argument_list|()
@@ -661,7 +664,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Interrupted while trying to stop ReplicationMonitor"
+literal|"Interrupted while trying to stop RedundancyMonitor"
 argument_list|)
 throw|;
 block|}

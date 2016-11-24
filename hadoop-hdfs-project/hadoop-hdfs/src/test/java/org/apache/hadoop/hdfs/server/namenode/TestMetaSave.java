@@ -439,14 +439,14 @@ name|HdfsConfiguration
 argument_list|()
 decl_stmt|;
 comment|// High value of replication interval
-comment|// so that blocks remain under-replicated
+comment|// so that blocks remain less redundant
 name|conf
 operator|.
 name|setInt
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_REPLICATION_INTERVAL_KEY
+name|DFS_NAMENODE_REDUNDANCY_INTERVAL_SECONDS_KEY
 argument_list|,
 literal|1000
 argument_list|)

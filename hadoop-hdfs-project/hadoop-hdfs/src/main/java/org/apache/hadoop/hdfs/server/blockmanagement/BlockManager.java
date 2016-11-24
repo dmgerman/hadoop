@@ -1819,12 +1819,12 @@ name|getNumTimedOuts
 argument_list|()
 return|;
 block|}
-comment|/**replicationRecheckInterval is how often namenode checks for new replication work*/
-DECL|field|replicationRecheckInterval
+comment|/**    * redundancyRecheckInterval is how often namenode checks for new    * reconstruction work.    */
+DECL|field|redundancyRecheckIntervalMs
 specifier|private
 specifier|final
 name|long
-name|replicationRecheckInterval
+name|redundancyRecheckIntervalMs
 decl_stmt|;
 comment|/** How often to check and the limit for the storageinfo efficiency. */
 DECL|field|storageInfoDefragmentInterval
@@ -1851,17 +1851,18 @@ specifier|final
 name|BlocksMap
 name|blocksMap
 decl_stmt|;
-comment|/** Replication thread. */
-DECL|field|replicationThread
+comment|/** Redundancy thread. */
+DECL|field|redundancyThread
+specifier|private
 specifier|final
 name|Daemon
-name|replicationThread
+name|redundancyThread
 init|=
 operator|new
 name|Daemon
 argument_list|(
 operator|new
-name|ReplicationMonitor
+name|RedundancyMonitor
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -2476,7 +2477,7 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|replicationRecheckInterval
+name|redundancyRecheckIntervalMs
 operator|=
 name|conf
 operator|.
@@ -2484,18 +2485,18 @@ name|getTimeDuration
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_REPLICATION_INTERVAL_KEY
+name|DFS_NAMENODE_REDUNDANCY_INTERVAL_SECONDS_KEY
 argument_list|,
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_REPLICATION_INTERVAL_DEFAULT
+name|DFS_NAMENODE_REDUNDANCY_INTERVAL_SECONDS_DEFAULT
 argument_list|,
 name|TimeUnit
 operator|.
 name|SECONDS
 argument_list|)
 operator|*
-literal|1000L
+literal|1000
 expr_stmt|;
 name|this
 operator|.
@@ -2764,9 +2765,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"replicationRecheckInterval = "
+literal|"redundancyRecheckInterval  = "
 operator|+
-name|replicationRecheckInterval
+name|redundancyRecheckIntervalMs
+operator|+
+literal|"ms"
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -3211,7 +3214,7 @@ return|return
 name|blockTokenSecretManager
 return|;
 block|}
-comment|/** Allow silent termination of replication monitor for testing */
+comment|/** Allow silent termination of redundancy monitor for testing. */
 annotation|@
 name|VisibleForTesting
 DECL|method|enableRMTerminationForTesting ()
@@ -3286,16 +3289,16 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|replicationThread
+name|redundancyThread
 operator|.
 name|setName
 argument_list|(
-literal|"ReplicationMonitor"
+literal|"RedundancyMonitor"
 argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|replicationThread
+name|redundancyThread
 operator|.
 name|start
 argument_list|()
@@ -3353,7 +3356,7 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|replicationThread
+name|redundancyThread
 operator|.
 name|interrupt
 argument_list|()
@@ -3368,7 +3371,7 @@ operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
-name|replicationThread
+name|redundancyThread
 operator|.
 name|join
 argument_list|(
@@ -4589,7 +4592,7 @@ return|return
 name|committed
 return|;
 block|}
-comment|/**    * If IBR is not sent from expected locations yet, add the datanodes to    * pendingReconstruction in order to keep ReplicationMonitor from scheduling    * the block.    */
+comment|/**    * If IBR is not sent from expected locations yet, add the datanodes to    * pendingReconstruction in order to keep RedundancyMonitor from scheduling    * the block.    */
 DECL|method|addExpectedReplicasToPending (BlockInfo blk)
 specifier|public
 name|void
@@ -9429,7 +9432,7 @@ name|blockLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* Removing {} from neededReplications as"
+literal|"BLOCK* Removing {} from neededReconstruction as"
 operator|+
 literal|" it has enough replicas"
 argument_list|,
@@ -9538,9 +9541,9 @@ name|blockLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* block {} is moved from neededReplications to "
+literal|"BLOCK* block {} is moved from neededReconstruction to "
 operator|+
-literal|"pendingReplications"
+literal|"pendingReconstruction"
 argument_list|,
 name|block
 argument_list|)
@@ -20304,10 +20307,10 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Periodically calls computeBlockRecoveryWork().    */
-DECL|class|ReplicationMonitor
+DECL|class|RedundancyMonitor
 specifier|private
 class|class
-name|ReplicationMonitor
+name|RedundancyMonitor
 implements|implements
 name|Runnable
 block|{
@@ -20329,7 +20332,7 @@ condition|)
 block|{
 try|try
 block|{
-comment|// Process replication work only when active NN is out of safe mode.
+comment|// Process recovery work only when active NN is out of safe mode.
 if|if
 condition|(
 name|isPopulatingReplQueues
@@ -20346,11 +20349,13 @@ name|rescanPostponedMisreplicatedBlocks
 argument_list|()
 expr_stmt|;
 block|}
-name|Thread
+name|TimeUnit
+operator|.
+name|MILLISECONDS
 operator|.
 name|sleep
 argument_list|(
-name|replicationRecheckInterval
+name|redundancyRecheckIntervalMs
 argument_list|)
 expr_stmt|;
 block|}
@@ -20373,7 +20378,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Stopping ReplicationMonitor."
+literal|"Stopping RedundancyMonitor."
 argument_list|)
 expr_stmt|;
 if|if
@@ -20390,7 +20395,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"ReplicationMonitor received an exception"
+literal|"RedundancyMonitor received an exception"
 operator|+
 literal|" while shutting down."
 argument_list|,
@@ -20415,7 +20420,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Stopping ReplicationMonitor for testing."
+literal|"Stopping RedundancyMonitor for testing."
 argument_list|)
 expr_stmt|;
 break|break;
@@ -20424,7 +20429,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"ReplicationMonitor thread received Runtime exception. "
+literal|"RedundancyMonitor thread received Runtime exception. "
 argument_list|,
 name|t
 argument_list|)
@@ -21932,6 +21937,18 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+comment|/**    * @return redundancy thread.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getRedundancyThread ()
+name|Daemon
+name|getRedundancyThread
+parameter_list|()
+block|{
+return|return
+name|redundancyThread
+return|;
 block|}
 DECL|method|getBlockIdManager ()
 specifier|public

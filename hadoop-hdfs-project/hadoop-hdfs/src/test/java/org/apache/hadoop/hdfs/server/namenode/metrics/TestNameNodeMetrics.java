@@ -807,12 +807,12 @@ operator|new
 name|HdfsConfiguration
 argument_list|()
 decl_stmt|;
-DECL|field|DFS_REPLICATION_INTERVAL
+DECL|field|DFS_REDUNDANCY_INTERVAL
 specifier|private
 specifier|static
 specifier|final
 name|int
-name|DFS_REPLICATION_INTERVAL
+name|DFS_REDUNDANCY_INTERVAL
 init|=
 literal|1
 decl_stmt|;
@@ -924,7 +924,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_HEARTBEAT_INTERVAL_KEY
 argument_list|,
-name|DFS_REPLICATION_INTERVAL
+name|DFS_REDUNDANCY_INTERVAL
 argument_list|)
 expr_stmt|;
 name|CONF
@@ -933,9 +933,9 @@ name|setInt
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_REPLICATION_INTERVAL_KEY
+name|DFS_NAMENODE_REDUNDANCY_INTERVAL_SECONDS_KEY
 argument_list|,
-name|DFS_REPLICATION_INTERVAL
+name|DFS_REDUNDANCY_INTERVAL
 argument_list|)
 expr_stmt|;
 name|CONF
@@ -2261,7 +2261,7 @@ name|Thread
 operator|.
 name|sleep
 argument_list|(
-name|DFS_REPLICATION_INTERVAL
+name|DFS_REDUNDANCY_INTERVAL
 operator|*
 operator|(
 name|DATANODE_COUNT
@@ -2350,7 +2350,7 @@ name|Thread
 operator|.
 name|sleep
 argument_list|(
-name|DFS_REPLICATION_INTERVAL
+name|DFS_REDUNDANCY_INTERVAL
 operator|*
 literal|500
 argument_list|)

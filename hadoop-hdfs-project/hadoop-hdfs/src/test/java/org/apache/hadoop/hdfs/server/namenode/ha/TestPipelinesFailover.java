@@ -1012,14 +1012,14 @@ argument_list|,
 name|BLOCK_SIZE
 argument_list|)
 expr_stmt|;
-comment|// Don't check replication periodically.
+comment|// Don't check low redundancy periodically.
 name|conf
 operator|.
 name|setInt
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_REPLICATION_INTERVAL_KEY
+name|DFS_NAMENODE_REDUNDANCY_INTERVAL_SECONDS_KEY
 argument_list|,
 literal|1000
 argument_list|)

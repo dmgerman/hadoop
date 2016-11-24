@@ -793,7 +793,7 @@ argument_list|,
 name|SMALL_BLOCK
 argument_list|)
 expr_stmt|;
-comment|// Bump up replication interval so that we only run replication
+comment|// Bump up redundancy interval so that we only run low redundancy
 comment|// checks explicitly.
 name|conf
 operator|.
@@ -801,7 +801,7 @@ name|setInt
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_REPLICATION_INTERVAL_KEY
+name|DFS_NAMENODE_REDUNDANCY_INTERVAL_SECONDS_KEY
 argument_list|,
 literal|600
 argument_list|)
@@ -1173,7 +1173,7 @@ name|getPostponedMisreplicatedBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Wait for NN2 to enact its deletions (replication monitor has to run, etc)
+comment|// Wait for NN2 to enact its deletions (redundancy monitor has to run, etc)
 name|BlockManagerTestUtil
 operator|.
 name|computeInvalidationWork
@@ -1548,7 +1548,7 @@ name|getPostponedMisreplicatedBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Wait for NN2 to enact its deletions (replication monitor has to run, etc)
+comment|// Wait for NN2 to enact its deletions (redundancy monitor has to run, etc)
 name|BlockManagerTestUtil
 operator|.
 name|computeInvalidationWork
@@ -1986,7 +1986,7 @@ name|getPostponedMisreplicatedBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Wait for NN2 to enact its deletions (replication monitor has to run, etc)
+comment|// Wait for NN2 to enact its deletions (redundancy monitor has to run, etc)
 name|BlockManagerTestUtil
 operator|.
 name|computeInvalidationWork

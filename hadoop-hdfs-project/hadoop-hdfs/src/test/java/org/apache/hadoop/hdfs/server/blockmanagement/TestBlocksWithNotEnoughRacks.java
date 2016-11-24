@@ -409,7 +409,7 @@ argument_list|,
 literal|1L
 argument_list|)
 expr_stmt|;
-comment|// Have the NN ReplicationMonitor compute the replication and
+comment|// Have the NN RedundancyMonitor compute the reconstruction and
 comment|// invalidation commands to send DNs every second.
 name|conf
 operator|.
@@ -417,7 +417,7 @@ name|setInt
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_REPLICATION_INTERVAL_KEY
+name|DFS_NAMENODE_REDUNDANCY_INTERVAL_SECONDS_KEY
 argument_list|,
 literal|1
 argument_list|)

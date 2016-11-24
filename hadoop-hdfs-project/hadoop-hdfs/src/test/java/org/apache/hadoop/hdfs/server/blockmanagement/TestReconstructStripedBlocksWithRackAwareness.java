@@ -763,7 +763,7 @@ name|setInt
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_REPLICATION_INTERVAL_KEY
+name|DFS_NAMENODE_REDUNDANCY_INTERVAL_SECONDS_KEY
 argument_list|,
 literal|1
 argument_list|)
@@ -774,7 +774,7 @@ name|setBoolean
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_REPLICATION_CONSIDERLOAD_KEY
+name|DFS_NAMENODE_REDUNDANCY_CONSIDERLOAD_KEY
 argument_list|,
 literal|false
 argument_list|)
@@ -968,7 +968,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * When there are all the internal blocks available but they are not placed on    * enough racks, NameNode should avoid normal decoding reconstruction but copy    * an internal block to a new rack.    *    * In this test, we first need to create a scenario that a striped block has    * all the internal blocks but distributed in<6 racks. Then we check if the    * replication monitor can correctly schedule the reconstruction work for it.    */
+comment|/**    * When there are all the internal blocks available but they are not placed on    * enough racks, NameNode should avoid normal decoding reconstruction but copy    * an internal block to a new rack.    *    * In this test, we first need to create a scenario that a striped block has    * all the internal blocks but distributed in<6 racks. Then we check if the    * redundancy monitor can correctly schedule the reconstruction work for it.    */
 annotation|@
 name|Test
 DECL|method|testReconstructForNotEnoughRacks ()
@@ -1308,7 +1308,7 @@ name|writeUnlock
 argument_list|()
 expr_stmt|;
 block|}
-comment|// check if replication monitor correctly schedule the replication work
+comment|// check if redundancy monitor correctly schedule the reconstruction work.
 name|boolean
 name|scheduled
 init|=

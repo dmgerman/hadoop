@@ -386,11 +386,11 @@ name|getBoolean
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_REPLICATION_CONSIDERLOAD_KEY
+name|DFS_NAMENODE_REDUNDANCY_CONSIDERLOAD_KEY
 argument_list|,
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_REPLICATION_CONSIDERLOAD_DEFAULT
+name|DFS_NAMENODE_REDUNDANCY_CONSIDERLOAD_DEFAULT
 argument_list|)
 expr_stmt|;
 name|this
@@ -403,11 +403,11 @@ name|getDouble
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_REPLICATION_CONSIDERLOAD_FACTOR
+name|DFS_NAMENODE_REDUNDANCY_CONSIDERLOAD_FACTOR
 argument_list|,
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_REPLICATION_CONSIDERLOAD_FACTOR_DEFAULT
+name|DFS_NAMENODE_REDUNDANCY_CONSIDERLOAD_FACTOR_DEFAULT
 argument_list|)
 expr_stmt|;
 name|this

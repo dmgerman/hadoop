@@ -3286,11 +3286,11 @@ name|getTimeDuration
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_REPLICATION_INTERVAL_KEY
+name|DFS_NAMENODE_REDUNDANCY_INTERVAL_SECONDS_KEY
 argument_list|,
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_REPLICATION_INTERVAL_DEFAULT
+name|DFS_NAMENODE_REDUNDANCY_INTERVAL_SECONDS_DEFAULT
 argument_list|,
 name|TimeUnit
 operator|.

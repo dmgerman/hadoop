@@ -567,14 +567,14 @@ literal|1
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Next, wait for the replication monitor to mark the file as corrupt
+comment|// Next, wait for the redundancy monitor to mark the file as corrupt.
 name|Thread
 operator|.
 name|sleep
 argument_list|(
 literal|2
 operator|*
-name|DFS_NAMENODE_REPLICATION_INTERVAL_DEFAULT
+name|DFS_NAMENODE_REDUNDANCY_INTERVAL_SECONDS_DEFAULT
 operator|*
 literal|1000
 argument_list|)
@@ -708,14 +708,14 @@ argument_list|(
 literal|30000L
 argument_list|)
 expr_stmt|;
-comment|// Next, wait for the replication monitor to mark the file as corrupt
+comment|// Next, wait for the redundancy monitor to mark the file as corrupt.
 name|Thread
 operator|.
 name|sleep
 argument_list|(
 literal|2
 operator|*
-name|DFS_NAMENODE_REPLICATION_INTERVAL_DEFAULT
+name|DFS_NAMENODE_REDUNDANCY_INTERVAL_SECONDS_DEFAULT
 operator|*
 literal|1000
 argument_list|)
@@ -820,14 +820,14 @@ operator|.
 name|restartNameNodes
 argument_list|()
 expr_stmt|;
-comment|// wait for the replication monitor to mark the file as corrupt
+comment|// wait for the redundancy monitor to mark the file as corrupt.
 name|Thread
 operator|.
 name|sleep
 argument_list|(
 literal|2
 operator|*
-name|DFS_NAMENODE_REPLICATION_INTERVAL_DEFAULT
+name|DFS_NAMENODE_REDUNDANCY_INTERVAL_SECONDS_DEFAULT
 operator|*
 literal|1000
 argument_list|)

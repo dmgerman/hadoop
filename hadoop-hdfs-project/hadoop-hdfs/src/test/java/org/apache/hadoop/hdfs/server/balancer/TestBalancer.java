@@ -1806,7 +1806,7 @@ name|setLong
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_REPLICATION_INTERVAL_KEY
+name|DFS_NAMENODE_REDUNDANCY_INTERVAL_SECONDS_KEY
 argument_list|,
 literal|1L
 argument_list|)
@@ -2047,7 +2047,7 @@ name|setBoolean
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_REPLICATION_CONSIDERLOAD_KEY
+name|DFS_NAMENODE_REDUNDANCY_CONSIDERLOAD_KEY
 argument_list|,
 literal|false
 argument_list|)
@@ -2076,7 +2076,7 @@ name|setLong
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_REPLICATION_INTERVAL_KEY
+name|DFS_NAMENODE_REDUNDANCY_INTERVAL_SECONDS_KEY
 argument_list|,
 literal|1L
 argument_list|)
@@ -6285,11 +6285,11 @@ name|getLong
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_REPLICATION_INTERVAL_KEY
+name|DFS_NAMENODE_REDUNDANCY_INTERVAL_SECONDS_KEY
 argument_list|,
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_REPLICATION_INTERVAL_DEFAULT
+name|DFS_NAMENODE_REDUNDANCY_INTERVAL_SECONDS_DEFAULT
 argument_list|)
 operator|*
 literal|1000
@@ -10167,7 +10167,7 @@ name|setLong
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_REPLICATION_INTERVAL_KEY
+name|DFS_NAMENODE_REDUNDANCY_INTERVAL_SECONDS_KEY
 argument_list|,
 literal|1
 argument_list|)
@@ -10540,7 +10540,7 @@ name|setLong
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_REPLICATION_INTERVAL_KEY
+name|DFS_NAMENODE_REDUNDANCY_INTERVAL_SECONDS_KEY
 argument_list|,
 literal|1L
 argument_list|)

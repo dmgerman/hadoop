@@ -295,7 +295,7 @@ name|setDouble
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_REPLICATION_CONSIDERLOAD_FACTOR
+name|DFS_NAMENODE_REDUNDANCY_CONSIDERLOAD_FACTOR
 argument_list|,
 literal|1.2
 argument_list|)

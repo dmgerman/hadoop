@@ -6864,7 +6864,7 @@ expr_stmt|;
 block|}
 block|}
 comment|// end BlockReportStats
-comment|/**    * Measures how fast replication monitor can compute data-node work.    *     * It runs only one thread until no more work can be scheduled.    */
+comment|/**    * Measures how fast redundancy monitor can compute data-node work.    *    * It runs only one thread until no more work can be scheduled.    */
 DECL|class|ReplicationStats
 class|class
 name|ReplicationStats
@@ -6965,7 +6965,7 @@ argument_list|)
 expr_stmt|;
 comment|// number of operations is 4 times the number of decommissioned
 comment|// blocks divided by the number of needed replications scanned
-comment|// by the replication monitor in one iteration
+comment|// by the redundancy monitor in one iteration
 name|numOpsRequired
 operator|=
 operator|(
@@ -7368,10 +7368,10 @@ argument_list|(
 name|ignore
 argument_list|)
 expr_stmt|;
-comment|// stop replication monitor
+comment|// stop redundancy monitor thread.
 name|BlockManagerTestUtil
 operator|.
-name|stopReplicationThread
+name|stopRedundancyThread
 argument_list|(
 name|namesystem
 operator|.
