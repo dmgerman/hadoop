@@ -10813,12 +10813,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 throw|throw
-name|RPCUtil
-operator|.
-name|getRemoteException
-argument_list|(
 name|ex
-argument_list|)
 throw|;
 block|}
 name|RMAuditLogger

@@ -429,6 +429,15 @@ name|UPDATE_APP_TIMEOUTS
 init|=
 literal|"Update Application Timeouts"
 decl_stmt|;
+DECL|field|GET_APP_TIMEOUTS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|GET_APP_TIMEOUTS
+init|=
+literal|"Get Application Timeouts"
+decl_stmt|;
 DECL|field|CHANGE_CONTAINER_RESOURCE
 specifier|public
 specifier|static

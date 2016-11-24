@@ -2828,6 +2828,8 @@ operator|new
 name|YarnException
 argument_list|(
 name|message
+argument_list|,
+name|ex
 argument_list|)
 throw|;
 block|}

@@ -313,6 +313,14 @@ block|,
 name|FairSchedulerQueueInfoList
 operator|.
 name|class
+block|,
+name|AppTimeoutsInfo
+operator|.
+name|class
+block|,
+name|AppTimeoutInfo
+operator|.
+name|class
 block|}
 decl_stmt|;
 comment|// these dao classes need root unwrapping

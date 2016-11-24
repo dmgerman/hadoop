@@ -38,6 +38,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|LinkedHashMap
 import|;
 end_import
@@ -1462,13 +1472,12 @@ argument_list|>
 name|getApplicationTimeouts
 parameter_list|()
 block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|(
-literal|"Not supported yet."
-argument_list|)
-throw|;
+return|return
+name|Collections
+operator|.
+name|emptyMap
+argument_list|()
+return|;
 block|}
 annotation|@
 name|Override
