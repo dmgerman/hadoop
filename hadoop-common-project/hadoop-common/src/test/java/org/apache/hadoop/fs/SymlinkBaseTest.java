@@ -3430,7 +3430,13 @@ condition|)
 block|{
 name|assertEquals
 argument_list|(
-literal|"No FileSystem for scheme: null"
+literal|"No FileSystem for scheme "
+operator|+
+literal|"\""
+operator|+
+literal|"null"
+operator|+
+literal|"\""
 argument_list|,
 name|e
 operator|.
