@@ -179,16 +179,6 @@ import|;
 end_import
 
 begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Locale
-import|;
-end_import
-
-begin_import
 import|import static
 name|com
 operator|.
@@ -2347,7 +2337,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Scheduled snapshot period at "
+literal|"Scheduled Metric snapshot period at "
 operator|+
 operator|(
 name|period
