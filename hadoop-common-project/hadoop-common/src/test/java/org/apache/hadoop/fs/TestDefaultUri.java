@@ -69,18 +69,6 @@ import|;
 end_import
 
 begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|fail
-import|;
-end_import
-
-begin_import
 import|import
 name|java
 operator|.
@@ -118,23 +106,25 @@ begin_import
 import|import
 name|org
 operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|apache
 operator|.
 name|hadoop
 operator|.
 name|test
 operator|.
-name|GenericTestUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
+name|LambdaTestUtils
 operator|.
-name|junit
-operator|.
-name|Test
+name|*
 import|;
 end_import
 
@@ -380,6 +370,8 @@ specifier|public
 name|void
 name|tetGetDefaultUriNoSchemeTrailingSlash
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|conf
 operator|.
@@ -390,37 +382,24 @@ argument_list|,
 literal|"nn_host/"
 argument_list|)
 expr_stmt|;
-try|try
-block|{
+name|intercept
+argument_list|(
+name|IllegalArgumentException
+operator|.
+name|class
+argument_list|,
+literal|"No scheme in default FS"
+argument_list|,
+parameter_list|()
+lambda|->
 name|FileSystem
 operator|.
 name|getDefaultUri
 argument_list|(
 name|conf
 argument_list|)
-expr_stmt|;
-name|fail
-argument_list|(
-literal|"Expect IAE: No scheme in default FS"
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IllegalArgumentException
-name|e
-parameter_list|)
-block|{
-name|GenericTestUtils
-operator|.
-name|assertExceptionContains
-argument_list|(
-literal|"No scheme in default FS"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 annotation|@
 name|Test
@@ -472,7 +451,7 @@ name|void
 name|tetFsGetNoScheme
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 comment|// Bare host name or address indicates hdfs scheme
 name|conf
@@ -484,37 +463,24 @@ argument_list|,
 literal|"nn_host"
 argument_list|)
 expr_stmt|;
-try|try
-block|{
+name|intercept
+argument_list|(
+name|UnsupportedFileSystemException
+operator|.
+name|class
+argument_list|,
+literal|"hdfs"
+argument_list|,
+parameter_list|()
+lambda|->
 name|FileSystem
 operator|.
 name|get
 argument_list|(
 name|conf
 argument_list|)
-expr_stmt|;
-name|fail
-argument_list|(
-literal|"Expect IOE: No FileSystem for scheme: hdfs"
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|GenericTestUtils
-operator|.
-name|assertExceptionContains
-argument_list|(
-literal|"No FileSystem for scheme: hdfs"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 annotation|@
 name|Test
@@ -524,7 +490,7 @@ name|void
 name|tetFsGetNoSchemeTrailingSlash
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 comment|// Bare host name or address with trailing slash is invalid
 name|conf
@@ -536,37 +502,24 @@ argument_list|,
 literal|"nn_host/"
 argument_list|)
 expr_stmt|;
-try|try
-block|{
+name|intercept
+argument_list|(
+name|IllegalArgumentException
+operator|.
+name|class
+argument_list|,
+literal|"No scheme in default FS"
+argument_list|,
+parameter_list|()
+lambda|->
 name|FileSystem
 operator|.
 name|get
 argument_list|(
 name|conf
 argument_list|)
-expr_stmt|;
-name|fail
-argument_list|(
-literal|"Expect IAE: No scheme in default FS"
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IllegalArgumentException
-name|e
-parameter_list|)
-block|{
-name|GenericTestUtils
-operator|.
-name|assertExceptionContains
-argument_list|(
-literal|"No scheme in default FS"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 block|}
 end_class

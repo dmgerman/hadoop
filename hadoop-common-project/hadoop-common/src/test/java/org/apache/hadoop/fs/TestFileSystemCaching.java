@@ -552,21 +552,10 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|UnsupportedFileSystemException
 name|e
 parameter_list|)
-block|{
-name|assertEquals
-argument_list|(
-literal|"No FileSystem for scheme: null"
-argument_list|,
-name|e
-operator|.
-name|getMessage
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
+block|{     }
 comment|// no scheme, different auth
 try|try
 block|{
@@ -594,21 +583,10 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|UnsupportedFileSystemException
 name|e
 parameter_list|)
-block|{
-name|assertEquals
-argument_list|(
-literal|"No FileSystem for scheme: null"
-argument_list|,
-name|e
-operator|.
-name|getMessage
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
+block|{     }
 block|}
 DECL|class|InitializeForeverFileSystem
 specifier|public

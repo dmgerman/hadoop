@@ -1,6 +1,6 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *  *     http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
+comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *  *     http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
 end_comment
 
 begin_package
@@ -731,6 +731,26 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
+begin_import
 import|import static
 name|com
 operator|.
@@ -763,10 +783,15 @@ import|;
 end_import
 
 begin_comment
-comment|/****************************************************************  * An abstract base class for a fairly generic filesystem.  It  * may be implemented as a distributed filesystem, or as a "local"  * one that reflects the locally-connected disk.  The local version  * exists for small Hadoop instances and for testing.  *  *<p>  *  * All user code that may potentially use the Hadoop Distributed  * File System should be written to use a FileSystem object.  The  * Hadoop DFS is a multi-machine system that appears as a single  * disk.  It's useful because of its fault tolerance and potentially  * very large capacity.  *   *<p>  * The local implementation is {@link LocalFileSystem} and distributed  * implementation is DistributedFileSystem.  *****************************************************************/
+comment|/****************************************************************  * An abstract base class for a fairly generic filesystem.  It  * may be implemented as a distributed filesystem, or as a "local"  * one that reflects the locally-connected disk.  The local version  * exists for small Hadoop instances and for testing.  *  *<p>  *  * All user code that may potentially use the Hadoop Distributed  * File System should be written to use a FileSystem object or its  * successor, {@link FileContext}.  *  *<p>  * The local implementation is {@link LocalFileSystem} and distributed  * implementation is DistributedFileSystem. There are other implementations  * for object stores and (outside the Apache Hadoop codebase),  * third party filesystems.  *<p>  * Notes  *<ol>  *<li>The behaviour of the filesystem is  *<a href="https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/filesystem/filesystem.html">  * specified in the Hadoop documentation.</a>  * However, the normative specification of the behavior of this class is  * actually HDFS: if HDFS does not behave the way these Javadocs or  * the specification in the Hadoop documentations define, assume that  * the documentation is incorrect.  *</li>  *<li>The term {@code FileSystem} refers to an instance of this class.</li>  *<li>The acronym "FS" is used as an abbreviation of FileSystem.</li>  *<li>The term {@code filesystem} refers to the distributed/local filesystem  * itself, rather than the class used to interact with it.</li>  *<li>The term "file" refers to a file in the remote filesystem,  * rather than instances of {@code java.io.File}.</li>  *</ol>  *****************************************************************/
 end_comment
 
 begin_class
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"DeprecatedIsStillUsed"
+argument_list|)
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -807,6 +832,11 @@ name|CommonConfigurationKeys
 operator|.
 name|FS_DEFAULT_NAME_DEFAULT
 decl_stmt|;
+comment|/**    * This log is widely used in the org.apache.hadoop.fs code and tests,    * so must be considered something to only be changed with care.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|field|LOG
 specifier|public
 specifier|static
@@ -823,7 +853,24 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * Priority of the FileSystem shutdown hook.    */
+comment|/**    * The SLF4J logger to use in logging within the FileSystem class itself.    */
+DECL|field|LOGGER
+specifier|private
+specifier|static
+specifier|final
+name|Logger
+name|LOGGER
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|FileSystem
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+comment|/**    * Priority of the FileSystem shutdown hook: {@value}.    */
 DECL|field|SHUTDOWN_HOOK_PRIORITY
 specifier|public
 specifier|static
@@ -833,6 +880,7 @@ name|SHUTDOWN_HOOK_PRIORITY
 init|=
 literal|10
 decl_stmt|;
+comment|/**    * Prefix for trash directory: {@value}.    */
 DECL|field|TRASH_PREFIX
 specifier|public
 specifier|static
@@ -851,7 +899,7 @@ name|USER_HOME_PREFIX
 init|=
 literal|"/user"
 decl_stmt|;
-comment|/** FileSystem cache */
+comment|/** FileSystem cache. */
 DECL|field|CACHE
 specifier|static
 specifier|final
@@ -870,7 +918,7 @@ operator|.
 name|Key
 name|key
 decl_stmt|;
-comment|/** Recording statistics per a FileSystem class */
+comment|/** Recording statistics per a FileSystem class. */
 specifier|private
 specifier|static
 specifier|final
@@ -890,16 +938,7 @@ name|statisticsTable
 init|=
 operator|new
 name|IdentityHashMap
-argument_list|<
-name|Class
-argument_list|<
-name|?
-extends|extends
-name|FileSystem
-argument_list|>
-argument_list|,
-name|Statistics
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|/**    * The statistics for this file system.    */
@@ -908,9 +947,10 @@ specifier|protected
 name|Statistics
 name|statistics
 decl_stmt|;
-comment|/**    * A cache of files that should be deleted when filesystem is closed    * or the JVM is exited.    */
+comment|/**    * A cache of files that should be deleted when the FileSystem is closed    * or the JVM is exited.    */
 DECL|field|deleteOnExit
 specifier|private
+specifier|final
 name|Set
 argument_list|<
 name|Path
@@ -919,16 +959,17 @@ name|deleteOnExit
 init|=
 operator|new
 name|TreeSet
-argument_list|<
-name|Path
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
+comment|/**    * Should symbolic links be resolved by {@link FileSystemLinkResolver}.    * Set to the value of    * {@link CommonConfigurationKeysPublic#FS_CLIENT_RESOLVE_REMOTE_SYMLINKS_KEY}    */
 DECL|field|resolveSymlinks
 name|boolean
 name|resolveSymlinks
 decl_stmt|;
-comment|/**    * This method adds a file system for testing so that we can find it later. It    * is only for testing.    * @param uri the uri to store it under    * @param conf the configuration to store it under    * @param fs the file system to store    * @throws IOException    */
+comment|/**    * This method adds a FileSystem instance to the cache so that it can    * be retrieved later. It is only for testing.    * @param uri the uri to store it under    * @param conf the configuration to store it under    * @param fs the FileSystem to store    * @throws IOException if the current user cannot be determined.    */
+annotation|@
+name|VisibleForTesting
 DECL|method|addFileSystemForTesting (URI uri, Configuration conf, FileSystem fs)
 specifier|static
 name|void
@@ -966,7 +1007,7 @@ name|fs
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get a filesystem instance based on the uri, the passed    * configuration and the user    * @param uri of the filesystem    * @param conf the configuration to use    * @param user to perform the get as    * @return the filesystem instance    * @throws IOException    * @throws InterruptedException    */
+comment|/**    * Get a FileSystem instance based on the uri, the passed in    * configuration and the user.    * @param uri of the filesystem    * @param conf the configuration to use    * @param user to perform the get as    * @return the filesystem instance    * @throws IOException failure to load    * @throws InterruptedException If the {@code UGI.doAs()} call was    * somehow interrupted.    */
 DECL|method|get (final URI uri, final Configuration conf, final String user)
 specifier|public
 specifier|static
@@ -1048,7 +1089,7 @@ block|}
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns the configured filesystem implementation.    * @param conf the configuration to use    */
+comment|/**    * Returns the configured FileSystem implementation.    * @param conf the configuration to use    */
 DECL|method|get (Configuration conf)
 specifier|public
 specifier|static
@@ -1073,7 +1114,7 @@ name|conf
 argument_list|)
 return|;
 block|}
-comment|/** Get the default filesystem URI from a configuration.    * @param conf the configuration to use    * @return the uri of the default filesystem    */
+comment|/**    * Get the default FileSystem URI from a configuration.    * @param conf the configuration to use    * @return the uri of the default filesystem    */
 DECL|method|getDefaultUri (Configuration conf)
 specifier|public
 specifier|static
@@ -1128,7 +1169,7 @@ return|return
 name|uri
 return|;
 block|}
-comment|/** Set the default filesystem URI in a configuration.    * @param conf the configuration to alter    * @param uri the new default filesystem uri    */
+comment|/**    * Set the default FileSystem URI in a configuration.    * @param conf the configuration to alter    * @param uri the new default filesystem uri    */
 DECL|method|setDefaultUri (Configuration conf, URI uri)
 specifier|public
 specifier|static
@@ -1155,7 +1196,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Set the default filesystem URI in a configuration.    * @param conf the configuration to alter    * @param uri the new default filesystem uri    */
+comment|/** Set the default FileSystem URI in a configuration.    * @param conf the configuration to alter    * @param uri the new default filesystem uri    */
 DECL|method|setDefaultUri (Configuration conf, String uri)
 specifier|public
 specifier|static
@@ -1185,7 +1226,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Called after a new FileSystem instance is constructed.    * @param name a uri whose authority section names the host, port, etc.    *   for this FileSystem    * @param conf the configuration    */
+comment|/**    * Initialize a FileSystem.    *    * Called after the new FileSystem instance is constructed, and before it    * is ready for use.    *    * FileSystem implementations overriding this method MUST forward it to    * their superclass, though the order in which it is done, and whether    * to alter the configuration before the invocation are options of the    * subclass.    * @param name a URI whose authority section names the host, port, etc.    *   for this FileSystem    * @param conf the configuration    * @throws IOException on any failure to initialize this instance.    * @throws IllegalArgumentException if the URI is considered invalid.    */
 DECL|method|initialize (URI name, Configuration conf)
 specifier|public
 name|void
@@ -1259,17 +1300,17 @@ name|conf
 operator|.
 name|getBoolean
 argument_list|(
-name|CommonConfigurationKeys
+name|CommonConfigurationKeysPublic
 operator|.
 name|FS_CLIENT_RESOLVE_REMOTE_SYMLINKS_KEY
 argument_list|,
-name|CommonConfigurationKeys
+name|CommonConfigurationKeysPublic
 operator|.
 name|FS_CLIENT_RESOLVE_REMOTE_SYMLINKS_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Return the protocol scheme for the FileSystem.    *<p/>    * This implementation throws an<code>UnsupportedOperationException</code>.    *    * @return the protocol scheme for the FileSystem.    */
+comment|/**    * Return the protocol scheme for this FileSystem.    *<p>    * This implementation throws an<code>UnsupportedOperationException</code>.    *    * @return the protocol scheme for this FileSystem.    * @throws UnsupportedOperationException if the operation is unsupported    *         (default).    */
 DECL|method|getScheme ()
 specifier|public
 name|String
@@ -1292,7 +1333,7 @@ literal|" FileSystem implementation"
 argument_list|)
 throw|;
 block|}
-comment|/** Returns a URI whose scheme and authority identify this FileSystem.*/
+comment|/**    * Returns a URI which identifies this FileSystem.    *    * @return the URI of this filesystem.    */
 DECL|method|getUri ()
 specifier|public
 specifier|abstract
@@ -1300,7 +1341,7 @@ name|URI
 name|getUri
 parameter_list|()
 function_decl|;
-comment|/**    * Return a canonicalized form of this FileSystem's URI.    *     * The default implementation simply calls {@link #canonicalizeUri(URI)}    * on the filesystem's own URI, so subclasses typically only need to    * implement that method.    *    * @see #canonicalizeUri(URI)    */
+comment|/**    * Return a canonicalized form of this FileSystem's URI.    *    * The default implementation simply calls {@link #canonicalizeUri(URI)}    * on the filesystem's own URI, so subclasses typically only need to    * implement that method.    *    * @see #canonicalizeUri(URI)    */
 DECL|method|getCanonicalUri ()
 specifier|protected
 name|URI
@@ -1315,7 +1356,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Canonicalize the given URI.    *     * This is filesystem-dependent, but may for example consist of    * canonicalizing the hostname using DNS and adding the default    * port if not specified.    *     * The default implementation simply fills in the default port if    * not specified and if the filesystem has a default port.    *    * @return URI    * @see NetUtils#getCanonicalUri(URI, int)    */
+comment|/**    * Canonicalize the given URI.    *    * This is implementation-dependent, and may for example consist of    * canonicalizing the hostname using DNS and adding the default    * port if not specified.    *    * The default implementation simply fills in the default port if    * not specified and if {@link #getDefaultPort()} returns a    * default port.    *    * @return URI    * @see NetUtils#getCanonicalUri(URI, int)    */
 DECL|method|canonicalizeUri (URI uri)
 specifier|protected
 name|URI
@@ -1406,7 +1447,7 @@ return|return
 name|uri
 return|;
 block|}
-comment|/**    * Get the default port for this file system.    * @return the default port or 0 if there isn't one    */
+comment|/**    * Get the default port for this FileSystem.    * @return the default port or 0 if there isn't one    */
 DECL|method|getDefaultPort ()
 specifier|protected
 name|int
@@ -1446,7 +1487,7 @@ operator|.
 name|checkNotRelative
 argument_list|()
 expr_stmt|;
-comment|// Uses the default file system if not fully qualified
+comment|// Uses the default FileSystem if not fully qualified
 return|return
 name|get
 argument_list|(
@@ -1459,7 +1500,7 @@ name|conf
 argument_list|)
 return|;
 block|}
-comment|/**    * Get a canonical service name for this file system.  The token cache is    * the only user of the canonical service name, and uses it to lookup this    * filesystem's service tokens.    * If file system provides a token of its own then it must have a canonical    * name, otherwise canonical name can be null.    *     * Default Impl: If the file system has child file systems     * (such as an embedded file system) then it is assumed that the fs has no    * tokens of its own and hence returns a null name; otherwise a service    * name is built using Uri and port.    *     * @return a service string that uniquely identifies this file system, null    *         if the filesystem does not implement tokens    * @see SecurityUtil#buildDTServiceName(URI, int)     */
+comment|/**    * Get a canonical service name for this FileSystem.    * The token cache is the only user of the canonical service name,    * and uses it to lookup this FileSystem's service tokens.    * If the file system provides a token of its own then it must have a    * canonical name, otherwise the canonical name can be null.    *    * Default implementation: If the FileSystem has child file systems    * (such as an embedded file system) then it is assumed that the FS has no    * tokens of its own and hence returns a null name; otherwise a service    * name is built using Uri and port.    *    * @return a service string that uniquely identifies this file system, null    *         if the filesystem does not implement tokens    * @see SecurityUtil#buildDTServiceName(URI, int)    */
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -1499,7 +1540,7 @@ else|:
 literal|null
 return|;
 block|}
-comment|/** @deprecated call #getUri() instead.*/
+comment|/** @deprecated call {@link #getUri()} instead.*/
 annotation|@
 name|Deprecated
 DECL|method|getName ()
@@ -1516,7 +1557,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/** @deprecated call #get(URI,Configuration) instead. */
+comment|/** @deprecated call {@link #get(URI, Configuration)} instead. */
 annotation|@
 name|Deprecated
 DECL|method|getNamed (String name, Configuration conf)
@@ -1551,7 +1592,7 @@ name|conf
 argument_list|)
 return|;
 block|}
-comment|/** Update old-format filesystem names, for back-compatibility.  This should    * eventually be replaced with a checkName() method that throws an exception    * for old-format names. */
+comment|/** Update old-format filesystem names, for back-compatibility.  This should    * eventually be replaced with a checkName() method that throws an exception    * for old-format names.    */
 DECL|method|fixName (String name)
 specifier|private
 specifier|static
@@ -1574,7 +1615,7 @@ argument_list|)
 condition|)
 block|{
 comment|// "local" is now "file:///".
-name|LOG
+name|LOGGER
 operator|.
 name|warn
 argument_list|(
@@ -1603,7 +1644,7 @@ literal|1
 condition|)
 block|{
 comment|// unqualified is "hdfs://"
-name|LOG
+name|LOGGER
 operator|.
 name|warn
 argument_list|(
@@ -1631,7 +1672,7 @@ return|return
 name|name
 return|;
 block|}
-comment|/**    * Get the local file system.    * @param conf the configuration to configure the file system with    * @return a LocalFileSystem    */
+comment|/**    * Get the local FileSystem.    * @param conf the configuration to configure the FileSystem with    * if it is newly instantiated.    * @return a LocalFileSystem    * @throws IOException if somehow the local FS cannot be instantiated.    */
 DECL|method|getLocal (Configuration conf)
 specifier|public
 specifier|static
@@ -1658,7 +1699,7 @@ name|conf
 argument_list|)
 return|;
 block|}
-comment|/** Returns the FileSystem for this URI's scheme and authority.  The scheme    * of the URI determines a configuration property name,    *<tt>fs.<i>scheme</i>.class</tt> whose value names the FileSystem class.    * The entire URI is passed to the FileSystem instance's initialize method.    */
+comment|/**    * Get a FileSystem for this URI's scheme and authority.    *<ol>    *<li>    *   If the configuration has the property    *   {@code "fs.$SCHEME.impl.disable.cache"} set to true,    *   a new instance will be created, initialized with the supplied URI and    *   configuration, then returned without being cached.    *</li>    *<li>    *   If the there is a cached FS instance matching the same URI, it will    *   be returned.    *</li>    *<li>    *   Otherwise: a new FS instance will be created, initialized with the    *   configuration and URI, cached and returned to the caller.    *</li>    *</ol>    * @throws IOException if the FileSystem cannot be instantiated.    */
 DECL|method|get (URI uri, Configuration conf)
 specifier|public
 specifier|static
@@ -1786,6 +1827,15 @@ literal|false
 argument_list|)
 condition|)
 block|{
+name|LOGGER
+operator|.
+name|debug
+argument_list|(
+literal|"Bypassing cache to create filesystem {}"
+argument_list|,
+name|uri
+argument_list|)
+expr_stmt|;
 return|return
 name|createFileSystem
 argument_list|(
@@ -1806,7 +1856,7 @@ name|conf
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns the FileSystem for this URI's scheme and authority and the     * passed user. Internally invokes {@link #newInstance(URI, Configuration)}    * @param uri of the filesystem    * @param conf the configuration to use    * @param user to perform the get as    * @return filesystem instance    * @throws IOException    * @throws InterruptedException    */
+comment|/**    * Returns the FileSystem for this URI's scheme and authority and the    * given user. Internally invokes {@link #newInstance(URI, Configuration)}    * @param uri of the filesystem    * @param conf the configuration to use    * @param user to perform the get as    * @return filesystem instance    * @throws IOException if the FileSystem cannot be instantiated.    * @throws InterruptedException If the {@code UGI.doAs()} call was    *         somehow interrupted.    */
 DECL|method|newInstance (final URI uri, final Configuration conf, final String user)
 specifier|public
 specifier|static
@@ -1888,8 +1938,8 @@ block|}
 argument_list|)
 return|;
 block|}
-comment|/** Returns the FileSystem for this URI's scheme and authority.  The scheme    * of the URI determines a configuration property name,    *<tt>fs.<i>scheme</i>.class</tt> whose value names the FileSystem class.    * The entire URI is passed to the FileSystem instance's initialize method.    * This always returns a new FileSystem object.    */
-DECL|method|newInstance (URI uri, Configuration conf)
+comment|/**    * Returns the FileSystem for this URI's scheme and authority.    * The entire URI is passed to the FileSystem instance's initialize method.    * This always returns a new FileSystem object.    * @param uri FS URI    * @param config configuration to use    * @return the new FS instance    * @throws IOException FS creation or initialization failure.    */
+DECL|method|newInstance (URI uri, Configuration config)
 specifier|public
 specifier|static
 name|FileSystem
@@ -1899,7 +1949,7 @@ name|URI
 name|uri
 parameter_list|,
 name|Configuration
-name|conf
+name|config
 parameter_list|)
 throws|throws
 name|IOException
@@ -1931,7 +1981,7 @@ comment|// no scheme: use default FS
 return|return
 name|newInstance
 argument_list|(
-name|conf
+name|config
 argument_list|)
 return|;
 block|}
@@ -1948,7 +1998,7 @@ name|defaultUri
 init|=
 name|getDefaultUri
 argument_list|(
-name|conf
+name|config
 argument_list|)
 decl_stmt|;
 if|if
@@ -1978,7 +2028,7 @@ name|newInstance
 argument_list|(
 name|defaultUri
 argument_list|,
-name|conf
+name|config
 argument_list|)
 return|;
 comment|// return default
@@ -1991,11 +2041,11 @@ name|getUnique
 argument_list|(
 name|uri
 argument_list|,
-name|conf
+name|config
 argument_list|)
 return|;
 block|}
-comment|/** Returns a unique configured filesystem implementation.    * This always returns a new FileSystem object.    * @param conf the configuration to use    */
+comment|/**    * Returns a unique configured FileSystem implementation for the default    * filesystem of the supplied configuration.    * This always returns a new FileSystem object.    * @param conf the configuration to use    * @return the new FS instance    * @throws IOException FS creation or initialization failure.    */
 DECL|method|newInstance (Configuration conf)
 specifier|public
 specifier|static
@@ -2020,7 +2070,7 @@ name|conf
 argument_list|)
 return|;
 block|}
-comment|/**    * Get a unique local file system object    * @param conf the configuration to configure the file system with    * @return a LocalFileSystem    * This always returns a new FileSystem object.    */
+comment|/**    * Get a unique local FileSystem object.    * @param conf the configuration to configure the FileSystem with    * @return a new LocalFileSystem object.    * @throws IOException FS creation or initialization failure.    */
 DECL|method|newInstanceLocal (Configuration conf)
 specifier|public
 specifier|static
@@ -2047,7 +2097,7 @@ name|conf
 argument_list|)
 return|;
 block|}
-comment|/**    * Close all cached filesystems. Be sure those filesystems are not    * used anymore.    *     * @throws IOException    */
+comment|/**    * Close all cached FileSystem instances. After this operation, they    * may not be used in any operations.    *    * @throws IOException a problem arose closing one or more filesystem.    */
 DECL|method|closeAll ()
 specifier|public
 specifier|static
@@ -2063,7 +2113,7 @@ name|closeAll
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Close all cached filesystems for a given UGI. Be sure those filesystems     * are not used anymore.    * @param ugi user group info to close    * @throws IOException    */
+comment|/**    * Close all cached FileSystem instances for a given UGI.    * Be sure those filesystems are not used anymore.    * @param ugi user group info to close    * @throws IOException a problem arose closing one or more filesystem.    */
 DECL|method|closeAllForUGI (UserGroupInformation ugi)
 specifier|public
 specifier|static
@@ -2084,7 +2134,7 @@ name|ugi
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**     * Make sure that a path specifies a FileSystem.    * @param path to use    */
+comment|/**    * Qualify a path to one which uses this FileSystem and, if relative,    * made absolute.    * @param path to qualify.    * @return this path if it contains a scheme and authority and is absolute, or    * a new path that includes a path and authority and is fully qualified    * @see Path#makeQualified(URI, Path)    * @throws IllegalArgumentException if the path has a schema/URI different    * from this FileSystem.    */
 DECL|method|makeQualified (Path path)
 specifier|public
 name|Path
@@ -2116,7 +2166,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Get a new delegation token for this file system.    * This is an internal method that should have been declared protected    * but wasn't historically.    * Callers should use {@link #addDelegationTokens(String, Credentials)}    *     * @param renewer the account name that is allowed to renew the token.    * @return a new delegation token    * @throws IOException    */
+comment|/**    * Get a new delegation token for this FileSystem.    * This is an internal method that should have been declared protected    * but wasn't historically.    * Callers should use {@link #addDelegationTokens(String, Credentials)}    *    * @param renewer the account name that is allowed to renew the token.    * @return a new delegation token or null if the FS does not support tokens.    * @throws IOException on any problem obtaining a token    */
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -2140,7 +2190,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Obtain all delegation tokens used by this FileSystem that are not    * already present in the given Credentials.  Existing tokens will neither    * be verified as valid nor having the given renewer.  Missing tokens will    * be acquired and added to the given Credentials.    *     * Default Impl: works for simple fs with its own token    * and also for an embedded fs whose tokens are those of its    * children file system (i.e. the embedded fs has not tokens of its    * own).    *     * @param renewer the user allowed to renew the delegation tokens    * @param credentials cache in which to add new delegation tokens    * @return list of new delegation tokens    * @throws IOException    */
+comment|/**    * Obtain all delegation tokens used by this FileSystem that are not    * already present in the given Credentials. Existing tokens will neither    * be verified as valid nor having the given renewer.  Missing tokens will    * be acquired and added to the given Credentials.    *    * Default Impl: works for simple FS with its own token    * and also for an embedded FS whose tokens are those of its    * child FileSystems (i.e. the embedded FS has no tokens of its own).    *    * @param renewer the user allowed to renew the delegation tokens    * @param credentials cache in which to add new delegation tokens    * @return list of new delegation tokens    * @throws IOException problems obtaining a token    */
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -2197,12 +2247,7 @@ name|tokens
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|Token
-argument_list|<
-name|?
-argument_list|>
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|collectDelegationTokens
@@ -2233,7 +2278,7 @@ index|]
 argument_list|)
 return|;
 block|}
-comment|/**    * Recursively obtain the tokens for this FileSystem and all descended    * FileSystems as determined by getChildFileSystems().    * @param renewer the user allowed to renew the delegation tokens    * @param credentials cache in which to add the new delegation tokens    * @param tokens list in which to add acquired tokens    * @throws IOException    */
+comment|/**    * Recursively obtain the tokens for this FileSystem and all descendant    * FileSystems as determined by {@link #getChildFileSystems()}.    * @param renewer the user allowed to renew the delegation tokens    * @param credentials cache in which to add the new delegation tokens    * @param tokens list in which to add acquired tokens    * @throws IOException problems obtaining a token    */
 DECL|method|collectDelegationTokens (final String renewer, final Credentials credentials, final List<Token<?>> tokens)
 specifier|private
 name|void
@@ -2378,7 +2423,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Get all the immediate child FileSystems embedded in this FileSystem.    * It does not recurse and get grand children.  If a FileSystem    * has multiple child FileSystems, then it should return a unique list    * of those FileSystems.  Default is to return null to signify no children.    *     * @return FileSystems used by this FileSystem    */
+comment|/**    * Get all the immediate child FileSystems embedded in this FileSystem.    * It does not recurse and get grand children.  If a FileSystem    * has multiple child FileSystems, then it must return a unique list    * of those FileSystems.  Default is to return null to signify no children.    *    * @return FileSystems that are direct children of this FileSystem,    *         or null for "no children"    */
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -2401,7 +2446,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/** create a file with the provided permission    * The permission of the file is set to be the provided permission as in    * setPermission, not permission&~umask    *     * It is implemented using two RPCs. It is understood that it is inefficient,    * but the implementation is thread-safe. The other option is to change the    * value of umask in configuration to be 0, but it is not thread-safe.    *     * @param fs file system handle    * @param file the name of the file to be created    * @param permission the permission of the file    * @return an output stream    * @throws IOException    */
+comment|/**    * Create a file with the provided permission.    *    * The permission of the file is set to be the provided permission as in    * setPermission, not permission&~umask    *    * The HDFS implementation is implemented using two RPCs.    * It is understood that it is inefficient,    * but the implementation is thread-safe. The other option is to change the    * value of umask in configuration to be 0, but it is not thread-safe.    *    * @param fs FileSystem    * @param file the name of the file to be created    * @param permission the permission of the file    * @return an output stream    * @throws IOException IO failure    */
 DECL|method|create (FileSystem fs, Path file, FsPermission permission)
 specifier|public
 specifier|static
@@ -2445,7 +2490,7 @@ return|return
 name|out
 return|;
 block|}
-comment|/** create a directory with the provided permission    * The permission of the directory is set to be the provided permission as in    * setPermission, not permission&~umask    *     * @see #create(FileSystem, Path, FsPermission)    *     * @param fs file system handle    * @param dir the name of the directory to be created    * @param permission the permission of the directory    * @return true if the directory creation succeeds; false otherwise    * @throws IOException    */
+comment|/**    * Create a directory with the provided permission.    * The permission of the directory is set to be the provided permission as in    * setPermission, not permission&~umask    *    * @see #create(FileSystem, Path, FsPermission)    *    * @param fs FileSystem handle    * @param dir the name of the directory to be created    * @param permission the permission of the directory    * @return true if the directory creation succeeds; false otherwise    * @throws IOException A problem creating the directories.    */
 DECL|method|mkdirs (FileSystem fs, Path dir, FsPermission permission)
 specifier|public
 specifier|static
@@ -2503,7 +2548,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**     * Check that a Path belongs to this FileSystem.    * @param path to check    */
+comment|/**    * Check that a Path belongs to this FileSystem.    *    * The base implementation performs case insensitive equality checks    * of the URIs' schemes and authorities. Subclasses may implement slightly    * different checks.    * @param path to check    * @throws IllegalArgumentException if the path is not considered to be    * part of this FileSystem.    *    */
 DECL|method|checkPath (Path path)
 specifier|protected
 name|void
@@ -2691,7 +2736,7 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
-comment|/**    * Return an array containing hostnames, offset and size of     * portions of the given file.  For a nonexistent     * file or regions, null will be returned.    *    * This call is most helpful with DFS, where it returns     * hostnames of machines that contain the given file.    *    * The FileSystem will simply return an elt containing 'localhost'.    *    * @param file FilesStatus to get data from    * @param start offset into the given file    * @param len length for which to get locations for    */
+comment|/**    * Return an array containing hostnames, offset and size of    * portions of the given file.  For nonexistent    * file or regions, {@code null} is returned.    *    *<pre>    *   if f == null :    *     result = null    *   elif f.getLen()<= start:    *     result = []    *   else result = [ locations(FS, b) for b in blocks(FS, p, s, s+l)]    *</pre>    * This call is most helpful with and distributed filesystem    * where the hostnames of machines that contain blocks of the given file    * can be determined.    *    * The default implementation returns an array containing one element:    *<pre>    * BlockLocation( { "localhost:50010" },  { "localhost" }, 0, file.getLen())    *</pre>>    *    * @param file FilesStatus to get data from    * @param start offset into the given file    * @param len length for which to get locations for    * @throws IOException IO failure    */
 DECL|method|getFileBlockLocations (FileStatus file, long start, long len)
 specifier|public
 name|BlockLocation
@@ -2796,7 +2841,7 @@ argument_list|)
 block|}
 return|;
 block|}
-comment|/**    * Return an array containing hostnames, offset and size of     * portions of the given file.  For a nonexistent     * file or regions, null will be returned.    *    * This call is most helpful with DFS, where it returns     * hostnames of machines that contain the given file.    *    * The FileSystem will simply return an elt containing 'localhost'.    *    * @param p path is used to identify an FS since an FS could have    *          another FS that it could be delegating the call to    * @param start offset into the given file    * @param len length for which to get locations for    */
+comment|/**    * Return an array containing hostnames, offset and size of    * portions of the given file.  For a nonexistent    * file or regions, {@code null} is returned.    *    * This call is most helpful with location-aware distributed    * filesystems, where it returns hostnames of machines that    * contain the given file.    *    * A FileSystem will normally return the equivalent result    * of passing the {@code FileStatus} of the path to    * {@link #getFileBlockLocations(FileStatus, long, long)}    *    * @param p path is used to identify an FS since an FS could have    *          another FS that it could be delegating the call to    * @param start offset into the given file    * @param len length for which to get locations for    * @throws FileNotFoundException when the path does not exist    * @throws IOException IO failure    */
 DECL|method|getFileBlockLocations (Path p, long start, long len)
 specifier|public
 name|BlockLocation
@@ -2847,7 +2892,7 @@ name|len
 argument_list|)
 return|;
 block|}
-comment|/**    * Return a set of server default configuration values    * @return server default configuration values    * @throws IOException    * @deprecated use {@link #getServerDefaults(Path)} instead    */
+comment|/**    * Return a set of server default configuration values.    * @return server default configuration values    * @throws IOException IO failure    * @deprecated use {@link #getServerDefaults(Path)} instead    */
 annotation|@
 name|Deprecated
 DECL|method|getServerDefaults ()
@@ -2859,7 +2904,7 @@ throws|throws
 name|IOException
 block|{
 name|Configuration
-name|conf
+name|config
 init|=
 name|getConf
 argument_list|()
@@ -2874,7 +2919,7 @@ argument_list|(
 name|getDefaultBlockSize
 argument_list|()
 argument_list|,
-name|conf
+name|config
 operator|.
 name|getInt
 argument_list|(
@@ -2890,7 +2935,7 @@ argument_list|,
 name|getDefaultReplication
 argument_list|()
 argument_list|,
-name|conf
+name|config
 operator|.
 name|getInt
 argument_list|(
@@ -2911,7 +2956,7 @@ name|CRC32
 argument_list|)
 return|;
 block|}
-comment|/**    * Return a set of server default configuration values    * @param p path is used to identify an FS since an FS could have    *          another FS that it could be delegating the call to    * @return server default configuration values    * @throws IOException    */
+comment|/**    * Return a set of server default configuration values.    * @param p path is used to identify an FS since an FS could have    *          another FS that it could be delegating the call to    * @return server default configuration values    * @throws IOException IO failure    */
 DECL|method|getServerDefaults (Path p)
 specifier|public
 name|FsServerDefaults
@@ -2928,7 +2973,7 @@ name|getServerDefaults
 argument_list|()
 return|;
 block|}
-comment|/**    * Return the fully-qualified path of path f resolving the path    * through any symlinks or mount point    * @param p path to be resolved    * @return fully qualified path     * @throws FileNotFoundException    */
+comment|/**    * Return the fully-qualified path of path, resolving the path    * through any symlinks or mount point.    * @param p path to be resolved    * @return fully qualified path    * @throws FileNotFoundException if the path is not present    * @throws IOException for any other error    */
 DECL|method|resolvePath (final Path p)
 specifier|public
 name|Path
@@ -2956,7 +3001,7 @@ name|getPath
 argument_list|()
 return|;
 block|}
-comment|/**    * Opens an FSDataInputStream at the indicated Path.    * @param f the file name to open    * @param bufferSize the size of the buffer to be used.    */
+comment|/**    * Opens an FSDataInputStream at the indicated Path.    * @param f the file name to open    * @param bufferSize the size of the buffer to be used.    * @throws IOException IO failure    */
 DECL|method|open (Path f, int bufferSize)
 specifier|public
 specifier|abstract
@@ -2972,7 +3017,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Opens an FSDataInputStream at the indicated Path.    * @param f the file to open    */
+comment|/**    * Opens an FSDataInputStream at the indicated Path.    * @param f the file to open    * @throws IOException IO failure    */
 DECL|method|open (Path f)
 specifier|public
 name|FSDataInputStream
@@ -3001,7 +3046,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Create an FSDataOutputStream at the indicated Path.    * Files are overwritten by default.    * @param f the file to create    */
+comment|/**    * Create an FSDataOutputStream at the indicated Path.    * Files are overwritten by default.    * @param f the file to create    * @throws IOException IO failure    */
 DECL|method|create (Path f)
 specifier|public
 name|FSDataOutputStream
@@ -3022,7 +3067,7 @@ literal|true
 argument_list|)
 return|;
 block|}
-comment|/**    * Create an FSDataOutputStream at the indicated Path.    * @param f the file to create    * @param overwrite if a file with this name already exists, then if true,    *   the file will be overwritten, and if false an exception will be thrown.    */
+comment|/**    * Create an FSDataOutputStream at the indicated Path.    * @param f the file to create    * @param overwrite if a file with this name already exists, then if true,    *   the file will be overwritten, and if false an exception will be thrown.    * @throws IOException IO failure    */
 DECL|method|create (Path f, boolean overwrite)
 specifier|public
 name|FSDataOutputStream
@@ -3066,7 +3111,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Create an FSDataOutputStream at the indicated Path with write-progress    * reporting.    * Files are overwritten by default.    * @param f the file to create    * @param progress to report progress    */
+comment|/**    * Create an FSDataOutputStream at the indicated Path with write-progress    * reporting.    * Files are overwritten by default.    * @param f the file to create    * @param progress to report progress    * @throws IOException IO failure    */
 DECL|method|create (Path f, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -3112,7 +3157,7 @@ name|progress
 argument_list|)
 return|;
 block|}
-comment|/**    * Create an FSDataOutputStream at the indicated Path.    * Files are overwritten by default.    * @param f the file to create    * @param replication the replication factor    */
+comment|/**    * Create an FSDataOutputStream at the indicated Path.    * Files are overwritten by default.    * @param f the file to create    * @param replication the replication factor    * @throws IOException IO failure    */
 DECL|method|create (Path f, short replication)
 specifier|public
 name|FSDataOutputStream
@@ -3153,7 +3198,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Create an FSDataOutputStream at the indicated Path with write-progress    * reporting.    * Files are overwritten by default.    * @param f the file to create    * @param replication the replication factor    * @param progress to report progress    */
+comment|/**    * Create an FSDataOutputStream at the indicated Path with write-progress    * reporting.    * Files are overwritten by default.    * @param f the file to create    * @param replication the replication factor    * @param progress to report progress    * @throws IOException IO failure    */
 DECL|method|create (Path f, short replication, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -3199,7 +3244,7 @@ name|progress
 argument_list|)
 return|;
 block|}
-comment|/**    * Create an FSDataOutputStream at the indicated Path.    * @param f the file name to create    * @param overwrite if a file with this name already exists, then if true,    *   the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    */
+comment|/**    * Create an FSDataOutputStream at the indicated Path.    * @param f the file to create    * @param overwrite if a path with this name already exists, then if true,    *   the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @throws IOException IO failure    */
 DECL|method|create (Path f, boolean overwrite, int bufferSize )
 specifier|public
 name|FSDataOutputStream
@@ -3238,7 +3283,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Create an FSDataOutputStream at the indicated Path with write-progress    * reporting.    * @param f the path of the file to open    * @param overwrite if a file with this name already exists, then if true,    *   the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    */
+comment|/**    * Create an {@link FSDataOutputStream} at the indicated Path    * with write-progress reporting.    *    * The frequency of callbacks is implementation-specific; it may be "none".    * @param f the path of the file to open    * @param overwrite if a file with this name already exists, then if true,    *   the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @throws IOException IO failure    */
 DECL|method|create (Path f, boolean overwrite, int bufferSize, Progressable progress )
 specifier|public
 name|FSDataOutputStream
@@ -3282,8 +3327,8 @@ name|progress
 argument_list|)
 return|;
 block|}
-comment|/**    * Create an FSDataOutputStream at the indicated Path.    * @param f the file name to open    * @param overwrite if a file with this name already exists, then if true,    *   the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.     */
-DECL|method|create (Path f, boolean overwrite, int bufferSize, short replication, long blockSize )
+comment|/**    * Create an FSDataOutputStream at the indicated Path.    * @param f the file name to open    * @param overwrite if a file with this name already exists, then if true,    *   the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @throws IOException IO failure    */
+DECL|method|create (Path f, boolean overwrite, int bufferSize, short replication, long blockSize)
 specifier|public
 name|FSDataOutputStream
 name|create
@@ -3323,7 +3368,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/**    * Create an FSDataOutputStream at the indicated Path with write-progress    * reporting.    * @param f the file name to open    * @param overwrite if a file with this name already exists, then if true,    *   the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.     */
+comment|/**    * Create an FSDataOutputStream at the indicated Path with write-progress    * reporting.    * @param f the file name to open    * @param overwrite if a file with this name already exists, then if true,    *   the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @throws IOException IO failure    */
 DECL|method|create (Path f, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress )
 specifier|public
 name|FSDataOutputStream
@@ -3387,7 +3432,7 @@ name|progress
 argument_list|)
 return|;
 block|}
-comment|/**    * Create an FSDataOutputStream at the indicated Path with write-progress    * reporting.    * @param f the file name to open    * @param permission file permission    * @param overwrite if a file with this name already exists, then if true,    *   the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize block size    * @param progress the progress reporter    * @throws IOException    * @see #setPermission(Path, FsPermission)    */
+comment|/**    * Create an FSDataOutputStream at the indicated Path with write-progress    * reporting.    * @param f the file name to open    * @param permission file permission    * @param overwrite if a file with this name already exists, then if true,    *   the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize block size    * @param progress the progress reporter    * @throws IOException IO failure    * @see #setPermission(Path, FsPermission)    */
 DECL|method|create (Path f, FsPermission permission, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 specifier|abstract
@@ -3418,7 +3463,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Create an FSDataOutputStream at the indicated Path with write-progress    * reporting.    * @param f the file name to open    * @param permission file permission    * @param flags {@link CreateFlag}s to use for this stream.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize block size    * @param progress the progress reporter    * @throws IOException    * @see #setPermission(Path, FsPermission)    */
+comment|/**    * Create an FSDataOutputStream at the indicated Path with write-progress    * reporting.    * @param f the file name to open    * @param permission file permission    * @param flags {@link CreateFlag}s to use for this stream.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize block size    * @param progress the progress reporter    * @throws IOException IO failure    * @see #setPermission(Path, FsPermission)    */
 DECL|method|create (Path f, FsPermission permission, EnumSet<CreateFlag> flags, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -3472,7 +3517,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/**    * Create an FSDataOutputStream at the indicated Path with a custom    * checksum option    * @param f the file name to open    * @param permission file permission    * @param flags {@link CreateFlag}s to use for this stream.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize block size    * @param progress the progress reporter    * @param checksumOpt checksum parameter. If null, the values    *        found in conf will be used.    * @throws IOException    * @see #setPermission(Path, FsPermission)    */
+comment|/**    * Create an FSDataOutputStream at the indicated Path with a custom    * checksum option.    * @param f the file name to open    * @param permission file permission    * @param flags {@link CreateFlag}s to use for this stream.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize block size    * @param progress the progress reporter    * @param checksumOpt checksum parameter. If null, the values    *        found in conf will be used.    * @throws IOException IO failure    * @see #setPermission(Path, FsPermission)    */
 DECL|method|create (Path f, FsPermission permission, EnumSet<CreateFlag> flags, int bufferSize, short replication, long blockSize, Progressable progress, ChecksumOpt checksumOpt)
 specifier|public
 name|FSDataOutputStream
@@ -3537,7 +3582,7 @@ name|progress
 argument_list|)
 return|;
 block|}
-comment|/*.    * This create has been added to support the FileContext that processes    * the permission    * with umask before calling this method.    * This a temporary method added to support the transition from FileSystem    * to FileContext for user applications.    */
+comment|/**    * This create has been added to support the FileContext that processes    * the permission with umask before calling this method.    * This a temporary method added to support the transition from FileSystem    * to FileContext for user applications.    * @throws IOException IO failure    */
 annotation|@
 name|Deprecated
 DECL|method|primitiveCreate (Path f, FsPermission absolutePermission, EnumSet<CreateFlag> flag, int bufferSize, short replication, long blockSize, Progressable progress, ChecksumOpt checksumOpt)
@@ -3651,7 +3696,7 @@ name|progress
 argument_list|)
 return|;
 block|}
-comment|/**    * This version of the mkdirs method assumes that the permission is absolute.    * It has been added to support the FileContext that processes the permission    * with umask before calling this method.    * This a temporary method added to support the transition from FileSystem    * to FileContext for user applications.    */
+comment|/**    * This version of the mkdirs method assumes that the permission is absolute.    * It has been added to support the FileContext that processes the permission    * with umask before calling this method.    * This a temporary method added to support the transition from FileSystem    * to FileContext for user applications.    * @param f path    * @param absolutePermission permissions    * @return true if the directory was actually created.    * @throws IOException IO failure    * @see #mkdirs(Path, FsPermission)    */
 annotation|@
 name|Deprecated
 DECL|method|primitiveMkdir (Path f, FsPermission absolutePermission)
@@ -3668,9 +3713,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// Default impl is to assume that permissions do not matter and hence
-comment|// calling the regular mkdirs is good enough.
-comment|// FSs that implement permissions should override this.
 return|return
 name|this
 operator|.
@@ -3788,7 +3830,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Opens an FSDataOutputStream at the indicated Path with write-progress    * reporting. Same as create(), except fails if parent directory doesn't    * already exist.    * @param f the file name to open    * @param overwrite if a file with this name already exists, then if true,    * the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize block size    * @param progress the progress reporter    * @throws IOException    * @see #setPermission(Path, FsPermission)    */
+comment|/**    * Opens an FSDataOutputStream at the indicated Path with write-progress    * reporting. Same as create(), except fails if parent directory doesn't    * already exist.    * @param f the file name to open    * @param overwrite if a file with this name already exists, then if true,    * the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize block size    * @param progress the progress reporter    * @throws IOException IO failure    * @see #setPermission(Path, FsPermission)    */
 DECL|method|createNonRecursive (Path f, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -3839,7 +3881,7 @@ name|progress
 argument_list|)
 return|;
 block|}
-comment|/**    * Opens an FSDataOutputStream at the indicated Path with write-progress    * reporting. Same as create(), except fails if parent directory doesn't    * already exist.    * @param f the file name to open    * @param permission file permission    * @param overwrite if a file with this name already exists, then if true,    * the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize block size    * @param progress the progress reporter    * @throws IOException    * @see #setPermission(Path, FsPermission)    */
+comment|/**    * Opens an FSDataOutputStream at the indicated Path with write-progress    * reporting. Same as create(), except fails if parent directory doesn't    * already exist.    * @param f the file name to open    * @param permission file permission    * @param overwrite if a file with this name already exists, then if true,    * the file will be overwritten, and if false an error will be thrown.    * @param bufferSize the size of the buffer to be used.    * @param replication required block replication for the file.    * @param blockSize block size    * @param progress the progress reporter    * @throws IOException IO failure    * @see #setPermission(Path, FsPermission)    */
 DECL|method|createNonRecursive (Path f, FsPermission permission, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -3910,7 +3952,7 @@ name|progress
 argument_list|)
 return|;
 block|}
-comment|/**     * Opens an FSDataOutputStream at the indicated Path with write-progress     * reporting. Same as create(), except fails if parent directory doesn't     * already exist.     * @param f the file name to open     * @param permission file permission     * @param flags {@link CreateFlag}s to use for this stream.     * @param bufferSize the size of the buffer to be used.     * @param replication required block replication for the file.     * @param blockSize block size     * @param progress the progress reporter     * @throws IOException     * @see #setPermission(Path, FsPermission)     */
+comment|/**     * Opens an FSDataOutputStream at the indicated Path with write-progress     * reporting. Same as create(), except fails if parent directory doesn't     * already exist.     * @param f the file name to open     * @param permission file permission     * @param flags {@link CreateFlag}s to use for this stream.     * @param bufferSize the size of the buffer to be used.     * @param replication required block replication for the file.     * @param blockSize block size     * @param progress the progress reporter     * @throws IOException IO failure     * @see #setPermission(Path, FsPermission)     */
 DECL|method|createNonRecursive (Path f, FsPermission permission, EnumSet<CreateFlag> flags, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -3956,7 +3998,7 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
-comment|/**    * Creates the given Path as a brand-new zero-length file.  If    * create fails, or if it already existed, return false.    *    * @param f path to use for create    */
+comment|/**    * Creates the given Path as a brand-new zero-length file.  If    * create fails, or if it already existed, return false.    *<i>Important: the default implementation is not atomic</i>    * @param f path to use for create    * @throws IOException IO failure    */
 DECL|method|createNewFile (Path f)
 specifier|public
 name|boolean
@@ -4007,7 +4049,7 @@ literal|true
 return|;
 block|}
 block|}
-comment|/**    * Append to an existing file (optional operation).    * Same as append(f, getConf().getInt(IO_FILE_BUFFER_SIZE_KEY,    *     IO_FILE_BUFFER_SIZE_DEFAULT), null)    * @param f the existing file to be appended.    * @throws IOException    */
+comment|/**    * Append to an existing file (optional operation).    * Same as    * {@code append(f, getConf().getInt(IO_FILE_BUFFER_SIZE_KEY,    *     IO_FILE_BUFFER_SIZE_DEFAULT), null)}    * @param f the existing file to be appended.    * @throws IOException IO failure    * @throws UnsupportedOperationException if the operation is unsupported    *         (default).    */
 DECL|method|append (Path f)
 specifier|public
 name|FSDataOutputStream
@@ -4038,7 +4080,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/**    * Append to an existing file (optional operation).    * Same as append(f, bufferSize, null).    * @param f the existing file to be appended.    * @param bufferSize the size of the buffer to be used.    * @throws IOException    */
+comment|/**    * Append to an existing file (optional operation).    * Same as append(f, bufferSize, null).    * @param f the existing file to be appended.    * @param bufferSize the size of the buffer to be used.    * @throws IOException IO failure    * @throws UnsupportedOperationException if the operation is unsupported    *         (default).    */
 DECL|method|append (Path f, int bufferSize)
 specifier|public
 name|FSDataOutputStream
@@ -4064,7 +4106,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/**    * Append to an existing file (optional operation).    * @param f the existing file to be appended.    * @param bufferSize the size of the buffer to be used.    * @param progress for reporting progress if it is not null.    * @throws IOException    */
+comment|/**    * Append to an existing file (optional operation).    * @param f the existing file to be appended.    * @param bufferSize the size of the buffer to be used.    * @param progress for reporting progress if it is not null.    * @throws IOException IO failure    * @throws UnsupportedOperationException if the operation is unsupported    *         (default).    */
 DECL|method|append (Path f, int bufferSize, Progressable progress)
 specifier|public
 specifier|abstract
@@ -4083,7 +4125,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Concat existing files together.    * @param trg the path to the target destination.    * @param psrcs the paths to the sources to use for the concatenation.    * @throws IOException    */
+comment|/**    * Concat existing files together.    * @param trg the path to the target destination.    * @param psrcs the paths to the sources to use for the concatenation.    * @throws IOException IO failure    * @throws UnsupportedOperationException if the operation is unsupported    *         (default).    */
 DECL|method|concat (final Path trg, final Path [] psrcs)
 specifier|public
 name|void
@@ -4117,7 +4159,7 @@ literal|" FileSystem implementation"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Get replication.    *     * @deprecated Use getFileStatus() instead    * @param src file name    * @return file replication    * @throws IOException    */
+comment|/**    * Get the replication factor.    *    * @deprecated Use {@link #getFileStatus(Path)} instead    * @param src file name    * @return file replication    * @throws FileNotFoundException if the path does not resolve.    * @throws IOException an IO failure    */
 annotation|@
 name|Deprecated
 DECL|method|getReplication (Path src)
@@ -4141,7 +4183,7 @@ name|getReplication
 argument_list|()
 return|;
 block|}
-comment|/**    * Set replication for an existing file.    *     * @param src file name    * @param replication new replication    * @throws IOException    * @return true if successful;    *         false if file does not exist or is a directory    */
+comment|/**    * Set the replication for an existing file.    * If a filesystem does not support replication, it will always    * return true: the check for a file existing may be bypassed.    * This is the default behavior.    * @param src file name    * @param replication new replication    * @throws IOException    * @return true if successful, or the feature in unsupported;    *         false if replication is supported but the file does not exist,    *         or is a directory    */
 DECL|method|setReplication (Path src, short replication)
 specifier|public
 name|boolean
@@ -4160,7 +4202,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Renames Path src to Path dst.  Can take place on local fs    * or remote DFS.    * @param src path to be renamed    * @param dst new path after rename    * @throws IOException on failure    * @return true if rename is successful    */
+comment|/**    * Renames Path src to Path dst.    * @param src path to be renamed    * @param dst new path after rename    * @throws IOException on failure    * @return true if rename is successful    */
 DECL|method|rename (Path src, Path dst)
 specifier|public
 specifier|abstract
@@ -4176,7 +4218,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Renames Path src to Path dst    *<ul>    *<li>Fails if src is a file and dst is a directory.    *<li>Fails if src is a directory and dst is a file.    *<li>Fails if the parent of dst does not exist or is a file.    *</ul>    *<p>    * If OVERWRITE option is not passed as an argument, rename fails    * if the dst already exists.    *<p>    * If OVERWRITE option is passed as an argument, rename overwrites    * the dst if it is a file or an empty directory. Rename fails if dst is    * a non-empty directory.    *<p>    * Note that atomicity of rename is dependent on the file system    * implementation. Please refer to the file system documentation for    * details. This default implementation is non atomic.    *<p>    * This method is deprecated since it is a temporary method added to     * support the transition from FileSystem to FileContext for user     * applications.    *     * @param src path to be renamed    * @param dst new path after rename    * @throws IOException on failure    */
+comment|/**    * Renames Path src to Path dst    *<ul>    *<li>Fails if src is a file and dst is a directory.</li>    *<li>Fails if src is a directory and dst is a file.</li>    *<li>Fails if the parent of dst does not exist or is a file.</li>    *</ul>    *<p>    * If OVERWRITE option is not passed as an argument, rename fails    * if the dst already exists.    *<p>    * If OVERWRITE option is passed as an argument, rename overwrites    * the dst if it is a file or an empty directory. Rename fails if dst is    * a non-empty directory.    *<p>    * Note that atomicity of rename is dependent on the file system    * implementation. Please refer to the file system documentation for    * details. This default implementation is non atomic.    *<p>    * This method is deprecated since it is a temporary method added to    * support the transition from FileSystem to FileContext for user    * applications.    *    * @param src path to be renamed    * @param dst new path after rename    * @throws FileNotFoundException src path does not exist, or the parent    * path of dst does not exist.    * @throws FileAlreadyExistsException dest path exists and is a file    * @throws ParentNotDirectoryException if the parent path of dest is not    * a directory    * @throws IOException on failure    */
 annotation|@
 name|Deprecated
 DECL|method|rename (final Path src, final Path dst, final Rename... options)
@@ -4482,7 +4524,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Truncate the file in the indicated path to the indicated size.    *<ul>    *<li>Fails if path is a directory.    *<li>Fails if path does not exist.    *<li>Fails if path is not closed.    *<li>Fails if new size is greater than current size.    *</ul>    * @param f The path to the file to be truncated    * @param newLength The size the file is to be truncated to    *    * @return<code>true</code> if the file has been truncated to the desired    *<code>newLength</code> and is immediately available to be reused for    * write operations such as<code>append</code>, or    *<code>false</code> if a background process of adjusting the length of    * the last block has been started, and clients should wait for it to    * complete before proceeding with further file updates.    */
+comment|/**    * Truncate the file in the indicated path to the indicated size.    *<ul>    *<li>Fails if path is a directory.</li>    *<li>Fails if path does not exist.</li>    *<li>Fails if path is not closed.</li>    *<li>Fails if new size is greater than current size.</li>    *</ul>    * @param f The path to the file to be truncated    * @param newLength The size the file is to be truncated to    *    * @return<code>true</code> if the file has been truncated to the desired    *<code>newLength</code> and is immediately available to be reused for    * write operations such as<code>append</code>, or    *<code>false</code> if a background process of adjusting the length of    * the last block has been started, and clients should wait for it to    * complete before proceeding with further file updates.    * @throws IOException IO failure    * @throws UnsupportedOperationException if the operation is unsupported    *         (default).    */
 DECL|method|truncate (Path f, long newLength)
 specifier|public
 name|boolean
@@ -4513,7 +4555,7 @@ literal|" FileSystem implementation"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Delete a file     * @deprecated Use {@link #delete(Path, boolean)} instead.    */
+comment|/**    * Delete a file/directory.    * @deprecated Use {@link #delete(Path, boolean)} instead.    */
 annotation|@
 name|Deprecated
 DECL|method|delete (Path f)
@@ -4536,7 +4578,7 @@ literal|true
 argument_list|)
 return|;
 block|}
-comment|/** Delete a file.    *    * @param f the path to delete.    * @param recursive if path is a directory and set to     * true, the directory is deleted else throws an exception. In    * case of a file the recursive can be set to either true or false.     * @return  true if delete is successful else false.     * @throws IOException    */
+comment|/** Delete a file.    *    * @param f the path to delete.    * @param recursive if path is a directory and set to    * true, the directory is deleted else throws an exception. In    * case of a file the recursive can be set to either true or false.    * @return  true if delete is successful else false.    * @throws IOException IO failure    */
 DECL|method|delete (Path f, boolean recursive)
 specifier|public
 specifier|abstract
@@ -4552,7 +4594,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Mark a path to be deleted when FileSystem is closed.    * When the JVM shuts down,    * all FileSystem objects will be closed automatically.    * Then,    * the marked path will be deleted as a result of closing the FileSystem.    *    * The path has to exist in the file system.    *     * @param f the path to delete.    * @return  true if deleteOnExit is successful, otherwise false.    * @throws IOException    */
+comment|/**    * Mark a path to be deleted when its FileSystem is closed.    * When the JVM shuts down cleanly, all cached FileSystem objects will be    * closed automatically âthese the marked paths will be deleted as a result.    *    * If a FileSystem instance is not cached, i.e. has been created with    * {@link #createFileSystem(URI, Configuration)}, then the paths will    * be deleted in when {@link #close()} is called on that instance.    *    * The path must exist in the filesystem at the time of the method call;    * it does not have to exist at the time of JVM shutdown.    *    * Notes    *<ol>    *<li>Clean shutdown of the JVM cannot be guaranteed.</li>    *<li>The time to shut down a FileSystem will depends on the number of    *   files to delete. For filesystems where the cost of checking    *   for the existence of a file/directory and the actual delete operation    *   (for example: object stores) is high, the time to shutdown the JVM can be    *   significantly extended by over-use of this feature.</li>    *<li>Connectivity problems with a remote filesystem may delay shutdown    *   further, and may cause the files to not be deleted.</li>    *</ol>    * @param f the path to delete.    * @return  true if deleteOnExit is successful, otherwise false.    * @throws IOException IO failure    */
 DECL|method|deleteOnExit (Path f)
 specifier|public
 name|boolean
@@ -4594,7 +4636,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Cancel the deletion of the path when the FileSystem is closed    * @param f the path to cancel deletion    */
+comment|/**    * Cancel the scheduled deletion of the path when the FileSystem is closed.    * @param f the path to cancel deletion    * @return true if the path was found in the delete-on-exit list.    */
 DECL|method|cancelDeleteOnExit (Path f)
 specifier|public
 name|boolean
@@ -4619,7 +4661,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Delete all files that were marked as delete-on-exit. This recursively    * deletes all files in the specified paths.    */
+comment|/**    * Delete all paths that were marked as delete-on-exit. This recursively    * deletes all files and directories in the specified paths.    *    * The time to process this operation is {@code O(paths)}, with the actual    * time dependent on the time for existence and deletion operations to    * complete, successfully or not.    */
 DECL|method|processDeleteOnExit ()
 specifier|protected
 name|void
@@ -4684,12 +4726,12 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-name|LOG
+name|LOGGER
 operator|.
 name|info
 argument_list|(
-literal|"Ignoring failure to deleteOnExit for path "
-operator|+
+literal|"Ignoring failure to deleteOnExit for path {}"
+argument_list|,
 name|path
 argument_list|)
 expr_stmt|;
@@ -4702,7 +4744,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/** Check if exists.    * @param f source file    */
+comment|/** Check if a path exists.    * @param f source path    * @return true if the path exists    * @throws IOException IO failure    */
 DECL|method|exists (Path f)
 specifier|public
 name|boolean
@@ -4736,7 +4778,7 @@ literal|false
 return|;
 block|}
 block|}
-comment|/** True iff the named path is a directory.    * Note: Avoid using this method. Instead reuse the FileStatus     * returned by getFileStatus() or listStatus() methods.    * @param f path to check    */
+comment|/** True iff the named path is a directory.    * Note: Avoid using this method. Instead reuse the FileStatus    * returned by getFileStatus() or listStatus() methods.    * @param f path to check    * @throws IOException IO failure    */
 DECL|method|isDirectory (Path f)
 specifier|public
 name|boolean
@@ -4772,7 +4814,7 @@ return|;
 comment|// f does not exist
 block|}
 block|}
-comment|/** True iff the named path is a regular file.    * Note: Avoid using this method. Instead reuse the FileStatus     * returned by getFileStatus() or listStatus() methods.    * @param f path to check    */
+comment|/** True iff the named path is a regular file.    * Note: Avoid using this method. Instead reuse the FileStatus    * returned by {@link #getFileStatus(Path)} or listStatus() methods.    * @param f path to check    * @throws IOException IO failure    */
 DECL|method|isFile (Path f)
 specifier|public
 name|boolean
@@ -4808,8 +4850,7 @@ return|;
 comment|// f does not exist
 block|}
 block|}
-comment|/** The number of bytes in a file. */
-comment|/** @deprecated Use getFileStatus() instead */
+comment|/**    * The number of bytes in a file.    * @return the number of bytes; 0 for a directory    * @deprecated Use {@link #getFileStatus(Path)} instead.    * @throws FileNotFoundException if the path does not resolve    * @throws IOException IO failure    */
 annotation|@
 name|Deprecated
 DECL|method|getLength (Path f)
@@ -4833,7 +4874,7 @@ name|getLen
 argument_list|()
 return|;
 block|}
-comment|/** Return the {@link ContentSummary} of a given {@link Path}.   * @param f path to use   */
+comment|/** Return the {@link ContentSummary} of a given {@link Path}.    * @param f path to use    * @throws FileNotFoundException if the path does not resolve    * @throws IOException IO failure    */
 DECL|method|getContentSummary (Path f)
 specifier|public
 name|ContentSummary
@@ -5052,7 +5093,7 @@ name|build
 argument_list|()
 return|;
 block|}
-comment|/** Return the {@link QuotaUsage} of a given {@link Path}.    * @param f path to use    */
+comment|/** Return the {@link QuotaUsage} of a given {@link Path}.    * @param f path to use    * @return the quota usage    * @throws IOException IO failure    */
 DECL|method|getQuotaUsage (Path f)
 specifier|public
 name|QuotaUsage
@@ -5071,10 +5112,11 @@ name|f
 argument_list|)
 return|;
 block|}
+comment|/**    * The default filter accepts all paths.    */
 DECL|field|DEFAULT_FILTER
-specifier|final
 specifier|private
 specifier|static
+specifier|final
 name|PathFilter
 name|DEFAULT_FILTER
 init|=
@@ -5110,6 +5152,8 @@ name|Path
 name|f
 parameter_list|)
 throws|throws
+name|FileNotFoundException
+throws|,
 name|IOException
 function_decl|;
 comment|/**    * Represents a batch of directory entries when iteratively listing a    * directory. This is a private API not meant for use by end users.    *<p>    * For internal use by FileSystem subclasses that override    * {@link FileSystem#listStatusBatch(Path, byte[])} to implement iterative    * listing.    */
@@ -5277,7 +5321,7 @@ literal|false
 argument_list|)
 return|;
 block|}
-comment|/*    * Filter files/directories in the given path using the user-supplied path    * filter. Results are added to the given array<code>results</code>.    */
+comment|/**    * Filter files/directories in the given path using the user-supplied path    * filter. Results are added to the given array<code>results</code>.    * @throws FileNotFoundException when the path does not exist    * @throws IOException see specific implementation    */
 DECL|method|listStatus (ArrayList<FileStatus> results, Path f, PathFilter filter)
 specifier|private
 name|void
@@ -5364,7 +5408,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * @return an iterator over the corrupt files under the given path    * (may contain duplicates if a file has more than one corrupt block)    * @throws IOException    */
+comment|/**    * List corrupted file blocks.    * @return an iterator over the corrupt files under the given path    * (may contain duplicates if a file has more than one corrupt block)    * @throws UnsupportedOperationException if the operation is unsupported    *         (default).    * @throws IOException IO failure    */
 DECL|method|listCorruptFileBlocks (Path path)
 specifier|public
 name|RemoteIterator
@@ -5389,13 +5433,11 @@ operator|.
 name|getCanonicalName
 argument_list|()
 operator|+
-literal|" does not support"
-operator|+
-literal|" listCorruptFileBlocks"
+literal|" does not support listCorruptFileBlocks"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Filter files/directories in the given path using the user-supplied path    * filter.    *<p>    * Does not guarantee to return the List of files/directories status in a    * sorted order.    *     * @param f    *          a path name    * @param filter    *          the user-supplied path filter    * @return an array of FileStatus objects for the files under the given path    *         after applying the filter    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation       */
+comment|/**    * Filter files/directories in the given path using the user-supplied path    * filter.    *<p>    * Does not guarantee to return the List of files/directories status in a    * sorted order.    *    * @param f    *          a path name    * @param filter    *          the user-supplied path filter    * @return an array of FileStatus objects for the files under the given path    *         after applying the filter    * @throws FileNotFoundException when the path does not exist    * @throws IOException see specific implementation    */
 DECL|method|listStatus (Path f, PathFilter filter)
 specifier|public
 name|FileStatus
@@ -5421,9 +5463,7 @@ name|results
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|FileStatus
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|listStatus
@@ -5451,7 +5491,7 @@ index|]
 argument_list|)
 return|;
 block|}
-comment|/**    * Filter files/directories in the given list of paths using default    * path filter.    *<p>    * Does not guarantee to return the List of files/directories status in a    * sorted order.    *     * @param files    *          a list of paths    * @return a list of statuses for the files under the given paths after    *         applying the filter default Path filter    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation    */
+comment|/**    * Filter files/directories in the given list of paths using default    * path filter.    *<p>    * Does not guarantee to return the List of files/directories status in a    * sorted order.    *    * @param files    *          a list of paths    * @return a list of statuses for the files under the given paths after    *         applying the filter default Path filter    * @throws FileNotFoundException when the path does not exist    * @throws IOException see specific implementation    */
 DECL|method|listStatus (Path[] files)
 specifier|public
 name|FileStatus
@@ -5476,7 +5516,7 @@ name|DEFAULT_FILTER
 argument_list|)
 return|;
 block|}
-comment|/**    * Filter files/directories in the given list of paths using user-supplied    * path filter.    *<p>    * Does not guarantee to return the List of files/directories status in a    * sorted order.    *     * @param files    *          a list of paths    * @param filter    *          the user-supplied path filter    * @return a list of statuses for the files under the given paths after    *         applying the filter    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation    */
+comment|/**    * Filter files/directories in the given list of paths using user-supplied    * path filter.    *<p>    * Does not guarantee to return the List of files/directories status in a    * sorted order.    *    * @param files    *          a list of paths    * @param filter    *          the user-supplied path filter    * @return a list of statuses for the files under the given paths after    *         applying the filter    * @throws FileNotFoundException when the path does not exist    * @throws IOException see specific implementation    */
 DECL|method|listStatus (Path[] files, PathFilter filter)
 specifier|public
 name|FileStatus
@@ -5554,7 +5594,7 @@ index|]
 argument_list|)
 return|;
 block|}
-comment|/**    *<p>Return all the files that match filePattern and are not checksum    * files. Results are sorted by their names.    *     *<p>    * A filename pattern is composed of<i>regular</i> characters and    *<i>special pattern matching</i> characters, which are:    *    *<dl>    *<dd>    *<dl>    *<p>    *<dt><tt> ?</tt>    *<dd> Matches any single character.    *    *<p>    *<dt><tt> *</tt>    *<dd> Matches zero or more characters.    *    *<p>    *<dt><tt> [<i>abc</i>]</tt>    *<dd> Matches a single character from character set    *<tt>{<i>a,b,c</i>}</tt>.    *    *<p>    *<dt><tt> [<i>a</i>-<i>b</i>]</tt>    *<dd> Matches a single character from the character range    *<tt>{<i>a...b</i>}</tt>.  Note that character<tt><i>a</i></tt> must be    *     lexicographically less than or equal to character<tt><i>b</i></tt>.    *    *<p>    *<dt><tt> [^<i>a</i>]</tt>    *<dd> Matches a single character that is not from character set or range    *<tt>{<i>a</i>}</tt>.  Note that the<tt>^</tt> character must occur    *     immediately to the right of the opening bracket.    *    *<p>    *<dt><tt> \<i>c</i></tt>    *<dd> Removes (escapes) any special meaning of character<i>c</i>.    *    *<p>    *<dt><tt> {ab,cd}</tt>    *<dd> Matches a string from the string set<tt>{<i>ab, cd</i>}</tt>    *        *<p>    *<dt><tt> {ab,c{de,fh}}</tt>    *<dd> Matches a string from the string set<tt>{<i>ab, cde, cfh</i>}</tt>    *    *</dl>    *</dd>    *</dl>    *    * @param pathPattern a regular expression specifying a pth pattern     * @return an array of paths that match the path pattern    * @throws IOException    */
+comment|/**    *<p>Return all the files that match filePattern and are not checksum    * files. Results are sorted by their names.    *    *<p>    * A filename pattern is composed of<i>regular</i> characters and    *<i>special pattern matching</i> characters, which are:    *    *<dl>    *<dd>    *<dl>    *<p>    *<dt><tt> ?</tt>    *<dd> Matches any single character.    *    *<p>    *<dt><tt> *</tt>    *<dd> Matches zero or more characters.    *    *<p>    *<dt><tt> [<i>abc</i>]</tt>    *<dd> Matches a single character from character set    *<tt>{<i>a,b,c</i>}</tt>.    *    *<p>    *<dt><tt> [<i>a</i>-<i>b</i>]</tt>    *<dd> Matches a single character from the character range    *<tt>{<i>a...b</i>}</tt>.  Note that character<tt><i>a</i></tt> must be    *     lexicographically less than or equal to character<tt><i>b</i></tt>.    *    *<p>    *<dt><tt> [^<i>a</i>]</tt>    *<dd> Matches a single character that is not from character set or range    *<tt>{<i>a</i>}</tt>.  Note that the<tt>^</tt> character must occur    *     immediately to the right of the opening bracket.    *    *<p>    *<dt><tt> \<i>c</i></tt>    *<dd> Removes (escapes) any special meaning of character<i>c</i>.    *    *<p>    *<dt><tt> {ab,cd}</tt>    *<dd> Matches a string from the string set<tt>{<i>ab, cd</i>}</tt>    *    *<p>    *<dt><tt> {ab,c{de,fh}}</tt>    *<dd> Matches a string from the string set<tt>{<i>ab, cde, cfh</i>}</tt>    *    *</dl>    *</dd>    *</dl>    *    * @param pathPattern a regular expression specifying a pth pattern     * @return an array of paths that match the path pattern    * @throws IOException IO failure    */
 DECL|method|globStatus (Path pathPattern)
 specifier|public
 name|FileStatus
@@ -5582,7 +5622,7 @@ name|glob
 argument_list|()
 return|;
 block|}
-comment|/**    * Return an array of FileStatus objects whose path names match    * {@code pathPattern} and is accepted by the user-supplied path filter.    * Results are sorted by their path names.    *     * @param pathPattern a regular expression specifying the path pattern    * @param filter a user-supplied path filter    * @return null if {@code pathPattern} has no glob and the path does not exist    *         an empty array if {@code pathPattern} has a glob and no path    *         matches it else an array of {@link FileStatus} objects matching the    *         pattern    * @throws IOException if any I/O error occurs when fetching file status    */
+comment|/**    * Return an array of {@link FileStatus} objects whose path names match    * {@code pathPattern} and is accepted by the user-supplied path filter.    * Results are sorted by their path names.    *    * @param pathPattern a regular expression specifying the path pattern    * @param filter a user-supplied path filter    * @return null if {@code pathPattern} has no glob and the path does not exist    *         an empty array if {@code pathPattern} has a glob and no path    *         matches it else an array of {@link FileStatus} objects matching the    *         pattern    * @throws IOException if any I/O error occurs when fetching file status    */
 DECL|method|globStatus (Path pathPattern, PathFilter filter)
 specifier|public
 name|FileStatus
@@ -5613,7 +5653,7 @@ name|glob
 argument_list|()
 return|;
 block|}
-comment|/**    * List the statuses of the files/directories in the given path if the path is    * a directory.     * Return the file's status and block locations If the path is a file.    *     * If a returned status is a file, it contains the file's block locations.    *     * @param f is the path    *    * @return an iterator that traverses statuses of the files/directories     *         in the given path    *    * @throws FileNotFoundException If<code>f</code> does not exist    * @throws IOException If an I/O error occurred    */
+comment|/**    * List the statuses of the files/directories in the given path if the path is    * a directory.    * Return the file's status and block locations If the path is a file.    *    * If a returned status is a file, it contains the file's block locations.    *    * @param f is the path    *    * @return an iterator that traverses statuses of the files/directories    *         in the given path    *    * @throws FileNotFoundException If<code>f</code> does not exist    * @throws IOException If an I/O error occurred    */
 DECL|method|listLocatedStatus (final Path f)
 specifier|public
 name|RemoteIterator
@@ -5640,7 +5680,7 @@ name|DEFAULT_FILTER
 argument_list|)
 return|;
 block|}
-comment|/**    * Listing a directory    * The returned results include its block location if it is a file    * The results are filtered by the given path filter    * @param f a path    * @param filter a path filter    * @return an iterator that traverses statuses of the files/directories     *         in the given path    * @throws FileNotFoundException if<code>f</code> does not exist    * @throws IOException if any I/O error occurred    */
+comment|/**    * List a directory.    * The returned results include its block location if it is a file    * The results are filtered by the given path filter    * @param f a path    * @param filter a path filter    * @return an iterator that traverses statuses of the files/directories    *         in the given path    * @throws FileNotFoundException if<code>f</code> does not exist    * @throws IOException if any I/O error occurred    */
 DECL|method|listLocatedStatus (final Path f, final PathFilter filter)
 specifier|protected
 name|RemoteIterator
@@ -5961,7 +6001,7 @@ index|]
 return|;
 block|}
 block|}
-comment|/**    * Returns a remote iterator so that followup calls are made on demand    * while consuming the entries. Each file system implementation should    * override this method and provide a more efficient implementation, if    * possible.     * Does not guarantee to return the iterator that traverses statuses    * of the files in a sorted order.    *    * @param p target path    * @return remote iterator    */
+comment|/**    * Returns a remote iterator so that followup calls are made on demand    * while consuming the entries. Each FileSystem implementation should    * override this method and provide a more efficient implementation, if    * possible.    *    * Does not guarantee to return the iterator that traverses statuses    * of the files in a sorted order.    *    * @param p target path    * @return remote iterator    * @throws FileNotFoundException if<code>p</code> does not exist    * @throws IOException if any I/O error occurred    */
 DECL|method|listStatusIterator (final Path p)
 specifier|public
 name|RemoteIterator
@@ -5988,7 +6028,7 @@ name|p
 argument_list|)
 return|;
 block|}
-comment|/**    * List the statuses and block locations of the files in the given path.    * Does not guarantee to return the iterator that traverses statuses    * of the files in a sorted order.    *     * If the path is a directory,     *   if recursive is false, returns files in the directory;    *   if recursive is true, return files in the subtree rooted at the path.    * If the path is a file, return the file's status and block locations.    *     * @param f is the path    * @param recursive if the subdirectories need to be traversed recursively    *    * @return an iterator that traverses statuses of the files    *    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation    */
+comment|/**    * List the statuses and block locations of the files in the given path.    * Does not guarantee to return the iterator that traverses statuses    * of the files in a sorted order.    *<pre>    * If the path is a directory,    *   if recursive is false, returns files in the directory;    *   if recursive is true, return files in the subtree rooted at the path.    * If the path is a file, return the file's status and block locations.    *</pre>    * @param f is the path    * @param recursive if the subdirectories need to be traversed recursively    *    * @return an iterator that traverses statuses of the files    *    * @throws FileNotFoundException when the path does not exist;    * @throws IOException see specific implementation    */
 DECL|method|listFiles ( final Path f, final boolean recursive)
 specifier|public
 name|RemoteIterator
@@ -6030,12 +6070,7 @@ name|itors
 init|=
 operator|new
 name|Stack
-argument_list|<
-name|RemoteIterator
-argument_list|<
-name|LocatedFileStatus
-argument_list|>
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 specifier|private
@@ -6212,7 +6247,7 @@ block|}
 block|}
 return|;
 block|}
-comment|/** Return the current user's home directory in this filesystem.    * The default implementation returns "/user/$USER/".    */
+comment|/** Return the current user's home directory in this FileSystem.    * The default implementation returns {@code "/user/$USER/"}.    */
 DECL|method|getHomeDirectory ()
 specifier|public
 name|Path
@@ -6241,7 +6276,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Set the current working directory for the given file system. All relative    * paths will be resolved relative to it.    *     * @param new_dir Path of new working directory    */
+comment|/**    * Set the current working directory for the given FileSystem. All relative    * paths will be resolved relative to it.    *    * @param new_dir Path of new working directory    */
 DECL|method|setWorkingDirectory (Path new_dir)
 specifier|public
 specifier|abstract
@@ -6252,7 +6287,7 @@ name|Path
 name|new_dir
 parameter_list|)
 function_decl|;
-comment|/**    * Get the current working directory for the given file system    * @return the directory pathname    */
+comment|/**    * Get the current working directory for the given FileSystem    * @return the directory pathname    */
 DECL|method|getWorkingDirectory ()
 specifier|public
 specifier|abstract
@@ -6260,7 +6295,7 @@ name|Path
 name|getWorkingDirectory
 parameter_list|()
 function_decl|;
-comment|/**    * Note: with the new FilesContext class, getWorkingDirectory()    * will be removed.     * The working directory is implemented in FilesContext.    *     * Some file systems like LocalFileSystem have an initial workingDir    * that we use as the starting workingDir. For other file systems    * like HDFS there is no built in notion of an initial workingDir.    *     * @return if there is built in notion of workingDir then it    * is returned; else a null is returned.    */
+comment|/**    * Note: with the new FileContext class, getWorkingDirectory()    * will be removed.    * The working directory is implemented in FileContext.    *    * Some FileSystems like LocalFileSystem have an initial workingDir    * that we use as the starting workingDir. For other file systems    * like HDFS there is no built in notion of an initial workingDir.    *    * @return if there is built in notion of workingDir then it    * is returned; else a null is returned.    */
 DECL|method|getInitialWorkingDirectory ()
 specifier|protected
 name|Path
@@ -6271,7 +6306,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Call {@link #mkdirs(Path, FsPermission)} with default permission.    */
+comment|/**    * Call {@link #mkdirs(Path, FsPermission)} with default permission.    * @param f path    * @return true if the directory was created    * @throws IOException IO failure    */
 DECL|method|mkdirs (Path f)
 specifier|public
 name|boolean
@@ -6295,7 +6330,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Make the given file and all non-existent parents into    * directories. Has the semantics of Unix 'mkdir -p'.    * Existence of the directory hierarchy is not an error.    * @param f path to create    * @param permission to apply to f    */
+comment|/**    * Make the given file and all non-existent parents into    * directories. Has roughly the semantics of Unix @{code mkdir -p}.    * Existence of the directory hierarchy is not an error.    * @param f path to create    * @param permission to apply to f    * @throws IOException IO failure    */
 DECL|method|mkdirs (Path f, FsPermission permission )
 specifier|public
 specifier|abstract
@@ -6311,7 +6346,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * The src file is on the local disk.  Add it to FS at    * the given dst name and the source is kept intact afterwards    * @param src path    * @param dst path    */
+comment|/**    * The src file is on the local disk.  Add it to filesystem at    * the given dst name and the source is kept intact afterwards    * @param src path    * @param dst path    * @throws IOException IO failure    */
 DECL|method|copyFromLocalFile (Path src, Path dst)
 specifier|public
 name|void
@@ -6336,7 +6371,7 @@ name|dst
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * The src files is on the local disk.  Add it to FS at    * the given dst name, removing the source afterwards.    * @param srcs path    * @param dst path    */
+comment|/**    * The src files is on the local disk.  Add it to filesystem at    * the given dst name, removing the source afterwards.    * @param srcs source paths    * @param dst path    * @throws IOException IO failure    */
 DECL|method|moveFromLocalFile (Path[] srcs, Path dst)
 specifier|public
 name|void
@@ -6364,7 +6399,7 @@ name|dst
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * The src file is on the local disk.  Add it to FS at    * the given dst name, removing the source afterwards.    * @param src path    * @param dst path    */
+comment|/**    * The src file is on the local disk.  Add it to the filesystem at    * the given dst name, removing the source afterwards.    * @param src local path    * @param dst path    * @throws IOException IO failure    */
 DECL|method|moveFromLocalFile (Path src, Path dst)
 specifier|public
 name|void
@@ -6389,7 +6424,7 @@ name|dst
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * The src file is on the local disk.  Add it to FS at    * the given dst name.    * delSrc indicates if the source should be removed    * @param delSrc whether to delete the src    * @param src path    * @param dst path    */
+comment|/**    * The src file is on the local disk.  Add it to the filesystem at    * the given dst name.    * delSrc indicates if the source should be removed    * @param delSrc whether to delete the src    * @param src path    * @param dst path    */
 DECL|method|copyFromLocalFile (boolean delSrc, Path src, Path dst)
 specifier|public
 name|void
@@ -6419,7 +6454,7 @@ name|dst
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * The src files are on the local disk.  Add it to FS at    * the given dst name.    * delSrc indicates if the source should be removed    * @param delSrc whether to delete the src    * @param overwrite whether to overwrite an existing file    * @param srcs array of paths which are source    * @param dst path    */
+comment|/**    * The src files are on the local disk.  Add it to the filesystem at    * the given dst name.    * delSrc indicates if the source should be removed    * @param delSrc whether to delete the src    * @param overwrite whether to overwrite an existing file    * @param srcs array of paths which are source    * @param dst path    * @throws IOException IO failure    */
 DECL|method|copyFromLocalFile (boolean delSrc, boolean overwrite, Path[] srcs, Path dst)
 specifier|public
 name|void
@@ -6470,7 +6505,7 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * The src file is on the local disk.  Add it to FS at    * the given dst name.    * delSrc indicates if the source should be removed    * @param delSrc whether to delete the src    * @param overwrite whether to overwrite an existing file    * @param src path    * @param dst path    */
+comment|/**    * The src file is on the local disk.  Add it to the filesystem at    * the given dst name.    * delSrc indicates if the source should be removed    * @param delSrc whether to delete the src    * @param overwrite whether to overwrite an existing file    * @param src path    * @param dst path    * @throws IOException IO failure    */
 DECL|method|copyFromLocalFile (boolean delSrc, boolean overwrite, Path src, Path dst)
 specifier|public
 name|void
@@ -6520,7 +6555,7 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * The src file is under FS, and the dst is on the local disk.    * Copy it from FS control to the local dst name.    * @param src path    * @param dst path    */
+comment|/**    * Copy it a file from the remote filesystem to the local one.    * @param src path src file in the remote filesystem    * @param dst path local destination    * @throws IOException IO failure    */
 DECL|method|copyToLocalFile (Path src, Path dst)
 specifier|public
 name|void
@@ -6545,7 +6580,7 @@ name|dst
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * The src file is under FS, and the dst is on the local disk.    * Copy it from FS control to the local dst name.    * Remove the source afterwards    * @param src path    * @param dst path    */
+comment|/**    * Copy a file to the local filesystem, then delete it from the    * remote filesystem (if successfully copied).    * @param src path src file in the remote filesystem    * @param dst path local destination    * @throws IOException IO failure    */
 DECL|method|moveToLocalFile (Path src, Path dst)
 specifier|public
 name|void
@@ -6570,7 +6605,7 @@ name|dst
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * The src file is under FS, and the dst is on the local disk.    * Copy it from FS control to the local dst name.    * delSrc indicates if the src will be removed or not.    * @param delSrc whether to delete the src    * @param src path    * @param dst path    */
+comment|/**    * Copy it a file from a remote filesystem to the local one.    * delSrc indicates if the src will be removed or not.    * @param delSrc whether to delete the src    * @param src path src file in the remote filesystem    * @param dst path local destination    * @throws IOException IO failure    */
 DECL|method|copyToLocalFile (boolean delSrc, Path src, Path dst)
 specifier|public
 name|void
@@ -6600,7 +6635,7 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * The src file is under FS, and the dst is on the local disk. Copy it from FS    * control to the local dst name. delSrc indicates if the src will be removed    * or not. useRawLocalFileSystem indicates whether to use RawLocalFileSystem    * as local file system or not. RawLocalFileSystem is non crc file system.So,    * It will not create any crc files at local.    *     * @param delSrc    *          whether to delete the src    * @param src    *          path    * @param dst    *          path    * @param useRawLocalFileSystem    *          whether to use RawLocalFileSystem as local file system or not.    *     * @throws IOException    *           - if any IO error    */
+comment|/**    * The src file is under this filesystem, and the dst is on the local disk.    * Copy it from the remote filesystem to the local dst name.    * delSrc indicates if the src will be removed    * or not. useRawLocalFileSystem indicates whether to use RawLocalFileSystem    * as the local file system or not. RawLocalFileSystem is non checksumming,    * So, It will not create any crc files at local.    *    * @param delSrc    *          whether to delete the src    * @param src    *          path    * @param dst    *          path    * @param useRawLocalFileSystem    *          whether to use RawLocalFileSystem as local file system or not.    *    * @throws IOException for any IO error    */
 DECL|method|copyToLocalFile (boolean delSrc, Path src, Path dst, boolean useRawLocalFileSystem)
 specifier|public
 name|void
@@ -6676,7 +6711,7 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Returns a local File that the user can write output to.  The caller    * provides both the eventual FS target name and the local working    * file.  If the FS is local, we write directly into the target.  If    * the FS is remote, we write into the tmp local area.    * @param fsOutputFile path of output file    * @param tmpLocalFile path of local tmp file    */
+comment|/**    * Returns a local file that the user can write output to.  The caller    * provides both the eventual target name in this FileSystem    * and the local working file path.    * If this FileSystem is local, we write directly into the target.  If    * the FileSystem is not local, we write into the tmp local area.    * @param fsOutputFile path of output file    * @param tmpLocalFile path of local tmp file    * @throws IOException IO failure    */
 DECL|method|startLocalOutput (Path fsOutputFile, Path tmpLocalFile)
 specifier|public
 name|Path
@@ -6695,7 +6730,7 @@ return|return
 name|tmpLocalFile
 return|;
 block|}
-comment|/**    * Called when we're all done writing to the target.  A local FS will    * do nothing, because we've written to exactly the right place.  A remote    * FS will copy the contents of tmpLocalFile to the correct target at    * fsOutputFile.    * @param fsOutputFile path of output file    * @param tmpLocalFile path to local tmp file    */
+comment|/**    * Called when we're all done writing to the target.    * A local FS will do nothing, because we've written to exactly the    * right place.    * A remote FS will copy the contents of tmpLocalFile to the correct target at    * fsOutputFile.    * @param fsOutputFile path of output file    * @param tmpLocalFile path to local tmp file    * @throws IOException IO failure    */
 DECL|method|completeLocalOutput (Path fsOutputFile, Path tmpLocalFile)
 specifier|public
 name|void
@@ -6718,7 +6753,7 @@ name|fsOutputFile
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * No more filesystem operations are needed.  Will    * release any held locks.    */
+comment|/**    * Close this FileSystem instance.    * Will release any held locks, delete all files queued for deletion    * through calls to {@link #deleteOnExit(Path)}, and remove this FS instance    * from the cache, if cached.    *    * After this operation, the outcome of any method call on this FileSystem    * instance, or any input/output stream created by it is<i>undefined</i>.    * @throws IOException IO failure    */
 annotation|@
 name|Override
 DECL|method|close ()
@@ -6745,7 +6780,7 @@ name|this
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Return the total size of all files in the filesystem. */
+comment|/**    * Return the total size of all files in the filesystem.    * @throws IOException IO failure    */
 DECL|method|getUsed ()
 specifier|public
 name|long
@@ -6770,7 +6805,7 @@ name|path
 argument_list|)
 return|;
 block|}
-comment|/** Return the total size of all files from a specified path. */
+comment|/**    * Return the total size of all files from a specified path.    * @throws IOException IO failure    */
 DECL|method|getUsed (Path path)
 specifier|public
 name|long
@@ -6792,8 +6827,7 @@ name|getLength
 argument_list|()
 return|;
 block|}
-comment|/**    * Get the block size for a particular file.    * @param f the filename    * @return the number of bytes in a block    */
-comment|/** @deprecated Use getFileStatus() instead */
+comment|/**    * Get the block size for a particular file.    * @param f the filename    * @return the number of bytes in a block    * @deprecated Use {@link #getFileStatus(Path)} instead    * @throws FileNotFoundException if the path is not present    * @throws IOException IO failure    */
 annotation|@
 name|Deprecated
 DECL|method|getBlockSize (Path f)
@@ -6817,7 +6851,7 @@ name|getBlockSize
 argument_list|()
 return|;
 block|}
-comment|/**    * Return the number of bytes that large input files should be optimally    * be split into to minimize i/o time.    * @deprecated use {@link #getDefaultBlockSize(Path)} instead    */
+comment|/**    * Return the number of bytes that large input files should be optimally    * be split into to minimize I/O time.    * @deprecated use {@link #getDefaultBlockSize(Path)} instead    */
 annotation|@
 name|Deprecated
 DECL|method|getDefaultBlockSize ()
@@ -6843,7 +6877,7 @@ literal|1024
 argument_list|)
 return|;
 block|}
-comment|/** Return the number of bytes that large input files should be optimally    * be split into to minimize i/o time.  The given path will be used to    * locate the actual filesystem.  The full path does not have to exist.    * @param f path of file    * @return the default block size for the path's filesystem    */
+comment|/**    * Return the number of bytes that large input files should be optimally    * be split into to minimize I/O time.  The given path will be used to    * locate the actual filesystem.  The full path does not have to exist.    * @param f path of file    * @return the default block size for the path's filesystem    */
 DECL|method|getDefaultBlockSize (Path f)
 specifier|public
 name|long
@@ -6858,7 +6892,7 @@ name|getDefaultBlockSize
 argument_list|()
 return|;
 block|}
-comment|/**    * Get the default replication.    * @deprecated use {@link #getDefaultReplication(Path)} instead    */
+comment|/**    * Get the default replication.    * @return the replication; the default value is "1".    * @deprecated use {@link #getDefaultReplication(Path)} instead    */
 annotation|@
 name|Deprecated
 DECL|method|getDefaultReplication ()
@@ -6871,7 +6905,7 @@ return|return
 literal|1
 return|;
 block|}
-comment|/**    * Get the default replication for a path.   The given path will be used to    * locate the actual filesystem.  The full path does not have to exist.    * @param path of the file    * @return default replication for the path's filesystem     */
+comment|/**    * Get the default replication for a path.    * The given path will be used to locate the actual FileSystem to query.    * The full path does not have to exist.    * @param path of the file    * @return default replication for the path's filesystem    */
 DECL|method|getDefaultReplication (Path path)
 specifier|public
 name|short
@@ -6886,7 +6920,7 @@ name|getDefaultReplication
 argument_list|()
 return|;
 block|}
-comment|/**    * Return a file status object that represents the path.    * @param f The path we want information from    * @return a FileStatus object    * @throws FileNotFoundException when the path does not exist;    *         IOException see specific implementation    */
+comment|/**    * Return a file status object that represents the path.    * @param f The path we want information from    * @return a FileStatus object    * @throws FileNotFoundException when the path does not exist    * @throws IOException see specific implementation    */
 DECL|method|getFileStatus (Path f)
 specifier|public
 specifier|abstract
@@ -6899,7 +6933,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Checks if the user can access a path.  The mode specifies which access    * checks to perform.  If the requested permissions are granted, then the    * method returns normally.  If access is denied, then the method throws an    * {@link AccessControlException}.    *<p/>    * The default implementation of this method calls {@link #getFileStatus(Path)}    * and checks the returned permissions against the requested permissions.    * Note that the getFileStatus call will be subject to authorization checks.    * Typically, this requires search (execute) permissions on each directory in    * the path's prefix, but this is implementation-defined.  Any file system    * that provides a richer authorization model (such as ACLs) may override the    * default implementation so that it checks against that model instead.    *<p>    * In general, applications should avoid using this method, due to the risk of    * time-of-check/time-of-use race conditions.  The permissions on a file may    * change immediately after the access call returns.  Most applications should    * prefer running specific file system actions as the desired user represented    * by a {@link UserGroupInformation}.    *    * @param path Path to check    * @param mode type of access to check    * @throws AccessControlException if access is denied    * @throws FileNotFoundException if the path does not exist    * @throws IOException see specific implementation    */
+comment|/**    * Checks if the user can access a path.  The mode specifies which access    * checks to perform.  If the requested permissions are granted, then the    * method returns normally.  If access is denied, then the method throws an    * {@link AccessControlException}.    *<p>    * The default implementation calls {@link #getFileStatus(Path)}    * and checks the returned permissions against the requested permissions.    *    * Note that the {@link #getFileStatus(Path)} call will be subject to    * authorization checks.    * Typically, this requires search (execute) permissions on each directory in    * the path's prefix, but this is implementation-defined.  Any file system    * that provides a richer authorization model (such as ACLs) may override the    * default implementation so that it checks against that model instead.    *<p>    * In general, applications should avoid using this method, due to the risk of    * time-of-check/time-of-use race conditions.  The permissions on a file may    * change immediately after the access call returns.  Most applications should    * prefer running specific file system actions as the desired user represented    * by a {@link UserGroupInformation}.    *    * @param path Path to check    * @param mode type of access to check    * @throws AccessControlException if access is denied    * @throws FileNotFoundException if the path does not exist    * @throws IOException see specific implementation    */
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -6942,7 +6976,7 @@ name|mode
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * This method provides the default implementation of    * {@link #access(Path, FsAction)}.    *    * @param stat FileStatus to check    * @param mode type of access to check    * @throws IOException for any error    */
+comment|/**    * This method provides the default implementation of    * {@link #access(Path, FsAction)}.    *    * @param stat FileStatus to check    * @param mode type of access to check    * @throws AccessControlException if access is denied    * @throws IOException for any error    */
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -6959,6 +6993,8 @@ name|FsAction
 name|mode
 parameter_list|)
 throws|throws
+name|AccessControlException
+throws|,
 name|IOException
 block|{
 name|FsPermission
@@ -7106,7 +7142,7 @@ argument_list|)
 argument_list|)
 throw|;
 block|}
-comment|/**    * See {@link FileContext#fixRelativePart}    */
+comment|/**    * See {@link FileContext#fixRelativePart}.    */
 DECL|method|fixRelativePart (Path p)
 specifier|protected
 name|Path
@@ -7142,7 +7178,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * See {@link FileContext#createSymlink(Path, Path, boolean)}    */
+comment|/**    * See {@link FileContext#createSymlink(Path, Path, boolean)}.    */
 DECL|method|createSymlink (final Path target, final Path link, final boolean createParent)
 specifier|public
 name|void
@@ -7182,7 +7218,7 @@ literal|"Filesystem does not support symlinks!"
 argument_list|)
 throw|;
 block|}
-comment|/**    * See {@link FileContext#getFileLinkStatus(Path)}    */
+comment|/**    * See {@link FileContext#getFileLinkStatus(Path)}.    * @throws FileNotFoundException when the path does not exist    * @throws IOException see specific implementation    */
 DECL|method|getFileLinkStatus (final Path f)
 specifier|public
 name|FileStatus
@@ -7209,7 +7245,7 @@ name|f
 argument_list|)
 return|;
 block|}
-comment|/**    * See {@link AbstractFileSystem#supportsSymlinks()}    */
+comment|/**    * See {@link AbstractFileSystem#supportsSymlinks()}.    */
 DECL|method|supportsSymlinks ()
 specifier|public
 name|boolean
@@ -7220,7 +7256,7 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * See {@link FileContext#getLinkTarget(Path)}    */
+comment|/**    * See {@link FileContext#getLinkTarget(Path)}.    * @throws UnsupportedOperationException if the operation is unsupported    *         (default outcome).    */
 DECL|method|getLinkTarget (Path f)
 specifier|public
 name|Path
@@ -7241,7 +7277,7 @@ literal|"Filesystem does not support symlinks!"
 argument_list|)
 throw|;
 block|}
-comment|/**    * See {@link AbstractFileSystem#getLinkTarget(Path)}    */
+comment|/**    * See {@link AbstractFileSystem#getLinkTarget(Path)}.    * @throws UnsupportedOperationException if the operation is unsupported    *         (default outcome).    */
 DECL|method|resolveLink (Path f)
 specifier|protected
 name|Path
@@ -7262,7 +7298,7 @@ literal|"Filesystem does not support symlinks!"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Get the checksum of a file.    *    * @param f The file path    * @return The file checksum.  The default return value is null,    *  which indicates that no checksum algorithm is implemented    *  in the corresponding FileSystem.    */
+comment|/**    * Get the checksum of a file, if the FS supports checksums.    *    * @param f The file path    * @return The file checksum.  The default return value is null,    *  which indicates that no checksum algorithm is implemented    *  in the corresponding FileSystem.    * @throws IOException IO failure    */
 DECL|method|getFileChecksum (Path f)
 specifier|public
 name|FileChecksum
@@ -7285,7 +7321,7 @@ name|MAX_VALUE
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the checksum of a file, from the beginning of the file till the    * specific length.    * @param f The file path    * @param length The length of the file range for checksum calculation    * @return The file checksum.    */
+comment|/**    * Get the checksum of a file, from the beginning of the file till the    * specific length.    * @param f The file path    * @param length The length of the file range for checksum calculation    * @return The file checksum or null if checksums are not supported.    * @throws IOException IO failure    */
 DECL|method|getFileChecksum (Path f, final long length)
 specifier|public
 name|FileChecksum
@@ -7305,7 +7341,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Set the verify checksum flag. This is only applicable if the     * corresponding FileSystem supports checksum. By default doesn't do anything.    * @param verifyChecksum Verify checksum flag    */
+comment|/**    * Set the verify checksum flag. This is only applicable if the    * corresponding filesystem supports checksums.    * By default doesn't do anything.    * @param verifyChecksum Verify checksum flag    */
 DECL|method|setVerifyChecksum (boolean verifyChecksum)
 specifier|public
 name|void
@@ -7317,7 +7353,7 @@ parameter_list|)
 block|{
 comment|//doesn't do anything
 block|}
-comment|/**    * Set the write checksum flag. This is only applicable if the     * corresponding FileSystem supports checksum. By default doesn't do anything.    * @param writeChecksum Write checsum flag    */
+comment|/**    * Set the write checksum flag. This is only applicable if the    * corresponding filesystem supports checksums.    * By default doesn't do anything.    * @param writeChecksum Write checksum flag    */
 DECL|method|setWriteChecksum (boolean writeChecksum)
 specifier|public
 name|void
@@ -7329,7 +7365,7 @@ parameter_list|)
 block|{
 comment|//doesn't do anything
 block|}
-comment|/**    * Returns a status object describing the use and capacity of the    * file system. If the file system has multiple partitions, the    * use and capacity of the root partition is reflected.    *     * @return a FsStatus object    * @throws IOException    *           see specific implementation    */
+comment|/**    * Returns a status object describing the use and capacity of the    * filesystem. If the filesystem has multiple partitions, the    * use and capacity of the root partition is reflected.    *    * @return a FsStatus object    * @throws IOException    *           see specific implementation    */
 DECL|method|getStatus ()
 specifier|public
 name|FsStatus
@@ -7345,7 +7381,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns a status object describing the use and capacity of the    * file system. If the file system has multiple partitions, the    * use and capacity of the partition pointed to by the specified    * path is reflected.    * @param p Path for which status should be obtained. null means    * the default partition.     * @return a FsStatus object    * @throws IOException    *           see specific implementation    */
+comment|/**    * Returns a status object describing the use and capacity of the    * filesystem. If the filesystem has multiple partitions, the    * use and capacity of the partition pointed to by the specified    * path is reflected.    * @param p Path for which status should be obtained. null means    * the default partition.    * @return a FsStatus object    * @throws IOException    *           see specific implementation    */
 DECL|method|getStatus (Path p)
 specifier|public
 name|FsStatus
@@ -7373,7 +7409,7 @@ name|MAX_VALUE
 argument_list|)
 return|;
 block|}
-comment|/**    * Set permission of a path.    * @param p The path    * @param permission permission    */
+comment|/**    * Set permission of a path.    * @param p The path    * @param permission permission    * @throws IOException IO failure    */
 DECL|method|setPermission (Path p, FsPermission permission )
 specifier|public
 name|void
@@ -7388,7 +7424,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{   }
-comment|/**    * Set owner of a path (i.e. a file or a directory).    * The parameters username and groupname cannot both be null.    * @param p The path    * @param username If it is null, the original username remains unchanged.    * @param groupname If it is null, the original groupname remains unchanged.    */
+comment|/**    * Set owner of a path (i.e. a file or a directory).    * The parameters username and groupname cannot both be null.    * @param p The path    * @param username If it is null, the original username remains unchanged.    * @param groupname If it is null, the original groupname remains unchanged.    * @throws IOException IO failure    */
 DECL|method|setOwner (Path p, String username, String groupname )
 specifier|public
 name|void
@@ -7406,7 +7442,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{   }
-comment|/**    * Set access time of a file    * @param p The path    * @param mtime Set the modification time of this file.    *              The number of milliseconds since Jan 1, 1970.     *              A value of -1 means that this call should not set modification time.    * @param atime Set the access time of this file.    *              The number of milliseconds since Jan 1, 1970.     *              A value of -1 means that this call should not set access time.    */
+comment|/**    * Set access time of a file.    * @param p The path    * @param mtime Set the modification time of this file.    *              The number of milliseconds since Jan 1, 1970.    *              A value of -1 means that this call should not set modification time.    * @param atime Set the access time of this file.    *              The number of milliseconds since Jan 1, 1970.    *              A value of -1 means that this call should not set access time.    * @throws IOException IO failure    */
 DECL|method|setTimes (Path p, long mtime, long atime )
 specifier|public
 name|void
@@ -7424,7 +7460,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{   }
-comment|/**    * Create a snapshot with a default name.    * @param path The directory where snapshots will be taken.    * @return the snapshot path.    */
+comment|/**    * Create a snapshot with a default name.    * @param path The directory where snapshots will be taken.    * @return the snapshot path.    * @throws IOException IO failure    * @throws UnsupportedOperationException if the operation is unsupported    */
 DECL|method|createSnapshot (Path path)
 specifier|public
 specifier|final
@@ -7446,7 +7482,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a snapshot    * @param path The directory where snapshots will be taken.    * @param snapshotName The name of the snapshot    * @return the snapshot path.    */
+comment|/**    * Create a snapshot.    * @param path The directory where snapshots will be taken.    * @param snapshotName The name of the snapshot    * @return the snapshot path.    * @throws IOException IO failure    * @throws UnsupportedOperationException if the operation is unsupported    */
 DECL|method|createSnapshot (Path path, String snapshotName)
 specifier|public
 name|Path
@@ -7475,7 +7511,7 @@ literal|" doesn't support createSnapshot"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Rename a snapshot    * @param path The directory path where the snapshot was taken    * @param snapshotOldName Old name of the snapshot    * @param snapshotNewName New name of the snapshot    * @throws IOException    */
+comment|/**    * Rename a snapshot.    * @param path The directory path where the snapshot was taken    * @param snapshotOldName Old name of the snapshot    * @param snapshotNewName New name of the snapshot    * @throws IOException IO failure    * @throws UnsupportedOperationException if the operation is unsupported    *         (default outcome).    */
 DECL|method|renameSnapshot (Path path, String snapshotOldName, String snapshotNewName)
 specifier|public
 name|void
@@ -7507,7 +7543,7 @@ literal|" doesn't support renameSnapshot"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Delete a snapshot of a directory    * @param path  The directory that the to-be-deleted snapshot belongs to    * @param snapshotName The name of the snapshot    */
+comment|/**    * Delete a snapshot of a directory.    * @param path  The directory that the to-be-deleted snapshot belongs to    * @param snapshotName The name of the snapshot    * @throws IOException IO failure    * @throws UnsupportedOperationException if the operation is unsupported    *         (default outcome).    */
 DECL|method|deleteSnapshot (Path path, String snapshotName)
 specifier|public
 name|void
@@ -7536,7 +7572,7 @@ literal|" doesn't support deleteSnapshot"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Modifies ACL entries of files and directories.  This method can add new ACL    * entries or modify the permissions on existing ACL entries.  All existing    * ACL entries that are not specified in this call are retained without    * changes.  (Modifications are merged into the current ACL.)    *    * @param path Path to modify    * @param aclSpec List<AclEntry> describing modifications    * @throws IOException if an ACL could not be modified    */
+comment|/**    * Modifies ACL entries of files and directories.  This method can add new ACL    * entries or modify the permissions on existing ACL entries.  All existing    * ACL entries that are not specified in this call are retained without    * changes.  (Modifications are merged into the current ACL.)    *    * @param path Path to modify    * @param aclSpec List<AclEntry> describing modifications    * @throws IOException if an ACL could not be modified    * @throws UnsupportedOperationException if the operation is unsupported    *         (default outcome).    */
 DECL|method|modifyAclEntries (Path path, List<AclEntry> aclSpec)
 specifier|public
 name|void
@@ -7568,7 +7604,7 @@ literal|" doesn't support modifyAclEntries"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Removes ACL entries from files and directories.  Other ACL entries are    * retained.    *    * @param path Path to modify    * @param aclSpec List<AclEntry> describing entries to remove    * @throws IOException if an ACL could not be modified    */
+comment|/**    * Removes ACL entries from files and directories.  Other ACL entries are    * retained.    *    * @param path Path to modify    * @param aclSpec List describing entries to remove    * @throws IOException if an ACL could not be modified    * @throws UnsupportedOperationException if the operation is unsupported    *         (default outcome).    */
 DECL|method|removeAclEntries (Path path, List<AclEntry> aclSpec)
 specifier|public
 name|void
@@ -7600,7 +7636,7 @@ literal|" doesn't support removeAclEntries"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Removes all default ACL entries from files and directories.    *    * @param path Path to modify    * @throws IOException if an ACL could not be modified    */
+comment|/**    * Removes all default ACL entries from files and directories.    *    * @param path Path to modify    * @throws IOException if an ACL could not be modified    * @throws UnsupportedOperationException if the operation is unsupported    *         (default outcome).    */
 DECL|method|removeDefaultAcl (Path path)
 specifier|public
 name|void
@@ -7626,7 +7662,7 @@ literal|" doesn't support removeDefaultAcl"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Removes all but the base ACL entries of files and directories.  The entries    * for user, group, and others are retained for compatibility with permission    * bits.    *    * @param path Path to modify    * @throws IOException if an ACL could not be removed    */
+comment|/**    * Removes all but the base ACL entries of files and directories.  The entries    * for user, group, and others are retained for compatibility with permission    * bits.    *    * @param path Path to modify    * @throws IOException if an ACL could not be removed    * @throws UnsupportedOperationException if the operation is unsupported    *         (default outcome).    */
 DECL|method|removeAcl (Path path)
 specifier|public
 name|void
@@ -7652,7 +7688,7 @@ literal|" doesn't support removeAcl"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Fully replaces ACL of files and directories, discarding all existing    * entries.    *    * @param path Path to modify    * @param aclSpec List<AclEntry> describing modifications, must include entries    *   for user, group, and others for compatibility with permission bits.    * @throws IOException if an ACL could not be modified    */
+comment|/**    * Fully replaces ACL of files and directories, discarding all existing    * entries.    *    * @param path Path to modify    * @param aclSpec List describing modifications, which must include entries    *   for user, group, and others for compatibility with permission bits.    * @throws IOException if an ACL could not be modified    * @throws UnsupportedOperationException if the operation is unsupported    *         (default outcome).    */
 DECL|method|setAcl (Path path, List<AclEntry> aclSpec)
 specifier|public
 name|void
@@ -7684,7 +7720,7 @@ literal|" doesn't support setAcl"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Gets the ACL of a file or directory.    *    * @param path Path to get    * @return AclStatus describing the ACL of the file or directory    * @throws IOException if an ACL could not be read    */
+comment|/**    * Gets the ACL of a file or directory.    *    * @param path Path to get    * @return AclStatus describing the ACL of the file or directory    * @throws IOException if an ACL could not be read    * @throws UnsupportedOperationException if the operation is unsupported    *         (default outcome).    */
 DECL|method|getAclStatus (Path path)
 specifier|public
 name|AclStatus
@@ -7710,7 +7746,7 @@ literal|" doesn't support getAclStatus"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Set an xattr of a file or directory.    * The name must be prefixed with the namespace followed by ".". For example,    * "user.attr".    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to modify    * @param name xattr name.    * @param value xattr value.    * @throws IOException    */
+comment|/**    * Set an xattr of a file or directory.    * The name must be prefixed with the namespace followed by ".". For example,    * "user.attr".    *<p>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to modify    * @param name xattr name.    * @param value xattr value.    * @throws IOException IO failure    * @throws UnsupportedOperationException if the operation is unsupported    *         (default outcome).    */
 DECL|method|setXAttr (Path path, String name, byte[] value)
 specifier|public
 name|void
@@ -7752,7 +7788,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Set an xattr of a file or directory.    * The name must be prefixed with the namespace followed by ".". For example,    * "user.attr".    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to modify    * @param name xattr name.    * @param value xattr value.    * @param flag xattr set flag    * @throws IOException    */
+comment|/**    * Set an xattr of a file or directory.    * The name must be prefixed with the namespace followed by ".". For example,    * "user.attr".    *<p>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to modify    * @param name xattr name.    * @param value xattr value.    * @param flag xattr set flag    * @throws IOException IO failure    * @throws UnsupportedOperationException if the operation is unsupported    *         (default outcome).    */
 DECL|method|setXAttr (Path path, String name, byte[] value, EnumSet<XAttrSetFlag> flag)
 specifier|public
 name|void
@@ -7791,7 +7827,7 @@ literal|" doesn't support setXAttr"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Get an xattr name and value for a file or directory.    * The name must be prefixed with the namespace followed by ".". For example,    * "user.attr".    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to get extended attribute    * @param name xattr name.    * @return byte[] xattr value.    * @throws IOException    */
+comment|/**    * Get an xattr name and value for a file or directory.    * The name must be prefixed with the namespace followed by ".". For example,    * "user.attr".    *<p>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to get extended attribute    * @param name xattr name.    * @return byte[] xattr value.    * @throws IOException IO failure    * @throws UnsupportedOperationException if the operation is unsupported    *         (default outcome).    */
 DECL|method|getXAttr (Path path, String name)
 specifier|public
 name|byte
@@ -7821,7 +7857,7 @@ literal|" doesn't support getXAttr"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Get all of the xattr name/value pairs for a file or directory.    * Only those xattrs which the logged-in user has permissions to view    * are returned.    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to get extended attributes    * @return Map describing the XAttrs of the file or directory    * @throws IOException    */
+comment|/**    * Get all of the xattr name/value pairs for a file or directory.    * Only those xattrs which the logged-in user has permissions to view    * are returned.    *<p>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to get extended attributes    * @return Map describing the XAttrs of the file or directory    * @throws IOException IO failure    * @throws UnsupportedOperationException if the operation is unsupported    *         (default outcome).    */
 DECL|method|getXAttrs (Path path)
 specifier|public
 name|Map
@@ -7853,7 +7889,7 @@ literal|" doesn't support getXAttrs"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Get all of the xattrs name/value pairs for a file or directory.    * Only those xattrs which the logged-in user has permissions to view    * are returned.    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to get extended attributes    * @param names XAttr names.    * @return Map describing the XAttrs of the file or directory    * @throws IOException    */
+comment|/**    * Get all of the xattrs name/value pairs for a file or directory.    * Only those xattrs which the logged-in user has permissions to view    * are returned.    *<p>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to get extended attributes    * @param names XAttr names.    * @return Map describing the XAttrs of the file or directory    * @throws IOException IO failure    * @throws UnsupportedOperationException if the operation is unsupported    *         (default outcome).    */
 DECL|method|getXAttrs (Path path, List<String> names)
 specifier|public
 name|Map
@@ -7891,7 +7927,7 @@ literal|" doesn't support getXAttrs"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Get all of the xattr names for a file or directory.    * Only those xattr names which the logged-in user has permissions to view    * are returned.    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to get extended attributes    * @return List<String> of the XAttr names of the file or directory    * @throws IOException    */
+comment|/**    * Get all of the xattr names for a file or directory.    * Only those xattr names which the logged-in user has permissions to view    * are returned.    *<p>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to get extended attributes    * @return List<String> of the XAttr names of the file or directory    * @throws IOException IO failure    * @throws UnsupportedOperationException if the operation is unsupported    *         (default outcome).    */
 DECL|method|listXAttrs (Path path)
 specifier|public
 name|List
@@ -7920,7 +7956,7 @@ literal|" doesn't support listXAttrs"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Remove an xattr of a file or directory.    * The name must be prefixed with the namespace followed by ".". For example,    * "user.attr".    *<p/>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to remove extended attribute    * @param name xattr name    * @throws IOException    */
+comment|/**    * Remove an xattr of a file or directory.    * The name must be prefixed with the namespace followed by ".". For example,    * "user.attr".    *<p>    * Refer to the HDFS extended attributes user documentation for details.    *    * @param path Path to remove extended attribute    * @param name xattr name    * @throws IOException IO failure    * @throws UnsupportedOperationException if the operation is unsupported    *         (default outcome).    */
 DECL|method|removeXAttr (Path path, String name)
 specifier|public
 name|void
@@ -7949,7 +7985,7 @@ literal|" doesn't support removeXAttr"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Set the storage policy for a given file or directory.    *    * @param src file or directory path.    * @param policyName the name of the target storage policy. The list    *                   of supported Storage policies can be retrieved    *                   via {@link #getAllStoragePolicies}.    * @throws IOException    */
+comment|/**    * Set the storage policy for a given file or directory.    *    * @param src file or directory path.    * @param policyName the name of the target storage policy. The list    *                   of supported Storage policies can be retrieved    *                   via {@link #getAllStoragePolicies}.    * @throws IOException IO failure    * @throws UnsupportedOperationException if the operation is unsupported    *         (default outcome).    */
 DECL|method|setStoragePolicy (final Path src, final String policyName)
 specifier|public
 name|void
@@ -7980,7 +8016,7 @@ literal|" doesn't support setStoragePolicy"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Unset the storage policy set for a given file or directory.    * @param src file or directory path.    * @throws IOException    */
+comment|/**    * Unset the storage policy set for a given file or directory.    * @param src file or directory path.    * @throws IOException IO failure    * @throws UnsupportedOperationException if the operation is unsupported    *         (default outcome).    */
 DECL|method|unsetStoragePolicy (final Path src)
 specifier|public
 name|void
@@ -8007,7 +8043,7 @@ literal|" doesn't support unsetStoragePolicy"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Query the effective storage policy ID for the given file or directory.    *    * @param src file or directory path.    * @return storage policy for give file.    * @throws IOException    */
+comment|/**    * Query the effective storage policy ID for the given file or directory.    *    * @param src file or directory path.    * @return storage policy for give file.    * @throws IOException IO failure    * @throws UnsupportedOperationException if the operation is unsupported    *         (default outcome).    */
 DECL|method|getStoragePolicy (final Path src)
 specifier|public
 name|BlockStoragePolicySpi
@@ -8034,7 +8070,7 @@ literal|" doesn't support getStoragePolicy"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Retrieve all the storage policies supported by this file system.    *    * @return all storage policies supported by this filesystem.    * @throws IOException    */
+comment|/**    * Retrieve all the storage policies supported by this file system.    *    * @return all storage policies supported by this filesystem.    * @throws IOException IO failure    * @throws UnsupportedOperationException if the operation is unsupported    *         (default outcome).    */
 DECL|method|getAllStoragePolicies ()
 specifier|public
 name|Collection
@@ -8062,7 +8098,7 @@ literal|" doesn't support getAllStoragePolicies"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Get the root directory of Trash for current user when the path specified    * is deleted.    *    * @param path the trash root of the path to be determined.    * @return the default implementation returns "/user/$USER/.Trash".    */
+comment|/**    * Get the root directory of Trash for current user when the path specified    * is deleted.    *    * @param path the trash root of the path to be determined.    * @return the default implementation returns {@code /user/$USER/.Trash}    */
 DECL|method|getTrashRoot (Path path)
 specifier|public
 name|Path
@@ -8094,7 +8130,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Get all the trash roots for current user or all users.    *    * @param allUsers return trash roots for all users if true.    * @return all the trash root directories.    *         Default FileSystem returns .Trash under users' home directories if    *         /user/$USER/.Trash exists.    */
+comment|/**    * Get all the trash roots for current user or all users.    *    * @param allUsers return trash roots for all users if true.    * @return all the trash root directories.    *         Default FileSystem returns .Trash under users' home directories if    *         {@code /user/$USER/.Trash} exists.    */
 DECL|method|getTrashRoots (boolean allUsers)
 specifier|public
 name|Collection
@@ -8255,7 +8291,7 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-name|LOG
+name|LOGGER
 operator|.
 name|warn
 argument_list|(
@@ -8279,6 +8315,7 @@ name|FILE_SYSTEMS_LOADED
 init|=
 literal|false
 decl_stmt|;
+comment|/**    * Filesystems listed as services.    */
 specifier|private
 specifier|static
 specifier|final
@@ -8298,18 +8335,10 @@ name|SERVICE_FILE_SYSTEMS
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|String
-argument_list|,
-name|Class
-argument_list|<
-name|?
-extends|extends
-name|FileSystem
-argument_list|>
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
+comment|/**    * Load the filesystem declarations from service resources.    * This is a synchronized operation.    */
 DECL|method|loadFileSystems ()
 specifier|private
 specifier|static
@@ -8317,6 +8346,13 @@ name|void
 name|loadFileSystems
 parameter_list|()
 block|{
+name|LOGGER
+operator|.
+name|debug
+argument_list|(
+literal|"Loading filesystems"
+argument_list|)
+expr_stmt|;
 synchronized|synchronized
 init|(
 name|FileSystem
@@ -8366,8 +8402,6 @@ condition|)
 block|{
 name|FileSystem
 name|fs
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -8395,23 +8429,30 @@ name|getClass
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|e
-parameter_list|)
-block|{
-name|LOG
+if|if
+condition|(
+name|LOGGER
 operator|.
-name|warn
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOGGER
+operator|.
+name|debug
 argument_list|(
-literal|"Cannot load: "
-operator|+
+literal|"{}:// = {} from {}"
+argument_list|,
 name|fs
-operator|+
-literal|" from "
-operator|+
+operator|.
+name|getScheme
+argument_list|()
+argument_list|,
+name|fs
+operator|.
+name|getClass
+argument_list|()
+argument_list|,
 name|ClassUtil
 operator|.
 name|findContainingJar
@@ -8421,6 +8462,42 @@ operator|.
 name|getClass
 argument_list|()
 argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|LOGGER
+operator|.
+name|warn
+argument_list|(
+literal|"Cannot load: {} from {}"
+argument_list|,
+name|fs
+argument_list|,
+name|ClassUtil
+operator|.
+name|findContainingJar
+argument_list|(
+name|fs
+operator|.
+name|getClass
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|LOGGER
+operator|.
+name|info
+argument_list|(
+literal|"Full exception loading: {}"
+argument_list|,
+name|fs
 argument_list|,
 name|e
 argument_list|)
@@ -8495,6 +8572,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|/**    * Get the FileSystem implementation class of a filesystem.    * This triggers a scan and load of all FileSystem implementations listed as    * services and discovered via the {@link ServiceLoader}    * @param scheme URL scheme of FS    * @param conf configuration: can be null, in which case the check for    * a filesystem binding declaration in the configuration is skipped.    * @return the filesystem    * @throws UnsupportedFileSystemException if there was no known implementation    *         for the scheme.    * @throws IOException if the filesystem could not be loaded    */
 DECL|method|getFileSystemClass (String scheme, Configuration conf)
 specifier|public
 specifier|static
@@ -8525,6 +8603,15 @@ name|loadFileSystems
 argument_list|()
 expr_stmt|;
 block|}
+name|LOGGER
+operator|.
+name|debug
+argument_list|(
+literal|"Looking for FS supporting {}"
+argument_list|,
+name|scheme
+argument_list|)
+expr_stmt|;
 name|Class
 argument_list|<
 name|?
@@ -8542,6 +8629,24 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|String
+name|property
+init|=
+literal|"fs."
+operator|+
+name|scheme
+operator|+
+literal|".impl"
+decl_stmt|;
+name|LOGGER
+operator|.
+name|debug
+argument_list|(
+literal|"looking for configuration option {}"
+argument_list|,
+name|property
+argument_list|)
+expr_stmt|;
 name|clazz
 operator|=
 operator|(
@@ -8556,13 +8661,21 @@ name|conf
 operator|.
 name|getClass
 argument_list|(
-literal|"fs."
-operator|+
-name|scheme
-operator|+
-literal|".impl"
+name|property
 argument_list|,
 literal|null
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOGGER
+operator|.
+name|debug
+argument_list|(
+literal|"No configuration: skipping check for fs.{}.impl"
+argument_list|,
+name|scheme
 argument_list|)
 expr_stmt|;
 block|}
@@ -8573,12 +8686,31 @@ operator|==
 literal|null
 condition|)
 block|{
+name|LOGGER
+operator|.
+name|debug
+argument_list|(
+literal|"Looking in service filesystems for implementation class"
+argument_list|)
+expr_stmt|;
 name|clazz
 operator|=
 name|SERVICE_FILE_SYSTEMS
 operator|.
 name|get
 argument_list|(
+name|scheme
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOGGER
+operator|.
+name|debug
+argument_list|(
+literal|"Filesystem {} defined in configuration option"
+argument_list|,
 name|scheme
 argument_list|)
 expr_stmt|;
@@ -8592,19 +8724,35 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|UnsupportedFileSystemException
 argument_list|(
-literal|"No FileSystem for scheme: "
+literal|"No FileSystem for scheme "
+operator|+
+literal|"\""
 operator|+
 name|scheme
+operator|+
+literal|"\""
 argument_list|)
 throw|;
 block|}
+name|LOGGER
+operator|.
+name|debug
+argument_list|(
+literal|"FS for {} is {}"
+argument_list|,
+name|scheme
+argument_list|,
+name|clazz
+argument_list|)
+expr_stmt|;
 return|return
 name|clazz
 return|;
 block|}
-DECL|method|createFileSystem (URI uri, Configuration conf )
+comment|/**    * Create and initialize a new instance of a FileSystem.    * @param uri URI containing the FS schema and FS details    * @param conf configuration to use to look for the FS instance declaration    * and to pass to the {@link FileSystem#initialize(URI, Configuration)}.    * @return the initialized filesystem.    * @throws IOException problems loading or initializing the FileSystem    */
+DECL|method|createFileSystem (URI uri, Configuration conf)
 specifier|private
 specifier|static
 name|FileSystem
@@ -8629,6 +8777,8 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
+try|try
+init|(
 name|TraceScope
 name|scope
 init|=
@@ -8638,7 +8788,8 @@ name|newScope
 argument_list|(
 literal|"FileSystem#createFileSystem"
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|scope
 operator|.
 name|addKVAnnotation
@@ -8651,8 +8802,6 @@ name|getScheme
 argument_list|()
 argument_list|)
 expr_stmt|;
-try|try
-block|{
 name|Class
 argument_list|<
 name|?
@@ -8697,16 +8846,8 @@ return|return
 name|fs
 return|;
 block|}
-finally|finally
-block|{
-name|scope
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
-block|}
-comment|/** Caching FileSystem objects */
+comment|/** Caching FileSystem objects. */
 DECL|class|Cache
 specifier|static
 class|class
@@ -8735,11 +8876,7 @@ name|map
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|Key
-argument_list|,
-name|FileSystem
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|field|toAutoClose
@@ -8753,12 +8890,10 @@ name|toAutoClose
 init|=
 operator|new
 name|HashSet
-argument_list|<
-name|Key
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
-comment|/** A variable that makes all objects in the cache unique */
+comment|/** A variable that makes all objects in the cache unique. */
 DECL|field|unique
 specifier|private
 specifier|static
@@ -8806,7 +8941,7 @@ name|key
 argument_list|)
 return|;
 block|}
-comment|/** The objects inserted into the cache using this method are all unique */
+comment|/** The objects inserted into the cache using this method are all unique. */
 DECL|method|getUnique (URI uri, Configuration conf)
 name|FileSystem
 name|getUnique
@@ -8847,6 +8982,7 @@ name|key
 argument_list|)
 return|;
 block|}
+comment|/**      * Get the FS instance if the key maps to an instance, creating and      * initializing the FS if it is not found.      * If this is the first entry in the map and the JVM is not shutting down,      * this registers a shutdown hook to close filesystems, and adds this      * FS to the {@code toAutoClose} set if {@code "fs.automatic.close"}      * is set in the configuration (default: true).      * @param uri filesystem URI      * @param conf configuration      * @param key key to store/retrieve this FileSystem in the cache      * @return a cached or newly instantiated FileSystem.      * @throws IOException      */
 DECL|method|getInternal (URI uri, Configuration conf, Key key)
 specifier|private
 name|FileSystem
@@ -9064,6 +9200,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**      * Close all FileSystems in the cache, whether they are marked for      * automatic closing or not.      * @throws IOException a problem arose closing one or more FileSystem.      */
 DECL|method|closeAll ()
 specifier|synchronized
 name|void
@@ -9078,7 +9215,7 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Close all FileSystem instances in the Cache.      * @param onlyAutomatic only close those that are marked for automatic closing      */
+comment|/**      * Close all FileSystem instances in the Cache.      * @param onlyAutomatic only close those that are marked for automatic closing      * @throws IOException a problem arose closing one or more FileSystem.      */
 DECL|method|closeAll (boolean onlyAutomatic)
 specifier|synchronized
 name|void
@@ -9098,9 +9235,7 @@ name|exceptions
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|IOException
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|// Make a copy of the keys in the map since we'll be modifying
@@ -9113,9 +9248,7 @@ name|keys
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|Key
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|keys
@@ -9257,7 +9390,7 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-name|LOG
+name|LOGGER
 operator|.
 name|info
 argument_list|(
@@ -9288,12 +9421,18 @@ name|targetFSList
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|FileSystem
-argument_list|>
+argument_list|<>
+argument_list|(
+name|map
+operator|.
+name|entrySet
 argument_list|()
+operator|.
+name|size
+argument_list|()
+argument_list|)
 decl_stmt|;
-comment|//Make a pass over the list and collect the filesystems to close
+comment|//Make a pass over the list and collect the FileSystems to close
 comment|//we cannot close inline since close() removes the entry from the Map
 for|for
 control|(
@@ -9364,9 +9503,7 @@ name|exceptions
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|IOException
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|//now make a pass over the target list and close each
@@ -9627,10 +9764,6 @@ block|}
 if|if
 condition|(
 name|obj
-operator|!=
-literal|null
-operator|&&
-name|obj
 operator|instanceof
 name|Key
 condition|)
@@ -9719,7 +9852,7 @@ return|;
 block|}
 block|}
 block|}
-comment|/**    * Tracks statistics about how many reads, writes, and so forth have been    * done in a FileSystem.    *     * Since there is only one of these objects per FileSystem, there will     * typically be many threads writing to this object.  Almost every operation    * on an open file will involve a write to this object.  In contrast, reading    * statistics is done infrequently by most programs, and not at all by others.    * Hence, this is optimized for writes.    *     * Each thread writes to its own thread-local area of memory.  This removes     * contention and allows us to scale up to many, many threads.  To read    * statistics, the reader thread totals up the contents of all of the     * thread-local data areas.    */
+comment|/**    * Tracks statistics about how many reads, writes, and so forth have been    * done in a FileSystem.    *    * Since there is only one of these objects per FileSystem, there will    * typically be many threads writing to this object.  Almost every operation    * on an open file will involve a write to this object.  In contrast, reading    * statistics is done infrequently by most programs, and not at all by others.    * Hence, this is optimized for writes.    *    * Each thread writes to its own thread-local area of memory.  This removes    * contention and allows us to scale up to many, many threads.  To read    * statistics, the reader thread totals up the contents of all of the    * thread-local data areas.    */
 DECL|class|Statistics
 specifier|public
 specifier|static
@@ -9727,7 +9860,7 @@ specifier|final
 class|class
 name|Statistics
 block|{
-comment|/**      * Statistics data.      *       * There is only a single writer to thread-local StatisticsData objects.      * Hence, volatile is adequate here-- we do not need AtomicLong or similar      * to prevent lost updates.      * The Java specification guarantees that updates to volatile longs will      * be perceived as atomic with respect to other threads, which is all we      * need.      */
+comment|/**      * Statistics data.      *      * There is only a single writer to thread-local StatisticsData objects.      * Hence, volatile is adequate here-- we do not need AtomicLong or similar      * to prevent lost updates.      * The Java specification guarantees that updates to volatile longs will      * be perceived as atomic with respect to other threads, which is all we      * need.      */
 DECL|class|StatisticsData
 specifier|public
 specifier|static
@@ -10115,6 +10248,11 @@ name|StatisticsData
 name|rootData
 decl_stmt|;
 comment|/**      * Thread-local data.      */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"ThreadLocalNotStaticFinal"
+argument_list|)
 DECL|field|threadData
 specifier|private
 specifier|final
@@ -10158,9 +10296,7 @@ name|STATS_DATA_REF_QUEUE
 operator|=
 operator|new
 name|ReferenceQueue
-argument_list|<
-name|Thread
-argument_list|>
+argument_list|<>
 argument_list|()
 expr_stmt|;
 comment|// start a single daemon cleaner thread
@@ -10227,9 +10363,7 @@ name|threadData
 operator|=
 operator|new
 name|ThreadLocal
-argument_list|<
-name|StatisticsData
-argument_list|>
+argument_list|<>
 argument_list|()
 expr_stmt|;
 name|this
@@ -10238,13 +10372,11 @@ name|allData
 operator|=
 operator|new
 name|HashSet
-argument_list|<
-name|StatisticsDataReference
-argument_list|>
+argument_list|<>
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**      * Copy constructor.      *       * @param other    The input Statistics object which is cloned.      */
+comment|/**      * Copy constructor.      *      * @param other    The input Statistics object which is cloned.      */
 DECL|method|Statistics (Statistics other)
 specifier|public
 name|Statistics
@@ -10316,9 +10448,7 @@ name|threadData
 operator|=
 operator|new
 name|ThreadLocal
-argument_list|<
-name|StatisticsData
-argument_list|>
+argument_list|<>
 argument_list|()
 expr_stmt|;
 name|this
@@ -10327,15 +10457,14 @@ name|allData
 operator|=
 operator|new
 name|HashSet
-argument_list|<
-name|StatisticsDataReference
-argument_list|>
+argument_list|<>
 argument_list|()
 expr_stmt|;
 block|}
 comment|/**      * A weak reference to a thread that also includes the data associated      * with that thread. On the thread being garbage collected, it is enqueued      * to the reference queue for clean-up.      */
 DECL|class|StatisticsDataReference
 specifier|private
+specifier|final
 class|class
 name|StatisticsDataReference
 extends|extends
@@ -10351,7 +10480,7 @@ name|StatisticsData
 name|data
 decl_stmt|;
 DECL|method|StatisticsDataReference (StatisticsData data, Thread thread)
-specifier|public
+specifier|private
 name|StatisticsDataReference
 parameter_list|(
 name|StatisticsData
@@ -10469,7 +10598,7 @@ name|InterruptedException
 name|ie
 parameter_list|)
 block|{
-name|LOG
+name|LOGGER
 operator|.
 name|warn
 argument_list|(
@@ -10493,13 +10622,13 @@ name|Throwable
 name|th
 parameter_list|)
 block|{
-name|LOG
+name|LOGGER
 operator|.
 name|warn
 argument_list|(
-literal|"Exception in the cleaner thread but it will continue to "
+literal|"Exception in the cleaner thread but it will"
 operator|+
-literal|"run"
+literal|" continue to run"
 argument_list|,
 name|th
 argument_list|)
@@ -10575,7 +10704,7 @@ return|return
 name|data
 return|;
 block|}
-comment|/**      * Increment the bytes read in the statistics      * @param newBytes the additional bytes read      */
+comment|/**      * Increment the bytes read in the statistics.      * @param newBytes the additional bytes read      */
 DECL|method|incrementBytesRead (long newBytes)
 specifier|public
 name|void
@@ -10593,7 +10722,7 @@ operator|+=
 name|newBytes
 expr_stmt|;
 block|}
-comment|/**      * Increment the bytes written in the statistics      * @param newBytes the additional bytes written      */
+comment|/**      * Increment the bytes written in the statistics.      * @param newBytes the additional bytes written      */
 DECL|method|incrementBytesWritten (long newBytes)
 specifier|public
 name|void
@@ -10611,7 +10740,7 @@ operator|+=
 name|newBytes
 expr_stmt|;
 block|}
-comment|/**      * Increment the number of read operations      * @param count number of read operations      */
+comment|/**      * Increment the number of read operations.      * @param count number of read operations      */
 DECL|method|incrementReadOps (int count)
 specifier|public
 name|void
@@ -10629,7 +10758,7 @@ operator|+=
 name|count
 expr_stmt|;
 block|}
-comment|/**      * Increment the number of large read operations      * @param count number of large read operations      */
+comment|/**      * Increment the number of large read operations.      * @param count number of large read operations      */
 DECL|method|incrementLargeReadOps (int count)
 specifier|public
 name|void
@@ -10647,7 +10776,7 @@ operator|+=
 name|count
 expr_stmt|;
 block|}
-comment|/**      * Increment the number of write operations      * @param count number of write operations      */
+comment|/**      * Increment the number of write operations.      * @param count number of write operations      */
 DECL|method|incrementWriteOps (int count)
 specifier|public
 name|void
@@ -10733,7 +10862,7 @@ expr_stmt|;
 break|break;
 block|}
 block|}
-comment|/**      * Apply the given aggregator to all StatisticsData objects associated with      * this Statistics object.      *      * For each StatisticsData object, we will call accept on the visitor.      * Finally, at the end, we will call aggregate to get the final total.       *      * @param         visitor to use.      * @return        The total.      */
+comment|/**      * Apply the given aggregator to all StatisticsData objects associated with      * this Statistics object.      *      * For each StatisticsData object, we will call accept on the visitor.      * Finally, at the end, we will call aggregate to get the final total.      *      * @param         visitor to use.      * @return        The total.      */
 DECL|method|visitAll (StatisticsAggregator<T> visitor)
 specifier|private
 specifier|synchronized
@@ -10788,7 +10917,7 @@ name|aggregate
 argument_list|()
 return|;
 block|}
-comment|/**      * Get the total number of bytes read      * @return the number of bytes      */
+comment|/**      * Get the total number of bytes read.      * @return the number of bytes      */
 DECL|method|getBytesRead ()
 specifier|public
 name|long
@@ -10841,7 +10970,7 @@ block|}
 argument_list|)
 return|;
 block|}
-comment|/**      * Get the total number of bytes written      * @return the number of bytes      */
+comment|/**      * Get the total number of bytes written.      * @return the number of bytes      */
 DECL|method|getBytesWritten ()
 specifier|public
 name|long
@@ -10894,7 +11023,7 @@ block|}
 argument_list|)
 return|;
 block|}
-comment|/**      * Get the number of file system read operations such as list files      * @return number of read operations      */
+comment|/**      * Get the number of file system read operations such as list files.      * @return number of read operations      */
 DECL|method|getReadOps ()
 specifier|public
 name|int
@@ -10953,7 +11082,7 @@ block|}
 argument_list|)
 return|;
 block|}
-comment|/**      * Get the number of large file system read operations such as list files      * under a large directory      * @return number of large read operations      */
+comment|/**      * Get the number of large file system read operations such as list files      * under a large directory.      * @return number of large read operations      */
 DECL|method|getLargeReadOps ()
 specifier|public
 name|int
@@ -11006,7 +11135,7 @@ block|}
 argument_list|)
 return|;
 block|}
-comment|/**      * Get the number of file system write operations such as create, append       * rename etc.      * @return number of write operations      */
+comment|/**      * Get the number of file system write operations such as create, append      * rename etc.      * @return number of write operations      */
 DECL|method|getWriteOps ()
 specifier|public
 name|int
@@ -11134,7 +11263,7 @@ return|return
 name|bytesRead
 return|;
 block|}
-comment|/**      * Get all statistics data      * MR or other frameworks can use the method to get all statistics at once.      * @return the StatisticsData      */
+comment|/**      * Get all statistics data.      * MR or other frameworks can use the method to get all statistics at once.      * @return the StatisticsData      */
 DECL|method|getData ()
 specifier|public
 name|StatisticsData
@@ -11370,11 +11499,7 @@ name|result
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|String
-argument_list|,
-name|Statistics
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 for|for
@@ -11422,9 +11547,7 @@ block|{
 return|return
 operator|new
 name|ArrayList
-argument_list|<
-name|Statistics
-argument_list|>
+argument_list|<>
 argument_list|(
 name|statisticsTable
 operator|.
@@ -11433,7 +11556,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the statistics for a particular file system    * @param cls the class to lookup    * @return a statistics object    * @deprecated use {@link #getGlobalStorageStatistics()}    */
+comment|/**    * Get the statistics for a particular file system.    * @param cls the class to lookup    * @return a statistics object    * @deprecated use {@link #getGlobalStorageStatistics()}    */
 annotation|@
 name|Deprecated
 DECL|method|getStatistics (final String scheme, Class<? extends FileSystem> cls)
@@ -11542,7 +11665,7 @@ return|return
 name|result
 return|;
 block|}
-comment|/**    * Reset all statistics for all file systems    */
+comment|/**    * Reset all statistics for all file systems.    */
 DECL|method|clearStatistics ()
 specifier|public
 specifier|static
@@ -11559,7 +11682,7 @@ name|reset
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Print all statistics for all file systems    */
+comment|/**    * Print all statistics for all file systems to {@code System.out}    */
 specifier|public
 specifier|static
 specifier|synchronized
@@ -11627,14 +11750,6 @@ name|boolean
 name|symlinksEnabled
 init|=
 literal|false
-decl_stmt|;
-DECL|field|conf
-specifier|private
-specifier|static
-name|Configuration
-name|conf
-init|=
-literal|null
 decl_stmt|;
 annotation|@
 name|VisibleForTesting
