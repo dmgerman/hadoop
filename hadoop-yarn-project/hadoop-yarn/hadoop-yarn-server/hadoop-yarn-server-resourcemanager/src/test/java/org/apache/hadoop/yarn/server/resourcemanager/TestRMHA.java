@@ -2707,7 +2707,6 @@ block|{
 annotation|@
 name|Override
 specifier|public
-specifier|synchronized
 name|void
 name|updateApplicationState
 parameter_list|(
