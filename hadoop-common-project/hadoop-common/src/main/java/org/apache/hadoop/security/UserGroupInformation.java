@@ -808,20 +808,7 @@ begin_class
 annotation|@
 name|InterfaceAudience
 operator|.
-name|LimitedPrivate
-argument_list|(
-block|{
-literal|"HDFS"
-block|,
-literal|"MapReduce"
-block|,
-literal|"HBase"
-block|,
-literal|"Hive"
-block|,
-literal|"Oozie"
-block|}
-argument_list|)
+name|Public
 annotation|@
 name|InterfaceStability
 operator|.
@@ -4042,7 +4029,7 @@ return|return
 name|userName
 return|;
 block|}
-comment|/**    * Log in a user using the given subject    * @parma subject the subject to use when logging in a user, or null to     * create a new subject.    * @throws IOException if login fails    */
+comment|/**    * Log in a user using the given subject    * @param subject the subject to use when logging in a user, or null to    * create a new subject.    * @throws IOException if login fails    */
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -7576,7 +7563,7 @@ block|}
 end_function
 
 begin_comment
-comment|/**    * Get the group names for this user. {@ #getGroups(String)} is less    * expensive alternative when checking for a contained element.    * @return the list of users with the primary group first. If the command    *    fails, it returns an empty list.    */
+comment|/**    * Get the group names for this user. {@link #getGroups()} is less    * expensive alternative when checking for a contained element.    * @return the list of users with the primary group first. If the command    *    fails, it returns an empty list.    */
 end_comment
 
 begin_function

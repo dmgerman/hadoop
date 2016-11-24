@@ -296,16 +296,7 @@ begin_class
 annotation|@
 name|InterfaceAudience
 operator|.
-name|LimitedPrivate
-argument_list|(
-block|{
-literal|"HDFS"
-block|,
-literal|"MapReduce"
-block|,
-literal|"Hive"
-block|}
-argument_list|)
+name|Public
 annotation|@
 name|InterfaceStability
 operator|.

@@ -1504,14 +1504,11 @@ comment|/**    * Get a canonical service name for this FileSystem.    * The toke
 annotation|@
 name|InterfaceAudience
 operator|.
-name|LimitedPrivate
-argument_list|(
-block|{
-literal|"HDFS"
-block|,
-literal|"MapReduce"
-block|}
-argument_list|)
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|method|getCanonicalServiceName ()
 specifier|public
 name|String
@@ -2194,14 +2191,11 @@ comment|/**    * Obtain all delegation tokens used by this FileSystem that are n
 annotation|@
 name|InterfaceAudience
 operator|.
-name|LimitedPrivate
-argument_list|(
-block|{
-literal|"HDFS"
-block|,
-literal|"MapReduce"
-block|}
-argument_list|)
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|method|addDelegationTokens ( final String renewer, Credentials credentials)
 specifier|public
 name|Token

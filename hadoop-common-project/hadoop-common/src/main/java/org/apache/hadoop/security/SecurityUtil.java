@@ -458,24 +458,22 @@ name|VisibleForTesting
 import|;
 end_import
 
+begin_comment
+comment|/**  * Security Utils.  */
+end_comment
+
 begin_class
 annotation|@
 name|InterfaceAudience
 operator|.
-name|LimitedPrivate
-argument_list|(
-block|{
-literal|"HDFS"
-block|,
-literal|"MapReduce"
-block|}
-argument_list|)
+name|Public
 annotation|@
 name|InterfaceStability
 operator|.
 name|Evolving
 DECL|class|SecurityUtil
 specifier|public
+specifier|final
 class|class
 name|SecurityUtil
 block|{
@@ -513,6 +511,11 @@ name|FAILED_TO_GET_UGI_MSG_HEADER
 init|=
 literal|"Failed to obtain user group information:"
 decl_stmt|;
+DECL|method|SecurityUtil ()
+specifier|private
+name|SecurityUtil
+parameter_list|()
+block|{   }
 comment|// controls whether buildTokenService will use an ip or host/ip as given
 comment|// by the user
 annotation|@

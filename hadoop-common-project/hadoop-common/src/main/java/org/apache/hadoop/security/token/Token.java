@@ -2207,14 +2207,7 @@ comment|/**    * A trivial renewer for token kinds that aren't managed. Sub-clas
 annotation|@
 name|InterfaceAudience
 operator|.
-name|LimitedPrivate
-argument_list|(
-block|{
-literal|"HDFS"
-block|,
-literal|"MapReduce"
-block|}
-argument_list|)
+name|Public
 annotation|@
 name|InterfaceStability
 operator|.
