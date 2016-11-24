@@ -865,7 +865,7 @@ name|protocolName
 argument_list|()
 return|;
 block|}
-comment|/**    * Get the protocol version from protocol class.    * If the protocol class has a ProtocolAnnotation, then get the protocol    * name from the annotation; otherwise the class name is the protocol name.    */
+comment|/**    * Get the protocol version from protocol class.    * If the protocol class has a ProtocolAnnotation,    * then get the protocol version from the annotation;    * otherwise get it from the versionID field of the protocol class.    */
 DECL|method|getProtocolVersion (Class<?> protocol)
 specifier|static
 specifier|public
