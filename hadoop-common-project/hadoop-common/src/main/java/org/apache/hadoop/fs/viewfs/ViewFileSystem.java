@@ -5196,7 +5196,7 @@ name|PERMISSION_555
 argument_list|,
 name|ugi
 operator|.
-name|getUserName
+name|getShortUserName
 argument_list|()
 argument_list|,
 name|ugi
@@ -5342,7 +5342,7 @@ name|PERMISSION_555
 argument_list|,
 name|ugi
 operator|.
-name|getUserName
+name|getShortUserName
 argument_list|()
 argument_list|,
 name|ugi
@@ -5399,7 +5399,7 @@ name|PERMISSION_555
 argument_list|,
 name|ugi
 operator|.
-name|getUserName
+name|getShortUserName
 argument_list|()
 argument_list|,
 name|ugi
@@ -5993,7 +5993,7 @@ name|owner
 argument_list|(
 name|ugi
 operator|.
-name|getUserName
+name|getShortUserName
 argument_list|()
 argument_list|)
 operator|.
