@@ -1390,7 +1390,12 @@ name|hbi
 operator|=
 operator|new
 name|HBaseTimelineWriterImpl
+argument_list|(
+name|util
+operator|.
+name|getConfiguration
 argument_list|()
+argument_list|)
 expr_stmt|;
 name|hbi
 operator|.
@@ -2683,7 +2688,12 @@ name|hbi
 operator|=
 operator|new
 name|HBaseTimelineWriterImpl
+argument_list|(
+name|util
+operator|.
+name|getConfiguration
 argument_list|()
+argument_list|)
 expr_stmt|;
 name|hbi
 operator|.
