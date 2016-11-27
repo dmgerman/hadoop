@@ -1063,34 +1063,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|HBaseTimelineWriterImpl (Configuration conf)
-specifier|public
-name|HBaseTimelineWriterImpl
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|super
-argument_list|(
-name|conf
-operator|.
-name|get
-argument_list|(
-literal|"yarn.application.id"
-argument_list|,
-name|HBaseTimelineWriterImpl
-operator|.
-name|class
-operator|.
-name|getName
-argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**    * initializes the hbase connection to write to the entity table.    */
 annotation|@
 name|Override
