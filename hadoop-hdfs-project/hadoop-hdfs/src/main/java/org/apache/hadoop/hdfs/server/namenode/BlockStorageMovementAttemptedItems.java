@@ -827,6 +827,21 @@ name|size
 argument_list|()
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getAttemptedItemsCount ()
+specifier|public
+name|int
+name|getAttemptedItemsCount
+parameter_list|()
+block|{
+return|return
+name|storageMovementAttemptedItems
+operator|.
+name|size
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

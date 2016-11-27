@@ -1128,6 +1128,34 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+name|addBlockMovingInfosToCoordinatorDn
+argument_list|(
+name|blockCollectionID
+argument_list|,
+name|blockMovingInfos
+argument_list|,
+name|coordinatorNode
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|addBlockMovingInfosToCoordinatorDn (long blockCollectionID, List<BlockMovingInfo> blockMovingInfos, DatanodeDescriptor coordinatorNode)
+specifier|private
+name|void
+name|addBlockMovingInfosToCoordinatorDn
+parameter_list|(
+name|long
+name|blockCollectionID
+parameter_list|,
+name|List
+argument_list|<
+name|BlockMovingInfo
+argument_list|>
+name|blockMovingInfos
+parameter_list|,
+name|DatanodeDescriptor
+name|coordinatorNode
+parameter_list|)
+block|{
 if|if
 condition|(
 name|blockMovingInfos
@@ -1141,6 +1169,49 @@ block|{
 comment|// TODO: Major: handle this case. I think we need retry cases to
 comment|// be implemented. Idea is, if some files are not getting storage movement
 comment|// chances, then we can just retry limited number of times and exit.
+return|return;
+block|}
+name|boolean
+name|needBlockStorageMovement
+init|=
+literal|false
+decl_stmt|;
+for|for
+control|(
+name|BlockMovingInfo
+name|blkMovingInfo
+range|:
+name|blockMovingInfos
+control|)
+block|{
+comment|// Check for atleast one block storage movement has been chosen
+if|if
+condition|(
+name|blkMovingInfo
+operator|.
+name|getTargets
+argument_list|()
+operator|.
+name|length
+operator|>
+literal|0
+condition|)
+block|{
+name|needBlockStorageMovement
+operator|=
+literal|true
+expr_stmt|;
+break|break;
+block|}
+block|}
+if|if
+condition|(
+operator|!
+name|needBlockStorageMovement
+condition|)
+block|{
+comment|// Simply return as there is no targets selected for scheduling the block
+comment|// movement.
 return|return;
 block|}
 comment|// 'BlockCollectionId' is used as the tracking ID. All the blocks under this
@@ -1279,10 +1350,6 @@ operator|.
 name|dn
 argument_list|,
 name|expected
-argument_list|,
-name|locsForExpectedStorageTypes
-argument_list|,
-name|chosenNodes
 argument_list|)
 decl_stmt|;
 if|if
@@ -1440,11 +1507,23 @@ comment|// TODO: We can increment scheduled block count for this node?
 block|}
 else|else
 block|{
-comment|// TODO: Failed to ChooseTargetNodes...So let just retry. Shall we
-comment|// proceed without this targets? Then what should be final result?
-comment|// How about pack empty target, means target node could not be chosen ,
-comment|// so result should be RETRY_REQUIRED from DN always.
-comment|// Log..unable to choose target node for source datanodeDescriptor
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to choose target datanode for the required"
+operator|+
+literal|" storage types {}, block:{}, existing storage type:{}"
+argument_list|,
+name|expected
+argument_list|,
+name|blockInfo
+argument_list|,
+name|existingTypeNodePair
+operator|.
+name|storageType
+argument_list|)
+expr_stmt|;
 name|sourceNodes
 operator|.
 name|add
@@ -1463,20 +1542,8 @@ operator|.
 name|storageType
 argument_list|)
 expr_stmt|;
-name|targetNodes
-operator|.
-name|add
-argument_list|(
-literal|null
-argument_list|)
-expr_stmt|;
-name|targetStorageTypes
-operator|.
-name|add
-argument_list|(
-literal|null
-argument_list|)
-expr_stmt|;
+comment|// Imp: Not setting the target details, empty targets. Later, this is
+comment|// used as an indicator for retrying this block movement.
 block|}
 block|}
 name|BlockMovingInfo
@@ -1548,8 +1615,8 @@ return|return
 name|blkMovingInfo
 return|;
 block|}
-comment|/**    * Choose the target storage within same Datanode if possible.    *    * @param locsForExpectedStorageTypes    * @param chosenNodes    */
-DECL|method|chooseTargetTypeInSameNode ( DatanodeDescriptor source, List<StorageType> targetTypes, StorageTypeNodeMap locsForExpectedStorageTypes, List<DatanodeDescriptor> chosenNodes)
+comment|/**    * Choose the target storage within same datanode if possible.    *    * @param source source datanode    * @param targetTypes list of target storage types    */
+DECL|method|chooseTargetTypeInSameNode ( DatanodeDescriptor source, List<StorageType> targetTypes)
 specifier|private
 name|StorageTypeNodePair
 name|chooseTargetTypeInSameNode
@@ -1562,15 +1629,6 @@ argument_list|<
 name|StorageType
 argument_list|>
 name|targetTypes
-parameter_list|,
-name|StorageTypeNodeMap
-name|locsForExpectedStorageTypes
-parameter_list|,
-name|List
-argument_list|<
-name|DatanodeDescriptor
-argument_list|>
-name|chosenNodes
 parameter_list|)
 block|{
 for|for
@@ -1666,6 +1724,21 @@ argument_list|(
 name|t
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|nodesWithStorages
+operator|==
+literal|null
+operator|||
+name|nodesWithStorages
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+continue|continue;
+comment|// no target nodes with the required storage type.
+block|}
 name|Collections
 operator|.
 name|shuffle

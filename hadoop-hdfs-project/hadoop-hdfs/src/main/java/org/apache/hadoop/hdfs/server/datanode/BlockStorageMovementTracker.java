@@ -140,7 +140,7 @@ name|datanode
 operator|.
 name|StoragePolicySatisfyWorker
 operator|.
-name|BlocksMovementsCompletionHandler
+name|BlockMovementResult
 import|;
 end_import
 
@@ -160,7 +160,27 @@ name|datanode
 operator|.
 name|StoragePolicySatisfyWorker
 operator|.
-name|BlockMovementResult
+name|BlockMovementStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|StoragePolicySatisfyWorker
+operator|.
+name|BlocksMovementsCompletionHandler
 import|;
 end_import
 
@@ -502,6 +522,54 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|/**    * Mark as block movement failure for the given trackId and blockId.    *    * @param trackId tracking id    * @param blockId block id    */
+DECL|method|markBlockMovementFailure (long trackId, long blockId)
+name|void
+name|markBlockMovementFailure
+parameter_list|(
+name|long
+name|trackId
+parameter_list|,
+name|long
+name|blockId
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Mark as block movement failure for the given "
+operator|+
+literal|"trackId:{} and blockId:{}"
+argument_list|,
+name|trackId
+argument_list|,
+name|blockId
+argument_list|)
+expr_stmt|;
+name|BlockMovementResult
+name|result
+init|=
+operator|new
+name|BlockMovementResult
+argument_list|(
+name|trackId
+argument_list|,
+name|blockId
+argument_list|,
+literal|null
+argument_list|,
+name|BlockMovementStatus
+operator|.
+name|DN_BLK_STORAGE_MOVEMENT_FAILURE
+argument_list|)
+decl_stmt|;
+name|addMovementResultToTrackIdList
+argument_list|(
+name|result
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|addMovementResultToTrackIdList ( BlockMovementResult result)
 specifier|private
 name|List
@@ -527,14 +595,21 @@ argument_list|<
 name|BlockMovementResult
 argument_list|>
 name|perTrackIdList
-init|=
+decl_stmt|;
+synchronized|synchronized
+init|(
+name|movementResults
+init|)
+block|{
+name|perTrackIdList
+operator|=
 name|movementResults
 operator|.
 name|get
 argument_list|(
 name|trackId
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 name|perTrackIdList
@@ -566,6 +641,7 @@ argument_list|(
 name|result
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|perTrackIdList
 return|;
