@@ -1323,9 +1323,7 @@ name|hbi
 operator|=
 operator|new
 name|HBaseTimelineWriterImpl
-argument_list|(
-name|c1
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|hbi
 operator|.
@@ -1913,9 +1911,7 @@ name|hbi
 operator|=
 operator|new
 name|HBaseTimelineWriterImpl
-argument_list|(
-name|c1
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|hbi
 operator|.
@@ -3475,9 +3471,7 @@ name|hbi
 operator|=
 operator|new
 name|HBaseTimelineWriterImpl
-argument_list|(
-name|c1
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|hbi
 operator|.
@@ -3998,9 +3992,7 @@ name|hbi
 operator|=
 operator|new
 name|HBaseTimelineWriterImpl
-argument_list|(
-name|c1
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|hbi
 operator|.
@@ -4530,9 +4522,7 @@ name|hbi
 operator|=
 operator|new
 name|HBaseTimelineWriterImpl
-argument_list|(
-name|c1
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|hbi
 operator|.
@@ -5118,9 +5108,7 @@ name|hbi
 operator|=
 operator|new
 name|HBaseTimelineWriterImpl
-argument_list|(
-name|c1
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|hbi
 operator|.
@@ -5640,9 +5628,7 @@ name|hbi
 operator|=
 operator|new
 name|HBaseTimelineWriterImpl
-argument_list|(
-name|c1
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|hbi
 operator|.
