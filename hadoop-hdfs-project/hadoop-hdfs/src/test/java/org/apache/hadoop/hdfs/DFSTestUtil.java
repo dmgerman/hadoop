@@ -11791,7 +11791,7 @@ return|return
 name|reports
 return|;
 block|}
-comment|/**    * Creates the metadata of a file in striped layout. This method only    * manipulates the NameNode state without injecting data to DataNode.    * You should disable periodical heartbeat before use this.    *  @param file Path of the file to create    * @param dir Parent path of the file    * @param numBlocks Number of striped block groups to add to the file    * @param numStripesPerBlk Number of striped cells in each block    * @param toMkdir    */
+comment|/**    * Creates the metadata of a file in striped layout. This method only    * manipulates the NameNode state without injecting data to DataNode.    * You should disable periodical heartbeat before use this.    * @param file Path of the file to create    * @param dir Parent path of the file    * @param numBlocks Number of striped block groups to add to the file    * @param numStripesPerBlk Number of striped cells in each block    * @param toMkdir    */
 DECL|method|createStripedFile (MiniDFSCluster cluster, Path file, Path dir, int numBlocks, int numStripesPerBlk, boolean toMkdir)
 specifier|public
 specifier|static
@@ -11815,6 +11815,55 @@ name|numStripesPerBlk
 parameter_list|,
 name|boolean
 name|toMkdir
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+name|createStripedFile
+argument_list|(
+name|cluster
+argument_list|,
+name|file
+argument_list|,
+name|dir
+argument_list|,
+name|numBlocks
+argument_list|,
+name|numStripesPerBlk
+argument_list|,
+name|toMkdir
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Creates the metadata of a file in striped layout. This method only    * manipulates the NameNode state without injecting data to DataNode.    * You should disable periodical heartbeat before use this.    * @param file Path of the file to create    * @param dir Parent path of the file    * @param numBlocks Number of striped block groups to add to the file    * @param numStripesPerBlk Number of striped cells in each block    * @param toMkdir    * @param ecPolicy erasure coding policy apply to created file. A null value    *                 means using default erasure coding policy.    */
+DECL|method|createStripedFile (MiniDFSCluster cluster, Path file, Path dir, int numBlocks, int numStripesPerBlk, boolean toMkdir, ErasureCodingPolicy ecPolicy)
+specifier|public
+specifier|static
+name|void
+name|createStripedFile
+parameter_list|(
+name|MiniDFSCluster
+name|cluster
+parameter_list|,
+name|Path
+name|file
+parameter_list|,
+name|Path
+name|dir
+parameter_list|,
+name|int
+name|numBlocks
+parameter_list|,
+name|int
+name|numStripesPerBlk
+parameter_list|,
+name|boolean
+name|toMkdir
+parameter_list|,
+name|ErasureCodingPolicy
+name|ecPolicy
 parameter_list|)
 throws|throws
 name|Exception
@@ -11859,7 +11908,7 @@ operator|.
 name|toString
 argument_list|()
 argument_list|,
-literal|null
+name|ecPolicy
 argument_list|)
 expr_stmt|;
 block|}

@@ -587,6 +587,15 @@ name|RS_6_3_LEGACY_POLICY_ID
 init|=
 literal|2
 decl_stmt|;
+DECL|field|XOR_2_1_POLICY_ID
+specifier|public
+specifier|static
+specifier|final
+name|byte
+name|XOR_2_1_POLICY_ID
+init|=
+literal|3
+decl_stmt|;
 comment|/* Hidden constructor */
 DECL|method|HdfsConstants ()
 specifier|protected
