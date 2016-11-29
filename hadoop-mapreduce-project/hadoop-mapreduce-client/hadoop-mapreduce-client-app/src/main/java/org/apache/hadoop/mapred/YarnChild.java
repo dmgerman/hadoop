@@ -689,6 +689,14 @@ argument_list|(
 name|job
 argument_list|)
 expr_stmt|;
+comment|// MAPREDUCE-6565: need to set configuration for SecurityUtil.
+name|SecurityUtil
+operator|.
+name|setConfiguration
+argument_list|(
+name|job
+argument_list|)
+expr_stmt|;
 name|String
 name|host
 init|=

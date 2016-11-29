@@ -1756,6 +1756,20 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|SecurityUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|UserGroupInformation
 import|;
 end_import
@@ -9083,6 +9097,14 @@ throws|,
 name|InterruptedException
 block|{
 name|UserGroupInformation
+operator|.
+name|setConfiguration
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+comment|// MAPREDUCE-6565: need to set configuration for SecurityUtil.
+name|SecurityUtil
 operator|.
 name|setConfiguration
 argument_list|(
