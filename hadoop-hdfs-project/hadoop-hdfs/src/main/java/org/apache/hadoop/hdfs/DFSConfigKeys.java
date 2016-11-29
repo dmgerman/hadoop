@@ -2507,9 +2507,9 @@ specifier|final
 name|long
 name|DFS_NAMENODE_MAX_BLOCKS_PER_FILE_DEFAULT
 init|=
-literal|1024
+literal|10
 operator|*
-literal|1024
+literal|1000
 decl_stmt|;
 DECL|field|DFS_NAMENODE_MAX_XATTRS_PER_INODE_KEY
 specifier|public
