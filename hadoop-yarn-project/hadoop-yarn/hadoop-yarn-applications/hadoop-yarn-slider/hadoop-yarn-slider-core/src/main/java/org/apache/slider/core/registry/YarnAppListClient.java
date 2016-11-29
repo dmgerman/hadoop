@@ -395,6 +395,8 @@ init|=
 name|listInstances
 argument_list|(
 literal|null
+argument_list|,
+name|appname
 argument_list|)
 decl_stmt|;
 return|return
@@ -446,6 +448,35 @@ name|YarnException
 throws|,
 name|IOException
 block|{
+return|return
+name|listInstances
+argument_list|(
+name|user
+argument_list|,
+literal|null
+argument_list|)
+return|;
+block|}
+comment|/**    * List all instances belonging to a specific user and a specific appname.    *    * @param user    *          user if not the default. null means default, "" means all users,    *          otherwise it is the name of a user    * @param appname    *          application name set as an application tag    * @return a possibly empty list of AMs    * @throws YarnException    * @throws IOException    */
+DECL|method|listInstances (String user, String appname)
+specifier|public
+name|List
+argument_list|<
+name|ApplicationReport
+argument_list|>
+name|listInstances
+parameter_list|(
+name|String
+name|user
+parameter_list|,
+name|String
+name|appname
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+block|{
 name|String
 name|listUser
 init|=
@@ -463,6 +494,10 @@ operator|.
 name|listDeployedInstances
 argument_list|(
 name|listUser
+argument_list|,
+literal|null
+argument_list|,
+name|appname
 argument_list|)
 return|;
 block|}

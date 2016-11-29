@@ -272,6 +272,10 @@ operator|.
 name|listDeployedInstances
 argument_list|(
 name|username
+argument_list|,
+literal|null
+argument_list|,
+name|clustername
 argument_list|)
 decl_stmt|;
 name|ApplicationReport

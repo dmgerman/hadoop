@@ -229,6 +229,16 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -545,6 +555,39 @@ throw|;
 block|}
 block|}
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|getApplicationTags (SliderFileSystem fileSystem, ConfTreeOperations appConf, String appName)
+specifier|public
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getApplicationTags
+parameter_list|(
+name|SliderFileSystem
+name|fileSystem
+parameter_list|,
+name|ConfTreeOperations
+name|appConf
+parameter_list|,
+name|String
+name|appName
+parameter_list|)
+throws|throws
+name|SliderException
+block|{
+return|return
+name|createApplicationTags
+argument_list|(
+name|appName
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|)
+return|;
 block|}
 block|}
 end_class

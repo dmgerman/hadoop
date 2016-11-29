@@ -1164,6 +1164,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|EnumSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Enumeration
 import|;
 end_import
@@ -11808,6 +11818,106 @@ return|;
 block|}
 return|return
 name|prefix
+return|;
+block|}
+DECL|method|createNameTag (String name)
+specifier|public
+specifier|static
+name|String
+name|createNameTag
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+block|{
+return|return
+literal|"Name: "
+operator|+
+name|name
+return|;
+block|}
+DECL|method|createVersionTag (String version)
+specifier|public
+specifier|static
+name|String
+name|createVersionTag
+parameter_list|(
+name|String
+name|version
+parameter_list|)
+block|{
+return|return
+literal|"Version: "
+operator|+
+name|version
+return|;
+block|}
+DECL|method|createDescriptionTag (String description)
+specifier|public
+specifier|static
+name|String
+name|createDescriptionTag
+parameter_list|(
+name|String
+name|description
+parameter_list|)
+block|{
+return|return
+literal|"Description: "
+operator|+
+name|description
+return|;
+block|}
+comment|/**    * Get all YarnApplicationState values which signify that an application is    * in RUNNING or pre-RUNNING state.    *    * @return all live app states    */
+DECL|method|getAllLiveAppStates ()
+specifier|public
+specifier|static
+name|EnumSet
+argument_list|<
+name|YarnApplicationState
+argument_list|>
+name|getAllLiveAppStates
+parameter_list|()
+block|{
+return|return
+name|EnumSet
+operator|.
+name|range
+argument_list|(
+name|YarnApplicationState
+operator|.
+name|NEW
+argument_list|,
+name|YarnApplicationState
+operator|.
+name|RUNNING
+argument_list|)
+return|;
+block|}
+comment|/**    * Get all YarnApplicationState values which signify that an application is    * not live, which means it is in one of the post RUNNING states.    *    * @return all non live app states    */
+DECL|method|getAllNonLiveAppStates ()
+specifier|public
+specifier|static
+name|EnumSet
+argument_list|<
+name|YarnApplicationState
+argument_list|>
+name|getAllNonLiveAppStates
+parameter_list|()
+block|{
+return|return
+name|EnumSet
+operator|.
+name|range
+argument_list|(
+name|YarnApplicationState
+operator|.
+name|FINISHED
+argument_list|,
+name|YarnApplicationState
+operator|.
+name|KILLED
+argument_list|)
 return|;
 block|}
 block|}
