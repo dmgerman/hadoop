@@ -52,6 +52,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|registry
+operator|.
+name|client
+operator|.
+name|types
+operator|.
+name|ServiceRecord
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|service
 operator|.
 name|Service
@@ -91,24 +109,6 @@ operator|.
 name|records
 operator|.
 name|ContainerId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|registry
-operator|.
-name|client
-operator|.
-name|types
-operator|.
-name|ServiceRecord
 import|;
 end_import
 
@@ -325,28 +325,6 @@ operator|.
 name|state
 operator|.
 name|StateAccessForProviders
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|server
-operator|.
-name|appmaster
-operator|.
-name|web
-operator|.
-name|rest
-operator|.
-name|agent
-operator|.
-name|AgentRestOperations
 import|;
 end_import
 
@@ -622,12 +600,6 @@ parameter_list|(
 name|YarnRegistryViewForProviders
 name|yarnRegistry
 parameter_list|)
-function_decl|;
-comment|/**    * Returns the agent rest operations interface.    * @return  the interface if available, null otherwise.    */
-DECL|method|getAgentRestOperations ()
-name|AgentRestOperations
-name|getAgentRestOperations
-parameter_list|()
 function_decl|;
 comment|/**    * Build up the endpoint details for this service    * @param details    */
 DECL|method|buildEndpointDetails (Map<String, MonitorDetail> details)

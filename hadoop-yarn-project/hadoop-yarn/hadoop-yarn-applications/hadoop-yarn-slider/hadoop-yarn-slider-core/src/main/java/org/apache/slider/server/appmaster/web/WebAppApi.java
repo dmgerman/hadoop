@@ -46,20 +46,6 @@ name|apache
 operator|.
 name|slider
 operator|.
-name|api
-operator|.
-name|SliderClusterProtocol
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
 name|providers
 operator|.
 name|ProviderService
@@ -188,28 +174,6 @@ name|web
 operator|.
 name|rest
 operator|.
-name|agent
-operator|.
-name|AgentRestOperations
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|server
-operator|.
-name|appmaster
-operator|.
-name|web
-operator|.
-name|rest
-operator|.
 name|application
 operator|.
 name|resources
@@ -283,12 +247,6 @@ argument_list|,
 name|RoleStatus
 argument_list|>
 name|getRoleStatusByName
-parameter_list|()
-function_decl|;
-comment|/**    * Returns an interface that can support the agent-based REST operations.    */
-DECL|method|getAgentRestOperations ()
-name|AgentRestOperations
-name|getAgentRestOperations
 parameter_list|()
 function_decl|;
 comment|/**    * Registry operations accessor    * @return registry access    */
