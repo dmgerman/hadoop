@@ -2950,7 +2950,7 @@ literal|"by S3AFileSystem"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Renames Path src to Path dst.  Can take place on local fs    * or remote DFS.    *    * Warning: S3 does not support renames. This method does a copy which can    * take S3 some time to execute with large files and directories. Since    * there is no Progressable passed in, this can time out jobs.    *    * Note: This implementation differs with other S3 drivers. Specifically:    *       Fails if src is a file and dst is a directory.    *       Fails if src is a directory and dst is a file.    *       Fails if the parent of dst does not exist or is a file.    *       Fails if dst is a directory that is not empty.    *    * @param src path to be renamed    * @param dst new path after rename    * @throws IOException on IO failure    * @return true if rename is successful    */
+comment|/**    * Renames Path src to Path dst.  Can take place on local fs    * or remote DFS.    *    * Warning: S3 does not support renames. This method does a copy which can    * take S3 some time to execute with large files and directories. Since    * there is no Progressable passed in, this can time out jobs.    *    * Note: This implementation differs with other S3 drivers. Specifically:    *<pre>    *       Fails if src is a file and dst is a directory.    *       Fails if src is a directory and dst is a file.    *       Fails if the parent of dst does not exist or is a file.    *       Fails if dst is a directory that is not empty.    *</pre>    *    * @param src path to be renamed    * @param dst new path after rename    * @throws IOException on IO failure    * @return true if rename is successful    */
 DECL|method|rename (Path src, Path dst)
 specifier|public
 name|boolean
@@ -3001,8 +3001,51 @@ name|e
 argument_list|)
 throw|;
 block|}
+catch|catch
+parameter_list|(
+name|RenameFailedException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|e
+operator|.
+name|getExitCode
+argument_list|()
+return|;
 block|}
-comment|/**    * The inner rename operation. See {@link #rename(Path, Path)} for    * the description of the operation.    * @param src path to be renamed    * @param dst new path after rename    * @return true if rename is successful    * @throws IOException on IO failure.    * @throws AmazonClientException on failures inside the AWS SDK    */
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|e
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+literal|false
+return|;
+block|}
+block|}
+comment|/**    * The inner rename operation. See {@link #rename(Path, Path)} for    * the description of the operation.    * This operation throws an exception on any failure which needs to be    * reported and downgraded to a failure. That is: if a rename    * @param src path to be renamed    * @param dst new path after rename    * @throws RenameFailedException if some criteria for a state changing    * rename was not met. This means work didn't happen; it's not something    * which is reported upstream to the FileSystem APIs, for which the semantics    * of "false" are pretty vague.    * @throws FileNotFoundException there's no source file.    * @throws IOException on IO failure.    * @throws AmazonClientException on failures inside the AWS SDK    */
 DECL|method|innerRename (Path src, Path dst)
 specifier|private
 name|boolean
@@ -3015,6 +3058,10 @@ name|Path
 name|dst
 parameter_list|)
 throws|throws
+name|RenameFailedException
+throws|,
+name|FileNotFoundException
+throws|,
 name|IOException
 throws|,
 name|AmazonClientException
@@ -3057,60 +3104,50 @@ name|srcKey
 operator|.
 name|isEmpty
 argument_list|()
-operator|||
+condition|)
+block|{
+throw|throw
+operator|new
+name|RenameFailedException
+argument_list|(
+name|src
+argument_list|,
+name|dst
+argument_list|,
+literal|"source is root directory"
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
 name|dstKey
 operator|.
 name|isEmpty
 argument_list|()
 condition|)
 block|{
-name|LOG
-operator|.
-name|debug
+throw|throw
+operator|new
+name|RenameFailedException
 argument_list|(
-literal|"rename: source {} or dest {}, is empty"
+name|src
 argument_list|,
-name|srcKey
+name|dst
 argument_list|,
-name|dstKey
+literal|"dest is root directory"
 argument_list|)
-expr_stmt|;
-return|return
-literal|false
-return|;
+throw|;
 block|}
+comment|// get the source file status; this raises a FNFE if there is no source
+comment|// file.
 name|S3AFileStatus
 name|srcStatus
-decl_stmt|;
-try|try
-block|{
-name|srcStatus
-operator|=
+init|=
 name|getFileStatus
 argument_list|(
 name|src
 argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|FileNotFoundException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"rename: src not found {}"
-argument_list|,
-name|src
-argument_list|)
-expr_stmt|;
-return|return
-literal|false
-return|;
-block|}
+decl_stmt|;
 if|if
 condition|(
 name|srcKey
@@ -3125,17 +3162,30 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"rename: src and dst refer to the same file or directory: {}"
+literal|"rename: src and dest refer to the same file or directory: {}"
 argument_list|,
 name|dst
 argument_list|)
 expr_stmt|;
-return|return
+throw|throw
+operator|new
+name|RenameFailedException
+argument_list|(
+name|src
+argument_list|,
+name|dst
+argument_list|,
+literal|"source and dest refer to the same file or directory"
+argument_list|)
+operator|.
+name|withExitCode
+argument_list|(
 name|srcStatus
 operator|.
 name|isFile
 argument_list|()
-return|;
+argument_list|)
+throw|;
 block|}
 name|S3AFileStatus
 name|dstStatus
@@ -3151,41 +3201,49 @@ argument_list|(
 name|dst
 argument_list|)
 expr_stmt|;
+comment|// if there is no destination entry, an exception is raised.
+comment|// hence this code sequence can assume that there is something
+comment|// at the end of the path; the only detail being what it is and
+comment|// whether or not it can be the destination of the rename.
 if|if
 condition|(
 name|srcStatus
 operator|.
 name|isDirectory
 argument_list|()
-operator|&&
+condition|)
+block|{
+if|if
+condition|(
 name|dstStatus
 operator|.
 name|isFile
 argument_list|()
 condition|)
 block|{
-name|LOG
-operator|.
-name|debug
+throw|throw
+operator|new
+name|RenameFailedException
 argument_list|(
-literal|"rename: src {} is a directory and dst {} is a file"
-argument_list|,
 name|src
 argument_list|,
 name|dst
+argument_list|,
+literal|"source is a directory and dest is a file"
 argument_list|)
-expr_stmt|;
-return|return
-literal|false
-return|;
+operator|.
+name|withExitCode
+argument_list|(
+name|srcStatus
+operator|.
+name|isFile
+argument_list|()
+argument_list|)
+throw|;
 block|}
+elseif|else
 if|if
 condition|(
-name|dstStatus
-operator|.
-name|isDirectory
-argument_list|()
-operator|&&
 operator|!
 name|dstStatus
 operator|.
@@ -3193,9 +3251,54 @@ name|isEmptyDirectory
 argument_list|()
 condition|)
 block|{
-return|return
+throw|throw
+operator|new
+name|RenameFailedException
+argument_list|(
+name|src
+argument_list|,
+name|dst
+argument_list|,
+literal|"Destination is a non-empty directory"
+argument_list|)
+operator|.
+name|withExitCode
+argument_list|(
 literal|false
-return|;
+argument_list|)
+throw|;
+block|}
+comment|// at this point the destination is an empty directory
+block|}
+else|else
+block|{
+comment|// source is a file. The destination must be a directory,
+comment|// empty or not
+if|if
+condition|(
+name|dstStatus
+operator|.
+name|isFile
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|RenameFailedException
+argument_list|(
+name|src
+argument_list|,
+name|dst
+argument_list|,
+literal|"Cannot rename onto an existing file"
+argument_list|)
+operator|.
+name|withExitCode
+argument_list|(
+literal|false
+argument_list|)
+throw|;
+block|}
 block|}
 block|}
 catch|catch
@@ -3256,9 +3359,17 @@ name|isDirectory
 argument_list|()
 condition|)
 block|{
-return|return
-literal|false
-return|;
+throw|throw
+operator|new
+name|RenameFailedException
+argument_list|(
+name|src
+argument_list|,
+name|dst
+argument_list|,
+literal|"destination parent is not a directory"
+argument_list|)
+throw|;
 block|}
 block|}
 catch|catch
@@ -3267,20 +3378,17 @@ name|FileNotFoundException
 name|e2
 parameter_list|)
 block|{
-name|LOG
-operator|.
-name|debug
+throw|throw
+operator|new
+name|RenameFailedException
 argument_list|(
-literal|"rename: destination path {} has no parent {}"
+name|src
 argument_list|,
 name|dst
 argument_list|,
-name|parent
+literal|"destination has no parent "
 argument_list|)
-expr_stmt|;
-return|return
-literal|false
-return|;
+throw|;
 block|}
 block|}
 block|}
@@ -3463,22 +3571,17 @@ name|srcKey
 argument_list|)
 condition|)
 block|{
-name|LOG
-operator|.
-name|debug
+throw|throw
+operator|new
+name|RenameFailedException
 argument_list|(
-literal|"cannot rename a directory {}"
-operator|+
-literal|" to a subdirectory of self: {}"
-argument_list|,
 name|srcKey
 argument_list|,
 name|dstKey
+argument_list|,
+literal|"cannot rename a directory to a subdirectory o fitself "
 argument_list|)
-expr_stmt|;
-return|return
-literal|false
-return|;
+throw|;
 block|}
 name|List
 argument_list|<
