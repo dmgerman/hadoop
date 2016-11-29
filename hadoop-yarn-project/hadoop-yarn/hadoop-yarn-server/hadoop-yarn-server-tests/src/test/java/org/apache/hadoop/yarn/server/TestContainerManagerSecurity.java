@@ -1121,6 +1121,13 @@ argument_list|,
 name|httpSpnegoPrincipal
 argument_list|)
 expr_stmt|;
+name|UserGroupInformation
+operator|.
+name|setConfiguration
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|yarnCluster
 operator|=
 operator|new
@@ -1321,13 +1328,6 @@ operator|.
 name|RM_AM_EXPIRY_INTERVAL_MS
 argument_list|,
 literal|100000L
-argument_list|)
-expr_stmt|;
-name|UserGroupInformation
-operator|.
-name|setConfiguration
-argument_list|(
-name|conf
 argument_list|)
 expr_stmt|;
 name|this
