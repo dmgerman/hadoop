@@ -286,6 +286,42 @@ argument_list|)
 name|MutableGaugeInt
 name|maxApps
 decl_stmt|;
+DECL|field|maxAMShareMB
+annotation|@
+name|Metric
+argument_list|(
+literal|"Maximum AM share of memory in MB"
+argument_list|)
+name|MutableGaugeLong
+name|maxAMShareMB
+decl_stmt|;
+DECL|field|maxAMShareVCores
+annotation|@
+name|Metric
+argument_list|(
+literal|"Maximum AM share of CPU in vcores"
+argument_list|)
+name|MutableGaugeInt
+name|maxAMShareVCores
+decl_stmt|;
+DECL|field|amResourceUsageMB
+annotation|@
+name|Metric
+argument_list|(
+literal|"AM resource usage of memory in MB"
+argument_list|)
+name|MutableGaugeLong
+name|amResourceUsageMB
+decl_stmt|;
+DECL|field|amResourceUsageVCores
+annotation|@
+name|Metric
+argument_list|(
+literal|"AM resource usage of CPU in vcores"
+argument_list|)
+name|MutableGaugeInt
+name|amResourceUsageVCores
+decl_stmt|;
 DECL|field|schedulingPolicy
 specifier|private
 name|String
@@ -575,6 +611,124 @@ operator|.
 name|set
 argument_list|(
 name|max
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Get the maximum memory size AM can use in MB.    *    * @return the maximum memory size AM can use    */
+DECL|method|getMaxAMShareMB ()
+specifier|public
+name|long
+name|getMaxAMShareMB
+parameter_list|()
+block|{
+return|return
+name|maxAMShareMB
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+comment|/**    * Get the maximum number of VCores AM can use.    *    * @return the maximum number of VCores AM can use    */
+DECL|method|getMaxAMShareVCores ()
+specifier|public
+name|int
+name|getMaxAMShareVCores
+parameter_list|()
+block|{
+return|return
+name|maxAMShareVCores
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+comment|/**    * Set the maximum resource AM can use.    *    * @param resource the maximum resource AM can use    */
+DECL|method|setMaxAMShare (Resource resource)
+specifier|public
+name|void
+name|setMaxAMShare
+parameter_list|(
+name|Resource
+name|resource
+parameter_list|)
+block|{
+name|maxAMShareMB
+operator|.
+name|set
+argument_list|(
+name|resource
+operator|.
+name|getMemorySize
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|maxAMShareVCores
+operator|.
+name|set
+argument_list|(
+name|resource
+operator|.
+name|getVirtualCores
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Get the AM memory usage in MB.    *    * @return the AM memory usage    */
+DECL|method|getAMResourceUsageMB ()
+specifier|public
+name|long
+name|getAMResourceUsageMB
+parameter_list|()
+block|{
+return|return
+name|amResourceUsageMB
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+comment|/**    * Get the AM VCore usage.    *    * @return the AM VCore usage    */
+DECL|method|getAMResourceUsageVCores ()
+specifier|public
+name|int
+name|getAMResourceUsageVCores
+parameter_list|()
+block|{
+return|return
+name|amResourceUsageVCores
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+comment|/**    * Set the AM resource usage.    *    * @param resource the AM resource usage    */
+DECL|method|setAMResourceUsage (Resource resource)
+specifier|public
+name|void
+name|setAMResourceUsage
+parameter_list|(
+name|Resource
+name|resource
+parameter_list|)
+block|{
+name|amResourceUsageMB
+operator|.
+name|set
+argument_list|(
+name|resource
+operator|.
+name|getMemorySize
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|amResourceUsageVCores
+operator|.
+name|set
+argument_list|(
+name|resource
+operator|.
+name|getVirtualCores
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

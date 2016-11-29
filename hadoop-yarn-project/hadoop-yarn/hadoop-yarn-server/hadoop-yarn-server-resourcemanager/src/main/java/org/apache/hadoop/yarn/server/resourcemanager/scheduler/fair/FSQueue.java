@@ -356,6 +356,20 @@ name|Resources
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_class
 annotation|@
 name|Private
@@ -820,6 +834,18 @@ parameter_list|()
 block|{
 return|return
 name|maxRunningApps
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getMaxAMShare ()
+specifier|protected
+name|float
+name|getMaxAMShare
+parameter_list|()
+block|{
+return|return
+name|maxAMShare
 return|;
 block|}
 DECL|method|setMaxAMShare (float maxAMShare)

@@ -634,6 +634,14 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
+name|getMetrics
+argument_list|()
+operator|.
+name|setAMResourceUsage
+argument_list|(
+name|amResourceUsage
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|addApp (FSAppAttempt app, boolean runnable)
 name|void
@@ -812,6 +820,14 @@ name|app
 operator|.
 name|getAMResource
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|getMetrics
+argument_list|()
+operator|.
+name|setAMResourceUsage
+argument_list|(
+name|amResourceUsage
 argument_list|)
 expr_stmt|;
 block|}
@@ -2133,36 +2149,13 @@ return|return
 name|activeUsersManager
 return|;
 block|}
-comment|/**    * Check whether this queue can run this application master under the    * maxAMShare limit.    *    * @param amResource resources required to run the AM    * @return true if this queue can run    */
-DECL|method|canRunAppAM (Resource amResource)
-name|boolean
-name|canRunAppAM
-parameter_list|(
+comment|/**   * Compute the maximum resource AM can use. The value is the result of   * multiplying FairShare and maxAMShare. If FairShare is zero, use   * min(maxShare, available resource) instead to prevent zero value for   * maximum AM resource since it forbids any job running in the queue.   *   * @return the maximum resource AM can use   */
+DECL|method|computeMaxAMResource ()
+specifier|private
 name|Resource
-name|amResource
-parameter_list|)
+name|computeMaxAMResource
+parameter_list|()
 block|{
-if|if
-condition|(
-name|Math
-operator|.
-name|abs
-argument_list|(
-name|maxAMShare
-operator|-
-operator|-
-literal|1.0f
-argument_list|)
-operator|<
-literal|0.0001
-condition|)
-block|{
-return|return
-literal|true
-return|;
-block|}
-comment|// If FairShare is zero, use min(maxShare, available resource) to compute
-comment|// maxAMResource
 name|Resource
 name|maxResource
 init|=
@@ -2244,9 +2237,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-name|Resource
-name|maxAMResource
-init|=
+return|return
 name|Resources
 operator|.
 name|multiply
@@ -2255,7 +2246,51 @@ name|maxResource
 argument_list|,
 name|maxAMShare
 argument_list|)
+return|;
+block|}
+comment|/**    * Check whether this queue can run the Application Master under the    * maxAMShare limit.    *    * @param amResource resources required to run the AM    * @return true if this queue can run    */
+DECL|method|canRunAppAM (Resource amResource)
+specifier|public
+name|boolean
+name|canRunAppAM
+parameter_list|(
+name|Resource
+name|amResource
+parameter_list|)
+block|{
+if|if
+condition|(
+name|Math
+operator|.
+name|abs
+argument_list|(
+name|maxAMShare
+operator|-
+operator|-
+literal|1.0f
+argument_list|)
+operator|<
+literal|0.0001
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+name|Resource
+name|maxAMResource
+init|=
+name|computeMaxAMResource
+argument_list|()
 decl_stmt|;
+name|getMetrics
+argument_list|()
+operator|.
+name|setMaxAMShare
+argument_list|(
+name|maxAMResource
+argument_list|)
+expr_stmt|;
 name|Resource
 name|ifRunAMResource
 init|=
@@ -2301,6 +2336,14 @@ argument_list|(
 name|amResourceUsage
 argument_list|,
 name|amResource
+argument_list|)
+expr_stmt|;
+name|getMetrics
+argument_list|()
+operator|.
+name|setAMResourceUsage
+argument_list|(
+name|amResourceUsage
 argument_list|)
 expr_stmt|;
 block|}
