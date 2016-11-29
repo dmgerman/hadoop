@@ -2421,8 +2421,8 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
-comment|// if it's AM shut down, do not decrement maxClientRetry as we wait for
-comment|// AM to be restarted.
+comment|// if its AM shut down, do not decrement maxClientRetry while we wait
+comment|// for its AM to be restarted.
 if|if
 condition|(
 operator|!
