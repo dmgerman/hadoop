@@ -414,6 +414,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|AbstractResourceRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|event
 operator|.
 name|EventHandler
@@ -1034,6 +1052,15 @@ name|getSchedulerNode
 parameter_list|(
 name|NodeId
 name|nodeId
+parameter_list|)
+function_decl|;
+comment|/**    * Normalize a resource request.    *    * @param request the resource request to be normalized    */
+DECL|method|normalizeRequest (AbstractResourceRequest request)
+name|void
+name|normalizeRequest
+parameter_list|(
+name|AbstractResourceRequest
+name|request
 parameter_list|)
 function_decl|;
 block|}

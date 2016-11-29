@@ -6786,23 +6786,9 @@ name|application
 argument_list|)
 expr_stmt|;
 comment|// Sanity check for new allocation requests
-name|SchedulerUtils
-operator|.
 name|normalizeRequests
 argument_list|(
 name|ask
-argument_list|,
-name|getResourceCalculator
-argument_list|()
-argument_list|,
-name|getClusterResource
-argument_list|()
-argument_list|,
-name|getMinimumResourceCapability
-argument_list|()
-argument_list|,
-name|getMaximumResourceCapability
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|Allocation

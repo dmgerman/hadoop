@@ -98,6 +98,8 @@ specifier|public
 specifier|abstract
 class|class
 name|UpdateContainerRequest
+extends|extends
+name|AbstractResourceRequest
 block|{
 annotation|@
 name|InterfaceAudience
@@ -283,41 +285,6 @@ name|setContainerId
 parameter_list|(
 name|ContainerId
 name|containerId
-parameter_list|)
-function_decl|;
-comment|/**    * Get the<code>Resource</code> capability of the container.    * @return<code>Resource</code> capability of the container    */
-annotation|@
-name|InterfaceAudience
-operator|.
-name|Public
-annotation|@
-name|InterfaceStability
-operator|.
-name|Unstable
-DECL|method|getCapability ()
-specifier|public
-specifier|abstract
-name|Resource
-name|getCapability
-parameter_list|()
-function_decl|;
-comment|/**    * Set the<code>Resource</code> capability of the container.    * @param capability<code>Resource</code> capability of the container    */
-annotation|@
-name|InterfaceAudience
-operator|.
-name|Public
-annotation|@
-name|InterfaceStability
-operator|.
-name|Unstable
-DECL|method|setCapability (Resource capability)
-specifier|public
-specifier|abstract
-name|void
-name|setCapability
-parameter_list|(
-name|Resource
-name|capability
 parameter_list|)
 function_decl|;
 comment|/**    * Get the target<code>ExecutionType</code> of the container.    * @return<code>ExecutionType</code> of the container    */

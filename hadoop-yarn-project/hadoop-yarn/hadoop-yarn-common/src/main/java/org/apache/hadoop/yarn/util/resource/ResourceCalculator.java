@@ -319,36 +319,7 @@ name|Resource
 name|stepFactor
 parameter_list|)
 function_decl|;
-comment|/**    * Normalize resource<code>r</code> given the base     *<code>minimumResource</code> and verify against max allowed    *<code>maximumResource</code>    *     * @param r resource    * @param minimumResource step-factor    * @param maximumResource the upper bound of the resource to be allocated    * @return normalized resource    */
-DECL|method|normalize (Resource r, Resource minimumResource, Resource maximumResource)
-specifier|public
-name|Resource
-name|normalize
-parameter_list|(
-name|Resource
-name|r
-parameter_list|,
-name|Resource
-name|minimumResource
-parameter_list|,
-name|Resource
-name|maximumResource
-parameter_list|)
-block|{
-return|return
-name|normalize
-argument_list|(
-name|r
-argument_list|,
-name|minimumResource
-argument_list|,
-name|maximumResource
-argument_list|,
-name|minimumResource
-argument_list|)
-return|;
-block|}
-comment|/**    * Normalize resource<code>r</code> given the base     *<code>minimumResource</code> and verify against max allowed    *<code>maximumResource</code> using a step factor for hte normalization.    *    * @param r resource    * @param minimumResource minimum value    * @param maximumResource the upper bound of the resource to be allocated    * @param stepFactor the increment for resources to be allocated    * @return normalized resource    */
+comment|/**    * Normalize resource<code>r</code> given the base     *<code>minimumResource</code> and verify against max allowed    *<code>maximumResource</code> using a step factor for the normalization.    *    * @param r resource    * @param minimumResource minimum value    * @param maximumResource the upper bound of the resource to be allocated    * @param stepFactor the increment for resources to be allocated    * @return normalized resource    */
 DECL|method|normalize (Resource r, Resource minimumResource, Resource maximumResource, Resource stepFactor)
 specifier|public
 specifier|abstract

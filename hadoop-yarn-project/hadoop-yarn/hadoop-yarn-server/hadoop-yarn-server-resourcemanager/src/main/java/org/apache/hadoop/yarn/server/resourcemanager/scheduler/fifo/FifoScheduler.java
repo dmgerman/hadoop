@@ -2402,21 +2402,9 @@ name|EMPTY_ALLOCATION
 return|;
 block|}
 comment|// Sanity check
-name|SchedulerUtils
-operator|.
 name|normalizeRequests
 argument_list|(
 name|ask
-argument_list|,
-name|resourceCalculator
-argument_list|,
-name|getClusterResource
-argument_list|()
-argument_list|,
-name|minimumAllocation
-argument_list|,
-name|getMaximumResourceCapability
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Release containers

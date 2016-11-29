@@ -466,6 +466,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|AbstractResourceRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|conf
 operator|.
 name|YarnConfiguration
@@ -1741,20 +1759,20 @@ name|reservationThreshold
 argument_list|)
 return|;
 block|}
-DECL|method|validateConf (Configuration conf)
+DECL|method|validateConf (FairSchedulerConfiguration config)
 specifier|private
 name|void
 name|validateConf
 parameter_list|(
-name|Configuration
-name|conf
+name|FairSchedulerConfiguration
+name|config
 parameter_list|)
 block|{
 comment|// validate scheduler memory allocation setting
 name|int
 name|minMem
 init|=
-name|conf
+name|config
 operator|.
 name|getInt
 argument_list|(
@@ -1770,7 +1788,7 @@ decl_stmt|;
 name|int
 name|maxMem
 init|=
-name|conf
+name|config
 operator|.
 name|getInt
 argument_list|(
@@ -1828,11 +1846,49 @@ literal|"the minimum allocation value."
 argument_list|)
 throw|;
 block|}
+name|long
+name|incrementMem
+init|=
+name|config
+operator|.
+name|getIncrementAllocation
+argument_list|()
+operator|.
+name|getMemorySize
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|incrementMem
+operator|<=
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|YarnRuntimeException
+argument_list|(
+literal|"Invalid resource scheduler memory"
+operator|+
+literal|" allocation configuration: "
+operator|+
+name|FairSchedulerConfiguration
+operator|.
+name|RM_SCHEDULER_INCREMENT_ALLOCATION_MB
+operator|+
+literal|"="
+operator|+
+name|incrementMem
+operator|+
+literal|". Values must be greater than 0."
+argument_list|)
+throw|;
+block|}
 comment|// validate scheduler vcores allocation setting
 name|int
 name|minVcores
 init|=
-name|conf
+name|config
 operator|.
 name|getInt
 argument_list|(
@@ -1848,7 +1904,7 @@ decl_stmt|;
 name|int
 name|maxVcores
 init|=
-name|conf
+name|config
 operator|.
 name|getInt
 argument_list|(
@@ -1903,6 +1959,44 @@ operator|+
 literal|"and the maximum allocation value must be greater than or equal to"
 operator|+
 literal|"the minimum allocation value."
+argument_list|)
+throw|;
+block|}
+name|int
+name|incrementVcore
+init|=
+name|config
+operator|.
+name|getIncrementAllocation
+argument_list|()
+operator|.
+name|getVirtualCores
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|incrementVcore
+operator|<=
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|YarnRuntimeException
+argument_list|(
+literal|"Invalid resource scheduler vcores"
+operator|+
+literal|" allocation configuration: "
+operator|+
+name|FairSchedulerConfiguration
+operator|.
+name|RM_SCHEDULER_INCREMENT_ALLOCATION_VCORES
+operator|+
+literal|"="
+operator|+
+name|incrementVcore
+operator|+
+literal|". Values must be greater than 0."
 argument_list|)
 throw|;
 block|}
@@ -4144,6 +4238,34 @@ block|}
 block|}
 annotation|@
 name|Override
+DECL|method|normalizeRequest (AbstractResourceRequest ask)
+specifier|public
+name|void
+name|normalizeRequest
+parameter_list|(
+name|AbstractResourceRequest
+name|ask
+parameter_list|)
+block|{
+name|SchedulerUtils
+operator|.
+name|normalizeRequest
+argument_list|(
+name|ask
+argument_list|,
+name|DOMINANT_RESOURCE_CALCULATOR
+argument_list|,
+name|minimumAllocation
+argument_list|,
+name|getMaximumResourceCapability
+argument_list|()
+argument_list|,
+name|incrAllocation
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|allocate (ApplicationAttemptId appAttemptId, List<ResourceRequest> ask, List<ContainerId> release, List<String> blacklistAdditions, List<String> blacklistRemovals, List<UpdateContainerRequest> increaseRequests, List<UpdateContainerRequest> decreaseRequests)
 specifier|public
 name|Allocation
@@ -4221,23 +4343,9 @@ name|EMPTY_ALLOCATION
 return|;
 block|}
 comment|// Sanity check
-name|SchedulerUtils
-operator|.
 name|normalizeRequests
 argument_list|(
 name|ask
-argument_list|,
-name|DOMINANT_RESOURCE_CALCULATOR
-argument_list|,
-name|getClusterResource
-argument_list|()
-argument_list|,
-name|minimumAllocation
-argument_list|,
-name|getMaximumResourceCapability
-argument_list|()
-argument_list|,
-name|incrAllocation
 argument_list|)
 expr_stmt|;
 comment|// Record container allocation start time

@@ -1281,8 +1281,6 @@ name|ask
 argument_list|,
 name|resourceCalculator
 argument_list|,
-literal|null
-argument_list|,
 name|minResource
 argument_list|,
 name|maxResource
@@ -1321,8 +1319,6 @@ argument_list|(
 name|ask
 argument_list|,
 name|resourceCalculator
-argument_list|,
-literal|null
 argument_list|,
 name|minResource
 argument_list|,
@@ -1364,8 +1360,6 @@ argument_list|(
 name|ask
 argument_list|,
 name|resourceCalculator
-argument_list|,
-literal|null
 argument_list|,
 name|minResource
 argument_list|,
@@ -1410,8 +1404,6 @@ name|ask
 argument_list|,
 name|resourceCalculator
 argument_list|,
-literal|null
-argument_list|,
 name|minResource
 argument_list|,
 name|maxResource
@@ -1453,8 +1445,6 @@ name|ask
 argument_list|,
 name|resourceCalculator
 argument_list|,
-literal|null
-argument_list|,
 name|minResource
 argument_list|,
 name|maxResource
@@ -1495,8 +1485,6 @@ argument_list|(
 name|ask
 argument_list|,
 name|resourceCalculator
-argument_list|,
-literal|null
 argument_list|,
 name|minResource
 argument_list|,
@@ -1553,8 +1541,6 @@ name|ask
 argument_list|,
 name|resourceCalculator
 argument_list|,
-literal|null
-argument_list|,
 name|minResource
 argument_list|,
 name|maxResource
@@ -1609,8 +1595,6 @@ argument_list|(
 name|ask
 argument_list|,
 name|resourceCalculator
-argument_list|,
-literal|null
 argument_list|,
 name|minResource
 argument_list|,
@@ -1724,8 +1708,6 @@ name|ask
 argument_list|,
 name|resourceCalculator
 argument_list|,
-name|clusterResource
-argument_list|,
 name|minResource
 argument_list|,
 name|maxResource
@@ -1763,8 +1745,6 @@ argument_list|(
 name|ask
 argument_list|,
 name|resourceCalculator
-argument_list|,
-name|clusterResource
 argument_list|,
 name|minResource
 argument_list|,
@@ -1829,8 +1809,6 @@ argument_list|(
 name|ask
 argument_list|,
 name|resourceCalculator
-argument_list|,
-name|clusterResource
 argument_list|,
 name|minResource
 argument_list|,
