@@ -1183,7 +1183,7 @@ specifier|static
 class|class
 name|SpyHook
 extends|extends
-name|CapacityScheduler
+name|CapacitySchedulerQueueManager
 operator|.
 name|QueueHook
 block|{

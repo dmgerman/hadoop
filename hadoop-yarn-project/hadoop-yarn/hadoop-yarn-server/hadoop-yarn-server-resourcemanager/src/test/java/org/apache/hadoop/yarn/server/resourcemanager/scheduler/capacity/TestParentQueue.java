@@ -910,9 +910,9 @@ argument_list|)
 operator|.
 name|thenReturn
 argument_list|(
-name|CapacityScheduler
+name|CapacitySchedulerQueueManager
 operator|.
-name|nonPartitionedQueueComparator
+name|NON_PARTITIONED_QUEUE_COMPARATOR
 argument_list|)
 expr_stmt|;
 name|when
@@ -1764,7 +1764,7 @@ decl_stmt|;
 name|CSQueue
 name|root
 init|=
-name|CapacityScheduler
+name|CapacitySchedulerQueueManager
 operator|.
 name|parseQueue
 argument_list|(
@@ -2737,7 +2737,7 @@ literal|false
 decl_stmt|;
 try|try
 block|{
-name|CapacityScheduler
+name|CapacitySchedulerQueueManager
 operator|.
 name|parseQueue
 argument_list|(
@@ -2815,7 +2815,7 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|CapacityScheduler
+name|CapacitySchedulerQueueManager
 operator|.
 name|parseQueue
 argument_list|(
@@ -2892,7 +2892,7 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|CapacityScheduler
+name|CapacitySchedulerQueueManager
 operator|.
 name|parseQueue
 argument_list|(
@@ -3427,7 +3427,7 @@ decl_stmt|;
 name|CSQueue
 name|root
 init|=
-name|CapacityScheduler
+name|CapacitySchedulerQueueManager
 operator|.
 name|parseQueue
 argument_list|(
@@ -4817,7 +4817,7 @@ name|CSQueue
 argument_list|>
 argument_list|()
 decl_stmt|;
-name|CapacityScheduler
+name|CapacitySchedulerQueueManager
 operator|.
 name|parseQueue
 argument_list|(
@@ -4924,7 +4924,7 @@ name|CSQueue
 argument_list|>
 argument_list|()
 decl_stmt|;
-name|CapacityScheduler
+name|CapacitySchedulerQueueManager
 operator|.
 name|parseQueue
 argument_list|(
@@ -5065,7 +5065,7 @@ argument_list|()
 decl_stmt|;
 try|try
 block|{
-name|CapacityScheduler
+name|CapacitySchedulerQueueManager
 operator|.
 name|parseQueue
 argument_list|(
@@ -5147,7 +5147,7 @@ decl_stmt|;
 name|CSQueue
 name|root
 init|=
-name|CapacityScheduler
+name|CapacitySchedulerQueueManager
 operator|.
 name|parseQueue
 argument_list|(
@@ -5784,7 +5784,7 @@ decl_stmt|;
 name|CSQueue
 name|root
 init|=
-name|CapacityScheduler
+name|CapacitySchedulerQueueManager
 operator|.
 name|parseQueue
 argument_list|(
@@ -6585,7 +6585,7 @@ decl_stmt|;
 name|CSQueue
 name|root
 init|=
-name|CapacityScheduler
+name|CapacitySchedulerQueueManager
 operator|.
 name|parseQueue
 argument_list|(
@@ -6618,7 +6618,7 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-name|CapacityScheduler
+name|CapacitySchedulerQueueManager
 operator|.
 name|setQueueAcls
 argument_list|(

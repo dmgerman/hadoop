@@ -954,9 +954,9 @@ argument_list|)
 operator|.
 name|thenReturn
 argument_list|(
-name|CapacityScheduler
+name|CapacitySchedulerQueueManager
 operator|.
-name|nonPartitionedQueueComparator
+name|NON_PARTITIONED_QUEUE_COMPARATOR
 argument_list|)
 expr_stmt|;
 name|when
@@ -1738,7 +1738,7 @@ decl_stmt|;
 name|CSQueue
 name|root
 init|=
-name|CapacityScheduler
+name|CapacitySchedulerQueueManager
 operator|.
 name|parseQueue
 argument_list|(
