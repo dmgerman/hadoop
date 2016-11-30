@@ -3146,6 +3146,18 @@ operator|.
 name|getPath
 argument_list|()
 decl_stmt|;
+comment|// sometimes the common prefix includes the base dir (HADOOP-13830).
+comment|// avoid that problem by detecting it and keeping it out
+comment|// of the list
+if|if
+condition|(
+operator|!
+name|relativePath
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
 name|status
 operator|.
 name|add
@@ -3162,6 +3174,7 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|priorLastKey
 operator|=
