@@ -122,7 +122,7 @@ specifier|final
 class|class
 name|ErasureCodingPolicyManager
 block|{
-comment|/**    * TODO: HDFS-8095.    */
+comment|/**    * TODO: HDFS-8095    */
 DECL|field|DEFAULT_CELLSIZE
 specifier|private
 specifier|static
@@ -197,27 +197,6 @@ operator|.
 name|RS_6_3_LEGACY_POLICY_ID
 argument_list|)
 decl_stmt|;
-DECL|field|SYS_POLICY4
-specifier|private
-specifier|static
-specifier|final
-name|ErasureCodingPolicy
-name|SYS_POLICY4
-init|=
-operator|new
-name|ErasureCodingPolicy
-argument_list|(
-name|ErasureCodeConstants
-operator|.
-name|XOR_2_1_SCHEMA
-argument_list|,
-name|DEFAULT_CELLSIZE
-argument_list|,
-name|HdfsConstants
-operator|.
-name|XOR_2_1_POLICY_ID
-argument_list|)
-decl_stmt|;
 comment|//We may add more later.
 DECL|field|SYS_POLICIES
 specifier|private
@@ -236,8 +215,6 @@ block|,
 name|SYS_POLICY2
 block|,
 name|SYS_POLICY3
-block|,
-name|SYS_POLICY4
 block|}
 decl_stmt|;
 comment|// Supported storage policies for striped EC files
@@ -338,44 +315,6 @@ block|{
 comment|// make this configurable?
 return|return
 name|SYS_POLICY1
-return|;
-block|}
-comment|/**    * Get system-wide policy by policy ID.    * @return ecPolicy    */
-DECL|method|getPolicyByPolicyID (byte id)
-specifier|public
-specifier|static
-name|ErasureCodingPolicy
-name|getPolicyByPolicyID
-parameter_list|(
-name|byte
-name|id
-parameter_list|)
-block|{
-for|for
-control|(
-name|ErasureCodingPolicy
-name|policy
-range|:
-name|SYS_POLICIES
-control|)
-block|{
-if|if
-condition|(
-name|policy
-operator|.
-name|getId
-argument_list|()
-operator|==
-name|id
-condition|)
-block|{
-return|return
-name|policy
-return|;
-block|}
-block|}
-return|return
-literal|null
 return|;
 block|}
 comment|/**    * Get all policies that's available to use.    * @return all policies    */
@@ -512,7 +451,7 @@ return|return
 name|isPolicySuitable
 return|;
 block|}
-comment|/**    * Clear and clean up.    */
+comment|/**    * Clear and clean up    */
 DECL|method|clear ()
 specifier|public
 name|void

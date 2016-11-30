@@ -121,23 +121,6 @@ argument_list|,
 literal|3
 argument_list|)
 decl_stmt|;
-DECL|field|XOR_2_1_SCHEMA
-specifier|public
-specifier|static
-specifier|final
-name|ECSchema
-name|XOR_2_1_SCHEMA
-init|=
-operator|new
-name|ECSchema
-argument_list|(
-name|XOR_CODEC_NAME
-argument_list|,
-literal|2
-argument_list|,
-literal|1
-argument_list|)
-decl_stmt|;
 block|}
 end_class
 

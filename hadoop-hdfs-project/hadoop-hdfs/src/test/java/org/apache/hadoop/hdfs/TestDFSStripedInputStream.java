@@ -562,23 +562,53 @@ argument_list|)
 decl_stmt|;
 DECL|field|ecPolicy
 specifier|private
+specifier|final
 name|ErasureCodingPolicy
 name|ecPolicy
+init|=
+name|ErasureCodingPolicyManager
+operator|.
+name|getSystemDefaultPolicy
+argument_list|()
 decl_stmt|;
 DECL|field|dataBlocks
 specifier|private
+specifier|final
 name|short
 name|dataBlocks
+init|=
+operator|(
+name|short
+operator|)
+name|ecPolicy
+operator|.
+name|getNumDataUnits
+argument_list|()
 decl_stmt|;
 DECL|field|parityBlocks
 specifier|private
+specifier|final
 name|short
 name|parityBlocks
+init|=
+operator|(
+name|short
+operator|)
+name|ecPolicy
+operator|.
+name|getNumParityUnits
+argument_list|()
 decl_stmt|;
 DECL|field|cellSize
 specifier|private
+specifier|final
 name|int
 name|cellSize
+init|=
+name|ecPolicy
+operator|.
+name|getCellSize
+argument_list|()
 decl_stmt|;
 DECL|field|stripesPerBlock
 specifier|private
@@ -590,13 +620,23 @@ literal|2
 decl_stmt|;
 DECL|field|blockSize
 specifier|private
+specifier|final
 name|int
 name|blockSize
+init|=
+name|stripesPerBlock
+operator|*
+name|cellSize
 decl_stmt|;
 DECL|field|blockGroupSize
 specifier|private
+specifier|final
 name|int
 name|blockGroupSize
+init|=
+name|dataBlocks
+operator|*
+name|blockSize
 decl_stmt|;
 annotation|@
 name|Rule
@@ -611,19 +651,6 @@ argument_list|(
 literal|300000
 argument_list|)
 decl_stmt|;
-DECL|method|getEcPolicy ()
-specifier|public
-name|ErasureCodingPolicy
-name|getEcPolicy
-parameter_list|()
-block|{
-return|return
-name|ErasureCodingPolicyManager
-operator|.
-name|getSystemDefaultPolicy
-argument_list|()
-return|;
-block|}
 annotation|@
 name|Before
 DECL|method|setup ()
@@ -634,62 +661,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-comment|/*      * Initialize erasure coding policy.      */
-name|ecPolicy
-operator|=
-name|getEcPolicy
-argument_list|()
-expr_stmt|;
-name|dataBlocks
-operator|=
-operator|(
-name|short
-operator|)
-name|ecPolicy
-operator|.
-name|getNumDataUnits
-argument_list|()
-expr_stmt|;
-name|parityBlocks
-operator|=
-operator|(
-name|short
-operator|)
-name|ecPolicy
-operator|.
-name|getNumParityUnits
-argument_list|()
-expr_stmt|;
-name|cellSize
-operator|=
-name|ecPolicy
-operator|.
-name|getCellSize
-argument_list|()
-expr_stmt|;
-name|blockSize
-operator|=
-name|stripesPerBlock
-operator|*
-name|cellSize
-expr_stmt|;
-name|blockGroupSize
-operator|=
-name|dataBlocks
-operator|*
-name|blockSize
-expr_stmt|;
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"EC policy = "
-operator|+
-name|ecPolicy
-argument_list|)
-expr_stmt|;
 name|conf
 operator|.
 name|setLong
@@ -816,7 +787,7 @@ operator|.
 name|toString
 argument_list|()
 argument_list|,
-name|ecPolicy
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -846,7 +817,7 @@ literal|null
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Test {@link DFSStripedInputStream#getBlockAt(long)}.    */
+comment|/**    * Test {@link DFSStripedInputStream#getBlockAt(long)}    */
 annotation|@
 name|Test
 DECL|method|testRefreshBlock ()
@@ -878,8 +849,6 @@ argument_list|,
 name|stripesPerBlock
 argument_list|,
 literal|false
-argument_list|,
-name|ecPolicy
 argument_list|)
 expr_stmt|;
 name|LocatedBlocks
@@ -1084,8 +1053,6 @@ argument_list|,
 name|stripesPerBlock
 argument_list|,
 literal|false
-argument_list|,
-name|ecPolicy
 argument_list|)
 expr_stmt|;
 name|LocatedBlocks
@@ -1252,7 +1219,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**        * A variation of {@link DFSTestUtil#fillExpectedBuf} for striped blocks        */
+comment|/** A variation of {@link DFSTestUtil#fillExpectedBuf} for striped blocks */
 for|for
 control|(
 name|int
@@ -1582,8 +1549,6 @@ argument_list|,
 name|stripesPerBlock
 argument_list|,
 literal|false
-argument_list|,
-name|ecPolicy
 argument_list|)
 expr_stmt|;
 name|LocatedBlocks
@@ -2437,8 +2402,6 @@ argument_list|,
 name|stripesPerBlock
 argument_list|,
 literal|false
-argument_list|,
-name|ecPolicy
 argument_list|)
 expr_stmt|;
 name|LocatedBlocks
@@ -2625,7 +2588,7 @@ name|getLocatedBlocks
 argument_list|()
 control|)
 block|{
-comment|/**        * A variation of {@link DFSTestUtil#fillExpectedBuf} for striped blocks        */
+comment|/** A variation of {@link DFSTestUtil#fillExpectedBuf} for striped blocks */
 for|for
 control|(
 name|int
@@ -2902,8 +2865,6 @@ argument_list|,
 name|stripesPerBlock
 argument_list|,
 literal|false
-argument_list|,
-name|ecPolicy
 argument_list|)
 expr_stmt|;
 name|LocatedBlocks
