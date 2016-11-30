@@ -1399,6 +1399,12 @@ name|OUT_FILE
 operator|+
 literal|" 2>"
 operator|+
+name|ApplicationConstants
+operator|.
+name|LOG_DIR_EXPANSION_VAR
+operator|+
+literal|"/"
+operator|+
 name|ERR_FILE
 argument_list|)
 expr_stmt|;
