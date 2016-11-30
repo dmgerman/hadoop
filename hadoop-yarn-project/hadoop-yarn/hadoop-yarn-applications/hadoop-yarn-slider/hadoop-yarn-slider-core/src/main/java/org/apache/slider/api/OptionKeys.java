@@ -69,17 +69,33 @@ name|EXPORT_PREFIX
 init|=
 literal|"export."
 decl_stmt|;
+comment|/**    * Type suffix for config file and package options: {@value}    */
 DECL|field|TYPE_SUFFIX
 name|String
 name|TYPE_SUFFIX
 init|=
 literal|".type"
 decl_stmt|;
+comment|/**    * Name suffix for config file and package options: {@value}    */
 DECL|field|NAME_SUFFIX
 name|String
 name|NAME_SUFFIX
 init|=
 literal|".name"
+decl_stmt|;
+comment|/**    * Per component suffix for config file options: {@value}    */
+DECL|field|PER_COMPONENT
+name|String
+name|PER_COMPONENT
+init|=
+literal|".per.component"
+decl_stmt|;
+comment|/**    * Per group suffix for config file options: {@value}    */
+DECL|field|PER_GROUP
+name|String
+name|PER_GROUP
+init|=
+literal|".per.group"
 decl_stmt|;
 comment|/**    * Zookeeper quorum host list: {@value}    */
 DECL|field|ZOOKEEPER_QUORUM
