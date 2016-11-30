@@ -236,6 +236,46 @@ name|StorageLocation
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|checker
+operator|.
+name|Checkable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|checker
+operator|.
+name|VolumeCheckResult
+import|;
+end_import
+
 begin_comment
 comment|/**  * This is an interface for the underlying volume.  */
 end_comment
@@ -245,6 +285,15 @@ DECL|interface|FsVolumeSpi
 specifier|public
 interface|interface
 name|FsVolumeSpi
+extends|extends
+name|Checkable
+argument_list|<
+name|FsVolumeSpi
+operator|.
+name|VolumeCheckContext
+argument_list|,
+name|VolumeCheckResult
+argument_list|>
 block|{
 comment|/**    * Obtain a reference object that had increased 1 reference count of the    * volume.    *    * It is caller's responsibility to close {@link FsVolumeReference} to decrease    * the reference count on the volume.    */
 DECL|method|obtainReference ()
@@ -1049,6 +1098,11 @@ name|InterruptedException
 throws|,
 name|IOException
 function_decl|;
+comment|/**    * Context for the {@link #check} call.    */
+DECL|class|VolumeCheckContext
+class|class
+name|VolumeCheckContext
+block|{   }
 block|}
 end_interface
 

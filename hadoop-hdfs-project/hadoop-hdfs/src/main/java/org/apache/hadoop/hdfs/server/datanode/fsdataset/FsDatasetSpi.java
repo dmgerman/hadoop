@@ -998,6 +998,25 @@ name|getVolume
 argument_list|()
 return|;
 block|}
+comment|/**      * Get the reference for a given index.      */
+DECL|method|getReference (int index)
+specifier|public
+name|FsVolumeReference
+name|getReference
+parameter_list|(
+name|int
+name|index
+parameter_list|)
+block|{
+return|return
+name|references
+operator|.
+name|get
+argument_list|(
+name|index
+argument_list|)
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|close ()
