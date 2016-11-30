@@ -154,6 +154,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|util
@@ -282,6 +296,52 @@ block|}
 return|return
 name|authorizer
 return|;
+block|}
+comment|/**    * Destroy the {@link YarnAuthorizationProvider} instance.    * This method is called only in Tests.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|destroy ()
+specifier|public
+specifier|static
+name|void
+name|destroy
+parameter_list|()
+block|{
+synchronized|synchronized
+init|(
+name|YarnAuthorizationProvider
+operator|.
+name|class
+init|)
+block|{
+if|if
+condition|(
+name|authorizer
+operator|!=
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|authorizer
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|" is destroyed."
+argument_list|)
+expr_stmt|;
+name|authorizer
+operator|=
+literal|null
+expr_stmt|;
+block|}
+block|}
 block|}
 comment|/**    * Initialize the provider. Invoked on daemon startup. DefaultYarnAuthorizer is    * initialized based on configurations.    */
 DECL|method|init (Configuration conf)
