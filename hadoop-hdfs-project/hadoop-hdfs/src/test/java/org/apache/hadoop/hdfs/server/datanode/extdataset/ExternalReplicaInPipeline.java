@@ -235,7 +235,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|createStreams (boolean isCreate, DataChecksum requestedChecksum)
+DECL|method|createStreams (boolean isCreate, DataChecksum requestedChecksum, long slowLogThresholdMs)
 specifier|public
 name|ReplicaOutputStreams
 name|createStreams
@@ -245,6 +245,9 @@ name|isCreate
 parameter_list|,
 name|DataChecksum
 name|requestedChecksum
+parameter_list|,
+name|long
+name|slowLogThresholdMs
 parameter_list|)
 throws|throws
 name|IOException
@@ -260,6 +263,8 @@ argument_list|,
 name|requestedChecksum
 argument_list|,
 literal|false
+argument_list|,
+name|slowLogThresholdMs
 argument_list|)
 return|;
 block|}

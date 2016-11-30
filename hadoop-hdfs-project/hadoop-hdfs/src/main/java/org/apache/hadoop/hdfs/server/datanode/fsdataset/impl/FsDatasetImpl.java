@@ -70,16 +70,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileDescriptor
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|FileNotFoundException
 import|;
 end_import
@@ -14273,7 +14263,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|submitBackgroundSyncFileRangeRequest (ExtendedBlock block, FileDescriptor fd, long offset, long nbytes, int flags)
+DECL|method|submitBackgroundSyncFileRangeRequest (ExtendedBlock block, ReplicaOutputStreams outs, long offset, long nbytes, int flags)
 specifier|public
 name|void
 name|submitBackgroundSyncFileRangeRequest
@@ -14281,8 +14271,8 @@ parameter_list|(
 name|ExtendedBlock
 name|block
 parameter_list|,
-name|FileDescriptor
-name|fd
+name|ReplicaOutputStreams
+name|outs
 parameter_list|,
 name|long
 name|offset
@@ -14310,7 +14300,7 @@ name|submitSyncFileRangeRequest
 argument_list|(
 name|fsVolumeImpl
 argument_list|,
-name|fd
+name|outs
 argument_list|,
 name|offset
 argument_list|,
