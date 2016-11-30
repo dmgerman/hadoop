@@ -3434,8 +3434,6 @@ argument_list|(
 name|file1_Path
 argument_list|,
 literal|1024
-operator|*
-literal|1024
 argument_list|,
 operator|(
 name|short
