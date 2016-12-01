@@ -4569,6 +4569,30 @@ name|heartbeatInterval
 init|=
 name|HEARTBEAT_INTERVAL
 decl_stmt|;
+comment|// configure AM to wait forever for RM
+name|getConfig
+argument_list|()
+operator|.
+name|setLong
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RESOURCEMANAGER_CONNECT_MAX_WAIT_MS
+argument_list|,
+operator|-
+literal|1
+argument_list|)
+expr_stmt|;
+name|getConfig
+argument_list|()
+operator|.
+name|unset
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|CLIENT_FAILOVER_MAX_ATTEMPTS
+argument_list|)
+expr_stmt|;
 comment|// add the RM client -this brings the callbacks in
 name|asyncRMClient
 operator|=
