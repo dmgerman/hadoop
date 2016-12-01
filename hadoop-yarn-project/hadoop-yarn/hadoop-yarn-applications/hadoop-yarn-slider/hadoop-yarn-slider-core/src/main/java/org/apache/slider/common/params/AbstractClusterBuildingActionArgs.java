@@ -426,9 +426,7 @@ block|}
 argument_list|,
 name|description
 operator|=
-literal|"Life time of the application since application started at"
-operator|+
-literal|" running state"
+literal|"Lifetime of the application from the time of request"
 argument_list|)
 DECL|field|lifetime
 specifier|public
