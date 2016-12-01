@@ -122,6 +122,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|AccessControlException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|StringUtils
@@ -714,6 +728,8 @@ parameter_list|)
 block|{
 comment|// expected
 block|}
+try|try
+block|{
 name|assertFalse
 argument_list|(
 name|fs
@@ -724,6 +740,16 @@ name|testSubDir
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|AccessControlException
+name|e
+parameter_list|)
+block|{
+comment|// Expected : HDFS-11132 Checks on paths under file may be rejected by
+comment|// file missing execute permission.
+block|}
 name|Path
 name|testDeepSubDir
 init|=
@@ -755,6 +781,8 @@ parameter_list|)
 block|{
 comment|// expected
 block|}
+try|try
+block|{
 name|assertFalse
 argument_list|(
 name|fs
@@ -765,6 +793,16 @@ name|testDeepSubDir
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|AccessControlException
+name|e
+parameter_list|)
+block|{
+comment|// Expected : HDFS-11132 Checks on paths under file may be rejected by
+comment|// file missing execute permission.
+block|}
 block|}
 DECL|method|testMkdirsWithUmask ()
 specifier|public
