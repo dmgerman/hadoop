@@ -7683,7 +7683,7 @@ operator|.
 name|getFSImage
 argument_list|()
 operator|.
-name|getLastAppliedOrWrittenTxId
+name|getCorrectLastAppliedOrWrittenTxId
 argument_list|()
 return|;
 block|}

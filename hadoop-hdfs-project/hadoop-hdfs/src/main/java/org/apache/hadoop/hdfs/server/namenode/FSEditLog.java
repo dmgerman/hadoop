@@ -1678,8 +1678,11 @@ init|=
 literal|null
 decl_stmt|;
 comment|// a monotonically increasing counter that represents transactionIds.
+comment|// All of the threads which update/increment txid are synchronized,
+comment|// so make txid volatile instead of AtomicLong.
 DECL|field|txid
 specifier|private
+specifier|volatile
 name|long
 name|txid
 init|=
@@ -1697,6 +1700,7 @@ comment|// the first txid of the log that's currently open for writing.
 comment|// If this value is N, we are currently writing to edits_inprogress_N
 DECL|field|curSegmentTxId
 specifier|private
+specifier|volatile
 name|long
 name|curSegmentTxId
 init|=
@@ -2445,11 +2449,45 @@ operator|.
 name|BETWEEN_LOG_SEGMENTS
 return|;
 block|}
+comment|/**    * Return true if the log is currently open in write mode.    * This method is not synchronized and must be used only for metrics.    * @return true if the log is currently open in write mode, regardless    * of whether it actually has an open segment.    */
+DECL|method|isOpenForWriteWithoutLock ()
+name|boolean
+name|isOpenForWriteWithoutLock
+parameter_list|()
+block|{
+return|return
+name|state
+operator|==
+name|State
+operator|.
+name|IN_SEGMENT
+operator|||
+name|state
+operator|==
+name|State
+operator|.
+name|BETWEEN_LOG_SEGMENTS
+return|;
+block|}
 comment|/**    * @return true if the log is open in write mode and has a segment open    * ready to take edits.    */
 DECL|method|isSegmentOpen ()
 specifier|synchronized
 name|boolean
 name|isSegmentOpen
+parameter_list|()
+block|{
+return|return
+name|state
+operator|==
+name|State
+operator|.
+name|IN_SEGMENT
+return|;
+block|}
+comment|/**    * Return true the state is IN_SEGMENT.    * This method is not synchronized and must be used only for metrics.    * @return true if the log is open in write mode and has a segment open    * ready to take edits.    */
+DECL|method|isSegmentOpenWithoutLock ()
+name|boolean
+name|isSegmentOpenWithoutLock
 parameter_list|()
 block|{
 return|return
@@ -3001,6 +3039,16 @@ return|return
 name|txid
 return|;
 block|}
+comment|/**    * Return the transaction ID of the last transaction written to the log.    * This method is not synchronized and must be used only for metrics.    * @return The transaction ID of the last transaction written to the log    */
+DECL|method|getLastWrittenTxIdWithoutLock ()
+name|long
+name|getLastWrittenTxIdWithoutLock
+parameter_list|()
+block|{
+return|return
+name|txid
+return|;
+block|}
 comment|/**    * @return the first transaction ID in the current log segment    */
 DECL|method|getCurSegmentTxId ()
 specifier|synchronized
@@ -3020,6 +3068,16 @@ argument_list|,
 name|state
 argument_list|)
 expr_stmt|;
+return|return
+name|curSegmentTxId
+return|;
+block|}
+comment|/**    * Return the first transaction ID in the current log segment.    * This method is not synchronized and must be used only for metrics.    * @return The first transaction ID in the current log segment    */
+DECL|method|getCurSegmentTxIdWithoutLock ()
+name|long
+name|getCurSegmentTxIdWithoutLock
+parameter_list|()
+block|{
 return|return
 name|curSegmentTxId
 return|;
@@ -6026,7 +6084,6 @@ expr_stmt|;
 block|}
 comment|/**    * Get all the journals this edit log is currently operating on.    */
 DECL|method|getJournals ()
-specifier|synchronized
 name|List
 argument_list|<
 name|JournalAndStream
@@ -6034,6 +6091,8 @@ argument_list|>
 name|getJournals
 parameter_list|()
 block|{
+comment|// The list implementation is CopyOnWriteArrayList,
+comment|// so we don't need to synchronize this method.
 return|return
 name|journalSet
 operator|.
@@ -6045,7 +6104,6 @@ comment|/**    * Used only by tests.    */
 annotation|@
 name|VisibleForTesting
 DECL|method|getJournalSet ()
-specifier|synchronized
 specifier|public
 name|JournalSet
 name|getJournalSet
@@ -8053,31 +8111,49 @@ block|{   }
 comment|/**    * Return total number of syncs happened on this edit log.    * @return long - count    */
 DECL|method|getTotalSyncCount ()
 specifier|public
-specifier|synchronized
 name|long
 name|getTotalSyncCount
 parameter_list|()
 block|{
+comment|// Avoid NPE as possible.
 if|if
 condition|(
 name|editLogStream
-operator|!=
+operator|==
 literal|null
 condition|)
-block|{
-return|return
-name|editLogStream
-operator|.
-name|getNumSync
-argument_list|()
-return|;
-block|}
-else|else
 block|{
 return|return
 literal|0
 return|;
 block|}
+name|long
+name|count
+init|=
+literal|0
+decl_stmt|;
+try|try
+block|{
+name|count
+operator|=
+name|editLogStream
+operator|.
+name|getNumSync
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|NullPointerException
+name|ignore
+parameter_list|)
+block|{
+comment|// This method is used for metrics, so we don't synchronize it.
+comment|// Therefore NPE can happen even if there is a null check before.
+block|}
+return|return
+name|count
+return|;
 block|}
 block|}
 end_class

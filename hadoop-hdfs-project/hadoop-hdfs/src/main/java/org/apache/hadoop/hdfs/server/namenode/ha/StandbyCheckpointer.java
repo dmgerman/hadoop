@@ -1000,7 +1000,7 @@ name|thisCheckpointTxId
 init|=
 name|img
 operator|.
-name|getLastAppliedOrWrittenTxId
+name|getCorrectLastAppliedOrWrittenTxId
 argument_list|()
 decl_stmt|;
 assert|assert
@@ -1592,7 +1592,7 @@ decl_stmt|;
 return|return
 name|img
 operator|.
-name|getLastAppliedOrWrittenTxId
+name|getCorrectLastAppliedOrWrittenTxId
 argument_list|()
 operator|-
 name|img

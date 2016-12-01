@@ -18464,7 +18464,7 @@ argument_list|,
 name|getFSImage
 argument_list|()
 operator|.
-name|getLastAppliedOrWrittenTxId
+name|getCorrectLastAppliedOrWrittenTxId
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -18846,7 +18846,7 @@ block|{
 name|long
 name|numEdits
 init|=
-name|getTransactionsSinceLastLogRoll
+name|getCorrectTransactionsSinceLastLogRoll
 argument_list|()
 decl_stmt|;
 if|if
@@ -19445,6 +19445,49 @@ operator|!
 name|getEditLog
 argument_list|()
 operator|.
+name|isSegmentOpenWithoutLock
+argument_list|()
+condition|)
+block|{
+return|return
+literal|0
+return|;
+block|}
+else|else
+block|{
+return|return
+name|getEditLog
+argument_list|()
+operator|.
+name|getLastWrittenTxIdWithoutLock
+argument_list|()
+operator|-
+name|getEditLog
+argument_list|()
+operator|.
+name|getCurSegmentTxIdWithoutLock
+argument_list|()
+operator|+
+literal|1
+return|;
+block|}
+block|}
+comment|/**    * Get the correct number of transactions since last edit log roll.    * This method holds a lock of FSEditLog and must not be used for metrics.    */
+DECL|method|getCorrectTransactionsSinceLastLogRoll ()
+specifier|private
+name|long
+name|getCorrectTransactionsSinceLastLogRoll
+parameter_list|()
+block|{
+if|if
+condition|(
+name|isInStandbyState
+argument_list|()
+operator|||
+operator|!
+name|getEditLog
+argument_list|()
+operator|.
 name|isSegmentOpen
 argument_list|()
 condition|)
@@ -19491,7 +19534,7 @@ return|return
 name|getEditLog
 argument_list|()
 operator|.
-name|getLastWrittenTxId
+name|getLastWrittenTxIdWithoutLock
 argument_list|()
 return|;
 block|}
@@ -26687,12 +26730,14 @@ operator|!=
 literal|null
 condition|)
 block|{
+comment|// This flag can be false because we cannot hold a lock of FSEditLog
+comment|// for metrics.
 name|boolean
 name|openForWrite
 init|=
 name|log
 operator|.
-name|isOpenForWrite
+name|isOpenForWriteWithoutLock
 argument_list|()
 decl_stmt|;
 for|for

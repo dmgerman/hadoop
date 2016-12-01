@@ -4736,7 +4736,7 @@ decl_stmt|;
 name|long
 name|txid
 init|=
-name|getLastAppliedOrWrittenTxId
+name|getCorrectLastAppliedOrWrittenTxId
 argument_list|()
 decl_stmt|;
 name|SaveNamespaceContext
@@ -5153,7 +5153,7 @@ name|checkpointTxId
 operator|>=
 name|this
 operator|.
-name|getLastAppliedOrWrittenTxId
+name|getCorrectLastAppliedOrWrittenTxId
 argument_list|()
 operator|-
 name|txGap
@@ -5262,7 +5262,7 @@ block|}
 name|long
 name|imageTxId
 init|=
-name|getLastAppliedOrWrittenTxId
+name|getCorrectLastAppliedOrWrittenTxId
 argument_list|()
 decl_stmt|;
 if|if
@@ -6988,6 +6988,33 @@ DECL|method|getLastAppliedOrWrittenTxId ()
 specifier|public
 name|long
 name|getLastAppliedOrWrittenTxId
+parameter_list|()
+block|{
+return|return
+name|Math
+operator|.
+name|max
+argument_list|(
+name|lastAppliedTxId
+argument_list|,
+name|editLog
+operator|!=
+literal|null
+condition|?
+name|editLog
+operator|.
+name|getLastWrittenTxIdWithoutLock
+argument_list|()
+else|:
+literal|0
+argument_list|)
+return|;
+block|}
+comment|/**    * This method holds a lock of FSEditLog to get the correct value.    * This method must not be used for metrics.    */
+DECL|method|getCorrectLastAppliedOrWrittenTxId ()
+specifier|public
+name|long
+name|getCorrectLastAppliedOrWrittenTxId
 parameter_list|()
 block|{
 return|return
