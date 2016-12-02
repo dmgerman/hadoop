@@ -68,7 +68,17 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Test
+name|Assume
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Before
 import|;
 end_import
 
@@ -83,7 +93,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Verify Adls adhere to Hadoop file system semantics.  */
+comment|/**  * Test Base contract tests on Adl file system.  */
 end_comment
 
 begin_class
@@ -208,147 +218,24 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|testGetFileStatus ()
+annotation|@
+name|Before
+DECL|method|skipTestCheck ()
 specifier|public
 name|void
-name|testGetFileStatus
+name|skipTestCheck
 parameter_list|()
-throws|throws
-name|IOException
 block|{
-if|if
-condition|(
-operator|!
+name|Assume
+operator|.
+name|assumeTrue
+argument_list|(
 name|AdlStorageConfiguration
 operator|.
 name|isContractTestEnabled
 argument_list|()
-condition|)
-block|{
-return|return;
-block|}
-name|Path
-name|testPath
-init|=
-operator|new
-name|Path
-argument_list|(
-literal|"/test/adltest"
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|adlStore
-operator|.
-name|exists
-argument_list|(
-name|testPath
-argument_list|)
-condition|)
-block|{
-name|adlStore
-operator|.
-name|delete
-argument_list|(
-name|testPath
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
-block|}
-name|adlStore
-operator|.
-name|create
-argument_list|(
-name|testPath
-argument_list|)
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-name|assertTrue
-argument_list|(
-name|adlStore
-operator|.
-name|delete
-argument_list|(
-name|testPath
-argument_list|,
-literal|false
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * The following tests are failing on Azure Data Lake and the Azure Data Lake    * file system code needs to be modified to make them pass.    * A separate work item has been opened for this.    */
-annotation|@
-name|Test
-annotation|@
-name|Override
-DECL|method|testMkdirsFailsForSubdirectoryOfExistingFile ()
-specifier|public
-name|void
-name|testMkdirsFailsForSubdirectoryOfExistingFile
-parameter_list|()
-throws|throws
-name|Exception
-block|{
-comment|// BUG : Adl should return exception instead of false.
-block|}
-annotation|@
-name|Test
-annotation|@
-name|Override
-DECL|method|testMkdirsWithUmask ()
-specifier|public
-name|void
-name|testMkdirsWithUmask
-parameter_list|()
-throws|throws
-name|Exception
-block|{
-comment|// Support under implementation in Adl
-block|}
-annotation|@
-name|Test
-annotation|@
-name|Override
-DECL|method|testMoveFileUnderParent ()
-specifier|public
-name|void
-name|testMoveFileUnderParent
-parameter_list|()
-throws|throws
-name|Exception
-block|{
-comment|// BUG: Adl server should return expected status code.
-block|}
-annotation|@
-name|Test
-annotation|@
-name|Override
-DECL|method|testRenameFileToSelf ()
-specifier|public
-name|void
-name|testRenameFileToSelf
-parameter_list|()
-throws|throws
-name|Exception
-block|{
-comment|// BUG: Adl server should return expected status code.
-block|}
-annotation|@
-name|Test
-annotation|@
-name|Override
-DECL|method|testRenameToDirWithSamePrefixAllowed ()
-specifier|public
-name|void
-name|testRenameToDirWithSamePrefixAllowed
-parameter_list|()
-throws|throws
-name|Exception
-block|{
-comment|// BUG: Adl server should return expected status code.
 block|}
 block|}
 end_class

@@ -1554,8 +1554,6 @@ return|;
 block|}
 comment|/**    * Opens an FSDataOutputStream at the indicated Path with write-progress    * reporting. Same as create(), except fails if parent directory doesn't    * already exist.    *    * @param f           the file name to open    * @param permission  Access permission for the newly created file    * @param flags       {@link CreateFlag}s to use for this stream.    * @param bufferSize  the size of the buffer to be used. ADL backend does    *                    not honour    * @param replication required block replication for the file. ADL backend    *                    does not honour    * @param blockSize   Block size, ADL backend does not honour    * @param progress    Progress indicator    * @throws IOException when system error, internal server error or user error    * @see #setPermission(Path, FsPermission)    * @deprecated API only for 0.20-append    */
 annotation|@
-name|Deprecated
-annotation|@
 name|Override
 DECL|method|createNonRecursive (Path f, FsPermission permission, EnumSet<CreateFlag> flags, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
@@ -1926,6 +1924,23 @@ argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|toRelativeFilePath
+argument_list|(
+name|src
+argument_list|)
+operator|.
+name|equals
+argument_list|(
+literal|"/"
+argument_list|)
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
 return|return
 name|adlClient
 operator|.
@@ -2122,6 +2137,64 @@ argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
+name|String
+name|relativePath
+init|=
+name|toRelativeFilePath
+argument_list|(
+name|path
+argument_list|)
+decl_stmt|;
+comment|// Delete on root directory not supported.
+if|if
+condition|(
+name|relativePath
+operator|.
+name|equals
+argument_list|(
+literal|"/"
+argument_list|)
+condition|)
+block|{
+comment|// This is important check after recent commit
+comment|// HADOOP-12977 and HADOOP-13716 validates on root for
+comment|// 1. if root is empty and non recursive delete then return false.
+comment|// 2. if root is non empty and non recursive delete then throw exception.
+if|if
+condition|(
+operator|!
+name|recursive
+operator|&&
+name|adlClient
+operator|.
+name|enumerateDirectory
+argument_list|(
+name|toRelativeFilePath
+argument_list|(
+name|path
+argument_list|)
+argument_list|,
+literal|1
+argument_list|)
+operator|.
+name|size
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Delete on root is not supported."
+argument_list|)
+throw|;
+block|}
+return|return
+literal|false
+return|;
+block|}
 return|return
 name|recursive
 condition|?
@@ -2129,20 +2202,14 @@ name|adlClient
 operator|.
 name|deleteRecursive
 argument_list|(
-name|toRelativeFilePath
-argument_list|(
-name|path
-argument_list|)
+name|relativePath
 argument_list|)
 else|:
 name|adlClient
 operator|.
 name|delete
 argument_list|(
-name|toRelativeFilePath
-argument_list|(
-name|path
-argument_list|)
+name|relativePath
 argument_list|)
 return|;
 block|}

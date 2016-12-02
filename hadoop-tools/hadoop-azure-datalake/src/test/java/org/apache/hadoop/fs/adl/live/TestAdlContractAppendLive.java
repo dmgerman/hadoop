@@ -88,22 +88,12 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Before
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
 name|Test
 import|;
 end_import
 
 begin_comment
-comment|/**  * Verify Adls APPEND semantics compliance with Hadoop.  */
+comment|/**  * Test Append on Adl file system.  */
 end_comment
 
 begin_class
@@ -153,38 +143,6 @@ literal|"Skipping since renaming file in append "
 operator|+
 literal|"mode not supported in Adl"
 argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|Before
-annotation|@
-name|Override
-DECL|method|setup ()
-specifier|public
-name|void
-name|setup
-parameter_list|()
-throws|throws
-name|Exception
-block|{
-name|org
-operator|.
-name|junit
-operator|.
-name|Assume
-operator|.
-name|assumeTrue
-argument_list|(
-name|AdlStorageConfiguration
-operator|.
-name|isContractTestEnabled
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|super
-operator|.
-name|setup
-argument_list|()
 expr_stmt|;
 block|}
 block|}

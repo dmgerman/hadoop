@@ -46,7 +46,7 @@ name|fs
 operator|.
 name|contract
 operator|.
-name|AbstractContractMkdirTest
+name|AbstractContractGetFileStatusTest
 import|;
 end_import
 
@@ -67,33 +67,33 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Test Mkdir contract on Adl storage file system.  */
+comment|/**  * Test getFileStatus contract test.  */
 end_comment
 
 begin_class
-DECL|class|TestAdlContractMkdirLive
+DECL|class|TestAdlContractGetFileStatusLive
 specifier|public
 class|class
-name|TestAdlContractMkdirLive
+name|TestAdlContractGetFileStatusLive
 extends|extends
-name|AbstractContractMkdirTest
+name|AbstractContractGetFileStatusTest
 block|{
 annotation|@
 name|Override
-DECL|method|createContract (Configuration conf)
+DECL|method|createContract (Configuration configuration)
 specifier|protected
 name|AbstractFSContract
 name|createContract
 parameter_list|(
 name|Configuration
-name|conf
+name|configuration
 parameter_list|)
 block|{
 return|return
 operator|new
 name|AdlStorageContract
 argument_list|(
-name|conf
+name|configuration
 argument_list|)
 return|;
 block|}

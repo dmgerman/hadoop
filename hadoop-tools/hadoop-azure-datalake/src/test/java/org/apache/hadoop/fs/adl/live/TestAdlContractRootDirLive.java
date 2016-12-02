@@ -66,44 +66,8 @@ name|AbstractFSContract
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|contract
-operator|.
-name|ContractTestUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Before
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Test
-import|;
-end_import
-
 begin_comment
-comment|/**  * Verify Adls root level operation support.  */
+comment|/**  * Test operation on root level.  */
 end_comment
 
 begin_class
@@ -132,58 +96,6 @@ argument_list|(
 name|configuration
 argument_list|)
 return|;
-block|}
-annotation|@
-name|Before
-annotation|@
-name|Override
-DECL|method|setup ()
-specifier|public
-name|void
-name|setup
-parameter_list|()
-throws|throws
-name|Exception
-block|{
-name|org
-operator|.
-name|junit
-operator|.
-name|Assume
-operator|.
-name|assumeTrue
-argument_list|(
-name|AdlStorageConfiguration
-operator|.
-name|isContractTestEnabled
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|super
-operator|.
-name|setup
-argument_list|()
-expr_stmt|;
-block|}
-annotation|@
-name|Test
-DECL|method|testRmNonEmptyRootDirNonRecursive ()
-specifier|public
-name|void
-name|testRmNonEmptyRootDirNonRecursive
-parameter_list|()
-throws|throws
-name|Throwable
-block|{
-name|ContractTestUtils
-operator|.
-name|unsupported
-argument_list|(
-literal|"BUG : Adl should throw exception instred "
-operator|+
-literal|"of returning false."
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 end_class
