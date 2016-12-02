@@ -353,7 +353,7 @@ block|,
 DECL|enumConstant|STREAM_CLOSED
 name|STREAM_CLOSED
 argument_list|(
-literal|"streamClosed"
+literal|"stream_closed"
 argument_list|,
 literal|"Count of times the TCP stream was closed"
 argument_list|)
@@ -377,7 +377,7 @@ block|,
 DECL|enumConstant|STREAM_OPENED
 name|STREAM_OPENED
 argument_list|(
-literal|"streamOpened"
+literal|"stream_opened"
 argument_list|,
 literal|"Total count of times an input stream to object store was opened"
 argument_list|)
