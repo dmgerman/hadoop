@@ -26,6 +26,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -732,6 +746,12 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Get the scheduling policy.    *    * @return the scheduling policy    */
+annotation|@
+name|Metric
+argument_list|(
+literal|"Scheduling policy"
+argument_list|)
 DECL|method|getSchedulingPolicy ()
 specifier|public
 name|String
@@ -784,6 +804,47 @@ operator|.
 name|instance
 argument_list|()
 decl_stmt|;
+return|return
+name|forQueue
+argument_list|(
+name|ms
+argument_list|,
+name|queueName
+argument_list|,
+name|parent
+argument_list|,
+name|enableUserMetrics
+argument_list|,
+name|conf
+argument_list|)
+return|;
+block|}
+comment|/**    * Get the FS queue metric for the given queue. Create one and register it to    * metrics system if there isn't one for the queue.    *    * @param ms the metric system    * @param queueName queue name    * @param parent parent queue    * @param enableUserMetrics  if user metrics is needed    * @param conf configuration    * @return a FSQueueMetrics object    */
+annotation|@
+name|VisibleForTesting
+specifier|public
+specifier|synchronized
+DECL|method|forQueue (MetricsSystem ms, String queueName, Queue parent, boolean enableUserMetrics, Configuration conf)
+specifier|static
+name|FSQueueMetrics
+name|forQueue
+parameter_list|(
+name|MetricsSystem
+name|ms
+parameter_list|,
+name|String
+name|queueName
+parameter_list|,
+name|Queue
+name|parent
+parameter_list|,
+name|boolean
+name|enableUserMetrics
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|)
+block|{
 name|QueueMetrics
 name|metrics
 init|=
