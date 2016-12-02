@@ -129,9 +129,20 @@ argument_list|,
 literal|true
 argument_list|)
 block|,
-comment|/** GET_BLOCK_LOCATIONS is a private unstable op. */
+comment|/**      * GET_BLOCK_LOCATIONS is a private/stable API op. It returns a      * {@link org.apache.hadoop.hdfs.protocol.LocatedBlocks}      * json object.      */
 DECL|enumConstant|GET_BLOCK_LOCATIONS
 name|GET_BLOCK_LOCATIONS
+argument_list|(
+literal|false
+argument_list|,
+name|HttpURLConnection
+operator|.
+name|HTTP_OK
+argument_list|)
+block|,
+comment|/**      * GETFILEBLOCKLOCATIONS is the public op that complies with      * {@link org.apache.hadoop.fs.FileSystem#getFileBlockLocations}      * interface.      */
+DECL|enumConstant|GETFILEBLOCKLOCATIONS
+name|GETFILEBLOCKLOCATIONS
 argument_list|(
 literal|false
 argument_list|,
