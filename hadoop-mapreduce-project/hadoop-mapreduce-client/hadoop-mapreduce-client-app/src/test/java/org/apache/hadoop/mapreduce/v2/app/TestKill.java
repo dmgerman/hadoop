@@ -863,11 +863,14 @@ decl_stmt|;
 comment|//wait and vailidate for Job to become RUNNING
 name|app
 operator|.
-name|waitForState
+name|waitForInternalState
 argument_list|(
+operator|(
+name|JobImpl
+operator|)
 name|job
 argument_list|,
-name|JobState
+name|JobStateInternal
 operator|.
 name|RUNNING
 argument_list|)

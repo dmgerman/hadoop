@@ -2167,6 +2167,10 @@ name|T_KILL
 argument_list|,
 name|TaskEventType
 operator|.
+name|T_SCHEDULE
+argument_list|,
+name|TaskEventType
+operator|.
 name|T_ATTEMPT_KILLED
 argument_list|,
 name|TaskEventType
