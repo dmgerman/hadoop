@@ -461,7 +461,7 @@ decl_stmt|;
 name|String
 name|footer
 init|=
-literal|"\nQuery command retrievs the plan ID and the current "
+literal|"\nQuery command retrieves the plan ID and the current "
 operator|+
 literal|"running state. "
 decl_stmt|;

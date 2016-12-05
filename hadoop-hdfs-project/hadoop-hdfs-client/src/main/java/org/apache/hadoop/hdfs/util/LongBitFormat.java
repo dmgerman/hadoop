@@ -201,7 +201,7 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"Illagal value: "
+literal|"Illegal value: "
 operator|+
 name|NAME
 operator|+
@@ -226,7 +226,7 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"Illagal value: "
+literal|"Illegal value: "
 operator|+
 name|NAME
 operator|+

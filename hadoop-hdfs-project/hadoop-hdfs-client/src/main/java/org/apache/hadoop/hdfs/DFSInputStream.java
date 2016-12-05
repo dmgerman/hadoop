@@ -5322,7 +5322,7 @@ name|IOException
 argument_list|(
 literal|"truncated return from reader.read(): "
 operator|+
-literal|"excpected "
+literal|"expected "
 operator|+
 name|len
 operator|+

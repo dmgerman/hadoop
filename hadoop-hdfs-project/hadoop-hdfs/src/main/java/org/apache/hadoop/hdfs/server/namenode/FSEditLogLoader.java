@@ -7272,7 +7272,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Trying to delete non-existant block "
+literal|"Trying to delete non-existent block "
 operator|+
 name|oldBlock
 argument_list|)

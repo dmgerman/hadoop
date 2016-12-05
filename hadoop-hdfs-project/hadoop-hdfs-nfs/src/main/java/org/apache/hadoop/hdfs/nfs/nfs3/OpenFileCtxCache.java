@@ -694,7 +694,7 @@ operator|.
 name|getValue
 argument_list|()
 argument_list|,
-literal|"The deleted entry is not the same as odlest found."
+literal|"The deleted entry is not the same as oldest found."
 argument_list|)
 expr_stmt|;
 block|}

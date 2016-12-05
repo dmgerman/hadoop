@@ -6617,7 +6617,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception occured while compiling report: "
+literal|"Exception occurred while compiling report: "
 argument_list|,
 name|ioe
 argument_list|)

@@ -4221,7 +4221,7 @@ name|InconsistentFSStateException
 argument_list|(
 name|storage
 argument_list|,
-literal|"Unexepcted blockpoolID "
+literal|"Unexpected blockpoolID "
 operator|+
 name|bpid
 operator|+
