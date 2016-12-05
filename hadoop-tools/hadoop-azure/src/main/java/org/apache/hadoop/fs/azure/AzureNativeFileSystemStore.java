@@ -7372,11 +7372,11 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Searches the given list of {@link FileMetadata} objects for a directory    * with the given key.    *     * @param list    *          The list to search.    * @param key    *          The key to search for.    * @return The wanted directory, or null if not found.    */
-DECL|method|getDirectoryInList ( final Iterable<FileMetadata> list, String key)
+DECL|method|getFileMetadataInList ( final Iterable<FileMetadata> list, String key)
 specifier|private
 specifier|static
 name|FileMetadata
-name|getDirectoryInList
+name|getFileMetadataInList
 parameter_list|(
 specifier|final
 name|Iterable
@@ -7399,11 +7399,6 @@ control|)
 block|{
 if|if
 condition|(
-name|current
-operator|.
-name|isDir
-argument_list|()
-operator|&&
 name|current
 operator|.
 name|getKey
@@ -7702,7 +7697,7 @@ comment|// entries first that we may have added by finding nested files.
 name|FileMetadata
 name|existing
 init|=
-name|getDirectoryInList
+name|getFileMetadataInList
 argument_list|(
 name|fileMetadata
 argument_list|,
@@ -7815,7 +7810,7 @@ comment|// Add the directory metadata to the list only if it's not already
 comment|// there.
 if|if
 condition|(
-name|getDirectoryInList
+name|getFileMetadataInList
 argument_list|(
 name|fileMetadata
 argument_list|,
@@ -8218,7 +8213,7 @@ comment|// there.
 name|FileMetadata
 name|existing
 init|=
-name|getDirectoryInList
+name|getFileMetadataInList
 argument_list|(
 name|aFileMetadataList
 argument_list|,
@@ -8338,7 +8333,7 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|getDirectoryInList
+name|getFileMetadataInList
 argument_list|(
 name|aFileMetadataList
 argument_list|,
@@ -8650,11 +8645,12 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|/**    * API implementation to delete a blob in the back end azure storage.    */
 annotation|@
 name|Override
 DECL|method|delete (String key, SelfRenewingLease lease)
 specifier|public
-name|void
+name|boolean
 name|delete
 parameter_list|(
 name|String
@@ -8683,7 +8679,9 @@ name|DoesntExist
 condition|)
 block|{
 comment|// Container doesn't exist, no need to do anything
-return|return;
+return|return
+literal|true
+return|;
 block|}
 comment|// Get the blob reference and delete it.
 name|CloudBlobWrapper
@@ -8712,6 +8710,15 @@ argument_list|,
 name|lease
 argument_list|)
 expr_stmt|;
+return|return
+literal|true
+return|;
+block|}
+else|else
+block|{
+return|return
+literal|false
+return|;
 block|}
 block|}
 catch|catch
@@ -8730,11 +8737,12 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * API implementation to delete a blob in the back end azure storage.    */
 annotation|@
 name|Override
 DECL|method|delete (String key)
 specifier|public
-name|void
+name|boolean
 name|delete
 parameter_list|(
 name|String
@@ -8745,13 +8753,14 @@ name|IOException
 block|{
 try|try
 block|{
+return|return
 name|delete
 argument_list|(
 name|key
 argument_list|,
 literal|null
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 catch|catch
 parameter_list|(
@@ -8815,13 +8824,14 @@ argument_list|(
 name|key
 argument_list|)
 expr_stmt|;
+return|return
 name|delete
 argument_list|(
 name|key
 argument_list|,
 name|lease
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 catch|catch
 parameter_list|(

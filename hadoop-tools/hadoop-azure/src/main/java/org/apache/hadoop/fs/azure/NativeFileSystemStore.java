@@ -347,8 +347,9 @@ parameter_list|)
 throws|throws
 name|AzureException
 function_decl|;
+comment|/**    * API to delete a blob in the back end azure storage.    * @param key - key to the blob being deleted.    * @return return true when delete is successful, false if    * blob cannot be found or delete is not possible without    * exception.    * @throws IOException Exception encountered while deleting in    * azure storage.    */
 DECL|method|delete (String key)
-name|void
+name|boolean
 name|delete
 parameter_list|(
 name|String
@@ -444,8 +445,9 @@ parameter_list|)
 throws|throws
 name|AzureException
 function_decl|;
+comment|/**    * API to delete a blob in the back end azure storage.    * @param key - key to the blob being deleted.    * @param lease - Active lease on the blob.    * @return return true when delete is successful, false if    * blob cannot be found or delete is not possible without    * exception.    * @throws IOException Exception encountered while deleting in    * azure storage.    */
 DECL|method|delete (String key, SelfRenewingLease lease)
-name|void
+name|boolean
 name|delete
 parameter_list|(
 name|String
