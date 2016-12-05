@@ -50,6 +50,22 @@ name|Evolving
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
+name|YarnRuntimeException
+import|;
+end_import
+
 begin_comment
 comment|/** @deprecated Use {@link InvalidStateTransitionException} instead. */
 end_comment
@@ -66,7 +82,7 @@ specifier|public
 class|class
 name|InvalidStateTransitonException
 extends|extends
-name|InvalidStateTransitionException
+name|YarnRuntimeException
 block|{
 DECL|field|serialVersionUID
 specifier|private
@@ -75,7 +91,24 @@ specifier|final
 name|long
 name|serialVersionUID
 init|=
-literal|8610511635996283691L
+operator|-
+literal|6188669113571351684L
+decl_stmt|;
+DECL|field|currentState
+specifier|private
+name|Enum
+argument_list|<
+name|?
+argument_list|>
+name|currentState
+decl_stmt|;
+DECL|field|event
+specifier|private
+name|Enum
+argument_list|<
+name|?
+argument_list|>
+name|event
 decl_stmt|;
 DECL|method|InvalidStateTransitonException (Enum<?> currentState, Enum<?> event)
 specifier|public
@@ -96,11 +129,53 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
-name|currentState
-argument_list|,
+literal|"Invalid event: "
+operator|+
 name|event
+operator|+
+literal|" at "
+operator|+
+name|currentState
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|currentState
+operator|=
+name|currentState
+expr_stmt|;
+name|this
+operator|.
+name|event
+operator|=
+name|event
+expr_stmt|;
+block|}
+DECL|method|getCurrentState ()
+specifier|public
+name|Enum
+argument_list|<
+name|?
+argument_list|>
+name|getCurrentState
+parameter_list|()
+block|{
+return|return
+name|currentState
+return|;
+block|}
+DECL|method|getEvent ()
+specifier|public
+name|Enum
+argument_list|<
+name|?
+argument_list|>
+name|getEvent
+parameter_list|()
+block|{
+return|return
+name|event
+return|;
 block|}
 block|}
 end_class

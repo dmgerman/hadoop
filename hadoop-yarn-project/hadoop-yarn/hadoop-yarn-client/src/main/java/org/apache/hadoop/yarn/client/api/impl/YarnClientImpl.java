@@ -5376,7 +5376,7 @@ name|newInstance
 argument_list|()
 argument_list|)
 operator|.
-name|getNodeLabels
+name|getNodeLabelList
 argument_list|()
 return|;
 block|}

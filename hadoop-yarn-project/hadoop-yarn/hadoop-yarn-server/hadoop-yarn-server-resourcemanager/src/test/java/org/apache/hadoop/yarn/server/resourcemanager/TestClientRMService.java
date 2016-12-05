@@ -11338,7 +11338,7 @@ name|assertTrue
 argument_list|(
 name|response
 operator|.
-name|getNodeLabels
+name|getNodeLabelList
 argument_list|()
 operator|.
 name|containsAll
@@ -11905,7 +11905,7 @@ name|assertTrue
 argument_list|(
 name|response
 operator|.
-name|getNodeLabels
+name|getNodeLabelList
 argument_list|()
 operator|.
 name|containsAll
