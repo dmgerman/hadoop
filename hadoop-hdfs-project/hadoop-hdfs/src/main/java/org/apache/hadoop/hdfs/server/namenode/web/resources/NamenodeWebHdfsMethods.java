@@ -1755,7 +1755,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Namesystem has not been initialized yet."
+literal|"Namesystem has not been intialized yet."
 argument_list|)
 throw|;
 block|}

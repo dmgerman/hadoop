@@ -6016,7 +6016,7 @@ throw|throw
 operator|new
 name|HadoopIllegalArgumentException
 argument_list|(
-literal|"Unrecognized value '"
+literal|"Unregonized value '"
 operator|+
 name|policyStr
 operator|+

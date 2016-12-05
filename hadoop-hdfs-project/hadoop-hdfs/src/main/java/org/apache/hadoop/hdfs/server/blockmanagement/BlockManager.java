@@ -13419,7 +13419,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Processing previously queued message "
+literal|"Processing previouly queued message "
 operator|+
 name|rbi
 argument_list|)

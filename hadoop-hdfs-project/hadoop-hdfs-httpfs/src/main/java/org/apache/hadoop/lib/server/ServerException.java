@@ -118,7 +118,7 @@ block|,
 DECL|enumConstant|S07
 name|S07
 argument_list|(
-literal|"Could not instantiate service class [{0}], {1}"
+literal|"Could not instanciate service class [{0}], {1}"
 argument_list|)
 block|,
 DECL|enumConstant|S08

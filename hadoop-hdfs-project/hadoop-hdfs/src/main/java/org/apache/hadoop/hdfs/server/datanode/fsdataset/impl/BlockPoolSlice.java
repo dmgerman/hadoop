@@ -4189,7 +4189,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Exception occurred while reading the replicas cache file: "
+literal|"Exception occured while reading the replicas cache file: "
 operator|+
 name|replicaFile
 operator|.

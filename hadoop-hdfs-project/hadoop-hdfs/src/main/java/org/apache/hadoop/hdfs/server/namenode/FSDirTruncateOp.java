@@ -758,7 +758,7 @@ name|lastBlockDelta
 operator|>
 literal|0
 operator|:
-literal|"delta is 0 only if on block boundary"
+literal|"delta is 0 only if on block bounday"
 assert|;
 name|truncateBlock
 operator|=
