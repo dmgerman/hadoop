@@ -6814,31 +6814,6 @@ name|bpId
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|fullyDelete (final File dir)
-specifier|public
-specifier|static
-name|boolean
-name|fullyDelete
-parameter_list|(
-specifier|final
-name|File
-name|dir
-parameter_list|)
-block|{
-name|boolean
-name|result
-init|=
-name|FileUtil
-operator|.
-name|fullyDelete
-argument_list|(
-name|dir
-argument_list|)
-decl_stmt|;
-return|return
-name|result
-return|;
-block|}
 block|}
 end_class
 

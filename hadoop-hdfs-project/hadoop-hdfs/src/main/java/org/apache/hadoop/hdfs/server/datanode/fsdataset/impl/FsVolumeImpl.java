@@ -5330,7 +5330,7 @@ condition|(
 name|force
 condition|)
 block|{
-name|DataStorage
+name|FileUtil
 operator|.
 name|fullyDelete
 argument_list|(
@@ -5426,7 +5426,7 @@ name|lazypersistDir
 argument_list|)
 throw|;
 block|}
-name|DataStorage
+name|FileUtil
 operator|.
 name|fullyDelete
 argument_list|(

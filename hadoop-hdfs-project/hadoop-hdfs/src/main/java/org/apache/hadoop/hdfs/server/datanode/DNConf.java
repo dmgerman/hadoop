@@ -1894,16 +1894,6 @@ return|return
 name|volsConfigured
 return|;
 block|}
-DECL|method|getSlowIoWarningThresholdMs ()
-specifier|public
-name|long
-name|getSlowIoWarningThresholdMs
-parameter_list|()
-block|{
-return|return
-name|datanodeSlowIoWarningThresholdMs
-return|;
-block|}
 DECL|method|getMaxDataLength ()
 name|int
 name|getMaxDataLength

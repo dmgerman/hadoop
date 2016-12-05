@@ -1498,7 +1498,7 @@ name|IOException
 block|{    }
 annotation|@
 name|Override
-DECL|method|submitBackgroundSyncFileRangeRequest (ExtendedBlock block, ReplicaOutputStreams outs, long offset, long nbytes, int flags)
+DECL|method|submitBackgroundSyncFileRangeRequest (ExtendedBlock block, FileDescriptor fd, long offset, long nbytes, int flags)
 specifier|public
 name|void
 name|submitBackgroundSyncFileRangeRequest
@@ -1506,8 +1506,8 @@ parameter_list|(
 name|ExtendedBlock
 name|block
 parameter_list|,
-name|ReplicaOutputStreams
-name|outs
+name|FileDescriptor
+name|fd
 parameter_list|,
 name|long
 name|offset
@@ -1518,7 +1518,7 @@ parameter_list|,
 name|int
 name|flags
 parameter_list|)
-block|{   }
+block|{    }
 annotation|@
 name|Override
 DECL|method|onCompleteLazyPersist (String bpId, long blockId, long creationTime, File[] savedFiles, ExternalVolumeImpl targetVolume)

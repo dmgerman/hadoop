@@ -26,7 +26,47 @@ name|java
 operator|.
 name|io
 operator|.
-name|*
+name|File
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|FileDescriptor
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|InputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|OutputStream
 import|;
 end_import
 
@@ -1567,7 +1607,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|createStreams (boolean isCreate, DataChecksum requestedChecksum, long slowLogThresholdMs)
+DECL|method|createStreams (boolean isCreate, DataChecksum requestedChecksum)
 specifier|synchronized
 specifier|public
 name|ReplicaOutputStreams
@@ -1578,9 +1618,6 @@ name|isCreate
 parameter_list|,
 name|DataChecksum
 name|requestedChecksum
-parameter_list|,
-name|long
-name|slowLogThresholdMs
 parameter_list|)
 throws|throws
 name|IOException
@@ -1623,8 +1660,6 @@ name|volume
 operator|.
 name|isTransientStorage
 argument_list|()
-argument_list|,
-name|slowLogThresholdMs
 argument_list|)
 return|;
 block|}
@@ -6403,7 +6438,7 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|submitBackgroundSyncFileRangeRequest (ExtendedBlock block, ReplicaOutputStreams outs, long offset, long nbytes, int flags)
+DECL|method|submitBackgroundSyncFileRangeRequest (ExtendedBlock block, FileDescriptor fd, long offset, long nbytes, int flags)
 specifier|public
 name|void
 name|submitBackgroundSyncFileRangeRequest
@@ -6411,8 +6446,8 @@ parameter_list|(
 name|ExtendedBlock
 name|block
 parameter_list|,
-name|ReplicaOutputStreams
-name|outs
+name|FileDescriptor
+name|fd
 parameter_list|,
 name|long
 name|offset
