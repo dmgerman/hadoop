@@ -1259,10 +1259,13 @@ name|dn
 return|;
 block|}
 comment|/**    * Called by the BPServiceActors when they handshake to a NN.    * If this is the first NN connection, this sets the namespace info    * for this BPOfferService. If it's a connection to a new NN, it    * verifies that this namespace matches (eg to prevent a misconfiguration    * where a StandbyNode from a different cluster is specified)    */
-DECL|method|verifyAndSetNamespaceInfo (NamespaceInfo nsInfo)
+DECL|method|verifyAndSetNamespaceInfo (BPServiceActor actor, NamespaceInfo nsInfo)
 name|void
 name|verifyAndSetNamespaceInfo
 parameter_list|(
+name|BPServiceActor
+name|actor
+parameter_list|,
 name|NamespaceInfo
 name|nsInfo
 parameter_list|)
@@ -1272,6 +1275,36 @@ block|{
 name|writeLock
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|nsInfo
+operator|.
+name|getState
+argument_list|()
+operator|==
+name|HAServiceState
+operator|.
+name|ACTIVE
+operator|&&
+name|bpServiceToActive
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Acknowledging ACTIVE Namenode during handshake"
+operator|+
+name|actor
+argument_list|)
+expr_stmt|;
+name|bpServiceToActive
+operator|=
+name|actor
+expr_stmt|;
+block|}
 try|try
 block|{
 if|if
