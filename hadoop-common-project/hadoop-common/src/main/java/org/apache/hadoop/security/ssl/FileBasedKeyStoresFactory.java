@@ -837,17 +837,13 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-throw|throw
-operator|new
-name|GeneralSecurityException
-argument_list|(
-literal|"The property '"
-operator|+
-name|passwordProperty
-operator|+
-literal|"' has not been set in the ssl configuration file."
-argument_list|)
-throw|;
+comment|// An empty trust store password is legal; the trust store password
+comment|// is only required when writing to a trust store. Otherwise it's
+comment|// an optional integrity check.
+name|truststorePassword
+operator|=
+literal|null
+expr_stmt|;
 block|}
 name|long
 name|truststoreReloadInterval

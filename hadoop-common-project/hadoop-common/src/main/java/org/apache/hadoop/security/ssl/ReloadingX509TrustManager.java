@@ -698,6 +698,14 @@ name|load
 argument_list|(
 name|in
 argument_list|,
+operator|(
+name|password
+operator|==
+literal|null
+operator|)
+condition|?
+literal|null
+else|:
 name|password
 operator|.
 name|toCharArray
