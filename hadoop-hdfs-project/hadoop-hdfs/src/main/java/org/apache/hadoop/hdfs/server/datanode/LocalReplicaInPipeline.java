@@ -200,22 +200,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
-operator|.
-name|nativeio
-operator|.
-name|NativeIO
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|DataChecksum
@@ -997,7 +981,7 @@ block|}
 annotation|@
 name|Override
 comment|// ReplicaInPipeline
-DECL|method|createStreams (boolean isCreate, DataChecksum requestedChecksum)
+DECL|method|createStreams (boolean isCreate, DataChecksum requestedChecksum, long slowLogThresholdMs)
 specifier|public
 name|ReplicaOutputStreams
 name|createStreams
@@ -1007,6 +991,9 @@ name|isCreate
 parameter_list|,
 name|DataChecksum
 name|requestedChecksum
+parameter_list|,
+name|long
+name|slowLogThresholdMs
 parameter_list|)
 throws|throws
 name|IOException
@@ -1344,6 +1331,8 @@ argument_list|()
 operator|.
 name|isTransientStorage
 argument_list|()
+argument_list|,
+name|slowLogThresholdMs
 argument_list|)
 return|;
 block|}
@@ -1600,7 +1589,7 @@ argument_list|)
 throw|;
 block|}
 name|LocalReplica
-name|localReplica
+name|oldReplica
 init|=
 operator|(
 name|LocalReplica
@@ -1610,7 +1599,7 @@ decl_stmt|;
 name|File
 name|oldmeta
 init|=
-name|localReplica
+name|oldReplica
 operator|.
 name|getMetaFile
 argument_list|()
@@ -1621,36 +1610,12 @@ init|=
 name|getMetaFile
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Renaming "
-operator|+
-name|oldmeta
-operator|+
-literal|" to "
-operator|+
-name|newmeta
-argument_list|)
-expr_stmt|;
-block|}
 try|try
 block|{
-name|NativeIO
+name|oldReplica
 operator|.
-name|renameTo
+name|renameMeta
 argument_list|(
-name|oldmeta
-argument_list|,
 name|newmeta
 argument_list|)
 expr_stmt|;
@@ -1683,51 +1648,12 @@ name|e
 argument_list|)
 throw|;
 block|}
-name|File
-name|blkfile
-init|=
-name|localReplica
-operator|.
-name|getBlockFile
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Renaming "
-operator|+
-name|blkfile
-operator|+
-literal|" to "
-operator|+
-name|newBlkFile
-operator|+
-literal|", file length="
-operator|+
-name|blkfile
-operator|.
-name|length
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 try|try
 block|{
-name|NativeIO
+name|oldReplica
 operator|.
-name|renameTo
+name|renameBlock
 argument_list|(
-name|blkfile
-argument_list|,
 name|newBlkFile
 argument_list|)
 expr_stmt|;
@@ -1740,12 +1666,8 @@ parameter_list|)
 block|{
 try|try
 block|{
-name|NativeIO
-operator|.
-name|renameTo
+name|renameMeta
 argument_list|(
-name|newmeta
-argument_list|,
 name|oldmeta
 argument_list|)
 expr_stmt|;
@@ -1784,7 +1706,10 @@ literal|" reopen failed. "
 operator|+
 literal|" Unable to move block file "
 operator|+
-name|blkfile
+name|oldReplica
+operator|.
+name|getBlockFile
+argument_list|()
 operator|+
 literal|" to rbw dir "
 operator|+

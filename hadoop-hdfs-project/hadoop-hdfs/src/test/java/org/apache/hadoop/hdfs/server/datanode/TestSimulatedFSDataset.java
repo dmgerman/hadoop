@@ -578,6 +578,8 @@ name|CRC32
 argument_list|,
 literal|512
 argument_list|)
+argument_list|,
+literal|300
 argument_list|)
 decl_stmt|;
 try|try

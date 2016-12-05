@@ -138,8 +138,8 @@ name|ChunkChecksum
 name|getLastChecksumAndDataLen
 parameter_list|()
 function_decl|;
-comment|/**    * Create output streams for writing to this replica,    * one for block file and one for CRC file    *    * @param isCreate if it is for creation    * @param requestedChecksum the checksum the writer would prefer to use    * @return output streams for writing    * @throws IOException if any error occurs    */
-DECL|method|createStreams (boolean isCreate, DataChecksum requestedChecksum)
+comment|/**    * Create output streams for writing to this replica,    * one for block file and one for CRC file    *    * @param isCreate if it is for creation    * @param requestedChecksum the checksum the writer would prefer to use    * @param slowLogThresholdMs slow io threshold for logging    * @return output streams for writing    * @throws IOException if any error occurs    */
+DECL|method|createStreams (boolean isCreate, DataChecksum requestedChecksum, long slowLogThresholdMs)
 specifier|public
 name|ReplicaOutputStreams
 name|createStreams
@@ -149,6 +149,9 @@ name|isCreate
 parameter_list|,
 name|DataChecksum
 name|requestedChecksum
+parameter_list|,
+name|long
+name|slowLogThresholdMs
 parameter_list|)
 throws|throws
 name|IOException

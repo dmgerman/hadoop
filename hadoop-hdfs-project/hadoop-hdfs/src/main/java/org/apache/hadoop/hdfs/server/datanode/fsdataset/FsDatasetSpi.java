@@ -58,16 +58,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileDescriptor
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|FileNotFoundException
 import|;
 end_import
@@ -1739,7 +1729,7 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * submit a sync_file_range request to AsyncDiskService.    */
-DECL|method|submitBackgroundSyncFileRangeRequest (final ExtendedBlock block, final FileDescriptor fd, final long offset, final long nbytes, final int flags)
+DECL|method|submitBackgroundSyncFileRangeRequest (final ExtendedBlock block, final ReplicaOutputStreams outs, final long offset, final long nbytes, final int flags)
 name|void
 name|submitBackgroundSyncFileRangeRequest
 parameter_list|(
@@ -1748,8 +1738,8 @@ name|ExtendedBlock
 name|block
 parameter_list|,
 specifier|final
-name|FileDescriptor
-name|fd
+name|ReplicaOutputStreams
+name|outs
 parameter_list|,
 specifier|final
 name|long
