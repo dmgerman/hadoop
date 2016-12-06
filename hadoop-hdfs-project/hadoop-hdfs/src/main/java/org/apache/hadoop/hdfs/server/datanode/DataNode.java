@@ -3073,7 +3073,7 @@ comment|// DatanodeRegistration
 literal|", blockid: %s"
 operator|+
 comment|// block id
-literal|", duration: %s"
+literal|", duration(ns): %s"
 decl_stmt|;
 comment|// duration time
 DECL|field|ClientTraceLog
