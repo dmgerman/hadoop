@@ -347,6 +347,25 @@ argument_list|)
 return|;
 block|}
 block|}
+comment|/**    * Creates a timeline entity type reader that will read all available entity    * types within the specified context.    *    * @param context Reader context which defines the scope in which query has to    *                be made. Limited to application level only.    * @return an<cite>EntityTypeReader</cite> object    */
+DECL|method|createEntityTypeReader ( TimelineReaderContext context)
+specifier|public
+specifier|static
+name|EntityTypeReader
+name|createEntityTypeReader
+parameter_list|(
+name|TimelineReaderContext
+name|context
+parameter_list|)
+block|{
+return|return
+operator|new
+name|EntityTypeReader
+argument_list|(
+name|context
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 

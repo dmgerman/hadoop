@@ -110,6 +110,20 @@ name|hadoop
 operator|.
 name|hbase
 operator|.
+name|HConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hbase
+operator|.
 name|HRegionInfo
 import|;
 end_import
@@ -317,6 +331,16 @@ operator|.
 name|text
 operator|.
 name|NumberFormat
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Arrays
 import|;
 end_import
 
@@ -1308,6 +1332,104 @@ expr_stmt|;
 block|}
 return|return
 name|hbaseConf
+return|;
+block|}
+comment|/**    * Given a row key prefix stored in a byte array, return a byte array for its    * immediate next row key.    *    * @param rowKeyPrefix The provided row key prefix, represented in an array.    * @return the closest next row key of the provided row key.    */
+DECL|method|calculateTheClosestNextRowKeyForPrefix ( byte[] rowKeyPrefix)
+specifier|public
+specifier|static
+name|byte
+index|[]
+name|calculateTheClosestNextRowKeyForPrefix
+parameter_list|(
+name|byte
+index|[]
+name|rowKeyPrefix
+parameter_list|)
+block|{
+comment|// Essentially we are treating it like an 'unsigned very very long' and
+comment|// doing +1 manually.
+comment|// Search for the place where the trailing 0xFFs start
+name|int
+name|offset
+init|=
+name|rowKeyPrefix
+operator|.
+name|length
+decl_stmt|;
+while|while
+condition|(
+name|offset
+operator|>
+literal|0
+condition|)
+block|{
+if|if
+condition|(
+name|rowKeyPrefix
+index|[
+name|offset
+operator|-
+literal|1
+index|]
+operator|!=
+operator|(
+name|byte
+operator|)
+literal|0xFF
+condition|)
+block|{
+break|break;
+block|}
+name|offset
+operator|--
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|offset
+operator|==
+literal|0
+condition|)
+block|{
+comment|// We got an 0xFFFF... (only FFs) stopRow value which is
+comment|// the last possible prefix before the end of the table.
+comment|// So set it to stop at the 'end of the table'
+return|return
+name|HConstants
+operator|.
+name|EMPTY_END_ROW
+return|;
+block|}
+comment|// Copy the right length of the original
+name|byte
+index|[]
+name|newStopRow
+init|=
+name|Arrays
+operator|.
+name|copyOfRange
+argument_list|(
+name|rowKeyPrefix
+argument_list|,
+literal|0
+argument_list|,
+name|offset
+argument_list|)
+decl_stmt|;
+comment|// And increment the last one
+name|newStopRow
+index|[
+name|newStopRow
+operator|.
+name|length
+operator|-
+literal|1
+index|]
+operator|++
+expr_stmt|;
+return|return
+name|newStopRow
 return|;
 block|}
 block|}

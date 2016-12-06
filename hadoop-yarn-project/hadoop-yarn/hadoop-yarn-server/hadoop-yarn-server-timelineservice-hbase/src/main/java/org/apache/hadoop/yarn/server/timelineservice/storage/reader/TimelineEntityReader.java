@@ -630,6 +630,8 @@ specifier|public
 specifier|abstract
 class|class
 name|TimelineEntityReader
+extends|extends
+name|AbstractTimelineStorageReader
 block|{
 DECL|field|LOG
 specifier|private
@@ -652,11 +654,6 @@ specifier|private
 specifier|final
 name|boolean
 name|singleEntityRead
-decl_stmt|;
-DECL|field|context
-specifier|private
-name|TimelineReaderContext
-name|context
 decl_stmt|;
 DECL|field|dataToRetrieve
 specifier|private
@@ -718,6 +715,11 @@ name|boolean
 name|sortedKeys
 parameter_list|)
 block|{
+name|super
+argument_list|(
+name|ctxt
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|singleEntityRead
@@ -729,12 +731,6 @@ operator|.
 name|sortedKeys
 operator|=
 name|sortedKeys
-expr_stmt|;
-name|this
-operator|.
-name|context
-operator|=
-name|ctxt
 expr_stmt|;
 name|this
 operator|.
@@ -769,17 +765,16 @@ name|TimelineDataToRetrieve
 name|toRetrieve
 parameter_list|)
 block|{
+name|super
+argument_list|(
+name|ctxt
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|singleEntityRead
 operator|=
 literal|true
-expr_stmt|;
-name|this
-operator|.
-name|context
-operator|=
-name|ctxt
 expr_stmt|;
 name|this
 operator|.
@@ -932,16 +927,6 @@ return|return
 literal|null
 return|;
 block|}
-DECL|method|getContext ()
-specifier|protected
-name|TimelineReaderContext
-name|getContext
-parameter_list|()
-block|{
-return|return
-name|context
-return|;
-block|}
 DECL|method|getDataToRetrieve ()
 specifier|protected
 name|TimelineDataToRetrieve
@@ -1068,7 +1053,8 @@ name|info
 argument_list|(
 literal|"Cannot find matching entity of type "
 operator|+
-name|context
+name|getContext
+argument_list|()
 operator|.
 name|getEntityType
 argument_list|()
@@ -1270,30 +1256,6 @@ return|return
 name|table
 return|;
 block|}
-comment|/**    * Validates the required parameters to read the entities.    */
-DECL|method|validateParams ()
-specifier|protected
-specifier|abstract
-name|void
-name|validateParams
-parameter_list|()
-function_decl|;
-comment|/**    * Sets certain parameters to defaults if the values are not provided.    *    * @param hbaseConf HBase Configuration.    * @param conn HBase Connection.    * @throws IOException if any exception is encountered while setting params.    */
-DECL|method|augmentParams (Configuration hbaseConf, Connection conn)
-specifier|protected
-specifier|abstract
-name|void
-name|augmentParams
-parameter_list|(
-name|Configuration
-name|hbaseConf
-parameter_list|,
-name|Connection
-name|conn
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
 comment|/**    * Fetches a {@link Result} instance for a single-entity read.    *    * @param hbaseConf HBase Configuration.    * @param conn HBase Connection.    * @param filterList filter list which will be applied to HBase Get.    * @return the {@link Result} instance or null if no such record is found.    * @throws IOException if any exception is encountered while getting result.    */
 DECL|method|getResult (Configuration hbaseConf, Connection conn, FilterList filterList)
 specifier|protected

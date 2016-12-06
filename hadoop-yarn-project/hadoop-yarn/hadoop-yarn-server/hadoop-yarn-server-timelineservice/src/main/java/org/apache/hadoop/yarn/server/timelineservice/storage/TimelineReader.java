@@ -245,6 +245,20 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * The API to list all available entity types of the given context.    *    * @param context A context defines the scope of this query. The incoming    * context should contain at least the cluster id and application id.    *    * @return A set of entity types available in the given context.    *    * @throws IOException if an exception occurred while listing from backend    * storage.    */
+DECL|method|getEntityTypes (TimelineReaderContext context)
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getEntityTypes
+parameter_list|(
+name|TimelineReaderContext
+name|context
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 
