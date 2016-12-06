@@ -596,6 +596,15 @@ name|XOR_2_1_POLICY_ID
 init|=
 literal|3
 decl_stmt|;
+DECL|field|RS_10_4_POLICY_ID
+specifier|public
+specifier|static
+specifier|final
+name|byte
+name|RS_10_4_POLICY_ID
+init|=
+literal|4
+decl_stmt|;
 comment|/* Hidden constructor */
 DECL|method|HdfsConstants ()
 specifier|protected

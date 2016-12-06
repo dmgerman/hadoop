@@ -218,6 +218,27 @@ operator|.
 name|XOR_2_1_POLICY_ID
 argument_list|)
 decl_stmt|;
+DECL|field|SYS_POLICY5
+specifier|private
+specifier|static
+specifier|final
+name|ErasureCodingPolicy
+name|SYS_POLICY5
+init|=
+operator|new
+name|ErasureCodingPolicy
+argument_list|(
+name|ErasureCodeConstants
+operator|.
+name|RS_10_4_SCHEMA
+argument_list|,
+name|DEFAULT_CELLSIZE
+argument_list|,
+name|HdfsConstants
+operator|.
+name|RS_10_4_POLICY_ID
+argument_list|)
+decl_stmt|;
 comment|//We may add more later.
 DECL|field|SYS_POLICIES
 specifier|private
@@ -238,6 +259,8 @@ block|,
 name|SYS_POLICY3
 block|,
 name|SYS_POLICY4
+block|,
+name|SYS_POLICY5
 block|}
 decl_stmt|;
 comment|// Supported storage policies for striped EC files

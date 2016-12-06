@@ -138,6 +138,23 @@ argument_list|,
 literal|1
 argument_list|)
 decl_stmt|;
+DECL|field|RS_10_4_SCHEMA
+specifier|public
+specifier|static
+specifier|final
+name|ECSchema
+name|RS_10_4_SCHEMA
+init|=
+operator|new
+name|ECSchema
+argument_list|(
+name|RS_DEFAULT_CODEC_NAME
+argument_list|,
+literal|10
+argument_list|,
+literal|4
+argument_list|)
+decl_stmt|;
 block|}
 end_class
 
