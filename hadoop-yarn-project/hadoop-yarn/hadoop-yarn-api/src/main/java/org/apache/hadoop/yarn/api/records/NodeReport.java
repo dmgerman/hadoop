@@ -607,25 +607,39 @@ annotation|@
 name|Stable
 DECL|method|getAggregatedContainersUtilization ()
 specifier|public
-specifier|abstract
 name|ResourceUtilization
 name|getAggregatedContainersUtilization
 parameter_list|()
-function_decl|;
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"subclass must implement this method"
+argument_list|)
+throw|;
+block|}
 annotation|@
 name|Private
 annotation|@
 name|Unstable
 DECL|method|setAggregatedContainersUtilization (ResourceUtilization containersUtilization)
 specifier|public
-specifier|abstract
 name|void
 name|setAggregatedContainersUtilization
 parameter_list|(
 name|ResourceUtilization
 name|containersUtilization
 parameter_list|)
-function_decl|;
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"subclass must implement this method"
+argument_list|)
+throw|;
+block|}
 comment|/**    * Get node resource utilization    * @return node resource utilization    */
 annotation|@
 name|Public

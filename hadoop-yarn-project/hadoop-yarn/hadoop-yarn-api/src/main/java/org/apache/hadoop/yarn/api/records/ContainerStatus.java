@@ -291,25 +291,39 @@ annotation|@
 name|Evolving
 DECL|method|getExecutionType ()
 specifier|public
-specifier|abstract
 name|ExecutionType
 name|getExecutionType
 parameter_list|()
-function_decl|;
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"subclass must implement this method"
+argument_list|)
+throw|;
+block|}
 annotation|@
 name|Private
 annotation|@
 name|Unstable
 DECL|method|setExecutionType (ExecutionType executionType)
 specifier|public
-specifier|abstract
 name|void
 name|setExecutionType
 parameter_list|(
 name|ExecutionType
 name|executionType
 parameter_list|)
-function_decl|;
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"subclass must implement this method"
+argument_list|)
+throw|;
+block|}
 comment|/**    * Get the<code>ContainerState</code> of the container.    * @return<code>ContainerState</code> of the container    */
 annotation|@
 name|Public
@@ -395,25 +409,39 @@ annotation|@
 name|Unstable
 DECL|method|getCapability ()
 specifier|public
-specifier|abstract
 name|Resource
 name|getCapability
 parameter_list|()
-function_decl|;
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"subclass must implement this method"
+argument_list|)
+throw|;
+block|}
 annotation|@
 name|Private
 annotation|@
 name|Unstable
 DECL|method|setCapability (Resource capability)
 specifier|public
-specifier|abstract
 name|void
 name|setCapability
 parameter_list|(
 name|Resource
 name|capability
 parameter_list|)
-function_decl|;
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"subclass must implement this method"
+argument_list|)
+throw|;
+block|}
 comment|/**    * Get all the IP addresses with which the container run.    * @return The IP address where the container runs.    */
 annotation|@
 name|Public
@@ -421,21 +449,27 @@ annotation|@
 name|Unstable
 DECL|method|getIPs ()
 specifier|public
-specifier|abstract
 name|List
 argument_list|<
 name|String
 argument_list|>
 name|getIPs
 parameter_list|()
-function_decl|;
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"subclass must implement this method"
+argument_list|)
+throw|;
+block|}
 annotation|@
 name|Private
 annotation|@
 name|Unstable
 DECL|method|setIPs (List<String> ips)
 specifier|public
-specifier|abstract
 name|void
 name|setIPs
 parameter_list|(
@@ -445,7 +479,15 @@ name|String
 argument_list|>
 name|ips
 parameter_list|)
-function_decl|;
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"subclass must implement this method"
+argument_list|)
+throw|;
+block|}
 comment|/**    * Get the hostname where the container runs.    * @return The hostname where the container runs.    */
 annotation|@
 name|Public
@@ -453,25 +495,39 @@ annotation|@
 name|Unstable
 DECL|method|getHost ()
 specifier|public
-specifier|abstract
 name|String
 name|getHost
 parameter_list|()
-function_decl|;
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"subclass must implement this method"
+argument_list|)
+throw|;
+block|}
 annotation|@
 name|Private
 annotation|@
 name|Unstable
 DECL|method|setHost (String host)
 specifier|public
-specifier|abstract
 name|void
 name|setHost
 parameter_list|(
 name|String
 name|host
 parameter_list|)
-function_decl|;
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"subclass must implement this method"
+argument_list|)
+throw|;
+block|}
 block|}
 end_class
 
