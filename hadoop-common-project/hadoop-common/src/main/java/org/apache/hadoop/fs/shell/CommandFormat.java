@@ -1001,7 +1001,7 @@ literal|"option "
 operator|+
 name|duplicatedOption
 operator|+
-literal|" already exsits!"
+literal|" already exists!"
 argument_list|)
 expr_stmt|;
 block|}

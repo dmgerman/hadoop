@@ -2806,7 +2806,7 @@ argument_list|()
 decl_stmt|;
 name|println
 argument_list|(
-literal|"keytab princial count: %d"
+literal|"keytab principal count: %d"
 argument_list|,
 name|principals
 operator|.

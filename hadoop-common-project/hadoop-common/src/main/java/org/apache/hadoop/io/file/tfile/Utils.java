@@ -594,7 +594,7 @@ throw|throw
 operator|new
 name|RuntimeException
 argument_list|(
-literal|"Internel error"
+literal|"Internal error"
 argument_list|)
 throw|;
 block|}

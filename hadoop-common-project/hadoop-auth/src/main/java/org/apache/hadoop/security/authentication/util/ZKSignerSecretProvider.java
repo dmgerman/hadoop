@@ -1050,7 +1050,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"An unexpected exception occured pushing data to ZooKeeper"
+literal|"An unexpected exception occurred pushing data to ZooKeeper"
 argument_list|,
 name|ex
 argument_list|)

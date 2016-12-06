@@ -3025,7 +3025,7 @@ throw|throw
 operator|new
 name|RuntimeException
 argument_list|(
-literal|"Not invertble"
+literal|"Not invertible"
 argument_list|)
 throw|;
 block|}

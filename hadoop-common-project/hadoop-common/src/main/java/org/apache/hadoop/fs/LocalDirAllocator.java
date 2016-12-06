@@ -2111,7 +2111,7 @@ throw|throw
 operator|new
 name|RuntimeException
 argument_list|(
-literal|"Can't check existance of "
+literal|"Can't check existence of "
 operator|+
 name|next
 argument_list|,

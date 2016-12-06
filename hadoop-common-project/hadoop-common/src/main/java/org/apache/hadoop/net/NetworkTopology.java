@@ -770,7 +770,7 @@ operator|.
 name|getNetworkLocation
 argument_list|()
 operator|+
-literal|", is not a descendent of "
+literal|", is not a descendant of "
 operator|+
 name|getPath
 argument_list|(
@@ -1047,7 +1047,7 @@ operator|.
 name|getNetworkLocation
 argument_list|()
 operator|+
-literal|", is not a descendent of "
+literal|", is not a descendant of "
 operator|+
 name|getPath
 argument_list|(

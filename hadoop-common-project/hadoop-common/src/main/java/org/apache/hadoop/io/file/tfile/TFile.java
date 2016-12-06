@@ -5097,7 +5097,7 @@ throw|throw
 operator|new
 name|IndexOutOfBoundsException
 argument_list|(
-literal|"Bufer not enough to store the key"
+literal|"Buffer not enough to store the key"
 argument_list|)
 throw|;
 block|}
