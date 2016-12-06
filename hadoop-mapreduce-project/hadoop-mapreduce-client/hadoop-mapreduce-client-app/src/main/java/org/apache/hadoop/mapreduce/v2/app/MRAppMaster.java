@@ -2186,18 +2186,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|log4j
-operator|.
-name|LogManager
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -7063,20 +7051,6 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|shutdownTaskLog ()
-specifier|protected
-name|void
-name|shutdownTaskLog
-parameter_list|()
-block|{
-name|TaskLog
-operator|.
-name|syncLogsShutdown
-argument_list|(
-name|logSyncer
-argument_list|)
-expr_stmt|;
-block|}
 annotation|@
 name|Override
 DECL|method|stop ()
@@ -7088,9 +7062,6 @@ block|{
 name|super
 operator|.
 name|stop
-argument_list|()
-expr_stmt|;
-name|shutdownTaskLog
 argument_list|()
 expr_stmt|;
 block|}
@@ -9564,18 +9535,6 @@ throws|throws
 name|Exception
 function_decl|;
 block|}
-DECL|method|shutdownLogManager ()
-specifier|protected
-name|void
-name|shutdownLogManager
-parameter_list|()
-block|{
-name|LogManager
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-block|}
 annotation|@
 name|Override
 DECL|method|serviceStop ()
@@ -9589,9 +9548,6 @@ block|{
 name|super
 operator|.
 name|serviceStop
-argument_list|()
-expr_stmt|;
-name|shutdownLogManager
 argument_list|()
 expr_stmt|;
 block|}

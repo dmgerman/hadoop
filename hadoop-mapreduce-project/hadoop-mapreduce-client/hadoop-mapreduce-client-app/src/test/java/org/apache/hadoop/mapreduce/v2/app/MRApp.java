@@ -5481,30 +5481,6 @@ name|decodeIdentifier
 argument_list|()
 return|;
 block|}
-annotation|@
-name|Override
-DECL|method|shutdownTaskLog ()
-specifier|protected
-name|void
-name|shutdownTaskLog
-parameter_list|()
-block|{
-comment|// Avoid closing the logging system during unit tests,
-comment|// otherwise subsequent MRApp instances in the same test
-comment|// will fail to log anything.
-block|}
-annotation|@
-name|Override
-DECL|method|shutdownLogManager ()
-specifier|protected
-name|void
-name|shutdownLogManager
-parameter_list|()
-block|{
-comment|// Avoid closing the logging system during unit tests,
-comment|// otherwise subsequent MRApp instances in the same test
-comment|// will fail to log anything.
-block|}
 block|}
 end_class
 
