@@ -725,6 +725,16 @@ specifier|private
 name|QueueLimitCalculator
 name|queueLimitCalculator
 decl_stmt|;
+DECL|field|haServiceStateLock
+specifier|private
+specifier|final
+name|Object
+name|haServiceStateLock
+init|=
+operator|new
+name|Object
+argument_list|()
+decl_stmt|;
 comment|/**    * Default constructor. To be used in conjunction with setter methods for    * individual fields.    */
 DECL|method|RMContextImpl ()
 specifier|public
@@ -1257,24 +1267,24 @@ operator|=
 name|isHAEnabled
 expr_stmt|;
 block|}
-DECL|method|setHAServiceState (HAServiceState haServiceState)
+DECL|method|setHAServiceState (HAServiceState serviceState)
 name|void
 name|setHAServiceState
 parameter_list|(
 name|HAServiceState
-name|haServiceState
+name|serviceState
 parameter_list|)
 block|{
 synchronized|synchronized
 init|(
-name|haServiceState
+name|haServiceStateLock
 init|)
 block|{
 name|this
 operator|.
 name|haServiceState
 operator|=
-name|haServiceState
+name|serviceState
 expr_stmt|;
 block|}
 block|}
@@ -1594,7 +1604,7 @@ parameter_list|()
 block|{
 synchronized|synchronized
 init|(
-name|haServiceState
+name|haServiceStateLock
 init|)
 block|{
 return|return
