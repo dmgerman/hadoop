@@ -156,25 +156,6 @@ operator|.
 name|DFS_DF_INTERVAL_KEY
 argument_list|)
 expr_stmt|;
-comment|// Remove default properties
-name|configurationPropsToSkipCompare
-operator|.
-name|add
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_IMAGE_COMPRESSION_CODEC_DEFAULT
-argument_list|)
-expr_stmt|;
-name|configurationPropsToSkipCompare
-operator|.
-name|add
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_WEBHDFS_AUTHENTICATION_FILTER_DEFAULT
-argument_list|)
-expr_stmt|;
 comment|// Remove support property
 name|configurationPropsToSkipCompare
 operator|.

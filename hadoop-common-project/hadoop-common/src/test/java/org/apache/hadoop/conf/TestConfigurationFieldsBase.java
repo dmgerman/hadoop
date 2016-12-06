@@ -523,6 +523,17 @@ condition|)
 block|{
 continue|continue;
 block|}
+comment|// filter out default-value fields
+if|if
+condition|(
+name|isFieldADefaultValue
+argument_list|(
+name|f
+argument_list|)
+condition|)
+block|{
+continue|continue;
+block|}
 comment|// Convert found member into String
 try|try
 block|{
@@ -1074,6 +1085,39 @@ return|return
 name|retVal
 return|;
 block|}
+comment|/**    * Test if a field is a default value of another property by    * checking if its name starts with "DEFAULT_" or ends with    * "_DEFAULT".    * @param field the field to check    */
+DECL|method|isFieldADefaultValue (Field field)
+specifier|private
+specifier|static
+name|boolean
+name|isFieldADefaultValue
+parameter_list|(
+name|Field
+name|field
+parameter_list|)
+block|{
+return|return
+name|field
+operator|.
+name|getName
+argument_list|()
+operator|.
+name|startsWith
+argument_list|(
+literal|"DEFAULT_"
+argument_list|)
+operator|||
+name|field
+operator|.
+name|getName
+argument_list|()
+operator|.
+name|endsWith
+argument_list|(
+literal|"_DEFAULT"
+argument_list|)
+return|;
+block|}
 comment|/**    * Utility function to extract&quot;public static final&quot; default    * member variables from a Configuration type class.    *    * @param fields The class member variables    * @return HashMap containing<DefaultVariableName,DefaultValue> entries    */
 specifier|private
 name|HashMap
@@ -1195,24 +1239,9 @@ comment|// Special: Stuff any property beginning with "DEFAULT_" into a
 comment|// different hash for later processing
 if|if
 condition|(
-name|f
-operator|.
-name|getName
-argument_list|()
-operator|.
-name|startsWith
+name|isFieldADefaultValue
 argument_list|(
-literal|"DEFAULT_"
-argument_list|)
-operator|||
 name|f
-operator|.
-name|getName
-argument_list|()
-operator|.
-name|endsWith
-argument_list|(
-literal|"_DEFAULT"
 argument_list|)
 condition|)
 block|{
