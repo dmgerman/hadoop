@@ -535,6 +535,11 @@ return|;
 block|}
 annotation|@
 name|Test
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"checkstyle:linelength"
+argument_list|)
 DECL|method|testAggregation ()
 specifier|public
 name|void
@@ -715,6 +720,56 @@ operator|.
 name|evictCacheForTesting
 argument_list|()
 expr_stmt|;
+name|kmsAudit
+operator|.
+name|ok
+argument_list|(
+name|luser
+argument_list|,
+name|KMSOp
+operator|.
+name|REENCRYPT_EEK
+argument_list|,
+literal|"k1"
+argument_list|,
+literal|"testmsg"
+argument_list|)
+expr_stmt|;
+name|kmsAudit
+operator|.
+name|ok
+argument_list|(
+name|luser
+argument_list|,
+name|KMSOp
+operator|.
+name|REENCRYPT_EEK
+argument_list|,
+literal|"k1"
+argument_list|,
+literal|"testmsg"
+argument_list|)
+expr_stmt|;
+name|kmsAudit
+operator|.
+name|ok
+argument_list|(
+name|luser
+argument_list|,
+name|KMSOp
+operator|.
+name|REENCRYPT_EEK
+argument_list|,
+literal|"k1"
+argument_list|,
+literal|"testmsg"
+argument_list|)
+expr_stmt|;
+name|kmsAudit
+operator|.
+name|evictCacheForTesting
+argument_list|()
+expr_stmt|;
 name|String
 name|out
 init|=
@@ -749,12 +804,21 @@ operator|+
 literal|"OK\\[op=DECRYPT_EEK, key=k1, user=luser, accessCount=6, interval=[^m]{1,4}ms\\] testmsg"
 operator|+
 literal|"OK\\[op=DECRYPT_EEK, key=k1, user=luser, accessCount=1, interval=[^m]{1,4}ms\\] testmsg"
+operator|+
+literal|"OK\\[op=REENCRYPT_EEK, key=k1, user=luser, accessCount=1, interval=[^m]{1,4}ms\\] testmsg"
+operator|+
+literal|"OK\\[op=REENCRYPT_EEK, key=k1, user=luser, accessCount=3, interval=[^m]{1,4}ms\\] testmsg"
 argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
 annotation|@
 name|Test
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"checkstyle:linelength"
+argument_list|)
 DECL|method|testAggregationUnauth ()
 specifier|public
 name|void
@@ -980,6 +1044,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"checkstyle:linelength"
+argument_list|)
 DECL|method|testAuditLogFormat ()
 specifier|public
 name|void

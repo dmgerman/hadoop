@@ -430,6 +430,12 @@ operator|.
 name|KMSOp
 operator|.
 name|GENERATE_EEK
+argument_list|,
+name|KMS
+operator|.
+name|KMSOp
+operator|.
+name|REENCRYPT_EEK
 argument_list|)
 decl_stmt|;
 DECL|field|cache

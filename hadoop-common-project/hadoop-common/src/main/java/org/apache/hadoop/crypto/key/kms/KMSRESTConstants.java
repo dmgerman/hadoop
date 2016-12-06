@@ -187,6 +187,15 @@ name|EEK_NUM_KEYS
 init|=
 literal|"num_keys"
 decl_stmt|;
+DECL|field|EEK_REENCRYPT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|EEK_REENCRYPT
+init|=
+literal|"reencrypt"
+decl_stmt|;
 DECL|field|IV_FIELD
 specifier|public
 specifier|static
