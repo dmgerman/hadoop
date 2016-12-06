@@ -14606,6 +14606,21 @@ argument_list|)
 throw|;
 block|}
 block|}
+DECL|method|isStoragePolicySatisfierRunning ()
+specifier|public
+name|boolean
+name|isStoragePolicySatisfierRunning
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|namenode
+operator|.
+name|isStoragePolicySatisfierRunning
+argument_list|()
+return|;
+block|}
 DECL|method|getTracer ()
 name|Tracer
 name|getTracer

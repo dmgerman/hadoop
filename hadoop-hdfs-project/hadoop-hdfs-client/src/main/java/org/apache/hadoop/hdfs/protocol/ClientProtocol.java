@@ -2453,6 +2453,16 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Check if StoragePolicySatisfier is running.    * @return true if StoragePolicySatisfier is running    * @throws IOException    */
+annotation|@
+name|Idempotent
+DECL|method|isStoragePolicySatisfierRunning ()
+name|boolean
+name|isStoragePolicySatisfierRunning
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

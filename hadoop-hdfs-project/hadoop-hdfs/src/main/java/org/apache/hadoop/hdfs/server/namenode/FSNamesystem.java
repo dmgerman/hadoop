@@ -19965,6 +19965,16 @@ expr_stmt|;
 block|}
 comment|// TODO: Handle blocks movement results send by the coordinator datanode.
 comment|// This has to be revisited as part of HDFS-11029.
+if|if
+condition|(
+name|blockManager
+operator|.
+name|getStoragePolicySatisfier
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
 name|blockManager
 operator|.
 name|getStoragePolicySatisfier
@@ -19975,6 +19985,7 @@ argument_list|(
 name|blksMovementResults
 argument_list|)
 expr_stmt|;
+block|}
 comment|//create ha status
 specifier|final
 name|NNHAStatusHeartbeat

@@ -513,6 +513,17 @@ argument_list|,
 literal|2000L
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Before

@@ -3838,6 +3838,24 @@ operator|*
 literal|1000
 decl_stmt|;
 comment|// One minute
+DECL|field|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+init|=
+literal|"dfs.storage.policy.satisfier.activate"
+decl_stmt|;
+DECL|field|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_DEFAULT
+init|=
+literal|true
+decl_stmt|;
 DECL|field|DFS_DATANODE_ADDRESS_KEY
 specifier|public
 specifier|static
