@@ -38,10 +38,6 @@ block|,
 DECL|enumConstant|KILL
 name|KILL
 block|,
-DECL|enumConstant|MOVE
-name|MOVE
-block|,
-comment|// Move app to a new queue
 comment|// Source: Scheduler and RMAppManager
 DECL|enumConstant|APP_REJECTED
 name|APP_REJECTED

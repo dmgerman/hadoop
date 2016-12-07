@@ -555,9 +555,6 @@ literal|"Move not supported"
 argument_list|,
 name|ex
 operator|.
-name|getCause
-argument_list|()
-operator|.
 name|getMessage
 argument_list|()
 argument_list|)
@@ -1002,6 +999,36 @@ name|QueueACL
 operator|.
 name|ADMINISTER_QUEUE
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|preValidateMoveApplication (ApplicationId appId, String newQueue)
+specifier|public
+name|void
+name|preValidateMoveApplication
+parameter_list|(
+name|ApplicationId
+name|appId
+parameter_list|,
+name|String
+name|newQueue
+parameter_list|)
+throws|throws
+name|YarnException
+block|{
+if|if
+condition|(
+name|failMove
+condition|)
+block|{
+throw|throw
+operator|new
+name|YarnException
+argument_list|(
+literal|"Move not supported"
+argument_list|)
+throw|;
+block|}
 block|}
 block|}
 block|}

@@ -28,6 +28,9 @@ name|RMAppManagerEventType
 block|{
 DECL|enumConstant|APP_COMPLETED
 name|APP_COMPLETED
+block|,
+DECL|enumConstant|APP_MOVE
+name|APP_MOVE
 block|}
 end_enum
 

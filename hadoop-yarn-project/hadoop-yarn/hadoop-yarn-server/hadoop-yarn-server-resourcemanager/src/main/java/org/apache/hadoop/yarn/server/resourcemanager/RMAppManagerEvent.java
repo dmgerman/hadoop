@@ -71,12 +71,42 @@ specifier|final
 name|ApplicationId
 name|appId
 decl_stmt|;
+DECL|field|targetQueueForMove
+specifier|private
+specifier|final
+name|String
+name|targetQueueForMove
+decl_stmt|;
 DECL|method|RMAppManagerEvent (ApplicationId appId, RMAppManagerEventType type)
 specifier|public
 name|RMAppManagerEvent
 parameter_list|(
 name|ApplicationId
 name|appId
+parameter_list|,
+name|RMAppManagerEventType
+name|type
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|appId
+argument_list|,
+literal|""
+argument_list|,
+name|type
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|RMAppManagerEvent (ApplicationId appId, String targetQueueForMove, RMAppManagerEventType type)
+specifier|public
+name|RMAppManagerEvent
+parameter_list|(
+name|ApplicationId
+name|appId
+parameter_list|,
+name|String
+name|targetQueueForMove
 parameter_list|,
 name|RMAppManagerEventType
 name|type
@@ -93,6 +123,12 @@ name|appId
 operator|=
 name|appId
 expr_stmt|;
+name|this
+operator|.
+name|targetQueueForMove
+operator|=
+name|targetQueueForMove
+expr_stmt|;
 block|}
 DECL|method|getApplicationId ()
 specifier|public
@@ -104,6 +140,18 @@ return|return
 name|this
 operator|.
 name|appId
+return|;
+block|}
+DECL|method|getTargetQueueForMove ()
+specifier|public
+name|String
+name|getTargetQueueForMove
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|targetQueueForMove
 return|;
 block|}
 block|}

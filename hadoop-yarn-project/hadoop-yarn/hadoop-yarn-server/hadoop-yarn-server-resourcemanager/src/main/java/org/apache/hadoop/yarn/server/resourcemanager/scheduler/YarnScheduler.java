@@ -879,6 +879,28 @@ parameter_list|)
 throws|throws
 name|YarnException
 function_decl|;
+comment|/**    *    * @param appId Application ID    * @param newQueue Target QueueName    * @throws YarnException if the pre-validation for move cannot be carried out    */
+annotation|@
+name|LimitedPrivate
+argument_list|(
+literal|"yarn"
+argument_list|)
+annotation|@
+name|Evolving
+DECL|method|preValidateMoveApplication (ApplicationId appId, String newQueue)
+specifier|public
+name|void
+name|preValidateMoveApplication
+parameter_list|(
+name|ApplicationId
+name|appId
+parameter_list|,
+name|String
+name|newQueue
+parameter_list|)
+throws|throws
+name|YarnException
+function_decl|;
 comment|/**    * Completely drain sourceQueue of applications, by moving all of them to    * destQueue.    *    * @param sourceQueue    * @param destQueue    * @throws YarnException    */
 DECL|method|moveAllApps (String sourceQueue, String destQueue)
 name|void

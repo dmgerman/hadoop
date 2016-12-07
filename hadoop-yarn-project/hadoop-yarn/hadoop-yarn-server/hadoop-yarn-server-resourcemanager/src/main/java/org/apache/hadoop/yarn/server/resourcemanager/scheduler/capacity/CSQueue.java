@@ -1082,6 +1082,24 @@ name|ReadLock
 name|getReadLock
 parameter_list|()
 function_decl|;
+comment|/**    * Validate submitApplication api so that moveApplication do a pre-check.    * @param applicationId Application ID    * @param userName User Name    * @param queue Queue Name    * @throws AccessControlException if any acl violation is there.    */
+DECL|method|validateSubmitApplication (ApplicationId applicationId, String userName, String queue)
+specifier|public
+name|void
+name|validateSubmitApplication
+parameter_list|(
+name|ApplicationId
+name|applicationId
+parameter_list|,
+name|String
+name|userName
+parameter_list|,
+name|String
+name|queue
+parameter_list|)
+throws|throws
+name|AccessControlException
+function_decl|;
 block|}
 end_interface
 
