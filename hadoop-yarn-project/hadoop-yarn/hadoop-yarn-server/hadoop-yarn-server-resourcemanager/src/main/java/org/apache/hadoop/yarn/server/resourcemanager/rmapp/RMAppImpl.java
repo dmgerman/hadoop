@@ -5213,6 +5213,24 @@ name|timeoutInMillis
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|isAppInCompletedStates
+argument_list|()
+condition|)
+block|{
+comment|// if application configured with timeout and finished before timeout
+comment|// happens then remaining time should not be calculated.
+name|timeout
+operator|.
+name|setRemainingTime
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|timeout
 operator|.
 name|setRemainingTime
@@ -5237,14 +5255,20 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+block|}
 name|report
 operator|.
 name|setApplicationTimeouts
 argument_list|(
 name|Collections
 operator|.
-name|singletonList
+name|singletonMap
 argument_list|(
+name|timeout
+operator|.
+name|getTimeoutType
+argument_list|()
+argument_list|,
 name|timeout
 argument_list|)
 argument_list|)

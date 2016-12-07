@@ -4502,6 +4502,9 @@ name|appReport
 operator|.
 name|getApplicationTimeouts
 argument_list|()
+operator|.
+name|values
+argument_list|()
 control|)
 block|{
 name|appReportStr

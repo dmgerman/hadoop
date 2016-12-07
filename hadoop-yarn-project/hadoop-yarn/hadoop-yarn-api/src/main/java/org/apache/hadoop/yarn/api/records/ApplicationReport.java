@@ -122,7 +122,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|List
+name|Map
 import|;
 end_import
 
@@ -1194,8 +1194,10 @@ name|Unstable
 DECL|method|getApplicationTimeouts ()
 specifier|public
 specifier|abstract
-name|List
+name|Map
 argument_list|<
+name|ApplicationTimeoutType
+argument_list|,
 name|ApplicationTimeout
 argument_list|>
 name|getApplicationTimeouts
@@ -1205,14 +1207,16 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|setApplicationTimeouts ( List<ApplicationTimeout> timeouts)
+DECL|method|setApplicationTimeouts ( Map<ApplicationTimeoutType, ApplicationTimeout> timeouts)
 specifier|public
 specifier|abstract
 name|void
 name|setApplicationTimeouts
 parameter_list|(
-name|List
+name|Map
 argument_list|<
+name|ApplicationTimeoutType
+argument_list|,
 name|ApplicationTimeout
 argument_list|>
 name|timeouts
