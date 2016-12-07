@@ -2059,6 +2059,11 @@ parameter_list|)
 block|{
 comment|// As it is possible for the separation of node manager and datanode,
 comment|// here we should get node but not datanode only .
+name|boolean
+name|nonDatanodeReader
+init|=
+literal|false
+decl_stmt|;
 name|Node
 name|client
 init|=
@@ -2074,6 +2079,10 @@ operator|==
 literal|null
 condition|)
 block|{
+name|nonDatanodeReader
+operator|=
+literal|true
+expr_stmt|;
 name|List
 argument_list|<
 name|String
@@ -2221,6 +2230,28 @@ name|lastActiveIndex
 operator|+
 literal|1
 decl_stmt|;
+if|if
+condition|(
+name|nonDatanodeReader
+condition|)
+block|{
+name|networktopology
+operator|.
+name|sortByDistanceUsingNetworkLocation
+argument_list|(
+name|client
+argument_list|,
+name|lb
+operator|.
+name|getLocations
+argument_list|()
+argument_list|,
+name|activeLen
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|networktopology
 operator|.
 name|sortByDistance
@@ -2235,6 +2266,7 @@ argument_list|,
 name|activeLen
 argument_list|)
 expr_stmt|;
+block|}
 comment|// must update cache since we modified locations array
 name|lb
 operator|.
