@@ -2521,7 +2521,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Error occured reading the process stdout"
+literal|"Error occurred reading the process stdout"
 argument_list|,
 name|t
 argument_list|)
@@ -3724,7 +3724,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"An exception occured during the cleanup of localizer job %s:%n%s"
+literal|"An exception occurred during the cleanup of localizer job %s:%n%s"
 argument_list|,
 name|localizerPid
 argument_list|,

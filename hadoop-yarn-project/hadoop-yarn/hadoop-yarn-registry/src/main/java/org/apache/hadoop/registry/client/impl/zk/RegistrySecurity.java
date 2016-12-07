@@ -1360,7 +1360,7 @@ name|checkNotNull
 argument_list|(
 name|systemACLs
 argument_list|,
-literal|"registry security is unitialized"
+literal|"registry security is uninitialized"
 argument_list|)
 expr_stmt|;
 return|return

@@ -240,7 +240,7 @@ operator|!=
 literal|null
 operator|)
 operator|:
-literal|"o canot be null"
+literal|"o cannot be null"
 assert|;
 return|return
 name|URLEncoder

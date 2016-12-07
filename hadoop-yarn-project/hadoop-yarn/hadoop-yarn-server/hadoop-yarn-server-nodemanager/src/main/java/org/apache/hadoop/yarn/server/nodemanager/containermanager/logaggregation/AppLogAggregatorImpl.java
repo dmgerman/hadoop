@@ -2994,7 +2994,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Error occured while aggregating the log for the application "
+literal|"Error occurred while aggregating the log for the application "
 operator|+
 name|appId
 argument_list|,

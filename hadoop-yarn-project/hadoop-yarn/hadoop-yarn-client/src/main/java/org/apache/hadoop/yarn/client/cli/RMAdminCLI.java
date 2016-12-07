@@ -2407,7 +2407,7 @@ literal|"Graceful decommissioning not completed in "
 operator|+
 name|timeout
 operator|+
-literal|" seconds, issueing forceful decommissioning command."
+literal|" seconds, issuing forceful decommissioning command."
 argument_list|)
 expr_stmt|;
 name|RefreshNodesRequest

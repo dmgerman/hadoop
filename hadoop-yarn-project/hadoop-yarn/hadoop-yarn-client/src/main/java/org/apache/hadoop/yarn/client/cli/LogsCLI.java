@@ -1722,7 +1722,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Logs are not avaiable right now."
+literal|"Logs are not available right now."
 argument_list|)
 expr_stmt|;
 return|return

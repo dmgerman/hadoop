@@ -2659,7 +2659,7 @@ name|maxServiceRetries
 operator|+
 literal|", but failed to fetch timeline service address. Please verify"
 operator|+
-literal|" Timeline Auxillary Service is configured in all the NMs"
+literal|" Timeline Auxiliary Service is configured in all the NMs"
 decl_stmt|;
 name|LOG
 operator|.

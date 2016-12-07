@@ -392,7 +392,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unrecongized attribute value for "
+literal|"Unrecognized attribute value for "
 operator|+
 name|CommonConfigurationKeys
 operator|.

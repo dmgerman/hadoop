@@ -10009,7 +10009,7 @@ throw|throw
 operator|new
 name|YarnException
 argument_list|(
-literal|"ApplicationMaster not autorized to perform "
+literal|"ApplicationMaster not authorized to perform "
 operator|+
 literal|"["
 operator|+

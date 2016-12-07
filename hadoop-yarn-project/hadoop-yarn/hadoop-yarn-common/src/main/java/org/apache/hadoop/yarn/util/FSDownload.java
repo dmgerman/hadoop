@@ -1500,7 +1500,7 @@ literal|"Resource "
 operator|+
 name|sCopy
 operator|+
-literal|" is not publicly accessable and as such cannot be part of the"
+literal|" is not publicly accessible and as such cannot be part of the"
 operator|+
 literal|" public cache."
 argument_list|)

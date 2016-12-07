@@ -4488,7 +4488,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 operator|+
-literal|" does not have privilage to see this application "
+literal|" does not have privilege to see this application "
 operator|+
 name|app
 operator|.

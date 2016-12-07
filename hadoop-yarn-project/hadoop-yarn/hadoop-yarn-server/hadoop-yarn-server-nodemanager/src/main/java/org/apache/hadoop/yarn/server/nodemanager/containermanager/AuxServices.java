@@ -964,7 +964,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"The Auxilurary Service named '"
+literal|"The Auxiliary Service named '"
 operator|+
 name|sName
 operator|+

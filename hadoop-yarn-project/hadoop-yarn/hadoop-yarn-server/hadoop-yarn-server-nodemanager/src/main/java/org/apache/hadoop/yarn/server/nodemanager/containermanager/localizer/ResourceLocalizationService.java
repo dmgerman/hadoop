@@ -7039,7 +7039,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Inorrect path for PRIVATE localization."
+literal|"Incorrect path for PRIVATE localization."
 operator|+
 name|next
 operator|.
