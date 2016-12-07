@@ -489,8 +489,10 @@ name|append
 argument_list|(
 name|job
 operator|.
-name|getStartTimeStr
-argument_list|()
+name|getFormattedStartTimeStr
+argument_list|(
+name|dateFormat
+argument_list|)
 argument_list|)
 operator|.
 name|append
