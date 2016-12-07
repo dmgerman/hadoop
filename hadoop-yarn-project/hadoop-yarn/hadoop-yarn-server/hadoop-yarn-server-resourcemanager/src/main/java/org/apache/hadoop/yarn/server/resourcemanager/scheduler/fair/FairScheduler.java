@@ -3637,9 +3637,7 @@ literal|"Application "
 operator|+
 name|applicationAttemptId
 operator|+
-literal|" is done."
-operator|+
-literal|" finalState="
+literal|" is done. finalState="
 operator|+
 name|rmAppAttemptFinalState
 argument_list|)
@@ -3668,6 +3666,30 @@ operator|+
 name|applicationAttemptId
 operator|+
 literal|" has completed!"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+comment|// Check if the attempt is already stopped and don't stop it twice.
+if|if
+condition|(
+name|attempt
+operator|.
+name|isStopped
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Application "
+operator|+
+name|applicationAttemptId
+operator|+
+literal|" has already been "
+operator|+
+literal|"stopped!"
 argument_list|)
 expr_stmt|;
 return|return;
@@ -7725,6 +7747,39 @@ operator|.
 name|getQueue
 argument_list|()
 decl_stmt|;
+comment|// Check if the attempt is already stopped: don't move stopped app
+comment|// attempt. The attempt has already been removed from all queues.
+if|if
+condition|(
+name|attempt
+operator|.
+name|isStopped
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Application "
+operator|+
+name|appId
+operator|+
+literal|" is stopped and can't be moved!"
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|YarnException
+argument_list|(
+literal|"Application "
+operator|+
+name|appId
+operator|+
+literal|" is stopped and can't be moved!"
+argument_list|)
+throw|;
+block|}
 name|String
 name|destQueueName
 init|=
@@ -8187,13 +8242,18 @@ parameter_list|,
 name|FSLeafQueue
 name|newQueue
 parameter_list|)
+throws|throws
+name|YarnException
 block|{
+comment|// Check current runs state. Do not remove the attempt from the queue until
+comment|// after the check has been performed otherwise it could remove the app
+comment|// from a queue without moving it to a new queue.
 name|boolean
 name|wasRunnable
 init|=
 name|oldQueue
 operator|.
-name|removeApp
+name|isRunnableApp
 argument_list|(
 name|attempt
 argument_list|)
@@ -8221,7 +8281,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalStateException
+name|YarnException
 argument_list|(
 literal|"Should have already verified that app "
 operator|+
@@ -8234,6 +8294,14 @@ literal|" would be runnable in new queue"
 argument_list|)
 throw|;
 block|}
+comment|// Now it is safe to remove from the queue.
+name|oldQueue
+operator|.
+name|removeApp
+argument_list|(
+name|attempt
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|wasRunnable
