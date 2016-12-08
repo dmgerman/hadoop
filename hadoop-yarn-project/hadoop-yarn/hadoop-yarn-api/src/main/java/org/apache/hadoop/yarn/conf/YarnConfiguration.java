@@ -7223,9 +7223,9 @@ specifier|final
 name|String
 name|DEFAULT_TIMELINE_SERVICE_READER_CLASS
 init|=
-literal|"org.apache.hadoop.yarn.server.timelineservice"
+literal|"org.apache.hadoop.yarn.server.timelineservice.storage"
 operator|+
-literal|".storage.HBaseTimelineReaderImpl"
+literal|".HBaseTimelineReaderImpl"
 decl_stmt|;
 comment|/**    * default schema prefix for hbase tables.    */
 DECL|field|DEFAULT_TIMELINE_SERVICE_HBASE_SCHEMA_PREFIX
