@@ -6914,6 +6914,17 @@ name|TIMELINE_SERVICE_PREFIX
 operator|+
 literal|"writer.class"
 decl_stmt|;
+DECL|field|DEFAULT_TIMELINE_SERVICE_WRITER_CLASS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_TIMELINE_SERVICE_WRITER_CLASS
+init|=
+literal|"org.apache.hadoop.yarn.server.timelineservice"
+operator|+
+literal|".storage.HBaseTimelineWriterImpl"
+decl_stmt|;
 DECL|field|TIMELINE_SERVICE_READER_CLASS
 specifier|public
 specifier|static
@@ -6924,6 +6935,17 @@ init|=
 name|TIMELINE_SERVICE_PREFIX
 operator|+
 literal|"reader.class"
+decl_stmt|;
+DECL|field|DEFAULT_TIMELINE_SERVICE_READER_CLASS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_TIMELINE_SERVICE_READER_CLASS
+init|=
+literal|"org.apache.hadoop.yarn.server.timelineservice"
+operator|+
+literal|".storage.HBaseTimelineReaderImpl"
 decl_stmt|;
 comment|/** The setting that controls how often the timeline collector flushes the    * timeline writer.    */
 DECL|field|TIMELINE_SERVICE_WRITER_FLUSH_INTERVAL_SECONDS
