@@ -4002,6 +4002,41 @@ argument_list|)
 else|:
 literal|null
 decl_stmt|;
+comment|// On some macOS environment, BasicFileAttributeView.setTimes
+comment|// does not set times correctly when the argument of accessTime is null.
+comment|// TODO: Remove this after the issue is fixed.
+if|if
+condition|(
+name|fatime
+operator|==
+literal|null
+operator|&&
+name|Shell
+operator|.
+name|MAC
+condition|)
+block|{
+name|FileStatus
+name|f
+init|=
+name|getFileStatus
+argument_list|(
+name|p
+argument_list|)
+decl_stmt|;
+name|fatime
+operator|=
+name|FileTime
+operator|.
+name|fromMillis
+argument_list|(
+name|f
+operator|.
+name|getAccessTime
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|view
 operator|.
 name|setTimes

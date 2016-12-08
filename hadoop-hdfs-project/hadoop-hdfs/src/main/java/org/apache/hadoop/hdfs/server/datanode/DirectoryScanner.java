@@ -254,6 +254,22 @@ name|apache
 operator|.
 name|commons
 operator|.
+name|lang
+operator|.
+name|time
+operator|.
+name|FastDateFormat
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
 name|logging
 operator|.
 name|Log
@@ -500,7 +516,7 @@ name|START_MESSAGE
 init|=
 literal|"Periodic Directory Tree Verification scan"
 operator|+
-literal|" starting at %dms with interval of %dms"
+literal|" starting at %s with interval of %dms"
 decl_stmt|;
 DECL|field|START_MESSAGE_WITH_THROTTLE
 specifier|private
@@ -1256,7 +1272,15 @@ name|format
 argument_list|(
 name|START_MESSAGE_WITH_THROTTLE
 argument_list|,
+name|FastDateFormat
+operator|.
+name|getInstance
+argument_list|()
+operator|.
+name|format
+argument_list|(
 name|firstScanTime
+argument_list|)
 argument_list|,
 name|scanPeriodMsecs
 argument_list|,
@@ -1274,7 +1298,15 @@ name|format
 argument_list|(
 name|START_MESSAGE
 argument_list|,
+name|FastDateFormat
+operator|.
+name|getInstance
+argument_list|()
+operator|.
+name|format
+argument_list|(
 name|firstScanTime
+argument_list|)
 argument_list|,
 name|scanPeriodMsecs
 argument_list|)
