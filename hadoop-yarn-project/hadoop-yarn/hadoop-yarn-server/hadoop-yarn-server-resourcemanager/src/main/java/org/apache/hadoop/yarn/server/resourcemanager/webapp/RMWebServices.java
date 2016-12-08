@@ -15509,7 +15509,7 @@ name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/apps/{appid}/timeout/{type}"
+literal|"/apps/{appid}/timeouts/{type}"
 argument_list|)
 annotation|@
 name|Produces
@@ -16282,6 +16282,13 @@ name|getTimeoutType
 argument_list|()
 operator|==
 literal|null
+operator|||
+name|appTimeout
+operator|.
+name|getExpireTime
+argument_list|()
+operator|==
+literal|null
 condition|)
 block|{
 return|return
@@ -16296,7 +16303,7 @@ argument_list|)
 operator|.
 name|entity
 argument_list|(
-literal|"Timeout type is null."
+literal|"Timeout type or ExpiryTime is null."
 argument_list|)
 operator|.
 name|build

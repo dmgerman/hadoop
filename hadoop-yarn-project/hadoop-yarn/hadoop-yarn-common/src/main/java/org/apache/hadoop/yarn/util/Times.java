@@ -429,6 +429,24 @@ parameter_list|)
 throws|throws
 name|ParseException
 block|{
+if|if
+condition|(
+name|isoString
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|ParseException
+argument_list|(
+literal|"Invalid input."
+argument_list|,
+operator|-
+literal|1
+argument_list|)
+throw|;
+block|}
 return|return
 name|isoFormat
 operator|.

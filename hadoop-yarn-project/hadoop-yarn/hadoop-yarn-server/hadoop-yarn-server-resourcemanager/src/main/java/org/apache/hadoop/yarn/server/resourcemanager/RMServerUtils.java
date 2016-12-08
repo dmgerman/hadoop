@@ -2764,7 +2764,14 @@ name|message
 init|=
 literal|"Expire time is not in ISO8601 format. ISO8601 supported "
 operator|+
-literal|"format is yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+literal|"format is yyyy-MM-dd'T'HH:mm:ss.SSSZ. Configured "
+operator|+
+literal|"timeout value is "
+operator|+
+name|timeout
+operator|.
+name|getValue
+argument_list|()
 decl_stmt|;
 throw|throw
 operator|new
