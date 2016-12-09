@@ -2723,6 +2723,21 @@ name|requestBlockReportLease
 argument_list|)
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|sendLifelineForTests ()
+name|void
+name|sendLifelineForTests
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|lifelineSender
+operator|.
+name|sendLifeline
+argument_list|()
+expr_stmt|;
+block|}
 comment|//This must be called only by BPOfferService
 DECL|method|start ()
 name|void

@@ -1260,6 +1260,18 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
+DECL|method|isHeartbeatedSinceRegistration ()
+specifier|public
+name|boolean
+name|isHeartbeatedSinceRegistration
+parameter_list|()
+block|{
+return|return
+name|heartbeatedSinceRegistration
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getStorageInfo (String storageID)
 specifier|public
 name|DatanodeStorageInfo

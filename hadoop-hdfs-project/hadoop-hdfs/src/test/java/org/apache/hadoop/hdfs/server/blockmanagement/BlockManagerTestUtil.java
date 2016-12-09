@@ -953,6 +953,9 @@ name|BlockManager
 name|bm
 parameter_list|)
 block|{
+name|HeartbeatManager
+name|hbm
+init|=
 name|bm
 operator|.
 name|getDatanodeManager
@@ -960,6 +963,13 @@ argument_list|()
 operator|.
 name|getHeartbeatManager
 argument_list|()
+decl_stmt|;
+name|hbm
+operator|.
+name|restartHeartbeatStopWatch
+argument_list|()
+expr_stmt|;
+name|hbm
 operator|.
 name|heartbeatCheck
 argument_list|()

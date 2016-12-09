@@ -7160,11 +7160,17 @@ condition|(
 name|nodeinfo
 operator|==
 literal|null
+operator|||
+operator|!
+name|nodeinfo
+operator|.
+name|isRegistered
+argument_list|()
 condition|)
 block|{
-comment|// This is null if the DataNode has not yet registered.  We expect this
-comment|// will never happen, because the DataNode has logic to prevent sending
-comment|// lifeline messages until after initial registration is successful.
+comment|// This can happen if the lifeline message comes when DataNode is either
+comment|// not registered at all or its marked dead at NameNode and expectes
+comment|// re-registration. Ignore lifeline messages without registration.
 comment|// Lifeline message handling can't send commands back to the DataNode to
 comment|// tell it to register, so simply exit.
 return|return;
