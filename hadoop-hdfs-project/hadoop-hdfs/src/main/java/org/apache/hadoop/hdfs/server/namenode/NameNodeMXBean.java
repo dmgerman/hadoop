@@ -75,14 +75,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This is the JMX management interface for namenode information  */
+comment|/**  * This is the JMX management interface for namenode information.  * End users shouldn't be implementing these interfaces, and instead  * access this information through the JMX APIs.  */
 end_comment
 
 begin_interface
 annotation|@
 name|InterfaceAudience
 operator|.
-name|Public
+name|Private
 annotation|@
 name|InterfaceStability
 operator|.
