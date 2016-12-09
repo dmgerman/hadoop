@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.api.records
+DECL|package|org.apache.hadoop.yarn.server.nodemanager.containermanager.container
 package|package
 name|org
 operator|.
@@ -14,9 +14,13 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|api
+name|server
 operator|.
-name|records
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|container
 package|;
 end_package
 
@@ -28,84 +32,75 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
+name|yarn
 operator|.
-name|InterfaceAudience
+name|api
 operator|.
-name|Public
-import|;
-end_import
-
-begin_import
-import|import
-name|org
+name|records
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceStability
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceStability
-operator|.
-name|Stable
+name|ContainerId
 import|;
 end_import
 
 begin_comment
-comment|/**  *<p>State of a<code>Container</code>.</p>  */
+comment|/**  * ContainerEvent for ContainerEventType.PAUSE_CONTAINER.  */
 end_comment
 
-begin_enum
-annotation|@
-name|Public
-annotation|@
-name|Stable
-DECL|enum|ContainerState
+begin_class
+DECL|class|ContainerPauseEvent
 specifier|public
-enum|enum
-name|ContainerState
+class|class
+name|ContainerPauseEvent
+extends|extends
+name|ContainerEvent
 block|{
-comment|/** New container */
-DECL|enumConstant|NEW
-name|NEW
-block|,
-comment|/** Running container */
-DECL|enumConstant|RUNNING
-name|RUNNING
-block|,
-comment|/** Completed container */
-DECL|enumConstant|COMPLETE
-name|COMPLETE
-block|,
-comment|/** Scheduled (awaiting resources) at the NM. */
-DECL|enumConstant|InterfaceStability.Unstable
-annotation|@
-name|InterfaceStability
+DECL|field|diagnostic
+specifier|private
+specifier|final
+name|String
+name|diagnostic
+decl_stmt|;
+DECL|method|ContainerPauseEvent (ContainerId cId, String diagnostic)
+specifier|public
+name|ContainerPauseEvent
+parameter_list|(
+name|ContainerId
+name|cId
+parameter_list|,
+name|String
+name|diagnostic
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|cId
+argument_list|,
+name|ContainerEventType
 operator|.
-name|Unstable
-DECL|enumConstant|SCHEDULED
-name|SCHEDULED
-block|,
-comment|/** Paused at the NM. */
-DECL|enumConstant|PAUSED
-name|PAUSED
+name|PAUSE_CONTAINER
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|diagnostic
+operator|=
+name|diagnostic
+expr_stmt|;
 block|}
-end_enum
+DECL|method|getDiagnostic ()
+specifier|public
+name|String
+name|getDiagnostic
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|diagnostic
+return|;
+block|}
+block|}
+end_class
 
 end_unit
 

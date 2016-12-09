@@ -49,7 +49,13 @@ block|,
 comment|// The process(grp) itself.
 DECL|enumConstant|SIGNAL_CONTAINER
 name|SIGNAL_CONTAINER
-block|, }
+block|,
+DECL|enumConstant|PAUSE_CONTAINER
+name|PAUSE_CONTAINER
+block|,
+DECL|enumConstant|RESUME_CONTAINER
+name|RESUME_CONTAINER
+block|}
 end_enum
 
 end_unit

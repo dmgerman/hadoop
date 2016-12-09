@@ -2665,6 +2665,62 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Pause the container. The default implementation is to raise a kill event.    * Specific executor implementations can override this behavior.    * @param container    *          the Container    */
+DECL|method|pauseContainer (Container container)
+specifier|public
+name|void
+name|pauseContainer
+parameter_list|(
+name|Container
+name|container
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|container
+operator|.
+name|getContainerId
+argument_list|()
+operator|+
+literal|" doesn't support pausing."
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
+comment|/**    * Resume the container from pause state. The default implementation ignores    * this event. Specific implementations can override this behavior.    * @param container    *          the Container    */
+DECL|method|resumeContainer (Container container)
+specifier|public
+name|void
+name|resumeContainer
+parameter_list|(
+name|Container
+name|container
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|container
+operator|.
+name|getContainerId
+argument_list|()
+operator|+
+literal|" doesn't support resume."
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
 comment|/**    * Get the process-identifier for the container.    *    * @param containerID the container ID    * @return the process ID of the container if it has already launched,    * or null otherwise    */
 DECL|method|getProcessId (ContainerId containerID)
 specifier|public

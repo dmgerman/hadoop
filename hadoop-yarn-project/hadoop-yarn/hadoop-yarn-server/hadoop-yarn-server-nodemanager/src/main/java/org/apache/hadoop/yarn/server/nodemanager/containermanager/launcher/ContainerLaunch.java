@@ -882,6 +882,28 @@ name|containermanager
 operator|.
 name|container
 operator|.
+name|ContainerKillEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|container
+operator|.
 name|ContainerState
 import|;
 end_import
@@ -1056,6 +1078,22 @@ name|VisibleForTesting
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|ConverterUtils
+import|;
+end_import
+
 begin_class
 DECL|class|ContainerLaunch
 specifier|public
@@ -1170,6 +1208,17 @@ DECL|field|containerAlreadyLaunched
 specifier|protected
 name|AtomicBoolean
 name|containerAlreadyLaunched
+init|=
+operator|new
+name|AtomicBoolean
+argument_list|(
+literal|false
+argument_list|)
+decl_stmt|;
+DECL|field|shouldPauseContainer
+specifier|protected
+name|AtomicBoolean
+name|shouldPauseContainer
 init|=
 operator|new
 name|AtomicBoolean
@@ -4831,6 +4880,322 @@ block|}
 return|return
 name|signal
 return|;
+block|}
+comment|/**    * Pause the container.    * Cancels the launch if the container isn't launched yet. Otherwise asks the    * executor to pause the container.    * @throws IOException in case of errors.    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+comment|// dispatcher not typed
+DECL|method|pauseContainer ()
+specifier|public
+name|void
+name|pauseContainer
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|ContainerId
+name|containerId
+init|=
+name|container
+operator|.
+name|getContainerId
+argument_list|()
+decl_stmt|;
+name|String
+name|containerIdStr
+init|=
+name|containerId
+operator|.
+name|toString
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Pausing the container "
+operator|+
+name|containerIdStr
+argument_list|)
+expr_stmt|;
+comment|// The pause event is only handled if the container is in the running state
+comment|// (the container state machine), so we don't check for
+comment|// shouldLaunchContainer over here
+if|if
+condition|(
+operator|!
+name|shouldPauseContainer
+operator|.
+name|compareAndSet
+argument_list|(
+literal|false
+argument_list|,
+literal|true
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Container "
+operator|+
+name|containerId
+operator|+
+literal|" not paused as "
+operator|+
+literal|"resume already called"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+try|try
+block|{
+comment|// Pause the container
+name|exec
+operator|.
+name|pauseContainer
+argument_list|(
+name|container
+argument_list|)
+expr_stmt|;
+comment|// PauseContainer is a blocking call. We are here almost means the
+comment|// container is paused, so send out the event.
+name|dispatcher
+operator|.
+name|getEventHandler
+argument_list|()
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|ContainerEvent
+argument_list|(
+name|containerId
+argument_list|,
+name|ContainerEventType
+operator|.
+name|CONTAINER_PAUSED
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|String
+name|message
+init|=
+literal|"Exception when trying to pause container "
+operator|+
+name|containerIdStr
+operator|+
+literal|": "
+operator|+
+name|StringUtils
+operator|.
+name|stringifyException
+argument_list|(
+name|e
+argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|message
+argument_list|)
+expr_stmt|;
+name|container
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|ContainerKillEvent
+argument_list|(
+name|container
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|,
+name|ContainerExitStatus
+operator|.
+name|PREEMPTED
+argument_list|,
+literal|"Container preempted as there was "
+operator|+
+literal|" an exception in pausing it."
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Resume the container.    * Cancels the launch if the container isn't launched yet. Otherwise asks the    * executor to pause the container.    * @throws IOException in case of error.    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+comment|// dispatcher not typed
+DECL|method|resumeContainer ()
+specifier|public
+name|void
+name|resumeContainer
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|ContainerId
+name|containerId
+init|=
+name|container
+operator|.
+name|getContainerId
+argument_list|()
+decl_stmt|;
+name|String
+name|containerIdStr
+init|=
+name|containerId
+operator|.
+name|toString
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Resuming the container "
+operator|+
+name|containerIdStr
+argument_list|)
+expr_stmt|;
+comment|// The resume event is only handled if the container is in a paused state
+comment|// so we don't check for the launched flag here.
+comment|// paused flag will be set to true if process already paused
+name|boolean
+name|alreadyPaused
+init|=
+operator|!
+name|shouldPauseContainer
+operator|.
+name|compareAndSet
+argument_list|(
+literal|false
+argument_list|,
+literal|true
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|alreadyPaused
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Container "
+operator|+
+name|containerIdStr
+operator|+
+literal|" not paused."
+operator|+
+literal|" No resume necessary"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+comment|// If the container has already started
+try|try
+block|{
+name|exec
+operator|.
+name|resumeContainer
+argument_list|(
+name|container
+argument_list|)
+expr_stmt|;
+comment|// ResumeContainer is a blocking call. We are here almost means the
+comment|// container is resumed, so send out the event.
+name|dispatcher
+operator|.
+name|getEventHandler
+argument_list|()
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|ContainerEvent
+argument_list|(
+name|containerId
+argument_list|,
+name|ContainerEventType
+operator|.
+name|CONTAINER_RESUMED
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|String
+name|message
+init|=
+literal|"Exception when trying to resume container "
+operator|+
+name|containerIdStr
+operator|+
+literal|": "
+operator|+
+name|StringUtils
+operator|.
+name|stringifyException
+argument_list|(
+name|e
+argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|message
+argument_list|)
+expr_stmt|;
+name|container
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|ContainerKillEvent
+argument_list|(
+name|container
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|,
+name|ContainerExitStatus
+operator|.
+name|PREEMPTED
+argument_list|,
+literal|"Container preempted as there was "
+operator|+
+literal|" an exception in pausing it."
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Loop through for a time-bounded interval waiting to    * read the process id from a file generated by a running process.    * @param pidFilePath File from which to read the process id    * @return Process ID    * @throws Exception    */
 DECL|method|getContainerPid (Path pidFilePath)

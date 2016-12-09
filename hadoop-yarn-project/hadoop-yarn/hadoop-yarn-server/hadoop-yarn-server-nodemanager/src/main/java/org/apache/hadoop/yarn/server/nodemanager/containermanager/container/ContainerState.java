@@ -68,6 +68,15 @@ block|,
 name|CONTAINER_RESOURCES_CLEANINGUP
 block|,
 name|DONE
+block|,
+DECL|enumConstant|PAUSING
+DECL|enumConstant|PAUSED
+DECL|enumConstant|RESUMING
+name|PAUSING
+block|,
+name|PAUSED
+block|,
+name|RESUMING
 block|}
 end_enum
 

@@ -49,6 +49,12 @@ block|,
 DECL|enumConstant|ROLLBACK_REINIT
 name|ROLLBACK_REINIT
 block|,
+DECL|enumConstant|PAUSE_CONTAINER
+name|PAUSE_CONTAINER
+block|,
+DECL|enumConstant|RESUME_CONTAINER
+name|RESUME_CONTAINER
+block|,
 comment|// DownloadManager
 DECL|enumConstant|CONTAINER_INITED
 name|CONTAINER_INITED
@@ -74,6 +80,12 @@ name|CONTAINER_EXITED_WITH_FAILURE
 block|,
 DECL|enumConstant|CONTAINER_KILLED_ON_REQUEST
 name|CONTAINER_KILLED_ON_REQUEST
+block|,
+DECL|enumConstant|CONTAINER_PAUSED
+name|CONTAINER_PAUSED
+block|,
+DECL|enumConstant|CONTAINER_RESUMED
+name|CONTAINER_RESUMED
 block|}
 end_enum
 
