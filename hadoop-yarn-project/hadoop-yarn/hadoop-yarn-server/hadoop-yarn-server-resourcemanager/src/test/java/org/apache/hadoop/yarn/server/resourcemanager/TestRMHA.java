@@ -1344,7 +1344,7 @@ argument_list|)
 expr_stmt|;
 comment|// Other stuff is verified in the regular web-services related tests
 block|}
-comment|/**    * Test to verify the following RM HA transitions to the following states.    * 1. Standby: Should be a no-op    * 2. Active: Active services should start    * 3. Active: Should be a no-op.    *    While active, submit a couple of jobs    * 4. Standby: Active services should stop    * 5. Active: Active services should start    * 6. Stop the RM: All services should stop and RM should not be ready to    * become Active    */
+comment|/**    * Test to verify the following RM HA transitions to the following states.    * 1. Standby: Should be a no-op    * 2. Active: Active services should start    * 3. Active: Should be a no-op.    * While active, submit a couple of jobs    * 4. Standby: Active services should stop    * 5. Active: Active services should start    * 6. Stop the RM: All services should stop and RM should not be ready to    * become Active    */
 annotation|@
 name|Test
 argument_list|(
@@ -2664,11 +2664,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|90000
-argument_list|)
 DECL|method|testTransitionedToStandbyShouldNotHang ()
 specifier|public
 name|void

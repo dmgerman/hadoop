@@ -377,9 +377,6 @@ operator|.
 name|getRMContext
 argument_list|()
 operator|.
-name|getRMAdminService
-argument_list|()
-operator|.
 name|getHAZookeeperConnectionState
 argument_list|()
 expr_stmt|;

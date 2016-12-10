@@ -836,16 +836,16 @@ name|PlacementManager
 name|placementMgr
 parameter_list|)
 function_decl|;
-DECL|method|setLeaderElectorService (LeaderElectorService elector)
+DECL|method|setLeaderElectorService (EmbeddedElector elector)
 name|void
 name|setLeaderElectorService
 parameter_list|(
-name|LeaderElectorService
+name|EmbeddedElector
 name|elector
 parameter_list|)
 function_decl|;
 DECL|method|getLeaderElectorService ()
-name|LeaderElectorService
+name|EmbeddedElector
 name|getLeaderElectorService
 parameter_list|()
 function_decl|;
@@ -865,6 +865,11 @@ function_decl|;
 DECL|method|getRMAppLifetimeMonitor ()
 name|RMAppLifetimeMonitor
 name|getRMAppLifetimeMonitor
+parameter_list|()
+function_decl|;
+DECL|method|getHAZookeeperConnectionState ()
+name|String
+name|getHAZookeeperConnectionState
 parameter_list|()
 function_decl|;
 block|}

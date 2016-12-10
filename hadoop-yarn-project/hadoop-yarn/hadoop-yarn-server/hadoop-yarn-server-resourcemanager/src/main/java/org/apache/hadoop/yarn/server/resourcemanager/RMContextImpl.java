@@ -717,7 +717,7 @@ name|systemMetricsPublisher
 decl_stmt|;
 DECL|field|elector
 specifier|private
-name|LeaderElectorService
+name|EmbeddedElector
 name|elector
 decl_stmt|;
 DECL|field|queueLimitCalculator
@@ -904,12 +904,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setLeaderElectorService (LeaderElectorService elector)
+DECL|method|setLeaderElectorService (EmbeddedElector elector)
 specifier|public
 name|void
 name|setLeaderElectorService
 parameter_list|(
-name|LeaderElectorService
+name|EmbeddedElector
 name|elector
 parameter_list|)
 block|{
@@ -924,7 +924,7 @@ annotation|@
 name|Override
 DECL|method|getLeaderElectorService ()
 specifier|public
-name|LeaderElectorService
+name|EmbeddedElector
 name|getLeaderElectorService
 parameter_list|()
 block|{
@@ -2108,6 +2108,35 @@ operator|.
 name|getRMAppLifetimeMonitor
 argument_list|()
 return|;
+block|}
+DECL|method|getHAZookeeperConnectionState ()
+specifier|public
+name|String
+name|getHAZookeeperConnectionState
+parameter_list|()
+block|{
+if|if
+condition|(
+name|elector
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|"Could not find leader elector. Verify both HA and automatic "
+operator|+
+literal|"failover are enabled."
+return|;
+block|}
+else|else
+block|{
+return|return
+name|elector
+operator|.
+name|getZookeeperConnectionState
+argument_list|()
+return|;
+block|}
 block|}
 block|}
 end_class

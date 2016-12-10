@@ -673,11 +673,11 @@ argument_list|(
 name|as
 argument_list|)
 expr_stmt|;
-name|EmbeddedElectorService
+name|ActiveStandbyElectorBasedElectorService
 name|ees
 init|=
 operator|new
-name|EmbeddedElectorService
+name|ActiveStandbyElectorBasedElectorService
 argument_list|(
 name|rc
 argument_list|)
@@ -766,7 +766,7 @@ break|break;
 block|}
 block|}
 comment|/**    * Helper method to test that neutral mode plays well with an active    * transition.    *    * @param as the admin service    * @param ees the embedded elector service    * @throws IOException if there's an issue transitioning    * @throws InterruptedException if interrupted    */
-DECL|method|testCallbackSynchronizationActive (AdminService as, EmbeddedElectorService ees)
+DECL|method|testCallbackSynchronizationActive (AdminService as, ActiveStandbyElectorBasedElectorService ees)
 specifier|private
 name|void
 name|testCallbackSynchronizationActive
@@ -774,7 +774,7 @@ parameter_list|(
 name|AdminService
 name|as
 parameter_list|,
-name|EmbeddedElectorService
+name|ActiveStandbyElectorBasedElectorService
 name|ees
 parameter_list|)
 throws|throws
@@ -821,7 +821,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Helper method to test that neutral mode plays well with a standby    * transition.    *    * @param as the admin service    * @param ees the embedded elector service    * @throws IOException if there's an issue transitioning    * @throws InterruptedException if interrupted    */
-DECL|method|testCallbackSynchronizationStandby (AdminService as, EmbeddedElectorService ees)
+DECL|method|testCallbackSynchronizationStandby (AdminService as, ActiveStandbyElectorBasedElectorService ees)
 specifier|private
 name|void
 name|testCallbackSynchronizationStandby
@@ -829,7 +829,7 @@ parameter_list|(
 name|AdminService
 name|as
 parameter_list|,
-name|EmbeddedElectorService
+name|ActiveStandbyElectorBasedElectorService
 name|ees
 parameter_list|)
 throws|throws
@@ -883,7 +883,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Helper method to test that neutral mode plays well with itself.    *    * @param as the admin service    * @param ees the embedded elector service    * @throws IOException if there's an issue transitioning    * @throws InterruptedException if interrupted    */
-DECL|method|testCallbackSynchronizationNeutral (AdminService as, EmbeddedElectorService ees)
+DECL|method|testCallbackSynchronizationNeutral (AdminService as, ActiveStandbyElectorBasedElectorService ees)
 specifier|private
 name|void
 name|testCallbackSynchronizationNeutral
@@ -891,7 +891,7 @@ parameter_list|(
 name|AdminService
 name|as
 parameter_list|,
-name|EmbeddedElectorService
+name|ActiveStandbyElectorBasedElectorService
 name|ees
 parameter_list|)
 throws|throws
@@ -945,7 +945,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Helper method to test that neutral mode does not race with an active    * transition.    *    * @param as the admin service    * @param ees the embedded elector service    * @throws IOException if there's an issue transitioning    * @throws InterruptedException if interrupted    */
-DECL|method|testCallbackSynchronizationTimingActive (AdminService as, EmbeddedElectorService ees)
+DECL|method|testCallbackSynchronizationTimingActive (AdminService as, ActiveStandbyElectorBasedElectorService ees)
 specifier|private
 name|void
 name|testCallbackSynchronizationTimingActive
@@ -953,7 +953,7 @@ parameter_list|(
 name|AdminService
 name|as
 parameter_list|,
-name|EmbeddedElectorService
+name|ActiveStandbyElectorBasedElectorService
 name|ees
 parameter_list|)
 throws|throws
@@ -1023,7 +1023,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Helper method to test that neutral mode does not race with an active    * transition.    *    * @param as the admin service    * @param ees the embedded elector service    * @throws IOException if there's an issue transitioning    * @throws InterruptedException if interrupted    */
-DECL|method|testCallbackSynchronizationTimingStandby (AdminService as, EmbeddedElectorService ees)
+DECL|method|testCallbackSynchronizationTimingStandby (AdminService as, ActiveStandbyElectorBasedElectorService ees)
 specifier|private
 name|void
 name|testCallbackSynchronizationTimingStandby
@@ -1031,7 +1031,7 @@ parameter_list|(
 name|AdminService
 name|as
 parameter_list|,
-name|EmbeddedElectorService
+name|ActiveStandbyElectorBasedElectorService
 name|ees
 parameter_list|)
 throws|throws
@@ -1158,34 +1158,15 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|createAdminService ()
+DECL|method|createEmbeddedElector ()
 specifier|protected
-name|AdminService
-name|createAdminService
+name|EmbeddedElector
+name|createEmbeddedElector
 parameter_list|()
 block|{
 return|return
 operator|new
-name|AdminService
-argument_list|(
-name|MockRMWithElector
-operator|.
-name|this
-argument_list|,
-name|getRMContext
-argument_list|()
-argument_list|)
-block|{
-annotation|@
-name|Override
-specifier|protected
-name|EmbeddedElectorService
-name|createEmbeddedElectorService
-parameter_list|()
-block|{
-return|return
-operator|new
-name|EmbeddedElectorService
+name|ActiveStandbyElectorBasedElectorService
 argument_list|(
 name|getRMContext
 argument_list|()
@@ -1252,9 +1233,6 @@ operator|.
 name|becomeActive
 argument_list|()
 expr_stmt|;
-block|}
-block|}
-return|;
 block|}
 block|}
 return|;

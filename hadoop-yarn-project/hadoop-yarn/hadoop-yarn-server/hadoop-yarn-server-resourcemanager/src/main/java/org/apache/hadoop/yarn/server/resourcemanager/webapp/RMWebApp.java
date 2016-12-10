@@ -739,12 +739,7 @@ name|getHAZookeeperConnectionState
 parameter_list|()
 block|{
 return|return
-name|rm
-operator|.
 name|getRMContext
-argument_list|()
-operator|.
-name|getRMAdminService
 argument_list|()
 operator|.
 name|getHAZookeeperConnectionState

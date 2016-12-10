@@ -344,6 +344,10 @@ name|TimerTask
 import|;
 end_import
 
+begin_comment
+comment|/**  * Leader election implementation that uses {@link ActiveStandbyElector}.  */
+end_comment
+
 begin_class
 annotation|@
 name|InterfaceAudience
@@ -353,13 +357,15 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Unstable
-DECL|class|EmbeddedElectorService
+DECL|class|ActiveStandbyElectorBasedElectorService
 specifier|public
 class|class
-name|EmbeddedElectorService
+name|ActiveStandbyElectorBasedElectorService
 extends|extends
 name|AbstractService
 implements|implements
+name|EmbeddedElector
+implements|,
 name|ActiveStandbyElector
 operator|.
 name|ActiveStandbyElectorCallback
@@ -375,7 +381,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|EmbeddedElectorService
+name|ActiveStandbyElectorBasedElectorService
 operator|.
 name|class
 operator|.
@@ -441,8 +447,8 @@ operator|new
 name|Object
 argument_list|()
 decl_stmt|;
-DECL|method|EmbeddedElectorService (RMContext rmContext)
-name|EmbeddedElectorService
+DECL|method|ActiveStandbyElectorBasedElectorService (RMContext rmContext)
+name|ActiveStandbyElectorBasedElectorService
 parameter_list|(
 name|RMContext
 name|rmContext
@@ -450,7 +456,7 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
-name|EmbeddedElectorService
+name|ActiveStandbyElectorBasedElectorService
 operator|.
 name|class
 operator|.
@@ -1203,10 +1209,13 @@ return|return
 literal|true
 return|;
 block|}
-DECL|method|resetLeaderElection ()
+comment|// EmbeddedElector methods
+annotation|@
+name|Override
+DECL|method|rejoinElection ()
 specifier|public
 name|void
-name|resetLeaderElection
+name|rejoinElection
 parameter_list|()
 block|{
 name|elector
@@ -1224,10 +1233,12 @@ name|localActiveNodeInfo
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getHAZookeeperConnectionState ()
+annotation|@
+name|Override
+DECL|method|getZookeeperConnectionState ()
 specifier|public
 name|String
-name|getHAZookeeperConnectionState
+name|getZookeeperConnectionState
 parameter_list|()
 block|{
 return|return

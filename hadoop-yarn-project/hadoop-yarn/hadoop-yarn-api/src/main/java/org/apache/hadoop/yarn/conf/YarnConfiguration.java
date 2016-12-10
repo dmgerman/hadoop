@@ -156,6 +156,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ha
+operator|.
+name|ActiveStandbyElector
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|http
 operator|.
 name|HttpConfig
@@ -2570,8 +2584,11 @@ name|RM_HA_PREFIX
 operator|+
 literal|"failover-controller.active-standby-elector.zk.retries"
 decl_stmt|;
+comment|/**    * Whether to use curator-based elector for leader election.    *    * @deprecated Eventually, we want to default to the curator-based    * implementation and remove the {@link ActiveStandbyElector} based    * implementation. We should remove this config then.    */
 annotation|@
-name|Private
+name|Unstable
+annotation|@
+name|Deprecated
 DECL|field|CURATOR_LEADER_ELECTOR
 specifier|public
 specifier|static
@@ -2583,6 +2600,10 @@ name|RM_HA_PREFIX
 operator|+
 literal|"curator-leader-elector.enabled"
 decl_stmt|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|field|DEFAULT_CURATOR_LEADER_ELECTOR_ENABLED
 specifier|public
 specifier|static
