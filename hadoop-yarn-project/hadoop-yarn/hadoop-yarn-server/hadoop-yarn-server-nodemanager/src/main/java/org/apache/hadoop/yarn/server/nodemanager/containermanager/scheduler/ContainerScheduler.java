@@ -837,7 +837,7 @@ name|setOpportMemoryUsed
 argument_list|(
 name|metrics
 operator|.
-name|getOpportMemoryUsed
+name|getAllocatedOpportunisticGB
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -849,7 +849,7 @@ name|setOpportCoresUsed
 argument_list|(
 name|metrics
 operator|.
-name|getOpportCoresUsed
+name|getAllocatedOpportunisticVCores
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -861,7 +861,7 @@ name|setRunningOpportContainers
 argument_list|(
 name|metrics
 operator|.
-name|getRunningOpportContainers
+name|getRunningOpportunisticContainers
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -972,9 +972,12 @@ name|this
 operator|.
 name|metrics
 operator|.
-name|opportunisticContainerCompleted
+name|completeOpportunisticContainer
 argument_list|(
 name|container
+operator|.
+name|getResource
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1467,9 +1470,12 @@ name|this
 operator|.
 name|metrics
 operator|.
-name|opportunisticContainerStarted
+name|startOpportunisticContainer
 argument_list|(
 name|container
+operator|.
+name|getResource
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

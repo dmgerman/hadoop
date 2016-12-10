@@ -781,10 +781,10 @@ name|rmContainer
 operator|.
 name|getExecutionType
 argument_list|()
-operator|!=
+operator|==
 name|ExecutionType
 operator|.
-name|OPPORTUNISTIC
+name|GUARANTEED
 condition|)
 block|{
 name|deductUnallocatedResource
@@ -795,10 +795,10 @@ name|getResource
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 operator|++
 name|numContainers
 expr_stmt|;
+block|}
 name|launchedContainers
 operator|.
 name|put
@@ -1103,10 +1103,10 @@ name|getResource
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 operator|--
 name|numContainers
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Release an allocated container on this node.    * @param container Container to be released.    */
 DECL|method|releaseContainer (Container container)

@@ -5863,7 +5863,7 @@ name|getXmlLong
 argument_list|(
 name|element
 argument_list|,
-literal|"usedMemoryOpport"
+literal|"usedMemoryOpportGB"
 argument_list|)
 argument_list|,
 name|WebServicesTestUtils
@@ -6073,7 +6073,7 @@ name|nodeInfo
 operator|.
 name|getLong
 argument_list|(
-literal|"usedMemoryOpport"
+literal|"usedMemoryOpportGB"
 argument_list|)
 argument_list|,
 name|nodeInfo
@@ -6092,7 +6092,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|verifyNodeInfoGeneric (RMNode node, String state, String rack, String id, String nodeHostName, String nodeHTTPAddress, long lastHealthUpdate, String healthReport, int numContainers, long usedMemoryMB, long availMemoryMB, long usedVirtualCores, long availVirtualCores, String version, int nodePhysicalMemoryMB, int nodeVirtualMemoryMB, double nodeCPUUsage, int containersPhysicalMemoryMB, int containersVirtualMemoryMB, double containersCPUUsage, int numRunningOpportContainers, long usedMemoryOpport, int usedVirtualCoresOpport, int numQueuedContainers)
+DECL|method|verifyNodeInfoGeneric (RMNode node, String state, String rack, String id, String nodeHostName, String nodeHTTPAddress, long lastHealthUpdate, String healthReport, int numContainers, long usedMemoryMB, long availMemoryMB, long usedVirtualCores, long availVirtualCores, String version, int nodePhysicalMemoryMB, int nodeVirtualMemoryMB, double nodeCPUUsage, int containersPhysicalMemoryMB, int containersVirtualMemoryMB, double containersCPUUsage, int numRunningOpportContainers, long usedMemoryOpportGB, int usedVirtualCoresOpport, int numQueuedContainers)
 specifier|public
 name|void
 name|verifyNodeInfoGeneric
@@ -6161,7 +6161,7 @@ name|int
 name|numRunningOpportContainers
 parameter_list|,
 name|long
-name|usedMemoryOpport
+name|usedMemoryOpportGB
 parameter_list|,
 name|int
 name|usedVirtualCoresOpport
@@ -6546,16 +6546,16 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"usedMemoryOpport doesn't match: "
+literal|"usedMemoryOpportGB doesn't match: "
 operator|+
-name|usedMemoryOpport
+name|usedMemoryOpportGB
 argument_list|,
 name|opportunisticStatus
 operator|.
 name|getOpportMemoryUsed
 argument_list|()
 argument_list|,
-name|usedMemoryOpport
+name|usedMemoryOpportGB
 argument_list|)
 expr_stmt|;
 name|assertEquals

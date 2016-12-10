@@ -302,12 +302,11 @@ specifier|private
 name|int
 name|numRunningOpportContainers
 decl_stmt|;
-DECL|field|usedMemoryOpport
+DECL|field|usedMemoryOpportGB
 specifier|private
 name|long
-name|usedMemoryOpport
+name|usedMemoryOpportGB
 decl_stmt|;
-comment|// Memory in bytes.
 DECL|field|usedVirtualCoresOpport
 specifier|private
 name|long
@@ -542,7 +541,7 @@ literal|0
 expr_stmt|;
 name|this
 operator|.
-name|usedMemoryOpport
+name|usedMemoryOpportGB
 operator|=
 literal|0
 expr_stmt|;
@@ -584,7 +583,7 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|usedMemoryOpport
+name|usedMemoryOpportGB
 operator|=
 name|opportStatus
 operator|.
@@ -831,14 +830,14 @@ return|return
 name|numRunningOpportContainers
 return|;
 block|}
-DECL|method|getUsedMemoryOpport ()
+DECL|method|getUsedMemoryOpportGB ()
 specifier|public
 name|long
-name|getUsedMemoryOpport
+name|getUsedMemoryOpportGB
 parameter_list|()
 block|{
 return|return
-name|usedMemoryOpport
+name|usedMemoryOpportGB
 return|;
 block|}
 DECL|method|getUsedVirtualCoresOpport ()
