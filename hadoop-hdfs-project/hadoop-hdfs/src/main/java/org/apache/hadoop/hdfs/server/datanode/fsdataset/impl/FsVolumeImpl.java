@@ -5683,6 +5683,8 @@ index|[
 name|checksumSize
 index|]
 decl_stmt|;
+try|try
+init|(
 name|RandomAccessFile
 name|raf
 init|=
@@ -5693,7 +5695,8 @@ name|metaFile
 argument_list|,
 literal|"r"
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|raf
 operator|.
 name|seek
@@ -5712,6 +5715,7 @@ argument_list|,
 name|checksumSize
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|lastChecksum
 return|;
