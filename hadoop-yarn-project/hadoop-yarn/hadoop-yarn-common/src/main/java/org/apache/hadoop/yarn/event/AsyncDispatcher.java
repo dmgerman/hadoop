@@ -341,6 +341,9 @@ DECL|field|handlerInstance
 specifier|private
 specifier|final
 name|EventHandler
+argument_list|<
+name|Event
+argument_list|>
 name|handlerInstance
 init|=
 operator|new
@@ -1097,6 +1100,9 @@ name|Override
 DECL|method|getEventHandler ()
 specifier|public
 name|EventHandler
+argument_list|<
+name|Event
+argument_list|>
 name|getEventHandler
 parameter_list|()
 block|{

@@ -309,11 +309,17 @@ name|Override
 DECL|method|getEventHandler ()
 specifier|public
 name|EventHandler
+argument_list|<
+name|Event
+argument_list|>
 name|getEventHandler
 parameter_list|()
 block|{
 specifier|final
 name|EventHandler
+argument_list|<
+name|Event
+argument_list|>
 name|actual
 init|=
 name|super
@@ -324,6 +330,9 @@ decl_stmt|;
 return|return
 operator|new
 name|EventHandler
+argument_list|<
+name|Event
+argument_list|>
 argument_list|()
 block|{
 annotation|@

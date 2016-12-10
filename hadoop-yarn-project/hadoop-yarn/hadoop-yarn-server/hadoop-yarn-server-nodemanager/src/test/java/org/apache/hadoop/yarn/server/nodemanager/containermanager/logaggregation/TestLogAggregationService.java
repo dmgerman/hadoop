@@ -1828,7 +1828,7 @@ decl_stmt|;
 DECL|field|appEventHandler
 name|EventHandler
 argument_list|<
-name|ApplicationEvent
+name|Event
 argument_list|>
 name|appEventHandler
 decl_stmt|;

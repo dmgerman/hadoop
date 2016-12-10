@@ -208,6 +208,22 @@ name|yarn
 operator|.
 name|event
 operator|.
+name|Event
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|event
+operator|.
 name|EventHandler
 import|;
 end_import
@@ -268,6 +284,9 @@ DECL|field|handler
 specifier|private
 specifier|final
 name|EventHandler
+argument_list|<
+name|Event
+argument_list|>
 name|handler
 decl_stmt|;
 DECL|field|jobId
@@ -276,7 +295,7 @@ specifier|final
 name|JobId
 name|jobId
 decl_stmt|;
-DECL|method|JobHistoryCopyService (ApplicationAttemptId applicationAttemptId, EventHandler handler)
+DECL|method|JobHistoryCopyService (ApplicationAttemptId applicationAttemptId, EventHandler<Event> handler)
 specifier|public
 name|JobHistoryCopyService
 parameter_list|(
@@ -284,6 +303,9 @@ name|ApplicationAttemptId
 name|applicationAttemptId
 parameter_list|,
 name|EventHandler
+argument_list|<
+name|Event
+argument_list|>
 name|handler
 parameter_list|)
 block|{

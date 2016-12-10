@@ -28,17 +28,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapreduce
-operator|.
-name|v2
-operator|.
-name|app
-operator|.
-name|job
+name|yarn
 operator|.
 name|event
 operator|.
-name|TaskAttemptEvent
+name|Event
 import|;
 end_import
 
@@ -66,17 +60,17 @@ name|MockEventHandler
 implements|implements
 name|EventHandler
 argument_list|<
-name|TaskAttemptEvent
+name|Event
 argument_list|>
 block|{
 annotation|@
 name|Override
-DECL|method|handle (TaskAttemptEvent event)
+DECL|method|handle (Event event)
 specifier|public
 name|void
 name|handle
 parameter_list|(
-name|TaskAttemptEvent
+name|Event
 name|event
 parameter_list|)
 block|{   }

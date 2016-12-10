@@ -3377,10 +3377,16 @@ name|class
 argument_list|)
 decl_stmt|;
 name|EventHandler
+argument_list|<
+name|Event
+argument_list|>
 name|eventHandler
 init|=
 operator|new
 name|EventHandler
+argument_list|<
+name|Event
+argument_list|>
 argument_list|()
 block|{
 specifier|public
@@ -4566,7 +4572,7 @@ name|ContainerExitHandler
 implements|implements
 name|EventHandler
 argument_list|<
-name|ContainerEvent
+name|Event
 argument_list|>
 block|{
 DECL|field|testForMultiFile
@@ -4604,12 +4610,12 @@ return|return
 name|containerExitEventOccured
 return|;
 block|}
-DECL|method|handle (ContainerEvent event)
+DECL|method|handle (Event event)
 specifier|public
 name|void
 name|handle
 parameter_list|(
-name|ContainerEvent
+name|Event
 name|event
 parameter_list|)
 block|{
@@ -7674,12 +7680,20 @@ name|class
 argument_list|)
 decl_stmt|;
 name|EventHandler
+argument_list|<
+name|Event
+argument_list|>
 name|eventHandler
 init|=
 operator|new
 name|EventHandler
+argument_list|<
+name|Event
+argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|void
 name|handle

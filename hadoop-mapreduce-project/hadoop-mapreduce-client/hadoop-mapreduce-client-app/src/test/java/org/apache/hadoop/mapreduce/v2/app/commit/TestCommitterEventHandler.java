@@ -725,6 +725,9 @@ class|class
 name|WaitForItHandler
 implements|implements
 name|EventHandler
+argument_list|<
+name|Event
+argument_list|>
 block|{
 DECL|field|event
 specifier|private

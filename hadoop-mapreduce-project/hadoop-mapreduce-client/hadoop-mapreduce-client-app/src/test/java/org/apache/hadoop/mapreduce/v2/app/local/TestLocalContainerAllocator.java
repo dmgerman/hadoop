@@ -1819,9 +1819,12 @@ decl_stmt|;
 annotation|@
 name|SuppressWarnings
 argument_list|(
-literal|"rawtypes"
+literal|"unchecked"
 argument_list|)
 name|EventHandler
+argument_list|<
+name|Event
+argument_list|>
 name|eventHandler
 init|=
 name|mock

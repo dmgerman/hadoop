@@ -528,6 +528,22 @@ name|VisibleForTesting
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|event
+operator|.
+name|Event
+import|;
+end_import
+
 begin_class
 DECL|class|DefaultSpeculator
 specifier|public
@@ -842,7 +858,7 @@ specifier|private
 specifier|final
 name|EventHandler
 argument_list|<
-name|TaskEvent
+name|Event
 argument_list|>
 name|eventHandler
 decl_stmt|;

@@ -796,6 +796,22 @@ name|Sets
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|event
+operator|.
+name|Event
+import|;
+end_import
+
 begin_class
 DECL|class|TestUtils
 specifier|public
@@ -886,6 +902,9 @@ annotation|@
 name|Override
 specifier|public
 name|EventHandler
+argument_list|<
+name|Event
+argument_list|>
 name|getEventHandler
 parameter_list|()
 block|{

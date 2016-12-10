@@ -96,6 +96,22 @@ name|yarn
 operator|.
 name|event
 operator|.
+name|Event
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|event
+operator|.
 name|EventHandler
 import|;
 end_import
@@ -170,6 +186,9 @@ block|{
 DECL|field|dispatcher
 specifier|private
 name|EventHandler
+argument_list|<
+name|Event
+argument_list|>
 name|dispatcher
 decl_stmt|;
 DECL|method|NMLivelinessMonitor (Dispatcher d)

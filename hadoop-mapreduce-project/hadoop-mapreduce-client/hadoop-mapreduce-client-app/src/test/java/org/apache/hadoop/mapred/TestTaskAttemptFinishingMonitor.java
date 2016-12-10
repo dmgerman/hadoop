@@ -686,6 +686,9 @@ class|class
 name|MockEventHandler
 implements|implements
 name|EventHandler
+argument_list|<
+name|Event
+argument_list|>
 block|{
 DECL|field|timedOut
 specifier|public

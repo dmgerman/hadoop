@@ -8622,6 +8622,9 @@ name|thenReturn
 argument_list|(
 operator|new
 name|EventHandler
+argument_list|<
+name|Event
+argument_list|>
 argument_list|()
 block|{
 annotation|@

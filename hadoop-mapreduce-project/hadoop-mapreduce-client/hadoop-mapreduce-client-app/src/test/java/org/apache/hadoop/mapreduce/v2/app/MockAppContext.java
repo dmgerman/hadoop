@@ -142,6 +142,22 @@ name|yarn
 operator|.
 name|event
 operator|.
+name|Event
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|event
+operator|.
 name|EventHandler
 import|;
 end_import
@@ -535,15 +551,13 @@ return|;
 comment|// OK
 block|}
 annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"rawtypes"
-argument_list|)
-annotation|@
 name|Override
 DECL|method|getEventHandler ()
 specifier|public
 name|EventHandler
+argument_list|<
+name|Event
+argument_list|>
 name|getEventHandler
 parameter_list|()
 block|{

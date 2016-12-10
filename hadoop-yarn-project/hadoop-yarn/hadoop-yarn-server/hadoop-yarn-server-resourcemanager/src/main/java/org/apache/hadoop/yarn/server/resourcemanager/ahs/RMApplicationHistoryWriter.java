@@ -1831,6 +1831,9 @@ name|Override
 DECL|method|getEventHandler ()
 specifier|public
 name|EventHandler
+argument_list|<
+name|Event
+argument_list|>
 name|getEventHandler
 parameter_list|()
 block|{

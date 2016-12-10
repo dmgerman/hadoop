@@ -93,6 +93,9 @@ literal|false
 decl_stmt|;
 DECL|method|getEventHandler ()
 name|EventHandler
+argument_list|<
+name|Event
+argument_list|>
 name|getEventHandler
 parameter_list|()
 function_decl|;

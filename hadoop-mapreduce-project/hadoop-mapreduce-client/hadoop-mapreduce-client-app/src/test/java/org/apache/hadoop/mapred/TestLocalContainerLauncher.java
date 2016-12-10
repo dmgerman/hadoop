@@ -889,10 +889,16 @@ literal|1
 argument_list|)
 decl_stmt|;
 name|EventHandler
+argument_list|<
+name|Event
+argument_list|>
 name|handler
 init|=
 operator|new
 name|EventHandler
+argument_list|<
+name|Event
+argument_list|>
 argument_list|()
 block|{
 annotation|@
