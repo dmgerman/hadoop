@@ -488,7 +488,7 @@ name|storage
 operator|.
 name|common
 operator|.
-name|TimelineStorageUtils
+name|HBaseTimelineStorageUtils
 import|;
 end_import
 
@@ -769,7 +769,7 @@ specifier|static
 name|long
 name|dayTs
 init|=
-name|TimelineStorageUtils
+name|HBaseTimelineStorageUtils
 operator|.
 name|getTopOfTheDayTimestamp
 argument_list|(
@@ -7257,7 +7257,7 @@ expr_stmt|;
 name|long
 name|firstFlowActivity
 init|=
-name|TimelineStorageUtils
+name|HBaseTimelineStorageUtils
 operator|.
 name|getTopOfTheDayTimestamp
 argument_list|(

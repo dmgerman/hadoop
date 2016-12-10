@@ -1366,7 +1366,7 @@ decl_stmt|;
 name|Long
 name|dayTimestamp
 init|=
-name|TimelineStorageUtils
+name|HBaseTimelineStorageUtils
 operator|.
 name|getTopOfTheDayTimestamp
 argument_list|(

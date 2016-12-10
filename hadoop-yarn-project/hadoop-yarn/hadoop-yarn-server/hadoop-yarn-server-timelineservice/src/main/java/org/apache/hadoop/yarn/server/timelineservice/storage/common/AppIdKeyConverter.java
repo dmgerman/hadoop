@@ -157,7 +157,7 @@ name|Bytes
 operator|.
 name|toBytes
 argument_list|(
-name|TimelineStorageUtils
+name|HBaseTimelineStorageUtils
 operator|.
 name|invertInt
 argument_list|(
@@ -246,7 +246,7 @@ decl_stmt|;
 name|int
 name|seqId
 init|=
-name|TimelineStorageUtils
+name|HBaseTimelineStorageUtils
 operator|.
 name|invertInt
 argument_list|(

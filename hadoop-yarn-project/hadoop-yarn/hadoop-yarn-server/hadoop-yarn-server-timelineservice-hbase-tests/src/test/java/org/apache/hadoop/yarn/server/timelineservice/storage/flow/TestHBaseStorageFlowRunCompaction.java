@@ -544,7 +544,7 @@ name|storage
 operator|.
 name|common
 operator|.
-name|LongConverter
+name|HBaseTimelineStorageUtils
 import|;
 end_import
 
@@ -566,7 +566,7 @@ name|storage
 operator|.
 name|common
 operator|.
-name|TimelineStorageUtils
+name|LongConverter
 import|;
 end_import
 
@@ -2888,7 +2888,7 @@ comment|// create a cell with a VERY old timestamp and attribute SUM_FINAL
 name|Cell
 name|c1
 init|=
-name|TimelineStorageUtils
+name|HBaseTimelineStorageUtils
 operator|.
 name|createNewCell
 argument_list|(
@@ -2959,7 +2959,7 @@ comment|// create a cell with a recent timestamp and attribute SUM_FINAL
 name|Cell
 name|c2
 init|=
-name|TimelineStorageUtils
+name|HBaseTimelineStorageUtils
 operator|.
 name|createNewCell
 argument_list|(
@@ -3030,7 +3030,7 @@ comment|// create a cell with a VERY old timestamp but has attribute SUM
 name|Cell
 name|c3
 init|=
-name|TimelineStorageUtils
+name|HBaseTimelineStorageUtils
 operator|.
 name|createNewCell
 argument_list|(
@@ -3101,7 +3101,7 @@ comment|// create a cell with a VERY old timestamp but has attribute SUM
 name|Cell
 name|c4
 init|=
-name|TimelineStorageUtils
+name|HBaseTimelineStorageUtils
 operator|.
 name|createNewCell
 argument_list|(
@@ -3477,7 +3477,7 @@ decl_stmt|;
 comment|// create a cell with a VERY old timestamp and attribute SUM_FINAL
 name|c1
 operator|=
-name|TimelineStorageUtils
+name|HBaseTimelineStorageUtils
 operator|.
 name|createNewCell
 argument_list|(
@@ -3575,7 +3575,7 @@ decl_stmt|;
 comment|// create a cell with attribute SUM
 name|c1
 operator|=
-name|TimelineStorageUtils
+name|HBaseTimelineStorageUtils
 operator|.
 name|createNewCell
 argument_list|(
@@ -3974,7 +3974,7 @@ decl_stmt|;
 comment|// create a cell with a VERY old timestamp and attribute SUM_FINAL
 name|c1
 operator|=
-name|TimelineStorageUtils
+name|HBaseTimelineStorageUtils
 operator|.
 name|createNewCell
 argument_list|(
@@ -4072,7 +4072,7 @@ decl_stmt|;
 comment|// create a cell with a VERY old timestamp and attribute SUM_FINAL
 name|c1
 operator|=
-name|TimelineStorageUtils
+name|HBaseTimelineStorageUtils
 operator|.
 name|createNewCell
 argument_list|(
@@ -4170,7 +4170,7 @@ decl_stmt|;
 comment|// create a cell with attribute SUM
 name|c1
 operator|=
-name|TimelineStorageUtils
+name|HBaseTimelineStorageUtils
 operator|.
 name|createNewCell
 argument_list|(
@@ -4494,7 +4494,7 @@ comment|// create a cell with a VERY old timestamp and attribute SUM_FINAL
 name|Cell
 name|c1
 init|=
-name|TimelineStorageUtils
+name|HBaseTimelineStorageUtils
 operator|.
 name|createNewCell
 argument_list|(
@@ -4565,7 +4565,7 @@ comment|// create a cell with a VERY old timestamp but has attribute SUM
 name|Cell
 name|c2
 init|=
-name|TimelineStorageUtils
+name|HBaseTimelineStorageUtils
 operator|.
 name|createNewCell
 argument_list|(
@@ -4826,7 +4826,7 @@ comment|// create a cell with a VERY old timestamp
 name|Cell
 name|c1
 init|=
-name|TimelineStorageUtils
+name|HBaseTimelineStorageUtils
 operator|.
 name|createNewCell
 argument_list|(
@@ -5033,7 +5033,7 @@ decl_stmt|;
 name|Cell
 name|c1
 init|=
-name|TimelineStorageUtils
+name|HBaseTimelineStorageUtils
 operator|.
 name|createNewCell
 argument_list|(

@@ -746,7 +746,7 @@ name|storage
 operator|.
 name|common
 operator|.
-name|TimelineStorageUtils
+name|HBaseTimelineStorageUtils
 import|;
 end_import
 
@@ -1031,7 +1031,7 @@ control|)
 block|{
 name|assertTrue
 argument_list|(
-name|TimelineStorageUtils
+name|HBaseTimelineStorageUtils
 operator|.
 name|isFlowRunTable
 argument_list|(
@@ -1118,7 +1118,7 @@ control|)
 block|{
 name|assertFalse
 argument_list|(
-name|TimelineStorageUtils
+name|HBaseTimelineStorageUtils
 operator|.
 name|isFlowRunTable
 argument_list|(
@@ -1205,7 +1205,7 @@ control|)
 block|{
 name|assertFalse
 argument_list|(
-name|TimelineStorageUtils
+name|HBaseTimelineStorageUtils
 operator|.
 name|isFlowRunTable
 argument_list|(

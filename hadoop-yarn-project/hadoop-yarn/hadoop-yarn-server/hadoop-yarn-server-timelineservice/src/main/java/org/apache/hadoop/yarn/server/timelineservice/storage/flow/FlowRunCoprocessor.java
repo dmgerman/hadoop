@@ -474,7 +474,7 @@ name|storage
 operator|.
 name|common
 operator|.
-name|TimelineStorageUtils
+name|HBaseTimelineStorageUtils
 import|;
 end_import
 
@@ -590,7 +590,7 @@ argument_list|()
 expr_stmt|;
 name|isFlowRunRegion
 operator|=
-name|TimelineStorageUtils
+name|HBaseTimelineStorageUtils
 operator|.
 name|isFlowRunTable
 argument_list|(
@@ -717,7 +717,7 @@ block|{
 name|Tag
 name|t
 init|=
-name|TimelineStorageUtils
+name|HBaseTimelineStorageUtils
 operator|.
 name|getTagFromAttribute
 argument_list|(
