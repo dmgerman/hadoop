@@ -2157,6 +2157,17 @@ name|min
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Value of {} is {}"
+argument_list|,
+name|key
+argument_list|,
+name|v
+argument_list|)
+expr_stmt|;
 return|return
 name|v
 return|;
@@ -2214,6 +2225,17 @@ name|min
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Value of {} is {}"
+argument_list|,
+name|key
+argument_list|,
+name|v
+argument_list|)
+expr_stmt|;
 return|return
 name|v
 return|;
@@ -2269,6 +2291,17 @@ name|v
 argument_list|,
 name|min
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Value of {} is {}"
+argument_list|,
+name|key
+argument_list|,
+name|v
 argument_list|)
 expr_stmt|;
 return|return

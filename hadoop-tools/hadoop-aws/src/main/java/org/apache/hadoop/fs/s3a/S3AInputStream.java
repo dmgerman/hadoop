@@ -536,6 +536,8 @@ operator|+
 literal|")"
 argument_list|,
 name|contentRangeFinish
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -1001,6 +1003,8 @@ argument_list|,
 name|this
 operator|.
 name|contentRangeFinish
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|pos
@@ -1533,6 +1537,8 @@ argument_list|,
 name|this
 operator|.
 name|contentRangeFinish
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// this is actually a no-op
@@ -1553,8 +1559,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Close a stream: decide whether to abort or close, based on    * the length of the stream and the current position.    * If a close() is attempted and fails, the operation escalates to    * an abort.    *    * This does not set the {@link #closed} flag.    *    * @param reason reason for stream being closed; used in messages    * @param length length of the stream.    */
-DECL|method|closeStream (String reason, long length)
+comment|/**    * Close a stream: decide whether to abort or close, based on    * the length of the stream and the current position.    * If a close() is attempted and fails, the operation escalates to    * an abort.    *    * This does not set the {@link #closed} flag.    * @param reason reason for stream being closed; used in messages    * @param length length of the stream.    * @param forceAbort force an abort; used if explicitly requested.    */
+DECL|method|closeStream (String reason, long length, boolean forceAbort)
 specifier|private
 name|void
 name|closeStream
@@ -1564,6 +1570,9 @@ name|reason
 parameter_list|,
 name|long
 name|length
+parameter_list|,
+name|boolean
+name|forceAbort
 parameter_list|)
 block|{
 if|if
@@ -1584,6 +1593,8 @@ decl_stmt|;
 name|boolean
 name|shouldAbort
 init|=
+name|forceAbort
+operator|||
 name|remaining
 operator|>
 name|readahead
@@ -1697,6 +1708,58 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
+block|}
+comment|/**    * Forcibly reset the stream, by aborting the connection. The next    * {@code read()} operation will trigger the opening of a new HTTPS    * connection.    *    * This is potentially very inefficient, and should only be invoked    * in extreme circumstances. It logs at info for this reason.    * @return true if the connection was actually reset.    * @throws IOException if invoked on a closed stream.    */
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|method|resetConnection ()
+specifier|public
+specifier|synchronized
+name|boolean
+name|resetConnection
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|checkNotClosed
+argument_list|()
+expr_stmt|;
+name|boolean
+name|connectionOpen
+init|=
+name|wrappedStream
+operator|!=
+literal|null
+decl_stmt|;
+if|if
+condition|(
+name|connectionOpen
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Forced reset of connection to {}"
+argument_list|,
+name|uri
+argument_list|)
+expr_stmt|;
+name|closeStream
+argument_list|(
+literal|"reset()"
+argument_list|,
+name|contentRangeFinish
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|connectionOpen
+return|;
 block|}
 annotation|@
 name|Override

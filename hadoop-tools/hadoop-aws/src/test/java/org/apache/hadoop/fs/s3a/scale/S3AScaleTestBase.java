@@ -164,16 +164,6 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Assert
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
 name|Assume
 import|;
 end_import
@@ -484,6 +474,26 @@ name|FSDataInputStream
 name|in
 parameter_list|)
 block|{
+return|return
+name|getS3AInputStream
+argument_list|(
+name|in
+argument_list|)
+operator|.
+name|getS3AStreamStatistics
+argument_list|()
+return|;
+block|}
+comment|/**    * Get the inner stream of an input stream.    * Raises an exception if the inner stream is not an S3A input stream    * @param in wrapper    * @return the inner stream    * @throws AssertionError if the inner stream is of the wrong type    */
+DECL|method|getS3AInputStream ( FSDataInputStream in)
+specifier|protected
+name|S3AInputStream
+name|getS3AInputStream
+parameter_list|(
+name|FSDataInputStream
+name|in
+parameter_list|)
+block|{
 name|InputStream
 name|inner
 init|=
@@ -499,36 +509,24 @@ operator|instanceof
 name|S3AInputStream
 condition|)
 block|{
-name|S3AInputStream
-name|s3a
-init|=
+return|return
 operator|(
 name|S3AInputStream
 operator|)
 name|inner
-decl_stmt|;
-return|return
-name|s3a
-operator|.
-name|getS3AStreamStatistics
-argument_list|()
 return|;
 block|}
 else|else
 block|{
-name|Assert
-operator|.
-name|fail
+throw|throw
+operator|new
+name|AssertionError
 argument_list|(
 literal|"Not an S3AInputStream: "
 operator|+
 name|inner
 argument_list|)
-expr_stmt|;
-comment|// never reached
-return|return
-literal|null
-return|;
+throw|;
 block|}
 block|}
 comment|/**    * Get the gauge value of a statistic. Raises an assertion if    * there is no such gauge.    * @param statistic statistic to look up    * @return the value.    */
