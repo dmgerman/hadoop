@@ -438,7 +438,7 @@ decl_stmt|;
 return|return
 name|mapper
 operator|.
-name|writerWithType
+name|writerFor
 argument_list|(
 name|planType
 argument_list|)

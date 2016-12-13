@@ -146,7 +146,7 @@ operator|new
 name|ObjectMapper
 argument_list|()
 operator|.
-name|reader
+name|readerFor
 argument_list|(
 name|DiskBalancerVolume
 operator|.

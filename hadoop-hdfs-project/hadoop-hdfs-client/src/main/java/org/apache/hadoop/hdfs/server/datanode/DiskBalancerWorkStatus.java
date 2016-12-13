@@ -210,7 +210,7 @@ operator|new
 name|ObjectMapper
 argument_list|()
 operator|.
-name|reader
+name|readerFor
 argument_list|(
 name|DiskBalancerWorkStatus
 operator|.
@@ -228,7 +228,7 @@ operator|new
 name|ObjectMapper
 argument_list|()
 operator|.
-name|reader
+name|readerFor
 argument_list|(
 name|defaultInstance
 argument_list|()
