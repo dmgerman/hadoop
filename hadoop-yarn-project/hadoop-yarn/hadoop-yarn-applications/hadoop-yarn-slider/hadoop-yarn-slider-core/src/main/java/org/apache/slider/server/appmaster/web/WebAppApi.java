@@ -64,22 +64,6 @@ name|server
 operator|.
 name|appmaster
 operator|.
-name|AppMasterActionOperations
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|server
-operator|.
-name|appmaster
-operator|.
 name|actions
 operator|.
 name|QueueAccess
@@ -136,24 +120,6 @@ name|appmaster
 operator|.
 name|state
 operator|.
-name|RoleStatus
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|server
-operator|.
-name|appmaster
-operator|.
-name|state
-operator|.
 name|StateAccessForProviders
 import|;
 end_import
@@ -182,34 +148,6 @@ name|ContentCache
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|server
-operator|.
-name|services
-operator|.
-name|security
-operator|.
-name|CertificateManager
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-import|;
-end_import
-
 begin_comment
 comment|/**  * Interface to pass information from the Slider AppMaster to the WebApp  */
 end_comment
@@ -232,23 +170,6 @@ name|ProviderService
 name|getProviderService
 parameter_list|()
 function_decl|;
-comment|/**    * The {@link CertificateManager} for the current cluster    */
-DECL|method|getCertificateManager ()
-name|CertificateManager
-name|getCertificateManager
-parameter_list|()
-function_decl|;
-comment|/**    * Generate a mapping from role name to its {@link RoleStatus}. Be aware that this    * is a computed value and not just a getter    */
-DECL|method|getRoleStatusByName ()
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|RoleStatus
-argument_list|>
-name|getRoleStatusByName
-parameter_list|()
-function_decl|;
 comment|/**    * Registry operations accessor    * @return registry access    */
 DECL|method|getRegistryOperations ()
 name|RegistryOperations
@@ -265,12 +186,6 @@ comment|/**    * Get the queue accessor    * @return the immediate and scheduled
 DECL|method|getQueues ()
 name|QueueAccess
 name|getQueues
-parameter_list|()
-function_decl|;
-comment|/**    * API for AM operations    * @return current operations implementation    */
-DECL|method|getAMOperations ()
-name|AppMasterActionOperations
-name|getAMOperations
 parameter_list|()
 function_decl|;
 comment|/**    * Local cache of content    * @return the cache    */

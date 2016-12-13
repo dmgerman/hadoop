@@ -507,20 +507,6 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-DECL|method|getClientCertificateStore (Messages.GetCertificateStoreRequestProto request)
-name|Messages
-operator|.
-name|GetCertificateStoreResponseProto
-name|getClientCertificateStore
-parameter_list|(
-name|Messages
-operator|.
-name|GetCertificateStoreRequestProto
-name|request
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
 block|}
 end_interface
 
