@@ -6814,6 +6814,9 @@ name|bpId
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Prefer FileIoProvider#fullydelete.    * @param dir    * @return    */
+annotation|@
+name|Deprecated
 DECL|method|fullyDelete (final File dir)
 specifier|public
 specifier|static

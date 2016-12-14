@@ -3173,6 +3173,12 @@ name|DATANODE_HTRACE_PREFIX
 init|=
 literal|"datanode.htrace."
 decl_stmt|;
+DECL|field|fileIoProvider
+specifier|private
+specifier|final
+name|FileIoProvider
+name|fileIoProvider
+decl_stmt|;
 comment|/**    * Use {@link NetUtils#createSocketAddr(String)} instead.    */
 annotation|@
 name|Deprecated
@@ -3689,6 +3695,16 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
+name|fileIoProvider
+operator|=
+operator|new
+name|FileIoProvider
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
 name|fileDescriptorPassingDisabledReason
 operator|=
 literal|null
@@ -3829,6 +3845,16 @@ name|TracerConfigurationManager
 argument_list|(
 name|DATANODE_HTRACE_PREFIX
 argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|fileIoProvider
+operator|=
+operator|new
+name|FileIoProvider
+argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
@@ -4669,6 +4695,16 @@ operator|.
 name|ECN
 operator|.
 name|SUPPORTED
+return|;
+block|}
+DECL|method|getFileIoProvider ()
+specifier|public
+name|FileIoProvider
+name|getFileIoProvider
+parameter_list|()
+block|{
+return|return
+name|fileIoProvider
 return|;
 block|}
 comment|/**    * Contains the StorageLocations for changed data volumes.    */
@@ -14574,6 +14610,22 @@ return|return
 literal|""
 return|;
 block|}
+block|}
+annotation|@
+name|Override
+comment|// DataNodeMXBean
+DECL|method|getFileIoProviderStatistics ()
+specifier|public
+name|String
+name|getFileIoProviderStatistics
+parameter_list|()
+block|{
+return|return
+name|fileIoProvider
+operator|.
+name|getStatistics
+argument_list|()
+return|;
 block|}
 DECL|method|refreshNamenodes (Configuration conf)
 specifier|public

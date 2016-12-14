@@ -168,20 +168,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
-operator|.
-name|IOUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|DataChecksum
@@ -327,18 +313,21 @@ return|return
 name|checksum
 return|;
 block|}
-comment|/**    * Read the checksum header from the meta file.    * @return the data checksum obtained from the header.    */
-DECL|method|readDataChecksum (File metaFile, int bufSize)
+comment|/**    * Read the checksum header from the meta file.    * inputStream must be closed by the caller.    * @return the data checksum obtained from the header.    */
+DECL|method|readDataChecksum ( FileInputStream inputStream, int bufSize, File metaFile)
 specifier|public
 specifier|static
 name|DataChecksum
 name|readDataChecksum
 parameter_list|(
-name|File
-name|metaFile
+name|FileInputStream
+name|inputStream
 parameter_list|,
 name|int
 name|bufSize
+parameter_list|,
+name|File
+name|metaFile
 parameter_list|)
 throws|throws
 name|IOException
@@ -346,28 +335,18 @@ block|{
 name|DataInputStream
 name|in
 init|=
-literal|null
-decl_stmt|;
-try|try
-block|{
-name|in
-operator|=
 operator|new
 name|DataInputStream
 argument_list|(
 operator|new
 name|BufferedInputStream
 argument_list|(
-operator|new
-name|FileInputStream
-argument_list|(
-name|metaFile
-argument_list|)
+name|inputStream
 argument_list|,
 name|bufSize
 argument_list|)
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 return|return
 name|readDataChecksum
 argument_list|(
@@ -376,17 +355,6 @@ argument_list|,
 name|metaFile
 argument_list|)
 return|;
-block|}
-finally|finally
-block|{
-name|IOUtils
-operator|.
-name|closeStream
-argument_list|(
-name|in
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Read the checksum header from the meta input stream.    * @return the data checksum obtained from the header.    */
 DECL|method|readDataChecksum (final DataInputStream metaIn, final Object name)
@@ -454,7 +422,7 @@ name|getChecksum
 argument_list|()
 return|;
 block|}
-comment|/**    * Read the header without changing the position of the FileChannel.    *    * @param fc The FileChannel to read.    * @return the Metadata Header.    * @throws IOException on error.    */
+comment|/**    * Read the header without changing the position of the FileChannel.    * This is used by the client for short-circuit reads.    *    * @param fc The FileChannel to read.    * @return the Metadata Header.    * @throws IOException on error.    */
 DECL|method|preadHeader (FileChannel fc)
 specifier|public
 specifier|static
@@ -595,58 +563,41 @@ name|in
 argument_list|)
 return|;
 block|}
-comment|/**    * Reads header at the top of metadata file and returns the header.    *    * @return metadata header for the block    * @throws IOException    */
-DECL|method|readHeader (File file)
+comment|/**    * Reads header at the top of metadata file and returns the header.    * Closes the input stream after reading the header.    *    * @return metadata header for the block    * @throws IOException    */
+DECL|method|readHeader ( FileInputStream fis)
 specifier|public
 specifier|static
 name|BlockMetadataHeader
 name|readHeader
 parameter_list|(
-name|File
-name|file
+name|FileInputStream
+name|fis
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+init|(
 name|DataInputStream
 name|in
 init|=
-literal|null
-decl_stmt|;
-try|try
-block|{
-name|in
-operator|=
 operator|new
 name|DataInputStream
 argument_list|(
 operator|new
 name|BufferedInputStream
 argument_list|(
-operator|new
-name|FileInputStream
-argument_list|(
-name|file
+name|fis
 argument_list|)
 argument_list|)
-argument_list|)
-expr_stmt|;
+init|)
+block|{
 return|return
 name|readHeader
 argument_list|(
 name|in
 argument_list|)
 return|;
-block|}
-finally|finally
-block|{
-name|IOUtils
-operator|.
-name|closeStream
-argument_list|(
-name|in
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 comment|/**    * Read the header at the beginning of the given block meta file.    * The current file position will be altered by this method.    * If an error occurs, the file is<em>not</em> closed.    */

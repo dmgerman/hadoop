@@ -174,6 +174,12 @@ name|String
 name|getDiskBalancerStatus
 parameter_list|()
 function_decl|;
+comment|/**    * Gets the {@link FileIoProvider} statistics.    */
+DECL|method|getFileIoProviderStatistics ()
+name|String
+name|getFileIoProviderStatistics
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

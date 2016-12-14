@@ -4530,6 +4530,15 @@ name|DFS_DATANODE_FSDATASET_VOLUME_CHOOSING_POLICY_KEY
 init|=
 literal|"dfs.datanode.fsdataset.volume.choosing.policy"
 decl_stmt|;
+DECL|field|DFS_DATANODE_FILE_IO_EVENTS_CLASS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_DATANODE_FILE_IO_EVENTS_CLASS_KEY
+init|=
+literal|"dfs.datanode.fileio.events.class"
+decl_stmt|;
 DECL|field|DFS_DATANODE_AVAILABLE_SPACE_VOLUME_CHOOSING_POLICY_BALANCED_SPACE_THRESHOLD_KEY
 specifier|public
 specifier|static

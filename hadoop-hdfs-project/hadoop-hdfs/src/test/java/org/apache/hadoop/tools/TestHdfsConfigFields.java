@@ -280,6 +280,15 @@ operator|.
 name|DFS_NAMENODE_STARTUP_KEY
 argument_list|)
 expr_stmt|;
+name|configurationPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_FILE_IO_EVENTS_CLASS_KEY
+argument_list|)
+expr_stmt|;
 comment|// Allocate
 name|xmlPropsToSkipCompare
 operator|=

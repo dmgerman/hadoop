@@ -212,6 +212,24 @@ name|server
 operator|.
 name|datanode
 operator|.
+name|FileIoProvider
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
 name|DirectoryScanner
 operator|.
 name|ReportCompiler
@@ -1103,6 +1121,11 @@ DECL|class|VolumeCheckContext
 class|class
 name|VolumeCheckContext
 block|{   }
+DECL|method|getFileIoProvider ()
+name|FileIoProvider
+name|getFileIoProvider
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

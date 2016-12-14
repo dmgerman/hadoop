@@ -68,6 +68,24 @@ name|StorageDirectory
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|FileIoProvider
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class is to be used as a builder for {@link FsVolumeImpl} objects.  */
 end_comment
@@ -97,6 +115,11 @@ DECL|field|conf
 specifier|private
 name|Configuration
 name|conf
+decl_stmt|;
+DECL|field|fileIoProvider
+specifier|private
+name|FileIoProvider
+name|fileIoProvider
 decl_stmt|;
 DECL|method|FsVolumeImplBuilder ()
 specifier|public
@@ -192,6 +215,24 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|setFileIoProvider (FileIoProvider fileIoProvider)
+name|FsVolumeImplBuilder
+name|setFileIoProvider
+parameter_list|(
+name|FileIoProvider
+name|fileIoProvider
+parameter_list|)
+block|{
+name|this
+operator|.
+name|fileIoProvider
+operator|=
+name|fileIoProvider
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|build ()
 name|FsVolumeImpl
 name|build
@@ -208,6 +249,18 @@ argument_list|,
 name|storageID
 argument_list|,
 name|sd
+argument_list|,
+name|fileIoProvider
+operator|!=
+literal|null
+condition|?
+name|fileIoProvider
+else|:
+operator|new
+name|FileIoProvider
+argument_list|(
+literal|null
+argument_list|)
 argument_list|,
 name|conf
 argument_list|)

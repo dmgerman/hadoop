@@ -3207,91 +3207,12 @@ name|user
 return|;
 block|}
 block|}
-comment|/**    * Create a FileInputStream that shares delete permission on the    * file opened, i.e. other process can delete the file the    * FileInputStream is reading. Only Windows implementation uses    * the native interface.    */
-DECL|method|getShareDeleteFileInputStream (File f)
+comment|/**    * Create a FileDescriptor that shares delete permission on the    * file opened at a given offset, i.e. other process can delete    * the file the FileDescriptor is reading. Only Windows implementation    * uses the native interface.    */
+DECL|method|getShareDeleteFileDescriptor ( File f, long seekOffset)
 specifier|public
 specifier|static
-name|FileInputStream
-name|getShareDeleteFileInputStream
-parameter_list|(
-name|File
-name|f
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-if|if
-condition|(
-operator|!
-name|Shell
-operator|.
-name|WINDOWS
-condition|)
-block|{
-comment|// On Linux the default FileInputStream shares delete permission
-comment|// on the file opened.
-comment|//
-return|return
-operator|new
-name|FileInputStream
-argument_list|(
-name|f
-argument_list|)
-return|;
-block|}
-else|else
-block|{
-comment|// Use Windows native interface to create a FileInputStream that
-comment|// shares delete permission on the file opened.
-comment|//
 name|FileDescriptor
-name|fd
-init|=
-name|Windows
-operator|.
-name|createFile
-argument_list|(
-name|f
-operator|.
-name|getAbsolutePath
-argument_list|()
-argument_list|,
-name|Windows
-operator|.
-name|GENERIC_READ
-argument_list|,
-name|Windows
-operator|.
-name|FILE_SHARE_READ
-operator||
-name|Windows
-operator|.
-name|FILE_SHARE_WRITE
-operator||
-name|Windows
-operator|.
-name|FILE_SHARE_DELETE
-argument_list|,
-name|Windows
-operator|.
-name|OPEN_EXISTING
-argument_list|)
-decl_stmt|;
-return|return
-operator|new
-name|FileInputStream
-argument_list|(
-name|fd
-argument_list|)
-return|;
-block|}
-block|}
-comment|/**    * Create a FileInputStream that shares delete permission on the    * file opened at a given offset, i.e. other process can delete    * the file the FileInputStream is reading. Only Windows implementation    * uses the native interface.    */
-DECL|method|getShareDeleteFileInputStream (File f, long seekOffset)
-specifier|public
-specifier|static
-name|FileInputStream
-name|getShareDeleteFileInputStream
+name|getShareDeleteFileDescriptor
 parameter_list|(
 name|File
 name|f
@@ -3337,14 +3258,10 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
-operator|new
-name|FileInputStream
-argument_list|(
 name|rf
 operator|.
 name|getFD
 argument_list|()
-argument_list|)
 return|;
 block|}
 else|else
@@ -3422,11 +3339,7 @@ name|FILE_BEGIN
 argument_list|)
 expr_stmt|;
 return|return
-operator|new
-name|FileInputStream
-argument_list|(
 name|fd
-argument_list|)
 return|;
 block|}
 block|}

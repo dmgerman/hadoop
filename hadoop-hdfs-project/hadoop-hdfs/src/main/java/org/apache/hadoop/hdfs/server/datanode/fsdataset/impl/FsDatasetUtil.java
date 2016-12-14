@@ -40,6 +40,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|FileDescriptor
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|FileInputStream
 import|;
 end_import
@@ -546,7 +556,7 @@ block|}
 DECL|method|openAndSeek (File file, long offset)
 specifier|public
 specifier|static
-name|FileInputStream
+name|FileDescriptor
 name|openAndSeek
 parameter_list|(
 name|File
@@ -591,14 +601,10 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
-operator|new
-name|FileInputStream
-argument_list|(
 name|raf
 operator|.
 name|getFD
 argument_list|()
-argument_list|)
 return|;
 block|}
 catch|catch

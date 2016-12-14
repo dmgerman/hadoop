@@ -4335,8 +4335,6 @@ argument_list|(
 literal|false
 argument_list|,
 name|DEFAULT_CHECKSUM
-argument_list|,
-literal|300
 argument_list|)
 decl_stmt|;
 name|OutputStream

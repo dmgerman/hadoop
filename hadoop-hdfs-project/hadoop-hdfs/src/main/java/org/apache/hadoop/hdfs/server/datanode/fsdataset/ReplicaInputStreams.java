@@ -98,9 +98,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
+name|hdfs
 operator|.
-name|IOUtils
+name|server
+operator|.
+name|datanode
+operator|.
+name|FileIoProvider
 import|;
 end_import
 
@@ -114,9 +118,7 @@ name|hadoop
 operator|.
 name|io
 operator|.
-name|nativeio
-operator|.
-name|NativeIO
+name|IOUtils
 import|;
 end_import
 
@@ -184,6 +186,12 @@ specifier|private
 name|FsVolumeReference
 name|volumeRef
 decl_stmt|;
+DECL|field|fileIoProvider
+specifier|private
+specifier|final
+name|FileIoProvider
+name|fileIoProvider
+decl_stmt|;
 DECL|field|dataInFd
 specifier|private
 name|FileDescriptor
@@ -192,7 +200,7 @@ init|=
 literal|null
 decl_stmt|;
 comment|/** Create an object with a data input stream and a checksum input stream. */
-DECL|method|ReplicaInputStreams (InputStream dataStream, InputStream checksumStream, FsVolumeReference volumeRef)
+DECL|method|ReplicaInputStreams ( InputStream dataStream, InputStream checksumStream, FsVolumeReference volumeRef, FileIoProvider fileIoProvider)
 specifier|public
 name|ReplicaInputStreams
 parameter_list|(
@@ -204,6 +212,9 @@ name|checksumStream
 parameter_list|,
 name|FsVolumeReference
 name|volumeRef
+parameter_list|,
+name|FileIoProvider
+name|fileIoProvider
 parameter_list|)
 block|{
 name|this
@@ -211,6 +222,12 @@ operator|.
 name|volumeRef
 operator|=
 name|volumeRef
+expr_stmt|;
+name|this
+operator|.
+name|fileIoProvider
+operator|=
+name|fileIoProvider
 expr_stmt|;
 name|this
 operator|.
@@ -483,15 +500,16 @@ literal|null
 operator|:
 literal|"null dataInFd!"
 assert|;
-name|NativeIO
+name|fileIoProvider
 operator|.
-name|POSIX
-operator|.
-name|getCacheManipulator
+name|posixFadvise
+argument_list|(
+name|getVolumeRef
 argument_list|()
 operator|.
-name|posixFadviseIfPossible
-argument_list|(
+name|getVolume
+argument_list|()
+argument_list|,
 name|identifier
 argument_list|,
 name|dataInFd

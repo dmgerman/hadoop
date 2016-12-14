@@ -235,6 +235,20 @@ specifier|private
 name|FsVolumeSpi
 name|volume
 decl_stmt|;
+comment|/** This is used by some tests and FsDatasetUtil#computeChecksum. */
+DECL|field|DEFAULT_FILE_IO_PROVIDER
+specifier|private
+specifier|static
+specifier|final
+name|FileIoProvider
+name|DEFAULT_FILE_IO_PROVIDER
+init|=
+operator|new
+name|FileIoProvider
+argument_list|(
+literal|null
+argument_list|)
+decl_stmt|;
 comment|/**   * Constructor   * @param vol volume where replica is located   * @param blockId block id   * @param len replica length   * @param genStamp replica generation stamp   */
 DECL|method|ReplicaInfo (FsVolumeSpi vol, long blockId, long len, long genStamp)
 name|ReplicaInfo
@@ -277,6 +291,31 @@ parameter_list|()
 block|{
 return|return
 name|volume
+return|;
+block|}
+comment|/**    * Get the {@link FileIoProvider} for disk IO operations.    */
+DECL|method|getFileIoProvider ()
+specifier|public
+name|FileIoProvider
+name|getFileIoProvider
+parameter_list|()
+block|{
+comment|// In tests and when invoked via FsDatasetUtil#computeChecksum, the
+comment|// target volume for this replica may be unknown and hence null.
+comment|// Use the DEFAULT_FILE_IO_PROVIDER with no-op hooks.
+return|return
+operator|(
+name|volume
+operator|!=
+literal|null
+operator|)
+condition|?
+name|volume
+operator|.
+name|getFileIoProvider
+argument_list|()
+else|:
+name|DEFAULT_FILE_IO_PROVIDER
 return|;
 block|}
 comment|/**    * Set the volume where this replica is located on disk.    */

@@ -5434,6 +5434,18 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getFileIoProvider ()
+specifier|public
+name|FileIoProvider
+name|getFileIoProvider
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|check (VolumeCheckContext context)
 specifier|public
 name|VolumeCheckResult

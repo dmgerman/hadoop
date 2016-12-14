@@ -950,6 +950,12 @@ specifier|final
 name|AutoCloseableLock
 name|datasetLock
 decl_stmt|;
+DECL|field|fileIoProvider
+specifier|private
+specifier|final
+name|FileIoProvider
+name|fileIoProvider
+decl_stmt|;
 static|static
 block|{
 name|DataChecksum
@@ -1597,7 +1603,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|createStreams (boolean isCreate, DataChecksum requestedChecksum, long slowLogThresholdMs)
+DECL|method|createStreams (boolean isCreate, DataChecksum requestedChecksum)
 specifier|synchronized
 specifier|public
 name|ReplicaOutputStreams
@@ -1608,9 +1614,6 @@ name|isCreate
 parameter_list|,
 name|DataChecksum
 name|requestedChecksum
-parameter_list|,
-name|long
-name|slowLogThresholdMs
 parameter_list|)
 throws|throws
 name|IOException
@@ -1650,11 +1653,8 @@ argument_list|,
 name|requestedChecksum
 argument_list|,
 name|volume
-operator|.
-name|isTransientStorage
-argument_list|()
 argument_list|,
-name|slowLogThresholdMs
+name|fileIoProvider
 argument_list|)
 return|;
 block|}
@@ -2398,12 +2398,22 @@ specifier|final
 name|SimulatedStorage
 name|storage
 decl_stmt|;
-DECL|method|SimulatedVolume (final SimulatedStorage storage)
+DECL|field|fileIoProvider
+specifier|private
+specifier|final
+name|FileIoProvider
+name|fileIoProvider
+decl_stmt|;
+DECL|method|SimulatedVolume (final SimulatedStorage storage, final FileIoProvider fileIoProvider)
 name|SimulatedVolume
 parameter_list|(
 specifier|final
 name|SimulatedStorage
 name|storage
+parameter_list|,
+specifier|final
+name|FileIoProvider
+name|fileIoProvider
 parameter_list|)
 block|{
 name|this
@@ -2411,6 +2421,12 @@ operator|.
 name|storage
 operator|=
 name|storage
+expr_stmt|;
+name|this
+operator|.
+name|fileIoProvider
+operator|=
+name|fileIoProvider
 expr_stmt|;
 block|}
 annotation|@
@@ -2666,6 +2682,18 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getFileIoProvider ()
+specifier|public
+name|FileIoProvider
+name|getFileIoProvider
+parameter_list|()
+block|{
+return|return
+name|fileIoProvider
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|check (VolumeCheckContext context)
 specifier|public
 name|VolumeCheckResult
@@ -2850,6 +2878,16 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
+name|fileIoProvider
+operator|=
+operator|new
+name|FileIoProvider
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
 name|storage
 operator|=
 operator|new
@@ -2884,6 +2922,10 @@ argument_list|(
 name|this
 operator|.
 name|storage
+argument_list|,
+name|this
+operator|.
+name|fileIoProvider
 argument_list|)
 expr_stmt|;
 name|this
