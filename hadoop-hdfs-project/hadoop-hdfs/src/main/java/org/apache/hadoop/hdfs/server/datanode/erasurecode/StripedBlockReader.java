@@ -986,6 +986,16 @@ name|n
 operator|+=
 name|nread
 expr_stmt|;
+name|stripedReader
+operator|.
+name|getReconstructor
+argument_list|()
+operator|.
+name|incrBytesRead
+argument_list|(
+name|nread
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 comment|// close block reader

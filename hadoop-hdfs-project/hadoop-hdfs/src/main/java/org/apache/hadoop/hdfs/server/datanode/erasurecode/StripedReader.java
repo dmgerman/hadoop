@@ -2238,6 +2238,15 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+DECL|method|getReconstructor ()
+name|StripedReconstructor
+name|getReconstructor
+parameter_list|()
+block|{
+return|return
+name|reconstructor
+return|;
+block|}
 DECL|method|getReader (int i)
 name|StripedBlockReader
 name|getReader

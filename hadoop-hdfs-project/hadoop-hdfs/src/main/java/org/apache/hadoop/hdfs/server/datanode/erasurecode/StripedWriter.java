@@ -1406,6 +1406,15 @@ name|target
 argument_list|)
 return|;
 block|}
+DECL|method|getReconstructor ()
+name|StripedReconstructor
+name|getReconstructor
+parameter_list|()
+block|{
+return|return
+name|reconstructor
+return|;
+block|}
 DECL|method|hasValidTargets ()
 name|boolean
 name|hasValidTargets

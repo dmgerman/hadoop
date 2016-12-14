@@ -1202,6 +1202,16 @@ name|blockOffset4Target
 operator|+=
 name|toWrite
 expr_stmt|;
+name|stripedWriter
+operator|.
+name|getReconstructor
+argument_list|()
+operator|.
+name|incrBytesWritten
+argument_list|(
+name|toWrite
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 comment|// send an empty packet to mark the end of the block

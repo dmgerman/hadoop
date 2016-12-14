@@ -41,24 +41,6 @@ import|;
 end_import
 
 begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|metrics2
-operator|.
-name|lib
-operator|.
-name|Interns
-operator|.
-name|info
-import|;
-end_import
-
-begin_import
 import|import
 name|org
 operator|.
@@ -677,10 +659,32 @@ DECL|field|ecFailedReconstructionTasks
 name|MutableCounterLong
 name|ecFailedReconstructionTasks
 decl_stmt|;
-comment|// Nanoseconds spent by decoding tasks.
+annotation|@
+name|Metric
+argument_list|(
+literal|"Nanoseconds spent by decoding tasks"
+argument_list|)
 DECL|field|ecDecodingTimeNanos
 name|MutableCounterLong
 name|ecDecodingTimeNanos
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Bytes read by erasure coding worker"
+argument_list|)
+DECL|field|ecReconstructionBytesRead
+name|MutableCounterLong
+name|ecReconstructionBytesRead
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Bytes written by erasure coding worker"
+argument_list|)
+DECL|field|ecReconstructionBytesWritten
+name|MutableCounterLong
+name|ecReconstructionBytesWritten
 decl_stmt|;
 DECL|field|registry
 specifier|final
@@ -807,25 +811,6 @@ name|MutableQuantiles
 index|[
 name|len
 index|]
-expr_stmt|;
-name|ecDecodingTimeNanos
-operator|=
-name|registry
-operator|.
-name|newCounter
-argument_list|(
-name|info
-argument_list|(
-literal|"ecDecodingTimeNanos"
-argument_list|,
-literal|"Nanoseconds spent by decoding tasks"
-argument_list|)
-argument_list|,
-operator|(
-name|long
-operator|)
-literal|0
-argument_list|)
 expr_stmt|;
 for|for
 control|(
@@ -2090,6 +2075,40 @@ operator|.
 name|incr
 argument_list|(
 name|decodingTimeNanos
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|incrECReconstructionBytesRead (long bytes)
+specifier|public
+name|void
+name|incrECReconstructionBytesRead
+parameter_list|(
+name|long
+name|bytes
+parameter_list|)
+block|{
+name|ecReconstructionBytesRead
+operator|.
+name|incr
+argument_list|(
+name|bytes
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|incrECReconstructionBytesWritten (long bytes)
+specifier|public
+name|void
+name|incrECReconstructionBytesWritten
+parameter_list|(
+name|long
+name|bytes
+parameter_list|)
+block|{
+name|ecReconstructionBytesWritten
+operator|.
+name|incr
+argument_list|(
+name|bytes
 argument_list|)
 expr_stmt|;
 block|}

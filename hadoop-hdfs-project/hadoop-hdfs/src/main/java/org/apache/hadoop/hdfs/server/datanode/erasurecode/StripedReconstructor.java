@@ -342,6 +342,20 @@ name|ThreadPoolExecutor
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicLong
+import|;
+end_import
+
 begin_comment
 comment|/**  * StripedReconstructor reconstruct one or more missed striped block in the  * striped block group, the minimum number of live striped blocks should be  * no less than data block number.  *  * |<- Striped Block Group -> |  *  blk_0      blk_1       blk_2(*)   blk_3   ...<- A striped block group  *    |          |           |          |  *    v          v           v          v  * +------+   +------+   +------+   +------+  * |cell_0|   |cell_1|   |cell_2|   |cell_3|  ...  * +------+   +------+   +------+   +------+  * |cell_4|   |cell_5|   |cell_6|   |cell_7|  ...  * +------+   +------+   +------+   +------+  * |cell_8|   |cell_9|   |cell10|   |cell11|  ...  * +------+   +------+   +------+   +------+  *  ...         ...       ...         ...  *  *  * We use following steps to reconstruct striped block group, in each round, we  * reconstruct<code>bufferSize</code> data until finish, the  *<code>bufferSize</code> is configurable and may be less or larger than  * cell size:  * step1: read<code>bufferSize</code> data from minimum number of sources  *        required by reconstruction.  * step2: decode data for targets.  * step3: transfer data to targets.  *  * In step1, try to read<code>bufferSize</code> data from minimum number  * of sources , if there is corrupt or stale sources, read from new source  * will be scheduled. The best sources are remembered for next round and  * may be updated in each round.  *  * In step2, typically if source blocks we read are all data blocks, we  * need to call encode, and if there is one parity block, we need to call  * decode. Notice we only read once and reconstruct all missed striped block  * if they are more than one.  *  * In step3, send the reconstructed data to targets by constructing packet  * and send them directly. Same as continuous block replication, we  * don't check the packet ack. Since the datanode doing the reconstruction work  * are one of the source datanodes, so the reconstructed data are sent  * remotely.  *  * There are some points we can do further improvements in next phase:  * 1. we can read the block file directly on the local datanode,  *    currently we use remote block reader. (Notice short-circuit is not  *    a good choice, see inline comments).  * 2. We need to check the packet ack for EC reconstruction? Since EC  *    reconstruction is more expensive than continuous block replication,  *    it needs to read from several other datanodes, should we make sure the  *    reconstructed result received by targets?  */
 end_comment
@@ -441,6 +455,29 @@ specifier|private
 specifier|final
 name|BitSet
 name|liveBitSet
+decl_stmt|;
+comment|// metrics
+DECL|field|bytesRead
+specifier|private
+name|AtomicLong
+name|bytesRead
+init|=
+operator|new
+name|AtomicLong
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
+DECL|field|bytesWritten
+specifier|private
+name|AtomicLong
+name|bytesWritten
+init|=
+operator|new
+name|AtomicLong
+argument_list|(
+literal|0
+argument_list|)
 decl_stmt|;
 DECL|method|StripedReconstructor (ErasureCodingWorker worker, StripedReconstructionInfo stripedReconInfo)
 name|StripedReconstructor
@@ -570,6 +607,66 @@ name|positionInBlock
 operator|=
 literal|0L
 expr_stmt|;
+block|}
+DECL|method|incrBytesRead (long delta)
+specifier|public
+name|void
+name|incrBytesRead
+parameter_list|(
+name|long
+name|delta
+parameter_list|)
+block|{
+name|bytesRead
+operator|.
+name|addAndGet
+argument_list|(
+name|delta
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|incrBytesWritten (long delta)
+specifier|public
+name|void
+name|incrBytesWritten
+parameter_list|(
+name|long
+name|delta
+parameter_list|)
+block|{
+name|bytesWritten
+operator|.
+name|addAndGet
+argument_list|(
+name|delta
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|getBytesRead ()
+specifier|public
+name|long
+name|getBytesRead
+parameter_list|()
+block|{
+return|return
+name|bytesRead
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
+DECL|method|getBytesWritten ()
+specifier|public
+name|long
+name|getBytesWritten
+parameter_list|()
+block|{
+return|return
+name|bytesWritten
+operator|.
+name|get
+argument_list|()
+return|;
 block|}
 comment|/**    * Reconstruct one or more missed striped block in the striped block group,    * the minimum number of live striped blocks should be no less than data    * block number.    *    * @throws IOException    */
 DECL|method|reconstruct ()
