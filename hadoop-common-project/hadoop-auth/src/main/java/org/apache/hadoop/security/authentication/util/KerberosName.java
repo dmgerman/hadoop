@@ -225,7 +225,7 @@ name|Pattern
 operator|.
 name|compile
 argument_list|(
-literal|"([^/@]*)(/([^/@]*))?@([^/@]*)"
+literal|"([^/@]+)(/([^/@]+))?(@([^/@]+))?"
 argument_list|)
 decl_stmt|;
 comment|/**    * A pattern that matches a string with out '$' and then a single    * parameter with $n.    */
@@ -420,7 +420,7 @@ name|match
 operator|.
 name|group
 argument_list|(
-literal|4
+literal|5
 argument_list|)
 expr_stmt|;
 block|}

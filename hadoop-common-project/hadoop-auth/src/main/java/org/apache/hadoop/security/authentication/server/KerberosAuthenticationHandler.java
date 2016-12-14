@@ -469,7 +469,7 @@ implements|implements
 name|AuthenticationHandler
 block|{
 DECL|field|LOG
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|Logger
@@ -1236,13 +1236,6 @@ literal|null
 operator|&&
 name|kerbName
 operator|.
-name|getRealm
-argument_list|()
-operator|!=
-literal|null
-operator|&&
-name|kerbName
-operator|.
 name|getServiceName
 argument_list|()
 operator|!=
@@ -1259,20 +1252,9 @@ literal|"HTTP"
 argument_list|)
 condition|)
 block|{
-name|LOG
-operator|.
-name|trace
-argument_list|(
-literal|"Map server: {} to principal: {}"
-argument_list|,
-name|kerbName
-operator|.
-name|getHostName
-argument_list|()
-argument_list|,
-name|spnegoPrincipal
-argument_list|)
-expr_stmt|;
+name|boolean
+name|added
+init|=
 name|serverPrincipalMap
 operator|.
 name|put
@@ -1284,6 +1266,22 @@ argument_list|()
 argument_list|,
 name|spnegoPrincipal
 argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Map server: {} to principal: [{}], added = {}"
+argument_list|,
+name|kerbName
+operator|.
+name|getHostName
+argument_list|()
+argument_list|,
+name|spnegoPrincipal
+argument_list|,
+name|added
+argument_list|)
 expr_stmt|;
 block|}
 else|else
@@ -1292,7 +1290,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"HTTP principal: {} is invalid for SPNEGO!"
+literal|"HTTP principal: [{}] is invalid for SPNEGO!"
 argument_list|,
 name|spnegoPrincipal
 argument_list|)
@@ -1724,12 +1722,14 @@ name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"SPNEGO with principals: {}"
+literal|"SPNEGO with server principals: {} for {}"
 argument_list|,
 name|serverPrincipals
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+name|serverName
 argument_list|)
 expr_stmt|;
 block|}
@@ -1934,7 +1934,7 @@ name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"SPNEGO initiated with principal {}"
+literal|"SPNEGO initiated with server principal [{}]"
 argument_list|,
 name|serverPrincipal
 argument_list|)
@@ -2142,7 +2142,7 @@ name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"SPNEGO completed for principal [{}]"
+literal|"SPNEGO completed for client principal [{}]"
 argument_list|,
 name|clientPrincipal
 argument_list|)
