@@ -228,6 +228,24 @@ name|protocol
 operator|.
 name|datatransfer
 operator|.
+name|BlockPinningException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|datatransfer
+operator|.
 name|DataTransferProtoUtil
 import|;
 end_import
@@ -6149,7 +6167,9 @@ argument_list|)
 expr_stmt|;
 name|sendResponse
 argument_list|(
-name|ERROR
+name|Status
+operator|.
+name|ERROR_BLOCK_PINNED
 argument_list|,
 name|msg
 argument_list|)
@@ -6899,6 +6919,8 @@ argument_list|(
 name|copyResponse
 argument_list|,
 name|logInfo
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 comment|// get checksum info about the block we're copying
@@ -7060,6 +7082,20 @@ name|opStatus
 operator|=
 name|ERROR
 expr_stmt|;
+if|if
+condition|(
+name|ioe
+operator|instanceof
+name|BlockPinningException
+condition|)
+block|{
+name|opStatus
+operator|=
+name|Status
+operator|.
+name|ERROR_BLOCK_PINNED
+expr_stmt|;
+block|}
 name|errMsg
 operator|=
 literal|"opReplaceBlock "
