@@ -661,7 +661,13 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"Usage: hdfs zkfc [ -formatZK [-force] [-nonInteractive] ]"
+literal|"Usage: hdfs zkfc [ -formatZK [-force] [-nonInteractive] ]\n"
+operator|+
+literal|"\t-force: formats the znode if the znode exists.\n"
+operator|+
+literal|"\t-nonInteractive: formats the znode aborts if the znode exists,\n"
+operator|+
+literal|"\tunless -force option is specified."
 decl_stmt|;
 comment|/** Unable to format the parent znode in ZK */
 DECL|field|ERR_CODE_FORMAT_DENIED
