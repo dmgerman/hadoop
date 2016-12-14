@@ -1538,7 +1538,7 @@ argument_list|(
 name|callbackHandler
 operator|.
 name|callbackCount
-operator|==
+operator|>
 literal|0
 argument_list|)
 expr_stmt|;
