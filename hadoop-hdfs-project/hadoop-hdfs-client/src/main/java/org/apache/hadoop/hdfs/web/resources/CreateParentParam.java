@@ -100,6 +100,12 @@ operator|.
 name|parse
 argument_list|(
 name|str
+operator|==
+literal|null
+condition|?
+name|DEFAULT
+else|:
+name|str
 argument_list|)
 argument_list|)
 expr_stmt|;
