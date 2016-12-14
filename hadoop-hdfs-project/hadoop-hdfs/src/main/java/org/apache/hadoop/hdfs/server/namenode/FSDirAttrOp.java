@@ -1314,32 +1314,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// make sure storage policy is enabled, otherwise
-comment|// there is no need to satisfy storage policy.
-if|if
-condition|(
-operator|!
-name|fsd
-operator|.
-name|isStoragePolicyEnabled
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"Failed to satisfy storage policy since %s is set to false."
-argument_list|,
-name|DFS_STORAGE_POLICY_ENABLED_KEY
-argument_list|)
-argument_list|)
-throw|;
-block|}
 name|FSPermissionChecker
 name|pc
 init|=

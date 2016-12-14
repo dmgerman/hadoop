@@ -1206,6 +1206,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_STORAGE_POLICY_ENABLED_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|namenode
@@ -12632,6 +12648,65 @@ operator|+
 name|src
 argument_list|)
 expr_stmt|;
+comment|// make sure storage policy is enabled, otherwise
+comment|// there is no need to satisfy storage policy.
+if|if
+condition|(
+operator|!
+name|dir
+operator|.
+name|isStoragePolicyEnabled
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Failed to satisfy storage policy since %s is set to false."
+argument_list|,
+name|DFS_STORAGE_POLICY_ENABLED_KEY
+argument_list|)
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|blockManager
+operator|.
+name|getStoragePolicySatisfier
+argument_list|()
+operator|==
+literal|null
+operator|||
+operator|!
+name|blockManager
+operator|.
+name|getStoragePolicySatisfier
+argument_list|()
+operator|.
+name|isRunning
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedActionException
+argument_list|(
+literal|"Cannot request to satisfy storage policy "
+operator|+
+literal|"when storage policy satisfier feature has been deactivated"
+operator|+
+literal|" by admin. Seek for an admin help to activate it "
+operator|+
+literal|"or use Mover tool."
+argument_list|)
+throw|;
+block|}
 comment|// TODO: need to update editlog for persistence.
 name|FSDirAttrOp
 operator|.
@@ -19963,28 +20038,60 @@ name|nodeReg
 argument_list|)
 expr_stmt|;
 block|}
-comment|// TODO: Handle blocks movement results send by the coordinator datanode.
-comment|// This has to be revisited as part of HDFS-11029.
-if|if
-condition|(
+comment|// Handle blocks movement results sent by the coordinator datanode.
+name|StoragePolicySatisfier
+name|sps
+init|=
 name|blockManager
 operator|.
 name|getStoragePolicySatisfier
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|sps
 operator|!=
 literal|null
 condition|)
 block|{
-name|blockManager
+if|if
+condition|(
+operator|!
+name|sps
 operator|.
-name|getStoragePolicySatisfier
+name|isRunning
 argument_list|()
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Storage policy satisfier is not running. So, ignoring block "
+operator|+
+literal|"storage movement results sent by co-ordinator datanode"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+name|sps
 operator|.
 name|handleBlocksStorageMovementResults
 argument_list|(
 name|blksMovementResults
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|//create ha status
 specifier|final

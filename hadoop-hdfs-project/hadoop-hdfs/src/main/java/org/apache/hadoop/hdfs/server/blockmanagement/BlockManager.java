@@ -23472,6 +23472,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Gets the storage policy satisfier instance.    *    * @return sps    */
 DECL|method|getStoragePolicySatisfier ()
 specifier|public
 name|StoragePolicySatisfier
@@ -23480,6 +23481,126 @@ parameter_list|()
 block|{
 return|return
 name|sps
+return|;
+block|}
+comment|/**    * Activate the storage policy satisfier by starting its service.    */
+DECL|method|activateSPS ()
+specifier|public
+name|void
+name|activateSPS
+parameter_list|()
+block|{
+if|if
+condition|(
+name|sps
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Storage policy satisfier is not initialized."
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+elseif|else
+if|if
+condition|(
+name|sps
+operator|.
+name|isRunning
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Storage policy satisfier is already running."
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+name|sps
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Deactivate the storage policy satisfier by stopping its services.    */
+DECL|method|deactivateSPS ()
+specifier|public
+name|void
+name|deactivateSPS
+parameter_list|()
+block|{
+if|if
+condition|(
+name|sps
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Storage policy satisfier is not initialized."
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+elseif|else
+if|if
+condition|(
+operator|!
+name|sps
+operator|.
+name|isRunning
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Storage policy satisfier is already stopped."
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+name|sps
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+comment|// TODO: add command to DNs for stop in-progress processing SPS commands?
+comment|// to avoid confusions in cluster, I think sending commands from centralized
+comment|// place would be better to drop pending queues at DN. Anyway in progress
+comment|// work will be finished in a while, but this command can void starting
+comment|// fresh movements at DN.
+block|}
+comment|/**    * @return True if storage policy satisfier running.    */
+DECL|method|isStoragePolicySatisfierRunning ()
+specifier|public
+name|boolean
+name|isStoragePolicySatisfierRunning
+parameter_list|()
+block|{
+return|return
+name|sps
+operator|==
+literal|null
+condition|?
+literal|false
+else|:
+name|sps
+operator|.
+name|isRunning
+argument_list|()
 return|;
 block|}
 block|}

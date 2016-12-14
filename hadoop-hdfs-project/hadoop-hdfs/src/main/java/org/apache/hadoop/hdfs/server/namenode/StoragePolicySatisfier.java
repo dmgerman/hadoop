@@ -571,10 +571,22 @@ block|}
 comment|/**    * Start storage policy satisfier demon thread. Also start block storage    * movements monitor for retry the attempts if needed.    */
 DECL|method|start ()
 specifier|public
+specifier|synchronized
 name|void
 name|start
 parameter_list|()
 block|{
+name|isRunning
+operator|=
+literal|true
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Starting StoragePolicySatisfier."
+argument_list|)
+expr_stmt|;
 name|storagePolicySatisfierThread
 operator|=
 operator|new
@@ -606,6 +618,7 @@ block|}
 comment|/**    * Stop storage policy satisfier demon thread.    */
 DECL|method|stop ()
 specifier|public
+specifier|synchronized
 name|void
 name|stop
 parameter_list|()
@@ -613,6 +626,13 @@ block|{
 name|isRunning
 operator|=
 literal|false
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Stopping StoragePolicySatisfier."
+argument_list|)
 expr_stmt|;
 if|if
 condition|(
@@ -649,6 +669,11 @@ operator|.
 name|storageMovementsMonitor
 operator|.
 name|stop
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|clearQueues
 argument_list|()
 expr_stmt|;
 block|}
@@ -749,11 +774,21 @@ name|void
 name|run
 parameter_list|()
 block|{
-name|isRunning
-operator|=
+name|boolean
+name|isMoverRunning
+init|=
 operator|!
 name|checkIfMoverRunning
 argument_list|()
+decl_stmt|;
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+name|isRunning
+operator|=
+name|isMoverRunning
 expr_stmt|;
 if|if
 condition|(
@@ -761,11 +796,24 @@ operator|!
 name|isRunning
 condition|)
 block|{
+comment|// Stopping monitor thread and clearing queues as well
+name|this
+operator|.
+name|clearQueues
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|storageMovementsMonitor
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
 name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"StoragePolicySatisfier thread stopped "
+literal|"Stopping StoragePolicySatisfier thread "
 operator|+
 literal|"as Mover ID file "
 operator|+
@@ -781,12 +829,15 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
+block|}
 while|while
 condition|(
 name|namesystem
 operator|.
 name|isRunning
 argument_list|()
+operator|&&
+name|isRunning
 condition|)
 block|{
 try|try
@@ -837,10 +888,29 @@ name|Throwable
 name|t
 parameter_list|)
 block|{
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
 name|isRunning
 operator|=
 literal|false
 expr_stmt|;
+comment|// Stopping monitor thread and clearing queues as well
+name|this
+operator|.
+name|clearQueues
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|storageMovementsMonitor
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+block|}
 if|if
 condition|(
 operator|!
@@ -2384,6 +2454,28 @@ block|{
 return|return
 name|storageMovementsMonitor
 return|;
+block|}
+comment|/**    * Clear the queues from to be storage movement needed lists and items tracked    * in storage movement monitor.    */
+DECL|method|clearQueues ()
+specifier|public
+name|void
+name|clearQueues
+parameter_list|()
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Clearing all the queues from StoragePolicySatisfier. So, "
+operator|+
+literal|"user requests on satisfying block storages would be discarded."
+argument_list|)
+expr_stmt|;
+name|storageMovementNeeded
+operator|.
+name|clearAll
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 end_class

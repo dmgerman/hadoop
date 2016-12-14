@@ -118,6 +118,19 @@ name|poll
 argument_list|()
 return|;
 block|}
+DECL|method|clearAll ()
+specifier|public
+specifier|synchronized
+name|void
+name|clearAll
+parameter_list|()
+block|{
+name|storageMovementNeeded
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 end_class
 

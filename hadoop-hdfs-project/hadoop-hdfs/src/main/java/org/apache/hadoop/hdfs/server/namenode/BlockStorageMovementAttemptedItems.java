@@ -222,11 +222,11 @@ name|BlocksStorageMovementResult
 argument_list|>
 name|storageMovementAttemptedResults
 decl_stmt|;
-DECL|field|spsRunning
+DECL|field|monitorRunning
 specifier|private
 specifier|volatile
 name|boolean
-name|spsRunning
+name|monitorRunning
 init|=
 literal|true
 decl_stmt|;
@@ -405,10 +405,16 @@ block|}
 block|}
 comment|/**    * Starts the monitor thread.    */
 DECL|method|start ()
+specifier|public
+specifier|synchronized
 name|void
 name|start
 parameter_list|()
 block|{
+name|monitorRunning
+operator|=
+literal|true
+expr_stmt|;
 name|timerThread
 operator|=
 operator|new
@@ -435,13 +441,40 @@ block|}
 comment|/**    * Stops the monitor thread.    */
 DECL|method|stop ()
 specifier|public
+specifier|synchronized
 name|void
 name|stop
 parameter_list|()
 block|{
-name|spsRunning
+name|monitorRunning
 operator|=
 literal|false
+expr_stmt|;
+name|timerThread
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|timerThread
+operator|.
+name|join
+argument_list|(
+literal|3000
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{     }
+name|this
+operator|.
+name|clearQueues
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * A monitor class for checking block storage movement result and long waiting    * items periodically.    */
@@ -462,7 +495,7 @@ parameter_list|()
 block|{
 while|while
 condition|(
-name|spsRunning
+name|monitorRunning
 condition|)
 block|{
 try|try
@@ -489,7 +522,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|debug
+name|info
 argument_list|(
 literal|"BlocksStorageMovementAttemptResultMonitor thread "
 operator|+
@@ -841,6 +874,23 @@ operator|.
 name|size
 argument_list|()
 return|;
+block|}
+DECL|method|clearQueues ()
+specifier|public
+name|void
+name|clearQueues
+parameter_list|()
+block|{
+name|storageMovementAttemptedResults
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|storageMovementAttemptedItems
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 end_class
