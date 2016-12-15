@@ -1478,9 +1478,6 @@ name|String
 name|DFS_WEBHDFS_AUTHENTICATION_FILTER_DEFAULT
 init|=
 literal|"org.apache.hadoop.hdfs.web.AuthFilter"
-operator|.
-name|toString
-argument_list|()
 decl_stmt|;
 annotation|@
 name|Deprecated
