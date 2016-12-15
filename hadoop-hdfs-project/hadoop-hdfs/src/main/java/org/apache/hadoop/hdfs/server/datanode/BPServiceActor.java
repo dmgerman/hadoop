@@ -1589,6 +1589,8 @@ name|bpos
 operator|.
 name|verifyAndSetNamespaceInfo
 argument_list|(
+name|this
+argument_list|,
 name|nsInfo
 argument_list|)
 expr_stmt|;
