@@ -101,6 +101,24 @@ specifier|public
 name|String
 name|output
 decl_stmt|;
+annotation|@
+name|Parameter
+argument_list|(
+name|names
+operator|=
+block|{
+name|ARG_LIFETIME
+block|}
+argument_list|,
+name|description
+operator|=
+literal|"Lifetime of the application from the time of request"
+argument_list|)
+DECL|field|lifetime
+specifier|public
+name|boolean
+name|lifetime
+decl_stmt|;
 DECL|method|getOutput ()
 specifier|public
 name|String
