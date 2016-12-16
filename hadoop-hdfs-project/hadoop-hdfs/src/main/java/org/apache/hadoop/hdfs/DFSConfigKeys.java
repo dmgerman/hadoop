@@ -1787,7 +1787,7 @@ specifier|final
 name|String
 name|DFS_NAMENODE_MIN_SUPPORTED_DATANODE_VERSION_DEFAULT
 init|=
-literal|"3.0.0-alpha1-SNAPSHOT"
+literal|"2.1.0-beta"
 decl_stmt|;
 DECL|field|DFS_NAMENODE_EDITS_DIR_MINIMUM_KEY
 specifier|public
@@ -4022,7 +4022,7 @@ specifier|final
 name|String
 name|DFS_DATANODE_MIN_SUPPORTED_NAMENODE_VERSION_DEFAULT
 init|=
-literal|"3.0.0-alpha1-SNAPSHOT"
+literal|"2.1.0-beta"
 decl_stmt|;
 DECL|field|DFS_NAMENODE_INODE_ATTRIBUTES_PROVIDER_KEY
 specifier|public
