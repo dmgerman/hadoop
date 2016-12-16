@@ -2651,6 +2651,27 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|loadLastPartialChunkChecksum ( File blockFile, File metaFile)
+specifier|public
+name|byte
+index|[]
+name|loadLastPartialChunkChecksum
+parameter_list|(
+name|File
+name|blockFile
+parameter_list|,
+name|File
+name|metaFile
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|compileReport (String bpid, LinkedList<ScanInfo> report, ReportCompiler reportCompiler)
 specifier|public
 name|LinkedList

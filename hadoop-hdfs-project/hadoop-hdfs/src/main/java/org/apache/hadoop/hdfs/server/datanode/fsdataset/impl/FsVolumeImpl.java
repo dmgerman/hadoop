@@ -5627,8 +5627,10 @@ name|storageType
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|loadLastPartialChunkChecksum ( File blockFile, File metaFile)
-specifier|private
+specifier|public
 name|byte
 index|[]
 name|loadLastPartialChunkChecksum
@@ -5705,7 +5707,7 @@ return|return
 literal|null
 return|;
 block|}
-name|int
+name|long
 name|offsetInChecksum
 init|=
 name|BlockMetadataHeader
@@ -5713,16 +5715,13 @@ operator|.
 name|getHeaderSize
 argument_list|()
 operator|+
-call|(
-name|int
-call|)
-argument_list|(
+operator|(
 name|onDiskLen
 operator|/
 name|bytesPerChecksum
+operator|)
 operator|*
 name|checksumSize
-argument_list|)
 decl_stmt|;
 name|byte
 index|[]
@@ -5758,6 +5757,9 @@ argument_list|(
 name|offsetInChecksum
 argument_list|)
 expr_stmt|;
+name|int
+name|readBytes
+init|=
 name|raf
 operator|.
 name|read
@@ -5768,7 +5770,59 @@ literal|0
 argument_list|,
 name|checksumSize
 argument_list|)
-expr_stmt|;
+decl_stmt|;
+if|if
+condition|(
+name|readBytes
+operator|==
+operator|-
+literal|1
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Expected to read "
+operator|+
+name|checksumSize
+operator|+
+literal|" bytes from offset "
+operator|+
+name|offsetInChecksum
+operator|+
+literal|" but reached end of file."
+argument_list|)
+throw|;
+block|}
+elseif|else
+if|if
+condition|(
+name|readBytes
+operator|!=
+name|checksumSize
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Expected to read "
+operator|+
+name|checksumSize
+operator|+
+literal|" bytes from offset "
+operator|+
+name|offsetInChecksum
+operator|+
+literal|" but read "
+operator|+
+name|readBytes
+operator|+
+literal|" bytes."
+argument_list|)
+throw|;
+block|}
 block|}
 return|return
 name|lastChecksum

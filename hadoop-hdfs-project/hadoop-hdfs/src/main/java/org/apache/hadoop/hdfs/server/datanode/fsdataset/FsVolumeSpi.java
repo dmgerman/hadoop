@@ -1091,6 +1091,21 @@ name|GRANDFATHER_GENERATION_STAMP
 return|;
 block|}
 block|}
+comment|/**    * Load last partial chunk checksum from checksum file.    * Need to be called with FsDataset lock acquired.    * @param blockFile    * @param metaFile    * @return the last partial checksum    * @throws IOException    */
+DECL|method|loadLastPartialChunkChecksum (File blockFile, File metaFile)
+name|byte
+index|[]
+name|loadLastPartialChunkChecksum
+parameter_list|(
+name|File
+name|blockFile
+parameter_list|,
+name|File
+name|metaFile
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Compile a list of {@link ScanInfo} for the blocks in    * the block pool with id {@code bpid}.    *    * @param bpid block pool id to scan    * @param report the list onto which blocks reports are placed    * @param reportCompiler    * @throws IOException    */
 DECL|method|compileReport (String bpid, LinkedList<ScanInfo> report, ReportCompiler reportCompiler)
 name|LinkedList

@@ -1032,6 +1032,15 @@ literal|"If verifying checksum, currently must also send it."
 argument_list|)
 expr_stmt|;
 block|}
+comment|// if there is a append write happening right after the BlockSender
+comment|// is constructed, the last partial checksum maybe overwritten by the
+comment|// append, the BlockSender need to use the partial checksum before
+comment|// the append write.
+name|ChunkChecksum
+name|chunkChecksum
+init|=
+literal|null
+decl_stmt|;
 specifier|final
 name|long
 name|replicaVisibleLength
@@ -1065,13 +1074,33 @@ operator|.
 name|getVisibleLength
 argument_list|()
 expr_stmt|;
-block|}
-comment|// if there is a write in progress
-name|ChunkChecksum
-name|chunkChecksum
+if|if
+condition|(
+name|replica
+operator|instanceof
+name|FinalizedReplica
+condition|)
+block|{
+comment|// Load last checksum in case the replica is being written
+comment|// concurrently
+specifier|final
+name|FinalizedReplica
+name|frep
 init|=
-literal|null
+operator|(
+name|FinalizedReplica
+operator|)
+name|replica
 decl_stmt|;
+name|chunkChecksum
+operator|=
+name|frep
+operator|.
+name|getLastChecksumAndDataLen
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 if|if
 condition|(
 name|replica

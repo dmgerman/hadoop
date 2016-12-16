@@ -397,10 +397,26 @@ decl_stmt|;
 comment|/**    * The configuration.    */
 DECL|field|conf
 specifier|private
-specifier|final
 name|Conf
 name|conf
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
+DECL|method|setConf (Conf conf)
+name|void
+name|setConf
+parameter_list|(
+name|Conf
+name|conf
+parameter_list|)
+block|{
+name|this
+operator|.
+name|conf
+operator|=
+name|conf
+expr_stmt|;
+block|}
 comment|/**    * The DataNode this VolumEscanner is associated with.    */
 DECL|field|datanode
 specifier|private
@@ -1945,6 +1961,15 @@ literal|1
 return|;
 comment|// block not found.
 block|}
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"start scanning block {}"
+argument_list|,
+name|block
+argument_list|)
+expr_stmt|;
 name|BlockSender
 name|blockSender
 init|=
@@ -2732,6 +2757,17 @@ operator|>
 literal|0
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"{}: wait for {} milliseconds"
+argument_list|,
+name|this
+argument_list|,
+name|timeout
+argument_list|)
+expr_stmt|;
 name|wait
 argument_list|(
 name|timeout
