@@ -838,7 +838,7 @@ name|setInt
 argument_list|(
 name|MRJobConfig
 operator|.
-name|MR_NUM_OPPORTUNISTIC_MAPS_PER_100
+name|MR_NUM_OPPORTUNISTIC_MAPS_PERCENTAGE
 argument_list|,
 name|percent
 argument_list|)

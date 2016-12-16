@@ -815,7 +815,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * AMRMProxyService is a service that runs on each node manager that can be used  * to intercept and inspect messages from application master to the cluster  * resource manager. It listens to messages from the application master and  * creates a request intercepting pipeline instance for each application. The  * pipeline is a chain of intercepter instances that can inspect and modify the  * request/response as needed.  */
+comment|/**  * AMRMProxyService is a service that runs on each node manager that can be used  * to intercept and inspect messages from application master to the cluster  * resource manager. It listens to messages from the application master and  * creates a request intercepting pipeline instance for each application. The  * pipeline is a chain of interceptor instances that can inspect and modify the  * request/response as needed.  */
 end_comment
 
 begin_class

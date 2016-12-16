@@ -1041,7 +1041,7 @@ name|OPP_CONTAINER_ALLOCATION_NODES_NUMBER_USED
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|OPP_CONTAINER_ALLOCATION_NODES_NUMBER_USED_DEFAULT
+name|DEFAULT_OPP_CONTAINER_ALLOCATION_NODES_NUMBER_USED
 argument_list|)
 expr_stmt|;
 name|long
@@ -1060,7 +1060,7 @@ name|NM_CONTAINER_QUEUING_SORTING_NODES_INTERVAL_MS
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|NM_CONTAINER_QUEUING_SORTING_NODES_INTERVAL_MS_DEFAULT
+name|DEFAULT_NM_CONTAINER_QUEUING_SORTING_NODES_INTERVAL_MS
 argument_list|)
 decl_stmt|;
 name|this
@@ -1102,7 +1102,7 @@ name|NM_CONTAINER_QUEUING_LOAD_COMPARATOR
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|NM_CONTAINER_QUEUING_LOAD_COMPARATOR_DEFAULT
+name|DEFAULT_NM_CONTAINER_QUEUING_LOAD_COMPARATOR
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -1133,7 +1133,7 @@ name|NM_CONTAINER_QUEUING_LIMIT_STDEV
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|NM_CONTAINER_QUEUING_LIMIT_STDEV_DEFAULT
+name|DEFAULT_NM_CONTAINER_QUEUING_LIMIT_STDEV
 argument_list|)
 decl_stmt|;
 name|int
@@ -1167,7 +1167,7 @@ name|NM_CONTAINER_QUEUING_MIN_QUEUE_LENGTH
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|NM_CONTAINER_QUEUING_MIN_QUEUE_LENGTH_DEFAULT
+name|DEFAULT_NM_CONTAINER_QUEUING_MIN_QUEUE_LENGTH
 argument_list|)
 expr_stmt|;
 name|limitMax
@@ -1185,7 +1185,7 @@ name|NM_CONTAINER_QUEUING_MAX_QUEUE_LENGTH
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|NM_CONTAINER_QUEUING_MAX_QUEUE_LENGTH_DEFAULT
+name|DEFAULT_NM_CONTAINER_QUEUING_MAX_QUEUE_LENGTH
 argument_list|)
 expr_stmt|;
 block|}
@@ -1206,7 +1206,7 @@ name|NM_CONTAINER_QUEUING_MIN_QUEUE_WAIT_TIME_MS
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|NM_CONTAINER_QUEUING_MIN_QUEUE_WAIT_TIME_MS_DEFAULT
+name|DEFAULT_NM_CONTAINER_QUEUING_MIN_QUEUE_WAIT_TIME_MS
 argument_list|)
 expr_stmt|;
 name|limitMax
@@ -1224,7 +1224,7 @@ name|NM_CONTAINER_QUEUING_MAX_QUEUE_WAIT_TIME_MS
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|NM_CONTAINER_QUEUING_MAX_QUEUE_WAIT_TIME_MS_DEFAULT
+name|DEFAULT_NM_CONTAINER_QUEUING_MAX_QUEUE_WAIT_TIME_MS
 argument_list|)
 expr_stmt|;
 block|}

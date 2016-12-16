@@ -594,7 +594,7 @@ name|NM_OPPORTUNISTIC_CONTAINERS_MAX_QUEUE_LENGTH
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|NM_OPPORTUNISTIC_CONTAINERS_MAX_QUEUE_LENGTH_DEFAULT
+name|DEFAULT_NM_OPPORTUNISTIC_CONTAINERS_MAX_QUEUE_LENGTH
 argument_list|)
 argument_list|)
 expr_stmt|;

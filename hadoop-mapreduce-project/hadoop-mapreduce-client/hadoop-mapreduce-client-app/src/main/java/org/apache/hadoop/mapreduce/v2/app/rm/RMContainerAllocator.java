@@ -1806,11 +1806,11 @@ name|getInt
 argument_list|(
 name|MRJobConfig
 operator|.
-name|MR_NUM_OPPORTUNISTIC_MAPS_PER_100
+name|MR_NUM_OPPORTUNISTIC_MAPS_PERCENTAGE
 argument_list|,
 name|MRJobConfig
 operator|.
-name|DEFAULT_MR_NUM_OPPORTUNISTIC_MAPS_PER_100
+name|DEFAULT_MR_NUM_OPPORTUNISTIC_MAPS_PERCENTAGE
 argument_list|)
 argument_list|)
 expr_stmt|;

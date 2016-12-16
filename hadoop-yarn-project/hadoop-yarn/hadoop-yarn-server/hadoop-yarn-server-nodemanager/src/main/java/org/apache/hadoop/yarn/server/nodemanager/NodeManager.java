@@ -2201,7 +2201,7 @@ name|DIST_SCHEDULING_ENABLED
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DIST_SCHEDULING_ENABLED_DEFAULT
+name|DEFAULT_DIST_SCHEDULING_ENABLED
 argument_list|)
 decl_stmt|;
 name|this
