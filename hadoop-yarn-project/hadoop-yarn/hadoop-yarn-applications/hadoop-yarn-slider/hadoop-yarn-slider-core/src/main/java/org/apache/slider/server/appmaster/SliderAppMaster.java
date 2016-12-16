@@ -9210,35 +9210,13 @@ name|Throwable
 name|e
 parameter_list|)
 block|{
-comment|//callback says it's time to finish
 name|LOG_YARN
 operator|.
-name|error
+name|info
 argument_list|(
-literal|"AMRMClientAsync.onError() received {}"
+literal|"Ignoring AMRMClientAsync.onError() received {}"
 argument_list|,
 name|e
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-name|signalAMComplete
-argument_list|(
-operator|new
-name|ActionStopSlider
-argument_list|(
-literal|"stop"
-argument_list|,
-name|EXIT_EXCEPTION_THROWN
-argument_list|,
-name|FinalApplicationStatus
-operator|.
-name|FAILED
-argument_list|,
-literal|"AMRMClientAsync.onError() received "
-operator|+
-name|e
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
