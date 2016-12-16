@@ -5102,9 +5102,6 @@ DECL|field|nextLifelineTime
 specifier|volatile
 name|long
 name|nextLifelineTime
-init|=
-name|monotonicNow
-argument_list|()
 decl_stmt|;
 annotation|@
 name|VisibleForTesting
@@ -5194,6 +5191,11 @@ operator|.
 name|blockReportIntervalMs
 operator|=
 name|blockReportIntervalMs
+expr_stmt|;
+name|scheduleNextLifeline
+argument_list|(
+name|nextHeartbeatTime
+argument_list|)
 expr_stmt|;
 block|}
 comment|// This is useful to make sure NN gets Heartbeat before Blockreport
