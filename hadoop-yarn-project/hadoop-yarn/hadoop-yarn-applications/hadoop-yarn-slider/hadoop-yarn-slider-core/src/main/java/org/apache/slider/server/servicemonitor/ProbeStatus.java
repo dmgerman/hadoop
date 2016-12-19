@@ -51,6 +51,15 @@ name|ProbeStatus
 implements|implements
 name|Serializable
 block|{
+DECL|field|serialVersionUID
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|serialVersionUID
+init|=
+literal|165468L
+decl_stmt|;
 DECL|field|timestamp
 specifier|private
 name|long

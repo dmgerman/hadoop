@@ -147,41 +147,6 @@ else|:
 literal|0
 return|;
 block|}
-comment|/**    * Evaluate from a string. Returns true if the string is considered to match 'true',    * false otherwise.    * @param s source    * @return true if the input parses to an integer other than 0. False if it doesn't parse    * or parses to 0.    */
-DECL|method|fromString (String s)
-specifier|public
-specifier|static
-name|boolean
-name|fromString
-parameter_list|(
-name|String
-name|s
-parameter_list|)
-block|{
-try|try
-block|{
-return|return
-name|Integer
-operator|.
-name|valueOf
-argument_list|(
-name|s
-argument_list|)
-operator|!=
-literal|0
-return|;
-block|}
-catch|catch
-parameter_list|(
-name|NumberFormatException
-name|e
-parameter_list|)
-block|{
-return|return
-literal|false
-return|;
-block|}
-block|}
 annotation|@
 name|Override
 DECL|method|toString ()

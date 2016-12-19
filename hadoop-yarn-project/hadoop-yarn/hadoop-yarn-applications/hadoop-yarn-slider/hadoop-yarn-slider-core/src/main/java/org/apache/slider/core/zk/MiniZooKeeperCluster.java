@@ -621,7 +621,7 @@ name|startup
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * @param baseDir    * @param numZooKeeperServers    * @return ClientPort server bound to, -1 if there was a    *         binding problem and we couldn't pick another port.    * @throws IOException    * @throws InterruptedException    */
+comment|/**    * @return ClientPort server bound to, -1 if there was a    *         binding problem and we couldn't pick another port.    * @throws IOException    * @throws InterruptedException    */
 DECL|method|startup ()
 specifier|private
 name|int
@@ -1019,31 +1019,6 @@ argument_list|,
 name|e
 argument_list|)
 throw|;
-block|}
-block|}
-comment|/**    * Delete the basedir    */
-DECL|method|deleteBaseDir ()
-specifier|private
-name|void
-name|deleteBaseDir
-parameter_list|()
-block|{
-if|if
-condition|(
-name|baseDir
-operator|!=
-literal|null
-condition|)
-block|{
-name|baseDir
-operator|.
-name|delete
-argument_list|()
-expr_stmt|;
-name|baseDir
-operator|=
-literal|null
-expr_stmt|;
 block|}
 block|}
 annotation|@
@@ -1534,7 +1509,9 @@ argument_list|(
 literal|"stat"
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+literal|"UTF-8"
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|outstream
@@ -1658,7 +1635,9 @@ argument_list|(
 literal|"stat"
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+literal|"UTF-8"
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|outstream
@@ -1676,6 +1655,8 @@ name|sock
 operator|.
 name|getInputStream
 argument_list|()
+argument_list|,
+literal|"UTF-8"
 argument_list|)
 decl_stmt|;
 name|reader
@@ -1776,26 +1757,6 @@ expr_stmt|;
 block|}
 return|return
 literal|false
-return|;
-block|}
-DECL|method|getClientPort ()
-specifier|public
-name|int
-name|getClientPort
-parameter_list|()
-block|{
-return|return
-name|clientPort
-return|;
-block|}
-DECL|method|getZkQuorum ()
-specifier|public
-name|String
-name|getZkQuorum
-parameter_list|()
-block|{
-return|return
-name|zkQuorum
 return|;
 block|}
 block|}

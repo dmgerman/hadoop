@@ -750,8 +750,7 @@ name|commander
 operator|.
 name|parse
 argument_list|(
-name|getArgs
-argument_list|()
+name|args
 argument_list|)
 expr_stmt|;
 block|}
@@ -775,8 +774,7 @@ name|toString
 argument_list|()
 argument_list|,
 operator|(
-name|getArgs
-argument_list|()
+name|args
 operator|!=
 literal|null
 condition|?
@@ -785,8 +783,7 @@ name|SliderUtils
 operator|.
 name|join
 argument_list|(
-name|getArgs
-argument_list|()
+name|args
 argument_list|,
 literal|" "
 argument_list|,
@@ -1241,17 +1238,6 @@ return|return
 name|coreAction
 operator|.
 name|parameters
-return|;
-block|}
-DECL|method|getArgs ()
-specifier|public
-name|String
-index|[]
-name|getArgs
-parameter_list|()
-block|{
-return|return
-name|args
 return|;
 block|}
 block|}

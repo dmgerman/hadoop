@@ -286,20 +286,6 @@ name|hadoop
 operator|.
 name|io
 operator|.
-name|IOUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
 name|nativeio
 operator|.
 name|NativeIO
@@ -2039,23 +2025,6 @@ argument_list|(
 name|class_file
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|urlEnumeration
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Unable to find resources for class "
-operator|+
-name|my_class
-argument_list|)
-throw|;
-block|}
 for|for
 control|(
 init|;
@@ -4139,7 +4108,7 @@ block|{
 name|String
 name|containerf
 init|=
-literal|"  %-28s  %30s  %45s  %s\n"
+literal|"  %-28s  %30s  %45s  %s%n"
 decl_stmt|;
 name|StringBuilder
 name|builder
@@ -4154,7 +4123,7 @@ name|builder
 operator|.
 name|append
 argument_list|(
-literal|"Containers:\n"
+literal|"Containers:%n"
 argument_list|)
 expr_stmt|;
 name|builder
@@ -4165,7 +4134,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"  %-28s  %30s  %45s  %s\n"
+literal|"  %-28s  %30s  %45s  %s%n"
 argument_list|,
 literal|"Component Name"
 argument_list|,
@@ -5006,7 +4975,7 @@ name|first
 return|;
 block|}
 comment|/**    * Merge string maps excluding prefixes    * @param first first map    * @param second second map    * @param  prefixes prefixes to ignore    * @return 'first' merged with the second    */
-DECL|method|mergeMapsIgnoreDuplicateKeysAndPrefixes ( Map<String, String> first, Map<String, String> second, String... prefixes)
+DECL|method|mergeMapsIgnoreDuplicateKeysAndPrefixes ( Map<String, String> first, Map<String, String> second, List<String> prefixes)
 specifier|public
 specifier|static
 name|Map
@@ -5033,8 +5002,10 @@ name|String
 argument_list|>
 name|second
 parameter_list|,
+name|List
+argument_list|<
 name|String
-modifier|...
+argument_list|>
 name|prefixes
 parameter_list|)
 block|{
@@ -9749,13 +9720,16 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
+try|try
+init|(
 name|ByteArrayOutputStream
 name|baos
 init|=
 operator|new
 name|ByteArrayOutputStream
 argument_list|()
-decl_stmt|;
+init|)
+block|{
 while|while
 condition|(
 literal|true
@@ -9798,6 +9772,7 @@ name|toByteArray
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|done
 operator|=
@@ -10076,233 +10051,8 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Look for the windows executable and check it has the right headers.    *<code>File.canRead()</code> doesn't work on windows, so the reading    * is mandatory.    *    * @param program program name for errors    * @param exe executable    * @throws IOException IOE    */
-DECL|method|verifyWindowsExe (String program, File exe)
-specifier|public
-specifier|static
-name|void
-name|verifyWindowsExe
-parameter_list|(
-name|String
-name|program
-parameter_list|,
-name|File
-name|exe
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|verifyIsFile
-argument_list|(
-name|program
-argument_list|,
-name|exe
-argument_list|)
-expr_stmt|;
-name|verifyFileSize
-argument_list|(
-name|program
-argument_list|,
-name|exe
-argument_list|,
-literal|0x100
-argument_list|)
-expr_stmt|;
-comment|// now read two bytes and verify the header.
-try|try
-init|(
-name|FileReader
-name|reader
-init|=
-operator|new
-name|FileReader
-argument_list|(
-name|exe
-argument_list|)
-init|)
-block|{
-name|int
-index|[]
-name|header
-init|=
-operator|new
-name|int
-index|[
-literal|2
-index|]
-decl_stmt|;
-name|header
-index|[
-literal|0
-index|]
-operator|=
-name|reader
-operator|.
-name|read
-argument_list|()
-expr_stmt|;
-name|header
-index|[
-literal|1
-index|]
-operator|=
-name|reader
-operator|.
-name|read
-argument_list|()
-expr_stmt|;
-if|if
-condition|(
-operator|(
-name|header
-index|[
-literal|0
-index|]
-operator|!=
-literal|'M'
-operator|||
-name|header
-index|[
-literal|1
-index|]
-operator|!=
-literal|'Z'
-operator|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|FileNotFoundException
-argument_list|(
-name|program
-operator|+
-literal|" at "
-operator|+
-name|exe
-operator|+
-literal|" is not a windows executable file"
-argument_list|)
-throw|;
-block|}
-block|}
-block|}
-comment|/**    * Verify that a Unix exe works    * @param program program name for errors    * @param exe executable    * @throws IOException IOE     */
-DECL|method|verifyUnixExe (String program, File exe)
-specifier|public
-specifier|static
-name|void
-name|verifyUnixExe
-parameter_list|(
-name|String
-name|program
-parameter_list|,
-name|File
-name|exe
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|verifyIsFile
-argument_list|(
-name|program
-argument_list|,
-name|exe
-argument_list|)
-expr_stmt|;
-comment|// read flag
-if|if
-condition|(
-operator|!
-name|exe
-operator|.
-name|canRead
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Cannot read "
-operator|+
-name|program
-operator|+
-literal|" at "
-operator|+
-name|exe
-argument_list|)
-throw|;
-block|}
-comment|// exe flag
-if|if
-condition|(
-operator|!
-name|exe
-operator|.
-name|canExecute
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Cannot execute "
-operator|+
-name|program
-operator|+
-literal|" at "
-operator|+
-name|exe
-argument_list|)
-throw|;
-block|}
-block|}
-comment|/**    * Validate an executable    * @param program program name for errors    * @param exe program to look at    * @throws IOException    */
-DECL|method|validateExe (String program, File exe)
-specifier|public
-specifier|static
-name|void
-name|validateExe
-parameter_list|(
-name|String
-name|program
-parameter_list|,
-name|File
-name|exe
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-if|if
-condition|(
-operator|!
-name|Shell
-operator|.
-name|WINDOWS
-condition|)
-block|{
-name|verifyWindowsExe
-argument_list|(
-name|program
-argument_list|,
-name|exe
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|verifyUnixExe
-argument_list|(
-name|program
-argument_list|,
-name|exe
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-comment|/**    * Write bytes to a file    * @param outfile output file    * @param data data to write    * @param createParent flag to indicate that the parent dir should    * be created    * @throws IOException on any IO problem    */
-DECL|method|write (File outfile, byte[] data, boolean createParent)
+comment|/**    * Write bytes to a file    * @param outfile output file    * @param data data to write    * @throws IOException on any IO problem    */
+DECL|method|write (File outfile, byte[] data)
 specifier|public
 specifier|static
 name|void
@@ -10314,9 +10064,6 @@ parameter_list|,
 name|byte
 index|[]
 name|data
-parameter_list|,
-name|boolean
-name|createParent
 parameter_list|)
 throws|throws
 name|IOException
@@ -10354,14 +10101,32 @@ throw|;
 block|}
 if|if
 condition|(
-name|createParent
+operator|!
+name|parentDir
+operator|.
+name|exists
+argument_list|()
 condition|)
 block|{
+if|if
+condition|(
+operator|!
 name|parentDir
 operator|.
 name|mkdirs
 argument_list|()
-expr_stmt|;
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Failed to create parent directory "
+operator|+
+name|parentDir
+argument_list|)
+throw|;
+block|}
 block|}
 name|SliderUtils
 operator|.

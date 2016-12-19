@@ -934,8 +934,6 @@ name|Comparator
 argument_list|<
 name|Container
 argument_list|>
-implements|,
-name|Serializable
 block|{
 DECL|field|rh
 specifier|private

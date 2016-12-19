@@ -226,6 +226,7 @@ comment|/**  * Base path for services  */
 DECL|field|ZK_SERVICES
 specifier|public
 specifier|static
+specifier|final
 name|String
 name|ZK_SERVICES
 init|=
@@ -235,6 +236,7 @@ comment|/**    * Base path for all Slider references    */
 DECL|field|ZK_SLIDER
 specifier|public
 specifier|static
+specifier|final
 name|String
 name|ZK_SLIDER
 init|=
@@ -243,6 +245,7 @@ decl_stmt|;
 DECL|field|ZK_USERS
 specifier|public
 specifier|static
+specifier|final
 name|String
 name|ZK_USERS
 init|=
@@ -251,6 +254,7 @@ decl_stmt|;
 DECL|field|SVC_SLIDER
 specifier|public
 specifier|static
+specifier|final
 name|String
 name|SVC_SLIDER
 init|=
@@ -265,6 +269,7 @@ decl_stmt|;
 DECL|field|SVC_SLIDER_USERS
 specifier|public
 specifier|static
+specifier|final
 name|String
 name|SVC_SLIDER_USERS
 init|=
@@ -318,6 +323,7 @@ block|}
 DECL|field|SESSION_TIMEOUT
 specifier|public
 specifier|static
+specifier|final
 name|int
 name|SESSION_TIMEOUT
 init|=
@@ -1146,31 +1152,6 @@ operator|+
 literal|"/"
 expr_stmt|;
 block|}
-block|}
-comment|/**  * Blocking enum of users  * @return an unordered list of clusters under a user  */
-DECL|method|getClusters ()
-specifier|public
-name|List
-argument_list|<
-name|String
-argument_list|>
-name|getClusters
-parameter_list|()
-throws|throws
-name|KeeperException
-throws|,
-name|InterruptedException
-block|{
-return|return
-name|zookeeper
-operator|.
-name|getChildren
-argument_list|(
-name|userPath
-argument_list|,
-literal|null
-argument_list|)
-return|;
 block|}
 comment|/**    * Delete a node, does not throw an exception if the path is not fond    * @param path path to delete    * @return true if the path could be deleted, false if there was no node to delete     *    */
 DECL|method|delete (String path)

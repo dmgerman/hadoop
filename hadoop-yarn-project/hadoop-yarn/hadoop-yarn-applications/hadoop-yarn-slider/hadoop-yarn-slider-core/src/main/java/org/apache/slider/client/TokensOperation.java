@@ -482,9 +482,9 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"%d tokens saved to %s\n"
+literal|"%d tokens saved to %s%n"
 operator|+
-literal|"To use these in the environment:\n"
+literal|"To use these in the environment:%n"
 operator|+
 literal|"export %s=%s"
 argument_list|,

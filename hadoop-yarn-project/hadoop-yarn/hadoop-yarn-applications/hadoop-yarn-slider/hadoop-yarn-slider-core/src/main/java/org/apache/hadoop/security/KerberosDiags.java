@@ -222,6 +222,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|PrintStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|PrintWriter
 import|;
 end_import
@@ -488,7 +498,7 @@ decl_stmt|;
 DECL|field|out
 specifier|private
 specifier|final
-name|PrintWriter
+name|PrintStream
 name|out
 decl_stmt|;
 DECL|field|keytab
@@ -574,14 +584,14 @@ name|SuppressWarnings
 argument_list|(
 literal|"IOResourceOpenedButNotSafelyClosed"
 argument_list|)
-DECL|method|KerberosDiags (Configuration conf, PrintWriter out, List<String> services, File keytab, String principal, long minKeyLength, boolean securityRequired)
+DECL|method|KerberosDiags (Configuration conf, PrintStream out, List<String> services, File keytab, String principal, long minKeyLength, boolean securityRequired)
 specifier|public
 name|KerberosDiags
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|,
-name|PrintWriter
+name|PrintStream
 name|out
 parameter_list|,
 name|List

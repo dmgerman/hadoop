@@ -112,6 +112,18 @@ begin_import
 import|import
 name|java
 operator|.
+name|nio
+operator|.
+name|charset
+operator|.
+name|Charset
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -1707,6 +1719,8 @@ name|process
 operator|.
 name|getErrorStream
 argument_list|()
+argument_list|,
+literal|"UTF-8"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1722,6 +1736,8 @@ name|process
 operator|.
 name|getInputStream
 argument_list|()
+argument_list|,
+literal|"UTF-8"
 argument_list|)
 argument_list|)
 expr_stmt|;

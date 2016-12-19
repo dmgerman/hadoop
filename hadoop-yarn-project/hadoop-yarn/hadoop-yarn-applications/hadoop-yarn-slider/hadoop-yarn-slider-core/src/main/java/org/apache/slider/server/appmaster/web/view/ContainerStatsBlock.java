@@ -270,6 +270,16 @@ end_import
 
 begin_import
 import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nonnull
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -1109,6 +1119,8 @@ name|T
 argument_list|>
 name|apply
 parameter_list|(
+annotation|@
+name|Nonnull
 name|Entry
 argument_list|<
 name|String

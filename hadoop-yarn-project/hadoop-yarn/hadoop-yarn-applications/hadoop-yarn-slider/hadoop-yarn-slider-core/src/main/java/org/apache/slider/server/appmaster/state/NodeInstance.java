@@ -818,7 +818,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"\n  [%02d]  "
+literal|"%n  [%02d]  "
 argument_list|,
 name|entry
 operator|.

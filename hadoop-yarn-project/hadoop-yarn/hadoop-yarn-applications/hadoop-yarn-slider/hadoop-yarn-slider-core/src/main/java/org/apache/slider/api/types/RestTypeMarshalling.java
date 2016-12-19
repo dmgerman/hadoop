@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.slider.api.proto
+DECL|package|org.apache.slider.api.types
 package|package
 name|org
 operator|.
@@ -14,9 +14,25 @@ name|slider
 operator|.
 name|api
 operator|.
-name|proto
+name|types
 package|;
 end_package
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
+name|api
+operator|.
+name|proto
+operator|.
+name|Messages
+import|;
+end_import
 
 begin_import
 import|import

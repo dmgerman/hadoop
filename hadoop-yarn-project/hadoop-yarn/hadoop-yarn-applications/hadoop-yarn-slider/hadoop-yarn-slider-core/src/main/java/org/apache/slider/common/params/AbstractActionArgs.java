@@ -525,6 +525,15 @@ name|index
 init|=
 literal|1
 decl_stmt|;
+name|StringBuilder
+name|buf
+init|=
+operator|new
+name|StringBuilder
+argument_list|(
+name|message
+argument_list|)
+decl_stmt|;
 for|for
 control|(
 name|String
@@ -545,20 +554,26 @@ argument_list|,
 name|actionArg
 argument_list|)
 expr_stmt|;
-name|message
-operator|+=
+name|buf
+operator|.
+name|append
+argument_list|(
 literal|" \""
 operator|+
 name|actionArg
 operator|+
 literal|"\" "
+argument_list|)
 expr_stmt|;
 block|}
 throw|throw
 operator|new
 name|BadCommandArgumentsException
 argument_list|(
-name|message
+name|buf
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 throw|;
 block|}

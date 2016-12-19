@@ -111,7 +111,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Serializable version of component data.  *<p>  * This is sent in REST calls as a JSON object âbut is also marshalled into  * a protobuf structure. Look at {@link org.apache.slider.api.proto.RestTypeMarshalling}  * for the specifics there.  *<p>  * This means that if any fields are added here. they must be added to  *<code>src/main/proto/SliderClusterMessages.proto</code> and  * the protobuf structures rebuilt via a {@code mvn generate-sources -Pcompile-protobuf}  *  * See also {@link RoleStatus#serialize()}  */
+comment|/**  * Serializable version of component data.  *<p>  * This is sent in REST calls as a JSON object âbut is also marshalled into  * a protobuf structure. Look at {@link RestTypeMarshalling}  * for the specifics there.  *<p>  * This means that if any fields are added here. they must be added to  *<code>src/main/proto/SliderClusterMessages.proto</code> and  * the protobuf structures rebuilt via a {@code mvn generate-sources -Pcompile-protobuf}  *  * See also {@link RoleStatus#serialize()}  */
 end_comment
 
 begin_class

@@ -311,24 +311,6 @@ argument_list|(
 name|INITAL_MAP_CAPACITY
 argument_list|)
 decl_stmt|;
-comment|/**    * Shallow clone    * @return a shallow clone    * @throws CloneNotSupportedException    */
-annotation|@
-name|Override
-DECL|method|clone ()
-specifier|public
-name|Object
-name|clone
-parameter_list|()
-throws|throws
-name|CloneNotSupportedException
-block|{
-return|return
-name|super
-operator|.
-name|clone
-argument_list|()
-return|;
-block|}
 annotation|@
 name|Override
 DECL|method|toString ()
@@ -375,10 +357,6 @@ name|toJson
 parameter_list|()
 throws|throws
 name|IOException
-throws|,
-name|JsonGenerationException
-throws|,
-name|JsonMappingException
 block|{
 return|return
 name|ConfTreeSerDeser

@@ -751,15 +751,6 @@ operator|new
 name|ConfTree
 argument_list|()
 decl_stmt|;
-name|ConfTreeOperations
-name|ops
-init|=
-operator|new
-name|ConfTreeOperations
-argument_list|(
-name|confTree
-argument_list|)
-decl_stmt|;
 name|confTree
 operator|.
 name|global

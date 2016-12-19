@@ -369,14 +369,6 @@ name|HttpServletRequest
 operator|)
 name|req
 decl_stmt|;
-name|HttpServletResponse
-name|httpResp
-init|=
-operator|(
-name|HttpServletResponse
-operator|)
-name|resp
-decl_stmt|;
 name|String
 name|requestURI
 init|=

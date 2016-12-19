@@ -456,7 +456,7 @@ name|slider
 operator|.
 name|api
 operator|.
-name|proto
+name|types
 operator|.
 name|RestTypeMarshalling
 operator|.

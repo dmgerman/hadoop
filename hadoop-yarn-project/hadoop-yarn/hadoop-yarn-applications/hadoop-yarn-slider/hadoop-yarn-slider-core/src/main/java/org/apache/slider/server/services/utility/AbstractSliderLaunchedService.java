@@ -233,13 +233,6 @@ name|name
 argument_list|)
 expr_stmt|;
 comment|// make sure all the yarn configs get loaded
-name|YarnConfiguration
-name|conf
-init|=
-operator|new
-name|YarnConfiguration
-argument_list|()
-decl_stmt|;
 name|ConfigHelper
 operator|.
 name|registerDeprecatedConfigItems
@@ -314,12 +307,6 @@ throws|throws
 name|BadConfigException
 block|{
 comment|// push back the slider registry entry if needed
-name|String
-name|quorum
-init|=
-name|lookupZKQuorum
-argument_list|()
-decl_stmt|;
 name|RegistryOperations
 name|registryWriterService
 init|=

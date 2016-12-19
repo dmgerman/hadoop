@@ -436,6 +436,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Map
 import|;
 end_import
@@ -848,7 +858,7 @@ block|}
 argument_list|)
 DECL|method|getAMClassPath ()
 specifier|public
-name|Set
+name|List
 argument_list|<
 name|URL
 argument_list|>
@@ -874,18 +884,11 @@ name|getURLs
 argument_list|()
 decl_stmt|;
 return|return
-operator|new
-name|LinkedHashSet
-argument_list|<
-name|URL
-argument_list|>
-argument_list|(
 name|Arrays
 operator|.
 name|asList
 argument_list|(
 name|urls
-argument_list|)
 argument_list|)
 return|;
 block|}

@@ -896,6 +896,8 @@ argument_list|,
 name|data
 operator|.
 name|length
+argument_list|,
+literal|"UTF-8"
 argument_list|)
 decl_stmt|;
 name|log

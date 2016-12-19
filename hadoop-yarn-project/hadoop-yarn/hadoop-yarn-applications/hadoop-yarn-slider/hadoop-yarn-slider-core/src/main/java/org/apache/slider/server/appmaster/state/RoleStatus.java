@@ -1254,26 +1254,6 @@ name|get
 argument_list|()
 return|;
 block|}
-DECL|method|setCompleted (int completed)
-specifier|public
-specifier|synchronized
-name|void
-name|setCompleted
-parameter_list|(
-name|int
-name|completed
-parameter_list|)
-block|{
-name|this
-operator|.
-name|completed
-operator|.
-name|set
-argument_list|(
-name|completed
-argument_list|)
-expr_stmt|;
-block|}
 DECL|method|incCompleted ()
 specifier|public
 name|long

@@ -1096,14 +1096,6 @@ name|time
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|MapOperations
-name|globalOptions
-init|=
-name|internalOps
-operator|.
-name|getGlobalOptions
-argument_list|()
-decl_stmt|;
 name|BuildHelper
 operator|.
 name|addBuildMetadata
