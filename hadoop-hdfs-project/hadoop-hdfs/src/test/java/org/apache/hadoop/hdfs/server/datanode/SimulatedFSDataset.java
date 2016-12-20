@@ -428,6 +428,26 @@ name|datanode
 operator|.
 name|fsdataset
 operator|.
+name|DataNodeVolumeMetrics
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|fsdataset
+operator|.
 name|FsDatasetSpi
 import|;
 end_import
@@ -2404,7 +2424,13 @@ specifier|final
 name|FileIoProvider
 name|fileIoProvider
 decl_stmt|;
-DECL|method|SimulatedVolume (final SimulatedStorage storage, final FileIoProvider fileIoProvider)
+DECL|field|metrics
+specifier|private
+specifier|final
+name|DataNodeVolumeMetrics
+name|metrics
+decl_stmt|;
+DECL|method|SimulatedVolume (final SimulatedStorage storage, final FileIoProvider fileIoProvider, final DataNodeVolumeMetrics metrics)
 name|SimulatedVolume
 parameter_list|(
 specifier|final
@@ -2414,6 +2440,10 @@ parameter_list|,
 specifier|final
 name|FileIoProvider
 name|fileIoProvider
+parameter_list|,
+specifier|final
+name|DataNodeVolumeMetrics
+name|metrics
 parameter_list|)
 block|{
 name|this
@@ -2427,6 +2457,12 @@ operator|.
 name|fileIoProvider
 operator|=
 name|fileIoProvider
+expr_stmt|;
+name|this
+operator|.
+name|metrics
+operator|=
+name|metrics
 expr_stmt|;
 block|}
 annotation|@
@@ -2715,6 +2751,18 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getMetrics ()
+specifier|public
+name|DataNodeVolumeMetrics
+name|getMetrics
+parameter_list|()
+block|{
+return|return
+name|metrics
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|check (VolumeCheckContext context)
 specifier|public
 name|VolumeCheckResult
@@ -2933,6 +2981,19 @@ name|DEFAULT_STATE
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// TODO: per volume id or path
+name|DataNodeVolumeMetrics
+name|volumeMetrics
+init|=
+name|DataNodeVolumeMetrics
+operator|.
+name|create
+argument_list|(
+name|conf
+argument_list|,
+name|datanodeUuid
+argument_list|)
+decl_stmt|;
 name|this
 operator|.
 name|volume
@@ -2947,6 +3008,8 @@ argument_list|,
 name|this
 operator|.
 name|fileIoProvider
+argument_list|,
+name|volumeMetrics
 argument_list|)
 expr_stmt|;
 name|this

@@ -1141,6 +1141,11 @@ name|FileIoProvider
 name|getFileIoProvider
 parameter_list|()
 function_decl|;
+DECL|method|getMetrics ()
+name|DataNodeVolumeMetrics
+name|getMetrics
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

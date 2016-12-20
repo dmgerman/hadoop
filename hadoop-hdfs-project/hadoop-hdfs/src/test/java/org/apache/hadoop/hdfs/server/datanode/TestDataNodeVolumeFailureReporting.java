@@ -72,20 +72,6 @@ begin_import
 import|import static
 name|org
 operator|.
-name|hamcrest
-operator|.
-name|core
-operator|.
-name|Is
-operator|.
-name|is
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
 name|junit
 operator|.
 name|Assert
@@ -127,18 +113,6 @@ operator|.
 name|Assert
 operator|.
 name|assertNull
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertThat
 import|;
 end_import
 
@@ -233,20 +207,6 @@ operator|.
 name|conf
 operator|.
 name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|conf
-operator|.
-name|ReconfigurationException
 import|;
 end_import
 
@@ -2713,6 +2673,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Reconfigure again to try to add back the failed volumes.
+name|DataNodeTestUtils
+operator|.
 name|reconfigureDataNode
 argument_list|(
 name|dns
@@ -2727,6 +2689,8 @@ argument_list|,
 name|dn1Vol2
 argument_list|)
 expr_stmt|;
+name|DataNodeTestUtils
+operator|.
 name|reconfigureDataNode
 argument_list|(
 name|dns
@@ -2884,6 +2848,8 @@ argument_list|)
 expr_stmt|;
 comment|// Reconfigure a third time with the failed volumes.  Afterwards, we expect
 comment|// the same volume failures to be reported.  (No double-counting.)
+name|DataNodeTestUtils
+operator|.
 name|reconfigureDataNode
 argument_list|(
 name|dns
@@ -2898,6 +2864,8 @@ argument_list|,
 name|dn1Vol2
 argument_list|)
 expr_stmt|;
+name|DataNodeTestUtils
+operator|.
 name|reconfigureDataNode
 argument_list|(
 name|dns
@@ -3064,6 +3032,8 @@ argument_list|,
 name|dn2Vol1
 argument_list|)
 expr_stmt|;
+name|DataNodeTestUtils
+operator|.
 name|reconfigureDataNode
 argument_list|(
 name|dns
@@ -3078,6 +3048,8 @@ argument_list|,
 name|dn1Vol2
 argument_list|)
 expr_stmt|;
+name|DataNodeTestUtils
+operator|.
 name|reconfigureDataNode
 argument_list|(
 name|dns
@@ -4228,122 +4200,6 @@ operator|.
 name|getStoragesPerDatanode
 argument_list|()
 expr_stmt|;
-block|}
-comment|/**    * Reconfigure a DataNode by setting a new list of volumes.    *    * @param dn DataNode to reconfigure    * @param newVols new volumes to configure    * @throws Exception if there is any failure    */
-DECL|method|reconfigureDataNode (DataNode dn, File... newVols)
-specifier|private
-specifier|static
-name|void
-name|reconfigureDataNode
-parameter_list|(
-name|DataNode
-name|dn
-parameter_list|,
-name|File
-modifier|...
-name|newVols
-parameter_list|)
-throws|throws
-name|Exception
-block|{
-name|StringBuilder
-name|dnNewDataDirs
-init|=
-operator|new
-name|StringBuilder
-argument_list|()
-decl_stmt|;
-for|for
-control|(
-name|File
-name|newVol
-range|:
-name|newVols
-control|)
-block|{
-if|if
-condition|(
-name|dnNewDataDirs
-operator|.
-name|length
-argument_list|()
-operator|>
-literal|0
-condition|)
-block|{
-name|dnNewDataDirs
-operator|.
-name|append
-argument_list|(
-literal|','
-argument_list|)
-expr_stmt|;
-block|}
-name|dnNewDataDirs
-operator|.
-name|append
-argument_list|(
-name|newVol
-operator|.
-name|getAbsolutePath
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-try|try
-block|{
-name|assertThat
-argument_list|(
-name|dn
-operator|.
-name|reconfigurePropertyImpl
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_DATANODE_DATA_DIR_KEY
-argument_list|,
-name|dnNewDataDirs
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-argument_list|,
-name|is
-argument_list|(
-name|dn
-operator|.
-name|getConf
-argument_list|()
-operator|.
-name|get
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_DATANODE_DATA_DIR_KEY
-argument_list|)
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|ReconfigurationException
-name|e
-parameter_list|)
-block|{
-comment|// This can be thrown if reconfiguration tries to use a failed volume.
-comment|// We need to swallow the exception, because some of our tests want to
-comment|// cover this case.
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Could not reconfigure DataNode."
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 block|}
 end_class
