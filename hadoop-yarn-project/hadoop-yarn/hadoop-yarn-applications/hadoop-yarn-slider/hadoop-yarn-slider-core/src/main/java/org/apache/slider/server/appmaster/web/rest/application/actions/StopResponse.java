@@ -81,6 +81,7 @@ class|class
 name|StopResponse
 block|{
 DECL|field|verb
+specifier|public
 name|String
 name|verb
 decl_stmt|;
