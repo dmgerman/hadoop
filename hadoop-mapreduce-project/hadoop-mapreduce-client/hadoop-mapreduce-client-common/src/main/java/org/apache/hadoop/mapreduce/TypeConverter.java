@@ -3626,6 +3626,9 @@ name|jobStatus
 operator|.
 name|setNeededMem
 argument_list|(
+operator|(
+name|int
+operator|)
 name|resourceUsageReport
 operator|.
 name|getNeededResources
@@ -3659,6 +3662,9 @@ name|jobStatus
 operator|.
 name|setReservedMem
 argument_list|(
+operator|(
+name|int
+operator|)
 name|resourceUsageReport
 operator|.
 name|getReservedResources
@@ -3672,6 +3678,9 @@ name|jobStatus
 operator|.
 name|setUsedMem
 argument_list|(
+operator|(
+name|int
+operator|)
 name|resourceUsageReport
 operator|.
 name|getUsedResources
