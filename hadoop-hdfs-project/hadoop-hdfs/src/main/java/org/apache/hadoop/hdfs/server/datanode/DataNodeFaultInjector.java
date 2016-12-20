@@ -142,14 +142,64 @@ return|return
 literal|false
 return|;
 block|}
-DECL|method|stopSendingPacketDownstream ()
+DECL|method|stopSendingPacketDownstream (final String mirrAddr)
 specifier|public
 name|void
 name|stopSendingPacketDownstream
-parameter_list|()
+parameter_list|(
+specifier|final
+name|String
+name|mirrAddr
+parameter_list|)
 throws|throws
 name|IOException
-block|{}
+block|{   }
+comment|/**    * Used as a hook to intercept the latency of sending packet.    */
+DECL|method|logDelaySendingPacketDownstream ( final String mirrAddr, final long delayMs)
+specifier|public
+name|void
+name|logDelaySendingPacketDownstream
+parameter_list|(
+specifier|final
+name|String
+name|mirrAddr
+parameter_list|,
+specifier|final
+name|long
+name|delayMs
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+DECL|method|delaySendingAckToUpstream (final String upstreamAddr)
+specifier|public
+name|void
+name|delaySendingAckToUpstream
+parameter_list|(
+specifier|final
+name|String
+name|upstreamAddr
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+comment|/**    * Used as a hook to intercept the latency of sending ack.    */
+DECL|method|logDelaySendingAckToUpstream ( final String upstreamAddr, final long delayMs)
+specifier|public
+name|void
+name|logDelaySendingAckToUpstream
+parameter_list|(
+specifier|final
+name|String
+name|upstreamAddr
+parameter_list|,
+specifier|final
+name|long
+name|delayMs
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
 DECL|method|noRegistration ()
 specifier|public
 name|void

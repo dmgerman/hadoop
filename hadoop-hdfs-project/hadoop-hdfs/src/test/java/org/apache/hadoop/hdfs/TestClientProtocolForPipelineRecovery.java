@@ -2562,7 +2562,11 @@ name|Override
 specifier|public
 name|void
 name|stopSendingPacketDownstream
-parameter_list|()
+parameter_list|(
+specifier|final
+name|String
+name|mirrAddr
+parameter_list|)
 throws|throws
 name|IOException
 block|{
