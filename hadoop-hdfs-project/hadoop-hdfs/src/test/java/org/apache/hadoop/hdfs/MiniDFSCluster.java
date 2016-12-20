@@ -9335,13 +9335,30 @@ name|i
 operator|--
 control|)
 block|{
+name|shutdownDataNode
+argument_list|(
+name|i
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Shutdown the datanode at a given index.    */
+DECL|method|shutdownDataNode (int dnIndex)
+specifier|public
+name|void
+name|shutdownDataNode
+parameter_list|(
+name|int
+name|dnIndex
+parameter_list|)
+block|{
 name|LOG
 operator|.
 name|info
 argument_list|(
 literal|"Shutting down DataNode "
 operator|+
-name|i
+name|dnIndex
 argument_list|)
 expr_stmt|;
 name|DataNode
@@ -9351,7 +9368,7 @@ name|dataNodes
 operator|.
 name|remove
 argument_list|(
-name|i
+name|dnIndex
 argument_list|)
 operator|.
 name|datanode
@@ -9364,7 +9381,6 @@ expr_stmt|;
 name|numDataNodes
 operator|--
 expr_stmt|;
-block|}
 block|}
 comment|/**    * Shutdown all the namenodes.    */
 DECL|method|shutdownNameNodes ()
