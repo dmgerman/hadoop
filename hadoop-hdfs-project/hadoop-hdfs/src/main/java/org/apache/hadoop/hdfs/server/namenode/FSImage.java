@@ -887,11 +887,6 @@ specifier|protected
 name|NNStorageRetentionManager
 name|archivalManager
 decl_stmt|;
-DECL|field|quotaInitThreads
-specifier|private
-name|int
-name|quotaInitThreads
-decl_stmt|;
 comment|/* Used to make sure there are no concurrent checkpoints for a given txid    * The checkpoint here could be one of the following operations.    * a. checkpoint when NN is in standby.    * b. admin saveNameSpace operation.    * c. download checkpoint file from any remote checkpointer.   */
 DECL|field|currentlyCheckpointing
 specifier|private
@@ -3418,11 +3413,6 @@ literal|"No edit log streams selected."
 argument_list|)
 expr_stmt|;
 block|}
-name|Exception
-name|le
-init|=
-literal|null
-decl_stmt|;
 name|FSImageFile
 name|imageFile
 init|=
@@ -3494,10 +3484,6 @@ name|Exception
 name|e
 parameter_list|)
 block|{
-name|le
-operator|=
-name|e
-expr_stmt|;
 name|LOG
 operator|.
 name|error
