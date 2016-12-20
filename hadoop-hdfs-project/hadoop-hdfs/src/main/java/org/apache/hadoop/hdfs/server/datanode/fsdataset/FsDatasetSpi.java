@@ -1550,14 +1550,17 @@ name|long
 name|blockId
 parameter_list|)
 function_decl|;
-comment|/**      * Check if all the data directories are healthy      * @return A set of unhealthy data directories.      */
-DECL|method|checkDataDir ()
+comment|/**      * Check if all the data directories are healthy      * @return A set of unhealthy data directories.      * @param failedVolumes      */
+DECL|method|handleVolumeFailures (Set<FsVolumeSpi> failedVolumes)
+name|void
+name|handleVolumeFailures
+parameter_list|(
 name|Set
 argument_list|<
-name|StorageLocation
+name|FsVolumeSpi
 argument_list|>
-name|checkDataDir
-parameter_list|()
+name|failedVolumes
+parameter_list|)
 function_decl|;
 comment|/**    * Shutdown the FSDataset    */
 DECL|method|shutdown ()

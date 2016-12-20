@@ -4739,32 +4739,6 @@ return|return
 name|cacheExecutor
 return|;
 block|}
-DECL|method|checkDirs ()
-name|void
-name|checkDirs
-parameter_list|()
-throws|throws
-name|DiskErrorException
-block|{
-comment|// TODO:FEDERATION valid synchronization
-for|for
-control|(
-name|BlockPoolSlice
-name|s
-range|:
-name|bpSlices
-operator|.
-name|values
-argument_list|()
-control|)
-block|{
-name|s
-operator|.
-name|checkDirs
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 annotation|@
 name|Override
 DECL|method|check (VolumeCheckContext ignored)

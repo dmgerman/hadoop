@@ -1243,19 +1243,18 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|checkDataDir ()
+DECL|method|handleVolumeFailures (Set<FsVolumeSpi> failedVolumes)
 specifier|public
+name|void
+name|handleVolumeFailures
+parameter_list|(
 name|Set
 argument_list|<
-name|StorageLocation
+name|FsVolumeSpi
 argument_list|>
-name|checkDataDir
-parameter_list|()
-block|{
-return|return
-literal|null
-return|;
-block|}
+name|failedVolumes
+parameter_list|)
+block|{   }
 annotation|@
 name|Override
 DECL|method|shutdown ()

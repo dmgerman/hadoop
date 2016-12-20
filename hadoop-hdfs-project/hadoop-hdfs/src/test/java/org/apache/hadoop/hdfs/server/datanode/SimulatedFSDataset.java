@@ -2476,7 +2476,35 @@ throws|throws
 name|ClosedChannelException
 block|{
 return|return
-literal|null
+operator|new
+name|FsVolumeReference
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|void
+name|close
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// no-op.
+block|}
+annotation|@
+name|Override
+specifier|public
+name|FsVolumeSpi
+name|getVolume
+parameter_list|()
+block|{
+return|return
+name|SimulatedVolume
+operator|.
+name|this
+return|;
+block|}
+block|}
 return|;
 block|}
 annotation|@
@@ -5361,20 +5389,18 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|checkDataDir ()
+DECL|method|handleVolumeFailures (Set<FsVolumeSpi> failedVolumes)
 specifier|public
+name|void
+name|handleVolumeFailures
+parameter_list|(
 name|Set
 argument_list|<
-name|StorageLocation
+name|FsVolumeSpi
 argument_list|>
-name|checkDataDir
-parameter_list|()
-block|{
-comment|// nothing to check for simulated data set
-return|return
-literal|null
-return|;
-block|}
+name|failedVolumes
+parameter_list|)
+block|{   }
 annotation|@
 name|Override
 comment|// FsDatasetSpi
@@ -6390,11 +6416,18 @@ name|FsVolumeReferences
 name|getFsVolumeReferences
 parameter_list|()
 block|{
-throw|throw
+return|return
 operator|new
-name|UnsupportedOperationException
-argument_list|()
-throw|;
+name|FsVolumeReferences
+argument_list|(
+name|Collections
+operator|.
+name|singletonList
+argument_list|(
+name|volume
+argument_list|)
+argument_list|)
+return|;
 block|}
 annotation|@
 name|Override

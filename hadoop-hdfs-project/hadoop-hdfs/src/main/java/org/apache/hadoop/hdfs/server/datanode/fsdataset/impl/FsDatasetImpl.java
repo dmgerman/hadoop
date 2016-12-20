@@ -10906,25 +10906,29 @@ operator|)
 return|;
 block|}
 block|}
-comment|/**    * check if a data directory is healthy    *    * if some volumes failed - the caller must emove all the blocks that belong    * to these failed volumes.    * @return the failed volumes. Returns null if no volume failed.    */
+comment|/**    * check if a data directory is healthy    *    * if some volumes failed - the caller must emove all the blocks that belong    * to these failed volumes.    * @return the failed volumes. Returns null if no volume failed.    * @param failedVolumes    */
 annotation|@
 name|Override
 comment|// FsDatasetSpi
-DECL|method|checkDataDir ()
+DECL|method|handleVolumeFailures (Set<FsVolumeSpi> failedVolumes)
 specifier|public
+name|void
+name|handleVolumeFailures
+parameter_list|(
 name|Set
 argument_list|<
-name|StorageLocation
+name|FsVolumeSpi
 argument_list|>
-name|checkDataDir
-parameter_list|()
+name|failedVolumes
+parameter_list|)
 block|{
-return|return
 name|volumes
 operator|.
-name|checkDirs
-argument_list|()
-return|;
+name|handleVolumeFailures
+argument_list|(
+name|failedVolumes
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
