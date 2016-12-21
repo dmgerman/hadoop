@@ -2924,45 +2924,33 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
+comment|// if the last access time update was within the last precision interval,
+comment|// then no need to store access time
 if|if
 condition|(
 name|atime
 operator|!=
 operator|-
 literal|1
-condition|)
-block|{
-name|long
-name|inodeTime
-init|=
+operator|&&
+operator|(
+name|status
+operator|||
+name|force
+operator|||
+name|atime
+operator|>
 name|inode
 operator|.
 name|getAccessTime
 argument_list|()
-decl_stmt|;
-comment|// if the last access time update was within the last precision interval, then
-comment|// no need to store access time
-if|if
-condition|(
-name|atime
-operator|<=
-name|inodeTime
 operator|+
 name|fsd
 operator|.
 name|getAccessTimePrecision
 argument_list|()
-operator|&&
-operator|!
-name|force
+operator|)
 condition|)
-block|{
-name|status
-operator|=
-literal|false
-expr_stmt|;
-block|}
-else|else
 block|{
 name|inode
 operator|.
@@ -2977,7 +2965,6 @@ name|status
 operator|=
 literal|true
 expr_stmt|;
-block|}
 block|}
 return|return
 name|status
