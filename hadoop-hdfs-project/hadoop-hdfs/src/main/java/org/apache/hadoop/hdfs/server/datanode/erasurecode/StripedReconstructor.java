@@ -479,6 +479,17 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
+DECL|field|remoteBytesRead
+specifier|private
+name|AtomicLong
+name|remoteBytesRead
+init|=
+operator|new
+name|AtomicLong
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
 DECL|method|StripedReconstructor (ErasureCodingWorker worker, StripedReconstructionInfo stripedReconInfo)
 name|StripedReconstructor
 parameter_list|(
@@ -608,14 +619,22 @@ operator|=
 literal|0L
 expr_stmt|;
 block|}
-DECL|method|incrBytesRead (long delta)
+DECL|method|incrBytesRead (boolean local, long delta)
 specifier|public
 name|void
 name|incrBytesRead
 parameter_list|(
+name|boolean
+name|local
+parameter_list|,
 name|long
 name|delta
 parameter_list|)
+block|{
+if|if
+condition|(
+name|local
+condition|)
 block|{
 name|bytesRead
 operator|.
@@ -624,6 +643,24 @@ argument_list|(
 name|delta
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|bytesRead
+operator|.
+name|addAndGet
+argument_list|(
+name|delta
+argument_list|)
+expr_stmt|;
+name|remoteBytesRead
+operator|.
+name|addAndGet
+argument_list|(
+name|delta
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|incrBytesWritten (long delta)
 specifier|public
@@ -650,6 +687,19 @@ parameter_list|()
 block|{
 return|return
 name|bytesRead
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
+DECL|method|getRemoteBytesRead ()
+specifier|public
+name|long
+name|getRemoteBytesRead
+parameter_list|()
+block|{
+return|return
+name|remoteBytesRead
 operator|.
 name|get
 argument_list|()

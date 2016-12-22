@@ -246,6 +246,14 @@ argument_list|)
 expr_stmt|;
 name|metrics
 operator|.
+name|incrECReconstructionRemoteBytesRead
+argument_list|(
+name|getRemoteBytesRead
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|metrics
+operator|.
 name|incrECReconstructionBytesWritten
 argument_list|(
 name|getBytesWritten

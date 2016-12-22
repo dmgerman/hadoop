@@ -342,6 +342,22 @@ name|test
 operator|.
 name|MetricsAsserts
 operator|.
+name|getLongCounterWithoutCheck
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|MetricsAsserts
+operator|.
 name|getMetrics
 import|;
 end_import
@@ -743,6 +759,20 @@ literal|"EcReconstructionBytesWritten"
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"EcReconstructionRemoteBytesRead should be "
+argument_list|,
+literal|0
+argument_list|,
+name|getLongMetricWithoutCheck
+argument_list|(
+literal|"EcReconstructionRemoteBytesRead"
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 comment|// A partial block, reconstruct the partial block
 annotation|@
@@ -802,6 +832,20 @@ argument_list|,
 name|getLongMetric
 argument_list|(
 literal|"EcReconstructionBytesWritten"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"EcReconstructionRemoteBytesRead should be "
+argument_list|,
+literal|0
+argument_list|,
+name|getLongMetricWithoutCheck
+argument_list|(
+literal|"EcReconstructionRemoteBytesRead"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -871,13 +915,27 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"ecReconstructionBytesWritten should be "
+literal|"EcReconstructionBytesWritten should be "
 argument_list|,
 name|blockSize
 argument_list|,
 name|getLongMetric
 argument_list|(
 literal|"EcReconstructionBytesWritten"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"EcReconstructionRemoteBytesRead should be "
+argument_list|,
+literal|0
+argument_list|,
+name|getLongMetricWithoutCheck
+argument_list|(
+literal|"EcReconstructionRemoteBytesRead"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -963,6 +1021,20 @@ literal|"EcReconstructionBytesWritten"
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"EcReconstructionRemoteBytesRead should be "
+argument_list|,
+literal|0
+argument_list|,
+name|getLongMetricWithoutCheck
+argument_list|(
+literal|"EcReconstructionRemoteBytesRead"
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|getLongMetric (String metricName)
 specifier|private
@@ -1007,6 +1079,60 @@ decl_stmt|;
 name|metricValue
 operator|+=
 name|getLongCounter
+argument_list|(
+name|metricName
+argument_list|,
+name|rb
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|metricValue
+return|;
+block|}
+DECL|method|getLongMetricWithoutCheck (String metricName)
+specifier|private
+name|long
+name|getLongMetricWithoutCheck
+parameter_list|(
+name|String
+name|metricName
+parameter_list|)
+block|{
+name|long
+name|metricValue
+init|=
+literal|0
+decl_stmt|;
+comment|// Add all reconstruction metric value from all data nodes
+for|for
+control|(
+name|DataNode
+name|dn
+range|:
+name|cluster
+operator|.
+name|getDataNodes
+argument_list|()
+control|)
+block|{
+name|MetricsRecordBuilder
+name|rb
+init|=
+name|getMetrics
+argument_list|(
+name|dn
+operator|.
+name|getMetrics
+argument_list|()
+operator|.
+name|name
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|metricValue
+operator|+=
+name|getLongCounterWithoutCheck
 argument_list|(
 name|metricName
 argument_list|,

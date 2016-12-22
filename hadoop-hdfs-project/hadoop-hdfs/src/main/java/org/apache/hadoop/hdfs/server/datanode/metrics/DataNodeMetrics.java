@@ -686,6 +686,15 @@ DECL|field|ecReconstructionBytesWritten
 name|MutableCounterLong
 name|ecReconstructionBytesWritten
 decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Bytes remote read by erasure coding worker"
+argument_list|)
+DECL|field|ecReconstructionRemoteBytesRead
+name|MutableCounterLong
+name|ecReconstructionRemoteBytesRead
+decl_stmt|;
 DECL|field|registry
 specifier|final
 name|MetricsRegistry
@@ -2088,6 +2097,23 @@ name|bytes
 parameter_list|)
 block|{
 name|ecReconstructionBytesRead
+operator|.
+name|incr
+argument_list|(
+name|bytes
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|incrECReconstructionRemoteBytesRead (long bytes)
+specifier|public
+name|void
+name|incrECReconstructionRemoteBytesRead
+parameter_list|(
+name|long
+name|bytes
+parameter_list|)
+block|{
+name|ecReconstructionRemoteBytesRead
 operator|.
 name|incr
 argument_list|(
