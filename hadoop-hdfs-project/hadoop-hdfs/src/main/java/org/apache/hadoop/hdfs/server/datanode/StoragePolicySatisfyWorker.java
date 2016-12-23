@@ -410,6 +410,24 @@ name|protocol
 operator|.
 name|datatransfer
 operator|.
+name|BlockPinningException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|datatransfer
+operator|.
 name|DataTransferProtoUtil
 import|;
 end_import
@@ -1599,6 +1617,31 @@ return|;
 block|}
 catch|catch
 parameter_list|(
+name|BlockPinningException
+name|e
+parameter_list|)
+block|{
+comment|// Pinned block won't be able to move to a different node. So, its not
+comment|// required to do retries, just marked as SUCCESS.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Pinned block can't be moved, so skipping block:{}"
+argument_list|,
+name|block
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+return|return
+name|BlockMovementStatus
+operator|.
+name|DN_BLK_STORAGE_MOVEMENT_SUCCESS
+return|;
+block|}
+catch|catch
+parameter_list|(
 name|IOException
 name|e
 parameter_list|)
@@ -1769,6 +1812,8 @@ argument_list|(
 name|response
 argument_list|,
 name|logInfo
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
