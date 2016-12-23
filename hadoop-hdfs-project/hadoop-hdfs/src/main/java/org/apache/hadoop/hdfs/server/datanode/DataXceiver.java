@@ -2314,6 +2314,9 @@ block|}
 block|}
 finally|finally
 block|{
+name|collectThreadLocalStates
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|LOG
@@ -2368,6 +2371,22 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+comment|/**    * In this short living thread, any local states should be collected before    * the thread dies away.    */
+DECL|method|collectThreadLocalStates ()
+specifier|private
+name|void
+name|collectThreadLocalStates
+parameter_list|()
+block|{
+name|datanode
+operator|.
+name|getPeerMetrics
+argument_list|()
+operator|.
+name|collectThreadLocalStates
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Override
