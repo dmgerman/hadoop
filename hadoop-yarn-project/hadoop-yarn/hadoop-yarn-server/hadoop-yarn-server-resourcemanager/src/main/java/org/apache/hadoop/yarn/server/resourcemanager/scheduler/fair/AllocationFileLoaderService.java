@@ -4491,6 +4491,7 @@ name|defaultPermissions
 return|;
 block|}
 DECL|interface|Listener
+specifier|public
 interface|interface
 name|Listener
 block|{
