@@ -4047,6 +4047,27 @@ name|DEFAULT_NM_CONTAINER_RETRY_MINIMUM_INTERVAL_MS
 init|=
 literal|1000
 decl_stmt|;
+comment|/**    * Use container pause as the preemption policy over kill in the container    * queue at a NodeManager.    **/
+DECL|field|NM_CONTAINER_QUEUING_USE_PAUSE_FOR_PREEMPTION
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_CONTAINER_QUEUING_USE_PAUSE_FOR_PREEMPTION
+init|=
+name|NM_PREFIX
+operator|+
+literal|"opportunistic-containers-use-pause-for-preemption"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+DECL|field|DEFAULT_NM_CONTAINER_QUEUING_USE_PAUSE_FOR_PREEMPTION
+name|DEFAULT_NM_CONTAINER_QUEUING_USE_PAUSE_FOR_PREEMPTION
+init|=
+literal|false
+decl_stmt|;
 comment|/** Interval at which the delayed token removal thread runs */
 DECL|field|RM_DELAYED_DELEGATION_TOKEN_REMOVAL_INTERVAL_MS
 specifier|public

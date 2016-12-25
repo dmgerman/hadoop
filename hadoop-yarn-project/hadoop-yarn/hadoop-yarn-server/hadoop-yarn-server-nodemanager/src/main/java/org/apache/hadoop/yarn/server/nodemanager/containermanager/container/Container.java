@@ -441,6 +441,14 @@ name|ResourceMappings
 name|getResourceMappings
 parameter_list|()
 function_decl|;
+DECL|method|sendPauseEvent (String description)
+name|void
+name|sendPauseEvent
+parameter_list|(
+name|String
+name|description
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

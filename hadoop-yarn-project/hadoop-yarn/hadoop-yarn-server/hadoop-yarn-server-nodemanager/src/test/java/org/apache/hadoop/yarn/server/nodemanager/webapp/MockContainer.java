@@ -1112,6 +1112,17 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|sendPauseEvent (String description)
+specifier|public
+name|void
+name|sendPauseEvent
+parameter_list|(
+name|String
+name|description
+parameter_list|)
+block|{    }
 block|}
 end_class
 

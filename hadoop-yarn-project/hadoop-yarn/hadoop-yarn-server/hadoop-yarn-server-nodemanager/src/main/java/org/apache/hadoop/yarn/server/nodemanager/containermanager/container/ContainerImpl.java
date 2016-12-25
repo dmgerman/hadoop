@@ -4845,6 +4845,35 @@ name|void
 name|sendLaunchEvent
 parameter_list|()
 block|{
+if|if
+condition|(
+name|ContainerState
+operator|.
+name|PAUSED
+operator|==
+name|getContainerState
+argument_list|()
+condition|)
+block|{
+name|dispatcher
+operator|.
+name|getEventHandler
+argument_list|()
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|ContainerResumeEvent
+argument_list|(
+name|containerId
+argument_list|,
+literal|"Container Resumed as some resources freed up"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|ContainersLauncherEventType
 name|launcherEvent
 init|=
@@ -4892,6 +4921,7 @@ name|launcherEvent
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|SuppressWarnings
@@ -4963,6 +4993,40 @@ argument_list|(
 name|containerId
 argument_list|,
 name|exitStatus
+argument_list|,
+name|description
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+comment|// dispatcher not typed
+annotation|@
+name|Override
+DECL|method|sendPauseEvent (String description)
+specifier|public
+name|void
+name|sendPauseEvent
+parameter_list|(
+name|String
+name|description
+parameter_list|)
+block|{
+name|dispatcher
+operator|.
+name|getEventHandler
+argument_list|()
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|ContainerPauseEvent
+argument_list|(
+name|containerId
 argument_list|,
 name|description
 argument_list|)
@@ -9106,7 +9170,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Transitions upon receiving PAUSE_CONTAINER.    * - RUNNING -> PAUSED    */
+comment|/**    * Transitions upon receiving PAUSE_CONTAINER.    * - RUNNING -> PAUSING    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
