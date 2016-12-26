@@ -271,7 +271,7 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"The new rcovery id: "
+literal|"The new recovery id: "
 operator|+
 name|recoveryId
 operator|+
