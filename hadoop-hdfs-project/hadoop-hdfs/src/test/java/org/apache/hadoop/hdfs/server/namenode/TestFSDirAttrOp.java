@@ -305,7 +305,7 @@ block|{
 comment|// atime< access time + precision
 name|assertFalse
 argument_list|(
-literal|"SetTimes should not update access time"
+literal|"SetTimes should not update access time "
 operator|+
 literal|"because it's within the last precision interval"
 argument_list|,
@@ -327,7 +327,7 @@ expr_stmt|;
 comment|// atime = access time + precision
 name|assertFalse
 argument_list|(
-literal|"SetTimes should not update access time"
+literal|"SetTimes should not update access time "
 operator|+
 literal|"because it's within the last precision interval"
 argument_list|,
@@ -349,7 +349,7 @@ expr_stmt|;
 comment|// atime> access time + precision
 name|assertTrue
 argument_list|(
-literal|"SetTimes should store access time"
+literal|"SetTimes should update access time"
 argument_list|,
 name|unprotectedSetTimes
 argument_list|(
@@ -369,7 +369,7 @@ expr_stmt|;
 comment|// atime< access time + precision, but force is set
 name|assertTrue
 argument_list|(
-literal|"SetTimes should store access time"
+literal|"SetTimes should update access time"
 argument_list|,
 name|unprotectedSetTimes
 argument_list|(
@@ -389,7 +389,7 @@ expr_stmt|;
 comment|// atime< access time + precision, but mtime is set
 name|assertTrue
 argument_list|(
-literal|"SetTimes should store access time"
+literal|"SetTimes should update access time"
 argument_list|,
 name|unprotectedSetTimes
 argument_list|(
