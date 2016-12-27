@@ -1815,8 +1815,12 @@ operator|==
 literal|null
 condition|)
 return|return;
-comment|// this looks like a bug because it results in append and not set
 name|initLocalNewContainerList
+argument_list|()
+expr_stmt|;
+name|allocatedContainers
+operator|.
+name|clear
 argument_list|()
 expr_stmt|;
 name|allocatedContainers
@@ -1876,6 +1880,11 @@ argument_list|()
 expr_stmt|;
 name|updatedContainers
 operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|updatedContainers
+operator|.
 name|addAll
 argument_list|(
 name|containers
@@ -1928,6 +1937,11 @@ literal|null
 condition|)
 return|return;
 name|initLocalFinishedContainerList
+argument_list|()
+expr_stmt|;
+name|completedContainersStatuses
+operator|.
+name|clear
 argument_list|()
 expr_stmt|;
 name|completedContainersStatuses

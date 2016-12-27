@@ -237,6 +237,32 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"RemoteNode{"
+operator|+
+literal|"nodeId="
+operator|+
+name|getNodeId
+argument_list|()
+operator|+
+literal|", "
+operator|+
+literal|"httpAddress="
+operator|+
+name|getHttpAddress
+argument_list|()
+operator|+
+literal|"}"
+return|;
+block|}
 block|}
 end_class
 

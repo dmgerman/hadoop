@@ -437,6 +437,55 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"UpdateReq{"
+operator|+
+literal|"containerId="
+operator|+
+name|getContainerId
+argument_list|()
+operator|+
+literal|", "
+operator|+
+literal|"containerVersion="
+operator|+
+name|getContainerVersion
+argument_list|()
+operator|+
+literal|", "
+operator|+
+literal|"targetExecType="
+operator|+
+name|getExecutionType
+argument_list|()
+operator|+
+literal|", "
+operator|+
+literal|"targetCapability="
+operator|+
+name|getCapability
+argument_list|()
+operator|+
+literal|", "
+operator|+
+literal|"updateType="
+operator|+
+name|getContainerUpdateType
+argument_list|()
+operator|+
+literal|", "
+operator|+
+literal|"}"
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|equals (Object obj)
 specifier|public
 name|boolean

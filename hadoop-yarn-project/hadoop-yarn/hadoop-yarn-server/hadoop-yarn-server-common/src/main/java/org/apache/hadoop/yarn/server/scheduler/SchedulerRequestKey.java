@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager.scheduler
+DECL|package|org.apache.hadoop.yarn.server.scheduler
 package|package
 name|org
 operator|.
@@ -15,8 +15,6 @@ operator|.
 name|yarn
 operator|.
 name|server
-operator|.
-name|resourcemanager
 operator|.
 name|scheduler
 package|;
@@ -159,7 +157,6 @@ argument_list|)
 return|;
 block|}
 DECL|method|SchedulerRequestKey (Priority priority, long allocationRequestId)
-specifier|private
 name|SchedulerRequestKey
 parameter_list|(
 name|Priority
@@ -419,6 +416,28 @@ argument_list|)
 expr_stmt|;
 return|return
 name|result
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"SchedulerRequestKey{"
+operator|+
+literal|"priority="
+operator|+
+name|priority
+operator|+
+literal|", allocationRequestId="
+operator|+
+name|allocationRequestId
+operator|+
+literal|'}'
 return|;
 block|}
 block|}

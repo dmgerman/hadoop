@@ -975,6 +975,7 @@ name|cacheRefreshInterval
 decl_stmt|;
 DECL|field|cachedNodes
 specifier|private
+specifier|volatile
 name|List
 argument_list|<
 name|RemoteNode
@@ -983,6 +984,7 @@ name|cachedNodes
 decl_stmt|;
 DECL|field|lastCacheUpdateTime
 specifier|private
+specifier|volatile
 name|long
 name|lastCacheUpdateTime
 decl_stmt|;
@@ -1542,18 +1544,22 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|allocate (AllocateRequest request)
-specifier|public
-name|AllocateResponse
-name|allocate
+DECL|method|allocateInternal (ApplicationAttemptId appAttemptId, AllocateRequest request, AllocateResponse allocateResponse)
+specifier|protected
+name|void
+name|allocateInternal
 parameter_list|(
+name|ApplicationAttemptId
+name|appAttemptId
+parameter_list|,
 name|AllocateRequest
 name|request
+parameter_list|,
+name|AllocateResponse
+name|allocateResponse
 parameter_list|)
 throws|throws
 name|YarnException
-throws|,
-name|IOException
 block|{
 comment|// Partition requests to GUARANTEED and OPPORTUNISTIC.
 name|OpportunisticContainerAllocator
@@ -1572,23 +1578,6 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// Allocate OPPORTUNISTIC containers.
-name|request
-operator|.
-name|setAskList
-argument_list|(
-name|partitionedAsks
-operator|.
-name|getOpportunistic
-argument_list|()
-argument_list|)
-expr_stmt|;
-specifier|final
-name|ApplicationAttemptId
-name|appAttemptId
-init|=
-name|getAppAttemptId
-argument_list|()
-decl_stmt|;
 name|SchedulerApplicationAttempt
 name|appAttempt
 init|=
@@ -1634,6 +1623,14 @@ operator|.
 name|allocateContainers
 argument_list|(
 name|request
+operator|.
+name|getResourceBlacklistRequest
+argument_list|()
+argument_list|,
+name|partitionedAsks
+operator|.
+name|getOpportunistic
+argument_list|()
 argument_list|,
 name|appAttemptId
 argument_list|,
@@ -1674,6 +1671,13 @@ argument_list|(
 name|oppContainers
 argument_list|)
 expr_stmt|;
+name|addToAllocatedContainers
+argument_list|(
+name|allocateResponse
+argument_list|,
+name|oppContainers
+argument_list|)
+expr_stmt|;
 block|}
 comment|// Allocate GUARANTEED containers.
 name|request
@@ -1686,50 +1690,17 @@ name|getGuaranteed
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|AllocateResponse
-name|allocateResp
-init|=
 name|super
 operator|.
-name|allocate
+name|allocateInternal
 argument_list|(
+name|appAttemptId
+argument_list|,
 name|request
-argument_list|)
-decl_stmt|;
-comment|// Add allocated OPPORTUNISTIC containers to the AllocateResponse.
-if|if
-condition|(
-operator|!
-name|oppContainers
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-name|allocateResp
-operator|.
-name|getAllocatedContainers
-argument_list|()
-operator|.
-name|addAll
-argument_list|(
-name|oppContainers
+argument_list|,
+name|allocateResponse
 argument_list|)
 expr_stmt|;
-block|}
-comment|// Update opportunistic container context with the allocated GUARANTEED
-comment|// containers.
-name|oppCtx
-operator|.
-name|updateCompletedContainers
-argument_list|(
-name|allocateResp
-argument_list|)
-expr_stmt|;
-comment|// Add all opportunistic containers
-return|return
-name|allocateResp
-return|;
 block|}
 annotation|@
 name|Override
@@ -2331,9 +2302,11 @@ operator|>
 name|cacheRefreshInterval
 operator|)
 operator|||
+operator|(
 name|cachedNodes
 operator|==
 literal|null
+operator|)
 condition|)
 block|{
 name|cachedNodes
@@ -2352,10 +2325,21 @@ name|k
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|cachedNodes
+operator|.
+name|size
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
 name|lastCacheUpdateTime
 operator|=
 name|currTime
 expr_stmt|;
+block|}
 block|}
 return|return
 name|cachedNodes

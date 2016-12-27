@@ -1157,19 +1157,6 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// Allocate OPPORTUNISTIC containers.
-name|request
-operator|.
-name|getAllocateRequest
-argument_list|()
-operator|.
-name|setAskList
-argument_list|(
-name|partitionedAsks
-operator|.
-name|getOpportunistic
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|List
 argument_list|<
 name|Container
@@ -1183,6 +1170,14 @@ argument_list|(
 name|request
 operator|.
 name|getAllocateRequest
+argument_list|()
+operator|.
+name|getResourceBlacklistRequest
+argument_list|()
+argument_list|,
+name|partitionedAsks
+operator|.
+name|getOpportunistic
 argument_list|()
 argument_list|,
 name|applicationAttemptId
@@ -1288,16 +1283,6 @@ name|nmToken
 argument_list|)
 expr_stmt|;
 block|}
-name|oppContainerContext
-operator|.
-name|updateCompletedContainers
-argument_list|(
-name|dsResp
-operator|.
-name|getAllocateResponse
-argument_list|()
-argument_list|)
-expr_stmt|;
 comment|// Check if we have NM tokens for all the allocated containers. If not
 comment|// generate one and update the response.
 name|updateAllocateResponse
@@ -1312,32 +1297,6 @@ argument_list|,
 name|allocatedContainers
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Number of opportunistic containers currently"
-operator|+
-literal|"allocated by application: "
-operator|+
-name|oppContainerContext
-operator|.
-name|getContainersAllocated
-argument_list|()
-operator|.
-name|size
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 return|return
 name|dsResp
 return|;

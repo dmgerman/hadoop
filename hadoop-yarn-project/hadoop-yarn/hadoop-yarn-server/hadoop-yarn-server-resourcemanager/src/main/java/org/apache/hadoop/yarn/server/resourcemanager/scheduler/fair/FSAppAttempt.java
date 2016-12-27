@@ -640,8 +640,6 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|resourcemanager
-operator|.
 name|scheduler
 operator|.
 name|SchedulerRequestKey
