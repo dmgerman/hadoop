@@ -472,6 +472,30 @@ argument_list|(
 literal|"fs.AbstractFileSystem.adl.impl"
 argument_list|)
 expr_stmt|;
+comment|// Azure properties are in a different class
+comment|// - org.apache.hadoop.fs.azure.AzureNativeFileSystemStore
+comment|// - org.apache.hadoop.fs.azure.SASKeyGeneratorImpl
+name|xmlPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+literal|"fs.azure.sas.expiry.period"
+argument_list|)
+expr_stmt|;
+name|xmlPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+literal|"fs.azure.local.sas.key.mode"
+argument_list|)
+expr_stmt|;
+name|xmlPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+literal|"fs.azure.secure.mode"
+argument_list|)
+expr_stmt|;
 comment|// Deprecated properties.  These should eventually be removed from the
 comment|// class.
 name|configurationPropsToSkipCompare
