@@ -1325,6 +1325,10 @@ expr_stmt|;
 block|}
 if|if
 condition|(
+name|newState
+operator|!=
+literal|null
+operator|&&
 name|oldState
 operator|!=
 name|newState

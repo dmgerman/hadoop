@@ -4976,6 +4976,8 @@ name|IOException
 throws|,
 name|JSONException
 block|{
+try|try
+init|(
 name|InputStream
 name|in
 init|=
@@ -4983,7 +4985,8 @@ name|conn
 operator|.
 name|getInputStream
 argument_list|()
-decl_stmt|;
+init|)
+block|{
 name|String
 name|encoding
 init|=
@@ -5036,6 +5039,7 @@ decl_stmt|;
 return|return
 name|clusterInfo
 return|;
+block|}
 block|}
 DECL|method|getClusterUrl ()
 specifier|private

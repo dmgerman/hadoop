@@ -219,6 +219,13 @@ literal|4
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|ret
+operator|!=
+literal|null
+condition|)
+block|{
 name|ret
 operator|.
 name|addSubGraph
@@ -231,6 +238,7 @@ name|gname
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 return|return
 name|ret

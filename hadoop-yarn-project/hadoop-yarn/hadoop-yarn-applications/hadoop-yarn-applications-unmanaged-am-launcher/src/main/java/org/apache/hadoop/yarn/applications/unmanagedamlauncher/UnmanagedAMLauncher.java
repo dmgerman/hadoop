@@ -1207,6 +1207,8 @@ operator|.
 name|deleteOnExit
 argument_list|()
 expr_stmt|;
+try|try
+init|(
 name|DataOutputStream
 name|os
 init|=
@@ -1221,7 +1223,8 @@ argument_list|,
 literal|true
 argument_list|)
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|credentials
 operator|.
 name|writeTokenStorageToStream
@@ -1229,11 +1232,7 @@ argument_list|(
 name|os
 argument_list|)
 expr_stmt|;
-name|os
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
+block|}
 name|Map
 argument_list|<
 name|String

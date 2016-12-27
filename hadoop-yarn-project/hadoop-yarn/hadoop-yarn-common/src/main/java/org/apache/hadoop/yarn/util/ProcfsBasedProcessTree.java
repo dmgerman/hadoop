@@ -3854,6 +3854,13 @@ name|value
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|memoryMappingInfo
+operator|!=
+literal|null
+condition|)
+block|{
 name|memoryMappingInfo
 operator|.
 name|setMemInfo
@@ -3863,6 +3870,7 @@ argument_list|,
 name|value
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 catch|catch

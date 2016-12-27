@@ -4464,6 +4464,10 @@ name|equals
 argument_list|(
 name|DOMAIN_DATA_TYPE
 argument_list|)
+operator|&&
+name|domains
+operator|!=
+literal|null
 condition|)
 block|{
 name|boolean
