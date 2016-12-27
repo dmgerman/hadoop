@@ -9310,7 +9310,7 @@ else|:
 name|RM_SERVICES_ADDRESS_CONF_KEYS_HTTP
 return|;
 block|}
-comment|/**    * Get the socket address for<code>name</code> property as a    *<code>InetSocketAddress</code>. On a HA cluster,    * this fetches the address corresponding to the RM identified by    * {@link #RM_HA_ID}.    * @param name property name.    * @param defaultAddress the default value    * @param defaultPort the default port    * @return InetSocketAddress    */
+comment|/**    * Get the socket address for<code>name</code> property as a    *<code>InetSocketAddress</code>. On an HA cluster,    * this fetches the address corresponding to the RM identified by    * {@link #RM_HA_ID}.    * @param name property name.    * @param defaultAddress the default value    * @param defaultPort the default port    * @return InetSocketAddress    */
 annotation|@
 name|Override
 DECL|method|getSocketAddr ( String name, String defaultAddress, int defaultPort)

@@ -4106,7 +4106,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Exception while executing a FS operation."
+literal|"Exception while executing an FS operation."
 argument_list|,
 name|e
 argument_list|)

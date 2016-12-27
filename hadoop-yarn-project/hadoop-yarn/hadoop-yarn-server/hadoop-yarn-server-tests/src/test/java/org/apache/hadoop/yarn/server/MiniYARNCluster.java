@@ -2696,7 +2696,7 @@ return|return
 name|testWorkDir
 return|;
 block|}
-comment|/**    * In a HA cluster, go through all the RMs and find the Active RM. In a    * non-HA cluster, return the index of the only RM.    *    * @return index of the active RM or -1 if none of them turn active    */
+comment|/**    * In an HA cluster, go through all the RMs and find the Active RM. In a    * non-HA cluster, return the index of the only RM.    *    * @return index of the active RM or -1 if none of them turn active    */
 annotation|@
 name|InterfaceAudience
 operator|.

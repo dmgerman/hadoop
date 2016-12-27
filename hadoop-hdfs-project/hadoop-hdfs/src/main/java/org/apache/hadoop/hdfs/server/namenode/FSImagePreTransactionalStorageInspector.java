@@ -283,7 +283,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Inspects a FSImage storage directory in the "old" (pre-HDFS-1073) format.  * This format has the following data files:  *   - fsimage  *   - fsimage.ckpt (when checkpoint is being uploaded)  *   - edits  *   - edits.new (when logs are "rolled")  */
+comment|/**  * Inspects an FSImage storage directory in the "old" (pre-HDFS-1073) format.  * This format has the following data files:  *   - fsimage  *   - fsimage.ckpt (when checkpoint is being uploaded)  *   - edits  *   - edits.new (when logs are "rolled")  */
 end_comment
 
 begin_class

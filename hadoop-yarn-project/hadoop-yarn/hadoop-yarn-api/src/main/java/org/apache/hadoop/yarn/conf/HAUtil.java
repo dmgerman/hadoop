@@ -977,7 +977,7 @@ block|{
 return|return
 name|confKey
 operator|+
-literal|" needs to be set in a HA configuration."
+literal|" needs to be set in an HA configuration."
 return|;
 block|}
 annotation|@
@@ -1039,7 +1039,7 @@ literal|"("
 operator|+
 name|rmId
 operator|+
-literal|") in a HA configuration."
+literal|") in an HA configuration."
 return|;
 block|}
 annotation|@
