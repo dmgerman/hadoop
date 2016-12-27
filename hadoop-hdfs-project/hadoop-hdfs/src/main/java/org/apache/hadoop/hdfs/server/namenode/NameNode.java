@@ -2483,7 +2483,34 @@ operator|.
 name|getName
 argument_list|()
 operator|+
-literal|"] | \n\t["
+literal|" ["
+operator|+
+name|StartupOption
+operator|.
+name|FORCE
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|"] ["
+operator|+
+name|StartupOption
+operator|.
+name|NONINTERACTIVE
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|"] ["
+operator|+
+name|StartupOption
+operator|.
+name|SKIPSHAREDEDITSCHECK
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|"] ] | \n\t["
 operator|+
 name|StartupOption
 operator|.

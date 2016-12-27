@@ -696,6 +696,12 @@ argument_list|(
 literal|"-nonInteractive"
 argument_list|)
 block|,
+DECL|enumConstant|SKIPSHAREDEDITSCHECK
+name|SKIPSHAREDEDITSCHECK
+argument_list|(
+literal|"-skipSharedEditsCheck"
+argument_list|)
+block|,
 DECL|enumConstant|RENAMERESERVED
 name|RENAMERESERVED
 argument_list|(

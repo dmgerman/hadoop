@@ -1062,7 +1062,7 @@ parameter_list|()
 block|{
 name|System
 operator|.
-name|err
+name|out
 operator|.
 name|println
 argument_list|(
@@ -1076,7 +1076,19 @@ operator|.
 name|getSimpleName
 argument_list|()
 operator|+
-literal|" [-force] [-nonInteractive] [-skipSharedEditsCheck]"
+literal|" [-force] [-nonInteractive] [-skipSharedEditsCheck]\n"
+operator|+
+literal|"\t-force: formats if the name directory exists.\n"
+operator|+
+literal|"\t-nonInteractive: formats aborts if the name directory exists,\n"
+operator|+
+literal|"\tunless -force option is specified.\n"
+operator|+
+literal|"\t-skipSharedEditsCheck: skips edits check which ensures that\n"
+operator|+
+literal|"\twe have enough edits already in the shared directory to start\n"
+operator|+
+literal|"\tup from the last checkpoint on the active."
 argument_list|)
 expr_stmt|;
 block|}
