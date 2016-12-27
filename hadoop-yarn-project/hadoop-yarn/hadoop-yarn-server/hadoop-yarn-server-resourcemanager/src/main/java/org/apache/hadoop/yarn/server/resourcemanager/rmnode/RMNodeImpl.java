@@ -4047,7 +4047,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unexpcted initial state"
+literal|"Unexpected initial state"
 argument_list|)
 expr_stmt|;
 block|}

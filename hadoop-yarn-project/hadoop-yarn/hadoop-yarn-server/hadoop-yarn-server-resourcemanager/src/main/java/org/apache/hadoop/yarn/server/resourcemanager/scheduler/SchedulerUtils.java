@@ -1314,7 +1314,7 @@ throw|throw
 operator|new
 name|InvalidLabelResourceRequestException
 argument_list|(
-literal|"Invailid resource request, queue="
+literal|"Invalid resource request, queue="
 operator|+
 name|queueInfo
 operator|.

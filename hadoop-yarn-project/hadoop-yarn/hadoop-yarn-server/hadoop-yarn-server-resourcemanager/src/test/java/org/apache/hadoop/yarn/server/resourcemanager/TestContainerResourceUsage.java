@@ -849,7 +849,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"Unexcpected MemorySeconds value"
+literal|"Unexpected MemorySeconds value"
 argument_list|,
 name|ru
 operator|.
@@ -1461,7 +1461,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"Unexcpected MemorySeconds value"
+literal|"Unexpected MemorySeconds value"
 argument_list|,
 name|memorySeconds
 argument_list|,
@@ -2429,7 +2429,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"Unexcpected MemorySeconds value"
+literal|"Unexpected MemorySeconds value"
 argument_list|,
 name|memorySeconds
 argument_list|,

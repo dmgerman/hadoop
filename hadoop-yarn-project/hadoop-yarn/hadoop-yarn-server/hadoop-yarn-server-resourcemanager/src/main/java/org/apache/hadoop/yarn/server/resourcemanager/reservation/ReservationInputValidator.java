@@ -908,7 +908,7 @@ condition|)
 block|{
 name|message
 operator|=
-literal|"The size of the largest gang in the reservation refinition ("
+literal|"The size of the largest gang in the reservation definition ("
 operator|+
 name|maxGangSize
 operator|+

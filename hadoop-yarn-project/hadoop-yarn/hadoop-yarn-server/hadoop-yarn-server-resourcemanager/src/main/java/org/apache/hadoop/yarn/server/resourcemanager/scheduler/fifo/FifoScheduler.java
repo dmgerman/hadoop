@@ -2390,7 +2390,7 @@ name|error
 argument_list|(
 literal|"Calling allocate on removed "
 operator|+
-literal|"or non existant application "
+literal|"or non-existent application "
 operator|+
 name|applicationAttemptId
 argument_list|)

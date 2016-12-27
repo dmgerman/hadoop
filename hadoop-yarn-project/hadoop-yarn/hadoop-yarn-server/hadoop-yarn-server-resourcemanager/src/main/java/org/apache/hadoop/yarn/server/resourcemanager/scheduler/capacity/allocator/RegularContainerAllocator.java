@@ -1310,7 +1310,7 @@ argument_list|()
 operator|+
 literal|" because missed-non-partitioned-resource-request"
 operator|+
-literal|" opportunity under requred:"
+literal|" opportunity under required:"
 operator|+
 literal|" Now="
 operator|+

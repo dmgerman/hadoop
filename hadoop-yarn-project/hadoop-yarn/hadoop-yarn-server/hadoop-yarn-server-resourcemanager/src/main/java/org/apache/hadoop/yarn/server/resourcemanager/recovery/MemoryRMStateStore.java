@@ -911,7 +911,7 @@ throw|throw
 operator|new
 name|YarnRuntimeException
 argument_list|(
-literal|"Removing non-exsisting application state"
+literal|"Removing non-existing application state"
 argument_list|)
 throw|;
 block|}

@@ -3774,7 +3774,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 operator|+
-literal|" does not have privilage to see this attempt "
+literal|" does not have privilege to see this attempt "
 operator|+
 name|appAttemptId
 argument_list|)
@@ -4004,7 +4004,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 operator|+
-literal|" does not have privilage to see this application "
+literal|" does not have privilege to see this application "
 operator|+
 name|appId
 argument_list|)
@@ -4248,7 +4248,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 operator|+
-literal|" does not have privilage to see this application "
+literal|" does not have privilege to see this application "
 operator|+
 name|appId
 argument_list|)
@@ -4520,7 +4520,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 operator|+
-literal|" does not have privilage to see this application "
+literal|" does not have privilege to see this application "
 operator|+
 name|appId
 argument_list|)

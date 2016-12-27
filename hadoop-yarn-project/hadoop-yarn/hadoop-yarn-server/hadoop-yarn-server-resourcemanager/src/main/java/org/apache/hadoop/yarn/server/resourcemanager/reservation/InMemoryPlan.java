@@ -1708,7 +1708,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Sucessfully added reservation: {} to plan."
+literal|"Successfully added reservation: {} to plan."
 argument_list|,
 name|inMemReservation
 operator|.
@@ -1882,7 +1882,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Sucessfully updated reservation: {} in plan."
+literal|"Successfully updated reservation: {} in plan."
 argument_list|,
 name|reservation
 operator|.

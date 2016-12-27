@@ -1646,7 +1646,7 @@ name|message
 operator|.
 name|startsWith
 argument_list|(
-literal|"The size of the largest gang in the reservation refinition"
+literal|"The size of the largest gang in the reservation definition"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2864,7 +2864,7 @@ name|message
 operator|.
 name|startsWith
 argument_list|(
-literal|"The size of the largest gang in the reservation refinition"
+literal|"The size of the largest gang in the reservation definition"
 argument_list|)
 argument_list|)
 expr_stmt|;

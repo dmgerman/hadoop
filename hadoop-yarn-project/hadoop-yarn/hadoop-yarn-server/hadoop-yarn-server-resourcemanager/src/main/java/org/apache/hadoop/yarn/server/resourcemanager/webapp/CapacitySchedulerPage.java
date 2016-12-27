@@ -2747,7 +2747,7 @@ name|append
 argument_list|(
 literal|" alert(\"Scheduler log generation failed. Please check the"
 operator|+
-literal|" ResourceManager log for more informtion.\");"
+literal|" ResourceManager log for more information.\");"
 argument_list|)
 operator|.
 name|append
