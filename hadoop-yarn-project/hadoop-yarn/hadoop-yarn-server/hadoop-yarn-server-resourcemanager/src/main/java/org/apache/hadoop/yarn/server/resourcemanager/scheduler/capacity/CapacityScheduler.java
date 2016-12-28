@@ -12863,6 +12863,20 @@ return|return
 literal|0
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getCapacitySchedulerQueueManager ()
+specifier|public
+name|CapacitySchedulerQueueManager
+name|getCapacitySchedulerQueueManager
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|queueManager
+return|;
+block|}
 block|}
 end_class
 

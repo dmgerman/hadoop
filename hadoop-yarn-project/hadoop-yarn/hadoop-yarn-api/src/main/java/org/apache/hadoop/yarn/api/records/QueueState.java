@@ -69,7 +69,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * State of a Queue.  *<p>  * A queue is in one of:  *<ul>  *<li>{@link #RUNNING} - normal state.</li>  *<li>{@link #STOPPED} - not accepting new application submissions.</li>  *</ul>  *   * @see QueueInfo  * @see ApplicationClientProtocol#getQueueInfo(org.apache.hadoop.yarn.api.protocolrecords.GetQueueInfoRequest)  */
+comment|/**  * State of a Queue.  *<p>  * A queue is in one of:  *<ul>  *<li>{@link #RUNNING} - normal state.</li>  *<li>{@link #STOPPED} - not accepting new application submissions.</li>  *<li>  *     {@link #DRAINING} - not accepting new application submissions  *     and waiting for applications finish.  *</li>  *</ul>  *   * @see QueueInfo  * @see ApplicationClientProtocol#getQueueInfo(org.apache.hadoop.yarn.api.protocolrecords.GetQueueInfoRequest)  */
 end_comment
 
 begin_enum
@@ -85,6 +85,10 @@ block|{
 comment|/**    * Stopped - Not accepting submissions of new applications.    */
 DECL|enumConstant|STOPPED
 name|STOPPED
+block|,
+comment|/**    * Draining - Not accepting submissions of new applications,    * and waiting for applications finish.    */
+DECL|enumConstant|DRAINING
+name|DRAINING
 block|,
 comment|/**    * Running - normal operation.    */
 DECL|enumConstant|RUNNING

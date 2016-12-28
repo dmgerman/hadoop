@@ -2056,7 +2056,8 @@ literal|"\n"
 operator|+
 literal|"state = "
 operator|+
-name|state
+name|getState
+argument_list|()
 operator|+
 literal|" [= configuredState ]"
 operator|+
@@ -4550,6 +4551,9 @@ name|user
 argument_list|,
 name|application
 argument_list|)
+expr_stmt|;
+name|appFinished
+argument_list|()
 expr_stmt|;
 comment|// Inform the parent queue
 name|getParent
@@ -11373,6 +11377,57 @@ block|{
 return|return
 name|clusterResource
 return|;
+block|}
+block|}
+annotation|@
+name|Override
+DECL|method|stopQueue ()
+specifier|public
+name|void
+name|stopQueue
+parameter_list|()
+block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+name|getNumApplications
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+name|updateQueueState
+argument_list|(
+name|QueueState
+operator|.
+name|DRAINING
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|updateQueueState
+argument_list|(
+name|QueueState
+operator|.
+name|STOPPED
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 block|}

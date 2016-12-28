@@ -100,6 +100,11 @@ end_comment
 
 begin_interface
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"rawtypes"
+argument_list|)
+annotation|@
 name|Private
 annotation|@
 name|Unstable
@@ -110,7 +115,7 @@ name|SchedulerQueueManager
 parameter_list|<
 name|T
 extends|extends
-name|Queue
+name|SchedulerQueue
 parameter_list|,
 name|E
 extends|extends

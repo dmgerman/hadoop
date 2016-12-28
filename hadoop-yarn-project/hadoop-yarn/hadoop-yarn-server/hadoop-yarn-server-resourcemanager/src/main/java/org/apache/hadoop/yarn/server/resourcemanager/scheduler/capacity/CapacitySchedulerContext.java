@@ -411,6 +411,11 @@ name|ActivitiesManager
 name|getActivitiesManager
 parameter_list|()
 function_decl|;
+DECL|method|getCapacitySchedulerQueueManager ()
+name|CapacitySchedulerQueueManager
+name|getCapacitySchedulerQueueManager
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
