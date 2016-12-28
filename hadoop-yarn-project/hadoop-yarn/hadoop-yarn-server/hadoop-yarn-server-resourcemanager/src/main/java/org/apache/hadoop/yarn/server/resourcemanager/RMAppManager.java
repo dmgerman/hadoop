@@ -3027,6 +3027,13 @@ operator|+
 literal|" applications"
 argument_list|)
 expr_stmt|;
+name|int
+name|count
+init|=
+literal|0
+decl_stmt|;
+try|try
+block|{
 for|for
 control|(
 name|ApplicationStateData
@@ -3043,6 +3050,32 @@ argument_list|(
 name|appState
 argument_list|,
 name|state
+argument_list|)
+expr_stmt|;
+name|count
+operator|+=
+literal|1
+expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Successfully recovered "
+operator|+
+name|count
+operator|+
+literal|" out of "
+operator|+
+name|appStates
+operator|.
+name|size
+argument_list|()
+operator|+
+literal|" applications"
 argument_list|)
 expr_stmt|;
 block|}
