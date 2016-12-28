@@ -106,6 +106,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Iterator
 import|;
 end_import
@@ -131,7 +141,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>  * In addition to {@link PlacementSet}, this also maintains  * pending ResourceRequests:  * - When new ResourceRequest(s) added to scheduler, or,  * - Or new container allocated, scheduler can notify corresponding  * PlacementSet.  *</p>  *  *<p>  * Different set of resource requests (E.g., resource requests with the  * same schedulerKey) can have one instance of PlacementSet, each PlacementSet  * can have different ways to order nodes depends on requests.  *</p>  */
+comment|/**  *<p>  * Comparing to {@link PlacementSet}, this also maintains  * pending ResourceRequests:  * - When new ResourceRequest(s) added to scheduler, or,  * - Or new container allocated, scheduler can notify corresponding  * PlacementSet.  *</p>  *  *<p>  * Different set of resource requests (E.g., resource requests with the  * same schedulerKey) can have one instance of PlacementSet, each PlacementSet  * can have different ways to order nodes depends on requests.  *</p>  */
 end_comment
 
 begin_interface
@@ -144,11 +154,6 @@ name|N
 extends|extends
 name|SchedulerNode
 parameter_list|>
-extends|extends
-name|PlacementSet
-argument_list|<
-name|N
-argument_list|>
 block|{
 comment|/**    * Get iterator of preferred node depends on requirement and/or availability    * @param clusterPlacementSet input cluster PlacementSet    * @return iterator of preferred node    */
 DECL|method|getPreferredNodeIterator (PlacementSet<N> clusterPlacementSet)
@@ -166,11 +171,11 @@ name|clusterPlacementSet
 parameter_list|)
 function_decl|;
 comment|/**    * Replace existing ResourceRequest by the new requests    *    * @param requests new ResourceRequests    * @param recoverPreemptedRequestForAContainer if we're recovering resource    * requests for preempted container    * @return true if total pending resource changed    */
-DECL|method|updateResourceRequests ( List<ResourceRequest> requests, boolean recoverPreemptedRequestForAContainer)
+DECL|method|updateResourceRequests ( Collection<ResourceRequest> requests, boolean recoverPreemptedRequestForAContainer)
 name|ResourceRequestUpdateResult
 name|updateResourceRequests
 parameter_list|(
-name|List
+name|Collection
 argument_list|<
 name|ResourceRequest
 argument_list|>
@@ -191,19 +196,16 @@ argument_list|>
 name|getResourceRequests
 parameter_list|()
 function_decl|;
-comment|/**    * Get ResourceRequest by given schedulerKey and resourceName    * @param resourceName resourceName    * @param schedulerRequestKey schedulerRequestKey    * @return ResourceRequest    */
-DECL|method|getResourceRequest (String resourceName, SchedulerRequestKey schedulerRequestKey)
+comment|/**    * Get ResourceRequest by given schedulerKey and resourceName    * @param resourceName resourceName    * @return ResourceRequest    */
+DECL|method|getResourceRequest (String resourceName)
 name|ResourceRequest
 name|getResourceRequest
 parameter_list|(
 name|String
 name|resourceName
-parameter_list|,
-name|SchedulerRequestKey
-name|schedulerRequestKey
 parameter_list|)
 function_decl|;
-comment|/**    * Notify container allocated.    * @param type Type of the allocation    * @param node Which node this container allocated on    * @param request resource request    * @return list of ResourceRequests deducted    */
+comment|/**    * Notify container allocated.    * @param type Type of the allocation    * @param node Which node this container allocated on    * @param request Which resource request to allocate    * @return list of ResourceRequests deducted    */
 DECL|method|allocate (NodeType type, SchedulerNode node, ResourceRequest request)
 name|List
 argument_list|<
@@ -219,6 +221,18 @@ name|node
 parameter_list|,
 name|ResourceRequest
 name|request
+parameter_list|)
+function_decl|;
+comment|/**    * We can still have pending requirement for a given NodeType and node    * @param type Locality Type    * @param node which node we will allocate on    * @return true if we has pending requirement    */
+DECL|method|canAllocate (NodeType type, SchedulerNode node)
+name|boolean
+name|canAllocate
+parameter_list|(
+name|NodeType
+name|type
+parameter_list|,
+name|SchedulerNode
+name|node
 parameter_list|)
 function_decl|;
 block|}
