@@ -114,7 +114,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|List
+name|Map
 import|;
 end_import
 
@@ -125,6 +125,28 @@ operator|.
 name|util
 operator|.
 name|Map
+operator|.
+name|Entry
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|TreeMap
 import|;
 end_import
 
@@ -177,7 +199,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|List
+name|Set
 argument_list|<
 name|ExportEntry
 argument_list|>
@@ -211,7 +233,7 @@ name|description
 expr_stmt|;
 block|}
 comment|/**    * Build a configuration from the entries    *    * @param description configuration description    * @param entries     entries to put    */
-DECL|method|PublishedExports (String description, Iterable<Map.Entry<String, List<ExportEntry>>> entries)
+DECL|method|PublishedExports (String description, Iterable<Entry<String, Set<ExportEntry>>> entries)
 specifier|public
 name|PublishedExports
 parameter_list|(
@@ -220,13 +242,11 @@ name|description
 parameter_list|,
 name|Iterable
 argument_list|<
-name|Map
-operator|.
 name|Entry
 argument_list|<
 name|String
 argument_list|,
-name|List
+name|Set
 argument_list|<
 name|ExportEntry
 argument_list|>
@@ -300,8 +320,49 @@ name|toString
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Set the values from an iterable (this includes a Hadoop Configuration and Java properties    * object). Any existing value set is discarded    *    * @param entries entries to put    */
-DECL|method|putValues (Iterable<Map.Entry<String, List<ExportEntry>>> entries)
+DECL|method|sortedEntries ()
+specifier|public
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Set
+argument_list|<
+name|ExportEntry
+argument_list|>
+argument_list|>
+name|sortedEntries
+parameter_list|()
+block|{
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Set
+argument_list|<
+name|ExportEntry
+argument_list|>
+argument_list|>
+name|sortedEntries
+init|=
+operator|new
+name|TreeMap
+argument_list|<>
+argument_list|()
+decl_stmt|;
+name|sortedEntries
+operator|.
+name|putAll
+argument_list|(
+name|entries
+argument_list|)
+expr_stmt|;
+return|return
+name|sortedEntries
+return|;
+block|}
+comment|/**    * Set the values from an iterable (this includes a Hadoop Configuration and Java properties    * object). Any existing value set is discarded    *    * @param values values to put    */
+DECL|method|putValues (Iterable<Map.Entry<String, Set<ExportEntry>>> values)
 specifier|public
 name|void
 name|putValues
@@ -314,13 +375,13 @@ name|Entry
 argument_list|<
 name|String
 argument_list|,
-name|List
+name|Set
 argument_list|<
 name|ExportEntry
 argument_list|>
 argument_list|>
 argument_list|>
-name|entries
+name|values
 parameter_list|)
 block|{
 name|this
@@ -329,14 +390,7 @@ name|entries
 operator|=
 operator|new
 name|HashMap
-argument_list|<
-name|String
-argument_list|,
-name|List
-argument_list|<
-name|ExportEntry
-argument_list|>
-argument_list|>
+argument_list|<>
 argument_list|()
 expr_stmt|;
 for|for
@@ -347,14 +401,14 @@ name|Entry
 argument_list|<
 name|String
 argument_list|,
-name|List
+name|Set
 argument_list|<
 name|ExportEntry
 argument_list|>
 argument_list|>
 name|entry
 range|:
-name|entries
+name|values
 control|)
 block|{
 name|this

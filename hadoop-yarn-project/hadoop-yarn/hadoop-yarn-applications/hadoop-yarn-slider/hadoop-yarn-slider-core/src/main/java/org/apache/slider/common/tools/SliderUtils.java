@@ -1527,13 +1527,13 @@ name|s
 argument_list|)
 return|;
 block|}
-DECL|method|isEmpty (List l)
+DECL|method|isEmpty (Collection l)
 specifier|public
 specifier|static
 name|boolean
 name|isEmpty
 parameter_list|(
-name|List
+name|Collection
 name|l
 parameter_list|)
 block|{
@@ -1548,14 +1548,14 @@ name|isEmpty
 argument_list|()
 return|;
 block|}
-comment|/**    * Probe for a list existing and not being empty    * @param l list    * @return true if the reference is valid and it contains entries    */
-DECL|method|isNotEmpty (List l)
+comment|/**    * Probe for a collection existing and not being empty    * @param l collection    * @return true if the reference is valid and it contains entries    */
+DECL|method|isNotEmpty (Collection l)
 specifier|public
 specifier|static
 name|boolean
 name|isNotEmpty
 parameter_list|(
-name|List
+name|Collection
 name|l
 parameter_list|)
 block|{
