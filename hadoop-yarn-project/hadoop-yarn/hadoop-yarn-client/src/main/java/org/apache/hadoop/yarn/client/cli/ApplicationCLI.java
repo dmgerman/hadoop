@@ -775,6 +775,15 @@ name|UPDATE_LIFETIME
 init|=
 literal|"updateLifetime"
 decl_stmt|;
+DECL|field|CHANGE_APPLICATION_QUEUE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CHANGE_APPLICATION_QUEUE
+init|=
+literal|"changeQueue"
+decl_stmt|;
 DECL|field|allAppStates
 specifier|private
 name|boolean
@@ -932,7 +941,7 @@ literal|true
 argument_list|,
 literal|"Moves the application to a "
 operator|+
-literal|"different queue."
+literal|"different queue. Deprecated command. Use 'changeQueue' instead."
 argument_list|)
 expr_stmt|;
 name|opts
@@ -1140,6 +1149,23 @@ operator|+
 literal|" passed using 'appId' option. Timeout value is in seconds."
 argument_list|)
 expr_stmt|;
+name|opts
+operator|.
+name|addOption
+argument_list|(
+name|CHANGE_APPLICATION_QUEUE
+argument_list|,
+literal|true
+argument_list|,
+literal|"Moves application to a new queue. ApplicationId can be"
+operator|+
+literal|" passed using 'appId' option. 'movetoqueue' command is"
+operator|+
+literal|" deprecated, this new command 'changeQueue' performs same"
+operator|+
+literal|" functionality."
+argument_list|)
+expr_stmt|;
 name|Option
 name|killOpt
 init|=
@@ -1255,6 +1281,18 @@ operator|.
 name|setArgName
 argument_list|(
 literal|"Timeout"
+argument_list|)
+expr_stmt|;
+name|opts
+operator|.
+name|getOption
+argument_list|(
+name|CHANGE_APPLICATION_QUEUE
+argument_list|)
+operator|.
+name|setArgName
+argument_list|(
+literal|"Queue Name"
 argument_list|)
 expr_stmt|;
 block|}
@@ -2368,6 +2406,57 @@ operator|.
 name|LIFETIME
 argument_list|,
 name|timeoutInSec
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|cliParser
+operator|.
+name|hasOption
+argument_list|(
+name|CHANGE_APPLICATION_QUEUE
+argument_list|)
+condition|)
+block|{
+if|if
+condition|(
+operator|!
+name|cliParser
+operator|.
+name|hasOption
+argument_list|(
+name|APP_ID
+argument_list|)
+condition|)
+block|{
+name|printUsage
+argument_list|(
+name|title
+argument_list|,
+name|opts
+argument_list|)
+expr_stmt|;
+return|return
+name|exitCode
+return|;
+block|}
+name|moveApplicationAcrossQueues
+argument_list|(
+name|cliParser
+operator|.
+name|getOptionValue
+argument_list|(
+name|APP_ID
+argument_list|)
+argument_list|,
+name|cliParser
+operator|.
+name|getOptionValue
+argument_list|(
+name|CHANGE_APPLICATION_QUEUE
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
