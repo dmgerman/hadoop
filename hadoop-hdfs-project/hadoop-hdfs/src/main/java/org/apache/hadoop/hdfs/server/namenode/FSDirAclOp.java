@@ -22,6 +22,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -1441,11 +1455,38 @@ operator|.
 name|ACL_ENTRY_COMPARATOR
 argument_list|)
 decl_stmt|;
-assert|assert
+name|Preconditions
+operator|.
+name|checkPositionIndex
+argument_list|(
 name|groupEntryIndex
-operator|>=
-literal|0
-assert|;
+argument_list|,
+name|featureEntries
+operator|.
+name|size
+argument_list|()
+argument_list|,
+literal|"Invalid group entry index after binary-searching inode: "
+operator|+
+name|inode
+operator|.
+name|getFullPathName
+argument_list|()
+operator|+
+literal|"("
+operator|+
+name|inode
+operator|.
+name|getId
+argument_list|()
+operator|+
+literal|") "
+operator|+
+literal|"with featureEntries:"
+operator|+
+name|featureEntries
+argument_list|)
+expr_stmt|;
 name|FsAction
 name|groupPerm
 init|=
