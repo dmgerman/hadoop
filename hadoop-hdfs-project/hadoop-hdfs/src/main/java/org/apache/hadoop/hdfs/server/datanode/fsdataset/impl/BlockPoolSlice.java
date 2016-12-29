@@ -1478,14 +1478,13 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|fileIoProvider
+comment|// This is only called as part of the volume shutdown.
+comment|// We explicitly avoid calling flush with fileIoProvider which triggers
+comment|// volume check upon io exception to avoid cyclic volume checks.
+name|out
 operator|.
 name|flush
-argument_list|(
-name|volume
-argument_list|,
-name|out
-argument_list|)
+argument_list|()
 expr_stmt|;
 block|}
 block|}

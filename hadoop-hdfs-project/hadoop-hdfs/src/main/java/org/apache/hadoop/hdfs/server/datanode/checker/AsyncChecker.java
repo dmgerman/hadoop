@@ -30,6 +30,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|base
+operator|.
+name|Optional
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|util
 operator|.
 name|concurrent
@@ -113,11 +127,14 @@ parameter_list|,
 name|V
 parameter_list|>
 block|{
-comment|/**    * Schedule an asynchronous check for the given object.    *    * @param target object to be checked.    *    * @param context the interpretation of the context depends on the    *                target.    *    * @return returns a {@link ListenableFuture} that can be used to    *         retrieve the result of the asynchronous check.    */
+comment|/**    * Schedule an asynchronous check for the given object.    *    * @param target object to be checked.    *    * @param context the interpretation of the context depends on the    *                target.    *    * @return returns a {@link Optional of ListenableFuture} that can be used to    *         retrieve the result of the asynchronous check.    */
 DECL|method|schedule (Checkable<K, V> target, K context)
+name|Optional
+argument_list|<
 name|ListenableFuture
 argument_list|<
 name|V
+argument_list|>
 argument_list|>
 name|schedule
 parameter_list|(

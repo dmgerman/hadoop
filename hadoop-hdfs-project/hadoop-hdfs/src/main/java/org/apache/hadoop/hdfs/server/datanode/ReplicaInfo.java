@@ -247,6 +247,8 @@ operator|new
 name|FileIoProvider
 argument_list|(
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 comment|/**   * Constructor   * @param vol volume where replica is located   * @param blockId block id   * @param len replica length   * @param genStamp replica generation stamp   */

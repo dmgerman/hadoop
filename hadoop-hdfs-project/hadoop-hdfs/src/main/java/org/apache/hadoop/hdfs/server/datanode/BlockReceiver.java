@@ -1737,16 +1737,11 @@ operator|!=
 literal|null
 condition|)
 block|{
-comment|// possible disk error
 name|ioe
 operator|=
 name|cause
 expr_stmt|;
-name|datanode
-operator|.
-name|checkDiskErrorAsync
-argument_list|()
-expr_stmt|;
+comment|// Volume error check moved to FileIoProvider
 block|}
 throw|throw
 name|ioe
@@ -2098,7 +2093,6 @@ name|flushTotalNanos
 argument_list|)
 expr_stmt|;
 block|}
-comment|// disk check
 if|if
 condition|(
 name|ioe
@@ -2106,11 +2100,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|datanode
-operator|.
-name|checkDiskErrorAsync
-argument_list|()
-expr_stmt|;
+comment|// Volume error check moved to FileIoProvider
 throw|throw
 name|ioe
 throw|;
@@ -3909,11 +3899,7 @@ name|IOException
 name|iex
 parameter_list|)
 block|{
-name|datanode
-operator|.
-name|checkDiskErrorAsync
-argument_list|()
-expr_stmt|;
+comment|// Volume error check moved to FileIoProvider
 throw|throw
 name|iex
 throw|;
@@ -6500,11 +6486,7 @@ condition|(
 name|running
 condition|)
 block|{
-name|datanode
-operator|.
-name|checkDiskErrorAsync
-argument_list|()
-expr_stmt|;
+comment|// Volume error check moved to FileIoProvider
 name|LOG
 operator|.
 name|info

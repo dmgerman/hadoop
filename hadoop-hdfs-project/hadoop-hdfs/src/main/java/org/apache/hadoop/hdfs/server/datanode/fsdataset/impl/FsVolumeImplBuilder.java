@@ -260,6 +260,8 @@ operator|new
 name|FileIoProvider
 argument_list|(
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 argument_list|,
 name|conf

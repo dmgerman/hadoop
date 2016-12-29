@@ -30,6 +30,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|base
+operator|.
+name|Optional
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|util
 operator|.
 name|concurrent
@@ -407,16 +421,17 @@ block|}
 comment|/**    * See {@link AsyncChecker#schedule}    *    * If the object has been checked recently then the check will    * be skipped. Multiple concurrent checks for the same object    * will receive the same Future.    */
 annotation|@
 name|Override
-DECL|method|schedule ( final Checkable<K, V> target, final K context)
+DECL|method|schedule (Checkable<K, V> target, K context)
 specifier|public
-specifier|synchronized
+name|Optional
+argument_list|<
 name|ListenableFuture
 argument_list|<
 name|V
 argument_list|>
+argument_list|>
 name|schedule
 parameter_list|(
-specifier|final
 name|Checkable
 argument_list|<
 name|K
@@ -425,16 +440,15 @@ name|V
 argument_list|>
 name|target
 parameter_list|,
-specifier|final
 name|K
 name|context
 parameter_list|)
 block|{
 name|LOG
 operator|.
-name|debug
+name|info
 argument_list|(
-literal|"Scheduling a check of {}"
+literal|"Scheduling a check for {}"
 argument_list|,
 name|target
 argument_list|)
@@ -450,12 +464,10 @@ argument_list|)
 condition|)
 block|{
 return|return
-name|checksInProgress
+name|Optional
 operator|.
-name|get
-argument_list|(
-name|target
-argument_list|)
+name|absent
+argument_list|()
 return|;
 block|}
 if|if
@@ -518,29 +530,10 @@ name|minMsBetweenChecks
 argument_list|)
 expr_stmt|;
 return|return
-name|result
+name|Optional
 operator|.
-name|result
-operator|!=
-literal|null
-condition|?
-name|Futures
-operator|.
-name|immediateFuture
-argument_list|(
-name|result
-operator|.
-name|result
-argument_list|)
-else|:
-name|Futures
-operator|.
-name|immediateFailedFuture
-argument_list|(
-name|result
-operator|.
-name|exception
-argument_list|)
+name|absent
+argument_list|()
 return|;
 block|}
 block|}
@@ -600,7 +593,12 @@ name|lf
 argument_list|)
 expr_stmt|;
 return|return
+name|Optional
+operator|.
+name|of
+argument_list|(
 name|lf
+argument_list|)
 return|;
 block|}
 comment|/**    * Register a callback to cache the result of a check.    * @param target    * @param lf    */

@@ -9648,7 +9648,12 @@ comment|// if file is not null, but doesn't exist - possibly disk failed
 name|datanode
 operator|.
 name|checkDiskErrorAsync
+argument_list|(
+name|r
+operator|.
+name|getVolume
 argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 if|if

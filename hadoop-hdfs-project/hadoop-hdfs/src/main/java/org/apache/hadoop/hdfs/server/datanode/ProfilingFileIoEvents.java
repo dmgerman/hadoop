@@ -110,7 +110,7 @@ name|Private
 DECL|class|ProfilingFileIoEvents
 class|class
 name|ProfilingFileIoEvents
-implements|implements
+extends|extends
 name|FileIoEvents
 block|{
 annotation|@

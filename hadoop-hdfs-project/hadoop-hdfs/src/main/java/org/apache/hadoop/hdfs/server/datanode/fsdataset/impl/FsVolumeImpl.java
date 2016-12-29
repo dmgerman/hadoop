@@ -6797,14 +6797,7 @@ argument_list|,
 name|ioe
 argument_list|)
 expr_stmt|;
-comment|// Initiate a check on disk failure.
-name|dataset
-operator|.
-name|datanode
-operator|.
-name|checkDiskErrorAsync
-argument_list|()
-expr_stmt|;
+comment|// Volume error check moved to FileIoProvider.
 comment|// Ignore this directory and proceed.
 return|return
 name|report

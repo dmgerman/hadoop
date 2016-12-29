@@ -102,7 +102,7 @@ begin_comment
 comment|/**  * The following hooks can be implemented for instrumentation/fault  * injection.  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -111,13 +111,15 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Unstable
-DECL|interface|FileIoEvents
+DECL|class|FileIoEvents
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|FileIoEvents
 block|{
 comment|/**    * Invoked before a filesystem metadata operation.    *    * @param volume  target volume for the operation. Null if unavailable.    * @param op  type of operation.    * @return  timestamp at which the operation was started. 0 if    *          unavailable.    */
 DECL|method|beforeMetadataOp (@ullable FsVolumeSpi volume, OPERATION op)
+specifier|abstract
 name|long
 name|beforeMetadataOp
 parameter_list|(
@@ -132,6 +134,7 @@ parameter_list|)
 function_decl|;
 comment|/**    * Invoked after a filesystem metadata operation has completed.    *    * @param volume  target volume for the operation.  Null if unavailable.    * @param op  type of operation.    * @param begin  timestamp at which the operation was started. 0    *               if unavailable.    */
 DECL|method|afterMetadataOp (@ullable FsVolumeSpi volume, OPERATION op, long begin)
+specifier|abstract
 name|void
 name|afterMetadataOp
 parameter_list|(
@@ -149,6 +152,7 @@ parameter_list|)
 function_decl|;
 comment|/**    * Invoked before a read/write/flush/channel transfer operation.    *    * @param volume  target volume for the operation. Null if unavailable.    * @param op  type of operation.    * @param len  length of the file IO. 0 for flush.    * @return  timestamp at which the operation was started. 0 if    *          unavailable.    */
 DECL|method|beforeFileIo (@ullable FsVolumeSpi volume, OPERATION op, long len)
+specifier|abstract
 name|long
 name|beforeFileIo
 parameter_list|(
@@ -166,6 +170,7 @@ parameter_list|)
 function_decl|;
 comment|/**    * Invoked after a read/write/flush/channel transfer operation    * has completed.    *    * @param volume  target volume for the operation. Null if unavailable.    * @param op  type of operation.    * @param len   of the file IO. 0 for flush.    * @return  timestamp at which the operation was started. 0 if    *          unavailable.    */
 DECL|method|afterFileIo (@ullable FsVolumeSpi volume, OPERATION op, long begin, long len)
+specifier|abstract
 name|void
 name|afterFileIo
 parameter_list|(
@@ -184,8 +189,9 @@ name|long
 name|len
 parameter_list|)
 function_decl|;
-comment|/**    * Invoked if an operation fails with an exception.    *  @param volume  target volume for the operation. Null if unavailable.    * @param op  type of operation.    * @param e  Exception encountered during the operation.    * @param begin  time at which the operation was started.    */
+comment|/**    * Invoked if an operation fails with an exception.    * @param volume  target volume for the operation. Null if unavailable.    * @param op  type of operation.    * @param e  Exception encountered during the operation.    * @param begin  time at which the operation was started.    */
 DECL|method|onFailure ( @ullable FsVolumeSpi volume, OPERATION op, Exception e, long begin)
+specifier|abstract
 name|void
 name|onFailure
 parameter_list|(
@@ -204,16 +210,71 @@ name|long
 name|begin
 parameter_list|)
 function_decl|;
+comment|/**    * Invoked by FileIoProvider if an operation fails with an exception.    * @param datanode datanode that runs volume check upon volume io failure    * @param volume  target volume for the operation. Null if unavailable.    * @param op  type of operation.    * @param e  Exception encountered during the operation.    * @param begin  time at which the operation was started.    */
+DECL|method|onFailure (DataNode datanode, @Nullable FsVolumeSpi volume, OPERATION op, Exception e, long begin)
+name|void
+name|onFailure
+parameter_list|(
+name|DataNode
+name|datanode
+parameter_list|,
+annotation|@
+name|Nullable
+name|FsVolumeSpi
+name|volume
+parameter_list|,
+name|OPERATION
+name|op
+parameter_list|,
+name|Exception
+name|e
+parameter_list|,
+name|long
+name|begin
+parameter_list|)
+block|{
+name|onFailure
+argument_list|(
+name|volume
+argument_list|,
+name|op
+argument_list|,
+name|e
+argument_list|,
+name|begin
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|datanode
+operator|!=
+literal|null
+operator|&&
+name|volume
+operator|!=
+literal|null
+condition|)
+block|{
+name|datanode
+operator|.
+name|checkDiskErrorAsync
+argument_list|(
+name|volume
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Return statistics as a JSON string.    * @return    */
 DECL|method|getStatistics ()
 annotation|@
 name|Nullable
+specifier|abstract
 name|String
 name|getStatistics
 parameter_list|()
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

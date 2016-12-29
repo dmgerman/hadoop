@@ -3529,6 +3529,7 @@ specifier|private
 name|ObjectName
 name|dataNodeInfoBeanName
 decl_stmt|;
+comment|// Test verification only
 DECL|field|lastDiskErrorCheck
 specifier|private
 specifier|volatile
@@ -3724,6 +3725,8 @@ operator|new
 name|FileIoProvider
 argument_list|(
 name|conf
+argument_list|,
+name|this
 argument_list|)
 expr_stmt|;
 name|this
@@ -3868,6 +3871,8 @@ operator|new
 name|FileIoProvider
 argument_list|(
 name|conf
+argument_list|,
+name|this
 argument_list|)
 expr_stmt|;
 name|this
@@ -5582,7 +5587,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Remove volumes from DataNode.    * See {@link #removeVolumes(Set, boolean)} for details.    *    * @param locations the StorageLocations of the volumes to be removed.    * @throws IOException    */
+comment|/**    * Remove volumes from DataNode.    * See {@link #removeVolumes(Collection, boolean)} for details.    *    * @param locations the StorageLocations of the volumes to be removed.    * @throws IOException    */
 DECL|method|removeVolumes (final Collection<StorageLocation> locations)
 specifier|private
 name|void
@@ -5616,7 +5621,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Remove volumes from DataNode.    *    * It does three things:    *<li>    *<ul>Remove volumes and block info from FsDataset.</ul>    *<ul>Remove volumes from DataStorage.</ul>    *<ul>Reset configuration DATA_DIR and {@link #dataDirs} to represent    *   active volumes.</ul>    *</li>    * @param absoluteVolumePaths the absolute path of volumes.    * @param clearFailure if true, clears the failure information related to the    *                     volumes.    * @throws IOException    */
+comment|/**    * Remove volumes from DataNode.    *    * It does three things:    *<li>    *<ul>Remove volumes and block info from FsDataset.</ul>    *<ul>Remove volumes from DataStorage.</ul>    *<ul>Reset configuration DATA_DIR and {@link #dataDirs} to represent    *   active volumes.</ul>    *</li>    * @param storageLocations the absolute path of volumes.    * @param clearFailure if true, clears the failure information related to the    *                     volumes.    * @throws IOException    */
 DECL|method|removeVolumes ( final Collection<StorageLocation> storageLocations, boolean clearFailure)
 specifier|private
 specifier|synchronized
@@ -7709,7 +7714,7 @@ operator|.
 name|cacheReportsDisabledForTests
 return|;
 block|}
-comment|/**    * This method starts the data node with the specified conf.    *     * If conf's CONFIG_PROPERTY_SIMULATED property is set    * then a simulated storage based data node is created.    *     * @param dataDirs - only for a non-simulated storage data node    * @throws IOException    */
+comment|/**    * This method starts the data node with the specified conf.    *     * If conf's CONFIG_PROPERTY_SIMULATED property is set    * then a simulated storage based data node is created.    *     * @param dataDirectories - only for a non-simulated storage data node    * @throws IOException    */
 DECL|method|startDataNode (List<StorageLocation> dataDirectories, SecureResources resources )
 name|void
 name|startDataNode
@@ -10730,7 +10735,9 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Check if there is a disk failure asynchronously and if so, handle the error    */
+comment|/**    * Check if there is a disk failure asynchronously    * and if so, handle the error.    */
+annotation|@
+name|VisibleForTesting
 DECL|method|checkDiskErrorAsync ()
 specifier|public
 name|void
@@ -10801,13 +10808,87 @@ block|}
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|handleDiskError (String errMsgr)
+comment|/**    * Check if there is a disk failure asynchronously    * and if so, handle the error.    */
+DECL|method|checkDiskErrorAsync (FsVolumeSpi volume)
+specifier|public
+name|void
+name|checkDiskErrorAsync
+parameter_list|(
+name|FsVolumeSpi
+name|volume
+parameter_list|)
+block|{
+name|volumeChecker
+operator|.
+name|checkVolume
+argument_list|(
+name|volume
+argument_list|,
+parameter_list|(
+name|healthyVolumes
+parameter_list|,
+name|failedVolumes
+parameter_list|)
+lambda|->
+block|{
+if|if
+condition|(
+name|failedVolumes
+operator|.
+name|size
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"checkDiskErrorAsync callback got {} failed volumes: {}"
+argument_list|,
+name|failedVolumes
+operator|.
+name|size
+argument_list|()
+argument_list|,
+name|failedVolumes
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"checkDiskErrorAsync: no volume failures detected"
+argument_list|)
+expr_stmt|;
+block|}
+name|lastDiskErrorCheck
+operator|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+expr_stmt|;
+name|handleVolumeFailures
+argument_list|(
+name|failedVolumes
+argument_list|)
+expr_stmt|;
+block|}
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|handleDiskError (String failedVolumes)
 specifier|private
 name|void
 name|handleDiskError
 parameter_list|(
 name|String
-name|errMsgr
+name|failedVolumes
 parameter_list|)
 block|{
 specifier|final
@@ -10823,7 +10904,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"DataNode.handleDiskError: Keep Running: "
+literal|"DataNode.handleDiskError on : ["
+operator|+
+name|failedVolumes
+operator|+
+literal|"] Keep Running: "
 operator|+
 name|hasEnoughResources
 argument_list|)
@@ -10866,7 +10951,7 @@ name|trySendErrorReport
 argument_list|(
 name|dpError
 argument_list|,
-name|errMsgr
+name|failedVolumes
 argument_list|)
 expr_stmt|;
 block|}
@@ -10887,9 +10972,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"DataNode is shutting down: "
+literal|"DataNode is shutting down due to failed volumes: ["
 operator|+
-name|errMsgr
+name|failedVolumes
+operator|+
+literal|"]"
 argument_list|)
 expr_stmt|;
 name|shouldRun
@@ -12346,10 +12433,35 @@ argument_list|,
 name|ie
 argument_list|)
 expr_stmt|;
-comment|// check if there are any disk problem
-name|checkDiskErrorAsync
-argument_list|()
+comment|// disk check moved to FileIoProvider
+name|IOException
+name|cause
+init|=
+name|DatanodeUtil
+operator|.
+name|getCauseIfDiskError
+argument_list|(
+name|ie
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|cause
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// possible disk error
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"IOException in DataTransfer#run(). Cause is "
+argument_list|,
+name|cause
+argument_list|)
 expr_stmt|;
+block|}
 block|}
 finally|finally
 block|{
@@ -15460,6 +15572,25 @@ argument_list|>
 name|unhealthyVolumes
 parameter_list|)
 block|{
+if|if
+condition|(
+name|unhealthyVolumes
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"handleVolumeFailures done with empty "
+operator|+
+literal|"unhealthyVolumes"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|data
 operator|.
 name|handleVolumeFailures
@@ -15483,15 +15614,6 @@ name|size
 argument_list|()
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-operator|!
-name|unhealthyVolumes
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
 name|StringBuilder
 name|sb
 init|=
@@ -15567,9 +15689,17 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 name|sb
 operator|.
@@ -15577,6 +15707,8 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+comment|// send blockreport regarding volume failure
 name|handleDiskError
 argument_list|(
 name|sb
@@ -15586,7 +15718,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getLastDiskErrorCheck ()
 specifier|public
 name|long

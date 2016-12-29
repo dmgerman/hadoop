@@ -5325,7 +5325,9 @@ decl_stmt|;
 name|dn
 operator|.
 name|checkDiskErrorAsync
-argument_list|()
+argument_list|(
+name|failedVolume
+argument_list|)
 expr_stmt|;
 while|while
 condition|(

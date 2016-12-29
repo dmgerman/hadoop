@@ -30,6 +30,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|base
+operator|.
+name|Optional
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|util
 operator|.
 name|concurrent
@@ -598,6 +612,9 @@ literal|0
 argument_list|)
 decl_stmt|;
 comment|/**      * Request a check and ensure it triggered {@link FsVolumeSpi#check}.      */
+name|boolean
+name|result
+init|=
 name|checker
 operator|.
 name|checkVolume
@@ -704,7 +721,7 @@ block|}
 block|}
 block|}
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 comment|// Ensure that the check was invoked at least once.
 name|verify
 argument_list|(
@@ -722,6 +739,11 @@ name|anyObject
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|result
+condition|)
+block|{
 name|assertThat
 argument_list|(
 name|numCallbackInvocations
@@ -735,6 +757,7 @@ literal|1L
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Test {@link DatasetVolumeChecker#checkAllVolumes} propagates    * checks for all volumes to the delegate checker.    *    * @throws Exception    */
 annotation|@
@@ -992,6 +1015,9 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
+name|boolean
+name|result
+init|=
 name|checker
 operator|.
 name|checkAllVolumesAsync
@@ -1110,8 +1136,13 @@ expr_stmt|;
 block|}
 block|}
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 comment|// The callback should be invoked exactly once.
+if|if
+condition|(
+name|result
+condition|)
+block|{
 name|assertThat
 argument_list|(
 name|numCallbackInvocations
@@ -1125,6 +1156,7 @@ literal|1L
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Ensure each volume's check() method was called exactly once.
 for|for
 control|(
@@ -1169,9 +1201,12 @@ annotation|@
 name|Override
 DECL|method|schedule ( Checkable<VolumeCheckContext, VolumeCheckResult> target, VolumeCheckContext context)
 specifier|public
+name|Optional
+argument_list|<
 name|ListenableFuture
 argument_list|<
 name|VolumeCheckResult
+argument_list|>
 argument_list|>
 name|schedule
 parameter_list|(
@@ -1190,6 +1225,10 @@ block|{
 try|try
 block|{
 return|return
+name|Optional
+operator|.
+name|of
+argument_list|(
 name|Futures
 operator|.
 name|immediateFuture
@@ -1199,6 +1238,7 @@ operator|.
 name|check
 argument_list|(
 name|context
+argument_list|)
 argument_list|)
 argument_list|)
 return|;
@@ -1219,11 +1259,16 @@ name|e
 argument_list|)
 expr_stmt|;
 return|return
+name|Optional
+operator|.
+name|of
+argument_list|(
 name|Futures
 operator|.
 name|immediateFailedFuture
 argument_list|(
 name|e
+argument_list|)
 argument_list|)
 return|;
 block|}

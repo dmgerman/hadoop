@@ -2981,6 +2981,8 @@ operator|new
 name|FileIoProvider
 argument_list|(
 name|conf
+argument_list|,
+name|datanode
 argument_list|)
 expr_stmt|;
 name|this

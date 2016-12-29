@@ -191,7 +191,7 @@ DECL|class|CountingFileIoEvents
 specifier|public
 class|class
 name|CountingFileIoEvents
-implements|implements
+extends|extends
 name|FileIoEvents
 block|{
 DECL|field|counts

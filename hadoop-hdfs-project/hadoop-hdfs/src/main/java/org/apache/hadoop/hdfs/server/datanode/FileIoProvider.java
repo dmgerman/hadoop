@@ -516,8 +516,14 @@ specifier|final
 name|FileIoEvents
 name|eventHooks
 decl_stmt|;
-comment|/**    * @param conf  Configuration object. May be null. When null,    *              the event handlers are no-ops.    */
-DECL|method|FileIoProvider (@ullable Configuration conf)
+DECL|field|datanode
+specifier|private
+specifier|final
+name|DataNode
+name|datanode
+decl_stmt|;
+comment|/**    * @param conf  Configuration object. May be null. When null,    *              the event handlers are no-ops.    * @param datanode datanode that owns this FileIoProvider. Used for    *               IO error based volume checker callback    */
+DECL|method|FileIoProvider (@ullable Configuration conf, final DataNode datanode)
 specifier|public
 name|FileIoProvider
 parameter_list|(
@@ -525,6 +531,10 @@ annotation|@
 name|Nullable
 name|Configuration
 name|conf
+parameter_list|,
+specifier|final
+name|DataNode
+name|datanode
 parameter_list|)
 block|{
 if|if
@@ -581,6 +591,12 @@ name|DefaultFileIoEvents
 argument_list|()
 expr_stmt|;
 block|}
+name|this
+operator|.
+name|datanode
+operator|=
+name|datanode
+expr_stmt|;
 block|}
 comment|/**    * Lists the types of file system operations. Passed to the    * IO hooks so implementations can choose behavior based on    * specific operations.    */
 DECL|enum|OPERATION
@@ -706,6 +722,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|FLUSH
@@ -788,6 +806,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|SYNC
@@ -884,6 +904,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|SYNC
@@ -984,6 +1006,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|FADVISE
@@ -1061,6 +1085,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|DELETE
@@ -1160,6 +1186,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|DELETE
@@ -1262,6 +1290,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|TRANSFER
@@ -1341,6 +1371,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|OPEN
@@ -1442,6 +1474,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|OPEN
@@ -1456,7 +1490,7 @@ name|e
 throw|;
 block|}
 block|}
-comment|/**    * Create a FileOutputStream using    * {@link FileOutputStream#FileOutputStream(File, boolean)}.    *    * Wraps the created output stream to intercept write calls    * before delegating to the wrapped stream.    *    * @param volume  target volume. null if unavailable.    * @param f  File object.    * @param append  if true, then bytes will be written to the end of the    *                file rather than the beginning.    * @param  FileOutputStream to the given file object.    * @throws FileNotFoundException    */
+comment|/**    * Create a FileOutputStream using    * {@link FileOutputStream#FileOutputStream(File, boolean)}.    *    * Wraps the created output stream to intercept write calls    * before delegating to the wrapped stream.    *    * @param volume  target volume. null if unavailable.    * @param f  File object.    * @param append  if true, then bytes will be written to the end of the    *                file rather than the beginning.    * @return  FileOutputStream to the given file object.    * @throws FileNotFoundException    */
 DECL|method|getFileOutputStream ( @ullable FsVolumeSpi volume, File f, boolean append)
 specifier|public
 name|FileOutputStream
@@ -1548,6 +1582,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|OPEN
@@ -1590,7 +1626,7 @@ literal|false
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a FileOutputStream using    * {@link FileOutputStream#FileOutputStream(FileDescriptor)}.    *    * Wraps the created output stream to intercept write calls    * before delegating to the wrapped stream.    *    * @param volume  target volume. null if unavailable.    * @param f  File object.    * @return  FileOutputStream to the given file object.    * @throws  FileNotFoundException    */
+comment|/**    * Create a FileOutputStream using    * {@link FileOutputStream#FileOutputStream(FileDescriptor)}.    *    * Wraps the created output stream to intercept write calls    * before delegating to the wrapped stream.    *    * @param volume  target volume. null if unavailable.    * @param fd  File descriptor object.    * @return  FileOutputStream to the given file object.    * @throws  FileNotFoundException    */
 DECL|method|getFileOutputStream ( @ullable FsVolumeSpi volume, FileDescriptor fd)
 specifier|public
 name|FileOutputStream
@@ -1712,6 +1748,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|OPEN
@@ -1823,6 +1861,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|OPEN
@@ -1929,6 +1969,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|OPEN
@@ -2008,6 +2050,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|DELETE
@@ -2088,6 +2132,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|MOVE
@@ -2168,6 +2214,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|MOVE
@@ -2248,6 +2296,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|MOVE
@@ -2334,6 +2384,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|MOVE
@@ -2432,6 +2484,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|NATIVE_COPY
@@ -2525,6 +2579,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|MKDIRS
@@ -2632,6 +2688,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|MKDIRS
@@ -2731,6 +2789,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|LIST
@@ -2745,7 +2805,7 @@ name|e
 throw|;
 block|}
 block|}
-comment|/**    * Get a listing of the given directory using    * {@link FileUtil#listFiles(File)}.    *    * @param volume  target volume. null if unavailable.    * @param   Driectory to be listed.    * @return  array of strings representing the directory entries.    * @throws IOException    */
+comment|/**    * Get a listing of the given directory using    * {@link FileUtil#listFiles(File)}.    *    * @param volume  target volume. null if unavailable.    * @param   dir directory to be listed.    * @return  array of strings representing the directory entries.    * @throws IOException    */
 DECL|method|list ( @ullable FsVolumeSpi volume, File dir)
 specifier|public
 name|String
@@ -2814,6 +2874,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|LIST
@@ -2906,6 +2968,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|LIST
@@ -2987,6 +3051,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|LIST
@@ -3064,6 +3130,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|EXISTS
@@ -3212,6 +3280,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|READ
@@ -3299,6 +3369,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|READ
@@ -3394,6 +3466,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|READ
@@ -3547,6 +3621,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|WRITE
@@ -3630,6 +3706,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|WRITE
@@ -3719,6 +3797,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|WRITE
@@ -3845,6 +3925,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|READ
@@ -3937,6 +4019,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|READ
@@ -4021,6 +4105,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|READ
@@ -4096,6 +4182,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|WRITE
@@ -4178,6 +4266,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|WRITE
@@ -4264,6 +4354,8 @@ name|eventHooks
 operator|.
 name|onFailure
 argument_list|(
+name|datanode
+argument_list|,
 name|volume
 argument_list|,
 name|WRITE

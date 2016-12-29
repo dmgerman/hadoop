@@ -116,7 +116,7 @@ specifier|public
 specifier|final
 class|class
 name|DefaultFileIoEvents
-implements|implements
+extends|extends
 name|FileIoEvents
 block|{
 annotation|@
