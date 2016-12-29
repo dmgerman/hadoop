@@ -2713,10 +2713,14 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|it
+name|this
+operator|.
+name|storageDirs
 operator|.
 name|remove
-argument_list|()
+argument_list|(
+name|sd
+argument_list|)
 expr_stmt|;
 try|try
 block|{
