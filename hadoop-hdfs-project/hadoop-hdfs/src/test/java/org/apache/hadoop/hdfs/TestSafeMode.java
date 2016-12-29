@@ -2690,6 +2690,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/*    * Tests some utility methods that surround the SafeMode's state.    * @throws IOException when there's an issue connecting to the test DFS.    */
+annotation|@
+name|Test
 DECL|method|testSafeModeUtils ()
 specifier|public
 name|void
