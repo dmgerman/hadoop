@@ -659,9 +659,7 @@ name|storageDirs
 init|=
 operator|new
 name|CopyOnWriteArrayList
-argument_list|<
-name|StorageDirectory
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|class|DirIterator
@@ -3417,6 +3415,19 @@ name|storageDirs
 operator|.
 name|size
 argument_list|()
+return|;
+block|}
+DECL|method|getStorageDirs ()
+specifier|public
+name|List
+argument_list|<
+name|StorageDirectory
+argument_list|>
+name|getStorageDirs
+parameter_list|()
+block|{
+return|return
+name|storageDirs
 return|;
 block|}
 DECL|method|getStorageDir (int idx)

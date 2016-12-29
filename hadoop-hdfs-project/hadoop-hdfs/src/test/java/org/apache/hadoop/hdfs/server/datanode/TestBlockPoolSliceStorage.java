@@ -234,7 +234,8 @@ argument_list|)
 expr_stmt|;
 name|assertThat
 argument_list|(
-name|storageDirs
+name|getStorageDirs
+argument_list|()
 operator|.
 name|size
 argument_list|()

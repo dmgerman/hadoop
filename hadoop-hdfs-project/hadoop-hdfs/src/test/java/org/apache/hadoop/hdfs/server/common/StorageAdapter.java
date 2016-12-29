@@ -92,7 +92,8 @@ argument_list|)
 decl_stmt|;
 name|s
 operator|.
-name|storageDirs
+name|getStorageDirs
+argument_list|()
 operator|.
 name|set
 argument_list|(

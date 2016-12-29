@@ -879,13 +879,6 @@ operator|.
 name|NAME_NODE
 argument_list|)
 expr_stmt|;
-name|storageDirs
-operator|=
-operator|new
-name|CopyOnWriteArrayList
-argument_list|<>
-argument_list|()
-expr_stmt|;
 comment|// this may modify the editsDirs, so copy before passing in
 name|setStorageDirectories
 argument_list|(
@@ -1052,7 +1045,8 @@ block|{
 name|unlockAll
 argument_list|()
 expr_stmt|;
-name|storageDirs
+name|getStorageDirs
+argument_list|()
 operator|.
 name|clear
 argument_list|()
@@ -1313,9 +1307,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|this
-operator|.
-name|storageDirs
+name|getStorageDirs
+argument_list|()
 operator|.
 name|clear
 argument_list|()
@@ -3638,9 +3631,8 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|this
-operator|.
-name|storageDirs
+name|getStorageDirs
+argument_list|()
 operator|.
 name|remove
 argument_list|(
@@ -3844,7 +3836,8 @@ control|(
 name|StorageDirectory
 name|sd
 range|:
-name|storageDirs
+name|getStorageDirs
+argument_list|()
 control|)
 block|{
 name|String
@@ -4690,7 +4683,8 @@ control|(
 name|StorageDirectory
 name|sd
 range|:
-name|storageDirs
+name|getStorageDirs
+argument_list|()
 control|)
 block|{
 try|try
@@ -4728,7 +4722,8 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|storageDirs
+name|getStorageDirs
+argument_list|()
 operator|.
 name|isEmpty
 argument_list|()

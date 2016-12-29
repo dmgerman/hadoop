@@ -1342,9 +1342,8 @@ name|StorageDirectory
 argument_list|>
 name|it
 init|=
-name|this
-operator|.
-name|storageDirs
+name|getStorageDirs
+argument_list|()
 operator|.
 name|iterator
 argument_list|()
@@ -3555,7 +3554,8 @@ control|(
 name|StorageDirectory
 name|sd
 range|:
-name|storageDirs
+name|getStorageDirs
+argument_list|()
 control|)
 block|{
 name|File
@@ -3709,7 +3709,8 @@ control|(
 name|StorageDirectory
 name|sd
 range|:
-name|storageDirs
+name|getStorageDirs
+argument_list|()
 control|)
 block|{
 if|if

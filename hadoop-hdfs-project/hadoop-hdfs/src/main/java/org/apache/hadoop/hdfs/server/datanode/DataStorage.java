@@ -1097,7 +1097,8 @@ argument_list|)
 operator|.
 name|setRollingUpgradeMarkers
 argument_list|(
-name|storageDirs
+name|getStorageDirs
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1119,7 +1120,8 @@ argument_list|)
 operator|.
 name|clearRollingUpgradeMarkers
 argument_list|(
-name|storageDirs
+name|getStorageDirs
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2610,9 +2612,8 @@ name|StorageDirectory
 argument_list|>
 name|it
 init|=
-name|this
-operator|.
-name|storageDirs
+name|getStorageDirs
+argument_list|()
 operator|.
 name|iterator
 argument_list|()
@@ -4791,7 +4792,8 @@ control|(
 name|StorageDirectory
 name|sd
 range|:
-name|storageDirs
+name|getStorageDirs
+argument_list|()
 control|)
 block|{
 name|File
