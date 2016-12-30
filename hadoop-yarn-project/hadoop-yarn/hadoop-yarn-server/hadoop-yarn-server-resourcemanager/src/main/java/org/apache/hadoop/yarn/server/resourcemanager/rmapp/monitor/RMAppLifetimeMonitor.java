@@ -455,7 +455,9 @@ block|}
 name|String
 name|diagnostics
 init|=
-literal|"Application killed due to exceeding its lifetime period"
+literal|"Application is killed by ResourceManager as it"
+operator|+
+literal|" has exceeded the lifetime period."
 decl_stmt|;
 name|rmContext
 operator|.

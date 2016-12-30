@@ -5268,7 +5268,7 @@ specifier|final
 name|long
 name|DEFAULT_RM_APPLICATION_MONITOR_INTERVAL_MS
 init|=
-literal|60000
+literal|3000
 decl_stmt|;
 comment|/**    * Interval of time the linux container executor should try cleaning up    * cgroups entry when cleaning up a container. This is required due to what     * it seems a race condition because the SIGTERM/SIGKILL is asynch.    */
 DECL|field|NM_LINUX_CONTAINER_CGROUPS_DELETE_TIMEOUT
