@@ -1278,6 +1278,8 @@ init|=
 literal|" "
 decl_stmt|;
 comment|/** Setting that controls whether opportunistic container allocation    *  is enabled or not. */
+annotation|@
+name|Unstable
 DECL|field|OPPORTUNISTIC_CONTAINER_ALLOCATION_ENABLED
 specifier|public
 specifier|static
@@ -1299,6 +1301,8 @@ init|=
 literal|false
 decl_stmt|;
 comment|/** Number of nodes to be used by the Opportunistic Container allocator for    * dispatching containers during container allocation. */
+annotation|@
+name|Unstable
 DECL|field|OPP_CONTAINER_ALLOCATION_NODES_NUMBER_USED
 specifier|public
 specifier|static
@@ -1320,6 +1324,8 @@ init|=
 literal|10
 decl_stmt|;
 comment|/** Frequency for computing least loaded NMs. */
+annotation|@
+name|Unstable
 DECL|field|NM_CONTAINER_QUEUING_SORTING_NODES_INTERVAL_MS
 specifier|public
 specifier|static
@@ -1341,6 +1347,8 @@ init|=
 literal|1000
 decl_stmt|;
 comment|/** Comparator for determining node load for scheduling of opportunistic    * containers. */
+annotation|@
+name|Unstable
 DECL|field|NM_CONTAINER_QUEUING_LOAD_COMPARATOR
 specifier|public
 specifier|static
@@ -1362,6 +1370,8 @@ init|=
 literal|"QUEUE_LENGTH"
 decl_stmt|;
 comment|/** Value of standard deviation used for calculation of queue limit    * thresholds. */
+annotation|@
+name|Unstable
 DECL|field|NM_CONTAINER_QUEUING_LIMIT_STDEV
 specifier|public
 specifier|static
@@ -1383,6 +1393,8 @@ init|=
 literal|1.0f
 decl_stmt|;
 comment|/** Min length of container queue at NodeManager. This is a cluster-wide    * configuration that acts as the lower-bound of optimal queue length    * calculated by the NodeQueueLoadMonitor */
+annotation|@
+name|Unstable
 DECL|field|NM_CONTAINER_QUEUING_MIN_QUEUE_LENGTH
 specifier|public
 specifier|static
@@ -1404,6 +1416,8 @@ init|=
 literal|5
 decl_stmt|;
 comment|/** Max length of container queue at NodeManager. This is a cluster-wide    * configuration that acts as the upper-bound of optimal queue length    * calculated by the NodeQueueLoadMonitor */
+annotation|@
+name|Unstable
 DECL|field|NM_CONTAINER_QUEUING_MAX_QUEUE_LENGTH
 specifier|public
 specifier|static
@@ -1425,6 +1439,8 @@ init|=
 literal|15
 decl_stmt|;
 comment|/** Min queue wait time for a container at a NodeManager. */
+annotation|@
+name|Unstable
 DECL|field|NM_CONTAINER_QUEUING_MIN_QUEUE_WAIT_TIME_MS
 specifier|public
 specifier|static
@@ -1446,6 +1462,8 @@ init|=
 literal|10
 decl_stmt|;
 comment|/** Max queue wait time for a container queue at a NodeManager. */
+annotation|@
+name|Unstable
 DECL|field|NM_CONTAINER_QUEUING_MAX_QUEUE_WAIT_TIME_MS
 specifier|public
 specifier|static

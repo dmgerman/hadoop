@@ -1798,7 +1798,7 @@ name|this
 operator|.
 name|scheduledRequests
 operator|.
-name|setNumOpportunisticMapsPer100
+name|setNumOpportunisticMapsPercent
 argument_list|(
 name|conf
 operator|.
@@ -1806,11 +1806,11 @@ name|getInt
 argument_list|(
 name|MRJobConfig
 operator|.
-name|MR_NUM_OPPORTUNISTIC_MAPS_PERCENTAGE
+name|MR_NUM_OPPORTUNISTIC_MAPS_PERCENT
 argument_list|,
 name|MRJobConfig
 operator|.
-name|DEFAULT_MR_NUM_OPPORTUNISTIC_MAPS_PERCENTAGE
+name|DEFAULT_MR_NUM_OPPORTUNISTIC_MAPS_PERCENT
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1822,7 +1822,7 @@ name|this
 operator|.
 name|scheduledRequests
 operator|.
-name|getNumOpportunisticMapsPer100
+name|getNumOpportunisticMapsPercent
 argument_list|()
 operator|+
 literal|"% of the mappers will be scheduled using OPPORTUNISTIC containers"
@@ -5739,15 +5739,15 @@ name|mapsMod100
 init|=
 literal|0
 decl_stmt|;
-DECL|field|numOpportunisticMapsPer100
+DECL|field|numOpportunisticMapsPercent
 name|int
-name|numOpportunisticMapsPer100
+name|numOpportunisticMapsPercent
 init|=
 literal|0
 decl_stmt|;
-DECL|method|setNumOpportunisticMapsPer100 (int numMaps)
+DECL|method|setNumOpportunisticMapsPercent (int numMaps)
 name|void
-name|setNumOpportunisticMapsPer100
+name|setNumOpportunisticMapsPercent
 parameter_list|(
 name|int
 name|numMaps
@@ -5755,20 +5755,20 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|numOpportunisticMapsPer100
+name|numOpportunisticMapsPercent
 operator|=
 name|numMaps
 expr_stmt|;
 block|}
-DECL|method|getNumOpportunisticMapsPer100 ()
+DECL|method|getNumOpportunisticMapsPercent ()
 name|int
-name|getNumOpportunisticMapsPer100
+name|getNumOpportunisticMapsPercent
 parameter_list|()
 block|{
 return|return
 name|this
 operator|.
-name|numOpportunisticMapsPer100
+name|numOpportunisticMapsPercent
 return|;
 block|}
 annotation|@
@@ -6019,7 +6019,7 @@ if|if
 condition|(
 name|mapsMod100
 operator|<
-name|numOpportunisticMapsPer100
+name|numOpportunisticMapsPercent
 condition|)
 block|{
 name|request

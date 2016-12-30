@@ -3614,21 +3614,21 @@ init|=
 literal|0
 decl_stmt|;
 comment|/**    * Number of OPPORTUNISTIC Containers per 100 containers that will be    * requested by the MRAppMaster. The Default value is 0, which implies all    * maps will be guaranteed. A value of 100 means all maps will be requested    * as opportunistic. For any other value say 'x', the FIRST 'x' maps    * requested by the AM will be opportunistic. If the total number of maps    * for the job is less than 'x', then ALL maps will be OPPORTUNISTIC    */
-DECL|field|MR_NUM_OPPORTUNISTIC_MAPS_PERCENTAGE
+DECL|field|MR_NUM_OPPORTUNISTIC_MAPS_PERCENT
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|MR_NUM_OPPORTUNISTIC_MAPS_PERCENTAGE
+name|MR_NUM_OPPORTUNISTIC_MAPS_PERCENT
 init|=
-literal|"mapreduce.job.num-opportunistic-maps-percentage"
+literal|"mapreduce.job.num-opportunistic-maps-percent"
 decl_stmt|;
-DECL|field|DEFAULT_MR_NUM_OPPORTUNISTIC_MAPS_PERCENTAGE
+DECL|field|DEFAULT_MR_NUM_OPPORTUNISTIC_MAPS_PERCENT
 specifier|public
 specifier|static
 specifier|final
 name|int
-name|DEFAULT_MR_NUM_OPPORTUNISTIC_MAPS_PERCENTAGE
+name|DEFAULT_MR_NUM_OPPORTUNISTIC_MAPS_PERCENT
 init|=
 literal|0
 decl_stmt|;
