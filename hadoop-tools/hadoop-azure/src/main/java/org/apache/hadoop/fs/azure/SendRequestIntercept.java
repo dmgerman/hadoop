@@ -313,7 +313,7 @@ operator|=
 name|opContext
 expr_stmt|;
 block|}
-comment|/**    * Binds a new lister to the operation context so the WASB file system can    * appropriately intercept sends. By allowing concurrent OOB I/Os, we bypass    * the blob immutability check when reading streams.    *     * @param opContext    *          The operation context to bind to listener.    *     * @param allowConcurrentOOBIo    *          True if reads are allowed with concurrent OOB writes.    */
+comment|/**    * Binds a new lister to the operation context so the WASB file system can    * appropriately intercept sends. By allowing concurrent OOB I/Os, we bypass    * the blob immutability check when reading streams.    *    * @param storageCreds The credential of blob storage.    * @param opContext    *          The operation context to bind to listener.    *     * @param allowConcurrentOOBIo    *          True if reads are allowed with concurrent OOB writes.    */
 DECL|method|bind (StorageCredentials storageCreds, OperationContext opContext, boolean allowConcurrentOOBIo)
 specifier|public
 specifier|static

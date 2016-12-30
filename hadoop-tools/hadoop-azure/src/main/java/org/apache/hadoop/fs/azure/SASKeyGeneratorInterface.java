@@ -38,7 +38,7 @@ specifier|public
 interface|interface
 name|SASKeyGeneratorInterface
 block|{
-comment|/**    * Interface method to retrieve SAS Key for a container within the storage    * account.    *    * @param accountName    *          - Storage account name    * @param container    *          - Container name within the storage account.    * @return SAS URI for the container.    * @throws SASKeyGenerationException    */
+comment|/**    * Interface method to retrieve SAS Key for a container within the storage    * account.    *    * @param accountName    *          - Storage account name    * @param container    *          - Container name within the storage account.    * @return SAS URI for the container.    * @throws SASKeyGenerationException Exception that gets thrown during    * generation of SAS Key.    */
 DECL|method|getContainerSASUri (String accountName, String container)
 name|URI
 name|getContainerSASUri
@@ -52,7 +52,7 @@ parameter_list|)
 throws|throws
 name|SASKeyGenerationException
 function_decl|;
-comment|/**    * Interface method to retrieve SAS Key for a blob within the container of the    * storage account.    *    * @param accountName    *          - Storage account name    * @param container    *          - Container name within the storage account.    * @param relativePath    *          - Relative path within the container    * @return SAS URI for the relative path blob.    * @throws SASKeyGenerationException    */
+comment|/**    * Interface method to retrieve SAS Key for a blob within the container of the    * storage account.    *    * @param accountName    *          - Storage account name    * @param container    *          - Container name within the storage account.    * @param relativePath    *          - Relative path within the container    * @return SAS URI for the relative path blob.    * @throws SASKeyGenerationException Exception that gets thrown during    * generation of SAS Key.    */
 DECL|method|getRelativeBlobSASUri (String accountName, String container, String relativePath)
 name|URI
 name|getRelativeBlobSASUri

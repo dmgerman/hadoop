@@ -390,7 +390,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Delete all keys with the given prefix. Used for testing.    *    * @throws IOException    */
+comment|/**    * Delete all keys with the given prefix. Used for testing.    *    * @param prefix prefix of objects to be deleted.    * @throws IOException Exception encountered while deleting keys.    */
 annotation|@
 name|VisibleForTesting
 DECL|method|purge (String prefix)
@@ -403,7 +403,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Diagnostic method to dump state to the console.    *    * @throws IOException    */
+comment|/**    * Diagnostic method to dump state to the console.    *    * @throws IOException Exception encountered while dumping to console.    */
 DECL|method|dump ()
 name|void
 name|dump

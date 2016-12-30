@@ -1495,7 +1495,7 @@ throw|;
 block|}
 block|}
 block|}
-comment|/**      * Write to disk the information needed to redo folder rename,      * in JSON format. The file name will be      * {@code wasb://<sourceFolderPrefix>/folderName-RenamePending.json}      * The file format will be:      *<pre>{@code      * {      *   FormatVersion: "1.0",      *   OperationTime: "<YYYY-MM-DD HH:MM:SS.MMM>",      *   OldFolderName: "<key>",      *   NewFolderName: "<key>",      *   FileList: [<string> ,<string> , ... ]      * }      *      * Here's a sample:      * {      *  FormatVersion: "1.0",      *  OperationUTCTime: "2014-07-01 23:50:35.572",      *  OldFolderName: "user/ehans/folderToRename",      *  NewFolderName: "user/ehans/renamedFolder",      *  FileList: [      *    "innerFile",      *    "innerFile2"      *  ]      * } }</pre>      * @throws IOException      */
+comment|/**      * Write to disk the information needed to redo folder rename,      * in JSON format. The file name will be      * {@code wasb://<sourceFolderPrefix>/folderName-RenamePending.json}      * The file format will be:      *<pre>{@code      * {      *   FormatVersion: "1.0",      *   OperationTime: "<YYYY-MM-DD HH:MM:SS.MMM>",      *   OldFolderName: "<key>",      *   NewFolderName: "<key>",      *   FileList: [<string> ,<string> , ... ]      * }      *      * Here's a sample:      * {      *  FormatVersion: "1.0",      *  OperationUTCTime: "2014-07-01 23:50:35.572",      *  OldFolderName: "user/ehans/folderToRename",      *  NewFolderName: "user/ehans/renamedFolder",      *  FileList: [      *    "innerFile",      *    "innerFile2"      *  ]      * } }</pre>      * @param fs file system on which a file is written.      * @throws IOException Thrown when fail to write file.      */
 DECL|method|writeFile (FileSystem fs)
 specifier|public
 name|void
@@ -1601,7 +1601,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**      * Return the contents of the JSON file to represent the operations      * to be performed for a folder rename.      */
+comment|/**      * Return the contents of the JSON file to represent the operations      * to be performed for a folder rename.      *      * @return JSON string which represents the operation.      */
 DECL|method|makeRenamePendingFileContents ()
 specifier|public
 name|String
@@ -2108,7 +2108,7 @@ name|srcKey
 argument_list|)
 return|;
 block|}
-comment|/**      * Execute a folder rename. This is the execution path followed      * when everything is working normally. See redo() for the alternate      * execution path for the case where we're recovering from a folder rename      * failure.      * @throws IOException      */
+comment|/**      * Execute a folder rename. This is the execution path followed      * when everything is working normally. See redo() for the alternate      * execution path for the case where we're recovering from a folder rename      * failure.      * @throws IOException Thrown when fail to renaming.      */
 DECL|method|execute ()
 specifier|public
 name|void
@@ -2349,7 +2349,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/** Clean up after execution of rename.      * @throws IOException */
+comment|/** Clean up after execution of rename.      * @throws IOException Thrown when fail to clean up.      * */
 DECL|method|cleanup ()
 specifier|public
 name|void
@@ -2421,7 +2421,7 @@ return|return
 name|path
 return|;
 block|}
-comment|/**      * Recover from a folder rename failure by redoing the intended work,      * as recorded in the -RenamePending.json file.      *       * @throws IOException      */
+comment|/**      * Recover from a folder rename failure by redoing the intended work,      * as recorded in the -RenamePending.json file.      *       * @throws IOException Thrown when fail to redo.      */
 DECL|method|redo ()
 specifier|public
 name|void
@@ -4458,7 +4458,7 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
-comment|/**    * Creates a new metrics source name that's unique within this process.    */
+comment|/**    * Creates a new metrics source name that's unique within this process.    * @return metric source name    */
 annotation|@
 name|VisibleForTesting
 DECL|method|newMetricsSourceName ()
@@ -5049,7 +5049,7 @@ literal|"."
 argument_list|)
 return|;
 block|}
-comment|/**    * Convert the path to a key. By convention, any leading or trailing slash is    * removed, except for the special case of a single slash.    */
+comment|/**    * Convert the path to a key. By convention, any leading or trailing slash is    * removed, except for the special case of a single slash.    * @param path path converted to a key    * @return key string    */
 annotation|@
 name|VisibleForTesting
 DECL|method|pathToKey (Path path)
@@ -5302,7 +5302,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the absolute version of the path (fully qualified).    * This is public for testing purposes.    *    * @param path    * @return fully qualified path    */
+comment|/**    * Get the absolute version of the path (fully qualified).    * This is public for testing purposes.    *    * @param path path to be absolute path.    * @return fully qualified path    */
 annotation|@
 name|VisibleForTesting
 DECL|method|makeAbsolute (Path path)
@@ -5698,7 +5698,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/**    * Get a self-renewing lease on the specified file.    */
+comment|/**    * Get a self-renewing lease on the specified file.    * @param path path whose lease to be renewed.    * @return Lease    */
 DECL|method|acquireLease (Path path)
 specifier|public
 name|SelfRenewingLease
@@ -6669,7 +6669,7 @@ literal|false
 argument_list|)
 return|;
 block|}
-comment|/**    * Delete the specified file or folder. The parameter    * skipParentFolderLastModifidedTimeUpdate    * is used in the case of atomic folder rename redo. In that case, there is    * a lease on the parent folder, so (without reworking the code) modifying    * the parent folder update time will fail because of a conflict with the    * lease. Since we are going to delete the folder soon anyway so accurate    * modified time is not necessary, it's easier to just skip    * the modified time update.    *    * @param f    * @param recursive    * @param skipParentFolderLastModifidedTimeUpdate If true, don't update the folder last    * modified time.    * @return true if and only if the file is deleted    * @throws IOException    */
+comment|/**    * Delete the specified file or folder. The parameter    * skipParentFolderLastModifidedTimeUpdate    * is used in the case of atomic folder rename redo. In that case, there is    * a lease on the parent folder, so (without reworking the code) modifying    * the parent folder update time will fail because of a conflict with the    * lease. Since we are going to delete the folder soon anyway so accurate    * modified time is not necessary, it's easier to just skip    * the modified time update.    *    * @param f file path to be deleted.    * @param recursive specify deleting recursively or not.    * @param skipParentFolderLastModifidedTimeUpdate If true, don't update the folder last    * modified time.    * @return true if and only if the file is deleted    * @throws IOException Thrown when fail to delete file or directory.    */
 DECL|method|delete (Path f, boolean recursive, boolean skipParentFolderLastModifidedTimeUpdate)
 specifier|public
 name|boolean
@@ -11725,7 +11725,7 @@ literal|null
 condition|)
 do|;
 block|}
-comment|/**    * Looks under the given root path for any blob that are left "dangling",    * meaning that they are place-holder blobs that we created while we upload    * the data to a temporary blob, but for some reason we crashed in the middle    * of the upload and left them there. If any are found, we move them to the    * destination given.    *     * @param root    *          The root path to consider.    * @param destination    *          The destination path to move any recovered files to.    * @throws IOException    */
+comment|/**    * Looks under the given root path for any blob that are left "dangling",    * meaning that they are place-holder blobs that we created while we upload    * the data to a temporary blob, but for some reason we crashed in the middle    * of the upload and left them there. If any are found, we move them to the    * destination given.    *     * @param root    *          The root path to consider.    * @param destination    *          The destination path to move any recovered files to.    * @throws IOException Thrown when fail to recover files.    */
 DECL|method|recoverFilesWithDanglingTempData (Path root, Path destination)
 specifier|public
 name|void
@@ -11761,7 +11761,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Looks under the given root path for any blob that are left "dangling",    * meaning that they are place-holder blobs that we created while we upload    * the data to a temporary blob, but for some reason we crashed in the middle    * of the upload and left them there. If any are found, we delete them.    *     * @param root    *          The root path to consider.    * @throws IOException    */
+comment|/**    * Looks under the given root path for any blob that are left "dangling",    * meaning that they are place-holder blobs that we created while we upload    * the data to a temporary blob, but for some reason we crashed in the middle    * of the upload and left them there. If any are found, we delete them.    *     * @param root    *          The root path to consider.    * @throws IOException Thrown when fail to delete.    */
 DECL|method|deleteFilesWithDanglingTempData (Path root)
 specifier|public
 name|void
@@ -11818,7 +11818,7 @@ name|finalize
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Encode the key with a random prefix for load balancing in Azure storage.    * Upload data to a random temporary file then do storage side renaming to    * recover the original key.    *     * @param aKey    * @return Encoded version of the original key.    */
+comment|/**    * Encode the key with a random prefix for load balancing in Azure storage.    * Upload data to a random temporary file then do storage side renaming to    * recover the original key.    *     * @param aKey a key to be encoded.    * @return Encoded version of the original key.    */
 DECL|method|encodeKey (String aKey)
 specifier|private
 specifier|static

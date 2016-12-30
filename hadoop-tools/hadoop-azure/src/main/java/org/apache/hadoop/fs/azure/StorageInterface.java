@@ -364,7 +364,7 @@ specifier|abstract
 class|class
 name|StorageInterface
 block|{
-comment|/**    * Sets the timeout to use when making requests to the storage service.    *<p>    * The server timeout interval begins at the time that the complete request    * has been received by the service, and the server begins processing the    * response. If the timeout interval elapses before the response is returned    * to the client, the operation times out. The timeout interval resets with    * each retry, if the request is retried.    *     * The default timeout interval for a request made via the service client is    * 90 seconds. You can change this value on the service client by setting this    * property, so that all subsequent requests made via the service client will    * use the new timeout interval. You can also change this value for an    * individual request, by setting the    * {@link RequestOptions#timeoutIntervalInMs} property.    *     * If you are downloading a large blob, you should increase the value of the    * timeout beyond the default value.    *     * @param timeoutInMs    *          The timeout, in milliseconds, to use when making requests to the    *          storage service.    */
+comment|/**    * Sets the timeout to use when making requests to the storage service.    *<p>    * The server timeout interval begins at the time that the complete request    * has been received by the service, and the server begins processing the    * response. If the timeout interval elapses before the response is returned    * to the client, the operation times out. The timeout interval resets with    * each retry, if the request is retried.    *     * The default timeout interval for a request made via the service client is    * 90 seconds. You can change this value on the service client by setting this    * property, so that all subsequent requests made via the service client will    * use the new timeout interval. You can also change this value for an    * individual request, by setting the    * {@link com.microsoft.azure.storage.RequestOptions#timeoutIntervalInMs}    * property.    *     * If you are downloading a large blob, you should increase the value of the    * timeout beyond the default value.    *     * @param timeoutInMs    *          The timeout, in milliseconds, to use when making requests to the    *          storage service.    */
 DECL|method|setTimeoutInMs (int timeoutInMs)
 specifier|public
 specifier|abstract
@@ -387,7 +387,7 @@ name|RetryPolicyFactory
 name|retryPolicyFactory
 parameter_list|)
 function_decl|;
-comment|/**    * Creates a new Blob service client.    *     */
+comment|/**    * Creates a new Blob service client.    *    * @param account cloud storage account.    */
 DECL|method|createBlobClient (CloudStorageAccount account)
 specifier|public
 specifier|abstract
@@ -446,7 +446,7 @@ name|URISyntaxException
 throws|,
 name|StorageException
 function_decl|;
-comment|/**    * A thin wrapper over the {@link CloudBlobDirectory} class that simply    * redirects calls to the real object except in unit tests.    */
+comment|/**    * A thin wrapper over the    * {@link com.microsoft.azure.storage.blob.CloudBlobDirectory} class    * that simply redirects calls to the real object except in unit tests.    */
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -468,7 +468,7 @@ name|URI
 name|getUri
 parameter_list|()
 function_decl|;
-comment|/**      * Returns an enumerable collection of blob items whose names begin with the      * specified prefix, using the specified flat or hierarchical option,      * listing details options, request options, and operation context.      *       * @param prefix      *          A<code>String</code> that represents the prefix of the blob      *          name.      * @param useFlatBlobListing      *<code>true</code> to indicate that the returned list will be      *          flat;<code>false</code> to indicate that the returned list will      *          be hierarchical.      * @param listingDetails      *          A<code>java.util.EnumSet</code> object that contains      *          {@link BlobListingDetails} values that indicate whether      *          snapshots, metadata, and/or uncommitted blocks are returned.      *          Committed blocks are always returned.      * @param options      *          A {@link BlobRequestOptions} object that specifies any      *          additional options for the request. Specifying<code>null</code>      *          will use the default request options from the associated service      *          client ( {@link CloudBlobClient}).      * @param opContext      *          An {@link OperationContext} object that represents the context      *          for the current operation. This object is used to track requests      *          to the storage service, and to provide additional runtime      *          information about the operation.      *       * @return An enumerable collection of {@link ListBlobItem} objects that      *         represent the block items whose names begin with the specified      *         prefix in this directory.      *       * @throws StorageException      *           If a storage service error occurred.      * @throws URISyntaxException      *           If the resource URI is invalid.      */
+comment|/**      * Returns an enumerable collection of blob items whose names begin with the      * specified prefix, using the specified flat or hierarchical option,      * listing details options, request options, and operation context.      *       * @param prefix      *          A<code>String</code> that represents the prefix of the blob      *          name.      * @param useFlatBlobListing      *<code>true</code> to indicate that the returned list will be      *          flat;<code>false</code> to indicate that the returned list will      *          be hierarchical.      * @param listingDetails      *          A<code>java.util.EnumSet</code> object that contains      *          {@link BlobListingDetails} values that indicate whether      *          snapshots, metadata, and/or uncommitted blocks are returned.      *          Committed blocks are always returned.      * @param options      *          A {@link BlobRequestOptions} object that specifies any      *          additional options for the request. Specifying<code>null</code>      *          will use the default request options from the associated service      *          client ({@link com.microsoft.azure.storage.blob.CloudBlobClient}).      * @param opContext      *          An {@link OperationContext} object that represents the context      *          for the current operation. This object is used to track requests      *          to the storage service, and to provide additional runtime      *          information about the operation.      *       * @return An enumerable collection of {@link ListBlobItem} objects that      *         represent the block items whose names begin with the specified      *         prefix in this directory.      *       * @throws StorageException      *           If a storage service error occurred.      * @throws URISyntaxException      *           If the resource URI is invalid.      */
 DECL|method|listBlobs (String prefix, boolean useFlatBlobListing, EnumSet<BlobListingDetails> listingDetails, BlobRequestOptions options, OperationContext opContext)
 specifier|public
 specifier|abstract
@@ -502,7 +502,7 @@ throws|,
 name|StorageException
 function_decl|;
 block|}
-comment|/**    * A thin wrapper over the {@link CloudBlobContainer} class that simply    * redirects calls to the real object except in unit tests.    */
+comment|/**    * A thin wrapper over the    * {@link com.microsoft.azure.storage.blob.CloudBlobContainer} class    * that simply redirects calls to the real object except in unit tests.    */
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -877,7 +877,7 @@ name|getBlob
 parameter_list|()
 function_decl|;
 block|}
-comment|/**    * A thin wrapper over the {@link CloudBlockBlob} class that simply redirects calls    * to the real object except in unit tests.    */
+comment|/**    * A thin wrapper over the    * {@link com.microsoft.azure.storage.blob.CloudBlockBlob} class    * that simply redirects calls to the real object except in unit tests.    */
 DECL|interface|CloudBlockBlobWrapper
 specifier|public
 specifier|abstract
@@ -973,7 +973,7 @@ throws|,
 name|StorageException
 function_decl|;
 block|}
-comment|/**    * A thin wrapper over the {@link CloudPageBlob} class that simply redirects calls    * to the real object except in unit tests.    */
+comment|/**    * A thin wrapper over the    * {@link com.microsoft.azure.storage.blob.CloudPageBlob}    * class that simply redirects calls to the real object except in unit tests.    */
 DECL|interface|CloudPageBlobWrapper
 specifier|public
 specifier|abstract

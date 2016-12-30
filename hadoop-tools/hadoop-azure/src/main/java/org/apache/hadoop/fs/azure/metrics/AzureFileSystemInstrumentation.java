@@ -809,7 +809,7 @@ literal|1000
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * The unique identifier for this file system in the metrics.    */
+comment|/**    * The unique identifier for this file system in the metrics.    * @return The unique identifier.    */
 DECL|method|getFileSystemInstanceId ()
 specifier|public
 name|UUID
@@ -820,7 +820,7 @@ return|return
 name|fileSystemInstanceId
 return|;
 block|}
-comment|/**    * Get the metrics registry information.    */
+comment|/**    * Get the metrics registry information.    * @return The metrics registry information.    */
 DECL|method|getMetricsRegistryInfo ()
 specifier|public
 name|MetricsInfo

@@ -60,7 +60,7 @@ specifier|public
 interface|interface
 name|KeyProvider
 block|{
-comment|/**    * Key providers must implement this method. Given a list of configuration    * parameters for the specified Azure storage account, retrieve the plaintext    * storage account key.    *     * @param accountName    *          the storage account name    * @param conf    *          Hadoop configuration parameters    * @return the plaintext storage account key    * @throws KeyProviderException    */
+comment|/**    * Key providers must implement this method. Given a list of configuration    * parameters for the specified Azure storage account, retrieve the plaintext    * storage account key.    *     * @param accountName    *          the storage account name    * @param conf    *          Hadoop configuration parameters    * @return the plaintext storage account key    * @throws KeyProviderException Thrown if there is a problem instantiating a    * KeyProvider or retrieving a key using a KeyProvider object.    */
 DECL|method|getStorageAccountKey (String accountName, Configuration conf)
 name|String
 name|getStorageAccountKey

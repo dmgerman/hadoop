@@ -425,7 +425,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Free the lease and stop the keep-alive thread.    * @throws StorageException    */
+comment|/**    * Free the lease and stop the keep-alive thread.    * @throws StorageException Thrown when fail to free the lease.    */
 DECL|method|free ()
 specifier|public
 name|void
