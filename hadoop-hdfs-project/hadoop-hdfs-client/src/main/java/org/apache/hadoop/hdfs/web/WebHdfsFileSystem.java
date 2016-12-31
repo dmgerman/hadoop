@@ -3816,9 +3816,14 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
+comment|// Don't call conn.disconnect() to allow connection reuse
+comment|// See http://tinyurl.com/java7-http-keepalive
 name|conn
 operator|.
-name|disconnect
+name|getInputStream
+argument_list|()
+operator|.
+name|close
 argument_list|()
 expr_stmt|;
 block|}
@@ -4916,9 +4921,14 @@ throw|;
 block|}
 finally|finally
 block|{
+comment|// Don't call conn.disconnect() to allow connection reuse
+comment|// See http://tinyurl.com/java7-http-keepalive
 name|conn
 operator|.
-name|disconnect
+name|getInputStream
+argument_list|()
+operator|.
+name|close
 argument_list|()
 expr_stmt|;
 block|}
@@ -5127,6 +5137,9 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
+comment|// This is a connection to DataNode.  Let's disconnect since
+comment|// there is little chance that the connection will be reused
+comment|// any time soonl
 name|conn
 operator|.
 name|disconnect
