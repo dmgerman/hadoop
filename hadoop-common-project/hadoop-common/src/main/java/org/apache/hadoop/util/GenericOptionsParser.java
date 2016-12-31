@@ -610,7 +610,7 @@ name|OptionBuilder
 operator|.
 name|withArgName
 argument_list|(
-literal|"local|namenode:port"
+literal|"file:///|hdfs://namenode:port"
 argument_list|)
 operator|.
 name|hasArg
@@ -618,7 +618,9 @@ argument_list|()
 operator|.
 name|withDescription
 argument_list|(
-literal|"specify a namenode"
+literal|"specify default filesystem URL to use, "
+operator|+
+literal|"overrides 'fs.defaultFS' property from configurations."
 argument_list|)
 operator|.
 name|create
@@ -2398,9 +2400,11 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"-fs<local|namenode:port>         "
+literal|"-fs<file:///|hdfs://namenode:port> "
 operator|+
-literal|"specify a namenode"
+literal|"specify default filesystem URL to use, overrides "
+operator|+
+literal|"'fs.defaultFS' property from configurations."
 argument_list|)
 expr_stmt|;
 name|out

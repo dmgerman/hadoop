@@ -2019,7 +2019,11 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"-fs<local|namenode:port>         specify a namenode"
+literal|"-fs<file:///|hdfs://namenode:port> "
+operator|+
+literal|"specify default filesystem URL to use, overrides "
+operator|+
+literal|"'fs.defaultFS' property from configurations."
 argument_list|)
 argument_list|)
 expr_stmt|;
