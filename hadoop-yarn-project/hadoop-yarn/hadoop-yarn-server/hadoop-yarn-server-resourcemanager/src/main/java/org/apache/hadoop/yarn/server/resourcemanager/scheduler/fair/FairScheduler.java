@@ -256,6 +256,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|AbstractResourceRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ApplicationAttemptId
 import|;
 end_import
@@ -491,24 +509,6 @@ operator|.
 name|records
 operator|.
 name|UpdateContainerRequest
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|AbstractResourceRequest
 import|;
 end_import
 
@@ -4762,7 +4762,6 @@ annotation|@
 name|Override
 DECL|method|nodeUpdate (RMNode nm)
 specifier|protected
-specifier|synchronized
 name|void
 name|nodeUpdate
 parameter_list|(

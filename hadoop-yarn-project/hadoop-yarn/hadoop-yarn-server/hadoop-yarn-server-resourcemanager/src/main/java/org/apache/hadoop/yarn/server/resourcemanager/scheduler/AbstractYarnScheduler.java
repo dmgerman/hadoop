@@ -240,6 +240,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|AbstractResourceRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ApplicationAttemptId
 import|;
 end_import
@@ -493,24 +511,6 @@ operator|.
 name|records
 operator|.
 name|UpdateContainerRequest
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|AbstractResourceRequest
 import|;
 end_import
 
@@ -986,28 +986,6 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|scheduler
-operator|.
-name|activities
-operator|.
-name|ActivitiesManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|rmnode
 operator|.
 name|RMNodeResourceUpdateEvent
@@ -1031,6 +1009,28 @@ operator|.
 name|rmnode
 operator|.
 name|UpdatedContainerInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|activities
+operator|.
+name|ActivitiesManager
 import|;
 end_import
 
@@ -2476,9 +2476,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|recoverContainersOnNode ( List<NMContainerStatus> containerReports, RMNode nm)
+DECL|method|recoverContainersOnNode (List<NMContainerStatus> containerReports, RMNode nm)
 specifier|public
-specifier|synchronized
 name|void
 name|recoverContainersOnNode
 parameter_list|(
@@ -5008,7 +5007,6 @@ block|}
 comment|/**    * Process a heartbeat update from a node.    * @param nm The RMNode corresponding to the NodeManager    */
 DECL|method|nodeUpdate (RMNode nm)
 specifier|protected
-specifier|synchronized
 name|void
 name|nodeUpdate
 parameter_list|(
