@@ -216,7 +216,7 @@ return|return
 name|diskValidator
 return|;
 block|}
-comment|/**    * Returns {@link DiskValidator} instance corresponding to its name.    * The diskValidator parameter can be "basic" for {@link BasicDiskValidator}.    * @param diskValidator canonical class name, for example, "basic"    * @throws DiskErrorException if the class cannot be located    */
+comment|/**    * Returns {@link DiskValidator} instance corresponding to its name.    * The diskValidator parameter can be "basic" for {@link BasicDiskValidator}    * or "read-write" for {@link ReadWriteDiskValidator}.    * @param diskValidator canonical class name, for example, "basic"    * @throws DiskErrorException if the class cannot be located    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -257,6 +257,26 @@ block|{
 name|clazz
 operator|=
 name|BasicDiskValidator
+operator|.
+name|class
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|diskValidator
+operator|.
+name|equalsIgnoreCase
+argument_list|(
+name|ReadWriteDiskValidator
+operator|.
+name|NAME
+argument_list|)
+condition|)
+block|{
+name|clazz
+operator|=
+name|ReadWriteDiskValidator
 operator|.
 name|class
 expr_stmt|;

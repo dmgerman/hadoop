@@ -791,6 +791,20 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
+comment|/**    * Get the quantile estimator.    *    * @return the quantile estimator    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getEstimator ()
+specifier|public
+specifier|synchronized
+name|QuantileEstimator
+name|getEstimator
+parameter_list|()
+block|{
+return|return
+name|estimator
+return|;
+block|}
 DECL|method|setEstimator (QuantileEstimator quantileEstimator)
 specifier|public
 specifier|synchronized
