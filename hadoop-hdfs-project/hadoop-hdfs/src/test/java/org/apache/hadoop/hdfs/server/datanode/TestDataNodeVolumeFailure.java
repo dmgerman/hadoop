@@ -1699,6 +1699,15 @@ decl_stmt|;
 name|checkDiskErrorSync
 argument_list|(
 name|dn0
+argument_list|,
+name|DataNodeTestUtils
+operator|.
+name|getVolume
+argument_list|(
+name|dn0
+argument_list|,
+name|dn0Vol1
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Verify dn0Vol1 has been completely removed from DN0.
@@ -2018,7 +2027,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|checkDiskErrorSync (DataNode dn)
+DECL|method|checkDiskErrorSync (DataNode dn, FsVolumeSpi volume)
 specifier|private
 specifier|static
 name|void
@@ -2026,6 +2035,9 @@ name|checkDiskErrorSync
 parameter_list|(
 name|DataNode
 name|dn
+parameter_list|,
+name|FsVolumeSpi
+name|volume
 parameter_list|)
 throws|throws
 name|InterruptedException
@@ -2042,7 +2054,9 @@ decl_stmt|;
 name|dn
 operator|.
 name|checkDiskErrorAsync
-argument_list|()
+argument_list|(
+name|volume
+argument_list|)
 expr_stmt|;
 comment|// Wait 10 seconds for checkDiskError thread to finish and discover volume
 comment|// failures.
@@ -2170,6 +2184,29 @@ decl_stmt|;
 name|checkDiskErrorSync
 argument_list|(
 name|dn0
+argument_list|,
+name|DataNodeTestUtils
+operator|.
+name|getVolume
+argument_list|(
+name|dn0
+argument_list|,
+name|dn0Vol1
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|checkDiskErrorSync
+argument_list|(
+name|dn0
+argument_list|,
+name|DataNodeTestUtils
+operator|.
+name|getVolume
+argument_list|(
+name|dn0
+argument_list|,
+name|dn0Vol2
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// DN0 should stop after the number of failure disks exceed tolerated
@@ -2279,6 +2316,15 @@ expr_stmt|;
 name|checkDiskErrorSync
 argument_list|(
 name|dn0
+argument_list|,
+name|DataNodeTestUtils
+operator|.
+name|getVolume
+argument_list|(
+name|dn0
+argument_list|,
+name|dn0Vol1
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Hot swap out the failure volume.
@@ -2368,6 +2414,15 @@ expr_stmt|;
 name|checkDiskErrorSync
 argument_list|(
 name|dn0
+argument_list|,
+name|DataNodeTestUtils
+operator|.
+name|getVolume
+argument_list|(
+name|dn0
+argument_list|,
+name|dn0Vol2
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -2524,6 +2579,15 @@ expr_stmt|;
 name|checkDiskErrorSync
 argument_list|(
 name|dn0
+argument_list|,
+name|DataNodeTestUtils
+operator|.
+name|getVolume
+argument_list|(
+name|dn0
+argument_list|,
+name|dn0Vol1
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -2545,6 +2609,15 @@ expr_stmt|;
 name|checkDiskErrorSync
 argument_list|(
 name|dn0
+argument_list|,
+name|DataNodeTestUtils
+operator|.
+name|getVolume
+argument_list|(
+name|dn0
+argument_list|,
+name|dn0Vol2
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertFalse
