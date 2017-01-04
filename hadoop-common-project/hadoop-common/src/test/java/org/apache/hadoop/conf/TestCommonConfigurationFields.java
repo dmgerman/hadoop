@@ -525,20 +525,6 @@ literal|"dr.who"
 argument_list|)
 expr_stmt|;
 comment|// XML deprecated properties.
-name|xmlPropsToSkipCompare
-operator|.
-name|add
-argument_list|(
-literal|"io.seqfile.lazydecompress"
-argument_list|)
-expr_stmt|;
-name|xmlPropsToSkipCompare
-operator|.
-name|add
-argument_list|(
-literal|"io.seqfile.sorter.recordlimit"
-argument_list|)
-expr_stmt|;
 comment|// - org.apache.hadoop.hdfs.client.HdfsClientConfigKeys
 name|xmlPropsToSkipCompare
 operator|.
