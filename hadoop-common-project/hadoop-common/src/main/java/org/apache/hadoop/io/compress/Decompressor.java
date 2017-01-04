@@ -129,7 +129,7 @@ name|boolean
 name|finished
 parameter_list|()
 function_decl|;
-comment|/**    * Fills specified buffer with uncompressed data. Returns actual number    * of bytes of uncompressed data. A return value of 0 indicates that    * {@link #needsInput()} should be called in order to determine if more    * input data is required.    *     * @param b Buffer for the compressed data    * @param off Start offset of the data    * @param len Size of the buffer    * @return The actual number of bytes of compressed data.    * @throws IOException    */
+comment|/**    * Fills specified buffer with uncompressed data. Returns actual number    * of bytes of uncompressed data. A return value of 0 indicates that    * {@link #needsInput()} should be called in order to determine if more    * input data is required.    *     * @param b Buffer for the compressed data    * @param off Start offset of the data    * @param len Size of the buffer    * @return The actual number of bytes of uncompressed data.    * @throws IOException    */
 DECL|method|decompress (byte[] b, int off, int len)
 specifier|public
 name|int

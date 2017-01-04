@@ -449,6 +449,46 @@ literal|256
 operator|*
 literal|1024
 decl_stmt|;
+comment|/** ZStandard compression level. */
+DECL|field|IO_COMPRESSION_CODEC_ZSTD_LEVEL_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|IO_COMPRESSION_CODEC_ZSTD_LEVEL_KEY
+init|=
+literal|"io.compression.codec.zstd.level"
+decl_stmt|;
+comment|/** Default value for IO_COMPRESSION_CODEC_ZSTD_LEVEL_KEY. */
+DECL|field|IO_COMPRESSION_CODEC_ZSTD_LEVEL_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|IO_COMPRESSION_CODEC_ZSTD_LEVEL_DEFAULT
+init|=
+literal|3
+decl_stmt|;
+comment|/** ZStandard buffer size. */
+DECL|field|IO_COMPRESSION_CODEC_ZSTD_BUFFER_SIZE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|IO_COMPRESSION_CODEC_ZSTD_BUFFER_SIZE_KEY
+init|=
+literal|"io.compression.codec.zstd.buffersize"
+decl_stmt|;
+comment|/** ZStandard buffer size a value of 0 means use the recommended zstd    * buffer size that the library recommends. */
+specifier|public
+specifier|static
+specifier|final
+name|int
+DECL|field|IO_COMPRESSION_CODEC_ZSTD_BUFFER_SIZE_DEFAULT
+name|IO_COMPRESSION_CODEC_ZSTD_BUFFER_SIZE_DEFAULT
+init|=
+literal|0
+decl_stmt|;
 comment|/** Internal buffer size for Lz4 compressor/decompressors */
 DECL|field|IO_COMPRESSION_CODEC_LZ4_BUFFERSIZE_KEY
 specifier|public

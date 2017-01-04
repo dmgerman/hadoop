@@ -256,6 +256,18 @@ name|assertTrue
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assume
+operator|.
+name|assumeTrue
+import|;
+end_import
+
 begin_class
 DECL|class|TestCompressionStreamReuse
 specifier|public
@@ -347,6 +359,36 @@ argument_list|,
 name|count
 argument_list|,
 literal|"org.apache.hadoop.io.compress.GzipCodec"
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testZStandardCompressStreamReuse ()
+specifier|public
+name|void
+name|testZStandardCompressStreamReuse
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|assumeTrue
+argument_list|(
+name|ZStandardCodec
+operator|.
+name|isNativeCodeLoaded
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|resetStateTest
+argument_list|(
+name|conf
+argument_list|,
+name|seed
+argument_list|,
+name|count
+argument_list|,
+literal|"org.apache.hadoop.io.compress.ZStandardCodec"
 argument_list|)
 expr_stmt|;
 block|}

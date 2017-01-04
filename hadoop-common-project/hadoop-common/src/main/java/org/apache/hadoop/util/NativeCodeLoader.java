@@ -247,6 +247,15 @@ name|boolean
 name|buildSupportsIsal
 parameter_list|()
 function_decl|;
+comment|/**   * Returns true only if this build was compiled with support for ZStandard.    */
+DECL|method|buildSupportsZstd ()
+specifier|public
+specifier|static
+specifier|native
+name|boolean
+name|buildSupportsZstd
+parameter_list|()
+function_decl|;
 comment|/**    * Returns true only if this build was compiled with support for openssl.    */
 DECL|method|buildSupportsOpenssl ()
 specifier|public
