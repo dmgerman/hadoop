@@ -1202,6 +1202,26 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
+name|ContainerUpdates
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
 name|NodeType
 import|;
 end_import
@@ -5670,7 +5690,7 @@ name|NoLock
 operator|.
 name|class
 argument_list|)
-DECL|method|allocate (ApplicationAttemptId applicationAttemptId, List<ResourceRequest> ask, List<ContainerId> release, List<String> blacklistAdditions, List<String> blacklistRemovals, List<UpdateContainerRequest> increaseRequests, List<UpdateContainerRequest> decreaseRequests)
+DECL|method|allocate (ApplicationAttemptId applicationAttemptId, List<ResourceRequest> ask, List<ContainerId> release, List<String> blacklistAdditions, List<String> blacklistRemovals, ContainerUpdates updateRequests)
 specifier|public
 name|Allocation
 name|allocate
@@ -5702,17 +5722,8 @@ name|String
 argument_list|>
 name|blacklistRemovals
 parameter_list|,
-name|List
-argument_list|<
-name|UpdateContainerRequest
-argument_list|>
-name|increaseRequests
-parameter_list|,
-name|List
-argument_list|<
-name|UpdateContainerRequest
-argument_list|>
-name|decreaseRequests
+name|ContainerUpdates
+name|updateRequests
 parameter_list|)
 block|{
 name|FiCaSchedulerApp
@@ -5734,6 +5745,22 @@ return|return
 name|EMPTY_ALLOCATION
 return|;
 block|}
+comment|// Handle promotions and demotions
+name|handleExecutionTypeUpdates
+argument_list|(
+name|application
+argument_list|,
+name|updateRequests
+operator|.
+name|getPromotionRequests
+argument_list|()
+argument_list|,
+name|updateRequests
+operator|.
+name|getDemotionRequests
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// Release containers
 name|releaseContainers
 argument_list|(
@@ -5748,7 +5775,10 @@ name|updateDemandForQueue
 init|=
 name|updateIncreaseRequests
 argument_list|(
-name|increaseRequests
+name|updateRequests
+operator|.
+name|getIncreaseRequests
+argument_list|()
 argument_list|,
 name|application
 argument_list|)
@@ -5756,7 +5786,10 @@ decl_stmt|;
 comment|// Decrease containers
 name|decreaseContainers
 argument_list|(
-name|decreaseRequests
+name|updateRequests
+operator|.
+name|getDecreaseRequests
+argument_list|()
 argument_list|,
 name|application
 argument_list|)

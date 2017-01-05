@@ -812,6 +812,26 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
+name|ContainerUpdates
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
 name|ResourceScheduler
 import|;
 end_import
@@ -3719,7 +3739,7 @@ comment|// override this to copy the objects otherwise FifoScheduler updates the
 comment|// numContainers in same objects as kept by RMContainerAllocator
 annotation|@
 name|Override
-DECL|method|allocate ( ApplicationAttemptId applicationAttemptId, List<ResourceRequest> ask, List<ContainerId> release, List<String> blacklistAdditions, List<String> blacklistRemovals, List<UpdateContainerRequest> increaseRequests, List<UpdateContainerRequest> decreaseRequests)
+DECL|method|allocate ( ApplicationAttemptId applicationAttemptId, List<ResourceRequest> ask, List<ContainerId> release, List<String> blacklistAdditions, List<String> blacklistRemovals, ContainerUpdates updateRequests)
 specifier|public
 specifier|synchronized
 name|Allocation
@@ -3752,17 +3772,8 @@ name|String
 argument_list|>
 name|blacklistRemovals
 parameter_list|,
-name|List
-argument_list|<
-name|UpdateContainerRequest
-argument_list|>
-name|increaseRequests
-parameter_list|,
-name|List
-argument_list|<
-name|UpdateContainerRequest
-argument_list|>
-name|decreaseRequests
+name|ContainerUpdates
+name|updateRequests
 parameter_list|)
 block|{
 name|List
@@ -3837,11 +3848,17 @@ name|release
 expr_stmt|;
 name|lastIncrease
 operator|=
-name|increaseRequests
+name|updateRequests
+operator|.
+name|getIncreaseRequests
+argument_list|()
 expr_stmt|;
 name|lastDecrease
 operator|=
-name|decreaseRequests
+name|updateRequests
+operator|.
+name|getDecreaseRequests
+argument_list|()
 expr_stmt|;
 name|lastBlacklistAdditions
 operator|=
@@ -3866,9 +3883,7 @@ name|blacklistAdditions
 argument_list|,
 name|blacklistRemovals
 argument_list|,
-name|increaseRequests
-argument_list|,
-name|decreaseRequests
+name|updateRequests
 argument_list|)
 return|;
 block|}

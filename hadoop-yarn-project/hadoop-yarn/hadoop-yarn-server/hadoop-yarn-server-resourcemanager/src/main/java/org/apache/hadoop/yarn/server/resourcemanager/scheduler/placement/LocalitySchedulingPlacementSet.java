@@ -791,11 +791,14 @@ name|resourceName
 argument_list|)
 return|;
 block|}
-DECL|method|decrementOutstanding (ResourceRequest offSwitchRequest)
+DECL|method|decrementOutstanding (SchedulerRequestKey schedulerRequestKey, ResourceRequest offSwitchRequest)
 specifier|private
 name|void
 name|decrementOutstanding
 parameter_list|(
+name|SchedulerRequestKey
+name|schedulerRequestKey
+parameter_list|,
 name|ResourceRequest
 name|offSwitchRequest
 parameter_list|)
@@ -827,16 +830,6 @@ operator|==
 literal|0
 condition|)
 block|{
-name|SchedulerRequestKey
-name|schedulerRequestKey
-init|=
-name|SchedulerRequestKey
-operator|.
-name|create
-argument_list|(
-name|offSwitchRequest
-argument_list|)
-decl_stmt|;
 name|appSchedulingInfo
 operator|.
 name|decrementSchedulerKeyReference
@@ -867,7 +860,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|cloneResourceRequest (ResourceRequest request)
-specifier|private
+specifier|public
 name|ResourceRequest
 name|cloneResourceRequest
 parameter_list|(
@@ -880,46 +873,78 @@ name|newRequest
 init|=
 name|ResourceRequest
 operator|.
-name|newInstance
+name|newBuilder
+argument_list|()
+operator|.
+name|priority
 argument_list|(
 name|request
 operator|.
 name|getPriority
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|allocationRequestId
+argument_list|(
+name|request
+operator|.
+name|getAllocationRequestId
+argument_list|()
+argument_list|)
+operator|.
+name|resourceName
+argument_list|(
 name|request
 operator|.
 name|getResourceName
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|capability
+argument_list|(
 name|request
 operator|.
 name|getCapability
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|numContainers
+argument_list|(
 literal|1
-argument_list|,
+argument_list|)
+operator|.
+name|relaxLocality
+argument_list|(
 name|request
 operator|.
 name|getRelaxLocality
 argument_list|()
-argument_list|,
+argument_list|)
+operator|.
+name|nodeLabelExpression
+argument_list|(
 name|request
 operator|.
 name|getNodeLabelExpression
 argument_list|()
 argument_list|)
+operator|.
+name|build
+argument_list|()
 decl_stmt|;
 return|return
 name|newRequest
 return|;
 block|}
 comment|/**    * The {@link ResourceScheduler} is allocating data-local resources to the    * application.    */
-DECL|method|allocateRackLocal (SchedulerNode node, ResourceRequest rackLocalRequest, List<ResourceRequest> resourceRequests)
+DECL|method|allocateRackLocal (SchedulerRequestKey schedulerKey, SchedulerNode node, ResourceRequest rackLocalRequest, List<ResourceRequest> resourceRequests)
 specifier|private
 name|void
 name|allocateRackLocal
 parameter_list|(
+name|SchedulerRequestKey
+name|schedulerKey
+parameter_list|,
 name|SchedulerNode
 name|node
 parameter_list|,
@@ -958,6 +983,8 @@ argument_list|)
 decl_stmt|;
 name|decrementOutstanding
 argument_list|(
+name|schedulerKey
+argument_list|,
 name|offRackRequest
 argument_list|)
 expr_stmt|;
@@ -984,11 +1011,14 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * The {@link ResourceScheduler} is allocating data-local resources to the    * application.    */
-DECL|method|allocateOffSwitch (ResourceRequest offSwitchRequest, List<ResourceRequest> resourceRequests)
+DECL|method|allocateOffSwitch (SchedulerRequestKey schedulerKey, ResourceRequest offSwitchRequest, List<ResourceRequest> resourceRequests)
 specifier|private
 name|void
 name|allocateOffSwitch
 parameter_list|(
+name|SchedulerRequestKey
+name|schedulerKey
+parameter_list|,
 name|ResourceRequest
 name|offSwitchRequest
 parameter_list|,
@@ -1002,6 +1032,8 @@ block|{
 comment|// Update future requirements
 name|decrementOutstanding
 argument_list|(
+name|schedulerKey
+argument_list|,
 name|offSwitchRequest
 argument_list|)
 expr_stmt|;
@@ -1018,11 +1050,14 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * The {@link ResourceScheduler} is allocating data-local resources to the    * application.    */
-DECL|method|allocateNodeLocal (SchedulerNode node, ResourceRequest nodeLocalRequest, List<ResourceRequest> resourceRequests)
+DECL|method|allocateNodeLocal (SchedulerRequestKey schedulerKey, SchedulerNode node, ResourceRequest nodeLocalRequest, List<ResourceRequest> resourceRequests)
 specifier|private
 name|void
 name|allocateNodeLocal
 parameter_list|(
+name|SchedulerRequestKey
+name|schedulerKey
+parameter_list|,
 name|SchedulerNode
 name|node
 parameter_list|,
@@ -1084,6 +1119,8 @@ argument_list|)
 decl_stmt|;
 name|decrementOutstanding
 argument_list|(
+name|schedulerKey
+argument_list|,
 name|offRackRequest
 argument_list|)
 expr_stmt|;
@@ -1314,7 +1351,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|allocate (NodeType type, SchedulerNode node, ResourceRequest request)
+DECL|method|allocate (SchedulerRequestKey schedulerKey, NodeType type, SchedulerNode node, ResourceRequest request)
 specifier|public
 name|List
 argument_list|<
@@ -1322,6 +1359,9 @@ name|ResourceRequest
 argument_list|>
 name|allocate
 parameter_list|(
+name|SchedulerRequestKey
+name|schedulerKey
+parameter_list|,
 name|NodeType
 name|type
 parameter_list|,
@@ -1428,6 +1468,8 @@ condition|)
 block|{
 name|allocateNodeLocal
 argument_list|(
+name|schedulerKey
+argument_list|,
 name|node
 argument_list|,
 name|request
@@ -1448,6 +1490,8 @@ condition|)
 block|{
 name|allocateRackLocal
 argument_list|(
+name|schedulerKey
+argument_list|,
 name|node
 argument_list|,
 name|request
@@ -1460,6 +1504,8 @@ else|else
 block|{
 name|allocateOffSwitch
 argument_list|(
+name|schedulerKey
+argument_list|,
 name|request
 argument_list|,
 name|resourceRequests

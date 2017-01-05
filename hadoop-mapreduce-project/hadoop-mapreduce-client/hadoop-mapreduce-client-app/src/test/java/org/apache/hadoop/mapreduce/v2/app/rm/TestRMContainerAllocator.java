@@ -1494,24 +1494,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|UpdateContainerRequest
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|conf
 operator|.
 name|YarnConfiguration
@@ -1873,6 +1855,26 @@ operator|.
 name|scheduler
 operator|.
 name|Allocation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|ContainerUpdates
 import|;
 end_import
 
@@ -12014,7 +12016,7 @@ comment|// override this to copy the objects otherwise FifoScheduler updates the
 comment|// numContainers in same objects as kept by RMContainerAllocator
 annotation|@
 name|Override
-DECL|method|allocate ( ApplicationAttemptId applicationAttemptId, List<ResourceRequest> ask, List<ContainerId> release, List<String> blacklistAdditions, List<String> blacklistRemovals, List<UpdateContainerRequest> increaseRequests, List<UpdateContainerRequest> decreaseRequests)
+DECL|method|allocate ( ApplicationAttemptId applicationAttemptId, List<ResourceRequest> ask, List<ContainerId> release, List<String> blacklistAdditions, List<String> blacklistRemovals, ContainerUpdates updateRequests)
 specifier|public
 specifier|synchronized
 name|Allocation
@@ -12047,17 +12049,8 @@ name|String
 argument_list|>
 name|blacklistRemovals
 parameter_list|,
-name|List
-argument_list|<
-name|UpdateContainerRequest
-argument_list|>
-name|increaseRequests
-parameter_list|,
-name|List
-argument_list|<
-name|UpdateContainerRequest
-argument_list|>
-name|decreaseRequests
+name|ContainerUpdates
+name|updateRequests
 parameter_list|)
 block|{
 name|List
@@ -12162,9 +12155,7 @@ name|blacklistAdditions
 argument_list|,
 name|blacklistRemovals
 argument_list|,
-name|increaseRequests
-argument_list|,
-name|decreaseRequests
+name|updateRequests
 argument_list|)
 decl_stmt|;
 if|if
@@ -12264,7 +12255,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|allocate ( ApplicationAttemptId applicationAttemptId, List<ResourceRequest> ask, List<ContainerId> release, List<String> blacklistAdditions, List<String> blacklistRemovals, List<UpdateContainerRequest> increaseRequest, List<UpdateContainerRequest> decreaseRequests)
+DECL|method|allocate ( ApplicationAttemptId applicationAttemptId, List<ResourceRequest> ask, List<ContainerId> release, List<String> blacklistAdditions, List<String> blacklistRemovals, ContainerUpdates updateRequests)
 specifier|public
 specifier|synchronized
 name|Allocation
@@ -12297,17 +12288,8 @@ name|String
 argument_list|>
 name|blacklistRemovals
 parameter_list|,
-name|List
-argument_list|<
-name|UpdateContainerRequest
-argument_list|>
-name|increaseRequest
-parameter_list|,
-name|List
-argument_list|<
-name|UpdateContainerRequest
-argument_list|>
-name|decreaseRequests
+name|ContainerUpdates
+name|updateRequests
 parameter_list|)
 block|{
 name|List
@@ -12396,9 +12378,7 @@ name|blacklistAdditions
 argument_list|,
 name|blacklistRemovals
 argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|updateRequests
 argument_list|)
 decl_stmt|;
 name|List

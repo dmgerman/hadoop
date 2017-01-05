@@ -764,6 +764,12 @@ operator|.
 name|WriteLock
 name|writeLock
 decl_stmt|;
+DECL|field|updateContext
+specifier|public
+specifier|final
+name|ContainerUpdateContext
+name|updateContext
+decl_stmt|;
 DECL|method|AppSchedulingInfo (ApplicationAttemptId appAttemptId, String user, Queue queue, ActiveUsersManager activeUsersManager, long epoch, ResourceUsage appResourceUsage)
 specifier|public
 name|AppSchedulingInfo
@@ -847,6 +853,14 @@ operator|new
 name|ReentrantReadWriteLock
 argument_list|()
 decl_stmt|;
+name|updateContext
+operator|=
+operator|new
+name|ContainerUpdateContext
+argument_list|(
+name|this
+argument_list|)
+expr_stmt|;
 name|readLock
 operator|=
 name|lock
@@ -2038,6 +2052,16 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+DECL|method|getUpdateContext ()
+specifier|public
+name|ContainerUpdateContext
+name|getUpdateContext
+parameter_list|()
+block|{
+return|return
+name|updateContext
+return|;
+block|}
 comment|/**    * The ApplicationMaster is updating resource requirements for the    * application, by asking for more resources and releasing resources acquired    * by the application.    *    * @param requests    *          resources to be acquired    * @param recoverPreemptedRequestForAContainer    *          recover ResourceRequest on preemption    * @return true if any resource was updated, false otherwise    */
 DECL|method|updateResourceRequests (List<ResourceRequest> requests, boolean recoverPreemptedRequestForAContainer)
 specifier|public
@@ -2166,6 +2190,56 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Update scheduling placement set
+name|offswitchResourcesUpdated
+operator|=
+name|addToPlacementSets
+argument_list|(
+name|recoverPreemptedRequestForAContainer
+argument_list|,
+name|dedupRequests
+argument_list|)
+expr_stmt|;
+return|return
+name|offswitchResourcesUpdated
+return|;
+block|}
+finally|finally
+block|{
+name|this
+operator|.
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+DECL|method|addToPlacementSets ( boolean recoverPreemptedRequestForAContainer, Map<SchedulerRequestKey, Map<String, ResourceRequest>> dedupRequests)
+name|boolean
+name|addToPlacementSets
+parameter_list|(
+name|boolean
+name|recoverPreemptedRequestForAContainer
+parameter_list|,
+name|Map
+argument_list|<
+name|SchedulerRequestKey
+argument_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|ResourceRequest
+argument_list|>
+argument_list|>
+name|dedupRequests
+parameter_list|)
+block|{
+name|boolean
+name|offswitchResourcesUpdated
+init|=
+literal|false
+decl_stmt|;
 for|for
 control|(
 name|Map
@@ -2283,17 +2357,6 @@ block|}
 return|return
 name|offswitchResourcesUpdated
 return|;
-block|}
-finally|finally
-block|{
-name|this
-operator|.
-name|writeLock
-operator|.
-name|unlock
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|updatePendingResources (ResourceRequest lastRequest, ResourceRequest request, SchedulerRequestKey schedulerKey, QueueMetrics metrics)
 specifier|private
@@ -3466,6 +3529,8 @@ argument_list|)
 operator|.
 name|allocate
 argument_list|(
+name|schedulerKey
+argument_list|,
 name|type
 argument_list|,
 name|node

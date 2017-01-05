@@ -1168,6 +1168,26 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
+name|ContainerUpdates
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
 name|QueueMetrics
 import|;
 end_import
@@ -1623,6 +1643,17 @@ literal|"test-queues"
 argument_list|)
 operator|.
 name|getAbsolutePath
+argument_list|()
+decl_stmt|;
+DECL|field|NULL_UPDATE_REQUESTS
+specifier|private
+specifier|final
+specifier|static
+name|ContainerUpdates
+name|NULL_UPDATE_REQUESTS
+init|=
+operator|new
+name|ContainerUpdates
 argument_list|()
 decl_stmt|;
 annotation|@
@@ -8533,9 +8564,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|NULL_UPDATE_REQUESTS
 argument_list|)
 expr_stmt|;
 name|ApplicationAttemptId
@@ -14180,9 +14209,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|NULL_UPDATE_REQUESTS
 argument_list|)
 expr_stmt|;
 comment|// Second ask, queue2 requests 1 large.
@@ -14270,9 +14297,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|NULL_UPDATE_REQUESTS
 argument_list|)
 expr_stmt|;
 comment|// Third ask, queue2 requests 2 small (minReqSize).
@@ -14356,9 +14381,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|NULL_UPDATE_REQUESTS
 argument_list|)
 expr_stmt|;
 name|scheduler
@@ -17121,9 +17144,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|NULL_UPDATE_REQUESTS
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -17786,9 +17807,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|NULL_UPDATE_REQUESTS
 argument_list|)
 expr_stmt|;
 comment|// node 1 checks in
@@ -20595,9 +20614,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|NULL_UPDATE_REQUESTS
 argument_list|)
 expr_stmt|;
 comment|// then node2 should get the container
@@ -20926,9 +20943,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|NULL_UPDATE_REQUESTS
 argument_list|)
 expr_stmt|;
 name|scheduler
@@ -27527,9 +27542,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|NULL_UPDATE_REQUESTS
 argument_list|)
 expr_stmt|;
 name|String
@@ -27938,9 +27951,7 @@ argument_list|)
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|NULL_UPDATE_REQUESTS
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -27984,9 +27995,7 @@ argument_list|(
 name|host
 argument_list|)
 argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|NULL_UPDATE_REQUESTS
 argument_list|)
 expr_stmt|;
 name|assertFalse
@@ -28057,9 +28066,7 @@ argument_list|)
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|NULL_UPDATE_REQUESTS
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -28125,9 +28132,7 @@ argument_list|(
 name|host
 argument_list|)
 argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|NULL_UPDATE_REQUESTS
 argument_list|)
 expr_stmt|;
 name|assertFalse

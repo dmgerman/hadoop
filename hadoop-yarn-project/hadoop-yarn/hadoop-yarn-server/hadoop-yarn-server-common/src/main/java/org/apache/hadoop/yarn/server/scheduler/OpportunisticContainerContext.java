@@ -723,13 +723,20 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"# of outstandingOpReqs in ANY (at"
+literal|"# of outstandingOpReqs in ANY (at "
 operator|+
 literal|"priority = "
 operator|+
 name|schedulerKey
 operator|.
 name|getPriority
+argument_list|()
+operator|+
+literal|", allocationReqId = "
+operator|+
+name|schedulerKey
+operator|.
+name|getAllocationRequestId
 argument_list|()
 operator|+
 literal|", with capability = "

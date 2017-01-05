@@ -205,14 +205,17 @@ name|String
 name|resourceName
 parameter_list|)
 function_decl|;
-comment|/**    * Notify container allocated.    * @param type Type of the allocation    * @param node Which node this container allocated on    * @param request Which resource request to allocate    * @return list of ResourceRequests deducted    */
-DECL|method|allocate (NodeType type, SchedulerNode node, ResourceRequest request)
+comment|/**    * Notify container allocated.    * @param schedulerKey SchedulerRequestKey for this ResourceRequest    * @param type Type of the allocation    * @param node Which node this container allocated on    * @param request Which resource request to allocate    * @return list of ResourceRequests deducted    */
+DECL|method|allocate (SchedulerRequestKey schedulerKey, NodeType type, SchedulerNode node, ResourceRequest request)
 name|List
 argument_list|<
 name|ResourceRequest
 argument_list|>
 name|allocate
 parameter_list|(
+name|SchedulerRequestKey
+name|schedulerKey
+parameter_list|,
 name|NodeType
 name|type
 parameter_list|,

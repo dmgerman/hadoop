@@ -1057,6 +1057,21 @@ name|ACQUIRED
 argument_list|,
 name|RMContainerState
 operator|.
+name|ACQUIRED
+argument_list|,
+name|RMContainerEventType
+operator|.
+name|ACQUIRED
+argument_list|)
+operator|.
+name|addTransition
+argument_list|(
+name|RMContainerState
+operator|.
+name|ACQUIRED
+argument_list|,
+name|RMContainerState
+operator|.
 name|COMPLETED
 argument_list|,
 name|RMContainerEventType
@@ -1181,6 +1196,21 @@ argument_list|,
 operator|new
 name|KillTransition
 argument_list|()
+argument_list|)
+operator|.
+name|addTransition
+argument_list|(
+name|RMContainerState
+operator|.
+name|RUNNING
+argument_list|,
+name|RMContainerState
+operator|.
+name|RUNNING
+argument_list|,
+name|RMContainerEventType
+operator|.
+name|ACQUIRED
 argument_list|)
 operator|.
 name|addTransition
@@ -1420,12 +1450,6 @@ specifier|final
 name|NodeId
 name|nodeId
 decl_stmt|;
-DECL|field|container
-specifier|private
-specifier|final
-name|Container
-name|container
-decl_stmt|;
 DECL|field|rmContext
 specifier|private
 specifier|final
@@ -1455,6 +1479,12 @@ specifier|private
 specifier|final
 name|String
 name|nodeLabelExpression
+decl_stmt|;
+DECL|field|container
+specifier|private
+specifier|volatile
+name|Container
+name|container
 decl_stmt|;
 DECL|field|reservedResource
 specifier|private
@@ -1530,12 +1560,15 @@ specifier|private
 name|SchedulerRequestKey
 name|allocatedSchedulerKey
 decl_stmt|;
-DECL|method|RMContainerImpl (Container container, ApplicationAttemptId appAttemptId, NodeId nodeId, String user, RMContext rmContext)
+DECL|method|RMContainerImpl (Container container, SchedulerRequestKey schedulerKey, ApplicationAttemptId appAttemptId, NodeId nodeId, String user, RMContext rmContext)
 specifier|public
 name|RMContainerImpl
 parameter_list|(
 name|Container
 name|container
+parameter_list|,
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|ApplicationAttemptId
 name|appAttemptId
@@ -1554,6 +1587,8 @@ name|this
 argument_list|(
 name|container
 argument_list|,
+name|schedulerKey
+argument_list|,
 name|appAttemptId
 argument_list|,
 name|nodeId
@@ -1571,12 +1606,15 @@ literal|""
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|RMContainerImpl (Container container, ApplicationAttemptId appAttemptId, NodeId nodeId, String user, RMContext rmContext, boolean isExternallyAllocated)
+DECL|method|RMContainerImpl (Container container, SchedulerRequestKey schedulerKey, ApplicationAttemptId appAttemptId, NodeId nodeId, String user, RMContext rmContext, boolean isExternallyAllocated)
 specifier|public
 name|RMContainerImpl
 parameter_list|(
 name|Container
 name|container
+parameter_list|,
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|ApplicationAttemptId
 name|appAttemptId
@@ -1597,6 +1635,8 @@ block|{
 name|this
 argument_list|(
 name|container
+argument_list|,
+name|schedulerKey
 argument_list|,
 name|appAttemptId
 argument_list|,
@@ -1622,12 +1662,15 @@ specifier|private
 name|boolean
 name|saveNonAMContainerMetaInfo
 decl_stmt|;
-DECL|method|RMContainerImpl (Container container, ApplicationAttemptId appAttemptId, NodeId nodeId, String user, RMContext rmContext, String nodeLabelExpression)
+DECL|method|RMContainerImpl (Container container, SchedulerRequestKey schedulerKey, ApplicationAttemptId appAttemptId, NodeId nodeId, String user, RMContext rmContext, String nodeLabelExpression)
 specifier|public
 name|RMContainerImpl
 parameter_list|(
 name|Container
 name|container
+parameter_list|,
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|ApplicationAttemptId
 name|appAttemptId
@@ -1649,6 +1692,8 @@ name|this
 argument_list|(
 name|container
 argument_list|,
+name|schedulerKey
+argument_list|,
 name|appAttemptId
 argument_list|,
 name|nodeId
@@ -1666,12 +1711,15 @@ name|nodeLabelExpression
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|RMContainerImpl (Container container, ApplicationAttemptId appAttemptId, NodeId nodeId, String user, RMContext rmContext, long creationTime, String nodeLabelExpression)
+DECL|method|RMContainerImpl (Container container, SchedulerRequestKey schedulerKey, ApplicationAttemptId appAttemptId, NodeId nodeId, String user, RMContext rmContext, long creationTime, String nodeLabelExpression)
 specifier|public
 name|RMContainerImpl
 parameter_list|(
 name|Container
 name|container
+parameter_list|,
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|ApplicationAttemptId
 name|appAttemptId
@@ -1696,6 +1744,8 @@ name|this
 argument_list|(
 name|container
 argument_list|,
+name|schedulerKey
+argument_list|,
 name|appAttemptId
 argument_list|,
 name|nodeId
@@ -1712,12 +1762,15 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|RMContainerImpl (Container container, ApplicationAttemptId appAttemptId, NodeId nodeId, String user, RMContext rmContext, long creationTime, String nodeLabelExpression, boolean isExternallyAllocated)
+DECL|method|RMContainerImpl (Container container, SchedulerRequestKey schedulerKey, ApplicationAttemptId appAttemptId, NodeId nodeId, String user, RMContext rmContext, long creationTime, String nodeLabelExpression, boolean isExternallyAllocated)
 specifier|public
 name|RMContainerImpl
 parameter_list|(
 name|Container
 name|container
+parameter_list|,
+name|SchedulerRequestKey
+name|schedulerKey
 parameter_list|,
 name|ApplicationAttemptId
 name|appAttemptId
@@ -1768,12 +1821,7 @@ name|this
 operator|.
 name|allocatedSchedulerKey
 operator|=
-name|SchedulerRequestKey
-operator|.
-name|extractFrom
-argument_list|(
-name|container
-argument_list|)
+name|schedulerKey
 expr_stmt|;
 name|this
 operator|.
@@ -1993,6 +2041,22 @@ name|this
 operator|.
 name|container
 return|;
+block|}
+DECL|method|setContainer (Container container)
+specifier|public
+name|void
+name|setContainer
+parameter_list|(
+name|Container
+name|container
+parameter_list|)
+block|{
+name|this
+operator|.
+name|container
+operator|=
+name|container
+expr_stmt|;
 block|}
 annotation|@
 name|Override

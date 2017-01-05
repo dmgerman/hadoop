@@ -1096,6 +1096,26 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
+name|ContainerUpdates
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
 name|QueueMetrics
 import|;
 end_import
@@ -1614,6 +1634,17 @@ name|getRecordFactory
 argument_list|(
 literal|null
 argument_list|)
+decl_stmt|;
+DECL|field|NULL_UPDATE_REQUESTS
+specifier|private
+specifier|final
+specifier|static
+name|ContainerUpdates
+name|NULL_UPDATE_REQUESTS
+init|=
+operator|new
+name|ContainerUpdates
+argument_list|()
 decl_stmt|;
 annotation|@
 name|Before
@@ -2621,9 +2652,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|NULL_UPDATE_REQUESTS
 argument_list|)
 expr_stmt|;
 name|NodeUpdateSchedulerEvent
@@ -3253,9 +3282,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|NULL_UPDATE_REQUESTS
 argument_list|)
 expr_stmt|;
 comment|// Before the node update event, there are one local request
@@ -6905,9 +6932,7 @@ argument_list|)
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|NULL_UPDATE_REQUESTS
 argument_list|)
 expr_stmt|;
 comment|// Trigger container assignment
@@ -6941,9 +6966,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|NULL_UPDATE_REQUESTS
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -6992,9 +7015,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|NULL_UPDATE_REQUESTS
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -7118,9 +7139,7 @@ argument_list|)
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|NULL_UPDATE_REQUESTS
 argument_list|)
 expr_stmt|;
 comment|// verify n1 is not qualified to be allocated
@@ -7152,9 +7171,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|NULL_UPDATE_REQUESTS
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -7203,9 +7220,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|NULL_UPDATE_REQUESTS
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -7254,9 +7269,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|NULL_UPDATE_REQUESTS
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -7304,9 +7317,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|NULL_UPDATE_REQUESTS
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -7696,9 +7707,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|NULL_UPDATE_REQUESTS
 argument_list|)
 expr_stmt|;
 comment|// Ask for a 2 GB container for app 2
@@ -7763,9 +7772,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|NULL_UPDATE_REQUESTS
 argument_list|)
 expr_stmt|;
 comment|// Trigger container assignment
@@ -7798,9 +7805,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|NULL_UPDATE_REQUESTS
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -7839,9 +7844,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|NULL_UPDATE_REQUESTS
 argument_list|)
 decl_stmt|;
 name|Assert

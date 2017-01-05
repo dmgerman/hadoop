@@ -916,9 +916,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|NULL_UPDATE_REQUESTS
 argument_list|)
 expr_stmt|;
 name|FSAppAttempt
@@ -1186,9 +1184,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|NULL_UPDATE_REQUESTS
 argument_list|)
 expr_stmt|;
 name|triggerSchedulingAttempt
@@ -1269,9 +1265,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|NULL_UPDATE_REQUESTS
 argument_list|)
 expr_stmt|;
 name|triggerSchedulingAttempt
@@ -2158,9 +2152,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
-literal|null
+name|NULL_UPDATE_REQUESTS
 argument_list|)
 expr_stmt|;
 name|NodeAddedSchedulerEvent

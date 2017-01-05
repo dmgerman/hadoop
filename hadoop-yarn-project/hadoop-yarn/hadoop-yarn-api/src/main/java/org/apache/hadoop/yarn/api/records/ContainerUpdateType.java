@@ -74,9 +74,13 @@ comment|/**    * Resource decrease.    */
 DECL|enumConstant|DECREASE_RESOURCE
 name|DECREASE_RESOURCE
 block|,
-comment|/**    * Execution Type change.    */
-DECL|enumConstant|UPDATE_EXECUTION_TYPE
-name|UPDATE_EXECUTION_TYPE
+comment|/**    * Execution Type promotion.    */
+DECL|enumConstant|PROMOTE_EXECUTION_TYPE
+name|PROMOTE_EXECUTION_TYPE
+block|,
+comment|/**    * Execution Type demotion.    */
+DECL|enumConstant|DEMOTE_EXECUTION_TYPE
+name|DEMOTE_EXECUTION_TYPE
 block|}
 end_enum
 

@@ -283,6 +283,30 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"UpdateContainerError{reason="
+operator|+
+name|getReason
+argument_list|()
+operator|+
+literal|", "
+operator|+
+literal|"req="
+operator|+
+name|getUpdateContainerRequest
+argument_list|()
+operator|+
+literal|"}"
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|equals (Object obj)
 specifier|public
 name|boolean

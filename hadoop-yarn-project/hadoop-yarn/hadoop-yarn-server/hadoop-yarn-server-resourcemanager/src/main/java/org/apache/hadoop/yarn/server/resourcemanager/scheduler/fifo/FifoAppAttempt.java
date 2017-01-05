@@ -495,6 +495,8 @@ name|RMContainerImpl
 argument_list|(
 name|container
 argument_list|,
+name|schedulerKey
+argument_list|,
 name|this
 operator|.
 name|getApplicationAttemptId
@@ -545,10 +547,10 @@ literal|null
 argument_list|)
 expr_stmt|;
 comment|// Add it to allContainers list.
-name|newlyAllocatedContainers
-operator|.
-name|add
+name|addToNewlyAllocatedContainers
 argument_list|(
+name|node
+argument_list|,
 name|rmContainer
 argument_list|)
 expr_stmt|;
