@@ -1115,6 +1115,7 @@ return|return
 literal|true
 return|;
 block|}
+comment|/**    * This class contains datanode storage information and block index in the    * block group.    */
 DECL|class|StorageAndBlockIndex
 specifier|public
 specifier|static
@@ -1156,6 +1157,7 @@ operator|=
 name|blockIndex
 expr_stmt|;
 block|}
+comment|/**      * @return storage in the datanode.      */
 DECL|method|getStorage ()
 specifier|public
 name|DatanodeStorageInfo
@@ -1166,6 +1168,7 @@ return|return
 name|storage
 return|;
 block|}
+comment|/**      * @return block index in the block group.      */
 DECL|method|getBlockIndex ()
 specifier|public
 name|byte
