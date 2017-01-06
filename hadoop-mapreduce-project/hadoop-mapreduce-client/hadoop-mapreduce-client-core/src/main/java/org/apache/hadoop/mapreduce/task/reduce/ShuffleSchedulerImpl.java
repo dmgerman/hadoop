@@ -2566,11 +2566,6 @@ name|wait
 argument_list|()
 expr_stmt|;
 block|}
-name|MapHost
-name|host
-init|=
-literal|null
-decl_stmt|;
 name|Iterator
 argument_list|<
 name|MapHost
@@ -2580,6 +2575,15 @@ init|=
 name|pendingHosts
 operator|.
 name|iterator
+argument_list|()
+decl_stmt|;
+comment|// Safe to take one because we know pendingHosts isn't empty
+name|MapHost
+name|host
+init|=
+name|iter
+operator|.
+name|next
 argument_list|()
 decl_stmt|;
 name|int
@@ -2603,7 +2607,7 @@ init|=
 literal|0
 init|;
 name|i
-operator|<=
+operator|<
 name|numToPick
 condition|;
 operator|++
@@ -2630,6 +2634,14 @@ operator|.
 name|markBusy
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -2656,6 +2668,7 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|SHUFFLE_START
 operator|.
 name|set
@@ -2839,6 +2852,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -2866,6 +2887,7 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|result
 return|;

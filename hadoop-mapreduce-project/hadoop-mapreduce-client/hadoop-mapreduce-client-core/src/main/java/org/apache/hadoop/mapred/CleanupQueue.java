@@ -500,6 +500,25 @@ name|InterruptedException
 name|t
 parameter_list|)
 block|{
+if|if
+condition|(
+name|context
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Interrupted deletion of an invalid path: Path deletion "
+operator|+
+literal|"context is null."
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|LOG
 operator|.
 name|warn
@@ -511,6 +530,7 @@ operator|.
 name|fullPath
 argument_list|)
 expr_stmt|;
+block|}
 return|return;
 block|}
 catch|catch

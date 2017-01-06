@@ -419,6 +419,8 @@ argument_list|(
 literal|10000
 argument_list|)
 decl_stmt|;
+try|try
+init|(
 name|BufferedReader
 name|in
 init|=
@@ -439,7 +441,8 @@ operator|.
 name|UTF_8
 argument_list|)
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|String
 name|line
 init|=
@@ -470,11 +473,7 @@ name|readLine
 argument_list|()
 expr_stmt|;
 block|}
-name|in
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
+block|}
 return|return
 name|result
 return|;

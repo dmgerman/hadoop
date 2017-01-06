@@ -757,6 +757,15 @@ expr_stmt|;
 break|break;
 block|}
 block|}
+if|if
+condition|(
+name|piece
+operator|==
+literal|null
+condition|)
+block|{
+continue|continue;
+block|}
 comment|// for each point where the piece was placed, mark it with the piece name
 for|for
 control|(

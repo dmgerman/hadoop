@@ -2550,22 +2550,40 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+if|if
+condition|(
+name|lastException
+operator|!=
+literal|null
+condition|)
+block|{
 throw|throw
 operator|new
 name|IOException
 argument_list|(
 literal|"Initialization of all the collectors failed. "
 operator|+
-literal|"Error in last collector was :"
+literal|"Error in last collector was:"
 operator|+
 name|lastException
 operator|.
-name|getMessage
+name|toString
 argument_list|()
 argument_list|,
 name|lastException
 argument_list|)
 throw|;
+block|}
+else|else
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Initialization of all the collectors failed."
+argument_list|)
+throw|;
+block|}
 block|}
 annotation|@
 name|SuppressWarnings
