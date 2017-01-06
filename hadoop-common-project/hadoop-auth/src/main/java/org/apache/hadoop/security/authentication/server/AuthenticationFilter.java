@@ -489,10 +489,10 @@ specifier|private
 name|boolean
 name|isCookiePersistent
 decl_stmt|;
-DECL|field|isInitializedByTomcat
+DECL|field|destroySecretProvider
 specifier|private
 name|boolean
-name|isInitializedByTomcat
+name|destroySecretProvider
 decl_stmt|;
 comment|/**    *<p>Initializes the authentication filter and signer secret provider.</p>    * It instantiates and initializes the specified {@link    * AuthenticationHandler}.    *    * @param filterConfig filter configuration.    *    * @throws ServletException thrown if the filter or the authentication handler could not be initialized properly.    */
 annotation|@
@@ -814,7 +814,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|isInitializedByTomcat
+name|destroySecretProvider
 operator|=
 literal|true
 expr_stmt|;
@@ -1265,7 +1265,7 @@ name|secretProvider
 operator|!=
 literal|null
 operator|&&
-name|isInitializedByTomcat
+name|destroySecretProvider
 condition|)
 block|{
 name|secretProvider
