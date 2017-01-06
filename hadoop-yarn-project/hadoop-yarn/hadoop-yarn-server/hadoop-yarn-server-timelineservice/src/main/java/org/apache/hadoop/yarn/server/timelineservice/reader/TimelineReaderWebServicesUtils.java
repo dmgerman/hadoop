@@ -64,6 +64,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|lang
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|security
@@ -132,7 +146,7 @@ name|TimelineReaderWebServicesUtils
 parameter_list|()
 block|{   }
 comment|/**    * Parse the passed context information represented as strings and convert    * into a {@link TimelineReaderContext} object.    * @param clusterId Cluster Id.    * @param userId User Id.    * @param flowName Flow Name.    * @param flowRunId Run id for the flow.    * @param appId App Id.    * @param entityType Entity Type.    * @param entityId Entity Id.    * @return a {@link TimelineReaderContext} object.    */
-DECL|method|createTimelineReaderContext (String clusterId, String userId, String flowName, String flowRunId, String appId, String entityType, String entityId)
+DECL|method|createTimelineReaderContext (String clusterId, String userId, String flowName, String flowRunId, String appId, String entityType, String entityIdPrefix, String entityId)
 specifier|static
 name|TimelineReaderContext
 name|createTimelineReaderContext
@@ -154,6 +168,9 @@ name|appId
 parameter_list|,
 name|String
 name|entityType
+parameter_list|,
+name|String
+name|entityIdPrefix
 parameter_list|,
 name|String
 name|entityId
@@ -193,6 +210,11 @@ argument_list|(
 name|entityType
 argument_list|)
 argument_list|,
+name|parseLongStr
+argument_list|(
+name|entityIdPrefix
+argument_list|)
+argument_list|,
 name|parseStr
 argument_list|(
 name|entityId
@@ -201,7 +223,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Parse the passed filters represented as strings and convert them into a    * {@link TimelineEntityFilters} object.    * @param limit Limit to number of entities to return.    * @param createdTimeStart Created time start for the entities to return.    * @param createdTimeEnd Created time end for the entities to return.    * @param relatesTo Entities to return must match relatesTo.    * @param isRelatedTo Entities to return must match isRelatedTo.    * @param infofilters Entities to return must match these info filters.    * @param conffilters Entities to return must match these metric filters.    * @param metricfilters Entities to return must match these metric filters.    * @param eventfilters Entities to return must match these event filters.    * @return a {@link TimelineEntityFilters} object.    * @throws TimelineParseException if any problem occurs during parsing.    */
-DECL|method|createTimelineEntityFilters (String limit, String createdTimeStart, String createdTimeEnd, String relatesTo, String isRelatedTo, String infofilters, String conffilters, String metricfilters, String eventfilters)
+DECL|method|createTimelineEntityFilters (String limit, String createdTimeStart, String createdTimeEnd, String relatesTo, String isRelatedTo, String infofilters, String conffilters, String metricfilters, String eventfilters, String fromidprefix, String fromid)
 specifier|static
 name|TimelineEntityFilters
 name|createTimelineEntityFilters
@@ -232,6 +254,12 @@ name|metricfilters
 parameter_list|,
 name|String
 name|eventfilters
+parameter_list|,
+name|String
+name|fromidprefix
+parameter_list|,
+name|String
+name|fromid
 parameter_list|)
 throws|throws
 name|TimelineParseException
@@ -287,6 +315,16 @@ argument_list|,
 name|parseEventFilters
 argument_list|(
 name|eventfilters
+argument_list|)
+argument_list|,
+name|parseLongStr
+argument_list|(
+name|fromidprefix
+argument_list|)
+argument_list|,
+name|parseStr
+argument_list|(
+name|fromid
 argument_list|)
 argument_list|)
 return|;
@@ -634,16 +672,12 @@ name|str
 parameter_list|)
 block|{
 return|return
-name|str
-operator|==
-literal|null
-condition|?
-literal|null
-else|:
-name|str
+name|StringUtils
 operator|.
-name|trim
-argument_list|()
+name|trimToNull
+argument_list|(
+name|str
+argument_list|)
 return|;
 block|}
 comment|/**    * Get UGI from HTTP request.    * @param req HTTP request.    * @return UGI.    */

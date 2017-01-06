@@ -808,6 +808,14 @@ argument_list|()
 block|,
 name|context
 operator|.
+name|getEntityIdPrefix
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+block|,
+name|context
+operator|.
 name|getEntityId
 argument_list|()
 block|}
@@ -840,6 +848,14 @@ block|,
 name|context
 operator|.
 name|getEntityType
+argument_list|()
+block|,
+name|context
+operator|.
+name|getEntityIdPrefix
+argument_list|()
+operator|.
+name|toString
 argument_list|()
 block|,
 name|context
@@ -889,8 +905,8 @@ argument_list|(
 name|uId
 argument_list|)
 decl_stmt|;
-comment|// Should have 7 parts i.e. cluster, user, flow name, flowrun id, app id,
-comment|// entity type and entity id OR should have 4 parts i.e. cluster, app id,
+comment|// Should have 8 parts i.e. cluster, user, flow name, flowrun id, app id,
+comment|// entity type and entity id OR should have 5 parts i.e. cluster, app id,
 comment|// entity type and entity id.
 if|if
 condition|(
@@ -899,7 +915,7 @@ operator|.
 name|size
 argument_list|()
 operator|==
-literal|7
+literal|8
 condition|)
 block|{
 comment|// Flow information exists.
@@ -954,11 +970,23 @@ argument_list|(
 literal|5
 argument_list|)
 argument_list|,
+name|Long
+operator|.
+name|parseLong
+argument_list|(
 name|entityTupleList
 operator|.
 name|get
 argument_list|(
 literal|6
+argument_list|)
+argument_list|)
+argument_list|,
+name|entityTupleList
+operator|.
+name|get
+argument_list|(
+literal|7
 argument_list|)
 argument_list|)
 return|;
@@ -971,7 +999,7 @@ operator|.
 name|size
 argument_list|()
 operator|==
-literal|4
+literal|5
 condition|)
 block|{
 comment|// Flow information does not exist.
@@ -1006,11 +1034,23 @@ argument_list|(
 literal|2
 argument_list|)
 argument_list|,
+name|Long
+operator|.
+name|parseLong
+argument_list|(
 name|entityTupleList
 operator|.
 name|get
 argument_list|(
 literal|3
+argument_list|)
+argument_list|)
+argument_list|,
+name|entityTupleList
+operator|.
+name|get
+argument_list|(
+literal|4
 argument_list|)
 argument_list|)
 return|;

@@ -499,8 +499,6 @@ argument_list|,
 name|entityFilters
 argument_list|,
 name|toRetrieve
-argument_list|,
-literal|true
 argument_list|)
 expr_stmt|;
 block|}

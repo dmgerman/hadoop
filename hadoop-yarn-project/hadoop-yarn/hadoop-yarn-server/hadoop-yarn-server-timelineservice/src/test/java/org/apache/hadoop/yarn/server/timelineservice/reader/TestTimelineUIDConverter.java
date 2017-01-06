@@ -311,6 +311,8 @@ literal|"application_1111111111_1111"
 argument_list|,
 literal|"YARN_CONTAINER"
 argument_list|,
+literal|12345L
+argument_list|,
 literal|"container_1111111111_1111_01_000001"
 argument_list|)
 expr_stmt|;
@@ -329,7 +331,7 @@ name|assertEquals
 argument_list|(
 literal|"yarn_cluster!root!hive_join!1234!application_1111111111_1111!"
 operator|+
-literal|"YARN_CONTAINER!container_1111111111_1111_01_000001"
+literal|"YARN_CONTAINER!12345!container_1111111111_1111_01_000001"
 argument_list|,
 name|uid
 argument_list|)
@@ -365,6 +367,8 @@ literal|"application_1111111111_1111"
 argument_list|,
 literal|"YARN_CONTAINER"
 argument_list|,
+literal|54321L
+argument_list|,
 literal|"container_1111111111_1111_01_000001"
 argument_list|)
 expr_stmt|;
@@ -383,7 +387,7 @@ name|assertEquals
 argument_list|(
 literal|"yarn_cluster!application_1111111111_1111!YARN_CONTAINER!"
 operator|+
-literal|"container_1111111111_1111_01_000001"
+literal|"54321!container_1111111111_1111_01_000001"
 argument_list|,
 name|uid
 argument_list|)

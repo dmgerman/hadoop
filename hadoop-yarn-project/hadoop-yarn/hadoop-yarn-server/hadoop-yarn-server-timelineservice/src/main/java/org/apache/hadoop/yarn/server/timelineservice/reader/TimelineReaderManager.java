@@ -538,6 +538,16 @@ argument_list|)
 expr_stmt|;
 name|context
 operator|.
+name|setEntityIdPrefix
+argument_list|(
+name|entity
+operator|.
+name|getIdPrefix
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|context
+operator|.
 name|setEntityId
 argument_list|(
 name|entity

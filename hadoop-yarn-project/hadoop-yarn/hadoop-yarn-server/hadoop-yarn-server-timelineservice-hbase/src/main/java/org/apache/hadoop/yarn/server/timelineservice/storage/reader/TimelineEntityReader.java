@@ -70,6 +70,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|LinkedHashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Map
 import|;
 end_import
@@ -90,27 +100,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|NavigableSet
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Set
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|TreeSet
 import|;
 end_import
 
@@ -675,14 +665,6 @@ name|?
 argument_list|>
 name|table
 decl_stmt|;
-comment|/**    * Specifies whether keys for this table are sorted in a manner where entities    * can be retrieved by created time. If true, it will be sufficient to collect    * the first results as specified by the limit. Otherwise all matched entities    * will be fetched and then limit applied.    */
-DECL|field|sortedKeys
-specifier|private
-name|boolean
-name|sortedKeys
-init|=
-literal|false
-decl_stmt|;
 comment|/**    * Used to convert strings key components to and from storage format.    */
 DECL|field|stringKeyConverter
 specifier|private
@@ -697,8 +679,8 @@ operator|new
 name|StringKeyConverter
 argument_list|()
 decl_stmt|;
-comment|/**    * Instantiates a reader for multiple-entity reads.    *    * @param ctxt Reader context which defines the scope in which query has to be    *     made.    * @param entityFilters Filters which limit the entities returned.    * @param toRetrieve Data to retrieve for each entity.    * @param sortedKeys Specifies whether key for this table are sorted or not.    *     If sorted, entities can be retrieved by created time.    */
-DECL|method|TimelineEntityReader (TimelineReaderContext ctxt, TimelineEntityFilters entityFilters, TimelineDataToRetrieve toRetrieve, boolean sortedKeys)
+comment|/**    * Instantiates a reader for multiple-entity reads.    *    * @param ctxt Reader context which defines the scope in which query has to be    *     made.    * @param entityFilters Filters which limit the entities returned.    * @param toRetrieve Data to retrieve for each entity.    */
+DECL|method|TimelineEntityReader (TimelineReaderContext ctxt, TimelineEntityFilters entityFilters, TimelineDataToRetrieve toRetrieve)
 specifier|protected
 name|TimelineEntityReader
 parameter_list|(
@@ -710,9 +692,6 @@ name|entityFilters
 parameter_list|,
 name|TimelineDataToRetrieve
 name|toRetrieve
-parameter_list|,
-name|boolean
-name|sortedKeys
 parameter_list|)
 block|{
 name|super
@@ -725,12 +704,6 @@ operator|.
 name|singleEntityRead
 operator|=
 literal|false
-expr_stmt|;
-name|this
-operator|.
-name|sortedKeys
-operator|=
-name|sortedKeys
 expr_stmt|;
 name|this
 operator|.
@@ -1099,14 +1072,14 @@ argument_list|,
 name|conn
 argument_list|)
 expr_stmt|;
-name|NavigableSet
+name|Set
 argument_list|<
 name|TimelineEntity
 argument_list|>
 name|entities
 init|=
 operator|new
-name|TreeSet
+name|LinkedHashSet
 argument_list|<>
 argument_list|()
 decl_stmt|;
@@ -1186,34 +1159,6 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-operator|!
-name|sortedKeys
-condition|)
-block|{
-if|if
-condition|(
-name|entities
-operator|.
-name|size
-argument_list|()
-operator|>
-name|filters
-operator|.
-name|getLimit
-argument_list|()
-condition|)
-block|{
-name|entities
-operator|.
-name|pollLast
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-else|else
-block|{
-if|if
-condition|(
 name|entities
 operator|.
 name|size
@@ -1226,7 +1171,6 @@ argument_list|()
 condition|)
 block|{
 break|break;
-block|}
 block|}
 block|}
 return|return

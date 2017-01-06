@@ -341,8 +341,6 @@ argument_list|,
 name|filters
 argument_list|,
 name|dataToRetrieve
-argument_list|,
-literal|false
 argument_list|)
 return|;
 block|}
