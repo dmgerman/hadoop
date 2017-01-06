@@ -94,6 +94,50 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|capacity
+operator|.
+name|SchedulingMode
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|common
+operator|.
+name|PendingAsk
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|scheduler
 operator|.
 name|SchedulerRequestKey
@@ -196,17 +240,26 @@ argument_list|>
 name|getResourceRequests
 parameter_list|()
 function_decl|;
-comment|/**    * Get ResourceRequest by given schedulerKey and resourceName    * @param resourceName resourceName    * @return ResourceRequest    */
-DECL|method|getResourceRequest (String resourceName)
-name|ResourceRequest
-name|getResourceRequest
+comment|/**    * Get pending ask for given resourceName. If there's no such pendingAsk,    * returns {@link PendingAsk#ZERO}    *    * @param resourceName resourceName    * @return PendingAsk    */
+DECL|method|getPendingAsk (String resourceName)
+name|PendingAsk
+name|getPendingAsk
 parameter_list|(
 name|String
 name|resourceName
 parameter_list|)
 function_decl|;
-comment|/**    * Notify container allocated.    * @param schedulerKey SchedulerRequestKey for this ResourceRequest    * @param type Type of the allocation    * @param node Which node this container allocated on    * @param request Which resource request to allocate    * @return list of ResourceRequests deducted    */
-DECL|method|allocate (SchedulerRequestKey schedulerKey, NodeType type, SchedulerNode node, ResourceRequest request)
+comment|/**    * Get #pending-allocations for given resourceName. If there's no such    * pendingAsk, returns 0    *    * @param resourceName resourceName    * @return #pending-allocations    */
+DECL|method|getOutstandingAsksCount (String resourceName)
+name|int
+name|getOutstandingAsksCount
+parameter_list|(
+name|String
+name|resourceName
+parameter_list|)
+function_decl|;
+comment|/**    * Notify container allocated.    * @param schedulerKey SchedulerRequestKey for this ResourceRequest    * @param type Type of the allocation    * @param node Which node this container allocated on    * @return list of ResourceRequests deducted    */
+DECL|method|allocate (SchedulerRequestKey schedulerKey, NodeType type, SchedulerNode node)
 name|List
 argument_list|<
 name|ResourceRequest
@@ -221,10 +274,16 @@ name|type
 parameter_list|,
 name|SchedulerNode
 name|node
-parameter_list|,
-name|ResourceRequest
-name|request
 parameter_list|)
+function_decl|;
+comment|/**    * Returns list of accepted resourceNames.    * @return Iterator of accepted resourceNames    */
+DECL|method|getAcceptedResouceNames ()
+name|Iterator
+argument_list|<
+name|String
+argument_list|>
+name|getAcceptedResouceNames
+parameter_list|()
 function_decl|;
 comment|/**    * We can still have pending requirement for a given NodeType and node    * @param type Locality Type    * @param node which node we will allocate on    * @return true if we has pending requirement    */
 DECL|method|canAllocate (NodeType type, SchedulerNode node)
@@ -237,6 +296,45 @@ parameter_list|,
 name|SchedulerNode
 name|node
 parameter_list|)
+function_decl|;
+comment|/**    * Can delay to give locality?    * TODO (wangda): This should be moved out of SchedulingPlacementSet    * and should belong to specific delay scheduling policy impl.    *    * @param resourceName resourceName    * @return can/cannot    */
+DECL|method|canDelayTo (String resourceName)
+name|boolean
+name|canDelayTo
+parameter_list|(
+name|String
+name|resourceName
+parameter_list|)
+function_decl|;
+comment|/**    * Does this {@link SchedulingPlacementSet} accept resources on nodePartition?    *    * @param nodePartition nodePartition    * @param schedulingMode schedulingMode    * @return accepted/not    */
+DECL|method|acceptNodePartition (String nodePartition, SchedulingMode schedulingMode)
+name|boolean
+name|acceptNodePartition
+parameter_list|(
+name|String
+name|nodePartition
+parameter_list|,
+name|SchedulingMode
+name|schedulingMode
+parameter_list|)
+function_decl|;
+comment|/**    * It is possible that one request can accept multiple node partition,    * So this method returns primary node partition for pending resource /    * headroom calculation.    *    * @return primary requested node partition    */
+DECL|method|getPrimaryRequestedNodePartition ()
+name|String
+name|getPrimaryRequestedNodePartition
+parameter_list|()
+function_decl|;
+comment|/**    * @return number of unique location asks with #pending greater than 0,    * (like /rack1, host1, etc.).    *    * TODO (wangda): This should be moved out of SchedulingPlacementSet    * and should belong to specific delay scheduling policy impl.    */
+DECL|method|getUniqueLocationAsks ()
+name|int
+name|getUniqueLocationAsks
+parameter_list|()
+function_decl|;
+comment|/**    * Print human-readable requests to LOG debug.    */
+DECL|method|showRequests ()
+name|void
+name|showRequests
+parameter_list|()
 function_decl|;
 block|}
 end_interface

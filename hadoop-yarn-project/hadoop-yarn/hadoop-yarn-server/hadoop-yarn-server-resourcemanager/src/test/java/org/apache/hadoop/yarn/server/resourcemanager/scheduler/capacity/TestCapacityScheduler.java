@@ -9933,11 +9933,13 @@ comment|// Already the node local resource request is cleared from RM after
 comment|// allocation.
 name|Assert
 operator|.
-name|assertNull
+name|assertEquals
 argument_list|(
+literal|0
+argument_list|,
 name|app
 operator|.
-name|getResourceRequest
+name|getOutstandingAsksCount
 argument_list|(
 name|SchedulerRequestKey
 operator|.
@@ -9992,7 +9994,7 @@ literal|1
 argument_list|,
 name|app
 operator|.
-name|getResourceRequest
+name|getOutstandingAsksCount
 argument_list|(
 name|SchedulerRequestKey
 operator|.
@@ -10006,9 +10008,6 @@ operator|.
 name|getResourceName
 argument_list|()
 argument_list|)
-operator|.
-name|getNumContainers
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

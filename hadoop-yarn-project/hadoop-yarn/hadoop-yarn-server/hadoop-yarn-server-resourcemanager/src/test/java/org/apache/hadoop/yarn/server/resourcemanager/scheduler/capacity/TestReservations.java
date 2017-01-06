@@ -2841,7 +2841,7 @@ literal|2
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|toSchedulerKey
 argument_list|(
@@ -3040,7 +3040,7 @@ literal|2
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|toSchedulerKey
 argument_list|(
@@ -3239,7 +3239,7 @@ literal|1
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|toSchedulerKey
 argument_list|(
@@ -3431,7 +3431,7 @@ literal|0
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|toSchedulerKey
 argument_list|(
@@ -5848,7 +5848,7 @@ literal|2
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|toSchedulerKey
 argument_list|(
@@ -6047,7 +6047,7 @@ literal|2
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|toSchedulerKey
 argument_list|(
@@ -6246,7 +6246,7 @@ literal|1
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|toSchedulerKey
 argument_list|(
@@ -6446,7 +6446,7 @@ literal|1
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|toSchedulerKey
 argument_list|(
@@ -7458,7 +7458,7 @@ literal|2
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|toSchedulerKey
 argument_list|(
@@ -7642,7 +7642,7 @@ literal|2
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|toSchedulerKey
 argument_list|(
@@ -7818,7 +7818,7 @@ literal|1
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|toSchedulerKey
 argument_list|(

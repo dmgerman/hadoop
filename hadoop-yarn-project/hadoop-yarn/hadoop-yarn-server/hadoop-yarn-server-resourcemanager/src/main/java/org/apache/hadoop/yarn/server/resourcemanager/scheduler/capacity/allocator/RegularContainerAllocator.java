@@ -360,26 +360,6 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|SchedulerUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
 name|activities
 operator|.
 name|ActivityDiagnosticConstant
@@ -644,6 +624,28 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|common
+operator|.
+name|PendingAsk
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|utils
 operator|.
 name|BuilderUtils
@@ -713,13 +715,6 @@ name|RegularContainerAllocator
 operator|.
 name|class
 argument_list|)
-decl_stmt|;
-DECL|field|lastResourceRequest
-specifier|private
-name|ResourceRequest
-name|lastResourceRequest
-init|=
-literal|null
 decl_stmt|;
 DECL|method|RegularContainerAllocator (FiCaSchedulerApp application, ResourceCalculator rc, RMContext rmContext, ActivitiesManager activitiesManager)
 specifier|public
@@ -879,12 +874,12 @@ argument_list|(
 name|ps
 argument_list|)
 decl_stmt|;
-name|ResourceRequest
-name|anyRequest
+name|PendingAsk
+name|offswitchPendingAsk
 init|=
 name|application
 operator|.
-name|getResourceRequest
+name|getPendingAsk
 argument_list|(
 name|schedulerKey
 argument_list|,
@@ -895,9 +890,12 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-literal|null
-operator|==
-name|anyRequest
+name|offswitchPendingAsk
+operator|.
+name|getCount
+argument_list|()
+operator|<=
+literal|0
 condition|)
 block|{
 name|ActivitiesLogger
@@ -929,9 +927,9 @@ comment|// Required resource
 name|Resource
 name|required
 init|=
-name|anyRequest
+name|offswitchPendingAsk
 operator|.
-name|getCapability
+name|getPerAllocationResource
 argument_list|()
 decl_stmt|;
 comment|// Do we need containers at this 'priority'?
@@ -939,7 +937,7 @@ if|if
 condition|(
 name|application
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey
 argument_list|)
@@ -1047,22 +1045,18 @@ name|APP_SKIPPED
 return|;
 block|}
 block|}
-comment|// Is the node-label-expression of this offswitch resource request
-comment|// matches the node's label?
+comment|// Is the nodePartition of pending request matches the node's partition
 comment|// If not match, jump to next priority.
 if|if
 condition|(
 operator|!
-name|SchedulerUtils
+name|appInfo
 operator|.
-name|checkResourceRequestMatchingNodePartition
+name|acceptNodePartition
 argument_list|(
-name|anyRequest
-operator|.
-name|getNodeLabelExpression
-argument_list|()
+name|schedulerKey
 argument_list|,
-name|ps
+name|node
 operator|.
 name|getPartition
 argument_list|()
@@ -1232,18 +1226,27 @@ name|missedNonPartitionedRequestSchedulingOpportunity
 init|=
 literal|0
 decl_stmt|;
+comment|// Only do this when request associated with given scheduler key accepts
+comment|// NO_LABEL under RESPECT_EXCLUSIVITY mode
 if|if
 condition|(
-name|anyRequest
-operator|.
-name|getNodeLabelExpression
-argument_list|()
+name|StringUtils
 operator|.
 name|equals
 argument_list|(
 name|RMNodeLabelsManager
 operator|.
 name|NO_LABEL
+argument_list|,
+name|appInfo
+operator|.
+name|getSchedulingPlacementSet
+argument_list|(
+name|schedulerKey
+argument_list|)
+operator|.
+name|getPrimaryRequestedNodePartition
+argument_list|()
 argument_list|)
 condition|)
 block|{
@@ -1559,12 +1562,12 @@ name|max
 argument_list|(
 name|application
 operator|.
-name|getResourceRequests
+name|getSchedulingPlacementSet
 argument_list|(
 name|schedulerKey
 argument_list|)
 operator|.
-name|size
+name|getUniqueLocationAsks
 argument_list|()
 operator|-
 literal|1
@@ -1661,20 +1664,6 @@ literal|true
 return|;
 block|}
 comment|// 'Delay' off-switch
-name|ResourceRequest
-name|offSwitchRequest
-init|=
-name|application
-operator|.
-name|getResourceRequest
-argument_list|(
-name|schedulerKey
-argument_list|,
-name|ResourceRequest
-operator|.
-name|ANY
-argument_list|)
-decl_stmt|;
 name|long
 name|missedOpportunities
 init|=
@@ -1688,10 +1677,12 @@ decl_stmt|;
 name|long
 name|requiredContainers
 init|=
-name|offSwitchRequest
+name|application
 operator|.
-name|getNumContainers
-argument_list|()
+name|getOutstandingAsksCount
+argument_list|(
+name|schedulerKey
+argument_list|)
 decl_stmt|;
 name|float
 name|localityWaitFactor
@@ -1738,12 +1729,11 @@ operator|)
 return|;
 block|}
 comment|// Check if we need containers on this rack
-name|ResourceRequest
-name|rackLocalRequest
-init|=
+if|if
+condition|(
 name|application
 operator|.
-name|getResourceRequest
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey
 argument_list|,
@@ -1752,17 +1742,6 @@ operator|.
 name|getRackName
 argument_list|()
 argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|rackLocalRequest
-operator|==
-literal|null
-operator|||
-name|rackLocalRequest
-operator|.
-name|getNumContainers
-argument_list|()
 operator|<=
 literal|0
 condition|)
@@ -1810,12 +1789,10 @@ name|NODE_LOCAL
 condition|)
 block|{
 comment|// Now check if we need containers on this host...
-name|ResourceRequest
-name|nodeLocalRequest
-init|=
+return|return
 name|application
 operator|.
-name|getResourceRequest
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey
 argument_list|,
@@ -1824,29 +1801,15 @@ operator|.
 name|getNodeName
 argument_list|()
 argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|nodeLocalRequest
-operator|!=
-literal|null
-condition|)
-block|{
-return|return
-name|nodeLocalRequest
-operator|.
-name|getNumContainers
-argument_list|()
 operator|>
 literal|0
 return|;
-block|}
 block|}
 return|return
 literal|false
 return|;
 block|}
-DECL|method|assignNodeLocalContainers ( Resource clusterResource, ResourceRequest nodeLocalResourceRequest, FiCaSchedulerNode node, SchedulerRequestKey schedulerKey, RMContainer reservedContainer, SchedulingMode schedulingMode, ResourceLimits currentResoureLimits)
+DECL|method|assignNodeLocalContainers ( Resource clusterResource, PendingAsk nodeLocalAsk, FiCaSchedulerNode node, SchedulerRequestKey schedulerKey, RMContainer reservedContainer, SchedulingMode schedulingMode, ResourceLimits currentResoureLimits)
 specifier|private
 name|ContainerAllocation
 name|assignNodeLocalContainers
@@ -1854,8 +1817,8 @@ parameter_list|(
 name|Resource
 name|clusterResource
 parameter_list|,
-name|ResourceRequest
-name|nodeLocalResourceRequest
+name|PendingAsk
+name|nodeLocalAsk
 parameter_list|,
 name|FiCaSchedulerNode
 name|node
@@ -1898,7 +1861,7 @@ name|node
 argument_list|,
 name|schedulerKey
 argument_list|,
-name|nodeLocalResourceRequest
+name|nodeLocalAsk
 argument_list|,
 name|NodeType
 operator|.
@@ -1941,7 +1904,7 @@ operator|.
 name|LOCALITY_SKIPPED
 return|;
 block|}
-DECL|method|assignRackLocalContainers ( Resource clusterResource, ResourceRequest rackLocalResourceRequest, FiCaSchedulerNode node, SchedulerRequestKey schedulerKey, RMContainer reservedContainer, SchedulingMode schedulingMode, ResourceLimits currentResoureLimits)
+DECL|method|assignRackLocalContainers ( Resource clusterResource, PendingAsk rackLocalAsk, FiCaSchedulerNode node, SchedulerRequestKey schedulerKey, RMContainer reservedContainer, SchedulingMode schedulingMode, ResourceLimits currentResoureLimits)
 specifier|private
 name|ContainerAllocation
 name|assignRackLocalContainers
@@ -1949,8 +1912,8 @@ parameter_list|(
 name|Resource
 name|clusterResource
 parameter_list|,
-name|ResourceRequest
-name|rackLocalResourceRequest
+name|PendingAsk
+name|rackLocalAsk
 parameter_list|,
 name|FiCaSchedulerNode
 name|node
@@ -1993,7 +1956,7 @@ name|node
 argument_list|,
 name|schedulerKey
 argument_list|,
-name|rackLocalResourceRequest
+name|rackLocalAsk
 argument_list|,
 name|NodeType
 operator|.
@@ -2036,7 +1999,7 @@ operator|.
 name|LOCALITY_SKIPPED
 return|;
 block|}
-DECL|method|assignOffSwitchContainers ( Resource clusterResource, ResourceRequest offSwitchResourceRequest, FiCaSchedulerNode node, SchedulerRequestKey schedulerKey, RMContainer reservedContainer, SchedulingMode schedulingMode, ResourceLimits currentResoureLimits)
+DECL|method|assignOffSwitchContainers ( Resource clusterResource, PendingAsk offSwitchAsk, FiCaSchedulerNode node, SchedulerRequestKey schedulerKey, RMContainer reservedContainer, SchedulingMode schedulingMode, ResourceLimits currentResoureLimits)
 specifier|private
 name|ContainerAllocation
 name|assignOffSwitchContainers
@@ -2044,8 +2007,8 @@ parameter_list|(
 name|Resource
 name|clusterResource
 parameter_list|,
-name|ResourceRequest
-name|offSwitchResourceRequest
+name|PendingAsk
+name|offSwitchAsk
 parameter_list|,
 name|FiCaSchedulerNode
 name|node
@@ -2088,7 +2051,7 @@ name|node
 argument_list|,
 name|schedulerKey
 argument_list|,
-name|offSwitchResourceRequest
+name|offSwitchAsk
 argument_list|,
 name|NodeType
 operator|.
@@ -2180,12 +2143,12 @@ init|=
 literal|null
 decl_stmt|;
 comment|// Data-local
-name|ResourceRequest
-name|nodeLocalResourceRequest
+name|PendingAsk
+name|nodeLocalAsk
 init|=
 name|application
 operator|.
-name|getResourceRequest
+name|getPendingAsk
 argument_list|(
 name|schedulerKey
 argument_list|,
@@ -2197,9 +2160,12 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|nodeLocalResourceRequest
-operator|!=
-literal|null
+name|nodeLocalAsk
+operator|.
+name|getCount
+argument_list|()
+operator|>
+literal|0
 condition|)
 block|{
 name|requestLocalityType
@@ -2214,7 +2180,7 @@ name|assignNodeLocalContainers
 argument_list|(
 name|clusterResource
 argument_list|,
-name|nodeLocalResourceRequest
+name|nodeLocalAsk
 argument_list|,
 name|node
 argument_list|,
@@ -2261,12 +2227,12 @@ return|;
 block|}
 block|}
 comment|// Rack-local
-name|ResourceRequest
-name|rackLocalResourceRequest
+name|PendingAsk
+name|rackLocalAsk
 init|=
 name|application
 operator|.
-name|getResourceRequest
+name|getPendingAsk
 argument_list|(
 name|schedulerKey
 argument_list|,
@@ -2278,18 +2244,28 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|rackLocalResourceRequest
-operator|!=
-literal|null
+name|rackLocalAsk
+operator|.
+name|getCount
+argument_list|()
+operator|>
+literal|0
 condition|)
 block|{
 if|if
 condition|(
 operator|!
-name|rackLocalResourceRequest
+name|appInfo
 operator|.
-name|getRelaxLocality
+name|canDelayTo
+argument_list|(
+name|schedulerKey
+argument_list|,
+name|node
+operator|.
+name|getRackName
 argument_list|()
+argument_list|)
 condition|)
 block|{
 name|ActivitiesLogger
@@ -2335,7 +2311,7 @@ name|assignRackLocalContainers
 argument_list|(
 name|clusterResource
 argument_list|,
-name|rackLocalResourceRequest
+name|rackLocalAsk
 argument_list|,
 name|node
 argument_list|,
@@ -2382,12 +2358,12 @@ return|;
 block|}
 block|}
 comment|// Off-switch
-name|ResourceRequest
-name|offSwitchResourceRequest
+name|PendingAsk
+name|offSwitchAsk
 init|=
 name|application
 operator|.
-name|getResourceRequest
+name|getPendingAsk
 argument_list|(
 name|schedulerKey
 argument_list|,
@@ -2398,18 +2374,27 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|offSwitchResourceRequest
-operator|!=
-literal|null
+name|offSwitchAsk
+operator|.
+name|getCount
+argument_list|()
+operator|>
+literal|0
 condition|)
 block|{
 if|if
 condition|(
 operator|!
-name|offSwitchResourceRequest
+name|appInfo
 operator|.
-name|getRelaxLocality
-argument_list|()
+name|canDelayTo
+argument_list|(
+name|schedulerKey
+argument_list|,
+name|ResourceRequest
+operator|.
+name|ANY
+argument_list|)
 condition|)
 block|{
 name|ActivitiesLogger
@@ -2455,7 +2440,7 @@ name|assignOffSwitchContainers
 argument_list|(
 name|clusterResource
 argument_list|,
-name|offSwitchResourceRequest
+name|offSwitchAsk
 argument_list|,
 name|node
 argument_list|,
@@ -2525,7 +2510,7 @@ operator|.
 name|PRIORITY_SKIPPED
 return|;
 block|}
-DECL|method|assignContainer (Resource clusterResource, FiCaSchedulerNode node, SchedulerRequestKey schedulerKey, ResourceRequest request, NodeType type, RMContainer rmContainer, SchedulingMode schedulingMode, ResourceLimits currentResoureLimits)
+DECL|method|assignContainer (Resource clusterResource, FiCaSchedulerNode node, SchedulerRequestKey schedulerKey, PendingAsk pendingAsk, NodeType type, RMContainer rmContainer, SchedulingMode schedulingMode, ResourceLimits currentResoureLimits)
 specifier|private
 name|ContainerAllocation
 name|assignContainer
@@ -2539,8 +2524,8 @@ parameter_list|,
 name|SchedulerRequestKey
 name|schedulerKey
 parameter_list|,
-name|ResourceRequest
-name|request
+name|PendingAsk
+name|pendingAsk
 parameter_list|,
 name|NodeType
 name|type
@@ -2563,10 +2548,6 @@ operator|.
 name|getPriority
 argument_list|()
 decl_stmt|;
-name|lastResourceRequest
-operator|=
-name|request
-expr_stmt|;
 if|if
 condition|(
 name|LOG
@@ -2600,9 +2581,9 @@ operator|.
 name|getPriority
 argument_list|()
 operator|+
-literal|" request="
+literal|" pendingAsk="
 operator|+
-name|request
+name|pendingAsk
 operator|+
 literal|" type="
 operator|+
@@ -2610,74 +2591,12 @@ name|type
 argument_list|)
 expr_stmt|;
 block|}
-comment|// check if the resource request can access the label
-if|if
-condition|(
-operator|!
-name|SchedulerUtils
-operator|.
-name|checkResourceRequestMatchingNodePartition
-argument_list|(
-name|request
-operator|.
-name|getNodeLabelExpression
-argument_list|()
-argument_list|,
-name|node
-operator|.
-name|getPartition
-argument_list|()
-argument_list|,
-name|schedulingMode
-argument_list|)
-condition|)
-block|{
-comment|// this is a reserved container, but we cannot allocate it now according
-comment|// to label not match. This can be caused by node label changed
-comment|// We should un-reserve this container.
-name|ActivitiesLogger
-operator|.
-name|APP
-operator|.
-name|recordAppActivityWithoutAllocation
-argument_list|(
-name|activitiesManager
-argument_list|,
-name|node
-argument_list|,
-name|application
-argument_list|,
-name|priority
-argument_list|,
-name|ActivityDiagnosticConstant
-operator|.
-name|REQUEST_CAN_NOT_ACCESS_NODE_LABEL
-argument_list|,
-name|ActivityState
-operator|.
-name|REJECTED
-argument_list|)
-expr_stmt|;
-return|return
-operator|new
-name|ContainerAllocation
-argument_list|(
-name|rmContainer
-argument_list|,
-literal|null
-argument_list|,
-name|AllocationState
-operator|.
-name|LOCALITY_SKIPPED
-argument_list|)
-return|;
-block|}
 name|Resource
 name|capability
 init|=
-name|request
+name|pendingAsk
 operator|.
-name|getCapability
+name|getPerAllocationResource
 argument_list|()
 decl_stmt|;
 name|Resource
@@ -2724,9 +2643,9 @@ operator|.
 name|getNodeID
 argument_list|()
 operator|+
-literal|" does not have sufficient resource for request : "
+literal|" does not have sufficient resource for ask : "
 operator|+
-name|request
+name|pendingAsk
 operator|+
 literal|" node total capability : "
 operator|+
@@ -3074,9 +2993,9 @@ name|ContainerAllocation
 argument_list|(
 name|unreservedContainer
 argument_list|,
-name|request
+name|pendingAsk
 operator|.
-name|getCapability
+name|getPerAllocationResource
 argument_list|()
 argument_list|,
 name|AllocationState
@@ -3182,9 +3101,9 @@ name|ContainerAllocation
 argument_list|(
 literal|null
 argument_list|,
-name|request
+name|pendingAsk
 operator|.
-name|getCapability
+name|getPerAllocationResource
 argument_list|()
 argument_list|,
 name|AllocationState
@@ -3252,7 +3171,7 @@ name|requiredContainers
 init|=
 name|application
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey
 argument_list|)
@@ -3541,8 +3460,6 @@ argument_list|(
 name|node
 argument_list|,
 name|schedulerKey
-argument_list|,
-name|lastResourceRequest
 argument_list|,
 name|container
 argument_list|)
@@ -3961,7 +3878,7 @@ if|if
 condition|(
 name|application
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey
 argument_list|)

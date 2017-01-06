@@ -90,18 +90,6 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Matchers
-operator|.
-name|anyString
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
 name|Mockito
 operator|.
 name|doNothing
@@ -7682,10 +7670,16 @@ name|app_0
 argument_list|,
 name|app_0
 operator|.
-name|getResource
+name|getAppSchedulingInfo
+argument_list|()
+operator|.
+name|getPendingAsk
 argument_list|(
 name|u0SchedKey
 argument_list|)
+operator|.
+name|getPerAllocationResource
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -7704,10 +7698,16 @@ name|app_2
 argument_list|,
 name|app_2
 operator|.
-name|getResource
+name|getAppSchedulingInfo
+argument_list|()
+operator|.
+name|getPendingAsk
 argument_list|(
 name|u1SchedKey
 argument_list|)
+operator|.
+name|getPerAllocationResource
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -14512,7 +14512,7 @@ literal|3
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey
 argument_list|)
@@ -14589,7 +14589,7 @@ literal|3
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey
 argument_list|)
@@ -14666,7 +14666,7 @@ literal|3
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey
 argument_list|)
@@ -14749,7 +14749,7 @@ literal|2
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey
 argument_list|)
@@ -14818,7 +14818,7 @@ literal|1
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey
 argument_list|)
@@ -14887,7 +14887,7 @@ literal|0
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey
 argument_list|)
@@ -14999,7 +14999,7 @@ literal|4
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey
 argument_list|)
@@ -15085,7 +15085,7 @@ literal|4
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey
 argument_list|)
@@ -15154,7 +15154,7 @@ literal|3
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey
 argument_list|)
@@ -15213,7 +15213,7 @@ literal|3
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey
 argument_list|)
@@ -15296,7 +15296,7 @@ literal|2
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey
 argument_list|)
@@ -15365,7 +15365,7 @@ literal|1
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey
 argument_list|)
@@ -16165,7 +16165,7 @@ literal|2
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey1
 argument_list|)
@@ -16189,7 +16189,7 @@ literal|1
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey2
 argument_list|)
@@ -16254,7 +16254,7 @@ literal|2
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey1
 argument_list|)
@@ -16278,7 +16278,7 @@ literal|1
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey2
 argument_list|)
@@ -16346,7 +16346,7 @@ literal|1
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey1
 argument_list|)
@@ -16370,7 +16370,7 @@ literal|1
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey2
 argument_list|)
@@ -16438,7 +16438,7 @@ literal|0
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey1
 argument_list|)
@@ -16462,7 +16462,7 @@ literal|1
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey2
 argument_list|)
@@ -16530,7 +16530,7 @@ literal|0
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey1
 argument_list|)
@@ -16554,7 +16554,7 @@ literal|0
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey2
 argument_list|)
@@ -17076,7 +17076,7 @@ literal|0
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey
 argument_list|)
@@ -17143,7 +17143,7 @@ literal|0
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey
 argument_list|)
@@ -17248,7 +17248,7 @@ literal|1
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey
 argument_list|)
@@ -17317,7 +17317,7 @@ literal|0
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey
 argument_list|)
@@ -19217,7 +19217,7 @@ literal|1
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey
 argument_list|)
@@ -19361,7 +19361,7 @@ literal|0
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey
 argument_list|)
@@ -22235,7 +22235,7 @@ literal|3
 argument_list|,
 name|app_0
 operator|.
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey
 argument_list|)

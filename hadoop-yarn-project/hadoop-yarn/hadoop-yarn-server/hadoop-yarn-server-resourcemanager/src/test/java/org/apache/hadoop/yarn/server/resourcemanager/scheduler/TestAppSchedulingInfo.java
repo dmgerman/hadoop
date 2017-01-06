@@ -1184,8 +1184,6 @@ literal|null
 argument_list|,
 name|schedulerKey
 argument_list|,
-name|req1
-argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
@@ -1289,8 +1287,6 @@ name|create
 argument_list|(
 name|req2
 argument_list|)
-argument_list|,
-name|req2
 argument_list|,
 literal|null
 argument_list|)

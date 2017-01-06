@@ -433,7 +433,7 @@ name|rmContext
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|allocate (NodeType type, FiCaSchedulerNode node, SchedulerRequestKey schedulerKey, ResourceRequest request, Container container)
+DECL|method|allocate (NodeType type, FiCaSchedulerNode node, SchedulerRequestKey schedulerKey, Container container)
 specifier|public
 name|RMContainer
 name|allocate
@@ -446,9 +446,6 @@ name|node
 parameter_list|,
 name|SchedulerRequestKey
 name|schedulerKey
-parameter_list|,
-name|ResourceRequest
-name|request
 parameter_list|,
 name|Container
 name|container
@@ -474,7 +471,7 @@ comment|// Required sanity check - AM can call 'allocate' to update resource
 comment|// request without locking the scheduler, hence we need to check
 if|if
 condition|(
-name|getTotalRequiredResources
+name|getOutstandingAsksCount
 argument_list|(
 name|schedulerKey
 argument_list|)
@@ -516,9 +513,9 @@ name|this
 operator|.
 name|rmContext
 argument_list|,
-name|request
+name|node
 operator|.
-name|getNodeLabelExpression
+name|getPartition
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -587,8 +584,6 @@ argument_list|,
 name|node
 argument_list|,
 name|schedulerKey
-argument_list|,
-name|request
 argument_list|,
 name|container
 argument_list|)

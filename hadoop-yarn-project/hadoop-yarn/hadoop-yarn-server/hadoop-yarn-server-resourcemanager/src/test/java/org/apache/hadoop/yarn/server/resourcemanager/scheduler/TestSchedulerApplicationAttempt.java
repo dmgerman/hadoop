@@ -750,8 +750,6 @@ argument_list|(
 name|requestedPriority
 argument_list|)
 argument_list|,
-name|request
-argument_list|,
 name|container1
 operator|.
 name|getContainer
