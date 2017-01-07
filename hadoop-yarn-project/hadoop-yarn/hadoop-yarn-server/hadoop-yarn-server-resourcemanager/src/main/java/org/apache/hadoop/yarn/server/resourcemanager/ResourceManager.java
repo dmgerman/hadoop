@@ -3050,7 +3050,9 @@ block|{
 return|return
 operator|new
 name|AsyncDispatcher
-argument_list|()
+argument_list|(
+literal|"RM Event dispatcher"
+argument_list|)
 return|;
 block|}
 DECL|method|createScheduler ()

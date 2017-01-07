@@ -1305,7 +1305,9 @@ name|dispatcher
 operator|=
 operator|new
 name|AsyncDispatcher
-argument_list|()
+argument_list|(
+literal|"NodeLabelManager dispatcher"
+argument_list|)
 expr_stmt|;
 name|AsyncDispatcher
 name|asyncDispatcher

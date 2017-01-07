@@ -376,6 +376,14 @@ specifier|private
 name|boolean
 name|exitOnDispatchException
 decl_stmt|;
+comment|/**    * The thread name for dispatcher.    */
+DECL|field|dispatcherThreadName
+specifier|private
+name|String
+name|dispatcherThreadName
+init|=
+literal|"AsyncDispatcher event handler"
+decl_stmt|;
 DECL|method|AsyncDispatcher ()
 specifier|public
 name|AsyncDispatcher
@@ -431,6 +439,23 @@ argument_list|,
 name|EventHandler
 argument_list|>
 argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Set a name for this dispatcher thread.    * @param dispatcherName name of the dispatcher thread    */
+DECL|method|AsyncDispatcher (String dispatcherName)
+specifier|public
+name|AsyncDispatcher
+parameter_list|(
+name|String
+name|dispatcherName
+parameter_list|)
+block|{
+name|this
+argument_list|()
+expr_stmt|;
+name|dispatcherThreadName
+operator|=
+name|dispatcherName
 expr_stmt|;
 block|}
 DECL|method|createThread ()
@@ -620,7 +645,7 @@ name|eventHandlingThread
 operator|.
 name|setName
 argument_list|(
-literal|"AsyncDispatcher event handler"
+name|dispatcherThreadName
 argument_list|)
 expr_stmt|;
 name|eventHandlingThread

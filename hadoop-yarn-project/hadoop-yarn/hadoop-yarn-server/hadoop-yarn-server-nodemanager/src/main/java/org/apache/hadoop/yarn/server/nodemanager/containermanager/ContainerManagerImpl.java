@@ -2939,7 +2939,9 @@ name|dispatcher
 operator|=
 operator|new
 name|AsyncDispatcher
-argument_list|()
+argument_list|(
+literal|"NM ContainerManager dispatcher"
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
