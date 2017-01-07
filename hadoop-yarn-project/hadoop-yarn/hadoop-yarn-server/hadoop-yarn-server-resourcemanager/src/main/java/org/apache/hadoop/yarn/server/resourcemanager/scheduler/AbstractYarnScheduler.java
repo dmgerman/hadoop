@@ -240,24 +240,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|AbstractResourceRequest
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|ApplicationAttemptId
 import|;
 end_import
@@ -5284,20 +5266,21 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|normalizeRequest (AbstractResourceRequest ask)
+DECL|method|getNormalizedResource (Resource requestedResource)
 specifier|public
-name|void
-name|normalizeRequest
+name|Resource
+name|getNormalizedResource
 parameter_list|(
-name|AbstractResourceRequest
-name|ask
+name|Resource
+name|requestedResource
 parameter_list|)
 block|{
+return|return
 name|SchedulerUtils
 operator|.
-name|normalizeRequest
+name|getNormalizedResource
 argument_list|(
-name|ask
+name|requestedResource
 argument_list|,
 name|getResourceCalculator
 argument_list|()
@@ -5311,7 +5294,7 @@ argument_list|,
 name|getMinimumResourceCapability
 argument_list|()
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 comment|/**    * Normalize a list of resource requests.    *    * @param asks resource requests    */
 DECL|method|normalizeRequests (List<ResourceRequest> asks)
@@ -5334,9 +5317,17 @@ range|:
 name|asks
 control|)
 block|{
-name|normalizeRequest
+name|ask
+operator|.
+name|setCapability
+argument_list|(
+name|getNormalizedResource
 argument_list|(
 name|ask
+operator|.
+name|getCapability
+argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

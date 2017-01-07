@@ -184,24 +184,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|AbstractResourceRequest
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|ApplicationAttemptId
 import|;
 end_import
@@ -1049,13 +1031,13 @@ name|NodeId
 name|nodeId
 parameter_list|)
 function_decl|;
-comment|/**    * Normalize a resource request.    *    * @param request the resource request to be normalized    */
-DECL|method|normalizeRequest (AbstractResourceRequest request)
-name|void
-name|normalizeRequest
+comment|/**    * Normalize a resource request.    *    * @param requestedResource the resource to be normalized    * @return the normalized resource    */
+DECL|method|getNormalizedResource (Resource requestedResource)
+name|Resource
+name|getNormalizedResource
 parameter_list|(
-name|AbstractResourceRequest
-name|request
+name|Resource
+name|requestedResource
 parameter_list|)
 function_decl|;
 block|}

@@ -44,6 +44,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -261,24 +275,6 @@ operator|.
 name|records
 operator|.
 name|ResourceRequest
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|AbstractResourceRequest
 import|;
 end_import
 
@@ -743,6 +739,8 @@ name|containerStatus
 return|;
 block|}
 comment|/**    * Utility method to normalize a resource request, by insuring that the    * requested memory is a multiple of minMemory and is not zero.    */
+annotation|@
+name|VisibleForTesting
 DECL|method|normalizeRequest ( ResourceRequest ask, ResourceCalculator resourceCalculator, Resource minimumResource, Resource maximumResource)
 specifier|public
 specifier|static
@@ -762,9 +760,16 @@ name|Resource
 name|maximumResource
 parameter_list|)
 block|{
-name|normalizeRequest
+name|ask
+operator|.
+name|setCapability
+argument_list|(
+name|getNormalizedResource
 argument_list|(
 name|ask
+operator|.
+name|getCapability
+argument_list|()
 argument_list|,
 name|resourceCalculator
 argument_list|,
@@ -774,16 +779,17 @@ name|maximumResource
 argument_list|,
 name|minimumResource
 argument_list|)
+argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Utility method to normalize a resource request, by insuring that the    * requested memory is a multiple of increment resource and is not zero.    */
-DECL|method|normalizeRequest ( AbstractResourceRequest ask, ResourceCalculator resourceCalculator, Resource minimumResource, Resource maximumResource, Resource incrementResource)
+comment|/**    * Utility method to normalize a resource request, by insuring that the    * requested memory is a multiple of increment resource and is not zero.    *    * @return normalized resource    */
+DECL|method|getNormalizedResource ( Resource ask, ResourceCalculator resourceCalculator, Resource minimumResource, Resource maximumResource, Resource incrementResource)
 specifier|public
 specifier|static
-name|void
-name|normalizeRequest
+name|Resource
+name|getNormalizedResource
 parameter_list|(
-name|AbstractResourceRequest
+name|Resource
 name|ask
 parameter_list|,
 name|ResourceCalculator
@@ -809,9 +815,6 @@ argument_list|(
 name|resourceCalculator
 argument_list|,
 name|ask
-operator|.
-name|getCapability
-argument_list|()
 argument_list|,
 name|minimumResource
 argument_list|,
@@ -820,13 +823,9 @@ argument_list|,
 name|incrementResource
 argument_list|)
 decl_stmt|;
-name|ask
-operator|.
-name|setCapability
-argument_list|(
+return|return
 name|normalized
-argument_list|)
-expr_stmt|;
+return|;
 block|}
 DECL|method|normalizeNodeLabelExpressionInRequest ( ResourceRequest resReq, QueueInfo queueInfo)
 specifier|private

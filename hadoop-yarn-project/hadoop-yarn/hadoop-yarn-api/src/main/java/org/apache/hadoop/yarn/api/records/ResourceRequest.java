@@ -140,8 +140,6 @@ specifier|public
 specifier|abstract
 class|class
 name|ResourceRequest
-extends|extends
-name|AbstractResourceRequest
 implements|implements
 name|Comparable
 argument_list|<
@@ -1129,6 +1127,33 @@ name|UnsupportedOperationException
 argument_list|()
 throw|;
 block|}
+comment|/**    * Set the<code>Resource</code> capability of the request.    * @param capability<code>Resource</code> capability of the request    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|setCapability (Resource capability)
+specifier|public
+specifier|abstract
+name|void
+name|setCapability
+parameter_list|(
+name|Resource
+name|capability
+parameter_list|)
+function_decl|;
+comment|/**    * Get the<code>Resource</code> capability of the request.    * @return<code>Resource</code> capability of the request    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getCapability ()
+specifier|public
+specifier|abstract
+name|Resource
+name|getCapability
+parameter_list|()
+function_decl|;
 annotation|@
 name|Override
 DECL|method|hashCode ()
