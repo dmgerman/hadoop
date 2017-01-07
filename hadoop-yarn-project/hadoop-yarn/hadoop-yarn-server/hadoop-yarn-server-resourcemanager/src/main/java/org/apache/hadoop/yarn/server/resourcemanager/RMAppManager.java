@@ -2310,13 +2310,13 @@ parameter_list|)
 throws|throws
 name|YarnException
 block|{
-comment|// Do queue mapping
 if|if
 condition|(
 operator|!
 name|isRecovery
 condition|)
 block|{
+comment|// Do queue mapping
 if|if
 condition|(
 name|rmContext
@@ -2341,6 +2341,17 @@ name|user
 argument_list|)
 expr_stmt|;
 block|}
+comment|// fail the submission if configured application timeout value is invalid
+name|RMServerUtils
+operator|.
+name|validateApplicationTimeouts
+argument_list|(
+name|submissionContext
+operator|.
+name|getApplicationTimeouts
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 name|ApplicationId
 name|applicationId
@@ -2568,17 +2579,6 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|// fail the submission if configured application timeout value is invalid
-name|RMServerUtils
-operator|.
-name|validateApplicationTimeouts
-argument_list|(
-name|submissionContext
-operator|.
-name|getApplicationTimeouts
-argument_list|()
-argument_list|)
-expr_stmt|;
 comment|// Create RMApp
 name|RMAppImpl
 name|application
