@@ -3471,6 +3471,14 @@ argument_list|,
 name|JobEventType
 operator|.
 name|JOB_TASK_ATTEMPT_FETCH_FAILURE
+argument_list|,
+name|JobEventType
+operator|.
+name|JOB_TASK_ATTEMPT_COMPLETED
+argument_list|,
+name|JobEventType
+operator|.
+name|JOB_MAP_TASK_RESCHEDULED
 argument_list|)
 argument_list|)
 comment|// Transitions from SUCCEEDED state
