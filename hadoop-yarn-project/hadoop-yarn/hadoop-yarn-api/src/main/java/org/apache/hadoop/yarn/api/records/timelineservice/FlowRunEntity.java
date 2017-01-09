@@ -471,9 +471,14 @@ condition|?
 literal|0L
 else|:
 operator|(
-name|Long
+operator|(
+name|Number
 operator|)
 name|runId
+operator|)
+operator|.
+name|longValue
+argument_list|()
 return|;
 block|}
 DECL|method|setRunId (long runId)
@@ -544,9 +549,14 @@ condition|?
 literal|0L
 else|:
 operator|(
-name|Long
+operator|(
+name|Number
 operator|)
 name|time
+operator|)
+operator|.
+name|longValue
+argument_list|()
 return|;
 block|}
 DECL|method|setMaxEndTime (long endTime)
