@@ -3129,10 +3129,54 @@ name|logSyncAll
 parameter_list|()
 block|{
 comment|// Make sure we're synced up to the most recent transaction ID.
-name|logSync
-argument_list|(
+name|long
+name|lastWrittenTxId
+init|=
 name|getLastWrittenTxId
 argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"logSyncAll toSyncToTxId="
+operator|+
+name|lastWrittenTxId
+operator|+
+literal|" lastSyncedTxid="
+operator|+
+name|synctxid
+operator|+
+literal|" mostRecentTxid="
+operator|+
+name|txid
+argument_list|)
+expr_stmt|;
+name|logSync
+argument_list|(
+name|lastWrittenTxId
+argument_list|)
+expr_stmt|;
+name|lastWrittenTxId
+operator|=
+name|getLastWrittenTxId
+argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Done logSyncAll lastWrittenTxId="
+operator|+
+name|lastWrittenTxId
+operator|+
+literal|" lastSyncedTxid="
+operator|+
+name|synctxid
+operator|+
+literal|" mostRecentTxid="
+operator|+
+name|txid
 argument_list|)
 expr_stmt|;
 block|}
@@ -6562,6 +6606,11 @@ argument_list|(
 literal|"Ending log segment "
 operator|+
 name|curSegmentTxId
+operator|+
+literal|", "
+operator|+
+name|getLastWrittenTxId
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|Preconditions
@@ -6615,6 +6664,28 @@ init|=
 name|getLastWrittenTxId
 argument_list|()
 decl_stmt|;
+specifier|final
+name|long
+name|lastSyncedTxId
+init|=
+name|getSyncTxId
+argument_list|()
+decl_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|lastTxId
+operator|==
+name|lastSyncedTxId
+argument_list|,
+literal|"LastWrittenTxId %s is expected to be the same as lastSyncedTxId %s"
+argument_list|,
+name|lastTxId
+argument_list|,
+name|lastSyncedTxId
+argument_list|)
+expr_stmt|;
 try|try
 block|{
 name|journalSet
