@@ -392,6 +392,26 @@ name|SchedulerQueueManager
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|security
+operator|.
+name|AppPriorityACLsManager
+import|;
+end_import
+
 begin_comment
 comment|/**  *  * Context of the Queues in Capacity Scheduler.  *  */
 end_comment
@@ -589,6 +609,11 @@ specifier|final
 name|RMNodeLabelsManager
 name|labelManager
 decl_stmt|;
+DECL|field|appPriorityACLManager
+specifier|private
+name|AppPriorityACLsManager
+name|appPriorityACLManager
+decl_stmt|;
 specifier|private
 name|QueueStateManager
 argument_list|<
@@ -599,8 +624,8 @@ argument_list|>
 DECL|field|queueStateManager
 name|queueStateManager
 decl_stmt|;
-comment|/**    * Construct the service.    * @param conf the configuration    * @param labelManager the labelManager    */
-DECL|method|CapacitySchedulerQueueManager (Configuration conf, RMNodeLabelsManager labelManager)
+comment|/**    * Construct the service.    * @param conf the configuration    * @param labelManager the labelManager    * @param appPriorityACLManager App priority ACL manager    */
+DECL|method|CapacitySchedulerQueueManager (Configuration conf, RMNodeLabelsManager labelManager, AppPriorityACLsManager appPriorityACLManager)
 specifier|public
 name|CapacitySchedulerQueueManager
 parameter_list|(
@@ -609,6 +634,9 @@ name|conf
 parameter_list|,
 name|RMNodeLabelsManager
 name|labelManager
+parameter_list|,
+name|AppPriorityACLsManager
+name|appPriorityACLManager
 parameter_list|)
 block|{
 name|this
@@ -636,6 +664,12 @@ operator|new
 name|QueueStateManager
 argument_list|<>
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|appPriorityACLManager
+operator|=
+name|appPriorityACLManager
 expr_stmt|;
 block|}
 annotation|@
@@ -792,6 +826,8 @@ name|setQueueAcls
 argument_list|(
 name|authorizer
 argument_list|,
+name|appPriorityACLManager
+argument_list|,
 name|queues
 argument_list|)
 expr_stmt|;
@@ -907,6 +943,8 @@ expr_stmt|;
 name|setQueueAcls
 argument_list|(
 name|authorizer
+argument_list|,
+name|appPriorityACLManager
 argument_list|,
 name|queues
 argument_list|)
@@ -1516,7 +1554,7 @@ block|}
 annotation|@
 name|VisibleForTesting
 comment|/**    * Set the acls for the queues.    * @param authorizer the yarnAuthorizationProvider    * @param queues the queues    * @throws IOException if fails to set queue acls    */
-DECL|method|setQueueAcls (YarnAuthorizationProvider authorizer, Map<String, CSQueue> queues)
+DECL|method|setQueueAcls (YarnAuthorizationProvider authorizer, AppPriorityACLsManager appPriorityACLManager, Map<String, CSQueue> queues)
 specifier|public
 specifier|static
 name|void
@@ -1524,6 +1562,9 @@ name|setQueueAcls
 parameter_list|(
 name|YarnAuthorizationProvider
 name|authorizer
+parameter_list|,
+name|AppPriorityACLsManager
+name|appPriorityACLManager
 parameter_list|,
 name|Map
 argument_list|<
@@ -1585,6 +1626,48 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|queue
+operator|instanceof
+name|LeafQueue
+condition|)
+block|{
+name|LeafQueue
+name|lQueue
+init|=
+operator|(
+name|LeafQueue
+operator|)
+name|queue
+decl_stmt|;
+comment|// Clear Priority ACLs first since reinitialize also call same.
+name|appPriorityACLManager
+operator|.
+name|clearPriorityACLs
+argument_list|(
+name|lQueue
+operator|.
+name|getQueueName
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|appPriorityACLManager
+operator|.
+name|addPrioirityACLs
+argument_list|(
+name|lQueue
+operator|.
+name|getPriorityACLs
+argument_list|()
+argument_list|,
+name|lQueue
+operator|.
+name|getQueueName
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 name|authorizer
 operator|.

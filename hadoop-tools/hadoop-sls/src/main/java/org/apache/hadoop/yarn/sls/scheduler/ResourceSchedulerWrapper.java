@@ -5562,7 +5562,7 @@ comment|// do nothing
 block|}
 annotation|@
 name|Override
-DECL|method|checkAndGetApplicationPriority (Priority priority, String user, String queueName, ApplicationId applicationId)
+DECL|method|checkAndGetApplicationPriority (Priority priority, UserGroupInformation user, String queueName, ApplicationId applicationId)
 specifier|public
 name|Priority
 name|checkAndGetApplicationPriority
@@ -5570,7 +5570,7 @@ parameter_list|(
 name|Priority
 name|priority
 parameter_list|,
-name|String
+name|UserGroupInformation
 name|user
 parameter_list|,
 name|String

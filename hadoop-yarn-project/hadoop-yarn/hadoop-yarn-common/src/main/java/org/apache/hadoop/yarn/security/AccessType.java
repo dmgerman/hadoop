@@ -70,6 +70,10 @@ name|SUBMIT_APP
 block|,
 DECL|enumConstant|ADMINISTER_QUEUE
 name|ADMINISTER_QUEUE
+block|,
+comment|// application
+DECL|enumConstant|APPLICATION_MAX_PRIORITY
+name|APPLICATION_MAX_PRIORITY
 block|, }
 end_enum
 

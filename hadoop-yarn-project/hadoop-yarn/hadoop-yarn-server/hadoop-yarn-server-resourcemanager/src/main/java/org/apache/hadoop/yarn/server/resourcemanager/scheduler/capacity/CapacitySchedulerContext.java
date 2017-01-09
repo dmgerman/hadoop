@@ -98,6 +98,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|Priority
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Resource
 import|;
 end_import
@@ -414,6 +432,12 @@ function_decl|;
 DECL|method|getCapacitySchedulerQueueManager ()
 name|CapacitySchedulerQueueManager
 name|getCapacitySchedulerQueueManager
+parameter_list|()
+function_decl|;
+comment|/**    *    * @return Max Cluster level App priority.    */
+DECL|method|getMaxClusterLevelAppPriority ()
+name|Priority
+name|getMaxClusterLevelAppPriority
 parameter_list|()
 function_decl|;
 block|}

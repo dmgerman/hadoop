@@ -2172,6 +2172,26 @@ name|resourcemanager
 operator|.
 name|security
 operator|.
+name|AppPriorityACLsManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|security
+operator|.
 name|RMContainerTokenSecretManager
 import|;
 end_import
@@ -2614,6 +2634,11 @@ specifier|private
 name|RMNodeLabelsManager
 name|labelManager
 decl_stmt|;
+DECL|field|appPriorityACLManager
+specifier|private
+name|AppPriorityACLsManager
+name|appPriorityACLManager
+decl_stmt|;
 comment|/**    * EXPERT    */
 DECL|field|asyncScheduleInterval
 specifier|private
@@ -2922,6 +2947,16 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
+name|appPriorityACLManager
+operator|=
+operator|new
+name|AppPriorityACLsManager
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
 name|queueManager
 operator|=
 operator|new
@@ -2932,6 +2967,10 @@ argument_list|,
 name|this
 operator|.
 name|labelManager
+argument_list|,
+name|this
+operator|.
+name|appPriorityACLManager
 argument_list|)
 expr_stmt|;
 name|this
@@ -11526,15 +11565,15 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|checkAndGetApplicationPriority (Priority priorityFromContext, String user, String queueName, ApplicationId applicationId)
+DECL|method|checkAndGetApplicationPriority ( Priority priorityRequestedByApp, UserGroupInformation user, String queueName, ApplicationId applicationId)
 specifier|public
 name|Priority
 name|checkAndGetApplicationPriority
 parameter_list|(
 name|Priority
-name|priorityFromContext
+name|priorityRequestedByApp
 parameter_list|,
-name|String
+name|UserGroupInformation
 name|user
 parameter_list|,
 name|String
@@ -11546,23 +11585,54 @@ parameter_list|)
 throws|throws
 name|YarnException
 block|{
+try|try
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|Priority
 name|appPriority
 init|=
-literal|null
+name|priorityRequestedByApp
 decl_stmt|;
-comment|// ToDo: Verify against priority ACLs
 comment|// Verify the scenario where priority is null from submissionContext.
 if|if
 condition|(
 literal|null
 operator|==
-name|priorityFromContext
+name|appPriority
 condition|)
 block|{
-comment|// Get the default priority for the Queue. If Queue is non-existent, then
-comment|// use default priority
-name|priorityFromContext
+comment|// Verify whether submitted user has any default priority set. If so,
+comment|// user's default priority will get precedence over queue default.
+comment|// for updateApplicationPriority call flow, this check is done in
+comment|// CientRMService itself.
+name|appPriority
+operator|=
+name|this
+operator|.
+name|appPriorityACLManager
+operator|.
+name|getDefaultPriority
+argument_list|(
+name|queueName
+argument_list|,
+name|user
+argument_list|)
+expr_stmt|;
+comment|// Get the default priority for the Queue. If Queue is non-existent,
+comment|// then
+comment|// use default priority. Do it only if user doesnt have any default.
+if|if
+condition|(
+literal|null
+operator|==
+name|appPriority
+condition|)
+block|{
+name|appPriority
 operator|=
 name|this
 operator|.
@@ -11573,6 +11643,7 @@ argument_list|(
 name|queueName
 argument_list|)
 expr_stmt|;
+block|}
 name|LOG
 operator|.
 name|info
@@ -11585,7 +11656,7 @@ literal|"' is submitted without priority "
 operator|+
 literal|"hence considering default queue/cluster priority: "
 operator|+
-name|priorityFromContext
+name|appPriority
 operator|.
 name|getPriority
 argument_list|()
@@ -11596,18 +11667,19 @@ comment|// Verify whether submitted priority is lesser than max priority
 comment|// in the cluster. If it is out of found, defining a max cap.
 if|if
 condition|(
-name|priorityFromContext
+name|appPriority
 operator|.
-name|compareTo
-argument_list|(
+name|getPriority
+argument_list|()
+operator|>
 name|getMaxClusterLevelAppPriority
 argument_list|()
-argument_list|)
-operator|<
-literal|0
+operator|.
+name|getPriority
+argument_list|()
 condition|)
 block|{
-name|priorityFromContext
+name|appPriority
 operator|=
 name|Priority
 operator|.
@@ -11621,10 +11693,44 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Lets check for ACLs here.
+if|if
+condition|(
+operator|!
+name|appPriorityACLManager
+operator|.
+name|checkAccess
+argument_list|(
+name|user
+argument_list|,
+name|queueName
+argument_list|,
 name|appPriority
-operator|=
-name|priorityFromContext
-expr_stmt|;
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|YarnException
+argument_list|(
+operator|new
+name|AccessControlException
+argument_list|(
+literal|"User "
+operator|+
+name|user
+operator|+
+literal|" does not have permission to submit/update "
+operator|+
+name|applicationId
+operator|+
+literal|" for "
+operator|+
+name|appPriority
+argument_list|)
+argument_list|)
+throw|;
+block|}
 name|LOG
 operator|.
 name|info
@@ -11643,19 +11749,24 @@ operator|+
 literal|" for application: "
 operator|+
 name|applicationId
-operator|+
-literal|" for the user: "
-operator|+
-name|user
 argument_list|)
 expr_stmt|;
 return|return
 name|appPriority
 return|;
 block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Override
-DECL|method|updateApplicationPriority (Priority newPriority, ApplicationId applicationId, SettableFuture<Object> future)
+DECL|method|updateApplicationPriority (Priority newPriority, ApplicationId applicationId, SettableFuture<Object> future, UserGroupInformation user)
 specifier|public
 name|Priority
 name|updateApplicationPriority
@@ -11671,10 +11782,20 @@ argument_list|<
 name|Object
 argument_list|>
 name|future
+parameter_list|,
+name|UserGroupInformation
+name|user
 parameter_list|)
 throws|throws
 name|YarnException
 block|{
+try|try
+block|{
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 name|Priority
 name|appPriority
 init|=
@@ -11731,10 +11852,7 @@ name|checkAndGetApplicationPriority
 argument_list|(
 name|newPriority
 argument_list|,
-name|rmApp
-operator|.
-name|getUser
-argument_list|()
+name|user
 argument_list|,
 name|rmApp
 operator|.
@@ -11892,6 +12010,15 @@ expr_stmt|;
 return|return
 name|appPriority
 return|;
+block|}
+finally|finally
+block|{
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override

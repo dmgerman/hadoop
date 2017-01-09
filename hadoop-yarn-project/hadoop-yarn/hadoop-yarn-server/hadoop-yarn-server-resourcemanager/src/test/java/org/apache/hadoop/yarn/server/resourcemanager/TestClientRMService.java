@@ -8892,8 +8892,12 @@ operator|.
 name|class
 argument_list|)
 argument_list|,
-name|anyString
-argument_list|()
+name|any
+argument_list|(
+name|UserGroupInformation
+operator|.
+name|class
+argument_list|)
 argument_list|,
 name|anyString
 argument_list|()

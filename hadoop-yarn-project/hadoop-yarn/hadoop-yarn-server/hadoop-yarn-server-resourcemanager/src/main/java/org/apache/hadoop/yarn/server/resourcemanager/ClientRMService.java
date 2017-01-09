@@ -10017,6 +10017,8 @@ name|rmAppManager
 operator|.
 name|updateApplicationPriority
 argument_list|(
+name|callerUGI
+argument_list|,
 name|applicationId
 argument_list|,
 name|newAppPriority

@@ -220,6 +220,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|service
 operator|.
 name|AbstractService
@@ -4277,15 +4291,15 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|checkAndGetApplicationPriority (Priority priorityFromContext, String user, String queueName, ApplicationId applicationId)
+DECL|method|checkAndGetApplicationPriority ( Priority priorityRequestedByApp, UserGroupInformation user, String queueName, ApplicationId applicationId)
 specifier|public
 name|Priority
 name|checkAndGetApplicationPriority
 parameter_list|(
 name|Priority
-name|priorityFromContext
+name|priorityRequestedByApp
 parameter_list|,
-name|String
+name|UserGroupInformation
 name|user
 parameter_list|,
 name|String
@@ -4310,7 +4324,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|updateApplicationPriority (Priority newPriority, ApplicationId applicationId, SettableFuture<Object> future)
+DECL|method|updateApplicationPriority (Priority newPriority, ApplicationId applicationId, SettableFuture<Object> future, UserGroupInformation user)
 specifier|public
 name|Priority
 name|updateApplicationPriority
@@ -4326,6 +4340,9 @@ argument_list|<
 name|Object
 argument_list|>
 name|future
+parameter_list|,
+name|UserGroupInformation
+name|user
 parameter_list|)
 throws|throws
 name|YarnException

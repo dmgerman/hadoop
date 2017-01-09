@@ -2373,6 +2373,16 @@ argument_list|)
 decl_stmt|;
 comment|// Verify and get the update application priority and set back to
 comment|// submissionContext
+name|UserGroupInformation
+name|userUgi
+init|=
+name|UserGroupInformation
+operator|.
+name|createRemoteUser
+argument_list|(
+name|user
+argument_list|)
+decl_stmt|;
 name|Priority
 name|appPriority
 init|=
@@ -2385,7 +2395,7 @@ operator|.
 name|getPriority
 argument_list|()
 argument_list|,
-name|user
+name|userUgi
 argument_list|,
 name|submissionContext
 operator|.
@@ -2402,16 +2412,6 @@ argument_list|(
 name|appPriority
 argument_list|)
 expr_stmt|;
-name|UserGroupInformation
-name|userUgi
-init|=
-name|UserGroupInformation
-operator|.
-name|createRemoteUser
-argument_list|(
-name|user
-argument_list|)
-decl_stmt|;
 comment|// Since FairScheduler queue mapping is done inside scheduler,
 comment|// if FairScheduler is used and the queue doesn't exist, we should not
 comment|// fail here because queue will be created inside FS. Ideally, FS queue
@@ -3378,12 +3378,15 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * updateApplicationPriority will invoke scheduler api to update the    * new priority to RM and StateStore.    * @param applicationId Application Id    * @param newAppPriority proposed new application priority    * @throws YarnException Handle exceptions    */
-DECL|method|updateApplicationPriority (ApplicationId applicationId, Priority newAppPriority)
+comment|/**    * updateApplicationPriority will invoke scheduler api to update the    * new priority to RM and StateStore.    * @param callerUGI user    * @param applicationId Application Id    * @param newAppPriority proposed new application priority    * @throws YarnException Handle exceptions    */
+DECL|method|updateApplicationPriority (UserGroupInformation callerUGI, ApplicationId applicationId, Priority newAppPriority)
 specifier|public
 name|void
 name|updateApplicationPriority
 parameter_list|(
+name|UserGroupInformation
+name|callerUGI
+parameter_list|,
 name|ApplicationId
 name|applicationId
 parameter_list|,
@@ -3452,6 +3455,8 @@ argument_list|,
 name|applicationId
 argument_list|,
 name|future
+argument_list|,
+name|callerUGI
 argument_list|)
 decl_stmt|;
 if|if
