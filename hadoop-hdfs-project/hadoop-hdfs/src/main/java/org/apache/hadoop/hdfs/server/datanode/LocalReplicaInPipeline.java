@@ -1282,13 +1282,9 @@ argument_list|(
 name|getVolume
 argument_list|()
 argument_list|,
-name|fileIoProvider
-operator|.
-name|getRandomAccessFile
+operator|new
+name|RandomAccessFile
 argument_list|(
-name|getVolume
-argument_list|()
-argument_list|,
 name|blockFile
 argument_list|,
 literal|"rw"
