@@ -3016,13 +3016,21 @@ name|appAggregationFinished
 operator|.
 name|get
 argument_list|()
+operator|&&
+operator|!
+name|this
+operator|.
+name|aborted
+operator|.
+name|get
+argument_list|()
 condition|)
 block|{
 name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Aggregation did not complete for application "
+literal|"Log aggregation did not complete for application "
 operator|+
 name|appId
 argument_list|)
