@@ -255,10 +255,10 @@ comment|//
 comment|// It might take anywhere between 5 to 10 minutes before
 comment|// a request is timed out.
 comment|//
-DECL|field|checkTimeout
+DECL|field|minCheckTimeout
 specifier|private
 name|long
-name|checkTimeout
+name|minCheckTimeout
 init|=
 literal|5
 operator|*
@@ -272,12 +272,12 @@ specifier|private
 name|BlockStorageMovementNeeded
 name|blockStorageMovementNeeded
 decl_stmt|;
-DECL|method|BlockStorageMovementAttemptedItems (long timeoutPeriod, long selfRetryTimeout, BlockStorageMovementNeeded unsatisfiedStorageMovementFiles)
+DECL|method|BlockStorageMovementAttemptedItems (long recheckTimeout, long selfRetryTimeout, BlockStorageMovementNeeded unsatisfiedStorageMovementFiles)
 specifier|public
 name|BlockStorageMovementAttemptedItems
 parameter_list|(
 name|long
-name|timeoutPeriod
+name|recheckTimeout
 parameter_list|,
 name|long
 name|selfRetryTimeout
@@ -288,22 +288,22 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|timeoutPeriod
+name|recheckTimeout
 operator|>
 literal|0
 condition|)
 block|{
 name|this
 operator|.
-name|checkTimeout
+name|minCheckTimeout
 operator|=
 name|Math
 operator|.
 name|min
 argument_list|(
-name|checkTimeout
+name|minCheckTimeout
 argument_list|,
-name|timeoutPeriod
+name|recheckTimeout
 argument_list|)
 expr_stmt|;
 block|}
@@ -599,7 +599,7 @@ name|Thread
 operator|.
 name|sleep
 argument_list|(
-name|checkTimeout
+name|minCheckTimeout
 argument_list|)
 expr_stmt|;
 block|}

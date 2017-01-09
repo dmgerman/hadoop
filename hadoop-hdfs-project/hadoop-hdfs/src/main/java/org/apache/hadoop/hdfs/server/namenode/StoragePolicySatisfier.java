@@ -122,9 +122,37 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
 import|;
 end_import
 
@@ -561,7 +589,7 @@ name|isRunning
 init|=
 literal|false
 decl_stmt|;
-DECL|method|StoragePolicySatisfier (final Namesystem namesystem, final BlockStorageMovementNeeded storageMovementNeeded, final BlockManager blkManager)
+DECL|method|StoragePolicySatisfier (final Namesystem namesystem, final BlockStorageMovementNeeded storageMovementNeeded, final BlockManager blkManager, Configuration conf)
 specifier|public
 name|StoragePolicySatisfier
 parameter_list|(
@@ -576,6 +604,9 @@ parameter_list|,
 specifier|final
 name|BlockManager
 name|blkManager
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 name|this
@@ -596,9 +627,6 @@ name|blockManager
 operator|=
 name|blkManager
 expr_stmt|;
-comment|// TODO: below selfRetryTimeout and checkTimeout can be configurable later
-comment|// Now, the default values of selfRetryTimeout and checkTimeout are 30mins
-comment|// and 5mins respectively
 name|this
 operator|.
 name|storageMovementsMonitor
@@ -606,17 +634,31 @@ operator|=
 operator|new
 name|BlockStorageMovementAttemptedItems
 argument_list|(
-literal|5
-operator|*
-literal|60
-operator|*
-literal|1000
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_STORAGE_POLICY_SATISFIER_RECHECK_TIMEOUT_MILLIS_KEY
 argument_list|,
-literal|30
-operator|*
-literal|60
-operator|*
-literal|1000
+name|DFSConfigKeys
+operator|.
+name|DFS_STORAGE_POLICY_SATISFIER_RECHECK_TIMEOUT_MILLIS_DEFAULT
+argument_list|)
+argument_list|,
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_STORAGE_POLICY_SATISFIER_SELF_RETRY_TIMEOUT_MILLIS_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_STORAGE_POLICY_SATISFIER_SELF_RETRY_TIMEOUT_MILLIS_DEFAULT
+argument_list|)
 argument_list|,
 name|storageMovementNeeded
 argument_list|)
