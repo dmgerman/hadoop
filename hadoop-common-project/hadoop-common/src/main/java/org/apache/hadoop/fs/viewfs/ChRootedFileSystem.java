@@ -1180,6 +1180,31 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getLinkTarget (Path f)
+specifier|public
+name|Path
+name|getLinkTarget
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|super
+operator|.
+name|getLinkTarget
+argument_list|(
+name|fullPath
+argument_list|(
+name|f
+argument_list|)
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|access (Path path, FsAction mode)
 specifier|public
 name|void
