@@ -4703,7 +4703,12 @@ name|node
 operator|.
 name|releaseContainer
 argument_list|(
-name|container
+name|rmContainer
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// Update total usage

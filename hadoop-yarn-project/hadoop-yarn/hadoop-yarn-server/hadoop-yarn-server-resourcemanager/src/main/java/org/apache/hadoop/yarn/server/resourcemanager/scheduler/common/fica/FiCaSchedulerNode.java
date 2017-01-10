@@ -757,9 +757,7 @@ block|{
 name|RMContainer
 name|c
 init|=
-name|launchedContainers
-operator|.
-name|get
+name|getContainer
 argument_list|(
 name|containerId
 argument_list|)
@@ -817,9 +815,7 @@ block|{
 name|RMContainer
 name|c
 init|=
-name|launchedContainers
-operator|.
-name|get
+name|getContainer
 argument_list|(
 name|containerId
 argument_list|)
