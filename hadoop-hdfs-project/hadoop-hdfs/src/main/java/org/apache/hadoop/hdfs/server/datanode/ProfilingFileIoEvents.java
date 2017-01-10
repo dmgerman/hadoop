@@ -42,6 +42,34 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|server
@@ -99,7 +127,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * {@link FileIoEvents} that profiles the performance of the metadata and data  * related operations on datanode volumes.  */
+comment|/**  * Profiles the performance of the metadata and data related operations on  * datanode volumes.  */
 end_comment
 
 begin_class
@@ -110,11 +138,54 @@ name|Private
 DECL|class|ProfilingFileIoEvents
 class|class
 name|ProfilingFileIoEvents
-extends|extends
-name|FileIoEvents
 block|{
+DECL|field|isEnabled
+specifier|private
+specifier|final
+name|boolean
+name|isEnabled
+decl_stmt|;
+DECL|method|ProfilingFileIoEvents (@ullable Configuration conf)
+specifier|public
+name|ProfilingFileIoEvents
+parameter_list|(
 annotation|@
-name|Override
+name|Nullable
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+if|if
+condition|(
+name|conf
+operator|!=
+literal|null
+condition|)
+block|{
+name|isEnabled
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_ENABLE_FILEIO_PROFILING_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_ENABLE_FILEIO_PROFILING_DEFAULT
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|isEnabled
+operator|=
+literal|false
+expr_stmt|;
+block|}
+block|}
 DECL|method|beforeMetadataOp (@ullable FsVolumeSpi volume, FileIoProvider.OPERATION op)
 specifier|public
 name|long
@@ -130,6 +201,11 @@ operator|.
 name|OPERATION
 name|op
 parameter_list|)
+block|{
+if|if
+condition|(
+name|isEnabled
+condition|)
 block|{
 name|DataNodeVolumeMetrics
 name|metrics
@@ -153,12 +229,11 @@ name|monotonicNow
 argument_list|()
 return|;
 block|}
+block|}
 return|return
 literal|0
 return|;
 block|}
-annotation|@
-name|Override
 DECL|method|afterMetadataOp (@ullable FsVolumeSpi volume, FileIoProvider.OPERATION op, long begin)
 specifier|public
 name|void
@@ -177,6 +252,11 @@ parameter_list|,
 name|long
 name|begin
 parameter_list|)
+block|{
+if|if
+condition|(
+name|isEnabled
+condition|)
 block|{
 name|DataNodeVolumeMetrics
 name|metrics
@@ -207,8 +287,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Override
+block|}
 DECL|method|beforeFileIo (@ullable FsVolumeSpi volume, FileIoProvider.OPERATION op, long len)
 specifier|public
 name|long
@@ -227,6 +306,11 @@ parameter_list|,
 name|long
 name|len
 parameter_list|)
+block|{
+if|if
+condition|(
+name|isEnabled
+condition|)
 block|{
 name|DataNodeVolumeMetrics
 name|metrics
@@ -250,12 +334,11 @@ name|monotonicNow
 argument_list|()
 return|;
 block|}
+block|}
 return|return
 literal|0
 return|;
 block|}
-annotation|@
-name|Override
 DECL|method|afterFileIo (@ullable FsVolumeSpi volume, FileIoProvider.OPERATION op, long begin, long len)
 specifier|public
 name|void
@@ -277,6 +360,11 @@ parameter_list|,
 name|long
 name|len
 parameter_list|)
+block|{
+if|if
+condition|(
+name|isEnabled
+condition|)
 block|{
 name|DataNodeVolumeMetrics
 name|metrics
@@ -363,9 +451,8 @@ default|default:
 block|}
 block|}
 block|}
-annotation|@
-name|Override
-DECL|method|onFailure (@ullable FsVolumeSpi volume, FileIoProvider.OPERATION op, Exception e, long begin)
+block|}
+DECL|method|onFailure (@ullable FsVolumeSpi volume, long begin)
 specifier|public
 name|void
 name|onFailure
@@ -375,17 +462,14 @@ name|Nullable
 name|FsVolumeSpi
 name|volume
 parameter_list|,
-name|FileIoProvider
-operator|.
-name|OPERATION
-name|op
-parameter_list|,
-name|Exception
-name|e
-parameter_list|,
 name|long
 name|begin
 parameter_list|)
+block|{
+if|if
+condition|(
+name|isEnabled
+condition|)
 block|{
 name|DataNodeVolumeMetrics
 name|metrics
@@ -416,19 +500,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Nullable
-annotation|@
-name|Override
-DECL|method|getStatistics ()
-specifier|public
-name|String
-name|getStatistics
-parameter_list|()
-block|{
-return|return
-literal|null
-return|;
 block|}
 DECL|method|getVolumeMetrics (final FsVolumeSpi volume)
 specifier|private
@@ -439,6 +510,11 @@ specifier|final
 name|FsVolumeSpi
 name|volume
 parameter_list|)
+block|{
+if|if
+condition|(
+name|isEnabled
+condition|)
 block|{
 if|if
 condition|(
@@ -453,6 +529,7 @@ operator|.
 name|getMetrics
 argument_list|()
 return|;
+block|}
 block|}
 return|return
 literal|null

@@ -14699,22 +14699,6 @@ literal|""
 return|;
 block|}
 block|}
-annotation|@
-name|Override
-comment|// DataNodeMXBean
-DECL|method|getFileIoProviderStatistics ()
-specifier|public
-name|String
-name|getFileIoProviderStatistics
-parameter_list|()
-block|{
-return|return
-name|fileIoProvider
-operator|.
-name|getStatistics
-argument_list|()
-return|;
-block|}
 DECL|method|refreshNamenodes (Configuration conf)
 specifier|public
 name|void

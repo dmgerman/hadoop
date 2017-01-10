@@ -174,12 +174,6 @@ name|String
 name|getDiskBalancerStatus
 parameter_list|()
 function_decl|;
-comment|/**    * Gets the {@link FileIoProvider} statistics.    */
-DECL|method|getFileIoProviderStatistics ()
-name|String
-name|getFileIoProviderStatistics
-parameter_list|()
-function_decl|;
 comment|/**    * Gets the average info (e.g. time) of SendPacketDownstream when the DataNode    * acts as the penultimate (2nd to the last) node in pipeline.    *<p>    * Example Json:    * {"[185.164.159.81:9801]RollingAvgTime":504.867,    *  "[49.236.149.246:9801]RollingAvgTime":504.463,    *  "[84.125.113.65:9801]RollingAvgTime":497.954}    *</p>    */
 DECL|method|getSendPacketDownstreamAvgInfo ()
 name|String

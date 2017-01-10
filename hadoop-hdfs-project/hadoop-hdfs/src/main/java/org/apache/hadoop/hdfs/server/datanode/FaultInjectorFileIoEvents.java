@@ -42,9 +42,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
+name|conf
 operator|.
-name|InterfaceStability
+name|Configuration
 import|;
 end_import
 
@@ -58,13 +58,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|FileIoProvider
-operator|.
-name|OPERATION
+name|DFSConfigKeys
 import|;
 end_import
 
@@ -99,7 +93,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The default implementation of {@link FileIoEvents} that do nothing.  */
+comment|/**  * Injects faults in the metadata and data related operations on datanode  * volumes.  */
 end_comment
 
 begin_class
@@ -107,23 +101,61 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-annotation|@
-name|InterfaceStability
-operator|.
-name|Unstable
-DECL|class|DefaultFileIoEvents
+DECL|class|FaultInjectorFileIoEvents
 specifier|public
-specifier|final
 class|class
-name|DefaultFileIoEvents
-extends|extends
-name|FileIoEvents
+name|FaultInjectorFileIoEvents
 block|{
-annotation|@
-name|Override
-DECL|method|beforeMetadataOp ( @ullable FsVolumeSpi volume, OPERATION op)
+DECL|field|isEnabled
+specifier|private
+specifier|final
+name|boolean
+name|isEnabled
+decl_stmt|;
+DECL|method|FaultInjectorFileIoEvents (@ullable Configuration conf)
 specifier|public
-name|long
+name|FaultInjectorFileIoEvents
+parameter_list|(
+annotation|@
+name|Nullable
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+if|if
+condition|(
+name|conf
+operator|!=
+literal|null
+condition|)
+block|{
+name|isEnabled
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_ENABLE_FILEIO_FAULT_INJECTION_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_ENABLE_FILEIO_FAULT_INJECTION_DEFAULT
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|isEnabled
+operator|=
+literal|false
+expr_stmt|;
+block|}
+block|}
+DECL|method|beforeMetadataOp ( @ullable FsVolumeSpi volume, FileIoProvider.OPERATION op)
+specifier|public
+name|void
 name|beforeMetadataOp
 parameter_list|(
 annotation|@
@@ -131,38 +163,15 @@ name|Nullable
 name|FsVolumeSpi
 name|volume
 parameter_list|,
+name|FileIoProvider
+operator|.
 name|OPERATION
 name|op
-parameter_list|)
-block|{
-return|return
-literal|0
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|afterMetadataOp ( @ullable FsVolumeSpi volume, OPERATION op, long begin)
-specifier|public
-name|void
-name|afterMetadataOp
-parameter_list|(
-annotation|@
-name|Nullable
-name|FsVolumeSpi
-name|volume
-parameter_list|,
-name|OPERATION
-name|op
-parameter_list|,
-name|long
-name|begin
 parameter_list|)
 block|{   }
-annotation|@
-name|Override
-DECL|method|beforeFileIo ( @ullable FsVolumeSpi volume, OPERATION op, long len)
+DECL|method|beforeFileIo ( @ullable FsVolumeSpi volume, FileIoProvider.OPERATION op, long len)
 specifier|public
-name|long
+name|void
 name|beforeFileIo
 parameter_list|(
 annotation|@
@@ -170,76 +179,15 @@ name|Nullable
 name|FsVolumeSpi
 name|volume
 parameter_list|,
+name|FileIoProvider
+operator|.
 name|OPERATION
 name|op
 parameter_list|,
 name|long
 name|len
 parameter_list|)
-block|{
-return|return
-literal|0
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|afterFileIo ( @ullable FsVolumeSpi volume, OPERATION op, long begin, long len)
-specifier|public
-name|void
-name|afterFileIo
-parameter_list|(
-annotation|@
-name|Nullable
-name|FsVolumeSpi
-name|volume
-parameter_list|,
-name|OPERATION
-name|op
-parameter_list|,
-name|long
-name|begin
-parameter_list|,
-name|long
-name|len
-parameter_list|)
 block|{   }
-annotation|@
-name|Override
-DECL|method|onFailure ( @ullable FsVolumeSpi volume, OPERATION op, Exception e, long begin)
-specifier|public
-name|void
-name|onFailure
-parameter_list|(
-annotation|@
-name|Nullable
-name|FsVolumeSpi
-name|volume
-parameter_list|,
-name|OPERATION
-name|op
-parameter_list|,
-name|Exception
-name|e
-parameter_list|,
-name|long
-name|begin
-parameter_list|)
-block|{   }
-annotation|@
-name|Override
-DECL|method|getStatistics ()
-specifier|public
-annotation|@
-name|Nullable
-name|String
-name|getStatistics
-parameter_list|()
-block|{
-comment|// null is valid JSON.
-return|return
-literal|null
-return|;
-block|}
 block|}
 end_class
 

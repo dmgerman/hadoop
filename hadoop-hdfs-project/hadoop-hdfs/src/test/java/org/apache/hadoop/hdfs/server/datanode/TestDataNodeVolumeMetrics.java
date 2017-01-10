@@ -811,13 +811,13 @@ argument_list|()
 decl_stmt|;
 name|conf
 operator|.
-name|set
+name|setBoolean
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_DATANODE_FILE_IO_EVENTS_CLASS_KEY
+name|DFS_DATANODE_ENABLE_FILEIO_PROFILING_KEY
 argument_list|,
-literal|"org.apache.hadoop.hdfs.server.datanode.ProfilingFileIoEvents"
+literal|true
 argument_list|)
 expr_stmt|;
 name|SimulatedFSDataset
