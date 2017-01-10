@@ -21,6 +21,24 @@ package|;
 end_package
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|Util
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -1827,7 +1845,7 @@ name|response
 operator|.
 name|setHeader
 argument_list|(
-name|TransferFsImage
+name|Util
 operator|.
 name|CONTENT_LENGTH
 argument_list|,
@@ -1863,7 +1881,7 @@ name|response
 operator|.
 name|setHeader
 argument_list|(
-name|TransferFsImage
+name|Util
 operator|.
 name|MD5_HEADER
 argument_list|,
@@ -2475,7 +2493,7 @@ name|connection
 operator|.
 name|setRequestProperty
 argument_list|(
-name|TransferFsImage
+name|Util
 operator|.
 name|CONTENT_LENGTH
 argument_list|,
@@ -2511,7 +2529,7 @@ name|connection
 operator|.
 name|setRequestProperty
 argument_list|(
-name|TransferFsImage
+name|Util
 operator|.
 name|MD5_HEADER
 argument_list|,
@@ -2596,7 +2614,7 @@ name|params
 operator|.
 name|put
 argument_list|(
-name|TransferFsImage
+name|Util
 operator|.
 name|FILE_LENGTH
 argument_list|,
@@ -3198,7 +3216,7 @@ name|parseLongParam
 argument_list|(
 name|request
 argument_list|,
-name|TransferFsImage
+name|Util
 operator|.
 name|FILE_LENGTH
 argument_list|)
