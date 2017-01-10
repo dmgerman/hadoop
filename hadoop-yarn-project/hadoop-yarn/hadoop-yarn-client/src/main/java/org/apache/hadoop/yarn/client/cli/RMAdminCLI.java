@@ -4101,7 +4101,7 @@ name|nLabels
 operator|<=
 literal|1
 argument_list|,
-literal|"%d labels specified on host=%s"
+literal|"%s labels specified on host=%s"
 operator|+
 literal|", please note that we do not support specifying multiple"
 operator|+
