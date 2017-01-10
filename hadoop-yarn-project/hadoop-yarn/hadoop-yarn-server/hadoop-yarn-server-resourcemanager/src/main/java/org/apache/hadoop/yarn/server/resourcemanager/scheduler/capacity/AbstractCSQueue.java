@@ -3231,6 +3231,7 @@ literal|true
 return|;
 block|}
 block|}
+comment|// Can not assign to this queue
 if|if
 condition|(
 name|LOG
@@ -3243,14 +3244,16 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"Failed to assign to queue: "
+operator|+
 name|getQueueName
 argument_list|()
 operator|+
-literal|"Check assign to queue, nodePartition="
+literal|" nodePatrition: "
 operator|+
 name|nodePartition
 operator|+
-literal|" usedResources: "
+literal|", usedResources: "
 operator|+
 name|queueUsage
 operator|.
@@ -3259,11 +3262,63 @@ argument_list|(
 name|nodePartition
 argument_list|)
 operator|+
-literal|" clusterResources: "
+literal|", clusterResources: "
 operator|+
 name|clusterResource
 operator|+
-literal|" currentUsedCapacity "
+literal|", reservedResources: "
+operator|+
+name|resourceCouldBeUnreserved
+operator|+
+literal|", maxLimitCapacity: "
+operator|+
+name|currentLimitResource
+operator|+
+literal|", currTotalUsed:"
+operator|+
+name|usedExceptKillable
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+literal|false
+return|;
+block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Check assign to queue: "
+operator|+
+name|getQueueName
+argument_list|()
+operator|+
+literal|" nodePartition: "
+operator|+
+name|nodePartition
+operator|+
+literal|", usedResources: "
+operator|+
+name|queueUsage
+operator|.
+name|getUsed
+argument_list|(
+name|nodePartition
+argument_list|)
+operator|+
+literal|", clusterResources: "
+operator|+
+name|clusterResource
+operator|+
+literal|", currentUsedCapacity: "
 operator|+
 name|Resources
 operator|.
@@ -3290,7 +3345,7 @@ name|clusterResource
 argument_list|)
 argument_list|)
 operator|+
-literal|" max-capacity: "
+literal|", max-capacity: "
 operator|+
 name|queueCapacities
 operator|.
@@ -3298,14 +3353,8 @@ name|getAbsoluteMaximumCapacity
 argument_list|(
 name|nodePartition
 argument_list|)
-operator|+
-literal|")"
 argument_list|)
 expr_stmt|;
-block|}
-return|return
-literal|false
-return|;
 block|}
 return|return
 literal|true
