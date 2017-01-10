@@ -1144,7 +1144,7 @@ name|isStriped
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|/* Verify that nested EC policies not supported */
+comment|/* Verify that nested EC policies are supported */
 specifier|final
 name|Path
 name|dir1
@@ -1223,11 +1223,6 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
-name|fail
-argument_list|(
-literal|"Nested erasure coding policies"
-argument_list|)
-expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -1235,11 +1230,9 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-name|assertExceptionContains
+name|fail
 argument_list|(
-literal|"already has an erasure coding policy"
-argument_list|,
-name|e
+literal|"Nested erasure coding policies are supported"
 argument_list|)
 expr_stmt|;
 block|}

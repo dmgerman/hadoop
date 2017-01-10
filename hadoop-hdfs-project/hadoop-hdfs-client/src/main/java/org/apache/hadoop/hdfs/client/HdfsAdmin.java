@@ -1323,6 +1323,27 @@ name|getErasureCodingPolicies
 argument_list|()
 return|;
 block|}
+comment|/**    * Unset erasure coding policy from the directory.    *    * @param path The source path referring to a directory.    * @throws IOException    */
+DECL|method|unsetErasureCodingPolicy (final Path path)
+specifier|public
+name|void
+name|unsetErasureCodingPolicy
+parameter_list|(
+specifier|final
+name|Path
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|dfs
+operator|.
+name|unsetErasureCodingPolicy
+argument_list|(
+name|path
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|provisionEZTrash (Path path)
 specifier|private
 name|void

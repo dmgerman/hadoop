@@ -2125,6 +2125,19 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Unset erasure coding policy from a specified path.    * @param src The path to unset policy.    */
+annotation|@
+name|AtMostOnce
+DECL|method|unsetErasureCodingPolicy (String src)
+name|void
+name|unsetErasureCodingPolicy
+parameter_list|(
+name|String
+name|src
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Get {@link QuotaUsage} rooted at the specified directory.    * @param path The string representation of the path    *    * @throws AccessControlException permission denied    * @throws java.io.FileNotFoundException file<code>path</code> is not found    * @throws org.apache.hadoop.fs.UnresolvedLinkException if<code>path</code>    *         contains a symlink.    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
