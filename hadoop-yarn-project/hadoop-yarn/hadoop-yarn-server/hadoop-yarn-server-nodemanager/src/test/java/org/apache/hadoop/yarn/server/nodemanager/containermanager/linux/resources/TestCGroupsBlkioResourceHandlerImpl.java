@@ -294,7 +294,7 @@ literal|1
 argument_list|)
 argument_list|)
 operator|.
-name|mountCGroupController
+name|initializeCGroupController
 argument_list|(
 name|CGroupsHandler
 operator|.

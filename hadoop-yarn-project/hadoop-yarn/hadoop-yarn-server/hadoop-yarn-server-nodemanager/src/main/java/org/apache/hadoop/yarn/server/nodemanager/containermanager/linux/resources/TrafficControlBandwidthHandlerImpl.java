@@ -226,22 +226,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|SystemClock
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|util
@@ -463,7 +447,7 @@ comment|//operation. At some point, LCE code can be refactored to batch mount
 comment|//operations across multiple controllers - cpu, net_cls, blkio etc
 name|cGroupsHandler
 operator|.
-name|mountCGroupController
+name|initializeCGroupController
 argument_list|(
 name|CGroupsHandler
 operator|.

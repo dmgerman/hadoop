@@ -634,7 +634,7 @@ name|this
 operator|.
 name|cGroupsHandler
 operator|.
-name|mountCGroupController
+name|initializeCGroupController
 argument_list|(
 name|CGroupsHandler
 operator|.

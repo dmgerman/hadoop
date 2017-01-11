@@ -72,8 +72,8 @@ specifier|public
 interface|interface
 name|CGroupsHandler
 block|{
+comment|/**    * List of supported cgroup subsystem types.    */
 DECL|enum|CGroupController
-specifier|public
 enum|enum
 name|CGroupController
 block|{
@@ -132,27 +132,18 @@ return|;
 block|}
 block|}
 DECL|field|CGROUP_FILE_TASKS
-specifier|public
-specifier|static
-specifier|final
 name|String
 name|CGROUP_FILE_TASKS
 init|=
 literal|"tasks"
 decl_stmt|;
 DECL|field|CGROUP_PARAM_CLASSID
-specifier|public
-specifier|static
-specifier|final
 name|String
 name|CGROUP_PARAM_CLASSID
 init|=
 literal|"classid"
 decl_stmt|;
 DECL|field|CGROUP_PARAM_BLKIO_WEIGHT
-specifier|public
-specifier|static
-specifier|final
 name|String
 name|CGROUP_PARAM_BLKIO_WEIGHT
 init|=
@@ -194,11 +185,10 @@ name|CGROUP_CPU_SHARES
 init|=
 literal|"shares"
 decl_stmt|;
-comment|/**    * Mounts a cgroup controller    * @param controller - the controller being mounted    * @throws ResourceHandlerException    */
-DECL|method|mountCGroupController (CGroupController controller)
-specifier|public
+comment|/**    * Mounts or initializes a cgroup controller.    * @param controller - the controller being initialized    * @throws ResourceHandlerException the initialization failed due to the    * environment    */
+DECL|method|initializeCGroupController (CGroupController controller)
 name|void
-name|mountCGroupController
+name|initializeCGroupController
 parameter_list|(
 name|CGroupController
 name|controller
@@ -206,9 +196,8 @@ parameter_list|)
 throws|throws
 name|ResourceHandlerException
 function_decl|;
-comment|/**    * Creates a cgroup for a given controller    * @param controller - controller type for which the cgroup is being created    * @param cGroupId - id of the cgroup being created    * @return full path to created cgroup    * @throws ResourceHandlerException    */
+comment|/**    * Creates a cgroup for a given controller.    * @param controller - controller type for which the cgroup is being created    * @param cGroupId - id of the cgroup being created    * @return full path to created cgroup    * @throws ResourceHandlerException creation failed    */
 DECL|method|createCGroup (CGroupController controller, String cGroupId)
-specifier|public
 name|String
 name|createCGroup
 parameter_list|(
@@ -221,9 +210,8 @@ parameter_list|)
 throws|throws
 name|ResourceHandlerException
 function_decl|;
-comment|/**    * Deletes the specified cgroup    * @param controller - controller type for the cgroup    * @param cGroupId - id of the cgroup being deleted    * @throws ResourceHandlerException    */
+comment|/**    * Deletes the specified cgroup.    * @param controller - controller type for the cgroup    * @param cGroupId - id of the cgroup being deleted    * @throws ResourceHandlerException deletion failed    */
 DECL|method|deleteCGroup (CGroupController controller, String cGroupId)
-specifier|public
 name|void
 name|deleteCGroup
 parameter_list|(
@@ -238,7 +226,6 @@ name|ResourceHandlerException
 function_decl|;
 comment|/**    * Gets the relative path for the cgroup, independent of a controller, for a    * given cgroup id.    * @param cGroupId - id of the cgroup    * @return path for the cgroup relative to the root of (any) controller.    */
 DECL|method|getRelativePathForCGroup (String cGroupId)
-specifier|public
 name|String
 name|getRelativePathForCGroup
 parameter_list|(
@@ -246,9 +233,8 @@ name|String
 name|cGroupId
 parameter_list|)
 function_decl|;
-comment|/**    * Gets the full path for the cgroup, given a controller and a cgroup id    * @param controller - controller type for the cgroup    * @param cGroupId - id of the cgroup    * @return full path for the cgroup    */
+comment|/**    * Gets the full path for the cgroup, given a controller and a cgroup id.    * @param controller - controller type for the cgroup    * @param cGroupId - id of the cgroup    * @return full path for the cgroup    */
 DECL|method|getPathForCGroup (CGroupController controller, String cGroupId)
-specifier|public
 name|String
 name|getPathForCGroup
 parameter_list|(
@@ -259,9 +245,8 @@ name|String
 name|cGroupId
 parameter_list|)
 function_decl|;
-comment|/**    * Gets the full path for the cgroup's tasks file, given a controller and a    * cgroup id    * @param controller - controller type for the cgroup    * @param cGroupId - id of the cgroup    * @return full path for the cgroup's tasks file    */
+comment|/**    * Gets the full path for the cgroup's tasks file, given a controller and a    * cgroup id.    * @param controller - controller type for the cgroup    * @param cGroupId - id of the cgroup    * @return full path for the cgroup's tasks file    */
 DECL|method|getPathForCGroupTasks (CGroupController controller, String cGroupId)
-specifier|public
 name|String
 name|getPathForCGroupTasks
 parameter_list|(
@@ -272,9 +257,8 @@ name|String
 name|cGroupId
 parameter_list|)
 function_decl|;
-comment|/**    * Gets the full path for a cgroup parameter, given a controller,    * cgroup id and parameter name    * @param controller - controller type for the cgroup    * @param cGroupId - id of the cgroup    * @param param - cgroup parameter ( e.g classid )    * @return full path for the cgroup parameter    */
+comment|/**    * Gets the full path for a cgroup parameter, given a controller,    * cgroup id and parameter name.    * @param controller - controller type for the cgroup    * @param cGroupId - id of the cgroup    * @param param - cgroup parameter ( e.g classid )    * @return full path for the cgroup parameter    */
 DECL|method|getPathForCGroupParam (CGroupController controller, String cGroupId, String param)
-specifier|public
 name|String
 name|getPathForCGroupParam
 parameter_list|(
@@ -288,9 +272,8 @@ name|String
 name|param
 parameter_list|)
 function_decl|;
-comment|/**    * updates a cgroup parameter, given a controller, cgroup id, parameter name    * and a parameter value    * @param controller - controller type for the cgroup    * @param cGroupId - id of the cgroup    * @param param - cgroup parameter ( e.g classid )    * @param value - value to be written to the parameter file    * @throws ResourceHandlerException    */
+comment|/**    * updates a cgroup parameter, given a controller, cgroup id, parameter name.    * and a parameter value    * @param controller - controller type for the cgroup    * @param cGroupId - id of the cgroup    * @param param - cgroup parameter ( e.g classid )    * @param value - value to be written to the parameter file    * @throws ResourceHandlerException the operation failed    */
 DECL|method|updateCGroupParam (CGroupController controller, String cGroupId, String param, String value)
-specifier|public
 name|void
 name|updateCGroupParam
 parameter_list|(
@@ -309,9 +292,8 @@ parameter_list|)
 throws|throws
 name|ResourceHandlerException
 function_decl|;
-comment|/**    * reads a cgroup parameter value, given a controller, cgroup id, parameter    * name    * @param controller - controller type for the cgroup    * @param cGroupId - id of the cgroup    * @param param - cgroup parameter ( e.g classid )    * @return parameter value as read from the parameter file    * @throws ResourceHandlerException    */
+comment|/**    * reads a cgroup parameter value, given a controller, cgroup id, parameter.    * name    * @param controller - controller type for the cgroup    * @param cGroupId - id of the cgroup    * @param param - cgroup parameter ( e.g classid )    * @return parameter value as read from the parameter file    * @throws ResourceHandlerException the operation failed    */
 DECL|method|getCGroupParam (CGroupController controller, String cGroupId, String param)
-specifier|public
 name|String
 name|getCGroupParam
 parameter_list|(

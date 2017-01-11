@@ -687,7 +687,7 @@ argument_list|(
 name|cGroupsHandlerMock
 argument_list|)
 operator|.
-name|mountCGroupController
+name|initializeCGroupController
 argument_list|(
 name|eq
 argument_list|(
