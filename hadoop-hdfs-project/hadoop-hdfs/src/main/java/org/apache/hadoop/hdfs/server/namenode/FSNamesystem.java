@@ -12612,12 +12612,15 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Satisfy the storage policy for a file or a directory.    *    * @param src file/directory path    */
-DECL|method|satisfyStoragePolicy (String src)
+DECL|method|satisfyStoragePolicy (String src, boolean logRetryCache)
 name|void
 name|satisfyStoragePolicy
 parameter_list|(
 name|String
 name|src
+parameter_list|,
+name|boolean
+name|logRetryCache
 parameter_list|)
 throws|throws
 name|IOException
@@ -12707,7 +12710,6 @@ literal|"or use Mover tool."
 argument_list|)
 throw|;
 block|}
-comment|// TODO: need to update editlog for persistence.
 name|FSDirAttrOp
 operator|.
 name|satisfyStoragePolicy
@@ -12717,6 +12719,8 @@ argument_list|,
 name|blockManager
 argument_list|,
 name|src
+argument_list|,
+name|logRetryCache
 argument_list|)
 expr_stmt|;
 block|}

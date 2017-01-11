@@ -779,6 +779,8 @@ name|triggerHeartbeats
 argument_list|()
 expr_stmt|;
 comment|// Wait till namenode notified about the block location details
+name|DFSTestUtil
+operator|.
 name|waitExpectedStorageType
 argument_list|(
 name|file
@@ -790,6 +792,8 @@ argument_list|,
 literal|3
 argument_list|,
 literal|30000
+argument_list|,
+name|dfs
 argument_list|)
 expr_stmt|;
 block|}
@@ -935,6 +939,8 @@ argument_list|()
 expr_stmt|;
 comment|// Wait till StorgePolicySatisfier Identified that block to move to SSD
 comment|// areas
+name|DFSTestUtil
+operator|.
 name|waitExpectedStorageType
 argument_list|(
 name|file
@@ -946,6 +952,8 @@ argument_list|,
 literal|3
 argument_list|,
 literal|30000
+argument_list|,
+name|dfs
 argument_list|)
 expr_stmt|;
 block|}
@@ -1071,6 +1079,8 @@ argument_list|()
 expr_stmt|;
 comment|// Wait till StorgePolicySatisfier Identified that block to move to SSD
 comment|// areas
+name|DFSTestUtil
+operator|.
 name|waitExpectedStorageType
 argument_list|(
 name|file
@@ -1082,8 +1092,12 @@ argument_list|,
 literal|1
 argument_list|,
 literal|30000
+argument_list|,
+name|dfs
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|waitExpectedStorageType
 argument_list|(
 name|file
@@ -1095,6 +1109,8 @@ argument_list|,
 literal|2
 argument_list|,
 literal|30000
+argument_list|,
+name|dfs
 argument_list|)
 expr_stmt|;
 block|}
@@ -1220,6 +1236,8 @@ name|triggerHeartbeats
 argument_list|()
 expr_stmt|;
 comment|// Wait till the block is moved to SSD areas
+name|DFSTestUtil
+operator|.
 name|waitExpectedStorageType
 argument_list|(
 name|file
@@ -1231,8 +1249,12 @@ argument_list|,
 literal|1
 argument_list|,
 literal|30000
+argument_list|,
+name|dfs
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|waitExpectedStorageType
 argument_list|(
 name|file
@@ -1244,6 +1266,8 @@ argument_list|,
 literal|2
 argument_list|,
 literal|30000
+argument_list|,
+name|dfs
 argument_list|)
 expr_stmt|;
 name|waitForBlocksMovementResult
@@ -1475,6 +1499,8 @@ name|files
 control|)
 block|{
 comment|// Wait till the block is moved to SSD areas
+name|DFSTestUtil
+operator|.
 name|waitExpectedStorageType
 argument_list|(
 name|fileName
@@ -1486,8 +1512,12 @@ argument_list|,
 literal|1
 argument_list|,
 literal|30000
+argument_list|,
+name|dfs
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|waitExpectedStorageType
 argument_list|(
 name|fileName
@@ -1499,6 +1529,8 @@ argument_list|,
 literal|2
 argument_list|,
 literal|30000
+argument_list|,
+name|dfs
 argument_list|)
 expr_stmt|;
 block|}
@@ -1646,6 +1678,8 @@ name|triggerHeartbeats
 argument_list|()
 expr_stmt|;
 comment|// Wait till namenode notified about the block location details
+name|DFSTestUtil
+operator|.
 name|waitExpectedStorageType
 argument_list|(
 name|file
@@ -1657,6 +1691,8 @@ argument_list|,
 literal|3
 argument_list|,
 literal|30000
+argument_list|,
+name|dfs
 argument_list|)
 expr_stmt|;
 block|}
@@ -1835,6 +1871,8 @@ name|triggerHeartbeats
 argument_list|()
 expr_stmt|;
 comment|// take effect for the file in the directory.
+name|DFSTestUtil
+operator|.
 name|waitExpectedStorageType
 argument_list|(
 name|subFile1
@@ -1846,8 +1884,12 @@ argument_list|,
 literal|1
 argument_list|,
 literal|30000
+argument_list|,
+name|dfs
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|waitExpectedStorageType
 argument_list|(
 name|subFile1
@@ -1859,9 +1901,13 @@ argument_list|,
 literal|2
 argument_list|,
 literal|30000
+argument_list|,
+name|dfs
 argument_list|)
 expr_stmt|;
 comment|// take no effect for the sub-dir's file in the directory.
+name|DFSTestUtil
+operator|.
 name|waitExpectedStorageType
 argument_list|(
 name|subFile2
@@ -1873,6 +1919,8 @@ argument_list|,
 literal|3
 argument_list|,
 literal|30000
+argument_list|,
+name|dfs
 argument_list|)
 expr_stmt|;
 block|}
@@ -2083,6 +2131,76 @@ name|FileNotFoundException
 name|e
 parameter_list|)
 block|{        }
+try|try
+block|{
+name|hdfsAdmin
+operator|.
+name|satisfyStoragePolicy
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+name|file
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|hdfsAdmin
+operator|.
+name|satisfyStoragePolicy
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+name|file
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|fail
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Should failed to satisfy storage policy "
+operator|+
+literal|"for %s ,since it has been "
+operator|+
+literal|"added to satisfy movement queue."
+argument_list|,
+name|file
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Cannot request to call satisfy storage policy "
+operator|+
+literal|"on path %s, as this file/dir was already called for "
+operator|+
+literal|"satisfying storage policy."
+argument_list|,
+name|file
+argument_list|)
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 finally|finally
 block|{
@@ -2206,6 +2324,8 @@ argument_list|()
 expr_stmt|;
 comment|// Wait till StorgePolicySatisfier identified that block to move to
 comment|// ARCHIVE area.
+name|DFSTestUtil
+operator|.
 name|waitExpectedStorageType
 argument_list|(
 name|file
@@ -2217,8 +2337,12 @@ argument_list|,
 literal|1
 argument_list|,
 literal|30000
+argument_list|,
+name|dfs
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|waitExpectedStorageType
 argument_list|(
 name|file
@@ -2230,6 +2354,8 @@ argument_list|,
 literal|2
 argument_list|,
 literal|30000
+argument_list|,
+name|dfs
 argument_list|)
 expr_stmt|;
 name|waitForBlocksMovementResult
@@ -2369,6 +2495,8 @@ argument_list|,
 literal|30000
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|waitExpectedStorageType
 argument_list|(
 name|file
@@ -2380,6 +2508,8 @@ argument_list|,
 literal|3
 argument_list|,
 literal|30000
+argument_list|,
+name|dfs
 argument_list|)
 expr_stmt|;
 comment|// Since there is no target node the item will get timed out and then
@@ -2719,6 +2849,8 @@ argument_list|,
 literal|30000
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|waitExpectedStorageType
 argument_list|(
 name|file1
@@ -2730,8 +2862,12 @@ argument_list|,
 literal|1
 argument_list|,
 literal|30000
+argument_list|,
+name|dfs
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|waitExpectedStorageType
 argument_list|(
 name|file1
@@ -2743,6 +2879,8 @@ argument_list|,
 literal|2
 argument_list|,
 literal|30000
+argument_list|,
+name|dfs
 argument_list|)
 expr_stmt|;
 block|}
@@ -2923,6 +3061,8 @@ argument_list|()
 expr_stmt|;
 comment|// Wait till StorgePolicySatisfier identified that block to move to
 comment|// ARCHIVE area.
+name|DFSTestUtil
+operator|.
 name|waitExpectedStorageType
 argument_list|(
 name|file
@@ -2934,8 +3074,12 @@ argument_list|,
 literal|2
 argument_list|,
 literal|30000
+argument_list|,
+name|dfs
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|waitExpectedStorageType
 argument_list|(
 name|file
@@ -2947,6 +3091,8 @@ argument_list|,
 literal|3
 argument_list|,
 literal|30000
+argument_list|,
+name|dfs
 argument_list|)
 expr_stmt|;
 name|waitForBlocksMovementResult
@@ -3112,6 +3258,8 @@ operator|.
 name|triggerHeartbeats
 argument_list|()
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|waitExpectedStorageType
 argument_list|(
 name|file
@@ -3123,8 +3271,12 @@ argument_list|,
 literal|1
 argument_list|,
 literal|30000
+argument_list|,
+name|dfs
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|waitExpectedStorageType
 argument_list|(
 name|file
@@ -3136,6 +3288,8 @@ argument_list|,
 literal|2
 argument_list|,
 literal|30000
+argument_list|,
+name|dfs
 argument_list|)
 expr_stmt|;
 block|}
@@ -3306,6 +3460,8 @@ operator|.
 name|triggerHeartbeats
 argument_list|()
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|waitExpectedStorageType
 argument_list|(
 name|file
@@ -3317,8 +3473,12 @@ argument_list|,
 literal|1
 argument_list|,
 literal|30000
+argument_list|,
+name|dfs
 argument_list|)
 expr_stmt|;
+name|DFSTestUtil
+operator|.
 name|waitExpectedStorageType
 argument_list|(
 name|file
@@ -3330,6 +3490,8 @@ argument_list|,
 literal|2
 argument_list|,
 literal|30000
+argument_list|,
+name|dfs
 argument_list|)
 expr_stmt|;
 block|}
@@ -4127,149 +4289,6 @@ expr_stmt|;
 return|return
 name|cluster
 return|;
-block|}
-comment|// Check whether the Block movement has been successfully completed to satisfy
-comment|// the storage policy for the given file.
-DECL|method|waitExpectedStorageType (final String fileName, final StorageType expectedStorageType, int expectedStorageCount, int timeout)
-specifier|private
-name|void
-name|waitExpectedStorageType
-parameter_list|(
-specifier|final
-name|String
-name|fileName
-parameter_list|,
-specifier|final
-name|StorageType
-name|expectedStorageType
-parameter_list|,
-name|int
-name|expectedStorageCount
-parameter_list|,
-name|int
-name|timeout
-parameter_list|)
-throws|throws
-name|Exception
-block|{
-name|GenericTestUtils
-operator|.
-name|waitFor
-argument_list|(
-operator|new
-name|Supplier
-argument_list|<
-name|Boolean
-argument_list|>
-argument_list|()
-block|{
-annotation|@
-name|Override
-specifier|public
-name|Boolean
-name|get
-parameter_list|()
-block|{
-name|LocatedBlock
-name|lb
-init|=
-literal|null
-decl_stmt|;
-try|try
-block|{
-name|lb
-operator|=
-name|dfs
-operator|.
-name|getClient
-argument_list|()
-operator|.
-name|getLocatedBlocks
-argument_list|(
-name|fileName
-argument_list|,
-literal|0
-argument_list|)
-operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Exception while getting located blocks"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-return|return
-literal|false
-return|;
-block|}
-name|int
-name|actualStorageCount
-init|=
-literal|0
-decl_stmt|;
-for|for
-control|(
-name|StorageType
-name|storageType
-range|:
-name|lb
-operator|.
-name|getStorageTypes
-argument_list|()
-control|)
-block|{
-if|if
-condition|(
-name|expectedStorageType
-operator|==
-name|storageType
-condition|)
-block|{
-name|actualStorageCount
-operator|++
-expr_stmt|;
-block|}
-block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-name|expectedStorageType
-operator|+
-literal|" replica count, expected={} and actual={}"
-argument_list|,
-name|expectedStorageType
-argument_list|,
-name|actualStorageCount
-argument_list|)
-expr_stmt|;
-return|return
-name|expectedStorageCount
-operator|==
-name|actualStorageCount
-return|;
-block|}
-block|}
-argument_list|,
-literal|100
-argument_list|,
-name|timeout
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 end_class

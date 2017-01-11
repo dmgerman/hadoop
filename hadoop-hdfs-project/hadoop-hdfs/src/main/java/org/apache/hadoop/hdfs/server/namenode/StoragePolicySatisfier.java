@@ -938,6 +938,15 @@ condition|)
 block|{
 try|try
 block|{
+if|if
+condition|(
+operator|!
+name|namesystem
+operator|.
+name|isInSafeMode
+argument_list|()
+condition|)
+block|{
 name|Long
 name|blockCollectionID
 init|=
@@ -990,6 +999,7 @@ argument_list|,
 name|allBlockLocsAttemptedToSatisfy
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|// TODO: We can think to make this as configurable later, how frequently

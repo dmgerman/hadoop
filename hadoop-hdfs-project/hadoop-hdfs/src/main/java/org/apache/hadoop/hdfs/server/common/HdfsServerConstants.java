@@ -1378,6 +1378,12 @@ name|XATTR_ERASURECODING_POLICY
 init|=
 literal|"system.hdfs.erasurecoding.policy"
 decl_stmt|;
+DECL|field|XATTR_SATISFY_STORAGE_POLICY
+name|String
+name|XATTR_SATISFY_STORAGE_POLICY
+init|=
+literal|"system.hdfs.satisfy.storage.policy"
+decl_stmt|;
 DECL|field|MOVER_ID_PATH
 name|Path
 name|MOVER_ID_PATH
