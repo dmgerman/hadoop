@@ -96,6 +96,28 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|crypto
+operator|.
+name|key
+operator|.
+name|kms
+operator|.
+name|server
+operator|.
+name|KMSACLs
+operator|.
+name|Type
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|UserGroupInformation
@@ -156,9 +178,7 @@ decl_stmt|;
 DECL|field|op
 specifier|private
 specifier|final
-name|KMS
-operator|.
-name|KMSOp
+name|Object
 name|op
 decl_stmt|;
 DECL|field|keyName
@@ -209,12 +229,11 @@ name|endTime
 init|=
 name|startTime
 decl_stmt|;
-DECL|method|AuditEvent (KMS.KMSOp op, UserGroupInformation ugi, String keyName, String remoteHost, String msg)
+comment|/**      * @param op      *          The operation being audited (either {@link KMS.KMSOp} or      *          {@link Type} N.B this is passed as an {@link Object} to allow      *          either enum to be passed in.      * @param ugi      *          The user's security context      * @param keyName      *          The String name of the key if applicable      * @param remoteHost      *          The hostname of the requesting service      * @param msg      *          Any extra details for auditing      */
+DECL|method|AuditEvent (Object op, UserGroupInformation ugi, String keyName, String remoteHost, String msg)
 name|AuditEvent
 parameter_list|(
-name|KMS
-operator|.
-name|KMSOp
+name|Object
 name|op
 parameter_list|,
 name|UserGroupInformation
@@ -335,9 +354,7 @@ return|;
 block|}
 DECL|method|getOp ()
 specifier|public
-name|KMS
-operator|.
-name|KMSOp
+name|Object
 name|getOp
 parameter_list|()
 block|{

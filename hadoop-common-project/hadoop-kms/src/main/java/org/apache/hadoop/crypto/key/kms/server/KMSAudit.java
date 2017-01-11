@@ -116,6 +116,50 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|crypto
+operator|.
+name|key
+operator|.
+name|kms
+operator|.
+name|server
+operator|.
+name|KMSACLs
+operator|.
+name|Type
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|crypto
+operator|.
+name|key
+operator|.
+name|kms
+operator|.
+name|server
+operator|.
+name|KeyAuthorizationKeyProvider
+operator|.
+name|KeyOpType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|UserGroupInformation
@@ -1019,7 +1063,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|op (final OpStatus opStatus, final KMS.KMSOp op, final UserGroupInformation ugi, final String key, final String remoteHost, final String extraMsg)
+comment|/**    * Logs to the audit service a single operation on the KMS or on a key.    *    * @param opStatus    *          The outcome of the audited event    * @param op    *          The operation being audited (either {@link KMS.KMSOp} or    *          {@link Type} N.B this is passed as an {@link Object} to allow    *          either enum to be passed in.    * @param ugi    *          The user's security context    * @param key    *          The String name of the key if applicable    * @param remoteHost    *          The hostname of the requesting service    * @param extraMsg    *          Any extra details for auditing    */
+DECL|method|op (final OpStatus opStatus, final Object op, final UserGroupInformation ugi, final String key, final String remoteHost, final String extraMsg)
 specifier|private
 name|void
 name|op
@@ -1029,9 +1074,7 @@ name|OpStatus
 name|opStatus
 parameter_list|,
 specifier|final
-name|KMS
-operator|.
-name|KMSOp
+name|Object
 name|op
 parameter_list|,
 specifier|final
@@ -1373,6 +1416,39 @@ literal|""
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|unauthorized (UserGroupInformation user, KeyOpType op, String key)
+specifier|public
+name|void
+name|unauthorized
+parameter_list|(
+name|UserGroupInformation
+name|user
+parameter_list|,
+name|KeyOpType
+name|op
+parameter_list|,
+name|String
+name|key
+parameter_list|)
+block|{
+name|op
+argument_list|(
+name|OpStatus
+operator|.
+name|UNAUTHORIZED
+argument_list|,
+name|op
+argument_list|,
+name|user
+argument_list|,
+name|key
+argument_list|,
+literal|"Unknown"
+argument_list|,
+literal|""
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|error (UserGroupInformation user, String method, String url, String extraMsg)
 specifier|public
 name|void
@@ -1469,7 +1545,7 @@ literal|"'"
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|createCacheKey (String user, String key, KMS.KMSOp op)
+DECL|method|createCacheKey (String user, String key, Object op)
 specifier|private
 specifier|static
 name|String
@@ -1481,9 +1557,7 @@ parameter_list|,
 name|String
 name|key
 parameter_list|,
-name|KMS
-operator|.
-name|KMSOp
+name|Object
 name|op
 parameter_list|)
 block|{
