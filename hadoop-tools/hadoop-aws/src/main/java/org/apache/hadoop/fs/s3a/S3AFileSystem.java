@@ -134,18 +134,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|concurrent
-operator|.
-name|ExecutorService
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Objects
 import|;
 end_import
@@ -1277,8 +1265,8 @@ specifier|private
 name|int
 name|blockOutputActiveBlocks
 decl_stmt|;
-comment|/** Called after a new FileSystem instance is constructed.    * @param name a uri whose authority section names the host, port, etc.    *   for this FileSystem    * @param conf the configuration    */
-DECL|method|initialize (URI name, Configuration conf)
+comment|/** Called after a new FileSystem instance is constructed.    * @param name a uri whose authority section names the host, port, etc.    *   for this FileSystem    * @param originalConf the configuration to use for the FS. The    * bucket-specific options are patched over the base ones before any use is    * made of the config.    */
+DECL|method|initialize (URI name, Configuration originalConf)
 specifier|public
 name|void
 name|initialize
@@ -1287,11 +1275,44 @@ name|URI
 name|name
 parameter_list|,
 name|Configuration
-name|conf
+name|originalConf
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|uri
+operator|=
+name|S3xLoginHelper
+operator|.
+name|buildFSURI
+argument_list|(
+name|name
+argument_list|)
+expr_stmt|;
+comment|// get the host; this is guaranteed to be non-null, non-empty
+name|bucket
+operator|=
+name|name
+operator|.
+name|getHost
+argument_list|()
+expr_stmt|;
+comment|// clone the configuration into one with propagated bucket options
+name|Configuration
+name|conf
+init|=
+name|propagateBucketOptions
+argument_list|(
+name|originalConf
+argument_list|,
+name|bucket
+argument_list|)
+decl_stmt|;
+name|patchSecurityCredentialProviders
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|super
 operator|.
 name|initialize
@@ -1312,15 +1333,6 @@ name|instrumentation
 operator|=
 operator|new
 name|S3AInstrumentation
-argument_list|(
-name|name
-argument_list|)
-expr_stmt|;
-name|uri
-operator|=
-name|S3xLoginHelper
-operator|.
-name|buildFSURI
 argument_list|(
 name|name
 argument_list|)
@@ -1357,13 +1369,6 @@ operator|.
 name|getWorkingDirectory
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|bucket
-operator|=
-name|name
-operator|.
-name|getHost
-argument_list|()
 expr_stmt|;
 name|Class
 argument_list|<

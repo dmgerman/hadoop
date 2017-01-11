@@ -114,6 +114,16 @@ name|AWS_CREDENTIALS_PROVIDER
 init|=
 literal|"fs.s3a.aws.credentials.provider"
 decl_stmt|;
+comment|/**    * Extra set of security credentials which will be prepended to that    * set in {@code "hadoop.security.credential.provider.path"}.    * This extra option allows for per-bucket overrides.    */
+DECL|field|S3A_SECURITY_CREDENTIAL_PROVIDER_PATH
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|S3A_SECURITY_CREDENTIAL_PROVIDER_PATH
+init|=
+literal|"fs.s3a.security.credential.provider.path"
+decl_stmt|;
 comment|// session token for when using TemporaryAWSCredentialsProvider
 DECL|field|SESSION_TOKEN
 specifier|public
@@ -726,6 +736,26 @@ name|String
 name|FS_S3A
 init|=
 literal|"s3a"
+decl_stmt|;
+comment|/** Prefix for all S3A properties: {@value}. */
+DECL|field|FS_S3A_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_S3A_PREFIX
+init|=
+literal|"fs.s3a."
+decl_stmt|;
+comment|/** Prefix for S3A bucket-specific properties: {@value}. */
+DECL|field|FS_S3A_BUCKET_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_S3A_BUCKET_PREFIX
+init|=
+literal|"fs.s3a.bucket."
 decl_stmt|;
 DECL|field|S3A_DEFAULT_PORT
 specifier|public

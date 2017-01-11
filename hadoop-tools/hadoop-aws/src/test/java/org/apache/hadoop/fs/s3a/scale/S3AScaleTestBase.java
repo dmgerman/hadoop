@@ -162,16 +162,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|junit
-operator|.
-name|Assume
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -322,8 +312,6 @@ name|getOperationCount
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// multipart purges are disabled on the scale tests
-comment|// check for the test being enabled
 name|enabled
 operator|=
 name|getTestPropertyBool
@@ -336,9 +324,7 @@ argument_list|,
 name|DEFAULT_SCALE_TESTS_ENABLED
 argument_list|)
 expr_stmt|;
-name|Assume
-operator|.
-name|assumeTrue
+name|assume
 argument_list|(
 literal|"Scale test disabled: to enable set property "
 operator|+

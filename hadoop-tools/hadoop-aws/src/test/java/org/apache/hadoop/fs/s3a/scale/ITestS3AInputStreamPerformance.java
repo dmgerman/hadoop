@@ -180,22 +180,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
-operator|.
-name|s3a
-operator|.
-name|S3ATestUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|io
 operator|.
 name|IOUtils
@@ -279,16 +263,6 @@ operator|.
 name|junit
 operator|.
 name|Assert
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Assume
 import|;
 end_import
 
@@ -385,6 +359,24 @@ operator|.
 name|Constants
 operator|.
 name|*
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3ATestUtils
+operator|.
+name|assume
 import|;
 end_import
 
@@ -545,6 +537,13 @@ literal|"Empty test property: "
 operator|+
 name|KEY_CSVTEST_FILE
 expr_stmt|;
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|assumptionMessage
+argument_list|)
+expr_stmt|;
 name|testDataAvailable
 operator|=
 literal|false
@@ -552,19 +551,21 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|S3ATestUtils
-operator|.
-name|useCSVDataEndpoint
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 name|testData
 operator|=
 operator|new
 name|Path
 argument_list|(
 name|testFile
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Using {} as input stream source"
+argument_list|,
+name|testData
 argument_list|)
 expr_stmt|;
 name|Path
@@ -684,9 +685,7 @@ name|void
 name|requireCSVTestData
 parameter_list|()
 block|{
-name|Assume
-operator|.
-name|assumeTrue
+name|assume
 argument_list|(
 name|assumptionMessage
 argument_list|,
@@ -745,7 +744,7 @@ name|readahead
 argument_list|)
 return|;
 block|}
-comment|/**    * Open a test file with the read buffer specified in the setting    * {@link #KEY_READ_BUFFER_SIZE}.    *    * @param path path to open    * @param inputPolicy input policy to use    * @param readahead readahead/buffer size    * @return the stream, wrapping an S3a one    * @throws IOException IO problems    */
+comment|/**    * Open a test file with the read buffer specified in the setting    * {@link org.apache.hadoop.fs.s3a.S3ATestConstants#KEY_READ_BUFFER_SIZE}.    *    * @param path path to open    * @param inputPolicy input policy to use    * @param readahead readahead/buffer size    * @return the stream, wrapping an S3a one    * @throws IOException IO problems    */
 DECL|method|openDataFile (S3AFileSystem fs, Path path, S3AInputPolicy inputPolicy, long readahead)
 specifier|private
 name|FSDataInputStream

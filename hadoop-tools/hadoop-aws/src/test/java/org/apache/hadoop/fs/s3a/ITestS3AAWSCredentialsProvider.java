@@ -660,13 +660,6 @@ name|DEFAULT_CSVTEST_FILE
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|S3ATestUtils
-operator|.
-name|useCSVDataEndpoint
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 name|FileSystem
 name|fs
 init|=
