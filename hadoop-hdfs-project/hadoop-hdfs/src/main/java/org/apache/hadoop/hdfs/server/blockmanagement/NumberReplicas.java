@@ -372,20 +372,11 @@ name|decommissionedAndDecommissioning
 parameter_list|()
 block|{
 return|return
-call|(
-name|int
-call|)
-argument_list|(
-name|get
-argument_list|(
-name|DECOMMISSIONED
-argument_list|)
+name|decommissioned
+argument_list|()
 operator|+
-name|get
-argument_list|(
-name|DECOMMISSIONING
-argument_list|)
-argument_list|)
+name|decommissioning
+argument_list|()
 return|;
 block|}
 comment|/**    *    * @return decommissioned replicas only    */

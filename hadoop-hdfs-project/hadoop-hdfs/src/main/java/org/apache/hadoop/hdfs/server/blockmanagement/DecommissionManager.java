@@ -2475,18 +2475,21 @@ name|firstReplicationLog
 init|=
 literal|true
 decl_stmt|;
+comment|// Low redundancy in UC Blocks only
+name|int
+name|lowRedundancyInOpenFiles
+init|=
+literal|0
+decl_stmt|;
+comment|// All low redundancy blocks. Includes lowRedundancyInOpenFiles.
 name|int
 name|lowRedundancyBlocks
 init|=
 literal|0
 decl_stmt|;
+comment|// All maintenance and decommission replicas.
 name|int
 name|outOfServiceOnlyReplicas
-init|=
-literal|0
-decl_stmt|;
-name|int
-name|lowRedundancyInOpenFiles
 init|=
 literal|0
 decl_stmt|;
@@ -2877,11 +2880,11 @@ argument_list|()
 operator|.
 name|set
 argument_list|(
+name|lowRedundancyInOpenFiles
+argument_list|,
 name|lowRedundancyBlocks
 argument_list|,
 name|outOfServiceOnlyReplicas
-argument_list|,
-name|lowRedundancyInOpenFiles
 argument_list|)
 expr_stmt|;
 block|}

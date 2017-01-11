@@ -3226,19 +3226,19 @@ specifier|private
 name|long
 name|startTime
 decl_stmt|;
-DECL|method|set (int underRep, int onlyRep, int underConstruction)
+DECL|method|set (int underRepInOpenFiles, int underRepBlocks, int outOfServiceOnlyRep)
 specifier|synchronized
 name|void
 name|set
 parameter_list|(
 name|int
-name|underRep
+name|underRepInOpenFiles
 parameter_list|,
 name|int
-name|onlyRep
+name|underRepBlocks
 parameter_list|,
 name|int
-name|underConstruction
+name|outOfServiceOnlyRep
 parameter_list|)
 block|{
 if|if
@@ -3254,17 +3254,17 @@ condition|)
 block|{
 return|return;
 block|}
+name|underReplicatedInOpenFiles
+operator|=
+name|underRepInOpenFiles
+expr_stmt|;
 name|underReplicatedBlocks
 operator|=
-name|underRep
+name|underRepBlocks
 expr_stmt|;
 name|outOfServiceOnlyReplicas
 operator|=
-name|onlyRep
-expr_stmt|;
-name|underReplicatedInOpenFiles
-operator|=
-name|underConstruction
+name|outOfServiceOnlyRep
 expr_stmt|;
 block|}
 comment|/** @return the number of under-replicated blocks */

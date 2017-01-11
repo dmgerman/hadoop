@@ -255,6 +255,12 @@ name|String
 name|getDecomNodes
 parameter_list|()
 function_decl|;
+comment|/**    * Gets the information on nodes entering maintenance.    *    * @return the information on nodes entering maintenance    */
+DECL|method|getEnteringMaintenanceNodes ()
+name|String
+name|getEnteringMaintenanceNodes
+parameter_list|()
+function_decl|;
 comment|/**    * Gets the cluster id.    *     * @return the cluster id    */
 DECL|method|getClusterId ()
 specifier|public
