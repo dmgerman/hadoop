@@ -2155,7 +2155,7 @@ name|Assert
 operator|.
 name|fail
 argument_list|(
-literal|"Exception is not expteced."
+literal|"Exception is not expected."
 argument_list|)
 expr_stmt|;
 block|}

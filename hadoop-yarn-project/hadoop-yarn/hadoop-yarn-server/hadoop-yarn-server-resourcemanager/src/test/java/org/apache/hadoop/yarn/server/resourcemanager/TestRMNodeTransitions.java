@@ -7247,7 +7247,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"Unhelathy Nodes"
+literal|"Unhealthy Nodes"
 argument_list|,
 name|initialUnHealthy
 argument_list|,

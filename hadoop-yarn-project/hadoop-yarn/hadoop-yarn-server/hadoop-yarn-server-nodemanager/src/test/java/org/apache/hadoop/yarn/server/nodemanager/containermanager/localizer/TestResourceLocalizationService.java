@@ -15278,7 +15278,7 @@ throw|throw
 operator|new
 name|Exception
 argument_list|(
-literal|"Unexpected resource recevied."
+literal|"Unexpected resource received."
 argument_list|)
 throw|;
 block|}

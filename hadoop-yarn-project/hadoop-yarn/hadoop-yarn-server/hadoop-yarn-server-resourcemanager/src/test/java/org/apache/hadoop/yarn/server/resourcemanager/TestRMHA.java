@@ -3459,7 +3459,7 @@ name|getDispatcher
 argument_list|()
 operator|)
 decl_stmt|;
-comment|// Verify transistion to transitionToStandby
+comment|// Verify transition to transitionToStandby
 name|rm
 operator|.
 name|adminService
@@ -3514,7 +3514,7 @@ name|Assert
 operator|.
 name|fail
 argument_list|(
-literal|"Transistion to Active should have failed for refreshAll()"
+literal|"Transition to Active should have failed for refreshAll()"
 argument_list|)
 expr_stmt|;
 block|}

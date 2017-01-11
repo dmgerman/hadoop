@@ -1596,7 +1596,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"Exclude protential property: %s\n"
+literal|"Exclude potential property: %s\n"
 argument_list|,
 name|gsp
 operator|.

@@ -1175,7 +1175,7 @@ argument_list|)
 expr_stmt|;
 name|fail
 argument_list|(
-literal|"resourceInfo object shouldnt be available for finished apps"
+literal|"resourceInfo object shouldn't be available for finished apps"
 argument_list|)
 expr_stmt|;
 block|}

@@ -1020,7 +1020,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-literal|"Node script time out message not propogated"
+literal|"Node script time out message not propagated"
 argument_list|,
 name|healthStatus
 operator|.

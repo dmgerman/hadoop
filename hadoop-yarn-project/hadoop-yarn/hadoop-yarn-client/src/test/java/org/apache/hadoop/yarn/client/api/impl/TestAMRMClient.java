@@ -2080,7 +2080,7 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|"Expected no macthing requests."
+literal|"Expected no matching requests."
 argument_list|,
 name|matches
 operator|.

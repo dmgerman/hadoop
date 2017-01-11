@@ -964,7 +964,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-literal|"invalid label charactor should not add to repo"
+literal|"invalid label character should not add to repo"
 argument_list|,
 name|caught
 argument_list|)

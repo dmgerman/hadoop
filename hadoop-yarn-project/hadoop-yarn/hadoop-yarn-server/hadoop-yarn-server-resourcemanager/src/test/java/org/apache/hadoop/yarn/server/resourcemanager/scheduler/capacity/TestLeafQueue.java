@@ -6194,7 +6194,7 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-literal|"Exepected AbsoluteUsedCapacity> 0.95, got: "
+literal|"Expected AbsoluteUsedCapacity> 0.95, got: "
 operator|+
 name|b
 operator|.
