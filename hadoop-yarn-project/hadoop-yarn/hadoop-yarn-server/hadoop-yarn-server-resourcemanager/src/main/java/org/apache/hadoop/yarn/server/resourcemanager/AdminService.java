@@ -4024,10 +4024,9 @@ throw|throw
 operator|new
 name|ServiceFailedException
 argument_list|(
+literal|"RefreshAll operation failed"
+argument_list|,
 name|ex
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
 throw|;
 block|}

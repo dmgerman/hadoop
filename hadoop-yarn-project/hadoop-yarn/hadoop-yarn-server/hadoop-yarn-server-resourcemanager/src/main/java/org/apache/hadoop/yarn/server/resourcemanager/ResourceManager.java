@@ -2377,44 +2377,6 @@ operator|.
 name|conf
 argument_list|)
 expr_stmt|;
-comment|// If the RM is configured to use an embedded leader elector,
-comment|// initialize the leader elector.
-if|if
-condition|(
-name|HAUtil
-operator|.
-name|isAutomaticFailoverEnabled
-argument_list|(
-name|conf
-argument_list|)
-operator|&&
-name|HAUtil
-operator|.
-name|isAutomaticFailoverEmbedded
-argument_list|(
-name|conf
-argument_list|)
-condition|)
-block|{
-name|EmbeddedElector
-name|elector
-init|=
-name|createEmbeddedElector
-argument_list|()
-decl_stmt|;
-name|addIfService
-argument_list|(
-name|elector
-argument_list|)
-expr_stmt|;
-name|rmContext
-operator|.
-name|setLeaderElectorService
-argument_list|(
-name|elector
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 comment|// Set UGI and do login
 comment|// If security is enabled, use login user
@@ -2468,6 +2430,10 @@ argument_list|(
 name|rmDispatcher
 argument_list|)
 expr_stmt|;
+comment|// The order of services below should not be changed as services will be
+comment|// started in same order
+comment|// As elector service needs admin service to be initialized and started,
+comment|// first we add admin service then elector service
 name|adminService
 operator|=
 name|createAdminService
@@ -2485,6 +2451,56 @@ argument_list|(
 name|adminService
 argument_list|)
 expr_stmt|;
+comment|// elector must be added post adminservice
+if|if
+condition|(
+name|this
+operator|.
+name|rmContext
+operator|.
+name|isHAEnabled
+argument_list|()
+condition|)
+block|{
+comment|// If the RM is configured to use an embedded leader elector,
+comment|// initialize the leader elector.
+if|if
+condition|(
+name|HAUtil
+operator|.
+name|isAutomaticFailoverEnabled
+argument_list|(
+name|conf
+argument_list|)
+operator|&&
+name|HAUtil
+operator|.
+name|isAutomaticFailoverEmbedded
+argument_list|(
+name|conf
+argument_list|)
+condition|)
+block|{
+name|EmbeddedElector
+name|elector
+init|=
+name|createEmbeddedElector
+argument_list|()
+decl_stmt|;
+name|addIfService
+argument_list|(
+name|elector
+argument_list|)
+expr_stmt|;
+name|rmContext
+operator|.
+name|setLeaderElectorService
+argument_list|(
+name|elector
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 name|rmContext
 operator|.
 name|setYarnConfiguration
