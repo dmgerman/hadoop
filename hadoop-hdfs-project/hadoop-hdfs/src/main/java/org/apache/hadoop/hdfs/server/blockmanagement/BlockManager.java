@@ -2403,6 +2403,13 @@ specifier|final
 name|ProvidedStorageMap
 name|providedStorageMap
 decl_stmt|;
+comment|/**    * Whether HA is enabled.    */
+DECL|field|haEnabled
+specifier|private
+specifier|final
+name|boolean
+name|haEnabled
+decl_stmt|;
 DECL|method|BlockManager (final Namesystem namesystem, boolean haEnabled, final Configuration conf)
 specifier|public
 name|BlockManager
@@ -2426,6 +2433,12 @@ operator|.
 name|namesystem
 operator|=
 name|namesystem
+expr_stmt|;
+name|this
+operator|.
+name|haEnabled
+operator|=
+name|haEnabled
 expr_stmt|;
 name|datanodeManager
 operator|=
@@ -3814,6 +3827,9 @@ condition|(
 name|sps
 operator|!=
 literal|null
+operator|&&
+operator|!
+name|haEnabled
 condition|)
 block|{
 name|sps
