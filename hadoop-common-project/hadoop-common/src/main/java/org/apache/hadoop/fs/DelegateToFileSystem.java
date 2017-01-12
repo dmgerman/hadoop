@@ -723,7 +723,10 @@ name|getUriDefaultPort
 parameter_list|()
 block|{
 return|return
-name|DELEGATE_TO_FS_DEFAULT_PORT
+name|getDefaultPortIfDefined
+argument_list|(
+name|fsImpl
+argument_list|)
 return|;
 block|}
 annotation|@
