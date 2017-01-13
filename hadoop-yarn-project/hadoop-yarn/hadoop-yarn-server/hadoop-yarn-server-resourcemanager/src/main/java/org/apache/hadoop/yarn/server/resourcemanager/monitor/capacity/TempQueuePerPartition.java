@@ -220,6 +220,11 @@ DECL|field|preemptionDisabled
 name|boolean
 name|preemptionDisabled
 decl_stmt|;
+DECL|field|pendingDeductReserved
+specifier|protected
+name|Resource
+name|pendingDeductReserved
+decl_stmt|;
 DECL|method|TempQueuePerPartition (String queueName, Resource current, boolean preemptionDisabled, String partition, Resource killable, float absCapacity, float absMaxCapacity, Resource totalPartitionResource, Resource reserved, CSQueue queue)
 name|TempQueuePerPartition
 parameter_list|(
@@ -305,6 +310,21 @@ argument_list|(
 name|totalPartitionResource
 argument_list|,
 name|partition
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+name|pendingDeductReserved
+operator|=
+name|l
+operator|.
+name|getTotalPendingResourcesConsideringUserLimit
+argument_list|(
+name|totalPartitionResource
+argument_list|,
+name|partition
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|leafQueue
@@ -315,6 +335,15 @@ block|}
 else|else
 block|{
 name|pending
+operator|=
+name|Resources
+operator|.
+name|createResource
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+name|pendingDeductReserved
 operator|=
 name|Resources
 operator|.
@@ -470,6 +499,17 @@ operator|.
 name|pending
 argument_list|)
 expr_stmt|;
+name|Resources
+operator|.
+name|addTo
+argument_list|(
+name|pendingDeductReserved
+argument_list|,
+name|q
+operator|.
+name|pendingDeductReserved
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|getChildren ()
 specifier|public
@@ -482,23 +522,6 @@ parameter_list|()
 block|{
 return|return
 name|children
-return|;
-block|}
-DECL|method|getUsedDeductReservd ()
-specifier|public
-name|Resource
-name|getUsedDeductReservd
-parameter_list|()
-block|{
-return|return
-name|Resources
-operator|.
-name|subtract
-argument_list|(
-name|current
-argument_list|,
-name|reserved
-argument_list|)
 return|;
 block|}
 comment|// This function "accepts" all the resources it can (pending) and return
@@ -573,7 +596,7 @@ argument_list|,
 name|avail
 argument_list|,
 name|Resources
-comment|/*              * When we're using FifoPreemptionSelector (considerReservedResource              * = false).              *              * We should deduct reserved resource to avoid excessive preemption:              *              * For example, if an under-utilized queue has used = reserved = 20.              * Preemption policy will try to preempt 20 containers (which is not              * satisfied) from different hosts.              *              * In FifoPreemptionSelector, there's no guarantee that preempted              * resource can be used by pending request, so policy will preempt              * resources repeatly.              */
+comment|/*              * When we're using FifoPreemptionSelector (considerReservedResource              * = false).              *              * We should deduct reserved resource from pending to avoid excessive              * preemption:              *              * For example, if an under-utilized queue has used = reserved = 20.              * Preemption policy will try to preempt 20 containers (which is not              * satisfied) from different hosts.              *              * In FifoPreemptionSelector, there's no guarantee that preempted              * resource can be used by pending request, so policy will preempt              * resources repeatly.              */
 operator|.
 name|subtract
 argument_list|(
@@ -581,17 +604,16 @@ name|Resources
 operator|.
 name|add
 argument_list|(
+name|getUsed
+argument_list|()
+argument_list|,
 operator|(
 name|considersReservedResource
 condition|?
-name|getUsed
-argument_list|()
-else|:
-name|getUsedDeductReservd
-argument_list|()
-operator|)
-argument_list|,
 name|pending
+else|:
+name|pendingDeductReserved
+operator|)
 argument_list|)
 argument_list|,
 name|idealAssigned

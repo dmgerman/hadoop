@@ -6010,6 +6010,7 @@ return|return
 literal|false
 return|;
 block|}
+comment|/*    * Note that the behavior of appAttemptResourceUsage is different from queue's    * For queue, used = actual-used + reserved    * For app, used = actual-used.    *    * TODO (wangda): Need to make behaviors of queue/app's resource usage    * consistent    */
 annotation|@
 name|VisibleForTesting
 DECL|method|getAppAttemptResourceUsage ()

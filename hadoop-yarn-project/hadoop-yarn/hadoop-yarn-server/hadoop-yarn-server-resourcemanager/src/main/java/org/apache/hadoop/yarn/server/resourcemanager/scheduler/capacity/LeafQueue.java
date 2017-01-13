@@ -10120,20 +10120,20 @@ name|apps
 argument_list|)
 return|;
 block|}
-comment|// Consider the headroom for each user in the queue.
-comment|// Total pending for the queue =
-comment|//   sum(for each user(min((user's headroom), sum(user's pending requests))))
-comment|//  NOTE: Used for calculating pedning resources in the preemption monitor.
-DECL|method|getTotalPendingResourcesConsideringUserLimit ( Resource resources, String partition)
+comment|/**    * Get total pending resource considering user limit for the leaf queue. This    * will be used for calculating pending resources in the preemption monitor.    *    * Consider the headroom for each user in the queue.    * Total pending for the queue =    * sum(for each user(min((user's headroom), sum(user's pending requests))))    * NOTE:     * @param clusterResources clusterResource    * @param partition node partition    * @param deductReservedFromPending When a container is reserved in CS,    *                                  pending resource will not be deducted.    *                                  This could lead to double accounting when    *                                  doing preemption:    *                                  In normal cases, we should deduct reserved    *                                  resource from pending to avoid    *                                  excessive preemption.    * @return Total pending resource considering user limit    */
+DECL|method|getTotalPendingResourcesConsideringUserLimit ( Resource clusterResources, String partition, boolean deductReservedFromPending)
 specifier|public
 name|Resource
 name|getTotalPendingResourcesConsideringUserLimit
 parameter_list|(
 name|Resource
-name|resources
+name|clusterResources
 parameter_list|,
 name|String
 name|partition
+parameter_list|,
+name|boolean
+name|deductReservedFromPending
 parameter_list|)
 block|{
 try|try
@@ -10157,7 +10157,7 @@ argument_list|<>
 argument_list|()
 decl_stmt|;
 name|Resource
-name|pendingConsideringUserLimit
+name|totalPendingConsideringUserLimit
 init|=
 name|Resource
 operator|.
@@ -10218,7 +10218,7 @@ operator|.
 name|getUser
 argument_list|()
 argument_list|,
-name|resources
+name|clusterResources
 argument_list|,
 name|user
 argument_list|,
@@ -10262,6 +10262,59 @@ name|headroom
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Check if we need to deduct reserved from pending
+name|Resource
+name|pending
+init|=
+name|app
+operator|.
+name|getAppAttemptResourceUsage
+argument_list|()
+operator|.
+name|getPending
+argument_list|(
+name|partition
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|deductReservedFromPending
+condition|)
+block|{
+name|pending
+operator|=
+name|Resources
+operator|.
+name|subtract
+argument_list|(
+name|pending
+argument_list|,
+name|app
+operator|.
+name|getAppAttemptResourceUsage
+argument_list|()
+operator|.
+name|getReserved
+argument_list|(
+name|partition
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+name|pending
+operator|=
+name|Resources
+operator|.
+name|componentwiseMax
+argument_list|(
+name|pending
+argument_list|,
+name|Resources
+operator|.
+name|none
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|Resource
 name|minpendingConsideringUserLimit
 init|=
@@ -10276,22 +10329,14 @@ argument_list|(
 name|userName
 argument_list|)
 argument_list|,
-name|app
-operator|.
-name|getAppAttemptResourceUsage
-argument_list|()
-operator|.
-name|getPending
-argument_list|(
-name|partition
-argument_list|)
+name|pending
 argument_list|)
 decl_stmt|;
 name|Resources
 operator|.
 name|addTo
 argument_list|(
-name|pendingConsideringUserLimit
+name|totalPendingConsideringUserLimit
 argument_list|,
 name|minpendingConsideringUserLimit
 argument_list|)
@@ -10312,7 +10357,7 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|pendingConsideringUserLimit
+name|totalPendingConsideringUserLimit
 return|;
 block|}
 finally|finally
