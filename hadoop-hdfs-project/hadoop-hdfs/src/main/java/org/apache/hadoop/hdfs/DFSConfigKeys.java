@@ -6504,7 +6504,7 @@ specifier|final
 name|int
 name|DFS_DISK_BALANCER_BLOCK_TOLERANCE_DEFAULT
 init|=
-literal|5
+literal|10
 decl_stmt|;
 DECL|field|DFS_DISK_BALANCER_PLAN_THRESHOLD
 specifier|public
