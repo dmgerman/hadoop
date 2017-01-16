@@ -425,6 +425,25 @@ name|NFS_SUPERUSER_DEFAULT
 init|=
 literal|""
 decl_stmt|;
+comment|/*    * Timeout value in millisecond for rpc connection to portmap    */
+DECL|field|NFS_UDP_CLIENT_PORTMAP_TIMEOUT_MILLIS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NFS_UDP_CLIENT_PORTMAP_TIMEOUT_MILLIS_KEY
+init|=
+literal|"nfs.udp.client.portmap.timeout.millis"
+decl_stmt|;
+DECL|field|NFS_UDP_CLIENT_PORTMAP_TIMEOUT_MILLIS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|NFS_UDP_CLIENT_PORTMAP_TIMEOUT_MILLIS_DEFAULT
+init|=
+literal|500
+decl_stmt|;
 block|}
 end_class
 

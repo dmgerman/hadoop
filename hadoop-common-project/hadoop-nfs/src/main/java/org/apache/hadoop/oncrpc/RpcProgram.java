@@ -58,6 +58,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -316,7 +330,13 @@ specifier|final
 name|DatagramSocket
 name|registrationSocket
 decl_stmt|;
-comment|/**    * Constructor    *     * @param program program name    * @param host host where the Rpc server program is started    * @param port port where the Rpc server program is listening to    * @param progNumber program number as defined in RFC 1050    * @param lowProgVersion lowest version of the specification supported    * @param highProgVersion highest version of the specification supported    * @param registrationSocket if not null, use this socket to register    *        with portmap daemon    * @param allowInsecurePorts true to allow client connections from    *        unprivileged ports, false otherwise    */
+comment|/*    * Timeout value in millisecond for the rpc connection to portmap    */
+DECL|field|portmapUdpTimeoutMillis
+specifier|private
+specifier|final
+name|int
+name|portmapUdpTimeoutMillis
+decl_stmt|;
 DECL|method|RpcProgram (String program, String host, int port, int progNumber, int lowProgVersion, int highProgVersion, DatagramSocket registrationSocket, boolean allowInsecurePorts)
 specifier|protected
 name|RpcProgram
@@ -344,6 +364,61 @@ name|registrationSocket
 parameter_list|,
 name|boolean
 name|allowInsecurePorts
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|program
+argument_list|,
+name|host
+argument_list|,
+name|port
+argument_list|,
+name|progNumber
+argument_list|,
+name|lowProgVersion
+argument_list|,
+name|highProgVersion
+argument_list|,
+name|registrationSocket
+argument_list|,
+name|allowInsecurePorts
+argument_list|,
+literal|500
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Constructor    *     * @param program program name    * @param host host where the Rpc server program is started    * @param port port where the Rpc server program is listening to    * @param progNumber program number as defined in RFC 1050    * @param lowProgVersion lowest version of the specification supported    * @param highProgVersion highest version of the specification supported    * @param registrationSocket if not null, use this socket to register    *        with portmap daemon    * @param allowInsecurePorts true to allow client connections from    *        unprivileged ports, false otherwise    * @param  portmapUdpTimeoutMillis timeout in milliseconds for RPC connection    */
+DECL|method|RpcProgram (String program, String host, int port, int progNumber, int lowProgVersion, int highProgVersion, DatagramSocket registrationSocket, boolean allowInsecurePorts, int portmapUdpTimeoutMillis)
+specifier|protected
+name|RpcProgram
+parameter_list|(
+name|String
+name|program
+parameter_list|,
+name|String
+name|host
+parameter_list|,
+name|int
+name|port
+parameter_list|,
+name|int
+name|progNumber
+parameter_list|,
+name|int
+name|lowProgVersion
+parameter_list|,
+name|int
+name|highProgVersion
+parameter_list|,
+name|DatagramSocket
+name|registrationSocket
+parameter_list|,
+name|boolean
+name|allowInsecurePorts
+parameter_list|,
+name|int
+name|portmapUdpTimeoutMillis
 parameter_list|)
 block|{
 name|this
@@ -393,6 +468,12 @@ operator|.
 name|allowInsecurePorts
 operator|=
 name|allowInsecurePorts
+expr_stmt|;
+name|this
+operator|.
+name|portmapUdpTimeoutMillis
+operator|=
+name|portmapUdpTimeoutMillis
 expr_stmt|;
 name|LOG
 operator|.
@@ -570,7 +651,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Register the program with Portmap or Rpcbind    * @param mapEntry port map entries    * @param set specifies registration or not    */
+comment|/**    * Register the program with Portmap or Rpcbind.    * @param mapEntry port map entries    * @param set specifies registration or not    */
 DECL|method|register (PortmapMapping mapEntry, boolean set)
 specifier|protected
 name|void
@@ -607,7 +688,11 @@ name|RPCB_PORT
 argument_list|,
 name|mappingRequest
 argument_list|,
+literal|true
+argument_list|,
 name|registrationSocket
+argument_list|,
+name|portmapUdpTimeoutMillis
 argument_list|)
 decl_stmt|;
 try|try
@@ -1195,6 +1280,18 @@ parameter_list|()
 block|{
 return|return
 name|port
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getPortmapUdpTimeoutMillis ()
+specifier|public
+name|int
+name|getPortmapUdpTimeoutMillis
+parameter_list|()
+block|{
+return|return
+name|portmapUdpTimeoutMillis
 return|;
 block|}
 block|}
