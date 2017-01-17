@@ -2859,10 +2859,7 @@ argument_list|(
 name|target
 argument_list|)
 expr_stmt|;
-name|getStorage
-argument_list|()
-operator|.
-name|writeAll
+name|updateStorageVersion
 argument_list|()
 expr_stmt|;
 block|}
@@ -5294,9 +5291,7 @@ name|isRollingUpgrade
 argument_list|()
 condition|)
 block|{
-name|storage
-operator|.
-name|writeAll
+name|updateStorageVersion
 argument_list|()
 expr_stmt|;
 block|}

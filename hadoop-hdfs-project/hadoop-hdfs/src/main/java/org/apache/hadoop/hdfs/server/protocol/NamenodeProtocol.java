@@ -400,6 +400,16 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * return whether the Namenode is rolling upgrade in progress (true) or    * not (false).    * @return    * @throws IOException    */
+annotation|@
+name|Idempotent
+DECL|method|isRollingUpgrade ()
+name|boolean
+name|isRollingUpgrade
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

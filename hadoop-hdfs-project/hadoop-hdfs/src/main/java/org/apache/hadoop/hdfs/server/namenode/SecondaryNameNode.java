@@ -5098,7 +5098,6 @@ block|}
 block|}
 block|}
 DECL|method|doMerge ( CheckpointSignature sig, RemoteEditLogManifest manifest, boolean loadImage, FSImage dstImage, FSNamesystem dstNamesystem)
-specifier|static
 name|void
 name|doMerge
 parameter_list|(
@@ -5246,15 +5245,15 @@ expr_stmt|;
 if|if
 condition|(
 operator|!
-name|dstNamesystem
+name|namenode
 operator|.
 name|isRollingUpgrade
 argument_list|()
 condition|)
 block|{
-name|dstStorage
+name|dstImage
 operator|.
-name|writeAll
+name|updateStorageVersion
 argument_list|()
 expr_stmt|;
 block|}

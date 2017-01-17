@@ -7840,6 +7840,32 @@ return|;
 block|}
 annotation|@
 name|Override
+comment|// NamenodeProtocol
+DECL|method|isRollingUpgrade ()
+specifier|public
+name|boolean
+name|isRollingUpgrade
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
+name|namesystem
+operator|.
+name|checkSuperuserPrivilege
+argument_list|()
+expr_stmt|;
+return|return
+name|namesystem
+operator|.
+name|isRollingUpgrade
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 comment|// ClientProtocol
 DECL|method|finalizeUpgrade ()
 specifier|public
