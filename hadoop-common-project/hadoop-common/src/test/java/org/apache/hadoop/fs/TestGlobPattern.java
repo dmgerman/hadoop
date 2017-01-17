@@ -204,6 +204,8 @@ argument_list|,
 literal|"foo"
 argument_list|,
 literal|"bar"
+argument_list|,
+literal|"\n"
 argument_list|)
 expr_stmt|;
 name|assertMatch
@@ -234,6 +236,10 @@ argument_list|,
 literal|"food"
 argument_list|,
 literal|"fool"
+argument_list|,
+literal|"foo\n"
+argument_list|,
+literal|"foo\nbar"
 argument_list|)
 expr_stmt|;
 name|assertMatch
@@ -245,6 +251,8 @@ argument_list|,
 literal|"fud"
 argument_list|,
 literal|"food"
+argument_list|,
+literal|"foo\nd"
 argument_list|)
 expr_stmt|;
 name|assertMatch
@@ -256,6 +264,8 @@ argument_list|,
 literal|"good"
 argument_list|,
 literal|"bad"
+argument_list|,
+literal|"\nd"
 argument_list|)
 expr_stmt|;
 name|assertMatch
