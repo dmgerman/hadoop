@@ -1412,22 +1412,6 @@ name|yarn
 operator|.
 name|util
 operator|.
-name|ConverterUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
 name|Records
 import|;
 end_import
@@ -3960,6 +3944,8 @@ argument_list|,
 name|stagingDir
 argument_list|)
 expr_stmt|;
+comment|// not initializing dispatcher to avoid potential race condition between
+comment|// the dispatcher thread& test thread - see MAPREDUCE-6831
 name|AsyncDispatcher
 name|dispatcher
 init|=
@@ -3967,18 +3953,6 @@ operator|new
 name|AsyncDispatcher
 argument_list|()
 decl_stmt|;
-name|dispatcher
-operator|.
-name|init
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-name|dispatcher
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
 name|OutputCommitter
 name|committer
 init|=
