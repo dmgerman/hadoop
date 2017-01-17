@@ -1621,9 +1621,9 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
 name|updateRequests
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 return|return
@@ -1663,9 +1663,9 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
 name|updateRequests
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 return|return

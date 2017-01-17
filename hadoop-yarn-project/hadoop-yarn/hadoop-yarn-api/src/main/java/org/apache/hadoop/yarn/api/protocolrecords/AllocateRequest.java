@@ -286,7 +286,7 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|newInstance (int responseID, float appProgress, List<ResourceRequest> resourceAsk, List<ContainerId> containersToBeReleased, ResourceBlacklistRequest resourceBlacklistRequest, List<UpdateContainerRequest> updateRequests)
+DECL|method|newInstance (int responseID, float appProgress, List<ResourceRequest> resourceAsk, List<ContainerId> containersToBeReleased, List<UpdateContainerRequest> updateRequests, ResourceBlacklistRequest resourceBlacklistRequest)
 specifier|public
 specifier|static
 name|AllocateRequest
@@ -310,14 +310,14 @@ name|ContainerId
 argument_list|>
 name|containersToBeReleased
 parameter_list|,
-name|ResourceBlacklistRequest
-name|resourceBlacklistRequest
-parameter_list|,
 name|List
 argument_list|<
 name|UpdateContainerRequest
 argument_list|>
 name|updateRequests
+parameter_list|,
+name|ResourceBlacklistRequest
+name|resourceBlacklistRequest
 parameter_list|)
 block|{
 return|return
