@@ -26,6 +26,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -124,7 +134,7 @@ name|storage
 operator|.
 name|apptoflow
 operator|.
-name|AppToFlowColumn
+name|AppToFlowColumnPrefix
 import|;
 end_import
 
@@ -188,16 +198,6 @@ name|NotFoundException
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
 begin_comment
 comment|/**  * The base class for reading timeline data from the HBase storage. This class  * provides basic support to validate and augment reader context.  */
 end_comment
@@ -249,14 +249,17 @@ return|return
 name|context
 return|;
 block|}
-comment|/**    * Looks up flow context from AppToFlow table.    *    * @param appToFlowRowKey to identify Cluster and App Ids.    * @param hbaseConf HBase configuration.    * @param conn HBase Connection.    * @return flow context information.    * @throws IOException if any problem occurs while fetching flow information.    */
-DECL|method|lookupFlowContext (AppToFlowRowKey appToFlowRowKey, Configuration hbaseConf, Connection conn)
+comment|/**    * Looks up flow context from AppToFlow table.    *    * @param appToFlowRowKey to identify Cluster and App Ids.    * @param clusterId the cluster id.    * @param hbaseConf HBase configuration.    * @param conn HBase Connection.    * @return flow context information.    * @throws IOException if any problem occurs while fetching flow information.    */
+DECL|method|lookupFlowContext (AppToFlowRowKey appToFlowRowKey, String clusterId, Configuration hbaseConf, Connection conn)
 specifier|protected
 name|FlowContext
 name|lookupFlowContext
 parameter_list|(
 name|AppToFlowRowKey
 name|appToFlowRowKey
+parameter_list|,
+name|String
+name|clusterId
 parameter_list|,
 name|Configuration
 name|hbaseConf
@@ -312,46 +315,101 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-return|return
-operator|new
-name|FlowContext
-argument_list|(
-name|AppToFlowColumn
+name|Object
+name|flowName
+init|=
+name|AppToFlowColumnPrefix
 operator|.
-name|USER_ID
-operator|.
-name|readResult
-argument_list|(
-name|result
-argument_list|)
-operator|.
-name|toString
-argument_list|()
-argument_list|,
-name|AppToFlowColumn
-operator|.
-name|FLOW_ID
+name|FLOW_NAME
 operator|.
 name|readResult
 argument_list|(
 name|result
-argument_list|)
-operator|.
-name|toString
-argument_list|()
 argument_list|,
-operator|(
-operator|(
-name|Number
-operator|)
-name|AppToFlowColumn
+name|clusterId
+argument_list|)
+decl_stmt|;
+name|Object
+name|flowRunId
+init|=
+name|AppToFlowColumnPrefix
 operator|.
 name|FLOW_RUN_ID
 operator|.
 name|readResult
 argument_list|(
 name|result
+argument_list|,
+name|clusterId
 argument_list|)
+decl_stmt|;
+name|Object
+name|userId
+init|=
+name|AppToFlowColumnPrefix
+operator|.
+name|USER_ID
+operator|.
+name|readResult
+argument_list|(
+name|result
+argument_list|,
+name|clusterId
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|flowName
+operator|==
+literal|null
+operator|||
+name|userId
+operator|==
+literal|null
+operator|||
+name|flowRunId
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|NotFoundException
+argument_list|(
+literal|"Unable to find the context flow name, and flow run id, "
+operator|+
+literal|"and user id for clusterId="
+operator|+
+name|clusterId
+operator|+
+literal|", appId="
+operator|+
+name|appToFlowRowKey
+operator|.
+name|getAppId
+argument_list|()
+argument_list|)
+throw|;
+block|}
+return|return
+operator|new
+name|FlowContext
+argument_list|(
+operator|(
+name|String
+operator|)
+name|userId
+argument_list|,
+operator|(
+name|String
+operator|)
+name|flowName
+argument_list|,
+operator|(
+operator|(
+name|Number
+operator|)
+name|flowRunId
 operator|)
 operator|.
 name|longValue
@@ -365,12 +423,11 @@ throw|throw
 operator|new
 name|NotFoundException
 argument_list|(
-literal|"Unable to find the context flow ID and flow run ID for clusterId="
+literal|"Unable to find the context flow name, and flow run id, "
 operator|+
-name|appToFlowRowKey
-operator|.
-name|getClusterId
-argument_list|()
+literal|"and user id for clusterId="
+operator|+
+name|clusterId
 operator|+
 literal|", appId="
 operator|+
@@ -455,11 +512,6 @@ name|AppToFlowRowKey
 argument_list|(
 name|context
 operator|.
-name|getClusterId
-argument_list|()
-argument_list|,
-name|context
-operator|.
 name|getAppId
 argument_list|()
 argument_list|)
@@ -470,6 +522,11 @@ init|=
 name|lookupFlowContext
 argument_list|(
 name|appToFlowRowKey
+argument_list|,
+name|context
+operator|.
+name|getClusterId
+argument_list|()
 argument_list|,
 name|hbaseConf
 argument_list|,

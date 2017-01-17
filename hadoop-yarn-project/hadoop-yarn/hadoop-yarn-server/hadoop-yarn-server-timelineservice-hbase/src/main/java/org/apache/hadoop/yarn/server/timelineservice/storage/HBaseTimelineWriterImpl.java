@@ -384,7 +384,7 @@ name|storage
 operator|.
 name|apptoflow
 operator|.
-name|AppToFlowColumn
+name|AppToFlowColumnPrefix
 import|;
 end_import
 
@@ -1469,22 +1469,11 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|AppToFlowRowKey
-name|appToFlowRowKey
-init|=
-operator|new
-name|AppToFlowRowKey
-argument_list|(
-name|clusterId
-argument_list|,
-name|appId
-argument_list|)
-decl_stmt|;
 name|onApplicationCreated
 argument_list|(
 name|flowRunRowKey
 argument_list|,
-name|appToFlowRowKey
+name|clusterId
 argument_list|,
 name|appId
 argument_list|,
@@ -1556,7 +1545,7 @@ return|return
 name|putStatus
 return|;
 block|}
-DECL|method|onApplicationCreated (FlowRunRowKey flowRunRowKey, AppToFlowRowKey appToFlowRowKey, String appId, String userId, String flowVersion, TimelineEntity te, long appCreatedTimeStamp)
+DECL|method|onApplicationCreated (FlowRunRowKey flowRunRowKey, String clusterId, String appId, String userId, String flowVersion, TimelineEntity te, long appCreatedTimeStamp)
 specifier|private
 name|void
 name|onApplicationCreated
@@ -1564,8 +1553,8 @@ parameter_list|(
 name|FlowRunRowKey
 name|flowRunRowKey
 parameter_list|,
-name|AppToFlowRowKey
-name|appToFlowRowKey
+name|String
+name|clusterId
 parameter_list|,
 name|String
 name|appId
@@ -1602,6 +1591,15 @@ name|getFlowRunId
 argument_list|()
 decl_stmt|;
 comment|// store in App to flow table
+name|AppToFlowRowKey
+name|appToFlowRowKey
+init|=
+operator|new
+name|AppToFlowRowKey
+argument_list|(
+name|appId
+argument_list|)
+decl_stmt|;
 name|byte
 index|[]
 name|rowKey
@@ -1611,9 +1609,9 @@ operator|.
 name|getRowKey
 argument_list|()
 decl_stmt|;
-name|AppToFlowColumn
+name|AppToFlowColumnPrefix
 operator|.
-name|FLOW_ID
+name|FLOW_NAME
 operator|.
 name|store
 argument_list|(
@@ -1621,12 +1619,14 @@ name|rowKey
 argument_list|,
 name|appToFlowTable
 argument_list|,
+name|clusterId
+argument_list|,
 literal|null
 argument_list|,
 name|flowName
 argument_list|)
 expr_stmt|;
-name|AppToFlowColumn
+name|AppToFlowColumnPrefix
 operator|.
 name|FLOW_RUN_ID
 operator|.
@@ -1636,12 +1636,14 @@ name|rowKey
 argument_list|,
 name|appToFlowTable
 argument_list|,
+name|clusterId
+argument_list|,
 literal|null
 argument_list|,
 name|flowRunId
 argument_list|)
 expr_stmt|;
-name|AppToFlowColumn
+name|AppToFlowColumnPrefix
 operator|.
 name|USER_ID
 operator|.
@@ -1650,6 +1652,8 @@ argument_list|(
 name|rowKey
 argument_list|,
 name|appToFlowTable
+argument_list|,
+name|clusterId
 argument_list|,
 literal|null
 argument_list|,

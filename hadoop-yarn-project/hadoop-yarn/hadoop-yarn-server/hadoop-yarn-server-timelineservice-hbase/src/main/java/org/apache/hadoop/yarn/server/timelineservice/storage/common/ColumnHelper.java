@@ -1359,7 +1359,7 @@ return|return
 name|results
 return|;
 block|}
-comment|/**    * @param columnPrefixBytes The byte representation for the column prefix.    *          Should not contain {@link Separator#QUALIFIERS}.    * @param qualifier for the remainder of the column. Any    *          {@link Separator#QUALIFIERS} will be encoded in the qualifier.    * @return fully sanitized column qualifier that is a combination of prefix    *         and qualifier. If prefix is null, the result is simply the encoded    *         qualifier without any separator.    */
+comment|/**    * @param columnPrefixBytes The byte representation for the column prefix.    *          Should not contain {@link Separator#QUALIFIERS}.    * @param qualifier for the remainder of the column.    *          {@link Separator#QUALIFIERS} is permissible in the qualifier    *          as it is joined only with the column prefix bytes.    * @return fully sanitized column qualifier that is a combination of prefix    *         and qualifier. If prefix is null, the result is simply the encoded    *         qualifier without any separator.    */
 DECL|method|getColumnQualifier (byte[] columnPrefixBytes, String qualifier)
 specifier|public
 specifier|static

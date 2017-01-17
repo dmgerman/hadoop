@@ -963,8 +963,6 @@ init|=
 operator|new
 name|AppToFlowRowKey
 argument_list|(
-name|CLUSTER
-argument_list|,
 name|APPLICATION_ID
 argument_list|)
 operator|.
@@ -981,16 +979,6 @@ argument_list|(
 name|byteRowKey
 argument_list|)
 decl_stmt|;
-name|assertEquals
-argument_list|(
-name|CLUSTER
-argument_list|,
-name|rowKey
-operator|.
-name|getClusterId
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|assertEquals
 argument_list|(
 name|APPLICATION_ID
