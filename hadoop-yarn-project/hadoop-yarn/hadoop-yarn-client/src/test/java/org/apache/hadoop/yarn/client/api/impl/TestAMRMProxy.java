@@ -916,7 +916,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/*    * This test validates the token renewal from the AMRMPRoxy. The test verifies    * that the received token it is different from the previous one within 5    * requests.    */
+comment|/*    * This test validates the token renewal from the AMRMPRoxy. The test verifies    * that the received token from AMRMProxy is different from the previous one    * within 5 requests.    */
 annotation|@
 name|Test
 argument_list|(
@@ -924,10 +924,10 @@ name|timeout
 operator|=
 literal|120000
 argument_list|)
-DECL|method|testE2ETokenRenewal ()
+DECL|method|testAMRMProxyTokenRenewal ()
 specifier|public
 name|void
-name|testE2ETokenRenewal
+name|testAMRMProxyTokenRenewal
 parameter_list|()
 throws|throws
 name|Exception
@@ -1128,7 +1128,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"testAMRMPRoxy - Allocate Resources Application Master"
+literal|"testAMRMProxyTokenRenewal - Allocate Resources Application Master"
 argument_list|)
 expr_stmt|;
 name|AllocateRequest
@@ -1222,7 +1222,7 @@ operator|.
 name|getAMRMToken
 argument_list|()
 expr_stmt|;
-comment|// Time slot to be sure the RM renew the token
+comment|// Time slot to be sure the AMRMProxy renew the token
 name|Thread
 operator|.
 name|sleep

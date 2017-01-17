@@ -1929,6 +1929,18 @@ argument_list|,
 name|allocateResponse
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
+name|assertNull
+argument_list|(
+literal|"new AMRMToken from RM should have been nulled by AMRMProxyService"
+argument_list|,
+name|allocateResponse
+operator|.
+name|getAMRMToken
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|containers
 operator|.
 name|addAll
@@ -1987,6 +1999,18 @@ argument_list|(
 literal|"allocate() returned null response"
 argument_list|,
 name|allocateResponse
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertNull
+argument_list|(
+literal|"new AMRMToken from RM should have been nulled by AMRMProxyService"
+argument_list|,
+name|allocateResponse
+operator|.
+name|getAMRMToken
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|containers
@@ -2176,6 +2200,18 @@ argument_list|(
 name|allocateResponse
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
+name|assertNull
+argument_list|(
+literal|"new AMRMToken from RM should have been nulled by AMRMProxyService"
+argument_list|,
+name|allocateResponse
+operator|.
+name|getAMRMToken
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// The way the mock resource manager is setup, it will return the containers
 comment|// that were released in the response. This is done because the UAMs run
 comment|// asynchronously and we need to if all the resource managers received the
@@ -2251,6 +2287,18 @@ operator|.
 name|assertNotNull
 argument_list|(
 name|allocateResponse
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertNull
+argument_list|(
+literal|"new AMRMToken from RM should have been nulled by AMRMProxyService"
+argument_list|,
+name|allocateResponse
+operator|.
+name|getAMRMToken
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|containersForReleasedContainerIds

@@ -1808,6 +1808,13 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"RM rolled master-key for amrm-tokens"
+argument_list|)
+expr_stmt|;
 name|org
 operator|.
 name|apache
@@ -1828,6 +1835,14 @@ operator|.
 name|getAMRMToken
 argument_list|()
 decl_stmt|;
+comment|// Do not propagate this info back to AM
+name|allocateResponse
+operator|.
+name|setAMRMToken
+argument_list|(
+literal|null
+argument_list|)
+expr_stmt|;
 name|org
 operator|.
 name|apache

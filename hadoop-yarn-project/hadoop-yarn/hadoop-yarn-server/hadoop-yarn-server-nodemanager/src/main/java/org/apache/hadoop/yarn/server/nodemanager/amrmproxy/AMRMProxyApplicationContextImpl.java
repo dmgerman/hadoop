@@ -438,7 +438,7 @@ name|keyId
 operator|=
 name|this
 operator|.
-name|amrmToken
+name|localToken
 operator|.
 name|decodeIdentifier
 argument_list|()
