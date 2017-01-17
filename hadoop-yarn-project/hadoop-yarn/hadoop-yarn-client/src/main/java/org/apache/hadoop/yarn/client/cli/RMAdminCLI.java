@@ -1310,6 +1310,22 @@ operator|=
 name|errOut
 expr_stmt|;
 block|}
+DECL|method|setOut (PrintStream out)
+specifier|protected
+name|void
+name|setOut
+parameter_list|(
+name|PrintStream
+name|out
+parameter_list|)
+block|{
+name|this
+operator|.
+name|out
+operator|=
+name|out
+expr_stmt|;
+block|}
 DECL|method|appendHAUsage (final StringBuilder usageBuilder)
 specifier|private
 specifier|static
@@ -1372,6 +1388,32 @@ operator|.
 name|getValue
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|usageInfo
+operator|.
+name|args
+operator|==
+literal|null
+condition|)
+block|{
+name|usageBuilder
+operator|.
+name|append
+argument_list|(
+literal|" ["
+operator|+
+name|cmdEntry
+operator|.
+name|getKey
+argument_list|()
+operator|+
+literal|"]"
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|usageBuilder
 operator|.
 name|append
@@ -1392,6 +1434,7 @@ operator|+
 literal|"]"
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|buildHelpMsg (String cmd, StringBuilder builder)
@@ -1443,6 +1486,33 @@ block|{
 return|return;
 block|}
 block|}
+if|if
+condition|(
+name|usageInfo
+operator|.
+name|args
+operator|==
+literal|null
+condition|)
+block|{
+name|builder
+operator|.
+name|append
+argument_list|(
+literal|"   "
+operator|+
+name|cmd
+operator|+
+literal|": "
+operator|+
+name|usageInfo
+operator|.
+name|help
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|String
 name|space
 init|=
@@ -1479,6 +1549,7 @@ operator|.
 name|help
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|buildIndividualUsageMsg (String cmd, StringBuilder builder )
 specifier|private
@@ -1538,6 +1609,29 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|usageInfo
+operator|.
+name|args
+operator|==
+literal|null
+condition|)
+block|{
+name|builder
+operator|.
+name|append
+argument_list|(
+literal|"Usage: yarn rmadmin ["
+operator|+
+name|cmd
+operator|+
+literal|"]\n"
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|String
 name|space
 init|=
@@ -1570,6 +1664,7 @@ operator|+
 literal|"]\n"
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|isHACommand
@@ -1703,6 +1798,29 @@ operator|.
 name|getValue
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|usageInfo
+operator|.
+name|args
+operator|==
+literal|null
+condition|)
+block|{
+name|builder
+operator|.
+name|append
+argument_list|(
+literal|"   "
+operator|+
+name|cmdKey
+operator|+
+literal|"\n"
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|builder
 operator|.
 name|append
@@ -1720,6 +1838,7 @@ operator|+
 literal|"\n"
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}
