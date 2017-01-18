@@ -56,6 +56,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -65,6 +77,20 @@ operator|.
 name|ipc
 operator|.
 name|RemoteException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StopWatch
 import|;
 end_import
 
@@ -272,6 +298,16 @@ name|WAIT_PROGRESS_WARN_THRESHOLD
 init|=
 literal|0.7f
 decl_stmt|;
+DECL|field|quorumStopWatch
+specifier|private
+specifier|final
+name|StopWatch
+name|quorumStopWatch
+init|=
+operator|new
+name|StopWatch
+argument_list|()
+decl_stmt|;
 DECL|method|create ( Map<KEY, ? extends ListenableFuture<RESULT>> calls)
 specifier|static
 parameter_list|<
@@ -437,6 +473,57 @@ parameter_list|()
 block|{
 comment|// Only instantiated from factory method above
 block|}
+DECL|method|restartQuorumStopWatch ()
+specifier|private
+name|void
+name|restartQuorumStopWatch
+parameter_list|()
+block|{
+name|quorumStopWatch
+operator|.
+name|reset
+argument_list|()
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|shouldIncreaseQuorumTimeout (long offset, int millis)
+specifier|private
+name|boolean
+name|shouldIncreaseQuorumTimeout
+parameter_list|(
+name|long
+name|offset
+parameter_list|,
+name|int
+name|millis
+parameter_list|)
+block|{
+name|long
+name|elapsed
+init|=
+name|quorumStopWatch
+operator|.
+name|now
+argument_list|(
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+argument_list|)
+decl_stmt|;
+return|return
+name|elapsed
+operator|+
+name|offset
+operator|>
+operator|(
+name|millis
+operator|*
+name|WAIT_PROGRESS_INFO_THRESHOLD
+operator|)
+return|;
+block|}
 comment|/**    * Wait for the quorum to achieve a certain number of responses.    *     * Note that, even after this returns, more responses may arrive,    * causing the return value of other methods in this class to change.    *    * @param minResponses return as soon as this many responses have been    * received, regardless of whether they are successes or exceptions    * @param minSuccesses return as soon as this many successful (non-exception)    * responses have been received    * @param maxExceptions return as soon as this many exception responses    * have been received. Pass 0 to return immediately if any exception is    * received.    * @param millis the number of milliseconds to wait for    * @throws InterruptedException if the thread is interrupted while waiting    * @throws TimeoutException if the specified timeout elapses before    * achieving the desired conditions    */
 DECL|method|waitFor ( int minResponses, int minSuccesses, int maxExceptions, int millis, String operationName)
 specifier|public
@@ -498,6 +585,9 @@ condition|(
 literal|true
 condition|)
 block|{
+name|restartQuorumStopWatch
+argument_list|()
+expr_stmt|;
 name|checkAssertionErrors
 argument_list|()
 expr_stmt|;
@@ -695,12 +785,36 @@ operator|<=
 literal|0
 condition|)
 block|{
+comment|// Increase timeout if a full GC occurred after restarting stopWatch
+if|if
+condition|(
+name|shouldIncreaseQuorumTimeout
+argument_list|(
+literal|0
+argument_list|,
+name|millis
+argument_list|)
+condition|)
+block|{
+name|et
+operator|=
+name|et
+operator|+
+name|millis
+expr_stmt|;
+block|}
+else|else
+block|{
 throw|throw
 operator|new
 name|TimeoutException
 argument_list|()
 throw|;
 block|}
+block|}
+name|restartQuorumStopWatch
+argument_list|()
+expr_stmt|;
 name|rem
 operator|=
 name|Math
@@ -730,6 +844,25 @@ argument_list|(
 name|rem
 argument_list|)
 expr_stmt|;
+comment|// Increase timeout if a full GC occurred after restarting stopWatch
+if|if
+condition|(
+name|shouldIncreaseQuorumTimeout
+argument_list|(
+operator|-
+name|rem
+argument_list|,
+name|millis
+argument_list|)
+condition|)
+block|{
+name|et
+operator|=
+name|et
+operator|+
+name|millis
+expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * Check if any of the responses came back with an AssertionError.    * If so, it re-throws it, even if there was a quorum of responses.    * This code only runs if assertions are enabled for this class,    * otherwise it should JIT itself away.    *     * This is done since AssertionError indicates programmer confusion    * rather than some kind of expected issue, and thus in the context    * of test cases we'd like to actually fail the test case instead of    * continuing through.    */
