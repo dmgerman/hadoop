@@ -1199,17 +1199,6 @@ name|FILTER_INITIALIZER_PROPERTY
 init|=
 literal|"hadoop.http.filter.initializers"
 decl_stmt|;
-annotation|@
-name|Deprecated
-DECL|field|HTTP_MAX_THREADS
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|HTTP_MAX_THREADS
-init|=
-name|HTTP_MAX_THREADS_KEY
-decl_stmt|;
 comment|// The ServletContext attribute where the daemon Configuration
 comment|// gets stored.
 DECL|field|CONF_CONTEXT_ATTRIBUTE
@@ -2832,7 +2821,7 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-name|HTTP_MAX_THREADS
+name|HTTP_MAX_THREADS_KEY
 argument_list|,
 operator|-
 literal|1

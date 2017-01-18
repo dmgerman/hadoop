@@ -1103,7 +1103,7 @@ name|setInt
 argument_list|(
 name|HttpServer2
 operator|.
-name|HTTP_MAX_THREADS
+name|HTTP_MAX_THREADS_KEY
 argument_list|,
 literal|10
 argument_list|)
