@@ -454,6 +454,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|BlockType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|blockmanagement
@@ -1026,8 +1042,12 @@ if|if
 condition|(
 name|file
 operator|.
-name|isStriped
+name|getBlockType
 argument_list|()
+operator|==
+name|BlockType
+operator|.
+name|STRIPED
 condition|)
 block|{
 return|return;
@@ -1196,8 +1216,8 @@ name|String
 name|clientMachine
 decl_stmt|;
 specifier|final
-name|boolean
-name|isStriped
+name|BlockType
+name|blockType
 decl_stmt|;
 name|INodesInPath
 name|iip
@@ -1354,11 +1374,11 @@ operator|.
 name|getClientMachine
 argument_list|()
 expr_stmt|;
-name|isStriped
+name|blockType
 operator|=
 name|pendingFile
 operator|.
-name|isStriped
+name|getBlockType
 argument_list|()
 expr_stmt|;
 name|ErasureCodingPolicy
@@ -1368,7 +1388,11 @@ literal|null
 decl_stmt|;
 if|if
 condition|(
-name|isStriped
+name|blockType
+operator|==
+name|BlockType
+operator|.
+name|STRIPED
 condition|)
 block|{
 name|ecPolicy
@@ -1435,7 +1459,7 @@ name|storagePolicyID
 argument_list|,
 name|clientMachine
 argument_list|,
-name|isStriped
+name|blockType
 argument_list|)
 return|;
 block|}
@@ -1653,7 +1677,7 @@ name|targets
 argument_list|,
 name|pendingFile
 operator|.
-name|isStriped
+name|getBlockType
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1699,12 +1723,12 @@ argument_list|)
 expr_stmt|;
 comment|// allocate new block, record block locations in INode.
 specifier|final
-name|boolean
-name|isStriped
+name|BlockType
+name|blockType
 init|=
 name|pendingFile
 operator|.
-name|isStriped
+name|getBlockType
 argument_list|()
 decl_stmt|;
 comment|// allocate new block, record block locations in INode.
@@ -1715,7 +1739,7 @@ name|fsn
 operator|.
 name|createNewBlock
 argument_list|(
-name|isStriped
+name|blockType
 argument_list|)
 decl_stmt|;
 name|INodesInPath
@@ -1740,7 +1764,7 @@ name|newBlock
 argument_list|,
 name|targets
 argument_list|,
-name|isStriped
+name|blockType
 argument_list|)
 expr_stmt|;
 name|persistNewBlock
@@ -1929,7 +1953,7 @@ name|storagePolicyID
 argument_list|,
 name|r
 operator|.
-name|isStriped
+name|blockType
 argument_list|,
 name|flags
 argument_list|)
@@ -2758,6 +2782,22 @@ name|getId
 argument_list|()
 expr_stmt|;
 block|}
+specifier|final
+name|BlockType
+name|blockType
+init|=
+name|ecPolicy
+operator|!=
+literal|null
+condition|?
+name|BlockType
+operator|.
+name|STRIPED
+else|:
+name|BlockType
+operator|.
+name|CONTIGUOUS
+decl_stmt|;
 if|if
 condition|(
 name|underConstruction
@@ -2781,9 +2821,7 @@ name|preferredBlockSize
 argument_list|,
 name|storagePolicyId
 argument_list|,
-name|ecPolicy
-operator|!=
-literal|null
+name|blockType
 argument_list|)
 expr_stmt|;
 name|newNode
@@ -2816,9 +2854,7 @@ name|preferredBlockSize
 argument_list|,
 name|storagePolicyId
 argument_list|,
-name|ecPolicy
-operator|!=
-literal|null
+name|blockType
 argument_list|)
 expr_stmt|;
 block|}
@@ -2949,7 +2985,7 @@ literal|null
 return|;
 block|}
 comment|/**    * Add a block to the file. Returns a reference to the added block.    */
-DECL|method|addBlock (FSDirectory fsd, String path, INodesInPath inodesInPath, Block block, DatanodeStorageInfo[] targets, boolean isStriped)
+DECL|method|addBlock (FSDirectory fsd, String path, INodesInPath inodesInPath, Block block, DatanodeStorageInfo[] targets, BlockType blockType)
 specifier|private
 specifier|static
 name|BlockInfo
@@ -2971,8 +3007,8 @@ name|DatanodeStorageInfo
 index|[]
 name|targets
 parameter_list|,
-name|boolean
-name|isStriped
+name|BlockType
+name|blockType
 parameter_list|)
 throws|throws
 name|IOException
@@ -3013,7 +3049,11 @@ name|blockInfo
 decl_stmt|;
 if|if
 condition|(
-name|isStriped
+name|blockType
+operator|==
+name|BlockType
+operator|.
+name|STRIPED
 condition|)
 block|{
 name|ErasureCodingPolicy
@@ -3314,6 +3354,22 @@ name|getId
 argument_list|()
 expr_stmt|;
 block|}
+specifier|final
+name|BlockType
+name|blockType
+init|=
+name|ecPolicy
+operator|!=
+literal|null
+condition|?
+name|BlockType
+operator|.
+name|STRIPED
+else|:
+name|BlockType
+operator|.
+name|CONTIGUOUS
+decl_stmt|;
 name|INodeFile
 name|newNode
 init|=
@@ -3334,9 +3390,7 @@ name|replication
 argument_list|,
 name|preferredBlockSize
 argument_list|,
-name|ecPolicy
-operator|!=
-literal|null
+name|blockType
 argument_list|)
 decl_stmt|;
 name|newNode
@@ -4142,7 +4196,7 @@ return|return
 literal|true
 return|;
 block|}
-DECL|method|newINodeFile ( long id, PermissionStatus permissions, long mtime, long atime, short replication, long preferredBlockSize, byte storagePolicyId, boolean isStriped)
+DECL|method|newINodeFile ( long id, PermissionStatus permissions, long mtime, long atime, short replication, long preferredBlockSize, byte storagePolicyId, BlockType blockType)
 specifier|private
 specifier|static
 name|INodeFile
@@ -4169,8 +4223,8 @@ parameter_list|,
 name|byte
 name|storagePolicyId
 parameter_list|,
-name|boolean
-name|isStriped
+name|BlockType
+name|blockType
 parameter_list|)
 block|{
 return|return
@@ -4197,11 +4251,11 @@ name|preferredBlockSize
 argument_list|,
 name|storagePolicyId
 argument_list|,
-name|isStriped
+name|blockType
 argument_list|)
 return|;
 block|}
-DECL|method|newINodeFile (long id, PermissionStatus permissions, long mtime, long atime, short replication, long preferredBlockSize, boolean isStriped)
+DECL|method|newINodeFile (long id, PermissionStatus permissions, long mtime, long atime, short replication, long preferredBlockSize, BlockType blockType)
 specifier|private
 specifier|static
 name|INodeFile
@@ -4225,8 +4279,8 @@ parameter_list|,
 name|long
 name|preferredBlockSize
 parameter_list|,
-name|boolean
-name|isStriped
+name|BlockType
+name|blockType
 parameter_list|)
 block|{
 return|return
@@ -4249,7 +4303,7 @@ name|byte
 operator|)
 literal|0
 argument_list|,
-name|isStriped
+name|blockType
 argument_list|)
 return|;
 block|}
@@ -4335,7 +4389,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Save allocated block at the given pending filename    *    * @param fsn FSNamesystem    * @param src path to the file    * @param inodesInPath representing each of the components of src.    *                     The last INode is the INode for {@code src} file.    * @param newBlock newly allocated block to be save    * @param targets target datanodes where replicas of the new block is placed    * @throws QuotaExceededException If addition of block exceeds space quota    */
-DECL|method|saveAllocatedBlock (FSNamesystem fsn, String src, INodesInPath inodesInPath, Block newBlock, DatanodeStorageInfo[] targets, boolean isStriped)
+DECL|method|saveAllocatedBlock (FSNamesystem fsn, String src, INodesInPath inodesInPath, Block newBlock, DatanodeStorageInfo[] targets, BlockType blockType)
 specifier|private
 specifier|static
 name|void
@@ -4357,8 +4411,8 @@ name|DatanodeStorageInfo
 index|[]
 name|targets
 parameter_list|,
-name|boolean
-name|isStriped
+name|BlockType
+name|blockType
 parameter_list|)
 throws|throws
 name|IOException
@@ -4386,7 +4440,7 @@ name|newBlock
 argument_list|,
 name|targets
 argument_list|,
-name|isStriped
+name|blockType
 argument_list|)
 decl_stmt|;
 name|logAllocatedBlock
@@ -4709,12 +4763,12 @@ specifier|final
 name|String
 name|clientMachine
 decl_stmt|;
-DECL|field|isStriped
+DECL|field|blockType
 specifier|final
-name|boolean
-name|isStriped
+name|BlockType
+name|blockType
 decl_stmt|;
-DECL|method|ValidateAddBlockResult ( long blockSize, int numTargets, byte storagePolicyID, String clientMachine, boolean isStriped)
+DECL|method|ValidateAddBlockResult ( long blockSize, int numTargets, byte storagePolicyID, String clientMachine, BlockType blockType)
 name|ValidateAddBlockResult
 parameter_list|(
 name|long
@@ -4729,8 +4783,8 @@ parameter_list|,
 name|String
 name|clientMachine
 parameter_list|,
-name|boolean
-name|isStriped
+name|BlockType
+name|blockType
 parameter_list|)
 block|{
 name|this
@@ -4759,9 +4813,9 @@ name|clientMachine
 expr_stmt|;
 name|this
 operator|.
-name|isStriped
+name|blockType
 operator|=
-name|isStriped
+name|blockType
 expr_stmt|;
 block|}
 block|}

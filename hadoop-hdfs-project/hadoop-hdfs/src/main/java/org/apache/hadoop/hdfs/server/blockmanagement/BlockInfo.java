@@ -114,6 +114,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|BlockType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|common
@@ -643,6 +659,13 @@ name|boolean
 name|isStriped
 parameter_list|()
 function_decl|;
+DECL|method|getBlockType ()
+specifier|public
+specifier|abstract
+name|BlockType
+name|getBlockType
+parameter_list|()
+function_decl|;
 comment|/** @return true if there is no datanode storage associated with the block */
 DECL|method|hasNoStorage ()
 specifier|abstract
@@ -961,7 +984,7 @@ name|targets
 argument_list|,
 name|this
 operator|.
-name|isStriped
+name|getBlockType
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -986,7 +1009,7 @@ name|targets
 argument_list|,
 name|this
 operator|.
-name|isStriped
+name|getBlockType
 argument_list|()
 argument_list|)
 expr_stmt|;

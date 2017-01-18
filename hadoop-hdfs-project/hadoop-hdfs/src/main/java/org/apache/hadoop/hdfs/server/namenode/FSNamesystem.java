@@ -2806,6 +2806,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|BlockType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|blockmanagement
@@ -13695,8 +13711,8 @@ argument_list|>
 name|chosen
 decl_stmt|;
 specifier|final
-name|boolean
-name|isStriped
+name|BlockType
+name|blockType
 decl_stmt|;
 name|checkOperation
 argument_list|(
@@ -13807,11 +13823,11 @@ operator|.
 name|getStoragePolicyID
 argument_list|()
 expr_stmt|;
-name|isStriped
+name|blockType
 operator|=
 name|file
 operator|.
-name|isStriped
+name|getBlockType
 argument_list|()
 expr_stmt|;
 comment|//find datanode storages
@@ -13904,7 +13920,7 @@ name|preferredblocksize
 argument_list|,
 name|storagePolicyID
 argument_list|,
-name|isStriped
+name|blockType
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -14434,13 +14450,13 @@ return|return
 name|success
 return|;
 block|}
-comment|/**    * Create new block with a unique block id and a new generation stamp.    * @param isStriped is the file under striping or contiguous layout?    */
-DECL|method|createNewBlock (boolean isStriped)
+comment|/**    * Create new block with a unique block id and a new generation stamp.    * @param blockType is the file under striping or contiguous layout?    */
+DECL|method|createNewBlock (BlockType blockType)
 name|Block
 name|createNewBlock
 parameter_list|(
-name|boolean
-name|isStriped
+name|BlockType
+name|blockType
 parameter_list|)
 throws|throws
 name|IOException
@@ -14457,7 +14473,7 @@ name|Block
 argument_list|(
 name|nextBlockId
 argument_list|(
-name|isStriped
+name|blockType
 argument_list|)
 argument_list|,
 literal|0
@@ -16605,7 +16621,7 @@ argument_list|)
 argument_list|,
 name|lastBlock
 operator|.
-name|isStriped
+name|getBlockType
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -22512,14 +22528,14 @@ return|return
 name|gs
 return|;
 block|}
-comment|/**    * Increments, logs and then returns the block ID    * @param isStriped is the file under striping or contiguous layout?    */
-DECL|method|nextBlockId (boolean isStriped)
+comment|/**    * Increments, logs and then returns the block ID    * @param blockType is the file under striping or contiguous layout?    */
+DECL|method|nextBlockId (BlockType blockType)
 specifier|private
 name|long
 name|nextBlockId
 parameter_list|(
-name|boolean
-name|isStriped
+name|BlockType
+name|blockType
 parameter_list|)
 throws|throws
 name|IOException
@@ -22541,7 +22557,7 @@ name|blockManager
 operator|.
 name|nextBlockId
 argument_list|(
-name|isStriped
+name|blockType
 argument_list|)
 decl_stmt|;
 name|getEditLog
@@ -23541,7 +23557,7 @@ name|storages
 argument_list|,
 name|lastBlock
 operator|.
-name|isStriped
+name|getBlockType
 argument_list|()
 argument_list|)
 expr_stmt|;

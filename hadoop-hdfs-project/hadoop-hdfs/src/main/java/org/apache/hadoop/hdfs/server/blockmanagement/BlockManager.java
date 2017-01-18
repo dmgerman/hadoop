@@ -28,6 +28,42 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|BlockType
+operator|.
+name|CONTIGUOUS
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|BlockType
+operator|.
+name|STRIPED
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|ExitUtil
@@ -511,6 +547,22 @@ operator|.
 name|BlockListAsLongs
 operator|.
 name|BlockReportReplica
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|BlockType
 import|;
 end_import
 
@@ -3454,7 +3506,7 @@ name|placementPolicies
 operator|.
 name|getPolicy
 argument_list|(
-literal|false
+name|CONTIGUOUS
 argument_list|)
 return|;
 block|}
@@ -4221,14 +4273,17 @@ name|BlockInfo
 name|block
 parameter_list|)
 block|{
-if|if
+switch|switch
 condition|(
 name|block
 operator|.
-name|isStriped
+name|getBlockType
 argument_list|()
 condition|)
 block|{
+case|case
+name|STRIPED
+case|:
 return|return
 operator|(
 operator|(
@@ -4240,12 +4295,25 @@ operator|.
 name|getRealTotalBlockNum
 argument_list|()
 return|;
-block|}
-else|else
-block|{
+case|case
+name|CONTIGUOUS
+case|:
 return|return
 name|defaultReplication
 return|;
+default|default:
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"getDefaultStorageNum called with unknown BlockType: "
+operator|+
+name|block
+operator|.
+name|getBlockType
+argument_list|()
+argument_list|)
+throw|;
 block|}
 block|}
 DECL|method|getMinReplication ()
@@ -4267,14 +4335,17 @@ name|BlockInfo
 name|block
 parameter_list|)
 block|{
-if|if
+switch|switch
 condition|(
 name|block
 operator|.
-name|isStriped
+name|getBlockType
 argument_list|()
 condition|)
 block|{
+case|case
+name|STRIPED
+case|:
 return|return
 operator|(
 operator|(
@@ -4286,12 +4357,25 @@ operator|.
 name|getRealDataBlockNum
 argument_list|()
 return|;
-block|}
-else|else
-block|{
+case|case
+name|CONTIGUOUS
+case|:
 return|return
 name|minReplication
 return|;
+default|default:
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"getMinStorageNum called with unknown BlockType: "
+operator|+
+name|block
+operator|.
+name|getBlockType
+argument_list|()
+argument_list|)
+throw|;
 block|}
 block|}
 DECL|method|getMinReplicationToBeInMaintenance ()
@@ -8587,7 +8671,7 @@ operator|.
 name|getBlock
 argument_list|()
 operator|.
-name|isStriped
+name|getBlockType
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -9618,7 +9702,7 @@ name|placementPolicies
 operator|.
 name|getPolicy
 argument_list|(
-literal|false
+name|CONTIGUOUS
 argument_list|)
 operator|.
 name|chooseTarget
@@ -9653,7 +9737,7 @@ argument_list|)
 return|;
 block|}
 comment|/** Choose target for getting additional datanodes for an existing pipeline. */
-DECL|method|chooseTarget4AdditionalDatanode (String src, int numAdditionalNodes, Node clientnode, List<DatanodeStorageInfo> chosen, Set<Node> excludes, long blocksize, byte storagePolicyID, boolean isStriped)
+DECL|method|chooseTarget4AdditionalDatanode (String src, int numAdditionalNodes, Node clientnode, List<DatanodeStorageInfo> chosen, Set<Node> excludes, long blocksize, byte storagePolicyID, BlockType blockType)
 specifier|public
 name|DatanodeStorageInfo
 index|[]
@@ -9686,8 +9770,8 @@ parameter_list|,
 name|byte
 name|storagePolicyID
 parameter_list|,
-name|boolean
-name|isStriped
+name|BlockType
+name|blockType
 parameter_list|)
 block|{
 specifier|final
@@ -9709,7 +9793,7 @@ name|placementPolicies
 operator|.
 name|getPolicy
 argument_list|(
-name|isStriped
+name|blockType
 argument_list|)
 decl_stmt|;
 return|return
@@ -9738,7 +9822,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Choose target datanodes for creating a new block.    *     * @throws IOException    *           if the number of targets< minimum replication.    * @see BlockPlacementPolicy#chooseTarget(String, int, Node,    *      Set, long, List, BlockStoragePolicy, EnumSet)    */
-DECL|method|chooseTarget4NewBlock (final String src, final int numOfReplicas, final Node client, final Set<Node> excludedNodes, final long blocksize, final List<String> favoredNodes, final byte storagePolicyID, final boolean isStriped, final EnumSet<AddBlockFlag> flags)
+DECL|method|chooseTarget4NewBlock (final String src, final int numOfReplicas, final Node client, final Set<Node> excludedNodes, final long blocksize, final List<String> favoredNodes, final byte storagePolicyID, final BlockType blockType, final EnumSet<AddBlockFlag> flags)
 specifier|public
 name|DatanodeStorageInfo
 index|[]
@@ -9779,8 +9863,8 @@ name|byte
 name|storagePolicyID
 parameter_list|,
 specifier|final
-name|boolean
-name|isStriped
+name|BlockType
+name|blockType
 parameter_list|,
 specifier|final
 name|EnumSet
@@ -9822,7 +9906,7 @@ name|placementPolicies
 operator|.
 name|getPolicy
 argument_list|(
-name|isStriped
+name|blockType
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -16232,7 +16316,7 @@ name|placementPolicies
 operator|.
 name|getPolicy
 argument_list|(
-literal|false
+name|CONTIGUOUS
 argument_list|)
 decl_stmt|;
 name|List
@@ -16545,7 +16629,7 @@ name|placementPolicies
 operator|.
 name|getPolicy
 argument_list|(
-literal|true
+name|STRIPED
 argument_list|)
 decl_stmt|;
 comment|// for each duplicated index, delete some replicas until only one left
@@ -19713,6 +19797,14 @@ argument_list|()
 index|]
 argument_list|)
 decl_stmt|;
+name|BlockType
+name|blockType
+init|=
+name|storedBlock
+operator|.
+name|getBlockType
+argument_list|()
+decl_stmt|;
 name|BlockPlacementPolicy
 name|placementPolicy
 init|=
@@ -19720,19 +19812,15 @@ name|placementPolicies
 operator|.
 name|getPolicy
 argument_list|(
-name|storedBlock
-operator|.
-name|isStriped
-argument_list|()
+name|blockType
 argument_list|)
 decl_stmt|;
 name|int
 name|numReplicas
 init|=
-name|storedBlock
-operator|.
-name|isStriped
-argument_list|()
+name|blockType
+operator|==
+name|STRIPED
 condition|?
 operator|(
 operator|(
@@ -21901,13 +21989,13 @@ name|block
 argument_list|)
 return|;
 block|}
-DECL|method|nextBlockId (boolean isStriped)
+DECL|method|nextBlockId (BlockType blockType)
 specifier|public
 name|long
 name|nextBlockId
 parameter_list|(
-name|boolean
-name|isStriped
+name|BlockType
+name|blockType
 parameter_list|)
 block|{
 return|return
@@ -21915,7 +22003,7 @@ name|blockIdManager
 operator|.
 name|nextBlockId
 argument_list|(
-name|isStriped
+name|blockType
 argument_list|)
 return|;
 block|}

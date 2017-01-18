@@ -2008,10 +2008,15 @@ argument_list|()
 argument_list|,
 name|xAttrs
 argument_list|,
+name|PBHelperClient
+operator|.
+name|convert
+argument_list|(
 name|fileInPb
 operator|.
-name|getIsStriped
+name|getBlockType
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

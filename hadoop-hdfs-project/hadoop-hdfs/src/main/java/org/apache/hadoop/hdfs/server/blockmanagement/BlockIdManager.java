@@ -76,6 +76,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|BlockType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|HdfsConstants
 import|;
 end_import
@@ -123,6 +139,24 @@ operator|.
 name|io
 operator|.
 name|IOException
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|BlockType
+operator|.
+name|STRIPED
 import|;
 end_import
 
@@ -541,27 +575,46 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Increments, logs and then returns the block ID    */
-DECL|method|nextBlockId (boolean isStriped)
+DECL|method|nextBlockId (BlockType blockType)
 name|long
 name|nextBlockId
 parameter_list|(
-name|boolean
-name|isStriped
+name|BlockType
+name|blockType
 parameter_list|)
 block|{
+switch|switch
+condition|(
+name|blockType
+condition|)
+block|{
+case|case
+name|CONTIGUOUS
+case|:
 return|return
-name|isStriped
-condition|?
-name|blockGroupIdGenerator
-operator|.
-name|nextValue
-argument_list|()
-else|:
 name|blockIdGenerator
 operator|.
 name|nextValue
 argument_list|()
 return|;
+case|case
+name|STRIPED
+case|:
+return|return
+name|blockGroupIdGenerator
+operator|.
+name|nextValue
+argument_list|()
+return|;
+default|default:
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"nextBlockId called with an unsupported BlockType"
+argument_list|)
+throw|;
+block|}
 block|}
 DECL|method|isGenStampInFuture (Block block)
 name|boolean
@@ -663,9 +716,14 @@ name|id
 parameter_list|)
 block|{
 return|return
+name|BlockType
+operator|.
+name|fromBlockId
+argument_list|(
 name|id
-operator|<
-literal|0
+argument_list|)
+operator|==
+name|STRIPED
 return|;
 block|}
 comment|/**    * The last 4 bits of HdfsConstants.BLOCK_GROUP_INDEX_MASK(15) is 1111,    * so the last 4 bits of (~HdfsConstants.BLOCK_GROUP_INDEX_MASK) is 0000    * and the other 60 bits are 1. Group ID is the first 60 bits of any    * data/parity block id in the same striped block group.    */

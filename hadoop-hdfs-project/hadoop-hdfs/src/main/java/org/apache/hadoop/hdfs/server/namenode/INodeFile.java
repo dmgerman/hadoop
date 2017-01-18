@@ -48,6 +48,42 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|BlockType
+operator|.
+name|CONTIGUOUS
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|BlockType
+operator|.
+name|STRIPED
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|namenode
@@ -386,6 +422,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|BlockType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|blockmanagement
@@ -659,7 +711,7 @@ name|asFile
 argument_list|()
 return|;
 block|}
-comment|/**     * Bit format:    * [4-bit storagePolicyID][12-bit BLOCK_LAYOUT_AND_REDUNDANCY]    * [48-bit preferredBlockSize]    *    * BLOCK_LAYOUT_AND_REDUNDANCY contains 12 bits and describes the layout and    * redundancy of a block. We use the highest 1 bit to determine whether the    * block is replica or erasure coded. For replica blocks, the tail 11 bits    * stores the replication factor. For erasure coded blocks, the tail 11 bits    * stores the EC policy ID, and in the future, we may further divide these    * 11 bits to store both the EC policy ID and replication factor for erasure    * coded blocks. The layout of this section is demonstrated as below.    * +---------------+-------------------------------+    * |     1 bit     |             11 bit            |    * +---------------+-------------------------------+    * | Replica or EC |Replica factor or EC policy ID |    * +---------------+-------------------------------+    *    * BLOCK_LAYOUT_AND_REDUNDANCY format for replicated block:    * 0 [11-bit replication]    *    * BLOCK_LAYOUT_AND_REDUNDANCY format for striped block:    * 1 [11-bit ErasureCodingPolicy ID]    */
+comment|/**     * Bit format:    * [4-bit storagePolicyID][12-bit BLOCK_LAYOUT_AND_REDUNDANCY]    * [48-bit preferredBlockSize]    *    * BLOCK_LAYOUT_AND_REDUNDANCY contains 12 bits and describes the layout and    * redundancy of a block. We use the highest 1 bit to determine whether the    * block is replica or erasure coded. For replica blocks, the tail 11 bits    * stores the replication factor. For erasure coded blocks, the tail 11 bits    * stores the EC policy ID, and in the future, we may further divide these    * 11 bits to store both the EC policy ID and replication factor for erasure    * coded blocks. The layout of this section is demonstrated as below.    *    * Another possible future extension is for future block types, in which case    * the 'Replica or EC' bit may be extended into the 11 bit field.    *    * +---------------+-------------------------------+    * |     1 bit     |             11 bit            |    * +---------------+-------------------------------+    * | Replica or EC |Replica factor or EC policy ID |    * +---------------+-------------------------------+    *    * BLOCK_LAYOUT_AND_REDUNDANCY format for replicated block:    * 0 [11-bit replication]    *    * BLOCK_LAYOUT_AND_REDUNDANCY format for striped block:    * 1 [11-bit ErasureCodingPolicy ID]    */
 DECL|enum|HeaderFormat
 enum|enum
 name|HeaderFormat
@@ -871,6 +923,29 @@ name|header
 argument_list|)
 return|;
 block|}
+comment|// Union of all the block type masks. Currently there is only
+comment|// BLOCK_TYPE_MASK_STRIPED
+DECL|field|BLOCK_TYPE_MASK
+specifier|static
+specifier|final
+name|long
+name|BLOCK_TYPE_MASK
+init|=
+literal|1
+operator|<<
+literal|11
+decl_stmt|;
+comment|// Mask to determine if the block type is striped.
+DECL|field|BLOCK_TYPE_MASK_STRIPED
+specifier|static
+specifier|final
+name|long
+name|BLOCK_TYPE_MASK_STRIPED
+init|=
+literal|1
+operator|<<
+literal|11
+decl_stmt|;
 DECL|method|isStriped (long header)
 specifier|static
 name|boolean
@@ -896,17 +971,59 @@ return|return
 operator|(
 name|layoutRedundancy
 operator|&
-operator|(
-literal|1
-operator|<<
-literal|11
-operator|)
+name|BLOCK_TYPE_MASK
 operator|)
 operator|!=
 literal|0
 return|;
 block|}
-DECL|method|toLong (long preferredBlockSize, short replication, boolean isStriped, byte storagePolicyID)
+DECL|method|getBlockType (long header)
+specifier|static
+name|BlockType
+name|getBlockType
+parameter_list|(
+name|long
+name|header
+parameter_list|)
+block|{
+name|long
+name|layoutRedundancy
+init|=
+name|BLOCK_LAYOUT_AND_REDUNDANCY
+operator|.
+name|BITS
+operator|.
+name|retrieve
+argument_list|(
+name|header
+argument_list|)
+decl_stmt|;
+name|long
+name|blockType
+init|=
+name|layoutRedundancy
+operator|&
+name|BLOCK_TYPE_MASK
+decl_stmt|;
+if|if
+condition|(
+name|blockType
+operator|==
+name|BLOCK_TYPE_MASK_STRIPED
+condition|)
+block|{
+return|return
+name|STRIPED
+return|;
+block|}
+else|else
+block|{
+return|return
+name|CONTIGUOUS
+return|;
+block|}
+block|}
+DECL|method|toLong (long preferredBlockSize, short replication, BlockType blockType, byte storagePolicyID)
 specifier|static
 name|long
 name|toLong
@@ -917,8 +1034,8 @@ parameter_list|,
 name|short
 name|replication
 parameter_list|,
-name|boolean
-name|isStriped
+name|BlockType
+name|blockType
 parameter_list|,
 name|byte
 name|storagePolicyID
@@ -981,14 +1098,14 @@ literal|0
 decl_stmt|;
 if|if
 condition|(
-name|isStriped
+name|blockType
+operator|==
+name|STRIPED
 condition|)
 block|{
 name|layoutRedundancy
 operator||=
-literal|1
-operator|<<
-literal|11
+name|BLOCK_TYPE_MASK_STRIPED
 expr_stmt|;
 block|}
 name|layoutRedundancy
@@ -1092,11 +1209,11 @@ name|byte
 operator|)
 literal|0
 argument_list|,
-literal|false
+name|CONTIGUOUS
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|INodeFile (long id, byte[] name, PermissionStatus permissions, long mtime, long atime, BlockInfo[] blklist, short replication, long preferredBlockSize, byte storagePolicyID, boolean isStriped)
+DECL|method|INodeFile (long id, byte[] name, PermissionStatus permissions, long mtime, long atime, BlockInfo[] blklist, short replication, long preferredBlockSize, byte storagePolicyID, BlockType blockType)
 name|INodeFile
 parameter_list|(
 name|long
@@ -1128,8 +1245,8 @@ parameter_list|,
 name|byte
 name|storagePolicyID
 parameter_list|,
-name|boolean
-name|isStriped
+name|BlockType
+name|blockType
 parameter_list|)
 block|{
 name|super
@@ -1155,7 +1272,7 @@ name|preferredBlockSize
 argument_list|,
 name|replication
 argument_list|,
-name|isStriped
+name|blockType
 argument_list|,
 name|storagePolicyID
 argument_list|)
@@ -1187,10 +1304,10 @@ name|checkArgument
 argument_list|(
 name|b
 operator|.
-name|isStriped
+name|getBlockType
 argument_list|()
 operator|==
-name|isStriped
+name|blockType
 argument_list|)
 expr_stmt|;
 block|}
@@ -2688,6 +2805,26 @@ return|return
 name|HeaderFormat
 operator|.
 name|isStriped
+argument_list|(
+name|header
+argument_list|)
+return|;
+block|}
+comment|/**    * @return The type of the INodeFile based on block id.    */
+annotation|@
+name|VisibleForTesting
+annotation|@
+name|Override
+DECL|method|getBlockType ()
+specifier|public
+name|BlockType
+name|getBlockType
+parameter_list|()
+block|{
+return|return
+name|HeaderFormat
+operator|.
+name|getBlockType
 argument_list|(
 name|header
 argument_list|)

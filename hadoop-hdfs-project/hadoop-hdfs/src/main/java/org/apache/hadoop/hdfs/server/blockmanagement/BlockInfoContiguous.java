@@ -50,6 +50,22 @@ name|Block
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|BlockType
+import|;
+end_import
+
 begin_comment
 comment|/**  * Subclass of {@link BlockInfo}, used for a block with replication scheme.  */
 end_comment
@@ -341,6 +357,20 @@ parameter_list|()
 block|{
 return|return
 literal|false
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getBlockType ()
+specifier|public
+name|BlockType
+name|getBlockType
+parameter_list|()
+block|{
+return|return
+name|BlockType
+operator|.
+name|CONTIGUOUS
 return|;
 block|}
 annotation|@

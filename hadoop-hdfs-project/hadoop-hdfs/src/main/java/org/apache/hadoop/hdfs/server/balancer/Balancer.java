@@ -37,6 +37,24 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|BlockType
+operator|.
+name|CONTIGUOUS
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -928,7 +946,7 @@ name|placementPolicies
 operator|.
 name|getPolicy
 argument_list|(
-literal|false
+name|CONTIGUOUS
 argument_list|)
 operator|instanceof
 name|BlockPlacementPolicyDefault

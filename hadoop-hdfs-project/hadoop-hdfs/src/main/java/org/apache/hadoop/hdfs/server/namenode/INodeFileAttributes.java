@@ -60,6 +60,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|BlockType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|namenode
@@ -96,6 +112,12 @@ comment|/** @return whether the file is striped (instead of contiguous) */
 DECL|method|isStriped ()
 name|boolean
 name|isStriped
+parameter_list|()
+function_decl|;
+comment|/** @return whether the file is striped (instead of contiguous) */
+DECL|method|getBlockType ()
+name|BlockType
+name|getBlockType
 parameter_list|()
 function_decl|;
 comment|/** @return the ID of the ErasureCodingPolicy */
@@ -147,7 +169,7 @@ specifier|final
 name|long
 name|header
 decl_stmt|;
-DECL|method|SnapshotCopy (byte[] name, PermissionStatus permissions, AclFeature aclFeature, long modificationTime, long accessTime, short replication, long preferredBlockSize, byte storagePolicyID, XAttrFeature xAttrsFeature, boolean isStriped)
+DECL|method|SnapshotCopy (byte[] name, PermissionStatus permissions, AclFeature aclFeature, long modificationTime, long accessTime, short replication, long preferredBlockSize, byte storagePolicyID, XAttrFeature xAttrsFeature, BlockType blockType)
 specifier|public
 name|SnapshotCopy
 parameter_list|(
@@ -179,8 +201,8 @@ parameter_list|,
 name|XAttrFeature
 name|xAttrsFeature
 parameter_list|,
-name|boolean
-name|isStriped
+name|BlockType
+name|blockType
 parameter_list|)
 block|{
 name|super
@@ -208,7 +230,7 @@ name|preferredBlockSize
 argument_list|,
 name|replication
 argument_list|,
-name|isStriped
+name|blockType
 argument_list|,
 name|storagePolicyID
 argument_list|)
@@ -278,6 +300,23 @@ return|return
 name|HeaderFormat
 operator|.
 name|isStriped
+argument_list|(
+name|header
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getBlockType ()
+specifier|public
+name|BlockType
+name|getBlockType
+parameter_list|()
+block|{
+return|return
+name|HeaderFormat
+operator|.
+name|getBlockType
 argument_list|(
 name|header
 argument_list|)

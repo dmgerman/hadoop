@@ -4561,7 +4561,7 @@ name|getPolicy
 argument_list|(
 name|lBlk
 operator|.
-name|isStriped
+name|getBlockType
 argument_list|()
 argument_list|)
 operator|.

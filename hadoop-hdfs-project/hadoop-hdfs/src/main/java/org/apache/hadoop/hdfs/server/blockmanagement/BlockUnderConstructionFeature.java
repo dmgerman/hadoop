@@ -46,6 +46,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|BlockType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|common
@@ -197,7 +213,7 @@ specifier|private
 name|Block
 name|truncateBlock
 decl_stmt|;
-DECL|method|BlockUnderConstructionFeature (Block blk, BlockUCState state, DatanodeStorageInfo[] targets, boolean isStriped)
+DECL|method|BlockUnderConstructionFeature (Block blk, BlockUCState state, DatanodeStorageInfo[] targets, BlockType blockType)
 specifier|public
 name|BlockUnderConstructionFeature
 parameter_list|(
@@ -211,8 +227,8 @@ name|DatanodeStorageInfo
 index|[]
 name|targets
 parameter_list|,
-name|boolean
-name|isStriped
+name|BlockType
+name|blockType
 parameter_list|)
 block|{
 assert|assert
@@ -235,12 +251,12 @@ name|blk
 argument_list|,
 name|targets
 argument_list|,
-name|isStriped
+name|blockType
 argument_list|)
 expr_stmt|;
 block|}
 comment|/** Set expected locations */
-DECL|method|setExpectedLocations (Block block, DatanodeStorageInfo[] targets, boolean isStriped)
+DECL|method|setExpectedLocations (Block block, DatanodeStorageInfo[] targets, BlockType blockType)
 specifier|public
 name|void
 name|setExpectedLocations
@@ -252,8 +268,8 @@ name|DatanodeStorageInfo
 index|[]
 name|targets
 parameter_list|,
-name|boolean
-name|isStriped
+name|BlockType
+name|blockType
 parameter_list|)
 block|{
 if|if
@@ -337,7 +353,11 @@ comment|// index to each storage
 name|Block
 name|replicaBlock
 init|=
-name|isStriped
+name|blockType
+operator|==
+name|BlockType
+operator|.
+name|STRIPED
 condition|?
 operator|new
 name|Block

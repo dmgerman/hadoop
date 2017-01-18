@@ -907,6 +907,18 @@ return|return
 literal|false
 return|;
 block|}
+DECL|method|getBlockType ()
+specifier|public
+name|BlockType
+name|getBlockType
+parameter_list|()
+block|{
+return|return
+name|BlockType
+operator|.
+name|CONTIGUOUS
+return|;
+block|}
 block|}
 end_class
 
