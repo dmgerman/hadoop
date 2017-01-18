@@ -2923,6 +2923,17 @@ name|RMContainer
 name|container
 parameter_list|)
 block|{
+if|if
+condition|(
+operator|!
+name|isPreemptable
+argument_list|()
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
 comment|// Sanity check that the app owns this container
 if|if
 condition|(
@@ -2979,50 +2990,6 @@ comment|// The container is already under consideration for preemption
 return|return
 literal|false
 return|;
-block|}
-comment|// Check if any of the parent queues are not preemptable
-comment|// TODO (YARN-5831): Propagate the "preemptable" flag all the way down to
-comment|// the app to avoid recursing up every time.
-for|for
-control|(
-name|FSQueue
-name|q
-init|=
-name|getQueue
-argument_list|()
-init|;
-operator|!
-name|q
-operator|.
-name|getQueueName
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-literal|"root"
-argument_list|)
-condition|;
-name|q
-operator|=
-name|q
-operator|.
-name|getParent
-argument_list|()
-control|)
-block|{
-if|if
-condition|(
-operator|!
-name|q
-operator|.
-name|isPreemptable
-argument_list|()
-condition|)
-block|{
-return|return
-literal|false
-return|;
-block|}
 block|}
 comment|// Check if the app's allocation will be over its fairshare even
 comment|// after preempting this container
@@ -5641,6 +5608,22 @@ name|equals
 argument_list|(
 name|o
 argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|isPreemptable ()
+specifier|public
+name|boolean
+name|isPreemptable
+parameter_list|()
+block|{
+return|return
+name|getQueue
+argument_list|()
+operator|.
+name|isPreemptable
+argument_list|()
 return|;
 block|}
 block|}

@@ -670,6 +670,18 @@ name|void
 name|updateDemand
 parameter_list|()
 block|{}
+annotation|@
+name|Override
+DECL|method|isPreemptable ()
+specifier|public
+name|boolean
+name|isPreemptable
+parameter_list|()
+block|{
+return|return
+literal|true
+return|;
+block|}
 block|}
 end_class
 

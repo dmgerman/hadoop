@@ -734,13 +734,21 @@ name|parent
 operator|=
 name|parent
 expr_stmt|;
+name|reinit
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
 block|}
-comment|/**    * Initialize a queue by setting its queue-specific properties and its    * metrics.    * This function is invoked when a new queue is created or reloading the    * allocation configuration.    */
-DECL|method|init ()
+comment|/**    * Initialize a queue by setting its queue-specific properties and its    * metrics.    * This function is invoked when a new queue is created or reloading the    * allocation configuration.    *    * @param recursive whether child queues should be reinitialized recursively    */
+DECL|method|reinit (boolean recursive)
 specifier|public
 name|void
-name|init
-parameter_list|()
+name|reinit
+parameter_list|(
+name|boolean
+name|recursive
+parameter_list|)
 block|{
 name|AllocationConfiguration
 name|allocConf
@@ -759,6 +767,32 @@ argument_list|,
 name|scheduler
 argument_list|)
 expr_stmt|;
+name|updatePreemptionVariables
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+name|recursive
+condition|)
+block|{
+for|for
+control|(
+name|FSQueue
+name|child
+range|:
+name|getChildQueues
+argument_list|()
+control|)
+block|{
+name|child
+operator|.
+name|reinit
+argument_list|(
+name|recursive
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 DECL|method|getName ()
 specifier|public
@@ -1656,6 +1690,8 @@ operator|=
 name|fairSharePreemptionThreshold
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|isPreemptable ()
 specifier|public
 name|boolean
@@ -1701,7 +1737,7 @@ expr_stmt|;
 block|}
 comment|/**    * Update the min/fair share preemption timeouts, threshold and preemption    * disabled flag for this queue.    */
 DECL|method|updatePreemptionVariables ()
-specifier|public
+specifier|private
 name|void
 name|updatePreemptionVariables
 parameter_list|()
@@ -1807,7 +1843,29 @@ name|getFairSharePreemptionThreshold
 argument_list|()
 expr_stmt|;
 block|}
-comment|// For option whether allow preemption from this queue
+comment|// For option whether allow preemption from this queue.
+comment|// If the parent is non-preemptable, this queue is non-preemptable as well,
+comment|// otherwise get the value from the allocation file.
+if|if
+condition|(
+name|parent
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|parent
+operator|.
+name|isPreemptable
+argument_list|()
+condition|)
+block|{
+name|preemptable
+operator|=
+literal|false
+expr_stmt|;
+block|}
+else|else
+block|{
 name|preemptable
 operator|=
 name|scheduler
@@ -1821,6 +1879,7 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Gets the children of this queue, if any.    */
 DECL|method|getChildQueues ()

@@ -433,11 +433,6 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
-name|rootQueue
-operator|.
-name|init
-argument_list|()
-expr_stmt|;
 name|queues
 operator|.
 name|put
@@ -457,6 +452,14 @@ name|YarnConfiguration
 operator|.
 name|DEFAULT_QUEUE_NAME
 argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+comment|// Recursively reinitialize to propagate queue properties
+name|rootQueue
+operator|.
+name|reinit
+argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
@@ -1090,11 +1093,6 @@ operator|=
 name|newParent
 expr_stmt|;
 block|}
-name|queue
-operator|.
-name|init
-argument_list|()
-expr_stmt|;
 name|parent
 operator|.
 name|addChildQueue
@@ -1122,11 +1120,6 @@ argument_list|()
 argument_list|,
 name|queue
 argument_list|)
-expr_stmt|;
-name|queue
-operator|.
-name|updatePreemptionVariables
-argument_list|()
 expr_stmt|;
 comment|// If we just created a leaf node, the newParent is null, but that's OK
 comment|// because we only create a leaf node in the very last iteration.
@@ -1887,39 +1880,18 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|// Initialize all queues recursively
 name|rootQueue
 operator|.
-name|recomputeSteadyShares
-argument_list|()
+name|reinit
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
-for|for
-control|(
-name|FSQueue
-name|queue
-range|:
-name|queues
-operator|.
-name|values
-argument_list|()
-control|)
-block|{
-name|queue
-operator|.
-name|init
-argument_list|()
-expr_stmt|;
-block|}
 comment|// Update steady fair shares for all queues
 name|rootQueue
 operator|.
 name|recomputeSteadyShares
-argument_list|()
-expr_stmt|;
-comment|// Update the fair share preemption timeouts and preemption for all queues
-comment|// recursively
-name|rootQueue
-operator|.
-name|updatePreemptionVariables
 argument_list|()
 expr_stmt|;
 block|}

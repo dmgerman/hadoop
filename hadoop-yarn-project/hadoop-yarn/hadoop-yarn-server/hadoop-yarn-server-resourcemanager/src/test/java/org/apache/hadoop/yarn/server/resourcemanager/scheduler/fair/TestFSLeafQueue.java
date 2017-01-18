@@ -612,11 +612,6 @@ argument_list|)
 decl_stmt|;
 name|schedulable
 operator|.
-name|init
-argument_list|()
-expr_stmt|;
-name|schedulable
-operator|.
 name|setMaxShare
 argument_list|(
 name|maxResource

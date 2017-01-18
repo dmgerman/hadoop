@@ -1782,6 +1782,18 @@ operator|+
 literal|"}"
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|isPreemptable ()
+specifier|public
+name|boolean
+name|isPreemptable
+parameter_list|()
+block|{
+return|return
+literal|true
+return|;
+block|}
 block|}
 block|}
 block|}
