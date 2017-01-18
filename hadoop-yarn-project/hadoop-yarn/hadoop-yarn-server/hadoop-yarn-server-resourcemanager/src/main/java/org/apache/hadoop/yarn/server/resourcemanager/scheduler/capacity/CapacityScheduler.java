@@ -3475,7 +3475,12 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Failed to re-init queues"
+literal|"Failed to re-init queues : "
+operator|+
+name|t
+operator|.
+name|getMessage
+argument_list|()
 argument_list|,
 name|t
 argument_list|)

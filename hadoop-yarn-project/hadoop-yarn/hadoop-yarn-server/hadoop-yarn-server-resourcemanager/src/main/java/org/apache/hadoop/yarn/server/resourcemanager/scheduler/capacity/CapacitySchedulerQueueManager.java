@@ -26,20 +26,6 @@ end_package
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -240,6 +226,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|QueueState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Resource
 import|;
 end_import
@@ -409,6 +413,20 @@ operator|.
 name|security
 operator|.
 name|AppPriorityACLsManager
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
 import|;
 end_import
 
@@ -909,16 +927,16 @@ argument_list|,
 name|NOOP
 argument_list|)
 decl_stmt|;
-comment|// Ensure all existing queues are still present
-name|validateExistingQueues
+comment|// Ensure queue hiearchy in the new XML file is proper.
+name|validateQueueHierarchy
 argument_list|(
 name|queues
 argument_list|,
 name|newQueues
 argument_list|)
 expr_stmt|;
-comment|// Add new queues
-name|addNewQueues
+comment|// Add new queues and delete OldQeueus only after validation.
+name|updateQueues
 argument_list|(
 name|queues
 argument_list|,
@@ -1326,11 +1344,11 @@ return|return
 name|queue
 return|;
 block|}
-comment|/**    * Ensure all existing queues are present. Queues cannot be deleted    * @param queues existing queues    * @param newQueues new queues    */
-DECL|method|validateExistingQueues ( Map<String, CSQueue> queues, Map<String, CSQueue> newQueues)
+comment|/**    * Ensure all existing queues are present. Queues cannot be deleted if its not    * in Stopped state, Queue's cannot be moved from one hierarchy to other also.    *    * @param queues existing queues    * @param newQueues new queues    */
+DECL|method|validateQueueHierarchy (Map<String, CSQueue> queues, Map<String, CSQueue> newQueues)
 specifier|private
 name|void
-name|validateExistingQueues
+name|validateQueueHierarchy
 parameter_list|(
 name|Map
 argument_list|<
@@ -1416,15 +1434,59 @@ operator|==
 name|newQueue
 condition|)
 block|{
+comment|// old queue doesn't exist in the new XML
+if|if
+condition|(
+name|oldQueue
+operator|.
+name|getState
+argument_list|()
+operator|==
+name|QueueState
+operator|.
+name|STOPPED
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Deleting Queue "
+operator|+
+name|queueName
+operator|+
+literal|", as it is not"
+operator|+
+literal|" present in the modified capacity configuration xml"
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 throw|throw
 operator|new
 name|IOException
 argument_list|(
-name|queueName
+name|oldQueue
+operator|.
+name|getQueuePath
+argument_list|()
 operator|+
-literal|" cannot be found during refresh!"
+literal|" is deleted from"
+operator|+
+literal|" the new capacity scheduler configuration, but the"
+operator|+
+literal|" queue is not yet in stopped state. "
+operator|+
+literal|"Current State : "
+operator|+
+name|oldQueue
+operator|.
+name|getState
+argument_list|()
 argument_list|)
 throw|;
+block|}
 block|}
 elseif|else
 if|if
@@ -1444,6 +1506,7 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
+comment|//Queue's cannot be moved from one hierarchy to other
 throw|throw
 operator|new
 name|IOException
@@ -1471,11 +1534,11 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Add the new queues (only) to our list of queues...    * ... be careful, do not overwrite existing queues.    * @param queues the existing queues    * @param newQueues the new queues    */
-DECL|method|addNewQueues ( Map<String, CSQueue> queues, Map<String, CSQueue> newQueues)
+comment|/**    * Updates to our list of queues: Adds the new queues and deletes the removed    * ones... be careful, do not overwrite existing queues.    *    * @param existingQueues, the existing queues    * @param newQueues the new queues based on new XML    */
+DECL|method|updateQueues (Map<String, CSQueue> existingQueues, Map<String, CSQueue> newQueues)
 specifier|private
 name|void
-name|addNewQueues
+name|updateQueues
 parameter_list|(
 name|Map
 argument_list|<
@@ -1483,7 +1546,7 @@ name|String
 argument_list|,
 name|CSQueue
 argument_list|>
-name|queues
+name|existingQueues
 parameter_list|,
 name|Map
 argument_list|<
@@ -1531,7 +1594,7 @@ decl_stmt|;
 if|if
 condition|(
 operator|!
-name|queues
+name|existingQueues
 operator|.
 name|containsKey
 argument_list|(
@@ -1539,13 +1602,59 @@ name|queueName
 argument_list|)
 condition|)
 block|{
-name|queues
+name|existingQueues
 operator|.
 name|put
 argument_list|(
 name|queueName
 argument_list|,
 name|queue
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+for|for
+control|(
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|String
+argument_list|,
+name|CSQueue
+argument_list|>
+name|e
+range|:
+name|existingQueues
+operator|.
+name|entrySet
+argument_list|()
+control|)
+block|{
+name|String
+name|queueName
+init|=
+name|e
+operator|.
+name|getKey
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|newQueues
+operator|.
+name|containsKey
+argument_list|(
+name|queueName
+argument_list|)
+condition|)
+block|{
+name|existingQueues
+operator|.
+name|remove
+argument_list|(
+name|queueName
 argument_list|)
 expr_stmt|;
 block|}
