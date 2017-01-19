@@ -383,7 +383,9 @@ literal|"-upgradedomains]]]] "
 operator|+
 literal|"[-includeSnapshots] [-showprogress] "
 operator|+
-literal|"[-storagepolicies] [-blockId<blk_Id>]\n"
+literal|"[-storagepolicies] [-maintenance] "
+operator|+
+literal|"[-blockId<blk_Id>]\n"
 operator|+
 literal|"\t<path>\tstart checking from this path\n"
 operator|+
@@ -420,6 +422,8 @@ operator|+
 literal|"every block\n"
 operator|+
 literal|"\t-storagepolicies\tprint out storage policy summary for the blocks\n"
+operator|+
+literal|"\t-maintenance\tprint out maintenance state node details\n"
 operator|+
 literal|"\t-showprogress\tshow progress in output. Default is OFF (no progress)\n"
 operator|+
@@ -1511,6 +1515,28 @@ index|]
 operator|.
 name|equals
 argument_list|(
+literal|"-maintenance"
+argument_list|)
+condition|)
+block|{
+name|url
+operator|.
+name|append
+argument_list|(
+literal|"&maintenance=1"
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|args
+index|[
+name|idx
+index|]
+operator|.
+name|equals
+argument_list|(
 literal|"-blockId"
 argument_list|)
 condition|)
@@ -2054,6 +2080,42 @@ block|{
 name|errCode
 operator|=
 literal|3
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|lastLine
+operator|.
+name|endsWith
+argument_list|(
+name|NamenodeFsck
+operator|.
+name|IN_MAINTENANCE_STATUS
+argument_list|)
+condition|)
+block|{
+name|errCode
+operator|=
+literal|4
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|lastLine
+operator|.
+name|endsWith
+argument_list|(
+name|NamenodeFsck
+operator|.
+name|ENTERING_MAINTENANCE_STATUS
+argument_list|)
+condition|)
+block|{
+name|errCode
+operator|=
+literal|5
 expr_stmt|;
 block|}
 return|return
