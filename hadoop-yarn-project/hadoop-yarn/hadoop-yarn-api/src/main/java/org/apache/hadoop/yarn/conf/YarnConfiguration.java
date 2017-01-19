@@ -7282,6 +7282,28 @@ name|TIMELINE_SERVICE_PREFIX
 operator|+
 literal|"hbase.coprocessor.app-final-value-retention-milliseconds"
 decl_stmt|;
+comment|/**    * The name of the setting for the location of the coprocessor    * jar on hdfs.    */
+DECL|field|FLOW_RUN_COPROCESSOR_JAR_HDFS_LOCATION
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FLOW_RUN_COPROCESSOR_JAR_HDFS_LOCATION
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"hbase.coprocessor.jar.hdfs.location"
+decl_stmt|;
+comment|/** default hdfs location for flowrun coprocessor jar. */
+DECL|field|DEFAULT_HDFS_LOCATION_FLOW_RUN_COPROCESSOR_JAR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_HDFS_LOCATION_FLOW_RUN_COPROCESSOR_JAR
+init|=
+literal|"/hbase/coprocessor/hadoop-yarn-server-timelineservice.jar"
+decl_stmt|;
 comment|/**    * The name for setting that points to an optional HBase configuration    * (hbase-site.xml file) with settings that will override the ones found on    * the classpath.    */
 DECL|field|TIMELINE_SERVICE_HBASE_CONFIGURATION_FILE
 specifier|public

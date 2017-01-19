@@ -466,7 +466,7 @@ name|timelineservice
 operator|.
 name|storage
 operator|.
-name|HBaseTimelineWriterImpl
+name|DataGeneratorForTest
 import|;
 end_import
 
@@ -486,7 +486,7 @@ name|timelineservice
 operator|.
 name|storage
 operator|.
-name|TimelineSchemaCreator
+name|HBaseTimelineWriterImpl
 import|;
 end_import
 
@@ -755,29 +755,14 @@ operator|.
 name|startMiniCluster
 argument_list|()
 expr_stmt|;
-name|createSchema
-argument_list|()
-expr_stmt|;
-block|}
-DECL|method|createSchema ()
-specifier|private
-specifier|static
-name|void
-name|createSchema
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-name|TimelineSchemaCreator
+name|DataGeneratorForTest
 operator|.
-name|createAllTables
+name|createSchema
 argument_list|(
 name|util
 operator|.
 name|getConfiguration
 argument_list|()
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 block|}
