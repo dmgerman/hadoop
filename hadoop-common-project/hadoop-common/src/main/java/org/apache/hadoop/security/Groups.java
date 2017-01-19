@@ -787,7 +787,7 @@ name|CommonConfigurationKeys
 operator|.
 name|HADOOP_SECURITY_GROUP_MAPPING
 argument_list|,
-name|ShellBasedUnixGroupsMapping
+name|JniBasedUnixGroupsMappingWithFallback
 operator|.
 name|class
 argument_list|,
