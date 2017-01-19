@@ -1379,9 +1379,8 @@ name|absPathToRemove
 argument_list|)
 condition|)
 block|{
-name|this
-operator|.
-name|storageDirs
+name|getStorageDirs
+argument_list|()
 operator|.
 name|remove
 argument_list|(

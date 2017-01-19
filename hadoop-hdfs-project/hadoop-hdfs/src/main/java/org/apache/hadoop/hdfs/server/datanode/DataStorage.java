@@ -2714,9 +2714,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|this
-operator|.
-name|storageDirs
+name|getStorageDirs
+argument_list|()
 operator|.
 name|remove
 argument_list|(

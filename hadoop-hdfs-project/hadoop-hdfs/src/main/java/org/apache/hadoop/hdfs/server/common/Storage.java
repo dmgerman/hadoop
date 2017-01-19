@@ -650,7 +650,8 @@ parameter_list|)
 function_decl|;
 block|}
 DECL|field|storageDirs
-specifier|protected
+specifier|private
+specifier|final
 name|List
 argument_list|<
 name|StorageDirectory
