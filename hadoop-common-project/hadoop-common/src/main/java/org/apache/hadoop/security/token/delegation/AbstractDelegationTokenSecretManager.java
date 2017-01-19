@@ -54,9 +54,9 @@ begin_import
 import|import
 name|java
 operator|.
-name|util
+name|security
 operator|.
-name|Arrays
+name|MessageDigest
 import|;
 end_import
 
@@ -1759,9 +1759,9 @@ decl_stmt|;
 if|if
 condition|(
 operator|!
-name|Arrays
+name|MessageDigest
 operator|.
-name|equals
+name|isEqual
 argument_list|(
 name|password
 argument_list|,
@@ -2059,9 +2059,9 @@ decl_stmt|;
 if|if
 condition|(
 operator|!
-name|Arrays
+name|MessageDigest
 operator|.
-name|equals
+name|isEqual
 argument_list|(
 name|password
 argument_list|,
