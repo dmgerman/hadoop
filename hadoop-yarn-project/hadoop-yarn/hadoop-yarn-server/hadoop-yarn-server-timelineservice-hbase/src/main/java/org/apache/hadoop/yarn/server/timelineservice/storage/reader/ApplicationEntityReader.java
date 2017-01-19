@@ -2135,11 +2135,6 @@ init|=
 operator|new
 name|AppToFlowRowKey
 argument_list|(
-name|context
-operator|.
-name|getClusterId
-argument_list|()
-argument_list|,
 name|getFilters
 argument_list|()
 operator|.
@@ -2153,6 +2148,11 @@ init|=
 name|lookupFlowContext
 argument_list|(
 name|appToFlowRowKey
+argument_list|,
+name|context
+operator|.
+name|getClusterId
+argument_list|()
 argument_list|,
 name|hbaseConf
 argument_list|,
