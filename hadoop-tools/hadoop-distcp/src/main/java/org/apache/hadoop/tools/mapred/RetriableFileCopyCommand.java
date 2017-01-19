@@ -1116,8 +1116,9 @@ argument_list|(
 name|configuration
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
+name|long
+name|srcLen
+init|=
 name|fs
 operator|.
 name|getFileStatus
@@ -1127,6 +1128,10 @@ argument_list|)
 operator|.
 name|getLen
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|srcLen
 operator|!=
 name|targetLen
 condition|)
@@ -1138,9 +1143,19 @@ literal|"Mismatch in length of source:"
 operator|+
 name|sourcePath
 operator|+
-literal|" and target:"
+literal|" ("
+operator|+
+name|srcLen
+operator|+
+literal|") and target:"
 operator|+
 name|target
+operator|+
+literal|" ("
+operator|+
+name|targetLen
+operator|+
+literal|")"
 argument_list|)
 throw|;
 block|}
