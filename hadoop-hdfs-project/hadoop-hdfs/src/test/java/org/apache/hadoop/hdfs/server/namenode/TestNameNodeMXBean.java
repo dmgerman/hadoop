@@ -3662,7 +3662,7 @@ argument_list|()
 argument_list|,
 name|Time
 operator|.
-name|monotonicNow
+name|now
 argument_list|()
 operator|+
 name|expirationInMs

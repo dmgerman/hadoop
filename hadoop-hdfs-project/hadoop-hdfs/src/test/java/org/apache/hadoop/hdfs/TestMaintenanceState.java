@@ -656,7 +656,7 @@ argument_list|()
 argument_list|,
 name|Time
 operator|.
-name|monotonicNow
+name|now
 argument_list|()
 operator|+
 name|EXPIRATION_IN_MS
@@ -745,7 +745,7 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
-comment|// expiration has to be greater than Time.monotonicNow().
+comment|// expiration has to be greater than Time.now().
 name|takeNodeOutofService
 argument_list|(
 literal|0
@@ -754,7 +754,7 @@ literal|null
 argument_list|,
 name|Time
 operator|.
-name|monotonicNow
+name|now
 argument_list|()
 argument_list|,
 literal|null
@@ -1112,7 +1112,7 @@ argument_list|()
 argument_list|,
 name|Time
 operator|.
-name|monotonicNow
+name|now
 argument_list|()
 operator|+
 name|EXPIRATION_IN_MS
@@ -1376,7 +1376,7 @@ argument_list|()
 argument_list|,
 name|Time
 operator|.
-name|monotonicNow
+name|now
 argument_list|()
 operator|+
 name|EXPIRATION_IN_MS
@@ -2044,7 +2044,7 @@ argument_list|()
 argument_list|,
 name|Time
 operator|.
-name|monotonicNow
+name|now
 argument_list|()
 operator|+
 name|EXPIRATION_IN_MS

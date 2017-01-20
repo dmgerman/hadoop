@@ -2602,7 +2602,7 @@ block|{
 return|return
 name|Time
 operator|.
-name|monotonicNow
+name|now
 argument_list|()
 operator|<
 name|maintenanceExpireTimeInMS
