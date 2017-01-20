@@ -1860,7 +1860,7 @@ name|List
 argument_list|<
 name|DatanodeDescriptor
 argument_list|>
-name|chosenNodes
+name|excludeNodes
 init|=
 operator|new
 name|ArrayList
@@ -1903,6 +1903,8 @@ name|chosenTarget
 init|=
 name|chooseTargetTypeInSameNode
 argument_list|(
+name|blockInfo
+argument_list|,
 name|existingTypeNodePair
 operator|.
 name|dn
@@ -1953,15 +1955,6 @@ operator|.
 name|storageType
 argument_list|)
 expr_stmt|;
-name|chosenNodes
-operator|.
-name|add
-argument_list|(
-name|chosenTarget
-operator|.
-name|dn
-argument_list|)
-expr_stmt|;
 name|expected
 operator|.
 name|remove
@@ -1973,6 +1966,16 @@ argument_list|)
 expr_stmt|;
 comment|// TODO: We can increment scheduled block count for this node?
 block|}
+comment|// To avoid choosing this excludeNodes as targets later
+name|excludeNodes
+operator|.
+name|add
+argument_list|(
+name|existingTypeNodePair
+operator|.
+name|dn
+argument_list|)
+expr_stmt|;
 block|}
 comment|// Looping over all the source node locations. Choose a remote target
 comment|// storage node if it was not found out within same node.
@@ -2061,7 +2064,7 @@ name|SAME_NODE_GROUP
 argument_list|,
 name|locsForExpectedStorageTypes
 argument_list|,
-name|chosenNodes
+name|excludeNodes
 argument_list|)
 expr_stmt|;
 block|}
@@ -2091,7 +2094,7 @@ name|SAME_RACK
 argument_list|,
 name|locsForExpectedStorageTypes
 argument_list|,
-name|chosenNodes
+name|excludeNodes
 argument_list|)
 expr_stmt|;
 block|}
@@ -2120,7 +2123,7 @@ name|ANY_OTHER
 argument_list|,
 name|locsForExpectedStorageTypes
 argument_list|,
-name|chosenNodes
+name|excludeNodes
 argument_list|)
 expr_stmt|;
 block|}
@@ -2167,15 +2170,6 @@ operator|.
 name|storageType
 argument_list|)
 expr_stmt|;
-name|chosenNodes
-operator|.
-name|add
-argument_list|(
-name|chosenTarget
-operator|.
-name|dn
-argument_list|)
-expr_stmt|;
 name|expected
 operator|.
 name|remove
@@ -2183,6 +2177,15 @@ argument_list|(
 name|chosenTarget
 operator|.
 name|storageType
+argument_list|)
+expr_stmt|;
+name|excludeNodes
+operator|.
+name|add
+argument_list|(
+name|chosenTarget
+operator|.
+name|dn
 argument_list|)
 expr_stmt|;
 comment|// TODO: We can increment scheduled block count for this node?
@@ -2780,12 +2783,15 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Choose the target storage within same datanode if possible.    *    * @param source source datanode    * @param targetTypes list of target storage types    */
-DECL|method|chooseTargetTypeInSameNode ( DatanodeDescriptor source, List<StorageType> targetTypes)
+comment|/**    * Choose the target storage within same datanode if possible.    *    * @param block    *          - block info    * @param source    *          - source datanode    * @param targetTypes    *          - list of target storage types    */
+DECL|method|chooseTargetTypeInSameNode (Block block, DatanodeDescriptor source, List<StorageType> targetTypes)
 specifier|private
 name|StorageTypeNodePair
 name|chooseTargetTypeInSameNode
 parameter_list|(
+name|Block
+name|block
+parameter_list|,
 name|DatanodeDescriptor
 name|source
 parameter_list|,
@@ -2813,7 +2819,10 @@ name|chooseStorage4Block
 argument_list|(
 name|t
 argument_list|,
-literal|0
+name|block
+operator|.
+name|getNumBytes
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -2838,7 +2847,7 @@ return|return
 literal|null
 return|;
 block|}
-DECL|method|chooseTarget (Block block, DatanodeDescriptor source, List<StorageType> targetTypes, Matcher matcher, StorageTypeNodeMap locsForExpectedStorageTypes, List<DatanodeDescriptor> chosenNodes)
+DECL|method|chooseTarget (Block block, DatanodeDescriptor source, List<StorageType> targetTypes, Matcher matcher, StorageTypeNodeMap locsForExpectedStorageTypes, List<DatanodeDescriptor> excludeNodes)
 specifier|private
 name|StorageTypeNodePair
 name|chooseTarget
@@ -2865,7 +2874,7 @@ name|List
 argument_list|<
 name|DatanodeDescriptor
 argument_list|>
-name|chosenNodes
+name|excludeNodes
 parameter_list|)
 block|{
 for|for
@@ -2922,7 +2931,7 @@ block|{
 if|if
 condition|(
 operator|!
-name|chosenNodes
+name|excludeNodes
 operator|.
 name|contains
 argument_list|(
