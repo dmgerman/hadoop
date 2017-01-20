@@ -22,6 +22,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -208,6 +222,33 @@ name|Block
 name|reportedBlock
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|this
+operator|.
+name|getBlockId
+argument_list|()
+operator|==
+name|reportedBlock
+operator|.
+name|getBlockId
+argument_list|()
+argument_list|,
+literal|"reported blk_%s is different from stored blk_%s"
+argument_list|,
+name|reportedBlock
+operator|.
+name|getBlockId
+argument_list|()
+argument_list|,
+name|this
+operator|.
+name|getBlockId
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// find the last null node
 name|int
 name|lastNode
