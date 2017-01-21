@@ -139,7 +139,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Initializes hadoop-auth AuthenticationFilter which provides support for  * Kerberos HTTP SPNEGO authentication.  *<p/>  * It enables anonymous access, simple/speudo and Kerberos HTTP SPNEGO  * authentication  for Hadoop JobTracker, NameNode, DataNodes and  * TaskTrackers.  *<p/>  * Refer to the<code>core-default.xml</code> file, after the comment  * 'HTTP Authentication' for details on the configuration options.  * All related configuration properties have 'hadoop.http.authentication.'  * as prefix.  */
+comment|/**  * Initializes {@link AuthenticationWithProxyUserFilter}  * which provides support for Kerberos HTTP SPNEGO authentication  * and proxy user authentication.  *<p/>  * It enables anonymous access, simple/speudo and Kerberos HTTP SPNEGO  * authentication  for Hadoop JobTracker, NameNode, DataNodes and  * TaskTrackers.  *<p/>  * Refer to the<code>core-default.xml</code> file, after the comment  * 'HTTP Authentication' for details on the configuration options.  * All related configuration properties have 'hadoop.http.authentication.'  * as prefix.  */
 end_comment
 
 begin_class
@@ -188,13 +188,15 @@ argument_list|,
 name|PREFIX
 argument_list|)
 decl_stmt|;
+comment|// extend AuthenticationFilter's feature to
+comment|// support proxy user operation.
 name|container
 operator|.
 name|addFilter
 argument_list|(
 literal|"authentication"
 argument_list|,
-name|AuthenticationFilter
+name|AuthenticationWithProxyUserFilter
 operator|.
 name|class
 operator|.

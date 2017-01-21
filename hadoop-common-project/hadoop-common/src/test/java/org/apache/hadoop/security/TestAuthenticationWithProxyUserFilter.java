@@ -112,11 +112,15 @@ name|Map
 import|;
 end_import
 
+begin_comment
+comment|/**  * This class is tested for {@link AuthenticationWithProxyUserFilter}  * to verify configurations of this filter.  */
+end_comment
+
 begin_class
-DECL|class|TestAuthenticationFilter
+DECL|class|TestAuthenticationWithProxyUserFilter
 specifier|public
 class|class
-name|TestAuthenticationFilter
+name|TestAuthenticationWithProxyUserFilter
 extends|extends
 name|TestCase
 block|{
@@ -208,6 +212,21 @@ argument_list|,
 name|args
 index|[
 literal|0
+index|]
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|AuthenticationWithProxyUserFilter
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+argument_list|,
+name|args
+index|[
+literal|1
 index|]
 argument_list|)
 expr_stmt|;
