@@ -64,6 +64,16 @@ name|DummyResourceCalculatorPlugin
 extends|extends
 name|ResourceCalculatorPlugin
 block|{
+DECL|method|DummyResourceCalculatorPlugin ()
+name|DummyResourceCalculatorPlugin
+parameter_list|()
+block|{
+name|super
+argument_list|(
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
 comment|/** max vmem on the TT */
 DECL|field|MAXVMEM_TESTING_PROPERTY
 specifier|public
