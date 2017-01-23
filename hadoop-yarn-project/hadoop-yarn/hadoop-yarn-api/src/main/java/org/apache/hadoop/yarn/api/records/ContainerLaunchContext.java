@@ -399,6 +399,33 @@ name|ByteBuffer
 name|tokens
 parameter_list|)
 function_decl|;
+comment|/**    * Get the configuration used by RM to renew tokens.    * @return The configuration used by RM to renew the tokens.    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getTokensConf ()
+specifier|public
+specifier|abstract
+name|ByteBuffer
+name|getTokensConf
+parameter_list|()
+function_decl|;
+comment|/**    * Set the configuration used by RM to renew the tokens.    * @param tokensConf The configuration used by RM to renew the tokens    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|setTokensConf (ByteBuffer tokensConf)
+specifier|public
+specifier|abstract
+name|void
+name|setTokensConf
+parameter_list|(
+name|ByteBuffer
+name|tokensConf
+parameter_list|)
+function_decl|;
 comment|/**    * Get<code>LocalResource</code> required by the container.    * @return all<code>LocalResource</code> required by the container    */
 annotation|@
 name|Public

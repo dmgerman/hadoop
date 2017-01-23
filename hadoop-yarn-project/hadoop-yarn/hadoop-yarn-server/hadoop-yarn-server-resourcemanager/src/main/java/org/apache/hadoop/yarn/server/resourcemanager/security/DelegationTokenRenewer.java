@@ -139,6 +139,16 @@ operator|.
 name|util
 operator|.
 name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
 operator|.
 name|Entry
 import|;
@@ -2152,8 +2162,8 @@ return|return
 name|tokens
 return|;
 block|}
-comment|/**    * Asynchronously add application tokens for renewal.    * @param applicationId added application    * @param ts tokens    * @param shouldCancelAtEnd true if tokens should be canceled when the app is    * done else false.     * @param user user    */
-DECL|method|addApplicationAsync (ApplicationId applicationId, Credentials ts, boolean shouldCancelAtEnd, String user)
+comment|/**    * Asynchronously add application tokens for renewal.    * @param applicationId added application    * @param ts tokens    * @param shouldCancelAtEnd true if tokens should be canceled when the app is    * done else false.    * @param user user    * @param tokenConf tokenConf sent by the app-submitter    */
+DECL|method|addApplicationAsync (ApplicationId applicationId, Credentials ts, boolean shouldCancelAtEnd, String user, Configuration tokenConf)
 specifier|public
 name|void
 name|addApplicationAsync
@@ -2169,6 +2179,9 @@ name|shouldCancelAtEnd
 parameter_list|,
 name|String
 name|user
+parameter_list|,
+name|Configuration
+name|tokenConf
 parameter_list|)
 block|{
 name|processDelegationTokenRenewerEvent
@@ -2183,12 +2196,14 @@ argument_list|,
 name|shouldCancelAtEnd
 argument_list|,
 name|user
+argument_list|,
+name|tokenConf
 argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Asynchronously add application tokens for renewal.    *    * @param applicationId    *          added application    * @param ts    *          tokens    * @param shouldCancelAtEnd    *          true if tokens should be canceled when the app is done else false.    * @param user    *          user    */
-DECL|method|addApplicationAsyncDuringRecovery (ApplicationId applicationId, Credentials ts, boolean shouldCancelAtEnd, String user)
+comment|/**    * Asynchronously add application tokens for renewal.    *  @param applicationId    *          added application    * @param ts    *          tokens    * @param shouldCancelAtEnd    *          true if tokens should be canceled when the app is done else false.    * @param user user    * @param tokenConf tokenConf sent by the app-submitter    */
+DECL|method|addApplicationAsyncDuringRecovery (ApplicationId applicationId, Credentials ts, boolean shouldCancelAtEnd, String user, Configuration tokenConf)
 specifier|public
 name|void
 name|addApplicationAsyncDuringRecovery
@@ -2204,6 +2219,9 @@ name|shouldCancelAtEnd
 parameter_list|,
 name|String
 name|user
+parameter_list|,
+name|Configuration
+name|tokenConf
 parameter_list|)
 block|{
 name|processDelegationTokenRenewerEvent
@@ -2218,11 +2236,14 @@ argument_list|,
 name|shouldCancelAtEnd
 argument_list|,
 name|user
+argument_list|,
+name|tokenConf
 argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Synchronously renew delegation tokens.    * @param user user    */
+comment|// Only for testing
+comment|// Synchronously renew delegation tokens.
 DECL|method|addApplicationSync (ApplicationId applicationId, Credentials ts, boolean shouldCancelAtEnd, String user)
 specifier|public
 name|void
@@ -2257,6 +2278,10 @@ argument_list|,
 name|shouldCancelAtEnd
 argument_list|,
 name|user
+argument_list|,
+operator|new
+name|Configuration
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2466,6 +2491,120 @@ operator|==
 literal|null
 condition|)
 block|{
+name|Configuration
+name|tokenConf
+decl_stmt|;
+if|if
+condition|(
+name|evt
+operator|.
+name|tokenConf
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// Override conf with app provided conf - this is required in cases
+comment|// where RM does not have the required conf to communicate with
+comment|// remote hdfs cluster. The conf is provided by the application
+comment|// itself.
+name|tokenConf
+operator|=
+name|evt
+operator|.
+name|tokenConf
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Using app provided token conf for renewal,"
+operator|+
+literal|" number of configs = "
+operator|+
+name|tokenConf
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+for|for
+control|(
+name|Iterator
+argument_list|<
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+argument_list|>
+name|itor
+init|=
+name|tokenConf
+operator|.
+name|iterator
+argument_list|()
+init|;
+name|itor
+operator|.
+name|hasNext
+argument_list|()
+condition|;
+control|)
+block|{
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|entry
+init|=
+name|itor
+operator|.
+name|next
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|entry
+operator|.
+name|getKey
+argument_list|()
+operator|+
+literal|" ===> "
+operator|+
+name|entry
+operator|.
+name|getValue
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+else|else
+block|{
+name|tokenConf
+operator|=
+name|getConfig
+argument_list|()
+expr_stmt|;
+block|}
 name|dttr
 operator|=
 operator|new
@@ -2480,8 +2619,7 @@ argument_list|)
 argument_list|,
 name|token
 argument_list|,
-name|getConfig
-argument_list|()
+name|tokenConf
 argument_list|,
 name|now
 argument_list|,
@@ -4625,7 +4763,7 @@ name|DelegationTokenRenewerAppSubmitEvent
 extends|extends
 name|AbstractDelegationTokenRenewerAppEvent
 block|{
-DECL|method|DelegationTokenRenewerAppSubmitEvent (ApplicationId appId, Credentials credentails, boolean shouldCancelAtEnd, String user)
+DECL|method|DelegationTokenRenewerAppSubmitEvent (ApplicationId appId, Credentials credentails, boolean shouldCancelAtEnd, String user, Configuration tokenConf)
 specifier|public
 name|DelegationTokenRenewerAppSubmitEvent
 parameter_list|(
@@ -4640,6 +4778,9 @@ name|shouldCancelAtEnd
 parameter_list|,
 name|String
 name|user
+parameter_list|,
+name|Configuration
+name|tokenConf
 parameter_list|)
 block|{
 name|super
@@ -4655,6 +4796,8 @@ argument_list|,
 name|DelegationTokenRenewerEventType
 operator|.
 name|VERIFY_AND_START_APPLICATION
+argument_list|,
+name|tokenConf
 argument_list|)
 expr_stmt|;
 block|}
@@ -4669,7 +4812,7 @@ name|DelegationTokenRenewerAppRecoverEvent
 extends|extends
 name|AbstractDelegationTokenRenewerAppEvent
 block|{
-DECL|method|DelegationTokenRenewerAppRecoverEvent (ApplicationId appId, Credentials credentails, boolean shouldCancelAtEnd, String user)
+DECL|method|DelegationTokenRenewerAppRecoverEvent (ApplicationId appId, Credentials credentails, boolean shouldCancelAtEnd, String user, Configuration tokenConf)
 specifier|public
 name|DelegationTokenRenewerAppRecoverEvent
 parameter_list|(
@@ -4684,6 +4827,9 @@ name|shouldCancelAtEnd
 parameter_list|,
 name|String
 name|user
+parameter_list|,
+name|Configuration
+name|tokenConf
 parameter_list|)
 block|{
 name|super
@@ -4699,6 +4845,8 @@ argument_list|,
 name|DelegationTokenRenewerEventType
 operator|.
 name|RECOVER_APPLICATION
+argument_list|,
+name|tokenConf
 argument_list|)
 expr_stmt|;
 block|}
@@ -4718,6 +4866,11 @@ specifier|private
 name|Credentials
 name|credentials
 decl_stmt|;
+DECL|field|tokenConf
+specifier|private
+name|Configuration
+name|tokenConf
+decl_stmt|;
 DECL|field|shouldCancelAtEnd
 specifier|private
 name|boolean
@@ -4728,7 +4881,7 @@ specifier|private
 name|String
 name|user
 decl_stmt|;
-DECL|method|AbstractDelegationTokenRenewerAppEvent (ApplicationId appId, Credentials credentails, boolean shouldCancelAtEnd, String user, DelegationTokenRenewerEventType type)
+DECL|method|AbstractDelegationTokenRenewerAppEvent (ApplicationId appId, Credentials credentials, boolean shouldCancelAtEnd, String user, DelegationTokenRenewerEventType type, Configuration tokenConf)
 specifier|public
 name|AbstractDelegationTokenRenewerAppEvent
 parameter_list|(
@@ -4736,7 +4889,7 @@ name|ApplicationId
 name|appId
 parameter_list|,
 name|Credentials
-name|credentails
+name|credentials
 parameter_list|,
 name|boolean
 name|shouldCancelAtEnd
@@ -4746,6 +4899,9 @@ name|user
 parameter_list|,
 name|DelegationTokenRenewerEventType
 name|type
+parameter_list|,
+name|Configuration
+name|tokenConf
 parameter_list|)
 block|{
 name|super
@@ -4759,7 +4915,7 @@ name|this
 operator|.
 name|credentials
 operator|=
-name|credentails
+name|credentials
 expr_stmt|;
 name|this
 operator|.
@@ -4772,6 +4928,12 @@ operator|.
 name|user
 operator|=
 name|user
+expr_stmt|;
+name|this
+operator|.
+name|tokenConf
+operator|=
+name|tokenConf
 expr_stmt|;
 block|}
 DECL|method|getCredentials ()

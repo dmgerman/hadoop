@@ -3639,6 +3639,12 @@ name|MR_JOB_REDACTED_PROPERTIES
 init|=
 literal|"mapreduce.job.redacted-properties"
 decl_stmt|;
+DECL|field|MR_JOB_SEND_TOKEN_CONF
+name|String
+name|MR_JOB_SEND_TOKEN_CONF
+init|=
+literal|"mapreduce.job.send-token-conf"
+decl_stmt|;
 block|}
 end_interface
 

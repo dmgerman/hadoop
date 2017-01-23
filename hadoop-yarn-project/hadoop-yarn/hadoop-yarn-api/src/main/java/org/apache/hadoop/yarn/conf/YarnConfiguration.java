@@ -1975,6 +1975,26 @@ operator|*
 literal|1000
 decl_stmt|;
 comment|// 7 days
+DECL|field|RM_DELEGATION_TOKEN_MAX_CONF_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_DELEGATION_TOKEN_MAX_CONF_SIZE
+init|=
+name|RM_PREFIX
+operator|+
+literal|"delegation-token.max-conf-size-bytes"
+decl_stmt|;
+DECL|field|DEFAULT_RM_DELEGATION_TOKEN_MAX_CONF_SIZE_BYTES
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_RM_DELEGATION_TOKEN_MAX_CONF_SIZE_BYTES
+init|=
+literal|12800
+decl_stmt|;
 DECL|field|RECOVERY_ENABLED
 specifier|public
 specifier|static
