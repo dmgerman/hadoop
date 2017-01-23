@@ -549,16 +549,6 @@ return|;
 block|}
 block|}
 decl_stmt|;
-DECL|field|PARTITIONED_QUEUE_COMPARATOR
-specifier|static
-specifier|final
-name|PartitionedQueueComparator
-name|PARTITIONED_QUEUE_COMPARATOR
-init|=
-operator|new
-name|PartitionedQueueComparator
-argument_list|()
-decl_stmt|;
 DECL|class|QueueHook
 specifier|static
 class|class

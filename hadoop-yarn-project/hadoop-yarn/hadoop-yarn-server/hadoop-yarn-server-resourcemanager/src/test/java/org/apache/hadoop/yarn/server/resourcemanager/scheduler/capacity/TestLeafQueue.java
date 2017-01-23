@@ -1848,21 +1848,6 @@ name|when
 argument_list|(
 name|csContext
 operator|.
-name|getNonPartitionedQueueComparator
-argument_list|()
-argument_list|)
-operator|.
-name|thenReturn
-argument_list|(
-name|CapacitySchedulerQueueManager
-operator|.
-name|NON_PARTITIONED_QUEUE_COMPARATOR
-argument_list|)
-expr_stmt|;
-name|when
-argument_list|(
-name|csContext
-operator|.
 name|getResourceCalculator
 argument_list|()
 argument_list|)
@@ -3398,7 +3383,7 @@ operator|.
 expr|<
 name|FiCaSchedulerApp
 operator|>
-name|getOrderingPolicy
+name|getAppOrderingPolicy
 argument_list|(
 name|tproot
 argument_list|)
@@ -3842,7 +3827,7 @@ operator|.
 expr|<
 name|FiCaSchedulerApp
 operator|>
-name|getOrderingPolicy
+name|getAppOrderingPolicy
 argument_list|(
 name|tproot
 argument_list|)
@@ -3871,7 +3856,7 @@ name|policyType
 argument_list|,
 name|CapacitySchedulerConfiguration
 operator|.
-name|FAIR_ORDERING_POLICY
+name|FAIR_APP_ORDERING_POLICY
 argument_list|)
 expr_stmt|;
 name|schedOrder
@@ -3881,7 +3866,7 @@ operator|.
 expr|<
 name|FiCaSchedulerApp
 operator|>
-name|getOrderingPolicy
+name|getAppOrderingPolicy
 argument_list|(
 name|tproot
 argument_list|)
@@ -3943,7 +3928,7 @@ operator|.
 expr|<
 name|FiCaSchedulerApp
 operator|>
-name|getOrderingPolicy
+name|getAppOrderingPolicy
 argument_list|(
 name|tproot
 argument_list|)

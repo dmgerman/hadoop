@@ -220,6 +220,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|Priority
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|QueueACL
 import|;
 end_import
@@ -1108,6 +1126,12 @@ name|queue
 parameter_list|)
 throws|throws
 name|AccessControlException
+function_decl|;
+comment|/**    * Get priority of queue    * @return queue priority    */
+DECL|method|getPriority ()
+name|Priority
+name|getPriority
+parameter_list|()
 function_decl|;
 block|}
 end_interface

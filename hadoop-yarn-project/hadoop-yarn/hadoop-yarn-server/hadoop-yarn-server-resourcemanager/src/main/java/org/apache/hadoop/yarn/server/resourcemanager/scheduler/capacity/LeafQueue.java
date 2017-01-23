@@ -1587,7 +1587,7 @@ operator|.
 expr|<
 name|FiCaSchedulerApp
 operator|>
-name|getOrderingPolicy
+name|getAppOrderingPolicy
 argument_list|(
 name|getQueuePath
 argument_list|()
@@ -2131,6 +2131,10 @@ operator|+
 literal|"defaultAppPriorityPerQueue = "
 operator|+
 name|defaultAppPriorityPerQueue
+operator|+
+literal|"\npriority = "
+operator|+
+name|priority
 argument_list|)
 expr_stmt|;
 block|}

@@ -1595,7 +1595,7 @@ name|reservedContainer
 return|;
 block|}
 comment|/**    * Set the reserved container in the node.    * @param reservedContainer Reserved container in the node.    */
-specifier|protected
+specifier|public
 specifier|synchronized
 name|void
 DECL|method|setReservedContainer (RMContainer reservedContainer)

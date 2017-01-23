@@ -184,10 +184,10 @@ comment|// a
 literal|"--a1(=[50 100 50 100],red=[0 0 0 0],blue=[100 200 200 0]);"
 operator|+
 comment|// a1
-literal|"--a2(=[50 200 50 0],red=[0 0 0 0],blue=[100 200 0 200]);"
+literal|"--a2(=[50 200 50 0],red=[0 0 0 0],blue=[100 200 0 200]){priority=2};"
 operator|+
 comment|// a2
-literal|"-b(=[100 200 0 0],red=[100 100 100 100],blue=[0 0 0 0])"
+literal|"-b(=[100 200 0 0],red=[100 100 100 100],blue=[0 0 0 0]){priority=1,disable_preemption=true}"
 decl_stmt|;
 name|String
 name|appsConfig
@@ -331,6 +331,19 @@ argument_list|,
 literal|200
 argument_list|)
 expr_stmt|;
+name|checkPriority
+argument_list|(
+name|cs
+operator|.
+name|getQueue
+argument_list|(
+literal|"root"
+argument_list|)
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+comment|// default
 comment|// a
 name|checkAbsCapacities
 argument_list|(
@@ -428,6 +441,19 @@ argument_list|,
 literal|200
 argument_list|)
 expr_stmt|;
+name|checkPriority
+argument_list|(
+name|cs
+operator|.
+name|getQueue
+argument_list|(
+literal|"a"
+argument_list|)
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+comment|// default
 comment|// a1
 name|checkAbsCapacities
 argument_list|(
@@ -525,6 +551,19 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
+name|checkPriority
+argument_list|(
+name|cs
+operator|.
+name|getQueue
+argument_list|(
+literal|"a1"
+argument_list|)
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+comment|// default
 comment|// a2
 name|checkAbsCapacities
 argument_list|(
@@ -622,7 +661,34 @@ argument_list|,
 literal|200
 argument_list|)
 expr_stmt|;
-comment|// b1
+name|checkPriority
+argument_list|(
+name|cs
+operator|.
+name|getQueue
+argument_list|(
+literal|"a2"
+argument_list|)
+argument_list|,
+literal|2
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertFalse
+argument_list|(
+name|cs
+operator|.
+name|getQueue
+argument_list|(
+literal|"a2"
+argument_list|)
+operator|.
+name|getPreemptionDisabled
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// b
 name|checkAbsCapacities
 argument_list|(
 name|cs
@@ -717,6 +783,33 @@ argument_list|,
 literal|"blue"
 argument_list|,
 literal|0
+argument_list|)
+expr_stmt|;
+name|checkPriority
+argument_list|(
+name|cs
+operator|.
+name|getQueue
+argument_list|(
+literal|"b"
+argument_list|)
+argument_list|,
+literal|1
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|cs
+operator|.
+name|getQueue
+argument_list|(
+literal|"b"
+argument_list|)
+operator|.
+name|getPreemptionDisabled
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Check ignored partitioned containers in queue

@@ -347,15 +347,15 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testNodePartitionPreemptionRespectMaximumCapacity ()
+DECL|method|testNodePartitionPreemptionNotHappenBetweenSatisfiedQueues ()
 specifier|public
 name|void
-name|testNodePartitionPreemptionRespectMaximumCapacity
+name|testNodePartitionPreemptionNotHappenBetweenSatisfiedQueues
 parameter_list|()
 throws|throws
 name|IOException
 block|{
-comment|/**      * Queue structure is:      *      *<pre>      *         root      *       /  |  \      *      a   b   c      *</pre>      *      * Both a/b/c can access x, and guaranteed_capacity(x) of them is 80:10:10.      * a/b's max resource is 100, and c's max resource is 30.      *      * Two nodes, n1 has 100 x, n2 has 100 NO_LABEL.      *      * 2 apps in cluster.      * app1 in b and app2 in c.      *      * app1 uses 90x, and app2 use 10x. After preemption, app2 will preempt 10x      * from app1 because of max capacity.      */
+comment|/**      * Queue structure is:      *      *<pre>      *         root      *       /  |  \      *      a   b   c      *</pre>      *      * Both a/b/c can access x, and guaranteed_capacity(x) of them is 80:10:10.      * a/b's max resource is 100, and c's max resource is 30.      *      * Two nodes, n1 has 100 x, n2 has 100 NO_LABEL.      *      * 2 apps in cluster.      * app1 in b and app2 in c.      *      * app1 uses 90x, and app2 use 10x. We don't expect preemption happen      * between them because all of them are satisfied      */
 name|String
 name|labelsConfig
 init|=
@@ -422,16 +422,13 @@ operator|.
 name|editSchedule
 argument_list|()
 expr_stmt|;
-comment|// 30 preempted from app1, 30 preempted from app4, and nothing preempted
-comment|// from app2/app3
+comment|// No preemption happens
 name|verify
 argument_list|(
 name|mDisp
 argument_list|,
-name|times
-argument_list|(
-literal|20
-argument_list|)
+name|never
+argument_list|()
 argument_list|)
 operator|.
 name|handle

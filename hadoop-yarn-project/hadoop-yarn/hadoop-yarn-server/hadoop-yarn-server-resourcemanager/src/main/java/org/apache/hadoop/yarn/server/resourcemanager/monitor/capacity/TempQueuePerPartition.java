@@ -225,6 +225,21 @@ specifier|protected
 name|Resource
 name|pendingDeductReserved
 decl_stmt|;
+comment|// Relative priority of this queue to its parent
+comment|// If parent queue's ordering policy doesn't respect priority,
+comment|// this will be always 0
+DECL|field|relativePriority
+name|int
+name|relativePriority
+init|=
+literal|0
+decl_stmt|;
+DECL|field|parent
+name|TempQueuePerPartition
+name|parent
+init|=
+literal|null
+decl_stmt|;
 DECL|method|TempQueuePerPartition (String queueName, Resource current, boolean preemptionDisabled, String partition, Resource killable, float absCapacity, float absMaxCapacity, Resource totalPartitionResource, Resource reserved, CSQueue queue)
 name|TempQueuePerPartition
 parameter_list|(
@@ -570,8 +585,15 @@ literal|0
 argument_list|)
 argument_list|)
 decl_stmt|;
-comment|// remain = avail - min(avail, (max - assigned), (current + pending -
-comment|// assigned))
+comment|// accepted = min{avail,
+comment|//               max - assigned,
+comment|//               current + pending - assigned,
+comment|//               # Make sure a queue will not get more than max of its
+comment|//               # used/guaranteed, this is to make sure preemption won't
+comment|//               # happen if all active queues are beyond their guaranteed
+comment|//               # This is for leaf queue only.
+comment|//               max(guaranteed, used) - assigned}
+comment|// remain = avail - accepted
 name|Resource
 name|accepted
 init|=
@@ -621,6 +643,82 @@ argument_list|)
 argument_list|)
 argument_list|)
 decl_stmt|;
+comment|// For leaf queue: accept = min(accept, max(guaranteed, used) - assigned)
+comment|// Why only for leaf queue?
+comment|// Because for a satisfied parent queue, it could have some under-utilized
+comment|// leaf queues. Such under-utilized leaf queue could preemption resources
+comment|// from over-utilized leaf queue located at other hierarchies.
+if|if
+condition|(
+literal|null
+operator|==
+name|children
+operator|||
+name|children
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|Resource
+name|maxOfGuranteedAndUsedDeductAssigned
+init|=
+name|Resources
+operator|.
+name|subtract
+argument_list|(
+name|Resources
+operator|.
+name|max
+argument_list|(
+name|rc
+argument_list|,
+name|clusterResource
+argument_list|,
+name|getUsed
+argument_list|()
+argument_list|,
+name|getGuaranteed
+argument_list|()
+argument_list|)
+argument_list|,
+name|idealAssigned
+argument_list|)
+decl_stmt|;
+name|maxOfGuranteedAndUsedDeductAssigned
+operator|=
+name|Resources
+operator|.
+name|max
+argument_list|(
+name|rc
+argument_list|,
+name|clusterResource
+argument_list|,
+name|maxOfGuranteedAndUsedDeductAssigned
+argument_list|,
+name|Resources
+operator|.
+name|none
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|accepted
+operator|=
+name|Resources
+operator|.
+name|min
+argument_list|(
+name|rc
+argument_list|,
+name|clusterResource
+argument_list|,
+name|accepted
+argument_list|,
+name|maxOfGuranteedAndUsedDeductAssigned
+argument_list|)
+expr_stmt|;
+block|}
 name|Resource
 name|remain
 init|=

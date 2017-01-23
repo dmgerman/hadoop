@@ -202,7 +202,7 @@ name|getResourceCalculator
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Get preemption candidates from computed resource sharing and already    * selected candidates.    *    * @param selectedCandidates already selected candidates from previous policies    * @param clusterResource total resource    * @param totalPreemptedResourceAllowed how many resources allowed to be    *                                      preempted in this round    * @return merged selected candidates.    */
+comment|/**    * Get preemption candidates from computed resource sharing and already    * selected candidates.    *    * @param selectedCandidates already selected candidates from previous policies    * @param clusterResource total resource    * @param totalPreemptedResourceAllowed how many resources allowed to be    *                                      preempted in this round. Should be    *                                      updated(in-place set) after the call    * @return merged selected candidates.    */
 DECL|method|selectCandidates ( Map<ApplicationAttemptId, Set<RMContainer>> selectedCandidates, Resource clusterResource, Resource totalPreemptedResourceAllowed)
 specifier|public
 specifier|abstract
