@@ -372,6 +372,22 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
+name|InvalidLabelResourceRequestException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
 name|YarnException
 import|;
 end_import
@@ -793,6 +809,26 @@ operator|.
 name|capacity
 operator|.
 name|CapacityScheduler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|nodelabels
+operator|.
+name|RMNodeLabelsManager
 import|;
 end_import
 
@@ -2273,6 +2309,132 @@ name|getStartTime
 argument_list|()
 argument_list|)
 decl_stmt|;
+comment|// If null amReq has been returned, check if it is the case that
+comment|// application has specified node label expression while node label
+comment|// has been disabled. Reject the recovery of this application if it
+comment|// is true and give clear message so that user can react properly.
+if|if
+condition|(
+operator|!
+name|appContext
+operator|.
+name|getUnmanagedAM
+argument_list|()
+operator|&&
+name|application
+operator|.
+name|getAMResourceRequest
+argument_list|()
+operator|==
+literal|null
+operator|&&
+operator|!
+name|YarnConfiguration
+operator|.
+name|areNodeLabelsEnabled
+argument_list|(
+name|this
+operator|.
+name|conf
+argument_list|)
+condition|)
+block|{
+comment|// check application submission context and see if am resource request
+comment|// or application itself contains any node label expression.
+name|ResourceRequest
+name|amReqFromAppContext
+init|=
+name|appContext
+operator|.
+name|getAMContainerResourceRequest
+argument_list|()
+decl_stmt|;
+name|String
+name|labelExp
+init|=
+operator|(
+name|amReqFromAppContext
+operator|!=
+literal|null
+operator|)
+condition|?
+name|amReqFromAppContext
+operator|.
+name|getNodeLabelExpression
+argument_list|()
+else|:
+literal|null
+decl_stmt|;
+if|if
+condition|(
+name|labelExp
+operator|==
+literal|null
+condition|)
+block|{
+name|labelExp
+operator|=
+name|appContext
+operator|.
+name|getNodeLabelExpression
+argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|labelExp
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|labelExp
+operator|.
+name|equals
+argument_list|(
+name|RMNodeLabelsManager
+operator|.
+name|NO_LABEL
+argument_list|)
+condition|)
+block|{
+name|String
+name|message
+init|=
+literal|"Failed to recover application "
+operator|+
+name|appId
+operator|+
+literal|". NodeLabel is not enabled in cluster, but AM resource request "
+operator|+
+literal|"contains a label expression."
+decl_stmt|;
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|message
+argument_list|)
+expr_stmt|;
+name|application
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|RMAppEvent
+argument_list|(
+name|appId
+argument_list|,
+name|RMAppEventType
+operator|.
+name|APP_REJECTED
+argument_list|,
+name|message
+argument_list|)
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+block|}
 name|application
 operator|.
 name|handle
@@ -2364,13 +2526,78 @@ decl_stmt|;
 name|ResourceRequest
 name|amReq
 init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|amReq
+operator|=
 name|validateAndCreateResourceRequest
 argument_list|(
 name|submissionContext
 argument_list|,
 name|isRecovery
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InvalidLabelResourceRequestException
+name|e
+parameter_list|)
+block|{
+comment|// This can happen if the application had been submitted and run
+comment|// with Node Label enabled but recover with Node Label disabled.
+comment|// Thus there might be node label expression in the application's
+comment|// resource requests. If this is the case, create RmAppImpl with
+comment|// null amReq and reject the application later with clear error
+comment|// message. So that the application can still be tracked by RM
+comment|// after recovery and user can see what's going on and react accordingly.
+if|if
+condition|(
+name|isRecovery
+operator|&&
+operator|!
+name|YarnConfiguration
+operator|.
+name|areNodeLabelsEnabled
+argument_list|(
+name|this
+operator|.
+name|conf
+argument_list|)
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"AMResourceRequest is not created for "
+operator|+
+name|applicationId
+operator|+
+literal|". NodeLabel is not enabled in cluster, but AM resource "
+operator|+
+literal|"request contains a label expression."
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+throw|throw
+name|e
+throw|;
+block|}
+block|}
 comment|// Verify and get the update application priority and set back to
 comment|// submissionContext
 name|UserGroupInformation
