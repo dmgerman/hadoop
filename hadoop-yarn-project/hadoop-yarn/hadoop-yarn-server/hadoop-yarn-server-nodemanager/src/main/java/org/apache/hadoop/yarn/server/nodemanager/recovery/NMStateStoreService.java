@@ -436,6 +436,18 @@ name|applications
 return|;
 block|}
 block|}
+comment|/**    * Type of post recovery action.    */
+DECL|enum|RecoveredContainerType
+specifier|public
+enum|enum
+name|RecoveredContainerType
+block|{
+DECL|enumConstant|KILL
+DECL|enumConstant|RECOVER
+name|KILL
+block|,
+name|RECOVER
+block|}
 DECL|enum|RecoveredContainerStatus
 specifier|public
 enum|enum
@@ -513,6 +525,15 @@ decl_stmt|;
 DECL|field|version
 name|int
 name|version
+decl_stmt|;
+DECL|field|recoveryType
+specifier|private
+name|RecoveredContainerType
+name|recoveryType
+init|=
+name|RecoveredContainerType
+operator|.
+name|RECOVER
 decl_stmt|;
 DECL|method|getStatus ()
 specifier|public
@@ -780,6 +801,32 @@ operator|.
 name|toString
 argument_list|()
 return|;
+block|}
+DECL|method|getRecoveryType ()
+specifier|public
+name|RecoveredContainerType
+name|getRecoveryType
+parameter_list|()
+block|{
+return|return
+name|recoveryType
+return|;
+block|}
+DECL|method|setRecoveryType (RecoveredContainerType recoveryType)
+specifier|public
+name|void
+name|setRecoveryType
+parameter_list|(
+name|RecoveredContainerType
+name|recoveryType
+parameter_list|)
+block|{
+name|this
+operator|.
+name|recoveryType
+operator|=
+name|recoveryType
+expr_stmt|;
 block|}
 block|}
 DECL|class|LocalResourceTrackerState
