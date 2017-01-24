@@ -4853,7 +4853,7 @@ block|}
 block|}
 annotation|@
 name|Private
-DECL|method|readContainerMetaDataAndSkipData ( DataInputStream valueStream, PrintStream out)
+DECL|method|readContainerMetaDataAndSkipData ( DataInputStream valueStream)
 specifier|public
 specifier|static
 name|Pair
@@ -4866,9 +4866,6 @@ name|readContainerMetaDataAndSkipData
 parameter_list|(
 name|DataInputStream
 name|valueStream
-parameter_list|,
-name|PrintStream
-name|out
 parameter_list|)
 throws|throws
 name|IOException
