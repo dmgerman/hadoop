@@ -210,6 +210,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|EnumSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashMap
 import|;
 end_import
@@ -372,7 +382,7 @@ name|appname
 argument_list|)
 return|;
 block|}
-comment|/**    * Find an instance of a application belong to the current user    * @param appname application name    * @return the app report or null if none is found    * @throws YarnException YARN issues    * @throws IOException IO problems    */
+comment|/**    * Find an instance of a application belong to the current user.    * @param appname application name    * @return the app report or null if none is found    * @throws YarnException YARN issues    * @throws IOException IO problems    */
 DECL|method|findInstance (String appname)
 specifier|public
 name|ApplicationReport
@@ -380,6 +390,35 @@ name|findInstance
 parameter_list|(
 name|String
 name|appname
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+block|{
+return|return
+name|findInstance
+argument_list|(
+name|appname
+argument_list|,
+literal|null
+argument_list|)
+return|;
+block|}
+comment|/**    * Find an instance of a application belong to the current user in specific    * app states.    * @param appname application name    * @param appStates list of states in which application should be in    * @return the app report or null if none is found    * @throws YarnException YARN issues    * @throws IOException IO problems    */
+DECL|method|findInstance (String appname, EnumSet<YarnApplicationState> appStates)
+specifier|public
+name|ApplicationReport
+name|findInstance
+parameter_list|(
+name|String
+name|appname
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|YarnApplicationState
+argument_list|>
+name|appStates
 parameter_list|)
 throws|throws
 name|YarnException
@@ -397,6 +436,8 @@ argument_list|(
 literal|null
 argument_list|,
 name|appname
+argument_list|,
+name|appStates
 argument_list|)
 decl_stmt|;
 return|return
@@ -457,8 +498,8 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/**    * List all instances belonging to a specific user and a specific appname.    *    * @param user    *          user if not the default. null means default, "" means all users,    *          otherwise it is the name of a user    * @param appname    *          application name set as an application tag    * @return a possibly empty list of AMs    * @throws YarnException    * @throws IOException    */
-DECL|method|listInstances (String user, String appname)
+comment|/**    * List all instances belonging to a specific user with a specific app name.    *    * @param user    *          user if not the default. null means default, "" means all users,    *          otherwise it is the name of a user    * @param appName    *          application name set as an application tag    * @return a possibly empty list of AMs    * @throws YarnException    * @throws IOException    */
+DECL|method|listInstances (String user, String appName)
 specifier|public
 name|List
 argument_list|<
@@ -470,13 +511,63 @@ name|String
 name|user
 parameter_list|,
 name|String
-name|appname
+name|appName
 parameter_list|)
 throws|throws
 name|YarnException
 throws|,
 name|IOException
 block|{
+return|return
+name|listInstances
+argument_list|(
+name|user
+argument_list|,
+name|appName
+argument_list|,
+literal|null
+argument_list|)
+return|;
+block|}
+comment|/**    * List all instances belonging to a specific user, with a specific app name    * and in specific app states.    *    * @param user    *          user if not the default. null means default, "" means all users,    *          otherwise it is the name of a user    * @param appName    *          application name set as an application tag    * @param appStates    *          a set of application states within which the app should be in    * @return a possibly empty list of AMs    * @throws YarnException    * @throws IOException    */
+DECL|method|listInstances (String user, String appName, EnumSet<YarnApplicationState> appStates)
+specifier|public
+name|List
+argument_list|<
+name|ApplicationReport
+argument_list|>
+name|listInstances
+parameter_list|(
+name|String
+name|user
+parameter_list|,
+name|String
+name|appName
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|YarnApplicationState
+argument_list|>
+name|appStates
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+block|{
+name|log
+operator|.
+name|debug
+argument_list|(
+literal|"listInstances called with user: {}, appName: {}, appStates: {}"
+argument_list|,
+name|user
+argument_list|,
+name|appName
+argument_list|,
+name|appStates
+argument_list|)
+expr_stmt|;
 name|String
 name|listUser
 init|=
@@ -495,9 +586,9 @@ name|listDeployedInstances
 argument_list|(
 name|listUser
 argument_list|,
-literal|null
+name|appStates
 argument_list|,
-name|appname
+name|appName
 argument_list|)
 return|;
 block|}

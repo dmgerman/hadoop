@@ -1996,22 +1996,6 @@ name|core
 operator|.
 name|launch
 operator|.
-name|RunningApplication
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|core
-operator|.
-name|launch
-operator|.
 name|SerializedApplicationReport
 import|;
 end_import
@@ -9597,12 +9581,33 @@ name|YarnException
 throws|,
 name|IOException
 block|{
+name|EnumSet
+argument_list|<
+name|YarnApplicationState
+argument_list|>
+name|appStates
+init|=
+name|EnumSet
+operator|.
+name|range
+argument_list|(
+name|YarnApplicationState
+operator|.
+name|NEW
+argument_list|,
+name|YarnApplicationState
+operator|.
+name|RUNNING
+argument_list|)
+decl_stmt|;
 name|ApplicationReport
 name|report
 init|=
 name|findInstance
 argument_list|(
 name|appName
+argument_list|,
+name|appStates
 argument_list|)
 decl_stmt|;
 if|if
@@ -14532,8 +14537,8 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * List Slider instances belonging to a specific user. This will include    * failed and killed instances; there may be duplicates    * @param user user: "" means all users, null means "default"    * @return a possibly empty list of Slider AMs    */
-DECL|method|listSliderInstances (String user)
+comment|/**    * List Slider instances belonging to a specific user with a specific app    * name and within a set of app states.    * @param user user: "" means all users, null means "default"    * @param appName name of the application set as a tag    * @param appStates a set of states the applications should be in    * @return a possibly empty list of Slider AMs    */
+DECL|method|listSliderInstances (String user, String appName, EnumSet<YarnApplicationState> appStates)
 specifier|public
 name|List
 argument_list|<
@@ -14543,6 +14548,15 @@ name|listSliderInstances
 parameter_list|(
 name|String
 name|user
+parameter_list|,
+name|String
+name|appName
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|YarnApplicationState
+argument_list|>
+name|appStates
 parameter_list|)
 throws|throws
 name|YarnException
@@ -14555,6 +14569,10 @@ operator|.
 name|listInstances
 argument_list|(
 name|user
+argument_list|,
+name|appName
+argument_list|,
+name|appStates
 argument_list|)
 return|;
 block|}
@@ -15000,6 +15018,21 @@ argument_list|()
 return|;
 block|}
 comment|// and those the RM knows about
+name|EnumSet
+argument_list|<
+name|YarnApplicationState
+argument_list|>
+name|appStates
+init|=
+name|EnumSet
+operator|.
+name|range
+argument_list|(
+name|min
+argument_list|,
+name|max
+argument_list|)
+decl_stmt|;
 name|List
 argument_list|<
 name|ApplicationReport
@@ -15009,6 +15042,10 @@ init|=
 name|listSliderInstances
 argument_list|(
 literal|null
+argument_list|,
+name|clustername
+argument_list|,
+name|appStates
 argument_list|)
 decl_stmt|;
 name|sortApplicationsByMostRecent
@@ -16070,7 +16107,7 @@ return|return
 name|yarnAppListClient
 return|;
 block|}
-comment|/**    * Find an instance of an application belonging to the current user    * @param appname application name    * @return the app report or null if none is found    * @throws YarnException YARN issues    * @throws IOException IO problems    */
+comment|/**    * Find an instance of an application belonging to the current user.    * @param appname application name    * @return the app report or null if none is found    * @throws YarnException YARN issues    * @throws IOException IO problems    */
 DECL|method|findInstance (String appname)
 specifier|public
 name|ApplicationReport
@@ -16085,49 +16122,43 @@ throws|,
 name|IOException
 block|{
 return|return
-name|yarnAppListClient
-operator|.
 name|findInstance
 argument_list|(
 name|appname
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
-DECL|method|findApplication (String appname)
-specifier|private
-name|RunningApplication
-name|findApplication
+comment|/**    * Find an instance of an application belonging to the current user and in    * specific app states.    * @param appname application name    * @param appStates app states in which the application should be in    * @return the app report or null if none is found    * @throws YarnException YARN issues    * @throws IOException IO problems    */
+DECL|method|findInstance (String appname, EnumSet<YarnApplicationState> appStates)
+specifier|public
+name|ApplicationReport
+name|findInstance
 parameter_list|(
 name|String
 name|appname
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|YarnApplicationState
+argument_list|>
+name|appStates
 parameter_list|)
 throws|throws
 name|YarnException
 throws|,
 name|IOException
 block|{
-name|ApplicationReport
-name|applicationReport
-init|=
+return|return
+name|yarnAppListClient
+operator|.
 name|findInstance
 argument_list|(
 name|appname
-argument_list|)
-decl_stmt|;
-return|return
-name|applicationReport
-operator|!=
-literal|null
-condition|?
-operator|new
-name|RunningApplication
-argument_list|(
-name|yarnClient
 argument_list|,
-name|applicationReport
+name|appStates
 argument_list|)
-else|:
-literal|null
 return|;
 block|}
 comment|/**    * find all live instances of a specific app -if there is>1 in the cluster,    * this returns them all. State should be running or less    * @param appname application name    * @return the list of all matching application instances    */
