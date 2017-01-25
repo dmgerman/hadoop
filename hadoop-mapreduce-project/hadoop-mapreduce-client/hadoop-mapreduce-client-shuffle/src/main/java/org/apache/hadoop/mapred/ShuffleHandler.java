@@ -5957,6 +5957,10 @@ argument_list|(
 literal|0
 argument_list|)
 operator|+
+literal|" mappers: "
+operator|+
+name|mapIds
+operator|+
 literal|" reducer "
 operator|+
 name|reduceQ
