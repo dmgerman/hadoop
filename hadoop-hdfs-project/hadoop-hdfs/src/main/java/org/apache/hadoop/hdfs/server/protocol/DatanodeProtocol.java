@@ -146,6 +146,16 @@ name|KerberosInfo
 import|;
 end_import
 
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nonnull
+import|;
+end_import
+
 begin_comment
 comment|/**********************************************************************  * Protocol that a DFS datanode uses to communicate with the NameNode.  * It's used to upload current load information and block reports.  *  * The only way a NameNode can communicate with a DataNode is by  * returning values from these functions.  *  **********************************************************************/
 end_comment
@@ -343,10 +353,10 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * sendHeartbeat() tells the NameNode that the DataNode is still    * alive and well.  Includes some status info, too.     * It also gives the NameNode a chance to return     * an array of "DatanodeCommand" objects in HeartbeatResponse.    * A DatanodeCommand tells the DataNode to invalidate local block(s),     * or to copy them to other DataNodes, etc.    * @param registration datanode registration information    * @param reports utilization report per storage    * @param xmitsInProgress number of transfers from this datanode to others    * @param xceiverCount number of active transceiver threads    * @param failedVolumes number of failed volumes    * @param volumeFailureSummary info about volume failures    * @param requestFullBlockReportLease whether to request a full block    *                                    report lease.    * @throws IOException on error    */
+comment|/**    * sendHeartbeat() tells the NameNode that the DataNode is still    * alive and well.  Includes some status info, too.     * It also gives the NameNode a chance to return     * an array of "DatanodeCommand" objects in HeartbeatResponse.    * A DatanodeCommand tells the DataNode to invalidate local block(s),     * or to copy them to other DataNodes, etc.    * @param registration datanode registration information    * @param reports utilization report per storage    * @param xmitsInProgress number of transfers from this datanode to others    * @param xceiverCount number of active transceiver threads    * @param failedVolumes number of failed volumes    * @param volumeFailureSummary info about volume failures    * @param requestFullBlockReportLease whether to request a full block    *                                    report lease.    * @param slowPeers Details of peer DataNodes that were detected as being    *                  slow to respond to packet writes. Empty report if no    *                  slow peers were detected by the DataNode.    * @throws IOException on error    */
 annotation|@
 name|Idempotent
-DECL|method|sendHeartbeat (DatanodeRegistration registration, StorageReport[] reports, long dnCacheCapacity, long dnCacheUsed, int xmitsInProgress, int xceiverCount, int failedVolumes, VolumeFailureSummary volumeFailureSummary, boolean requestFullBlockReportLease)
+DECL|method|sendHeartbeat (DatanodeRegistration registration, StorageReport[] reports, long dnCacheCapacity, long dnCacheUsed, int xmitsInProgress, int xceiverCount, int failedVolumes, VolumeFailureSummary volumeFailureSummary, boolean requestFullBlockReportLease, @Nonnull SlowPeerReports slowPeers)
 specifier|public
 name|HeartbeatResponse
 name|sendHeartbeat
@@ -378,6 +388,11 @@ name|volumeFailureSummary
 parameter_list|,
 name|boolean
 name|requestFullBlockReportLease
+parameter_list|,
+annotation|@
+name|Nonnull
+name|SlowPeerReports
+name|slowPeers
 parameter_list|)
 throws|throws
 name|IOException

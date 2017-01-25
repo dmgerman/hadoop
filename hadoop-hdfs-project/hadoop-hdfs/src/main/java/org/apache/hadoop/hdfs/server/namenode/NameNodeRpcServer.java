@@ -2160,6 +2160,24 @@ name|server
 operator|.
 name|protocol
 operator|.
+name|SlowPeerReports
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
 name|StorageBlockReport
 import|;
 end_import
@@ -2881,6 +2899,16 @@ operator|.
 name|protobuf
 operator|.
 name|BlockingService
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nonnull
 import|;
 end_import
 
@@ -8573,7 +8601,7 @@ block|}
 annotation|@
 name|Override
 comment|// DatanodeProtocol
-DECL|method|sendHeartbeat (DatanodeRegistration nodeReg, StorageReport[] report, long dnCacheCapacity, long dnCacheUsed, int xmitsInProgress, int xceiverCount, int failedVolumes, VolumeFailureSummary volumeFailureSummary, boolean requestFullBlockReportLease)
+DECL|method|sendHeartbeat (DatanodeRegistration nodeReg, StorageReport[] report, long dnCacheCapacity, long dnCacheUsed, int xmitsInProgress, int xceiverCount, int failedVolumes, VolumeFailureSummary volumeFailureSummary, boolean requestFullBlockReportLease, @Nonnull SlowPeerReports slowPeers)
 specifier|public
 name|HeartbeatResponse
 name|sendHeartbeat
@@ -8605,6 +8633,11 @@ name|volumeFailureSummary
 parameter_list|,
 name|boolean
 name|requestFullBlockReportLease
+parameter_list|,
+annotation|@
+name|Nonnull
+name|SlowPeerReports
+name|slowPeers
 parameter_list|)
 throws|throws
 name|IOException
@@ -8639,6 +8672,8 @@ argument_list|,
 name|volumeFailureSummary
 argument_list|,
 name|requestFullBlockReportLease
+argument_list|,
+name|slowPeers
 argument_list|)
 return|;
 block|}

@@ -1610,6 +1610,16 @@ begin_import
 import|import
 name|javax
 operator|.
+name|annotation
+operator|.
+name|Nonnull
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
 name|management
 operator|.
 name|NotCompliantMBeanException
@@ -3721,6 +3731,24 @@ operator|.
 name|protocol
 operator|.
 name|NamespaceInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|SlowPeerReports
 import|;
 end_import
 
@@ -18361,7 +18389,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * The given node has reported in.  This method should:    * 1) Record the heartbeat, so the datanode isn't timed out    * 2) Adjust usage stats for future block allocation    *    * If a substantial amount of time passed since the last datanode    * heartbeat then request an immediate block report.    *    * @return an array of datanode commands    * @throws IOException    */
-DECL|method|handleHeartbeat (DatanodeRegistration nodeReg, StorageReport[] reports, long cacheCapacity, long cacheUsed, int xceiverCount, int xmitsInProgress, int failedVolumes, VolumeFailureSummary volumeFailureSummary, boolean requestFullBlockReportLease)
+DECL|method|handleHeartbeat (DatanodeRegistration nodeReg, StorageReport[] reports, long cacheCapacity, long cacheUsed, int xceiverCount, int xmitsInProgress, int failedVolumes, VolumeFailureSummary volumeFailureSummary, boolean requestFullBlockReportLease, @Nonnull SlowPeerReports slowPeers)
 name|HeartbeatResponse
 name|handleHeartbeat
 parameter_list|(
@@ -18392,6 +18420,11 @@ name|volumeFailureSummary
 parameter_list|,
 name|boolean
 name|requestFullBlockReportLease
+parameter_list|,
+annotation|@
+name|Nonnull
+name|SlowPeerReports
+name|slowPeers
 parameter_list|)
 throws|throws
 name|IOException
@@ -18442,6 +18475,8 @@ argument_list|,
 name|failedVolumes
 argument_list|,
 name|volumeFailureSummary
+argument_list|,
+name|slowPeers
 argument_list|)
 decl_stmt|;
 name|long

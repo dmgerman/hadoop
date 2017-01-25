@@ -372,6 +372,24 @@ name|server
 operator|.
 name|protocol
 operator|.
+name|SlowPeerReports
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
 name|StorageReport
 import|;
 end_import
@@ -897,6 +915,10 @@ argument_list|,
 literal|null
 argument_list|,
 literal|true
+argument_list|,
+name|SlowPeerReports
+operator|.
+name|EMPTY_REPORT
 argument_list|)
 expr_stmt|;
 comment|// Check that the missing storage was pruned.

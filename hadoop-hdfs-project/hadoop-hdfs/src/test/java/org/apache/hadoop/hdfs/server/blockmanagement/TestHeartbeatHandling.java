@@ -392,7 +392,29 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Rule
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|rules
+operator|.
+name|Timeout
 import|;
 end_import
 
@@ -416,6 +438,20 @@ specifier|public
 class|class
 name|TestHeartbeatHandling
 block|{
+comment|/**    * Set a timeout for every test case.    */
+annotation|@
+name|Rule
+DECL|field|testTimeout
+specifier|public
+name|Timeout
+name|testTimeout
+init|=
+operator|new
+name|Timeout
+argument_list|(
+literal|300_000
+argument_list|)
+decl_stmt|;
 comment|/**    * Test if    * {@link FSNamesystem#handleHeartbeat}    * can pick up replication and/or invalidate requests and observes the max    * limit    */
 annotation|@
 name|Test

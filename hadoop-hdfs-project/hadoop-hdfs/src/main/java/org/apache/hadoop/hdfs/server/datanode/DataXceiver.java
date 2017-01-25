@@ -2379,6 +2379,16 @@ name|void
 name|collectThreadLocalStates
 parameter_list|()
 block|{
+if|if
+condition|(
+name|datanode
+operator|.
+name|getPeerMetrics
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
 name|datanode
 operator|.
 name|getPeerMetrics
@@ -2387,6 +2397,7 @@ operator|.
 name|collectThreadLocalStates
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override

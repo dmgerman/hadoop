@@ -107,6 +107,12 @@ name|long
 name|getBytesWithFutureGenerationStamps
 parameter_list|()
 function_decl|;
+comment|/**    * Retrieves information about slow DataNodes, if the feature is    * enabled. The report is in a JSON format.    */
+DECL|method|getSlowPeersReport ()
+name|String
+name|getSlowPeersReport
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

@@ -193,7 +193,7 @@ init|=
 operator|new
 name|RollingAverages
 argument_list|(
-literal|5
+literal|5000
 argument_list|,
 literal|2
 argument_list|)
@@ -351,9 +351,9 @@ literal|"foo2"
 decl_stmt|;
 specifier|final
 name|int
-name|windowSize
+name|windowSizeMs
 init|=
-literal|5
+literal|5000
 decl_stmt|;
 comment|// 5s roll over interval
 specifier|final
@@ -376,7 +376,7 @@ init|=
 operator|new
 name|RollingAverages
 argument_list|(
-name|windowSize
+name|windowSizeMs
 argument_list|,
 name|numWindows
 argument_list|)
@@ -442,9 +442,7 @@ operator|(
 name|start
 operator|+
 operator|(
-name|windowSize
-operator|*
-literal|1000
+name|windowSizeMs
 operator|*
 name|i
 operator|)
@@ -523,7 +521,7 @@ name|addGauge
 argument_list|(
 name|info
 argument_list|(
-literal|"Foo2RollingAvgTime"
+literal|"[Foo2]RollingAvgTime"
 argument_list|,
 literal|"Rolling average time for foo2"
 argument_list|)
@@ -550,7 +548,7 @@ name|eq
 argument_list|(
 name|info
 argument_list|(
-literal|"Foo2RollingAvgTime"
+literal|"[Foo2]RollingAvgTime"
 argument_list|,
 literal|"Rolling average time for foo2"
 argument_list|)

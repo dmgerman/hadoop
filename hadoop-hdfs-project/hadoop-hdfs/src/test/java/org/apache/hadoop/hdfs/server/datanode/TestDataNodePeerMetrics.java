@@ -34,6 +34,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -203,13 +215,17 @@ argument_list|()
 decl_stmt|;
 name|conf
 operator|.
-name|setInt
+name|setTimeDuration
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_METRICS_ROLLING_AVERAGES_WINDOW_SIZE_KEY
+name|DFS_METRICS_ROLLING_AVERAGES_WINDOW_LENGTH_KEY
 argument_list|,
 name|windowSize
+argument_list|,
+name|TimeUnit
+operator|.
+name|SECONDS
 argument_list|)
 expr_stmt|;
 name|conf
@@ -218,7 +234,7 @@ name|setInt
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_METRICS_ROLLING_AVERAGES_WINDOW_NUMBERS_KEY
+name|DFS_METRICS_ROLLING_AVERAGE_NUM_WINDOWS_KEY
 argument_list|,
 name|numWindows
 argument_list|)

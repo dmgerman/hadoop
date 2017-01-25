@@ -478,6 +478,24 @@ name|server
 operator|.
 name|protocol
 operator|.
+name|SlowPeerReports
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
 name|StorageReport
 import|;
 end_import
@@ -1125,6 +1143,13 @@ argument_list|)
 argument_list|,
 name|anyBoolean
 argument_list|()
+argument_list|,
+name|any
+argument_list|(
+name|SlowPeerReports
+operator|.
+name|class
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Intercept lifeline to trigger latch count-down on each call.
@@ -1400,6 +1425,13 @@ argument_list|)
 argument_list|,
 name|anyBoolean
 argument_list|()
+argument_list|,
+name|any
+argument_list|(
+name|SlowPeerReports
+operator|.
+name|class
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// While waiting on the latch for the expected number of heartbeat messages,

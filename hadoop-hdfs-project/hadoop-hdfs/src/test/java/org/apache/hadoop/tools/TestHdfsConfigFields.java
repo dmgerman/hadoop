@@ -185,6 +185,24 @@ operator|.
 name|DFS_DATANODE_XCEIVER_STOP_TIMEOUT_MILLIS_KEY
 argument_list|)
 expr_stmt|;
+name|configurationPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_METRICS_ROLLING_AVERAGES_WINDOW_LENGTH_KEY
+argument_list|)
+expr_stmt|;
+name|configurationPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_METRICS_ROLLING_AVERAGE_NUM_WINDOWS_KEY
+argument_list|)
+expr_stmt|;
 comment|// Fully deprecated properties?
 name|configurationPropsToSkipCompare
 operator|.

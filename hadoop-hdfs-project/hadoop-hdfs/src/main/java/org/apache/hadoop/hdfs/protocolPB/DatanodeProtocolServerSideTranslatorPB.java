@@ -1105,6 +1105,16 @@ name|request
 operator|.
 name|getRequestFullBlockReportLease
 argument_list|()
+argument_list|,
+name|PBHelper
+operator|.
+name|convertSlowPeerInfo
+argument_list|(
+name|request
+operator|.
+name|getSlowPeersList
+argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
