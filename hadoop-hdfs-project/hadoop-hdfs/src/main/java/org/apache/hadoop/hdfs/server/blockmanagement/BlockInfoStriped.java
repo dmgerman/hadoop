@@ -1116,16 +1116,19 @@ literal|true
 return|;
 block|}
 DECL|class|StorageAndBlockIndex
+specifier|public
 specifier|static
 class|class
 name|StorageAndBlockIndex
 block|{
 DECL|field|storage
+specifier|private
 specifier|final
 name|DatanodeStorageInfo
 name|storage
 decl_stmt|;
 DECL|field|blockIndex
+specifier|private
 specifier|final
 name|byte
 name|blockIndex
@@ -1152,6 +1155,26 @@ name|blockIndex
 operator|=
 name|blockIndex
 expr_stmt|;
+block|}
+DECL|method|getStorage ()
+specifier|public
+name|DatanodeStorageInfo
+name|getStorage
+parameter_list|()
+block|{
+return|return
+name|storage
+return|;
+block|}
+DECL|method|getBlockIndex ()
+specifier|public
+name|byte
+name|getBlockIndex
+parameter_list|()
+block|{
+return|return
+name|blockIndex
+return|;
 block|}
 block|}
 DECL|method|getStorageAndIndexInfos ()

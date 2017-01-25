@@ -18602,7 +18602,8 @@ name|block
 argument_list|,
 name|si
 operator|.
-name|storage
+name|getStorage
+argument_list|()
 argument_list|,
 name|nodesCorrupt
 argument_list|,
@@ -18627,7 +18628,8 @@ name|get
 argument_list|(
 name|si
 operator|.
-name|blockIndex
+name|getBlockIndex
+argument_list|()
 argument_list|)
 condition|)
 block|{
@@ -18637,7 +18639,8 @@ name|set
 argument_list|(
 name|si
 operator|.
-name|blockIndex
+name|getBlockIndex
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
