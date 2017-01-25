@@ -2284,10 +2284,10 @@ name|timeout
 operator|=
 literal|120000
 argument_list|)
-DECL|method|testShellKillAllProcesses ()
+DECL|method|testDestroyAllShellProcesses ()
 specifier|public
 name|void
-name|testShellKillAllProcesses
+name|testDestroyAllShellProcesses
 parameter_list|()
 throws|throws
 name|Throwable
@@ -2494,7 +2494,7 @@ argument_list|)
 expr_stmt|;
 name|Shell
 operator|.
-name|destroyAllProcesses
+name|destroyAllShellProcesses
 argument_list|()
 expr_stmt|;
 name|shexc1
