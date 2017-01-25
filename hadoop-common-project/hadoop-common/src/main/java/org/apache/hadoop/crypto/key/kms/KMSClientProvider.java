@@ -6502,22 +6502,22 @@ block|}
 end_function
 
 begin_function
-DECL|method|currentUgiContainsKmsDt ()
+DECL|method|containsKmsDt (UserGroupInformation ugi)
 specifier|private
 name|boolean
-name|currentUgiContainsKmsDt
-parameter_list|()
+name|containsKmsDt
+parameter_list|(
+name|UserGroupInformation
+name|ugi
+parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// Add existing credentials from current UGI, since provider is cached.
+comment|// Add existing credentials from the UGI, since provider is cached.
 name|Credentials
 name|creds
 init|=
-name|UserGroupInformation
-operator|.
-name|getCurrentUser
-argument_list|()
+name|ugi
 operator|.
 name|getCredentials
 argument_list|()
@@ -6637,15 +6637,16 @@ name|getRealUser
 argument_list|()
 expr_stmt|;
 block|}
-elseif|else
 if|if
 condition|(
 operator|!
-name|currentUgiContainsKmsDt
-argument_list|()
+name|containsKmsDt
+argument_list|(
+name|actualUgi
+argument_list|)
 operator|&&
 operator|!
-name|currentUgi
+name|actualUgi
 operator|.
 name|hasKerberosCredentials
 argument_list|()
@@ -6653,9 +6654,18 @@ condition|)
 block|{
 comment|// Use login user for user that does not have either
 comment|// Kerberos credential or KMS delegation token for KMS operations
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"using loginUser no KMS Delegation Token "
+operator|+
+literal|"no Kerberos Credentials"
+argument_list|)
+expr_stmt|;
 name|actualUgi
 operator|=
-name|currentUgi
+name|UserGroupInformation
 operator|.
 name|getLoginUser
 argument_list|()
