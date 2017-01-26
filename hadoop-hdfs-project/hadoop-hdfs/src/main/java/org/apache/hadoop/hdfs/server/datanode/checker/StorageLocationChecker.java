@@ -1038,20 +1038,34 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|DiskErrorException
 argument_list|(
-literal|"Too many failed volumes: "
+literal|"Too many failed volumes - "
+operator|+
+literal|"current valid volumes: "
+operator|+
+name|goodLocations
+operator|.
+name|size
+argument_list|()
+operator|+
+literal|", volumes configured: "
+operator|+
+name|dataDirs
+operator|.
+name|size
+argument_list|()
+operator|+
+literal|", volumes failed: "
 operator|+
 name|failedLocations
 operator|.
 name|size
 argument_list|()
 operator|+
-literal|". The configuration allows for a maximum of "
+literal|", volume failures tolerated: "
 operator|+
 name|maxVolumeFailuresTolerated
-operator|+
-literal|" failed volumes."
 argument_list|)
 throw|;
 block|}
@@ -1067,7 +1081,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|DiskErrorException
 argument_list|(
 literal|"All directories in "
 operator|+

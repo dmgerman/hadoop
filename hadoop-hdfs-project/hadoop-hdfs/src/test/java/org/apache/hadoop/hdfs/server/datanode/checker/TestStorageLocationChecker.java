@@ -616,7 +616,11 @@ name|thrown
 operator|.
 name|expectMessage
 argument_list|(
-literal|"Too many failed volumes"
+literal|"Too many failed volumes - current valid volumes: 1,"
+operator|+
+literal|" volumes configured: 3, volumes failed: 2, volume failures"
+operator|+
+literal|" tolerated: 1"
 argument_list|)
 expr_stmt|;
 name|StorageLocationChecker
