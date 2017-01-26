@@ -23,30 +23,6 @@ package|;
 end_package
 
 begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|web
-operator|.
-name|webhdfs
-operator|.
-name|WebHdfsHandler
-operator|.
-name|WEBHDFS_PREFIX
-import|;
-end_import
-
-begin_import
 import|import
 name|io
 operator|.
@@ -100,16 +76,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|net
-operator|.
-name|InetSocketAddress
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -141,6 +107,40 @@ operator|.
 name|webhdfs
 operator|.
 name|WebHdfsHandler
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|InetSocketAddress
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|web
+operator|.
+name|webhdfs
+operator|.
+name|WebHdfsHandler
+operator|.
+name|WEBHDFS_PREFIX
 import|;
 end_import
 
@@ -225,7 +225,7 @@ name|uri
 init|=
 name|req
 operator|.
-name|uri
+name|getUri
 argument_list|()
 decl_stmt|;
 name|ChannelPipeline
