@@ -3134,6 +3134,11 @@ name|isLeaf
 init|=
 literal|true
 decl_stmt|;
+name|boolean
+name|isReservable
+init|=
+literal|false
+decl_stmt|;
 for|for
 control|(
 name|int
@@ -4003,9 +4008,9 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-name|isLeaf
+name|isReservable
 operator|=
-literal|false
+literal|true
 expr_stmt|;
 name|reservableQueues
 operator|.
@@ -4151,15 +4156,13 @@ literal|false
 expr_stmt|;
 block|}
 block|}
+comment|// if a leaf in the alloc file is marked as type='parent'
+comment|// then store it as a parent queue
 if|if
 condition|(
 name|isLeaf
-condition|)
-block|{
-comment|// if a leaf in the alloc file is marked as type='parent'
-comment|// then store it under 'parent'
-if|if
-condition|(
+operator|&&
+operator|!
 literal|"parent"
 operator|.
 name|equals
@@ -4172,23 +4175,6 @@ literal|"type"
 argument_list|)
 argument_list|)
 condition|)
-block|{
-name|configuredQueues
-operator|.
-name|get
-argument_list|(
-name|FSQueueType
-operator|.
-name|PARENT
-argument_list|)
-operator|.
-name|add
-argument_list|(
-name|queueName
-argument_list|)
-expr_stmt|;
-block|}
-else|else
 block|{
 name|configuredQueues
 operator|.
@@ -4205,37 +4191,28 @@ name|queueName
 argument_list|)
 expr_stmt|;
 block|}
-block|}
 else|else
 block|{
 if|if
 condition|(
-literal|"parent"
-operator|.
-name|equals
-argument_list|(
-name|element
-operator|.
-name|getAttribute
-argument_list|(
-literal|"type"
-argument_list|)
-argument_list|)
+name|isReservable
 condition|)
 block|{
 throw|throw
 operator|new
 name|AllocationConfigurationException
 argument_list|(
-literal|"Both<reservation> and "
+literal|"The configuration settings"
 operator|+
-literal|"type=\"parent\" found for queue "
+literal|" for "
 operator|+
 name|queueName
 operator|+
-literal|" which is "
+literal|" are invalid. A queue element that "
 operator|+
-literal|"unsupported"
+literal|"contains child queue elements or that has the type='parent' "
+operator|+
+literal|"attribute cannot also include a reservation element."
 argument_list|)
 throw|;
 block|}
