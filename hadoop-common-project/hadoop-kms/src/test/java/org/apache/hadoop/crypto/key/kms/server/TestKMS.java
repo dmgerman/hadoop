@@ -14930,6 +14930,11 @@ operator|new
 name|Configuration
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|kerberos
+condition|)
+block|{
 name|conf
 operator|.
 name|set
@@ -14937,6 +14942,14 @@ argument_list|(
 literal|"hadoop.security.authentication"
 argument_list|,
 literal|"kerberos"
+argument_list|)
+expr_stmt|;
+block|}
+name|UserGroupInformation
+operator|.
+name|setConfiguration
+argument_list|(
+name|conf
 argument_list|)
 expr_stmt|;
 specifier|final

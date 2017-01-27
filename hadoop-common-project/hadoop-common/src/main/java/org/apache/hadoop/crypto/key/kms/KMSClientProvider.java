@@ -6639,6 +6639,11 @@ expr_stmt|;
 block|}
 if|if
 condition|(
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+operator|&&
 operator|!
 name|containsKmsDt
 argument_list|(
@@ -6652,15 +6657,16 @@ name|hasKerberosCredentials
 argument_list|()
 condition|)
 block|{
-comment|// Use login user for user that does not have either
+comment|// Use login user is only necessary when Kerberos is enabled
+comment|// but the actual user does not have either
 comment|// Kerberos credential or KMS delegation token for KMS operations
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"using loginUser no KMS Delegation Token "
+literal|"Using loginUser when Kerberos is enabled but the actual user"
 operator|+
-literal|"no Kerberos Credentials"
+literal|" does not have either KMS Delegation Token or Kerberos Credentials"
 argument_list|)
 expr_stmt|;
 name|actualUgi
