@@ -4038,7 +4038,14 @@ operator|.
 name|editSchedule
 argument_list|()
 expr_stmt|;
-comment|// Do allocation for all nms
+name|waitNumberOfLiveContainersFromApp
+argument_list|(
+name|schedulerApp1
+argument_list|,
+literal|4
+argument_list|)
+expr_stmt|;
+comment|// Make sure the container killed, then do allocation for all nms
 for|for
 control|(
 name|int
@@ -4069,13 +4076,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-name|waitNumberOfLiveContainersFromApp
-argument_list|(
-name|schedulerApp1
-argument_list|,
-literal|4
-argument_list|)
-expr_stmt|;
 name|waitNumberOfLiveContainersFromApp
 argument_list|(
 name|schedulerApp1

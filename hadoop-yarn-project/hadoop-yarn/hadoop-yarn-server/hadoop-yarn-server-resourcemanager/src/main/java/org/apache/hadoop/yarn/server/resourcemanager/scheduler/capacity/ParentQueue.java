@@ -2275,6 +2275,14 @@ name|values
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Make sure we notifies QueueOrderingPolicy
+name|queueOrderingPolicy
+operator|.
+name|setQueues
+argument_list|(
+name|childQueues
+argument_list|)
+expr_stmt|;
 block|}
 finally|finally
 block|{
