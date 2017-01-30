@@ -17899,6 +17899,11 @@ init|=
 name|findInstance
 argument_list|(
 name|clustername
+argument_list|,
+name|SliderUtils
+operator|.
+name|getAllLiveAppStates
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
