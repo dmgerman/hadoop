@@ -3260,6 +3260,14 @@ operator|.
 name|PERSISTENT
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -3271,6 +3279,7 @@ operator|+
 literal|" update the application state."
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 annotation|@
@@ -3491,6 +3500,14 @@ operator|.
 name|PERSISTENT
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -3502,6 +3519,7 @@ operator|+
 literal|" update the application attempt state."
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 annotation|@
@@ -3851,6 +3869,14 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -3860,6 +3886,7 @@ operator|+
 name|nodeRemovePath
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|trx
 operator|.
@@ -3935,6 +3962,11 @@ init|)
 block|{
 if|if
 condition|(
+name|isUpdate
+condition|)
+block|{
+if|if
+condition|(
 name|LOG
 operator|.
 name|isDebugEnabled
@@ -3945,15 +3977,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-operator|(
-name|isUpdate
-condition|?
-literal|"Storing "
-else|:
-literal|"Updating "
-operator|)
-operator|+
-literal|"RMDelegationToken_"
+literal|"Updating RMDelegationToken_"
 operator|+
 name|rmDTIdentifier
 operator|.
@@ -3962,11 +3986,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|isUpdate
-condition|)
-block|{
 name|trx
 operator|.
 name|setData
@@ -4026,13 +4045,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-operator|(
-name|isUpdate
-condition|?
 literal|"Storing "
-else|:
-literal|"Updating "
-operator|)
 operator|+
 name|dtSequenceNumberPath
 operator|+
