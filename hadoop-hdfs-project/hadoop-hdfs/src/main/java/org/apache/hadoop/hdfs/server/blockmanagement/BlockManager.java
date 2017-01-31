@@ -3835,7 +3835,9 @@ block|{
 name|sps
 operator|.
 name|start
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -3855,7 +3857,9 @@ block|{
 name|sps
 operator|.
 name|stop
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 expr_stmt|;
 block|}
 name|bmSafeMode
@@ -23545,7 +23549,9 @@ block|}
 name|sps
 operator|.
 name|start
-argument_list|()
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Deactivate the storage policy satisfier by stopping its services.    */
@@ -23593,13 +23599,10 @@ block|}
 name|sps
 operator|.
 name|stop
-argument_list|()
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
-comment|// TODO: add command to DNs for stop in-progress processing SPS commands?
-comment|// to avoid confusions in cluster, I think sending commands from centralized
-comment|// place would be better to drop pending queues at DN. Anyway in progress
-comment|// work will be finished in a while, but this command can void starting
-comment|// fresh movements at DN.
 block|}
 comment|/**    * @return True if storage policy satisfier running.    */
 DECL|method|isStoragePolicySatisfierRunning ()

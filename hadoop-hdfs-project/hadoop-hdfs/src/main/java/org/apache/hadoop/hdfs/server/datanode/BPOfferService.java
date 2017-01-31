@@ -3272,6 +3272,27 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 break|break;
+case|case
+name|DatanodeProtocol
+operator|.
+name|DNA_DROP_SPS_WORK_COMMAND
+case|:
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"DatanodeCommand action: DNA_DROP_SPS_WORK_COMMAND"
+argument_list|)
+expr_stmt|;
+name|dn
+operator|.
+name|getStoragePolicySatisfyWorker
+argument_list|()
+operator|.
+name|dropSPSWork
+argument_list|()
+expr_stmt|;
+break|break;
 default|default:
 name|LOG
 operator|.

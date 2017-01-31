@@ -2220,6 +2220,24 @@ block|}
 block|}
 block|}
 block|}
+comment|/**      * Clear the trackID vs movement status tracking map.      */
+DECL|method|removeAll ()
+name|void
+name|removeAll
+parameter_list|()
+block|{
+synchronized|synchronized
+init|(
+name|trackIdVsMovementStatus
+init|)
+block|{
+name|trackIdVsMovementStatus
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 block|}
 annotation|@
 name|VisibleForTesting
@@ -2231,6 +2249,35 @@ block|{
 return|return
 name|handler
 return|;
+block|}
+comment|/**    * Drop the in-progress SPS work queues.    */
+DECL|method|dropSPSWork ()
+specifier|public
+name|void
+name|dropSPSWork
+parameter_list|()
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Received request to drop StoragePolicySatisfierWorker queues. "
+operator|+
+literal|"So, none of the SPS Worker queued block movements will"
+operator|+
+literal|" be scheduled."
+argument_list|)
+expr_stmt|;
+name|movementTracker
+operator|.
+name|removeAll
+argument_list|()
+expr_stmt|;
+name|handler
+operator|.
+name|removeAll
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 end_class

@@ -1110,6 +1110,14 @@ name|LinkedList
 argument_list|<>
 argument_list|()
 decl_stmt|;
+DECL|field|dropSPSWork
+specifier|private
+specifier|volatile
+name|boolean
+name|dropSPSWork
+init|=
+literal|false
+decl_stmt|;
 comment|/* Variables for maintaining number of blocks scheduled to be written to    * this storage. This count is approximate and might be slightly bigger    * in case of errors (e.g. datanode does not report if an error occurs    * while writing the block).    */
 DECL|field|currApproxBlocksScheduled
 specifier|private
@@ -4756,6 +4764,38 @@ name|poll
 argument_list|()
 return|;
 block|}
+block|}
+comment|/**    * Set whether to drop SPS related queues at DN side.    *    * @param dropSPSWork    *          - true if need to drop SPS queues, otherwise false.    */
+DECL|method|setDropSPSWork (boolean dropSPSWork)
+specifier|public
+specifier|synchronized
+name|void
+name|setDropSPSWork
+parameter_list|(
+name|boolean
+name|dropSPSWork
+parameter_list|)
+block|{
+name|this
+operator|.
+name|dropSPSWork
+operator|=
+name|dropSPSWork
+expr_stmt|;
+block|}
+comment|/**    * @return true if need to drop SPS queues at DN.    */
+DECL|method|shouldDropSPSWork ()
+specifier|public
+specifier|synchronized
+name|boolean
+name|shouldDropSPSWork
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|dropSPSWork
+return|;
 block|}
 block|}
 end_class

@@ -665,17 +665,37 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Start storage policy satisfier demon thread. Also start block storage    * movements monitor for retry the attempts if needed.    */
-DECL|method|start ()
+DECL|method|start (boolean reconfigStart)
 specifier|public
 specifier|synchronized
 name|void
 name|start
-parameter_list|()
+parameter_list|(
+name|boolean
+name|reconfigStart
+parameter_list|)
 block|{
 name|isRunning
 operator|=
 literal|true
 expr_stmt|;
+if|if
+condition|(
+name|reconfigStart
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Starting StoragePolicySatisfier, as admin requested to "
+operator|+
+literal|"activate it."
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|LOG
 operator|.
 name|info
@@ -683,6 +703,7 @@ argument_list|(
 literal|"Starting StoragePolicySatisfier."
 argument_list|)
 expr_stmt|;
+block|}
 name|storagePolicySatisfierThread
 operator|=
 operator|new
@@ -711,18 +732,38 @@ name|start
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Stop storage policy satisfier demon thread.    */
-DECL|method|stop ()
+comment|/**    * Stop storage policy satisfier demon thread.    *    * @param reconfigStop    */
+DECL|method|stop (boolean reconfigStop)
 specifier|public
 specifier|synchronized
 name|void
 name|stop
-parameter_list|()
+parameter_list|(
+name|boolean
+name|reconfigStop
+parameter_list|)
 block|{
 name|isRunning
 operator|=
 literal|false
 expr_stmt|;
+if|if
+condition|(
+name|reconfigStop
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Stopping StoragePolicySatisfier, as admin requested to "
+operator|+
+literal|"deactivate it."
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|LOG
 operator|.
 name|info
@@ -730,6 +771,7 @@ argument_list|(
 literal|"Stopping StoragePolicySatisfier."
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|storagePolicySatisfierThread
@@ -767,11 +809,27 @@ operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|reconfigStop
+condition|)
+block|{
 name|this
 operator|.
 name|clearQueues
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|blockManager
+operator|.
+name|getDatanodeManager
+argument_list|()
+operator|.
+name|addDropSPSWorkCommandsToAllDNs
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Check whether StoragePolicySatisfier is running.    * @return true if running    */
 DECL|method|isRunning ()

@@ -659,6 +659,35 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Clear the pending movement and movement result queues.    */
+DECL|method|removeAll ()
+name|void
+name|removeAll
+parameter_list|()
+block|{
+synchronized|synchronized
+init|(
+name|moverTaskFutures
+init|)
+block|{
+name|moverTaskFutures
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+block|}
+synchronized|synchronized
+init|(
+name|movementResults
+init|)
+block|{
+name|movementResults
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 block|}
 end_class
 
