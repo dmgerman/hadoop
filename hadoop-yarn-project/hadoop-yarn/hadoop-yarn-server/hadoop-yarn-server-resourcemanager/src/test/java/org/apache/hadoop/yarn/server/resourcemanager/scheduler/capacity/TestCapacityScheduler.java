@@ -2999,7 +2999,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|ResourceScheduler
+name|CapacityScheduler
 name|scheduler
 init|=
 operator|new
@@ -3049,11 +3049,9 @@ try|try
 block|{
 name|scheduler
 operator|.
-name|reinitialize
+name|init
 argument_list|(
 name|conf
-argument_list|,
-name|mockContext
 argument_list|)
 expr_stmt|;
 name|fail
