@@ -1732,7 +1732,7 @@ name|isContinuousSchedulingEnabled
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Add one nodes
+comment|// Add one node
 name|RMNode
 name|node1
 init|=
