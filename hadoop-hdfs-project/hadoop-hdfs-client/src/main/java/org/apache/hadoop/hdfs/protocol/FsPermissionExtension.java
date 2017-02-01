@@ -64,6 +64,15 @@ name|FsPermissionExtension
 extends|extends
 name|FsPermission
 block|{
+DECL|field|serialVersionUID
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|serialVersionUID
+init|=
+literal|0x13c298a4
+decl_stmt|;
 DECL|field|ACL_BIT
 specifier|private
 specifier|final

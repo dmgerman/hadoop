@@ -28,6 +28,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|Serializable
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -71,7 +81,18 @@ DECL|class|BlockLocation
 specifier|public
 class|class
 name|BlockLocation
+implements|implements
+name|Serializable
 block|{
+DECL|field|serialVersionUID
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|serialVersionUID
+init|=
+literal|0x22986f6d
+decl_stmt|;
 DECL|field|hosts
 specifier|private
 name|String

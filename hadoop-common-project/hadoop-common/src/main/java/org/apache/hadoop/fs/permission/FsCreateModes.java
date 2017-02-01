@@ -77,6 +77,15 @@ name|FsCreateModes
 extends|extends
 name|FsPermission
 block|{
+DECL|field|serialVersionUID
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|serialVersionUID
+init|=
+literal|0x22986f6d
+decl_stmt|;
 DECL|field|unmasked
 specifier|private
 specifier|final
