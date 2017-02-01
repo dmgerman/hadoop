@@ -1098,7 +1098,8 @@ operator|.
 name|getDnConf
 argument_list|()
 operator|.
-name|datanodeSlowIoWarningThresholdMs
+name|getSlowIoWarningThresholdMs
+argument_list|()
 expr_stmt|;
 comment|// For replaceBlock() calls response should be sent to avoid socketTimeout
 comment|// at clients. So sending with the interval of 0.5 * socketTimeout
