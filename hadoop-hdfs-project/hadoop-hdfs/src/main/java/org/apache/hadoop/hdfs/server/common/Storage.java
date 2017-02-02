@@ -1983,7 +1983,7 @@ name|InconsistentFSStateException
 argument_list|(
 name|root
 argument_list|,
-literal|"Can't format the storage directory because the current/ "
+literal|"Can't format the storage directory because the current "
 operator|+
 literal|"directory is not empty."
 argument_list|)

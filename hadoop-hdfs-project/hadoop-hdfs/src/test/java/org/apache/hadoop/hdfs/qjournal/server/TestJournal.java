@@ -1380,6 +1380,21 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+comment|// Clear the storage directory before reformatting it
+name|journal
+operator|.
+name|getStorage
+argument_list|()
+operator|.
+name|getJournalManager
+argument_list|()
+operator|.
+name|getStorageDirectory
+argument_list|()
+operator|.
+name|clearDirectory
+argument_list|()
+expr_stmt|;
 name|journal
 operator|.
 name|format
@@ -2400,6 +2415,52 @@ operator|.
 name|assertExceptionContains
 argument_list|(
 literal|"Incompatible namespaceID"
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|Test
+DECL|method|testFormatNonEmptyStorageDirectories ()
+specifier|public
+name|void
+name|testFormatNonEmptyStorageDirectories
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+try|try
+block|{
+comment|// Format again here and to format the non-empty directories in
+comment|// journal node.
+name|journal
+operator|.
+name|format
+argument_list|(
+name|FAKE_NSINFO
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"Did not fail to format non-empty directories in journal node."
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+argument_list|(
+literal|"Can't format the storage directory because the current "
+operator|+
+literal|"directory is not empty."
 argument_list|,
 name|ioe
 argument_list|)
