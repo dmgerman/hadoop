@@ -482,7 +482,29 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Rule
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|rules
+operator|.
+name|Timeout
 import|;
 end_import
 
@@ -569,6 +591,22 @@ name|int
 name|WAIT_FOR_DEATH
 init|=
 literal|15000
+decl_stmt|;
+comment|// specific the timeout for entire test class
+annotation|@
+name|Rule
+DECL|field|timeout
+specifier|public
+name|Timeout
+name|timeout
+init|=
+operator|new
+name|Timeout
+argument_list|(
+literal|120
+operator|*
+literal|1000
+argument_list|)
 decl_stmt|;
 annotation|@
 name|Before
@@ -1303,19 +1341,6 @@ operator|)
 literal|2
 argument_list|)
 expr_stmt|;
-comment|// The DN should consider itself dead
-name|DFSTestUtil
-operator|.
-name|waitForDatanodeDeath
-argument_list|(
-name|dns
-operator|.
-name|get
-argument_list|(
-literal|2
-argument_list|)
-argument_list|)
-expr_stmt|;
 comment|// And report two failed volumes
 name|checkFailuresAtDataNode
 argument_list|(
@@ -1339,6 +1364,19 @@ name|dn3Vol2
 operator|.
 name|getAbsolutePath
 argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// The DN should consider itself dead
+name|DFSTestUtil
+operator|.
+name|waitForDatanodeDeath
+argument_list|(
+name|dns
+operator|.
+name|get
+argument_list|(
+literal|2
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// The NN considers the DN dead
