@@ -4336,15 +4336,19 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Slow waitForAckedSeqno took "
+literal|"Slow waitForAckedSeqno took {}ms (threshold={}ms). File being"
 operator|+
+literal|" written: {}, block: {}, Write pipeline datanodes: {}."
+argument_list|,
 name|duration
-operator|+
-literal|"ms (threshold="
-operator|+
+argument_list|,
 name|dfsclientSlowLogThresholdMs
-operator|+
-literal|"ms)"
+argument_list|,
+name|src
+argument_list|,
+name|block
+argument_list|,
+name|nodes
 argument_list|)
 expr_stmt|;
 block|}
