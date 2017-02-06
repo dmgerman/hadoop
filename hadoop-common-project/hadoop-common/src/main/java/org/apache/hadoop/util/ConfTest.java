@@ -1701,7 +1701,7 @@ literal|1
 argument_list|,
 name|HADOOP_CONF_DIR
 operator|+
-literal|" does not defined"
+literal|" is not defined"
 argument_list|)
 expr_stmt|;
 block|}
