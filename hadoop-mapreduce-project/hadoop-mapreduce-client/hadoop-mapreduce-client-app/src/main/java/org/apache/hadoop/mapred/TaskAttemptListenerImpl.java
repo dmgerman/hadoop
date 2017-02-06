@@ -1027,9 +1027,11 @@ argument_list|(
 literal|"0.0.0.0"
 argument_list|)
 operator|.
-name|setPort
+name|setPortRangeConfig
 argument_list|(
-literal|0
+name|MRJobConfig
+operator|.
+name|MR_AM_JOB_CLIENT_PORT_RANGE
 argument_list|)
 operator|.
 name|setNumHandlers
