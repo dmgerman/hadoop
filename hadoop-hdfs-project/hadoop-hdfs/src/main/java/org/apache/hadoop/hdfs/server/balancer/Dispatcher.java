@@ -943,15 +943,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|MAX_NO_PENDING_MOVE_ITERATIONS
-specifier|private
-specifier|static
-specifier|final
-name|int
-name|MAX_NO_PENDING_MOVE_ITERATIONS
-init|=
-literal|5
-decl_stmt|;
 comment|/**    * the period of time to delay the usage of a DataNode after hitting    * errors when using it for migrating data    */
 DECL|field|delayAfterErrors
 specifier|private
@@ -5721,6 +5712,22 @@ name|warn
 argument_list|(
 literal|"No mover threads available: skip moving "
 operator|+
+name|p
+argument_list|)
+expr_stmt|;
+name|targetDn
+operator|.
+name|removePendingBlock
+argument_list|(
+name|p
+argument_list|)
+expr_stmt|;
+name|p
+operator|.
+name|proxySource
+operator|.
+name|removePendingBlock
+argument_list|(
 name|p
 argument_list|)
 expr_stmt|;
