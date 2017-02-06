@@ -226,6 +226,15 @@ name|HTTP_HOST_DEFAULT
 init|=
 literal|"0.0.0.0"
 decl_stmt|;
+DECL|field|HTTP_ADMINS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HTTP_ADMINS_KEY
+init|=
+literal|"hadoop.kms.http.administrators"
+decl_stmt|;
 comment|// SSL properties
 DECL|field|SSL_ENABLED_KEY
 specifier|public
