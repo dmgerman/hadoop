@@ -1334,15 +1334,14 @@ name|DFS_NAMENODE_RECONSTRUCTION_PENDING_TIMEOUT_SEC_KEY
 init|=
 literal|"dfs.namenode.reconstruction.pending.timeout-sec"
 decl_stmt|;
-DECL|field|DFS_NAMENODE_RECONSTRUCTION_PENDING_TIMEOUT_SEC_DEFAULT
 specifier|public
 specifier|static
 specifier|final
 name|int
+DECL|field|DFS_NAMENODE_RECONSTRUCTION_PENDING_TIMEOUT_SEC_DEFAULT
 name|DFS_NAMENODE_RECONSTRUCTION_PENDING_TIMEOUT_SEC_DEFAULT
 init|=
-operator|-
-literal|1
+literal|300
 decl_stmt|;
 DECL|field|DFS_NAMENODE_MAINTENANCE_REPLICATION_MIN_KEY
 specifier|public
