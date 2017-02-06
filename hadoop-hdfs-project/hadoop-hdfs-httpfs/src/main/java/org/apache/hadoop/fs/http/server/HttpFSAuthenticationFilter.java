@@ -231,7 +231,6 @@ extends|extends
 name|DelegationTokenAuthenticationFilter
 block|{
 DECL|field|CONF_PREFIX
-specifier|private
 specifier|static
 specifier|final
 name|String
