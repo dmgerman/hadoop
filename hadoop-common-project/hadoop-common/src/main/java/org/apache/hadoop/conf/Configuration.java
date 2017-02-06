@@ -7090,6 +7090,46 @@ name|toString
 argument_list|()
 return|;
 block|}
+comment|/**      * Get range start for the first integer range.      * @return range start.      */
+DECL|method|getRangeStart ()
+specifier|public
+name|int
+name|getRangeStart
+parameter_list|()
+block|{
+if|if
+condition|(
+name|ranges
+operator|==
+literal|null
+operator|||
+name|ranges
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+return|return
+operator|-
+literal|1
+return|;
+block|}
+name|Range
+name|r
+init|=
+name|ranges
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
+return|return
+name|r
+operator|.
+name|start
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|iterator ()
