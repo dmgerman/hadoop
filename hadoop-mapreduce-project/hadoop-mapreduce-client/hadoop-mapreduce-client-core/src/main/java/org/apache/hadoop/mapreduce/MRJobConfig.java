@@ -2421,6 +2421,15 @@ name|MR_AM_PREFIX
 operator|+
 literal|"job.client.port-range"
 decl_stmt|;
+comment|/**    * Range of ports that the MapReduce AM can use when binding for its webapp.    * Leave blank if you want all possible ports.    */
+DECL|field|MR_AM_WEBAPP_PORT_RANGE
+name|String
+name|MR_AM_WEBAPP_PORT_RANGE
+init|=
+name|MR_AM_PREFIX
+operator|+
+literal|"webapp.port-range"
+decl_stmt|;
 comment|/** Enable blacklisting of nodes in the job.*/
 DECL|field|MR_AM_JOB_NODE_BLACKLISTING_ENABLE
 specifier|public

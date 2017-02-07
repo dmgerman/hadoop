@@ -1568,6 +1568,15 @@ operator|.
 name|HTTP_ONLY
 argument_list|)
 operator|.
+name|withPortRange
+argument_list|(
+name|conf
+argument_list|,
+name|MRJobConfig
+operator|.
+name|MR_AM_WEBAPP_PORT_RANGE
+argument_list|)
+operator|.
 name|start
 argument_list|(
 operator|new
