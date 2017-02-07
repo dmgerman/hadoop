@@ -810,6 +810,24 @@ name|server
 operator|.
 name|webapp
 operator|.
+name|YarnWebServiceParams
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|webapp
+operator|.
 name|dao
 operator|.
 name|ContainerLogsInfo
@@ -1794,7 +1812,7 @@ operator|.
 name|UTF_8
 block|}
 argument_list|)
-DECL|method|getContainerLogsInfo ( @avax.ws.rs.core.Context HttpServletRequest hsr, @javax.ws.rs.core.Context HttpServletResponse res, @PathParam(R) String containerIdStr)
+DECL|method|getContainerLogsInfo ( @avax.ws.rs.core.Context HttpServletRequest hsr, @javax.ws.rs.core.Context HttpServletResponse res, @PathParam(YarnWebServiceParams.CONTAINER_ID) String containerIdStr)
 specifier|public
 name|Response
 name|getContainerLogsInfo
@@ -1828,7 +1846,9 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
-literal|"containerid"
+name|YarnWebServiceParams
+operator|.
+name|CONTAINER_ID
 argument_list|)
 name|String
 name|containerIdStr
@@ -2122,7 +2142,7 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|getContainerLogFile ( @athParamR) String containerIdStr, @PathParam(R) String filename, @QueryParam(R) String format, @QueryParam(R) String size)
+DECL|method|getContainerLogFile ( @athParamYarnWebServiceParams.CONTAINER_ID) final String containerIdStr, @PathParam(YarnWebServiceParams.CONTAINER_LOG_FILE_NAME) String filename, @QueryParam(YarnWebServiceParams.RESPONSE_CONTENT_FORMAT) String format, @QueryParam(YarnWebServiceParams.RESPONSE_CONTENT_SIZE) String size)
 specifier|public
 name|Response
 name|getContainerLogFile
@@ -2130,15 +2150,20 @@ parameter_list|(
 annotation|@
 name|PathParam
 argument_list|(
-literal|"containerid"
+name|YarnWebServiceParams
+operator|.
+name|CONTAINER_ID
 argument_list|)
+specifier|final
 name|String
 name|containerIdStr
 parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
-literal|"filename"
+name|YarnWebServiceParams
+operator|.
+name|CONTAINER_LOG_FILE_NAME
 argument_list|)
 name|String
 name|filename
@@ -2146,7 +2171,9 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"format"
+name|YarnWebServiceParams
+operator|.
+name|RESPONSE_CONTENT_FORMAT
 argument_list|)
 name|String
 name|format
@@ -2154,7 +2181,9 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"size"
+name|YarnWebServiceParams
+operator|.
+name|RESPONSE_CONTENT_SIZE
 argument_list|)
 name|String
 name|size
@@ -2200,7 +2229,7 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|getLogs ( @athParamR) final String containerIdStr, @PathParam(R) String filename, @QueryParam(R) String format, @QueryParam(R) String size)
+DECL|method|getLogs ( @athParamYarnWebServiceParams.CONTAINER_ID) final String containerIdStr, @PathParam(YarnWebServiceParams.CONTAINER_LOG_FILE_NAME) String filename, @QueryParam(YarnWebServiceParams.RESPONSE_CONTENT_FORMAT) String format, @QueryParam(YarnWebServiceParams.RESPONSE_CONTENT_SIZE) String size)
 specifier|public
 name|Response
 name|getLogs
@@ -2208,7 +2237,9 @@ parameter_list|(
 annotation|@
 name|PathParam
 argument_list|(
-literal|"containerid"
+name|YarnWebServiceParams
+operator|.
+name|CONTAINER_ID
 argument_list|)
 specifier|final
 name|String
@@ -2217,7 +2248,9 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
-literal|"filename"
+name|YarnWebServiceParams
+operator|.
+name|CONTAINER_LOG_FILE_NAME
 argument_list|)
 name|String
 name|filename
@@ -2225,7 +2258,9 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"format"
+name|YarnWebServiceParams
+operator|.
+name|RESPONSE_CONTENT_FORMAT
 argument_list|)
 name|String
 name|format
@@ -2233,7 +2268,9 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"size"
+name|YarnWebServiceParams
+operator|.
+name|RESPONSE_CONTENT_SIZE
 argument_list|)
 name|String
 name|size
