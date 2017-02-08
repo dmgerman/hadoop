@@ -424,6 +424,27 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|invalidateCache (String name)
+specifier|public
+name|void
+name|invalidateCache
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|keyProvider
+operator|.
+name|invalidateCache
+argument_list|(
+name|name
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|flush ()
 specifier|public
 name|void

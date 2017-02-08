@@ -948,6 +948,43 @@ block|}
 block|}
 end_function
 
+begin_comment
+comment|// This request is sent to all providers in the load-balancing group
+end_comment
+
+begin_function
+annotation|@
+name|Override
+DECL|method|invalidateCache (String keyName)
+specifier|public
+name|void
+name|invalidateCache
+parameter_list|(
+name|String
+name|keyName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+for|for
+control|(
+name|KMSClientProvider
+name|provider
+range|:
+name|providers
+control|)
+block|{
+name|provider
+operator|.
+name|invalidateCache
+argument_list|(
+name|keyName
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+end_function
+
 begin_function
 annotation|@
 name|Override
@@ -1147,13 +1184,13 @@ block|}
 end_function
 
 begin_function
-DECL|method|reencryptEncryptedKey (EncryptedKeyVersion edek)
+DECL|method|reencryptEncryptedKey (EncryptedKeyVersion ekv)
 specifier|public
 name|EncryptedKeyVersion
 name|reencryptEncryptedKey
 parameter_list|(
 name|EncryptedKeyVersion
-name|edek
+name|ekv
 parameter_list|)
 throws|throws
 name|IOException
@@ -1191,7 +1228,7 @@ name|provider
 operator|.
 name|reencryptEncryptedKey
 argument_list|(
-name|edek
+name|ekv
 argument_list|)
 return|;
 block|}
@@ -1837,7 +1874,10 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-return|return
+specifier|final
+name|KeyVersion
+name|newVersion
+init|=
 name|doOp
 argument_list|(
 operator|new
@@ -1875,6 +1915,14 @@ argument_list|,
 name|nextIdx
 argument_list|()
 argument_list|)
+decl_stmt|;
+name|invalidateCache
+argument_list|(
+name|name
+argument_list|)
+expr_stmt|;
+return|return
+name|newVersion
 return|;
 block|}
 end_function
@@ -1898,7 +1946,10 @@ name|IOException
 block|{
 try|try
 block|{
-return|return
+specifier|final
+name|KeyVersion
+name|newVersion
+init|=
 name|doOp
 argument_list|(
 operator|new
@@ -1936,6 +1987,14 @@ argument_list|,
 name|nextIdx
 argument_list|()
 argument_list|)
+decl_stmt|;
+name|invalidateCache
+argument_list|(
+name|name
+argument_list|)
+expr_stmt|;
+return|return
+name|newVersion
 return|;
 block|}
 catch|catch

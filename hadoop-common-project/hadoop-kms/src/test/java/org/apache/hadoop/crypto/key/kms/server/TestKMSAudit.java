@@ -658,6 +658,21 @@ name|luser
 argument_list|,
 name|KMSOp
 operator|.
+name|INVALIDATE_CACHE
+argument_list|,
+literal|"k1"
+argument_list|,
+literal|"testmsg"
+argument_list|)
+expr_stmt|;
+name|kmsAudit
+operator|.
+name|ok
+argument_list|(
+name|luser
+argument_list|,
+name|KMSOp
+operator|.
 name|DECRYPT_EEK
 argument_list|,
 literal|"k1"
@@ -799,6 +814,8 @@ operator|+
 literal|"OK\\[op=DELETE_KEY, key=k1, user=luser\\] testmsg"
 operator|+
 literal|"OK\\[op=ROLL_NEW_VERSION, key=k1, user=luser\\] testmsg"
+operator|+
+literal|"OK\\[op=INVALIDATE_CACHE, key=k1, user=luser\\] testmsg"
 comment|// Aggregated
 operator|+
 literal|"OK\\[op=DECRYPT_EEK, key=k1, user=luser, accessCount=6, interval=[^m]{1,4}ms\\] testmsg"

@@ -732,6 +732,35 @@ return|return
 name|keyVersion
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|invalidateCache (String name)
+specifier|public
+name|void
+name|invalidateCache
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|super
+operator|.
+name|invalidateCache
+argument_list|(
+name|name
+argument_list|)
+expr_stmt|;
+name|getExtension
+argument_list|()
+operator|.
+name|drain
+argument_list|(
+name|name
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

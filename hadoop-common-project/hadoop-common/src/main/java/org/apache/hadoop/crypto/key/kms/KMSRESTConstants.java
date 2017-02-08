@@ -142,6 +142,15 @@ name|CURRENT_VERSION_SUB_RESOURCE
 init|=
 literal|"_currentversion"
 decl_stmt|;
+DECL|field|INVALIDATECACHE_RESOURCE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|INVALIDATECACHE_RESOURCE
+init|=
+literal|"_invalidatecache"
+decl_stmt|;
 DECL|field|KEY
 specifier|public
 specifier|static

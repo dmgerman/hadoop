@@ -2458,6 +2458,20 @@ name|material
 argument_list|)
 return|;
 block|}
+comment|/**    * Can be used by implementing classes to invalidate the caches. This could be    * used after rollNewVersion to provide a strong guarantee to return the new    * version of the given key.    *    * @param name the basename of the key    * @throws IOException    */
+DECL|method|invalidateCache (String name)
+specifier|public
+name|void
+name|invalidateCache
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// NOP
+block|}
 comment|/**    * Ensures that any changes to the keys are written to persistent store.    * @throws IOException    */
 DECL|method|flush ()
 specifier|public
