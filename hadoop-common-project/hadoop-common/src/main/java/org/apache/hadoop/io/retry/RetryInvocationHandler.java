@@ -637,15 +637,24 @@ operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|warn
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Interrupted while waiting to retry"
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+block|}
 name|InterruptedIOException
 name|intIOE
 init|=
@@ -1953,7 +1962,9 @@ argument_list|()
 operator|.
 name|append
 argument_list|(
-literal|"Exception while invoking "
+name|ex
+operator|+
+literal|", while invoking "
 argument_list|)
 operator|.
 name|append
@@ -2038,8 +2049,6 @@ name|b
 operator|.
 name|toString
 argument_list|()
-argument_list|,
-name|ex
 argument_list|)
 expr_stmt|;
 block|}

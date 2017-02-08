@@ -876,6 +876,22 @@ name|args
 argument_list|)
 return|;
 block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Looking for the active RM in "
+operator|+
+name|Arrays
+operator|.
+name|toString
+argument_list|(
+name|rmServiceIds
+argument_list|)
+operator|+
+literal|"..."
+argument_list|)
+expr_stmt|;
 name|ExecutorService
 name|executor
 init|=
@@ -1039,7 +1055,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Invocation successful on ["
+literal|"Found active RM ["
 operator|+
 name|pInfo
 operator|+
@@ -1145,7 +1161,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Connection lost, trying to fail over."
+literal|"Connection lost with "
+operator|+
+name|successfulProxy
+operator|+
+literal|", trying to fail over."
 argument_list|)
 expr_stmt|;
 name|successfulProxy
