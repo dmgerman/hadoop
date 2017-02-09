@@ -6244,21 +6244,8 @@ name|Exception
 name|e
 parameter_list|)
 block|{
-comment|// Do not log WrappedRpcServerExceptionSuppressed.
-if|if
-condition|(
-operator|!
-operator|(
-name|e
-operator|instanceof
-name|WrappedRpcServerExceptionSuppressed
-operator|)
-condition|)
-block|{
-comment|// A WrappedRpcServerException is an exception that has been sent
-comment|// to the client, so the stacktrace is unnecessary; any other
-comment|// exceptions are unexpected internal server errors and thus the
-comment|// stacktrace should be logged.
+comment|// Any exceptions that reach here are fatal unexpected internal errors
+comment|// that could not be sent to the client.
 name|LOG
 operator|.
 name|info
@@ -6274,9 +6261,6 @@ operator|+
 literal|": readAndProcess from client "
 operator|+
 name|c
-operator|.
-name|getHostAddress
-argument_list|()
 operator|+
 literal|" threw exception ["
 operator|+
@@ -6284,18 +6268,9 @@ name|e
 operator|+
 literal|"]"
 argument_list|,
-operator|(
-name|e
-operator|instanceof
-name|WrappedRpcServerException
-operator|)
-condition|?
-literal|null
-else|:
 name|e
 argument_list|)
 expr_stmt|;
-block|}
 name|count
 operator|=
 operator|-
@@ -6303,11 +6278,18 @@ literal|1
 expr_stmt|;
 comment|//so that the (count< 0) block is executed
 block|}
+comment|// setupResponse will signal the connection should be closed when a
+comment|// fatal response is sent.
 if|if
 condition|(
 name|count
 operator|<
 literal|0
+operator|||
+name|c
+operator|.
+name|shouldClose
+argument_list|()
 condition|)
 block|{
 name|closeConnection
@@ -7767,11 +7749,11 @@ name|SuppressWarnings
 argument_list|(
 literal|"serial"
 argument_list|)
-DECL|class|WrappedRpcServerException
+DECL|class|FatalRpcServerException
 specifier|private
 specifier|static
 class|class
-name|WrappedRpcServerException
+name|FatalRpcServerException
 extends|extends
 name|RpcServerException
 block|{
@@ -7781,9 +7763,9 @@ specifier|final
 name|RpcErrorCodeProto
 name|errCode
 decl_stmt|;
-DECL|method|WrappedRpcServerException (RpcErrorCodeProto errCode, IOException ioe)
+DECL|method|FatalRpcServerException (RpcErrorCodeProto errCode, IOException ioe)
 specifier|public
-name|WrappedRpcServerException
+name|FatalRpcServerException
 parameter_list|(
 name|RpcErrorCodeProto
 name|errCode
@@ -7809,9 +7791,9 @@ operator|=
 name|errCode
 expr_stmt|;
 block|}
-DECL|method|WrappedRpcServerException (RpcErrorCodeProto errCode, String message)
+DECL|method|FatalRpcServerException (RpcErrorCodeProto errCode, String message)
 specifier|public
-name|WrappedRpcServerException
+name|FatalRpcServerException
 parameter_list|(
 name|RpcErrorCodeProto
 name|errCode
@@ -7831,6 +7813,20 @@ name|message
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getRpcStatusProto ()
+specifier|public
+name|RpcStatusProto
+name|getRpcStatusProto
+parameter_list|()
+block|{
+return|return
+name|RpcStatusProto
+operator|.
+name|FATAL
+return|;
 block|}
 annotation|@
 name|Override
@@ -7859,40 +7855,6 @@ operator|.
 name|toString
 argument_list|()
 return|;
-block|}
-block|}
-comment|/**    * A WrappedRpcServerException that is suppressed altogether    * for the purposes of logging.    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"serial"
-argument_list|)
-DECL|class|WrappedRpcServerExceptionSuppressed
-specifier|private
-specifier|static
-class|class
-name|WrappedRpcServerExceptionSuppressed
-extends|extends
-name|WrappedRpcServerException
-block|{
-DECL|method|WrappedRpcServerExceptionSuppressed ( RpcErrorCodeProto errCode, IOException ioe)
-specifier|public
-name|WrappedRpcServerExceptionSuppressed
-parameter_list|(
-name|RpcErrorCodeProto
-name|errCode
-parameter_list|,
-name|IOException
-name|ioe
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|errCode
-argument_list|,
-name|ioe
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 comment|/** Reads calls from a connection and queues them for handling. */
@@ -8031,6 +7993,13 @@ DECL|field|serviceClass
 specifier|private
 name|int
 name|serviceClass
+decl_stmt|;
+DECL|field|shouldClose
+specifier|private
+name|boolean
+name|shouldClose
+init|=
+literal|false
 decl_stmt|;
 DECL|field|user
 name|UserGroupInformation
@@ -8250,6 +8219,26 @@ operator|+
 name|remotePort
 return|;
 block|}
+DECL|method|setShouldClose ()
+name|boolean
+name|setShouldClose
+parameter_list|()
+block|{
+return|return
+name|shouldClose
+operator|=
+literal|true
+return|;
+block|}
+DECL|method|shouldClose ()
+name|boolean
+name|shouldClose
+parameter_list|()
+block|{
+return|return
+name|shouldClose
+return|;
+block|}
 DECL|method|getHostAddress ()
 specifier|public
 name|String
@@ -8443,7 +8432,7 @@ name|Buffer
 name|buffer
 parameter_list|)
 throws|throws
-name|WrappedRpcServerException
+name|RpcServerException
 throws|,
 name|IOException
 throws|,
@@ -8486,7 +8475,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|WrappedRpcServerException
+name|FatalRpcServerException
 argument_list|(
 name|RpcErrorCodeProto
 operator|.
@@ -8614,7 +8603,7 @@ return|return
 name|e
 return|;
 block|}
-comment|/**      * Process saslMessage and send saslResponse back      * @param saslMessage received SASL message      * @throws WrappedRpcServerException setup failed due to SASL negotiation       *         failure, premature or invalid connection context, or other state       *         errors. This exception needs to be sent to the client. This       *         exception will wrap {@link RetriableException},       *         {@link InvalidToken}, {@link StandbyException} or       *         {@link SaslException}.      * @throws IOException if sending reply fails      * @throws InterruptedException      */
+comment|/**      * Process saslMessage and send saslResponse back      * @param saslMessage received SASL message      * @throws RpcServerException setup failed due to SASL negotiation      *         failure, premature or invalid connection context, or other state       *         errors. This exception needs to be sent to the client. This       *         exception will wrap {@link RetriableException},       *         {@link InvalidToken}, {@link StandbyException} or       *         {@link SaslException}.      * @throws IOException if sending reply fails      * @throws InterruptedException      */
 DECL|method|saslProcess (RpcSaslProto saslMessage)
 specifier|private
 name|void
@@ -8624,7 +8613,7 @@ name|RpcSaslProto
 name|saslMessage
 parameter_list|)
 throws|throws
-name|WrappedRpcServerException
+name|RpcServerException
 throws|,
 name|IOException
 throws|,
@@ -8637,7 +8626,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|WrappedRpcServerException
+name|FatalRpcServerException
 argument_list|(
 name|RpcErrorCodeProto
 operator|.
@@ -8835,13 +8824,13 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|WrappedRpcServerException
-name|wrse
+name|RpcServerException
+name|rse
 parameter_list|)
 block|{
 comment|// don't re-wrap
 throw|throw
-name|wrse
+name|rse
 throw|;
 block|}
 catch|catch
@@ -8852,7 +8841,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|WrappedRpcServerException
+name|FatalRpcServerException
 argument_list|(
 name|RpcErrorCodeProto
 operator|.
@@ -9424,10 +9413,10 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
-name|saslCall
-operator|.
 name|sendResponse
-argument_list|()
+argument_list|(
+name|saslCall
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|doSaslReply (Exception ioe)
@@ -9469,10 +9458,10 @@ name|getLocalizedMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|authFailedCall
-operator|.
 name|sendResponse
-argument_list|()
+argument_list|(
+name|authFailedCall
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|disposeSasl ()
@@ -9596,24 +9585,25 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**      * This method reads in a non-blocking fashion from the channel:       * this method is called repeatedly when data is present in the channel;       * when it has enough data to process one rpc it processes that rpc.      *       * On the first pass, it processes the connectionHeader,       * connectionContext (an outOfBand RPC) and at most one RPC request that       * follows that. On future passes it will process at most one RPC request.      *        * Quirky things: dataLengthBuffer (4 bytes) is used to read "hrpc" OR       * rpc request length.      *          * @return -1 in case of error, else num bytes read so far      * @throws WrappedRpcServerException - an exception that has already been       *         sent back to the client that does not require verbose logging      *         by the Listener thread      * @throws IOException - internal error that should not be returned to      *         client, typically failure to respond to client      * @throws InterruptedException      */
+comment|/**      * This method reads in a non-blocking fashion from the channel:       * this method is called repeatedly when data is present in the channel;       * when it has enough data to process one rpc it processes that rpc.      *       * On the first pass, it processes the connectionHeader,       * connectionContext (an outOfBand RPC) and at most one RPC request that       * follows that. On future passes it will process at most one RPC request.      *        * Quirky things: dataLengthBuffer (4 bytes) is used to read "hrpc" OR       * rpc request length.      *          * @return -1 in case of error, else num bytes read so far      * @throws IOException - internal error that should not be returned to      *         client, typically failure to respond to client      * @throws InterruptedException      */
 DECL|method|readAndProcess ()
 specifier|public
 name|int
 name|readAndProcess
 parameter_list|()
 throws|throws
-name|WrappedRpcServerException
-throws|,
 name|IOException
 throws|,
 name|InterruptedException
 block|{
 while|while
 condition|(
-literal|true
+operator|!
+name|shouldClose
+argument_list|()
 condition|)
 block|{
+comment|// stop if a fatal response has been sent.
 comment|// dataLengthBuffer is used to read "hrpc" or the rpc-packet length
 name|int
 name|count
@@ -9907,6 +9897,16 @@ operator|.
 name|flip
 argument_list|()
 expr_stmt|;
+name|ByteBuffer
+name|requestData
+init|=
+name|data
+decl_stmt|;
+name|data
+operator|=
+literal|null
+expr_stmt|;
+comment|// null out in case processOneRpc throws.
 name|boolean
 name|isHeaderRead
 init|=
@@ -9914,12 +9914,8 @@ name|connectionContextRead
 decl_stmt|;
 name|processOneRpc
 argument_list|(
-name|data
+name|requestData
 argument_list|)
-expr_stmt|;
-name|data
-operator|=
-literal|null
 expr_stmt|;
 comment|// the last rpc-request we processed could have simply been the
 comment|// connectionContext; if so continue to read the first RPC.
@@ -9936,6 +9932,10 @@ return|return
 name|count
 return|;
 block|}
+return|return
+operator|-
+literal|1
+return|;
 block|}
 DECL|method|initializeAuthContext (int authType)
 specifier|private
@@ -10268,10 +10268,10 @@ argument_list|,
 name|errMsg
 argument_list|)
 expr_stmt|;
-name|fakeCall
-operator|.
 name|sendResponse
-argument_list|()
+argument_list|(
+name|fakeCall
+argument_list|)
 expr_stmt|;
 block|}
 elseif|else
@@ -10313,10 +10313,10 @@ argument_list|,
 name|errMsg
 argument_list|)
 expr_stmt|;
-name|fakeCall
-operator|.
 name|sendResponse
-argument_list|()
+argument_list|(
+name|fakeCall
+argument_list|)
 expr_stmt|;
 block|}
 elseif|else
@@ -10402,10 +10402,10 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|fakeCall
-operator|.
 name|sendResponse
-argument_list|()
+argument_list|(
+name|fakeCall
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -10447,13 +10447,13 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|fakeCall
-operator|.
 name|sendResponse
-argument_list|()
+argument_list|(
+name|fakeCall
+argument_list|)
 expr_stmt|;
 block|}
-comment|/** Reads the connection context following the connection header      * @throws WrappedRpcServerException - if the header cannot be      *         deserialized, or the user is not authorized      */
+comment|/** Reads the connection context following the connection header      * @throws RpcServerException - if the header cannot be      *         deserialized, or the user is not authorized      */
 DECL|method|processConnectionContext (RpcWritable.Buffer buffer)
 specifier|private
 name|void
@@ -10465,7 +10465,7 @@ name|Buffer
 name|buffer
 parameter_list|)
 throws|throws
-name|WrappedRpcServerException
+name|RpcServerException
 block|{
 comment|// allow only one connection context during a session
 if|if
@@ -10475,7 +10475,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|WrappedRpcServerException
+name|FatalRpcServerException
 argument_list|(
 name|RpcErrorCodeProto
 operator|.
@@ -10585,7 +10585,7 @@ block|{
 comment|// Not allowed to doAs if token authentication is used
 throw|throw
 operator|new
-name|WrappedRpcServerException
+name|FatalRpcServerException
 argument_list|(
 name|RpcErrorCodeProto
 operator|.
@@ -10661,7 +10661,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**      * Process a wrapped RPC Request - unwrap the SASL packet and process      * each embedded RPC request       * @param inBuf - SASL wrapped request of one or more RPCs      * @throws IOException - SASL packet cannot be unwrapped      * @throws WrappedRpcServerException - an exception that has already been       *         sent back to the client that does not require verbose logging      *         by the Listener thread      * @throws InterruptedException      */
+comment|/**      * Process a wrapped RPC Request - unwrap the SASL packet and process      * each embedded RPC request       * @param inBuf - SASL wrapped request of one or more RPCs      * @throws IOException - SASL packet cannot be unwrapped      * @throws InterruptedException      */
 DECL|method|unwrapPacketAndProcessRpcs (byte[] inBuf)
 specifier|private
 name|void
@@ -10672,8 +10672,6 @@ index|[]
 name|inBuf
 parameter_list|)
 throws|throws
-name|WrappedRpcServerException
-throws|,
 name|IOException
 throws|,
 name|InterruptedException
@@ -10732,9 +10730,12 @@ decl_stmt|;
 comment|// Read all RPCs contained in the inBuf, even partial ones
 while|while
 condition|(
-literal|true
+operator|!
+name|shouldClose
+argument_list|()
 condition|)
 block|{
+comment|// stop if a fatal response has been sent.
 name|int
 name|count
 init|=
@@ -10848,19 +10849,25 @@ operator|.
 name|flip
 argument_list|()
 expr_stmt|;
-name|processOneRpc
-argument_list|(
+name|ByteBuffer
+name|requestData
+init|=
 name|unwrappedData
-argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|unwrappedData
 operator|=
 literal|null
 expr_stmt|;
+comment|// null out in case processOneRpc throws.
+name|processOneRpc
+argument_list|(
+name|requestData
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**      * Process one RPC Request from buffer read from socket stream       *  - decode rpc in a rpc-Call      *  - handle out-of-band RPC requests such as the initial connectionContext      *  - A successfully decoded RpcCall will be deposited in RPC-Q and      *    its response will be sent later when the request is processed.      *       * Prior to this call the connectionHeader ("hrpc...") has been handled and      * if SASL then SASL has been established and the buf we are passed      * has been unwrapped from SASL.      *       * @param bb - contains the RPC request header and the rpc request      * @throws IOException - internal error that should not be returned to      *         client, typically failure to respond to client      * @throws WrappedRpcServerException - an exception that is sent back to the      *         client in this method and does not require verbose logging by the      *         Listener thread      * @throws InterruptedException      */
+comment|/**      * Process one RPC Request from buffer read from socket stream       *  - decode rpc in a rpc-Call      *  - handle out-of-band RPC requests such as the initial connectionContext      *  - A successfully decoded RpcCall will be deposited in RPC-Q and      *    its response will be sent later when the request is processed.      *       * Prior to this call the connectionHeader ("hrpc...") has been handled and      * if SASL then SASL has been established and the buf we are passed      * has been unwrapped from SASL.      *       * @param bb - contains the RPC request header and the rpc request      * @throws IOException - internal error that should not be returned to      *         client, typically failure to respond to client      * @throws InterruptedException      */
 DECL|method|processOneRpc (ByteBuffer bb)
 specifier|private
 name|void
@@ -10872,10 +10879,11 @@ parameter_list|)
 throws|throws
 name|IOException
 throws|,
-name|WrappedRpcServerException
-throws|,
 name|InterruptedException
 block|{
+comment|// exceptions that escape this method are fatal to the connection.
+comment|// setupResponse will use the rpc status to determine if the connection
+comment|// should be closed.
 name|int
 name|callId
 init|=
@@ -10982,7 +10990,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|WrappedRpcServerException
+name|FatalRpcServerException
 argument_list|(
 name|RpcErrorCodeProto
 operator|.
@@ -11005,18 +11013,63 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|WrappedRpcServerException
-name|wrse
+name|RpcServerException
+name|rse
 parameter_list|)
 block|{
-comment|// inform client of error
+comment|// inform client of error, but do not rethrow else non-fatal
+comment|// exceptions will close connection!
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|": processOneRpc from client "
+operator|+
+name|this
+operator|+
+literal|" threw exception ["
+operator|+
+name|rse
+operator|+
+literal|"]"
+argument_list|)
+expr_stmt|;
+block|}
+comment|// use the wrapped exception if there is one.
 name|Throwable
-name|ioe
+name|t
 init|=
-name|wrse
+operator|(
+name|rse
 operator|.
 name|getCause
 argument_list|()
+operator|!=
+literal|null
+operator|)
+condition|?
+name|rse
+operator|.
+name|getCause
+argument_list|()
+else|:
+name|rse
 decl_stmt|;
 specifier|final
 name|RpcCall
@@ -11036,18 +11089,19 @@ name|setupResponse
 argument_list|(
 name|call
 argument_list|,
-name|RpcStatusProto
+name|rse
 operator|.
-name|FATAL
+name|getRpcStatusProto
+argument_list|()
 argument_list|,
-name|wrse
+name|rse
 operator|.
 name|getRpcErrorCodeProto
 argument_list|()
 argument_list|,
 literal|null
 argument_list|,
-name|ioe
+name|t
 operator|.
 name|getClass
 argument_list|()
@@ -11055,23 +11109,20 @@ operator|.
 name|getName
 argument_list|()
 argument_list|,
-name|ioe
+name|t
 operator|.
 name|getMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|call
-operator|.
 name|sendResponse
-argument_list|()
+argument_list|(
+name|call
+argument_list|)
 expr_stmt|;
-throw|throw
-name|wrse
-throw|;
 block|}
 block|}
-comment|/**      * Verify RPC header is valid      * @param header - RPC request header      * @throws WrappedRpcServerException - header contains invalid values       */
+comment|/**      * Verify RPC header is valid      * @param header - RPC request header      * @throws RpcServerException - header contains invalid values      */
 DECL|method|checkRpcHeaders (RpcRequestHeaderProto header)
 specifier|private
 name|void
@@ -11081,7 +11132,7 @@ name|RpcRequestHeaderProto
 name|header
 parameter_list|)
 throws|throws
-name|WrappedRpcServerException
+name|RpcServerException
 block|{
 if|if
 condition|(
@@ -11099,7 +11150,7 @@ literal|" IPC Server: No rpc op in rpcRequestHeader"
 decl_stmt|;
 throw|throw
 operator|new
-name|WrappedRpcServerException
+name|FatalRpcServerException
 argument_list|(
 name|RpcErrorCodeProto
 operator|.
@@ -11135,7 +11186,7 @@ argument_list|()
 decl_stmt|;
 throw|throw
 operator|new
-name|WrappedRpcServerException
+name|FatalRpcServerException
 argument_list|(
 name|RpcErrorCodeProto
 operator|.
@@ -11164,7 +11215,7 @@ literal|" IPC Server: No rpc kind in rpcRequestHeader"
 decl_stmt|;
 throw|throw
 operator|new
-name|WrappedRpcServerException
+name|FatalRpcServerException
 argument_list|(
 name|RpcErrorCodeProto
 operator|.
@@ -11175,7 +11226,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**      * Process an RPC Request       *   - the connection headers and context must have been already read.      *   - Based on the rpcKind, decode the rpcRequest.      *   - A successfully decoded RpcCall will be deposited in RPC-Q and      *     its response will be sent later when the request is processed.      * @param header - RPC request header      * @param buffer - stream to request payload      * @throws WrappedRpcServerException - due to fatal rpc layer issues such      *   as invalid header or deserialization error. In this case a RPC fatal      *   status response will later be sent back to client.      * @throws InterruptedException      */
+comment|/**      * Process an RPC Request       *   - the connection headers and context must have been already read.      *   - Based on the rpcKind, decode the rpcRequest.      *   - A successfully decoded RpcCall will be deposited in RPC-Q and      *     its response will be sent later when the request is processed.      * @param header - RPC request header      * @param buffer - stream to request payload      * @throws RpcServerException - generally due to fatal rpc layer issues      *   such as invalid header or deserialization error.  The call queue      *   may also throw a fatal or non-fatal exception on overflow.      * @throws IOException - fatal internal error that should/could not      *   be sent to client.      * @throws InterruptedException      */
 DECL|method|processRpcRequest (RpcRequestHeaderProto header, RpcWritable.Buffer buffer)
 specifier|private
 name|void
@@ -11190,7 +11241,7 @@ name|Buffer
 name|buffer
 parameter_list|)
 throws|throws
-name|WrappedRpcServerException
+name|RpcServerException
 throws|,
 name|InterruptedException
 block|{
@@ -11247,7 +11298,7 @@ argument_list|()
 decl_stmt|;
 throw|throw
 operator|new
-name|WrappedRpcServerException
+name|FatalRpcServerException
 argument_list|(
 name|RpcErrorCodeProto
 operator|.
@@ -11274,6 +11325,17 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|RpcServerException
+name|rse
+parameter_list|)
+block|{
+comment|// lets tests inject failures.
+throw|throw
+name|rse
+throw|;
 block|}
 catch|catch
 parameter_list|(
@@ -11319,7 +11381,7 @@ argument_list|()
 decl_stmt|;
 throw|throw
 operator|new
-name|WrappedRpcServerException
+name|FatalRpcServerException
 argument_list|(
 name|RpcErrorCodeProto
 operator|.
@@ -11519,7 +11581,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|WrappedRpcServerException
+name|FatalRpcServerException
 argument_list|(
 name|RpcErrorCodeProto
 operator|.
@@ -11534,7 +11596,7 @@ argument_list|()
 expr_stmt|;
 comment|// Increment the rpc count
 block|}
-comment|/**      * Establish RPC connection setup by negotiating SASL if required, then      * reading and authorizing the connection header      * @param header - RPC header      * @param buffer - stream to request payload      * @throws WrappedRpcServerException - setup failed due to SASL      *         negotiation failure, premature or invalid connection context,      *         or other state errors. This exception needs to be sent to the       *         client.      * @throws IOException - failed to send a response back to the client      * @throws InterruptedException      */
+comment|/**      * Establish RPC connection setup by negotiating SASL if required, then      * reading and authorizing the connection header      * @param header - RPC header      * @param buffer - stream to request payload      * @throws RpcServerException - setup failed due to SASL      *         negotiation failure, premature or invalid connection context,      *         or other state errors. This exception needs to be sent to the       *         client.      * @throws IOException - failed to send a response back to the client      * @throws InterruptedException      */
 DECL|method|processRpcOutOfBandRequest (RpcRequestHeaderProto header, RpcWritable.Buffer buffer)
 specifier|private
 name|void
@@ -11549,7 +11611,7 @@ name|Buffer
 name|buffer
 parameter_list|)
 throws|throws
-name|WrappedRpcServerException
+name|RpcServerException
 throws|,
 name|IOException
 throws|,
@@ -11586,7 +11648,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|WrappedRpcServerException
+name|FatalRpcServerException
 argument_list|(
 name|RpcErrorCodeProto
 operator|.
@@ -11627,7 +11689,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|WrappedRpcServerException
+name|FatalRpcServerException
 argument_list|(
 name|RpcErrorCodeProto
 operator|.
@@ -11663,7 +11725,7 @@ else|else
 block|{
 throw|throw
 operator|new
-name|WrappedRpcServerException
+name|FatalRpcServerException
 argument_list|(
 name|RpcErrorCodeProto
 operator|.
@@ -11676,14 +11738,14 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**      * Authorize proxy users to access this server      * @throws WrappedRpcServerException - user is not allowed to proxy      */
+comment|/**      * Authorize proxy users to access this server      * @throws RpcServerException - user is not allowed to proxy      */
 DECL|method|authorizeConnection ()
 specifier|private
 name|void
 name|authorizeConnection
 parameter_list|()
 throws|throws
-name|WrappedRpcServerException
+name|RpcServerException
 block|{
 try|try
 block|{
@@ -11793,7 +11855,7 @@ argument_list|()
 expr_stmt|;
 throw|throw
 operator|new
-name|WrappedRpcServerException
+name|FatalRpcServerException
 argument_list|(
 name|RpcErrorCodeProto
 operator|.
@@ -11804,7 +11866,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**      * Decode the a protobuf from the given input stream       * @return Message - decoded protobuf      * @throws WrappedRpcServerException - deserialization failed      */
+comment|/**      * Decode the a protobuf from the given input stream       * @return Message - decoded protobuf      * @throws RpcServerException - deserialization failed      */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -11828,7 +11890,7 @@ name|Buffer
 name|buffer
 parameter_list|)
 throws|throws
-name|WrappedRpcServerException
+name|RpcServerException
 block|{
 try|try
 block|{
@@ -11863,7 +11925,7 @@ argument_list|()
 decl_stmt|;
 throw|throw
 operator|new
-name|WrappedRpcServerException
+name|FatalRpcServerException
 argument_list|(
 name|RpcErrorCodeProto
 operator|.
@@ -11883,6 +11945,9 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|// ipc reader threads should invoke this directly, whereas handlers
+comment|// must invoke call.sendResponse to allow lifecycle management of
+comment|// external, postponed, deferred calls, etc.
 DECL|method|sendResponse (RpcCall call)
 specifier|private
 name|void
@@ -13440,6 +13505,24 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// fatal responses will cause the reader to close the connection.
+if|if
+condition|(
+name|status
+operator|==
+name|RpcStatusProto
+operator|.
+name|FATAL
+condition|)
+block|{
+name|call
+operator|.
+name|connection
+operator|.
+name|setShouldClose
+argument_list|()
+expr_stmt|;
+block|}
 name|RpcResponseHeaderProto
 operator|.
 name|Builder
