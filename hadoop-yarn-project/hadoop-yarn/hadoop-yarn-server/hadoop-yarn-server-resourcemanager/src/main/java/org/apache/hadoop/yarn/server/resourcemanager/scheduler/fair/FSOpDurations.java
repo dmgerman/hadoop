@@ -277,15 +277,6 @@ decl_stmt|;
 annotation|@
 name|Metric
 argument_list|(
-literal|"Duration for an update call"
-argument_list|)
-DECL|field|updateCall
-name|MutableRate
-name|updateCall
-decl_stmt|;
-annotation|@
-name|Metric
-argument_list|(
 literal|"Duration for a preempt call"
 argument_list|)
 DECL|field|preemptCall
@@ -447,13 +438,6 @@ argument_list|(
 name|isExtended
 argument_list|)
 expr_stmt|;
-name|updateCall
-operator|.
-name|setExtended
-argument_list|(
-name|isExtended
-argument_list|)
-expr_stmt|;
 name|preemptCall
 operator|.
 name|setExtended
@@ -545,23 +529,6 @@ name|value
 parameter_list|)
 block|{
 name|updateThreadRun
-operator|.
-name|add
-argument_list|(
-name|value
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|addUpdateCallDuration (long value)
-specifier|public
-name|void
-name|addUpdateCallDuration
-parameter_list|(
-name|long
-name|value
-parameter_list|)
-block|{
-name|updateCall
 operator|.
 name|add
 argument_list|(
