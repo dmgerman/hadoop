@@ -2826,13 +2826,16 @@ name|RMContainer
 name|container
 parameter_list|)
 block|{
+if|if
+condition|(
 name|containersToPreempt
 operator|.
 name|add
 argument_list|(
 name|container
 argument_list|)
-expr_stmt|;
+condition|)
+block|{
 synchronized|synchronized
 init|(
 name|preemptedResources
@@ -2852,6 +2855,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
 DECL|method|untrackContainerForPreemption (RMContainer container)
 specifier|private
 name|void
@@ -2860,6 +2864,16 @@ parameter_list|(
 name|RMContainer
 name|container
 parameter_list|)
+block|{
+if|if
+condition|(
+name|containersToPreempt
+operator|.
+name|remove
+argument_list|(
+name|container
+argument_list|)
+condition|)
 block|{
 synchronized|synchronized
 init|(
@@ -2879,13 +2893,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|containersToPreempt
-operator|.
-name|remove
-argument_list|(
-name|container
-argument_list|)
-expr_stmt|;
+block|}
 block|}
 DECL|method|getPreemptionContainers ()
 name|Set

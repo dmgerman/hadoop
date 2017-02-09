@@ -23633,6 +23633,21 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
+literal|"Finished application usage should be none"
+argument_list|,
+name|Resources
+operator|.
+name|none
+argument_list|()
+argument_list|,
+name|app1
+operator|.
+name|getResourceUsage
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
 literal|"Application3's AM should be running"
 argument_list|,
 literal|1
@@ -23763,6 +23778,21 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
+literal|"Finished application usage should be none"
+argument_list|,
+name|Resources
+operator|.
+name|none
+argument_list|()
+argument_list|,
+name|app4
+operator|.
+name|getResourceUsage
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
 literal|"Queue1's AM resource usage should be 2048 MB memory"
 argument_list|,
 literal|2048
@@ -23863,6 +23893,21 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
+literal|"Finished application usage should be none"
+argument_list|,
+name|Resources
+operator|.
+name|none
+argument_list|()
+argument_list|,
+name|app5
+operator|.
+name|getResourceUsage
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
 literal|"Queue1's AM resource usage should be 2048 MB memory"
 argument_list|,
 literal|2048
@@ -23923,6 +23968,21 @@ name|getLiveContainers
 argument_list|()
 operator|.
 name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Finished application usage should be none"
+argument_list|,
+name|Resources
+operator|.
+name|none
+argument_list|()
+argument_list|,
+name|app5
+operator|.
+name|getResourceUsage
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -24015,6 +24075,21 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
+literal|"Finished application usage should be none"
+argument_list|,
+name|Resources
+operator|.
+name|none
+argument_list|()
+argument_list|,
+name|app2
+operator|.
+name|getResourceUsage
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
 literal|"Application3's AM should be finished"
 argument_list|,
 literal|0
@@ -24025,6 +24100,21 @@ name|getLiveContainers
 argument_list|()
 operator|.
 name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Finished application usage should be none"
+argument_list|,
+name|Resources
+operator|.
+name|none
+argument_list|()
+argument_list|,
+name|app3
+operator|.
+name|getResourceUsage
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -24148,6 +24238,21 @@ name|getLiveContainers
 argument_list|()
 operator|.
 name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Finished application usage should be none"
+argument_list|,
+name|Resources
+operator|.
+name|none
+argument_list|()
+argument_list|,
+name|app5
+operator|.
+name|getResourceUsage
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -24279,6 +24384,21 @@ name|getLiveContainers
 argument_list|()
 operator|.
 name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Finished application usage should be none"
+argument_list|,
+name|Resources
+operator|.
+name|none
+argument_list|()
+argument_list|,
+name|app6
+operator|.
+name|getResourceUsage
 argument_list|()
 argument_list|)
 expr_stmt|;
