@@ -153,6 +153,8 @@ DECL|class|ActiveUsersManager
 specifier|public
 class|class
 name|ActiveUsersManager
+implements|implements
+name|AbstractUsersManager
 block|{
 DECL|field|LOG
 specifier|private
@@ -237,6 +239,8 @@ operator|.
 name|class
 block|}
 argument_list|)
+annotation|@
+name|Override
 DECL|method|activateApplication ( String user, ApplicationId applicationId)
 specifier|synchronized
 specifier|public
@@ -296,6 +300,14 @@ operator|.
 name|incrActiveUsers
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -309,6 +321,7 @@ operator|+
 name|activeUsers
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 if|if
 condition|(
@@ -343,6 +356,8 @@ operator|.
 name|class
 block|}
 argument_list|)
+annotation|@
+name|Override
 DECL|method|deactivateApplication ( String user, ApplicationId applicationId)
 specifier|synchronized
 specifier|public
@@ -417,6 +432,14 @@ operator|.
 name|decrActiveUsers
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -430,6 +453,7 @@ operator|+
 name|activeUsers
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}
@@ -447,6 +471,8 @@ operator|.
 name|class
 block|}
 argument_list|)
+annotation|@
+name|Override
 DECL|method|getNumActiveUsers ()
 specifier|synchronized
 specifier|public

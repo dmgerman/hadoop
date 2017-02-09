@@ -651,10 +651,10 @@ specifier|private
 name|Queue
 name|queue
 decl_stmt|;
-DECL|field|activeUsersManager
+DECL|field|abstractUsersManager
 specifier|private
-name|ActiveUsersManager
-name|activeUsersManager
+name|AbstractUsersManager
+name|abstractUsersManager
 decl_stmt|;
 comment|// whether accepted/allocated by scheduler
 DECL|field|pending
@@ -804,7 +804,7 @@ specifier|final
 name|ContainerUpdateContext
 name|updateContext
 decl_stmt|;
-DECL|method|AppSchedulingInfo (ApplicationAttemptId appAttemptId, String user, Queue queue, ActiveUsersManager activeUsersManager, long epoch, ResourceUsage appResourceUsage)
+DECL|method|AppSchedulingInfo (ApplicationAttemptId appAttemptId, String user, Queue queue, AbstractUsersManager abstractUsersManager, long epoch, ResourceUsage appResourceUsage)
 specifier|public
 name|AppSchedulingInfo
 parameter_list|(
@@ -817,8 +817,8 @@ parameter_list|,
 name|Queue
 name|queue
 parameter_list|,
-name|ActiveUsersManager
-name|activeUsersManager
+name|AbstractUsersManager
+name|abstractUsersManager
 parameter_list|,
 name|long
 name|epoch
@@ -856,9 +856,9 @@ name|user
 expr_stmt|;
 name|this
 operator|.
-name|activeUsersManager
+name|abstractUsersManager
 operator|=
-name|activeUsersManager
+name|abstractUsersManager
 expr_stmt|;
 name|this
 operator|.
@@ -2479,7 +2479,7 @@ argument_list|(
 name|schedulerKey
 argument_list|)
 expr_stmt|;
-name|activeUsersManager
+name|abstractUsersManager
 operator|.
 name|activateApplication
 argument_list|(
@@ -3552,7 +3552,7 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-name|activeUsersManager
+name|abstractUsersManager
 operator|.
 name|deactivateApplication
 argument_list|(
@@ -3723,7 +3723,7 @@ argument_list|(
 name|this
 argument_list|)
 expr_stmt|;
-name|activeUsersManager
+name|abstractUsersManager
 operator|.
 name|deactivateApplication
 argument_list|(
@@ -3732,14 +3732,14 @@ argument_list|,
 name|applicationId
 argument_list|)
 expr_stmt|;
-name|activeUsersManager
+name|abstractUsersManager
 operator|=
 name|newQueue
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 expr_stmt|;
-name|activeUsersManager
+name|abstractUsersManager
 operator|.
 name|activateApplication
 argument_list|(

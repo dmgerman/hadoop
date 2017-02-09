@@ -7268,7 +7268,7 @@ argument_list|,
 name|nm2
 argument_list|)
 decl_stmt|;
-comment|// Each application request 5 * 1GB container
+comment|// Each application request 50 * 1GB container
 name|am1
 operator|.
 name|allocate
@@ -7845,6 +7845,15 @@ argument_list|,
 literal|50
 argument_list|)
 expr_stmt|;
+name|csConf
+operator|.
+name|setUserLimit
+argument_list|(
+name|A
+argument_list|,
+literal|200
+argument_list|)
+expr_stmt|;
 specifier|final
 name|String
 name|B
@@ -7896,6 +7905,15 @@ argument_list|,
 literal|"x"
 argument_list|,
 literal|50
+argument_list|)
+expr_stmt|;
+name|csConf
+operator|.
+name|setUserLimit
+argument_list|(
+name|B
+argument_list|,
+literal|200
 argument_list|)
 expr_stmt|;
 comment|// set node -> label
@@ -8110,6 +8128,17 @@ name|getNodeId
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|cs
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|NodeUpdateSchedulerEvent
+argument_list|(
+name|rmNode1
+argument_list|)
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|int

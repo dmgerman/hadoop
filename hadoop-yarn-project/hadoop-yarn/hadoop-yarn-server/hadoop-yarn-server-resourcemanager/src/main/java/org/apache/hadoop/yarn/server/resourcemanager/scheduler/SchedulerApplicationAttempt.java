@@ -1603,7 +1603,7 @@ operator|new
 name|AtomicInteger
 argument_list|()
 decl_stmt|;
-DECL|method|SchedulerApplicationAttempt (ApplicationAttemptId applicationAttemptId, String user, Queue queue, ActiveUsersManager activeUsersManager, RMContext rmContext)
+DECL|method|SchedulerApplicationAttempt (ApplicationAttemptId applicationAttemptId, String user, Queue queue, AbstractUsersManager abstractUsersManager, RMContext rmContext)
 specifier|public
 name|SchedulerApplicationAttempt
 parameter_list|(
@@ -1616,8 +1616,8 @@ parameter_list|,
 name|Queue
 name|queue
 parameter_list|,
-name|ActiveUsersManager
-name|activeUsersManager
+name|AbstractUsersManager
+name|abstractUsersManager
 parameter_list|,
 name|RMContext
 name|rmContext
@@ -1651,7 +1651,7 @@ name|user
 argument_list|,
 name|queue
 argument_list|,
-name|activeUsersManager
+name|abstractUsersManager
 argument_list|,
 name|rmContext
 operator|.

@@ -774,6 +774,26 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
+name|AbstractUsersManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
 name|ActiveUsersManager
 import|;
 end_import
@@ -934,9 +954,9 @@ name|scheduler
 operator|.
 name|capacity
 operator|.
-name|preemption
+name|UsersManager
 operator|.
-name|PreemptionManager
+name|User
 import|;
 end_import
 
@@ -958,9 +978,9 @@ name|scheduler
 operator|.
 name|capacity
 operator|.
-name|LeafQueue
+name|preemption
 operator|.
-name|User
+name|PreemptionManager
 import|;
 end_import
 
@@ -3994,6 +4014,15 @@ name|user_0
 init|=
 literal|"user_0"
 decl_stmt|;
+comment|// Active Users Manager
+name|AbstractUsersManager
+name|activeUserManager
+init|=
+name|a
+operator|.
+name|getAbstractUsersManager
+argument_list|()
+decl_stmt|;
 comment|// Submit applications
 specifier|final
 name|ApplicationAttemptId
@@ -4020,12 +4049,7 @@ name|user_0
 argument_list|,
 name|a
 argument_list|,
-name|mock
-argument_list|(
-name|ActiveUsersManager
-operator|.
-name|class
-argument_list|)
+name|activeUserManager
 argument_list|,
 name|spyRMContext
 argument_list|)
@@ -4064,12 +4088,7 @@ name|user_0
 argument_list|,
 name|a
 argument_list|,
-name|mock
-argument_list|(
-name|ActiveUsersManager
-operator|.
-name|class
-argument_list|)
+name|activeUserManager
 argument_list|,
 name|spyRMContext
 argument_list|)
@@ -5291,7 +5310,7 @@ name|b
 argument_list|,
 name|b
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|spyRMContext
@@ -5674,7 +5693,7 @@ name|b
 argument_list|,
 name|b
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|spyRMContext
@@ -5716,7 +5735,7 @@ name|b
 argument_list|,
 name|b
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|spyRMContext
@@ -5874,6 +5893,19 @@ argument_list|(
 name|numNodes
 argument_list|)
 expr_stmt|;
+name|when
+argument_list|(
+name|csContext
+operator|.
+name|getClusterResource
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|clusterResource
+argument_list|)
+expr_stmt|;
 comment|// Setup resource-requests so that one application is memory dominant
 comment|// and other application is vcores dominant
 name|Priority
@@ -6004,7 +6036,7 @@ literal|2
 argument_list|,
 name|b
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 operator|.
 name|getNumActiveUsers
@@ -6234,6 +6266,9 @@ name|expectedRatio
 argument_list|,
 name|b
 operator|.
+name|getUsersManager
+argument_list|()
+operator|.
 name|getUsageRatio
 argument_list|(
 literal|""
@@ -6331,6 +6366,9 @@ name|expectedRatio
 argument_list|,
 name|b
 operator|.
+name|getUsersManager
+argument_list|()
+operator|.
 name|getUsageRatio
 argument_list|(
 literal|""
@@ -6375,6 +6413,28 @@ argument_list|(
 literal|1.0f
 argument_list|)
 expr_stmt|;
+name|when
+argument_list|(
+name|csContext
+operator|.
+name|getClusterResource
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|Resources
+operator|.
+name|createResource
+argument_list|(
+literal|16
+operator|*
+name|GB
+argument_list|,
+literal|32
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// Users
 specifier|final
 name|String
@@ -6416,7 +6476,7 @@ name|a
 argument_list|,
 name|a
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|spyRMContext
@@ -6458,7 +6518,7 @@ name|a
 argument_list|,
 name|a
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|spyRMContext
@@ -6710,7 +6770,7 @@ literal|2
 argument_list|,
 name|a
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 operator|.
 name|getNumActiveUsers
@@ -6958,7 +7018,7 @@ literal|1
 argument_list|,
 name|a
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 operator|.
 name|getNumActiveUsers
@@ -7228,7 +7288,7 @@ name|qb
 argument_list|,
 name|qb
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|spyRMContext
@@ -7325,7 +7385,7 @@ literal|1
 argument_list|,
 name|qb
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 operator|.
 name|getNumActiveUsers
@@ -7422,7 +7482,7 @@ name|qb
 argument_list|,
 name|qb
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|spyRMContext
@@ -7742,7 +7802,7 @@ name|qb
 argument_list|,
 name|qb
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|spyRMContext
@@ -7787,7 +7847,7 @@ name|qb
 argument_list|,
 name|qb
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|spyRMContext
@@ -8034,7 +8094,7 @@ name|qb
 argument_list|,
 name|qb
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|spyRMContext
@@ -8187,11 +8247,11 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|//app4 is user 0
-comment|//maxqueue 16G, userlimit 13G, used 8G, headroom 5G
+comment|//maxqueue 16G, userlimit 7G, used 8G, headroom 5G
 comment|//(8G used is 6G from this test case - app4, 2 from last test case, app_1)
 name|assertEquals
 argument_list|(
-literal|5
+literal|0
 operator|*
 name|GB
 argument_list|,
@@ -8281,7 +8341,7 @@ name|a
 argument_list|,
 name|a
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|spyRMContext
@@ -8323,7 +8383,7 @@ name|a
 argument_list|,
 name|a
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|spyRMContext
@@ -8366,7 +8426,7 @@ name|a
 argument_list|,
 name|a
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|spyRMContext
@@ -9010,7 +9070,7 @@ name|a
 argument_list|,
 name|a
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|spyRMContext
@@ -9052,7 +9112,7 @@ name|a
 argument_list|,
 name|a
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|spyRMContext
@@ -9095,7 +9155,7 @@ name|a
 argument_list|,
 name|a
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|spyRMContext
@@ -9354,7 +9414,7 @@ literal|1
 argument_list|,
 name|a
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 operator|.
 name|getNumActiveUsers
@@ -9440,7 +9500,7 @@ expr_stmt|;
 comment|// TODO, fix headroom in the future patch
 name|assertEquals
 argument_list|(
-literal|1
+literal|0
 operator|*
 name|GB
 argument_list|,
@@ -9453,7 +9513,7 @@ name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// User limit = 4G, 2 in use
+comment|// User limit = 2G, 2 in use
 name|assertEquals
 argument_list|(
 literal|0
@@ -9548,7 +9608,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|1
+literal|0
 operator|*
 name|GB
 argument_list|,
@@ -9564,7 +9624,7 @@ expr_stmt|;
 comment|// 4G - 3G
 name|assertEquals
 argument_list|(
-literal|1
+literal|0
 operator|*
 name|GB
 argument_list|,
@@ -9623,7 +9683,7 @@ literal|2
 argument_list|,
 name|a
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 operator|.
 name|getNumActiveUsers
@@ -9791,7 +9851,7 @@ literal|1
 argument_list|,
 name|a
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 operator|.
 name|getNumActiveUsers
@@ -9927,7 +9987,7 @@ name|a
 argument_list|,
 name|a
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|spyRMContext
@@ -9969,7 +10029,7 @@ name|a
 argument_list|,
 name|a
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|spyRMContext
@@ -10012,7 +10072,7 @@ name|a
 argument_list|,
 name|a
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|spyRMContext
@@ -10054,7 +10114,7 @@ name|a
 argument_list|,
 name|a
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|spyRMContext
@@ -10191,6 +10251,19 @@ operator|.
 name|thenReturn
 argument_list|(
 name|numNodes
+argument_list|)
+expr_stmt|;
+name|when
+argument_list|(
+name|csContext
+operator|.
+name|getClusterResource
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|clusterResource
 argument_list|)
 expr_stmt|;
 comment|// Setup resource-requests
@@ -12808,6 +12881,26 @@ operator|.
 name|thenReturn
 argument_list|(
 name|node_1
+argument_list|)
+expr_stmt|;
+name|when
+argument_list|(
+name|csContext
+operator|.
+name|getClusterResource
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|Resource
+operator|.
+name|newInstance
+argument_list|(
+literal|8
+argument_list|,
+literal|1
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|Map
@@ -25166,7 +25259,7 @@ name|queue
 argument_list|,
 name|queue
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|rmContext
@@ -25254,7 +25347,7 @@ name|queue
 argument_list|,
 name|queue
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|rmContext
@@ -25330,7 +25423,7 @@ name|qChild
 argument_list|,
 name|qChild
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|rmContext
@@ -25523,7 +25616,7 @@ name|when
 argument_list|(
 name|queue
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|)
 operator|.

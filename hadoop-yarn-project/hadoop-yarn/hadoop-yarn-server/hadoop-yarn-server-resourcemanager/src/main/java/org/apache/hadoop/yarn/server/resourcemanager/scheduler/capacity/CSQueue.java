@@ -366,7 +366,7 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|ActiveUsersManager
+name|AbstractUsersManager
 import|;
 end_import
 
@@ -903,11 +903,11 @@ name|ResourceLimits
 name|resourceLimits
 parameter_list|)
 function_decl|;
-comment|/**    * Get the {@link ActiveUsersManager} for the queue.    * @return the<code>ActiveUsersManager</code> for the queue    */
-DECL|method|getActiveUsersManager ()
+comment|/**    * Get the {@link AbstractUsersManager} for the queue.    * @return the<code>AbstractUsersManager</code> for the queue    */
+DECL|method|getAbstractUsersManager ()
 specifier|public
-name|ActiveUsersManager
-name|getActiveUsersManager
+name|AbstractUsersManager
+name|getAbstractUsersManager
 parameter_list|()
 function_decl|;
 comment|/**    * Adds all applications in the queue and its subqueues to the given collection.    * @param apps the collection to add the applications to    */

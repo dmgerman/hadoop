@@ -1655,7 +1655,7 @@ name|when
 argument_list|(
 name|queue
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|)
 operator|.
@@ -5004,7 +5004,7 @@ name|queue
 argument_list|,
 name|queue
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|spyRMContext
@@ -5092,7 +5092,7 @@ name|Resources
 operator|.
 name|createResource
 argument_list|(
-literal|10
+literal|5
 operator|*
 literal|16
 operator|*
@@ -5139,7 +5139,7 @@ name|queue
 argument_list|,
 name|queue
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|spyRMContext
@@ -5270,7 +5270,7 @@ name|queue
 argument_list|,
 name|queue
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|spyRMContext
@@ -5413,6 +5413,17 @@ literal|16
 operator|*
 name|GB
 argument_list|)
+expr_stmt|;
+comment|// Any change is cluster resource needs to enforce user-limit recomputation.
+comment|// In existing code, LeafQueue#updateClusterResource handled this. However
+comment|// here that method was not used.
+name|queue
+operator|.
+name|getUsersManager
+argument_list|()
+operator|.
+name|userLimitNeedsRecompute
+argument_list|()
 expr_stmt|;
 name|queue
 operator|.

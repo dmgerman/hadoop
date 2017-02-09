@@ -1550,7 +1550,7 @@ argument_list|(
 name|queueName
 argument_list|)
 decl_stmt|;
-name|LeafQueue
+name|UsersManager
 operator|.
 name|User
 name|user
@@ -1948,7 +1948,10 @@ name|users
 init|=
 name|queue
 operator|.
-name|getUsers
+name|getUsersManager
+argument_list|()
+operator|.
+name|getUsersInfo
 argument_list|()
 decl_stmt|;
 for|for

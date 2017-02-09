@@ -80,16 +80,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Comparator
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|EnumSet
 import|;
 end_import
@@ -5028,7 +5018,7 @@ name|queue
 argument_list|,
 name|queue
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|rmContext

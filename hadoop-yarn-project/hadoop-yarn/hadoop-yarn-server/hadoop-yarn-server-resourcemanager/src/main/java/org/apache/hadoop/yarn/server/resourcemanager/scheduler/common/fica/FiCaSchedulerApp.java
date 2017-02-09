@@ -546,7 +546,7 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|ActiveUsersManager
+name|AbstractUsersManager
 import|;
 end_import
 
@@ -1327,7 +1327,7 @@ name|ConcurrentHashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
-DECL|method|FiCaSchedulerApp (ApplicationAttemptId applicationAttemptId, String user, Queue queue, ActiveUsersManager activeUsersManager, RMContext rmContext)
+DECL|method|FiCaSchedulerApp (ApplicationAttemptId applicationAttemptId, String user, Queue queue, AbstractUsersManager abstractUsersManager, RMContext rmContext)
 specifier|public
 name|FiCaSchedulerApp
 parameter_list|(
@@ -1340,8 +1340,8 @@ parameter_list|,
 name|Queue
 name|queue
 parameter_list|,
-name|ActiveUsersManager
-name|activeUsersManager
+name|AbstractUsersManager
+name|abstractUsersManager
 parameter_list|,
 name|RMContext
 name|rmContext
@@ -1355,7 +1355,7 @@ name|user
 argument_list|,
 name|queue
 argument_list|,
-name|activeUsersManager
+name|abstractUsersManager
 argument_list|,
 name|rmContext
 argument_list|,
@@ -1370,7 +1370,7 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|FiCaSchedulerApp (ApplicationAttemptId applicationAttemptId, String user, Queue queue, ActiveUsersManager activeUsersManager, RMContext rmContext, Priority appPriority, boolean isAttemptRecovering)
+DECL|method|FiCaSchedulerApp (ApplicationAttemptId applicationAttemptId, String user, Queue queue, AbstractUsersManager abstractUsersManager, RMContext rmContext, Priority appPriority, boolean isAttemptRecovering)
 specifier|public
 name|FiCaSchedulerApp
 parameter_list|(
@@ -1383,8 +1383,8 @@ parameter_list|,
 name|Queue
 name|queue
 parameter_list|,
-name|ActiveUsersManager
-name|activeUsersManager
+name|AbstractUsersManager
+name|abstractUsersManager
 parameter_list|,
 name|RMContext
 name|rmContext
@@ -1404,7 +1404,7 @@ name|user
 argument_list|,
 name|queue
 argument_list|,
-name|activeUsersManager
+name|abstractUsersManager
 argument_list|,
 name|rmContext
 argument_list|,
@@ -1416,7 +1416,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|FiCaSchedulerApp (ApplicationAttemptId applicationAttemptId, String user, Queue queue, ActiveUsersManager activeUsersManager, RMContext rmContext, Priority appPriority, boolean isAttemptRecovering, ActivitiesManager activitiesManager)
+DECL|method|FiCaSchedulerApp (ApplicationAttemptId applicationAttemptId, String user, Queue queue, AbstractUsersManager abstractUsersManager, RMContext rmContext, Priority appPriority, boolean isAttemptRecovering, ActivitiesManager activitiesManager)
 specifier|public
 name|FiCaSchedulerApp
 parameter_list|(
@@ -1429,8 +1429,8 @@ parameter_list|,
 name|Queue
 name|queue
 parameter_list|,
-name|ActiveUsersManager
-name|activeUsersManager
+name|AbstractUsersManager
+name|abstractUsersManager
 parameter_list|,
 name|RMContext
 name|rmContext
@@ -1453,7 +1453,7 @@ name|user
 argument_list|,
 name|queue
 argument_list|,
-name|activeUsersManager
+name|abstractUsersManager
 argument_list|,
 name|rmContext
 argument_list|)

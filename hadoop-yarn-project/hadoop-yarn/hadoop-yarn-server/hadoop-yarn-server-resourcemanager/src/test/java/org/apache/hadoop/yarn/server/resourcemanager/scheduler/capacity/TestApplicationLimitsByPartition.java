@@ -3928,7 +3928,7 @@ name|queue
 argument_list|,
 name|queue
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|spyRMContext
@@ -4009,7 +4009,7 @@ operator|.
 name|RESPECT_PARTITION_EXCLUSIVITY
 argument_list|)
 expr_stmt|;
-comment|//head room = queue capacity = 50 % 90% 160 GB
+comment|//head room = queue capacity = 50 % 90% 160 GB * 0.25 (UL)
 name|Resource
 name|expectedHeadroom
 init|=
@@ -4026,6 +4026,8 @@ operator|*
 literal|0.9
 operator|*
 literal|160
+operator|*
+literal|0.25
 argument_list|)
 operator|*
 name|GB
@@ -4071,7 +4073,7 @@ name|queue
 argument_list|,
 name|queue
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|spyRMContext
@@ -4241,6 +4243,8 @@ call|(
 name|int
 call|)
 argument_list|(
+literal|0.25
+operator|*
 literal|0.5
 operator|*
 literal|160
@@ -4292,7 +4296,7 @@ name|queue
 argument_list|,
 name|queue
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|spyRMContext
@@ -4431,7 +4435,7 @@ literal|0.9
 operator|*
 literal|160
 operator|*
-literal|0.5
+literal|0.25
 argument_list|)
 operator|*
 name|GB
@@ -4455,7 +4459,7 @@ call|(
 name|int
 call|)
 argument_list|(
-literal|0.5
+literal|0.25
 operator|*
 literal|0.5
 operator|*

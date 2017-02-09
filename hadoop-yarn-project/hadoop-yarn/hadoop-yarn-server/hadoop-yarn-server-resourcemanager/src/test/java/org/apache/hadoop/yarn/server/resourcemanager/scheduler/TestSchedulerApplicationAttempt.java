@@ -623,7 +623,7 @@ name|oldQueue
 argument_list|,
 name|oldQueue
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|rmContext
@@ -1461,7 +1461,7 @@ name|when
 argument_list|(
 name|queue
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|)
 operator|.
@@ -1664,7 +1664,7 @@ name|queue
 argument_list|,
 name|queue
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|rmContext
@@ -1746,7 +1746,7 @@ name|queue
 argument_list|,
 name|queue
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|rmContext
@@ -1872,7 +1872,7 @@ name|queue
 argument_list|,
 name|queue
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|rmContext
@@ -2050,7 +2050,7 @@ name|queue
 argument_list|,
 name|queue
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|rmContext
@@ -2176,7 +2176,7 @@ name|queue
 argument_list|,
 name|queue
 operator|.
-name|getActiveUsersManager
+name|getAbstractUsersManager
 argument_list|()
 argument_list|,
 name|rmContext

@@ -2139,10 +2139,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getActiveUsersManager ()
+DECL|method|getAbstractUsersManager ()
 specifier|public
 name|ActiveUsersManager
-name|getActiveUsersManager
+name|getAbstractUsersManager
 parameter_list|()
 block|{
 return|return

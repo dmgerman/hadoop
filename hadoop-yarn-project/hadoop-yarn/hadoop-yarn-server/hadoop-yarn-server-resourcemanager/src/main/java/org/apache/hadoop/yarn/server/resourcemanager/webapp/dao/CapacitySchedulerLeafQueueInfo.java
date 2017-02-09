@@ -357,7 +357,10 @@ name|UsersInfo
 argument_list|(
 name|q
 operator|.
-name|getUsers
+name|getUsersManager
+argument_list|()
+operator|.
+name|getUsersInfo
 argument_list|()
 argument_list|)
 expr_stmt|;

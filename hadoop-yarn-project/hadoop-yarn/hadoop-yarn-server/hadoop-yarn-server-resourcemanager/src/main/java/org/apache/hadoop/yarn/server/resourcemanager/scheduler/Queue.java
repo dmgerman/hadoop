@@ -258,10 +258,10 @@ name|UserGroupInformation
 name|user
 parameter_list|)
 function_decl|;
-DECL|method|getActiveUsersManager ()
+DECL|method|getAbstractUsersManager ()
 specifier|public
-name|ActiveUsersManager
-name|getActiveUsersManager
+name|AbstractUsersManager
+name|getAbstractUsersManager
 parameter_list|()
 function_decl|;
 comment|/**    * Recover the state of the queue for a given container.    * @param clusterResource the resource of the cluster    * @param schedulerAttempt the application for which the container was allocated    * @param rmContainer the container that was recovered.    */

@@ -121,7 +121,7 @@ class|class
 name|CapacityHeadroomProvider
 block|{
 DECL|field|user
-name|LeafQueue
+name|UsersManager
 operator|.
 name|User
 name|user
@@ -140,11 +140,11 @@ operator|.
 name|QueueResourceLimitsInfo
 name|queueResourceLimitsInfo
 decl_stmt|;
-DECL|method|CapacityHeadroomProvider (LeafQueue.User user, LeafQueue queue, FiCaSchedulerApp application, LeafQueue.QueueResourceLimitsInfo queueResourceLimitsInfo)
+DECL|method|CapacityHeadroomProvider (UsersManager.User user, LeafQueue queue, FiCaSchedulerApp application, LeafQueue.QueueResourceLimitsInfo queueResourceLimitsInfo)
 specifier|public
 name|CapacityHeadroomProvider
 parameter_list|(
-name|LeafQueue
+name|UsersManager
 operator|.
 name|User
 name|user

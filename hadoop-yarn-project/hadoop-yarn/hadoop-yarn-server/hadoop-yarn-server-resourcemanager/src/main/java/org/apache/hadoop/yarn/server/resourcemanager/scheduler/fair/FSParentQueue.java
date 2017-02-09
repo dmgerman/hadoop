@@ -1382,10 +1382,10 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getActiveUsersManager ()
+DECL|method|getAbstractUsersManager ()
 specifier|public
 name|ActiveUsersManager
-name|getActiveUsersManager
+name|getAbstractUsersManager
 parameter_list|()
 block|{
 comment|// Should never be called since all applications are submitted to LeafQueues

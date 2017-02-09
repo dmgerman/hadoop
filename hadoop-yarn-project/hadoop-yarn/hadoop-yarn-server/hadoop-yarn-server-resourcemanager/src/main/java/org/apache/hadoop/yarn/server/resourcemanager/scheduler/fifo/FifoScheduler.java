@@ -1838,7 +1838,7 @@ annotation|@
 name|Override
 specifier|public
 name|ActiveUsersManager
-name|getActiveUsersManager
+name|getAbstractUsersManager
 parameter_list|()
 block|{
 return|return
