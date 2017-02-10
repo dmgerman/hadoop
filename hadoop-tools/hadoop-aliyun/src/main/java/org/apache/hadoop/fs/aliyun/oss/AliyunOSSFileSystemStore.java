@@ -194,6 +194,20 @@ name|oss
 operator|.
 name|model
 operator|.
+name|DeleteObjectsResult
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|aliyun
+operator|.
+name|oss
+operator|.
+name|model
+operator|.
 name|GetObjectRequest
 import|;
 end_import
@@ -1221,7 +1235,7 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Delete a list of keys, and update write operation statistics.    *    * @param keysToDelete collection of keys to delete.    */
+comment|/**    * Delete a list of keys, and update write operation statistics.    *    * @param keysToDelete collection of keys to delete.    * @throws IOException if failed to delete objects.    */
 DECL|method|deleteObjects (List<String> keysToDelete)
 specifier|public
 name|void
@@ -1233,14 +1247,53 @@ name|String
 argument_list|>
 name|keysToDelete
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 if|if
 condition|(
 name|CollectionUtils
 operator|.
-name|isNotEmpty
+name|isEmpty
 argument_list|(
 name|keysToDelete
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Keys to delete is empty."
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+name|int
+name|retry
+init|=
+literal|10
+decl_stmt|;
+name|int
+name|tries
+init|=
+literal|0
+decl_stmt|;
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|deleteFailed
+init|=
+name|keysToDelete
+decl_stmt|;
+while|while
+condition|(
+name|CollectionUtils
+operator|.
+name|isNotEmpty
+argument_list|(
+name|deleteFailed
 argument_list|)
 condition|)
 block|{
@@ -1257,29 +1310,82 @@ name|deleteRequest
 operator|.
 name|setKeys
 argument_list|(
-name|keysToDelete
+name|deleteFailed
 argument_list|)
 expr_stmt|;
+comment|// There are two modes to do batch delete:
+comment|// 1. detail mode: DeleteObjectsResult.getDeletedObjects returns objects
+comment|// which were deleted successfully.
+comment|// 2. simple mode: DeleteObjectsResult.getDeletedObjects returns objects
+comment|// which were deleted unsuccessfully.
+comment|// Here, we choose the simple mode to do batch delete.
+name|deleteRequest
+operator|.
+name|setQuiet
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|DeleteObjectsResult
+name|result
+init|=
 name|ossClient
 operator|.
 name|deleteObjects
 argument_list|(
 name|deleteRequest
 argument_list|)
-expr_stmt|;
-name|statistics
+decl_stmt|;
+name|deleteFailed
+operator|=
+name|result
 operator|.
-name|incrementWriteOps
-argument_list|(
-name|keysToDelete
-operator|.
-name|size
+name|getDeletedObjects
 argument_list|()
-argument_list|)
 expr_stmt|;
+name|tries
+operator|++
+expr_stmt|;
+if|if
+condition|(
+name|tries
+operator|==
+name|retry
+condition|)
+block|{
+break|break;
 block|}
 block|}
-comment|/**    * Delete a directory from Aliyun OSS.    *    * @param key directory key to delete.    */
+if|if
+condition|(
+name|tries
+operator|==
+name|retry
+operator|&&
+name|CollectionUtils
+operator|.
+name|isNotEmpty
+argument_list|(
+name|deleteFailed
+argument_list|)
+condition|)
+block|{
+comment|// Most of time, it is impossible to try 10 times, expect the
+comment|// Aliyun OSS service problems.
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Failed to delete Aliyun OSS objects for "
+operator|+
+name|tries
+operator|+
+literal|" times."
+argument_list|)
+throw|;
+block|}
+block|}
+comment|/**    * Delete a directory from Aliyun OSS.    *    * @param key directory key to delete.    * @throws IOException if failed to delete directory.    */
 DECL|method|deleteDirs (String key)
 specifier|public
 name|void
@@ -1288,6 +1394,8 @@ parameter_list|(
 name|String
 name|key
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|key
 operator|=
@@ -2622,7 +2730,7 @@ literal|null
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Clean up all objects matching the prefix.    *    * @param prefix Aliyun OSS object prefix.    */
+comment|/**    * Clean up all objects matching the prefix.    *    * @param prefix Aliyun OSS object prefix.    * @throws IOException if failed to clean up objects.    */
 DECL|method|purge (String prefix)
 specifier|public
 name|void
@@ -2631,6 +2739,8 @@ parameter_list|(
 name|String
 name|prefix
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|String
 name|key
