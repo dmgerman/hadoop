@@ -577,6 +577,7 @@ return|return
 name|NONE
 return|;
 block|}
+comment|/**    * Check whether a resource object is empty (0 memory and 0 virtual cores).    * @param other The resource to check    * @return {@code true} if {@code other} has 0 memory and 0 virtual cores,    * {@code false} otherwise    */
 DECL|method|isNone (Resource other)
 specifier|public
 specifier|static
