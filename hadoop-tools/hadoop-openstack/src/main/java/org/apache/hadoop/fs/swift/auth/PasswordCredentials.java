@@ -138,28 +138,11 @@ name|toString
 parameter_list|()
 block|{
 return|return
-literal|"user '"
+literal|"PasswordCredentials{username='"
 operator|+
 name|username
 operator|+
-literal|'\''
-operator|+
-literal|" with password of length "
-operator|+
-operator|(
-operator|(
-name|password
-operator|==
-literal|null
-operator|)
-condition|?
-literal|0
-else|:
-name|password
-operator|.
-name|length
-argument_list|()
-operator|)
+literal|"'}"
 return|;
 block|}
 block|}
