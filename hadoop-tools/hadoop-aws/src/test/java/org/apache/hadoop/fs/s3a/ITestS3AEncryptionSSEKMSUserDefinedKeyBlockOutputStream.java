@@ -19,6 +19,38 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|contract
+operator|.
+name|ContractTestUtils
+operator|.
+name|skip
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|lang
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -33,16 +65,16 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Run the encryption tests against the block output stream.  */
+comment|/**  * Run the encryption tests against the Fast output stream.  * This verifies that both file writing paths can encrypt their data. This  * requires the SERVER_SIDE_ENCRYPTION_KEY to be set in auth-keys.xml for it  * to run.  */
 end_comment
 
 begin_class
-DECL|class|ITestS3AEncryptionBlockOutputStream
+DECL|class|ITestS3AEncryptionSSEKMSUserDefinedKeyBlockOutputStream
 specifier|public
 class|class
-name|ITestS3AEncryptionBlockOutputStream
+name|ITestS3AEncryptionSSEKMSUserDefinedKeyBlockOutputStream
 extends|extends
-name|ITestS3AEncryption
+name|AbstractTestS3AEncryption
 block|{
 annotation|@
 name|Override
@@ -60,6 +92,40 @@ operator|.
 name|createConfiguration
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|StringUtils
+operator|.
+name|isBlank
+argument_list|(
+name|conf
+operator|.
+name|get
+argument_list|(
+name|Constants
+operator|.
+name|SERVER_SIDE_ENCRYPTION_KEY
+argument_list|)
+argument_list|)
+condition|)
+block|{
+name|skip
+argument_list|(
+name|Constants
+operator|.
+name|SERVER_SIDE_ENCRYPTION_KEY
+operator|+
+literal|" is not set for "
+operator|+
+name|S3AEncryptionMethods
+operator|.
+name|SSE_KMS
+operator|.
+name|getMethod
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|conf
 operator|.
 name|setBoolean
@@ -86,6 +152,20 @@ argument_list|)
 expr_stmt|;
 return|return
 name|conf
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getSSEAlgorithm ()
+specifier|protected
+name|S3AEncryptionMethods
+name|getSSEAlgorithm
+parameter_list|()
+block|{
+return|return
+name|S3AEncryptionMethods
+operator|.
+name|SSE_KMS
 return|;
 block|}
 block|}

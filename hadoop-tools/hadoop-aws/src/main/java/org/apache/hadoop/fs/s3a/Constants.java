@@ -680,7 +680,7 @@ name|DEFAULT_PURGE_EXISTING_MULTIPART_AGE
 init|=
 literal|86400
 decl_stmt|;
-comment|// s3 server-side encryption
+comment|// s3 server-side encryption, see S3AEncryptionMethods for valid options
 DECL|field|SERVER_SIDE_ENCRYPTION_ALGORITHM
 specifier|public
 specifier|static
@@ -690,7 +690,9 @@ name|SERVER_SIDE_ENCRYPTION_ALGORITHM
 init|=
 literal|"fs.s3a.server-side-encryption-algorithm"
 decl_stmt|;
-comment|/**    * The standard encryption algorithm AWS supports.    * Different implementations may support others (or none).    */
+comment|/**    * The standard encryption algorithm AWS supports.    * Different implementations may support others (or none).    * Use the S3AEncryptionMethods instead when configuring    * which Server Side Encryption to use.    */
+annotation|@
+name|Deprecated
 DECL|field|SERVER_SIDE_ENCRYPTION_AES256
 specifier|public
 specifier|static
@@ -699,6 +701,16 @@ name|String
 name|SERVER_SIDE_ENCRYPTION_AES256
 init|=
 literal|"AES256"
+decl_stmt|;
+comment|/**    *  Used to specify which AWS KMS key to use if    *  SERVER_SIDE_ENCRYPTION_ALGORITHM is AWS_KMS (will default to aws/s3    *  master key if left blank) or with SSE_C, the actual AES 256 key.    */
+DECL|field|SERVER_SIDE_ENCRYPTION_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SERVER_SIDE_ENCRYPTION_KEY
+init|=
+literal|"fs.s3a.server-side-encryption-key"
 decl_stmt|;
 comment|//override signature algorithm used for signing requests
 DECL|field|SIGNING_ALGORITHM
@@ -909,6 +921,48 @@ name|int
 name|MAX_MULTIPART_COUNT
 init|=
 literal|10000
+decl_stmt|;
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+DECL|field|SSE_C_NO_KEY_ERROR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SSE_C_NO_KEY_ERROR
+init|=
+name|S3AEncryptionMethods
+operator|.
+name|SSE_C
+operator|.
+name|getMethod
+argument_list|()
+operator|+
+literal|" is enabled and no encryption key is provided."
+decl_stmt|;
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+DECL|field|SSE_S3_WITH_KEY_ERROR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SSE_S3_WITH_KEY_ERROR
+init|=
+name|S3AEncryptionMethods
+operator|.
+name|SSE_S3
+operator|.
+name|getMethod
+argument_list|()
+operator|+
+literal|" is configured and an "
+operator|+
+literal|"encryption key is provided"
 decl_stmt|;
 block|}
 end_class
