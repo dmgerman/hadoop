@@ -704,6 +704,37 @@ name|startTimelineReaderWebApp
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|join ()
+specifier|private
+name|void
+name|join
+parameter_list|()
+block|{
+comment|// keep the main thread that started the server up until it receives a stop
+comment|// signal
+if|if
+condition|(
+name|readerWebServer
+operator|!=
+literal|null
+condition|)
+block|{
+try|try
+block|{
+name|readerWebServer
+operator|.
+name|join
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ignore
+parameter_list|)
+block|{}
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|serviceStop ()
@@ -1150,12 +1181,20 @@ argument_list|,
 literal|2.0f
 argument_list|)
 expr_stmt|;
+name|TimelineReaderServer
+name|server
+init|=
 name|startTimelineReaderServer
 argument_list|(
 name|args
 argument_list|,
 name|conf
 argument_list|)
+decl_stmt|;
+name|server
+operator|.
+name|join
+argument_list|()
 expr_stmt|;
 block|}
 block|}
