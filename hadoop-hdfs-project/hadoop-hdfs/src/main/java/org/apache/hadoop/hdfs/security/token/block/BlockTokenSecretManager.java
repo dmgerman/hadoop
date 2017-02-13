@@ -409,6 +409,12 @@ specifier|final
 name|int
 name|nnRangeStart
 decl_stmt|;
+DECL|field|useProto
+specifier|private
+specifier|final
+name|boolean
+name|useProto
+decl_stmt|;
 DECL|field|nonceGenerator
 specifier|private
 specifier|final
@@ -419,8 +425,8 @@ operator|new
 name|SecureRandom
 argument_list|()
 decl_stmt|;
-comment|/**    * Constructor for workers.    *    * @param keyUpdateInterval how often a new key will be generated    * @param tokenLifetime how long an individual token is valid    */
-DECL|method|BlockTokenSecretManager (long keyUpdateInterval, long tokenLifetime, String blockPoolId, String encryptionAlgorithm)
+comment|/**    * Constructor for workers.    *    * @param keyUpdateInterval how often a new key will be generated    * @param tokenLifetime how long an individual token is valid    * @param useProto should we use new protobuf style tokens    */
+DECL|method|BlockTokenSecretManager (long keyUpdateInterval, long tokenLifetime, String blockPoolId, String encryptionAlgorithm, boolean useProto)
 specifier|public
 name|BlockTokenSecretManager
 parameter_list|(
@@ -435,6 +441,9 @@ name|blockPoolId
 parameter_list|,
 name|String
 name|encryptionAlgorithm
+parameter_list|,
+name|boolean
+name|useProto
 parameter_list|)
 block|{
 name|this
@@ -452,11 +461,13 @@ argument_list|,
 literal|0
 argument_list|,
 literal|1
+argument_list|,
+name|useProto
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Constructor for masters.    *    * @param keyUpdateInterval how often a new key will be generated    * @param tokenLifetime how long an individual token is valid    * @param nnIndex namenode index of the namenode for which we are creating the manager    * @param blockPoolId block pool ID    * @param encryptionAlgorithm encryption algorithm to use    * @param numNNs number of namenodes possible    */
-DECL|method|BlockTokenSecretManager (long keyUpdateInterval, long tokenLifetime, int nnIndex, int numNNs, String blockPoolId, String encryptionAlgorithm)
+DECL|method|BlockTokenSecretManager (long keyUpdateInterval, long tokenLifetime, int nnIndex, int numNNs, String blockPoolId, String encryptionAlgorithm, boolean useProto)
 specifier|public
 name|BlockTokenSecretManager
 parameter_list|(
@@ -477,6 +488,9 @@ name|blockPoolId
 parameter_list|,
 name|String
 name|encryptionAlgorithm
+parameter_list|,
+name|boolean
+name|useProto
 parameter_list|)
 block|{
 name|this
@@ -494,6 +508,8 @@ argument_list|,
 name|nnIndex
 argument_list|,
 name|numNNs
+argument_list|,
+name|useProto
 argument_list|)
 expr_stmt|;
 name|Preconditions
@@ -528,7 +544,7 @@ name|generateKeys
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|BlockTokenSecretManager (boolean isMaster, long keyUpdateInterval, long tokenLifetime, String blockPoolId, String encryptionAlgorithm, int nnIndex, int numNNs)
+DECL|method|BlockTokenSecretManager (boolean isMaster, long keyUpdateInterval, long tokenLifetime, String blockPoolId, String encryptionAlgorithm, int nnIndex, int numNNs, boolean useProto)
 specifier|private
 name|BlockTokenSecretManager
 parameter_list|(
@@ -552,6 +568,9 @@ name|nnIndex
 parameter_list|,
 name|int
 name|numNNs
+parameter_list|,
+name|boolean
+name|useProto
 parameter_list|)
 block|{
 name|this
@@ -614,6 +633,12 @@ operator|.
 name|encryptionAlgorithm
 operator|=
 name|encryptionAlgorithm
+expr_stmt|;
+name|this
+operator|.
+name|useProto
+operator|=
+name|useProto
 expr_stmt|;
 name|generateKeys
 argument_list|()
@@ -1279,6 +1304,8 @@ name|getBlockId
 argument_list|()
 argument_list|,
 name|modes
+argument_list|,
+name|useProto
 argument_list|)
 decl_stmt|;
 return|return
