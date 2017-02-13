@@ -3984,6 +3984,17 @@ name|YARN_PREFIX
 operator|+
 literal|"log.server.url"
 decl_stmt|;
+DECL|field|YARN_LOG_SERVER_WEBSERVICE_URL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|YARN_LOG_SERVER_WEBSERVICE_URL
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"log.server.web-service.url"
+decl_stmt|;
 DECL|field|YARN_TRACKING_URL_GENERATOR
 specifier|public
 specifier|static
