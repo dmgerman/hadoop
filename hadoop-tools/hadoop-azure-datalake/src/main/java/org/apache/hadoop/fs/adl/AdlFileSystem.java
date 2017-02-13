@@ -665,6 +665,7 @@ extends|extends
 name|FileSystem
 block|{
 DECL|field|SCHEME
+specifier|public
 specifier|static
 specifier|final
 name|String
