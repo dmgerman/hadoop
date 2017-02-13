@@ -1073,6 +1073,33 @@ operator|.
 name|getId
 argument_list|()
 decl_stmt|;
+comment|// Remove from the list of containers
+if|if
+condition|(
+name|liveContainers
+operator|.
+name|remove
+argument_list|(
+name|containerId
+argument_list|)
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Additional complete request on completed container "
+operator|+
+name|rmContainer
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 comment|// Remove from the list of newly allocated containers if found
 name|newlyAllocatedContainers
 operator|.
@@ -1129,17 +1156,6 @@ name|event
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Remove from the list of containers
-name|liveContainers
-operator|.
-name|remove
-argument_list|(
-name|rmContainer
-operator|.
-name|getContainerId
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|untrackContainerForPreemption
 argument_list|(
 name|rmContainer
