@@ -735,6 +735,11 @@ operator|new
 name|Object
 argument_list|()
 decl_stmt|;
+DECL|field|resourceManager
+specifier|private
+name|ResourceManager
+name|resourceManager
+decl_stmt|;
 comment|/**    * Default constructor. To be used in conjunction with setter methods for    * individual fields.    */
 DECL|method|RMContextImpl ()
 specifier|public
@@ -2137,6 +2142,34 @@ name|getZookeeperConnectionState
 argument_list|()
 return|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|getResourceManager ()
+specifier|public
+name|ResourceManager
+name|getResourceManager
+parameter_list|()
+block|{
+return|return
+name|resourceManager
+return|;
+block|}
+DECL|method|setResourceManager (ResourceManager rm)
+specifier|public
+name|void
+name|setResourceManager
+parameter_list|(
+name|ResourceManager
+name|rm
+parameter_list|)
+block|{
+name|this
+operator|.
+name|resourceManager
+operator|=
+name|rm
+expr_stmt|;
 block|}
 block|}
 end_class

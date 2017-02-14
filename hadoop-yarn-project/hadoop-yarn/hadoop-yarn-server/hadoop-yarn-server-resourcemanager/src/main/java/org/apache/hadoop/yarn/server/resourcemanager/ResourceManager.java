@@ -1870,6 +1870,20 @@ name|List
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicBoolean
+import|;
+end_import
+
 begin_comment
 comment|/**  * The ResourceManager is the main class that is a set of components.  * "I am the ResourceManager. All your resources belong to us..."  *  */
 end_comment
@@ -2192,6 +2206,13 @@ operator|=
 operator|new
 name|RMContextImpl
 argument_list|()
+expr_stmt|;
+name|rmContext
+operator|.
+name|setResourceManager
+argument_list|(
+name|this
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -3721,6 +3742,11 @@ name|fromActive
 init|=
 literal|false
 decl_stmt|;
+DECL|field|standByTransitionRunnable
+specifier|private
+name|StandByTransitionRunnable
+name|standByTransitionRunnable
+decl_stmt|;
 DECL|method|RMActiveServices (ResourceManager rm)
 name|RMActiveServices
 parameter_list|(
@@ -3753,6 +3779,12 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|standByTransitionRunnable
+operator|=
+operator|new
+name|StandByTransitionRunnable
+argument_list|()
+expr_stmt|;
 name|activeServiceContext
 operator|=
 operator|new
@@ -4832,12 +4864,80 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|handleTransitionToStandBy ()
+comment|/**    * Transition to standby state in a new thread. The transition operation is    * asynchronous to avoid deadlock caused by cyclic dependency.    */
+DECL|method|handleTransitionToStandByInNewThread ()
 specifier|public
 name|void
-name|handleTransitionToStandBy
+name|handleTransitionToStandByInNewThread
 parameter_list|()
 block|{
+name|Thread
+name|standByTransitionThread
+init|=
+operator|new
+name|Thread
+argument_list|(
+name|activeServices
+operator|.
+name|standByTransitionRunnable
+argument_list|)
+decl_stmt|;
+name|standByTransitionThread
+operator|.
+name|setName
+argument_list|(
+literal|"StandByTransitionThread"
+argument_list|)
+expr_stmt|;
+name|standByTransitionThread
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * The class to transition RM to standby state. The same    * {@link StandByTransitionRunnable} object could be used in multiple threads,    * but runs only once. That's because RM can go back to active state after    * transition to standby state, the same runnable in the old context can't    * transition RM to standby state again. A new runnable is created every time    * RM transitions to active state.    */
+DECL|class|StandByTransitionRunnable
+specifier|private
+class|class
+name|StandByTransitionRunnable
+implements|implements
+name|Runnable
+block|{
+comment|// The atomic variable to make sure multiple threads with the same runnable
+comment|// run only once.
+DECL|field|hasAlreadyRun
+specifier|private
+name|AtomicBoolean
+name|hasAlreadyRun
+init|=
+operator|new
+name|AtomicBoolean
+argument_list|(
+literal|false
+argument_list|)
+decl_stmt|;
+annotation|@
+name|Override
+DECL|method|run ()
+specifier|public
+name|void
+name|run
+parameter_list|()
+block|{
+comment|// Run this only once, even if multiple threads end up triggering
+comment|// this simultaneously.
+if|if
+condition|(
+name|hasAlreadyRun
+operator|.
+name|getAndSet
+argument_list|(
+literal|true
+argument_list|)
+condition|)
+block|{
+return|return;
+block|}
 if|if
 condition|(
 name|rmContext
@@ -4907,6 +5007,7 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}

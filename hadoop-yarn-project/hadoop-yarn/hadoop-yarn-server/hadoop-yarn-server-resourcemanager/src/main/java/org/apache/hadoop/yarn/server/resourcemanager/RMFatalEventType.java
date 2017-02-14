@@ -55,6 +55,10 @@ block|,
 comment|// Source<- Admin Service
 DECL|enumConstant|TRANSITION_TO_ACTIVE_FAILED
 name|TRANSITION_TO_ACTIVE_FAILED
+block|,
+comment|// Source<- Critical Thread Crash
+DECL|enumConstant|CRITICAL_THREAD_CRASH
+name|CRITICAL_THREAD_CRASH
 block|}
 end_enum
 

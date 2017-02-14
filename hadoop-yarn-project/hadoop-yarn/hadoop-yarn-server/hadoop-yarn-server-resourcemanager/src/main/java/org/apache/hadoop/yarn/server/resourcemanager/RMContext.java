@@ -872,6 +872,11 @@ name|String
 name|getHAZookeeperConnectionState
 parameter_list|()
 function_decl|;
+DECL|method|getResourceManager ()
+name|ResourceManager
+name|getResourceManager
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

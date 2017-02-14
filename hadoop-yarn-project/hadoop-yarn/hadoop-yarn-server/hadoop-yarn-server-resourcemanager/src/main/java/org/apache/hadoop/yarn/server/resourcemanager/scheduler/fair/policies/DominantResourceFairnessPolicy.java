@@ -479,11 +479,14 @@ name|fairShare
 parameter_list|)
 block|{
 return|return
-operator|!
 name|Resources
 operator|.
-name|fitsIn
+name|greaterThan
 argument_list|(
+name|CALCULATOR
+argument_list|,
+literal|null
+argument_list|,
 name|usage
 argument_list|,
 name|fairShare

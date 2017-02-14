@@ -5319,27 +5319,9 @@ name|isFenced
 operator|=
 literal|true
 expr_stmt|;
-name|Thread
-name|standByTransitionThread
-init|=
-operator|new
-name|Thread
-argument_list|(
-operator|new
-name|StandByTransitionThread
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|standByTransitionThread
+name|resourceManager
 operator|.
-name|setName
-argument_list|(
-literal|"StandByTransitionThread Handler"
-argument_list|)
-expr_stmt|;
-name|standByTransitionThread
-operator|.
-name|start
+name|handleTransitionToStandByInNewThread
 argument_list|()
 expr_stmt|;
 block|}
@@ -5515,35 +5497,6 @@ name|resourceManager
 operator|=
 name|rm
 expr_stmt|;
-block|}
-DECL|class|StandByTransitionThread
-specifier|private
-class|class
-name|StandByTransitionThread
-implements|implements
-name|Runnable
-block|{
-annotation|@
-name|Override
-DECL|method|run ()
-specifier|public
-name|void
-name|run
-parameter_list|()
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"RMStateStore has been fenced"
-argument_list|)
-expr_stmt|;
-name|resourceManager
-operator|.
-name|handleTransitionToStandBy
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|getRMStateStoreState ()
 specifier|public
