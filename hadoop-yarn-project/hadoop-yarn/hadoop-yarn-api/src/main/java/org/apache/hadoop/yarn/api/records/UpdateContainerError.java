@@ -169,6 +169,41 @@ name|String
 name|reason
 parameter_list|)
 function_decl|;
+comment|/**    * Get current container version.    * @return Current container Version.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|method|getCurrentContainerVersion ()
+specifier|public
+specifier|abstract
+name|int
+name|getCurrentContainerVersion
+parameter_list|()
+function_decl|;
+comment|/**    * Set current container version.    * @param currentVersion Current container version.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|method|setCurrentContainerVersion (int currentVersion)
+specifier|public
+specifier|abstract
+name|void
+name|setCurrentContainerVersion
+parameter_list|(
+name|int
+name|currentVersion
+parameter_list|)
+function_decl|;
 comment|/**    * Get the {@code UpdateContainerRequest} that was not satisfiable.    * @return UpdateContainerRequest    */
 annotation|@
 name|InterfaceAudience
@@ -293,6 +328,13 @@ return|return
 literal|"UpdateContainerError{reason="
 operator|+
 name|getReason
+argument_list|()
+operator|+
+literal|", "
+operator|+
+literal|"currentVersion="
+operator|+
+name|getCurrentContainerVersion
 argument_list|()
 operator|+
 literal|", "
@@ -456,7 +498,13 @@ literal|false
 return|;
 block|}
 return|return
-literal|true
+name|getCurrentContainerVersion
+argument_list|()
+operator|==
+name|other
+operator|.
+name|getCurrentContainerVersion
+argument_list|()
 return|;
 block|}
 block|}
