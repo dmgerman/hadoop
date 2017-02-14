@@ -264,6 +264,7 @@ name|xceiverCount
 decl_stmt|;
 DECL|field|location
 specifier|private
+specifier|volatile
 name|String
 name|location
 init|=
@@ -1233,7 +1234,6 @@ annotation|@
 name|Override
 DECL|method|getNetworkLocation ()
 specifier|public
-specifier|synchronized
 name|String
 name|getNetworkLocation
 parameter_list|()
@@ -1247,7 +1247,6 @@ annotation|@
 name|Override
 DECL|method|setNetworkLocation (String location)
 specifier|public
-specifier|synchronized
 name|void
 name|setNetworkLocation
 parameter_list|(
