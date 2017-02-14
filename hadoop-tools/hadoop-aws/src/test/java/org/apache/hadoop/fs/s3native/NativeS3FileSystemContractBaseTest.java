@@ -472,7 +472,7 @@ init|=
 literal|0
 init|;
 name|i
-operator|<
+operator|<=
 literal|3
 condition|;
 name|i
