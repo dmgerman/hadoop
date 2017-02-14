@@ -21,7 +21,7 @@ package|;
 end_package
 
 begin_comment
-comment|/*  * A system administrator can tune the balancer bandwidth parameter  * (dfs.balance.bandwidthPerSec) dynamically by calling  * "dfsadmin -setBalanacerBandwidth newbandwidth".  * This class is to define the command which sends the new bandwidth value to  * each datanode.  */
+comment|/*  * A system administrator can tune the balancer bandwidth parameter  * (dfs.datanode.balance.bandwidthPerSec) dynamically by calling  * "dfsadmin -setBalanacerBandwidth newbandwidth".  * This class is to define the command which sends the new bandwidth value to  * each datanode.  */
 end_comment
 
 begin_comment

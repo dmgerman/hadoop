@@ -8246,7 +8246,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Requests the namenode to tell all datanodes to use a new, non-persistent    * bandwidth value for dfs.balance.bandwidthPerSec.    * The bandwidth parameter is the max number of bytes per second of network    * bandwidth to be used by a datanode during balancing.    *    * @param bandwidth Balancer bandwidth in bytes per second for all datanodes.    * @throws IOException    */
+comment|/**    * Requests the namenode to tell all datanodes to use a new, non-persistent    * bandwidth value for dfs.datanode.balance.bandwidthPerSec.    * The bandwidth parameter is the max number of bytes per second of network    * bandwidth to be used by a datanode during balancing.    *    * @param bandwidth Balancer bandwidth in bytes per second for all datanodes.    * @throws IOException    */
 DECL|method|setBalancerBandwidth (long bandwidth)
 specifier|public
 name|void

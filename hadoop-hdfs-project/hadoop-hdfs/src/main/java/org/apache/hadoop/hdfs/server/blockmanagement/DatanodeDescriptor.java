@@ -945,7 +945,7 @@ init|=
 literal|false
 decl_stmt|;
 comment|// A system administrator can tune the balancer bandwidth parameter
-comment|// (dfs.balance.bandwidthPerSec) dynamically by calling
+comment|// (dfs.datanode.balance.bandwidthPerSec) dynamically by calling
 comment|// "dfsadmin -setBalanacerBandwidth<newbandwidth>", at which point the
 comment|// following 'bandwidth' variable gets updated with the new value for each
 comment|// node. Once the heartbeat command is issued to update the value on the

@@ -10535,7 +10535,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Requests the namenode to tell all datanodes to use a new, non-persistent    * bandwidth value for dfs.balance.bandwidthPerSec.    * See {@link ClientProtocol#setBalancerBandwidth(long)}    * for more details.    *    * @see ClientProtocol#setBalancerBandwidth(long)    */
+comment|/**    * Requests the namenode to tell all datanodes to use a new, non-persistent    * bandwidth value for dfs.datanode.balance.bandwidthPerSec.    * See {@link ClientProtocol#setBalancerBandwidth(long)}    * for more details.    *    * @see ClientProtocol#setBalancerBandwidth(long)    */
 DECL|method|setBalancerBandwidth (long bandwidth)
 specifier|public
 name|void

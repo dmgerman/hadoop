@@ -1344,7 +1344,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Tell all datanodes to use a new, non-persistent bandwidth value for    * dfs.balance.bandwidthPerSec.    *    * @param bandwidth Blanacer bandwidth in bytes per second for this datanode.    * @throws IOException    */
+comment|/**    * Tell all datanodes to use a new, non-persistent bandwidth value for    * dfs.datanode.balance.bandwidthPerSec.    *    * @param bandwidth Blanacer bandwidth in bytes per second for this datanode.    * @throws IOException    */
 annotation|@
 name|Idempotent
 DECL|method|setBalancerBandwidth (long bandwidth)

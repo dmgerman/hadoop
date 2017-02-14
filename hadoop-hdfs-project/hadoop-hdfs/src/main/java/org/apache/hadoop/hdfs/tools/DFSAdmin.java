@@ -5568,7 +5568,7 @@ literal|"\t\t<bandwidth> is the maximum number of bytes per second\n"
 operator|+
 literal|"\t\tthat will be used by each datanode. This value overrides\n"
 operator|+
-literal|"\t\tthe dfs.balance.bandwidthPerSec parameter.\n\n"
+literal|"\t\tthe dfs.datanode.balance.bandwidthPerSec parameter.\n\n"
 operator|+
 literal|"\t\t--- NOTE: The new value is not persistent on the DataNode.---\n"
 decl_stmt|;
