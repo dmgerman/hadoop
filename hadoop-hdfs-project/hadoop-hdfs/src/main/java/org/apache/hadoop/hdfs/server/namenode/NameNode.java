@@ -8142,6 +8142,11 @@ argument_list|,
 name|startOpt
 argument_list|)
 expr_stmt|;
+name|boolean
+name|aborted
+init|=
+literal|false
+decl_stmt|;
 switch|switch
 condition|(
 name|startOpt
@@ -8150,10 +8155,8 @@ block|{
 case|case
 name|FORMAT
 case|:
-block|{
-name|boolean
 name|aborted
-init|=
+operator|=
 name|format
 argument_list|(
 name|conf
@@ -8168,7 +8171,7 @@ operator|.
 name|getInteractiveFormat
 argument_list|()
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|terminate
 argument_list|(
 name|aborted
@@ -8182,11 +8185,9 @@ return|return
 literal|null
 return|;
 comment|// avoid javac warning
-block|}
 case|case
 name|GENCLUSTERID
 case|:
-block|{
 name|System
 operator|.
 name|err
@@ -8216,21 +8217,18 @@ expr_stmt|;
 return|return
 literal|null
 return|;
-block|}
 case|case
 name|ROLLBACK
 case|:
-block|{
-name|boolean
 name|aborted
-init|=
+operator|=
 name|doRollback
 argument_list|(
 name|conf
 argument_list|,
 literal|true
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|terminate
 argument_list|(
 name|aborted
@@ -8244,14 +8242,12 @@ return|return
 literal|null
 return|;
 comment|// avoid warning
-block|}
 case|case
 name|BOOTSTRAPSTANDBY
 case|:
-block|{
 name|String
-name|toolArgs
 index|[]
+name|toolArgs
 init|=
 name|Arrays
 operator|.
@@ -8287,14 +8283,11 @@ return|return
 literal|null
 return|;
 comment|// avoid warning
-block|}
 case|case
 name|INITIALIZESHAREDEDITS
 case|:
-block|{
-name|boolean
 name|aborted
-init|=
+operator|=
 name|initializeSharedEdits
 argument_list|(
 name|conf
@@ -8309,7 +8302,7 @@ operator|.
 name|getInteractiveFormat
 argument_list|()
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|terminate
 argument_list|(
 name|aborted
@@ -8323,14 +8316,12 @@ return|return
 literal|null
 return|;
 comment|// avoid warning
-block|}
 case|case
 name|BACKUP
 case|:
 case|case
 name|CHECKPOINT
 case|:
-block|{
 name|NamenodeRole
 name|role
 init|=
@@ -8365,11 +8356,9 @@ argument_list|,
 name|role
 argument_list|)
 return|;
-block|}
 case|case
 name|RECOVER
 case|:
-block|{
 name|NameNode
 operator|.
 name|doRecovery
@@ -8382,11 +8371,9 @@ expr_stmt|;
 return|return
 literal|null
 return|;
-block|}
 case|case
 name|METADATAVERSION
 case|:
-block|{
 name|printMetadataVersion
 argument_list|(
 name|conf
@@ -8401,11 +8388,9 @@ return|return
 literal|null
 return|;
 comment|// avoid javac warning
-block|}
 case|case
 name|UPGRADEONLY
 case|:
-block|{
 name|DefaultMetricsSystem
 operator|.
 name|initialize
@@ -8427,9 +8412,7 @@ expr_stmt|;
 return|return
 literal|null
 return|;
-block|}
 default|default:
-block|{
 name|DefaultMetricsSystem
 operator|.
 name|initialize
@@ -8444,7 +8427,6 @@ argument_list|(
 name|conf
 argument_list|)
 return|;
-block|}
 block|}
 block|}
 comment|/**    * In federation configuration is set for a set of    * namenode and secondary namenode/backup/checkpointer, which are    * grouped under a logical nameservice ID. The configuration keys specific     * to them have suffix set to configured nameserviceId.    *     * This method copies the value from specific key of format key.nameserviceId    * to key, to set up the generic configuration. Once this is done, only    * generic version of the configuration is read in rest of the code, for    * backward compatibility and simpler code changes.    *     * @param conf    *          Configuration object to lookup specific key and to set the value    *          to the key passed. Note the conf object is modified    * @param nameserviceId name service Id (to distinguish federated NNs)    * @param namenodeId the namenode ID (to distinguish HA NNs)    * @see DFSUtil#setGenericConf(Configuration, String, String, String...)    */
