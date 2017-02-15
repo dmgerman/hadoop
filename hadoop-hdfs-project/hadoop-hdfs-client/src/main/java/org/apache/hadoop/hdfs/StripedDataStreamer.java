@@ -369,6 +369,9 @@ argument_list|(
 name|index
 argument_list|,
 name|block
+operator|.
+name|getCurrentBlock
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|super
@@ -440,11 +443,14 @@ name|getFollowingBlock
 argument_list|()
 decl_stmt|;
 name|block
-operator|=
+operator|.
+name|setCurrentBlock
+argument_list|(
 name|lb
 operator|.
 name|getBlock
 argument_list|()
+argument_list|)
 expr_stmt|;
 name|block
 operator|.
@@ -503,8 +509,11 @@ name|success
 condition|)
 block|{
 name|block
-operator|=
+operator|.
+name|setCurrentBlock
+argument_list|(
 literal|null
+argument_list|)
 expr_stmt|;
 specifier|final
 name|DatanodeInfo
@@ -751,12 +760,8 @@ name|success
 condition|)
 block|{
 comment|// if all succeeded, update its block using the new GS
-name|block
-operator|=
-name|newBlock
+name|updateBlockGS
 argument_list|(
-name|block
-argument_list|,
 name|newGS
 argument_list|)
 expr_stmt|;
