@@ -13418,6 +13418,11 @@ specifier|final
 name|long
 name|numBlocks
 decl_stmt|;
+DECL|field|storageType
+specifier|final
+name|StorageType
+name|storageType
+decl_stmt|;
 DECL|method|VolumeInfo (FsVolumeImpl v, long usedSpace, long freeSpace)
 name|VolumeInfo
 parameter_list|(
@@ -13477,6 +13482,15 @@ operator|=
 name|v
 operator|.
 name|getNumBlocks
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|storageType
+operator|=
+name|v
+operator|.
+name|getStorageType
 argument_list|()
 expr_stmt|;
 block|}
@@ -13722,6 +13736,17 @@ argument_list|,
 name|v
 operator|.
 name|numBlocks
+argument_list|)
+expr_stmt|;
+name|innerInfo
+operator|.
+name|put
+argument_list|(
+literal|"storageType"
+argument_list|,
+name|v
+operator|.
+name|storageType
 argument_list|)
 expr_stmt|;
 name|info
