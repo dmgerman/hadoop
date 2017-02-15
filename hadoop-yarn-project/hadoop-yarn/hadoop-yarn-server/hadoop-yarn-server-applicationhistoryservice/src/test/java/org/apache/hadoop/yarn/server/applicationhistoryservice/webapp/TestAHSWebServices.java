@@ -486,7 +486,7 @@ name|yarn
 operator|.
 name|logaggregation
 operator|.
-name|ContainerLogType
+name|ContainerLogAggregationType
 import|;
 end_import
 
@@ -4872,7 +4872,7 @@ name|repeat
 argument_list|(
 literal|"*"
 argument_list|,
-literal|"End of LogFile:syslog"
+literal|"End of LogType:syslog"
 operator|.
 name|length
 argument_list|()
@@ -4885,7 +4885,7 @@ decl_stmt|;
 name|int
 name|tailTextSize
 init|=
-literal|"\nEnd of LogFile:syslog\n"
+literal|"\nEnd of LogType:syslog\n"
 operator|.
 name|getBytes
 argument_list|()
@@ -6139,9 +6139,9 @@ name|responseText
 operator|.
 name|contains
 argument_list|(
-literal|"LogType: "
+literal|"LogAggregationType: "
 operator|+
-name|ContainerLogType
+name|ContainerLogAggregationType
 operator|.
 name|LOCAL
 argument_list|)
@@ -6257,9 +6257,9 @@ name|responseText
 operator|.
 name|contains
 argument_list|(
-literal|"LogType: "
+literal|"LogAggregationType: "
 operator|+
-name|ContainerLogType
+name|ContainerLogAggregationType
 operator|.
 name|LOCAL
 argument_list|)
@@ -6741,7 +6741,7 @@ argument_list|()
 operator|.
 name|equals
 argument_list|(
-name|ContainerLogType
+name|ContainerLogAggregationType
 operator|.
 name|AGGREGATED
 operator|.
@@ -6819,7 +6819,7 @@ operator|.
 name|getLogType
 argument_list|()
 argument_list|,
-name|ContainerLogType
+name|ContainerLogAggregationType
 operator|.
 name|LOCAL
 operator|.
@@ -6944,7 +6944,7 @@ argument_list|()
 operator|.
 name|equals
 argument_list|(
-name|ContainerLogType
+name|ContainerLogAggregationType
 operator|.
 name|AGGREGATED
 operator|.
@@ -7022,7 +7022,7 @@ operator|.
 name|getLogType
 argument_list|()
 argument_list|,
-name|ContainerLogType
+name|ContainerLogAggregationType
 operator|.
 name|LOCAL
 operator|.
@@ -7245,7 +7245,7 @@ operator|.
 name|getLogType
 argument_list|()
 argument_list|,
-name|ContainerLogType
+name|ContainerLogAggregationType
 operator|.
 name|AGGREGATED
 operator|.

@@ -434,7 +434,7 @@ name|yarn
 operator|.
 name|logaggregation
 operator|.
-name|ContainerLogType
+name|ContainerLogAggregationType
 import|;
 end_import
 
@@ -4235,7 +4235,7 @@ operator|.
 name|getLogType
 argument_list|()
 argument_list|,
-name|ContainerLogType
+name|ContainerLogAggregationType
 operator|.
 name|LOCAL
 operator|.
@@ -4465,7 +4465,7 @@ argument_list|()
 operator|.
 name|equals
 argument_list|(
-name|ContainerLogType
+name|ContainerLogAggregationType
 operator|.
 name|AGGREGATED
 operator|.
@@ -4520,7 +4520,7 @@ operator|.
 name|getLogType
 argument_list|()
 argument_list|,
-name|ContainerLogType
+name|ContainerLogAggregationType
 operator|.
 name|LOCAL
 operator|.
@@ -4647,9 +4647,9 @@ name|responseText
 operator|.
 name|contains
 argument_list|(
-literal|"LogType: "
+literal|"LogAggregationType: "
 operator|+
-name|ContainerLogType
+name|ContainerLogAggregationType
 operator|.
 name|AGGREGATED
 argument_list|)
@@ -4671,9 +4671,9 @@ name|responseText
 operator|.
 name|contains
 argument_list|(
-literal|"LogType: "
+literal|"LogAggregationType: "
 operator|+
-name|ContainerLogType
+name|ContainerLogAggregationType
 operator|.
 name|LOCAL
 argument_list|)
@@ -5383,7 +5383,7 @@ decl_stmt|;
 name|String
 name|postfix
 init|=
-literal|"End of LogFile:"
+literal|"End of LogType:"
 decl_stmt|;
 name|int
 name|prefixIndex

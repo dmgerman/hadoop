@@ -648,7 +648,7 @@ name|containersLogMeta
 return|;
 block|}
 comment|/**    * Output container log.    * @param containerId the containerId    * @param nodeId the nodeId    * @param fileName the log file name    * @param fileLength the log file length    * @param outputSize the output size    * @param lastModifiedTime the log file last modified time    * @param fis the log file input stream    * @param os the output stream    * @param buf the buffer    * @param logType the log type.    * @throws IOException if we can not access the log file.    */
-DECL|method|outputContainerLog (String containerId, String nodeId, String fileName, long fileLength, long outputSize, String lastModifiedTime, InputStream fis, OutputStream os, byte[] buf, ContainerLogType logType)
+DECL|method|outputContainerLog (String containerId, String nodeId, String fileName, long fileLength, long outputSize, String lastModifiedTime, InputStream fis, OutputStream os, byte[] buf, ContainerLogAggregationType logType)
 specifier|public
 specifier|static
 name|void
@@ -682,7 +682,7 @@ name|byte
 index|[]
 name|buf
 parameter_list|,
-name|ContainerLogType
+name|ContainerLogAggregationType
 name|logType
 parameter_list|)
 throws|throws
@@ -876,7 +876,7 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"LogType: "
+literal|"LogAggregationType: "
 operator|+
 name|logType
 operator|+
@@ -906,7 +906,7 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"FileName:"
+literal|"LogType:"
 operator|+
 name|fileName
 operator|+
@@ -1408,7 +1408,7 @@ name|os
 argument_list|,
 name|buf
 argument_list|,
-name|ContainerLogType
+name|ContainerLogAggregationType
 operator|.
 name|AGGREGATED
 argument_list|)
@@ -1423,7 +1423,7 @@ decl_stmt|;
 name|String
 name|endOfFile
 init|=
-literal|"End of LogFile:"
+literal|"End of LogType:"
 operator|+
 name|fileType
 decl_stmt|;

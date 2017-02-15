@@ -536,7 +536,7 @@ name|yarn
 operator|.
 name|logaggregation
 operator|.
-name|ContainerLogType
+name|ContainerLogAggregationType
 import|;
 end_import
 
@@ -1961,7 +1961,7 @@ operator|.
 name|getRemoteUser
 argument_list|()
 argument_list|,
-name|ContainerLogType
+name|ContainerLogAggregationType
 operator|.
 name|LOCAL
 argument_list|)
@@ -2071,7 +2071,7 @@ name|ContainerLogsInfo
 argument_list|(
 name|logMeta
 argument_list|,
-name|ContainerLogType
+name|ContainerLogAggregationType
 operator|.
 name|AGGREGATED
 argument_list|)
@@ -2785,7 +2785,7 @@ name|os
 argument_list|,
 name|buf
 argument_list|,
-name|ContainerLogType
+name|ContainerLogAggregationType
 operator|.
 name|LOCAL
 argument_list|)
@@ -2800,7 +2800,7 @@ decl_stmt|;
 name|String
 name|endOfFile
 init|=
-literal|"End of LogFile:"
+literal|"End of LogType:"
 operator|+
 name|outputFileName
 decl_stmt|;

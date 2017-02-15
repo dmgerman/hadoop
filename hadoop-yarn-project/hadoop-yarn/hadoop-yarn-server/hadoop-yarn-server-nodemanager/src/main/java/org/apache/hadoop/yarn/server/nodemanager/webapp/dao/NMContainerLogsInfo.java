@@ -142,7 +142,7 @@ name|yarn
 operator|.
 name|logaggregation
 operator|.
-name|ContainerLogType
+name|ContainerLogAggregationType
 import|;
 end_import
 
@@ -268,7 +268,7 @@ specifier|public
 name|NMContainerLogsInfo
 parameter_list|()
 block|{}
-DECL|method|NMContainerLogsInfo (final Context nmContext, final ContainerId containerId, String remoteUser, ContainerLogType logType)
+DECL|method|NMContainerLogsInfo (final Context nmContext, final ContainerId containerId, String remoteUser, ContainerLogAggregationType logType)
 specifier|public
 name|NMContainerLogsInfo
 parameter_list|(
@@ -283,7 +283,7 @@ parameter_list|,
 name|String
 name|remoteUser
 parameter_list|,
-name|ContainerLogType
+name|ContainerLogAggregationType
 name|logType
 parameter_list|)
 throws|throws

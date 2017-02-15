@@ -528,7 +528,7 @@ name|yarn
 operator|.
 name|logaggregation
 operator|.
-name|ContainerLogType
+name|ContainerLogAggregationType
 import|;
 end_import
 
@@ -3352,15 +3352,27 @@ operator|!
 name|findLogs
 condition|)
 block|{
-throw|throw
-operator|new
-name|IOException
+name|os
+operator|.
+name|write
 argument_list|(
+operator|(
 literal|"Can not find logs for container:"
 operator|+
 name|containerIdStr
+operator|)
+operator|.
+name|getBytes
+argument_list|(
+name|Charset
+operator|.
+name|forName
+argument_list|(
+literal|"UTF-8"
 argument_list|)
-throw|;
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 else|else
 block|{
@@ -3389,9 +3401,9 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"LogType: "
+literal|"LogAggregationType: "
 operator|+
-name|ContainerLogType
+name|ContainerLogAggregationType
 operator|.
 name|LOCAL
 operator|+
@@ -3571,7 +3583,7 @@ name|ContainerLogsInfo
 argument_list|(
 name|meta
 argument_list|,
-name|ContainerLogType
+name|ContainerLogAggregationType
 operator|.
 name|AGGREGATED
 argument_list|)
@@ -3608,7 +3620,7 @@ name|ContainerLogsInfo
 argument_list|(
 name|emptyMeta
 argument_list|,
-name|ContainerLogType
+name|ContainerLogAggregationType
 operator|.
 name|LOCAL
 argument_list|)

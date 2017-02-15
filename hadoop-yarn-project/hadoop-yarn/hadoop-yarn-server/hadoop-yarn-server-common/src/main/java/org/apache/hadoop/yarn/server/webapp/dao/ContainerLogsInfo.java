@@ -142,7 +142,7 @@ name|yarn
 operator|.
 name|logaggregation
 operator|.
-name|ContainerLogType
+name|ContainerLogAggregationType
 import|;
 end_import
 
@@ -206,7 +206,7 @@ name|XmlElement
 argument_list|(
 name|name
 operator|=
-literal|"logType"
+literal|"logAggregationType"
 argument_list|)
 DECL|field|logType
 specifier|protected
@@ -243,14 +243,14 @@ specifier|public
 name|ContainerLogsInfo
 parameter_list|()
 block|{}
-DECL|method|ContainerLogsInfo (ContainerLogMeta logMeta, ContainerLogType logType)
+DECL|method|ContainerLogsInfo (ContainerLogMeta logMeta, ContainerLogAggregationType logType)
 specifier|public
 name|ContainerLogsInfo
 parameter_list|(
 name|ContainerLogMeta
 name|logMeta
 parameter_list|,
-name|ContainerLogType
+name|ContainerLogAggregationType
 name|logType
 parameter_list|)
 throws|throws
