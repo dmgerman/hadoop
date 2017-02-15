@@ -848,6 +848,22 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
+name|InvalidResourceRequestException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
 name|YarnException
 import|;
 end_import
@@ -1585,6 +1601,24 @@ operator|.
 name|slideram
 operator|.
 name|SliderAMProviderService
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
+name|server
+operator|.
+name|appmaster
+operator|.
+name|actions
+operator|.
+name|ActionHalt
 import|;
 end_import
 
@@ -9210,6 +9244,82 @@ name|Throwable
 name|e
 parameter_list|)
 block|{
+if|if
+condition|(
+name|e
+operator|instanceof
+name|InvalidResourceRequestException
+condition|)
+block|{
+comment|// stop the cluster
+name|LOG_YARN
+operator|.
+name|error
+argument_list|(
+literal|"AMRMClientAsync.onError() received {}"
+argument_list|,
+name|e
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|signalAMComplete
+argument_list|(
+operator|new
+name|ActionStopSlider
+argument_list|(
+literal|"stop"
+argument_list|,
+name|EXIT_EXCEPTION_THROWN
+argument_list|,
+name|FinalApplicationStatus
+operator|.
+name|FAILED
+argument_list|,
+literal|"AMRMClientAsync.onError() received "
+operator|+
+name|e
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|e
+operator|instanceof
+name|InvalidApplicationMasterRequestException
+condition|)
+block|{
+comment|// halt the AM
+name|LOG_YARN
+operator|.
+name|error
+argument_list|(
+literal|"AMRMClientAsync.onError() received {}"
+argument_list|,
+name|e
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|queue
+argument_list|(
+operator|new
+name|ActionHalt
+argument_list|(
+name|EXIT_EXCEPTION_THROWN
+argument_list|,
+literal|"AMRMClientAsync.onError() received "
+operator|+
+name|e
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// ignore and log
 name|LOG_YARN
 operator|.
 name|info
@@ -9219,6 +9329,7 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/* =================================================================== */
 comment|/* RMOperationHandlerActions */

@@ -104,6 +104,31 @@ specifier|final
 name|String
 name|text
 decl_stmt|;
+DECL|method|ActionHalt ( int status, String text)
+specifier|public
+name|ActionHalt
+parameter_list|(
+name|int
+name|status
+parameter_list|,
+name|String
+name|text
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|status
+argument_list|,
+name|text
+argument_list|,
+literal|0
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|ActionHalt ( int status, String text, long delay, TimeUnit timeUnit)
 specifier|public
 name|ActionHalt
