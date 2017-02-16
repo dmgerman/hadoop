@@ -2948,6 +2948,52 @@ throw|throw
 name|e
 throw|;
 block|}
+catch|catch
+parameter_list|(
+name|NoClassDefFoundError
+name|e
+parameter_list|)
+block|{
+name|NoClassDefFoundError
+name|wrappedError
+init|=
+operator|new
+name|NoClassDefFoundError
+argument_list|(
+name|e
+operator|.
+name|getMessage
+argument_list|()
+operator|+
+literal|". It appears that the timeline client "
+operator|+
+literal|"failed to initiate because an incompatible dependency "
+operator|+
+literal|"in classpath. If timeline service is optional to this "
+operator|+
+literal|"client, try to work around by setting "
+operator|+
+name|YarnConfiguration
+operator|.
+name|TIMELINE_SERVICE_ENABLED
+operator|+
+literal|" to false in client configuration."
+argument_list|)
+decl_stmt|;
+name|wrappedError
+operator|.
+name|setStackTrace
+argument_list|(
+name|e
+operator|.
+name|getStackTrace
+argument_list|()
+argument_list|)
+expr_stmt|;
+throw|throw
+name|wrappedError
+throw|;
+block|}
 block|}
 DECL|method|getTimelineDelegationTokenRenewer (Configuration conf)
 specifier|private
