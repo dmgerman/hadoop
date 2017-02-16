@@ -83,6 +83,15 @@ name|PERMISSION_DENIED
 init|=
 literal|"Permission denied"
 decl_stmt|;
+DECL|field|PERMISSION_DENIED_BY_STICKY_BIT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|PERMISSION_DENIED_BY_STICKY_BIT
+init|=
+literal|"Permission denied by sticky bit"
+decl_stmt|;
 block|}
 end_class
 
