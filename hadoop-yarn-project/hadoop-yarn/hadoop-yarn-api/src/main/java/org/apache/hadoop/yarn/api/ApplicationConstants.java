@@ -302,13 +302,6 @@ argument_list|(
 literal|"LD_LIBRARY_PATH"
 argument_list|)
 block|,
-comment|/**      * $YARN_RESOURCEMANAGER_APPLICATION_QUEUE      * The queue into which the app was submitted/launched.      */
-DECL|enumConstant|YARN_RESOURCEMANAGER_APPLICATION_QUEUE
-name|YARN_RESOURCEMANAGER_APPLICATION_QUEUE
-argument_list|(
-literal|"YARN_RESOURCEMANAGER_APPLICATION_QUEUE"
-argument_list|)
-block|,
 comment|/**      * $HADOOP_CONF_DIR      * Final, non-modifiable.      */
 DECL|enumConstant|HADOOP_CONF_DIR
 name|HADOOP_CONF_DIR
