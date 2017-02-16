@@ -819,6 +819,16 @@ literal|0
 argument_list|)
 decl_stmt|;
 comment|// Preemption related variables
+DECL|field|preemptionVariablesLock
+specifier|private
+specifier|final
+name|Object
+name|preemptionVariablesLock
+init|=
+operator|new
+name|Object
+argument_list|()
+decl_stmt|;
 DECL|field|preemptedResources
 specifier|private
 specifier|final
@@ -2821,6 +2831,11 @@ name|RMContainer
 name|container
 parameter_list|)
 block|{
+synchronized|synchronized
+init|(
+name|preemptionVariablesLock
+init|)
+block|{
 if|if
 condition|(
 name|containersToPreempt
@@ -2830,11 +2845,6 @@ argument_list|(
 name|container
 argument_list|)
 condition|)
-block|{
-synchronized|synchronized
-init|(
-name|preemptedResources
-init|)
 block|{
 name|Resources
 operator|.
@@ -2860,6 +2870,11 @@ name|RMContainer
 name|container
 parameter_list|)
 block|{
+synchronized|synchronized
+init|(
+name|preemptionVariablesLock
+init|)
+block|{
 if|if
 condition|(
 name|containersToPreempt
@@ -2869,11 +2884,6 @@ argument_list|(
 name|container
 argument_list|)
 condition|)
-block|{
-synchronized|synchronized
-init|(
-name|preemptedResources
-init|)
 block|{
 name|Resources
 operator|.
@@ -2890,31 +2900,51 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|getPreemptionContainers ()
+DECL|method|getPreemptionContainerIds ()
 name|Set
 argument_list|<
-name|RMContainer
+name|ContainerId
 argument_list|>
-name|getPreemptionContainers
-parameter_list|()
-block|{
-return|return
-name|containersToPreempt
-return|;
-block|}
-DECL|method|getPreemptedResources ()
-specifier|private
-name|Resource
-name|getPreemptedResources
+name|getPreemptionContainerIds
 parameter_list|()
 block|{
 synchronized|synchronized
 init|(
-name|preemptedResources
+name|preemptionVariablesLock
 init|)
 block|{
+name|Set
+argument_list|<
+name|ContainerId
+argument_list|>
+name|preemptionContainerIds
+init|=
+operator|new
+name|HashSet
+argument_list|<>
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+name|RMContainer
+name|container
+range|:
+name|containersToPreempt
+control|)
+block|{
+name|preemptionContainerIds
+operator|.
+name|add
+argument_list|(
+name|container
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 return|return
-name|preemptedResources
+name|preemptionContainerIds
 return|;
 block|}
 block|}
@@ -2979,6 +3009,11 @@ return|return
 literal|false
 return|;
 block|}
+synchronized|synchronized
+init|(
+name|preemptionVariablesLock
+init|)
+block|{
 if|if
 condition|(
 name|containersToPreempt
@@ -2993,6 +3028,7 @@ comment|// The container is already under consideration for preemption
 return|return
 literal|false
 return|;
+block|}
 block|}
 comment|// Check if the app's allocation will be over its fairshare even
 comment|// after preempting this container
@@ -5500,18 +5536,18 @@ name|Resource
 name|getResourceUsage
 parameter_list|()
 block|{
-comment|/*      * getResourcesToPreempt() returns zero, except when there are containers      * to preempt. Avoid creating an object in the common case.      */
+comment|// Subtract copies the object, so that we have a snapshot,
+comment|// in case usage changes, while the caller is using the value
+synchronized|synchronized
+init|(
+name|preemptionVariablesLock
+init|)
+block|{
 return|return
-name|getPreemptedResources
-argument_list|()
+name|containersToPreempt
 operator|.
-name|equals
-argument_list|(
-name|Resources
-operator|.
-name|none
+name|isEmpty
 argument_list|()
-argument_list|)
 condition|?
 name|getCurrentConsumption
 argument_list|()
@@ -5523,10 +5559,10 @@ argument_list|(
 name|getCurrentConsumption
 argument_list|()
 argument_list|,
-name|getPreemptedResources
-argument_list|()
+name|preemptedResources
 argument_list|)
 return|;
+block|}
 block|}
 annotation|@
 name|Override
