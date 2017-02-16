@@ -2489,13 +2489,27 @@ operator|.
 name|getTime
 argument_list|()
 decl_stmt|;
+comment|// set aclBit from ADLS backend response if
+comment|// ADL_SUPPORT_ACL_BIT_IN_FSPERMISSION is true.
+specifier|final
+name|boolean
+name|aclBit
+init|=
+name|aclBitStatus
+condition|?
+name|entry
+operator|.
+name|aclBit
+else|:
+literal|false
+decl_stmt|;
 name|FsPermission
 name|permission
 init|=
 operator|new
 name|AdlPermission
 argument_list|(
-name|aclBitStatus
+name|aclBit
 argument_list|,
 name|Short
 operator|.
