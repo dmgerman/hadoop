@@ -1942,17 +1942,14 @@ name|avgCapacity
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Initialize a {@link FSQueue} with queue-specific properties and its    * metrics.    * @param queue the FSQueue needed to be initialized    * @param scheduler the scheduler which the queue belonged to    */
-DECL|method|initFSQueue (FSQueue queue, FairScheduler scheduler)
+comment|/**    * Initialize a {@link FSQueue} with queue-specific properties and its    * metrics.    * @param queue the FSQueue needed to be initialized    */
+DECL|method|initFSQueue (FSQueue queue)
 specifier|public
 name|void
 name|initFSQueue
 parameter_list|(
 name|FSQueue
 name|queue
-parameter_list|,
-name|FairScheduler
-name|scheduler
 parameter_list|)
 block|{
 comment|// Set queue-specific properties.
@@ -2024,53 +2021,6 @@ name|name
 argument_list|)
 argument_list|)
 expr_stmt|;
-try|try
-block|{
-name|SchedulingPolicy
-name|policy
-init|=
-name|getSchedulingPolicy
-argument_list|(
-name|name
-argument_list|)
-decl_stmt|;
-name|policy
-operator|.
-name|initialize
-argument_list|(
-name|scheduler
-operator|.
-name|getClusterResource
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|queue
-operator|.
-name|setPolicy
-argument_list|(
-name|policy
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|AllocationConfigurationException
-name|ex
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Failed to set the scheduling policy "
-operator|+
-name|getDefaultSchedulingPolicy
-argument_list|()
-argument_list|,
-name|ex
-argument_list|)
-expr_stmt|;
-block|}
 comment|// Set queue metrics.
 name|queue
 operator|.

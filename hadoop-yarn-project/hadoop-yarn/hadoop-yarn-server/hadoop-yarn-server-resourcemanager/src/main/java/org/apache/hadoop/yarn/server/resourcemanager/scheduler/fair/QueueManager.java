@@ -216,6 +216,30 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|fair
+operator|.
+name|policies
+operator|.
+name|FifoPolicy
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|xml
 operator|.
 name|sax
@@ -291,7 +315,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Maintains a list of queues as well as scheduling parameters for each queue,  * such as guaranteed share allocations, from the fair scheduler config file.  *   */
+comment|/**  * Maintains a list of queues as well as scheduling parameters for each queue,  * such as guaranteed share allocations, from the fair scheduler config file.  */
 end_comment
 
 begin_class
@@ -421,6 +445,9 @@ name|AllocationConfigurationException
 throws|,
 name|ParserConfigurationException
 block|{
+comment|// Policies of root and default queue are set to
+comment|// SchedulingPolicy.DEFAULT_POLICY since the allocation file hasn't been
+comment|// loaded yet.
 name|rootQueue
 operator|=
 operator|new
@@ -1031,6 +1058,49 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
+comment|// Check if child policy is allowed
+name|SchedulingPolicy
+name|childPolicy
+init|=
+name|scheduler
+operator|.
+name|getAllocationConfiguration
+argument_list|()
+operator|.
+name|getSchedulingPolicy
+argument_list|(
+name|queueName
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|parent
+operator|.
+name|getPolicy
+argument_list|()
+operator|.
+name|isChildPolicyAllowed
+argument_list|(
+name|childPolicy
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Can't create queue '"
+operator|+
+name|queueName
+operator|+
+literal|"'."
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
 comment|// Only create a leaf queue at the very end
 if|if
 condition|(
@@ -1076,6 +1146,34 @@ expr_stmt|;
 block|}
 else|else
 block|{
+if|if
+condition|(
+name|childPolicy
+operator|instanceof
+name|FifoPolicy
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Can't create queue '"
+operator|+
+name|queueName
+operator|+
+literal|"', since "
+operator|+
+name|FifoPolicy
+operator|.
+name|NAME
+operator|+
+literal|" is only for leaf queues."
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
 name|newParent
 operator|=
 operator|new
@@ -1794,6 +1892,28 @@ init|(
 name|queues
 init|)
 block|{
+comment|// Verify and set scheduling policies for existing queues before creating
+comment|// any queue, since we need parent policies to determine if we can create
+comment|// its children.
+if|if
+condition|(
+operator|!
+name|rootQueue
+operator|.
+name|verifyAndSetPolicyFromConf
+argument_list|(
+name|queueConf
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Setting scheduling policies for existing queues failed!"
+argument_list|)
+expr_stmt|;
+block|}
 for|for
 control|(
 name|String

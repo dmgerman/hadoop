@@ -339,20 +339,6 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getApplicableDepth ()
-specifier|public
-name|byte
-name|getApplicableDepth
-parameter_list|()
-block|{
-return|return
-name|SchedulingPolicy
-operator|.
-name|DEPTH_ANY
-return|;
-block|}
-annotation|@
-name|Override
 DECL|method|getComparator ()
 specifier|public
 name|Comparator

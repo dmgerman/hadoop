@@ -857,6 +857,8 @@ expr_stmt|;
 name|addChildQueue
 argument_list|(
 name|out
+argument_list|,
+literal|"fair"
 argument_list|)
 expr_stmt|;
 name|out
@@ -902,6 +904,8 @@ expr_stmt|;
 name|addChildQueue
 argument_list|(
 name|out
+argument_list|,
+literal|"drf"
 argument_list|)
 expr_stmt|;
 name|out
@@ -909,6 +913,15 @@ operator|.
 name|println
 argument_list|(
 literal|"</queue>"
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"<defaultQueueSchedulingPolicy>drf"
+operator|+
+literal|"</defaultQueueSchedulingPolicy>"
 argument_list|)
 expr_stmt|;
 name|out
@@ -1037,13 +1050,16 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addChildQueue (PrintWriter out)
+DECL|method|addChildQueue (PrintWriter out, String policy)
 specifier|private
 name|void
 name|addChildQueue
 parameter_list|(
 name|PrintWriter
 name|out
+parameter_list|,
+name|String
+name|policy
 parameter_list|)
 block|{
 comment|// Child queue under fairshare with same settings
@@ -1070,6 +1086,17 @@ argument_list|(
 literal|"<fairSharePreemptionTimeout>0"
 operator|+
 literal|"</fairSharePreemptionTimeout>"
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"<schedulingPolicy>"
+operator|+
+name|policy
+operator|+
+literal|"</schedulingPolicy>"
 argument_list|)
 expr_stmt|;
 name|out

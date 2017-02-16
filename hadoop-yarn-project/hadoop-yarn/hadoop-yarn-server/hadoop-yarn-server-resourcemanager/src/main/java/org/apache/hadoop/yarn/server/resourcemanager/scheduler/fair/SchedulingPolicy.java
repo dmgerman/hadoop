@@ -280,67 +280,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|DEPTH_LEAF
-specifier|public
-specifier|static
-specifier|final
-name|byte
-name|DEPTH_LEAF
-init|=
-operator|(
-name|byte
-operator|)
-literal|1
-decl_stmt|;
-DECL|field|DEPTH_INTERMEDIATE
-specifier|public
-specifier|static
-specifier|final
-name|byte
-name|DEPTH_INTERMEDIATE
-init|=
-operator|(
-name|byte
-operator|)
-literal|2
-decl_stmt|;
-DECL|field|DEPTH_ROOT
-specifier|public
-specifier|static
-specifier|final
-name|byte
-name|DEPTH_ROOT
-init|=
-operator|(
-name|byte
-operator|)
-literal|4
-decl_stmt|;
-DECL|field|DEPTH_PARENT
-specifier|public
-specifier|static
-specifier|final
-name|byte
-name|DEPTH_PARENT
-init|=
-operator|(
-name|byte
-operator|)
-literal|6
-decl_stmt|;
-comment|// Root and Intermediate
-DECL|field|DEPTH_ANY
-specifier|public
-specifier|static
-specifier|final
-name|byte
-name|DEPTH_ANY
-init|=
-operator|(
-name|byte
-operator|)
-literal|7
-decl_stmt|;
 comment|/**    * Returns a {@link SchedulingPolicy} instance corresponding to the passed clazz    */
 DECL|method|getInstance (Class<? extends SchedulingPolicy> clazz)
 specifier|public
@@ -577,47 +516,6 @@ name|String
 name|getName
 parameter_list|()
 function_decl|;
-comment|/**    * Specifies the depths in the hierarchy, this {@link SchedulingPolicy}    * applies to    *     * @return depth equal to one of fields {@link SchedulingPolicy}#DEPTH_*    */
-DECL|method|getApplicableDepth ()
-specifier|public
-specifier|abstract
-name|byte
-name|getApplicableDepth
-parameter_list|()
-function_decl|;
-comment|/**    * Checks if the specified {@link SchedulingPolicy} can be used for a queue at    * the specified depth in the hierarchy    *     * @param policy {@link SchedulingPolicy} we are checking the    *          depth-applicability for    * @param depth queue's depth in the hierarchy    * @return true if policy is applicable to passed depth, false otherwise    */
-DECL|method|isApplicableTo (SchedulingPolicy policy, byte depth)
-specifier|public
-specifier|static
-name|boolean
-name|isApplicableTo
-parameter_list|(
-name|SchedulingPolicy
-name|policy
-parameter_list|,
-name|byte
-name|depth
-parameter_list|)
-block|{
-return|return
-operator|(
-operator|(
-name|policy
-operator|.
-name|getApplicableDepth
-argument_list|()
-operator|&
-name|depth
-operator|)
-operator|==
-name|depth
-operator|)
-condition|?
-literal|true
-else|:
-literal|false
-return|;
-block|}
 comment|/**    * The comparator returned by this method is to be used for sorting the    * {@link Schedulable}s in that queue.    *     * @return the comparator to sort by    */
 DECL|method|getComparator ()
 specifier|public
@@ -698,6 +596,20 @@ name|Resource
 name|maxAvailable
 parameter_list|)
 function_decl|;
+comment|/**    * Check whether the policy of a child queue is allowed.    *    * @param childPolicy the policy of child queue    * @return true if the child policy is allowed; false otherwise    */
+DECL|method|isChildPolicyAllowed (SchedulingPolicy childPolicy)
+specifier|public
+name|boolean
+name|isChildPolicyAllowed
+parameter_list|(
+name|SchedulingPolicy
+name|childPolicy
+parameter_list|)
+block|{
+return|return
+literal|true
+return|;
+block|}
 block|}
 end_class
 
