@@ -1138,15 +1138,19 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Helper method to identify starved applications. This needs to be called    * ONLY from {@link #updateInternal}, after the application shares    * are updated.    *    * A queue can be starving due to fairshare or minshare.    *    * Minshare is defined only on the queue and not the applications.    * Fairshare is defined for both the queue and the applications.    *    * If this queue is starved due to minshare, we need to identify the most    * deserving apps if they themselves are not starved due to fairshare.    *    * If this queue is starving due to fairshare, there must be at least    * one application that is starved. And, even if the queue is not    * starved due to fairshare, there might still be starved applications.    */
-DECL|method|updateStarvedApps ()
+comment|/**    * Compute the extent of fairshare starvation for a set of apps.    *    * @param appsWithDemand apps to compute fairshare starvation for    * @return aggregate fairshare starvation for all apps    */
+DECL|method|updateStarvedAppsFairshare ( TreeSet<FSAppAttempt> appsWithDemand)
 specifier|private
-name|void
-name|updateStarvedApps
-parameter_list|()
+name|Resource
+name|updateStarvedAppsFairshare
+parameter_list|(
+name|TreeSet
+argument_list|<
+name|FSAppAttempt
+argument_list|>
+name|appsWithDemand
+parameter_list|)
 block|{
-comment|// First identify starved applications and track total amount of
-comment|// starvation (in resources)
 name|Resource
 name|fairShareStarvation
 init|=
@@ -1159,15 +1163,6 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// Fetch apps with unmet demand sorted by fairshare starvation
-name|TreeSet
-argument_list|<
-name|FSAppAttempt
-argument_list|>
-name|appsWithDemand
-init|=
-name|fetchAppsWithDemand
-argument_list|()
-decl_stmt|;
 for|for
 control|(
 name|FSAppAttempt
@@ -1189,13 +1184,8 @@ condition|(
 operator|!
 name|Resources
 operator|.
-name|equals
+name|isNone
 argument_list|(
-name|Resources
-operator|.
-name|none
-argument_list|()
-argument_list|,
 name|appStarvation
 argument_list|)
 condition|)
@@ -1225,23 +1215,38 @@ block|{
 break|break;
 block|}
 block|}
-comment|// Compute extent of minshare starvation
+return|return
+name|fairShareStarvation
+return|;
+block|}
+comment|/**    * Distribute minshare starvation to a set of apps    * @param appsWithDemand set of apps    * @param minShareStarvation minshare starvation to distribute    */
+DECL|method|updateStarvedAppsMinshare ( final TreeSet<FSAppAttempt> appsWithDemand, final Resource minShareStarvation)
+specifier|private
+name|void
+name|updateStarvedAppsMinshare
+parameter_list|(
+specifier|final
+name|TreeSet
+argument_list|<
+name|FSAppAttempt
+argument_list|>
+name|appsWithDemand
+parameter_list|,
+specifier|final
 name|Resource
 name|minShareStarvation
+parameter_list|)
+block|{
+name|Resource
+name|pending
 init|=
-name|minShareStarvation
-argument_list|()
-decl_stmt|;
-comment|// Compute minshare starvation that is not subsumed by fairshare starvation
 name|Resources
 operator|.
-name|subtractFrom
+name|clone
 argument_list|(
 name|minShareStarvation
-argument_list|,
-name|fairShareStarvation
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 comment|// Keep adding apps to the starved list until the unmet demand goes over
 comment|// the remaining minshare
 for|for
@@ -1252,6 +1257,37 @@ range|:
 name|appsWithDemand
 control|)
 block|{
+if|if
+condition|(
+operator|!
+name|Resources
+operator|.
+name|isNone
+argument_list|(
+name|pending
+argument_list|)
+condition|)
+block|{
+name|Resource
+name|appMinShare
+init|=
+name|app
+operator|.
+name|getPendingDemand
+argument_list|()
+decl_stmt|;
+name|Resources
+operator|.
+name|subtractFromNonNegative
+argument_list|(
+name|appMinShare
+argument_list|,
+name|app
+operator|.
+name|getFairshareStarvation
+argument_list|()
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|Resources
@@ -1268,45 +1304,44 @@ operator|.
 name|getClusterResource
 argument_list|()
 argument_list|,
-name|minShareStarvation
+name|appMinShare
 argument_list|,
-name|none
-argument_list|()
+name|pending
 argument_list|)
 condition|)
 block|{
-name|Resource
-name|appPendingDemand
-init|=
 name|Resources
 operator|.
-name|subtract
+name|subtractFromNonNegative
 argument_list|(
-name|app
-operator|.
-name|getDemand
-argument_list|()
+name|appMinShare
 argument_list|,
-name|app
-operator|.
-name|getResourceUsage
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|Resources
-operator|.
-name|subtractFrom
-argument_list|(
-name|minShareStarvation
-argument_list|,
-name|appPendingDemand
+name|pending
 argument_list|)
 expr_stmt|;
+name|pending
+operator|=
+name|none
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+name|Resources
+operator|.
+name|subtractFromNonNegative
+argument_list|(
+name|pending
+argument_list|,
+name|appMinShare
+argument_list|)
+expr_stmt|;
+block|}
 name|app
 operator|.
 name|setMinshareStarvation
 argument_list|(
-name|appPendingDemand
+name|appMinShare
 argument_list|)
 expr_stmt|;
 name|context
@@ -1331,6 +1366,60 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+block|}
+comment|/**    * Helper method to identify starved applications. This needs to be called    * ONLY from {@link #updateInternal}, after the application shares    * are updated.    *    * A queue can be starving due to fairshare or minshare.    *    * Minshare is defined only on the queue and not the applications.    * Fairshare is defined for both the queue and the applications.    *    * If this queue is starved due to minshare, we need to identify the most    * deserving apps if they themselves are not starved due to fairshare.    *    * If this queue is starving due to fairshare, there must be at least    * one application that is starved. And, even if the queue is not    * starved due to fairshare, there might still be starved applications.    */
+DECL|method|updateStarvedApps ()
+specifier|private
+name|void
+name|updateStarvedApps
+parameter_list|()
+block|{
+comment|// Fetch apps with pending demand
+name|TreeSet
+argument_list|<
+name|FSAppAttempt
+argument_list|>
+name|appsWithDemand
+init|=
+name|fetchAppsWithDemand
+argument_list|(
+literal|false
+argument_list|)
+decl_stmt|;
+comment|// Process apps with fairshare starvation
+name|Resource
+name|fairShareStarvation
+init|=
+name|updateStarvedAppsFairshare
+argument_list|(
+name|appsWithDemand
+argument_list|)
+decl_stmt|;
+comment|// Compute extent of minshare starvation
+name|Resource
+name|minShareStarvation
+init|=
+name|minShareStarvation
+argument_list|()
+decl_stmt|;
+comment|// Compute minshare starvation that is not subsumed by fairshare starvation
+name|Resources
+operator|.
+name|subtractFromNonNegative
+argument_list|(
+name|minShareStarvation
+argument_list|,
+name|fairShareStarvation
+argument_list|)
+expr_stmt|;
+comment|// Assign this minshare to apps with pending demand over fairshare
+name|updateStarvedAppsMinshare
+argument_list|(
+name|appsWithDemand
+argument_list|,
+name|minShareStarvation
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -1686,7 +1775,9 @@ name|FSAppAttempt
 name|sched
 range|:
 name|fetchAppsWithDemand
-argument_list|()
+argument_list|(
+literal|true
+argument_list|)
 control|)
 block|{
 if|if
@@ -1758,14 +1849,18 @@ return|return
 name|assigned
 return|;
 block|}
-DECL|method|fetchAppsWithDemand ()
+comment|/**    * Fetch the subset of apps that have unmet demand. When used for    * preemption-related code (as opposed to allocation), omits apps that    * should not be checked for starvation.    *    * @param assignment whether the apps are for allocation containers, as    *                   opposed to preemption calculations    * @return Set of apps with unmet demand    */
+DECL|method|fetchAppsWithDemand (boolean assignment)
 specifier|private
 name|TreeSet
 argument_list|<
 name|FSAppAttempt
 argument_list|>
 name|fetchAppsWithDemand
-parameter_list|()
+parameter_list|(
+name|boolean
+name|assignment
+parameter_list|)
 block|{
 name|TreeSet
 argument_list|<
@@ -1812,13 +1907,21 @@ decl_stmt|;
 if|if
 condition|(
 operator|!
-name|pending
+name|Resources
 operator|.
-name|equals
+name|isNone
 argument_list|(
-name|none
-argument_list|()
+name|pending
 argument_list|)
+operator|&&
+operator|(
+name|assignment
+operator|||
+name|app
+operator|.
+name|shouldCheckForStarvation
+argument_list|()
+operator|)
 condition|)
 block|{
 name|pendingForResourceApps

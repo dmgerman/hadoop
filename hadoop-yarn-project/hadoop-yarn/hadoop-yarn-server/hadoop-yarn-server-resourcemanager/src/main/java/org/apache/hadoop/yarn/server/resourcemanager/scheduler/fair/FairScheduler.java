@@ -8857,6 +8857,15 @@ return|return
 name|reservableNodesRatio
 return|;
 block|}
+DECL|method|getNMHeartbeatInterval ()
+name|long
+name|getNMHeartbeatInterval
+parameter_list|()
+block|{
+return|return
+name|nmHeartbeatInterval
+return|;
+block|}
 block|}
 end_class
 

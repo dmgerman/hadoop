@@ -146,6 +146,22 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|ControlledClock
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|After
@@ -355,6 +371,17 @@ name|GB
 init|=
 literal|1024
 decl_stmt|;
+comment|// Scheduler clock
+DECL|field|clock
+specifier|private
+specifier|final
+name|ControlledClock
+name|clock
+init|=
+operator|new
+name|ControlledClock
+argument_list|()
+decl_stmt|;
 comment|// Node Capacity = NODE_CAPACITY_MULTIPLE * (1 GB or 1 vcore)
 DECL|field|NODE_CAPACITY_MULTIPLE
 specifier|private
@@ -387,12 +414,17 @@ annotation|@
 name|Parameterized
 operator|.
 name|Parameters
+argument_list|(
+name|name
+operator|=
+literal|"{0}"
+argument_list|)
 DECL|method|getParameters ()
 specifier|public
 specifier|static
 name|Collection
 argument_list|<
-name|Boolean
+name|Object
 index|[]
 argument_list|>
 name|getParameters
@@ -404,26 +436,33 @@ operator|.
 name|asList
 argument_list|(
 operator|new
-name|Boolean
+name|Object
 index|[]
 index|[]
 block|{
 block|{
+literal|"FairSharePreemption"
+block|,
 literal|true
 block|}
 block|,
 block|{
+literal|"MinSharePreemption"
+block|,
 literal|false
 block|}
 block|}
 argument_list|)
 return|;
 block|}
-DECL|method|TestFairSchedulerPreemption (Boolean fairshare)
+DECL|method|TestFairSchedulerPreemption (String name, boolean fairshare)
 specifier|public
 name|TestFairSchedulerPreemption
 parameter_list|(
-name|Boolean
+name|String
+name|name
+parameter_list|,
+name|boolean
 name|fairshare
 parameter_list|)
 throws|throws
@@ -444,6 +483,8 @@ specifier|public
 name|void
 name|setup
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|createConfiguration
 argument_list|()
@@ -494,6 +535,9 @@ name|WAIT_TIME_BEFORE_KILL
 argument_list|,
 literal|0
 argument_list|)
+expr_stmt|;
+name|setupCluster
+argument_list|()
 expr_stmt|;
 block|}
 annotation|@
@@ -806,11 +850,6 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|resourceManager
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
 name|scheduler
 operator|=
 operator|(
@@ -819,6 +858,18 @@ operator|)
 name|resourceManager
 operator|.
 name|getResourceScheduler
+argument_list|()
+expr_stmt|;
+name|scheduler
+operator|.
+name|setClock
+argument_list|(
+name|clock
+argument_list|)
+expr_stmt|;
+name|resourceManager
+operator|.
+name|start
 argument_list|()
 expr_stmt|;
 comment|// Create and add two nodes to the cluster
@@ -933,10 +984,10 @@ block|}
 block|}
 block|}
 comment|/**    * Submit an application to a given queue and take over the entire cluster.    *    * @param queueName queue name    */
-DECL|method|takeAllResource (String queueName)
+DECL|method|takeAllResources (String queueName)
 specifier|private
 name|void
-name|takeAllResource
+name|takeAllResources
 parameter_list|(
 name|String
 name|queueName
@@ -1063,12 +1114,12 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 expr_stmt|;
-comment|// Sleep long enough to pass
-name|Thread
+comment|// Move clock enough to identify starvation
+name|clock
 operator|.
-name|sleep
+name|tickSec
 argument_list|(
-literal|10
+literal|1
 argument_list|)
 expr_stmt|;
 name|scheduler
@@ -1092,7 +1143,7 @@ parameter_list|)
 throws|throws
 name|InterruptedException
 block|{
-name|takeAllResource
+name|takeAllResources
 argument_list|(
 name|queue1
 argument_list|)
@@ -1111,8 +1162,7 @@ parameter_list|()
 throws|throws
 name|InterruptedException
 block|{
-comment|// Sleep long enough for four containers to be preempted. Note that the
-comment|// starved app must be queued four times for containers to be preempted.
+comment|// Sleep long enough for four containers to be preempted.
 for|for
 control|(
 name|int
@@ -1122,7 +1172,7 @@ literal|0
 init|;
 name|i
 operator|<
-literal|10000
+literal|100
 condition|;
 name|i
 operator|++
@@ -1201,7 +1251,7 @@ literal|0
 init|;
 name|i
 operator|<
-literal|600
+literal|100
 condition|;
 name|i
 operator|++
@@ -1254,9 +1304,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|setupCluster
-argument_list|()
-expr_stmt|;
 name|String
 name|queue
 init|=
@@ -1295,9 +1342,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|setupCluster
-argument_list|()
-expr_stmt|;
 name|submitApps
 argument_list|(
 literal|"root.preemptable.child-1"
@@ -1319,9 +1363,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|setupCluster
-argument_list|()
-expr_stmt|;
 name|submitApps
 argument_list|(
 literal|"root.preemptable.child-1"
@@ -1343,9 +1384,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|setupCluster
-argument_list|()
-expr_stmt|;
 name|submitApps
 argument_list|(
 literal|"root.nonpreemptable.child-1"
@@ -1449,10 +1487,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|setupCluster
-argument_list|()
-expr_stmt|;
-name|takeAllResource
+name|takeAllResources
 argument_list|(
 literal|"root.preemptable.child-1"
 argument_list|)

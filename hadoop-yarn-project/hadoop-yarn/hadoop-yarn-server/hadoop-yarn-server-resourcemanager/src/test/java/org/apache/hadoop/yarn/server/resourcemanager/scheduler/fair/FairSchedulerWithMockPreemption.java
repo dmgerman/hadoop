@@ -52,6 +52,18 @@ name|FairSchedulerWithMockPreemption
 extends|extends
 name|FairScheduler
 block|{
+DECL|field|DELAY_FOR_NEXT_STARVATION_CHECK_MS
+specifier|static
+specifier|final
+name|long
+name|DELAY_FOR_NEXT_STARVATION_CHECK_MS
+init|=
+literal|10
+operator|*
+literal|60
+operator|*
+literal|1000
+decl_stmt|;
 annotation|@
 name|Override
 DECL|method|createPreemptionThread ()
@@ -97,6 +109,7 @@ init|=
 literal|0
 decl_stmt|;
 DECL|method|MockPreemptionThread (FairScheduler scheduler)
+specifier|private
 name|MockPreemptionThread
 parameter_list|(
 name|FairScheduler
@@ -148,6 +161,13 @@ argument_list|)
 expr_stmt|;
 name|totalAppsAdded
 operator|++
+expr_stmt|;
+name|app
+operator|.
+name|preemptionTriggered
+argument_list|(
+name|DELAY_FOR_NEXT_STARVATION_CHECK_MS
+argument_list|)
 expr_stmt|;
 block|}
 catch|catch
