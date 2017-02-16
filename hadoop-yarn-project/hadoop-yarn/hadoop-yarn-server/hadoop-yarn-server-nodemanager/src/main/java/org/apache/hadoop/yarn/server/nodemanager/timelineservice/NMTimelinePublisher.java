@@ -384,7 +384,7 @@ name|client
 operator|.
 name|api
 operator|.
-name|TimelineClient
+name|TimelineV2Client
 import|;
 end_import
 
@@ -751,7 +751,7 @@ name|Map
 argument_list|<
 name|ApplicationId
 argument_list|,
-name|TimelineClient
+name|TimelineV2Client
 argument_list|>
 name|appToClientMap
 decl_stmt|;
@@ -868,7 +868,7 @@ name|Map
 argument_list|<
 name|ApplicationId
 argument_list|,
-name|TimelineClient
+name|TimelineV2Client
 argument_list|>
 name|getAppToClientMap
 parameter_list|()
@@ -1117,7 +1117,7 @@ try|try
 block|{
 comment|// no need to put it as part of publisher as timeline client already has
 comment|// Queuing concept
-name|TimelineClient
+name|TimelineV2Client
 name|timelineClient
 init|=
 name|getTimelineClient
@@ -1658,7 +1658,7 @@ try|try
 block|{
 comment|// no need to put it as part of publisher as timeline client already has
 comment|// Queuing concept
-name|TimelineClient
+name|TimelineV2Client
 name|timelineClient
 init|=
 name|getTimelineClient
@@ -1834,7 +1834,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-name|TimelineClient
+name|TimelineV2Client
 name|timelineClient
 init|=
 name|getTimelineClient
@@ -2258,10 +2258,10 @@ name|appId
 argument_list|)
 condition|)
 block|{
-name|TimelineClient
+name|TimelineV2Client
 name|timelineClient
 init|=
-name|TimelineClient
+name|TimelineV2Client
 operator|.
 name|createTimelineClient
 argument_list|(
@@ -2301,7 +2301,7 @@ name|ApplicationId
 name|appId
 parameter_list|)
 block|{
-name|TimelineClient
+name|TimelineV2Client
 name|client
 init|=
 name|appToClientMap
@@ -2337,7 +2337,7 @@ name|String
 name|collectorAddr
 parameter_list|)
 block|{
-name|TimelineClient
+name|TimelineV2Client
 name|client
 init|=
 name|appToClientMap
@@ -2365,7 +2365,7 @@ block|}
 block|}
 DECL|method|getTimelineClient (ApplicationId appId)
 specifier|private
-name|TimelineClient
+name|TimelineV2Client
 name|getTimelineClient
 parameter_list|(
 name|ApplicationId

@@ -334,7 +334,7 @@ name|YarnConfiguration
 operator|.
 name|TIMELINE_SERVICE_VERSION
 argument_list|,
-literal|1.0f
+literal|2.0f
 argument_list|)
 expr_stmt|;
 name|conf
@@ -438,7 +438,7 @@ specifier|private
 class|class
 name|TestV2TimelineClientForExceptionHandling
 extends|extends
-name|TimelineClientImpl
+name|TimelineV2ClientImpl
 block|{
 DECL|method|TestV2TimelineClientForExceptionHandling (ApplicationId id)
 specifier|public

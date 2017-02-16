@@ -232,6 +232,16 @@ end_import
 
 begin_import
 import|import
+name|javax
+operator|.
+name|crypto
+operator|.
+name|KeyGenerator
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -2032,6 +2042,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|client
+operator|.
+name|api
+operator|.
+name|TimelineV2Client
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|conf
 operator|.
 name|YarnConfiguration
@@ -2195,16 +2223,6 @@ operator|.
 name|annotations
 operator|.
 name|VisibleForTesting
-import|;
-end_import
-
-begin_import
-import|import
-name|javax
-operator|.
-name|crypto
-operator|.
-name|KeyGenerator
 import|;
 end_import
 
@@ -6244,6 +6262,13 @@ name|timelineClient
 init|=
 literal|null
 decl_stmt|;
+DECL|field|timelineV2Client
+specifier|private
+name|TimelineV2Client
+name|timelineV2Client
+init|=
+literal|null
+decl_stmt|;
 DECL|field|taskAttemptFinishingMonitor
 specifier|private
 specifier|final
@@ -6319,9 +6344,9 @@ argument_list|)
 condition|)
 block|{
 comment|// create new version TimelineClient
-name|timelineClient
+name|timelineV2Client
 operator|=
-name|TimelineClient
+name|TimelineV2Client
 operator|.
 name|createTimelineClient
 argument_list|(
@@ -6608,7 +6633,6 @@ return|return
 name|taskAttemptFinishingMonitor
 return|;
 block|}
-comment|// Get Timeline Collector's address (get sync from RM)
 DECL|method|getTimelineClient ()
 specifier|public
 name|TimelineClient
@@ -6617,6 +6641,17 @@ parameter_list|()
 block|{
 return|return
 name|timelineClient
+return|;
+block|}
+comment|// Get Timeline Collector's address (get sync from RM)
+DECL|method|getTimelineV2Client ()
+specifier|public
+name|TimelineV2Client
+name|getTimelineV2Client
+parameter_list|()
+block|{
+return|return
+name|timelineV2Client
 return|;
 block|}
 block|}

@@ -392,7 +392,7 @@ name|client
 operator|.
 name|api
 operator|.
-name|TimelineClient
+name|TimelineV2Client
 import|;
 end_import
 
@@ -810,10 +810,10 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|TimelineClient
+name|TimelineV2Client
 name|client
 init|=
-name|TimelineClient
+name|TimelineV2Client
 operator|.
 name|createTimelineClient
 argument_list|(
@@ -964,10 +964,10 @@ argument_list|,
 literal|1
 argument_list|)
 decl_stmt|;
-name|TimelineClient
+name|TimelineV2Client
 name|client
 init|=
-name|TimelineClient
+name|TimelineV2Client
 operator|.
 name|createTimelineClient
 argument_list|(

@@ -24,34 +24,6 @@ end_package
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Preconditions
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Supplier
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -166,7 +138,7 @@ name|classification
 operator|.
 name|InterfaceStability
 operator|.
-name|Unstable
+name|Stable
 import|;
 end_import
 
@@ -182,7 +154,7 @@ name|classification
 operator|.
 name|InterfaceStability
 operator|.
-name|Stable
+name|Unstable
 import|;
 end_import
 
@@ -468,6 +440,24 @@ name|client
 operator|.
 name|api
 operator|.
+name|TimelineV2Client
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|client
+operator|.
+name|api
+operator|.
 name|async
 operator|.
 name|impl
@@ -506,11 +496,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|client
+name|exceptions
 operator|.
-name|api
-operator|.
-name|TimelineClient
+name|YarnException
 import|;
 end_import
 
@@ -524,9 +512,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
+name|util
 operator|.
-name|YarnException
+name|resource
+operator|.
+name|Resources
 import|;
 end_import
 
@@ -546,19 +536,29 @@ end_import
 
 begin_import
 import|import
-name|org
+name|com
 operator|.
-name|apache
+name|google
 operator|.
-name|hadoop
+name|common
 operator|.
-name|yarn
+name|base
 operator|.
-name|util
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
+name|com
 operator|.
-name|resource
+name|google
 operator|.
-name|Resources
+name|common
+operator|.
+name|base
+operator|.
+name|Supplier
 import|;
 end_import
 
@@ -1235,35 +1235,37 @@ name|int
 name|getClusterNodeCount
 parameter_list|()
 function_decl|;
-comment|/**    * Register TimelineClient to AMRMClient.    * @param timelineClient    */
-DECL|method|registerTimelineClient (TimelineClient timelineClient)
+comment|/**    * Register TimelineClient to AMRMClient.    * @param timelineClient    * @throws YarnException when this method is invoked even when ATS V2 is not    *           configured.    */
+DECL|method|registerTimelineV2Client (TimelineV2Client timelineClient)
 specifier|public
 name|void
-name|registerTimelineClient
+name|registerTimelineV2Client
 parameter_list|(
-name|TimelineClient
+name|TimelineV2Client
 name|timelineClient
 parameter_list|)
+throws|throws
+name|YarnException
 block|{
 name|client
 operator|.
-name|registerTimelineClient
+name|registerTimelineV2Client
 argument_list|(
 name|timelineClient
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Get registered timeline client.    * @return the registered timeline client    */
-DECL|method|getRegisteredTimelineClient ()
+DECL|method|getRegisteredTimelineV2Client ()
 specifier|public
-name|TimelineClient
-name|getRegisteredTimelineClient
+name|TimelineV2Client
+name|getRegisteredTimelineV2Client
 parameter_list|()
 block|{
 return|return
 name|client
 operator|.
-name|getRegisteredTimelineClient
+name|getRegisteredTimelineV2Client
 argument_list|()
 return|;
 block|}

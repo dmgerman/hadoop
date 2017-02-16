@@ -244,7 +244,7 @@ name|api
 operator|.
 name|impl
 operator|.
-name|TimelineClientImpl
+name|TimelineV2ClientImpl
 import|;
 end_import
 
@@ -393,7 +393,9 @@ name|timelineClient
 init|=
 operator|new
 name|DummyTimelineClient
-argument_list|()
+argument_list|(
+literal|null
+argument_list|)
 decl_stmt|;
 name|when
 argument_list|(
@@ -953,8 +955,22 @@ specifier|static
 class|class
 name|DummyTimelineClient
 extends|extends
-name|TimelineClientImpl
+name|TimelineV2ClientImpl
 block|{
+DECL|method|DummyTimelineClient (ApplicationId appId)
+specifier|public
+name|DummyTimelineClient
+parameter_list|(
+name|ApplicationId
+name|appId
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|appId
+argument_list|)
+expr_stmt|;
+block|}
 DECL|field|lastPublishedEntities
 specifier|private
 name|TimelineEntity

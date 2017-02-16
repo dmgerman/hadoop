@@ -52,22 +52,6 @@ name|classification
 operator|.
 name|InterfaceAudience
 operator|.
-name|Private
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-operator|.
 name|Public
 import|;
 end_import
@@ -128,7 +112,7 @@ name|hadoop
 operator|.
 name|service
 operator|.
-name|AbstractService
+name|CompositeService
 import|;
 end_import
 
@@ -147,24 +131,6 @@ operator|.
 name|records
 operator|.
 name|ApplicationAttemptId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|ApplicationId
 import|;
 end_import
 
@@ -303,7 +269,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A client library that can be used to post some information in terms of a  * number of conceptual entities.  */
+comment|/**  * A client library that can be used to post some information in terms of a  * number of conceptual entities. This client library needs to be used along  * with Timeline V.1.x server versions.  * Refer {@link TimelineV2Client} for ATS V2 interface.  */
 end_comment
 
 begin_class
@@ -317,17 +283,11 @@ specifier|abstract
 class|class
 name|TimelineClient
 extends|extends
-name|AbstractService
+name|CompositeService
 implements|implements
 name|Flushable
 block|{
-comment|/**    * Create a timeline client. The current UGI when the user initialize the    * client will be used to do the put and the delegation token operations. The    * current user may use {@link UserGroupInformation#doAs} another user to    * construct and initialize a timeline client if the following operations are    * supposed to be conducted by that user.    */
-DECL|field|contextAppId
-specifier|private
-name|ApplicationId
-name|contextAppId
-decl_stmt|;
-comment|/**    * Creates an instance of the timeline v.1.x client.    *    * @return the created timeline client instance    */
+comment|/**    * Creates an instance of the timeline v.1.x client.    * The current UGI when the user initialize the client will be used to do the    * put and the delegation token operations. The current user may use    * {@link UserGroupInformation#doAs} another user to construct and initialize    * a timeline client if the following operations are supposed to be conducted    * by that user.    *    * @return the created timeline client instance    */
 annotation|@
 name|Public
 DECL|method|createTimelineClient ()
@@ -348,53 +308,17 @@ return|return
 name|client
 return|;
 block|}
-comment|/**    * Creates an instance of the timeline v.2 client.    *    * @param appId the application id with which the timeline client is    * associated    * @return the created timeline client instance    */
-annotation|@
-name|Public
-DECL|method|createTimelineClient (ApplicationId appId)
-specifier|public
-specifier|static
-name|TimelineClient
-name|createTimelineClient
-parameter_list|(
-name|ApplicationId
-name|appId
-parameter_list|)
-block|{
-name|TimelineClient
-name|client
-init|=
-operator|new
-name|TimelineClientImpl
-argument_list|(
-name|appId
-argument_list|)
-decl_stmt|;
-return|return
-name|client
-return|;
-block|}
-annotation|@
-name|Private
-DECL|method|TimelineClient (String name, ApplicationId appId)
+DECL|method|TimelineClient (String name)
 specifier|protected
 name|TimelineClient
 parameter_list|(
 name|String
 name|name
-parameter_list|,
-name|ApplicationId
-name|appId
 parameter_list|)
 block|{
 name|super
 argument_list|(
 name|name
-argument_list|)
-expr_stmt|;
-name|setContextAppId
-argument_list|(
-name|appId
 argument_list|)
 expr_stmt|;
 block|}
@@ -537,107 +461,6 @@ name|IOException
 throws|,
 name|YarnException
 function_decl|;
-comment|/**    *<p>    * Send the information of a number of conceptual entities to the timeline    * service v.2 collector. It is a blocking API. The method will not return    * until all the put entities have been persisted. If this method is invoked    * for a non-v.2 timeline client instance, a YarnException is thrown.    *</p>    *    * @param entities the collection of {@link    * org.apache.hadoop.yarn.api.records.timelineservice.TimelineEntity}    * @throws IOException    * @throws YarnException    */
-annotation|@
-name|Public
-DECL|method|putEntities ( org.apache.hadoop.yarn.api.records.timelineservice.TimelineEntity... entities)
-specifier|public
-specifier|abstract
-name|void
-name|putEntities
-parameter_list|(
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|timelineservice
-operator|.
-name|TimelineEntity
-modifier|...
-name|entities
-parameter_list|)
-throws|throws
-name|IOException
-throws|,
-name|YarnException
-function_decl|;
-comment|/**    *<p>    * Send the information of a number of conceptual entities to the timeline    * service v.2 collector. It is an asynchronous API. The method will return    * once all the entities are received. If this method is invoked for a    * non-v.2 timeline client instance, a YarnException is thrown.    *</p>    *    * @param entities the collection of {@link    * org.apache.hadoop.yarn.api.records.timelineservice.TimelineEntity}    * @throws IOException    * @throws YarnException    */
-annotation|@
-name|Public
-DECL|method|putEntitiesAsync ( org.apache.hadoop.yarn.api.records.timelineservice.TimelineEntity... entities)
-specifier|public
-specifier|abstract
-name|void
-name|putEntitiesAsync
-parameter_list|(
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|timelineservice
-operator|.
-name|TimelineEntity
-modifier|...
-name|entities
-parameter_list|)
-throws|throws
-name|IOException
-throws|,
-name|YarnException
-function_decl|;
-comment|/**    *<p>    * Update the timeline service address where the request will be sent to.    *</p>    * @param address    *          the timeline service address    */
-DECL|method|setTimelineServiceAddress (String address)
-specifier|public
-specifier|abstract
-name|void
-name|setTimelineServiceAddress
-parameter_list|(
-name|String
-name|address
-parameter_list|)
-function_decl|;
-DECL|method|getContextAppId ()
-specifier|protected
-name|ApplicationId
-name|getContextAppId
-parameter_list|()
-block|{
-return|return
-name|contextAppId
-return|;
-block|}
-DECL|method|setContextAppId (ApplicationId appId)
-specifier|protected
-name|void
-name|setContextAppId
-parameter_list|(
-name|ApplicationId
-name|appId
-parameter_list|)
-block|{
-name|this
-operator|.
-name|contextAppId
-operator|=
-name|appId
-expr_stmt|;
-block|}
 block|}
 end_class
 

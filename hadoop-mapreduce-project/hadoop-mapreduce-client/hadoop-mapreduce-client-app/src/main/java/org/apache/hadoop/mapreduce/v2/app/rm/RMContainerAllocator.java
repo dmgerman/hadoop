@@ -4742,7 +4742,7 @@ argument_list|()
 operator|&&
 name|appContext
 operator|.
-name|getTimelineClient
+name|getTimelineV2Client
 argument_list|()
 operator|!=
 literal|null
@@ -4750,7 +4750,7 @@ condition|)
 block|{
 name|appContext
 operator|.
-name|getTimelineClient
+name|getTimelineV2Client
 argument_list|()
 operator|.
 name|setTimelineServiceAddress

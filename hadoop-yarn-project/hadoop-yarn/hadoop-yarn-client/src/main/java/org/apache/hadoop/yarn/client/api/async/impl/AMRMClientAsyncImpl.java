@@ -412,7 +412,7 @@ name|client
 operator|.
 name|api
 operator|.
-name|TimelineClient
+name|TimelineV2Client
 import|;
 end_import
 
@@ -1454,12 +1454,12 @@ operator|.
 name|getCollectorAddr
 argument_list|()
 decl_stmt|;
-name|TimelineClient
+name|TimelineV2Client
 name|timelineClient
 init|=
 name|client
 operator|.
-name|getRegisteredTimelineClient
+name|getRegisteredTimelineV2Client
 argument_list|()
 decl_stmt|;
 if|if
