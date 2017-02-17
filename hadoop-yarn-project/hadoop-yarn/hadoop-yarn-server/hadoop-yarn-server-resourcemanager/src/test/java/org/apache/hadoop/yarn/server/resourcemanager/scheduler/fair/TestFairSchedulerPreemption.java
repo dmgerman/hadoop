@@ -398,6 +398,12 @@ specifier|final
 name|boolean
 name|fairsharePreemption
 decl_stmt|;
+DECL|field|drf
+specifier|private
+specifier|final
+name|boolean
+name|drf
+decl_stmt|;
 comment|// App that takes up the entire cluster
 DECL|field|greedyApp
 specifier|private
@@ -441,37 +447,65 @@ index|[]
 index|[]
 block|{
 block|{
-literal|"FairSharePreemption"
+literal|"MinSharePreemption"
 block|,
-literal|true
+literal|0
 block|}
 block|,
 block|{
-literal|"MinSharePreemption"
+literal|"MinSharePreemptionWithDRF"
 block|,
-literal|false
+literal|1
+block|}
+block|,
+block|{
+literal|"FairSharePreemption"
+block|,
+literal|2
+block|}
+block|,
+block|{
+literal|"FairSharePreemptionWithDRF"
+block|,
+literal|3
 block|}
 block|}
 argument_list|)
 return|;
 block|}
-DECL|method|TestFairSchedulerPreemption (String name, boolean fairshare)
+DECL|method|TestFairSchedulerPreemption (String name, int mode)
 specifier|public
 name|TestFairSchedulerPreemption
 parameter_list|(
 name|String
 name|name
 parameter_list|,
-name|boolean
-name|fairshare
+name|int
+name|mode
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 name|fairsharePreemption
 operator|=
-name|fairshare
+operator|(
+name|mode
+operator|>
+literal|1
+operator|)
 expr_stmt|;
+comment|// 2 and 3
+name|drf
+operator|=
+operator|(
+name|mode
+operator|%
+literal|2
+operator|==
+literal|1
+operator|)
+expr_stmt|;
+comment|// 1 and 3
 name|writeAllocFile
 argument_list|()
 expr_stmt|;
@@ -741,6 +775,21 @@ literal|"</queue>"
 argument_list|)
 expr_stmt|;
 comment|// end of nonpreemptable queue
+if|if
+condition|(
+name|drf
+condition|)
+block|{
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"<defaultQueueSchedulingPolicy>drf"
+operator|+
+literal|"</defaultQueueSchedulingPolicy>"
+argument_list|)
+expr_stmt|;
+block|}
 name|out
 operator|.
 name|println
@@ -872,13 +921,16 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-comment|// Create and add two nodes to the cluster
+comment|// Create and add two nodes to the cluster, with capacities
+comment|// disproportional to the container requests.
 name|addNode
 argument_list|(
 name|NODE_CAPACITY_MULTIPLE
 operator|*
 name|GB
 argument_list|,
+literal|3
+operator|*
 name|NODE_CAPACITY_MULTIPLE
 argument_list|)
 expr_stmt|;
@@ -888,7 +940,23 @@ name|NODE_CAPACITY_MULTIPLE
 operator|*
 name|GB
 argument_list|,
+literal|3
+operator|*
 name|NODE_CAPACITY_MULTIPLE
+argument_list|)
+expr_stmt|;
+comment|// Reinitialize the scheduler so DRF policy picks up cluster capacity
+comment|// TODO (YARN-6194): One shouldn't need to call this
+name|scheduler
+operator|.
+name|reinitialize
+argument_list|(
+name|conf
+argument_list|,
+name|resourceManager
+operator|.
+name|getRMContext
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Verify if child-1 and child-2 are preemptable
@@ -1172,7 +1240,7 @@ literal|0
 init|;
 name|i
 operator|<
-literal|100
+literal|1000
 condition|;
 name|i
 operator|++
@@ -1204,6 +1272,8 @@ block|}
 comment|// Verify the right amount of containers are preempted from greedyApp
 name|assertEquals
 argument_list|(
+literal|"Incorrect number of containers on the greedy app"
+argument_list|,
 literal|4
 argument_list|,
 name|greedyApp
@@ -1221,6 +1291,8 @@ expr_stmt|;
 comment|// Verify the preempted containers are assigned to starvingApp
 name|assertEquals
 argument_list|(
+literal|"Starved app is not assigned the right number of containers"
+argument_list|,
 literal|2
 argument_list|,
 name|starvingApp
