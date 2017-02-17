@@ -1095,6 +1095,25 @@ name|HADOOP_USER_GROUP_METRICS_PERCENTILES_INTERVALS
 init|=
 literal|"hadoop.user.group.metrics.percentiles.intervals"
 decl_stmt|;
+comment|/* When creating UGI with UserGroupInformation(Subject), treat the passed    * subject external if set to true, and assume the owner of the subject    * should do the credential renewal.    *    * This is a temporary config to solve the compatibility issue with    * HADOOP-13558 and HADOOP-13805 fix, see the jiras for discussions.    */
+DECL|field|HADOOP_TREAT_SUBJECT_EXTERNAL_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_TREAT_SUBJECT_EXTERNAL_KEY
+init|=
+literal|"hadoop.treat.subject.external"
+decl_stmt|;
+DECL|field|HADOOP_TREAT_SUBJECT_EXTERNAL_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|HADOOP_TREAT_SUBJECT_EXTERNAL_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 DECL|field|RPC_METRICS_QUANTILE_ENABLE
 specifier|public
 specifier|static

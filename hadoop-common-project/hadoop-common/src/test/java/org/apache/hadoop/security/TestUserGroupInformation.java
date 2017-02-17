@@ -558,6 +558,22 @@ name|fs
 operator|.
 name|CommonConfigurationKeys
 operator|.
+name|HADOOP_TREAT_SUBJECT_EXTERNAL_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeys
+operator|.
 name|HADOOP_USER_GROUP_METRICS_PERCENTILES_INTERVALS
 import|;
 end_import
@@ -6439,12 +6455,10 @@ block|}
 end_function
 
 begin_function
-annotation|@
-name|Test
-DECL|method|testCheckTGTAfterLoginFromSubject ()
-specifier|public
+DECL|method|testCheckTGTAfterLoginFromSubjectHelper ()
+specifier|private
 name|void
-name|testCheckTGTAfterLoginFromSubject
+name|testCheckTGTAfterLoginFromSubjectHelper
 parameter_list|()
 throws|throws
 name|Exception
@@ -6545,6 +6559,56 @@ return|;
 block|}
 block|}
 argument_list|)
+expr_stmt|;
+block|}
+end_function
+
+begin_function
+annotation|@
+name|Test
+argument_list|(
+name|expected
+operator|=
+name|KerberosAuthException
+operator|.
+name|class
+argument_list|)
+DECL|method|testCheckTGTAfterLoginFromSubject ()
+specifier|public
+name|void
+name|testCheckTGTAfterLoginFromSubject
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|testCheckTGTAfterLoginFromSubjectHelper
+argument_list|()
+expr_stmt|;
+block|}
+end_function
+
+begin_function
+annotation|@
+name|Test
+DECL|method|testCheckTGTAfterLoginFromSubjectFix ()
+specifier|public
+name|void
+name|testCheckTGTAfterLoginFromSubjectFix
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|HADOOP_TREAT_SUBJECT_EXTERNAL_KEY
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|testCheckTGTAfterLoginFromSubjectHelper
+argument_list|()
 expr_stmt|;
 block|}
 end_function

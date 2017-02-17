@@ -456,6 +456,13 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+name|UserGroupInformation
+operator|.
+name|setEnableRenewThreadCreationForTest
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 name|LoginContext
 name|loginContext
 init|=

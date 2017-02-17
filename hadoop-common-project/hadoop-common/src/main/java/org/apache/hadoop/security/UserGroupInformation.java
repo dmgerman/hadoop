@@ -42,6 +42,38 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|CommonConfigurationKeys
+operator|.
+name|HADOOP_TREAT_SUBJECT_EXTERNAL_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeys
+operator|.
+name|HADOOP_TREAT_SUBJECT_EXTERNAL_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|CommonConfigurationKeysPublic
 operator|.
 name|HADOOP_KERBEROS_MIN_SECONDS_BEFORE_RELOGIN
@@ -1614,6 +1646,24 @@ name|long
 name|kerberosMinSecondsBeforeRelogin
 decl_stmt|;
 comment|/** The configuration to use */
+comment|/*    * This config is a temporary one for backward compatibility.    * It means whether to treat the subject passed to    * UserGroupInformation(Subject) as external. If true,    * -  no renewal thread will be created to do the renew credential    * -  reloginFromKeytab() and reloginFromTicketCache will not renew    *    credential.    * and it assumes that the owner of the subject to renew; if false, it means    * to retain the old behavior prior to fixing HADOOP-13558 and HADOOP-13805.    * The default is false.    */
+DECL|field|treatSubjectExternal
+specifier|private
+specifier|static
+name|boolean
+name|treatSubjectExternal
+init|=
+literal|false
+decl_stmt|;
+comment|/*    * Some test need the renewal thread to be created even if it does    *   UserGroupInformation.loginUserFromSubject(subject);    * The test code may set this variable to true via    *   setEnableRenewThreadCreationForTest(boolean)    * method.    */
+DECL|field|enableRenewThreadCreationForTest
+specifier|private
+specifier|static
+name|boolean
+name|enableRenewThreadCreationForTest
+init|=
+literal|false
+decl_stmt|;
 DECL|field|conf
 specifier|private
 specifier|static
@@ -1910,6 +1960,40 @@ name|getGroupsQuantiles
 expr_stmt|;
 block|}
 block|}
+name|treatSubjectExternal
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|HADOOP_TREAT_SUBJECT_EXTERNAL_KEY
+argument_list|,
+name|HADOOP_TREAT_SUBJECT_EXTERNAL_DEFAULT
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|treatSubjectExternal
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Config "
+operator|+
+name|HADOOP_TREAT_SUBJECT_EXTERNAL_KEY
+operator|+
+literal|" is set to "
+operator|+
+literal|"true, the owner of the subject passed to "
+operator|+
+literal|" UserGroupInformation(Subject) is supposed to renew the "
+operator|+
+literal|"credential."
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Set the static configuration for UGI.    * In particular, set the security authentication mechanism and the    * group look up service.    * @param conf the configuration to use    */
 annotation|@
@@ -1937,6 +2021,42 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|VisibleForTesting
+DECL|method|setEnableRenewThreadCreationForTest (boolean b)
+specifier|static
+name|void
+name|setEnableRenewThreadCreationForTest
+parameter_list|(
+name|boolean
+name|b
+parameter_list|)
+block|{
+name|enableRenewThreadCreationForTest
+operator|=
+name|b
+expr_stmt|;
+block|}
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|VisibleForTesting
+DECL|method|getEnableRenewThreadCreationForTest ()
+specifier|static
+name|boolean
+name|getEnableRenewThreadCreationForTest
+parameter_list|()
+block|{
+return|return
+name|enableRenewThreadCreationForTest
+return|;
 block|}
 annotation|@
 name|InterfaceAudience
@@ -1977,6 +2097,11 @@ operator|.
 name|setRules
 argument_list|(
 literal|null
+argument_list|)
+expr_stmt|;
+name|setEnableRenewThreadCreationForTest
+argument_list|(
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -2076,6 +2201,12 @@ specifier|private
 specifier|final
 name|boolean
 name|isKrbTkt
+decl_stmt|;
+DECL|field|isLoginExternal
+specifier|private
+specifier|final
+name|boolean
+name|isLoginExternal
 decl_stmt|;
 DECL|field|OS_LOGIN_MODULE_NAME
 specifier|private
@@ -3253,7 +3384,7 @@ name|login
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create a UserGroupInformation for the given subject.    * This does not change the subject or acquire new credentials.    * @param subject the user's subject    */
+comment|/**    * Create a UserGroupInformation for the given subject.    * This does not change the subject or acquire new credentials.    *    * The creator of subject is responsible for renewing credentials.    * @param subject the user's subject    */
 DECL|method|UserGroupInformation (Subject subject)
 name|UserGroupInformation
 parameter_list|(
@@ -3265,12 +3396,12 @@ name|this
 argument_list|(
 name|subject
 argument_list|,
-literal|false
+name|treatSubjectExternal
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create a UGI from the given subject.    * @param subject the subject    * @param externalKeyTab if the subject's keytab is managed by the user.    *                       Setting this to true will prevent UGI from attempting    *                       to login the keytab, or to renew it.    */
-DECL|method|UserGroupInformation (Subject subject, final boolean externalKeyTab)
+comment|/**    * Create a UGI from the given subject.    * @param subject the subject    * @param isLoginExternal if the subject's keytab is managed by other UGI.    *                       Setting this to true will prevent UGI from attempting    *                       to login the keytab, or to renew it.    */
+DECL|method|UserGroupInformation (Subject subject, final boolean isLoginExternal)
 specifier|private
 name|UserGroupInformation
 parameter_list|(
@@ -3279,7 +3410,7 @@ name|subject
 parameter_list|,
 specifier|final
 name|boolean
-name|externalKeyTab
+name|isLoginExternal
 parameter_list|)
 block|{
 name|this
@@ -3307,20 +3438,6 @@ operator|.
 name|next
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|externalKeyTab
-condition|)
-block|{
-name|this
-operator|.
-name|isKeytab
-operator|=
-literal|false
-expr_stmt|;
-block|}
-else|else
-block|{
 name|this
 operator|.
 name|isKeytab
@@ -3332,7 +3449,6 @@ argument_list|(
 name|subject
 argument_list|)
 expr_stmt|;
-block|}
 name|this
 operator|.
 name|isKrbTkt
@@ -3343,6 +3459,12 @@ name|hasKerberosTicket
 argument_list|(
 name|subject
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|isLoginExternal
+operator|=
+name|isLoginExternal
 expr_stmt|;
 block|}
 comment|/**    * checks if logged in using kerberos    * @return true if the subject logged via keytab or has a Kerberos TGT    */
@@ -3777,6 +3899,8 @@ operator|new
 name|UserGroupInformation
 argument_list|(
 name|loginSubject
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|ugi
@@ -3835,7 +3959,7 @@ name|kae
 throw|;
 block|}
 block|}
-comment|/**    * Create a UserGroupInformation from a Subject with Kerberos principal.    *    * @param subject             The KerberosPrincipal to use in UGI    *    * @throws IOException    * @throws KerberosAuthException if the kerberos login fails    */
+comment|/**    * Create a UserGroupInformation from a Subject with Kerberos principal.    *    * @param subject             The KerberosPrincipal to use in UGI.    *                            The creator of subject is responsible for    *                            renewing credentials.    *    * @throws IOException    * @throws KerberosAuthException if the kerberos login fails    */
 DECL|method|getUGIFromSubject (Subject subject)
 specifier|public
 specifier|static
@@ -4041,7 +4165,7 @@ return|return
 name|userName
 return|;
 block|}
-comment|/**    * Log in a user using the given subject    * @param subject the subject to use when logging in a user, or null to    * create a new subject.    * @throws IOException if login fails    */
+comment|/**    * Log in a user using the given subject    * @param subject the subject to use when logging in a user, or null to    * create a new subject.    *    * If subject is not null, the creator of subject is responsible for renewing    * credentials.    *    * @throws IOException if login fails    */
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -4066,6 +4190,11 @@ block|{
 name|ensureInitialized
 argument_list|()
 expr_stmt|;
+name|boolean
+name|externalSubject
+init|=
+literal|false
+decl_stmt|;
 try|try
 block|{
 if|if
@@ -4080,6 +4209,35 @@ operator|=
 operator|new
 name|Subject
 argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Treat subject external: "
+operator|+
+name|treatSubjectExternal
+operator|+
+literal|". When true, assuming keytab is managed extenally since "
+operator|+
+literal|" logged in from subject"
+argument_list|)
+expr_stmt|;
+block|}
+name|externalSubject
+operator|=
+name|treatSubjectExternal
 expr_stmt|;
 block|}
 name|LoginContext
@@ -4104,15 +4262,6 @@ operator|.
 name|login
 argument_list|()
 expr_stmt|;
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Assuming keytab is managed externally since logged in from"
-operator|+
-literal|" subject."
-argument_list|)
-expr_stmt|;
 name|UserGroupInformation
 name|realUser
 init|=
@@ -4121,7 +4270,7 @@ name|UserGroupInformation
 argument_list|(
 name|subject
 argument_list|,
-literal|true
+name|externalSubject
 argument_list|)
 decl_stmt|;
 name|realUser
@@ -4588,6 +4737,30 @@ name|TICKET_RENEW_WINDOW
 argument_list|)
 return|;
 block|}
+comment|/**    * Should relogin if security is enabled using Kerberos, and    * the Subject is not owned by another UGI.    * @return true if this UGI should relogin    */
+DECL|method|shouldRelogin ()
+specifier|private
+name|boolean
+name|shouldRelogin
+parameter_list|()
+block|{
+return|return
+name|isSecurityEnabled
+argument_list|()
+operator|&&
+name|user
+operator|.
+name|getAuthenticationMethod
+argument_list|()
+operator|==
+name|AuthenticationMethod
+operator|.
+name|KERBEROS
+operator|&&
+operator|!
+name|isLoginExternal
+return|;
+block|}
 comment|/**Spawn a thread to do periodic renewals of kerberos credentials*/
 DECL|method|spawnAutoRenewalThreadForUserCreds ()
 specifier|private
@@ -4597,18 +4770,26 @@ parameter_list|()
 block|{
 if|if
 condition|(
+name|getEnableRenewThreadCreationForTest
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Spawning thread to auto renew user credential since "
+operator|+
+literal|" enableRenewThreadCreationForTest was set to true."
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
 operator|!
-name|isSecurityEnabled
+name|shouldRelogin
 argument_list|()
-operator|||
-name|user
-operator|.
-name|getAuthenticationMethod
-argument_list|()
-operator|!=
-name|AuthenticationMethod
-operator|.
-name|KERBEROS
 operator|||
 name|isKeytab
 condition|)
@@ -5181,6 +5362,8 @@ operator|new
 name|UserGroupInformation
 argument_list|(
 name|subject
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|loginUser
@@ -5446,7 +5629,9 @@ operator|||
 operator|!
 name|isKeytab
 condition|)
+block|{
 return|return;
+block|}
 name|KerberosTicket
 name|tgt
 init|=
@@ -5646,17 +5831,8 @@ block|{
 if|if
 condition|(
 operator|!
-name|isSecurityEnabled
+name|shouldRelogin
 argument_list|()
-operator|||
-name|user
-operator|.
-name|getAuthenticationMethod
-argument_list|()
-operator|!=
-name|AuthenticationMethod
-operator|.
-name|KERBEROS
 operator|||
 operator|!
 name|isKeytab
@@ -5937,17 +6113,8 @@ block|{
 if|if
 condition|(
 operator|!
-name|isSecurityEnabled
+name|shouldRelogin
 argument_list|()
-operator|||
-name|user
-operator|.
-name|getAuthenticationMethod
-argument_list|()
-operator|!=
-name|AuthenticationMethod
-operator|.
-name|KERBEROS
 operator|||
 operator|!
 name|isKrbTkt
@@ -6231,6 +6398,8 @@ operator|new
 name|UserGroupInformation
 argument_list|(
 name|subject
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|newLoginUser
@@ -6528,6 +6697,8 @@ operator|new
 name|UserGroupInformation
 argument_list|(
 name|subject
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|result
@@ -6864,6 +7035,8 @@ operator|new
 name|UserGroupInformation
 argument_list|(
 name|subject
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|result
