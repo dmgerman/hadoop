@@ -3225,6 +3225,11 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Convenience method, so that we don't open a new connection when using this    * method from within another method. Otherwise every API invocation incurs    * the overhead of opening/closing a TCP connection.    *     * @param client    * @param src    * @param dst    * @return    * @throws IOException    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|rename (FTPClient client, Path src, Path dst)
 specifier|private
 name|boolean

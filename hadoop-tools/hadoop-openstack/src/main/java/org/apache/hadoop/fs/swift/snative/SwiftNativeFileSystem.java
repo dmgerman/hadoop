@@ -796,6 +796,11 @@ return|;
 block|}
 annotation|@
 name|Override
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|isFile (Path f)
 specifier|public
 name|boolean
@@ -839,6 +844,11 @@ return|;
 comment|// f does not exist
 block|}
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 annotation|@
 name|Override
 DECL|method|isDirectory (Path f)

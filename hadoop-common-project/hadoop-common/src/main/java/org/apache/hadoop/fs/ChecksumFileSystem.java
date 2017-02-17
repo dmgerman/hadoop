@@ -2818,6 +2818,11 @@ block|}
 comment|/**    * Rename files/dirs    */
 annotation|@
 name|Override
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|rename (Path src, Path dst)
 specifier|public
 name|boolean
@@ -3276,6 +3281,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * The src file is under FS, and the dst is on the local disk.    * Copy it from FS control to the local dst name.    * If src and dst are directories, the copyCrc parameter    * determines whether to copy CRC files.    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|copyToLocalFile (Path src, Path dst, boolean copyCrc)
 specifier|public
 name|void

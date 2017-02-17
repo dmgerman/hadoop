@@ -4738,7 +4738,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/** Check if a path exists.    * @param f source path    * @return true if the path exists    * @throws IOException IO failure    */
+comment|/** Check if a path exists.    *    * It is highly discouraged to call this method back to back with other    * {@link #getFileStatus(Path)} calls, as this will involve multiple redundant    * RPC calls in HDFS.    *    * @param f source path    * @return true if the path exists    * @throws IOException IO failure    */
 DECL|method|exists (Path f)
 specifier|public
 name|boolean
@@ -4772,7 +4772,9 @@ literal|false
 return|;
 block|}
 block|}
-comment|/** True iff the named path is a directory.    * Note: Avoid using this method. Instead reuse the FileStatus    * returned by getFileStatus() or listStatus() methods.    * @param f path to check    * @throws IOException IO failure    */
+comment|/** True iff the named path is a directory.    * Note: Avoid using this method. Instead reuse the FileStatus    * returned by getFileStatus() or listStatus() methods.    *    * @param f path to check    * @throws IOException IO failure    * @deprecated Use {@link #getFileStatus(Path)} instead    */
+annotation|@
+name|Deprecated
 DECL|method|isDirectory (Path f)
 specifier|public
 name|boolean
@@ -4808,7 +4810,9 @@ return|;
 comment|// f does not exist
 block|}
 block|}
-comment|/** True iff the named path is a regular file.    * Note: Avoid using this method. Instead reuse the FileStatus    * returned by {@link #getFileStatus(Path)} or listStatus() methods.    * @param f path to check    * @throws IOException IO failure    */
+comment|/** True iff the named path is a regular file.    * Note: Avoid using this method. Instead reuse the FileStatus    * returned by {@link #getFileStatus(Path)} or listStatus() methods.    *    * @param f path to check    * @throws IOException IO failure    * @deprecated Use {@link #getFileStatus(Path)} instead    */
+annotation|@
+name|Deprecated
 DECL|method|isFile (Path f)
 specifier|public
 name|boolean

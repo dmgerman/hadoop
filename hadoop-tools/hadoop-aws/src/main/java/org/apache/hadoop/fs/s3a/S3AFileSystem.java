@@ -8789,6 +8789,11 @@ block|}
 comment|/**    * Override superclass so as to add statistic collection.    * {@inheritDoc}    */
 annotation|@
 name|Override
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|isDirectory (Path f)
 specifier|public
 name|boolean
@@ -8817,6 +8822,11 @@ block|}
 comment|/**    * Override superclass so as to add statistic collection.    * {@inheritDoc}    */
 annotation|@
 name|Override
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|isFile (Path f)
 specifier|public
 name|boolean
