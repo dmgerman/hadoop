@@ -22277,16 +22277,25 @@ name|OP_REMOVE_XATTR
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getInstance ()
+DECL|method|getInstance (OpInstanceCache cache)
 specifier|static
 name|RemoveXAttrOp
 name|getInstance
-parameter_list|()
+parameter_list|(
+name|OpInstanceCache
+name|cache
+parameter_list|)
 block|{
 return|return
-operator|new
+operator|(
 name|RemoveXAttrOp
-argument_list|()
+operator|)
+name|cache
+operator|.
+name|get
+argument_list|(
+name|OP_REMOVE_XATTR
+argument_list|)
 return|;
 block|}
 annotation|@
@@ -22532,16 +22541,25 @@ name|OP_SET_XATTR
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getInstance ()
+DECL|method|getInstance (OpInstanceCache cache)
 specifier|static
 name|SetXAttrOp
 name|getInstance
-parameter_list|()
+parameter_list|(
+name|OpInstanceCache
+name|cache
+parameter_list|)
 block|{
 return|return
-operator|new
+operator|(
 name|SetXAttrOp
-argument_list|()
+operator|)
+name|cache
+operator|.
+name|get
+argument_list|(
+name|OP_SET_XATTR
+argument_list|)
 return|;
 block|}
 annotation|@
@@ -22792,16 +22810,25 @@ name|OP_SET_ACL
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getInstance ()
+DECL|method|getInstance (OpInstanceCache cache)
 specifier|static
 name|SetAclOp
 name|getInstance
-parameter_list|()
+parameter_list|(
+name|OpInstanceCache
+name|cache
+parameter_list|)
 block|{
 return|return
-operator|new
+operator|(
 name|SetAclOp
-argument_list|()
+operator|)
+name|cache
+operator|.
+name|get
+argument_list|(
+name|OP_SET_ACL
+argument_list|)
 return|;
 block|}
 annotation|@
