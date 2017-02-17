@@ -1957,13 +1957,6 @@ condition|)
 block|{
 return|return;
 block|}
-name|StringBuilder
-name|sb
-init|=
-operator|new
-name|StringBuilder
-argument_list|()
-decl_stmt|;
 name|long
 name|now
 init|=
@@ -1983,6 +1976,13 @@ name|values
 argument_list|()
 control|)
 block|{
+name|StringBuilder
+name|sb
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
 name|DecommissioningNodeStatus
 name|s
 init|=
@@ -2166,12 +2166,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-block|}
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
-literal|"Decommissioning Nodes: "
+literal|"Decommissioning node: "
 operator|+
 name|sb
 operator|.
@@ -2179,6 +2178,7 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|// Read possible new DECOMMISSIONING_TIMEOUT_KEY from yarn-site.xml.
 comment|// This enables DecommissioningNodesWatcher to pick up new value
