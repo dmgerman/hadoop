@@ -154,6 +154,15 @@ name|boolean
 name|inTransitionToActive
 parameter_list|()
 function_decl|;
+comment|/**    * Check if file is been opened for write purpose.    * @param filePath    * @return true if valid write lease exists, otherwise return false.    */
+DECL|method|isFileOpenedForWrite (String filePath)
+name|boolean
+name|isFileOpenedForWrite
+parameter_list|(
+name|String
+name|filePath
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 
