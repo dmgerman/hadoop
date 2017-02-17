@@ -8678,6 +8678,26 @@ name|DEFAULT_CLUSTER_LEVEL_APPLICATION_PRIORITY
 init|=
 literal|0
 decl_stmt|;
+DECL|field|APP_ATTEMPT_DIAGNOSTICS_LIMIT_KC
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|APP_ATTEMPT_DIAGNOSTICS_LIMIT_KC
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"app.attempt.diagnostics.limit.kc"
+decl_stmt|;
+DECL|field|DEFAULT_APP_ATTEMPT_DIAGNOSTICS_LIMIT_KC
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_APP_ATTEMPT_DIAGNOSTICS_LIMIT_KC
+init|=
+literal|64
+decl_stmt|;
 annotation|@
 name|Private
 DECL|method|isDistributedNodeLabelConfiguration (Configuration conf)
