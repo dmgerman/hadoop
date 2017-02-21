@@ -208,6 +208,13 @@ specifier|final
 name|String
 name|hostname
 decl_stmt|;
+DECL|field|blacklisted
+specifier|private
+name|boolean
+name|blacklisted
+init|=
+literal|false
+decl_stmt|;
 comment|/**    * last state of node. Starts off as {@link NodeState#RUNNING},    * on the assumption that it is live.    */
 DECL|field|nodeState
 specifier|private
@@ -279,6 +286,33 @@ argument_list|(
 name|roles
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|setBlacklisted (boolean blacklisted)
+specifier|public
+specifier|synchronized
+name|void
+name|setBlacklisted
+parameter_list|(
+name|boolean
+name|blacklisted
+parameter_list|)
+block|{
+name|this
+operator|.
+name|blacklisted
+operator|=
+name|blacklisted
+expr_stmt|;
+block|}
+DECL|method|isBlacklisted ()
+specifier|public
+name|boolean
+name|isBlacklisted
+parameter_list|()
+block|{
+return|return
+name|blacklisted
+return|;
 block|}
 comment|/**    * Update the node status.    * The return code is true if the node state changed enough to    * trigger a re-evaluation of pending requests. That is, either a node    * became available when it was previously not, or the label changed    * on an available node.    *    * Transitions of a node from live to dead aren't treated as significant,    * nor label changes on a dead node.    *    * @param report latest node report    * @return true if the node state changed enough for a request evaluation.    */
 DECL|method|updateNode (NodeReport report)

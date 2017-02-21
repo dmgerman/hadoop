@@ -90,7 +90,7 @@ specifier|public
 interface|interface
 name|RMOperationHandlerActions
 block|{
-comment|/**    * Release an assigned container    * @param containerId container    */
+comment|/**    * Release an assigned container.    * @param containerId container    */
 DECL|method|releaseAssignedContainer (ContainerId containerId)
 name|void
 name|releaseAssignedContainer
@@ -99,7 +99,7 @@ name|ContainerId
 name|containerId
 parameter_list|)
 function_decl|;
-comment|/**    * Issue a container request    * @param request    */
+comment|/**    * Issue a container request.    * @param request    */
 DECL|method|addContainerRequest (AMRMClient.ContainerRequest request)
 name|void
 name|addContainerRequest
@@ -110,7 +110,7 @@ name|ContainerRequest
 name|request
 parameter_list|)
 function_decl|;
-comment|/**    * Cancel a specific request    * @param request request to cancel    */
+comment|/**    * Cancel a specific request.    * @param request request to cancel    */
 DECL|method|cancelSingleRequest (AMRMClient.ContainerRequest request)
 name|void
 name|cancelSingleRequest
@@ -121,7 +121,7 @@ name|ContainerRequest
 name|request
 parameter_list|)
 function_decl|;
-comment|/**    * Remove a container request    * @param priority1 priority to remove at    * @param priority2 second priority to target    * @param count number to remove    */
+comment|/**    * Remove a container request.    * @param priority1 priority to remove at    * @param priority2 second priority to target    * @param count number to remove    */
 DECL|method|cancelContainerRequests (Priority priority1, Priority priority2, int count)
 name|int
 name|cancelContainerRequests
@@ -136,7 +136,25 @@ name|int
 name|count
 parameter_list|)
 function_decl|;
-comment|/**    * Execute an entire list of operations    * @param operations ops    */
+comment|/**    * Blacklist resources.    * @param blacklistAdditions resources to add to the blacklist    * @param blacklistRemovals resources to remove from the blacklist    */
+DECL|method|updateBlacklist (List<String> blacklistAdditions, List<String> blacklistRemovals)
+name|void
+name|updateBlacklist
+parameter_list|(
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|blacklistAdditions
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|blacklistRemovals
+parameter_list|)
+function_decl|;
+comment|/**    * Execute an entire list of operations.    * @param operations ops    */
 DECL|method|execute (List<AbstractRMOperation> operations)
 name|void
 name|execute

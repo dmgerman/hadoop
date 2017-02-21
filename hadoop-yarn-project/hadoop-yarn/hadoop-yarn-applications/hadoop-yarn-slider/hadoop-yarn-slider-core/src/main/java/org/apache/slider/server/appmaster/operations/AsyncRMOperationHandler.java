@@ -459,6 +459,36 @@ name|req
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|updateBlacklist (List<String> blacklistAdditions, List<String> blacklistRemovals)
+specifier|public
+name|void
+name|updateBlacklist
+parameter_list|(
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|blacklistAdditions
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|blacklistRemovals
+parameter_list|)
+block|{
+name|client
+operator|.
+name|updateBlacklist
+argument_list|(
+name|blacklistAdditions
+argument_list|,
+name|blacklistRemovals
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 
