@@ -12223,7 +12223,7 @@ decl_stmt|;
 if|if
 condition|(
 name|lifetime
-operator|>=
+operator|>
 literal|0
 condition|)
 block|{
