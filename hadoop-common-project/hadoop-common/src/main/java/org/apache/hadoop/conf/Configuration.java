@@ -3054,6 +3054,59 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Reload existing configuration instances.    */
+DECL|method|reloadExistingConfigurations ()
+specifier|public
+specifier|static
+specifier|synchronized
+name|void
+name|reloadExistingConfigurations
+parameter_list|()
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Reloading "
+operator|+
+name|REGISTRY
+operator|.
+name|keySet
+argument_list|()
+operator|.
+name|size
+argument_list|()
+operator|+
+literal|" existing configurations"
+argument_list|)
+expr_stmt|;
+block|}
+for|for
+control|(
+name|Configuration
+name|conf
+range|:
+name|REGISTRY
+operator|.
+name|keySet
+argument_list|()
+control|)
+block|{
+name|conf
+operator|.
+name|reloadConfiguration
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Add a default resource. Resources are loaded in the order of the resources     * added.    * @param name file name. File should be present in the classpath.    */
 DECL|method|addDefaultResource (String name)
 specifier|public

@@ -743,6 +743,14 @@ specifier|private
 name|AzureADTokenProvider
 name|azureTokenProvider
 decl_stmt|;
+static|static
+block|{
+name|AdlConfKeys
+operator|.
+name|addDeprecatedKeys
+argument_list|()
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|getScheme ()
