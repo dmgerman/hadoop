@@ -323,7 +323,6 @@ return|;
 block|}
 comment|/**    * Get a named {@link ThreadFactory} that just builds daemon threads.    *    * @param prefix name prefix for all threads created from the factory    * @return a thread factory that creates named, daemon threads with    * the supplied exception handler and normal priority    */
 DECL|method|newDaemonThreadFactory (final String prefix)
-specifier|private
 specifier|static
 name|ThreadFactory
 name|newDaemonThreadFactory
