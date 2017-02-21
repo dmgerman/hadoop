@@ -390,16 +390,25 @@ name|toolRun
 argument_list|(
 name|admin
 argument_list|,
-literal|"-setStoragePolicy -path /foo -policy WARM"
+literal|"-setStoragePolicy -path "
+operator|+
+name|fs
+operator|.
+name|getUri
+argument_list|()
+operator|+
+literal|"/foo -policy WARM"
 argument_list|,
 literal|0
 argument_list|,
 literal|"Set storage policy WARM on "
 operator|+
-name|foo
+name|fs
 operator|.
-name|toString
+name|getUri
 argument_list|()
+operator|+
+literal|"/foo"
 argument_list|)
 expr_stmt|;
 name|DFSTestUtil
@@ -500,18 +509,25 @@ name|toolRun
 argument_list|(
 name|admin
 argument_list|,
-literal|"-getStoragePolicy -path /foo"
+literal|"-getStoragePolicy -path "
+operator|+
+name|fs
+operator|.
+name|getUri
+argument_list|()
+operator|+
+literal|"/foo"
 argument_list|,
 literal|0
 argument_list|,
 literal|"The storage policy of "
 operator|+
-name|foo
+name|fs
 operator|.
-name|toString
+name|getUri
 argument_list|()
 operator|+
-literal|":\n"
+literal|"/foo:\n"
 operator|+
 name|warm
 argument_list|)
@@ -580,16 +596,25 @@ name|toolRun
 argument_list|(
 name|admin
 argument_list|,
-literal|"-unsetStoragePolicy -path /foo"
+literal|"-unsetStoragePolicy -path "
+operator|+
+name|fs
+operator|.
+name|getUri
+argument_list|()
+operator|+
+literal|"/foo"
 argument_list|,
 literal|0
 argument_list|,
 literal|"Unset storage policy from "
 operator|+
-name|foo
+name|fs
 operator|.
-name|toString
+name|getUri
 argument_list|()
+operator|+
+literal|"/foo"
 argument_list|)
 expr_stmt|;
 name|DFSTestUtil
