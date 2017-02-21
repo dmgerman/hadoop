@@ -325,6 +325,22 @@ name|ADL_SUPPORT_ACL_BIT_IN_FSPERMISSION_DEFAULT
 init|=
 literal|true
 decl_stmt|;
+DECL|field|ADL_ENABLEUPN_FOR_OWNERGROUP_KEY
+specifier|static
+specifier|final
+name|String
+name|ADL_ENABLEUPN_FOR_OWNERGROUP_KEY
+init|=
+literal|"adl.feature.ownerandgroup.enableupn"
+decl_stmt|;
+DECL|field|ADL_ENABLEUPN_FOR_OWNERGROUP_DEFAULT
+specifier|static
+specifier|final
+name|boolean
+name|ADL_ENABLEUPN_FOR_OWNERGROUP_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 DECL|method|AdlConfKeys ()
 specifier|private
 name|AdlConfKeys
