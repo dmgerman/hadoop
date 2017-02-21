@@ -2346,7 +2346,8 @@ name|cluster
 operator|.
 name|clusterMap
 operator|.
-name|children
+name|getChildren
+argument_list|()
 operator|.
 name|size
 argument_list|()
