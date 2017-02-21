@@ -139,7 +139,7 @@ specifier|static
 name|String
 name|usagePrefix
 init|=
-literal|"Usage: hdfs erasurecode [generic options]"
+literal|"Usage: hdfs ec [generic options]"
 decl_stmt|;
 annotation|@
 name|Override
