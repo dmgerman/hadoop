@@ -273,7 +273,7 @@ name|AccessDeniedException
 operator|.
 name|class
 argument_list|,
-literal|"Forbidden (Service: Amazon S3; Status Code: 403;"
+literal|"Service: Amazon S3; Status Code: 403;"
 argument_list|,
 parameter_list|()
 lambda|->
