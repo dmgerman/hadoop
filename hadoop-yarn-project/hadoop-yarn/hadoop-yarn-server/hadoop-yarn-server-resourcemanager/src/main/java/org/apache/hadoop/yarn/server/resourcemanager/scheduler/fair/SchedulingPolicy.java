@@ -491,6 +491,9 @@ name|clazz
 argument_list|)
 return|;
 block|}
+comment|/**    * Initialize the scheduling policy with cluster resources.    * @deprecated  Since it doesn't track cluster resource changes, replaced by    * {@link #initialize(FSContext)}.    *    * @param clusterCapacity cluster resources    */
+annotation|@
+name|Deprecated
 DECL|method|initialize (Resource clusterCapacity)
 specifier|public
 name|void
@@ -498,6 +501,16 @@ name|initialize
 parameter_list|(
 name|Resource
 name|clusterCapacity
+parameter_list|)
+block|{}
+comment|/**    * Initialize the scheduling policy with a {@link FSContext} object, which has    * a pointer to the cluster resources among other information.    *    * @param fsContext a {@link FSContext} object which has a pointer to the    *                  cluster resources    */
+DECL|method|initialize (FSContext fsContext)
+specifier|public
+name|void
+name|initialize
+parameter_list|(
+name|FSContext
+name|fsContext
 parameter_list|)
 block|{}
 comment|/**    * The {@link ResourceCalculator} returned by this method should be used    * for any calculations involving resources.    *    * @return ResourceCalculator instance to use    */

@@ -862,7 +862,7 @@ name|initialize
 argument_list|(
 name|scheduler
 operator|.
-name|getClusterResource
+name|getContext
 argument_list|()
 argument_list|)
 expr_stmt|;

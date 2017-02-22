@@ -1835,7 +1835,9 @@ name|context
 operator|=
 operator|new
 name|FSContext
-argument_list|()
+argument_list|(
+name|this
+argument_list|)
 expr_stmt|;
 name|allocsLoader
 operator|=
@@ -1860,8 +1862,6 @@ name|this
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|VisibleForTesting
 DECL|method|getContext ()
 specifier|public
 name|FSContext
@@ -7359,7 +7359,7 @@ argument_list|()
 operator|.
 name|initialize
 argument_list|(
-name|getClusterResource
+name|getContext
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -24,6 +24,24 @@ name|fair
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Resource
+import|;
+end_import
+
 begin_comment
 comment|/**  * Helper class that holds basic information to be passed around  * FairScheduler classes. Think of this as a glorified map that holds key  * information about the scheduler.  */
 end_comment
@@ -52,8 +70,26 @@ specifier|private
 name|FSStarvedApps
 name|starvedApps
 decl_stmt|;
+DECL|field|scheduler
+specifier|private
+name|FairScheduler
+name|scheduler
+decl_stmt|;
+DECL|method|FSContext (FairScheduler scheduler)
+name|FSContext
+parameter_list|(
+name|FairScheduler
+name|scheduler
+parameter_list|)
+block|{
+name|this
+operator|.
+name|scheduler
+operator|=
+name|scheduler
+expr_stmt|;
+block|}
 DECL|method|isPreemptionEnabled ()
-specifier|public
 name|boolean
 name|isPreemptionEnabled
 parameter_list|()
@@ -63,7 +99,6 @@ name|preemptionEnabled
 return|;
 block|}
 DECL|method|setPreemptionEnabled ()
-specifier|public
 name|void
 name|setPreemptionEnabled
 parameter_list|()
@@ -90,7 +125,6 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|getStarvedApps ()
-specifier|public
 name|FSStarvedApps
 name|getStarvedApps
 parameter_list|()
@@ -100,7 +134,6 @@ name|starvedApps
 return|;
 block|}
 DECL|method|getPreemptionUtilizationThreshold ()
-specifier|public
 name|float
 name|getPreemptionUtilizationThreshold
 parameter_list|()
@@ -110,7 +143,6 @@ name|preemptionUtilizationThreshold
 return|;
 block|}
 DECL|method|setPreemptionUtilizationThreshold ( float preemptionUtilizationThreshold)
-specifier|public
 name|void
 name|setPreemptionUtilizationThreshold
 parameter_list|(
@@ -124,6 +156,19 @@ name|preemptionUtilizationThreshold
 operator|=
 name|preemptionUtilizationThreshold
 expr_stmt|;
+block|}
+DECL|method|getClusterResource ()
+specifier|public
+name|Resource
+name|getClusterResource
+parameter_list|()
+block|{
+return|return
+name|scheduler
+operator|.
+name|getClusterResource
+argument_list|()
+return|;
 block|}
 block|}
 end_class
