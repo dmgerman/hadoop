@@ -891,12 +891,16 @@ operator|==
 literal|0
 condition|)
 block|{
-comment|// Apps are tied in fairness ratio. Break the tie by submit time.
+comment|// Apps are tied in fairness ratio. Break the tie by submit time and job
+comment|// name to get a deterministic ordering, which is useful for unit tests.
 name|res
 operator|=
-call|(
+operator|(
 name|int
-call|)
+operator|)
+name|Math
+operator|.
+name|signum
 argument_list|(
 name|s1
 operator|.
@@ -909,6 +913,29 @@ name|getStartTime
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|res
+operator|==
+literal|0
+condition|)
+block|{
+name|res
+operator|=
+name|s1
+operator|.
+name|getName
+argument_list|()
+operator|.
+name|compareTo
+argument_list|(
+name|s2
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 return|return
 name|res

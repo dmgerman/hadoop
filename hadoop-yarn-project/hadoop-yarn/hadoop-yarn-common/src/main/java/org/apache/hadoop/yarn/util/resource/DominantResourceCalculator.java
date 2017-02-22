@@ -132,7 +132,7 @@ argument_list|)
 decl_stmt|;
 annotation|@
 name|Override
-DECL|method|compare (Resource clusterResource, Resource lhs, Resource rhs)
+DECL|method|compare (Resource clusterResource, Resource lhs, Resource rhs, boolean singleType)
 specifier|public
 name|int
 name|compare
@@ -145,6 +145,9 @@ name|lhs
 parameter_list|,
 name|Resource
 name|rhs
+parameter_list|,
+name|boolean
+name|singleType
 parameter_list|)
 block|{
 if|if
@@ -326,7 +329,12 @@ return|return
 literal|1
 return|;
 block|}
-else|else
+elseif|else
+if|if
+condition|(
+operator|!
+name|singleType
+condition|)
 block|{
 name|l
 operator|=

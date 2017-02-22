@@ -778,6 +778,7 @@ name|res
 operator|==
 literal|0
 condition|)
+block|{
 name|res
 operator|=
 name|s1
@@ -793,6 +794,7 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 return|return
 name|res

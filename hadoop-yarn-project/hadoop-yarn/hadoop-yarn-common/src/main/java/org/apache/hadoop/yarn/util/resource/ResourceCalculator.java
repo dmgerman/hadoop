@@ -85,10 +85,30 @@ specifier|abstract
 class|class
 name|ResourceCalculator
 block|{
+comment|/**    * On a cluster with capacity {@code clusterResource}, compare {@code lhs}    * and {@code rhs}. Consider all resources unless {@code singleType} is set    * to true. When {@code singleType} is set to true, consider only one    * resource as per the {@link ResourceCalculator} implementation; the    * {@link DefaultResourceCalculator} considers memory and    * {@link DominantResourceCalculator} considers the dominant resource.    *    * @param clusterResource cluster capacity    * @param lhs First {@link Resource} to compare    * @param rhs Second {@link Resource} to compare    * @param singleType Whether to consider a single resource type or all    *                   resource types    * @return -1 if {@code lhs} is smaller, 0 if equal and 1 if it is larger    */
+DECL|method|compare ( Resource clusterResource, Resource lhs, Resource rhs, boolean singleType)
 specifier|public
 specifier|abstract
 name|int
+name|compare
+parameter_list|(
+name|Resource
+name|clusterResource
+parameter_list|,
+name|Resource
+name|lhs
+parameter_list|,
+name|Resource
+name|rhs
+parameter_list|,
+name|boolean
+name|singleType
+parameter_list|)
+function_decl|;
+comment|/**    * On a cluster with capacity {@code clusterResource}, compare {@code lhs}    * and {@code rhs} considering all resources.    *    * @param clusterResource cluster capacity    * @param lhs First {@link Resource} to compare    * @param rhs Second {@link Resource} to compare    * @return -1 if {@code lhs} is smaller, 0 if equal and 1 if it is larger    */
 DECL|method|compare (Resource clusterResource, Resource lhs, Resource rhs)
+specifier|public
+name|int
 name|compare
 parameter_list|(
 name|Resource
@@ -100,7 +120,20 @@ parameter_list|,
 name|Resource
 name|rhs
 parameter_list|)
-function_decl|;
+block|{
+return|return
+name|compare
+argument_list|(
+name|clusterResource
+argument_list|,
+name|lhs
+argument_list|,
+name|rhs
+argument_list|,
+literal|false
+argument_list|)
+return|;
+block|}
 DECL|method|divideAndCeil (int a, int b)
 specifier|public
 specifier|static

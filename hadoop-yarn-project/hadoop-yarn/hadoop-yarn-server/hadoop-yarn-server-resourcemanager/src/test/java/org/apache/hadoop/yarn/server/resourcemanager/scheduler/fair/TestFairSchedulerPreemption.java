@@ -617,7 +617,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-comment|/*      * Queue hierarchy:      * root      * |--- preemptable      *      |--- child-1      *      |--- child-2      * |--- nonpreemptible      *      |--- child-1      *      |--- child-2      */
+comment|/*      * Queue hierarchy:      * root      * |--- preemptable      *      |--- child-1      *      |--- child-2      * |--- preemptable-sibling      * |--- nonpreemptible      *      |--- child-1      *      |--- child-2      */
 name|PrintWriter
 name|out
 init|=
@@ -705,6 +705,25 @@ literal|"</queue>"
 argument_list|)
 expr_stmt|;
 comment|// end of preemptable queue
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"<queue name=\"preemptable-sibling\">"
+argument_list|)
+expr_stmt|;
+name|writePreemptionParams
+argument_list|(
+name|out
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"</queue>"
+argument_list|)
+expr_stmt|;
 comment|// Queue with preemption disallowed
 name|out
 operator|.
@@ -1222,11 +1241,14 @@ name|queue2
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|verifyPreemption ()
+DECL|method|verifyPreemption (int numStarvedAppContainers)
 specifier|private
 name|void
 name|verifyPreemption
-parameter_list|()
+parameter_list|(
+name|int
+name|numStarvedAppContainers
+parameter_list|)
 throws|throws
 name|InterruptedException
 block|{
@@ -1256,7 +1278,9 @@ operator|.
 name|size
 argument_list|()
 operator|==
-literal|4
+literal|2
+operator|*
+name|numStarvedAppContainers
 condition|)
 block|{
 break|break;
@@ -1274,7 +1298,9 @@ name|assertEquals
 argument_list|(
 literal|"Incorrect number of containers on the greedy app"
 argument_list|,
-literal|4
+literal|2
+operator|*
+name|numStarvedAppContainers
 argument_list|,
 name|greedyApp
 operator|.
@@ -1293,7 +1319,7 @@ name|assertEquals
 argument_list|(
 literal|"Starved app is not assigned the right number of containers"
 argument_list|,
-literal|2
+name|numStarvedAppContainers
 argument_list|,
 name|starvingApp
 operator|.
@@ -1394,7 +1420,9 @@ name|fairsharePreemption
 condition|)
 block|{
 name|verifyPreemption
-argument_list|()
+argument_list|(
+literal|2
+argument_list|)
 expr_stmt|;
 block|}
 else|else
@@ -1422,7 +1450,9 @@ literal|"root.preemptable.child-2"
 argument_list|)
 expr_stmt|;
 name|verifyPreemption
-argument_list|()
+argument_list|(
+literal|2
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@
@@ -1443,7 +1473,9 @@ literal|"root.nonpreemptable.child-1"
 argument_list|)
 expr_stmt|;
 name|verifyPreemption
-argument_list|()
+argument_list|(
+literal|2
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@
@@ -1575,7 +1607,9 @@ literal|"root.preemptable.child-2"
 argument_list|)
 expr_stmt|;
 name|verifyPreemption
-argument_list|()
+argument_list|(
+literal|2
+argument_list|)
 expr_stmt|;
 name|ArrayList
 argument_list|<
@@ -1641,6 +1675,54 @@ name|equals
 argument_list|(
 name|host1
 argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testPreemptionBetweenSiblingQueuesWithParentAtFairShare ()
+specifier|public
+name|void
+name|testPreemptionBetweenSiblingQueuesWithParentAtFairShare
+parameter_list|()
+throws|throws
+name|InterruptedException
+block|{
+comment|// Run this test only for fairshare preemption
+if|if
+condition|(
+operator|!
+name|fairsharePreemption
+condition|)
+block|{
+return|return;
+block|}
+comment|// Let one of the child queues take over the entire cluster
+name|takeAllResources
+argument_list|(
+literal|"root.preemptable.child-1"
+argument_list|)
+expr_stmt|;
+comment|// Submit a job so half the resources go to parent's sibling
+name|preemptHalfResources
+argument_list|(
+literal|"root.preemptable-sibling"
+argument_list|)
+expr_stmt|;
+name|verifyPreemption
+argument_list|(
+literal|2
+argument_list|)
+expr_stmt|;
+comment|// Submit a job to the child's sibling to force preemption from the child
+name|preemptHalfResources
+argument_list|(
+literal|"root.preemptable.child-2"
+argument_list|)
+expr_stmt|;
+name|verifyPreemption
+argument_list|(
+literal|1
 argument_list|)
 expr_stmt|;
 block|}
