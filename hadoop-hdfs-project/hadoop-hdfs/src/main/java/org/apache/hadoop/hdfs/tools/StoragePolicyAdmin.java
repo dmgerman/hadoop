@@ -1398,7 +1398,7 @@ name|println
 argument_list|(
 literal|"Please specify the path from which "
 operator|+
-literal|"the storage policy will be unsetd.\nUsage: "
+literal|"the storage policy will be unset.\nUsage: "
 operator|+
 name|getLongUsage
 argument_list|()
