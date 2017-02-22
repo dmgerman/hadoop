@@ -1758,6 +1758,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|setup
+argument_list|()
+expr_stmt|;
 name|startCluster
 argument_list|(
 literal|1
@@ -1859,6 +1862,9 @@ name|fileSys
 argument_list|,
 name|file
 argument_list|)
+expr_stmt|;
+name|teardown
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Verify a node can transition directly to AdminStates.IN_MAINTENANCE when    * DFS_NAMENODE_MAINTENANCE_REPLICATION_MIN_KEY is set to zero.    */
@@ -2499,6 +2505,9 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|setup
+argument_list|()
+expr_stmt|;
 name|startCluster
 argument_list|(
 literal|1
@@ -2699,6 +2708,9 @@ name|fileSys
 argument_list|,
 name|file
 argument_list|)
+expr_stmt|;
+name|teardown
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Verify if multiple DataNodes can transition to maintenance state    * at the same time.    */
@@ -2966,6 +2978,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|setup
+argument_list|()
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -3151,6 +3166,9 @@ name|fileSys
 argument_list|,
 name|file
 argument_list|)
+expr_stmt|;
+name|teardown
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Verify the following scenario.    * a. Put a live node to maintenance => 1 maintenance, 2 live.    * b. The maintenance node becomes dead => block map still has 1 maintenance,    *    2 live.    * c. Take the node out of maintenance => NN should schedule the replication    *    and end up with 3 live.    */
