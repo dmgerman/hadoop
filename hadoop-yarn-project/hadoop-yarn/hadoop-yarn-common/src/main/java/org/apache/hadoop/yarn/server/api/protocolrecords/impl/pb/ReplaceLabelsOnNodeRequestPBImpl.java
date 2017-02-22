@@ -158,9 +158,9 @@ name|yarn
 operator|.
 name|proto
 operator|.
-name|YarnServerResourceManagerServiceProtos
+name|YarnProtos
 operator|.
-name|NodeIdToLabelsNameProto
+name|NodeIdToLabelsProto
 import|;
 end_import
 
@@ -342,7 +342,7 @@ name|builder
 decl_stmt|;
 name|List
 argument_list|<
-name|NodeIdToLabelsNameProto
+name|NodeIdToLabelsProto
 argument_list|>
 name|list
 init|=
@@ -369,7 +369,7 @@ argument_list|()
 expr_stmt|;
 for|for
 control|(
-name|NodeIdToLabelsNameProto
+name|NodeIdToLabelsProto
 name|c
 range|:
 name|list
@@ -458,14 +458,14 @@ return|return;
 block|}
 name|Iterable
 argument_list|<
-name|NodeIdToLabelsNameProto
+name|NodeIdToLabelsProto
 argument_list|>
 name|iterable
 init|=
 operator|new
 name|Iterable
 argument_list|<
-name|NodeIdToLabelsNameProto
+name|NodeIdToLabelsProto
 argument_list|>
 argument_list|()
 block|{
@@ -474,7 +474,7 @@ name|Override
 specifier|public
 name|Iterator
 argument_list|<
-name|NodeIdToLabelsNameProto
+name|NodeIdToLabelsProto
 argument_list|>
 name|iterator
 parameter_list|()
@@ -483,7 +483,7 @@ return|return
 operator|new
 name|Iterator
 argument_list|<
-name|NodeIdToLabelsNameProto
+name|NodeIdToLabelsProto
 argument_list|>
 argument_list|()
 block|{
@@ -525,7 +525,7 @@ block|}
 annotation|@
 name|Override
 specifier|public
-name|NodeIdToLabelsNameProto
+name|NodeIdToLabelsProto
 name|next
 parameter_list|()
 block|{
@@ -546,7 +546,7 @@ name|next
 argument_list|()
 decl_stmt|;
 return|return
-name|NodeIdToLabelsNameProto
+name|NodeIdToLabelsProto
 operator|.
 name|newBuilder
 argument_list|()

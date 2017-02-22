@@ -131,7 +131,7 @@ specifier|abstract
 class|class
 name|GetLabelsToNodesResponse
 block|{
-DECL|method|newInstance ( Map<NodeLabel, Set<NodeId>> map)
+DECL|method|newInstance ( Map<String, Set<NodeId>> map)
 specifier|public
 specifier|static
 name|GetLabelsToNodesResponse
@@ -139,7 +139,7 @@ name|newInstance
 parameter_list|(
 name|Map
 argument_list|<
-name|NodeLabel
+name|String
 argument_list|,
 name|Set
 argument_list|<
@@ -176,7 +176,7 @@ annotation|@
 name|Public
 annotation|@
 name|Evolving
-DECL|method|setLabelsToNodes (Map<NodeLabel, Set<NodeId>> map)
+DECL|method|setLabelsToNodes (Map<String, Set<NodeId>> map)
 specifier|public
 specifier|abstract
 name|void
@@ -184,7 +184,7 @@ name|setLabelsToNodes
 parameter_list|(
 name|Map
 argument_list|<
-name|NodeLabel
+name|String
 argument_list|,
 name|Set
 argument_list|<
@@ -203,7 +203,7 @@ specifier|public
 specifier|abstract
 name|Map
 argument_list|<
-name|NodeLabel
+name|String
 argument_list|,
 name|Set
 argument_list|<

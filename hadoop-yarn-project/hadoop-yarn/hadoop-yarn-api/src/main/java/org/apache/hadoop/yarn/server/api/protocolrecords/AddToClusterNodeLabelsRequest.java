@@ -113,7 +113,7 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|newInstance ( List<NodeLabel> NodeLabels)
+DECL|method|newInstance (List<NodeLabel> nodeLabels)
 specifier|public
 specifier|static
 name|AddToClusterNodeLabelsRequest
@@ -123,7 +123,7 @@ name|List
 argument_list|<
 name|NodeLabel
 argument_list|>
-name|NodeLabels
+name|nodeLabels
 parameter_list|)
 block|{
 name|AddToClusterNodeLabelsRequest
@@ -142,7 +142,7 @@ name|request
 operator|.
 name|setNodeLabels
 argument_list|(
-name|NodeLabels
+name|nodeLabels
 argument_list|)
 expr_stmt|;
 return|return
@@ -153,7 +153,7 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|setNodeLabels (List<NodeLabel> NodeLabels)
+DECL|method|setNodeLabels (List<NodeLabel> nodeLabels)
 specifier|public
 specifier|abstract
 name|void
@@ -163,7 +163,7 @@ name|List
 argument_list|<
 name|NodeLabel
 argument_list|>
-name|NodeLabels
+name|nodeLabels
 parameter_list|)
 function_decl|;
 annotation|@

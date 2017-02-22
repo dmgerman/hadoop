@@ -351,7 +351,7 @@ DECL|field|labelsToNodes
 specifier|private
 name|Map
 argument_list|<
-name|NodeLabel
+name|String
 argument_list|,
 name|Set
 argument_list|<
@@ -440,7 +440,7 @@ operator|=
 operator|new
 name|HashMap
 argument_list|<
-name|NodeLabel
+name|String
 argument_list|,
 name|Set
 argument_list|<
@@ -513,14 +513,10 @@ name|labelsToNodes
 operator|.
 name|put
 argument_list|(
-operator|new
-name|NodeLabelPBImpl
-argument_list|(
 name|c
 operator|.
 name|getNodeLabels
 argument_list|()
-argument_list|)
 argument_list|,
 name|setNodes
 argument_list|)
@@ -616,7 +612,7 @@ name|Iterator
 argument_list|<
 name|Entry
 argument_list|<
-name|NodeLabel
+name|String
 argument_list|,
 name|Set
 argument_list|<
@@ -656,7 +652,7 @@ parameter_list|()
 block|{
 name|Entry
 argument_list|<
-name|NodeLabel
+name|String
 argument_list|,
 name|Set
 argument_list|<
@@ -713,13 +709,10 @@ argument_list|()
 operator|.
 name|setNodeLabels
 argument_list|(
-name|convertToProtoFormat
-argument_list|(
 name|now
 operator|.
 name|getKey
 argument_list|()
-argument_list|)
 argument_list|)
 operator|.
 name|addAllNodeId
@@ -855,27 +848,6 @@ name|getProto
 argument_list|()
 return|;
 block|}
-DECL|method|convertToProtoFormat (NodeLabel l)
-specifier|private
-name|NodeLabelProto
-name|convertToProtoFormat
-parameter_list|(
-name|NodeLabel
-name|l
-parameter_list|)
-block|{
-return|return
-operator|(
-operator|(
-name|NodeLabelPBImpl
-operator|)
-name|l
-operator|)
-operator|.
-name|getProto
-argument_list|()
-return|;
-block|}
 annotation|@
 name|Override
 DECL|method|hashCode ()
@@ -962,14 +934,14 @@ annotation|@
 name|Public
 annotation|@
 name|Evolving
-DECL|method|setLabelsToNodes (Map<NodeLabel, Set<NodeId>> map)
+DECL|method|setLabelsToNodes (Map<String, Set<NodeId>> map)
 specifier|public
 name|void
 name|setLabelsToNodes
 parameter_list|(
 name|Map
 argument_list|<
-name|NodeLabel
+name|String
 argument_list|,
 name|Set
 argument_list|<
@@ -1005,7 +977,7 @@ DECL|method|getLabelsToNodes ()
 specifier|public
 name|Map
 argument_list|<
-name|NodeLabel
+name|String
 argument_list|,
 name|Set
 argument_list|<

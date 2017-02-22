@@ -1572,7 +1572,7 @@ name|NodeId
 argument_list|,
 name|Set
 argument_list|<
-name|NodeLabel
+name|String
 argument_list|>
 argument_list|>
 name|getNodeToLabels
@@ -1592,7 +1592,7 @@ specifier|public
 specifier|abstract
 name|Map
 argument_list|<
-name|NodeLabel
+name|String
 argument_list|,
 name|Set
 argument_list|<
@@ -1616,7 +1616,7 @@ specifier|public
 specifier|abstract
 name|Map
 argument_list|<
-name|NodeLabel
+name|String
 argument_list|,
 name|Set
 argument_list|<
