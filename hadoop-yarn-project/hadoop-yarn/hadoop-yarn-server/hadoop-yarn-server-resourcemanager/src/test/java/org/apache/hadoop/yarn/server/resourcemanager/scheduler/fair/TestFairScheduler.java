@@ -32551,6 +32551,11 @@ argument_list|)
 expr_stmt|;
 name|scheduler
 operator|.
+name|update
+argument_list|()
+expr_stmt|;
+name|scheduler
+operator|.
 name|handle
 argument_list|(
 name|updateEvent
