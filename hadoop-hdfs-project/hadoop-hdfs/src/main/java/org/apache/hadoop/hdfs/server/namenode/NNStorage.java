@@ -3180,6 +3180,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|getFinalizedEditsFile (StorageDirectory sd, long startTxId, long endTxId)
+specifier|public
 specifier|static
 name|File
 name|getFinalizedEditsFile
@@ -3213,6 +3214,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|getTemporaryEditsFile (StorageDirectory sd, long startTxId, long endTxId, long timestamp)
+specifier|public
 specifier|static
 name|File
 name|getTemporaryEditsFile
@@ -4534,6 +4536,8 @@ return|return
 name|inspector
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getNamespaceInfo ()
 specifier|public
 name|NamespaceInfo

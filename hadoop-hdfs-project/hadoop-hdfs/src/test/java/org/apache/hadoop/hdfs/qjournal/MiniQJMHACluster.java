@@ -590,6 +590,13 @@ operator|.
 name|waitActive
 argument_list|()
 expr_stmt|;
+name|journalCluster
+operator|.
+name|setNamenodeSharedEditsConf
+argument_list|(
+name|NAMESERVICE
+argument_list|)
+expr_stmt|;
 name|URI
 name|journalURI
 init|=
