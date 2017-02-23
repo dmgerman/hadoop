@@ -8177,7 +8177,10 @@ name|rmAppManager
 operator|.
 name|moveApplicationAcrossQueue
 argument_list|(
-name|applicationId
+name|application
+operator|.
+name|getApplicationId
+argument_list|()
 argument_list|,
 name|request
 operator|.
@@ -10250,7 +10253,10 @@ name|updateApplicationPriority
 argument_list|(
 name|callerUGI
 argument_list|,
-name|applicationId
+name|application
+operator|.
+name|getApplicationId
+argument_list|()
 argument_list|,
 name|newAppPriority
 argument_list|)
