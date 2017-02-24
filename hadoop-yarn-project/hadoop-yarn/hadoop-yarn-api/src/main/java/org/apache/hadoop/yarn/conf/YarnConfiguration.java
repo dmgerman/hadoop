@@ -6455,6 +6455,17 @@ name|TIMELINE_SERVICE_PREFIX
 operator|+
 literal|"entity-group-fs-store."
 decl_stmt|;
+DECL|field|TIMELINE_SERVICE_ENTITYGROUP_FS_STORE_CACHE_STORE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_ENTITYGROUP_FS_STORE_CACHE_STORE
+init|=
+name|TIMELINE_SERVICE_ENTITYGROUP_FS_STORE_PREFIX
+operator|+
+literal|"cache-store-class"
+decl_stmt|;
 DECL|field|TIMELINE_SERVICE_ENTITYGROUP_FS_STORE_ACTIVE_DIR
 specifier|public
 specifier|static
