@@ -463,7 +463,7 @@ name|set
 argument_list|(
 name|CodecUtil
 operator|.
-name|IO_ERASURECODE_CODEC_RS_DEFAULT_RAWCODER_KEY
+name|IO_ERASURECODE_CODEC_RS_RAWCODER_KEY
 argument_list|,
 name|NativeRSRawErasureCoderFactory
 operator|.

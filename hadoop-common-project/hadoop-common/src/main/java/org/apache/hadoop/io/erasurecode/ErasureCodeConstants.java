@@ -34,14 +34,14 @@ specifier|private
 name|ErasureCodeConstants
 parameter_list|()
 block|{   }
-DECL|field|RS_DEFAULT_CODEC_NAME
+DECL|field|RS_CODEC_NAME
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|RS_DEFAULT_CODEC_NAME
+name|RS_CODEC_NAME
 init|=
-literal|"rs-default"
+literal|"rs"
 decl_stmt|;
 DECL|field|RS_LEGACY_CODEC_NAME
 specifier|public
@@ -80,7 +80,7 @@ init|=
 operator|new
 name|ECSchema
 argument_list|(
-name|RS_DEFAULT_CODEC_NAME
+name|RS_CODEC_NAME
 argument_list|,
 literal|6
 argument_list|,
@@ -97,7 +97,7 @@ init|=
 operator|new
 name|ECSchema
 argument_list|(
-name|RS_DEFAULT_CODEC_NAME
+name|RS_CODEC_NAME
 argument_list|,
 literal|3
 argument_list|,
@@ -148,7 +148,7 @@ init|=
 operator|new
 name|ECSchema
 argument_list|(
-name|RS_DEFAULT_CODEC_NAME
+name|RS_CODEC_NAME
 argument_list|,
 literal|10
 argument_list|,

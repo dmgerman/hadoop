@@ -252,7 +252,7 @@ argument_list|,
 name|numParityUnit
 argument_list|)
 decl_stmt|;
-comment|// should return default raw coder of rs-default codec
+comment|// should return default raw coder of rs codec
 name|RawErasureEncoder
 name|encoder
 init|=
@@ -264,7 +264,7 @@ name|conf
 argument_list|,
 name|ErasureCodeConstants
 operator|.
-name|RS_DEFAULT_CODEC_NAME
+name|RS_CODEC_NAME
 argument_list|,
 name|coderOptions
 argument_list|)
@@ -289,7 +289,7 @@ name|conf
 argument_list|,
 name|ErasureCodeConstants
 operator|.
-name|RS_DEFAULT_CODEC_NAME
+name|RS_CODEC_NAME
 argument_list|,
 name|coderOptions
 argument_list|)
@@ -378,7 +378,7 @@ init|=
 literal|"DummyNoneExistingFactory"
 decl_stmt|;
 comment|// set the dummy factory to rs-legacy and create a raw coder
-comment|// with rs-default, which is OK as the raw coder key is not used
+comment|// with rs, which is OK as the raw coder key is not used
 name|conf
 operator|.
 name|set
@@ -401,7 +401,7 @@ name|conf
 argument_list|,
 name|ErasureCodeConstants
 operator|.
-name|RS_DEFAULT_CODEC_NAME
+name|RS_CODEC_NAME
 argument_list|,
 name|coderOptions
 argument_list|)

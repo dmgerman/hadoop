@@ -246,7 +246,7 @@ argument_list|()
 argument_list|,
 name|ErasureCodeConstants
 operator|.
-name|RS_DEFAULT_CODEC_NAME
+name|RS_CODEC_NAME
 argument_list|,
 name|getOptions
 argument_list|()

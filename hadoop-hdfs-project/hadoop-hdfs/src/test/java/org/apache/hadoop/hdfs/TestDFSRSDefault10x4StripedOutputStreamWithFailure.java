@@ -67,7 +67,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This tests write operation of DFS striped file with RS-DEFAULT-10-4-64k  *  erasure code policy under Datanode failure conditions.  */
+comment|/**  * This tests write operation of DFS striped file with RS-10-4-64k  *  erasure code policy under Datanode failure conditions.  */
 end_comment
 
 begin_class
