@@ -30,9 +30,7 @@ name|hdfs
 operator|.
 name|tools
 operator|.
-name|erasurecode
-operator|.
-name|ECCli
+name|ECAdmin
 import|;
 end_import
 
@@ -67,19 +65,19 @@ literal|null
 decl_stmt|;
 DECL|field|admin
 specifier|protected
-name|ECCli
+name|ECAdmin
 name|admin
 init|=
 literal|null
 decl_stmt|;
-DECL|method|ErasureCodingCliCmdExecutor (String namenode, ECCli admin)
+DECL|method|ErasureCodingCliCmdExecutor (String namenode, ECAdmin admin)
 specifier|public
 name|ErasureCodingCliCmdExecutor
 parameter_list|(
 name|String
 name|namenode
 parameter_list|,
-name|ECCli
+name|ECAdmin
 name|admin
 parameter_list|)
 block|{

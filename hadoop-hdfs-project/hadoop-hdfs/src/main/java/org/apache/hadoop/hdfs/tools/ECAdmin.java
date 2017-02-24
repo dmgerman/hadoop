@@ -1,6 +1,6 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *  *     http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
+comment|/**  * Licensed to the Apache Software Foundation (ASF) under one or more  * contributor license agreements. See the NOTICE file distributed with this  * work for additional information regarding copyright ownership. The ASF  * licenses this file to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance with the License.  * You may obtain a copy of the License at  *  * http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the  * License for the specific language governing permissions and limitations under  * the License.  */
 end_comment
 
 begin_package
@@ -17,6 +17,20 @@ operator|.
 name|tools
 package|;
 end_package
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
 
 begin_import
 import|import
@@ -86,39 +100,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|BlockStoragePolicy
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|HdfsConstants
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|HdfsFileStatus
+name|ErasureCodingPolicy
 import|;
 end_import
 
@@ -194,6 +176,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Arrays
 import|;
 end_import
@@ -229,20 +221,33 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class implements block storage policy operations.  */
+comment|/**  * CLI for the erasure code encoding operations.  */
 end_comment
 
 begin_class
-DECL|class|StoragePolicyAdmin
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+DECL|class|ECAdmin
 specifier|public
 class|class
-name|StoragePolicyAdmin
+name|ECAdmin
 extends|extends
 name|Configured
 implements|implements
 name|Tool
 block|{
-DECL|method|main (String[] argsArray)
+DECL|field|NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NAME
+init|=
+literal|"ec"
+decl_stmt|;
+DECL|method|main (String[] args)
 specifier|public
 specifier|static
 name|void
@@ -250,17 +255,17 @@ name|main
 parameter_list|(
 name|String
 index|[]
-name|argsArray
+name|args
 parameter_list|)
 throws|throws
 name|Exception
 block|{
 specifier|final
-name|StoragePolicyAdmin
+name|ECAdmin
 name|admin
 init|=
 operator|new
-name|StoragePolicyAdmin
+name|ECAdmin
 argument_list|(
 operator|new
 name|Configuration
@@ -276,7 +281,7 @@ name|run
 argument_list|(
 name|admin
 argument_list|,
-name|argsArray
+name|args
 argument_list|)
 decl_stmt|;
 name|System
@@ -287,9 +292,9 @@ name|res
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|StoragePolicyAdmin (Configuration conf)
+DECL|method|ECAdmin (Configuration conf)
 specifier|public
-name|StoragePolicyAdmin
+name|ECAdmin
 parameter_list|(
 name|Configuration
 name|conf
@@ -330,7 +335,7 @@ name|printUsage
 argument_list|(
 literal|false
 argument_list|,
-literal|"storagepolicies"
+name|NAME
 argument_list|,
 name|COMMANDS
 argument_list|)
@@ -419,7 +424,7 @@ name|printUsage
 argument_list|(
 literal|false
 argument_list|,
-literal|"storagepolicies"
+name|NAME
 argument_list|,
 name|COMMANDS
 argument_list|)
@@ -510,12 +515,12 @@ literal|1
 return|;
 block|}
 block|}
-comment|/** Command to list all the existing storage policies */
-DECL|class|ListStoragePoliciesCommand
+comment|/** Command to list the set of available erasure coding policies */
+DECL|class|ListECPoliciesCommand
 specifier|private
 specifier|static
 class|class
-name|ListStoragePoliciesCommand
+name|ListECPoliciesCommand
 implements|implements
 name|AdminHelper
 operator|.
@@ -564,7 +569,7 @@ argument_list|()
 operator|+
 literal|"\n"
 operator|+
-literal|"List all the existing block storage policies.\n"
+literal|"Get the list of supported erasure coding policies.\n"
 return|;
 block|}
 annotation|@
@@ -586,6 +591,32 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|args
+operator|.
+name|size
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+name|getName
+argument_list|()
+operator|+
+literal|": Too many arguments"
+argument_list|)
+expr_stmt|;
+return|return
+literal|1
+return|;
+block|}
 specifier|final
 name|DistributedFileSystem
 name|dfs
@@ -601,13 +632,13 @@ try|try
 block|{
 name|Collection
 argument_list|<
-name|BlockStoragePolicy
+name|ErasureCodingPolicy
 argument_list|>
 name|policies
 init|=
 name|dfs
 operator|.
-name|getAllStoragePolicies
+name|getAllErasureCodingPolicies
 argument_list|()
 decl_stmt|;
 name|System
@@ -616,12 +647,12 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"Block Storage Policies:"
+literal|"Erasure Coding Policies:"
 argument_list|)
 expr_stmt|;
 for|for
 control|(
-name|BlockStoragePolicy
+name|ErasureCodingPolicy
 name|policy
 range|:
 name|policies
@@ -643,6 +674,9 @@ argument_list|(
 literal|"\t"
 operator|+
 name|policy
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -677,12 +711,12 @@ literal|0
 return|;
 block|}
 block|}
-comment|/** Command to get the storage policy of a file/directory */
-DECL|class|GetStoragePolicyCommand
+comment|/** Command to get the erasure coding policy for a file or directory */
+DECL|class|GetECPolicyCommand
 specifier|private
 specifier|static
 class|class
-name|GetStoragePolicyCommand
+name|GetECPolicyCommand
 implements|implements
 name|AdminHelper
 operator|.
@@ -697,7 +731,7 @@ name|getName
 parameter_list|()
 block|{
 return|return
-literal|"-getStoragePolicy"
+literal|"-getPolicy"
 return|;
 block|}
 annotation|@
@@ -740,7 +774,9 @@ name|addRow
 argument_list|(
 literal|"<path>"
 argument_list|,
-literal|"The path of the file/directory for getting the storage policy"
+literal|"The path of the file/directory for getting the erasure coding "
+operator|+
+literal|"policy"
 argument_list|)
 expr_stmt|;
 return|return
@@ -749,7 +785,7 @@ argument_list|()
 operator|+
 literal|"\n"
 operator|+
-literal|"Get the storage policy of a file/directory.\n\n"
+literal|"Get the erasure coding policy of a file/directory.\n\n"
 operator|+
 name|listing
 operator|.
@@ -812,6 +848,33 @@ return|return
 literal|1
 return|;
 block|}
+if|if
+condition|(
+name|args
+operator|.
+name|size
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+name|getName
+argument_list|()
+operator|+
+literal|": Too many arguments"
+argument_list|)
+expr_stmt|;
+return|return
+literal|1
+return|;
+block|}
+specifier|final
 name|Path
 name|p
 init|=
@@ -839,65 +902,37 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
-name|HdfsFileStatus
-name|status
+name|ErasureCodingPolicy
+name|ecPolicy
 init|=
 name|dfs
 operator|.
-name|getClient
-argument_list|()
-operator|.
-name|getFileInfo
-argument_list|(
-name|Path
-operator|.
-name|getPathWithoutSchemeAndAuthority
+name|getErasureCodingPolicy
 argument_list|(
 name|p
-argument_list|)
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|status
-operator|==
+name|ecPolicy
+operator|!=
 literal|null
 condition|)
 block|{
 name|System
 operator|.
-name|err
+name|out
 operator|.
 name|println
 argument_list|(
-literal|"File/Directory does not exist: "
-operator|+
-name|path
+name|ecPolicy
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
-return|return
-literal|2
-return|;
 block|}
-name|byte
-name|storagePolicyId
-init|=
-name|status
-operator|.
-name|getStoragePolicy
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|storagePolicyId
-operator|==
-name|HdfsConstants
-operator|.
-name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
-condition|)
+else|else
 block|{
 name|System
 operator|.
@@ -905,65 +940,15 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"The storage policy of "
+literal|"The erasure coding policy of "
 operator|+
 name|path
 operator|+
-literal|" is unspecified"
+literal|" is "
+operator|+
+literal|"unspecified"
 argument_list|)
 expr_stmt|;
-return|return
-literal|0
-return|;
-block|}
-name|Collection
-argument_list|<
-name|BlockStoragePolicy
-argument_list|>
-name|policies
-init|=
-name|dfs
-operator|.
-name|getAllStoragePolicies
-argument_list|()
-decl_stmt|;
-for|for
-control|(
-name|BlockStoragePolicy
-name|policy
-range|:
-name|policies
-control|)
-block|{
-if|if
-condition|(
-name|policy
-operator|.
-name|getId
-argument_list|()
-operator|==
-name|storagePolicyId
-condition|)
-block|{
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"The storage policy of "
-operator|+
-name|path
-operator|+
-literal|":\n"
-operator|+
-name|policy
-argument_list|)
-expr_stmt|;
-return|return
-literal|0
-return|;
-block|}
 block|}
 block|}
 catch|catch
@@ -990,28 +975,17 @@ return|return
 literal|2
 return|;
 block|}
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"Cannot identify the storage policy for "
-operator|+
-name|path
-argument_list|)
-expr_stmt|;
 return|return
-literal|2
+literal|0
 return|;
 block|}
 block|}
-comment|/** Command to set the storage policy to a file/directory */
-DECL|class|SetStoragePolicyCommand
+comment|/** Command to set the erasure coding policy to a file/directory */
+DECL|class|SetECPolicyCommand
 specifier|private
 specifier|static
 class|class
-name|SetStoragePolicyCommand
+name|SetECPolicyCommand
 implements|implements
 name|AdminHelper
 operator|.
@@ -1026,7 +1000,7 @@ name|getName
 parameter_list|()
 block|{
 return|return
-literal|"-setStoragePolicy"
+literal|"-setPolicy"
 return|;
 block|}
 annotation|@
@@ -1068,9 +1042,9 @@ name|addRow
 argument_list|(
 literal|"<path>"
 argument_list|,
-literal|"The path of the file/directory to set storage"
+literal|"The path of the file/directory to set "
 operator|+
-literal|" policy"
+literal|"the erasure coding policy"
 argument_list|)
 expr_stmt|;
 name|listing
@@ -1079,7 +1053,7 @@ name|addRow
 argument_list|(
 literal|"<policy>"
 argument_list|,
-literal|"The name of the block storage policy"
+literal|"The name of the erasure coding policy"
 argument_list|)
 expr_stmt|;
 return|return
@@ -1088,7 +1062,7 @@ argument_list|()
 operator|+
 literal|"\n"
 operator|+
-literal|"Set the storage policy to a file/directory.\n\n"
+literal|"Set the erasure coding policy for a file/directory.\n\n"
 operator|+
 name|listing
 operator|.
@@ -1141,7 +1115,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Please specify the path for setting the storage "
+literal|"Please specify the path for setting the EC "
 operator|+
 literal|"policy.\nUsage: "
 operator|+
@@ -1155,7 +1129,7 @@ return|;
 block|}
 specifier|final
 name|String
-name|policyName
+name|ecPolicyName
 init|=
 name|StringUtils
 operator|.
@@ -1168,7 +1142,7 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|policyName
+name|ecPolicyName
 operator|==
 literal|null
 condition|)
@@ -1189,6 +1163,33 @@ return|return
 literal|1
 return|;
 block|}
+if|if
+condition|(
+name|args
+operator|.
+name|size
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+name|getName
+argument_list|()
+operator|+
+literal|": Too many arguments"
+argument_list|)
+expr_stmt|;
+return|return
+literal|1
+return|;
+block|}
+specifier|final
 name|Path
 name|p
 init|=
@@ -1216,13 +1217,155 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
+name|ErasureCodingPolicy
+name|ecPolicy
+init|=
+literal|null
+decl_stmt|;
+name|ErasureCodingPolicy
+index|[]
+name|ecPolicies
+init|=
 name|dfs
 operator|.
-name|setStoragePolicy
+name|getClient
+argument_list|()
+operator|.
+name|getErasureCodingPolicies
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+name|ErasureCodingPolicy
+name|policy
+range|:
+name|ecPolicies
+control|)
+block|{
+if|if
+condition|(
+name|ecPolicyName
+operator|.
+name|equals
+argument_list|(
+name|policy
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|ecPolicy
+operator|=
+name|policy
+expr_stmt|;
+break|break;
+block|}
+block|}
+if|if
+condition|(
+name|ecPolicy
+operator|==
+literal|null
+condition|)
+block|{
+name|StringBuilder
+name|sb
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"Policy '"
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+name|ecPolicyName
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"' does not match any of the supported policies."
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|" Please select any one of "
+argument_list|)
+expr_stmt|;
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|ecPolicyNames
+init|=
+operator|new
+name|ArrayList
+argument_list|<
+name|String
+argument_list|>
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+name|ErasureCodingPolicy
+name|policy
+range|:
+name|ecPolicies
+control|)
+block|{
+name|ecPolicyNames
+operator|.
+name|add
+argument_list|(
+name|policy
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+name|sb
+operator|.
+name|append
+argument_list|(
+name|ecPolicyNames
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+name|sb
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+literal|3
+return|;
+block|}
+name|dfs
+operator|.
+name|setErasureCodingPolicy
 argument_list|(
 name|p
 argument_list|,
-name|policyName
+name|ecPolicy
 argument_list|)
 expr_stmt|;
 name|System
@@ -1231,9 +1374,9 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"Set storage policy "
+literal|"Set erasure coding policy "
 operator|+
-name|policyName
+name|ecPolicyName
 operator|+
 literal|" on "
 operator|+
@@ -1270,12 +1413,12 @@ literal|0
 return|;
 block|}
 block|}
-comment|/* Command to unset the storage policy set for a file/directory */
-DECL|class|UnsetStoragePolicyCommand
+comment|/** Command to unset the erasure coding policy set for a file/directory */
+DECL|class|UnsetECPolicyCommand
 specifier|private
 specifier|static
 class|class
-name|UnsetStoragePolicyCommand
+name|UnsetECPolicyCommand
 implements|implements
 name|AdminHelper
 operator|.
@@ -1290,7 +1433,7 @@ name|getName
 parameter_list|()
 block|{
 return|return
-literal|"-unsetStoragePolicy"
+literal|"-unsetPolicy"
 return|;
 block|}
 annotation|@
@@ -1332,9 +1475,9 @@ name|addRow
 argument_list|(
 literal|"<path>"
 argument_list|,
-literal|"The path of the file/directory "
+literal|"The path of the directory "
 operator|+
-literal|"from which the storage policy will be unset."
+literal|"from which the erasure coding policy will be unset."
 argument_list|)
 expr_stmt|;
 return|return
@@ -1343,7 +1486,7 @@ argument_list|()
 operator|+
 literal|"\n"
 operator|+
-literal|"Unset the storage policy set for a file/directory.\n\n"
+literal|"Unset the erasure coding policy for a directory.\n\n"
 operator|+
 name|listing
 operator|.
@@ -1396,9 +1539,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Please specify the path from which "
-operator|+
-literal|"the storage policy will be unset.\nUsage: "
+literal|"Please specify a path.\nUsage: "
 operator|+
 name|getLongUsage
 argument_list|()
@@ -1408,6 +1549,33 @@ return|return
 literal|1
 return|;
 block|}
+if|if
+condition|(
+name|args
+operator|.
+name|size
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+name|getName
+argument_list|()
+operator|+
+literal|": Too many arguments"
+argument_list|)
+expr_stmt|;
+return|return
+literal|1
+return|;
+block|}
+specifier|final
 name|Path
 name|p
 init|=
@@ -1437,7 +1605,7 @@ try|try
 block|{
 name|dfs
 operator|.
-name|unsetStoragePolicy
+name|unsetErasureCodingPolicy
 argument_list|(
 name|p
 argument_list|)
@@ -1448,7 +1616,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"Unset storage policy from "
+literal|"Unset erasure coding policy from "
 operator|+
 name|path
 argument_list|)
@@ -1495,19 +1663,19 @@ name|COMMANDS
 init|=
 block|{
 operator|new
-name|ListStoragePoliciesCommand
+name|ListECPoliciesCommand
 argument_list|()
 block|,
 operator|new
-name|SetStoragePolicyCommand
+name|GetECPolicyCommand
 argument_list|()
 block|,
 operator|new
-name|GetStoragePolicyCommand
+name|SetECPolicyCommand
 argument_list|()
 block|,
 operator|new
-name|UnsetStoragePolicyCommand
+name|UnsetECPolicyCommand
 argument_list|()
 block|}
 decl_stmt|;

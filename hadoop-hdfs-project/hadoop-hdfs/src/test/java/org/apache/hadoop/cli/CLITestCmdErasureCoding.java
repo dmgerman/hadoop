@@ -122,9 +122,7 @@ name|hdfs
 operator|.
 name|tools
 operator|.
-name|erasurecode
-operator|.
-name|ECCli
+name|ECAdmin
 import|;
 end_import
 
@@ -185,8 +183,10 @@ argument_list|(
 name|tag
 argument_list|,
 operator|new
-name|ECCli
-argument_list|()
+name|ECAdmin
+argument_list|(
+name|conf
+argument_list|)
 argument_list|)
 return|;
 return|return
