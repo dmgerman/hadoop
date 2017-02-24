@@ -1598,6 +1598,23 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setRemainingForTests (int remaining)
+name|void
+name|setRemainingForTests
+parameter_list|(
+name|int
+name|remaining
+parameter_list|)
+block|{
+name|this
+operator|.
+name|remaining
+operator|=
+name|remaining
+expr_stmt|;
+block|}
 DECL|enum|AddBlockResult
 specifier|static
 enum|enum

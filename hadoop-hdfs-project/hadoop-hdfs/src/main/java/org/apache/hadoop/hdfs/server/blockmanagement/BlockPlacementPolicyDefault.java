@@ -4594,7 +4594,7 @@ decl_stmt|;
 name|long
 name|free
 init|=
-name|node
+name|storage
 operator|.
 name|getRemaining
 argument_list|()
