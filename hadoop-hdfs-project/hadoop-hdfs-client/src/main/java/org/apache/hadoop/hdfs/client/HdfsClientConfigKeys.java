@@ -128,6 +128,12 @@ name|DFS_WEBHDFS_USER_PATTERN_DEFAULT
 init|=
 literal|"^[A-Za-z_][A-Za-z0-9._-]*[$]?$"
 decl_stmt|;
+DECL|field|DFS_WEBHDFS_ACL_PERMISSION_PATTERN_KEY
+name|String
+name|DFS_WEBHDFS_ACL_PERMISSION_PATTERN_KEY
+init|=
+literal|"dfs.webhdfs.acl.provider.permission.pattern"
+decl_stmt|;
 DECL|field|DFS_WEBHDFS_ACL_PERMISSION_PATTERN_DEFAULT
 name|String
 name|DFS_WEBHDFS_ACL_PERMISSION_PATTERN_DEFAULT

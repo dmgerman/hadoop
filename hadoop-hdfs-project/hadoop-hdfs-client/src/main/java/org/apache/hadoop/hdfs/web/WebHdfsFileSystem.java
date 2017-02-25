@@ -1549,7 +1549,7 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-comment|/** set user pattern based on configuration file */
+comment|// set user and acl patterns based on configuration file
 name|UserParam
 operator|.
 name|setUserPattern
@@ -1565,6 +1565,24 @@ argument_list|,
 name|HdfsClientConfigKeys
 operator|.
 name|DFS_WEBHDFS_USER_PATTERN_DEFAULT
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|AclPermissionParam
+operator|.
+name|setAclPermissionPattern
+argument_list|(
+name|conf
+operator|.
+name|get
+argument_list|(
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_WEBHDFS_ACL_PERMISSION_PATTERN_KEY
+argument_list|,
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_WEBHDFS_ACL_PERMISSION_PATTERN_DEFAULT
 argument_list|)
 argument_list|)
 expr_stmt|;
