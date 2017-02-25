@@ -1521,6 +1521,7 @@ name|src
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// Create snapshot and snapshotDiff.
 specifier|final
 name|Path
 name|orig
@@ -1537,6 +1538,45 @@ name|mkdirs
 argument_list|(
 name|orig
 argument_list|)
+expr_stmt|;
+specifier|final
+name|Path
+name|file1
+init|=
+operator|new
+name|Path
+argument_list|(
+literal|"/src/file"
+argument_list|)
+decl_stmt|;
+name|FSDataOutputStream
+name|o
+init|=
+name|hdfs
+operator|.
+name|create
+argument_list|(
+name|file1
+argument_list|)
+decl_stmt|;
+name|o
+operator|.
+name|write
+argument_list|(
+literal|23
+argument_list|)
+expr_stmt|;
+name|o
+operator|.
+name|write
+argument_list|(
+literal|45
+argument_list|)
+expr_stmt|;
+name|o
+operator|.
+name|close
+argument_list|()
 expr_stmt|;
 name|hdfs
 operator|.
@@ -1564,6 +1604,8 @@ argument_list|(
 literal|"/dst"
 argument_list|)
 decl_stmt|;
+comment|// Rename a directory in the snapshot directory to add snapshotCopy
+comment|// field to the dirDiff entry.
 name|hdfs
 operator|.
 name|rename
@@ -1590,6 +1632,34 @@ operator|.
 name|getFileStatus
 argument_list|(
 name|dst
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Truncate a file in the snapshot directory to add snapshotCopy and
+comment|// blocks fields to the fileDiff entry.
+name|hdfs
+operator|.
+name|truncate
+argument_list|(
+name|file1
+argument_list|,
+literal|1
+argument_list|)
+expr_stmt|;
+name|writtenFiles
+operator|.
+name|put
+argument_list|(
+name|file1
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|hdfs
+operator|.
+name|getFileStatus
+argument_list|(
+name|file1
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2199,6 +2269,8 @@ argument_list|(
 name|NUM_DIRS
 operator|*
 name|FILES_PER_DIR
+operator|+
+literal|1
 argument_list|,
 name|totalFiles
 argument_list|)
