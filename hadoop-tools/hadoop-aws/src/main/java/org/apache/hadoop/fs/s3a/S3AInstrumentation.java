@@ -236,6 +236,20 @@ name|concurrent
 operator|.
 name|atomic
 operator|.
+name|AtomicInteger
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
 name|AtomicLong
 import|;
 end_import
@@ -1571,8 +1585,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"No Gauge: "
-operator|+
+literal|"No Gauge: {}"
+argument_list|,
 name|op
 argument_list|)
 expr_stmt|;
@@ -2504,6 +2518,30 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
+DECL|field|blocksAllocated
+specifier|private
+specifier|final
+name|AtomicInteger
+name|blocksAllocated
+init|=
+operator|new
+name|AtomicInteger
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
+DECL|field|blocksReleased
+specifier|private
+specifier|final
+name|AtomicInteger
+name|blocksReleased
+init|=
+operator|new
+name|AtomicInteger
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
 DECL|field|statistics
 specifier|private
 name|Statistics
@@ -2522,6 +2560,30 @@ operator|.
 name|statistics
 operator|=
 name|statistics
+expr_stmt|;
+block|}
+comment|/**      * A block has been allocated.      */
+DECL|method|blockAllocated ()
+name|void
+name|blockAllocated
+parameter_list|()
+block|{
+name|blocksAllocated
+operator|.
+name|incrementAndGet
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**      * A block has been released.      */
+DECL|method|blockReleased ()
+name|void
+name|blockReleased
+parameter_list|()
+block|{
+name|blocksReleased
+operator|.
+name|incrementAndGet
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**      * Block is queued for upload.      */
@@ -2858,6 +2920,51 @@ name|get
 argument_list|()
 return|;
 block|}
+DECL|method|blocksAllocated ()
+specifier|public
+name|int
+name|blocksAllocated
+parameter_list|()
+block|{
+return|return
+name|blocksAllocated
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
+DECL|method|blocksReleased ()
+specifier|public
+name|int
+name|blocksReleased
+parameter_list|()
+block|{
+return|return
+name|blocksReleased
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
+comment|/**      * Get counters of blocks actively allocated; my be inaccurate      * if the numbers change during the (non-synchronized) calculation.      * @return the number of actively allocated blocks.      */
+DECL|method|blocksActivelyAllocated ()
+specifier|public
+name|int
+name|blocksActivelyAllocated
+parameter_list|()
+block|{
+return|return
+name|blocksAllocated
+operator|.
+name|get
+argument_list|()
+operator|-
+name|blocksReleased
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|toString ()
@@ -2958,6 +3065,43 @@ operator|.
 name|append
 argument_list|(
 name|bytesUploaded
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|", blocksAllocated="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|blocksAllocated
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|", blocksReleased="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|blocksReleased
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|", blocksActivelyAllocated="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|blocksActivelyAllocated
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|sb

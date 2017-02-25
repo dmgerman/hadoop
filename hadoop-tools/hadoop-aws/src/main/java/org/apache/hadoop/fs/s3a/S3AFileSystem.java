@@ -4441,6 +4441,13 @@ name|File
 name|srcfile
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|srcfile
+argument_list|)
+expr_stmt|;
 name|PutObjectRequest
 name|putObjectRequest
 init|=
@@ -4479,6 +4486,7 @@ return|;
 block|}
 comment|/**    * Create a {@link PutObjectRequest} request.    * The metadata is assumed to have been configured with the size of the    * operation.    * @param key key of object    * @param metadata metadata header    * @param inputStream source data.    * @return the request    */
 DECL|method|newPutObjectRequest (String key, ObjectMetadata metadata, InputStream inputStream)
+specifier|private
 name|PutObjectRequest
 name|newPutObjectRequest
 parameter_list|(
@@ -4492,6 +4500,13 @@ name|InputStream
 name|inputStream
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|inputStream
+argument_list|)
+expr_stmt|;
 name|PutObjectRequest
 name|putObjectRequest
 init|=
@@ -4583,7 +4598,7 @@ return|return
 name|om
 return|;
 block|}
-comment|/**    * PUT an object, incrementing the put requests and put bytes    * counters.    * It does not update the other counters,    * as existing code does that as progress callbacks come in.    * Byte length is calculated from the file length, or, if there is no    * file, from the content length of the header.    * @param putObjectRequest the request    * @return the upload initiated    */
+comment|/**    * Start a transfer-manager managed async PUT of an object,    * incrementing the put requests and put bytes    * counters.    * It does not update the other counters,    * as existing code does that as progress callbacks come in.    * Byte length is calculated from the file length, or, if there is no    * file, from the content length of the header.    * Because the operation is async, any stream supplied in the request    * must reference data (files, buffers) which stay valid until the upload    * completes.    * @param putObjectRequest the request    * @return the upload initiated    */
 DECL|method|putObject (PutObjectRequest putObjectRequest)
 specifier|public
 name|Upload
@@ -4676,7 +4691,7 @@ name|e
 throw|;
 block|}
 block|}
-comment|/**    * PUT an object directly (i.e. not via the transfer manager).    * Byte length is calculated from the file length, or, if there is no    * file, from the content length of the header.    * @param putObjectRequest the request    * @return the upload initiated    * @throws AmazonClientException on problems    */
+comment|/**    * PUT an object directly (i.e. not via the transfer manager).    * Byte length is calculated from the file length, or, if there is no    * file, from the content length of the header.    *<i>Important: this call will close any input stream in the request.</i>    * @param putObjectRequest the request    * @return the upload initiated    * @throws AmazonClientException on problems    */
 DECL|method|putObjectDirect (PutObjectRequest putObjectRequest)
 specifier|public
 name|PutObjectResult
@@ -4771,7 +4786,7 @@ name|e
 throw|;
 block|}
 block|}
-comment|/**    * Upload part of a multi-partition file.    * Increments the write and put counters    * @param request request    * @return the result of the operation.    * @throws AmazonClientException on problems    */
+comment|/**    * Upload part of a multi-partition file.    * Increments the write and put counters.    *<i>Important: this call does not close any input stream in the request.</i>    * @param request request    * @return the result of the operation.    * @throws AmazonClientException on problems    */
 DECL|method|uploadPart (UploadPartRequest request)
 specifier|public
 name|UploadPartResult
@@ -9278,7 +9293,7 @@ operator|=
 name|key
 expr_stmt|;
 block|}
-comment|/**      * Create a {@link PutObjectRequest} request.      * The metadata is assumed to have been configured with the size of the      * operation.      * @param inputStream source data.      * @param length size, if known. Use -1 for not known      * @return the request      */
+comment|/**      * Create a {@link PutObjectRequest} request.      * If {@code length} is set, the metadata is configured with the size of      * the upload.      * @param inputStream source data.      * @param length size, if known. Use -1 for not known      * @return the request      */
 DECL|method|newPutRequest (InputStream inputStream, long length)
 name|PutObjectRequest
 name|newPutRequest
@@ -9290,7 +9305,9 @@ name|long
 name|length
 parameter_list|)
 block|{
-return|return
+name|PutObjectRequest
+name|request
+init|=
 name|newPutObjectRequest
 argument_list|(
 name|key
@@ -9302,6 +9319,48 @@ argument_list|)
 argument_list|,
 name|inputStream
 argument_list|)
+decl_stmt|;
+return|return
+name|request
+return|;
+block|}
+comment|/**      * Create a {@link PutObjectRequest} request to upload a file.      * @param sourceFile source file      * @return the request      */
+DECL|method|newPutRequest (File sourceFile)
+name|PutObjectRequest
+name|newPutRequest
+parameter_list|(
+name|File
+name|sourceFile
+parameter_list|)
+block|{
+name|int
+name|length
+init|=
+operator|(
+name|int
+operator|)
+name|sourceFile
+operator|.
+name|length
+argument_list|()
+decl_stmt|;
+name|PutObjectRequest
+name|request
+init|=
+name|newPutObjectRequest
+argument_list|(
+name|key
+argument_list|,
+name|newObjectMetadata
+argument_list|(
+name|length
+argument_list|)
+argument_list|,
+name|sourceFile
+argument_list|)
+decl_stmt|;
+return|return
+name|request
 return|;
 block|}
 comment|/**      * Callback on a successful write.      */
@@ -9479,6 +9538,20 @@ argument_list|,
 literal|"No partitions have been uploaded"
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Completing multipart upload {} with {} parts"
+argument_list|,
+name|uploadId
+argument_list|,
+name|partETags
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
 return|return
 name|s3
 operator|.
@@ -9498,7 +9571,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**      * Abort a multipart upload operation.      * @param uploadId multipart operation Id      * @return the result      * @throws AmazonClientException on problems.      */
+comment|/**      * Abort a multipart upload operation.      * @param uploadId multipart operation Id      * @throws AmazonClientException on problems.      */
 DECL|method|abortMultipartUpload (String uploadId)
 name|void
 name|abortMultipartUpload
@@ -9509,6 +9582,15 @@ parameter_list|)
 throws|throws
 name|AmazonClientException
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Aborting multipart upload {}"
+argument_list|,
+name|uploadId
+argument_list|)
+expr_stmt|;
 name|s3
 operator|.
 name|abortMultipartUpload
@@ -9525,22 +9607,25 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Create and initialize a part request of a multipart upload.      * @param uploadId ID of ongoing upload      * @param uploadStream source of data to upload      * @param partNumber current part number of the upload      * @param size amount of data      * @return the request.      */
-DECL|method|newUploadPartRequest (String uploadId, InputStream uploadStream, int partNumber, int size)
+comment|/**      * Create and initialize a part request of a multipart upload.      * Exactly one of: {@code uploadStream} or {@code sourceFile}      * must be specified.      * @param uploadId ID of ongoing upload      * @param partNumber current part number of the upload      * @param size amount of data      * @param uploadStream source of data to upload      * @param sourceFile optional source file.      * @return the request.      */
+DECL|method|newUploadPartRequest (String uploadId, int partNumber, int size, InputStream uploadStream, File sourceFile)
 name|UploadPartRequest
 name|newUploadPartRequest
 parameter_list|(
 name|String
 name|uploadId
 parameter_list|,
-name|InputStream
-name|uploadStream
-parameter_list|,
 name|int
 name|partNumber
 parameter_list|,
 name|int
 name|size
+parameter_list|,
+name|InputStream
+name|uploadStream
+parameter_list|,
+name|File
+name|sourceFile
 parameter_list|)
 block|{
 name|Preconditions
@@ -9550,11 +9635,24 @@ argument_list|(
 name|uploadId
 argument_list|)
 expr_stmt|;
+comment|// exactly one source must be set; xor verifies this
 name|Preconditions
 operator|.
-name|checkNotNull
+name|checkArgument
 argument_list|(
+operator|(
 name|uploadStream
+operator|!=
+literal|null
+operator|)
+operator|^
+operator|(
+name|sourceFile
+operator|!=
+literal|null
+operator|)
+argument_list|,
+literal|"Data source"
 argument_list|)
 expr_stmt|;
 name|Preconditions
@@ -9600,7 +9698,9 @@ argument_list|,
 name|size
 argument_list|)
 expr_stmt|;
-return|return
+name|UploadPartRequest
+name|request
+init|=
 operator|new
 name|UploadPartRequest
 argument_list|()
@@ -9620,11 +9720,6 @@ argument_list|(
 name|uploadId
 argument_list|)
 operator|.
-name|withInputStream
-argument_list|(
-name|uploadStream
-argument_list|)
-operator|.
 name|withPartNumber
 argument_list|(
 name|partNumber
@@ -9634,6 +9729,35 @@ name|withPartSize
 argument_list|(
 name|size
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|uploadStream
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// there's an upload stream. Bind to it.
+name|request
+operator|.
+name|setInputStream
+argument_list|(
+name|uploadStream
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|request
+operator|.
+name|setFile
+argument_list|(
+name|sourceFile
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|request
 return|;
 block|}
 comment|/**      * The toString method is intended to be used in logging/toString calls.      * @return a string description.      */
@@ -9690,6 +9814,47 @@ operator|.
 name|toString
 argument_list|()
 return|;
+block|}
+comment|/**      * PUT an object directly (i.e. not via the transfer manager).      * @param putObjectRequest the request      * @return the upload initiated      * @throws IOException on problems      */
+DECL|method|putObject (PutObjectRequest putObjectRequest)
+name|PutObjectResult
+name|putObject
+parameter_list|(
+name|PutObjectRequest
+name|putObjectRequest
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+try|try
+block|{
+return|return
+name|putObjectDirect
+argument_list|(
+name|putObjectRequest
+argument_list|)
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|AmazonClientException
+name|e
+parameter_list|)
+block|{
+throw|throw
+name|translateException
+argument_list|(
+literal|"put"
+argument_list|,
+name|putObjectRequest
+operator|.
+name|getKey
+argument_list|()
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
 block|}
 block|}
 block|}

@@ -18,6 +18,16 @@ name|s3a
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Assume
+import|;
+end_import
+
 begin_comment
 comment|/**  * Use {@link Constants#FAST_UPLOAD_BUFFER_DISK} for buffering.  */
 end_comment
@@ -40,6 +50,31 @@ return|return
 name|Constants
 operator|.
 name|FAST_UPLOAD_BUFFER_DISK
+return|;
+block|}
+comment|/**    * The disk stream doesn't support mark/reset; calls    * {@code Assume} to skip the test.    * @param fileSystem source FS    * @return null    */
+DECL|method|createFactory (S3AFileSystem fileSystem)
+specifier|protected
+name|S3ADataBlocks
+operator|.
+name|BlockFactory
+name|createFactory
+parameter_list|(
+name|S3AFileSystem
+name|fileSystem
+parameter_list|)
+block|{
+name|Assume
+operator|.
+name|assumeTrue
+argument_list|(
+literal|"mark/reset nopt supoprted"
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
 return|;
 block|}
 block|}

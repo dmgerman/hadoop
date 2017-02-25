@@ -84,16 +84,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|FileNotFoundException
 import|;
 end_import
@@ -105,16 +95,6 @@ operator|.
 name|io
 operator|.
 name|FileOutputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|FilterInputStream
 import|;
 end_import
 
@@ -260,8 +240,26 @@ name|*
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3AUtils
+operator|.
+name|closeAll
+import|;
+end_import
+
 begin_comment
-comment|/**  * Set of classes to support output streaming into blocks which are then  * uploaded as partitions.  */
+comment|/**  * Set of classes to support output streaming into blocks which are then  * uploaded as to S3 as a single PUT, or as part of a multipart request.  */
 end_comment
 
 begin_class
@@ -455,6 +453,144 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * The output information for an upload.    * It can be one of a file or an input stream.    * When closed, any stream is closed. Any source file is untouched.    */
+DECL|class|BlockUploadData
+specifier|static
+specifier|final
+class|class
+name|BlockUploadData
+implements|implements
+name|Closeable
+block|{
+DECL|field|file
+specifier|private
+specifier|final
+name|File
+name|file
+decl_stmt|;
+DECL|field|uploadStream
+specifier|private
+specifier|final
+name|InputStream
+name|uploadStream
+decl_stmt|;
+comment|/**      * File constructor; input stream will be null.      * @param file file to upload      */
+DECL|method|BlockUploadData (File file)
+name|BlockUploadData
+parameter_list|(
+name|File
+name|file
+parameter_list|)
+block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|file
+operator|.
+name|exists
+argument_list|()
+argument_list|,
+literal|"No file: "
+operator|+
+name|file
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|file
+operator|=
+name|file
+expr_stmt|;
+name|this
+operator|.
+name|uploadStream
+operator|=
+literal|null
+expr_stmt|;
+block|}
+comment|/**      * Stream constructor, file field will be null.      * @param uploadStream stream to upload      */
+DECL|method|BlockUploadData (InputStream uploadStream)
+name|BlockUploadData
+parameter_list|(
+name|InputStream
+name|uploadStream
+parameter_list|)
+block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|uploadStream
+argument_list|,
+literal|"rawUploadStream"
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|uploadStream
+operator|=
+name|uploadStream
+expr_stmt|;
+name|this
+operator|.
+name|file
+operator|=
+literal|null
+expr_stmt|;
+block|}
+comment|/**      * Predicate: does this instance contain a file reference.      * @return true if there is a file.      */
+DECL|method|hasFile ()
+name|boolean
+name|hasFile
+parameter_list|()
+block|{
+return|return
+name|file
+operator|!=
+literal|null
+return|;
+block|}
+comment|/**      * Get the file, if there is one.      * @return the file for uploading, or null.      */
+DECL|method|getFile ()
+name|File
+name|getFile
+parameter_list|()
+block|{
+return|return
+name|file
+return|;
+block|}
+comment|/**      * Get the raw upload stream, if the object was      * created with one.      * @return the upload stream or null.      */
+DECL|method|getUploadStream ()
+name|InputStream
+name|getUploadStream
+parameter_list|()
+block|{
+return|return
+name|uploadStream
+return|;
+block|}
+comment|/**      * Close: closes any upload stream provided in the constructor.      * @throws IOException inherited exception      */
+annotation|@
+name|Override
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|closeAll
+argument_list|(
+name|LOG
+argument_list|,
+name|uploadStream
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Base class for block factories.    */
 DECL|class|BlockFactory
 specifier|static
@@ -485,19 +621,27 @@ operator|=
 name|owner
 expr_stmt|;
 block|}
-comment|/**      * Create a block.      * @param limit limit of the block.      * @return a new block.      */
-DECL|method|create (int limit)
+comment|/**      * Create a block.      *      * @param index index of block      * @param limit limit of the block.      * @param statistics stats to work with      * @return a new block.      */
+DECL|method|create (long index, int limit, S3AInstrumentation.OutputStreamStatistics statistics)
 specifier|abstract
 name|DataBlock
 name|create
 parameter_list|(
+name|long
+name|index
+parameter_list|,
 name|int
 name|limit
+parameter_list|,
+name|S3AInstrumentation
+operator|.
+name|OutputStreamStatistics
+name|statistics
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**      * Implement any close/cleanup operation.      * Base class is a no-op      * @throws IOException -ideally, it shouldn't.      */
+comment|/**      * Implement any close/cleanup operation.      * Base class is a no-op      * @throws IOException Inherited exception; implementations should      * avoid raising it.      */
 annotation|@
 name|Override
 DECL|method|close ()
@@ -550,6 +694,46 @@ name|state
 init|=
 name|Writing
 decl_stmt|;
+DECL|field|index
+specifier|protected
+specifier|final
+name|long
+name|index
+decl_stmt|;
+DECL|field|statistics
+specifier|protected
+specifier|final
+name|S3AInstrumentation
+operator|.
+name|OutputStreamStatistics
+name|statistics
+decl_stmt|;
+DECL|method|DataBlock (long index, S3AInstrumentation.OutputStreamStatistics statistics)
+specifier|protected
+name|DataBlock
+parameter_list|(
+name|long
+name|index
+parameter_list|,
+name|S3AInstrumentation
+operator|.
+name|OutputStreamStatistics
+name|statistics
+parameter_list|)
+block|{
+name|this
+operator|.
+name|index
+operator|=
+name|index
+expr_stmt|;
+name|this
+operator|.
+name|statistics
+operator|=
+name|statistics
+expr_stmt|;
+block|}
 comment|/**      * Atomically enter a state, verifying current state.      * @param current current state. null means "no check"      * @param next next state      * @throws IllegalStateException if the current state is not as expected      */
 DECL|method|enterState (DestState current, DestState next)
 specifier|protected
@@ -773,7 +957,7 @@ expr_stmt|;
 block|}
 comment|/**      * Switch to the upload state and return a stream for uploading.      * Base class calls {@link #enterState(DestState, DestState)} to      * manage the state machine.      * @return the stream      * @throws IOException trouble      */
 DECL|method|startUpload ()
-name|InputStream
+name|BlockUploadData
 name|startUpload
 parameter_list|()
 throws|throws
@@ -783,7 +967,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Start datablock upload"
+literal|"Start datablock[{}] upload"
+argument_list|,
+name|index
 argument_list|)
 expr_stmt|;
 name|enterState
@@ -873,6 +1059,48 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{      }
+comment|/**      * A block has been allocated.      */
+DECL|method|blockAllocated ()
+specifier|protected
+name|void
+name|blockAllocated
+parameter_list|()
+block|{
+if|if
+condition|(
+name|statistics
+operator|!=
+literal|null
+condition|)
+block|{
+name|statistics
+operator|.
+name|blockAllocated
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+comment|/**      * A block has been released.      */
+DECL|method|blockReleased ()
+specifier|protected
+name|void
+name|blockReleased
+parameter_list|()
+block|{
+if|if
+condition|(
+name|statistics
+operator|!=
+literal|null
+condition|)
+block|{
+name|statistics
+operator|.
+name|blockReleased
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 block|}
 comment|// ====================================================================
 comment|/**    * Use byte arrays on the heap for storage.    */
@@ -898,12 +1126,20 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|create (int limit)
+DECL|method|create (long index, int limit, S3AInstrumentation.OutputStreamStatistics statistics)
 name|DataBlock
 name|create
 parameter_list|(
+name|long
+name|index
+parameter_list|,
 name|int
 name|limit
+parameter_list|,
+name|S3AInstrumentation
+operator|.
+name|OutputStreamStatistics
+name|statistics
 parameter_list|)
 throws|throws
 name|IOException
@@ -912,7 +1148,11 @@ return|return
 operator|new
 name|ByteArrayBlock
 argument_list|(
+literal|0
+argument_list|,
 name|limit
+argument_list|,
+name|statistics
 argument_list|)
 return|;
 block|}
@@ -999,13 +1239,28 @@ specifier|private
 name|Integer
 name|dataSize
 decl_stmt|;
-DECL|method|ByteArrayBlock (int limit)
+DECL|method|ByteArrayBlock (long index, int limit, S3AInstrumentation.OutputStreamStatistics statistics)
 name|ByteArrayBlock
 parameter_list|(
+name|long
+name|index
+parameter_list|,
 name|int
 name|limit
+parameter_list|,
+name|S3AInstrumentation
+operator|.
+name|OutputStreamStatistics
+name|statistics
 parameter_list|)
 block|{
+name|super
+argument_list|(
+name|index
+argument_list|,
+name|statistics
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|limit
@@ -1019,6 +1274,9 @@ name|S3AByteArrayOutputStream
 argument_list|(
 name|limit
 argument_list|)
+expr_stmt|;
+name|blockAllocated
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**      * Get the amount of data; if there is no buffer then the size is 0.      * @return the amount of data available to upload.      */
@@ -1045,7 +1303,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|startUpload ()
-name|InputStream
+name|BlockUploadData
 name|startUpload
 parameter_list|()
 throws|throws
@@ -1076,7 +1334,11 @@ operator|=
 literal|null
 expr_stmt|;
 return|return
+operator|new
+name|BlockUploadData
+argument_list|(
 name|bufferData
+argument_list|)
 return|;
 block|}
 annotation|@
@@ -1182,6 +1444,9 @@ name|buffer
 operator|=
 literal|null
 expr_stmt|;
+name|blockReleased
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -1194,7 +1459,11 @@ block|{
 return|return
 literal|"ByteArrayBlock{"
 operator|+
-literal|"state="
+literal|"index="
+operator|+
+name|index
+operator|+
+literal|", state="
 operator|+
 name|getState
 argument_list|()
@@ -1212,7 +1481,7 @@ return|;
 block|}
 block|}
 comment|// ====================================================================
-comment|/**    * Stream via Direct ByteBuffers; these are allocated off heap    * via {@link DirectBufferPool}.    * This is actually the most complex of all the block factories,    * due to the need to explicitly recycle buffers; in comparison, the    * {@link DiskBlock} buffer delegates the work of deleting files to    * the {@link DiskBlock.FileDeletingInputStream}. Here the    * input stream {@link ByteBufferInputStream} has a similar task, along    * with the foundational work of streaming data from a byte array.    */
+comment|/**    * Stream via Direct ByteBuffers; these are allocated off heap    * via {@link DirectBufferPool}.    */
 DECL|class|ByteBufferBlockFactory
 specifier|static
 class|class
@@ -1257,12 +1526,20 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|create (int limit)
+DECL|method|create (long index, int limit, S3AInstrumentation.OutputStreamStatistics statistics)
 name|ByteBufferBlock
 name|create
 parameter_list|(
+name|long
+name|index
+parameter_list|,
 name|int
 name|limit
+parameter_list|,
+name|S3AInstrumentation
+operator|.
+name|OutputStreamStatistics
+name|statistics
 parameter_list|)
 throws|throws
 name|IOException
@@ -1271,7 +1548,11 @@ return|return
 operator|new
 name|ByteBufferBlock
 argument_list|(
+name|index
+argument_list|,
 name|limit
+argument_list|,
+name|statistics
 argument_list|)
 return|;
 block|}
@@ -1368,17 +1649,17 @@ operator|+
 literal|'}'
 return|;
 block|}
-comment|/**      * A DataBlock which requests a buffer from pool on creation; returns      * it when the output stream is closed.      */
+comment|/**      * A DataBlock which requests a buffer from pool on creation; returns      * it when it is closed.      */
 DECL|class|ByteBufferBlock
 class|class
 name|ByteBufferBlock
 extends|extends
 name|DataBlock
 block|{
-DECL|field|buffer
+DECL|field|blockBuffer
 specifier|private
 name|ByteBuffer
-name|buffer
+name|blockBuffer
 decl_stmt|;
 DECL|field|bufferSize
 specifier|private
@@ -1392,26 +1673,44 @@ specifier|private
 name|Integer
 name|dataSize
 decl_stmt|;
-comment|/**        * Instantiate. This will request a ByteBuffer of the desired size.        * @param bufferSize buffer size        */
-DECL|method|ByteBufferBlock (int bufferSize)
+comment|/**        * Instantiate. This will request a ByteBuffer of the desired size.        * @param index block index        * @param bufferSize buffer size        * @param statistics statistics to update        */
+DECL|method|ByteBufferBlock (long index, int bufferSize, S3AInstrumentation.OutputStreamStatistics statistics)
 name|ByteBufferBlock
 parameter_list|(
+name|long
+name|index
+parameter_list|,
 name|int
 name|bufferSize
+parameter_list|,
+name|S3AInstrumentation
+operator|.
+name|OutputStreamStatistics
+name|statistics
 parameter_list|)
 block|{
+name|super
+argument_list|(
+name|index
+argument_list|,
+name|statistics
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|bufferSize
 operator|=
 name|bufferSize
 expr_stmt|;
-name|buffer
+name|blockBuffer
 operator|=
 name|requestBuffer
 argument_list|(
 name|bufferSize
 argument_list|)
+expr_stmt|;
+name|blockAllocated
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**        * Get the amount of data; if there is no buffer then the size is 0.        * @return the amount of data available to upload.        */
@@ -1436,7 +1735,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|startUpload ()
-name|ByteBufferInputStream
+name|BlockUploadData
 name|startUpload
 parameter_list|()
 throws|throws
@@ -1453,17 +1752,17 @@ name|bufferCapacityUsed
 argument_list|()
 expr_stmt|;
 comment|// set the buffer up from reading from the beginning
-name|buffer
+name|blockBuffer
 operator|.
 name|limit
 argument_list|(
-name|buffer
+name|blockBuffer
 operator|.
 name|position
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|buffer
+name|blockBuffer
 operator|.
 name|position
 argument_list|(
@@ -1472,11 +1771,15 @@ argument_list|)
 expr_stmt|;
 return|return
 operator|new
+name|BlockUploadData
+argument_list|(
+operator|new
 name|ByteBufferInputStream
 argument_list|(
 name|dataSize
 argument_list|,
-name|buffer
+name|blockBuffer
+argument_list|)
 argument_list|)
 return|;
 block|}
@@ -1507,11 +1810,11 @@ name|remainingCapacity
 parameter_list|()
 block|{
 return|return
-name|buffer
+name|blockBuffer
 operator|!=
 literal|null
 condition|?
-name|buffer
+name|blockBuffer
 operator|.
 name|remaining
 argument_list|()
@@ -1526,12 +1829,12 @@ name|bufferCapacityUsed
 parameter_list|()
 block|{
 return|return
-name|buffer
+name|blockBuffer
 operator|.
 name|capacity
 argument_list|()
 operator|-
-name|buffer
+name|blockBuffer
 operator|.
 name|remaining
 argument_list|()
@@ -1580,7 +1883,7 @@ argument_list|,
 name|len
 argument_list|)
 decl_stmt|;
-name|buffer
+name|blockBuffer
 operator|.
 name|put
 argument_list|(
@@ -1595,6 +1898,7 @@ return|return
 name|written
 return|;
 block|}
+comment|/**        * Closing the block will release the buffer.        */
 annotation|@
 name|Override
 DECL|method|innerClose ()
@@ -1603,10 +1907,26 @@ name|void
 name|innerClose
 parameter_list|()
 block|{
-name|buffer
+if|if
+condition|(
+name|blockBuffer
+operator|!=
+literal|null
+condition|)
+block|{
+name|blockReleased
+argument_list|()
+expr_stmt|;
+name|releaseBuffer
+argument_list|(
+name|blockBuffer
+argument_list|)
+expr_stmt|;
+name|blockBuffer
 operator|=
 literal|null
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -1619,7 +1939,11 @@ block|{
 return|return
 literal|"ByteBufferBlock{"
 operator|+
-literal|"state="
+literal|"index="
+operator|+
+name|index
+operator|+
+literal|", state="
 operator|+
 name|getState
 argument_list|()
@@ -1641,8 +1965,7 @@ operator|+
 literal|'}'
 return|;
 block|}
-block|}
-comment|/**      * Provide an input stream from a byte buffer; supporting      * {@link #mark(int)}, which is required to enable replay of failed      * PUT attempts.      * This input stream returns the buffer to the pool afterwards.      */
+comment|/**        * Provide an input stream from a byte buffer; supporting        * {@link #mark(int)}, which is required to enable replay of failed        * PUT attempts.        */
 DECL|class|ByteBufferInputStream
 class|class
 name|ByteBufferInputStream
@@ -1692,7 +2015,7 @@ operator|=
 name|byteBuffer
 expr_stmt|;
 block|}
-comment|/**        * Return the buffer to the pool after the stream is closed.        */
+comment|/**          * After the stream is closed, set the local reference to the byte          * buffer to null; this guarantees that future attempts to use          * stream methods will fail.          */
 annotation|@
 name|Override
 DECL|method|close ()
@@ -1702,23 +2025,18 @@ name|void
 name|close
 parameter_list|()
 block|{
-if|if
-condition|(
-name|byteBuffer
-operator|!=
-literal|null
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"releasing buffer"
-argument_list|)
-expr_stmt|;
-name|releaseBuffer
-argument_list|(
-name|byteBuffer
+literal|"ByteBufferInputStream.close() for {}"
+argument_list|,
+name|ByteBufferBlock
+operator|.
+name|super
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|byteBuffer
@@ -1726,8 +2044,7 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-block|}
-comment|/**        * Verify that the stream is open.        * @throws IOException if the stream is closed        */
+comment|/**          * Verify that the stream is open.          * @throws IOException if the stream is closed          */
 DECL|method|verifyOpen ()
 specifier|private
 name|void
@@ -1890,7 +2207,7 @@ name|remaining
 argument_list|()
 return|;
 block|}
-comment|/**        * Get the current buffer position.        * @return the buffer position        */
+comment|/**          * Get the current buffer position.          * @return the buffer position          */
 DECL|method|position ()
 specifier|public
 specifier|synchronized
@@ -1905,7 +2222,7 @@ name|position
 argument_list|()
 return|;
 block|}
-comment|/**        * Check if there is data left.        * @return true if there is data remaining in the buffer.        */
+comment|/**          * Check if there is data left.          * @return true if there is data remaining in the buffer.          */
 DECL|method|hasRemaining ()
 specifier|public
 specifier|synchronized
@@ -1984,13 +2301,13 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**        * Read in data.        * @param buffer destination buffer        * @param offset offset within the buffer        * @param length length of bytes to read        * @throws EOFException if the position is negative        * @throws IndexOutOfBoundsException if there isn't space for the        * amount of data requested.        * @throws IllegalArgumentException other arguments are invalid.        */
+comment|/**          * Read in data.          * @param b destination buffer          * @param offset offset within the buffer          * @param length length of bytes to read          * @throws EOFException if the position is negative          * @throws IndexOutOfBoundsException if there isn't space for the          * amount of data requested.          * @throws IllegalArgumentException other arguments are invalid.          */
 annotation|@
 name|SuppressWarnings
 argument_list|(
 literal|"NullableProblems"
 argument_list|)
-DECL|method|read (byte[] buffer, int offset, int length)
+DECL|method|read (byte[] b, int offset, int length)
 specifier|public
 specifier|synchronized
 name|int
@@ -1998,7 +2315,7 @@ name|read
 parameter_list|(
 name|byte
 index|[]
-name|buffer
+name|b
 parameter_list|,
 name|int
 name|offset
@@ -2024,7 +2341,7 @@ name|Preconditions
 operator|.
 name|checkArgument
 argument_list|(
-name|buffer
+name|b
 operator|!=
 literal|null
 argument_list|,
@@ -2033,7 +2350,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|buffer
+name|b
 operator|.
 name|length
 operator|-
@@ -2061,7 +2378,7 @@ operator|+
 literal|"; buffer capacity ="
 operator|+
 operator|(
-name|buffer
+name|b
 operator|.
 name|length
 operator|-
@@ -2102,7 +2419,7 @@ name|byteBuffer
 operator|.
 name|get
 argument_list|(
-name|buffer
+name|b
 argument_list|,
 name|offset
 argument_list|,
@@ -2144,7 +2461,7 @@ name|size
 argument_list|)
 expr_stmt|;
 name|ByteBuffer
-name|buffer
+name|buf
 init|=
 name|this
 operator|.
@@ -2152,7 +2469,7 @@ name|byteBuffer
 decl_stmt|;
 if|if
 condition|(
-name|buffer
+name|buf
 operator|!=
 literal|null
 condition|)
@@ -2166,13 +2483,30 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|buffer
+name|buf
 operator|.
 name|remaining
 argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|", "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|ByteBufferBlock
+operator|.
+name|super
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|sb
 operator|.
 name|append
@@ -2186,6 +2520,7 @@ operator|.
 name|toString
 argument_list|()
 return|;
+block|}
 block|}
 block|}
 block|}
@@ -2211,15 +2546,23 @@ name|owner
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Create a temp file and a block which writes to it.      * @param limit limit of the block.      * @return the new block      * @throws IOException IO problems      */
+comment|/**      * Create a temp file and a {@link DiskBlock} instance to manage it.      *      * @param index block index      * @param limit limit of the block.      * @param statistics statistics to update      * @return the new block      * @throws IOException IO problems      */
 annotation|@
 name|Override
-DECL|method|create (int limit)
+DECL|method|create (long index, int limit, S3AInstrumentation.OutputStreamStatistics statistics)
 name|DataBlock
 name|create
 parameter_list|(
+name|long
+name|index
+parameter_list|,
 name|int
 name|limit
+parameter_list|,
+name|S3AInstrumentation
+operator|.
+name|OutputStreamStatistics
+name|statistics
 parameter_list|)
 throws|throws
 name|IOException
@@ -2232,7 +2575,14 @@ argument_list|()
 operator|.
 name|createTmpFileForWrite
 argument_list|(
-literal|"s3ablock"
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"s3ablock-%04d-"
+argument_list|,
+name|index
+argument_list|)
 argument_list|,
 name|limit
 argument_list|,
@@ -2250,11 +2600,15 @@ argument_list|(
 name|destFile
 argument_list|,
 name|limit
+argument_list|,
+name|index
+argument_list|,
+name|statistics
 argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Stream to a file.    * This will stop at the limit; the caller is expected to create a new block    */
+comment|/**    * Stream to a file.    * This will stop at the limit; the caller is expected to create a new block.    */
 DECL|class|DiskBlock
 specifier|static
 class|class
@@ -2284,12 +2638,19 @@ specifier|private
 name|BufferedOutputStream
 name|out
 decl_stmt|;
-DECL|field|uploadStream
+DECL|field|closed
 specifier|private
-name|InputStream
-name|uploadStream
+specifier|final
+name|AtomicBoolean
+name|closed
+init|=
+operator|new
+name|AtomicBoolean
+argument_list|(
+literal|false
+argument_list|)
 decl_stmt|;
-DECL|method|DiskBlock (File bufferFile, int limit)
+DECL|method|DiskBlock (File bufferFile, int limit, long index, S3AInstrumentation.OutputStreamStatistics statistics)
 name|DiskBlock
 parameter_list|(
 name|File
@@ -2297,10 +2658,25 @@ name|bufferFile
 parameter_list|,
 name|int
 name|limit
+parameter_list|,
+name|long
+name|index
+parameter_list|,
+name|S3AInstrumentation
+operator|.
+name|OutputStreamStatistics
+name|statistics
 parameter_list|)
 throws|throws
 name|FileNotFoundException
 block|{
+name|super
+argument_list|(
+name|index
+argument_list|,
+name|statistics
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|limit
@@ -2312,6 +2688,9 @@ operator|.
 name|bufferFile
 operator|=
 name|bufferFile
+expr_stmt|;
+name|blockAllocated
+argument_list|()
 expr_stmt|;
 name|out
 operator|=
@@ -2434,7 +2813,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|startUpload ()
-name|InputStream
+name|BlockUploadData
 name|startUpload
 parameter_list|()
 throws|throws
@@ -2465,23 +2844,20 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-name|uploadStream
-operator|=
-operator|new
-name|FileInputStream
-argument_list|(
-name|bufferFile
-argument_list|)
-expr_stmt|;
 return|return
 operator|new
-name|FileDeletingInputStream
+name|BlockUploadData
 argument_list|(
-name|uploadStream
+name|bufferFile
 argument_list|)
 return|;
 block|}
 comment|/**      * The close operation will delete the destination file if it still      * exists.      * @throws IOException IO problems      */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"UnnecessaryDefault"
+argument_list|)
 annotation|@
 name|Override
 DECL|method|innerClose ()
@@ -2529,38 +2905,14 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Deleting buffer file as upload did not start"
-argument_list|)
-expr_stmt|;
-name|boolean
-name|deleted
-init|=
-name|bufferFile
-operator|.
-name|delete
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-operator|!
-name|deleted
-operator|&&
-name|bufferFile
-operator|.
-name|exists
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Failed to delete buffer file {}"
+literal|"Block[{}]: Deleting buffer file as upload did not start"
 argument_list|,
-name|bufferFile
+name|index
 argument_list|)
 expr_stmt|;
-block|}
+name|closeBlock
+argument_list|()
+expr_stmt|;
 block|}
 break|break;
 case|case
@@ -2570,7 +2922,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Buffer file {} exists âclose upload stream"
+literal|"Block[{}]: Buffer file {} exists âclose upload stream"
+argument_list|,
+name|index
 argument_list|,
 name|bufferFile
 argument_list|)
@@ -2579,7 +2933,9 @@ break|break;
 case|case
 name|Closed
 case|:
-comment|// no-op
+name|closeBlock
+argument_list|()
+expr_stmt|;
 break|break;
 default|default:
 comment|// this state can never be reached, but checkstyle complains, so
@@ -2620,7 +2976,11 @@ name|sb
 init|=
 literal|"FileBlock{"
 operator|+
-literal|"destFile="
+literal|"index="
+operator|+
+name|index
+operator|+
+literal|", destFile="
 operator|+
 name|bufferFile
 operator|+
@@ -2644,61 +3004,21 @@ return|return
 name|sb
 return|;
 block|}
-comment|/**      * An input stream which deletes the buffer file when closed.      */
-DECL|class|FileDeletingInputStream
-specifier|private
-specifier|final
-class|class
-name|FileDeletingInputStream
-extends|extends
-name|FilterInputStream
-block|{
-DECL|field|closed
-specifier|private
-specifier|final
-name|AtomicBoolean
-name|closed
-init|=
-operator|new
-name|AtomicBoolean
-argument_list|(
-literal|false
-argument_list|)
-decl_stmt|;
-DECL|method|FileDeletingInputStream (InputStream source)
-name|FileDeletingInputStream
-parameter_list|(
-name|InputStream
-name|source
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|source
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**        * Delete the input file when closed.        * @throws IOException IO problem        */
-annotation|@
-name|Override
-DECL|method|close ()
-specifier|public
+comment|/**      * Close the block.      * This will delete the block's buffer file if the block has      * not previously been closed.      */
+DECL|method|closeBlock ()
 name|void
-name|close
+name|closeBlock
 parameter_list|()
-throws|throws
-name|IOException
 block|{
-try|try
-block|{
-name|super
+name|LOG
 operator|.
-name|close
-argument_list|()
+name|debug
+argument_list|(
+literal|"block[{}]: closeBlock()"
+argument_list|,
+name|index
+argument_list|)
 expr_stmt|;
-block|}
-finally|finally
-block|{
 if|if
 condition|(
 operator|!
@@ -2710,12 +3030,20 @@ literal|true
 argument_list|)
 condition|)
 block|{
+name|blockReleased
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 operator|!
 name|bufferFile
 operator|.
 name|delete
+argument_list|()
+operator|&&
+name|bufferFile
+operator|.
+name|exists
 argument_list|()
 condition|)
 block|{
@@ -2733,7 +3061,17 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"block[{}]: skipping re-entrant closeBlock()"
+argument_list|,
+name|index
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 block|}

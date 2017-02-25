@@ -42,6 +42,27 @@ operator|.
 name|FAST_UPLOAD_BYTEBUFFER
 return|;
 block|}
+DECL|method|createFactory (S3AFileSystem fileSystem)
+specifier|protected
+name|S3ADataBlocks
+operator|.
+name|BlockFactory
+name|createFactory
+parameter_list|(
+name|S3AFileSystem
+name|fileSystem
+parameter_list|)
+block|{
+return|return
+operator|new
+name|S3ADataBlocks
+operator|.
+name|ByteBufferBlockFactory
+argument_list|(
+name|fileSystem
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 
