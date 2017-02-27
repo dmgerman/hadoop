@@ -927,6 +927,11 @@ name|agent
 operator|=
 operator|new
 name|GreedyReservationAgent
+argument_list|()
+expr_stmt|;
+name|agent
+operator|.
+name|init
 argument_list|(
 name|conf
 argument_list|)

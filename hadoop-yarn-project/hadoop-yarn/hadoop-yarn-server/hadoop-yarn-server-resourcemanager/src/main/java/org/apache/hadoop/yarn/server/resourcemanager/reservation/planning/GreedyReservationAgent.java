@@ -168,7 +168,6 @@ decl_stmt|;
 comment|// Greedy planner
 DECL|field|planner
 specifier|private
-specifier|final
 name|ReservationAgent
 name|planner
 decl_stmt|;
@@ -192,7 +191,6 @@ literal|true
 decl_stmt|;
 DECL|field|allocateLeft
 specifier|private
-specifier|final
 name|boolean
 name|allocateLeft
 decl_stmt|;
@@ -200,26 +198,21 @@ DECL|method|GreedyReservationAgent ()
 specifier|public
 name|GreedyReservationAgent
 parameter_list|()
-block|{
-name|this
-argument_list|(
-operator|new
-name|Configuration
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|GreedyReservationAgent (Configuration yarnConfiguration)
+block|{   }
+annotation|@
+name|Override
+DECL|method|init (Configuration conf)
 specifier|public
-name|GreedyReservationAgent
+name|void
+name|init
 parameter_list|(
 name|Configuration
-name|yarnConfiguration
+name|conf
 parameter_list|)
 block|{
 name|allocateLeft
 operator|=
-name|yarnConfiguration
+name|conf
 operator|.
 name|getBoolean
 argument_list|(

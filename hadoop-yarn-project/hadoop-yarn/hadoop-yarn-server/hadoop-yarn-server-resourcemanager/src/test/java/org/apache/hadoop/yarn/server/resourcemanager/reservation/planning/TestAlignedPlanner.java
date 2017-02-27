@@ -3472,12 +3472,32 @@ operator|.
 name|createMockRMContext
 argument_list|()
 decl_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|AlignedPlannerWithGreedy
+operator|.
+name|SMOOTHNESS_FACTOR
+argument_list|,
+name|AlignedPlannerWithGreedy
+operator|.
+name|DEFAULT_SMOOTHNESS_FACTOR
+argument_list|)
+expr_stmt|;
 comment|// Set planning agent
 name|agent
 operator|=
 operator|new
 name|AlignedPlannerWithGreedy
 argument_list|()
+expr_stmt|;
+name|agent
+operator|.
+name|init
+argument_list|(
+name|conf
+argument_list|)
 expr_stmt|;
 comment|// Create Plan
 name|plan

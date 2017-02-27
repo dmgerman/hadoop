@@ -52,6 +52,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -378,6 +392,17 @@ name|reservationId
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|init (Configuration conf)
+specifier|public
+name|void
+name|init
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{   }
 block|}
 end_class
 

@@ -52,6 +52,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -156,13 +170,22 @@ name|ReservationAgent
 block|{
 comment|// Default smoothness factor
 DECL|field|DEFAULT_SMOOTHNESS_FACTOR
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|int
 name|DEFAULT_SMOOTHNESS_FACTOR
 init|=
 literal|10
+decl_stmt|;
+DECL|field|SMOOTHNESS_FACTOR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SMOOTHNESS_FACTOR
+init|=
+literal|"yarn.resourcemanager.reservation-system.smoothness-factor"
 decl_stmt|;
 comment|// Log
 DECL|field|LOG
@@ -184,7 +207,6 @@ decl_stmt|;
 comment|// Smoothness factor
 DECL|field|planner
 specifier|private
-specifier|final
 name|ReservationAgent
 name|planner
 decl_stmt|;
@@ -193,22 +215,30 @@ DECL|method|AlignedPlannerWithGreedy ()
 specifier|public
 name|AlignedPlannerWithGreedy
 parameter_list|()
-block|{
-name|this
-argument_list|(
-name|DEFAULT_SMOOTHNESS_FACTOR
-argument_list|)
-expr_stmt|;
-block|}
-comment|// Constructor
-DECL|method|AlignedPlannerWithGreedy (int smoothnessFactor)
+block|{   }
+annotation|@
+name|Override
+DECL|method|init (Configuration conf)
 specifier|public
-name|AlignedPlannerWithGreedy
+name|void
+name|init
 parameter_list|(
-name|int
-name|smoothnessFactor
+name|Configuration
+name|conf
 parameter_list|)
 block|{
+name|int
+name|smoothnessFactor
+init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|SMOOTHNESS_FACTOR
+argument_list|,
+name|DEFAULT_SMOOTHNESS_FACTOR
+argument_list|)
+decl_stmt|;
 comment|// List of algorithms
 name|List
 argument_list|<

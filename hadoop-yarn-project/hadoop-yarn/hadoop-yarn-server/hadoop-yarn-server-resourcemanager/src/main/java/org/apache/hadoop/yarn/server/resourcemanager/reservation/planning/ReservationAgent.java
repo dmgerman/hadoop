@@ -32,6 +32,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -171,6 +185,15 @@ name|plan
 parameter_list|)
 throws|throws
 name|PlanningException
+function_decl|;
+comment|/**    * Init configuration.    *    * @param conf Configuration    */
+DECL|method|init (Configuration conf)
+name|void
+name|init
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
 function_decl|;
 block|}
 end_interface
