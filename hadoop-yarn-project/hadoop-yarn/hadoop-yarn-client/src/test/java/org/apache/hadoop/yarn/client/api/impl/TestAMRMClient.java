@@ -3793,6 +3793,8 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
+name|matchSize
+argument_list|,
 name|matches
 operator|.
 name|get
@@ -3802,8 +3804,6 @@ argument_list|)
 operator|.
 name|size
 argument_list|()
-argument_list|,
-name|matchSize
 argument_list|)
 expr_stmt|;
 block|}

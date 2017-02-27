@@ -336,7 +336,7 @@ name|getName
 argument_list|()
 decl_stmt|;
 DECL|field|DEFAULT_PROFILE
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|String
@@ -345,7 +345,7 @@ init|=
 literal|"default"
 decl_stmt|;
 DECL|field|MINIMUM_PROFILE
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|String
@@ -354,7 +354,7 @@ init|=
 literal|"minimum"
 decl_stmt|;
 DECL|field|MAXIMUM_PROFILE
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|String
