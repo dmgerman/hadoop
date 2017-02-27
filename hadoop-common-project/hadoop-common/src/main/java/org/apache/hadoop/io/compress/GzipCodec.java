@@ -19,12 +19,64 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|IO_FILE_BUFFER_SIZE_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|IO_FILE_BUFFER_SIZE_KEY
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
 name|io
 operator|.
-name|*
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|InputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|OutputStream
 import|;
 end_import
 
@@ -94,7 +146,9 @@ name|io
 operator|.
 name|compress
 operator|.
-name|DefaultCodec
+name|zlib
+operator|.
+name|BuiltInGzipDecompressor
 import|;
 end_import
 
@@ -112,7 +166,7 @@ name|compress
 operator|.
 name|zlib
 operator|.
-name|*
+name|ZlibCompressor
 import|;
 end_import
 
@@ -131,56 +185,24 @@ operator|.
 name|zlib
 operator|.
 name|ZlibDecompressor
-operator|.
-name|ZlibDirectDecompressor
 import|;
 end_import
 
 begin_import
-import|import static
+import|import
 name|org
 operator|.
 name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
+name|io
 operator|.
-name|CommonConfigurationKeysPublic
+name|compress
 operator|.
-name|IO_FILE_BUFFER_SIZE_DEFAULT
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
+name|zlib
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|CommonConfigurationKeysPublic
-operator|.
-name|IO_FILE_BUFFER_SIZE_KEY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|PlatformName
-operator|.
-name|IBM_JAVA
+name|ZlibFactory
 import|;
 end_import
 
