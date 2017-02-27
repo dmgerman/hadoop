@@ -97,6 +97,18 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Initialize the Dispatcher.    */
+DECL|method|init ()
+name|void
+name|init
+parameter_list|()
+function_decl|;
+comment|/**    * Shutdown Dispatcher services.    */
+DECL|method|shutdown ()
+name|void
+name|shutdown
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

@@ -525,6 +525,10 @@ operator|new
 name|Dispatcher
 argument_list|(
 name|manager
+argument_list|,
+name|this
+operator|.
+name|ozoneConfig
 argument_list|)
 expr_stmt|;
 name|server
@@ -556,6 +560,11 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
+name|dispatcher
+operator|.
+name|init
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Stops the ozone container.    *<p>    * Shutdown logic is not very obvious from the following code. if you need to    * modify the logic, please keep these comments in mind. Here is the shutdown    * sequence.    *<p>    * 1. We shutdown the network ports.    *<p>    * 2. Now we need to wait for all requests in-flight to finish.    *<p>    * 3. The container manager lock is a read-write lock with "Fairness"    * enabled.    *<p>    * 4. This means that the waiting threads are served in a "first-come-first    * -served" manner. Please note that this applies to waiting threads only.    *<p>    * 5. Since write locks are exclusive, if we are waiting to get a lock it    * implies that we are waiting for in-flight operations to complete.    *<p>    * 6. if there are other write operations waiting on the reader-writer lock,    * fairness guarantees that they will proceed before the shutdown lock    * request.    *<p>    * 7. Since all operations either take a reader or writer lock of container    * manager, we are guaranteed that we are the last operation since we have    * closed the network port, and we wait until close is successful.    *<p>    * 8. We take the writer lock and call shutdown on each of the managers in    * reverse order. That is chunkManager, keyManager and containerManager is    * shutdown.    */
 DECL|method|stop ()
@@ -574,6 +583,11 @@ expr_stmt|;
 name|server
 operator|.
 name|stop
+argument_list|()
+expr_stmt|;
+name|dispatcher
+operator|.
+name|shutdown
 argument_list|()
 expr_stmt|;
 try|try
