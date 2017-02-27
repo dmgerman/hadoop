@@ -95,7 +95,8 @@ annotation|@
 name|Override
 DECL|method|getProtoBufMessage ()
 specifier|public
-name|NullCmdResponseProto
+name|byte
+index|[]
 name|getProtoBufMessage
 parameter_list|()
 block|{
@@ -106,6 +107,9 @@ name|newBuilder
 argument_list|()
 operator|.
 name|build
+argument_list|()
+operator|.
+name|toByteArray
 argument_list|()
 return|;
 block|}

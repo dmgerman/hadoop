@@ -1,6 +1,6 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/**  * Licensed to the Apache Software Foundation (ASF) under one or more  * contributor license agreements.  See the NOTICE file distributed with this  * work for additional information regarding copyright ownership.  The ASF  * licenses this file to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance with the License.  * You may obtain a copy of the License at  *<p>  * http://www.apache.org/licenses/LICENSE-2.0  *<p>  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the  * License for the specific language governing permissions and limitations under  * the License.  */
+comment|/**  * Licensed to the Apache Software Foundation (ASF) under one or more  * contributor license agreements.  See the NOTICE file distributed with this  * work for additional information regarding copyright ownership.  The ASF  * licenses this file to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance with the License.  * You may obtain a copy of the License at  *  * http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the  * License for the specific language governing permissions and limitations under  * the License.  */
 end_comment
 
 begin_package
@@ -77,20 +77,6 @@ operator|.
 name|ozone
 operator|.
 name|OzoneClientUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|OzoneConfigKeys
 import|;
 end_import
 
@@ -190,18 +176,6 @@ name|util
 operator|.
 name|concurrent
 operator|.
-name|ExecutionException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
 name|ExecutorService
 import|;
 end_import
@@ -215,18 +189,6 @@ operator|.
 name|concurrent
 operator|.
 name|TimeUnit
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|TimeoutException
 import|;
 end_import
 
@@ -315,23 +277,8 @@ name|executorService
 operator|=
 name|HadoopExecutors
 operator|.
-name|newScheduledThreadPool
+name|newCachedThreadPool
 argument_list|(
-name|this
-operator|.
-name|conf
-operator|.
-name|getInt
-argument_list|(
-name|OzoneConfigKeys
-operator|.
-name|OZONE_SCM_CONTAINER_THREADS
-argument_list|,
-name|OzoneConfigKeys
-operator|.
-name|OZONE_SCM_CONTAINER_THREADS_DEFAULT
-argument_list|)
-argument_list|,
 operator|new
 name|ThreadFactoryBuilder
 argument_list|()
@@ -377,11 +324,18 @@ argument_list|)
 expr_stmt|;
 name|heartbeatFrequency
 operator|=
+name|TimeUnit
+operator|.
+name|SECONDS
+operator|.
+name|toMillis
+argument_list|(
 name|OzoneClientUtils
 operator|.
 name|getScmHeartbeatInterval
 argument_list|(
 name|conf
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|container
@@ -442,6 +396,18 @@ condition|)
 block|{
 try|try
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Executing cycle Number : {}"
+argument_list|,
+name|context
+operator|.
+name|getExecutionCount
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|nextHB
 operator|=
 name|Time
@@ -491,11 +457,7 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|InterruptedException
-decl||
-name|ExecutionException
-decl||
-name|TimeoutException
+name|Exception
 name|e
 parameter_list|)
 block|{
@@ -503,7 +465,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Unable to finish the execution"
+literal|"Unable to finish the execution."
 argument_list|,
 name|e
 argument_list|)

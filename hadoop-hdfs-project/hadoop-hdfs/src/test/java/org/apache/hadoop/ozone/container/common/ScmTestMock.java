@@ -256,9 +256,14 @@ specifier|public
 name|StorageContainerDatanodeProtocolProtos
 operator|.
 name|SCMVersionResponseProto
-DECL|method|getVersion ()
+DECL|method|getVersion (StorageContainerDatanodeProtocolProtos .SCMVersionRequestProto unused)
 name|getVersion
-parameter_list|()
+parameter_list|(
+name|StorageContainerDatanodeProtocolProtos
+operator|.
+name|SCMVersionRequestProto
+name|unused
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -398,6 +403,12 @@ argument_list|)
 operator|.
 name|setNullCommand
 argument_list|(
+name|StorageContainerDatanodeProtocolProtos
+operator|.
+name|NullCmdResponseProto
+operator|.
+name|parseFrom
+argument_list|(
 name|NullCommand
 operator|.
 name|newBuilder
@@ -408,6 +419,7 @@ argument_list|()
 operator|.
 name|getProtoBufMessage
 argument_list|()
+argument_list|)
 argument_list|)
 operator|.
 name|build

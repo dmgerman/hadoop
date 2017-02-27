@@ -321,7 +321,7 @@ argument_list|)
 operator|.
 name|setHandlerType
 argument_list|(
-literal|"local"
+literal|"distributed"
 argument_list|)
 operator|.
 name|build
@@ -577,7 +577,7 @@ argument_list|)
 operator|.
 name|setHandlerType
 argument_list|(
-literal|"local"
+literal|"distributed"
 argument_list|)
 operator|.
 name|build
@@ -1147,7 +1147,7 @@ argument_list|)
 operator|.
 name|setHandlerType
 argument_list|(
-literal|"local"
+literal|"distributed"
 argument_list|)
 operator|.
 name|build

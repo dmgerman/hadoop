@@ -54,6 +54,22 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|StorageContainerNodeProtocol
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -82,6 +98,8 @@ specifier|public
 interface|interface
 name|NodeManager
 extends|extends
+name|StorageContainerNodeProtocol
+extends|,
 name|Closeable
 extends|,
 name|Runnable

@@ -299,7 +299,7 @@ decl_stmt|;
 DECL|field|cacheSize
 specifier|private
 specifier|final
-name|int
+name|long
 name|cacheSize
 decl_stmt|;
 DECL|field|lock
@@ -431,9 +431,9 @@ operator|.
 name|cacheSize
 operator|*
 operator|(
-literal|1024
+literal|1024L
 operator|*
-literal|1024
+literal|1024L
 operator|)
 argument_list|)
 expr_stmt|;
@@ -467,7 +467,7 @@ name|Random
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Translates a list of nodes, ordered such that the first is the leader, into    * a corresponding {@link Pipeline} object.    *    * @param node datanode on which we will allocate the contianer.    * @param containerName container name    * @return pipeline corresponding to nodes    */
+comment|/**    * // TODO : Fix the code to handle multiple nodes.    * Translates a list of nodes, ordered such that the first is the leader, into    * a corresponding {@link Pipeline} object.    *    * @param node datanode on which we will allocate the contianer.    * @param containerName container name    * @return pipeline corresponding to nodes    */
 DECL|method|newPipelineFromNodes (DatanodeID node, String containerName)
 specifier|private
 specifier|static

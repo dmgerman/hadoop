@@ -336,14 +336,17 @@ return|return
 name|rpcProxy
 return|;
 block|}
-comment|/**    * Returns SCM version.    *    * @return Version info.    */
+comment|/**    * Returns SCM version.    *    * @param unused - set to null and unused.    * @return Version info.    */
 annotation|@
 name|Override
-DECL|method|getVersion ()
+DECL|method|getVersion (SCMVersionRequestProto unused)
 specifier|public
 name|SCMVersionResponseProto
 name|getVersion
-parameter_list|()
+parameter_list|(
+name|SCMVersionRequestProto
+name|unused
+parameter_list|)
 throws|throws
 name|IOException
 block|{

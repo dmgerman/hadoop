@@ -255,7 +255,6 @@ return|return
 name|newPipeline
 return|;
 block|}
-comment|/** Adds a member to pipeline */
 comment|/**    * Adds a member to the pipeline.    *    * @param dataNodeId - Datanode to be added.    */
 DECL|method|addMember (DatanodeID dataNodeId)
 specifier|public

@@ -180,6 +180,7 @@ comment|/**    * Returns the type of this command.    *    * @return Type    */
 annotation|@
 name|Override
 DECL|method|getType ()
+specifier|public
 name|Type
 name|getType
 parameter_list|()
@@ -227,7 +228,9 @@ comment|/**    * Gets the protobuf message of this object.    *    * @return A p
 annotation|@
 name|Override
 DECL|method|getProtoBufMessage ()
-name|SCMRegisteredCmdResponseProto
+specifier|public
+name|byte
+index|[]
 name|getProtoBufMessage
 parameter_list|()
 block|{
@@ -259,6 +262,9 @@ name|error
 argument_list|)
 operator|.
 name|build
+argument_list|()
+operator|.
+name|toByteArray
 argument_list|()
 return|;
 block|}

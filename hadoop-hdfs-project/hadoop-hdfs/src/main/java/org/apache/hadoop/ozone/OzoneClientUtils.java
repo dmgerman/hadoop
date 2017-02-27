@@ -1180,7 +1180,7 @@ comment|/**    * Heartbeat Interval - Defines the heartbeat frequency from a dat
 DECL|method|getScmHeartbeatInterval (Configuration conf)
 specifier|public
 specifier|static
-name|int
+name|long
 name|getScmHeartbeatInterval
 parameter_list|(
 name|Configuration
@@ -1190,11 +1190,15 @@ block|{
 return|return
 name|conf
 operator|.
-name|getInt
+name|getTimeDuration
 argument_list|(
 name|OZONE_SCM_HEARTBEAT_INTERVAL_SECONDS
 argument_list|,
 name|OZONE_SCM_HEARBEAT_INTERVAL_SECONDS_DEFAULT
+argument_list|,
+name|TimeUnit
+operator|.
+name|SECONDS
 argument_list|)
 return|;
 block|}

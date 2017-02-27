@@ -70,6 +70,7 @@ parameter_list|>
 block|{
 comment|/**    * Returns the type of this command.    * @return Type    */
 DECL|method|getType ()
+specifier|public
 specifier|abstract
 name|Type
 name|getType
@@ -77,8 +78,10 @@ parameter_list|()
 function_decl|;
 comment|/**    * Gets the protobuf message of this object.    * @return A protobuf message.    */
 DECL|method|getProtoBufMessage ()
+specifier|public
 specifier|abstract
-name|T
+name|byte
+index|[]
 name|getProtoBufMessage
 parameter_list|()
 function_decl|;

@@ -1,6 +1,6 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/**  * Licensed to the Apache Software Foundation (ASF) under one or more  * contributor license agreements.  See the NOTICE file distributed with this  * work for additional information regarding copyright ownership.  The ASF  * licenses this file to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance with the License.  * You may obtain a copy of the License at  *<p>  * http://www.apache.org/licenses/LICENSE-2.0  *<p>  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the  * License for the specific language governing permissions and limitations under  * the License.  */
+comment|/**  * Licensed to the Apache Software Foundation (ASF) under one or more  * contributor license agreements.  See the NOTICE file distributed with this  * work for additional information regarding copyright ownership.  The ASF  * licenses this file to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance with the License.  * You may obtain a copy of the License at  *  * http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the  * License for the specific language governing permissions and limitations under  * the License.  */
 end_comment
 
 begin_package
@@ -67,6 +67,58 @@ operator|.
 name|common
 operator|.
 name|SCMTestUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|VersionResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|commands
+operator|.
+name|SCMCommand
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
 import|;
 end_import
 
@@ -198,7 +250,7 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
-comment|/**    * Sets the chill mode value.    * @param chillmode    */
+comment|/**    * Sets the chill mode value.    * @param chillmode  boolean    */
 DECL|method|setChillmode (boolean chillmode)
 specifier|public
 name|void
@@ -406,6 +458,59 @@ name|void
 name|run
 parameter_list|()
 block|{    }
+comment|/**    * Gets the version info from SCM.    *    * @param versionRequest - version Request.    * @return - returns SCM version info and other required information needed by    * datanode.    */
+annotation|@
+name|Override
+DECL|method|getVersion (StorageContainerDatanodeProtocolProtos .SCMVersionRequestProto versionRequest)
+specifier|public
+name|VersionResponse
+name|getVersion
+parameter_list|(
+name|StorageContainerDatanodeProtocolProtos
+operator|.
+name|SCMVersionRequestProto
+name|versionRequest
+parameter_list|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+comment|/**    * Register the node if the node finds that it is not registered with any    * SCM.    *    * @param datanodeID - Send datanodeID with Node info, but datanode UUID is    * empty. Server returns a datanodeID for the given node.    * @return SCMHeartbeatResponseProto    */
+annotation|@
+name|Override
+DECL|method|register (DatanodeID datanodeID)
+specifier|public
+name|SCMCommand
+name|register
+parameter_list|(
+name|DatanodeID
+name|datanodeID
+parameter_list|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+comment|/**    * Send heartbeat to indicate the datanode is alive and doing well.    *    * @param datanodeID - Datanode ID.    * @return SCMheartbeat response list    */
+annotation|@
+name|Override
+DECL|method|sendHeartbeat (DatanodeID datanodeID)
+specifier|public
+name|List
+argument_list|<
+name|SCMCommand
+argument_list|>
+name|sendHeartbeat
+parameter_list|(
+name|DatanodeID
+name|datanodeID
+parameter_list|)
+block|{
+return|return
+literal|null
+return|;
+block|}
 block|}
 end_class
 

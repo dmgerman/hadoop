@@ -701,9 +701,6 @@ argument_list|()
 operator|.
 name|getHostAddress
 argument_list|()
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|DataNode
 operator|.
@@ -766,6 +763,53 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+operator|!
+name|idPath
+operator|.
+name|getParent
+argument_list|()
+operator|.
+name|toFile
+argument_list|()
+operator|.
+name|exists
+argument_list|()
+operator|&&
+operator|!
+name|idPath
+operator|.
+name|getParent
+argument_list|()
+operator|.
+name|toFile
+argument_list|()
+operator|.
+name|mkdirs
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Failed to create container ID locations. Path: {}"
+argument_list|,
+name|idPath
+operator|.
+name|getParent
+argument_list|()
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Unable to create container ID directories."
+argument_list|)
+throw|;
+block|}
 name|StorageContainerDatanodeProtocolProtos
 operator|.
 name|ContainerNodeIDProto
@@ -1088,6 +1132,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|//TODO : Cache some of these tasks instead of creating them
+comment|//all the time.
 specifier|private
 name|Callable
 argument_list|<

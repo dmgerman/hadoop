@@ -682,6 +682,20 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Returns the count of the Execution.    * @return long    */
+DECL|method|getExecutionCount ()
+specifier|public
+name|long
+name|getExecutionCount
+parameter_list|()
+block|{
+return|return
+name|stateExecutionCount
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 
