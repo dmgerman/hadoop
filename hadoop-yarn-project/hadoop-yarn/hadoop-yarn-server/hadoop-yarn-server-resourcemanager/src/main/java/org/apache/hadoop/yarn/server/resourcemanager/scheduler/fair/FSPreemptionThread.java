@@ -242,6 +242,20 @@ name|TimerTask
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|locks
+operator|.
+name|Lock
+import|;
+end_import
+
 begin_comment
 comment|/**  * Thread that handles FairScheduler preemption.  */
 end_comment
@@ -298,6 +312,12 @@ specifier|private
 specifier|final
 name|Timer
 name|preemptionTimer
+decl_stmt|;
+DECL|field|schedulerReadLock
+specifier|private
+specifier|final
+name|Lock
+name|schedulerReadLock
 decl_stmt|;
 DECL|method|FSPreemptionThread (FairScheduler scheduler)
 name|FSPreemptionThread
@@ -408,6 +428,13 @@ operator|.
 name|getWaitTimeBeforeNextStarvationCheck
 argument_list|()
 expr_stmt|;
+name|schedulerReadLock
+operator|=
+name|scheduler
+operator|.
+name|getSchedulerReadLock
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|run ()
 specifier|public
@@ -439,6 +466,15 @@ operator|.
 name|take
 argument_list|()
 expr_stmt|;
+comment|// Hold the scheduler readlock so this is not concurrent with the
+comment|// update thread.
+name|schedulerReadLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
 name|preemptContainers
 argument_list|(
 name|identifyContainersToPreempt
@@ -447,6 +483,15 @@ name|starvedApp
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|schedulerReadLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 name|starvedApp
 operator|.
 name|preemptionTriggered

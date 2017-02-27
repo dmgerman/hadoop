@@ -1524,6 +1524,22 @@ name|ReentrantReadWriteLock
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|locks
+operator|.
+name|ReentrantReadWriteLock
+operator|.
+name|ReadLock
+import|;
+end_import
+
 begin_comment
 comment|/**  * A scheduler that schedules resources between a set of queues. The scheduler  * keeps track of the resources used by each queue, and attempts to maintain  * fairness by scheduling tasks at queues whose allocations are farthest below  * an ideal fair distribution.  *   * The fair scheduler supports hierarchical queues. All queues descend from a  * queue named "root". Available resources are distributed among the children  * of the root queue in the typical fair scheduling fashion. Then, the children  * distribute the resources assigned to them to their children in the same  * fashion.  Applications may only be scheduled on leaf queues. Queues can be  * specified as children of other queues by placing them as sub-elements of  * their parents in the fair scheduler configuration file.  *  * A queue's name starts with the names of its parents, with periods as  * separators.  So a queue named "queue1" under the root named, would be   * referred to as "root.queue1", and a queue named "queue2" under a queue  * named "parent1" would be referred to as "root.parent1.queue2".  */
 end_comment
@@ -8906,6 +8922,17 @@ parameter_list|()
 block|{
 return|return
 name|nmHeartbeatInterval
+return|;
+block|}
+DECL|method|getSchedulerReadLock ()
+name|ReadLock
+name|getSchedulerReadLock
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|readLock
 return|;
 block|}
 block|}
