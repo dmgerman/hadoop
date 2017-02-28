@@ -5592,22 +5592,6 @@ literal|0
 argument_list|)
 return|;
 block|}
-annotation|@
-name|Override
-DECL|method|decreaseContainer ( SchedContainerChangeRequest decreaseRequest, SchedulerApplicationAttempt attempt)
-specifier|protected
-name|void
-name|decreaseContainer
-parameter_list|(
-name|SchedContainerChangeRequest
-name|decreaseRequest
-parameter_list|,
-name|SchedulerApplicationAttempt
-name|attempt
-parameter_list|)
-block|{
-comment|// TODO Auto-generated method stub
-block|}
 block|}
 end_class
 

@@ -4492,19 +4492,11 @@ name|EMPTY_ALLOCATION
 return|;
 block|}
 comment|// Handle promotions and demotions
-name|handleExecutionTypeUpdates
+name|handleContainerUpdates
 argument_list|(
 name|application
 argument_list|,
 name|updateRequests
-operator|.
-name|getPromotionRequests
-argument_list|()
-argument_list|,
-name|updateRequests
-operator|.
-name|getDemotionRequests
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Sanity check
@@ -8888,22 +8880,6 @@ block|}
 return|return
 name|targetQueueName
 return|;
-block|}
-annotation|@
-name|Override
-DECL|method|decreaseContainer ( SchedContainerChangeRequest decreaseRequest, SchedulerApplicationAttempt attempt)
-specifier|protected
-name|void
-name|decreaseContainer
-parameter_list|(
-name|SchedContainerChangeRequest
-name|decreaseRequest
-parameter_list|,
-name|SchedulerApplicationAttempt
-name|attempt
-parameter_list|)
-block|{
-comment|// TODO Auto-generated method stub
 block|}
 DECL|method|getReservableNodesRatio ()
 specifier|public

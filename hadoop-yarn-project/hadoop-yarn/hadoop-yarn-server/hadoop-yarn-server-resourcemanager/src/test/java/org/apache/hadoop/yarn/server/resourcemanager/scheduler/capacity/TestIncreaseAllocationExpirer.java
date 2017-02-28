@@ -1493,6 +1493,15 @@ literal|10000
 argument_list|)
 expr_stmt|;
 comment|// Verify container size is 1G
+name|am1
+operator|.
+name|allocate
+argument_list|(
+literal|null
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
 name|Assert
 operator|.
 name|assertEquals
@@ -2100,6 +2109,22 @@ operator|.
 name|sleep
 argument_list|(
 literal|10000
+argument_list|)
+expr_stmt|;
+name|am1
+operator|.
+name|allocate
+argument_list|(
+literal|null
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|2000
 argument_list|)
 expr_stmt|;
 comment|// Verify container size is rolled back to 3G
@@ -2774,7 +2799,7 @@ name|containerId2
 argument_list|,
 name|ContainerUpdateType
 operator|.
-name|INCREASE_RESOURCE
+name|DECREASE_RESOURCE
 argument_list|,
 name|Resources
 operator|.
@@ -2803,7 +2828,7 @@ name|containerId3
 argument_list|,
 name|ContainerUpdateType
 operator|.
-name|INCREASE_RESOURCE
+name|DECREASE_RESOURCE
 argument_list|,
 name|Resources
 operator|.
@@ -2832,7 +2857,7 @@ name|containerId4
 argument_list|,
 name|ContainerUpdateType
 operator|.
-name|INCREASE_RESOURCE
+name|DECREASE_RESOURCE
 argument_list|,
 name|Resources
 operator|.
@@ -2902,6 +2927,15 @@ operator|.
 name|sleep
 argument_list|(
 literal|10000
+argument_list|)
+expr_stmt|;
+name|am1
+operator|.
+name|allocate
+argument_list|(
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|Assert

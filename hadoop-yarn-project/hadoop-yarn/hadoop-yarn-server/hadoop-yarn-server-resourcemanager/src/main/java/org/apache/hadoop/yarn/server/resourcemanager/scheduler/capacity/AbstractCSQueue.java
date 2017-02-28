@@ -2557,7 +2557,7 @@ return|return
 name|minimumAllocation
 return|;
 block|}
-DECL|method|allocateResource (Resource clusterResource, Resource resource, String nodePartition, boolean changeContainerResource)
+DECL|method|allocateResource (Resource clusterResource, Resource resource, String nodePartition)
 name|void
 name|allocateResource
 parameter_list|(
@@ -2569,9 +2569,6 @@ name|resource
 parameter_list|,
 name|String
 name|nodePartition
-parameter_list|,
-name|boolean
-name|changeContainerResource
 parameter_list|)
 block|{
 try|try
@@ -2590,16 +2587,9 @@ argument_list|,
 name|resource
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-operator|!
-name|changeContainerResource
-condition|)
-block|{
 operator|++
 name|numContainers
 expr_stmt|;
-block|}
 name|CSQueueUtils
 operator|.
 name|updateQueueStatistics
@@ -2627,7 +2617,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|releaseResource (Resource clusterResource, Resource resource, String nodePartition, boolean changeContainerResource)
+DECL|method|releaseResource (Resource clusterResource, Resource resource, String nodePartition)
 specifier|protected
 name|void
 name|releaseResource
@@ -2640,9 +2630,6 @@ name|resource
 parameter_list|,
 name|String
 name|nodePartition
-parameter_list|,
-name|boolean
-name|changeContainerResource
 parameter_list|)
 block|{
 try|try
@@ -2678,16 +2665,9 @@ argument_list|,
 name|nodePartition
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-operator|!
-name|changeContainerResource
-condition|)
-block|{
 operator|--
 name|numContainers
 expr_stmt|;
-block|}
 block|}
 finally|finally
 block|{

@@ -206,11 +206,6 @@ name|N
 argument_list|>
 name|allocateFromReservedContainer
 decl_stmt|;
-DECL|field|isIncreasedAllocation
-specifier|private
-name|boolean
-name|isIncreasedAllocation
-decl_stmt|;
 DECL|field|allocationLocalityType
 specifier|private
 name|NodeType
@@ -232,7 +227,7 @@ name|Resource
 name|allocatedResource
 decl_stmt|;
 comment|// newly allocated resource
-DECL|method|ContainerAllocationProposal ( SchedulerContainer<A, N> allocatedOrReservedContainer, List<SchedulerContainer<A, N>> toRelease, SchedulerContainer<A, N> allocateFromReservedContainer, boolean isIncreasedAllocation, NodeType allocationLocalityType, NodeType requestLocalityType, SchedulingMode schedulingMode, Resource allocatedResource)
+DECL|method|ContainerAllocationProposal ( SchedulerContainer<A, N> allocatedOrReservedContainer, List<SchedulerContainer<A, N>> toRelease, SchedulerContainer<A, N> allocateFromReservedContainer, NodeType allocationLocalityType, NodeType requestLocalityType, SchedulingMode schedulingMode, Resource allocatedResource)
 specifier|public
 name|ContainerAllocationProposal
 parameter_list|(
@@ -262,9 +257,6 @@ argument_list|,
 name|N
 argument_list|>
 name|allocateFromReservedContainer
-parameter_list|,
-name|boolean
-name|isIncreasedAllocation
 parameter_list|,
 name|NodeType
 name|allocationLocalityType
@@ -304,12 +296,6 @@ operator|.
 name|allocateFromReservedContainer
 operator|=
 name|allocateFromReservedContainer
-expr_stmt|;
-name|this
-operator|.
-name|isIncreasedAllocation
-operator|=
-name|isIncreasedAllocation
 expr_stmt|;
 name|this
 operator|.
@@ -364,16 +350,6 @@ parameter_list|()
 block|{
 return|return
 name|allocationLocalityType
-return|;
-block|}
-DECL|method|isIncreasedAllocation ()
-specifier|public
-name|boolean
-name|isIncreasedAllocation
-parameter_list|()
-block|{
-return|return
-name|isIncreasedAllocation
 return|;
 block|}
 DECL|method|getAllocateFromReservedContainer ()
