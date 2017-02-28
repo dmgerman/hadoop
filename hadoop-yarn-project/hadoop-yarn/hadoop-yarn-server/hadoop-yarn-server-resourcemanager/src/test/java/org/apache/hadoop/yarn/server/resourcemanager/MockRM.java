@@ -4095,7 +4095,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-DECL|method|submitApp (int masterMemory, long attemptFailuresValidityInterval)
+DECL|method|submitApp (int masterMemory, long attemptFailuresValidityInterval, boolean keepContainers)
 specifier|public
 name|RMApp
 name|submitApp
@@ -4105,6 +4105,9 @@ name|masterMemory
 parameter_list|,
 name|long
 name|attemptFailuresValidityInterval
+parameter_list|,
+name|boolean
+name|keepContainers
 parameter_list|)
 throws|throws
 name|Exception
@@ -4181,7 +4184,7 @@ literal|null
 argument_list|,
 literal|true
 argument_list|,
-literal|false
+name|keepContainers
 argument_list|,
 literal|false
 argument_list|,

@@ -577,7 +577,7 @@ literal|null
 argument_list|,
 name|configuration
 argument_list|,
-literal|false
+literal|null
 argument_list|,
 literal|null
 argument_list|)

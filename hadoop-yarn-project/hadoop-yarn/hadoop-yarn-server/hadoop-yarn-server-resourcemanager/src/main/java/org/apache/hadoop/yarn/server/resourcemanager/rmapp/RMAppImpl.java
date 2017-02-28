@@ -6173,20 +6173,9 @@ name|submissionContext
 argument_list|,
 name|conf
 argument_list|,
-comment|// The newly created attempt maybe last attempt if (number of
-comment|// previously failed attempts(which should not include Preempted,
-comment|// hardware error and NM resync) + 1) equal to the max-attempt
-comment|// limit.
-name|maxAppAttempts
-operator|==
-operator|(
-name|getNumFailedAppAttempts
-argument_list|()
-operator|+
-literal|1
-operator|)
-argument_list|,
 name|amReq
+argument_list|,
+name|this
 argument_list|,
 name|currentAMBlacklistManager
 argument_list|)
@@ -8660,7 +8649,7 @@ block|}
 empty_stmt|;
 block|}
 DECL|method|getNumFailedAppAttempts ()
-specifier|private
+specifier|public
 name|int
 name|getNumFailedAppAttempts
 parameter_list|()
@@ -8669,16 +8658,6 @@ name|int
 name|completedAttempts
 init|=
 literal|0
-decl_stmt|;
-name|long
-name|endTime
-init|=
-name|this
-operator|.
-name|systemClock
-operator|.
-name|getTime
-argument_list|()
 decl_stmt|;
 comment|// Do not count AM preemption, hardware failures or NM resync
 comment|// as attempt failure.
@@ -8701,32 +8680,9 @@ name|shouldCountTowardsMaxAttemptRetry
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|this
-operator|.
-name|attemptFailuresValidityInterval
-operator|<=
-literal|0
-operator|||
-operator|(
-name|attempt
-operator|.
-name|getFinishTime
-argument_list|()
-operator|>
-name|endTime
-operator|-
-name|this
-operator|.
-name|attemptFailuresValidityInterval
-operator|)
-condition|)
-block|{
 name|completedAttempts
 operator|++
 expr_stmt|;
-block|}
 block|}
 block|}
 return|return

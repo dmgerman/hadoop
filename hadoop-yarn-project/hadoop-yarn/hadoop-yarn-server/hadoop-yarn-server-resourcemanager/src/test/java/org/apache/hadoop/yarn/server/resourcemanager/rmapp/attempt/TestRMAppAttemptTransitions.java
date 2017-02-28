@@ -2859,8 +2859,6 @@ operator|new
 name|Configuration
 argument_list|()
 argument_list|,
-literal|false
-argument_list|,
 name|BuilderUtils
 operator|.
 name|newResourceRequest
@@ -2880,6 +2878,8 @@ argument_list|()
 argument_list|,
 literal|1
 argument_list|)
+argument_list|,
+name|application
 argument_list|)
 expr_stmt|;
 name|when
@@ -7278,8 +7278,6 @@ name|submissionContext
 argument_list|,
 name|myConf
 argument_list|,
-literal|false
-argument_list|,
 name|BuilderUtils
 operator|.
 name|newResourceRequest
@@ -7299,6 +7297,8 @@ argument_list|()
 argument_list|,
 literal|1
 argument_list|)
+argument_list|,
+name|application
 argument_list|)
 decl_stmt|;
 comment|//submit, schedule and allocate app attempt
@@ -9678,6 +9678,32 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
+name|when
+argument_list|(
+name|application
+operator|.
+name|getMaxAppAttempts
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+literal|2
+argument_list|)
+expr_stmt|;
+name|when
+argument_list|(
+name|application
+operator|.
+name|getNumFailedAppAttempts
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
 name|Container
 name|amContainer
 init|=
@@ -9947,8 +9973,6 @@ operator|new
 name|Configuration
 argument_list|()
 argument_list|,
-literal|true
-argument_list|,
 name|BuilderUtils
 operator|.
 name|newResourceRequest
@@ -9968,6 +9992,8 @@ argument_list|()
 argument_list|,
 literal|1
 argument_list|)
+argument_list|,
+name|application
 argument_list|)
 expr_stmt|;
 name|when
@@ -10364,8 +10390,6 @@ operator|new
 name|Configuration
 argument_list|()
 argument_list|,
-literal|true
-argument_list|,
 name|ResourceRequest
 operator|.
 name|newInstance
@@ -10391,6 +10415,8 @@ literal|false
 argument_list|,
 literal|"label-expression"
 argument_list|)
+argument_list|,
+name|application
 argument_list|)
 expr_stmt|;
 operator|new

@@ -1727,6 +1727,12 @@ specifier|final
 name|ApplicationMasterService
 name|masterService
 decl_stmt|;
+DECL|field|rmApp
+specifier|private
+specifier|final
+name|RMApp
+name|rmApp
+decl_stmt|;
 DECL|field|readLock
 specifier|private
 specifier|final
@@ -1913,17 +1919,6 @@ DECL|field|conf
 specifier|private
 name|Configuration
 name|conf
-decl_stmt|;
-comment|// Since AM preemption, hardware error and NM resync are not counted towards
-comment|// AM failure count, even if this flag is true, a new attempt can still be
-comment|// re-created if this attempt is eventually failed because of preemption,
-comment|// hardware error or NM resync. So this flag indicates that this may be
-comment|// last attempt.
-DECL|field|maybeLastAttempt
-specifier|private
-specifier|final
-name|boolean
-name|maybeLastAttempt
 decl_stmt|;
 DECL|field|EXPIRED_TRANSITION
 specifier|private
@@ -3450,7 +3445,7 @@ operator|.
 name|installTopology
 argument_list|()
 decl_stmt|;
-DECL|method|RMAppAttemptImpl (ApplicationAttemptId appAttemptId, RMContext rmContext, YarnScheduler scheduler, ApplicationMasterService masterService, ApplicationSubmissionContext submissionContext, Configuration conf, boolean maybeLastAttempt, ResourceRequest amReq)
+DECL|method|RMAppAttemptImpl (ApplicationAttemptId appAttemptId, RMContext rmContext, YarnScheduler scheduler, ApplicationMasterService masterService, ApplicationSubmissionContext submissionContext, Configuration conf, ResourceRequest amReq, RMApp rmApp)
 specifier|public
 name|RMAppAttemptImpl
 parameter_list|(
@@ -3472,11 +3467,11 @@ parameter_list|,
 name|Configuration
 name|conf
 parameter_list|,
-name|boolean
-name|maybeLastAttempt
-parameter_list|,
 name|ResourceRequest
 name|amReq
+parameter_list|,
+name|RMApp
+name|rmApp
 parameter_list|)
 block|{
 name|this
@@ -3493,9 +3488,9 @@ name|submissionContext
 argument_list|,
 name|conf
 argument_list|,
-name|maybeLastAttempt
-argument_list|,
 name|amReq
+argument_list|,
+name|rmApp
 argument_list|,
 operator|new
 name|DisabledBlacklistManager
@@ -3503,7 +3498,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|RMAppAttemptImpl (ApplicationAttemptId appAttemptId, RMContext rmContext, YarnScheduler scheduler, ApplicationMasterService masterService, ApplicationSubmissionContext submissionContext, Configuration conf, boolean maybeLastAttempt, ResourceRequest amReq, BlacklistManager amBlacklistManager)
+DECL|method|RMAppAttemptImpl (ApplicationAttemptId appAttemptId, RMContext rmContext, YarnScheduler scheduler, ApplicationMasterService masterService, ApplicationSubmissionContext submissionContext, Configuration conf, ResourceRequest amReq, RMApp rmApp, BlacklistManager amBlacklistManager)
 specifier|public
 name|RMAppAttemptImpl
 parameter_list|(
@@ -3525,11 +3520,11 @@ parameter_list|,
 name|Configuration
 name|conf
 parameter_list|,
-name|boolean
-name|maybeLastAttempt
-parameter_list|,
 name|ResourceRequest
 name|amReq
+parameter_list|,
+name|RMApp
+name|rmApp
 parameter_list|,
 name|BlacklistManager
 name|amBlacklistManager
@@ -3617,12 +3612,6 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|maybeLastAttempt
-operator|=
-name|maybeLastAttempt
-expr_stmt|;
-name|this
-operator|.
 name|stateMachine
 operator|=
 name|stateMachineFactory
@@ -3698,6 +3687,12 @@ name|diagnosticsLimitKC
 operator|*
 literal|1024
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|rmApp
+operator|=
+name|rmApp
 expr_stmt|;
 block|}
 DECL|method|getDiagnosticsLimitKCOrThrow (final Configuration configuration)
@@ -6693,21 +6688,7 @@ name|rmApp
 init|=
 name|appAttempt
 operator|.
-name|rmContext
-operator|.
-name|getRMApps
-argument_list|()
-operator|.
-name|get
-argument_list|(
-name|appAttempt
-operator|.
-name|getAppAttemptId
-argument_list|()
-operator|.
-name|getApplicationId
-argument_list|()
-argument_list|)
+name|rmApp
 decl_stmt|;
 comment|/*        * If last attempt recovered final state is null .. it means attempt was        * started but AM container may or may not have started / finished.        * Therefore we should wait for it to finish.        */
 if|if
@@ -7672,34 +7653,33 @@ name|getUnmanagedAM
 argument_list|()
 condition|)
 block|{
-comment|// See if we should retain containers for non-unmanaged applications
-if|if
-condition|(
-operator|!
+name|int
+name|numberOfFailure
+init|=
+operator|(
+operator|(
+name|RMAppImpl
+operator|)
 name|appAttempt
 operator|.
-name|shouldCountTowardsMaxAttemptRetry
+name|rmApp
+operator|)
+operator|.
+name|getNumFailedAppAttempts
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|numberOfFailure
+operator|<
+name|appAttempt
+operator|.
+name|rmApp
+operator|.
+name|getMaxAppAttempts
 argument_list|()
 condition|)
 block|{
-comment|// Premption, hardware failures, NM resync doesn't count towards
-comment|// app-failures and so we should retain containers.
-name|keepContainersAcrossAppAttempts
-operator|=
-literal|true
-expr_stmt|;
-block|}
-elseif|else
-if|if
-condition|(
-operator|!
-name|appAttempt
-operator|.
-name|maybeLastAttempt
-condition|)
-block|{
-comment|// Not preemption, hardware failures or NM resync.
-comment|// Not last-attempt too - keep containers.
 name|keepContainersAcrossAppAttempts
 operator|=
 literal|true
@@ -7801,20 +7781,7 @@ name|finalAttemptState
 argument_list|,
 name|appAttempt
 operator|.
-name|rmContext
-operator|.
-name|getRMApps
-argument_list|()
-operator|.
-name|get
-argument_list|(
-name|appAttempt
-operator|.
-name|applicationAttemptId
-operator|.
-name|getApplicationId
-argument_list|()
-argument_list|)
+name|rmApp
 argument_list|,
 name|System
 operator|.
@@ -8017,6 +7984,53 @@ name|boolean
 name|shouldCountTowardsMaxAttemptRetry
 parameter_list|()
 block|{
+name|long
+name|attemptFailuresValidityInterval
+init|=
+name|this
+operator|.
+name|submissionContext
+operator|.
+name|getAttemptFailuresValidityInterval
+argument_list|()
+decl_stmt|;
+name|long
+name|end
+init|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|attemptFailuresValidityInterval
+operator|>
+literal|0
+operator|&&
+name|this
+operator|.
+name|getFinishTime
+argument_list|()
+operator|>
+literal|0
+operator|&&
+name|this
+operator|.
+name|getFinishTime
+argument_list|()
+operator|<
+operator|(
+name|end
+operator|-
+name|attemptFailuresValidityInterval
+operator|)
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
 try|try
 block|{
 name|this
@@ -10733,17 +10747,6 @@ expr_stmt|;
 block|}
 return|return
 name|attemptReport
-return|;
-block|}
-comment|// for testing
-DECL|method|mayBeLastAttempt ()
-specifier|public
-name|boolean
-name|mayBeLastAttempt
-parameter_list|()
-block|{
-return|return
-name|maybeLastAttempt
 return|;
 block|}
 annotation|@
