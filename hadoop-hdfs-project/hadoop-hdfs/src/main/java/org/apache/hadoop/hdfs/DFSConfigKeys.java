@@ -2624,7 +2624,7 @@ specifier|final
 name|long
 name|DFS_NAMENODE_WRITE_LOCK_REPORTING_THRESHOLD_MS_DEFAULT
 init|=
-literal|1000L
+literal|5000L
 decl_stmt|;
 DECL|field|DFS_NAMENODE_READ_LOCK_REPORTING_THRESHOLD_MS_KEY
 specifier|public
