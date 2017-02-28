@@ -1566,6 +1566,11 @@ argument_list|,
 name|NULL_UPDATE_REQUESTS
 argument_list|)
 expr_stmt|;
+name|scheduler
+operator|.
+name|update
+argument_list|()
+expr_stmt|;
 return|return
 name|id
 return|;
@@ -1925,6 +1930,11 @@ literal|null
 argument_list|,
 name|NULL_UPDATE_REQUESTS
 argument_list|)
+expr_stmt|;
+name|scheduler
+operator|.
+name|update
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|createApplicationWithAMResource (ApplicationAttemptId attId, String queue, String user, Resource amResource)
