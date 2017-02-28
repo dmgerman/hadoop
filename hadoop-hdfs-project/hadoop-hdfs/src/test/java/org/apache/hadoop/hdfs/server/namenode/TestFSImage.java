@@ -1208,7 +1208,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// contruct a INode with StripedBlock for saving and loading
+comment|// Construct an INode with StripedBlock for saving and loading
 name|fsn
 operator|.
 name|setErasureCodingPolicy
@@ -1268,7 +1268,7 @@ literal|1426222916
 decl_stmt|;
 name|BlockInfoContiguous
 index|[]
-name|blks
+name|blocks
 init|=
 operator|new
 name|BlockInfoContiguous
@@ -1276,8 +1276,8 @@ index|[
 literal|0
 index|]
 decl_stmt|;
-name|short
-name|replication
+name|byte
+name|erasureCodingPolicyID
 init|=
 name|testECPolicy
 operator|.
@@ -1309,9 +1309,11 @@ name|mtime
 argument_list|,
 name|atime
 argument_list|,
-name|blks
+name|blocks
 argument_list|,
-name|replication
+literal|null
+argument_list|,
+name|erasureCodingPolicyID
 argument_list|,
 name|preferredBlockSize
 argument_list|,
@@ -1332,10 +1334,10 @@ operator|new
 name|ByteArrayOutputStream
 argument_list|()
 decl_stmt|;
-comment|//construct StripedBlocks for the INode
+comment|// Construct StripedBlocks for the INode
 name|BlockInfoStriped
 index|[]
-name|stripedBlks
+name|stripedBlocks
 init|=
 operator|new
 name|BlockInfoStriped
@@ -1364,7 +1366,7 @@ literal|0
 init|;
 name|i
 operator|<
-name|stripedBlks
+name|stripedBlocks
 operator|.
 name|length
 condition|;
@@ -1372,7 +1374,7 @@ name|i
 operator|++
 control|)
 block|{
-name|stripedBlks
+name|stripedBlocks
 index|[
 name|i
 index|]
@@ -1399,7 +1401,7 @@ name|file
 operator|.
 name|addBlock
 argument_list|(
-name|stripedBlks
+name|stripedBlocks
 index|[
 name|i
 index|]
@@ -1424,7 +1426,7 @@ name|path
 init|=
 literal|"testUnderConstructionPath"
 decl_stmt|;
-comment|//save the INode to byte array
+comment|// Save the INode to byte array
 name|DataOutput
 name|out
 init|=
@@ -3221,6 +3223,19 @@ name|isStriped
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|assertEquals
+argument_list|(
+name|testECPolicy
+operator|.
+name|getId
+argument_list|()
+argument_list|,
+name|inode
+operator|.
+name|getErasureCodingPolicyID
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|BlockInfo
 index|[]
 name|blks
@@ -3377,6 +3392,26 @@ argument_list|(
 name|inode
 operator|.
 name|isStriped
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|ErasureCodingPolicyManager
+operator|.
+name|getPolicyByPolicyID
+argument_list|(
+name|HdfsConstants
+operator|.
+name|RS_3_2_POLICY_ID
+argument_list|)
+operator|.
+name|getId
+argument_list|()
+argument_list|,
+name|inode
+operator|.
+name|getErasureCodingPolicyID
 argument_list|()
 argument_list|)
 expr_stmt|;

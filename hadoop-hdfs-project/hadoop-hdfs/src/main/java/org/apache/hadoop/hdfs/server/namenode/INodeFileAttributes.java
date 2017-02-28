@@ -169,7 +169,7 @@ specifier|final
 name|long
 name|header
 decl_stmt|;
-DECL|method|SnapshotCopy (byte[] name, PermissionStatus permissions, AclFeature aclFeature, long modificationTime, long accessTime, short replication, long preferredBlockSize, byte storagePolicyID, XAttrFeature xAttrsFeature, BlockType blockType)
+DECL|method|SnapshotCopy (byte[] name, PermissionStatus permissions, AclFeature aclFeature, long modificationTime, long accessTime, Short replication, Byte ecPolicyID, long preferredBlockSize, byte storagePolicyID, XAttrFeature xAttrsFeature, BlockType blockType)
 specifier|public
 name|SnapshotCopy
 parameter_list|(
@@ -189,8 +189,11 @@ parameter_list|,
 name|long
 name|accessTime
 parameter_list|,
-name|short
+name|Short
 name|replication
+parameter_list|,
+name|Byte
+name|ecPolicyID
 parameter_list|,
 name|long
 name|preferredBlockSize
@@ -220,6 +223,21 @@ argument_list|,
 name|xAttrsFeature
 argument_list|)
 expr_stmt|;
+specifier|final
+name|long
+name|layoutRedundancy
+init|=
+name|HeaderFormat
+operator|.
+name|getBlockLayoutRedundancy
+argument_list|(
+name|blockType
+argument_list|,
+name|replication
+argument_list|,
+name|ecPolicyID
+argument_list|)
+decl_stmt|;
 name|header
 operator|=
 name|HeaderFormat
@@ -228,9 +246,7 @@ name|toLong
 argument_list|(
 name|preferredBlockSize
 argument_list|,
-name|replication
-argument_list|,
-name|blockType
+name|layoutRedundancy
 argument_list|,
 name|storagePolicyID
 argument_list|)

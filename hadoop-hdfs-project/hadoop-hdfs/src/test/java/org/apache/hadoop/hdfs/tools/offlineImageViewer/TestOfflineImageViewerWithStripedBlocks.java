@@ -949,6 +949,22 @@ operator|.
 name|asFile
 argument_list|()
 decl_stmt|;
+name|assertEquals
+argument_list|(
+name|ErasureCodingPolicyManager
+operator|.
+name|getSystemDefaultPolicy
+argument_list|()
+operator|.
+name|getId
+argument_list|()
+argument_list|,
+name|fileNode
+operator|.
+name|getErasureCodingPolicyID
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|assertTrue
 argument_list|(
 literal|"Invalid block size"

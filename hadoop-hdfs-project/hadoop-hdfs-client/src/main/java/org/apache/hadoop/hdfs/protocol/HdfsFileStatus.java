@@ -333,16 +333,10 @@ name|this
 operator|.
 name|block_replication
 operator|=
-name|ecPolicy
-operator|==
-literal|null
-condition|?
 operator|(
 name|short
 operator|)
 name|block_replication
-else|:
-literal|0
 expr_stmt|;
 name|this
 operator|.
