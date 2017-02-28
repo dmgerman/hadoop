@@ -130,7 +130,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|scm
 operator|.
 name|protocol
 operator|.
@@ -146,7 +146,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|scm
 operator|.
 name|protocol
 operator|.
@@ -269,6 +269,22 @@ operator|.
 name|helpers
 operator|.
 name|Pipeline
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|scm
+operator|.
+name|protocolPB
+operator|.
+name|StorageContainerLocationProtocolPB
 import|;
 end_import
 

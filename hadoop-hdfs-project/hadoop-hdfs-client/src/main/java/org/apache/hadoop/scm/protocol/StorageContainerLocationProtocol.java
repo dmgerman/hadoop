@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.protocol
+DECL|package|org.apache.hadoop.scm.protocol
 package|package
 name|org
 operator|.
@@ -12,7 +12,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|scm
 operator|.
 name|protocol
 package|;
@@ -46,20 +46,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|scm
 operator|.
 name|container
@@ -77,10 +63,6 @@ comment|/**  * ContainerLocationProtocol is used by an HDFS node to find the set
 end_comment
 
 begin_interface
-annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
 DECL|interface|StorageContainerLocationProtocol
 specifier|public
 interface|interface

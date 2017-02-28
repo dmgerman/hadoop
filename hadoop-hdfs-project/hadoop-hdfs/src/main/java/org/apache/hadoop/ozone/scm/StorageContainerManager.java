@@ -178,7 +178,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|scm
 operator|.
 name|protocol
 operator|.
@@ -210,7 +210,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|scm
 operator|.
 name|protocol
 operator|.
@@ -508,7 +508,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|scm
 operator|.
 name|protocolPB
 operator|.
