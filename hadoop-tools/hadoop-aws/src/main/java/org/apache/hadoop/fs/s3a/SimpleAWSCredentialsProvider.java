@@ -135,16 +135,6 @@ import|;
 end_import
 
 begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|URI
-import|;
-end_import
-
-begin_import
 import|import static
 name|org
 operator|.
@@ -224,13 +214,10 @@ specifier|private
 name|IOException
 name|lookupIOE
 decl_stmt|;
-DECL|method|SimpleAWSCredentialsProvider (URI uri, Configuration conf)
+DECL|method|SimpleAWSCredentialsProvider (Configuration conf)
 specifier|public
 name|SimpleAWSCredentialsProvider
 parameter_list|(
-name|URI
-name|uri
-parameter_list|,
 name|Configuration
 name|conf
 parameter_list|)

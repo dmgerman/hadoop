@@ -68,16 +68,13 @@ name|S3ClientFactory
 block|{
 annotation|@
 name|Override
-DECL|method|createS3Client (URI name, URI uri)
+DECL|method|createS3Client (URI name)
 specifier|public
 name|AmazonS3
 name|createS3Client
 parameter_list|(
 name|URI
 name|name
-parameter_list|,
-name|URI
-name|uri
 parameter_list|)
 block|{
 name|String

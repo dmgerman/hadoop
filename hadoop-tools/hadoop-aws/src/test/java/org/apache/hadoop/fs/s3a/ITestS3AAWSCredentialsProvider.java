@@ -32,16 +32,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|net
-operator|.
-name|URI
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|nio
 operator|.
 name|file
@@ -103,6 +93,20 @@ operator|.
 name|fs
 operator|.
 name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|GenericTestUtils
 import|;
 end_import
 
@@ -258,6 +262,24 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3AUtils
+operator|.
+name|*
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -384,6 +406,113 @@ throw|;
 block|}
 block|}
 block|}
+comment|/**    * A bad CredentialsProvider which has no suitable constructor.    *    * This class does not provide a public constructor accepting Configuration,    * or a public factory method named getInstance that accepts no arguments,    * or a public default constructor.    */
+DECL|class|BadCredentialsProviderConstructor
+specifier|static
+class|class
+name|BadCredentialsProviderConstructor
+implements|implements
+name|AWSCredentialsProvider
+block|{
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unused"
+argument_list|)
+DECL|method|BadCredentialsProviderConstructor (String fsUri, Configuration conf)
+specifier|public
+name|BadCredentialsProviderConstructor
+parameter_list|(
+name|String
+name|fsUri
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|)
+block|{     }
+annotation|@
+name|Override
+DECL|method|getCredentials ()
+specifier|public
+name|AWSCredentials
+name|getCredentials
+parameter_list|()
+block|{
+return|return
+operator|new
+name|BasicAWSCredentials
+argument_list|(
+literal|"dummy_key"
+argument_list|,
+literal|"dummy_secret"
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|refresh ()
+specifier|public
+name|void
+name|refresh
+parameter_list|()
+block|{     }
+block|}
+annotation|@
+name|Test
+DECL|method|testBadCredentialsConstructor ()
+specifier|public
+name|void
+name|testBadCredentialsConstructor
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|Configuration
+name|conf
+init|=
+operator|new
+name|Configuration
+argument_list|()
+decl_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|AWS_CREDENTIALS_PROVIDER
+argument_list|,
+name|BadCredentialsProviderConstructor
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+try|try
+block|{
+name|createFailingFS
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+argument_list|(
+name|CONSTRUCTOR_EXCEPTION
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Create a filesystem, expect it to fail by raising an IOException.    * Raises an assertion exception if in fact the FS does get instantiated.    * @param conf configuration    * @throws IOException an expected exception.    */
 DECL|method|createFailingFS (Configuration conf)
 specifier|private
@@ -437,13 +566,10 @@ name|SuppressWarnings
 argument_list|(
 literal|"unused"
 argument_list|)
-DECL|method|BadCredentialsProvider (URI name, Configuration conf)
+DECL|method|BadCredentialsProvider (Configuration conf)
 specifier|public
 name|BadCredentialsProvider
 parameter_list|(
-name|URI
-name|name
-parameter_list|,
 name|Configuration
 name|conf
 parameter_list|)
@@ -535,13 +661,10 @@ name|SuppressWarnings
 argument_list|(
 literal|"unused"
 argument_list|)
-DECL|method|GoodCredentialsProvider (URI name, Configuration conf)
+DECL|method|GoodCredentialsProvider (Configuration conf)
 specifier|public
 name|GoodCredentialsProvider
 parameter_list|(
-name|URI
-name|name
-parameter_list|,
 name|Configuration
 name|conf
 parameter_list|)

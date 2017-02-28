@@ -80,16 +80,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|net
-operator|.
-name|URI
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -211,13 +201,10 @@ specifier|private
 name|IOException
 name|lookupIOE
 decl_stmt|;
-DECL|method|TemporaryAWSCredentialsProvider (URI uri, Configuration conf)
+DECL|method|TemporaryAWSCredentialsProvider (Configuration conf)
 specifier|public
 name|TemporaryAWSCredentialsProvider
 parameter_list|(
-name|URI
-name|uri
-parameter_list|,
 name|Configuration
 name|conf
 parameter_list|)

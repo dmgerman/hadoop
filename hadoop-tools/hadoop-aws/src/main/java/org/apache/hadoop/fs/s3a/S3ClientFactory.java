@@ -245,16 +245,13 @@ DECL|interface|S3ClientFactory
 interface|interface
 name|S3ClientFactory
 block|{
-comment|/**    * Creates a new {@link AmazonS3} client.  This method accepts the S3A file    * system URI both in raw input form and validated form as separate arguments,    * because both values may be useful in logging.    *    * @param name raw input S3A file system URI    * @param uri validated form of S3A file system URI    * @return S3 client    * @throws IOException IO problem    */
-DECL|method|createS3Client (URI name, URI uri)
+comment|/**    * Creates a new {@link AmazonS3} client.  This method accepts the S3A file    * system URI both in raw input form and validated form as separate arguments,    * because both values may be useful in logging.    *    * @param name raw input S3A file system URI    * @return S3 client    * @throws IOException IO problem    */
+DECL|method|createS3Client (URI name)
 name|AmazonS3
 name|createS3Client
 parameter_list|(
 name|URI
 name|name
-parameter_list|,
-name|URI
-name|uri
 parameter_list|)
 throws|throws
 name|IOException
@@ -282,16 +279,13 @@ name|LOG
 decl_stmt|;
 annotation|@
 name|Override
-DECL|method|createS3Client (URI name, URI uri)
+DECL|method|createS3Client (URI name)
 specifier|public
 name|AmazonS3
 name|createS3Client
 parameter_list|(
 name|URI
 name|name
-parameter_list|,
-name|URI
-name|uri
 parameter_list|)
 throws|throws
 name|IOException
@@ -310,8 +304,6 @@ argument_list|(
 name|name
 argument_list|,
 name|conf
-argument_list|,
-name|uri
 argument_list|)
 decl_stmt|;
 name|ClientConfiguration

@@ -661,12 +661,6 @@ init|=
 operator|new
 name|TemporaryAWSCredentialsProvider
 argument_list|(
-name|getFileSystem
-argument_list|()
-operator|.
-name|getUri
-argument_list|()
-argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;

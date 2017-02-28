@@ -1322,8 +1322,8 @@ name|getTime
 argument_list|()
 return|;
 block|}
-comment|/**    * Create the AWS credentials from the providers and the URI.    * @param binding Binding URI, may contain user:pass login details    * @param conf filesystem configuration    * @param fsURI fS URI âafter any login details have been stripped.    * @return a credentials provider list    * @throws IOException Problems loading the providers (including reading    * secrets from credential files).    */
-DECL|method|createAWSCredentialProviderSet ( URI binding, Configuration conf, URI fsURI)
+comment|/**    * Create the AWS credentials from the providers and the URI.    * @param binding Binding URI, may contain user:pass login details    * @param conf filesystem configuration    * @return a credentials provider list    * @throws IOException Problems loading the providers (including reading    * secrets from credential files).    */
+DECL|method|createAWSCredentialProviderSet ( URI binding, Configuration conf)
 specifier|public
 specifier|static
 name|AWSCredentialProviderList
@@ -1334,9 +1334,6 @@ name|binding
 parameter_list|,
 name|Configuration
 name|conf
-parameter_list|,
-name|URI
-name|fsURI
 parameter_list|)
 throws|throws
 name|IOException
@@ -1523,19 +1520,34 @@ argument_list|(
 name|conf
 argument_list|,
 name|aClass
-argument_list|,
-name|fsURI
 argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|// make sure the logging message strips out any auth details
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"For URI {}, using credentials {}"
+argument_list|,
+name|S3xLoginHelper
+operator|.
+name|toString
+argument_list|(
+name|binding
+argument_list|)
+argument_list|,
+name|credentials
+argument_list|)
+expr_stmt|;
 return|return
 name|credentials
 return|;
 block|}
-comment|/**    * Create an AWS credential provider from its class by using reflection.  The    * class must implement one of the following means of construction, which are    * attempted in order:    *    *<ol>    *<li>a public constructor accepting java.net.URI and    *     org.apache.hadoop.conf.Configuration</li>    *<li>a public static method named getInstance that accepts no    *    arguments and returns an instance of    *    com.amazonaws.auth.AWSCredentialsProvider, or</li>    *<li>a public default constructor.</li>    *</ol>    *    * @param conf configuration    * @param credClass credential class    * @param uri URI of the FS    * @return the instantiated class    * @throws IOException on any instantiation failure.    */
-DECL|method|createAWSCredentialProvider ( Configuration conf, Class<?> credClass, URI uri)
+comment|/**    * Create an AWS credential provider from its class by using reflection.  The    * class must implement one of the following means of construction, which are    * attempted in order:    *    *<ol>    *<li>a public constructor accepting    *    org.apache.hadoop.conf.Configuration</li>    *<li>a public static method named getInstance that accepts no    *    arguments and returns an instance of    *    com.amazonaws.auth.AWSCredentialsProvider, or</li>    *<li>a public default constructor.</li>    *</ol>    *    * @param conf configuration    * @param credClass credential class    * @return the instantiated class    * @throws IOException on any instantiation failure.    */
+DECL|method|createAWSCredentialProvider ( Configuration conf, Class<?> credClass)
 specifier|static
 name|AWSCredentialsProvider
 name|createAWSCredentialProvider
@@ -1548,9 +1560,6 @@ argument_list|<
 name|?
 argument_list|>
 name|credClass
-parameter_list|,
-name|URI
-name|uri
 parameter_list|)
 throws|throws
 name|IOException
@@ -1633,17 +1642,13 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-comment|// new X(uri, conf)
+comment|// new X(conf)
 name|Constructor
 name|cons
 init|=
 name|getConstructor
 argument_list|(
 name|credClass
-argument_list|,
-name|URI
-operator|.
-name|class
 argument_list|,
 name|Configuration
 operator|.
@@ -1666,8 +1671,6 @@ name|cons
 operator|.
 name|newInstance
 argument_list|(
-name|uri
-argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
@@ -1757,7 +1760,7 @@ name|CONSTRUCTOR_EXCEPTION
 operator|+
 literal|".  A class specified in %s must provide a public constructor "
 operator|+
-literal|"accepting URI and Configuration, or a public factory method named "
+literal|"accepting Configuration, or a public factory method named "
 operator|+
 literal|"getInstance that accepts no arguments, or a public default "
 operator|+
@@ -1794,28 +1797,6 @@ argument_list|,
 name|e
 argument_list|)
 throw|;
-block|}
-finally|finally
-block|{
-if|if
-condition|(
-name|credentials
-operator|!=
-literal|null
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Using {} for {}."
-argument_list|,
-name|credentials
-argument_list|,
-name|uri
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 block|}
 comment|/**    * Return the access key and secret for S3 API use.    * Credentials may exist in configuration, within credential providers    * or indicated in the UserInfo of the name URI param.    * @param name the URI for which we need the access keys.    * @param conf the Configuration object to interrogate for keys.    * @return AWSAccessKeys    * @throws IOException problems retrieving passwords from KMS.    */

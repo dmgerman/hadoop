@@ -457,8 +457,6 @@ argument_list|(
 name|uri
 argument_list|,
 name|conf
-argument_list|,
-name|uri
 argument_list|)
 decl_stmt|;
 name|List
@@ -541,8 +539,6 @@ argument_list|(
 name|uri1
 argument_list|,
 name|conf
-argument_list|,
-name|uri1
 argument_list|)
 decl_stmt|;
 name|AWSCredentialProviderList
@@ -555,8 +551,6 @@ argument_list|(
 name|uri2
 argument_list|,
 name|conf
-argument_list|,
-name|uri2
 argument_list|)
 decl_stmt|;
 name|List
@@ -709,8 +703,6 @@ argument_list|(
 name|uri1
 argument_list|,
 name|conf
-argument_list|,
-name|uri1
 argument_list|)
 decl_stmt|;
 name|AWSCredentialProviderList
@@ -723,8 +715,6 @@ argument_list|(
 name|uri2
 argument_list|,
 name|conf
-argument_list|,
-name|uri2
 argument_list|)
 decl_stmt|;
 name|assertCredentialProviders
@@ -849,8 +839,6 @@ argument_list|(
 name|uri1
 argument_list|,
 name|conf
-argument_list|,
-name|uri1
 argument_list|)
 decl_stmt|;
 name|AWSCredentialProviderList
@@ -863,8 +851,6 @@ argument_list|(
 name|uri2
 argument_list|,
 name|conf
-argument_list|,
-name|uri2
 argument_list|)
 decl_stmt|;
 name|assertCredentialProviders
@@ -1106,8 +1092,6 @@ argument_list|(
 name|uri
 argument_list|,
 name|conf
-argument_list|,
-name|uri
 argument_list|)
 expr_stmt|;
 block|}

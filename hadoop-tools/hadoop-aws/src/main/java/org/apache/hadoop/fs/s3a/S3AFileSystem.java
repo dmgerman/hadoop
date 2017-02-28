@@ -1494,8 +1494,6 @@ operator|.
 name|createS3Client
 argument_list|(
 name|name
-argument_list|,
-name|uri
 argument_list|)
 expr_stmt|;
 name|maxKeys
