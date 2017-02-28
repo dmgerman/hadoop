@@ -3526,7 +3526,9 @@ literal|"Application with id '"
 operator|+
 name|applicationId
 operator|+
-literal|"' doesn't exist in RM."
+literal|"' doesn't exist in RM. Please check "
+operator|+
+literal|"that the job submission was successful."
 argument_list|)
 throw|;
 block|}
@@ -3688,7 +3690,9 @@ operator|.
 name|getApplicationId
 argument_list|()
 operator|+
-literal|"' doesn't exist in RM."
+literal|"' doesn't exist in RM. Please check that the job "
+operator|+
+literal|"submission was successful."
 argument_list|)
 throw|;
 block|}
@@ -3886,7 +3890,9 @@ literal|"Application with id '"
 operator|+
 name|appId
 operator|+
-literal|"' doesn't exist in RM."
+literal|"' doesn't exist in RM. Please check that the job submission "
+operator|+
+literal|"was successful."
 argument_list|)
 throw|;
 block|}
@@ -4133,7 +4139,9 @@ literal|"Application with id '"
 operator|+
 name|appId
 operator|+
-literal|"' doesn't exist in RM."
+literal|"' doesn't exist in RM. Please check that the job submission "
+operator|+
+literal|"was successful."
 argument_list|)
 throw|;
 block|}
@@ -4369,7 +4377,9 @@ literal|"Application with id '"
 operator|+
 name|appId
 operator|+
-literal|"' doesn't exist in RM."
+literal|"' doesn't exist in RM. Please check that the job submission "
+operator|+
+literal|"was successful."
 argument_list|)
 throw|;
 block|}

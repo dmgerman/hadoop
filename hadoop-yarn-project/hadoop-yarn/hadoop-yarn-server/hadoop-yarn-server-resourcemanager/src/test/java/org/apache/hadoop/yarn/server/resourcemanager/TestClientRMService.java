@@ -3127,7 +3127,9 @@ operator|.
 name|getApplicationId
 argument_list|()
 operator|+
-literal|"' doesn't exist in RM."
+literal|"' doesn't exist in RM. Please check that the "
+operator|+
+literal|"job submission was successful."
 argument_list|)
 expr_stmt|;
 block|}
