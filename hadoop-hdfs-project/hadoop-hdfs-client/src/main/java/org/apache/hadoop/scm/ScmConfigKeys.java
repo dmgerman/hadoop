@@ -81,6 +81,24 @@ name|DFS_CONTAINER_IPC_PORT_DEFAULT
 init|=
 literal|50011
 decl_stmt|;
+DECL|field|SCM_CONTAINER_CLIENT_STALE_THRESHOLD_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SCM_CONTAINER_CLIENT_STALE_THRESHOLD_KEY
+init|=
+literal|"scm.container.client.idle.threshold"
+decl_stmt|;
+DECL|field|SCM_CONTAINER_CLIENT_STALE_THRESHOLD_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|SCM_CONTAINER_CLIENT_STALE_THRESHOLD_DEFAULT
+init|=
+literal|10000
+decl_stmt|;
 comment|// TODO : this is copied from OzoneConsts, may need to move to a better place
 DECL|field|CHUNK_SIZE
 specifier|public
