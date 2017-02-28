@@ -40,11 +40,9 @@ name|org
 operator|.
 name|apache
 operator|.
-name|hadoop
+name|slider
 operator|.
-name|yarn
-operator|.
-name|services
+name|api
 operator|.
 name|resource
 operator|.

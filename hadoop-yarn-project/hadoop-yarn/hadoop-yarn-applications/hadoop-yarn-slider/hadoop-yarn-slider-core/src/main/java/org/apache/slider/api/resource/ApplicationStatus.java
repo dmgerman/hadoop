@@ -4,17 +4,15 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one or more
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.services.resource
+DECL|package|org.apache.slider.api.resource
 package|package
 name|org
 operator|.
 name|apache
 operator|.
-name|hadoop
+name|slider
 operator|.
-name|yarn
-operator|.
-name|services
+name|api
 operator|.
 name|resource
 package|;
@@ -48,19 +46,23 @@ begin_import
 import|import
 name|java
 operator|.
-name|io
+name|util
 operator|.
-name|Serializable
+name|Objects
 import|;
 end_import
 
 begin_import
 import|import
-name|java
+name|javax
 operator|.
-name|util
+name|xml
 operator|.
-name|Objects
+name|bind
+operator|.
+name|annotation
+operator|.
+name|XmlRootElement
 import|;
 end_import
 
@@ -92,22 +94,8 @@ name|JsonProperty
 import|;
 end_import
 
-begin_import
-import|import
-name|com
-operator|.
-name|fasterxml
-operator|.
-name|jackson
-operator|.
-name|annotation
-operator|.
-name|JsonValue
-import|;
-end_import
-
 begin_comment
-comment|/**  * Artifact of an application component.  **/
+comment|/**  * The current status of a submitted application, returned as a response to the  * GET API.  **/
 end_comment
 
 begin_class
@@ -116,7 +104,7 @@ name|ApiModel
 argument_list|(
 name|description
 operator|=
-literal|"Artifact of an application component"
+literal|"The current status of a submitted application, returned as a response to the GET API."
 argument_list|)
 annotation|@
 name|javax
@@ -134,6 +122,8 @@ operator|=
 literal|"2016-06-02T08:15:05.615-07:00"
 argument_list|)
 annotation|@
+name|XmlRootElement
+annotation|@
 name|JsonInclude
 argument_list|(
 name|JsonInclude
@@ -142,12 +132,12 @@ name|Include
 operator|.
 name|NON_NULL
 argument_list|)
-DECL|class|Artifact
+DECL|class|ApplicationStatus
 specifier|public
 class|class
-name|Artifact
-implements|implements
-name|Serializable
+name|ApplicationStatus
+extends|extends
+name|BaseResource
 block|{
 DECL|field|serialVersionUID
 specifier|private
@@ -156,169 +146,45 @@ specifier|final
 name|long
 name|serialVersionUID
 init|=
-literal|3608929500111099035L
+operator|-
+literal|3469885905347851034L
 decl_stmt|;
-DECL|field|id
+DECL|field|diagnostics
 specifier|private
 name|String
-name|id
+name|diagnostics
 init|=
 literal|null
 decl_stmt|;
-DECL|enum|TypeEnum
-specifier|public
-enum|enum
-name|TypeEnum
-block|{
-DECL|enumConstant|DOCKER
-DECL|enumConstant|TARBALL
-DECL|enumConstant|APPLICATION
-name|DOCKER
-argument_list|(
-literal|"DOCKER"
-argument_list|)
-block|,
-name|TARBALL
-argument_list|(
-literal|"TARBALL"
-argument_list|)
-block|,
-name|APPLICATION
-argument_list|(
-literal|"APPLICATION"
-argument_list|)
-block|;
-DECL|field|value
+DECL|field|state
 specifier|private
-name|String
-name|value
-decl_stmt|;
-DECL|method|TypeEnum (String value)
-name|TypeEnum
-parameter_list|(
-name|String
-name|value
-parameter_list|)
-block|{
-name|this
-operator|.
-name|value
-operator|=
-name|value
-expr_stmt|;
-block|}
-annotation|@
-name|Override
-annotation|@
-name|JsonValue
-DECL|method|toString ()
-specifier|public
-name|String
-name|toString
-parameter_list|()
-block|{
-return|return
-name|value
-return|;
-block|}
-block|}
-DECL|field|type
-specifier|private
-name|TypeEnum
-name|type
-init|=
-name|TypeEnum
-operator|.
-name|DOCKER
-decl_stmt|;
-DECL|field|uri
-specifier|private
-name|String
-name|uri
+name|ApplicationState
+name|state
 init|=
 literal|null
 decl_stmt|;
-comment|/**    * Artifact id. Examples are package location uri for tarball based apps,    * image name for docker, etc.    **/
-DECL|method|id (String id)
+DECL|field|code
+specifier|private
+name|Integer
+name|code
+init|=
+literal|null
+decl_stmt|;
+comment|/**    * Diagnostic information (if any) for the reason of the current state of the    * application. It typically has a non-null value, if the application is in a    * non-running state.    **/
+DECL|method|diagnostics (String diagnostics)
 specifier|public
-name|Artifact
-name|id
+name|ApplicationStatus
+name|diagnostics
 parameter_list|(
 name|String
-name|id
+name|diagnostics
 parameter_list|)
 block|{
 name|this
 operator|.
-name|id
+name|diagnostics
 operator|=
-name|id
-expr_stmt|;
-return|return
-name|this
-return|;
-block|}
-annotation|@
-name|ApiModelProperty
-argument_list|(
-name|example
-operator|=
-literal|"null"
-argument_list|,
-name|required
-operator|=
-literal|true
-argument_list|,
-name|value
-operator|=
-literal|"Artifact id. Examples are package location uri for tarball based apps, image name for docker, etc."
-argument_list|)
-annotation|@
-name|JsonProperty
-argument_list|(
-literal|"id"
-argument_list|)
-DECL|method|getId ()
-specifier|public
-name|String
-name|getId
-parameter_list|()
-block|{
-return|return
-name|id
-return|;
-block|}
-DECL|method|setId (String id)
-specifier|public
-name|void
-name|setId
-parameter_list|(
-name|String
-name|id
-parameter_list|)
-block|{
-name|this
-operator|.
-name|id
-operator|=
-name|id
-expr_stmt|;
-block|}
-comment|/**    * Artifact type, like docker, tarball, etc. (optional).    **/
-DECL|method|type (TypeEnum type)
-specifier|public
-name|Artifact
-name|type
-parameter_list|(
-name|TypeEnum
-name|type
-parameter_list|)
-block|{
-name|this
-operator|.
-name|type
-operator|=
-name|type
+name|diagnostics
 expr_stmt|;
 return|return
 name|this
@@ -333,54 +199,54 @@ literal|"null"
 argument_list|,
 name|value
 operator|=
-literal|"Artifact type, like docker, tarball, etc. (optional)."
+literal|"Diagnostic information (if any) for the reason of the current state of the application. It typically has a non-null value, if the application is in a non-running state."
 argument_list|)
 annotation|@
 name|JsonProperty
 argument_list|(
-literal|"type"
+literal|"diagnostics"
 argument_list|)
-DECL|method|getType ()
+DECL|method|getDiagnostics ()
 specifier|public
-name|TypeEnum
-name|getType
+name|String
+name|getDiagnostics
 parameter_list|()
 block|{
 return|return
-name|type
+name|diagnostics
 return|;
 block|}
-DECL|method|setType (TypeEnum type)
+DECL|method|setDiagnostics (String diagnostics)
 specifier|public
 name|void
-name|setType
-parameter_list|(
-name|TypeEnum
-name|type
-parameter_list|)
-block|{
-name|this
-operator|.
-name|type
-operator|=
-name|type
-expr_stmt|;
-block|}
-comment|/**    * Artifact location to support multiple artifact stores (optional).    **/
-DECL|method|uri (String uri)
-specifier|public
-name|Artifact
-name|uri
+name|setDiagnostics
 parameter_list|(
 name|String
-name|uri
+name|diagnostics
 parameter_list|)
 block|{
 name|this
 operator|.
-name|uri
+name|diagnostics
 operator|=
-name|uri
+name|diagnostics
+expr_stmt|;
+block|}
+comment|/**    * Application state.    **/
+DECL|method|state (ApplicationState state)
+specifier|public
+name|ApplicationStatus
+name|state
+parameter_list|(
+name|ApplicationState
+name|state
+parameter_list|)
+block|{
+name|this
+operator|.
+name|state
+operator|=
+name|state
 expr_stmt|;
 return|return
 name|this
@@ -395,37 +261,99 @@ literal|"null"
 argument_list|,
 name|value
 operator|=
-literal|"Artifact location to support multiple artifact stores (optional)."
+literal|"Application state."
 argument_list|)
 annotation|@
 name|JsonProperty
 argument_list|(
-literal|"uri"
+literal|"state"
 argument_list|)
-DECL|method|getUri ()
+DECL|method|getState ()
 specifier|public
-name|String
-name|getUri
+name|ApplicationState
+name|getState
 parameter_list|()
 block|{
 return|return
-name|uri
+name|state
 return|;
 block|}
-DECL|method|setUri (String uri)
+DECL|method|setState (ApplicationState state)
 specifier|public
 name|void
-name|setUri
+name|setState
 parameter_list|(
-name|String
-name|uri
+name|ApplicationState
+name|state
 parameter_list|)
 block|{
 name|this
 operator|.
-name|uri
+name|state
 operator|=
-name|uri
+name|state
+expr_stmt|;
+block|}
+comment|/**    * An error code specific to a scenario which app owners should be able to use    * to understand the failure in addition to the diagnostic information.    **/
+DECL|method|code (Integer code)
+specifier|public
+name|ApplicationStatus
+name|code
+parameter_list|(
+name|Integer
+name|code
+parameter_list|)
+block|{
+name|this
+operator|.
+name|code
+operator|=
+name|code
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+annotation|@
+name|ApiModelProperty
+argument_list|(
+name|example
+operator|=
+literal|"null"
+argument_list|,
+name|value
+operator|=
+literal|"An error code specific to a scenario which app owners should be able to use to understand the failure in addition to the diagnostic information."
+argument_list|)
+annotation|@
+name|JsonProperty
+argument_list|(
+literal|"code"
+argument_list|)
+DECL|method|getCode ()
+specifier|public
+name|Integer
+name|getCode
+parameter_list|()
+block|{
+return|return
+name|code
+return|;
+block|}
+DECL|method|setCode (Integer code)
+specifier|public
+name|void
+name|setCode
+parameter_list|(
+name|Integer
+name|code
+parameter_list|)
+block|{
+name|this
+operator|.
+name|code
+operator|=
+name|code
 expr_stmt|;
 block|}
 annotation|@
@@ -473,11 +401,11 @@ return|return
 literal|false
 return|;
 block|}
-name|Artifact
-name|artifact
+name|ApplicationStatus
+name|applicationStatus
 init|=
 operator|(
-name|Artifact
+name|ApplicationStatus
 operator|)
 name|o
 decl_stmt|;
@@ -488,11 +416,11 @@ name|equals
 argument_list|(
 name|this
 operator|.
-name|id
+name|diagnostics
 argument_list|,
-name|artifact
+name|applicationStatus
 operator|.
-name|id
+name|diagnostics
 argument_list|)
 operator|&&
 name|Objects
@@ -501,11 +429,11 @@ name|equals
 argument_list|(
 name|this
 operator|.
-name|type
+name|state
 argument_list|,
-name|artifact
+name|applicationStatus
 operator|.
-name|type
+name|state
 argument_list|)
 operator|&&
 name|Objects
@@ -514,11 +442,11 @@ name|equals
 argument_list|(
 name|this
 operator|.
-name|uri
+name|code
 argument_list|,
-name|artifact
+name|applicationStatus
 operator|.
-name|uri
+name|code
 argument_list|)
 return|;
 block|}
@@ -535,11 +463,11 @@ name|Objects
 operator|.
 name|hash
 argument_list|(
-name|id
+name|diagnostics
 argument_list|,
-name|type
+name|state
 argument_list|,
-name|uri
+name|code
 argument_list|)
 return|;
 block|}
@@ -562,21 +490,21 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"class Artifact {\n"
+literal|"class ApplicationStatus {\n"
 argument_list|)
 expr_stmt|;
 name|sb
 operator|.
 name|append
 argument_list|(
-literal|"    id: "
+literal|"    diagnostics: "
 argument_list|)
 operator|.
 name|append
 argument_list|(
 name|toIndentedString
 argument_list|(
-name|id
+name|diagnostics
 argument_list|)
 argument_list|)
 operator|.
@@ -589,14 +517,14 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"    type: "
+literal|"    state: "
 argument_list|)
 operator|.
 name|append
 argument_list|(
 name|toIndentedString
 argument_list|(
-name|type
+name|state
 argument_list|)
 argument_list|)
 operator|.
@@ -609,14 +537,14 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"    uri: "
+literal|"    code: "
 argument_list|)
 operator|.
 name|append
 argument_list|(
 name|toIndentedString
 argument_list|(
-name|uri
+name|code
 argument_list|)
 argument_list|)
 operator|.

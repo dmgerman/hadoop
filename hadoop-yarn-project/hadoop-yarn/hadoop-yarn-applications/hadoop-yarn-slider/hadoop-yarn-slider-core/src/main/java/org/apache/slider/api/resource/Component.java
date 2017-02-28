@@ -1,20 +1,18 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  *  or more contributor license agreements.  See the NOTICE file  *  distributed with this work for additional information  *  regarding copyright ownership.  The ASF licenses this file  *  to you under the Apache License, Version 2.0 (the  *  "License"); you may not use this file except in compliance  *  with the License.  You may obtain a copy of the License at  *  *       http://www.apache.org/licenses/LICENSE-2.0  *  *  Unless required by applicable law or agreed to in writing, software  *  distributed under the License is distributed on an "AS IS" BASIS,  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  *  See the License for the specific language governing permissions and  *  limitations under the License.  */
+comment|/*  * Licensed to the Apache Software Foundation (ASF) under one or more  * contributor license agreements.  See the NOTICE file distributed with  * this work for additional information regarding copyright ownership.  * The ASF licenses this file to You under the Apache License, Version 2.0  * (the "License"); you may not use this file except in compliance with  * the License.  You may obtain a copy of the License at  *  *     http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.services.resource
+DECL|package|org.apache.slider.api.resource
 package|package
 name|org
 operator|.
 name|apache
 operator|.
-name|hadoop
+name|slider
 operator|.
-name|yarn
-operator|.
-name|services
+name|api
 operator|.
 name|resource
 package|;
@@ -48,6 +46,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|Serializable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -60,27 +68,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Date
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
 import|;
 end_import
 
@@ -124,20 +112,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|providers
-operator|.
-name|PlacementPolicy
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|fasterxml
@@ -164,22 +138,8 @@ name|JsonProperty
 import|;
 end_import
 
-begin_import
-import|import
-name|com
-operator|.
-name|fasterxml
-operator|.
-name|jackson
-operator|.
-name|annotation
-operator|.
-name|JsonPropertyOrder
-import|;
-end_import
-
 begin_comment
-comment|/**  * An Application resource has the following attributes.  **/
+comment|/**  * One or more components of the application. If the application is HBase say,  * then the component can be a simple role like master or regionserver. If the  * application is a complex business webapp then a component can be other  * applications say Kafka or Storm. Thereby it opens up the support for complex  * and nested applications.  **/
 end_comment
 
 begin_class
@@ -188,7 +148,7 @@ name|ApiModel
 argument_list|(
 name|description
 operator|=
-literal|"An Application resource has the following attributes."
+literal|"One or more components of the application. If the application is HBase say, then the component can be a simple role like master or regionserver. If the application is a complex business webapp then a component can be other applications say Kafka or Storm. Thereby it opens up the support for complex and nested applications."
 argument_list|)
 annotation|@
 name|javax
@@ -216,29 +176,12 @@ name|Include
 operator|.
 name|NON_NULL
 argument_list|)
-annotation|@
-name|JsonPropertyOrder
-argument_list|(
-block|{
-literal|"name"
-block|,
-literal|"state"
-block|,
-literal|"resource"
-block|,
-literal|"number_of_containers"
-block|,
-literal|"lifetime"
-block|,
-literal|"containers"
-block|}
-argument_list|)
-DECL|class|Application
+DECL|class|Component
 specifier|public
 class|class
-name|Application
-extends|extends
-name|BaseResource
+name|Component
+implements|implements
+name|Serializable
 block|{
 DECL|field|serialVersionUID
 specifier|private
@@ -248,7 +191,7 @@ name|long
 name|serialVersionUID
 init|=
 operator|-
-literal|4491694636566094885L
+literal|8430058381509087805L
 decl_stmt|;
 DECL|field|name
 specifier|private
@@ -257,10 +200,25 @@ name|name
 init|=
 literal|null
 decl_stmt|;
-DECL|field|id
+DECL|field|dependencies
 specifier|private
+name|List
+argument_list|<
 name|String
-name|id
+argument_list|>
+name|dependencies
+init|=
+operator|new
+name|ArrayList
+argument_list|<
+name|String
+argument_list|>
+argument_list|()
+decl_stmt|;
+DECL|field|readinessCheck
+specifier|private
+name|ReadinessCheck
+name|readinessCheck
 init|=
 literal|null
 decl_stmt|;
@@ -271,13 +229,6 @@ name|artifact
 init|=
 literal|null
 decl_stmt|;
-DECL|field|resource
-specifier|private
-name|Resource
-name|resource
-init|=
-literal|null
-decl_stmt|;
 DECL|field|launchCommand
 specifier|private
 name|String
@@ -285,10 +236,10 @@ name|launchCommand
 init|=
 literal|null
 decl_stmt|;
-DECL|field|launchTime
+DECL|field|resource
 specifier|private
-name|Date
-name|launchTime
+name|Resource
+name|resource
 init|=
 literal|null
 decl_stmt|;
@@ -299,17 +250,17 @@ name|numberOfContainers
 init|=
 literal|null
 decl_stmt|;
-DECL|field|numberOfRunningContainers
+DECL|field|uniqueComponentSupport
 specifier|private
-name|Long
-name|numberOfRunningContainers
+name|Boolean
+name|uniqueComponentSupport
 init|=
 literal|null
 decl_stmt|;
-DECL|field|lifetime
+DECL|field|runPrivilegedContainer
 specifier|private
-name|Long
-name|lifetime
+name|Boolean
+name|runPrivilegedContainer
 init|=
 literal|null
 decl_stmt|;
@@ -320,16 +271,6 @@ name|placementPolicy
 init|=
 literal|null
 decl_stmt|;
-DECL|field|components
-specifier|private
-name|List
-argument_list|<
-name|Component
-argument_list|>
-name|components
-init|=
-literal|null
-decl_stmt|;
 DECL|field|configuration
 specifier|private
 name|Configuration
@@ -337,49 +278,25 @@ name|configuration
 init|=
 literal|null
 decl_stmt|;
-DECL|field|containers
+DECL|field|quicklinks
 specifier|private
 name|List
 argument_list|<
-name|Container
-argument_list|>
-name|containers
-init|=
-operator|new
-name|ArrayList
-argument_list|<>
-argument_list|()
-decl_stmt|;
-DECL|field|state
-specifier|private
-name|ApplicationState
-name|state
-init|=
-literal|null
-decl_stmt|;
-DECL|field|quicklinks
-specifier|private
-name|Map
-argument_list|<
-name|String
-argument_list|,
 name|String
 argument_list|>
 name|quicklinks
 init|=
-literal|null
-decl_stmt|;
-DECL|field|queue
-specifier|private
+operator|new
+name|ArrayList
+argument_list|<
 name|String
-name|queue
-init|=
-literal|null
+argument_list|>
+argument_list|()
 decl_stmt|;
-comment|/**    * A unique application name.    **/
+comment|/**    * Name of the application component (mandatory).    **/
 DECL|method|name (String name)
 specifier|public
-name|Application
+name|Component
 name|name
 parameter_list|(
 name|String
@@ -409,7 +326,7 @@ literal|true
 argument_list|,
 name|value
 operator|=
-literal|"A unique application name."
+literal|"Name of the application component (mandatory)."
 argument_list|)
 annotation|@
 name|JsonProperty
@@ -442,21 +359,24 @@ operator|=
 name|name
 expr_stmt|;
 block|}
-comment|/**    * A unique application id.    **/
-DECL|method|id (String id)
+comment|/**    * An array of application components which should be in READY state (as    * defined by readiness check), before this component can be started. The    * dependencies across all components of an application should be represented    * as a DAG.    **/
+DECL|method|dependencies (List<String> dependencies)
 specifier|public
-name|Application
-name|id
+name|Component
+name|dependencies
 parameter_list|(
+name|List
+argument_list|<
 name|String
-name|id
+argument_list|>
+name|dependencies
 parameter_list|)
 block|{
 name|this
 operator|.
-name|id
+name|dependencies
 operator|=
-name|id
+name|dependencies
 expr_stmt|;
 return|return
 name|this
@@ -471,43 +391,118 @@ literal|"null"
 argument_list|,
 name|value
 operator|=
-literal|"A unique application id."
+literal|"An array of application components which should be in READY state (as defined by readiness check), before this component can be started. The dependencies across all components of an application should be represented as a DAG."
 argument_list|)
 annotation|@
 name|JsonProperty
 argument_list|(
-literal|"id"
+literal|"dependencies"
 argument_list|)
-DECL|method|getId ()
+DECL|method|getDependencies ()
 specifier|public
+name|List
+argument_list|<
 name|String
-name|getId
+argument_list|>
+name|getDependencies
 parameter_list|()
 block|{
 return|return
-name|id
+name|dependencies
 return|;
 block|}
-DECL|method|setId (String id)
+DECL|method|setDependencies (List<String> dependencies)
 specifier|public
 name|void
-name|setId
+name|setDependencies
 parameter_list|(
+name|List
+argument_list|<
 name|String
-name|id
+argument_list|>
+name|dependencies
 parameter_list|)
 block|{
 name|this
 operator|.
-name|id
+name|dependencies
 operator|=
-name|id
+name|dependencies
 expr_stmt|;
 block|}
-comment|/**    * Artifact of single-component applications. Mandatory if components    * attribute is not specified.    **/
+comment|/**    * Readiness check for this app-component.    **/
+DECL|method|readinessCheck (ReadinessCheck readinessCheck)
+specifier|public
+name|Component
+name|readinessCheck
+parameter_list|(
+name|ReadinessCheck
+name|readinessCheck
+parameter_list|)
+block|{
+name|this
+operator|.
+name|readinessCheck
+operator|=
+name|readinessCheck
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+annotation|@
+name|ApiModelProperty
+argument_list|(
+name|example
+operator|=
+literal|"null"
+argument_list|,
+name|value
+operator|=
+literal|"Readiness check for this app-component."
+argument_list|)
+annotation|@
+name|JsonProperty
+argument_list|(
+literal|"readiness_check"
+argument_list|)
+DECL|method|getReadinessCheck ()
+specifier|public
+name|ReadinessCheck
+name|getReadinessCheck
+parameter_list|()
+block|{
+return|return
+name|readinessCheck
+return|;
+block|}
+annotation|@
+name|XmlElement
+argument_list|(
+name|name
+operator|=
+literal|"readiness_check"
+argument_list|)
+DECL|method|setReadinessCheck (ReadinessCheck readinessCheck)
+specifier|public
+name|void
+name|setReadinessCheck
+parameter_list|(
+name|ReadinessCheck
+name|readinessCheck
+parameter_list|)
+block|{
+name|this
+operator|.
+name|readinessCheck
+operator|=
+name|readinessCheck
+expr_stmt|;
+block|}
+comment|/**    * Artifact of the component (optional). If not specified, the application    * level global artifact takes effect.    **/
 DECL|method|artifact (Artifact artifact)
 specifier|public
-name|Application
+name|Component
 name|artifact
 parameter_list|(
 name|Artifact
@@ -533,7 +528,7 @@ literal|"null"
 argument_list|,
 name|value
 operator|=
-literal|"Artifact of single-component applications. Mandatory if components attribute is not specified."
+literal|"Artifact of the component (optional). If not specified, the application level global artifact takes effect."
 argument_list|)
 annotation|@
 name|JsonProperty
@@ -566,72 +561,10 @@ operator|=
 name|artifact
 expr_stmt|;
 block|}
-comment|/**    * Resource of single-component applications or the global default for    * multi-component applications. Mandatory if it is a single-component    * application and if cpus and memory are not specified at the Application    * level.    **/
-DECL|method|resource (Resource resource)
-specifier|public
-name|Application
-name|resource
-parameter_list|(
-name|Resource
-name|resource
-parameter_list|)
-block|{
-name|this
-operator|.
-name|resource
-operator|=
-name|resource
-expr_stmt|;
-return|return
-name|this
-return|;
-block|}
-annotation|@
-name|ApiModelProperty
-argument_list|(
-name|example
-operator|=
-literal|"null"
-argument_list|,
-name|value
-operator|=
-literal|"Resource of single-component applications or the global default for multi-component applications. Mandatory if it is a single-component application and if cpus and memory are not specified at the Application level."
-argument_list|)
-annotation|@
-name|JsonProperty
-argument_list|(
-literal|"resource"
-argument_list|)
-DECL|method|getResource ()
-specifier|public
-name|Resource
-name|getResource
-parameter_list|()
-block|{
-return|return
-name|resource
-return|;
-block|}
-DECL|method|setResource (Resource resource)
-specifier|public
-name|void
-name|setResource
-parameter_list|(
-name|Resource
-name|resource
-parameter_list|)
-block|{
-name|this
-operator|.
-name|resource
-operator|=
-name|resource
-expr_stmt|;
-block|}
-comment|/**    * The custom launch command of an application component (optional). If not    * specified for applications with docker images say, it will default to the    * default start command of the image. If there is a single component in this    * application, you can specify this without the need to have a 'components'    * section.    **/
+comment|/**    * The custom launch command of this component (optional). When specified at    * the component level, it overrides the value specified at the global level    * (if any).    **/
 DECL|method|launchCommand (String launchCommand)
 specifier|public
-name|Application
+name|Component
 name|launchCommand
 parameter_list|(
 name|String
@@ -657,7 +590,7 @@ literal|"null"
 argument_list|,
 name|value
 operator|=
-literal|"The custom launch command of an application component (optional). If not specified for applications with docker images say, it will default to the default start command of the image. If there is a single component in this application, you can specify this without the need to have a 'components' section."
+literal|"The custom launch command of this component (optional). When specified at the component level, it overrides the value specified at the global level (if any)."
 argument_list|)
 annotation|@
 name|JsonProperty
@@ -697,33 +630,21 @@ operator|=
 name|launchCommand
 expr_stmt|;
 block|}
-comment|/**    * The time when the application was created, e.g. 2016-03-16T01:01:49.000Z.    **/
-DECL|method|launchTime (Date launchTime)
+comment|/**    * Resource of this component (optional). If not specified, the application    * level global resource takes effect.    **/
+DECL|method|resource (Resource resource)
 specifier|public
-name|Application
-name|launchTime
+name|Component
+name|resource
 parameter_list|(
-name|Date
-name|launchTime
+name|Resource
+name|resource
 parameter_list|)
 block|{
 name|this
 operator|.
-name|launchTime
+name|resource
 operator|=
-name|launchTime
-operator|==
-literal|null
-condition|?
-literal|null
-else|:
-operator|(
-name|Date
-operator|)
-name|launchTime
-operator|.
-name|clone
-argument_list|()
+name|resource
 expr_stmt|;
 return|return
 name|this
@@ -738,74 +659,43 @@ literal|"null"
 argument_list|,
 name|value
 operator|=
-literal|"The time when the application was created, e.g. 2016-03-16T01:01:49.000Z."
+literal|"Resource of this component (optional). If not specified, the application level global resource takes effect."
 argument_list|)
 annotation|@
 name|JsonProperty
 argument_list|(
-literal|"launch_time"
+literal|"resource"
 argument_list|)
-DECL|method|getLaunchTime ()
+DECL|method|getResource ()
 specifier|public
-name|Date
-name|getLaunchTime
+name|Resource
+name|getResource
 parameter_list|()
 block|{
 return|return
-name|launchTime
-operator|==
-literal|null
-condition|?
-literal|null
-else|:
-operator|(
-name|Date
-operator|)
-name|launchTime
-operator|.
-name|clone
-argument_list|()
+name|resource
 return|;
 block|}
-annotation|@
-name|XmlElement
-argument_list|(
-name|name
-operator|=
-literal|"launch_time"
-argument_list|)
-DECL|method|setLaunchTime (Date launchTime)
+DECL|method|setResource (Resource resource)
 specifier|public
 name|void
-name|setLaunchTime
+name|setResource
 parameter_list|(
-name|Date
-name|launchTime
+name|Resource
+name|resource
 parameter_list|)
 block|{
 name|this
 operator|.
-name|launchTime
+name|resource
 operator|=
-name|launchTime
-operator|==
-literal|null
-condition|?
-literal|null
-else|:
-operator|(
-name|Date
-operator|)
-name|launchTime
-operator|.
-name|clone
-argument_list|()
+name|resource
 expr_stmt|;
 block|}
-comment|/**    * Number of containers for each app-component in the application. Each    * app-component can further override this app-level global default.    **/
+comment|/**    * Number of containers for this app-component (optional). If not specified,    * the application level global number_of_containers takes effect.    **/
 DECL|method|numberOfContainers (Long numberOfContainers)
 specifier|public
-name|Application
+name|Component
 name|numberOfContainers
 parameter_list|(
 name|Long
@@ -831,7 +721,7 @@ literal|"null"
 argument_list|,
 name|value
 operator|=
-literal|"Number of containers for each app-component in the application. Each app-component can further override this app-level global default."
+literal|"Number of containers for this app-component (optional). If not specified, the application level global number_of_containers takes effect."
 argument_list|)
 annotation|@
 name|JsonProperty
@@ -871,21 +761,21 @@ operator|=
 name|numberOfContainers
 expr_stmt|;
 block|}
-comment|/**    * In get response this provides the total number of running containers for    * this application (across all components) at the time of request. Note, a    * subsequent request can return a different number as and when more    * containers get allocated until it reaches the total number of containers or    * if a flex request has been made between the two requests.    **/
-DECL|method|numberOfRunningContainers (Long numberOfRunningContainers)
+comment|/**    * Certain applications need to define multiple components using the same    * artifact and resource profile, differing only in configurations. In such    * cases, this field helps app owners to avoid creating multiple component    * definitions with repeated information. The number_of_containers field    * dictates the initial number of components created. Component names    * typically differ with a trailing id, but assumptions should not be made on    * that, as the algorithm can change at any time. Configurations section will    * be able to use placeholders like ${USER}, ${CLUSTER_NAME} and    * ${COMPONENT_NAME} to be replaced at runtime with user the app is submitted    * as, application name and application component name respectively. Launch    * command can use placeholders like ${APP_COMPONENT_NAME} and ${APP_NAME} to    * get its component name and app name respectively at runtime. The best part    * of this feature is that when the component is flexed up, entirely new    * components (with new trailing ids) are created.    **/
+DECL|method|uniqueComponentSupport (Boolean uniqueComponentSupport)
 specifier|public
-name|Application
-name|numberOfRunningContainers
+name|Component
+name|uniqueComponentSupport
 parameter_list|(
-name|Long
-name|numberOfRunningContainers
+name|Boolean
+name|uniqueComponentSupport
 parameter_list|)
 block|{
 name|this
 operator|.
-name|numberOfRunningContainers
+name|uniqueComponentSupport
 operator|=
-name|numberOfRunningContainers
+name|uniqueComponentSupport
 expr_stmt|;
 return|return
 name|this
@@ -900,21 +790,21 @@ literal|"null"
 argument_list|,
 name|value
 operator|=
-literal|"In get response this provides the total number of running containers for this application (across all components) at the time of request. Note, a subsequent request can return a different number as and when more containers get allocated until it reaches the total number of containers or if a flex request has been made between the two requests."
+literal|"Certain applications need to define multiple components using the same artifact and resource profile, differing only in configurations. In such cases, this field helps app owners to avoid creating multiple component definitions with repeated information. The number_of_containers field dictates the initial number of components created. Component names typically differ with a trailing id, but assumptions should not be made on that, as the algorithm can change at any time. Configurations section will be able to use placeholders like ${USER}, ${CLUSTER_NAME} and ${COMPONENT_NAME} to be replaced at runtime with user the app is submitted as, application name and application component name respectively. Launch command can use placeholders like ${APP_COMPONENT_NAME} and ${APP_NAME} to get its component name and app name respectively at runtime. The best part of this feature is that when the component is flexed up, entirely new components (with new trailing ids) are created."
 argument_list|)
 annotation|@
 name|JsonProperty
 argument_list|(
-literal|"number_of_running_containers"
+literal|"unique_component_support"
 argument_list|)
-DECL|method|getNumberOfRunningContainers ()
+DECL|method|getUniqueComponentSupport ()
 specifier|public
-name|Long
-name|getNumberOfRunningContainers
+name|Boolean
+name|getUniqueComponentSupport
 parameter_list|()
 block|{
 return|return
-name|numberOfRunningContainers
+name|uniqueComponentSupport
 return|;
 block|}
 annotation|@
@@ -922,39 +812,39 @@ name|XmlElement
 argument_list|(
 name|name
 operator|=
-literal|"number_of_running_containers"
+literal|"unique_component_support"
 argument_list|)
-DECL|method|setNumberOfRunningContainers (Long numberOfRunningContainers)
+DECL|method|setUniqueComponentSupport (Boolean uniqueComponentSupport)
 specifier|public
 name|void
-name|setNumberOfRunningContainers
+name|setUniqueComponentSupport
 parameter_list|(
-name|Long
-name|numberOfRunningContainers
+name|Boolean
+name|uniqueComponentSupport
 parameter_list|)
 block|{
 name|this
 operator|.
-name|numberOfRunningContainers
+name|uniqueComponentSupport
 operator|=
-name|numberOfRunningContainers
+name|uniqueComponentSupport
 expr_stmt|;
 block|}
-comment|/**    * Life time (in seconds) of the application from the time it reaches the    * STARTED state (after which it is automatically destroyed by YARN). For    * unlimited lifetime do not set a lifetime value.    **/
-DECL|method|lifetime (Long lifetime)
+comment|/**    * Run all containers of this component in privileged mode (YARN-4262).    **/
+DECL|method|runPrivilegedContainer (Boolean runPrivilegedContainer)
 specifier|public
-name|Application
-name|lifetime
+name|Component
+name|runPrivilegedContainer
 parameter_list|(
-name|Long
-name|lifetime
+name|Boolean
+name|runPrivilegedContainer
 parameter_list|)
 block|{
 name|this
 operator|.
-name|lifetime
+name|runPrivilegedContainer
 operator|=
-name|lifetime
+name|runPrivilegedContainer
 expr_stmt|;
 return|return
 name|this
@@ -969,43 +859,50 @@ literal|"null"
 argument_list|,
 name|value
 operator|=
-literal|"Life time (in seconds) of the application from the time it reaches the STARTED state (after which it is automatically destroyed by YARN). For unlimited lifetime do not set a lifetime value."
+literal|"Run all containers of this component in privileged mode (YARN-4262)."
 argument_list|)
 annotation|@
 name|JsonProperty
 argument_list|(
-literal|"lifetime"
+literal|"run_privileged_container"
 argument_list|)
-DECL|method|getLifetime ()
+DECL|method|getRunPrivilegedContainer ()
 specifier|public
-name|Long
-name|getLifetime
+name|Boolean
+name|getRunPrivilegedContainer
 parameter_list|()
 block|{
 return|return
-name|lifetime
+name|runPrivilegedContainer
 return|;
 block|}
-DECL|method|setLifetime (Long lifetime)
+annotation|@
+name|XmlElement
+argument_list|(
+name|name
+operator|=
+literal|"run_privileged_container"
+argument_list|)
+DECL|method|setRunPrivilegedContainer (Boolean runPrivilegedContainer)
 specifier|public
 name|void
-name|setLifetime
+name|setRunPrivilegedContainer
 parameter_list|(
-name|Long
-name|lifetime
+name|Boolean
+name|runPrivilegedContainer
 parameter_list|)
 block|{
 name|this
 operator|.
-name|lifetime
+name|runPrivilegedContainer
 operator|=
-name|lifetime
+name|runPrivilegedContainer
 expr_stmt|;
 block|}
-comment|/**    * Advanced scheduling and placement policies (optional). If not specified, it    * defaults to the default placement policy of the app owner. The design of    * placement policies are in the works. It is not very clear at this point,    * how policies in conjunction with labels be exposed to application owners.    * This is a placeholder for now. The advanced structure of this attribute    * will be determined by YARN-4902.    **/
+comment|/**    * Advanced scheduling and placement policies for all containers of this    * component (optional). If not specified, the app level placement_policy    * takes effect. Refer to the description at the global level for more    * details.    **/
 DECL|method|placementPolicy (PlacementPolicy placementPolicy)
 specifier|public
-name|Application
+name|Component
 name|placementPolicy
 parameter_list|(
 name|PlacementPolicy
@@ -1031,7 +928,7 @@ literal|"null"
 argument_list|,
 name|value
 operator|=
-literal|"Advanced scheduling and placement policies (optional). If not specified, it defaults to the default placement policy of the app owner. The design of placement policies are in the works. It is not very clear at this point, how policies in conjunction with labels be exposed to application owners. This is a placeholder for now. The advanced structure of this attribute will be determined by YARN-4902."
+literal|"Advanced scheduling and placement policies for all containers of this component (optional). If not specified, the app level placement_policy takes effect. Refer to the description at the global level for more details."
 argument_list|)
 annotation|@
 name|JsonProperty
@@ -1071,81 +968,10 @@ operator|=
 name|placementPolicy
 expr_stmt|;
 block|}
-comment|/**    * Components of an application.    **/
-DECL|method|components (List<Component> components)
-specifier|public
-name|Application
-name|components
-parameter_list|(
-name|List
-argument_list|<
-name|Component
-argument_list|>
-name|components
-parameter_list|)
-block|{
-name|this
-operator|.
-name|components
-operator|=
-name|components
-expr_stmt|;
-return|return
-name|this
-return|;
-block|}
-annotation|@
-name|ApiModelProperty
-argument_list|(
-name|example
-operator|=
-literal|"null"
-argument_list|,
-name|value
-operator|=
-literal|"Components of an application."
-argument_list|)
-annotation|@
-name|JsonProperty
-argument_list|(
-literal|"components"
-argument_list|)
-DECL|method|getComponents ()
-specifier|public
-name|List
-argument_list|<
-name|Component
-argument_list|>
-name|getComponents
-parameter_list|()
-block|{
-return|return
-name|components
-return|;
-block|}
-DECL|method|setComponents (List<Component> components)
-specifier|public
-name|void
-name|setComponents
-parameter_list|(
-name|List
-argument_list|<
-name|Component
-argument_list|>
-name|components
-parameter_list|)
-block|{
-name|this
-operator|.
-name|components
-operator|=
-name|components
-expr_stmt|;
-block|}
-comment|/**    * Config properties of an application. Configurations provided at the    * application/global level are available to all the components. Specific    * properties can be overridden at the component level.    **/
+comment|/**    * Config properties for this app-component.    **/
 DECL|method|configuration (Configuration configuration)
 specifier|public
-name|Application
+name|Component
 name|configuration
 parameter_list|(
 name|Configuration
@@ -1171,7 +997,7 @@ literal|"null"
 argument_list|,
 name|value
 operator|=
-literal|"Config properties of an application. Configurations provided at the application/global level are available to all the components. Specific properties can be overridden at the component level."
+literal|"Config properties for this app-component."
 argument_list|)
 annotation|@
 name|JsonProperty
@@ -1204,168 +1030,14 @@ operator|=
 name|configuration
 expr_stmt|;
 block|}
-comment|/**    * Containers of a started application. Specifying a value for this attribute    * for the POST payload raises a validation error. This blob is available only    * in the GET response of a started application.    **/
-DECL|method|containers (List<Container> containers)
+comment|/**    * A list of quicklink keys defined at the application level, and to be    * resolved by this component.    **/
+DECL|method|quicklinks (List<String> quicklinks)
 specifier|public
-name|Application
-name|containers
-parameter_list|(
-name|List
-argument_list|<
-name|Container
-argument_list|>
-name|containers
-parameter_list|)
-block|{
-name|this
-operator|.
-name|containers
-operator|=
-name|containers
-expr_stmt|;
-return|return
-name|this
-return|;
-block|}
-annotation|@
-name|ApiModelProperty
-argument_list|(
-name|example
-operator|=
-literal|"null"
-argument_list|,
-name|value
-operator|=
-literal|"Containers of a started application. Specifying a value for this attribute for the POST payload raises a validation error. This blob is available only in the GET response of a started application."
-argument_list|)
-annotation|@
-name|JsonProperty
-argument_list|(
-literal|"containers"
-argument_list|)
-DECL|method|getContainers ()
-specifier|public
-name|List
-argument_list|<
-name|Container
-argument_list|>
-name|getContainers
-parameter_list|()
-block|{
-return|return
-name|containers
-return|;
-block|}
-DECL|method|setContainers (List<Container> containers)
-specifier|public
-name|void
-name|setContainers
-parameter_list|(
-name|List
-argument_list|<
-name|Container
-argument_list|>
-name|containers
-parameter_list|)
-block|{
-name|this
-operator|.
-name|containers
-operator|=
-name|containers
-expr_stmt|;
-block|}
-DECL|method|addContainer (Container container)
-specifier|public
-name|void
-name|addContainer
-parameter_list|(
-name|Container
-name|container
-parameter_list|)
-block|{
-name|this
-operator|.
-name|containers
-operator|.
-name|add
-argument_list|(
-name|container
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * State of the application. Specifying a value for this attribute for the    * POST payload raises a validation error. This attribute is available only in    * the GET response of a started application.    **/
-DECL|method|state (ApplicationState state)
-specifier|public
-name|Application
-name|state
-parameter_list|(
-name|ApplicationState
-name|state
-parameter_list|)
-block|{
-name|this
-operator|.
-name|state
-operator|=
-name|state
-expr_stmt|;
-return|return
-name|this
-return|;
-block|}
-annotation|@
-name|ApiModelProperty
-argument_list|(
-name|example
-operator|=
-literal|"null"
-argument_list|,
-name|value
-operator|=
-literal|"State of the application. Specifying a value for this attribute for the POST payload raises a validation error. This attribute is available only in the GET response of a started application."
-argument_list|)
-annotation|@
-name|JsonProperty
-argument_list|(
-literal|"state"
-argument_list|)
-DECL|method|getState ()
-specifier|public
-name|ApplicationState
-name|getState
-parameter_list|()
-block|{
-return|return
-name|state
-return|;
-block|}
-DECL|method|setState (ApplicationState state)
-specifier|public
-name|void
-name|setState
-parameter_list|(
-name|ApplicationState
-name|state
-parameter_list|)
-block|{
-name|this
-operator|.
-name|state
-operator|=
-name|state
-expr_stmt|;
-block|}
-comment|/**    * A blob of key-value pairs of quicklinks to be exported for an application.    **/
-DECL|method|quicklinks (Map<String, String> quicklinks)
-specifier|public
-name|Application
+name|Component
 name|quicklinks
 parameter_list|(
-name|Map
+name|List
 argument_list|<
-name|String
-argument_list|,
 name|String
 argument_list|>
 name|quicklinks
@@ -1390,7 +1062,7 @@ literal|"null"
 argument_list|,
 name|value
 operator|=
-literal|"A blob of key-value pairs of quicklinks to be exported for an application."
+literal|"A list of quicklink keys defined at the application level, and to be resolved by this component."
 argument_list|)
 annotation|@
 name|JsonProperty
@@ -1399,10 +1071,8 @@ literal|"quicklinks"
 argument_list|)
 DECL|method|getQuicklinks ()
 specifier|public
-name|Map
+name|List
 argument_list|<
-name|String
-argument_list|,
 name|String
 argument_list|>
 name|getQuicklinks
@@ -1412,15 +1082,13 @@ return|return
 name|quicklinks
 return|;
 block|}
-DECL|method|setQuicklinks (Map<String, String> quicklinks)
+DECL|method|setQuicklinks (List<String> quicklinks)
 specifier|public
 name|void
 name|setQuicklinks
 parameter_list|(
-name|Map
+name|List
 argument_list|<
-name|String
-argument_list|,
 name|String
 argument_list|>
 name|quicklinks
@@ -1431,68 +1099,6 @@ operator|.
 name|quicklinks
 operator|=
 name|quicklinks
-expr_stmt|;
-block|}
-comment|/**    * The YARN queue that this application should be submitted to.    **/
-DECL|method|queue (String queue)
-specifier|public
-name|Application
-name|queue
-parameter_list|(
-name|String
-name|queue
-parameter_list|)
-block|{
-name|this
-operator|.
-name|queue
-operator|=
-name|queue
-expr_stmt|;
-return|return
-name|this
-return|;
-block|}
-annotation|@
-name|ApiModelProperty
-argument_list|(
-name|example
-operator|=
-literal|"null"
-argument_list|,
-name|value
-operator|=
-literal|"The YARN queue that this application should be submitted to."
-argument_list|)
-annotation|@
-name|JsonProperty
-argument_list|(
-literal|"queue"
-argument_list|)
-DECL|method|getQueue ()
-specifier|public
-name|String
-name|getQueue
-parameter_list|()
-block|{
-return|return
-name|queue
-return|;
-block|}
-DECL|method|setQueue (String queue)
-specifier|public
-name|void
-name|setQueue
-parameter_list|(
-name|String
-name|queue
-parameter_list|)
-block|{
-name|this
-operator|.
-name|queue
-operator|=
-name|queue
 expr_stmt|;
 block|}
 annotation|@
@@ -1540,11 +1146,11 @@ return|return
 literal|false
 return|;
 block|}
-name|Application
-name|application
+name|Component
+name|component
 init|=
 operator|(
-name|Application
+name|Component
 operator|)
 name|o
 decl_stmt|;
@@ -1557,9 +1163,152 @@ name|this
 operator|.
 name|name
 argument_list|,
-name|application
+name|component
 operator|.
 name|name
+argument_list|)
+operator|&&
+name|Objects
+operator|.
+name|equals
+argument_list|(
+name|this
+operator|.
+name|dependencies
+argument_list|,
+name|component
+operator|.
+name|dependencies
+argument_list|)
+operator|&&
+name|Objects
+operator|.
+name|equals
+argument_list|(
+name|this
+operator|.
+name|readinessCheck
+argument_list|,
+name|component
+operator|.
+name|readinessCheck
+argument_list|)
+operator|&&
+name|Objects
+operator|.
+name|equals
+argument_list|(
+name|this
+operator|.
+name|artifact
+argument_list|,
+name|component
+operator|.
+name|artifact
+argument_list|)
+operator|&&
+name|Objects
+operator|.
+name|equals
+argument_list|(
+name|this
+operator|.
+name|launchCommand
+argument_list|,
+name|component
+operator|.
+name|launchCommand
+argument_list|)
+operator|&&
+name|Objects
+operator|.
+name|equals
+argument_list|(
+name|this
+operator|.
+name|resource
+argument_list|,
+name|component
+operator|.
+name|resource
+argument_list|)
+operator|&&
+name|Objects
+operator|.
+name|equals
+argument_list|(
+name|this
+operator|.
+name|numberOfContainers
+argument_list|,
+name|component
+operator|.
+name|numberOfContainers
+argument_list|)
+operator|&&
+name|Objects
+operator|.
+name|equals
+argument_list|(
+name|this
+operator|.
+name|uniqueComponentSupport
+argument_list|,
+name|component
+operator|.
+name|uniqueComponentSupport
+argument_list|)
+operator|&&
+name|Objects
+operator|.
+name|equals
+argument_list|(
+name|this
+operator|.
+name|runPrivilegedContainer
+argument_list|,
+name|component
+operator|.
+name|runPrivilegedContainer
+argument_list|)
+operator|&&
+name|Objects
+operator|.
+name|equals
+argument_list|(
+name|this
+operator|.
+name|placementPolicy
+argument_list|,
+name|component
+operator|.
+name|placementPolicy
+argument_list|)
+operator|&&
+name|Objects
+operator|.
+name|equals
+argument_list|(
+name|this
+operator|.
+name|configuration
+argument_list|,
+name|component
+operator|.
+name|configuration
+argument_list|)
+operator|&&
+name|Objects
+operator|.
+name|equals
+argument_list|(
+name|this
+operator|.
+name|quicklinks
+argument_list|,
+name|component
+operator|.
+name|quicklinks
 argument_list|)
 return|;
 block|}
@@ -1577,6 +1326,28 @@ operator|.
 name|hash
 argument_list|(
 name|name
+argument_list|,
+name|dependencies
+argument_list|,
+name|readinessCheck
+argument_list|,
+name|artifact
+argument_list|,
+name|launchCommand
+argument_list|,
+name|resource
+argument_list|,
+name|numberOfContainers
+argument_list|,
+name|uniqueComponentSupport
+argument_list|,
+name|runPrivilegedContainer
+argument_list|,
+name|placementPolicy
+argument_list|,
+name|configuration
+argument_list|,
+name|quicklinks
 argument_list|)
 return|;
 block|}
@@ -1599,7 +1370,7 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"class Application {\n"
+literal|"class Component {\n"
 argument_list|)
 expr_stmt|;
 name|sb
@@ -1626,14 +1397,34 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"    id: "
+literal|"    dependencies: "
 argument_list|)
 operator|.
 name|append
 argument_list|(
 name|toIndentedString
 argument_list|(
-name|id
+name|dependencies
+argument_list|)
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"\n"
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"    readinessCheck: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|toIndentedString
+argument_list|(
+name|readinessCheck
 argument_list|)
 argument_list|)
 operator|.
@@ -1666,26 +1457,6 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"    resource: "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|toIndentedString
-argument_list|(
-name|resource
-argument_list|)
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"\n"
-argument_list|)
-expr_stmt|;
-name|sb
-operator|.
-name|append
-argument_list|(
 literal|"    launchCommand: "
 argument_list|)
 operator|.
@@ -1706,14 +1477,14 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"    launchTime: "
+literal|"    resource: "
 argument_list|)
 operator|.
 name|append
 argument_list|(
 name|toIndentedString
 argument_list|(
-name|launchTime
+name|resource
 argument_list|)
 argument_list|)
 operator|.
@@ -1746,14 +1517,14 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"    numberOfRunningContainers: "
+literal|"    uniqueComponentSupport: "
 argument_list|)
 operator|.
 name|append
 argument_list|(
 name|toIndentedString
 argument_list|(
-name|numberOfRunningContainers
+name|uniqueComponentSupport
 argument_list|)
 argument_list|)
 operator|.
@@ -1766,14 +1537,14 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"    lifetime: "
+literal|"    runPrivilegedContainer: "
 argument_list|)
 operator|.
 name|append
 argument_list|(
 name|toIndentedString
 argument_list|(
-name|lifetime
+name|runPrivilegedContainer
 argument_list|)
 argument_list|)
 operator|.
@@ -1806,26 +1577,6 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"    components: "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|toIndentedString
-argument_list|(
-name|components
-argument_list|)
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"\n"
-argument_list|)
-expr_stmt|;
-name|sb
-operator|.
-name|append
-argument_list|(
 literal|"    configuration: "
 argument_list|)
 operator|.
@@ -1846,46 +1597,6 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"    containers: "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|toIndentedString
-argument_list|(
-name|containers
-argument_list|)
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"\n"
-argument_list|)
-expr_stmt|;
-name|sb
-operator|.
-name|append
-argument_list|(
-literal|"    state: "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|toIndentedString
-argument_list|(
-name|state
-argument_list|)
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"\n"
-argument_list|)
-expr_stmt|;
-name|sb
-operator|.
-name|append
-argument_list|(
 literal|"    quicklinks: "
 argument_list|)
 operator|.
@@ -1894,26 +1605,6 @@ argument_list|(
 name|toIndentedString
 argument_list|(
 name|quicklinks
-argument_list|)
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"\n"
-argument_list|)
-expr_stmt|;
-name|sb
-operator|.
-name|append
-argument_list|(
-literal|"    queue: "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|toIndentedString
-argument_list|(
-name|queue
 argument_list|)
 argument_list|)
 operator|.
