@@ -456,6 +456,26 @@ name|server
 operator|.
 name|nodemanager
 operator|.
+name|executor
+operator|.
+name|ContainerPrepareContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
 name|util
 operator|.
 name|NodeManagerHardwareUtils
@@ -826,6 +846,18 @@ name|IOException
 throws|,
 name|InterruptedException
 function_decl|;
+comment|/**    * Prepare the container prior to the launch environment being written.    * @param ctx Encapsulates information necessary for launching containers.    * @throws IOException if errors occur during container preparation    */
+DECL|method|prepareContainer (ContainerPrepareContext ctx)
+specifier|public
+name|void
+name|prepareContainer
+parameter_list|(
+name|ContainerPrepareContext
+name|ctx
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
 comment|/**    * Launch the container on the node. This is a blocking call and returns only    * when the container exits.    * @param ctx Encapsulates information necessary for launching containers.    * @return the return status of the launch    * @throws IOException if the container launch fails    */
 DECL|method|launchContainer (ContainerStartContext ctx)
 specifier|public
