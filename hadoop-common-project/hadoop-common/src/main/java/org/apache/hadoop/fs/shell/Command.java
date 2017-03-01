@@ -474,6 +474,26 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Execute the command on the input path data. Commands can override to make    * use of the resolved filesystem.    * @param pathData The input path with resolved filesystem    * @throws IOException    */
+DECL|method|run (PathData pathData)
+specifier|protected
+name|void
+name|run
+parameter_list|(
+name|PathData
+name|pathData
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|run
+argument_list|(
+name|pathData
+operator|.
+name|path
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**     * For each source path, execute the command    *     * @return 0 if it runs successfully; -1 if it fails    */
 DECL|method|runAll ()
 specifier|public
@@ -521,8 +541,6 @@ block|{
 name|run
 argument_list|(
 name|s
-operator|.
-name|path
 argument_list|)
 expr_stmt|;
 block|}

@@ -426,6 +426,22 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|shell
+operator|.
+name|PathData
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|StorageType
 import|;
 end_import
@@ -1059,27 +1075,45 @@ extends|extends
 name|Command
 block|{
 DECL|field|dfs
-specifier|final
+specifier|protected
 name|DistributedFileSystem
 name|dfs
 decl_stmt|;
 comment|/** Constructor */
-DECL|method|DFSAdminCommand (FileSystem fs)
+DECL|method|DFSAdminCommand (Configuration conf)
 specifier|public
 name|DFSAdminCommand
 parameter_list|(
-name|FileSystem
-name|fs
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 name|super
 argument_list|(
-name|fs
-operator|.
-name|getConf
-argument_list|()
+name|conf
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|run (PathData pathData)
+specifier|public
+name|void
+name|run
+parameter_list|(
+name|PathData
+name|pathData
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|FileSystem
+name|fs
+init|=
+name|pathData
+operator|.
+name|fs
+decl_stmt|;
 if|if
 condition|(
 operator|!
@@ -1113,6 +1147,13 @@ operator|(
 name|DistributedFileSystem
 operator|)
 name|fs
+expr_stmt|;
+name|run
+argument_list|(
+name|pathData
+operator|.
+name|path
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -1169,7 +1210,7 @@ operator|+
 literal|"\t\tIt does not fault if the directory has no quota."
 decl_stmt|;
 comment|/** Constructor */
-DECL|method|ClearQuotaCommand (String[] args, int pos, FileSystem fs)
+DECL|method|ClearQuotaCommand (String[] args, int pos, Configuration conf)
 name|ClearQuotaCommand
 parameter_list|(
 name|String
@@ -1179,13 +1220,13 @@ parameter_list|,
 name|int
 name|pos
 parameter_list|,
-name|FileSystem
-name|fs
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 name|super
 argument_list|(
-name|fs
+name|conf
 argument_list|)
 expr_stmt|;
 name|CommandFormat
@@ -1365,7 +1406,7 @@ name|quota
 decl_stmt|;
 comment|// the quota to be set
 comment|/** Constructor */
-DECL|method|SetQuotaCommand (String[] args, int pos, FileSystem fs)
+DECL|method|SetQuotaCommand (String[] args, int pos, Configuration conf)
 name|SetQuotaCommand
 parameter_list|(
 name|String
@@ -1375,13 +1416,13 @@ parameter_list|,
 name|int
 name|pos
 parameter_list|,
-name|FileSystem
-name|fs
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 name|super
 argument_list|(
-name|fs
+name|conf
 argument_list|)
 expr_stmt|;
 name|CommandFormat
@@ -1585,7 +1626,7 @@ name|StorageType
 name|type
 decl_stmt|;
 comment|/** Constructor */
-DECL|method|ClearSpaceQuotaCommand (String[] args, int pos, FileSystem fs)
+DECL|method|ClearSpaceQuotaCommand (String[] args, int pos, Configuration conf)
 name|ClearSpaceQuotaCommand
 parameter_list|(
 name|String
@@ -1595,13 +1636,13 @@ parameter_list|,
 name|int
 name|pos
 parameter_list|,
-name|FileSystem
-name|fs
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 name|super
 argument_list|(
-name|fs
+name|conf
 argument_list|)
 expr_stmt|;
 name|CommandFormat
@@ -1865,7 +1906,7 @@ name|StorageType
 name|type
 decl_stmt|;
 comment|/** Constructor */
-DECL|method|SetSpaceQuotaCommand (String[] args, int pos, FileSystem fs)
+DECL|method|SetSpaceQuotaCommand (String[] args, int pos, Configuration conf)
 name|SetSpaceQuotaCommand
 parameter_list|(
 name|String
@@ -1875,13 +1916,13 @@ parameter_list|,
 name|int
 name|pos
 parameter_list|,
-name|FileSystem
-name|fs
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 name|super
 argument_list|(
-name|fs
+name|conf
 argument_list|)
 expr_stmt|;
 name|CommandFormat
@@ -4034,18 +4075,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|DistributedFileSystem
-name|dfs
+name|Path
+name|p
 init|=
-name|getDFS
-argument_list|()
-decl_stmt|;
-try|try
-block|{
-name|dfs
-operator|.
-name|allowSnapshot
-argument_list|(
 operator|new
 name|Path
 argument_list|(
@@ -4054,6 +4086,31 @@ index|[
 literal|1
 index|]
 argument_list|)
+decl_stmt|;
+specifier|final
+name|DistributedFileSystem
+name|dfs
+init|=
+name|AdminHelper
+operator|.
+name|getDFS
+argument_list|(
+name|p
+operator|.
+name|toUri
+argument_list|()
+argument_list|,
+name|getConf
+argument_list|()
+argument_list|)
+decl_stmt|;
+try|try
+block|{
+name|dfs
+operator|.
+name|allowSnapshot
+argument_list|(
+name|p
 argument_list|)
 expr_stmt|;
 block|}
@@ -4112,18 +4169,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|DistributedFileSystem
-name|dfs
+name|Path
+name|p
 init|=
-name|getDFS
-argument_list|()
-decl_stmt|;
-try|try
-block|{
-name|dfs
-operator|.
-name|disallowSnapshot
-argument_list|(
 operator|new
 name|Path
 argument_list|(
@@ -4132,6 +4180,31 @@ index|[
 literal|1
 index|]
 argument_list|)
+decl_stmt|;
+specifier|final
+name|DistributedFileSystem
+name|dfs
+init|=
+name|AdminHelper
+operator|.
+name|getDFS
+argument_list|(
+name|p
+operator|.
+name|toUri
+argument_list|()
+argument_list|,
+name|getConf
+argument_list|()
+argument_list|)
+decl_stmt|;
+try|try
+block|{
+name|dfs
+operator|.
+name|disallowSnapshot
+argument_list|(
+name|p
 argument_list|)
 expr_stmt|;
 block|}
@@ -11253,7 +11326,7 @@ name|argv
 argument_list|,
 name|i
 argument_list|,
-name|getDFS
+name|getConf
 argument_list|()
 argument_list|)
 operator|.
@@ -11281,7 +11354,7 @@ name|argv
 argument_list|,
 name|i
 argument_list|,
-name|getDFS
+name|getConf
 argument_list|()
 argument_list|)
 operator|.
@@ -11309,7 +11382,7 @@ name|argv
 argument_list|,
 name|i
 argument_list|,
-name|getDFS
+name|getConf
 argument_list|()
 argument_list|)
 operator|.
@@ -11337,7 +11410,7 @@ name|argv
 argument_list|,
 name|i
 argument_list|,
-name|getDFS
+name|getConf
 argument_list|()
 argument_list|)
 operator|.

@@ -54,6 +54,20 @@ name|hadoop
 operator|.
 name|conf
 operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
 name|Configured
 import|;
 end_import
@@ -97,6 +111,20 @@ operator|.
 name|hdfs
 operator|.
 name|DistributedFileSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|HdfsConfiguration
 import|;
 end_import
 
@@ -178,6 +206,35 @@ name|Configured
 implements|implements
 name|Tool
 block|{
+comment|/**    * Construct a SnapshotDiff object.    */
+DECL|method|SnapshotDiff ()
+specifier|public
+name|SnapshotDiff
+parameter_list|()
+block|{
+name|this
+argument_list|(
+operator|new
+name|HdfsConfiguration
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Construct a SnapshotDiff object.    */
+DECL|method|SnapshotDiff (Configuration conf)
+specifier|public
+name|SnapshotDiff
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|getSnapshotName (String name)
 specifier|private
 specifier|static
@@ -337,6 +394,18 @@ name|FileSystem
 operator|.
 name|get
 argument_list|(
+operator|new
+name|Path
+argument_list|(
+name|argv
+index|[
+literal|0
+index|]
+argument_list|)
+operator|.
+name|toUri
+argument_list|()
+argument_list|,
 name|getConf
 argument_list|()
 argument_list|)
