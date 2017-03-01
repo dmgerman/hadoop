@@ -26,6 +26,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|File
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|net
 operator|.
 name|URL
@@ -198,6 +208,19 @@ literal|"Could not find 'nodes' dummy file in classpath"
 argument_list|)
 throw|;
 block|}
+comment|// This will get rid of the beginning '/' in the url in Windows env
+name|File
+name|file
+init|=
+operator|new
+name|File
+argument_list|(
+name|url
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
+decl_stmt|;
 name|conf
 operator|.
 name|set
@@ -206,7 +229,7 @@ name|YarnConfiguration
 operator|.
 name|FEDERATION_MACHINE_LIST
 argument_list|,
-name|url
+name|file
 operator|.
 name|getPath
 argument_list|()
@@ -274,6 +297,19 @@ literal|"Could not find 'nodes-malformed' dummy file in classpath"
 argument_list|)
 throw|;
 block|}
+comment|// This will get rid of the beginning '/' in the url in Windows env
+name|File
+name|file
+init|=
+operator|new
+name|File
+argument_list|(
+name|url
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
+decl_stmt|;
 name|conf
 operator|.
 name|set
@@ -282,7 +318,7 @@ name|YarnConfiguration
 operator|.
 name|FEDERATION_MACHINE_LIST
 argument_list|,
-name|url
+name|file
 operator|.
 name|getPath
 argument_list|()

@@ -488,20 +488,6 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
-comment|// needed only for tests (getARMRMPolicy change the "type" in conf)
-name|fpc
-operator|.
-name|setType
-argument_list|(
-name|wfp
-operator|.
-name|getClass
-argument_list|()
-operator|.
-name|getCanonicalName
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|FederationRouterPolicy
 name|federationRouterPolicy
 init|=
