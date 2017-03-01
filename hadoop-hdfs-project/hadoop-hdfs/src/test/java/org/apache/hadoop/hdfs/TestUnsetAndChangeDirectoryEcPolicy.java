@@ -615,6 +615,9 @@ argument_list|(
 name|dirPath
 argument_list|,
 name|ecPolicy
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|DFSTestUtil
@@ -847,6 +850,9 @@ argument_list|(
 name|parentDir
 argument_list|,
 name|ecPolicy
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|fs
@@ -883,6 +889,9 @@ argument_list|(
 name|childDir
 argument_list|,
 name|ec32Policy
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Create RS(3,2) EC policy file
@@ -1167,6 +1176,9 @@ argument_list|(
 name|rootPath
 argument_list|,
 name|ecPolicy
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|DFSTestUtil
@@ -1377,6 +1389,9 @@ argument_list|(
 name|rootPath
 argument_list|,
 name|ecPolicy
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Create RS(6,3) EC policy file
@@ -1406,6 +1421,9 @@ argument_list|(
 name|rootPath
 argument_list|,
 name|ec32Policy
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|DFSTestUtil
@@ -1613,6 +1631,9 @@ argument_list|(
 name|ecDirPath
 argument_list|,
 name|ecPolicy
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|DFSTestUtil
@@ -1838,6 +1859,9 @@ argument_list|(
 name|dirPath
 argument_list|,
 name|ecPolicy
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|fail
@@ -1922,6 +1946,9 @@ argument_list|(
 name|ecFilePath
 argument_list|,
 name|ecPolicy
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|fail

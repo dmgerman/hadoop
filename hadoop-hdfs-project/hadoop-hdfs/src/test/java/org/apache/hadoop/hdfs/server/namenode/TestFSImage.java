@@ -1216,6 +1216,9 @@ argument_list|(
 literal|"/"
 argument_list|,
 name|testECPolicy
+operator|.
+name|getName
+argument_list|()
 argument_list|,
 literal|false
 argument_list|)
@@ -3057,6 +3060,9 @@ argument_list|(
 name|parentDir
 argument_list|,
 name|testECPolicy
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|fs
@@ -3066,6 +3072,9 @@ argument_list|(
 name|childDir
 argument_list|,
 name|ec32Policy
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|Path

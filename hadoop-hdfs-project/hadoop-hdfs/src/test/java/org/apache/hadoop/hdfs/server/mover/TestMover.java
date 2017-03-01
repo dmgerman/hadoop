@@ -4211,7 +4211,13 @@ name|setErasureCodingPolicy
 argument_list|(
 name|barDir
 argument_list|,
-literal|null
+name|ErasureCodingPolicyManager
+operator|.
+name|getSystemDefaultPolicy
+argument_list|()
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// write file to barDir

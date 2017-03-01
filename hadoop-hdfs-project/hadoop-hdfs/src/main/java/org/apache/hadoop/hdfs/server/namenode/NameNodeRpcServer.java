@@ -11548,7 +11548,7 @@ block|}
 annotation|@
 name|Override
 comment|// ClientProtocol
-DECL|method|setErasureCodingPolicy (String src, ErasureCodingPolicy ecPolicy)
+DECL|method|setErasureCodingPolicy (String src, String ecPolicyName)
 specifier|public
 name|void
 name|setErasureCodingPolicy
@@ -11556,8 +11556,8 @@ parameter_list|(
 name|String
 name|src
 parameter_list|,
-name|ErasureCodingPolicy
-name|ecPolicy
+name|String
+name|ecPolicyName
 parameter_list|)
 throws|throws
 name|IOException
@@ -11603,7 +11603,7 @@ name|setErasureCodingPolicy
 argument_list|(
 name|src
 argument_list|,
-name|ecPolicy
+name|ecPolicyName
 argument_list|,
 name|cacheEntry
 operator|!=

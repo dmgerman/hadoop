@@ -1254,8 +1254,8 @@ name|getAllStoragePolicies
 argument_list|()
 return|;
 block|}
-comment|/**    * Set the source path to the specified erasure coding policy.    *    * @param path The source path referring to a directory.    * @param ecPolicy The erasure coding policy for the directory.    *                 If null, the default will be used.    * @throws IOException    */
-DECL|method|setErasureCodingPolicy (final Path path, final ErasureCodingPolicy ecPolicy)
+comment|/**    * Set the source path to the specified erasure coding policy.    *    * @param path The source path referring to a directory.    * @param ecPolicyName The erasure coding policy name for the directory.    *    * @throws IOException    * @throws HadoopIllegalArgumentException if the specified EC policy is not    * enabled on the cluster    */
+DECL|method|setErasureCodingPolicy (final Path path, final String ecPolicyName)
 specifier|public
 name|void
 name|setErasureCodingPolicy
@@ -1265,8 +1265,8 @@ name|Path
 name|path
 parameter_list|,
 specifier|final
-name|ErasureCodingPolicy
-name|ecPolicy
+name|String
+name|ecPolicyName
 parameter_list|)
 throws|throws
 name|IOException
@@ -1277,7 +1277,7 @@ name|setErasureCodingPolicy
 argument_list|(
 name|path
 argument_list|,
-name|ecPolicy
+name|ecPolicyName
 argument_list|)
 expr_stmt|;
 block|}

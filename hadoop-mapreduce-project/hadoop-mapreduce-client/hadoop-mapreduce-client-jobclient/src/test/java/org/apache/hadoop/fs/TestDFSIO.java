@@ -5752,6 +5752,9 @@ argument_list|(
 name|path
 argument_list|,
 name|ec
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|LOG

@@ -12033,8 +12033,8 @@ name|lastReadTxid
 argument_list|)
 return|;
 block|}
-comment|/**    * Set the source path to the specified erasure coding policy.    *    * @param path     The directory to set the policy    * @param ecPolicy The erasure coding policy. If not specified default will    *                 be used.    * @throws IOException    */
-DECL|method|setErasureCodingPolicy (final Path path, final ErasureCodingPolicy ecPolicy)
+comment|/**    * Set the source path to the specified erasure coding policy.    *    * @param path     The directory to set the policy    * @param ecPolicyName The erasure coding policy name.    * @throws IOException    */
+DECL|method|setErasureCodingPolicy (final Path path, final String ecPolicyName)
 specifier|public
 name|void
 name|setErasureCodingPolicy
@@ -12044,8 +12044,8 @@ name|Path
 name|path
 parameter_list|,
 specifier|final
-name|ErasureCodingPolicy
-name|ecPolicy
+name|String
+name|ecPolicyName
 parameter_list|)
 throws|throws
 name|IOException
@@ -12058,6 +12058,17 @@ argument_list|(
 name|path
 argument_list|)
 decl_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|ecPolicyName
+argument_list|,
+literal|"Erasure coding policy cannot be"
+operator|+
+literal|" null."
+argument_list|)
+expr_stmt|;
 operator|new
 name|FileSystemLinkResolver
 argument_list|<
@@ -12087,7 +12098,7 @@ argument_list|(
 name|p
 argument_list|)
 argument_list|,
-name|ecPolicy
+name|ecPolicyName
 argument_list|)
 expr_stmt|;
 return|return
@@ -12132,7 +12143,7 @@ name|setErasureCodingPolicy
 argument_list|(
 name|p
 argument_list|,
-name|ecPolicy
+name|ecPolicyName
 argument_list|)
 expr_stmt|;
 return|return

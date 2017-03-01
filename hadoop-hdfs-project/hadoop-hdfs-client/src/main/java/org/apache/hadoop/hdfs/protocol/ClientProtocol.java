@@ -2085,18 +2085,18 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Set an erasure coding policy on a specified path.    * @param src The path to set policy on.    * @param ecPolicy The erasure coding policy. If null, default policy will    *                 be used    */
+comment|/**    * Set an erasure coding policy on a specified path.    * @param src The path to set policy on.    * @param ecPolicyName The erasure coding policy name.    */
 annotation|@
 name|AtMostOnce
-DECL|method|setErasureCodingPolicy (String src, ErasureCodingPolicy ecPolicy)
+DECL|method|setErasureCodingPolicy (String src, String ecPolicyName)
 name|void
 name|setErasureCodingPolicy
 parameter_list|(
 name|String
 name|src
 parameter_list|,
-name|ErasureCodingPolicy
-name|ecPolicy
+name|String
+name|ecPolicyName
 parameter_list|)
 throws|throws
 name|IOException

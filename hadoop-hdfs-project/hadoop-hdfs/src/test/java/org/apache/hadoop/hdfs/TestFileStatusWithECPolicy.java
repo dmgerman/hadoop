@@ -419,6 +419,9 @@ argument_list|(
 name|dir
 argument_list|,
 name|ecPolicy1
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 specifier|final

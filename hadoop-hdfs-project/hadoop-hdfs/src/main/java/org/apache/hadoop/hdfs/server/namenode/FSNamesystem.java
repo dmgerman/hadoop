@@ -31969,8 +31969,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Set an erasure coding policy on the given path.    * @param srcArg  The path of the target directory.    * @param ecPolicy The erasure coding policy to set on the target directory.    * @throws AccessControlException  if the caller is not the superuser.    * @throws UnresolvedLinkException if the path can't be resolved.    * @throws SafeModeException       if the Namenode is in safe mode.    */
-DECL|method|setErasureCodingPolicy (final String srcArg, final ErasureCodingPolicy ecPolicy, final boolean logRetryCache)
+comment|/**    * Set an erasure coding policy on the given path.    * @param srcArg  The path of the target directory.    * @param ecPolicyName The erasure coding policy to set on the target    *                    directory.    * @throws AccessControlException  if the caller is not the superuser.    * @throws UnresolvedLinkException if the path can't be resolved.    * @throws SafeModeException       if the Namenode is in safe mode.    */
+DECL|method|setErasureCodingPolicy (final String srcArg, final String ecPolicyName, final boolean logRetryCache)
 name|void
 name|setErasureCodingPolicy
 parameter_list|(
@@ -31979,8 +31979,8 @@ name|String
 name|srcArg
 parameter_list|,
 specifier|final
-name|ErasureCodingPolicy
-name|ecPolicy
+name|String
+name|ecPolicyName
 parameter_list|,
 specifier|final
 name|boolean
@@ -32050,7 +32050,7 @@ name|this
 argument_list|,
 name|srcArg
 argument_list|,
-name|ecPolicy
+name|ecPolicyName
 argument_list|,
 name|logRetryCache
 argument_list|)

@@ -5170,6 +5170,9 @@ argument_list|(
 name|topDir
 argument_list|,
 name|ecPolicy
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// create a new file under topDir
@@ -15961,7 +15964,13 @@ operator|.
 name|toString
 argument_list|()
 argument_list|,
-literal|null
+name|ErasureCodingPolicyManager
+operator|.
+name|getSystemDefaultPolicy
+argument_list|()
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|Path
@@ -16423,7 +16432,13 @@ operator|.
 name|toString
 argument_list|()
 argument_list|,
-literal|null
+name|ErasureCodingPolicyManager
+operator|.
+name|getSystemDefaultPolicy
+argument_list|()
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|Path

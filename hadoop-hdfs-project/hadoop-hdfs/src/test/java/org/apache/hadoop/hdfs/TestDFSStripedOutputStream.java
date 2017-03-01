@@ -559,6 +559,9 @@ argument_list|(
 literal|"/"
 argument_list|,
 name|ecPolicy
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|fs

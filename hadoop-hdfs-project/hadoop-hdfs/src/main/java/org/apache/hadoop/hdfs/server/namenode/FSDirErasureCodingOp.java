@@ -324,8 +324,8 @@ specifier|private
 name|FSDirErasureCodingOp
 parameter_list|()
 block|{}
-comment|/**    * Set an erasure coding policy on the given path.    *    * @param fsn The namespace    * @param srcArg The path of the target directory.    * @param ecPolicy The erasure coding policy to set on the target directory.    * @param logRetryCache whether to record RPC ids in editlog for retry    *          cache rebuilding    * @return {@link HdfsFileStatus}    * @throws IOException    */
-DECL|method|setErasureCodingPolicy (final FSNamesystem fsn, final String srcArg, final ErasureCodingPolicy ecPolicy, final boolean logRetryCache)
+comment|/**    * Set an erasure coding policy on the given path.    *    * @param fsn The namespace    * @param srcArg The path of the target directory.    * @param ecPolicyName The erasure coding policy name to set on the target    *                    directory.    * @param logRetryCache whether to record RPC ids in editlog for retry    *          cache rebuilding    * @return {@link HdfsFileStatus}    * @throws IOException    * @throws HadoopIllegalArgumentException if the policy is not enabled    */
+DECL|method|setErasureCodingPolicy (final FSNamesystem fsn, final String srcArg, final String ecPolicyName, final boolean logRetryCache)
 specifier|static
 name|HdfsFileStatus
 name|setErasureCodingPolicy
@@ -339,8 +339,8 @@ name|String
 name|srcArg
 parameter_list|,
 specifier|final
-name|ErasureCodingPolicy
-name|ecPolicy
+name|String
+name|ecPolicyName
 parameter_list|,
 specifier|final
 name|boolean
@@ -397,6 +397,40 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+name|ErasureCodingPolicy
+name|ecPolicy
+init|=
+name|fsn
+operator|.
+name|getErasureCodingPolicyManager
+argument_list|()
+operator|.
+name|getPolicyByName
+argument_list|(
+name|ecPolicyName
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|ecPolicy
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
+argument_list|(
+literal|"Policy '"
+operator|+
+name|ecPolicyName
+operator|+
+literal|"' does not match any supported erasure coding "
+operator|+
+literal|"policies."
+argument_list|)
+throw|;
+block|}
 name|iip
 operator|=
 name|fsd
