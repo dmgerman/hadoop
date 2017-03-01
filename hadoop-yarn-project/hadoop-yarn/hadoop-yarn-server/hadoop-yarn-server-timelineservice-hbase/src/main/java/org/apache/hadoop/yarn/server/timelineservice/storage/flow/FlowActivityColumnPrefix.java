@@ -1010,7 +1010,7 @@ name|tableMutator
 argument_list|,
 name|columnQualifier
 argument_list|,
-literal|null
+name|timestamp
 argument_list|,
 name|inputValue
 argument_list|,
