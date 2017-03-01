@@ -419,6 +419,16 @@ name|heartbeatFrequency
 expr_stmt|;
 name|context
 operator|.
+name|setReportState
+argument_list|(
+name|container
+operator|.
+name|getNodeReport
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|context
+operator|.
 name|execute
 argument_list|(
 name|executorService

@@ -1221,6 +1221,11 @@ name|getContainerNodeID
 argument_list|()
 argument_list|)
 operator|.
+name|setContext
+argument_list|(
+name|context
+argument_list|)
+operator|.
 name|build
 argument_list|()
 return|;

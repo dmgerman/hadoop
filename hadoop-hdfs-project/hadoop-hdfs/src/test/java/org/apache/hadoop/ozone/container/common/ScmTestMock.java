@@ -114,6 +114,26 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
+name|SCMNodeReport
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|scm
 operator|.
 name|VersionInfo
@@ -351,18 +371,21 @@ comment|// Just ignore this exception.
 block|}
 block|}
 block|}
-comment|/**    * Used by data node to send a Heartbeat.    *    * @param datanodeID - Datanode ID.    * @return - SCMHeartbeatResponseProto    * @throws IOException    */
+comment|/**    * Used by data node to send a Heartbeat.    *    * @param datanodeID - Datanode ID.    * @param nodeReport - node report.    * @return - SCMHeartbeatResponseProto    * @throws IOException    */
 annotation|@
 name|Override
 specifier|public
 name|StorageContainerDatanodeProtocolProtos
 operator|.
 name|SCMHeartbeatResponseProto
-DECL|method|sendHeartbeat (DatanodeID datanodeID)
+DECL|method|sendHeartbeat (DatanodeID datanodeID, SCMNodeReport nodeReport)
 name|sendHeartbeat
 parameter_list|(
 name|DatanodeID
 name|datanodeID
+parameter_list|,
+name|SCMNodeReport
+name|nodeReport
 parameter_list|)
 throws|throws
 name|IOException

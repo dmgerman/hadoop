@@ -1316,6 +1316,8 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|dataNode
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -1463,6 +1465,8 @@ name|SCMTestUtils
 operator|.
 name|getConf
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|endpointTask

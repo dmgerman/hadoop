@@ -172,6 +172,26 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
+name|SCMNodeReport
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
 name|SCMVersionRequestProto
 import|;
 end_import
@@ -398,16 +418,19 @@ return|return
 name|response
 return|;
 block|}
-comment|/**    * Send by datanode to SCM.    *    * @param datanodeID - DatanodeID    * @throws IOException    */
+comment|/**    * Send by datanode to SCM.    *    * @param datanodeID - DatanodeID    * @param nodeReport - node report    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|sendHeartbeat (DatanodeID datanodeID)
+DECL|method|sendHeartbeat (DatanodeID datanodeID, SCMNodeReport nodeReport)
 specifier|public
 name|SCMHeartbeatResponseProto
 name|sendHeartbeat
 parameter_list|(
 name|DatanodeID
 name|datanodeID
+parameter_list|,
+name|SCMNodeReport
+name|nodeReport
 parameter_list|)
 throws|throws
 name|IOException
@@ -430,6 +453,13 @@ name|datanodeID
 operator|.
 name|getProtoBufMessage
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|req
+operator|.
+name|setNodeReport
+argument_list|(
+name|nodeReport
 argument_list|)
 expr_stmt|;
 specifier|final

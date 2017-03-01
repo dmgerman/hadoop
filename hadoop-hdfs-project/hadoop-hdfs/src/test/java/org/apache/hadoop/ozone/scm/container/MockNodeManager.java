@@ -132,11 +132,49 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
+name|SCMNodeReport
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|scm
 operator|.
 name|node
 operator|.
 name|NodeManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|scm
+operator|.
+name|node
+operator|.
+name|SCMNodeStat
 import|;
 end_import
 
@@ -438,6 +476,35 @@ return|return
 literal|false
 return|;
 block|}
+comment|/**    * Returns the aggregated node stats.    * @return the aggregated node stats.    */
+annotation|@
+name|Override
+DECL|method|getStats ()
+specifier|public
+name|SCMNodeStat
+name|getStats
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+comment|/**    * Return a list of node stats.    * @return a list of individual node stats (live/stale but not dead).    */
+annotation|@
+name|Override
+DECL|method|getNodeStats ()
+specifier|public
+name|List
+argument_list|<
+name|SCMNodeStat
+argument_list|>
+name|getNodeStats
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
 comment|/**    * Closes this stream and releases any system resources associated with it. If    * the stream is already closed then invoking this method has no effect.    *<p>    *<p> As noted in {@link AutoCloseable#close()}, cases where the close may    * fail require careful attention. It is strongly advised to relinquish the    * underlying resources and to internally<em>mark</em> the {@code Closeable}    * as closed, prior to throwing the {@code IOException}.    *    * @throws IOException if an I/O error occurs    */
 annotation|@
 name|Override
@@ -492,10 +559,10 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Send heartbeat to indicate the datanode is alive and doing well.    *    * @param datanodeID - Datanode ID.    * @return SCMheartbeat response list    */
+comment|/**    * Send heartbeat to indicate the datanode is alive and doing well.    *    * @param datanodeID - Datanode ID.    * @param nodeReport - node report.    * @return SCMheartbeat response list    */
 annotation|@
 name|Override
-DECL|method|sendHeartbeat (DatanodeID datanodeID)
+DECL|method|sendHeartbeat (DatanodeID datanodeID, SCMNodeReport nodeReport)
 specifier|public
 name|List
 argument_list|<
@@ -505,6 +572,9 @@ name|sendHeartbeat
 parameter_list|(
 name|DatanodeID
 name|datanodeID
+parameter_list|,
+name|SCMNodeReport
+name|nodeReport
 parameter_list|)
 block|{
 return|return

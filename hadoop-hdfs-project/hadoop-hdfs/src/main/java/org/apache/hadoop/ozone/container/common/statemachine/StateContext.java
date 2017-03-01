@@ -120,6 +120,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
+name|SCMNodeReport
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|util
@@ -278,6 +298,11 @@ operator|.
 name|DatanodeStates
 name|state
 decl_stmt|;
+DECL|field|nrState
+specifier|private
+name|SCMNodeReport
+name|nrState
+decl_stmt|;
 comment|/**    * Constructs a StateContext.    *    * @param conf   - Configration    * @param state  - State    * @param parent Parent State Machine    */
 DECL|method|StateContext (Configuration conf, DatanodeStateMachine.DatanodeStates state, DatanodeStateMachine parent)
 specifier|public
@@ -333,6 +358,13 @@ name|AtomicLong
 argument_list|(
 literal|0
 argument_list|)
+expr_stmt|;
+name|nrState
+operator|=
+name|SCMNodeReport
+operator|.
+name|getDefaultInstance
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Returns the ContainerStateMachine class that holds this state.    *    * @return ContainerStateMachine.    */
@@ -433,6 +465,34 @@ operator|.
 name|state
 operator|=
 name|state
+expr_stmt|;
+block|}
+comment|/**    * Returns the node report of the datanode state context.    * @return the node report.    */
+DECL|method|getNodeReport ()
+specifier|public
+name|SCMNodeReport
+name|getNodeReport
+parameter_list|()
+block|{
+return|return
+name|nrState
+return|;
+block|}
+comment|/**    * Sets the storage location report of the datanode state context.    * @param nrReport - node report    */
+DECL|method|setReportState (SCMNodeReport nrReport)
+specifier|public
+name|void
+name|setReportState
+parameter_list|(
+name|SCMNodeReport
+name|nrReport
+parameter_list|)
+block|{
+name|this
+operator|.
+name|nrState
+operator|=
+name|nrReport
 expr_stmt|;
 block|}
 comment|/**    * Returns the next task to get executed by the datanode state machine.    * @return A callable that will be executed by the    * {@link DatanodeStateMachine}    */

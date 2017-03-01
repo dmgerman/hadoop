@@ -98,6 +98,26 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|statemachine
+operator|.
+name|StateContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|protocol
 operator|.
 name|proto
@@ -199,8 +219,13 @@ specifier|private
 name|ContainerNodeIDProto
 name|containerNodeIDProto
 decl_stmt|;
+DECL|field|context
+specifier|private
+name|StateContext
+name|context
+decl_stmt|;
 comment|/**    * Constructs a SCM heart beat.    *    * @param conf Config.    */
-DECL|method|HeartbeatEndpointTask (EndpointStateMachine rpcEndpoint, Configuration conf)
+DECL|method|HeartbeatEndpointTask (EndpointStateMachine rpcEndpoint, Configuration conf, StateContext context)
 specifier|public
 name|HeartbeatEndpointTask
 parameter_list|(
@@ -209,6 +234,9 @@ name|rpcEndpoint
 parameter_list|,
 name|Configuration
 name|conf
+parameter_list|,
+name|StateContext
+name|context
 parameter_list|)
 block|{
 name|this
@@ -222,6 +250,12 @@ operator|.
 name|conf
 operator|=
 name|conf
+expr_stmt|;
+name|this
+operator|.
+name|context
+operator|=
+name|context
 expr_stmt|;
 block|}
 comment|/**    * Get the container Node ID proto.    *    * @return ContainerNodeIDProto    */
@@ -298,7 +332,6 @@ name|getDatanodeID
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// TODO : Add the command to command processor queue.
 name|rpcEndpoint
 operator|.
 name|getEndPoint
@@ -307,6 +340,13 @@ operator|.
 name|sendHeartbeat
 argument_list|(
 name|datanodeID
+argument_list|,
+name|this
+operator|.
+name|context
+operator|.
+name|getNodeReport
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|rpcEndpoint
@@ -380,6 +420,11 @@ specifier|private
 name|ContainerNodeIDProto
 name|containerNodeIDProto
 decl_stmt|;
+DECL|field|context
+specifier|private
+name|StateContext
+name|context
+decl_stmt|;
 comment|/**      * Constructs the builder class.      */
 DECL|method|Builder ()
 specifier|public
@@ -441,6 +486,26 @@ operator|.
 name|containerNodeIDProto
 operator|=
 name|nodeID
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+comment|/**      * Sets the context.      * @param stateContext - State context.      * @return this.      */
+DECL|method|setContext (StateContext stateContext)
+specifier|public
+name|Builder
+name|setContext
+parameter_list|(
+name|StateContext
+name|stateContext
+parameter_list|)
+block|{
+name|this
+operator|.
+name|context
+operator|=
+name|stateContext
 expr_stmt|;
 return|return
 name|this
@@ -537,6 +602,10 @@ argument_list|,
 name|this
 operator|.
 name|conf
+argument_list|,
+name|this
+operator|.
+name|context
 argument_list|)
 decl_stmt|;
 name|task

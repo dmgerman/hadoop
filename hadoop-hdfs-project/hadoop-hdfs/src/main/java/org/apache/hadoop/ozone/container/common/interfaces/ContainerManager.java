@@ -126,6 +126,26 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
+name|SCMNodeReport
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|scm
 operator|.
 name|container
@@ -262,6 +282,8 @@ DECL|method|shutdown ()
 name|void
 name|shutdown
 parameter_list|()
+throws|throws
+name|IOException
 function_decl|;
 comment|/**    * Sets the Chunk Manager.    *    * @param chunkManager - ChunkManager.    */
 DECL|method|setChunkManager (ChunkManager chunkManager)
@@ -292,6 +314,14 @@ DECL|method|getKeyManager ()
 name|KeyManager
 name|getKeyManager
 parameter_list|()
+function_decl|;
+comment|/**    * Get the Node Report of container storage usage.    * @return node report.    */
+DECL|method|getNodeReport ()
+name|SCMNodeReport
+name|getNodeReport
+parameter_list|()
+throws|throws
+name|IOException
 function_decl|;
 block|}
 end_interface

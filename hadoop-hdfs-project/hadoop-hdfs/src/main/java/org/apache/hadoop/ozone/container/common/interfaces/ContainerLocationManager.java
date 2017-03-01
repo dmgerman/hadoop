@@ -24,6 +24,26 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|impl
+operator|.
+name|StorageLocationReport
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -70,6 +90,23 @@ parameter_list|(
 name|String
 name|containerName
 parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Returns an array of storage location usage report.    * @return storage location usage report.    */
+DECL|method|getLocationReport ()
+name|StorageLocationReport
+index|[]
+name|getLocationReport
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Supports clean shutdown of container.    *    * @throws IOException    */
+DECL|method|shutdown ()
+name|void
+name|shutdown
+parameter_list|()
 throws|throws
 name|IOException
 function_decl|;

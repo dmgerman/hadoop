@@ -88,6 +88,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
+name|SCMNodeReport
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|util
@@ -128,8 +148,8 @@ name|DatanodeID
 name|datanodeID
 parameter_list|)
 function_decl|;
-comment|/**    * Send heartbeat to indicate the datanode is alive and doing well.    * @param datanodeID - Datanode ID.    * @return SCMheartbeat response list    */
-DECL|method|sendHeartbeat (DatanodeID datanodeID)
+comment|/**    * Send heartbeat to indicate the datanode is alive and doing well.    * @param datanodeID - Datanode ID.    * @param nodeReport - node report.    * @return SCMheartbeat response list    */
+DECL|method|sendHeartbeat (DatanodeID datanodeID, SCMNodeReport nodeReport)
 name|List
 argument_list|<
 name|SCMCommand
@@ -138,6 +158,9 @@ name|sendHeartbeat
 parameter_list|(
 name|DatanodeID
 name|datanodeID
+parameter_list|,
+name|SCMNodeReport
+name|nodeReport
 parameter_list|)
 function_decl|;
 block|}

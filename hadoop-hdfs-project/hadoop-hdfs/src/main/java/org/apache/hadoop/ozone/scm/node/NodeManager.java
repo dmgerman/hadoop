@@ -201,6 +201,21 @@ block|,
 DECL|enumConstant|DEAD
 name|DEAD
 block|}
+comment|/**    * Returns the aggregated node stats.    * @return the aggregated node stats.    */
+DECL|method|getStats ()
+name|SCMNodeStat
+name|getStats
+parameter_list|()
+function_decl|;
+comment|/**    * Return a list of node stats.    * @return a list of individual node stats (live/stale but not dead).    */
+DECL|method|getNodeStats ()
+name|List
+argument_list|<
+name|SCMNodeStat
+argument_list|>
+name|getNodeStats
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
