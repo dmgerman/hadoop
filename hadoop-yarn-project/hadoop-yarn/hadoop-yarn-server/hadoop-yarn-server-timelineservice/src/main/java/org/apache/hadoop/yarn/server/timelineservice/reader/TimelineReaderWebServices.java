@@ -4593,7 +4593,7 @@ return|return
 name|entities
 return|;
 block|}
-comment|/**    * Return a list of active flows. Cluster ID is not provided by client so    * default cluster ID has to be taken.    *    * @param req Servlet request.    * @param res Servlet response.    * @param limit If specified, defines the number of flows to return. The    *     maximum possible value for limit can be {@link Long#MAX_VALUE}. If it    *     is not specified or has a value less than 0, then limit will be    *     considered as 100. (Optional query param).    * @param dateRange If specified is given as "[startdate]-[enddate]"(i.e.    *     start and end date separated by "-") or single date. Dates are    *     interpreted in yyyyMMdd format and are assumed to be in GMT(Optional    *     query param).    *     If a single date is specified, all flows active on that date are    *     returned. If both startdate and enddate is given, all flows active    *     between start and end date will be returned. If only startdate is    *     given, flows active on and after startdate are returned. If only    *     enddate is given, flows active on and before enddate are returned.    *     For example :    *     "daterange=20150711" returns flows active on 20150711.    *     "daterange=20150711-20150714" returns flows active between these    *     2 dates.    *     "daterange=20150711-" returns flows active on and after 20150711.    *     "daterange=-20150711" returns flows active on and before 20150711.    *    * @return If successful, a HTTP 200(OK) response having a JSON representing a    *     set of<cite>FlowActivityEntity</cite> instances are returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request, HTTP 400(Bad Request) is    *     returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.<br>    */
+comment|/**    * Return a list of active flows. Cluster ID is not provided by client so    * default cluster ID has to be taken.    *    * @param req Servlet request.    * @param res Servlet response.    * @param limit If specified, defines the number of flows to return. The    *     maximum possible value for limit can be {@link Long#MAX_VALUE}. If it    *     is not specified or has a value less than 0, then limit will be    *     considered as 100. (Optional query param).    * @param dateRange If specified is given as "[startdate]-[enddate]"(i.e.    *     start and end date separated by "-") or single date. Dates are    *     interpreted in yyyyMMdd format and are assumed to be in GMT(Optional    *     query param).    *     If a single date is specified, all flows active on that date are    *     returned. If both startdate and enddate is given, all flows active    *     between start and end date will be returned. If only startdate is    *     given, flows active on and after startdate are returned. If only    *     enddate is given, flows active on and before enddate are returned.    *     For example :    *     "daterange=20150711" returns flows active on 20150711.    *     "daterange=20150711-20150714" returns flows active between these    *     2 dates.    *     "daterange=20150711-" returns flows active on and after 20150711.    *     "daterange=-20150711" returns flows active on and before 20150711.    * @param fromId If specified, retrieve the next set of flows from the given    *     fromId. The set of flows retrieved is inclusive of specified fromId.    *     fromId should be taken from the value associated with FROM_ID info key    *     in flow entity response which was sent earlier.    *    * @return If successful, a HTTP 200(OK) response having a JSON representing a    *     set of<cite>FlowActivityEntity</cite> instances are returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request, HTTP 400(Bad Request) is    *     returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.<br>    */
 annotation|@
 name|GET
 annotation|@
@@ -4614,7 +4614,7 @@ name|JettyUtils
 operator|.
 name|UTF_8
 argument_list|)
-DECL|method|getFlows ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @QueryParam(R) String limit, @QueryParam(R) String dateRange)
+DECL|method|getFlows ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @QueryParam(R) String limit, @QueryParam(R) String dateRange, @QueryParam(R) String fromId)
 specifier|public
 name|Set
 argument_list|<
@@ -4647,6 +4647,14 @@ literal|"daterange"
 argument_list|)
 name|String
 name|dateRange
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"fromid"
+argument_list|)
+name|String
+name|fromId
 parameter_list|)
 block|{
 return|return
@@ -4661,10 +4669,12 @@ argument_list|,
 name|limit
 argument_list|,
 name|dateRange
+argument_list|,
+name|fromId
 argument_list|)
 return|;
 block|}
-comment|/**    * Return a list of active flows for a given cluster id.    *    * @param req Servlet request.    * @param res Servlet response.    * @param clusterId Cluster id to which the flows to be queried belong to(    *     Mandatory path param).    * @param limit If specified, defines the number of flows to return. The    *     maximum possible value for limit can be {@link Long#MAX_VALUE}. If it    *     is not specified or has a value less than 0, then limit will be    *     considered as 100. (Optional query param).    * @param dateRange If specified is given as "[startdate]-[enddate]"(i.e.    *     start and end date separated by "-") or single date. Dates are    *     interpreted in yyyyMMdd format and are assumed to be in GMT(Optional    *     query param).    *     If a single date is specified, all flows active on that date are    *     returned. If both startdate and enddate is given, all flows active    *     between start and end date will be returned. If only startdate is    *     given, flows active on and after startdate are returned. If only    *     enddate is given, flows active on and before enddate are returned.    *     For example :    *     "daterange=20150711" returns flows active on 20150711.    *     "daterange=20150711-20150714" returns flows active between these    *     2 dates.    *     "daterange=20150711-" returns flows active on and after 20150711.    *     "daterange=-20150711" returns flows active on and before 20150711.    *    * @return If successful, a HTTP 200(OK) response having a JSON representing a    *     set of<cite>FlowActivityEntity</cite> instances are returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request, HTTP 400(Bad Request) is    *     returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
+comment|/**    * Return a list of active flows for a given cluster id.    *    * @param req Servlet request.    * @param res Servlet response.    * @param clusterId Cluster id to which the flows to be queried belong to(    *     Mandatory path param).    * @param limit If specified, defines the number of flows to return. The    *     maximum possible value for limit can be {@link Long#MAX_VALUE}. If it    *     is not specified or has a value less than 0, then limit will be    *     considered as 100. (Optional query param).    * @param dateRange If specified is given as "[startdate]-[enddate]"(i.e.    *     start and end date separated by "-") or single date. Dates are    *     interpreted in yyyyMMdd format and are assumed to be in GMT(Optional    *     query param).    *     If a single date is specified, all flows active on that date are    *     returned. If both startdate and enddate is given, all flows active    *     between start and end date will be returned. If only startdate is    *     given, flows active on and after startdate are returned. If only    *     enddate is given, flows active on and before enddate are returned.    *     For example :    *     "daterange=20150711" returns flows active on 20150711.    *     "daterange=20150711-20150714" returns flows active between these    *     2 dates.    *     "daterange=20150711-" returns flows active on and after 20150711.    *     "daterange=-20150711" returns flows active on and before 20150711.    * @param fromId If specified, retrieve the next set of flows from the given    *     fromId. The set of flows retrieved is inclusive of specified fromId.    *     fromId should be taken from the value associated with FROM_ID info key    *     in flow entity response which was sent earlier.    *    * @return If successful, a HTTP 200(OK) response having a JSON representing a    *     set of<cite>FlowActivityEntity</cite> instances are returned.<br>    *     On failures,<br>    *     If any problem occurs in parsing request, HTTP 400(Bad Request) is    *     returned.<br>    *     For all other errors while retrieving data, HTTP 500(Internal Server    *     Error) is returned.    */
 annotation|@
 name|GET
 annotation|@
@@ -4685,7 +4695,7 @@ name|JettyUtils
 operator|.
 name|UTF_8
 argument_list|)
-DECL|method|getFlows ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @QueryParam(R) String limit, @QueryParam(R) String dateRange)
+DECL|method|getFlows ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String clusterId, @QueryParam(R) String limit, @QueryParam(R) String dateRange, @QueryParam(R) String fromId)
 specifier|public
 name|Set
 argument_list|<
@@ -4726,6 +4736,14 @@ literal|"daterange"
 argument_list|)
 name|String
 name|dateRange
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"fromid"
+argument_list|)
+name|String
+name|fromId
 parameter_list|)
 block|{
 name|String
@@ -4846,7 +4864,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
+name|fromId
 argument_list|)
 decl_stmt|;
 name|entityFilters

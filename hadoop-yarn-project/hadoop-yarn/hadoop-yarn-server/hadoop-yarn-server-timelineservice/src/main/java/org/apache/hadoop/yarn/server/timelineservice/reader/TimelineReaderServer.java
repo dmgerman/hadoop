@@ -1062,6 +1062,7 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getWebServerPort ()
+specifier|public
 name|int
 name|getWebServerPort
 parameter_list|()

@@ -66,12 +66,27 @@ name|StringUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * Set of utility methods to be used across timeline reader.  */
 end_comment
 
 begin_class
 DECL|class|TimelineReaderUtils
+specifier|public
 specifier|final
 class|class
 name|TimelineReaderUtils
@@ -81,6 +96,39 @@ specifier|private
 name|TimelineReaderUtils
 parameter_list|()
 block|{   }
+comment|/**    * Default delimiter for joining strings.    */
+annotation|@
+name|VisibleForTesting
+DECL|field|DEFAULT_DELIMITER_CHAR
+specifier|public
+specifier|static
+specifier|final
+name|char
+name|DEFAULT_DELIMITER_CHAR
+init|=
+literal|'!'
+decl_stmt|;
+comment|/**    * Default escape character used for joining strings.    */
+annotation|@
+name|VisibleForTesting
+DECL|field|DEFAULT_ESCAPE_CHAR
+specifier|public
+specifier|static
+specifier|final
+name|char
+name|DEFAULT_ESCAPE_CHAR
+init|=
+literal|'*'
+decl_stmt|;
+DECL|field|FROMID_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FROMID_KEY
+init|=
+literal|"FROM_ID"
+decl_stmt|;
 comment|/**    * Split the passed string along the passed delimiter character while looking    * for escape char to interpret the splitted parts correctly. For delimiter or    * escape character to be interpreted as part of the string, they have to be    * escaped by putting an escape character in front.    * @param str string to be split.    * @param delimiterChar delimiter used for splitting.    * @param escapeChar delimiter and escape character will be escaped using this    *     character.    * @return a list of strings after split.    * @throws IllegalArgumentException if string is not properly escaped.    */
 DECL|method|split (final String str, final char delimiterChar, final char escapeChar)
 specifier|static
@@ -646,6 +694,56 @@ argument_list|(
 name|strs
 argument_list|,
 name|delimiterChar
+argument_list|)
+return|;
+block|}
+DECL|method|split (final String str)
+specifier|public
+specifier|static
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|split
+parameter_list|(
+specifier|final
+name|String
+name|str
+parameter_list|)
+throws|throws
+name|IllegalArgumentException
+block|{
+return|return
+name|split
+argument_list|(
+name|str
+argument_list|,
+name|DEFAULT_DELIMITER_CHAR
+argument_list|,
+name|DEFAULT_ESCAPE_CHAR
+argument_list|)
+return|;
+block|}
+DECL|method|joinAndEscapeStrings (final String[] strs)
+specifier|public
+specifier|static
+name|String
+name|joinAndEscapeStrings
+parameter_list|(
+specifier|final
+name|String
+index|[]
+name|strs
+parameter_list|)
+block|{
+return|return
+name|joinAndEscapeStrings
+argument_list|(
+name|strs
+argument_list|,
+name|DEFAULT_DELIMITER_CHAR
+argument_list|,
+name|DEFAULT_ESCAPE_CHAR
 argument_list|)
 return|;
 block|}

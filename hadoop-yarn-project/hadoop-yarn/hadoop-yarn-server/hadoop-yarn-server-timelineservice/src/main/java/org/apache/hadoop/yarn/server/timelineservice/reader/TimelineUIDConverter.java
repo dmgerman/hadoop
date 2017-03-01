@@ -1064,27 +1064,7 @@ block|}
 block|}
 block|}
 block|;
-comment|/**    * Delimiter used for UID.    */
-DECL|field|UID_DELIMITER_CHAR
-specifier|public
-specifier|static
-specifier|final
-name|char
-name|UID_DELIMITER_CHAR
-init|=
-literal|'!'
-decl_stmt|;
-comment|/**    * Escape Character used if delimiter or escape character itself is part of    * different components of UID.    */
-DECL|field|UID_ESCAPE_CHAR
-specifier|public
-specifier|static
-specifier|final
-name|char
-name|UID_ESCAPE_CHAR
-init|=
-literal|'*'
-decl_stmt|;
-comment|/**    * Split UID using {@link #UID_DELIMITER_CHAR} and {@link #UID_ESCAPE_CHAR}.    * @param uid UID to be splitted.    * @return a list of different parts of UID split across delimiter.    * @throws IllegalArgumentException if UID is not properly escaped.    */
+comment|/**    * Split UID using {@link TimelineReaderUtils#DEFAULT_DELIMITER_CHAR} and    * {@link TimelineReaderUtils#DEFAULT_ESCAPE_CHAR}.    * @param uid UID to be splitted.    * @return a list of different parts of UID split across delimiter.    * @throws IllegalArgumentException if UID is not properly escaped.    */
 DECL|method|splitUID (String uid)
 specifier|private
 specifier|static
@@ -1106,14 +1086,10 @@ operator|.
 name|split
 argument_list|(
 name|uid
-argument_list|,
-name|UID_DELIMITER_CHAR
-argument_list|,
-name|UID_ESCAPE_CHAR
 argument_list|)
 return|;
 block|}
-comment|/**    * Join different parts of UID delimited by {@link #UID_DELIMITER_CHAR} with    * delimiter and escape character escaped using {@link #UID_ESCAPE_CHAR} if    * UID parts contain them.    * @param parts an array of UID parts to be joined.    * @return a string joined using the delimiter with escape and delimiter    *     characters escaped if they are part of the string parts to be joined.    *     Returns null if one of the parts is null.    */
+comment|/**    * Join different parts of UID delimited by    * {@link TimelineReaderUtils#DEFAULT_DELIMITER_CHAR} with delimiter and    * escape character escaped using    * {@link TimelineReaderUtils#DEFAULT_ESCAPE_CHAR} if UID parts contain them.    * @param parts an array of UID parts to be joined.    * @return a string joined using the delimiter with escape and delimiter    *         characters escaped if they are part of the string parts to be    *         joined. Returns null if one of the parts is null.    */
 DECL|method|joinAndEscapeUIDParts (String[] parts)
 specifier|private
 specifier|static
@@ -1131,10 +1107,6 @@ operator|.
 name|joinAndEscapeStrings
 argument_list|(
 name|parts
-argument_list|,
-name|UID_DELIMITER_CHAR
-argument_list|,
-name|UID_ESCAPE_CHAR
 argument_list|)
 return|;
 block|}
