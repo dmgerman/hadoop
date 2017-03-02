@@ -2730,7 +2730,7 @@ if|if
 condition|(
 name|minMaintenanceR
 operator|>
-name|minR
+name|defaultReplication
 condition|)
 block|{
 throw|throw
@@ -2751,11 +2751,11 @@ literal|"> "
 operator|+
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_REPLICATION_MIN_KEY
+name|DFS_REPLICATION_KEY
 operator|+
 literal|" = "
 operator|+
-name|minR
+name|defaultReplication
 argument_list|)
 throw|;
 block|}
@@ -4440,7 +4440,20 @@ block|}
 else|else
 block|{
 return|return
+operator|(
+name|short
+operator|)
+name|Math
+operator|.
+name|min
+argument_list|(
 name|minReplicationToBeInMaintenance
+argument_list|,
+name|block
+operator|.
+name|getReplication
+argument_list|()
+argument_list|)
 return|;
 block|}
 block|}
