@@ -62,6 +62,7 @@ end_comment
 
 begin_class
 DECL|class|InnerNodeImpl
+specifier|public
 class|class
 name|InnerNodeImpl
 extends|extends
@@ -70,6 +71,7 @@ implements|implements
 name|InnerNode
 block|{
 DECL|class|Factory
+specifier|protected
 specifier|static
 class|class
 name|Factory
@@ -82,7 +84,7 @@ name|InnerNodeImpl
 argument_list|>
 block|{
 DECL|method|Factory ()
-specifier|private
+specifier|protected
 name|Factory
 parameter_list|()
 block|{}
@@ -117,7 +119,7 @@ name|Factory
 argument_list|()
 decl_stmt|;
 DECL|field|children
-specifier|private
+specifier|protected
 specifier|final
 name|List
 argument_list|<
@@ -131,7 +133,7 @@ argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|field|childrenMap
-specifier|private
+specifier|protected
 specifier|final
 name|Map
 argument_list|<
@@ -147,12 +149,13 @@ argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|field|numOfLeaves
-specifier|private
+specifier|protected
 name|int
 name|numOfLeaves
 decl_stmt|;
 comment|/** Construct an InnerNode from a path-like string */
 DECL|method|InnerNodeImpl (String path)
+specifier|protected
 name|InnerNodeImpl
 parameter_list|(
 name|String
@@ -167,6 +170,7 @@ expr_stmt|;
 block|}
 comment|/** Construct an InnerNode    * from its name, its network location, its parent, and its level */
 DECL|method|InnerNodeImpl (String name, String location, InnerNode parent, int level)
+specifier|protected
 name|InnerNodeImpl
 parameter_list|(
 name|String
@@ -267,6 +271,7 @@ return|;
 block|}
 comment|/** Judge if this node is an ancestor of node<i>n</i>    *    * @param n a node    * @return true if this node is an ancestor of<i>n</i>    */
 DECL|method|isAncestor (Node n)
+specifier|protected
 name|boolean
 name|isAncestor
 parameter_list|(
@@ -313,6 +318,7 @@ return|;
 block|}
 comment|/** Judge if this node is the parent of node<i>n</i>    *    * @param n a node    * @return true if this node is the parent of<i>n</i>    */
 DECL|method|isParent (Node n)
+specifier|protected
 name|boolean
 name|isParent
 parameter_list|(
@@ -337,7 +343,7 @@ return|;
 block|}
 comment|/* Return a child name of this node who is an ancestor of node<i>n</i> */
 DECL|method|getNextAncestorName (Node n)
-specifier|private
+specifier|protected
 name|String
 name|getNextAncestorName
 parameter_list|(

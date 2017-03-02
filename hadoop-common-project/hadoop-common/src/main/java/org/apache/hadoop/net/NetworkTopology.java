@@ -316,6 +316,34 @@ name|conf
 parameter_list|)
 block|{
 return|return
+name|getInstance
+argument_list|(
+name|conf
+argument_list|,
+name|InnerNodeImpl
+operator|.
+name|FACTORY
+argument_list|)
+return|;
+block|}
+DECL|method|getInstance (Configuration conf, InnerNode.Factory factory)
+specifier|public
+specifier|static
+name|NetworkTopology
+name|getInstance
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|InnerNode
+operator|.
+name|Factory
+name|factory
+parameter_list|)
+block|{
+name|NetworkTopology
+name|nt
+init|=
 name|ReflectionUtils
 operator|.
 name|newInstance
@@ -339,23 +367,52 @@ argument_list|)
 argument_list|,
 name|conf
 argument_list|)
+decl_stmt|;
+return|return
+name|nt
+operator|.
+name|init
+argument_list|(
+name|factory
+argument_list|)
 return|;
 block|}
-DECL|field|factory
+DECL|method|init (InnerNode.Factory factory)
+specifier|protected
+name|NetworkTopology
+name|init
+parameter_list|(
 name|InnerNode
 operator|.
 name|Factory
 name|factory
-init|=
-name|InnerNodeImpl
+parameter_list|)
+block|{
+if|if
+condition|(
+operator|!
+name|factory
 operator|.
-name|FACTORY
-decl_stmt|;
-comment|/**    * the root cluster map    */
-DECL|field|clusterMap
-name|InnerNode
+name|equals
+argument_list|(
+name|this
+operator|.
+name|factory
+argument_list|)
+condition|)
+block|{
+comment|// the constructor has initialized the factory to default. So only init
+comment|// again if another factory is specified.
+name|this
+operator|.
+name|factory
+operator|=
+name|factory
+expr_stmt|;
+name|this
+operator|.
 name|clusterMap
-init|=
+operator|=
 name|factory
 operator|.
 name|newInnerNode
@@ -364,6 +421,22 @@ name|NodeBase
 operator|.
 name|ROOT
 argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|this
+return|;
+block|}
+DECL|field|factory
+name|InnerNode
+operator|.
+name|Factory
+name|factory
+decl_stmt|;
+comment|/**    * the root cluster map    */
+DECL|field|clusterMap
+name|InnerNode
+name|clusterMap
 decl_stmt|;
 comment|/** Depth of all leaf nodes */
 DECL|field|depthOfAllLeaves
@@ -400,11 +473,34 @@ operator|new
 name|ReentrantReadWriteLock
 argument_list|()
 decl_stmt|;
+comment|// keeping the constructor because other components like MR still uses this.
 DECL|method|NetworkTopology ()
 specifier|public
 name|NetworkTopology
 parameter_list|()
-block|{   }
+block|{
+name|this
+operator|.
+name|factory
+operator|=
+name|InnerNodeImpl
+operator|.
+name|FACTORY
+expr_stmt|;
+name|this
+operator|.
+name|clusterMap
+operator|=
+name|factory
+operator|.
+name|newInnerNode
+argument_list|(
+name|NodeBase
+operator|.
+name|ROOT
+argument_list|)
+expr_stmt|;
+block|}
 comment|/** Add a leaf node    * Update node counter& rack counter if necessary    * @param node node to be added; can be null    * @exception IllegalArgumentException if add a node to a leave                                           or node to be added is not a leaf    */
 DECL|method|add (Node node)
 specifier|public

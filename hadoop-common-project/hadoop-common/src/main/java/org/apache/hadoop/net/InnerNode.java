@@ -138,7 +138,7 @@ name|Node
 name|n
 parameter_list|)
 function_decl|;
-comment|/** get<i>leafIndex</i> leaf of this subtree    * if it is not in the<i>excludedNode</i>    *    * @param leafIndex an indexed leaf of the node    * @param excludedNode an excluded node (can be null)    * @return    */
+comment|/** get<i>leafIndex</i> leaf of this subtree    * if it is not in the<i>excludedNode</i>    *    * @param leafIndex an indexed leaf of the node    * @param excludedNode an excluded node (can be null)    * @return the leaf node corresponding to the given index.    */
 DECL|method|getLeaf (int leafIndex, Node excludedNode)
 name|Node
 name|getLeaf
