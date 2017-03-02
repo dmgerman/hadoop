@@ -1011,8 +1011,6 @@ argument_list|()
 operator|.
 name|getJobStatus
 argument_list|(
-name|status
-operator|.
 name|getJobID
 argument_list|()
 argument_list|)
