@@ -245,6 +245,15 @@ name|FAST_NODE_MAX_LATENCY_MS
 init|=
 literal|5
 decl_stmt|;
+DECL|field|MIN_OUTLIER_DETECTION_PEERS
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|MIN_OUTLIER_DETECTION_PEERS
+init|=
+literal|10
+decl_stmt|;
 DECL|field|random
 specifier|private
 name|Random
@@ -284,7 +293,7 @@ name|GenericTestUtils
 operator|.
 name|setLogLevel
 argument_list|(
-name|SlowNodeDetector
+name|OutlierDetector
 operator|.
 name|LOG
 argument_list|,
@@ -456,10 +465,7 @@ literal|0
 init|;
 name|nodeIndex
 operator|<
-name|SlowNodeDetector
-operator|.
-name|getMinOutlierDetectionPeers
-argument_list|()
+name|MIN_OUTLIER_DETECTION_PEERS
 condition|;
 operator|++
 name|nodeIndex

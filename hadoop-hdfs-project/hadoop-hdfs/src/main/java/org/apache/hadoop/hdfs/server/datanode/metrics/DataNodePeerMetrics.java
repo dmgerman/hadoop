@@ -232,10 +232,19 @@ name|LOW_THRESHOLD_MS
 init|=
 literal|5
 decl_stmt|;
+DECL|field|MIN_OUTLIER_DETECTION_NODES
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|MIN_OUTLIER_DETECTION_NODES
+init|=
+literal|10
+decl_stmt|;
 DECL|field|slowNodeDetector
 specifier|private
 specifier|final
-name|SlowNodeDetector
+name|OutlierDetector
 name|slowNodeDetector
 decl_stmt|;
 comment|/**    * Minimum number of packet send samples which are required to qualify    * for outlier detection. If the number of samples is below this then    * outlier detection is skipped.    */
@@ -277,8 +286,10 @@ operator|.
 name|slowNodeDetector
 operator|=
 operator|new
-name|SlowNodeDetector
+name|OutlierDetector
 argument_list|(
+name|MIN_OUTLIER_DETECTION_NODES
+argument_list|,
 name|LOW_THRESHOLD_MS
 argument_list|)
 expr_stmt|;

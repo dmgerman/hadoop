@@ -149,7 +149,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A utility class to help detect nodes whose aggregate latency  * is an outlier within a given set.  *  * We use the median absolute deviation for outlier detection as  * described in the following publication:  *  * Leys, C., et al., Detecting outliers: Do not use standard deviation  * around the mean, use absolute deviation around the median.  * http://dx.doi.org/10.1016/j.jesp.2013.03.013  *  * We augment the above scheme with the following heuristics to be even  * more conservative:  *  *  1. Skip outlier detection if the sample size is too small.  *  2. Never flag nodes whose aggregate latency is below a low threshold.  *  3. Never flag nodes whose aggregate latency is less than a small  *     multiple of the median.  */
+comment|/**  * A utility class to help detect resources (nodes/ disks) whose aggregate  * latency is an outlier within a given set.  *  * We use the median absolute deviation for outlier detection as  * described in the following publication:  *  * Leys, C., et al., Detecting outliers: Do not use standard deviation  * around the mean, use absolute deviation around the median.  * http://dx.doi.org/10.1016/j.jesp.2013.03.013  *  * We augment the above scheme with the following heuristics to be even  * more conservative:  *  *  1. Skip outlier detection if the sample size is too small.  *  2. Never flag resources whose aggregate latency is below a low threshold.  *  3. Never flag resources whose aggregate latency is less than a small  *     multiple of the median.  */
 end_comment
 
 begin_class
@@ -161,10 +161,10 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Unstable
-DECL|class|SlowNodeDetector
+DECL|class|OutlierDetector
 specifier|public
 class|class
-name|SlowNodeDetector
+name|OutlierDetector
 block|{
 DECL|field|LOG
 specifier|public
@@ -177,19 +177,17 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|SlowNodeDetector
+name|OutlierDetector
 operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * Minimum number of peers to run outlier detection.    */
-DECL|field|minOutlierDetectionPeers
+comment|/**    * Minimum number of resources to run outlier detection.    */
+DECL|field|minNumResources
 specifier|private
-specifier|static
+specifier|final
 name|long
-name|minOutlierDetectionPeers
-init|=
-literal|10
+name|minNumResources
 decl_stmt|;
 comment|/**    * The multiplier is from Leys, C. et al.    */
 DECL|field|MAD_MULTIPLIER
@@ -204,7 +202,7 @@ name|double
 operator|)
 literal|1.4826
 decl_stmt|;
-comment|/**    * Threshold in milliseconds below which a DataNode is definitely not slow.    */
+comment|/**    * Threshold in milliseconds below which a node/ disk is definitely not slow.    */
 DECL|field|lowThresholdMs
 specifier|private
 specifier|final
@@ -232,14 +230,23 @@ name|MEDIAN_MULTIPLIER
 init|=
 literal|3
 decl_stmt|;
-DECL|method|SlowNodeDetector (long lowThresholdMs)
+DECL|method|OutlierDetector (long minNumResources, long lowThresholdMs)
 specifier|public
-name|SlowNodeDetector
+name|OutlierDetector
 parameter_list|(
+name|long
+name|minNumResources
+parameter_list|,
 name|long
 name|lowThresholdMs
 parameter_list|)
 block|{
+name|this
+operator|.
+name|minNumResources
+operator|=
+name|minNumResources
+expr_stmt|;
 name|this
 operator|.
 name|lowThresholdMs
@@ -247,7 +254,7 @@ operator|=
 name|lowThresholdMs
 expr_stmt|;
 block|}
-comment|/**    * Return a set of DataNodes whose latency is much higher than    * their peers. The input is a map of (node -> aggregate latency)    * entries.    *    * The aggregate may be an arithmetic mean or a percentile e.g.    * 90th percentile. Percentiles are a better choice than median    * since latency is usually not a normal distribution.    *    * This method allocates temporary memory O(n) and    * has run time O(n.log(n)), where n = stats.size().    *    * @return    */
+comment|/**    * Return a set of nodes/ disks whose latency is much higher than    * their counterparts. The input is a map of (resource -> aggregate latency)    * entries.    *    * The aggregate may be an arithmetic mean or a percentile e.g.    * 90th percentile. Percentiles are a better choice than median    * since latency is usually not a normal distribution.    *    * This method allocates temporary memory O(n) and    * has run time O(n.log(n)), where n = stats.size().    *    * @return    */
 DECL|method|getOutliers (Map<String, Double> stats)
 specifier|public
 name|Map
@@ -274,7 +281,7 @@ operator|.
 name|size
 argument_list|()
 operator|<
-name|minOutlierDetectionPeers
+name|minNumResources
 condition|)
 block|{
 name|LOG
@@ -283,14 +290,14 @@ name|debug
 argument_list|(
 literal|"Skipping statistical outlier detection as we don't have "
 operator|+
-literal|"latency data for enough peers. Have {}, need at least {}"
+literal|"latency data for enough resources. Have {}, need at least {}"
 argument_list|,
 name|stats
 operator|.
 name|size
 argument_list|()
 argument_list|,
-name|minOutlierDetectionPeers
+name|minNumResources
 argument_list|)
 expr_stmt|;
 return|return
@@ -381,7 +388,7 @@ name|String
 argument_list|,
 name|Double
 argument_list|>
-name|slowNodes
+name|slowResources
 init|=
 operator|new
 name|HashMap
@@ -405,7 +412,7 @@ argument_list|,
 name|upperLimitLatency
 argument_list|)
 expr_stmt|;
-comment|// Find nodes whose latency exceeds the threshold.
+comment|// Find resources whose latency exceeds the threshold.
 for|for
 control|(
 name|Map
@@ -434,7 +441,7 @@ operator|>
 name|upperLimitLatency
 condition|)
 block|{
-name|slowNodes
+name|slowResources
 operator|.
 name|put
 argument_list|(
@@ -452,7 +459,7 @@ expr_stmt|;
 block|}
 block|}
 return|return
-name|slowNodes
+name|slowResources
 return|;
 block|}
 comment|/**    * Compute the Median Absolute Deviation of a sorted list.    */
@@ -653,37 +660,6 @@ expr_stmt|;
 block|}
 return|return
 name|median
-return|;
-block|}
-comment|/**    * This method *must not* be used outside of unit tests.    */
-annotation|@
-name|VisibleForTesting
-DECL|method|setMinOutlierDetectionPeers (long minOutlierDetectionPeers)
-specifier|static
-name|void
-name|setMinOutlierDetectionPeers
-parameter_list|(
-name|long
-name|minOutlierDetectionPeers
-parameter_list|)
-block|{
-name|SlowNodeDetector
-operator|.
-name|minOutlierDetectionPeers
-operator|=
-name|minOutlierDetectionPeers
-expr_stmt|;
-block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|getMinOutlierDetectionPeers ()
-specifier|static
-name|long
-name|getMinOutlierDetectionPeers
-parameter_list|()
-block|{
-return|return
-name|minOutlierDetectionPeers
 return|;
 block|}
 block|}

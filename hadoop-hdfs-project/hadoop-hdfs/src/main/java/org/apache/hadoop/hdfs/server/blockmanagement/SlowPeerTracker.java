@@ -431,11 +431,11 @@ name|getTimeDuration
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_DATANODE_SLOW_PEERS_REPORT_INTERVAL_KEY
+name|DFS_DATANODE_OUTLIERS_REPORT_INTERVAL_KEY
 argument_list|,
 name|DFSConfigKeys
 operator|.
-name|DFS_DATANODE_SLOW_PEERS_REPORT_INTERVAL_DEFAULT
+name|DFS_DATANODE_OUTLIERS_REPORT_INTERVAL_DEFAULT
 argument_list|,
 name|TimeUnit
 operator|.

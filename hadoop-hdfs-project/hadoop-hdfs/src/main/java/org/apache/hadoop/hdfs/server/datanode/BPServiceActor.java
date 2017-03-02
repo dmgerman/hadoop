@@ -1027,7 +1027,7 @@ name|blockReportInterval
 argument_list|,
 name|dnConf
 operator|.
-name|slowPeersReportIntervalMs
+name|outliersReportIntervalMs
 argument_list|)
 expr_stmt|;
 comment|// get the value of maxDataLength.

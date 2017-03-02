@@ -231,7 +231,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Unit tests for {@link SlowNodeDetector}.  */
+comment|/**  * Unit tests for {@link OutlierDetector}.  */
 end_comment
 
 begin_class
@@ -998,7 +998,7 @@ literal|"n3"
 argument_list|,
 name|LOW_THRESHOLD
 operator|*
-name|SlowNodeDetector
+name|OutlierDetector
 operator|.
 name|MEDIAN_MULTIPLIER
 operator|-
@@ -1039,7 +1039,7 @@ operator|+
 literal|0.1
 operator|)
 operator|*
-name|SlowNodeDetector
+name|OutlierDetector
 operator|.
 name|MEDIAN_MULTIPLIER
 operator|+
@@ -1276,7 +1276,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|slowNodeDetector
 specifier|private
-name|SlowNodeDetector
+name|OutlierDetector
 name|slowNodeDetector
 decl_stmt|;
 annotation|@
@@ -1290,26 +1290,21 @@ block|{
 name|slowNodeDetector
 operator|=
 operator|new
-name|SlowNodeDetector
+name|OutlierDetector
 argument_list|(
+name|MIN_OUTLIER_DETECTION_PEERS
+argument_list|,
 operator|(
 name|long
 operator|)
 name|LOW_THRESHOLD
 argument_list|)
 expr_stmt|;
-name|SlowNodeDetector
-operator|.
-name|setMinOutlierDetectionPeers
-argument_list|(
-name|MIN_OUTLIER_DETECTION_PEERS
-argument_list|)
-expr_stmt|;
 name|GenericTestUtils
 operator|.
 name|setLogLevel
 argument_list|(
-name|SlowNodeDetector
+name|OutlierDetector
 operator|.
 name|LOG
 argument_list|,
@@ -1420,7 +1415,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Unit test for {@link SlowNodeDetector#computeMedian(List)}.    */
+comment|/**    * Unit test for {@link OutlierDetector#computeMedian(List)}.    */
 annotation|@
 name|Test
 DECL|method|testMediansFromTestMatrix ()
@@ -1483,7 +1478,7 @@ specifier|final
 name|Double
 name|median
 init|=
-name|SlowNodeDetector
+name|OutlierDetector
 operator|.
 name|computeMedian
 argument_list|(
@@ -1542,7 +1537,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Unit test for {@link SlowNodeDetector#computeMad(List)}.    */
+comment|/**    * Unit test for {@link OutlierDetector#computeMad(List)}.    */
 annotation|@
 name|Test
 DECL|method|testMadsFromTestMatrix ()
@@ -1605,7 +1600,7 @@ specifier|final
 name|Double
 name|mad
 init|=
-name|SlowNodeDetector
+name|OutlierDetector
 operator|.
 name|computeMad
 argument_list|(
@@ -1714,7 +1709,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Verify that {@link SlowNodeDetector#computeMedian(List)} throws when    * passed an empty list.    */
+comment|/**    * Verify that {@link OutlierDetector#computeMedian(List)} throws when    * passed an empty list.    */
 annotation|@
 name|Test
 argument_list|(
@@ -1730,7 +1725,7 @@ name|void
 name|testMedianOfEmptyList
 parameter_list|()
 block|{
-name|SlowNodeDetector
+name|OutlierDetector
 operator|.
 name|computeMedian
 argument_list|(
@@ -1741,7 +1736,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Verify that {@link SlowNodeDetector#computeMad(List)} throws when    * passed an empty list.    */
+comment|/**    * Verify that {@link OutlierDetector#computeMad(List)} throws when    * passed an empty list.    */
 annotation|@
 name|Test
 argument_list|(
@@ -1757,7 +1752,7 @@ name|void
 name|testMadOfEmptyList
 parameter_list|()
 block|{
-name|SlowNodeDetector
+name|OutlierDetector
 operator|.
 name|computeMedian
 argument_list|(
