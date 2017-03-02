@@ -1626,6 +1626,17 @@ literal|"file"
 decl_stmt|;
 annotation|@
 name|Private
+DECL|field|STORE_CS_CONF_PROVIDER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|STORE_CS_CONF_PROVIDER
+init|=
+literal|"store"
+decl_stmt|;
+annotation|@
+name|Private
 DECL|field|DEFAULT_CS_CONF_PROVIDER
 specifier|public
 specifier|static
