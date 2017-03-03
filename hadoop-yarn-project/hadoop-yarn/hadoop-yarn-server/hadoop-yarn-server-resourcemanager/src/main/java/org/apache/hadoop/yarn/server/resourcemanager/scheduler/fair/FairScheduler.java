@@ -2385,8 +2385,10 @@ block|}
 block|}
 block|}
 comment|/**    * Recompute the internal variables used by the scheduler - per-job weights,    * fair shares, deficits, minimum slot allocations, and amount of used and    * required resources per job.    */
+annotation|@
+name|VisibleForTesting
 DECL|method|update ()
-specifier|protected
+specifier|public
 name|void
 name|update
 parameter_list|()
