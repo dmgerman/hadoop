@@ -66,7 +66,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
+name|Set
 import|;
 end_import
 
@@ -76,7 +76,9 @@ name|java
 operator|.
 name|util
 operator|.
-name|Set
+name|concurrent
+operator|.
+name|ConcurrentHashMap
 import|;
 end_import
 
@@ -114,7 +116,7 @@ argument_list|>
 name|nodeToSubCluster
 init|=
 operator|new
-name|HashMap
+name|ConcurrentHashMap
 argument_list|<
 name|String
 argument_list|,
@@ -136,7 +138,7 @@ argument_list|>
 name|rackToSubClusters
 init|=
 operator|new
-name|HashMap
+name|ConcurrentHashMap
 argument_list|<
 name|String
 argument_list|,

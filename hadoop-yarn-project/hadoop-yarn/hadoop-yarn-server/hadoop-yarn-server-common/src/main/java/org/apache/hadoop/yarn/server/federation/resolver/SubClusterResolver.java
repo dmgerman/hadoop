@@ -85,7 +85,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * An utility that helps to determine the sub-cluster that a specified node  * belongs to.  */
+comment|/**  * An utility that helps to determine the sub-cluster that a specified node or  * rack belongs to. All implementing classes should be thread-safe.  */
 end_comment
 
 begin_interface
