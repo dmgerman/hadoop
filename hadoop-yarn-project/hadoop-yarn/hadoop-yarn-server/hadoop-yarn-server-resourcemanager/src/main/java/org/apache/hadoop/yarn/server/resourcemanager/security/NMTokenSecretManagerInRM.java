@@ -939,7 +939,7 @@ try|try
 block|{
 name|this
 operator|.
-name|readLock
+name|writeLock
 operator|.
 name|lock
 argument_list|()
@@ -1059,7 +1059,7 @@ finally|finally
 block|{
 name|this
 operator|.
-name|readLock
+name|writeLock
 operator|.
 name|unlock
 argument_list|()
