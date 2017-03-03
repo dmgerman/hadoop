@@ -811,13 +811,13 @@ argument_list|()
 decl_stmt|;
 name|conf
 operator|.
-name|setDouble
+name|setBoolean
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_DATANODE_FILEIO_PROFILING_SAMPLING_FRACTION_KEY
+name|DFS_DATANODE_ENABLE_FILEIO_PROFILING_KEY
 argument_list|,
-literal|1.0
+literal|true
 argument_list|)
 expr_stmt|;
 name|SimulatedFSDataset

@@ -304,6 +304,15 @@ name|add
 argument_list|(
 name|DFSConfigKeys
 operator|.
+name|DFS_DATANODE_ENABLE_FILEIO_PROFILING_KEY
+argument_list|)
+expr_stmt|;
+name|configurationPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|DFSConfigKeys
+operator|.
 name|DFS_DATANODE_ENABLE_FILEIO_FAULT_INJECTION_KEY
 argument_list|)
 expr_stmt|;

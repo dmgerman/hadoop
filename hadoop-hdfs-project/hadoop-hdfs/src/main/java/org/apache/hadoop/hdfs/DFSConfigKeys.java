@@ -4632,6 +4632,24 @@ literal|0
 decl_stmt|;
 comment|//no throttling
 comment|// Datanode File IO Stats
+DECL|field|DFS_DATANODE_ENABLE_FILEIO_PROFILING_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_DATANODE_ENABLE_FILEIO_PROFILING_KEY
+init|=
+literal|"dfs.datanode.enable.fileio.profiling"
+decl_stmt|;
+DECL|field|DFS_DATANODE_ENABLE_FILEIO_PROFILING_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_DATANODE_ENABLE_FILEIO_PROFILING_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 DECL|field|DFS_DATANODE_ENABLE_FILEIO_FAULT_INJECTION_KEY
 specifier|public
 specifier|static
@@ -4663,10 +4681,10 @@ specifier|public
 specifier|static
 specifier|final
 name|double
-DECL|field|DFS_DATANODE_FILEIO_PROFILING_SAMPLING_FRACTION_DEFAULT
-name|DFS_DATANODE_FILEIO_PROFILING_SAMPLING_FRACTION_DEFAULT
+DECL|field|DFS_DATANODE_FILEIO_PROFILING_SAMPLING_FRACTION_DEAFULT
+name|DFS_DATANODE_FILEIO_PROFILING_SAMPLING_FRACTION_DEAFULT
 init|=
-literal|0.0
+literal|1.0
 decl_stmt|;
 comment|//Keys with no defaults
 DECL|field|DFS_DATANODE_PLUGINS_KEY
