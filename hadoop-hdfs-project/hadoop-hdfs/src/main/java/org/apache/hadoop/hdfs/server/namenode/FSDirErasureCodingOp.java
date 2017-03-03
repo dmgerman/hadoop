@@ -541,6 +541,15 @@ argument_list|,
 literal|"INodes cannot be null"
 argument_list|)
 expr_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|ecPolicy
+argument_list|,
+literal|"EC policy cannot be null"
+argument_list|)
+expr_stmt|;
 name|String
 name|src
 init|=
@@ -599,25 +608,7 @@ name|src
 argument_list|)
 throw|;
 block|}
-comment|// System default erasure coding policy will be used since no specified.
-if|if
-condition|(
-name|ecPolicy
-operator|==
-literal|null
-condition|)
-block|{
-name|ecPolicy
-operator|=
-name|ErasureCodingPolicyManager
-operator|.
-name|getSystemDefaultPolicy
-argument_list|()
-expr_stmt|;
-block|}
-else|else
-block|{
-comment|// If ecPolicy is specified check if it is one among active policies.
+comment|// Check that the EC policy is one of the active policies.
 name|boolean
 name|validPolicy
 init|=
@@ -718,7 +709,6 @@ operator|+
 name|ecPolicyNames
 argument_list|)
 throw|;
-block|}
 block|}
 specifier|final
 name|XAttr

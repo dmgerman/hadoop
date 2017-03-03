@@ -7405,10 +7405,7 @@ name|BlockInfoStriped
 argument_list|(
 name|newBlock
 argument_list|,
-name|ErasureCodingPolicyManager
-operator|.
-name|getSystemDefaultPolicy
-argument_list|()
+name|ecPolicy
 argument_list|)
 expr_stmt|;
 block|}

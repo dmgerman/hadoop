@@ -590,6 +590,20 @@ name|Preconditions
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
 begin_comment
 comment|/** I-node for closed file. */
 end_comment
@@ -1091,6 +1105,15 @@ name|erasureCodingPolicyID
 argument_list|)
 operator|!=
 literal|null
+argument_list|,
+literal|"Could not find EC policy with ID 0x"
+operator|+
+name|StringUtils
+operator|.
+name|byteToHexString
+argument_list|(
+name|erasureCodingPolicyID
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|layoutRedundancy
@@ -1130,6 +1153,10 @@ operator|&&
 name|replication
 operator|<=
 name|MAX_REDUNDANCY
+argument_list|,
+literal|"Invalid replication value "
+operator|+
+name|replication
 argument_list|)
 expr_stmt|;
 name|layoutRedundancy
@@ -2566,21 +2593,23 @@ name|getErasureCodingPolicyID
 argument_list|()
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|ecPolicy
-operator|==
-literal|null
-condition|)
-block|{
-name|ecPolicy
-operator|=
-name|ErasureCodingPolicyManager
+name|Preconditions
 operator|.
-name|getSystemDefaultPolicy
+name|checkNotNull
+argument_list|(
+name|ecPolicy
+argument_list|,
+literal|"Could not find EC policy with ID 0x"
+operator|+
+name|StringUtils
+operator|.
+name|byteToHexString
+argument_list|(
+name|getErasureCodingPolicyID
 argument_list|()
+argument_list|)
+argument_list|)
 expr_stmt|;
-block|}
 return|return
 call|(
 name|short

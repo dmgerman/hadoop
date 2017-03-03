@@ -746,6 +746,29 @@ name|length
 argument_list|)
 return|;
 block|}
+comment|/**    * Convert a byte to a hex string.    * @see #byteToHexString(byte[])    * @see #byteToHexString(byte[], int, int)    * @param b byte    * @return byte's hex value as a String    */
+DECL|method|byteToHexString (byte b)
+specifier|public
+specifier|static
+name|String
+name|byteToHexString
+parameter_list|(
+name|byte
+name|b
+parameter_list|)
+block|{
+return|return
+name|byteToHexString
+argument_list|(
+operator|new
+name|byte
+index|[]
+block|{
+name|b
+block|}
+argument_list|)
+return|;
+block|}
 comment|/**    * Given a hexstring this will return the byte array corresponding to the    * string    * @param hex the hex String array    * @return a byte array that is a hex string representation of the given    *         string. The size of the byte array is therefore hex.length/2    */
 DECL|method|hexStringToByte (String hex)
 specifier|public

@@ -7966,29 +7966,13 @@ name|ErasureCodingResult
 extends|extends
 name|Result
 block|{
-DECL|field|defaultECPolicy
-specifier|final
-name|String
-name|defaultECPolicy
-decl_stmt|;
 DECL|method|ErasureCodingResult (Configuration conf)
 name|ErasureCodingResult
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
-block|{
-name|defaultECPolicy
-operator|=
-name|ErasureCodingPolicyManager
-operator|.
-name|getSystemDefaultPolicy
-argument_list|()
-operator|.
-name|getName
-argument_list|()
-expr_stmt|;
-block|}
+block|{     }
 annotation|@
 name|Override
 DECL|method|toString ()
@@ -8532,16 +8516,6 @@ argument_list|)
 expr_stmt|;
 block|}
 name|res
-operator|.
-name|append
-argument_list|(
-literal|"\n Default ecPolicy:\t\t"
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|defaultECPolicy
-argument_list|)
 operator|.
 name|append
 argument_list|(
