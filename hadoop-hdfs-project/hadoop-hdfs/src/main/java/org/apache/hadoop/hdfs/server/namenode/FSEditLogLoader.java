@@ -3359,7 +3359,7 @@ name|ecPolicy
 init|=
 name|FSDirErasureCodingOp
 operator|.
-name|getErasureCodingPolicy
+name|unprotectedGetErasureCodingPolicy
 argument_list|(
 name|fsDir
 operator|.
@@ -3518,7 +3518,7 @@ name|ecPolicy
 init|=
 name|FSDirErasureCodingOp
 operator|.
-name|getErasureCodingPolicy
+name|unprotectedGetErasureCodingPolicy
 argument_list|(
 name|fsDir
 operator|.
@@ -3888,7 +3888,7 @@ name|ecPolicy
 init|=
 name|FSDirErasureCodingOp
 operator|.
-name|getErasureCodingPolicy
+name|unprotectedGetErasureCodingPolicy
 argument_list|(
 name|fsDir
 operator|.
@@ -4028,7 +4028,7 @@ name|ecPolicy
 init|=
 name|FSDirErasureCodingOp
 operator|.
-name|getErasureCodingPolicy
+name|unprotectedGetErasureCodingPolicy
 argument_list|(
 name|fsDir
 operator|.

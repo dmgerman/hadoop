@@ -1399,11 +1399,11 @@ name|ecPolicy
 operator|=
 name|FSDirErasureCodingOp
 operator|.
-name|getErasureCodingPolicy
+name|unprotectedGetErasureCodingPolicy
 argument_list|(
 name|fsn
 argument_list|,
-name|src
+name|iip
 argument_list|)
 expr_stmt|;
 name|numTargets
@@ -2762,7 +2762,7 @@ name|ecPolicy
 init|=
 name|FSDirErasureCodingOp
 operator|.
-name|getErasureCodingPolicy
+name|unprotectedGetErasureCodingPolicy
 argument_list|(
 name|fsd
 operator|.
@@ -3093,7 +3093,7 @@ name|ecPolicy
 init|=
 name|FSDirErasureCodingOp
 operator|.
-name|getErasureCodingPolicy
+name|unprotectedGetErasureCodingPolicy
 argument_list|(
 name|fsd
 operator|.
@@ -3366,7 +3366,7 @@ name|ecPolicy
 init|=
 name|FSDirErasureCodingOp
 operator|.
-name|getErasureCodingPolicy
+name|unprotectedGetErasureCodingPolicy
 argument_list|(
 name|fsd
 operator|.

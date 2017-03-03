@@ -1126,7 +1126,7 @@ name|ecPolicy
 init|=
 name|FSDirErasureCodingOp
 operator|.
-name|getErasureCodingPolicy
+name|unprotectedGetErasureCodingPolicy
 argument_list|(
 name|fsd
 operator|.
@@ -2299,7 +2299,7 @@ name|ecPolicy
 init|=
 name|FSDirErasureCodingOp
 operator|.
-name|getErasureCodingPolicy
+name|unprotectedGetErasureCodingPolicy
 argument_list|(
 name|fsd
 operator|.

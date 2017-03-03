@@ -289,6 +289,20 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|AccessControlException
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -324,8 +338,8 @@ specifier|private
 name|FSDirErasureCodingOp
 parameter_list|()
 block|{}
-comment|/**    * Set an erasure coding policy on the given path.    *    * @param fsn The namespace    * @param srcArg The path of the target directory.    * @param ecPolicyName The erasure coding policy name to set on the target    *                    directory.    * @param logRetryCache whether to record RPC ids in editlog for retry    *          cache rebuilding    * @return {@link HdfsFileStatus}    * @throws IOException    * @throws HadoopIllegalArgumentException if the policy is not enabled    */
-DECL|method|setErasureCodingPolicy (final FSNamesystem fsn, final String srcArg, final String ecPolicyName, final boolean logRetryCache)
+comment|/**    * Set an erasure coding policy on the given path.    *    * @param fsn The namespace    * @param srcArg The path of the target directory.    * @param ecPolicyName The erasure coding policy name to set on the target    *                    directory.    * @param logRetryCache whether to record RPC ids in editlog for retry    *          cache rebuilding    * @return {@link HdfsFileStatus}    * @throws IOException    * @throws HadoopIllegalArgumentException if the policy is not enabled    * @throws AccessControlException if the user does not have write access    */
+DECL|method|setErasureCodingPolicy (final FSNamesystem fsn, final String srcArg, final String ecPolicyName, final FSPermissionChecker pc, final boolean logRetryCache)
 specifier|static
 name|HdfsFileStatus
 name|setErasureCodingPolicy
@@ -343,11 +357,17 @@ name|String
 name|ecPolicyName
 parameter_list|,
 specifier|final
+name|FSPermissionChecker
+name|pc
+parameter_list|,
+specifier|final
 name|boolean
 name|logRetryCache
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|AccessControlException
 block|{
 assert|assert
 name|fsn
@@ -360,18 +380,6 @@ name|src
 init|=
 name|srcArg
 decl_stmt|;
-name|FSPermissionChecker
-name|pc
-init|=
-literal|null
-decl_stmt|;
-name|pc
-operator|=
-name|fsn
-operator|.
-name|getPermissionChecker
-argument_list|()
-expr_stmt|;
 name|FSDirectory
 name|fsd
 init|=
@@ -446,6 +454,29 @@ operator|.
 name|WRITE_LINK
 argument_list|)
 expr_stmt|;
+comment|// Write access is required to set erasure coding policy
+if|if
+condition|(
+name|fsd
+operator|.
+name|isPermissionEnabled
+argument_list|()
+condition|)
+block|{
+name|fsd
+operator|.
+name|checkPathAccess
+argument_list|(
+name|pc
+argument_list|,
+name|iip
+argument_list|,
+name|FsAction
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
+block|}
 name|src
 operator|=
 name|iip
@@ -497,6 +528,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|setErasureCodingPolicyXAttr (final FSNamesystem fsn, final INodesInPath srcIIP, ErasureCodingPolicy ecPolicy)
+specifier|private
 specifier|static
 name|List
 argument_list|<
@@ -857,8 +889,8 @@ return|return
 name|xattrs
 return|;
 block|}
-comment|/**    * Unset erasure coding policy from the given directory.    *    * @param fsn The namespace    * @param srcArg The path of the target directory.    * @param logRetryCache whether to record RPC ids in editlog for retry    *          cache rebuilding    * @return {@link HdfsFileStatus}    * @throws IOException    */
-DECL|method|unsetErasureCodingPolicy (final FSNamesystem fsn, final String srcArg, final boolean logRetryCache)
+comment|/**    * Unset erasure coding policy from the given directory.    *    * @param fsn The namespace    * @param srcArg The path of the target directory.    * @param logRetryCache whether to record RPC ids in editlog for retry    *          cache rebuilding    * @return {@link HdfsFileStatus}    * @throws IOException    * @throws AccessControlException if the user does not have write access    */
+DECL|method|unsetErasureCodingPolicy (final FSNamesystem fsn, final String srcArg, final FSPermissionChecker pc, final boolean logRetryCache)
 specifier|static
 name|HdfsFileStatus
 name|unsetErasureCodingPolicy
@@ -870,6 +902,10 @@ parameter_list|,
 specifier|final
 name|String
 name|srcArg
+parameter_list|,
+specifier|final
+name|FSPermissionChecker
+name|pc
 parameter_list|,
 specifier|final
 name|boolean
@@ -888,14 +924,6 @@ name|String
 name|src
 init|=
 name|srcArg
-decl_stmt|;
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsn
-operator|.
-name|getPermissionChecker
-argument_list|()
 decl_stmt|;
 name|FSDirectory
 name|fsd
@@ -937,6 +965,29 @@ operator|.
 name|WRITE_LINK
 argument_list|)
 expr_stmt|;
+comment|// Write access is required to unset erasure coding policy
+if|if
+condition|(
+name|fsd
+operator|.
+name|isPermissionEnabled
+argument_list|()
+condition|)
+block|{
+name|fsd
+operator|.
+name|checkPathAccess
+argument_list|(
+name|pc
+argument_list|,
+name|iip
+argument_list|,
+name|FsAction
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
+block|}
 name|src
 operator|=
 name|iip
@@ -1157,8 +1208,8 @@ return|return
 name|xattrs
 return|;
 block|}
-comment|/**    * Get the erasure coding policy information for specified path.    *    * @param fsn namespace    * @param src path    * @return {@link ErasureCodingPolicy}    * @throws IOException    * @throws FileNotFoundException if the path does not exist.    */
-DECL|method|getErasureCodingPolicy (final FSNamesystem fsn, final String src)
+comment|/**    * Get the erasure coding policy information for specified path.    *    * @param fsn namespace    * @param src path    * @return {@link ErasureCodingPolicy}    * @throws IOException    * @throws FileNotFoundException if the path does not exist.    * @throws AccessControlException if no read access    */
+DECL|method|getErasureCodingPolicy (final FSNamesystem fsn, final String src, FSPermissionChecker pc)
 specifier|static
 name|ErasureCodingPolicy
 name|getErasureCodingPolicy
@@ -1170,9 +1221,14 @@ parameter_list|,
 specifier|final
 name|String
 name|src
+parameter_list|,
+name|FSPermissionChecker
+name|pc
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|AccessControlException
 block|{
 assert|assert
 name|fsn
@@ -1180,17 +1236,56 @@ operator|.
 name|hasReadLock
 argument_list|()
 assert|;
+name|FSDirectory
+name|fsd
+init|=
+name|fsn
+operator|.
+name|getFSDirectory
+argument_list|()
+decl_stmt|;
 specifier|final
 name|INodesInPath
 name|iip
 init|=
-name|getINodesInPath
+name|fsd
+operator|.
+name|resolvePath
 argument_list|(
-name|fsn
+name|pc
 argument_list|,
 name|src
+argument_list|,
+name|DirOp
+operator|.
+name|READ
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|fsn
+operator|.
+name|isPermissionEnabled
+argument_list|()
+condition|)
+block|{
+name|fsn
+operator|.
+name|getFSDirectory
+argument_list|()
+operator|.
+name|checkPathAccess
+argument_list|(
+name|pc
+argument_list|,
+name|iip
+argument_list|,
+name|FsAction
+operator|.
+name|READ
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|iip
@@ -1217,40 +1312,9 @@ block|}
 return|return
 name|getErasureCodingPolicyForPath
 argument_list|(
-name|fsn
+name|fsd
 argument_list|,
 name|iip
-argument_list|)
-return|;
-block|}
-comment|/**    * Check if the file or directory has an erasure coding policy.    *    * @param fsn namespace    * @param srcArg path    * @return Whether the file or directory has an erasure coding policy.    * @throws IOException    */
-DECL|method|hasErasureCodingPolicy (final FSNamesystem fsn, final String srcArg)
-specifier|static
-name|boolean
-name|hasErasureCodingPolicy
-parameter_list|(
-specifier|final
-name|FSNamesystem
-name|fsn
-parameter_list|,
-specifier|final
-name|String
-name|srcArg
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-name|hasErasureCodingPolicy
-argument_list|(
-name|fsn
-argument_list|,
-name|getINodesInPath
-argument_list|(
-name|fsn
-argument_list|,
-name|srcArg
-argument_list|)
 argument_list|)
 return|;
 block|}
@@ -1272,7 +1336,7 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|getErasureCodingPolicy
+name|unprotectedGetErasureCodingPolicy
 argument_list|(
 name|fsn
 argument_list|,
@@ -1282,11 +1346,11 @@ operator|!=
 literal|null
 return|;
 block|}
-comment|/**    * Get the erasure coding policy.    *    * @param fsn namespace    * @param iip inodes in the path containing the file    * @return {@link ErasureCodingPolicy}    * @throws IOException    */
-DECL|method|getErasureCodingPolicy (final FSNamesystem fsn, final INodesInPath iip)
+comment|/**    * Get the erasure coding policy. This does not do any permission checking.    *    * @param fsn namespace    * @param iip inodes in the path containing the file    * @return {@link ErasureCodingPolicy}    * @throws IOException    */
+DECL|method|unprotectedGetErasureCodingPolicy ( final FSNamesystem fsn, final INodesInPath iip)
 specifier|static
 name|ErasureCodingPolicy
-name|getErasureCodingPolicy
+name|unprotectedGetErasureCodingPolicy
 parameter_list|(
 specifier|final
 name|FSNamesystem
@@ -1309,6 +1373,9 @@ return|return
 name|getErasureCodingPolicyForPath
 argument_list|(
 name|fsn
+operator|.
+name|getFSDirectory
+argument_list|()
 argument_list|,
 name|iip
 argument_list|)
@@ -1344,94 +1411,14 @@ name|getPolicies
 argument_list|()
 return|;
 block|}
-DECL|method|getINodesInPath (final FSNamesystem fsn, final String srcArg)
-specifier|private
-specifier|static
-name|INodesInPath
-name|getINodesInPath
-parameter_list|(
-specifier|final
-name|FSNamesystem
-name|fsn
-parameter_list|,
-specifier|final
-name|String
-name|srcArg
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-specifier|final
-name|FSDirectory
-name|fsd
-init|=
-name|fsn
-operator|.
-name|getFSDirectory
-argument_list|()
-decl_stmt|;
-specifier|final
-name|FSPermissionChecker
-name|pc
-init|=
-name|fsn
-operator|.
-name|getPermissionChecker
-argument_list|()
-decl_stmt|;
-name|INodesInPath
-name|iip
-init|=
-name|fsd
-operator|.
-name|resolvePath
-argument_list|(
-name|pc
-argument_list|,
-name|srcArg
-argument_list|,
-name|DirOp
-operator|.
-name|READ
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|fsn
-operator|.
-name|isPermissionEnabled
-argument_list|()
-condition|)
-block|{
-name|fsn
-operator|.
-name|getFSDirectory
-argument_list|()
-operator|.
-name|checkPathAccess
-argument_list|(
-name|pc
-argument_list|,
-name|iip
-argument_list|,
-name|FsAction
-operator|.
-name|READ
-argument_list|)
-expr_stmt|;
-block|}
-return|return
-name|iip
-return|;
-block|}
-DECL|method|getErasureCodingPolicyForPath (FSNamesystem fsn, INodesInPath iip)
+DECL|method|getErasureCodingPolicyForPath ( FSDirectory fsd, INodesInPath iip)
 specifier|private
 specifier|static
 name|ErasureCodingPolicy
 name|getErasureCodingPolicyForPath
 parameter_list|(
-name|FSNamesystem
-name|fsn
+name|FSDirectory
+name|fsd
 parameter_list|,
 name|INodesInPath
 name|iip
@@ -1448,14 +1435,6 @@ argument_list|,
 literal|"INodes cannot be null"
 argument_list|)
 expr_stmt|;
-name|FSDirectory
-name|fsd
-init|=
-name|fsn
-operator|.
-name|getFSDirectory
-argument_list|()
-decl_stmt|;
 name|fsd
 operator|.
 name|readLock

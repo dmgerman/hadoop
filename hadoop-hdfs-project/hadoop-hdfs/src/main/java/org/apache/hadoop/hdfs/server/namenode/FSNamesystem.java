@@ -32001,9 +32001,6 @@ name|operationName
 init|=
 literal|"setErasureCodingPolicy"
 decl_stmt|;
-name|checkSuperuserPrivilege
-argument_list|()
-expr_stmt|;
 name|checkOperation
 argument_list|(
 name|OperationCategory
@@ -32015,6 +32012,13 @@ name|HdfsFileStatus
 name|resultingStat
 init|=
 literal|null
+decl_stmt|;
+specifier|final
+name|FSPermissionChecker
+name|pc
+init|=
+name|getPermissionChecker
+argument_list|()
 decl_stmt|;
 name|boolean
 name|success
@@ -32051,6 +32055,8 @@ argument_list|,
 name|srcArg
 argument_list|,
 name|ecPolicyName
+argument_list|,
+name|pc
 argument_list|,
 name|logRetryCache
 argument_list|)
@@ -32145,9 +32151,6 @@ name|operationName
 init|=
 literal|"unsetErasureCodingPolicy"
 decl_stmt|;
-name|checkSuperuserPrivilege
-argument_list|()
-expr_stmt|;
 name|checkOperation
 argument_list|(
 name|OperationCategory
@@ -32159,6 +32162,13 @@ name|HdfsFileStatus
 name|resultingStat
 init|=
 literal|null
+decl_stmt|;
+specifier|final
+name|FSPermissionChecker
+name|pc
+init|=
+name|getPermissionChecker
+argument_list|()
 decl_stmt|;
 name|boolean
 name|success
@@ -32193,6 +32203,8 @@ argument_list|(
 name|this
 argument_list|,
 name|srcArg
+argument_list|,
+name|pc
 argument_list|,
 name|logRetryCache
 argument_list|)
@@ -32281,6 +32293,12 @@ operator|.
 name|READ
 argument_list|)
 expr_stmt|;
+name|FSPermissionChecker
+name|pc
+init|=
+name|getPermissionChecker
+argument_list|()
+decl_stmt|;
 name|readLock
 argument_list|()
 expr_stmt|;
@@ -32301,6 +32319,8 @@ argument_list|(
 name|this
 argument_list|,
 name|src
+argument_list|,
+name|pc
 argument_list|)
 return|;
 block|}
