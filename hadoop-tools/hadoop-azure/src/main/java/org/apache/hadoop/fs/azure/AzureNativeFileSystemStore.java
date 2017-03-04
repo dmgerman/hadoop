@@ -1685,11 +1685,6 @@ name|useLocalSasKeyMode
 init|=
 literal|false
 decl_stmt|;
-DECL|field|delegationToken
-specifier|private
-name|String
-name|delegationToken
-decl_stmt|;
 comment|/**    * A test hook interface that can modify the operation context we use for    * Azure Storage operations, e.g. to inject errors.    */
 annotation|@
 name|VisibleForTesting
@@ -2245,8 +2240,6 @@ argument_list|(
 name|useLocalSasKeyMode
 argument_list|,
 name|conf
-argument_list|,
-name|delegationToken
 argument_list|)
 expr_stmt|;
 block|}

@@ -734,6 +734,14 @@ argument_list|(
 literal|"io.seqfile.local.dir"
 argument_list|)
 expr_stmt|;
+comment|// - org.apache.hadoop.fs.azure.NativeAzureFileSystem
+name|xmlPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+literal|"fs.azure.authorization"
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class
