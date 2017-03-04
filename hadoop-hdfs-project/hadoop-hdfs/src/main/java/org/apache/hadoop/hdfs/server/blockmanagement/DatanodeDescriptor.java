@@ -3039,6 +3039,25 @@ operator|-
 name|scheduledSize
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"The node {} does not have enough {} space (required={},"
+operator|+
+literal|" scheduled={}, remaining={})."
+argument_list|,
+name|this
+argument_list|,
+name|t
+argument_list|,
+name|requiredSize
+argument_list|,
+name|scheduledSize
+argument_list|,
+name|remaining
+argument_list|)
+expr_stmt|;
 return|return
 literal|null
 return|;
