@@ -444,6 +444,11 @@ specifier|private
 name|int
 name|nnPort
 decl_stmt|;
+DECL|field|nnHttpPort
+specifier|private
+name|int
+name|nnHttpPort
+decl_stmt|;
 DECL|field|rmPort
 specifier|private
 name|int
@@ -557,6 +562,15 @@ argument_list|,
 literal|true
 argument_list|,
 literal|"NameNode port (default 0--we choose)"
+argument_list|)
+operator|.
+name|addOption
+argument_list|(
+literal|"nnhttpport"
+argument_list|,
+literal|true
+argument_list|,
+literal|"NameNode HTTP port (default 0--we choose)"
 argument_list|)
 operator|.
 name|addOption
@@ -774,6 +788,11 @@ operator|.
 name|nameNodePort
 argument_list|(
 name|nnPort
+argument_list|)
+operator|.
+name|nameNodeHttpPort
+argument_list|(
+name|nnHttpPort
 argument_list|)
 operator|.
 name|numDataNodes
@@ -1363,6 +1382,17 @@ argument_list|(
 name|cli
 argument_list|,
 literal|"nnport"
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+name|nnHttpPort
+operator|=
+name|intArgument
+argument_list|(
+name|cli
+argument_list|,
+literal|"nnhttpport"
 argument_list|,
 literal|0
 argument_list|)
