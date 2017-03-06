@@ -100,6 +100,26 @@ name|Records
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|HashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
 begin_comment
 comment|/**  * Contains various scheduling metrics to be reported by UI and CLI.  */
 end_comment
@@ -119,7 +139,7 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance ( int numUsedContainers, int numReservedContainers, Resource usedResources, Resource reservedResources, Resource neededResources, long memorySeconds, long vcoreSeconds, float queueUsagePerc, float clusterUsagePerc, long preemptedMemorySeconds, long preemptedVcoresSeconds)
+DECL|method|newInstance ( int numUsedContainers, int numReservedContainers, Resource usedResources, Resource reservedResources, Resource neededResources, Map<String, Long> resourceSecondsMap, float queueUsagePerc, float clusterUsagePerc, Map<String, Long> preemtedResourceSecondsMap)
 specifier|public
 specifier|static
 name|ApplicationResourceUsageReport
@@ -140,11 +160,13 @@ parameter_list|,
 name|Resource
 name|neededResources
 parameter_list|,
-name|long
-name|memorySeconds
-parameter_list|,
-name|long
-name|vcoreSeconds
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Long
+argument_list|>
+name|resourceSecondsMap
 parameter_list|,
 name|float
 name|queueUsagePerc
@@ -152,11 +174,13 @@ parameter_list|,
 name|float
 name|clusterUsagePerc
 parameter_list|,
-name|long
-name|preemptedMemorySeconds
-parameter_list|,
-name|long
-name|preemptedVcoresSeconds
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Long
+argument_list|>
+name|preemtedResourceSecondsMap
 parameter_list|)
 block|{
 name|ApplicationResourceUsageReport
@@ -208,16 +232,9 @@ argument_list|)
 expr_stmt|;
 name|report
 operator|.
-name|setMemorySeconds
+name|setResourceSecondsMap
 argument_list|(
-name|memorySeconds
-argument_list|)
-expr_stmt|;
-name|report
-operator|.
-name|setVcoreSeconds
-argument_list|(
-name|vcoreSeconds
+name|resourceSecondsMap
 argument_list|)
 expr_stmt|;
 name|report
@@ -236,16 +253,9 @@ argument_list|)
 expr_stmt|;
 name|report
 operator|.
-name|setPreemptedMemorySeconds
+name|setPreemptedResourceSecondsMap
 argument_list|(
-name|preemptedMemorySeconds
-argument_list|)
-expr_stmt|;
-name|report
-operator|.
-name|setPreemptedVcoreSeconds
-argument_list|(
-name|preemptedVcoresSeconds
+name|preemtedResourceSecondsMap
 argument_list|)
 expr_stmt|;
 return|return
@@ -545,6 +555,80 @@ specifier|abstract
 name|long
 name|getPreemptedVcoreSeconds
 parameter_list|()
+function_decl|;
+comment|/**    * Get the aggregated number of resources that the application has    * allocated times the number of seconds the application has been running.    * @return map containing the resource name and aggregated resource-seconds    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getResourceSecondsMap ()
+specifier|public
+specifier|abstract
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Long
+argument_list|>
+name|getResourceSecondsMap
+parameter_list|()
+function_decl|;
+comment|/**    * Set the aggregated number of resources that the application has    * allocated times the number of seconds the application has been running.    * @param resourceSecondsMap map containing the resource name and aggregated    *                           resource-seconds    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setResourceSecondsMap ( Map<String, Long> resourceSecondsMap)
+specifier|public
+specifier|abstract
+name|void
+name|setResourceSecondsMap
+parameter_list|(
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Long
+argument_list|>
+name|resourceSecondsMap
+parameter_list|)
+function_decl|;
+comment|/**    * Get the aggregated number of resources preempted that the application has    * allocated times the number of seconds the application has been running.    * @return map containing the resource name and aggregated preempted    * resource-seconds    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getPreemptedResourceSecondsMap ()
+specifier|public
+specifier|abstract
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Long
+argument_list|>
+name|getPreemptedResourceSecondsMap
+parameter_list|()
+function_decl|;
+comment|/**    * Set the aggregated number of resources preempted that the application has    * allocated times the number of seconds the application has been running.    * @param preemptedResourceSecondsMap  map containing the resource name and    *                                     aggregated preempted resource-seconds    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setPreemptedResourceSecondsMap ( Map<String, Long> preemptedResourceSecondsMap)
+specifier|public
+specifier|abstract
+name|void
+name|setPreemptedResourceSecondsMap
+parameter_list|(
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Long
+argument_list|>
+name|preemptedResourceSecondsMap
+parameter_list|)
 function_decl|;
 block|}
 end_class

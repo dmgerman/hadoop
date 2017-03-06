@@ -767,6 +767,16 @@ specifier|protected
 name|float
 name|clusterUsagePercentage
 decl_stmt|;
+DECL|field|resourceSecondsMap
+specifier|protected
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Long
+argument_list|>
+name|resourceSecondsMap
+decl_stmt|;
 comment|// preemption info fields
 DECL|field|preemptedResourceMB
 specifier|private
@@ -797,6 +807,16 @@ DECL|field|preemptedVcoreSeconds
 specifier|private
 name|long
 name|preemptedVcoreSeconds
+decl_stmt|;
+DECL|field|preemptedResourceSecondsMap
+specifier|protected
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Long
+argument_list|>
+name|preemptedResourceSecondsMap
 decl_stmt|;
 comment|// list of resource requests
 annotation|@
@@ -1611,6 +1631,13 @@ operator|.
 name|getVcoreSeconds
 argument_list|()
 expr_stmt|;
+name|resourceSecondsMap
+operator|=
+name|appMetrics
+operator|.
+name|getResourceSecondsMap
+argument_list|()
+expr_stmt|;
 name|preemptedMemorySeconds
 operator|=
 name|appMetrics
@@ -1623,6 +1650,13 @@ operator|=
 name|appMetrics
 operator|.
 name|getPreemptedVcoreSeconds
+argument_list|()
+expr_stmt|;
+name|preemptedResourceSecondsMap
+operator|=
+name|appMetrics
+operator|.
+name|getPreemptedResourceSecondsMap
 argument_list|()
 expr_stmt|;
 name|ApplicationSubmissionContext
@@ -2320,6 +2354,46 @@ operator|.
 name|reservedVCores
 return|;
 block|}
+DECL|method|getPreemptedMB ()
+specifier|public
+name|long
+name|getPreemptedMB
+parameter_list|()
+block|{
+return|return
+name|preemptedResourceMB
+return|;
+block|}
+DECL|method|getPreemptedVCores ()
+specifier|public
+name|long
+name|getPreemptedVCores
+parameter_list|()
+block|{
+return|return
+name|preemptedResourceVCores
+return|;
+block|}
+DECL|method|getNumNonAMContainersPreempted ()
+specifier|public
+name|int
+name|getNumNonAMContainersPreempted
+parameter_list|()
+block|{
+return|return
+name|numNonAMContainerPreempted
+return|;
+block|}
+DECL|method|getNumAMContainersPreempted ()
+specifier|public
+name|int
+name|getNumAMContainersPreempted
+parameter_list|()
+block|{
+return|return
+name|numAMContainerPreempted
+return|;
+block|}
 DECL|method|getMemorySeconds ()
 specifier|public
 name|long
@@ -2340,6 +2414,21 @@ return|return
 name|vcoreSeconds
 return|;
 block|}
+DECL|method|getResourceSecondsMap ()
+specifier|public
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Long
+argument_list|>
+name|getResourceSecondsMap
+parameter_list|()
+block|{
+return|return
+name|resourceSecondsMap
+return|;
+block|}
 DECL|method|getPreemptedMemorySeconds ()
 specifier|public
 name|long
@@ -2358,6 +2447,21 @@ parameter_list|()
 block|{
 return|return
 name|preemptedVcoreSeconds
+return|;
+block|}
+DECL|method|getPreemptedResourceSecondsMap ()
+specifier|public
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Long
+argument_list|>
+name|getPreemptedResourceSecondsMap
+parameter_list|()
+block|{
+return|return
+name|preemptedResourceSecondsMap
 return|;
 block|}
 DECL|method|getResourceRequests ()
