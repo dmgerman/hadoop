@@ -224,9 +224,7 @@ name|super
 argument_list|(
 name|DOMAIN
 argument_list|,
-name|DOMAIN
-operator|.
-name|parse
+name|getOp
 argument_list|(
 name|str
 argument_list|)
@@ -234,6 +232,53 @@ argument_list|)
 expr_stmt|;
 block|}
 end_constructor
+
+begin_function
+DECL|method|getOp (String str)
+specifier|private
+specifier|static
+name|Op
+name|getOp
+parameter_list|(
+name|String
+name|str
+parameter_list|)
+block|{
+try|try
+block|{
+return|return
+name|DOMAIN
+operator|.
+name|parse
+argument_list|(
+name|str
+argument_list|)
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalArgumentException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+name|str
+operator|+
+literal|" is not a valid "
+operator|+
+name|Type
+operator|.
+name|DELETE
+operator|+
+literal|" operation."
+argument_list|)
+throw|;
+block|}
+block|}
+end_function
 
 begin_function
 annotation|@
