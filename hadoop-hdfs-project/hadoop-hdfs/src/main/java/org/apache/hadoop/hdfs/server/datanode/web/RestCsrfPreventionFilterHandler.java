@@ -34,7 +34,9 @@ name|codec
 operator|.
 name|http
 operator|.
-name|HttpHeaderNames
+name|HttpHeaders
+operator|.
+name|Names
 operator|.
 name|CONNECTION
 import|;
@@ -52,7 +54,9 @@ name|codec
 operator|.
 name|http
 operator|.
-name|HttpHeaderValues
+name|HttpHeaders
+operator|.
+name|Values
 operator|.
 name|CLOSE
 import|;
@@ -503,7 +507,7 @@ block|{
 return|return
 name|req
 operator|.
-name|method
+name|getMethod
 argument_list|()
 operator|.
 name|name
