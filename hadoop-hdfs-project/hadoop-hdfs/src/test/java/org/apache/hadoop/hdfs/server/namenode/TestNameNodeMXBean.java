@@ -1538,6 +1538,16 @@ operator|==
 literal|0
 argument_list|)
 expr_stmt|;
+name|assertTrue
+argument_list|(
+name|liveNode
+operator|.
+name|containsKey
+argument_list|(
+literal|"lastBlockReport"
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// a. By default the upgrade domain isn't defined on any DN.
 comment|// b. If the upgrade domain is set on a DN, JMX should have the same
 comment|// value.

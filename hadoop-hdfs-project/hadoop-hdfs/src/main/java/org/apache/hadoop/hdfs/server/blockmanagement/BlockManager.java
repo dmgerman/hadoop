@@ -73,6 +73,22 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+operator|.
+name|now
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -11595,6 +11611,24 @@ argument_list|(
 name|node
 argument_list|,
 name|leaseId
+argument_list|)
+expr_stmt|;
+name|node
+operator|.
+name|setLastBlockReportTime
+argument_list|(
+name|now
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|node
+operator|.
+name|setLastBlockReportMonotonic
+argument_list|(
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

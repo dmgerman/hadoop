@@ -25691,6 +25691,17 @@ operator|.
 name|getVolumeFailures
 argument_list|()
 argument_list|)
+comment|// Block report time in minutes
+operator|.
+name|put
+argument_list|(
+literal|"lastBlockReport"
+argument_list|,
+name|getLastBlockReport
+argument_list|(
+name|node
+argument_list|)
+argument_list|)
 expr_stmt|;
 name|VolumeFailureSummary
 name|volumeFailureSummary
@@ -26303,6 +26314,29 @@ argument_list|()
 operator|)
 operator|/
 literal|1000
+return|;
+block|}
+DECL|method|getLastBlockReport (DatanodeDescriptor node)
+specifier|private
+name|Object
+name|getLastBlockReport
+parameter_list|(
+name|DatanodeDescriptor
+name|node
+parameter_list|)
+block|{
+return|return
+operator|(
+name|monotonicNow
+argument_list|()
+operator|-
+name|node
+operator|.
+name|getLastBlockReportMonotonic
+argument_list|()
+operator|)
+operator|/
+literal|60000
 return|;
 block|}
 DECL|method|getDfsUsed (DatanodeDescriptor alivenode)

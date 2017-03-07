@@ -415,6 +415,16 @@ specifier|private
 name|long
 name|maintenanceExpireTimeInMS
 decl_stmt|;
+DECL|field|lastBlockReportTime
+specifier|private
+name|long
+name|lastBlockReportTime
+decl_stmt|;
+DECL|field|lastBlockReportMonotonic
+specifier|private
+name|long
+name|lastBlockReportMonotonic
+decl_stmt|;
 DECL|method|DatanodeInfo (DatanodeInfo from)
 specifier|protected
 name|DatanodeInfo
@@ -545,6 +555,24 @@ operator|.
 name|getUpgradeDomain
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|lastBlockReportTime
+operator|=
+name|from
+operator|.
+name|getLastBlockReportTime
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|lastBlockReportMonotonic
+operator|=
+name|from
+operator|.
+name|getLastBlockReportMonotonic
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|DatanodeInfo (DatanodeID nodeID)
 specifier|protected
@@ -625,6 +653,18 @@ name|adminState
 operator|=
 literal|null
 expr_stmt|;
+name|this
+operator|.
+name|lastBlockReportTime
+operator|=
+literal|0L
+expr_stmt|;
+name|this
+operator|.
+name|lastBlockReportMonotonic
+operator|=
+literal|0L
+expr_stmt|;
 block|}
 DECL|method|DatanodeInfo (DatanodeID nodeID, String location)
 specifier|protected
@@ -650,7 +690,7 @@ name|location
 expr_stmt|;
 block|}
 comment|/** Constructor. */
-DECL|method|DatanodeInfo (final String ipAddr, final String hostName, final String datanodeUuid, final int xferPort, final int infoPort, final int infoSecurePort, final int ipcPort, final long capacity, final long dfsUsed, final long nonDfsUsed, final long remaining, final long blockPoolUsed, final long cacheCapacity, final long cacheUsed, final long lastUpdate, final long lastUpdateMonotonic, final int xceiverCount, final String networkLocation, final AdminStates adminState, final String upgradeDomain)
+DECL|method|DatanodeInfo (final String ipAddr, final String hostName, final String datanodeUuid, final int xferPort, final int infoPort, final int infoSecurePort, final int ipcPort, final long capacity, final long dfsUsed, final long nonDfsUsed, final long remaining, final long blockPoolUsed, final long cacheCapacity, final long cacheUsed, final long lastUpdate, final long lastUpdateMonotonic, final int xceiverCount, final String networkLocation, final AdminStates adminState, final String upgradeDomain, final long lastBlockReportTime, final long lastBlockReportMonotonic)
 specifier|private
 name|DatanodeInfo
 parameter_list|(
@@ -733,6 +773,14 @@ parameter_list|,
 specifier|final
 name|String
 name|upgradeDomain
+parameter_list|,
+specifier|final
+name|long
+name|lastBlockReportTime
+parameter_list|,
+specifier|final
+name|long
+name|lastBlockReportMonotonic
 parameter_list|)
 block|{
 name|super
@@ -829,6 +877,18 @@ operator|.
 name|upgradeDomain
 operator|=
 name|upgradeDomain
+expr_stmt|;
+name|this
+operator|.
+name|lastBlockReportTime
+operator|=
+name|lastBlockReportTime
+expr_stmt|;
+name|this
+operator|.
+name|lastBlockReportMonotonic
+operator|=
+name|lastBlockReportMonotonic
 expr_stmt|;
 block|}
 comment|/** Network location name. */
@@ -2008,6 +2068,33 @@ argument_list|(
 literal|"\n"
 argument_list|)
 expr_stmt|;
+name|buffer
+operator|.
+name|append
+argument_list|(
+literal|"Last Block Report: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|lastBlockReportTime
+operator|!=
+literal|0
+condition|?
+operator|new
+name|Date
+argument_list|(
+name|lastBlockReportTime
+argument_list|)
+else|:
+literal|"Never"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"\n"
+argument_list|)
+expr_stmt|;
 return|return
 name|buffer
 operator|.
@@ -2576,6 +2663,62 @@ operator|.
 name|maintenanceExpireTimeInMS
 return|;
 block|}
+comment|/** Sets the last block report time. */
+DECL|method|setLastBlockReportTime (long lastBlockReportTime)
+specifier|public
+name|void
+name|setLastBlockReportTime
+parameter_list|(
+name|long
+name|lastBlockReportTime
+parameter_list|)
+block|{
+name|this
+operator|.
+name|lastBlockReportTime
+operator|=
+name|lastBlockReportTime
+expr_stmt|;
+block|}
+comment|/** Sets the last block report monotonic time. */
+DECL|method|setLastBlockReportMonotonic (long lastBlockReportMonotonic)
+specifier|public
+name|void
+name|setLastBlockReportMonotonic
+parameter_list|(
+name|long
+name|lastBlockReportMonotonic
+parameter_list|)
+block|{
+name|this
+operator|.
+name|lastBlockReportMonotonic
+operator|=
+name|lastBlockReportMonotonic
+expr_stmt|;
+block|}
+comment|/** Last block report time. */
+DECL|method|getLastBlockReportTime ()
+specifier|public
+name|long
+name|getLastBlockReportTime
+parameter_list|()
+block|{
+return|return
+name|lastBlockReportTime
+return|;
+block|}
+comment|/** Last block report monotonic time. */
+DECL|method|getLastBlockReportMonotonic ()
+specifier|public
+name|long
+name|getLastBlockReportMonotonic
+parameter_list|()
+block|{
+return|return
+name|lastBlockReportMonotonic
+return|;
+block|}
 comment|/**    * Take the node out of maintenance mode.    */
 DECL|method|stopMaintenance ()
 specifier|public
@@ -3031,6 +3174,20 @@ name|nonDfsUsed
 init|=
 literal|0L
 decl_stmt|;
+DECL|field|lastBlockReportTime
+specifier|private
+name|long
+name|lastBlockReportTime
+init|=
+literal|0L
+decl_stmt|;
+DECL|field|lastBlockReportMonotonic
+specifier|private
+name|long
+name|lastBlockReportMonotonic
+init|=
+literal|0L
+decl_stmt|;
 DECL|method|setFrom (DatanodeInfo from)
 specifier|public
 name|DatanodeInfoBuilder
@@ -3155,6 +3312,24 @@ operator|=
 name|from
 operator|.
 name|getUpgradeDomain
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|lastBlockReportTime
+operator|=
+name|from
+operator|.
+name|getLastBlockReportTime
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|lastBlockReportMonotonic
+operator|=
+name|from
+operator|.
+name|getLastBlockReportMonotonic
 argument_list|()
 expr_stmt|;
 name|setNodeID
@@ -3624,6 +3799,44 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|setLastBlockReportTime (long time)
+specifier|public
+name|DatanodeInfoBuilder
+name|setLastBlockReportTime
+parameter_list|(
+name|long
+name|time
+parameter_list|)
+block|{
+name|this
+operator|.
+name|lastBlockReportTime
+operator|=
+name|time
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|setLastBlockReportMonotonic (long time)
+specifier|public
+name|DatanodeInfoBuilder
+name|setLastBlockReportMonotonic
+parameter_list|(
+name|long
+name|time
+parameter_list|)
+block|{
+name|this
+operator|.
+name|lastBlockReportMonotonic
+operator|=
+name|time
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|build ()
 specifier|public
 name|DatanodeInfo
@@ -3673,6 +3886,10 @@ argument_list|,
 name|adminState
 argument_list|,
 name|upgradeDomain
+argument_list|,
+name|lastBlockReportTime
+argument_list|,
+name|lastBlockReportMonotonic
 argument_list|)
 return|;
 block|}
