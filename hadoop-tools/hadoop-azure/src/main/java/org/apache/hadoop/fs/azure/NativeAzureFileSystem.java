@@ -4456,6 +4456,49 @@ name|appendSupportEnabled
 init|=
 literal|false
 decl_stmt|;
+comment|/**    * Configuration key to enable authorization support in WASB.    */
+DECL|field|KEY_AZURE_AUTHORIZATION
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KEY_AZURE_AUTHORIZATION
+init|=
+literal|"fs.azure.authorization"
+decl_stmt|;
+comment|/**    * Default value for the authorization support in WASB.    */
+DECL|field|DEFAULT_AZURE_AUTHORIZATION
+specifier|private
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_AZURE_AUTHORIZATION
+init|=
+literal|false
+decl_stmt|;
+comment|/**    * Flag controlling authorization support in WASB.    */
+DECL|field|azureAuthorization
+specifier|private
+name|boolean
+name|azureAuthorization
+init|=
+literal|false
+decl_stmt|;
+comment|/**    * Authorizer to use when authorization support is enabled in    * WASB.    */
+DECL|field|authorizer
+specifier|private
+name|WasbAuthorizerInterface
+name|authorizer
+init|=
+literal|null
+decl_stmt|;
+DECL|field|delegationToken
+specifier|private
+name|String
+name|delegationToken
+init|=
+literal|null
+decl_stmt|;
 DECL|method|NativeAzureFileSystem ()
 specifier|public
 name|NativeAzureFileSystem
@@ -4551,7 +4594,7 @@ name|number
 return|;
 block|}
 block|}
-comment|/**    * Checks if the given URI scheme is a scheme that's affiliated with the Azure    * File System.    *     * @param scheme    *          The URI scheme.    * @return true iff it's an Azure File System URI scheme.    */
+comment|/**    * Checks if the given URI scheme is a scheme that's affiliated with the Azure    * File System.    *    * @param scheme    *          The URI scheme.    * @return true iff it's an Azure File System URI scheme.    */
 DECL|method|isWasbScheme (String scheme)
 specifier|private
 specifier|static
@@ -4600,7 +4643,7 @@ argument_list|)
 operator|)
 return|;
 block|}
-comment|/**    * Puts in the authority of the default file system if it is a WASB file    * system and the given URI's authority is null.    *     * @return The URI with reconstructed authority if necessary and possible.    */
+comment|/**    * Puts in the authority of the default file system if it is a WASB file    * system and the given URI's authority is null.    *    * @return The URI with reconstructed authority if necessary and possible.    */
 DECL|method|reconstructAuthorityIfNeeded (URI uri, Configuration conf)
 specifier|private
 specifier|static
@@ -5006,6 +5049,78 @@ argument_list|,
 name|DEFAULT_AZURE_RENAME_THREADS
 argument_list|)
 expr_stmt|;
+name|boolean
+name|useSecureMode
+init|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|AzureNativeFileSystemStore
+operator|.
+name|KEY_USE_SECURE_MODE
+argument_list|,
+name|AzureNativeFileSystemStore
+operator|.
+name|DEFAULT_USE_SECURE_MODE
+argument_list|)
+decl_stmt|;
+name|this
+operator|.
+name|azureAuthorization
+operator|=
+name|useSecureMode
+operator|&&
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|KEY_AZURE_AUTHORIZATION
+argument_list|,
+name|DEFAULT_AZURE_AUTHORIZATION
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|this
+operator|.
+name|azureAuthorization
+condition|)
+block|{
+name|this
+operator|.
+name|authorizer
+operator|=
+operator|new
+name|RemoteWasbAuthorizerImpl
+argument_list|()
+expr_stmt|;
+name|authorizer
+operator|.
+name|init
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|updateWasbAuthorizer (WasbAuthorizerInterface authorizer)
+specifier|public
+name|void
+name|updateWasbAuthorizer
+parameter_list|(
+name|WasbAuthorizerInterface
+name|authorizer
+parameter_list|)
+block|{
+name|this
+operator|.
+name|authorizer
+operator|=
+name|authorizer
+expr_stmt|;
 block|}
 DECL|method|createDefaultStore (Configuration conf)
 specifier|private
@@ -5384,7 +5499,7 @@ name|path
 argument_list|)
 return|;
 block|}
-comment|/**    * For unit test purposes, retrieves the AzureNativeFileSystemStore store    * backing this file system.    *     * @return The store object.    */
+comment|/**    * For unit test purposes, retrieves the AzureNativeFileSystemStore store    * backing this file system.    *    * @return The store object.    */
 annotation|@
 name|VisibleForTesting
 DECL|method|getStore ()
@@ -5405,6 +5520,65 @@ block|{
 return|return
 name|store
 return|;
+block|}
+DECL|method|performAuthCheck (String path, String accessType, String operation)
+specifier|private
+name|void
+name|performAuthCheck
+parameter_list|(
+name|String
+name|path
+parameter_list|,
+name|String
+name|accessType
+parameter_list|,
+name|String
+name|operation
+parameter_list|)
+throws|throws
+name|WasbAuthorizationException
+throws|,
+name|IOException
+block|{
+if|if
+condition|(
+name|azureAuthorization
+operator|&&
+name|this
+operator|.
+name|authorizer
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|this
+operator|.
+name|authorizer
+operator|.
+name|authorize
+argument_list|(
+name|path
+argument_list|,
+name|accessType
+argument_list|,
+name|delegationToken
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|WasbAuthorizationException
+argument_list|(
+name|operation
+operator|+
+literal|" operation for Path : "
+operator|+
+name|path
+operator|+
+literal|" not allowed"
+argument_list|)
+throw|;
+block|}
 block|}
 comment|/**    * Gets the metrics source for this file system.    * This is mainly here for unit testing purposes.    *    * @return the metrics source.    */
 DECL|method|getInstrumentation ()
@@ -5468,6 +5642,23 @@ argument_list|(
 name|f
 argument_list|)
 decl_stmt|;
+name|performAuthCheck
+argument_list|(
+name|absolutePath
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|WasbAuthorizationOperations
+operator|.
+name|WRITE
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+literal|"append"
+argument_list|)
+expr_stmt|;
 name|String
 name|key
 init|=
@@ -5746,7 +5937,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/**    * Get a self-renewing lease on the specified file.    * @param path path whose lease to be renewed.    * @return Lease    */
+comment|/**    * Get a self-renewing lease on the specified file.    * @param path path whose lease to be renewed.    * @return Lease    * @throws AzureException when not being able to acquire a lease on the path    */
 DECL|method|acquireLease (Path path)
 specifier|public
 name|SelfRenewingLease
@@ -6313,6 +6504,23 @@ argument_list|(
 name|f
 argument_list|)
 decl_stmt|;
+name|performAuthCheck
+argument_list|(
+name|absolutePath
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|WasbAuthorizationOperations
+operator|.
+name|WRITE
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+literal|"create"
+argument_list|)
+expr_stmt|;
 name|String
 name|key
 init|=
@@ -6755,6 +6963,23 @@ argument_list|(
 name|f
 argument_list|)
 decl_stmt|;
+name|performAuthCheck
+argument_list|(
+name|absolutePath
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|WasbAuthorizationOperations
+operator|.
+name|EXECUTE
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+literal|"delete"
+argument_list|)
+expr_stmt|;
 name|String
 name|key
 init|=
@@ -7885,6 +8110,23 @@ argument_list|(
 name|f
 argument_list|)
 decl_stmt|;
+name|performAuthCheck
+argument_list|(
+name|absolutePath
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|WasbAuthorizationOperations
+operator|.
+name|EXECUTE
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+literal|"getFileStatus"
+argument_list|)
+expr_stmt|;
 name|String
 name|key
 init|=
@@ -8239,6 +8481,23 @@ argument_list|(
 name|f
 argument_list|)
 decl_stmt|;
+name|performAuthCheck
+argument_list|(
+name|absolutePath
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|WasbAuthorizationOperations
+operator|.
+name|EXECUTE
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+literal|"list"
+argument_list|)
+expr_stmt|;
 name|String
 name|key
 init|=
@@ -8963,7 +9222,7 @@ block|,
 DECL|enumConstant|ChangeExistingDirectory
 name|ChangeExistingDirectory
 block|,   }
-comment|/**    * Applies the applicable UMASK's on the given permission.    *     * @param permission    *          The permission to mask.    * @param applyMode    *          Whether to also apply the default umask.    * @return The masked persmission.    */
+comment|/**    * Applies the applicable UMASK's on the given permission.    *    * @param permission    *          The permission to mask.    * @param applyMode    *          Whether to also apply the default umask.    * @return The masked persmission.    */
 DECL|method|applyUMask (final FsPermission permission, final UMaskApplyMode applyMode)
 specifier|private
 name|FsPermission
@@ -9023,7 +9282,7 @@ return|return
 name|newPermission
 return|;
 block|}
-comment|/**    * Creates the PermissionStatus object to use for the given permission, based    * on the current user in context.    *     * @param permission    *          The permission for the file.    * @return The permission status object to use.    * @throws IOException    *           If login fails in getCurrentUser    */
+comment|/**    * Creates the PermissionStatus object to use for the given permission, based    * on the current user in context.    *    * @param permission    *          The permission for the file.    * @return The permission status object to use.    * @throws IOException    *           If login fails in getCurrentUser    */
 annotation|@
 name|VisibleForTesting
 DECL|method|createPermissionStatus (FsPermission permission)
@@ -9147,6 +9406,23 @@ argument_list|(
 name|f
 argument_list|)
 decl_stmt|;
+name|performAuthCheck
+argument_list|(
+name|absolutePath
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|WasbAuthorizationOperations
+operator|.
+name|EXECUTE
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+literal|"mkdirs"
+argument_list|)
+expr_stmt|;
 name|PermissionStatus
 name|permissionStatus
 init|=
@@ -9424,6 +9700,23 @@ argument_list|(
 name|f
 argument_list|)
 decl_stmt|;
+name|performAuthCheck
+argument_list|(
+name|absolutePath
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|WasbAuthorizationOperations
+operator|.
+name|READ
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+literal|"read"
+argument_list|)
+expr_stmt|;
 name|String
 name|key
 init|=
@@ -9688,15 +9981,37 @@ literal|" through WASB that has colons in the name"
 argument_list|)
 throw|;
 block|}
+name|Path
+name|absolutePath
+init|=
+name|makeAbsolute
+argument_list|(
+name|src
+argument_list|)
+decl_stmt|;
+name|performAuthCheck
+argument_list|(
+name|absolutePath
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|WasbAuthorizationOperations
+operator|.
+name|EXECUTE
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+literal|"rename"
+argument_list|)
+expr_stmt|;
 name|String
 name|srcKey
 init|=
 name|pathToKey
 argument_list|(
-name|makeAbsolute
-argument_list|(
-name|src
-argument_list|)
+name|absolutePath
 argument_list|)
 decl_stmt|;
 if|if
@@ -10907,6 +11222,23 @@ argument_list|(
 name|p
 argument_list|)
 decl_stmt|;
+name|performAuthCheck
+argument_list|(
+name|absolutePath
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|WasbAuthorizationOperations
+operator|.
+name|EXECUTE
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+literal|"setPermission"
+argument_list|)
+expr_stmt|;
 name|String
 name|key
 init|=
@@ -11123,6 +11455,23 @@ argument_list|(
 name|p
 argument_list|)
 decl_stmt|;
+name|performAuthCheck
+argument_list|(
+name|absolutePath
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|WasbAuthorizationOperations
+operator|.
+name|EXECUTE
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+literal|"setOwner"
+argument_list|)
+expr_stmt|;
 name|String
 name|key
 init|=

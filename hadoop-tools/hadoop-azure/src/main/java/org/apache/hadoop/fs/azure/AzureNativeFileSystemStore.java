@@ -1479,7 +1479,7 @@ literal|90
 decl_stmt|;
 comment|/**    * Default values to control SAS Key mode.    * By default we set the values to false.    */
 DECL|field|DEFAULT_USE_SECURE_MODE
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|boolean
@@ -3404,6 +3404,13 @@ expr_stmt|;
 name|canCreateOrModifyContainer
 operator|=
 literal|true
+expr_stmt|;
+name|configureAzureStorageSession
+argument_list|()
+expr_stmt|;
+name|tolerateOobAppends
+operator|=
+literal|false
 expr_stmt|;
 block|}
 comment|/**    * Connect to Azure storage using account key credentials.    */

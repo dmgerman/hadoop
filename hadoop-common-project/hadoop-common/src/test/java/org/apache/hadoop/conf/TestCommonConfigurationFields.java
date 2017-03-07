@@ -510,6 +510,13 @@ argument_list|(
 literal|"fs.azure.secure.mode"
 argument_list|)
 expr_stmt|;
+name|xmlPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+literal|"fs.azure.authorization"
+argument_list|)
+expr_stmt|;
 comment|// Deprecated properties.  These should eventually be removed from the
 comment|// class.
 name|configurationPropsToSkipCompare
