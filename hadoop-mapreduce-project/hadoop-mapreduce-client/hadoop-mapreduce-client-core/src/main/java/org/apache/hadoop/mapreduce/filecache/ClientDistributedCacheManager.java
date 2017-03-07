@@ -1429,6 +1429,22 @@ operator|.
 name|getPermission
 argument_list|()
 decl_stmt|;
+comment|// Encrypted files are always treated as private. This stance has two
+comment|// important side effects.  The first is that the encrypted files will be
+comment|// downloaded as the job owner instead of the YARN user, which is required
+comment|// for the KMS ACLs to work as expected.  Second, it prevent a file with
+comment|// world readable permissions that is stored in an encryption zone from
+comment|// being localized as a publicly shared file with world readable
+comment|// permissions.
+if|if
+condition|(
+operator|!
+name|perms
+operator|.
+name|getEncryptedBit
+argument_list|()
+condition|)
+block|{
 name|FsAction
 name|otherAction
 init|=
@@ -1450,6 +1466,7 @@ block|{
 return|return
 literal|true
 return|;
+block|}
 block|}
 return|return
 literal|false
