@@ -2719,6 +2719,54 @@ comment|// Remove the source folder. Don't check explicitly if it exists,
 comment|// to avoid triggering redo recursively.
 try|try
 block|{
+comment|// Rename the source folder 0-byte root file
+comment|// as destination folder 0-byte root file.
+name|FileMetadata
+name|srcMetaData
+init|=
+name|this
+operator|.
+name|getSourceMetadata
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|srcMetaData
+operator|.
+name|getBlobMaterialization
+argument_list|()
+operator|==
+name|BlobMaterialization
+operator|.
+name|Explicit
+condition|)
+block|{
+comment|// We already have a lease. So let's just rename the source blob
+comment|// as destination blob under same lease.
+name|fs
+operator|.
+name|getStoreInterface
+argument_list|()
+operator|.
+name|rename
+argument_list|(
+name|this
+operator|.
+name|getSrcKey
+argument_list|()
+argument_list|,
+name|this
+operator|.
+name|getDstKey
+argument_list|()
+argument_list|,
+literal|false
+argument_list|,
+name|lease
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Now we can safely delete the source folder.
 name|fs
 operator|.
 name|getStoreInterface
