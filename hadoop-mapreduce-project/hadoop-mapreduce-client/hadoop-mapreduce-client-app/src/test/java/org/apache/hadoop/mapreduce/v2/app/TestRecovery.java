@@ -1705,24 +1705,15 @@ operator|.
 name|RUNNING
 argument_list|)
 expr_stmt|;
-comment|// reduces must be in NEW state
-name|Assert
+name|app
 operator|.
-name|assertEquals
+name|waitForState
 argument_list|(
-literal|"Reduce Task state not correct"
+name|reduceTask
 argument_list|,
 name|TaskState
 operator|.
 name|RUNNING
-argument_list|,
-name|reduceTask
-operator|.
-name|getReport
-argument_list|()
-operator|.
-name|getTaskState
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|/////////// Play some games with the TaskAttempts of the first task //////
@@ -8636,24 +8627,15 @@ operator|.
 name|RUNNING
 argument_list|)
 expr_stmt|;
-comment|// reduces must be in NEW state
-name|Assert
+name|app
 operator|.
-name|assertEquals
+name|waitForState
 argument_list|(
-literal|"Reduce Task state not correct"
+name|reduceTask
 argument_list|,
 name|TaskState
 operator|.
 name|RUNNING
-argument_list|,
-name|reduceTask
-operator|.
-name|getReport
-argument_list|()
-operator|.
-name|getTaskState
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|//send the done signal to the map 1 attempt 1
@@ -9544,24 +9526,15 @@ operator|.
 name|RUNNING
 argument_list|)
 expr_stmt|;
-comment|// reduces must be in NEW state
-name|Assert
+name|app
 operator|.
-name|assertEquals
+name|waitForState
 argument_list|(
-literal|"Reduce Task state not correct"
+name|reduceTask
 argument_list|,
 name|TaskState
 operator|.
 name|RUNNING
-argument_list|,
-name|reduceTask
-operator|.
-name|getReport
-argument_list|()
-operator|.
-name|getTaskState
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|//send the done signal to the 1st map attempt
