@@ -187,7 +187,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Encapsulates information regarding the filters to apply while querying. These  * filters restrict the number of entities to return.<br>  * Filters contain the following :<br>  *<ul>  *<li><b>limit</b> - A limit on the number of entities to return. If null or  * {@literal< 0}, defaults to {@link #DEFAULT_LIMIT}. The maximum possible  * value for limit can be {@link Long#MAX_VALUE}.</li>  *<li><b>createdTimeBegin</b> - Matched entities should not be created before  * this timestamp. If null or {@literal<=0}, defaults to 0.</li>  *<li><b>createdTimeEnd</b> - Matched entities should not be created after this  * timestamp. If null or {@literal<=0}, defaults to  * {@link Long#MAX_VALUE}.</li>  *<li><b>relatesTo</b> - Matched entities should or should not relate to given  * entities depending on what's specified in the filter. The entities in  * relatesTo are identified by entity type and id. This is represented as  * a {@link TimelineFilterList} object containing  * {@link TimelineKeyValuesFilter} objects, each of which contains a  * set of values for a key and the comparison operator (equals/not equals). The  * key which represents the entity type is a string and values are a set of  * entity identifiers (also string). As it is a filter list, relatesTo can be  * evaluated with logical AND/OR and we can create a hierarchy of these  * {@link TimelineKeyValuesFilter} objects. If null or empty, the relations are  * not matched.</li>  *<li><b>isRelatedTo</b> - Matched entities should or should not be related  * to given entities depending on what's specified in the filter. The entities  * in isRelatedTo are identified by entity type and id.  This is represented as  * a {@link TimelineFilterList} object containing  * {@link TimelineKeyValuesFilter} objects, each of which contains a  * set of values for a key and the comparison operator (equals/not equals). The  * key which represents the entity type is a string and values are a set of  * entity identifiers (also string). As it is a filter list, relatesTo can be  * evaluated with logical AND/OR and we can create a hierarchy of these  * {@link TimelineKeyValuesFilter} objects. If null or empty, the relations are  * not matched.</li>  *<li><b>infoFilters</b> - Matched entities should have exact matches to  * the given info and should be either equal or not equal to given value  * depending on what's specified in the filter. This is represented as a  * {@link TimelineFilterList} object containing {@link TimelineKeyValueFilter}  * objects, each of which contains key-value pairs with a comparison operator  * (equals/not equals). The key which represents the info key is a string but  * value can be any object. As it is a filter list, info filters can be  * evaluated with logical AND/OR and we can create a hierarchy of these  * key-value pairs. If null or empty, the filter is not applied.</li>  *<li><b>configFilters</b> - Matched entities should have exact matches to  * the given configurations and should be either equal or not equal to given  * value depending on what's specified in the filter. This is represented as a  * {@link TimelineFilterList} object containing {@link TimelineKeyValueFilter}  * objects, each of which contains key-value pairs with a comparison operator  * (equals/not equals). Both key (which represents config name) and value (which  * is config value) are strings. As it is a filter list, config filters can be  * evaluated with logical AND/OR and we can create a hierarchy of these  * {@link TimelineKeyValueFilter} objects. If null or empty, the filter is not  * applied.</li>  *<li><b>metricFilters</b> - Matched entities should contain the given  * metrics and satisfy the specified relation with the value. This is  * represented as a {@link TimelineFilterList} object containing  * {@link TimelineCompareFilter} objects, each of which contains key-value pairs  * along with the specified relational/comparison operator represented by  * {@link TimelineCompareOp}.  The key is a string and value is integer  * (Short/Integer/Long). As it is a filter list, metric filters can be evaluated  * with logical AND/OR and we can create a hierarchy of these  * {@link TimelineCompareFilter} objects. If null or empty, the filter is not  * applied.</li>  *<li><b>eventFilters</b> - Matched entities should contain or not contain the  * given events. This is represented as a {@link TimelineFilterList} object  * containing {@link TimelineExistsFilter} objects, each of which contains a  * value which must or must not exist depending on comparison operator specified  * in the filter. For event filters, the value represents a event id. As it is a  * filter list, event filters can be evaluated with logical AND/OR and we can  * create a hierarchy of these {@link TimelineExistsFilter} objects. If null or  * empty, the filter is not applied.</li>  *<li><b>fromIdPrefix</b> - If specified, retrieve entities with an id prefix  * greater than or equal to the specified fromIdPrefix. If fromIdPrefix is same  * for all entities of a given entity type, then the user must provide fromId as  * a filter to denote the start entity from which further entities will be  * fetched. fromIdPrefix is mandatory even in the case the entity id prefix is  * not used and should be set to 0.</li>  *<li><b>fromId</b> - If specified along with fromIdPrefix, retrieve entities  * with an id prefix greater than or equal to specified id prefix in  * fromIdPrefix and entity id lexicographically greater than or equal to entity  * id specified in fromId. Please note than fromIdPrefix is mandatory if fromId  * is specified, otherwise, the filter will be ignored. It is recommended to  * provide both fromIdPrefix and fromId filters for more accurate results as id  * prefix may not be unique for an entity.</li>  *</ul>  */
+comment|/**  * Encapsulates information regarding the filters to apply while querying. These  * filters restrict the number of entities to return.<br>  * Filters contain the following :<br>  *<ul>  *<li><b>limit</b> - A limit on the number of entities to return. If null or  * {@literal< 0}, defaults to {@link #DEFAULT_LIMIT}. The maximum possible  * value for limit can be {@link Long#MAX_VALUE}.</li>  *<li><b>createdTimeBegin</b> - Matched entities should not be created before  * this timestamp. If null or {@literal<=0}, defaults to 0.</li>  *<li><b>createdTimeEnd</b> - Matched entities should not be created after this  * timestamp. If null or {@literal<=0}, defaults to  * {@link Long#MAX_VALUE}.</li>  *<li><b>relatesTo</b> - Matched entities should or should not relate to given  * entities depending on what's specified in the filter. The entities in  * relatesTo are identified by entity type and id. This is represented as  * a {@link TimelineFilterList} object containing  * {@link TimelineKeyValuesFilter} objects, each of which contains a  * set of values for a key and the comparison operator (equals/not equals). The  * key which represents the entity type is a string and values are a set of  * entity identifiers (also string). As it is a filter list, relatesTo can be  * evaluated with logical AND/OR and we can create a hierarchy of these  * {@link TimelineKeyValuesFilter} objects. If null or empty, the relations are  * not matched.</li>  *<li><b>isRelatedTo</b> - Matched entities should or should not be related  * to given entities depending on what's specified in the filter. The entities  * in isRelatedTo are identified by entity type and id.  This is represented as  * a {@link TimelineFilterList} object containing  * {@link TimelineKeyValuesFilter} objects, each of which contains a  * set of values for a key and the comparison operator (equals/not equals). The  * key which represents the entity type is a string and values are a set of  * entity identifiers (also string). As it is a filter list, relatesTo can be  * evaluated with logical AND/OR and we can create a hierarchy of these  * {@link TimelineKeyValuesFilter} objects. If null or empty, the relations are  * not matched.</li>  *<li><b>infoFilters</b> - Matched entities should have exact matches to  * the given info and should be either equal or not equal to given value  * depending on what's specified in the filter. This is represented as a  * {@link TimelineFilterList} object containing {@link TimelineKeyValueFilter}  * objects, each of which contains key-value pairs with a comparison operator  * (equals/not equals). The key which represents the info key is a string but  * value can be any object. As it is a filter list, info filters can be  * evaluated with logical AND/OR and we can create a hierarchy of these  * key-value pairs. If null or empty, the filter is not applied.</li>  *<li><b>configFilters</b> - Matched entities should have exact matches to  * the given configurations and should be either equal or not equal to given  * value depending on what's specified in the filter. This is represented as a  * {@link TimelineFilterList} object containing {@link TimelineKeyValueFilter}  * objects, each of which contains key-value pairs with a comparison operator  * (equals/not equals). Both key (which represents config name) and value (which  * is config value) are strings. As it is a filter list, config filters can be  * evaluated with logical AND/OR and we can create a hierarchy of these  * {@link TimelineKeyValueFilter} objects. If null or empty, the filter is not  * applied.</li>  *<li><b>metricFilters</b> - Matched entities should contain the given  * metrics and satisfy the specified relation with the value. This is  * represented as a {@link TimelineFilterList} object containing  * {@link TimelineCompareFilter} objects, each of which contains key-value pairs  * along with the specified relational/comparison operator represented by  * {@link TimelineCompareOp}.  The key is a string and value is integer  * (Short/Integer/Long). As it is a filter list, metric filters can be evaluated  * with logical AND/OR and we can create a hierarchy of these  * {@link TimelineCompareFilter} objects. If null or empty, the filter is not  * applied.</li>  *<li><b>eventFilters</b> - Matched entities should contain or not contain the  * given events. This is represented as a {@link TimelineFilterList} object  * containing {@link TimelineExistsFilter} objects, each of which contains a  * value which must or must not exist depending on comparison operator specified  * in the filter. For event filters, the value represents a event id. As it is a  * filter list, event filters can be evaluated with logical AND/OR and we can  * create a hierarchy of these {@link TimelineExistsFilter} objects. If null or  * empty, the filter is not applied.</li>  *<li><b>fromId</b> - If specified, retrieve the next set of entities from the  * given fromId. The set of entities retrieved is inclusive of specified fromId.  * fromId should be taken from the value associated with FROM_ID info key in  * entity response which was sent earlier.</li>  *</ul>  */
 end_comment
 
 begin_class
@@ -244,11 +244,6 @@ DECL|field|eventFilters
 specifier|private
 name|TimelineFilterList
 name|eventFilters
-decl_stmt|;
-DECL|field|fromIdPrefix
-specifier|private
-name|Long
-name|fromIdPrefix
 decl_stmt|;
 DECL|field|fromId
 specifier|private
@@ -312,7 +307,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|TimelineEntityFilters (Long entityLimit, Long timeBegin, Long timeEnd, TimelineFilterList entityRelatesTo, TimelineFilterList entityIsRelatedTo, TimelineFilterList entityInfoFilters, TimelineFilterList entityConfigFilters, TimelineFilterList entityMetricFilters, TimelineFilterList entityEventFilters, Long fromidprefix, String fromid)
+DECL|method|TimelineEntityFilters (Long entityLimit, Long timeBegin, Long timeEnd, TimelineFilterList entityRelatesTo, TimelineFilterList entityIsRelatedTo, TimelineFilterList entityInfoFilters, TimelineFilterList entityConfigFilters, TimelineFilterList entityMetricFilters, TimelineFilterList entityEventFilters, String fromid)
 specifier|public
 name|TimelineEntityFilters
 parameter_list|(
@@ -343,9 +338,6 @@ parameter_list|,
 name|TimelineFilterList
 name|entityEventFilters
 parameter_list|,
-name|Long
-name|fromidprefix
-parameter_list|,
 name|String
 name|fromid
 parameter_list|)
@@ -370,12 +362,6 @@ name|entityMetricFilters
 argument_list|,
 name|entityEventFilters
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|fromIdPrefix
-operator|=
-name|fromidprefix
 expr_stmt|;
 name|this
 operator|.
@@ -855,32 +841,6 @@ operator|.
 name|fromId
 operator|=
 name|fromId
-expr_stmt|;
-block|}
-DECL|method|getFromIdPrefix ()
-specifier|public
-name|Long
-name|getFromIdPrefix
-parameter_list|()
-block|{
-return|return
-name|fromIdPrefix
-return|;
-block|}
-DECL|method|setFromIdPrefix (Long fromIdPrefix)
-specifier|public
-name|void
-name|setFromIdPrefix
-parameter_list|(
-name|Long
-name|fromIdPrefix
-parameter_list|)
-block|{
-name|this
-operator|.
-name|fromIdPrefix
-operator|=
-name|fromIdPrefix
 expr_stmt|;
 block|}
 block|}

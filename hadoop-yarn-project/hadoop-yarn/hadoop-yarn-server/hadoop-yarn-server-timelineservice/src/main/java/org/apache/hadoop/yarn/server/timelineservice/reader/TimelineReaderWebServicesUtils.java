@@ -223,7 +223,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Parse the passed filters represented as strings and convert them into a    * {@link TimelineEntityFilters} object.    * @param limit Limit to number of entities to return.    * @param createdTimeStart Created time start for the entities to return.    * @param createdTimeEnd Created time end for the entities to return.    * @param relatesTo Entities to return must match relatesTo.    * @param isRelatedTo Entities to return must match isRelatedTo.    * @param infofilters Entities to return must match these info filters.    * @param conffilters Entities to return must match these metric filters.    * @param metricfilters Entities to return must match these metric filters.    * @param eventfilters Entities to return must match these event filters.    * @return a {@link TimelineEntityFilters} object.    * @throws TimelineParseException if any problem occurs during parsing.    */
-DECL|method|createTimelineEntityFilters (String limit, String createdTimeStart, String createdTimeEnd, String relatesTo, String isRelatedTo, String infofilters, String conffilters, String metricfilters, String eventfilters, String fromidprefix, String fromid)
+DECL|method|createTimelineEntityFilters (String limit, String createdTimeStart, String createdTimeEnd, String relatesTo, String isRelatedTo, String infofilters, String conffilters, String metricfilters, String eventfilters, String fromid)
 specifier|static
 name|TimelineEntityFilters
 name|createTimelineEntityFilters
@@ -254,9 +254,6 @@ name|metricfilters
 parameter_list|,
 name|String
 name|eventfilters
-parameter_list|,
-name|String
-name|fromidprefix
 parameter_list|,
 name|String
 name|fromid
@@ -315,11 +312,6 @@ argument_list|,
 name|parseEventFilters
 argument_list|(
 name|eventfilters
-argument_list|)
-argument_list|,
-name|parseLongStr
-argument_list|(
-name|fromidprefix
 argument_list|)
 argument_list|,
 name|parseStr
