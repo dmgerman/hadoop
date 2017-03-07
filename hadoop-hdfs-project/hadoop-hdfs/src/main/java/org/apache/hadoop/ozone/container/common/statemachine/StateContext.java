@@ -140,6 +140,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
+name|ReportState
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|util
@@ -248,6 +268,30 @@ name|ReentrantLock
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
+name|ReportState
+operator|.
+name|states
+operator|.
+name|noContainerReports
+import|;
+end_import
+
 begin_comment
 comment|/**  * Current Context of State Machine.  */
 end_comment
@@ -302,6 +346,36 @@ DECL|field|nrState
 specifier|private
 name|SCMNodeReport
 name|nrState
+decl_stmt|;
+DECL|field|reportState
+specifier|private
+name|ReportState
+name|reportState
+decl_stmt|;
+DECL|field|DEFAULT_REPORT_STATE
+specifier|private
+specifier|static
+specifier|final
+name|ReportState
+name|DEFAULT_REPORT_STATE
+init|=
+name|ReportState
+operator|.
+name|newBuilder
+argument_list|()
+operator|.
+name|setState
+argument_list|(
+name|noContainerReports
+argument_list|)
+operator|.
+name|setCount
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|build
+argument_list|()
 decl_stmt|;
 comment|/**    * Constructs a StateContext.    *    * @param conf   - Configration    * @param state  - State    * @param parent Parent State Machine    */
 DECL|method|StateContext (Configuration conf, DatanodeStateMachine.DatanodeStates state, DatanodeStateMachine parent)
@@ -671,6 +745,11 @@ expr_stmt|;
 block|}
 name|this
 operator|.
+name|clearReportState
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
 name|setState
 argument_list|(
 name|newState
@@ -755,6 +834,69 @@ operator|.
 name|get
 argument_list|()
 return|;
+block|}
+comment|/**    * Gets the ReportState.    * @return ReportState.    */
+DECL|method|getContainerReportState ()
+specifier|public
+specifier|synchronized
+name|ReportState
+name|getContainerReportState
+parameter_list|()
+block|{
+if|if
+condition|(
+name|reportState
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+name|DEFAULT_REPORT_STATE
+return|;
+block|}
+return|return
+name|reportState
+return|;
+block|}
+comment|/**    * Sets the ReportState.    * @param rState - ReportState.    */
+DECL|method|setContainerReportState (ReportState rState)
+specifier|public
+specifier|synchronized
+name|void
+name|setContainerReportState
+parameter_list|(
+name|ReportState
+name|rState
+parameter_list|)
+block|{
+name|this
+operator|.
+name|reportState
+operator|=
+name|rState
+expr_stmt|;
+block|}
+comment|/**    * Clears report state after it has been communicated.    */
+DECL|method|clearReportState ()
+specifier|public
+specifier|synchronized
+name|void
+name|clearReportState
+parameter_list|()
+block|{
+if|if
+condition|(
+name|reportState
+operator|!=
+literal|null
+condition|)
+block|{
+name|setContainerReportState
+argument_list|(
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class

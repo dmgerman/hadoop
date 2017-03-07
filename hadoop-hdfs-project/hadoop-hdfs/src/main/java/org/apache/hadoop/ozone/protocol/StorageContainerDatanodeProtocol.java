@@ -64,6 +64,26 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
+name|ReportState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
 name|SCMVersionRequestProto
 import|;
 end_import
@@ -183,8 +203,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Used by data node to send a Heartbeat.    * @param datanodeID - Datanode ID.    * @param nodeReport - node report state    * @return - SCMHeartbeatResponseProto    * @throws IOException    */
-DECL|method|sendHeartbeat (DatanodeID datanodeID, SCMNodeReport nodeReport)
+comment|/**    * Used by data node to send a Heartbeat.    * @param datanodeID - Datanode ID.    * @param nodeReport - node report state    * @param reportState - container report state.    * @return - SCMHeartbeatResponseProto    * @throws IOException    */
+DECL|method|sendHeartbeat (DatanodeID datanodeID, SCMNodeReport nodeReport, ReportState reportState)
 name|SCMHeartbeatResponseProto
 name|sendHeartbeat
 parameter_list|(
@@ -193,6 +213,9 @@ name|datanodeID
 parameter_list|,
 name|SCMNodeReport
 name|nodeReport
+parameter_list|,
+name|ReportState
+name|reportState
 parameter_list|)
 throws|throws
 name|IOException

@@ -120,6 +120,26 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
+name|ReportState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
 name|SCMNodeReport
 import|;
 end_import
@@ -212,6 +232,11 @@ name|AtomicInteger
 argument_list|(
 literal|0
 argument_list|)
+decl_stmt|;
+DECL|field|reportState
+specifier|private
+name|ReportState
+name|reportState
 decl_stmt|;
 comment|/**    * Returns the number of heartbeats made to this class.    *    * @return int    */
 DECL|method|getHeartbeatCount ()
@@ -378,7 +403,7 @@ specifier|public
 name|StorageContainerDatanodeProtocolProtos
 operator|.
 name|SCMHeartbeatResponseProto
-DECL|method|sendHeartbeat (DatanodeID datanodeID, SCMNodeReport nodeReport)
+DECL|method|sendHeartbeat (DatanodeID datanodeID, SCMNodeReport nodeReport, ReportState reportState)
 name|sendHeartbeat
 parameter_list|(
 name|DatanodeID
@@ -386,6 +411,9 @@ name|datanodeID
 parameter_list|,
 name|SCMNodeReport
 name|nodeReport
+parameter_list|,
+name|ReportState
+name|reportState
 parameter_list|)
 throws|throws
 name|IOException
@@ -399,6 +427,12 @@ name|heartbeatCount
 operator|.
 name|incrementAndGet
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|reportState
+operator|=
+name|reportState
 expr_stmt|;
 name|sleepIfNeeded
 argument_list|()
@@ -533,6 +567,18 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
+return|;
+block|}
+DECL|method|getReportState ()
+specifier|public
+name|ReportState
+name|getReportState
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|reportState
 return|;
 block|}
 block|}

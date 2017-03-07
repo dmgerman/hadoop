@@ -356,7 +356,7 @@ block|}
 comment|/**    * Get RpcTimeout.    *    * @return - Return RPC timeout.    */
 DECL|method|getRpcTimeout ()
 specifier|public
-name|long
+name|int
 name|getRpcTimeout
 parameter_list|()
 block|{
@@ -530,7 +530,8 @@ argument_list|(
 name|conf
 argument_list|)
 argument_list|,
-name|rpcTimeout
+name|getRpcTimeout
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|StorageContainerDatanodeProtocolClientSideTranslatorPB

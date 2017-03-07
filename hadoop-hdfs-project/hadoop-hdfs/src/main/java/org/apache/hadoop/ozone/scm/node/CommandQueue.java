@@ -170,14 +170,21 @@ specifier|final
 name|Lock
 name|lock
 decl_stmt|;
-DECL|field|nullList
+comment|// This map is used as default return value containing one null command.
+DECL|field|DEFAULT_LIST
 specifier|private
+specifier|static
 specifier|final
 name|List
 argument_list|<
 name|SCMCommand
 argument_list|>
-name|nullList
+name|DEFAULT_LIST
+init|=
+operator|new
+name|LinkedList
+argument_list|<>
+argument_list|()
 decl_stmt|;
 comment|/**    * Constructs a Command Queue.    */
 DECL|method|CommandQueue ()
@@ -198,14 +205,7 @@ operator|new
 name|ReentrantLock
 argument_list|()
 expr_stmt|;
-name|nullList
-operator|=
-operator|new
-name|LinkedList
-argument_list|<>
-argument_list|()
-expr_stmt|;
-name|nullList
+name|DEFAULT_LIST
 operator|.
 name|add
 argument_list|(
@@ -309,7 +309,7 @@ argument_list|()
 expr_stmt|;
 block|}
 return|return
-name|nullList
+name|DEFAULT_LIST
 return|;
 block|}
 comment|/**    * Adds a Command to the SCM Queue to send the command to container.    *    * @param datanodeID DatanodeID    * @param command    - Command    */
