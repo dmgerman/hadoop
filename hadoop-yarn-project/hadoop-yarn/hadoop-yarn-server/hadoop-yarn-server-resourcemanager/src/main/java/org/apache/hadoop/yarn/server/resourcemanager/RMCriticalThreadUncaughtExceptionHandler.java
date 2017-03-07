@@ -124,6 +124,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|rmContext
 specifier|private
+specifier|final
 name|RMContext
 name|rmContext
 decl_stmt|;
