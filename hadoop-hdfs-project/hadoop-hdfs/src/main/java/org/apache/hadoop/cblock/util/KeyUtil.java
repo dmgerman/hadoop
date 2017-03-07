@@ -50,6 +50,35 @@ operator|+
 name|volumeName
 return|;
 block|}
+DECL|method|getContainerName (String userName, String volumeName, int containerID)
+specifier|public
+specifier|static
+name|String
+name|getContainerName
+parameter_list|(
+name|String
+name|userName
+parameter_list|,
+name|String
+name|volumeName
+parameter_list|,
+name|int
+name|containerID
+parameter_list|)
+block|{
+return|return
+name|getVolumeKey
+argument_list|(
+name|userName
+argument_list|,
+name|volumeName
+argument_list|)
+operator|+
+literal|"#"
+operator|+
+name|containerID
+return|;
+block|}
 DECL|method|KeyUtil ()
 specifier|private
 name|KeyUtil

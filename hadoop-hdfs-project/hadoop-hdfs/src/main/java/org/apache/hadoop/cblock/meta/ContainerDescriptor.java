@@ -48,6 +48,26 @@ name|CBlockClientServerProtocolProtos
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|Pipeline
+import|;
+end_import
+
 begin_comment
 comment|/**  *  * The internal representation of a container maintained by CBlock server.  * Include enough information to exactly identify a container for read/write  * operation.  *  * NOTE that this class is work-in-progress. Depends on HDFS-7240 container  * implementation. Currently only to allow testing.  */
 end_comment
@@ -71,6 +91,11 @@ DECL|field|containerIndex
 specifier|private
 name|int
 name|containerIndex
+decl_stmt|;
+DECL|field|pipeline
+specifier|private
+name|Pipeline
+name|pipeline
 decl_stmt|;
 DECL|method|ContainerDescriptor (String containerID)
 specifier|public
@@ -137,6 +162,32 @@ return|return
 name|containerID
 return|;
 block|}
+DECL|method|setPipeline (Pipeline pipeline)
+specifier|public
+name|void
+name|setPipeline
+parameter_list|(
+name|Pipeline
+name|pipeline
+parameter_list|)
+block|{
+name|this
+operator|.
+name|pipeline
+operator|=
+name|pipeline
+expr_stmt|;
+block|}
+DECL|method|getPipeline ()
+specifier|public
+name|Pipeline
+name|getPipeline
+parameter_list|()
+block|{
+return|return
+name|pipeline
+return|;
+block|}
 DECL|method|getContainerIndex ()
 specifier|public
 name|int
@@ -193,6 +244,24 @@ argument_list|(
 name|containerIndex
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|pipeline
+operator|!=
+literal|null
+condition|)
+block|{
+name|builder
+operator|.
+name|setPipeline
+argument_list|(
+name|pipeline
+operator|.
+name|getProtobufMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|builder
 operator|.

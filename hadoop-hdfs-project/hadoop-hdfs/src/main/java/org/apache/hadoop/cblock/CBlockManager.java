@@ -230,11 +230,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|cblock
+name|scm
 operator|.
-name|storage
+name|client
 operator|.
-name|IStorageClient
+name|ScmClient
 import|;
 end_import
 
@@ -309,6 +309,20 @@ operator|.
 name|net
 operator|.
 name|NetUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConfiguration
 import|;
 end_import
 
@@ -666,14 +680,14 @@ argument_list|(
 literal|"UTF-8"
 argument_list|)
 decl_stmt|;
-DECL|method|CBlockManager (CBlockConfiguration conf, IStorageClient storageClient )
+DECL|method|CBlockManager (OzoneConfiguration conf, ScmClient storageClient)
 specifier|public
 name|CBlockManager
 parameter_list|(
-name|CBlockConfiguration
+name|OzoneConfiguration
 name|conf
 parameter_list|,
-name|IStorageClient
+name|ScmClient
 name|storageClient
 parameter_list|)
 throws|throws
@@ -685,6 +699,8 @@ operator|new
 name|StorageManager
 argument_list|(
 name|storageClient
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 name|dbPath
@@ -975,7 +991,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Starts an RPC server, if configured.    *    * @param conf configuration    * @param protocol RPC protocol provided by RPC server    * @param instance RPC protocol implementation instance    * @param addr configured address of RPC server    * @param bindHostKey configuration key for setting explicit bind host.  If    *     the property is not configured, then the bind host is taken from addr.    * @param handlerCountKey configuration key for RPC server handler count    * @param handlerCountDefault default RPC server handler count if unconfigured    * @return RPC server, or null if addr is null    * @throws IOException if there is an I/O error while creating RPC server    */
-DECL|method|startRpcServer (CBlockConfiguration conf, Class<?> protocol, BlockingService instance, InetSocketAddress addr, String bindHostKey, String handlerCountKey, int handlerCountDefault)
+DECL|method|startRpcServer (OzoneConfiguration conf, Class<?> protocol, BlockingService instance, InetSocketAddress addr, String bindHostKey, String handlerCountKey, int handlerCountDefault)
 specifier|private
 specifier|static
 name|RPC
@@ -983,7 +999,7 @@ operator|.
 name|Server
 name|startRpcServer
 parameter_list|(
-name|CBlockConfiguration
+name|OzoneConfiguration
 name|conf
 parameter_list|,
 name|Class
@@ -1540,6 +1556,28 @@ operator|.
 name|getAllVolume
 argument_list|(
 literal|null
+argument_list|)
+return|;
+block|}
+DECL|method|getAllVolumes (String userName)
+specifier|public
+specifier|synchronized
+name|List
+argument_list|<
+name|VolumeDescriptor
+argument_list|>
+name|getAllVolumes
+parameter_list|(
+name|String
+name|userName
+parameter_list|)
+block|{
+return|return
+name|storageManager
+operator|.
+name|getAllVolume
+argument_list|(
+name|userName
 argument_list|)
 return|;
 block|}

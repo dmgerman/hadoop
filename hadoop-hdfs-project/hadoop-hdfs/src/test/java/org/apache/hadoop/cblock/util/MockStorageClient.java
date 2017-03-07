@@ -26,11 +26,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|cblock
+name|scm
 operator|.
-name|meta
+name|client
 operator|.
-name|ContainerDescriptor
+name|ScmClient
 import|;
 end_import
 
@@ -42,11 +42,15 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|cblock
+name|scm
 operator|.
-name|storage
+name|container
 operator|.
-name|IStorageClient
+name|common
+operator|.
+name|helpers
+operator|.
+name|Pipeline
 import|;
 end_import
 
@@ -70,7 +74,7 @@ specifier|public
 class|class
 name|MockStorageClient
 implements|implements
-name|IStorageClient
+name|ScmClient
 block|{
 DECL|field|currentContainerId
 specifier|private
@@ -82,11 +86,16 @@ operator|-
 literal|1
 decl_stmt|;
 comment|/**    * Ask SCM to get a exclusive container.    *    * @return A container descriptor object to locate this container    * @throws Exception    */
-DECL|method|createContainer ()
+annotation|@
+name|Override
+DECL|method|createContainer (String containerId)
 specifier|public
-name|ContainerDescriptor
+name|Pipeline
 name|createContainer
-parameter_list|()
+parameter_list|(
+name|String
+name|containerId
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -118,18 +127,21 @@ argument_list|(
 name|currentContainerId
 argument_list|)
 argument_list|)
+operator|.
+name|getPipeline
+argument_list|()
 return|;
 block|}
-comment|/**    * As this is only a testing class, with all "container" maintained in    * memory, no need to really delete anything for now.    * @param containerId    * @throws IOException    */
+comment|/**    * As this is only a testing class, with all "container" maintained in    * memory, no need to really delete anything for now.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|deleteContainer (String containerId)
+DECL|method|deleteContainer (Pipeline pipeline)
 specifier|public
 name|void
 name|deleteContainer
 parameter_list|(
-name|String
-name|containerId
+name|Pipeline
+name|pipeline
 parameter_list|)
 throws|throws
 name|IOException
@@ -137,7 +149,7 @@ block|{    }
 comment|/**    * Return reference to an *existing* container with given ID.    *    * @param containerId    * @return    * @throws IOException    */
 DECL|method|getContainer (String containerId)
 specifier|public
-name|ContainerDescriptor
+name|Pipeline
 name|getContainer
 parameter_list|(
 name|String
@@ -153,15 +165,21 @@ name|lookUp
 argument_list|(
 name|containerId
 argument_list|)
+operator|.
+name|getPipeline
+argument_list|()
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getContainerSize ()
+DECL|method|getContainerSize (Pipeline pipeline)
 specifier|public
 name|long
 name|getContainerSize
-parameter_list|()
+parameter_list|(
+name|Pipeline
+name|pipeline
+parameter_list|)
 throws|throws
 name|IOException
 block|{
