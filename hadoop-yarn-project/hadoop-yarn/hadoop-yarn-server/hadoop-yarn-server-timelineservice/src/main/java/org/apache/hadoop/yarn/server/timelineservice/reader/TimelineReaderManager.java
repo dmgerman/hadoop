@@ -218,20 +218,6 @@ name|TimelineReader
 import|;
 end_import
 
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
-import|;
-end_import
-
 begin_comment
 comment|/**  * This class wraps over the timeline reader store implementation. It does some  * non trivial manipulation of the timeline data before or after getting  * it from the backend store.  */
 end_comment
@@ -248,17 +234,6 @@ name|TimelineReaderManager
 extends|extends
 name|AbstractService
 block|{
-annotation|@
-name|VisibleForTesting
-DECL|field|UID_KEY
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|UID_KEY
-init|=
-literal|"UID"
-decl_stmt|;
 DECL|field|reader
 specifier|private
 name|TimelineReader
@@ -441,6 +416,8 @@ name|entity
 operator|.
 name|setUID
 argument_list|(
+name|TimelineReaderUtils
+operator|.
 name|UID_KEY
 argument_list|,
 name|TimelineUIDConverter
@@ -479,6 +456,8 @@ name|entity
 operator|.
 name|setUID
 argument_list|(
+name|TimelineReaderUtils
+operator|.
 name|UID_KEY
 argument_list|,
 name|TimelineUIDConverter
@@ -509,6 +488,8 @@ name|entity
 operator|.
 name|setUID
 argument_list|(
+name|TimelineReaderUtils
+operator|.
 name|UID_KEY
 argument_list|,
 name|TimelineUIDConverter
@@ -560,6 +541,8 @@ name|entity
 operator|.
 name|setUID
 argument_list|(
+name|TimelineReaderUtils
+operator|.
 name|UID_KEY
 argument_list|,
 name|TimelineUIDConverter

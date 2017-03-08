@@ -129,6 +129,17 @@ name|FROMID_KEY
 init|=
 literal|"FROM_ID"
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
+DECL|field|UID_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|UID_KEY
+init|=
+literal|"UID"
+decl_stmt|;
 comment|/**    * Split the passed string along the passed delimiter character while looking    * for escape char to interpret the splitted parts correctly. For delimiter or    * escape character to be interpreted as part of the string, they have to be    * escaped by putting an escape character in front.    * @param str string to be split.    * @param delimiterChar delimiter used for splitting.    * @param escapeChar delimiter and escape character will be escaped using this    *     character.    * @return a list of strings after split.    * @throws IllegalArgumentException if string is not properly escaped.    */
 DECL|method|split (final String str, final char delimiterChar, final char escapeChar)
 specifier|static
