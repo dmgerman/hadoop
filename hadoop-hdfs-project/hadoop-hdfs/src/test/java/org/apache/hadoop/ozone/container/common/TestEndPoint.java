@@ -673,6 +673,11 @@ argument_list|(
 name|noContainerReports
 argument_list|)
 operator|.
+name|setCount
+argument_list|(
+literal|0
+argument_list|)
+operator|.
 name|build
 argument_list|()
 expr_stmt|;
