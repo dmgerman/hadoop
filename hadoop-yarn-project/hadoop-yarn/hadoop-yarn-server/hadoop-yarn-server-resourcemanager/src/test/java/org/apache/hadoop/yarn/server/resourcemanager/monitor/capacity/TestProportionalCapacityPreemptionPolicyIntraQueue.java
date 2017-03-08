@@ -364,6 +364,205 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+DECL|method|testNoIntraQueuePreemptionWithPreemptionDisabledOnQueues ()
+specifier|public
+name|void
+name|testNoIntraQueuePreemptionWithPreemptionDisabledOnQueues
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|/**      * This test has the same configuration as testSimpleIntraQueuePreemption      * except that preemption is disabled specifically for each queue. The      * purpose is to test that disabling preemption on a specific queue will      * avoid intra-queue preemption.      */
+name|conf
+operator|.
+name|setPreemptionDisabled
+argument_list|(
+literal|"root.a"
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setPreemptionDisabled
+argument_list|(
+literal|"root.b"
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setPreemptionDisabled
+argument_list|(
+literal|"root.c"
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setPreemptionDisabled
+argument_list|(
+literal|"root.d"
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|String
+name|labelsConfig
+init|=
+literal|"=100,true;"
+decl_stmt|;
+name|String
+name|nodesConfig
+init|=
+comment|// n1 has no label
+literal|"n1= res=100"
+decl_stmt|;
+name|String
+name|queuesConfig
+init|=
+comment|// guaranteed,max,used,pending,reserved
+literal|"root(=[100 100 80 120 0]);"
+operator|+
+comment|// root
+literal|"-a(=[11 100 11 50 0]);"
+operator|+
+comment|// a
+literal|"-b(=[40 100 38 60 0]);"
+operator|+
+comment|// b
+literal|"-c(=[20 100 10 10 0]);"
+operator|+
+comment|// c
+literal|"-d(=[29 100 20 0 0])"
+decl_stmt|;
+comment|// d
+name|String
+name|appsConfig
+init|=
+comment|// queueName\t(priority,resource,host,expression,#repeat,reserved,
+comment|// pending)
+literal|"a\t"
+comment|// app1 in a
+operator|+
+literal|"(1,1,n1,,6,false,25);"
+operator|+
+comment|// app1 a
+literal|"a\t"
+comment|// app2 in a
+operator|+
+literal|"(1,1,n1,,5,false,25);"
+operator|+
+comment|// app2 a
+literal|"b\t"
+comment|// app3 in b
+operator|+
+literal|"(4,1,n1,,34,false,20);"
+operator|+
+comment|// app3 b
+literal|"b\t"
+comment|// app4 in b
+operator|+
+literal|"(4,1,n1,,2,false,10);"
+operator|+
+comment|// app4 b
+literal|"b\t"
+comment|// app4 in b
+operator|+
+literal|"(5,1,n1,,1,false,10);"
+operator|+
+comment|// app5 b
+literal|"b\t"
+comment|// app4 in b
+operator|+
+literal|"(6,1,n1,,1,false,10);"
+operator|+
+comment|// app6 in b
+literal|"c\t"
+comment|// app1 in a
+operator|+
+literal|"(1,1,n1,,10,false,10);"
+operator|+
+literal|"d\t"
+comment|// app7 in c
+operator|+
+literal|"(1,1,n1,,20,false,0)"
+decl_stmt|;
+name|buildEnv
+argument_list|(
+name|labelsConfig
+argument_list|,
+name|nodesConfig
+argument_list|,
+name|queuesConfig
+argument_list|,
+name|appsConfig
+argument_list|)
+expr_stmt|;
+name|policy
+operator|.
+name|editSchedule
+argument_list|()
+expr_stmt|;
+name|verify
+argument_list|(
+name|mDisp
+argument_list|,
+name|times
+argument_list|(
+literal|0
+argument_list|)
+argument_list|)
+operator|.
+name|handle
+argument_list|(
+name|argThat
+argument_list|(
+operator|new
+name|TestProportionalCapacityPreemptionPolicy
+operator|.
+name|IsPreemptionRequestFor
+argument_list|(
+name|getAppAttemptId
+argument_list|(
+literal|4
+argument_list|)
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|verify
+argument_list|(
+name|mDisp
+argument_list|,
+name|times
+argument_list|(
+literal|0
+argument_list|)
+argument_list|)
+operator|.
+name|handle
+argument_list|(
+name|argThat
+argument_list|(
+operator|new
+name|TestProportionalCapacityPreemptionPolicy
+operator|.
+name|IsPreemptionRequestFor
+argument_list|(
+name|getAppAttemptId
+argument_list|(
+literal|3
+argument_list|)
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
 DECL|method|testNoPreemptionForSamePriorityApps ()
 specifier|public
 name|void

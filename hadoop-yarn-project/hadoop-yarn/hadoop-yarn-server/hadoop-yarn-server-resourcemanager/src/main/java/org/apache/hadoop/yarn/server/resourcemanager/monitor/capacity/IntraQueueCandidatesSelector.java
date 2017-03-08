@@ -574,6 +574,17 @@ condition|)
 block|{
 continue|continue;
 block|}
+comment|// Don't preempt if disabled for this queue.
+if|if
+condition|(
+name|leafQueue
+operator|.
+name|getPreemptionDisabled
+argument_list|()
+condition|)
+block|{
+continue|continue;
+block|}
 comment|// 5. Calculate the resource to obtain per partition
 name|Map
 argument_list|<
