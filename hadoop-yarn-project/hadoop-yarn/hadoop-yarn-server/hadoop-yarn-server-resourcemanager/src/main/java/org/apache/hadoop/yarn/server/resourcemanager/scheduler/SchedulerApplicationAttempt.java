@@ -5457,6 +5457,12 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+if|if
+condition|(
+operator|!
+name|isStopped
+condition|)
+block|{
 name|appSchedulingInfo
 operator|.
 name|move
@@ -5464,6 +5470,7 @@ argument_list|(
 name|newQueue
 argument_list|)
 expr_stmt|;
+block|}
 name|this
 operator|.
 name|queue
