@@ -1141,12 +1141,7 @@ name|recoveredLogInitedTimeMillis
 argument_list|,
 name|logFiles
 argument_list|,
-operator|new
-name|HashSet
-argument_list|<
-name|File
-argument_list|>
-argument_list|()
+name|logFiles
 argument_list|)
 expr_stmt|;
 block|}
@@ -1276,6 +1271,8 @@ operator|-
 literal|2
 operator|*
 name|week
+operator|*
+literal|1000
 decl_stmt|;
 name|verifyLogAggregationWithExpectedFiles2DeleteAndUpload
 argument_list|(
@@ -1681,7 +1678,7 @@ operator|.
 name|size
 argument_list|()
 operator|!=
-name|filesUploaded
+name|filesExpected
 operator|.
 name|size
 argument_list|()
@@ -2469,6 +2466,9 @@ argument_list|,
 name|context
 argument_list|,
 name|lfs
+argument_list|,
+operator|-
+literal|1
 argument_list|,
 name|recoveredLogInitedTime
 argument_list|)
