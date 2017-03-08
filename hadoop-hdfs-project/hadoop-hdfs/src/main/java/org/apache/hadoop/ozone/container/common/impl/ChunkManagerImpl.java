@@ -58,6 +58,26 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|StorageContainerException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|container
@@ -87,26 +107,6 @@ operator|.
 name|helpers
 operator|.
 name|ChunkUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|scm
-operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
-operator|.
-name|Pipeline
 import|;
 end_import
 
@@ -154,6 +154,26 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|Pipeline
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -184,16 +204,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|security
 operator|.
 name|NoSuchAlgorithmException
@@ -209,6 +219,54 @@ operator|.
 name|concurrent
 operator|.
 name|ExecutionException
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|Result
+operator|.
+name|CONTAINER_INTERNAL_ERROR
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|Result
+operator|.
+name|UNSUPPORTED_REQUEST
 import|;
 end_import
 
@@ -261,7 +319,7 @@ operator|=
 name|manager
 expr_stmt|;
 block|}
-comment|/**    * writes a given chunk.    *    * @param pipeline - Name and the set of machines that make this container.    * @param keyName  - Name of the Key.    * @param info     - ChunkInfo.    * @throws IOException    */
+comment|/**    * writes a given chunk.    *    * @param pipeline - Name and the set of machines that make this container.    * @param keyName - Name of the Key.    * @param info - ChunkInfo.    * @throws StorageContainerException    */
 annotation|@
 name|Override
 DECL|method|writeChunk (Pipeline pipeline, String keyName, ChunkInfo info, byte[] data)
@@ -283,7 +341,7 @@ index|[]
 name|data
 parameter_list|)
 throws|throws
-name|IOException
+name|StorageContainerException
 block|{
 comment|// we don't want container manager to go away while we are writing chunks.
 name|containerManager
@@ -299,6 +357,8 @@ operator|.
 name|checkNotNull
 argument_list|(
 name|pipeline
+argument_list|,
+literal|"Pipeline cannot be null"
 argument_list|)
 expr_stmt|;
 name|Preconditions
@@ -309,6 +369,8 @@ name|pipeline
 operator|.
 name|getContainerName
 argument_list|()
+argument_list|,
+literal|"Container name cannot be null"
 argument_list|)
 expr_stmt|;
 name|File
@@ -364,11 +426,13 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|IOException
+name|StorageContainerException
 argument_list|(
 literal|"Internal error: "
 argument_list|,
 name|e
+argument_list|,
+name|CONTAINER_INTERNAL_ERROR
 argument_list|)
 throw|;
 block|}
@@ -397,11 +461,13 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|IOException
+name|StorageContainerException
 argument_list|(
 literal|"Internal error: "
 argument_list|,
 name|e
+argument_list|,
+name|CONTAINER_INTERNAL_ERROR
 argument_list|)
 throw|;
 block|}
@@ -414,7 +480,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * reads the data defined by a chunk.    *    * @param pipeline - container pipeline.    * @param keyName  - Name of the Key    * @param info     - ChunkInfo.    * @return byte array    * @throws IOException TODO: Right now we do not support partial reads and    *                     writes of chunks. TODO: Explore if we need to do that    *                     for ozone.    */
+comment|/**    * reads the data defined by a chunk.    *    * @param pipeline - container pipeline.    * @param keyName - Name of the Key    * @param info - ChunkInfo.    * @return byte array    * @throws StorageContainerException    * TODO: Right now we do not support partial reads and writes of chunks.    * TODO: Explore if we need to do that for ozone.    */
 annotation|@
 name|Override
 DECL|method|readChunk (Pipeline pipeline, String keyName, ChunkInfo info)
@@ -433,7 +499,7 @@ name|ChunkInfo
 name|info
 parameter_list|)
 throws|throws
-name|IOException
+name|StorageContainerException
 block|{
 name|containerManager
 operator|.
@@ -497,11 +563,13 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|IOException
+name|StorageContainerException
 argument_list|(
 literal|"Internal error: "
 argument_list|,
 name|e
+argument_list|,
+name|CONTAINER_INTERNAL_ERROR
 argument_list|)
 throw|;
 block|}
@@ -530,11 +598,13 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|IOException
+name|StorageContainerException
 argument_list|(
 literal|"Internal error: "
 argument_list|,
 name|e
+argument_list|,
+name|CONTAINER_INTERNAL_ERROR
 argument_list|)
 throw|;
 block|}
@@ -547,7 +617,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Deletes a given chunk.    *    * @param pipeline - Pipeline.    * @param keyName  - Key Name    * @param info     - Chunk Info    * @throws IOException    */
+comment|/**    * Deletes a given chunk.    *    * @param pipeline - Pipeline.    * @param keyName - Key Name    * @param info - Chunk Info    * @throws StorageContainerException    */
 annotation|@
 name|Override
 DECL|method|deleteChunk (Pipeline pipeline, String keyName, ChunkInfo info)
@@ -565,7 +635,7 @@ name|ChunkInfo
 name|info
 parameter_list|)
 throws|throws
-name|IOException
+name|StorageContainerException
 block|{
 name|containerManager
 operator|.
@@ -646,16 +716,18 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|IOException
+name|StorageContainerException
 argument_list|(
-literal|"Not Supported Operation. Trying to delete a "
+literal|"Not Supported Operation. "
 operator|+
-literal|"chunk that is in shared file. chunk info : "
+literal|"Trying to delete a chunk that is in shared file. chunk info : "
 operator|+
 name|info
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+name|UNSUPPORTED_REQUEST
 argument_list|)
 throw|;
 block|}

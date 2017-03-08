@@ -66,16 +66,6 @@ name|ContainerCommandRequestProto
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
 begin_comment
 comment|/**  * Dispatcher acts as the bridge between the transport layer and  * the actual container layer. This layer is capable of transforming  * protobuf objects into corresponding class and issue the function call  * into the lower layers.  *  * The reply from the request is dispatched to the client.  */
 end_comment
@@ -86,7 +76,7 @@ specifier|public
 interface|interface
 name|ContainerDispatcher
 block|{
-comment|/**    * Dispatches commands to container layer.    * @param msg - Command Request    * @return Command Response    * @throws IOException    */
+comment|/**    * Dispatches commands to container layer.    * @param msg - Command Request    * @return Command Response    */
 DECL|method|dispatch (ContainerCommandRequestProto msg)
 name|ContainerCommandResponseProto
 name|dispatch
@@ -94,8 +84,6 @@ parameter_list|(
 name|ContainerCommandRequestProto
 name|msg
 parameter_list|)
-throws|throws
-name|IOException
 function_decl|;
 comment|/**    * Initialize the Dispatcher.    */
 DECL|method|init ()

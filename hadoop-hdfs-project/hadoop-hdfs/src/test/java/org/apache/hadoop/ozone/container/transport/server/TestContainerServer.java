@@ -342,6 +342,10 @@ name|mock
 import|;
 end_import
 
+begin_comment
+comment|/**  * Test Containers.  */
+end_comment
+
 begin_class
 DECL|class|TestContainerServer
 specifier|public
@@ -846,12 +850,13 @@ block|}
 block|}
 DECL|class|TestContainerDispatcher
 specifier|private
+specifier|static
 class|class
 name|TestContainerDispatcher
 implements|implements
 name|ContainerDispatcher
 block|{
-comment|/**      * Dispatches commands to container layer.      *      * @param msg - Command Request      * @return Command Response      * @throws IOException      */
+comment|/**      * Dispatches commands to container layer.      *      * @param msg - Command Request      * @return Command Response      */
 annotation|@
 name|Override
 specifier|public
@@ -862,8 +867,6 @@ parameter_list|(
 name|ContainerCommandRequestProto
 name|msg
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 return|return
 name|ContainerTestHelper

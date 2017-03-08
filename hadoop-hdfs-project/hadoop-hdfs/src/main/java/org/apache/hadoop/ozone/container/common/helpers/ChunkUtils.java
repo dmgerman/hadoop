@@ -136,6 +136,26 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|StorageContainerException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|container
@@ -286,6 +306,198 @@ name|ExecutionException
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|Result
+operator|.
+name|CHECKSUM_MISMATCH
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|Result
+operator|.
+name|CONTAINER_INTERNAL_ERROR
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|Result
+operator|.
+name|CONTAINER_NOT_FOUND
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|Result
+operator|.
+name|INVALID_WRITE_SIZE
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|Result
+operator|.
+name|IO_EXCEPTION
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|Result
+operator|.
+name|OVERWRITE_FLAG_REQUIRED
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|Result
+operator|.
+name|UNABLE_TO_FIND_CHUNK
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|Result
+operator|.
+name|UNABLE_TO_FIND_DATA_DIR
+import|;
+end_import
+
 begin_comment
 comment|/**  * Set of utility functions used by the chunk Manager.  */
 end_comment
@@ -398,7 +610,7 @@ argument_list|)
 operator|)
 return|;
 block|}
-comment|/**    * Validates chunk data and returns a file object to Chunk File that we are    * expected to write data to.    *    * @param pipeline - pipeline.    * @param data     - container data.    * @param info     - chunk info.    * @return File    * @throws IOException    */
+comment|/**    * Validates chunk data and returns a file object to Chunk File that we are    * expected to write data to.    *    * @param pipeline - pipeline.    * @param data - container data.    * @param info - chunk info.    * @return File    * @throws StorageContainerException    */
 DECL|method|validateChunk (Pipeline pipeline, ContainerData data, ChunkInfo info)
 specifier|public
 specifier|static
@@ -415,7 +627,7 @@ name|ChunkInfo
 name|info
 parameter_list|)
 throws|throws
-name|IOException
+name|StorageContainerException
 block|{
 name|Logger
 name|log
@@ -480,16 +692,18 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|IOException
+name|StorageContainerException
 argument_list|(
-literal|"Rejecting write chunk request. OverWrite "
+literal|"Rejecting write chunk request. "
 operator|+
-literal|"flag required."
+literal|"OverWrite flag required."
 operator|+
 name|info
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+name|OVERWRITE_FLAG_REQUIRED
 argument_list|)
 throw|;
 block|}
@@ -498,7 +712,7 @@ return|return
 name|chunkFile
 return|;
 block|}
-comment|/**    * Validates that Path to chunk file exists.    *    * @param pipeline - Container Info.    * @param data     - Container Data    * @param info     - Chunk info    * @return - File.    * @throws IOException    */
+comment|/**    * Validates that Path to chunk file exists.    *    * @param pipeline - Container Info.    * @param data - Container Data    * @param info - Chunk info    * @return - File.    * @throws StorageContainerException    */
 DECL|method|getChunkFile (Pipeline pipeline, ContainerData data, ChunkInfo info)
 specifier|public
 specifier|static
@@ -515,7 +729,7 @@ name|ChunkInfo
 name|info
 parameter_list|)
 throws|throws
-name|IOException
+name|StorageContainerException
 block|{
 name|Logger
 name|log
@@ -550,14 +764,18 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|IOException
+name|StorageContainerException
 argument_list|(
-literal|"Unable to find the container Name: "
+literal|"Unable to find the container Name:"
+operator|+
+literal|" "
 operator|+
 name|pipeline
 operator|.
 name|getContainerName
 argument_list|()
+argument_list|,
+name|CONTAINER_NOT_FOUND
 argument_list|)
 throw|;
 block|}
@@ -594,11 +812,15 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|IOException
+name|StorageContainerException
 argument_list|(
-literal|"Unable to find the data directory: "
+literal|"Unable to find the data directory:"
+operator|+
+literal|" "
 operator|+
 name|dataDir
+argument_list|,
+name|UNABLE_TO_FIND_DATA_DIR
 argument_list|)
 throw|;
 block|}
@@ -620,7 +842,7 @@ name|toFile
 argument_list|()
 return|;
 block|}
-comment|/**    * Writes the data in chunk Info to the specified location in the chunkfile.    *    * @param chunkFile - File to write data to.    * @param chunkInfo - Data stream to write.    * @throws IOException    */
+comment|/**    * Writes the data in chunk Info to the specified location in the chunkfile.    *    * @param chunkFile - File to write data to.    * @param chunkInfo - Data stream to write.    * @param data - The data buffer.    * @throws StorageContainerException    */
 DECL|method|writeData (File chunkFile, ChunkInfo chunkInfo, byte[] data)
 specifier|public
 specifier|static
@@ -638,7 +860,7 @@ index|[]
 name|data
 parameter_list|)
 throws|throws
-name|IOException
+name|StorageContainerException
 throws|,
 name|ExecutionException
 throws|,
@@ -700,9 +922,11 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|IOException
+name|StorageContainerException
 argument_list|(
 name|err
+argument_list|,
+name|INVALID_WRITE_SIZE
 argument_list|)
 throw|;
 block|}
@@ -832,9 +1056,11 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|IOException
+name|StorageContainerException
 argument_list|(
-literal|"Invalid write size found. Size: "
+literal|"Invalid write size found. "
+operator|+
+literal|"Size: "
 operator|+
 name|size
 operator|+
@@ -843,9 +1069,27 @@ operator|+
 name|data
 operator|.
 name|length
+argument_list|,
+name|INVALID_WRITE_SIZE
 argument_list|)
 throw|;
 block|}
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|StorageContainerException
+argument_list|(
+name|e
+argument_list|,
+name|IO_EXCEPTION
+argument_list|)
+throw|;
 block|}
 finally|finally
 block|{
@@ -856,11 +1100,37 @@ operator|!=
 literal|null
 condition|)
 block|{
+try|try
+block|{
 name|lock
 operator|.
 name|release
 argument_list|()
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|log
+operator|.
+name|error
+argument_list|(
+literal|"Unable to release lock ??, Fatal Error."
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|StorageContainerException
+argument_list|(
+name|e
+argument_list|,
+name|CONTAINER_INTERNAL_ERROR
+argument_list|)
+throw|;
+block|}
 block|}
 if|if
 condition|(
@@ -879,7 +1149,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Verifies the checksum of a chunk against the data buffer.    *    * @param chunkInfo - Chunk Info.    * @param data      - data buffer    * @param log       - log    * @throws NoSuchAlgorithmException    * @throws IOException    */
+comment|/**    * Verifies the checksum of a chunk against the data buffer.    *    * @param chunkInfo - Chunk Info.    * @param data - data buffer    * @param log - log    * @throws NoSuchAlgorithmException    * @throws StorageContainerException    */
 DECL|method|verifyChecksum (ChunkInfo chunkInfo, byte[] data, Logger log)
 specifier|private
 specifier|static
@@ -899,7 +1169,7 @@ parameter_list|)
 throws|throws
 name|NoSuchAlgorithmException
 throws|,
-name|IOException
+name|StorageContainerException
 block|{
 name|MessageDigest
 name|sha
@@ -966,7 +1236,7 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|IOException
+name|StorageContainerException
 argument_list|(
 literal|"Checksum mismatch. Provided: "
 operator|+
@@ -986,11 +1256,13 @@ operator|.
 name|digest
 argument_list|()
 argument_list|)
+argument_list|,
+name|CHECKSUM_MISMATCH
 argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Reads data from an existing chunk file.    *    * @param chunkFile - file where data lives.    * @param data      - chunk definition.    * @return ByteBuffer    * @throws IOException    * @throws ExecutionException    * @throws InterruptedException    */
+comment|/**    * Reads data from an existing chunk file.    *    * @param chunkFile - file where data lives.    * @param data - chunk definition.    *    * @return ByteBuffer    *    * @throws StorageContainerException    * @throws ExecutionException    * @throws InterruptedException    */
 DECL|method|readData (File chunkFile, ChunkInfo data)
 specifier|public
 specifier|static
@@ -1004,7 +1276,7 @@ name|ChunkInfo
 name|data
 parameter_list|)
 throws|throws
-name|IOException
+name|StorageContainerException
 throws|,
 name|ExecutionException
 throws|,
@@ -1047,14 +1319,18 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|IOException
+name|StorageContainerException
 argument_list|(
-literal|"Unable to find the chunk file. chunk info "
+literal|"Unable to find the chunk file. "
+operator|+
+literal|"chunk info "
 operator|+
 name|data
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+name|UNABLE_TO_FIND_CHUNK
 argument_list|)
 throw|;
 block|}
@@ -1175,6 +1451,22 @@ return|return
 name|buf
 return|;
 block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|StorageContainerException
+argument_list|(
+name|e
+argument_list|,
+name|IO_EXCEPTION
+argument_list|)
+throw|;
+block|}
 finally|finally
 block|{
 if|if
@@ -1184,11 +1476,28 @@ operator|!=
 literal|null
 condition|)
 block|{
+try|try
+block|{
 name|lock
 operator|.
 name|release
 argument_list|()
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|log
+operator|.
+name|error
+argument_list|(
+literal|"I/O error is lock release."
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 if|if
 condition|(
@@ -1231,7 +1540,7 @@ name|msg
 argument_list|)
 return|;
 block|}
-comment|/**    * Gets a response to the read chunk calls.    * @param msg - Msg    * @param data  - Data    * @param info  - Info    * @return    Response.    */
+comment|/**    * Gets a response to the read chunk calls.    *    * @param msg - Msg    * @param data - Data    * @param info - Info    * @return Response.    */
 specifier|public
 specifier|static
 name|ContainerProtos

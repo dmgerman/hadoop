@@ -224,6 +224,26 @@ name|common
 operator|.
 name|helpers
 operator|.
+name|ContainerMetrics
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
 name|ContainerUtils
 import|;
 end_import
@@ -302,26 +322,6 @@ name|container
 operator|.
 name|common
 operator|.
-name|helpers
-operator|.
-name|ContainerMetrics
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|container
-operator|.
-name|common
-operator|.
 name|interfaces
 operator|.
 name|ContainerDispatcher
@@ -372,6 +372,26 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|StorageContainerException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -415,6 +435,54 @@ operator|.
 name|util
 operator|.
 name|List
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|Result
+operator|.
+name|PUT_SMALL_FILE_ERROR
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|Result
+operator|.
+name|GET_SMALL_FILE_ERROR
 import|;
 end_import
 
@@ -537,8 +605,6 @@ parameter_list|(
 name|ContainerCommandRequestProto
 name|msg
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|long
 name|startNanos
@@ -553,6 +619,8 @@ name|resp
 init|=
 literal|null
 decl_stmt|;
+try|try
+block|{
 name|Preconditions
 operator|.
 name|checkNotNull
@@ -765,6 +833,48 @@ name|msg
 argument_list|)
 return|;
 block|}
+catch|catch
+parameter_list|(
+name|StorageContainerException
+name|e
+parameter_list|)
+block|{
+comment|// This useful since the trace ID will allow us to correlate failures.
+return|return
+name|ContainerUtils
+operator|.
+name|logAndReturnError
+argument_list|(
+name|LOG
+argument_list|,
+name|e
+argument_list|,
+name|msg
+argument_list|)
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalStateException
+decl||
+name|NullPointerException
+name|e
+parameter_list|)
+block|{
+return|return
+name|ContainerUtils
+operator|.
+name|logAndReturnError
+argument_list|(
+name|LOG
+argument_list|,
+name|e
+argument_list|,
+name|msg
+argument_list|)
+return|;
+block|}
+block|}
 DECL|method|getContainerMetrics ()
 specifier|public
 name|ContainerMetrics
@@ -775,7 +885,7 @@ return|return
 name|metrics
 return|;
 block|}
-comment|/**    * Handles the all Container related functionality.    *    * @param msg - command    * @return - response    * @throws IOException    */
+comment|/**    * Handles the all Container related functionality.    *    * @param msg - command    * @return - response    * @throws StorageContainerException    */
 DECL|method|containerProcessHandler ( ContainerCommandRequestProto msg)
 specifier|private
 name|ContainerCommandResponseProto
@@ -785,7 +895,7 @@ name|ContainerCommandRequestProto
 name|msg
 parameter_list|)
 throws|throws
-name|IOException
+name|StorageContainerException
 block|{
 try|try
 block|{
@@ -930,7 +1040,7 @@ argument_list|()
 return|;
 block|}
 block|}
-comment|/**    * Handles the all key related functionality.    *    * @param msg - command    * @return - response    * @throws IOException    */
+comment|/**    * Handles the all key related functionality.    *    * @param msg - command    * @return - response    * @throws StorageContainerException    */
 DECL|method|keyProcessHandler ( ContainerCommandRequestProto msg)
 specifier|private
 name|ContainerCommandResponseProto
@@ -940,7 +1050,7 @@ name|ContainerCommandRequestProto
 name|msg
 parameter_list|)
 throws|throws
-name|IOException
+name|StorageContainerException
 block|{
 try|try
 block|{
@@ -1072,7 +1182,7 @@ argument_list|()
 return|;
 block|}
 block|}
-comment|/**    * Handles the all chunk related functionality.    *    * @param msg - command    * @return - response    * @throws IOException    */
+comment|/**    * Handles the all chunk related functionality.    *    * @param msg - command    * @return - response    * @throws StorageContainerException    */
 DECL|method|chunkProcessHandler ( ContainerCommandRequestProto msg)
 specifier|private
 name|ContainerCommandResponseProto
@@ -1082,7 +1192,7 @@ name|ContainerCommandRequestProto
 name|msg
 parameter_list|)
 throws|throws
-name|IOException
+name|StorageContainerException
 block|{
 try|try
 block|{
@@ -1223,7 +1333,7 @@ name|ContainerCommandRequestProto
 name|msg
 parameter_list|)
 throws|throws
-name|IOException
+name|StorageContainerException
 block|{
 switch|switch
 condition|(
@@ -2332,7 +2442,7 @@ name|msg
 argument_list|)
 return|;
 block|}
-comment|/**    * Handles writing a chunk and associated key using single RPC.    *    * @param msg - Message.    * @return ContainerCommandResponseProto    * @throws IOException    */
+comment|/**    * Handles writing a chunk and associated key using single RPC.    *    * @param msg - Message.    * @return ContainerCommandResponseProto    * @throws StorageContainerException    */
 DECL|method|handlePutSmallFile ( ContainerCommandRequestProto msg)
 specifier|private
 name|ContainerCommandResponseProto
@@ -2342,7 +2452,7 @@ name|ContainerCommandRequestProto
 name|msg
 parameter_list|)
 throws|throws
-name|IOException
+name|StorageContainerException
 block|{
 if|if
 condition|(
@@ -2374,6 +2484,8 @@ name|msg
 argument_list|)
 return|;
 block|}
+try|try
+block|{
 name|Pipeline
 name|pipeline
 init|=
@@ -2537,7 +2649,26 @@ name|msg
 argument_list|)
 return|;
 block|}
-comment|/**    * Handles getting a data stream using a key. This helps in reducing the RPC    * overhead for small files.    *    * @param msg - ContainerCommandRequestProto    * @return ContainerCommandResponseProto    */
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|StorageContainerException
+argument_list|(
+literal|"Put Small File Failed."
+argument_list|,
+name|e
+argument_list|,
+name|PUT_SMALL_FILE_ERROR
+argument_list|)
+throw|;
+block|}
+block|}
+comment|/**    * Handles getting a data stream using a key. This helps in reducing the RPC    * overhead for small files.    *    * @param msg - ContainerCommandRequestProto    * @return ContainerCommandResponseProto    * @throws StorageContainerException    */
 DECL|method|handleGetSmallFile ( ContainerCommandRequestProto msg)
 specifier|private
 name|ContainerCommandResponseProto
@@ -2547,7 +2678,7 @@ name|ContainerCommandRequestProto
 name|msg
 parameter_list|)
 throws|throws
-name|IOException
+name|StorageContainerException
 block|{
 name|ByteString
 name|dataBuf
@@ -2586,6 +2717,8 @@ name|msg
 argument_list|)
 return|;
 block|}
+try|try
+block|{
 name|Pipeline
 name|pipeline
 init|=
@@ -2755,6 +2888,25 @@ name|c
 argument_list|)
 argument_list|)
 return|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|StorageContainerException
+argument_list|(
+literal|"Unable to decode protobuf"
+argument_list|,
+name|e
+argument_list|,
+name|GET_SMALL_FILE_ERROR
+argument_list|)
+throw|;
+block|}
 block|}
 block|}
 end_class

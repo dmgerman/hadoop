@@ -152,26 +152,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|scm
-operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
-operator|.
-name|Pipeline
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|ozone
 operator|.
 name|container
@@ -232,9 +212,69 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|Pipeline
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|StorageContainerException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|utils
 operator|.
 name|LevelDBStore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
 import|;
 end_import
 
@@ -258,6 +298,54 @@ name|List
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|Result
+operator|.
+name|IO_EXCEPTION
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|Result
+operator|.
+name|NO_SUCH_KEY
+import|;
+end_import
+
 begin_comment
 comment|/**  * Key Manager impl.  */
 end_comment
@@ -270,6 +358,21 @@ name|KeyManagerImpl
 implements|implements
 name|KeyManager
 block|{
+DECL|field|LOG
+specifier|static
+specifier|final
+name|Logger
+name|LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|KeyManagerImpl
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 DECL|field|LOAD_FACTOR
 specifier|private
 specifier|static
@@ -308,6 +411,10 @@ operator|.
 name|checkNotNull
 argument_list|(
 name|containerManager
+argument_list|,
+literal|"Container manager cannot be"
+operator|+
+literal|" null"
 argument_list|)
 expr_stmt|;
 name|Preconditions
@@ -315,6 +422,8 @@ operator|.
 name|checkNotNull
 argument_list|(
 name|conf
+argument_list|,
+literal|"Config cannot be null"
 argument_list|)
 expr_stmt|;
 name|int
@@ -367,7 +476,7 @@ name|KeyData
 name|data
 parameter_list|)
 throws|throws
-name|IOException
+name|StorageContainerException
 block|{
 name|containerManager
 operator|.
@@ -383,6 +492,8 @@ operator|.
 name|checkNotNull
 argument_list|(
 name|pipeline
+argument_list|,
+literal|"Pipeline cannot be null"
 argument_list|)
 expr_stmt|;
 name|Preconditions
@@ -393,6 +504,8 @@ name|pipeline
 operator|.
 name|getContainerName
 argument_list|()
+argument_list|,
+literal|"Container name cannot be null"
 argument_list|)
 expr_stmt|;
 name|ContainerData
@@ -420,11 +533,15 @@ argument_list|,
 name|containerCache
 argument_list|)
 decl_stmt|;
+comment|// This is a post condition that acts as a hint to the user.
+comment|// Should never fail.
 name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
 name|db
+argument_list|,
+literal|"DB cannot be null here"
 argument_list|)
 expr_stmt|;
 name|db
@@ -474,7 +591,7 @@ name|KeyData
 name|data
 parameter_list|)
 throws|throws
-name|IOException
+name|StorageContainerException
 block|{
 name|containerManager
 operator|.
@@ -488,6 +605,8 @@ operator|.
 name|checkNotNull
 argument_list|(
 name|data
+argument_list|,
+literal|"Key data cannot be null"
 argument_list|)
 expr_stmt|;
 name|Preconditions
@@ -498,6 +617,8 @@ name|data
 operator|.
 name|getContainerName
 argument_list|()
+argument_list|,
+literal|"Container name cannot be null"
 argument_list|)
 expr_stmt|;
 name|ContainerData
@@ -525,11 +646,15 @@ argument_list|,
 name|containerCache
 argument_list|)
 decl_stmt|;
+comment|// This is a post condition that acts as a hint to the user.
+comment|// Should never fail.
 name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
 name|db
+argument_list|,
+literal|"DB cannot be null here"
 argument_list|)
 expr_stmt|;
 name|byte
@@ -562,9 +687,11 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|StorageContainerException
 argument_list|(
 literal|"Unable to find the key."
+argument_list|,
+name|NO_SUCH_KEY
 argument_list|)
 throw|;
 block|}
@@ -591,6 +718,22 @@ name|keyData
 argument_list|)
 return|;
 block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ex
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|StorageContainerException
+argument_list|(
+name|ex
+argument_list|,
+name|IO_EXCEPTION
+argument_list|)
+throw|;
+block|}
 finally|finally
 block|{
 name|containerManager
@@ -615,7 +758,7 @@ name|String
 name|keyName
 parameter_list|)
 throws|throws
-name|IOException
+name|StorageContainerException
 block|{
 name|containerManager
 operator|.
@@ -629,6 +772,8 @@ operator|.
 name|checkNotNull
 argument_list|(
 name|pipeline
+argument_list|,
+literal|"Pipeline cannot be null"
 argument_list|)
 expr_stmt|;
 name|Preconditions
@@ -639,6 +784,8 @@ name|pipeline
 operator|.
 name|getContainerName
 argument_list|()
+argument_list|,
+literal|"Container name cannot be null"
 argument_list|)
 expr_stmt|;
 name|ContainerData
@@ -666,11 +813,15 @@ argument_list|,
 name|containerCache
 argument_list|)
 decl_stmt|;
+comment|// This is a post condition that acts as a hint to the user.
+comment|// Should never fail.
 name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
 name|db
+argument_list|,
+literal|"DB cannot be null here"
 argument_list|)
 expr_stmt|;
 comment|// Note : There is a race condition here, since get and delete
@@ -704,9 +855,11 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|StorageContainerException
 argument_list|(
 literal|"Unable to find the key."
+argument_list|,
+name|NO_SUCH_KEY
 argument_list|)
 throw|;
 block|}
@@ -758,7 +911,7 @@ name|int
 name|count
 parameter_list|)
 block|{
-comment|// TODO :
+comment|// TODO : Implement listKey function.
 return|return
 literal|null
 return|;
@@ -782,6 +935,10 @@ name|containerManager
 operator|.
 name|hasWriteLock
 argument_list|()
+argument_list|,
+literal|"asserts "
+operator|+
+literal|"that we are holding the container manager lock when shutting down."
 argument_list|)
 expr_stmt|;
 name|KeyUtils

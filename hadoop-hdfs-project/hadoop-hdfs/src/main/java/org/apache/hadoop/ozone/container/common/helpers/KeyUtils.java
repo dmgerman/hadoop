@@ -64,6 +64,26 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|StorageContainerException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|container
@@ -162,6 +182,30 @@ name|Charset
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|Result
+operator|.
+name|UNABLE_TO_READ_METADATA_DB
+import|;
+end_import
+
 begin_comment
 comment|/**  * Utils functions to help key functions.  */
 end_comment
@@ -247,7 +291,7 @@ literal|false
 argument_list|)
 return|;
 block|}
-comment|/**    * This function is called with  containerManager ReadLock held.    *    * @param container - container.    * @param cache     - cache    * @return LevelDB handle.    * @throws IOException    */
+comment|/**    * This function is called with  containerManager ReadLock held.    *    * @param container - container.    * @param cache     - cache    * @return LevelDB handle.    * @throws StorageContainerException    */
 DECL|method|getDB (ContainerData container, ContainerCache cache)
 specifier|public
 specifier|static
@@ -261,7 +305,7 @@ name|ContainerCache
 name|cache
 parameter_list|)
 throws|throws
-name|IOException
+name|StorageContainerException
 block|{
 name|Preconditions
 operator|.
@@ -277,6 +321,8 @@ argument_list|(
 name|cache
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|LevelDBStore
 name|db
 init|=
@@ -323,6 +369,43 @@ block|}
 return|return
 name|db
 return|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ex
+parameter_list|)
+block|{
+name|String
+name|message
+init|=
+literal|"Unable to open DB. DB Name: %s, Path: %s. ex: %s"
+operator|.
+name|format
+argument_list|(
+name|container
+operator|.
+name|getContainerName
+argument_list|()
+argument_list|,
+name|container
+operator|.
+name|getDBPath
+argument_list|()
+argument_list|,
+name|ex
+argument_list|)
+decl_stmt|;
+throw|throw
+operator|new
+name|StorageContainerException
+argument_list|(
+name|message
+argument_list|,
+name|UNABLE_TO_READ_METADATA_DB
+argument_list|)
+throw|;
+block|}
 block|}
 comment|/**    * Shutdown all DB Handles.    *    * @param cache - Cache for DB Handles.    * @throws IOException    */
 annotation|@
@@ -458,7 +541,7 @@ specifier|static
 name|ContainerProtos
 operator|.
 name|ContainerCommandResponseProto
-DECL|method|getKeyDataResponse (ContainerProtos.ContainerCommandRequestProto msg , KeyData data)
+DECL|method|getKeyDataResponse (ContainerProtos.ContainerCommandRequestProto msg, KeyData data)
 name|getKeyDataResponse
 parameter_list|(
 name|ContainerProtos

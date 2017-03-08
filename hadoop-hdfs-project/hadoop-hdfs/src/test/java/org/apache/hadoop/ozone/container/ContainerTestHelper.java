@@ -297,6 +297,7 @@ end_comment
 begin_class
 DECL|class|ContainerTestHelper
 specifier|public
+specifier|final
 class|class
 name|ContainerTestHelper
 block|{
@@ -310,6 +311,12 @@ operator|new
 name|Random
 argument_list|()
 decl_stmt|;
+comment|/**    * Never constructed.    */
+DECL|method|ContainerTestHelper ()
+specifier|private
+name|ContainerTestHelper
+parameter_list|()
+block|{   }
 comment|/**    * Create a pipeline with single node replica.    *    * @return Pipeline with single node in it.    * @throws IOException    */
 DECL|method|createSingleNodePipeline (String containerName)
 specifier|public
@@ -1306,8 +1313,6 @@ parameter_list|(
 name|ContainerCommandRequestProto
 name|request
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|ContainerProtos
 operator|.

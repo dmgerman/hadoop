@@ -136,6 +136,26 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|StorageContainerException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -220,6 +240,54 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|Result
+operator|.
+name|INVALID_ARGUMENT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|Result
+operator|.
+name|UNABLE_TO_FIND_DATA_DIR
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|OzoneConsts
@@ -255,6 +323,13 @@ specifier|final
 class|class
 name|ContainerUtils
 block|{
+DECL|method|ContainerUtils ()
+specifier|private
+name|ContainerUtils
+parameter_list|()
+block|{
+comment|//never constructed.
+block|}
 comment|/**    * Returns a CreateContainer Response. This call is used by create and delete    * containers which have null success responses.    *    * @param msg Request    * @return Response.    */
 specifier|public
 specifier|static
@@ -297,7 +372,7 @@ name|build
 argument_list|()
 return|;
 block|}
-comment|/**    * Returns a ReadContainer Response.    *    * @param msg           Request    * @param containerData - data    * @return Response.    */
+comment|/**    * Returns a ReadContainer Response.    *    * @param msg Request    * @param containerData - data    * @return Response.    */
 specifier|public
 specifier|static
 name|ContainerProtos
@@ -380,7 +455,7 @@ name|build
 argument_list|()
 return|;
 block|}
-comment|/**    * We found a command type but no associated payload for the command. Hence    * return malformed Command as response.    *    * @param msg     - Protobuf message.    * @param result  - result    * @param message - Error message.    * @return ContainerCommandResponseProto - MALFORMED_REQUEST.    */
+comment|/**    * We found a command type but no associated payload for the command. Hence    * return malformed Command as response.    *    * @param msg - Protobuf message.    * @param result - result    * @param message - Error message.    * @return ContainerCommandResponseProto - MALFORMED_REQUEST.    */
 specifier|public
 specifier|static
 name|ContainerProtos
@@ -438,6 +513,130 @@ name|setMessage
 argument_list|(
 name|message
 argument_list|)
+return|;
+block|}
+comment|/**    * Logs the error and returns a response to the caller.    *    * @param log - Logger    * @param ex - Exception    * @param msg - Request Object    * @return Response    */
+DECL|method|logAndReturnError ( Logger log, StorageContainerException ex, ContainerProtos.ContainerCommandRequestProto msg)
+specifier|public
+specifier|static
+name|ContainerProtos
+operator|.
+name|ContainerCommandResponseProto
+name|logAndReturnError
+parameter_list|(
+name|Logger
+name|log
+parameter_list|,
+name|StorageContainerException
+name|ex
+parameter_list|,
+name|ContainerProtos
+operator|.
+name|ContainerCommandRequestProto
+name|msg
+parameter_list|)
+block|{
+name|log
+operator|.
+name|info
+argument_list|(
+literal|"Trace ID: {} : Message: {} : Result: {}"
+argument_list|,
+name|msg
+operator|.
+name|getTraceID
+argument_list|()
+argument_list|,
+name|ex
+operator|.
+name|getMessage
+argument_list|()
+argument_list|,
+name|ex
+operator|.
+name|getResult
+argument_list|()
+operator|.
+name|getValueDescriptor
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|getContainerResponse
+argument_list|(
+name|msg
+argument_list|,
+name|ex
+operator|.
+name|getResult
+argument_list|()
+argument_list|,
+name|ex
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+operator|.
+name|build
+argument_list|()
+return|;
+block|}
+comment|/**    * Logs the error and returns a response to the caller.    *    * @param log - Logger    * @param ex - Exception    * @param msg - Request Object    * @return Response    */
+DECL|method|logAndReturnError ( Logger log, RuntimeException ex, ContainerProtos.ContainerCommandRequestProto msg)
+specifier|public
+specifier|static
+name|ContainerProtos
+operator|.
+name|ContainerCommandResponseProto
+name|logAndReturnError
+parameter_list|(
+name|Logger
+name|log
+parameter_list|,
+name|RuntimeException
+name|ex
+parameter_list|,
+name|ContainerProtos
+operator|.
+name|ContainerCommandRequestProto
+name|msg
+parameter_list|)
+block|{
+name|log
+operator|.
+name|info
+argument_list|(
+literal|"Trace ID: {} : Message: {} "
+argument_list|,
+name|msg
+operator|.
+name|getTraceID
+argument_list|()
+argument_list|,
+name|ex
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|getContainerResponse
+argument_list|(
+name|msg
+argument_list|,
+name|INVALID_ARGUMENT
+argument_list|,
+name|ex
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+operator|.
+name|build
+argument_list|()
 return|;
 block|}
 comment|/**    * We found a command type but no associated payload for the command. Hence    * return malformed Command as response.    *    * @param msg - Protobuf message.    * @return ContainerCommandResponseProto - MALFORMED_REQUEST.    */
@@ -550,7 +749,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    * Verifies that this in indeed a new container.    *    * @param containerFile - Container File to verify    * @param metadataFile  - metadata File to verify    * @throws IOException    */
+comment|/**    * Verifies that this in indeed a new container.    *    * @param containerFile - Container File to verify    * @param metadataFile - metadata File to verify    * @throws IOException    */
 DECL|method|verifyIsNewContainer (File containerFile, File metadataFile)
 specifier|public
 specifier|static
@@ -920,7 +1119,7 @@ return|return
 name|metadataPath
 return|;
 block|}
-comment|/**    * Returns Metadata location.    *    * @param containerData - Data    * @param location      - Path    * @return Path    */
+comment|/**    * Returns Metadata location.    *    * @param containerData - Data    * @param location - Path    * @return Path    */
 DECL|method|getMetadataFile (ContainerData containerData, Path location)
 specifier|public
 specifier|static
@@ -954,7 +1153,7 @@ name|toFile
 argument_list|()
 return|;
 block|}
-comment|/**    * Returns container file location.    * @param containerData  - Data    * @param location - Root path    * @return Path    */
+comment|/**    * Returns container file location.    *    * @param containerData - Data    * @param location - Root path    * @return Path    */
 DECL|method|getContainerFile (ContainerData containerData, Path location)
 specifier|public
 specifier|static
@@ -988,7 +1187,7 @@ name|toFile
 argument_list|()
 return|;
 block|}
-comment|/**    * Container metadata directory -- here is where the level DB lives.    * @param cData - cData.    * @return Path to the parent directory where the DB lives.    */
+comment|/**    * Container metadata directory -- here is where the level DB lives.    *    * @param cData - cData.    * @return Path to the parent directory where the DB lives.    */
 DECL|method|getMetadataDirectory (ContainerData cData)
 specifier|public
 specifier|static
@@ -1041,7 +1240,7 @@ name|getParent
 argument_list|()
 return|;
 block|}
-comment|/**    * Returns the path where data or chunks live for a given container.    * @param cData - cData container    * @return - Path    */
+comment|/**    * Returns the path where data or chunks live for a given container.    *    * @param cData - cData container    * @return - Path    * @throws StorageContainerException    */
 DECL|method|getDataDirectory (ContainerData cData)
 specifier|public
 specifier|static
@@ -1052,7 +1251,7 @@ name|ContainerData
 name|cData
 parameter_list|)
 throws|throws
-name|IOException
+name|StorageContainerException
 block|{
 name|Path
 name|path
@@ -1069,30 +1268,35 @@ argument_list|(
 name|path
 argument_list|)
 expr_stmt|;
-name|path
-operator|=
+name|Path
+name|parentPath
+init|=
 name|path
 operator|.
 name|getParent
 argument_list|()
-expr_stmt|;
+decl_stmt|;
 if|if
 condition|(
-name|path
+name|parentPath
 operator|==
 literal|null
 condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|StorageContainerException
 argument_list|(
-literal|"Unable to get Data directory. null path found"
+literal|"Unable to get Data directory."
+operator|+
+name|path
+argument_list|,
+name|UNABLE_TO_FIND_DATA_DIR
 argument_list|)
 throw|;
 block|}
 return|return
-name|path
+name|parentPath
 operator|.
 name|resolve
 argument_list|(
@@ -1267,13 +1471,6 @@ name|toFile
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
-DECL|method|ContainerUtils ()
-specifier|private
-name|ContainerUtils
-parameter_list|()
-block|{
-comment|//never constructed.
 block|}
 block|}
 end_class

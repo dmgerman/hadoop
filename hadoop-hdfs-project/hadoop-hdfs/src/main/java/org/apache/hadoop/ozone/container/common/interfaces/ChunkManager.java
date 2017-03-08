@@ -30,6 +30,26 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|StorageContainerException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|container
@@ -62,16 +82,6 @@ name|Pipeline
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
 begin_comment
 comment|/**  * Chunk Manager allows read, write, delete and listing of chunks in  * a container.  */
 end_comment
@@ -82,7 +92,7 @@ specifier|public
 interface|interface
 name|ChunkManager
 block|{
-comment|/**    * writes a given chunk.    * @param pipeline - Name and the set of machines that make this container.    * @param keyName - Name of the Key.    * @param info - ChunkInfo.    * @throws IOException    */
+comment|/**    * writes a given chunk.    * @param pipeline - Name and the set of machines that make this container.    * @param keyName - Name of the Key.    * @param info - ChunkInfo.    * @throws StorageContainerException    */
 DECL|method|writeChunk (Pipeline pipeline, String keyName, ChunkInfo info, byte[] data)
 name|void
 name|writeChunk
@@ -101,9 +111,9 @@ index|[]
 name|data
 parameter_list|)
 throws|throws
-name|IOException
+name|StorageContainerException
 function_decl|;
-comment|/**    * reads the data defined by a chunk.    * @param pipeline - container pipeline.    * @param keyName - Name of the Key    * @param info - ChunkInfo.    * @return  byte array    * @throws IOException    *    * TODO: Right now we do not support partial reads and writes of chunks.    * TODO: Explore if we need to do that for ozone.    */
+comment|/**    * reads the data defined by a chunk.    * @param pipeline - container pipeline.    * @param keyName - Name of the Key    * @param info - ChunkInfo.    * @return  byte array    * @throws StorageContainerException    *    * TODO: Right now we do not support partial reads and writes of chunks.    * TODO: Explore if we need to do that for ozone.    */
 DECL|method|readChunk (Pipeline pipeline, String keyName, ChunkInfo info)
 name|byte
 index|[]
@@ -119,9 +129,9 @@ name|ChunkInfo
 name|info
 parameter_list|)
 throws|throws
-name|IOException
+name|StorageContainerException
 function_decl|;
-comment|/**    * Deletes a given chunk.    * @param pipeline  - Pipeline.    * @param keyName   - Key Name    * @param info  - Chunk Info    * @throws IOException    */
+comment|/**    * Deletes a given chunk.    * @param pipeline  - Pipeline.    * @param keyName   - Key Name    * @param info  - Chunk Info    * @throws StorageContainerException    */
 DECL|method|deleteChunk (Pipeline pipeline, String keyName, ChunkInfo info)
 name|void
 name|deleteChunk
@@ -136,7 +146,7 @@ name|ChunkInfo
 name|info
 parameter_list|)
 throws|throws
-name|IOException
+name|StorageContainerException
 function_decl|;
 comment|// TODO : Support list operations.
 comment|/**    * Shutdown the chunkManager.    */

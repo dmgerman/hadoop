@@ -30,6 +30,26 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|StorageContainerException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|container
@@ -66,16 +86,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|List
@@ -92,7 +102,7 @@ specifier|public
 interface|interface
 name|KeyManager
 block|{
-comment|/**    * Puts or overwrites a key.    *    * @param pipeline - Pipeline.    * @param data     - Key Data.    */
+comment|/**    * Puts or overwrites a key.    *    * @param pipeline - Pipeline.    * @param data     - Key Data.    * @throws StorageContainerException    */
 DECL|method|putKey (Pipeline pipeline, KeyData data)
 name|void
 name|putKey
@@ -104,9 +114,9 @@ name|KeyData
 name|data
 parameter_list|)
 throws|throws
-name|IOException
+name|StorageContainerException
 function_decl|;
-comment|/**    * Gets an existing key.    *    * @param data - Key Data.    * @return Key Data.    */
+comment|/**    * Gets an existing key.    *    * @param data - Key Data.    * @return Key Data.    * @throws StorageContainerException    */
 DECL|method|getKey (KeyData data)
 name|KeyData
 name|getKey
@@ -115,9 +125,9 @@ name|KeyData
 name|data
 parameter_list|)
 throws|throws
-name|IOException
+name|StorageContainerException
 function_decl|;
-comment|/**    * Deletes an existing Key.    *    * @param pipeline - Pipeline.    * @param keyName  Key Data.    */
+comment|/**    * Deletes an existing Key.    *    * @param pipeline - Pipeline.    * @param keyName  Key Data.    * @throws StorageContainerException    */
 DECL|method|deleteKey (Pipeline pipeline, String keyName)
 name|void
 name|deleteKey
@@ -129,7 +139,7 @@ name|String
 name|keyName
 parameter_list|)
 throws|throws
-name|IOException
+name|StorageContainerException
 function_decl|;
 comment|/**    * List keys in a container.    *    * @param pipeline - pipeline.    * @param prefix   - Prefix in needed.    * @param prevKey  - Key to Start from, EMPTY_STRING to begin.    * @param count    - Number of keys to return.    * @return List of Keys that match the criteria.    */
 DECL|method|listKey (Pipeline pipeline, String prefix, String prevKey, int count)
