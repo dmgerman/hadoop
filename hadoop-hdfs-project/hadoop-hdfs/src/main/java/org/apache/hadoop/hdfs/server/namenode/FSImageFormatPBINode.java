@@ -2731,6 +2731,32 @@ condition|(
 name|isStriped
 condition|)
 block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|ecPolicy
+operator|.
+name|getId
+argument_list|()
+operator|>
+literal|0
+argument_list|,
+literal|"File with ID "
+operator|+
+name|n
+operator|.
+name|getId
+argument_list|()
+operator|+
+literal|" has an invalid erasure coding policy ID "
+operator|+
+name|ecPolicy
+operator|.
+name|getId
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|blocks
 index|[
 name|i

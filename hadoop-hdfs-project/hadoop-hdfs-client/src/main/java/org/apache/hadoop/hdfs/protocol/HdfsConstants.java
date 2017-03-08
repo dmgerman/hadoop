@@ -567,7 +567,7 @@ specifier|final
 name|byte
 name|RS_6_3_POLICY_ID
 init|=
-literal|0
+literal|1
 decl_stmt|;
 DECL|field|RS_3_2_POLICY_ID
 specifier|public
@@ -576,7 +576,7 @@ specifier|final
 name|byte
 name|RS_3_2_POLICY_ID
 init|=
-literal|1
+literal|2
 decl_stmt|;
 DECL|field|RS_6_3_LEGACY_POLICY_ID
 specifier|public
@@ -585,7 +585,7 @@ specifier|final
 name|byte
 name|RS_6_3_LEGACY_POLICY_ID
 init|=
-literal|2
+literal|3
 decl_stmt|;
 DECL|field|XOR_2_1_POLICY_ID
 specifier|public
@@ -594,7 +594,7 @@ specifier|final
 name|byte
 name|XOR_2_1_POLICY_ID
 init|=
-literal|3
+literal|4
 decl_stmt|;
 DECL|field|RS_10_4_POLICY_ID
 specifier|public
@@ -603,7 +603,7 @@ specifier|final
 name|byte
 name|RS_10_4_POLICY_ID
 init|=
-literal|4
+literal|5
 decl_stmt|;
 comment|/* Hidden constructor */
 DECL|method|HdfsConstants ()
