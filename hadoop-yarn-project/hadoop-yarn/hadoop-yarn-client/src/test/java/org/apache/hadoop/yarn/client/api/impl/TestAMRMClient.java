@@ -1268,6 +1268,24 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
+name|createClientAndCluster
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|createClientAndCluster (Configuration conf)
+specifier|private
+specifier|static
+name|void
+name|createClientAndCluster
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|Exception
+block|{
 name|yarnCluster
 operator|=
 operator|new
@@ -5797,6 +5815,70 @@ name|initAMRMClientAndTest
 argument_list|(
 literal|false
 argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
+DECL|method|testAMRMClientWithSaslEncryption ()
+specifier|public
+name|void
+name|testAMRMClientWithSaslEncryption
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|conf
+operator|.
+name|set
+argument_list|(
+literal|"hadoop.rpc.protection"
+argument_list|,
+literal|"privacy"
+argument_list|)
+expr_stmt|;
+comment|// we have to create a new instance of MiniYARNCluster to avoid SASL qop
+comment|// mismatches between client and server
+name|tearDown
+argument_list|()
+expr_stmt|;
+name|createClientAndCluster
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|startApp
+argument_list|()
+expr_stmt|;
+name|initAMRMClientAndTest
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+comment|// recreate the original MiniYARNCluster and YarnClient for other tests
+name|conf
+operator|.
+name|unset
+argument_list|(
+literal|"hadoop.rpc.protection"
+argument_list|)
+expr_stmt|;
+name|tearDown
+argument_list|()
+expr_stmt|;
+name|createClientAndCluster
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+comment|// unless we start an application the cancelApp() method will fail when
+comment|// it runs after this test
+name|startApp
+argument_list|()
 expr_stmt|;
 block|}
 annotation|@

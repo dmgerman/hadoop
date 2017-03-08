@@ -7540,13 +7540,19 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// Wrap the input stream in a BufferedInputStream to fill the buffer
+comment|// before reading its length (HADOOP-14062).
 name|setInputStream
+argument_list|(
+operator|new
+name|BufferedInputStream
 argument_list|(
 name|client
 operator|.
 name|getInputStream
 argument_list|(
 name|in
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
