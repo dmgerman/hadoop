@@ -100,6 +100,8 @@ name|NodeManager
 extends|extends
 name|StorageContainerNodeProtocol
 extends|,
+name|NodeManagerMXBean
+extends|,
 name|Closeable
 extends|,
 name|Runnable
@@ -145,18 +147,6 @@ argument_list|>
 name|getAllNodes
 parameter_list|()
 function_decl|;
-comment|/**    * Get the minimum number of nodes to get out of chill mode.    *    * @return int    */
-DECL|method|getMinimumChillModeNodes ()
-name|int
-name|getMinimumChillModeNodes
-parameter_list|()
-function_decl|;
-comment|/**    * Reports if we have exited out of chill mode by discovering enough nodes.    *    * @return True if we are out of Node layer chill mode, false otherwise.    */
-DECL|method|isOutOfNodeChillMode ()
-name|boolean
-name|isOutOfNodeChillMode
-parameter_list|()
-function_decl|;
 comment|/**    * Chill mode is the period when node manager waits for a minimum    * configured number of datanodes to report in. This is called chill mode    * to indicate the period before node manager gets into action.    *    * Forcefully exits the chill mode, even if we have not met the minimum    * criteria of the nodes reporting in.    */
 DECL|method|forceExitChillMode ()
 name|void
@@ -173,18 +163,6 @@ comment|/**    * Clears the manual chill mode flag.    */
 DECL|method|clearChillModeFlag ()
 name|void
 name|clearChillModeFlag
-parameter_list|()
-function_decl|;
-comment|/**    * Returns a chill mode status string.    * @return String    */
-DECL|method|getChillModeStatus ()
-name|String
-name|getChillModeStatus
-parameter_list|()
-function_decl|;
-comment|/**    * Returns the status of manual chill mode flag.    * @return true if forceEnterChillMode has been called,    * false if forceExitChillMode or status is not set. eg. clearChillModeFlag.    */
-DECL|method|isInManualChillMode ()
-name|boolean
-name|isInManualChillMode
 parameter_list|()
 function_decl|;
 comment|/**    * Enum that represents the Node State. This is used in calls to getNodeList    * and getNodeCount. TODO: Add decommission when we support it.    */

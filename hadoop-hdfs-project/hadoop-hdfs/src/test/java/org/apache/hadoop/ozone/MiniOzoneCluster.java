@@ -639,6 +639,18 @@ name|join
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|getStorageContainerManager ()
+specifier|public
+name|StorageContainerManager
+name|getStorageContainerManager
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|scm
+return|;
+block|}
 comment|/**    * Creates an {@link OzoneClient} connected to this cluster's REST service.    * Callers take ownership of the client and must close it when done.    *    * @return OzoneClient connected to this cluster's REST service    * @throws OzoneException if Ozone encounters an error creating the client    */
 DECL|method|createOzoneClient ()
 specifier|public
