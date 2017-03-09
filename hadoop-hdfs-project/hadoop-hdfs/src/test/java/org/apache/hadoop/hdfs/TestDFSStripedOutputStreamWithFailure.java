@@ -1684,6 +1684,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|DFSTestUtil
+operator|.
+name|enableAllECPolicies
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|cluster
 operator|=
 operator|new

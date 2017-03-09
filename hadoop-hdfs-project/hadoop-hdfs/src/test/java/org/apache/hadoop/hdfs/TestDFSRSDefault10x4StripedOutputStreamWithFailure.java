@@ -89,7 +89,7 @@ block|{
 return|return
 name|ErasureCodingPolicyManager
 operator|.
-name|getPolicyByPolicyID
+name|getPolicyByID
 argument_list|(
 name|HdfsConstants
 operator|.

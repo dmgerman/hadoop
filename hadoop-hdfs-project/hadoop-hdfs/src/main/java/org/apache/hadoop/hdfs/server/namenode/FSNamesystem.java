@@ -6463,7 +6463,9 @@ name|ecPolicyManager
 operator|=
 operator|new
 name|ErasureCodingPolicyManager
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 expr_stmt|;
 name|this
 operator|.

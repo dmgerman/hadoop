@@ -2676,7 +2676,7 @@ name|isStriped
 condition|?
 name|ErasureCodingPolicyManager
 operator|.
-name|getPolicyByPolicyID
+name|getPolicyByID
 argument_list|(
 operator|(
 name|byte

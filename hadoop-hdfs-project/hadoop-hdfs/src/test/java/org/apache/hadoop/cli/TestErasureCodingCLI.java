@@ -239,6 +239,17 @@ operator|.
 name|setUp
 argument_list|()
 expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_EC_POLICIES_ENABLED_KEY
+argument_list|,
+literal|"RS-6-3-64k,RS-3-2-64k,XOR-2-1-64k"
+argument_list|)
+expr_stmt|;
 name|dfsCluster
 operator|=
 operator|new

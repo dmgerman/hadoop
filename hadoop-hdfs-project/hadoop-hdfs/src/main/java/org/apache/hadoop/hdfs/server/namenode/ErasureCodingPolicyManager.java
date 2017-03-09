@@ -42,6 +42,34 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|protocol
@@ -88,6 +116,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Map
 import|;
 end_import
@@ -99,6 +137,18 @@ operator|.
 name|util
 operator|.
 name|TreeMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|stream
+operator|.
+name|Collectors
 import|;
 end_import
 
@@ -289,9 +339,10 @@ operator|.
 name|ALLSSD_STORAGE_POLICY_ID
 block|}
 decl_stmt|;
-comment|/**    * All active policies maintained in NN memory for fast querying,    * identified and sorted by its name.    */
-DECL|field|activePoliciesByName
+comment|/**    * All supported policies maintained in NN memory for fast querying,    * identified and sorted by its name.    */
+DECL|field|SYSTEM_POLICIES_BY_NAME
 specifier|private
+specifier|static
 specifier|final
 name|Map
 argument_list|<
@@ -299,15 +350,12 @@ name|String
 argument_list|,
 name|ErasureCodingPolicy
 argument_list|>
-name|activePoliciesByName
+name|SYSTEM_POLICIES_BY_NAME
 decl_stmt|;
-DECL|method|ErasureCodingPolicyManager ()
-name|ErasureCodingPolicyManager
-parameter_list|()
+static|static
 block|{
-name|this
-operator|.
-name|activePoliciesByName
+comment|// Create a hashmap of all available policies for quick lookup by name
+name|SYSTEM_POLICIES_BY_NAME
 operator|=
 operator|new
 name|TreeMap
@@ -322,7 +370,7 @@ range|:
 name|SYS_POLICIES
 control|)
 block|{
-name|activePoliciesByName
+name|SYSTEM_POLICIES_BY_NAME
 operator|.
 name|put
 argument_list|(
@@ -332,6 +380,152 @@ name|getName
 argument_list|()
 argument_list|,
 name|policy
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * All enabled policies maintained in NN memory for fast querying,    * identified and sorted by its name.    */
+DECL|field|enabledPoliciesByName
+specifier|private
+specifier|final
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|ErasureCodingPolicy
+argument_list|>
+name|enabledPoliciesByName
+decl_stmt|;
+DECL|method|ErasureCodingPolicyManager (Configuration conf)
+name|ErasureCodingPolicyManager
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+comment|// Populate the list of enabled policies from configuration
+specifier|final
+name|String
+index|[]
+name|policyNames
+init|=
+name|conf
+operator|.
+name|getTrimmedStrings
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_EC_POLICIES_ENABLED_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_EC_POLICIES_ENABLED_DEFAULT
+argument_list|)
+decl_stmt|;
+name|this
+operator|.
+name|enabledPoliciesByName
+operator|=
+operator|new
+name|TreeMap
+argument_list|<>
+argument_list|()
+expr_stmt|;
+for|for
+control|(
+name|String
+name|policyName
+range|:
+name|policyNames
+control|)
+block|{
+name|ErasureCodingPolicy
+name|ecPolicy
+init|=
+name|SYSTEM_POLICIES_BY_NAME
+operator|.
+name|get
+argument_list|(
+name|policyName
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|ecPolicy
+operator|==
+literal|null
+condition|)
+block|{
+name|String
+name|sysPolicies
+init|=
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|SYS_POLICIES
+argument_list|)
+operator|.
+name|stream
+argument_list|()
+operator|.
+name|map
+argument_list|(
+name|ErasureCodingPolicy
+operator|::
+name|getName
+argument_list|)
+operator|.
+name|collect
+argument_list|(
+name|Collectors
+operator|.
+name|joining
+argument_list|(
+literal|", "
+argument_list|)
+argument_list|)
+decl_stmt|;
+name|String
+name|msg
+init|=
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"EC policy %s specified at %s is not a "
+operator|+
+literal|"valid policy. Please choose from list of available policies: "
+operator|+
+literal|"[%s]"
+argument_list|,
+name|policyName
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_EC_POLICIES_ENABLED_KEY
+argument_list|,
+name|sysPolicies
+argument_list|)
+decl_stmt|;
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+name|msg
+argument_list|)
+throw|;
+block|}
+name|enabledPoliciesByName
+operator|.
+name|put
+argument_list|(
+name|ecPolicy
+operator|.
+name|getName
+argument_list|()
+argument_list|,
+name|ecPolicy
 argument_list|)
 expr_stmt|;
 block|}
@@ -363,12 +557,12 @@ return|return
 name|SYS_POLICY1
 return|;
 block|}
-comment|/**    * Get system-wide policy by policy ID.    * @return ecPolicy    */
-DECL|method|getPolicyByPolicyID (byte id)
+comment|/**    * Get a policy by policy ID.    * @return ecPolicy, or null if not found    */
+DECL|method|getPolicyByID (byte id)
 specifier|public
 specifier|static
 name|ErasureCodingPolicy
-name|getPolicyByPolicyID
+name|getPolicyByID
 parameter_list|(
 name|byte
 name|id
@@ -401,12 +595,32 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Get all policies that's available to use.    * @return all policies    */
-DECL|method|getPolicies ()
+comment|/**    * Get a policy by policy name.    * @return ecPolicy, or null if not found    */
+DECL|method|getPolicyByName (String name)
+specifier|public
+specifier|static
+name|ErasureCodingPolicy
+name|getPolicyByName
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+block|{
+return|return
+name|SYSTEM_POLICIES_BY_NAME
+operator|.
+name|get
+argument_list|(
+name|name
+argument_list|)
+return|;
+block|}
+comment|/**    * Get the set of enabled policies.    * @return all policies    */
+DECL|method|getEnabledPolicies ()
 specifier|public
 name|ErasureCodingPolicy
 index|[]
-name|getPolicies
+name|getEnabledPolicies
 parameter_list|()
 block|{
 name|ErasureCodingPolicy
@@ -416,14 +630,14 @@ init|=
 operator|new
 name|ErasureCodingPolicy
 index|[
-name|activePoliciesByName
+name|enabledPoliciesByName
 operator|.
 name|size
 argument_list|()
 index|]
 decl_stmt|;
 return|return
-name|activePoliciesByName
+name|enabledPoliciesByName
 operator|.
 name|values
 argument_list|()
@@ -434,18 +648,18 @@ name|results
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the policy specified by the policy name.    */
-DECL|method|getPolicyByName (String name)
+comment|/**    * Get enabled policy by policy name.    */
+DECL|method|getEnabledPolicyByName (String name)
 specifier|public
 name|ErasureCodingPolicy
-name|getPolicyByName
+name|getEnabledPolicyByName
 parameter_list|(
 name|String
 name|name
 parameter_list|)
 block|{
 return|return
-name|activePoliciesByName
+name|enabledPoliciesByName
 operator|.
 name|get
 argument_list|(
@@ -453,47 +667,7 @@ name|name
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the policy specified by the policy ID.    */
-DECL|method|getPolicyByID (byte id)
-specifier|public
-name|ErasureCodingPolicy
-name|getPolicyByID
-parameter_list|(
-name|byte
-name|id
-parameter_list|)
-block|{
-for|for
-control|(
-name|ErasureCodingPolicy
-name|policy
-range|:
-name|activePoliciesByName
-operator|.
-name|values
-argument_list|()
-control|)
-block|{
-if|if
-condition|(
-name|policy
-operator|.
-name|getId
-argument_list|()
-operator|==
-name|id
-condition|)
-block|{
-return|return
-name|policy
-return|;
-block|}
-block|}
-return|return
-literal|null
-return|;
-block|}
-comment|/**    * @return True if given policy is be suitable for striped EC Files.    */
+comment|/**    * @return if the specified storage policy ID is suitable for striped EC    * files.    */
 DECL|method|checkStoragePolicySuitableForECStripedMode ( byte storagePolicyID)
 specifier|public
 specifier|static
@@ -542,7 +716,7 @@ name|void
 name|clear
 parameter_list|()
 block|{
-name|activePoliciesByName
+name|enabledPoliciesByName
 operator|.
 name|clear
 argument_list|()

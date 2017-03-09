@@ -1099,7 +1099,7 @@ name|checkArgument
 argument_list|(
 name|ErasureCodingPolicyManager
 operator|.
-name|getPolicyByPolicyID
+name|getPolicyByID
 argument_list|(
 name|erasureCodingPolicyID
 argument_list|)
@@ -2587,7 +2587,7 @@ name|ecPolicy
 init|=
 name|ErasureCodingPolicyManager
 operator|.
-name|getPolicyByPolicyID
+name|getPolicyByID
 argument_list|(
 name|getErasureCodingPolicyID
 argument_list|()

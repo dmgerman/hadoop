@@ -474,6 +474,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|DFSTestUtil
+operator|.
+name|enableAllECPolicies
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|cluster
 operator|=
 operator|new
@@ -829,7 +836,7 @@ name|ec32Policy
 init|=
 name|ErasureCodingPolicyManager
 operator|.
-name|getPolicyByPolicyID
+name|getPolicyByID
 argument_list|(
 name|HdfsConstants
 operator|.
@@ -1368,7 +1375,7 @@ name|ec32Policy
 init|=
 name|ErasureCodingPolicyManager
 operator|.
-name|getPolicyByPolicyID
+name|getPolicyByID
 argument_list|(
 name|HdfsConstants
 operator|.
