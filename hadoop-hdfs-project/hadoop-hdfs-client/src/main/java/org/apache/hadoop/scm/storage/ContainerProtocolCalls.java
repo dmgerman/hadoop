@@ -368,20 +368,6 @@ name|hadoop
 operator|.
 name|scm
 operator|.
-name|XceiverClient
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|scm
-operator|.
 name|container
 operator|.
 name|common
@@ -399,6 +385,20 @@ operator|.
 name|io
 operator|.
 name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|scm
+operator|.
+name|XceiverClientSpi
 import|;
 end_import
 
@@ -420,13 +420,13 @@ name|ContainerProtocolCalls
 parameter_list|()
 block|{   }
 comment|/**    * Calls the container protocol to get a container key.    *    * @param xceiverClient client to perform call    * @param containerKeyData key data to identify container    * @param traceID container protocol call args    * @return container protocol get key response    * @throws IOException if there is an I/O error while performing the call    */
-DECL|method|getKey (XceiverClient xceiverClient, KeyData containerKeyData, String traceID)
+DECL|method|getKey (XceiverClientSpi xceiverClient, KeyData containerKeyData, String traceID)
 specifier|public
 specifier|static
 name|GetKeyResponseProto
 name|getKey
 parameter_list|(
-name|XceiverClient
+name|XceiverClientSpi
 name|xceiverClient
 parameter_list|,
 name|KeyData
@@ -515,13 +515,13 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Calls the container protocol to put a container key.    *    * @param xceiverClient client to perform call    * @param containerKeyData key data to identify container    * @param traceID container protocol call args    * @throws IOException if there is an I/O error while performing the call    */
-DECL|method|putKey (XceiverClient xceiverClient, KeyData containerKeyData, String traceID)
+DECL|method|putKey (XceiverClientSpi xceiverClient, KeyData containerKeyData, String traceID)
 specifier|public
 specifier|static
 name|void
 name|putKey
 parameter_list|(
-name|XceiverClient
+name|XceiverClientSpi
 name|xceiverClient
 parameter_list|,
 name|KeyData
@@ -604,13 +604,13 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Calls the container protocol to read a chunk.    *    * @param xceiverClient client to perform call    * @param chunk information about chunk to read    * @param key the key name    * @param traceID container protocol call args    * @return container protocol read chunk response    * @throws IOException if there is an I/O error while performing the call    */
-DECL|method|readChunk (XceiverClient xceiverClient, ChunkInfo chunk, String key, String traceID)
+DECL|method|readChunk (XceiverClientSpi xceiverClient, ChunkInfo chunk, String key, String traceID)
 specifier|public
 specifier|static
 name|ReadChunkResponseProto
 name|readChunk
 parameter_list|(
-name|XceiverClient
+name|XceiverClientSpi
 name|xceiverClient
 parameter_list|,
 name|ChunkInfo
@@ -707,13 +707,13 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Calls the container protocol to write a chunk.    *    * @param xceiverClient client to perform call    * @param chunk information about chunk to write    * @param key the key name    * @param data the data of the chunk to write    * @param traceID container protocol call args    * @throws IOException if there is an I/O error while performing the call    */
-DECL|method|writeChunk (XceiverClient xceiverClient, ChunkInfo chunk, String key, ByteString data, String traceID)
+DECL|method|writeChunk (XceiverClientSpi xceiverClient, ChunkInfo chunk, String key, ByteString data, String traceID)
 specifier|public
 specifier|static
 name|void
 name|writeChunk
 parameter_list|(
-name|XceiverClient
+name|XceiverClientSpi
 name|xceiverClient
 parameter_list|,
 name|ChunkInfo
@@ -812,13 +812,13 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Allows writing a small file using single RPC. This takes the container    * name, key name and data to write sends all that data to the container using    * a single RPC. This API is designed to be used for files which are smaller    * than 1 MB.    *    * @param client - client that communicates with the container.    * @param containerName - Name of the container    * @param key - Name of the Key    * @param data - Data to be written into the container.    * @param traceID - Trace ID for logging purpose.    * @throws IOException    */
-DECL|method|writeSmallFile (XceiverClient client, String containerName, String key, byte[] data, String traceID)
+DECL|method|writeSmallFile (XceiverClientSpi client, String containerName, String key, byte[] data, String traceID)
 specifier|public
 specifier|static
 name|void
 name|writeSmallFile
 parameter_list|(
-name|XceiverClient
+name|XceiverClientSpi
 name|client
 parameter_list|,
 name|String
@@ -990,13 +990,13 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * createContainer call that creates a container on the datanode.    * @param client  - client    * @param traceID - traceID    * @throws IOException    */
-DECL|method|createContainer (XceiverClient client, String traceID)
+DECL|method|createContainer (XceiverClientSpi client, String traceID)
 specifier|public
 specifier|static
 name|void
 name|createContainer
 parameter_list|(
-name|XceiverClient
+name|XceiverClientSpi
 name|client
 parameter_list|,
 name|String
@@ -1124,13 +1124,13 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Reads the data given the container name and key.    *    * @param client - client    * @param containerName - name of the container    * @param key - key    * @param traceID - trace ID    * @return GetSmallFileResponseProto    * @throws IOException    */
-DECL|method|readSmallFile (XceiverClient client, String containerName, String key, String traceID)
+DECL|method|readSmallFile (XceiverClientSpi client, String containerName, String key, String traceID)
 specifier|public
 specifier|static
 name|GetSmallFileResponseProto
 name|readSmallFile
 parameter_list|(
-name|XceiverClient
+name|XceiverClientSpi
 name|client
 parameter_list|,
 name|String

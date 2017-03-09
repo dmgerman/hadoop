@@ -362,7 +362,7 @@ block|}
 comment|/**    * Acquires a XceiverClient connected to a container capable of storing the    * specified key.    *    * If there is already a cached XceiverClient, simply return the cached    * otherwise create a new one.    *    * @param pipeline the container pipeline for the client connection    * @return XceiverClient connected to a container    * @throws IOException if an XceiverClient cannot be acquired    */
 DECL|method|acquireClient (Pipeline pipeline)
 specifier|public
-name|XceiverClient
+name|XceiverClientSpi
 name|acquireClient
 parameter_list|(
 name|Pipeline
@@ -445,7 +445,7 @@ block|}
 else|else
 block|{
 comment|// connection not found, create new, add reference and return
-name|XceiverClient
+name|XceiverClientSpi
 name|xceiverClient
 init|=
 operator|new
@@ -514,12 +514,12 @@ return|;
 block|}
 block|}
 comment|/**    * Releases an XceiverClient after use.    *    * @param xceiverClient client to release    */
-DECL|method|releaseClient (XceiverClient xceiverClient)
+DECL|method|releaseClient (XceiverClientSpi xceiverClient)
 specifier|public
 name|void
 name|releaseClient
 parameter_list|(
-name|XceiverClient
+name|XceiverClientSpi
 name|xceiverClient
 parameter_list|)
 block|{
@@ -582,7 +582,7 @@ block|{
 DECL|field|xceiverClient
 specifier|final
 specifier|private
-name|XceiverClient
+name|XceiverClientSpi
 name|xceiverClient
 decl_stmt|;
 DECL|field|referenceCount
@@ -591,10 +591,10 @@ specifier|private
 name|AtomicInteger
 name|referenceCount
 decl_stmt|;
-DECL|method|XceiverClientWithAccessInfo (XceiverClient xceiverClient)
+DECL|method|XceiverClientWithAccessInfo (XceiverClientSpi xceiverClient)
 name|XceiverClientWithAccessInfo
 parameter_list|(
-name|XceiverClient
+name|XceiverClientSpi
 name|xceiverClient
 parameter_list|)
 block|{
@@ -658,7 +658,7 @@ literal|0
 return|;
 block|}
 DECL|method|getXceiverClient ()
-name|XceiverClient
+name|XceiverClientSpi
 name|getXceiverClient
 parameter_list|()
 block|{

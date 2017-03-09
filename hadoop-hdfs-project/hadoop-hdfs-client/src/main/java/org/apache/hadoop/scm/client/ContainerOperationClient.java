@@ -28,9 +28,7 @@ name|hadoop
 operator|.
 name|scm
 operator|.
-name|protocolPB
-operator|.
-name|StorageContainerLocationProtocolClientSideTranslatorPB
+name|XceiverClientSpi
 import|;
 end_import
 
@@ -44,7 +42,9 @@ name|hadoop
 operator|.
 name|scm
 operator|.
-name|XceiverClient
+name|protocolPB
+operator|.
+name|StorageContainerLocationProtocolClientSideTranslatorPB
 import|;
 end_import
 
@@ -253,7 +253,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|XceiverClient
+name|XceiverClientSpi
 name|client
 init|=
 literal|null

@@ -106,7 +106,7 @@ name|hadoop
 operator|.
 name|scm
 operator|.
-name|XceiverClient
+name|XceiverClientManager
 import|;
 end_import
 
@@ -120,7 +120,7 @@ name|hadoop
 operator|.
 name|scm
 operator|.
-name|XceiverClientManager
+name|XceiverClientSpi
 import|;
 end_import
 
@@ -436,7 +436,7 @@ argument_list|(
 name|containerName
 argument_list|)
 decl_stmt|;
-name|XceiverClient
+name|XceiverClientSpi
 name|client
 init|=
 name|xceiverClientManager
@@ -551,7 +551,7 @@ argument_list|(
 name|containerName
 argument_list|)
 decl_stmt|;
-name|XceiverClient
+name|XceiverClientSpi
 name|client
 init|=
 name|xceiverClientManager
@@ -647,7 +647,7 @@ argument_list|(
 name|containerName
 argument_list|)
 decl_stmt|;
-name|XceiverClient
+name|XceiverClientSpi
 name|client
 init|=
 name|xceiverClientManager

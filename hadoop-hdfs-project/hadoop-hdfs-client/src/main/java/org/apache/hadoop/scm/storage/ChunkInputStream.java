@@ -142,7 +142,7 @@ name|hadoop
 operator|.
 name|scm
 operator|.
-name|XceiverClient
+name|XceiverClientSpi
 import|;
 end_import
 
@@ -201,7 +201,7 @@ name|xceiverClientManager
 decl_stmt|;
 DECL|field|xceiverClient
 specifier|private
-name|XceiverClient
+name|XceiverClientSpi
 name|xceiverClient
 decl_stmt|;
 DECL|field|chunks
@@ -231,7 +231,7 @@ name|int
 name|bufferOffset
 decl_stmt|;
 comment|/**    * Creates a new ChunkInputStream.    *    * @param key chunk key    * @param xceiverClientManager client manager that controls client    * @param xceiverClient client to perform container calls    * @param chunks list of chunks to read    * @param traceID container protocol call traceID    */
-DECL|method|ChunkInputStream (String key, XceiverClientManager xceiverClientManager, XceiverClient xceiverClient, List<ChunkInfo> chunks, String traceID)
+DECL|method|ChunkInputStream (String key, XceiverClientManager xceiverClientManager, XceiverClientSpi xceiverClient, List<ChunkInfo> chunks, String traceID)
 specifier|public
 name|ChunkInputStream
 parameter_list|(
@@ -241,7 +241,7 @@ parameter_list|,
 name|XceiverClientManager
 name|xceiverClientManager
 parameter_list|,
-name|XceiverClient
+name|XceiverClientSpi
 name|xceiverClient
 parameter_list|,
 name|List

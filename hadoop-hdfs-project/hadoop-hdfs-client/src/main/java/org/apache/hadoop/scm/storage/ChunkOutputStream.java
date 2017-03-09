@@ -196,7 +196,7 @@ name|hadoop
 operator|.
 name|scm
 operator|.
-name|XceiverClient
+name|XceiverClientManager
 import|;
 end_import
 
@@ -210,7 +210,7 @@ name|hadoop
 operator|.
 name|scm
 operator|.
-name|XceiverClientManager
+name|XceiverClientSpi
 import|;
 end_import
 
@@ -259,7 +259,7 @@ name|xceiverClientManager
 decl_stmt|;
 DECL|field|xceiverClient
 specifier|private
-name|XceiverClient
+name|XceiverClientSpi
 name|xceiverClient
 decl_stmt|;
 DECL|field|buffer
@@ -279,7 +279,7 @@ name|int
 name|chunkIndex
 decl_stmt|;
 comment|/**    * Creates a new ChunkOutputStream.    *    * @param containerKey container key    * @param key chunk key    * @param xceiverClientManager client manager that controls client    * @param xceiverClient client to perform container calls    * @param traceID container protocol call args    */
-DECL|method|ChunkOutputStream (String containerKey, String key, XceiverClientManager xceiverClientManager, XceiverClient xceiverClient, String traceID)
+DECL|method|ChunkOutputStream (String containerKey, String key, XceiverClientManager xceiverClientManager, XceiverClientSpi xceiverClient, String traceID)
 specifier|public
 name|ChunkOutputStream
 parameter_list|(
@@ -292,7 +292,7 @@ parameter_list|,
 name|XceiverClientManager
 name|xceiverClientManager
 parameter_list|,
-name|XceiverClient
+name|XceiverClientSpi
 name|xceiverClient
 parameter_list|,
 name|String

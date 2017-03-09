@@ -200,6 +200,8 @@ specifier|public
 specifier|final
 class|class
 name|XceiverServer
+implements|implements
+name|XceiverServerSpi
 block|{
 DECL|field|port
 specifier|private
@@ -271,7 +273,8 @@ operator|=
 name|dispatcher
 expr_stmt|;
 block|}
-comment|/**    * Starts running the server.    *    * @throws IOException    */
+annotation|@
+name|Override
 DECL|method|start ()
 specifier|public
 name|void
@@ -344,7 +347,8 @@ name|channel
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Stops a running server.    *    * @throws Exception    */
+annotation|@
+name|Override
 DECL|method|stop ()
 specifier|public
 name|void
