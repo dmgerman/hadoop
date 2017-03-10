@@ -1841,6 +1841,24 @@ name|VolumeFailureInfo
 name|volumeFailureInfo
 parameter_list|)
 block|{
+comment|// There could be redundant requests for adding the same failed
+comment|// volume because of repeated DataNode reconfigure with same list
+comment|// of volumes. Ignoring update on failed volume so as to preserve
+comment|// old failed capacity details in the map.
+if|if
+condition|(
+operator|!
+name|volumeFailureInfos
+operator|.
+name|containsKey
+argument_list|(
+name|volumeFailureInfo
+operator|.
+name|getFailedStorageLocation
+argument_list|()
+argument_list|)
+condition|)
+block|{
 name|volumeFailureInfos
 operator|.
 name|put
@@ -1853,6 +1871,7 @@ argument_list|,
 name|volumeFailureInfo
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|addVolumeFailureInfo (FsVolumeImpl vol)
 specifier|private
@@ -1887,7 +1906,6 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|removeVolumeFailureInfo (StorageLocation location)
-specifier|private
 name|void
 name|removeVolumeFailureInfo
 parameter_list|(

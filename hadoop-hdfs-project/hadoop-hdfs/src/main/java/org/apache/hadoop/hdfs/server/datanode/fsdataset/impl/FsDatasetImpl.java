@@ -3387,21 +3387,35 @@ block|}
 comment|/**    * Removes a set of volumes from FsDataset.    * @param storageLocationsToRemove a set of    * {@link StorageLocation}s for each volume.    * @param clearFailure set true to clear failure information.    */
 annotation|@
 name|Override
-DECL|method|removeVolumes ( Collection<StorageLocation> storageLocationsToRemove, boolean clearFailure)
+DECL|method|removeVolumes ( final Collection<StorageLocation> storageLocsToRemove, boolean clearFailure)
 specifier|public
 name|void
 name|removeVolumes
 parameter_list|(
+specifier|final
 name|Collection
 argument_list|<
 name|StorageLocation
 argument_list|>
-name|storageLocationsToRemove
+name|storageLocsToRemove
 parameter_list|,
 name|boolean
 name|clearFailure
 parameter_list|)
 block|{
+name|Collection
+argument_list|<
+name|StorageLocation
+argument_list|>
+name|storageLocationsToRemove
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|(
+name|storageLocsToRemove
+argument_list|)
+decl_stmt|;
 name|Map
 argument_list|<
 name|String
@@ -3680,6 +3694,38 @@ name|sd
 operator|.
 name|getStorageUuid
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|storageLocationsToRemove
+operator|.
+name|remove
+argument_list|(
+name|sdLocation
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|// A reconfigure can remove the storage location which is already
+comment|// removed when the failure was detected by DataNode#checkDiskErrorAsync.
+comment|// Now, lets remove this from the failed volume list.
+if|if
+condition|(
+name|clearFailure
+condition|)
+block|{
+for|for
+control|(
+name|StorageLocation
+name|storageLocToRemove
+range|:
+name|storageLocationsToRemove
+control|)
+block|{
+name|volumes
+operator|.
+name|removeVolumeFailureInfo
+argument_list|(
+name|storageLocToRemove
 argument_list|)
 expr_stmt|;
 block|}
