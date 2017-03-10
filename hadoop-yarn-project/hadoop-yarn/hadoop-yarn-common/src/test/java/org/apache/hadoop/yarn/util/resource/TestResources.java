@@ -106,7 +106,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testCompareToWithUnboundedResource ()
 specifier|public
@@ -188,7 +188,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testCompareToWithNoneResource ()
 specifier|public
@@ -259,6 +259,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 DECL|method|testMultipleRoundUp ()
 specifier|public
 name|void
