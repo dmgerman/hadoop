@@ -2785,6 +2785,8 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+try|try
+init|(
 name|DataOutputStream
 name|out
 init|=
@@ -2797,7 +2799,8 @@ argument_list|(
 operator|-
 literal|1
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|VERSION_KEY
 operator|.
 name|write
@@ -2805,13 +2808,12 @@ argument_list|(
 name|out
 argument_list|)
 expr_stmt|;
+block|}
+try|try
+init|(
+name|DataOutputStream
 name|out
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-name|out
-operator|=
+init|=
 name|this
 operator|.
 name|writer
@@ -2821,7 +2823,8 @@ argument_list|(
 operator|-
 literal|1
 argument_list|)
-expr_stmt|;
+init|)
+block|{
 name|out
 operator|.
 name|writeInt
@@ -2829,11 +2832,7 @@ argument_list|(
 name|VERSION
 argument_list|)
 expr_stmt|;
-name|out
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
+block|}
 block|}
 DECL|method|writeApplicationOwner (String user)
 specifier|public
@@ -2846,6 +2845,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+init|(
 name|DataOutputStream
 name|out
 init|=
@@ -2858,7 +2859,8 @@ argument_list|(
 operator|-
 literal|1
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|APPLICATION_OWNER_KEY
 operator|.
 name|write
@@ -2866,13 +2868,12 @@ argument_list|(
 name|out
 argument_list|)
 expr_stmt|;
+block|}
+try|try
+init|(
+name|DataOutputStream
 name|out
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-name|out
-operator|=
+init|=
 name|this
 operator|.
 name|writer
@@ -2882,7 +2883,8 @@ argument_list|(
 operator|-
 literal|1
 argument_list|)
-expr_stmt|;
+init|)
+block|{
 name|out
 operator|.
 name|writeUTF
@@ -2890,11 +2892,7 @@ argument_list|(
 name|user
 argument_list|)
 expr_stmt|;
-name|out
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
+block|}
 block|}
 DECL|method|writeApplicationACLs (Map<ApplicationAccessType, String> appAcls)
 specifier|public
@@ -2912,6 +2910,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+init|(
 name|DataOutputStream
 name|out
 init|=
@@ -2924,7 +2924,8 @@ argument_list|(
 operator|-
 literal|1
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|APPLICATION_ACL_KEY
 operator|.
 name|write
@@ -2932,13 +2933,12 @@ argument_list|(
 name|out
 argument_list|)
 expr_stmt|;
+block|}
+try|try
+init|(
+name|DataOutputStream
 name|out
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-name|out
-operator|=
+init|=
 name|this
 operator|.
 name|writer
@@ -2948,7 +2948,8 @@ argument_list|(
 operator|-
 literal|1
 argument_list|)
-expr_stmt|;
+init|)
+block|{
 for|for
 control|(
 name|Entry
@@ -2989,11 +2990,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|out
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
+block|}
 block|}
 DECL|method|append (LogKey logKey, LogValue logValue)
 specifier|public
@@ -3032,6 +3029,8 @@ condition|)
 block|{
 return|return;
 block|}
+try|try
+init|(
 name|DataOutputStream
 name|out
 init|=
@@ -3044,7 +3043,8 @@ argument_list|(
 operator|-
 literal|1
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|logKey
 operator|.
 name|write
@@ -3052,13 +3052,12 @@ argument_list|(
 name|out
 argument_list|)
 expr_stmt|;
+block|}
+try|try
+init|(
+name|DataOutputStream
 name|out
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-name|out
-operator|=
+init|=
 name|this
 operator|.
 name|writer
@@ -3068,7 +3067,8 @@ argument_list|(
 operator|-
 literal|1
 argument_list|)
-expr_stmt|;
+init|)
+block|{
 name|logValue
 operator|.
 name|write
@@ -3078,11 +3078,7 @@ argument_list|,
 name|pendingUploadFiles
 argument_list|)
 expr_stmt|;
-name|out
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
+block|}
 block|}
 DECL|method|close ()
 specifier|public
