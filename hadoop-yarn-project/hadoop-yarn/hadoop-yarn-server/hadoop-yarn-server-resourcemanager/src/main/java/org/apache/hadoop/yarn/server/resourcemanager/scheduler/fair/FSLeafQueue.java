@@ -2248,10 +2248,11 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Round up to allow AM to run when there is only one vcore on the cluster
 return|return
 name|Resources
 operator|.
-name|multiply
+name|multiplyAndRoundUp
 argument_list|(
 name|maxResource
 argument_list|,
