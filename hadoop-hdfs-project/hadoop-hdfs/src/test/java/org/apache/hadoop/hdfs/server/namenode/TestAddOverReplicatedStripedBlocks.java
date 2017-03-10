@@ -453,9 +453,9 @@ specifier|final
 name|ErasureCodingPolicy
 name|ecPolicy
 init|=
-name|ErasureCodingPolicyManager
+name|StripedFileTestUtil
 operator|.
-name|getSystemDefaultPolicy
+name|getDefaultECPolicy
 argument_list|()
 decl_stmt|;
 DECL|field|dataBlocks
@@ -671,9 +671,9 @@ operator|.
 name|toString
 argument_list|()
 argument_list|,
-name|ErasureCodingPolicyManager
+name|StripedFileTestUtil
 operator|.
-name|getSystemDefaultPolicy
+name|getDefaultECPolicy
 argument_list|()
 operator|.
 name|getName
@@ -1406,9 +1406,9 @@ name|BlockInfoStriped
 argument_list|(
 name|blk
 argument_list|,
-name|ErasureCodingPolicyManager
+name|StripedFileTestUtil
 operator|.
-name|getSystemDefaultPolicy
+name|getDefaultECPolicy
 argument_list|()
 argument_list|)
 decl_stmt|;

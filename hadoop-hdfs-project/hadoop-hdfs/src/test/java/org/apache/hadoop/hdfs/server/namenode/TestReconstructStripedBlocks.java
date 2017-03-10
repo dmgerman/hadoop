@@ -568,9 +568,9 @@ specifier|final
 name|ErasureCodingPolicy
 name|ecPolicy
 init|=
-name|ErasureCodingPolicyManager
+name|StripedFileTestUtil
 operator|.
-name|getSystemDefaultPolicy
+name|getDefaultECPolicy
 argument_list|()
 decl_stmt|;
 DECL|field|cellSize
@@ -1381,9 +1381,9 @@ name|setErasureCodingPolicy
 argument_list|(
 literal|"/"
 argument_list|,
-name|ErasureCodingPolicyManager
+name|StripedFileTestUtil
 operator|.
-name|getSystemDefaultPolicy
+name|getDefaultECPolicy
 argument_list|()
 operator|.
 name|getName
@@ -1776,9 +1776,9 @@ name|setErasureCodingPolicy
 argument_list|(
 name|dirPath
 argument_list|,
-name|ErasureCodingPolicyManager
+name|StripedFileTestUtil
 operator|.
-name|getSystemDefaultPolicy
+name|getDefaultECPolicy
 argument_list|()
 operator|.
 name|getName

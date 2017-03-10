@@ -544,19 +544,6 @@ return|return
 name|SYS_POLICIES
 return|;
 block|}
-comment|/**    * Get system-wide default policy, which can be used by default    * when no policy is specified for a path.    * @return ecPolicy    */
-DECL|method|getSystemDefaultPolicy ()
-specifier|public
-specifier|static
-name|ErasureCodingPolicy
-name|getSystemDefaultPolicy
-parameter_list|()
-block|{
-comment|// make this configurable?
-return|return
-name|SYS_POLICY1
-return|;
-block|}
 comment|/**    * Get a policy by policy ID.    * @return ecPolicy, or null if not found    */
 DECL|method|getPolicyByID (byte id)
 specifier|public

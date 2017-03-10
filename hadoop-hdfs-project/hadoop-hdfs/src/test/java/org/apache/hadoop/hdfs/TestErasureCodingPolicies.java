@@ -461,9 +461,9 @@ specifier|final
 name|ErasureCodingPolicy
 name|EC_POLICY
 init|=
-name|ErasureCodingPolicyManager
+name|StripedFileTestUtil
 operator|.
-name|getSystemDefaultPolicy
+name|getDefaultECPolicy
 argument_list|()
 decl_stmt|;
 DECL|field|namesystem
@@ -645,9 +645,9 @@ name|setErasureCodingPolicy
 argument_list|(
 name|dir
 argument_list|,
-name|ErasureCodingPolicyManager
+name|StripedFileTestUtil
 operator|.
-name|getSystemDefaultPolicy
+name|getDefaultECPolicy
 argument_list|()
 operator|.
 name|getName
@@ -1869,9 +1869,9 @@ name|setErasureCodingPolicy
 argument_list|(
 name|testDir
 argument_list|,
-name|ErasureCodingPolicyManager
+name|StripedFileTestUtil
 operator|.
-name|getSystemDefaultPolicy
+name|getDefaultECPolicy
 argument_list|()
 operator|.
 name|getName
@@ -2025,9 +2025,9 @@ comment|// dir EC policy after setting
 name|ErasureCodingPolicy
 name|sysDefaultECPolicy
 init|=
-name|ErasureCodingPolicyManager
+name|StripedFileTestUtil
 operator|.
-name|getSystemDefaultPolicy
+name|getDefaultECPolicy
 argument_list|()
 decl_stmt|;
 name|fs

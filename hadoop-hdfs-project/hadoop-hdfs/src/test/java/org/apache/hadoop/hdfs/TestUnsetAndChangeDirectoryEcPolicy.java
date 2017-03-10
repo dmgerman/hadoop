@@ -332,9 +332,9 @@ specifier|private
 name|ErasureCodingPolicy
 name|ecPolicy
 init|=
-name|ErasureCodingPolicyManager
+name|StripedFileTestUtil
 operator|.
-name|getSystemDefaultPolicy
+name|getDefaultECPolicy
 argument_list|()
 decl_stmt|;
 DECL|field|dataBlocks

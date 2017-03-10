@@ -5401,9 +5401,9 @@ decl_stmt|;
 name|int
 name|dataBlocks
 init|=
-name|ErasureCodingPolicyManager
+name|StripedFileTestUtil
 operator|.
-name|getSystemDefaultPolicy
+name|getDefaultECPolicy
 argument_list|()
 operator|.
 name|getNumDataUnits
@@ -5412,9 +5412,9 @@ decl_stmt|;
 name|int
 name|parityBlocks
 init|=
-name|ErasureCodingPolicyManager
+name|StripedFileTestUtil
 operator|.
-name|getSystemDefaultPolicy
+name|getDefaultECPolicy
 argument_list|()
 operator|.
 name|getNumParityUnits
@@ -5423,9 +5423,9 @@ decl_stmt|;
 name|int
 name|cellSize
 init|=
-name|ErasureCodingPolicyManager
+name|StripedFileTestUtil
 operator|.
-name|getSystemDefaultPolicy
+name|getDefaultECPolicy
 argument_list|()
 operator|.
 name|getCellSize
@@ -5497,9 +5497,9 @@ operator|.
 name|toString
 argument_list|()
 argument_list|,
-name|ErasureCodingPolicyManager
+name|StripedFileTestUtil
 operator|.
-name|getSystemDefaultPolicy
+name|getDefaultECPolicy
 argument_list|()
 operator|.
 name|getName

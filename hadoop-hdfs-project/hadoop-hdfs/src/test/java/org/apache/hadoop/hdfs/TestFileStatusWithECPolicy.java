@@ -116,24 +116,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|ErasureCodingPolicyManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|protocol
 operator|.
 name|ErasureCodingPolicy
@@ -406,9 +388,9 @@ specifier|final
 name|ErasureCodingPolicy
 name|ecPolicy1
 init|=
-name|ErasureCodingPolicyManager
+name|StripedFileTestUtil
 operator|.
-name|getSystemDefaultPolicy
+name|getDefaultECPolicy
 argument_list|()
 decl_stmt|;
 comment|// set EC policy on dir

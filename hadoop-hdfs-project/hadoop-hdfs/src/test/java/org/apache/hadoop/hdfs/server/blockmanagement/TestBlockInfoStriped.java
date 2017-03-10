@@ -44,9 +44,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|Block
+name|StripedFileTestUtil
 import|;
 end_import
 
@@ -60,11 +58,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
+name|protocol
 operator|.
-name|namenode
-operator|.
-name|ErasureCodingPolicyManager
+name|Block
 import|;
 end_import
 
@@ -256,9 +252,9 @@ specifier|final
 name|ErasureCodingPolicy
 name|testECPolicy
 init|=
-name|ErasureCodingPolicyManager
+name|StripedFileTestUtil
 operator|.
-name|getSystemDefaultPolicy
+name|getDefaultECPolicy
 argument_list|()
 decl_stmt|;
 DECL|field|totalBlocks

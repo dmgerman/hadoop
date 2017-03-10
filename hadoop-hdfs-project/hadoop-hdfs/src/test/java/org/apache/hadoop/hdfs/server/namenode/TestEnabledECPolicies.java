@@ -58,6 +58,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|StripedFileTestUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|ErasureCodingPolicy
@@ -358,9 +372,9 @@ name|expectInvalidPolicy
 argument_list|(
 literal|"not-a-policy,"
 operator|+
-name|ErasureCodingPolicyManager
+name|StripedFileTestUtil
 operator|.
-name|getSystemDefaultPolicy
+name|getDefaultECPolicy
 argument_list|()
 operator|.
 name|getName
@@ -370,9 +384,9 @@ expr_stmt|;
 comment|// Test with a valid and an invalid policy
 name|expectInvalidPolicy
 argument_list|(
-name|ErasureCodingPolicyManager
+name|StripedFileTestUtil
 operator|.
-name|getSystemDefaultPolicy
+name|getDefaultECPolicy
 argument_list|()
 operator|.
 name|getName
@@ -406,9 +420,9 @@ block|{
 name|String
 name|ecPolicyName
 init|=
-name|ErasureCodingPolicyManager
+name|StripedFileTestUtil
 operator|.
-name|getSystemDefaultPolicy
+name|getDefaultECPolicy
 argument_list|()
 operator|.
 name|getName

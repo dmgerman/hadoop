@@ -11919,9 +11919,9 @@ name|numStripesPerBlk
 argument_list|,
 name|toMkdir
 argument_list|,
-name|ErasureCodingPolicyManager
+name|StripedFileTestUtil
 operator|.
-name|getSystemDefaultPolicy
+name|getDefaultECPolicy
 argument_list|()
 argument_list|)
 expr_stmt|;
