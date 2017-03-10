@@ -583,6 +583,15 @@ argument_list|)
 name|MutableCounterLong
 name|aggregateContainersReleased
 decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Aggregate # of preempted containers"
+argument_list|)
+name|MutableCounterLong
+DECL|field|aggregateContainersPreempted
+name|aggregateContainersPreempted
+decl_stmt|;
 DECL|field|availableMB
 annotation|@
 name|Metric
@@ -2884,6 +2893,31 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+DECL|method|preemptContainer ()
+specifier|public
+name|void
+name|preemptContainer
+parameter_list|()
+block|{
+name|aggregateContainersPreempted
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+name|parent
+operator|!=
+literal|null
+condition|)
+block|{
+name|parent
+operator|.
+name|preemptContainer
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|reserveResource (String user, Resource res)
 specifier|public
 name|void
@@ -3534,6 +3568,19 @@ parameter_list|()
 block|{
 return|return
 name|aggregateContainersReleased
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+DECL|method|getAggregatePreemptedContainers ()
+specifier|public
+name|long
+name|getAggregatePreemptedContainers
+parameter_list|()
+block|{
+return|return
+name|aggregateContainersPreempted
 operator|.
 name|value
 argument_list|()

@@ -1293,10 +1293,10 @@ literal|10
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Verify the right amount of containers are preempted from greedyApp
+comment|// Post preemption, verify the greedyApp has the correct # of containers.
 name|assertEquals
 argument_list|(
-literal|"Incorrect number of containers on the greedy app"
+literal|"Incorrect # of containers on the greedy app"
 argument_list|,
 literal|2
 operator|*
@@ -1311,13 +1311,37 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Verify the queue metrics are set appropriately. The greedyApp started
+comment|// with 8 1GB, 1vcore containers.
+name|assertEquals
+argument_list|(
+literal|"Incorrect # of preempted containers in QueueMetrics"
+argument_list|,
+literal|8
+operator|-
+literal|2
+operator|*
+name|numStarvedAppContainers
+argument_list|,
+name|greedyApp
+operator|.
+name|getQueue
+argument_list|()
+operator|.
+name|getMetrics
+argument_list|()
+operator|.
+name|getAggregatePreemptedContainers
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|sendEnoughNodeUpdatesToAssignFully
 argument_list|()
 expr_stmt|;
 comment|// Verify the preempted containers are assigned to starvingApp
 name|assertEquals
 argument_list|(
-literal|"Starved app is not assigned the right number of containers"
+literal|"Starved app is not assigned the right # of containers"
 argument_list|,
 name|numStarvedAppContainers
 argument_list|,
