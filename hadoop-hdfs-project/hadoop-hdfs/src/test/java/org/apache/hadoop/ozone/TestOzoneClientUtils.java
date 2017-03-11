@@ -34,6 +34,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|scm
+operator|.
+name|ScmConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|Test
@@ -111,22 +125,6 @@ operator|.
 name|util
 operator|.
 name|Iterator
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|OzoneConfigKeys
-operator|.
-name|*
 import|;
 end_import
 
@@ -272,6 +270,8 @@ name|conf
 operator|.
 name|set
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_CLIENT_ADDRESS_KEY
 argument_list|,
 literal|"1.2.3.4"
@@ -309,6 +309,8 @@ argument_list|()
 argument_list|,
 name|is
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_CLIENT_PORT_DEFAULT
 argument_list|)
 argument_list|)
@@ -319,6 +321,8 @@ name|conf
 operator|.
 name|set
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_CLIENT_ADDRESS_KEY
 argument_list|,
 literal|"1.2.3.4:100"
@@ -417,6 +421,8 @@ name|conf
 operator|.
 name|set
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_CLIENT_ADDRESS_KEY
 argument_list|,
 literal|"1.2.3.4"
@@ -454,6 +460,8 @@ argument_list|()
 argument_list|,
 name|is
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_DATANODE_PORT_DEFAULT
 argument_list|)
 argument_list|)
@@ -464,6 +472,8 @@ name|conf
 operator|.
 name|set
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_CLIENT_ADDRESS_KEY
 argument_list|,
 literal|"1.2.3.4:100"
@@ -500,6 +510,8 @@ argument_list|()
 argument_list|,
 name|is
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_DATANODE_PORT_DEFAULT
 argument_list|)
 argument_list|)
@@ -510,6 +522,8 @@ name|conf
 operator|.
 name|set
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_CLIENT_ADDRESS_KEY
 argument_list|,
 literal|"1.2.3.4:100"
@@ -519,6 +533,8 @@ name|conf
 operator|.
 name|set
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_DATANODE_ADDRESS_KEY
 argument_list|,
 literal|"5.6.7.8"
@@ -555,6 +571,8 @@ argument_list|()
 argument_list|,
 name|is
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_DATANODE_PORT_DEFAULT
 argument_list|)
 argument_list|)
@@ -566,6 +584,8 @@ name|conf
 operator|.
 name|set
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_CLIENT_ADDRESS_KEY
 argument_list|,
 literal|"1.2.3.4:100"
@@ -575,6 +595,8 @@ name|conf
 operator|.
 name|set
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_DATANODE_ADDRESS_KEY
 argument_list|,
 literal|"5.6.7.8:200"
@@ -639,6 +661,8 @@ name|conf
 operator|.
 name|set
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_CLIENT_ADDRESS_KEY
 argument_list|,
 literal|"1.2.3.4"
@@ -676,6 +700,8 @@ argument_list|()
 argument_list|,
 name|is
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_CLIENT_PORT_DEFAULT
 argument_list|)
 argument_list|)
@@ -687,6 +713,8 @@ name|conf
 operator|.
 name|set
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_CLIENT_ADDRESS_KEY
 argument_list|,
 literal|"1.2.3.4:100"
@@ -696,6 +724,8 @@ name|conf
 operator|.
 name|set
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_DATANODE_ADDRESS_KEY
 argument_list|,
 literal|"1.2.3.4:200"
@@ -743,6 +773,8 @@ name|conf
 operator|.
 name|set
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_CLIENT_ADDRESS_KEY
 argument_list|,
 literal|"1.2.3.4"
@@ -752,6 +784,8 @@ name|conf
 operator|.
 name|set
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_DATANODE_ADDRESS_KEY
 argument_list|,
 literal|"1.2.3.4"
@@ -761,6 +795,8 @@ name|conf
 operator|.
 name|set
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_CLIENT_BIND_HOST_KEY
 argument_list|,
 literal|"5.6.7.8"
@@ -797,6 +833,8 @@ argument_list|()
 argument_list|,
 name|is
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_CLIENT_PORT_DEFAULT
 argument_list|)
 argument_list|)
@@ -808,6 +846,8 @@ name|conf
 operator|.
 name|set
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_CLIENT_ADDRESS_KEY
 argument_list|,
 literal|"1.2.3.4:100"
@@ -817,6 +857,8 @@ name|conf
 operator|.
 name|set
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_DATANODE_ADDRESS_KEY
 argument_list|,
 literal|"1.2.3.4:200"
@@ -826,6 +868,8 @@ name|conf
 operator|.
 name|set
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_CLIENT_BIND_HOST_KEY
 argument_list|,
 literal|"5.6.7.8"
@@ -890,6 +934,8 @@ name|conf
 operator|.
 name|set
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_CLIENT_ADDRESS_KEY
 argument_list|,
 literal|"1.2.3.4"
@@ -927,6 +973,8 @@ argument_list|()
 argument_list|,
 name|is
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_DATANODE_PORT_DEFAULT
 argument_list|)
 argument_list|)
@@ -938,6 +986,8 @@ name|conf
 operator|.
 name|set
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_CLIENT_ADDRESS_KEY
 argument_list|,
 literal|"1.2.3.4:100"
@@ -947,6 +997,8 @@ name|conf
 operator|.
 name|set
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_DATANODE_ADDRESS_KEY
 argument_list|,
 literal|"1.2.3.4:200"
@@ -994,6 +1046,8 @@ name|conf
 operator|.
 name|set
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_CLIENT_ADDRESS_KEY
 argument_list|,
 literal|"1.2.3.4:100"
@@ -1003,6 +1057,8 @@ name|conf
 operator|.
 name|set
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_DATANODE_ADDRESS_KEY
 argument_list|,
 literal|"1.2.3.4"
@@ -1012,6 +1068,8 @@ name|conf
 operator|.
 name|set
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_DATANODE_BIND_HOST_KEY
 argument_list|,
 literal|"5.6.7.8"
@@ -1048,6 +1106,8 @@ argument_list|()
 argument_list|,
 name|is
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_DATANODE_PORT_DEFAULT
 argument_list|)
 argument_list|)
@@ -1059,6 +1119,8 @@ name|conf
 operator|.
 name|set
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_CLIENT_ADDRESS_KEY
 argument_list|,
 literal|"1.2.3.4:100"
@@ -1068,6 +1130,8 @@ name|conf
 operator|.
 name|set
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_DATANODE_ADDRESS_KEY
 argument_list|,
 literal|"1.2.3.4:200"
@@ -1077,6 +1141,8 @@ name|conf
 operator|.
 name|set
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_DATANODE_BIND_HOST_KEY
 argument_list|,
 literal|"5.6.7.8"
@@ -1160,6 +1226,8 @@ name|conf
 operator|.
 name|setStrings
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_NAMES
 argument_list|,
 literal|"1.2.3.4"
@@ -1219,6 +1287,8 @@ argument_list|()
 argument_list|,
 name|is
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_DEFAULT_PORT
 argument_list|)
 argument_list|)
@@ -1228,6 +1298,8 @@ name|conf
 operator|.
 name|setStrings
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_NAMES
 argument_list|,
 literal|"scm1"
@@ -1287,6 +1359,8 @@ argument_list|()
 argument_list|,
 name|is
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_DEFAULT_PORT
 argument_list|)
 argument_list|)
@@ -1296,6 +1370,8 @@ name|conf
 operator|.
 name|setStrings
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_NAMES
 argument_list|,
 literal|"scm1:1234"
@@ -1409,6 +1485,8 @@ name|conf
 operator|.
 name|setStrings
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_NAMES
 argument_list|,
 literal|"scm1:1234,scm2:2345,scm3:3456"
@@ -1506,6 +1584,8 @@ name|conf
 operator|.
 name|setStrings
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_NAMES
 argument_list|,
 literal|" scm1:1234, scm2:2345 , scm3:3456 "
@@ -1603,6 +1683,8 @@ name|conf
 operator|.
 name|setStrings
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_NAMES
 argument_list|,
 literal|""
@@ -1644,6 +1726,8 @@ name|conf
 operator|.
 name|setStrings
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_NAMES
 argument_list|,
 literal|"s..x..:1234"
@@ -1685,6 +1769,8 @@ name|conf
 operator|.
 name|setStrings
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_NAMES
 argument_list|,
 literal|"scm:xyz"
@@ -1726,6 +1812,8 @@ name|conf
 operator|.
 name|setStrings
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_NAMES
 argument_list|,
 literal|"scm1:1234, scm:xyz"

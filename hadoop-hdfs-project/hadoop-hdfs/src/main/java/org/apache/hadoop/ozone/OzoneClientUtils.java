@@ -204,25 +204,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|scm
 operator|.
-name|OzoneConfigKeys
-operator|.
-name|*
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|OzoneConfigKeys
+name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_DEADNODE_INTERVAL_DEFAULT
 import|;
@@ -236,9 +220,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|scm
 operator|.
-name|OzoneConfigKeys
+name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_DEADNODE_INTERVAL_MS
 import|;
@@ -252,9 +236,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|scm
 operator|.
-name|OzoneConfigKeys
+name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_HEARTBEAT_INTERVAL_SECONDS
 import|;
@@ -268,9 +252,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|scm
 operator|.
-name|OzoneConfigKeys
+name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_HEARTBEAT_LOG_WARN_DEFAULT
 import|;
@@ -284,9 +268,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|scm
 operator|.
-name|OzoneConfigKeys
+name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_HEARTBEAT_LOG_WARN_INTERVAL_COUNT
 import|;
@@ -300,9 +284,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|scm
 operator|.
-name|OzoneConfigKeys
+name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_HEARTBEAT_PROCESS_INTERVAL_MS
 import|;
@@ -316,9 +300,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|scm
 operator|.
-name|OzoneConfigKeys
+name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_HEARTBEAT_RPC_TIMEOUT
 import|;
@@ -332,9 +316,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|scm
 operator|.
-name|OzoneConfigKeys
+name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_HEARTBEAT_RPC_TIMEOUT_DEFAULT
 import|;
@@ -348,9 +332,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|scm
 operator|.
-name|OzoneConfigKeys
+name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_STALENODE_INTERVAL_DEFAULT
 import|;
@@ -364,9 +348,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|scm
 operator|.
-name|OzoneConfigKeys
+name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_STALENODE_INTERVAL_MS
 import|;
@@ -482,7 +466,7 @@ name|conf
 operator|.
 name|getTrimmedStringCollection
 argument_list|(
-name|OzoneConfigKeys
+name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_NAMES
 argument_list|)
@@ -503,7 +487,7 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-name|OzoneConfigKeys
+name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_NAMES
 operator|+
@@ -540,7 +524,7 @@ name|Optional
 operator|.
 name|of
 argument_list|(
-name|OzoneConfigKeys
+name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_DEFAULT_PORT
 argument_list|)
@@ -671,6 +655,8 @@ name|getHostNameFromConfigKeys
 argument_list|(
 name|conf
 argument_list|,
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_CLIENT_ADDRESS_KEY
 argument_list|)
 decl_stmt|;
@@ -687,6 +673,8 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_CLIENT_ADDRESS_KEY
 operator|+
 literal|" must be defined. See"
@@ -708,6 +696,8 @@ name|getPortNumberFromConfigKeys
 argument_list|(
 name|conf
 argument_list|,
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_CLIENT_ADDRESS_KEY
 argument_list|)
 decl_stmt|;
@@ -727,6 +717,8 @@ name|port
 operator|.
 name|or
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_CLIENT_PORT_DEFAULT
 argument_list|)
 argument_list|)
@@ -759,8 +751,12 @@ name|getHostNameFromConfigKeys
 argument_list|(
 name|conf
 argument_list|,
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_DATANODE_ADDRESS_KEY
 argument_list|,
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_CLIENT_ADDRESS_KEY
 argument_list|)
 decl_stmt|;
@@ -777,6 +773,8 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_CLIENT_ADDRESS_KEY
 operator|+
 literal|" must be defined. See"
@@ -799,6 +797,8 @@ name|getPortNumberFromConfigKeys
 argument_list|(
 name|conf
 argument_list|,
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_DATANODE_ADDRESS_KEY
 argument_list|)
 decl_stmt|;
@@ -820,6 +820,8 @@ name|port
 operator|.
 name|or
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_DATANODE_PORT_DEFAULT
 argument_list|)
 argument_list|)
@@ -850,6 +852,8 @@ name|getHostNameFromConfigKeys
 argument_list|(
 name|conf
 argument_list|,
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_CLIENT_BIND_HOST_KEY
 argument_list|)
 decl_stmt|;
@@ -864,6 +868,8 @@ name|getPortNumberFromConfigKeys
 argument_list|(
 name|conf
 argument_list|,
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_CLIENT_ADDRESS_KEY
 argument_list|)
 decl_stmt|;
@@ -876,6 +882,8 @@ name|host
 operator|.
 name|or
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_CLIENT_BIND_HOST_DEFAULT
 argument_list|)
 operator|+
@@ -885,6 +893,8 @@ name|port
 operator|.
 name|or
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_CLIENT_PORT_DEFAULT
 argument_list|)
 argument_list|)
@@ -912,6 +922,8 @@ name|getHostNameFromConfigKeys
 argument_list|(
 name|conf
 argument_list|,
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_DATANODE_BIND_HOST_KEY
 argument_list|)
 decl_stmt|;
@@ -927,6 +939,8 @@ name|getPortNumberFromConfigKeys
 argument_list|(
 name|conf
 argument_list|,
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_DATANODE_ADDRESS_KEY
 argument_list|)
 decl_stmt|;
@@ -939,6 +953,8 @@ name|host
 operator|.
 name|or
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_DATANODE_BIND_HOST_DEFAULT
 argument_list|)
 operator|+
@@ -948,6 +964,8 @@ name|port
 operator|.
 name|or
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_DATANODE_PORT_DEFAULT
 argument_list|)
 argument_list|)
@@ -1398,6 +1416,8 @@ name|getLong
 argument_list|(
 name|OZONE_SCM_HEARTBEAT_PROCESS_INTERVAL_MS
 argument_list|,
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_HEARTBEAT_PROCESS_INTERVAL_MS_DEFAULT
 argument_list|)
 return|;
@@ -1420,6 +1440,8 @@ name|getTimeDuration
 argument_list|(
 name|OZONE_SCM_HEARTBEAT_INTERVAL_SECONDS
 argument_list|,
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_HEARBEAT_INTERVAL_SECONDS_DEFAULT
 argument_list|,
 name|TimeUnit
@@ -1644,8 +1666,12 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_MAX_HB_COUNT_TO_PROCESS
 argument_list|,
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_MAX_HB_COUNT_TO_PROCESS_DEFAULT
 argument_list|)
 return|;

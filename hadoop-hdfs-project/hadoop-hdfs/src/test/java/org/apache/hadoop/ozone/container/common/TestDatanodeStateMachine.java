@@ -72,9 +72,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|scm
 operator|.
-name|OzoneConfigKeys
+name|ScmConfigKeys
 import|;
 end_import
 
@@ -454,9 +454,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|scm
 operator|.
-name|OzoneConfigKeys
+name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_HEARTBEAT_RPC_TIMEOUT
 import|;
@@ -664,7 +664,7 @@ name|conf
 operator|.
 name|setStrings
 argument_list|(
-name|OzoneConfigKeys
+name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_NAMES
 argument_list|,
@@ -774,7 +774,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|OzoneConfigKeys
+name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_DATANODE_ID
 argument_list|,
@@ -1409,7 +1409,7 @@ name|conf
 operator|.
 name|setStrings
 argument_list|(
-name|OzoneConfigKeys
+name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_NAMES
 argument_list|,

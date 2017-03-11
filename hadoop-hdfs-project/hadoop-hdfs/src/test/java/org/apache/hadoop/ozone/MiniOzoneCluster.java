@@ -152,6 +152,20 @@ name|hadoop
 operator|.
 name|scm
 operator|.
+name|ScmConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|scm
+operator|.
 name|protocolPB
 operator|.
 name|StorageContainerLocationProtocolClientSideTranslatorPB
@@ -1417,7 +1431,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|OzoneConfigKeys
+name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_CLIENT_ADDRESS_KEY
 argument_list|,
@@ -1428,7 +1442,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|OzoneConfigKeys
+name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_DATANODE_ADDRESS_KEY
 argument_list|,
@@ -1474,7 +1488,7 @@ name|conf
 operator|.
 name|setStrings
 argument_list|(
-name|OzoneConfigKeys
+name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_NAMES
 argument_list|,
@@ -1615,7 +1629,7 @@ name|conf
 operator|.
 name|setStrings
 argument_list|(
-name|OzoneConfigKeys
+name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_DATANODE_ID
 argument_list|,
@@ -1733,7 +1747,7 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-name|OzoneConfigKeys
+name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_HEARTBEAT_INTERVAL_SECONDS
 argument_list|,
@@ -1750,7 +1764,7 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-name|OzoneConfigKeys
+name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_HEARTBEAT_INTERVAL_SECONDS
 argument_list|,
@@ -1770,7 +1784,7 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-name|OzoneConfigKeys
+name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_HEARTBEAT_PROCESS_INTERVAL_MS
 argument_list|,
@@ -1787,7 +1801,7 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-name|OzoneConfigKeys
+name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_HEARTBEAT_PROCESS_INTERVAL_MS
 argument_list|,

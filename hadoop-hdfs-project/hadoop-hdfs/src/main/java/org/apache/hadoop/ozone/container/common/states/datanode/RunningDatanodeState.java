@@ -110,20 +110,6 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|OzoneConfigKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
 name|container
 operator|.
 name|common
@@ -295,6 +281,20 @@ operator|.
 name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|scm
+operator|.
+name|ScmConfigKeys
 import|;
 end_import
 
@@ -880,7 +880,7 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|OzoneConfigKeys
+name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_DATANODE_ID
 argument_list|)
@@ -903,7 +903,7 @@ name|error
 argument_list|(
 literal|"A valid file path is needed for config setting {}"
 argument_list|,
-name|OzoneConfigKeys
+name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_DATANODE_ID
 argument_list|)
