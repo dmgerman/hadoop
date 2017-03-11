@@ -229,14 +229,6 @@ name|ADL_HADOOP_CLIENT_VERSION
 init|=
 literal|"2.0.0-SNAPSHOT"
 decl_stmt|;
-DECL|field|ADL_EVENTS_TRACKING_SOURCE
-specifier|static
-specifier|final
-name|String
-name|ADL_EVENTS_TRACKING_SOURCE
-init|=
-literal|"adl.events.tracking.source"
-decl_stmt|;
 DECL|field|ADL_EVENTS_TRACKING_CLUSTERNAME
 specifier|static
 specifier|final
