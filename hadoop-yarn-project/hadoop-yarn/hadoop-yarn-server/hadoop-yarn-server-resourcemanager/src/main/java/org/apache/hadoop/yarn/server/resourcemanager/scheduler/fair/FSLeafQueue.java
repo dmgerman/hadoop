@@ -2578,6 +2578,102 @@ name|isStarvedForFairShare
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|dumpStateInternal (StringBuilder sb)
+specifier|protected
+name|void
+name|dumpStateInternal
+parameter_list|(
+name|StringBuilder
+name|sb
+parameter_list|)
+block|{
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"{Name: "
+operator|+
+name|getName
+argument_list|()
+operator|+
+literal|", Weight: "
+operator|+
+name|weights
+operator|+
+literal|", Policy: "
+operator|+
+name|policy
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|", FairShare: "
+operator|+
+name|getFairShare
+argument_list|()
+operator|+
+literal|", SteadyFairShare: "
+operator|+
+name|getSteadyFairShare
+argument_list|()
+operator|+
+literal|", MaxShare: "
+operator|+
+name|maxShare
+operator|+
+literal|", MinShare: "
+operator|+
+name|minShare
+operator|+
+literal|", ResourceUsage: "
+operator|+
+name|getResourceUsage
+argument_list|()
+operator|+
+literal|", Demand: "
+operator|+
+name|getDemand
+argument_list|()
+operator|+
+literal|", Runnable: "
+operator|+
+name|getNumRunnableApps
+argument_list|()
+operator|+
+literal|", NumPendingApps: "
+operator|+
+name|getNumPendingApps
+argument_list|()
+operator|+
+literal|", NonRunnable: "
+operator|+
+name|getNumNonRunnableApps
+argument_list|()
+operator|+
+literal|", MaxAMShare: "
+operator|+
+name|maxAMShare
+operator|+
+literal|", MaxAMResource: "
+operator|+
+name|computeMaxAMResource
+argument_list|()
+operator|+
+literal|", AMResourceUsage: "
+operator|+
+name|getAmResourceUsage
+argument_list|()
+operator|+
+literal|", LastTimeAtMinShare: "
+operator|+
+name|lastTimeAtMinShare
+operator|+
+literal|"}"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

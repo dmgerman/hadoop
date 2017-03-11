@@ -3978,6 +3978,28 @@ return|return
 name|capability
 return|;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Resource request: "
+operator|+
+name|capability
+operator|+
+literal|" exceeds the available"
+operator|+
+literal|" resources of the node."
+argument_list|)
+expr_stmt|;
+block|}
 comment|// The desired container won't fit here, so reserve
 if|if
 condition|(
@@ -4003,46 +4025,15 @@ name|schedulerKey
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|isWaitingForAMContainer
-argument_list|()
-condition|)
-block|{
 name|updateAMDiagnosticMsg
 argument_list|(
 name|capability
 argument_list|,
-literal|" exceed the available resources of the node and the request is"
+literal|" exceeds the available resources of "
 operator|+
-literal|" reserved"
+literal|"the node and the request is reserved)"
 argument_list|)
 expr_stmt|;
-block|}
-return|return
-name|FairScheduler
-operator|.
-name|CONTAINER_RESERVED
-return|;
-block|}
-else|else
-block|{
-if|if
-condition|(
-name|isWaitingForAMContainer
-argument_list|()
-condition|)
-block|{
-name|updateAMDiagnosticMsg
-argument_list|(
-name|capability
-argument_list|,
-literal|" exceed the available resources of the node and the request cannot"
-operator|+
-literal|" be reserved"
-argument_list|)
-expr_stmt|;
-block|}
 if|if
 condition|(
 name|LOG
@@ -4055,12 +4046,48 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Couldn't creating reservation for "
+name|getName
+argument_list|()
+operator|+
+literal|"'s resource request is reserved."
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|FairScheduler
+operator|.
+name|CONTAINER_RESERVED
+return|;
+block|}
+else|else
+block|{
+name|updateAMDiagnosticMsg
+argument_list|(
+name|capability
+argument_list|,
+literal|" exceeds the available resources of "
+operator|+
+literal|"the node and the request cannot be reserved)"
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Couldn't create reservation for app:  "
 operator|+
 name|getName
 argument_list|()
 operator|+
-literal|",at priority "
+literal|", at priority "
 operator|+
 name|schedulerKey
 operator|.
@@ -4916,12 +4943,6 @@ argument_list|)
 condition|)
 block|{
 comment|// The requested container must fit in queue maximum share
-if|if
-condition|(
-name|isWaitingForAMContainer
-argument_list|()
-condition|)
-block|{
 name|updateAMDiagnosticMsg
 argument_list|(
 name|resource
@@ -4929,7 +4950,6 @@ argument_list|,
 literal|" exceeds current queue or its parents maximum resource allowed)."
 argument_list|)
 expr_stmt|;
-block|}
 name|ret
 operator|=
 literal|false
@@ -5813,12 +5833,6 @@ name|isOverAMShareLimit
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|isWaitingForAMContainer
-argument_list|()
-condition|)
-block|{
 name|PendingAsk
 name|amAsk
 init|=
@@ -5837,7 +5851,6 @@ argument_list|,
 literal|" exceeds maximum AM resource allowed)."
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|LOG
@@ -5850,9 +5863,20 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Skipping allocation because maxAMShare limit would "
+literal|"AM resource request: "
 operator|+
-literal|"be exceeded"
+name|amAsk
+operator|.
+name|getPerAllocationResource
+argument_list|()
+operator|+
+literal|" exceeds maximum AM resource allowed, "
+operator|+
+name|getQueue
+argument_list|()
+operator|.
+name|dumpState
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -5885,6 +5909,15 @@ name|String
 name|reason
 parameter_list|)
 block|{
+if|if
+condition|(
+operator|!
+name|isWaitingForAMContainer
+argument_list|()
+condition|)
+block|{
+return|return;
+block|}
 name|StringBuilder
 name|diagnosticMessageBldr
 init|=

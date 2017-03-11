@@ -32902,6 +32902,347 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
+DECL|method|testDumpState ()
+specifier|public
+name|void
+name|testDumpState
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|conf
+operator|.
+name|set
+argument_list|(
+name|FairSchedulerConfiguration
+operator|.
+name|ALLOCATION_FILE
+argument_list|,
+name|ALLOC_FILE
+argument_list|)
+expr_stmt|;
+name|PrintWriter
+name|out
+init|=
+operator|new
+name|PrintWriter
+argument_list|(
+operator|new
+name|FileWriter
+argument_list|(
+name|ALLOC_FILE
+argument_list|)
+argument_list|)
+decl_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"<?xml version=\"1.0\"?>"
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"<allocations>"
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"<queue name=\"parent\">"
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"<queue name=\"child1\">"
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"<weight>1</weight>"
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"</queue>"
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"</queue>"
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"</allocations>"
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+name|ControlledClock
+name|clock
+init|=
+operator|new
+name|ControlledClock
+argument_list|()
+decl_stmt|;
+name|scheduler
+operator|.
+name|setClock
+argument_list|(
+name|clock
+argument_list|)
+expr_stmt|;
+name|scheduler
+operator|.
+name|init
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|scheduler
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+name|scheduler
+operator|.
+name|reinitialize
+argument_list|(
+name|conf
+argument_list|,
+name|resourceManager
+operator|.
+name|getRMContext
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|FSLeafQueue
+name|child1
+init|=
+name|scheduler
+operator|.
+name|getQueueManager
+argument_list|()
+operator|.
+name|getLeafQueue
+argument_list|(
+literal|"parent.child1"
+argument_list|,
+literal|false
+argument_list|)
+decl_stmt|;
+name|Resource
+name|resource
+init|=
+name|Resource
+operator|.
+name|newInstance
+argument_list|(
+literal|4
+operator|*
+name|GB
+argument_list|,
+literal|4
+argument_list|)
+decl_stmt|;
+name|child1
+operator|.
+name|setMaxShare
+argument_list|(
+name|resource
+argument_list|)
+expr_stmt|;
+name|FSAppAttempt
+name|app
+init|=
+name|mock
+argument_list|(
+name|FSAppAttempt
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|Mockito
+operator|.
+name|when
+argument_list|(
+name|app
+operator|.
+name|getDemand
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|resource
+argument_list|)
+expr_stmt|;
+name|Mockito
+operator|.
+name|when
+argument_list|(
+name|app
+operator|.
+name|getResourceUsage
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|resource
+argument_list|)
+expr_stmt|;
+name|child1
+operator|.
+name|addAppSchedulable
+argument_list|(
+name|app
+argument_list|)
+expr_stmt|;
+name|child1
+operator|.
+name|updateDemand
+argument_list|()
+expr_stmt|;
+name|String
+name|childQueueString
+init|=
+literal|"{Name: root.parent.child1,"
+operator|+
+literal|" Weight:<memory weight=1.0, cpu weight=1.0>,"
+operator|+
+literal|" Policy: fair,"
+operator|+
+literal|" FairShare:<memory:0, vCores:0>,"
+operator|+
+literal|" SteadyFairShare:<memory:0, vCores:0>,"
+operator|+
+literal|" MaxShare:<memory:4096, vCores:4>,"
+operator|+
+literal|" MinShare:<memory:0, vCores:0>,"
+operator|+
+literal|" ResourceUsage:<memory:4096, vCores:4>,"
+operator|+
+literal|" Demand:<memory:4096, vCores:4>,"
+operator|+
+literal|" Runnable: 1,"
+operator|+
+literal|" NumPendingApps: 0,"
+operator|+
+literal|" NonRunnable: 0,"
+operator|+
+literal|" MaxAMShare: 0.5,"
+operator|+
+literal|" MaxAMResource:<memory:0, vCores:0>,"
+operator|+
+literal|" AMResourceUsage:<memory:0, vCores:0>,"
+operator|+
+literal|" LastTimeAtMinShare: "
+operator|+
+name|clock
+operator|.
+name|getTime
+argument_list|()
+operator|+
+literal|"}"
+decl_stmt|;
+name|assertTrue
+argument_list|(
+name|child1
+operator|.
+name|dumpState
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|childQueueString
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|FSParentQueue
+name|parent
+init|=
+name|scheduler
+operator|.
+name|getQueueManager
+argument_list|()
+operator|.
+name|getParentQueue
+argument_list|(
+literal|"parent"
+argument_list|,
+literal|false
+argument_list|)
+decl_stmt|;
+name|parent
+operator|.
+name|setMaxShare
+argument_list|(
+name|resource
+argument_list|)
+expr_stmt|;
+name|String
+name|parentQueueString
+init|=
+literal|"{Name: root.parent,"
+operator|+
+literal|" Weight:<memory weight=1.0, cpu weight=1.0>,"
+operator|+
+literal|" Policy: fair,"
+operator|+
+literal|" FairShare:<memory:0, vCores:0>,"
+operator|+
+literal|" SteadyFairShare:<memory:0, vCores:0>,"
+operator|+
+literal|" MaxShare:<memory:4096, vCores:4>,"
+operator|+
+literal|" MinShare:<memory:0, vCores:0>,"
+operator|+
+literal|" ResourceUsage:<memory:4096, vCores:4>,"
+operator|+
+literal|" Demand:<memory:0, vCores:0>,"
+operator|+
+literal|" MaxAMShare: 0.5,"
+operator|+
+literal|" Runnable: 0}"
+decl_stmt|;
+name|assertTrue
+argument_list|(
+name|parent
+operator|.
+name|dumpState
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|parentQueueString
+operator|+
+literal|", "
+operator|+
+name|childQueueString
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

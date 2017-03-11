@@ -1924,6 +1924,44 @@ parameter_list|)
 block|{
 if|if
 condition|(
+name|node
+operator|.
+name|getReservedContainer
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Assigning container failed on node '"
+operator|+
+name|node
+operator|.
+name|getNodeName
+argument_list|()
+operator|+
+literal|" because it has reserved containers."
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+literal|false
+return|;
+block|}
+elseif|else
+if|if
+condition|(
 operator|!
 name|Resources
 operator|.
@@ -1934,22 +1972,44 @@ argument_list|()
 argument_list|,
 name|maxShare
 argument_list|)
-operator|||
-name|node
-operator|.
-name|getReservedContainer
-argument_list|()
-operator|!=
-literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Assigning container failed on node '"
+operator|+
+name|node
+operator|.
+name|getNodeName
+argument_list|()
+operator|+
+literal|" because queue resource usage is larger than MaxShare: "
+operator|+
+name|dumpState
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 literal|false
 return|;
 block|}
+else|else
+block|{
 return|return
 literal|true
 return|;
+block|}
 block|}
 comment|/**    * Returns true if queue has at least one app running.    */
 DECL|method|isActive ()
@@ -2130,6 +2190,34 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Resource usage plus resource request: "
+operator|+
+name|usagePlusAddition
+operator|+
+literal|" exceeds maximum resource allowed:"
+operator|+
+name|getMaxShare
+argument_list|()
+operator|+
+literal|" in queue "
+operator|+
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 literal|false
 return|;
@@ -2244,6 +2332,43 @@ return|return
 literal|true
 return|;
 block|}
+comment|/**    * Recursively dump states of all queues.    *    * @return a string which holds all queue states    */
+DECL|method|dumpState ()
+specifier|public
+name|String
+name|dumpState
+parameter_list|()
+block|{
+name|StringBuilder
+name|sb
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+name|dumpStateInternal
+argument_list|(
+name|sb
+argument_list|)
+expr_stmt|;
+return|return
+name|sb
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
+comment|/**    * Recursively dump states of all queues.    *    * @param sb the {code StringBuilder} which holds queue states    */
+DECL|method|dumpStateInternal (StringBuilder sb)
+specifier|protected
+specifier|abstract
+name|void
+name|dumpStateInternal
+parameter_list|(
+name|StringBuilder
+name|sb
+parameter_list|)
+function_decl|;
 block|}
 end_class
 

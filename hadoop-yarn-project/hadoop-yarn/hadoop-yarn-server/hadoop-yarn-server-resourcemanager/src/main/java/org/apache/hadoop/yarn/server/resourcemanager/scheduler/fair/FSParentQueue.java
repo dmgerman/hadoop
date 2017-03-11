@@ -1356,6 +1356,102 @@ parameter_list|)
 block|{
 comment|// TODO Auto-generated method stub
 block|}
+annotation|@
+name|Override
+DECL|method|dumpStateInternal (StringBuilder sb)
+specifier|protected
+name|void
+name|dumpStateInternal
+parameter_list|(
+name|StringBuilder
+name|sb
+parameter_list|)
+block|{
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"{Name: "
+operator|+
+name|getName
+argument_list|()
+operator|+
+literal|", Weight: "
+operator|+
+name|weights
+operator|+
+literal|", Policy: "
+operator|+
+name|policy
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|", FairShare: "
+operator|+
+name|getFairShare
+argument_list|()
+operator|+
+literal|", SteadyFairShare: "
+operator|+
+name|getSteadyFairShare
+argument_list|()
+operator|+
+literal|", MaxShare: "
+operator|+
+name|maxShare
+operator|+
+literal|", MinShare: "
+operator|+
+name|minShare
+operator|+
+literal|", ResourceUsage: "
+operator|+
+name|getResourceUsage
+argument_list|()
+operator|+
+literal|", Demand: "
+operator|+
+name|getDemand
+argument_list|()
+operator|+
+literal|", MaxAMShare: "
+operator|+
+name|maxAMShare
+operator|+
+literal|", Runnable: "
+operator|+
+name|getNumRunnableApps
+argument_list|()
+operator|+
+literal|"}"
+argument_list|)
+expr_stmt|;
+for|for
+control|(
+name|FSQueue
+name|child
+range|:
+name|getChildQueues
+argument_list|()
+control|)
+block|{
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|", "
+argument_list|)
+expr_stmt|;
+name|child
+operator|.
+name|dumpStateInternal
+argument_list|(
+name|sb
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 end_class
 
