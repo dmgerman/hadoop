@@ -1743,6 +1743,8 @@ operator|+
 name|user
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|RequestInterceptor
 name|interceptorChain
 init|=
@@ -1757,6 +1759,10 @@ name|init
 argument_list|(
 name|createApplicationMasterContext
 argument_list|(
+name|this
+operator|.
+name|nmContext
+argument_list|,
 name|applicationAttemptId
 argument_list|,
 name|user
@@ -1776,6 +1782,29 @@ argument_list|,
 name|applicationAttemptId
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|this
+operator|.
+name|applPipelineMap
+operator|.
+name|remove
+argument_list|(
+name|applicationAttemptId
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|)
+expr_stmt|;
+throw|throw
+name|e
+throw|;
+block|}
 block|}
 comment|/**    * Shuts down the request processing pipeline for the specified application    * attempt id.    *    * @param applicationId    */
 DECL|method|stopApplication (ApplicationId applicationId)
@@ -1821,8 +1850,10 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Request to stop an application that does not exist. Id:"
+literal|"No interceptor pipeline for application {},"
 operator|+
+literal|" likely because its AM is not run in this node."
+argument_list|,
 name|applicationId
 argument_list|)
 expr_stmt|;
@@ -2178,11 +2209,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|createApplicationMasterContext ( ApplicationAttemptId applicationAttemptId, String user, Token<AMRMTokenIdentifier> amrmToken, Token<AMRMTokenIdentifier> localToken)
+DECL|method|createApplicationMasterContext ( Context context, ApplicationAttemptId applicationAttemptId, String user, Token<AMRMTokenIdentifier> amrmToken, Token<AMRMTokenIdentifier> localToken)
 specifier|private
 name|AMRMProxyApplicationContext
 name|createApplicationMasterContext
 parameter_list|(
+name|Context
+name|context
+parameter_list|,
 name|ApplicationAttemptId
 name|applicationAttemptId
 parameter_list|,
@@ -2208,9 +2242,7 @@ init|=
 operator|new
 name|AMRMProxyApplicationContextImpl
 argument_list|(
-name|this
-operator|.
-name|nmContext
+name|context
 argument_list|,
 name|getConfig
 argument_list|()
