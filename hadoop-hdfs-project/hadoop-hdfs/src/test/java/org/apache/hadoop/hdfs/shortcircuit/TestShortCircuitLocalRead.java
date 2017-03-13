@@ -2555,7 +2555,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|10000
+literal|60000
 argument_list|)
 DECL|method|testSkipWithVerifyChecksum ()
 specifier|public
