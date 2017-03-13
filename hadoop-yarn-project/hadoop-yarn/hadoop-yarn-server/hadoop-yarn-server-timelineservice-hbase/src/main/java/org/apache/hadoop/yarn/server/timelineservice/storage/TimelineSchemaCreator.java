@@ -278,6 +278,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|conf
+operator|.
+name|YarnConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|timelineservice
@@ -572,6 +588,13 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Starting the schema creation"
+argument_list|)
+expr_stmt|;
 name|Configuration
 name|hbaseConf
 init|=
@@ -579,7 +602,9 @@ name|HBaseTimelineStorageUtils
 operator|.
 name|getTimelineServiceHBaseConf
 argument_list|(
-literal|null
+operator|new
+name|YarnConfiguration
+argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// Grab input args and allow for -Dxyz style arguments
