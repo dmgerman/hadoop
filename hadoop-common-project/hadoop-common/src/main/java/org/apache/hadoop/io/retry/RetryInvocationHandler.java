@@ -1141,7 +1141,13 @@ specifier|final
 name|long
 name|expectedFailoverCount
 decl_stmt|;
-DECL|method|RetryInfo (long delay, RetryAction action, long expectedFailoverCount)
+DECL|field|failException
+specifier|private
+specifier|final
+name|Exception
+name|failException
+decl_stmt|;
+DECL|method|RetryInfo (long delay, RetryAction action, long expectedFailoverCount, Exception failException)
 name|RetryInfo
 parameter_list|(
 name|long
@@ -1152,6 +1158,9 @@ name|action
 parameter_list|,
 name|long
 name|expectedFailoverCount
+parameter_list|,
+name|Exception
+name|failException
 parameter_list|)
 block|{
 name|this
@@ -1182,6 +1191,12 @@ operator|.
 name|expectedFailoverCount
 operator|=
 name|expectedFailoverCount
+expr_stmt|;
+name|this
+operator|.
+name|failException
+operator|=
+name|failException
 expr_stmt|;
 block|}
 DECL|method|isFailover ()
@@ -1226,6 +1241,15 @@ operator|.
 name|FAIL
 return|;
 block|}
+DECL|method|getFailException ()
+name|Exception
+name|getFailException
+parameter_list|()
+block|{
+return|return
+name|failException
+return|;
+block|}
 DECL|method|newRetryInfo (RetryPolicy policy, Exception e, Counters counters, boolean idempotentOrAtMostOnce, long expectedFailoverCount)
 specifier|static
 name|RetryInfo
@@ -1258,6 +1282,11 @@ name|long
 name|maxRetryDelay
 init|=
 literal|0
+decl_stmt|;
+name|Exception
+name|ex
+init|=
+literal|null
 decl_stmt|;
 specifier|final
 name|Iterable
@@ -1374,6 +1403,24 @@ name|max
 operator|=
 name|a
 expr_stmt|;
+if|if
+condition|(
+name|a
+operator|.
+name|action
+operator|==
+name|RetryAction
+operator|.
+name|RetryDecision
+operator|.
+name|FAIL
+condition|)
+block|{
+name|ex
+operator|=
+name|exception
+expr_stmt|;
+block|}
 block|}
 block|}
 return|return
@@ -1385,6 +1432,8 @@ argument_list|,
 name|max
 argument_list|,
 name|expectedFailoverCount
+argument_list|,
+name|ex
 argument_list|)
 return|;
 block|}
@@ -1868,7 +1917,10 @@ expr_stmt|;
 block|}
 block|}
 throw|throw
-name|e
+name|retryInfo
+operator|.
+name|getFailException
+argument_list|()
 throw|;
 block|}
 name|log
