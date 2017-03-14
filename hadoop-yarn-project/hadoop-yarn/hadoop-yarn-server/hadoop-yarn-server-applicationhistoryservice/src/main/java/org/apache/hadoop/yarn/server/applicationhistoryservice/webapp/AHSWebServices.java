@@ -126,6 +126,18 @@ name|ws
 operator|.
 name|rs
 operator|.
+name|DefaultValue
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|ws
+operator|.
+name|rs
+operator|.
 name|GET
 import|;
 end_import
@@ -1879,7 +1891,7 @@ block|}
 block|}
 comment|// TODO: YARN-6080: Create WebServiceUtils to have common functions used in
 comment|//       RMWebService, NMWebService and AHSWebService.
-comment|/**    * Returns log file's name as well as current file size for a container.    *    * @param req    *    HttpServletRequest    * @param res    *    HttpServletResponse    * @param containerIdStr    *    The container ID    * @param nmId    *    The Node Manager NodeId    * @return    *    The log file's name and current file size    */
+comment|/**    * Returns log file's name as well as current file size for a container.    *    * @param req    *    HttpServletRequest    * @param res    *    HttpServletResponse    * @param containerIdStr    *    The container ID    * @param nmId    *    The Node Manager NodeId    * @param redirected_from_node    *    Whether this is a redirected request from NM    * @return    *    The log file's name and current file size    */
 annotation|@
 name|GET
 annotation|@
@@ -1900,7 +1912,7 @@ operator|.
 name|APPLICATION_XML
 block|}
 argument_list|)
-DECL|method|getContainerLogsInfo ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(YarnWebServiceParams.CONTAINER_ID) String containerIdStr, @QueryParam(YarnWebServiceParams.NM_ID) String nmId)
+DECL|method|getContainerLogsInfo ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(YarnWebServiceParams.CONTAINER_ID) String containerIdStr, @QueryParam(YarnWebServiceParams.NM_ID) String nmId, @QueryParam(YarnWebServiceParams.REDIRECTED_FROM_NODE) @DefaultValue(R) boolean redirected_from_node)
 specifier|public
 name|Response
 name|getContainerLogsInfo
@@ -1934,6 +1946,21 @@ name|NM_ID
 argument_list|)
 name|String
 name|nmId
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+name|YarnWebServiceParams
+operator|.
+name|REDIRECTED_FROM_NODE
+argument_list|)
+annotation|@
+name|DefaultValue
+argument_list|(
+literal|"false"
+argument_list|)
+name|boolean
+name|redirected_from_node
 parameter_list|)
 block|{
 name|ContainerId
@@ -2223,10 +2250,14 @@ name|nodeHttpAddress
 operator|.
 name|isEmpty
 argument_list|()
+operator|||
+name|redirected_from_node
 condition|)
 block|{
 comment|// return log meta for the aggregated logs if exists.
 comment|// It will also return empty log meta for the local logs.
+comment|// If this is the redirect request from NM, we should not
+comment|// re-direct the request back. Simply output the aggregated log meta.
 return|return
 name|getContainerLogMeta
 argument_list|(
@@ -2339,7 +2370,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Returns the contents of a container's log file in plain text.    *    * @param req    *    HttpServletRequest    * @param res    *    HttpServletResponse    * @param containerIdStr    *    The container ID    * @param filename    *    The name of the log file    * @param format    *    The content type    * @param size    *    the size of the log file    * @param nmId    *    The Node Manager NodeId    * @return    *    The contents of the container's log file    */
+comment|/**    * Returns the contents of a container's log file in plain text.    *    * @param req    *    HttpServletRequest    * @param res    *    HttpServletResponse    * @param containerIdStr    *    The container ID    * @param filename    *    The name of the log file    * @param format    *    The content type    * @param size    *    the size of the log file    * @param nmId    *    The Node Manager NodeId    * @param redirected_from_node    *    Whether this is the redirect request from NM    * @return    *    The contents of the container's log file    */
 annotation|@
 name|GET
 annotation|@
@@ -2360,7 +2391,7 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|getContainerLogFile (@ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(YarnWebServiceParams.CONTAINER_ID) String containerIdStr, @PathParam(YarnWebServiceParams.CONTAINER_LOG_FILE_NAME) String filename, @QueryParam(YarnWebServiceParams.RESPONSE_CONTENT_FORMAT) String format, @QueryParam(YarnWebServiceParams.RESPONSE_CONTENT_SIZE) String size, @QueryParam(YarnWebServiceParams.NM_ID) String nmId)
+DECL|method|getContainerLogFile (@ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(YarnWebServiceParams.CONTAINER_ID) String containerIdStr, @PathParam(YarnWebServiceParams.CONTAINER_LOG_FILE_NAME) String filename, @QueryParam(YarnWebServiceParams.RESPONSE_CONTENT_FORMAT) String format, @QueryParam(YarnWebServiceParams.RESPONSE_CONTENT_SIZE) String size, @QueryParam(YarnWebServiceParams.NM_ID) String nmId, @QueryParam(YarnWebServiceParams.REDIRECTED_FROM_NODE) boolean redirected_from_node)
 specifier|public
 name|Response
 name|getContainerLogFile
@@ -2424,6 +2455,16 @@ name|NM_ID
 argument_list|)
 name|String
 name|nmId
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+name|YarnWebServiceParams
+operator|.
+name|REDIRECTED_FROM_NODE
+argument_list|)
+name|boolean
+name|redirected_from_node
 parameter_list|)
 block|{
 return|return
@@ -2442,6 +2483,8 @@ argument_list|,
 name|size
 argument_list|,
 name|nmId
+argument_list|,
+name|redirected_from_node
 argument_list|)
 return|;
 block|}
@@ -2474,7 +2517,7 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|getLogs (@ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(YarnWebServiceParams.CONTAINER_ID) String containerIdStr, @PathParam(YarnWebServiceParams.CONTAINER_LOG_FILE_NAME) String filename, @QueryParam(YarnWebServiceParams.RESPONSE_CONTENT_FORMAT) String format, @QueryParam(YarnWebServiceParams.RESPONSE_CONTENT_SIZE) String size, @QueryParam(YarnWebServiceParams.NM_ID) String nmId)
+DECL|method|getLogs (@ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(YarnWebServiceParams.CONTAINER_ID) String containerIdStr, @PathParam(YarnWebServiceParams.CONTAINER_LOG_FILE_NAME) String filename, @QueryParam(YarnWebServiceParams.RESPONSE_CONTENT_FORMAT) String format, @QueryParam(YarnWebServiceParams.RESPONSE_CONTENT_SIZE) String size, @QueryParam(YarnWebServiceParams.NM_ID) String nmId, @QueryParam(YarnWebServiceParams.REDIRECTED_FROM_NODE) @DefaultValue(R) boolean redirected_from_node)
 specifier|public
 name|Response
 name|getLogs
@@ -2538,6 +2581,21 @@ name|NM_ID
 argument_list|)
 name|String
 name|nmId
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+name|YarnWebServiceParams
+operator|.
+name|REDIRECTED_FROM_NODE
+argument_list|)
+annotation|@
+name|DefaultValue
+argument_list|(
+literal|"false"
+argument_list|)
+name|boolean
+name|redirected_from_node
 parameter_list|)
 block|{
 name|init
@@ -2842,7 +2900,9 @@ argument_list|()
 expr_stmt|;
 comment|// make sure nodeHttpAddress is not null and not empty. Otherwise,
 comment|// we would only get aggregated logs instead of re-directing the
-comment|// request
+comment|// request.
+comment|// If this is the redirect request from NM, we should not re-direct the
+comment|// request back. Simply output the aggregated logs.
 if|if
 condition|(
 name|nodeHttpAddress
@@ -2853,6 +2913,8 @@ name|nodeHttpAddress
 operator|.
 name|isEmpty
 argument_list|()
+operator|||
+name|redirected_from_node
 condition|)
 block|{
 comment|// output the aggregated logs

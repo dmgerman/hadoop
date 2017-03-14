@@ -84,6 +84,12 @@ name|NM_ID
 init|=
 literal|"nm.id"
 decl_stmt|;
+DECL|field|REDIRECTED_FROM_NODE
+name|String
+name|REDIRECTED_FROM_NODE
+init|=
+literal|"redirected_from_node"
+decl_stmt|;
 block|}
 end_interface
 
