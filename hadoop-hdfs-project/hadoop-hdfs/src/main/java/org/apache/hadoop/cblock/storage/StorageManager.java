@@ -752,6 +752,12 @@ name|volumeName
 argument_list|,
 name|containerIdx
 argument_list|)
+argument_list|,
+name|ScmClient
+operator|.
+name|ReplicationFactor
+operator|.
+name|ONE
 argument_list|)
 decl_stmt|;
 name|ContainerDescriptor

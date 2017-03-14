@@ -48,6 +48,22 @@ name|hadoop
 operator|.
 name|scm
 operator|.
+name|client
+operator|.
+name|ScmClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|scm
+operator|.
 name|container
 operator|.
 name|common
@@ -92,6 +108,22 @@ name|allocateContainer
 parameter_list|(
 name|String
 name|containerName
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Asks SCM where a container should be allocated. SCM responds with the    * set of datanodes that should be used creating this container.    * @param containerName - Name of the container.    * @param replicationFactor - replication factor.    * @return Pipeline.    * @throws IOException    */
+DECL|method|allocateContainer (String containerName, ScmClient.ReplicationFactor replicationFactor)
+name|Pipeline
+name|allocateContainer
+parameter_list|(
+name|String
+name|containerName
+parameter_list|,
+name|ScmClient
+operator|.
+name|ReplicationFactor
+name|replicationFactor
 parameter_list|)
 throws|throws
 name|IOException

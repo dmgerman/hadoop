@@ -35,7 +35,7 @@ import|;
 end_import
 
 begin_comment
-comment|/** A server endpoint that acts as the communication layer for Ozone containers. */
+comment|/** A server endpoint that acts as the communication layer for Ozone  * containers. */
 end_comment
 
 begin_interface

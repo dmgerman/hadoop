@@ -363,21 +363,21 @@ return|return
 name|state
 return|;
 block|}
-comment|/**    * Sets the endpoint state.    *    * @param state - state.    */
-DECL|method|setState (EndPointStates state)
+comment|/**    * Sets the endpoint state.    *    * @param epState - end point state.    */
+DECL|method|setState (EndPointStates epState)
 specifier|public
 name|EndPointStates
 name|setState
 parameter_list|(
 name|EndPointStates
-name|state
+name|epState
 parameter_list|)
 block|{
 name|this
 operator|.
 name|state
 operator|=
-name|state
+name|epState
 expr_stmt|;
 return|return
 name|this

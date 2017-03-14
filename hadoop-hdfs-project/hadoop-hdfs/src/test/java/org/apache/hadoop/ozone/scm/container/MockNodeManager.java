@@ -509,13 +509,15 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Return a list of node stats.    * @return a list of individual node stats (live/stale but not dead).    */
+comment|/**    * Return a map of nodes to their stats.    * @return a list of individual node stats (live/stale but not dead).    */
 annotation|@
 name|Override
 DECL|method|getNodeStats ()
 specifier|public
-name|List
+name|Map
 argument_list|<
+name|String
+argument_list|,
 name|SCMNodeStat
 argument_list|>
 name|getNodeStats
@@ -523,6 +525,35 @@ parameter_list|()
 block|{
 return|return
 literal|null
+return|;
+block|}
+comment|/**    * Return the node stat of the specified datanode.    * @param datanodeID - datanode ID.    * @return node stat if it is live/stale, null if it is dead or does't exist.    */
+annotation|@
+name|Override
+DECL|method|getNodeStat (DatanodeID datanodeID)
+specifier|public
+name|SCMNodeStat
+name|getNodeStat
+parameter_list|(
+name|DatanodeID
+name|datanodeID
+parameter_list|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+comment|/**    * Used for testing.    *    * @return true if the HB check is done.    */
+annotation|@
+name|Override
+DECL|method|waitForHeartbeatProcessed ()
+specifier|public
+name|boolean
+name|waitForHeartbeatProcessed
+parameter_list|()
+block|{
+return|return
+literal|false
 return|;
 block|}
 comment|/**    * Closes this stream and releases any system resources associated with it. If    * the stream is already closed then invoking this method has no effect.    *<p>    *<p> As noted in {@link AutoCloseable#close()}, cases where the close may    * fail require careful attention. It is strongly advised to relinquish the    * underlying resources and to internally<em>mark</em> the {@code Closeable}    * as closed, prior to throwing the {@code IOException}.    *    * @throws IOException if an I/O error occurs    */

@@ -317,6 +317,7 @@ specifier|private
 name|ContainerTestHelper
 parameter_list|()
 block|{   }
+comment|// TODO: mock multi-node pipeline
 comment|/**    * Create a pipeline with single node replica.    *    * @return Pipeline with single node in it.    * @throws IOException    */
 DECL|method|createSingleNodePipeline (String containerName)
 specifier|public

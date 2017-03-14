@@ -1576,7 +1576,7 @@ return|return
 name|staleNodeIntevalMs
 return|;
 block|}
-comment|/**    * Gets the interval for dead node flagging. This has to be a value that is    * greater than stale node value,  and by transitive relation we also know    * that this value is greater than heartbeat interval and heartbeatProcess    * Interval.    *    * @param conf    * @return    */
+comment|/**    * Gets the interval for dead node flagging. This has to be a value that is    * greater than stale node value,  and by transitive relation we also know    * that this value is greater than heartbeat interval and heartbeatProcess    * Interval.    *    * @param conf - Configuration.    * @return - the interval for dead node flagging.    */
 DECL|method|getDeadNodeInterval (Configuration conf)
 specifier|public
 specifier|static
@@ -1650,7 +1650,7 @@ return|return
 name|deadNodeIntervalMs
 return|;
 block|}
-comment|/**    * Returns the maximum number of heartbeat to process per loop of the process    * thread.    * @param conf Configration    * @return - int -- Number of HBs to process    */
+comment|/**    * Returns the maximum number of heartbeat to process per loop of the process    * thread.    * @param conf Configuration    * @return - int -- Number of HBs to process    */
 DECL|method|getMaxHBToProcessPerLoop (Configuration conf)
 specifier|public
 specifier|static

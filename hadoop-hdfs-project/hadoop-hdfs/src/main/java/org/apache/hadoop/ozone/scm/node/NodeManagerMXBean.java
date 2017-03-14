@@ -60,35 +60,30 @@ name|NodeManagerMXBean
 block|{
 comment|/**    * Get the minimum number of nodes to get out of chill mode.    *    * @return int    */
 DECL|method|getMinimumChillModeNodes ()
-specifier|public
 name|int
 name|getMinimumChillModeNodes
 parameter_list|()
 function_decl|;
 comment|/**    * Reports if we have exited out of chill mode by discovering enough nodes.    *    * @return True if we are out of Node layer chill mode, false otherwise.    */
 DECL|method|isOutOfNodeChillMode ()
-specifier|public
 name|boolean
 name|isOutOfNodeChillMode
 parameter_list|()
 function_decl|;
 comment|/**    * Returns a chill mode status string.    * @return String    */
 DECL|method|getChillModeStatus ()
-specifier|public
 name|String
 name|getChillModeStatus
 parameter_list|()
 function_decl|;
 comment|/**    * Returns the status of manual chill mode flag.    * @return true if forceEnterChillMode has been called,    * false if forceExitChillMode or status is not set. eg. clearChillModeFlag.    */
 DECL|method|isInManualChillMode ()
-specifier|public
 name|boolean
 name|isInManualChillMode
 parameter_list|()
 function_decl|;
-comment|/**    * Get the number of data nodes that in all states,    * valid states are defined by {@link SCMNodeManager.NODESTATE}.    *    * @return A state to number of nodes that in this state mapping    */
+comment|/**    * Get the number of data nodes that in all states.    *    * @return A state to number of nodes that in this state mapping    */
 DECL|method|getNodeCount ()
-specifier|public
 name|Map
 argument_list|<
 name|String

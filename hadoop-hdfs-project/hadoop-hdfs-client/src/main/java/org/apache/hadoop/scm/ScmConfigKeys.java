@@ -45,7 +45,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class contains constants for configuration keys used in SCM  */
+comment|/**  * This class contains constants for configuration keys used in SCM.  */
 end_comment
 
 begin_class
@@ -400,6 +400,39 @@ name|OZONE_SCM_DB_CACHE_SIZE_DEFAULT
 init|=
 literal|128
 decl_stmt|;
+DECL|field|OZONE_SCM_CONTAINER_SIZE_GB
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_SCM_CONTAINER_SIZE_GB
+init|=
+literal|"ozone.scm.container.size.gb"
+decl_stmt|;
+DECL|field|OZONE_SCM_CONTAINER_SIZE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|OZONE_SCM_CONTAINER_SIZE_DEFAULT
+init|=
+literal|5
+decl_stmt|;
+DECL|field|OZONE_SCM_CONTAINER_PLACEMENT_IMPL_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_SCM_CONTAINER_PLACEMENT_IMPL_KEY
+init|=
+literal|"ozone.scm.container.placement.impl"
+decl_stmt|;
+comment|/**    * Never constructed.    */
+DECL|method|ScmConfigKeys ()
+specifier|private
+name|ScmConfigKeys
+parameter_list|()
+block|{    }
 block|}
 end_class
 

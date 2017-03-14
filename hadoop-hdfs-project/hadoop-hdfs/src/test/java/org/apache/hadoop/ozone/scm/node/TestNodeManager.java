@@ -646,7 +646,7 @@ parameter_list|()
 lambda|->
 name|nodeManager
 operator|.
-name|waitForHeartbeatThead
+name|waitForHeartbeatProcessed
 argument_list|()
 argument_list|,
 literal|100
@@ -658,9 +658,9 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-literal|"Heartbeat thread should have picked up the scheduled "
+literal|"Heartbeat thread should have picked up the"
 operator|+
-literal|"heartbeats and transitioned out of chill mode."
+literal|"scheduled heartbeats and transitioned out of chill mode."
 argument_list|,
 name|nodeManager
 operator|.
@@ -705,7 +705,7 @@ parameter_list|()
 lambda|->
 name|nodeManager
 operator|.
-name|waitForHeartbeatThead
+name|waitForHeartbeatProcessed
 argument_list|()
 argument_list|,
 literal|100
@@ -717,7 +717,9 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
-literal|"No heartbeats, Node manager should have been in chill mode."
+literal|"No heartbeats, Node manager should have been in"
+operator|+
+literal|" chill mode."
 argument_list|,
 name|nodeManager
 operator|.
@@ -784,7 +786,7 @@ parameter_list|()
 lambda|->
 name|nodeManager
 operator|.
-name|waitForHeartbeatThead
+name|waitForHeartbeatProcessed
 argument_list|()
 argument_list|,
 literal|100
@@ -796,9 +798,9 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
-literal|"Not enough heartbeat, Node manager should have been in "
+literal|"Not enough heartbeat, Node manager should have"
 operator|+
-literal|"chillmode."
+literal|"been in chillmode."
 argument_list|,
 name|nodeManager
 operator|.
@@ -886,7 +888,7 @@ parameter_list|()
 lambda|->
 name|nodeManager
 operator|.
-name|waitForHeartbeatThead
+name|waitForHeartbeatProcessed
 argument_list|()
 argument_list|,
 literal|100
@@ -898,7 +900,9 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
-literal|"Not enough nodes have send heartbeat to node manager."
+literal|"Not enough nodes have send heartbeat to node"
+operator|+
+literal|"manager."
 argument_list|,
 name|nodeManager
 operator|.
@@ -1077,7 +1081,7 @@ parameter_list|()
 lambda|->
 name|nodeManager
 operator|.
-name|waitForHeartbeatThead
+name|waitForHeartbeatProcessed
 argument_list|()
 argument_list|,
 literal|100
@@ -1815,9 +1819,7 @@ argument_list|()
 argument_list|,
 name|containsString
 argument_list|(
-literal|"Datanode ID in "
-operator|+
-literal|"heartbeat is null"
+literal|"Datanode ID in heartbeat is null"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3885,7 +3887,7 @@ parameter_list|()
 lambda|->
 name|nodeManager
 operator|.
-name|waitForHeartbeatThead
+name|waitForHeartbeatProcessed
 argument_list|()
 argument_list|,
 literal|100
@@ -4275,12 +4277,9 @@ name|capacity
 argument_list|,
 name|nodeManager
 operator|.
-name|getNodeStats
-argument_list|()
-operator|.
-name|get
+name|getNodeStat
 argument_list|(
-literal|0
+name|datanodeID
 argument_list|)
 operator|.
 name|getCapacity
@@ -4293,12 +4292,9 @@ name|expectedScmUsed
 argument_list|,
 name|nodeManager
 operator|.
-name|getNodeStats
-argument_list|()
-operator|.
-name|get
+name|getNodeStat
 argument_list|(
-literal|0
+name|datanodeID
 argument_list|)
 operator|.
 name|getScmUsed
@@ -4311,16 +4307,48 @@ name|expectedRemaining
 argument_list|,
 name|nodeManager
 operator|.
+name|getNodeStat
+argument_list|(
+name|datanodeID
+argument_list|)
+operator|.
+name|getRemaining
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Compare the result from
+comment|// NodeManager#getNodeStats and NodeManager#getNodeStat
+name|SCMNodeStat
+name|stat1
+init|=
+name|nodeManager
+operator|.
 name|getNodeStats
 argument_list|()
 operator|.
 name|get
 argument_list|(
-literal|0
-argument_list|)
+name|datanodeID
 operator|.
-name|getRemaining
+name|getDatanodeUuid
 argument_list|()
+argument_list|)
+decl_stmt|;
+name|SCMNodeStat
+name|stat2
+init|=
+name|nodeManager
+operator|.
+name|getNodeStat
+argument_list|(
+name|datanodeID
+argument_list|)
+decl_stmt|;
+name|assertEquals
+argument_list|(
+name|stat1
+argument_list|,
+name|stat2
 argument_list|)
 expr_stmt|;
 comment|// Wait up to 4s so that the node becomes stale
@@ -4370,12 +4398,9 @@ name|capacity
 argument_list|,
 name|nodeManager
 operator|.
-name|getNodeStats
-argument_list|()
-operator|.
-name|get
+name|getNodeStat
 argument_list|(
-literal|0
+name|datanodeID
 argument_list|)
 operator|.
 name|getCapacity
@@ -4388,12 +4413,9 @@ name|expectedScmUsed
 argument_list|,
 name|nodeManager
 operator|.
-name|getNodeStats
-argument_list|()
-operator|.
-name|get
+name|getNodeStat
 argument_list|(
-literal|0
+name|datanodeID
 argument_list|)
 operator|.
 name|getScmUsed
@@ -4406,12 +4428,9 @@ name|expectedRemaining
 argument_list|,
 name|nodeManager
 operator|.
-name|getNodeStats
-argument_list|()
-operator|.
-name|get
+name|getNodeStat
 argument_list|(
-literal|0
+name|datanodeID
 argument_list|)
 operator|.
 name|getRemaining
@@ -4641,12 +4660,9 @@ name|capacity
 argument_list|,
 name|nodeManager
 operator|.
-name|getNodeStats
-argument_list|()
-operator|.
-name|get
+name|getNodeStat
 argument_list|(
-literal|0
+name|datanodeID
 argument_list|)
 operator|.
 name|getCapacity
@@ -4659,12 +4675,9 @@ name|expectedScmUsed
 argument_list|,
 name|nodeManager
 operator|.
-name|getNodeStats
-argument_list|()
-operator|.
-name|get
+name|getNodeStat
 argument_list|(
-literal|0
+name|datanodeID
 argument_list|)
 operator|.
 name|getScmUsed
@@ -4677,12 +4690,9 @@ name|expectedRemaining
 argument_list|,
 name|nodeManager
 operator|.
-name|getNodeStats
-argument_list|()
-operator|.
-name|get
+name|getNodeStat
 argument_list|(
-literal|0
+name|datanodeID
 argument_list|)
 operator|.
 name|getRemaining

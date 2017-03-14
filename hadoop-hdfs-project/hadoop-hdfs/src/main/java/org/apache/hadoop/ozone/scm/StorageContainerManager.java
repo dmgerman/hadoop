@@ -76,6 +76,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|io
+operator|.
+name|IOUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|classification
@@ -183,6 +197,22 @@ operator|.
 name|ozone
 operator|.
 name|OzoneConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|scm
+operator|.
+name|client
+operator|.
+name|ScmClient
 import|;
 end_import
 
@@ -1006,7 +1036,7 @@ specifier|final
 name|InetSocketAddress
 name|clientRpcAddress
 decl_stmt|;
-comment|/** SCM mxbean*/
+comment|/** SCM mxbean. */
 DECL|field|scmInfoBeanName
 specifier|private
 name|ObjectName
@@ -1808,6 +1838,42 @@ operator|.
 name|allocateContainer
 argument_list|(
 name|containerName
+argument_list|,
+name|ScmClient
+operator|.
+name|ReplicationFactor
+operator|.
+name|ONE
+argument_list|)
+return|;
+block|}
+comment|/**    * Asks SCM where a container should be allocated. SCM responds with the set    * of datanodes that should be used creating this container.    *    * @param containerName - Name of the container.    * @param replicationFactor - replication factor.    * @return Pipeline.    * @throws IOException    */
+annotation|@
+name|Override
+DECL|method|allocateContainer (String containerName, ScmClient.ReplicationFactor replicationFactor)
+specifier|public
+name|Pipeline
+name|allocateContainer
+parameter_list|(
+name|String
+name|containerName
+parameter_list|,
+name|ScmClient
+operator|.
+name|ReplicationFactor
+name|replicationFactor
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|scmContainerManager
+operator|.
+name|allocateContainer
+argument_list|(
+name|containerName
+argument_list|,
+name|replicationFactor
 argument_list|)
 return|;
 block|}
@@ -1974,6 +2040,13 @@ argument_list|()
 expr_stmt|;
 name|unregisterMXBean
 argument_list|()
+expr_stmt|;
+name|IOUtils
+operator|.
+name|closeQuietly
+argument_list|(
+name|scmContainerManager
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Wait until service has completed shutdown.    */

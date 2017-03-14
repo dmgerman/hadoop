@@ -1596,10 +1596,12 @@ block|}
 comment|/**    * Used for testing.    *    * @return true if the HB check is done.    */
 annotation|@
 name|VisibleForTesting
-DECL|method|waitForHeartbeatThead ()
+annotation|@
+name|Override
+DECL|method|waitForHeartbeatProcessed ()
 specifier|public
 name|boolean
-name|waitForHeartbeatThead
+name|waitForHeartbeatProcessed
 parameter_list|()
 block|{
 return|return
@@ -2469,12 +2471,12 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|unregisterMXBean
+argument_list|()
+expr_stmt|;
 name|executorService
 operator|.
 name|shutdown
-argument_list|()
-expr_stmt|;
-name|unregisterMXBean
 argument_list|()
 expr_stmt|;
 try|try
@@ -2882,47 +2884,49 @@ name|scmStat
 argument_list|)
 return|;
 block|}
-comment|/**    * Return a list of node stats.    * @return a list of individual node stats (live/stale but not dead).    */
+comment|/**    * Return a map of node stats.    * @return a map of individual node stats (live/stale but not dead).    */
 annotation|@
 name|Override
 DECL|method|getNodeStats ()
 specifier|public
-name|List
+name|Map
 argument_list|<
+name|String
+argument_list|,
 name|SCMNodeStat
 argument_list|>
 name|getNodeStats
 parameter_list|()
 block|{
 return|return
-name|nodeStats
+name|Collections
 operator|.
-name|entrySet
-argument_list|()
-operator|.
-name|stream
-argument_list|()
-operator|.
-name|map
+name|unmodifiableMap
 argument_list|(
-name|entry
-lambda|->
+name|nodeStats
+argument_list|)
+return|;
+block|}
+comment|/**    * Return the node stat of the specified datanode.    * @param datanodeID - datanode ID.    * @return node stat if it is live/stale, null if it is dead or does't exist.    */
+annotation|@
+name|Override
+DECL|method|getNodeStat (DatanodeID datanodeID)
+specifier|public
+name|SCMNodeStat
+name|getNodeStat
+parameter_list|(
+name|DatanodeID
+name|datanodeID
+parameter_list|)
+block|{
+return|return
 name|nodeStats
 operator|.
 name|get
 argument_list|(
-name|entry
+name|datanodeID
 operator|.
-name|getKey
-argument_list|()
-argument_list|)
-argument_list|)
-operator|.
-name|collect
-argument_list|(
-name|Collectors
-operator|.
-name|toList
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 return|;

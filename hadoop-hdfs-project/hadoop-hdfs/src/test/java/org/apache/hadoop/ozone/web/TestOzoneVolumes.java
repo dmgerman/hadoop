@@ -1456,8 +1456,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Create a bunch of volumes in a loop.    *    * @throws IOException    */
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testCreateVolumesInLoop ()
 specifier|public
 name|void

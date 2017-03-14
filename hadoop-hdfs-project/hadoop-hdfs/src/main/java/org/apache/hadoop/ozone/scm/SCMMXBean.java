@@ -34,24 +34,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|scm
-operator|.
-name|node
-operator|.
-name|SCMNodeManager
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|util
@@ -74,9 +56,8 @@ specifier|public
 interface|interface
 name|SCMMXBean
 block|{
-comment|/**    * Get the number of data nodes that in all states,    * valid states are defined by {@link SCMNodeManager.NODESTATE}.    *    * @return A state to number of nodes that in this state mapping    */
+comment|/**    * Get the number of data nodes that in all states.    *    * @return A state to number of nodes that in this state mapping    */
 DECL|method|getNodeCount ()
-specifier|public
 name|Map
 argument_list|<
 name|String
@@ -88,14 +69,12 @@ parameter_list|()
 function_decl|;
 comment|/**    * Get the SCM RPC server port that used to listen to datanode requests.    * @return SCM datanode RPC server port    */
 DECL|method|getDatanodeRpcPort ()
-specifier|public
 name|String
 name|getDatanodeRpcPort
 parameter_list|()
 function_decl|;
 comment|/**    * Get the SCM RPC server port that used to listen to client requests.    * @return SCM client RPC server port    */
 DECL|method|getClientRpcPort ()
-specifier|public
 name|String
 name|getClientRpcPort
 parameter_list|()

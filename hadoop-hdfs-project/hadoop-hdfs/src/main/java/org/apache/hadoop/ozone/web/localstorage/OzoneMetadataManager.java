@@ -966,7 +966,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Volume already exists."
+literal|"Volume {} already exists."
+argument_list|,
+name|volumeName
 argument_list|)
 expr_stmt|;
 throw|throw

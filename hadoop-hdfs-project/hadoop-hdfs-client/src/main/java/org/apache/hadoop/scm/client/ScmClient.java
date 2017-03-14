@@ -120,6 +120,107 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Replication factors supported by Ozone and SCM.    */
+DECL|enum|ReplicationFactor
+enum|enum
+name|ReplicationFactor
+block|{
+DECL|enumConstant|ONE
+name|ONE
+argument_list|(
+literal|1
+argument_list|)
+block|,
+DECL|enumConstant|THREE
+name|THREE
+argument_list|(
+literal|3
+argument_list|)
+block|;
+DECL|field|value
+specifier|private
+specifier|final
+name|int
+name|value
+decl_stmt|;
+DECL|method|ReplicationFactor (int value)
+name|ReplicationFactor
+parameter_list|(
+name|int
+name|value
+parameter_list|)
+block|{
+name|this
+operator|.
+name|value
+operator|=
+name|value
+expr_stmt|;
+block|}
+DECL|method|getValue ()
+specifier|public
+name|int
+name|getValue
+parameter_list|()
+block|{
+return|return
+name|value
+return|;
+block|}
+DECL|method|parseReplicationFactor (int i)
+specifier|public
+specifier|static
+name|ReplicationFactor
+name|parseReplicationFactor
+parameter_list|(
+name|int
+name|i
+parameter_list|)
+block|{
+switch|switch
+condition|(
+name|i
+condition|)
+block|{
+case|case
+literal|1
+case|:
+return|return
+name|ONE
+return|;
+case|case
+literal|3
+case|:
+return|return
+name|THREE
+return|;
+default|default:
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Only replication factor 1 or 3"
+operator|+
+literal|" is supported by Ozone/SCM."
+argument_list|)
+throw|;
+block|}
+block|}
+block|}
+comment|/**    * Creates a Container on SCM and returns the pipeline.    * @param containerId - String container ID    * @param replicationFactor - replication factor (only 1/3 is supported)    * @return Pipeline    * @throws IOException    */
+DECL|method|createContainer (String containerId, ReplicationFactor replicationFactor)
+name|Pipeline
+name|createContainer
+parameter_list|(
+name|String
+name|containerId
+parameter_list|,
+name|ReplicationFactor
+name|replicationFactor
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

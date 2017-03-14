@@ -22,6 +22,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -85,6 +99,16 @@ operator|.
 name|util
 operator|.
 name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
 import|;
 end_import
 
@@ -185,13 +209,32 @@ name|SCMNodeStat
 name|getStats
 parameter_list|()
 function_decl|;
-comment|/**    * Return a list of node stats.    * @return a list of individual node stats (live/stale but not dead).    */
+comment|/**    * Return a map of node stats.    * @return a map of individual node stats (live/stale but not dead).    */
 DECL|method|getNodeStats ()
-name|List
+name|Map
 argument_list|<
+name|String
+argument_list|,
 name|SCMNodeStat
 argument_list|>
 name|getNodeStats
+parameter_list|()
+function_decl|;
+comment|/**    * Return the node stat of the specified datanode.    * @param datanodeID - datanode ID.    * @return node stat if it is live/stale, null if it is dead or does't exist.    */
+DECL|method|getNodeStat (DatanodeID datanodeID)
+name|SCMNodeStat
+name|getNodeStat
+parameter_list|(
+name|DatanodeID
+name|datanodeID
+parameter_list|)
+function_decl|;
+comment|/**    * Wait for the heartbeat is processed by NodeManager.    * @return true if heartbeat has been processed.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|waitForHeartbeatProcessed ()
+name|boolean
+name|waitForHeartbeatProcessed
 parameter_list|()
 function_decl|;
 block|}

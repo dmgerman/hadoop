@@ -601,21 +601,21 @@ return|return
 name|containerFilePath
 return|;
 block|}
-comment|/**    * Set container Path.    * @param containerFilePath - File path.    */
-DECL|method|setContainerPath (String containerFilePath)
+comment|/**    * Set container Path.    * @param containerPath - File path.    */
+DECL|method|setContainerPath (String containerPath)
 specifier|public
 name|void
 name|setContainerPath
 parameter_list|(
 name|String
-name|containerFilePath
+name|containerPath
 parameter_list|)
 block|{
 name|this
 operator|.
 name|containerFilePath
 operator|=
-name|containerFilePath
+name|containerPath
 expr_stmt|;
 block|}
 block|}

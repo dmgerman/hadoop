@@ -522,6 +522,16 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|context
+operator|.
+name|setState
+argument_list|(
+name|DatanodeStates
+operator|.
+name|getLastState
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|executorService
 operator|.
 name|shutdown
