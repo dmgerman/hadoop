@@ -228,6 +228,7 @@ return|;
 block|}
 comment|/** Judge if this node represents a rack    * @return true if it has no child or its children are not InnerNodes    */
 DECL|method|isRack ()
+specifier|public
 name|boolean
 name|isRack
 parameter_list|()
@@ -271,7 +272,7 @@ return|;
 block|}
 comment|/** Judge if this node is an ancestor of node<i>n</i>    *    * @param n a node    * @return true if this node is an ancestor of<i>n</i>    */
 DECL|method|isAncestor (Node n)
-specifier|protected
+specifier|public
 name|boolean
 name|isAncestor
 parameter_list|(
@@ -318,7 +319,7 @@ return|;
 block|}
 comment|/** Judge if this node is the parent of node<i>n</i>    *    * @param n a node    * @return true if this node is the parent of<i>n</i>    */
 DECL|method|isParent (Node n)
-specifier|protected
+specifier|public
 name|boolean
 name|isParent
 parameter_list|(
@@ -343,7 +344,7 @@ return|;
 block|}
 comment|/* Return a child name of this node who is an ancestor of node<i>n</i> */
 DECL|method|getNextAncestorName (Node n)
-specifier|protected
+specifier|public
 name|String
 name|getNextAncestorName
 parameter_list|(

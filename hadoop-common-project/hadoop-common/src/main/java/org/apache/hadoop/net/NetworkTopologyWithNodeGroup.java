@@ -1190,6 +1190,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|isRack ()
+specifier|public
 name|boolean
 name|isRack
 parameter_list|()
