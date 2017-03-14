@@ -24,6 +24,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -651,6 +661,8 @@ name|DFS_STORAGE_POLICY_SATISFIER_SELF_RETRY_TIMEOUT_MILLIS_DEFAULT
 argument_list|)
 argument_list|,
 name|storageMovementNeeded
+argument_list|,
+name|this
 argument_list|)
 expr_stmt|;
 block|}
@@ -739,31 +751,6 @@ literal|false
 expr_stmt|;
 if|if
 condition|(
-name|reconfigStop
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Stopping StoragePolicySatisfier, as admin requested to "
-operator|+
-literal|"deactivate it."
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Stopping StoragePolicySatisfier."
-argument_list|)
-expr_stmt|;
-block|}
-if|if
-condition|(
 name|storagePolicySatisfierThread
 operator|==
 literal|null
@@ -804,9 +791,18 @@ condition|(
 name|reconfigStop
 condition|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Stopping StoragePolicySatisfier, as admin requested to "
+operator|+
+literal|"deactivate it."
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
-name|clearQueues
+name|clearQueuesWithNotification
 argument_list|()
 expr_stmt|;
 name|this
@@ -818,6 +814,16 @@ argument_list|()
 operator|.
 name|addDropSPSWorkCommandsToAllDNs
 argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Stopping StoragePolicySatisfier."
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -3503,6 +3509,85 @@ name|storageMovementNeeded
 operator|.
 name|clearAll
 argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Clean all the movements in storageMovementNeeded and notify    * to clean up required resources.    * @throws IOException    */
+DECL|method|clearQueuesWithNotification ()
+specifier|private
+name|void
+name|clearQueuesWithNotification
+parameter_list|()
+block|{
+name|Long
+name|id
+decl_stmt|;
+while|while
+condition|(
+operator|(
+name|id
+operator|=
+name|storageMovementNeeded
+operator|.
+name|get
+argument_list|()
+operator|)
+operator|!=
+literal|null
+condition|)
+block|{
+try|try
+block|{
+name|notifyBlkStorageMovementFinished
+argument_list|(
+name|id
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ie
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to remove SPS "
+operator|+
+literal|"xattr for collection id "
+operator|+
+name|id
+argument_list|,
+name|ie
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+comment|/**    * When block movement has been finished successfully, some additional    * operations should be notified, for example, SPS xattr should be    * removed.    * @param trackId track id i.e., block collection id.    * @throws IOException    */
+DECL|method|notifyBlkStorageMovementFinished (long trackId)
+specifier|public
+name|void
+name|notifyBlkStorageMovementFinished
+parameter_list|(
+name|long
+name|trackId
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|this
+operator|.
+name|namesystem
+operator|.
+name|getFSDirectory
+argument_list|()
+operator|.
+name|removeSPSXattr
+argument_list|(
+name|trackId
+argument_list|)
 expr_stmt|;
 block|}
 block|}

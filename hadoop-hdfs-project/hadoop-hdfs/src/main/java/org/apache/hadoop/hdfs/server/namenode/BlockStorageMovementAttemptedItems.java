@@ -40,6 +40,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -236,6 +246,12 @@ name|timerThread
 init|=
 literal|null
 decl_stmt|;
+DECL|field|sps
+specifier|private
+specifier|final
+name|StoragePolicySatisfier
+name|sps
+decl_stmt|;
 comment|//
 comment|// It might take anywhere between 30 to 60 minutes before
 comment|// a request is timed out.
@@ -272,7 +288,7 @@ specifier|private
 name|BlockStorageMovementNeeded
 name|blockStorageMovementNeeded
 decl_stmt|;
-DECL|method|BlockStorageMovementAttemptedItems (long recheckTimeout, long selfRetryTimeout, BlockStorageMovementNeeded unsatisfiedStorageMovementFiles)
+DECL|method|BlockStorageMovementAttemptedItems (long recheckTimeout, long selfRetryTimeout, BlockStorageMovementNeeded unsatisfiedStorageMovementFiles, StoragePolicySatisfier sps)
 specifier|public
 name|BlockStorageMovementAttemptedItems
 parameter_list|(
@@ -284,6 +300,9 @@ name|selfRetryTimeout
 parameter_list|,
 name|BlockStorageMovementNeeded
 name|unsatisfiedStorageMovementFiles
+parameter_list|,
+name|StoragePolicySatisfier
+name|sps
 parameter_list|)
 block|{
 if|if
@@ -332,6 +351,12 @@ operator|new
 name|ArrayList
 argument_list|<>
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|sps
+operator|=
+name|sps
 expr_stmt|;
 block|}
 comment|/**    * Add item to block storage movement attempted items map which holds the    * tracking/blockCollection id versus time stamp.    *    * @param blockCollectionID    *          - tracking id / block collection id    * @param allBlockLocsAttemptedToSatisfy    *          - failed to find matching target nodes to satisfy storage type for    *          all the block locations of the given blockCollectionID    */
@@ -621,6 +646,24 @@ name|ie
 argument_list|)
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ie
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"BlocksStorageMovementAttemptResultMonitor thread "
+operator|+
+literal|"received exception and exiting."
+argument_list|,
+name|ie
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 block|}
@@ -832,6 +875,8 @@ DECL|method|blockStorageMovementResultCheck ()
 name|void
 name|blockStorageMovementResultCheck
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 synchronized|synchronized
 init|(
@@ -994,6 +1039,19 @@ literal|" reported from co-ordinating datanode. But the trackID "
 operator|+
 literal|"doesn't exists in storageMovementAttemptedItems list"
 argument_list|,
+name|storageMovementAttemptedResult
+operator|.
+name|getTrackId
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Remove xattr for the track id.
+name|this
+operator|.
+name|sps
+operator|.
+name|notifyBlkStorageMovementFinished
+argument_list|(
 name|storageMovementAttemptedResult
 operator|.
 name|getTrackId

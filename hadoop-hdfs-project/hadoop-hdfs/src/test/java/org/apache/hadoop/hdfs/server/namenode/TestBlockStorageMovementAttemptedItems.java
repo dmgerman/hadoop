@@ -96,6 +96,16 @@ name|Test
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+import|;
+end_import
+
 begin_comment
 comment|/**  * Tests that block storage movement attempt failures are reported from DN and  * processed them correctly or not.  */
 end_comment
@@ -135,6 +145,8 @@ specifier|public
 name|void
 name|setup
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|unsatisfiedStorageMovementFiles
 operator|=
@@ -142,6 +154,18 @@ operator|new
 name|BlockStorageMovementNeeded
 argument_list|()
 expr_stmt|;
+name|StoragePolicySatisfier
+name|sps
+init|=
+name|Mockito
+operator|.
+name|mock
+argument_list|(
+name|StoragePolicySatisfier
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 name|bsmAttemptedItems
 operator|=
 operator|new
@@ -152,6 +176,8 @@ argument_list|,
 name|selfRetryTimeout
 argument_list|,
 name|unsatisfiedStorageMovementFiles
+argument_list|,
+name|sps
 argument_list|)
 expr_stmt|;
 block|}
