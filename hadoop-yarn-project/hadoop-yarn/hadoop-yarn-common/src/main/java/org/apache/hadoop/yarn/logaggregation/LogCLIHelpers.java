@@ -413,7 +413,7 @@ specifier|final
 name|String
 name|PER_LOG_FILE_INFO_PATTERN
 init|=
-literal|"%30s\t%30s\t%30s"
+literal|"%30s\t%30s\t%30s\t%30s"
 operator|+
 name|System
 operator|.
@@ -1091,6 +1091,13 @@ name|out
 operator|.
 name|println
 argument_list|(
+literal|"LogAggregationType: AGGREGATED"
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
 name|StringUtils
 operator|.
 name|repeat
@@ -1486,6 +1493,13 @@ operator|.
 name|println
 argument_list|(
 name|containerString
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"LogAggregationType: AGGREGATED"
 argument_list|)
 expr_stmt|;
 name|out
@@ -2204,6 +2218,13 @@ name|out
 operator|.
 name|println
 argument_list|(
+literal|"LogAggregationType: AGGREGATED"
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
 name|StringUtils
 operator|.
 name|repeat
@@ -2615,6 +2636,8 @@ argument_list|,
 literal|"LogLength"
 argument_list|,
 literal|"LastModificationTime"
+argument_list|,
+literal|"LogAggregationType"
 argument_list|)
 expr_stmt|;
 name|out
@@ -2631,6 +2654,8 @@ name|containerString
 operator|.
 name|length
 argument_list|()
+operator|*
+literal|2
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2665,6 +2690,8 @@ name|logMeta
 operator|.
 name|getLastModifiedTime
 argument_list|()
+argument_list|,
+literal|"AGGREGATED"
 argument_list|)
 expr_stmt|;
 block|}
