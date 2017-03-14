@@ -439,6 +439,19 @@ range|:
 name|policyNames
 control|)
 block|{
+if|if
+condition|(
+name|policyName
+operator|.
+name|trim
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+continue|continue;
+block|}
 name|ErasureCodingPolicy
 name|ecPolicy
 init|=
@@ -493,7 +506,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"EC policy %s specified at %s is not a "
+literal|"EC policy '%s' specified at %s is not a "
 operator|+
 literal|"valid policy. Please choose from list of available policies: "
 operator|+

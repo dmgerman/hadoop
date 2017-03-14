@@ -3530,7 +3530,7 @@ specifier|final
 name|String
 name|DFS_NAMENODE_EC_POLICIES_ENABLED_DEFAULT
 init|=
-literal|"RS-6-3-64k"
+literal|""
 decl_stmt|;
 DECL|field|DFS_DN_EC_RECONSTRUCTION_STRIPED_READ_THREADS_KEY
 specifier|public
