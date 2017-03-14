@@ -33200,6 +33200,11 @@ argument_list|(
 name|resource
 argument_list|)
 expr_stmt|;
+name|parent
+operator|.
+name|updateDemand
+argument_list|()
+expr_stmt|;
 name|String
 name|parentQueueString
 init|=
@@ -33219,7 +33224,7 @@ literal|" MinShare:<memory:0, vCores:0>,"
 operator|+
 literal|" ResourceUsage:<memory:4096, vCores:4>,"
 operator|+
-literal|" Demand:<memory:0, vCores:0>,"
+literal|" Demand:<memory:4096, vCores:4>,"
 operator|+
 literal|" MaxAMShare: 0.5,"
 operator|+
