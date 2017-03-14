@@ -534,7 +534,7 @@ specifier|private
 name|BlockChecksumHelper
 parameter_list|()
 block|{   }
-comment|/**    * The abstract base block checksum computer.    */
+comment|/**    * The abstract block checksum computer.    */
 DECL|class|AbstractBlockChecksumComputer
 specifier|static
 specifier|abstract
@@ -802,7 +802,7 @@ name|checksumSize
 return|;
 block|}
 block|}
-comment|/**    * The abstract base block checksum computer.    */
+comment|/**    * The abstract base block checksum computer, mainly for replicated blocks.    */
 DECL|class|BlockChecksumComputer
 specifier|static
 specifier|abstract

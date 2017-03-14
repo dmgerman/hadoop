@@ -660,6 +660,13 @@ name|length
 expr_stmt|;
 if|if
 condition|(
+name|blockLocations
+operator|!=
+literal|null
+condition|)
+block|{
+if|if
+condition|(
 name|src
 operator|.
 name|contains
@@ -696,6 +703,7 @@ operator|.
 name|getLocatedBlocks
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 DECL|method|getSrc ()
 name|String
@@ -992,6 +1000,64 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+comment|/**        * request length is 0 or the file is empty, return one with the        * magic entry that matches what previous hdfs versions return.        */
+if|if
+condition|(
+name|locatedBlocks
+operator|==
+literal|null
+operator|||
+name|locatedBlocks
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+comment|// Explicitly specified here in case the default DataOutputBuffer
+comment|// buffer length value is changed in future. This matters because the
+comment|// fixed value 32 has to be used to repeat the magic value for previous
+comment|// HDFS version.
+specifier|final
+name|int
+name|lenOfZeroBytes
+init|=
+literal|32
+decl_stmt|;
+name|byte
+index|[]
+name|emptyBlockMd5
+init|=
+operator|new
+name|byte
+index|[
+name|lenOfZeroBytes
+index|]
+decl_stmt|;
+name|MD5Hash
+name|fileMD5
+init|=
+name|MD5Hash
+operator|.
+name|digest
+argument_list|(
+name|emptyBlockMd5
+argument_list|)
+decl_stmt|;
+name|fileChecksum
+operator|=
+operator|new
+name|MD5MD5CRC32GzipFileChecksum
+argument_list|(
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+name|fileMD5
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|checksumBlocks
 argument_list|()
 expr_stmt|;
@@ -1000,6 +1066,7 @@ operator|=
 name|makeFinalResult
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 comment|/**      * Compute and aggregate block checksums block by block.      * @throws IOException      */
 DECL|method|checksumBlocks ()
@@ -1065,31 +1132,7 @@ name|fileMD5
 argument_list|)
 return|;
 default|default:
-comment|// If there is no block allocated for the file,
-comment|// return one with the magic entry that matches what previous
-comment|// hdfs versions return.
-if|if
-condition|(
-name|locatedBlocks
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-return|return
-operator|new
-name|MD5MD5CRC32GzipFileChecksum
-argument_list|(
-literal|0
-argument_list|,
-literal|0
-argument_list|,
-name|fileMD5
-argument_list|)
-return|;
-block|}
-comment|// we should never get here since the validity was checked
-comment|// when getCrcType() was called above.
+comment|// we will get here when crcType is "NULL".
 return|return
 literal|null
 return|;
@@ -1867,7 +1910,7 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Striped file checksum computing.    */
+comment|/**    * Non-striped checksum computing for striped files.    */
 DECL|class|StripedFileNonStripedChecksumComputer
 specifier|static
 class|class
