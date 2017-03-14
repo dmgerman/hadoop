@@ -1047,11 +1047,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to obtain replica info for block (="
+literal|"Failed to recover block (block="
 operator|+
 name|block
 operator|+
-literal|") from datanode (="
+literal|", datanode="
 operator|+
 name|id
 operator|+
@@ -2383,11 +2383,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to obtain replica info for block (="
+literal|"Failed to recover block (block="
 operator|+
 name|block
 operator|+
-literal|") from datanode (="
+literal|", datanode="
 operator|+
 name|id
 operator|+
