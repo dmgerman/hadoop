@@ -192,6 +192,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|security
+operator|.
+name|NoSuchAlgorithmException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|List
@@ -290,6 +300,30 @@ comment|/**    * Get metadata about a specific container.    *    * @param conta
 DECL|method|readContainer (String containerName)
 name|ContainerData
 name|readContainer
+parameter_list|(
+name|String
+name|containerName
+parameter_list|)
+throws|throws
+name|StorageContainerException
+function_decl|;
+comment|/**    * Closes a open container, if it is already closed or does not exist a    * StorageContainerException is thrown.    * @param containerName - Name of the container.    * @throws StorageContainerException    */
+DECL|method|closeContainer (String containerName)
+name|void
+name|closeContainer
+parameter_list|(
+name|String
+name|containerName
+parameter_list|)
+throws|throws
+name|StorageContainerException
+throws|,
+name|NoSuchAlgorithmException
+function_decl|;
+comment|/**    * Checks if a container exists.    * @param containerName - Name of the container.    * @return true if the container is open false otherwise.    * @throws StorageContainerException  - Throws Exception if we are not    * able to find the container.    */
+DECL|method|isOpen (String containerName)
+name|boolean
+name|isOpen
 parameter_list|(
 name|String
 name|containerName

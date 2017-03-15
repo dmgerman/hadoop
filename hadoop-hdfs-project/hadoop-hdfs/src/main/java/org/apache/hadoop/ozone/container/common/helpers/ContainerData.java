@@ -121,6 +121,16 @@ specifier|private
 name|String
 name|containerFilePath
 decl_stmt|;
+DECL|field|open
+specifier|private
+name|boolean
+name|open
+decl_stmt|;
+DECL|field|hash
+specifier|private
+name|String
+name|hash
+decl_stmt|;
 comment|/**    * Constructs a  ContainerData Object.    *    * @param containerName - Name    */
 DECL|method|ContainerData (String containerName)
 specifier|public
@@ -251,6 +261,54 @@ argument_list|(
 name|protoData
 operator|.
 name|getDbPath
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|protoData
+operator|.
+name|hasOpen
+argument_list|()
+condition|)
+block|{
+name|data
+operator|.
+name|setOpen
+argument_list|(
+name|protoData
+operator|.
+name|getOpen
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|data
+operator|.
+name|setOpen
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|protoData
+operator|.
+name|hasHash
+argument_list|()
+condition|)
+block|{
+name|data
+operator|.
+name|setHash
+argument_list|(
+name|protoData
+operator|.
+name|getHash
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -616,6 +674,75 @@ operator|.
 name|containerFilePath
 operator|=
 name|containerPath
+expr_stmt|;
+block|}
+comment|/**    * checks if the container is open.    * @return - boolean    */
+DECL|method|isOpen ()
+specifier|public
+name|boolean
+name|isOpen
+parameter_list|()
+block|{
+return|return
+name|open
+return|;
+block|}
+comment|/**    * Marks this container as closed.    */
+DECL|method|closeContainer ()
+specifier|public
+name|void
+name|closeContainer
+parameter_list|()
+block|{
+name|this
+operator|.
+name|open
+operator|=
+literal|false
+expr_stmt|;
+block|}
+comment|/**    * Final hash for this container.    * @return - Hash    */
+DECL|method|getHash ()
+specifier|public
+name|String
+name|getHash
+parameter_list|()
+block|{
+return|return
+name|hash
+return|;
+block|}
+DECL|method|setHash (String hash)
+specifier|public
+name|void
+name|setHash
+parameter_list|(
+name|String
+name|hash
+parameter_list|)
+block|{
+name|this
+operator|.
+name|hash
+operator|=
+name|hash
+expr_stmt|;
+block|}
+comment|/**    * Sets the open or closed values.    * @param open    */
+DECL|method|setOpen (boolean open)
+specifier|public
+name|void
+name|setOpen
+parameter_list|(
+name|boolean
+name|open
+parameter_list|)
+block|{
+name|this
+operator|.
+name|open
+operator|=
+name|open
 expr_stmt|;
 block|}
 block|}
