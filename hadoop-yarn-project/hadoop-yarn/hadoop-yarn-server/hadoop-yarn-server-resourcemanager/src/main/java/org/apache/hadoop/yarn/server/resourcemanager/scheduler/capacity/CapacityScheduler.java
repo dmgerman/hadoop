@@ -11173,7 +11173,7 @@ argument_list|)
 expr_stmt|;
 comment|// Get the default priority for the Queue. If Queue is non-existent,
 comment|// then
-comment|// use default priority. Do it only if user doesnt have any default.
+comment|// use default priority. Do it only if user doesn't have any default.
 if|if
 condition|(
 literal|null
