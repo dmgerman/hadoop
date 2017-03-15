@@ -92,6 +92,20 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|Tool
 import|;
 end_import
@@ -267,7 +281,11 @@ literal|"-i,--inputFile<arg>   edits file to process, xml (case\n"
 operator|+
 literal|"                       insensitive) extension means XML format,\n"
 operator|+
-literal|"                       any other filename means binary format\n"
+literal|"                       any other filename means binary format.\n"
+operator|+
+literal|"                       XML/Binary format input file is not allowed\n"
+operator|+
+literal|"                       to be processed by the same type processor.\n"
 operator|+
 literal|"-o,--outputFile<arg>  Name of output file. If the specified\n"
 operator|+
@@ -544,6 +562,83 @@ literal|"]"
 argument_list|)
 expr_stmt|;
 block|}
+name|boolean
+name|xmlInput
+init|=
+name|StringUtils
+operator|.
+name|toLowerCase
+argument_list|(
+name|inputFileName
+argument_list|)
+operator|.
+name|endsWith
+argument_list|(
+literal|".xml"
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|xmlInput
+operator|&&
+name|StringUtils
+operator|.
+name|equalsIgnoreCase
+argument_list|(
+literal|"xml"
+argument_list|,
+name|processor
+argument_list|)
+condition|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"XML format input file is not allowed"
+operator|+
+literal|" to be processed by XML processor."
+argument_list|)
+expr_stmt|;
+return|return
+operator|-
+literal|1
+return|;
+block|}
+elseif|else
+if|if
+condition|(
+operator|!
+name|xmlInput
+operator|&&
+name|StringUtils
+operator|.
+name|equalsIgnoreCase
+argument_list|(
+literal|"binary"
+argument_list|,
+name|processor
+argument_list|)
+condition|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Binary format input file is not allowed"
+operator|+
+literal|" to be processed by Binary processor."
+argument_list|)
+expr_stmt|;
+return|return
+operator|-
+literal|1
+return|;
+block|}
 try|try
 block|{
 if|if
@@ -570,19 +665,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|boolean
-name|xmlInput
-init|=
-name|inputFileName
-operator|.
-name|toLowerCase
-argument_list|()
-operator|.
-name|endsWith
-argument_list|(
-literal|".xml"
-argument_list|)
-decl_stmt|;
 name|OfflineEditsLoader
 name|loader
 init|=
