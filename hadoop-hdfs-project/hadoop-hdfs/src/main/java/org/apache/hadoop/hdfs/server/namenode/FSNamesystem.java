@@ -1372,6 +1372,16 @@ name|java
 operator|.
 name|net
 operator|.
+name|InetSocketAddress
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
 name|URI
 import|;
 end_import
@@ -5206,6 +5216,13 @@ name|resourceLowSafeMode
 init|=
 literal|false
 decl_stmt|;
+DECL|field|nameNodeHostName
+specifier|private
+name|String
+name|nameNodeHostName
+init|=
+literal|null
+decl_stmt|;
 comment|/**    * Notify that loading of this FSDirectory is complete, and    * it is imageLoaded for use    */
 DECL|method|imageLoadComplete ()
 name|void
@@ -7721,6 +7738,35 @@ operator|.
 name|registerMXBean
 argument_list|()
 expr_stmt|;
+name|InetSocketAddress
+name|serviceAddress
+init|=
+name|NameNode
+operator|.
+name|getServiceAddress
+argument_list|(
+name|conf
+argument_list|,
+literal|true
+argument_list|)
+decl_stmt|;
+name|this
+operator|.
+name|nameNodeHostName
+operator|=
+operator|(
+name|serviceAddress
+operator|!=
+literal|null
+operator|)
+condition|?
+name|serviceAddress
+operator|.
+name|getHostName
+argument_list|()
+else|:
+literal|""
+expr_stmt|;
 block|}
 comment|/**     * Stop services common to both active and standby states    */
 DECL|method|stopCommonServices ()
@@ -8749,6 +8795,10 @@ literal|"mode.\n"
 operator|+
 name|getSafeModeTip
 argument_list|()
+operator|+
+literal|" NamenodeHostName:"
+operator|+
+name|nameNodeHostName
 argument_list|)
 return|;
 block|}
