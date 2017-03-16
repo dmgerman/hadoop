@@ -1056,6 +1056,18 @@ name|String
 name|description
 parameter_list|)
 block|{    }
+annotation|@
+name|Override
+DECL|method|isRecovering ()
+specifier|public
+name|boolean
+name|isRecovering
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
 block|}
 end_class
 

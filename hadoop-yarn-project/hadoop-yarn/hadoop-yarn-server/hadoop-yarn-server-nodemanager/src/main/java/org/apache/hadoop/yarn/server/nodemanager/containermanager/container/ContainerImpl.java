@@ -8765,6 +8765,36 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|isRecovering ()
+specifier|public
+name|boolean
+name|isRecovering
+parameter_list|()
+block|{
+name|boolean
+name|isRecovering
+init|=
+operator|(
+name|recoveredStatus
+operator|!=
+name|RecoveredContainerStatus
+operator|.
+name|REQUESTED
+operator|&&
+name|getContainerState
+argument_list|()
+operator|==
+name|ContainerState
+operator|.
+name|NEW
+operator|)
+decl_stmt|;
+return|return
+name|isRecovering
+return|;
+block|}
 block|}
 end_class
 

@@ -425,6 +425,11 @@ name|String
 name|description
 parameter_list|)
 function_decl|;
+DECL|method|isRecovering ()
+name|boolean
+name|isRecovering
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

@@ -1066,6 +1066,28 @@ name|containermanager
 operator|.
 name|application
 operator|.
+name|ApplicationFinishEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|application
+operator|.
 name|ApplicationImpl
 import|;
 end_import
@@ -2481,20 +2503,16 @@ argument_list|(
 name|appId
 argument_list|)
 expr_stmt|;
-name|cm
+name|app
 operator|.
 name|handle
 argument_list|(
 operator|new
-name|CMgrCompletedAppsEvent
+name|ApplicationFinishEvent
 argument_list|(
-name|finishedApps
+name|appId
 argument_list|,
-name|CMgrCompletedAppsEvent
-operator|.
-name|Reason
-operator|.
-name|BY_RESOURCEMANAGER
+literal|"Application killed by ResourceManager"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2573,20 +2591,16 @@ argument_list|)
 expr_stmt|;
 comment|// no longer saving FINISH_APP event in NM stateStore,
 comment|// simulate by resending FINISH_APP event
-name|cm
+name|app
 operator|.
 name|handle
 argument_list|(
 operator|new
-name|CMgrCompletedAppsEvent
+name|ApplicationFinishEvent
 argument_list|(
-name|finishedApps
+name|appId
 argument_list|,
-name|CMgrCompletedAppsEvent
-operator|.
-name|Reason
-operator|.
-name|BY_RESOURCEMANAGER
+literal|"Application killed by ResourceManager"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3079,20 +3093,16 @@ argument_list|(
 name|appId
 argument_list|)
 expr_stmt|;
-name|cm
+name|app
 operator|.
 name|handle
 argument_list|(
 operator|new
-name|CMgrCompletedAppsEvent
+name|ApplicationFinishEvent
 argument_list|(
-name|finishedApps
+name|appId
 argument_list|,
-name|CMgrCompletedAppsEvent
-operator|.
-name|Reason
-operator|.
-name|BY_RESOURCEMANAGER
+literal|"Application killed by ResourceManager"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3215,20 +3225,16 @@ argument_list|)
 expr_stmt|;
 comment|// no longer saving FINISH_APP event in NM stateStore,
 comment|// simulate by resending FINISH_APP event
-name|cm
+name|app
 operator|.
 name|handle
 argument_list|(
 operator|new
-name|CMgrCompletedAppsEvent
+name|ApplicationFinishEvent
 argument_list|(
-name|finishedApps
+name|appId
 argument_list|,
-name|CMgrCompletedAppsEvent
-operator|.
-name|Reason
-operator|.
-name|BY_RESOURCEMANAGER
+literal|"Application killed by ResourceManager"
 argument_list|)
 argument_list|)
 expr_stmt|;

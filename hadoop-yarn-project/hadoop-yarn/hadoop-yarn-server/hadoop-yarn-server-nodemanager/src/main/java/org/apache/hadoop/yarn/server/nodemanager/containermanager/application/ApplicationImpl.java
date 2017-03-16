@@ -50,7 +50,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
+name|Map
 import|;
 end_import
 
@@ -60,7 +60,9 @@ name|java
 operator|.
 name|util
 operator|.
-name|Map
+name|concurrent
+operator|.
+name|ConcurrentHashMap
 import|;
 end_import
 
@@ -931,12 +933,8 @@ argument_list|>
 name|containers
 init|=
 operator|new
-name|HashMap
-argument_list|<
-name|ContainerId
-argument_list|,
-name|Container
-argument_list|>
+name|ConcurrentHashMap
+argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|/**    * The timestamp when the log aggregation has started for this application.    * Used to determine the age of application log files during log aggregation.    * When logAggregationRentention policy is enabled, log files older than    * the retention policy will not be uploaded but scheduled for deletion.    */
