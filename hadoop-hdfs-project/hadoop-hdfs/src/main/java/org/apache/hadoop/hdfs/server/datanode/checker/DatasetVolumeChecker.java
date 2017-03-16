@@ -625,6 +625,12 @@ specifier|final
 name|long
 name|minDiskCheckGapMs
 decl_stmt|;
+DECL|field|diskCheckTimeout
+specifier|private
+specifier|final
+name|long
+name|diskCheckTimeout
+decl_stmt|;
 comment|/**    * Timestamp of the last check of all volumes.    */
 DECL|field|lastAllVolumesCheck
 specifier|private
@@ -759,6 +765,48 @@ literal|" (should be>= 0)"
 argument_list|)
 throw|;
 block|}
+name|diskCheckTimeout
+operator|=
+name|conf
+operator|.
+name|getTimeDuration
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_DISK_CHECK_TIMEOUT_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_DISK_CHECK_TIMEOUT_DEFAULT
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|diskCheckTimeout
+operator|<
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|DiskErrorException
+argument_list|(
+literal|"Invalid value configured for "
+operator|+
+name|DFS_DATANODE_DISK_CHECK_TIMEOUT_KEY
+operator|+
+literal|" - "
+operator|+
+name|diskCheckTimeout
+operator|+
+literal|" (should be>= 0)"
+argument_list|)
+throw|;
+block|}
 name|lastAllVolumesCheck
 operator|=
 name|timer
@@ -800,6 +848,8 @@ argument_list|(
 name|timer
 argument_list|,
 name|minDiskCheckGapMs
+argument_list|,
+name|diskCheckTimeout
 argument_list|,
 name|Executors
 operator|.

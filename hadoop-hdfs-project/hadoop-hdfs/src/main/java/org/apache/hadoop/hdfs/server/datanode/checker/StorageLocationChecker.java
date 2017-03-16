@@ -627,6 +627,8 @@ operator|.
 name|MILLISECONDS
 argument_list|)
 argument_list|,
+literal|0
+argument_list|,
 name|Executors
 operator|.
 name|newCachedThreadPool
