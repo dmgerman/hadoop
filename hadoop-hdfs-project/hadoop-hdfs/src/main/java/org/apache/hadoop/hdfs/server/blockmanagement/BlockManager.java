@@ -19929,7 +19929,7 @@ operator|)
 name|storedBlock
 operator|)
 operator|.
-name|getRealDataBlockNum
+name|getRealTotalBlockNum
 argument_list|()
 else|:
 name|storedBlock

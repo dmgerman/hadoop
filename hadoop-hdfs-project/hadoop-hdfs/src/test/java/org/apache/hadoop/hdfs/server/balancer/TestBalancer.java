@@ -12221,7 +12221,7 @@ name|dataBlocks
 operator|+
 name|parityBlocks
 operator|+
-literal|2
+literal|3
 decl_stmt|;
 name|int
 name|numOfRacks
@@ -12488,7 +12488,7 @@ argument_list|,
 name|groupSize
 argument_list|)
 expr_stmt|;
-comment|// add one datanode
+comment|// add datanodes in new rack
 name|String
 name|newRack
 init|=
@@ -12505,7 +12505,7 @@ name|startDataNodes
 argument_list|(
 name|conf
 argument_list|,
-literal|1
+literal|2
 argument_list|,
 literal|true
 argument_list|,
@@ -12516,6 +12516,8 @@ name|String
 index|[]
 block|{
 name|newRack
+block|,
+name|newRack
 block|}
 argument_list|,
 literal|null
@@ -12525,12 +12527,16 @@ name|long
 index|[]
 block|{
 name|capacity
+block|,
+name|capacity
 block|}
 argument_list|)
 expr_stmt|;
 name|totalCapacity
 operator|+=
 name|capacity
+operator|*
+literal|2
 expr_stmt|;
 name|cluster
 operator|.
