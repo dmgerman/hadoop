@@ -676,6 +676,15 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+name|tcpServer
+operator|.
+name|setOption
+argument_list|(
+literal|"child.reuseAddress"
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 name|udpServer
 operator|=
 operator|new

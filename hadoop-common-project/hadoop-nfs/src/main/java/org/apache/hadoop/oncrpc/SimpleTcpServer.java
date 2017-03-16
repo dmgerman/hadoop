@@ -408,6 +408,15 @@ name|server
 operator|.
 name|setOption
 argument_list|(
+literal|"child.reuseAddress"
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|server
+operator|.
+name|setOption
+argument_list|(
 literal|"reuseAddress"
 argument_list|,
 literal|true
