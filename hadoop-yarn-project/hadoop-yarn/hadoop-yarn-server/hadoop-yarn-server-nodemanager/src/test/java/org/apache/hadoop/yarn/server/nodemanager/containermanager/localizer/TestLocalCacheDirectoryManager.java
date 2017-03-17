@@ -220,11 +220,6 @@ name|TestLocalCacheDirectoryManager
 block|{
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|10000
-argument_list|)
 DECL|method|testHierarchicalSubDirectoryCreation ()
 specifier|public
 name|void
@@ -477,11 +472,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|10000
-argument_list|)
 DECL|method|testMinimumPerDirectoryFileLimit ()
 specifier|public
 name|void
@@ -622,11 +612,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|testDirectoryStateChangeFromFullToNonFull ()
 specifier|public
 name|void
