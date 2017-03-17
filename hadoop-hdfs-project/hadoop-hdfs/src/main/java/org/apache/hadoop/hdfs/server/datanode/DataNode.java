@@ -9751,6 +9751,16 @@ return|return
 name|metrics
 return|;
 block|}
+DECL|method|getDiskMetrics ()
+specifier|public
+name|DataNodeDiskMetrics
+name|getDiskMetrics
+parameter_list|()
+block|{
+return|return
+name|diskMetrics
+return|;
+block|}
 DECL|method|getPeerMetrics ()
 specifier|public
 name|DataNodePeerMetrics
@@ -16600,6 +16610,50 @@ name|dumpSendPacketDownstreamAvgInfoAsJson
 argument_list|()
 else|:
 literal|null
+return|;
+block|}
+annotation|@
+name|Override
+comment|// DataNodeMXBean
+DECL|method|getSlowDisks ()
+specifier|public
+name|String
+name|getSlowDisks
+parameter_list|()
+block|{
+if|if
+condition|(
+name|diskMetrics
+operator|==
+literal|null
+condition|)
+block|{
+comment|//Disk Stats not enabled
+return|return
+literal|null
+return|;
+block|}
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|slowDisks
+init|=
+name|diskMetrics
+operator|.
+name|getDiskOutliersStats
+argument_list|()
+operator|.
+name|keySet
+argument_list|()
+decl_stmt|;
+return|return
+name|JSON
+operator|.
+name|toString
+argument_list|(
+name|slowDisks
+argument_list|)
 return|;
 block|}
 block|}

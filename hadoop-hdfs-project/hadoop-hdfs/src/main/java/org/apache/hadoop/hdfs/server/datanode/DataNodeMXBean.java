@@ -180,6 +180,12 @@ name|String
 name|getSendPacketDownstreamAvgInfo
 parameter_list|()
 function_decl|;
+comment|/**    * Gets the slow disks in the Datanode.    *    * @return list of slow disks    */
+DECL|method|getSlowDisks ()
+name|String
+name|getSlowDisks
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
