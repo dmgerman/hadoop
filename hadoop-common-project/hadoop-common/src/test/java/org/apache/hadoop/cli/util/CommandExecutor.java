@@ -384,6 +384,8 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
+name|exitCode
+operator|=
 name|execute
 argument_list|(
 name|cmd
@@ -445,13 +447,12 @@ name|cmd
 argument_list|)
 return|;
 block|}
-DECL|method|execute (final String cmd)
+DECL|method|execute (String cmd)
 specifier|protected
 specifier|abstract
-name|void
+name|int
 name|execute
 parameter_list|(
-specifier|final
 name|String
 name|cmd
 parameter_list|)

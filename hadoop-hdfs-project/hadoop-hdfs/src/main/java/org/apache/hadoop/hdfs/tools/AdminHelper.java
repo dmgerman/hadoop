@@ -858,7 +858,7 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
-literal|0
+literal|1
 return|;
 block|}
 if|if
@@ -873,7 +873,7 @@ condition|)
 block|{
 name|System
 operator|.
-name|out
+name|err
 operator|.
 name|println
 argument_list|(
@@ -881,7 +881,7 @@ literal|"You must give exactly one argument to -help."
 argument_list|)
 expr_stmt|;
 return|return
-literal|0
+literal|1
 return|;
 block|}
 specifier|final

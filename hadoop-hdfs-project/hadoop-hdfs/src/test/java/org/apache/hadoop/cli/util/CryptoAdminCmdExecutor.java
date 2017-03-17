@@ -98,7 +98,7 @@ annotation|@
 name|Override
 DECL|method|execute (final String cmd)
 specifier|protected
-name|void
+name|int
 name|execute
 parameter_list|(
 specifier|final
@@ -123,6 +123,7 @@ operator|.
 name|namenode
 argument_list|)
 decl_stmt|;
+return|return
 name|ToolRunner
 operator|.
 name|run
@@ -131,7 +132,7 @@ name|admin
 argument_list|,
 name|args
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 block|}
 end_class
