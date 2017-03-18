@@ -3587,6 +3587,29 @@ if|if
 condition|(
 name|duration
 operator|>
+name|datanodeSlowLogThresholdMs
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Slow BlockReceiver write data to disk cost:"
+operator|+
+name|duration
+operator|+
+literal|"ms (threshold="
+operator|+
+name|datanodeSlowLogThresholdMs
+operator|+
+literal|"ms)"
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|duration
+operator|>
 name|maxWriteToDiskMs
 condition|)
 block|{
