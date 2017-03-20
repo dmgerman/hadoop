@@ -2245,8 +2245,6 @@ argument_list|(
 name|useLocalSasKeyMode
 argument_list|,
 name|conf
-argument_list|,
-name|delegationToken
 argument_list|)
 expr_stmt|;
 block|}

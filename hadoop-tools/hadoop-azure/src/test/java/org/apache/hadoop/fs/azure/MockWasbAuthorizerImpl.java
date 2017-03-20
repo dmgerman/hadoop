@@ -137,7 +137,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|authorize (String wasbAbsolutePath, String accessType, String delegationToken)
+DECL|method|authorize (String wasbAbsolutePath, String accessType)
 specifier|public
 name|boolean
 name|authorize
@@ -147,9 +147,6 @@ name|wasbAbsolutePath
 parameter_list|,
 name|String
 name|accessType
-parameter_list|,
-name|String
-name|delegationToken
 parameter_list|)
 throws|throws
 name|WasbAuthorizationException

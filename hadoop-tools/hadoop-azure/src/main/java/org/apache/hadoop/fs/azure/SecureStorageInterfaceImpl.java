@@ -535,12 +535,7 @@ specifier|private
 name|String
 name|storageAccount
 decl_stmt|;
-DECL|field|delegationToken
-specifier|private
-name|String
-name|delegationToken
-decl_stmt|;
-DECL|method|SecureStorageInterfaceImpl (boolean useLocalSASKeyMode, Configuration conf, String delegationToken)
+DECL|method|SecureStorageInterfaceImpl (boolean useLocalSASKeyMode, Configuration conf)
 specifier|public
 name|SecureStorageInterfaceImpl
 parameter_list|(
@@ -549,19 +544,10 @@ name|useLocalSASKeyMode
 parameter_list|,
 name|Configuration
 name|conf
-parameter_list|,
-name|String
-name|delegationToken
 parameter_list|)
 throws|throws
 name|SecureModeException
 block|{
-name|this
-operator|.
-name|delegationToken
-operator|=
-name|delegationToken
-expr_stmt|;
 if|if
 condition|(
 name|useLocalSASKeyMode
@@ -589,20 +575,21 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-operator|!
+try|try
+block|{
 name|remoteSasKeyGenerator
 operator|.
 name|initialize
 argument_list|(
 name|conf
-argument_list|,
-name|this
-operator|.
-name|delegationToken
 argument_list|)
-condition|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
 block|{
 throw|throw
 operator|new
@@ -611,6 +598,8 @@ argument_list|(
 literal|"Remote SAS Key mode could"
 operator|+
 literal|" not be initialized"
+argument_list|,
+name|ioe
 argument_list|)
 throw|;
 block|}
