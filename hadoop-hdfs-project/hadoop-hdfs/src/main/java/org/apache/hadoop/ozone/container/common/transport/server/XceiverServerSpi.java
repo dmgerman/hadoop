@@ -58,6 +58,12 @@ name|void
 name|stop
 parameter_list|()
 function_decl|;
+comment|/** Get server IPC port. */
+DECL|method|getIPCPort ()
+name|int
+name|getIPCPort
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

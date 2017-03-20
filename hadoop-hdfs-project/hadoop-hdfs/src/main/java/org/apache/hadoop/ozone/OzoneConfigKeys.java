@@ -81,6 +81,25 @@ name|DFS_CONTAINER_IPC_PORT_DEFAULT
 init|=
 literal|50011
 decl_stmt|;
+comment|/**    *    * When set to true, allocate a random free port for ozone container,    * so that a mini cluster is able to launch multiple containers on a node.    *    * When set to false (default), container port is fixed as specified by    * DFS_CONTAINER_IPC_PORT_DEFAULT.    */
+DECL|field|DFS_CONTAINER_IPC_RANDOM_PORT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_CONTAINER_IPC_RANDOM_PORT
+init|=
+literal|"dfs.container.ipc.random.port"
+decl_stmt|;
+DECL|field|DFS_CONTAINER_IPC_RANDOM_PORT_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_CONTAINER_IPC_RANDOM_PORT_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 DECL|field|OZONE_LOCALSTORAGE_ROOT
 specifier|public
 specifier|static

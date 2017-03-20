@@ -330,6 +330,11 @@ argument_list|(
 name|conf
 argument_list|)
 operator|.
+name|setRandomContainerPort
+argument_list|(
+literal|false
+argument_list|)
+operator|.
 name|setHandlerType
 argument_list|(
 literal|"distributed"
@@ -614,6 +619,11 @@ operator|.
 name|Builder
 argument_list|(
 name|conf
+argument_list|)
+operator|.
+name|setRandomContainerPort
+argument_list|(
+literal|false
 argument_list|)
 operator|.
 name|setHandlerType
@@ -1223,6 +1233,11 @@ argument_list|(
 name|conf
 argument_list|)
 operator|.
+name|setRandomContainerPort
+argument_list|(
+literal|false
+argument_list|)
+operator|.
 name|setHandlerType
 argument_list|(
 literal|"distributed"
@@ -1573,6 +1588,11 @@ operator|.
 name|Builder
 argument_list|(
 name|conf
+argument_list|)
+operator|.
+name|setRandomContainerPort
+argument_list|(
+literal|false
 argument_list|)
 operator|.
 name|setHandlerType

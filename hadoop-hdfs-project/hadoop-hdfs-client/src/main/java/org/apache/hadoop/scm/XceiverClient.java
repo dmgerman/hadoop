@@ -24,6 +24,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|base
 operator|.
 name|Preconditions
@@ -486,6 +500,25 @@ operator|.
 name|sync
 argument_list|()
 expr_stmt|;
+block|}
+comment|/**    * Returns if the exceiver client connects to a server.    * @return True if the connection is alive, false otherwise.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|isConnected ()
+specifier|public
+name|boolean
+name|isConnected
+parameter_list|()
+block|{
+return|return
+name|channelFuture
+operator|.
+name|channel
+argument_list|()
+operator|.
+name|isActive
+argument_list|()
+return|;
 block|}
 annotation|@
 name|Override

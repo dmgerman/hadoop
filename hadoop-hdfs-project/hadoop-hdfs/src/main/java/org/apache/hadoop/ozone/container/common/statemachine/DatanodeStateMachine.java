@@ -74,6 +74,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|DatanodeID
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|OzoneClientUtils
@@ -256,11 +272,21 @@ specifier|final
 name|OzoneContainer
 name|container
 decl_stmt|;
-comment|/**    * Constructs a a datanode state machine.    *    * @param conf - Configration.    */
-DECL|method|DatanodeStateMachine (Configuration conf)
+DECL|field|datanodeID
+specifier|private
+name|DatanodeID
+name|datanodeID
+init|=
+literal|null
+decl_stmt|;
+comment|/**    * Constructs a a datanode state machine.    *    * @param datanodeID - DatanodeID used to identify a datanode    * @param conf - Configration.    */
+DECL|method|DatanodeStateMachine (DatanodeID datanodeID, Configuration conf)
 specifier|public
 name|DatanodeStateMachine
 parameter_list|(
+name|DatanodeID
+name|datanodeID
+parameter_list|,
 name|Configuration
 name|conf
 parameter_list|)
@@ -346,6 +372,59 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|datanodeID
+operator|=
+name|datanodeID
+expr_stmt|;
+block|}
+DECL|method|DatanodeStateMachine (Configuration conf)
+specifier|public
+name|DatanodeStateMachine
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|this
+argument_list|(
+literal|null
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|setDatanodeID (DatanodeID datanodeID)
+specifier|public
+name|void
+name|setDatanodeID
+parameter_list|(
+name|DatanodeID
+name|datanodeID
+parameter_list|)
+block|{
+name|this
+operator|.
+name|datanodeID
+operator|=
+name|datanodeID
+expr_stmt|;
+block|}
+comment|/**    *    * Return DatanodeID if set, return null otherwise.    *    * @return datanodeID    */
+DECL|method|getDatanodeID ()
+specifier|public
+name|DatanodeID
+name|getDatanodeID
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|datanodeID
+return|;
 block|}
 comment|/**    * Returns the Connection manager for this state machine.    *    * @return - SCMConnectionManager.    */
 DECL|method|getConnectionManager ()
@@ -358,9 +437,21 @@ return|return
 name|connectionManager
 return|;
 block|}
+DECL|method|getContainer ()
+specifier|public
+name|OzoneContainer
+name|getContainer
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|container
+return|;
+block|}
 comment|/**    * Runs the state machine at a fixed frequency.    */
 DECL|method|start ()
-specifier|public
+specifier|private
 name|void
 name|start
 parameter_list|()
@@ -785,27 +876,13 @@ argument_list|()
 return|;
 block|}
 block|}
-DECL|method|initStateMachine (Configuration conf)
+comment|/**    * Start datanode state machine as a single thread daemon.    */
+DECL|method|startDaemon ()
 specifier|public
-specifier|static
-name|DatanodeStateMachine
-name|initStateMachine
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
-throws|throws
-name|IOException
+name|void
+name|startDaemon
+parameter_list|()
 block|{
-name|DatanodeStateMachine
-name|stateMachine
-init|=
-operator|new
-name|DatanodeStateMachine
-argument_list|(
-name|conf
-argument_list|)
-decl_stmt|;
 name|Runnable
 name|startStateMachineTask
 init|=
@@ -814,10 +891,15 @@ lambda|->
 block|{
 try|try
 block|{
-name|stateMachine
-operator|.
 name|start
 argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Ozone container server started."
+argument_list|)
 expr_stmt|;
 block|}
 catch|catch
@@ -868,8 +950,94 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
+block|}
+comment|/**    * Stop the daemon thread of the datanode state machine.    */
+DECL|method|stopDaemon ()
+specifier|public
+specifier|synchronized
+name|void
+name|stopDaemon
+parameter_list|()
+block|{
+try|try
+block|{
+name|context
+operator|.
+name|setState
+argument_list|(
+name|DatanodeStates
+operator|.
+name|SHUTDOWN
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Ozone container server stopped."
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Stop ozone container server failed."
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    *    * Check if the datanode state machine daemon is stopped.    *    * @return True if datanode state machine daemon is stopped    * and false otherwise.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|isDaemonStopped ()
+specifier|public
+name|boolean
+name|isDaemonStopped
+parameter_list|()
+block|{
 return|return
-name|stateMachine
+name|this
+operator|.
+name|executorService
+operator|.
+name|isShutdown
+argument_list|()
+operator|&&
+name|this
+operator|.
+name|getContext
+argument_list|()
+operator|.
+name|getExecutionCount
+argument_list|()
+operator|==
+literal|0
+operator|&&
+name|this
+operator|.
+name|getContext
+argument_list|()
+operator|.
+name|getState
+argument_list|()
+operator|==
+name|DatanodeStates
+operator|.
+name|SHUTDOWN
 return|;
 block|}
 block|}

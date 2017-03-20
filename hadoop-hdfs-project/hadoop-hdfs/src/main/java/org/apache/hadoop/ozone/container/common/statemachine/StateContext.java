@@ -452,6 +452,30 @@ return|return
 name|parent
 return|;
 block|}
+comment|/**    * Get the container server port.    * @return The container server port if available, return -1 if otherwise    */
+DECL|method|getContainerPort ()
+specifier|public
+name|int
+name|getContainerPort
+parameter_list|()
+block|{
+return|return
+name|parent
+operator|==
+literal|null
+condition|?
+operator|-
+literal|1
+else|:
+name|parent
+operator|.
+name|getContainer
+argument_list|()
+operator|.
+name|getContainerServerPort
+argument_list|()
+return|;
+block|}
 comment|/**    * Returns true if we are entering a new state.    *    * @return boolean    */
 DECL|method|isEntering ()
 name|boolean

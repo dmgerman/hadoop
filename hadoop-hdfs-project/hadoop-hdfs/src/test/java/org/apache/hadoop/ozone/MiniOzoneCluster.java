@@ -1196,6 +1196,13 @@ name|containerWorkerThreadInterval
 init|=
 literal|1
 decl_stmt|;
+DECL|field|randomContainerPort
+specifier|private
+name|Boolean
+name|randomContainerPort
+init|=
+literal|true
+decl_stmt|;
 comment|/**      * Creates a new Builder.      *      * @param conf configuration      */
 DECL|method|Builder (OzoneConfiguration conf)
 specifier|public
@@ -1263,6 +1270,25 @@ operator|.
 name|randomUUID
 argument_list|()
 expr_stmt|;
+block|}
+DECL|method|setRandomContainerPort (boolean randomPort)
+specifier|public
+name|Builder
+name|setRandomContainerPort
+parameter_list|(
+name|boolean
+name|randomPort
+parameter_list|)
+block|{
+name|this
+operator|.
+name|randomContainerPort
+operator|=
+name|randomPort
+expr_stmt|;
+return|return
+name|this
+return|;
 block|}
 annotation|@
 name|Override
@@ -1529,6 +1555,19 @@ operator|.
 name|OZONE_SCM_DATANODE_ADDRESS_KEY
 argument_list|,
 literal|"127.0.0.1:0"
+argument_list|)
+expr_stmt|;
+comment|// Use random ports for ozone containers in mini cluster,
+comment|// in order to launch multiple container servers per node.
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|OzoneConfigKeys
+operator|.
+name|DFS_CONTAINER_IPC_RANDOM_PORT
+argument_list|,
+name|randomContainerPort
 argument_list|)
 expr_stmt|;
 name|StorageContainerManager

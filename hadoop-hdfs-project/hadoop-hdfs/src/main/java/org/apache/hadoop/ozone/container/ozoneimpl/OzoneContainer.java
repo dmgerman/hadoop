@@ -762,6 +762,20 @@ name|getNodeReport
 argument_list|()
 return|;
 block|}
+comment|/**    * Returns the container server IPC port.    *    * @return Container server IPC port.    */
+DECL|method|getContainerServerPort ()
+specifier|public
+name|int
+name|getContainerServerPort
+parameter_list|()
+block|{
+return|return
+name|server
+operator|.
+name|getIPCPort
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 
