@@ -3788,7 +3788,7 @@ name|srcKey
 argument_list|,
 name|dstKey
 argument_list|,
-literal|"cannot rename a directory to a subdirectory o fitself "
+literal|"cannot rename a directory to a subdirectory of itself "
 argument_list|)
 throw|;
 block|}
