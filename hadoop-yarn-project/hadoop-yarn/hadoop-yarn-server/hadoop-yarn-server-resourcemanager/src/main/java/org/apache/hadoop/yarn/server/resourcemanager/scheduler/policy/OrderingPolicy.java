@@ -40,34 +40,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|yarn
@@ -82,28 +54,8 @@ name|RMContainer
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
-name|*
-import|;
-end_import
-
 begin_comment
-comment|/**  * OrderingPolicy is used by the scheduler to order SchedulableEntities for  * container assignment and preemption  */
+comment|/**  * OrderingPolicy is used by the scheduler to order SchedulableEntities for  * container assignment and preemption.  * @param<S> the type of {@link SchedulableEntity} that will be compared  */
 end_comment
 
 begin_interface
@@ -118,7 +70,7 @@ name|SchedulableEntity
 parameter_list|>
 block|{
 comment|/*    * Note: OrderingPolicy depends upon external    * synchronization of all use of the SchedulableEntity Collection and    * Iterators for correctness and to avoid concurrent modification issues    */
-comment|/**    * Get the collection of SchedulableEntities which are managed by this    * OrderingPolicy - should include processes returned by the Assignment and    * Preemption iterator with no guarantees regarding order    */
+comment|/**    * Get the collection of {@link SchedulableEntity} Objects which are managed    * by this OrderingPolicy - should include processes returned by the    * Assignment and Preemption iterator with no guarantees regarding order.    * @return a collection of {@link SchedulableEntity} objects    */
 DECL|method|getSchedulableEntities ()
 specifier|public
 name|Collection
@@ -128,7 +80,7 @@ argument_list|>
 name|getSchedulableEntities
 parameter_list|()
 function_decl|;
-comment|/**    * Return an iterator over the collection of SchedulableEntities which orders    * them for container assignment    */
+comment|/**    * Return an iterator over the collection of {@link SchedulableEntity}    * objects which orders them for container assignment.    * @return an iterator over the collection of {@link SchedulableEntity}    * objects    */
 DECL|method|getAssignmentIterator ()
 specifier|public
 name|Iterator
@@ -138,7 +90,7 @@ argument_list|>
 name|getAssignmentIterator
 parameter_list|()
 function_decl|;
-comment|/**    * Return an iterator over the collection of SchedulableEntities which orders    * them for preemption    */
+comment|/**    * Return an iterator over the collection of {@link SchedulableEntity}    * objects which orders them for preemption.    * @return an iterator over the collection of {@link SchedulableEntity}    */
 DECL|method|getPreemptionIterator ()
 specifier|public
 name|Iterator
@@ -148,7 +100,7 @@ argument_list|>
 name|getPreemptionIterator
 parameter_list|()
 function_decl|;
-comment|/**    * Add a SchedulableEntity to be managed for allocation and preemption     * ordering    */
+comment|/**    * Add a {@link SchedulableEntity} to be managed for allocation and preemption    * ordering.    * @param s the {@link SchedulableEntity} to add    */
 DECL|method|addSchedulableEntity (S s)
 specifier|public
 name|void
@@ -158,7 +110,7 @@ name|S
 name|s
 parameter_list|)
 function_decl|;
-comment|/**    * Remove a SchedulableEntity from management for allocation and preemption     * ordering    */
+comment|/**    * Remove a {@link SchedulableEntity} from management for allocation and    * preemption ordering.    * @param s the {@link SchedulableEntity} to remove    * @return whether the {@link SchedulableEntity} was present before this    * operation    */
 DECL|method|removeSchedulableEntity (S s)
 specifier|public
 name|boolean
@@ -168,7 +120,7 @@ name|S
 name|s
 parameter_list|)
 function_decl|;
-comment|/**    * Add a collection of SchedulableEntities to be managed for allocation     * and preemption ordering    */
+comment|/**    * Add a collection of {@link SchedulableEntity} objects to be managed for    * allocation and preemption ordering.    * @param sc the collection of {@link SchedulableEntity} objects to add    */
 DECL|method|addAllSchedulableEntities (Collection<S> sc)
 specifier|public
 name|void
@@ -181,14 +133,14 @@ argument_list|>
 name|sc
 parameter_list|)
 function_decl|;
-comment|/**    * Get the number of SchedulableEntities managed for allocation and    * preemption ordering    */
+comment|/**    * Get the number of {@link SchedulableEntity} objects managed for allocation    * and preemption ordering.    * @return the number of {@link SchedulableEntity} objects    */
 DECL|method|getNumSchedulableEntities ()
 specifier|public
 name|int
 name|getNumSchedulableEntities
 parameter_list|()
 function_decl|;
-comment|/**    * Provides configuration information for the policy from the scheduler    * configuration    */
+comment|/**    * Provides configuration information for the policy from the scheduler    * configuration.    * @param conf a map of scheduler configuration properties and values    */
 DECL|method|configure (Map<String, String> conf)
 specifier|public
 name|void
@@ -203,7 +155,7 @@ argument_list|>
 name|conf
 parameter_list|)
 function_decl|;
-comment|/**    * The passed SchedulableEntity has been allocated the passed Container,    * take appropriate action (depending on comparator, a reordering of the    * SchedulableEntity may be required)    */
+comment|/**    * Notify the {@code OrderingPolicy} that the {@link SchedulableEntity}    * has been allocated the given {@link RMContainer}, enabling the    * {@code OrderingPolicy} to take appropriate action. Depending on the    * comparator, a reordering of the {@link SchedulableEntity} may be required.    * @param schedulableEntity the {@link SchedulableEntity}    * @param r the allocated {@link RMContainer}    */
 DECL|method|containerAllocated (S schedulableEntity, RMContainer r)
 specifier|public
 name|void
@@ -216,7 +168,7 @@ name|RMContainer
 name|r
 parameter_list|)
 function_decl|;
-comment|/**    * The passed SchedulableEntity has released the passed Container,    * take appropriate action (depending on comparator, a reordering of the    * SchedulableEntity may be required)    */
+comment|/**    * Notify the {@code OrderingPolicy} that the {@link SchedulableEntity}    * has released the given {@link RMContainer}, enabling the    * {@code OrderingPolicy} to take appropriate action. Depending on the    * comparator, a reordering of the {@link SchedulableEntity} may be required.    * @param schedulableEntity the {@link SchedulableEntity}    * @param r the released {@link RMContainer}    */
 DECL|method|containerReleased (S schedulableEntity, RMContainer r)
 specifier|public
 name|void
@@ -229,7 +181,7 @@ name|RMContainer
 name|r
 parameter_list|)
 function_decl|;
-comment|/**    * Demand Updated for the passed schedulableEntity, reorder if needed.    */
+comment|/**    * Notify the {@code OrderingPolicy} that the demand for the    * {@link SchedulableEntity} has been updated, enabling the    * {@code OrderingPolicy} to reorder the {@link SchedulableEntity} if needed.    * @param schedulableEntity the updated {@link SchedulableEntity}    */
 DECL|method|demandUpdated (S schedulableEntity)
 name|void
 name|demandUpdated
@@ -238,7 +190,7 @@ name|S
 name|schedulableEntity
 parameter_list|)
 function_decl|;
-comment|/**    * Display information regarding configuration and status    */
+comment|/**    * Return information regarding configuration and status.    * @return configuration and status information    */
 DECL|method|getInfo ()
 specifier|public
 name|String
