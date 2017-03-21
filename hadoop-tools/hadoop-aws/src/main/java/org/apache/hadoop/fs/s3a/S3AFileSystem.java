@@ -9552,6 +9552,8 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// a copy of the list is required, so that the AWS SDK doesn't
+comment|// attempt to sort an unmodifiable list.
 return|return
 name|s3
 operator|.
@@ -9566,7 +9568,12 @@ name|key
 argument_list|,
 name|uploadId
 argument_list|,
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|(
 name|partETags
+argument_list|)
 argument_list|)
 argument_list|)
 return|;
