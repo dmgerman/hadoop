@@ -377,6 +377,17 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Gets container reports.    * @return List of all closed containers.    * @throws IOException    */
+DECL|method|getContainerReports ()
+name|List
+argument_list|<
+name|ContainerData
+argument_list|>
+name|getContainerReports
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

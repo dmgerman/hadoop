@@ -28,6 +28,22 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|codec
+operator|.
+name|digest
+operator|.
+name|DigestUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|hdfs
@@ -39,6 +55,20 @@ operator|.
 name|proto
 operator|.
 name|ContainerProtos
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
 import|;
 end_import
 
@@ -154,6 +184,12 @@ operator|.
 name|containerName
 operator|=
 name|containerName
+expr_stmt|;
+name|this
+operator|.
+name|open
+operator|=
+literal|true
 expr_stmt|;
 block|}
 comment|/**    * Constructs a ContainerData object from ProtoBuf classes.    *    * @param protoData - ProtoBuf Message    * @throws IOException    */
@@ -679,6 +715,7 @@ block|}
 comment|/**    * checks if the container is open.    * @return - boolean    */
 DECL|method|isOpen ()
 specifier|public
+specifier|synchronized
 name|boolean
 name|isOpen
 parameter_list|()
@@ -690,15 +727,40 @@ block|}
 comment|/**    * Marks this container as closed.    */
 DECL|method|closeContainer ()
 specifier|public
+specifier|synchronized
 name|void
 name|closeContainer
 parameter_list|()
 block|{
+name|setOpen
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+comment|// Some thing brain dead for now. name + Time stamp of when we get the close
+comment|// container message.
+name|setHash
+argument_list|(
+name|DigestUtils
+operator|.
+name|sha256Hex
+argument_list|(
 name|this
 operator|.
-name|open
-operator|=
-literal|false
+name|getContainerName
+argument_list|()
+operator|+
+name|Long
+operator|.
+name|toString
+argument_list|(
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+argument_list|)
+argument_list|)
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Final hash for this container.    * @return - Hash    */
@@ -731,6 +793,7 @@ block|}
 comment|/**    * Sets the open or closed values.    * @param open    */
 DECL|method|setOpen (boolean open)
 specifier|public
+specifier|synchronized
 name|void
 name|setOpen
 parameter_list|(

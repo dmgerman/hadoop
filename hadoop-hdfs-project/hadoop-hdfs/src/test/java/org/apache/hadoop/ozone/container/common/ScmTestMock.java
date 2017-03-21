@@ -22,6 +22,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -238,6 +252,28 @@ specifier|private
 name|ReportState
 name|reportState
 decl_stmt|;
+DECL|field|containerReportsCount
+specifier|private
+name|AtomicInteger
+name|containerReportsCount
+init|=
+operator|new
+name|AtomicInteger
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
+DECL|field|closedContainerCount
+specifier|private
+name|AtomicInteger
+name|closedContainerCount
+init|=
+operator|new
+name|AtomicInteger
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
 comment|/**    * Returns the number of heartbeats made to this class.    *    * @return int    */
 DECL|method|getHeartbeatCount ()
 specifier|public
@@ -293,6 +329,34 @@ name|rpcResponseDelay
 operator|=
 name|rpcResponseDelay
 expr_stmt|;
+block|}
+comment|/**    * Returns the number of container reports server has seen.    * @return int    */
+DECL|method|getContainerReportsCount ()
+specifier|public
+name|int
+name|getContainerReportsCount
+parameter_list|()
+block|{
+return|return
+name|containerReportsCount
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
+comment|/**    * Returns the number of closed containers that have been reported so far.    * @return - count of closed containers.    */
+DECL|method|getClosedContainerCount ()
+specifier|public
+name|int
+name|getClosedContainerCount
+parameter_list|()
+block|{
+return|return
+name|closedContainerCount
+operator|.
+name|get
+argument_list|()
+return|;
 block|}
 comment|/**    * Returns SCM version.    *    * @return Version info.    */
 annotation|@
@@ -437,6 +501,27 @@ expr_stmt|;
 name|sleepIfNeeded
 argument_list|()
 expr_stmt|;
+return|return
+name|getNullRespose
+argument_list|()
+return|;
+block|}
+specifier|private
+name|StorageContainerDatanodeProtocolProtos
+operator|.
+name|SCMHeartbeatResponseProto
+DECL|method|getNullRespose ()
+name|getNullRespose
+parameter_list|()
+throws|throws
+name|com
+operator|.
+name|google
+operator|.
+name|protobuf
+operator|.
+name|InvalidProtocolBufferException
+block|{
 name|StorageContainerDatanodeProtocolProtos
 operator|.
 name|SCMCommandResponseProto
@@ -566,6 +651,51 @@ name|success
 argument_list|)
 operator|.
 name|build
+argument_list|()
+return|;
+block|}
+comment|/**    * Send a container report.    *    * @param reports -- Container report    * @return HeartbeatResponse.nullcommand.    * @throws IOException    */
+annotation|@
+name|Override
+specifier|public
+name|StorageContainerDatanodeProtocolProtos
+operator|.
+name|SCMHeartbeatResponseProto
+DECL|method|sendContainerReport (StorageContainerDatanodeProtocolProtos .ContainerReportsProto reports)
+name|sendContainerReport
+parameter_list|(
+name|StorageContainerDatanodeProtocolProtos
+operator|.
+name|ContainerReportsProto
+name|reports
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|reports
+argument_list|)
+expr_stmt|;
+name|containerReportsCount
+operator|.
+name|incrementAndGet
+argument_list|()
+expr_stmt|;
+name|closedContainerCount
+operator|.
+name|addAndGet
+argument_list|(
+name|reports
+operator|.
+name|getReportsCount
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|getNullRespose
 argument_list|()
 return|;
 block|}
