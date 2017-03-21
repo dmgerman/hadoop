@@ -721,7 +721,9 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"Reporting volume information for DataNode(s) '%s'."
+literal|"Reporting volume information for DataNode(s). "
+operator|+
+literal|"These DataNode(s) are parsed from '%s'."
 argument_list|,
 name|nodeVal
 argument_list|)
@@ -1085,7 +1087,7 @@ literal|"hdfs diskbalancer -report -top 5\n"
 operator|+
 literal|"hdfs diskbalancer -report "
 operator|+
-literal|"-node [<DataNodeID|IP|Hostname>,...]"
+literal|"-node<file://> | [<DataNodeID|IP|Hostname>,...]"
 decl_stmt|;
 name|HelpFormatter
 name|helpFormatter

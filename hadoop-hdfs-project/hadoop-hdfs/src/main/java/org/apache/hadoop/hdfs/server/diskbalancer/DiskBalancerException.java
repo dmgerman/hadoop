@@ -92,6 +92,9 @@ name|INVALID_NODE
 block|,
 DECL|enumConstant|DATANODE_STATUS_NOT_REGULAR
 name|DATANODE_STATUS_NOT_REGULAR
+block|,
+DECL|enumConstant|INVALID_HOST_FILE_PATH
+name|INVALID_HOST_FILE_PATH
 block|,   }
 DECL|field|result
 specifier|private
