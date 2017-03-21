@@ -192,6 +192,26 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|SlowDiskReports
+operator|.
+name|DiskOp
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|Daemon
@@ -343,7 +363,7 @@ name|String
 argument_list|,
 name|Map
 argument_list|<
-name|DiskOutlierDetectionOp
+name|DiskOp
 argument_list|,
 name|Double
 argument_list|>
@@ -840,7 +860,7 @@ name|String
 argument_list|,
 name|Map
 argument_list|<
-name|DiskOutlierDetectionOp
+name|DiskOp
 argument_list|,
 name|Double
 argument_list|>
@@ -862,7 +882,7 @@ control|)
 block|{
 name|Map
 argument_list|<
-name|DiskOutlierDetectionOp
+name|DiskOp
 argument_list|,
 name|Double
 argument_list|>
@@ -877,7 +897,7 @@ name|diskStat
 operator|.
 name|put
 argument_list|(
-name|DiskOutlierDetectionOp
+name|DiskOp
 operator|.
 name|METADATA
 argument_list|,
@@ -893,7 +913,7 @@ name|diskStat
 operator|.
 name|put
 argument_list|(
-name|DiskOutlierDetectionOp
+name|DiskOp
 operator|.
 name|READ
 argument_list|,
@@ -909,7 +929,7 @@ name|diskStat
 operator|.
 name|put
 argument_list|(
-name|DiskOutlierDetectionOp
+name|DiskOp
 operator|.
 name|WRITE
 argument_list|,
@@ -943,30 +963,15 @@ literal|"Updated disk outliers."
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Lists the types of operations on which disk latencies are measured.    */
-DECL|enum|DiskOutlierDetectionOp
-specifier|public
-enum|enum
-name|DiskOutlierDetectionOp
-block|{
-DECL|enumConstant|METADATA
-name|METADATA
-block|,
-DECL|enumConstant|READ
-name|READ
-block|,
-DECL|enumConstant|WRITE
-name|WRITE
-block|}
+DECL|method|getDiskOutliersStats ()
 specifier|public
 name|Map
 argument_list|<
 name|String
 argument_list|,
-DECL|method|getDiskOutliersStats ()
 name|Map
 argument_list|<
-name|DiskOutlierDetectionOp
+name|DiskOp
 argument_list|,
 name|Double
 argument_list|>
@@ -1021,14 +1026,29 @@ block|}
 comment|/**    * Use only for testing.    */
 annotation|@
 name|VisibleForTesting
-DECL|method|addSlowDiskForTesting (String slowDiskPath)
+DECL|method|addSlowDiskForTesting (String slowDiskPath, Map<DiskOp, Double> latencies)
 specifier|public
 name|void
 name|addSlowDiskForTesting
 parameter_list|(
 name|String
 name|slowDiskPath
+parameter_list|,
+name|Map
+argument_list|<
+name|DiskOp
+argument_list|,
+name|Double
+argument_list|>
+name|latencies
 parameter_list|)
+block|{
+if|if
+condition|(
+name|latencies
+operator|==
+literal|null
+condition|)
 block|{
 name|diskOutliersStats
 operator|.
@@ -1042,6 +1062,19 @@ name|of
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|diskOutliersStats
+operator|.
+name|put
+argument_list|(
+name|slowDiskPath
+argument_list|,
+name|latencies
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class

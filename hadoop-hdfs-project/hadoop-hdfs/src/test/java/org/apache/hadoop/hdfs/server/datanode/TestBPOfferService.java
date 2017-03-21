@@ -37,6 +37,24 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|SlowDiskReports
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -1381,6 +1399,15 @@ operator|.
 name|any
 argument_list|(
 name|SlowPeerReports
+operator|.
+name|class
+argument_list|)
+argument_list|,
+name|Mockito
+operator|.
+name|any
+argument_list|(
+name|SlowDiskReports
 operator|.
 name|class
 argument_list|)

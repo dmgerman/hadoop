@@ -1169,6 +1169,24 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|SlowDiskReports
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -18441,7 +18459,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * The given node has reported in.  This method should:    * 1) Record the heartbeat, so the datanode isn't timed out    * 2) Adjust usage stats for future block allocation    *    * If a substantial amount of time passed since the last datanode    * heartbeat then request an immediate block report.    *    * @return an array of datanode commands    * @throws IOException    */
-DECL|method|handleHeartbeat (DatanodeRegistration nodeReg, StorageReport[] reports, long cacheCapacity, long cacheUsed, int xceiverCount, int xmitsInProgress, int failedVolumes, VolumeFailureSummary volumeFailureSummary, boolean requestFullBlockReportLease, @Nonnull SlowPeerReports slowPeers)
+DECL|method|handleHeartbeat (DatanodeRegistration nodeReg, StorageReport[] reports, long cacheCapacity, long cacheUsed, int xceiverCount, int xmitsInProgress, int failedVolumes, VolumeFailureSummary volumeFailureSummary, boolean requestFullBlockReportLease, @Nonnull SlowPeerReports slowPeers, @Nonnull SlowDiskReports slowDisks)
 name|HeartbeatResponse
 name|handleHeartbeat
 parameter_list|(
@@ -18477,6 +18495,11 @@ annotation|@
 name|Nonnull
 name|SlowPeerReports
 name|slowPeers
+parameter_list|,
+annotation|@
+name|Nonnull
+name|SlowDiskReports
+name|slowDisks
 parameter_list|)
 throws|throws
 name|IOException
@@ -18529,6 +18552,8 @@ argument_list|,
 name|volumeFailureSummary
 argument_list|,
 name|slowPeers
+argument_list|,
+name|slowDisks
 argument_list|)
 decl_stmt|;
 name|long

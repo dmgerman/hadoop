@@ -1115,6 +1115,16 @@ operator|.
 name|getSlowPeersList
 argument_list|()
 argument_list|)
+argument_list|,
+name|PBHelper
+operator|.
+name|convertSlowDiskInfo
+argument_list|(
+name|request
+operator|.
+name|getSlowDisksList
+argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

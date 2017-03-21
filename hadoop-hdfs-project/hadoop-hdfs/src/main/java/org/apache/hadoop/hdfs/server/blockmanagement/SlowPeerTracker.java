@@ -354,7 +354,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * Time duration after which a report is considered stale. This is    * set to DFS_DATANODE_SLOW_PEER_REPORT_INTERVAL_KEY * 3 i.e.    * maintained for at least two successive reports.    */
+comment|/**    * Time duration after which a report is considered stale. This is    * set to DFS_DATANODE_OUTLIERS_REPORT_INTERVAL_KEY * 3 i.e.    * maintained for at least two successive reports.    */
 DECL|field|reportValidityMs
 specifier|private
 specifier|final

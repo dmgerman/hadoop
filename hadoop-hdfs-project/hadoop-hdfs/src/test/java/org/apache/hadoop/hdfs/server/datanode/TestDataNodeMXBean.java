@@ -1567,6 +1567,8 @@ operator|.
 name|addSlowDiskForTesting
 argument_list|(
 name|slowDiskPath
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|MBeanServer

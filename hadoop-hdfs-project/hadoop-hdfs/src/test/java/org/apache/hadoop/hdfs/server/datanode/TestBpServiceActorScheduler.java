@@ -286,12 +286,12 @@ init|=
 literal|10000
 decl_stmt|;
 comment|// 10 seconds
-DECL|field|SLOW_PEER_REPORT_INTERVAL_MS
+DECL|field|OUTLIER_REPORT_INTERVAL_MS
 specifier|private
 specifier|static
 specifier|final
 name|long
-name|SLOW_PEER_REPORT_INTERVAL_MS
+name|OUTLIER_REPORT_INTERVAL_MS
 init|=
 literal|10000
 decl_stmt|;
@@ -925,10 +925,10 @@ block|}
 block|}
 annotation|@
 name|Test
-DECL|method|testSlowPeerReportScheduling ()
+DECL|method|testOutlierReportScheduling ()
 specifier|public
 name|void
-name|testSlowPeerReportScheduling
+name|testOutlierReportScheduling
 parameter_list|()
 block|{
 for|for
@@ -953,7 +953,7 @@ name|assertTrue
 argument_list|(
 name|scheduler
 operator|.
-name|isSlowPeersReportDue
+name|isOutliersReportDue
 argument_list|(
 name|now
 argument_list|)
@@ -961,14 +961,14 @@ argument_list|)
 expr_stmt|;
 name|scheduler
 operator|.
-name|scheduleNextSlowPeerReport
+name|scheduleNextOutlierReport
 argument_list|()
 expr_stmt|;
 name|assertFalse
 argument_list|(
 name|scheduler
 operator|.
-name|isSlowPeersReportDue
+name|isOutliersReportDue
 argument_list|(
 name|now
 argument_list|)
@@ -978,7 +978,7 @@ name|assertFalse
 argument_list|(
 name|scheduler
 operator|.
-name|isSlowPeersReportDue
+name|isOutliersReportDue
 argument_list|(
 name|now
 operator|+
@@ -990,11 +990,11 @@ name|assertTrue
 argument_list|(
 name|scheduler
 operator|.
-name|isSlowPeersReportDue
+name|isOutliersReportDue
 argument_list|(
 name|now
 operator|+
-name|SLOW_PEER_REPORT_INTERVAL_MS
+name|OUTLIER_REPORT_INTERVAL_MS
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1032,7 +1032,7 @@ name|LIFELINE_INTERVAL_MS
 argument_list|,
 name|BLOCK_REPORT_INTERVAL_MS
 argument_list|,
-name|SLOW_PEER_REPORT_INTERVAL_MS
+name|OUTLIER_REPORT_INTERVAL_MS
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -1063,7 +1063,7 @@ name|now
 expr_stmt|;
 name|mockScheduler
 operator|.
-name|nextSlowPeersReportTime
+name|nextOutliersReportTime
 operator|=
 name|now
 expr_stmt|;

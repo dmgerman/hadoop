@@ -21,6 +21,24 @@ package|;
 end_package
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|SlowDiskReports
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -857,6 +875,10 @@ argument_list|,
 literal|true
 argument_list|,
 name|SlowPeerReports
+operator|.
+name|EMPTY_REPORT
+argument_list|,
+name|SlowDiskReports
 operator|.
 name|EMPTY_REPORT
 argument_list|)

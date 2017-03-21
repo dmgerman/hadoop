@@ -6782,7 +6782,7 @@ block|}
 block|}
 block|}
 comment|/** Handle heartbeat from datanodes. */
-DECL|method|handleHeartbeat (DatanodeRegistration nodeReg, StorageReport[] reports, final String blockPoolId, long cacheCapacity, long cacheUsed, int xceiverCount, int maxTransfers, int failedVolumes, VolumeFailureSummary volumeFailureSummary, @Nonnull SlowPeerReports slowPeers)
+DECL|method|handleHeartbeat (DatanodeRegistration nodeReg, StorageReport[] reports, final String blockPoolId, long cacheCapacity, long cacheUsed, int xceiverCount, int maxTransfers, int failedVolumes, VolumeFailureSummary volumeFailureSummary, @Nonnull SlowPeerReports slowPeers, @Nonnull SlowDiskReports slowDisks)
 specifier|public
 name|DatanodeCommand
 index|[]
@@ -6821,6 +6821,11 @@ annotation|@
 name|Nonnull
 name|SlowPeerReports
 name|slowPeers
+parameter_list|,
+annotation|@
+name|Nonnull
+name|SlowDiskReports
+name|slowDisks
 parameter_list|)
 throws|throws
 name|IOException
