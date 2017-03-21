@@ -1025,6 +1025,20 @@ name|CONNECTION_RETRIES_ON_SOCKET_TIMEOUTS_DEFAULT
 init|=
 literal|0
 decl_stmt|;
+DECL|field|RANDOM_ORDER
+name|String
+name|RANDOM_ORDER
+init|=
+name|PREFIX
+operator|+
+literal|"random.order"
+decl_stmt|;
+DECL|field|RANDOM_ORDER_DEFAULT
+name|boolean
+name|RANDOM_ORDER_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 block|}
 comment|/** dfs.client.write configuration properties */
 DECL|interface|Write

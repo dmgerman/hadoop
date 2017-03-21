@@ -88,6 +88,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -305,7 +315,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A FailoverProxyProvider implementation which allows one to configure two URIs  * to connect to during fail-over. The first configured address is tried first,  * and on a fail-over event the other address is tried.  */
+comment|/**  * A FailoverProxyProvider implementation which allows one to configure  * multiple URIs to connect to during fail-over. A random configured address is  * tried first, and on a fail-over event the other addresses are tried  * sequentially in a random order.  */
 end_comment
 
 begin_class
@@ -764,6 +774,40 @@ argument_list|>
 argument_list|(
 name|address
 argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Randomize the list to prevent all clients pointing to the same one
+name|boolean
+name|randomized
+init|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|HdfsClientConfigKeys
+operator|.
+name|Failover
+operator|.
+name|RANDOM_ORDER
+argument_list|,
+name|HdfsClientConfigKeys
+operator|.
+name|Failover
+operator|.
+name|RANDOM_ORDER_DEFAULT
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|randomized
+condition|)
+block|{
+name|Collections
+operator|.
+name|shuffle
+argument_list|(
+name|proxies
 argument_list|)
 expr_stmt|;
 block|}
