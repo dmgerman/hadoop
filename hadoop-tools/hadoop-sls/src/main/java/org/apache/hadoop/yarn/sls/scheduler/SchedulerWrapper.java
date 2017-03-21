@@ -76,24 +76,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationAttemptId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|ApplicationId
 import|;
 end_import
@@ -121,19 +103,16 @@ interface|interface
 name|SchedulerWrapper
 block|{
 DECL|method|getMetrics ()
-specifier|public
 name|MetricRegistry
 name|getMetrics
 parameter_list|()
 function_decl|;
 DECL|method|getSchedulerMetrics ()
-specifier|public
 name|SchedulerMetrics
 name|getSchedulerMetrics
 parameter_list|()
 function_decl|;
 DECL|method|getQueueSet ()
-specifier|public
 name|Set
 argument_list|<
 name|String
@@ -142,7 +121,6 @@ name|getQueueSet
 parameter_list|()
 function_decl|;
 DECL|method|setQueueSet (Set<String> queues)
-specifier|public
 name|void
 name|setQueueSet
 parameter_list|(
@@ -154,7 +132,6 @@ name|queues
 parameter_list|)
 function_decl|;
 DECL|method|getTrackedAppSet ()
-specifier|public
 name|Set
 argument_list|<
 name|String
@@ -163,7 +140,6 @@ name|getTrackedAppSet
 parameter_list|()
 function_decl|;
 DECL|method|setTrackedAppSet (Set<String> apps)
-specifier|public
 name|void
 name|setTrackedAppSet
 parameter_list|(
@@ -174,32 +150,26 @@ argument_list|>
 name|apps
 parameter_list|)
 function_decl|;
-DECL|method|addTrackedApp (ApplicationAttemptId appAttemptId, String oldAppId)
-specifier|public
+DECL|method|addTrackedApp (ApplicationId appId, String oldAppId)
 name|void
 name|addTrackedApp
 parameter_list|(
-name|ApplicationAttemptId
-name|appAttemptId
+name|ApplicationId
+name|appId
 parameter_list|,
 name|String
 name|oldAppId
 parameter_list|)
 function_decl|;
-DECL|method|removeTrackedApp (ApplicationAttemptId appAttemptId, String oldAppId)
-specifier|public
+DECL|method|removeTrackedApp (String oldAppId)
 name|void
 name|removeTrackedApp
 parameter_list|(
-name|ApplicationAttemptId
-name|appAttemptId
-parameter_list|,
 name|String
 name|oldAppId
 parameter_list|)
 function_decl|;
 DECL|method|addAMRuntime (ApplicationId appId, long traceStartTimeMS, long traceEndTimeMS, long simulateStartTimeMS, long simulateEndTimeMS)
-specifier|public
 name|void
 name|addAMRuntime
 parameter_list|(

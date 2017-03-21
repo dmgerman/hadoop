@@ -4772,13 +4772,13 @@ name|schedulerMetrics
 return|;
 block|}
 comment|// API open to out classes
-DECL|method|addTrackedApp (ApplicationAttemptId appAttemptId, String oldAppId)
+DECL|method|addTrackedApp (ApplicationId appId, String oldAppId)
 specifier|public
 name|void
 name|addTrackedApp
 parameter_list|(
-name|ApplicationAttemptId
-name|appAttemptId
+name|ApplicationId
+name|appId
 parameter_list|,
 name|String
 name|oldAppId
@@ -4793,21 +4793,18 @@ name|schedulerMetrics
 operator|.
 name|trackApp
 argument_list|(
-name|appAttemptId
+name|appId
 argument_list|,
 name|oldAppId
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|removeTrackedApp (ApplicationAttemptId appAttemptId, String oldAppId)
+DECL|method|removeTrackedApp (String oldAppId)
 specifier|public
 name|void
 name|removeTrackedApp
 parameter_list|(
-name|ApplicationAttemptId
-name|appAttemptId
-parameter_list|,
 name|String
 name|oldAppId
 parameter_list|)
@@ -4821,8 +4818,6 @@ name|schedulerMetrics
 operator|.
 name|untrackApp
 argument_list|(
-name|appAttemptId
-argument_list|,
 name|oldAppId
 argument_list|)
 expr_stmt|;
