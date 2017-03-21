@@ -4907,6 +4907,7 @@ comment|// The atomic variable to make sure multiple threads with the same runna
 comment|// run only once.
 DECL|field|hasAlreadyRun
 specifier|private
+specifier|final
 name|AtomicBoolean
 name|hasAlreadyRun
 init|=
