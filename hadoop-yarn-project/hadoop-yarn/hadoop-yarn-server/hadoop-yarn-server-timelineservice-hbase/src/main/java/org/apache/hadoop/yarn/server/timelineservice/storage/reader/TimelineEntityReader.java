@@ -938,6 +938,11 @@ name|filters
 operator|=
 operator|new
 name|TimelineEntityFilters
+operator|.
+name|Builder
+argument_list|()
+operator|.
+name|build
 argument_list|()
 expr_stmt|;
 block|}
