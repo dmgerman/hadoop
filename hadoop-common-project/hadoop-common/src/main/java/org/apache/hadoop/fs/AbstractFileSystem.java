@@ -1874,7 +1874,9 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/**    * Return a set of server default configuration values.    *     * @return server default configuration values    *     * @throws IOException an I/O error occurred    */
+comment|/**    * Return a set of server default configuration values.    *     * @return server default configuration values    *     * @throws IOException an I/O error occurred    * @deprecated use {@link #getServerDefaults(Path)} instead    */
+annotation|@
+name|Deprecated
 DECL|method|getServerDefaults ()
 specifier|public
 specifier|abstract
@@ -1884,6 +1886,24 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Return a set of server default configuration values based on path.    * @param f path to fetch server defaults    * @return server default configuration values for path    * @throws IOException an I/O error occurred    */
+DECL|method|getServerDefaults (final Path f)
+specifier|public
+name|FsServerDefaults
+name|getServerDefaults
+parameter_list|(
+specifier|final
+name|Path
+name|f
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|getServerDefaults
+argument_list|()
+return|;
+block|}
 comment|/**    * Return the fully-qualified path of path f resolving the path    * through any internal symlinks or mount point    * @param p path to be resolved    * @return fully qualified path     * @throws FileNotFoundException, AccessControlException, IOException    *         UnresolvedLinkException if symbolic link on path cannot be resolved    *          internally    */
 DECL|method|resolvePath (final Path p)
 specifier|public
@@ -2416,7 +2436,9 @@ name|FsServerDefaults
 name|ssDef
 init|=
 name|getServerDefaults
-argument_list|()
+argument_list|(
+name|f
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
@@ -2709,7 +2731,9 @@ argument_list|(
 name|f
 argument_list|,
 name|getServerDefaults
-argument_list|()
+argument_list|(
+name|f
+argument_list|)
 operator|.
 name|getFileBufferSize
 argument_list|()

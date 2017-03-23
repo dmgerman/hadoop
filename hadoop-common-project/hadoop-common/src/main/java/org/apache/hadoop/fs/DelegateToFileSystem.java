@@ -684,6 +684,8 @@ return|;
 block|}
 annotation|@
 name|Override
+annotation|@
+name|Deprecated
 DECL|method|getServerDefaults ()
 specifier|public
 name|FsServerDefaults
@@ -697,6 +699,29 @@ name|fsImpl
 operator|.
 name|getServerDefaults
 argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getServerDefaults (final Path f)
+specifier|public
+name|FsServerDefaults
+name|getServerDefaults
+parameter_list|(
+specifier|final
+name|Path
+name|f
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|fsImpl
+operator|.
+name|getServerDefaults
+argument_list|(
+name|f
+argument_list|)
 return|;
 block|}
 annotation|@

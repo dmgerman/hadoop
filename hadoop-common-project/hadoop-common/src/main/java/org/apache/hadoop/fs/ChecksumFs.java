@@ -312,7 +312,13 @@ name|getMyFs
 argument_list|()
 operator|.
 name|getServerDefaults
-argument_list|()
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+literal|"/"
+argument_list|)
+argument_list|)
 operator|.
 name|getBytesPerChecksum
 argument_list|()
@@ -448,7 +454,7 @@ return|return
 name|defaultBytesPerChecksum
 return|;
 block|}
-DECL|method|getSumBufferSize (int bytesPerSum, int bufferSize)
+DECL|method|getSumBufferSize (int bytesPerSum, int bufferSize, Path file)
 specifier|private
 name|int
 name|getSumBufferSize
@@ -458,6 +464,9 @@ name|bytesPerSum
 parameter_list|,
 name|int
 name|bufferSize
+parameter_list|,
+name|Path
+name|file
 parameter_list|)
 throws|throws
 name|IOException
@@ -469,7 +478,9 @@ name|getMyFs
 argument_list|()
 operator|.
 name|getServerDefaults
-argument_list|()
+argument_list|(
+name|file
+argument_list|)
 operator|.
 name|getFileBufferSize
 argument_list|()
@@ -587,7 +598,9 @@ argument_list|,
 name|fs
 operator|.
 name|getServerDefaults
-argument_list|()
+argument_list|(
+name|file
+argument_list|)
 operator|.
 name|getFileBufferSize
 argument_list|()
@@ -674,6 +687,8 @@ name|getBytesPerSum
 argument_list|()
 argument_list|,
 name|bufferSize
+argument_list|,
+name|file
 argument_list|)
 decl_stmt|;
 name|sums
@@ -1709,6 +1724,8 @@ argument_list|(
 name|bytesPerSum
 argument_list|,
 name|bufferSize
+argument_list|,
+name|file
 argument_list|)
 decl_stmt|;
 name|this

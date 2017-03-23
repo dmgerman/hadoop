@@ -529,6 +529,8 @@ return|;
 block|}
 annotation|@
 name|Override
+annotation|@
+name|Deprecated
 DECL|method|getServerDefaults ()
 specifier|public
 name|FsServerDefaults
