@@ -2747,7 +2747,18 @@ block|}
 block|}
 static|static
 block|{
-comment|//print deprecation warning if hadoop-site.xml is found in classpath
+comment|// Add default resources
+name|addDefaultResource
+argument_list|(
+literal|"core-default.xml"
+argument_list|)
+expr_stmt|;
+name|addDefaultResource
+argument_list|(
+literal|"core-site.xml"
+argument_list|)
+expr_stmt|;
+comment|// print deprecation warning if hadoop-site.xml is found in classpath
 name|ClassLoader
 name|cL
 init|=
@@ -2803,17 +2814,12 @@ operator|+
 literal|"respectively"
 argument_list|)
 expr_stmt|;
+name|addDefaultResource
+argument_list|(
+literal|"hadoop-site.xml"
+argument_list|)
+expr_stmt|;
 block|}
-name|addDefaultResource
-argument_list|(
-literal|"core-default.xml"
-argument_list|)
-expr_stmt|;
-name|addDefaultResource
-argument_list|(
-literal|"core-site.xml"
-argument_list|)
-expr_stmt|;
 block|}
 DECL|field|properties
 specifier|private
@@ -9784,31 +9790,6 @@ operator|new
 name|Resource
 argument_list|(
 name|resource
-argument_list|)
-argument_list|,
-name|quiet
-argument_list|)
-expr_stmt|;
-block|}
-comment|//support the hadoop-site.xml as a deprecated case
-if|if
-condition|(
-name|getResource
-argument_list|(
-literal|"hadoop-site.xml"
-argument_list|)
-operator|!=
-literal|null
-condition|)
-block|{
-name|loadResource
-argument_list|(
-name|properties
-argument_list|,
-operator|new
-name|Resource
-argument_list|(
-literal|"hadoop-site.xml"
 argument_list|)
 argument_list|,
 name|quiet
