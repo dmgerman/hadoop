@@ -106,6 +106,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -160,6 +170,13 @@ name|DatanodeID
 argument_list|>
 name|datanodes
 decl_stmt|;
+comment|/**    * Allows you to maintain private data on pipelines.    * This is not serialized via protobuf, just allows us to maintain some    * private data.    */
+DECL|field|data
+specifier|private
+name|byte
+index|[]
+name|data
+decl_stmt|;
 comment|/**    * Constructs a new pipeline data structure.    *    * @param leaderID - First machine in this pipeline.    */
 DECL|method|Pipeline (String leaderID)
 specifier|public
@@ -181,6 +198,10 @@ operator|new
 name|TreeMap
 argument_list|<>
 argument_list|()
+expr_stmt|;
+name|data
+operator|=
+literal|null
 expr_stmt|;
 block|}
 comment|/**    * Gets pipeline object from protobuf.    *    * @param pipeline - ProtoBuf definition for the pipeline.    * @return Pipeline Object    */
@@ -411,6 +432,82 @@ name|containerName
 operator|=
 name|containerName
 expr_stmt|;
+block|}
+comment|/**    * Set private data on pipeline.    * @param data -- private data.    */
+DECL|method|setData (byte[] data)
+specifier|public
+name|void
+name|setData
+parameter_list|(
+name|byte
+index|[]
+name|data
+parameter_list|)
+block|{
+if|if
+condition|(
+name|data
+operator|!=
+literal|null
+condition|)
+block|{
+name|this
+operator|.
+name|data
+operator|=
+name|Arrays
+operator|.
+name|copyOf
+argument_list|(
+name|data
+argument_list|,
+name|data
+operator|.
+name|length
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Returns private data that is set on this pipeline.    *    * @return blob, the user can interpret it any way they like.    */
+DECL|method|getData ()
+specifier|public
+name|byte
+index|[]
+name|getData
+parameter_list|()
+block|{
+if|if
+condition|(
+name|this
+operator|.
+name|data
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+name|Arrays
+operator|.
+name|copyOf
+argument_list|(
+name|this
+operator|.
+name|data
+argument_list|,
+name|this
+operator|.
+name|data
+operator|.
+name|length
+argument_list|)
+return|;
+block|}
+else|else
+block|{
+return|return
+literal|null
+return|;
+block|}
 block|}
 block|}
 end_class
