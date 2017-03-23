@@ -262,6 +262,13 @@ name|found
 init|=
 literal|false
 decl_stmt|;
+comment|// Iterate serviceLoader in a synchronized block since
+comment|// serviceLoader iterator is not thread-safe.
+synchronized|synchronized
+init|(
+name|serviceLoader
+init|)
+block|{
 for|for
 control|(
 name|CredentialProviderFactory
@@ -301,6 +308,7 @@ operator|=
 literal|true
 expr_stmt|;
 break|break;
+block|}
 block|}
 block|}
 if|if
