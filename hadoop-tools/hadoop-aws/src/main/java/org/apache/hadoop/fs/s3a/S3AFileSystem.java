@@ -7523,7 +7523,7 @@ default|default:
 block|}
 block|}
 DECL|method|setOptionalPutRequestParameters (PutObjectRequest request)
-specifier|protected
+specifier|private
 name|void
 name|setOptionalPutRequestParameters
 parameter_list|(

@@ -1459,13 +1459,6 @@ argument_list|,
 name|size
 argument_list|)
 decl_stmt|;
-name|fs
-operator|.
-name|setOptionalPutRequestParameters
-argument_list|(
-name|putObjectRequest
-argument_list|)
-expr_stmt|;
 name|long
 name|transferQueueTime
 init|=
