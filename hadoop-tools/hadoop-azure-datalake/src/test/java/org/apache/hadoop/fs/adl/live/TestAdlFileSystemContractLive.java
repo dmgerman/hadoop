@@ -161,15 +161,12 @@ block|{
 name|cleanup
 argument_list|()
 expr_stmt|;
-name|adlStore
-operator|=
-literal|null
-expr_stmt|;
-name|fs
-operator|=
-literal|null
-expr_stmt|;
 block|}
+name|super
+operator|.
+name|tearDown
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|cleanup ()
 specifier|private
