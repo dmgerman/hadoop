@@ -5307,6 +5307,26 @@ name|f
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|newFSDataOutputStreamBuilder (Path path)
+specifier|public
+name|FSDataOutputStreamBuilder
+name|newFSDataOutputStreamBuilder
+parameter_list|(
+name|Path
+name|path
+parameter_list|)
+block|{
+return|return
+name|fs
+operator|.
+name|newFSDataOutputStreamBuilder
+argument_list|(
+name|path
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 

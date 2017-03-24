@@ -11809,6 +11809,26 @@ operator|.
 name|INSTANCE
 return|;
 block|}
+comment|/**    * Create a new FSDataOutputStreamBuilder for the file with path.    * @param path file path    * @return a FSDataOutputStreamBuilder object to build the file    */
+DECL|method|newFSDataOutputStreamBuilder (Path path)
+specifier|public
+name|FSDataOutputStreamBuilder
+name|newFSDataOutputStreamBuilder
+parameter_list|(
+name|Path
+name|path
+parameter_list|)
+block|{
+return|return
+operator|new
+name|FSDataOutputStreamBuilder
+argument_list|(
+name|this
+argument_list|,
+name|path
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 
