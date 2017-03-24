@@ -623,15 +623,7 @@ operator|.
 name|getScheme
 argument_list|()
 argument_list|,
-name|fs
-operator|.
-name|getUri
-argument_list|()
-operator|.
-name|getAuthority
-argument_list|()
-operator|!=
-literal|null
+literal|false
 argument_list|,
 name|fs
 operator|.
