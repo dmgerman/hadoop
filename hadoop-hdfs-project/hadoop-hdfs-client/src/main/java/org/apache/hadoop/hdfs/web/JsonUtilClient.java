@@ -860,7 +860,7 @@ argument_list|)
 return|;
 block|}
 comment|/** Convert a string to a FsPermission object. */
-DECL|method|toFsPermission ( final String s, Boolean aclBit, Boolean encBit)
+DECL|method|toFsPermission ( final String s, Boolean aclBit, Boolean encBit, Boolean erasureBit)
 specifier|static
 name|FsPermission
 name|toFsPermission
@@ -874,6 +874,9 @@ name|aclBit
 parameter_list|,
 name|Boolean
 name|encBit
+parameter_list|,
+name|Boolean
+name|erasureBit
 parameter_list|)
 block|{
 name|FsPermission
@@ -920,11 +923,27 @@ name|encBit
 else|:
 literal|false
 decl_stmt|;
+specifier|final
+name|boolean
+name|ecBit
+init|=
+operator|(
+name|erasureBit
+operator|!=
+literal|null
+operator|)
+condition|?
+name|erasureBit
+else|:
+literal|false
+decl_stmt|;
 if|if
 condition|(
 name|aBit
 operator|||
 name|eBit
+operator|||
+name|ecBit
 condition|)
 block|{
 return|return
@@ -936,6 +955,8 @@ argument_list|,
 name|aBit
 argument_list|,
 name|eBit
+argument_list|,
+name|ecBit
 argument_list|)
 return|;
 block|}
@@ -1157,6 +1178,16 @@ operator|.
 name|get
 argument_list|(
 literal|"encBit"
+argument_list|)
+argument_list|,
+operator|(
+name|Boolean
+operator|)
+name|m
+operator|.
+name|get
+argument_list|(
+literal|"ecBit"
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -3654,6 +3685,16 @@ operator|.
 name|get
 argument_list|(
 literal|"encBit"
+argument_list|)
+argument_list|,
+operator|(
+name|Boolean
+operator|)
+name|m
+operator|.
+name|get
+argument_list|(
+literal|"ecBit"
 argument_list|)
 argument_list|)
 decl_stmt|;

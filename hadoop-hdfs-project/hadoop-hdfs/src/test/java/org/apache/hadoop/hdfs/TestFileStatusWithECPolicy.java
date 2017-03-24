@@ -70,9 +70,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
+name|fs
 operator|.
-name|Configuration
+name|Path
 import|;
 end_import
 
@@ -86,7 +86,9 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|Path
+name|contract
+operator|.
+name|ContractTestUtils
 import|;
 end_import
 
@@ -342,6 +344,15 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|ContractTestUtils
+operator|.
+name|assertNotErasureCoded
+argument_list|(
+name|fs
+argument_list|,
+name|dir
+argument_list|)
+expr_stmt|;
 name|assertNull
 argument_list|(
 name|client
@@ -397,6 +408,15 @@ name|getErasureCodingPolicy
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|ContractTestUtils
+operator|.
+name|assertNotErasureCoded
+argument_list|(
+name|fs
+argument_list|,
+name|file
+argument_list|)
+expr_stmt|;
 name|fs
 operator|.
 name|delete
@@ -426,6 +446,15 @@ name|ecPolicy1
 operator|.
 name|getName
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|ContractTestUtils
+operator|.
+name|assertErasureCoded
+argument_list|(
+name|fs
+argument_list|,
+name|dir
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -510,6 +539,15 @@ name|equals
 argument_list|(
 name|ecPolicy3
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|ContractTestUtils
+operator|.
+name|assertErasureCoded
+argument_list|(
+name|fs
+argument_list|,
+name|file
 argument_list|)
 expr_stmt|;
 block|}

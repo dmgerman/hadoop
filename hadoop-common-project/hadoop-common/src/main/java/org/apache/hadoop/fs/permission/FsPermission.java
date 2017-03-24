@@ -1253,6 +1253,17 @@ return|return
 literal|false
 return|;
 block|}
+comment|/**    * Returns true if the file or directory is erasure coded.    */
+DECL|method|getErasureCodedBit ()
+specifier|public
+name|boolean
+name|getErasureCodedBit
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
 comment|/** Set the user file creation mask (umask) */
 DECL|method|setUMask (Configuration conf, FsPermission umask)
 specifier|public

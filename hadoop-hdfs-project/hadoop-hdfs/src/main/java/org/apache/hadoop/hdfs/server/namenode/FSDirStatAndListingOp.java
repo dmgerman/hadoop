@@ -2309,6 +2309,16 @@ argument_list|,
 name|iip
 argument_list|)
 decl_stmt|;
+specifier|final
+name|boolean
+name|isErasureCoded
+init|=
+operator|(
+name|ecPolicy
+operator|!=
+literal|null
+operator|)
+decl_stmt|;
 if|if
 condition|(
 name|node
@@ -2523,6 +2533,8 @@ argument_list|(
 name|nodeAttrs
 argument_list|,
 name|isEncrypted
+argument_list|,
+name|isErasureCoded
 argument_list|)
 argument_list|,
 name|nodeAttrs
@@ -2718,7 +2730,7 @@ return|;
 block|}
 block|}
 comment|/**    * Returns an inode's FsPermission for use in an outbound FileStatus.  If the    * inode has an ACL or is for an encrypted file/dir, then this method will    * return an FsPermissionExtension.    *    * @param node INode to check    * @param isEncrypted boolean true if the file/dir is encrypted    * @return FsPermission from inode, with ACL bit on if the inode has an ACL    * and encrypted bit on if it represents an encrypted file/dir.    */
-DECL|method|getPermissionForFileStatus ( INodeAttributes node, boolean isEncrypted)
+DECL|method|getPermissionForFileStatus ( INodeAttributes node, boolean isEncrypted, boolean isErasureCoded)
 specifier|private
 specifier|static
 name|FsPermission
@@ -2729,6 +2741,9 @@ name|node
 parameter_list|,
 name|boolean
 name|isEncrypted
+parameter_list|,
+name|boolean
+name|isErasureCoded
 parameter_list|)
 block|{
 name|FsPermission
@@ -2754,6 +2769,8 @@ condition|(
 name|hasAcl
 operator|||
 name|isEncrypted
+operator|||
+name|isErasureCoded
 condition|)
 block|{
 name|perm
@@ -2766,6 +2783,8 @@ argument_list|,
 name|hasAcl
 argument_list|,
 name|isEncrypted
+argument_list|,
+name|isErasureCoded
 argument_list|)
 expr_stmt|;
 block|}

@@ -1991,6 +1991,88 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Assert that a path is Erasure Coded.    *    * @param fs filesystem    * @param path path of the file or directory    * @throws IOException on File IO problems    */
+DECL|method|assertErasureCoded (final FileSystem fs, final Path path)
+specifier|public
+specifier|static
+name|void
+name|assertErasureCoded
+parameter_list|(
+specifier|final
+name|FileSystem
+name|fs
+parameter_list|,
+specifier|final
+name|Path
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|FileStatus
+name|fileStatus
+init|=
+name|fs
+operator|.
+name|getFileStatus
+argument_list|(
+name|path
+argument_list|)
+decl_stmt|;
+name|assertTrue
+argument_list|(
+name|path
+operator|+
+literal|" must be erasure coded!"
+argument_list|,
+name|fileStatus
+operator|.
+name|isErasureCoded
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Assert that a path is not Erasure Coded.    *    * @param fs filesystem    * @param path path of the file or directory    * @throws IOException on File IO problems    */
+DECL|method|assertNotErasureCoded (final FileSystem fs, final Path path)
+specifier|public
+specifier|static
+name|void
+name|assertNotErasureCoded
+parameter_list|(
+specifier|final
+name|FileSystem
+name|fs
+parameter_list|,
+specifier|final
+name|Path
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|FileStatus
+name|fileStatus
+init|=
+name|fs
+operator|.
+name|getFileStatus
+argument_list|(
+name|path
+argument_list|)
+decl_stmt|;
+name|assertFalse
+argument_list|(
+name|path
+operator|+
+literal|" should not be erasure coded!"
+argument_list|,
+name|fileStatus
+operator|.
+name|isErasureCoded
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Write the text to a file, returning the converted byte array    * for use in validating the round trip.    * @param fs filesystem    * @param path path of file    * @param text text to write    * @param overwrite should the operation overwrite any existing file?    * @return the read bytes    * @throws IOException on IO problems    */
 DECL|method|writeTextFile (FileSystem fs, Path path, String text, boolean overwrite)
 specifier|public

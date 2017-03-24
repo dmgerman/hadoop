@@ -95,6 +95,17 @@ literal|1
 operator|<<
 literal|13
 decl_stmt|;
+DECL|field|ERASURE_CODED_BIT
+specifier|private
+specifier|final
+specifier|static
+name|short
+name|ERASURE_CODED_BIT
+init|=
+literal|1
+operator|<<
+literal|14
+decl_stmt|;
 DECL|field|aclBit
 specifier|private
 specifier|final
@@ -107,8 +118,14 @@ specifier|final
 name|boolean
 name|encryptedBit
 decl_stmt|;
+DECL|field|erasureCodedBit
+specifier|private
+specifier|final
+name|boolean
+name|erasureCodedBit
+decl_stmt|;
 comment|/**    * Constructs a new FsPermissionExtension based on the given FsPermission.    *    * @param perm FsPermission containing permission bits    */
-DECL|method|FsPermissionExtension (FsPermission perm, boolean hasAcl, boolean isEncrypted)
+DECL|method|FsPermissionExtension (FsPermission perm, boolean hasAcl, boolean isEncrypted, boolean isErasureCoded)
 specifier|public
 name|FsPermissionExtension
 parameter_list|(
@@ -120,6 +137,9 @@ name|hasAcl
 parameter_list|,
 name|boolean
 name|isEncrypted
+parameter_list|,
+name|boolean
+name|isErasureCoded
 parameter_list|)
 block|{
 name|super
@@ -137,6 +157,10 @@ expr_stmt|;
 name|encryptedBit
 operator|=
 name|isEncrypted
+expr_stmt|;
+name|erasureCodedBit
+operator|=
+name|isErasureCoded
 expr_stmt|;
 block|}
 comment|/**    * Creates a new FsPermissionExtension by calling the base class constructor.    *    * @param perm short containing permission bits    */
@@ -173,6 +197,16 @@ operator|)
 operator|!=
 literal|0
 expr_stmt|;
+name|erasureCodedBit
+operator|=
+operator|(
+name|perm
+operator|&
+name|ERASURE_CODED_BIT
+operator|)
+operator|!=
+literal|0
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -205,6 +239,14 @@ name|ENCRYPTED_BIT
 else|:
 literal|0
 operator|)
+operator||
+operator|(
+name|erasureCodedBit
+condition|?
+name|ERASURE_CODED_BIT
+else|:
+literal|0
+operator|)
 argument_list|)
 return|;
 block|}
@@ -230,6 +272,18 @@ parameter_list|()
 block|{
 return|return
 name|encryptedBit
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getErasureCodedBit ()
+specifier|public
+name|boolean
+name|getErasureCodedBit
+parameter_list|()
+block|{
+return|return
+name|erasureCodedBit
 return|;
 block|}
 annotation|@
