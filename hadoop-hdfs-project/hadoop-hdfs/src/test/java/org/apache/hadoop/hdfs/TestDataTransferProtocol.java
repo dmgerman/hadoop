@@ -1022,7 +1022,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Did not recieve IOException when an exception "
+literal|"Did not receive IOException when an exception "
 operator|+
 literal|"is expected while reading from "
 operator|+

@@ -7129,7 +7129,7 @@ name|op
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * When NN failover happens, if the client did not receive the response and    * send a retry request to the other NN, the same response should be recieved    * based on the retry cache.    */
+comment|/**    * When NN failover happens, if the client did not receive the response and    * send a retry request to the other NN, the same response should be received    * based on the retry cache.    */
 DECL|method|testClientRetryWithFailover (final AtMostOnceOp op)
 specifier|public
 name|void

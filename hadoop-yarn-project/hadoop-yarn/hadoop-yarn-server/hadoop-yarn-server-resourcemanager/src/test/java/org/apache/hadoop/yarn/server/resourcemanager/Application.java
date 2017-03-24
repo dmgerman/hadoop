@@ -2421,7 +2421,7 @@ operator|.
 name|size
 argument_list|()
 operator|+
-literal|" recieved="
+literal|" received="
 operator|+
 name|containers
 operator|.

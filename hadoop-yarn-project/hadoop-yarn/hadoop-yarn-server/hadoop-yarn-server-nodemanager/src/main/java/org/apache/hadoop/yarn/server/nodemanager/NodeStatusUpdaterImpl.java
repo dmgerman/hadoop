@@ -2531,7 +2531,7 @@ throw|throw
 operator|new
 name|YarnRuntimeException
 argument_list|(
-literal|"Recieved SHUTDOWN signal from Resourcemanager, Registration of NodeManager failed, "
+literal|"Received SHUTDOWN signal from Resourcemanager, Registration of NodeManager failed, "
 operator|+
 name|message
 argument_list|)
@@ -5452,7 +5452,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Recieved SHUTDOWN signal from Resourcemanager as part of"
+literal|"Received SHUTDOWN signal from Resourcemanager as part of"
 operator|+
 literal|" heartbeat, hence shutting down."
 argument_list|)
