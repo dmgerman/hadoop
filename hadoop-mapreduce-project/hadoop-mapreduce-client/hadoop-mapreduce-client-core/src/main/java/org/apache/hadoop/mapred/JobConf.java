@@ -3032,7 +3032,7 @@ name|speculativeExecution
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get configured the number of reduce tasks for this job.    * Defaults to<code>1</code>.    *     * @return the number of reduce tasks for this job.    */
+comment|/**    * Get the configured number of map tasks for this job.    * Defaults to<code>1</code>.    *     * @return the number of map tasks for this job.    */
 DECL|method|getNumMapTasks ()
 specifier|public
 name|int
@@ -3070,7 +3070,7 @@ name|n
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get configured the number of reduce tasks for this job. Defaults to     *<code>1</code>.    *     * @return the number of reduce tasks for this job.    */
+comment|/**    * Get the configured number of reduce tasks for this job. Defaults to    *<code>1</code>.    *    * @return the number of reduce tasks for this job.    */
 DECL|method|getNumReduceTasks ()
 specifier|public
 name|int
