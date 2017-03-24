@@ -1013,6 +1013,11 @@ argument_list|(
 name|dnConf
 operator|.
 name|ibrInterval
+argument_list|,
+name|dn
+operator|.
+name|getMetrics
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|prevBlockReportId
@@ -1873,11 +1878,6 @@ argument_list|,
 name|bpos
 operator|.
 name|getBlockPoolId
-argument_list|()
-argument_list|,
-name|dn
-operator|.
-name|getMetrics
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3537,11 +3537,6 @@ argument_list|,
 name|bpos
 operator|.
 name|getBlockPoolId
-argument_list|()
-argument_list|,
-name|dn
-operator|.
-name|getMetrics
 argument_list|()
 argument_list|)
 expr_stmt|;

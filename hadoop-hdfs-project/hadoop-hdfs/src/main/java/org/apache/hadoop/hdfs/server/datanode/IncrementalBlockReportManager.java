@@ -345,6 +345,26 @@ operator|.
 name|newHashMap
 argument_list|()
 decl_stmt|;
+DECL|field|dnMetrics
+specifier|private
+name|DataNodeMetrics
+name|dnMetrics
+decl_stmt|;
+DECL|method|PerStorageIBR (final DataNodeMetrics dnMetrics)
+name|PerStorageIBR
+parameter_list|(
+specifier|final
+name|DataNodeMetrics
+name|dnMetrics
+parameter_list|)
+block|{
+name|this
+operator|.
+name|dnMetrics
+operator|=
+name|dnMetrics
+expr_stmt|;
+block|}
 comment|/**      * Remove the given block from this IBR      * @return true if the block was removed; otherwise, return false.      */
 DECL|method|remove (Block block)
 name|ReceivedDeletedBlockInfo
@@ -439,6 +459,65 @@ argument_list|,
 name|rdbi
 argument_list|)
 expr_stmt|;
+name|increaseBlocksCounter
+argument_list|(
+name|rdbi
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|increaseBlocksCounter ( final ReceivedDeletedBlockInfo receivedDeletedBlockInfo)
+specifier|private
+name|void
+name|increaseBlocksCounter
+parameter_list|(
+specifier|final
+name|ReceivedDeletedBlockInfo
+name|receivedDeletedBlockInfo
+parameter_list|)
+block|{
+switch|switch
+condition|(
+name|receivedDeletedBlockInfo
+operator|.
+name|getStatus
+argument_list|()
+condition|)
+block|{
+case|case
+name|RECEIVING_BLOCK
+case|:
+name|dnMetrics
+operator|.
+name|incrBlocksReceivingInPendingIBR
+argument_list|()
+expr_stmt|;
+break|break;
+case|case
+name|RECEIVED_BLOCK
+case|:
+name|dnMetrics
+operator|.
+name|incrBlocksReceivedInPendingIBR
+argument_list|()
+expr_stmt|;
+break|break;
+case|case
+name|DELETED_BLOCK
+case|:
+name|dnMetrics
+operator|.
+name|incrBlocksDeletedInPendingIBR
+argument_list|()
+expr_stmt|;
+break|break;
+default|default:
+break|break;
+block|}
+name|dnMetrics
+operator|.
+name|incrBlocksInPendingIBR
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**      * Put the all blocks to this IBR unless the block already exists.      * @param rdbis list of blocks to add.      * @return the number of missing blocks added.      */
 DECL|method|putMissing (ReceivedDeletedBlockInfo[] rdbis)
@@ -532,12 +611,21 @@ specifier|volatile
 name|long
 name|lastIBR
 decl_stmt|;
-DECL|method|IncrementalBlockReportManager (final long ibrInterval)
+DECL|field|dnMetrics
+specifier|private
+name|DataNodeMetrics
+name|dnMetrics
+decl_stmt|;
+DECL|method|IncrementalBlockReportManager ( final long ibrInterval, final DataNodeMetrics dnMetrics)
 name|IncrementalBlockReportManager
 parameter_list|(
 specifier|final
 name|long
 name|ibrInterval
+parameter_list|,
+specifier|final
+name|DataNodeMetrics
+name|dnMetrics
 parameter_list|)
 block|{
 name|this
@@ -554,6 +642,12 @@ name|monotonicNow
 argument_list|()
 operator|-
 name|ibrInterval
+expr_stmt|;
+name|this
+operator|.
+name|dnMetrics
+operator|=
+name|dnMetrics
 expr_stmt|;
 block|}
 DECL|method|sendImmediately ()
@@ -720,6 +814,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/* set blocks to zero */
+name|this
+operator|.
+name|dnMetrics
+operator|.
+name|resetBlocksInPendingIBR
+argument_list|()
+expr_stmt|;
 name|readyToSend
 operator|=
 literal|false
@@ -794,7 +896,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Send IBRs to namenode. */
-DECL|method|sendIBRs (DatanodeProtocol namenode, DatanodeRegistration registration, String bpid, DataNodeMetrics metrics)
+DECL|method|sendIBRs (DatanodeProtocol namenode, DatanodeRegistration registration, String bpid)
 name|void
 name|sendIBRs
 parameter_list|(
@@ -806,9 +908,6 @@ name|registration
 parameter_list|,
 name|String
 name|bpid
-parameter_list|,
-name|DataNodeMetrics
-name|metrics
 parameter_list|)
 throws|throws
 name|IOException
@@ -890,7 +989,12 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
-name|metrics
+if|if
+condition|(
+name|success
+condition|)
+block|{
+name|dnMetrics
 operator|.
 name|addIncrementalBlockReport
 argument_list|(
@@ -900,11 +1004,6 @@ operator|-
 name|startTime
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|success
-condition|)
-block|{
 name|lastIBR
 operator|=
 name|startTime
@@ -957,7 +1056,9 @@ name|perStorage
 operator|=
 operator|new
 name|PerStorageIBR
-argument_list|()
+argument_list|(
+name|dnMetrics
+argument_list|)
 expr_stmt|;
 name|pendingIBRs
 operator|.
