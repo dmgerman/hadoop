@@ -133,9 +133,12 @@ name|asList
 argument_list|(
 name|sensitiveRegexList
 operator|.
+name|trim
+argument_list|()
+operator|.
 name|split
 argument_list|(
-literal|","
+literal|"[,\\s]+"
 argument_list|)
 argument_list|)
 decl_stmt|;
