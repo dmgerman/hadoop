@@ -339,6 +339,42 @@ name|GET_APP_QUEUE
 init|=
 literal|"Get Application Queue"
 decl_stmt|;
+DECL|field|GET_APP_ATTEMPTS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|GET_APP_ATTEMPTS
+init|=
+literal|"Get Application Attempts"
+decl_stmt|;
+DECL|field|GET_APP_ATTEMPT_REPORT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|GET_APP_ATTEMPT_REPORT
+init|=
+literal|"Get Application Attempt Report"
+decl_stmt|;
+DECL|field|GET_CONTAINERS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|GET_CONTAINERS
+init|=
+literal|"Get Containers"
+decl_stmt|;
+DECL|field|GET_CONTAINER_REPORT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|GET_CONTAINER_REPORT
+init|=
+literal|"Get Container Report"
+decl_stmt|;
 DECL|field|FINISH_SUCCESS_APP
 specifier|public
 specifier|static
