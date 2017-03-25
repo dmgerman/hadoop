@@ -5432,7 +5432,7 @@ control|)
 block|{
 name|Futures
 operator|.
-name|get
+name|getChecked
 argument_list|(
 name|f
 argument_list|,

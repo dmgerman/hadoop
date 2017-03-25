@@ -506,20 +506,6 @@ name|google
 operator|.
 name|common
 operator|.
-name|base
-operator|.
-name|Throwables
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
 name|util
 operator|.
 name|concurrent
@@ -2392,13 +2378,9 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Throwables
-operator|.
-name|propagate
-argument_list|(
+throw|throw
 name|t
-argument_list|)
-expr_stmt|;
+throw|;
 block|}
 block|}
 DECL|method|doFence (HAServiceTarget target)

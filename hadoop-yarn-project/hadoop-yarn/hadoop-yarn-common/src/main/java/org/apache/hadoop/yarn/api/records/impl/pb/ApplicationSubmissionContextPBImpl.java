@@ -1629,7 +1629,8 @@ condition|(
 operator|!
 name|CharMatcher
 operator|.
-name|ASCII
+name|ascii
+argument_list|()
 operator|.
 name|matchesAllOf
 argument_list|(

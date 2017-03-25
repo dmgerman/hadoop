@@ -2041,7 +2041,8 @@ name|equals
 argument_list|(
 name|CharMatcher
 operator|.
-name|WHITESPACE
+name|whitespace
+argument_list|()
 operator|.
 name|trimFrom
 argument_list|(

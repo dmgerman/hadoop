@@ -18,15 +18,11 @@ end_package
 
 begin_import
 import|import
-name|com
+name|java
 operator|.
-name|google
+name|util
 operator|.
-name|common
-operator|.
-name|collect
-operator|.
-name|Iterators
+name|Collections
 import|;
 end_import
 
@@ -359,7 +355,7 @@ name|this
 operator|.
 name|it
 operator|=
-name|Iterators
+name|Collections
 operator|.
 name|emptyIterator
 argument_list|()

@@ -1550,7 +1550,8 @@ while|while
 condition|(
 name|CharMatcher
 operator|.
-name|WHITESPACE
+name|whitespace
+argument_list|()
 operator|.
 name|matches
 argument_list|(
@@ -1650,7 +1651,8 @@ literal|'/'
 operator|||
 name|CharMatcher
 operator|.
-name|WHITESPACE
+name|whitespace
+argument_list|()
 operator|.
 name|matches
 argument_list|(

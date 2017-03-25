@@ -3438,7 +3438,7 @@ argument_list|)
 expr_stmt|;
 name|Futures
 operator|.
-name|get
+name|getChecked
 argument_list|(
 name|future
 argument_list|,
@@ -3564,7 +3564,7 @@ return|return;
 block|}
 name|Futures
 operator|.
-name|get
+name|getChecked
 argument_list|(
 name|future
 argument_list|,
@@ -3874,7 +3874,7 @@ try|try
 block|{
 name|Futures
 operator|.
-name|get
+name|getChecked
 argument_list|(
 name|future
 argument_list|,

@@ -334,7 +334,7 @@ name|enValueOfFunc
 init|=
 name|Enums
 operator|.
-name|valueOfFunction
+name|stringConverter
 argument_list|(
 name|XAttrCodec
 operator|.

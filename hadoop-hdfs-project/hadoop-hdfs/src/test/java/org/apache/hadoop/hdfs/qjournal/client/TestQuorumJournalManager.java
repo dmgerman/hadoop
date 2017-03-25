@@ -4369,7 +4369,7 @@ comment|// This makes the tests more deterministic.
 return|return
 name|MoreExecutors
 operator|.
-name|sameThreadExecutor
+name|newDirectExecutorService
 argument_list|()
 return|;
 block|}

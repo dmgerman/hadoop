@@ -437,7 +437,7 @@ operator|.
 name|start
 argument_list|()
 operator|.
-name|compare
+name|compareFalseFirst
 argument_list|(
 operator|!
 name|elis1

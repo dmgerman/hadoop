@@ -20,20 +20,6 @@ end_package
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Objects
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -57,6 +43,20 @@ operator|.
 name|metrics2
 operator|.
 name|MetricsInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|MoreObjects
 import|;
 end_import
 
@@ -257,7 +257,7 @@ name|toString
 parameter_list|()
 block|{
 return|return
-name|Objects
+name|MoreObjects
 operator|.
 name|toStringHelper
 argument_list|(
