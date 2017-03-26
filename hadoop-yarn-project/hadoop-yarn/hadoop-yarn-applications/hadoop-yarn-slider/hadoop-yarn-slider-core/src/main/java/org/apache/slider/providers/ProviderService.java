@@ -24,34 +24,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|Path
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|registry
 operator|.
 name|client
@@ -152,6 +124,22 @@ name|apache
 operator|.
 name|slider
 operator|.
+name|api
+operator|.
+name|resource
+operator|.
+name|Application
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
 name|common
 operator|.
 name|tools
@@ -173,38 +161,6 @@ operator|.
 name|conf
 operator|.
 name|AggregateConf
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|core
-operator|.
-name|conf
-operator|.
-name|MapOperations
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|core
-operator|.
-name|exceptions
-operator|.
-name|BadCommandArgumentsException
 import|;
 end_import
 
@@ -402,24 +358,18 @@ specifier|public
 interface|interface
 name|ProviderService
 extends|extends
-name|ProviderCore
-extends|,
 name|Service
-extends|,
-name|RMOperationHandlerActions
-extends|,
-name|ExitCodeProvider
 block|{
-comment|/**    * Set up the entire container launch context    * @param containerLauncher    * @param instanceDefinition    * @param container    * @param providerRole    * @param sliderFileSystem    * @param generatedConfPath    * @param appComponent    * @param containerTmpDirPath    */
-DECL|method|buildContainerLaunchContext (ContainerLauncher containerLauncher, AggregateConf instanceDefinition, Container container, ProviderRole providerRole, SliderFileSystem sliderFileSystem, Path generatedConfPath, MapOperations resourceComponent, MapOperations appComponent, Path containerTmpDirPath)
+comment|/**    * Set up the entire container launch context    */
+DECL|method|buildContainerLaunchContext (ContainerLauncher containerLauncher, Application application, Container container, ProviderRole providerRole, SliderFileSystem sliderFileSystem)
 name|void
 name|buildContainerLaunchContext
 parameter_list|(
 name|ContainerLauncher
 name|containerLauncher
 parameter_list|,
-name|AggregateConf
-name|instanceDefinition
+name|Application
+name|application
 parameter_list|,
 name|Container
 name|container
@@ -429,167 +379,18 @@ name|providerRole
 parameter_list|,
 name|SliderFileSystem
 name|sliderFileSystem
-parameter_list|,
-name|Path
-name|generatedConfPath
-parameter_list|,
-name|MapOperations
-name|resourceComponent
-parameter_list|,
-name|MapOperations
-name|appComponent
-parameter_list|,
-name|Path
-name|containerTmpDirPath
 parameter_list|)
 throws|throws
 name|IOException
 throws|,
 name|SliderException
 function_decl|;
-comment|/**    * Notify the providers of container completion    * @param containerId container that has completed    */
-DECL|method|notifyContainerCompleted (ContainerId containerId)
+DECL|method|setAMState (StateAccessForProviders stateAccessForProviders)
 name|void
-name|notifyContainerCompleted
-parameter_list|(
-name|ContainerId
-name|containerId
-parameter_list|)
-function_decl|;
-comment|/**    * Execute a process in the AM    * @param instanceDefinition cluster description    * @param confDir configuration directory    * @param env environment    * @param execInProgress the callback for the exec events    * @return true if a process was actually started    * @throws IOException    * @throws SliderException    */
-DECL|method|exec (AggregateConf instanceDefinition, File confDir, Map<String, String> env, ProviderCompleted execInProgress)
-name|boolean
-name|exec
-parameter_list|(
-name|AggregateConf
-name|instanceDefinition
-parameter_list|,
-name|File
-name|confDir
-parameter_list|,
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|String
-argument_list|>
-name|env
-parameter_list|,
-name|ProviderCompleted
-name|execInProgress
-parameter_list|)
-throws|throws
-name|IOException
-throws|,
-name|SliderException
-function_decl|;
-comment|/**    * Scan through the roles and see if it is supported.    * @param role role to look for    * @return true if the role is known about -and therefore    * that a launcher thread can be deployed to launch it    */
-DECL|method|isSupportedRole (String role)
-name|boolean
-name|isSupportedRole
-parameter_list|(
-name|String
-name|role
-parameter_list|)
-function_decl|;
-comment|/**    * Load a specific XML configuration file for the provider config    * @param confDir configuration directory    * @return a configuration to be included in status    * @throws BadCommandArgumentsException    * @throws IOException    */
-DECL|method|loadProviderConfigurationInformation (File confDir)
-name|Configuration
-name|loadProviderConfigurationInformation
-parameter_list|(
-name|File
-name|confDir
-parameter_list|)
-throws|throws
-name|BadCommandArgumentsException
-throws|,
-name|IOException
-function_decl|;
-comment|/**    * The application configuration should be initialized here    *     * @param instanceDefinition    * @param fileSystem    * @param roleGroup    * @throws IOException    * @throws SliderException    */
-DECL|method|initializeApplicationConfiguration (AggregateConf instanceDefinition, SliderFileSystem fileSystem, String roleGroup)
-name|void
-name|initializeApplicationConfiguration
-parameter_list|(
-name|AggregateConf
-name|instanceDefinition
-parameter_list|,
-name|SliderFileSystem
-name|fileSystem
-parameter_list|,
-name|String
-name|roleGroup
-parameter_list|)
-throws|throws
-name|IOException
-throws|,
-name|SliderException
-function_decl|;
-comment|/**    * This is a validation of the application configuration on the AM.    * Here is where things like the existence of keytabs and other    * not-seen-client-side properties can be tested, before    * the actual process is spawned.     * @param instanceDefinition clusterSpecification    * @param confDir configuration directory    * @param secure flag to indicate that secure mode checks must exist    * @throws IOException IO problemsn    * @throws SliderException any failure    */
-DECL|method|validateApplicationConfiguration (AggregateConf instanceDefinition, File confDir, boolean secure )
-name|void
-name|validateApplicationConfiguration
-parameter_list|(
-name|AggregateConf
-name|instanceDefinition
-parameter_list|,
-name|File
-name|confDir
-parameter_list|,
-name|boolean
-name|secure
-parameter_list|)
-throws|throws
-name|IOException
-throws|,
-name|SliderException
-function_decl|;
-comment|/*      * Build the provider status, can be empty      * @return the provider status - map of entries to add to the info section      */
-DECL|method|buildProviderStatus ()
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|String
-argument_list|>
-name|buildProviderStatus
-parameter_list|()
-function_decl|;
-comment|/**    * Build a map of data intended for the AM webapp that is specific    * about this provider. The key is some text to be displayed, and the    * value can be a URL that will create an anchor over the key text.    *     * If no anchor is needed/desired, insert the key with a null value.    * @return the details    */
-DECL|method|buildMonitorDetails (ClusterDescription clusterSpec)
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|MonitorDetail
-argument_list|>
-name|buildMonitorDetails
-parameter_list|(
-name|ClusterDescription
-name|clusterSpec
-parameter_list|)
-function_decl|;
-comment|/**    * Get a human friendly name for web UIs and messages    * @return a name string. Default is simply the service instance name.    */
-DECL|method|getHumanName ()
-name|String
-name|getHumanName
-parameter_list|()
-function_decl|;
-DECL|method|bind (StateAccessForProviders stateAccessor, QueueAccess queueAccess, List<Container> liveContainers)
-specifier|public
-name|void
-name|bind
+name|setAMState
 parameter_list|(
 name|StateAccessForProviders
-name|stateAccessor
-parameter_list|,
-name|QueueAccess
-name|queueAccess
-parameter_list|,
-name|List
-argument_list|<
-name|Container
-argument_list|>
-name|liveContainers
+name|stateAccessForProviders
 parameter_list|)
 function_decl|;
 comment|/**    * Bind to the YARN registry    * @param yarnRegistry YARN registry    */
@@ -599,63 +400,6 @@ name|bindToYarnRegistry
 parameter_list|(
 name|YarnRegistryViewForProviders
 name|yarnRegistry
-parameter_list|)
-function_decl|;
-comment|/**    * Build up the endpoint details for this service    * @param details    */
-DECL|method|buildEndpointDetails (Map<String, MonitorDetail> details)
-name|void
-name|buildEndpointDetails
-parameter_list|(
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|MonitorDetail
-argument_list|>
-name|details
-parameter_list|)
-function_decl|;
-comment|/**    * Prior to going live -register the initial service registry data    * @param amWebURI URL to the AM. This may be proxied, so use relative paths    * @param serviceRecord service record to build up    */
-DECL|method|applyInitialRegistryDefinitions (URL amWebURI, ServiceRecord serviceRecord)
-name|void
-name|applyInitialRegistryDefinitions
-parameter_list|(
-name|URL
-name|amWebURI
-parameter_list|,
-name|ServiceRecord
-name|serviceRecord
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-comment|/**    * Create the container release selector for this provider...any policy    * can be implemented    * @return the selector to use for choosing containers.    */
-DECL|method|createContainerReleaseSelector ()
-name|ContainerReleaseSelector
-name|createContainerReleaseSelector
-parameter_list|()
-function_decl|;
-comment|/**    * On AM restart (for whatever reason) this API is required to rebuild the AM    * internal state with the containers which were already assigned and running    *     * @param liveContainers    * @param applicationId    * @param providerRoles    */
-DECL|method|rebuildContainerDetails (List<Container> liveContainers, String applicationId, Map<Integer, ProviderRole> providerRoles)
-name|void
-name|rebuildContainerDetails
-parameter_list|(
-name|List
-argument_list|<
-name|Container
-argument_list|>
-name|liveContainers
-parameter_list|,
-name|String
-name|applicationId
-parameter_list|,
-name|Map
-argument_list|<
-name|Integer
-argument_list|,
-name|ProviderRole
-argument_list|>
-name|providerRoles
 parameter_list|)
 function_decl|;
 comment|/**    * Process container status    * @return true if status needs to be requested again, false otherwise    */

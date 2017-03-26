@@ -120,6 +120,18 @@ name|DEFAULT_YARN_QUEUE_PRIORITY
 init|=
 literal|1
 decl_stmt|;
+DECL|field|KEY_AM_RESOURCE_MEM
+name|String
+name|KEY_AM_RESOURCE_MEM
+init|=
+literal|"slider.am.resource.memory"
+decl_stmt|;
+DECL|field|DEFAULT_KEY_AM_RESOURCE_MEM
+name|long
+name|DEFAULT_KEY_AM_RESOURCE_MEM
+init|=
+literal|1024
+decl_stmt|;
 comment|/**    * The slider base path: {@value}    * Defaults to HomeDir/.slider    */
 DECL|field|KEY_SLIDER_BASE_PATH
 name|String

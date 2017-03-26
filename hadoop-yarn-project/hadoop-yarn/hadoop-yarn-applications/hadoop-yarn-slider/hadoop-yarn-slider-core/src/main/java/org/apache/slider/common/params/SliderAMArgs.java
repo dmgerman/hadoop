@@ -80,10 +80,10 @@ name|image
 return|;
 block|}
 comment|/**    * This is the URI in the FS to the Slider cluster; the conf file (and any    * other cluster-specifics) can be picked up here    */
-DECL|method|getSliderClusterURI ()
+DECL|method|getAppDefDir ()
 specifier|public
 name|String
-name|getSliderClusterURI
+name|getAppDefDir
 parameter_list|()
 block|{
 return|return

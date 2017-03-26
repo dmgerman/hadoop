@@ -20,36 +20,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|File
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|beust
@@ -74,13 +44,21 @@ end_import
 
 begin_import
 import|import
-name|com
+name|java
 operator|.
-name|beust
+name|util
 operator|.
-name|jcommander
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
 operator|.
-name|ParametersDelegate
+name|util
+operator|.
+name|List
 import|;
 end_import
 
@@ -107,11 +85,7 @@ specifier|public
 class|class
 name|ActionUpgradeArgs
 extends|extends
-name|AbstractClusterBuildingActionArgs
-implements|implements
-name|WaitTimeAccessor
-implements|,
-name|LaunchArgsAccessor
+name|AbstractActionArgs
 block|{
 annotation|@
 name|Override
@@ -127,162 +101,18 @@ operator|.
 name|ACTION_UPGRADE
 return|;
 block|}
-annotation|@
-name|ParametersDelegate
-DECL|field|launchArgs
-name|LaunchArgsDelegate
-name|launchArgs
-init|=
-operator|new
-name|LaunchArgsDelegate
-argument_list|()
-decl_stmt|;
-annotation|@
-name|Override
-DECL|method|getOutputFile ()
-specifier|public
-name|File
-name|getOutputFile
-parameter_list|()
-block|{
-return|return
-name|launchArgs
-operator|.
-name|getOutputFile
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|getRmAddress ()
-specifier|public
-name|String
-name|getRmAddress
-parameter_list|()
-block|{
-return|return
-name|launchArgs
-operator|.
-name|getRmAddress
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|getWaittime ()
-specifier|public
-name|int
-name|getWaittime
-parameter_list|()
-block|{
-return|return
-name|launchArgs
-operator|.
-name|getWaittime
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|setWaittime (int waittime)
-specifier|public
-name|void
-name|setWaittime
-parameter_list|(
-name|int
-name|waittime
-parameter_list|)
-block|{
-name|launchArgs
-operator|.
-name|setWaittime
-argument_list|(
-name|waittime
-argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|Parameter
-argument_list|(
-name|names
-operator|=
-block|{
-name|ARG_CONTAINERS
-block|}
-argument_list|,
-name|variableArity
-operator|=
-literal|true
-argument_list|,
-name|description
-operator|=
-literal|"stop specific containers"
-argument_list|)
-DECL|field|containers
-specifier|public
-name|List
-argument_list|<
-name|String
-argument_list|>
-name|containers
-init|=
-operator|new
-name|ArrayList
-argument_list|<>
-argument_list|(
-literal|0
-argument_list|)
-decl_stmt|;
-annotation|@
-name|Parameter
-argument_list|(
-name|names
-operator|=
-block|{
-name|ARG_COMPONENTS
-block|}
-argument_list|,
-name|variableArity
-operator|=
-literal|true
-argument_list|,
-name|description
-operator|=
-literal|"stop all containers of specific components"
-argument_list|)
-DECL|field|components
-specifier|public
-name|List
-argument_list|<
-name|String
-argument_list|>
-name|components
-init|=
-operator|new
-name|ArrayList
-argument_list|<>
-argument_list|(
-literal|0
-argument_list|)
-decl_stmt|;
-annotation|@
-name|Parameter
-argument_list|(
-name|names
-operator|=
-block|{
-name|ARG_FORCE
-block|}
-argument_list|,
-name|description
-operator|=
-literal|"force spec upgrade operation"
-argument_list|)
-DECL|field|force
-specifier|public
-name|boolean
-name|force
-decl_stmt|;
+comment|//  TODO upgrade container
+comment|//  @Parameter(names={ARG_CONTAINERS}, variableArity = true,
+comment|//             description = "stop specific containers")
+comment|//  public List<String> containers = new ArrayList<>(0);
+comment|//
+comment|//  @Parameter(names={ARG_COMPONENTS}, variableArity = true,
+comment|//      description = "stop all containers of specific components")
+comment|//  public List<String> components = new ArrayList<>(0);
+comment|//
+comment|//  @Parameter(names = {ARG_FORCE},
+comment|//      description = "force spec upgrade operation")
+comment|//  public boolean force;
 block|}
 end_class
 

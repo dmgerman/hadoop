@@ -82,20 +82,6 @@ name|slider
 operator|.
 name|api
 operator|.
-name|ClusterDescription
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|api
-operator|.
 name|ClusterNode
 import|;
 end_import
@@ -111,6 +97,22 @@ operator|.
 name|api
 operator|.
 name|StatusKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
+name|api
+operator|.
+name|resource
+operator|.
+name|Application
 import|;
 end_import
 
@@ -175,38 +177,6 @@ operator|.
 name|types
 operator|.
 name|RoleStatistics
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|core
-operator|.
-name|conf
-operator|.
-name|AggregateConf
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|core
-operator|.
-name|conf
-operator|.
-name|ConfTreeOperations
 import|;
 end_import
 
@@ -381,27 +351,9 @@ name|getLiveContainers
 parameter_list|()
 function_decl|;
 comment|/**    * Get the current cluster description     * @return the actual state of the cluster    */
-DECL|method|getClusterStatus ()
-name|ClusterDescription
-name|getClusterStatus
-parameter_list|()
-function_decl|;
-comment|/**    * Get at the snapshot of the resource config    * Changes here do not affect the application state.    * @return the most recent settings    */
-DECL|method|getResourcesSnapshot ()
-name|ConfTreeOperations
-name|getResourcesSnapshot
-parameter_list|()
-function_decl|;
-comment|/**    * Get at the snapshot of the appconf config    * Changes here do not affect the application state.    * @return the most recent settings    */
-DECL|method|getAppConfSnapshot ()
-name|ConfTreeOperations
-name|getAppConfSnapshot
-parameter_list|()
-function_decl|;
-comment|/**    * Get at the snapshot of the internals config.    * Changes here do not affect the application state.    * @return the internals settings    */
-DECL|method|getInternalsSnapshot ()
-name|ConfTreeOperations
-name|getInternalsSnapshot
+DECL|method|getApplication ()
+name|Application
+name|getApplication
 parameter_list|()
 function_decl|;
 comment|/**    * Flag set to indicate the application is live -this only happens    * after the buildInstance operation    */
@@ -410,24 +362,7 @@ name|boolean
 name|isApplicationLive
 parameter_list|()
 function_decl|;
-DECL|method|getSnapshotTime ()
-name|long
-name|getSnapshotTime
-parameter_list|()
-function_decl|;
-comment|/**    * Get a snapshot of the entire aggregate configuration    * @return the aggregate configuration    */
-DECL|method|getInstanceDefinitionSnapshot ()
-name|AggregateConf
-name|getInstanceDefinitionSnapshot
-parameter_list|()
-function_decl|;
-comment|/**    * Get the desired/unresolved value    * @return unresolved    */
-DECL|method|getUnresolvedInstanceDefinition ()
-name|AggregateConf
-name|getUnresolvedInstanceDefinition
-parameter_list|()
-function_decl|;
-comment|/**    * Look up a role from its key -or fail     *    * @param key key to resolve    * @return the status    * @throws YarnRuntimeException on no match    */
+comment|/**    * Look up a role from its key -or fail    *    * @param key key to resolve    * @return the status    * @throws YarnRuntimeException on no match    */
 DECL|method|lookupRoleStatus (int key)
 name|RoleStatus
 name|lookupRoleStatus
@@ -436,7 +371,7 @@ name|int
 name|key
 parameter_list|)
 function_decl|;
-comment|/**    * Look up a role from its key -or fail     *    * @param c container in a role    * @return the status    * @throws YarnRuntimeException on no match    */
+comment|/**    * Look up a role from its key -or fail    *    * @param c container in a role    * @return the status    * @throws YarnRuntimeException on no match    */
 DECL|method|lookupRoleStatus (Container c)
 name|RoleStatus
 name|lookupRoleStatus
@@ -530,34 +465,14 @@ parameter_list|)
 function_decl|;
 comment|/**    * Update the cluster description with anything interesting    */
 DECL|method|refreshClusterStatus ()
-name|ClusterDescription
+name|Application
 name|refreshClusterStatus
-parameter_list|()
-function_decl|;
-comment|/**    * Get a deep clone of the role status list. Concurrent events may mean this    * list (or indeed, some of the role status entries) may be inconsistent    * @return a snapshot of the role status entries    */
-DECL|method|cloneRoleStatusList ()
-name|List
-argument_list|<
-name|RoleStatus
-argument_list|>
-name|cloneRoleStatusList
 parameter_list|()
 function_decl|;
 comment|/**    * get application liveness information    * @return a snapshot of the current liveness information    */
 DECL|method|getApplicationLivenessInformation ()
 name|ApplicationLivenessInformation
 name|getApplicationLivenessInformation
-parameter_list|()
-function_decl|;
-comment|/**    * Get the live statistics map    * @return a map of statistics values, defined in the {@link StatusKeys}    * keylist.    */
-DECL|method|getLiveStatistics ()
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|Integer
-argument_list|>
-name|getLiveStatistics
 parameter_list|()
 function_decl|;
 comment|/**    * Get a snapshot of component information.    *<p>    *   This does<i>not</i> include any container list, which     *   is more expensive to create.    * @return a map of current role status values.    */

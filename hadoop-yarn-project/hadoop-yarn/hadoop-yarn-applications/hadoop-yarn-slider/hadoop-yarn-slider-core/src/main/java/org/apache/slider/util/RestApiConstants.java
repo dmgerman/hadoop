@@ -4,19 +4,15 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one or more
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.services.utils
+DECL|package|org.apache.slider.util
 package|package
 name|org
 operator|.
 name|apache
 operator|.
-name|hadoop
+name|slider
 operator|.
-name|yarn
-operator|.
-name|services
-operator|.
-name|utils
+name|util
 package|;
 end_package
 

@@ -18,6 +18,22 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|ApplicationConstants
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|util
@@ -102,7 +118,7 @@ DECL|field|SLIDER_DEPENDENCY_TAR_GZ_FILE_NAME
 name|String
 name|SLIDER_DEPENDENCY_TAR_GZ_FILE_NAME
 init|=
-literal|"slider"
+literal|"slider-dep"
 decl_stmt|;
 DECL|field|SLIDER_DEPENDENCY_TAR_GZ_FILE_EXT
 name|String
@@ -376,7 +392,7 @@ DECL|field|SUBMITTED_CONF_DIR
 name|String
 name|SUBMITTED_CONF_DIR
 init|=
-literal|"confdir"
+literal|"conf"
 decl_stmt|;
 comment|/**    * Slider AM log4j file name : {@value}    */
 DECL|field|LOG4J_SERVER_PROP_FILENAME
@@ -456,7 +472,7 @@ DECL|field|SLIDER_JAR
 name|String
 name|SLIDER_JAR
 init|=
-literal|"slider.jar"
+literal|"slider-core.jar"
 decl_stmt|;
 DECL|field|JCOMMANDER_JAR
 name|String
@@ -510,7 +526,14 @@ DECL|field|HADOOP_USER_NAME
 name|String
 name|HADOOP_USER_NAME
 init|=
-literal|"HADOOP_USER_NAME"
+name|ApplicationConstants
+operator|.
+name|Environment
+operator|.
+name|USER
+operator|.
+name|toString
+argument_list|()
 decl_stmt|;
 DECL|field|HADOOP_PROXY_USER
 name|String

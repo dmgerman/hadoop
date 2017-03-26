@@ -26,7 +26,9 @@ name|slider
 operator|.
 name|api
 operator|.
-name|ResourceKeys
+name|resource
+operator|.
+name|Component
 import|;
 end_import
 
@@ -81,43 +83,12 @@ specifier|final
 name|String
 name|labelExpression
 decl_stmt|;
-DECL|method|ProviderRole (String name, int id)
+DECL|field|component
 specifier|public
-name|ProviderRole
-parameter_list|(
-name|String
-name|name
-parameter_list|,
-name|int
-name|id
-parameter_list|)
-block|{
-name|this
-argument_list|(
-name|name
-argument_list|,
-name|name
-argument_list|,
-name|id
-argument_list|,
-name|PlacementPolicy
-operator|.
-name|DEFAULT
-argument_list|,
-name|ResourceKeys
-operator|.
-name|DEFAULT_NODE_FAILURE_THRESHOLD
-argument_list|,
-name|ResourceKeys
-operator|.
-name|DEFAULT_PLACEMENT_ESCALATE_DELAY_SECONDS
-argument_list|,
-name|ResourceKeys
-operator|.
-name|DEF_YARN_LABEL_EXPRESSION
-argument_list|)
-expr_stmt|;
-block|}
+specifier|final
+name|Component
+name|component
+decl_stmt|;
 comment|/**    * Create a provider role    * @param name role/component name    * @param id ID. This becomes the YARN priority    * @param policy placement policy    * @param nodeFailureThreshold threshold for node failures (within a reset interval)    * after which a node failure is considered an app failure    * @param placementTimeoutSeconds for lax placement, timeout in seconds before    * @param labelExpression label expression for requests; may be null    */
 DECL|method|ProviderRole (String name, int id, int policy, int nodeFailureThreshold, long placementTimeoutSeconds, String labelExpression)
 specifier|public
@@ -157,11 +128,13 @@ argument_list|,
 name|placementTimeoutSeconds
 argument_list|,
 name|labelExpression
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Create a provider role with a role group    * @param name role/component name    * @param group role/component group    * @param id ID. This becomes the YARN priority    * @param policy placement policy    * @param nodeFailureThreshold threshold for node failures (within a reset interval)    * after which a node failure is considered an app failure    * @param placementTimeoutSeconds for lax placement, timeout in seconds before    * @param labelExpression label expression for requests; may be null    */
-DECL|method|ProviderRole (String name, String group, int id, int policy, int nodeFailureThreshold, long placementTimeoutSeconds, String labelExpression)
+DECL|method|ProviderRole (String name, String group, int id, int policy, int nodeFailureThreshold, long placementTimeoutSeconds, String labelExpression, Component component)
 specifier|public
 name|ProviderRole
 parameter_list|(
@@ -185,6 +158,9 @@ name|placementTimeoutSeconds
 parameter_list|,
 name|String
 name|labelExpression
+parameter_list|,
+name|Component
+name|component
 parameter_list|)
 block|{
 name|this
@@ -245,6 +221,12 @@ operator|.
 name|labelExpression
 operator|=
 name|labelExpression
+expr_stmt|;
+name|this
+operator|.
+name|component
+operator|=
+name|component
 expr_stmt|;
 block|}
 annotation|@

@@ -124,30 +124,6 @@ name|StateAccessForProviders
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|server
-operator|.
-name|appmaster
-operator|.
-name|web
-operator|.
-name|rest
-operator|.
-name|application
-operator|.
-name|resources
-operator|.
-name|ContentCache
-import|;
-end_import
-
 begin_comment
 comment|/**  * Interface to pass information from the Slider AppMaster to the WebApp  */
 end_comment
@@ -186,12 +162,6 @@ comment|/**    * Get the queue accessor    * @return the immediate and scheduled
 DECL|method|getQueues ()
 name|QueueAccess
 name|getQueues
-parameter_list|()
-function_decl|;
-comment|/**    * Local cache of content    * @return the cache    */
-DECL|method|getContentCache ()
-name|ContentCache
-name|getContentCache
 parameter_list|()
 function_decl|;
 block|}

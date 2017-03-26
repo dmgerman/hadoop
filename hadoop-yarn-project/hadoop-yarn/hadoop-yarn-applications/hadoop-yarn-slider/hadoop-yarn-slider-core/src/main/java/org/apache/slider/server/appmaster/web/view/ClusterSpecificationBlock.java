@@ -163,7 +163,7 @@ block|{
 return|return
 name|appState
 operator|.
-name|getClusterStatus
+name|getApplication
 argument_list|()
 operator|.
 name|toString

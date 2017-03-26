@@ -168,16 +168,6 @@ operator|new
 name|ActionAMSuicideArgs
 argument_list|()
 decl_stmt|;
-DECL|field|actionBuildArgs
-specifier|private
-specifier|final
-name|ActionBuildArgs
-name|actionBuildArgs
-init|=
-operator|new
-name|ActionBuildArgs
-argument_list|()
-decl_stmt|;
 DECL|field|actionClientArgs
 specifier|private
 specifier|final
@@ -489,8 +479,6 @@ name|addActions
 argument_list|(
 name|actionAMSuicideArgs
 argument_list|,
-name|actionBuildArgs
-argument_list|,
 name|actionClientArgs
 argument_list|,
 name|actionCreateArgs
@@ -662,16 +650,6 @@ parameter_list|()
 block|{
 return|return
 name|actionAMSuicideArgs
-return|;
-block|}
-DECL|method|getActionBuildArgs ()
-specifier|public
-name|ActionBuildArgs
-name|getActionBuildArgs
-parameter_list|()
-block|{
-return|return
-name|actionBuildArgs
 return|;
 block|}
 DECL|method|getActionInstallPackageArgs ()
@@ -952,20 +930,6 @@ name|action
 condition|)
 block|{
 case|case
-name|ACTION_BUILD
-case|:
-name|bindCoreAction
-argument_list|(
-name|actionBuildArgs
-argument_list|)
-expr_stmt|;
-comment|//its a builder, so set those actions too
-name|buildingActionArgs
-operator|=
-name|actionBuildArgs
-expr_stmt|;
-break|break;
-case|case
 name|ACTION_CREATE
 case|:
 name|bindCoreAction
@@ -980,7 +944,7 @@ name|actionCreateArgs
 expr_stmt|;
 break|break;
 case|case
-name|ACTION_FREEZE
+name|ACTION_STOP
 case|:
 name|bindCoreAction
 argument_list|(
@@ -989,7 +953,7 @@ argument_list|)
 expr_stmt|;
 break|break;
 case|case
-name|ACTION_THAW
+name|ACTION_START
 case|:
 name|bindCoreAction
 argument_list|(

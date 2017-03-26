@@ -63,7 +63,7 @@ operator|=
 block|{
 name|SliderActions
 operator|.
-name|ACTION_FREEZE
+name|ACTION_STOP
 block|}
 argument_list|,
 name|commandDescription
@@ -92,7 +92,7 @@ block|{
 return|return
 name|SliderActions
 operator|.
-name|ACTION_FREEZE
+name|ACTION_STOP
 return|;
 block|}
 DECL|field|FREEZE_COMMAND_ISSUED

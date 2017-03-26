@@ -48,6 +48,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|Path
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -68,6 +82,12 @@ name|SliderFileSystem
 extends|extends
 name|CoreFileSystem
 block|{
+DECL|field|appDir
+name|Path
+name|appDir
+init|=
+literal|null
+decl_stmt|;
 DECL|method|SliderFileSystem (FileSystem fileSystem, Configuration configuration)
 specifier|public
 name|SliderFileSystem
@@ -102,6 +122,34 @@ argument_list|(
 name|configuration
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|setAppDir (Path appDir)
+specifier|public
+name|void
+name|setAppDir
+parameter_list|(
+name|Path
+name|appDir
+parameter_list|)
+block|{
+name|this
+operator|.
+name|appDir
+operator|=
+name|appDir
+expr_stmt|;
+block|}
+DECL|method|getAppDir ()
+specifier|public
+name|Path
+name|getAppDir
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|appDir
+return|;
 block|}
 block|}
 end_class

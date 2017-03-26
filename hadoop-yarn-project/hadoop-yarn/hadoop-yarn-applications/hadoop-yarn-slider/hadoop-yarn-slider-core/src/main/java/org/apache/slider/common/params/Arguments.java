@@ -88,6 +88,12 @@ name|ARG_COMPONENT
 init|=
 literal|"--component"
 decl_stmt|;
+DECL|field|ARG_COUNT
+name|String
+name|ARG_COUNT
+init|=
+literal|"--count"
+decl_stmt|;
 DECL|field|ARG_COMPONENT_SHORT
 name|String
 name|ARG_COMPONENT_SHORT

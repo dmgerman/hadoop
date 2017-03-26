@@ -601,13 +601,10 @@ name|AggregateConf
 name|getAggregateConf
 parameter_list|()
 block|{
+comment|//TODO
 return|return
-name|slider
-operator|.
-name|getAppState
-argument_list|()
-operator|.
-name|getInstanceDefinitionSnapshot
+operator|new
+name|AggregateConf
 argument_list|()
 return|;
 block|}

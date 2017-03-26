@@ -28,6 +28,22 @@ name|apache
 operator|.
 name|slider
 operator|.
+name|api
+operator|.
+name|proto
+operator|.
+name|Messages
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
 name|core
 operator|.
 name|conf
@@ -90,13 +106,14 @@ name|ActionFlexCluster
 extends|extends
 name|AsyncAction
 block|{
-DECL|field|resources
-specifier|public
+DECL|field|requestProto
 specifier|final
-name|ConfTree
-name|resources
+name|Messages
+operator|.
+name|FlexComponentRequestProto
+name|requestProto
 decl_stmt|;
-DECL|method|ActionFlexCluster (String name, long delay, TimeUnit timeUnit, ConfTree resources)
+DECL|method|ActionFlexCluster (String name, long delay, TimeUnit timeUnit, Messages.FlexComponentRequestProto requestProto)
 specifier|public
 name|ActionFlexCluster
 parameter_list|(
@@ -109,8 +126,10 @@ parameter_list|,
 name|TimeUnit
 name|timeUnit
 parameter_list|,
-name|ConfTree
-name|resources
+name|Messages
+operator|.
+name|FlexComponentRequestProto
+name|requestProto
 parameter_list|)
 block|{
 name|super
@@ -126,9 +145,9 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|resources
+name|requestProto
 operator|=
-name|resources
+name|requestProto
 expr_stmt|;
 block|}
 annotation|@
@@ -154,7 +173,7 @@ name|appMaster
 operator|.
 name|flexCluster
 argument_list|(
-name|resources
+name|requestProto
 argument_list|)
 expr_stmt|;
 block|}

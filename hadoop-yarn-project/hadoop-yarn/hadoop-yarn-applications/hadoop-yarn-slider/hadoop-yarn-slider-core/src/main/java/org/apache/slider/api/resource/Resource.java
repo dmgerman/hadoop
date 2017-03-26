@@ -124,7 +124,7 @@ specifier|private
 name|Integer
 name|cpus
 init|=
-literal|null
+literal|1
 decl_stmt|;
 DECL|field|memory
 specifier|private

@@ -214,17 +214,6 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Put an updated resources structure. This triggers a cluster flex    * operation    * @param updated updated resources    * @throws IOException on any problem.    */
-DECL|method|putDesiredResources (ConfTree updated)
-name|void
-name|putDesiredResources
-parameter_list|(
-name|ConfTree
-name|updated
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
 comment|/**    * Get the aggregate resolved model    * @return the aggregate configuration of what was asked for    * -after resolution has taken place    * @throws IOException on any failure    */
 DECL|method|getResolvedModel ()
 name|AggregateConf

@@ -61,7 +61,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Refresh the aggregate desired model via  * {@link StateAccessForProviders#getInstanceDefinitionSnapshot()}  */
+comment|/**  * Refresh the aggregate desired model via  */
 end_comment
 
 begin_class
@@ -122,16 +122,8 @@ throws|throws
 name|Exception
 block|{
 return|return
-name|resolved
-condition|?
-name|state
-operator|.
-name|getInstanceDefinitionSnapshot
-argument_list|()
-else|:
-name|state
-operator|.
-name|getUnresolvedInstanceDefinition
+operator|new
+name|AggregateConf
 argument_list|()
 return|;
 block|}

@@ -73,7 +73,7 @@ operator|=
 block|{
 name|SliderActions
 operator|.
-name|ACTION_THAW
+name|ACTION_START
 block|}
 argument_list|,
 name|commandDescription
@@ -104,7 +104,7 @@ block|{
 return|return
 name|SliderActions
 operator|.
-name|ACTION_THAW
+name|ACTION_START
 return|;
 block|}
 annotation|@

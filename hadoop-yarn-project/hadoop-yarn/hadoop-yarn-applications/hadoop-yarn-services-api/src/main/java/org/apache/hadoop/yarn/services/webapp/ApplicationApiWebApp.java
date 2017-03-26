@@ -26,13 +26,9 @@ name|org
 operator|.
 name|apache
 operator|.
-name|hadoop
+name|slider
 operator|.
-name|yarn
-operator|.
-name|services
-operator|.
-name|utils
+name|util
 operator|.
 name|RestApiConstants
 operator|.

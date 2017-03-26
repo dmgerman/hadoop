@@ -628,22 +628,6 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Any provider-side alteration of a configuration can take place here.    * @param aggregateConf config to patch    * @throws IOException IO problems    * @throws SliderException Slider-specific issues    */
-DECL|method|prepareInstanceConfiguration (AggregateConf aggregateConf)
-specifier|public
-name|void
-name|prepareInstanceConfiguration
-parameter_list|(
-name|AggregateConf
-name|aggregateConf
-parameter_list|)
-throws|throws
-name|SliderException
-throws|,
-name|IOException
-block|{
-comment|//default: do nothing
-block|}
 comment|/**    * Prepare the AM settings for launch    * @param fileSystem filesystem    * @param serviceConf configuration of the client    * @param launcher launcher to set up    * @param instanceDescription instance description being launched    * @param snapshotConfDirPath    * @param generatedConfDirPath    * @param clientConfExtras    * @param libdir    * @param tempPath    * @param miniClusterTestRun flag set to true on a mini cluster run    * @throws IOException    * @throws SliderException    */
 DECL|method|prepareAMAndConfigForLaunch (SliderFileSystem fileSystem, Configuration serviceConf, AbstractLauncher launcher, AggregateConf instanceDescription, Path snapshotConfDirPath, Path generatedConfDirPath, Configuration clientConfExtras, String libdir, Path tempPath, boolean miniClusterTestRun)
 specifier|public
@@ -868,6 +852,7 @@ block|}
 comment|/**    * Generates a fixed format of application tags given one or more of    * application name, version and description. This allows subsequent query for    * an application with a name only, version only or description only or any    * combination of those as filters.    *    * @param appName name of the application    * @param appVersion version of the application    * @param appDescription brief description of the application    * @return    */
 DECL|method|createApplicationTags (String appName, String appVersion, String appDescription)
 specifier|public
+specifier|static
 specifier|final
 name|Set
 argument_list|<

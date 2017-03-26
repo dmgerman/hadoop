@@ -255,7 +255,7 @@ literal|0
 argument_list|)
 return|;
 block|}
-comment|/**    -D name=value     Define an HBase configuration option which overrides any options in    the configuration XML files of the image or in the image configuration    directory. The values will be persisted.    Configuration options are only passed to the cluster when creating or reconfiguring a cluster.     */
+comment|/**    -D name=value     Define an configuration option which overrides any options in    the configuration XML files of the image or in the image configuration    directory. The values will be persisted.    Configuration options are only passed to the cluster when creating or reconfiguring a cluster.     */
 annotation|@
 name|Parameter
 argument_list|(

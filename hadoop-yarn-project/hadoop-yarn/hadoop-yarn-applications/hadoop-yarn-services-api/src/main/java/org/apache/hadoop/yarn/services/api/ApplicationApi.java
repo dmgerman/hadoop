@@ -76,14 +76,6 @@ name|String
 name|state
 parameter_list|)
 function_decl|;
-DECL|method|getApplication (String appName)
-name|Response
-name|getApplication
-parameter_list|(
-name|String
-name|appName
-parameter_list|)
-function_decl|;
 DECL|method|deleteApplication (String appName)
 name|Response
 name|deleteApplication

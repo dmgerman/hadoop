@@ -110,6 +110,22 @@ name|slider
 operator|.
 name|api
 operator|.
+name|resource
+operator|.
+name|Application
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
+name|api
+operator|.
 name|types
 operator|.
 name|NodeInformationList
@@ -562,24 +578,8 @@ name|SliderClientAPI
 extends|extends
 name|Service
 block|{
-comment|/**    * Destroy a cluster. There's two race conditions here    * #1 the cluster is started between verifying that there are no live    * clusters of that name.    */
-DECL|method|actionDestroy (String clustername, ActionDestroyArgs destroyArgs)
-name|int
-name|actionDestroy
-parameter_list|(
-name|String
-name|clustername
-parameter_list|,
-name|ActionDestroyArgs
-name|destroyArgs
-parameter_list|)
-throws|throws
-name|YarnException
-throws|,
-name|IOException
-function_decl|;
 DECL|method|actionDestroy (String clustername)
-name|int
+name|void
 name|actionDestroy
 parameter_list|(
 name|String
@@ -616,22 +616,6 @@ name|provider
 parameter_list|)
 throws|throws
 name|SliderException
-function_decl|;
-comment|/**    * Build up the cluster specification/directory    *    * @param clustername cluster name    * @param buildInfo the arguments needed to build the cluster    * @throws YarnException Yarn problems    * @throws IOException other problems    * @throws BadCommandArgumentsException bad arguments.    */
-DECL|method|actionBuild (String clustername, AbstractClusterBuildingActionArgs buildInfo)
-name|int
-name|actionBuild
-parameter_list|(
-name|String
-name|clustername
-parameter_list|,
-name|AbstractClusterBuildingActionArgs
-name|buildInfo
-parameter_list|)
-throws|throws
-name|YarnException
-throws|,
-name|IOException
 function_decl|;
 comment|/**    * Upload keytab to a designated sub-directory of the user home directory    *    * @param installKeytabInfo the arguments needed to upload the keytab    * @throws YarnException Yarn problems    * @throws IOException other problems    * @throws BadCommandArgumentsException bad arguments.    * @deprecated use #actionKeytab    */
 DECL|method|actionInstallKeytab (ActionInstallKeytabArgs installKeytabInfo)
@@ -743,29 +727,6 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    * Get the report of a this application    * @return the app report or null if it could not be found.    * @throws IOException    * @throws YarnException    */
-DECL|method|getApplicationReport ()
-name|ApplicationReport
-name|getApplicationReport
-parameter_list|()
-throws|throws
-name|IOException
-throws|,
-name|YarnException
-function_decl|;
-comment|/**    * Kill the submitted application via YARN    * @throws YarnException    * @throws IOException    */
-DECL|method|forceKillApplication (String reason)
-name|boolean
-name|forceKillApplication
-parameter_list|(
-name|String
-name|reason
-parameter_list|)
-throws|throws
-name|YarnException
-throws|,
-name|IOException
-function_decl|;
 comment|/**    * Implement the list action: list all nodes    * @return exit code of 0 if a list was created    */
 DECL|method|actionList (String clustername, ActionListArgs args)
 name|int
@@ -782,33 +743,8 @@ name|IOException
 throws|,
 name|YarnException
 function_decl|;
-comment|/**    * Enumerate slider instances for the current user, and the    * most recent app report, where available.    * @param listOnlyInState boolean to indicate that the instances should    * only include those in a YARN state    *<code> minAppState&lt;= currentState&lt;= maxAppState</code>    *    * @param minAppState minimum application state to include in enumeration.    * @param maxAppState maximum application state to include    * @return a map of application instance name to description    * @throws IOException Any IO problem    * @throws YarnException YARN problems    */
-DECL|method|enumSliderInstances ( boolean listOnlyInState, YarnApplicationState minAppState, YarnApplicationState maxAppState)
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|SliderInstanceDescription
-argument_list|>
-name|enumSliderInstances
-parameter_list|(
-name|boolean
-name|listOnlyInState
-parameter_list|,
-name|YarnApplicationState
-name|minAppState
-parameter_list|,
-name|YarnApplicationState
-name|maxAppState
-parameter_list|)
-throws|throws
-name|IOException
-throws|,
-name|YarnException
-function_decl|;
-comment|/**    * Implement the islive action: probe for a cluster of the given name existing    * @return exit code    */
 DECL|method|actionFlex (String name, ActionFlexArgs args)
-name|int
+name|void
 name|actionFlex
 parameter_list|(
 name|String
@@ -888,7 +824,7 @@ name|IOException
 function_decl|;
 comment|/**    * Status operation which returns the status object as a string instead of    * printing it to the console or file.    *    * @param clustername cluster name    * @return cluster status details    * @throws YarnException    * @throws IOException    */
 DECL|method|actionStatus (String clustername)
-name|String
+name|Application
 name|actionStatus
 parameter_list|(
 name|String
@@ -906,9 +842,9 @@ name|actionVersion
 parameter_list|()
 function_decl|;
 comment|/**    * Stop the cluster    *    * @param clustername cluster name    * @param freezeArgs arguments to the stop    * @return EXIT_SUCCESS if the cluster was not running by the end of the operation    */
-DECL|method|actionFreeze (String clustername, ActionFreezeArgs freezeArgs)
-name|int
-name|actionFreeze
+DECL|method|actionStop (String clustername, ActionFreezeArgs freezeArgs)
+name|void
+name|actionStop
 parameter_list|(
 name|String
 name|clustername
@@ -922,9 +858,9 @@ throws|,
 name|IOException
 function_decl|;
 comment|/**    * Restore a cluster    */
-DECL|method|actionThaw (String clustername, ActionThawArgs thaw)
+DECL|method|actionStart (String clustername, ActionThawArgs thaw)
 name|int
-name|actionThaw
+name|actionStart
 parameter_list|(
 name|String
 name|clustername

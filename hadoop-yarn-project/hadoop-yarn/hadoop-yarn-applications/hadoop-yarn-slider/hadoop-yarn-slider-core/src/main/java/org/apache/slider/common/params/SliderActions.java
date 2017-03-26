@@ -100,9 +100,9 @@ name|ACTION_FLEX
 init|=
 literal|"flex"
 decl_stmt|;
-DECL|field|ACTION_FREEZE
+DECL|field|ACTION_STOP
 name|String
-name|ACTION_FREEZE
+name|ACTION_STOP
 init|=
 literal|"stop"
 decl_stmt|;
@@ -202,9 +202,9 @@ name|ACTION_STATUS
 init|=
 literal|"status"
 decl_stmt|;
-DECL|field|ACTION_THAW
+DECL|field|ACTION_START
 name|String
-name|ACTION_THAW
+name|ACTION_START
 init|=
 literal|"start"
 decl_stmt|;
@@ -254,7 +254,7 @@ DECL|field|DESCRIBE_ACTION_UPGRADE
 name|String
 name|DESCRIBE_ACTION_UPGRADE
 init|=
-literal|"Rolling upgrade/downgrade the application to a newer/previous version"
+literal|"Rolling upgrade/downgrade the component/containerto a newer/previous version"
 decl_stmt|;
 DECL|field|DESCRIBE_ACTION_DESTROY
 name|String

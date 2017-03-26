@@ -206,6 +206,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
+name|providers
+operator|.
+name|ProviderRole
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|util
@@ -251,6 +265,11 @@ DECL|field|container
 specifier|public
 name|Container
 name|container
+decl_stmt|;
+DECL|field|providerRole
+specifier|public
+name|ProviderRole
+name|providerRole
 decl_stmt|;
 comment|/**    * Container ID    */
 DECL|field|id

@@ -198,7 +198,7 @@ name|slider
 operator|.
 name|api
 operator|.
-name|ClusterDescription
+name|ClusterNode
 import|;
 end_import
 
@@ -212,7 +212,9 @@ name|slider
 operator|.
 name|api
 operator|.
-name|ClusterNode
+name|resource
+operator|.
+name|Application
 import|;
 end_import
 
@@ -975,28 +977,13 @@ block|}
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|ClusterDescription
-name|desc
+name|Application
+name|application
 init|=
 name|appState
 operator|.
-name|getClusterStatus
+name|getApplication
 argument_list|()
-decl_stmt|;
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|String
-argument_list|>
-name|options
-init|=
-name|desc
-operator|.
-name|getRole
-argument_list|(
-name|name
-argument_list|)
 decl_stmt|;
 name|Iterable
 argument_list|<
@@ -1009,32 +996,6 @@ argument_list|>
 argument_list|>
 name|tableContent
 decl_stmt|;
-comment|// Generate the pairs of data in the expected form
-if|if
-condition|(
-literal|null
-operator|!=
-name|options
-condition|)
-block|{
-name|tableContent
-operator|=
-name|Iterables
-operator|.
-name|transform
-argument_list|(
-name|options
-operator|.
-name|entrySet
-argument_list|()
-argument_list|,
-name|stringStringPairFunc
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-comment|// Or catch that we have no options and provide "empty"
 name|tableContent
 operator|=
 name|Collections
@@ -1042,7 +1003,6 @@ operator|.
 name|emptySet
 argument_list|()
 expr_stmt|;
-block|}
 comment|// Generate the options used by this role
 name|generateRoleDetails
 argument_list|(

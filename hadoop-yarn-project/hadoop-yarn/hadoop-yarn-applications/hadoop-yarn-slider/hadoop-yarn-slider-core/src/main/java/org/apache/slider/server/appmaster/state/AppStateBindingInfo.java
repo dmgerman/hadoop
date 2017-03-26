@@ -120,11 +120,11 @@ name|apache
 operator|.
 name|slider
 operator|.
-name|core
+name|api
 operator|.
-name|conf
+name|resource
 operator|.
-name|AggregateConf
+name|Application
 import|;
 end_import
 
@@ -192,11 +192,6 @@ specifier|public
 class|class
 name|AppStateBindingInfo
 block|{
-DECL|field|instanceDefinition
-specifier|public
-name|AggregateConf
-name|instanceDefinition
-decl_stmt|;
 DECL|field|serviceConfig
 specifier|public
 name|Configuration
@@ -206,16 +201,12 @@ operator|new
 name|Configuration
 argument_list|()
 decl_stmt|;
-DECL|field|publishedProviderConf
+DECL|field|application
 specifier|public
-name|Configuration
-name|publishedProviderConf
+name|Application
+name|application
 init|=
-operator|new
-name|Configuration
-argument_list|(
-literal|false
-argument_list|)
+literal|null
 decl_stmt|;
 DECL|field|roles
 specifier|public
@@ -255,21 +246,6 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
-DECL|field|applicationInfo
-specifier|public
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|String
-argument_list|>
-name|applicationInfo
-init|=
-operator|new
-name|HashMap
-argument_list|<>
-argument_list|()
-decl_stmt|;
 DECL|field|releaseSelector
 specifier|public
 name|ContainerReleaseSelector
@@ -307,33 +283,11 @@ name|Preconditions
 operator|.
 name|checkArgument
 argument_list|(
-name|instanceDefinition
-operator|!=
-literal|null
-argument_list|,
-literal|"null instanceDefinition"
-argument_list|)
-expr_stmt|;
-name|Preconditions
-operator|.
-name|checkArgument
-argument_list|(
 name|serviceConfig
 operator|!=
 literal|null
 argument_list|,
 literal|"null appmasterConfig"
-argument_list|)
-expr_stmt|;
-name|Preconditions
-operator|.
-name|checkArgument
-argument_list|(
-name|publishedProviderConf
-operator|!=
-literal|null
-argument_list|,
-literal|"null publishedProviderConf"
 argument_list|)
 expr_stmt|;
 name|Preconditions
@@ -389,6 +343,17 @@ operator|!=
 literal|null
 argument_list|,
 literal|"null nodeReports"
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|application
+operator|!=
+literal|null
+argument_list|,
+literal|"null application"
 argument_list|)
 expr_stmt|;
 block|}

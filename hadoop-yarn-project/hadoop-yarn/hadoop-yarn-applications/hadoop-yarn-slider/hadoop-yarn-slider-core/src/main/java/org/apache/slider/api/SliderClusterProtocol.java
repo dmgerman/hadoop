@@ -161,16 +161,15 @@ name|IOException
 throws|,
 name|YarnException
 function_decl|;
-comment|/**    * Flex the cluster.     */
-DECL|method|flexCluster (Messages.FlexClusterRequestProto request)
+DECL|method|flexComponent ( Messages.FlexComponentRequestProto request)
 name|Messages
 operator|.
-name|FlexClusterResponseProto
-name|flexCluster
+name|FlexComponentResponseProto
+name|flexComponent
 parameter_list|(
 name|Messages
 operator|.
-name|FlexClusterRequestProto
+name|FlexComponentRequestProto
 name|request
 parameter_list|)
 throws|throws
@@ -292,23 +291,6 @@ name|request
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    * Get the instance definition    */
-DECL|method|getInstanceDefinition ( Messages.GetInstanceDefinitionRequestProto request)
-name|Messages
-operator|.
-name|GetInstanceDefinitionResponseProto
-name|getInstanceDefinition
-parameter_list|(
-name|Messages
-operator|.
-name|GetInstanceDefinitionRequestProto
-name|request
-parameter_list|)
-throws|throws
-name|IOException
-throws|,
-name|YarnException
 function_decl|;
 comment|/**    * Get the application liveness    * @return current liveness information    * @throws IOException    */
 DECL|method|getLivenessInformation ( Messages.GetApplicationLivenessRequestProto request )

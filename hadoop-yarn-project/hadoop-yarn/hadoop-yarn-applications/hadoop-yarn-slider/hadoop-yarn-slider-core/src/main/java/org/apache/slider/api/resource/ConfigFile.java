@@ -58,6 +58,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Objects
 import|;
 end_import
@@ -291,7 +301,12 @@ literal|null
 decl_stmt|;
 DECL|field|props
 specifier|private
-name|Object
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
 name|props
 init|=
 literal|null
@@ -427,7 +442,7 @@ operator|=
 name|destFile
 expr_stmt|;
 block|}
-comment|/**    * Required for type template. This provides the source location of the    * template which needs to be mounted as dest_file post property    * substitutions. Typically the src_file would point to a source controlled    * network accessible file maintained by tools like puppet, chef, etc.    **/
+comment|/**    * TODO this probably is not required for non-template configs. It is now used as symlink for localization for non-template configs - we could infer the name from destFile instead    *    * Required for type template. This provides the source location of the    * template which needs to be mounted as dest_file post property    * substitutions. Typically the src_file would point to a source controlled    * network accessible file maintained by tools like puppet, chef, etc.    **/
 DECL|method|srcFile (String srcFile)
 specifier|public
 name|ConfigFile
@@ -497,12 +512,17 @@ name|srcFile
 expr_stmt|;
 block|}
 comment|/**    * A blob of key value pairs that will be dumped in the dest_file in the    * format as specified in type. If the type is template then the attribute    * src_file is mandatory and the src_file content is dumped to dest_file post    * property substitutions.    **/
-DECL|method|props (Object props)
+DECL|method|props (Map<String, String> props)
 specifier|public
 name|ConfigFile
 name|props
 parameter_list|(
-name|Object
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
 name|props
 parameter_list|)
 block|{
@@ -534,7 +554,12 @@ literal|"props"
 argument_list|)
 DECL|method|getProps ()
 specifier|public
-name|Object
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
 name|getProps
 parameter_list|()
 block|{
@@ -542,12 +567,17 @@ return|return
 name|props
 return|;
 block|}
-DECL|method|setProps (Object props)
+DECL|method|setProps (Map<String, String> props)
 specifier|public
 name|void
 name|setProps
 parameter_list|(
-name|Object
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
 name|props
 parameter_list|)
 block|{
@@ -557,6 +587,91 @@ name|props
 operator|=
 name|props
 expr_stmt|;
+block|}
+DECL|method|getLong (String name, long defaultValue)
+specifier|public
+name|long
+name|getLong
+parameter_list|(
+name|String
+name|name
+parameter_list|,
+name|long
+name|defaultValue
+parameter_list|)
+block|{
+if|if
+condition|(
+name|name
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+name|defaultValue
+return|;
+block|}
+name|String
+name|value
+init|=
+name|props
+operator|.
+name|get
+argument_list|(
+name|name
+operator|.
+name|trim
+argument_list|()
+argument_list|)
+decl_stmt|;
+return|return
+name|Long
+operator|.
+name|parseLong
+argument_list|(
+name|value
+argument_list|)
+return|;
+block|}
+DECL|method|getBoolean (String name, boolean defaultValue)
+specifier|public
+name|boolean
+name|getBoolean
+parameter_list|(
+name|String
+name|name
+parameter_list|,
+name|boolean
+name|defaultValue
+parameter_list|)
+block|{
+if|if
+condition|(
+name|name
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+name|defaultValue
+return|;
+block|}
+return|return
+name|Boolean
+operator|.
+name|valueOf
+argument_list|(
+name|props
+operator|.
+name|get
+argument_list|(
+name|name
+operator|.
+name|trim
+argument_list|()
+argument_list|)
+argument_list|)
+return|;
 block|}
 annotation|@
 name|Override

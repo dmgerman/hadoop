@@ -196,6 +196,36 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|metrics2
+operator|.
+name|MetricsSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|metrics2
+operator|.
+name|lib
+operator|.
+name|DefaultMetricsSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|registry
 operator|.
 name|client
@@ -756,6 +786,24 @@ name|client
 operator|.
 name|api
 operator|.
+name|YarnClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|client
+operator|.
+name|api
+operator|.
 name|async
 operator|.
 name|AMRMClientAsync
@@ -1012,20 +1060,6 @@ name|slider
 operator|.
 name|api
 operator|.
-name|ClusterDescription
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|api
-operator|.
 name|InternalKeys
 import|;
 end_import
@@ -1068,7 +1102,9 @@ name|slider
 operator|.
 name|api
 operator|.
-name|StatusKeys
+name|proto
+operator|.
+name|Messages
 import|;
 end_import
 
@@ -1096,9 +1132,11 @@ name|apache
 operator|.
 name|slider
 operator|.
-name|client
+name|api
 operator|.
-name|SliderYarnClientImpl
+name|resource
+operator|.
+name|Application
 import|;
 end_import
 
@@ -1284,57 +1322,9 @@ name|slider
 operator|.
 name|core
 operator|.
-name|buildutils
-operator|.
-name|InstanceIO
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|core
-operator|.
 name|conf
 operator|.
 name|AggregateConf
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|core
-operator|.
-name|conf
-operator|.
-name|ConfTree
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|core
-operator|.
-name|conf
-operator|.
-name|ConfTreeOperations
 import|;
 end_import
 
@@ -1508,6 +1498,22 @@ name|slider
 operator|.
 name|core
 operator|.
+name|persist
+operator|.
+name|JsonSerDeser
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
+name|core
+operator|.
 name|registry
 operator|.
 name|info
@@ -1569,38 +1575,6 @@ operator|.
 name|providers
 operator|.
 name|SliderProviderFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|providers
-operator|.
-name|slideram
-operator|.
-name|SliderAMClientProvider
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|providers
-operator|.
-name|slideram
-operator|.
-name|SliderAMProviderService
 import|;
 end_import
 
@@ -1978,24 +1952,6 @@ name|appmaster
 operator|.
 name|operations
 operator|.
-name|ProviderNotifyingOperationHandler
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|server
-operator|.
-name|appmaster
-operator|.
-name|operations
-operator|.
 name|RMOperationHandler
 import|;
 end_import
@@ -2141,6 +2097,24 @@ operator|.
 name|state
 operator|.
 name|ContainerAssignment
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
+name|server
+operator|.
+name|appmaster
+operator|.
+name|state
+operator|.
+name|MostRecentContainerReleaseSelector
 import|;
 end_import
 
@@ -2432,6 +2406,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|codehaus
+operator|.
+name|jackson
+operator|.
+name|map
+operator|.
+name|PropertyNamingStrategy
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -2484,16 +2472,6 @@ name|java
 operator|.
 name|net
 operator|.
-name|URI
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
 name|URL
 import|;
 end_import
@@ -2535,6 +2513,26 @@ operator|.
 name|util
 operator|.
 name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Date
 import|;
 end_import
 
@@ -2862,11 +2860,6 @@ specifier|private
 name|RMOperationHandler
 name|rmOperationHandler
 decl_stmt|;
-DECL|field|providerRMOperationHandler
-specifier|private
-name|RMOperationHandler
-name|providerRMOperationHandler
-decl_stmt|;
 comment|/** Handle to communicate with the Node Manager*/
 annotation|@
 name|SuppressWarnings
@@ -2883,6 +2876,10 @@ DECL|field|containerCredentials
 specifier|private
 name|Credentials
 name|containerCredentials
+init|=
+operator|new
+name|Credentials
+argument_list|()
 decl_stmt|;
 comment|/**    * Slider IPC: Real service handler    */
 DECL|field|sliderIPCService
@@ -3046,17 +3043,6 @@ argument_list|(
 literal|false
 argument_list|)
 decl_stmt|;
-comment|/**    * Flag to set if the process exit code was set before shutdown started    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"FieldAccessedSynchronizedAndUnsynchronized"
-argument_list|)
-DECL|field|spawnedProcessExitedBeforeShutdownTriggered
-specifier|private
-name|boolean
-name|spawnedProcessExitedBeforeShutdownTriggered
-decl_stmt|;
 comment|/** Arguments passed in : raw*/
 annotation|@
 name|SuppressWarnings
@@ -3155,11 +3141,6 @@ specifier|private
 name|InetSocketAddress
 name|rpcServiceAddress
 decl_stmt|;
-DECL|field|sliderAMProvider
-specifier|private
-name|SliderAMProviderService
-name|sliderAMProvider
-decl_stmt|;
 comment|/**    * Executor.    * Assigned in {@link #serviceInit(Configuration)}    */
 DECL|field|executorService
 specifier|private
@@ -3222,11 +3203,41 @@ specifier|private
 name|ContentCache
 name|contentCache
 decl_stmt|;
+DECL|field|jsonSerDeser
+specifier|private
+specifier|static
+specifier|final
+name|JsonSerDeser
+argument_list|<
+name|Application
+argument_list|>
+name|jsonSerDeser
+init|=
+operator|new
+name|JsonSerDeser
+argument_list|<
+name|Application
+argument_list|>
+argument_list|(
+name|Application
+operator|.
+name|class
+argument_list|,
+name|PropertyNamingStrategy
+operator|.
+name|CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES
+argument_list|)
+decl_stmt|;
 comment|/**    * resource limits    */
 DECL|field|maximumResourceCapability
 specifier|private
 name|Resource
 name|maximumResourceCapability
+decl_stmt|;
+DECL|field|application
+specifier|private
+name|Application
+name|application
 decl_stmt|;
 comment|/**    * Service Constructor    */
 DECL|method|SliderAppMaster ()
@@ -3947,117 +3958,95 @@ name|service
 return|;
 block|}
 comment|/* =================================================================== */
-comment|/**    * Create and run the cluster.    * @param clustername cluster name    * @return exit code    * @throws Throwable on a failure    */
-DECL|method|createAndRunCluster (String clustername)
+comment|/**    * Create and run the cluster.    * @param appName cluster name    * @return exit code    * @throws Throwable on a failure    */
+DECL|method|createAndRunCluster (String appName)
 specifier|private
 name|int
 name|createAndRunCluster
 parameter_list|(
 name|String
-name|clustername
+name|appName
 parameter_list|)
 throws|throws
 name|Throwable
 block|{
-comment|//load the cluster description from the cd argument
-name|String
-name|sliderClusterDir
+name|Path
+name|appDir
 init|=
+operator|new
+name|Path
+argument_list|(
+operator|(
 name|serviceArgs
 operator|.
-name|getSliderClusterURI
+name|getAppDefDir
 argument_list|()
-decl_stmt|;
-name|URI
-name|sliderClusterURI
-init|=
-operator|new
-name|URI
-argument_list|(
-name|sliderClusterDir
+operator|)
 argument_list|)
 decl_stmt|;
-name|Path
-name|clusterDirPath
-init|=
-operator|new
-name|Path
-argument_list|(
-name|sliderClusterURI
-argument_list|)
-decl_stmt|;
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"Application defined at {}"
-argument_list|,
-name|sliderClusterURI
-argument_list|)
-expr_stmt|;
 name|SliderFileSystem
 name|fs
 init|=
 name|getClusterFS
 argument_list|()
 decl_stmt|;
-comment|// build up information about the running application -this
-comment|// will be passed down to the cluster status
-name|MapOperations
-name|appInformation
+name|fs
+operator|.
+name|setAppDir
+argument_list|(
+name|appDir
+argument_list|)
+expr_stmt|;
+name|Path
+name|appJson
 init|=
 operator|new
-name|MapOperations
-argument_list|()
-decl_stmt|;
-name|AggregateConf
-name|instanceDefinition
-init|=
-name|InstanceIO
-operator|.
-name|loadInstanceDefinitionUnresolved
+name|Path
 argument_list|(
-name|fs
+name|appDir
 argument_list|,
-name|clusterDirPath
+name|appName
+operator|+
+literal|".json"
 argument_list|)
 decl_stmt|;
-name|instanceDefinition
+name|log
 operator|.
-name|setName
+name|info
 argument_list|(
-name|clustername
+literal|"Loading application definition from "
+operator|+
+name|appJson
+argument_list|)
+expr_stmt|;
+name|application
+operator|=
+name|jsonSerDeser
+operator|.
+name|load
+argument_list|(
+name|fs
+operator|.
+name|getFileSystem
+argument_list|()
+argument_list|,
+name|appJson
 argument_list|)
 expr_stmt|;
 name|log
 operator|.
 name|info
 argument_list|(
-literal|"Deploying cluster {}:"
-argument_list|,
-name|instanceDefinition
+literal|"Application Json: "
+operator|+
+name|application
 argument_list|)
-expr_stmt|;
-comment|// and resolve it
-name|AggregateConf
-name|resolvedInstance
-init|=
-operator|new
-name|AggregateConf
-argument_list|(
-name|instanceDefinition
-argument_list|)
-decl_stmt|;
-name|resolvedInstance
-operator|.
-name|resolve
-argument_list|()
 expr_stmt|;
 name|stateForProviders
 operator|.
 name|setApplicationName
 argument_list|(
-name|clustername
+name|appName
 argument_list|)
 expr_stmt|;
 name|Configuration
@@ -4066,243 +4055,9 @@ init|=
 name|getConfig
 argument_list|()
 decl_stmt|;
-comment|// extend AM configuration with component resource
-name|MapOperations
-name|amConfiguration
-init|=
-name|resolvedInstance
-operator|.
-name|getAppConfOperations
-argument_list|()
-operator|.
-name|getComponent
-argument_list|(
-name|COMPONENT_AM
-argument_list|)
-decl_stmt|;
-comment|// and patch configuration with prefix
-if|if
-condition|(
-name|amConfiguration
-operator|!=
-literal|null
-condition|)
-block|{
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|String
-argument_list|>
-name|sliderAppConfKeys
-init|=
-name|amConfiguration
-operator|.
-name|prefixedWith
-argument_list|(
-literal|"slider."
-argument_list|)
-decl_stmt|;
-for|for
-control|(
-name|Map
-operator|.
-name|Entry
-argument_list|<
-name|String
-argument_list|,
-name|String
-argument_list|>
-name|entry
-range|:
-name|sliderAppConfKeys
-operator|.
-name|entrySet
-argument_list|()
-control|)
-block|{
-name|String
-name|k
-init|=
-name|entry
-operator|.
-name|getKey
-argument_list|()
-decl_stmt|;
-name|String
-name|v
-init|=
-name|entry
-operator|.
-name|getValue
-argument_list|()
-decl_stmt|;
-name|boolean
-name|exists
-init|=
-name|serviceConf
-operator|.
-name|get
-argument_list|(
-name|k
-argument_list|)
-operator|!=
-literal|null
-decl_stmt|;
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"{} {} to {}"
-argument_list|,
-operator|(
-name|exists
-condition|?
-literal|"Overwriting"
-else|:
-literal|"Setting"
-operator|)
-argument_list|,
-name|k
-argument_list|,
-name|v
-argument_list|)
-expr_stmt|;
-name|serviceConf
-operator|.
-name|set
-argument_list|(
-name|k
-argument_list|,
-name|v
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-name|securityConfiguration
-operator|=
-operator|new
-name|SecurityConfiguration
-argument_list|(
-name|serviceConf
-argument_list|,
-name|resolvedInstance
-argument_list|,
-name|clustername
-argument_list|)
-expr_stmt|;
 comment|// obtain security state
-name|securityEnabled
-operator|=
-name|securityConfiguration
-operator|.
-name|isSecurityEnabled
-argument_list|()
-expr_stmt|;
 comment|// set the global security flag for the instance definition
-name|instanceDefinition
-operator|.
-name|getAppConfOperations
-argument_list|()
-operator|.
-name|set
-argument_list|(
-name|KEY_SECURITY_ENABLED
-argument_list|,
-name|securityEnabled
-argument_list|)
-expr_stmt|;
-comment|// triggers resolution and snapshotting for agent
-name|appState
-operator|.
-name|setInitialInstanceDefinition
-argument_list|(
-name|instanceDefinition
-argument_list|)
-expr_stmt|;
-name|File
-name|confDir
-init|=
-name|getLocalConfDir
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-operator|!
-name|confDir
-operator|.
-name|exists
-argument_list|()
-operator|||
-operator|!
-name|confDir
-operator|.
-name|isDirectory
-argument_list|()
-condition|)
-block|{
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"Conf dir {} does not exist."
-argument_list|,
-name|confDir
-argument_list|)
-expr_stmt|;
-name|File
-name|parentFile
-init|=
-name|confDir
-operator|.
-name|getParentFile
-argument_list|()
-decl_stmt|;
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"Parent dir {}:\n{}"
-argument_list|,
-name|parentFile
-argument_list|,
-name|SliderUtils
-operator|.
-name|listDir
-argument_list|(
-name|parentFile
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
 comment|//get our provider
-name|MapOperations
-name|globalInternalOptions
-init|=
-name|getGlobalInternalOptions
-argument_list|()
-decl_stmt|;
-name|String
-name|providerType
-init|=
-name|globalInternalOptions
-operator|.
-name|getMandatoryOption
-argument_list|(
-name|InternalKeys
-operator|.
-name|INTERNAL_PROVIDER_NAME
-argument_list|)
-decl_stmt|;
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"Cluster provider type is {}"
-argument_list|,
-name|providerType
-argument_list|)
-expr_stmt|;
 name|SliderProviderFactory
 name|factory
 init|=
@@ -4310,7 +4065,7 @@ name|SliderProviderFactory
 operator|.
 name|createSliderProviderFactory
 argument_list|(
-name|providerType
+literal|"docker"
 argument_list|)
 decl_stmt|;
 name|providerService
@@ -4324,26 +4079,6 @@ comment|// init the provider BUT DO NOT START IT YET
 name|initAndAddService
 argument_list|(
 name|providerService
-argument_list|)
-expr_stmt|;
-name|providerRMOperationHandler
-operator|=
-operator|new
-name|ProviderNotifyingOperationHandler
-argument_list|(
-name|providerService
-argument_list|)
-expr_stmt|;
-comment|// create a slider AM provider
-name|sliderAMProvider
-operator|=
-operator|new
-name|SliderAMProviderService
-argument_list|()
-expr_stmt|;
-name|initAndAddService
-argument_list|(
-name|sliderAMProvider
 argument_list|)
 expr_stmt|;
 name|InetSocketAddress
@@ -4478,48 +4213,6 @@ argument_list|,
 name|appid
 operator|.
 name|getId
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|appInformation
-operator|.
-name|put
-argument_list|(
-name|StatusKeys
-operator|.
-name|INFO_AM_CONTAINER_ID
-argument_list|,
-name|appMasterContainerID
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|appInformation
-operator|.
-name|put
-argument_list|(
-name|StatusKeys
-operator|.
-name|INFO_AM_APP_ID
-argument_list|,
-name|appid
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|appInformation
-operator|.
-name|put
-argument_list|(
-name|StatusKeys
-operator|.
-name|INFO_AM_ATTEMPT_ID
-argument_list|,
-name|appAttemptID
-operator|.
-name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4659,14 +4352,10 @@ block|}
 block|}
 comment|//bring up the Slider RPC service
 name|buildPortScanner
-argument_list|(
-name|instanceDefinition
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|startSliderRPCServer
-argument_list|(
-name|instanceDefinition
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|rpcServiceAddress
 operator|=
@@ -4707,28 +4396,6 @@ argument_list|,
 name|appMasterRpcPort
 argument_list|)
 expr_stmt|;
-name|appInformation
-operator|.
-name|put
-argument_list|(
-name|StatusKeys
-operator|.
-name|INFO_AM_HOSTNAME
-argument_list|,
-name|appMasterHostname
-argument_list|)
-expr_stmt|;
-name|appInformation
-operator|.
-name|set
-argument_list|(
-name|StatusKeys
-operator|.
-name|INFO_AM_RPC_PORT
-argument_list|,
-name|appMasterRpcPort
-argument_list|)
-expr_stmt|;
 name|log
 operator|.
 name|info
@@ -4758,41 +4425,11 @@ name|ProviderRole
 argument_list|>
 name|providerRoles
 init|=
-operator|new
-name|ArrayList
-argument_list|<>
-argument_list|(
-name|providerService
+name|Collections
 operator|.
-name|getRoles
-argument_list|()
-argument_list|)
+name|EMPTY_LIST
 decl_stmt|;
-name|providerRoles
-operator|.
-name|addAll
-argument_list|(
-name|SliderAMClientProvider
-operator|.
-name|ROLES
-argument_list|)
-expr_stmt|;
 comment|// Start up the WebApp and track the URL for it
-name|MapOperations
-name|component
-init|=
-name|instanceDefinition
-operator|.
-name|getAppConfOperations
-argument_list|()
-operator|.
-name|getComponent
-argument_list|(
-name|SliderKeys
-operator|.
-name|COMPONENT_AM
-argument_list|)
-decl_stmt|;
 comment|// Web service endpoints: initialize
 name|WebAppApiImpl
 name|webAppApi
@@ -4809,10 +4446,6 @@ argument_list|,
 name|metricsAndMonitoring
 argument_list|,
 name|actionQueues
-argument_list|,
-name|this
-argument_list|,
-name|contentCache
 argument_list|)
 decl_stmt|;
 name|initAMFilterOptions
@@ -4844,30 +4477,6 @@ operator|+
 literal|":"
 operator|+
 name|webAppPort
-expr_stmt|;
-name|appInformation
-operator|.
-name|put
-argument_list|(
-name|StatusKeys
-operator|.
-name|INFO_AM_WEB_URL
-argument_list|,
-name|appMasterTrackingUrl
-operator|+
-literal|"/"
-argument_list|)
-expr_stmt|;
-name|appInformation
-operator|.
-name|set
-argument_list|(
-name|StatusKeys
-operator|.
-name|INFO_AM_WEB_PORT
-argument_list|,
-name|webAppPort
-argument_list|)
 expr_stmt|;
 comment|// *****************************************************
 comment|// Register self with ResourceManager
@@ -4905,6 +4514,7 @@ operator|.
 name|getMaximumResourceCapability
 argument_list|()
 expr_stmt|;
+comment|//TODO should not read local configs !!!
 name|int
 name|minMemory
 init|=
@@ -4971,44 +4581,7 @@ argument_list|,
 name|maximumResourceCapability
 argument_list|)
 expr_stmt|;
-comment|// set the RM-defined maximum cluster values
-name|appInformation
-operator|.
-name|put
-argument_list|(
-name|ResourceKeys
-operator|.
-name|YARN_CORES
-argument_list|,
-name|Integer
-operator|.
-name|toString
-argument_list|(
-name|maxCores
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|appInformation
-operator|.
-name|put
-argument_list|(
-name|ResourceKeys
-operator|.
-name|YARN_MEMORY
-argument_list|,
-name|Integer
-operator|.
-name|toString
-argument_list|(
-name|maxMemory
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|processAMCredentials
-argument_list|(
-name|securityConfiguration
-argument_list|)
-expr_stmt|;
+comment|//      processAMCredentials(securityConfiguration);
 if|if
 condition|(
 name|securityEnabled
@@ -5068,6 +4641,7 @@ operator|.
 name|getPrincipal
 argument_list|()
 decl_stmt|;
+comment|//TODO read key tab file from slider-am.xml
 name|File
 name|localKeytabFile
 init|=
@@ -5075,7 +4649,9 @@ name|securityConfiguration
 operator|.
 name|getKeytabFile
 argument_list|(
-name|instanceDefinition
+operator|new
+name|AggregateConf
+argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// Now log in...
@@ -5101,7 +4677,7 @@ block|}
 comment|// YARN client.
 comment|// Important: this is only valid at startup, and must be executed within
 comment|// the right UGI context. Use with care.
-name|SliderYarnClientImpl
+name|YarnClient
 name|yarnClient
 init|=
 literal|null
@@ -5116,8 +4692,9 @@ try|try
 block|{
 name|yarnClient
 operator|=
-operator|new
-name|SliderYarnClientImpl
+name|YarnClient
+operator|.
+name|createYarnClient
 argument_list|()
 expr_stmt|;
 name|yarnClient
@@ -5217,37 +4794,11 @@ operator|.
 name|getContainersFromPreviousAttempts
 argument_list|()
 expr_stmt|;
-comment|//now validate the installation
-name|Configuration
-name|providerConf
-init|=
-name|providerService
+name|DefaultMetricsSystem
 operator|.
-name|loadProviderConfigurationInformation
+name|initialize
 argument_list|(
-name|confDir
-argument_list|)
-decl_stmt|;
-name|providerService
-operator|.
-name|initializeApplicationConfiguration
-argument_list|(
-name|instanceDefinition
-argument_list|,
-name|fs
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
-name|providerService
-operator|.
-name|validateApplicationConfiguration
-argument_list|(
-name|instanceDefinition
-argument_list|,
-name|confDir
-argument_list|,
-name|securityEnabled
+literal|"SliderAppMaster"
 argument_list|)
 expr_stmt|;
 comment|//determine the location for the role history data
@@ -5257,7 +4808,7 @@ init|=
 operator|new
 name|Path
 argument_list|(
-name|clusterDirPath
+name|appDir
 argument_list|,
 name|HISTORY_DIR_NAME
 argument_list|)
@@ -5272,21 +4823,9 @@ argument_list|()
 decl_stmt|;
 name|binding
 operator|.
-name|instanceDefinition
-operator|=
-name|instanceDefinition
-expr_stmt|;
-name|binding
-operator|.
 name|serviceConfig
 operator|=
 name|serviceConf
-expr_stmt|;
-name|binding
-operator|.
-name|publishedProviderConf
-operator|=
-name|providerConf
 expr_stmt|;
 name|binding
 operator|.
@@ -5317,17 +4856,10 @@ name|liveContainers
 expr_stmt|;
 name|binding
 operator|.
-name|applicationInfo
-operator|=
-name|appInformation
-expr_stmt|;
-name|binding
-operator|.
 name|releaseSelector
 operator|=
-name|providerService
-operator|.
-name|createContainerReleaseSelector
+operator|new
+name|MostRecentContainerReleaseSelector
 argument_list|()
 expr_stmt|;
 name|binding
@@ -5335,47 +4867,18 @@ operator|.
 name|nodeReports
 operator|=
 name|nodeReports
+expr_stmt|;
+name|binding
+operator|.
+name|application
+operator|=
+name|application
 expr_stmt|;
 name|appState
 operator|.
 name|buildInstance
 argument_list|(
 name|binding
-argument_list|)
-expr_stmt|;
-name|providerService
-operator|.
-name|rebuildContainerDetails
-argument_list|(
-name|liveContainers
-argument_list|,
-name|instanceDefinition
-operator|.
-name|getName
-argument_list|()
-argument_list|,
-name|appState
-operator|.
-name|getRolePriorityMap
-argument_list|()
-argument_list|)
-expr_stmt|;
-comment|// add the AM to the list of nodes in the cluster
-name|appState
-operator|.
-name|buildAppMasterNode
-argument_list|(
-name|appMasterContainerID
-argument_list|,
-name|appMasterHostname
-argument_list|,
-name|webAppPort
-argument_list|,
-name|appMasterHostname
-operator|+
-literal|":"
-operator|+
-name|webAppPort
 argument_list|)
 expr_stmt|;
 comment|// build up environment variables that the AM wants set in every container
@@ -5445,15 +4948,9 @@ decl_stmt|;
 name|String
 name|amTmpDir
 init|=
-name|globalInternalOptions
-operator|.
-name|getMandatoryOption
-argument_list|(
-name|InternalKeys
-operator|.
-name|INTERNAL_AM_TMP_DIR
-argument_list|)
+literal|"/tmp"
 decl_stmt|;
+comment|//TODO read tmpDir from slider-am.xml
 name|Path
 name|tmpDirPath
 init|=
@@ -5496,16 +4993,7 @@ name|providerService
 argument_list|,
 name|fs
 argument_list|,
-operator|new
-name|Path
-argument_list|(
-name|getGeneratedConfDir
-argument_list|()
-argument_list|)
-argument_list|,
 name|envVars
-argument_list|,
-name|launcherTmpDirPath
 argument_list|)
 expr_stmt|;
 name|deployChildService
@@ -5513,44 +5001,16 @@ argument_list|(
 name|launchService
 argument_list|)
 expr_stmt|;
-name|appState
-operator|.
-name|noteAMLaunched
-argument_list|()
-expr_stmt|;
 comment|//Give the provider access to the state, and AM
 name|providerService
 operator|.
-name|bind
+name|setAMState
 argument_list|(
 name|stateForProviders
-argument_list|,
-name|actionQueues
-argument_list|,
-name|liveContainers
-argument_list|)
-expr_stmt|;
-name|sliderAMProvider
-operator|.
-name|bind
-argument_list|(
-name|stateForProviders
-argument_list|,
-name|actionQueues
-argument_list|,
-name|liveContainers
 argument_list|)
 expr_stmt|;
 comment|// chaos monkey
-name|maybeStartMonkey
-argument_list|()
-expr_stmt|;
-comment|// setup token renewal and expiry handling for long lived apps
-comment|//    if (!securityConfiguration.isKeytabProvided()&&
-comment|//        SliderUtils.isHadoopClusterSecure(getConfig())) {
-comment|//      fsDelegationTokenManager = new FsDelegationTokenManager(actionQueues);
-comment|//      fsDelegationTokenManager.acquireDelegationToken(getConfig());
-comment|//    }
+comment|//    maybeStartMonkey();
 comment|// if not a secure cluster, extract the username -it will be
 comment|// propagated to workers
 if|if
@@ -5616,17 +5076,17 @@ argument_list|)
 expr_stmt|;
 name|scheduleFailureWindowResets
 argument_list|(
-name|instanceDefinition
+name|application
 operator|.
-name|getResources
+name|getConfiguration
 argument_list|()
 argument_list|)
 expr_stmt|;
 name|scheduleEscalation
 argument_list|(
-name|instanceDefinition
+name|application
 operator|.
-name|getInternal
+name|getConfiguration
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5638,9 +5098,11 @@ argument_list|(
 operator|new
 name|ActionRegisterServiceInstance
 argument_list|(
-name|clustername
+name|appName
 argument_list|,
 name|appid
+argument_list|,
+name|application
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -5672,20 +5134,10 @@ argument_list|,
 name|appMasterProxiedUrl
 argument_list|)
 expr_stmt|;
-comment|// Start the Slider AM provider
-name|sliderAMProvider
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
 comment|// launch the real provider; this is expected to trigger a callback that
 comment|// starts the node review process
 name|launchProviderService
-argument_list|(
-name|instanceDefinition
-argument_list|,
-name|confDir
-argument_list|)
+argument_list|()
 expr_stmt|;
 comment|// start handling any scheduled events
 name|startQueueProcessing
@@ -5732,13 +5184,13 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Get the YARN application Attempt report as the logged in user    * @param yarnClient client to the RM    * @return the application report    * @throws YarnException    * @throws IOException    * @throws InterruptedException    */
-DECL|method|getApplicationAttemptReport ( final SliderYarnClientImpl yarnClient)
+DECL|method|getApplicationAttemptReport ( final YarnClient yarnClient)
 specifier|private
 name|ApplicationAttemptReport
 name|getApplicationAttemptReport
 parameter_list|(
 specifier|final
-name|SliderYarnClientImpl
+name|YarnClient
 name|yarnClient
 parameter_list|)
 throws|throws
@@ -5824,8 +5276,8 @@ return|return
 name|report
 return|;
 block|}
-comment|/**    * List the node reports: uses {@link SliderYarnClientImpl} as the login user    * @param yarnClient client to the RM    * @return the node reports    * @throws IOException    * @throws YarnException    * @throws InterruptedException    */
-DECL|method|getNodeReports (final SliderYarnClientImpl yarnClient)
+comment|/**    * List the node reports: uses {@link YarnClient} as the login user    * @param yarnClient client to the RM    * @return the node reports    * @throws IOException    * @throws YarnException    * @throws InterruptedException    */
+DECL|method|getNodeReports (final YarnClient yarnClient)
 specifier|private
 name|List
 argument_list|<
@@ -5834,7 +5286,7 @@ argument_list|>
 name|getNodeReports
 parameter_list|(
 specifier|final
-name|SliderYarnClientImpl
+name|YarnClient
 name|yarnClient
 parameter_list|)
 throws|throws
@@ -5940,7 +5392,7 @@ return|return
 name|nodeReports
 return|;
 block|}
-comment|/**    * Deploy the web application.    *<p>    *   Creates and starts the web application, and adds a    *<code>WebAppService</code> service under the AM, to ensure    *   a managed web application shutdown.    * @param webAppApi web app API instance    * @return port the web application is deployed on    * @throws IOException general problems starting the webapp (network, etc)    * @throws WebAppException other issues    */
+comment|/**    * Deploy the web application.    *<p>    *   Creates and starts the web application, and adds a    *<code>WebAppService</code> service under the AM, to ensure    *   a managed web application shutdown.    * @param webAppApi web application API instance    * @return port the web application is deployed on    * @throws IOException general problems starting the webapp (network, etc)    * @throws WebAppException other issues    */
 DECL|method|deployWebApplication (WebAppApiImpl webAppApi)
 specifier|private
 name|int
@@ -6209,14 +5661,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Build up the port scanner. This may include setting a port range.    */
-DECL|method|buildPortScanner (AggregateConf instanceDefinition)
+DECL|method|buildPortScanner ()
 specifier|private
 name|void
 name|buildPortScanner
-parameter_list|(
-name|AggregateConf
-name|instanceDefinition
-parameter_list|)
+parameter_list|()
 throws|throws
 name|BadConfigException
 block|{
@@ -6229,23 +5678,12 @@ expr_stmt|;
 name|String
 name|portRange
 init|=
-name|instanceDefinition
-operator|.
-name|getAppConfOperations
-argument_list|()
-operator|.
-name|getGlobalOptions
-argument_list|()
-operator|.
-name|getOption
-argument_list|(
-name|SliderKeys
-operator|.
-name|KEY_ALLOWED_PORT_RANGE
-argument_list|,
 literal|"0"
-argument_list|)
 decl_stmt|;
+comment|//TODO read from slider-am.xml
+comment|//    String portRange = instanceDefinition.
+comment|//        getAppConfOperations().getGlobalOptions().
+comment|//          getOption(SliderKeys.KEY_ALLOWED_PORT_RANGE, "0");
 if|if
 condition|(
 operator|!
@@ -6512,7 +5950,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * This registers the service instance and its external values    * @param instanceName name of this instance    * @param appId application ID    * @throws IOException    */
-DECL|method|registerServiceInstance (String instanceName, ApplicationId appId)
+DECL|method|registerServiceInstance (String instanceName, ApplicationId appId, Application application)
 specifier|public
 name|void
 name|registerServiceInstance
@@ -6522,20 +5960,13 @@ name|instanceName
 parameter_list|,
 name|ApplicationId
 name|appId
+parameter_list|,
+name|Application
+name|application
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// the registry is running, so register services
-name|URL
-name|amWebURI
-init|=
-operator|new
-name|URL
-argument_list|(
-name|appMasterProxiedUrl
-argument_list|)
-decl_stmt|;
 comment|//Give the provider restricted access to the state, registry
 name|setupInitialRegistryPaths
 argument_list|()
@@ -6559,13 +5990,6 @@ name|appAttemptID
 argument_list|)
 expr_stmt|;
 name|providerService
-operator|.
-name|bindToYarnRegistry
-argument_list|(
-name|yarnRegistryOperations
-argument_list|)
-expr_stmt|;
-name|sliderAMProvider
 operator|.
 name|bindToYarnRegistry
 argument_list|(
@@ -6629,41 +6053,13 @@ name|rpcServiceAddress
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// internal services
-name|sliderAMProvider
-operator|.
-name|applyInitialRegistryDefinitions
-argument_list|(
-name|amWebURI
-argument_list|,
-name|serviceRecord
-argument_list|)
-expr_stmt|;
-comment|// provider service dynamic definitions.
-name|providerService
-operator|.
-name|applyInitialRegistryDefinitions
-argument_list|(
-name|amWebURI
-argument_list|,
-name|serviceRecord
-argument_list|)
-expr_stmt|;
 comment|// set any provided attributes
-name|setProvidedServiceRecordAttributes
+name|setUserProvidedServiceRecordAttributes
 argument_list|(
-name|getInstanceDefinition
+name|application
+operator|.
+name|getConfiguration
 argument_list|()
-operator|.
-name|getAppConfOperations
-argument_list|()
-operator|.
-name|getComponent
-argument_list|(
-name|SliderKeys
-operator|.
-name|COMPONENT_AM
-argument_list|)
 argument_list|,
 name|serviceRecord
 argument_list|)
@@ -6768,7 +6164,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Handler for {@link RegisterComponentInstance action}    * Register/re-register an ephemeral container that is already in the app state    * @param id the component    * @param description component description    * @param type component type    * @return true if the component is registered    */
+comment|/**    * Handler for {@link RegisterComponentInstance action}    * Register/re-register an ephemeral container that is already in the application state    * @param id the component    * @param description component description    * @param type component type    * @return true if the component is registered    */
 DECL|method|registerComponent (ContainerId id, String description, String type)
 specifier|public
 name|boolean
@@ -6831,13 +6227,13 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 name|ServiceRecord
-name|container
+name|record
 init|=
 operator|new
 name|ServiceRecord
 argument_list|()
 decl_stmt|;
-name|container
+name|record
 operator|.
 name|set
 argument_list|(
@@ -6848,13 +6244,13 @@ argument_list|,
 name|cid
 argument_list|)
 expr_stmt|;
-name|container
+name|record
 operator|.
 name|description
 operator|=
 name|description
 expr_stmt|;
-name|container
+name|record
 operator|.
 name|set
 argument_list|(
@@ -6867,25 +6263,18 @@ operator|.
 name|CONTAINER
 argument_list|)
 expr_stmt|;
-name|MapOperations
-name|compOps
-init|=
-name|getInstanceDefinition
-argument_list|()
-operator|.
-name|getAppConfOperations
-argument_list|()
-operator|.
-name|getComponent
+name|setUserProvidedServiceRecordAttributes
 argument_list|(
-name|type
-argument_list|)
-decl_stmt|;
-name|setProvidedServiceRecordAttributes
-argument_list|(
-name|compOps
+name|instance
+operator|.
+name|providerRole
+operator|.
+name|component
+operator|.
+name|getConfiguration
+argument_list|()
 argument_list|,
-name|container
+name|record
 argument_list|)
 expr_stmt|;
 try|try
@@ -6896,7 +6285,7 @@ name|putComponent
 argument_list|(
 name|cid
 argument_list|,
-name|container
+name|record
 argument_list|)
 expr_stmt|;
 block|}
@@ -6925,17 +6314,112 @@ return|return
 literal|false
 return|;
 block|}
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
+name|api
+operator|.
+name|resource
+operator|.
+name|Container
+name|container
+init|=
+operator|new
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
+name|api
+operator|.
+name|resource
+operator|.
+name|Container
+argument_list|()
+decl_stmt|;
+name|container
+operator|.
+name|setId
+argument_list|(
+name|id
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|container
+operator|.
+name|setLaunchTime
+argument_list|(
+operator|new
+name|Date
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|container
+operator|.
+name|setState
+argument_list|(
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
+name|api
+operator|.
+name|resource
+operator|.
+name|ContainerState
+operator|.
+name|INIT
+argument_list|)
+expr_stmt|;
+name|container
+operator|.
+name|setBareHost
+argument_list|(
+name|instance
+operator|.
+name|host
+argument_list|)
+expr_stmt|;
+name|instance
+operator|.
+name|providerRole
+operator|.
+name|component
+operator|.
+name|addContainer
+argument_list|(
+name|container
+argument_list|)
+expr_stmt|;
 return|return
 literal|true
 return|;
 block|}
-DECL|method|setProvidedServiceRecordAttributes (MapOperations ops, ServiceRecord record)
+DECL|method|setUserProvidedServiceRecordAttributes ( org.apache.slider.api.resource.Configuration conf, ServiceRecord record)
 specifier|protected
 name|void
-name|setProvidedServiceRecordAttributes
+name|setUserProvidedServiceRecordAttributes
 parameter_list|(
-name|MapOperations
-name|ops
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
+name|api
+operator|.
+name|resource
+operator|.
+name|Configuration
+name|conf
 parameter_list|,
 name|ServiceRecord
 name|record
@@ -6960,7 +6444,10 @@ name|String
 argument_list|>
 name|entry
 range|:
-name|ops
+name|conf
+operator|.
+name|getProperties
+argument_list|()
 operator|.
 name|entrySet
 argument_list|()
@@ -7157,68 +6644,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-block|}
-comment|/**    * Build the configuration directory passed in or of the target FS    * @return the file    */
-DECL|method|getLocalConfDir ()
-specifier|public
-name|File
-name|getLocalConfDir
-parameter_list|()
-block|{
-name|File
-name|confdir
-init|=
-operator|new
-name|File
-argument_list|(
-name|SliderKeys
-operator|.
-name|PROPAGATED_CONF_DIR_NAME
-argument_list|)
-operator|.
-name|getAbsoluteFile
-argument_list|()
-decl_stmt|;
-return|return
-name|confdir
-return|;
-block|}
-comment|/**    * Get the path to the DFS configuration that is defined in the cluster specification     * @return the generated configuration dir    */
-DECL|method|getGeneratedConfDir ()
-specifier|public
-name|String
-name|getGeneratedConfDir
-parameter_list|()
-block|{
-return|return
-name|getGlobalInternalOptions
-argument_list|()
-operator|.
-name|get
-argument_list|(
-name|InternalKeys
-operator|.
-name|INTERNAL_GENERATED_CONF_PATH
-argument_list|)
-return|;
-block|}
-comment|/**    * Get the global internal options for the AM    * @return a map to access the internals    */
-DECL|method|getGlobalInternalOptions ()
-specifier|public
-name|MapOperations
-name|getGlobalInternalOptions
-parameter_list|()
-block|{
-return|return
-name|getInstanceDefinition
-argument_list|()
-operator|.
-name|getInternalOperations
-argument_list|()
-operator|.
-name|getGlobalOptions
-argument_list|()
-return|;
 block|}
 comment|/**    * Get the filesystem of this cluster    * @return the FS of the config    */
 DECL|method|getClusterFS ()
@@ -7441,29 +6866,6 @@ operator|.
 name|getFinalApplicationStatus
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-operator|!
-name|spawnedProcessExitedBeforeShutdownTriggered
-condition|)
-block|{
-comment|//stopped the forked process but don't worry about its exit code
-name|int
-name|forkedExitCode
-init|=
-name|stopForkedProcess
-argument_list|()
-decl_stmt|;
-name|log
-operator|.
-name|debug
-argument_list|(
-literal|"Stopped forked process: exit code={}"
-argument_list|,
-name|forkedExitCode
-argument_list|)
-expr_stmt|;
-block|}
 comment|// make sure the AM is actually registered. If not, there's no point
 comment|// trying to unregister it
 if|if
@@ -7503,6 +6905,13 @@ argument_list|()
 expr_stmt|;
 comment|//now release all containers
 name|releaseAllContainers
+argument_list|(
+name|application
+argument_list|)
+expr_stmt|;
+name|DefaultMetricsSystem
+operator|.
+name|shutdown
 argument_list|()
 expr_stmt|;
 comment|// When the application completes, it should send a finish application
@@ -7635,14 +7044,11 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Start the slider RPC server    */
-DECL|method|startSliderRPCServer (AggregateConf instanceDefinition)
+DECL|method|startSliderRPCServer ()
 specifier|private
 name|void
 name|startSliderRPCServer
-parameter_list|(
-name|AggregateConf
-name|instanceDefinition
-parameter_list|)
+parameter_list|()
 throws|throws
 name|IOException
 throws|,
@@ -7885,43 +7291,18 @@ range|:
 name|assignments
 control|)
 block|{
-try|try
-block|{
+comment|//TODO Do we need to pass credentials to containers?
 name|launchService
 operator|.
 name|launchRole
 argument_list|(
 name|assignment
 argument_list|,
-name|getInstanceDefinition
-argument_list|()
+name|application
 argument_list|,
-name|buildContainerCredentials
-argument_list|()
+literal|null
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-comment|// Can be caused by failure to renew credentials with the remote
-comment|// service. If so, don't launch the application. Container is retained,
-comment|// though YARN will take it away after a timeout.
-name|log
-operator|.
-name|error
-argument_list|(
-literal|"Failed to build credentials to launch container: {}"
-argument_list|,
-name|e
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 comment|//for all the operations, exec them
 name|execute
@@ -8036,7 +7417,7 @@ name|result
 init|=
 name|appState
 operator|.
-name|onCompletedNode
+name|onCompletedContainer
 argument_list|(
 name|status
 argument_list|)
@@ -8074,14 +7455,6 @@ operator|.
 name|unknownNode
 condition|)
 block|{
-name|getProviderService
-argument_list|()
-operator|.
-name|notifyContainerCompleted
-argument_list|(
-name|containerId
-argument_list|)
-expr_stmt|;
 name|queue
 argument_list|(
 operator|new
@@ -8462,61 +7835,37 @@ return|return
 name|roleContainerMap
 return|;
 block|}
-comment|/**    * Implementation of cluster flexing.    * It should be the only way that anything -even the AM itself on startup-    * asks for nodes.     * @param resources the resource tree    * @throws SliderException slider problems, including invalid configs    * @throws IOException IO problems    */
-DECL|method|flexCluster (ConfTree resources)
+comment|/**    * Implementation of cluster flexing.    * It should be the only way that anything -even the AM itself on startup-    * asks for nodes.     * @throws SliderException slider problems, including invalid configs    * @throws IOException IO problems    */
+DECL|method|flexCluster (Messages.FlexComponentRequestProto request)
 specifier|public
 name|void
 name|flexCluster
 parameter_list|(
-name|ConfTree
-name|resources
+name|Messages
+operator|.
+name|FlexComponentRequestProto
+name|request
 parameter_list|)
 throws|throws
 name|IOException
 throws|,
 name|SliderException
 block|{
-name|AggregateConf
-name|newConf
-init|=
-operator|new
-name|AggregateConf
-argument_list|(
+if|if
+condition|(
+name|request
+operator|!=
+literal|null
+condition|)
+block|{
 name|appState
 operator|.
-name|getInstanceDefinitionSnapshot
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|newConf
-operator|.
-name|setResources
+name|updateComponents
 argument_list|(
-name|resources
+name|request
 argument_list|)
 expr_stmt|;
-comment|// verify the new definition is valid
-name|sliderAMProvider
-operator|.
-name|validateInstanceDefinition
-argument_list|(
-name|newConf
-argument_list|)
-expr_stmt|;
-name|providerService
-operator|.
-name|validateInstanceDefinition
-argument_list|(
-name|newConf
-argument_list|)
-expr_stmt|;
-name|appState
-operator|.
-name|updateResourceDefinitions
-argument_list|(
-name|resources
-argument_list|)
-expr_stmt|;
+block|}
 comment|// reset the scheduled windows...the values
 comment|// may have changed
 name|appState
@@ -8531,17 +7880,25 @@ literal|"flexCluster"
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Schedule the failure window    * @param resources the resource tree    * @throws BadConfigException if the window is out of range    */
-DECL|method|scheduleFailureWindowResets (ConfTree resources)
+comment|/**    * Schedule the failure window    * @throws BadConfigException if the window is out of range    */
+DECL|method|scheduleFailureWindowResets ( org.apache.slider.api.resource.Configuration conf)
 specifier|private
 name|void
 name|scheduleFailureWindowResets
 parameter_list|(
-name|ConfTree
-name|resources
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
+name|api
+operator|.
+name|resource
+operator|.
+name|Configuration
+name|conf
 parameter_list|)
-throws|throws
-name|BadConfigException
 block|{
 name|ResetFailureWindow
 name|reset
@@ -8552,52 +7909,134 @@ argument_list|(
 name|rmOperationHandler
 argument_list|)
 decl_stmt|;
-name|ConfTreeOperations
-name|ops
-init|=
-operator|new
-name|ConfTreeOperations
-argument_list|(
-name|resources
-argument_list|)
-decl_stmt|;
-name|MapOperations
-name|globals
-init|=
-name|ops
-operator|.
-name|getGlobalOptions
-argument_list|()
-decl_stmt|;
 name|long
-name|seconds
+name|days
 init|=
-name|globals
+name|conf
 operator|.
-name|getTimeRange
+name|getPropertyLong
 argument_list|(
 name|ResourceKeys
 operator|.
 name|CONTAINER_FAILURE_WINDOW
+operator|+
+literal|".days"
 argument_list|,
 name|ResourceKeys
 operator|.
 name|DEFAULT_CONTAINER_FAILURE_WINDOW_DAYS
+argument_list|)
+decl_stmt|;
+name|long
+name|hours
+init|=
+name|conf
+operator|.
+name|getPropertyLong
+argument_list|(
+name|ResourceKeys
+operator|.
+name|CONTAINER_FAILURE_WINDOW
+operator|+
+literal|".hours"
 argument_list|,
 name|ResourceKeys
 operator|.
 name|DEFAULT_CONTAINER_FAILURE_WINDOW_HOURS
+argument_list|)
+decl_stmt|;
+name|long
+name|minutes
+init|=
+name|conf
+operator|.
+name|getPropertyLong
+argument_list|(
+name|ResourceKeys
+operator|.
+name|CONTAINER_FAILURE_WINDOW
+operator|+
+literal|".minutes"
 argument_list|,
 name|ResourceKeys
 operator|.
 name|DEFAULT_CONTAINER_FAILURE_WINDOW_MINUTES
+argument_list|)
+decl_stmt|;
+name|long
+name|seconds
+init|=
+name|conf
+operator|.
+name|getPropertyLong
+argument_list|(
+name|ResourceKeys
+operator|.
+name|CONTAINER_FAILURE_WINDOW
+operator|+
+literal|".seconds"
 argument_list|,
 literal|0
 argument_list|)
 decl_stmt|;
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|days
+operator|>=
+literal|0
+operator|&&
+name|hours
+operator|>=
+literal|0
+operator|&&
+name|minutes
+operator|>=
+literal|0
+operator|&&
+name|seconds
+operator|>=
+literal|0
+argument_list|,
+literal|"Time range for has negative time component %s:%s:%s:%s"
+argument_list|,
+name|days
+argument_list|,
+name|hours
+argument_list|,
+name|minutes
+argument_list|,
+name|seconds
+argument_list|)
+expr_stmt|;
+name|long
+name|totalMinutes
+init|=
+name|days
+operator|*
+literal|24
+operator|*
+literal|60
+operator|+
+name|hours
+operator|*
+literal|24
+operator|+
+name|minutes
+decl_stmt|;
+name|long
+name|totalSeconds
+init|=
+name|totalMinutes
+operator|*
+literal|60
+operator|+
+name|seconds
+decl_stmt|;
 if|if
 condition|(
-name|seconds
+name|totalSeconds
 operator|>
 literal|0
 condition|)
@@ -8606,9 +8045,11 @@ name|log
 operator|.
 name|info
 argument_list|(
-literal|"Scheduling the failure window reset interval to every {} seconds"
+literal|"Scheduling the failure window reset interval to every {}"
+operator|+
+literal|" seconds"
 argument_list|,
-name|seconds
+name|totalSeconds
 argument_list|)
 expr_stmt|;
 name|RenewingAction
@@ -8623,9 +8064,9 @@ argument_list|<>
 argument_list|(
 name|reset
 argument_list|,
-name|seconds
+name|totalSeconds
 argument_list|,
-name|seconds
+name|totalSeconds
 argument_list|,
 name|TimeUnit
 operator|.
@@ -8655,17 +8096,25 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Schedule the escalation action    * @param internal    * @throws BadConfigException    */
-DECL|method|scheduleEscalation (ConfTree internal)
+comment|/**    * Schedule the escalation action    * @throws BadConfigException    */
+DECL|method|scheduleEscalation ( org.apache.slider.api.resource.Configuration conf)
 specifier|private
 name|void
 name|scheduleEscalation
 parameter_list|(
-name|ConfTree
-name|internal
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
+name|api
+operator|.
+name|resource
+operator|.
+name|Configuration
+name|conf
 parameter_list|)
-throws|throws
-name|BadConfigException
 block|{
 name|EscalateOutstandingRequests
 name|escalate
@@ -8674,24 +8123,12 @@ operator|new
 name|EscalateOutstandingRequests
 argument_list|()
 decl_stmt|;
-name|ConfTreeOperations
-name|ops
-init|=
-operator|new
-name|ConfTreeOperations
-argument_list|(
-name|internal
-argument_list|)
-decl_stmt|;
-name|int
+name|long
 name|seconds
 init|=
-name|ops
+name|conf
 operator|.
-name|getGlobalOptions
-argument_list|()
-operator|.
-name|getOptionInt
+name|getPropertyLong
 argument_list|(
 name|InternalKeys
 operator|.
@@ -8748,7 +8185,7 @@ parameter_list|)
 block|{
 name|log
 operator|.
-name|debug
+name|info
 argument_list|(
 literal|"reviewRequestAndReleaseNodes({})"
 argument_list|,
@@ -8799,6 +8236,7 @@ name|ATTR_HALTS_APP
 argument_list|)
 condition|)
 block|{
+comment|//TODO Loop all actions to check duplicate ï¼ï¼
 comment|// this operation isn't needed at all -existing duplicate or shutdown due
 return|return;
 block|}
@@ -8847,7 +8285,7 @@ name|SliderInternalStateException
 block|{
 name|log
 operator|.
-name|debug
+name|info
 argument_list|(
 literal|"in executeNodeReview({})"
 argument_list|,
@@ -8883,14 +8321,6 @@ operator|.
 name|reviewRequestAndReleaseNodes
 argument_list|()
 decl_stmt|;
-comment|// tell the provider
-name|providerRMOperationHandler
-operator|.
-name|execute
-argument_list|(
-name|allOperations
-argument_list|)
-expr_stmt|;
 comment|//now apply the operations
 name|execute
 argument_list|(
@@ -8945,13 +8375,6 @@ operator|.
 name|escalateOutstandingRequests
 argument_list|()
 decl_stmt|;
-name|providerRMOperationHandler
-operator|.
-name|execute
-argument_list|(
-name|operations
-argument_list|)
-expr_stmt|;
 name|execute
 argument_list|(
 name|operations
@@ -8959,11 +8382,14 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Shutdown operation: release all containers    */
-DECL|method|releaseAllContainers ()
+DECL|method|releaseAllContainers (Application application)
 specifier|private
 name|void
 name|releaseAllContainers
-parameter_list|()
+parameter_list|(
+name|Application
+name|application
+parameter_list|)
 block|{
 comment|// Add the sleep here (before releasing containers) so that applications get
 comment|// time to perform graceful shutdown
@@ -8973,7 +8399,9 @@ name|long
 name|timeout
 init|=
 name|getContainerReleaseTimeout
-argument_list|()
+argument_list|(
+name|application
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
@@ -9018,13 +8446,6 @@ operator|.
 name|releaseAllContainers
 argument_list|()
 decl_stmt|;
-name|providerRMOperationHandler
-operator|.
-name|execute
-argument_list|(
-name|operations
-argument_list|)
-expr_stmt|;
 comment|// now apply the operations
 name|execute
 argument_list|(
@@ -9033,28 +8454,25 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|getContainerReleaseTimeout ()
+DECL|method|getContainerReleaseTimeout (Application application)
 specifier|private
 name|long
 name|getContainerReleaseTimeout
-parameter_list|()
+parameter_list|(
+name|Application
+name|application
+parameter_list|)
 block|{
 comment|// Get container release timeout in millis or 0 if the property is not set.
-comment|// If non-zero then add the agent heartbeat delay time, since it can take up
-comment|// to that much time for agents to receive the stop command.
-name|int
+name|long
 name|timeout
 init|=
-name|getInstanceDefinition
+name|application
+operator|.
+name|getConfiguration
 argument_list|()
 operator|.
-name|getAppConfOperations
-argument_list|()
-operator|.
-name|getGlobalOptions
-argument_list|()
-operator|.
-name|getOptionInt
+name|getPropertyLong
 argument_list|(
 name|SliderKeys
 operator|.
@@ -9063,20 +8481,6 @@ argument_list|,
 literal|0
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|timeout
-operator|>
-literal|0
-condition|)
-block|{
-name|timeout
-operator|+=
-name|SliderKeys
-operator|.
-name|APP_CONTAINER_HEARTBEAT_INTERVAL_SEC
-expr_stmt|;
-block|}
 comment|// convert to millis
 name|long
 name|timeoutInMillis
@@ -9482,72 +8886,17 @@ block|}
 comment|/* =================================================================== */
 comment|/* END */
 comment|/* =================================================================== */
-comment|/**    * Launch the provider service    *    * @param instanceDefinition definition of the service    * @param confDir directory of config data    * @throws IOException    * @throws SliderException    */
-DECL|method|launchProviderService (AggregateConf instanceDefinition, File confDir)
+comment|/**    * Launch the provider service    * @throws IOException    * @throws SliderException    */
+DECL|method|launchProviderService ()
 specifier|protected
 specifier|synchronized
 name|void
 name|launchProviderService
-parameter_list|(
-name|AggregateConf
-name|instanceDefinition
-parameter_list|,
-name|File
-name|confDir
-parameter_list|)
+parameter_list|()
 throws|throws
 name|IOException
 throws|,
 name|SliderException
-block|{
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|String
-argument_list|>
-name|env
-init|=
-operator|new
-name|HashMap
-argument_list|<>
-argument_list|()
-decl_stmt|;
-name|boolean
-name|execStarted
-init|=
-name|providerService
-operator|.
-name|exec
-argument_list|(
-name|instanceDefinition
-argument_list|,
-name|confDir
-argument_list|,
-name|env
-argument_list|,
-name|this
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|execStarted
-condition|)
-block|{
-name|providerService
-operator|.
-name|registerServiceListener
-argument_list|(
-name|this
-argument_list|)
-expr_stmt|;
-name|providerService
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
-block|}
-else|else
 block|{
 comment|// didn't start, so don't register
 name|providerService
@@ -9561,7 +8910,6 @@ argument_list|(
 literal|null
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|/* =================================================================== */
 comment|/* EventCallback  from the child or ourselves directly */
@@ -9578,22 +8926,12 @@ name|Object
 name|parameter
 parameter_list|)
 block|{
-comment|// signalled that the child process is up.
-name|appState
-operator|.
-name|noteAMLive
-argument_list|()
-expr_stmt|;
 comment|// now ask for the cluster nodes
 try|try
 block|{
 name|flexCluster
 argument_list|(
-name|getInstanceDefinition
-argument_list|()
-operator|.
-name|getResources
-argument_list|()
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -9700,170 +9038,6 @@ literal|"Container not in active set - ignoring"
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-comment|/* =================================================================== */
-comment|/* ServiceStateChangeListener */
-comment|/* =================================================================== */
-comment|/**    * Received on listening service termination.    * @param service the service that has changed.    */
-annotation|@
-name|Override
-comment|//ServiceStateChangeListener
-DECL|method|stateChanged (Service service)
-specifier|public
-name|void
-name|stateChanged
-parameter_list|(
-name|Service
-name|service
-parameter_list|)
-block|{
-if|if
-condition|(
-name|service
-operator|==
-name|providerService
-operator|&&
-name|service
-operator|.
-name|isInState
-argument_list|(
-name|STATE
-operator|.
-name|STOPPED
-argument_list|)
-condition|)
-block|{
-comment|//its the current master process in play
-name|int
-name|exitCode
-init|=
-name|providerService
-operator|.
-name|getExitCode
-argument_list|()
-decl_stmt|;
-name|int
-name|mappedProcessExitCode
-init|=
-name|exitCode
-decl_stmt|;
-name|boolean
-name|shouldTriggerFailure
-init|=
-operator|!
-name|amCompletionFlag
-operator|.
-name|get
-argument_list|()
-operator|&&
-operator|(
-name|mappedProcessExitCode
-operator|!=
-literal|0
-operator|)
-decl_stmt|;
-if|if
-condition|(
-name|shouldTriggerFailure
-condition|)
-block|{
-name|String
-name|reason
-init|=
-literal|"Spawned process failed with raw "
-operator|+
-name|exitCode
-operator|+
-literal|" mapped to "
-operator|+
-name|mappedProcessExitCode
-decl_stmt|;
-name|ActionStopSlider
-name|stop
-init|=
-operator|new
-name|ActionStopSlider
-argument_list|(
-literal|"stop"
-argument_list|,
-name|mappedProcessExitCode
-argument_list|,
-name|FinalApplicationStatus
-operator|.
-name|FAILED
-argument_list|,
-name|reason
-argument_list|)
-decl_stmt|;
-comment|//this wasn't expected: the process finished early
-name|spawnedProcessExitedBeforeShutdownTriggered
-operator|=
-literal|true
-expr_stmt|;
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"Process has exited with exit code {} mapped to {} -triggering termination"
-argument_list|,
-name|exitCode
-argument_list|,
-name|mappedProcessExitCode
-argument_list|)
-expr_stmt|;
-comment|//tell the AM the cluster is complete
-name|signalAMComplete
-argument_list|(
-name|stop
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-comment|//we don't care
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"Process has exited with exit code {} mapped to {} -ignoring"
-argument_list|,
-name|exitCode
-argument_list|,
-name|mappedProcessExitCode
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-else|else
-block|{
-name|super
-operator|.
-name|stateChanged
-argument_list|(
-name|service
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-comment|/**    * stop forked process if it the running process var is not null    * @return the process exit code    */
-DECL|method|stopForkedProcess ()
-specifier|protected
-specifier|synchronized
-name|Integer
-name|stopForkedProcess
-parameter_list|()
-block|{
-name|providerService
-operator|.
-name|stop
-argument_list|()
-expr_stmt|;
-return|return
-name|providerService
-operator|.
-name|getExitCode
-argument_list|()
-return|;
 block|}
 comment|/**    *  Async start container request    * @param container container    * @param ctx context    * @param instance node details    */
 DECL|method|startContainer (Container container, ContainerLaunchContext ctx, RoleInstance instance)
@@ -10279,33 +9453,6 @@ name|containerId
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getInstanceDefinition ()
-specifier|public
-name|AggregateConf
-name|getInstanceDefinition
-parameter_list|()
-block|{
-return|return
-name|appState
-operator|.
-name|getInstanceDefinition
-argument_list|()
-return|;
-block|}
-comment|/**    * This is the status, the live model    */
-DECL|method|getClusterDescription ()
-specifier|public
-name|ClusterDescription
-name|getClusterDescription
-parameter_list|()
-block|{
-return|return
-name|appState
-operator|.
-name|getClusterStatus
-argument_list|()
-return|;
-block|}
 DECL|method|getProviderService ()
 specifier|public
 name|ProviderService
@@ -10447,17 +9594,19 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Start the chaos monkey    * @return true if it started    */
+comment|/**    * TODO Start the chaos monkey    * @return true if it started    */
 DECL|method|maybeStartMonkey ()
 specifier|private
 name|boolean
 name|maybeStartMonkey
 parameter_list|()
 block|{
+comment|//    MapOperations internals = getGlobalInternalOptions();
 name|MapOperations
 name|internals
 init|=
-name|getGlobalInternalOptions
+operator|new
+name|MapOperations
 argument_list|()
 decl_stmt|;
 name|Boolean
