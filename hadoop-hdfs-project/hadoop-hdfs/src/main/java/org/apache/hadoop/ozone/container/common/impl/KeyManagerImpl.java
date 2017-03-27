@@ -80,20 +80,6 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|OzoneConfigKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
 name|container
 operator|.
 name|common
@@ -388,11 +374,11 @@ specifier|final
 name|ContainerManager
 name|containerManager
 decl_stmt|;
-DECL|field|containerCache
+DECL|field|conf
 specifier|private
 specifier|final
-name|ContainerCache
-name|containerCache
+name|Configuration
+name|conf
 decl_stmt|;
 comment|/**    * Constructs a key Manager.    *    * @param containerManager - Container Manager.    */
 DECL|method|KeyManagerImpl (ContainerManager containerManager, Configuration conf)
@@ -426,39 +412,17 @@ argument_list|,
 literal|"Config cannot be null"
 argument_list|)
 expr_stmt|;
-name|int
-name|cacheSize
-init|=
-name|conf
-operator|.
-name|getInt
-argument_list|(
-name|OzoneConfigKeys
-operator|.
-name|OZONE_KEY_CACHE
-argument_list|,
-name|OzoneConfigKeys
-operator|.
-name|OZONE_KEY_CACHE_DEFAULT
-argument_list|)
-decl_stmt|;
 name|this
 operator|.
 name|containerManager
 operator|=
 name|containerManager
 expr_stmt|;
-name|containerCache
+name|this
+operator|.
+name|conf
 operator|=
-operator|new
-name|ContainerCache
-argument_list|(
-name|cacheSize
-argument_list|,
-name|LOAD_FACTOR
-argument_list|,
-literal|true
-argument_list|)
+name|conf
 expr_stmt|;
 block|}
 comment|/**    * {@inheritDoc}    */
@@ -530,7 +494,7 @@ name|getDB
 argument_list|(
 name|cData
 argument_list|,
-name|containerCache
+name|conf
 argument_list|)
 decl_stmt|;
 comment|// This is a post condition that acts as a hint to the user.
@@ -643,7 +607,7 @@ name|getDB
 argument_list|(
 name|cData
 argument_list|,
-name|containerCache
+name|conf
 argument_list|)
 decl_stmt|;
 comment|// This is a post condition that acts as a hint to the user.
@@ -810,7 +774,7 @@ name|getDB
 argument_list|(
 name|cData
 argument_list|,
-name|containerCache
+name|conf
 argument_list|)
 decl_stmt|;
 comment|// This is a post condition that acts as a hint to the user.
@@ -945,7 +909,12 @@ name|KeyUtils
 operator|.
 name|shutdownCache
 argument_list|(
-name|containerCache
+name|ContainerCache
+operator|.
+name|getInstance
+argument_list|(
+name|conf
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

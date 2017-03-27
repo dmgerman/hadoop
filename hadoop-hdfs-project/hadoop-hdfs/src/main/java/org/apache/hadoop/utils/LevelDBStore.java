@@ -359,6 +359,7 @@ name|seekToFirst
 argument_list|()
 expr_stmt|;
 return|return
+operator|!
 name|iter
 operator|.
 name|hasNext

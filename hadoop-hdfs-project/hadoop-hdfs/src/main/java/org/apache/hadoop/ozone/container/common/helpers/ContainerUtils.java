@@ -58,6 +58,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|FileAlreadyExistsException
@@ -1381,7 +1395,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * remove Container if it is empty.    *<p/>    * There are three things we need to delete.    *<p/>    * 1. Container file and metadata file. 2. The Level DB file 3. The path that    * we created on the data location.    *    * @param containerData - Data of the container to remove.    * @throws IOException    */
-DECL|method|removeContainer (ContainerData containerData)
+DECL|method|removeContainer (ContainerData containerData, Configuration conf)
 specifier|public
 specifier|static
 name|void
@@ -1389,6 +1403,9 @@ name|removeContainer
 parameter_list|(
 name|ContainerData
 name|containerData
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 throws|throws
 name|IOException
@@ -1400,8 +1417,6 @@ argument_list|(
 name|containerData
 argument_list|)
 expr_stmt|;
-comment|// TODO : Check if there are any keys. This needs to be done
-comment|// by calling into key layer code, hence this is a TODO for now.
 name|Path
 name|dbPath
 init|=
@@ -1415,6 +1430,51 @@ name|getDBPath
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|LevelDBStore
+name|db
+init|=
+name|KeyUtils
+operator|.
+name|getDB
+argument_list|(
+name|containerData
+argument_list|,
+name|conf
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|db
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|StorageContainerException
+argument_list|(
+literal|"Container cannot be deleted because it is not empty."
+argument_list|,
+name|ContainerProtos
+operator|.
+name|Result
+operator|.
+name|ERROR_CONTAINER_NOT_EMPTY
+argument_list|)
+throw|;
+block|}
+comment|// Close the DB connection and remove the DB handler from cache
+name|KeyUtils
+operator|.
+name|removeDB
+argument_list|(
+name|containerData
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
 comment|// Delete the DB File.
 name|FileUtils
 operator|.
