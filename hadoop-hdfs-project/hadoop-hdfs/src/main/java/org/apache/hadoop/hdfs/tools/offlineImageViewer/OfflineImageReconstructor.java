@@ -9060,7 +9060,7 @@ parameter_list|)
 block|{
 comment|// Handle the case where<version> does not exist.
 comment|// Note: fsimage XML files which are missing<version> are also missing
-comment|// many other fields that ovi needs to accurately reconstruct the
+comment|// many other fields that oiv needs to accurately reconstruct the
 comment|// fsimage.
 throw|throw
 operator|new
@@ -9070,7 +9070,7 @@ literal|"No<version> section found at the top of "
 operator|+
 literal|"the fsimage XML.  This XML file is too old to be processed "
 operator|+
-literal|"by ovi."
+literal|"by oiv."
 argument_list|,
 name|e
 argument_list|)
