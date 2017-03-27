@@ -7929,11 +7929,7 @@ throws|,
 name|IOException
 block|{
 name|checkReservationSystem
-argument_list|(
-name|AuditConstants
-operator|.
-name|CREATE_NEW_RESERVATION_REQUEST
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|GetNewReservationResponse
 name|response
@@ -7984,11 +7980,7 @@ name|IOException
 block|{
 comment|// Check if reservation system is enabled
 name|checkReservationSystem
-argument_list|(
-name|AuditConstants
-operator|.
-name|SUBMIT_RESERVATION_REQUEST
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|ReservationSubmissionResponse
 name|response
@@ -8254,11 +8246,7 @@ name|IOException
 block|{
 comment|// Check if reservation system is enabled
 name|checkReservationSystem
-argument_list|(
-name|AuditConstants
-operator|.
-name|UPDATE_RESERVATION_REQUEST
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|ReservationUpdateResponse
 name|response
@@ -8456,11 +8444,7 @@ name|IOException
 block|{
 comment|// Check if reservation system is enabled
 name|checkReservationSystem
-argument_list|(
-name|AuditConstants
-operator|.
-name|DELETE_RESERVATION_REQUEST
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|ReservationDeleteResponse
 name|response
@@ -8653,11 +8637,7 @@ name|IOException
 block|{
 comment|// Check if reservation system is enabled
 name|checkReservationSystem
-argument_list|(
-name|AuditConstants
-operator|.
-name|LIST_RESERVATION_REQUEST
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|ReservationListResponse
 name|response
@@ -8969,14 +8949,11 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|checkReservationSystem (String auditConstant)
+DECL|method|checkReservationSystem ()
 specifier|private
 name|void
 name|checkReservationSystem
-parameter_list|(
-name|String
-name|auditConstant
-parameter_list|)
+parameter_list|()
 throws|throws
 name|YarnException
 block|{
