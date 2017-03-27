@@ -1987,6 +1987,18 @@ name|LOG_AGGREGATION_STATUS_PREFIX
 init|=
 literal|"LOG_"
 decl_stmt|;
+DECL|field|LOG_AGGREGATION_STATUS_PREFIX_LEN
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|LOG_AGGREGATION_STATUS_PREFIX_LEN
+init|=
+name|LOG_AGGREGATION_STATUS_PREFIX
+operator|.
+name|length
+argument_list|()
+decl_stmt|;
 DECL|method|convertToProtoFormat ( LogAggregationStatus e)
 specifier|public
 specifier|static
@@ -2031,11 +2043,9 @@ operator|.
 name|name
 argument_list|()
 operator|.
-name|replace
+name|substring
 argument_list|(
-name|LOG_AGGREGATION_STATUS_PREFIX
-argument_list|,
-literal|""
+name|LOG_AGGREGATION_STATUS_PREFIX_LEN
 argument_list|)
 argument_list|)
 return|;

@@ -3121,6 +3121,34 @@ name|getLogAggregationStatusForAppReport
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|rmApp
+operator|=
+operator|(
+name|RMAppImpl
+operator|)
+name|createRMApp
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|rmApp
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|RMAppEvent
+argument_list|(
+name|rmApp
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|,
+name|RMAppEventType
+operator|.
+name|KILL
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// If the log aggregation status for all NMs are SUCCEEDED and Application
 comment|// is at the final state, the log aggregation status for this app will
 comment|// return SUCCEEDED
