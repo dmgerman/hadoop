@@ -1165,12 +1165,12 @@ name|INODE_SECTION_BLOCK
 init|=
 literal|"block"
 decl_stmt|;
-DECL|field|INODE_SECTION_GEMSTAMP
+DECL|field|INODE_SECTION_GENSTAMP
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|INODE_SECTION_GEMSTAMP
+name|INODE_SECTION_GENSTAMP
 init|=
 literal|"genstamp"
 decl_stmt|;
@@ -3610,7 +3610,7 @@ argument_list|)
 operator|.
 name|o
 argument_list|(
-name|INODE_SECTION_GEMSTAMP
+name|INODE_SECTION_GENSTAMP
 argument_list|,
 name|b
 operator|.
@@ -5043,7 +5043,7 @@ argument_list|)
 operator|.
 name|o
 argument_list|(
-name|INODE_SECTION_GEMSTAMP
+name|INODE_SECTION_GENSTAMP
 argument_list|,
 name|b
 operator|.

@@ -3984,7 +3984,7 @@ name|block
 operator|.
 name|removeChildLong
 argument_list|(
-name|INODE_SECTION_GEMSTAMP
+name|INODE_SECTION_GENSTAMP
 argument_list|)
 decl_stmt|;
 if|if
