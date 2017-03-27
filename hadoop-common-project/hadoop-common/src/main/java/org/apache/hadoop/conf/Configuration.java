@@ -4491,11 +4491,9 @@ name|value
 operator|!=
 literal|null
 argument_list|,
-literal|"The value of property "
-operator|+
+literal|"The value of property %s must not be null"
+argument_list|,
 name|name
-operator|+
-literal|" must not be null"
 argument_list|)
 expr_stmt|;
 name|name
