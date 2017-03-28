@@ -94,20 +94,6 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|internal
-operator|.
-name|matchers
-operator|.
-name|GreaterThan
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|mockito
-operator|.
 name|invocation
 operator|.
 name|InvocationOnMock
@@ -1730,7 +1716,7 @@ parameter_list|)
 block|{
 name|Assert
 operator|.
-name|assertThat
+name|assertTrue
 argument_list|(
 literal|"Bad value for metric "
 operator|+
@@ -1742,15 +1728,8 @@ name|name
 argument_list|,
 name|rb
 argument_list|)
-argument_list|,
-operator|new
-name|GreaterThan
-argument_list|<
-name|Long
-argument_list|>
-argument_list|(
+operator|>
 name|greater
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1803,7 +1782,7 @@ parameter_list|)
 block|{
 name|Assert
 operator|.
-name|assertThat
+name|assertTrue
 argument_list|(
 literal|"Bad value for metric "
 operator|+
@@ -1815,15 +1794,8 @@ name|name
 argument_list|,
 name|rb
 argument_list|)
-argument_list|,
-operator|new
-name|GreaterThan
-argument_list|<
-name|Double
-argument_list|>
-argument_list|(
+operator|>
 name|greater
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
