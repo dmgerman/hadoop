@@ -114,6 +114,24 @@ name|AZURE_AD_TOKEN_PROVIDER_CLASS_KEY
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|adl
+operator|.
+name|AdlConfKeys
+operator|.
+name|AZURE_AD_TOKEN_PROVIDER_TYPE_KEY
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class verifies path conversion to SDK.  */
 end_comment
@@ -150,6 +168,17 @@ operator|new
 name|Configuration
 argument_list|()
 decl_stmt|;
+name|configuration
+operator|.
+name|setEnum
+argument_list|(
+name|AZURE_AD_TOKEN_PROVIDER_TYPE_KEY
+argument_list|,
+name|TokenProviderType
+operator|.
+name|Custom
+argument_list|)
+expr_stmt|;
 name|configuration
 operator|.
 name|set

@@ -1346,9 +1346,9 @@ name|AdlConfKeys
 operator|.
 name|AZURE_AD_TOKEN_PROVIDER_TYPE_KEY
 argument_list|,
-name|TokenProviderType
+name|AdlConfKeys
 operator|.
-name|Custom
+name|AZURE_AD_TOKEN_PROVIDER_TYPE_DEFAULT
 argument_list|)
 decl_stmt|;
 switch|switch

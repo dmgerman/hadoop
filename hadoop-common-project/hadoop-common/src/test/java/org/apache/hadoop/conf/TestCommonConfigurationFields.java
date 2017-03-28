@@ -472,11 +472,11 @@ argument_list|(
 literal|"adl."
 argument_list|)
 expr_stmt|;
-name|xmlPropsToSkipCompare
+name|xmlPrefixToSkipCompare
 operator|.
 name|add
 argument_list|(
-literal|"fs.adl.impl"
+literal|"fs.adl."
 argument_list|)
 expr_stmt|;
 name|xmlPropsToSkipCompare

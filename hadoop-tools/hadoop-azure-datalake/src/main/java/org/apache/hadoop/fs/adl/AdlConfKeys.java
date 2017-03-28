@@ -133,6 +133,17 @@ name|AZURE_AD_TOKEN_PROVIDER_TYPE_KEY
 init|=
 literal|"fs.adl.oauth2.access.token.provider.type"
 decl_stmt|;
+DECL|field|AZURE_AD_TOKEN_PROVIDER_TYPE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|TokenProviderType
+name|AZURE_AD_TOKEN_PROVIDER_TYPE_DEFAULT
+init|=
+name|TokenProviderType
+operator|.
+name|ClientCredential
+decl_stmt|;
 comment|// OAuth Refresh Token Configuration
 DECL|field|AZURE_AD_REFRESH_TOKEN_KEY
 specifier|public

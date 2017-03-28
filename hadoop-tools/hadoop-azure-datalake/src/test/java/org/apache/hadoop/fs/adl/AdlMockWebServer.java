@@ -127,6 +127,24 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|adl
+operator|.
+name|AdlConfKeys
+operator|.
+name|AZURE_AD_TOKEN_PROVIDER_TYPE_KEY
+import|;
+end_import
+
+begin_import
 import|import
 name|com
 operator|.
@@ -307,6 +325,17 @@ operator|=
 operator|new
 name|TestableAdlFileSystem
 argument_list|()
+expr_stmt|;
+name|conf
+operator|.
+name|setEnum
+argument_list|(
+name|AZURE_AD_TOKEN_PROVIDER_TYPE_KEY
+argument_list|,
+name|TokenProviderType
+operator|.
+name|Custom
+argument_list|)
 expr_stmt|;
 name|conf
 operator|.
