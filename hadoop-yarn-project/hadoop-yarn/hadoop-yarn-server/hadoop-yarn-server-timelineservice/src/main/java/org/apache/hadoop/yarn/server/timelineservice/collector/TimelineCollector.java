@@ -579,13 +579,6 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"SUCCESS - TIMELINE V2 PROTOTYPE"
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|debug
-argument_list|(
 literal|"putEntities(entities="
 operator|+
 name|entities
@@ -598,12 +591,32 @@ literal|")"
 argument_list|)
 expr_stmt|;
 block|}
-name|TimelineCollectorContext
-name|context
+name|TimelineWriteResponse
+name|response
 init|=
-name|getTimelineEntityContext
-argument_list|()
+name|writeTimelineEntities
+argument_list|(
+name|entities
+argument_list|)
 decl_stmt|;
+name|flushBufferedTimelineEntities
+argument_list|()
+expr_stmt|;
+return|return
+name|response
+return|;
+block|}
+DECL|method|writeTimelineEntities ( TimelineEntities entities)
+specifier|private
+name|TimelineWriteResponse
+name|writeTimelineEntities
+parameter_list|(
+name|TimelineEntities
+name|entities
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 comment|// Update application metrics for aggregation
 name|updateAggregateStatus
 argument_list|(
@@ -615,6 +628,13 @@ name|getEntityTypesSkipAggregation
 argument_list|()
 argument_list|)
 expr_stmt|;
+specifier|final
+name|TimelineCollectorContext
+name|context
+init|=
+name|getTimelineEntityContext
+argument_list|()
+decl_stmt|;
 return|return
 name|writer
 operator|.
@@ -654,7 +674,22 @@ name|entities
 argument_list|)
 return|;
 block|}
-comment|/**    * Handles entity writes in an asynchronous manner. The method returns as soon    * as validation is done. No promises are made on how quickly it will be    * written to the backing storage or if it will always be written to the    * backing storage. Multiple writes to the same entities may be batched and    * appropriate values updated and result in fewer writes to the backing    * storage.    *    * @param entities entities to post    * @param callerUgi the caller UGI    */
+comment|/**    * Flush buffered timeline entities, if any.    * @throws IOException if there is any exception encountered while    *      flushing buffered entities.    */
+DECL|method|flushBufferedTimelineEntities ()
+specifier|private
+name|void
+name|flushBufferedTimelineEntities
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|writer
+operator|.
+name|flush
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Handles entity writes in an asynchronous manner. The method returns as soon    * as validation is done. No promises are made on how quickly it will be    * written to the backing storage or if it will always be written to the    * backing storage. Multiple writes to the same entities may be batched and    * appropriate values updated and result in fewer writes to the backing    * storage.    *    * @param entities entities to post    * @param callerUgi the caller UGI    * @throws IOException if there is any exception encounted while putting    *     entities.    */
 DECL|method|putEntitiesAsync (TimelineEntities entities, UserGroupInformation callerUgi)
 specifier|public
 name|void
@@ -666,8 +701,9 @@ parameter_list|,
 name|UserGroupInformation
 name|callerUgi
 parameter_list|)
+throws|throws
+name|IOException
 block|{
-comment|// TODO implement
 if|if
 condition|(
 name|LOG
@@ -692,6 +728,11 @@ literal|")"
 argument_list|)
 expr_stmt|;
 block|}
+name|writeTimelineEntities
+argument_list|(
+name|entities
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Aggregate all metrics in given timeline entities with no predefined states.    *    * @param entities Entities to aggregate    * @param resultEntityId Id of the result entity    * @param resultEntityType Type of the result entity    * @param needsGroupIdInResult Marks if we want the aggregation group id in    *                             each aggregated metrics.    * @return A timeline entity that contains all aggregated TimelineMetric.    */
 DECL|method|aggregateEntities ( TimelineEntities entities, String resultEntityId, String resultEntityType, boolean needsGroupIdInResult)
