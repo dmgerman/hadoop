@@ -82,6 +82,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|Closeable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|File
 import|;
 end_import
@@ -105,6 +115,8 @@ DECL|class|LevelDBStore
 specifier|public
 class|class
 name|LevelDBStore
+implements|implements
+name|Closeable
 block|{
 DECL|field|db
 specifier|private
@@ -320,6 +332,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Closes the DB.    *    * @throws IOException    */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void

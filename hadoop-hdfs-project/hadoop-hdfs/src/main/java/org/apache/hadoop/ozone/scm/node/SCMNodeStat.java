@@ -41,8 +41,11 @@ end_comment
 begin_class
 DECL|class|SCMNodeStat
 specifier|public
+specifier|final
 class|class
 name|SCMNodeStat
+implements|implements
+name|NodeStat
 block|{
 DECL|field|capacity
 specifier|private
@@ -64,10 +67,11 @@ specifier|public
 name|SCMNodeStat
 parameter_list|()
 block|{   }
-DECL|method|SCMNodeStat (SCMNodeStat other)
+DECL|method|SCMNodeStat (final SCMNodeStat other)
 specifier|public
 name|SCMNodeStat
 parameter_list|(
+specifier|final
 name|SCMNodeStat
 name|other
 parameter_list|)
@@ -89,6 +93,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * @return the total configured capacity of the node.    */
+annotation|@
+name|Override
 DECL|method|getCapacity ()
 specifier|public
 name|long
@@ -100,6 +106,8 @@ name|capacity
 return|;
 block|}
 comment|/**    * @return the total SCM used space on the node.    */
+annotation|@
+name|Override
 DECL|method|getScmUsed ()
 specifier|public
 name|long
@@ -111,6 +119,8 @@ name|scmUsed
 return|;
 block|}
 comment|/**    * @return the total remaining space available on the node.    */
+annotation|@
+name|Override
 DECL|method|getRemaining ()
 specifier|public
 name|long
@@ -123,17 +133,22 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|set (long total, long used, long remain)
+annotation|@
+name|Override
+DECL|method|set (final long total, final long used, final long remain)
 specifier|public
 name|void
 name|set
 parameter_list|(
+specifier|final
 name|long
 name|total
 parameter_list|,
+specifier|final
 name|long
 name|used
 parameter_list|,
+specifier|final
 name|long
 name|remain
 parameter_list|)
@@ -157,12 +172,15 @@ operator|=
 name|remain
 expr_stmt|;
 block|}
-DECL|method|add (SCMNodeStat stat)
+annotation|@
+name|Override
+DECL|method|add (final NodeStat stat)
 specifier|public
 name|SCMNodeStat
 name|add
 parameter_list|(
-name|SCMNodeStat
+specifier|final
+name|NodeStat
 name|stat
 parameter_list|)
 block|{
@@ -197,12 +215,15 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|subtract (SCMNodeStat stat)
+annotation|@
+name|Override
+DECL|method|subtract (final NodeStat stat)
 specifier|public
 name|SCMNodeStat
 name|subtract
 parameter_list|(
-name|SCMNodeStat
+specifier|final
+name|NodeStat
 name|stat
 parameter_list|)
 block|{
@@ -239,11 +260,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|equals (Object to)
+DECL|method|equals (final Object to)
 specifier|public
 name|boolean
 name|equals
 parameter_list|(
+specifier|final
 name|Object
 name|to
 parameter_list|)

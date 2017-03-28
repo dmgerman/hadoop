@@ -102,20 +102,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|hdfs
 operator|.
 name|protocol
@@ -167,6 +153,20 @@ operator|.
 name|ozone
 operator|.
 name|OzoneClientUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConfiguration
 import|;
 end_import
 
@@ -764,17 +764,26 @@ specifier|private
 name|ObjectName
 name|nmInfoBean
 decl_stmt|;
+comment|// Node pool manager.
+DECL|field|nodePoolManager
+specifier|private
+specifier|final
+name|SCMNodePoolManager
+name|nodePoolManager
+decl_stmt|;
 comment|/**    * Constructs SCM machine Manager.    */
-DECL|method|SCMNodeManager (Configuration conf, String clusterID)
+DECL|method|SCMNodeManager (OzoneConfiguration conf, String clusterID)
 specifier|public
 name|SCMNodeManager
 parameter_list|(
-name|Configuration
+name|OzoneConfiguration
 name|conf
 parameter_list|,
 name|String
 name|clusterID
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|heartbeatQueue
 operator|=
@@ -985,6 +994,16 @@ argument_list|)
 expr_stmt|;
 name|registerMXBean
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|nodePoolManager
+operator|=
+operator|new
+name|SCMNodePoolManager
+argument_list|(
+name|conf
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|registerMXBean ()
@@ -2670,6 +2689,33 @@ name|SCMNodeStat
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// TODO: define node pool policy for non-default node pool.
+comment|// For now, all nodes are added to the "DefaultNodePool" upon registration
+comment|// if it has not been added to any node pool yet.
+if|if
+condition|(
+name|nodePoolManager
+operator|.
+name|getNodePool
+argument_list|(
+name|datanodeID
+argument_list|)
+operator|==
+literal|null
+condition|)
+block|{
+name|nodePoolManager
+operator|.
+name|addNode
+argument_list|(
+name|SCMNodePoolManager
+operator|.
+name|DEFAULT_NODEPOOL
+argument_list|,
+name|datanodeID
+argument_list|)
+expr_stmt|;
+block|}
 name|LOG
 operator|.
 name|info

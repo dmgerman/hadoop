@@ -28,9 +28,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
+name|fs
 operator|.
-name|Configuration
+name|FileUtil
 import|;
 end_import
 
@@ -47,6 +47,20 @@ operator|.
 name|protocol
 operator|.
 name|DatanodeID
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConfigKeys
 import|;
 end_import
 
@@ -154,6 +168,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|PathUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|hamcrest
 operator|.
 name|CoreMatchers
@@ -167,6 +195,26 @@ operator|.
 name|junit
 operator|.
 name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Before
 import|;
 end_import
 
@@ -209,6 +257,16 @@ operator|.
 name|rules
 operator|.
 name|ExpectedException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|File
 import|;
 end_import
 
@@ -494,6 +552,11 @@ specifier|public
 class|class
 name|TestNodeManager
 block|{
+DECL|field|testDir
+specifier|private
+name|File
+name|testDir
+decl_stmt|;
 annotation|@
 name|Rule
 DECL|field|thrown
@@ -517,24 +580,79 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{   }
+annotation|@
+name|Before
+DECL|method|setup ()
+specifier|public
+name|void
+name|setup
+parameter_list|()
+block|{
+name|testDir
+operator|=
+name|PathUtils
+operator|.
+name|getTestDir
+argument_list|(
+name|TestNodeManager
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|After
+DECL|method|cleanup ()
+specifier|public
+name|void
+name|cleanup
+parameter_list|()
+block|{
+name|FileUtil
+operator|.
+name|fullyDelete
+argument_list|(
+name|testDir
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Returns a new copy of Configuration.    *    * @return Config    */
 DECL|method|getConf ()
-name|Configuration
+name|OzoneConfiguration
 name|getConf
 parameter_list|()
 block|{
-return|return
+name|OzoneConfiguration
+name|conf
+init|=
 operator|new
 name|OzoneConfiguration
 argument_list|()
+decl_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|OzoneConfigKeys
+operator|.
+name|OZONE_CONTAINER_METADATA_DIRS
+argument_list|,
+name|testDir
+operator|.
+name|getAbsolutePath
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|conf
 return|;
 block|}
 comment|/**    * Creates a NodeManager.    *    * @param config - Config for the node manager.    * @return SCNNodeManager    * @throws IOException    */
-DECL|method|createNodeManager (Configuration config)
+DECL|method|createNodeManager (OzoneConfiguration config)
 name|SCMNodeManager
 name|createNodeManager
 parameter_list|(
-name|Configuration
+name|OzoneConfiguration
 name|config
 parameter_list|)
 throws|throws
@@ -927,7 +1045,7 @@ name|InterruptedException
 throws|,
 name|TimeoutException
 block|{
-name|Configuration
+name|OzoneConfiguration
 name|conf
 init|=
 name|getConf
@@ -1015,7 +1133,7 @@ name|InterruptedException
 throws|,
 name|TimeoutException
 block|{
-name|Configuration
+name|OzoneConfiguration
 name|conf
 init|=
 name|getConf
@@ -1120,7 +1238,7 @@ name|InterruptedException
 throws|,
 name|TimeoutException
 block|{
-name|Configuration
+name|OzoneConfiguration
 name|conf
 init|=
 name|getConf
@@ -1202,7 +1320,7 @@ name|InterruptedException
 throws|,
 name|TimeoutException
 block|{
-name|Configuration
+name|OzoneConfiguration
 name|conf
 init|=
 name|getConf
@@ -1269,7 +1387,7 @@ name|InterruptedException
 throws|,
 name|TimeoutException
 block|{
-name|Configuration
+name|OzoneConfiguration
 name|conf
 init|=
 name|getConf
@@ -1513,7 +1631,7 @@ name|nodeCount
 init|=
 literal|10
 decl_stmt|;
-name|Configuration
+name|OzoneConfiguration
 name|conf
 init|=
 name|getConf
@@ -1841,7 +1959,7 @@ throws|,
 name|TimeoutException
 block|{
 comment|/**      * These values are very important. Here is what it means so you don't      * have to look it up while reading this code.      *      *  OZONE_SCM_HEARTBEAT_PROCESS_INTERVAL_MS - This the frequency of the      *  HB processing thread that is running in the SCM. This thread must run      *  for the SCM  to process the Heartbeats.      *      *  OZONE_SCM_HEARTBEAT_INTERVAL_SECONDS - This is the frequency at which      *  datanodes will send heartbeats to SCM. Please note: This is the only      *  config value for node manager that is specified in seconds. We don't      *  want SCM heartbeat resolution to be more than in seconds.      *  In this test it is not used, but we are forced to set it because we      *  have validation code that checks Stale Node interval and Dead Node      *  interval is larger than the value of      *  OZONE_SCM_HEARTBEAT_INTERVAL_SECONDS.      *      *  OZONE_SCM_STALENODE_INTERVAL_MS - This is the time that must elapse      *  from the last heartbeat for us to mark a node as stale. In this test      *  we set that to 3. That is if a node has not heartbeat SCM for last 3      *  seconds we will mark it as stale.      *      *  OZONE_SCM_DEADNODE_INTERVAL_MS - This is the time that must elapse      *  from the last heartbeat for a node to be marked dead. We have an      *  additional constraint that this must be at least 2 times bigger than      *  Stale node Interval.      *      *  With these we are trying to explore the state of this cluster with      *  various timeouts. Each section is commented so that you can keep      *  track of the state of the cluster nodes.      *      */
-name|Configuration
+name|OzoneConfiguration
 name|conf
 init|=
 name|getConf
@@ -2634,7 +2752,7 @@ name|deadCount
 init|=
 literal|10
 decl_stmt|;
-name|Configuration
+name|OzoneConfiguration
 name|conf
 init|=
 name|getConf
@@ -3003,7 +3121,7 @@ name|staleCount
 init|=
 literal|3000
 decl_stmt|;
-name|Configuration
+name|OzoneConfiguration
 name|conf
 init|=
 name|getConf
@@ -3268,7 +3386,7 @@ init|=
 literal|3000
 decl_stmt|;
 comment|// Make the HB process thread run slower.
-name|Configuration
+name|OzoneConfiguration
 name|conf
 init|=
 name|getConf
@@ -3441,7 +3559,7 @@ name|IOException
 throws|,
 name|InterruptedException
 block|{
-name|Configuration
+name|OzoneConfiguration
 name|conf
 init|=
 name|getConf
@@ -3738,7 +3856,7 @@ name|InterruptedException
 throws|,
 name|TimeoutException
 block|{
-name|Configuration
+name|OzoneConfiguration
 name|conf
 init|=
 name|getConf
@@ -3971,7 +4089,7 @@ name|InterruptedException
 throws|,
 name|TimeoutException
 block|{
-name|Configuration
+name|OzoneConfiguration
 name|conf
 init|=
 name|getConf

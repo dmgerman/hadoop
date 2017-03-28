@@ -346,16 +346,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -510,7 +500,7 @@ argument_list|()
 decl_stmt|;
 comment|/**    * Returns a new copy of Configuration.    *    * @return Config    */
 DECL|method|getConf ()
-name|Configuration
+name|OzoneConfiguration
 name|getConf
 parameter_list|()
 block|{
@@ -521,11 +511,11 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Creates a NodeManager.    *    * @param config - Config for the node manager.    * @return SCNNodeManager    * @throws IOException    */
-DECL|method|createNodeManager (Configuration config)
+DECL|method|createNodeManager (OzoneConfiguration config)
 name|SCMNodeManager
 name|createNodeManager
 parameter_list|(
-name|Configuration
+name|OzoneConfiguration
 name|config
 parameter_list|)
 throws|throws
@@ -615,7 +605,7 @@ name|InterruptedException
 throws|,
 name|TimeoutException
 block|{
-name|Configuration
+name|OzoneConfiguration
 name|conf
 init|=
 name|getConf
@@ -723,41 +713,15 @@ name|DatanodeID
 argument_list|>
 name|datanodes
 init|=
-operator|new
-name|ArrayList
-argument_list|<>
+name|SCMTestUtils
+operator|.
+name|getRegisteredDatanodeIDs
 argument_list|(
+name|nodeManager
+argument_list|,
 name|nodeCount
 argument_list|)
 decl_stmt|;
-for|for
-control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
-name|nodeCount
-condition|;
-name|i
-operator|++
-control|)
-block|{
-name|datanodes
-operator|.
-name|add
-argument_list|(
-name|SCMTestUtils
-operator|.
-name|getDatanodeID
-argument_list|(
-name|nodeManager
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
 try|try
 block|{
 for|for
