@@ -58,6 +58,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Map
 import|;
 end_import
@@ -571,9 +581,12 @@ name|maxAppAttempts
 init|=
 literal|1
 decl_stmt|;
-DECL|field|amReq
+DECL|field|amReqs
+name|List
+argument_list|<
 name|ResourceRequest
-name|amReq
+argument_list|>
+name|amReqs
 decl_stmt|;
 DECL|method|MockRMApp (int newid, long time, RMAppState newState)
 specifier|public
@@ -606,8 +619,12 @@ name|state
 operator|=
 name|newState
 expr_stmt|;
-name|amReq
+name|amReqs
 operator|=
+name|Collections
+operator|.
+name|singletonList
+argument_list|(
 name|ResourceRequest
 operator|.
 name|newInstance
@@ -628,6 +645,7 @@ literal|0
 argument_list|)
 argument_list|,
 literal|1
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1327,16 +1345,19 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|getAMResourceRequest ()
+DECL|method|getAMResourceRequests ()
 specifier|public
+name|List
+argument_list|<
 name|ResourceRequest
-name|getAMResourceRequest
+argument_list|>
+name|getAMResourceRequests
 parameter_list|()
 block|{
 return|return
 name|this
 operator|.
-name|amReq
+name|amReqs
 return|;
 block|}
 annotation|@

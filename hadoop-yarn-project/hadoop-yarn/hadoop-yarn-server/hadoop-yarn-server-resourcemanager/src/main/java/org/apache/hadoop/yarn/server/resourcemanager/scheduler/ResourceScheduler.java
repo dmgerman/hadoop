@@ -34,6 +34,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -75,6 +85,24 @@ operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeId
 import|;
 end_import
 
@@ -159,6 +187,18 @@ name|rmContext
 parameter_list|)
 throws|throws
 name|IOException
+function_decl|;
+comment|/**    * Get the {@link NodeId} available in the cluster by resource name.    * @param resourceName resource name    * @return the number of available {@link NodeId} by resource name.    */
+DECL|method|getNodeIds (String resourceName)
+name|List
+argument_list|<
+name|NodeId
+argument_list|>
+name|getNodeIds
+parameter_list|(
+name|String
+name|resourceName
+parameter_list|)
 function_decl|;
 block|}
 end_interface

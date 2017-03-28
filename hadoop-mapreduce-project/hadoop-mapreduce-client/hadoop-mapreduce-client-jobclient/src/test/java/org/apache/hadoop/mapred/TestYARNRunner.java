@@ -4332,8 +4332,13 @@ name|assertEquals
 argument_list|(
 name|appSubCtx
 operator|.
-name|getAMContainerResourceRequest
+name|getAMContainerResourceRequests
 argument_list|()
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
 operator|.
 name|getNodeLabelExpression
 argument_list|()

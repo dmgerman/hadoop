@@ -21366,8 +21366,13 @@ name|minAllocResource
 argument_list|,
 name|rmApp
 operator|.
-name|getAMResourceRequest
+name|getAMResourceRequests
 argument_list|()
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
 operator|.
 name|getCapability
 argument_list|()

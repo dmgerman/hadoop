@@ -1974,10 +1974,13 @@ name|attemptMetrics
 init|=
 literal|null
 decl_stmt|;
-DECL|field|amReq
+DECL|field|amReqs
 specifier|private
+name|List
+argument_list|<
 name|ResourceRequest
-name|amReq
+argument_list|>
+name|amReqs
 init|=
 literal|null
 decl_stmt|;
@@ -3445,7 +3448,7 @@ operator|.
 name|installTopology
 argument_list|()
 decl_stmt|;
-DECL|method|RMAppAttemptImpl (ApplicationAttemptId appAttemptId, RMContext rmContext, YarnScheduler scheduler, ApplicationMasterService masterService, ApplicationSubmissionContext submissionContext, Configuration conf, ResourceRequest amReq, RMApp rmApp)
+DECL|method|RMAppAttemptImpl (ApplicationAttemptId appAttemptId, RMContext rmContext, YarnScheduler scheduler, ApplicationMasterService masterService, ApplicationSubmissionContext submissionContext, Configuration conf, List<ResourceRequest> amReqs, RMApp rmApp)
 specifier|public
 name|RMAppAttemptImpl
 parameter_list|(
@@ -3467,8 +3470,11 @@ parameter_list|,
 name|Configuration
 name|conf
 parameter_list|,
+name|List
+argument_list|<
 name|ResourceRequest
-name|amReq
+argument_list|>
+name|amReqs
 parameter_list|,
 name|RMApp
 name|rmApp
@@ -3488,7 +3494,7 @@ name|submissionContext
 argument_list|,
 name|conf
 argument_list|,
-name|amReq
+name|amReqs
 argument_list|,
 name|rmApp
 argument_list|,
@@ -3498,7 +3504,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|RMAppAttemptImpl (ApplicationAttemptId appAttemptId, RMContext rmContext, YarnScheduler scheduler, ApplicationMasterService masterService, ApplicationSubmissionContext submissionContext, Configuration conf, ResourceRequest amReq, RMApp rmApp, BlacklistManager amBlacklistManager)
+DECL|method|RMAppAttemptImpl (ApplicationAttemptId appAttemptId, RMContext rmContext, YarnScheduler scheduler, ApplicationMasterService masterService, ApplicationSubmissionContext submissionContext, Configuration conf, List<ResourceRequest> amReqs, RMApp rmApp, BlacklistManager amBlacklistManager)
 specifier|public
 name|RMAppAttemptImpl
 parameter_list|(
@@ -3520,8 +3526,11 @@ parameter_list|,
 name|Configuration
 name|conf
 parameter_list|,
+name|List
+argument_list|<
 name|ResourceRequest
-name|amReq
+argument_list|>
+name|amReqs
 parameter_list|,
 name|RMApp
 name|rmApp
@@ -3635,9 +3644,9 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|amReq
+name|amReqs
 operator|=
-name|amReq
+name|amReqs
 expr_stmt|;
 name|this
 operator|.
@@ -6169,12 +6178,19 @@ block|{
 comment|// Need reset #containers before create new attempt, because this request
 comment|// will be passed to scheduler, and scheduler will deduct the number after
 comment|// AM container allocated
-comment|// Currently, following fields are all hard code,
+comment|// Currently, following fields are all hard coded,
 comment|// TODO: change these fields when we want to support
-comment|// priority/resource-name/relax-locality specification for AM containers
-comment|// allocation.
+comment|// priority or multiple containers AM container allocation.
+for|for
+control|(
+name|ResourceRequest
+name|amReq
+range|:
 name|appAttempt
 operator|.
+name|amReqs
+control|)
+block|{
 name|amReq
 operator|.
 name|setNumContainers
@@ -6182,8 +6198,6 @@ argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
-name|appAttempt
-operator|.
 name|amReq
 operator|.
 name|setPriority
@@ -6191,33 +6205,10 @@ argument_list|(
 name|AM_CONTAINER_PRIORITY
 argument_list|)
 expr_stmt|;
-name|appAttempt
-operator|.
-name|amReq
-operator|.
-name|setResourceName
-argument_list|(
-name|ResourceRequest
-operator|.
-name|ANY
-argument_list|)
-expr_stmt|;
-name|appAttempt
-operator|.
-name|amReq
-operator|.
-name|setRelaxLocality
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-name|appAttempt
-operator|.
-name|getAMBlacklistManager
-argument_list|()
-operator|.
-name|refreshNodeHostCount
-argument_list|(
+block|}
+name|int
+name|numNodes
+init|=
 name|RMServerUtils
 operator|.
 name|getApplicableNodeCountForAM
@@ -6232,8 +6223,35 @@ name|conf
 argument_list|,
 name|appAttempt
 operator|.
-name|amReq
+name|amReqs
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Setting node count for blacklist to "
+operator|+
+name|numNodes
+argument_list|)
+expr_stmt|;
+block|}
+name|appAttempt
+operator|.
+name|getAMBlacklistManager
+argument_list|()
+operator|.
+name|refreshNodeHostCount
+argument_list|(
+name|numNodes
 argument_list|)
 expr_stmt|;
 name|ResourceBlacklistRequest
@@ -6291,14 +6309,9 @@ name|appAttempt
 operator|.
 name|applicationAttemptId
 argument_list|,
-name|Collections
-operator|.
-name|singletonList
-argument_list|(
 name|appAttempt
 operator|.
-name|amReq
-argument_list|)
+name|amReqs
 argument_list|,
 name|EMPTY_CONTAINER_RELEASE_LIST
 argument_list|,

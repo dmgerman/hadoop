@@ -26,6 +26,26 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Map
 import|;
 end_import
@@ -430,9 +450,14 @@ argument_list|)
 expr_stmt|;
 name|context
 operator|.
-name|setAMContainerResourceRequest
+name|setAMContainerResourceRequests
+argument_list|(
+name|Collections
+operator|.
+name|singletonList
 argument_list|(
 name|amReq
+argument_list|)
 argument_list|)
 expr_stmt|;
 return|return
@@ -773,9 +798,14 @@ argument_list|)
 expr_stmt|;
 name|context
 operator|.
-name|setAMContainerResourceRequest
+name|setAMContainerResourceRequests
+argument_list|(
+name|Collections
+operator|.
+name|singletonList
 argument_list|(
 name|resourceRequest
+argument_list|)
 argument_list|)
 expr_stmt|;
 return|return
@@ -1313,11 +1343,13 @@ name|String
 name|nodeLabelExpression
 parameter_list|)
 function_decl|;
-comment|/**    * Get ResourceRequest of AM container, if this is not null, scheduler will    * use this to acquire resource for AM container.    *     * If this is null, scheduler will assemble a ResourceRequest by using    *<em>getResource</em> and<em>getPriority</em> of    *<em>ApplicationSubmissionContext</em>.    *     * Number of containers and Priority will be ignore.    *     * @return ResourceRequest of AM container    */
+comment|/**    * Get the ResourceRequest of the AM container.    *    * If this is not null, scheduler will use this to acquire resource for AM    * container.    *    * If this is null, scheduler will assemble a ResourceRequest by using    *<em>getResource</em> and<em>getPriority</em> of    *<em>ApplicationSubmissionContext</em>.    *    * Number of containers and Priority will be ignored.    *    * @return ResourceRequest of the AM container    * @deprecated See {@link #getAMContainerResourceRequests()}    */
 annotation|@
 name|Public
 annotation|@
 name|Evolving
+annotation|@
+name|Deprecated
 DECL|method|getAMContainerResourceRequest ()
 specifier|public
 specifier|abstract
@@ -1325,11 +1357,13 @@ name|ResourceRequest
 name|getAMContainerResourceRequest
 parameter_list|()
 function_decl|;
-comment|/**    * Set ResourceRequest of AM container    * @param request of AM container    */
+comment|/**    * Set ResourceRequest of the AM container    * @param request of the AM container    * @deprecated See {@link #setAMContainerResourceRequests(List)}    */
 annotation|@
 name|Public
 annotation|@
 name|Evolving
+annotation|@
+name|Deprecated
 DECL|method|setAMContainerResourceRequest (ResourceRequest request)
 specifier|public
 specifier|abstract
@@ -1338,6 +1372,39 @@ name|setAMContainerResourceRequest
 parameter_list|(
 name|ResourceRequest
 name|request
+parameter_list|)
+function_decl|;
+comment|/**    * Get the ResourceRequests of the AM container.    *    * If this is not null, scheduler will use this to acquire resource for AM    * container.    *    * If this is null, scheduler will use the ResourceRequest as determined by    *<em>getAMContainerResourceRequest</em> and its behavior.    *    * Number of containers and Priority will be ignored.    *    * @return List of ResourceRequests of the AM container    */
+annotation|@
+name|Public
+annotation|@
+name|Evolving
+DECL|method|getAMContainerResourceRequests ()
+specifier|public
+specifier|abstract
+name|List
+argument_list|<
+name|ResourceRequest
+argument_list|>
+name|getAMContainerResourceRequests
+parameter_list|()
+function_decl|;
+comment|/**    * Set ResourceRequests of the AM container.    * @param requests of the AM container    */
+annotation|@
+name|Public
+annotation|@
+name|Evolving
+DECL|method|setAMContainerResourceRequests ( List<ResourceRequest> requests)
+specifier|public
+specifier|abstract
+name|void
+name|setAMContainerResourceRequests
+parameter_list|(
+name|List
+argument_list|<
+name|ResourceRequest
+argument_list|>
+name|requests
 parameter_list|)
 function_decl|;
 comment|/**    * Get the attemptFailuresValidityInterval in milliseconds for the application    *    * @return the attemptFailuresValidityInterval    */

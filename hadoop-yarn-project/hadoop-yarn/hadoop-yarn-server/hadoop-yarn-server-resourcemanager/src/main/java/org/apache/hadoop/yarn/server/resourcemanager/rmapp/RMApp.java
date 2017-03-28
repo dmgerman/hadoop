@@ -38,6 +38,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Map
 import|;
 end_import
@@ -610,9 +620,12 @@ name|ReservationId
 name|getReservationId
 parameter_list|()
 function_decl|;
-DECL|method|getAMResourceRequest ()
+DECL|method|getAMResourceRequests ()
+name|List
+argument_list|<
 name|ResourceRequest
-name|getAMResourceRequest
+argument_list|>
+name|getAMResourceRequests
 parameter_list|()
 function_decl|;
 DECL|method|getLogAggregationReportsForApp ()

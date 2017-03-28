@@ -1521,8 +1521,13 @@ literal|null
 else|:
 name|app
 operator|.
-name|getAMResourceRequest
+name|getAMResourceRequests
 argument_list|()
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
 operator|.
 name|getNodeLabelExpression
 argument_list|()

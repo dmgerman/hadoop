@@ -2859,6 +2859,10 @@ operator|new
 name|Configuration
 argument_list|()
 argument_list|,
+name|Collections
+operator|.
+name|singletonList
+argument_list|(
 name|BuilderUtils
 operator|.
 name|newResourceRequest
@@ -2877,6 +2881,7 @@ name|getResource
 argument_list|()
 argument_list|,
 literal|1
+argument_list|)
 argument_list|)
 argument_list|,
 name|application
@@ -7278,6 +7283,10 @@ name|submissionContext
 argument_list|,
 name|myConf
 argument_list|,
+name|Collections
+operator|.
+name|singletonList
+argument_list|(
 name|BuilderUtils
 operator|.
 name|newResourceRequest
@@ -7296,6 +7305,7 @@ name|getResource
 argument_list|()
 argument_list|,
 literal|1
+argument_list|)
 argument_list|)
 argument_list|,
 name|application
@@ -9973,6 +9983,10 @@ operator|new
 name|Configuration
 argument_list|()
 argument_list|,
+name|Collections
+operator|.
+name|singletonList
+argument_list|(
 name|BuilderUtils
 operator|.
 name|newResourceRequest
@@ -9991,6 +10005,7 @@ name|getResource
 argument_list|()
 argument_list|,
 literal|1
+argument_list|)
 argument_list|)
 argument_list|,
 name|application
@@ -10390,6 +10405,10 @@ operator|new
 name|Configuration
 argument_list|()
 argument_list|,
+name|Collections
+operator|.
+name|singletonList
+argument_list|(
 name|ResourceRequest
 operator|.
 name|newInstance
@@ -10414,6 +10433,7 @@ argument_list|,
 literal|false
 argument_list|,
 literal|"label-expression"
+argument_list|)
 argument_list|)
 argument_list|,
 name|application

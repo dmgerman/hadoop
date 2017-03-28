@@ -2114,10 +2114,13 @@ specifier|private
 name|RMAppState
 name|recoveredFinalState
 decl_stmt|;
-DECL|field|amReq
+DECL|field|amReqs
 specifier|private
+name|List
+argument_list|<
 name|ResourceRequest
-name|amReq
+argument_list|>
+name|amReqs
 decl_stmt|;
 DECL|field|callerContext
 specifier|private
@@ -3467,7 +3470,7 @@ name|MAXIMUM_AM_BLACKLIST_THRESHOLD_VALUE
 init|=
 literal|1.0f
 decl_stmt|;
-DECL|method|RMAppImpl (ApplicationId applicationId, RMContext rmContext, Configuration config, String name, String user, String queue, ApplicationSubmissionContext submissionContext, YarnScheduler scheduler, ApplicationMasterService masterService, long submitTime, String applicationType, Set<String> applicationTags, ResourceRequest amReq)
+DECL|method|RMAppImpl (ApplicationId applicationId, RMContext rmContext, Configuration config, String name, String user, String queue, ApplicationSubmissionContext submissionContext, YarnScheduler scheduler, ApplicationMasterService masterService, long submitTime, String applicationType, Set<String> applicationTags, List<ResourceRequest> amReqs)
 specifier|public
 name|RMAppImpl
 parameter_list|(
@@ -3510,8 +3513,11 @@ name|String
 argument_list|>
 name|applicationTags
 parameter_list|,
+name|List
+argument_list|<
 name|ResourceRequest
-name|amReq
+argument_list|>
+name|amReqs
 parameter_list|)
 block|{
 name|this
@@ -3540,14 +3546,14 @@ name|applicationType
 argument_list|,
 name|applicationTags
 argument_list|,
-name|amReq
+name|amReqs
 argument_list|,
 operator|-
 literal|1
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|RMAppImpl (ApplicationId applicationId, RMContext rmContext, Configuration config, String name, String user, String queue, ApplicationSubmissionContext submissionContext, YarnScheduler scheduler, ApplicationMasterService masterService, long submitTime, String applicationType, Set<String> applicationTags, ResourceRequest amReq, long startTime)
+DECL|method|RMAppImpl (ApplicationId applicationId, RMContext rmContext, Configuration config, String name, String user, String queue, ApplicationSubmissionContext submissionContext, YarnScheduler scheduler, ApplicationMasterService masterService, long submitTime, String applicationType, Set<String> applicationTags, List<ResourceRequest> amReqs, long startTime)
 specifier|public
 name|RMAppImpl
 parameter_list|(
@@ -3590,8 +3596,11 @@ name|String
 argument_list|>
 name|applicationTags
 parameter_list|,
+name|List
+argument_list|<
 name|ResourceRequest
-name|amReq
+argument_list|>
+name|amReqs
 parameter_list|,
 name|long
 name|startTime
@@ -3726,9 +3735,9 @@ name|applicationTags
 expr_stmt|;
 name|this
 operator|.
-name|amReq
+name|amReqs
 operator|=
-name|amReq
+name|amReqs
 expr_stmt|;
 if|if
 condition|(
@@ -6150,7 +6159,7 @@ name|rmContext
 argument_list|,
 name|conf
 argument_list|,
-name|getAMResourceRequest
+name|getAMResourceRequests
 argument_list|()
 argument_list|)
 argument_list|,
@@ -6186,7 +6195,7 @@ name|submissionContext
 argument_list|,
 name|conf
 argument_list|,
-name|amReq
+name|amReqs
 argument_list|,
 name|this
 argument_list|,
@@ -9564,16 +9573,19 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getAMResourceRequest ()
+DECL|method|getAMResourceRequests ()
 specifier|public
+name|List
+argument_list|<
 name|ResourceRequest
-name|getAMResourceRequest
+argument_list|>
+name|getAMResourceRequests
 parameter_list|()
 block|{
 return|return
 name|this
 operator|.
-name|amReq
+name|amReqs
 return|;
 block|}
 annotation|@
@@ -10925,11 +10937,30 @@ condition|)
 block|{
 name|amNodeLabelExpression
 operator|=
-name|getAMResourceRequest
+name|getAMResourceRequests
 argument_list|()
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|getAMResourceRequests
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
+condition|?
+name|getAMResourceRequests
+argument_list|()
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
 operator|.
 name|getNodeLabelExpression
 argument_list|()
+else|:
+literal|null
 expr_stmt|;
 name|amNodeLabelExpression
 operator|=

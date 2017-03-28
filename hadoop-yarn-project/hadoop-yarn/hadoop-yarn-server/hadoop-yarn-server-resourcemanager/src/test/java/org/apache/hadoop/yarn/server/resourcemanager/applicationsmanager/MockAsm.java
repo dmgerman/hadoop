@@ -601,9 +601,12 @@ name|ApplicationBase
 implements|implements
 name|RMApp
 block|{
-DECL|field|amReq
+DECL|field|amReqs
+name|List
+argument_list|<
 name|ResourceRequest
-name|amReq
+argument_list|>
+name|amReqs
 decl_stmt|;
 annotation|@
 name|Override
@@ -1173,16 +1176,19 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|getAMResourceRequest ()
+DECL|method|getAMResourceRequests ()
 specifier|public
+name|List
+argument_list|<
 name|ResourceRequest
-name|getAMResourceRequest
+argument_list|>
+name|getAMResourceRequests
 parameter_list|()
 block|{
 return|return
 name|this
 operator|.
-name|amReq
+name|amReqs
 return|;
 block|}
 annotation|@

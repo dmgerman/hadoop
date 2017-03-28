@@ -6417,6 +6417,29 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
+DECL|method|getNodeIds (String resourceName)
+specifier|public
+name|List
+argument_list|<
+name|NodeId
+argument_list|>
+name|getNodeIds
+parameter_list|(
+name|String
+name|resourceName
+parameter_list|)
+block|{
+return|return
+name|nodeTracker
+operator|.
+name|getNodeIdsByResourceName
+argument_list|(
+name|resourceName
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 
