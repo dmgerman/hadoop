@@ -1957,7 +1957,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|chooseRandom (final String scope, String excludedScope, final Collection<Node> excludedNodes)
-specifier|private
+specifier|protected
 name|Node
 name|chooseRandom
 parameter_list|(

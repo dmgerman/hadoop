@@ -165,7 +165,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The HDFS specific network topology class. The main purpose of doing this  * subclassing is to add storage-type-aware chooseRandom method. All the  * remaining parts should be the same.  *  * Currently a placeholder to test storage type info.  * TODO : add "chooseRandom with storageType info" function.  */
+comment|/**  * The HDFS specific network topology class. The main purpose of doing this  * subclassing is to add storage-type-aware chooseRandom method. All the  * remaining parts should be the same.  *  * Currently a placeholder to test storage type info.  */
 end_comment
 
 begin_class
@@ -218,7 +218,7 @@ name|FACTORY
 argument_list|)
 return|;
 block|}
-comment|/**    * Randomly choose one node from<i>scope</i>, with specified storage type.    *    * If scope starts with ~, choose one from the all nodes except for the    * ones in<i>scope</i>; otherwise, choose one from<i>scope</i>.    * If excludedNodes is given, choose a node that's not in excludedNodes.    *    * @param scope range of nodes from which a node will be chosen    * @param excludedNodes nodes to be excluded from    * @return the chosen node    */
+comment|/**    * Randomly choose one node from<i>scope</i>, with specified storage type.    *    * If scope starts with ~, choose one from the all nodes except for the    * ones in<i>scope</i>; otherwise, choose one from<i>scope</i>.    * If excludedNodes is given, choose a node that's not in excludedNodes.    *    * @param scope range of nodes from which a node will be chosen    * @param excludedNodes nodes to be excluded from    * @param type the storage type we search for    * @return the chosen node    */
 DECL|method|chooseRandomWithStorageType (final String scope, final Collection<Node> excludedNodes, StorageType type)
 specifier|public
 name|Node
@@ -307,7 +307,195 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Choose a random node based on given scope, excludedScope and excludedNodes    * set. Although in general the topology has at most three layers, this class    * will not impose such assumption.    *    * At high level, the idea is like this, say:    *    * R has two children A and B, and storage type is X, say:    * A has X = 6 (rooted at A there are 6 datanodes with X) and B has X = 8.    *    * Then R will generate a random int between 1~14, if it's<= 6, recursively    * call into A, otherwise B. This will maintain a uniformed randomness of    * choosing datanodes.    *    * The tricky part is how to handle excludes.    *    * For excludedNodes, since this set is small: currently the main reason of    * being an excluded node is because it already has a replica. So randomly    * picking up this node again should be rare. Thus we only check that, if the    * chosen node is excluded, we do chooseRandom again.    *    * For excludedScope, we locate the root of the excluded scope. Subtracting    * all it's ancestors' storage counters accordingly, this way the excluded    * root is out of the picture.    *    * TODO : this function has duplicate code as NetworkTopology, need to    * refactor in the future.    *    * @param scope    * @param excludedScope    * @param excludedNodes    * @return    */
+comment|/**    * Randomly choose one node from<i>scope</i> with the given storage type.    *    * If scope starts with ~, choose one from the all nodes except for the    * ones in<i>scope</i>; otherwise, choose one from<i>scope</i>.    * If excludedNodes is given, choose a node that's not in excludedNodes.    *    * This call would make up to two calls. It first tries to get a random node    * (with old method) and check if it satisfies. If yes, simply return it.    * Otherwise, it make a second call (with the new method) by passing in a    * storage type.    *    * This is for better performance reason. Put in short, the key note is that    * the old method is faster but may take several runs, while the new method    * is somewhat slower, and always succeed in one trial.    * See HDFS-11535 for more detail.    *    * @param scope range of nodes from which a node will be chosen    * @param excludedNodes nodes to be excluded from    * @param type the storage type we search for    * @return the chosen node    */
+DECL|method|chooseRandomWithStorageTypeTwoTrial (final String scope, final Collection<Node> excludedNodes, StorageType type)
+specifier|public
+name|Node
+name|chooseRandomWithStorageTypeTwoTrial
+parameter_list|(
+specifier|final
+name|String
+name|scope
+parameter_list|,
+specifier|final
+name|Collection
+argument_list|<
+name|Node
+argument_list|>
+name|excludedNodes
+parameter_list|,
+name|StorageType
+name|type
+parameter_list|)
+block|{
+name|netlock
+operator|.
+name|readLock
+argument_list|()
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|String
+name|searchScope
+decl_stmt|;
+name|String
+name|excludedScope
+decl_stmt|;
+if|if
+condition|(
+name|scope
+operator|.
+name|startsWith
+argument_list|(
+literal|"~"
+argument_list|)
+condition|)
+block|{
+name|searchScope
+operator|=
+name|NodeBase
+operator|.
+name|ROOT
+expr_stmt|;
+name|excludedScope
+operator|=
+name|scope
+operator|.
+name|substring
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|searchScope
+operator|=
+name|scope
+expr_stmt|;
+name|excludedScope
+operator|=
+literal|null
+expr_stmt|;
+block|}
+comment|// next do a two-trial search
+comment|// first trial, call the old method, inherited from NetworkTopology
+name|Node
+name|n
+init|=
+name|chooseRandom
+argument_list|(
+name|searchScope
+argument_list|,
+name|excludedScope
+argument_list|,
+name|excludedNodes
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|n
+operator|==
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"No node to choose."
+argument_list|)
+expr_stmt|;
+block|}
+comment|// this means there is simply no node to choose from
+return|return
+literal|null
+return|;
+block|}
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|n
+operator|instanceof
+name|DatanodeDescriptor
+argument_list|)
+expr_stmt|;
+name|DatanodeDescriptor
+name|dnDescriptor
+init|=
+operator|(
+name|DatanodeDescriptor
+operator|)
+name|n
+decl_stmt|;
+if|if
+condition|(
+name|dnDescriptor
+operator|.
+name|hasStorageType
+argument_list|(
+name|type
+argument_list|)
+condition|)
+block|{
+comment|// the first trial succeeded, just return
+return|return
+name|dnDescriptor
+return|;
+block|}
+else|else
+block|{
+comment|// otherwise, make the second trial by calling the new method
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"First trial failed, node has no type {}, "
+operator|+
+literal|"making second trial carrying this type"
+argument_list|,
+name|type
+argument_list|)
+expr_stmt|;
+return|return
+name|chooseRandomWithStorageType
+argument_list|(
+name|searchScope
+argument_list|,
+name|excludedScope
+argument_list|,
+name|excludedNodes
+argument_list|,
+name|type
+argument_list|)
+return|;
+block|}
+block|}
+finally|finally
+block|{
+name|netlock
+operator|.
+name|readLock
+argument_list|()
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Choose a random node based on given scope, excludedScope and excludedNodes    * set. Although in general the topology has at most three layers, this class    * will not impose such assumption.    *    * At high level, the idea is like this, say:    *    * R has two children A and B, and storage type is X, say:    * A has X = 6 (rooted at A there are 6 datanodes with X) and B has X = 8.    *    * Then R will generate a random int between 1~14, if it's<= 6, recursively    * call into A, otherwise B. This will maintain a uniformed randomness of    * choosing datanodes.    *    * The tricky part is how to handle excludes.    *    * For excludedNodes, since this set is small: currently the main reason of    * being an excluded node is because it already has a replica. So randomly    * picking up this node again should be rare. Thus we only check that, if the    * chosen node is excluded, we do chooseRandom again.    *    * For excludedScope, we locate the root of the excluded scope. Subtracting    * all it's ancestors' storage counters accordingly, this way the excluded    * root is out of the picture.    *    * @param scope the scope where we look for node.    * @param excludedScope the scope where the node must NOT be from.    * @param excludedNodes the returned node must not be in this set    * @return a node with required storage type    */
 annotation|@
 name|VisibleForTesting
 DECL|method|chooseRandomWithStorageType (final String scope, String excludedScope, final Collection<Node> excludedNodes, StorageType type)
