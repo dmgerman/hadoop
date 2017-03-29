@@ -273,6 +273,23 @@ parameter_list|)
 throws|throws
 name|StorageContainerException
 function_decl|;
+comment|/**    * Update an existing container.    *    * @param pipeline container nodes    * @param containerName name of the container    * @param data container data    * @throws StorageContainerException    */
+DECL|method|updateContainer (Pipeline pipeline, String containerName, ContainerData data)
+name|void
+name|updateContainer
+parameter_list|(
+name|Pipeline
+name|pipeline
+parameter_list|,
+name|String
+name|containerName
+parameter_list|,
+name|ContainerData
+name|data
+parameter_list|)
+throws|throws
+name|StorageContainerException
+function_decl|;
 comment|/**    * As simple interface for container Iterations.    *    * @param prefix - Return only values matching this prefix    * @param count   - how many to return    * @param prevKey - Previous key - Server returns results from this point.    * @param data    - Actual containerData    * @throws StorageContainerException    */
 DECL|method|listContainer (String prefix, long count, String prevKey, List<ContainerData> data)
 name|void
