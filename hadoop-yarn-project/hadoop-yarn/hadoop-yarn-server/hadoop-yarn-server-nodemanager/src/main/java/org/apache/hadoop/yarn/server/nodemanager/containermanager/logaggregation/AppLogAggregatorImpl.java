@@ -3399,8 +3399,6 @@ operator|)
 argument_list|)
 return|;
 block|}
-comment|// TODO: The condition: containerId.getId() == 1 to determine an AM container
-comment|// is not always true.
 DECL|method|shouldUploadLogs (ContainerLogContext logContext)
 specifier|private
 name|boolean
