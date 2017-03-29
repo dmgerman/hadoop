@@ -2846,7 +2846,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"All specified directories are failed to load."
+literal|"All specified directories have failed to load."
 argument_list|)
 throw|;
 block|}
