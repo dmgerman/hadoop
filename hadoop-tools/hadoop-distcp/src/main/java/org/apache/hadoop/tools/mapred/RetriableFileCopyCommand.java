@@ -965,6 +965,9 @@ operator|.
 name|OVERWRITE
 condition|)
 block|{
+comment|// If there is an erasure coding policy set on the target directory,
+comment|// files will be written to the target directory using the same EC policy.
+comment|// The replication factor of the source file is ignored and not preserved.
 specifier|final
 name|short
 name|repl

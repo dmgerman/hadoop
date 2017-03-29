@@ -808,6 +808,20 @@ return|return
 name|permission
 return|;
 block|}
+DECL|method|isErasureCoded ()
+specifier|public
+name|boolean
+name|isErasureCoded
+parameter_list|()
+block|{
+return|return
+name|getPermission
+argument_list|()
+operator|.
+name|getErasureCodedBit
+argument_list|()
+return|;
+block|}
 comment|/**    * Returns the full logical ACL.    *    * @return List containing full logical ACL    */
 DECL|method|getAclEntries ()
 specifier|public

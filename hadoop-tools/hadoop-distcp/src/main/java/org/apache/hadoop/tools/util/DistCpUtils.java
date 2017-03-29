@@ -1200,6 +1200,8 @@ block|}
 block|}
 block|}
 block|}
+comment|// The replication factor can only be preserved for replicated files.
+comment|// It is ignored when either the source or target file are erasure coded.
 if|if
 condition|(
 name|attributes
@@ -1217,7 +1219,18 @@ operator|.
 name|isDirectory
 argument_list|()
 operator|&&
-operator|(
+operator|!
+name|targetFileStatus
+operator|.
+name|isErasureCoded
+argument_list|()
+operator|&&
+operator|!
+name|srcFileStatus
+operator|.
+name|isErasureCoded
+argument_list|()
+operator|&&
 name|srcFileStatus
 operator|.
 name|getReplication
@@ -1227,7 +1240,6 @@ name|targetFileStatus
 operator|.
 name|getReplication
 argument_list|()
-operator|)
 condition|)
 block|{
 name|targetFS
