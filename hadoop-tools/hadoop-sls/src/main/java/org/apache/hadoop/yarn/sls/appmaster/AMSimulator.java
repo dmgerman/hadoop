@@ -640,6 +640,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|sls
+operator|.
+name|scheduler
+operator|.
+name|SchedulerMetrics
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|util
 operator|.
 name|Records
@@ -1397,6 +1415,9 @@ name|getStartTimeMS
 argument_list|()
 expr_stmt|;
 comment|// record job running information
+name|SchedulerMetrics
+name|schedulerMetrics
+init|=
 operator|(
 operator|(
 name|SchedulerWrapper
@@ -1406,6 +1427,18 @@ operator|.
 name|getResourceScheduler
 argument_list|()
 operator|)
+operator|.
+name|getSchedulerMetrics
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|schedulerMetrics
+operator|!=
+literal|null
+condition|)
+block|{
+name|schedulerMetrics
 operator|.
 name|addAMRuntime
 argument_list|(
@@ -1420,6 +1453,7 @@ argument_list|,
 name|simulateFinishTimeMS
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|createResourceRequest ( Resource resource, String host, int priority, int numContainers)
 specifier|protected
@@ -2043,6 +2077,9 @@ condition|(
 name|isTracked
 condition|)
 block|{
+name|SchedulerMetrics
+name|schedulerMetrics
+init|=
 operator|(
 operator|(
 name|SchedulerWrapper
@@ -2053,6 +2090,18 @@ name|getResourceScheduler
 argument_list|()
 operator|)
 operator|.
+name|getSchedulerMetrics
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|schedulerMetrics
+operator|!=
+literal|null
+condition|)
+block|{
+name|schedulerMetrics
+operator|.
 name|addTrackedApp
 argument_list|(
 name|appId
@@ -2060,6 +2109,7 @@ argument_list|,
 name|oldAppId
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|untrackApp ()
@@ -2073,6 +2123,9 @@ condition|(
 name|isTracked
 condition|)
 block|{
+name|SchedulerMetrics
+name|schedulerMetrics
+init|=
 operator|(
 operator|(
 name|SchedulerWrapper
@@ -2083,11 +2136,24 @@ name|getResourceScheduler
 argument_list|()
 operator|)
 operator|.
+name|getSchedulerMetrics
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|schedulerMetrics
+operator|!=
+literal|null
+condition|)
+block|{
+name|schedulerMetrics
+operator|.
 name|removeTrackedApp
 argument_list|(
 name|oldAppId
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|packageRequests ( List<ContainerSimulator> csList, int priority)

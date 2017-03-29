@@ -732,13 +732,6 @@ name|wrapper
 operator|=
 name|wrapper
 expr_stmt|;
-name|metrics
-operator|=
-name|wrapper
-operator|.
-name|getMetrics
-argument_list|()
-expr_stmt|;
 name|handleOperTimecostHistogramMap
 operator|=
 operator|new
@@ -777,6 +770,13 @@ operator|=
 name|wrapper
 operator|.
 name|getSchedulerMetrics
+argument_list|()
+expr_stmt|;
+name|metrics
+operator|=
+name|schedulerMetrics
+operator|.
+name|getMetrics
 argument_list|()
 expr_stmt|;
 name|port
@@ -1330,6 +1330,9 @@ name|queues
 init|=
 name|wrapper
 operator|.
+name|getTracker
+argument_list|()
+operator|.
 name|getQueueSet
 argument_list|()
 decl_stmt|;
@@ -1515,6 +1518,9 @@ name|trackedQueues
 init|=
 name|wrapper
 operator|.
+name|getTracker
+argument_list|()
+operator|.
 name|getQueueSet
 argument_list|()
 decl_stmt|;
@@ -1569,6 +1575,9 @@ argument_list|>
 name|trackedApps
 init|=
 name|wrapper
+operator|.
+name|getTracker
+argument_list|()
 operator|.
 name|getTrackedAppSet
 argument_list|()
@@ -2480,6 +2489,9 @@ name|queue
 range|:
 name|wrapper
 operator|.
+name|getTracker
+argument_list|()
+operator|.
 name|getQueueSet
 argument_list|()
 control|)
@@ -2772,6 +2784,9 @@ name|String
 name|queue
 range|:
 name|wrapper
+operator|.
+name|getTracker
+argument_list|()
 operator|.
 name|getQueueSet
 argument_list|()

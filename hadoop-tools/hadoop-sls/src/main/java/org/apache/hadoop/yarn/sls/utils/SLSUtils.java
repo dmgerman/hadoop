@@ -296,6 +296,15 @@ specifier|public
 class|class
 name|SLSUtils
 block|{
+DECL|field|SHUTDOWN_HOOK_PRIORITY
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|SHUTDOWN_HOOK_PRIORITY
+init|=
+literal|30
+decl_stmt|;
 comment|// hostname includes the network path and the host name. for example
 comment|// "/default-rack/hostFoo" or "/coreSwitchA/TORSwitchB/hostBar".
 comment|// the function returns two Strings, the first element is the network
