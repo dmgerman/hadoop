@@ -5592,6 +5592,11 @@ operator|.
 name|shutdownNow
 argument_list|()
 expr_stmt|;
+name|encoder
+operator|.
+name|release
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 annotation|@

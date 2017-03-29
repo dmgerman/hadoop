@@ -271,6 +271,9 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+name|cleanup
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 DECL|method|reconstruct ()

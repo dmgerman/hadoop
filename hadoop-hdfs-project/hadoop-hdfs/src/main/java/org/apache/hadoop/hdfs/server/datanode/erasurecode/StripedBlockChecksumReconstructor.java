@@ -334,6 +334,8 @@ init|=
 name|getMaxTargetLength
 argument_list|()
 decl_stmt|;
+try|try
+block|{
 while|while
 condition|(
 name|requestedLen
@@ -442,6 +444,13 @@ argument_list|(
 name|checksumWriter
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|cleanup
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|checksumWithTargetOutput (byte[] outputData, int toReconstructLen, MessageDigest digester)
 specifier|private

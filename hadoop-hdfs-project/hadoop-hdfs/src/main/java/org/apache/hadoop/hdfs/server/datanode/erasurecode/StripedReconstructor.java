@@ -1023,6 +1023,25 @@ return|return
 name|decoder
 return|;
 block|}
+DECL|method|cleanup ()
+name|void
+name|cleanup
+parameter_list|()
+block|{
+if|if
+condition|(
+name|decoder
+operator|!=
+literal|null
+condition|)
+block|{
+name|decoder
+operator|.
+name|release
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|getStripedReader ()
 name|StripedReader
 name|getStripedReader
