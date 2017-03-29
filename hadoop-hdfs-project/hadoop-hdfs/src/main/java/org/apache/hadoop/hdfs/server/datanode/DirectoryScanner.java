@@ -340,6 +340,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|DFSConfigKeys
@@ -649,6 +663,7 @@ comment|/**    * Allow retaining diffs for unit test and analysis. Defaults to f
 annotation|@
 name|VisibleForTesting
 DECL|method|setRetainDiffs (boolean b)
+specifier|public
 name|void
 name|setRetainDiffs
 parameter_list|(
@@ -1022,6 +1037,7 @@ block|}
 block|}
 comment|/**    * Create a new directory scanner, but don't cycle it running yet.    *    * @param datanode the parent datanode    * @param dataset the dataset to scan    * @param conf the Configuration object    */
 DECL|method|DirectoryScanner (DataNode datanode, FsDatasetSpi<?> dataset, Configuration conf)
+specifier|public
 name|DirectoryScanner
 parameter_list|(
 name|DataNode
@@ -1586,6 +1602,7 @@ comment|/**    * Reconcile differences between disk and in-memory blocks    */
 annotation|@
 name|VisibleForTesting
 DECL|method|reconcile ()
+specifier|public
 name|void
 name|reconcile
 parameter_list|()
@@ -1648,24 +1665,6 @@ argument_list|(
 name|bpid
 argument_list|,
 name|info
-operator|.
-name|getBlockId
-argument_list|()
-argument_list|,
-name|info
-operator|.
-name|getBlockFile
-argument_list|()
-argument_list|,
-name|info
-operator|.
-name|getMetaFile
-argument_list|()
-argument_list|,
-name|info
-operator|.
-name|getVolume
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1955,6 +1954,18 @@ if|if
 condition|(
 name|info
 operator|.
+name|getVolume
+argument_list|()
+operator|.
+name|getStorageType
+argument_list|()
+operator|!=
+name|StorageType
+operator|.
+name|PROVIDED
+operator|&&
+name|info
+operator|.
 name|getBlockFile
 argument_list|()
 operator|==
@@ -1987,7 +1998,7 @@ argument_list|()
 operator|||
 name|info
 operator|.
-name|getBlockFileLength
+name|getBlockLength
 argument_list|()
 operator|!=
 name|memBlock
@@ -2725,6 +2736,22 @@ name|LinkedList
 argument_list|<>
 argument_list|()
 decl_stmt|;
+name|perfTimer
+operator|.
+name|reset
+argument_list|()
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+name|throttleTimer
+operator|.
+name|reset
+argument_list|()
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
 try|try
 block|{
 name|result

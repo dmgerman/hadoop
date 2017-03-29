@@ -251,6 +251,38 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
+comment|/**    * Constructor.    * @param block a block    * @param vol volume where replica is located    * @param dir directory path where block and meta files are located    */
+DECL|method|ReplicaInfo (Block block, FsVolumeSpi vol)
+name|ReplicaInfo
+parameter_list|(
+name|Block
+name|block
+parameter_list|,
+name|FsVolumeSpi
+name|vol
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|vol
+argument_list|,
+name|block
+operator|.
+name|getBlockId
+argument_list|()
+argument_list|,
+name|block
+operator|.
+name|getNumBytes
+argument_list|()
+argument_list|,
+name|block
+operator|.
+name|getGenerationStamp
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**   * Constructor   * @param vol volume where replica is located   * @param blockId block id   * @param len replica length   * @param genStamp replica generation stamp   */
 DECL|method|ReplicaInfo (FsVolumeSpi vol, long blockId, long len, long genStamp)
 name|ReplicaInfo
@@ -284,7 +316,26 @@ operator|=
 name|vol
 expr_stmt|;
 block|}
-comment|/**    * Get the volume where this replica is located on disk.    * @return the volume where this replica is located on disk    */
+comment|/**    * Copy constructor.    * @param from where to copy from    */
+DECL|method|ReplicaInfo (ReplicaInfo from)
+name|ReplicaInfo
+parameter_list|(
+name|ReplicaInfo
+name|from
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|from
+argument_list|,
+name|from
+operator|.
+name|getVolume
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * @return the volume where this replica is located on disk    */
 DECL|method|getVolume ()
 specifier|public
 name|FsVolumeSpi

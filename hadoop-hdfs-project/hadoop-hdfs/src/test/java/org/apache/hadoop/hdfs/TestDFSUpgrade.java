@@ -1754,6 +1754,8 @@ name|getCurrentBlockPoolID
 argument_list|(
 name|cluster
 argument_list|)
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 name|startBlockPoolShouldFail
@@ -1867,6 +1869,8 @@ name|getCurrentBlockPoolID
 argument_list|(
 name|cluster
 argument_list|)
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 comment|// Ensure corresponding block pool failed to initialized

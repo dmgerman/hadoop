@@ -508,6 +508,28 @@ name|datanode
 operator|.
 name|fsdataset
 operator|.
+name|FsVolumeSpi
+operator|.
+name|ScanInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|fsdataset
+operator|.
 name|LengthInputStream
 import|;
 end_import
@@ -2941,6 +2963,8 @@ name|i
 argument_list|)
 argument_list|,
 literal|false
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 block|}
@@ -6397,7 +6421,7 @@ parameter_list|)
 block|{   }
 annotation|@
 name|Override
-DECL|method|checkAndUpdate (String bpid, long blockId, File diskFile, File diskMetaFile, FsVolumeSpi vol)
+DECL|method|checkAndUpdate (String bpid, ScanInfo info)
 specifier|public
 name|void
 name|checkAndUpdate
@@ -6405,17 +6429,8 @@ parameter_list|(
 name|String
 name|bpid
 parameter_list|,
-name|long
-name|blockId
-parameter_list|,
-name|File
-name|diskFile
-parameter_list|,
-name|File
-name|diskMetaFile
-parameter_list|,
-name|FsVolumeSpi
-name|vol
+name|ScanInfo
+name|info
 parameter_list|)
 throws|throws
 name|IOException

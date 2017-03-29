@@ -216,6 +216,7 @@ name|InterfaceStability
 operator|.
 name|Evolving
 DECL|class|FSImageCompression
+specifier|public
 class|class
 name|FSImageCompression
 block|{

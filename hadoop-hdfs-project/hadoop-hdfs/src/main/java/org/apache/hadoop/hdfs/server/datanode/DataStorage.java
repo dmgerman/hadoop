@@ -356,6 +356,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|DFSConfigKeys
@@ -825,7 +839,7 @@ operator|=
 name|newDatanodeUuid
 expr_stmt|;
 block|}
-DECL|method|createStorageID (StorageDirectory sd, int lv)
+DECL|method|createStorageID (StorageDirectory sd, int lv, Configuration conf)
 specifier|private
 specifier|static
 name|boolean
@@ -836,6 +850,9 @@ name|sd
 parameter_list|,
 name|int
 name|lv
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 comment|// Clusters previously upgraded from layout versions earlier than
@@ -875,11 +892,13 @@ name|sd
 argument_list|,
 operator|!
 name|haveValidStorageId
+argument_list|,
+name|conf
 argument_list|)
 return|;
 block|}
 comment|/** Create an ID for this storage.    * @return true if a new storage ID was generated.    * */
-DECL|method|createStorageID ( StorageDirectory sd, boolean regenerateStorageIds)
+DECL|method|createStorageID ( StorageDirectory sd, boolean regenerateStorageIds, Configuration conf)
 specifier|public
 specifier|static
 name|boolean
@@ -890,6 +909,9 @@ name|sd
 parameter_list|,
 name|boolean
 name|regenerateStorageIds
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 specifier|final
@@ -901,6 +923,52 @@ operator|.
 name|getStorageUuid
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|sd
+operator|.
+name|getStorageLocation
+argument_list|()
+operator|!=
+literal|null
+operator|&&
+name|sd
+operator|.
+name|getStorageLocation
+argument_list|()
+operator|.
+name|getStorageType
+argument_list|()
+operator|==
+name|StorageType
+operator|.
+name|PROVIDED
+condition|)
+block|{
+comment|// We only support one provided storage per datanode for now.
+comment|// TODO support multiple provided storage ids per datanode.
+name|sd
+operator|.
+name|setStorageUuid
+argument_list|(
+name|conf
+operator|.
+name|get
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_PROVIDER_STORAGEUUID
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_PROVIDER_STORAGEUUID_DEFAULT
+argument_list|)
+argument_list|)
+expr_stmt|;
+return|return
+literal|false
+return|;
+block|}
 if|if
 condition|(
 name|oldStorageID
@@ -1479,6 +1547,11 @@ argument_list|,
 name|datanode
 operator|.
 name|getDatanodeUuid
+argument_list|()
+argument_list|,
+name|datanode
+operator|.
+name|getConf
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2835,7 +2908,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|format (StorageDirectory sd, NamespaceInfo nsInfo, String datanodeUuid)
+DECL|method|format (StorageDirectory sd, NamespaceInfo nsInfo, String newDatanodeUuid, Configuration conf)
 name|void
 name|format
 parameter_list|(
@@ -2846,7 +2919,10 @@ name|NamespaceInfo
 name|nsInfo
 parameter_list|,
 name|String
-name|datanodeUuid
+name|newDatanodeUuid
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 throws|throws
 name|IOException
@@ -2891,7 +2967,7 @@ literal|0
 expr_stmt|;
 name|setDatanodeUuid
 argument_list|(
-name|datanodeUuid
+name|newDatanodeUuid
 argument_list|)
 expr_stmt|;
 name|createStorageID
@@ -2899,6 +2975,8 @@ argument_list|(
 name|sd
 argument_list|,
 literal|false
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 name|writeProperties
@@ -3091,6 +3169,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|props
+operator|==
+literal|null
+condition|)
+block|{
+return|return;
+block|}
 if|if
 condition|(
 name|overrideLayoutVersion
@@ -3541,6 +3628,35 @@ name|IOException
 block|{
 if|if
 condition|(
+name|sd
+operator|.
+name|getStorageLocation
+argument_list|()
+operator|.
+name|getStorageType
+argument_list|()
+operator|==
+name|StorageType
+operator|.
+name|PROVIDED
+condition|)
+block|{
+name|createStorageID
+argument_list|(
+name|sd
+argument_list|,
+name|layoutVersion
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+return|return
+literal|false
+return|;
+comment|// regular start up for PROVIDED storage directories
+block|}
+if|if
+condition|(
 name|startOpt
 operator|==
 name|StartupOption
@@ -3702,6 +3818,8 @@ argument_list|(
 name|sd
 argument_list|,
 name|layoutVersion
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 return|return
@@ -3731,6 +3849,8 @@ comment|// simply update the properties.
 name|upgradeProperties
 argument_list|(
 name|sd
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 block|}
@@ -4130,6 +4250,8 @@ expr_stmt|;
 name|upgradeProperties
 argument_list|(
 name|sd
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 comment|// 5. Rename<SD>/previous.tmp to<SD>/previous
@@ -4155,12 +4277,15 @@ literal|" is complete"
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|upgradeProperties (StorageDirectory sd)
+DECL|method|upgradeProperties (StorageDirectory sd, Configuration conf)
 name|void
 name|upgradeProperties
 parameter_list|(
 name|StorageDirectory
 name|sd
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 throws|throws
 name|IOException
@@ -4170,6 +4295,8 @@ argument_list|(
 name|sd
 argument_list|,
 name|layoutVersion
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -4789,6 +4916,10 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
+name|prevDir
+operator|!=
+literal|null
+operator|&&
 name|prevDir
 operator|.
 name|exists

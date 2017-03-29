@@ -4144,6 +4144,7 @@ block|}
 block|}
 block|}
 DECL|class|Cli
+specifier|public
 specifier|static
 class|class
 name|Cli

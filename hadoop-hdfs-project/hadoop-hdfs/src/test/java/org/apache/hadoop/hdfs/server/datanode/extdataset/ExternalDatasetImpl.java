@@ -242,6 +242,28 @@ name|datanode
 operator|.
 name|fsdataset
 operator|.
+name|FsVolumeSpi
+operator|.
+name|ScanInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|fsdataset
+operator|.
 name|LengthInputStream
 import|;
 end_import
@@ -638,7 +660,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|checkAndUpdate (String bpid, long blockId, File diskFile, File diskMetaFile, FsVolumeSpi vol)
+DECL|method|checkAndUpdate (String bpid, ScanInfo info)
 specifier|public
 name|void
 name|checkAndUpdate
@@ -646,19 +668,12 @@ parameter_list|(
 name|String
 name|bpid
 parameter_list|,
-name|long
-name|blockId
-parameter_list|,
-name|File
-name|diskFile
-parameter_list|,
-name|File
-name|diskMetaFile
-parameter_list|,
-name|FsVolumeSpi
-name|vol
+name|ScanInfo
+name|info
 parameter_list|)
-block|{   }
+block|{
+return|return;
+block|}
 annotation|@
 name|Override
 DECL|method|getMetaDataInputStream (ExtendedBlock b)
