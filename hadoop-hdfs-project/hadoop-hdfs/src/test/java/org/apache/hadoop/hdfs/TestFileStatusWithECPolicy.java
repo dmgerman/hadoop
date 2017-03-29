@@ -72,6 +72,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|Path
 import|;
 end_import
@@ -492,7 +506,7 @@ name|ecPolicy2
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// test file doesn't have an EC policy
+comment|// test file with EC policy
 name|fs
 operator|.
 name|create
@@ -548,6 +562,37 @@ argument_list|(
 name|fs
 argument_list|,
 name|file
+argument_list|)
+expr_stmt|;
+name|FileStatus
+name|status
+init|=
+name|fs
+operator|.
+name|getFileStatus
+argument_list|(
+name|file
+argument_list|)
+decl_stmt|;
+name|assertTrue
+argument_list|(
+name|file
+operator|+
+literal|" should have erasure coding set in "
+operator|+
+literal|"FileStatus#toString(): "
+operator|+
+name|status
+argument_list|,
+name|status
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"isErasureCoded=true"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

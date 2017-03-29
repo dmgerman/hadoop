@@ -774,6 +774,20 @@ return|return
 name|permission
 return|;
 block|}
+comment|/**    * Tell whether the underlying file or directory has ACLs set.    *    * @return true if the underlying file or directory has ACLs set.    */
+DECL|method|hasAcl ()
+specifier|public
+name|boolean
+name|hasAcl
+parameter_list|()
+block|{
+return|return
+name|permission
+operator|.
+name|getAclBit
+argument_list|()
+return|;
+block|}
 comment|/**    * Tell whether the underlying file or directory is encrypted or not.    *    * @return true if the underlying file is encrypted.    */
 DECL|method|isEncrypted ()
 specifier|public
@@ -1553,6 +1567,36 @@ name|symlink
 argument_list|)
 expr_stmt|;
 block|}
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"; hasAcl="
+operator|+
+name|hasAcl
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"; isEncrypted="
+operator|+
+name|isEncrypted
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"; isErasureCoded="
+operator|+
+name|isErasureCoded
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|sb
 operator|.
 name|append

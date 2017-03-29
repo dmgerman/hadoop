@@ -457,6 +457,27 @@ argument_list|,
 name|path
 argument_list|)
 expr_stmt|;
+name|assertTrue
+argument_list|(
+name|path
+operator|+
+literal|" should have erasure coding unset in "
+operator|+
+literal|"FileStatus#toString(): "
+operator|+
+name|stat
+argument_list|,
+name|stat
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"isErasureCoded=false"
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// check serialization/deserialization
 name|DataOutputBuffer
 name|dob

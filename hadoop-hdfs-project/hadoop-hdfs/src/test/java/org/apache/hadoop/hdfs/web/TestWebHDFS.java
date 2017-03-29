@@ -4208,6 +4208,27 @@ argument_list|,
 name|ecDir
 argument_list|)
 expr_stmt|;
+name|assertTrue
+argument_list|(
+name|ecDir
+operator|+
+literal|" should have erasure coding set in "
+operator|+
+literal|"FileStatus#toString(): "
+operator|+
+name|actualECDirStatus
+argument_list|,
+name|actualECDirStatus
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"isErasureCoded=true"
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|FileStatus
 name|expectedECFileStatus
 init|=
@@ -4252,6 +4273,27 @@ argument_list|,
 name|ecFile
 argument_list|)
 expr_stmt|;
+name|assertTrue
+argument_list|(
+name|ecFile
+operator|+
+literal|" should have erasure coding set in "
+operator|+
+literal|"FileStatus#toString(): "
+operator|+
+name|actualECFileStatus
+argument_list|,
+name|actualECFileStatus
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"isErasureCoded=true"
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|FileStatus
 name|expectedNormalDirStatus
 init|=
@@ -4296,6 +4338,27 @@ argument_list|,
 name|normalDir
 argument_list|)
 expr_stmt|;
+name|assertTrue
+argument_list|(
+name|normalDir
+operator|+
+literal|" should have erasure coding unset in "
+operator|+
+literal|"FileStatus#toString(): "
+operator|+
+name|actualNormalDirStatus
+argument_list|,
+name|actualNormalDirStatus
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"isErasureCoded=false"
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|FileStatus
 name|expectedNormalFileStatus
 init|=
@@ -4338,6 +4401,27 @@ argument_list|(
 name|dfs
 argument_list|,
 name|normalFile
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|normalFile
+operator|+
+literal|" should have erasure coding unset in "
+operator|+
+literal|"FileStatus#toString(): "
+operator|+
+name|actualNormalFileStatus
+argument_list|,
+name|actualNormalFileStatus
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"isErasureCoded=false"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

@@ -902,6 +902,27 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|assertTrue
+argument_list|(
+name|file1
+operator|+
+literal|" should have erasure coding unset in "
+operator|+
+literal|"FileStatus#toString(): "
+operator|+
+name|status
+argument_list|,
+name|status
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"isErasureCoded=false"
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 comment|/** Test the FileStatus obtained calling listStatus on a file */
 annotation|@
