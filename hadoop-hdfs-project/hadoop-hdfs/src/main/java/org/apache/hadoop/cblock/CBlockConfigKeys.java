@@ -231,6 +231,24 @@ name|DFS_CBLOCK_TRACE_IO_DEFAULT
 init|=
 literal|false
 decl_stmt|;
+DECL|field|DFS_CBLOCK_ENABLE_SHORT_CIRCUIT_IO
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_CBLOCK_ENABLE_SHORT_CIRCUIT_IO
+init|=
+literal|"dfs.cblock.short.circuit.io"
+decl_stmt|;
+DECL|field|DFS_CBLOCK_ENABLE_SHORT_CIRCUIT_IO_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_CBLOCK_ENABLE_SHORT_CIRCUIT_IO_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 comment|/**    * Cache size in 1000s of entries. 256 indicates 256 * 1024.    */
 DECL|field|DFS_CBLOCK_CACHE_QUEUE_SIZE_KB
 specifier|public
