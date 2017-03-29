@@ -2445,6 +2445,9 @@ name|DEFAULT_AUTO_FAILOVER_ENABLED
 init|=
 literal|true
 decl_stmt|;
+comment|/**    * This property controls whether {@link ActiveStandbyElector} leader    * election should be used when {@link #CURATOR_LEADER_ELECTOR} is    * {@code false}.    *    * @deprecated This property should never be set to {@code false}.    */
+annotation|@
+name|Deprecated
 DECL|field|AUTO_FAILOVER_EMBEDDED
 specifier|public
 specifier|static
@@ -2456,6 +2459,9 @@ name|AUTO_FAILOVER_PREFIX
 operator|+
 literal|"embedded"
 decl_stmt|;
+comment|/**    * The default value for {@link #AUTO_FAILOVER_EMBEDDED}.    *    * @deprecated The {@link #AUTO_FAILOVER_EMBEDDED} property is deprecated.    */
+annotation|@
+name|Deprecated
 DECL|field|DEFAULT_AUTO_FAILOVER_EMBEDDED
 specifier|public
 specifier|static
@@ -2601,7 +2607,7 @@ name|RM_HA_PREFIX
 operator|+
 literal|"failover-controller.active-standby-elector.zk.retries"
 decl_stmt|;
-comment|/**    * Whether to use curator-based elector for leader election.    *    * @deprecated Eventually, we want to default to the curator-based    * implementation and remove the {@link ActiveStandbyElector} based    * implementation. We should remove this config then.    */
+comment|/**    * Whether to use the Curator-based elector for leader election.    *    * @deprecated Eventually, we want to default to the curator-based    * implementation and remove the {@link ActiveStandbyElector} based    * implementation. We should remove this config then.    */
 annotation|@
 name|Unstable
 annotation|@

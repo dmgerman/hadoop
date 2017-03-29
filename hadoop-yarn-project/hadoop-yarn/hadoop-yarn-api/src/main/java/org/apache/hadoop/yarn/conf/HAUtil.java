@@ -175,6 +175,8 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
 DECL|field|BAD_CONFIG_MESSAGE_PREFIX
 specifier|public
 specifier|static
@@ -328,6 +330,11 @@ name|conf
 argument_list|)
 expr_stmt|;
 name|verifyAndSetCurrentRMHAId
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|verifyLeaderElection
 argument_list|(
 name|conf
 argument_list|)
@@ -540,7 +547,10 @@ name|RM_ADDRESS
 argument_list|,
 name|id
 argument_list|)
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|" "
 argument_list|)
 expr_stmt|;
@@ -622,6 +632,70 @@ name|rmId
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * This method validates that some leader election service is enabled. YARN    * allows leadership election to be disabled in the configuration, which    * breaks automatic failover. If leadership election is disabled, this    * method will throw an exception via    * {@link #throwBadConfigurationException(java.lang.String)}.    *    * @param conf the {@link Configuration} to validate    */
+DECL|method|verifyLeaderElection (Configuration conf)
+specifier|private
+specifier|static
+name|void
+name|verifyLeaderElection
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+if|if
+condition|(
+name|isAutomaticFailoverEnabled
+argument_list|(
+name|conf
+argument_list|)
+operator|&&
+operator|!
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|CURATOR_LEADER_ELECTOR
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_CURATOR_LEADER_ELECTOR_ENABLED
+argument_list|)
+operator|&&
+operator|!
+name|isAutomaticFailoverEmbedded
+argument_list|(
+name|conf
+argument_list|)
+condition|)
+block|{
+name|throwBadConfigurationException
+argument_list|(
+name|NO_LEADER_ELECTION_MESSAGE
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|field|NO_LEADER_ELECTION_MESSAGE
+specifier|static
+specifier|final
+name|String
+name|NO_LEADER_ELECTION_MESSAGE
+init|=
+literal|"The yarn.resourcemanager.ha.automatic-failover.embedded "
+operator|+
+literal|"and yarn.resourcemanager.ha.curator-leader-elector.enabled "
+operator|+
+literal|"properties are both false. One of these two properties must "
+operator|+
+literal|"be true when yarn.resourcemanager.ha.automatic-failover.enabled "
+operator|+
+literal|"is true"
+decl_stmt|;
 DECL|method|verifyAndSetConfValue (String prefix, Configuration conf)
 specifier|private
 specifier|static
