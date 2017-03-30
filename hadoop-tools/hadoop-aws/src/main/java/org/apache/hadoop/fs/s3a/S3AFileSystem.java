@@ -6083,8 +6083,6 @@ throw|;
 block|}
 block|}
 comment|/**    *    * Make the given path and all non-existent parents into    * directories.    * See {@link #mkdirs(Path, FsPermission)}    * @param f path to create    * @param permission to apply to f    * @return true if a directory was created    * @throws FileAlreadyExistsException there is a file at the path specified    * @throws IOException other IO problems    * @throws AmazonClientException on failures inside the AWS SDK    */
-comment|// TODO: If we have created an empty file at /foo/bar and we then call
-comment|// mkdirs for /foo/bar/baz/roo what happens to the empty file /foo/bar/?
 DECL|method|innerMkdirs (Path f, FsPermission permission)
 specifier|private
 name|boolean
@@ -6251,6 +6249,14 @@ decl_stmt|;
 name|createFakeDirectory
 argument_list|(
 name|key
+argument_list|)
+expr_stmt|;
+name|deleteUnnecessaryFakeDirectories
+argument_list|(
+name|f
+operator|.
+name|getParent
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
