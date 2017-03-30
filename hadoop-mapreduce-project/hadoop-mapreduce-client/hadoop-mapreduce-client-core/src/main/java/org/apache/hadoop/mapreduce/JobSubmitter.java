@@ -2615,6 +2615,8 @@ name|FileSystem
 operator|.
 name|get
 argument_list|(
+name|uri
+argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
