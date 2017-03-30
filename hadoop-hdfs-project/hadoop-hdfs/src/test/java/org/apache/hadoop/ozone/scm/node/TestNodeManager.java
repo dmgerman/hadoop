@@ -3549,10 +3549,10 @@ block|}
 block|}
 annotation|@
 name|Test
-DECL|method|testScmEnterAndExistChillMode ()
+DECL|method|testScmEnterAndExitChillMode ()
 specifier|public
 name|void
-name|testScmEnterAndExistChillMode
+name|testScmEnterAndExitChillMode
 parameter_list|()
 throws|throws
 name|IOException
@@ -3635,7 +3635,7 @@ literal|"mode. Waiting on nodes to report in."
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Should not exist chill mode since 10 nodes have not heartbeat yet.
+comment|// Should not exit chill mode since 10 nodes have not heartbeat yet.
 name|assertFalse
 argument_list|(
 name|nodeManager

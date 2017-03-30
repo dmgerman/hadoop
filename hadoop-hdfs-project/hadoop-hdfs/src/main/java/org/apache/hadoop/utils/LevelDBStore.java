@@ -445,6 +445,34 @@ name|dbOptions
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Compacts the DB by removing deleted keys etc.    * @throws IOException if there is an error.    */
+DECL|method|compactDB ()
+specifier|public
+name|void
+name|compactDB
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|db
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// From LevelDB docs : begin == null and end == null means the whole DB.
+name|db
+operator|.
+name|compactRange
+argument_list|(
+literal|null
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 end_class
 
