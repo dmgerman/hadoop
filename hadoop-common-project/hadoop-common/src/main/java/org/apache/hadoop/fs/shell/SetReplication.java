@@ -174,7 +174,9 @@ literal|"Set the replication level of a file. If<path> is a directory "
 operator|+
 literal|"then the command recursively changes the replication factor of "
 operator|+
-literal|"all files under the directory tree rooted at<path>.\n"
+literal|"all files under the directory tree rooted at<path>. "
+operator|+
+literal|"The EC files will be ignored here.\n"
 operator|+
 literal|"-w: It requests that the command waits for the replication "
 operator|+
