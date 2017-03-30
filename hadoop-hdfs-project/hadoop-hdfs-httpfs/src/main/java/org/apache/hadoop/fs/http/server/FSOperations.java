@@ -2063,7 +2063,7 @@ name|Path
 index|[]
 name|sources
 decl_stmt|;
-comment|/**      * Creates a Concat executor.      *      * @param path target path to concat to.      * @param sources comma seperated absolute paths to use as sources.      */
+comment|/**      * Creates a Concat executor.      *      * @param path target path to concat to.      * @param sources comma separated absolute paths to use as sources.      */
 DECL|method|FSConcat (String path, String[] sources)
 specifier|public
 name|FSConcat

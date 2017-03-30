@@ -102,6 +102,18 @@ argument_list|(
 literal|""
 argument_list|)
 decl_stmt|;
+DECL|field|DATA_FIELD_SEPARATOR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DATA_FIELD_SEPARATOR
+init|=
+literal|"mapreduce.fieldsel.data.field.separator"
+decl_stmt|;
+comment|/**    * @deprecated Use {@link #DATA_FIELD_SEPARATOR}    */
+annotation|@
+name|Deprecated
 DECL|field|DATA_FIELD_SEPERATOR
 specifier|public
 specifier|static
@@ -109,7 +121,7 @@ specifier|final
 name|String
 name|DATA_FIELD_SEPERATOR
 init|=
-literal|"mapreduce.fieldsel.data.field.separator"
+name|DATA_FIELD_SEPARATOR
 decl_stmt|;
 DECL|field|MAP_OUTPUT_KEY_VALUE_SPEC
 specifier|public

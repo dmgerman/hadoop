@@ -1538,7 +1538,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    * Returns an arraylist of strings.    * @param str the comma seperated string values    * @return the arraylist of the comma seperated string values    */
+comment|/**    * Returns an arraylist of strings.    * @param str the comma separated string values    * @return the arraylist of the comma separated string values    */
 DECL|method|getStrings (String str)
 specifier|public
 specifier|static
@@ -1564,7 +1564,7 @@ name|delim
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns an arraylist of strings.    * @param str the string values    * @param delim delimiter to separate the values    * @return the arraylist of the seperated string values    */
+comment|/**    * Returns an arraylist of strings.    * @param str the string values    * @param delim delimiter to separate the values    * @return the arraylist of the separated string values    */
 DECL|method|getStrings (String str, String delim)
 specifier|public
 specifier|static
@@ -1622,7 +1622,7 @@ index|]
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns a collection of strings.    * @param str comma seperated string values    * @return an<code>ArrayList</code> of string values    */
+comment|/**    * Returns a collection of strings.    * @param str comma separated string values    * @return an<code>ArrayList</code> of string values    */
 DECL|method|getStringCollection (String str)
 specifier|public
 specifier|static

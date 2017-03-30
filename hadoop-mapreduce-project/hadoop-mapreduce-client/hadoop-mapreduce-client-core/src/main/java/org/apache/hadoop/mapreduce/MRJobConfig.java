@@ -1299,6 +1299,18 @@ name|MAP_OUTPUT_VALUE_CLASS
 init|=
 literal|"mapreduce.map.output.value.class"
 decl_stmt|;
+DECL|field|MAP_OUTPUT_KEY_FIELD_SEPARATOR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MAP_OUTPUT_KEY_FIELD_SEPARATOR
+init|=
+literal|"mapreduce.map.output.key.field.separator"
+decl_stmt|;
+comment|/**    * @deprecated Use {@link #MAP_OUTPUT_KEY_FIELD_SEPARATOR}    */
+annotation|@
+name|Deprecated
 DECL|field|MAP_OUTPUT_KEY_FIELD_SEPERATOR
 specifier|public
 specifier|static
@@ -1306,7 +1318,7 @@ specifier|final
 name|String
 name|MAP_OUTPUT_KEY_FIELD_SEPERATOR
 init|=
-literal|"mapreduce.map.output.key.field.separator"
+name|MAP_OUTPUT_KEY_FIELD_SEPARATOR
 decl_stmt|;
 DECL|field|MAP_LOG_LEVEL
 specifier|public

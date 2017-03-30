@@ -153,6 +153,18 @@ argument_list|,
 name|Text
 argument_list|>
 block|{
+DECL|field|KEY_VALUE_SEPARATOR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KEY_VALUE_SEPARATOR
+init|=
+literal|"mapreduce.input.keyvaluelinerecordreader.key.value.separator"
+decl_stmt|;
+comment|/**    * @deprecated Use {@link #KEY_VALUE_SEPARATOR}    */
+annotation|@
+name|Deprecated
 DECL|field|KEY_VALUE_SEPERATOR
 specifier|public
 specifier|static
@@ -160,7 +172,7 @@ specifier|final
 name|String
 name|KEY_VALUE_SEPERATOR
 init|=
-literal|"mapreduce.input.keyvaluelinerecordreader.key.value.separator"
+name|KEY_VALUE_SEPARATOR
 decl_stmt|;
 DECL|field|lineRecordReader
 specifier|private
@@ -228,7 +240,7 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|KEY_VALUE_SEPERATOR
+name|KEY_VALUE_SEPARATOR
 argument_list|,
 literal|"\t"
 argument_list|)

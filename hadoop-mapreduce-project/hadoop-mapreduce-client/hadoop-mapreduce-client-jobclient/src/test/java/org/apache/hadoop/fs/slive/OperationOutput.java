@@ -153,7 +153,7 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"Invalid key format - no type seperator - "
+literal|"Invalid key format - no type separator - "
 operator|+
 name|TYPE_SEP
 argument_list|)
@@ -231,7 +231,7 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"Invalid key format - no measurement seperator - "
+literal|"Invalid key format - no measurement separator - "
 operator|+
 name|MEASUREMENT_SEP
 argument_list|)

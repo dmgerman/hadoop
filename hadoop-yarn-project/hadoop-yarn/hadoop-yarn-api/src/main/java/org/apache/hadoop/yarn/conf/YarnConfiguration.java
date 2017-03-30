@@ -6467,7 +6467,7 @@ name|DEFAULT_TIMELINE_SERVICE_VERSION
 init|=
 literal|1.0f
 decl_stmt|;
-comment|/**    * Comma seperated list of names for UIs hosted in the timeline server    * (For pluggable UIs).    */
+comment|/**    * Comma separated list of names for UIs hosted in the timeline server    * (For pluggable UIs).    */
 DECL|field|TIMELINE_SERVICE_UI_NAMES
 specifier|public
 specifier|static

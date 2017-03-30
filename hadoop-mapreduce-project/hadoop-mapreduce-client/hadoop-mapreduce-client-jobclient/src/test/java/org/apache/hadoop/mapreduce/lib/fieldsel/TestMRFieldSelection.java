@@ -299,7 +299,7 @@ name|set
 argument_list|(
 name|FieldSelectionHelper
 operator|.
-name|DATA_FIELD_SEPERATOR
+name|DATA_FIELD_SEPARATOR
 argument_list|,
 literal|"-"
 argument_list|)

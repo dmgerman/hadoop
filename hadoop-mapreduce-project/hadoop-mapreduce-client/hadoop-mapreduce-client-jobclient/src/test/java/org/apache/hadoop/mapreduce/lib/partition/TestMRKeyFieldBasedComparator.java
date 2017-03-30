@@ -323,7 +323,7 @@ name|set
 argument_list|(
 name|MRJobConfig
 operator|.
-name|MAP_OUTPUT_KEY_FIELD_SEPERATOR
+name|MAP_OUTPUT_KEY_FIELD_SEPARATOR
 argument_list|,
 literal|" "
 argument_list|)
@@ -401,7 +401,7 @@ name|set
 argument_list|(
 name|MRJobConfig
 operator|.
-name|MAP_OUTPUT_KEY_FIELD_SEPERATOR
+name|MAP_OUTPUT_KEY_FIELD_SEPARATOR
 argument_list|,
 literal|" "
 argument_list|)

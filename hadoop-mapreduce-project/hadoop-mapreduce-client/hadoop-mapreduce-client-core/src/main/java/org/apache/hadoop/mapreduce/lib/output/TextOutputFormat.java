@@ -282,13 +282,24 @@ argument_list|,
 name|V
 argument_list|>
 block|{
+DECL|field|SEPARATOR
+specifier|public
+specifier|static
+name|String
+name|SEPARATOR
+init|=
+literal|"mapreduce.output.textoutputformat.separator"
+decl_stmt|;
+comment|/**    * @deprecated Use {@link #SEPARATOR}    */
+annotation|@
+name|Deprecated
 DECL|field|SEPERATOR
 specifier|public
 specifier|static
 name|String
 name|SEPERATOR
 init|=
-literal|"mapreduce.output.textoutputformat.separator"
+name|SEPARATOR
 decl_stmt|;
 DECL|class|LineRecordWriter
 specifier|protected
@@ -606,7 +617,7 @@ name|conf
 operator|.
 name|get
 argument_list|(
-name|SEPERATOR
+name|SEPARATOR
 argument_list|,
 literal|"\t"
 argument_list|)

@@ -1428,7 +1428,7 @@ literal|"map.output.key.field.separator"
 argument_list|,
 name|MRJobConfig
 operator|.
-name|MAP_OUTPUT_KEY_FIELD_SEPERATOR
+name|MAP_OUTPUT_KEY_FIELD_SEPARATOR
 argument_list|)
 block|,
 operator|new
@@ -2216,7 +2216,7 @@ name|fieldsel
 operator|.
 name|FieldSelectionHelper
 operator|.
-name|DATA_FIELD_SEPERATOR
+name|DATA_FIELD_SEPARATOR
 argument_list|)
 block|,
 operator|new
@@ -2326,7 +2326,7 @@ name|input
 operator|.
 name|KeyValueLineRecordReader
 operator|.
-name|KEY_VALUE_SEPERATOR
+name|KEY_VALUE_SEPARATOR
 argument_list|)
 block|,
 operator|new
@@ -2392,7 +2392,7 @@ name|output
 operator|.
 name|TextOutputFormat
 operator|.
-name|SEPERATOR
+name|SEPARATOR
 argument_list|)
 block|,
 operator|new

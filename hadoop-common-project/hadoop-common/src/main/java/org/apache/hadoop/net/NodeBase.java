@@ -131,7 +131,7 @@ specifier|public
 name|NodeBase
 parameter_list|()
 block|{   }
-comment|/** Construct a node from its path    * @param path     *   a concatenation of this node's location, the path seperator, and its name     */
+comment|/** Construct a node from its path    * @param path     *   a concatenation of this node's location, the path separator, and its name    */
 DECL|method|NodeBase (String path)
 specifier|public
 name|NodeBase
