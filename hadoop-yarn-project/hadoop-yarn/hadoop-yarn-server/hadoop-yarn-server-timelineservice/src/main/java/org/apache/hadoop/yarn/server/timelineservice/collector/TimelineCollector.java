@@ -593,15 +593,26 @@ expr_stmt|;
 block|}
 name|TimelineWriteResponse
 name|response
-init|=
+decl_stmt|;
+comment|// synchronize on the writer object so that no other threads can
+comment|// flush the writer buffer concurrently and swallow any exception
+comment|// caused by the timeline enitites that are being put here.
+synchronized|synchronized
+init|(
+name|writer
+init|)
+block|{
+name|response
+operator|=
 name|writeTimelineEntities
 argument_list|(
 name|entities
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|flushBufferedTimelineEntities
 argument_list|()
 expr_stmt|;
+block|}
 return|return
 name|response
 return|;

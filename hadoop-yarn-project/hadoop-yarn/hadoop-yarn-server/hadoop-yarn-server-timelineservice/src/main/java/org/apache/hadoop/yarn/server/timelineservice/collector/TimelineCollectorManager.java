@@ -1052,11 +1052,20 @@ parameter_list|()
 block|{
 try|try
 block|{
+comment|// synchronize on the writer object to avoid flushing timeline
+comment|// entities placed on the buffer by synchronous putEntities
+comment|// requests.
+synchronized|synchronized
+init|(
+name|writer
+init|)
+block|{
 name|writer
 operator|.
 name|flush
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
