@@ -471,6 +471,9 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+operator|.
+name|_
+argument_list|()
 expr_stmt|;
 name|TBODY
 argument_list|<
