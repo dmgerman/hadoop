@@ -88,22 +88,6 @@ name|metrics2
 operator|.
 name|lib
 operator|.
-name|DefaultMetricsSystem
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|metrics2
-operator|.
-name|lib
-operator|.
 name|MutableGaugeInt
 import|;
 end_import
@@ -299,20 +283,6 @@ operator|.
 name|resource
 operator|.
 name|Resources
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|api
-operator|.
-name|ClusterDescription
 import|;
 end_import
 
@@ -948,24 +918,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|hadoop
-operator|.
-name|metrics2
-operator|.
-name|lib
-operator|.
-name|Interns
-operator|.
-name|info
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
 name|slider
 operator|.
 name|api
@@ -1060,16 +1012,6 @@ DECL|field|app
 specifier|private
 name|Application
 name|app
-decl_stmt|;
-comment|/**    * This is a template of the cluster status    */
-DECL|field|clusterStatusTemplate
-specifier|private
-name|ClusterDescription
-name|clusterStatusTemplate
-init|=
-operator|new
-name|ClusterDescription
-argument_list|()
 decl_stmt|;
 DECL|field|roleStatusMap
 specifier|private
@@ -6006,7 +5948,6 @@ expr_stmt|;
 return|return
 name|app
 return|;
-comment|/*     return app;      ClusterDescription cd = getClusterStatus();     long now = now();     cd.setInfoTime(StatusKeys.INFO_STATUS_TIME_HUMAN,                    StatusKeys.INFO_STATUS_TIME_MILLIS,                    now);      MapOperations infoOps = new MapOperations("info", cd.info);     infoOps.mergeWithoutOverwrite(applicationInfo);     SliderUtils.addBuildInfo(infoOps, "status");     cd.statistics = new HashMap<>();      // build the map of node -> container IDs     Map<String, List<String>> instanceMap = createRoleToInstanceMap();     cd.instances = instanceMap;          //build the map of node -> containers     Map<String, Map<String, ClusterNode>> clusterNodes =       createRoleToClusterNodeMap();     log.info("app state clusterNodes {} ", clusterNodes.toString());     cd.status = new HashMap<>();     cd.status.put(ClusterDescriptionKeys.KEY_CLUSTER_LIVE, clusterNodes);      for (RoleStatus role : getRoleStatusMap().values()) {       String rolename = role.getName();       List<String> instances = instanceMap.get(rolename);       int nodeCount = instances != null ? instances.size(): 0;       cd.setRoleOpt(rolename, COMPONENT_INSTANCES,                     role.getDesired());       cd.setRoleOpt(rolename, ROLE_ACTUAL_INSTANCES, nodeCount);       cd.setRoleOpt(rolename, ROLE_REQUESTED_INSTANCES, role.getRequested());       cd.setRoleOpt(rolename, ROLE_RELEASING_INSTANCES, role.getReleasing());       cd.setRoleOpt(rolename, ROLE_FAILED_INSTANCES, role.getFailed());       cd.setRoleOpt(rolename, ROLE_FAILED_STARTING_INSTANCES, role.getStartFailed());       cd.setRoleOpt(rolename, ROLE_FAILED_RECENTLY_INSTANCES, role.getFailedRecently());       cd.setRoleOpt(rolename, ROLE_NODE_FAILED_INSTANCES, role.getNodeFailed());       cd.setRoleOpt(rolename, ROLE_PREEMPTED_INSTANCES, role.getPreempted());       if (role.isAntiAffinePlacement()) {         cd.setRoleOpt(rolename, ROLE_PENDING_AA_INSTANCES, role.getPendingAntiAffineRequests());       }       Map<String, Integer> stats = role.buildStatistics();       cd.statistics.put(rolename, stats);     }      Map<String, Integer> sliderstats = getLiveStatistics();     cd.statistics.put(SliderKeys.COMPONENT_AM, sliderstats);      // liveness     cd.liveness = getApplicationLivenessInformation();      return cd;*/
 block|}
 comment|/**    * get application liveness information    * @return a snapshot of the current liveness information    */
 DECL|method|getApplicationLivenessInformation ()
@@ -6057,17 +5998,6 @@ operator|=
 name|outstanding
 operator|<=
 literal|0
-expr_stmt|;
-name|li
-operator|.
-name|activeRequests
-operator|=
-operator|(
-name|int
-operator|)
-name|stats
-operator|.
-name|requested
 expr_stmt|;
 return|return
 name|li

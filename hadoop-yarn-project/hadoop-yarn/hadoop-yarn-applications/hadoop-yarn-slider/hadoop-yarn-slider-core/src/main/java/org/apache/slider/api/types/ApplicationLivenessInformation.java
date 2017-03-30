@@ -88,12 +88,6 @@ specifier|public
 name|int
 name|requestsOutstanding
 decl_stmt|;
-comment|/** number of requests submitted to YARN */
-DECL|field|activeRequests
-specifier|public
-name|int
-name|activeRequests
-decl_stmt|;
 annotation|@
 name|Override
 DECL|method|toString ()

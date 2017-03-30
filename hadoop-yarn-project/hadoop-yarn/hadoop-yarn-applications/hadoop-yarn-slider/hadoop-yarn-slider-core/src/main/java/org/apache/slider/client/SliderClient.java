@@ -458,38 +458,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|security
-operator|.
-name|alias
-operator|.
-name|CredentialProvider
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|alias
-operator|.
-name|CredentialProviderFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|Shell
@@ -688,42 +656,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|NodeReport
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|NodeState
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|Resource
 import|;
 end_import
@@ -900,20 +832,6 @@ name|slider
 operator|.
 name|api
 operator|.
-name|SliderApplicationApi
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|api
-operator|.
 name|SliderClusterProtocol
 import|;
 end_import
@@ -995,22 +913,6 @@ operator|.
 name|types
 operator|.
 name|NodeInformationList
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|client
-operator|.
-name|ipc
-operator|.
-name|SliderApplicationIpcClient
 import|;
 end_import
 
@@ -1627,54 +1529,6 @@ operator|.
 name|tools
 operator|.
 name|SliderVersionInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|core
-operator|.
-name|buildutils
-operator|.
-name|InstanceIO
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|core
-operator|.
-name|conf
-operator|.
-name|AggregateConf
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|core
-operator|.
-name|conf
-operator|.
-name|ConfTree
 import|;
 end_import
 
@@ -2480,26 +2334,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|io
-operator|.
-name|StringWriter
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|Writer
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|nio
 operator|.
 name|charset
@@ -2691,22 +2525,6 @@ operator|.
 name|RegistryUtils
 operator|.
 name|*
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|api
-operator|.
-name|InternalKeys
-operator|.
-name|INTERNAL_APPLICATION_IMAGE_PATH
 import|;
 end_import
 
@@ -2989,11 +2807,6 @@ DECL|field|yarnAppListClient
 specifier|private
 name|YarnAppListClient
 name|yarnAppListClient
-decl_stmt|;
-DECL|field|launchedInstanceDefinition
-specifier|private
-name|AggregateConf
-name|launchedInstanceDefinition
 decl_stmt|;
 comment|/**    * The YARN registry service    */
 annotation|@
@@ -6226,288 +6039,43 @@ return|return
 literal|0
 return|;
 block|}
-DECL|method|checkForCredentials (Configuration conf, ConfTree tree, String clusterName)
-specifier|protected
-specifier|static
-name|void
-name|checkForCredentials
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|,
-name|ConfTree
-name|tree
-parameter_list|,
-name|String
-name|clusterName
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-if|if
-condition|(
-name|tree
-operator|.
-name|credentials
-operator|==
-literal|null
-operator|||
-name|tree
-operator|.
-name|credentials
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"No credentials requested"
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
-name|Console
-name|console
-init|=
-name|System
-operator|.
-name|console
-argument_list|()
-decl_stmt|;
-for|for
-control|(
-name|Entry
-argument_list|<
-name|String
-argument_list|,
-name|List
-argument_list|<
-name|String
-argument_list|>
-argument_list|>
-name|cred
-range|:
-name|tree
-operator|.
-name|credentials
-operator|.
-name|entrySet
-argument_list|()
-control|)
-block|{
-name|String
-name|provider
-init|=
-name|cred
-operator|.
-name|getKey
-argument_list|()
-operator|.
-name|replaceAll
-argument_list|(
-name|Pattern
-operator|.
-name|quote
-argument_list|(
-literal|"${CLUSTER_NAME}"
-argument_list|)
-argument_list|,
-name|clusterName
-argument_list|)
-operator|.
-name|replaceAll
-argument_list|(
-name|Pattern
-operator|.
-name|quote
-argument_list|(
-literal|"${CLUSTER}"
-argument_list|)
-argument_list|,
-name|clusterName
-argument_list|)
-decl_stmt|;
-name|List
-argument_list|<
-name|String
-argument_list|>
-name|aliases
-init|=
-name|cred
-operator|.
-name|getValue
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|aliases
-operator|==
-literal|null
-operator|||
-name|aliases
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-continue|continue;
-block|}
-name|Configuration
-name|c
-init|=
-operator|new
-name|Configuration
-argument_list|(
-name|conf
-argument_list|)
-decl_stmt|;
-name|c
-operator|.
-name|set
-argument_list|(
-name|CredentialProviderFactory
-operator|.
-name|CREDENTIAL_PROVIDER_PATH
-argument_list|,
-name|provider
-argument_list|)
-expr_stmt|;
-name|CredentialProvider
-name|credentialProvider
-init|=
-name|CredentialProviderFactory
-operator|.
-name|getProviders
-argument_list|(
-name|c
-argument_list|)
-operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
-decl_stmt|;
-name|Set
-argument_list|<
-name|String
-argument_list|>
-name|existingAliases
-init|=
-operator|new
-name|HashSet
-argument_list|<>
-argument_list|(
-name|credentialProvider
-operator|.
-name|getAliases
-argument_list|()
-argument_list|)
-decl_stmt|;
-for|for
-control|(
-name|String
-name|alias
-range|:
-name|aliases
-control|)
-block|{
-if|if
-condition|(
-name|existingAliases
-operator|.
-name|contains
-argument_list|(
-name|alias
-operator|.
-name|toLowerCase
-argument_list|(
-name|Locale
-operator|.
-name|ENGLISH
-argument_list|)
-argument_list|)
-condition|)
-block|{
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"Credentials for "
-operator|+
-name|alias
-operator|+
-literal|" found in "
-operator|+
-name|provider
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-if|if
-condition|(
-name|console
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Unable to input password for "
-operator|+
-name|alias
-operator|+
-literal|" because System.console() is null; provider "
-operator|+
-name|provider
-operator|+
-literal|" must be populated manually"
-argument_list|)
-throw|;
-block|}
-name|char
-index|[]
-name|pass
-init|=
-name|readPassword
-argument_list|(
-name|alias
-argument_list|,
-name|console
-argument_list|)
-decl_stmt|;
-name|credentialProvider
-operator|.
-name|createCredentialEntry
-argument_list|(
-name|alias
-argument_list|,
-name|pass
-argument_list|)
-expr_stmt|;
-name|credentialProvider
-operator|.
-name|flush
-argument_list|()
-expr_stmt|;
-name|Arrays
-operator|.
-name|fill
-argument_list|(
-name|pass
-argument_list|,
-literal|' '
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-block|}
-block|}
+comment|//  protected static void checkForCredentials(Configuration conf,
+comment|//      ConfTree tree, String clusterName) throws IOException {
+comment|//    if (tree.credentials == null || tree.credentials.isEmpty()) {
+comment|//      log.info("No credentials requested");
+comment|//      return;
+comment|//    }
+comment|//
+comment|//    Console console = System.console();
+comment|//    for (Entry<String, List<String>> cred : tree.credentials.entrySet()) {
+comment|//      String provider = cred.getKey()
+comment|//          .replaceAll(Pattern.quote("${CLUSTER_NAME}"), clusterName)
+comment|//          .replaceAll(Pattern.quote("${CLUSTER}"), clusterName);
+comment|//      List<String> aliases = cred.getValue();
+comment|//      if (aliases == null || aliases.isEmpty()) {
+comment|//        continue;
+comment|//      }
+comment|//      Configuration c = new Configuration(conf);
+comment|//      c.set(CredentialProviderFactory.CREDENTIAL_PROVIDER_PATH, provider);
+comment|//      CredentialProvider credentialProvider = CredentialProviderFactory.getProviders(c).get(0);
+comment|//      Set<String> existingAliases = new HashSet<>(credentialProvider.getAliases());
+comment|//      for (String alias : aliases) {
+comment|//        if (existingAliases.contains(alias.toLowerCase(Locale.ENGLISH))) {
+comment|//          log.info("Credentials for " + alias + " found in " + provider);
+comment|//        } else {
+comment|//          if (console == null) {
+comment|//            throw new IOException("Unable to input password for " + alias +
+comment|//                " because System.console() is null; provider " + provider +
+comment|//                " must be populated manually");
+comment|//          }
+comment|//          char[] pass = readPassword(alias, console);
+comment|//          credentialProvider.createCredentialEntry(alias, pass);
+comment|//          credentialProvider.flush();
+comment|//          Arrays.fill(pass, ' ');
+comment|//        }
+comment|//      }
+comment|//    }
+comment|//  }
 DECL|method|readPassword (String alias, Console console)
 specifier|private
 specifier|static
@@ -8647,321 +8215,57 @@ name|YarnException
 throws|,
 name|IOException
 block|{
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|Path
-argument_list|>
-name|persistentInstances
-init|=
-name|sliderFileSystem
-operator|.
-name|listPersistentInstances
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|persistentInstances
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"No slider cluster specification available"
-argument_list|)
-expr_stmt|;
-return|return
-name|EXIT_SUCCESS
-return|;
-block|}
-name|String
-name|pkgPathValue
-init|=
-name|sliderFileSystem
-operator|.
-name|buildPackageDirPath
-argument_list|(
-name|StringUtils
-operator|.
-name|EMPTY
-argument_list|,
-name|StringUtils
-operator|.
-name|EMPTY
-argument_list|)
-operator|.
-name|toUri
-argument_list|()
-operator|.
-name|getPath
-argument_list|()
-decl_stmt|;
-name|FileSystem
-name|fs
-init|=
-name|sliderFileSystem
-operator|.
-name|getFileSystem
-argument_list|()
-decl_stmt|;
-name|Iterator
-argument_list|<
-name|Map
-operator|.
-name|Entry
-argument_list|<
-name|String
-argument_list|,
-name|Path
-argument_list|>
-argument_list|>
-name|instanceItr
-init|=
-name|persistentInstances
-operator|.
-name|entrySet
-argument_list|()
-operator|.
-name|iterator
-argument_list|()
-decl_stmt|;
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"List of applications with its package name and path"
-argument_list|)
-expr_stmt|;
-name|println
-argument_list|(
-literal|"%-25s  %15s  %30s  %s"
-argument_list|,
-literal|"Cluster Name"
-argument_list|,
-literal|"Package Name"
-argument_list|,
-literal|"Package Version"
-argument_list|,
-literal|"Application Location"
-argument_list|)
-expr_stmt|;
-while|while
-condition|(
-name|instanceItr
-operator|.
-name|hasNext
-argument_list|()
-condition|)
-block|{
-name|Map
-operator|.
-name|Entry
-argument_list|<
-name|String
-argument_list|,
-name|Path
-argument_list|>
-name|entry
-init|=
-name|instanceItr
-operator|.
-name|next
-argument_list|()
-decl_stmt|;
-name|String
-name|clusterName
-init|=
-name|entry
-operator|.
-name|getKey
-argument_list|()
-decl_stmt|;
-name|Path
-name|clusterPath
-init|=
-name|entry
-operator|.
-name|getValue
-argument_list|()
-decl_stmt|;
-name|AggregateConf
-name|instanceDefinition
-init|=
-name|loadInstanceDefinitionUnresolved
-argument_list|(
-name|clusterName
-argument_list|,
-name|clusterPath
-argument_list|)
-decl_stmt|;
-name|Path
-name|appDefPath
-init|=
-literal|null
-decl_stmt|;
-try|try
-block|{
-name|appDefPath
-operator|=
-operator|new
-name|Path
-argument_list|(
-name|getApplicationDefinitionPath
-argument_list|(
-name|instanceDefinition
-operator|.
-name|getAppConfOperations
-argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|BadConfigException
-name|e
-parameter_list|)
-block|{
-comment|// Invalid cluster state, so move on to next. No need to log anything
-comment|// as this is just listing of instances.
-continue|continue;
-block|}
-if|if
-condition|(
-operator|!
-name|appDefPath
-operator|.
-name|isUriPathAbsolute
-argument_list|()
-condition|)
-block|{
-name|appDefPath
-operator|=
-operator|new
-name|Path
-argument_list|(
-name|fs
-operator|.
-name|getHomeDirectory
-argument_list|()
-argument_list|,
-name|appDefPath
-argument_list|)
-expr_stmt|;
-block|}
-name|String
-name|appDefPathStr
-init|=
-name|appDefPath
-operator|.
-name|toUri
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-decl_stmt|;
-try|try
-block|{
-if|if
-condition|(
-name|appDefPathStr
-operator|.
-name|contains
-argument_list|(
-name|pkgPathValue
-argument_list|)
-operator|&&
-name|fs
-operator|.
-name|isFile
-argument_list|(
-name|appDefPath
-argument_list|)
-condition|)
-block|{
-name|String
-name|packageName
-init|=
-name|appDefPath
-operator|.
-name|getParent
-argument_list|()
-operator|.
-name|getName
-argument_list|()
-decl_stmt|;
-name|String
-name|packageVersion
-init|=
-name|StringUtils
-operator|.
-name|EMPTY
-decl_stmt|;
-if|if
-condition|(
-name|instanceDefinition
-operator|.
-name|isVersioned
-argument_list|()
-condition|)
-block|{
-name|packageVersion
-operator|=
-name|packageName
-expr_stmt|;
-name|packageName
-operator|=
-name|appDefPath
-operator|.
-name|getParent
-argument_list|()
-operator|.
-name|getParent
-argument_list|()
-operator|.
-name|getName
-argument_list|()
-expr_stmt|;
-block|}
-name|println
-argument_list|(
-literal|"%-25s  %15s  %30s  %s"
-argument_list|,
-name|clusterName
-argument_list|,
-name|packageName
-argument_list|,
-name|packageVersion
-argument_list|,
-name|appDefPathStr
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|log
-operator|.
-name|debug
-argument_list|(
-literal|"{} application definition path {} is not found."
-argument_list|,
-name|clusterName
-argument_list|,
-name|appDefPathStr
-argument_list|)
-expr_stmt|;
-block|}
-block|}
+comment|//    Map<String, Path> persistentInstances = sliderFileSystem
+comment|//        .listPersistentInstances();
+comment|//    if (persistentInstances.isEmpty()) {
+comment|//      log.info("No slider cluster specification available");
+comment|//      return EXIT_SUCCESS;
+comment|//    }
+comment|//    String pkgPathValue = sliderFileSystem
+comment|//        .buildPackageDirPath(StringUtils.EMPTY, StringUtils.EMPTY).toUri()
+comment|//        .getPath();
+comment|//    FileSystem fs = sliderFileSystem.getFileSystem();
+comment|//    Iterator<Map.Entry<String, Path>> instanceItr = persistentInstances
+comment|//        .entrySet().iterator();
+comment|//    log.info("List of applications with its package name and path");
+comment|//    println("%-25s  %15s  %30s  %s", "Cluster Name", "Package Name",
+comment|//        "Package Version", "Application Location");
+comment|//TODO deal with packages
+comment|//    while(instanceItr.hasNext()) {
+comment|//      Map.Entry<String, Path> entry = instanceItr.next();
+comment|//      String clusterName = entry.getKey();
+comment|//      Path clusterPath = entry.getValue();
+comment|//      AggregateConf instanceDefinition = loadInstanceDefinitionUnresolved(
+comment|//          clusterName, clusterPath);
+comment|//      Path appDefPath = null;
+comment|//      try {
+comment|//        appDefPath = new Path(
+comment|//            getApplicationDefinitionPath(instanceDefinition
+comment|//                .getAppConfOperations()));
+comment|//      } catch (BadConfigException e) {
+comment|//        // Invalid cluster state, so move on to next. No need to log anything
+comment|//        // as this is just listing of instances.
+comment|//        continue;
+comment|//      }
+comment|//      if (!appDefPath.isUriPathAbsolute()) {
+comment|//        appDefPath = new Path(fs.getHomeDirectory(), appDefPath);
+comment|//      }
+comment|//      String appDefPathStr = appDefPath.toUri().toString();
+comment|//      try {
+comment|//        if (appDefPathStr.contains(pkgPathValue)&& fs.isFile(appDefPath)) {
+comment|//          String packageName = appDefPath.getParent().getName();
+comment|//          String packageVersion = StringUtils.EMPTY;
+comment|//          if (instanceDefinition.isVersioned()) {
+comment|//            packageVersion = packageName;
+comment|//            packageName = appDefPath.getParent().getParent().getName();
+comment|//          }
+comment|//          println("%-25s  %15s  %30s  %s", clusterName, packageName,
+comment|//              packageVersion, appDefPathStr);
+comment|//        }
+comment|//      } catch (IOException e) {
+comment|//        log.debug("{} application definition path {} is not found.", clusterName, appDefPathStr);
+comment|//      }
+comment|//    }
 return|return
 name|EXIT_SUCCESS
 return|;
@@ -9981,66 +9285,6 @@ expr_stmt|;
 return|return
 name|newTimeout
 return|;
-block|}
-comment|/**    * Load the instance definition. It is not resolved at this point    * @param name cluster name    * @param clusterDirectory cluster dir    * @return the loaded configuration    * @throws IOException    * @throws SliderException    * @throws UnknownApplicationInstanceException if the file is not found    */
-DECL|method|loadInstanceDefinitionUnresolved (String name, Path clusterDirectory)
-specifier|public
-name|AggregateConf
-name|loadInstanceDefinitionUnresolved
-parameter_list|(
-name|String
-name|name
-parameter_list|,
-name|Path
-name|clusterDirectory
-parameter_list|)
-throws|throws
-name|IOException
-throws|,
-name|SliderException
-block|{
-try|try
-block|{
-name|AggregateConf
-name|definition
-init|=
-name|InstanceIO
-operator|.
-name|loadInstanceDefinitionUnresolved
-argument_list|(
-name|sliderFileSystem
-argument_list|,
-name|clusterDirectory
-argument_list|)
-decl_stmt|;
-name|definition
-operator|.
-name|setName
-argument_list|(
-name|name
-argument_list|)
-expr_stmt|;
-return|return
-name|definition
-return|;
-block|}
-catch|catch
-parameter_list|(
-name|FileNotFoundException
-name|e
-parameter_list|)
-block|{
-throw|throw
-name|UnknownApplicationInstanceException
-operator|.
-name|unknownInstance
-argument_list|(
-name|name
-argument_list|,
-name|e
-argument_list|)
-throw|;
-block|}
 block|}
 DECL|method|getAmLaunchEnv (Configuration config)
 specifier|protected
@@ -12963,109 +12207,6 @@ name|getApplication
 argument_list|()
 return|;
 block|}
-comment|/**    * List all node UUIDs in a role    * @param role role name or "" for all    * @return an array of UUID strings    * @throws IOException    * @throws YarnException    */
-annotation|@
-name|VisibleForTesting
-DECL|method|listNodeUUIDsByRole (String role)
-specifier|public
-name|String
-index|[]
-name|listNodeUUIDsByRole
-parameter_list|(
-name|String
-name|role
-parameter_list|)
-throws|throws
-name|IOException
-throws|,
-name|YarnException
-block|{
-return|return
-name|createClusterOperations
-argument_list|()
-operator|.
-name|listNodeUUIDsByRole
-argument_list|(
-name|role
-argument_list|)
-return|;
-block|}
-comment|/**    * List all nodes in a role. This is a double round trip: once to list    * the nodes in a role, another to get their details    * @param role component/role to look for    * @return an array of ContainerNode instances    * @throws IOException    * @throws YarnException    */
-annotation|@
-name|VisibleForTesting
-DECL|method|listClusterNodesInRole (String role)
-specifier|public
-name|List
-argument_list|<
-name|ClusterNode
-argument_list|>
-name|listClusterNodesInRole
-parameter_list|(
-name|String
-name|role
-parameter_list|)
-throws|throws
-name|IOException
-throws|,
-name|YarnException
-block|{
-return|return
-name|createClusterOperations
-argument_list|()
-operator|.
-name|listClusterNodesInRole
-argument_list|(
-name|role
-argument_list|)
-return|;
-block|}
-comment|/**    * Get the details on a list of uuids    * @param uuids uuids to ask for     * @return a possibly empty list of node details    * @throws IOException    * @throws YarnException    */
-annotation|@
-name|VisibleForTesting
-DECL|method|listClusterNodes (String[] uuids)
-specifier|public
-name|List
-argument_list|<
-name|ClusterNode
-argument_list|>
-name|listClusterNodes
-parameter_list|(
-name|String
-index|[]
-name|uuids
-parameter_list|)
-throws|throws
-name|IOException
-throws|,
-name|YarnException
-block|{
-if|if
-condition|(
-name|uuids
-operator|.
-name|length
-operator|==
-literal|0
-condition|)
-block|{
-comment|// short cut on an empty list
-return|return
-operator|new
-name|LinkedList
-argument_list|<>
-argument_list|()
-return|;
-block|}
-return|return
-name|createClusterOperations
-argument_list|()
-operator|.
-name|listClusterNodes
-argument_list|(
-name|uuids
-argument_list|)
-return|;
-block|}
 comment|/**    * Bond to a running cluster    * @param clustername cluster name    * @return the AM RPC client    * @throws SliderException if the cluster is unkown    */
 DECL|method|bondToCluster (String clustername)
 specifier|private
@@ -13155,70 +12296,6 @@ operator|new
 name|SliderClusterOperations
 argument_list|(
 name|sliderAM
-argument_list|)
-return|;
-block|}
-comment|/**    * Create a cluster operations instance against the active cluster    * -returning any previous created one if held.    * @return a bonded cluster operations instance    * @throws YarnException YARN issues    * @throws IOException IO problems    */
-DECL|method|createClusterOperations ()
-specifier|private
-name|SliderClusterOperations
-name|createClusterOperations
-parameter_list|()
-throws|throws
-name|YarnException
-throws|,
-name|IOException
-block|{
-if|if
-condition|(
-name|sliderClusterOperations
-operator|==
-literal|null
-condition|)
-block|{
-name|sliderClusterOperations
-operator|=
-name|createClusterOperations
-argument_list|(
-name|getDeployedClusterName
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-return|return
-name|sliderClusterOperations
-return|;
-block|}
-comment|/**    * Wait for an instance of a named role to be live (or past it in the lifecycle)    * @param role role to look for    * @param timeout time to wait    * @return the state. If still in CREATED, the cluster didn't come up    * in the time period. If LIVE, all is well. If>LIVE, it has shut for a reason    * @throws IOException IO    * @throws SliderException Slider    * @throws WaitTimeoutException if the wait timed out    */
-annotation|@
-name|VisibleForTesting
-DECL|method|waitForRoleInstanceLive (String role, long timeout)
-specifier|public
-name|int
-name|waitForRoleInstanceLive
-parameter_list|(
-name|String
-name|role
-parameter_list|,
-name|long
-name|timeout
-parameter_list|)
-throws|throws
-name|WaitTimeoutException
-throws|,
-name|IOException
-throws|,
-name|YarnException
-block|{
-return|return
-name|createClusterOperations
-argument_list|()
-operator|.
-name|waitForRoleInstanceLive
-argument_list|(
-name|role
-argument_list|,
-name|timeout
 argument_list|)
 return|;
 block|}
@@ -14131,11 +13208,7 @@ operator|.
 name|application
 condition|)
 block|{
-name|actionDiagnosticApplication
-argument_list|(
-name|diagnosticArgs
-argument_list|)
-expr_stmt|;
+comment|// TODO print configs of application - get from AM
 block|}
 elseif|else
 if|if
@@ -14145,11 +13218,11 @@ operator|.
 name|yarn
 condition|)
 block|{
-name|actionDiagnosticYarn
-argument_list|(
-name|diagnosticArgs
-argument_list|)
-expr_stmt|;
+comment|// This method prints yarn nodes info and yarn configs.
+comment|// We can just use yarn node CLI instead which is much more richful
+comment|// for yarn configs, this method reads local config which is only client
+comment|// config not cluster configs.
+comment|//        actionDiagnosticYarn(diagnosticArgs);
 block|}
 elseif|else
 if|if
@@ -14159,9 +13232,10 @@ operator|.
 name|credentials
 condition|)
 block|{
-name|actionDiagnosticCredentials
-argument_list|()
-expr_stmt|;
+comment|// actionDiagnosticCredentials internall only runs a bare 'klist' command...
+comment|// IMHO, the user can just run klist on their own with extra options supported, don't
+comment|// actually see the point of this method.
+comment|//        actionDiagnosticCredentials();
 block|}
 elseif|else
 if|if
@@ -14252,611 +13326,11 @@ argument_list|(
 name|diagnosticArgs
 argument_list|)
 expr_stmt|;
-name|actionDiagnosticApplication
-argument_list|(
-name|diagnosticArgs
-argument_list|)
-expr_stmt|;
-name|actionDiagnosticSlider
-argument_list|(
-name|diagnosticArgs
-argument_list|)
-expr_stmt|;
-name|actionDiagnosticYarn
-argument_list|(
-name|diagnosticArgs
-argument_list|)
-expr_stmt|;
-name|actionDiagnosticCredentials
-argument_list|()
-expr_stmt|;
-block|}
-DECL|method|actionDiagnosticCredentials ()
-specifier|private
-name|void
-name|actionDiagnosticCredentials
-parameter_list|()
-throws|throws
-name|BadConfigException
-throws|,
-name|IOException
-block|{
-if|if
-condition|(
-name|isHadoopClusterSecure
-argument_list|(
-name|loadSliderClientXML
-argument_list|()
-argument_list|)
-condition|)
-block|{
-name|String
-name|credentialCacheFileDescription
-init|=
-literal|null
-decl_stmt|;
-try|try
-block|{
-name|credentialCacheFileDescription
-operator|=
-name|checkCredentialCacheFile
-argument_list|()
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|BadConfigException
-name|e
-parameter_list|)
-block|{
-name|log
-operator|.
-name|error
-argument_list|(
-literal|"The credential config is not valid: "
-operator|+
-name|e
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-expr_stmt|;
-throw|throw
-name|e
-throw|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|log
-operator|.
-name|error
-argument_list|(
-literal|"Unable to read the credential file: "
-operator|+
-name|e
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-expr_stmt|;
-throw|throw
-name|e
-throw|;
-block|}
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"Credential cache file for the current user: "
-operator|+
-name|credentialCacheFileDescription
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"the cluster is not in secure mode"
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-DECL|method|actionDiagnosticYarn (ActionDiagnosticArgs diagnosticArgs)
-specifier|private
-name|void
-name|actionDiagnosticYarn
-parameter_list|(
-name|ActionDiagnosticArgs
-name|diagnosticArgs
-parameter_list|)
-throws|throws
-name|IOException
-throws|,
-name|YarnException
-block|{
-name|JSONObject
-name|converter
-init|=
-literal|null
-decl_stmt|;
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"the node in the YARN cluster has below state: "
-argument_list|)
-expr_stmt|;
-name|List
-argument_list|<
-name|NodeReport
-argument_list|>
-name|yarnClusterInfo
-decl_stmt|;
-try|try
-block|{
-name|yarnClusterInfo
-operator|=
-name|yarnClient
-operator|.
-name|getNodeReports
-argument_list|(
-name|NodeState
-operator|.
-name|RUNNING
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|YarnException
-name|e1
-parameter_list|)
-block|{
-name|log
-operator|.
-name|error
-argument_list|(
-literal|"Exception happened when fetching node report from the YARN cluster: "
-operator|+
-name|e1
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-expr_stmt|;
-throw|throw
-name|e1
-throw|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e1
-parameter_list|)
-block|{
-name|log
-operator|.
-name|error
-argument_list|(
-literal|"Network problem happened when fetching node report YARN cluster: "
-operator|+
-name|e1
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-expr_stmt|;
-throw|throw
-name|e1
-throw|;
-block|}
-for|for
-control|(
-name|NodeReport
-name|nodeReport
-range|:
-name|yarnClusterInfo
-control|)
-block|{
-name|log
-operator|.
-name|info
-argument_list|(
-name|nodeReport
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-if|if
-condition|(
-name|diagnosticArgs
-operator|.
-name|verbose
-condition|)
-block|{
-name|Writer
-name|configWriter
-init|=
-operator|new
-name|StringWriter
-argument_list|()
-decl_stmt|;
-try|try
-block|{
-name|Configuration
-operator|.
-name|dumpConfiguration
-argument_list|(
-name|yarnClient
-operator|.
-name|getConfig
-argument_list|()
-argument_list|,
-name|configWriter
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e1
-parameter_list|)
-block|{
-name|log
-operator|.
-name|error
-argument_list|(
-literal|"Network problem happened when retrieving YARN config from YARN: "
-operator|+
-name|e1
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-expr_stmt|;
-throw|throw
-name|e1
-throw|;
-block|}
-try|try
-block|{
-name|converter
-operator|=
-operator|new
-name|JSONObject
-argument_list|(
-name|configWriter
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"the configuration of the YARN cluster is: "
-operator|+
-name|converter
-operator|.
-name|toString
-argument_list|(
-literal|2
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|JSONException
-name|e
-parameter_list|)
-block|{
-name|log
-operator|.
-name|error
-argument_list|(
-literal|"JSONException happened during parsing response from YARN: "
-operator|+
-name|e
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-block|}
-DECL|method|actionDiagnosticSlider (ActionDiagnosticArgs diagnosticArgs)
-specifier|private
-name|void
-name|actionDiagnosticSlider
-parameter_list|(
-name|ActionDiagnosticArgs
-name|diagnosticArgs
-parameter_list|)
-throws|throws
-name|YarnException
-throws|,
-name|IOException
-block|{
-comment|// not using member variable clustername because we want to place
-comment|// application name after --application option and member variable
-comment|// cluster name has to be put behind action
-name|String
-name|clusterName
-init|=
-name|diagnosticArgs
-operator|.
-name|name
-decl_stmt|;
-if|if
-condition|(
-name|isUnset
-argument_list|(
-name|clusterName
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|BadCommandArgumentsException
-argument_list|(
-literal|"application name must be provided with --name option"
-argument_list|)
-throw|;
-block|}
-name|AggregateConf
-name|instanceDefinition
-init|=
-operator|new
-name|AggregateConf
-argument_list|()
-decl_stmt|;
-name|String
-name|imagePath
-init|=
-name|instanceDefinition
-operator|.
-name|getInternalOperations
-argument_list|()
-operator|.
-name|get
-argument_list|(
-name|INTERNAL_APPLICATION_IMAGE_PATH
-argument_list|)
-decl_stmt|;
-comment|// if null, it will be uploaded by Slider and thus at slider's path
-if|if
-condition|(
-name|imagePath
-operator|==
-literal|null
-condition|)
-block|{
-name|ApplicationReport
-name|appReport
-init|=
-name|findInstance
-argument_list|(
-name|clusterName
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|appReport
-operator|!=
-literal|null
-condition|)
-block|{
-name|Path
-name|path1
-init|=
-name|sliderFileSystem
-operator|.
-name|getTempPathForCluster
-argument_list|(
-name|clusterName
-argument_list|)
-decl_stmt|;
-name|Path
-name|subPath
-init|=
-operator|new
-name|Path
-argument_list|(
-name|path1
-argument_list|,
-name|appReport
-operator|.
-name|getApplicationId
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|"/agent"
-argument_list|)
-decl_stmt|;
-name|imagePath
-operator|=
-name|subPath
-operator|.
-name|toString
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"The path of slider agent tarball on HDFS is: "
-operator|+
-name|imagePath
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|actionDiagnosticApplication (ActionDiagnosticArgs diagnosticArgs)
-specifier|private
-name|void
-name|actionDiagnosticApplication
-parameter_list|(
-name|ActionDiagnosticArgs
-name|diagnosticArgs
-parameter_list|)
-throws|throws
-name|YarnException
-throws|,
-name|IOException
-block|{
-comment|// not using member variable clustername because we want to place
-comment|// application name after --application option and member variable
-comment|// cluster name has to be put behind action
-name|String
-name|clusterName
-init|=
-name|diagnosticArgs
-operator|.
-name|name
-decl_stmt|;
-name|requireArgumentSet
-argument_list|(
-name|Arguments
-operator|.
-name|ARG_NAME
-argument_list|,
-name|clusterName
-argument_list|)
-expr_stmt|;
-name|AggregateConf
-name|instanceDefinition
-init|=
-operator|new
-name|AggregateConf
-argument_list|()
-decl_stmt|;
-name|String
-name|clusterDir
-init|=
-name|instanceDefinition
-operator|.
-name|getAppConfOperations
-argument_list|()
-operator|.
-name|getGlobalOptions
-argument_list|()
-operator|.
-name|get
-argument_list|(
-name|AgentKeys
-operator|.
-name|APP_ROOT
-argument_list|)
-decl_stmt|;
-name|String
-name|pkgTarball
-init|=
-name|getApplicationDefinitionPath
-argument_list|(
-name|instanceDefinition
-operator|.
-name|getAppConfOperations
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|String
-name|runAsUser
-init|=
-name|instanceDefinition
-operator|.
-name|getAppConfOperations
-argument_list|()
-operator|.
-name|getGlobalOptions
-argument_list|()
-operator|.
-name|get
-argument_list|(
-name|AgentKeys
-operator|.
-name|RUNAS_USER
-argument_list|)
-decl_stmt|;
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"The location of the cluster instance directory in HDFS is: {}"
-argument_list|,
-name|clusterDir
-argument_list|)
-expr_stmt|;
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"The name of the application package tarball on HDFS is: {}"
-argument_list|,
-name|pkgTarball
-argument_list|)
-expr_stmt|;
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"The runas user of the application in the cluster is: {}"
-argument_list|,
-name|runAsUser
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|diagnosticArgs
-operator|.
-name|verbose
-condition|)
-block|{
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"App config of the application:\n{}"
-argument_list|,
-name|instanceDefinition
-operator|.
-name|getAppConf
-argument_list|()
-operator|.
-name|toJson
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"Resource config of the application:\n{}"
-argument_list|,
-name|instanceDefinition
-operator|.
-name|getResources
-argument_list|()
-operator|.
-name|toJson
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
+comment|// actionDiagnosticSlider only prints the agent location on hdfs,
+comment|// which is invalid now.
+comment|// actionDiagnosticCredentials only runs 'klist' command, IMHO, the user
+comment|// can just run klist on its own with extra options supported, don't
+comment|// actually see the point of this method.
 block|}
 DECL|method|actionDiagnosticClient (ActionDiagnosticArgs diagnosticArgs)
 specifier|private
@@ -17047,26 +15521,6 @@ expr_stmt|;
 block|}
 return|return
 literal|0
-return|;
-block|}
-comment|/**    * Create a new IPC client for talking to slider via what follows the REST API.    * Client must already be bonded to the cluster    * @return a new IPC client    */
-DECL|method|createIpcClient ()
-specifier|public
-name|SliderApplicationApi
-name|createIpcClient
-parameter_list|()
-throws|throws
-name|IOException
-throws|,
-name|YarnException
-block|{
-return|return
-operator|new
-name|SliderApplicationIpcClient
-argument_list|(
-name|createClusterOperations
-argument_list|()
-argument_list|)
 return|;
 block|}
 comment|/**    * Save/list tokens. This is for testing oozie integration    * @param args commands    * @return status    */

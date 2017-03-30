@@ -22,142 +22,6 @@ end_package
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Preconditions
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|UserGroupInformation
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|core
-operator|.
-name|main
-operator|.
-name|LauncherExitCodes
-operator|.
-name|EXIT_UNAUTHORIZED
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|common
-operator|.
-name|SliderKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|common
-operator|.
-name|SliderXmlConfKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|common
-operator|.
-name|tools
-operator|.
-name|SliderUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|core
-operator|.
-name|conf
-operator|.
-name|AggregateConf
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|core
-operator|.
-name|exceptions
-operator|.
-name|SliderException
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|slf4j
@@ -173,26 +37,6 @@ operator|.
 name|slf4j
 operator|.
 name|LoggerFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|File
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
 import|;
 end_import
 
@@ -222,567 +66,116 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|configuration
-specifier|private
-specifier|final
-name|Configuration
-name|configuration
-decl_stmt|;
-DECL|field|instanceDefinition
-specifier|private
-specifier|final
-name|AggregateConf
-name|instanceDefinition
-decl_stmt|;
 DECL|field|clusterName
 specifier|private
 name|String
 name|clusterName
 decl_stmt|;
-DECL|method|SecurityConfiguration (Configuration configuration, AggregateConf instanceDefinition, String clusterName)
-specifier|public
-name|SecurityConfiguration
-parameter_list|(
-name|Configuration
-name|configuration
-parameter_list|,
-name|AggregateConf
-name|instanceDefinition
-parameter_list|,
-name|String
-name|clusterName
-parameter_list|)
-throws|throws
-name|SliderException
-block|{
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|configuration
-argument_list|)
-expr_stmt|;
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|instanceDefinition
-argument_list|)
-expr_stmt|;
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|clusterName
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|configuration
-operator|=
-name|configuration
-expr_stmt|;
-name|this
-operator|.
-name|instanceDefinition
-operator|=
-name|instanceDefinition
-expr_stmt|;
-name|this
-operator|.
-name|clusterName
-operator|=
-name|clusterName
-expr_stmt|;
-name|validate
-argument_list|()
-expr_stmt|;
-block|}
-DECL|method|validate ()
-specifier|private
-name|void
-name|validate
-parameter_list|()
-throws|throws
-name|SliderException
-block|{
-if|if
-condition|(
-name|isSecurityEnabled
-argument_list|()
-condition|)
-block|{
-name|String
-name|principal
-init|=
-name|instanceDefinition
-operator|.
-name|getAppConfOperations
-argument_list|()
-operator|.
-name|getComponent
-argument_list|(
-name|SliderKeys
-operator|.
-name|COMPONENT_AM
-argument_list|)
-operator|.
-name|get
-argument_list|(
-name|SliderXmlConfKeys
-operator|.
-name|KEY_KEYTAB_PRINCIPAL
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|SliderUtils
-operator|.
-name|isUnset
-argument_list|(
-name|principal
-argument_list|)
-condition|)
-block|{
-comment|// if no login identity is available, fail
-name|UserGroupInformation
-name|loginUser
-init|=
-literal|null
-decl_stmt|;
-try|try
-block|{
-name|loginUser
-operator|=
-name|getLoginUser
-argument_list|()
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|SliderException
-argument_list|(
-name|EXIT_UNAUTHORIZED
-argument_list|,
-name|e
-argument_list|,
-literal|"No principal configured for the application and "
-operator|+
-literal|"exception raised during retrieval of login user. "
-operator|+
-literal|"Unable to proceed with application "
-operator|+
-literal|"initialization.  Please ensure a value "
-operator|+
-literal|"for %s exists in the application "
-operator|+
-literal|"configuration or the login issue is addressed"
-argument_list|,
-name|SliderXmlConfKeys
-operator|.
-name|KEY_KEYTAB_PRINCIPAL
-argument_list|)
-throw|;
-block|}
-if|if
-condition|(
-name|loginUser
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|SliderException
-argument_list|(
-name|EXIT_UNAUTHORIZED
-argument_list|,
-literal|"No principal configured for the application "
-operator|+
-literal|"and no login user found. "
-operator|+
-literal|"Unable to proceed with application "
-operator|+
-literal|"initialization.  Please ensure a value "
-operator|+
-literal|"for %s exists in the application "
-operator|+
-literal|"configuration or the login issue is addressed"
-argument_list|,
-name|SliderXmlConfKeys
-operator|.
-name|KEY_KEYTAB_PRINCIPAL
-argument_list|)
-throw|;
-block|}
-block|}
-comment|// ensure that either local or distributed keytab mechanism is enabled,
-comment|// but not both
-name|String
-name|keytabFullPath
-init|=
-name|instanceDefinition
-operator|.
-name|getAppConfOperations
-argument_list|()
-operator|.
-name|getComponent
-argument_list|(
-name|SliderKeys
-operator|.
-name|COMPONENT_AM
-argument_list|)
-operator|.
-name|get
-argument_list|(
-name|SliderXmlConfKeys
-operator|.
-name|KEY_AM_KEYTAB_LOCAL_PATH
-argument_list|)
-decl_stmt|;
-name|String
-name|keytabName
-init|=
-name|instanceDefinition
-operator|.
-name|getAppConfOperations
-argument_list|()
-operator|.
-name|getComponent
-argument_list|(
-name|SliderKeys
-operator|.
-name|COMPONENT_AM
-argument_list|)
-operator|.
-name|get
-argument_list|(
-name|SliderXmlConfKeys
-operator|.
-name|KEY_AM_LOGIN_KEYTAB_NAME
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|SliderUtils
-operator|.
-name|isSet
-argument_list|(
-name|keytabFullPath
-argument_list|)
-operator|&&
-name|SliderUtils
-operator|.
-name|isSet
-argument_list|(
-name|keytabName
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|SliderException
-argument_list|(
-name|EXIT_UNAUTHORIZED
-argument_list|,
-literal|"Both a keytab on the cluster host (%s) and a"
-operator|+
-literal|" keytab to be retrieved from HDFS (%s) are"
-operator|+
-literal|" specified.  Please configure only one keytab"
-operator|+
-literal|" retrieval mechanism."
-argument_list|,
-name|SliderXmlConfKeys
-operator|.
-name|KEY_AM_KEYTAB_LOCAL_PATH
-argument_list|,
-name|SliderXmlConfKeys
-operator|.
-name|KEY_AM_LOGIN_KEYTAB_NAME
-argument_list|)
-throw|;
-block|}
-block|}
-block|}
-DECL|method|getLoginUser ()
-specifier|protected
-name|UserGroupInformation
-name|getLoginUser
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-return|return
-name|UserGroupInformation
-operator|.
-name|getLoginUser
-argument_list|()
-return|;
-block|}
-DECL|method|isSecurityEnabled ()
-specifier|public
-name|boolean
-name|isSecurityEnabled
-parameter_list|()
-block|{
-return|return
-name|SliderUtils
-operator|.
-name|isHadoopClusterSecure
-argument_list|(
-name|configuration
-argument_list|)
-return|;
-block|}
-DECL|method|getPrincipal ()
-specifier|public
-name|String
-name|getPrincipal
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-name|String
-name|principal
-init|=
-name|instanceDefinition
-operator|.
-name|getAppConfOperations
-argument_list|()
-operator|.
-name|getComponent
-argument_list|(
-name|SliderKeys
-operator|.
-name|COMPONENT_AM
-argument_list|)
-operator|.
-name|get
-argument_list|(
-name|SliderXmlConfKeys
-operator|.
-name|KEY_KEYTAB_PRINCIPAL
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|SliderUtils
-operator|.
-name|isUnset
-argument_list|(
-name|principal
-argument_list|)
-condition|)
-block|{
-name|principal
-operator|=
-name|UserGroupInformation
-operator|.
-name|getLoginUser
-argument_list|()
-operator|.
-name|getShortUserName
-argument_list|()
-expr_stmt|;
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"No principal set in the slider configuration.  Will use AM login"
-operator|+
-literal|" identity {} to attempt keytab-based login"
-argument_list|,
-name|principal
-argument_list|)
-expr_stmt|;
-block|}
-return|return
-name|principal
-return|;
-block|}
-DECL|method|isKeytabProvided ()
-specifier|public
-name|boolean
-name|isKeytabProvided
-parameter_list|()
-block|{
-name|boolean
-name|keytabProvided
-init|=
-name|instanceDefinition
-operator|.
-name|getAppConfOperations
-argument_list|()
-operator|.
-name|getComponent
-argument_list|(
-name|SliderKeys
-operator|.
-name|COMPONENT_AM
-argument_list|)
-operator|.
-name|get
-argument_list|(
-name|SliderXmlConfKeys
-operator|.
-name|KEY_AM_KEYTAB_LOCAL_PATH
-argument_list|)
-operator|!=
-literal|null
-operator|||
-name|instanceDefinition
-operator|.
-name|getAppConfOperations
-argument_list|()
-operator|.
-name|getComponent
-argument_list|(
-name|SliderKeys
-operator|.
-name|COMPONENT_AM
-argument_list|)
-operator|.
-name|get
-argument_list|(
-name|SliderXmlConfKeys
-operator|.
-name|KEY_AM_LOGIN_KEYTAB_NAME
-argument_list|)
-operator|!=
-literal|null
-decl_stmt|;
-return|return
-name|keytabProvided
-return|;
-block|}
-DECL|method|getKeytabFile (AggregateConf instanceDefinition)
-specifier|public
-name|File
-name|getKeytabFile
-parameter_list|(
-name|AggregateConf
-name|instanceDefinition
-parameter_list|)
-throws|throws
-name|SliderException
-throws|,
-name|IOException
-block|{
-comment|//TODO implement this for dash semantic
-name|String
-name|keytabFullPath
-init|=
-name|instanceDefinition
-operator|.
-name|getAppConfOperations
-argument_list|()
-operator|.
-name|getComponent
-argument_list|(
-name|SliderKeys
-operator|.
-name|COMPONENT_AM
-argument_list|)
-operator|.
-name|get
-argument_list|(
-name|SliderXmlConfKeys
-operator|.
-name|KEY_AM_KEYTAB_LOCAL_PATH
-argument_list|)
-decl_stmt|;
-name|File
-name|localKeytabFile
-decl_stmt|;
-if|if
-condition|(
-name|SliderUtils
-operator|.
-name|isUnset
-argument_list|(
-name|keytabFullPath
-argument_list|)
-condition|)
-block|{
-comment|// get the keytab
-name|String
-name|keytabName
-init|=
-name|instanceDefinition
-operator|.
-name|getAppConfOperations
-argument_list|()
-operator|.
-name|getComponent
-argument_list|(
-name|SliderKeys
-operator|.
-name|COMPONENT_AM
-argument_list|)
-operator|.
-name|get
-argument_list|(
-name|SliderXmlConfKeys
-operator|.
-name|KEY_AM_LOGIN_KEYTAB_NAME
-argument_list|)
-decl_stmt|;
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"No host keytab file path specified. Will attempt to retrieve"
-operator|+
-literal|" keytab file {} as a local resource for the container"
-argument_list|,
-name|keytabName
-argument_list|)
-expr_stmt|;
-comment|// download keytab to local, protected directory
-name|localKeytabFile
-operator|=
-operator|new
-name|File
-argument_list|(
-name|SliderKeys
-operator|.
-name|KEYTAB_DIR
-argument_list|,
-name|keytabName
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"Using host keytab file {} for login"
-argument_list|,
-name|keytabFullPath
-argument_list|)
-expr_stmt|;
-name|localKeytabFile
-operator|=
-operator|new
-name|File
-argument_list|(
-name|keytabFullPath
-argument_list|)
-expr_stmt|;
-block|}
-return|return
-name|localKeytabFile
-return|;
-block|}
+comment|//  private void validate() throws SliderException {
+comment|//    if (isSecurityEnabled()) {
+comment|//      String principal = instanceDefinition.getAppConfOperations()
+comment|//          .getComponent(SliderKeys.COMPONENT_AM).get(SliderXmlConfKeys.KEY_KEYTAB_PRINCIPAL);
+comment|//      if(SliderUtils.isUnset(principal)) {
+comment|//        // if no login identity is available, fail
+comment|//        UserGroupInformation loginUser = null;
+comment|//        try {
+comment|//          loginUser = getLoginUser();
+comment|//        } catch (IOException e) {
+comment|//          throw new SliderException(EXIT_UNAUTHORIZED, e,
+comment|//                                    "No principal configured for the application and "
+comment|//                                    + "exception raised during retrieval of login user. "
+comment|//                                    + "Unable to proceed with application "
+comment|//                                    + "initialization.  Please ensure a value "
+comment|//                                    + "for %s exists in the application "
+comment|//                                    + "configuration or the login issue is addressed",
+comment|//                                    SliderXmlConfKeys.KEY_KEYTAB_PRINCIPAL);
+comment|//        }
+comment|//        if (loginUser == null) {
+comment|//          throw new SliderException(EXIT_UNAUTHORIZED,
+comment|//                                    "No principal configured for the application "
+comment|//                                    + "and no login user found. "
+comment|//                                    + "Unable to proceed with application "
+comment|//                                    + "initialization.  Please ensure a value "
+comment|//                                    + "for %s exists in the application "
+comment|//                                    + "configuration or the login issue is addressed",
+comment|//                                    SliderXmlConfKeys.KEY_KEYTAB_PRINCIPAL);
+comment|//        }
+comment|//      }
+comment|//      // ensure that either local or distributed keytab mechanism is enabled,
+comment|//      // but not both
+comment|//      String keytabFullPath = instanceDefinition.getAppConfOperations()
+comment|//          .getComponent(SliderKeys.COMPONENT_AM)
+comment|//          .get(SliderXmlConfKeys.KEY_AM_KEYTAB_LOCAL_PATH);
+comment|//      String keytabName = instanceDefinition.getAppConfOperations()
+comment|//          .getComponent(SliderKeys.COMPONENT_AM)
+comment|//          .get(SliderXmlConfKeys.KEY_AM_LOGIN_KEYTAB_NAME);
+comment|//      if (SliderUtils.isSet(keytabFullPath)&& SliderUtils.isSet(keytabName)) {
+comment|//        throw new SliderException(EXIT_UNAUTHORIZED,
+comment|//                                  "Both a keytab on the cluster host (%s) and a"
+comment|//                                  + " keytab to be retrieved from HDFS (%s) are"
+comment|//                                  + " specified.  Please configure only one keytab"
+comment|//                                  + " retrieval mechanism.",
+comment|//                                  SliderXmlConfKeys.KEY_AM_KEYTAB_LOCAL_PATH,
+comment|//                                  SliderXmlConfKeys.KEY_AM_LOGIN_KEYTAB_NAME);
+comment|//
+comment|//      }
+comment|//    }
+comment|//  }
+comment|//
+comment|//  protected UserGroupInformation getLoginUser() throws IOException {
+comment|//    return UserGroupInformation.getLoginUser();
+comment|//  }
+comment|//
+comment|//  public boolean isSecurityEnabled () {
+comment|//    return SliderUtils.isHadoopClusterSecure(configuration);
+comment|//  }
+comment|//
+comment|//  public String getPrincipal () throws IOException {
+comment|//    String principal = instanceDefinition.getAppConfOperations()
+comment|//        .getComponent(SliderKeys.COMPONENT_AM).get(SliderXmlConfKeys.KEY_KEYTAB_PRINCIPAL);
+comment|//    if (SliderUtils.isUnset(principal)) {
+comment|//      principal = UserGroupInformation.getLoginUser().getShortUserName();
+comment|//      log.info("No principal set in the slider configuration.  Will use AM login"
+comment|//               + " identity {} to attempt keytab-based login", principal);
+comment|//    }
+comment|//
+comment|//    return principal;
+comment|//  }
+comment|//
+comment|//  public boolean isKeytabProvided() {
+comment|//    boolean keytabProvided = instanceDefinition.getAppConfOperations()
+comment|//                    .getComponent(SliderKeys.COMPONENT_AM)
+comment|//                    .get(SliderXmlConfKeys.KEY_AM_KEYTAB_LOCAL_PATH) != null ||
+comment|//                instanceDefinition.getAppConfOperations()
+comment|//                    .getComponent(SliderKeys.COMPONENT_AM).
+comment|//                    get(SliderXmlConfKeys.KEY_AM_LOGIN_KEYTAB_NAME) != null;
+comment|//    return keytabProvided;
+comment|//
+comment|//  }
+comment|//
+comment|//  public File getKeytabFile(AggregateConf instanceDefinition)
+comment|//      throws SliderException, IOException {
+comment|//    //TODO implement this for dash semantic
+comment|//    String keytabFullPath = instanceDefinition.getAppConfOperations()
+comment|//        .getComponent(SliderKeys.COMPONENT_AM)
+comment|//        .get(SliderXmlConfKeys.KEY_AM_KEYTAB_LOCAL_PATH);
+comment|//    File localKeytabFile;
+comment|//    if (SliderUtils.isUnset(keytabFullPath)) {
+comment|//      // get the keytab
+comment|//      String keytabName = instanceDefinition.getAppConfOperations()
+comment|//          .getComponent(SliderKeys.COMPONENT_AM).
+comment|//              get(SliderXmlConfKeys.KEY_AM_LOGIN_KEYTAB_NAME);
+comment|//      log.info("No host keytab file path specified. Will attempt to retrieve"
+comment|//               + " keytab file {} as a local resource for the container",
+comment|//               keytabName);
+comment|//      // download keytab to local, protected directory
+comment|//      localKeytabFile = new File(SliderKeys.KEYTAB_DIR, keytabName);
+comment|//    } else {
+comment|//      log.info("Using host keytab file {} for login", keytabFullPath);
+comment|//      localKeytabFile = new File(keytabFullPath);
+comment|//    }
+comment|//    return localKeytabFile;
+comment|//  }
 block|}
 end_class
 

@@ -198,20 +198,6 @@ name|hadoop
 operator|.
 name|metrics2
 operator|.
-name|MetricsSystem
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|metrics2
-operator|.
 name|lib
 operator|.
 name|DefaultMetricsSystem
@@ -994,24 +980,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|security
-operator|.
-name|client
-operator|.
-name|TimelineDelegationTokenIdentifier
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|util
 operator|.
 name|ConverterUtils
@@ -1327,22 +1295,6 @@ operator|.
 name|tools
 operator|.
 name|SliderVersionInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|core
-operator|.
-name|conf
-operator|.
-name|AggregateConf
 import|;
 end_import
 
@@ -1989,24 +1941,6 @@ operator|.
 name|rpc
 operator|.
 name|RpcBinder
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|server
-operator|.
-name|appmaster
-operator|.
-name|rpc
-operator|.
-name|SliderAMPolicyProvider
 import|;
 end_import
 
@@ -3232,16 +3166,6 @@ operator|new
 name|QueueService
 argument_list|()
 decl_stmt|;
-DECL|field|agentOpsUrl
-specifier|private
-name|String
-name|agentOpsUrl
-decl_stmt|;
-DECL|field|agentStatusUrl
-specifier|private
-name|String
-name|agentStatusUrl
-decl_stmt|;
 DECL|field|yarnRegistryOperations
 specifier|private
 name|YarnRegistryViewForProviders
@@ -3257,11 +3181,6 @@ DECL|field|portScanner
 specifier|private
 name|PortScanner
 name|portScanner
-decl_stmt|;
-DECL|field|securityConfiguration
-specifier|private
-name|SecurityConfiguration
-name|securityConfiguration
 decl_stmt|;
 comment|/**    * Is security enabled?    * Set early on in the {@link #createAndRunCluster(String)} operation.    */
 DECL|field|securityEnabled
@@ -4751,99 +4670,32 @@ argument_list|,
 name|maximumResourceCapability
 argument_list|)
 expr_stmt|;
-comment|//      processAMCredentials(securityConfiguration);
-if|if
-condition|(
-name|securityEnabled
-condition|)
-block|{
-name|secretManager
-operator|.
-name|setMasterKey
-argument_list|(
-name|amRegistrationData
-operator|.
-name|getClientToAMTokenMasterKey
-argument_list|()
-operator|.
-name|array
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|applicationACLs
-operator|=
-name|amRegistrationData
-operator|.
-name|getApplicationACLs
+name|stripAMRMToken
 argument_list|()
 expr_stmt|;
-comment|//tell the server what the ACLs are
-name|rpcService
-operator|.
-name|getServer
-argument_list|()
-operator|.
-name|refreshServiceAcl
-argument_list|(
-name|serviceConf
-argument_list|,
-operator|new
-name|SliderAMPolicyProvider
-argument_list|()
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|securityConfiguration
-operator|.
-name|isKeytabProvided
-argument_list|()
-condition|)
-block|{
-comment|// perform keytab based login to establish kerberos authenticated
-comment|// principal.  Can do so now since AM registration with RM above required
-comment|// tokens associated to principal
-name|String
-name|principal
-init|=
-name|securityConfiguration
-operator|.
-name|getPrincipal
-argument_list|()
-decl_stmt|;
-comment|//TODO read key tab file from slider-am.xml
-name|File
-name|localKeytabFile
-init|=
-name|securityConfiguration
-operator|.
-name|getKeytabFile
-argument_list|(
-operator|new
-name|AggregateConf
-argument_list|()
-argument_list|)
-decl_stmt|;
-comment|// Now log in...
-name|login
-argument_list|(
-name|principal
-argument_list|,
-name|localKeytabFile
-argument_list|)
-expr_stmt|;
-comment|// obtain new FS reference that should be kerberos based and different
-comment|// than the previously cached reference
-name|fs
-operator|=
-operator|new
-name|SliderFileSystem
-argument_list|(
-name|serviceConf
-argument_list|)
-expr_stmt|;
-block|}
-block|}
+comment|//      if (securityEnabled) {
+comment|//        secretManager.setMasterKey(
+comment|//            amRegistrationData.getClientToAMTokenMasterKey().array());
+comment|//        applicationACLs = amRegistrationData.getApplicationACLs();
+comment|//
+comment|//        //tell the server what the ACLs are
+comment|//        rpcService.getServer().refreshServiceAcl(serviceConf,
+comment|//            new SliderAMPolicyProvider());
+comment|//        if (securityConfiguration.isKeytabProvided()) {
+comment|//          // perform keytab based login to establish kerberos authenticated
+comment|//          // principal.  Can do so now since AM registration with RM above required
+comment|//          // tokens associated to principal
+comment|//          String principal = securityConfiguration.getPrincipal();
+comment|//          //TODO read key tab file from slider-am.xml
+comment|//          File localKeytabFile = new File("todo");
+comment|////              securityConfiguration.getKeytabFile(new AggregateConf());
+comment|//          // Now log in...
+comment|//          login(principal, localKeytabFile);
+comment|//          // obtain new FS reference that should be kerberos based and different
+comment|//          // than the previously cached reference
+comment|//          fs = new SliderFileSystem(serviceConf);
+comment|//        }
+comment|//      }
 comment|// YARN client.
 comment|// Important: this is only valid at startup, and must be executed within
 comment|// the right UGI context. Use with care.
@@ -5750,15 +5602,12 @@ throw|;
 block|}
 block|}
 block|}
-comment|/**    * Process the initial user to obtain the set of user    * supplied credentials (tokens were passed in by client).    * Removes the AM/RM token.    * If a keytab has been provided, also strip the HDFS delegation token.    * @param securityConfig slider security config    * @throws IOException    */
-DECL|method|processAMCredentials (SecurityConfiguration securityConfig)
+comment|/**    * Process the initial user to obtain the set of user    * supplied credentials (tokens were passed in by client).    * Removes the AM/RM token.    * @throws IOException    */
+DECL|method|stripAMRMToken ()
 specifier|private
 name|void
-name|processAMCredentials
-parameter_list|(
-name|SecurityConfiguration
-name|securityConfig
-parameter_list|)
+name|stripAMRMToken
+parameter_list|()
 throws|throws
 name|IOException
 block|{
@@ -5784,51 +5633,6 @@ operator|.
 name|KIND_NAME
 argument_list|)
 expr_stmt|;
-name|filteredTokens
-operator|.
-name|add
-argument_list|(
-name|TimelineDelegationTokenIdentifier
-operator|.
-name|KIND_NAME
-argument_list|)
-expr_stmt|;
-name|boolean
-name|keytabProvided
-init|=
-name|securityConfig
-operator|.
-name|isKeytabProvided
-argument_list|()
-decl_stmt|;
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"Slider AM Security Mode: {}"
-argument_list|,
-name|keytabProvided
-condition|?
-literal|"KEYTAB"
-else|:
-literal|"TOKEN"
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|keytabProvided
-condition|)
-block|{
-name|filteredTokens
-operator|.
-name|add
-argument_list|(
-name|DelegationTokenIdentifier
-operator|.
-name|HDFS_DELEGATION_KIND
-argument_list|)
-expr_stmt|;
-block|}
 name|containerCredentials
 operator|=
 name|CredentialUtils
@@ -9357,50 +9161,6 @@ argument_list|,
 name|ctx
 argument_list|)
 expr_stmt|;
-block|}
-comment|/**    * Build the credentials needed for containers. This will include    * getting new delegation tokens for HDFS if the AM is running    * with a keytab.    * @return a buffer of credentials    * @throws IOException    */
-DECL|method|buildContainerCredentials ()
-specifier|private
-name|Credentials
-name|buildContainerCredentials
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-name|Credentials
-name|credentials
-init|=
-operator|new
-name|Credentials
-argument_list|(
-name|containerCredentials
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|securityConfiguration
-operator|.
-name|isKeytabProvided
-argument_list|()
-condition|)
-block|{
-name|CredentialUtils
-operator|.
-name|addSelfRenewableFSDelegationTokens
-argument_list|(
-name|getClusterFS
-argument_list|()
-operator|.
-name|getFileSystem
-argument_list|()
-argument_list|,
-name|credentials
-argument_list|)
-expr_stmt|;
-block|}
-return|return
-name|credentials
-return|;
 block|}
 annotation|@
 name|Override
