@@ -1464,14 +1464,11 @@ class|class
 name|TimelineEntityDispatcher
 block|{
 comment|/**      * Time period for which the timelineclient will wait for draining after      * stop.      */
-DECL|field|DRAIN_TIME_PERIOD
+DECL|field|drainTimeoutPeriod
 specifier|private
-specifier|static
 specifier|final
 name|long
-name|DRAIN_TIME_PERIOD
-init|=
-literal|2000L
+name|drainTimeoutPeriod
 decl_stmt|;
 DECL|field|numberOfAsyncsToMerge
 specifier|private
@@ -1521,6 +1518,21 @@ argument_list|,
 name|YarnConfiguration
 operator|.
 name|DEFAULT_NUMBER_OF_ASYNC_ENTITIES_TO_MERGE
+argument_list|)
+expr_stmt|;
+name|drainTimeoutPeriod
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|TIMELINE_V2_CLIENT_DRAIN_TIME_MILLIS
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_TIMELINE_V2_CLIENT_DRAIN_TIME_MILLIS
 argument_list|)
 expr_stmt|;
 block|}
@@ -1644,7 +1656,7 @@ operator|.
 name|currentTimeMillis
 argument_list|()
 operator|+
-name|DRAIN_TIME_PERIOD
+name|drainTimeoutPeriod
 decl_stmt|;
 while|while
 condition|(
@@ -2072,7 +2084,7 @@ name|executor
 operator|.
 name|awaitTermination
 argument_list|(
-name|DRAIN_TIME_PERIOD
+name|drainTimeoutPeriod
 argument_list|,
 name|TimeUnit
 operator|.

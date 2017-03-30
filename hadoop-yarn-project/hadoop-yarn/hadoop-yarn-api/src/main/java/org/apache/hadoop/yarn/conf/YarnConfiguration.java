@@ -7044,6 +7044,27 @@ name|DEFAULT_NUMBER_OF_ASYNC_ENTITIES_TO_MERGE
 init|=
 literal|10
 decl_stmt|;
+comment|/**    * The time period for which timeline v2 client will wait for draining    * leftover entities after stop.    */
+DECL|field|TIMELINE_V2_CLIENT_DRAIN_TIME_MILLIS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_V2_CLIENT_DRAIN_TIME_MILLIS
+init|=
+name|TIMELINE_SERVICE_CLIENT_PREFIX
+operator|+
+literal|"drain-entities.timeout.ms"
+decl_stmt|;
+DECL|field|DEFAULT_TIMELINE_V2_CLIENT_DRAIN_TIME_MILLIS
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_TIMELINE_V2_CLIENT_DRAIN_TIME_MILLIS
+init|=
+literal|2000L
+decl_stmt|;
 comment|// mark app-history related configs @Private as application history is going
 comment|// to be integrated into the timeline service
 annotation|@
