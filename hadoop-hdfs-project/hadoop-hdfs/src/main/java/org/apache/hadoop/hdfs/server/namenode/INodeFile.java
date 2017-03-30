@@ -1764,15 +1764,24 @@ argument_list|,
 name|minReplication
 argument_list|)
 decl_stmt|;
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
+if|if
+condition|(
 name|err
-operator|==
+operator|!=
 literal|null
-argument_list|,
-literal|"Unexpected block state: %s, file=%s (%s), blocks=%s (i=%s)"
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalStateException
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Unexpected block state: "
+operator|+
+literal|"%s, file=%s (%s), blocks=%s (i=%s)"
 argument_list|,
 name|err
 argument_list|,
@@ -1793,7 +1802,9 @@ argument_list|)
 argument_list|,
 name|i
 argument_list|)
-expr_stmt|;
+argument_list|)
+throw|;
+block|}
 block|}
 block|}
 comment|/**    * Check if the i-th block is COMPLETE;    * when the i-th block is the last block, it may be allowed to be COMMITTED.    *    * @return null if the block passes the check;    *              otherwise, return an error message.    */
