@@ -768,6 +768,24 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|slider
+operator|.
+name|server
+operator|.
+name|appmaster
+operator|.
+name|timelineservice
+operator|.
+name|ServiceTimelinePublisher
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -1316,6 +1334,11 @@ DECL|field|appMetrics
 specifier|private
 name|SliderMetrics
 name|appMetrics
+decl_stmt|;
+DECL|field|serviceTimelinePublisher
+specifier|private
+name|ServiceTimelinePublisher
+name|serviceTimelinePublisher
 decl_stmt|;
 comment|/**    * Create an instance    * @param recordFactory factory for YARN records    * @param metricsAndMonitoring metrics and monitoring services    */
 DECL|method|AppState (AbstractClusterServices recordFactory, MetricsAndMonitoring metricsAndMonitoring)
@@ -7599,6 +7622,22 @@ argument_list|(
 name|possible
 argument_list|)
 expr_stmt|;
+comment|// update during finish call
+if|if
+condition|(
+name|serviceTimelinePublisher
+operator|!=
+literal|null
+condition|)
+block|{
+name|serviceTimelinePublisher
+operator|.
+name|componentInstanceFinished
+argument_list|(
+name|instance
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -8492,6 +8531,22 @@ block|}
 return|return
 name|naming
 return|;
+block|}
+DECL|method|setServiceTimelinePublisher (ServiceTimelinePublisher serviceTimelinePublisher)
+specifier|public
+name|void
+name|setServiceTimelinePublisher
+parameter_list|(
+name|ServiceTimelinePublisher
+name|serviceTimelinePublisher
+parameter_list|)
+block|{
+name|this
+operator|.
+name|serviceTimelinePublisher
+operator|=
+name|serviceTimelinePublisher
+expr_stmt|;
 block|}
 block|}
 end_class
