@@ -570,7 +570,7 @@ name|currentSplitSize
 operator|+
 name|srcFileStatus
 operator|.
-name|getLen
+name|getChunkLength
 argument_list|()
 operator|>
 name|nBytesPerSplit
@@ -639,7 +639,7 @@ name|currentSplitSize
 operator|+=
 name|srcFileStatus
 operator|.
-name|getLen
+name|getChunkLength
 argument_list|()
 expr_stmt|;
 name|lastPosition
