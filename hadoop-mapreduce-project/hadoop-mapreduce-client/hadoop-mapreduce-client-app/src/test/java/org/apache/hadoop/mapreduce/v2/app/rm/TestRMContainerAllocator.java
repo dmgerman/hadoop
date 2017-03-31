@@ -2240,20 +2240,6 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-name|DrainDispatcher
-name|dispatcher
-init|=
-operator|(
-name|DrainDispatcher
-operator|)
-name|rm
-operator|.
-name|getRMContext
-argument_list|()
-operator|.
-name|getDispatcher
-argument_list|()
-decl_stmt|;
 comment|// Submit the application
 name|RMApp
 name|app
@@ -2265,9 +2251,9 @@ argument_list|(
 literal|1024
 argument_list|)
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|MockNM
@@ -2289,9 +2275,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|ApplicationAttemptId
@@ -2312,9 +2298,9 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|JobId
@@ -2442,9 +2428,9 @@ argument_list|,
 literal|10240
 argument_list|)
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// create the container request
@@ -2514,9 +2500,9 @@ operator|.
 name|schedule
 argument_list|()
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -2586,9 +2572,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -2647,9 +2633,9 @@ literal|true
 argument_list|)
 expr_stmt|;
 comment|// Node heartbeat
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|assigned
@@ -2659,9 +2645,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -2700,16 +2686,14 @@ literal|false
 argument_list|)
 expr_stmt|;
 comment|// check that the assigned container requests are cancelled
-name|assigned
-operator|=
 name|allocator
 operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -2774,20 +2758,6 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-name|DrainDispatcher
-name|dispatcher
-init|=
-operator|(
-name|DrainDispatcher
-operator|)
-name|rm
-operator|.
-name|getRMContext
-argument_list|()
-operator|.
-name|getDispatcher
-argument_list|()
-decl_stmt|;
 comment|// Submit the application
 name|RMApp
 name|app
@@ -2799,9 +2769,9 @@ argument_list|(
 literal|1024
 argument_list|)
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|MockNM
@@ -2823,9 +2793,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|ApplicationAttemptId
@@ -2846,9 +2816,9 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|JobId
@@ -2976,9 +2946,9 @@ literal|1536
 argument_list|)
 decl_stmt|;
 comment|// assign 1 map
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// create the container requests for maps
@@ -3073,9 +3043,9 @@ operator|.
 name|schedule
 argument_list|()
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -3111,9 +3081,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|assigned
@@ -3123,9 +3093,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|checkAssignments
@@ -3257,20 +3227,6 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-name|DrainDispatcher
-name|dispatcher
-init|=
-operator|(
-name|DrainDispatcher
-operator|)
-name|rm
-operator|.
-name|getRMContext
-argument_list|()
-operator|.
-name|getDispatcher
-argument_list|()
-decl_stmt|;
 comment|// Submit the application
 name|RMApp
 name|app
@@ -3282,9 +3238,9 @@ argument_list|(
 literal|1024
 argument_list|)
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|MockNM
@@ -3306,9 +3262,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|ApplicationAttemptId
@@ -3329,9 +3285,9 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|JobId
@@ -3459,9 +3415,9 @@ argument_list|,
 literal|10240
 argument_list|)
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// create the container request
@@ -3531,9 +3487,9 @@ operator|.
 name|schedule
 argument_list|()
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -3575,9 +3531,9 @@ literal|true
 argument_list|)
 expr_stmt|;
 comment|// Node heartbeat
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|assigned
@@ -3587,9 +3543,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|checkAssignments
@@ -3666,21 +3622,6 @@ name|start
 argument_list|()
 expr_stmt|;
 specifier|final
-name|DrainDispatcher
-name|dispatcher
-init|=
-operator|(
-name|DrainDispatcher
-operator|)
-name|rm
-operator|.
-name|getRMContext
-argument_list|()
-operator|.
-name|getDispatcher
-argument_list|()
-decl_stmt|;
-specifier|final
 name|RMApp
 name|app
 init|=
@@ -3691,9 +3632,9 @@ argument_list|(
 literal|1024
 argument_list|)
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 specifier|final
@@ -3729,9 +3670,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 specifier|final
@@ -3753,9 +3694,9 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 specifier|final
@@ -3855,9 +3796,9 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// add resources to scheduler
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// create the container request
@@ -3906,9 +3847,9 @@ literal|1
 condition|;
 control|)
 block|{
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|i
@@ -3962,9 +3903,9 @@ operator|==
 literal|0
 condition|)
 block|{
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|allocator
@@ -4060,20 +4001,6 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-name|DrainDispatcher
-name|dispatcher
-init|=
-operator|(
-name|DrainDispatcher
-operator|)
-name|rm
-operator|.
-name|getRMContext
-argument_list|()
-operator|.
-name|getDispatcher
-argument_list|()
-decl_stmt|;
 comment|// Submit the application
 name|RMApp
 name|app
@@ -4085,9 +4012,9 @@ argument_list|(
 literal|1024
 argument_list|)
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|MockNM
@@ -4109,9 +4036,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|ApplicationAttemptId
@@ -4132,9 +4059,9 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|JobId
@@ -4431,20 +4358,6 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-name|DrainDispatcher
-name|dispatcher
-init|=
-operator|(
-name|DrainDispatcher
-operator|)
-name|rm
-operator|.
-name|getRMContext
-argument_list|()
-operator|.
-name|getDispatcher
-argument_list|()
-decl_stmt|;
 comment|// Submit the application
 name|RMApp
 name|app
@@ -4456,9 +4369,9 @@ argument_list|(
 literal|1024
 argument_list|)
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|MockNM
@@ -4480,9 +4393,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|ApplicationAttemptId
@@ -4503,9 +4416,9 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|JobId
@@ -4895,20 +4808,6 @@ literal|8
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|DrainDispatcher
-name|dispatcher
-init|=
-operator|(
-name|DrainDispatcher
-operator|)
-name|rm
-operator|.
-name|getRMContext
-argument_list|()
-operator|.
-name|getDispatcher
-argument_list|()
-decl_stmt|;
 comment|// Submit the application
 name|RMApp
 name|app
@@ -4920,9 +4819,9 @@ argument_list|(
 literal|1024
 argument_list|)
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|MockNM
@@ -4944,9 +4843,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|ApplicationAttemptId
@@ -4967,9 +4866,9 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|JobId
@@ -5318,21 +5217,6 @@ name|start
 argument_list|()
 expr_stmt|;
 specifier|final
-name|DrainDispatcher
-name|dispatcher
-init|=
-operator|(
-name|DrainDispatcher
-operator|)
-name|rm
-operator|.
-name|getRMContext
-argument_list|()
-operator|.
-name|getDispatcher
-argument_list|()
-decl_stmt|;
-specifier|final
 name|RMApp
 name|app
 init|=
@@ -5343,9 +5227,9 @@ argument_list|(
 literal|2048
 argument_list|)
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 specifier|final
@@ -5381,9 +5265,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 specifier|final
@@ -5405,9 +5289,9 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 specifier|final
@@ -5556,9 +5440,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|allocator
@@ -5613,9 +5497,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 block|}
@@ -6169,20 +6053,6 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-name|DrainDispatcher
-name|dispatcher
-init|=
-operator|(
-name|DrainDispatcher
-operator|)
-name|rm
-operator|.
-name|getRMContext
-argument_list|()
-operator|.
-name|getDispatcher
-argument_list|()
-decl_stmt|;
 comment|// Submit the application
 name|RMApp
 name|app
@@ -6194,9 +6064,9 @@ argument_list|(
 literal|1024
 argument_list|)
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|MockNM
@@ -6218,9 +6088,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|ApplicationAttemptId
@@ -6241,9 +6111,9 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|JobId
@@ -6376,9 +6246,9 @@ argument_list|,
 literal|10240
 argument_list|)
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// create the container request
@@ -6490,9 +6360,9 @@ operator|.
 name|schedule
 argument_list|()
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -6534,9 +6404,9 @@ literal|true
 argument_list|)
 expr_stmt|;
 comment|// Node heartbeat
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|assigned
@@ -6546,9 +6416,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|checkAssignments
@@ -6677,20 +6547,6 @@ argument_list|(
 name|fakeClusterTimeStamp
 argument_list|)
 expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|createDispatcher ()
-specifier|protected
-name|Dispatcher
-name|createDispatcher
-parameter_list|()
-block|{
-return|return
-operator|new
-name|DrainDispatcher
-argument_list|()
-return|;
 block|}
 annotation|@
 name|Override
@@ -6871,9 +6727,9 @@ argument_list|(
 literal|1024
 argument_list|)
 decl_stmt|;
-name|rmDispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|MockNM
@@ -6895,9 +6751,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|rmDispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 specifier|final
@@ -6919,9 +6775,9 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 expr_stmt|;
-name|rmDispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|MRApp
@@ -7149,9 +7005,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|rmDispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|amNodeManager
@@ -7161,9 +7017,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|rmDispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|allocator
@@ -7171,9 +7027,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|rmDispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// Wait for all map-tasks to be running
@@ -7222,9 +7078,9 @@ name|schedule
 argument_list|()
 expr_stmt|;
 comment|// Send heartbeat
-name|rmDispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -7291,9 +7147,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|rmDispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -7343,9 +7199,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|rmDispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -7395,9 +7251,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|rmDispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|amNodeManager
@@ -7407,9 +7263,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|rmDispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|allocator
@@ -7417,9 +7273,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|rmDispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// Wait for all reduce-tasks to be running
@@ -7481,9 +7337,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|rmDispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -7533,9 +7389,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|rmDispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// Remaining is JobCleanup
@@ -7858,9 +7714,9 @@ argument_list|(
 literal|1024
 argument_list|)
 decl_stmt|;
-name|rmDispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|MockNM
@@ -7882,9 +7738,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|rmDispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 specifier|final
@@ -7906,9 +7762,9 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 expr_stmt|;
-name|rmDispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|MRApp
@@ -8123,9 +7979,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|rmDispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|amNodeManager
@@ -8135,9 +7991,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|rmDispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|allocator
@@ -8145,9 +8001,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|rmDispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// Wait for all map-tasks to be running
@@ -8183,9 +8039,9 @@ name|schedule
 argument_list|()
 expr_stmt|;
 comment|// Send heartbeat
-name|rmDispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -8252,9 +8108,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|rmDispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -8304,9 +8160,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|rmDispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -8356,9 +8212,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|rmDispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -8421,20 +8277,6 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-name|DrainDispatcher
-name|dispatcher
-init|=
-operator|(
-name|DrainDispatcher
-operator|)
-name|rm
-operator|.
-name|getRMContext
-argument_list|()
-operator|.
-name|getDispatcher
-argument_list|()
-decl_stmt|;
 comment|// Submit the application
 name|RMApp
 name|app
@@ -8446,9 +8288,9 @@ argument_list|(
 literal|1024
 argument_list|)
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|MockNM
@@ -8470,9 +8312,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|ApplicationAttemptId
@@ -8493,9 +8335,9 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|JobId
@@ -8563,9 +8405,9 @@ argument_list|,
 literal|10240
 argument_list|)
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// create the map container request
@@ -8684,9 +8526,9 @@ operator|.
 name|schedule
 argument_list|()
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|nm1
@@ -8696,9 +8538,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -8755,9 +8597,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -8837,9 +8679,9 @@ argument_list|(
 literal|false
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// schedule response returns updated nodes
@@ -8850,9 +8692,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -8964,9 +8806,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -9081,20 +8923,6 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-name|DrainDispatcher
-name|dispatcher
-init|=
-operator|(
-name|DrainDispatcher
-operator|)
-name|rm
-operator|.
-name|getRMContext
-argument_list|()
-operator|.
-name|getDispatcher
-argument_list|()
-decl_stmt|;
 comment|// Submit the application
 name|RMApp
 name|app
@@ -9106,9 +8934,9 @@ argument_list|(
 literal|1024
 argument_list|)
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|MockNM
@@ -9130,9 +8958,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|ApplicationAttemptId
@@ -9153,9 +8981,9 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|JobId
@@ -9283,9 +9111,9 @@ argument_list|,
 literal|10240
 argument_list|)
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// create the container request
@@ -9382,9 +9210,9 @@ operator|.
 name|schedule
 argument_list|()
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -9461,9 +9289,9 @@ literal|true
 argument_list|)
 expr_stmt|;
 comment|// Node heartbeat
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|assigned
@@ -9487,9 +9315,9 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -9530,9 +9358,9 @@ argument_list|(
 literal|false
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|assigned
@@ -9542,9 +9370,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|assertBlacklistAdditionsAndRemovals
@@ -9578,9 +9406,9 @@ literal|true
 argument_list|)
 expr_stmt|;
 comment|// Node heartbeat
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|assigned
@@ -9590,9 +9418,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|assertBlacklistAdditionsAndRemovals
@@ -9723,20 +9551,6 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-name|DrainDispatcher
-name|dispatcher
-init|=
-operator|(
-name|DrainDispatcher
-operator|)
-name|rm
-operator|.
-name|getRMContext
-argument_list|()
-operator|.
-name|getDispatcher
-argument_list|()
-decl_stmt|;
 comment|// Submit the application
 name|RMApp
 name|app
@@ -9748,9 +9562,9 @@ argument_list|(
 literal|1024
 argument_list|)
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|MockNM
@@ -9787,8 +9601,6 @@ name|nmNum
 operator|++
 argument_list|,
 name|rm
-argument_list|,
-name|dispatcher
 argument_list|)
 expr_stmt|;
 name|nodeManagers
@@ -9801,9 +9613,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|ApplicationAttemptId
@@ -9824,9 +9636,9 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|JobId
@@ -9940,8 +9752,6 @@ index|[
 literal|0
 index|]
 argument_list|,
-name|dispatcher
-argument_list|,
 name|allocator
 argument_list|,
 literal|0
@@ -10026,8 +9836,6 @@ index|[
 literal|0
 index|]
 argument_list|,
-name|dispatcher
-argument_list|,
 name|allocator
 argument_list|,
 literal|1
@@ -10078,8 +9886,6 @@ index|[
 literal|0
 index|]
 argument_list|,
-name|dispatcher
-argument_list|,
 name|allocator
 argument_list|,
 literal|0
@@ -10118,8 +9924,6 @@ name|nmNum
 operator|++
 argument_list|,
 name|rm
-argument_list|,
-name|dispatcher
 argument_list|)
 expr_stmt|;
 comment|// Known=2, blacklisted=1, ignore should be true - assign 1 anyway.
@@ -10145,8 +9949,6 @@ index|[
 literal|1
 index|]
 argument_list|,
-name|dispatcher
-argument_list|,
 name|allocator
 argument_list|,
 literal|0
@@ -10185,8 +9987,6 @@ name|nmNum
 operator|++
 argument_list|,
 name|rm
-argument_list|,
-name|dispatcher
 argument_list|)
 expr_stmt|;
 comment|// Known=3, blacklisted=1, ignore should be true - assign 1 anyway.
@@ -10211,8 +10011,6 @@ name|nodeManagers
 index|[
 literal|2
 index|]
-argument_list|,
-name|dispatcher
 argument_list|,
 name|allocator
 argument_list|,
@@ -10264,8 +10062,6 @@ index|[
 literal|0
 index|]
 argument_list|,
-name|dispatcher
-argument_list|,
 name|allocator
 argument_list|,
 literal|0
@@ -10304,8 +10100,6 @@ name|nmNum
 operator|++
 argument_list|,
 name|rm
-argument_list|,
-name|dispatcher
 argument_list|)
 expr_stmt|;
 comment|// Known=4, blacklisted=1, ignore should be false - assign 1 anyway
@@ -10330,8 +10124,6 @@ name|nodeManagers
 index|[
 literal|3
 index|]
-argument_list|,
-name|dispatcher
 argument_list|,
 name|allocator
 argument_list|,
@@ -10383,8 +10175,6 @@ name|nodeManagers
 index|[
 literal|0
 index|]
-argument_list|,
-name|dispatcher
 argument_list|,
 name|allocator
 argument_list|,
@@ -10461,8 +10251,6 @@ index|[
 literal|0
 index|]
 argument_list|,
-name|dispatcher
-argument_list|,
 name|allocator
 argument_list|,
 literal|1
@@ -10514,8 +10302,6 @@ index|[
 literal|0
 index|]
 argument_list|,
-name|dispatcher
-argument_list|,
 name|allocator
 argument_list|,
 literal|0
@@ -10565,8 +10351,6 @@ name|nodeManagers
 index|[
 literal|1
 index|]
-argument_list|,
-name|dispatcher
 argument_list|,
 name|allocator
 argument_list|,
@@ -10628,8 +10412,6 @@ name|nmNum
 operator|++
 argument_list|,
 name|rm
-argument_list|,
-name|dispatcher
 argument_list|)
 expr_stmt|;
 comment|// Known=5, blacklisted=3, ignore should be true.
@@ -10654,8 +10436,6 @@ name|nodeManagers
 index|[
 literal|2
 index|]
-argument_list|,
-name|dispatcher
 argument_list|,
 name|allocator
 argument_list|,
@@ -10711,8 +10491,6 @@ name|nmNum
 operator|++
 argument_list|,
 name|rm
-argument_list|,
-name|dispatcher
 argument_list|)
 expr_stmt|;
 name|assigned
@@ -10747,8 +10525,6 @@ literal|4
 operator|+
 name|i
 index|]
-argument_list|,
-name|dispatcher
 argument_list|,
 name|allocator
 argument_list|,
@@ -10809,8 +10585,6 @@ index|[
 literal|2
 index|]
 argument_list|,
-name|dispatcher
-argument_list|,
 name|allocator
 argument_list|,
 literal|0
@@ -10839,7 +10613,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|registerNodeManager (int i, MyResourceManager rm, DrainDispatcher dispatcher)
+DECL|method|registerNodeManager (int i, MyResourceManager rm)
 specifier|private
 name|MockNM
 name|registerNodeManager
@@ -10849,9 +10623,6 @@ name|i
 parameter_list|,
 name|MyResourceManager
 name|rm
-parameter_list|,
-name|DrainDispatcher
-name|dispatcher
 parameter_list|)
 throws|throws
 name|Exception
@@ -10876,9 +10647,9 @@ argument_list|,
 literal|10240
 argument_list|)
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 return|return
@@ -10886,7 +10657,7 @@ name|nm
 return|;
 block|}
 specifier|private
-DECL|method|getContainerOnHost (JobId jobId, int taskAttemptId, int memory, String[] hosts, MockNM mockNM, DrainDispatcher dispatcher, MyContainerAllocator allocator, int expectedAdditions1, int expectedRemovals1, int expectedAdditions2, int expectedRemovals2, MyResourceManager rm)
+DECL|method|getContainerOnHost (JobId jobId, int taskAttemptId, int memory, String[] hosts, MockNM mockNM, MyContainerAllocator allocator, int expectedAdditions1, int expectedRemovals1, int expectedAdditions2, int expectedRemovals2, MyResourceManager rm)
 name|List
 argument_list|<
 name|TaskAttemptContainerAssignedEvent
@@ -10908,9 +10679,6 @@ name|hosts
 parameter_list|,
 name|MockNM
 name|mockNM
-parameter_list|,
-name|DrainDispatcher
-name|dispatcher
 parameter_list|,
 name|MyContainerAllocator
 name|allocator
@@ -10966,9 +10734,9 @@ operator|.
 name|schedule
 argument_list|()
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|assertBlacklistAdditionsAndRemovals
@@ -11002,9 +10770,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|assigned
@@ -11014,9 +10782,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|assertBlacklistAdditionsAndRemovals
@@ -11104,20 +10872,6 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-name|DrainDispatcher
-name|dispatcher
-init|=
-operator|(
-name|DrainDispatcher
-operator|)
-name|rm
-operator|.
-name|getRMContext
-argument_list|()
-operator|.
-name|getDispatcher
-argument_list|()
-decl_stmt|;
 comment|// Submit the application
 name|RMApp
 name|app
@@ -11129,9 +10883,9 @@ argument_list|(
 literal|1024
 argument_list|)
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|MockNM
@@ -11153,9 +10907,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|ApplicationAttemptId
@@ -11176,9 +10930,9 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|JobId
@@ -11294,9 +11048,9 @@ argument_list|,
 literal|10240
 argument_list|)
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|LOG
@@ -11353,9 +11107,9 @@ operator|.
 name|schedule
 argument_list|()
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -11388,9 +11142,9 @@ literal|true
 argument_list|)
 expr_stmt|;
 comment|// Node heartbeat
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|LOG
@@ -11407,9 +11161,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|assertBlacklistAdditionsAndRemovals
@@ -11504,9 +11258,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|assertBlacklistAdditionsAndRemovals
@@ -11579,9 +11333,9 @@ literal|true
 argument_list|)
 expr_stmt|;
 comment|// Node heartbeat
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|LOG
@@ -11598,9 +11352,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|assertBlacklistAdditionsAndRemovals
@@ -11642,9 +11396,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|assertBlacklistAdditionsAndRemovals
@@ -11686,9 +11440,9 @@ literal|true
 argument_list|)
 expr_stmt|;
 comment|// Node heartbeat
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|LOG
@@ -11714,9 +11468,9 @@ argument_list|,
 name|rm
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// For debugging
@@ -15052,20 +14806,6 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-name|DrainDispatcher
-name|dispatcher
-init|=
-operator|(
-name|DrainDispatcher
-operator|)
-name|rm
-operator|.
-name|getRMContext
-argument_list|()
-operator|.
-name|getDispatcher
-argument_list|()
-decl_stmt|;
 comment|// Submit the application
 name|RMApp
 name|app
@@ -15077,9 +14817,9 @@ argument_list|(
 literal|1024
 argument_list|)
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// Make a node to register so as to launch the AM.
@@ -15102,9 +14842,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|ApplicationAttemptId
@@ -15125,9 +14865,9 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|JobId
@@ -15987,20 +15727,6 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-name|DrainDispatcher
-name|rmDispatcher
-init|=
-operator|(
-name|DrainDispatcher
-operator|)
-name|rm
-operator|.
-name|getRMContext
-argument_list|()
-operator|.
-name|getDispatcher
-argument_list|()
-decl_stmt|;
 comment|// Submit the application
 name|RMApp
 name|rmApp
@@ -16012,9 +15738,9 @@ argument_list|(
 literal|1024
 argument_list|)
 decl_stmt|;
-name|rmDispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|MockNM
@@ -16036,9 +15762,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|rmDispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 specifier|final
@@ -16060,9 +15786,9 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 expr_stmt|;
-name|rmDispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|MRApp
@@ -16355,20 +16081,6 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-name|DrainDispatcher
-name|dispatcher
-init|=
-operator|(
-name|DrainDispatcher
-operator|)
-name|rm1
-operator|.
-name|getRMContext
-argument_list|()
-operator|.
-name|getDispatcher
-argument_list|()
-decl_stmt|;
 comment|// Submit the application
 name|RMApp
 name|app
@@ -16380,9 +16092,9 @@ argument_list|(
 literal|1024
 argument_list|)
 decl_stmt|;
-name|dispatcher
+name|rm1
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|MockNM
@@ -16414,9 +16126,9 @@ literal|true
 argument_list|)
 expr_stmt|;
 comment|// Node heartbeat
-name|dispatcher
+name|rm1
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|ApplicationAttemptId
@@ -16437,9 +16149,9 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm1
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|JobId
@@ -16622,9 +16334,9 @@ operator|.
 name|schedule
 argument_list|()
 decl_stmt|;
-name|dispatcher
+name|rm1
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -16668,9 +16380,9 @@ literal|true
 argument_list|)
 expr_stmt|;
 comment|// Node heartbeat
-name|dispatcher
+name|rm1
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// Step-2 : 2 containers are allocated by RM.
@@ -16681,9 +16393,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm1
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -16879,19 +16591,6 @@ argument_list|(
 name|rm2
 argument_list|)
 expr_stmt|;
-name|dispatcher
-operator|=
-operator|(
-name|DrainDispatcher
-operator|)
-name|rm2
-operator|.
-name|getRMContext
-argument_list|()
-operator|.
-name|getDispatcher
-argument_list|()
-expr_stmt|;
 comment|// NM should be rebooted on heartbeat, even first heartbeat for nm2
 name|NodeHeartbeatResponse
 name|hbResponse
@@ -16945,9 +16644,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm2
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// Step-4 : On RM restart, AM(does not know RM is restarted) sends
@@ -17029,9 +16728,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm2
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// Step-5 : On Resync,AM sends all outstanding
@@ -17075,9 +16774,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm2
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|assertAsksAndReleases
@@ -17105,9 +16804,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm2
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// Step-6 : RM allocates containers i.e event3,event4 and cRequest5
@@ -17118,9 +16817,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm2
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -17642,20 +17341,6 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-name|DrainDispatcher
-name|dispatcher
-init|=
-operator|(
-name|DrainDispatcher
-operator|)
-name|rm1
-operator|.
-name|getRMContext
-argument_list|()
-operator|.
-name|getDispatcher
-argument_list|()
-decl_stmt|;
 name|RMApp
 name|app
 init|=
@@ -17666,9 +17351,9 @@ argument_list|(
 literal|1024
 argument_list|)
 decl_stmt|;
-name|dispatcher
+name|rm1
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|MockNM
@@ -17699,9 +17384,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm1
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|ApplicationAttemptId
@@ -17722,9 +17407,9 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm1
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|JobId
@@ -17859,9 +17544,9 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-name|dispatcher
+name|rm1
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -18007,20 +17692,6 @@ operator|.
 name|getAMRMTokenSecretManager
 argument_list|()
 decl_stmt|;
-name|DrainDispatcher
-name|dispatcher
-init|=
-operator|(
-name|DrainDispatcher
-operator|)
-name|rm
-operator|.
-name|getRMContext
-argument_list|()
-operator|.
-name|getDispatcher
-argument_list|()
-decl_stmt|;
 comment|// Submit the application
 name|RMApp
 name|app
@@ -18032,9 +17703,9 @@ argument_list|(
 literal|1024
 argument_list|)
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|MockNM
@@ -18056,9 +17727,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 specifier|final
@@ -18089,9 +17760,9 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|JobId
@@ -19266,20 +18937,6 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-name|DrainDispatcher
-name|dispatcher
-init|=
-operator|(
-name|DrainDispatcher
-operator|)
-name|rm
-operator|.
-name|getRMContext
-argument_list|()
-operator|.
-name|getDispatcher
-argument_list|()
-decl_stmt|;
 comment|// Submit the application
 name|RMApp
 name|app
@@ -19291,9 +18948,9 @@ argument_list|(
 literal|1024
 argument_list|)
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|MockNM
@@ -19315,9 +18972,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|ApplicationAttemptId
@@ -19338,9 +18995,9 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|JobId
@@ -19500,20 +19157,6 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-name|DrainDispatcher
-name|dispatcher
-init|=
-operator|(
-name|DrainDispatcher
-operator|)
-name|rm
-operator|.
-name|getRMContext
-argument_list|()
-operator|.
-name|getDispatcher
-argument_list|()
-decl_stmt|;
 comment|// Submit the application
 name|RMApp
 name|app
@@ -19525,9 +19168,9 @@ argument_list|(
 literal|1024
 argument_list|)
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|MockNM
@@ -19549,9 +19192,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|ApplicationAttemptId
@@ -19572,9 +19215,9 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|JobId
@@ -19703,9 +19346,9 @@ argument_list|,
 literal|1024
 argument_list|)
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// Request 2 maps and 1 reducer(sone on nodes which are not registered).
@@ -19798,9 +19441,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// Advance clock so that maps can be considered as hanging.
@@ -19852,9 +19495,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// Update resources in scheduler through node heartbeat from h1.
@@ -19865,9 +19508,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|rm
@@ -19892,9 +19535,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// One map is assigned.
@@ -20176,9 +19819,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// After allocate response from scheduler, all scheduled reduces are ramped
@@ -20621,20 +20264,6 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-name|DrainDispatcher
-name|dispatcher
-init|=
-operator|(
-name|DrainDispatcher
-operator|)
-name|rm
-operator|.
-name|getRMContext
-argument_list|()
-operator|.
-name|getDispatcher
-argument_list|()
-decl_stmt|;
 comment|// Submit the application
 name|RMApp
 name|app
@@ -20646,9 +20275,9 @@ argument_list|(
 literal|1024
 argument_list|)
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|MockNM
@@ -20670,9 +20299,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|ApplicationAttemptId
@@ -20693,9 +20322,9 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|JobId
@@ -20824,9 +20453,9 @@ argument_list|,
 literal|1024
 argument_list|)
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// Request 2 maps and 1 reducer(sone on nodes which are not registered).
@@ -20919,9 +20548,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// Advance clock so that maps can be considered as hanging.
@@ -20973,9 +20602,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// Update resources in scheduler through node heartbeat from h1.
@@ -20986,9 +20615,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|rm
@@ -21013,9 +20642,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// One map is assigned.
@@ -21315,9 +20944,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// After allocate response from scheduler, all scheduled reduces are ramped
@@ -21511,20 +21140,6 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-name|DrainDispatcher
-name|dispatcher
-init|=
-operator|(
-name|DrainDispatcher
-operator|)
-name|rm
-operator|.
-name|getRMContext
-argument_list|()
-operator|.
-name|getDispatcher
-argument_list|()
-decl_stmt|;
 comment|// Submit the application
 name|RMApp
 name|app
@@ -21536,9 +21151,9 @@ argument_list|(
 literal|1024
 argument_list|)
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|MockNM
@@ -21560,9 +21175,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|ApplicationAttemptId
@@ -21583,9 +21198,9 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|JobId
@@ -21759,9 +21374,9 @@ argument_list|,
 literal|4096
 argument_list|)
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// Register nodes to RM.
@@ -21777,9 +21392,9 @@ argument_list|,
 literal|1024
 argument_list|)
 decl_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// Request 2 maps and 1 reducer(sone on nodes which are not registered).
@@ -21872,9 +21487,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// Request for another reducer on h3 which has not registered.
@@ -21913,9 +21528,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// Update resources in scheduler through node heartbeat from h1.
@@ -21926,9 +21541,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|rm
@@ -21953,9 +21568,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// Two maps are assigned.
@@ -22040,9 +21655,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 name|rm
@@ -22067,9 +21682,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// h2 heartbeats.
@@ -22080,9 +21695,9 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// Send request for one more mapper.
@@ -22134,9 +21749,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// One reducer is assigned and one map is scheduled
@@ -22198,9 +21813,9 @@ operator|.
 name|schedule
 argument_list|()
 expr_stmt|;
-name|dispatcher
+name|rm
 operator|.
-name|await
+name|drainEvents
 argument_list|()
 expr_stmt|;
 comment|// After allocate response, the one assigned reducer is preempted and killed
