@@ -433,9 +433,27 @@ argument_list|(
 name|config
 argument_list|)
 decl_stmt|;
-name|Path
-name|sortedList
+specifier|final
+name|boolean
+name|splitLargeFile
 init|=
+name|options
+operator|.
+name|splitLargeFile
+argument_list|()
+decl_stmt|;
+comment|// When splitLargeFile is enabled, we don't randomize the copylist
+comment|// earlier, so we don't do the sorting here. For a file that has
+comment|// multiple entries due to split, we check here that their
+comment|//<chunkOffset, chunkLength> is continuous.
+comment|//
+name|Path
+name|checkPath
+init|=
+name|splitLargeFile
+condition|?
+name|pathToListFile
+else|:
 name|DistCpUtils
 operator|.
 name|sortListing
@@ -465,7 +483,7 @@ name|Reader
 operator|.
 name|file
 argument_list|(
-name|sortedList
+name|checkPath
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -481,6 +499,18 @@ literal|"*"
 argument_list|)
 decl_stmt|;
 comment|//source relative path can never hold *
+name|long
+name|lastChunkOffset
+init|=
+operator|-
+literal|1
+decl_stmt|;
+name|long
+name|lastChunkLength
+init|=
+operator|-
+literal|1
+decl_stmt|;
 name|CopyListingFileStatus
 name|lastFileStatus
 init|=
@@ -556,6 +586,12 @@ argument_list|(
 name|currentFileStatus
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|splitLargeFile
+condition|)
+block|{
 throw|throw
 operator|new
 name|DuplicateFileException
@@ -577,6 +613,66 @@ operator|+
 literal|" would cause duplicates. Aborting"
 argument_list|)
 throw|;
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|lastChunkOffset
+operator|+
+name|lastChunkLength
+operator|!=
+name|currentFileStatus
+operator|.
+name|getChunkOffset
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|InvalidInputException
+argument_list|(
+literal|"File "
+operator|+
+name|lastFileStatus
+operator|.
+name|getPath
+argument_list|()
+operator|+
+literal|" "
+operator|+
+name|lastChunkOffset
+operator|+
+literal|","
+operator|+
+name|lastChunkLength
+operator|+
+literal|" and "
+operator|+
+name|currentFileStatus
+operator|.
+name|getPath
+argument_list|()
+operator|+
+literal|" "
+operator|+
+name|currentFileStatus
+operator|.
+name|getChunkOffset
+argument_list|()
+operator|+
+literal|","
+operator|+
+name|currentFileStatus
+operator|.
+name|getChunkLength
+argument_list|()
+operator|+
+literal|" are not continuous. Aborting"
+argument_list|)
+throw|;
+block|}
+block|}
 block|}
 name|reader
 operator|.
@@ -716,6 +812,26 @@ argument_list|(
 name|currentKey
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|splitLargeFile
+condition|)
+block|{
+name|lastChunkOffset
+operator|=
+name|lastFileStatus
+operator|.
+name|getChunkOffset
+argument_list|()
+expr_stmt|;
+name|lastChunkLength
+operator|=
+name|lastFileStatus
+operator|.
+name|getChunkLength
+argument_list|()
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|options
