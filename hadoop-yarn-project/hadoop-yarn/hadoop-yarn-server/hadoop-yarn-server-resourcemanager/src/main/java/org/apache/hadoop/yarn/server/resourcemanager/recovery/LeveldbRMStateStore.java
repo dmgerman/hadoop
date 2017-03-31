@@ -1545,6 +1545,17 @@ literal|null
 return|;
 block|}
 annotation|@
+name|VisibleForTesting
+DECL|method|getDatabase ()
+name|DB
+name|getDatabase
+parameter_list|()
+block|{
+return|return
+name|db
+return|;
+block|}
+annotation|@
 name|Override
 DECL|method|loadVersion ()
 specifier|protected
@@ -1925,6 +1936,19 @@ name|getKey
 argument_list|()
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+operator|!
+name|key
+operator|.
+name|startsWith
+argument_list|(
+name|RM_RESERVATION_KEY_PREFIX
+argument_list|)
+condition|)
+block|{
+break|break;
+block|}
 name|String
 name|planReservationString
 init|=
