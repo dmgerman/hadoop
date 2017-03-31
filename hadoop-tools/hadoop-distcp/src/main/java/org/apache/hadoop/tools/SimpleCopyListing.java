@@ -383,16 +383,6 @@ import|;
 end_import
 
 begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|LinkedList
-import|;
-end_import
-
-begin_import
 import|import static
 name|org
 operator|.
@@ -1366,10 +1356,7 @@ operator|.
 name|shouldPreserveRawXattrs
 argument_list|()
 decl_stmt|;
-name|LinkedList
-argument_list|<
 name|CopyListingFileStatus
-argument_list|>
 name|fileCopyListingStatus
 init|=
 name|DistCpUtils
@@ -1385,11 +1372,6 @@ argument_list|,
 name|preserveXAttrs
 argument_list|,
 name|preserveRawXAttrs
-argument_list|,
-name|options
-operator|.
-name|getBlocksPerChunk
-argument_list|()
 argument_list|)
 decl_stmt|;
 name|writeToFileListingRoot
@@ -1875,10 +1857,7 @@ name|isDirectory
 argument_list|()
 condition|)
 block|{
-name|LinkedList
-argument_list|<
 name|CopyListingFileStatus
-argument_list|>
 name|rootCopyListingStatus
 init|=
 name|DistCpUtils
@@ -1894,11 +1873,6 @@ argument_list|,
 name|preserveXAttrs
 argument_list|,
 name|preserveRawXAttrs
-argument_list|,
-name|options
-operator|.
-name|getBlocksPerChunk
-argument_list|()
 argument_list|)
 decl_stmt|;
 name|writeToFileListingRoot
@@ -1962,10 +1936,7 @@ literal|" for copy."
 argument_list|)
 expr_stmt|;
 block|}
-name|LinkedList
-argument_list|<
 name|CopyListingFileStatus
-argument_list|>
 name|sourceCopyListingStatus
 init|=
 name|DistCpUtils
@@ -1996,21 +1967,8 @@ name|sourceStatus
 operator|.
 name|isDirectory
 argument_list|()
-argument_list|,
-name|options
-operator|.
-name|getBlocksPerChunk
-argument_list|()
 argument_list|)
 decl_stmt|;
-for|for
-control|(
-name|CopyListingFileStatus
-name|fs
-range|:
-name|sourceCopyListingStatus
-control|)
-block|{
 if|if
 condition|(
 name|randomizeFileListing
@@ -2023,7 +1981,7 @@ argument_list|,
 operator|new
 name|FileStatusInfo
 argument_list|(
-name|fs
+name|sourceCopyListingStatus
 argument_list|,
 name|sourcePathRoot
 argument_list|)
@@ -2038,12 +1996,11 @@ name|writeToFileListing
 argument_list|(
 name|fileListWriter
 argument_list|,
-name|fs
+name|sourceCopyListingStatus
 argument_list|,
 name|sourcePathRoot
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 if|if
 condition|(
@@ -3377,10 +3334,7 @@ name|getSuccess
 argument_list|()
 condition|)
 block|{
-name|LinkedList
-argument_list|<
 name|CopyListingFileStatus
-argument_list|>
 name|childCopyListingStatus
 init|=
 name|DistCpUtils
@@ -3411,21 +3365,8 @@ name|child
 operator|.
 name|isDirectory
 argument_list|()
-argument_list|,
-name|options
-operator|.
-name|getBlocksPerChunk
-argument_list|()
 argument_list|)
 decl_stmt|;
-for|for
-control|(
-name|CopyListingFileStatus
-name|fs
-range|:
-name|childCopyListingStatus
-control|)
-block|{
 if|if
 condition|(
 name|randomizeFileListing
@@ -3438,7 +3379,7 @@ argument_list|,
 operator|new
 name|FileStatusInfo
 argument_list|(
-name|fs
+name|childCopyListingStatus
 argument_list|,
 name|sourcePathRoot
 argument_list|)
@@ -3453,12 +3394,11 @@ name|writeToFileListing
 argument_list|(
 name|fileListWriter
 argument_list|,
-name|fs
+name|childCopyListingStatus
 argument_list|,
 name|sourcePathRoot
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 if|if
@@ -3559,7 +3499,7 @@ name|shutdown
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|writeToFileListingRoot (SequenceFile.Writer fileListWriter, LinkedList<CopyListingFileStatus> fileStatus, Path sourcePathRoot, DistCpOptions options)
+DECL|method|writeToFileListingRoot (SequenceFile.Writer fileListWriter, CopyListingFileStatus fileStatus, Path sourcePathRoot, DistCpOptions options)
 specifier|private
 name|void
 name|writeToFileListingRoot
@@ -3569,10 +3509,7 @@ operator|.
 name|Writer
 name|fileListWriter
 parameter_list|,
-name|LinkedList
-argument_list|<
 name|CopyListingFileStatus
-argument_list|>
 name|fileStatus
 parameter_list|,
 name|Path
@@ -3597,17 +3534,9 @@ operator|.
 name|shouldOverwrite
 argument_list|()
 decl_stmt|;
-for|for
-control|(
-name|CopyListingFileStatus
-name|fs
-range|:
-name|fileStatus
-control|)
-block|{
 if|if
 condition|(
-name|fs
+name|fileStatus
 operator|.
 name|getPath
 argument_list|()
@@ -3617,7 +3546,7 @@ argument_list|(
 name|sourcePathRoot
 argument_list|)
 operator|&&
-name|fs
+name|fileStatus
 operator|.
 name|isDirectory
 argument_list|()
@@ -3640,7 +3569,7 @@ name|debug
 argument_list|(
 literal|"Skip "
 operator|+
-name|fs
+name|fileStatus
 operator|.
 name|getPath
 argument_list|()
@@ -3653,12 +3582,11 @@ name|writeToFileListing
 argument_list|(
 name|fileListWriter
 argument_list|,
-name|fs
+name|fileStatus
 argument_list|,
 name|sourcePathRoot
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 DECL|method|writeToFileListing (SequenceFile.Writer fileListWriter, CopyListingFileStatus fileStatus, Path sourcePathRoot)
 specifier|private
@@ -3769,7 +3697,7 @@ name|totalBytesToCopy
 operator|+=
 name|fileStatus
 operator|.
-name|getSizeToCopy
+name|getLen
 argument_list|()
 expr_stmt|;
 block|}

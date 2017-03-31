@@ -446,36 +446,6 @@ literal|"copied to<= n bytes"
 argument_list|)
 argument_list|)
 block|,
-DECL|enumConstant|BLOCKS_PER_CHUNK
-name|BLOCKS_PER_CHUNK
-argument_list|(
-literal|""
-argument_list|,
-operator|new
-name|Option
-argument_list|(
-literal|"blocksperchunk"
-argument_list|,
-literal|true
-argument_list|,
-literal|"If set to a positive value, files"
-operator|+
-literal|"with more blocks than this value will be split into chunks of "
-operator|+
-literal|"<blocksperchunk> blocks to be transferred in parallel, and "
-operator|+
-literal|"reassembled on the destination. By default,<blocksperchunk> is "
-operator|+
-literal|"0 and the files will be transmitted in their entirety without "
-operator|+
-literal|"splitting. This switch is only applicable when the source file "
-operator|+
-literal|"system implements getBlockLocations method and the target file "
-operator|+
-literal|"system implements concat method"
-argument_list|)
-argument_list|)
-block|,
 comment|/**    * Specify bandwidth per map in MB, accepts bandwidth as a fraction    */
 DECL|enumConstant|BANDWIDTH
 name|BANDWIDTH

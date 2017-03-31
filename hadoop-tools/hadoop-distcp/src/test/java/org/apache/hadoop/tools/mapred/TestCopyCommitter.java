@@ -553,20 +553,6 @@ argument_list|,
 literal|"/meta"
 argument_list|)
 expr_stmt|;
-comment|// Unset listing file path since the config is shared by
-comment|// multiple tests, and some test doesn't set it, such as
-comment|// testNoCommitAction, but the distcp code will check it.
-name|config
-operator|.
-name|set
-argument_list|(
-name|DistCpConstants
-operator|.
-name|CONF_LABEL_LISTING_FILE_PATH
-argument_list|,
-literal|""
-argument_list|)
-expr_stmt|;
 name|Path
 name|meta
 init|=

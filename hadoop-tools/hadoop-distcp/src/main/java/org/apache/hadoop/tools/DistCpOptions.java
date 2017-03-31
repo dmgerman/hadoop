@@ -330,15 +330,6 @@ name|targetPathExists
 init|=
 literal|true
 decl_stmt|;
-comment|// Size of chunk in number of blocks when splitting large file into chunks
-comment|// to copy in parallel. Default is 0 and file are not splitted.
-DECL|field|blocksPerChunk
-specifier|private
-name|int
-name|blocksPerChunk
-init|=
-literal|0
-decl_stmt|;
 DECL|enum|FileAttribute
 specifier|public
 specifier|static
@@ -716,14 +707,6 @@ name|that
 operator|.
 name|getFiltersFile
 argument_list|()
-expr_stmt|;
-name|this
-operator|.
-name|blocksPerChunk
-operator|=
-name|that
-operator|.
-name|blocksPerChunk
 expr_stmt|;
 block|}
 block|}
@@ -1518,47 +1501,6 @@ operator|=
 name|filtersFilename
 expr_stmt|;
 block|}
-DECL|method|setBlocksPerChunk (int csize)
-specifier|public
-specifier|final
-name|void
-name|setBlocksPerChunk
-parameter_list|(
-name|int
-name|csize
-parameter_list|)
-block|{
-name|this
-operator|.
-name|blocksPerChunk
-operator|=
-name|csize
-expr_stmt|;
-block|}
-DECL|method|getBlocksPerChunk ()
-specifier|public
-specifier|final
-name|int
-name|getBlocksPerChunk
-parameter_list|()
-block|{
-return|return
-name|blocksPerChunk
-return|;
-block|}
-DECL|method|splitLargeFile ()
-specifier|public
-specifier|final
-name|boolean
-name|splitLargeFile
-parameter_list|()
-block|{
-return|return
-name|blocksPerChunk
-operator|>
-literal|0
-return|;
-block|}
 DECL|method|validate ()
 name|void
 name|validate
@@ -2006,24 +1948,6 @@ name|filtersFile
 argument_list|)
 expr_stmt|;
 block|}
-name|DistCpOptionSwitch
-operator|.
-name|addToConf
-argument_list|(
-name|conf
-argument_list|,
-name|DistCpOptionSwitch
-operator|.
-name|BLOCKS_PER_CHUNK
-argument_list|,
-name|String
-operator|.
-name|valueOf
-argument_list|(
-name|blocksPerChunk
-argument_list|)
-argument_list|)
-expr_stmt|;
 block|}
 comment|/**    * Utility to easily string-ify Options, for logging.    *    * @return String representation of the Options.    */
 annotation|@
@@ -2140,10 +2064,6 @@ operator|+
 name|filtersFile
 operator|+
 literal|'\''
-operator|+
-literal|", blocksPerChunk="
-operator|+
-name|blocksPerChunk
 operator|+
 literal|'}'
 return|;

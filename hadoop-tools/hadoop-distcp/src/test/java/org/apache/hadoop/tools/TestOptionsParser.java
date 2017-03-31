@@ -1712,7 +1712,7 @@ literal|"preserveRawXattrs=false, atomicWorkPath=null, logPath=null, "
 operator|+
 literal|"sourceFileListing=abc, sourcePaths=null, targetPath=xyz, "
 operator|+
-literal|"targetPathExists=true, filtersFile='null', blocksPerChunk=0}"
+literal|"targetPathExists=true, filtersFile='null'}"
 decl_stmt|;
 name|String
 name|optionString
