@@ -8066,6 +8066,26 @@ return|return
 name|slowDiskTracker
 return|;
 block|}
+comment|/**    * Retrieve information about slow disks as a JSON.    * Returns null if we are not tracking slow disks.    * @return    */
+DECL|method|getSlowDisksReport ()
+specifier|public
+name|String
+name|getSlowDisksReport
+parameter_list|()
+block|{
+return|return
+name|slowDiskTracker
+operator|!=
+literal|null
+condition|?
+name|slowDiskTracker
+operator|.
+name|getSlowDiskReportAsJsonString
+argument_list|()
+else|:
+literal|null
+return|;
+block|}
 block|}
 end_class
 

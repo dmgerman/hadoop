@@ -113,6 +113,12 @@ name|String
 name|getSlowPeersReport
 parameter_list|()
 function_decl|;
+comment|/**    *  Gets the topN slow disks in the cluster, if the feature is enabled.    *    *  @return JSON string of list of diskIDs and latencies    */
+DECL|method|getSlowDisksReport ()
+name|String
+name|getSlowDisksReport
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
