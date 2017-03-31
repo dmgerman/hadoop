@@ -295,6 +295,16 @@ specifier|private
 name|String
 name|upgradeDomain
 decl_stmt|;
+DECL|field|EMPTY_ARRAY
+specifier|public
+specifier|static
+specifier|final
+name|DatanodeInfo
+index|[]
+name|EMPTY_ARRAY
+init|=
+block|{}
+decl_stmt|;
 comment|// Datanode administrative states
 DECL|enum|AdminStates
 specifier|public
