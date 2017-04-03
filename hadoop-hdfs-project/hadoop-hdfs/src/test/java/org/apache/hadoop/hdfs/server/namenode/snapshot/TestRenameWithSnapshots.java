@@ -131,6 +131,22 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|GenericTestUtils
+operator|.
+name|getTestDir
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -17939,6 +17955,9 @@ argument_list|(
 literal|"testDu-"
 argument_list|,
 literal|".tmp"
+argument_list|,
+name|getTestDir
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|tempFile
@@ -18474,9 +18493,10 @@ name|createTempFile
 argument_list|(
 literal|"testDuMultipleDirs-"
 argument_list|,
-literal|""
-operator|+
 literal|".tmp"
+argument_list|,
+name|getTestDir
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|tempFile
