@@ -18,13 +18,9 @@ end_package
 
 begin_import
 import|import
-name|com
+name|java
 operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
+name|util
 operator|.
 name|Optional
 import|;
@@ -41,20 +37,6 @@ operator|.
 name|base
 operator|.
 name|Preconditions
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Supplier
 import|;
 end_import
 
@@ -1033,19 +1015,8 @@ name|GenericTestUtils
 operator|.
 name|waitFor
 argument_list|(
-operator|new
-name|Supplier
-argument_list|<
-name|Boolean
-argument_list|>
-argument_list|()
-block|{
-annotation|@
-name|Override
-specifier|public
-name|Boolean
-name|get
 parameter_list|()
+lambda|->
 block|{
 if|if
 condition|(
@@ -1091,7 +1062,6 @@ return|return
 literal|false
 return|;
 block|}
-block|}
 argument_list|,
 literal|1000
 argument_list|,
@@ -1119,19 +1089,8 @@ name|GenericTestUtils
 operator|.
 name|waitFor
 argument_list|(
-operator|new
-name|Supplier
-argument_list|<
-name|Boolean
-argument_list|>
-argument_list|()
-block|{
-annotation|@
-name|Override
-specifier|public
-name|Boolean
-name|get
 parameter_list|()
+lambda|->
 block|{
 if|if
 condition|(
@@ -1158,7 +1117,6 @@ expr_stmt|;
 return|return
 literal|false
 return|;
-block|}
 block|}
 argument_list|,
 literal|100
@@ -1214,6 +1172,9 @@ argument_list|()
 operator|.
 name|getCapacity
 argument_list|()
+operator|.
+name|get
+argument_list|()
 operator|>
 literal|0
 argument_list|,
@@ -1232,14 +1193,6 @@ specifier|static
 class|class
 name|Builder
 extends|extends
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|MiniDFSCluster
 operator|.
 name|Builder
@@ -1250,19 +1203,21 @@ specifier|final
 name|OzoneConfiguration
 name|conf
 decl_stmt|;
-DECL|field|defaultHBSeconds
+DECL|field|DEFAULT_HB_SECONDS
 specifier|private
+specifier|static
 specifier|final
 name|int
-name|defaultHBSeconds
+name|DEFAULT_HB_SECONDS
 init|=
 literal|1
 decl_stmt|;
-DECL|field|defaultProcessorMs
+DECL|field|DEFAULT_PROCESSOR_MS
 specifier|private
+specifier|static
 specifier|final
 name|int
-name|defaultProcessorMs
+name|DEFAULT_PROCESSOR_MS
 init|=
 literal|100
 decl_stmt|;
@@ -1286,9 +1241,13 @@ name|String
 argument_list|>
 name|ozoneHandlerType
 init|=
+name|java
+operator|.
+name|util
+operator|.
 name|Optional
 operator|.
-name|absent
+name|empty
 argument_list|()
 decl_stmt|;
 DECL|field|enableTrace
@@ -1316,7 +1275,7 @@ name|hbSeconds
 init|=
 name|Optional
 operator|.
-name|absent
+name|empty
 argument_list|()
 decl_stmt|;
 DECL|field|hbProcessorInterval
@@ -1329,7 +1288,7 @@ name|hbProcessorInterval
 init|=
 name|Optional
 operator|.
-name|absent
+name|empty
 argument_list|()
 decl_stmt|;
 DECL|field|scmMetadataDir
@@ -1342,7 +1301,7 @@ name|scmMetadataDir
 init|=
 name|Optional
 operator|.
-name|absent
+name|empty
 argument_list|()
 decl_stmt|;
 DECL|field|ozoneEnabled
@@ -1358,13 +1317,6 @@ name|Boolean
 name|waitForChillModeFinish
 init|=
 literal|true
-decl_stmt|;
-DECL|field|containerWorkerThreadInterval
-specifier|private
-name|int
-name|containerWorkerThreadInterval
-init|=
-literal|1
 decl_stmt|;
 DECL|field|randomContainerPort
 specifier|private
@@ -1393,8 +1345,6 @@ name|conf
 operator|=
 name|conf
 expr_stmt|;
-comment|// TODO : Remove this later, with SCM, NN and SCM can run together.
-comment|//this.nnTopology(new MiniDFSNNTopology()); // No NameNode required
 name|URL
 name|p
 init|=
@@ -1643,23 +1593,6 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setSCMContainerWorkerThreadInterval (int intervalInSeconds)
-specifier|public
-name|Builder
-name|setSCMContainerWorkerThreadInterval
-parameter_list|(
-name|int
-name|intervalInSeconds
-parameter_list|)
-block|{
-name|containerWorkerThreadInterval
-operator|=
-name|intervalInSeconds
-expr_stmt|;
-return|return
-name|this
-return|;
-block|}
 DECL|method|getPath ()
 specifier|public
 name|String
@@ -1873,7 +1806,7 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
-comment|// If user has not specified a path, create a UUID for this miniCluser
+comment|// If user has not specified a path, create a UUID for this miniCluster
 comment|// and create SCM under that directory.
 name|Path
 name|scmPath
@@ -1998,7 +1931,6 @@ name|get
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|GenericTestUtils
 operator|.
 name|setLogLevel
@@ -2017,6 +1949,27 @@ argument_list|,
 name|Level
 operator|.
 name|ALL
+argument_list|)
+expr_stmt|;
+block|}
+name|GenericTestUtils
+operator|.
+name|setLogLevel
+argument_list|(
+name|org
+operator|.
+name|apache
+operator|.
+name|log4j
+operator|.
+name|Logger
+operator|.
+name|getRootLogger
+argument_list|()
+argument_list|,
+name|Level
+operator|.
+name|INFO
 argument_list|)
 expr_stmt|;
 block|}
@@ -2059,7 +2012,7 @@ name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_HEARTBEAT_INTERVAL_SECONDS
 argument_list|,
-name|defaultHBSeconds
+name|DEFAULT_HB_SECONDS
 argument_list|)
 expr_stmt|;
 block|}
@@ -2096,7 +2049,7 @@ name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_HEARTBEAT_PROCESS_INTERVAL_MS
 argument_list|,
-name|defaultProcessorMs
+name|DEFAULT_PROCESSOR_MS
 argument_list|)
 expr_stmt|;
 block|}

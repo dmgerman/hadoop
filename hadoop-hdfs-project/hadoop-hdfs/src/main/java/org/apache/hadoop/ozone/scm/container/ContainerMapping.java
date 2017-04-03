@@ -124,6 +124,50 @@ name|ozone
 operator|.
 name|scm
 operator|.
+name|container
+operator|.
+name|placement
+operator|.
+name|algorithms
+operator|.
+name|ContainerPlacementPolicy
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|placement
+operator|.
+name|algorithms
+operator|.
+name|SCMContainerPlacementRandom
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|scm
+operator|.
 name|node
 operator|.
 name|NodeManager
@@ -191,6 +235,18 @@ operator|.
 name|utils
 operator|.
 name|LevelDBStore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|iq80
+operator|.
+name|leveldb
+operator|.
+name|Options
 import|;
 end_import
 
@@ -305,18 +361,6 @@ operator|.
 name|locks
 operator|.
 name|ReentrantLock
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|iq80
-operator|.
-name|leveldb
-operator|.
-name|Options
 import|;
 end_import
 
@@ -560,6 +604,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Create pluggable container placement policy implementation instance.    *    * @param nodeManager - SCM node manager.    * @param conf - configuration.    * @return SCM container placement policy implementation instance.    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|createContainerPlacementPolicy ( final NodeManager nodeManager, final Configuration conf)
 specifier|private
 specifier|static
@@ -677,12 +726,30 @@ parameter_list|(
 name|Exception
 name|e
 parameter_list|)
-block|{     }
-return|return
-literal|null
-return|;
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Unhandled exception occured, Placement policy will not be "
+operator|+
+literal|"functional."
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Unable to load "
+operator|+
+literal|"ContainerPlacementPolicy"
+argument_list|,
+name|e
+argument_list|)
+throw|;
 block|}
-comment|/**    * Translates a list of nodes, ordered such that the first is the leader, into    * a corresponding {@link Pipeline} object.    * @param nodes - list of datanodes on which we will allocate the container.    *              The first of the list will be the leader node.    * @param containerName container name    * @return pipeline corresponding to nodes    */
+block|}
+comment|/**    * Translates a list of nodes, ordered such that the first is the leader, into    * a corresponding {@link Pipeline} object.    * @param nodes - list of datanodes on which we will allocate the container.    * The first of the list will be the leader node.    * @param containerName container name    * @return pipeline corresponding to nodes    */
 DECL|method|newPipelineFromNodes (final List<DatanodeID> nodes, final String containerName)
 specifier|private
 specifier|static
@@ -786,8 +853,6 @@ name|IOException
 block|{
 name|Pipeline
 name|pipeline
-init|=
-literal|null
 decl_stmt|;
 name|lock
 operator|.

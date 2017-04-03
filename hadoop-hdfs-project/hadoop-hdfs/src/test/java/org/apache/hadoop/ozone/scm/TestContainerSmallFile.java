@@ -108,6 +108,10 @@ name|scm
 operator|.
 name|container
 operator|.
+name|placement
+operator|.
+name|algorithms
+operator|.
 name|ContainerPlacementPolicy
 import|;
 end_import
@@ -125,6 +129,10 @@ operator|.
 name|scm
 operator|.
 name|container
+operator|.
+name|placement
+operator|.
+name|algorithms
 operator|.
 name|SCMContainerPlacementCapacity
 import|;

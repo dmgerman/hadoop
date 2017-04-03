@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.scm.node
+DECL|package|org.apache.hadoop.ozone.scm.container.placement.metrics
 package|package
 name|org
 operator|.
@@ -16,7 +16,11 @@ name|ozone
 operator|.
 name|scm
 operator|.
-name|node
+name|container
+operator|.
+name|placement
+operator|.
+name|metrics
 package|;
 end_package
 
@@ -45,31 +49,31 @@ name|NodeStat
 block|{
 comment|/**    * Get capacity of the node.    * @return capacity of the node.    */
 DECL|method|getCapacity ()
-name|long
+name|LongMetric
 name|getCapacity
 parameter_list|()
 function_decl|;
 comment|/**    * Get the used space of the node.    * @return the used space of the node.    */
 DECL|method|getScmUsed ()
-name|long
+name|LongMetric
 name|getScmUsed
 parameter_list|()
 function_decl|;
 comment|/**    * Get the remaining space of the node.    * @return the remaining space of the node.    */
 DECL|method|getRemaining ()
-name|long
+name|LongMetric
 name|getRemaining
 parameter_list|()
 function_decl|;
-comment|/**    * Set the total/used/remaining space.    * @param total - total space.    * @param used - used space.    * @param remain - remaining space.    */
+comment|/**    * Set the total/used/remaining space.    * @param capacity - total space.    * @param used - used space.    * @param remain - remaining space.    */
 annotation|@
 name|VisibleForTesting
-DECL|method|set (long total, long used, long remain)
+DECL|method|set (long capacity, long used, long remain)
 name|void
 name|set
 parameter_list|(
 name|long
-name|total
+name|capacity
 parameter_list|,
 name|long
 name|used

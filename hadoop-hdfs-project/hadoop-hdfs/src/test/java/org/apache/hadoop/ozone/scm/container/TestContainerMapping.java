@@ -380,7 +380,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Unable to create test diectory path"
+literal|"Unable to create test directory path"
 argument_list|)
 throw|;
 block|}
@@ -388,7 +388,11 @@ name|nodeManager
 operator|=
 operator|new
 name|MockNodeManager
-argument_list|()
+argument_list|(
+literal|true
+argument_list|,
+literal|10
+argument_list|)
 expr_stmt|;
 name|mapping
 operator|=
@@ -414,11 +418,19 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|mapping
+operator|!=
+literal|null
+condition|)
+block|{
 name|mapping
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
 name|FileUtil
 operator|.
 name|fullyDelete

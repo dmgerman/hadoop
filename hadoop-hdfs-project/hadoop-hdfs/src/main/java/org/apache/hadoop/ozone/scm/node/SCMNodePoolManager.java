@@ -350,7 +350,7 @@ name|SCMException
 operator|.
 name|ResultCodes
 operator|.
-name|NODE_NOT_FOUND_IN_NODEPOOL
+name|FAILED_TO_FIND_NODE_IN_POOL
 import|;
 end_import
 
@@ -1039,7 +1039,7 @@ argument_list|,
 name|pool
 argument_list|)
 argument_list|,
-name|NODE_NOT_FOUND_IN_NODEPOOL
+name|FAILED_TO_FIND_NODE_IN_POOL
 argument_list|)
 throw|;
 block|}
@@ -1106,7 +1106,7 @@ argument_list|,
 name|pool
 argument_list|)
 argument_list|,
-name|NODE_NOT_FOUND_IN_NODEPOOL
+name|FAILED_TO_FIND_NODE_IN_POOL
 argument_list|)
 throw|;
 block|}

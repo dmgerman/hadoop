@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one or mor
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.scm.container
+DECL|package|org.apache.hadoop.ozone.scm.container.placement.algorithms
 package|package
 name|org
 operator|.
@@ -17,6 +17,10 @@ operator|.
 name|scm
 operator|.
 name|container
+operator|.
+name|placement
+operator|.
+name|algorithms
 package|;
 end_package
 
