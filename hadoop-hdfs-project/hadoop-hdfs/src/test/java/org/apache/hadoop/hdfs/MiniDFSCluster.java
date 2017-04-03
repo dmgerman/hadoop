@@ -7957,6 +7957,8 @@ block|}
 comment|// Set up datanode address
 name|setupDatanodeAddress
 argument_list|(
+name|i
+argument_list|,
 name|dnConf
 argument_list|,
 name|setupHostsFile
@@ -13116,9 +13118,10 @@ name|base
 argument_list|)
 return|;
 block|}
-comment|/**    * Get a storage directory for a datanode.    *<ol>    *<li><base directory>/data/data<2*dnIndex + 1></li>    *<li><base directory>/data/data<2*dnIndex + 2></li>    *</ol>    *    * @param dnIndex datanode index (starts from 0)    * @param dirIndex directory index.    * @return Storage directory    */
+comment|/**    * Get a storage directory for a datanode.    * For examples,    *<ol>    *<li><base directory>/data/dn0_data0</li>    *<li><base directory>/data/dn0_data1</li>    *<li><base directory>/data/dn1_data0</li>    *<li><base directory>/data/dn1_data1</li>    *</ol>    *    * @param dnIndex datanode index (starts from 0)    * @param dirIndex directory index.    * @return Storage directory    */
 DECL|method|getStorageDir (int dnIndex, int dirIndex)
 specifier|public
+specifier|static
 name|File
 name|getStorageDir
 parameter_list|(
@@ -13148,6 +13151,7 @@ block|}
 comment|/**    * Calculate the DN instance-specific path for appending to the base dir    * to determine the location of the storage of a DN instance in the mini cluster    * @param dnIndex datanode index    * @param dirIndex directory index.    * @return storage directory path    */
 DECL|method|getStorageDirPath (int dnIndex, int dirIndex)
 specifier|private
+specifier|static
 name|String
 name|getStorageDirPath
 parameter_list|(
@@ -13159,17 +13163,13 @@ name|dirIndex
 parameter_list|)
 block|{
 return|return
-literal|"data/data"
+literal|"data/dn"
 operator|+
-operator|(
-name|storagesPerDatanode
-operator|*
 name|dnIndex
 operator|+
-literal|1
+literal|"_data"
 operator|+
 name|dirIndex
-operator|)
 return|;
 block|}
 comment|/**    * Get current directory corresponding to the datanode as defined in    * (@link Storage#STORAGE_DIR_CURRENT}    * @param storageDir the storage directory of a datanode.    * @return the datanode current directory    */
@@ -14253,13 +14253,16 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|setupDatanodeAddress (Configuration conf, boolean setupHostsFile, boolean checkDataNodeAddrConfig)
+DECL|method|setupDatanodeAddress ( int i, Configuration dnConf, boolean setupHostsFile, boolean checkDataNodeAddrConfig)
 specifier|protected
 name|void
 name|setupDatanodeAddress
 parameter_list|(
+name|int
+name|i
+parameter_list|,
 name|Configuration
-name|conf
+name|dnConf
 parameter_list|,
 name|boolean
 name|setupHostsFile
@@ -14278,7 +14281,7 @@ block|{
 name|String
 name|hostsFile
 init|=
-name|conf
+name|dnConf
 operator|.
 name|get
 argument_list|(
@@ -14324,7 +14327,7 @@ condition|(
 name|checkDataNodeAddrConfig
 condition|)
 block|{
-name|conf
+name|dnConf
 operator|.
 name|setIfUnset
 argument_list|(
@@ -14336,7 +14339,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|conf
+name|dnConf
 operator|.
 name|set
 argument_list|(
@@ -14374,7 +14377,7 @@ condition|(
 name|checkDataNodeAddrConfig
 condition|)
 block|{
-name|conf
+name|dnConf
 operator|.
 name|setIfUnset
 argument_list|(
@@ -14386,7 +14389,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|conf
+name|dnConf
 operator|.
 name|set
 argument_list|(
@@ -14402,7 +14405,7 @@ condition|(
 name|checkDataNodeAddrConfig
 condition|)
 block|{
-name|conf
+name|dnConf
 operator|.
 name|setIfUnset
 argument_list|(
@@ -14411,7 +14414,7 @@ argument_list|,
 literal|"127.0.0.1:0"
 argument_list|)
 expr_stmt|;
-name|conf
+name|dnConf
 operator|.
 name|setIfUnset
 argument_list|(
@@ -14423,7 +14426,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|conf
+name|dnConf
 operator|.
 name|set
 argument_list|(
@@ -14432,7 +14435,7 @@ argument_list|,
 literal|"127.0.0.1:0"
 argument_list|)
 expr_stmt|;
-name|conf
+name|dnConf
 operator|.
 name|set
 argument_list|(

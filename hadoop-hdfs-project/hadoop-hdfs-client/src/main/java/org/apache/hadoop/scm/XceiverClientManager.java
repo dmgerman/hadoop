@@ -221,6 +221,12 @@ specifier|final
 name|long
 name|staleThresholdMs
 decl_stmt|;
+DECL|field|useRatis
+specifier|private
+specifier|final
+name|boolean
+name|useRatis
+decl_stmt|;
 comment|/**    * Creates a new XceiverClientManager.    *    * @param conf configuration    */
 DECL|method|XceiverClientManager (Configuration conf)
 specifier|public
@@ -252,6 +258,23 @@ argument_list|,
 name|TimeUnit
 operator|.
 name|MILLISECONDS
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|useRatis
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|ScmConfigKeys
+operator|.
+name|DFS_CONTAINER_RATIS_ENABLED_KEY
+argument_list|,
+name|ScmConfigKeys
+operator|.
+name|DFS_CONTAINER_RATIS_ENABLED_DEFAULT
 argument_list|)
 expr_stmt|;
 name|this
@@ -445,9 +468,21 @@ block|}
 else|else
 block|{
 comment|// connection not found, create new, add reference and return
+specifier|final
 name|XceiverClientSpi
 name|xceiverClient
 init|=
+name|useRatis
+condition|?
+name|XceiverClientRatis
+operator|.
+name|newXceiverClientRatis
+argument_list|(
+name|pipeline
+argument_list|,
+name|conf
+argument_list|)
+else|:
 operator|new
 name|XceiverClient
 argument_list|(
