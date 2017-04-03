@@ -390,6 +390,19 @@ name|isFile
 argument_list|()
 condition|)
 block|{
+comment|// Do the checking if the file is erasure coded since
+comment|// replication factor for an EC file is meaningless.
+if|if
+condition|(
+operator|!
+name|item
+operator|.
+name|stat
+operator|.
+name|isErasureCoded
+argument_list|()
+condition|)
+block|{
 if|if
 condition|(
 operator|!
@@ -434,6 +447,7 @@ if|if
 condition|(
 name|waitOpt
 condition|)
+block|{
 name|waitList
 operator|.
 name|add
@@ -441,6 +455,22 @@ argument_list|(
 name|item
 argument_list|)
 expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Did not set replication for: "
+operator|+
+name|item
+operator|+
+literal|", because it's an erasure coded file."
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * Wait for all files in waitList to have replication number equal to rep.    */
