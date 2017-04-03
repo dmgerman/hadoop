@@ -482,6 +482,8 @@ name|class
 argument_list|)
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|confProvider
 operator|.
 name|mutateConfiguration
@@ -491,6 +493,15 @@ argument_list|,
 name|badUpdate
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+comment|// Expected exception.
+block|}
 name|assertNull
 argument_list|(
 name|confProvider

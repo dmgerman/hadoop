@@ -24,6 +24,20 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -43,21 +57,23 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Interface for allowing changing scheduler configurations.  */
+comment|/**  * Interface for a scheduler that supports changing configuration at runtime.  *  */
 end_comment
 
 begin_interface
-DECL|interface|MutableConfigurationProvider
+DECL|interface|MutableConfScheduler
 specifier|public
 interface|interface
-name|MutableConfigurationProvider
+name|MutableConfScheduler
+extends|extends
+name|ResourceScheduler
 block|{
-comment|/**    * Update the scheduler configuration with the provided key value pairs.    * @param user User issuing the request    * @param confUpdate Key-value pairs for configurations to be updated.    * @throws IOException if scheduler could not be reinitialized    */
-DECL|method|mutateConfiguration (String user, Map<String, String> confUpdate)
+comment|/**    * Update the scheduler's configuration.    * @param user Caller of this update    * @param confUpdate key-value map of the configuration update    * @throws IOException if update is invalid    */
+DECL|method|updateConfiguration (UserGroupInformation user, Map<String, String> confUpdate)
 name|void
-name|mutateConfiguration
+name|updateConfiguration
 parameter_list|(
-name|String
+name|UserGroupInformation
 name|user
 parameter_list|,
 name|Map
