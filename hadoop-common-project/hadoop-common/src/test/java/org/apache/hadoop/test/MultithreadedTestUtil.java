@@ -567,7 +567,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**      * User method for any code to test repeating behavior of (as threads).      * @throws Exception throw an exception if a failure has occured.      */
+comment|/**      * User method for any code to test repeating behavior of (as threads).      * @throws Exception throw an exception if a failure has occurred.      */
 DECL|method|doAnAction ()
 specifier|public
 specifier|abstract

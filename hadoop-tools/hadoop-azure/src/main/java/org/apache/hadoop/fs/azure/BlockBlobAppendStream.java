@@ -1170,7 +1170,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Time out occured while waiting for IO request to finish in append"
+literal|"Time out occurred while waiting for IO request to finish in append"
 operator|+
 literal|" for blob : {}"
 argument_list|,

@@ -60,7 +60,7 @@ specifier|public
 class|class
 name|StreamKeyValUtil
 block|{
-comment|/**    * Find the first occured tab in a UTF-8 encoded string    * @param utf a byte array containing a UTF-8 encoded string    * @param start starting offset    * @param length no. of bytes    * @return position that first tab occures otherwise -1    */
+comment|/**    * Find the first occurred tab in a UTF-8 encoded string    * @param utf a byte array containing a UTF-8 encoded string    * @param start starting offset    * @param length no. of bytes    * @return position that first tab occurres otherwise -1    */
 DECL|method|findTab (byte [] utf, int start, int length)
 specifier|public
 specifier|static
@@ -120,7 +120,7 @@ operator|-
 literal|1
 return|;
 block|}
-comment|/**    * Find the first occured tab in a UTF-8 encoded string    * @param utf a byte array containing a UTF-8 encoded string    * @return position that first tab occures otherwise -1    */
+comment|/**    * Find the first occurred tab in a UTF-8 encoded string    * @param utf a byte array containing a UTF-8 encoded string    * @return position that first tab occurres otherwise -1    */
 DECL|method|findTab (byte [] utf)
 specifier|public
 specifier|static

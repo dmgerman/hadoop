@@ -1978,7 +1978,7 @@ block|}
 finally|finally
 block|{
 comment|// Check if need to report block replicas corruption either read
-comment|// was successful or ChecksumException occured.
+comment|// was successful or ChecksumException occurred.
 name|reportCheckSumFailure
 argument_list|(
 name|corruptedBlocks

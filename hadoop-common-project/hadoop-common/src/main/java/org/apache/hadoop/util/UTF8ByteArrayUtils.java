@@ -58,7 +58,7 @@ specifier|public
 class|class
 name|UTF8ByteArrayUtils
 block|{
-comment|/**    * Find the first occurrence of the given byte b in a UTF-8 encoded string    * @param utf a byte array containing a UTF-8 encoded string    * @param start starting offset    * @param end ending position    * @param b the byte to find    * @return position that first byte occures otherwise -1    */
+comment|/**    * Find the first occurrence of the given byte b in a UTF-8 encoded string    * @param utf a byte array containing a UTF-8 encoded string    * @param start starting offset    * @param end ending position    * @param b the byte to find    * @return position that first byte occurs, otherwise -1    */
 DECL|method|findByte (byte [] utf, int start, int end, byte b)
 specifier|public
 specifier|static
@@ -114,7 +114,7 @@ operator|-
 literal|1
 return|;
 block|}
-comment|/**    * Find the first occurrence of the given bytes b in a UTF-8 encoded string    * @param utf a byte array containing a UTF-8 encoded string    * @param start starting offset    * @param end ending position    * @param b the bytes to find    * @return position that first byte occures otherwise -1    */
+comment|/**    * Find the first occurrence of the given bytes b in a UTF-8 encoded string    * @param utf a byte array containing a UTF-8 encoded string    * @param start starting offset    * @param end ending position    * @param b the bytes to find    * @return position that first byte occurs, otherwise -1    */
 DECL|method|findBytes (byte [] utf, int start, int end, byte[] b)
 specifier|public
 specifier|static

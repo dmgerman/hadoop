@@ -1051,7 +1051,7 @@ block|{
 name|String
 name|message
 init|=
-literal|"Unexpected System Error Occured: "
+literal|"Unexpected System Error Occurred: "
 operator|+
 name|StringUtils
 operator|.

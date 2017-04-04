@@ -1970,7 +1970,7 @@ name|path
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return void.      *      * @throws IOException thrown if an IO error occured.      */
+comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return void.      *      * @throws IOException thrown if an IO error occurred.      */
 annotation|@
 name|Override
 DECL|method|execute (FileSystem fs)
@@ -2133,7 +2133,7 @@ name|path
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return void.      *      * @throws IOException thrown if an IO error occured.      */
+comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return void.      *      * @throws IOException thrown if an IO error occurred.      */
 annotation|@
 name|Override
 DECL|method|execute (FileSystem fs)
@@ -2218,7 +2218,7 @@ operator|=
 name|newLength
 expr_stmt|;
 block|}
-comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return<code>true</code> if the file has been truncated to the desired,      *<code>false</code> if a background process of adjusting the       *         length of the last block has been started, and clients should       *         wait for it to complete before proceeding with further file       *         updates.      *      * @throws IOException thrown if an IO error occured.      */
+comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return<code>true</code> if the file has been truncated to the desired,      *<code>false</code> if a background process of adjusting the       *         length of the last block has been started, and clients should       *         wait for it to complete before proceeding with further file       *         updates.      *      * @throws IOException thrown if an IO error occurred.      */
 annotation|@
 name|Override
 DECL|method|execute (FileSystem fs)
@@ -2304,7 +2304,7 @@ name|path
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return a Map object (JSON friendly) with the content-summary.      *      * @throws IOException thrown if an IO error occured.      */
+comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return a Map object (JSON friendly) with the content-summary.      *      * @throws IOException thrown if an IO error occurred.      */
 annotation|@
 name|Override
 DECL|method|execute (FileSystem fs)
@@ -2449,7 +2449,7 @@ operator|=
 name|blockSize
 expr_stmt|;
 block|}
-comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return The URI of the created file.      *      * @throws IOException thrown if an IO error occured.      */
+comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return The URI of the created file.      *      * @throws IOException thrown if an IO error occurred.      */
 annotation|@
 name|Override
 DECL|method|execute (FileSystem fs)
@@ -2625,7 +2625,7 @@ operator|=
 name|recursive
 expr_stmt|;
 block|}
-comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return<code>true</code> if the delete operation was successful,      *<code>false</code> otherwise.      *      * @throws IOException thrown if an IO error occured.      */
+comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return<code>true</code> if the delete operation was successful,      *<code>false</code> otherwise.      *      * @throws IOException thrown if an IO error occurred.      */
 annotation|@
 name|Override
 DECL|method|execute (FileSystem fs)
@@ -2711,7 +2711,7 @@ name|path
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return a Map object (JSON friendly) with the file checksum.      *      * @throws IOException thrown if an IO error occured.      */
+comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return a Map object (JSON friendly) with the file checksum.      *      * @throws IOException thrown if an IO error occurred.      */
 annotation|@
 name|Override
 DECL|method|execute (FileSystem fs)
@@ -2836,7 +2836,7 @@ argument_list|<
 name|JSONObject
 argument_list|>
 block|{
-comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return a JSON object with the user home directory.      *      * @throws IOException thrown if an IO error occured.      */
+comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return a JSON object with the user home directory.      *      * @throws IOException thrown if an IO error occurred.      */
 annotation|@
 name|Override
 annotation|@
@@ -3235,7 +3235,7 @@ operator|=
 name|permission
 expr_stmt|;
 block|}
-comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return<code>true</code> if the mkdirs operation was successful,      *<code>false</code> otherwise.      *      * @throws IOException thrown if an IO error occured.      */
+comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return<code>true</code> if the mkdirs operation was successful,      *<code>false</code> otherwise.      *      * @throws IOException thrown if an IO error occurred.      */
 annotation|@
 name|Override
 DECL|method|execute (FileSystem fs)
@@ -3325,7 +3325,7 @@ name|path
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return The inputstream of the file.      *      * @throws IOException thrown if an IO error occured.      */
+comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return The inputstream of the file.      *      * @throws IOException thrown if an IO error occurred.      */
 annotation|@
 name|Override
 DECL|method|execute (FileSystem fs)
@@ -3430,7 +3430,7 @@ name|toPath
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return<code>true</code> if the rename operation was successful,      *<code>false</code> otherwise.      *      * @throws IOException thrown if an IO error occured.      */
+comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return<code>true</code> if the rename operation was successful,      *<code>false</code> otherwise.      *      * @throws IOException thrown if an IO error occurred.      */
 annotation|@
 name|Override
 DECL|method|execute (FileSystem fs)
@@ -3539,7 +3539,7 @@ operator|=
 name|group
 expr_stmt|;
 block|}
-comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return void.      *      * @throws IOException thrown if an IO error occured.      */
+comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return void.      *      * @throws IOException thrown if an IO error occurred.      */
 annotation|@
 name|Override
 DECL|method|execute (FileSystem fs)
@@ -3626,7 +3626,7 @@ operator|=
 name|permission
 expr_stmt|;
 block|}
-comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return void.      *      * @throws IOException thrown if an IO error occured.      */
+comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return void.      *      * @throws IOException thrown if an IO error occurred.      */
 annotation|@
 name|Override
 DECL|method|execute (FileSystem fs)
@@ -4319,7 +4319,7 @@ operator|=
 name|replication
 expr_stmt|;
 block|}
-comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return<code>true</code> if the replication value was set,      *<code>false</code> otherwise.      *      * @throws IOException thrown if an IO error occured.      */
+comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return<code>true</code> if the replication value was set,      *<code>false</code> otherwise.      *      * @throws IOException thrown if an IO error occurred.      */
 annotation|@
 name|Override
 annotation|@
@@ -4444,7 +4444,7 @@ operator|=
 name|aTime
 expr_stmt|;
 block|}
-comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return void.      *      * @throws IOException thrown if an IO error occured.      */
+comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return void.      *      * @throws IOException thrown if an IO error occurred.      */
 annotation|@
 name|Override
 DECL|method|execute (FileSystem fs)
@@ -4734,7 +4734,7 @@ name|path
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return Map a map object (JSON friendly) with the xattr names.      *      * @throws IOException thrown if an IO error occured.      */
+comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return Map a map object (JSON friendly) with the xattr names.      *      * @throws IOException thrown if an IO error occurred.      */
 annotation|@
 name|Override
 DECL|method|execute (FileSystem fs)
@@ -4851,7 +4851,7 @@ operator|=
 name|encoding
 expr_stmt|;
 block|}
-comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return Map a map object (JSON friendly) with the xattrs.      *      * @throws IOException thrown if an IO error occured.      */
+comment|/**      * Executes the filesystem operation.      *      * @param fs filesystem instance to use.      *      * @return Map a map object (JSON friendly) with the xattrs.      *      * @throws IOException thrown if an IO error occurred.      */
 annotation|@
 name|Override
 DECL|method|execute (FileSystem fs)

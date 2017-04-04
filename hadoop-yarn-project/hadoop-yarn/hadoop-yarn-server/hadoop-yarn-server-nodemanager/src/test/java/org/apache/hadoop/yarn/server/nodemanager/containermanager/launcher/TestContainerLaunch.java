@@ -4902,11 +4902,11 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-literal|"ContainerExitEvent should have occured"
+literal|"ContainerExitEvent should have occurred"
 argument_list|,
 name|eventHandler
 operator|.
-name|isContainerExitEventOccured
+name|isContainerExitEventOccurred
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4941,20 +4941,20 @@ operator|=
 name|testForMultiFile
 expr_stmt|;
 block|}
-DECL|field|containerExitEventOccured
+DECL|field|containerExitEventOccurred
 name|boolean
-name|containerExitEventOccured
+name|containerExitEventOccurred
 init|=
 literal|false
 decl_stmt|;
-DECL|method|isContainerExitEventOccured ()
+DECL|method|isContainerExitEventOccurred ()
 specifier|public
 name|boolean
-name|isContainerExitEventOccured
+name|isContainerExitEventOccurred
 parameter_list|()
 block|{
 return|return
-name|containerExitEventOccured
+name|containerExitEventOccurred
 return|;
 block|}
 DECL|method|handle (Event event)
@@ -4973,7 +4973,7 @@ operator|instanceof
 name|ContainerExitEvent
 condition|)
 block|{
-name|containerExitEventOccured
+name|containerExitEventOccurred
 operator|=
 literal|true
 expr_stmt|;

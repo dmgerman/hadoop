@@ -3512,7 +3512,7 @@ literal|"Container created event needs to be published atleast once"
 argument_list|,
 literal|1
 argument_list|,
-name|getNumOfStringOccurences
+name|getNumOfStringOccurrences
 argument_list|(
 name|containerEntityFile
 argument_list|,
@@ -3525,7 +3525,7 @@ expr_stmt|;
 comment|// to avoid race condition of testcase, atleast check 4 times with sleep
 comment|// of 500ms
 name|long
-name|numOfContainerFinishedOccurences
+name|numOfContainerFinishedOccurrences
 init|=
 literal|0
 decl_stmt|;
@@ -3544,9 +3544,9 @@ name|i
 operator|++
 control|)
 block|{
-name|numOfContainerFinishedOccurences
+name|numOfContainerFinishedOccurrences
 operator|=
-name|getNumOfStringOccurences
+name|getNumOfStringOccurrences
 argument_list|(
 name|containerEntityFile
 argument_list|,
@@ -3557,7 +3557,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|numOfContainerFinishedOccurences
+name|numOfContainerFinishedOccurrences
 operator|>
 literal|0
 condition|)
@@ -3583,7 +3583,7 @@ literal|"Container finished event needs to be published atleast once"
 argument_list|,
 literal|1
 argument_list|,
-name|numOfContainerFinishedOccurences
+name|numOfContainerFinishedOccurrences
 argument_list|)
 expr_stmt|;
 comment|// Verify RM posting Application life cycle Events are getting published
@@ -3633,7 +3633,7 @@ literal|"Application created event should be published atleast once"
 argument_list|,
 literal|1
 argument_list|,
-name|getNumOfStringOccurences
+name|getNumOfStringOccurrences
 argument_list|(
 name|appEntityFile
 argument_list|,
@@ -3646,7 +3646,7 @@ expr_stmt|;
 comment|// to avoid race condition of testcase, atleast check 4 times with sleep
 comment|// of 500ms
 name|long
-name|numOfStringOccurences
+name|numOfStringOccurrences
 init|=
 literal|0
 decl_stmt|;
@@ -3665,9 +3665,9 @@ name|i
 operator|++
 control|)
 block|{
-name|numOfStringOccurences
+name|numOfStringOccurrences
 operator|=
-name|getNumOfStringOccurences
+name|getNumOfStringOccurrences
 argument_list|(
 name|appEntityFile
 argument_list|,
@@ -3678,7 +3678,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|numOfStringOccurences
+name|numOfStringOccurrences
 operator|>
 literal|0
 condition|)
@@ -3704,7 +3704,7 @@ literal|"Application finished event should be published atleast once"
 argument_list|,
 literal|1
 argument_list|,
-name|numOfStringOccurences
+name|numOfStringOccurrences
 argument_list|)
 expr_stmt|;
 comment|// Verify RM posting AppAttempt life cycle Events are getting published
@@ -3756,7 +3756,7 @@ literal|"AppAttempt register event should be published atleast once"
 argument_list|,
 literal|1
 argument_list|,
-name|getNumOfStringOccurences
+name|getNumOfStringOccurrences
 argument_list|(
 name|appAttemptEntityFile
 argument_list|,
@@ -3774,7 +3774,7 @@ literal|"AppAttempt finished event should be published atleast once"
 argument_list|,
 literal|1
 argument_list|,
-name|getNumOfStringOccurences
+name|getNumOfStringOccurrences
 argument_list|(
 name|appAttemptEntityFile
 argument_list|,
@@ -3878,10 +3878,10 @@ return|return
 name|entityFile
 return|;
 block|}
-DECL|method|getNumOfStringOccurences (File entityFile, String searchString)
+DECL|method|getNumOfStringOccurrences (File entityFile, String searchString)
 specifier|private
 name|long
-name|getNumOfStringOccurences
+name|getNumOfStringOccurrences
 parameter_list|(
 name|File
 name|entityFile
