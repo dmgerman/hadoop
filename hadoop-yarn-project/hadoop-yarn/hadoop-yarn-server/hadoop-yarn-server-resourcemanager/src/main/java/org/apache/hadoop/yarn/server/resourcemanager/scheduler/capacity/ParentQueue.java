@@ -2154,7 +2154,61 @@ operator|!=
 literal|null
 condition|)
 block|{
-comment|// Re-init existing child queues
+comment|// Check if the child-queue has been converted into parent queue.
+comment|// The CS has already checked to ensure that this child-queue is in
+comment|// STOPPED state.
+if|if
+condition|(
+name|childQueue
+operator|instanceof
+name|LeafQueue
+operator|&&
+name|newChildQueue
+operator|instanceof
+name|ParentQueue
+condition|)
+block|{
+comment|// We would convert this LeafQueue to ParentQueue, consider this
+comment|// as the combination of DELETE then ADD.
+name|newChildQueue
+operator|.
+name|setParent
+argument_list|(
+name|this
+argument_list|)
+expr_stmt|;
+name|currentChildQueues
+operator|.
+name|put
+argument_list|(
+name|newChildQueueName
+argument_list|,
+name|newChildQueue
+argument_list|)
+expr_stmt|;
+comment|// inform CapacitySchedulerQueueManager
+name|CapacitySchedulerQueueManager
+name|queueManager
+init|=
+name|this
+operator|.
+name|csContext
+operator|.
+name|getCapacitySchedulerQueueManager
+argument_list|()
+decl_stmt|;
+name|queueManager
+operator|.
+name|addQueue
+argument_list|(
+name|newChildQueueName
+argument_list|,
+name|newChildQueue
+argument_list|)
+expr_stmt|;
+continue|continue;
+block|}
+comment|// Re-init existing queues
 name|childQueue
 operator|.
 name|reinitialize

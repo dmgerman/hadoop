@@ -1344,7 +1344,7 @@ return|return
 name|queue
 return|;
 block|}
-comment|/**    * Ensure all existing queues are present. Queues cannot be deleted if its not    * in Stopped state, Queue's cannot be moved from one hierarchy to other also.    *    * @param queues existing queues    * @param newQueues new queues    */
+comment|/**    * Ensure all existing queues are present. Queues cannot be deleted if its not    * in Stopped state, Queue's cannot be moved from one hierarchy to other also.    * Previous child queue could be converted into parent queue if it is in    * STOPPED state.    *    * @param queues existing queues    * @param newQueues new queues    */
 DECL|method|validateQueueHierarchy (Map<String, CSQueue> queues, Map<String, CSQueue> newQueues)
 specifier|private
 name|void
@@ -1530,6 +1530,70 @@ operator|+
 literal|" after refresh, which is not allowed."
 argument_list|)
 throw|;
+block|}
+elseif|else
+if|if
+condition|(
+name|oldQueue
+operator|instanceof
+name|LeafQueue
+operator|&&
+name|newQueue
+operator|instanceof
+name|ParentQueue
+condition|)
+block|{
+if|if
+condition|(
+name|oldQueue
+operator|.
+name|getState
+argument_list|()
+operator|==
+name|QueueState
+operator|.
+name|STOPPED
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Converting the leaf queue: "
+operator|+
+name|oldQueue
+operator|.
+name|getQueuePath
+argument_list|()
+operator|+
+literal|" to parent queue."
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Can not convert the leaf queue: "
+operator|+
+name|oldQueue
+operator|.
+name|getQueuePath
+argument_list|()
+operator|+
+literal|" to parent queue since "
+operator|+
+literal|"it is not yet in stopped state. Current State : "
+operator|+
+name|oldQueue
+operator|.
+name|getState
+argument_list|()
+argument_list|)
+throw|;
+block|}
 block|}
 block|}
 block|}
