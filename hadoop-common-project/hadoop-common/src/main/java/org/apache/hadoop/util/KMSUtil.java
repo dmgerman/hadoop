@@ -116,16 +116,6 @@ name|URI
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|URISyntaxException
-import|;
-end_import
-
 begin_comment
 comment|/**  * Utils for KMS.  */
 end_comment
@@ -200,13 +190,15 @@ operator|.
 name|getTrimmed
 argument_list|(
 name|configKeyName
-argument_list|,
-literal|""
 argument_list|)
 decl_stmt|;
 comment|// No provider set in conf
 if|if
 condition|(
+name|providerUriStr
+operator|==
+literal|null
+operator|||
 name|providerUriStr
 operator|.
 name|isEmpty
@@ -217,35 +209,37 @@ return|return
 literal|null
 return|;
 block|}
-specifier|final
+return|return
+name|createKeyProviderFromUri
+argument_list|(
+name|conf
+argument_list|,
 name|URI
-name|providerUri
-decl_stmt|;
-try|try
-block|{
-name|providerUri
-operator|=
-operator|new
-name|URI
+operator|.
+name|create
 argument_list|(
 name|providerUriStr
 argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|URISyntaxException
-name|e
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-name|e
 argument_list|)
-throw|;
+return|;
 block|}
+DECL|method|createKeyProviderFromUri (final Configuration conf, final URI providerUri)
+specifier|public
+specifier|static
+name|KeyProvider
+name|createKeyProviderFromUri
+parameter_list|(
+specifier|final
+name|Configuration
+name|conf
+parameter_list|,
+specifier|final
+name|URI
+name|providerUri
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 name|KeyProvider
 name|keyProvider
 init|=
@@ -269,15 +263,9 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Could not instantiate KeyProvider from "
+literal|"Could not instantiate KeyProvider for uri: "
 operator|+
-name|configKeyName
-operator|+
-literal|" setting of '"
-operator|+
-name|providerUriStr
-operator|+
-literal|"'"
+name|providerUri
 argument_list|)
 throw|;
 block|}

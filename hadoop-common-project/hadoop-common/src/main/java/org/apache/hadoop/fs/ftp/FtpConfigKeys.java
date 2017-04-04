@@ -247,6 +247,15 @@ name|Type
 operator|.
 name|CRC32
 decl_stmt|;
+DECL|field|KEY_PROVIDER_URI_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KEY_PROVIDER_URI_DEFAULT
+init|=
+literal|""
+decl_stmt|;
 DECL|method|getServerDefaults ()
 specifier|protected
 specifier|static
@@ -275,6 +284,8 @@ argument_list|,
 name|FS_TRASH_INTERVAL_DEFAULT
 argument_list|,
 name|CHECKSUM_TYPE_DEFAULT
+argument_list|,
+name|KEY_PROVIDER_URI_DEFAULT
 argument_list|)
 return|;
 block|}

@@ -238,12 +238,17 @@ operator|.
 name|Type
 name|checksumType
 decl_stmt|;
+DECL|field|keyProviderUri
+specifier|private
+name|String
+name|keyProviderUri
+decl_stmt|;
 DECL|method|FsServerDefaults ()
 specifier|public
 name|FsServerDefaults
 parameter_list|()
 block|{   }
-DECL|method|FsServerDefaults (long blockSize, int bytesPerChecksum, int writePacketSize, short replication, int fileBufferSize, boolean encryptDataTransfer, long trashInterval, DataChecksum.Type checksumType)
+DECL|method|FsServerDefaults (long blockSize, int bytesPerChecksum, int writePacketSize, short replication, int fileBufferSize, boolean encryptDataTransfer, long trashInterval, DataChecksum.Type checksumType, String keyProviderUri)
 specifier|public
 name|FsServerDefaults
 parameter_list|(
@@ -272,6 +277,9 @@ name|DataChecksum
 operator|.
 name|Type
 name|checksumType
+parameter_list|,
+name|String
+name|keyProviderUri
 parameter_list|)
 block|{
 name|this
@@ -321,6 +329,12 @@ operator|.
 name|checksumType
 operator|=
 name|checksumType
+expr_stmt|;
+name|this
+operator|.
+name|keyProviderUri
+operator|=
+name|keyProviderUri
 expr_stmt|;
 block|}
 DECL|method|getBlockSize ()
@@ -403,6 +417,17 @@ parameter_list|()
 block|{
 return|return
 name|checksumType
+return|;
+block|}
+comment|/* null means old style namenode.    * "" (empty string) means namenode is upgraded but EZ is not supported.    * some string means that value is the key provider.    */
+DECL|method|getKeyProviderUri ()
+specifier|public
+name|String
+name|getKeyProviderUri
+parameter_list|()
+block|{
+return|return
+name|keyProviderUri
 return|;
 block|}
 comment|// /////////////////////////////////////////

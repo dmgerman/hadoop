@@ -2947,6 +2947,8 @@ operator|.
 name|Type
 operator|.
 name|CRC32
+argument_list|,
+literal|""
 argument_list|)
 return|;
 block|}

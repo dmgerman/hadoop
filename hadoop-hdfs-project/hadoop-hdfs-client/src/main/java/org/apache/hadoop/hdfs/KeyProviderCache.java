@@ -120,6 +120,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|KMSUtil
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -357,7 +371,7 @@ name|build
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|get (final Configuration conf)
+DECL|method|get (final Configuration conf, final URI serverProviderUri)
 specifier|public
 name|KeyProvider
 name|get
@@ -365,19 +379,15 @@ parameter_list|(
 specifier|final
 name|Configuration
 name|conf
+parameter_list|,
+specifier|final
+name|URI
+name|serverProviderUri
 parameter_list|)
 block|{
-name|URI
-name|kpURI
-init|=
-name|createKeyProviderURI
-argument_list|(
-name|conf
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
-name|kpURI
+name|serverProviderUri
 operator|==
 literal|null
 condition|)
@@ -393,7 +403,7 @@ name|cache
 operator|.
 name|get
 argument_list|(
-name|kpURI
+name|serverProviderUri
 argument_list|,
 operator|new
 name|Callable
@@ -412,11 +422,13 @@ throws|throws
 name|Exception
 block|{
 return|return
-name|DFSUtilClient
+name|KMSUtil
 operator|.
-name|createKeyProvider
+name|createKeyProviderFromUri
 argument_list|(
 name|conf
+argument_list|,
+name|serverProviderUri
 argument_list|)
 return|;
 block|}
@@ -437,9 +449,6 @@ argument_list|(
 literal|"Could not create KeyProvider for DFSClient !!"
 argument_list|,
 name|e
-operator|.
-name|getCause
-argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
@@ -467,13 +476,15 @@ argument_list|(
 name|CommonConfigurationKeysPublic
 operator|.
 name|HADOOP_SECURITY_KEY_PROVIDER_PATH
-argument_list|,
-literal|""
 argument_list|)
 decl_stmt|;
 comment|// No provider set in conf
 if|if
 condition|(
+name|providerUriStr
+operator|==
+literal|null
+operator|||
 name|providerUriStr
 operator|.
 name|isEmpty
