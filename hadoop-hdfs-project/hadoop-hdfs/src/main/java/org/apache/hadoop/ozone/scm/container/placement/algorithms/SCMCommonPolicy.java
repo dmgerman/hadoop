@@ -474,7 +474,11 @@ name|format
 argument_list|(
 literal|"Unable to find enough nodes that meet the space "
 operator|+
-literal|"requirement in healthy node set. Nodes required: %d Found: %d"
+literal|"requirement of %d bytes in healthy node set."
+operator|+
+literal|" Nodes required: %d Found: %d"
+argument_list|,
+name|sizeRequired
 argument_list|,
 name|nodesRequired
 argument_list|,

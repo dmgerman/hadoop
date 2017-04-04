@@ -1722,6 +1722,11 @@ name|waitTobeOutOfChillMode
 argument_list|()
 expr_stmt|;
 block|}
+name|cluster
+operator|.
+name|waitForHeartbeatProcessed
+argument_list|()
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
