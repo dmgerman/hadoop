@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.federation.store.utils
+DECL|package|org.apache.hadoop.yarn.server.federation.store.exception
 package|package
 name|org
 operator|.
@@ -20,7 +20,7 @@ name|federation
 operator|.
 name|store
 operator|.
-name|utils
+name|exception
 package|;
 end_package
 
@@ -41,18 +41,17 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Exception thrown by the {@link FederationMembershipStateStoreInputValidator},  * {@link FederationApplicationHomeSubClusterStoreInputValidator},  * {@link FederationPolicyStoreInputValidator} if the input is invalid.  *  */
+comment|/**  * Exception thrown by the {@code FederationStateStore}, if it is a retriable  * exception.  *  */
 end_comment
 
 begin_class
-DECL|class|FederationStateStoreInvalidInputException
+DECL|class|FederationStateStoreRetriableException
 specifier|public
 class|class
-name|FederationStateStoreInvalidInputException
+name|FederationStateStoreRetriableException
 extends|extends
 name|YarnException
 block|{
-comment|/**    * IDE auto-generated.    */
 DECL|field|serialVersionUID
 specifier|private
 specifier|static
@@ -60,12 +59,11 @@ specifier|final
 name|long
 name|serialVersionUID
 init|=
-operator|-
-literal|7352144682711430801L
+literal|1L
 decl_stmt|;
-DECL|method|FederationStateStoreInvalidInputException (Throwable cause)
+DECL|method|FederationStateStoreRetriableException (Throwable cause)
 specifier|public
-name|FederationStateStoreInvalidInputException
+name|FederationStateStoreRetriableException
 parameter_list|(
 name|Throwable
 name|cause
@@ -77,9 +75,9 @@ name|cause
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|FederationStateStoreInvalidInputException (String message)
+DECL|method|FederationStateStoreRetriableException (String message)
 specifier|public
-name|FederationStateStoreInvalidInputException
+name|FederationStateStoreRetriableException
 parameter_list|(
 name|String
 name|message
@@ -91,9 +89,9 @@ name|message
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|FederationStateStoreInvalidInputException (String message, Throwable cause)
+DECL|method|FederationStateStoreRetriableException (String message, Throwable cause)
 specifier|public
-name|FederationStateStoreInvalidInputException
+name|FederationStateStoreRetriableException
 parameter_list|(
 name|String
 name|message
