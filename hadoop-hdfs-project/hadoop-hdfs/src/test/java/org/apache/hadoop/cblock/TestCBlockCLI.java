@@ -360,6 +360,13 @@ name|void
 name|clean
 parameter_list|()
 block|{
+if|if
+condition|(
+name|cBlockManager
+operator|!=
+literal|null
+condition|)
+block|{
 name|cBlockManager
 operator|.
 name|stop
@@ -375,6 +382,7 @@ operator|.
 name|clean
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|After

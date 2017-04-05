@@ -1600,9 +1600,6 @@ comment|// Empty
 literal|"x..y"
 block|,
 comment|// Invalid schema
-literal|"scm:"
-block|,
-comment|// Missing port
 literal|"scm:xyz"
 block|,
 comment|// Invalid port
