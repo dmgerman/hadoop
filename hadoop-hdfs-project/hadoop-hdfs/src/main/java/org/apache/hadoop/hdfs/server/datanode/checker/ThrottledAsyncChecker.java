@@ -857,7 +857,7 @@ block|}
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * {@inheritDoc}.    */
+comment|/**    * {@inheritDoc}.    *    * The results of in-progress checks are not useful during shutdown,    * so we optimize for faster shutdown by interrupt all actively    * executing checks.    */
 annotation|@
 name|Override
 DECL|method|shutdownAndWait (long timeout, TimeUnit timeUnit)
@@ -874,41 +874,6 @@ parameter_list|)
 throws|throws
 name|InterruptedException
 block|{
-comment|// Try orderly shutdown.
-name|executorService
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-if|if
-condition|(
-operator|!
-name|executorService
-operator|.
-name|awaitTermination
-argument_list|(
-name|timeout
-argument_list|,
-name|timeUnit
-argument_list|)
-condition|)
-block|{
-comment|// Interrupt executing tasks and wait again.
-name|executorService
-operator|.
-name|shutdownNow
-argument_list|()
-expr_stmt|;
-name|executorService
-operator|.
-name|awaitTermination
-argument_list|(
-name|timeout
-argument_list|,
-name|timeUnit
-argument_list|)
-expr_stmt|;
-block|}
 if|if
 condition|(
 name|scheduledExecutorService
@@ -916,26 +881,6 @@ operator|!=
 literal|null
 condition|)
 block|{
-comment|// Try orderly shutdown
-name|scheduledExecutorService
-operator|.
-name|shutdown
-argument_list|()
-expr_stmt|;
-if|if
-condition|(
-operator|!
-name|scheduledExecutorService
-operator|.
-name|awaitTermination
-argument_list|(
-name|timeout
-argument_list|,
-name|timeUnit
-argument_list|)
-condition|)
-block|{
-comment|// Interrupt executing tasks and wait again.
 name|scheduledExecutorService
 operator|.
 name|shutdownNow
@@ -951,7 +896,20 @@ name|timeUnit
 argument_list|)
 expr_stmt|;
 block|}
-block|}
+name|executorService
+operator|.
+name|shutdownNow
+argument_list|()
+expr_stmt|;
+name|executorService
+operator|.
+name|awaitTermination
+argument_list|(
+name|timeout
+argument_list|,
+name|timeUnit
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Status of running a check. It can either be a result or an    * exception, depending on whether the check completed or threw.    */
 DECL|class|LastCheckResult
