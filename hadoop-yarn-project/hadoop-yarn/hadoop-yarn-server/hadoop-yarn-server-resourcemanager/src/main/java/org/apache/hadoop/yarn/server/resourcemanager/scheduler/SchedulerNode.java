@@ -84,6 +84,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -1237,8 +1251,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Deduct unallocated resources from the node. This is used when allocating a    * container.    * @param resource Resources to deduct.    */
+annotation|@
+name|VisibleForTesting
 DECL|method|deductUnallocatedResource (Resource resource)
-specifier|private
+specifier|public
 specifier|synchronized
 name|void
 name|deductUnallocatedResource

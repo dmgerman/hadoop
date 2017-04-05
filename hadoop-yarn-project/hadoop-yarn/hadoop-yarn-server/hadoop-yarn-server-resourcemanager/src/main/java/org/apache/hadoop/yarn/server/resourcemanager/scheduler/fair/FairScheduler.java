@@ -4928,14 +4928,24 @@ argument_list|<
 name|FSSchedulerNode
 argument_list|>
 name|nodeIdList
-init|=
+decl_stmt|;
+comment|// Hold a lock to prevent comparator order changes due to changes of node
+comment|// unallocated resources
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+name|nodeIdList
+operator|=
 name|nodeTracker
 operator|.
 name|sortedNodeList
 argument_list|(
 name|nodeAvailableResourceComparator
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
 comment|// iterate all nodes
 for|for
 control|(
