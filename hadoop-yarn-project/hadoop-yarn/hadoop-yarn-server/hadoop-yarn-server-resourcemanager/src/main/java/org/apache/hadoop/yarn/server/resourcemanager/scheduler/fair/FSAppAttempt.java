@@ -775,16 +775,19 @@ argument_list|()
 decl_stmt|;
 DECL|field|startTime
 specifier|private
+specifier|final
 name|long
 name|startTime
 decl_stmt|;
 DECL|field|appPriority
 specifier|private
+specifier|final
 name|Priority
 name|appPriority
 decl_stmt|;
 DECL|field|resourceWeights
 specifier|private
+specifier|final
 name|ResourceWeights
 name|resourceWeights
 decl_stmt|;
@@ -802,6 +805,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|scheduler
 specifier|private
+specifier|final
 name|FairScheduler
 name|scheduler
 decl_stmt|;
@@ -900,6 +904,7 @@ comment|// Used to record node reservation by an app.
 comment|// Key = RackName, Value = Set of Nodes reserved by app on rack
 DECL|field|reservations
 specifier|private
+specifier|final
 name|Map
 argument_list|<
 name|String
@@ -918,6 +923,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|blacklistNodeIds
 specifier|private
+specifier|final
 name|List
 argument_list|<
 name|FSSchedulerNode
