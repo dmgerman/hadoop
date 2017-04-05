@@ -391,13 +391,6 @@ name|FairSchedulerConfiguration
 argument_list|()
 expr_stmt|;
 block|}
-annotation|@
-name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|testParseSchedulingPolicy ()
 specifier|public
 name|void
