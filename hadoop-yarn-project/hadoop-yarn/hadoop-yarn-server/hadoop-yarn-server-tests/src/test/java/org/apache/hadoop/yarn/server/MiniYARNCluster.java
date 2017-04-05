@@ -1407,15 +1407,8 @@ specifier|private
 name|int
 name|numLogDirs
 decl_stmt|;
-DECL|field|enableAHS
-specifier|private
-name|boolean
-name|enableAHS
-decl_stmt|;
-comment|/**    * @param testName name of the test    * @param numResourceManagers the number of resource managers in the cluster    * @param numNodeManagers the number of node managers in the cluster    * @param numLocalDirs the number of nm-local-dirs per nodemanager    * @param numLogDirs the number of nm-log-dirs per nodemanager    * @param enableAHS enable ApplicationHistoryServer or not    */
-annotation|@
-name|Deprecated
-DECL|method|MiniYARNCluster ( String testName, int numResourceManagers, int numNodeManagers, int numLocalDirs, int numLogDirs, boolean enableAHS)
+comment|/**    * @param testName name of the test    * @param numResourceManagers the number of resource managers in the cluster    * @param numNodeManagers the number of node managers in the cluster    * @param numLocalDirs the number of nm-local-dirs per nodemanager    * @param numLogDirs the number of nm-log-dirs per nodemanager    */
+DECL|method|MiniYARNCluster ( String testName, int numResourceManagers, int numNodeManagers, int numLocalDirs, int numLogDirs)
 specifier|public
 name|MiniYARNCluster
 parameter_list|(
@@ -1433,9 +1426,6 @@ name|numLocalDirs
 parameter_list|,
 name|int
 name|numLogDirs
-parameter_list|,
-name|boolean
-name|enableAHS
 parameter_list|)
 block|{
 name|super
@@ -1461,12 +1451,6 @@ operator|.
 name|numLogDirs
 operator|=
 name|numLogDirs
-expr_stmt|;
-name|this
-operator|.
-name|enableAHS
-operator|=
-name|enableAHS
 expr_stmt|;
 name|String
 name|testSubDir
@@ -1720,43 +1704,6 @@ name|NodeManager
 index|[
 name|numNodeManagers
 index|]
-expr_stmt|;
-block|}
-comment|/**    * @param testName name of the test    * @param numResourceManagers the number of resource managers in the cluster    * @param numNodeManagers the number of node managers in the cluster    * @param numLocalDirs the number of nm-local-dirs per nodemanager    * @param numLogDirs the number of nm-log-dirs per nodemanager    */
-DECL|method|MiniYARNCluster ( String testName, int numResourceManagers, int numNodeManagers, int numLocalDirs, int numLogDirs)
-specifier|public
-name|MiniYARNCluster
-parameter_list|(
-name|String
-name|testName
-parameter_list|,
-name|int
-name|numResourceManagers
-parameter_list|,
-name|int
-name|numNodeManagers
-parameter_list|,
-name|int
-name|numLocalDirs
-parameter_list|,
-name|int
-name|numLogDirs
-parameter_list|)
-block|{
-name|this
-argument_list|(
-name|testName
-argument_list|,
-name|numResourceManagers
-argument_list|,
-name|numNodeManagers
-argument_list|,
-name|numLocalDirs
-argument_list|,
-name|numLogDirs
-argument_list|,
-literal|false
-argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * @param testName name of the test    * @param numNodeManagers the number of node managers in the cluster    * @param numLocalDirs the number of nm-local-dirs per nodemanager    * @param numLogDirs the number of nm-log-dirs per nodemanager    */
@@ -2130,8 +2077,6 @@ name|YarnConfiguration
 operator|.
 name|DEFAULT_TIMELINE_SERVICE_ENABLED
 argument_list|)
-operator|||
-name|enableAHS
 condition|)
 block|{
 name|addService
