@@ -236,6 +236,12 @@ name|DFS_NAMESERVICES
 init|=
 literal|"dfs.nameservices"
 decl_stmt|;
+DECL|field|DFS_NAMENODE_RPC_ADDRESS_KEY
+name|String
+name|DFS_NAMENODE_RPC_ADDRESS_KEY
+init|=
+literal|"dfs.namenode.rpc-address"
+decl_stmt|;
 DECL|field|DFS_NAMENODE_HTTP_PORT_DEFAULT
 name|int
 name|DFS_NAMENODE_HTTP_PORT_DEFAULT

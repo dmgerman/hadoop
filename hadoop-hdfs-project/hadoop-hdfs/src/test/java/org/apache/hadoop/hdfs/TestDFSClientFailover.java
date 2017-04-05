@@ -294,24 +294,6 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|NameNode
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
 name|ha
 operator|.
 name|ConfiguredFailoverProxyProvider
@@ -355,6 +337,26 @@ operator|.
 name|ha
 operator|.
 name|IPFailoverProxyProvider
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|ha
+operator|.
+name|HAProxyFactory
 import|;
 end_import
 
@@ -1903,7 +1905,7 @@ specifier|private
 name|T
 name|proxy
 decl_stmt|;
-DECL|method|DummyLegacyFailoverProxyProvider (Configuration conf, URI uri, Class<T> xface)
+DECL|method|DummyLegacyFailoverProxyProvider (Configuration conf, URI uri, Class<T> xface, HAProxyFactory<T> proxyFactory)
 specifier|public
 name|DummyLegacyFailoverProxyProvider
 parameter_list|(
@@ -1918,6 +1920,12 @@ argument_list|<
 name|T
 argument_list|>
 name|xface
+parameter_list|,
+name|HAProxyFactory
+argument_list|<
+name|T
+argument_list|>
+name|proxyFactory
 parameter_list|)
 block|{
 try|try

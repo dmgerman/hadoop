@@ -114,41 +114,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|NameNodeProxies
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|client
 operator|.
 name|HdfsClientConfigKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|protocol
-operator|.
-name|NamenodeProtocols
 import|;
 end_import
 
@@ -180,22 +148,8 @@ name|UserGroupInformation
 import|;
 end_import
 
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Preconditions
-import|;
-end_import
-
 begin_comment
-comment|/**  * A NNFailoverProxyProvider implementation which works on IP failover setup.  * Only one proxy is used to connect to both servers and switching between  * the servers is done by the environment/infrastructure, which guarantees  * clients can consistently reach only one node at a time.  *  * Clients with a live connection will likely get connection reset after an  * IP failover. This case will be handled by the   * FailoverOnNetworkExceptionRetry retry policy. I.e. if the call is  * not idempotent, it won't get retried.  *  * A connection reset while setting up a connection (i.e. before sending a  * request) will be handled in ipc client.  *  * The namenode URI must contain a resolvable host name.  */
+comment|/**  * A NNFailoverProxyProvider implementation which works on IP failover setup.  * Only one proxy is used to connect to both servers and switching between  * the servers is done by the environment/infrastructure, which guarantees  * clients can consistently reach only one node at a time.  *  * Clients with a live connection will likely get connection reset after an  * IP failover. This case will be handled by the  * FailoverOnNetworkExceptionRetry retry policy. I.e. if the call is  * not idempotent, it won't get retried.  *  * A connection reset while setting up a connection (i.e. before sending a  * request) will be handled in ipc client.  *  * The namenode URI must contain a resolvable host name.  */
 end_comment
 
 begin_class
@@ -233,6 +187,15 @@ specifier|final
 name|URI
 name|nameNodeUri
 decl_stmt|;
+DECL|field|factory
+specifier|private
+specifier|final
+name|HAProxyFactory
+argument_list|<
+name|T
+argument_list|>
+name|factory
+decl_stmt|;
 DECL|field|nnProxyInfo
 specifier|private
 name|ProxyInfo
@@ -243,7 +206,7 @@ name|nnProxyInfo
 init|=
 literal|null
 decl_stmt|;
-DECL|method|IPFailoverProxyProvider (Configuration conf, URI uri, Class<T> xface)
+DECL|method|IPFailoverProxyProvider (Configuration conf, URI uri, Class<T> xface, HAProxyFactory<T> factory)
 specifier|public
 name|IPFailoverProxyProvider
 parameter_list|(
@@ -258,24 +221,14 @@ argument_list|<
 name|T
 argument_list|>
 name|xface
+parameter_list|,
+name|HAProxyFactory
+argument_list|<
+name|T
+argument_list|>
+name|factory
 parameter_list|)
 block|{
-name|Preconditions
-operator|.
-name|checkArgument
-argument_list|(
-name|xface
-operator|.
-name|isAssignableFrom
-argument_list|(
-name|NamenodeProtocols
-operator|.
-name|class
-argument_list|)
-argument_list|,
-literal|"Interface class %s is not a valid NameNode protocol!"
-argument_list|)
-expr_stmt|;
 name|this
 operator|.
 name|xface
@@ -287,6 +240,12 @@ operator|.
 name|nameNodeUri
 operator|=
 name|uri
+expr_stmt|;
+name|this
+operator|.
+name|factory
+operator|=
+name|factory
 expr_stmt|;
 name|this
 operator|.
@@ -425,9 +384,9 @@ argument_list|<
 name|T
 argument_list|>
 argument_list|(
-name|NameNodeProxies
+name|factory
 operator|.
-name|createNonHAProxy
+name|createProxy
 argument_list|(
 name|conf
 argument_list|,
@@ -442,9 +401,6 @@ argument_list|()
 argument_list|,
 literal|false
 argument_list|)
-operator|.
-name|getProxy
-argument_list|()
 argument_list|,
 name|nnAddr
 operator|.

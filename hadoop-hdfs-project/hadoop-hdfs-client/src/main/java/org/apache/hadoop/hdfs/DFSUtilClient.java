@@ -1309,6 +1309,42 @@ operator|+
 name|suffix
 return|;
 block|}
+comment|/**    * Returns list of InetSocketAddress corresponding to HA NN RPC addresses from    * the configuration.    *    * @param conf configuration    * @return list of InetSocketAddresses    */
+DECL|method|getHaNnRpcAddresses ( Configuration conf)
+specifier|public
+specifier|static
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|InetSocketAddress
+argument_list|>
+argument_list|>
+name|getHaNnRpcAddresses
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
+name|DFSUtilClient
+operator|.
+name|getAddresses
+argument_list|(
+name|conf
+argument_list|,
+literal|null
+argument_list|,
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_NAMENODE_RPC_ADDRESS_KEY
+argument_list|)
+return|;
+block|}
 comment|/**    * Returns list of InetSocketAddress corresponding to HA NN HTTP addresses from    * the configuration.    *    * @return list of InetSocketAddresses    */
 DECL|method|getHaNnWebHdfsAddresses ( Configuration conf, String scheme)
 specifier|public

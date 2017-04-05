@@ -835,7 +835,9 @@ specifier|final
 name|String
 name|DFS_NAMENODE_RPC_ADDRESS_KEY
 init|=
-literal|"dfs.namenode.rpc-address"
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_NAMENODE_RPC_ADDRESS_KEY
 decl_stmt|;
 DECL|field|DFS_NAMENODE_RPC_BIND_HOST_KEY
 specifier|public

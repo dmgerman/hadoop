@@ -2996,7 +2996,7 @@ argument_list|>
 argument_list|>
 name|map
 init|=
-name|DFSUtil
+name|DFSUtilClient
 operator|.
 name|getHaNnRpcAddresses
 argument_list|(

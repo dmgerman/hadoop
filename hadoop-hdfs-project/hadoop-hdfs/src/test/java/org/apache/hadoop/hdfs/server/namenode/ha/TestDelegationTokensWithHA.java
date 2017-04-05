@@ -1717,7 +1717,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|HAUtil
+name|HAUtilClient
 operator|.
 name|cloneDelegationTokenForLogicalUri
 argument_list|(
@@ -1901,7 +1901,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// reclone the tokens, and see if they match now
-name|HAUtil
+name|HAUtilClient
 operator|.
 name|cloneDelegationTokenForLogicalUri
 argument_list|(
