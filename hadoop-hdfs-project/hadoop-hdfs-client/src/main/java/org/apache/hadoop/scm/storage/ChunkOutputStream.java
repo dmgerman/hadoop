@@ -182,20 +182,6 @@ name|hadoop
 operator|.
 name|scm
 operator|.
-name|ScmConfigKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|scm
-operator|.
 name|XceiverClientManager
 import|;
 end_import
@@ -278,8 +264,13 @@ specifier|private
 name|int
 name|chunkIndex
 decl_stmt|;
-comment|/**    * Creates a new ChunkOutputStream.    *    * @param containerKey container key    * @param key chunk key    * @param xceiverClientManager client manager that controls client    * @param xceiverClient client to perform container calls    * @param traceID container protocol call args    */
-DECL|method|ChunkOutputStream (String containerKey, String key, XceiverClientManager xceiverClientManager, XceiverClientSpi xceiverClient, String traceID)
+DECL|field|chunkSize
+specifier|private
+name|int
+name|chunkSize
+decl_stmt|;
+comment|/**    * Creates a new ChunkOutputStream.    *    * @param containerKey container key    * @param key chunk key    * @param xceiverClientManager client manager that controls client    * @param xceiverClient client to perform container calls    * @param traceID container protocol call args    * @param chunkSize chunk size    */
+DECL|method|ChunkOutputStream (String containerKey, String key, XceiverClientManager xceiverClientManager, XceiverClientSpi xceiverClient, String traceID, int chunkSize)
 specifier|public
 name|ChunkOutputStream
 parameter_list|(
@@ -297,6 +288,9 @@ name|xceiverClient
 parameter_list|,
 name|String
 name|traceID
+parameter_list|,
+name|int
+name|chunkSize
 parameter_list|)
 block|{
 name|this
@@ -316,6 +310,12 @@ operator|.
 name|traceID
 operator|=
 name|traceID
+expr_stmt|;
+name|this
+operator|.
+name|chunkSize
+operator|=
+name|chunkSize
 expr_stmt|;
 name|KeyValue
 name|keyValue
@@ -388,9 +388,7 @@ name|ByteBuffer
 operator|.
 name|allocate
 argument_list|(
-name|ScmConfigKeys
-operator|.
-name|CHUNK_SIZE
+name|chunkSize
 argument_list|)
 expr_stmt|;
 name|this
@@ -462,9 +460,7 @@ operator|.
 name|position
 argument_list|()
 operator|==
-name|ScmConfigKeys
-operator|.
-name|CHUNK_SIZE
+name|chunkSize
 condition|)
 block|{
 name|flushBufferToChunk
@@ -586,9 +582,7 @@ name|Math
 operator|.
 name|min
 argument_list|(
-name|ScmConfigKeys
-operator|.
-name|CHUNK_SIZE
+name|chunkSize
 operator|-
 name|buffer
 operator|.
@@ -632,9 +626,7 @@ operator|.
 name|position
 argument_list|()
 operator|==
-name|ScmConfigKeys
-operator|.
-name|CHUNK_SIZE
+name|chunkSize
 condition|)
 block|{
 name|flushBufferToChunk

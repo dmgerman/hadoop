@@ -136,12 +136,22 @@ init|=
 literal|"GRPC"
 decl_stmt|;
 comment|// TODO : this is copied from OzoneConsts, may need to move to a better place
-DECL|field|CHUNK_SIZE
+DECL|field|OZONE_SCM_CHUNK_SIZE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_SCM_CHUNK_SIZE_KEY
+init|=
+literal|"ozone.scm.chunk.size"
+decl_stmt|;
+comment|// 1 MB by default
+DECL|field|OZONE_SCM_CHUNK_SIZE_DEFAULT
 specifier|public
 specifier|static
 specifier|final
 name|int
-name|CHUNK_SIZE
+name|OZONE_SCM_CHUNK_SIZE_DEFAULT
 init|=
 literal|1
 operator|*
@@ -149,7 +159,19 @@ literal|1024
 operator|*
 literal|1024
 decl_stmt|;
-comment|// 1 MB
+DECL|field|OZONE_SCM_CHUNK_MAX_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|OZONE_SCM_CHUNK_MAX_SIZE
+init|=
+literal|1
+operator|*
+literal|1024
+operator|*
+literal|1024
+decl_stmt|;
 DECL|field|OZONE_SCM_CLIENT_PORT_DEFAULT
 specifier|public
 specifier|static
