@@ -244,6 +244,26 @@ name|StringUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/**  ************************************************************************  * Copied from the not-yet-commons-ssl project at  * http://juliusdavies.ca/commons-ssl/  * This project is not yet in Apache, but it is Apache 2.0 licensed.  ************************************************************************  * Interface for checking if a hostname matches the names stored inside the  * server's X.509 certificate.  Correctly implements  * javax.net.ssl.HostnameVerifier, but that interface is not recommended.  * Instead we added several check() methods that take SSLSocket,  * or X509Certificate, or ultimately (they all end up calling this one),  * String.  (It's easier to supply JUnit with Strings instead of mock  * SSLSession objects!)  *</p><p>Our check() methods throw exceptions if the name is  * invalid, whereas javax.net.ssl.HostnameVerifier just returns true/false.  *<p/>  * We provide the HostnameVerifier.DEFAULT, HostnameVerifier.STRICT, and  * HostnameVerifier.ALLOW_ALL implementations.  We also provide the more  * specialized HostnameVerifier.DEFAULT_AND_LOCALHOST, as well as  * HostnameVerifier.STRICT_IE6.  But feel free to define your own  * implementations!  *<p/>  * Inspired by Sebastian Hauer's original StrictSSLProtocolSocketFactory in the  * HttpClient "contrib" repository.  */
 end_comment
@@ -706,6 +726,22 @@ name|AbstractVerifier
 implements|implements
 name|SSLHostnameVerifier
 block|{
+comment|/**          * Writes as SSLFactory logs as it is the only consumer of this verifier          * class.          */
+DECL|field|LOG
+specifier|static
+specifier|final
+name|Logger
+name|LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|SSLFactory
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 comment|/**          * This contains a list of 2nd-level domains that aren't allowed to          * have wildcards when combined with country-codes.          * For example: [*.co.uk].          *<p/>          * The [*.co.uk] problem is an interesting one.  Should we just hope          * that CA's would never foolishly allow such a certificate to happen?          * Looks like we're the only implementation guarding against this.          * Firefox, Curl, Sun Java 1.4, 5, 6 don't bother with this check.          */
 DECL|field|BAD_COUNTRY_2LDS
 specifier|private
@@ -1139,6 +1175,8 @@ argument_list|(
 name|cert
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|check
 argument_list|(
 name|host
@@ -1148,6 +1186,26 @@ argument_list|,
 name|subjectAlts
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|SSLException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Host check error {}"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+throw|throw
+name|e
+throw|;
+block|}
 block|}
 DECL|method|check (final String[] hosts, final String[] cns, final String[] subjectAlts, final boolean ie6, final boolean strictWithSubDomains)
 specifier|public
@@ -1180,6 +1238,49 @@ parameter_list|)
 throws|throws
 name|SSLException
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Hosts:{}, CNs:{} subjectAlts:{}, ie6:{}, "
+operator|+
+literal|"strictWithSubDomains{}"
+argument_list|,
+name|Arrays
+operator|.
+name|toString
+argument_list|(
+name|hosts
+argument_list|)
+argument_list|,
+name|Arrays
+operator|.
+name|toString
+argument_list|(
+name|cns
+argument_list|)
+argument_list|,
+name|Arrays
+operator|.
+name|toString
+argument_list|(
+name|subjectAlts
+argument_list|)
+argument_list|,
+name|ie6
+argument_list|,
+name|strictWithSubDomains
+argument_list|)
+expr_stmt|;
+block|}
 comment|// Build up lists of allowed hosts For logging/debugging purposes.
 name|StringBuffer
 name|buf
