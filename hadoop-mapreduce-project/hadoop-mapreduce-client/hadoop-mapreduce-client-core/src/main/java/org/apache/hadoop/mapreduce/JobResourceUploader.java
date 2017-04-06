@@ -82,6 +82,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|LinkedList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Map
 import|;
 end_import
@@ -487,8 +497,6 @@ operator|.
 name|JOB_DIR_PERMISSION
 argument_list|)
 decl_stmt|;
-name|FileSystem
-operator|.
 name|mkdirs
 argument_list|(
 name|jtFs
@@ -659,8 +667,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|uploadFiles (Configuration conf, Collection<String> files, Path submitJobDir, FsPermission mapredSysPerms, short submitReplication)
-specifier|private
 name|void
 name|uploadFiles
 parameter_list|(
@@ -704,8 +713,6 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-name|FileSystem
-operator|.
 name|mkdirs
 argument_list|(
 name|jtFs
@@ -749,6 +756,12 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
+literal|"Error parsing files argument."
+operator|+
+literal|" Argument must be a valid URI: "
+operator|+
+name|tmpFile
+argument_list|,
 name|e
 argument_list|)
 throw|;
@@ -812,7 +825,11 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Failed to create uri for "
+literal|"Failed to create a URI (URISyntaxException) for the remote path "
+operator|+
+name|newPath
+operator|+
+literal|". This was based on the files parameter: "
 operator|+
 name|tmpFile
 argument_list|,
@@ -823,8 +840,15 @@ block|}
 block|}
 block|}
 block|}
+comment|// Suppress warning for use of DistributedCache (it is everywhere).
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+annotation|@
+name|VisibleForTesting
 DECL|method|uploadLibJars (Configuration conf, Collection<String> libjars, Path submitJobDir, FsPermission mapredSysPerms, short submitReplication)
-specifier|private
 name|void
 name|uploadLibJars
 parameter_list|(
@@ -868,8 +892,6 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-name|FileSystem
-operator|.
 name|mkdirs
 argument_list|(
 name|jtFs
@@ -879,6 +901,22 @@ argument_list|,
 name|mapredSysPerms
 argument_list|)
 expr_stmt|;
+name|Collection
+argument_list|<
+name|URI
+argument_list|>
+name|libjarURIs
+init|=
+operator|new
+name|LinkedList
+argument_list|<>
+argument_list|()
+decl_stmt|;
+name|boolean
+name|foundFragment
+init|=
+literal|false
+decl_stmt|;
 for|for
 control|(
 name|String
@@ -887,13 +925,49 @@ range|:
 name|libjars
 control|)
 block|{
+name|URI
+name|tmpURI
+init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|tmpURI
+operator|=
+operator|new
+name|URI
+argument_list|(
+name|tmpjars
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|URISyntaxException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Error parsing libjars argument."
+operator|+
+literal|" Argument must be a valid URI: "
+operator|+
+name|tmpjars
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
 name|Path
 name|tmp
 init|=
 operator|new
 name|Path
 argument_list|(
-name|tmpjars
+name|tmpURI
 argument_list|)
 decl_stmt|;
 name|Path
@@ -910,7 +984,37 @@ argument_list|,
 name|submitReplication
 argument_list|)
 decl_stmt|;
-comment|// Add each file to the classpath
+try|try
+block|{
+name|URI
+name|pathURI
+init|=
+name|getPathURI
+argument_list|(
+name|newPath
+argument_list|,
+name|tmpURI
+operator|.
+name|getFragment
+argument_list|()
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|foundFragment
+condition|)
+block|{
+name|foundFragment
+operator|=
+name|pathURI
+operator|.
+name|getFragment
+argument_list|()
+operator|!=
+literal|null
+expr_stmt|;
+block|}
 name|DistributedCache
 operator|.
 name|addFileToClassPath
@@ -918,10 +1022,7 @@ argument_list|(
 operator|new
 name|Path
 argument_list|(
-name|newPath
-operator|.
-name|toUri
-argument_list|()
+name|pathURI
 operator|.
 name|getPath
 argument_list|()
@@ -931,17 +1032,50 @@ name|conf
 argument_list|,
 name|jtFs
 argument_list|,
-operator|!
-name|useWildcard
+literal|false
 argument_list|)
 expr_stmt|;
+name|libjarURIs
+operator|.
+name|add
+argument_list|(
+name|pathURI
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|URISyntaxException
+name|ue
+parameter_list|)
+block|{
+comment|// should not throw a uri exception
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Failed to create a URI (URISyntaxException) for the remote path "
+operator|+
+name|newPath
+operator|+
+literal|". This was based on the libjar parameter: "
+operator|+
+name|tmpjars
+argument_list|,
+name|ue
+argument_list|)
+throw|;
+block|}
 block|}
 if|if
 condition|(
 name|useWildcard
+operator|&&
+operator|!
+name|foundFragment
 condition|)
 block|{
-comment|// Add the whole directory to the cache
+comment|// Add the whole directory to the cache using a wild card
 name|Path
 name|libJarsDirWildcard
 init|=
@@ -973,10 +1107,32 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+else|else
+block|{
+for|for
+control|(
+name|URI
+name|uri
+range|:
+name|libjarURIs
+control|)
+block|{
+name|DistributedCache
+operator|.
+name|addCacheFile
+argument_list|(
+name|uri
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
 block|}
 block|}
+block|}
+block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|uploadArchives (Configuration conf, Collection<String> archives, Path submitJobDir, FsPermission mapredSysPerms, short submitReplication)
-specifier|private
 name|void
 name|uploadArchives
 parameter_list|(
@@ -1020,8 +1176,6 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-name|FileSystem
-operator|.
 name|mkdirs
 argument_list|(
 name|jtFs
@@ -1063,6 +1217,12 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
+literal|"Error parsing archives argument."
+operator|+
+literal|" Argument must be a valid URI: "
+operator|+
+name|tmpArchives
+argument_list|,
 name|e
 argument_list|)
 throw|;
@@ -1126,7 +1286,11 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Failed to create uri for "
+literal|"Failed to create a URI (URISyntaxException) for the remote path"
+operator|+
+name|newPath
+operator|+
+literal|". This was based on the archive parameter: "
 operator|+
 name|tmpArchives
 argument_list|,
@@ -1137,8 +1301,9 @@ block|}
 block|}
 block|}
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|uploadJobJar (Job job, String jobJar, Path submitJobDir, short submitReplication)
-specifier|private
 name|void
 name|uploadJobJar
 parameter_list|(
@@ -1562,6 +1727,12 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
+literal|"Error parsing argument."
+operator|+
+literal|" Argument must be a valid URI: "
+operator|+
+name|s
+argument_list|,
 name|e
 argument_list|)
 throw|;
@@ -2087,10 +2258,43 @@ return|return
 name|status
 return|;
 block|}
+comment|/**    * Create a new directory in the passed filesystem. This wrapper method exists    * so that it can be overridden/stubbed during testing.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|mkdirs (FileSystem fs, Path dir, FsPermission permission)
+name|boolean
+name|mkdirs
+parameter_list|(
+name|FileSystem
+name|fs
+parameter_list|,
+name|Path
+name|dir
+parameter_list|,
+name|FsPermission
+name|permission
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|FileSystem
+operator|.
+name|mkdirs
+argument_list|(
+name|fs
+argument_list|,
+name|dir
+argument_list|,
+name|permission
+argument_list|)
+return|;
+block|}
 comment|// copies a file to the jobtracker filesystem and returns the path where it
 comment|// was copied to
+annotation|@
+name|VisibleForTesting
 DECL|method|copyRemoteFiles (Path parentDir, Path originalPath, Configuration conf, short replication)
-specifier|private
 name|Path
 name|copyRemoteFiles
 parameter_list|(
@@ -2186,12 +2390,20 @@ argument_list|,
 name|replication
 argument_list|)
 expr_stmt|;
+name|jtFs
+operator|.
+name|makeQualified
+argument_list|(
+name|newPath
+argument_list|)
+expr_stmt|;
 return|return
 name|newPath
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|copyJar (Path originalJarPath, Path submitJarFile, short replication)
-specifier|private
 name|void
 name|copyJar
 parameter_list|(
@@ -2353,24 +2565,7 @@ operator|==
 literal|null
 condition|)
 block|{
-name|pathURI
-operator|=
-operator|new
-name|URI
-argument_list|(
-name|pathURI
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|"#"
-operator|+
-name|destPath
-operator|.
-name|getName
-argument_list|()
-argument_list|)
-expr_stmt|;
+comment|// no fragment, just return existing pathURI from destPath
 block|}
 else|else
 block|{
