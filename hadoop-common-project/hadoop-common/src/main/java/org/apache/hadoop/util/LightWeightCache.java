@@ -235,26 +235,6 @@ return|;
 block|}
 block|}
 decl_stmt|;
-comment|/** A clock for measuring time so that it can be mocked in unit tests. */
-DECL|class|Clock
-specifier|static
-class|class
-name|Clock
-block|{
-comment|/** @return the current time. */
-DECL|method|currentTime ()
-name|long
-name|currentTime
-parameter_list|()
-block|{
-return|return
-name|System
-operator|.
-name|nanoTime
-argument_list|()
-return|;
-block|}
-block|}
 DECL|method|updateRecommendedLength (int recommendedLength, int sizeLimit)
 specifier|private
 specifier|static
@@ -317,11 +297,11 @@ specifier|final
 name|int
 name|sizeLimit
 decl_stmt|;
-DECL|field|clock
+DECL|field|timer
 specifier|private
 specifier|final
-name|Clock
-name|clock
+name|Timer
+name|timer
 decl_stmt|;
 comment|/**    * @param recommendedLength Recommended size of the internal array.    * @param sizeLimit the limit of the size of the cache.    *            The limit is disabled if it is<= 0.    * @param creationExpirationPeriod the time period C> 0 in nanoseconds that    *            the creation of an entry is expired if it is added to the cache    *            longer than C.    * @param accessExpirationPeriod the time period A>= 0 in nanoseconds that    *            the access of an entry is expired if it is not accessed    *            longer than A.     */
 DECL|method|LightWeightCache (final int recommendedLength, final int sizeLimit, final long creationExpirationPeriod, final long accessExpirationPeriod)
@@ -356,14 +336,14 @@ argument_list|,
 name|accessExpirationPeriod
 argument_list|,
 operator|new
-name|Clock
+name|Timer
 argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|LightWeightCache (final int recommendedLength, final int sizeLimit, final long creationExpirationPeriod, final long accessExpirationPeriod, final Clock clock)
+DECL|method|LightWeightCache (final int recommendedLength, final int sizeLimit, final long creationExpirationPeriod, final long accessExpirationPeriod, final Timer timer)
 name|LightWeightCache
 parameter_list|(
 specifier|final
@@ -383,8 +363,8 @@ name|long
 name|accessExpirationPeriod
 parameter_list|,
 specifier|final
-name|Clock
-name|clock
+name|Timer
+name|timer
 parameter_list|)
 block|{
 name|super
@@ -480,9 +460,9 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|clock
+name|timer
 operator|=
-name|clock
+name|timer
 expr_stmt|;
 block|}
 DECL|method|setExpirationTime (final Entry e, final long expirationPeriod)
@@ -502,9 +482,9 @@ name|e
 operator|.
 name|setExpirationTime
 argument_list|(
-name|clock
+name|timer
 operator|.
-name|currentTime
+name|monotonicNowNanos
 argument_list|()
 operator|+
 name|expirationPeriod
@@ -591,9 +571,9 @@ specifier|final
 name|long
 name|now
 init|=
-name|clock
+name|timer
 operator|.
-name|currentTime
+name|monotonicNowNanos
 argument_list|()
 decl_stmt|;
 for|for

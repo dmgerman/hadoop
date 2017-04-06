@@ -156,6 +156,21 @@ operator|/
 name|NANOSECONDS_PER_MILLISECOND
 return|;
 block|}
+comment|/**    * Same as {@link #monotonicNow()} but returns its result in nanoseconds.    * Note that this is subject to the same resolution constraints as    * {@link System#nanoTime()}.    * @return a monotonic clock that counts in nanoseconds.    */
+DECL|method|monotonicNowNanos ()
+specifier|public
+specifier|static
+name|long
+name|monotonicNowNanos
+parameter_list|()
+block|{
+return|return
+name|System
+operator|.
+name|nanoTime
+argument_list|()
+return|;
+block|}
 comment|/**    * Convert time in millisecond to human readable format.    * @return a human readable string for the input time    */
 DECL|method|formatTime (long millis)
 specifier|public

@@ -90,6 +90,20 @@ name|monotonicNow
 argument_list|()
 return|;
 block|}
+comment|/**    * Same as {@link #monotonicNow()} but returns its result in nanoseconds.    * Note that this is subject to the same resolution constraints as    * {@link System#nanoTime()}.    * @return a monotonic clock that counts in nanoseconds.    */
+DECL|method|monotonicNowNanos ()
+specifier|public
+name|long
+name|monotonicNowNanos
+parameter_list|()
+block|{
+return|return
+name|Time
+operator|.
+name|monotonicNowNanos
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

@@ -18,6 +18,18 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -64,10 +76,10 @@ name|FakeTimer
 extends|extends
 name|Timer
 block|{
-DECL|field|nowMillis
+DECL|field|nowNanos
 specifier|private
 name|long
-name|nowMillis
+name|nowNanos
 decl_stmt|;
 comment|/** Constructs a FakeTimer with a non-zero value */
 DECL|method|FakeTimer ()
@@ -75,7 +87,7 @@ specifier|public
 name|FakeTimer
 parameter_list|()
 block|{
-name|nowMillis
+name|nowNanos
 operator|=
 literal|1000
 expr_stmt|;
@@ -90,7 +102,14 @@ name|now
 parameter_list|()
 block|{
 return|return
-name|nowMillis
+name|TimeUnit
+operator|.
+name|NANOSECONDS
+operator|.
+name|toMillis
+argument_list|(
+name|nowNanos
+argument_list|)
 return|;
 block|}
 annotation|@
@@ -102,7 +121,26 @@ name|monotonicNow
 parameter_list|()
 block|{
 return|return
-name|nowMillis
+name|TimeUnit
+operator|.
+name|NANOSECONDS
+operator|.
+name|toMillis
+argument_list|(
+name|nowNanos
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|monotonicNowNanos ()
+specifier|public
+name|long
+name|monotonicNowNanos
+parameter_list|()
+block|{
+return|return
+name|nowNanos
 return|;
 block|}
 comment|/** Increases the time by milliseconds */
@@ -115,9 +153,31 @@ name|long
 name|advMillis
 parameter_list|)
 block|{
-name|nowMillis
+name|nowNanos
 operator|+=
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+operator|.
+name|toNanos
+argument_list|(
 name|advMillis
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Increases the time by nanoseconds.    * @param advNanos Nanoseconds to advance by.    */
+DECL|method|advanceNanos (long advNanos)
+specifier|public
+name|void
+name|advanceNanos
+parameter_list|(
+name|long
+name|advNanos
+parameter_list|)
+block|{
+name|nowNanos
+operator|+=
+name|advNanos
 expr_stmt|;
 block|}
 block|}
