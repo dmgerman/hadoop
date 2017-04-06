@@ -1958,6 +1958,26 @@ name|server
 operator|.
 name|nodemanager
 operator|.
+name|metrics
+operator|.
+name|NodeManagerMetrics
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
 name|recovery
 operator|.
 name|NMMemoryStateStoreService
@@ -2252,6 +2272,11 @@ specifier|private
 name|NMContext
 name|nmContext
 decl_stmt|;
+DECL|field|metrics
+specifier|private
+name|NodeManagerMetrics
+name|metrics
+decl_stmt|;
 annotation|@
 name|BeforeClass
 DECL|method|setupClass ()
@@ -2388,6 +2413,15 @@ argument_list|,
 literal|false
 argument_list|,
 name|conf
+argument_list|)
+expr_stmt|;
+name|metrics
+operator|=
+name|mock
+argument_list|(
+name|NodeManagerMetrics
+operator|.
+name|class
 argument_list|)
 expr_stmt|;
 block|}
@@ -2620,6 +2654,8 @@ argument_list|,
 name|diskhandler
 argument_list|,
 name|nmContext
+argument_list|,
+name|metrics
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -3051,6 +3087,8 @@ argument_list|,
 name|diskhandler
 argument_list|,
 name|nmContext
+argument_list|,
+name|metrics
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -3609,6 +3647,8 @@ argument_list|,
 name|dirsHandler
 argument_list|,
 name|nmContext
+argument_list|,
+name|metrics
 argument_list|)
 decl_stmt|;
 name|ResourceLocalizationService
@@ -6361,6 +6401,8 @@ argument_list|,
 name|dirsHandlerSpy
 argument_list|,
 name|nmContext
+argument_list|,
+name|metrics
 argument_list|)
 decl_stmt|;
 name|ResourceLocalizationService
@@ -6968,6 +7010,8 @@ argument_list|,
 name|dirsHandler
 argument_list|,
 name|nmContext
+argument_list|,
+name|metrics
 argument_list|)
 decl_stmt|;
 name|ResourceLocalizationService
@@ -9075,6 +9119,8 @@ argument_list|,
 name|dirsHandler
 argument_list|,
 name|nmContext
+argument_list|,
+name|metrics
 argument_list|)
 decl_stmt|;
 name|ResourceLocalizationService
@@ -11202,6 +11248,8 @@ argument_list|,
 name|dirsHandler
 argument_list|,
 name|spyContext
+argument_list|,
+name|metrics
 argument_list|)
 decl_stmt|;
 name|ResourceLocalizationService
@@ -11833,6 +11881,8 @@ argument_list|,
 name|dirsHandler
 argument_list|,
 name|nmContext
+argument_list|,
+name|metrics
 argument_list|)
 decl_stmt|;
 name|ResourceLocalizationService
@@ -12699,6 +12749,8 @@ argument_list|,
 name|dirsHandler
 argument_list|,
 name|nmContext
+argument_list|,
+name|metrics
 argument_list|)
 decl_stmt|;
 name|ResourceLocalizationService
@@ -13351,6 +13403,8 @@ argument_list|,
 name|dirsHandlerSpy
 argument_list|,
 name|nmContext
+argument_list|,
+name|metrics
 argument_list|)
 decl_stmt|;
 name|ResourceLocalizationService
@@ -14185,6 +14239,8 @@ argument_list|,
 name|localDirHandler
 argument_list|,
 name|nmContext
+argument_list|,
+name|metrics
 argument_list|)
 decl_stmt|;
 name|dispatcher1
@@ -15033,6 +15089,8 @@ argument_list|,
 name|localDirHandler
 argument_list|,
 name|nmContext
+argument_list|,
+name|metrics
 argument_list|)
 decl_stmt|;
 name|dispatcher1
@@ -15964,6 +16022,8 @@ argument_list|,
 name|dirsHandler
 argument_list|,
 name|nmContext
+argument_list|,
+name|metrics
 argument_list|)
 decl_stmt|;
 name|ResourceLocalizationService
@@ -17677,6 +17737,8 @@ argument_list|,
 name|dirsHandler
 argument_list|,
 name|nmContext
+argument_list|,
+name|metrics
 argument_list|)
 decl_stmt|;
 name|ResourceLocalizationService
@@ -18173,6 +18235,8 @@ argument_list|,
 name|mockDirsHandler
 argument_list|,
 name|nmContext
+argument_list|,
+name|metrics
 argument_list|)
 decl_stmt|;
 name|ResourceLocalizationService

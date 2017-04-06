@@ -25,6 +25,18 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|mock
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -121,6 +133,26 @@ operator|.
 name|LocalCacheDirectoryManager
 operator|.
 name|Directory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|metrics
+operator|.
+name|NodeManagerMetrics
 import|;
 end_import
 
@@ -534,6 +566,16 @@ argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
+name|NodeManagerMetrics
+name|metrics
+init|=
+name|mock
+argument_list|(
+name|NodeManagerMetrics
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 name|ResourceLocalizationService
 name|service
 init|=
@@ -549,6 +591,8 @@ argument_list|,
 literal|null
 argument_list|,
 name|nmContext
+argument_list|,
+name|metrics
 argument_list|)
 decl_stmt|;
 try|try

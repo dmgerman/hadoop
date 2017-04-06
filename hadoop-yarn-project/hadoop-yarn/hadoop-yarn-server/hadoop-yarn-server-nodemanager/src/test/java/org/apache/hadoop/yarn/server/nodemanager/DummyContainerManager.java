@@ -798,7 +798,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|createResourceLocalizationService ( ContainerExecutor exec, DeletionService deletionContext, Context context)
+DECL|method|createResourceLocalizationService ( ContainerExecutor exec, DeletionService deletionContext, Context context, NodeManagerMetrics metrics)
 specifier|protected
 name|ResourceLocalizationService
 name|createResourceLocalizationService
@@ -811,6 +811,9 @@ name|deletionContext
 parameter_list|,
 name|Context
 name|context
+parameter_list|,
+name|NodeManagerMetrics
+name|metrics
 parameter_list|)
 block|{
 return|return
@@ -830,6 +833,8 @@ operator|.
 name|dirsHandler
 argument_list|,
 name|context
+argument_list|,
+name|metrics
 argument_list|)
 block|{
 annotation|@

@@ -3004,6 +3004,8 @@ argument_list|,
 name|deletionContext
 argument_list|,
 name|context
+argument_list|,
+name|metrics
 argument_list|)
 expr_stmt|;
 name|addService
@@ -4338,7 +4340,7 @@ operator|.
 name|containersMonitor
 return|;
 block|}
-DECL|method|createResourceLocalizationService ( ContainerExecutor exec, DeletionService deletionContext, Context context)
+DECL|method|createResourceLocalizationService ( ContainerExecutor exec, DeletionService deletionContext, Context nmContext, NodeManagerMetrics nmMetrics)
 specifier|protected
 name|ResourceLocalizationService
 name|createResourceLocalizationService
@@ -4350,7 +4352,10 @@ name|DeletionService
 name|deletionContext
 parameter_list|,
 name|Context
-name|context
+name|nmContext
+parameter_list|,
+name|NodeManagerMetrics
+name|nmMetrics
 parameter_list|)
 block|{
 return|return
@@ -4367,7 +4372,9 @@ name|deletionContext
 argument_list|,
 name|dirsHandler
 argument_list|,
-name|context
+name|nmContext
+argument_list|,
+name|nmMetrics
 argument_list|)
 return|;
 block|}
