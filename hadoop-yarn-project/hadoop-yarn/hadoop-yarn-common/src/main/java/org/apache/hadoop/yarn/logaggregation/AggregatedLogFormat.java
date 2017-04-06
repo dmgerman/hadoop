@@ -2592,16 +2592,16 @@ specifier|public
 specifier|static
 class|class
 name|LogWriter
+implements|implements
+name|AutoCloseable
 block|{
 DECL|field|fsDataOStream
 specifier|private
-specifier|final
 name|FSDataOutputStream
 name|fsDataOStream
 decl_stmt|;
 DECL|field|writer
 specifier|private
-specifier|final
 name|TFile
 operator|.
 name|Writer
@@ -2612,9 +2612,11 @@ specifier|private
 name|FileContext
 name|fc
 decl_stmt|;
-DECL|method|LogWriter (final Configuration conf, final Path remoteAppLogFile, UserGroupInformation userUgi)
+comment|/**      * Initialize the LogWriter.      * Must be called just after the instance is created.      * @param conf Configuration      * @param remoteAppLogFile remote log file path      * @param userUgi Ugi of the user      * @throws IOException Failed to initialize      */
+DECL|method|initialize (final Configuration conf, final Path remoteAppLogFile, UserGroupInformation userUgi)
 specifier|public
-name|LogWriter
+name|void
+name|initialize
 parameter_list|(
 specifier|final
 name|Configuration
@@ -3080,16 +3082,23 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
 name|close
 parameter_list|()
 block|{
+if|if
+condition|(
+name|writer
+operator|!=
+literal|null
+condition|)
+block|{
 try|try
 block|{
-name|this
-operator|.
 name|writer
 operator|.
 name|close
@@ -3111,6 +3120,7 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|IOUtils
 operator|.

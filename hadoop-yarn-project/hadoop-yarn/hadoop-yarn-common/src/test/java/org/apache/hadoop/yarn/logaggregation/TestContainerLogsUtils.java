@@ -632,6 +632,8 @@ name|nodeId
 argument_list|)
 argument_list|)
 decl_stmt|;
+try|try
+init|(
 name|AggregatedLogFormat
 operator|.
 name|LogWriter
@@ -641,6 +643,12 @@ operator|new
 name|AggregatedLogFormat
 operator|.
 name|LogWriter
+argument_list|()
+init|)
+block|{
+name|writer
+operator|.
+name|initialize
 argument_list|(
 name|configuration
 argument_list|,
@@ -648,7 +656,7 @@ name|path
 argument_list|,
 name|ugi
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|writer
 operator|.
 name|writeApplicationOwner
@@ -687,11 +695,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|writer
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
+block|}
 block|}
 block|}
 end_class

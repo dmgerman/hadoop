@@ -1784,6 +1784,8 @@ operator|.
 name|getCurrentUser
 argument_list|()
 decl_stmt|;
+try|try
+init|(
 name|AggregatedLogFormat
 operator|.
 name|LogWriter
@@ -1793,6 +1795,12 @@ operator|new
 name|AggregatedLogFormat
 operator|.
 name|LogWriter
+argument_list|()
+init|)
+block|{
+name|writer
+operator|.
+name|initialize
 argument_list|(
 name|configuration
 argument_list|,
@@ -1804,7 +1812,7 @@ argument_list|)
 argument_list|,
 name|ugi
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|writer
 operator|.
 name|writeApplicationOwner
@@ -1825,11 +1833,7 @@ name|appAcls
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|ApplicationAccessType
-argument_list|,
-name|String
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|appAcls
@@ -1884,11 +1888,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|writer
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
+block|}
 block|}
 DECL|method|writeLogs (String dirName)
 specifier|private

@@ -9505,6 +9505,8 @@ name|currentTimeMillis
 argument_list|()
 argument_list|)
 decl_stmt|;
+try|try
+init|(
 name|AggregatedLogFormat
 operator|.
 name|LogWriter
@@ -9514,6 +9516,12 @@ operator|new
 name|AggregatedLogFormat
 operator|.
 name|LogWriter
+argument_list|()
+init|)
+block|{
+name|writer
+operator|.
+name|initialize
 argument_list|(
 name|configuration
 argument_list|,
@@ -9521,7 +9529,7 @@ name|path
 argument_list|,
 name|ugi
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|writer
 operator|.
 name|writeApplicationOwner
@@ -9542,11 +9550,7 @@ name|appAcls
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|ApplicationAccessType
-argument_list|,
-name|String
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|appAcls
@@ -9601,11 +9605,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|writer
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
+block|}
 block|}
 DECL|method|uploadEmptyContainerLogIntoRemoteDir (UserGroupInformation ugi, Configuration configuration, List<String> rootLogDirs, NodeId nodeId, ContainerId containerId, Path appDir, FileSystem fs)
 specifier|private
@@ -9661,6 +9661,8 @@ name|currentTimeMillis
 argument_list|()
 argument_list|)
 decl_stmt|;
+try|try
+init|(
 name|AggregatedLogFormat
 operator|.
 name|LogWriter
@@ -9670,6 +9672,12 @@ operator|new
 name|AggregatedLogFormat
 operator|.
 name|LogWriter
+argument_list|()
+init|)
+block|{
+name|writer
+operator|.
+name|initialize
 argument_list|(
 name|configuration
 argument_list|,
@@ -9677,7 +9685,7 @@ name|path
 argument_list|,
 name|ugi
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|writer
 operator|.
 name|writeApplicationOwner
@@ -9698,11 +9706,7 @@ name|appAcls
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|ApplicationAccessType
-argument_list|,
-name|String
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|appAcls
@@ -9795,9 +9799,7 @@ name|out
 argument_list|,
 operator|new
 name|HashSet
-argument_list|<
-name|File
-argument_list|>
+argument_list|<>
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -9806,11 +9808,7 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-name|writer
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
+block|}
 block|}
 DECL|method|createMockYarnClient (YarnApplicationState appState, String user)
 specifier|private

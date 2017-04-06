@@ -1026,11 +1026,19 @@ operator|.
 name|getCurrentUser
 argument_list|()
 decl_stmt|;
+try|try
+init|(
 name|LogWriter
 name|logWriter
 init|=
 operator|new
 name|LogWriter
+argument_list|()
+init|)
+block|{
+name|logWriter
+operator|.
+name|initialize
 argument_list|(
 operator|new
 name|Configuration
@@ -1040,7 +1048,7 @@ name|remoteAppLogFile
 argument_list|,
 name|ugi
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|LogKey
 name|logKey
 init|=
@@ -1204,11 +1212,7 @@ argument_list|,
 name|logValue
 argument_list|)
 expr_stmt|;
-name|logWriter
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Test
@@ -1403,11 +1407,19 @@ operator|.
 name|getCurrentUser
 argument_list|()
 decl_stmt|;
+try|try
+init|(
 name|LogWriter
 name|logWriter
 init|=
 operator|new
 name|LogWriter
+argument_list|()
+init|)
+block|{
+name|logWriter
+operator|.
+name|initialize
 argument_list|(
 name|conf
 argument_list|,
@@ -1415,7 +1427,7 @@ name|remoteAppLogFile
 argument_list|,
 name|ugi
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|LogKey
 name|logKey
 init|=
@@ -1449,8 +1461,8 @@ name|getShortUserName
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// When we try to open FileInputStream for stderr, it will throw out an IOException.
-comment|// Skip the log aggregation for stderr.
+comment|// When we try to open FileInputStream for stderr, it will throw out an
+comment|// IOException. Skip the log aggregation for stderr.
 name|LogValue
 name|spyLogValue
 init|=
@@ -1507,11 +1519,7 @@ argument_list|,
 name|spyLogValue
 argument_list|)
 expr_stmt|;
-name|logWriter
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
+block|}
 comment|// make sure permission are correct on the file
 name|FileStatus
 name|fsStatus
@@ -2037,11 +2045,19 @@ operator|.
 name|getCurrentUser
 argument_list|()
 decl_stmt|;
+try|try
+init|(
 name|LogWriter
 name|logWriter
 init|=
 operator|new
 name|LogWriter
+argument_list|()
+init|)
+block|{
+name|logWriter
+operator|.
+name|initialize
 argument_list|(
 name|conf
 argument_list|,
@@ -2049,7 +2065,7 @@ name|remoteAppLogFile
 argument_list|,
 name|ugi
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|LogKey
 name|logKey
 init|=
@@ -2090,8 +2106,8 @@ argument_list|)
 decl_stmt|;
 comment|// It is trying simulate a situation where first log file is owned by
 comment|// different user (probably symlink) and second one by the user itself.
-comment|// The first file should not be aggregated. Because this log file has the invalid
-comment|// user name.
+comment|// The first file should not be aggregated. Because this log file has
+comment|// the invalid user name.
 name|when
 argument_list|(
 name|logValue
@@ -2122,11 +2138,7 @@ argument_list|,
 name|logValue
 argument_list|)
 expr_stmt|;
-name|logWriter
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
+block|}
 name|BufferedReader
 name|in
 init|=
