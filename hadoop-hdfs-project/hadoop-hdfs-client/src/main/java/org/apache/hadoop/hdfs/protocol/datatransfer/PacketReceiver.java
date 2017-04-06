@@ -190,7 +190,7 @@ name|Closeable
 block|{
 comment|/**    * The max size of any single packet. This prevents OOMEs when    * invalid data is sent.    */
 DECL|field|MAX_PACKET_SIZE
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|int

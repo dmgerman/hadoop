@@ -486,6 +486,24 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|datatransfer
+operator|.
+name|PacketReceiver
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|security
 operator|.
 name|token
@@ -961,6 +979,11 @@ specifier|private
 name|FileEncryptionInfo
 name|fileEncryptionInfo
 decl_stmt|;
+DECL|field|writePacketSize
+specifier|private
+name|int
+name|writePacketSize
+decl_stmt|;
 comment|/** Use {@link ByteArrayManager} to create buffer for non-heartbeat packets.*/
 DECL|method|createPacket (int packetSize, int chunksPerPkt, long offsetInBlock, long seqno, boolean lastPacketInBlock)
 specifier|protected
@@ -1375,6 +1398,9 @@ name|src
 argument_list|)
 expr_stmt|;
 block|}
+name|initWritePacketSize
+argument_list|()
+expr_stmt|;
 name|this
 operator|.
 name|bytesPerChecksum
@@ -1446,6 +1472,57 @@ operator|.
 name|getByteArrayManager
 argument_list|()
 expr_stmt|;
+block|}
+comment|/**    * Ensures the configured writePacketSize never exceeds    * PacketReceiver.MAX_PACKET_SIZE.    */
+DECL|method|initWritePacketSize ()
+specifier|private
+name|void
+name|initWritePacketSize
+parameter_list|()
+block|{
+name|writePacketSize
+operator|=
+name|dfsClient
+operator|.
+name|getConf
+argument_list|()
+operator|.
+name|getWritePacketSize
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+name|writePacketSize
+operator|>
+name|PacketReceiver
+operator|.
+name|MAX_PACKET_SIZE
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Configured write packet exceeds {} bytes as max,"
+operator|+
+literal|" using {} bytes."
+argument_list|,
+name|PacketReceiver
+operator|.
+name|MAX_PACKET_SIZE
+argument_list|,
+name|PacketReceiver
+operator|.
+name|MAX_PACKET_SIZE
+argument_list|)
+expr_stmt|;
+name|writePacketSize
+operator|=
+name|PacketReceiver
+operator|.
+name|MAX_PACKET_SIZE
+expr_stmt|;
+block|}
 block|}
 comment|/** Construct a new output stream for creating a file. */
 DECL|method|DFSOutputStream (DFSClient dfsClient, String src, HdfsFileStatus stat, EnumSet<CreateFlag> flag, Progressable progress, DataChecksum checksum, String[] favoredNodes, boolean createStreamer)
@@ -2887,16 +2964,16 @@ name|getAppendChunk
 argument_list|()
 condition|)
 block|{
+specifier|final
 name|int
 name|psize
 init|=
+operator|(
+name|int
+operator|)
 name|Math
 operator|.
 name|min
-argument_list|(
-call|(
-name|int
-call|)
 argument_list|(
 name|blockSize
 operator|-
@@ -2905,15 +2982,8 @@ argument_list|()
 operator|.
 name|getBytesCurBlock
 argument_list|()
-argument_list|)
 argument_list|,
-name|dfsClient
-operator|.
-name|getConf
-argument_list|()
-operator|.
-name|getWritePacketSize
-argument_list|()
+name|writePacketSize
 argument_list|)
 decl_stmt|;
 name|computePacketChunkSize
@@ -2924,6 +2994,48 @@ name|bytesPerChecksum
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|/**    * Used in test only.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|setAppendChunk (final boolean appendChunk)
+name|void
+name|setAppendChunk
+parameter_list|(
+specifier|final
+name|boolean
+name|appendChunk
+parameter_list|)
+block|{
+name|getStreamer
+argument_list|()
+operator|.
+name|setAppendChunk
+argument_list|(
+name|appendChunk
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Used in test only.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|setBytesCurBlock (final long bytesCurBlock)
+name|void
+name|setBytesCurBlock
+parameter_list|(
+specifier|final
+name|long
+name|bytesCurBlock
+parameter_list|)
+block|{
+name|getStreamer
+argument_list|()
+operator|.
+name|setBytesCurBlock
+argument_list|(
+name|bytesCurBlock
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * if encountering a block boundary, send an empty packet to    * indicate the end of block and reset bytesCurBlock.    *    * @throws IOException    */
 DECL|method|endBlock ()
