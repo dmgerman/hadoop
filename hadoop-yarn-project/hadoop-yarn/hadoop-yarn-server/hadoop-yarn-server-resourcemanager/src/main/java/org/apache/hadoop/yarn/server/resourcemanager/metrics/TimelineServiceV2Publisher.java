@@ -1480,18 +1480,15 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|TimelineV2PublishEvent
+name|ApplicationFinishPublishEvent
 argument_list|(
 name|SystemMetricsEventType
 operator|.
-name|PUBLISH_ENTITY
+name|PUBLISH_APPLICATION_FINISHED_ENTITY
 argument_list|,
 name|entity
 argument_list|,
 name|app
-operator|.
-name|getApplicationId
-argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3187,10 +3184,10 @@ name|TimelineV2PublishEvent
 block|{
 DECL|field|app
 specifier|private
-name|RMAppImpl
+name|RMApp
 name|app
 decl_stmt|;
-DECL|method|ApplicationFinishPublishEvent (SystemMetricsEventType type, TimelineEntity entity, RMAppImpl app)
+DECL|method|ApplicationFinishPublishEvent (SystemMetricsEventType type, TimelineEntity entity, RMApp app)
 specifier|public
 name|ApplicationFinishPublishEvent
 parameter_list|(
@@ -3200,7 +3197,7 @@ parameter_list|,
 name|TimelineEntity
 name|entity
 parameter_list|,
-name|RMAppImpl
+name|RMApp
 name|app
 parameter_list|)
 block|{
@@ -3230,6 +3227,9 @@ name|getRMAppImpl
 parameter_list|()
 block|{
 return|return
+operator|(
+name|RMAppImpl
+operator|)
 name|app
 return|;
 block|}
