@@ -346,6 +346,26 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|namenode
+operator|.
+name|NNStorage
+operator|.
+name|NameNodeDirType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|protocol
 operator|.
 name|NamespaceInfo
@@ -1264,7 +1284,6 @@ name|File
 name|dir
 parameter_list|)
 block|{
-comment|// default dirType is null
 name|this
 argument_list|(
 name|dir
@@ -1283,7 +1302,6 @@ name|StorageLocation
 name|location
 parameter_list|)
 block|{
-comment|// default dirType is null
 name|this
 argument_list|(
 literal|null
@@ -1468,11 +1486,22 @@ name|lock
 operator|=
 literal|null
 expr_stmt|;
+comment|// default dirType is UNDEFINED
 name|this
 operator|.
 name|dirType
 operator|=
+operator|(
 name|dirType
+operator|==
+literal|null
+condition|?
+name|NameNodeDirType
+operator|.
+name|UNDEFINED
+else|:
+name|dirType
+operator|)
 expr_stmt|;
 name|this
 operator|.
