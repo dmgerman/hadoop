@@ -155,6 +155,20 @@ specifier|private
 name|MutableCounterLong
 name|numReadLostBlocks
 decl_stmt|;
+DECL|field|numDirectBlockWrites
+annotation|@
+name|Metric
+specifier|private
+name|MutableCounterLong
+name|numDirectBlockWrites
+decl_stmt|;
+DECL|field|numFailedDirectBlockWrites
+annotation|@
+name|Metric
+specifier|private
+name|MutableCounterLong
+name|numFailedDirectBlockWrites
+decl_stmt|;
 DECL|field|dbReadLatency
 annotation|@
 name|Metric
@@ -182,6 +196,13 @@ name|Metric
 specifier|private
 name|MutableRate
 name|containerWriteLatency
+decl_stmt|;
+DECL|field|directBlockWriteLatency
+annotation|@
+name|Metric
+specifier|private
+name|MutableRate
+name|directBlockWriteLatency
 decl_stmt|;
 DECL|method|CBlockTargetMetrics ()
 specifier|public
@@ -278,6 +299,30 @@ name|incr
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|incNumDirectBlockWrites ()
+specifier|public
+name|void
+name|incNumDirectBlockWrites
+parameter_list|()
+block|{
+name|numDirectBlockWrites
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumFailedDirectBlockWrites ()
+specifier|public
+name|void
+name|incNumFailedDirectBlockWrites
+parameter_list|()
+block|{
+name|numFailedDirectBlockWrites
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
 DECL|method|updateDBReadLatency (long latency)
 specifier|public
 name|void
@@ -339,6 +384,23 @@ name|latency
 parameter_list|)
 block|{
 name|containerWriteLatency
+operator|.
+name|add
+argument_list|(
+name|latency
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|updateDirectBlockWriteLatency (long latency)
+specifier|public
+name|void
+name|updateDirectBlockWriteLatency
+parameter_list|(
+name|long
+name|latency
+parameter_list|)
+block|{
+name|directBlockWriteLatency
 operator|.
 name|add
 argument_list|(
@@ -416,6 +478,36 @@ parameter_list|()
 block|{
 return|return
 name|numReadLostBlocks
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumDirectBlockWrites ()
+specifier|public
+name|long
+name|getNumDirectBlockWrites
+parameter_list|()
+block|{
+return|return
+name|numDirectBlockWrites
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumFailedDirectBlockWrites ()
+specifier|public
+name|long
+name|getNumFailedDirectBlockWrites
+parameter_list|()
+block|{
+return|return
+name|numFailedDirectBlockWrites
 operator|.
 name|value
 argument_list|()
