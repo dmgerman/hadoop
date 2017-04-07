@@ -2547,6 +2547,19 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
+comment|// Default value is 90 - if you have low disk space,
+comment|// testNetworkedJob will fail
+name|conf
+operator|.
+name|set
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_MAX_PER_DISK_UTILIZATION_PERCENTAGE
+argument_list|,
+literal|"99"
+argument_list|)
+expr_stmt|;
 return|return
 name|MiniMRClientClusterFactory
 operator|.
