@@ -977,6 +977,54 @@ argument_list|<
 name|NodeManagerEvent
 argument_list|>
 block|{
+comment|/**    * Node manager return status codes.    */
+DECL|enum|NodeManagerStatus
+specifier|public
+enum|enum
+name|NodeManagerStatus
+block|{
+DECL|enumConstant|NO_ERROR
+name|NO_ERROR
+argument_list|(
+literal|0
+argument_list|)
+block|,
+DECL|enumConstant|EXCEPTION
+name|EXCEPTION
+argument_list|(
+literal|1
+argument_list|)
+block|;
+DECL|field|exitCode
+specifier|private
+name|int
+name|exitCode
+decl_stmt|;
+DECL|method|NodeManagerStatus (int exitCode)
+name|NodeManagerStatus
+parameter_list|(
+name|int
+name|exitCode
+parameter_list|)
+block|{
+name|this
+operator|.
+name|exitCode
+operator|=
+name|exitCode
+expr_stmt|;
+block|}
+DECL|method|getExitCode ()
+specifier|public
+name|int
+name|getExitCode
+parameter_list|()
+block|{
+return|return
+name|exitCode
+return|;
+block|}
+block|}
 comment|/**    * Priority of the NodeManager shutdown hook.    */
 DECL|field|SHUTDOWN_HOOK_PRIORITY
 specifier|public
@@ -2595,11 +2643,15 @@ return|return
 literal|"NodeManager"
 return|;
 block|}
-DECL|method|shutDown ()
+DECL|method|shutDown (final int exitCode)
 specifier|protected
 name|void
 name|shutDown
-parameter_list|()
+parameter_list|(
+specifier|final
+name|int
+name|exitCode
+parameter_list|)
 block|{
 operator|new
 name|Thread
@@ -2658,8 +2710,7 @@ name|ExitUtil
 operator|.
 name|terminate
 argument_list|(
-operator|-
-literal|1
+name|exitCode
 argument_list|)
 expr_stmt|;
 block|}
@@ -2761,7 +2812,14 @@ name|e
 argument_list|)
 expr_stmt|;
 name|shutDown
+argument_list|(
+name|NodeManagerStatus
+operator|.
+name|EXCEPTION
+operator|.
+name|getExitCode
 argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -3863,7 +3921,14 @@ case|case
 name|SHUTDOWN
 case|:
 name|shutDown
+argument_list|(
+name|NodeManagerStatus
+operator|.
+name|NO_ERROR
+operator|.
+name|getExitCode
 argument_list|()
+argument_list|)
 expr_stmt|;
 break|break;
 case|case

@@ -3875,11 +3875,14 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|shutDown ()
+DECL|method|shutDown (int exitCode)
 specifier|protected
 name|void
 name|shutDown
-parameter_list|()
+parameter_list|(
+name|int
+name|exitCode
+parameter_list|)
 block|{
 synchronized|synchronized
 init|(
