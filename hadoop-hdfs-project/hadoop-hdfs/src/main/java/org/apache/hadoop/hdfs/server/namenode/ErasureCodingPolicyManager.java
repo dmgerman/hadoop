@@ -716,11 +716,8 @@ name|void
 name|clear
 parameter_list|()
 block|{
-name|enabledPoliciesByName
-operator|.
-name|clear
-argument_list|()
-expr_stmt|;
+comment|// TODO: we should only clear policies loaded from NN metadata.
+comment|// This is a placeholder for HDFS-7337.
 block|}
 block|}
 end_class
