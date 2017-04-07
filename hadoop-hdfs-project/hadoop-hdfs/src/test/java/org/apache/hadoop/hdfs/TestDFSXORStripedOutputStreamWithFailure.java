@@ -28,7 +28,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ErasureCodingPolicy
+name|SystemErasureCodingPolicies
 import|;
 end_import
 
@@ -44,25 +44,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstants
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|ErasureCodingPolicyManager
+name|ErasureCodingPolicy
 import|;
 end_import
 
@@ -87,11 +69,11 @@ name|getEcPolicy
 parameter_list|()
 block|{
 return|return
-name|ErasureCodingPolicyManager
+name|SystemErasureCodingPolicies
 operator|.
-name|getPolicyByID
+name|getByID
 argument_list|(
-name|HdfsConstants
+name|SystemErasureCodingPolicies
 operator|.
 name|XOR_2_1_POLICY_ID
 argument_list|)
