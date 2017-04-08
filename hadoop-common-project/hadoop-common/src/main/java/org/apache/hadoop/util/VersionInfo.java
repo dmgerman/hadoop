@@ -124,11 +124,11 @@ begin_class
 annotation|@
 name|InterfaceAudience
 operator|.
-name|Private
+name|Public
 annotation|@
 name|InterfaceStability
 operator|.
-name|Unstable
+name|Stable
 DECL|class|VersionInfo
 specifier|public
 class|class
@@ -431,7 +431,7 @@ name|_getVersion
 argument_list|()
 return|;
 block|}
-comment|/**    * Get the subversion revision number for the root directory    * @return the revision number, eg. "451451"    */
+comment|/**    * Get the Git commit hash of the repository when compiled.    * @return the commit hash, eg. "18f64065d5db6208daf50b02c1b5ed4ee3ce547a"    */
 DECL|method|getRevision ()
 specifier|public
 specifier|static
@@ -491,7 +491,7 @@ name|_getUser
 argument_list|()
 return|;
 block|}
-comment|/**    * Get the subversion URL for the root Hadoop directory.    */
+comment|/**    * Get the URL for the Hadoop repository.    * @return the URL of the Hadoop repository    */
 DECL|method|getUrl ()
 specifier|public
 specifier|static
@@ -506,7 +506,7 @@ name|_getUrl
 argument_list|()
 return|;
 block|}
-comment|/**    * Get the checksum of the source files from which Hadoop was    * built.    **/
+comment|/**    * Get the checksum of the source files from which Hadoop was built.    * @return the checksum of the source files    */
 DECL|method|getSrcChecksum ()
 specifier|public
 specifier|static
@@ -521,7 +521,7 @@ name|_getSrcChecksum
 argument_list|()
 return|;
 block|}
-comment|/**    * Returns the buildVersion which includes version,     * revision, user and date.     */
+comment|/**    * Returns the buildVersion which includes version,    * revision, user and date.    * @return the buildVersion    */
 DECL|method|getBuildVersion ()
 specifier|public
 specifier|static
@@ -536,7 +536,7 @@ name|_getBuildVersion
 argument_list|()
 return|;
 block|}
-comment|/**    * Returns the protoc version used for the build.    */
+comment|/**    * Returns the protoc version used for the build.    * @return the protoc version    */
 DECL|method|getProtocVersion ()
 specifier|public
 specifier|static
