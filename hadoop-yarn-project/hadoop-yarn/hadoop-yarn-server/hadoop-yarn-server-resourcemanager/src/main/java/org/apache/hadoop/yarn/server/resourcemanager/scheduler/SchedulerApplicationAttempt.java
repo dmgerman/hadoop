@@ -6300,6 +6300,32 @@ name|schedulerRequestKey
 argument_list|)
 return|;
 block|}
+DECL|method|getResourceRequests ( SchedulerRequestKey schedulerRequestKey)
+specifier|public
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|ResourceRequest
+argument_list|>
+name|getResourceRequests
+parameter_list|(
+name|SchedulerRequestKey
+name|schedulerRequestKey
+parameter_list|)
+block|{
+return|return
+name|appSchedulingInfo
+operator|.
+name|getSchedulingPlacementSet
+argument_list|(
+name|schedulerRequestKey
+argument_list|)
+operator|.
+name|getResourceRequests
+argument_list|()
+return|;
+block|}
 DECL|method|incUnconfirmedRes (Resource res)
 specifier|public
 name|void

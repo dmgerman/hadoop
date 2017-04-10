@@ -1624,6 +1624,43 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+DECL|method|getActualRackLocalityDelay ()
+specifier|private
+name|int
+name|getActualRackLocalityDelay
+parameter_list|()
+block|{
+return|return
+name|Math
+operator|.
+name|min
+argument_list|(
+name|rmContext
+operator|.
+name|getScheduler
+argument_list|()
+operator|.
+name|getNumClusterNodes
+argument_list|()
+argument_list|,
+name|application
+operator|.
+name|getCSLeafQueue
+argument_list|()
+operator|.
+name|getNodeLocalityDelay
+argument_list|()
+operator|+
+name|application
+operator|.
+name|getCSLeafQueue
+argument_list|()
+operator|.
+name|getRackLocalityAdditionalDelay
+argument_list|()
+argument_list|)
+return|;
+block|}
 DECL|method|canAssign (SchedulerRequestKey schedulerKey, FiCaSchedulerNode node, NodeType type, RMContainer reservedContainer)
 specifier|private
 name|boolean
@@ -1663,6 +1700,45 @@ return|return
 literal|true
 return|;
 block|}
+comment|// If there are no nodes in the cluster, return false.
+if|if
+condition|(
+name|rmContext
+operator|.
+name|getScheduler
+argument_list|()
+operator|.
+name|getNumClusterNodes
+argument_list|()
+operator|==
+literal|0
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+comment|// If we have only ANY requests for this schedulerKey, we should not
+comment|// delay its scheduling.
+if|if
+condition|(
+name|application
+operator|.
+name|getResourceRequests
+argument_list|(
+name|schedulerKey
+argument_list|)
+operator|.
+name|size
+argument_list|()
+operator|==
+literal|1
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
 comment|// 'Delay' off-switch
 name|long
 name|missedOpportunities
@@ -1674,6 +1750,30 @@ argument_list|(
 name|schedulerKey
 argument_list|)
 decl_stmt|;
+comment|// If rack locality additional delay parameter is enabled.
+if|if
+condition|(
+name|application
+operator|.
+name|getCSLeafQueue
+argument_list|()
+operator|.
+name|getRackLocalityAdditionalDelay
+argument_list|()
+operator|>
+operator|-
+literal|1
+condition|)
+block|{
+return|return
+name|missedOpportunities
+operator|>
+name|getActualRackLocalityDelay
+argument_list|()
+return|;
+block|}
+else|else
+block|{
 name|long
 name|requiredContainers
 init|=
@@ -1700,9 +1800,7 @@ name|getNumClusterNodes
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// Cap the delay by the number of nodes in the cluster. Under most
-comment|// conditions this means we will consider each node in the cluster before
-comment|// accepting an off-switch assignment.
+comment|// Cap the delay by the number of nodes in the cluster.
 return|return
 operator|(
 name|Math
@@ -1727,6 +1825,7 @@ operator|<
 name|missedOpportunities
 operator|)
 return|;
+block|}
 block|}
 comment|// Check if we need containers on this rack
 if|if

@@ -1179,6 +1179,12 @@ specifier|volatile
 name|int
 name|nodeLocalityDelay
 decl_stmt|;
+DECL|field|rackLocalityAdditionalDelay
+specifier|private
+specifier|volatile
+name|int
+name|rackLocalityAdditionalDelay
+decl_stmt|;
 DECL|field|rackLocalityFullReset
 specifier|private
 specifier|volatile
@@ -1721,6 +1727,13 @@ operator|.
 name|getNodeLocalityDelay
 argument_list|()
 expr_stmt|;
+name|rackLocalityAdditionalDelay
+operator|=
+name|conf
+operator|.
+name|getRackLocalityAdditionalDelay
+argument_list|()
+expr_stmt|;
 name|rackLocalityFullReset
 operator|=
 name|conf
@@ -2023,6 +2036,12 @@ operator|+
 literal|"nodeLocalityDelay = "
 operator|+
 name|nodeLocalityDelay
+operator|+
+literal|"\n"
+operator|+
+literal|"rackLocalityAdditionalDelay = "
+operator|+
+name|rackLocalityAdditionalDelay
 operator|+
 literal|"\n"
 operator|+
@@ -6671,6 +6690,23 @@ parameter_list|()
 block|{
 return|return
 name|nodeLocalityDelay
+return|;
+block|}
+annotation|@
+name|Lock
+argument_list|(
+name|NoLock
+operator|.
+name|class
+argument_list|)
+DECL|method|getRackLocalityAdditionalDelay ()
+specifier|public
+name|int
+name|getRackLocalityAdditionalDelay
+parameter_list|()
+block|{
+return|return
+name|rackLocalityAdditionalDelay
 return|;
 block|}
 annotation|@
