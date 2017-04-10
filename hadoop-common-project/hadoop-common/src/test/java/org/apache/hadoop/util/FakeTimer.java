@@ -87,11 +87,18 @@ specifier|public
 name|FakeTimer
 parameter_list|()
 block|{
+comment|// Initialize with a non-trivial value.
 name|nowNanos
 operator|=
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+operator|.
+name|toNanos
+argument_list|(
 literal|1000
+argument_list|)
 expr_stmt|;
-comment|// Initialize with a non-trivial value.
 block|}
 annotation|@
 name|Override
