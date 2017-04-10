@@ -200,6 +200,20 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|BasicDiskValidator
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|StringUtils
 import|;
 end_import
@@ -3630,7 +3644,9 @@ specifier|final
 name|String
 name|DEFAULT_DISK_VALIDATOR
 init|=
-literal|"basic"
+name|BasicDiskValidator
+operator|.
+name|NAME
 decl_stmt|;
 comment|/**    * Maximum size of contain's diagnostics to keep for relaunching container    * case.    **/
 DECL|field|NM_CONTAINER_DIAGNOSTICS_MAXIMUM_SIZE

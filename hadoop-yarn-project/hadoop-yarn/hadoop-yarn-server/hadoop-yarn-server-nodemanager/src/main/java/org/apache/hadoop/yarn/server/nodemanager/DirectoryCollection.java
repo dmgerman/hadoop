@@ -737,6 +737,10 @@ argument_list|(
 name|YarnConfiguration
 operator|.
 name|DISK_VALIDATOR
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_DISK_VALIDATOR
 argument_list|)
 argument_list|)
 expr_stmt|;
