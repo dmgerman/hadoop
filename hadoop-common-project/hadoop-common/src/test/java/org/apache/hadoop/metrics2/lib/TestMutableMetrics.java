@@ -364,6 +364,17 @@ argument_list|)
 expr_stmt|;
 name|registry
 operator|.
+name|newGauge
+argument_list|(
+literal|"g3"
+argument_list|,
+literal|"float gauge"
+argument_list|,
+literal|5f
+argument_list|)
+expr_stmt|;
+name|registry
+operator|.
 name|newStat
 argument_list|(
 literal|"s1"
@@ -513,6 +524,23 @@ literal|"long gauge"
 argument_list|)
 argument_list|,
 literal|4L
+argument_list|)
+expr_stmt|;
+name|verify
+argument_list|(
+name|mb
+argument_list|)
+operator|.
+name|addGauge
+argument_list|(
+name|info
+argument_list|(
+literal|"g3"
+argument_list|,
+literal|"float gauge"
+argument_list|)
+argument_list|,
+literal|5f
 argument_list|)
 expr_stmt|;
 name|verify

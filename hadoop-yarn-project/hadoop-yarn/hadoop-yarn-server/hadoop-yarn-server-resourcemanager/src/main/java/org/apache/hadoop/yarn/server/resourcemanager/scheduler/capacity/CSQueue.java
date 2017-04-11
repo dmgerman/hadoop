@@ -675,26 +675,6 @@ name|float
 name|getAbsoluteUsedCapacity
 parameter_list|()
 function_decl|;
-comment|/**    * Set used capacity of the queue.    * @param usedCapacity    *          used capacity of the queue    */
-DECL|method|setUsedCapacity (float usedCapacity)
-specifier|public
-name|void
-name|setUsedCapacity
-parameter_list|(
-name|float
-name|usedCapacity
-parameter_list|)
-function_decl|;
-comment|/**    * Set absolute used capacity of the queue.    * @param absUsedCapacity    *          absolute used capacity of the queue    */
-DECL|method|setAbsoluteUsedCapacity (float absUsedCapacity)
-specifier|public
-name|void
-name|setAbsoluteUsedCapacity
-parameter_list|(
-name|float
-name|absUsedCapacity
-parameter_list|)
-function_decl|;
 comment|/**    * Get the current used capacity of nodes without label(s) of the queue    * and it's children (if any).    * @return queue used capacity    */
 DECL|method|getUsedCapacity ()
 specifier|public

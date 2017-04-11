@@ -199,6 +199,17 @@ argument_list|)
 expr_stmt|;
 name|r
 operator|.
+name|newGauge
+argument_list|(
+literal|"g3"
+argument_list|,
+literal|"g3 desc"
+argument_list|,
+literal|5f
+argument_list|)
+expr_stmt|;
+name|r
+operator|.
 name|newStat
 argument_list|(
 literal|"s1"
@@ -214,7 +225,7 @@ name|assertEquals
 argument_list|(
 literal|"num metrics in registry"
 argument_list|,
-literal|5
+literal|6
 argument_list|,
 name|r
 operator|.
@@ -279,6 +290,20 @@ literal|"g2"
 argument_list|)
 operator|instanceof
 name|MutableGaugeLong
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"g3 found"
+argument_list|,
+name|r
+operator|.
+name|get
+argument_list|(
+literal|"g3"
+argument_list|)
+operator|instanceof
+name|MutableGaugeFloat
 argument_list|)
 expr_stmt|;
 name|assertTrue

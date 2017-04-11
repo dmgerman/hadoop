@@ -1472,44 +1472,6 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-annotation|@
-name|Override
-DECL|method|setUsedCapacity (float usedCapacity)
-specifier|public
-name|void
-name|setUsedCapacity
-parameter_list|(
-name|float
-name|usedCapacity
-parameter_list|)
-block|{
-name|queueCapacities
-operator|.
-name|setUsedCapacity
-argument_list|(
-name|usedCapacity
-argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|setAbsoluteUsedCapacity (float absUsedCapacity)
-specifier|public
-name|void
-name|setAbsoluteUsedCapacity
-parameter_list|(
-name|float
-name|absUsedCapacity
-parameter_list|)
-block|{
-name|queueCapacities
-operator|.
-name|setAbsoluteUsedCapacity
-argument_list|(
-name|absUsedCapacity
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**    * Set maximum capacity - used only for testing.    * @param maximumCapacity new max capacity    */
 DECL|method|setMaxCapacity (float maximumCapacity)
 name|void
@@ -1814,8 +1776,6 @@ argument_list|(
 name|resourceCalculator
 argument_list|,
 name|clusterResource
-argument_list|,
-name|minimumAllocation
 argument_list|,
 name|this
 argument_list|,
@@ -2598,8 +2558,6 @@ name|resourceCalculator
 argument_list|,
 name|clusterResource
 argument_list|,
-name|minimumAllocation
-argument_list|,
 name|this
 argument_list|,
 name|labelManager
@@ -2655,8 +2613,6 @@ argument_list|(
 name|resourceCalculator
 argument_list|,
 name|clusterResource
-argument_list|,
-name|minimumAllocation
 argument_list|,
 name|this
 argument_list|,
@@ -3657,13 +3613,9 @@ name|none
 argument_list|()
 argument_list|)
 argument_list|,
-name|minimumAllocation
-argument_list|,
-name|queueUsage
-argument_list|,
-name|queueCapacities
-argument_list|,
 name|nodeLabel
+argument_list|,
+name|this
 argument_list|)
 expr_stmt|;
 if|if
@@ -3745,13 +3697,9 @@ name|none
 argument_list|()
 argument_list|)
 argument_list|,
-name|minimumAllocation
-argument_list|,
-name|queueUsage
-argument_list|,
-name|queueCapacities
-argument_list|,
 name|nodeLabel
+argument_list|,
+name|this
 argument_list|)
 expr_stmt|;
 if|if

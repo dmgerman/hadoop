@@ -4518,8 +4518,6 @@ name|resourceCalculator
 argument_list|,
 name|clusterResource
 argument_list|,
-name|minimumAllocation
-argument_list|,
 name|this
 argument_list|,
 name|labelManager

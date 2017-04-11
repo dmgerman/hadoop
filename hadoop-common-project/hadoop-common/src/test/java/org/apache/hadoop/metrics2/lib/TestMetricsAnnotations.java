@@ -256,6 +256,15 @@ argument_list|)
 name|MutableGaugeLong
 name|g3
 decl_stmt|;
+DECL|field|g4
+annotation|@
+name|Metric
+argument_list|(
+literal|"g4 desc"
+argument_list|)
+name|MutableGaugeFloat
+name|g4
+decl_stmt|;
 DECL|field|r1
 annotation|@
 name|Metric
@@ -331,6 +340,13 @@ expr_stmt|;
 name|metrics
 operator|.
 name|g3
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+name|metrics
+operator|.
+name|g4
 operator|.
 name|incr
 argument_list|()
@@ -455,6 +471,23 @@ literal|"g3 desc"
 argument_list|)
 argument_list|,
 literal|1L
+argument_list|)
+expr_stmt|;
+name|verify
+argument_list|(
+name|rb
+argument_list|)
+operator|.
+name|addGauge
+argument_list|(
+name|info
+argument_list|(
+literal|"G4"
+argument_list|,
+literal|"g4 desc"
+argument_list|)
+argument_list|,
+literal|1f
 argument_list|)
 expr_stmt|;
 name|verify
