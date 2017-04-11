@@ -1108,9 +1108,9 @@ name|expectMessage
 argument_list|(
 name|startsWith
 argument_list|(
-literal|"Unable to find enough nodes that meet the space "
+literal|"Unable to find enough nodes that meet "
 operator|+
-literal|"requirement in healthy node set."
+literal|"the space requirement"
 argument_list|)
 argument_list|)
 expr_stmt|;

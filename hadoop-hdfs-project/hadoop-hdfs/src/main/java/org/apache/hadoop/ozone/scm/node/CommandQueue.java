@@ -50,24 +50,6 @@ name|protocol
 operator|.
 name|commands
 operator|.
-name|NullCommand
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|protocol
-operator|.
-name|commands
-operator|.
 name|SCMCommand
 import|;
 end_import
@@ -170,7 +152,7 @@ specifier|final
 name|Lock
 name|lock
 decl_stmt|;
-comment|// This map is used as default return value containing one null command.
+comment|// This map is used as default return value.
 DECL|field|DEFAULT_LIST
 specifier|private
 specifier|static
@@ -205,21 +187,8 @@ operator|new
 name|ReentrantLock
 argument_list|()
 expr_stmt|;
-name|DEFAULT_LIST
-operator|.
-name|add
-argument_list|(
-name|NullCommand
-operator|.
-name|newBuilder
-argument_list|()
-operator|.
-name|build
-argument_list|()
-argument_list|)
-expr_stmt|;
 block|}
-comment|/**    * Returns  a list of Commands for the datanode to execute, if we have no    * commands returns a list with Null Command otherwise the current set of    * commands are returned and command map set to empty list again.    *    * @param datanodeID DatanodeID    * @return List of SCM Commands.    */
+comment|/**    * Returns  a list of Commands for the datanode to execute, if we have no    * commands returns a empty list otherwise the current set of    * commands are returned and command map set to empty list again.    *    * @param datanodeID DatanodeID    * @return List of SCM Commands.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -274,24 +243,13 @@ operator|>
 literal|0
 condition|)
 block|{
-name|LinkedList
-argument_list|<
-name|SCMCommand
-argument_list|>
-name|emptyList
-init|=
-operator|new
-name|LinkedList
-argument_list|<>
-argument_list|()
-decl_stmt|;
 name|commandMap
 operator|.
 name|put
 argument_list|(
 name|datanodeID
 argument_list|,
-name|emptyList
+name|DEFAULT_LIST
 argument_list|)
 expr_stmt|;
 return|return
