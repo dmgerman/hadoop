@@ -102,16 +102,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Collection
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Collections
 import|;
 end_import
@@ -1639,6 +1629,21 @@ argument_list|,
 name|nsInfo
 argument_list|)
 expr_stmt|;
+comment|/* set thread name again to include NamespaceInfo when it's available. */
+name|this
+operator|.
+name|bpThread
+operator|.
+name|setName
+argument_list|(
+name|formatThreadName
+argument_list|(
+literal|"heartbeating"
+argument_list|,
+name|nnAddr
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// Second phase of the handshake with the NN.
 name|register
 argument_list|(
@@ -2945,43 +2950,45 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|formatThreadName (String action, InetSocketAddress addr)
+DECL|method|formatThreadName ( final String action, final InetSocketAddress addr)
 specifier|private
 name|String
 name|formatThreadName
 parameter_list|(
+specifier|final
 name|String
 name|action
 parameter_list|,
+specifier|final
 name|InetSocketAddress
 name|addr
 parameter_list|)
 block|{
-name|Collection
-argument_list|<
-name|StorageLocation
-argument_list|>
-name|dataDirs
+specifier|final
+name|String
+name|prefix
 init|=
-name|DataNode
+name|bpos
 operator|.
-name|getStorageLocations
-argument_list|(
-name|dn
-operator|.
-name|getConf
+name|getBlockPoolId
 argument_list|()
-argument_list|)
+operator|!=
+literal|null
+condition|?
+name|bpos
+operator|.
+name|getBlockPoolId
+argument_list|()
+else|:
+name|bpos
+operator|.
+name|getNameserviceId
+argument_list|()
 decl_stmt|;
 return|return
-literal|"DataNode: ["
+name|prefix
 operator|+
-name|dataDirs
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|"]  "
+literal|" "
 operator|+
 name|action
 operator|+

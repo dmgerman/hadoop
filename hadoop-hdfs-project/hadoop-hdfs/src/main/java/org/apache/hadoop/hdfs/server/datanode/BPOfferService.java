@@ -402,6 +402,12 @@ specifier|volatile
 name|DatanodeRegistration
 name|bpRegistration
 decl_stmt|;
+DECL|field|nameserviceId
+specifier|private
+specifier|final
+name|String
+name|nameserviceId
+decl_stmt|;
 DECL|field|dn
 specifier|private
 specifier|final
@@ -519,9 +525,13 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|BPOfferService (List<InetSocketAddress> nnAddrs, List<InetSocketAddress> lifelineNnAddrs, DataNode dn)
+DECL|method|BPOfferService ( final String nameserviceId, List<InetSocketAddress> nnAddrs, List<InetSocketAddress> lifelineNnAddrs, DataNode dn)
 name|BPOfferService
 parameter_list|(
+specifier|final
+name|String
+name|nameserviceId
+parameter_list|,
 name|List
 argument_list|<
 name|InetSocketAddress
@@ -567,6 +577,12 @@ argument_list|()
 argument_list|,
 literal|"Must pass same number of NN addresses and lifeline addresses."
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|nameserviceId
+operator|=
+name|nameserviceId
 expr_stmt|;
 name|this
 operator|.
@@ -752,6 +768,16 @@ block|}
 block|}
 return|return
 literal|false
+return|;
+block|}
+comment|/**    * Gets nameservice id to which this {@link BPOfferService} maps to.    * @return nameservice id, which can be null.    */
+DECL|method|getNameserviceId ()
+name|String
+name|getNameserviceId
+parameter_list|()
+block|{
+return|return
+name|nameserviceId
 return|;
 block|}
 DECL|method|getBlockPoolId ()

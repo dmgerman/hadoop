@@ -2645,6 +2645,8 @@ return|return
 operator|new
 name|BPOfferService
 argument_list|(
+literal|"test_ns"
+argument_list|,
 name|Lists
 operator|.
 name|newArrayList

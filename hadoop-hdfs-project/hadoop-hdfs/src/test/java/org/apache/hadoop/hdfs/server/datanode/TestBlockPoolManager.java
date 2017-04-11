@@ -312,6 +312,10 @@ specifier|protected
 name|BPOfferService
 name|createBPOS
 parameter_list|(
+specifier|final
+name|String
+name|nameserviceId
+parameter_list|,
 name|List
 argument_list|<
 name|InetSocketAddress

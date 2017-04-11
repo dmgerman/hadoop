@@ -1134,6 +1134,8 @@ name|bpos
 init|=
 name|createBPOS
 argument_list|(
+name|nsToAdd
+argument_list|,
 name|addrs
 argument_list|,
 name|lifelineAddrs
@@ -1397,11 +1399,15 @@ block|}
 block|}
 block|}
 comment|/**    * Extracted out for test purposes.    */
-DECL|method|createBPOS (List<InetSocketAddress> nnAddrs, List<InetSocketAddress> lifelineNnAddrs)
+DECL|method|createBPOS ( final String nameserviceId, List<InetSocketAddress> nnAddrs, List<InetSocketAddress> lifelineNnAddrs)
 specifier|protected
 name|BPOfferService
 name|createBPOS
 parameter_list|(
+specifier|final
+name|String
+name|nameserviceId
+parameter_list|,
 name|List
 argument_list|<
 name|InetSocketAddress
@@ -1419,6 +1425,8 @@ return|return
 operator|new
 name|BPOfferService
 argument_list|(
+name|nameserviceId
+argument_list|,
 name|nnAddrs
 argument_list|,
 name|lifelineNnAddrs
