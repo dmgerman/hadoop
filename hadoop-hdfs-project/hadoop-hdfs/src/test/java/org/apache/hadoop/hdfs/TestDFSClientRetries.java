@@ -2631,9 +2631,11 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-name|DFSConfigKeys
+name|HdfsClientConfigKeys
 operator|.
-name|DFS_CLIENT_RETRY_WINDOW_BASE
+name|Retry
+operator|.
+name|WINDOW_BASE_KEY
 argument_list|,
 literal|10
 argument_list|)
