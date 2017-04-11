@@ -6236,6 +6236,17 @@ name|HADOOP_SECURITY_KEY_PROVIDER_PATH
 argument_list|,
 literal|""
 argument_list|)
+argument_list|,
+name|blockManager
+operator|.
+name|getStoragePolicySuite
+argument_list|()
+operator|.
+name|getDefaultPolicy
+argument_list|()
+operator|.
+name|getId
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|this

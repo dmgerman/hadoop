@@ -1513,6 +1513,16 @@ name|getFileBufferSize
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|7
+argument_list|,
+name|serverDefaults
+operator|.
+name|getDefaultStoragePolicyId
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 finally|finally
 block|{

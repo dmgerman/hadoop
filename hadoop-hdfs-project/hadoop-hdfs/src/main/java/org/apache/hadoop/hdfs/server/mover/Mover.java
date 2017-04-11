@@ -2406,7 +2406,6 @@ name|Result
 name|result
 parameter_list|)
 block|{
-specifier|final
 name|byte
 name|policyId
 init|=
@@ -2415,7 +2414,6 @@ operator|.
 name|getStoragePolicy
 argument_list|()
 decl_stmt|;
-comment|// currently we ignore files with unspecified storage policy
 if|if
 condition|(
 name|policyId
@@ -2425,7 +2423,39 @@ operator|.
 name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 condition|)
 block|{
+try|try
+block|{
+comment|// get default policy from namenode
+name|policyId
+operator|=
+name|dfs
+operator|.
+name|getServerDefaults
+argument_list|()
+operator|.
+name|getDefaultStoragePolicyId
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to get default policy for "
+operator|+
+name|fullPath
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 return|return;
+block|}
 block|}
 specifier|final
 name|BlockStoragePolicy
