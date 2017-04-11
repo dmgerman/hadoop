@@ -1031,6 +1031,23 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|checkDefaultQueueBeforePlanFollowerRun ()
+specifier|protected
+name|void
+name|checkDefaultQueueBeforePlanFollowerRun
+parameter_list|()
+block|{
+name|Assert
+operator|.
+name|assertNull
+argument_list|(
+name|getDefaultQueue
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|verifyCapacity (Queue defQ)
 specifier|protected
 name|void

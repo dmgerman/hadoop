@@ -827,6 +827,11 @@ literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// default reseration queue should exist before run of PlanFollower AND have
+comment|// no apps
+name|checkDefaultQueueBeforePlanFollowerRun
+argument_list|()
+expr_stmt|;
 name|AbstractSchedulerPlanFollower
 name|planFollower
 init|=
@@ -938,7 +943,7 @@ argument_list|(
 name|appAttemptAddedEvent
 argument_list|)
 expr_stmt|;
-comment|// initial default reservation queue should have no apps
+comment|// initial default reservation queue should have no apps after first run
 name|Queue
 name|defQ
 init|=
@@ -1310,6 +1315,13 @@ name|defQ
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|checkDefaultQueueBeforePlanFollowerRun ()
+specifier|protected
+specifier|abstract
+name|void
+name|checkDefaultQueueBeforePlanFollowerRun
+parameter_list|()
+function_decl|;
 DECL|method|getReservationQueue (String reservationId)
 specifier|protected
 specifier|abstract

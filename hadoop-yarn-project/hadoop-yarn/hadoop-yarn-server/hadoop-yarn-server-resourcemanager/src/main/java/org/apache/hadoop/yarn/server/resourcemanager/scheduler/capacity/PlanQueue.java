@@ -507,8 +507,8 @@ argument_list|()
 operator|.
 name|size
 argument_list|()
-operator|>
-literal|0
+operator|!=
+literal|1
 condition|)
 block|{
 throw|throw
@@ -517,7 +517,7 @@ name|IOException
 argument_list|(
 literal|"Reservable Queue should not have sub-queues in the"
 operator|+
-literal|"configuration"
+literal|"configuration expect the default reservation queue"
 argument_list|)
 throw|;
 block|}
