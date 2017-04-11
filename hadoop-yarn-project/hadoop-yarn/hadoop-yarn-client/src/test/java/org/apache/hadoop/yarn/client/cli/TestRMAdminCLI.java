@@ -1491,11 +1491,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|500
-argument_list|)
 DECL|method|testRefreshQueues ()
 specifier|public
 name|void
@@ -1542,11 +1537,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|500
-argument_list|)
 DECL|method|testRefreshUserToGroupsMappings ()
 specifier|public
 name|void
@@ -1593,11 +1583,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|500
-argument_list|)
 DECL|method|testRefreshSuperUserGroupsConfiguration ()
 specifier|public
 name|void
@@ -1644,11 +1629,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|500
-argument_list|)
 DECL|method|testRefreshAdminAcls ()
 specifier|public
 name|void
@@ -1695,11 +1675,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|5000
-argument_list|)
 DECL|method|testRefreshClusterMaxPriority ()
 specifier|public
 name|void
@@ -1746,11 +1721,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|500
-argument_list|)
 DECL|method|testRefreshServiceAcl ()
 specifier|public
 name|void
@@ -1797,11 +1767,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|500
-argument_list|)
 DECL|method|testUpdateNodeResource ()
 specifier|public
 name|void
@@ -1978,11 +1943,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|500
-argument_list|)
 DECL|method|testUpdateNodeResourceWithInvalidValue ()
 specifier|public
 name|void
@@ -2069,11 +2029,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|500
-argument_list|)
 DECL|method|testRefreshNodes ()
 specifier|public
 name|void
@@ -2746,11 +2701,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|500
-argument_list|)
 DECL|method|testGetGroups ()
 specifier|public
 name|void
@@ -2902,11 +2852,6 @@ block|}
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|500
-argument_list|)
 DECL|method|testTransitionToActive ()
 specifier|public
 name|void
@@ -3008,11 +2953,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|500
-argument_list|)
 DECL|method|testTransitionToStandby ()
 specifier|public
 name|void
@@ -3100,11 +3040,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|500
-argument_list|)
 DECL|method|testGetServiceState ()
 specifier|public
 name|void
@@ -3323,11 +3258,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|500
-argument_list|)
 DECL|method|testCheckHealth ()
 specifier|public
 name|void
@@ -3398,11 +3328,6 @@ block|}
 comment|/**    * Test printing of help messages    */
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|500
-argument_list|)
 DECL|method|testHelp ()
 specifier|public
 name|void
@@ -4050,11 +3975,6 @@ block|}
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|500
-argument_list|)
 DECL|method|testException ()
 specifier|public
 name|void
