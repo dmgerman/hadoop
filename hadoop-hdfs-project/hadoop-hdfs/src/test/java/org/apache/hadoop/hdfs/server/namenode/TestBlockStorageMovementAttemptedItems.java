@@ -198,7 +198,12 @@ condition|)
 block|{
 name|bsmAttemptedItems
 operator|.
-name|stop
+name|deactivate
+argument_list|()
+expr_stmt|;
+name|bsmAttemptedItems
+operator|.
+name|stopGracefully
 argument_list|()
 expr_stmt|;
 block|}

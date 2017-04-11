@@ -734,15 +734,15 @@ name|start
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Stop storage policy satisfier demon thread.    *    * @param reconfigStop    */
-DECL|method|stop (boolean reconfigStop)
+comment|/**    * Deactivates storage policy satisfier by stopping its services.    *    * @param reconfig    *          true represents deactivating SPS service as requested by admin,    *          false otherwise    */
+DECL|method|deactivate (boolean reconfig)
 specifier|public
 specifier|synchronized
 name|void
-name|stop
+name|deactivate
 parameter_list|(
 name|boolean
-name|reconfigStop
+name|reconfig
 parameter_list|)
 block|{
 name|isRunning
@@ -763,32 +763,16 @@ operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
-try|try
-block|{
-name|storagePolicySatisfierThread
-operator|.
-name|join
-argument_list|(
-literal|3000
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|ie
-parameter_list|)
-block|{     }
 name|this
 operator|.
 name|storageMovementsMonitor
 operator|.
-name|stop
+name|deactivate
 argument_list|()
 expr_stmt|;
 if|if
 condition|(
-name|reconfigStop
+name|reconfig
 condition|)
 block|{
 name|LOG
@@ -826,6 +810,58 @@ literal|"Stopping StoragePolicySatisfier."
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|/**    * Timed wait to stop storage policy satisfier daemon threads.    */
+DECL|method|stopGracefully ()
+specifier|public
+specifier|synchronized
+name|void
+name|stopGracefully
+parameter_list|()
+block|{
+if|if
+condition|(
+name|isRunning
+condition|)
+block|{
+name|deactivate
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+name|this
+operator|.
+name|storageMovementsMonitor
+operator|.
+name|stopGracefully
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+name|storagePolicySatisfierThread
+operator|==
+literal|null
+condition|)
+block|{
+return|return;
+block|}
+try|try
+block|{
+name|storagePolicySatisfierThread
+operator|.
+name|join
+argument_list|(
+literal|3000
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{     }
 block|}
 comment|/**    * Check whether StoragePolicySatisfier is running.    * @return true if running    */
 DECL|method|isRunning ()
@@ -904,7 +940,7 @@ name|this
 operator|.
 name|storageMovementsMonitor
 operator|.
-name|stop
+name|stopGracefully
 argument_list|()
 expr_stmt|;
 name|LOG
@@ -1039,7 +1075,7 @@ name|this
 operator|.
 name|storageMovementsMonitor
 operator|.
-name|stop
+name|stopGracefully
 argument_list|()
 expr_stmt|;
 block|}

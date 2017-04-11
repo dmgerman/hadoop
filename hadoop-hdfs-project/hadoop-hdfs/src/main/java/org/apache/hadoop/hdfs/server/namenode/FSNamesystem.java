@@ -8979,6 +8979,11 @@ argument_list|(
 literal|false
 argument_list|)
 expr_stmt|;
+name|blockManager
+operator|.
+name|stopSPSGracefully
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 finally|finally

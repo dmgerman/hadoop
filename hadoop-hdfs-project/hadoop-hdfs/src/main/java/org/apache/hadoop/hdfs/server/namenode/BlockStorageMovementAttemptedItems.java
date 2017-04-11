@@ -476,12 +476,12 @@ name|start
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Stops the monitor thread.    */
-DECL|method|stop ()
+comment|/**    * Sets running flag to false. Also, this will interrupt monitor thread and    * clear all the queued up tasks.    */
+DECL|method|deactivate ()
 specifier|public
 specifier|synchronized
 name|void
-name|stop
+name|deactivate
 parameter_list|()
 block|{
 name|monitorRunning
@@ -500,6 +500,38 @@ operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
+block|}
+name|this
+operator|.
+name|clearQueues
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Timed wait to stop monitor thread.    */
+DECL|method|stopGracefully ()
+specifier|synchronized
+name|void
+name|stopGracefully
+parameter_list|()
+block|{
+if|if
+condition|(
+name|timerThread
+operator|==
+literal|null
+condition|)
+block|{
+return|return;
+block|}
+if|if
+condition|(
+name|monitorRunning
+condition|)
+block|{
+name|deactivate
+argument_list|()
+expr_stmt|;
+block|}
 try|try
 block|{
 name|timerThread
@@ -515,13 +547,7 @@ parameter_list|(
 name|InterruptedException
 name|ie
 parameter_list|)
-block|{       }
-block|}
-name|this
-operator|.
-name|clearQueues
-argument_list|()
-expr_stmt|;
+block|{     }
 block|}
 comment|/**    * This class contains information of an attempted trackID. Information such    * as, (a)last attempted time stamp, (b)whether all the blocks in the trackID    * were attempted and blocks movement has been scheduled to satisfy storage    * policy. This is used by    * {@link BlockStorageMovementAttemptedItems#storageMovementAttemptedItems}.    */
 DECL|class|ItemInfo

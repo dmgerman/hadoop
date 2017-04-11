@@ -3856,7 +3856,7 @@ condition|)
 block|{
 name|sps
 operator|.
-name|stop
+name|deactivate
 argument_list|(
 literal|false
 argument_list|)
@@ -3925,6 +3925,9 @@ expr_stmt|;
 name|blocksMap
 operator|.
 name|close
+argument_list|()
+expr_stmt|;
+name|stopSPSGracefully
 argument_list|()
 expr_stmt|;
 block|}
@@ -23598,11 +23601,32 @@ return|return;
 block|}
 name|sps
 operator|.
-name|stop
+name|deactivate
 argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Timed wait to stop storage policy satisfier daemon threads.    */
+DECL|method|stopSPSGracefully ()
+specifier|public
+name|void
+name|stopSPSGracefully
+parameter_list|()
+block|{
+if|if
+condition|(
+name|sps
+operator|!=
+literal|null
+condition|)
+block|{
+name|sps
+operator|.
+name|stopGracefully
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**    * @return True if storage policy satisfier running.    */
 DECL|method|isStoragePolicySatisfierRunning ()
