@@ -4288,7 +4288,7 @@ return|;
 block|}
 block|}
 comment|/*    * In order to make this write atomic as a part of write we will first write    * data to .tmp file and then rename it. Here we are assuming that rename is    * atomic for underlying file system.    */
-DECL|method|writeFile (Path outputPath, byte[] data, boolean makeUnradableByAdmin)
+DECL|method|writeFile (Path outputPath, byte[] data, boolean makeUnreadableByAdmin)
 specifier|protected
 name|void
 name|writeFile
@@ -4301,7 +4301,7 @@ index|[]
 name|data
 parameter_list|,
 name|boolean
-name|makeUnradableByAdmin
+name|makeUnreadableByAdmin
 parameter_list|)
 throws|throws
 name|Exception
@@ -4347,7 +4347,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|makeUnradableByAdmin
+name|makeUnreadableByAdmin
 condition|)
 block|{
 name|setUnreadableBySuperuserXattrib
@@ -4396,7 +4396,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/*    * In order to make this update atomic as a part of write we will first write    * data to .new file and then rename it. Here we are assuming that rename is    * atomic for underlying file system.    */
-DECL|method|updateFile (Path outputPath, byte[] data, boolean makeUnradableByAdmin)
+DECL|method|updateFile (Path outputPath, byte[] data, boolean makeUnreadableByAdmin)
 specifier|protected
 name|void
 name|updateFile
@@ -4409,7 +4409,7 @@ index|[]
 name|data
 parameter_list|,
 name|boolean
-name|makeUnradableByAdmin
+name|makeUnreadableByAdmin
 parameter_list|)
 throws|throws
 name|Exception
@@ -4440,7 +4440,7 @@ name|newPath
 argument_list|,
 name|data
 argument_list|,
-name|makeUnradableByAdmin
+name|makeUnreadableByAdmin
 argument_list|)
 expr_stmt|;
 name|replaceFile
