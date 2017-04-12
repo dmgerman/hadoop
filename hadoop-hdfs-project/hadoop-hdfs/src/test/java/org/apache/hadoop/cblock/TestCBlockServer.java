@@ -234,6 +234,11 @@ argument_list|,
 name|storageClient
 argument_list|)
 expr_stmt|;
+name|cBlockManager
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|AfterClass
