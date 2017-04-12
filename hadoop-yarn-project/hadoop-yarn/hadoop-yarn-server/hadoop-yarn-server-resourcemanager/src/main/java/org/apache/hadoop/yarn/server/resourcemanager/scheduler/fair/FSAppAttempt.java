@@ -3192,8 +3192,36 @@ name|SchedulerRequestKey
 name|schedulerKey
 parameter_list|)
 block|{
+name|RMContainer
+name|nodeReservedContainer
+init|=
+name|node
+operator|.
+name|getReservedContainer
+argument_list|()
+decl_stmt|;
+name|boolean
+name|reservableForThisApp
+init|=
+name|nodeReservedContainer
+operator|==
+literal|null
+operator|||
+name|nodeReservedContainer
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|getApplicationAttemptId
+argument_list|()
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
+name|reservableForThisApp
+operator|&&
 operator|!
 name|reservationExceedsThreshold
 argument_list|(
@@ -5289,7 +5317,6 @@ return|;
 block|}
 comment|/**    * Is application starved for fairshare or minshare    */
 DECL|method|isStarved ()
-specifier|private
 name|boolean
 name|isStarved
 parameter_list|()

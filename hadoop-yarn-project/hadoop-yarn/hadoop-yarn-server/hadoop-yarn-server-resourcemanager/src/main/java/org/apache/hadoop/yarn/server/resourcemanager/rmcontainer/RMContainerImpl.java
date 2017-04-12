@@ -748,11 +748,6 @@ class|class
 name|RMContainerImpl
 implements|implements
 name|RMContainer
-implements|,
-name|Comparable
-argument_list|<
-name|RMContainer
-argument_list|>
 block|{
 DECL|field|LOG
 specifier|private

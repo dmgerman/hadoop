@@ -603,19 +603,6 @@ range|:
 name|potentialNodes
 control|)
 block|{
-comment|// TODO (YARN-5829): Attempt to reserve the node for starved app.
-if|if
-condition|(
-name|isNodeAlreadyReserved
-argument_list|(
-name|node
-argument_list|,
-name|starvedApp
-argument_list|)
-condition|)
-block|{
-continue|continue;
-block|}
 name|int
 name|maxAMContainers
 init|=
@@ -697,11 +684,14 @@ operator|.
 name|containers
 argument_list|)
 expr_stmt|;
+comment|// Reserve the containers for the starved app
 name|trackPreemptionsAgainstNode
 argument_list|(
 name|bestContainers
 operator|.
 name|containers
+argument_list|,
+name|starvedApp
 argument_list|)
 expr_stmt|;
 block|}
@@ -759,10 +749,14 @@ name|getContainersForPreemption
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Initialize potential with unallocated resources
+comment|// Initialize potential with unallocated but not reserved resources
 name|Resource
 name|potential
 init|=
+name|Resources
+operator|.
+name|subtractFromNonNegative
+argument_list|(
 name|Resources
 operator|.
 name|clone
@@ -770,6 +764,12 @@ argument_list|(
 name|node
 operator|.
 name|getUnallocatedResource
+argument_list|()
+argument_list|)
+argument_list|,
+name|node
+operator|.
+name|getTotalReserved
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -850,10 +850,6 @@ return|return
 name|preemptableContainers
 return|;
 block|}
-else|else
-block|{
-comment|// TODO (YARN-5829): Unreserve the node for the starved app.
-block|}
 block|}
 return|return
 literal|null
@@ -893,7 +889,7 @@ name|app
 argument_list|)
 return|;
 block|}
-DECL|method|trackPreemptionsAgainstNode (List<RMContainer> containers)
+DECL|method|trackPreemptionsAgainstNode (List<RMContainer> containers, FSAppAttempt app)
 specifier|private
 name|void
 name|trackPreemptionsAgainstNode
@@ -903,6 +899,9 @@ argument_list|<
 name|RMContainer
 argument_list|>
 name|containers
+parameter_list|,
+name|FSAppAttempt
+name|app
 parameter_list|)
 block|{
 name|FSSchedulerNode
@@ -934,6 +933,8 @@ operator|.
 name|addContainersForPreemption
 argument_list|(
 name|containers
+argument_list|,
+name|app
 argument_list|)
 expr_stmt|;
 block|}
@@ -1100,32 +1101,6 @@ argument_list|,
 name|RMContainerEventType
 operator|.
 name|KILL
-argument_list|)
-expr_stmt|;
-name|FSSchedulerNode
-name|containerNode
-init|=
-operator|(
-name|FSSchedulerNode
-operator|)
-name|scheduler
-operator|.
-name|getNodeTracker
-argument_list|()
-operator|.
-name|getNode
-argument_list|(
-name|container
-operator|.
-name|getAllocatedNode
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|containerNode
-operator|.
-name|removeContainerForPreemption
-argument_list|(
-name|container
 argument_list|)
 expr_stmt|;
 block|}

@@ -818,7 +818,7 @@ expr_stmt|;
 block|}
 comment|/**    * The Scheduler has allocated containers on this node to the given    * application.    * @param rmContainer Allocated container    * @param launchedOnNode True if the container has been launched    */
 DECL|method|allocateContainer (RMContainer rmContainer, boolean launchedOnNode)
-specifier|private
+specifier|protected
 specifier|synchronized
 name|void
 name|allocateContainer

@@ -260,6 +260,11 @@ name|EventHandler
 argument_list|<
 name|RMContainerEvent
 argument_list|>
+extends|,
+name|Comparable
+argument_list|<
+name|RMContainer
+argument_list|>
 block|{
 DECL|method|getContainerId ()
 name|ContainerId
