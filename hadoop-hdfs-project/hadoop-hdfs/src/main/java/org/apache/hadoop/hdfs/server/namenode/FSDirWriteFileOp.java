@@ -40,6 +40,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|lang
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|HadoopIllegalArgumentException
@@ -2234,7 +2248,7 @@ name|iip
 return|;
 block|}
 comment|/**    * Create a new file or overwrite an existing file<br>    *    * Once the file is create the client then allocates a new block with the next    * call using {@link ClientProtocol#addBlock}.    *<p>    * For description of parameters and exceptions thrown see    * {@link ClientProtocol#create}    */
-DECL|method|startFile ( FSNamesystem fsn, INodesInPath iip, PermissionStatus permissions, String holder, String clientMachine, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, FileEncryptionInfo feInfo, INode.BlocksMapUpdateInfo toRemoveBlocks, boolean logRetryEntry)
+DECL|method|startFile ( FSNamesystem fsn, INodesInPath iip, PermissionStatus permissions, String holder, String clientMachine, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, FileEncryptionInfo feInfo, INode.BlocksMapUpdateInfo toRemoveBlocks, String ecPolicyName, boolean logRetryEntry)
 specifier|static
 name|HdfsFileStatus
 name|startFile
@@ -2276,6 +2290,9 @@ name|INode
 operator|.
 name|BlocksMapUpdateInfo
 name|toRemoveBlocks
+parameter_list|,
+name|String
+name|ecPolicyName
 parameter_list|,
 name|boolean
 name|logRetryEntry
@@ -2525,6 +2542,8 @@ argument_list|,
 name|holder
 argument_list|,
 name|clientMachine
+argument_list|,
+name|ecPolicyName
 argument_list|)
 expr_stmt|;
 name|newNode
@@ -3299,7 +3318,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Add the given filename to the fs.    * @return the new INodesInPath instance that contains the new INode    */
-DECL|method|addFile ( FSDirectory fsd, INodesInPath existing, byte[] localName, PermissionStatus permissions, short replication, long preferredBlockSize, String clientName, String clientMachine)
+DECL|method|addFile ( FSDirectory fsd, INodesInPath existing, byte[] localName, PermissionStatus permissions, short replication, long preferredBlockSize, String clientName, String clientMachine, String ecPolicyName)
 specifier|private
 specifier|static
 name|INodesInPath
@@ -3329,6 +3348,9 @@ name|clientName
 parameter_list|,
 name|String
 name|clientMachine
+parameter_list|,
+name|String
+name|ecPolicyName
 parameter_list|)
 throws|throws
 name|IOException
@@ -3363,7 +3385,37 @@ literal|false
 decl_stmt|;
 name|ErasureCodingPolicy
 name|ecPolicy
-init|=
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|StringUtils
+operator|.
+name|isEmpty
+argument_list|(
+name|ecPolicyName
+argument_list|)
+condition|)
+block|{
+name|ecPolicy
+operator|=
+name|FSDirErasureCodingOp
+operator|.
+name|getErasureCodingPolicyByName
+argument_list|(
+name|fsd
+operator|.
+name|getFSNamesystem
+argument_list|()
+argument_list|,
+name|ecPolicyName
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|ecPolicy
+operator|=
 name|FSDirErasureCodingOp
 operator|.
 name|unprotectedGetErasureCodingPolicy
@@ -3375,7 +3427,8 @@ argument_list|()
 argument_list|,
 name|existing
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|ecPolicy

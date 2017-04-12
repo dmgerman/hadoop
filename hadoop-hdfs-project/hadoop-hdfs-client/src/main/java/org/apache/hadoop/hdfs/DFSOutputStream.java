@@ -1632,7 +1632,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|newStreamForCreate (DFSClient dfsClient, String src, FsPermission masked, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, Progressable progress, DataChecksum checksum, String[] favoredNodes)
+DECL|method|newStreamForCreate (DFSClient dfsClient, String src, FsPermission masked, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, Progressable progress, DataChecksum checksum, String[] favoredNodes, String ecPolicyName)
 specifier|static
 name|DFSOutputStream
 name|newStreamForCreate
@@ -1670,6 +1670,9 @@ parameter_list|,
 name|String
 index|[]
 name|favoredNodes
+parameter_list|,
+name|String
+name|ecPolicyName
 parameter_list|)
 throws|throws
 name|IOException
@@ -1747,6 +1750,8 @@ argument_list|,
 name|blockSize
 argument_list|,
 name|SUPPORTED_CRYPTO_VERSIONS
+argument_list|,
+name|ecPolicyName
 argument_list|)
 expr_stmt|;
 break|break;

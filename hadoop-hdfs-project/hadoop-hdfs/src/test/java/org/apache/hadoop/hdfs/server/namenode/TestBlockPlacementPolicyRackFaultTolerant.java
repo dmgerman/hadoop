@@ -808,6 +808,8 @@ name|DEFAULT_BLOCK_SIZE
 argument_list|,
 literal|null
 argument_list|,
+literal|null
+argument_list|,
 literal|false
 argument_list|)
 decl_stmt|;
@@ -950,6 +952,8 @@ operator|)
 literal|20
 argument_list|,
 name|DEFAULT_BLOCK_SIZE
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|,

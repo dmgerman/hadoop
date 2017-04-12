@@ -3354,6 +3354,8 @@ name|CryptoProtocolVersion
 operator|.
 name|supported
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|long
@@ -3398,6 +3400,7 @@ operator|.
 name|GRANDFATHER_INODE_ID
 argument_list|)
 control|)
+block|{       }
 empty_stmt|;
 return|return
 name|end
@@ -6306,6 +6309,8 @@ name|CryptoProtocolVersion
 operator|.
 name|supported
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|ExtendedBlock

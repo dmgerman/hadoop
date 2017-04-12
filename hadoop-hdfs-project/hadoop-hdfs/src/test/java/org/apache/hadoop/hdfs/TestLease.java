@@ -2662,6 +2662,9 @@ index|[]
 operator|)
 name|anyObject
 argument_list|()
+argument_list|,
+name|anyObject
+argument_list|()
 argument_list|)
 expr_stmt|;
 specifier|final

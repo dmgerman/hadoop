@@ -2664,6 +2664,8 @@ name|CryptoProtocolVersion
 operator|.
 name|ENCRYPTION_ZONES
 block|}
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}

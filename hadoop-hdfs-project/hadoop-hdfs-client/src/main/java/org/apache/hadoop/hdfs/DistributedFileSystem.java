@@ -1158,6 +1158,16 @@ name|Preconditions
 import|;
 end_import
 
+begin_import
+import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nonnull
+import|;
+end_import
+
 begin_comment
 comment|/****************************************************************  * Implementation of the abstract FileSystem for the DFS system.  * This object is the way end-user code interacts with a Hadoop  * DistributedFileSystem.  *  *****************************************************************/
 end_comment
@@ -2828,8 +2838,8 @@ name|absF
 argument_list|)
 return|;
 block|}
-comment|/**    * Same as    * {@link #create(Path, FsPermission, EnumSet<CreateFlag>, int, short, long,    * Progressable, ChecksumOpt)} with the addition of favoredNodes that is a    * hint to where the namenode should place the file blocks.    * The favored nodes hint is not persisted in HDFS. Hence it may be honored    * at the creation time only. And with favored nodes, blocks will be pinned    * on the datanodes to prevent balancing move the block. HDFS could move the    * blocks during replication, to move the blocks from favored nodes. A value    * of null means no favored nodes for this create    */
-DECL|method|create (final Path f, final FsPermission permission, EnumSet<CreateFlag> flag, final int bufferSize, final short replication, final long blockSize, final Progressable progress, final ChecksumOpt checksumOpt, final InetSocketAddress[] favoredNodes)
+comment|/**    * Same as    * {@link #create(Path, FsPermission, EnumSet<CreateFlag>, int, short, long,    * Progressable, ChecksumOpt)} with the addition of favoredNodes that is a    * hint to where the namenode should place the file blocks.    * The favored nodes hint is not persisted in HDFS. Hence it may be honored    * at the creation time only. And with favored nodes, blocks will be pinned    * on the datanodes to prevent balancing move the block. HDFS could move the    * blocks during replication, to move the blocks from favored nodes. A value    * of null means no favored nodes for this create.    * Another addition is ecPolicyName. A non-null ecPolicyName specifies an    * explicit erasure coding policy for this file, overriding the inherited    * policy. A null ecPolicyName means the file will inherit its EC policy from    * an ancestor (the default).    */
+DECL|method|create (final Path f, final FsPermission permission, final EnumSet<CreateFlag> flag, final int bufferSize, final short replication, final long blockSize, final Progressable progress, final ChecksumOpt checksumOpt, final InetSocketAddress[] favoredNodes, final String ecPolicyName)
 specifier|private
 name|HdfsDataOutputStream
 name|create
@@ -2842,6 +2852,7 @@ specifier|final
 name|FsPermission
 name|permission
 parameter_list|,
+specifier|final
 name|EnumSet
 argument_list|<
 name|CreateFlag
@@ -2872,6 +2883,10 @@ specifier|final
 name|InetSocketAddress
 index|[]
 name|favoredNodes
+parameter_list|,
+specifier|final
+name|String
+name|ecPolicyName
 parameter_list|)
 throws|throws
 name|IOException
@@ -2951,6 +2966,8 @@ argument_list|,
 name|checksumOpt
 argument_list|,
 name|favoredNodes
+argument_list|,
+name|ecPolicyName
 argument_list|)
 decl_stmt|;
 return|return
@@ -3018,6 +3035,8 @@ argument_list|,
 name|checksumOpt
 argument_list|,
 name|favoredNodes
+argument_list|,
+name|ecPolicyName
 argument_list|)
 return|;
 block|}
@@ -13140,6 +13159,13 @@ name|favoredNodes
 init|=
 literal|null
 decl_stmt|;
+DECL|field|ecPolicyName
+specifier|private
+name|String
+name|ecPolicyName
+init|=
+literal|null
+decl_stmt|;
 DECL|method|HdfsDataOutputStreamBuilder (DistributedFileSystem dfs, Path path)
 specifier|public
 name|HdfsDataOutputStreamBuilder
@@ -13176,11 +13202,13 @@ return|return
 name|favoredNodes
 return|;
 block|}
-DECL|method|setFavoredNodes ( final InetSocketAddress[] nodes)
+DECL|method|setFavoredNodes ( @onnull final InetSocketAddress[] nodes)
 specifier|public
 name|HdfsDataOutputStreamBuilder
 name|setFavoredNodes
 parameter_list|(
+annotation|@
+name|Nonnull
 specifier|final
 name|InetSocketAddress
 index|[]
@@ -13200,6 +13228,43 @@ name|nodes
 operator|.
 name|clone
 argument_list|()
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|getEcPolicyName ()
+specifier|protected
+name|String
+name|getEcPolicyName
+parameter_list|()
+block|{
+return|return
+name|ecPolicyName
+return|;
+block|}
+DECL|method|setEcPolicyName ( @onnull final String policyName)
+specifier|public
+name|HdfsDataOutputStreamBuilder
+name|setEcPolicyName
+parameter_list|(
+annotation|@
+name|Nonnull
+specifier|final
+name|String
+name|policyName
+parameter_list|)
+block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|policyName
+argument_list|)
+expr_stmt|;
+name|ecPolicyName
+operator|=
+name|policyName
 expr_stmt|;
 return|return
 name|this
@@ -13245,6 +13310,9 @@ name|getChecksumOpt
 argument_list|()
 argument_list|,
 name|getFavoredNodes
+argument_list|()
+argument_list|,
+name|getEcPolicyName
 argument_list|()
 argument_list|)
 return|;

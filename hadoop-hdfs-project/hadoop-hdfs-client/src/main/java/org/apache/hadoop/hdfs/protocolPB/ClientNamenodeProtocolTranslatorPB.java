@@ -3607,7 +3607,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|create (String src, FsPermission masked, String clientName, EnumSetWritable<CreateFlag> flag, boolean createParent, short replication, long blockSize, CryptoProtocolVersion[] supportedVersions)
+DECL|method|create (String src, FsPermission masked, String clientName, EnumSetWritable<CreateFlag> flag, boolean createParent, short replication, long blockSize, CryptoProtocolVersion[] supportedVersions, String ecPolicyName)
 specifier|public
 name|HdfsFileStatus
 name|create
@@ -3639,6 +3639,9 @@ parameter_list|,
 name|CryptoProtocolVersion
 index|[]
 name|supportedVersions
+parameter_list|,
+name|String
+name|ecPolicyName
 parameter_list|)
 throws|throws
 name|IOException
@@ -3698,6 +3701,21 @@ argument_list|(
 name|blockSize
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|ecPolicyName
+operator|!=
+literal|null
+condition|)
+block|{
+name|builder
+operator|.
+name|setEcPolicyName
+argument_list|(
+name|ecPolicyName
+argument_list|)
+expr_stmt|;
+block|}
 name|FsPermission
 name|unmasked
 init|=
