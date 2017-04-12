@@ -576,7 +576,7 @@ name|EnvironmentVariableCredentialsProvider
 operator|.
 name|class
 argument_list|,
-name|SharedInstanceProfileCredentialsProvider
+name|InstanceProfileCredentialsProvider
 operator|.
 name|class
 argument_list|)
@@ -672,7 +672,7 @@ name|EnvironmentVariableCredentialsProvider
 operator|.
 name|class
 argument_list|,
-name|SharedInstanceProfileCredentialsProvider
+name|InstanceProfileCredentialsProvider
 operator|.
 name|class
 argument_list|,
