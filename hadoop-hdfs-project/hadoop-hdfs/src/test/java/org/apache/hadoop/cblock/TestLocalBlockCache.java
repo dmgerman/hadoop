@@ -540,6 +540,38 @@ name|DFS_CBLOCK_TRACE_IO
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|cblock
+operator|.
+name|CBlockConfigKeys
+operator|.
+name|DFS_CBLOCK_CACHE_BLOCK_BUFFER_SIZE_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|cblock
+operator|.
+name|CBlockConfigKeys
+operator|.
+name|DFS_CBLOCK_CACHE_BLOCK_BUFFER_SIZE
+import|;
+end_import
+
 begin_comment
 comment|/**  * Tests for Tests for local cache.  */
 end_comment
@@ -1701,6 +1733,35 @@ name|endTime
 operator|-
 name|startTime
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|long
+name|blockBufferSize
+init|=
+name|config
+operator|.
+name|getInt
+argument_list|(
+name|DFS_CBLOCK_CACHE_BLOCK_BUFFER_SIZE
+argument_list|,
+name|DFS_CBLOCK_CACHE_BLOCK_BUFFER_SIZE_DEFAULT
+argument_list|)
+decl_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|metrics
+operator|.
+name|getNumWriteOps
+argument_list|()
+operator|/
+name|blockBufferSize
+argument_list|,
+name|metrics
+operator|.
+name|getNumBlockBufferFlush
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// TODO: Read this data back.

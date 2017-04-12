@@ -344,7 +344,7 @@ name|DFS_CBLOCK_CACHE_THREAD_PRIORITY_DEFAULT
 init|=
 name|NORM_PRIORITY
 decl_stmt|;
-comment|/**    * Block Buffer size in 1024 entries, 128 means 128 * 1024 blockIDs.    */
+comment|/**    * Block Buffer size in terms of blockID entries, 512 means 512 blockIDs.    */
 DECL|field|DFS_CBLOCK_CACHE_BLOCK_BUFFER_SIZE
 specifier|public
 specifier|static
@@ -361,7 +361,7 @@ specifier|final
 name|int
 name|DFS_CBLOCK_CACHE_BLOCK_BUFFER_SIZE_DEFAULT
 init|=
-literal|128
+literal|512
 decl_stmt|;
 DECL|method|CBlockConfigKeys ()
 specifier|private

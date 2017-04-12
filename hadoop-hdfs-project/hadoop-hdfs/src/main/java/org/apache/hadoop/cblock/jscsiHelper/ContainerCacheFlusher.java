@@ -876,7 +876,15 @@ argument_list|,
 name|DFS_CBLOCK_CACHE_BLOCK_BUFFER_SIZE_DEFAULT
 argument_list|)
 operator|*
-literal|1024
+operator|(
+name|Long
+operator|.
+name|SIZE
+operator|/
+name|Byte
+operator|.
+name|SIZE
+operator|)
 decl_stmt|;
 name|LOG
 operator|.

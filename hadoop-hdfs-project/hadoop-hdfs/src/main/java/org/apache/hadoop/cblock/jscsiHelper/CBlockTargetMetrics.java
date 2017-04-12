@@ -120,6 +120,7 @@ specifier|public
 class|class
 name|CBlockTargetMetrics
 block|{
+comment|// Counter based Metrics
 DECL|field|numReadOps
 annotation|@
 name|Metric
@@ -155,6 +156,13 @@ specifier|private
 name|MutableCounterLong
 name|numReadLostBlocks
 decl_stmt|;
+DECL|field|numBlockBufferFlush
+annotation|@
+name|Metric
+specifier|private
+name|MutableCounterLong
+name|numBlockBufferFlush
+decl_stmt|;
 DECL|field|numDirectBlockWrites
 annotation|@
 name|Metric
@@ -169,6 +177,7 @@ specifier|private
 name|MutableCounterLong
 name|numFailedDirectBlockWrites
 decl_stmt|;
+comment|// Latency based Metrics
 DECL|field|dbReadLatency
 annotation|@
 name|Metric
@@ -196,6 +205,13 @@ name|Metric
 specifier|private
 name|MutableRate
 name|containerWriteLatency
+decl_stmt|;
+DECL|field|blockBufferFlushLatency
+annotation|@
+name|Metric
+specifier|private
+name|MutableRate
+name|blockBufferFlushLatency
 decl_stmt|;
 DECL|field|directBlockWriteLatency
 annotation|@
@@ -323,6 +339,18 @@ name|incr
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|incNumBlockBufferFlush ()
+specifier|public
+name|void
+name|incNumBlockBufferFlush
+parameter_list|()
+block|{
+name|numBlockBufferFlush
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
 DECL|method|updateDBReadLatency (long latency)
 specifier|public
 name|void
@@ -401,6 +429,23 @@ name|latency
 parameter_list|)
 block|{
 name|directBlockWriteLatency
+operator|.
+name|add
+argument_list|(
+name|latency
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|updateBlockBufferFlushLatency (long latency)
+specifier|public
+name|void
+name|updateBlockBufferFlushLatency
+parameter_list|(
+name|long
+name|latency
+parameter_list|)
+block|{
+name|blockBufferFlushLatency
 operator|.
 name|add
 argument_list|(
@@ -508,6 +553,21 @@ parameter_list|()
 block|{
 return|return
 name|numFailedDirectBlockWrites
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumBlockBufferFlush ()
+specifier|public
+name|long
+name|getNumBlockBufferFlush
+parameter_list|()
+block|{
+return|return
+name|numBlockBufferFlush
 operator|.
 name|value
 argument_list|()
