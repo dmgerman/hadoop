@@ -161,6 +161,8 @@ parameter_list|,
 name|int
 name|count
 parameter_list|)
+throws|throws
+name|StorageContainerException
 function_decl|;
 comment|/**    * Shutdown keyManager.    */
 DECL|method|shutdown ()
