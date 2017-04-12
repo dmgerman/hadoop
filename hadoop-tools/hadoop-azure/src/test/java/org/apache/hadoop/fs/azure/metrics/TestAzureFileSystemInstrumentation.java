@@ -790,6 +790,7 @@ comment|// called /user/<name>/a, and then 3 request for the creation of the thr
 comment|// levels, and then 2 requests for checking/stamping the version of AS,
 comment|// totaling 11.
 comment|// Also, there's the initial 1 request for container check so total is 12.
+comment|// The getAncestor call at the very beginning adds another 4 calls, totalling 16.
 name|base
 operator|=
 name|assertWebResponsesInRange
@@ -798,7 +799,7 @@ name|base
 argument_list|,
 literal|1
 argument_list|,
-literal|12
+literal|16
 argument_list|)
 expr_stmt|;
 name|assertEquals

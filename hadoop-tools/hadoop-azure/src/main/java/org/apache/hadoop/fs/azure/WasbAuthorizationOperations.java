@@ -62,12 +62,6 @@ case|:
 return|return
 literal|"write"
 return|;
-case|case
-name|EXECUTE
-case|:
-return|return
-literal|"execute"
-return|;
 default|default:
 throw|throw
 operator|new

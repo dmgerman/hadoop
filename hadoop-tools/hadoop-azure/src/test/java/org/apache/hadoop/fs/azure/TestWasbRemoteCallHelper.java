@@ -1546,9 +1546,9 @@ name|expectMessage
 argument_list|(
 literal|"org.apache.hadoop.fs.azure.WasbRemoteCallException: "
 operator|+
-literal|"http://localhost/CHECK_AUTHORIZATION?wasb_absolute_path=%2Ftest.dat&"
+literal|"http://localhost/CHECK_AUTHORIZATION?wasb_absolute_path=%2F&"
 operator|+
-literal|"operation_type=write&delegation_token:Encountered IOException while making remote call"
+literal|"operation_type=write:Encountered IOException while making remote call"
 argument_list|)
 expr_stmt|;
 block|}

@@ -667,6 +667,25 @@ name|IOException
 block|{
 try|try
 block|{
+comment|/* Make an exception for the internal -RenamePending files */
+if|if
+condition|(
+name|wasbAbsolutePath
+operator|.
+name|endsWith
+argument_list|(
+name|NativeAzureFileSystem
+operator|.
+name|FolderRenamePending
+operator|.
+name|SUFFIX
+argument_list|)
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
 name|URIBuilder
 name|uriBuilder
 init|=
@@ -1049,7 +1068,7 @@ name|WasbAuthorizationException
 argument_list|(
 literal|"Remote authorization"
 operator|+
-literal|" serivce encountered an error "
+literal|" service encountered an error "
 operator|+
 name|authorizerResponse
 operator|.
@@ -1084,7 +1103,7 @@ block|}
 end_class
 
 begin_comment
-comment|/**  * POJO representing the response expected from a remote  * authorization service.  * The remote service is expected to return the authorization  * response in the following JSON format  * {  *    "responseCode" : 0 or non-zero<int>,  *    "responseMessage" : relavant message of failure<String>  *    "authorizationResult" : authorization result<boolean>  *                            true - if auhorization allowed  *                            false - otherwise.  *  * }  */
+comment|/**  * POJO representing the response expected from a remote  * authorization service.  * The remote service is expected to return the authorization  * response in the following JSON format  * {  *    "responseCode" : 0 or non-zero<int>,  *    "responseMessage" : relevant message of failure<String>  *    "authorizationResult" : authorization result<boolean>  *                            true - if auhorization allowed  *                            false - otherwise.  *  * }  */
 end_comment
 
 begin_class
