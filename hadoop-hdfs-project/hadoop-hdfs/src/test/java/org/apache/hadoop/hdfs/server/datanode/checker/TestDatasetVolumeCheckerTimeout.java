@@ -644,7 +644,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|300000
 argument_list|)
 DECL|method|testDiskCheckTimeout ()
 specifier|public

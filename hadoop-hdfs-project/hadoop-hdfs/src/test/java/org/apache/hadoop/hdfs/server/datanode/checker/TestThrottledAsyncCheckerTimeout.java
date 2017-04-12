@@ -23,6 +23,90 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Matchers
+operator|.
+name|any
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Matchers
+operator|.
+name|anyObject
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Matchers
+operator|.
+name|anySet
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|mock
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|times
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|timeout
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|verify
+import|;
+end_import
+
+begin_import
 import|import
 name|com
 operator|.
@@ -267,74 +351,14 @@ import|;
 end_import
 
 begin_import
-import|import static
+import|import
 name|org
 operator|.
-name|mockito
+name|junit
 operator|.
-name|Matchers
+name|rules
 operator|.
-name|any
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Matchers
-operator|.
-name|anyObject
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Matchers
-operator|.
-name|anySet
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|mock
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|times
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|verify
+name|Timeout
 import|;
 end_import
 
@@ -485,9 +509,18 @@ operator|new
 name|TestName
 argument_list|()
 decl_stmt|;
-DECL|field|conf
-name|Configuration
-name|conf
+annotation|@
+name|Rule
+DECL|field|testTimeout
+specifier|public
+name|Timeout
+name|testTimeout
+init|=
+operator|new
+name|Timeout
+argument_list|(
+literal|300_000
+argument_list|)
 decl_stmt|;
 DECL|field|DISK_CHECK_TIMEOUT
 specifier|private
@@ -497,15 +530,6 @@ name|long
 name|DISK_CHECK_TIMEOUT
 init|=
 literal|10
-decl_stmt|;
-DECL|field|DISK_CHECK_TIME
-specifier|private
-specifier|static
-specifier|final
-name|long
-name|DISK_CHECK_TIME
-init|=
-literal|100
 decl_stmt|;
 DECL|field|lock
 specifier|private
@@ -543,11 +567,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|testDiskCheckTimeout ()
 specifier|public
 name|void
@@ -813,11 +832,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|2000
-argument_list|)
 DECL|method|testDiskCheckTimeoutInvokesOneCallbackOnly ()
 specifier|public
 name|void
@@ -934,20 +948,22 @@ argument_list|,
 name|futureCallback
 argument_list|)
 expr_stmt|;
-comment|// Wait for the callback
-name|Thread
-operator|.
-name|sleep
-argument_list|(
-name|DISK_CHECK_TIMEOUT
-argument_list|)
-expr_stmt|;
 comment|// Verify that timeout results in only 1 onFailure call and 0 onSuccess
 comment|// calls.
 name|verify
 argument_list|(
 name|futureCallback
 argument_list|,
+name|timeout
+argument_list|(
+operator|(
+name|int
+operator|)
+name|DISK_CHECK_TIMEOUT
+operator|*
+literal|10
+argument_list|)
+operator|.
 name|times
 argument_list|(
 literal|1
@@ -964,6 +980,16 @@ name|verify
 argument_list|(
 name|futureCallback
 argument_list|,
+name|timeout
+argument_list|(
+operator|(
+name|int
+operator|)
+name|DISK_CHECK_TIMEOUT
+operator|*
+literal|10
+argument_list|)
+operator|.
 name|times
 argument_list|(
 literal|0
@@ -1021,20 +1047,22 @@ argument_list|,
 name|futureCallback
 argument_list|)
 expr_stmt|;
-comment|// Wait for the callback
-name|Thread
-operator|.
-name|sleep
-argument_list|(
-name|DISK_CHECK_TIME
-argument_list|)
-expr_stmt|;
 comment|// Verify that normal check (dummy) results in only 1 onSuccess call.
-comment|// Number of times onFailure is invoked should remain the same - 1.
+comment|// Number of times onFailure is invoked should remain the same i.e. 1.
 name|verify
 argument_list|(
 name|futureCallback
 argument_list|,
+name|timeout
+argument_list|(
+operator|(
+name|int
+operator|)
+name|DISK_CHECK_TIMEOUT
+operator|*
+literal|10
+argument_list|)
+operator|.
 name|times
 argument_list|(
 literal|1
@@ -1051,6 +1079,16 @@ name|verify
 argument_list|(
 name|futureCallback
 argument_list|,
+name|timeout
+argument_list|(
+operator|(
+name|int
+operator|)
+name|DISK_CHECK_TIMEOUT
+operator|*
+literal|10
+argument_list|)
+operator|.
 name|times
 argument_list|(
 literal|1
@@ -1066,11 +1104,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|testTimeoutExceptionIsNotThrownForGoodDisk ()
 specifier|public
 name|void
