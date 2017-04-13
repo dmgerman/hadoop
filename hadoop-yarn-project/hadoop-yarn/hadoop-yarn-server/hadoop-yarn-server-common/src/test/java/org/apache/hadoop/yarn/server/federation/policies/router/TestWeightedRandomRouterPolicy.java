@@ -338,7 +338,12 @@ name|HashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
-comment|// simulate 20 subclusters with a 5% chance of being inactive
+name|float
+name|numSubClusters
+init|=
+literal|20
+decl_stmt|;
+comment|// simulate N subclusters each with a 5% chance of being inactive
 for|for
 control|(
 name|int
@@ -348,7 +353,7 @@ literal|0
 init|;
 name|i
 operator|<
-literal|20
+name|numSubClusters
 condition|;
 name|i
 operator|++
@@ -432,16 +437,29 @@ name|sci
 argument_list|)
 expr_stmt|;
 block|}
-comment|// 5% chance we omit one of the weights
+comment|// 80% of the weight is evenly spread, 20% is randomly generated
 name|float
 name|weight
 init|=
+operator|(
+literal|0.8f
+operator|*
+literal|1f
+operator|/
+name|numSubClusters
+operator|)
+operator|+
+operator|(
+literal|0.2f
+operator|*
 name|getRand
 argument_list|()
 operator|.
 name|nextFloat
 argument_list|()
+operator|)
 decl_stmt|;
+comment|// also 5% chance we omit one of the weights
 if|if
 condition|(
 name|i
@@ -594,7 +612,7 @@ block|}
 name|float
 name|numberOfDraws
 init|=
-literal|100000
+literal|10000
 decl_stmt|;
 for|for
 control|(
@@ -783,25 +801,16 @@ literal|" expected weight: "
 operator|+
 name|expectedWeight
 argument_list|,
-name|expectedWeight
-operator|==
-literal|0
-operator|||
-operator|(
+name|Math
+operator|.
+name|abs
+argument_list|(
 name|actualWeight
-operator|/
+operator|-
 name|expectedWeight
-operator|)
+argument_list|)
 operator|<
-literal|1.2
-operator|&&
-operator|(
-name|actualWeight
-operator|/
-name|expectedWeight
-operator|)
-operator|>
-literal|0.8
+literal|0.01
 argument_list|)
 expr_stmt|;
 block|}
