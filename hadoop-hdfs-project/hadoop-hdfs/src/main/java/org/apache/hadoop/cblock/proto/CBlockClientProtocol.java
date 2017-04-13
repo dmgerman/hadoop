@@ -33,10 +33,10 @@ comment|/**  * The protocol that CBlock client side uses to talk to server side.
 end_comment
 
 begin_interface
-DECL|interface|CBlockClientServerProtocol
+DECL|interface|CBlockClientProtocol
 specifier|public
 interface|interface
-name|CBlockClientServerProtocol
+name|CBlockClientProtocol
 block|{
 DECL|method|mountVolume (String userName, String volumeName)
 name|MountVolumeResponse

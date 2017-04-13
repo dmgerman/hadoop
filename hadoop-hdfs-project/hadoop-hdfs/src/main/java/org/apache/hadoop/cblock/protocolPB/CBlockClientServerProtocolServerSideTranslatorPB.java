@@ -54,7 +54,7 @@ name|cblock
 operator|.
 name|proto
 operator|.
-name|CBlockClientServerProtocol
+name|CBlockClientProtocol
 import|;
 end_import
 
@@ -175,14 +175,14 @@ block|{
 DECL|field|impl
 specifier|private
 specifier|final
-name|CBlockClientServerProtocol
+name|CBlockClientProtocol
 name|impl
 decl_stmt|;
-DECL|method|CBlockClientServerProtocolServerSideTranslatorPB ( CBlockClientServerProtocol impl)
+DECL|method|CBlockClientServerProtocolServerSideTranslatorPB ( CBlockClientProtocol impl)
 specifier|public
 name|CBlockClientServerProtocolServerSideTranslatorPB
 parameter_list|(
-name|CBlockClientServerProtocol
+name|CBlockClientProtocol
 name|impl
 parameter_list|)
 block|{

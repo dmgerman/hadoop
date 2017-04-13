@@ -86,7 +86,7 @@ name|cblock
 operator|.
 name|proto
 operator|.
-name|CBlockClientServerProtocol
+name|CBlockClientProtocol
 import|;
 end_import
 
@@ -616,7 +616,7 @@ name|CBlockManager
 implements|implements
 name|CBlockServiceProtocol
 implements|,
-name|CBlockClientServerProtocol
+name|CBlockClientProtocol
 block|{
 DECL|field|LOG
 specifier|private
