@@ -1427,6 +1427,19 @@ argument_list|()
 operator|+
 literal|"/cpu cgroup rw,relatime,cpu 0 0\n"
 decl_stmt|;
+comment|// Mark an empty directory called 'cp' cgroup. It is processed before 'cpu'
+name|String
+name|cpuMtabContentMissing
+init|=
+literal|"none "
+operator|+
+name|parentDir
+operator|.
+name|getAbsolutePath
+argument_list|()
+operator|+
+literal|"/cp cgroup rw,relatime,cpu 0 0\n"
+decl_stmt|;
 name|String
 name|blkioMtabContent
 init|=
@@ -1505,6 +1518,13 @@ name|getAbsoluteFile
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|mtabWriter
+operator|.
+name|write
+argument_list|(
+name|cpuMtabContentMissing
+argument_list|)
+expr_stmt|;
 name|mtabWriter
 operator|.
 name|write
