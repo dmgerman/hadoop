@@ -372,6 +372,20 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
+name|GrowingSleepJob
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
 name|LargeSorter
 import|;
 end_import
@@ -638,6 +652,19 @@ operator|.
 name|class
 argument_list|,
 literal|"A job that sleeps at each map and reduce task."
+argument_list|)
+expr_stmt|;
+name|pgd
+operator|.
+name|addClass
+argument_list|(
+literal|"gsleep"
+argument_list|,
+name|GrowingSleepJob
+operator|.
+name|class
+argument_list|,
+literal|"A sleep job whose mappers create 1MB buffer for every record."
 argument_list|)
 expr_stmt|;
 name|pgd
