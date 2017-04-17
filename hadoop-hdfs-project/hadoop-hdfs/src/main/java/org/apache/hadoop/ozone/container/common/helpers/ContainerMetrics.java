@@ -389,6 +389,8 @@ operator|.
 name|valueOf
 argument_list|(
 name|i
+operator|+
+literal|1
 argument_list|)
 argument_list|,
 literal|"number of "
@@ -400,6 +402,8 @@ operator|.
 name|valueOf
 argument_list|(
 name|i
+operator|+
+literal|1
 argument_list|)
 operator|+
 literal|" ops"
@@ -428,6 +432,8 @@ operator|.
 name|valueOf
 argument_list|(
 name|i
+operator|+
+literal|1
 argument_list|)
 argument_list|,
 literal|"bytes used by "
@@ -439,6 +445,8 @@ operator|.
 name|valueOf
 argument_list|(
 name|i
+operator|+
+literal|1
 argument_list|)
 operator|+
 literal|"op"
@@ -467,6 +475,8 @@ operator|.
 name|valueOf
 argument_list|(
 name|i
+operator|+
+literal|1
 argument_list|)
 argument_list|,
 name|ContainerProtos
@@ -476,6 +486,8 @@ operator|.
 name|valueOf
 argument_list|(
 name|i
+operator|+
+literal|1
 argument_list|)
 operator|+
 literal|" op"
@@ -514,6 +526,8 @@ operator|.
 name|valueOf
 argument_list|(
 name|i
+operator|+
+literal|1
 argument_list|)
 operator|+
 literal|"Nanos"
