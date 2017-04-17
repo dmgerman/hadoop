@@ -2081,6 +2081,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|isRMActive
+argument_list|()
+condition|)
+block|{
+return|return;
+block|}
 comment|// call refreshAdminAcls before HA state transition
 comment|// for the case that adminAcls have been updated in previous active RM
 try|try
