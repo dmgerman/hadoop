@@ -208,6 +208,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|client
+operator|.
+name|api
+operator|.
+name|TimelineV2Client
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|util
 operator|.
 name|timeline
@@ -412,7 +430,7 @@ literal|1024
 decl_stmt|;
 DECL|field|timelineClient
 specifier|private
-name|TimelineClient
+name|TimelineV2Client
 name|timelineClient
 decl_stmt|;
 DECL|field|stopped
@@ -464,11 +482,11 @@ return|return
 name|stopped
 return|;
 block|}
-DECL|method|ServiceTimelinePublisher (TimelineClient client)
+DECL|method|ServiceTimelinePublisher (TimelineV2Client client)
 specifier|public
 name|ServiceTimelinePublisher
 parameter_list|(
-name|TimelineClient
+name|TimelineV2Client
 name|client
 parameter_list|)
 block|{

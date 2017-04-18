@@ -790,6 +790,24 @@ name|client
 operator|.
 name|api
 operator|.
+name|TimelineV2Client
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|client
+operator|.
+name|api
+operator|.
 name|YarnClient
 import|;
 end_import
@@ -2841,7 +2859,7 @@ decl_stmt|;
 comment|/** Handle to communicate with the timeline service */
 DECL|field|timelineClient
 specifier|private
-name|TimelineClient
+name|TimelineV2Client
 name|timelineClient
 decl_stmt|;
 DECL|field|timelineServiceEnabled
@@ -4307,7 +4325,7 @@ condition|)
 block|{
 name|timelineClient
 operator|=
-name|TimelineClient
+name|TimelineV2Client
 operator|.
 name|createTimelineClient
 argument_list|(
@@ -4316,7 +4334,7 @@ argument_list|)
 expr_stmt|;
 name|asyncRMClient
 operator|.
-name|registerTimelineClient
+name|registerTimelineV2Client
 argument_list|(
 name|timelineClient
 argument_list|)
