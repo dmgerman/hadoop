@@ -259,8 +259,8 @@ parameter_list|)
 throws|throws
 name|StorageContainerException
 function_decl|;
-comment|/**    * Deletes an existing container.    *    * @param pipeline      - nodes that make this container.    * @param containerName - name of the container.    * @throws StorageContainerException    */
-DECL|method|deleteContainer (Pipeline pipeline, String containerName)
+comment|/**    * Deletes an existing container.    *    * @param pipeline      - nodes that make this container.    * @param containerName - name of the container.    * @param forceDelete   - whether this container should be deleted forcibly.    * @throws StorageContainerException    */
+DECL|method|deleteContainer (Pipeline pipeline, String containerName, boolean forceDelete)
 name|void
 name|deleteContainer
 parameter_list|(
@@ -269,6 +269,9 @@ name|pipeline
 parameter_list|,
 name|String
 name|containerName
+parameter_list|,
+name|boolean
+name|forceDelete
 parameter_list|)
 throws|throws
 name|StorageContainerException

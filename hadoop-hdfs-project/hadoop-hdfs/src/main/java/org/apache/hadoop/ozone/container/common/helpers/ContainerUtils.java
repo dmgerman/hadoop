@@ -1394,8 +1394,8 @@ name|CONTAINER_DATA_PATH
 argument_list|)
 return|;
 block|}
-comment|/**    * remove Container if it is empty.    *<p/>    * There are three things we need to delete.    *<p/>    * 1. Container file and metadata file. 2. The Level DB file 3. The path that    * we created on the data location.    *    * @param containerData - Data of the container to remove.    * @throws IOException    */
-DECL|method|removeContainer (ContainerData containerData, Configuration conf)
+comment|/**    * remove Container if it is empty.    *<p/>    * There are three things we need to delete.    *<p/>    * 1. Container file and metadata file. 2. The Level DB file 3. The path that    * we created on the data location.    *    * @param containerData - Data of the container to remove.    * @param conf - configuration of the cluster.    * @param forceDelete - whether this container should be deleted forcibly.    * @throws IOException    */
+DECL|method|removeContainer (ContainerData containerData, Configuration conf, boolean forceDelete)
 specifier|public
 specifier|static
 name|void
@@ -1406,6 +1406,9 @@ name|containerData
 parameter_list|,
 name|Configuration
 name|conf
+parameter_list|,
+name|boolean
+name|forceDelete
 parameter_list|)
 throws|throws
 name|IOException
@@ -1442,8 +1445,13 @@ argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
+comment|// If the container is not empty and cannot be deleted forcibly,
+comment|// then throw a SCE to stop deleting.
 if|if
 condition|(
+operator|!
+name|forceDelete
+operator|&&
 operator|!
 name|db
 operator|.

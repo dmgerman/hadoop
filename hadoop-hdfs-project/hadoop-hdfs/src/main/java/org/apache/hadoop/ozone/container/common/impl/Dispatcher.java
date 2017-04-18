@@ -544,6 +544,30 @@ name|PUT_SMALL_FILE_ERROR
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|Result
+operator|.
+name|UNCLOSED_CONTAINER_IO
+import|;
+end_import
+
 begin_comment
 comment|/**  * Ozone Container dispatcher takes a call from the netty server and routes it  * to the right handler function.  */
 end_comment
@@ -1740,6 +1764,17 @@ operator|.
 name|getName
 argument_list|()
 decl_stmt|;
+name|boolean
+name|forceDelete
+init|=
+name|msg
+operator|.
+name|getDeleteContainer
+argument_list|()
+operator|.
+name|getForceDelete
+argument_list|()
+decl_stmt|;
 name|Pipeline
 name|pipeline
 init|=
@@ -1763,6 +1798,42 @@ argument_list|(
 name|pipeline
 argument_list|)
 expr_stmt|;
+comment|// If this cmd requires force deleting, then we should
+comment|// make sure the container is in the state of closed,
+comment|// otherwise, stop deleting container.
+if|if
+condition|(
+name|forceDelete
+condition|)
+block|{
+if|if
+condition|(
+name|this
+operator|.
+name|containerManager
+operator|.
+name|isOpen
+argument_list|(
+name|pipeline
+operator|.
+name|getContainerName
+argument_list|()
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|StorageContainerException
+argument_list|(
+literal|"Attempting to force delete "
+operator|+
+literal|"an open container."
+argument_list|,
+name|UNCLOSED_CONTAINER_IO
+argument_list|)
+throw|;
+block|}
+block|}
 name|this
 operator|.
 name|containerManager
@@ -1772,6 +1843,8 @@ argument_list|(
 name|pipeline
 argument_list|,
 name|name
+argument_list|,
+name|forceDelete
 argument_list|)
 expr_stmt|;
 return|return
