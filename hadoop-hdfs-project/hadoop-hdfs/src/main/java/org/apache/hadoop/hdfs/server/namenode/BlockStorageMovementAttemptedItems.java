@@ -144,6 +144,26 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|BlocksStorageMovementResult
+operator|.
+name|Status
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|Daemon
@@ -185,7 +205,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A monitor class for checking whether block storage movements finished or not.  * If block storage movement results from datanode indicates about the movement  * success, then it will just remove the entries from tracking. If it reports  * failure, then it will add back to needed block storage movements list. If no  * DN reports about movement for longer time, then such items will be retries  * automatically after timeout. The default timeout would be 30mins.  */
+comment|/**  * A monitor class for checking whether block storage movements finished or not.  * If block storage movement results from datanode indicates about the movement  * success, then it will just remove the entries from tracking. If it reports  * failure, then it will add back to needed block storage movements list. If it  * reports in_progress, that means the blocks movement is in progress and the  * coordinator is still tracking the movement. If no DN reports about movement  * for longer time, then such items will be retries automatically after timeout.  * The default timeout would be 30mins.  */
 end_comment
 
 begin_class
@@ -253,7 +273,7 @@ name|StoragePolicySatisfier
 name|sps
 decl_stmt|;
 comment|//
-comment|// It might take anywhere between 30 to 60 minutes before
+comment|// It might take anywhere between 20 to 60 minutes before
 comment|// a request is timed out.
 comment|//
 DECL|field|selfRetryTimeout
@@ -261,7 +281,7 @@ specifier|private
 name|long
 name|selfRetryTimeout
 init|=
-literal|30
+literal|20
 operator|*
 literal|60
 operator|*
@@ -549,7 +569,7 @@ name|ie
 parameter_list|)
 block|{     }
 block|}
-comment|/**    * This class contains information of an attempted trackID. Information such    * as, (a)last attempted time stamp, (b)whether all the blocks in the trackID    * were attempted and blocks movement has been scheduled to satisfy storage    * policy. This is used by    * {@link BlockStorageMovementAttemptedItems#storageMovementAttemptedItems}.    */
+comment|/**    * This class contains information of an attempted trackID. Information such    * as, (a)last attempted or reported time stamp, (b)whether all the blocks in    * the trackID were attempted and blocks movement has been scheduled to    * satisfy storage policy. This is used by    * {@link BlockStorageMovementAttemptedItems#storageMovementAttemptedItems}.    */
 DECL|class|ItemInfo
 specifier|private
 specifier|final
@@ -557,11 +577,10 @@ specifier|static
 class|class
 name|ItemInfo
 block|{
-DECL|field|lastAttemptedTimeStamp
+DECL|field|lastAttemptedOrReportedTime
 specifier|private
-specifier|final
 name|long
-name|lastAttemptedTimeStamp
+name|lastAttemptedOrReportedTime
 decl_stmt|;
 DECL|field|allBlockLocsAttemptedToSatisfy
 specifier|private
@@ -569,13 +588,13 @@ specifier|final
 name|boolean
 name|allBlockLocsAttemptedToSatisfy
 decl_stmt|;
-comment|/**      * ItemInfo constructor.      *      * @param lastAttemptedTimeStamp      *          last attempted time stamp      * @param allBlockLocsAttemptedToSatisfy      *          whether all the blocks in the trackID were attempted and blocks      *          movement has been scheduled to satisfy storage policy      */
-DECL|method|ItemInfo (long lastAttemptedTimeStamp, boolean allBlockLocsAttemptedToSatisfy)
+comment|/**      * ItemInfo constructor.      *      * @param lastAttemptedOrReportedTime      *          last attempted or reported time      * @param allBlockLocsAttemptedToSatisfy      *          whether all the blocks in the trackID were attempted and blocks      *          movement has been scheduled to satisfy storage policy      */
+DECL|method|ItemInfo (long lastAttemptedOrReportedTime, boolean allBlockLocsAttemptedToSatisfy)
 specifier|private
 name|ItemInfo
 parameter_list|(
 name|long
-name|lastAttemptedTimeStamp
+name|lastAttemptedOrReportedTime
 parameter_list|,
 name|boolean
 name|allBlockLocsAttemptedToSatisfy
@@ -583,9 +602,9 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|lastAttemptedTimeStamp
+name|lastAttemptedOrReportedTime
 operator|=
-name|lastAttemptedTimeStamp
+name|lastAttemptedOrReportedTime
 expr_stmt|;
 name|this
 operator|.
@@ -594,15 +613,15 @@ operator|=
 name|allBlockLocsAttemptedToSatisfy
 expr_stmt|;
 block|}
-comment|/**      * @return last attempted time stamp.      */
-DECL|method|getLastAttemptedTimeStamp ()
+comment|/**      * @return last attempted or reported time stamp.      */
+DECL|method|getLastAttemptedOrReportedTime ()
 specifier|private
 name|long
-name|getLastAttemptedTimeStamp
+name|getLastAttemptedOrReportedTime
 parameter_list|()
 block|{
 return|return
-name|lastAttemptedTimeStamp
+name|lastAttemptedOrReportedTime
 return|;
 block|}
 comment|/**      * @return true/false. True value represents that, all the block locations      *         under the trackID has found matching target nodes to satisfy      *         storage policy. False value represents that, trackID needed      *         retries to satisfy the storage policy for some of the block      *         locations.      */
@@ -615,6 +634,21 @@ block|{
 return|return
 name|allBlockLocsAttemptedToSatisfy
 return|;
+block|}
+comment|/**      * Update lastAttemptedOrReportedTime, so that the expiration time will be      * postponed to future.      */
+DECL|method|touchLastReportedTimeStamp ()
+specifier|private
+name|void
+name|touchLastReportedTimeStamp
+parameter_list|()
+block|{
+name|this
+operator|.
+name|lastAttemptedOrReportedTime
+operator|=
+name|monotonicNow
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 comment|/**    * A monitor class for checking block storage movement result and long waiting    * items periodically.    */
@@ -765,7 +799,7 @@ name|now
 operator|>
 name|itemInfo
 operator|.
-name|getLastAttemptedTimeStamp
+name|getLastAttemptedOrReportedTime
 argument_list|()
 operator|+
 name|selfRetryTimeout
@@ -928,6 +962,11 @@ name|hasNext
 argument_list|()
 condition|)
 block|{
+name|boolean
+name|isInprogress
+init|=
+literal|false
+decl_stmt|;
 comment|// TrackID need to be retried in the following cases:
 comment|// 1) All or few scheduled block(s) movement has been failed.
 comment|// 2) All the scheduled block(s) movement has been succeeded but there
@@ -947,20 +986,25 @@ init|(
 name|storageMovementAttemptedItems
 init|)
 block|{
-if|if
-condition|(
+name|Status
+name|status
+init|=
 name|storageMovementAttemptedResult
 operator|.
 name|getStatus
 argument_list|()
-operator|==
-name|BlocksStorageMovementResult
-operator|.
-name|Status
-operator|.
-name|FAILURE
+decl_stmt|;
+name|ItemInfo
+name|itemInfo
+decl_stmt|;
+switch|switch
+condition|(
+name|status
 condition|)
 block|{
+case|case
+name|FAILURE
+case|:
 name|blockStorageMovementNeeded
 operator|.
 name|add
@@ -987,12 +1031,12 @@ name|getTrackId
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
-else|else
-block|{
-name|ItemInfo
+break|break;
+case|case
+name|SUCCESS
+case|:
 name|itemInfo
-init|=
+operator|=
 name|storageMovementAttemptedItems
 operator|.
 name|get
@@ -1002,7 +1046,7 @@ operator|.
 name|getTrackId
 argument_list|()
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 comment|// ItemInfo could be null. One case is, before the blocks movements
 comment|// result arrives the attempted trackID became timed out and then
 comment|// removed the trackID from the storageMovementAttemptedItems list.
@@ -1085,8 +1129,61 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+break|break;
+case|case
+name|IN_PROGRESS
+case|:
+name|isInprogress
+operator|=
+literal|true
+expr_stmt|;
+name|itemInfo
+operator|=
+name|storageMovementAttemptedItems
+operator|.
+name|get
+argument_list|(
+name|storageMovementAttemptedResult
+operator|.
+name|getTrackId
+argument_list|()
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|itemInfo
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// update the attempted expiration time to next cycle.
+name|itemInfo
+operator|.
+name|touchLastReportedTimeStamp
+argument_list|()
+expr_stmt|;
 block|}
-comment|// Remove trackID from the attempted list, if any.
+break|break;
+default|default:
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Unknown status: {}"
+argument_list|,
+name|status
+argument_list|)
+expr_stmt|;
+break|break;
+block|}
+comment|// Remove trackID from the attempted list if the attempt has been
+comment|// completed(success or failure), if any.
+if|if
+condition|(
+operator|!
+name|isInprogress
+condition|)
+block|{
 name|storageMovementAttemptedItems
 operator|.
 name|remove
@@ -1097,6 +1194,7 @@ name|getTrackId
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|// Remove trackID from results as processed above.
 name|resultsIter

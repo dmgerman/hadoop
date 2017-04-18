@@ -2897,7 +2897,7 @@ operator|.
 name|getStoragePolicySatisfyWorker
 argument_list|()
 operator|.
-name|getBlocksMovementsCompletionHandler
+name|getBlocksMovementsStatusHandler
 argument_list|()
 operator|.
 name|remove
@@ -2927,7 +2927,7 @@ operator|.
 name|getStoragePolicySatisfyWorker
 argument_list|()
 operator|.
-name|getBlocksMovementsCompletionHandler
+name|getBlocksMovementsStatusHandler
 argument_list|()
 operator|.
 name|getBlksMovementResults

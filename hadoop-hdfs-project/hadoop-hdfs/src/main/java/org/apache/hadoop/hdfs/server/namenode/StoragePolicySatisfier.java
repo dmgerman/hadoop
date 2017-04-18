@@ -706,6 +706,11 @@ literal|"Starting StoragePolicySatisfier."
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Ensure that all the previously submitted block movements(if any) have to
+comment|// be stopped in all datanodes.
+name|addDropSPSWorkCommandsToAllDNs
+argument_list|()
+expr_stmt|;
 name|storagePolicySatisfierThread
 operator|=
 operator|new
@@ -789,13 +794,6 @@ operator|.
 name|clearQueuesWithNotification
 argument_list|()
 expr_stmt|;
-name|this
-operator|.
-name|blockManager
-operator|.
-name|getDatanodeManager
-argument_list|()
-operator|.
 name|addDropSPSWorkCommandsToAllDNs
 argument_list|()
 expr_stmt|;
@@ -899,6 +897,24 @@ argument_list|(
 name|moverId
 argument_list|)
 return|;
+block|}
+comment|/**    * Adding drop commands to all datanodes to stop performing the satisfier    * block movements, if any.    */
+DECL|method|addDropSPSWorkCommandsToAllDNs ()
+specifier|private
+name|void
+name|addDropSPSWorkCommandsToAllDNs
+parameter_list|()
+block|{
+name|this
+operator|.
+name|blockManager
+operator|.
+name|getDatanodeManager
+argument_list|()
+operator|.
+name|addDropSPSWorkCommandsToAllDNs
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Override

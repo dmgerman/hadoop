@@ -3895,7 +3895,7 @@ specifier|final
 name|int
 name|DFS_STORAGE_POLICY_SATISFIER_SELF_RETRY_TIMEOUT_MILLIS_DEFAULT
 init|=
-literal|30
+literal|20
 operator|*
 literal|60
 operator|*

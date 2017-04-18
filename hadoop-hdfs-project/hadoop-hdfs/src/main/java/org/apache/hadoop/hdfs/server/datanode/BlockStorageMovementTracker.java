@@ -66,6 +66,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|concurrent
 operator|.
 name|CompletionService
@@ -160,7 +170,7 @@ name|datanode
 operator|.
 name|StoragePolicySatisfyWorker
 operator|.
-name|BlocksMovementsCompletionHandler
+name|BlocksMovementsStatusHandler
 import|;
 end_import
 
@@ -229,11 +239,11 @@ name|BlockMovementResult
 argument_list|>
 name|moverCompletionService
 decl_stmt|;
-DECL|field|blksMovementscompletionHandler
+DECL|field|blksMovementsStatusHandler
 specifier|private
 specifier|final
-name|BlocksMovementsCompletionHandler
-name|blksMovementscompletionHandler
+name|BlocksMovementsStatusHandler
+name|blksMovementsStatusHandler
 decl_stmt|;
 comment|// Keeps the information - trackID vs its list of blocks
 DECL|field|moverTaskFutures
@@ -267,8 +277,16 @@ argument_list|>
 argument_list|>
 name|movementResults
 decl_stmt|;
-comment|/**    * BlockStorageMovementTracker constructor.    *    * @param moverCompletionService    *          completion service.    * @param handler    *          blocks movements completion handler    */
-DECL|method|BlockStorageMovementTracker ( CompletionService<BlockMovementResult> moverCompletionService, BlocksMovementsCompletionHandler handler)
+DECL|field|running
+specifier|private
+specifier|volatile
+name|boolean
+name|running
+init|=
+literal|true
+decl_stmt|;
+comment|/**    * BlockStorageMovementTracker constructor.    *    * @param moverCompletionService    *          completion service.    * @param handler    *          blocks movements status handler    */
+DECL|method|BlockStorageMovementTracker ( CompletionService<BlockMovementResult> moverCompletionService, BlocksMovementsStatusHandler handler)
 specifier|public
 name|BlockStorageMovementTracker
 parameter_list|(
@@ -278,7 +296,7 @@ name|BlockMovementResult
 argument_list|>
 name|moverCompletionService
 parameter_list|,
-name|BlocksMovementsCompletionHandler
+name|BlocksMovementsStatusHandler
 name|handler
 parameter_list|)
 block|{
@@ -299,7 +317,7 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|blksMovementscompletionHandler
+name|blksMovementsStatusHandler
 operator|=
 name|handler
 expr_stmt|;
@@ -323,7 +341,7 @@ parameter_list|()
 block|{
 while|while
 condition|(
-literal|true
+name|running
 condition|)
 block|{
 if|if
@@ -463,8 +481,8 @@ name|trackId
 argument_list|)
 expr_stmt|;
 block|}
-comment|// handle completed blocks movements per trackId.
-name|blksMovementscompletionHandler
+comment|// handle completed or inprogress blocks movements per trackId.
+name|blksMovementsStatusHandler
 operator|.
 name|handle
 argument_list|(
@@ -687,6 +705,43 @@ name|clear
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+comment|/**    * @return the list of trackIds which are still waiting to complete all the    *         scheduled blocks movements.    */
+DECL|method|getInProgressTrackIds ()
+name|Set
+argument_list|<
+name|Long
+argument_list|>
+name|getInProgressTrackIds
+parameter_list|()
+block|{
+synchronized|synchronized
+init|(
+name|moverTaskFutures
+init|)
+block|{
+return|return
+name|moverTaskFutures
+operator|.
+name|keySet
+argument_list|()
+return|;
+block|}
+block|}
+comment|/**    * Sets running flag to false and clear the pending movement result queues.    */
+DECL|method|stopTracking ()
+specifier|public
+name|void
+name|stopTracking
+parameter_list|()
+block|{
+name|running
+operator|=
+literal|false
+expr_stmt|;
+name|removeAll
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 end_class

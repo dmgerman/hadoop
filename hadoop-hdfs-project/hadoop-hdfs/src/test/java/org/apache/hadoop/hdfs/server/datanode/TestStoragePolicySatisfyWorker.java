@@ -1203,6 +1203,13 @@ argument_list|,
 name|src
 argument_list|)
 decl_stmt|;
+try|try
+block|{
+name|worker
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
 name|List
 argument_list|<
 name|BlockMovingInfo
@@ -1307,6 +1314,15 @@ argument_list|,
 literal|30000
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|worker
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Tests that drop SPS work method clears all the queues.    *    * @throws Exception    */
 annotation|@
@@ -1447,6 +1463,13 @@ argument_list|,
 name|src
 argument_list|)
 decl_stmt|;
+name|worker
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+try|try
+block|{
 name|List
 argument_list|<
 name|BlockMovingInfo
@@ -1589,7 +1612,7 @@ name|assertTrue
 argument_list|(
 name|worker
 operator|.
-name|getBlocksMovementsCompletionHandler
+name|getBlocksMovementsStatusHandler
 argument_list|()
 operator|.
 name|getBlksMovementResults
@@ -1601,6 +1624,15 @@ operator|==
 literal|0
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|worker
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|waitForBlockMovementResult ( final StoragePolicySatisfyWorker worker, final long inodeId, int timeout)
 specifier|private
@@ -1647,7 +1679,7 @@ name|completedBlocks
 init|=
 name|worker
 operator|.
-name|getBlocksMovementsCompletionHandler
+name|getBlocksMovementsStatusHandler
 argument_list|()
 operator|.
 name|getBlksMovementResults
@@ -1718,7 +1750,7 @@ name|completedBlocks
 init|=
 name|worker
 operator|.
-name|getBlocksMovementsCompletionHandler
+name|getBlocksMovementsStatusHandler
 argument_list|()
 operator|.
 name|getBlksMovementResults

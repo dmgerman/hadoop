@@ -39,6 +39,22 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+operator|.
+name|monotonicNow
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -164,7 +180,27 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
 import|;
 end_import
 
@@ -744,7 +780,7 @@ decl_stmt|;
 DECL|field|handler
 specifier|private
 specifier|final
-name|BlocksMovementsCompletionHandler
+name|BlocksMovementsStatusHandler
 name|handler
 decl_stmt|;
 DECL|field|movementTracker
@@ -757,6 +793,21 @@ DECL|field|movementTrackerThread
 specifier|private
 name|Daemon
 name|movementTrackerThread
+decl_stmt|;
+DECL|field|inprogressTrackIdsCheckInterval
+specifier|private
+name|long
+name|inprogressTrackIdsCheckInterval
+init|=
+literal|30
+operator|*
+literal|1000
+decl_stmt|;
+comment|// 30seconds.
+DECL|field|nextInprogressRecheckTime
+specifier|private
+name|long
+name|nextInprogressRecheckTime
 decl_stmt|;
 DECL|method|StoragePolicySatisfyWorker (Configuration conf, DataNode datanode)
 specifier|public
@@ -820,7 +871,7 @@ expr_stmt|;
 name|handler
 operator|=
 operator|new
-name|BlocksMovementsCompletionHandler
+name|BlocksMovementsStatusHandler
 argument_list|()
 expr_stmt|;
 name|movementTracker
@@ -848,12 +899,96 @@ argument_list|(
 literal|"BlockStorageMovementTracker"
 argument_list|)
 expr_stmt|;
+comment|// Interval to check that the inprogress trackIds. The time interval is
+comment|// proportional o the heart beat interval time period.
+specifier|final
+name|long
+name|heartbeatIntervalSeconds
+init|=
+name|conf
+operator|.
+name|getTimeDuration
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_HEARTBEAT_INTERVAL_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_HEARTBEAT_INTERVAL_DEFAULT
+argument_list|,
+name|TimeUnit
+operator|.
+name|SECONDS
+argument_list|)
+decl_stmt|;
+name|inprogressTrackIdsCheckInterval
+operator|=
+literal|5
+operator|*
+name|heartbeatIntervalSeconds
+expr_stmt|;
+comment|// update first inprogress recheck time to a future time stamp.
+name|nextInprogressRecheckTime
+operator|=
+name|monotonicNow
+argument_list|()
+operator|+
+name|inprogressTrackIdsCheckInterval
+expr_stmt|;
+comment|// TODO: Needs to manage the number of concurrent moves per DataNode.
+block|}
+comment|/**    * Start StoragePolicySatisfyWorker, which will start block movement tracker    * thread to track the completion of block movements.    */
+DECL|method|start ()
+name|void
+name|start
+parameter_list|()
+block|{
 name|movementTrackerThread
 operator|.
 name|start
 argument_list|()
 expr_stmt|;
-comment|// TODO: Needs to manage the number of concurrent moves per DataNode.
+block|}
+comment|/**    * Stop StoragePolicySatisfyWorker, which will stop block movement tracker    * thread.    */
+DECL|method|stop ()
+name|void
+name|stop
+parameter_list|()
+block|{
+name|movementTrackerThread
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
+name|movementTracker
+operator|.
+name|stopTracking
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Timed wait to stop BlockStorageMovement tracker daemon thread.    */
+DECL|method|waitToFinishWorkerThread ()
+name|void
+name|waitToFinishWorkerThread
+parameter_list|()
+block|{
+try|try
+block|{
+name|movementTrackerThread
+operator|.
+name|join
+argument_list|(
+literal|3000
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{     }
 block|}
 DECL|method|initializeBlockMoverThreadPool (int num)
 specifier|private
@@ -2019,11 +2154,10 @@ argument_list|()
 return|;
 block|}
 block|}
-comment|/**    * Blocks movements completion handler, which is used to collect details of    * the completed list of block movements and this status(success or failure)    * will be send to the namenode via heartbeat.    */
-DECL|class|BlocksMovementsCompletionHandler
-specifier|static
+comment|/**    * Blocks movements status handler, which is used to collect details of the    * completed or inprogress list of block movements and this status(success or    * failure or inprogress) will be send to the namenode via heartbeat.    */
+DECL|class|BlocksMovementsStatusHandler
 class|class
-name|BlocksMovementsCompletionHandler
+name|BlocksMovementsStatusHandler
 block|{
 DECL|field|trackIdVsMovementStatus
 specifier|private
@@ -2139,6 +2273,18 @@ argument_list|>
 name|getBlksMovementResults
 parameter_list|()
 block|{
+name|List
+argument_list|<
+name|BlocksStorageMovementResult
+argument_list|>
+name|movementResults
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+decl_stmt|;
+comment|// 1. Adding all the completed trackids.
 synchronized|synchronized
 init|(
 name|trackIdVsMovementStatus
@@ -2150,34 +2296,60 @@ name|trackIdVsMovementStatus
 operator|.
 name|size
 argument_list|()
-operator|<=
+operator|>
 literal|0
 condition|)
 block|{
-return|return
-operator|new
-name|ArrayList
-argument_list|<>
-argument_list|()
-return|;
-block|}
-name|List
-argument_list|<
-name|BlocksStorageMovementResult
-argument_list|>
-name|results
-init|=
+name|movementResults
+operator|=
 name|Collections
 operator|.
 name|unmodifiableList
 argument_list|(
 name|trackIdVsMovementStatus
 argument_list|)
-decl_stmt|;
-return|return
-name|results
-return|;
+expr_stmt|;
 block|}
+block|}
+comment|// 2. Adding the in progress track ids after those which are completed.
+name|Set
+argument_list|<
+name|Long
+argument_list|>
+name|inProgressTrackIds
+init|=
+name|getInProgressTrackIds
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+name|Long
+name|trackId
+range|:
+name|inProgressTrackIds
+control|)
+block|{
+name|movementResults
+operator|.
+name|add
+argument_list|(
+operator|new
+name|BlocksStorageMovementResult
+argument_list|(
+name|trackId
+argument_list|,
+name|BlocksStorageMovementResult
+operator|.
+name|Status
+operator|.
+name|IN_PROGRESS
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|movementResults
+return|;
 block|}
 comment|/**      * Remove the blocks storage movement results.      *      * @param results      *          set of blocks storage movement results      */
 DECL|method|remove (BlocksStorageMovementResult[] results)
@@ -2241,9 +2413,9 @@ block|}
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getBlocksMovementsCompletionHandler ()
-name|BlocksMovementsCompletionHandler
-name|getBlocksMovementsCompletionHandler
+DECL|method|getBlocksMovementsStatusHandler ()
+name|BlocksMovementsStatusHandler
+name|getBlocksMovementsStatusHandler
 parameter_list|()
 block|{
 return|return
@@ -2278,6 +2450,59 @@ operator|.
 name|removeAll
 argument_list|()
 expr_stmt|;
+block|}
+comment|/**    * Gets list of trackids which are inprogress. Will do collection periodically    * on 'dfs.datanode.storage.policy.satisfier.worker.inprogress.recheck.time.    * millis' interval.    *    * @return collection of trackids which are inprogress    */
+DECL|method|getInProgressTrackIds ()
+specifier|private
+name|Set
+argument_list|<
+name|Long
+argument_list|>
+name|getInProgressTrackIds
+parameter_list|()
+block|{
+name|Set
+argument_list|<
+name|Long
+argument_list|>
+name|trackIds
+init|=
+operator|new
+name|HashSet
+argument_list|<>
+argument_list|()
+decl_stmt|;
+name|long
+name|now
+init|=
+name|monotonicNow
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|nextInprogressRecheckTime
+operator|>=
+name|now
+condition|)
+block|{
+name|trackIds
+operator|=
+name|movementTracker
+operator|.
+name|getInProgressTrackIds
+argument_list|()
+expr_stmt|;
+comment|// schedule next re-check interval
+name|nextInprogressRecheckTime
+operator|=
+name|now
+operator|+
+name|inprogressTrackIdsCheckInterval
+expr_stmt|;
+block|}
+return|return
+name|trackIds
+return|;
 block|}
 block|}
 end_class

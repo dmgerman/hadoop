@@ -42,7 +42,7 @@ specifier|final
 name|Status
 name|status
 decl_stmt|;
-comment|/**    * SUCCESS - If all the blocks associated to track id has moved successfully    * or maximum possible movements done.    *    *<p>    * FAILURE - If any of its(trackId) blocks movement failed and requires to    * retry these failed blocks movements. Example selected target node is no    * more running or no space. So, retrying by selecting new target node might    * work.    */
+comment|/**    * SUCCESS - If all the blocks associated to track id has moved successfully    * or maximum possible movements done.    *    *<p>    * FAILURE - If any of its(trackId) blocks movement failed and requires to    * retry these failed blocks movements. Example selected target node is no    * more running or no space. So, retrying by selecting new target node might    * work.    *    *<p>    * IN_PROGRESS - If all or some of the blocks associated to track id are    * still moving.    */
 DECL|enum|Status
 specifier|public
 specifier|static
@@ -51,9 +51,12 @@ name|Status
 block|{
 DECL|enumConstant|SUCCESS
 DECL|enumConstant|FAILURE
+DECL|enumConstant|IN_PROGRESS
 name|SUCCESS
 block|,
 name|FAILURE
+block|,
+name|IN_PROGRESS
 block|;   }
 comment|/**    * BlocksStorageMovementResult constructor.    *    * @param trackId    *          tracking identifier    * @param status    *          block movement status    */
 DECL|method|BlocksStorageMovementResult (long trackId, Status status)

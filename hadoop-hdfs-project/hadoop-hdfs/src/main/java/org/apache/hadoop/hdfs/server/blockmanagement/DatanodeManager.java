@@ -4795,6 +4795,23 @@ literal|false
 argument_list|)
 expr_stmt|;
 comment|// Node is in the include list
+comment|// Sets dropSPSWork flag to true, to ensure that
+comment|// DNA_DROP_SPS_WORK_COMMAND will send to datanode via next heartbeat
+comment|// response immediately after the node registration. This is
+comment|// to avoid a situation, where multiple trackId responses coming from
+comment|// different co-odinator datanodes. After SPS monitor time out, it
+comment|// will retry the files which were scheduled to the disconnected(for
+comment|// long time more than heartbeat expiry) DN, by finding new
+comment|// co-ordinator datanode. Now, if the expired datanode reconnects back
+comment|// after SPS reschedules, it leads to get different movement results
+comment|// from reconnected and new DN co-ordinators.
+name|nodeS
+operator|.
+name|setDropSPSWork
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 comment|// resolve network location
 if|if
 condition|(
