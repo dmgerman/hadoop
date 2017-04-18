@@ -632,31 +632,17 @@ condition|)
 block|{
 return|return;
 block|}
-name|String
-name|propValue
-init|=
-name|conf
-operator|.
-name|get
-argument_list|(
-name|propName
-argument_list|)
-decl_stmt|;
 name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Environment variable {} = '{}' is deprecated and overriding"
+literal|"Environment variable {} is deprecated and overriding"
 operator|+
-literal|" property {} = '{}', please set the property in {} instead."
+literal|" property {}', please set the property in {} instead."
 argument_list|,
 name|varName
 argument_list|,
-name|value
-argument_list|,
 name|propName
-argument_list|,
-name|propValue
 argument_list|,
 name|confFile
 argument_list|)
