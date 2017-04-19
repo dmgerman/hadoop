@@ -1548,6 +1548,20 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+comment|/**    * Returns the hedged read metrics object for this client.    *    * @return object of DFSHedgedReadMetrics    */
+DECL|method|getHedgedReadMetrics ()
+specifier|public
+name|DFSHedgedReadMetrics
+name|getHedgedReadMetrics
+parameter_list|()
+block|{
+return|return
+name|dfs
+operator|.
+name|getHedgedReadMetrics
+argument_list|()
+return|;
+block|}
 comment|/**    * Checks that the passed URI belongs to this filesystem and returns    * just the path component. Expects a URI with an absolute path.    *    * @param file URI with absolute path    * @return path component of {file}    * @throws IllegalArgumentException if URI does not belong to this DFS    */
 DECL|method|getPathName (Path file)
 name|String
