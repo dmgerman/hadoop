@@ -215,22 +215,6 @@ literal|0
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the virtual memory used by all the processes in the    * process-tree.    *    * @return virtual memory used by the process-tree in bytes,    * {@link #UNAVAILABLE} if it cannot be calculated.    */
-annotation|@
-name|Deprecated
-DECL|method|getCumulativeVmem ()
-specifier|public
-name|long
-name|getCumulativeVmem
-parameter_list|()
-block|{
-return|return
-name|getCumulativeVmem
-argument_list|(
-literal|0
-argument_list|)
-return|;
-block|}
 comment|/**    * Get the resident set size (rss) memory used by all the processes    * in the process-tree.    *    * @return rss memory used by the process-tree in bytes,    * {@link #UNAVAILABLE} if it cannot be calculated.    */
 DECL|method|getRssMemorySize ()
 specifier|public
@@ -240,22 +224,6 @@ parameter_list|()
 block|{
 return|return
 name|getRssMemorySize
-argument_list|(
-literal|0
-argument_list|)
-return|;
-block|}
-comment|/**    * Get the resident set size (rss) memory used by all the processes    * in the process-tree.    *    * @return rss memory used by the process-tree in bytes,    * {@link #UNAVAILABLE} if it cannot be calculated.    */
-annotation|@
-name|Deprecated
-DECL|method|getCumulativeRssmem ()
-specifier|public
-name|long
-name|getCumulativeRssmem
-parameter_list|()
-block|{
-return|return
-name|getCumulativeRssmem
 argument_list|(
 literal|0
 argument_list|)
@@ -275,43 +243,11 @@ return|return
 name|UNAVAILABLE
 return|;
 block|}
-comment|/**    * Get the virtual memory used by all the processes in the    * process-tree that are older than the passed in age.    *    * @param olderThanAge processes above this age are included in the    *                     memory addition    * @return virtual memory used by the process-tree in bytes for    * processes older than the specified age, {@link #UNAVAILABLE} if it    * cannot be calculated.    */
-annotation|@
-name|Deprecated
-DECL|method|getCumulativeVmem (int olderThanAge)
-specifier|public
-name|long
-name|getCumulativeVmem
-parameter_list|(
-name|int
-name|olderThanAge
-parameter_list|)
-block|{
-return|return
-name|UNAVAILABLE
-return|;
-block|}
 comment|/**    * Get the resident set size (rss) memory used by all the processes    * in the process-tree that are older than the passed in age.    *    * @param olderThanAge processes above this age are included in the    *                     memory addition    * @return rss memory used by the process-tree in bytes for    * processes older than specified age, {@link #UNAVAILABLE} if it cannot be    * calculated.    */
 DECL|method|getRssMemorySize (int olderThanAge)
 specifier|public
 name|long
 name|getRssMemorySize
-parameter_list|(
-name|int
-name|olderThanAge
-parameter_list|)
-block|{
-return|return
-name|UNAVAILABLE
-return|;
-block|}
-comment|/**    * Get the resident set size (rss) memory used by all the processes    * in the process-tree that are older than the passed in age.    *    * @param olderThanAge processes above this age are included in the    *                     memory addition    * @return rss memory used by the process-tree in bytes for    * processes older than specified age, {@link #UNAVAILABLE} if it cannot be    * calculated.    */
-annotation|@
-name|Deprecated
-DECL|method|getCumulativeRssmem (int olderThanAge)
-specifier|public
-name|long
-name|getCumulativeRssmem
 parameter_list|(
 name|int
 name|olderThanAge

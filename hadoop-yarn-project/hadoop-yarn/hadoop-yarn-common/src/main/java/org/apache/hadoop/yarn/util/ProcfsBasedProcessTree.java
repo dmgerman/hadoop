@@ -1773,29 +1773,6 @@ return|;
 block|}
 annotation|@
 name|Override
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
-DECL|method|getCumulativeVmem (int olderThanAge)
-specifier|public
-name|long
-name|getCumulativeVmem
-parameter_list|(
-name|int
-name|olderThanAge
-parameter_list|)
-block|{
-return|return
-name|getVirtualMemorySize
-argument_list|(
-name|olderThanAge
-argument_list|)
-return|;
-block|}
-annotation|@
-name|Override
 DECL|method|getRssMemorySize (int olderThanAge)
 specifier|public
 name|long
@@ -1892,29 +1869,6 @@ else|:
 name|UNAVAILABLE
 return|;
 comment|// convert # pages to byte
-block|}
-annotation|@
-name|Override
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
-DECL|method|getCumulativeRssmem (int olderThanAge)
-specifier|public
-name|long
-name|getCumulativeRssmem
-parameter_list|(
-name|int
-name|olderThanAge
-parameter_list|)
-block|{
-return|return
-name|getRssMemorySize
-argument_list|(
-name|olderThanAge
-argument_list|)
-return|;
 block|}
 comment|/**    * Get the resident set size (RSS) memory used by all the processes    * in the process-tree that are older than the passed in age. RSS is    * calculated based on SMAP information. Skip mappings with "r--s", "r-xs"    * permissions to get real RSS usage of the process.    *    * @param olderThanAge    *          processes above this age are included in the memory addition    * @return rss memory used by the process-tree in bytes, for    * processes older than this age. return {@link #UNAVAILABLE} if it cannot    * be calculated.    */
 DECL|method|getSmapBasedRssMemorySize (int olderThanAge)

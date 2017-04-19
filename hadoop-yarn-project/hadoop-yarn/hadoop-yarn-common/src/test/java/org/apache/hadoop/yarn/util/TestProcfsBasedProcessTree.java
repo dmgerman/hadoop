@@ -1406,27 +1406,6 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-literal|"vmem (old API) for the gone-process is "
-operator|+
-name|p
-operator|.
-name|getCumulativeVmem
-argument_list|()
-operator|+
-literal|" . It should be UNAVAILABLE(-1)."
-argument_list|,
-name|p
-operator|.
-name|getCumulativeVmem
-argument_list|()
-operator|==
-name|UNAVAILABLE
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|assertTrue
-argument_list|(
 name|p
 operator|.
 name|toString
@@ -2691,21 +2670,6 @@ name|getRssMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// verify old API
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|"rss memory (old API) does not match"
-argument_list|,
-name|cumuRssMem
-argument_list|,
-name|processTree
-operator|.
-name|getCumulativeRssmem
-argument_list|()
-argument_list|)
-expr_stmt|;
 comment|// verify cumulative cpu time
 name|long
 name|cumuCpuTime
@@ -2782,27 +2746,6 @@ argument_list|,
 name|processTree
 operator|.
 name|getRssMemorySize
-argument_list|()
-argument_list|)
-expr_stmt|;
-comment|// verify old API
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|"rss memory (old API) does not match"
-argument_list|,
-operator|(
-literal|20
-operator|*
-name|KB_TO_BYTES
-operator|*
-literal|3
-operator|)
-argument_list|,
-name|processTree
-operator|.
-name|getCumulativeRssmem
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3088,11 +3031,6 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|testMemForOlderProcesses (boolean smapEnabled)
 specifier|private
 name|void
@@ -3381,20 +3319,6 @@ name|getVirtualMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|"Virtual memory (old API) does not match"
-argument_list|,
-literal|700000L
-argument_list|,
-name|processTree
-operator|.
-name|getCumulativeVmem
-argument_list|()
-argument_list|)
-expr_stmt|;
 comment|// write one more process as child of 100.
 name|String
 index|[]
@@ -3506,20 +3430,6 @@ name|getVirtualMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|"vmem (old API) does not include new process"
-argument_list|,
-literal|1200000L
-argument_list|,
-name|processTree
-operator|.
-name|getCumulativeVmem
-argument_list|()
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 operator|!
@@ -3559,21 +3469,6 @@ name|getRssMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// verify old API
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|"rssmem (old API) does not include new process"
-argument_list|,
-name|cumuRssMem
-argument_list|,
-name|processTree
-operator|.
-name|getCumulativeRssmem
-argument_list|()
-argument_list|)
-expr_stmt|;
 block|}
 else|else
 block|{
@@ -3595,25 +3490,6 @@ name|getRssMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// verify old API
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|"rssmem (old API) does not include new process"
-argument_list|,
-literal|20
-operator|*
-name|KB_TO_BYTES
-operator|*
-literal|4
-argument_list|,
-name|processTree
-operator|.
-name|getCumulativeRssmem
-argument_list|()
-argument_list|)
-expr_stmt|;
 block|}
 comment|// however processes older than 1 iteration will retain the older value
 name|Assert
@@ -3627,23 +3503,6 @@ argument_list|,
 name|processTree
 operator|.
 name|getVirtualMemorySize
-argument_list|(
-literal|1
-argument_list|)
-argument_list|)
-expr_stmt|;
-comment|// verify old API
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|"vmem (old API) shouldn't have included new process"
-argument_list|,
-literal|700000L
-argument_list|,
-name|processTree
-operator|.
-name|getCumulativeVmem
 argument_list|(
 literal|1
 argument_list|)
@@ -3690,23 +3549,6 @@ literal|1
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Verify old API
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|"rssmem (old API) shouldn't have included new process"
-argument_list|,
-name|cumuRssMem
-argument_list|,
-name|processTree
-operator|.
-name|getCumulativeRssmem
-argument_list|(
-literal|1
-argument_list|)
-argument_list|)
-expr_stmt|;
 block|}
 else|else
 block|{
@@ -3725,27 +3567,6 @@ argument_list|,
 name|processTree
 operator|.
 name|getRssMemorySize
-argument_list|(
-literal|1
-argument_list|)
-argument_list|)
-expr_stmt|;
-comment|// Verify old API
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|"rssmem (old API) shouldn't have included new process"
-argument_list|,
-literal|20
-operator|*
-name|KB_TO_BYTES
-operator|*
-literal|3
-argument_list|,
-name|processTree
-operator|.
-name|getCumulativeRssmem
 argument_list|(
 literal|1
 argument_list|)
@@ -3863,23 +3684,6 @@ literal|2
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// verify old API
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|"vmem (old API) shouldn't have included new processes"
-argument_list|,
-literal|700000L
-argument_list|,
-name|processTree
-operator|.
-name|getCumulativeVmem
-argument_list|(
-literal|2
-argument_list|)
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 operator|!
@@ -3921,23 +3725,6 @@ literal|2
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Verify old API
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|"rssmem (old API) shouldn't have included new processes"
-argument_list|,
-name|cumuRssMem
-argument_list|,
-name|processTree
-operator|.
-name|getCumulativeRssmem
-argument_list|(
-literal|2
-argument_list|)
-argument_list|)
-expr_stmt|;
 block|}
 else|else
 block|{
@@ -3961,27 +3748,6 @@ literal|2
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Verify old API
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|"rssmem (old API) shouldn't have included new processes"
-argument_list|,
-literal|20
-operator|*
-name|KB_TO_BYTES
-operator|*
-literal|3
-argument_list|,
-name|processTree
-operator|.
-name|getCumulativeRssmem
-argument_list|(
-literal|2
-argument_list|)
-argument_list|)
-expr_stmt|;
 block|}
 comment|// processes older than 1 iteration should not include new process,
 comment|// but include process 500
@@ -3996,23 +3762,6 @@ argument_list|,
 name|processTree
 operator|.
 name|getVirtualMemorySize
-argument_list|(
-literal|1
-argument_list|)
-argument_list|)
-expr_stmt|;
-comment|// verify old API
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|"vmem (old API) shouldn't have included new processes"
-argument_list|,
-literal|1200000L
-argument_list|,
-name|processTree
-operator|.
-name|getCumulativeVmem
 argument_list|(
 literal|1
 argument_list|)
@@ -4059,23 +3808,6 @@ literal|1
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// verify old API
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|"rssmem (old API) shouldn't have included new processes"
-argument_list|,
-name|cumuRssMem
-argument_list|,
-name|processTree
-operator|.
-name|getCumulativeRssmem
-argument_list|(
-literal|1
-argument_list|)
-argument_list|)
-expr_stmt|;
 block|}
 else|else
 block|{
@@ -4099,26 +3831,6 @@ literal|1
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|"rssmem (old API) shouldn't have included new processes"
-argument_list|,
-literal|20
-operator|*
-name|KB_TO_BYTES
-operator|*
-literal|4
-argument_list|,
-name|processTree
-operator|.
-name|getCumulativeRssmem
-argument_list|(
-literal|1
-argument_list|)
-argument_list|)
-expr_stmt|;
 block|}
 comment|// no processes older than 3 iterations
 name|Assert
@@ -4137,23 +3849,6 @@ literal|3
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// verify old API
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|"Getting non-zero vmem (old API) for processes older than 3 iterations"
-argument_list|,
-literal|0
-argument_list|,
-name|processTree
-operator|.
-name|getCumulativeVmem
-argument_list|(
-literal|3
-argument_list|)
-argument_list|)
-expr_stmt|;
 name|Assert
 operator|.
 name|assertEquals
@@ -4165,23 +3860,6 @@ argument_list|,
 name|processTree
 operator|.
 name|getRssMemorySize
-argument_list|(
-literal|3
-argument_list|)
-argument_list|)
-expr_stmt|;
-comment|// verify old API
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|"Getting non-zero rssmem (old API) for processes older than 3 iterations"
-argument_list|,
-literal|0
-argument_list|,
-name|processTree
-operator|.
-name|getCumulativeRssmem
 argument_list|(
 literal|3
 argument_list|)
