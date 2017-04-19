@@ -1884,6 +1884,27 @@ name|ONE
 argument_list|)
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getContainer (String containerName)
+name|Pipeline
+name|getContainer
+parameter_list|(
+name|String
+name|containerName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|scmContainerManager
+operator|.
+name|getContainer
+argument_list|(
+name|containerName
+argument_list|)
+return|;
+block|}
 comment|/**    * Asks SCM where a container should be allocated. SCM responds with the set    * of datanodes that should be used creating this container.    *    * @param containerName - Name of the container.    * @param replicationFactor - replication factor.    * @return Pipeline.    * @throws IOException    */
 annotation|@
 name|Override
