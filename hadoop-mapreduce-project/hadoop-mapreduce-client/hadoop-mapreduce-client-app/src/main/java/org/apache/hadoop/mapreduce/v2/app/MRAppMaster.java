@@ -2748,17 +2748,6 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|conf
-operator|.
-name|setBoolean
-argument_list|(
-name|Dispatcher
-operator|.
-name|DISPATCHER_EXIT_ON_ERROR_KEY
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
 name|initJobCredentialsAndUGI
 argument_list|(
 name|conf

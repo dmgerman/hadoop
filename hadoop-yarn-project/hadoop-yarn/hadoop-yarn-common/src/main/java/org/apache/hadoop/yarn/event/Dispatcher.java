@@ -69,28 +69,6 @@ specifier|public
 interface|interface
 name|Dispatcher
 block|{
-comment|// Configuration to make sure dispatcher crashes but doesn't do system-exit in
-comment|// case of errors. By default, it should be false, so that tests are not
-comment|// affected. For all daemons it should be explicitly set to true so that
-comment|// daemons can crash instead of hanging around.
-DECL|field|DISPATCHER_EXIT_ON_ERROR_KEY
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DISPATCHER_EXIT_ON_ERROR_KEY
-init|=
-literal|"yarn.dispatcher.exit-on-error"
-decl_stmt|;
-DECL|field|DEFAULT_DISPATCHER_EXIT_ON_ERROR
-specifier|public
-specifier|static
-specifier|final
-name|boolean
-name|DEFAULT_DISPATCHER_EXIT_ON_ERROR
-init|=
-literal|false
-decl_stmt|;
 DECL|method|getEventHandler ()
 name|EventHandler
 argument_list|<

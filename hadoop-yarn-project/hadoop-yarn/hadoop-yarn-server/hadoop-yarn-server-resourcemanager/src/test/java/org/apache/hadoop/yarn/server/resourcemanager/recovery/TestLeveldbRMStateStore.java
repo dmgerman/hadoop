@@ -842,6 +842,13 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
+name|stateStore
+operator|.
+name|dispatcher
+operator|.
+name|disableExitOnDispatchException
+argument_list|()
+expr_stmt|;
 return|return
 name|stateStore
 return|;

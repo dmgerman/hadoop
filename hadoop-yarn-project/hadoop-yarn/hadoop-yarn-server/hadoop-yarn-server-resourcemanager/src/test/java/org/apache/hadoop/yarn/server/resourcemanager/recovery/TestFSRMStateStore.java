@@ -572,6 +572,11 @@ name|fsWorkingPath
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|dispatcher
+operator|.
+name|disableExitOnDispatchException
+argument_list|()
+expr_stmt|;
 name|start
 argument_list|()
 expr_stmt|;

@@ -339,6 +339,11 @@ name|getName
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|schedulerDispatcher
+operator|.
+name|disableExitOnError
+argument_list|()
+expr_stmt|;
 name|rmDispatcher
 operator|.
 name|register

@@ -790,6 +790,11 @@ argument_list|,
 name|dirsHandler
 argument_list|)
 expr_stmt|;
+name|dispatcher
+operator|.
+name|disableExitOnDispatchException
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Override
