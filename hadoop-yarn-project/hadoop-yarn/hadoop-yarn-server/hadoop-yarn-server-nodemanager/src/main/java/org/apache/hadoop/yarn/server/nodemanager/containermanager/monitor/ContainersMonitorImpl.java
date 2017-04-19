@@ -1892,11 +1892,6 @@ name|cpuUsagePercentPerCoreByAllContainers
 init|=
 literal|0
 decl_stmt|;
-name|long
-name|cpuUsageTotalCoresByAllContainers
-init|=
-literal|0
-decl_stmt|;
 for|for
 control|(
 name|Entry
@@ -2012,8 +2007,7 @@ name|getRssMemorySize
 argument_list|()
 decl_stmt|;
 comment|// if machine has 6 cores and 3 are used,
-comment|// cpuUsagePercentPerCore should be 300% and
-comment|// cpuUsageTotalCoresPercentage should be 50%
+comment|// cpuUsagePercentPerCore should be 300%
 name|float
 name|cpuUsagePercentPerCore
 init|=
@@ -2091,10 +2085,6 @@ name|cpuUsagePercentPerCoreByAllContainers
 operator|+=
 name|cpuUsagePercentPerCore
 expr_stmt|;
-name|cpuUsageTotalCoresByAllContainers
-operator|+=
-name|cpuUsagePercentPerCore
-expr_stmt|;
 name|reportResourceUsage
 argument_list|(
 name|containerId
@@ -2149,11 +2139,7 @@ literal|", Physical Memory= "
 operator|+
 name|pmemByAllContainers
 operator|+
-literal|", Total CPU usage= "
-operator|+
-name|cpuUsageTotalCoresByAllContainers
-operator|+
-literal|", Total CPU(% per core) usage"
+literal|", Total CPU usage(% per core)= "
 operator|+
 name|cpuUsagePercentPerCoreByAllContainers
 argument_list|)
@@ -2492,6 +2478,9 @@ name|ResourceUtilization
 name|trackedContainersUtilization
 parameter_list|)
 block|{
+comment|// if machine has 6 cores and 3 are used,
+comment|// cpuUsagePercentPerCore should be 300% and
+comment|// cpuUsageTotalCoresPercentage should be 50%
 name|float
 name|cpuUsagePercentPerCore
 init|=
@@ -3622,46 +3611,6 @@ operator|.
 name|getContainerId
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-operator|!
-name|containersMonitorEnabled
-condition|)
-block|{
-if|if
-condition|(
-name|monitoringEvent
-operator|.
-name|getType
-argument_list|()
-operator|==
-name|ContainersMonitorEventType
-operator|.
-name|CHANGE_MONITORING_CONTAINER_RESOURCE
-condition|)
-block|{
-comment|// Nothing to enforce. Update container resource immediately.
-name|ChangeMonitoringContainerResourceEvent
-name|changeEvent
-init|=
-operator|(
-name|ChangeMonitoringContainerResourceEvent
-operator|)
-name|monitoringEvent
-decl_stmt|;
-name|changeContainerResource
-argument_list|(
-name|containerId
-argument_list|,
-name|changeEvent
-operator|.
-name|getResource
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-return|return;
-block|}
 switch|switch
 condition|(
 name|monitoringEvent
@@ -3727,6 +3676,11 @@ name|ChangeMonitoringContainerResourceEvent
 operator|)
 name|monitoringEvent
 decl_stmt|;
+if|if
+condition|(
+name|containersMonitorEnabled
+condition|)
+block|{
 name|ProcessTreeInfo
 name|processTreeInfo
 init|=
@@ -3823,6 +3777,7 @@ argument_list|,
 name|cpuVcores
 argument_list|)
 expr_stmt|;
+block|}
 name|changeContainerResource
 argument_list|(
 name|containerId
