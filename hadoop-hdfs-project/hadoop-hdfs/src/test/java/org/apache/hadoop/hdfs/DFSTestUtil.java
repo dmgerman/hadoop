@@ -11719,11 +11719,19 @@ argument_list|(
 literal|0
 argument_list|)
 expr_stmt|;
+comment|// Set this to a large negative value.
+comment|// On short-lived VMs, the monotonic time can be less than the heartbeat
+comment|// expiry time. Setting this to 0 will fail to immediately mark the DN as
+comment|// dead.
 name|dn
 operator|.
 name|setLastUpdateMonotonic
 argument_list|(
-literal|0
+name|Long
+operator|.
+name|MIN_VALUE
+operator|/
+literal|2
 argument_list|)
 expr_stmt|;
 block|}
