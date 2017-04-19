@@ -99,6 +99,15 @@ name|void
 name|clearFinishedContainersFromCache
 parameter_list|()
 function_decl|;
+comment|/**    * Report an unrecoverable exception.    * @param ex exception that makes the node unhealthy    */
+DECL|method|reportException (Exception ex)
+name|void
+name|reportException
+parameter_list|(
+name|Exception
+name|ex
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

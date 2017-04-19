@@ -386,6 +386,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|exceptions
+operator|.
+name|ConfigurationException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|nodemanager
@@ -858,7 +874,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{   }
-comment|/**    * Launch the container on the node. This is a blocking call and returns only    * when the container exits.    * @param ctx Encapsulates information necessary for launching containers.    * @return the return status of the launch    * @throws IOException if the container launch fails    */
+comment|/**    * Launch the container on the node. This is a blocking call and returns only    * when the container exits.    * @param ctx Encapsulates information necessary for launching containers.    * @return the return status of the launch    * @throws IOException if the container launch fails    * @throws ConfigurationException if config error was found    */
 DECL|method|launchContainer (ContainerStartContext ctx)
 specifier|public
 specifier|abstract
@@ -870,6 +886,8 @@ name|ctx
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|ConfigurationException
 function_decl|;
 comment|/**    * Signal container with the specified signal.    *    * @param ctx Encapsulates information necessary for signaling containers.    * @return returns true if the operation succeeded    * @throws IOException if signaling the container fails    */
 DECL|method|signalContainer (ContainerSignalContext ctx)

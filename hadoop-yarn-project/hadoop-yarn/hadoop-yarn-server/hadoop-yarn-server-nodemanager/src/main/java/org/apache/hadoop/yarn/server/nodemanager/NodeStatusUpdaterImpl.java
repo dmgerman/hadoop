@@ -5569,6 +5569,28 @@ return|return
 literal|false
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|reportException (Exception ex)
+specifier|public
+name|void
+name|reportException
+parameter_list|(
+name|Exception
+name|ex
+parameter_list|)
+block|{
+name|healthChecker
+operator|.
+name|reportException
+argument_list|(
+name|ex
+argument_list|)
+expr_stmt|;
+name|sendOutofBandHeartBeat
+argument_list|()
+expr_stmt|;
+block|}
 DECL|method|getLogAggregationReportsForApps ( ConcurrentLinkedQueue<LogAggregationReport> lastestLogAggregationStatus)
 specifier|private
 name|List
