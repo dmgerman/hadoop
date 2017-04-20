@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one or mor
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.container.common.impl
+DECL|package|org.apache.hadoop.ozone.container.metrics
 package|package
 name|org
 operator|.
@@ -16,9 +16,7 @@ name|ozone
 operator|.
 name|container
 operator|.
-name|common
-operator|.
-name|impl
+name|metrics
 package|;
 end_package
 
@@ -235,6 +233,26 @@ operator|.
 name|helpers
 operator|.
 name|ChunkInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|impl
+operator|.
+name|Dispatcher
 import|;
 end_import
 
