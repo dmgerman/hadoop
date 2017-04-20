@@ -291,14 +291,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Create container :"
-operator|+
+literal|"Create container : {}"
+argument_list|,
 name|pipelineID
-operator|+
-literal|" "
-operator|+
-name|getScmClient
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|getScmClient
