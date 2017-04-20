@@ -75,7 +75,7 @@ class|class
 name|DataNodeFaultInjector
 block|{
 DECL|field|instance
-specifier|public
+specifier|private
 specifier|static
 name|DataNodeFaultInjector
 name|instance
@@ -230,6 +230,22 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{ }
+DECL|method|startOfferService ()
+specifier|public
+name|void
+name|startOfferService
+parameter_list|()
+throws|throws
+name|Exception
+block|{}
+DECL|method|endOfferService ()
+specifier|public
+name|void
+name|endOfferService
+parameter_list|()
+throws|throws
+name|Exception
+block|{}
 block|}
 end_class
 

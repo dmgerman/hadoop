@@ -182,6 +182,18 @@ end_import
 
 begin_import
 import|import
+name|net
+operator|.
+name|jcip
+operator|.
+name|annotations
+operator|.
+name|NotThreadSafe
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -511,6 +523,8 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|NotThreadSafe
 DECL|class|TestDataNodeMetrics
 specifier|public
 class|class
@@ -1523,6 +1537,14 @@ operator|.
 name|newArrayList
 argument_list|()
 decl_stmt|;
+name|DataNodeFaultInjector
+name|oldInjector
+init|=
+name|DataNodeFaultInjector
+operator|.
+name|get
+argument_list|()
+decl_stmt|;
 try|try
 block|{
 specifier|final
@@ -1578,9 +1600,10 @@ argument_list|()
 expr_stmt|;
 name|DataNodeFaultInjector
 operator|.
-name|instance
-operator|=
+name|set
+argument_list|(
 name|injector
+argument_list|)
 expr_stmt|;
 name|streams
 operator|.
@@ -1740,11 +1763,10 @@ expr_stmt|;
 block|}
 name|DataNodeFaultInjector
 operator|.
-name|instance
-operator|=
-operator|new
-name|DataNodeFaultInjector
-argument_list|()
+name|set
+argument_list|(
+name|oldInjector
+argument_list|)
 expr_stmt|;
 block|}
 block|}

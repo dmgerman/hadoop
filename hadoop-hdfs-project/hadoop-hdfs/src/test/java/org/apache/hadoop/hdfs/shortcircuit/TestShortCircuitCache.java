@@ -202,6 +202,18 @@ end_import
 
 begin_import
 import|import
+name|net
+operator|.
+name|jcip
+operator|.
+name|annotations
+operator|.
+name|NotThreadSafe
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -885,6 +897,8 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|NotThreadSafe
 DECL|class|TestShortCircuitCache
 specifier|public
 class|class
@@ -4890,13 +4904,15 @@ name|prevInjector
 init|=
 name|DataNodeFaultInjector
 operator|.
-name|instance
+name|get
+argument_list|()
 decl_stmt|;
 name|DataNodeFaultInjector
 operator|.
-name|instance
-operator|=
+name|set
+argument_list|(
 name|failureInjector
+argument_list|)
 expr_stmt|;
 try|try
 block|{
@@ -4967,9 +4983,10 @@ argument_list|)
 expr_stmt|;
 name|DataNodeFaultInjector
 operator|.
-name|instance
-operator|=
+name|set
+argument_list|(
 name|prevInjector
+argument_list|)
 expr_stmt|;
 name|fs
 operator|.
