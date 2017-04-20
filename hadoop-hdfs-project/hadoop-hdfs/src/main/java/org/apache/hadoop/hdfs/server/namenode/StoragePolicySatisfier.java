@@ -589,6 +589,37 @@ name|isRunning
 init|=
 literal|false
 decl_stmt|;
+comment|/**    * Represents the collective analysis status for all blocks.    */
+DECL|enum|BlocksMovingAnalysisStatus
+specifier|private
+enum|enum
+name|BlocksMovingAnalysisStatus
+block|{
+comment|// Represents that, the analysis skipped due to some conditions. A such
+comment|// condition is if block collection is in incomplete state.
+DECL|enumConstant|ANALYSIS_SKIPPED_FOR_RETRY
+name|ANALYSIS_SKIPPED_FOR_RETRY
+block|,
+comment|// Represents that, all block storage movement needed blocks found its
+comment|// targets.
+DECL|enumConstant|ALL_BLOCKS_TARGETS_PAIRED
+name|ALL_BLOCKS_TARGETS_PAIRED
+block|,
+comment|// Represents that, only fewer or none of the block storage movement needed
+comment|// block found its eligible targets.
+DECL|enumConstant|FEW_BLOCKS_TARGETS_PAIRED
+name|FEW_BLOCKS_TARGETS_PAIRED
+block|,
+comment|// Represents that, none of the blocks found for block storage movements.
+DECL|enumConstant|BLOCKS_ALREADY_SATISFIED
+name|BLOCKS_ALREADY_SATISFIED
+block|,
+comment|// Represents that, the analysis skipped due to some conditions.
+comment|// Example conditions are if no blocks really exists in block collection or
+comment|// if analysis is not required on ec files with unsuitable storage policies
+DECL|enumConstant|BLOCKS_TARGET_PAIRING_SKIPPED
+name|BLOCKS_TARGET_PAIRING_SKIPPED
+block|;   }
 DECL|method|StoragePolicySatisfier (final Namesystem namesystem, final BlockStorageMovementNeeded storageMovementNeeded, final BlockManager blkManager, Configuration conf)
 specifier|public
 name|StoragePolicySatisfier
@@ -1034,14 +1065,28 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|boolean
-name|allBlockLocsAttemptedToSatisfy
+name|BlocksMovingAnalysisStatus
+name|status
 init|=
-name|computeAndAssignStorageMismatchedBlocksToDNs
+name|analyseBlocksStorageMovementsAndAssignToDN
 argument_list|(
 name|blockCollection
 argument_list|)
 decl_stmt|;
+switch|switch
+condition|(
+name|status
+condition|)
+block|{
+comment|// Just add to monitor, so it will be retried after timeout
+case|case
+name|ANALYSIS_SKIPPED_FOR_RETRY
+case|:
+comment|// Just add to monitor, so it will be tracked for result and
+comment|// be removed on successful storage movement result.
+case|case
+name|ALL_BLOCKS_TARGETS_PAIRED
+case|:
 name|this
 operator|.
 name|storageMovementsMonitor
@@ -1050,9 +1095,52 @@ name|add
 argument_list|(
 name|blockCollectionID
 argument_list|,
-name|allBlockLocsAttemptedToSatisfy
+literal|true
 argument_list|)
 expr_stmt|;
+break|break;
+comment|// Add to monitor with allBlcoksAttemptedToSatisfy flag false, so
+comment|// that it will be tracked and still it will be consider for retry
+comment|// as analysis was not found targets for storage movement blocks.
+case|case
+name|FEW_BLOCKS_TARGETS_PAIRED
+case|:
+name|this
+operator|.
+name|storageMovementsMonitor
+operator|.
+name|add
+argument_list|(
+name|blockCollectionID
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+break|break;
+comment|// Just clean Xattrs
+case|case
+name|BLOCKS_TARGET_PAIRING_SKIPPED
+case|:
+case|case
+name|BLOCKS_ALREADY_SATISFIED
+case|:
+default|default:
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Block analysis skipped or blocks already satisfied"
+operator|+
+literal|" with storages. So, Cleaning up the Xattrs."
+argument_list|)
+expr_stmt|;
+name|postBlkStorageMovementCleanup
+argument_list|(
+name|blockCollectionID
+argument_list|)
+expr_stmt|;
+break|break;
+block|}
 block|}
 block|}
 block|}
@@ -1146,21 +1234,26 @@ argument_list|,
 name|t
 argument_list|)
 expr_stmt|;
-comment|// TODO: Just break for now. Once we implement dynamic start/stop
-comment|// option, we can add conditions here when to break/terminate.
 break|break;
 block|}
 block|}
 block|}
-DECL|method|computeAndAssignStorageMismatchedBlocksToDNs ( BlockCollection blockCollection)
+DECL|method|analyseBlocksStorageMovementsAndAssignToDN ( BlockCollection blockCollection)
 specifier|private
-name|boolean
-name|computeAndAssignStorageMismatchedBlocksToDNs
+name|BlocksMovingAnalysisStatus
+name|analyseBlocksStorageMovementsAndAssignToDN
 parameter_list|(
 name|BlockCollection
 name|blockCollection
 parameter_list|)
 block|{
+name|BlocksMovingAnalysisStatus
+name|status
+init|=
+name|BlocksMovingAnalysisStatus
+operator|.
+name|BLOCKS_ALREADY_SATISFIED
+decl_stmt|;
 name|byte
 name|existingStoragePolicyID
 init|=
@@ -1208,7 +1301,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
-literal|true
+name|BlocksMovingAnalysisStatus
+operator|.
+name|ANALYSIS_SKIPPED_FOR_RETRY
 return|;
 block|}
 comment|// First datanode will be chosen as the co-ordinator node for storage
@@ -1227,6 +1322,35 @@ operator|.
 name|getBlocks
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|blocks
+operator|.
+name|length
+operator|==
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"BlockCollectionID: {} file is not having any blocks."
+operator|+
+literal|" So, skipping the analysis."
+argument_list|,
+name|blockCollection
+operator|.
+name|getId
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|BlocksMovingAnalysisStatus
+operator|.
+name|BLOCKS_TARGET_PAIRING_SKIPPED
+return|;
+block|}
 name|List
 argument_list|<
 name|BlockMovingInfo
@@ -1239,15 +1363,6 @@ argument_list|<
 name|BlockMovingInfo
 argument_list|>
 argument_list|()
-decl_stmt|;
-comment|// True value represents that, SPS is able to find matching target nodes
-comment|// to satisfy storage type for all the blocks locations of the given
-comment|// blockCollection. A false value represents that, blockCollection needed
-comment|// retries to satisfy the storage policy for some of the block locations.
-name|boolean
-name|foundMatchingTargetNodesForAllBlocks
-init|=
-literal|true
 decl_stmt|;
 for|for
 control|(
@@ -1336,7 +1451,9 @@ literal|"So, ignoring to move the blocks"
 argument_list|)
 expr_stmt|;
 return|return
-literal|false
+name|BlocksMovingAnalysisStatus
+operator|.
+name|BLOCKS_TARGET_PAIRING_SKIPPED
 return|;
 block|}
 block|}
@@ -1355,61 +1472,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|foundMatchingTargetNodesForAllBlocks
-operator||=
-name|computeBlockMovingInfos
-argument_list|(
-name|blockMovingInfos
-argument_list|,
-name|blockInfo
-argument_list|,
-name|expectedStorageTypes
-argument_list|)
-expr_stmt|;
-block|}
-name|assignBlockMovingInfosToCoordinatorDn
-argument_list|(
-name|blockCollection
-operator|.
-name|getId
-argument_list|()
-argument_list|,
-name|blockMovingInfos
-argument_list|,
-name|coordinatorNode
-argument_list|)
-expr_stmt|;
-return|return
-name|foundMatchingTargetNodesForAllBlocks
-return|;
-block|}
-comment|/**    * Compute the list of block moving information corresponding to the given    * blockId. This will check that each block location of the given block is    * satisfying the expected storage policy. If block location is not satisfied    * the policy then find out the target node with the expected storage type to    * satisfy the storage policy.    *    * @param blockMovingInfos    *          - list of block source and target node pair    * @param blockInfo    *          - block details    * @param expectedStorageTypes    *          - list of expected storage type to satisfy the storage policy    * @return false if some of the block locations failed to find target node to    *         satisfy the storage policy, true otherwise    */
-DECL|method|computeBlockMovingInfos ( List<BlockMovingInfo> blockMovingInfos, BlockInfo blockInfo, List<StorageType> expectedStorageTypes)
-specifier|private
-name|boolean
-name|computeBlockMovingInfos
-parameter_list|(
-name|List
-argument_list|<
-name|BlockMovingInfo
-argument_list|>
-name|blockMovingInfos
-parameter_list|,
-name|BlockInfo
-name|blockInfo
-parameter_list|,
-name|List
-argument_list|<
-name|StorageType
-argument_list|>
-name|expectedStorageTypes
-parameter_list|)
-block|{
-name|boolean
-name|foundMatchingTargetNodesForBlock
-init|=
-literal|true
-decl_stmt|;
 name|DatanodeStorageInfo
 index|[]
 name|storages
@@ -1493,6 +1555,119 @@ argument_list|(
 name|storageTypes
 argument_list|)
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|DFSUtil
+operator|.
+name|removeOverlapBetweenStorageTypes
+argument_list|(
+name|expectedStorageTypes
+argument_list|,
+name|existing
+argument_list|,
+literal|true
+argument_list|)
+condition|)
+block|{
+name|boolean
+name|computeStatus
+init|=
+name|computeBlockMovingInfos
+argument_list|(
+name|blockMovingInfos
+argument_list|,
+name|blockInfo
+argument_list|,
+name|expectedStorageTypes
+argument_list|,
+name|existing
+argument_list|,
+name|storages
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|computeStatus
+operator|&&
+name|status
+operator|!=
+name|BlocksMovingAnalysisStatus
+operator|.
+name|FEW_BLOCKS_TARGETS_PAIRED
+condition|)
+block|{
+name|status
+operator|=
+name|BlocksMovingAnalysisStatus
+operator|.
+name|ALL_BLOCKS_TARGETS_PAIRED
+expr_stmt|;
+block|}
+else|else
+block|{
+name|status
+operator|=
+name|BlocksMovingAnalysisStatus
+operator|.
+name|FEW_BLOCKS_TARGETS_PAIRED
+expr_stmt|;
+block|}
+block|}
+block|}
+name|assignBlockMovingInfosToCoordinatorDn
+argument_list|(
+name|blockCollection
+operator|.
+name|getId
+argument_list|()
+argument_list|,
+name|blockMovingInfos
+argument_list|,
+name|coordinatorNode
+argument_list|)
+expr_stmt|;
+return|return
+name|status
+return|;
+block|}
+comment|/**    * Compute the list of block moving information corresponding to the given    * blockId. This will check that each block location of the given block is    * satisfying the expected storage policy. If block location is not satisfied    * the policy then find out the target node with the expected storage type to    * satisfy the storage policy.    *    * @param blockMovingInfos    *          - list of block source and target node pair    * @param blockInfo    *          - block details    * @param expectedStorageTypes    *          - list of expected storage type to satisfy the storage policy    * @param existing    *          - list to get existing storage types    * @param storages    *          - available storages    * @return false if some of the block locations failed to find target node to    *         satisfy the storage policy, true otherwise    */
+DECL|method|computeBlockMovingInfos ( List<BlockMovingInfo> blockMovingInfos, BlockInfo blockInfo, List<StorageType> expectedStorageTypes, List<StorageType> existing, DatanodeStorageInfo[] storages)
+specifier|private
+name|boolean
+name|computeBlockMovingInfos
+parameter_list|(
+name|List
+argument_list|<
+name|BlockMovingInfo
+argument_list|>
+name|blockMovingInfos
+parameter_list|,
+name|BlockInfo
+name|blockInfo
+parameter_list|,
+name|List
+argument_list|<
+name|StorageType
+argument_list|>
+name|expectedStorageTypes
+parameter_list|,
+name|List
+argument_list|<
+name|StorageType
+argument_list|>
+name|existing
+parameter_list|,
+name|DatanodeStorageInfo
+index|[]
+name|storages
+parameter_list|)
+block|{
+name|boolean
+name|foundMatchingTargetNodesForBlock
+init|=
+literal|true
 decl_stmt|;
 if|if
 condition|(
@@ -3589,7 +3764,7 @@ condition|)
 block|{
 try|try
 block|{
-name|notifyBlkStorageMovementFinished
+name|postBlkStorageMovementCleanup
 argument_list|(
 name|id
 argument_list|)
@@ -3618,10 +3793,10 @@ block|}
 block|}
 block|}
 comment|/**    * When block movement has been finished successfully, some additional    * operations should be notified, for example, SPS xattr should be    * removed.    * @param trackId track id i.e., block collection id.    * @throws IOException    */
-DECL|method|notifyBlkStorageMovementFinished (long trackId)
+DECL|method|postBlkStorageMovementCleanup (long trackId)
 specifier|public
 name|void
-name|notifyBlkStorageMovementFinished
+name|postBlkStorageMovementCleanup
 parameter_list|(
 name|long
 name|trackId

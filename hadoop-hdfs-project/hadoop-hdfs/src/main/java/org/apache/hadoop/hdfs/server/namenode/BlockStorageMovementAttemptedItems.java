@@ -1120,7 +1120,7 @@ name|this
 operator|.
 name|sps
 operator|.
-name|notifyBlkStorageMovementFinished
+name|postBlkStorageMovementCleanup
 argument_list|(
 name|storageMovementAttemptedResult
 operator|.
