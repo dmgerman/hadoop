@@ -1149,16 +1149,16 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|flexComponent ( Messages.FlexComponentRequestProto request)
+DECL|method|flexComponents ( Messages.FlexComponentsRequestProto request)
 specifier|public
 name|Messages
 operator|.
-name|FlexComponentResponseProto
-name|flexComponent
+name|FlexComponentsResponseProto
+name|flexComponents
 parameter_list|(
 name|Messages
 operator|.
-name|FlexComponentRequestProto
+name|FlexComponentsRequestProto
 name|request
 parameter_list|)
 throws|throws
@@ -1189,7 +1189,7 @@ expr_stmt|;
 return|return
 name|Messages
 operator|.
-name|FlexComponentResponseProto
+name|FlexComponentsResponseProto
 operator|.
 name|newBuilder
 argument_list|()

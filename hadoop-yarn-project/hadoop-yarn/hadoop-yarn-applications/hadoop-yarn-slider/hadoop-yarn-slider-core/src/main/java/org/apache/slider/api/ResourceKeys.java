@@ -61,6 +61,13 @@ name|YARN_CORES
 init|=
 literal|"yarn.vcores"
 decl_stmt|;
+comment|/**    * If normalization is set to false, then if the resource (memory and/or    * vcore) requested by a role is higher than YARN limits, then the resource    * request is not normalized. If this causes failures at the YARN level then    * applications are expecting that to happen. Default value is true.    */
+DECL|field|YARN_RESOURCE_NORMALIZATION_ENABLED
+name|String
+name|YARN_RESOURCE_NORMALIZATION_ENABLED
+init|=
+literal|"yarn.resource.normalization.enabled"
+decl_stmt|;
 comment|/**    * Number of disks per instance to ask YARN for    *  {@value}    */
 DECL|field|YARN_DISKS
 name|String
@@ -139,19 +146,19 @@ init|=
 literal|"yarn.container.failure.window"
 decl_stmt|;
 DECL|field|DEFAULT_CONTAINER_FAILURE_WINDOW_DAYS
-name|int
+name|long
 name|DEFAULT_CONTAINER_FAILURE_WINDOW_DAYS
 init|=
 literal|0
 decl_stmt|;
 DECL|field|DEFAULT_CONTAINER_FAILURE_WINDOW_HOURS
-name|int
+name|long
 name|DEFAULT_CONTAINER_FAILURE_WINDOW_HOURS
 init|=
 literal|6
 decl_stmt|;
 DECL|field|DEFAULT_CONTAINER_FAILURE_WINDOW_MINUTES
-name|int
+name|long
 name|DEFAULT_CONTAINER_FAILURE_WINDOW_MINUTES
 init|=
 literal|0

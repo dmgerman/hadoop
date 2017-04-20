@@ -94,10 +94,10 @@ DECL|field|requestProto
 specifier|final
 name|Messages
 operator|.
-name|FlexComponentRequestProto
+name|FlexComponentsRequestProto
 name|requestProto
 decl_stmt|;
-DECL|method|ActionFlexCluster (String name, long delay, TimeUnit timeUnit, Messages.FlexComponentRequestProto requestProto)
+DECL|method|ActionFlexCluster (String name, long delay, TimeUnit timeUnit, Messages.FlexComponentsRequestProto requestProto)
 specifier|public
 name|ActionFlexCluster
 parameter_list|(
@@ -112,7 +112,7 @@ name|timeUnit
 parameter_list|,
 name|Messages
 operator|.
-name|FlexComponentRequestProto
+name|FlexComponentsRequestProto
 name|requestProto
 parameter_list|)
 block|{

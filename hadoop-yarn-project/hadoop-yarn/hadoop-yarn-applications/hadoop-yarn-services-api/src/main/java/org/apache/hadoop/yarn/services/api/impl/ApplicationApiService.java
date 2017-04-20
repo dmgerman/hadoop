@@ -484,6 +484,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashMap
 import|;
 end_import
@@ -1725,7 +1735,12 @@ return|;
 block|}
 try|try
 block|{
-name|long
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Long
+argument_list|>
 name|original
 init|=
 name|SLIDER_CLIENT
@@ -1734,7 +1749,20 @@ name|flex
 argument_list|(
 name|appName
 argument_list|,
+name|Collections
+operator|.
+name|singletonMap
+argument_list|(
 name|component
+operator|.
+name|getName
+argument_list|()
+argument_list|,
+name|component
+operator|.
+name|getNumberOfContainers
+argument_list|()
+argument_list|)
 argument_list|)
 decl_stmt|;
 return|return
@@ -1752,6 +1780,11 @@ operator|+
 literal|" size from "
 operator|+
 name|original
+operator|.
+name|get
+argument_list|(
+name|componentName
+argument_list|)
 operator|+
 literal|" to "
 operator|+

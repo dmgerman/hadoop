@@ -161,15 +161,15 @@ name|IOException
 throws|,
 name|YarnException
 function_decl|;
-DECL|method|flexComponent ( Messages.FlexComponentRequestProto request)
+DECL|method|flexComponents ( Messages.FlexComponentsRequestProto request)
 name|Messages
 operator|.
-name|FlexComponentResponseProto
-name|flexComponent
+name|FlexComponentsResponseProto
+name|flexComponents
 parameter_list|(
 name|Messages
 operator|.
-name|FlexComponentRequestProto
+name|FlexComponentsRequestProto
 name|request
 parameter_list|)
 throws|throws

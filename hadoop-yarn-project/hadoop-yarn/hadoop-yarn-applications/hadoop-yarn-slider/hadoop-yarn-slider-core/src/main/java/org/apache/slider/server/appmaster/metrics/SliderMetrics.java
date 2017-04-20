@@ -224,12 +224,12 @@ block|{
 annotation|@
 name|Metric
 argument_list|(
-literal|"containers pending"
+literal|"containers requested"
 argument_list|)
-DECL|field|containersPending
+DECL|field|containersRequested
 specifier|public
 name|MutableGaugeInt
-name|containersPending
+name|containersRequested
 decl_stmt|;
 annotation|@
 name|Metric
@@ -244,7 +244,7 @@ decl_stmt|;
 annotation|@
 name|Metric
 argument_list|(
-literal|"containers pending"
+literal|"containers running"
 argument_list|)
 DECL|field|containersRunning
 specifier|public
@@ -254,7 +254,7 @@ decl_stmt|;
 annotation|@
 name|Metric
 argument_list|(
-literal|"containers requested"
+literal|"containers desired"
 argument_list|)
 DECL|field|containersDesired
 specifier|public
@@ -304,12 +304,32 @@ decl_stmt|;
 annotation|@
 name|Metric
 argument_list|(
+literal|"containers exceeded limits"
+argument_list|)
+DECL|field|containersLimitsExceeded
+specifier|public
+name|MutableGaugeInt
+name|containersLimitsExceeded
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
 literal|"containers surplus"
 argument_list|)
 DECL|field|surplusContainers
 specifier|public
 name|MutableGaugeInt
 name|surplusContainers
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"containers failed due to disk failure"
+argument_list|)
+DECL|field|containersDiskFailure
+specifier|public
+name|MutableGaugeInt
+name|containersDiskFailure
 decl_stmt|;
 DECL|field|registry
 specifier|protected

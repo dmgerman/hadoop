@@ -58,42 +58,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|ApplicationReport
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|YarnApplicationState
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|exceptions
 operator|.
 name|YarnException
@@ -129,22 +93,6 @@ operator|.
 name|types
 operator|.
 name|NodeInformationList
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|api
-operator|.
-name|types
-operator|.
-name|SliderInstanceDescription
 import|;
 end_import
 
@@ -224,39 +172,7 @@ name|common
 operator|.
 name|params
 operator|.
-name|ActionDestroyArgs
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|common
-operator|.
-name|params
-operator|.
 name|ActionDiagnosticArgs
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|common
-operator|.
-name|params
-operator|.
-name|ActionEchoArgs
 import|;
 end_import
 
@@ -304,38 +220,6 @@ name|common
 operator|.
 name|params
 operator|.
-name|ActionInstallKeytabArgs
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|common
-operator|.
-name|params
-operator|.
-name|ActionInstallPackageArgs
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|common
-operator|.
-name|params
-operator|.
 name|ActionKeytabArgs
 import|;
 end_import
@@ -353,22 +237,6 @@ operator|.
 name|params
 operator|.
 name|ActionNodesArgs
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|common
-operator|.
-name|params
-operator|.
-name|ActionPackageArgs
 import|;
 end_import
 
@@ -556,16 +424,6 @@ name|IOException
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-import|;
-end_import
-
 begin_comment
 comment|/**  * Interface of those method calls in the slider API that are intended  * for direct public invocation.  *<p>  * Stability: evolving  */
 end_comment
@@ -579,7 +437,7 @@ extends|extends
 name|Service
 block|{
 DECL|method|actionDestroy (String clustername)
-name|void
+name|int
 name|actionDestroy
 parameter_list|(
 name|String
@@ -617,19 +475,6 @@ parameter_list|)
 throws|throws
 name|SliderException
 function_decl|;
-comment|/**    * Upload keytab to a designated sub-directory of the user home directory    *    * @param installKeytabInfo the arguments needed to upload the keytab    * @throws YarnException Yarn problems    * @throws IOException other problems    * @throws BadCommandArgumentsException bad arguments.    * @deprecated use #actionKeytab    */
-DECL|method|actionInstallKeytab (ActionInstallKeytabArgs installKeytabInfo)
-name|int
-name|actionInstallKeytab
-parameter_list|(
-name|ActionInstallKeytabArgs
-name|installKeytabInfo
-parameter_list|)
-throws|throws
-name|YarnException
-throws|,
-name|IOException
-function_decl|;
 comment|/**    * Manage keytabs leveraged by slider    *    * @param keytabInfo the arguments needed to manage the keytab    * @throws YarnException Yarn problems    * @throws IOException other problems    * @throws BadCommandArgumentsException bad arguments.    */
 DECL|method|actionKeytab (ActionKeytabArgs keytabInfo)
 name|int
@@ -637,19 +482,6 @@ name|actionKeytab
 parameter_list|(
 name|ActionKeytabArgs
 name|keytabInfo
-parameter_list|)
-throws|throws
-name|YarnException
-throws|,
-name|IOException
-function_decl|;
-comment|/**    * Upload application package to user home directory    *    * @param installPkgInfo the arguments needed to upload the package    * @throws YarnException Yarn problems    * @throws IOException other problems    * @throws BadCommandArgumentsException bad arguments.    */
-DECL|method|actionInstallPkg (ActionInstallPackageArgs installPkgInfo)
-name|int
-name|actionInstallPkg
-parameter_list|(
-name|ActionInstallPackageArgs
-name|installPkgInfo
 parameter_list|)
 throws|throws
 name|YarnException
@@ -681,19 +513,6 @@ throws|throws
 name|IOException
 throws|,
 name|YarnException
-function_decl|;
-comment|/**    * Managing slider application package    *    * @param pkgInfo the arguments needed to upload, delete or list the package    * @throws YarnException Yarn problems    * @throws IOException other problems    * @throws BadCommandArgumentsException bad arguments.    */
-DECL|method|actionPackage (ActionPackageArgs pkgInfo)
-name|int
-name|actionPackage
-parameter_list|(
-name|ActionPackageArgs
-name|pkgInfo
-parameter_list|)
-throws|throws
-name|YarnException
-throws|,
-name|IOException
 function_decl|;
 comment|/**    * Update the cluster specification    *    * @param clustername cluster name    * @param buildInfo the arguments needed to update the cluster    * @throws YarnException Yarn problems    * @throws IOException other problems    */
 DECL|method|actionUpdate (String clustername, AbstractClusterBuildingActionArgs buildInfo)
@@ -744,7 +563,7 @@ throws|,
 name|YarnException
 function_decl|;
 DECL|method|actionFlex (String name, ActionFlexArgs args)
-name|void
+name|int
 name|actionFlex
 parameter_list|(
 name|String
@@ -790,22 +609,6 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    * Echo operation (not currently wired up to command line)    * @param name cluster name    * @param args arguments    * @return the echoed text    * @throws YarnException    * @throws IOException    */
-DECL|method|actionEcho (String name, ActionEchoArgs args)
-name|String
-name|actionEcho
-parameter_list|(
-name|String
-name|name
-parameter_list|,
-name|ActionEchoArgs
-name|args
-parameter_list|)
-throws|throws
-name|YarnException
-throws|,
-name|IOException
-function_decl|;
 comment|/**    * Status operation    *    * @param clustername cluster name    * @param statusArgs status arguments    * @return 0 -for success, else an exception is thrown    * @throws YarnException    * @throws IOException    */
 DECL|method|actionStatus (String clustername, ActionStatusArgs statusArgs)
 name|int
@@ -843,7 +646,7 @@ parameter_list|()
 function_decl|;
 comment|/**    * Stop the cluster    *    * @param clustername cluster name    * @param freezeArgs arguments to the stop    * @return EXIT_SUCCESS if the cluster was not running by the end of the operation    */
 DECL|method|actionStop (String clustername, ActionFreezeArgs freezeArgs)
-name|void
+name|int
 name|actionStop
 parameter_list|(
 name|String

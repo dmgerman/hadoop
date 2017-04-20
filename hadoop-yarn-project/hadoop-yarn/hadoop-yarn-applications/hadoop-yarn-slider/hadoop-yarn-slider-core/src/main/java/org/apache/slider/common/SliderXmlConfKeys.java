@@ -16,24 +16,6 @@ name|common
 package|;
 end_package
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|registry
-operator|.
-name|client
-operator|.
-name|api
-operator|.
-name|RegistryConstants
-import|;
-end_import
-
 begin_comment
 comment|/**  * These are the keys that can be added to<code>conf/slider-client.xml</code>.  */
 end_comment
@@ -166,24 +148,6 @@ name|String
 name|DEFAULT_DATA_DIRECTORY_PERMISSIONS
 init|=
 literal|"750"
-decl_stmt|;
-comment|/**    *    * Use {@link RegistryConstants#KEY_REGISTRY_ZK_ROOT}    *    */
-annotation|@
-name|Deprecated
-DECL|field|REGISTRY_PATH
-name|String
-name|REGISTRY_PATH
-init|=
-literal|"slider.registry.path"
-decl_stmt|;
-comment|/**    *     * @Deprecated use {@link RegistryConstants#KEY_REGISTRY_ZK_QUORUM}    *     */
-annotation|@
-name|Deprecated
-DECL|field|REGISTRY_ZK_QUORUM
-name|String
-name|REGISTRY_ZK_QUORUM
-init|=
-literal|"slider.zookeeper.quorum"
 decl_stmt|;
 DECL|field|IPC_CLIENT_FALLBACK_TO_SIMPLE_AUTH
 name|String

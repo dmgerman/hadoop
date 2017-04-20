@@ -94,8 +94,6 @@ block|{
 name|ARG_COMPONENT
 block|,
 name|ARG_COMPONENT_SHORT
-block|,
-name|ARG_ROLE
 block|}
 argument_list|,
 name|arity

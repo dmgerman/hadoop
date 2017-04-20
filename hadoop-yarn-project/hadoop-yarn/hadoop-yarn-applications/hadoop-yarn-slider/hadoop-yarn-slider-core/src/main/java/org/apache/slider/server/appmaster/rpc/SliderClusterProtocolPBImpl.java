@@ -259,19 +259,19 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|flexComponent ( RpcController controller, Messages.FlexComponentRequestProto request)
+DECL|method|flexComponents ( RpcController controller, Messages.FlexComponentsRequestProto request)
 specifier|public
 name|Messages
 operator|.
-name|FlexComponentResponseProto
-name|flexComponent
+name|FlexComponentsResponseProto
+name|flexComponents
 parameter_list|(
 name|RpcController
 name|controller
 parameter_list|,
 name|Messages
 operator|.
-name|FlexComponentRequestProto
+name|FlexComponentsRequestProto
 name|request
 parameter_list|)
 throws|throws
@@ -282,7 +282,7 @@ block|{
 return|return
 name|real
 operator|.
-name|flexComponent
+name|flexComponents
 argument_list|(
 name|request
 argument_list|)

@@ -85,7 +85,7 @@ specifier|public
 class|class
 name|ActionUpgradeArgs
 extends|extends
-name|AbstractActionArgs
+name|AbstractClusterBuildingActionArgs
 block|{
 annotation|@
 name|Override

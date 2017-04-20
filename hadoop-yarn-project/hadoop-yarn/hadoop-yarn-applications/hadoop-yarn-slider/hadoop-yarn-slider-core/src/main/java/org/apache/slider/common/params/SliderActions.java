@@ -118,12 +118,6 @@ name|ACTION_INSTALL_KEYTAB
 init|=
 literal|"install-keytab"
 decl_stmt|;
-DECL|field|ACTION_INSTALL_PACKAGE
-name|String
-name|ACTION_INSTALL_PACKAGE
-init|=
-literal|"install-package"
-decl_stmt|;
 DECL|field|ACTION_KDIAG
 name|String
 name|ACTION_KDIAG
@@ -159,12 +153,6 @@ name|String
 name|ACTION_NODES
 init|=
 literal|"nodes"
-decl_stmt|;
-DECL|field|ACTION_PACKAGE
-name|String
-name|ACTION_PACKAGE
-init|=
-literal|"package"
 decl_stmt|;
 DECL|field|ACTION_PREFLIGHT
 name|String
@@ -358,53 +346,11 @@ name|DESCRIBE_ACTION_VERSION
 init|=
 literal|"Print the Slider version information"
 decl_stmt|;
-DECL|field|DESCRIBE_ACTION_INSTALL_PACKAGE
-name|String
-name|DESCRIBE_ACTION_INSTALL_PACKAGE
-init|=
-literal|"Install application package."
-operator|+
-literal|" Deprecated, use '"
-operator|+
-name|ACTION_PACKAGE
-operator|+
-literal|" "
-operator|+
-name|ClientArgs
-operator|.
-name|ARG_INSTALL
-operator|+
-literal|"'."
-decl_stmt|;
-DECL|field|DESCRIBE_ACTION_PACKAGE
-name|String
-name|DESCRIBE_ACTION_PACKAGE
-init|=
-literal|"Install/list/delete application packages and list app instances that use the packages"
-decl_stmt|;
 DECL|field|DESCRIBE_ACTION_CLIENT
 name|String
 name|DESCRIBE_ACTION_CLIENT
 init|=
 literal|"Install the application client in the specified directory or obtain a client keystore or truststore"
-decl_stmt|;
-DECL|field|DESCRIBE_ACTION_INSTALL_KEYTAB
-name|String
-name|DESCRIBE_ACTION_INSTALL_KEYTAB
-init|=
-literal|"Install the Kerberos keytab."
-operator|+
-literal|" Deprecated, use '"
-operator|+
-name|ACTION_KEYTAB
-operator|+
-literal|" "
-operator|+
-name|ClientArgs
-operator|.
-name|ARG_INSTALL
-operator|+
-literal|"'."
 decl_stmt|;
 DECL|field|DESCRIBE_ACTION_KEYTAB
 name|String

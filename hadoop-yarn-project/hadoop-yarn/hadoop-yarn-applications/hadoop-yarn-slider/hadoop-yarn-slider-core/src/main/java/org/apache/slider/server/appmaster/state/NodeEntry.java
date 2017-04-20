@@ -454,7 +454,7 @@ name|Failed
 case|:
 comment|// specific node failure
 case|case
-name|Node_failure
+name|Disk_failure
 case|:
 operator|++
 name|failed

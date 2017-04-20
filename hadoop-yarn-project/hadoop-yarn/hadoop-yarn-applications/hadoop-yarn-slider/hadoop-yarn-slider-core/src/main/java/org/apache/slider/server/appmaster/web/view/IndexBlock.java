@@ -1024,7 +1024,7 @@ if|if
 condition|(
 name|status
 operator|.
-name|getPending
+name|getRequested
 argument_list|()
 operator|>
 literal|0
@@ -1105,7 +1105,7 @@ literal|"%d"
 argument_list|,
 name|metrics
 operator|.
-name|containersPending
+name|containersRequested
 operator|.
 name|value
 argument_list|()

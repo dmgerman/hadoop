@@ -66,22 +66,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|metrics2
-operator|.
-name|lib
-operator|.
-name|DefaultMetricsSystem
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|yarn
 operator|.
 name|api
@@ -225,24 +209,6 @@ operator|.
 name|util
 operator|.
 name|Map
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|metrics2
-operator|.
-name|lib
-operator|.
-name|Interns
-operator|.
-name|info
 import|;
 end_import
 
@@ -731,7 +697,27 @@ name|value
 argument_list|()
 return|;
 block|}
+DECL|method|setDesired (int desired)
+specifier|public
+name|void
+name|setDesired
+parameter_list|(
+name|int
+name|desired
+parameter_list|)
+block|{
+name|componentMetrics
+operator|.
+name|containersDesired
+operator|.
+name|set
+argument_list|(
+name|desired
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|getRunning ()
+specifier|public
 name|long
 name|getRunning
 parameter_list|()
@@ -745,16 +731,16 @@ name|value
 argument_list|()
 return|;
 block|}
-DECL|method|getPending ()
+DECL|method|getRequested ()
 specifier|public
 name|long
-name|getPending
+name|getRequested
 parameter_list|()
 block|{
 return|return
 name|componentMetrics
 operator|.
-name|containersPending
+name|containersRequested
 operator|.
 name|value
 argument_list|()
@@ -809,7 +795,53 @@ name|n
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|getLimitsExceeded ()
+specifier|public
+name|long
+name|getLimitsExceeded
+parameter_list|()
+block|{
+return|return
+name|componentMetrics
+operator|.
+name|containersLimitsExceeded
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+DECL|method|getPreempted ()
+specifier|public
+name|long
+name|getPreempted
+parameter_list|()
+block|{
+return|return
+name|componentMetrics
+operator|.
+name|containersPreempted
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+DECL|method|getDiskFailed ()
+specifier|public
+name|long
+name|getDiskFailed
+parameter_list|()
+block|{
+return|return
+name|componentMetrics
+operator|.
+name|containersDiskFailure
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
 DECL|method|getFailedRecently ()
+specifier|public
 name|long
 name|getFailedRecently
 parameter_list|()
@@ -824,6 +856,7 @@ argument_list|()
 return|;
 block|}
 DECL|method|resetFailedRecently ()
+specifier|public
 name|long
 name|resetFailedRecently
 parameter_list|()
@@ -852,6 +885,7 @@ name|count
 return|;
 block|}
 DECL|method|getFailed ()
+specifier|public
 name|long
 name|getFailed
 parameter_list|()
@@ -904,6 +938,8 @@ operator|<
 literal|0
 condition|)
 block|{
+comment|// TODO this doesn't do anything now that we're not tracking releasing
+comment|// containers -- maybe we need releasing
 comment|//if we are releasing, remove the number that are already released.
 comment|//but never switch to a positive
 name|delta
@@ -922,7 +958,7 @@ return|return
 name|delta
 return|;
 block|}
-comment|/**    * Get count of actual and requested containers. This includes pending ones    * @return the size of the application when outstanding requests are included.    */
+comment|/**    * Get count of actual and requested containers.    * @return the size of the application when outstanding requests are included.    */
 DECL|method|getActualAndRequested ()
 specifier|public
 name|long
@@ -933,7 +969,7 @@ return|return
 name|getRunning
 argument_list|()
 operator|+
-name|getPending
+name|getRequested
 argument_list|()
 return|;
 block|}
@@ -1180,6 +1216,62 @@ operator|.
 name|activeAA
 operator|=
 name|getOutstandingAARequestCount
+argument_list|()
+expr_stmt|;
+name|stats
+operator|.
+name|actual
+operator|=
+name|getRunning
+argument_list|()
+expr_stmt|;
+name|stats
+operator|.
+name|desired
+operator|=
+name|getDesired
+argument_list|()
+expr_stmt|;
+name|stats
+operator|.
+name|failed
+operator|=
+name|getFailed
+argument_list|()
+expr_stmt|;
+name|stats
+operator|.
+name|limitsExceeded
+operator|=
+name|getLimitsExceeded
+argument_list|()
+expr_stmt|;
+name|stats
+operator|.
+name|nodeFailed
+operator|=
+name|getDiskFailed
+argument_list|()
+expr_stmt|;
+name|stats
+operator|.
+name|preempted
+operator|=
+name|getPreempted
+argument_list|()
+expr_stmt|;
+name|stats
+operator|.
+name|requested
+operator|=
+name|getRequested
+argument_list|()
+expr_stmt|;
+name|stats
+operator|.
+name|started
+operator|=
+name|getRunning
 argument_list|()
 expr_stmt|;
 return|return

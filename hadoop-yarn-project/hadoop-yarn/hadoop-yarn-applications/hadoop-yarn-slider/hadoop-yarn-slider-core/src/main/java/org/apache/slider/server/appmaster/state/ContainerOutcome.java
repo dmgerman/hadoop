@@ -57,8 +57,8 @@ block|,
 DECL|enumConstant|Failed_limits_exceeded
 name|Failed_limits_exceeded
 block|,
-DECL|enumConstant|Node_failure
-name|Node_failure
+DECL|enumConstant|Disk_failure
+name|Disk_failure
 block|,
 DECL|enumConstant|Preempted
 name|Preempted
@@ -109,7 +109,7 @@ operator|.
 name|DISKS_FAILED
 case|:
 return|return
-name|Node_failure
+name|Disk_failure
 return|;
 case|case
 name|ContainerExitStatus
