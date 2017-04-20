@@ -931,11 +931,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Get usable disk space.    *    * @param dbPathString - Path to db    * @return long bytes remaining.    */
-DECL|method|getRemaningDiskSpace (String dbPathString)
+DECL|method|getRemainingDiskSpace (String dbPathString)
 specifier|private
 specifier|static
 name|long
-name|getRemaningDiskSpace
+name|getRemainingDiskSpace
 parameter_list|(
 name|String
 name|dbPathString
@@ -1170,7 +1170,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-comment|// This is a No-op for us. We start when we bootup.
+name|blockWriter
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -1568,7 +1572,7 @@ block|}
 name|long
 name|spaceRemaining
 init|=
-name|getRemaningDiskSpace
+name|getRemainingDiskSpace
 argument_list|(
 name|dbPath
 argument_list|)

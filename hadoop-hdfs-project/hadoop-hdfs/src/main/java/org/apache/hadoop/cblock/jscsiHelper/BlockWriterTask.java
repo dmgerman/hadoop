@@ -486,7 +486,7 @@ argument_list|)
 expr_stmt|;
 name|flusher
 operator|.
-name|incrementremoteIO
+name|incrementRemoteIO
 argument_list|()
 expr_stmt|;
 block|}
@@ -623,7 +623,7 @@ argument_list|()
 operator|.
 name|error
 argument_list|(
-literal|"Unable to create the log directory, Crticial error cannot continue"
+literal|"Unable to create the log directory, Critical error cannot continue"
 argument_list|)
 expr_stmt|;
 return|return;

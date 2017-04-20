@@ -1402,10 +1402,10 @@ name|shutdown
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|incrementremoteIO ()
+DECL|method|incrementRemoteIO ()
 specifier|public
 name|long
-name|incrementremoteIO
+name|incrementRemoteIO
 parameter_list|()
 block|{
 return|return
@@ -1989,6 +1989,14 @@ operator|.
 name|SIZE
 operator|)
 decl_stmt|;
+name|getTargetMetrics
+argument_list|()
+operator|.
+name|incNumBytesDirtyLogRead
+argument_list|(
+name|bytesRead
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|finishCountMap
@@ -2096,6 +2104,12 @@ name|SIZE
 operator|)
 condition|)
 block|{
+name|getTargetMetrics
+argument_list|()
+operator|.
+name|incNumDirtyLogBlockRead
+argument_list|()
+expr_stmt|;
 name|long
 name|blockID
 init|=
