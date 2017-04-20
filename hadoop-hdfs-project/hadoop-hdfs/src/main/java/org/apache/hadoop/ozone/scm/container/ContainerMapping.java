@@ -1117,6 +1117,31 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Unable to find enough datanodes for new container. "
+operator|+
+literal|"Required {} found {}"
+argument_list|,
+name|replicationFactor
+argument_list|,
+name|datanodes
+operator|!=
+literal|null
+condition|?
+name|datanodes
+operator|.
+name|size
+argument_list|()
+else|:
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 finally|finally
 block|{

@@ -503,6 +503,24 @@ name|OZONE_SCM_CONTAINER_PLACEMENT_IMPL_KEY
 init|=
 literal|"ozone.scm.container.placement.impl"
 decl_stmt|;
+DECL|field|OZONE_SCM_CONTAINER_PROVISION_BATCH_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_SCM_CONTAINER_PROVISION_BATCH_SIZE
+init|=
+literal|"ozone.scm.container.provision_batch_size"
+decl_stmt|;
+DECL|field|OZONE_SCM_CONTAINER_PROVISION_BATCH_SIZE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|OZONE_SCM_CONTAINER_PROVISION_BATCH_SIZE_DEFAULT
+init|=
+literal|10
+decl_stmt|;
 comment|/**    * Never constructed.    */
 DECL|method|ScmConfigKeys ()
 specifier|private
