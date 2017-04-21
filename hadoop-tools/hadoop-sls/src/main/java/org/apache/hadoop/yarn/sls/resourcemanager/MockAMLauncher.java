@@ -478,6 +478,18 @@ name|Exception
 block|{
 comment|// Do nothing
 block|}
+annotation|@
+name|Override
+DECL|method|serviceStop ()
+specifier|protected
+name|void
+name|serviceStop
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+comment|// Do nothing
+block|}
 DECL|method|setupAMRMToken (RMAppAttempt appAttempt)
 specifier|private
 name|void

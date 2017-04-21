@@ -106,18 +106,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|avro
-operator|.
-name|Protocol
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -207,6 +195,24 @@ operator|.
 name|protocolrecords
 operator|.
 name|AllocateResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|ReservationSubmissionRequest
 import|;
 end_import
 
@@ -347,24 +353,6 @@ operator|.
 name|resourcemanager
 operator|.
 name|ResourceManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|utils
-operator|.
-name|BuilderUtils
 import|;
 end_import
 
@@ -662,7 +650,12 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|method|init (int id, int heartbeatInterval, List<ContainerSimulator> containerList, ResourceManager rm, SLSRunner se, long traceStartTime, long traceFinishTime, String user, String queue, boolean isTracked, String oldAppId)
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"checkstyle:parameternumber"
+argument_list|)
+DECL|method|init (int id, int heartbeatInterval, List<ContainerSimulator> containerList, ResourceManager rm, SLSRunner se, long traceStartTime, long traceFinishTime, String user, String queue, boolean isTracked, String oldAppId, ReservationSubmissionRequest rr, long baselineStartTimeMS)
 specifier|public
 name|void
 name|init
@@ -702,6 +695,12 @@ name|isTracked
 parameter_list|,
 name|String
 name|oldAppId
+parameter_list|,
+name|ReservationSubmissionRequest
+name|rr
+parameter_list|,
+name|long
+name|baselineStartTimeMS
 parameter_list|)
 block|{
 name|super
@@ -729,6 +728,10 @@ argument_list|,
 name|isTracked
 argument_list|,
 name|oldAppId
+argument_list|,
+name|rr
+argument_list|,
+name|baselineStartTimeMS
 argument_list|)
 expr_stmt|;
 name|amtype

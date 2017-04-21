@@ -124,6 +124,8 @@ specifier|public
 name|void
 name|cleanUp
 parameter_list|()
+throws|throws
+name|InterruptedException
 block|{
 name|runner
 operator|.

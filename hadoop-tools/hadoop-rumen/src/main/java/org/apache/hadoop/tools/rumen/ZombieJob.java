@@ -2055,6 +2055,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|0
 argument_list|)
 decl_stmt|;
 return|return
@@ -2241,6 +2243,8 @@ init|=
 operator|new
 name|TaskInfo
 argument_list|(
+literal|0
+argument_list|,
 literal|0
 argument_list|,
 literal|0
@@ -3252,6 +3256,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|0
 argument_list|)
 return|;
 block|}
@@ -3523,6 +3529,7 @@ argument_list|()
 expr_stmt|;
 break|break;
 block|}
+comment|//note: hardcoding vCores, as they are not collected
 name|TaskInfo
 name|taskInfo
 init|=
@@ -3547,6 +3554,8 @@ operator|(
 name|int
 operator|)
 name|heapMegabytes
+argument_list|,
+literal|1
 argument_list|,
 name|metrics
 argument_list|)
