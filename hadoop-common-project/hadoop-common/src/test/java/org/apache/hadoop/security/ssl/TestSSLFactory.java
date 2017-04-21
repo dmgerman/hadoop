@@ -124,6 +124,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|log4j
 operator|.
 name|Level
@@ -413,13 +427,13 @@ name|excludeCiphers
 init|=
 literal|"TLS_ECDHE_RSA_WITH_RC4_128_SHA,"
 operator|+
-literal|"SSL_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA,"
+literal|"SSL_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA,  \n"
 operator|+
 literal|"SSL_RSA_WITH_DES_CBC_SHA,"
 operator|+
-literal|"SSL_DHE_RSA_WITH_DES_CBC_SHA,"
+literal|"SSL_DHE_RSA_WITH_DES_CBC_SHA,  "
 operator|+
-literal|"SSL_RSA_EXPORT_WITH_RC4_40_MD5,"
+literal|"SSL_RSA_EXPORT_WITH_RC4_40_MD5,\t \n"
 operator|+
 literal|"SSL_RSA_EXPORT_WITH_DES40_CBC_SHA,"
 operator|+
@@ -1103,11 +1117,11 @@ name|clientSSLEngine
 operator|.
 name|setEnabledCipherSuites
 argument_list|(
-name|excludeCiphers
+name|StringUtils
 operator|.
-name|split
+name|getTrimmedStrings
 argument_list|(
-literal|","
+name|excludeCiphers
 argument_list|)
 argument_list|)
 expr_stmt|;

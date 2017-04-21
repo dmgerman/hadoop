@@ -74,6 +74,20 @@ name|*
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * Tool for redacting sensitive information when displaying config parameters.  *  *<p>Some config parameters contain sensitive information (for example, cloud  * storage keys). When these properties are displayed in plaintext, we should  * redactor their values as appropriate.  */
 end_comment
@@ -131,14 +145,11 @@ name|Arrays
 operator|.
 name|asList
 argument_list|(
-name|sensitiveRegexList
+name|StringUtils
 operator|.
-name|trim
-argument_list|()
-operator|.
-name|split
+name|getTrimmedStrings
 argument_list|(
-literal|"[,\\s]+"
+name|sensitiveRegexList
 argument_list|)
 argument_list|)
 decl_stmt|;

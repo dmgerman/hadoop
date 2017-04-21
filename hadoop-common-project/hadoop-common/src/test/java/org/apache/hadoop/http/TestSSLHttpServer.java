@@ -288,6 +288,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|AfterClass
@@ -400,17 +414,17 @@ name|excludeCiphers
 init|=
 literal|"TLS_ECDHE_RSA_WITH_RC4_128_SHA,"
 operator|+
-literal|"SSL_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA,"
+literal|"SSL_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA, \n"
 operator|+
 literal|"SSL_RSA_WITH_DES_CBC_SHA,"
 operator|+
-literal|"SSL_DHE_RSA_WITH_DES_CBC_SHA,"
+literal|"SSL_DHE_RSA_WITH_DES_CBC_SHA,  "
 operator|+
-literal|"SSL_RSA_EXPORT_WITH_RC4_40_MD5,"
+literal|"SSL_RSA_EXPORT_WITH_RC4_40_MD5,\t \n"
 operator|+
 literal|"SSL_RSA_EXPORT_WITH_DES40_CBC_SHA,"
 operator|+
-literal|"SSL_RSA_WITH_RC4_128_MD5"
+literal|"SSL_RSA_WITH_RC4_128_MD5 \t"
 decl_stmt|;
 DECL|field|oneEnabledCiphers
 specifier|private
@@ -430,17 +444,17 @@ specifier|final
 name|String
 name|exclusiveEnabledCiphers
 init|=
-literal|"TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,"
+literal|"\tTLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, \n"
 operator|+
 literal|"TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,"
 operator|+
 literal|"TLS_RSA_WITH_AES_128_CBC_SHA,"
 operator|+
-literal|"TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA,"
+literal|"TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA,  "
 operator|+
 literal|"TLS_ECDH_RSA_WITH_AES_128_CBC_SHA,"
 operator|+
-literal|"TLS_DHE_RSA_WITH_AES_128_CBC_SHA,"
+literal|"TLS_DHE_RSA_WITH_AES_128_CBC_SHA,\t\n "
 operator|+
 literal|"TLS_DHE_DSS_WITH_AES_128_CBC_SHA"
 decl_stmt|;
@@ -973,11 +987,11 @@ name|PrefferedCipherSSLSocketFactory
 argument_list|(
 name|sslSocketF
 argument_list|,
-name|excludeCiphers
+name|StringUtils
 operator|.
-name|split
+name|getTrimmedStrings
 argument_list|(
-literal|","
+name|excludeCiphers
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -1098,11 +1112,11 @@ name|PrefferedCipherSSLSocketFactory
 argument_list|(
 name|sslSocketF
 argument_list|,
-name|oneEnabledCiphers
+name|StringUtils
 operator|.
-name|split
+name|getTrimmedStrings
 argument_list|(
-literal|","
+name|oneEnabledCiphers
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -1237,11 +1251,11 @@ name|PrefferedCipherSSLSocketFactory
 argument_list|(
 name|sslSocketF
 argument_list|,
-name|exclusiveEnabledCiphers
+name|StringUtils
 operator|.
-name|split
+name|getTrimmedStrings
 argument_list|(
-literal|","
+name|exclusiveEnabledCiphers
 argument_list|)
 argument_list|)
 decl_stmt|;

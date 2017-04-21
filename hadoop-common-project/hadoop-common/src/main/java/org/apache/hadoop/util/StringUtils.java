@@ -1771,7 +1771,7 @@ return|return
 name|set
 return|;
 block|}
-comment|/**    * Splits a comma separated value<code>String</code>, trimming leading and    * trailing whitespace on each value.    *    * @param str a comma separated<code>String</code> with values, may be null    * @return an array of<code>String</code> values, empty array if null String    *         input    */
+comment|/**    * Splits a comma or newline separated value<code>String</code>, trimming    * leading and trailing whitespace on each value.    *    * @param str a comma or newline separated<code>String</code> with values,    *            may be null    * @return an array of<code>String</code> values, empty array if null String    *         input    */
 DECL|method|getTrimmedStrings (String str)
 specifier|public
 specifier|static
@@ -1810,7 +1810,7 @@ argument_list|()
 operator|.
 name|split
 argument_list|(
-literal|"\\s*,\\s*"
+literal|"\\s*[,\n]\\s*"
 argument_list|)
 return|;
 block|}
