@@ -816,6 +816,19 @@ operator|=
 name|state
 expr_stmt|;
 block|}
+DECL|method|setHeartbeatedSinceFailover (boolean value)
+name|void
+name|setHeartbeatedSinceFailover
+parameter_list|(
+name|boolean
+name|value
+parameter_list|)
+block|{
+name|heartbeatedSinceFailover
+operator|=
+name|value
+expr_stmt|;
+block|}
 DECL|method|areBlocksOnFailedStorage ()
 name|boolean
 name|areBlocksOnFailedStorage

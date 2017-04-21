@@ -2503,6 +2503,14 @@ name|activeLen
 argument_list|)
 expr_stmt|;
 block|}
+comment|//move PROVIDED storage to the end to prefer local replicas.
+name|lb
+operator|.
+name|moveProvidedToEnd
+argument_list|(
+name|activeLen
+argument_list|)
+expr_stmt|;
 comment|// must update cache since we modified locations array
 name|lb
 operator|.

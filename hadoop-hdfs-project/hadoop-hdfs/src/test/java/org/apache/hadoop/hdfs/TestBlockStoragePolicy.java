@@ -740,6 +740,16 @@ name|HdfsConstants
 operator|.
 name|MEMORY_STORAGE_POLICY_ID
 decl_stmt|;
+DECL|field|PROVIDED
+specifier|static
+specifier|final
+name|byte
+name|PROVIDED
+init|=
+name|HdfsConstants
+operator|.
+name|PROVIDED_STORAGE_POLICY_ID
+decl_stmt|;
 annotation|@
 name|Test
 argument_list|(
@@ -1037,6 +1047,21 @@ operator|+
 literal|", storageTypes=[SSD], creationFallbacks=[DISK], "
 operator|+
 literal|"replicationFallbacks=[DISK]}"
+argument_list|)
+expr_stmt|;
+name|expectedPolicyStrings
+operator|.
+name|put
+argument_list|(
+name|PROVIDED
+argument_list|,
+literal|"BlockStoragePolicy{PROVIDED:"
+operator|+
+name|PROVIDED
+operator|+
+literal|", storageTypes=[PROVIDED, DISK], creationFallbacks=[PROVIDED, DISK], "
+operator|+
+literal|"replicationFallbacks=[PROVIDED, DISK]}"
 argument_list|)
 expr_stmt|;
 for|for
