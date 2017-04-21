@@ -13805,20 +13805,54 @@ name|provider
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Probe for encryption enabled on this filesystem.    * @return true if encryption is enabled    */
+comment|/**    * Probe for encryption enabled on this filesystem.    * Note (see HDFS-11689):    * Not to throw exception in this method since it would break hive.    * Hive accesses this method and assumes no exception would be thrown.    * Hive should not access DFSClient since it is InterfaceAudience.Private.    * Deprecated annotation is added to trigger build warning at hive side.    * Request has been made to Hive to remove access to DFSClient.    * @return true if encryption is enabled    */
+annotation|@
+name|Deprecated
 DECL|method|isHDFSEncryptionEnabled ()
 specifier|public
 name|boolean
 name|isHDFSEncryptionEnabled
 parameter_list|()
-throws|throws
-name|IOException
 block|{
-return|return
+name|boolean
+name|result
+init|=
+literal|false
+decl_stmt|;
+try|try
+block|{
+name|result
+operator|=
+operator|(
 name|getKeyProviderUri
 argument_list|()
 operator|!=
 literal|null
+operator|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Exception while checking whether encryption zone "
+operator|+
+literal|"is supported, assumes it is not supported"
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|result
 return|;
 block|}
 comment|/**    * Returns the SaslDataTransferClient configured for this DFSClient.    *    * @return SaslDataTransferClient configured for this DFSClient    */
