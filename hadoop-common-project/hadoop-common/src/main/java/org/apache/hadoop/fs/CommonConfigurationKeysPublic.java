@@ -1671,6 +1671,8 @@ literal|"ssl.keystore.pass$"
 argument_list|,
 literal|"fs.s3.*[Ss]ecret.?[Kk]ey"
 argument_list|,
+literal|"fs.s3a.*.server-side-encryption.key"
+argument_list|,
 literal|"fs.azure\\.account.key.*"
 argument_list|,
 literal|"credential$"

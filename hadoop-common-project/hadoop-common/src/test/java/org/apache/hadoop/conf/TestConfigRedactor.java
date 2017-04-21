@@ -169,6 +169,10 @@ literal|"fs.s3a.secret.key"
 argument_list|,
 literal|"fs.s3a.bucket.BUCKET.secret.key"
 argument_list|,
+literal|"fs.s3a.server-side-encryption.key"
+argument_list|,
+literal|"fs.s3a.bucket.engineering.server-side-encryption.key"
+argument_list|,
 literal|"fs.s3n.awsSecretKey"
 argument_list|,
 literal|"fs.azure.account.key.abcdefg.blob.core.windows.net"
@@ -246,6 +250,8 @@ argument_list|,
 literal|"httpfs.config.dir"
 argument_list|,
 literal|"hadoop.security.credstore.java-keystore-provider.password-file"
+argument_list|,
+literal|"fs.s3a.bucket.engineering.server-side-encryption-algorithm"
 argument_list|)
 decl_stmt|;
 for|for

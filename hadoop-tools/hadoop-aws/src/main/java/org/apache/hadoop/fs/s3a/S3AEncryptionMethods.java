@@ -76,6 +76,14 @@ argument_list|(
 literal|""
 argument_list|)
 block|;
+DECL|field|UNKNOWN_ALGORITHM
+specifier|static
+specifier|final
+name|String
+name|UNKNOWN_ALGORITHM
+init|=
+literal|"Unknown Server Side Encryption algorithm "
+decl_stmt|;
 DECL|field|method
 specifier|private
 name|String
@@ -105,6 +113,7 @@ return|return
 name|method
 return|;
 block|}
+comment|/**    * Get the encryption mechanism from the value provided.    * @param name algorithm name    * @return the method    * @throws IOException if the algorithm is unknown    */
 DECL|method|getMethod (String name)
 specifier|public
 specifier|static
@@ -159,7 +168,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Unknown Server Side algorithm "
+name|UNKNOWN_ALGORITHM
 operator|+
 name|name
 argument_list|)

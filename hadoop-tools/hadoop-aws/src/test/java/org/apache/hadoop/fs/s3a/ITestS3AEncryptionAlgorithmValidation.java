@@ -452,7 +452,7 @@ name|IOException
 operator|.
 name|class
 argument_list|,
-name|Constants
+name|S3AUtils
 operator|.
 name|SSE_C_NO_KEY_ERROR
 argument_list|,
@@ -603,7 +603,7 @@ name|IOException
 operator|.
 name|class
 argument_list|,
-name|Constants
+name|S3AUtils
 operator|.
 name|SSE_S3_WITH_KEY_ERROR
 argument_list|,
