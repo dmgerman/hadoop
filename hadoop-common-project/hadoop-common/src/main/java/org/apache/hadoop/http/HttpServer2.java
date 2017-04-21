@@ -2174,6 +2174,18 @@ name|SSL_SERVER_TRUSTSTORE_TYPE_DEFAULT
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|excludeCiphers
+argument_list|(
+name|sslConf
+operator|.
+name|get
+argument_list|(
+name|SSLFactory
+operator|.
+name|SSL_SERVER_EXCLUDE_CIPHER_LIST
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|build ()
 specifier|public
