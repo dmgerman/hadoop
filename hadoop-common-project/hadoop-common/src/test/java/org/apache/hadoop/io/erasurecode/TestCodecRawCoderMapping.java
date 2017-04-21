@@ -82,7 +82,7 @@ name|erasurecode
 operator|.
 name|rawcoder
 operator|.
-name|RSRawDecoderLegacy
+name|RSLegacyRawDecoder
 import|;
 end_import
 
@@ -118,7 +118,7 @@ name|erasurecode
 operator|.
 name|rawcoder
 operator|.
-name|RSRawEncoderLegacy
+name|RSLegacyRawEncoder
 import|;
 end_import
 
@@ -397,7 +397,7 @@ name|assertTrue
 argument_list|(
 name|encoder
 operator|instanceof
-name|RSRawEncoderLegacy
+name|RSLegacyRawEncoder
 argument_list|)
 expr_stmt|;
 name|decoder
@@ -421,7 +421,7 @@ name|assertTrue
 argument_list|(
 name|decoder
 operator|instanceof
-name|RSRawDecoderLegacy
+name|RSLegacyRawDecoder
 argument_list|)
 expr_stmt|;
 block|}
@@ -686,7 +686,7 @@ name|assertTrue
 argument_list|(
 name|encoder
 operator|instanceof
-name|RSRawEncoderLegacy
+name|RSLegacyRawEncoder
 argument_list|)
 expr_stmt|;
 name|RawErasureDecoder
@@ -711,7 +711,7 @@ name|assertTrue
 argument_list|(
 name|decoder
 operator|instanceof
-name|RSRawDecoderLegacy
+name|RSLegacyRawDecoder
 argument_list|)
 expr_stmt|;
 block|}

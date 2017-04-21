@@ -99,10 +99,10 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|RSRawEncoderLegacy
+DECL|class|RSLegacyRawEncoder
 specifier|public
 class|class
-name|RSRawEncoderLegacy
+name|RSLegacyRawEncoder
 extends|extends
 name|RawErasureEncoder
 block|{
@@ -112,9 +112,9 @@ name|int
 index|[]
 name|generatingPolynomial
 decl_stmt|;
-DECL|method|RSRawEncoderLegacy (ErasureCoderOptions coderOptions)
+DECL|method|RSLegacyRawEncoder (ErasureCoderOptions coderOptions)
 specifier|public
-name|RSRawEncoderLegacy
+name|RSLegacyRawEncoder
 parameter_list|(
 name|ErasureCoderOptions
 name|coderOptions

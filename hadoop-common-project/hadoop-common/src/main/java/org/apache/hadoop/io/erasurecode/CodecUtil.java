@@ -292,7 +292,7 @@ name|erasurecode
 operator|.
 name|rawcoder
 operator|.
-name|RSRawErasureCoderFactoryLegacy
+name|RSLegacyRawErasureCoderFactory
 import|;
 end_import
 
@@ -539,7 +539,7 @@ specifier|final
 name|String
 name|IO_ERASURECODE_CODEC_RS_LEGACY_RAWCODERS_DEFAULT
 init|=
-name|RSRawErasureCoderFactoryLegacy
+name|RSLegacyRawErasureCoderFactory
 operator|.
 name|class
 operator|.

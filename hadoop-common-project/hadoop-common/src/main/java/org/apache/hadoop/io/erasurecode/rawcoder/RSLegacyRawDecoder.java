@@ -101,10 +101,10 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|RSRawDecoderLegacy
+DECL|class|RSLegacyRawDecoder
 specifier|public
 class|class
-name|RSRawDecoderLegacy
+name|RSLegacyRawDecoder
 extends|extends
 name|RawErasureDecoder
 block|{
@@ -121,9 +121,9 @@ name|int
 index|[]
 name|primitivePower
 decl_stmt|;
-DECL|method|RSRawDecoderLegacy (ErasureCoderOptions coderOptions)
+DECL|method|RSLegacyRawDecoder (ErasureCoderOptions coderOptions)
 specifier|public
-name|RSRawDecoderLegacy
+name|RSLegacyRawDecoder
 parameter_list|(
 name|ErasureCoderOptions
 name|coderOptions

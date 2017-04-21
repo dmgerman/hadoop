@@ -260,7 +260,7 @@ name|DummyRawErasureCoderFactory
 argument_list|()
 argument_list|,
 operator|new
-name|RSRawErasureCoderFactoryLegacy
+name|RSLegacyRawErasureCoderFactory
 argument_list|()
 argument_list|,
 operator|new
