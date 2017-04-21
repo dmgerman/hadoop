@@ -336,6 +336,16 @@ name|REDUCE_NODE_LABEL_EXP
 init|=
 literal|"mapreduce.reduce.node-label-expression"
 decl_stmt|;
+comment|/**    * Specify strict locality on a comma-separated list of racks and/or nodes.    * Syntax: /rack or /rack/node or node (assumes /default-rack)    */
+DECL|field|AM_STRICT_LOCALITY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|AM_STRICT_LOCALITY
+init|=
+literal|"mapreduce.job.am.strict-locality"
+decl_stmt|;
 DECL|field|RESERVATION_ID
 specifier|public
 specifier|static
