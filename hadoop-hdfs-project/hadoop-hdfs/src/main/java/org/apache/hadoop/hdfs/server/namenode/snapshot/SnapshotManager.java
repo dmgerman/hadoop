@@ -23,6 +23,38 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_SNAPSHOT_CAPTURE_OPENFILES
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_SNAPSHOT_CAPTURE_OPENFILES_DEFAULT
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -123,6 +155,20 @@ operator|.
 name|management
 operator|.
 name|ObjectName
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
 import|;
 end_import
 
@@ -372,6 +418,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|LeaseManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|metrics2
 operator|.
 name|util
@@ -406,27 +470,17 @@ name|SnapshotManager
 implements|implements
 name|SnapshotStatsMXBean
 block|{
-DECL|field|allowNestedSnapshots
-specifier|private
-name|boolean
-name|allowNestedSnapshots
-init|=
-literal|false
-decl_stmt|;
 DECL|field|fsdir
 specifier|private
 specifier|final
 name|FSDirectory
 name|fsdir
 decl_stmt|;
-DECL|field|SNAPSHOT_ID_BIT_WIDTH
+DECL|field|captureOpenFiles
 specifier|private
-specifier|static
 specifier|final
-name|int
-name|SNAPSHOT_ID_BIT_WIDTH
-init|=
-literal|24
+name|boolean
+name|captureOpenFiles
 decl_stmt|;
 DECL|field|numSnapshots
 specifier|private
@@ -437,6 +491,22 @@ init|=
 operator|new
 name|AtomicInteger
 argument_list|()
+decl_stmt|;
+DECL|field|SNAPSHOT_ID_BIT_WIDTH
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|SNAPSHOT_ID_BIT_WIDTH
+init|=
+literal|24
+decl_stmt|;
+DECL|field|allowNestedSnapshots
+specifier|private
+name|boolean
+name|allowNestedSnapshots
+init|=
+literal|false
 decl_stmt|;
 DECL|field|snapshotCounter
 specifier|private
@@ -466,10 +536,14 @@ name|INodeDirectory
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|SnapshotManager (final FSDirectory fsdir)
+DECL|method|SnapshotManager (final Configuration conf, final FSDirectory fsdir)
 specifier|public
 name|SnapshotManager
 parameter_list|(
+specifier|final
+name|Configuration
+name|conf
+parameter_list|,
 specifier|final
 name|FSDirectory
 name|fsdir
@@ -480,6 +554,19 @@ operator|.
 name|fsdir
 operator|=
 name|fsdir
+expr_stmt|;
+name|this
+operator|.
+name|captureOpenFiles
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFS_NAMENODE_SNAPSHOT_CAPTURE_OPENFILES
+argument_list|,
+name|DFS_NAMENODE_SNAPSHOT_CAPTURE_OPENFILES_DEFAULT
+argument_list|)
 expr_stmt|;
 block|}
 comment|/** Used in tests only */
@@ -953,11 +1040,15 @@ name|dir
 return|;
 block|}
 comment|/**    * Create a snapshot of the given path.    * It is assumed that the caller will perform synchronization.    *    * @param iip the INodes resolved from the snapshottable directory's path    * @param snapshotName    *          The name of the snapshot.    * @throws IOException    *           Throw IOException when 1) the given path does not lead to an    *           existing snapshottable directory, and/or 2) there exists a    *           snapshot with the given name for the directory, and/or 3)    *           snapshot number exceeds quota    */
-DECL|method|createSnapshot (final INodesInPath iip, String snapshotRoot, String snapshotName)
+DECL|method|createSnapshot (final LeaseManager leaseManager, final INodesInPath iip, String snapshotRoot, String snapshotName)
 specifier|public
 name|String
 name|createSnapshot
 parameter_list|(
+specifier|final
+name|LeaseManager
+name|leaseManager
+parameter_list|,
 specifier|final
 name|INodesInPath
 name|iip
@@ -1007,6 +1098,12 @@ argument_list|(
 name|snapshotCounter
 argument_list|,
 name|snapshotName
+argument_list|,
+name|leaseManager
+argument_list|,
+name|this
+operator|.
+name|captureOpenFiles
 argument_list|)
 expr_stmt|;
 comment|//create success, update id

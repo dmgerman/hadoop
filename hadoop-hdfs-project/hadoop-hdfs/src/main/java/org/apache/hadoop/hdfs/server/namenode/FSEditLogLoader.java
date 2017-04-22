@@ -5398,6 +5398,14 @@ argument_list|()
 operator|.
 name|createSnapshot
 argument_list|(
+name|fsDir
+operator|.
+name|getFSNamesystem
+argument_list|()
+operator|.
+name|getLeaseManager
+argument_list|()
+argument_list|,
 name|iip
 argument_list|,
 name|snapshotRoot

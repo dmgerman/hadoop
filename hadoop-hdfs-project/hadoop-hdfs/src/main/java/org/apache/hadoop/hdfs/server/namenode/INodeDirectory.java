@@ -1319,7 +1319,7 @@ name|snapshotQuota
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addSnapshot (int id, String name)
+DECL|method|addSnapshot (int id, String name, final LeaseManager leaseManager, final boolean captureOpenFiles)
 specifier|public
 name|Snapshot
 name|addSnapshot
@@ -1329,6 +1329,14 @@ name|id
 parameter_list|,
 name|String
 name|name
+parameter_list|,
+specifier|final
+name|LeaseManager
+name|leaseManager
+parameter_list|,
+specifier|final
+name|boolean
+name|captureOpenFiles
 parameter_list|)
 throws|throws
 name|SnapshotException
@@ -1346,6 +1354,10 @@ argument_list|,
 name|id
 argument_list|,
 name|name
+argument_list|,
+name|leaseManager
+argument_list|,
+name|captureOpenFiles
 argument_list|)
 return|;
 block|}

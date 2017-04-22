@@ -650,6 +650,18 @@ name|DFS_DATA_TRANSFER_CLIENT_TCPNODELAY_DEFAULT
 init|=
 literal|true
 decl_stmt|;
+DECL|field|DFS_NAMENODE_SNAPSHOT_CAPTURE_OPENFILES
+name|String
+name|DFS_NAMENODE_SNAPSHOT_CAPTURE_OPENFILES
+init|=
+literal|"dfs.namenode.snapshot.capture.openfiles"
+decl_stmt|;
+DECL|field|DFS_NAMENODE_SNAPSHOT_CAPTURE_OPENFILES_DEFAULT
+name|boolean
+name|DFS_NAMENODE_SNAPSHOT_CAPTURE_OPENFILES_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 comment|/**    * These are deprecated config keys to client code.    */
 DECL|interface|DeprecatedKeys
 interface|interface

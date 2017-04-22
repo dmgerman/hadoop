@@ -600,8 +600,6 @@ throw|;
 block|}
 name|String
 name|snapshotPath
-init|=
-literal|null
 decl_stmt|;
 name|verifySnapshotName
 argument_list|(
@@ -625,6 +623,14 @@ name|snapshotManager
 operator|.
 name|createSnapshot
 argument_list|(
+name|fsd
+operator|.
+name|getFSNamesystem
+argument_list|()
+operator|.
+name|getLeaseManager
+argument_list|()
+argument_list|,
 name|iip
 argument_list|,
 name|snapshotRoot
