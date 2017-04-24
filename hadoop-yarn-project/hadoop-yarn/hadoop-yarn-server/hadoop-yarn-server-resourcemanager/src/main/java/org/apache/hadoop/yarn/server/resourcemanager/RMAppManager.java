@@ -1501,6 +1501,16 @@ argument_list|)
 operator|.
 name|add
 argument_list|(
+literal|"submitTime"
+argument_list|,
+name|app
+operator|.
+name|getSubmitTime
+argument_list|()
+argument_list|)
+operator|.
+name|add
+argument_list|(
 literal|"startTime"
 argument_list|,
 name|app
