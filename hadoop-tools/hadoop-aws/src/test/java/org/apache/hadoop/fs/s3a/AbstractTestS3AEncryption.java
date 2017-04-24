@@ -482,6 +482,31 @@ name|len
 argument_list|)
 return|;
 block|}
+DECL|method|createFilename (String name)
+specifier|protected
+name|String
+name|createFilename
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+block|{
+return|return
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"%s-%s"
+argument_list|,
+name|methodName
+operator|.
+name|getMethodName
+argument_list|()
+argument_list|,
+name|name
+argument_list|)
+return|;
+block|}
 comment|/**    * Assert that at path references an encrypted blob.    * @param path path    * @throws IOException on a failure    */
 DECL|method|assertEncrypted (Path path)
 specifier|protected
