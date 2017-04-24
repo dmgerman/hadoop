@@ -1183,8 +1183,9 @@ name|ret
 return|;
 block|}
 comment|/**    * Find the hierarchy of the subsystem.    * The kernel ensures that a subsystem can only be part of a single hierarchy.    * The subsystem can be part of multiple mount points, if they belong to the    * same hierarchy.    * @param controller subsystem like cpu, cpuset, etc...    * @param entries map of paths to mount options    * @return the first mount path that has the requested subsystem    */
+annotation|@
+name|VisibleForTesting
 DECL|method|findControllerInMtab (String controller, Map<String, List<String>> entries)
-specifier|private
 specifier|static
 name|String
 name|findControllerInMtab
