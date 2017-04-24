@@ -134,7 +134,7 @@ specifier|final
 name|String
 name|CONTRACT_ENABLE_KEY
 init|=
-literal|"dfs.adl.test.contract.enable"
+literal|"fs.adl.test.contract.enable"
 decl_stmt|;
 DECL|field|CONTRACT_ENABLE_DEFAULT
 specifier|private
@@ -211,6 +211,23 @@ name|conf
 init|=
 literal|null
 decl_stmt|;
+static|static
+block|{
+name|Configuration
+operator|.
+name|addDeprecation
+argument_list|(
+literal|"dfs.adl.test.contract.enable"
+argument_list|,
+name|CONTRACT_ENABLE_KEY
+argument_list|)
+expr_stmt|;
+name|Configuration
+operator|.
+name|reloadExistingConfigurations
+argument_list|()
+expr_stmt|;
+block|}
 DECL|method|AdlStorageConfiguration ()
 specifier|private
 name|AdlStorageConfiguration
