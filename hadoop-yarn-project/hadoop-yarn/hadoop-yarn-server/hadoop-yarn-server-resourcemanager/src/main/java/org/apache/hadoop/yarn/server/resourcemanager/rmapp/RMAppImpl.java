@@ -8770,6 +8770,39 @@ operator|.
 name|getNumFailedAppAttempts
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|app
+operator|.
+name|maxAppAttempts
+operator|==
+literal|1
+condition|)
+block|{
+comment|// If the user explicitly set the attempts to 1 then there are likely
+comment|// correctness issues if the AM restarts for any reason.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Max app attempts is 1 for "
+operator|+
+name|app
+operator|.
+name|applicationId
+operator|+
+literal|", preventing further attempts."
+argument_list|)
+expr_stmt|;
+name|numberOfFailure
+operator|=
+name|app
+operator|.
+name|maxAppAttempts
+expr_stmt|;
+block|}
+else|else
+block|{
 name|LOG
 operator|.
 name|info
@@ -8819,6 +8852,7 @@ argument_list|(
 name|app
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 if|if
 condition|(
