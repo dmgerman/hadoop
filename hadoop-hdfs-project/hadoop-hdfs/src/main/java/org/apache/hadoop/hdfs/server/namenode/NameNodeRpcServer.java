@@ -4495,6 +4495,7 @@ comment|/** Allow access to the client RPC server for testing */
 annotation|@
 name|VisibleForTesting
 DECL|method|getClientRpcServer ()
+specifier|public
 name|RPC
 operator|.
 name|Server

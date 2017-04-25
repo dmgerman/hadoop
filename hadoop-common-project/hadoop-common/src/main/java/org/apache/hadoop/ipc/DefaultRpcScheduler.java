@@ -106,6 +106,14 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{   }
+annotation|@
+name|Override
+DECL|method|stop ()
+specifier|public
+name|void
+name|stop
+parameter_list|()
+block|{   }
 block|}
 end_class
 

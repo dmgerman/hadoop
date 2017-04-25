@@ -1301,6 +1301,13 @@ argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
+name|this
+operator|.
+name|scheduler
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
 name|RpcScheduler
 name|newScheduler
 init|=
