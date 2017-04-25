@@ -165,11 +165,11 @@ name|FederationPolicyStoreInputValidator
 parameter_list|()
 block|{   }
 comment|/**    * Quick validation on the input to check some obvious fail conditions (fail    * fast). Check if the provided    * {@link GetSubClusterPolicyConfigurationRequest} for querying policy's    * information is valid or not.    *    * @param request the {@link GetSubClusterPolicyConfigurationRequest} to    *          validate against    * @throws FederationStateStoreInvalidInputException if the request is invalid    */
-DECL|method|validateGetSubClusterPolicyConfigurationRequest ( GetSubClusterPolicyConfigurationRequest request)
+DECL|method|validate (GetSubClusterPolicyConfigurationRequest request)
 specifier|public
 specifier|static
 name|void
-name|validateGetSubClusterPolicyConfigurationRequest
+name|validate
 parameter_list|(
 name|GetSubClusterPolicyConfigurationRequest
 name|request
@@ -217,11 +217,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Quick validation on the input to check some obvious fail conditions (fail    * fast). Check if the provided    * {@link SetSubClusterPolicyConfigurationRequest} for adding a new policy is    * valid or not.    *    * @param request the {@link SetSubClusterPolicyConfigurationRequest} to    *          validate against    * @throws FederationStateStoreInvalidInputException if the request is invalid    */
-DECL|method|validateSetSubClusterPolicyConfigurationRequest ( SetSubClusterPolicyConfigurationRequest request)
+DECL|method|validate (SetSubClusterPolicyConfigurationRequest request)
 specifier|public
 specifier|static
 name|void
-name|validateSetSubClusterPolicyConfigurationRequest
+name|validate
 parameter_list|(
 name|SetSubClusterPolicyConfigurationRequest
 name|request

@@ -50,6 +50,16 @@ name|java
 operator|.
 name|sql
 operator|.
+name|ResultSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|sql
+operator|.
 name|SQLException
 import|;
 end_import
@@ -67,28 +77,6 @@ operator|.
 name|exceptions
 operator|.
 name|YarnException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|federation
-operator|.
-name|store
-operator|.
-name|exception
-operator|.
-name|FederationStateStoreErrorCode
 import|;
 end_import
 
@@ -178,6 +166,18 @@ name|LoggerFactory
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|zaxxer
+operator|.
+name|hikari
+operator|.
+name|HikariDataSource
+import|;
+end_import
+
 begin_comment
 comment|/**  * Common utility methods used by the store implementations.  *  */
 end_comment
@@ -205,13 +205,22 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|FEDERATION_STORE_URL
+specifier|public
+specifier|final
+specifier|static
+name|String
+name|FEDERATION_STORE_URL
+init|=
+literal|"url"
+decl_stmt|;
 DECL|method|FederationStateStoreUtils ()
 specifier|private
 name|FederationStateStoreUtils
 parameter_list|()
 block|{   }
-comment|/**    * Returns the SQL<code>FederationStateStore</code> connection to the pool.    *    * @param log the logger interface    * @param cstmt the interface used to execute SQL stored procedures    * @param conn the SQL connection    * @throws YarnException on failure    */
-DECL|method|returnToPool (Logger log, CallableStatement cstmt, Connection conn)
+comment|/**    * Returns the SQL<code>FederationStateStore</code> connections to the pool.    *    * @param log the logger interface    * @param cstmt the interface used to execute SQL stored procedures    * @param conn the SQL connection    * @param rs the ResultSet interface used to execute SQL stored procedures    * @throws YarnException on failure    */
+DECL|method|returnToPool (Logger log, CallableStatement cstmt, Connection conn, ResultSet rs)
 specifier|public
 specifier|static
 name|void
@@ -225,6 +234,9 @@ name|cstmt
 parameter_list|,
 name|Connection
 name|conn
+parameter_list|,
+name|ResultSet
+name|rs
 parameter_list|)
 throws|throws
 name|YarnException
@@ -293,6 +305,69 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+if|if
+condition|(
+name|rs
+operator|!=
+literal|null
+condition|)
+block|{
+try|try
+block|{
+name|rs
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|SQLException
+name|e
+parameter_list|)
+block|{
+name|logAndThrowException
+argument_list|(
+name|log
+argument_list|,
+literal|"Exception while trying to close ResultSet"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+comment|/**    * Returns the SQL<code>FederationStateStore</code> connections to the pool.    *    * @param log the logger interface    * @param cstmt the interface used to execute SQL stored procedures    * @param conn the SQL connection    * @throws YarnException on failure    */
+DECL|method|returnToPool (Logger log, CallableStatement cstmt, Connection conn)
+specifier|public
+specifier|static
+name|void
+name|returnToPool
+parameter_list|(
+name|Logger
+name|log
+parameter_list|,
+name|CallableStatement
+name|cstmt
+parameter_list|,
+name|Connection
+name|conn
+parameter_list|)
+throws|throws
+name|YarnException
+block|{
+name|returnToPool
+argument_list|(
+name|log
+argument_list|,
+name|cstmt
+argument_list|,
+name|conn
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Throws an exception due to an error in<code>FederationStateStore</code>.    *    * @param log the logger interface    * @param errMsg the error message    * @param t the throwable raised in the called class.    * @throws YarnException on failure    */
 DECL|method|logAndThrowException (Logger log, String errMsg, Throwable t)
@@ -357,8 +432,8 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Throws an<code>FederationStateStoreException</code> due to an error in    *<code>FederationStateStore</code>.    *    * @param log the logger interface    * @param code FederationStateStoreErrorCode of the error    * @param errMsg the error message    * @throws YarnException on failure    */
-DECL|method|logAndThrowStoreException (Logger log, FederationStateStoreErrorCode code, String errMsg)
+comment|/**    * Throws an<code>FederationStateStoreException</code> due to an error in    *<code>FederationStateStore</code>.    *    * @param log the logger interface    * @param errMsg the error message    * @throws YarnException on failure    */
+DECL|method|logAndThrowStoreException (Logger log, String errMsg)
 specifier|public
 specifier|static
 name|void
@@ -366,9 +441,6 @@ name|logAndThrowStoreException
 parameter_list|(
 name|Logger
 name|log
-parameter_list|,
-name|FederationStateStoreErrorCode
-name|code
 parameter_list|,
 name|String
 name|errMsg
@@ -381,54 +453,13 @@ operator|.
 name|error
 argument_list|(
 name|errMsg
-operator|+
-literal|" "
-operator|+
-name|code
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
 name|FederationStateStoreException
 argument_list|(
-name|code
-argument_list|)
-throw|;
-block|}
-comment|/**    * Throws an<code>FederationStateStoreException</code> due to an error in    *<code>FederationStateStore</code>.    *    * @param log the logger interface    * @param code FederationStateStoreErrorCode of the error    * @throws YarnException on failure    */
-DECL|method|logAndThrowStoreException (Logger log, FederationStateStoreErrorCode code)
-specifier|public
-specifier|static
-name|void
-name|logAndThrowStoreException
-parameter_list|(
-name|Logger
-name|log
-parameter_list|,
-name|FederationStateStoreErrorCode
-name|code
-parameter_list|)
-throws|throws
-name|YarnException
-block|{
-name|log
-operator|.
-name|error
-argument_list|(
-name|code
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-expr_stmt|;
-throw|throw
-operator|new
-name|FederationStateStoreException
-argument_list|(
-name|code
+name|errMsg
 argument_list|)
 throw|;
 block|}
@@ -448,7 +479,7 @@ parameter_list|)
 throws|throws
 name|YarnException
 block|{
-name|LOG
+name|log
 operator|.
 name|error
 argument_list|(
@@ -489,7 +520,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|LOG
+name|log
 operator|.
 name|error
 argument_list|(
@@ -510,7 +541,7 @@ throw|;
 block|}
 else|else
 block|{
-name|LOG
+name|log
 operator|.
 name|error
 argument_list|(
@@ -524,6 +555,156 @@ argument_list|(
 name|errMsg
 argument_list|)
 throw|;
+block|}
+block|}
+comment|/**    * Sets a specific value for a specific property of    *<code>HikariDataSource</code> SQL connections.    *    * @param dataSource the<code>HikariDataSource</code> connections    * @param property the property to set    * @param value the value to set    */
+DECL|method|setProperty (HikariDataSource dataSource, String property, String value)
+specifier|public
+specifier|static
+name|void
+name|setProperty
+parameter_list|(
+name|HikariDataSource
+name|dataSource
+parameter_list|,
+name|String
+name|property
+parameter_list|,
+name|String
+name|value
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Setting property {} with value {}"
+argument_list|,
+name|property
+argument_list|,
+name|value
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|property
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|property
+operator|.
+name|isEmpty
+argument_list|()
+operator|&&
+name|value
+operator|!=
+literal|null
+condition|)
+block|{
+name|dataSource
+operator|.
+name|addDataSourceProperty
+argument_list|(
+name|property
+argument_list|,
+name|value
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Sets a specific username for<code>HikariDataSource</code> SQL connections.    *    * @param dataSource the<code>HikariDataSource</code> connections    * @param userNameDB the value to set    */
+DECL|method|setUsername (HikariDataSource dataSource, String userNameDB)
+specifier|public
+specifier|static
+name|void
+name|setUsername
+parameter_list|(
+name|HikariDataSource
+name|dataSource
+parameter_list|,
+name|String
+name|userNameDB
+parameter_list|)
+block|{
+if|if
+condition|(
+name|userNameDB
+operator|!=
+literal|null
+condition|)
+block|{
+name|dataSource
+operator|.
+name|setUsername
+argument_list|(
+name|userNameDB
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Setting non NULL Username for Store connection"
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"NULL Username specified for Store connection, so ignoring"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Sets a specific password for<code>HikariDataSource</code> SQL connections.    *    * @param dataSource the<code>HikariDataSource</code> connections    * @param password the value to set    */
+DECL|method|setPassword (HikariDataSource dataSource, String password)
+specifier|public
+specifier|static
+name|void
+name|setPassword
+parameter_list|(
+name|HikariDataSource
+name|dataSource
+parameter_list|,
+name|String
+name|password
+parameter_list|)
+block|{
+if|if
+condition|(
+name|password
+operator|!=
+literal|null
+condition|)
+block|{
+name|dataSource
+operator|.
+name|setPassword
+argument_list|(
+name|password
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Setting non NULL Credentials for Store connection"
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"NULL Credentials specified for Store connection, so ignoring"
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 block|}

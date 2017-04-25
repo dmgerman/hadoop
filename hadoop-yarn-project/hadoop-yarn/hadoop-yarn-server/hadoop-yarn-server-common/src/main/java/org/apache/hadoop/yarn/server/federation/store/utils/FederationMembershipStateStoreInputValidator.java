@@ -263,11 +263,11 @@ name|FederationMembershipStateStoreInputValidator
 parameter_list|()
 block|{   }
 comment|/**    * Quick validation on the input to check some obvious fail conditions (fail    * fast). Check if the provided {@link SubClusterRegisterRequest} for    * registration a new subcluster is valid or not.    *    * @param request the {@link SubClusterRegisterRequest} to validate against    * @throws FederationStateStoreInvalidInputException if the request is invalid    */
-DECL|method|validateSubClusterRegisterRequest ( SubClusterRegisterRequest request)
+DECL|method|validate (SubClusterRegisterRequest request)
 specifier|public
 specifier|static
 name|void
-name|validateSubClusterRegisterRequest
+name|validate
 parameter_list|(
 name|SubClusterRegisterRequest
 name|request
@@ -318,11 +318,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Quick validation on the input to check some obvious fail conditions (fail    * fast). Check if the provided {@link SubClusterDeregisterRequest} for    * deregistration a subcluster is valid or not.    *    * @param request the {@link SubClusterDeregisterRequest} to validate against    * @throws FederationStateStoreInvalidInputException if the request is invalid    */
-DECL|method|validateSubClusterDeregisterRequest ( SubClusterDeregisterRequest request)
+DECL|method|validate (SubClusterDeregisterRequest request)
 specifier|public
 specifier|static
 name|void
-name|validateSubClusterDeregisterRequest
+name|validate
 parameter_list|(
 name|SubClusterDeregisterRequest
 name|request
@@ -419,11 +419,11 @@ throw|;
 block|}
 block|}
 comment|/**    * Quick validation on the input to check some obvious fail conditions (fail    * fast). Check if the provided {@link SubClusterHeartbeatRequest} for    * heartbeating a subcluster is valid or not.    *    * @param request the {@link SubClusterHeartbeatRequest} to validate against    * @throws FederationStateStoreInvalidInputException if the request is invalid    */
-DECL|method|validateSubClusterHeartbeatRequest ( SubClusterHeartbeatRequest request)
+DECL|method|validate (SubClusterHeartbeatRequest request)
 specifier|public
 specifier|static
 name|void
-name|validateSubClusterHeartbeatRequest
+name|validate
 parameter_list|(
 name|SubClusterHeartbeatRequest
 name|request
@@ -501,11 +501,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Quick validation on the input to check some obvious fail conditions (fail    * fast). Check if the provided {@link GetSubClusterInfoRequest} for querying    * subcluster's information is valid or not.    *    * @param request the {@link GetSubClusterInfoRequest} to validate against    * @throws FederationStateStoreInvalidInputException if the request is invalid    */
-DECL|method|validateGetSubClusterInfoRequest ( GetSubClusterInfoRequest request)
+DECL|method|validate (GetSubClusterInfoRequest request)
 specifier|public
 specifier|static
 name|void
-name|validateGetSubClusterInfoRequest
+name|validate
 parameter_list|(
 name|GetSubClusterInfoRequest
 name|request
@@ -555,7 +555,7 @@ expr_stmt|;
 block|}
 comment|/**    * Validate if all the required fields on {@link SubClusterInfo} are present    * or not. {@code Capability} will be empty as the corresponding    * {@code ResourceManager} is in the process of initialization during    * registration.    *    * @param subClusterInfo the information of the subcluster to be verified    * @throws FederationStateStoreInvalidInputException if the SubCluster Info    *           are invalid    */
 DECL|method|checkSubClusterInfo (SubClusterInfo subClusterInfo)
-specifier|private
+specifier|public
 specifier|static
 name|void
 name|checkSubClusterInfo

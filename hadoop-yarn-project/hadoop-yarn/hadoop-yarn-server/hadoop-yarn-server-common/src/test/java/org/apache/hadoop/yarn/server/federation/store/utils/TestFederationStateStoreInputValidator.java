@@ -877,7 +877,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterRegisterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -910,7 +910,7 @@ literal|null
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterRegisterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -972,7 +972,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterRegisterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -1055,7 +1055,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterRegisterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -1138,7 +1138,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterRegisterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -1221,7 +1221,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterRegisterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -1304,7 +1304,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterRegisterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -1367,7 +1367,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterRegisterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -1440,7 +1440,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterRegisterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -1523,7 +1523,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterRegisterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -1616,7 +1616,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterRegisterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -1699,7 +1699,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterRegisterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -1782,7 +1782,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterRegisterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -1865,7 +1865,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterRegisterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -1948,7 +1948,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterRegisterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -2031,7 +2031,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterRegisterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -2114,7 +2114,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterRegisterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -2197,7 +2197,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterRegisterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -2290,7 +2290,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterRegisterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -2373,7 +2373,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterRegisterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -2456,7 +2456,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterRegisterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -2539,7 +2539,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterRegisterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -2622,7 +2622,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterRegisterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -2705,7 +2705,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterRegisterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -2788,7 +2788,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterRegisterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -2871,7 +2871,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterRegisterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -2940,7 +2940,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterDeregisterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -2973,7 +2973,7 @@ literal|null
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterDeregisterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -3033,7 +3033,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterDeregisterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -3093,7 +3093,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterDeregisterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -3153,7 +3153,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterDeregisterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -3213,7 +3213,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterDeregisterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -3286,7 +3286,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterHeartbeatRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -3319,7 +3319,7 @@ literal|null
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterHeartbeatRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -3383,7 +3383,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterHeartbeatRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -3447,7 +3447,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterHeartbeatRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -3511,7 +3511,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterHeartbeatRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -3575,7 +3575,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterHeartbeatRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -3639,7 +3639,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterHeartbeatRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -3703,7 +3703,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateSubClusterHeartbeatRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -3770,7 +3770,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateGetSubClusterInfoRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -3803,7 +3803,7 @@ literal|null
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateGetSubClusterInfoRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -3861,7 +3861,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateGetSubClusterInfoRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -3919,7 +3919,7 @@ argument_list|)
 decl_stmt|;
 name|FederationMembershipStateStoreInputValidator
 operator|.
-name|validateGetSubClusterInfoRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -3998,7 +3998,7 @@ argument_list|)
 decl_stmt|;
 name|FederationApplicationHomeSubClusterStoreInputValidator
 operator|.
-name|validateAddApplicationHomeSubClusterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -4031,7 +4031,7 @@ literal|null
 decl_stmt|;
 name|FederationApplicationHomeSubClusterStoreInputValidator
 operator|.
-name|validateAddApplicationHomeSubClusterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -4083,7 +4083,7 @@ argument_list|)
 decl_stmt|;
 name|FederationApplicationHomeSubClusterStoreInputValidator
 operator|.
-name|validateAddApplicationHomeSubClusterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -4142,7 +4142,7 @@ argument_list|)
 decl_stmt|;
 name|FederationApplicationHomeSubClusterStoreInputValidator
 operator|.
-name|validateAddApplicationHomeSubClusterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -4211,7 +4211,7 @@ argument_list|)
 decl_stmt|;
 name|FederationApplicationHomeSubClusterStoreInputValidator
 operator|.
-name|validateAddApplicationHomeSubClusterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -4280,7 +4280,7 @@ argument_list|)
 decl_stmt|;
 name|FederationApplicationHomeSubClusterStoreInputValidator
 operator|.
-name|validateAddApplicationHomeSubClusterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -4349,7 +4349,7 @@ argument_list|)
 decl_stmt|;
 name|FederationApplicationHomeSubClusterStoreInputValidator
 operator|.
-name|validateUpdateApplicationHomeSubClusterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -4382,7 +4382,7 @@ literal|null
 decl_stmt|;
 name|FederationApplicationHomeSubClusterStoreInputValidator
 operator|.
-name|validateUpdateApplicationHomeSubClusterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -4434,7 +4434,7 @@ argument_list|)
 decl_stmt|;
 name|FederationApplicationHomeSubClusterStoreInputValidator
 operator|.
-name|validateUpdateApplicationHomeSubClusterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -4493,7 +4493,7 @@ argument_list|)
 decl_stmt|;
 name|FederationApplicationHomeSubClusterStoreInputValidator
 operator|.
-name|validateUpdateApplicationHomeSubClusterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -4562,7 +4562,7 @@ argument_list|)
 decl_stmt|;
 name|FederationApplicationHomeSubClusterStoreInputValidator
 operator|.
-name|validateUpdateApplicationHomeSubClusterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -4631,7 +4631,7 @@ argument_list|)
 decl_stmt|;
 name|FederationApplicationHomeSubClusterStoreInputValidator
 operator|.
-name|validateUpdateApplicationHomeSubClusterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -4688,7 +4688,7 @@ argument_list|)
 decl_stmt|;
 name|FederationApplicationHomeSubClusterStoreInputValidator
 operator|.
-name|validateGetApplicationHomeSubClusterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -4721,7 +4721,7 @@ literal|null
 decl_stmt|;
 name|FederationApplicationHomeSubClusterStoreInputValidator
 operator|.
-name|validateGetApplicationHomeSubClusterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -4769,7 +4769,7 @@ argument_list|)
 decl_stmt|;
 name|FederationApplicationHomeSubClusterStoreInputValidator
 operator|.
-name|validateGetApplicationHomeSubClusterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -4826,7 +4826,7 @@ argument_list|)
 decl_stmt|;
 name|FederationApplicationHomeSubClusterStoreInputValidator
 operator|.
-name|validateDeleteApplicationHomeSubClusterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -4859,7 +4859,7 @@ literal|null
 decl_stmt|;
 name|FederationApplicationHomeSubClusterStoreInputValidator
 operator|.
-name|validateDeleteApplicationHomeSubClusterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -4907,7 +4907,7 @@ argument_list|)
 decl_stmt|;
 name|FederationApplicationHomeSubClusterStoreInputValidator
 operator|.
-name|validateDeleteApplicationHomeSubClusterRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -4964,7 +4964,7 @@ argument_list|)
 decl_stmt|;
 name|FederationPolicyStoreInputValidator
 operator|.
-name|validateGetSubClusterPolicyConfigurationRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -4997,7 +4997,7 @@ literal|null
 decl_stmt|;
 name|FederationPolicyStoreInputValidator
 operator|.
-name|validateGetSubClusterPolicyConfigurationRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -5045,7 +5045,7 @@ argument_list|)
 decl_stmt|;
 name|FederationPolicyStoreInputValidator
 operator|.
-name|validateGetSubClusterPolicyConfigurationRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -5093,7 +5093,7 @@ argument_list|)
 decl_stmt|;
 name|FederationPolicyStoreInputValidator
 operator|.
-name|validateGetSubClusterPolicyConfigurationRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -5164,7 +5164,7 @@ argument_list|)
 decl_stmt|;
 name|FederationPolicyStoreInputValidator
 operator|.
-name|validateSetSubClusterPolicyConfigurationRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -5197,7 +5197,7 @@ literal|null
 decl_stmt|;
 name|FederationPolicyStoreInputValidator
 operator|.
-name|validateSetSubClusterPolicyConfigurationRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -5250,7 +5250,7 @@ argument_list|)
 decl_stmt|;
 name|FederationPolicyStoreInputValidator
 operator|.
-name|validateSetSubClusterPolicyConfigurationRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -5312,7 +5312,7 @@ argument_list|)
 decl_stmt|;
 name|FederationPolicyStoreInputValidator
 operator|.
-name|validateSetSubClusterPolicyConfigurationRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -5374,7 +5374,7 @@ argument_list|)
 decl_stmt|;
 name|FederationPolicyStoreInputValidator
 operator|.
-name|validateSetSubClusterPolicyConfigurationRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -5436,7 +5436,7 @@ argument_list|)
 decl_stmt|;
 name|FederationPolicyStoreInputValidator
 operator|.
-name|validateSetSubClusterPolicyConfigurationRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)
@@ -5498,7 +5498,7 @@ argument_list|)
 decl_stmt|;
 name|FederationPolicyStoreInputValidator
 operator|.
-name|validateSetSubClusterPolicyConfigurationRequest
+name|validate
 argument_list|(
 name|request
 argument_list|)

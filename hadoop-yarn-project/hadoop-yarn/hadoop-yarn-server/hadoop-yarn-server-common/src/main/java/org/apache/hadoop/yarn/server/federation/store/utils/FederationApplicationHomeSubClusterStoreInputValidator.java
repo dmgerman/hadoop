@@ -227,11 +227,11 @@ name|FederationApplicationHomeSubClusterStoreInputValidator
 parameter_list|()
 block|{   }
 comment|/**    * Quick validation on the input to check some obvious fail conditions (fail    * fast). Check if the provided {@link AddApplicationHomeSubClusterRequest}    * for adding a new application is valid or not.    *    * @param request the {@link AddApplicationHomeSubClusterRequest} to validate    *          against    * @throws FederationStateStoreInvalidInputException if the request is invalid    */
-DECL|method|validateAddApplicationHomeSubClusterRequest ( AddApplicationHomeSubClusterRequest request)
+DECL|method|validate (AddApplicationHomeSubClusterRequest request)
 specifier|public
 specifier|static
 name|void
-name|validateAddApplicationHomeSubClusterRequest
+name|validate
 parameter_list|(
 name|AddApplicationHomeSubClusterRequest
 name|request
@@ -281,11 +281,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Quick validation on the input to check some obvious fail conditions (fail    * fast). Check if the provided {@link UpdateApplicationHomeSubClusterRequest}    * for updating an application is valid or not.    *    * @param request the {@link UpdateApplicationHomeSubClusterRequest} to    *          validate against    * @throws FederationStateStoreInvalidInputException if the request is invalid    */
-DECL|method|validateUpdateApplicationHomeSubClusterRequest ( UpdateApplicationHomeSubClusterRequest request)
+DECL|method|validate (UpdateApplicationHomeSubClusterRequest request)
 specifier|public
 specifier|static
 name|void
-name|validateUpdateApplicationHomeSubClusterRequest
+name|validate
 parameter_list|(
 name|UpdateApplicationHomeSubClusterRequest
 name|request
@@ -335,11 +335,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Quick validation on the input to check some obvious fail conditions (fail    * fast). Check if the provided {@link GetApplicationHomeSubClusterRequest}    * for querying application's information is valid or not.    *    * @param request the {@link GetApplicationHomeSubClusterRequest} to validate    *          against    * @throws FederationStateStoreInvalidInputException if the request is invalid    */
-DECL|method|validateGetApplicationHomeSubClusterRequest ( GetApplicationHomeSubClusterRequest request)
+DECL|method|validate (GetApplicationHomeSubClusterRequest request)
 specifier|public
 specifier|static
 name|void
-name|validateGetApplicationHomeSubClusterRequest
+name|validate
 parameter_list|(
 name|GetApplicationHomeSubClusterRequest
 name|request
@@ -387,11 +387,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Quick validation on the input to check some obvious fail conditions (fail    * fast). Check if the provided {@link DeleteApplicationHomeSubClusterRequest}    * for deleting an application is valid or not.    *    * @param request the {@link DeleteApplicationHomeSubClusterRequest} to    *          validate against    * @throws FederationStateStoreInvalidInputException if the request is invalid    */
-DECL|method|validateDeleteApplicationHomeSubClusterRequest ( DeleteApplicationHomeSubClusterRequest request)
+DECL|method|validate (DeleteApplicationHomeSubClusterRequest request)
 specifier|public
 specifier|static
 name|void
-name|validateDeleteApplicationHomeSubClusterRequest
+name|validate
 parameter_list|(
 name|DeleteApplicationHomeSubClusterRequest
 name|request
