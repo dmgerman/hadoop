@@ -631,10 +631,10 @@ throw|;
 block|}
 block|}
 comment|/**    * Converts a value from one unit to another. Supported units can be obtained    * by inspecting the KNOWN_UNITS set.    *    * @param fromUnit  the unit of the from value    * @param toUnit    the target unit    * @param fromValue the value you wish to convert    * @return the value in toUnit    */
-DECL|method|convert (String fromUnit, String toUnit, Long fromValue)
+DECL|method|convert (String fromUnit, String toUnit, long fromValue)
 specifier|public
 specifier|static
-name|Long
+name|long
 name|convert
 parameter_list|(
 name|String
@@ -643,7 +643,7 @@ parameter_list|,
 name|String
 name|toUnit
 parameter_list|,
-name|Long
+name|long
 name|fromValue
 parameter_list|)
 block|{
@@ -656,10 +656,6 @@ operator|||
 name|fromUnit
 operator|==
 literal|null
-operator|||
-name|fromValue
-operator|==
-literal|null
 condition|)
 block|{
 throw|throw
@@ -670,23 +666,6 @@ literal|"One or more arguments are null"
 argument_list|)
 throw|;
 block|}
-name|String
-name|overflowMsg
-init|=
-literal|"Converting "
-operator|+
-name|fromValue
-operator|+
-literal|" from '"
-operator|+
-name|fromUnit
-operator|+
-literal|"' to '"
-operator|+
-name|toUnit
-operator|+
-literal|"' will result in an overflow of Long"
-decl_stmt|;
 if|if
 condition|(
 name|fromUnit
@@ -717,7 +696,7 @@ argument_list|(
 name|toUnit
 argument_list|)
 decl_stmt|;
-name|Long
+name|long
 name|numerator
 init|=
 name|fc
@@ -728,7 +707,7 @@ name|tc
 operator|.
 name|denominator
 decl_stmt|;
-name|Long
+name|long
 name|denominator
 init|=
 name|fc
@@ -739,7 +718,7 @@ name|tc
 operator|.
 name|numerator
 decl_stmt|;
-name|Long
+name|long
 name|numeratorMultiplierLimit
 init|=
 name|Long
@@ -762,6 +741,23 @@ operator|<
 name|fromValue
 condition|)
 block|{
+name|String
+name|overflowMsg
+init|=
+literal|"Converting "
+operator|+
+name|fromValue
+operator|+
+literal|" from '"
+operator|+
+name|fromUnit
+operator|+
+literal|"' to '"
+operator|+
+name|toUnit
+operator|+
+literal|"' will result in an overflow of Long"
+decl_stmt|;
 throw|throw
 operator|new
 name|IllegalArgumentException
@@ -797,7 +793,7 @@ operator|/
 name|denominator
 return|;
 block|}
-name|Long
+name|long
 name|tmp
 init|=
 name|numerator
@@ -817,6 +813,23 @@ operator|<
 name|fromValue
 condition|)
 block|{
+name|String
+name|overflowMsg
+init|=
+literal|"Converting "
+operator|+
+name|fromValue
+operator|+
+literal|" from '"
+operator|+
+name|fromUnit
+operator|+
+literal|"' to '"
+operator|+
+name|toUnit
+operator|+
+literal|"' will result in an overflow of Long"
+decl_stmt|;
 throw|throw
 operator|new
 name|IllegalArgumentException
@@ -832,7 +845,7 @@ name|tmp
 return|;
 block|}
 comment|/**    * Compare a value in a given unit with a value in another unit. The return    * value is equivalent to the value returned by compareTo.    *    * @param unitA  first unit    * @param valueA first value    * @param unitB  second unit    * @param valueB second value    * @return +1, 0 or -1 depending on whether the relationship is greater than,    * equal to or lesser than    */
-DECL|method|compare (String unitA, Long valueA, String unitB, Long valueB)
+DECL|method|compare (String unitA, long valueA, String unitB, long valueB)
 specifier|public
 specifier|static
 name|int
@@ -841,13 +854,13 @@ parameter_list|(
 name|String
 name|unitA
 parameter_list|,
-name|Long
+name|long
 name|valueA
 parameter_list|,
 name|String
 name|unitB
 parameter_list|,
-name|Long
+name|long
 name|valueB
 parameter_list|)
 block|{
@@ -959,7 +972,12 @@ argument_list|)
 condition|)
 block|{
 return|return
+name|Long
+operator|.
+name|valueOf
+argument_list|(
 name|valueA
+argument_list|)
 operator|.
 name|compareTo
 argument_list|(
@@ -989,12 +1007,12 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
-name|Long
+name|long
 name|tmpA
 init|=
 name|valueA
 decl_stmt|;
-name|Long
+name|long
 name|tmpB
 init|=
 name|valueB
@@ -1033,7 +1051,12 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
+name|Long
+operator|.
+name|valueOf
+argument_list|(
 name|tmpA
+argument_list|)
 operator|.
 name|compareTo
 argument_list|(

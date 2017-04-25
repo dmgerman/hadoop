@@ -883,10 +883,15 @@ name|resource
 operator|.
 name|setVirtualCores
 argument_list|(
+name|Long
+operator|.
+name|valueOf
+argument_list|(
 name|resourceValue
 operator|.
 name|getValue
 argument_list|()
+argument_list|)
 operator|.
 name|intValue
 argument_list|()

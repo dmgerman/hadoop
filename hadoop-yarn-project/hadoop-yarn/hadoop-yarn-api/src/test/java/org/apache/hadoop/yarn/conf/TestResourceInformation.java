@@ -205,10 +205,10 @@ name|name
 init|=
 literal|"yarn.io/test"
 decl_stmt|;
-name|Long
+name|long
 name|value
 init|=
-literal|1l
+literal|1L
 decl_stmt|;
 name|ResourceInformation
 name|ri
@@ -264,10 +264,10 @@ name|name
 init|=
 literal|"yarn.io/test"
 decl_stmt|;
-name|Long
+name|long
 name|value
 init|=
-literal|1l
+literal|1L
 decl_stmt|;
 name|String
 name|units

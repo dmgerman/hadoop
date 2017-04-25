@@ -1850,6 +1850,11 @@ argument_list|,
 name|actual
 argument_list|)
 expr_stmt|;
+name|dest
+operator|.
+name|delete
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 DECL|method|setupResourceTypes (Configuration conf, String filename)

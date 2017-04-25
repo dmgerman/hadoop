@@ -219,7 +219,7 @@ name|resources
 decl_stmt|;
 DECL|field|resourceValue
 specifier|private
-name|Long
+name|long
 name|resourceValue
 decl_stmt|;
 DECL|field|name
@@ -228,13 +228,13 @@ name|String
 name|name
 decl_stmt|;
 comment|/**      * Constructor for a fixed value resource      * @param rName the name of the resource      * @param value the fixed value to be returned for all resource types      */
-DECL|method|FixedValueResource (String rName, Long value)
+DECL|method|FixedValueResource (String rName, long value)
 name|FixedValueResource
 parameter_list|(
 name|String
 name|rName
 parameter_list|,
-name|Long
+name|long
 name|value
 parameter_list|)
 block|{
@@ -280,9 +280,14 @@ name|MAX_VALUE
 return|;
 block|}
 return|return
+name|Long
+operator|.
+name|valueOf
+argument_list|(
 name|this
 operator|.
 name|resourceValue
+argument_list|)
 operator|.
 name|intValue
 argument_list|()
@@ -978,7 +983,7 @@ operator|.
 name|getValue
 argument_list|()
 decl_stmt|;
-name|Long
+name|long
 name|convertedRhs
 init|=
 name|UnitsConversionUtil
@@ -1116,7 +1121,7 @@ operator|.
 name|getValue
 argument_list|()
 decl_stmt|;
-name|Long
+name|long
 name|convertedRhs
 init|=
 name|UnitsConversionUtil
@@ -1437,7 +1442,7 @@ operator|.
 name|getValue
 argument_list|()
 decl_stmt|;
-name|Long
+name|long
 name|convertedRhs
 init|=
 call|(
@@ -2232,7 +2237,7 @@ operator|.
 name|getValue
 argument_list|()
 decl_stmt|;
-name|Long
+name|long
 name|convertedRhs
 init|=
 name|UnitsConversionUtil
@@ -2387,7 +2392,7 @@ operator|.
 name|getValue
 argument_list|()
 decl_stmt|;
-name|Long
+name|long
 name|convertedRhs
 init|=
 name|UnitsConversionUtil
@@ -2517,7 +2522,7 @@ operator|.
 name|getValue
 argument_list|()
 decl_stmt|;
-name|Long
+name|long
 name|convertedRhs
 init|=
 name|UnitsConversionUtil

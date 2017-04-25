@@ -86,17 +86,17 @@ name|resourceType
 decl_stmt|;
 DECL|field|value
 specifier|private
-name|Long
+name|long
 name|value
 decl_stmt|;
 DECL|field|minimumAllocation
 specifier|private
-name|Long
+name|long
 name|minimumAllocation
 decl_stmt|;
 DECL|field|maximumAllocation
 specifier|private
-name|Long
+name|long
 name|maximumAllocation
 decl_stmt|;
 DECL|field|MEMORY_URI
@@ -263,7 +263,7 @@ block|}
 comment|/**    * Get the value for the resource.    *    * @return the resource value    */
 DECL|method|getValue ()
 specifier|public
-name|Long
+name|long
 name|getValue
 parameter_list|()
 block|{
@@ -272,12 +272,12 @@ name|value
 return|;
 block|}
 comment|/**    * Set the value for the resource.    *    * @param rValue the resource value    */
-DECL|method|setValue (Long rValue)
+DECL|method|setValue (long rValue)
 specifier|public
 name|void
 name|setValue
 parameter_list|(
-name|Long
+name|long
 name|rValue
 parameter_list|)
 block|{
@@ -291,7 +291,7 @@ block|}
 comment|/**    * Get the minimum allocation for the resource.    *    * @return the minimum allocation for the resource    */
 DECL|method|getMinimumAllocation ()
 specifier|public
-name|Long
+name|long
 name|getMinimumAllocation
 parameter_list|()
 block|{
@@ -300,12 +300,12 @@ name|minimumAllocation
 return|;
 block|}
 comment|/**    * Set the minimum allocation for the resource.    *    * @param minimumAllocation the minimum allocation for the resource    */
-DECL|method|setMinimumAllocation (Long minimumAllocation)
+DECL|method|setMinimumAllocation (long minimumAllocation)
 specifier|public
 name|void
 name|setMinimumAllocation
 parameter_list|(
-name|Long
+name|long
 name|minimumAllocation
 parameter_list|)
 block|{
@@ -319,7 +319,7 @@ block|}
 comment|/**    * Get the maximum allocation for the resource.    *    * @return the maximum allocation for the resource    */
 DECL|method|getMaximumAllocation ()
 specifier|public
-name|Long
+name|long
 name|getMaximumAllocation
 parameter_list|()
 block|{
@@ -328,12 +328,12 @@ name|maximumAllocation
 return|;
 block|}
 comment|/**    * Set the maximum allocation for the resource.    *    * @param maximumAllocation the maximum allocation for the resource    */
-DECL|method|setMaximumAllocation (Long maximumAllocation)
+DECL|method|setMaximumAllocation (long maximumAllocation)
 specifier|public
 name|void
 name|setMaximumAllocation
 parameter_list|(
-name|Long
+name|long
 name|maximumAllocation
 parameter_list|)
 block|{
@@ -362,71 +362,18 @@ operator|new
 name|ResourceInformation
 argument_list|()
 decl_stmt|;
-name|ret
-operator|.
-name|setName
+name|copy
 argument_list|(
 name|other
-operator|.
-name|getName
-argument_list|()
-argument_list|)
-expr_stmt|;
+argument_list|,
 name|ret
-operator|.
-name|setResourceType
-argument_list|(
-name|other
-operator|.
-name|getResourceType
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|ret
-operator|.
-name|setUnits
-argument_list|(
-name|other
-operator|.
-name|getUnits
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|ret
-operator|.
-name|setValue
-argument_list|(
-name|other
-operator|.
-name|getValue
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|ret
-operator|.
-name|setMinimumAllocation
-argument_list|(
-name|other
-operator|.
-name|getMinimumAllocation
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|ret
-operator|.
-name|setMaximumAllocation
-argument_list|(
-name|other
-operator|.
-name|getMaximumAllocation
-argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
 name|ret
 return|;
 block|}
-DECL|method|newInstance (String name, String units, Long value, ResourceTypes type, Long minimumAllocation, Long maximumAllocation)
+DECL|method|newInstance (String name, String units, long value, ResourceTypes type, long minimumAllocation, long maximumAllocation)
 specifier|public
 specifier|static
 name|ResourceInformation
@@ -438,16 +385,16 @@ parameter_list|,
 name|String
 name|units
 parameter_list|,
-name|Long
+name|long
 name|value
 parameter_list|,
 name|ResourceTypes
 name|type
 parameter_list|,
-name|Long
+name|long
 name|minimumAllocation
 parameter_list|,
-name|Long
+name|long
 name|maximumAllocation
 parameter_list|)
 block|{
@@ -504,7 +451,7 @@ return|return
 name|ret
 return|;
 block|}
-DECL|method|newInstance (String name, String units, Long value)
+DECL|method|newInstance (String name, String units, long value)
 specifier|public
 specifier|static
 name|ResourceInformation
@@ -516,7 +463,7 @@ parameter_list|,
 name|String
 name|units
 parameter_list|,
-name|Long
+name|long
 name|value
 parameter_list|)
 block|{
@@ -579,7 +526,7 @@ name|MAX_VALUE
 argument_list|)
 return|;
 block|}
-DECL|method|newInstance (String name, Long value)
+DECL|method|newInstance (String name, long value)
 specifier|public
 specifier|static
 name|ResourceInformation
@@ -588,7 +535,7 @@ parameter_list|(
 name|String
 name|name
 parameter_list|,
-name|Long
+name|long
 name|value
 parameter_list|)
 block|{
@@ -635,6 +582,81 @@ argument_list|,
 literal|""
 argument_list|)
 return|;
+block|}
+comment|/**    * Copies the content of the source ResourceInformation object to the    * destination object, overwriting all properties of the destination object.    * @param src Source ResourceInformation object    * @param dst Destination ResourceInformation object    */
+DECL|method|copy (ResourceInformation src, ResourceInformation dst)
+specifier|public
+specifier|static
+name|void
+name|copy
+parameter_list|(
+name|ResourceInformation
+name|src
+parameter_list|,
+name|ResourceInformation
+name|dst
+parameter_list|)
+block|{
+name|dst
+operator|.
+name|setName
+argument_list|(
+name|src
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|dst
+operator|.
+name|setResourceType
+argument_list|(
+name|src
+operator|.
+name|getResourceType
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|dst
+operator|.
+name|setUnits
+argument_list|(
+name|src
+operator|.
+name|getUnits
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|dst
+operator|.
+name|setValue
+argument_list|(
+name|src
+operator|.
+name|getValue
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|dst
+operator|.
+name|setMinimumAllocation
+argument_list|(
+name|src
+operator|.
+name|getMinimumAllocation
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|dst
+operator|.
+name|setMaximumAllocation
+argument_list|(
+name|src
+operator|.
+name|getMaximumAllocation
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -856,10 +878,12 @@ name|prime
 operator|*
 name|result
 operator|+
-name|value
+name|Long
 operator|.
 name|hashCode
-argument_list|()
+argument_list|(
+name|value
+argument_list|)
 expr_stmt|;
 return|return
 name|result
