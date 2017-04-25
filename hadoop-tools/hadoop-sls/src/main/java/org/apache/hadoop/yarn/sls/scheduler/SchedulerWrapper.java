@@ -52,6 +52,22 @@ name|Unstable
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
+name|YarnException
+import|;
+end_import
+
 begin_interface
 annotation|@
 name|Private
@@ -71,6 +87,16 @@ DECL|method|getTracker ()
 name|Tracker
 name|getTracker
 parameter_list|()
+function_decl|;
+DECL|method|getRealQueueName (String queue)
+name|String
+name|getRealQueueName
+parameter_list|(
+name|String
+name|queue
+parameter_list|)
+throws|throws
+name|YarnException
 function_decl|;
 block|}
 end_interface

@@ -296,14 +296,14 @@ specifier|public
 class|class
 name|SLSUtils
 block|{
-DECL|field|SHUTDOWN_HOOK_PRIORITY
+DECL|field|DEFAULT_JOB_TYPE
 specifier|public
-specifier|static
 specifier|final
-name|int
-name|SHUTDOWN_HOOK_PRIORITY
+specifier|static
+name|String
+name|DEFAULT_JOB_TYPE
 init|=
-literal|30
+literal|"mapreduce"
 decl_stmt|;
 comment|// hostname includes the network path and the host name. for example
 comment|// "/default-rack/hostFoo" or "/coreSwitchA/TORSwitchB/hostBar".
