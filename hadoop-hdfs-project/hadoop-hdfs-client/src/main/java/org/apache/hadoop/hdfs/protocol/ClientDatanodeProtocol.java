@@ -380,6 +380,17 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Get volume report of datanode.    */
+DECL|method|getVolumeReport ()
+name|List
+argument_list|<
+name|DatanodeVolumeInfo
+argument_list|>
+name|getVolumeReport
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Submit a disk balancer plan for execution.    */
 DECL|method|submitDiskBalancerPlan (String planID, long planVersion, String planFile, String planData, boolean skipDateCheck)
 name|void
