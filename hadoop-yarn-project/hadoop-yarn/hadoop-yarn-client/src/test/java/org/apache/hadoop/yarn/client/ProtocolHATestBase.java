@@ -2490,6 +2490,8 @@ literal|1
 argument_list|,
 literal|1
 argument_list|,
+literal|false
+argument_list|,
 name|overrideClientRMService
 argument_list|,
 name|overrideRTS
@@ -2609,7 +2611,7 @@ argument_list|(
 literal|false
 argument_list|)
 decl_stmt|;
-DECL|method|MiniYARNClusterForHATesting (String testName, int numResourceManagers, int numNodeManagers, int numLocalDirs, int numLogDirs, boolean overrideClientRMService, boolean overrideRTS, boolean overrideApplicationMasterService)
+DECL|method|MiniYARNClusterForHATesting (String testName, int numResourceManagers, int numNodeManagers, int numLocalDirs, int numLogDirs, boolean enableAHS, boolean overrideClientRMService, boolean overrideRTS, boolean overrideApplicationMasterService)
 specifier|public
 name|MiniYARNClusterForHATesting
 parameter_list|(
@@ -2627,6 +2629,9 @@ name|numLocalDirs
 parameter_list|,
 name|int
 name|numLogDirs
+parameter_list|,
+name|boolean
+name|enableAHS
 parameter_list|,
 name|boolean
 name|overrideClientRMService
@@ -2649,6 +2654,8 @@ argument_list|,
 name|numLocalDirs
 argument_list|,
 name|numLogDirs
+argument_list|,
+name|enableAHS
 argument_list|)
 expr_stmt|;
 name|this
