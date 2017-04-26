@@ -160,7 +160,7 @@ DECL|field|ERROR_CONTAINERS_COUNT_INVALID
 name|String
 name|ERROR_CONTAINERS_COUNT_INVALID
 init|=
-literal|"Required no of containers not specified"
+literal|"Invalid no of containers specified"
 decl_stmt|;
 DECL|field|ERROR_CONTAINERS_COUNT_FOR_COMP_INVALID
 name|String

@@ -519,8 +519,7 @@ literal|1
 argument_list|)
 return|;
 block|}
-annotation|@
-name|Test
+comment|// TODO does not support adding new components dynamically
 DECL|method|testDynamicRoleHistory ()
 specifier|public
 name|void
@@ -598,13 +597,6 @@ argument_list|(
 name|component
 argument_list|)
 expr_stmt|;
-comment|// write the definitions
-name|List
-argument_list|<
-name|ProviderRole
-argument_list|>
-name|updates
-init|=
 name|appState
 operator|.
 name|updateComponents
@@ -617,35 +609,6 @@ name|dynamic
 argument_list|,
 name|desired
 argument_list|)
-argument_list|)
-decl_stmt|;
-name|assertEquals
-argument_list|(
-literal|1
-argument_list|,
-name|updates
-operator|.
-name|size
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|ProviderRole
-name|updatedRole
-init|=
-name|updates
-operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
-decl_stmt|;
-name|assertEquals
-argument_list|(
-name|updatedRole
-operator|.
-name|placementPolicy
-argument_list|,
-name|placementPolicy
 argument_list|)
 expr_stmt|;
 comment|// now look at the role map

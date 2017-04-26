@@ -526,14 +526,7 @@ DECL|field|HADOOP_USER_NAME
 name|String
 name|HADOOP_USER_NAME
 init|=
-name|ApplicationConstants
-operator|.
-name|Environment
-operator|.
-name|USER
-operator|.
-name|toString
-argument_list|()
+literal|"HADOOP_USER_NAME"
 decl_stmt|;
 DECL|field|HADOOP_PROXY_USER
 name|String
@@ -726,7 +719,7 @@ DECL|field|APP_CONF_DIR
 name|String
 name|APP_CONF_DIR
 init|=
-literal|"app/conf"
+literal|"conf"
 decl_stmt|;
 DECL|field|APP_RESOURCES
 name|String

@@ -1627,7 +1627,7 @@ name|ActionKillContainer
 argument_list|(
 name|instance
 operator|.
-name|getId
+name|getContainerId
 argument_list|()
 argument_list|,
 literal|0

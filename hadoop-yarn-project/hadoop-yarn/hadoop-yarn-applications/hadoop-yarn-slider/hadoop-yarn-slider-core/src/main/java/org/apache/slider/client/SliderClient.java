@@ -4303,9 +4303,14 @@ name|YarnException
 block|{
 name|ServiceApiUtil
 operator|.
-name|validateApplicationPostPayload
+name|validateApplicationPayload
 argument_list|(
 name|application
+argument_list|,
+name|sliderFileSystem
+operator|.
+name|getFileSystem
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|String
@@ -4527,16 +4532,13 @@ name|localResources
 argument_list|)
 decl_stmt|;
 comment|// copy jars to hdfs and add to localResources
-name|Path
-name|tempPath
-init|=
 name|addJarResource
 argument_list|(
 name|appName
 argument_list|,
 name|localResources
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 comment|// add keytab if in secure env
 name|addKeytabResourceIfSecure
 argument_list|(
@@ -4567,8 +4569,6 @@ init|=
 name|addAMEnv
 argument_list|(
 name|conf
-argument_list|,
-name|tempPath
 argument_list|)
 decl_stmt|;
 comment|// create AM CLI
@@ -5138,7 +5138,7 @@ return|return
 name|cmdStr
 return|;
 block|}
-DECL|method|addAMEnv (Configuration conf, Path tempPath)
+DECL|method|addAMEnv (Configuration conf)
 specifier|private
 name|Map
 argument_list|<
@@ -5150,9 +5150,6 @@ name|addAMEnv
 parameter_list|(
 name|Configuration
 name|conf
-parameter_list|,
-name|Path
-name|tempPath
 parameter_list|)
 throws|throws
 name|IOException
@@ -5250,6 +5247,47 @@ argument_list|(
 name|HADOOP_JAAS_DEBUG
 argument_list|,
 name|jaas
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+operator|!
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+condition|)
+block|{
+name|String
+name|userName
+init|=
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+operator|.
+name|getUserName
+argument_list|()
+decl_stmt|;
+name|log
+operator|.
+name|info
+argument_list|(
+literal|"Run as user "
+operator|+
+name|userName
+argument_list|)
+expr_stmt|;
+comment|// HADOOP_USER_NAME env is used by UserGroupInformation when log in
+comment|// This env makes AM run as this user
+name|env
+operator|.
+name|put
+argument_list|(
+literal|"HADOOP_USER_NAME"
+argument_list|,
+name|userName
 argument_list|)
 expr_stmt|;
 block|}

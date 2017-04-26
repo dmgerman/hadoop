@@ -74,6 +74,24 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
+name|server
+operator|.
+name|appmaster
+operator|.
+name|state
+operator|.
+name|RoleInstance
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|util
@@ -85,7 +103,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Tell AM to unregister this component instance  * {@link SliderAppMaster#unregisterComponent(ContainerId)}  */
+comment|/**  * Tell AM to unregister this component instance  */
 end_comment
 
 begin_class
@@ -96,33 +114,40 @@ name|UnregisterComponentInstance
 extends|extends
 name|AsyncAction
 block|{
-DECL|field|containerId
+DECL|field|roleInstance
 specifier|public
 specifier|final
-name|ContainerId
-name|containerId
+name|RoleInstance
+name|roleInstance
 decl_stmt|;
-DECL|method|UnregisterComponentInstance (ContainerId containerId, long delay, TimeUnit timeUnit)
+DECL|method|UnregisterComponentInstance (long delay, TimeUnit timeUnit, RoleInstance roleInstance)
 specifier|public
 name|UnregisterComponentInstance
 parameter_list|(
-name|ContainerId
-name|containerId
-parameter_list|,
 name|long
 name|delay
 parameter_list|,
 name|TimeUnit
 name|timeUnit
+parameter_list|,
+name|RoleInstance
+name|roleInstance
 parameter_list|)
 block|{
 name|super
 argument_list|(
 literal|"UnregisterComponentInstance :"
 operator|+
-name|containerId
+name|roleInstance
 operator|.
-name|toString
+name|getCompInstanceName
+argument_list|()
+operator|+
+literal|", ContainerId = "
+operator|+
+name|roleInstance
+operator|.
+name|getContainerId
 argument_list|()
 argument_list|,
 name|delay
@@ -132,9 +157,9 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|containerId
+name|roleInstance
 operator|=
-name|containerId
+name|roleInstance
 expr_stmt|;
 block|}
 annotation|@
@@ -160,7 +185,7 @@ name|appMaster
 operator|.
 name|unregisterComponent
 argument_list|(
-name|containerId
+name|roleInstance
 argument_list|)
 expr_stmt|;
 block|}

@@ -434,7 +434,7 @@ name|ActionKillContainer
 argument_list|(
 name|roleInstance
 operator|.
-name|getId
+name|getContainerId
 argument_list|()
 argument_list|,
 name|DELAY

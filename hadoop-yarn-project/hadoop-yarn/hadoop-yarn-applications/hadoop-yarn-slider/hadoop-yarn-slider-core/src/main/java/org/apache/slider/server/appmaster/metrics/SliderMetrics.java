@@ -458,6 +458,83 @@ name|value
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|toString ()
+annotation|@
+name|Override
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"SliderMetrics{"
+operator|+
+literal|"containersRequested="
+operator|+
+name|containersRequested
+operator|.
+name|value
+argument_list|()
+operator|+
+literal|", pendingAAContainers="
+operator|+
+name|pendingAAContainers
+operator|.
+name|value
+argument_list|()
+operator|+
+literal|", containersRunning="
+operator|+
+name|containersRunning
+operator|.
+name|value
+argument_list|()
+operator|+
+literal|", containersDesired="
+operator|+
+name|containersDesired
+operator|.
+name|value
+argument_list|()
+operator|+
+literal|", containersCompleted="
+operator|+
+name|containersCompleted
+operator|.
+name|value
+argument_list|()
+operator|+
+literal|", containersFailed="
+operator|+
+name|containersFailed
+operator|.
+name|value
+argument_list|()
+operator|+
+literal|", failedSinceLastThreshold="
+operator|+
+name|failedSinceLastThreshold
+operator|.
+name|value
+argument_list|()
+operator|+
+literal|", containersPreempted="
+operator|+
+name|containersPreempted
+operator|.
+name|value
+argument_list|()
+operator|+
+literal|", surplusContainers="
+operator|+
+name|surplusContainers
+operator|.
+name|value
+argument_list|()
+operator|+
+literal|'}'
+return|;
+block|}
 block|}
 end_class
 

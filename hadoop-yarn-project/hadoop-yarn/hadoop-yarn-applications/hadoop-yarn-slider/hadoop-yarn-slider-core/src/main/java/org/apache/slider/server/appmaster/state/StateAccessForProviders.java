@@ -486,7 +486,7 @@ argument_list|>
 name|getComponentInfoSnapshot
 parameter_list|()
 function_decl|;
-comment|/**    * Find out about the nodes for specific roles    * @return     */
+comment|/**    * Find out about the nodes for specific roles    * Component_name -> ContainerId -> ClusterNode    * @return     */
 DECL|method|getRoleClusterNodeMapping ()
 name|Map
 argument_list|<

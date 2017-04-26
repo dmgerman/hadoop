@@ -478,8 +478,7 @@ name|createAndStartNodes
 argument_list|()
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|// TODO does not support adding new components dynamically
 DECL|method|testDynamicFlexAddRole ()
 specifier|public
 name|void
@@ -546,16 +545,6 @@ expr_stmt|;
 name|createAndStartNodes
 argument_list|()
 expr_stmt|;
-name|dumpClusterDescription
-argument_list|(
-literal|"updated CD"
-argument_list|,
-name|appState
-operator|.
-name|getClusterStatus
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|appState
 operator|.
 name|lookupRoleStatus
@@ -586,21 +575,6 @@ literal|"dynamic-6"
 argument_list|,
 literal|0L
 argument_list|)
-argument_list|)
-expr_stmt|;
-name|Application
-name|getCD
-init|=
-name|appState
-operator|.
-name|getClusterStatus
-argument_list|()
-decl_stmt|;
-name|dumpClusterDescription
-argument_list|(
-literal|"updated CD"
-argument_list|,
-name|getCD
 argument_list|)
 expr_stmt|;
 comment|//status is retained for future

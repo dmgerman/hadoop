@@ -141,25 +141,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Get the value at an offset    * @param offset offset    * @return the value at that point    */
-DECL|method|elt (int offset)
-specifier|public
-name|String
-name|elt
-parameter_list|(
-name|int
-name|offset
-parameter_list|)
-block|{
-return|return
-name|argumentList
-operator|.
-name|get
-argument_list|(
-name|offset
-argument_list|)
-return|;
-block|}
 comment|/**    * Get the number of arguments    * @return an integer>= 0    */
 DECL|method|size ()
 specifier|public
@@ -289,19 +270,6 @@ name|argumentList
 argument_list|,
 literal|" "
 argument_list|)
-return|;
-block|}
-DECL|method|getArgumentList ()
-specifier|public
-name|List
-argument_list|<
-name|String
-argument_list|>
-name|getArgumentList
-parameter_list|()
-block|{
-return|return
-name|argumentList
 return|;
 block|}
 block|}

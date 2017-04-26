@@ -162,6 +162,24 @@ name|appmaster
 operator|.
 name|state
 operator|.
+name|RoleInstance
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
+name|server
+operator|.
+name|appmaster
+operator|.
+name|state
+operator|.
 name|StateAccessForProviders
 import|;
 end_import
@@ -203,7 +221,7 @@ extends|extends
 name|Service
 block|{
 comment|/**    * Set up the entire container launch context    */
-DECL|method|buildContainerLaunchContext (ContainerLauncher containerLauncher, Application application, Container container, ProviderRole providerRole, SliderFileSystem sliderFileSystem)
+DECL|method|buildContainerLaunchContext (ContainerLauncher containerLauncher, Application application, Container container, ProviderRole providerRole, SliderFileSystem sliderFileSystem, RoleInstance roleInstance)
 name|void
 name|buildContainerLaunchContext
 parameter_list|(
@@ -221,6 +239,9 @@ name|providerRole
 parameter_list|,
 name|SliderFileSystem
 name|sliderFileSystem
+parameter_list|,
+name|RoleInstance
+name|roleInstance
 parameter_list|)
 throws|throws
 name|IOException

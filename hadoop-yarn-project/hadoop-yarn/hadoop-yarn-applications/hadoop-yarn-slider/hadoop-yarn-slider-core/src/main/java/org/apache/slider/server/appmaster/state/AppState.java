@@ -50,6 +50,62 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|cache
+operator|.
+name|CacheBuilder
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|cache
+operator|.
+name|CacheLoader
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|cache
+operator|.
+name|LoadingCache
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|io
+operator|.
+name|IOUtils
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -59,6 +115,34 @@ operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|FSDataInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|FileSystem
 import|;
 end_import
 
@@ -407,6 +491,22 @@ operator|.
 name|resource
 operator|.
 name|Component
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
+name|api
+operator|.
+name|resource
+operator|.
+name|ConfigFile
 import|;
 end_import
 
@@ -924,6 +1024,18 @@ name|util
 operator|.
 name|concurrent
 operator|.
+name|TimeUnit
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
 name|atomic
 operator|.
 name|AtomicInteger
@@ -1031,6 +1143,7 @@ specifier|private
 name|Application
 name|app
 decl_stmt|;
+comment|// priority_id -> RoleStatus
 DECL|field|roleStatusMap
 specifier|private
 specifier|final
@@ -1047,6 +1160,7 @@ name|ConcurrentSkipListMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
+comment|// component_name -> ProviderRole
 DECL|field|roles
 specifier|private
 specifier|final
@@ -1299,6 +1413,19 @@ DECL|field|serviceTimelinePublisher
 specifier|private
 name|ServiceTimelinePublisher
 name|serviceTimelinePublisher
+decl_stmt|;
+comment|// A cache for loading config files from remote such as hdfs
+DECL|field|configFileCache
+specifier|public
+name|LoadingCache
+argument_list|<
+name|ConfigFile
+argument_list|,
+name|Object
+argument_list|>
+name|configFileCache
+init|=
+literal|null
 decl_stmt|;
 comment|/**    * Create an instance    * @param recordFactory factory for YARN records    * @param metricsAndMonitoring metrics and monitoring services    */
 DECL|method|AppState (AbstractClusterServices recordFactory, MetricsAndMonitoring metricsAndMonitoring)
@@ -1600,13 +1727,6 @@ operator|.
 name|validate
 argument_list|()
 expr_stmt|;
-name|log
-operator|.
-name|debug
-argument_list|(
-literal|"Building application state"
-argument_list|)
-expr_stmt|;
 name|containerReleaseSelector
 operator|=
 name|binding
@@ -1717,36 +1837,7 @@ argument_list|,
 name|DEFAULT_NODE_FAILURE_THRESHOLD
 argument_list|)
 expr_stmt|;
-comment|//build the initial role list
-name|List
-argument_list|<
-name|ProviderRole
-argument_list|>
-name|roleList
-init|=
-operator|new
-name|ArrayList
-argument_list|<>
-argument_list|(
-name|binding
-operator|.
-name|roles
-argument_list|)
-decl_stmt|;
-for|for
-control|(
-name|ProviderRole
-name|providerRole
-range|:
-name|roleList
-control|)
-block|{
-name|buildRole
-argument_list|(
-name|providerRole
-argument_list|)
-expr_stmt|;
-block|}
+comment|//build the initial component list
 name|int
 name|priority
 init|=
@@ -1790,27 +1881,6 @@ condition|)
 block|{
 continue|continue;
 block|}
-if|if
-condition|(
-name|component
-operator|.
-name|getUniqueComponentSupport
-argument_list|()
-condition|)
-block|{
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"Skipping group "
-operator|+
-name|name
-operator|+
-literal|", as it's unique component"
-argument_list|)
-expr_stmt|;
-continue|continue;
-block|}
 name|log
 operator|.
 name|info
@@ -1820,9 +1890,6 @@ operator|+
 name|name
 argument_list|)
 expr_stmt|;
-name|ProviderRole
-name|dynamicRole
-init|=
 name|createComponent
 argument_list|(
 name|name
@@ -1832,25 +1899,12 @@ argument_list|,
 name|component
 argument_list|,
 name|priority
-argument_list|)
-decl_stmt|;
-name|buildRole
-argument_list|(
-name|dynamicRole
-argument_list|)
-expr_stmt|;
-name|roleList
-operator|.
-name|add
-argument_list|(
-name|dynamicRole
+operator|++
 argument_list|)
 expr_stmt|;
 block|}
 comment|//then pick up the requirements
-name|buildRoleRequirementsFromResources
-argument_list|()
-expr_stmt|;
+comment|//    buildRoleRequirementsFromResources();
 comment|// set up the role history
 name|roleHistory
 operator|=
@@ -1924,8 +1978,223 @@ argument_list|(
 name|STARTED
 argument_list|)
 expr_stmt|;
+name|createConfigFileCache
+argument_list|(
+name|binding
+operator|.
+name|fs
+argument_list|)
+expr_stmt|;
 block|}
-comment|//TODO WHY do we need to create the component for AM ?
+DECL|method|createConfigFileCache (final FileSystem fileSystem)
+specifier|private
+name|void
+name|createConfigFileCache
+parameter_list|(
+specifier|final
+name|FileSystem
+name|fileSystem
+parameter_list|)
+block|{
+name|this
+operator|.
+name|configFileCache
+operator|=
+name|CacheBuilder
+operator|.
+name|newBuilder
+argument_list|()
+operator|.
+name|expireAfterAccess
+argument_list|(
+literal|10
+argument_list|,
+name|TimeUnit
+operator|.
+name|MINUTES
+argument_list|)
+operator|.
+name|build
+argument_list|(
+operator|new
+name|CacheLoader
+argument_list|<
+name|ConfigFile
+argument_list|,
+name|Object
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|Object
+name|load
+parameter_list|(
+name|ConfigFile
+name|key
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+switch|switch
+condition|(
+name|key
+operator|.
+name|getType
+argument_list|()
+condition|)
+block|{
+case|case
+name|HADOOP_XML
+case|:
+try|try
+init|(
+name|FSDataInputStream
+name|input
+init|=
+name|fileSystem
+operator|.
+name|open
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+name|key
+operator|.
+name|getSrcFile
+argument_list|()
+argument_list|)
+argument_list|)
+init|)
+block|{
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
+name|confRead
+init|=
+operator|new
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
+argument_list|(
+literal|false
+argument_list|)
+decl_stmt|;
+name|confRead
+operator|.
+name|addResource
+argument_list|(
+name|input
+argument_list|)
+expr_stmt|;
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|map
+init|=
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|(
+name|confRead
+operator|.
+name|size
+argument_list|()
+argument_list|)
+decl_stmt|;
+for|for
+control|(
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|entry
+range|:
+name|confRead
+control|)
+block|{
+name|map
+operator|.
+name|put
+argument_list|(
+name|entry
+operator|.
+name|getKey
+argument_list|()
+argument_list|,
+name|entry
+operator|.
+name|getValue
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|map
+return|;
+block|}
+case|case
+name|TEMPLATE
+case|:
+try|try
+init|(
+name|FSDataInputStream
+name|fileInput
+init|=
+name|fileSystem
+operator|.
+name|open
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+name|key
+operator|.
+name|getSrcFile
+argument_list|()
+argument_list|)
+argument_list|)
+init|)
+block|{
+return|return
+name|IOUtils
+operator|.
+name|toString
+argument_list|(
+name|fileInput
+argument_list|)
+return|;
+block|}
+default|default:
+return|return
+literal|null
+return|;
+block|}
+block|}
+block|}
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|createComponent (String name, String group, Component component, int priority)
 specifier|public
 name|ProviderRole
@@ -2038,8 +2307,17 @@ argument_list|,
 name|label
 argument_list|,
 name|component
+argument_list|,
+name|this
 argument_list|)
 decl_stmt|;
+name|buildRole
+argument_list|(
+name|newRole
+argument_list|,
+name|component
+argument_list|)
+expr_stmt|;
 name|log
 operator|.
 name|info
@@ -2058,10 +2336,7 @@ name|VisibleForTesting
 DECL|method|updateComponents (Map<String, Long> componentCounts)
 specifier|public
 specifier|synchronized
-name|List
-argument_list|<
-name|ProviderRole
-argument_list|>
+name|void
 name|updateComponents
 parameter_list|(
 name|Map
@@ -2099,10 +2374,9 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-name|component
-operator|.
-name|setNumberOfContainers
-argument_list|(
+name|long
+name|count
+init|=
 name|componentCounts
 operator|.
 name|get
@@ -2112,23 +2386,70 @@ operator|.
 name|getName
 argument_list|()
 argument_list|)
+decl_stmt|;
+name|component
+operator|.
+name|setNumberOfContainers
+argument_list|(
+name|count
+argument_list|)
+expr_stmt|;
+name|ProviderRole
+name|role
+init|=
+name|roles
+operator|.
+name|get
+argument_list|(
+name|component
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|role
+operator|!=
+literal|null
+operator|&&
+name|roleStatusMap
+operator|.
+name|get
+argument_list|(
+name|role
+operator|.
+name|id
+argument_list|)
+operator|!=
+literal|null
+condition|)
+block|{
+name|setDesiredContainers
+argument_list|(
+name|roleStatusMap
+operator|.
+name|get
+argument_list|(
+name|role
+operator|.
+name|id
+argument_list|)
+argument_list|,
+operator|(
+name|int
+operator|)
+name|count
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|//TODO update cluster description
-return|return
-name|buildRoleRequirementsFromResources
-argument_list|()
-return|;
+block|}
 block|}
 DECL|method|updateComponents ( Messages.FlexComponentsRequestProto requestProto)
 specifier|public
 specifier|synchronized
-name|List
-argument_list|<
-name|ProviderRole
-argument_list|>
+name|void
 name|updateComponents
 parameter_list|(
 name|Messages
@@ -2179,539 +2500,118 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-return|return
 name|updateComponents
 argument_list|(
 name|componentCounts
 argument_list|)
-return|;
+expr_stmt|;
 block|}
 comment|/**    * build the role requirements from the cluster specification    * @return a list of any dynamically added provider roles    */
-DECL|method|buildRoleRequirementsFromResources ()
-specifier|private
-name|List
-argument_list|<
-name|ProviderRole
-argument_list|>
-name|buildRoleRequirementsFromResources
-parameter_list|()
-throws|throws
-name|BadConfigException
-block|{
-name|List
-argument_list|<
-name|ProviderRole
-argument_list|>
-name|newRoles
-init|=
-operator|new
-name|ArrayList
-argument_list|<>
-argument_list|(
-literal|0
-argument_list|)
-decl_stmt|;
-comment|// now update every role's desired count.
-comment|// if there are no instance values, that role count goes to zero
-comment|// Add all the existing roles
-comment|// component name -> number of containers
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|Integer
-argument_list|>
-name|groupCounts
-init|=
-operator|new
-name|HashMap
-argument_list|<>
-argument_list|()
-decl_stmt|;
-for|for
-control|(
-name|RoleStatus
-name|roleStatus
-range|:
-name|getRoleStatusMap
-argument_list|()
-operator|.
-name|values
-argument_list|()
-control|)
-block|{
-if|if
-condition|(
-name|roleStatus
-operator|.
-name|isExcludeFromFlexing
-argument_list|()
-condition|)
-block|{
-comment|// skip inflexible roles, e.g AM itself
-continue|continue;
-block|}
-name|long
-name|currentDesired
-init|=
-name|roleStatus
-operator|.
-name|getDesired
-argument_list|()
-decl_stmt|;
-name|String
-name|role
-init|=
-name|roleStatus
-operator|.
-name|getName
-argument_list|()
-decl_stmt|;
-name|String
-name|roleGroup
-init|=
-name|roleStatus
-operator|.
-name|getGroup
-argument_list|()
-decl_stmt|;
-name|Component
-name|component
-init|=
-name|roleStatus
-operator|.
-name|getProviderRole
-argument_list|()
-operator|.
-name|component
-decl_stmt|;
-name|int
-name|desiredInstanceCount
-init|=
-name|component
-operator|.
-name|getNumberOfContainers
-argument_list|()
-operator|.
-name|intValue
-argument_list|()
-decl_stmt|;
-name|int
-name|newDesired
-init|=
-name|desiredInstanceCount
-decl_stmt|;
-if|if
-condition|(
-name|component
-operator|.
-name|getUniqueComponentSupport
-argument_list|()
-condition|)
-block|{
-name|Integer
-name|groupCount
-init|=
-literal|0
-decl_stmt|;
-if|if
-condition|(
-name|groupCounts
-operator|.
-name|containsKey
-argument_list|(
-name|roleGroup
-argument_list|)
-condition|)
-block|{
-name|groupCount
-operator|=
-name|groupCounts
-operator|.
-name|get
-argument_list|(
-name|roleGroup
-argument_list|)
-expr_stmt|;
-block|}
-name|newDesired
-operator|=
-name|desiredInstanceCount
-operator|-
-name|groupCount
-expr_stmt|;
-if|if
-condition|(
-name|newDesired
-operator|>
-literal|0
-condition|)
-block|{
-name|newDesired
-operator|=
-literal|1
-expr_stmt|;
-name|groupCounts
-operator|.
-name|put
-argument_list|(
-name|roleGroup
-argument_list|,
-name|groupCount
-operator|+
-name|newDesired
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|newDesired
-operator|=
-literal|0
-expr_stmt|;
-block|}
-block|}
-if|if
-condition|(
-name|newDesired
-operator|==
-literal|0
-condition|)
-block|{
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"Role {} has 0 instances specified"
-argument_list|,
-name|role
-argument_list|)
-expr_stmt|;
-block|}
-if|if
-condition|(
-name|currentDesired
-operator|!=
-name|newDesired
-condition|)
-block|{
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"Role {} flexed from {} to {}"
-argument_list|,
-name|role
-argument_list|,
-name|currentDesired
-argument_list|,
-name|newDesired
-argument_list|)
-expr_stmt|;
-name|setDesiredContainers
-argument_list|(
-name|roleStatus
-argument_list|,
-name|newDesired
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-comment|// now the dynamic ones. Iterate through the the cluster spec and
-comment|// add any role status entries not in the role status
-for|for
-control|(
-name|Component
-name|component
-range|:
-name|app
-operator|.
-name|getComponents
-argument_list|()
-control|)
-block|{
-name|String
-name|name
-init|=
-name|component
-operator|.
-name|getName
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|roles
-operator|.
-name|containsKey
-argument_list|(
-name|name
-argument_list|)
-condition|)
-block|{
-continue|continue;
-block|}
-if|if
-condition|(
-name|component
-operator|.
-name|getUniqueComponentSupport
-argument_list|()
-condition|)
-block|{
-comment|// THIS NAME IS A GROUP
-name|int
-name|desiredInstanceCount
-init|=
-name|component
-operator|.
-name|getNumberOfContainers
-argument_list|()
-operator|.
-name|intValue
-argument_list|()
-decl_stmt|;
-name|Integer
-name|groupCount
-init|=
-literal|0
-decl_stmt|;
-if|if
-condition|(
-name|groupCounts
-operator|.
-name|containsKey
-argument_list|(
-name|name
-argument_list|)
-condition|)
-block|{
-name|groupCount
-operator|=
-name|groupCounts
-operator|.
-name|get
-argument_list|(
-name|name
-argument_list|)
-expr_stmt|;
-block|}
-for|for
-control|(
-name|int
-name|i
-init|=
-name|groupCount
-operator|+
-literal|1
-init|;
-name|i
-operator|<=
-name|desiredInstanceCount
-condition|;
-name|i
-operator|++
-control|)
-block|{
-comment|// this is a new instance of an existing group
-name|String
-name|newName
-init|=
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"%s%d"
-argument_list|,
-name|name
-argument_list|,
-name|i
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|roles
-operator|.
-name|containsKey
-argument_list|(
-name|newName
-argument_list|)
-condition|)
-block|{
-continue|continue;
-block|}
-name|int
-name|newPriority
-init|=
-name|getNewPriority
-argument_list|(
-name|i
-argument_list|)
-decl_stmt|;
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"Adding new role {}"
-argument_list|,
-name|newName
-argument_list|)
-expr_stmt|;
-name|ProviderRole
-name|dynamicRole
-init|=
-name|createComponent
-argument_list|(
-name|newName
-argument_list|,
-name|name
-argument_list|,
-name|component
-argument_list|,
-name|newPriority
-argument_list|)
-decl_stmt|;
-name|RoleStatus
-name|newRole
-init|=
-name|buildRole
-argument_list|(
-name|dynamicRole
-argument_list|)
-decl_stmt|;
-name|incDesiredContainers
-argument_list|(
-name|newRole
-argument_list|)
-expr_stmt|;
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"New role {}"
-argument_list|,
-name|newRole
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|roleHistory
-operator|!=
-literal|null
-condition|)
-block|{
-name|roleHistory
-operator|.
-name|addNewRole
-argument_list|(
-name|newRole
-argument_list|)
-expr_stmt|;
-block|}
-name|newRoles
-operator|.
-name|add
-argument_list|(
-name|dynamicRole
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-else|else
-block|{
-comment|// this is a new value
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"Adding new role {}, num containers {}"
-argument_list|,
-name|name
-argument_list|,
-name|component
-operator|.
-name|getNumberOfContainers
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|ProviderRole
-name|dynamicRole
-init|=
-name|createComponent
-argument_list|(
-name|name
-argument_list|,
-name|name
-argument_list|,
-name|component
-argument_list|,
-name|getNewPriority
-argument_list|(
-literal|1
-argument_list|)
-argument_list|)
-decl_stmt|;
-name|RoleStatus
-name|newRole
-init|=
-name|buildRole
-argument_list|(
-name|dynamicRole
-argument_list|)
-decl_stmt|;
-name|incDesiredContainers
-argument_list|(
-name|newRole
-argument_list|,
-name|component
-operator|.
-name|getNumberOfContainers
-argument_list|()
-operator|.
-name|intValue
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"New role {}"
-argument_list|,
-name|newRole
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|roleHistory
-operator|!=
-literal|null
-condition|)
-block|{
-name|roleHistory
-operator|.
-name|addNewRole
-argument_list|(
-name|newRole
-argument_list|)
-expr_stmt|;
-block|}
-name|newRoles
-operator|.
-name|add
-argument_list|(
-name|dynamicRole
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-comment|// and fill in all those roles with their requirements
-name|buildRoleResourceRequirements
-argument_list|()
-expr_stmt|;
-return|return
-name|newRoles
-return|;
-block|}
+comment|//  private List<ProviderRole> buildRoleRequirementsFromResources()
+comment|//      throws BadConfigException {
+comment|//
+comment|//    List<ProviderRole> newRoles = new ArrayList<>(0);
+comment|//
+comment|//    // now update every role's desired count.
+comment|//    // if there are no instance values, that role count goes to zero
+comment|//    // Add all the existing roles
+comment|//    // component name -> number of containers
+comment|//    Map<String, Integer> groupCounts = new HashMap<>();
+comment|//
+comment|//    for (RoleStatus roleStatus : getRoleStatusMap().values()) {
+comment|//      if (roleStatus.isExcludeFromFlexing()) {
+comment|//        // skip inflexible roles, e.g AM itself
+comment|//        continue;
+comment|//      }
+comment|//      long currentDesired = roleStatus.getDesired();
+comment|//      String role = roleStatus.getName();
+comment|//      String roleGroup = roleStatus.getGroup();
+comment|//      Component component = roleStatus.getProviderRole().component;
+comment|//      int desiredInstanceCount = component.getNumberOfContainers().intValue();
+comment|//
+comment|//      int newDesired = desiredInstanceCount;
+comment|//      if (component.getUniqueComponentSupport()) {
+comment|//        Integer groupCount = 0;
+comment|//        if (groupCounts.containsKey(roleGroup)) {
+comment|//          groupCount = groupCounts.get(roleGroup);
+comment|//        }
+comment|//
+comment|//        newDesired = desiredInstanceCount - groupCount;
+comment|//
+comment|//        if (newDesired> 0) {
+comment|//          newDesired = 1;
+comment|//          groupCounts.put(roleGroup, groupCount + newDesired);
+comment|//        } else {
+comment|//          newDesired = 0;
+comment|//        }
+comment|//      }
+comment|//
+comment|//      if (newDesired == 0) {
+comment|//        log.info("Role {} has 0 instances specified", role);
+comment|//      }
+comment|//      if (currentDesired != newDesired) {
+comment|//        log.info("Role {} flexed from {} to {}", role, currentDesired,
+comment|//            newDesired);
+comment|//        setDesiredContainers(roleStatus, newDesired);
+comment|//      }
+comment|//    }
+comment|//
+comment|//    log.info("Counts per component: " + groupCounts);
+comment|//    // now the dynamic ones. Iterate through the the cluster spec and
+comment|//    // add any role status entries not in the role status
+comment|//
+comment|//    List<RoleStatus> list = new ArrayList<>(getRoleStatusMap().values());
+comment|//    for (RoleStatus roleStatus : list) {
+comment|//      String name = roleStatus.getName();
+comment|//      Component component = roleStatus.getProviderRole().component;
+comment|//      if (roles.containsKey(name)) {
+comment|//        continue;
+comment|//      }
+comment|//      if (component.getUniqueComponentSupport()) {
+comment|//        // THIS NAME IS A GROUP
+comment|//        int desiredInstanceCount = component.getNumberOfContainers().intValue();
+comment|//        Integer groupCount = 0;
+comment|//        if (groupCounts.containsKey(name)) {
+comment|//          groupCount = groupCounts.get(name);
+comment|//        }
+comment|//        log.info("Component " + component.getName() + ", current count = "
+comment|//            + groupCount + ", desired count = " + desiredInstanceCount);
+comment|//        for (int i = groupCount + 1; i<= desiredInstanceCount; i++) {
+comment|//          int priority = roleStatus.getPriority();
+comment|//          // this is a new instance of an existing group
+comment|//          String newName = String.format("%s%d", name, i);
+comment|//          int newPriority = getNewPriority(priority + i - 1);
+comment|//          log.info("Adding new role {}", newName);
+comment|//          ProviderRole dynamicRole =
+comment|//              createComponent(newName, name, component, newPriority);
+comment|//          RoleStatus newRole = buildRole(dynamicRole);
+comment|//          incDesiredContainers(newRole);
+comment|//          log.info("New role {}", newRole);
+comment|//          if (roleHistory != null) {
+comment|//            roleHistory.addNewRole(newRole);
+comment|//          }
+comment|//          newRoles.add(dynamicRole);
+comment|//        }
+comment|//      } else {
+comment|//        // this is a new value
+comment|//        log.info("Adding new role {}", name);
+comment|//        ProviderRole dynamicRole =
+comment|//            createComponent(name, name, component, roleStatus.getPriority());
+comment|//        RoleStatus newRole = buildRole(dynamicRole);
+comment|//        incDesiredContainers(roleStatus,
+comment|//            component.getNumberOfContainers().intValue());
+comment|//        log.info("New role {}", newRole);
+comment|//        if (roleHistory != null) {
+comment|//          roleHistory.addNewRole(newRole);
+comment|//        }
+comment|//        newRoles.add(dynamicRole);
+comment|//      }
+comment|//    }
+comment|//    // and fill in all those roles with their requirements
+comment|//    buildRoleResourceRequirements();
+comment|//
+comment|//    return newRoles;
+comment|//  }
 DECL|method|getNewPriority (int start)
 specifier|private
 name|int
@@ -2746,13 +2646,16 @@ literal|1
 return|;
 block|}
 comment|/**    * Add knowledge of a role.    * This is a build-time operation that is not synchronized, and    * should be used while setting up the system state -before servicing    * requests.    * @param providerRole role to add    * @return the role status built up    * @throws BadConfigException if a role of that priority already exists    */
-DECL|method|buildRole (ProviderRole providerRole)
+DECL|method|buildRole (ProviderRole providerRole, Component component)
 specifier|public
 name|RoleStatus
 name|buildRole
 parameter_list|(
 name|ProviderRole
 name|providerRole
+parameter_list|,
+name|Component
+name|component
 parameter_list|)
 throws|throws
 name|BadConfigException
@@ -2779,7 +2682,7 @@ throw|throw
 operator|new
 name|BadConfigException
 argument_list|(
-literal|"Duplicate Provider Key: %s and %s"
+literal|"Duplicate component priority Key: %s and %s"
 argument_list|,
 name|providerRole
 argument_list|,
@@ -2789,9 +2692,6 @@ name|get
 argument_list|(
 name|priority
 argument_list|)
-operator|.
-name|getProviderRole
-argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -2804,6 +2704,60 @@ argument_list|(
 name|providerRole
 argument_list|)
 decl_stmt|;
+name|roleStatus
+operator|.
+name|setResourceRequirements
+argument_list|(
+name|buildResourceRequirements
+argument_list|(
+name|roleStatus
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|long
+name|prev
+init|=
+name|roleStatus
+operator|.
+name|getDesired
+argument_list|()
+decl_stmt|;
+name|setDesiredContainers
+argument_list|(
+name|roleStatus
+argument_list|,
+name|component
+operator|.
+name|getNumberOfContainers
+argument_list|()
+operator|.
+name|intValue
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|log
+operator|.
+name|info
+argument_list|(
+literal|"Set desired containers for component "
+operator|+
+name|component
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|" from "
+operator|+
+name|prev
+operator|+
+literal|" to "
+operator|+
+name|roleStatus
+operator|.
+name|getDesired
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|roleStatusMap
 operator|.
 name|put
@@ -2855,53 +2809,6 @@ expr_stmt|;
 return|return
 name|roleStatus
 return|;
-block|}
-comment|/**    * Build up the requirements of every resource    */
-DECL|method|buildRoleResourceRequirements ()
-specifier|private
-name|void
-name|buildRoleResourceRequirements
-parameter_list|()
-block|{
-for|for
-control|(
-name|RoleStatus
-name|role
-range|:
-name|roleStatusMap
-operator|.
-name|values
-argument_list|()
-control|)
-block|{
-name|role
-operator|.
-name|setResourceRequirements
-argument_list|(
-name|buildResourceRequirements
-argument_list|(
-name|role
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"Setting resource requirements for {} to {}"
-argument_list|,
-name|role
-operator|.
-name|getName
-argument_list|()
-argument_list|,
-name|role
-operator|.
-name|getResourceRequirements
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Look up the status entry of a role or raise an exception    * @param key role ID    * @return the status entry    * @throws RuntimeException if the role cannot be found    */
 DECL|method|lookupRoleStatus (int key)
@@ -3402,7 +3309,7 @@ return|return
 name|nodes
 return|;
 block|}
-comment|/**    * Enum all nodes by role.     * @param role role, or "" for all roles    * @return a list of nodes, may be empty    */
+comment|/**    * Enum all nodes by role.    * @param role role, or "" for all roles    * @return a list of nodes, may be empty    */
 DECL|method|enumLiveNodesInRole (String role)
 specifier|public
 specifier|synchronized
@@ -3667,7 +3574,7 @@ return|return
 name|map
 return|;
 block|}
-comment|/**    * Build a map of role->nodename->node-info    *     * @return the map of Role name to list of Cluster Nodes    */
+comment|/**    * Build a map of Component_name -> ContainerId -> ClusterNode    *     * @return the map of Role name to list of Cluster Nodes    */
 DECL|method|createRoleToClusterNodeMap ()
 specifier|public
 specifier|synchronized
@@ -3944,7 +3851,7 @@ name|container
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create a container request.    * Update internal state, such as the role request count.     * Anti-Affine: the {@link RoleStatus#outstandingAArequest} is set here.    * This is where role history information will be used for placement decisions.    * @param role role    * @return the container request to submit or null if there is none    */
+comment|/**    * Create a container request.    * Update internal state, such as the role request count.    * Anti-Affine: the {@link RoleStatus#outstandingAArequest} is set here.    * This is where role history information will be used for placement decisions.    * @param role role    * @return the container request to submit or null if there is none    */
 DECL|method|createContainerRequest (RoleStatus role)
 specifier|private
 name|AMRMClient
@@ -4390,67 +4297,11 @@ name|int
 name|n
 parameter_list|)
 block|{
-name|role
-operator|.
-name|getComponentMetrics
-argument_list|()
-operator|.
-name|containersDesired
-operator|.
-name|set
-argument_list|(
-name|n
-argument_list|)
-expr_stmt|;
-name|appMetrics
-operator|.
-name|containersDesired
-operator|.
-name|set
-argument_list|(
-name|n
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|incDesiredContainers (RoleStatus role)
-specifier|private
-name|void
-name|incDesiredContainers
-parameter_list|(
-name|RoleStatus
-name|role
-parameter_list|)
-block|{
-name|role
-operator|.
-name|getComponentMetrics
-argument_list|()
-operator|.
-name|containersDesired
-operator|.
-name|incr
-argument_list|()
-expr_stmt|;
-name|appMetrics
-operator|.
-name|containersDesired
-operator|.
-name|incr
-argument_list|()
-expr_stmt|;
-block|}
-DECL|method|incDesiredContainers (RoleStatus role, int n)
-specifier|private
-name|void
-name|incDesiredContainers
-parameter_list|(
-name|RoleStatus
-name|role
-parameter_list|,
 name|int
+name|delta
+init|=
 name|n
-parameter_list|)
-block|{
+operator|-
 name|role
 operator|.
 name|getComponentMetrics
@@ -4458,7 +4309,17 @@ argument_list|()
 operator|.
 name|containersDesired
 operator|.
-name|incr
+name|value
+argument_list|()
+decl_stmt|;
+name|role
+operator|.
+name|getComponentMetrics
+argument_list|()
+operator|.
+name|containersDesired
+operator|.
+name|set
 argument_list|(
 name|n
 argument_list|)
@@ -4469,7 +4330,7 @@ name|containersDesired
 operator|.
 name|incr
 argument_list|(
-name|n
+name|delta
 argument_list|)
 expr_stmt|;
 block|}
@@ -4709,7 +4570,7 @@ expr_stmt|;
 break|break;
 block|}
 block|}
-comment|/**    * Build up the resource requirements for this role from the cluster    * specification, including substituting max allowed values if the    * specification asked for it (except when    * {@link ResourceKeys#YARN_RESOURCE_NORMALIZATION_ENABLED} is set to false).    * @param role role    * during normalization    */
+comment|/**    * Build up the resource requirements for this role from the cluster    * specification, including substituting max allowed values if the    * specification asked for it (except when    * {@link org.apache.slider.api.ResourceKeys#YARN_RESOURCE_NORMALIZATION_ENABLED}    * is set to false).    * @param role role    * during normalization    */
 DECL|method|buildResourceRequirements (RoleStatus role)
 specifier|public
 name|Resource
@@ -4738,26 +4599,6 @@ argument_list|()
 operator|.
 name|component
 decl_stmt|;
-if|if
-condition|(
-name|component
-operator|==
-literal|null
-condition|)
-block|{
-comment|// this is for AM container
-comment|// TODO why do we need to create the component for AM ?
-return|return
-name|Resource
-operator|.
-name|newInstance
-argument_list|(
-literal|1
-argument_list|,
-literal|512
-argument_list|)
-return|;
-block|}
 name|int
 name|cores
 init|=
@@ -6005,7 +5846,10 @@ literal|"Failed container in role[{}] : {}"
 argument_list|,
 name|roleId
 argument_list|,
-name|rolename
+name|roleInstance
+operator|.
+name|getCompInstanceName
+argument_list|()
 argument_list|)
 expr_stmt|;
 try|try
@@ -6023,6 +5867,20 @@ decl_stmt|;
 name|decRunningContainers
 argument_list|(
 name|roleStatus
+argument_list|)
+expr_stmt|;
+name|roleStatus
+operator|.
+name|getProviderRole
+argument_list|()
+operator|.
+name|failedInstanceName
+operator|.
+name|offer
+argument_list|(
+name|roleInstance
+operator|.
+name|compInstanceName
 argument_list|)
 expr_stmt|;
 name|boolean
@@ -7127,7 +6985,7 @@ return|return
 name|operations
 return|;
 block|}
-comment|/**    * Look at the allocation status of one role, and trigger add/release    * actions if the number of desired role instances doesn't equal     * (actual + pending).    *<p>    * MUST be executed from within a synchronized method    *<p>    * @param role role    * @return a list of operations    * @throws SliderInternalStateException if the operation reveals that    * the internal state of the application is inconsistent.    */
+comment|/**    * Look at the allocation status of one role, and trigger add/release    * actions if the number of desired role instances doesn't equal    * (actual + pending).    *<p>    * MUST be executed from within a synchronized method    *<p>    * @param role role    * @return a list of operations    * @throws SliderInternalStateException if the operation reveals that    * the internal state of the application is inconsistent.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -7149,18 +7007,6 @@ name|SliderInternalStateException
 throws|,
 name|TriggerClusterTeardownException
 block|{
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"review one role "
-operator|+
-name|role
-operator|.
-name|getName
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|List
 argument_list|<
 name|AbstractRMOperation
@@ -7210,25 +7056,19 @@ name|log
 operator|.
 name|info
 argument_list|(
-literal|"Reviewing {} : "
-argument_list|,
-name|role
-argument_list|)
-expr_stmt|;
-name|log
-operator|.
-name|debug
-argument_list|(
-literal|"Expected {}, Requested/Running {}, Delta: {}"
-argument_list|,
-name|expected
-argument_list|,
+literal|"Reviewing "
+operator|+
 name|role
 operator|.
-name|getActualAndRequested
+name|getName
 argument_list|()
-argument_list|,
-name|delta
+operator|+
+literal|": "
+operator|+
+name|role
+operator|.
+name|getComponentMetrics
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|checkFailureThreshold
@@ -7833,6 +7673,20 @@ operator|.
 name|container
 argument_list|)
 expr_stmt|;
+name|role
+operator|.
+name|getProviderRole
+argument_list|()
+operator|.
+name|failedInstanceName
+operator|.
+name|offer
+argument_list|(
+name|possible
+operator|.
+name|compInstanceName
+argument_list|)
+expr_stmt|;
 name|operations
 operator|.
 name|add
@@ -7842,7 +7696,7 @@ name|ContainerReleaseOperation
 argument_list|(
 name|possible
 operator|.
-name|getId
+name|getContainerId
 argument_list|()
 argument_list|)
 argument_list|)
@@ -8076,7 +7930,7 @@ name|ContainerReleaseOperation
 argument_list|(
 name|role
 operator|.
-name|getId
+name|getContainerId
 argument_list|()
 argument_list|)
 argument_list|)
@@ -8690,52 +8544,6 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Get diagnostics info about containers    */
-DECL|method|getContainerDiagnosticInfo ()
-specifier|public
-name|String
-name|getContainerDiagnosticInfo
-parameter_list|()
-block|{
-name|StringBuilder
-name|builder
-init|=
-operator|new
-name|StringBuilder
-argument_list|()
-decl_stmt|;
-for|for
-control|(
-name|RoleStatus
-name|roleStatus
-range|:
-name|getRoleStatusMap
-argument_list|()
-operator|.
-name|values
-argument_list|()
-control|)
-block|{
-name|builder
-operator|.
-name|append
-argument_list|(
-name|roleStatus
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|'\n'
-argument_list|)
-expr_stmt|;
-block|}
-return|return
-name|builder
-operator|.
-name|toString
-argument_list|()
-return|;
-block|}
 comment|/**    * Event handler for the list of active containers on restart.    * Sets the info key {@link StatusKeys#INFO_CONTAINERS_AM_RESTART}    * to the size of the list passed down (and does not set it if none were)    * @param liveContainers the containers allocated    * @return true if a rebuild took place (even if size 0)    * @throws RuntimeException on problems    */
 DECL|method|rebuildModelFromRestart (List<Container> liveContainers)
 specifier|private
@@ -8882,6 +8690,7 @@ name|containerHostInfo
 argument_list|)
 expr_stmt|;
 comment|//update app state internal structures and maps
+comment|//TODO recover the component instance name from zk registry ?
 name|RoleInstance
 name|instance
 init|=
@@ -8902,15 +8711,6 @@ operator|.
 name|role
 operator|=
 name|roleName
-expr_stmt|;
-name|instance
-operator|.
-name|group
-operator|=
-name|role
-operator|.
-name|getGroup
-argument_list|()
 expr_stmt|;
 name|instance
 operator|.

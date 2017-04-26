@@ -942,6 +942,7 @@ comment|// TODO this doesn't do anything now that we're not tracking releasing
 comment|// containers -- maybe we need releasing
 comment|//if we are releasing, remove the number that are already released.
 comment|//but never switch to a positive
+comment|// TODO, WHY is this min operation even needed ??? if delta is negative, it's always< 0 ???
 name|delta
 operator|=
 name|Math

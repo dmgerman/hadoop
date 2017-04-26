@@ -122,6 +122,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|Path
 import|;
 end_import
@@ -1152,6 +1166,22 @@ name|apache
 operator|.
 name|slider
 operator|.
+name|api
+operator|.
+name|resource
+operator|.
+name|Component
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
 name|common
 operator|.
 name|SliderExitCodes
@@ -1505,20 +1535,6 @@ operator|.
 name|providers
 operator|.
 name|ProviderCompleted
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|providers
-operator|.
-name|ProviderRole
 import|;
 end_import
 
@@ -1979,24 +1995,6 @@ operator|.
 name|rpc
 operator|.
 name|SliderIPCService
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|server
-operator|.
-name|appmaster
-operator|.
-name|security
-operator|.
-name|SecurityConfiguration
 import|;
 end_import
 
@@ -2503,16 +2501,6 @@ operator|.
 name|util
 operator|.
 name|Arrays
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Collections
 import|;
 end_import
 
@@ -4509,17 +4497,6 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|//build the role map
-name|List
-argument_list|<
-name|ProviderRole
-argument_list|>
-name|providerRoles
-init|=
-name|Collections
-operator|.
-name|EMPTY_LIST
-decl_stmt|;
 comment|// Start up the WebApp and track the URL for it
 comment|// Web service endpoints: initialize
 name|WebAppApiImpl
@@ -4884,12 +4861,6 @@ name|serviceConf
 expr_stmt|;
 name|binding
 operator|.
-name|roles
-operator|=
-name|providerRoles
-expr_stmt|;
-name|binding
-operator|.
 name|fs
 operator|=
 name|fs
@@ -5147,6 +5118,32 @@ name|getConfiguration
 argument_list|()
 argument_list|)
 expr_stmt|;
+for|for
+control|(
+name|Component
+name|component
+range|:
+name|application
+operator|.
+name|getComponents
+argument_list|()
+control|)
+block|{
+comment|// Merge app-level configuration into component level configuration
+name|component
+operator|.
+name|getConfiguration
+argument_list|()
+operator|.
+name|mergeFrom
+argument_list|(
+name|application
+operator|.
+name|getConfiguration
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 try|try
 block|{
 comment|// schedule YARN Registry registration
@@ -6186,8 +6183,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Handler for {@link RegisterComponentInstance action}    * Register/re-register an ephemeral container that is already in the application state    * @param id the component    * @param description component description    * @param type component type    * @return true if the component is registered    */
-DECL|method|registerComponent (ContainerId id, String description, String type)
+comment|/**    * Handler for {@link RegisterComponentInstance action}    * Register/re-register an ephemeral container that is already in the application state    * @param id the component    * @return true if the component is registered    */
+DECL|method|registerComponent (ContainerId id, RoleInstance roleInstance)
 specifier|public
 name|boolean
 name|registerComponent
@@ -6195,11 +6192,8 @@ parameter_list|(
 name|ContainerId
 name|id
 parameter_list|,
-name|String
-name|description
-parameter_list|,
-name|String
-name|type
+name|RoleInstance
+name|roleInstance
 parameter_list|)
 throws|throws
 name|IOException
@@ -6226,15 +6220,6 @@ literal|false
 return|;
 block|}
 comment|// this is where component registrations  go
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"Registering component {}"
-argument_list|,
-name|id
-argument_list|)
-expr_stmt|;
 name|String
 name|cid
 init|=
@@ -6270,7 +6255,26 @@ name|record
 operator|.
 name|description
 operator|=
-name|description
+name|roleInstance
+operator|.
+name|getCompInstanceName
+argument_list|()
+expr_stmt|;
+name|log
+operator|.
+name|info
+argument_list|(
+literal|"Registering component "
+operator|+
+name|roleInstance
+operator|.
+name|getCompInstanceName
+argument_list|()
+operator|+
+literal|", containerId = "
+operator|+
+name|id
+argument_list|)
 expr_stmt|;
 name|record
 operator|.
@@ -6325,7 +6329,9 @@ literal|"Failed to register container {}/{}: {}"
 argument_list|,
 name|id
 argument_list|,
-name|description
+name|roleInstance
+operator|.
+name|role
 argument_list|,
 name|e
 argument_list|,
@@ -6408,6 +6414,17 @@ argument_list|(
 name|instance
 operator|.
 name|host
+argument_list|)
+expr_stmt|;
+comment|// TODO differentiate component name and component instance name ?
+name|container
+operator|.
+name|setComponentName
+argument_list|(
+name|roleInstance
+operator|.
+name|getCompInstanceName
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|instance
@@ -6546,23 +6563,38 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Handler for {@link UnregisterComponentInstance}    *     * unregister a component. At the time this message is received,    * the component may not have been registered    * @param id the component    */
-DECL|method|unregisterComponent (ContainerId id)
+comment|/**    * Handler for {@link UnregisterComponentInstance}    *     * unregister a component. At the time this message is received,    * the component may not have been registered    */
+DECL|method|unregisterComponent (RoleInstance roleInstance)
 specifier|public
 name|void
 name|unregisterComponent
 parameter_list|(
-name|ContainerId
-name|id
+name|RoleInstance
+name|roleInstance
 parameter_list|)
 block|{
+name|ContainerId
+name|containerId
+init|=
+name|roleInstance
+operator|.
+name|getContainerId
+argument_list|()
+decl_stmt|;
 name|log
 operator|.
 name|info
 argument_list|(
-literal|"Unregistering component {}"
-argument_list|,
-name|id
+literal|"Unregistering component instance "
+operator|+
+name|roleInstance
+operator|.
+name|getCompInstanceName
+argument_list|()
+operator|+
+literal|", ContainerId = "
+operator|+
+name|containerId
 argument_list|)
 expr_stmt|;
 if|if
@@ -6592,7 +6624,7 @@ name|RegistryPathUtils
 operator|.
 name|encodeYarnID
 argument_list|(
-name|id
+name|containerId
 operator|.
 name|toString
 argument_list|()
@@ -6620,9 +6652,93 @@ name|warn
 argument_list|(
 literal|"Failed to delete container {} : {}"
 argument_list|,
-name|id
+name|containerId
 argument_list|,
 name|e
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+comment|// remove component instance dir
+try|try
+block|{
+name|FileSystem
+name|fs
+init|=
+name|getClusterFS
+argument_list|()
+operator|.
+name|getFileSystem
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|roleInstance
+operator|.
+name|compInstanceDir
+operator|!=
+literal|null
+operator|&&
+name|fs
+operator|.
+name|exists
+argument_list|(
+name|roleInstance
+operator|.
+name|compInstanceDir
+argument_list|)
+condition|)
+block|{
+name|boolean
+name|deleted
+init|=
+name|fs
+operator|.
+name|delete
+argument_list|(
+name|roleInstance
+operator|.
+name|compInstanceDir
+argument_list|,
+literal|true
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|deleted
+condition|)
+block|{
+name|log
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to delete component instance dir: "
+operator|+
+name|roleInstance
+operator|.
+name|compInstanceDir
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|log
+operator|.
+name|error
+argument_list|(
+literal|"Failed to delete component instance dir: "
+operator|+
+name|roleInstance
+operator|.
+name|compInstanceDir
 argument_list|,
 name|e
 argument_list|)
@@ -7072,20 +7188,6 @@ return|return
 name|exitCode
 return|;
 block|}
-comment|/**      * Get diagnostics info about containers      */
-DECL|method|getContainerDiagnosticInfo ()
-specifier|private
-name|String
-name|getContainerDiagnosticInfo
-parameter_list|()
-block|{
-return|return
-name|appState
-operator|.
-name|getContainerDiagnosticInfo
-argument_list|()
-return|;
-block|}
 DECL|method|getProxy (Class protocol, InetSocketAddress addr)
 specifier|public
 name|Object
@@ -7379,16 +7481,6 @@ argument_list|(
 name|operations
 argument_list|)
 expr_stmt|;
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"Diagnostics: {}"
-argument_list|,
-name|getContainerDiagnosticInfo
-argument_list|()
-argument_list|)
-expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -7529,13 +7621,15 @@ argument_list|(
 operator|new
 name|UnregisterComponentInstance
 argument_list|(
-name|containerId
-argument_list|,
 literal|0
 argument_list|,
 name|TimeUnit
 operator|.
 name|MILLISECONDS
+argument_list|,
+name|result
+operator|.
+name|roleInstance
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -9188,12 +9282,6 @@ argument_list|(
 name|containerId
 argument_list|,
 name|cinfo
-operator|.
-name|role
-argument_list|,
-name|cinfo
-operator|.
-name|group
 argument_list|,
 literal|0
 argument_list|,
