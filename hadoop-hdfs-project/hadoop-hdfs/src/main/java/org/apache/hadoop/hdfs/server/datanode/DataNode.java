@@ -10339,6 +10339,8 @@ argument_list|,
 name|block
 argument_list|,
 name|accessMode
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -12210,6 +12212,8 @@ name|AccessMode
 operator|.
 name|WRITE
 argument_list|)
+argument_list|,
+name|targetStorageTypes
 argument_list|)
 decl_stmt|;
 name|long
@@ -12715,7 +12719,7 @@ block|}
 block|}
 block|}
 comment|/***    * Use BlockTokenSecretManager to generate block token for current user.    */
-DECL|method|getBlockAccessToken (ExtendedBlock b, EnumSet<AccessMode> mode)
+DECL|method|getBlockAccessToken (ExtendedBlock b, EnumSet<AccessMode> mode, StorageType[] storageTypes)
 specifier|public
 name|Token
 argument_list|<
@@ -12731,6 +12735,10 @@ argument_list|<
 name|AccessMode
 argument_list|>
 name|mode
+parameter_list|,
+name|StorageType
+index|[]
+name|storageTypes
 parameter_list|)
 throws|throws
 name|IOException
@@ -12759,6 +12767,8 @@ argument_list|(
 name|b
 argument_list|,
 name|mode
+argument_list|,
+name|storageTypes
 argument_list|)
 expr_stmt|;
 block|}
@@ -14269,6 +14279,8 @@ operator|.
 name|AccessMode
 operator|.
 name|READ
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}

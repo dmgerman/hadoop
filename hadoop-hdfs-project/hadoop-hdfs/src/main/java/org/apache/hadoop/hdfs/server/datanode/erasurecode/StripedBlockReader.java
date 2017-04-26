@@ -72,6 +72,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|BlockReader
@@ -620,6 +634,10 @@ name|AccessMode
 operator|.
 name|READ
 argument_list|)
+argument_list|,
+name|StorageType
+operator|.
+name|EMPTY_ARRAY
 argument_list|)
 decl_stmt|;
 comment|/*          * This can be further improved if the replica is local, then we can          * read directly from DN and need to check the replica is FINALIZED          * state, notice we should not use short-circuit local read which          * requires config for domain-socket in UNIX or legacy config in          * Windows. The network distance value isn't used for this scenario.          *          * TODO: add proper tracer          */

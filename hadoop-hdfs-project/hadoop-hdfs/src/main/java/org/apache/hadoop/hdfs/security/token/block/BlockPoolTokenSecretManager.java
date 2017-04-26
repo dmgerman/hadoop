@@ -146,6 +146,20 @@ name|VisibleForTesting
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|StorageType
+import|;
+end_import
+
 begin_comment
 comment|/**  * Manages a {@link BlockTokenSecretManager} per block pool. Routes the requests  * given a block pool Id to corresponding {@link BlockTokenSecretManager}  */
 end_comment
@@ -340,8 +354,8 @@ name|identifier
 argument_list|)
 return|;
 block|}
-comment|/**    * See {@link BlockTokenSecretManager#checkAccess(BlockTokenIdentifier,     *                String, ExtendedBlock, BlockTokenIdentifier.AccessMode)}    */
-DECL|method|checkAccess (BlockTokenIdentifier id, String userId, ExtendedBlock block, AccessMode mode)
+comment|/**    * See {@link BlockTokenSecretManager#checkAccess(BlockTokenIdentifier,    *                String, ExtendedBlock, BlockTokenIdentifier.AccessMode,    *                StorageType[])}    */
+DECL|method|checkAccess (BlockTokenIdentifier id, String userId, ExtendedBlock block, AccessMode mode, StorageType[] storageTypes)
 specifier|public
 name|void
 name|checkAccess
@@ -357,6 +371,10 @@ name|block
 parameter_list|,
 name|AccessMode
 name|mode
+parameter_list|,
+name|StorageType
+index|[]
+name|storageTypes
 parameter_list|)
 throws|throws
 name|InvalidToken
@@ -378,11 +396,13 @@ argument_list|,
 name|block
 argument_list|,
 name|mode
+argument_list|,
+name|storageTypes
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * See {@link BlockTokenSecretManager#checkAccess(Token, String,     *                ExtendedBlock, BlockTokenIdentifier.AccessMode)}    */
-DECL|method|checkAccess (Token<BlockTokenIdentifier> token, String userId, ExtendedBlock block, AccessMode mode)
+comment|/**    * See {@link BlockTokenSecretManager#checkAccess(Token, String,    *                ExtendedBlock, BlockTokenIdentifier.AccessMode,    *                StorageType[])}.    */
+DECL|method|checkAccess (Token<BlockTokenIdentifier> token, String userId, ExtendedBlock block, AccessMode mode, StorageType[] storageTypes)
 specifier|public
 name|void
 name|checkAccess
@@ -401,6 +421,10 @@ name|block
 parameter_list|,
 name|AccessMode
 name|mode
+parameter_list|,
+name|StorageType
+index|[]
+name|storageTypes
 parameter_list|)
 throws|throws
 name|InvalidToken
@@ -422,6 +446,8 @@ argument_list|,
 name|block
 argument_list|,
 name|mode
+argument_list|,
+name|storageTypes
 argument_list|)
 expr_stmt|;
 block|}
@@ -451,8 +477,8 @@ name|exportedKeys
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * See {@link BlockTokenSecretManager#generateToken(ExtendedBlock, EnumSet)}    */
-DECL|method|generateToken (ExtendedBlock b, EnumSet<AccessMode> of)
+comment|/**    * See {@link BlockTokenSecretManager#generateToken(ExtendedBlock, EnumSet,    *  StorageType[])}    */
+DECL|method|generateToken (ExtendedBlock b, EnumSet<AccessMode> of, StorageType[] storageTypes)
 specifier|public
 name|Token
 argument_list|<
@@ -468,6 +494,10 @@ argument_list|<
 name|AccessMode
 argument_list|>
 name|of
+parameter_list|,
+name|StorageType
+index|[]
+name|storageTypes
 parameter_list|)
 throws|throws
 name|IOException
@@ -486,6 +516,8 @@ argument_list|(
 name|b
 argument_list|,
 name|of
+argument_list|,
+name|storageTypes
 argument_list|)
 return|;
 block|}

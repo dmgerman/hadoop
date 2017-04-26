@@ -6767,6 +6767,11 @@ name|of
 argument_list|(
 name|mode
 argument_list|)
+argument_list|,
+name|b
+operator|.
+name|getStorageTypes
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -6807,6 +6812,11 @@ name|of
 argument_list|(
 name|mode
 argument_list|)
+argument_list|,
+name|b
+operator|.
+name|getStorageTypes
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;

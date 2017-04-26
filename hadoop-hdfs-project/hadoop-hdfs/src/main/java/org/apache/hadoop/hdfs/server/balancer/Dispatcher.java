@@ -2166,6 +2166,15 @@ operator|.
 name|getAccessToken
 argument_list|(
 name|eb
+argument_list|,
+operator|new
+name|StorageType
+index|[]
+block|{
+name|target
+operator|.
+name|storageType
+block|}
 argument_list|)
 decl_stmt|;
 name|IOStreamPair

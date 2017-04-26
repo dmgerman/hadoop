@@ -114,6 +114,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|DFSConfigKeys
@@ -580,7 +594,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Get an access token for a block. */
-DECL|method|getAccessToken (ExtendedBlock eb )
+DECL|method|getAccessToken (ExtendedBlock eb, StorageType[] storageTypes)
 specifier|public
 name|Token
 argument_list|<
@@ -590,6 +604,10 @@ name|getAccessToken
 parameter_list|(
 name|ExtendedBlock
 name|eb
+parameter_list|,
+name|StorageType
+index|[]
+name|storageTypes
 parameter_list|)
 throws|throws
 name|IOException
@@ -647,6 +665,8 @@ name|AccessMode
 operator|.
 name|COPY
 argument_list|)
+argument_list|,
+name|storageTypes
 argument_list|)
 return|;
 block|}

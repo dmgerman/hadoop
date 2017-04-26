@@ -725,6 +725,13 @@ name|AccessMode
 operator|.
 name|WRITE
 argument_list|)
+argument_list|,
+operator|new
+name|StorageType
+index|[]
+block|{
+name|storageType
+block|}
 argument_list|)
 decl_stmt|;
 name|long
