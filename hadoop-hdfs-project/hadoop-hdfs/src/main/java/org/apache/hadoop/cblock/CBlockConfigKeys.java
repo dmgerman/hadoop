@@ -455,6 +455,25 @@ name|DFS_CBLOCK_CONTAINER_SIZE_GB_DEFAULT
 init|=
 literal|5
 decl_stmt|;
+comment|// LevelDB cache file uses an off-heap cache in LevelDB of 256 MB.
+DECL|field|DFS_CBLOCK_CACHE_LEVELDB_CACHE_SIZE_MB_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_CBLOCK_CACHE_LEVELDB_CACHE_SIZE_MB_KEY
+init|=
+literal|"dfs.cblock.cache.leveldb.cache.size.mb"
+decl_stmt|;
+DECL|field|DFS_CBLOCK_CACHE_LEVELDB_CACHE_SIZE_MB_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DFS_CBLOCK_CACHE_LEVELDB_CACHE_SIZE_MB_DEFAULT
+init|=
+literal|256
+decl_stmt|;
 DECL|method|CBlockConfigKeys ()
 specifier|private
 name|CBlockConfigKeys

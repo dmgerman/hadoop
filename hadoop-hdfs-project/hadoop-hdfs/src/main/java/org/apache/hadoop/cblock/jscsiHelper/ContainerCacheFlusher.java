@@ -122,6 +122,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
+name|OzoneConsts
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|scm
 operator|.
 name|XceiverClientManager
@@ -652,7 +666,7 @@ name|cblock
 operator|.
 name|CBlockConfigKeys
 operator|.
-name|DFS_CBLOCK_DISK_CACHE_PATH_DEFAULT
+name|DFS_CBLOCK_CACHE_LEVELDB_CACHE_SIZE_MB_KEY
 import|;
 end_import
 
@@ -668,7 +682,7 @@ name|cblock
 operator|.
 name|CBlockConfigKeys
 operator|.
-name|DFS_CBLOCK_DISK_CACHE_PATH_KEY
+name|DFS_CBLOCK_CACHE_LEVELDB_CACHE_SIZE_MB_DEFAULT
 import|;
 end_import
 
@@ -775,6 +789,12 @@ DECL|field|shutdown
 specifier|private
 name|AtomicBoolean
 name|shutdown
+decl_stmt|;
+DECL|field|levelDBCacheSize
+specifier|private
+specifier|final
+name|long
+name|levelDBCacheSize
 decl_stmt|;
 DECL|field|finishCountMap
 specifier|private
@@ -886,6 +906,21 @@ operator|.
 name|SIZE
 operator|)
 decl_stmt|;
+name|levelDBCacheSize
+operator|=
+name|config
+operator|.
+name|getInt
+argument_list|(
+name|DFS_CBLOCK_CACHE_LEVELDB_CACHE_SIZE_MB_KEY
+argument_list|,
+name|DFS_CBLOCK_CACHE_LEVELDB_CACHE_SIZE_MB_DEFAULT
+argument_list|)
+operator|*
+name|OzoneConsts
+operator|.
+name|MB
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -1065,41 +1100,16 @@ name|ConcurrentHashMap
 argument_list|<>
 argument_list|()
 expr_stmt|;
-name|checkExisitingDirtyLog
-argument_list|(
-name|config
-argument_list|)
-expr_stmt|;
 block|}
-DECL|method|checkExisitingDirtyLog (Configuration config)
+DECL|method|checkExistingDirtyLog (File dbPath)
 specifier|private
 name|void
-name|checkExisitingDirtyLog
+name|checkExistingDirtyLog
 parameter_list|(
-name|Configuration
-name|config
-parameter_list|)
-block|{
 name|File
 name|dbPath
-init|=
-name|Paths
-operator|.
-name|get
-argument_list|(
-name|config
-operator|.
-name|get
-argument_list|(
-name|DFS_CBLOCK_DISK_CACHE_PATH_KEY
-argument_list|,
-name|DFS_CBLOCK_DISK_CACHE_PATH_DEFAULT
-argument_list|)
-argument_list|)
-operator|.
-name|toFile
-argument_list|()
-decl_stmt|;
+parameter_list|)
+block|{
 if|if
 condition|(
 operator|!
@@ -1111,7 +1121,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"No existing dirty log found at {}"
 argument_list|,
@@ -1122,7 +1132,7 @@ return|return;
 block|}
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Need to check and requeue existing dirty log {}"
 argument_list|,
@@ -1470,8 +1480,8 @@ return|return
 name|LOG
 return|;
 block|}
-comment|/**    * Opens a DB if needed or returns a handle to an already open DB.    *    * @param dbPath -- dbPath    * @param cacheSize - cacheSize    * @return the levelDB on the given path.    * @throws IOException    */
-DECL|method|openDB (String dbPath, int cacheSize)
+comment|/**    * Opens a DB if needed or returns a handle to an already open DB.    *    * @param dbPath -- dbPath    * @return the levelDB on the given path.    * @throws IOException    */
+DECL|method|openDB (String dbPath)
 specifier|public
 specifier|synchronized
 name|LevelDBStore
@@ -1479,9 +1489,6 @@ name|openDB
 parameter_list|(
 name|String
 name|dbPath
-parameter_list|,
-name|int
-name|cacheSize
 parameter_list|)
 throws|throws
 name|IOException
@@ -1530,13 +1537,7 @@ name|options
 operator|.
 name|cacheSize
 argument_list|(
-name|cacheSize
-operator|*
-operator|(
-literal|1024L
-operator|*
-literal|1024L
-operator|)
+name|levelDBCacheSize
 argument_list|)
 expr_stmt|;
 name|options
@@ -1589,7 +1590,7 @@ name|cacheDB
 return|;
 block|}
 block|}
-comment|/**    * Updates the contianer map. This data never changes so we will update this    * during restarts and it should not hurt us.    *    * @param dbPath - DbPath    * @param containerList - Contianer List.    */
+comment|/**    * Updates the container map. This data never changes so we will update this    * during restarts and it should not hurt us.    *    * Once a CBlockLocalCache cache is registered, requeue dirty/retry log files    * for the volume    *    * @param dbPath - DbPath    * @param containerList - Container List.    */
 DECL|method|register (String dbPath, Pipeline[] containerList)
 specifier|public
 name|void
@@ -1603,6 +1604,19 @@ index|[]
 name|containerList
 parameter_list|)
 block|{
+name|File
+name|dbFile
+init|=
+name|Paths
+operator|.
+name|get
+argument_list|(
+name|dbPath
+argument_list|)
+operator|.
+name|toFile
+argument_list|()
+decl_stmt|;
 name|pipelineMap
 operator|.
 name|put
@@ -1610,6 +1624,11 @@ argument_list|(
 name|dbPath
 argument_list|,
 name|containerList
+argument_list|)
+expr_stmt|;
+name|checkExistingDirtyLog
+argument_list|(
+name|dbFile
 argument_list|)
 expr_stmt|;
 block|}
@@ -2062,6 +2081,8 @@ name|message
 operator|.
 name|getFileName
 argument_list|()
+argument_list|,
+name|this
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2490,7 +2511,13 @@ specifier|private
 name|AtomicBoolean
 name|fileDeleted
 decl_stmt|;
-DECL|method|FinishCounter (long expectedCount, String dbPath, String dirtyLogPath)
+DECL|field|flusher
+specifier|private
+specifier|final
+name|ContainerCacheFlusher
+name|flusher
+decl_stmt|;
+DECL|method|FinishCounter (long expectedCount, String dbPath, String dirtyLogPath, ContainerCacheFlusher flusher)
 name|FinishCounter
 parameter_list|(
 name|long
@@ -2501,7 +2528,12 @@ name|dbPath
 parameter_list|,
 name|String
 name|dirtyLogPath
+parameter_list|,
+name|ContainerCacheFlusher
+name|flusher
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|this
 operator|.
@@ -2539,6 +2571,21 @@ operator|new
 name|AtomicBoolean
 argument_list|(
 literal|false
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|flusher
+operator|=
+name|flusher
+expr_stmt|;
+name|this
+operator|.
+name|flusher
+operator|.
+name|openDB
+argument_list|(
+name|dbPath
 argument_list|)
 expr_stmt|;
 block|}
@@ -2607,6 +2654,13 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
+name|flusher
+operator|.
+name|closeDB
+argument_list|(
+name|dbPath
+argument_list|)
+expr_stmt|;
 name|Path
 name|path
 init|=
@@ -2638,7 +2692,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
+name|Exception
 name|e
 parameter_list|)
 block|{
@@ -2646,14 +2700,11 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Error deleting dirty log file {} {}"
-argument_list|,
+literal|"Error deleting dirty log file:"
+operator|+
 name|filePath
 argument_list|,
 name|e
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

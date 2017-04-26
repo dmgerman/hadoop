@@ -500,20 +500,12 @@ specifier|final
 name|Configuration
 name|conf
 decl_stmt|;
-comment|/**    * LevelDB cache file, we use an off-heap cache in LevelDB for 256 MB for now.    */
+comment|/**    * LevelDB cache file.    */
 DECL|field|cacheDB
 specifier|private
 specifier|final
 name|LevelDBStore
 name|cacheDB
-decl_stmt|;
-DECL|field|cacheSizeMb
-specifier|private
-specifier|final
-name|int
-name|cacheSizeMb
-init|=
-literal|256
 decl_stmt|;
 comment|/**    * Asyncblock writer updates the cacheDB and writes the blocks async to    * remote containers.    */
 DECL|field|blockWriter
@@ -778,8 +770,6 @@ name|dbPath
 operator|.
 name|toString
 argument_list|()
-argument_list|,
-name|cacheSizeMb
 argument_list|)
 expr_stmt|;
 name|this
@@ -798,6 +788,18 @@ operator|.
 name|size
 argument_list|()
 index|]
+argument_list|)
+expr_stmt|;
+name|flusher
+operator|.
+name|register
+argument_list|(
+name|dbPath
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|containerList
 argument_list|)
 expr_stmt|;
 name|this
