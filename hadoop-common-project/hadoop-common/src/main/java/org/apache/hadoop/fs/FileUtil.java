@@ -2401,13 +2401,12 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|PathIsDirectoryException
 argument_list|(
-literal|"Target "
-operator|+
 name|dst
-operator|+
-literal|" is a directory"
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -2439,8 +2438,13 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|PathExistsException
 argument_list|(
+name|dst
+operator|.
+name|toString
+argument_list|()
+argument_list|,
 literal|"Target "
 operator|+
 name|dst

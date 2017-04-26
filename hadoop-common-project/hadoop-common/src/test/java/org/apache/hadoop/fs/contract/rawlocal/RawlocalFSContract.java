@@ -119,7 +119,7 @@ specifier|final
 name|String
 name|RAW_CONTRACT_XML
 init|=
-literal|"contract/localfs.xml"
+literal|"contract/rawlocal.xml"
 decl_stmt|;
 annotation|@
 name|Override

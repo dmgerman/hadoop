@@ -2914,7 +2914,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|FileNotFoundException
+name|FileAlreadyExistsException
 argument_list|(
 literal|"Destination exists"
 operator|+
