@@ -371,7 +371,7 @@ name|Pattern
 operator|.
 name|compile
 argument_list|(
-literal|"^([\\d-]+)\\s\\(([^)]+)\\)\\s[^\\s]\\s([\\d-]+)\\s([\\d-]+)\\s"
+literal|"^([\\d-]+)\\s\\((.*)\\)\\s[^\\s]\\s([\\d-]+)\\s([\\d-]+)\\s"
 operator|+
 literal|"([\\d-]+)\\s([\\d-]+\\s){7}(\\d+)\\s(\\d+)\\s([\\d-]+\\s){7}(\\d+)\\s"
 operator|+

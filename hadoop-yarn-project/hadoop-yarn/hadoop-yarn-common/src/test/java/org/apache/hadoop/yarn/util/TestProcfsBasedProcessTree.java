@@ -2465,7 +2465,7 @@ index|[]
 block|{
 literal|"300"
 block|,
-literal|"proc3"
+literal|"proc(3)"
 block|,
 literal|"200"
 block|,
@@ -3165,7 +3165,7 @@ index|[]
 block|{
 literal|"300"
 block|,
-literal|"proc3"
+literal|"proc(3)"
 block|,
 literal|"1"
 block|,
@@ -4119,7 +4119,7 @@ index|[]
 block|{
 literal|"300"
 block|,
-literal|"proc3"
+literal|"proc(3)"
 block|,
 literal|"200"
 block|,
@@ -4338,7 +4338,7 @@ index|[
 literal|2
 index|]
 operator|=
-literal|"proc3 arg5 arg6"
+literal|"proc(3) arg5 arg6"
 expr_stmt|;
 name|cmdLines
 index|[
