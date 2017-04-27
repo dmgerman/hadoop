@@ -82,6 +82,18 @@ name|ErasureCoderOptions
 name|coderOptions
 parameter_list|)
 function_decl|;
+comment|/**    * Get the name of the coder.    * @return coder name    */
+DECL|method|getCoderName ()
+name|String
+name|getCoderName
+parameter_list|()
+function_decl|;
+comment|/**    * Get the name of its codec.    * @return codec name    */
+DECL|method|getCodecName ()
+name|String
+name|getCodecName
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
