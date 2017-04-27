@@ -1121,6 +1121,8 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
+try|try
+block|{
 name|img
 operator|.
 name|saveLegacyOIVImage
@@ -1132,6 +1134,25 @@ argument_list|,
 name|canceler
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Exception encountered while saving legacy OIV image; "
+operator|+
+literal|"continuing with other checkpointing steps"
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 finally|finally
