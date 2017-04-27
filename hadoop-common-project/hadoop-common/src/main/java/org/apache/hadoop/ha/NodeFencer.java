@@ -302,6 +302,12 @@ argument_list|,
 name|SshFenceByTcpPort
 operator|.
 name|class
+argument_list|,
+literal|"powershell"
+argument_list|,
+name|PowerShellFencer
+operator|.
+name|class
 argument_list|)
 decl_stmt|;
 DECL|field|methods
