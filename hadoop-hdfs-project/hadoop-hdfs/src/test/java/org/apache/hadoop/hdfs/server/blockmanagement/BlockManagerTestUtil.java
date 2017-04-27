@@ -762,6 +762,27 @@ argument_list|)
 throw|;
 block|}
 block|}
+DECL|method|getHeartbeatManager ( final BlockManager blockManager)
+specifier|public
+specifier|static
+name|HeartbeatManager
+name|getHeartbeatManager
+parameter_list|(
+specifier|final
+name|BlockManager
+name|blockManager
+parameter_list|)
+block|{
+return|return
+name|blockManager
+operator|.
+name|getDatanodeManager
+argument_list|()
+operator|.
+name|getHeartbeatManager
+argument_list|()
+return|;
+block|}
 comment|/**    * @return corruptReplicas from block manager    */
 DECL|method|getCorruptReplicas (final BlockManager blockManager)
 specifier|public
