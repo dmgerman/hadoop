@@ -34,6 +34,15 @@ specifier|private
 name|ErasureCodeConstants
 parameter_list|()
 block|{   }
+DECL|field|DUMMY_CODEC_NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DUMMY_CODEC_NAME
+init|=
+literal|"dummy"
+decl_stmt|;
 DECL|field|RS_CODEC_NAME
 specifier|public
 specifier|static

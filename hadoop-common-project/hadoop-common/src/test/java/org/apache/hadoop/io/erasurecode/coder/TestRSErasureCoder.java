@@ -235,10 +235,7 @@ name|IO_ERASURECODE_CODEC_RS_RAWCODERS_KEY
 argument_list|,
 name|RSRawErasureCoderFactory
 operator|.
-name|class
-operator|.
-name|getCanonicalName
-argument_list|()
+name|CODER_NAME
 argument_list|)
 expr_stmt|;
 name|prepare
