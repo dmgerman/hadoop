@@ -503,7 +503,10 @@ name|IO_ERASURECODE_CODEC_RS_RAWCODERS_KEY
 argument_list|,
 name|NativeRSRawErasureCoderFactory
 operator|.
-name|CODER_NAME
+name|class
+operator|.
+name|getCanonicalName
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

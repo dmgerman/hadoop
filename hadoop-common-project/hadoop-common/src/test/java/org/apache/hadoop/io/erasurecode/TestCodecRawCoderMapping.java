@@ -220,24 +220,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
-operator|.
-name|erasurecode
-operator|.
-name|rawcoder
-operator|.
-name|XORRawErasureCoderFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|test
 operator|.
 name|GenericTestUtils
@@ -595,13 +577,19 @@ name|IO_ERASURECODE_CODEC_RS_RAWCODERS_KEY
 argument_list|,
 name|RSRawErasureCoderFactory
 operator|.
-name|CODER_NAME
+name|class
+operator|.
+name|getCanonicalName
+argument_list|()
 operator|+
 literal|","
 operator|+
 name|NativeRSRawErasureCoderFactory
 operator|.
-name|CODER_NAME
+name|class
+operator|.
+name|getCanonicalName
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// should return default raw coder of rs codec
@@ -756,9 +744,7 @@ name|IO_ERASURECODE_CODEC_XOR_RAWCODERS_KEY
 argument_list|,
 literal|"invalid-codec,"
 operator|+
-name|XORRawErasureCoderFactory
-operator|.
-name|CODER_NAME
+literal|"org.apache.hadoop.io.erasurecode.rawcoder.XORRawErasureCoderFactory"
 argument_list|)
 expr_stmt|;
 comment|// should return second coder specified by IO_ERASURECODE_CODEC_CODERS
