@@ -1057,9 +1057,13 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|checkStream
-argument_list|()
-expr_stmt|;
+if|if
+condition|(
+name|closed
+condition|)
+block|{
+return|return;
+block|}
 name|encrypt
 argument_list|()
 expr_stmt|;
