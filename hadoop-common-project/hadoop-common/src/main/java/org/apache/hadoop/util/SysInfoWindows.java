@@ -379,6 +379,7 @@ literal|null
 return|;
 block|}
 DECL|method|refreshIfNeeded ()
+specifier|synchronized
 name|void
 name|refreshIfNeeded
 parameter_list|()
