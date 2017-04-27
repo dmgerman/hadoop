@@ -261,7 +261,7 @@ index|[
 literal|0
 index|]
 decl_stmt|;
-comment|/**    * Constructor    * @param length the number of bytes the file has    * @param isdir if the path is a directory    * @param block_replication the replication factor    * @param blocksize the block size    * @param modification_time modification time    * @param access_time access time    * @param permission permission    * @param owner the owner of the path    * @param group the group of the path    * @param path the local name in java UTF8 encoding the same as that in-memory    * @param fileId the file id    * @param feInfo the file's encryption info    */
+comment|/**    * Constructor.    * @param length the number of bytes the file has    * @param isdir if the path is a directory    * @param block_replication the replication factor    * @param blocksize the block size    * @param modification_time modification time    * @param access_time access time    * @param permission permission    * @param owner the owner of the path    * @param group the group of the path    * @param symlink symlink target encoded in java UTF8 or null    * @param path the local name in java UTF8 encoding the same as that in-memory    * @param fileId the file id    * @param childrenNum the number of children. Used by directory.    * @param feInfo the file's encryption info    * @param storagePolicy ID which specifies storage policy    * @param ecPolicy the erasure coding policy    */
 DECL|method|HdfsFileStatus (long length, boolean isdir, int block_replication, long blocksize, long modification_time, long access_time, FsPermission permission, String owner, String group, byte[] symlink, byte[] path, long fileId, int childrenNum, FileEncryptionInfo feInfo, byte storagePolicy, ErasureCodingPolicy ecPolicy)
 specifier|public
 name|HdfsFileStatus
@@ -544,7 +544,7 @@ return|return
 name|access_time
 return|;
 block|}
-comment|/**    * Get FsPermission associated with the file.    * @return permssion    */
+comment|/**    * Get FsPermission associated with the file.    * @return permission    */
 DECL|method|getPermission ()
 specifier|public
 specifier|final
@@ -580,7 +580,7 @@ return|return
 name|group
 return|;
 block|}
-comment|/**    * Check if the local name is empty    * @return true if the name is empty    */
+comment|/**    * Check if the local name is empty.    * @return true if the name is empty    */
 DECL|method|isEmptyLocalName ()
 specifier|public
 specifier|final
@@ -596,7 +596,7 @@ operator|==
 literal|0
 return|;
 block|}
-comment|/**    * Get the string representation of the local name    * @return the local name in string    */
+comment|/**    * Get the string representation of the local name.    * @return the local name in string    */
 DECL|method|getLocalName ()
 specifier|public
 specifier|final
@@ -613,7 +613,7 @@ name|path
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the Java UTF8 representation of the local name    * @return the local name in java UTF8    */
+comment|/**    * Get the Java UTF8 representation of the local name.    * @return the local name in java UTF8    */
 DECL|method|getLocalNameInBytes ()
 specifier|public
 specifier|final
@@ -626,7 +626,7 @@ return|return
 name|path
 return|;
 block|}
-comment|/**    * Get the string representation of the full path name    * @param parent the parent path    * @return the full path in string    */
+comment|/**    * Get the string representation of the full path name.    * @param parent the parent path    * @return the full path in string    */
 DECL|method|getFullName (final String parent)
 specifier|public
 specifier|final
@@ -695,7 +695,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    * Get the full path    * @param parent the parent path    * @return the full path    */
+comment|/**    * Get the full path.    * @param parent the parent path    * @return the full path    */
 DECL|method|getFullPath (final Path parent)
 specifier|public
 specifier|final
@@ -779,6 +779,7 @@ return|return
 name|feInfo
 return|;
 block|}
+comment|/**    * Get the erasure coding policy if it's set.    * @return the erasure coding policy    */
 DECL|method|getErasureCodingPolicy ()
 specifier|public
 name|ErasureCodingPolicy
