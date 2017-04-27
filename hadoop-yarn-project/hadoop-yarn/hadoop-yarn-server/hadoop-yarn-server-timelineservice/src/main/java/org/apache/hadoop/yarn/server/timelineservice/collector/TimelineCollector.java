@@ -485,16 +485,6 @@ operator|=
 name|w
 expr_stmt|;
 block|}
-DECL|method|getWriter ()
-specifier|protected
-name|TimelineWriter
-name|getWriter
-parameter_list|()
-block|{
-return|return
-name|writer
-return|;
-block|}
 DECL|method|getAggregationGroups ()
 specifier|protected
 name|Map
