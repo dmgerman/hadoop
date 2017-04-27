@@ -150,7 +150,8 @@ end_enum
 
 begin_decl_stmt
 DECL|field|qACLNeeded
-specifier|public
+specifier|private
+specifier|final
 name|QueueACL
 name|qACLNeeded
 decl_stmt|;
@@ -158,7 +159,8 @@ end_decl_stmt
 
 begin_decl_stmt
 DECL|field|jobACLNeeded
-specifier|public
+specifier|private
+specifier|final
 name|JobACL
 name|jobACLNeeded
 decl_stmt|;
@@ -187,7 +189,30 @@ name|jobACLNeeded
 operator|=
 name|jobACL
 block|;   }
+DECL|method|getqACLNeeded ()
+specifier|public
+name|QueueACL
+name|getqACLNeeded
+argument_list|()
+block|{
+return|return
+name|qACLNeeded
+return|;
+block|}
 end_expr_stmt
+
+begin_function
+DECL|method|getJobACLNeeded ()
+specifier|public
+name|JobACL
+name|getJobACLNeeded
+parameter_list|()
+block|{
+return|return
+name|jobACLNeeded
+return|;
+block|}
+end_function
 
 unit|}
 end_unit

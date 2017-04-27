@@ -415,15 +415,12 @@ block|{
 return|return
 name|Long
 operator|.
-name|valueOf
+name|compare
 argument_list|(
 name|this
 operator|.
 name|jvmId
-argument_list|)
-operator|.
-name|compareTo
-argument_list|(
+argument_list|,
 name|that
 operator|.
 name|jvmId
