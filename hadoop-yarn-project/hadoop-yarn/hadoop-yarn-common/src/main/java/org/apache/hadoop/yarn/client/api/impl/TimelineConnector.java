@@ -842,6 +842,17 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|YarnConfiguration
+operator|.
+name|useHttps
+argument_list|(
+name|conf
+argument_list|)
+condition|)
+block|{
+comment|// If https is chosen, configures SSL client.
 name|sslFactory
 operator|=
 name|getSSLFactory
@@ -856,6 +867,14 @@ argument_list|(
 name|sslFactory
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|connConfigurator
+operator|=
+name|DEFAULT_TIMEOUT_CONN_CONFIGURATOR
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|UserGroupInformation
