@@ -26,11 +26,9 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
+name|http
 operator|.
-name|httpclient
-operator|.
-name|HttpMethod
+name|HttpResponse
 import|;
 end_import
 
@@ -56,7 +54,7 @@ name|SwiftBadRequestException
 extends|extends
 name|SwiftInvalidResponseException
 block|{
-DECL|method|SwiftBadRequestException (String message, String operation, URI uri, HttpMethod method)
+DECL|method|SwiftBadRequestException (String message, String operation, URI uri, HttpResponse resp)
 specifier|public
 name|SwiftBadRequestException
 parameter_list|(
@@ -69,8 +67,8 @@ parameter_list|,
 name|URI
 name|uri
 parameter_list|,
-name|HttpMethod
-name|method
+name|HttpResponse
+name|resp
 parameter_list|)
 block|{
 name|super
@@ -81,7 +79,7 @@ name|operation
 argument_list|,
 name|uri
 argument_list|,
-name|method
+name|resp
 argument_list|)
 expr_stmt|;
 block|}

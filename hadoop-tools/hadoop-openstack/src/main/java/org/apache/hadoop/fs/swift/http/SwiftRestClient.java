@@ -26,11 +26,15 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
+name|hadoop
 operator|.
-name|httpclient
+name|fs
 operator|.
-name|DefaultHttpMethodRetryHandler
+name|swift
+operator|.
+name|util
+operator|.
+name|HttpResponseUtils
 import|;
 end_import
 
@@ -40,9 +44,7 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|httpclient
+name|http
 operator|.
 name|Header
 import|;
@@ -54,23 +56,7 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|httpclient
-operator|.
-name|HttpClient
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|httpclient
+name|http
 operator|.
 name|HttpHost
 import|;
@@ -82,11 +68,9 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
+name|http
 operator|.
-name|httpclient
-operator|.
-name|HttpMethod
+name|HttpResponse
 import|;
 end_import
 
@@ -96,23 +80,7 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|httpclient
-operator|.
-name|HttpMethodBase
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|httpclient
+name|http
 operator|.
 name|HttpStatus
 import|;
@@ -124,13 +92,43 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
+name|http
 operator|.
-name|httpclient
+name|client
+operator|.
+name|HttpClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|http
+operator|.
+name|client
+operator|.
+name|config
+operator|.
+name|RequestConfig
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|http
+operator|.
+name|client
 operator|.
 name|methods
 operator|.
-name|DeleteMethod
+name|HttpDelete
 import|;
 end_import
 
@@ -140,13 +138,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
+name|http
 operator|.
-name|httpclient
+name|client
 operator|.
 name|methods
 operator|.
-name|GetMethod
+name|HttpGet
 import|;
 end_import
 
@@ -156,13 +154,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
+name|http
 operator|.
-name|httpclient
+name|client
 operator|.
 name|methods
 operator|.
-name|HeadMethod
+name|HttpHead
 import|;
 end_import
 
@@ -172,13 +170,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
+name|http
 operator|.
-name|httpclient
+name|client
 operator|.
 name|methods
 operator|.
-name|InputStreamRequestEntity
+name|HttpPost
 import|;
 end_import
 
@@ -188,13 +186,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
+name|http
 operator|.
-name|httpclient
+name|client
 operator|.
 name|methods
 operator|.
-name|PostMethod
+name|HttpPut
 import|;
 end_import
 
@@ -204,13 +202,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
+name|http
 operator|.
-name|httpclient
+name|client
 operator|.
 name|methods
 operator|.
-name|PutMethod
+name|HttpRequestBase
 import|;
 end_import
 
@@ -220,13 +218,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
+name|http
 operator|.
-name|httpclient
+name|client
 operator|.
 name|methods
 operator|.
-name|StringRequestEntity
+name|HttpUriRequest
 import|;
 end_import
 
@@ -236,13 +234,11 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
+name|http
 operator|.
-name|httpclient
+name|config
 operator|.
-name|params
-operator|.
-name|HttpConnectionParams
+name|SocketConfig
 import|;
 end_import
 
@@ -252,13 +248,101 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
+name|http
 operator|.
-name|httpclient
+name|entity
 operator|.
-name|params
+name|ContentType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|HttpMethodParams
+name|apache
+operator|.
+name|http
+operator|.
+name|entity
+operator|.
+name|InputStreamEntity
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|http
+operator|.
+name|entity
+operator|.
+name|StringEntity
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|http
+operator|.
+name|impl
+operator|.
+name|client
+operator|.
+name|CloseableHttpClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|http
+operator|.
+name|impl
+operator|.
+name|client
+operator|.
+name|DefaultHttpRequestRetryHandler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|http
+operator|.
+name|impl
+operator|.
+name|client
+operator|.
+name|HttpClientBuilder
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|http
+operator|.
+name|message
+operator|.
+name|BasicHeader
 import|;
 end_import
 
@@ -780,22 +864,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|http
-operator|.
-name|conn
-operator|.
-name|params
-operator|.
-name|ConnRoutePNames
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -900,9 +968,7 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|httpclient
+name|http
 operator|.
 name|HttpStatus
 operator|.
@@ -931,7 +997,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This implements the client-side of the Swift REST API  *  * The core actions put, get and query data in the Swift object store,  * after authenticating the client.  *  *<b>Logging:</b>  *  * Logging at DEBUG level displays detail about the actions of this  * client, including HTTP requests and responses -excluding authentication  * details.  */
+comment|/**  * This implements the client-side of the Swift REST API.  *  * The core actions put, get and query data in the Swift object store,  * after authenticating the client.  *  *<b>Logging:</b>  *  * Logging at DEBUG level displays detail about the actions of this  * client, including HTTP requests and responses -excluding authentication  * details.  */
 end_comment
 
 begin_class
@@ -966,7 +1032,7 @@ name|Header
 name|NEWEST
 init|=
 operator|new
-name|Header
+name|BasicHeader
 argument_list|(
 name|SwiftProtocolConstants
 operator|.
@@ -975,7 +1041,7 @@ argument_list|,
 literal|"true"
 argument_list|)
 decl_stmt|;
-comment|/**    * the authentication endpoint as supplied in the configuration    */
+comment|/**    * the authentication endpoint as supplied in the configuration.    */
 DECL|field|authUri
 specifier|private
 specifier|final
@@ -989,42 +1055,42 @@ specifier|final
 name|String
 name|region
 decl_stmt|;
-comment|/**    * tenant name    */
+comment|/**    * tenant name.    */
 DECL|field|tenant
 specifier|private
 specifier|final
 name|String
 name|tenant
 decl_stmt|;
-comment|/**    * username name    */
+comment|/**    * username name.    */
 DECL|field|username
 specifier|private
 specifier|final
 name|String
 name|username
 decl_stmt|;
-comment|/**    * user password    */
+comment|/**    * user password.    */
 DECL|field|password
 specifier|private
 specifier|final
 name|String
 name|password
 decl_stmt|;
-comment|/**    * user api key    */
+comment|/**    * user api key.    */
 DECL|field|apiKey
 specifier|private
 specifier|final
 name|String
 name|apiKey
 decl_stmt|;
-comment|/**    * The authentication request used to authenticate with Swift    */
+comment|/**    * The authentication request used to authenticate with Swift.    */
 DECL|field|authRequest
 specifier|private
 specifier|final
 name|AuthenticationRequest
 name|authRequest
 decl_stmt|;
-comment|/**    * This auth request is similar to @see authRequest,    * with one difference: it has another json representation when    * authRequest one is not applicable    */
+comment|/**    * This auth request is similar to @see authRequest,    * with one difference: it has another json representation when    * authRequest one is not applicable.    */
 DECL|field|keystoneAuthRequest
 specifier|private
 name|AuthenticationRequest
@@ -1037,7 +1103,7 @@ name|useKeystoneAuthentication
 init|=
 literal|false
 decl_stmt|;
-comment|/**    * The container this client is working with    */
+comment|/**    * The container this client is working with.    */
 DECL|field|container
 specifier|private
 specifier|final
@@ -1050,13 +1116,13 @@ specifier|final
 name|String
 name|serviceDescription
 decl_stmt|;
-comment|/**    * Access token (Secret)    */
+comment|/**    * Access token (Secret).    */
 DECL|field|token
 specifier|private
 name|AccessToken
 name|token
 decl_stmt|;
-comment|/**    * Endpoint for swift operations, obtained after authentication    */
+comment|/**    * Endpoint for swift operations, obtained after authentication.    */
 DECL|field|endpointURI
 specifier|private
 name|URI
@@ -1068,7 +1134,7 @@ specifier|private
 name|URI
 name|objectLocationURI
 decl_stmt|;
-comment|/**    * The name of the service provider    */
+comment|/**    * The name of the service provider.    */
 DECL|field|serviceProvider
 specifier|private
 specifier|final
@@ -1082,41 +1148,41 @@ specifier|final
 name|boolean
 name|usePublicURL
 decl_stmt|;
-comment|/**    * Number of times to retry a connection    */
+comment|/**    * Number of times to retry a connection.    */
 DECL|field|retryCount
 specifier|private
 specifier|final
 name|int
 name|retryCount
 decl_stmt|;
-comment|/**    * How long (in milliseconds) should a connection be attempted    */
+comment|/**    * How long (in milliseconds) should a connection be attempted.    */
 DECL|field|connectTimeout
 specifier|private
 specifier|final
 name|int
 name|connectTimeout
 decl_stmt|;
-comment|/**    * How long (in milliseconds) should a connection be attempted    */
+comment|/**    * How long (in milliseconds) should a connection be attempted.    */
 DECL|field|socketTimeout
 specifier|private
 specifier|final
 name|int
 name|socketTimeout
 decl_stmt|;
-comment|/**    * How long (in milliseconds) between bulk operations    */
+comment|/**    * How long (in milliseconds) between bulk operations.    */
 DECL|field|throttleDelay
 specifier|private
 specifier|final
 name|int
 name|throttleDelay
 decl_stmt|;
-comment|/**   * the name of a proxy host (can be null, in which case there is no proxy)    */
+comment|/**   * the name of a proxy host (can be null, in which case there is no proxy).    */
 DECL|field|proxyHost
 specifier|private
 name|String
 name|proxyHost
 decl_stmt|;
-comment|/**    * The port of a proxy. This is ignored if {@link #proxyHost} is null    */
+comment|/**    * The port of a proxy. This is ignored if {@link #proxyHost} is null.    */
 DECL|field|proxyPort
 specifier|private
 name|int
@@ -1170,7 +1236,7 @@ return|return
 name|endpointURI
 return|;
 block|}
-comment|/**    * token for Swift communication    */
+comment|/**    * token for Swift communication.    */
 DECL|method|getToken ()
 specifier|private
 specifier|synchronized
@@ -1244,26 +1310,26 @@ name|authToken
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Base class for all Swift REST operations    *    * @param<M> method    * @param<R> result    */
-DECL|class|HttpMethodProcessor
+comment|/**    * Base class for all Swift REST operations.    *    * @param<M> request    * @param<R> result    */
+DECL|class|HttpRequestProcessor
 specifier|private
 specifier|static
 specifier|abstract
 class|class
-name|HttpMethodProcessor
+name|HttpRequestProcessor
 parameter_list|<
 name|M
 extends|extends
-name|HttpMethod
+name|HttpUriRequest
 parameter_list|,
 name|R
 parameter_list|>
 block|{
-DECL|method|createMethod (String uri)
+DECL|method|createRequest (String uri)
 specifier|public
 specifier|final
 name|M
-name|createMethod
+name|createRequest
 parameter_list|(
 name|String
 name|uri
@@ -1273,59 +1339,64 @@ name|IOException
 block|{
 specifier|final
 name|M
-name|method
+name|req
 init|=
-name|doCreateMethod
+name|doCreateRequest
 argument_list|(
 name|uri
 argument_list|)
 decl_stmt|;
 name|setup
 argument_list|(
-name|method
+name|req
 argument_list|)
 expr_stmt|;
 return|return
-name|method
+name|req
 return|;
 block|}
-comment|/**      * Override it to return some result after method is executed.      */
-DECL|method|extractResult (M method)
+comment|/**      * Override it to return some result after request is executed.      */
+DECL|method|extractResult (M req, HttpResponse resp)
 specifier|public
 specifier|abstract
 name|R
 name|extractResult
 parameter_list|(
 name|M
-name|method
+name|req
+parameter_list|,
+name|HttpResponse
+name|resp
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**      * Factory method to create a REST method against the given URI      *      * @param uri target      * @return method to invoke      */
-DECL|method|doCreateMethod (String uri)
+comment|/**      * Factory method to create a REST method against the given URI.      *      * @param uri target      * @return method to invoke      */
+DECL|method|doCreateRequest (String uri)
 specifier|protected
 specifier|abstract
 name|M
-name|doCreateMethod
+name|doCreateRequest
 parameter_list|(
 name|String
 name|uri
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
-comment|/**      * Override port to set up the method before it is executed.      */
-DECL|method|setup (M method)
+comment|/**      * Override port to set up the request before it is executed.      */
+DECL|method|setup (M req)
 specifier|protected
 name|void
 name|setup
 parameter_list|(
 name|M
-name|method
+name|req
 parameter_list|)
 throws|throws
 name|IOException
 block|{     }
-comment|/**      * Override point: what are the status codes that this operation supports      *      * @return an array with the permitted status code(s)      */
+comment|/**      * Override point: what are the status codes that this operation supports?      *      * @return an array with the permitted status code(s)      */
 DECL|method|getAllowedStatusCodes ()
 specifier|protected
 name|int
@@ -1351,30 +1422,30 @@ block|,       }
 return|;
 block|}
 block|}
-DECL|class|GetMethodProcessor
+DECL|class|GetRequestProcessor
 specifier|private
 specifier|static
 specifier|abstract
 class|class
-name|GetMethodProcessor
+name|GetRequestProcessor
 parameter_list|<
 name|R
 parameter_list|>
 extends|extends
-name|HttpMethodProcessor
+name|HttpRequestProcessor
 argument_list|<
-name|GetMethod
+name|HttpGet
 argument_list|,
 name|R
 argument_list|>
 block|{
 annotation|@
 name|Override
-DECL|method|doCreateMethod (String uri)
+DECL|method|doCreateRequest (String uri)
 specifier|protected
 specifier|final
-name|GetMethod
-name|doCreateMethod
+name|HttpGet
+name|doCreateRequest
 parameter_list|(
 name|String
 name|uri
@@ -1382,7 +1453,45 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|GetMethod
+name|HttpGet
+argument_list|(
+name|uri
+argument_list|)
+return|;
+block|}
+block|}
+DECL|class|PostRequestProcessor
+specifier|private
+specifier|static
+specifier|abstract
+class|class
+name|PostRequestProcessor
+parameter_list|<
+name|R
+parameter_list|>
+extends|extends
+name|HttpRequestProcessor
+argument_list|<
+name|HttpPost
+argument_list|,
+name|R
+argument_list|>
+block|{
+annotation|@
+name|Override
+DECL|method|doCreateRequest (String uri)
+specifier|protected
+specifier|final
+name|HttpPost
+name|doCreateRequest
+parameter_list|(
+name|String
+name|uri
+parameter_list|)
+block|{
+return|return
+operator|new
+name|HttpPost
 argument_list|(
 name|uri
 argument_list|)
@@ -1390,17 +1499,18 @@ return|;
 block|}
 block|}
 comment|/**    * There's a special type for auth messages, so that low-level    * message handlers can react to auth failures differently from everything    * else.    */
-DECL|class|AuthPostMethod
+DECL|class|AuthPostRequest
 specifier|private
 specifier|static
+specifier|final
 class|class
-name|AuthPostMethod
+name|AuthPostRequest
 extends|extends
-name|PostMethod
+name|HttpPost
 block|{
-DECL|method|AuthPostMethod (String uri)
+DECL|method|AuthPostRequest (String uri)
 specifier|private
-name|AuthPostMethod
+name|AuthPostRequest
 parameter_list|(
 name|String
 name|uri
@@ -1413,31 +1523,31 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Generate an auth message    * @param<R> response    */
-DECL|class|AuthMethodProcessor
+comment|/**    * Generate an auth message.    * @param<R> response    */
+DECL|class|AuthRequestProcessor
 specifier|private
 specifier|static
 specifier|abstract
 class|class
-name|AuthMethodProcessor
+name|AuthRequestProcessor
 parameter_list|<
 name|R
 parameter_list|>
 extends|extends
-name|HttpMethodProcessor
+name|HttpRequestProcessor
 argument_list|<
-name|AuthPostMethod
+name|AuthPostRequest
 argument_list|,
 name|R
 argument_list|>
 block|{
 annotation|@
 name|Override
-DECL|method|doCreateMethod (String uri)
+DECL|method|doCreateRequest (String uri)
 specifier|protected
 specifier|final
-name|AuthPostMethod
-name|doCreateMethod
+name|AuthPostRequest
+name|doCreateRequest
 parameter_list|(
 name|String
 name|uri
@@ -1445,37 +1555,37 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|AuthPostMethod
+name|AuthPostRequest
 argument_list|(
 name|uri
 argument_list|)
 return|;
 block|}
 block|}
-DECL|class|PutMethodProcessor
+DECL|class|PutRequestProcessor
 specifier|private
 specifier|static
 specifier|abstract
 class|class
-name|PutMethodProcessor
+name|PutRequestProcessor
 parameter_list|<
 name|R
 parameter_list|>
 extends|extends
-name|HttpMethodProcessor
+name|HttpRequestProcessor
 argument_list|<
-name|PutMethod
+name|HttpPut
 argument_list|,
 name|R
 argument_list|>
 block|{
 annotation|@
 name|Override
-DECL|method|doCreateMethod (String uri)
+DECL|method|doCreateRequest (String uri)
 specifier|protected
 specifier|final
-name|PutMethod
-name|doCreateMethod
+name|HttpPut
+name|doCreateRequest
 parameter_list|(
 name|String
 name|uri
@@ -1483,13 +1593,13 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|PutMethod
+name|HttpPut
 argument_list|(
 name|uri
 argument_list|)
 return|;
 block|}
-comment|/**      * Override point: what are the status codes that this operation supports      *      * @return the list of status codes to accept      */
+comment|/**      * Override point: what are the status codes that this operation supports?      *      * @return the list of status codes to accept      */
 annotation|@
 name|Override
 DECL|method|getAllowedStatusCodes ()
@@ -1515,45 +1625,80 @@ block|,       }
 return|;
 block|}
 block|}
-comment|/**    * Create operation    *    * @param<R>    */
-DECL|class|CopyMethodProcessor
+comment|/**    * Create operation.    *    * @param<R> result type    */
+DECL|class|CopyRequestProcessor
 specifier|private
 specifier|static
 specifier|abstract
 class|class
-name|CopyMethodProcessor
+name|CopyRequestProcessor
 parameter_list|<
 name|R
 parameter_list|>
 extends|extends
-name|HttpMethodProcessor
+name|HttpRequestProcessor
 argument_list|<
-name|CopyMethod
+name|CopyRequest
 argument_list|,
 name|R
 argument_list|>
 block|{
 annotation|@
 name|Override
-DECL|method|doCreateMethod (String uri)
+DECL|method|doCreateRequest (String uri)
 specifier|protected
 specifier|final
-name|CopyMethod
-name|doCreateMethod
+name|CopyRequest
+name|doCreateRequest
 parameter_list|(
 name|String
 name|uri
 parameter_list|)
+throws|throws
+name|SwiftException
 block|{
-return|return
+name|CopyRequest
+name|copy
+init|=
 operator|new
-name|CopyMethod
+name|CopyRequest
+argument_list|()
+decl_stmt|;
+try|try
+block|{
+name|copy
+operator|.
+name|setURI
+argument_list|(
+operator|new
+name|URI
 argument_list|(
 name|uri
 argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|URISyntaxException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|SwiftException
+argument_list|(
+literal|"Failed to create URI from: "
+operator|+
+name|uri
+argument_list|)
+throw|;
+block|}
+return|return
+name|copy
 return|;
 block|}
-comment|/**      * The only allowed status code is 201:created      * @return an array with the permitted status code(s)      */
+comment|/**      * The only allowed status code is 201:created.      * @return an array with the permitted status code(s)      */
 annotation|@
 name|Override
 DECL|method|getAllowedStatusCodes ()
@@ -1573,31 +1718,31 @@ block|}
 return|;
 block|}
 block|}
-comment|/**    * Delete operation    *    * @param<R>    */
-DECL|class|DeleteMethodProcessor
+comment|/**    * Delete operation.    *    * @param<R>    */
+DECL|class|DeleteRequestProcessor
 specifier|private
 specifier|static
 specifier|abstract
 class|class
-name|DeleteMethodProcessor
+name|DeleteRequestProcessor
 parameter_list|<
 name|R
 parameter_list|>
 extends|extends
-name|HttpMethodProcessor
+name|HttpRequestProcessor
 argument_list|<
-name|DeleteMethod
+name|HttpDelete
 argument_list|,
 name|R
 argument_list|>
 block|{
 annotation|@
 name|Override
-DECL|method|doCreateMethod (String uri)
+DECL|method|doCreateRequest (String uri)
 specifier|protected
 specifier|final
-name|DeleteMethod
-name|doCreateMethod
+name|HttpDelete
+name|doCreateRequest
 parameter_list|(
 name|String
 name|uri
@@ -1605,7 +1750,7 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|DeleteMethod
+name|HttpDelete
 argument_list|(
 name|uri
 argument_list|)
@@ -1636,30 +1781,30 @@ block|}
 return|;
 block|}
 block|}
-DECL|class|HeadMethodProcessor
+DECL|class|HeadRequestProcessor
 specifier|private
 specifier|static
 specifier|abstract
 class|class
-name|HeadMethodProcessor
+name|HeadRequestProcessor
 parameter_list|<
 name|R
 parameter_list|>
 extends|extends
-name|HttpMethodProcessor
+name|HttpRequestProcessor
 argument_list|<
-name|HeadMethod
+name|HttpHead
 argument_list|,
 name|R
 argument_list|>
 block|{
 annotation|@
 name|Override
-DECL|method|doCreateMethod (String uri)
+DECL|method|doCreateRequest (String uri)
 specifier|protected
 specifier|final
-name|HeadMethod
-name|doCreateMethod
+name|HttpHead
+name|doCreateRequest
 parameter_list|(
 name|String
 name|uri
@@ -1667,7 +1812,7 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|HeadMethod
+name|HttpHead
 argument_list|(
 name|uri
 argument_list|)
@@ -2203,7 +2348,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Get a mandatory configuration option    *    * @param props property set    * @param key   key    * @return value of the configuration    * @throws SwiftConfigurationException if there was no match for the key    */
+comment|/**    * Get a mandatory configuration option.    *    * @param props property set    * @param key   key    * @return value of the configuration    * @throws SwiftConfigurationException if there was no match for the key    */
 DECL|method|getOption (Properties props, String key)
 specifier|private
 specifier|static
@@ -2373,7 +2518,7 @@ argument_list|(
 name|path
 argument_list|,
 operator|new
-name|Header
+name|BasicHeader
 argument_list|(
 name|HEADER_RANGE
 argument_list|,
@@ -2386,7 +2531,7 @@ name|NEWEST
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns object length    *    * @param uri file URI    * @return object length    * @throws SwiftException on swift-related issues    * @throws IOException on network/IO problems    */
+comment|/**    * Returns object length.    *    * @param uri file URI    * @return object length    * @throws SwiftException on swift-related issues    * @throws IOException on network/IO problems    */
 DECL|method|getContentLength (URI uri)
 specifier|public
 name|long
@@ -2411,7 +2556,7 @@ argument_list|,
 name|uri
 argument_list|,
 operator|new
-name|HeadMethodProcessor
+name|HeadRequestProcessor
 argument_list|<
 name|Long
 argument_list|>
@@ -2423,17 +2568,22 @@ specifier|public
 name|Long
 name|extractResult
 parameter_list|(
-name|HeadMethod
-name|method
+name|HttpHead
+name|req
+parameter_list|,
+name|HttpResponse
+name|resp
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 return|return
-name|method
+name|HttpResponseUtils
 operator|.
-name|getResponseContentLength
-argument_list|()
+name|getContentLength
+argument_list|(
+name|resp
+argument_list|)
 return|;
 block|}
 annotation|@
@@ -2442,8 +2592,8 @@ specifier|protected
 name|void
 name|setup
 parameter_list|(
-name|HeadMethod
-name|method
+name|HttpHead
+name|req
 parameter_list|)
 throws|throws
 name|IOException
@@ -2452,12 +2602,12 @@ name|super
 operator|.
 name|setup
 argument_list|(
-name|method
+name|req
 argument_list|)
 expr_stmt|;
-name|method
+name|req
 operator|.
-name|addRequestHeader
+name|addHeader
 argument_list|(
 name|NEWEST
 argument_list|)
@@ -2467,7 +2617,7 @@ block|}
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the length of the remote object    * @param path object to probe    * @return the content length    * @throws IOException on any failure    */
+comment|/**    * Get the length of the remote object.    * @param path object to probe    * @return the content length    * @throws IOException on any failure    */
 DECL|method|getContentLength (SwiftObjectPath path)
 specifier|public
 name|long
@@ -2523,7 +2673,7 @@ name|requestHeaders
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns object location as byte[]    *    * @param path path to file    * @param requestHeaders http headers    * @return byte[] file data or null if the object was not found    * @throws IOException on IO Faults    */
+comment|/**    * Returns object location as byte[].    *    * @param path path to file    * @param requestHeaders http headers    * @return byte[] file data or null if the object was not found    * @throws IOException on IO Faults    */
 DECL|method|getObjectLocation (SwiftObjectPath path, final Header... requestHeaders)
 specifier|public
 name|byte
@@ -2571,7 +2721,7 @@ name|path
 argument_list|)
 argument_list|,
 operator|new
-name|GetMethodProcessor
+name|GetRequestProcessor
 argument_list|<
 name|byte
 index|[]
@@ -2606,39 +2756,47 @@ name|byte
 index|[]
 name|extractResult
 parameter_list|(
-name|GetMethod
-name|method
+name|HttpGet
+name|req
+parameter_list|,
+name|HttpResponse
+name|resp
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 comment|//TODO: remove SC_NO_CONTENT if it depends on Swift versions
-if|if
-condition|(
-name|method
+name|int
+name|statusCode
+init|=
+name|resp
+operator|.
+name|getStatusLine
+argument_list|()
 operator|.
 name|getStatusCode
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|statusCode
 operator|==
 name|SC_NOT_FOUND
 operator|||
-name|method
-operator|.
-name|getStatusCode
-argument_list|()
+name|statusCode
 operator|==
 name|SC_FORBIDDEN
 operator|||
-name|method
-operator|.
-name|getStatusCode
-argument_list|()
+name|statusCode
 operator|==
 name|SC_NO_CONTENT
 operator|||
-name|method
+name|resp
 operator|.
-name|getResponseBodyAsStream
+name|getEntity
+argument_list|()
+operator|.
+name|getContent
 argument_list|()
 operator|==
 literal|null
@@ -2652,9 +2810,12 @@ specifier|final
 name|InputStream
 name|responseBodyAsStream
 init|=
-name|method
+name|resp
 operator|.
-name|getResponseBodyAsStream
+name|getEntity
+argument_list|()
+operator|.
+name|getContent
 argument_list|()
 decl_stmt|;
 specifier|final
@@ -2689,15 +2850,15 @@ specifier|protected
 name|void
 name|setup
 parameter_list|(
-name|GetMethod
-name|method
+name|HttpGet
+name|req
 parameter_list|)
 throws|throws
 name|SwiftInternalStateException
 block|{
 name|setHeaders
 argument_list|(
-name|method
+name|req
 argument_list|,
 name|requestHeaders
 argument_list|)
@@ -2733,7 +2894,7 @@ literal|null
 return|;
 block|}
 block|}
-comment|/**    * Create the URI needed to query the location of an object    * @param path object path to retrieve information about    * @return the URI for the location operation    * @throws SwiftException if the URI could not be constructed    */
+comment|/**    * Create the URI needed to query the location of an object.    * @param path object path to retrieve information about    * @return the URI for the location operation    * @throws SwiftException if the URI could not be constructed    */
 DECL|method|pathToObjectLocation (SwiftObjectPath path)
 specifier|private
 name|URI
@@ -2831,7 +2992,7 @@ return|return
 name|uri
 return|;
 block|}
-comment|/**    * Find objects under a prefix    *    * @param path path prefix    * @param requestHeaders optional request headers    * @return byte[] file data or null if the object was not found    * @throws IOException on IO Faults    * @throws FileNotFoundException if nothing is at the end of the URI -that is,    * the directory is empty    */
+comment|/**    * Find objects under a prefix.    *    * @param path path prefix    * @param requestHeaders optional request headers    * @return byte[] file data or null if the object was not found    * @throws IOException on IO Faults    * @throws FileNotFoundException if nothing is at the end of the URI -that is,    * the directory is empty    */
 DECL|method|findObjectsByPrefix (SwiftObjectPath path, final Header... requestHeaders)
 specifier|public
 name|byte
@@ -2965,7 +3126,7 @@ argument_list|,
 name|uri
 argument_list|,
 operator|new
-name|GetMethodProcessor
+name|GetRequestProcessor
 argument_list|<
 name|byte
 index|[]
@@ -2979,15 +3140,21 @@ name|byte
 index|[]
 name|extractResult
 parameter_list|(
-name|GetMethod
-name|method
+name|HttpGet
+name|req
+parameter_list|,
+name|HttpResponse
+name|resp
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 if|if
 condition|(
-name|method
+name|resp
+operator|.
+name|getStatusLine
+argument_list|()
 operator|.
 name|getStatusCode
 argument_list|()
@@ -3002,7 +3169,7 @@ name|FileNotFoundException
 argument_list|(
 literal|"Not found "
 operator|+
-name|method
+name|req
 operator|.
 name|getURI
 argument_list|()
@@ -3010,10 +3177,12 @@ argument_list|)
 throw|;
 block|}
 return|return
-name|method
+name|HttpResponseUtils
 operator|.
 name|getResponseBody
-argument_list|()
+argument_list|(
+name|resp
+argument_list|)
 return|;
 block|}
 annotation|@
@@ -3041,15 +3210,15 @@ specifier|protected
 name|void
 name|setup
 parameter_list|(
-name|GetMethod
-name|method
+name|HttpGet
+name|req
 parameter_list|)
 throws|throws
 name|SwiftInternalStateException
 block|{
 name|setHeaders
 argument_list|(
-name|method
+name|req
 argument_list|,
 name|requestHeaders
 argument_list|)
@@ -3059,7 +3228,7 @@ block|}
 argument_list|)
 return|;
 block|}
-comment|/**    * Find objects in a directory    *    * @param path path prefix    * @param requestHeaders optional request headers    * @return byte[] file data or null if the object was not found    * @throws IOException on IO Faults    * @throws FileNotFoundException if nothing is at the end of the URI -that is,    * the directory is empty    */
+comment|/**    * Find objects in a directory.    *    * @param path path prefix    * @param requestHeaders optional request headers    * @return byte[] file data or null if the object was not found    * @throws IOException on IO Faults    * @throws FileNotFoundException if nothing is at the end of the URI -that is,    * the directory is empty    */
 DECL|method|listDeepObjectsInDirectory (SwiftObjectPath path, boolean listDeep, final Header... requestHeaders)
 specifier|public
 name|byte
@@ -3232,7 +3401,7 @@ name|requestHeaders
 argument_list|)
 return|;
 block|}
-comment|/**    * Find objects in a location    * @param location URI    * @param requestHeaders optional request headers    * @return the body of te response    * @throws IOException IO problems    */
+comment|/**    * Find objects in a location.    * @param location URI    * @param requestHeaders optional request headers    * @return the body of te response    * @throws IOException IO problems    */
 DECL|method|findObjects (String location, final Header[] requestHeaders)
 specifier|private
 name|byte
@@ -3295,7 +3464,7 @@ argument_list|,
 name|uri
 argument_list|,
 operator|new
-name|GetMethodProcessor
+name|GetRequestProcessor
 argument_list|<
 name|byte
 index|[]
@@ -3309,15 +3478,21 @@ name|byte
 index|[]
 name|extractResult
 parameter_list|(
-name|GetMethod
-name|method
+name|HttpGet
+name|req
+parameter_list|,
+name|HttpResponse
+name|resp
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 if|if
 condition|(
-name|method
+name|resp
+operator|.
+name|getStatusLine
+argument_list|()
 operator|.
 name|getStatusCode
 argument_list|()
@@ -3332,7 +3507,7 @@ name|FileNotFoundException
 argument_list|(
 literal|"Not found "
 operator|+
-name|method
+name|req
 operator|.
 name|getURI
 argument_list|()
@@ -3340,10 +3515,12 @@ argument_list|)
 throw|;
 block|}
 return|return
-name|method
+name|HttpResponseUtils
 operator|.
 name|getResponseBody
-argument_list|()
+argument_list|(
+name|resp
+argument_list|)
 return|;
 block|}
 annotation|@
@@ -3371,15 +3548,15 @@ specifier|protected
 name|void
 name|setup
 parameter_list|(
-name|GetMethod
-name|method
+name|HttpGet
+name|req
 parameter_list|)
 throws|throws
 name|SwiftInternalStateException
 block|{
 name|setHeaders
 argument_list|(
-name|method
+name|req
 argument_list|,
 name|requestHeaders
 argument_list|)
@@ -3426,7 +3603,7 @@ name|src
 argument_list|)
 argument_list|,
 operator|new
-name|CopyMethodProcessor
+name|CopyRequestProcessor
 argument_list|<
 name|Boolean
 argument_list|>
@@ -3438,14 +3615,20 @@ specifier|public
 name|Boolean
 name|extractResult
 parameter_list|(
-name|CopyMethod
-name|method
+name|CopyRequest
+name|req
+parameter_list|,
+name|HttpResponse
+name|resp
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 return|return
-name|method
+name|resp
+operator|.
+name|getStatusLine
+argument_list|()
 operator|.
 name|getStatusCode
 argument_list|()
@@ -3459,22 +3642,22 @@ specifier|protected
 name|void
 name|setup
 parameter_list|(
-name|CopyMethod
-name|method
+name|CopyRequest
+name|req
 parameter_list|)
 throws|throws
 name|SwiftInternalStateException
 block|{
 name|setHeaders
 argument_list|(
-name|method
+name|req
 argument_list|,
 name|headers
 argument_list|)
 expr_stmt|;
-name|method
+name|req
 operator|.
-name|addRequestHeader
+name|addHeader
 argument_list|(
 name|HEADER_DESTINATION
 argument_list|,
@@ -3531,7 +3714,7 @@ name|path
 argument_list|)
 argument_list|,
 operator|new
-name|PutMethodProcessor
+name|PutRequestProcessor
 argument_list|<
 name|byte
 index|[]
@@ -3545,17 +3728,22 @@ name|byte
 index|[]
 name|extractResult
 parameter_list|(
-name|PutMethod
-name|method
+name|HttpPut
+name|req
+parameter_list|,
+name|HttpResponse
+name|resp
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 return|return
-name|method
+name|HttpResponseUtils
 operator|.
 name|getResponseBody
-argument_list|()
+argument_list|(
+name|resp
+argument_list|)
 return|;
 block|}
 annotation|@
@@ -3564,18 +3752,18 @@ specifier|protected
 name|void
 name|setup
 parameter_list|(
-name|PutMethod
-name|method
+name|HttpPut
+name|req
 parameter_list|)
 throws|throws
 name|SwiftInternalStateException
 block|{
-name|method
+name|req
 operator|.
-name|setRequestEntity
+name|setEntity
 argument_list|(
 operator|new
-name|InputStreamRequestEntity
+name|InputStreamEntity
 argument_list|(
 name|data
 argument_list|,
@@ -3585,7 +3773,7 @@ argument_list|)
 expr_stmt|;
 name|setHeaders
 argument_list|(
-name|method
+name|req
 argument_list|,
 name|requestHeaders
 argument_list|)
@@ -3637,7 +3825,7 @@ name|path
 argument_list|)
 argument_list|,
 operator|new
-name|DeleteMethodProcessor
+name|DeleteRequestProcessor
 argument_list|<
 name|Boolean
 argument_list|>
@@ -3649,14 +3837,20 @@ specifier|public
 name|Boolean
 name|extractResult
 parameter_list|(
-name|DeleteMethod
-name|method
+name|HttpDelete
+name|req
+parameter_list|,
+name|HttpResponse
+name|resp
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 return|return
-name|method
+name|resp
+operator|.
+name|getStatusLine
+argument_list|()
 operator|.
 name|getStatusCode
 argument_list|()
@@ -3670,15 +3864,15 @@ specifier|protected
 name|void
 name|setup
 parameter_list|(
-name|DeleteMethod
-name|method
+name|HttpDelete
+name|req
 parameter_list|)
 throws|throws
 name|SwiftInternalStateException
 block|{
 name|setHeaders
 argument_list|(
-name|method
+name|req
 argument_list|,
 name|requestHeaders
 argument_list|)
@@ -3688,7 +3882,7 @@ block|}
 argument_list|)
 return|;
 block|}
-comment|/**    * Issue a head request    * @param reason reason -used in logs    * @param path path to query    * @param requestHeaders request header    * @return the response headers. This may be an empty list    * @throws IOException IO problems    * @throws FileNotFoundException if there is nothing at the end    */
+comment|/**    * Issue a head request.    * @param reason reason -used in logs    * @param path path to query    * @param requestHeaders request header    * @return the response headers. This may be an empty list    * @throws IOException IO problems    * @throws FileNotFoundException if there is nothing at the end    */
 DECL|method|headRequest (String reason, SwiftObjectPath path, final Header... requestHeaders)
 specifier|public
 name|Header
@@ -3727,7 +3921,7 @@ name|path
 argument_list|)
 argument_list|,
 operator|new
-name|HeadMethodProcessor
+name|HeadRequestProcessor
 argument_list|<
 name|Header
 index|[]
@@ -3741,15 +3935,21 @@ name|Header
 index|[]
 name|extractResult
 parameter_list|(
-name|HeadMethod
-name|method
+name|HttpHead
+name|req
+parameter_list|,
+name|HttpResponse
+name|resp
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 if|if
 condition|(
-name|method
+name|resp
+operator|.
+name|getStatusLine
+argument_list|()
 operator|.
 name|getStatusCode
 argument_list|()
@@ -3763,7 +3963,7 @@ name|FileNotFoundException
 argument_list|(
 literal|"Not Found "
 operator|+
-name|method
+name|req
 operator|.
 name|getURI
 argument_list|()
@@ -3771,9 +3971,9 @@ argument_list|)
 throw|;
 block|}
 return|return
-name|method
+name|resp
 operator|.
-name|getResponseHeaders
+name|getAllHeaders
 argument_list|()
 return|;
 block|}
@@ -3783,15 +3983,15 @@ specifier|protected
 name|void
 name|setup
 parameter_list|(
-name|HeadMethod
-name|method
+name|HttpHead
+name|req
 parameter_list|)
 throws|throws
 name|SwiftInternalStateException
 block|{
 name|setHeaders
 argument_list|(
-name|method
+name|req
 argument_list|,
 name|requestHeaders
 argument_list|)
@@ -3801,7 +4001,7 @@ block|}
 argument_list|)
 return|;
 block|}
-comment|/**    * Issue a put request    * @param path path    * @param requestHeaders optional headers    * @return the HTTP response    * @throws IOException any problem    */
+comment|/**    * Issue a put request.    * @param path path    * @param requestHeaders optional headers    * @return the HTTP response    * @throws IOException any problem    */
 DECL|method|putRequest (SwiftObjectPath path, final Header... requestHeaders)
 specifier|public
 name|int
@@ -3832,7 +4032,7 @@ name|path
 argument_list|)
 argument_list|,
 operator|new
-name|PutMethodProcessor
+name|PutRequestProcessor
 argument_list|<
 name|Integer
 argument_list|>
@@ -3844,14 +4044,20 @@ specifier|public
 name|Integer
 name|extractResult
 parameter_list|(
-name|PutMethod
-name|method
+name|HttpPut
+name|req
+parameter_list|,
+name|HttpResponse
+name|resp
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 return|return
-name|method
+name|resp
+operator|.
+name|getStatusLine
+argument_list|()
 operator|.
 name|getStatusCode
 argument_list|()
@@ -3863,15 +4069,15 @@ specifier|protected
 name|void
 name|setup
 parameter_list|(
-name|PutMethod
-name|method
+name|HttpPut
+name|req
 parameter_list|)
 throws|throws
 name|SwiftInternalStateException
 block|{
 name|setHeaders
 argument_list|(
-name|method
+name|req
 argument_list|,
 name|requestHeaders
 argument_list|)
@@ -3881,7 +4087,7 @@ block|}
 argument_list|)
 return|;
 block|}
-comment|/**    * Authenticate to Openstack Keystone    * As well as returning the access token, the member fields {@link #token},    * {@link #endpointURI} and {@link #objectLocationURI} are set up for re-use.    *<p>    * This method is re-entrant -if more than one thread attempts to authenticate    * neither will block -but the field values with have those of the last caller.    *    * @return authenticated access token    */
+comment|/**    * Authenticate to Openstack Keystone.    * As well as returning the access token, the member fields {@link #token},    * {@link #endpointURI} and {@link #objectLocationURI} are set up for re-use.    *<p>    * This method is re-entrant -if more than one thread attempts to authenticate    * neither will block -but the field values with have those of the last caller.    *    * @return authenticated access token    */
 DECL|method|authenticate ()
 specifier|public
 name|AccessToken
@@ -3935,10 +4141,11 @@ return|;
 block|}
 DECL|class|AuthenticationPost
 specifier|private
+specifier|final
 class|class
 name|AuthenticationPost
 extends|extends
-name|AuthMethodProcessor
+name|AuthRequestProcessor
 argument_list|<
 name|AccessToken
 argument_list|>
@@ -3965,20 +4172,20 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|setup (AuthPostMethod method)
+DECL|method|setup (AuthPostRequest req)
 specifier|protected
 name|void
 name|setup
 parameter_list|(
-name|AuthPostMethod
-name|method
+name|AuthPostRequest
+name|req
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|method
+name|req
 operator|.
-name|setRequestEntity
+name|setEntity
 argument_list|(
 name|getAuthenticationRequst
 argument_list|(
@@ -4027,13 +4234,16 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|extractResult (AuthPostMethod method)
+DECL|method|extractResult (AuthPostRequest req, HttpResponse resp)
 specifier|public
 name|AccessToken
 name|extractResult
 parameter_list|(
-name|AuthPostMethod
-name|method
+name|AuthPostRequest
+name|req
+parameter_list|,
+name|HttpResponse
+name|resp
 parameter_list|)
 throws|throws
 name|IOException
@@ -4041,7 +4251,10 @@ block|{
 comment|//initial check for failure codes leading to authentication failures
 if|if
 condition|(
-name|method
+name|resp
+operator|.
+name|getStatusLine
+argument_list|()
 operator|.
 name|getStatusCode
 argument_list|()
@@ -4062,7 +4275,7 @@ literal|"POST"
 argument_list|,
 name|authUri
 argument_list|,
-name|method
+name|resp
 argument_list|)
 throw|;
 block|}
@@ -4074,10 +4287,12 @@ name|JSONUtil
 operator|.
 name|toObject
 argument_list|(
-name|method
+name|HttpResponseUtils
 operator|.
 name|getResponseBodyAsString
-argument_list|()
+argument_list|(
+name|resp
+argument_list|)
 argument_list|,
 name|AuthenticationWrapper
 operator|.
@@ -4517,9 +4732,9 @@ name|accessToken
 return|;
 block|}
 block|}
-DECL|method|getAuthenticationRequst (AuthenticationRequest authenticationRequest)
+DECL|method|getAuthenticationRequst ( AuthenticationRequest authenticationRequest)
 specifier|private
-name|StringRequestEntity
+name|StringEntity
 name|getAuthenticationRequst
 parameter_list|(
 name|AuthenticationRequest
@@ -4562,9 +4777,19 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|toJsonEntity
+operator|new
+name|StringEntity
 argument_list|(
 name|data
+argument_list|,
+name|ContentType
+operator|.
+name|create
+argument_list|(
+literal|"application/json"
+argument_list|,
+literal|"UTF-8"
+argument_list|)
 argument_list|)
 return|;
 block|}
@@ -4584,7 +4809,7 @@ name|container
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create a container -if it already exists, do nothing    *    * @param containerName the container name    * @throws IOException IO problems    * @throws SwiftBadRequestException invalid container name    * @throws SwiftInvalidResponseException error from the server    */
+comment|/**    * Create a container -if it already exists, do nothing.    *    * @param containerName the container name    * @throws IOException IO problems    * @throws SwiftBadRequestException invalid container name    * @throws SwiftInvalidResponseException error from the server    */
 DECL|method|createContainer (String containerName)
 specifier|public
 name|void
@@ -4724,7 +4949,7 @@ throw|;
 block|}
 block|}
 block|}
-comment|/**    * Trigger an initial auth operation if some of the needed    * fields are missing    *    * @throws IOException on problems    */
+comment|/**    * Trigger an initial auth operation if some of the needed    * fields are missing.    *    * @throws IOException on problems    */
 DECL|method|authIfNeeded ()
 specifier|private
 name|void
@@ -4781,12 +5006,12 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Performs the HTTP request, validates the response code and returns    * the received data. HTTP Status codes are converted into exceptions.    *    * @param uri URI to source    * @param processor HttpMethodProcessor    * @param<M> method    * @param<R> result type    * @return result of HTTP request    * @throws IOException IO problems    * @throws SwiftBadRequestException the status code indicated "Bad request"    * @throws SwiftInvalidResponseException the status code is out of range    * for the action (excluding 404 responses)    * @throws SwiftInternalStateException the internal state of this client    * is invalid    * @throws FileNotFoundException a 404 response was returned    */
-DECL|method|perform (URI uri, HttpMethodProcessor<M, R> processor)
+DECL|method|perform (URI uri, HttpRequestProcessor<M, R> processor)
 specifier|private
 parameter_list|<
 name|M
 extends|extends
-name|HttpMethod
+name|HttpRequestBase
 parameter_list|,
 name|R
 parameter_list|>
@@ -4796,7 +5021,7 @@ parameter_list|(
 name|URI
 name|uri
 parameter_list|,
-name|HttpMethodProcessor
+name|HttpRequestProcessor
 argument_list|<
 name|M
 argument_list|,
@@ -4827,12 +5052,12 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Performs the HTTP request, validates the response code and returns    * the received data. HTTP Status codes are converted into exceptions.    * @param reason why is this operation taking place. Used for statistics    * @param uri URI to source    * @param processor HttpMethodProcessor    * @param<M> method    * @param<R> result type    * @return result of HTTP request    * @throws IOException IO problems    * @throws SwiftBadRequestException the status code indicated "Bad request"    * @throws SwiftInvalidResponseException the status code is out of range    * for the action (excluding 404 responses)    * @throws SwiftInternalStateException the internal state of this client    * is invalid    * @throws FileNotFoundException a 404 response was returned    */
-DECL|method|perform (String reason, URI uri, HttpMethodProcessor<M, R> processor)
+DECL|method|perform (String reason, URI uri, HttpRequestProcessor<M, R> processor)
 specifier|private
 parameter_list|<
 name|M
 extends|extends
-name|HttpMethod
+name|HttpRequestBase
 parameter_list|,
 name|R
 parameter_list|>
@@ -4845,7 +5070,7 @@ parameter_list|,
 name|URI
 name|uri
 parameter_list|,
-name|HttpMethodProcessor
+name|HttpRequestProcessor
 argument_list|<
 name|M
 argument_list|,
@@ -4876,11 +5101,11 @@ argument_list|)
 expr_stmt|;
 specifier|final
 name|M
-name|method
+name|req
 init|=
 name|processor
 operator|.
-name|createMethod
+name|createRequest
 argument_list|(
 name|uri
 operator|.
@@ -4888,25 +5113,30 @@ name|toString
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|//retry policy
-name|HttpMethodParams
-name|methodParams
-init|=
-name|method
+name|req
 operator|.
-name|getParams
+name|addHeader
+argument_list|(
+name|HEADER_USER_AGENT
+argument_list|,
+name|SWIFT_USER_AGENT
+argument_list|)
+expr_stmt|;
+comment|//retry policy
+name|HttpClientBuilder
+name|clientBuilder
+init|=
+name|HttpClientBuilder
+operator|.
+name|create
 argument_list|()
 decl_stmt|;
-name|methodParams
+name|clientBuilder
 operator|.
-name|setParameter
+name|setRetryHandler
 argument_list|(
-name|HttpMethodParams
-operator|.
-name|RETRY_HANDLER
-argument_list|,
 operator|new
-name|DefaultHttpMethodRetryHandler
+name|DefaultHttpRequestRetryHandler
 argument_list|(
 name|retryCount
 argument_list|,
@@ -4914,31 +5144,68 @@ literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|methodParams
+name|RequestConfig
 operator|.
-name|setIntParameter
+name|Builder
+name|requestConfigBuilder
+init|=
+name|RequestConfig
+operator|.
+name|custom
+argument_list|()
+operator|.
+name|setConnectTimeout
 argument_list|(
-name|HttpConnectionParams
-operator|.
-name|CONNECTION_TIMEOUT
-argument_list|,
 name|connectTimeout
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|proxyHost
+operator|!=
+literal|null
+condition|)
+block|{
+name|requestConfigBuilder
+operator|.
+name|setProxy
+argument_list|(
+operator|new
+name|HttpHost
+argument_list|(
+name|proxyHost
+argument_list|,
+name|proxyPort
+argument_list|)
+argument_list|)
 expr_stmt|;
-name|methodParams
+block|}
+name|clientBuilder
+operator|.
+name|setDefaultRequestConfig
+argument_list|(
+name|requestConfigBuilder
+operator|.
+name|build
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|clientBuilder
+operator|.
+name|setDefaultSocketConfig
+argument_list|(
+name|SocketConfig
+operator|.
+name|custom
+argument_list|()
 operator|.
 name|setSoTimeout
 argument_list|(
 name|socketTimeout
 argument_list|)
-expr_stmt|;
-name|method
 operator|.
-name|addRequestHeader
-argument_list|(
-name|HEADER_USER_AGENT
-argument_list|,
-name|SWIFT_USER_AGENT
+name|build
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|Duration
@@ -4953,8 +5220,21 @@ name|success
 init|=
 literal|false
 decl_stmt|;
+name|HttpResponse
+name|resp
+decl_stmt|;
 try|try
 block|{
+comment|// client should not be closed in this method because
+comment|// the connection can be used later
+name|CloseableHttpClient
+name|client
+init|=
+name|clientBuilder
+operator|.
+name|build
+argument_list|()
+decl_stmt|;
 name|int
 name|statusCode
 init|=
@@ -4962,11 +5242,26 @@ literal|0
 decl_stmt|;
 try|try
 block|{
-name|statusCode
+name|resp
 operator|=
 name|exec
 argument_list|(
-name|method
+name|client
+argument_list|,
+name|req
+argument_list|)
+expr_stmt|;
+name|statusCode
+operator|=
+name|checkNotNull
+argument_list|(
+name|resp
+operator|.
+name|getStatusLine
+argument_list|()
+operator|.
+name|getStatusCode
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -4987,9 +5282,9 @@ operator|.
 name|toString
 argument_list|()
 argument_list|,
-name|method
+name|req
 operator|.
-name|getName
+name|getMethod
 argument_list|()
 argument_list|,
 name|e
@@ -5032,7 +5327,9 @@ name|buildException
 argument_list|(
 name|uri
 argument_list|,
-name|method
+name|req
+argument_list|,
+name|resp
 argument_list|,
 name|statusCode
 argument_list|)
@@ -5048,7 +5345,9 @@ name|processor
 operator|.
 name|extractResult
 argument_list|(
-name|method
+name|req
+argument_list|,
+name|resp
 argument_list|)
 decl_stmt|;
 name|success
@@ -5066,7 +5365,7 @@ name|e
 parameter_list|)
 block|{
 comment|//release the connection -always
-name|method
+name|req
 operator|.
 name|releaseConnection
 argument_list|()
@@ -5086,9 +5385,9 @@ name|durationStats
 operator|.
 name|add
 argument_list|(
-name|method
+name|req
 operator|.
-name|getName
+name|getMethod
 argument_list|()
 operator|+
 literal|" "
@@ -5102,13 +5401,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Build an exception from a failed operation. This can include generating    * specific exceptions (e.g. FileNotFound), as well as the default    * {@link SwiftInvalidResponseException}.    *    * @param uri URI for operation    * @param method operation that failed    * @param statusCode status code    * @param<M> method type    * @return an exception to throw    */
-DECL|method|buildException (URI uri, M method, int statusCode)
+comment|/**    * Build an exception from a failed operation. This can include generating    * specific exceptions (e.g. FileNotFound), as well as the default    * {@link SwiftInvalidResponseException}.    *    * @param uri URI for operation    * @param resp operation that failed    * @param statusCode status code    * @param<M> method type    * @return an exception to throw    */
+DECL|method|buildException ( URI uri, M req, HttpResponse resp, int statusCode)
 specifier|private
 parameter_list|<
 name|M
 extends|extends
-name|HttpMethod
+name|HttpUriRequest
 parameter_list|>
 name|IOException
 name|buildException
@@ -5117,7 +5416,10 @@ name|URI
 name|uri
 parameter_list|,
 name|M
-name|method
+name|req
+parameter_list|,
+name|HttpResponse
+name|resp
 parameter_list|,
 name|int
 name|statusCode
@@ -5138,16 +5440,16 @@ literal|"Method %s on %s failed, status code: %d,"
 operator|+
 literal|" status line: %s"
 argument_list|,
-name|method
+name|req
 operator|.
-name|getName
+name|getMethod
 argument_list|()
 argument_list|,
 name|uri
 argument_list|,
 name|statusCode
 argument_list|,
-name|method
+name|resp
 operator|.
 name|getStatusLine
 argument_list|()
@@ -5185,9 +5487,9 @@ name|FileNotFoundException
 argument_list|(
 literal|"Operation "
 operator|+
-name|method
+name|req
 operator|.
-name|getName
+name|getMethod
 argument_list|()
 operator|+
 literal|" on "
@@ -5209,14 +5511,14 @@ literal|"Bad request against "
 operator|+
 name|uri
 argument_list|,
-name|method
+name|req
 operator|.
-name|getName
+name|getMethod
 argument_list|()
 argument_list|,
 name|uri
 argument_list|,
-name|method
+name|resp
 argument_list|)
 expr_stmt|;
 break|break;
@@ -5230,9 +5532,12 @@ init|=
 operator|new
 name|StringBuilder
 argument_list|(
-name|method
+name|resp
 operator|.
-name|getStatusText
+name|getStatusLine
+argument_list|()
+operator|.
+name|getReasonPhrase
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -5240,9 +5545,9 @@ comment|//get the requested length
 name|Header
 name|requestContentLen
 init|=
-name|method
+name|req
 operator|.
-name|getRequestHeader
+name|getFirstHeader
 argument_list|(
 name|HEADER_CONTENT_LENGTH
 argument_list|)
@@ -5274,9 +5579,9 @@ comment|//and the result
 name|Header
 name|availableContentRange
 init|=
-name|method
+name|resp
 operator|.
-name|getResponseHeader
+name|getFirstHeader
 argument_list|(
 name|HEADER_CONTENT_RANGE
 argument_list|)
@@ -5330,14 +5635,14 @@ operator|+
 name|getToken
 argument_list|()
 argument_list|,
-name|method
+name|req
 operator|.
-name|getName
+name|getMethod
 argument_list|()
 argument_list|,
 name|uri
 argument_list|,
-name|method
+name|resp
 argument_list|)
 expr_stmt|;
 break|break;
@@ -5359,14 +5664,14 @@ name|SwiftThrottledRequestException
 argument_list|(
 literal|"Client is being throttled: too many requests"
 argument_list|,
-name|method
+name|req
 operator|.
-name|getName
+name|getMethod
 argument_list|()
 argument_list|,
 name|uri
 argument_list|,
-name|method
+name|resp
 argument_list|)
 expr_stmt|;
 break|break;
@@ -5379,14 +5684,14 @@ name|SwiftInvalidResponseException
 argument_list|(
 name|errorMessage
 argument_list|,
-name|method
+name|req
 operator|.
-name|getName
+name|getMethod
 argument_list|()
 argument_list|,
 name|uri
 argument_list|,
-name|method
+name|resp
 argument_list|)
 expr_stmt|;
 block|}
@@ -5394,7 +5699,7 @@ return|return
 name|fault
 return|;
 block|}
-comment|/**    * Exec a GET request and return the input stream of the response    *    * @param uri URI to GET    * @param requestHeaders request headers    * @return the input stream. This must be closed to avoid log errors    * @throws IOException    */
+comment|/**    * Exec a GET request and return the input stream of the response.    *    * @param uri URI to GET    * @param requestHeaders request headers    * @return the input stream. This must be closed to avoid log errors    * @throws IOException    */
 DECL|method|doGet (final URI uri, final Header... requestHeaders)
 specifier|private
 name|HttpBodyContent
@@ -5420,7 +5725,7 @@ argument_list|,
 name|uri
 argument_list|,
 operator|new
-name|GetMethodProcessor
+name|GetRequestProcessor
 argument_list|<
 name|HttpBodyContent
 argument_list|>
@@ -5432,8 +5737,11 @@ specifier|public
 name|HttpBodyContent
 name|extractResult
 parameter_list|(
-name|GetMethod
-name|method
+name|HttpGet
+name|req
+parameter_list|,
+name|HttpResponse
+name|resp
 parameter_list|)
 throws|throws
 name|IOException
@@ -5447,13 +5755,17 @@ name|HttpInputStreamWithRelease
 argument_list|(
 name|uri
 argument_list|,
-name|method
+name|req
+argument_list|,
+name|resp
 argument_list|)
 argument_list|,
-name|method
+name|HttpResponseUtils
 operator|.
-name|getResponseContentLength
-argument_list|()
+name|getContentLength
+argument_list|(
+name|resp
+argument_list|)
 argument_list|)
 return|;
 block|}
@@ -5463,15 +5775,15 @@ specifier|protected
 name|void
 name|setup
 parameter_list|(
-name|GetMethod
-name|method
+name|HttpGet
+name|req
 parameter_list|)
 throws|throws
 name|SwiftInternalStateException
 block|{
 name|setHeaders
 argument_list|(
-name|method
+name|req
 argument_list|,
 name|requestHeaders
 argument_list|)
@@ -5481,7 +5793,7 @@ block|}
 argument_list|)
 return|;
 block|}
-comment|/**    * Create an instance against a specific FS URI,    *    * @param filesystemURI filesystem to bond to    * @param config source of configuration data    * @return REST client instance    * @throws IOException on instantiation problems    */
+comment|/**    * Create an instance against a specific FS URI.    *    * @param filesystemURI filesystem to bond to    * @param config source of configuration data    * @return REST client instance    * @throws IOException on instantiation problems    */
 DECL|method|getInstance (URI filesystemURI, Configuration config)
 specifier|public
 specifier|static
@@ -5505,57 +5817,6 @@ name|filesystemURI
 argument_list|,
 name|config
 argument_list|)
-return|;
-block|}
-comment|/**    * Convert the (JSON) data to a string request as UTF-8    *    * @param data data    * @return the data    * @throws SwiftException if for some very unexpected reason it's impossible    * to convert the data to UTF-8.    */
-DECL|method|toJsonEntity (String data)
-specifier|private
-specifier|static
-name|StringRequestEntity
-name|toJsonEntity
-parameter_list|(
-name|String
-name|data
-parameter_list|)
-throws|throws
-name|SwiftException
-block|{
-name|StringRequestEntity
-name|entity
-decl_stmt|;
-try|try
-block|{
-name|entity
-operator|=
-operator|new
-name|StringRequestEntity
-argument_list|(
-name|data
-argument_list|,
-literal|"application/json"
-argument_list|,
-literal|"UTF-8"
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|UnsupportedEncodingException
-name|e
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|SwiftException
-argument_list|(
-literal|"Could not encode data as UTF-8"
-argument_list|,
-name|e
-argument_list|)
-throw|;
-block|}
-return|return
-name|entity
 return|;
 block|}
 comment|/**    * Converts Swift path to URI to make request.    * This is public for unit testing    *    * @param path path to object    * @param endpointURI domain url e.g. http://domain.com    * @return valid URI for object    * @throws SwiftException    */
@@ -5726,13 +5987,13 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Add the headers to the method, and the auth token (which must be set    * @param method method to update    * @param requestHeaders the list of headers    * @throws SwiftInternalStateException not yet authenticated    */
-DECL|method|setHeaders (HttpMethodBase method, Header[] requestHeaders)
+comment|/**    * Add the headers to the method, and the auth token (which must be set).    * @param method method to update    * @param requestHeaders the list of headers    * @throws SwiftInternalStateException not yet authenticated    */
+DECL|method|setHeaders (HttpUriRequest method, Header[] requestHeaders)
 specifier|private
 name|void
 name|setHeaders
 parameter_list|(
-name|HttpMethodBase
+name|HttpUriRequest
 name|method
 parameter_list|,
 name|Header
@@ -5752,7 +6013,7 @@ control|)
 block|{
 name|method
 operator|.
-name|addRequestHeader
+name|addHeader
 argument_list|(
 name|header
 argument_list|)
@@ -5767,13 +6028,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Set the auth key header of the method to the token ID supplied    *    * @param method method    * @param accessToken access token    * @throws SwiftInternalStateException if the client is not yet authenticated    */
-DECL|method|setAuthToken (HttpMethodBase method, AccessToken accessToken)
+comment|/**    * Set the auth key header of the method to the token ID supplied.    *    * @param method method    * @param accessToken access token    * @throws SwiftInternalStateException if the client is not yet authenticated    */
+DECL|method|setAuthToken (HttpUriRequest method, AccessToken accessToken)
 specifier|private
 name|void
 name|setAuthToken
 parameter_list|(
-name|HttpMethodBase
+name|HttpUriRequest
 name|method
 parameter_list|,
 name|AccessToken
@@ -5791,7 +6052,7 @@ argument_list|)
 expr_stmt|;
 name|method
 operator|.
-name|addRequestHeader
+name|addHeader
 argument_list|(
 name|HEADER_AUTH_KEY
 argument_list|,
@@ -5802,68 +6063,46 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Execute a method in a new HttpClient instance.    * If the auth failed, authenticate then retry the method.    *    * @param method method to exec    * @param<M> Method type    * @return the status code    * @throws IOException on any failure    */
-DECL|method|exec (M method)
+comment|/**    * Execute a method in a new HttpClient instance. If the auth failed,    * authenticate then retry the method.    *    * @param req request to exec    * @param client client to use    * @param<M> Request type    * @return the status code    * @throws IOException on any failure    */
+DECL|method|exec (HttpClient client, M req)
 specifier|private
 parameter_list|<
 name|M
 extends|extends
-name|HttpMethod
+name|HttpUriRequest
 parameter_list|>
-name|int
+name|HttpResponse
 name|exec
 parameter_list|(
+name|HttpClient
+name|client
+parameter_list|,
 name|M
-name|method
+name|req
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-specifier|final
-name|HttpClient
-name|client
-init|=
-operator|new
-name|HttpClient
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|proxyHost
-operator|!=
-literal|null
-condition|)
-block|{
-name|client
-operator|.
-name|getParams
-argument_list|()
-operator|.
-name|setParameter
-argument_list|(
-name|ConnRoutePNames
-operator|.
-name|DEFAULT_PROXY
-argument_list|,
-operator|new
-name|HttpHost
-argument_list|(
-name|proxyHost
-argument_list|,
-name|proxyPort
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-name|int
-name|statusCode
+name|HttpResponse
+name|resp
 init|=
 name|execWithDebugOutput
 argument_list|(
-name|method
+name|req
 argument_list|,
 name|client
 argument_list|)
+decl_stmt|;
+name|int
+name|statusCode
+init|=
+name|resp
+operator|.
+name|getStatusLine
+argument_list|()
+operator|.
+name|getStatusCode
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
@@ -5881,9 +6120,9 @@ operator|.
 name|SC_BAD_REQUEST
 operator|)
 operator|&&
-name|method
+name|req
 operator|instanceof
-name|AuthPostMethod
+name|AuthPostRequest
 operator|&&
 operator|!
 name|useKeystoneAuthentication
@@ -5903,10 +6142,7 @@ name|debug
 argument_list|(
 literal|"Operation failed with status "
 operator|+
-name|method
-operator|.
-name|getStatusCode
-argument_list|()
+name|statusCode
 operator|+
 literal|" attempting keystone auth"
 argument_list|)
@@ -5918,18 +6154,18 @@ operator|=
 literal|true
 expr_stmt|;
 specifier|final
-name|AuthPostMethod
+name|AuthPostRequest
 name|authentication
 init|=
 operator|(
-name|AuthPostMethod
+name|AuthPostRequest
 operator|)
-name|method
+name|req
 decl_stmt|;
 comment|//replace rackspace auth with keystone one
 name|authentication
 operator|.
-name|setRequestEntity
+name|setEntity
 argument_list|(
 name|getAuthenticationRequst
 argument_list|(
@@ -5937,11 +6173,11 @@ name|keystoneAuthRequest
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|statusCode
+name|resp
 operator|=
 name|execWithDebugOutput
 argument_list|(
-name|method
+name|req
 argument_list|,
 name|client
 argument_list|)
@@ -5959,9 +6195,9 @@ block|{
 comment|//unauthed -or the auth uri rejected it.
 if|if
 condition|(
-name|method
+name|req
 operator|instanceof
-name|AuthPostMethod
+name|AuthPostRequest
 condition|)
 block|{
 comment|//unauth response from the AUTH URI itself.
@@ -5978,7 +6214,7 @@ literal|"auth"
 argument_list|,
 name|authUri
 argument_list|,
-name|method
+name|resp
 argument_list|)
 throw|;
 block|}
@@ -6019,33 +6255,33 @@ literal|"Retrying original request"
 argument_list|)
 expr_stmt|;
 block|}
-name|statusCode
+name|resp
 operator|=
 name|execWithDebugOutput
 argument_list|(
-name|method
+name|req
 argument_list|,
 name|client
 argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|statusCode
+name|resp
 return|;
 block|}
-comment|/**    * Execute the request with the request and response logged at debug level    * @param method method to execute    * @param client client to use    * @param<M> method type    * @return the status code    * @throws IOException any failure reported by the HTTP client.    */
-DECL|method|execWithDebugOutput (M method, HttpClient client)
+comment|/**    * Execute the request with the request and response logged at debug level.    * @param req request to execute    * @param client client to use    * @param<M> method type    * @return the status code    * @throws IOException any failure reported by the HTTP client.    */
+DECL|method|execWithDebugOutput (M req, HttpClient client)
 specifier|private
 parameter_list|<
 name|M
 extends|extends
-name|HttpMethod
+name|HttpUriRequest
 parameter_list|>
-name|int
+name|HttpResponse
 name|execWithDebugOutput
 parameter_list|(
 name|M
-name|method
+name|req
 parameter_list|,
 name|HttpClient
 name|client
@@ -6067,14 +6303,14 @@ init|=
 operator|new
 name|StringBuilder
 argument_list|(
-name|method
+name|req
 operator|.
-name|getName
+name|getMethod
 argument_list|()
 operator|+
 literal|" "
 operator|+
-name|method
+name|req
 operator|.
 name|getURI
 argument_list|()
@@ -6087,9 +6323,9 @@ control|(
 name|Header
 name|header
 range|:
-name|method
+name|req
 operator|.
-name|getRequestHeaders
+name|getAllHeaders
 argument_list|()
 control|)
 block|{
@@ -6112,14 +6348,14 @@ name|builder
 argument_list|)
 expr_stmt|;
 block|}
-name|int
-name|statusCode
+name|HttpResponse
+name|resp
 init|=
 name|client
 operator|.
-name|executeMethod
+name|execute
 argument_list|(
-name|method
+name|req
 argument_list|)
 decl_stmt|;
 if|if
@@ -6136,12 +6372,18 @@ name|debug
 argument_list|(
 literal|"Status code = "
 operator|+
-name|statusCode
+name|resp
+operator|.
+name|getStatusLine
+argument_list|()
+operator|.
+name|getStatusCode
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|statusCode
+name|resp
 return|;
 block|}
 comment|/**    * Ensures that an object reference passed as a parameter to the calling    * method is not null.    *    * @param reference an object reference    * @return the non-null reference that was validated    * @throws NullPointerException if {@code reference} is null    */
@@ -6206,7 +6448,7 @@ return|return
 name|reference
 return|;
 block|}
-comment|/**    * Check for a status code being expected -takes a list of expected values    *    * @param status received status    * @param expected expected value    * @return true iff status is an element of [expected]    */
+comment|/**    * Check for a status code being expected -takes a list of expected values    *    * @param status received status    * @param expected expected value    * @return true if status is an element of [expected]    */
 DECL|method|isStatusCodeExpected (int status, int... expected)
 specifier|private
 name|boolean
@@ -6302,7 +6544,7 @@ return|return
 name|container
 return|;
 block|}
-comment|/**    * Is this client bound to a location aware Swift blobstore    * -that is, can you query for the location of partitions    * @return true iff the location of multipart file uploads    * can be determined.    */
+comment|/**    * Is this client bound to a location aware Swift blobstore    * -that is, can you query for the location of partitions?    * @return true iff the location of multipart file uploads    * can be determined.    */
 DECL|method|isLocationAware ()
 specifier|public
 name|boolean
@@ -6324,7 +6566,7 @@ return|return
 name|blocksizeKB
 return|;
 block|}
-comment|/**    * Get the partition size in KB    * @return the partition size    */
+comment|/**    * Get the partition size in KB.    * @return the partition size    */
 DECL|method|getPartSizeKB ()
 specifier|public
 name|int
@@ -6335,7 +6577,7 @@ return|return
 name|partSizeKB
 return|;
 block|}
-comment|/**    * Get the buffer size in KB    * @return the buffer size wanted for reads    */
+comment|/**    * Get the buffer size in KB.    * @return the buffer size wanted for reads    */
 DECL|method|getBufferSizeKB ()
 specifier|public
 name|int
@@ -6406,7 +6648,7 @@ return|return
 name|throttleDelay
 return|;
 block|}
-comment|/**    * Get the current operation statistics    * @return a snapshot of the statistics    */
+comment|/**    * Get the current operation statistics.    * @return a snapshot of the statistics    */
 DECL|method|getOperationStatistics ()
 specifier|public
 name|List

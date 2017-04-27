@@ -28,20 +28,6 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|httpclient
-operator|.
-name|HttpMethod
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
 name|logging
 operator|.
 name|Log
@@ -95,6 +81,34 @@ operator|.
 name|util
 operator|.
 name|SwiftUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|http
+operator|.
+name|HttpResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|http
+operator|.
+name|client
+operator|.
+name|methods
+operator|.
+name|HttpRequestBase
 import|;
 end_import
 
@@ -182,10 +196,15 @@ specifier|final
 name|URI
 name|uri
 decl_stmt|;
-DECL|field|method
+DECL|field|req
 specifier|private
-name|HttpMethod
-name|method
+name|HttpRequestBase
+name|req
+decl_stmt|;
+DECL|field|resp
+specifier|private
+name|HttpResponse
+name|resp
 decl_stmt|;
 comment|//flag to say the stream is released -volatile so that read operations
 comment|//pick it up even while unsynchronized.
@@ -222,15 +241,18 @@ name|reasonClosed
 init|=
 literal|"unopened"
 decl_stmt|;
-DECL|method|HttpInputStreamWithRelease (URI uri, HttpMethod method)
+DECL|method|HttpInputStreamWithRelease (URI uri, HttpRequestBase req, HttpResponse resp)
 specifier|public
 name|HttpInputStreamWithRelease
 parameter_list|(
 name|URI
 name|uri
 parameter_list|,
-name|HttpMethod
-name|method
+name|HttpRequestBase
+name|req
+parameter_list|,
+name|HttpResponse
+name|resp
 parameter_list|)
 throws|throws
 name|IOException
@@ -243,9 +265,15 @@ name|uri
 expr_stmt|;
 name|this
 operator|.
-name|method
+name|req
 operator|=
-name|method
+name|req
+expr_stmt|;
+name|this
+operator|.
+name|resp
+operator|=
+name|resp
 expr_stmt|;
 name|constructionStack
 operator|=
@@ -264,7 +292,7 @@ literal|null
 expr_stmt|;
 if|if
 condition|(
-name|method
+name|req
 operator|==
 literal|null
 condition|)
@@ -273,7 +301,7 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"Null 'method' parameter "
+literal|"Null 'request' parameter "
 argument_list|)
 throw|;
 block|}
@@ -281,9 +309,12 @@ try|try
 block|{
 name|inStream
 operator|=
-name|method
+name|resp
 operator|.
-name|getResponseBodyAsStream
+name|getEntity
+argument_list|()
+operator|.
+name|getContent
 argument_list|()
 expr_stmt|;
 block|}
@@ -388,7 +419,7 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|method
+name|req
 operator|!=
 literal|null
 condition|)
@@ -399,13 +430,13 @@ operator|!
 name|dataConsumed
 condition|)
 block|{
-name|method
+name|req
 operator|.
 name|abort
 argument_list|()
 expr_stmt|;
 block|}
-name|method
+name|req
 operator|.
 name|releaseConnection
 argument_list|()

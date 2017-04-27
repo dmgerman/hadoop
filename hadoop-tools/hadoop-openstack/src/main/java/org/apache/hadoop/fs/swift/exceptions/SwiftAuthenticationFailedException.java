@@ -26,11 +26,9 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
+name|http
 operator|.
-name|httpclient
-operator|.
-name|HttpMethod
+name|HttpResponse
 import|;
 end_import
 
@@ -85,7 +83,7 @@ name|uri
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|SwiftAuthenticationFailedException (String message, String operation, URI uri, HttpMethod method)
+DECL|method|SwiftAuthenticationFailedException (String message, String operation, URI uri, HttpResponse resp)
 specifier|public
 name|SwiftAuthenticationFailedException
 parameter_list|(
@@ -98,8 +96,8 @@ parameter_list|,
 name|URI
 name|uri
 parameter_list|,
-name|HttpMethod
-name|method
+name|HttpResponse
+name|resp
 parameter_list|)
 block|{
 name|super
@@ -110,7 +108,7 @@ name|operation
 argument_list|,
 name|uri
 argument_list|,
-name|method
+name|resp
 argument_list|)
 expr_stmt|;
 block|}

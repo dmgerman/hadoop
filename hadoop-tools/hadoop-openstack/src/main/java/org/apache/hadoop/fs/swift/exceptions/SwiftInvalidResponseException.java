@@ -26,11 +26,27 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
+name|hadoop
 operator|.
-name|httpclient
+name|fs
 operator|.
-name|HttpMethod
+name|swift
+operator|.
+name|util
+operator|.
+name|HttpResponseUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|http
+operator|.
+name|HttpResponse
 import|;
 end_import
 
@@ -137,7 +153,7 @@ operator|=
 literal|""
 expr_stmt|;
 block|}
-DECL|method|SwiftInvalidResponseException (String message, String operation, URI uri, HttpMethod method)
+DECL|method|SwiftInvalidResponseException (String message, String operation, URI uri, HttpResponse resp)
 specifier|public
 name|SwiftInvalidResponseException
 parameter_list|(
@@ -150,8 +166,8 @@ parameter_list|,
 name|URI
 name|uri
 parameter_list|,
-name|HttpMethod
-name|method
+name|HttpResponse
+name|resp
 parameter_list|)
 block|{
 name|super
@@ -163,7 +179,10 @@ name|this
 operator|.
 name|statusCode
 operator|=
-name|method
+name|resp
+operator|.
+name|getStatusLine
+argument_list|()
 operator|.
 name|getStatusCode
 argument_list|()
@@ -187,10 +206,12 @@ try|try
 block|{
 name|bodyAsString
 operator|=
-name|method
+name|HttpResponseUtils
 operator|.
 name|getResponseBodyAsString
-argument_list|()
+argument_list|(
+name|resp
+argument_list|)
 expr_stmt|;
 if|if
 condition|(

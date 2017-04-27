@@ -26,13 +26,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
+name|http
 operator|.
-name|httpclient
+name|client
 operator|.
 name|methods
 operator|.
-name|EntityEnclosingMethod
+name|HttpEntityEnclosingRequestBase
 import|;
 end_import
 
@@ -41,33 +41,27 @@ comment|/**  * Implementation for SwiftRestClient to make copy requests.  * COPY
 end_comment
 
 begin_class
-DECL|class|CopyMethod
+DECL|class|CopyRequest
 class|class
-name|CopyMethod
+name|CopyRequest
 extends|extends
-name|EntityEnclosingMethod
+name|HttpEntityEnclosingRequestBase
 block|{
-DECL|method|CopyMethod (String uri)
-specifier|public
-name|CopyMethod
-parameter_list|(
-name|String
-name|uri
-parameter_list|)
+DECL|method|CopyRequest ()
+name|CopyRequest
+parameter_list|()
 block|{
 name|super
-argument_list|(
-name|uri
-argument_list|)
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * @return http method name    */
 annotation|@
 name|Override
-DECL|method|getName ()
+DECL|method|getMethod ()
 specifier|public
 name|String
-name|getName
+name|getMethod
 parameter_list|()
 block|{
 return|return

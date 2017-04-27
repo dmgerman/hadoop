@@ -42,9 +42,7 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|httpclient
+name|http
 operator|.
 name|Header
 import|;
@@ -56,11 +54,23 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|httpclient
+name|http
 operator|.
 name|HttpStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|http
+operator|.
+name|message
+operator|.
+name|BasicHeader
 import|;
 end_import
 
@@ -907,7 +917,7 @@ argument_list|,
 literal|0
 argument_list|,
 operator|new
-name|Header
+name|BasicHeader
 argument_list|(
 name|SwiftProtocolConstants
 operator|.
