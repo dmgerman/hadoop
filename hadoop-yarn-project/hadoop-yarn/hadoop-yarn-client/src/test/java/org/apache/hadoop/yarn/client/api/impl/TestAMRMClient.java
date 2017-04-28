@@ -8008,9 +8008,7 @@ name|assertEquals
 argument_list|(
 literal|2
 argument_list|,
-name|amClient
-operator|.
-name|release
+name|releases
 operator|.
 name|size
 argument_list|()
