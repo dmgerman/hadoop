@@ -2770,8 +2770,8 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Return a message for logging.    * @param prefix prefix keyword for the message    * @param msg content of the message    * @return a message for logging    */
-DECL|method|toStartupShutdownString (String prefix, String [] msg)
-specifier|private
+DECL|method|toStartupShutdownString (String prefix, String[] msg)
+specifier|public
 specifier|static
 name|String
 name|toStartupShutdownString
@@ -2812,9 +2812,15 @@ operator|.
 name|append
 argument_list|(
 literal|"\n"
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|prefix
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|s
 argument_list|)
 expr_stmt|;
@@ -2960,93 +2966,13 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-name|toStartupShutdownString
+name|createStartupShutdownMessage
 argument_list|(
-literal|"STARTUP_MSG: "
-argument_list|,
-operator|new
-name|String
-index|[]
-block|{
-literal|"Starting "
-operator|+
 name|classname
-block|,
-literal|"  user = "
-operator|+
-name|System
-operator|.
-name|getProperty
-argument_list|(
-literal|"user.name"
-argument_list|)
-block|,
-literal|"  host = "
-operator|+
+argument_list|,
 name|hostname
-block|,
-literal|"  args = "
-operator|+
-name|Arrays
-operator|.
-name|asList
-argument_list|(
+argument_list|,
 name|args
-argument_list|)
-block|,
-literal|"  version = "
-operator|+
-name|VersionInfo
-operator|.
-name|getVersion
-argument_list|()
-block|,
-literal|"  classpath = "
-operator|+
-name|System
-operator|.
-name|getProperty
-argument_list|(
-literal|"java.class.path"
-argument_list|)
-block|,
-literal|"  build = "
-operator|+
-name|VersionInfo
-operator|.
-name|getUrl
-argument_list|()
-operator|+
-literal|" -r "
-operator|+
-name|VersionInfo
-operator|.
-name|getRevision
-argument_list|()
-operator|+
-literal|"; compiled by '"
-operator|+
-name|VersionInfo
-operator|.
-name|getUser
-argument_list|()
-operator|+
-literal|"' on "
-operator|+
-name|VersionInfo
-operator|.
-name|getDate
-argument_list|()
-block|,
-literal|"  java = "
-operator|+
-name|System
-operator|.
-name|getProperty
-argument_list|(
-literal|"java.version"
-argument_list|)
-block|}
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3133,6 +3059,106 @@ argument_list|,
 name|SHUTDOWN_HOOK_PRIORITY
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Generate the text for the startup/shutdown message of processes.    * @param classname short classname of the class    * @param hostname hostname    * @param args Command arguments    * @return a string to log.    */
+DECL|method|createStartupShutdownMessage (String classname, String hostname, String[] args)
+specifier|public
+specifier|static
+name|String
+name|createStartupShutdownMessage
+parameter_list|(
+name|String
+name|classname
+parameter_list|,
+name|String
+name|hostname
+parameter_list|,
+name|String
+index|[]
+name|args
+parameter_list|)
+block|{
+return|return
+name|toStartupShutdownString
+argument_list|(
+literal|"STARTUP_MSG: "
+argument_list|,
+operator|new
+name|String
+index|[]
+block|{
+literal|"Starting "
+operator|+
+name|classname
+block|,
+literal|"  host = "
+operator|+
+name|hostname
+block|,
+literal|"  args = "
+operator|+
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|args
+argument_list|)
+block|,
+literal|"  version = "
+operator|+
+name|VersionInfo
+operator|.
+name|getVersion
+argument_list|()
+block|,
+literal|"  classpath = "
+operator|+
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"java.class.path"
+argument_list|)
+block|,
+literal|"  build = "
+operator|+
+name|VersionInfo
+operator|.
+name|getUrl
+argument_list|()
+operator|+
+literal|" -r "
+operator|+
+name|VersionInfo
+operator|.
+name|getRevision
+argument_list|()
+operator|+
+literal|"; compiled by '"
+operator|+
+name|VersionInfo
+operator|.
+name|getUser
+argument_list|()
+operator|+
+literal|"' on "
+operator|+
+name|VersionInfo
+operator|.
+name|getDate
+argument_list|()
+block|,
+literal|"  java = "
+operator|+
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"java.version"
+argument_list|)
+block|}
+argument_list|)
+return|;
 block|}
 comment|/**    * The traditional binary prefixes, kilo, mega, ..., exa,    * which can be represented by a 64-bit integer.    * TraditionalBinaryPrefix symbol are case insensitive.     */
 DECL|enum|TraditionalBinaryPrefix

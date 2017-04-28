@@ -48,8 +48,38 @@ name|Evolving
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|service
+operator|.
+name|launcher
+operator|.
+name|LauncherExitCodes
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|ExitCodeProvider
+import|;
+end_import
+
 begin_comment
-comment|/**  * Exception that is raised on state change operations.  */
+comment|/**  * Exception that can be raised on state change operations, whose  * exit code can be explicitly set, determined from that of any nested  * cause, or a default value of  * {@link  LauncherExitCodes#EXIT_SERVICE_LIFECYCLE_EXCEPTION}.  */
 end_comment
 
 begin_class
@@ -63,6 +93,8 @@ class|class
 name|ServiceStateException
 extends|extends
 name|RuntimeException
+implements|implements
+name|ExitCodeProvider
 block|{
 DECL|field|serialVersionUID
 specifier|private
@@ -73,6 +105,13 @@ name|serialVersionUID
 init|=
 literal|1110000352259232646L
 decl_stmt|;
+comment|/**    * Exit code.    */
+DECL|field|exitCode
+specifier|private
+name|int
+name|exitCode
+decl_stmt|;
+comment|/**    * Instantiate    * @param message error message    */
 DECL|method|ServiceStateException (String message)
 specifier|public
 name|ServiceStateException
@@ -81,12 +120,15 @@ name|String
 name|message
 parameter_list|)
 block|{
-name|super
+name|this
 argument_list|(
 name|message
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Instantiate with a message and cause; if the cause has an exit code    * then it is used, otherwise the generic    * {@link LauncherExitCodes#EXIT_SERVICE_LIFECYCLE_EXCEPTION} exit code    * is used.    * @param message exception message    * @param cause optional inner cause    */
 DECL|method|ServiceStateException (String message, Throwable cause)
 specifier|public
 name|ServiceStateException
@@ -105,6 +147,68 @@ argument_list|,
 name|cause
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|cause
+operator|instanceof
+name|ExitCodeProvider
+condition|)
+block|{
+name|this
+operator|.
+name|exitCode
+operator|=
+operator|(
+operator|(
+name|ExitCodeProvider
+operator|)
+name|cause
+operator|)
+operator|.
+name|getExitCode
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+name|this
+operator|.
+name|exitCode
+operator|=
+name|LauncherExitCodes
+operator|.
+name|EXIT_SERVICE_LIFECYCLE_EXCEPTION
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Instantiate, using the specified exit code as the exit code    * of the exception, irrespetive of any exit code supplied by any inner    * cause.    *    * @param exitCode exit code to declare    * @param message exception message    * @param cause inner cause    */
+DECL|method|ServiceStateException (int exitCode, String message, Throwable cause)
+specifier|public
+name|ServiceStateException
+parameter_list|(
+name|int
+name|exitCode
+parameter_list|,
+name|String
+name|message
+parameter_list|,
+name|Throwable
+name|cause
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|message
+argument_list|,
+name|cause
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|exitCode
+operator|=
+name|exitCode
+expr_stmt|;
 block|}
 DECL|method|ServiceStateException (Throwable cause)
 specifier|public
@@ -120,7 +224,19 @@ name|cause
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Convert any exception into a {@link RuntimeException}.    * If the caught exception is already of that type, it is typecast to a    * {@link RuntimeException} and returned.    *    * All other exception types are wrapped in a new instance of    * ServiceStateException    * @param fault exception or throwable    * @return a ServiceStateException to rethrow    */
+annotation|@
+name|Override
+DECL|method|getExitCode ()
+specifier|public
+name|int
+name|getExitCode
+parameter_list|()
+block|{
+return|return
+name|exitCode
+return|;
+block|}
+comment|/**    * Convert any exception into a {@link RuntimeException}.    * All other exception types are wrapped in a new instance of    * {@code ServiceStateException}.    * @param fault exception or throwable    * @return a {@link RuntimeException} to rethrow    */
 DECL|method|convert (Throwable fault)
 specifier|public
 specifier|static
@@ -156,7 +272,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Convert any exception into a {@link RuntimeException}.    * If the caught exception is already of that type, it is typecast to a    * {@link RuntimeException} and returned.    *    * All other exception types are wrapped in a new instance of    * ServiceStateException    * @param text text to use if a new exception is created    * @param fault exception or throwable    * @return a ServiceStateException to rethrow    */
+comment|/**    * Convert any exception into a {@link RuntimeException}.    * If the caught exception is already of that type, it is typecast to a    * {@link RuntimeException} and returned.    *    * All other exception types are wrapped in a new instance of    * {@code ServiceStateException}.    * @param text text to use if a new exception is created    * @param fault exception or throwable    * @return a {@link RuntimeException} to rethrow    */
 DECL|method|convert (String text, Throwable fault)
 specifier|public
 specifier|static

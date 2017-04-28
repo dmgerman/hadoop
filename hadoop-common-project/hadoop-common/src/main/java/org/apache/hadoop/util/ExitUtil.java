@@ -22,34 +22,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -72,8 +44,28 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
-comment|/**  * Facilitates hooking process termination for tests and debugging.  */
+comment|/**  * Facilitates hooking process termination for tests, debugging  * and embedding.  *   * Hadoop code that attempts to call {@link System#exit(int)}   * or {@link Runtime#halt(int)} MUST invoke it via these methods.  */
 end_comment
 
 begin_class
@@ -86,6 +78,8 @@ block|{
 literal|"HDFS"
 block|,
 literal|"MapReduce"
+block|,
+literal|"YARN"
 block|}
 argument_list|)
 annotation|@
@@ -98,16 +92,16 @@ specifier|final
 class|class
 name|ExitUtil
 block|{
-DECL|field|LOG
 specifier|private
-specifier|final
 specifier|static
-name|Log
+specifier|final
+name|Logger
+DECL|field|LOG
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|ExitUtil
 operator|.
@@ -149,6 +143,12 @@ specifier|volatile
 name|HaltException
 name|firstHaltException
 decl_stmt|;
+DECL|method|ExitUtil ()
+specifier|private
+name|ExitUtil
+parameter_list|()
+block|{   }
+comment|/**    * An exception raised when a call to {@link #terminate(int)} was    * called and system exits were blocked.    */
 DECL|class|ExitException
 specifier|public
 specifier|static
@@ -156,6 +156,8 @@ class|class
 name|ExitException
 extends|extends
 name|RuntimeException
+implements|implements
+name|ExitCodeProvider
 block|{
 DECL|field|serialVersionUID
 specifier|private
@@ -166,6 +168,7 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
+comment|/**      * The status code.      */
 DECL|field|status
 specifier|public
 specifier|final
@@ -195,7 +198,114 @@ operator|=
 name|status
 expr_stmt|;
 block|}
+DECL|method|ExitException (int status, String message, Throwable cause)
+specifier|public
+name|ExitException
+parameter_list|(
+name|int
+name|status
+parameter_list|,
+name|String
+name|message
+parameter_list|,
+name|Throwable
+name|cause
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|message
+argument_list|,
+name|cause
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|status
+operator|=
+name|status
+expr_stmt|;
 block|}
+DECL|method|ExitException (int status, Throwable cause)
+specifier|public
+name|ExitException
+parameter_list|(
+name|int
+name|status
+parameter_list|,
+name|Throwable
+name|cause
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|cause
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|status
+operator|=
+name|status
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getExitCode ()
+specifier|public
+name|int
+name|getExitCode
+parameter_list|()
+block|{
+return|return
+name|status
+return|;
+block|}
+comment|/**      * String value does not include exception type, just exit code and message.      * @return the exit code and any message      */
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+name|String
+name|message
+init|=
+name|getMessage
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|message
+operator|==
+literal|null
+condition|)
+block|{
+name|message
+operator|=
+name|super
+operator|.
+name|toString
+argument_list|()
+expr_stmt|;
+block|}
+return|return
+name|Integer
+operator|.
+name|toString
+argument_list|(
+name|status
+argument_list|)
+operator|+
+literal|": "
+operator|+
+name|message
+return|;
+block|}
+block|}
+comment|/**    * An exception raised when a call to {@link #terminate(int)} was    * called and system halts were blocked.    */
 DECL|class|HaltException
 specifier|public
 specifier|static
@@ -203,6 +313,8 @@ class|class
 name|HaltException
 extends|extends
 name|RuntimeException
+implements|implements
+name|ExitCodeProvider
 block|{
 DECL|field|serialVersionUID
 specifier|private
@@ -219,6 +331,29 @@ specifier|final
 name|int
 name|status
 decl_stmt|;
+DECL|method|HaltException (int status, Throwable cause)
+specifier|public
+name|HaltException
+parameter_list|(
+name|int
+name|status
+parameter_list|,
+name|Throwable
+name|cause
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|cause
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|status
+operator|=
+name|status
+expr_stmt|;
+block|}
 DECL|method|HaltException (int status, String msg)
 specifier|public
 name|HaltException
@@ -241,6 +376,89 @@ name|status
 operator|=
 name|status
 expr_stmt|;
+block|}
+DECL|method|HaltException (int status, String message, Throwable cause)
+specifier|public
+name|HaltException
+parameter_list|(
+name|int
+name|status
+parameter_list|,
+name|String
+name|message
+parameter_list|,
+name|Throwable
+name|cause
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|message
+argument_list|,
+name|cause
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|status
+operator|=
+name|status
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getExitCode ()
+specifier|public
+name|int
+name|getExitCode
+parameter_list|()
+block|{
+return|return
+name|status
+return|;
+block|}
+comment|/**      * String value does not include exception type, just exit code and message.      * @return the exit code and any message      */
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+name|String
+name|message
+init|=
+name|getMessage
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|message
+operator|==
+literal|null
+condition|)
+block|{
+name|message
+operator|=
+name|super
+operator|.
+name|toString
+argument_list|()
+expr_stmt|;
+block|}
+return|return
+name|Integer
+operator|.
+name|toString
+argument_list|(
+name|status
+argument_list|)
+operator|+
+literal|": "
+operator|+
+name|message
+return|;
 block|}
 block|}
 comment|/**    * Disable the use of System.exit for testing.    */
@@ -269,7 +487,7 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
-comment|/**    * @return true if terminate has been called    */
+comment|/**    * @return true if terminate has been called.    */
 DECL|method|terminateCalled ()
 specifier|public
 specifier|static
@@ -284,7 +502,7 @@ operator|!=
 literal|null
 return|;
 block|}
-comment|/**    * @return true if halt has been called    */
+comment|/**    * @return true if halt has been called.    */
 DECL|method|haltCalled ()
 specifier|public
 specifier|static
@@ -298,7 +516,7 @@ operator|!=
 literal|null
 return|;
 block|}
-comment|/**    * @return the first ExitException thrown, null if none thrown yet    */
+comment|/**    * @return the first ExitException thrown, null if none thrown yet.    */
 DECL|method|getFirstExitException ()
 specifier|public
 specifier|static
@@ -310,7 +528,7 @@ return|return
 name|firstExitException
 return|;
 block|}
-comment|/**    * @return the first {@code HaltException} thrown, null if none thrown yet    */
+comment|/**    * @return the first {@code HaltException} thrown, null if none thrown yet.    */
 DECL|method|getFirstHaltException ()
 specifier|public
 specifier|static
@@ -347,50 +565,77 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-comment|/**    * Terminate the current process. Note that terminate is the *only* method    * that should be used to terminate the daemon processes.    *    * @param status    *          exit code    * @param msg    *          message used to create the {@code ExitException}    * @throws ExitException    *           if System.exit is disabled for test purposes    */
-DECL|method|terminate (int status, String msg)
+comment|/**    * Inner termination: either exit with the exception's exit code,    * or, if system exits are disabled, rethrow the exception.    * @param ee exit exception    */
+DECL|method|terminate (ExitException ee)
 specifier|public
 specifier|static
+specifier|synchronized
 name|void
 name|terminate
 parameter_list|(
-name|int
-name|status
-parameter_list|,
-name|String
-name|msg
+name|ExitException
+name|ee
 parameter_list|)
 throws|throws
 name|ExitException
 block|{
+name|int
+name|status
+init|=
+name|ee
+operator|.
+name|getExitCode
+argument_list|()
+decl_stmt|;
+name|String
+name|msg
+init|=
+name|ee
+operator|.
+name|getMessage
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|status
+operator|!=
+literal|0
+condition|)
+block|{
+comment|//exit indicates a problem, log it
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Exiting with status {}: {}"
+argument_list|,
+name|status
+argument_list|,
+name|msg
+argument_list|,
+name|ee
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Exiting with status "
-operator|+
+literal|"Exiting with status {}: {}"
+argument_list|,
 name|status
+argument_list|,
+name|msg
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|systemExitDisabled
 condition|)
 block|{
-name|ExitException
-name|ee
-init|=
-operator|new
-name|ExitException
-argument_list|(
-name|status
-argument_list|,
-name|msg
-argument_list|)
-decl_stmt|;
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 literal|"Terminate called"
 argument_list|,
@@ -399,9 +644,9 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-literal|null
-operator|==
-name|firstExitException
+operator|!
+name|terminateCalled
+argument_list|()
 condition|)
 block|{
 name|firstExitException
@@ -421,54 +666,90 @@ name|status
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Forcibly terminates the currently running Java virtual machine.    *    * @param status    *          exit code    * @param msg    *          message used to create the {@code HaltException}    * @throws HaltException    *           if Runtime.getRuntime().halt() is disabled for test purposes    */
-DECL|method|halt (int status, String msg)
+comment|/**    * Forcibly terminates the currently running Java virtual machine.    * The exception argument is rethrown if JVM halting is disabled.    * @param ee the exception containing the status code, message and any stack    * trace.    * @throws HaltException if {@link Runtime#halt(int)} is disabled.    */
+DECL|method|halt (HaltException ee)
 specifier|public
 specifier|static
+specifier|synchronized
 name|void
 name|halt
 parameter_list|(
-name|int
-name|status
-parameter_list|,
-name|String
-name|msg
+name|HaltException
+name|ee
 parameter_list|)
 throws|throws
 name|HaltException
 block|{
+name|int
+name|status
+init|=
+name|ee
+operator|.
+name|getExitCode
+argument_list|()
+decl_stmt|;
+name|String
+name|msg
+init|=
+name|ee
+operator|.
+name|getMessage
+argument_list|()
+decl_stmt|;
+try|try
+block|{
+if|if
+condition|(
+name|status
+operator|!=
+literal|0
+condition|)
+block|{
+comment|//exit indicates a problem, log it
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Halt with status {}: {}"
+argument_list|,
+name|status
+argument_list|,
+name|msg
+argument_list|,
+name|ee
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Halt with status "
-operator|+
+literal|"Halt with status {}: {}"
+argument_list|,
 name|status
-operator|+
-literal|" Message: "
-operator|+
+argument_list|,
+name|msg
+argument_list|,
 name|msg
 argument_list|)
 expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|ignored
+parameter_list|)
+block|{
+comment|// ignore exceptions here, as it may be due to an out of memory situation
+block|}
 if|if
 condition|(
 name|systemHaltDisabled
 condition|)
 block|{
-name|HaltException
-name|ee
-init|=
-operator|new
-name|HaltException
-argument_list|(
-name|status
-argument_list|,
-name|msg
-argument_list|)
-decl_stmt|;
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 literal|"Halt called"
 argument_list|,
@@ -477,9 +758,9 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-literal|null
-operator|==
-name|firstHaltException
+operator|!
+name|haltCalled
+argument_list|()
 condition|)
 block|{
 name|firstHaltException
@@ -502,7 +783,7 @@ name|status
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Like {@link terminate(int, String)} but uses the given throwable to    * initialize the ExitException.    *    * @param status    * @param t    *          throwable used to create the ExitException    * @throws ExitException    *           if System.exit is disabled for test purposes    */
+comment|/**    * Like {@link #terminate(int, String)} but uses the given throwable to    * build the message to display or throw as an    * {@link ExitException}.    *<p>    * @param status exit code to use if the exception is not an ExitException.    * @param t throwable which triggered the termination. If this exception    * is an {@link ExitException} its status overrides that passed in.    * @throws ExitException if {@link System#exit(int)}  is disabled.    */
 DECL|method|terminate (int status, Throwable t)
 specifier|public
 specifier|static
@@ -518,20 +799,38 @@ parameter_list|)
 throws|throws
 name|ExitException
 block|{
+if|if
+condition|(
+name|t
+operator|instanceof
+name|ExitException
+condition|)
+block|{
 name|terminate
+argument_list|(
+operator|(
+name|ExitException
+operator|)
+name|t
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|terminate
+argument_list|(
+operator|new
+name|ExitException
 argument_list|(
 name|status
 argument_list|,
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
 name|t
 argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Forcibly terminates the currently running Java virtual machine.    *    * @param status    * @param t    * @throws ExitException    */
+block|}
+comment|/**    * Forcibly terminates the currently running Java virtual machine.    *    * @param status exit code to use if the exception is not a HaltException.    * @param t throwable which triggered the termination. If this exception    * is a {@link HaltException} its status overrides that passed in.    * @throws HaltException if {@link System#exit(int)}  is disabled.    */
 DECL|method|halt (int status, Throwable t)
 specifier|public
 specifier|static
@@ -547,20 +846,38 @@ parameter_list|)
 throws|throws
 name|HaltException
 block|{
+if|if
+condition|(
+name|t
+operator|instanceof
+name|HaltException
+condition|)
+block|{
 name|halt
+argument_list|(
+operator|(
+name|HaltException
+operator|)
+name|t
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|halt
+argument_list|(
+operator|new
+name|HaltException
 argument_list|(
 name|status
 argument_list|,
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
 name|t
 argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Like {@link terminate(int, String)} without a message.    *    * @param status    * @throws ExitException    *           if System.exit is disabled for test purposes    */
+block|}
+comment|/**    * Like {@link #terminate(int, Throwable)} without a message.    *    * @param status exit code    * @throws ExitException if {@link System#exit(int)} is disabled.    */
 DECL|method|terminate (int status)
 specifier|public
 specifier|static
@@ -577,11 +894,39 @@ name|terminate
 argument_list|(
 name|status
 argument_list|,
-literal|"ExitException"
+literal|""
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Forcibly terminates the currently running Java virtual machine.    * @param status    * @throws ExitException    */
+comment|/**    * Terminate the current process. Note that terminate is the *only* method    * that should be used to terminate the daemon processes.    *    * @param status exit code    * @param msg message used to create the {@code ExitException}    * @throws ExitException if {@link System#exit(int)} is disabled.    */
+DECL|method|terminate (int status, String msg)
+specifier|public
+specifier|static
+name|void
+name|terminate
+parameter_list|(
+name|int
+name|status
+parameter_list|,
+name|String
+name|msg
+parameter_list|)
+throws|throws
+name|ExitException
+block|{
+name|terminate
+argument_list|(
+operator|new
+name|ExitException
+argument_list|(
+name|status
+argument_list|,
+name|msg
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Forcibly terminates the currently running Java virtual machine.    * @param status status code    * @throws HaltException if {@link Runtime#halt(int)} is disabled.    */
 DECL|method|halt (int status)
 specifier|public
 specifier|static
@@ -598,7 +943,80 @@ name|halt
 argument_list|(
 name|status
 argument_list|,
-literal|"HaltException"
+literal|""
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Forcibly terminates the currently running Java virtual machine.    * @param status status code    * @param message message    * @throws HaltException if {@link Runtime#halt(int)} is disabled.    */
+DECL|method|halt (int status, String message)
+specifier|public
+specifier|static
+name|void
+name|halt
+parameter_list|(
+name|int
+name|status
+parameter_list|,
+name|String
+name|message
+parameter_list|)
+throws|throws
+name|HaltException
+block|{
+name|halt
+argument_list|(
+operator|new
+name|HaltException
+argument_list|(
+name|status
+argument_list|,
+name|message
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Handler for out of memory events -no attempt is made here    * to cleanly shutdown or support halt blocking; a robust    * printing of the event to stderr is all that can be done.    * @param oome out of memory event    */
+DECL|method|haltOnOutOfMemory (OutOfMemoryError oome)
+specifier|public
+specifier|static
+name|void
+name|haltOnOutOfMemory
+parameter_list|(
+name|OutOfMemoryError
+name|oome
+parameter_list|)
+block|{
+comment|//After catching an OOM java says it is undefined behavior, so don't
+comment|//even try to clean up or we can get stuck on shutdown.
+try|try
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Halting due to Out Of Memory Error..."
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|err
+parameter_list|)
+block|{
+comment|//Again we done want to exit because of logging issues.
+block|}
+name|Runtime
+operator|.
+name|getRuntime
+argument_list|()
+operator|.
+name|halt
+argument_list|(
+operator|-
+literal|1
 argument_list|)
 expr_stmt|;
 block|}

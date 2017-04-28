@@ -17,6 +17,7 @@ package|;
 end_package
 
 begin_import
+DECL|package|org.apache.hadoop.util
 import|import
 name|java
 operator|.
@@ -426,6 +427,12 @@ specifier|private
 name|CommandLine
 name|commandLine
 decl_stmt|;
+DECL|field|parseSuccessful
+specifier|private
+specifier|final
+name|boolean
+name|parseSuccessful
+decl_stmt|;
 comment|/**    * Create an options parser with the given options to parse the args.    * @param opts the options    * @param args the command line arguments    * @throws IOException     */
 DECL|method|GenericOptionsParser (Options opts, String[] args)
 specifier|public
@@ -530,6 +537,8 @@ name|conf
 operator|=
 name|conf
 expr_stmt|;
+name|parseSuccessful
+operator|=
 name|parseGeneralOptions
 argument_list|(
 name|options
@@ -586,22 +595,38 @@ return|return
 name|commandLine
 return|;
 block|}
-comment|/**    * Specify properties of each generic option    */
+comment|/**    * Query for the parse operation succeeding.    * @return true if parsing the CLI was successful    */
+DECL|method|isParseSuccessful ()
+specifier|public
+name|boolean
+name|isParseSuccessful
+parameter_list|()
+block|{
+return|return
+name|parseSuccessful
+return|;
+block|}
+comment|/**    * Specify properties of each generic option.    *<i>Important</i?: as {@link OptionBuilder} is not thread safe, subclasses    * must synchronize use on {@code OptionBuilder.class}    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
 literal|"static-access"
 argument_list|)
 DECL|method|buildGeneralOptions (Options opts)
-specifier|private
-specifier|static
-specifier|synchronized
+specifier|protected
 name|Options
 name|buildGeneralOptions
 parameter_list|(
 name|Options
 name|opts
 parameter_list|)
+block|{
+synchronized|synchronized
+init|(
+name|OptionBuilder
+operator|.
+name|class
+init|)
 block|{
 name|Option
 name|fs
@@ -853,6 +878,7 @@ expr_stmt|;
 return|return
 name|opts
 return|;
+block|}
 block|}
 comment|/**    * Modify configuration according user-specified generic options.    *    * @param line User-specified generic options    */
 DECL|method|processGeneralOptions (CommandLine line)
@@ -1482,7 +1508,7 @@ index|]
 argument_list|)
 return|;
 block|}
-comment|/**    * takes input as a comma separated list of files    * and verifies if they exist. It defaults for file:///    * if the files specified do not have a scheme.    * it returns the paths uri converted defaulting to file:///.    * So an input of  /home/user/file1,/home/user/file2 would return    * file:///home/user/file1,file:///home/user/file2.    *    * This method does not recognize wildcards.    *    * @param files the input files argument    * @return a comma-separated list of validated and qualified paths, or null    * if the input files argument is null    */
+comment|/**    * Takes input as a comma separated list of files    * and verifies if they exist. It defaults for file:///    * if the files specified do not have a scheme.    * it returns the paths uri converted defaulting to file:///.    * So an input of  /home/user/file1,/home/user/file2 would return    * file:///home/user/file1,file:///home/user/file2.    *    * This method does not recognize wildcards.    *    * @param files the input files argument    * @return a comma-separated list of validated and qualified paths, or null    * if the input files argument is null    */
 DECL|method|validateFiles (String files)
 specifier|private
 name|String
@@ -2270,10 +2296,10 @@ index|]
 argument_list|)
 return|;
 block|}
-comment|/**    * Parse the user-specified options, get the generic options, and modify    * configuration accordingly.    *    * @param opts Options to use for parsing args.    * @param args User-specified arguments    */
+comment|/**    * Parse the user-specified options, get the generic options, and modify    * configuration accordingly.    *    * @param opts Options to use for parsing args.    * @param args User-specified arguments    * @return true if the parse was successful    */
 DECL|method|parseGeneralOptions (Options opts, String[] args)
 specifier|private
-name|void
+name|boolean
 name|parseGeneralOptions
 parameter_list|(
 name|Options
@@ -2300,6 +2326,11 @@ operator|new
 name|GnuParser
 argument_list|()
 decl_stmt|;
+name|boolean
+name|parsed
+init|=
+literal|false
+decl_stmt|;
 try|try
 block|{
 name|commandLine
@@ -2322,6 +2353,10 @@ name|processGeneralOptions
 argument_list|(
 name|commandLine
 argument_list|)
+expr_stmt|;
+name|parsed
+operator|=
+literal|true
 expr_stmt|;
 block|}
 catch|catch
@@ -2359,6 +2394,9 @@ name|opts
 argument_list|)
 expr_stmt|;
 block|}
+return|return
+name|parsed
+return|;
 block|}
 comment|/**    * Print the usage message for generic command-line options supported.    *     * @param out stream to print the usage message to.    */
 DECL|method|printGenericCommandUsage (PrintStream out)

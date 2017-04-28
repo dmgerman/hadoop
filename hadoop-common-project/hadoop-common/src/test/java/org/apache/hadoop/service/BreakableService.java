@@ -30,34 +30,6 @@ name|Configuration
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|service
-operator|.
-name|AbstractService
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|service
-operator|.
-name|Service
-import|;
-end_import
-
 begin_comment
 comment|/**  * This is a service that can be configured to break on any of the lifecycle  * events, so test the failure handling of other parts of the service  * infrastructure.  *  * It retains a counter to the number of times each entry point is called -  * these counters are incremented before the exceptions are raised and  * before the superclass state methods are invoked.  *  */
 end_comment
@@ -227,6 +199,8 @@ parameter_list|,
 name|String
 name|action
 parameter_list|)
+throws|throws
+name|Exception
 block|{
 if|if
 condition|(
@@ -234,6 +208,24 @@ name|fail
 condition|)
 block|{
 throw|throw
+name|createFailureException
+argument_list|(
+name|action
+argument_list|)
+throw|;
+block|}
+block|}
+comment|/**    * Override point: create the exception to raise    * @param action action in progress    * @return the exception that will be thrown    */
+DECL|method|createFailureException (String action)
+specifier|protected
+name|Exception
+name|createFailureException
+parameter_list|(
+name|String
+name|action
+parameter_list|)
+block|{
+return|return
 operator|new
 name|BrokenLifecycleEvent
 argument_list|(
@@ -241,8 +233,7 @@ name|this
 argument_list|,
 name|action
 argument_list|)
-throw|;
-block|}
+return|;
 block|}
 annotation|@
 name|Override
@@ -286,6 +277,8 @@ specifier|protected
 name|void
 name|serviceStart
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|inc
 argument_list|(
@@ -309,6 +302,8 @@ specifier|protected
 name|void
 name|serviceStop
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|inc
 argument_list|(
@@ -373,7 +368,7 @@ operator|=
 name|failOnStop
 expr_stmt|;
 block|}
-comment|/**    * The exception explicitly raised on a failure    */
+comment|/**    * The exception explicitly raised on a failure.    */
 DECL|class|BrokenLifecycleEvent
 specifier|public
 specifier|static
@@ -383,6 +378,7 @@ extends|extends
 name|RuntimeException
 block|{
 DECL|field|state
+specifier|public
 specifier|final
 name|STATE
 name|state
