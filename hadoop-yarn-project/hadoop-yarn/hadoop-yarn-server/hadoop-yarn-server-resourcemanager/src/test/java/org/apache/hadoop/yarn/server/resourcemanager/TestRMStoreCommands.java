@@ -561,16 +561,11 @@ argument_list|(
 name|appIdPath
 argument_list|)
 expr_stmt|;
-name|assertEquals
-argument_list|(
-literal|"Application node for "
-operator|+
-name|appId
-operator|+
-literal|"should exist"
-argument_list|,
-name|appId
-argument_list|,
+for|for
+control|(
+name|String
+name|path
+range|:
 name|curatorFramework
 operator|.
 name|getChildren
@@ -580,13 +575,36 @@ name|forPath
 argument_list|(
 name|appRootPath
 argument_list|)
+control|)
+block|{
+if|if
+condition|(
+name|path
 operator|.
-name|get
+name|equals
 argument_list|(
-literal|0
+name|ZKRMStateStore
+operator|.
+name|RM_APP_ROOT_HIERARCHIES
 argument_list|)
+condition|)
+block|{
+continue|continue;
+block|}
+name|assertEquals
+argument_list|(
+literal|"Application node for "
+operator|+
+name|appId
+operator|+
+literal|" should exist"
+argument_list|,
+name|appId
+argument_list|,
+name|path
 argument_list|)
 expr_stmt|;
+block|}
 try|try
 block|{
 name|ResourceManager
@@ -617,7 +635,7 @@ name|assertTrue
 argument_list|(
 literal|"After remove app from store there should be no child nodes"
 operator|+
-literal|" in app root path"
+literal|" for application in app root path"
 argument_list|,
 name|curatorFramework
 operator|.
@@ -629,8 +647,32 @@ argument_list|(
 name|appRootPath
 argument_list|)
 operator|.
-name|isEmpty
+name|size
 argument_list|()
+operator|==
+literal|1
+operator|&&
+name|curatorFramework
+operator|.
+name|getChildren
+argument_list|()
+operator|.
+name|forPath
+argument_list|(
+name|appRootPath
+argument_list|)
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|equals
+argument_list|(
+name|ZKRMStateStore
+operator|.
+name|RM_APP_ROOT_HIERARCHIES
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
