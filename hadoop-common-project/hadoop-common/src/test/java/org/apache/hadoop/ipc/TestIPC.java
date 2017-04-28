@@ -4550,7 +4550,7 @@ name|spy
 argument_list|,
 name|timeout
 argument_list|(
-literal|100
+literal|5000
 argument_list|)
 operator|.
 name|times
