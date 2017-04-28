@@ -412,7 +412,35 @@ name|JavaSandboxLinuxContainerRuntime
 operator|.
 name|NMContainerPolicyUtils
 operator|.
-name|CHAINED_COMMAND_REGEX
+name|LOG
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|linux
+operator|.
+name|runtime
+operator|.
+name|JavaSandboxLinuxContainerRuntime
+operator|.
+name|NMContainerPolicyUtils
+operator|.
+name|MULTI_COMMAND_REGEX
 import|;
 end_import
 
@@ -2139,15 +2167,51 @@ name|void
 name|testChainedCmdRegex
 parameter_list|()
 block|{
+name|String
+index|[]
+name|multiCmds
+init|=
+block|{
+literal|"cmd1&& cmd2"
+block|,
+literal|"cmd1 || cmd2"
+block|,
+literal|"cmd1 `cmd2`"
+block|,
+literal|"cmd1 $(cmd2)"
+block|,
+literal|"cmd1; \\\n cmd2"
+block|,
+literal|"cmd1; cmd2"
+block|,
+literal|"cmd1|&cmd2"
+block|,
+literal|"cmd1|cmd2"
+block|,
+literal|"cmd1&cmd2"
+block|}
+decl_stmt|;
+name|Arrays
+operator|.
+name|stream
+argument_list|(
+name|multiCmds
+argument_list|)
+operator|.
+name|forEach
+argument_list|(
+name|cmd
+lambda|->
 name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-literal|"cmd1&& cmd2 || cmd3"
+name|cmd
 operator|.
 name|matches
 argument_list|(
-name|CHAINED_COMMAND_REGEX
+name|MULTI_COMMAND_REGEX
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2159,7 +2223,7 @@ literal|"cmd1&> logfile"
 operator|.
 name|matches
 argument_list|(
-name|CHAINED_COMMAND_REGEX
+name|MULTI_COMMAND_REGEX
 argument_list|)
 argument_list|)
 expr_stmt|;

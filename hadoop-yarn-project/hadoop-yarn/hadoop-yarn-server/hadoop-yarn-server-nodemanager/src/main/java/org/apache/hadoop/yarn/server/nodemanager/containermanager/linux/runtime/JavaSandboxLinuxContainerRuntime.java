@@ -763,9 +763,6 @@ name|DEFAULT_YARN_CONTAINER_SANDBOX
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|initializePolicyDir
-argument_list|()
-expr_stmt|;
 name|super
 operator|.
 name|initialize
@@ -1078,6 +1075,9 @@ argument_list|(
 name|CONTAINER_ID_STR
 argument_list|)
 decl_stmt|;
+name|initializePolicyDir
+argument_list|()
+expr_stmt|;
 name|Path
 name|policyFilePath
 init|=
@@ -1610,15 +1610,26 @@ name|JAVA_CMD
 operator|+
 literal|".*"
 decl_stmt|;
-DECL|field|CHAINED_COMMAND_REGEX
+DECL|field|MULTI_COMMAND_REGEX
 specifier|static
 specifier|final
 name|String
-name|CHAINED_COMMAND_REGEX
+name|MULTI_COMMAND_REGEX
 init|=
-literal|"^.*(&&.+$)|(\\|\\|.+$).*$"
+literal|"(?s).*("
+operator|+
+comment|//command read as single line
+literal|"(&[^>]|&&)|(\\|{1,2})|(\\|&)|"
+operator|+
+comment|//Matches '&','&&','|','||' and '|&'
+literal|"(`[^`]+`)|(\\$\\([^)]+\\))|"
+operator|+
+comment|//Matches occurrences of $() or ``
+literal|"(;)"
+operator|+
+comment|//Matches end of statement ';'
+literal|").*"
 decl_stmt|;
-comment|//Matches any occurrences of '||' or '&&'
 DECL|field|CLEAN_CMD_REGEX
 specifier|static
 specifier|final
@@ -2039,7 +2050,7 @@ name|command
 operator|.
 name|matches
 argument_list|(
-name|CHAINED_COMMAND_REGEX
+name|MULTI_COMMAND_REGEX
 argument_list|)
 condition|)
 block|{
