@@ -2104,6 +2104,21 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Add Erasure coding policies.    *    * @param policies The user defined ec policy list to add.    * @return Return the response list of adding operations.    * @throws IOException    */
+annotation|@
+name|AtMostOnce
+DECL|method|addErasureCodingPolicies ( ErasureCodingPolicy[] policies)
+name|AddingECPolicyResponse
+index|[]
+name|addErasureCodingPolicies
+parameter_list|(
+name|ErasureCodingPolicy
+index|[]
+name|policies
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Get the erasure coding policies loaded in Namenode    *    * @throws IOException    */
 annotation|@
 name|Idempotent

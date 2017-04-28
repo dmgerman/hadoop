@@ -127,12 +127,6 @@ specifier|final
 class|class
 name|ErasureCodingPolicy
 block|{
-DECL|field|name
-specifier|private
-specifier|final
-name|String
-name|name
-decl_stmt|;
 DECL|field|schema
 specifier|private
 specifier|final
@@ -145,9 +139,13 @@ specifier|final
 name|int
 name|cellSize
 decl_stmt|;
+DECL|field|name
+specifier|private
+name|String
+name|name
+decl_stmt|;
 DECL|field|id
 specifier|private
-specifier|final
 name|byte
 name|id
 decl_stmt|;
@@ -250,7 +248,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|composePolicyName (ECSchema schema, int cellSize)
-specifier|private
+specifier|public
 specifier|static
 name|String
 name|composePolicyName
@@ -310,6 +308,22 @@ block|{
 return|return
 name|name
 return|;
+block|}
+DECL|method|setName (String name)
+specifier|public
+name|void
+name|setName
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+block|{
+name|this
+operator|.
+name|name
+operator|=
+name|name
+expr_stmt|;
 block|}
 DECL|method|getSchema ()
 specifier|public
@@ -379,6 +393,22 @@ block|{
 return|return
 name|id
 return|;
+block|}
+DECL|method|setId (byte id)
+specifier|public
+name|void
+name|setId
+parameter_list|(
+name|byte
+name|id
+parameter_list|)
+block|{
+name|this
+operator|.
+name|id
+operator|=
+name|id
+expr_stmt|;
 block|}
 annotation|@
 name|Override

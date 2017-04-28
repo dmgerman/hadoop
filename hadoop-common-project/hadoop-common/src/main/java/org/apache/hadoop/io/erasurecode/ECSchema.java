@@ -739,6 +739,7 @@ name|toString
 argument_list|()
 return|;
 block|}
+comment|// Todo: Further use `extraOptions` to compare ECSchemas
 annotation|@
 name|Override
 DECL|method|equals (Object o)

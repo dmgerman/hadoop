@@ -268,8 +268,12 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-operator|new
 name|ErasureCodingPolicyManager
+operator|.
+name|getInstance
+argument_list|()
+operator|.
+name|init
 argument_list|(
 name|conf
 argument_list|)
@@ -333,12 +337,18 @@ expr_stmt|;
 name|ErasureCodingPolicyManager
 name|manager
 init|=
-operator|new
 name|ErasureCodingPolicyManager
+operator|.
+name|getInstance
+argument_list|()
+decl_stmt|;
+name|manager
+operator|.
+name|init
 argument_list|(
 name|conf
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|assertEquals
 argument_list|(
 literal|"Incorrect number of enabled policies"
@@ -661,12 +671,18 @@ expr_stmt|;
 name|ErasureCodingPolicyManager
 name|manager
 init|=
-operator|new
 name|ErasureCodingPolicyManager
+operator|.
+name|getInstance
+argument_list|()
+decl_stmt|;
+name|manager
+operator|.
+name|init
 argument_list|(
 name|conf
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 comment|// Check that returned values are unique
 name|Set
 argument_list|<
