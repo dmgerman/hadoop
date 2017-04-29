@@ -4453,11 +4453,7 @@ name|void
 name|hflush
 parameter_list|()
 block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|()
-throw|;
+comment|// not supported yet
 block|}
 annotation|@
 name|Override
@@ -4467,11 +4463,7 @@ name|void
 name|hsync
 parameter_list|()
 block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|()
-throw|;
+comment|// not supported yet
 block|}
 annotation|@
 name|Override
