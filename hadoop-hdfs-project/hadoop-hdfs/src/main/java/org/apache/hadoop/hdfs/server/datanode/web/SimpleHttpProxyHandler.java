@@ -917,9 +917,17 @@ name|Throwable
 name|cause
 parameter_list|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Proxy for "
 operator|+
@@ -930,6 +938,7 @@ argument_list|,
 name|cause
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|proxiedChannel
