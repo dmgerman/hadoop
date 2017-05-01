@@ -171,24 +171,6 @@ specifier|private
 name|ReservationAgent
 name|planner
 decl_stmt|;
-DECL|field|GREEDY_FAVOR_EARLY_ALLOCATION
-specifier|public
-specifier|final
-specifier|static
-name|String
-name|GREEDY_FAVOR_EARLY_ALLOCATION
-init|=
-literal|"yarn.resourcemanager.reservation-system.favor-early-allocation"
-decl_stmt|;
-DECL|field|DEFAULT_GREEDY_FAVOR_EARLY_ALLOCATION
-specifier|public
-specifier|final
-specifier|static
-name|boolean
-name|DEFAULT_GREEDY_FAVOR_EARLY_ALLOCATION
-init|=
-literal|true
-decl_stmt|;
 DECL|field|allocateLeft
 specifier|private
 name|boolean
@@ -216,7 +198,7 @@ name|conf
 operator|.
 name|getBoolean
 argument_list|(
-name|GREEDY_FAVOR_EARLY_ALLOCATION
+name|FAVOR_EARLY_ALLOCATION
 argument_list|,
 name|DEFAULT_GREEDY_FAVOR_EARLY_ALLOCATION
 argument_list|)
@@ -234,7 +216,7 @@ literal|"Initializing the GreedyReservationAgent to favor \"early\""
 operator|+
 literal|" (left) allocations (controlled by parameter: "
 operator|+
-name|GREEDY_FAVOR_EARLY_ALLOCATION
+name|FAVOR_EARLY_ALLOCATION
 operator|+
 literal|")"
 argument_list|)
@@ -250,7 +232,7 @@ literal|"Initializing the GreedyReservationAgent to favor \"late\""
 operator|+
 literal|" (right) allocations (controlled by parameter: "
 operator|+
-name|GREEDY_FAVOR_EARLY_ALLOCATION
+name|FAVOR_EARLY_ALLOCATION
 operator|+
 literal|")"
 argument_list|)
@@ -262,7 +244,7 @@ operator|new
 name|IterativePlanner
 argument_list|(
 operator|new
-name|StageEarliestStartByJobArrival
+name|StageExecutionIntervalUnconstrained
 argument_list|()
 argument_list|,
 operator|new

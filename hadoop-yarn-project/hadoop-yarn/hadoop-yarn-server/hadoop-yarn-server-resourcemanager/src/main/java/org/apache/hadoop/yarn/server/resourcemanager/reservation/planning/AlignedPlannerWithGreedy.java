@@ -187,6 +187,13 @@ name|SMOOTHNESS_FACTOR
 init|=
 literal|"yarn.resourcemanager.reservation-system.smoothness-factor"
 decl_stmt|;
+DECL|field|allocateLeft
+specifier|private
+name|boolean
+name|allocateLeft
+init|=
+literal|false
+decl_stmt|;
 comment|// Log
 DECL|field|LOG
 specifier|private
@@ -215,7 +222,7 @@ DECL|method|AlignedPlannerWithGreedy ()
 specifier|public
 name|AlignedPlannerWithGreedy
 parameter_list|()
-block|{   }
+block|{    }
 annotation|@
 name|Override
 DECL|method|init (Configuration conf)
@@ -239,6 +246,17 @@ argument_list|,
 name|DEFAULT_SMOOTHNESS_FACTOR
 argument_list|)
 decl_stmt|;
+name|allocateLeft
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|FAVOR_EARLY_ALLOCATION
+argument_list|,
+name|DEFAULT_GREEDY_FAVOR_EARLY_ALLOCATION
+argument_list|)
+expr_stmt|;
 comment|// List of algorithms
 name|List
 argument_list|<
@@ -261,16 +279,18 @@ operator|new
 name|IterativePlanner
 argument_list|(
 operator|new
-name|StageEarliestStartByDemand
+name|StageExecutionIntervalByDemand
 argument_list|()
 argument_list|,
 operator|new
 name|StageAllocatorLowCostAligned
 argument_list|(
 name|smoothnessFactor
+argument_list|,
+name|allocateLeft
 argument_list|)
 argument_list|,
-literal|false
+name|allocateLeft
 argument_list|)
 decl_stmt|;
 name|listAlg
@@ -288,14 +308,16 @@ operator|new
 name|IterativePlanner
 argument_list|(
 operator|new
-name|StageEarliestStartByJobArrival
+name|StageExecutionIntervalUnconstrained
 argument_list|()
 argument_list|,
 operator|new
-name|StageAllocatorGreedy
-argument_list|()
+name|StageAllocatorGreedyRLE
+argument_list|(
+name|allocateLeft
+argument_list|)
 argument_list|,
-literal|false
+name|allocateLeft
 argument_list|)
 decl_stmt|;
 name|listAlg

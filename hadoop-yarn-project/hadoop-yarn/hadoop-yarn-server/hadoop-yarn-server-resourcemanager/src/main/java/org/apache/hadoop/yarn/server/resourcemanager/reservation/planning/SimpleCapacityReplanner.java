@@ -293,7 +293,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This (re)planner scan a period of time from now to a maximum time window (or  * the end of the last session, whichever comes first) checking the overall  * capacity is not violated.  *   * It greedily removes sessions in reversed order of acceptance (latest accepted  * is the first removed).  */
+comment|/**  * This (re)planner scan a period of time from now to a maximum time window (or  * the end of the last session, whichever comes first) checking the overall  * capacity is not violated.  *  * It greedily removes sessions in reversed order of acceptance (latest accepted  * is the first removed).  */
 end_comment
 
 begin_class

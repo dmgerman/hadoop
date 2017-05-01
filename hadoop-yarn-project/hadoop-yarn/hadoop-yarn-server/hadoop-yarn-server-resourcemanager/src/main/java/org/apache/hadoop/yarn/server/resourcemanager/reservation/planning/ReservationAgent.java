@@ -126,7 +126,25 @@ specifier|public
 interface|interface
 name|ReservationAgent
 block|{
-comment|/**    * Create a reservation for the user that abides by the specified contract    *     * @param reservationId the identifier of the reservation to be created.    * @param user the user who wants to create the reservation    * @param plan the Plan to which the reservation must be fitted    * @param contract encapsulates the resources the user requires for his    *          session    *     * @return whether the create operation was successful or not    * @throws PlanningException if the session cannot be fitted into the plan    */
+comment|/**    * Constant defining the preferential treatment of time for equally valid    * allocations.    */
+DECL|field|FAVOR_EARLY_ALLOCATION
+specifier|final
+specifier|static
+name|String
+name|FAVOR_EARLY_ALLOCATION
+init|=
+literal|"yarn.resourcemanager.reservation-system.favor-early-allocation"
+decl_stmt|;
+comment|/**    * By default favor early allocations.    */
+DECL|field|DEFAULT_GREEDY_FAVOR_EARLY_ALLOCATION
+specifier|final
+specifier|static
+name|boolean
+name|DEFAULT_GREEDY_FAVOR_EARLY_ALLOCATION
+init|=
+literal|true
+decl_stmt|;
+comment|/**    * Create a reservation for the user that abides by the specified contract    *    * @param reservationId the identifier of the reservation to be created.    * @param user the user who wants to create the reservation    * @param plan the Plan to which the reservation must be fitted    * @param contract encapsulates the resources the user requires for his    *          session    *    * @return whether the create operation was successful or not    * @throws PlanningException if the session cannot be fitted into the plan    */
 DECL|method|createReservation (ReservationId reservationId, String user, Plan plan, ReservationDefinition contract)
 specifier|public
 name|boolean
@@ -147,7 +165,7 @@ parameter_list|)
 throws|throws
 name|PlanningException
 function_decl|;
-comment|/**    * Update a reservation for the user that abides by the specified contract    *     * @param reservationId the identifier of the reservation to be updated    * @param user the user who wants to create the session    * @param plan the Plan to which the reservation must be fitted    * @param contract encapsulates the resources the user requires for his    *          reservation    *     * @return whether the update operation was successful or not    * @throws PlanningException if the reservation cannot be fitted into the plan    */
+comment|/**    * Update a reservation for the user that abides by the specified contract    *    * @param reservationId the identifier of the reservation to be updated    * @param user the user who wants to create the session    * @param plan the Plan to which the reservation must be fitted    * @param contract encapsulates the resources the user requires for his    *          reservation    *    * @return whether the update operation was successful or not    * @throws PlanningException if the reservation cannot be fitted into the plan    */
 DECL|method|updateReservation (ReservationId reservationId, String user, Plan plan, ReservationDefinition contract)
 specifier|public
 name|boolean
@@ -168,7 +186,7 @@ parameter_list|)
 throws|throws
 name|PlanningException
 function_decl|;
-comment|/**    * Delete an user reservation    *     * @param reservationId the identifier of the reservation to be deleted    * @param user the user who wants to create the reservation    * @param plan the Plan to which the session must be fitted    *     * @return whether the delete operation was successful or not    * @throws PlanningException if the reservation cannot be fitted into the plan    */
+comment|/**    * Delete an user reservation    *    * @param reservationId the identifier of the reservation to be deleted    * @param user the user who wants to create the reservation    * @param plan the Plan to which the session must be fitted    *    * @return whether the delete operation was successful or not    * @throws PlanningException if the reservation cannot be fitted into the plan    */
 DECL|method|deleteReservation (ReservationId reservationId, String user, Plan plan)
 specifier|public
 name|boolean

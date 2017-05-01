@@ -80,20 +80,60 @@ name|Plan
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|reservation
+operator|.
+name|RLESparseResourceAllocation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|reservation
+operator|.
+name|ReservationInterval
+import|;
+end_import
+
 begin_comment
-comment|/**  * Interface for setting the earliest start time of a stage in IterativePlanner.  */
+comment|/**  * An auxiliary class used to compute the time interval in which the stage can  * be allocated resources by {@link IterativePlanner}.  */
 end_comment
 
 begin_interface
-DECL|interface|StageEarliestStart
+DECL|interface|StageExecutionInterval
 specifier|public
 interface|interface
-name|StageEarliestStart
+name|StageExecutionInterval
 block|{
-comment|/**    * Computes the earliest allowed starting time for a given stage.    *    * @param plan the Plan to which the reservation must be fitted    * @param reservation the job contract    * @param index the index of the stage in the job contract    * @param currentReservationStage the stage    * @param stageDeadline the deadline of the stage set by the two phase    *          planning algorithm    *    * @return the earliest allowed starting time for the stage.    */
-DECL|method|setEarliestStartTime (Plan plan, ReservationDefinition reservation, int index, ReservationRequest currentReservationStage, long stageDeadline)
-name|long
-name|setEarliestStartTime
+comment|/**    * Computes the earliest allowed starting time for a given stage.    *    * @param plan the Plan to which the reservation must be fitted    * @param reservation the job contract    * @param currentReservationStage the stage    * @param allocateLeft is the job allocated from left to right    * @param allocations Existing resource assignments for the job    * @return the time interval in which the stage can get resources.    */
+DECL|method|computeExecutionInterval (Plan plan, ReservationDefinition reservation, ReservationRequest currentReservationStage, boolean allocateLeft, RLESparseResourceAllocation allocations)
+name|ReservationInterval
+name|computeExecutionInterval
 parameter_list|(
 name|Plan
 name|plan
@@ -101,14 +141,14 @@ parameter_list|,
 name|ReservationDefinition
 name|reservation
 parameter_list|,
-name|int
-name|index
-parameter_list|,
 name|ReservationRequest
 name|currentReservationStage
 parameter_list|,
-name|long
-name|stageDeadline
+name|boolean
+name|allocateLeft
+parameter_list|,
+name|RLESparseResourceAllocation
+name|allocations
 parameter_list|)
 function_decl|;
 block|}

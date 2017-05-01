@@ -180,8 +180,8 @@ specifier|public
 interface|interface
 name|StageAllocator
 block|{
-comment|/**    * Computes the allocation of a stage inside a defined time interval.    *    * @param plan the Plan to which the reservation must be fitted    * @param planLoads a 'dirty' read of the plan loads at each time    * @param planModifications the allocations performed by the planning    *          algorithm which are not yet reflected by plan    * @param rr the stage    * @param stageEarliestStart the arrival time (earliest starting time) set for    *          the stage by the two phase planning algorithm    * @param stageDeadline the deadline of the stage set by the two phase    *          planning algorithm    *    * @return The computed allocation (or null if the stage could not be    *         allocated)    * @throws PlanningException    */
-DECL|method|computeStageAllocation (Plan plan, Map<Long, Resource> planLoads, RLESparseResourceAllocation planModifications, ReservationRequest rr, long stageEarliestStart, long stageDeadline, String user, ReservationId oldId)
+comment|/**    * Computes the allocation of a stage inside a defined time interval.    *    * @param plan the Plan to which the reservation must be fitted    * @param planLoads a 'dirty' read of the plan loads at each time    * @param planModifications the allocations performed by the planning    *          algorithm which are not yet reflected by plan    * @param rr the stage    * @param stageArrival the arrival time (earliest starting time) set for    *          the stage by the two phase planning algorithm    * @param stageDeadline the deadline of the stage set by the two phase    *          planning algorithm    * @param user name of the user    * @param oldId identifier of the old reservation    *    * @return The computed allocation (or null if the stage could not be    *         allocated)    * @throws PlanningException    */
+DECL|method|computeStageAllocation (Plan plan, RLESparseResourceAllocation planLoads, RLESparseResourceAllocation planModifications, ReservationRequest rr, long stageArrival, long stageDeadline, String user, ReservationId oldId)
 name|Map
 argument_list|<
 name|ReservationInterval
@@ -193,12 +193,7 @@ parameter_list|(
 name|Plan
 name|plan
 parameter_list|,
-name|Map
-argument_list|<
-name|Long
-argument_list|,
-name|Resource
-argument_list|>
+name|RLESparseResourceAllocation
 name|planLoads
 parameter_list|,
 name|RLESparseResourceAllocation
@@ -208,7 +203,7 @@ name|ReservationRequest
 name|rr
 parameter_list|,
 name|long
-name|stageEarliestStart
+name|stageArrival
 parameter_list|,
 name|long
 name|stageDeadline

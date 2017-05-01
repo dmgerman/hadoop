@@ -154,7 +154,9 @@ name|resourcemanager
 operator|.
 name|reservation
 operator|.
-name|ReservationInterval
+name|RLESparseResourceAllocation
+operator|.
+name|RLEOperator
 import|;
 end_import
 
@@ -174,9 +176,7 @@ name|resourcemanager
 operator|.
 name|reservation
 operator|.
-name|RLESparseResourceAllocation
-operator|.
-name|RLEOperator
+name|ReservationInterval
 import|;
 end_import
 
@@ -234,7 +234,7 @@ name|StageAllocator
 block|{
 annotation|@
 name|Override
-DECL|method|computeStageAllocation (Plan plan, Map<Long, Resource> planLoads, RLESparseResourceAllocation planModifications, ReservationRequest rr, long stageEarliestStart, long stageDeadline, String user, ReservationId oldId)
+DECL|method|computeStageAllocation (Plan plan, RLESparseResourceAllocation planLoads, RLESparseResourceAllocation planModifications, ReservationRequest rr, long stageEarliestStart, long stageDeadline, String user, ReservationId oldId)
 specifier|public
 name|Map
 argument_list|<
@@ -247,12 +247,7 @@ parameter_list|(
 name|Plan
 name|plan
 parameter_list|,
-name|Map
-argument_list|<
-name|Long
-argument_list|,
-name|Resource
-argument_list|>
+name|RLESparseResourceAllocation
 name|planLoads
 parameter_list|,
 name|RLESparseResourceAllocation

@@ -266,6 +266,18 @@ name|long
 name|end
 parameter_list|)
 function_decl|;
+comment|/**    * Get the cumulative load over a time interval.    *    * @param start Start of the time interval.    * @param end End of the time interval.    * @return RLE sparse allocation.    */
+DECL|method|getCumulativeLoadOverTime (long start, long end)
+name|RLESparseResourceAllocation
+name|getCumulativeLoadOverTime
+parameter_list|(
+name|long
+name|start
+parameter_list|,
+name|long
+name|end
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 
