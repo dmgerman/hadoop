@@ -1990,9 +1990,11 @@ name|ONE
 argument_list|)
 return|;
 block|}
+comment|/**    * {@inheritDoc}    */
 annotation|@
-name|VisibleForTesting
+name|Override
 DECL|method|getContainer (String containerName)
+specifier|public
 name|Pipeline
 name|getContainer
 parameter_list|(

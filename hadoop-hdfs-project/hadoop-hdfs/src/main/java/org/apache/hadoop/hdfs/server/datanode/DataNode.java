@@ -1210,6 +1210,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
+name|container
+operator|.
+name|ozoneimpl
+operator|.
+name|OzoneContainer
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|AutoCloseableLock
@@ -8829,6 +8847,23 @@ argument_list|,
 name|blockPoolId
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getOzoneContainerManager ()
+specifier|public
+name|OzoneContainer
+name|getOzoneContainerManager
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|datanodeStateMachine
+operator|.
+name|getContainer
+argument_list|()
+return|;
 block|}
 comment|/**    * After the block pool has contacted the NN, registers that block pool    * with the secret manager, updating it with the secrets provided by the NN.    * @throws IOException on error    */
 DECL|method|registerBlockPoolWithSecretManager ( DatanodeRegistration bpRegistration, String blockPoolId)

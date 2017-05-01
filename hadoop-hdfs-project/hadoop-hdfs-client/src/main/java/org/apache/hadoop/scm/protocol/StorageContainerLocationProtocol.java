@@ -128,6 +128,17 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Ask SCM the location of the container. SCM responds with a group of    * nodes where this container and its replicas are located.    *    * @param containerName - Name of the container.    * @return Pipeline - the pipeline where container locates.    * @throws IOException    */
+DECL|method|getContainer (String containerName)
+name|Pipeline
+name|getContainer
+parameter_list|(
+name|String
+name|containerName
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

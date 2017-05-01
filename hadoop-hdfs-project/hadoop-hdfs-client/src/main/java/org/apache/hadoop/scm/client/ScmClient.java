@@ -98,13 +98,16 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Delets an existing container.    * @param pipeline - Pipeline that represents the container.    * @throws IOException    */
-DECL|method|deleteContainer (Pipeline pipeline)
+comment|/**    * Delets an existing container.    * @param pipeline - Pipeline that represents the container.    * @param force - true to forcibly delete the container.    * @throws IOException    */
+DECL|method|deleteContainer (Pipeline pipeline, boolean force)
 name|void
 name|deleteContainer
 parameter_list|(
 name|Pipeline
 name|pipeline
+parameter_list|,
+name|boolean
+name|force
 parameter_list|)
 throws|throws
 name|IOException

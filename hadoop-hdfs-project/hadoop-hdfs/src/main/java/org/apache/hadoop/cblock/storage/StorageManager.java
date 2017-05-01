@@ -980,6 +980,8 @@ operator|.
 name|deleteContainer
 argument_list|(
 name|pipeline
+argument_list|,
+name|force
 argument_list|)
 expr_stmt|;
 block|}

@@ -52,21 +52,11 @@ end_import
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|slf4j
+name|io
 operator|.
-name|Logger
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|slf4j
-operator|.
-name|LoggerFactory
+name|IOException
 import|;
 end_import
 
@@ -76,7 +66,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|IOException
+name|PrintStream
 import|;
 end_import
 
@@ -96,21 +86,23 @@ specifier|private
 name|ScmClient
 name|scmClient
 decl_stmt|;
-DECL|field|LOG
+DECL|field|out
 specifier|protected
-specifier|static
-specifier|final
-name|Logger
-name|LOG
+name|PrintStream
+name|out
 init|=
-name|LoggerFactory
+name|System
 operator|.
-name|getLogger
-argument_list|(
-name|OzoneCommandHandler
+name|out
+decl_stmt|;
+DECL|field|err
+specifier|protected
+name|PrintStream
+name|err
+init|=
+name|System
 operator|.
-name|class
-argument_list|)
+name|err
 decl_stmt|;
 comment|/**    * Constructs a handler object.    */
 DECL|method|OzoneCommandHandler (ScmClient scmClient)
@@ -137,6 +129,70 @@ block|{
 return|return
 name|scmClient
 return|;
+block|}
+comment|/**    * Sets customized output stream to redirect the stdout to somewhere else.    * @param out    */
+DECL|method|setOut (PrintStream out)
+specifier|public
+name|void
+name|setOut
+parameter_list|(
+name|PrintStream
+name|out
+parameter_list|)
+block|{
+name|this
+operator|.
+name|out
+operator|=
+name|out
+expr_stmt|;
+block|}
+comment|/**    * Sets customized error stream to redirect the stderr to somewhere else.    * @param err    */
+DECL|method|setErr (PrintStream err)
+specifier|public
+name|void
+name|setErr
+parameter_list|(
+name|PrintStream
+name|err
+parameter_list|)
+block|{
+name|this
+operator|.
+name|err
+operator|=
+name|err
+expr_stmt|;
+block|}
+DECL|method|logOut (String msg, String ... variable)
+specifier|public
+name|void
+name|logOut
+parameter_list|(
+name|String
+name|msg
+parameter_list|,
+name|String
+modifier|...
+name|variable
+parameter_list|)
+block|{
+name|this
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+name|msg
+argument_list|,
+name|variable
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Executes the Client command.    *    * @param cmd - CommandLine.    * @throws IOException throws exception.    */
 DECL|method|execute (CommandLine cmd)

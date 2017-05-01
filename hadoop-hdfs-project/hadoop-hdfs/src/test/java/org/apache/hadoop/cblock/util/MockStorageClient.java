@@ -149,13 +149,16 @@ block|}
 comment|/**    * As this is only a testing class, with all "container" maintained in    * memory, no need to really delete anything for now.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|deleteContainer (Pipeline pipeline)
+DECL|method|deleteContainer (Pipeline pipeline, boolean force)
 specifier|public
 name|void
 name|deleteContainer
 parameter_list|(
 name|Pipeline
 name|pipeline
+parameter_list|,
+name|boolean
+name|force
 parameter_list|)
 throws|throws
 name|IOException

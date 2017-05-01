@@ -287,11 +287,9 @@ argument_list|(
 name|PIPELINE_ID
 argument_list|)
 decl_stmt|;
-name|LOG
-operator|.
-name|info
+name|logOut
 argument_list|(
-literal|"Create container : {}"
+literal|"Creating container : %s."
 argument_list|,
 name|pipelineID
 argument_list|)
@@ -304,11 +302,9 @@ argument_list|(
 name|pipelineID
 argument_list|)
 expr_stmt|;
-name|LOG
-operator|.
-name|debug
+name|logOut
 argument_list|(
-literal|"Container creation returned"
+literal|"Container created."
 argument_list|)
 expr_stmt|;
 block|}

@@ -22,6 +22,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -867,6 +881,20 @@ name|manager
 operator|.
 name|getContainerReports
 argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getContainerManager ()
+specifier|public
+name|ContainerManager
+name|getContainerManager
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|manager
 return|;
 block|}
 block|}
