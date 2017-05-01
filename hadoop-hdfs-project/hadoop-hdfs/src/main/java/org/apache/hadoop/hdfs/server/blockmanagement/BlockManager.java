@@ -10163,7 +10163,7 @@ return|return
 name|datanodeDescriptors
 return|;
 block|}
-comment|/**    * Parse the data-nodes the block belongs to and choose a certain number    * from them to be the recovery sources.    *    * We prefer nodes that are in DECOMMISSION_INPROGRESS state to other nodes    * since the former do not have write traffic and hence are less busy.    * We do not use already decommissioned nodes as a source.    * Otherwise we randomly choose nodes among those that did not reach their    * replication limits. However, if the recovery work is of the highest    * priority and all nodes have reached their replication limits, we will    * randomly choose the desired number of nodes despite the replication limit.    *    * In addition form a list of all nodes containing the block    * and calculate its replication numbers.    *    * @param block Block for which a replication source is needed    * @param containingNodes List to be populated with nodes found to contain    *                        the given block    * @param nodesContainingLiveReplicas List to be populated with nodes found    *                                    to contain live replicas of the given    *                                    block    * @param numReplicas NumberReplicas instance to be initialized with the    *                    counts of live, corrupt, excess, and decommissioned    *                    replicas of the given block.    * @param liveBlockIndices List to be populated with indices of healthy    *                         blocks in a striped block group    * @param priority integer representing replication priority of the given    *                 block    * @return the array of DatanodeDescriptor of the chosen nodes from which to    *         recover the given block    */
+comment|/**    * Parse the data-nodes the block belongs to and choose a certain number    * from them to be the recovery sources.    *    * We prefer nodes that are in DECOMMISSION_INPROGRESS state to other nodes    * since the former do not have write traffic and hence are less busy.    * We do not use already decommissioned nodes as a source, unless there is    * no other choice.    * Otherwise we randomly choose nodes among those that did not reach their    * replication limits. However, if the recovery work is of the highest    * priority and all nodes have reached their replication limits, we will    * randomly choose the desired number of nodes despite the replication limit.    *    * In addition form a list of all nodes containing the block    * and calculate its replication numbers.    *    * @param block Block for which a replication source is needed    * @param containingNodes List to be populated with nodes found to contain    *                        the given block    * @param nodesContainingLiveReplicas List to be populated with nodes found    *                                    to contain live replicas of the given    *                                    block    * @param numReplicas NumberReplicas instance to be initialized with the    *                    counts of live, corrupt, excess, and decommissioned    *                    replicas of the given block.    * @param liveBlockIndices List to be populated with indices of healthy    *                         blocks in a striped block group    * @param priority integer representing replication priority of the given    *                 block    * @return the array of DatanodeDescriptor of the chosen nodes from which to    *         recover the given block    */
 annotation|@
 name|VisibleForTesting
 DECL|method|chooseSourceDatanodes (BlockInfo block, List<DatanodeDescriptor> containingNodes, List<DatanodeStorageInfo> nodesContainingLiveReplicas, NumberReplicas numReplicas, List<Byte> liveBlockIndices, int priority)
@@ -10233,6 +10233,11 @@ name|block
 operator|.
 name|isStriped
 argument_list|()
+decl_stmt|;
+name|DatanodeDescriptor
+name|decommissionedSrc
+init|=
+literal|null
 decl_stmt|;
 name|BitSet
 name|bitSet
@@ -10341,8 +10346,8 @@ condition|)
 block|{
 continue|continue;
 block|}
-comment|// never use already decommissioned nodes, maintenance node not
-comment|// suitable for read or unknown state replicas.
+comment|// Never use maintenance node not suitable for read
+comment|// or unknown state replicas.
 if|if
 condition|(
 name|state
@@ -10353,15 +10358,43 @@ name|state
 operator|==
 name|StoredReplicaState
 operator|.
-name|DECOMMISSIONED
-operator|||
+name|MAINTENANCE_NOT_FOR_READ
+condition|)
+block|{
+continue|continue;
+block|}
+comment|// Save the live decommissioned replica in case we need it. Such replicas
+comment|// are normally not used for replication, but if nothing else is
+comment|// available, one can be selected as a source.
+if|if
+condition|(
 name|state
 operator|==
 name|StoredReplicaState
 operator|.
-name|MAINTENANCE_NOT_FOR_READ
+name|DECOMMISSIONED
 condition|)
 block|{
+if|if
+condition|(
+name|decommissionedSrc
+operator|==
+literal|null
+operator|||
+name|ThreadLocalRandom
+operator|.
+name|current
+argument_list|()
+operator|.
+name|nextBoolean
+argument_list|()
+condition|)
+block|{
+name|decommissionedSrc
+operator|=
+name|node
+expr_stmt|;
+block|}
 continue|continue;
 block|}
 if|if
@@ -10532,6 +10565,35 @@ name|node
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|// Pick a live decommissioned replica, if nothing else is available.
+if|if
+condition|(
+operator|!
+name|isStriped
+operator|&&
+name|nodesContainingLiveReplicas
+operator|.
+name|isEmpty
+argument_list|()
+operator|&&
+name|srcNodes
+operator|.
+name|isEmpty
+argument_list|()
+operator|&&
+name|decommissionedSrc
+operator|!=
+literal|null
+condition|)
+block|{
+name|srcNodes
+operator|.
+name|add
+argument_list|(
+name|decommissionedSrc
+argument_list|)
+expr_stmt|;
 block|}
 return|return
 name|srcNodes
@@ -14661,6 +14723,15 @@ condition|)
 block|{
 name|curReplicaDelta
 operator|=
+operator|(
+name|node
+operator|.
+name|isDecommissioned
+argument_list|()
+operator|)
+condition|?
+literal|0
+else|:
 literal|1
 expr_stmt|;
 if|if

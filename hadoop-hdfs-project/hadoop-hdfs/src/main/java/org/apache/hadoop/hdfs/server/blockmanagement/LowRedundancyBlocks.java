@@ -1116,13 +1116,8 @@ name|oldPri
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|oldPri
-operator|!=
-name|curPri
-condition|)
-block|{
+comment|// oldPri is mostly correct, but not always. If not found with oldPri,
+comment|// other levels will be searched until the block is found& removed.
 name|remove
 argument_list|(
 name|block
@@ -1130,7 +1125,6 @@ argument_list|,
 name|oldPri
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|priorityQueues
