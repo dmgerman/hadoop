@@ -887,6 +887,17 @@ specifier|protected
 name|NNStorageRetentionManager
 name|archivalManager
 decl_stmt|;
+comment|/**    * The collection of newly added storage directories. These are partially    * formatted then later fully populated along with a VERSION file.    * For HA, the second part is done when the next checkpoint is saved.    * This set will be cleared once a VERSION file is created.    * For non-HA, a new fsimage will be locally generated along with a new    * VERSION file. This set is not used for non-HA mode.    */
+DECL|field|newDirs
+specifier|private
+name|Set
+argument_list|<
+name|StorageDirectory
+argument_list|>
+name|newDirs
+init|=
+literal|null
+decl_stmt|;
 comment|/* Used to make sure there are no concurrent checkpoints for a given txid    * The checkpoint here could be one of the following operations.    * a. checkpoint when NN is in standby.    * b. admin saveNameSpace operation.    * c. download checkpoint file from any remote checkpointer.   */
 DECL|field|currentlyCheckpointing
 specifier|private
@@ -1577,6 +1588,12 @@ throw|;
 case|case
 name|NOT_FORMATTED
 case|:
+comment|// Create a dir structure, but not the VERSION file. The presence of
+comment|// VERSION is checked in the inspector's needToSave() method and
+comment|// saveNamespace is triggered if it is absent. This will bring
+comment|// the storage state uptodate along with a new VERSION file.
+comment|// If HA is enabled, NNs start up as standby so saveNamespace is not
+comment|// triggered.
 name|LOG
 operator|.
 name|info
@@ -1604,6 +1621,45 @@ name|clearDirectory
 argument_list|()
 expr_stmt|;
 comment|// create empty currrent dir
+comment|// For non-HA, no further action is needed here, as saveNamespace will
+comment|// take care of the rest.
+if|if
+condition|(
+operator|!
+name|target
+operator|.
+name|isHaEnabled
+argument_list|()
+condition|)
+block|{
+continue|continue;
+block|}
+comment|// If HA is enabled, save the dirs to create a version file later when
+comment|// a checkpoint image is saved.
+if|if
+condition|(
+name|newDirs
+operator|==
+literal|null
+condition|)
+block|{
+name|newDirs
+operator|=
+operator|new
+name|HashSet
+argument_list|<
+name|StorageDirectory
+argument_list|>
+argument_list|()
+expr_stmt|;
+block|}
+name|newDirs
+operator|.
+name|add
+argument_list|(
+name|sd
+argument_list|)
+expr_stmt|;
 break|break;
 default|default:
 break|break;
@@ -1670,6 +1726,81 @@ argument_list|,
 name|recovery
 argument_list|)
 return|;
+block|}
+comment|/**    * Create a VERSION file in the newly added storage directories.    */
+DECL|method|initNewDirs ()
+specifier|private
+name|void
+name|initNewDirs
+parameter_list|()
+block|{
+if|if
+condition|(
+name|newDirs
+operator|==
+literal|null
+condition|)
+block|{
+return|return;
+block|}
+for|for
+control|(
+name|StorageDirectory
+name|sd
+range|:
+name|newDirs
+control|)
+block|{
+try|try
+block|{
+name|storage
+operator|.
+name|writeProperties
+argument_list|(
+name|sd
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Wrote VERSION in the new storage, "
+operator|+
+name|sd
+operator|.
+name|getCurrentDir
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+comment|// Failed to create a VERSION file. Report the error.
+name|storage
+operator|.
+name|reportErrorOnFile
+argument_list|(
+name|sd
+operator|.
+name|getVersionFile
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+name|newDirs
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|newDirs
+operator|=
+literal|null
+expr_stmt|;
 block|}
 comment|/**    * For each storage directory, performs recovery of incomplete transitions    * (eg. upgrade, rollback, checkpoint) and inserts the directory's storage    * state into the dataDirStates map.    * @param dataDirStates output of storage directory states    * @return true if there is at least one valid formatted storage directory    */
 DECL|method|recoverStorageDirs (StartupOption startOpt, NNStorage storage, Map<StorageDirectory, StorageState> dataDirStates)
@@ -6736,6 +6867,10 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Create a version file in any new storage directory.
+name|initNewDirs
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Override
