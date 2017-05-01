@@ -6008,24 +6008,6 @@ name|YarnException
 name|ex
 parameter_list|)
 block|{
-if|if
-condition|(
-name|isAppFinished
-condition|)
-block|{
-return|return
-name|printContainerLogsForFinishedApplicationWithoutNodeId
-argument_list|(
-name|request
-argument_list|,
-name|logCliHelper
-argument_list|,
-name|useRegex
-argument_list|)
-return|;
-block|}
-else|else
-block|{
 name|nodeHttpAddress
 operator|=
 name|getNodeHttpAddressFromRMWebString
@@ -6156,16 +6138,9 @@ name|result
 return|;
 block|}
 block|}
-block|}
 comment|// If the application is not in the final state,
 comment|// we will provide the NodeHttpAddress and get the container logs
 comment|// by calling NodeManager webservice.
-if|if
-condition|(
-operator|!
-name|isAppFinished
-condition|)
-block|{
 name|resultCode
 operator|=
 name|printContainerLogsFromRunningApplication
@@ -6180,23 +6155,6 @@ argument_list|,
 name|useRegex
 argument_list|)
 expr_stmt|;
-block|}
-else|else
-block|{
-comment|// If the application is in the final state, we will directly
-comment|// get the container logs from HDFS.
-name|resultCode
-operator|=
-name|printContainerLogsForFinishedApplication
-argument_list|(
-name|request
-argument_list|,
-name|logCliHelper
-argument_list|,
-name|useRegex
-argument_list|)
-expr_stmt|;
-block|}
 return|return
 name|resultCode
 return|;

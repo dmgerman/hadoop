@@ -2887,12 +2887,13 @@ operator|==
 literal|null
 condition|)
 block|{
-name|timelineClient
-operator|=
+name|TimelineClient
+name|tlClient
+init|=
 name|createTimelineClient
 argument_list|()
-expr_stmt|;
-name|timelineClient
+decl_stmt|;
+name|tlClient
 operator|.
 name|init
 argument_list|(
@@ -2900,10 +2901,19 @@ name|getConfig
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|timelineClient
+name|tlClient
 operator|.
 name|start
 argument_list|()
+expr_stmt|;
+comment|// Assign value to timeline client variable only
+comment|// when it is fully initiated. In order to avoid
+comment|// other threads to see partially initialized object.
+name|this
+operator|.
+name|timelineClient
+operator|=
+name|tlClient
 expr_stmt|;
 block|}
 block|}
