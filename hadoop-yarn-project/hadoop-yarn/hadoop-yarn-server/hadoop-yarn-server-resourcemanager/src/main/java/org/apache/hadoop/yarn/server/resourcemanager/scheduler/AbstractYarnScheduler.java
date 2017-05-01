@@ -1395,7 +1395,7 @@ name|long
 name|nmHeartbeatInterval
 decl_stmt|;
 DECL|field|EMPTY_CONTAINER_LIST
-specifier|protected
+specifier|private
 specifier|final
 specifier|static
 name|List

@@ -630,7 +630,10 @@ decl_stmt|;
 name|QueueMetrics
 name|metrics
 init|=
-name|queueMetrics
+name|QueueMetrics
+operator|.
+name|getQueueMetrics
+argument_list|()
 operator|.
 name|get
 argument_list|(
@@ -697,7 +700,10 @@ name|metrics
 argument_list|)
 expr_stmt|;
 block|}
-name|queueMetrics
+name|QueueMetrics
+operator|.
+name|getQueueMetrics
+argument_list|()
 operator|.
 name|put
 argument_list|(

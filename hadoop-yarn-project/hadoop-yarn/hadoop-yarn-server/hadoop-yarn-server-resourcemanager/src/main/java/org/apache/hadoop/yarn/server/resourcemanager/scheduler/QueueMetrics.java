@@ -1048,24 +1048,24 @@ name|void
 name|clearQueueMetrics
 parameter_list|()
 block|{
-name|queueMetrics
+name|QUEUE_METRICS
 operator|.
 name|clear
 argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Simple metrics cache to help prevent re-registrations.    */
-DECL|field|queueMetrics
-specifier|protected
-specifier|final
+DECL|field|QUEUE_METRICS
+specifier|private
 specifier|static
+specifier|final
 name|Map
 argument_list|<
 name|String
 argument_list|,
 name|QueueMetrics
 argument_list|>
-name|queueMetrics
+name|QUEUE_METRICS
 init|=
 operator|new
 name|HashMap
@@ -1076,6 +1076,23 @@ name|QueueMetrics
 argument_list|>
 argument_list|()
 decl_stmt|;
+comment|/**    * Returns the metrics cache to help prevent re-registrations.    *    * @return A string to {@link QueueMetrics} map.    */
+DECL|method|getQueueMetrics ()
+specifier|protected
+specifier|static
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|QueueMetrics
+argument_list|>
+name|getQueueMetrics
+parameter_list|()
+block|{
+return|return
+name|QUEUE_METRICS
+return|;
+block|}
 specifier|public
 specifier|synchronized
 DECL|method|forQueue (MetricsSystem ms, String queueName, Queue parent, boolean enableUserMetrics, Configuration conf)
@@ -1102,7 +1119,7 @@ block|{
 name|QueueMetrics
 name|metrics
 init|=
-name|queueMetrics
+name|QUEUE_METRICS
 operator|.
 name|get
 argument_list|(
@@ -1169,7 +1186,7 @@ name|metrics
 argument_list|)
 expr_stmt|;
 block|}
-name|queueMetrics
+name|QUEUE_METRICS
 operator|.
 name|put
 argument_list|(

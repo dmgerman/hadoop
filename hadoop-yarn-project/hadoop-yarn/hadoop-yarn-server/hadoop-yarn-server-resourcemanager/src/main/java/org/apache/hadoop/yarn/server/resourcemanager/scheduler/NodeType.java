@@ -51,12 +51,12 @@ literal|2
 argument_list|)
 block|;
 DECL|field|index
-specifier|public
+specifier|private
+specifier|final
 name|int
 name|index
 decl_stmt|;
 DECL|method|NodeType (int index)
-specifier|private
 name|NodeType
 parameter_list|(
 name|int
@@ -69,6 +69,17 @@ name|index
 operator|=
 name|index
 expr_stmt|;
+block|}
+comment|/**    * @return the index of the node type    */
+DECL|method|getIndex ()
+specifier|public
+name|int
+name|getIndex
+parameter_list|()
+block|{
+return|return
+name|index
+return|;
 block|}
 block|}
 end_enum

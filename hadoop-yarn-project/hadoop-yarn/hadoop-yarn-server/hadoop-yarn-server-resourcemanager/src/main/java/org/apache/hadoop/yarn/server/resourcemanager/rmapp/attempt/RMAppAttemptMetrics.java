@@ -880,12 +880,14 @@ name|localityStatistics
 index|[
 name|containerType
 operator|.
-name|index
+name|getIndex
+argument_list|()
 index|]
 index|[
 name|requestType
 operator|.
-name|index
+name|getIndex
+argument_list|()
 index|]
 operator|++
 expr_stmt|;
