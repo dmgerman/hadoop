@@ -46,16 +46,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -101,6 +91,28 @@ operator|.
 name|records
 operator|.
 name|BaseRecord
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|federation
+operator|.
+name|store
+operator|.
+name|records
+operator|.
+name|Query
 import|;
 end_import
 
@@ -227,10 +239,10 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get a single record from the store that matches the query.    *    * @param clazz Class of record to fetch.    * @param query Map of field names and objects to filter results.    * @return A single record matching the query. Null if there are no matching    *         records or more than one matching record in the store.    * @throws IOException If multiple records match or if the data store cannot    *           be queried.    */
+comment|/**    * Get a single record from the store that matches the query.    *    * @param clazz Class of record to fetch.    * @param query Query to filter results.    * @return A single record matching the query. Null if there are no matching    *         records or more than one matching record in the store.    * @throws IOException If multiple records match or if the data store cannot    *           be queried.    */
 annotation|@
 name|Idempotent
-DECL|method|get (Class<T> clazz, Map<String, String> query)
+DECL|method|get (Class<T> clazz, Query<T> query)
 argument_list|<
 name|T
 extends|extends
@@ -245,21 +257,19 @@ name|T
 argument_list|>
 name|clazz
 parameter_list|,
-name|Map
+name|Query
 argument_list|<
-name|String
-argument_list|,
-name|String
+name|T
 argument_list|>
 name|query
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get multiple records from the store that match a query. This method    * assumes the underlying driver does not support filtering. If the driver    * supports filtering it should overwrite this method.    *    * @param clazz Class of record to fetch.    * @param query Map of field names and objects to filter results.    * @return Records of type clazz that match the query or empty list if none    *         are found.    * @throws IOException Throws exception if unable to query the data store.    */
+comment|/**    * Get multiple records from the store that match a query. This method    * assumes the underlying driver does not support filtering. If the driver    * supports filtering it should overwrite this method.    *    * @param clazz Class of record to fetch.    * @param query Query to filter results.    * @return Records of type clazz that match the query or empty list if none    *         are found.    * @throws IOException Throws exception if unable to query the data store.    */
 annotation|@
 name|Idempotent
-DECL|method|getMultiple ( Class<T> clazz, Map<String, String> query)
+DECL|method|getMultiple ( Class<T> clazz, Query<T> query)
 argument_list|<
 name|T
 extends|extends
@@ -277,11 +287,9 @@ name|T
 argument_list|>
 name|clazz
 parameter_list|,
-name|Map
+name|Query
 argument_list|<
-name|String
-argument_list|,
-name|String
+name|T
 argument_list|>
 name|query
 parameter_list|)
@@ -378,10 +386,10 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Remove multiple records of a specific class that match a query. Requires    * the getAll implementation to fetch fresh records on each call.    *    * @param clazz Class of record to remove.    * @param filter matching filter to remove.    * @return The number of records removed.    * @throws IOException Throws exception if unable to query the data store.    */
+comment|/**    * Remove multiple records of a specific class that match a query. Requires    * the getAll implementation to fetch fresh records on each call.    *    * @param query Query to filter what to remove.    * @return The number of records removed.    * @throws IOException Throws exception if unable to query the data store.    */
 annotation|@
 name|AtMostOnce
-DECL|method|remove (Class<T> clazz, Map<String, String> filter)
+DECL|method|remove (Class<T> clazz, Query<T> query)
 argument_list|<
 name|T
 extends|extends
@@ -396,13 +404,11 @@ name|T
 argument_list|>
 name|clazz
 parameter_list|,
-name|Map
+name|Query
 argument_list|<
-name|String
-argument_list|,
-name|String
+name|T
 argument_list|>
-name|filter
+name|query
 parameter_list|)
 throws|throws
 name|IOException
