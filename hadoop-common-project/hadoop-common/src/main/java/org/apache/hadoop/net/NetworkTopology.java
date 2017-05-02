@@ -585,25 +585,18 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Error: can't add leaf node "
-operator|+
+literal|"Error: can't add leaf node {} at depth {} to topology:{}\n"
+argument_list|,
 name|NodeBase
 operator|.
 name|getPath
 argument_list|(
 name|node
 argument_list|)
-operator|+
-literal|" at depth "
-operator|+
+argument_list|,
 name|newDepth
-operator|+
-literal|" to topology:\n"
-operator|+
+argument_list|,
 name|this
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -732,9 +725,6 @@ argument_list|(
 literal|"NetworkTopology became:\n{}"
 argument_list|,
 name|this
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1006,9 +996,6 @@ argument_list|(
 literal|"NetworkTopology became:\n{}"
 argument_list|,
 name|this
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2130,19 +2117,9 @@ name|debug
 argument_list|(
 literal|"Failed to find datanode (scope=\"{}\" excludedScope=\"{}\")."
 argument_list|,
-name|String
-operator|.
-name|valueOf
-argument_list|(
 name|scope
-argument_list|)
 argument_list|,
-name|String
-operator|.
-name|valueOf
-argument_list|(
 name|excludedScope
-argument_list|)
 argument_list|)
 expr_stmt|;
 return|return
@@ -2200,9 +2177,6 @@ argument_list|,
 name|availableNodes
 argument_list|,
 name|innerNode
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|scope
 argument_list|,
