@@ -284,7 +284,29 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Rule
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|rules
+operator|.
+name|Timeout
 import|;
 end_import
 
@@ -363,6 +385,32 @@ DECL|field|fileSys
 specifier|private
 name|LocalFileSystem
 name|fileSys
+decl_stmt|;
+comment|/**    * standard test timeout: {@value}.    */
+DECL|field|DEFAULT_TEST_TIMEOUT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_TEST_TIMEOUT
+init|=
+literal|60
+operator|*
+literal|1000
+decl_stmt|;
+comment|/**    * Set the timeout for every test.    */
+annotation|@
+name|Rule
+DECL|field|testTimeout
+specifier|public
+name|Timeout
+name|testTimeout
+init|=
+operator|new
+name|Timeout
+argument_list|(
+name|DEFAULT_TEST_TIMEOUT
+argument_list|)
 decl_stmt|;
 DECL|method|cleanupFile (FileSystem fs, Path name)
 specifier|private
@@ -508,11 +556,6 @@ block|}
 comment|/**    * Test the capability of setting the working directory.    */
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|10000
-argument_list|)
 DECL|method|testWorkingDirectory ()
 specifier|public
 name|void
@@ -826,11 +869,6 @@ block|}
 comment|/**    * test Syncable interface on raw local file system    * @throws IOException    */
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|testSyncable ()
 specifier|public
 name|void
@@ -1059,11 +1097,6 @@ block|}
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|10000
-argument_list|)
 DECL|method|testCopy ()
 specifier|public
 name|void
@@ -1361,11 +1394,6 @@ block|}
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|testHomeDirectory ()
 specifier|public
 name|void
@@ -1411,11 +1439,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|testPathEscapes ()
 specifier|public
 name|void
@@ -1479,11 +1502,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|testCreateFileAndMkdirs ()
 specifier|public
 name|void
@@ -1661,11 +1679,6 @@ block|}
 comment|/** Test deleting a file, directory, and non-existent path */
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|testBasicDelete ()
 specifier|public
 name|void
@@ -1787,11 +1800,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|testStatistics ()
 specifier|public
 name|void
@@ -1844,11 +1852,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|testHasFileDescriptor ()
 specifier|public
 name|void
@@ -1926,11 +1929,6 @@ block|}
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|testListStatusWithColons ()
 specifier|public
 name|void
@@ -2126,11 +2124,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|10000
-argument_list|)
 DECL|method|testReportChecksumFailure ()
 specifier|public
 name|void
@@ -2652,11 +2645,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|1000
-argument_list|)
 DECL|method|testSetTimes ()
 specifier|public
 name|void
