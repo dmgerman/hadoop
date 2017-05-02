@@ -954,7 +954,7 @@ init|=
 operator|new
 name|SimpleDateFormat
 argument_list|(
-literal|"hh:mm:ss"
+literal|"HH:mm:ss"
 argument_list|)
 decl_stmt|;
 name|String
