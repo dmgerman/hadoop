@@ -320,6 +320,22 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|OzoneConsts
+operator|.
+name|NODEPOOL_DB
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|scm
 operator|.
 name|exceptions
@@ -563,7 +579,7 @@ name|File
 argument_list|(
 name|scmMetaDataDir
 argument_list|,
-literal|"nodepool.db"
+name|NODEPOOL_DB
 argument_list|)
 decl_stmt|;
 name|nodePoolStore

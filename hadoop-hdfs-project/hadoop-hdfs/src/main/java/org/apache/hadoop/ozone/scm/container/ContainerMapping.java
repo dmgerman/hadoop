@@ -364,6 +364,22 @@ name|ReentrantLock
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConsts
+operator|.
+name|CONTAINER_DB
+import|;
+end_import
+
 begin_comment
 comment|/**  * Mapping class contains the mapping from a name to a pipeline mapping. This is  * used by SCM when allocating new locations and when looking up a key.  */
 end_comment
@@ -549,7 +565,7 @@ name|File
 argument_list|(
 name|scmMetaDataDir
 argument_list|,
-literal|"container.db"
+name|CONTAINER_DB
 argument_list|)
 decl_stmt|;
 name|containerStore
