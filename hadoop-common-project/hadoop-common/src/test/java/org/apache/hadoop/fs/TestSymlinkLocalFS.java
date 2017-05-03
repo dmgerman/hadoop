@@ -401,7 +401,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 comment|/** lstat a non-existant file using a partially qualified path */
 DECL|method|testDanglingLinkFilePartQual ()
@@ -476,7 +476,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 comment|/** Stat and lstat a dangling link */
 DECL|method|testDanglingLink ()
@@ -742,7 +742,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 comment|/**     * Test getLinkTarget with a partially qualified target.     * NB: Hadoop does not support fully qualified URIs for the     * file scheme (eg file://host/tmp/test).    */
 DECL|method|testGetLinkStatusPartQualTarget ()
