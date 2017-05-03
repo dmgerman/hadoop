@@ -729,7 +729,7 @@ literal|"-container"
 block|,
 literal|"-create"
 block|,
-literal|"-p"
+literal|"-c"
 block|,
 name|containerName
 block|}
@@ -746,13 +746,6 @@ name|run
 argument_list|(
 name|args
 argument_list|)
-argument_list|)
-expr_stmt|;
-name|Thread
-operator|.
-name|sleep
-argument_list|(
-literal|3000
 argument_list|)
 expr_stmt|;
 name|Pipeline
@@ -1348,7 +1341,7 @@ literal|"usage: hdfs scm -container -create<option>\n"
 operator|+
 literal|"where<option> is\n"
 operator|+
-literal|" -p<arg>   Specify pipeline ID\n"
+literal|" -c<arg>   Specify container name\n"
 decl_stmt|;
 name|assertEquals
 argument_list|(

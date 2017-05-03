@@ -183,15 +183,17 @@ name|CONTAINER_CREATE
 init|=
 literal|"create"
 decl_stmt|;
-DECL|field|PIPELINE_ID
+DECL|field|OPT_CONTAINER_NAME
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|PIPELINE_ID
+name|OPT_CONTAINER_NAME
 init|=
-literal|"p"
+literal|"c"
 decl_stmt|;
+comment|// TODO Support an optional -p<pipelineID> option to create
+comment|// container on given datanodes.
 DECL|method|CreateContainerHandler (ScmClient scmClient)
 specifier|public
 name|CreateContainerHandler
@@ -238,7 +240,6 @@ literal|"Expecting container create"
 argument_list|)
 throw|;
 block|}
-comment|// TODO requires pipeline id (instead of optional as in the design) for now
 if|if
 condition|(
 operator|!
@@ -246,7 +247,7 @@ name|cmd
 operator|.
 name|hasOption
 argument_list|(
-name|PIPELINE_ID
+name|OPT_CONTAINER_NAME
 argument_list|)
 condition|)
 block|{
@@ -268,7 +269,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Expecting container ID"
+literal|"Expecting container name"
 argument_list|)
 throw|;
 block|}
@@ -278,20 +279,20 @@ return|return;
 block|}
 block|}
 name|String
-name|pipelineID
+name|containerName
 init|=
 name|cmd
 operator|.
 name|getOptionValue
 argument_list|(
-name|PIPELINE_ID
+name|OPT_CONTAINER_NAME
 argument_list|)
 decl_stmt|;
 name|logOut
 argument_list|(
 literal|"Creating container : %s."
 argument_list|,
-name|pipelineID
+name|containerName
 argument_list|)
 expr_stmt|;
 name|getScmClient
@@ -299,7 +300,7 @@ argument_list|()
 operator|.
 name|createContainer
 argument_list|(
-name|pipelineID
+name|containerName
 argument_list|)
 expr_stmt|;
 name|logOut
@@ -316,7 +317,6 @@ name|void
 name|displayHelp
 parameter_list|()
 block|{
-comment|// TODO : may need to change this if we decide to make -p optional later
 name|Options
 name|options
 init|=
@@ -363,23 +363,23 @@ name|options
 parameter_list|)
 block|{
 name|Option
-name|pipelineID
+name|containerNameOpt
 init|=
 operator|new
 name|Option
 argument_list|(
-name|PIPELINE_ID
+name|OPT_CONTAINER_NAME
 argument_list|,
 literal|true
 argument_list|,
-literal|"Specify pipeline ID"
+literal|"Specify container name"
 argument_list|)
 decl_stmt|;
 name|options
 operator|.
 name|addOption
 argument_list|(
-name|pipelineID
+name|containerNameOpt
 argument_list|)
 expr_stmt|;
 block|}
