@@ -445,7 +445,7 @@ specifier|final
 name|int
 name|OZONE_SCM_DEFAULT_PORT
 init|=
-literal|9862
+name|OZONE_SCM_DATANODE_PORT_DEFAULT
 decl_stmt|;
 comment|// File Name and path where datanode ID is to written to.
 comment|// if this value is not set then container startup will fail.
