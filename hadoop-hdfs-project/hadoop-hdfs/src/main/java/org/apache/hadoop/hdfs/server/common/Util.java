@@ -2088,14 +2088,14 @@ return|return
 name|addrsList
 return|;
 block|}
-DECL|method|isDiskStatsEnabled (int fileIOSamplingPercentage)
+DECL|method|isDiskStatsEnabled (double fileIOSamplingFraction)
 specifier|public
 specifier|static
 name|boolean
 name|isDiskStatsEnabled
 parameter_list|(
-name|int
-name|fileIOSamplingPercentage
+name|double
+name|fileIOSamplingFraction
 parameter_list|)
 block|{
 specifier|final
@@ -2104,9 +2104,9 @@ name|isEnabled
 decl_stmt|;
 if|if
 condition|(
-name|fileIOSamplingPercentage
-operator|<=
-literal|0
+name|fileIOSamplingFraction
+operator|<
+literal|0.000001
 condition|)
 block|{
 name|LOG
@@ -2115,11 +2115,11 @@ name|info
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_KEY
+name|DFS_DATANODE_FILEIO_PROFILING_SAMPLING_FRACTION_KEY
 operator|+
 literal|" set to "
 operator|+
-name|fileIOSamplingPercentage
+name|fileIOSamplingFraction
 operator|+
 literal|". Disabling file IO profiling"
 argument_list|)
@@ -2137,11 +2137,11 @@ name|info
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_KEY
+name|DFS_DATANODE_FILEIO_PROFILING_SAMPLING_FRACTION_KEY
 operator|+
 literal|" set to "
 operator|+
-name|fileIOSamplingPercentage
+name|fileIOSamplingFraction
 operator|+
 literal|". Enabling file IO profiling"
 argument_list|)

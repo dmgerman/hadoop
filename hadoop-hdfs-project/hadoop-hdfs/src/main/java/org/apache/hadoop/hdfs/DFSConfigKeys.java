@@ -4696,19 +4696,19 @@ specifier|public
 specifier|static
 specifier|final
 name|String
-DECL|field|DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_KEY
-name|DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_KEY
+DECL|field|DFS_DATANODE_FILEIO_PROFILING_SAMPLING_FRACTION_KEY
+name|DFS_DATANODE_FILEIO_PROFILING_SAMPLING_FRACTION_KEY
 init|=
-literal|"dfs.datanode.fileio.profiling.sampling.percentage"
+literal|"dfs.datanode.fileio.profiling.sampling.fraction"
 decl_stmt|;
 specifier|public
 specifier|static
 specifier|final
-name|int
-DECL|field|DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_DEFAULT
-name|DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_DEFAULT
+name|double
+DECL|field|DFS_DATANODE_FILEIO_PROFILING_SAMPLING_FRACTION_DEFAULT
+name|DFS_DATANODE_FILEIO_PROFILING_SAMPLING_FRACTION_DEFAULT
 init|=
-literal|0
+literal|0.0
 decl_stmt|;
 comment|//Keys with no defaults
 DECL|field|DFS_DATANODE_PLUGINS_KEY
