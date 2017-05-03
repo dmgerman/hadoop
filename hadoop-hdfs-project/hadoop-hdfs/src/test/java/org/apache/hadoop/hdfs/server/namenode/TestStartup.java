@@ -2844,14 +2844,16 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"ExitException"
+name|ExitUtil
+operator|.
+name|EXIT_EXCEPTION_MESSAGE
 argument_list|,
 name|ee
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-literal|"Didn't termiated properly "
+literal|"Didn't terminate properly "
 argument_list|,
 name|ExitUtil
 operator|.

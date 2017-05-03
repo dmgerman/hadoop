@@ -143,6 +143,26 @@ specifier|volatile
 name|HaltException
 name|firstHaltException
 decl_stmt|;
+comment|/** Message raised from an exit exception if none were provided: {@value}. */
+DECL|field|EXIT_EXCEPTION_MESSAGE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|EXIT_EXCEPTION_MESSAGE
+init|=
+literal|"ExitException"
+decl_stmt|;
+comment|/** Message raised from a halt exception if none were provided: {@value}. */
+DECL|field|HALT_EXCEPTION_MESSAGE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HALT_EXCEPTION_MESSAGE
+init|=
+literal|"HaltException"
+decl_stmt|;
 DECL|method|ExitUtil ()
 specifier|private
 name|ExitUtil
@@ -894,7 +914,7 @@ name|terminate
 argument_list|(
 name|status
 argument_list|,
-literal|""
+name|EXIT_EXCEPTION_MESSAGE
 argument_list|)
 expr_stmt|;
 block|}
@@ -943,7 +963,7 @@ name|halt
 argument_list|(
 name|status
 argument_list|,
-literal|""
+name|HALT_EXCEPTION_MESSAGE
 argument_list|)
 expr_stmt|;
 block|}

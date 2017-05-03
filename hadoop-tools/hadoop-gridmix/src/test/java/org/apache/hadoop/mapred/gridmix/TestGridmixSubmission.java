@@ -258,6 +258,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -1042,14 +1058,13 @@ name|ExitException
 name|e
 parameter_list|)
 block|{
-name|assertEquals
+name|assertExceptionContains
 argument_list|(
-literal|"ExitException"
+name|ExitUtil
+operator|.
+name|EXIT_EXCEPTION_MESSAGE
 argument_list|,
 name|e
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|ExitUtil
