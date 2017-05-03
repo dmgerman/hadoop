@@ -4573,8 +4573,10 @@ name|runtime
 operator|.
 name|initialize
 argument_list|(
-name|getConfigurationWithMockContainerExecutor
-argument_list|()
+name|enableMockContainerExecutor
+argument_list|(
+name|conf
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|runtime
@@ -4928,8 +4930,10 @@ name|runtime
 operator|.
 name|initialize
 argument_list|(
-name|getConfigurationWithMockContainerExecutor
-argument_list|()
+name|enableMockContainerExecutor
+argument_list|(
+name|conf
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|runtime
@@ -4998,11 +5002,16 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-DECL|method|getConfigurationWithMockContainerExecutor ()
-specifier|private
+comment|/**    * Return a configuration object with the mock container executor binary    * preconfigured.    *    * @param conf The hadoop configuration.    * @return The hadoop configuration.    */
+DECL|method|enableMockContainerExecutor (Configuration conf)
+specifier|public
+specifier|static
 name|Configuration
-name|getConfigurationWithMockContainerExecutor
-parameter_list|()
+name|enableMockContainerExecutor
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
 block|{
 name|File
 name|f
