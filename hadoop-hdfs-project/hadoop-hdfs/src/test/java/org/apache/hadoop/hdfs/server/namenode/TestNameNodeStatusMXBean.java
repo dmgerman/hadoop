@@ -587,13 +587,13 @@ argument_list|()
 decl_stmt|;
 name|conf
 operator|.
-name|setDouble
+name|setInt
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_DATANODE_FILEIO_PROFILING_SAMPLING_FRACTION_KEY
+name|DFS_DATANODE_FILEIO_PROFILING_SAMPLING_PERCENTAGE_KEY
 argument_list|,
-literal|1.0
+literal|100
 argument_list|)
 expr_stmt|;
 name|conf
