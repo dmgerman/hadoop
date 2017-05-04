@@ -194,6 +194,24 @@ name|slider
 operator|.
 name|server
 operator|.
+name|appmaster
+operator|.
+name|timelineservice
+operator|.
+name|ServiceTimelinePublisher
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
+name|server
+operator|.
 name|services
 operator|.
 name|yarnregistry
@@ -275,6 +293,15 @@ name|containerId
 parameter_list|,
 name|ContainerStatus
 name|status
+parameter_list|)
+function_decl|;
+comment|/**    * Set service publisher.    * @param serviceTimelinePublisher service publisher.    */
+DECL|method|setServiceTimelinePublisher ( ServiceTimelinePublisher serviceTimelinePublisher)
+name|void
+name|setServiceTimelinePublisher
+parameter_list|(
+name|ServiceTimelinePublisher
+name|serviceTimelinePublisher
 parameter_list|)
 function_decl|;
 block|}

@@ -94,6 +94,15 @@ name|LAUNCH_TIME
 init|=
 literal|"LAUNCH_TIME"
 decl_stmt|;
+DECL|field|QUICK_LINKS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|QUICK_LINKS
+init|=
+literal|"QUICK_LINKS"
+decl_stmt|;
 DECL|field|LAUNCH_COMMAND
 specifier|public
 specifier|static

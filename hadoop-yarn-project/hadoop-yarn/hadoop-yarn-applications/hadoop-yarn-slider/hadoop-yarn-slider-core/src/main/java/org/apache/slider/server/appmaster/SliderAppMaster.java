@@ -4328,7 +4328,7 @@ name|log
 operator|.
 name|info
 argument_list|(
-literal|"Timeline client started."
+literal|"Timeline v2 client started."
 argument_list|)
 expr_stmt|;
 name|serviceTimelinePublisher
@@ -4351,6 +4351,13 @@ name|serviceTimelinePublisher
 operator|.
 name|start
 argument_list|()
+expr_stmt|;
+name|providerService
+operator|.
+name|setServiceTimelinePublisher
+argument_list|(
+name|serviceTimelinePublisher
+argument_list|)
 expr_stmt|;
 name|appState
 operator|.
