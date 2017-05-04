@@ -1205,7 +1205,7 @@ argument_list|>
 name|tempRow
 init|=
 operator|new
-name|ConcurrentHashMap
+name|HashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
@@ -1233,6 +1233,11 @@ name|tempRow
 expr_stmt|;
 block|}
 block|}
+synchronized|synchronized
+init|(
+name|aggrRow
+init|)
+block|{
 name|aggrRow
 operator|.
 name|put
@@ -1242,6 +1247,7 @@ argument_list|,
 name|m
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|aggregateTo (TimelineMetric metric, TimelineEntity e, String aggregationGroupId)
@@ -1364,6 +1370,11 @@ name|HashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
+synchronized|synchronized
+init|(
+name|aggrRow
+init|)
+block|{
 for|for
 control|(
 name|TimelineMetric
@@ -1412,6 +1423,12 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+name|aggrRow
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
 block|}
 name|Set
 argument_list|<
