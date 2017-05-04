@@ -372,6 +372,17 @@ argument_list|()
 decl_stmt|;
 name|conf
 operator|.
+name|setBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_JOURNALNODE_ENABLE_SYNC_KEY
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
 name|setLong
 argument_list|(
 name|DFSConfigKeys
