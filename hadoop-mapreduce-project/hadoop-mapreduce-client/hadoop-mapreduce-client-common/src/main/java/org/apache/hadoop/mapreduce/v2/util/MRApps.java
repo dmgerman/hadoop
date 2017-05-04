@@ -3951,9 +3951,6 @@ argument_list|,
 name|JobConf
 operator|.
 name|DEFAULT_LOG_LEVEL
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 return|;
 block|}
@@ -3971,9 +3968,6 @@ argument_list|,
 name|JobConf
 operator|.
 name|DEFAULT_LOG_LEVEL
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 return|;
 block|}
