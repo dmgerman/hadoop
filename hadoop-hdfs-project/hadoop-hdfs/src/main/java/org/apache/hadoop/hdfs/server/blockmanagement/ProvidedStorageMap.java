@@ -746,6 +746,11 @@ specifier|private
 name|ShadowDatanodeInfoWithStorage
 name|pending
 decl_stmt|;
+DECL|field|hasProvidedLocations
+specifier|private
+name|boolean
+name|hasProvidedLocations
+decl_stmt|;
 DECL|method|ProvidedBlocksBuilder (int maxBlocks)
 name|ProvidedBlocksBuilder
 parameter_list|(
@@ -767,6 +772,10 @@ name|providedDescriptor
 argument_list|,
 name|storageId
 argument_list|)
+expr_stmt|;
+name|hasProvidedLocations
+operator|=
+literal|false
 expr_stmt|;
 block|}
 annotation|@
@@ -893,6 +902,10 @@ index|]
 operator|=
 name|pending
 expr_stmt|;
+name|hasProvidedLocations
+operator|=
+literal|true
+expr_stmt|;
 block|}
 else|else
 block|{
@@ -956,6 +969,11 @@ name|client
 parameter_list|)
 block|{
 comment|// TODO: to support multiple provided storages, need to pass/maintain map
+if|if
+condition|(
+name|hasProvidedLocations
+condition|)
+block|{
 comment|// set all fields of pending DatanodeInfo
 name|List
 argument_list|<
@@ -1081,6 +1099,7 @@ argument_list|(
 name|dn
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 operator|new
 name|LocatedBlocks
@@ -1500,6 +1519,10 @@ comment|// exact match for now
 name|DatanodeDescriptor
 name|dn
 init|=
+name|client
+operator|!=
+literal|null
+condition|?
 name|dns
 operator|.
 name|get
@@ -1509,6 +1532,8 @@ operator|.
 name|getDatanodeUuid
 argument_list|()
 argument_list|)
+else|:
+literal|null
 decl_stmt|;
 if|if
 condition|(
@@ -1545,6 +1570,10 @@ comment|// exact match for now
 name|DatanodeDescriptor
 name|dn
 init|=
+name|client
+operator|!=
+literal|null
+condition|?
 name|dns
 operator|.
 name|get
@@ -1554,6 +1583,8 @@ operator|.
 name|getDatanodeUuid
 argument_list|()
 argument_list|)
+else|:
+literal|null
 decl_stmt|;
 if|if
 condition|(
