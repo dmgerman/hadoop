@@ -124,6 +124,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -701,6 +715,18 @@ operator|.
 name|getStorageID
 argument_list|()
 argument_list|)
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getProvidedStorageInfo ()
+specifier|public
+name|DatanodeStorageInfo
+name|getProvidedStorageInfo
+parameter_list|()
+block|{
+return|return
+name|providedStorageInfo
 return|;
 block|}
 DECL|method|newLocatedBlocks (int maxValue)
