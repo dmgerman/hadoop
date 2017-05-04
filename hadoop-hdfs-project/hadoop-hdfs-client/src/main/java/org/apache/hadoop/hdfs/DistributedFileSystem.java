@@ -1176,6 +1176,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|lang
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
 name|javax
 operator|.
 name|annotation
@@ -2868,7 +2882,7 @@ name|absF
 argument_list|)
 return|;
 block|}
-comment|/**    * Same as    * {@link #create(Path, FsPermission, EnumSet<CreateFlag>, int, short, long,    * Progressable, ChecksumOpt)} with the addition of favoredNodes that is a    * hint to where the namenode should place the file blocks.    * The favored nodes hint is not persisted in HDFS. Hence it may be honored    * at the creation time only. And with favored nodes, blocks will be pinned    * on the datanodes to prevent balancing move the block. HDFS could move the    * blocks during replication, to move the blocks from favored nodes. A value    * of null means no favored nodes for this create.    * Another addition is ecPolicyName. A non-null ecPolicyName specifies an    * explicit erasure coding policy for this file, overriding the inherited    * policy. A null ecPolicyName means the file will inherit its EC policy from    * an ancestor (the default).    */
+comment|/**    * Same as    * {@link #create(Path, FsPermission, EnumSet<CreateFlag>, int, short, long,    * Progressable, ChecksumOpt)} with a few additions. First, addition of    * favoredNodes that is a hint to where the namenode should place the file    * blocks. The favored nodes hint is not persisted in HDFS. Hence it may be    * honored at the creation time only. And with favored nodes, blocks will be    * pinned on the datanodes to prevent balancing move the block. HDFS could    * move the blocks during replication, to move the blocks from favored nodes.    * A value of null means no favored nodes for this create.    * The second addition is ecPolicyName. A non-null ecPolicyName specifies an    * explicit erasure coding policy for this file, overriding the inherited    * policy. A null ecPolicyName means the file will inherit its EC policy or    * replication policy from its ancestor (the default).    * ecPolicyName and SHOULD_REPLICATE CreateFlag are mutually exclusive. It's    * invalid to set both SHOULD_REPLICATE and a non-null ecPolicyName.    *    */
 DECL|method|create (final Path f, final FsPermission permission, final EnumSet<CreateFlag> flag, final int bufferSize, final short replication, final long blockSize, final Progressable progress, final ChecksumOpt checksumOpt, final InetSocketAddress[] favoredNodes, final String ecPolicyName)
 specifier|private
 name|HdfsDataOutputStream
@@ -13188,6 +13202,13 @@ name|ecPolicyName
 init|=
 literal|null
 decl_stmt|;
+DECL|field|shouldReplicate
+specifier|private
+name|boolean
+name|shouldReplicate
+init|=
+literal|false
+decl_stmt|;
 DECL|method|HdfsDataOutputStreamBuilder (DistributedFileSystem dfs, Path path)
 specifier|public
 name|HdfsDataOutputStreamBuilder
@@ -13265,6 +13286,7 @@ return|return
 name|ecPolicyName
 return|;
 block|}
+comment|/**      * Enforce the file to be a striped file with erasure coding policy      * 'policyName', no matter what its parent directory's replication      * or erasure coding policy is. Don't call this function and      * enforceReplicate() in the same builder since they have conflict      * of interest.      *      */
 DECL|method|setEcPolicyName ( @onnull final String policyName)
 specifier|public
 name|HdfsDataOutputStreamBuilder
@@ -13292,6 +13314,31 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|shouldReplicate ()
+specifier|public
+name|boolean
+name|shouldReplicate
+parameter_list|()
+block|{
+return|return
+name|shouldReplicate
+return|;
+block|}
+comment|/**      * Enforce the file to be a replicated file, no matter what its parent      * directory's replication or erasure coding policy is. Don't call this      * function and setEcPolicyName() in the same builder since they have      * conflict of interest.      */
+DECL|method|replicate ()
+specifier|public
+name|HdfsDataOutputStreamBuilder
+name|replicate
+parameter_list|()
+block|{
+name|shouldReplicate
+operator|=
+literal|true
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|build ()
@@ -13302,6 +13349,57 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+operator|!
+operator|(
+name|shouldReplicate
+argument_list|()
+operator|&&
+operator|(
+operator|!
+name|StringUtils
+operator|.
+name|isEmpty
+argument_list|(
+name|getEcPolicyName
+argument_list|()
+argument_list|)
+operator|)
+operator|)
+argument_list|,
+literal|"shouldReplicate and ecPolicyName are "
+operator|+
+literal|"exclusive parameters. Set both is not allowed!"
+argument_list|)
+expr_stmt|;
+name|EnumSet
+argument_list|<
+name|CreateFlag
+argument_list|>
+name|createFlags
+init|=
+name|getFlags
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|shouldReplicate
+argument_list|()
+condition|)
+block|{
+name|createFlags
+operator|.
+name|add
+argument_list|(
+name|CreateFlag
+operator|.
+name|SHOULD_REPLICATE
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|dfs
 operator|.
@@ -13313,8 +13411,7 @@ argument_list|,
 name|getPermission
 argument_list|()
 argument_list|,
-name|getFlags
-argument_list|()
+name|createFlags
 argument_list|,
 name|getBufferSize
 argument_list|()

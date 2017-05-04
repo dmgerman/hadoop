@@ -183,7 +183,17 @@ name|short
 operator|)
 literal|0x40
 argument_list|)
-decl_stmt|;
+block|,
+comment|/**    * Enforce the file to be a replicated file, no matter what its parent    * directory's replication or erasure coding policy is.    */
+DECL|enumConstant|SHOULD_REPLICATE
+name|SHOULD_REPLICATE
+argument_list|(
+operator|(
+name|short
+operator|)
+literal|0x80
+argument_list|)
+block|;
 DECL|field|mode
 specifier|private
 specifier|final

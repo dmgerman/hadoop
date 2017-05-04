@@ -2248,7 +2248,7 @@ name|iip
 return|;
 block|}
 comment|/**    * Create a new file or overwrite an existing file<br>    *    * Once the file is create the client then allocates a new block with the next    * call using {@link ClientProtocol#addBlock}.    *<p>    * For description of parameters and exceptions thrown see    * {@link ClientProtocol#create}    */
-DECL|method|startFile ( FSNamesystem fsn, INodesInPath iip, PermissionStatus permissions, String holder, String clientMachine, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, FileEncryptionInfo feInfo, INode.BlocksMapUpdateInfo toRemoveBlocks, String ecPolicyName, boolean logRetryEntry)
+DECL|method|startFile ( FSNamesystem fsn, INodesInPath iip, PermissionStatus permissions, String holder, String clientMachine, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, FileEncryptionInfo feInfo, INode.BlocksMapUpdateInfo toRemoveBlocks, boolean shouldReplicate, String ecPolicyName, boolean logRetryEntry)
 specifier|static
 name|HdfsFileStatus
 name|startFile
@@ -2290,6 +2290,9 @@ name|INode
 operator|.
 name|BlocksMapUpdateInfo
 name|toRemoveBlocks
+parameter_list|,
+name|boolean
+name|shouldReplicate
 parameter_list|,
 name|String
 name|ecPolicyName
@@ -2542,6 +2545,8 @@ argument_list|,
 name|holder
 argument_list|,
 name|clientMachine
+argument_list|,
+name|shouldReplicate
 argument_list|,
 name|ecPolicyName
 argument_list|)
@@ -3318,7 +3323,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Add the given filename to the fs.    * @return the new INodesInPath instance that contains the new INode    */
-DECL|method|addFile ( FSDirectory fsd, INodesInPath existing, byte[] localName, PermissionStatus permissions, short replication, long preferredBlockSize, String clientName, String clientMachine, String ecPolicyName)
+DECL|method|addFile ( FSDirectory fsd, INodesInPath existing, byte[] localName, PermissionStatus permissions, short replication, long preferredBlockSize, String clientName, String clientMachine, boolean shouldReplicate, String ecPolicyName)
 specifier|private
 specifier|static
 name|INodesInPath
@@ -3348,6 +3353,9 @@ name|clientName
 parameter_list|,
 name|String
 name|clientMachine
+parameter_list|,
+name|boolean
+name|shouldReplicate
 parameter_list|,
 name|String
 name|ecPolicyName
@@ -3385,7 +3393,15 @@ literal|false
 decl_stmt|;
 name|ErasureCodingPolicy
 name|ecPolicy
+init|=
+literal|null
 decl_stmt|;
+if|if
+condition|(
+operator|!
+name|shouldReplicate
+condition|)
+block|{
 if|if
 condition|(
 operator|!
@@ -3440,6 +3456,7 @@ name|isStriped
 operator|=
 literal|true
 expr_stmt|;
+block|}
 block|}
 specifier|final
 name|BlockType
