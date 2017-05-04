@@ -2824,6 +2824,16 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|assertNotNull
+argument_list|(
+literal|"key provider is not present"
+argument_list|,
+name|dfsAdmin
+operator|.
+name|getKeyProvider
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|int
 name|numZones
 init|=

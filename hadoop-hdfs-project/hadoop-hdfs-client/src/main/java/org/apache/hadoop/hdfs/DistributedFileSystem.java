@@ -12803,6 +12803,8 @@ name|Path
 name|path
 parameter_list|)
 block|{
+try|try
+block|{
 if|if
 condition|(
 operator|(
@@ -12826,6 +12828,27 @@ argument_list|(
 name|path
 argument_list|)
 return|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Exception while checking whether encryption zone is "
+operator|+
+literal|"supported"
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
 block|}
 name|String
 name|parentSrc
