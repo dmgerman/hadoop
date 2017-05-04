@@ -172,6 +172,22 @@ name|YarnException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|MockResourceManagerFacade
+import|;
+end_import
+
 begin_class
 DECL|class|MockRequestInterceptor
 specifier|public
