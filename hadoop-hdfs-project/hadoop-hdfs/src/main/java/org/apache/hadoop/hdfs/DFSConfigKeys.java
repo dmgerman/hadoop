@@ -6703,6 +6703,24 @@ name|HTTP_BUFFER_SIZE_DEFAULT
 init|=
 literal|4096
 decl_stmt|;
+DECL|field|DFS_USE_DFS_NETWORK_TOPOLOGY_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_USE_DFS_NETWORK_TOPOLOGY_KEY
+init|=
+literal|"dfs.use.dfs.network.topology"
+decl_stmt|;
+DECL|field|DFS_USE_DFS_NETWORK_TOPOLOGY_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_USE_DFS_NETWORK_TOPOLOGY_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 comment|// dfs.client.retry confs are moved to HdfsClientConfigKeys.Retry
 annotation|@
 name|Deprecated
