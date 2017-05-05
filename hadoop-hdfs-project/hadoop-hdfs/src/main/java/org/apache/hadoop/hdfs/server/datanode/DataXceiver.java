@@ -2465,6 +2465,10 @@ operator|.
 name|AccessMode
 operator|.
 name|READ
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|BlockOpResponseProto
@@ -4137,7 +4141,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|writeBlock (final ExtendedBlock block, final StorageType storageType, final Token<BlockTokenIdentifier> blockToken, final String clientname, final DatanodeInfo[] targets, final StorageType[] targetStorageTypes, final DatanodeInfo srcDataNode, final BlockConstructionStage stage, final int pipelineSize, final long minBytesRcvd, final long maxBytesRcvd, final long latestGenerationStamp, DataChecksum requestedChecksum, CachingStrategy cachingStrategy, boolean allowLazyPersist, final boolean pinning, final boolean[] targetPinnings)
+DECL|method|writeBlock (final ExtendedBlock block, final StorageType storageType, final Token<BlockTokenIdentifier> blockToken, final String clientname, final DatanodeInfo[] targets, final StorageType[] targetStorageTypes, final DatanodeInfo srcDataNode, final BlockConstructionStage stage, final int pipelineSize, final long minBytesRcvd, final long maxBytesRcvd, final long latestGenerationStamp, DataChecksum requestedChecksum, CachingStrategy cachingStrategy, boolean allowLazyPersist, final boolean pinning, final boolean[] targetPinnings, final String storageId, final String[] targetStorageIds)
 specifier|public
 name|void
 name|writeBlock
@@ -4212,6 +4216,15 @@ specifier|final
 name|boolean
 index|[]
 name|targetPinnings
+parameter_list|,
+specifier|final
+name|String
+name|storageId
+parameter_list|,
+specifier|final
+name|String
+index|[]
+name|targetStorageIds
 parameter_list|)
 throws|throws
 name|IOException
@@ -4341,6 +4354,57 @@ name|nst
 argument_list|)
 expr_stmt|;
 block|}
+name|int
+name|nsi
+init|=
+name|targetStorageIds
+operator|.
+name|length
+decl_stmt|;
+name|String
+index|[]
+name|storageIds
+init|=
+operator|new
+name|String
+index|[
+name|nsi
+operator|+
+literal|1
+index|]
+decl_stmt|;
+name|storageIds
+index|[
+literal|0
+index|]
+operator|=
+name|storageId
+expr_stmt|;
+if|if
+condition|(
+name|targetStorageTypes
+operator|.
+name|length
+operator|>
+literal|0
+condition|)
+block|{
+name|System
+operator|.
+name|arraycopy
+argument_list|(
+name|targetStorageIds
+argument_list|,
+literal|0
+argument_list|,
+name|storageIds
+argument_list|,
+literal|1
+argument_list|,
+name|nsi
+argument_list|)
+expr_stmt|;
+block|}
 name|checkAccess
 argument_list|(
 name|replyOut
@@ -4362,6 +4426,8 @@ operator|.
 name|WRITE
 argument_list|,
 name|storageTypes
+argument_list|,
+name|storageIds
 argument_list|)
 expr_stmt|;
 comment|// check single target for transfer-RBW/Finalized
@@ -4642,6 +4708,8 @@ argument_list|,
 name|allowLazyPersist
 argument_list|,
 name|pinning
+argument_list|,
+name|storageId
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -5000,6 +5068,13 @@ literal|0
 index|]
 argument_list|,
 name|targetPinnings
+argument_list|,
+name|targetStorageIds
+index|[
+literal|0
+index|]
+argument_list|,
+name|targetStorageIds
 argument_list|)
 expr_stmt|;
 block|}
@@ -5049,6 +5124,13 @@ argument_list|,
 literal|false
 argument_list|,
 name|targetPinnings
+argument_list|,
+name|targetStorageIds
+index|[
+literal|0
+index|]
+argument_list|,
+name|targetStorageIds
 argument_list|)
 expr_stmt|;
 block|}
@@ -5599,7 +5681,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|transferBlock (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, final String clientName, final DatanodeInfo[] targets, final StorageType[] targetStorageTypes)
+DECL|method|transferBlock (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, final String clientName, final DatanodeInfo[] targets, final StorageType[] targetStorageTypes, final String[] targetStorageIds)
 specifier|public
 name|void
 name|transferBlock
@@ -5628,6 +5710,11 @@ specifier|final
 name|StorageType
 index|[]
 name|targetStorageTypes
+parameter_list|,
+specifier|final
+name|String
+index|[]
+name|targetStorageIds
 parameter_list|)
 throws|throws
 name|IOException
@@ -5679,6 +5766,8 @@ operator|.
 name|COPY
 argument_list|,
 name|targetStorageTypes
+argument_list|,
+name|targetStorageIds
 argument_list|)
 expr_stmt|;
 try|try
@@ -5692,6 +5781,8 @@ argument_list|,
 name|targets
 argument_list|,
 name|targetStorageTypes
+argument_list|,
+name|targetStorageIds
 argument_list|,
 name|clientName
 argument_list|)
@@ -6545,7 +6636,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|replaceBlock (final ExtendedBlock block, final StorageType storageType, final Token<BlockTokenIdentifier> blockToken, final String delHint, final DatanodeInfo proxySource)
+DECL|method|replaceBlock (final ExtendedBlock block, final StorageType storageType, final Token<BlockTokenIdentifier> blockToken, final String delHint, final DatanodeInfo proxySource, final String storageId)
 specifier|public
 name|void
 name|replaceBlock
@@ -6572,6 +6663,10 @@ parameter_list|,
 specifier|final
 name|DatanodeInfo
 name|proxySource
+parameter_list|,
+specifier|final
+name|String
+name|storageId
 parameter_list|)
 throws|throws
 name|IOException
@@ -6622,6 +6717,13 @@ name|StorageType
 index|[]
 block|{
 name|storageType
+block|}
+argument_list|,
+operator|new
+name|String
+index|[]
+block|{
+name|storageId
 block|}
 argument_list|)
 expr_stmt|;
@@ -6732,6 +6834,8 @@ argument_list|(
 name|block
 argument_list|,
 name|storageType
+argument_list|,
+name|storageId
 argument_list|)
 decl_stmt|;
 if|if
@@ -7095,6 +7199,8 @@ argument_list|,
 literal|false
 argument_list|,
 literal|false
+argument_list|,
+name|storageId
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -7341,7 +7447,7 @@ block|}
 comment|/**    * Separated for testing.    */
 annotation|@
 name|VisibleForTesting
-DECL|method|getBlockReceiver ( final ExtendedBlock block, final StorageType storageType, final DataInputStream in, final String inAddr, final String myAddr, final BlockConstructionStage stage, final long newGs, final long minBytesRcvd, final long maxBytesRcvd, final String clientname, final DatanodeInfo srcDataNode, final DataNode dn, DataChecksum requestedChecksum, CachingStrategy cachingStrategy, final boolean allowLazyPersist, final boolean pinning)
+DECL|method|getBlockReceiver ( final ExtendedBlock block, final StorageType storageType, final DataInputStream in, final String inAddr, final String myAddr, final BlockConstructionStage stage, final long newGs, final long minBytesRcvd, final long maxBytesRcvd, final String clientname, final DatanodeInfo srcDataNode, final DataNode dn, DataChecksum requestedChecksum, CachingStrategy cachingStrategy, final boolean allowLazyPersist, final boolean pinning, final String storageId)
 name|BlockReceiver
 name|getBlockReceiver
 parameter_list|(
@@ -7406,6 +7512,10 @@ parameter_list|,
 specifier|final
 name|boolean
 name|pinning
+parameter_list|,
+specifier|final
+name|String
+name|storageId
 parameter_list|)
 throws|throws
 name|IOException
@@ -7445,6 +7555,8 @@ argument_list|,
 name|allowLazyPersist
 argument_list|,
 name|pinning
+argument_list|,
+name|storageId
 argument_list|)
 return|;
 block|}
@@ -7849,10 +7961,12 @@ argument_list|,
 name|mode
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|checkAccess (OutputStream out, final boolean reply, final ExtendedBlock blk, final Token<BlockTokenIdentifier> t, final Op op, final BlockTokenIdentifier.AccessMode mode, final StorageType[] storageTypes)
+DECL|method|checkAccess (OutputStream out, final boolean reply, final ExtendedBlock blk, final Token<BlockTokenIdentifier> t, final Op op, final BlockTokenIdentifier.AccessMode mode, final StorageType[] storageTypes, final String[] storageIds)
 specifier|private
 name|void
 name|checkAccess
@@ -7889,6 +8003,11 @@ specifier|final
 name|StorageType
 index|[]
 name|storageTypes
+parameter_list|,
+specifier|final
+name|String
+index|[]
+name|storageIds
 parameter_list|)
 throws|throws
 name|IOException
@@ -7949,6 +8068,8 @@ argument_list|,
 name|mode
 argument_list|,
 name|storageTypes
+argument_list|,
+name|storageIds
 argument_list|)
 expr_stmt|;
 block|}

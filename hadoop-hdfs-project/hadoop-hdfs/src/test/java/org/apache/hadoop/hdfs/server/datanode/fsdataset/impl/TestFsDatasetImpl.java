@@ -2321,6 +2321,8 @@ name|StorageType
 operator|.
 name|DEFAULT
 argument_list|,
+literal|null
+argument_list|,
 name|eb
 argument_list|,
 literal|false
@@ -4279,6 +4281,8 @@ argument_list|(
 name|StorageType
 operator|.
 name|DEFAULT
+argument_list|,
+literal|null
 argument_list|,
 name|eb
 argument_list|,

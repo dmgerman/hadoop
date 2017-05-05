@@ -2540,6 +2540,8 @@ name|getDatanodeUuid
 argument_list|()
 argument_list|,
 name|sourceProxy
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|out

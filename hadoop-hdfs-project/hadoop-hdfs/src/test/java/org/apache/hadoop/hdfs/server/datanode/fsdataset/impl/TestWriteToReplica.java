@@ -2455,6 +2455,8 @@ name|StorageType
 operator|.
 name|DEFAULT
 argument_list|,
+literal|null
+argument_list|,
 name|blocks
 index|[
 name|FINALIZED
@@ -2563,6 +2565,8 @@ name|StorageType
 operator|.
 name|DEFAULT
 argument_list|,
+literal|null
+argument_list|,
 name|blocks
 index|[
 name|TEMPORARY
@@ -2632,6 +2636,8 @@ argument_list|(
 name|StorageType
 operator|.
 name|DEFAULT
+argument_list|,
+literal|null
 argument_list|,
 name|blocks
 index|[
@@ -2738,6 +2744,8 @@ argument_list|(
 name|StorageType
 operator|.
 name|DEFAULT
+argument_list|,
+literal|null
 argument_list|,
 name|blocks
 index|[
@@ -2847,6 +2855,8 @@ name|StorageType
 operator|.
 name|DEFAULT
 argument_list|,
+literal|null
+argument_list|,
 name|blocks
 index|[
 name|RUR
@@ -2951,6 +2961,8 @@ name|StorageType
 operator|.
 name|DEFAULT
 argument_list|,
+literal|null
+argument_list|,
 name|blocks
 index|[
 name|NON_EXISTENT
@@ -2984,6 +2996,8 @@ argument_list|(
 name|StorageType
 operator|.
 name|DEFAULT
+argument_list|,
+literal|null
 argument_list|,
 name|blocks
 index|[
@@ -3022,6 +3036,8 @@ name|StorageType
 operator|.
 name|DEFAULT
 argument_list|,
+literal|null
+argument_list|,
 name|blocks
 index|[
 name|TEMPORARY
@@ -3059,6 +3075,8 @@ name|StorageType
 operator|.
 name|DEFAULT
 argument_list|,
+literal|null
+argument_list|,
 name|blocks
 index|[
 name|RBW
@@ -3093,6 +3111,8 @@ argument_list|(
 name|StorageType
 operator|.
 name|DEFAULT
+argument_list|,
+literal|null
 argument_list|,
 name|blocks
 index|[
@@ -3131,6 +3151,8 @@ name|StorageType
 operator|.
 name|DEFAULT
 argument_list|,
+literal|null
+argument_list|,
 name|blocks
 index|[
 name|RUR
@@ -3164,6 +3186,8 @@ name|StorageType
 operator|.
 name|DEFAULT
 argument_list|,
+literal|null
+argument_list|,
 name|blocks
 index|[
 name|NON_EXISTENT
@@ -3179,6 +3203,8 @@ argument_list|(
 name|StorageType
 operator|.
 name|DEFAULT
+argument_list|,
+literal|null
 argument_list|,
 name|blocks
 index|[
@@ -3273,6 +3299,8 @@ argument_list|(
 name|StorageType
 operator|.
 name|DEFAULT
+argument_list|,
+literal|null
 argument_list|,
 name|blocks
 index|[

@@ -748,6 +748,8 @@ name|StorageType
 operator|.
 name|DEFAULT
 argument_list|,
+literal|null
+argument_list|,
 literal|128
 argument_list|)
 init|)

@@ -4489,6 +4489,8 @@ name|StorageType
 operator|.
 name|DEFAULT
 argument_list|,
+literal|null
+argument_list|,
 name|block
 argument_list|,
 literal|false
@@ -4648,6 +4650,8 @@ argument_list|(
 name|StorageType
 operator|.
 name|DEFAULT
+argument_list|,
+literal|null
 argument_list|,
 name|block
 argument_list|,
@@ -6164,6 +6168,8 @@ argument_list|(
 name|StorageType
 operator|.
 name|DISK
+argument_list|,
+literal|null
 argument_list|,
 name|block
 argument_list|,

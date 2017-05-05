@@ -2187,6 +2187,12 @@ name|target
 operator|.
 name|storageType
 block|}
+argument_list|,
+operator|new
+name|String
+index|[
+literal|0
+index|]
 argument_list|)
 decl_stmt|;
 name|IOStreamPair
@@ -2481,6 +2487,8 @@ argument_list|,
 name|proxySource
 operator|.
 name|datanode
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}

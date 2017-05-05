@@ -594,7 +594,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Get an access token for a block. */
-DECL|method|getAccessToken (ExtendedBlock eb, StorageType[] storageTypes)
+DECL|method|getAccessToken (ExtendedBlock eb, StorageType[] storageTypes, String[] storageIds)
 specifier|public
 name|Token
 argument_list|<
@@ -608,6 +608,10 @@ parameter_list|,
 name|StorageType
 index|[]
 name|storageTypes
+parameter_list|,
+name|String
+index|[]
+name|storageIds
 parameter_list|)
 throws|throws
 name|IOException
@@ -667,6 +671,8 @@ name|COPY
 argument_list|)
 argument_list|,
 name|storageTypes
+argument_list|,
+name|storageIds
 argument_list|)
 return|;
 block|}

@@ -10369,6 +10369,8 @@ argument_list|,
 name|accessMode
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -11475,7 +11477,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|transferBlock (ExtendedBlock block, DatanodeInfo[] xferTargets, StorageType[] xferTargetStorageTypes)
+DECL|method|transferBlock (ExtendedBlock block, DatanodeInfo[] xferTargets, StorageType[] xferTargetStorageTypes, String[] xferTargetStorageIDs)
 name|void
 name|transferBlock
 parameter_list|(
@@ -11489,6 +11491,10 @@ parameter_list|,
 name|StorageType
 index|[]
 name|xferTargetStorageTypes
+parameter_list|,
+name|String
+index|[]
+name|xferTargetStorageIDs
 parameter_list|)
 throws|throws
 name|IOException
@@ -11779,6 +11785,8 @@ name|xferTargets
 argument_list|,
 name|xferTargetStorageTypes
 argument_list|,
+name|xferTargetStorageIDs
+argument_list|,
 name|block
 argument_list|,
 name|BlockConstructionStage
@@ -11794,7 +11802,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|transferBlocks (String poolId, Block blocks[], DatanodeInfo xferTargets[][], StorageType[][] xferTargetStorageTypes)
+DECL|method|transferBlocks (String poolId, Block blocks[], DatanodeInfo[][] xferTargets, StorageType[][] xferTargetStorageTypes, String[][] xferTargetStorageIDs)
 name|void
 name|transferBlocks
 parameter_list|(
@@ -11806,14 +11814,19 @@ name|blocks
 index|[]
 parameter_list|,
 name|DatanodeInfo
+index|[]
+index|[]
 name|xferTargets
-index|[]
-index|[]
 parameter_list|,
 name|StorageType
 index|[]
 index|[]
 name|xferTargetStorageTypes
+parameter_list|,
+name|String
+index|[]
+index|[]
+name|xferTargetStorageIDs
 parameter_list|)
 block|{
 for|for
@@ -11854,6 +11867,11 @@ name|i
 index|]
 argument_list|,
 name|xferTargetStorageTypes
+index|[
+name|i
+index|]
+argument_list|,
+name|xferTargetStorageIDs
 index|[
 name|i
 index|]
@@ -11904,6 +11922,13 @@ name|StorageType
 index|[]
 name|targetStorageTypes
 decl_stmt|;
+DECL|field|targetStorageIds
+specifier|final
+specifier|private
+name|String
+index|[]
+name|targetStorageIds
+decl_stmt|;
 DECL|field|b
 specifier|final
 name|ExtendedBlock
@@ -11931,7 +11956,7 @@ name|CachingStrategy
 name|cachingStrategy
 decl_stmt|;
 comment|/**      * Connect to the first item in the target list.  Pass along the       * entire target list, the block, and the data.      */
-DECL|method|DataTransfer (DatanodeInfo targets[], StorageType[] targetStorageTypes, ExtendedBlock b, BlockConstructionStage stage, final String clientname)
+DECL|method|DataTransfer (DatanodeInfo targets[], StorageType[] targetStorageTypes, String[] targetStorageIds, ExtendedBlock b, BlockConstructionStage stage, final String clientname)
 name|DataTransfer
 parameter_list|(
 name|DatanodeInfo
@@ -11941,6 +11966,10 @@ parameter_list|,
 name|StorageType
 index|[]
 name|targetStorageTypes
+parameter_list|,
+name|String
+index|[]
+name|targetStorageIds
 parameter_list|,
 name|ExtendedBlock
 name|b
@@ -12021,6 +12050,23 @@ argument_list|(
 name|targetStorageTypes
 argument_list|)
 operator|)
+operator|+
+literal|", target storage IDs="
+operator|+
+operator|(
+name|targetStorageIds
+operator|==
+literal|null
+condition|?
+literal|"[]"
+else|:
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|targetStorageIds
+argument_list|)
+operator|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -12035,6 +12081,12 @@ operator|.
 name|targetStorageTypes
 operator|=
 name|targetStorageTypes
+expr_stmt|;
+name|this
+operator|.
+name|targetStorageIds
+operator|=
+name|targetStorageIds
 expr_stmt|;
 name|this
 operator|.
@@ -12242,6 +12294,8 @@ name|WRITE
 argument_list|)
 argument_list|,
 name|targetStorageTypes
+argument_list|,
+name|targetStorageIds
 argument_list|)
 decl_stmt|;
 name|long
@@ -12397,6 +12451,22 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
+name|String
+name|storageId
+init|=
+name|targetStorageIds
+operator|.
+name|length
+operator|>
+literal|0
+condition|?
+name|targetStorageIds
+index|[
+literal|0
+index|]
+else|:
+literal|null
+decl_stmt|;
 operator|new
 name|Sender
 argument_list|(
@@ -12444,6 +12514,10 @@ argument_list|,
 literal|false
 argument_list|,
 literal|null
+argument_list|,
+name|storageId
+argument_list|,
+name|targetStorageIds
 argument_list|)
 expr_stmt|;
 comment|// send data& checksum
@@ -12747,7 +12821,7 @@ block|}
 block|}
 block|}
 comment|/***    * Use BlockTokenSecretManager to generate block token for current user.    */
-DECL|method|getBlockAccessToken (ExtendedBlock b, EnumSet<AccessMode> mode, StorageType[] storageTypes)
+DECL|method|getBlockAccessToken (ExtendedBlock b, EnumSet<AccessMode> mode, StorageType[] storageTypes, String[] storageIds)
 specifier|public
 name|Token
 argument_list|<
@@ -12767,6 +12841,10 @@ parameter_list|,
 name|StorageType
 index|[]
 name|storageTypes
+parameter_list|,
+name|String
+index|[]
+name|storageIds
 parameter_list|)
 throws|throws
 name|IOException
@@ -12797,6 +12875,8 @@ argument_list|,
 name|mode
 argument_list|,
 name|storageTypes
+argument_list|,
+name|storageIds
 argument_list|)
 expr_stmt|;
 block|}
@@ -14309,13 +14389,15 @@ operator|.
 name|READ
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 block|}
 comment|/**    * Transfer a replica to the datanode targets.    * @param b the block to transfer.    *          The corresponding replica must be an RBW or a Finalized.    *          Its GS and numBytes will be set to    *          the stored GS and the visible length.     * @param targets targets to transfer the block to    * @param client client name    */
-DECL|method|transferReplicaForPipelineRecovery (final ExtendedBlock b, final DatanodeInfo[] targets, final StorageType[] targetStorageTypes, final String client)
+DECL|method|transferReplicaForPipelineRecovery (final ExtendedBlock b, final DatanodeInfo[] targets, final StorageType[] targetStorageTypes, final String[] targetStorageIds, final String client)
 name|void
 name|transferReplicaForPipelineRecovery
 parameter_list|(
@@ -14332,6 +14414,11 @@ specifier|final
 name|StorageType
 index|[]
 name|targetStorageTypes
+parameter_list|,
+specifier|final
+name|String
+index|[]
+name|targetStorageIds
 parameter_list|,
 specifier|final
 name|String
@@ -14537,6 +14624,8 @@ argument_list|(
 name|targets
 argument_list|,
 name|targetStorageTypes
+argument_list|,
+name|targetStorageIds
 argument_list|,
 name|b
 argument_list|,

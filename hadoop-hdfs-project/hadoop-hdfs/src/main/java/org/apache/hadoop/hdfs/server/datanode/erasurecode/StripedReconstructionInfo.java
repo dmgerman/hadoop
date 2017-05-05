@@ -161,6 +161,13 @@ name|StorageType
 index|[]
 name|targetStorageTypes
 decl_stmt|;
+DECL|field|targetStorageIds
+specifier|private
+specifier|final
+name|String
+index|[]
+name|targetStorageIds
+decl_stmt|;
 DECL|method|StripedReconstructionInfo (ExtendedBlock blockGroup, ErasureCodingPolicy ecPolicy, byte[] liveIndices, DatanodeInfo[] sources, byte[] targetIndices)
 specifier|public
 name|StripedReconstructionInfo
@@ -199,10 +206,12 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|StripedReconstructionInfo (ExtendedBlock blockGroup, ErasureCodingPolicy ecPolicy, byte[] liveIndices, DatanodeInfo[] sources, DatanodeInfo[] targets, StorageType[] targetStorageTypes)
+DECL|method|StripedReconstructionInfo (ExtendedBlock blockGroup, ErasureCodingPolicy ecPolicy, byte[] liveIndices, DatanodeInfo[] sources, DatanodeInfo[] targets, StorageType[] targetStorageTypes, String[] targetStorageIds)
 name|StripedReconstructionInfo
 parameter_list|(
 name|ExtendedBlock
@@ -226,6 +235,10 @@ parameter_list|,
 name|StorageType
 index|[]
 name|targetStorageTypes
+parameter_list|,
+name|String
+index|[]
+name|targetStorageIds
 parameter_list|)
 block|{
 name|this
@@ -243,10 +256,12 @@ argument_list|,
 name|targets
 argument_list|,
 name|targetStorageTypes
+argument_list|,
+name|targetStorageIds
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|StripedReconstructionInfo (ExtendedBlock blockGroup, ErasureCodingPolicy ecPolicy, byte[] liveIndices, DatanodeInfo[] sources, byte[] targetIndices, DatanodeInfo[] targets, StorageType[] targetStorageTypes)
+DECL|method|StripedReconstructionInfo (ExtendedBlock blockGroup, ErasureCodingPolicy ecPolicy, byte[] liveIndices, DatanodeInfo[] sources, byte[] targetIndices, DatanodeInfo[] targets, StorageType[] targetStorageTypes, String[] targetStorageIds)
 specifier|private
 name|StripedReconstructionInfo
 parameter_list|(
@@ -275,6 +290,10 @@ parameter_list|,
 name|StorageType
 index|[]
 name|targetStorageTypes
+parameter_list|,
+name|String
+index|[]
+name|targetStorageIds
 parameter_list|)
 block|{
 name|this
@@ -318,6 +337,12 @@ operator|.
 name|targetStorageTypes
 operator|=
 name|targetStorageTypes
+expr_stmt|;
+name|this
+operator|.
+name|targetStorageIds
+operator|=
+name|targetStorageIds
 expr_stmt|;
 block|}
 DECL|method|getBlockGroup ()
@@ -386,6 +411,16 @@ parameter_list|()
 block|{
 return|return
 name|targetStorageTypes
+return|;
+block|}
+DECL|method|getTargetStorageIds ()
+name|String
+index|[]
+name|getTargetStorageIds
+parameter_list|()
+block|{
+return|return
+name|targetStorageIds
 return|;
 block|}
 block|}

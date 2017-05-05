@@ -211,7 +211,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|chooseVolume (final List<V> volumes, long blockSize)
+DECL|method|chooseVolume (final List<V> volumes, long blockSize, String storageId)
 specifier|public
 name|V
 name|chooseVolume
@@ -225,6 +225,9 @@ name|volumes
 parameter_list|,
 name|long
 name|blockSize
+parameter_list|,
+name|String
+name|storageId
 parameter_list|)
 throws|throws
 name|IOException

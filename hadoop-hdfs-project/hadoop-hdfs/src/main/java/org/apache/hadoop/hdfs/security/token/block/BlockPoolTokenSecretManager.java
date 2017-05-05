@@ -354,8 +354,8 @@ name|identifier
 argument_list|)
 return|;
 block|}
-comment|/**    * See {@link BlockTokenSecretManager#checkAccess(BlockTokenIdentifier,    *                String, ExtendedBlock, BlockTokenIdentifier.AccessMode,    *                StorageType[])}    */
-DECL|method|checkAccess (BlockTokenIdentifier id, String userId, ExtendedBlock block, AccessMode mode, StorageType[] storageTypes)
+comment|/**    * See {@link BlockTokenSecretManager#checkAccess(BlockTokenIdentifier,    *                String, ExtendedBlock, BlockTokenIdentifier.AccessMode,    *                StorageType[], String[])}    */
+DECL|method|checkAccess (BlockTokenIdentifier id, String userId, ExtendedBlock block, AccessMode mode, StorageType[] storageTypes, String[] storageIds)
 specifier|public
 name|void
 name|checkAccess
@@ -375,6 +375,10 @@ parameter_list|,
 name|StorageType
 index|[]
 name|storageTypes
+parameter_list|,
+name|String
+index|[]
+name|storageIds
 parameter_list|)
 throws|throws
 name|InvalidToken
@@ -398,11 +402,13 @@ argument_list|,
 name|mode
 argument_list|,
 name|storageTypes
+argument_list|,
+name|storageIds
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * See {@link BlockTokenSecretManager#checkAccess(Token, String,    *                ExtendedBlock, BlockTokenIdentifier.AccessMode,    *                StorageType[])}.    */
-DECL|method|checkAccess (Token<BlockTokenIdentifier> token, String userId, ExtendedBlock block, AccessMode mode, StorageType[] storageTypes)
+comment|/**    * See {@link BlockTokenSecretManager#checkAccess(Token, String,    *                ExtendedBlock, BlockTokenIdentifier.AccessMode,    *                StorageType[], String[])}    */
+DECL|method|checkAccess (Token<BlockTokenIdentifier> token, String userId, ExtendedBlock block, AccessMode mode, StorageType[] storageTypes, String[] storageIds)
 specifier|public
 name|void
 name|checkAccess
@@ -425,6 +431,10 @@ parameter_list|,
 name|StorageType
 index|[]
 name|storageTypes
+parameter_list|,
+name|String
+index|[]
+name|storageIds
 parameter_list|)
 throws|throws
 name|InvalidToken
@@ -448,6 +458,8 @@ argument_list|,
 name|mode
 argument_list|,
 name|storageTypes
+argument_list|,
+name|storageIds
 argument_list|)
 expr_stmt|;
 block|}
@@ -477,8 +489,8 @@ name|exportedKeys
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * See {@link BlockTokenSecretManager#generateToken(ExtendedBlock, EnumSet,    *  StorageType[])}    */
-DECL|method|generateToken (ExtendedBlock b, EnumSet<AccessMode> of, StorageType[] storageTypes)
+comment|/**    * See {@link BlockTokenSecretManager#generateToken(ExtendedBlock, EnumSet,    *  StorageType[], String[])}.    */
+DECL|method|generateToken (ExtendedBlock b, EnumSet<AccessMode> of, StorageType[] storageTypes, String[] storageIds)
 specifier|public
 name|Token
 argument_list|<
@@ -498,6 +510,10 @@ parameter_list|,
 name|StorageType
 index|[]
 name|storageTypes
+parameter_list|,
+name|String
+index|[]
+name|storageIds
 parameter_list|)
 throws|throws
 name|IOException
@@ -518,6 +534,8 @@ argument_list|,
 name|of
 argument_list|,
 name|storageTypes
+argument_list|,
+name|storageIds
 argument_list|)
 return|;
 block|}

@@ -638,6 +638,12 @@ argument_list|,
 name|StorageType
 operator|.
 name|EMPTY_ARRAY
+argument_list|,
+operator|new
+name|String
+index|[
+literal|0
+index|]
 argument_list|)
 decl_stmt|;
 comment|/*          * This can be further improved if the replica is local, then we can          * read directly from DN and need to check the replica is FINALIZED          * state, notice we should not use short-circuit local read which          * requires config for domain-socket in UNIX or legacy config in          * Windows. The network distance value isn't used for this scenario.          *          * TODO: add proper tracer          */

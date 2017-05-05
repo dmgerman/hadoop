@@ -515,7 +515,7 @@ argument_list|()
 decl_stmt|;
 annotation|@
 name|Override
-DECL|method|chooseVolume (List<V> volumes, long replicaSize)
+DECL|method|chooseVolume (List<V> volumes, long replicaSize, String storageId)
 specifier|public
 name|V
 name|chooseVolume
@@ -528,6 +528,9 @@ name|volumes
 parameter_list|,
 name|long
 name|replicaSize
+parameter_list|,
+name|String
+name|storageId
 parameter_list|)
 throws|throws
 name|IOException
@@ -598,11 +601,13 @@ argument_list|(
 name|volumes
 argument_list|,
 name|replicaSize
+argument_list|,
+name|storageId
 argument_list|)
 return|;
 block|}
 block|}
-DECL|method|doChooseVolume (final List<V> volumes, long replicaSize)
+DECL|method|doChooseVolume (final List<V> volumes, long replicaSize, String storageId)
 specifier|private
 name|V
 name|doChooseVolume
@@ -616,6 +621,9 @@ name|volumes
 parameter_list|,
 name|long
 name|replicaSize
+parameter_list|,
+name|String
+name|storageId
 parameter_list|)
 throws|throws
 name|IOException
@@ -649,6 +657,8 @@ argument_list|(
 name|volumes
 argument_list|,
 name|replicaSize
+argument_list|,
+name|storageId
 argument_list|)
 decl_stmt|;
 if|if
@@ -786,6 +796,8 @@ argument_list|(
 name|highAvailableVolumes
 argument_list|,
 name|replicaSize
+argument_list|,
+name|storageId
 argument_list|)
 expr_stmt|;
 if|if
@@ -822,6 +834,8 @@ argument_list|(
 name|lowAvailableVolumes
 argument_list|,
 name|replicaSize
+argument_list|,
+name|storageId
 argument_list|)
 expr_stmt|;
 if|if
@@ -1188,7 +1202,7 @@ name|ret
 return|;
 block|}
 block|}
-comment|/**    * Used so that we only check the available space on a given volume once, at    * the beginning of {@link AvailableSpaceVolumeChoosingPolicy#chooseVolume(List, long)}.    */
+comment|/**    * Used so that we only check the available space on a given volume once, at    * the beginning of    * {@link AvailableSpaceVolumeChoosingPolicy#chooseVolume}.    */
 DECL|class|AvailableSpaceVolumePair
 specifier|private
 class|class

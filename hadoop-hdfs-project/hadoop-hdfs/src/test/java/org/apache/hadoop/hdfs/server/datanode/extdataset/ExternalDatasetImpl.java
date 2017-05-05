@@ -816,13 +816,16 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|createTemporary (StorageType t, ExtendedBlock b)
+DECL|method|createTemporary (StorageType t, String i, ExtendedBlock b)
 specifier|public
 name|ReplicaHandler
 name|createTemporary
 parameter_list|(
 name|StorageType
 name|t
+parameter_list|,
+name|String
+name|i
 parameter_list|,
 name|ExtendedBlock
 name|b
@@ -844,13 +847,16 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|createRbw (StorageType t, ExtendedBlock b, boolean tf)
+DECL|method|createRbw (StorageType storageType, String id, ExtendedBlock b, boolean tf)
 specifier|public
 name|ReplicaHandler
 name|createRbw
 parameter_list|(
 name|StorageType
-name|t
+name|storageType
+parameter_list|,
+name|String
+name|id
 parameter_list|,
 name|ExtendedBlock
 name|b
@@ -1560,7 +1566,7 @@ parameter_list|)
 block|{    }
 annotation|@
 name|Override
-DECL|method|moveBlockAcrossStorage (ExtendedBlock block, StorageType targetStorageType)
+DECL|method|moveBlockAcrossStorage (ExtendedBlock block, StorageType targetStorageType, String storageId)
 specifier|public
 name|ReplicaInfo
 name|moveBlockAcrossStorage
@@ -1570,6 +1576,9 @@ name|block
 parameter_list|,
 name|StorageType
 name|targetStorageType
+parameter_list|,
+name|String
+name|storageId
 parameter_list|)
 throws|throws
 name|IOException

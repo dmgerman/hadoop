@@ -5009,7 +5009,7 @@ block|}
 annotation|@
 name|Override
 comment|// FsDatasetSpi
-DECL|method|createRbw ( StorageType storageType, ExtendedBlock b, boolean allowLazyPersist)
+DECL|method|createRbw ( StorageType storageType, String storageId, ExtendedBlock b, boolean allowLazyPersist)
 specifier|public
 specifier|synchronized
 name|ReplicaHandler
@@ -5017,6 +5017,9 @@ name|createRbw
 parameter_list|(
 name|StorageType
 name|storageType
+parameter_list|,
+name|String
+name|storageId
 parameter_list|,
 name|ExtendedBlock
 name|b
@@ -5032,6 +5035,8 @@ name|createTemporary
 argument_list|(
 name|storageType
 argument_list|,
+name|storageId
+argument_list|,
 name|b
 argument_list|)
 return|;
@@ -5039,7 +5044,7 @@ block|}
 annotation|@
 name|Override
 comment|// FsDatasetSpi
-DECL|method|createTemporary ( StorageType storageType, ExtendedBlock b)
+DECL|method|createTemporary ( StorageType storageType, String storageId, ExtendedBlock b)
 specifier|public
 specifier|synchronized
 name|ReplicaHandler
@@ -5047,6 +5052,9 @@ name|createTemporary
 parameter_list|(
 name|StorageType
 name|storageType
+parameter_list|,
+name|String
+name|storageId
 parameter_list|,
 name|ExtendedBlock
 name|b
@@ -6673,7 +6681,7 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|moveBlockAcrossStorage (ExtendedBlock block, StorageType targetStorageType)
+DECL|method|moveBlockAcrossStorage (ExtendedBlock block, StorageType targetStorageType, String storageId)
 specifier|public
 name|ReplicaInfo
 name|moveBlockAcrossStorage
@@ -6683,6 +6691,9 @@ name|block
 parameter_list|,
 name|StorageType
 name|targetStorageType
+parameter_list|,
+name|String
+name|storageId
 parameter_list|)
 throws|throws
 name|IOException

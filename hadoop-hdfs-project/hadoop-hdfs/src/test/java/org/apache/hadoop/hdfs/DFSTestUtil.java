@@ -6913,6 +6913,12 @@ name|StorageType
 operator|.
 name|DEFAULT
 block|}
+argument_list|,
+operator|new
+name|String
+index|[
+literal|0
+index|]
 argument_list|)
 expr_stmt|;
 name|out

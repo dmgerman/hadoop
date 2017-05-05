@@ -1246,7 +1246,7 @@ literal|true
 return|;
 block|}
 comment|/** Generate an block token for current user */
-DECL|method|generateToken (ExtendedBlock block, EnumSet<BlockTokenIdentifier.AccessMode> modes, StorageType[] storageTypes)
+DECL|method|generateToken (ExtendedBlock block, EnumSet<BlockTokenIdentifier.AccessMode> modes, StorageType[] storageTypes, String[] storageIds)
 specifier|public
 name|Token
 argument_list|<
@@ -1268,6 +1268,10 @@ parameter_list|,
 name|StorageType
 index|[]
 name|storageTypes
+parameter_list|,
+name|String
+index|[]
+name|storageIds
 parameter_list|)
 throws|throws
 name|IOException
@@ -1306,11 +1310,13 @@ argument_list|,
 name|modes
 argument_list|,
 name|storageTypes
+argument_list|,
+name|storageIds
 argument_list|)
 return|;
 block|}
 comment|/** Generate a block token for a specified user */
-DECL|method|generateToken (String userId, ExtendedBlock block, EnumSet<BlockTokenIdentifier.AccessMode> modes, StorageType[] storageTypes)
+DECL|method|generateToken (String userId, ExtendedBlock block, EnumSet<BlockTokenIdentifier.AccessMode> modes, StorageType[] storageTypes, String[] storageIds)
 specifier|public
 name|Token
 argument_list|<
@@ -1335,6 +1341,10 @@ parameter_list|,
 name|StorageType
 index|[]
 name|storageTypes
+parameter_list|,
+name|String
+index|[]
+name|storageIds
 parameter_list|)
 throws|throws
 name|IOException
@@ -1361,6 +1371,8 @@ name|modes
 argument_list|,
 name|storageTypes
 argument_list|,
+name|storageIds
+argument_list|,
 name|useProto
 argument_list|)
 decl_stmt|;
@@ -1378,7 +1390,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Check if access should be allowed. userID is not checked if null. This    * method doesn't check if token password is correct. It should be used only    * when token password has already been verified (e.g., in the RPC layer).    *    * Some places need to check the access using StorageTypes and for other    * places the StorageTypes is not relevant.    */
-DECL|method|checkAccess (BlockTokenIdentifier id, String userId, ExtendedBlock block, BlockTokenIdentifier.AccessMode mode, StorageType[] storageTypes)
+DECL|method|checkAccess (BlockTokenIdentifier id, String userId, ExtendedBlock block, BlockTokenIdentifier.AccessMode mode, StorageType[] storageTypes, String[] storageIds)
 specifier|public
 name|void
 name|checkAccess
@@ -1400,6 +1412,10 @@ parameter_list|,
 name|StorageType
 index|[]
 name|storageTypes
+parameter_list|,
+name|String
+index|[]
+name|storageIds
 parameter_list|)
 throws|throws
 name|InvalidToken
@@ -1436,6 +1452,34 @@ name|getStorageTypes
 argument_list|()
 argument_list|,
 name|storageTypes
+argument_list|,
+literal|"StorageTypes"
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|storageIds
+operator|!=
+literal|null
+operator|&&
+name|storageIds
+operator|.
+name|length
+operator|>
+literal|0
+condition|)
+block|{
+name|checkAccess
+argument_list|(
+name|id
+operator|.
+name|getStorageIds
+argument_list|()
+argument_list|,
+name|storageIds
+argument_list|,
+literal|"StorageIDs"
 argument_list|)
 expr_stmt|;
 block|}
@@ -1654,27 +1698,33 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Check if the requested StorageTypes match the StorageTypes in the    * BlockTokenIdentifier.    * Empty candidateStorageTypes specifiers mean 'all is permitted'. They    * would otherwise be nonsensical.    */
-DECL|method|checkAccess (StorageType[] candidateStorageTypes, StorageType[] storageTypesRequested)
+comment|/**    * Check if the requested values can be satisfied with the values in the    * BlockToken. This is intended for use with StorageTypes and StorageIDs.    *    * The current node can only verify that one of the storage [Type|ID] is    * available. The rest will be on different nodes.    */
+DECL|method|checkAccess (T[] candidates, T[] requested, String msg)
 specifier|public
 specifier|static
+parameter_list|<
+name|T
+parameter_list|>
 name|void
 name|checkAccess
 parameter_list|(
-name|StorageType
+name|T
 index|[]
-name|candidateStorageTypes
+name|candidates
 parameter_list|,
-name|StorageType
+name|T
 index|[]
-name|storageTypesRequested
+name|requested
+parameter_list|,
+name|String
+name|msg
 parameter_list|)
 throws|throws
 name|InvalidToken
 block|{
 if|if
 condition|(
-name|storageTypesRequested
+name|requested
 operator|.
 name|length
 operator|==
@@ -1685,7 +1735,11 @@ throw|throw
 operator|new
 name|InvalidToken
 argument_list|(
-literal|"The request has no StorageTypes. "
+literal|"The request has no "
+operator|+
+name|msg
+operator|+
+literal|". "
 operator|+
 literal|"This is probably a configuration error."
 argument_list|)
@@ -1693,7 +1747,7 @@ throw|;
 block|}
 if|if
 condition|(
-name|candidateStorageTypes
+name|candidates
 operator|.
 name|length
 operator|==
@@ -1703,15 +1757,12 @@ block|{
 return|return;
 block|}
 name|List
-argument_list|<
-name|StorageType
-argument_list|>
 name|unseenCandidates
 init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|StorageType
+name|T
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -1723,16 +1774,16 @@ name|Arrays
 operator|.
 name|asList
 argument_list|(
-name|candidateStorageTypes
+name|candidates
 argument_list|)
 argument_list|)
 expr_stmt|;
 for|for
 control|(
-name|StorageType
-name|storageType
+name|T
+name|req
 range|:
-name|storageTypesRequested
+name|requested
 control|)
 block|{
 specifier|final
@@ -1743,7 +1794,7 @@ name|unseenCandidates
 operator|.
 name|indexOf
 argument_list|(
-name|storageType
+name|req
 argument_list|)
 decl_stmt|;
 if|if
@@ -1758,22 +1809,30 @@ throw|throw
 operator|new
 name|InvalidToken
 argument_list|(
-literal|"Block token with StorageTypes "
+literal|"Block token with "
+operator|+
+name|msg
+operator|+
+literal|" "
 operator|+
 name|Arrays
 operator|.
 name|toString
 argument_list|(
-name|candidateStorageTypes
+name|candidates
 argument_list|)
 operator|+
-literal|" not valid for access with StorageTypes "
+literal|" not valid for access with "
+operator|+
+name|msg
+operator|+
+literal|" "
 operator|+
 name|Arrays
 operator|.
 name|toString
 argument_list|(
-name|storageTypesRequested
+name|requested
 argument_list|)
 argument_list|)
 throw|;
@@ -1809,7 +1868,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Check if access should be allowed. userID is not checked if null */
-DECL|method|checkAccess (Token<BlockTokenIdentifier> token, String userId, ExtendedBlock block, BlockTokenIdentifier.AccessMode mode, StorageType[] storageTypes)
+DECL|method|checkAccess (Token<BlockTokenIdentifier> token, String userId, ExtendedBlock block, BlockTokenIdentifier.AccessMode mode, StorageType[] storageTypes, String[] storageIds)
 specifier|public
 name|void
 name|checkAccess
@@ -1834,6 +1893,10 @@ parameter_list|,
 name|StorageType
 index|[]
 name|storageTypes
+parameter_list|,
+name|String
+index|[]
+name|storageIds
 parameter_list|)
 throws|throws
 name|InvalidToken
@@ -1901,6 +1964,8 @@ argument_list|,
 name|mode
 argument_list|,
 name|storageTypes
+argument_list|,
+name|storageIds
 argument_list|)
 expr_stmt|;
 if|if

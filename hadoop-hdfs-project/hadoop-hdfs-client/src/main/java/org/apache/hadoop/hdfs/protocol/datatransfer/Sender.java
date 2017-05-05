@@ -72,6 +72,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -890,7 +900,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|writeBlock (final ExtendedBlock blk, final StorageType storageType, final Token<BlockTokenIdentifier> blockToken, final String clientName, final DatanodeInfo[] targets, final StorageType[] targetStorageTypes, final DatanodeInfo source, final BlockConstructionStage stage, final int pipelineSize, final long minBytesRcvd, final long maxBytesRcvd, final long latestGenerationStamp, DataChecksum requestedChecksum, final CachingStrategy cachingStrategy, final boolean allowLazyPersist, final boolean pinning, final boolean[] targetPinnings)
+DECL|method|writeBlock (final ExtendedBlock blk, final StorageType storageType, final Token<BlockTokenIdentifier> blockToken, final String clientName, final DatanodeInfo[] targets, final StorageType[] targetStorageTypes, final DatanodeInfo source, final BlockConstructionStage stage, final int pipelineSize, final long minBytesRcvd, final long maxBytesRcvd, final long latestGenerationStamp, DataChecksum requestedChecksum, final CachingStrategy cachingStrategy, final boolean allowLazyPersist, final boolean pinning, final boolean[] targetPinnings, final String storageId, final String[] targetStorageIds)
 specifier|public
 name|void
 name|writeBlock
@@ -967,6 +977,15 @@ specifier|final
 name|boolean
 index|[]
 name|targetPinnings
+parameter_list|,
+specifier|final
+name|String
+name|storageId
+parameter_list|,
+specifier|final
+name|String
+index|[]
+name|targetStorageIds
 parameter_list|)
 throws|throws
 name|IOException
@@ -1106,6 +1125,18 @@ argument_list|,
 literal|1
 argument_list|)
 argument_list|)
+operator|.
+name|addAllTargetStorageIds
+argument_list|(
+name|PBHelperClient
+operator|.
+name|convert
+argument_list|(
+name|targetStorageIds
+argument_list|,
+literal|1
+argument_list|)
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
@@ -1127,6 +1158,21 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|storageId
+operator|!=
+literal|null
+condition|)
+block|{
+name|proto
+operator|.
+name|setStorageId
+argument_list|(
+name|storageId
+argument_list|)
+expr_stmt|;
+block|}
 name|send
 argument_list|(
 name|out
@@ -1144,7 +1190,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|transferBlock (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, final String clientName, final DatanodeInfo[] targets, final StorageType[] targetStorageTypes)
+DECL|method|transferBlock (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, final String clientName, final DatanodeInfo[] targets, final StorageType[] targetStorageTypes, final String[] targetStorageIds)
 specifier|public
 name|void
 name|transferBlock
@@ -1173,6 +1219,11 @@ specifier|final
 name|StorageType
 index|[]
 name|targetStorageTypes
+parameter_list|,
+specifier|final
+name|String
+index|[]
+name|targetStorageIds
 parameter_list|)
 throws|throws
 name|IOException
@@ -1216,6 +1267,16 @@ operator|.
 name|convertStorageTypes
 argument_list|(
 name|targetStorageTypes
+argument_list|)
+argument_list|)
+operator|.
+name|addAllTargetStorageIds
+argument_list|(
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|targetStorageIds
 argument_list|)
 argument_list|)
 operator|.
@@ -1527,7 +1588,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|replaceBlock (final ExtendedBlock blk, final StorageType storageType, final Token<BlockTokenIdentifier> blockToken, final String delHint, final DatanodeInfo source)
+DECL|method|replaceBlock (final ExtendedBlock blk, final StorageType storageType, final Token<BlockTokenIdentifier> blockToken, final String delHint, final DatanodeInfo source, final String storageId)
 specifier|public
 name|void
 name|replaceBlock
@@ -1554,11 +1615,17 @@ parameter_list|,
 specifier|final
 name|DatanodeInfo
 name|source
+parameter_list|,
+specifier|final
+name|String
+name|storageId
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 name|OpReplaceBlockProto
+operator|.
+name|Builder
 name|proto
 init|=
 name|OpReplaceBlockProto
@@ -1602,10 +1669,22 @@ argument_list|(
 name|source
 argument_list|)
 argument_list|)
-operator|.
-name|build
-argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|storageId
+operator|!=
+literal|null
+condition|)
+block|{
+name|proto
+operator|.
+name|setStorageId
+argument_list|(
+name|storageId
+argument_list|)
+expr_stmt|;
+block|}
 name|send
 argument_list|(
 name|out
@@ -1615,6 +1694,9 @@ operator|.
 name|REPLACE_BLOCK
 argument_list|,
 name|proto
+operator|.
+name|build
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

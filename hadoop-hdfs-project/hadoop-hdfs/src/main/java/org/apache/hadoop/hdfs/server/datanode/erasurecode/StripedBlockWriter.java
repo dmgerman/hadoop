@@ -475,6 +475,12 @@ specifier|final
 name|StorageType
 name|storageType
 decl_stmt|;
+DECL|field|storageId
+specifier|private
+specifier|final
+name|String
+name|storageId
+decl_stmt|;
 DECL|field|targetSocket
 specifier|private
 name|Socket
@@ -520,7 +526,7 @@ operator|new
 name|ElasticByteBufferPool
 argument_list|()
 decl_stmt|;
-DECL|method|StripedBlockWriter (StripedWriter stripedWriter, DataNode datanode, Configuration conf, ExtendedBlock block, DatanodeInfo target, StorageType storageType)
+DECL|method|StripedBlockWriter (StripedWriter stripedWriter, DataNode datanode, Configuration conf, ExtendedBlock block, DatanodeInfo target, StorageType storageType, String storageId)
 name|StripedBlockWriter
 parameter_list|(
 name|StripedWriter
@@ -540,6 +546,9 @@ name|target
 parameter_list|,
 name|StorageType
 name|storageType
+parameter_list|,
+name|String
+name|storageId
 parameter_list|)
 throws|throws
 name|IOException
@@ -579,6 +588,12 @@ operator|.
 name|storageType
 operator|=
 name|storageType
+expr_stmt|;
+name|this
+operator|.
+name|storageId
+operator|=
+name|storageId
 expr_stmt|;
 name|this
 operator|.
@@ -731,6 +746,13 @@ name|StorageType
 index|[]
 block|{
 name|storageType
+block|}
+argument_list|,
+operator|new
+name|String
+index|[]
+block|{
+name|storageId
 block|}
 argument_list|)
 decl_stmt|;
@@ -916,6 +938,15 @@ argument_list|,
 literal|false
 argument_list|,
 literal|null
+argument_list|,
+name|storageId
+argument_list|,
+operator|new
+name|String
+index|[]
+block|{
+name|storageId
+block|}
 argument_list|)
 expr_stmt|;
 name|targetSocket

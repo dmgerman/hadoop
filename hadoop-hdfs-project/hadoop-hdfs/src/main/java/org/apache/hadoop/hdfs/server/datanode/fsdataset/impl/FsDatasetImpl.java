@@ -5328,7 +5328,7 @@ block|}
 comment|/**    * Move block files from one storage to another storage.    * @return Returns the Old replicaInfo    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|moveBlockAcrossStorage (ExtendedBlock block, StorageType targetStorageType)
+DECL|method|moveBlockAcrossStorage (ExtendedBlock block, StorageType targetStorageType, String targetStorageId)
 specifier|public
 name|ReplicaInfo
 name|moveBlockAcrossStorage
@@ -5338,6 +5338,9 @@ name|block
 parameter_list|,
 name|StorageType
 name|targetStorageType
+parameter_list|,
+name|String
+name|targetStorageId
 parameter_list|)
 throws|throws
 name|IOException
@@ -5490,6 +5493,8 @@ operator|.
 name|getNextVolume
 argument_list|(
 name|targetStorageType
+argument_list|,
+name|targetStorageId
 argument_list|,
 name|block
 operator|.
@@ -7082,13 +7087,16 @@ block|}
 annotation|@
 name|Override
 comment|// FsDatasetSpi
-DECL|method|createRbw ( StorageType storageType, ExtendedBlock b, boolean allowLazyPersist)
+DECL|method|createRbw ( StorageType storageType, String storageId, ExtendedBlock b, boolean allowLazyPersist)
 specifier|public
 name|ReplicaHandler
 name|createRbw
 parameter_list|(
 name|StorageType
 name|storageType
+parameter_list|,
+name|String
+name|storageId
 parameter_list|,
 name|ExtendedBlock
 name|b
@@ -7260,6 +7268,8 @@ operator|.
 name|getNextVolume
 argument_list|(
 name|storageType
+argument_list|,
+name|storageId
 argument_list|,
 name|b
 operator|.
@@ -8113,13 +8123,16 @@ block|}
 annotation|@
 name|Override
 comment|// FsDatasetSpi
-DECL|method|createTemporary ( StorageType storageType, ExtendedBlock b)
+DECL|method|createTemporary ( StorageType storageType, String storageId, ExtendedBlock b)
 specifier|public
 name|ReplicaHandler
 name|createTemporary
 parameter_list|(
 name|StorageType
 name|storageType
+parameter_list|,
+name|String
+name|storageId
 parameter_list|,
 name|ExtendedBlock
 name|b
@@ -8220,6 +8233,8 @@ operator|.
 name|getNextVolume
 argument_list|(
 name|storageType
+argument_list|,
+name|storageId
 argument_list|,
 name|b
 operator|.
@@ -14922,6 +14937,8 @@ argument_list|(
 name|StorageType
 operator|.
 name|DEFAULT
+argument_list|,
+literal|null
 argument_list|,
 name|replicaInfo
 operator|.

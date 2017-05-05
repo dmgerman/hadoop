@@ -1194,6 +1194,14 @@ argument_list|,
 literal|false
 argument_list|,
 literal|null
+argument_list|,
+literal|null
+argument_list|,
+operator|new
+name|String
+index|[
+literal|0
+index|]
 argument_list|)
 expr_stmt|;
 name|out
@@ -1842,6 +1850,12 @@ name|StorageType
 operator|.
 name|DISK
 block|}
+argument_list|,
+operator|new
+name|String
+index|[
+literal|0
+index|]
 argument_list|)
 expr_stmt|;
 comment|// Sleep for 1 second so the DataTrasnfer daemon can start transfer.

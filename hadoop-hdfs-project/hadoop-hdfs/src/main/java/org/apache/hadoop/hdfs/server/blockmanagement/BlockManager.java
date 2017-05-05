@@ -6772,6 +6772,11 @@ name|b
 operator|.
 name|getStorageTypes
 argument_list|()
+argument_list|,
+name|b
+operator|.
+name|getStorageIDs
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -6816,6 +6821,11 @@ argument_list|,
 name|b
 operator|.
 name|getStorageTypes
+argument_list|()
+argument_list|,
+name|b
+operator|.
+name|getStorageIDs
 argument_list|()
 argument_list|)
 argument_list|)

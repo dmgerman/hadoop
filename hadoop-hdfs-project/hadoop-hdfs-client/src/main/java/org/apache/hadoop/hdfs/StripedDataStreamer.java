@@ -488,6 +488,15 @@ operator|.
 name|getStorageTypes
 argument_list|()
 decl_stmt|;
+name|String
+index|[]
+name|storageIDs
+init|=
+name|lb
+operator|.
+name|getStorageIDs
+argument_list|()
+decl_stmt|;
 comment|// Connect to the DataNode. If fail the internal error state will be set.
 name|success
 operator|=
@@ -496,6 +505,8 @@ argument_list|(
 name|nodes
 argument_list|,
 name|storageTypes
+argument_list|,
+name|storageIDs
 argument_list|,
 literal|0L
 argument_list|,
@@ -581,7 +592,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setupPipelineInternal (DatanodeInfo[] nodes, StorageType[] nodeStorageTypes)
+DECL|method|setupPipelineInternal (DatanodeInfo[] nodes, StorageType[] nodeStorageTypes, String[] nodeStorageIDs)
 specifier|protected
 name|void
 name|setupPipelineInternal
@@ -593,6 +604,10 @@ parameter_list|,
 name|StorageType
 index|[]
 name|nodeStorageTypes
+parameter_list|,
+name|String
+index|[]
+name|nodeStorageIDs
 parameter_list|)
 throws|throws
 name|IOException
@@ -686,6 +701,8 @@ argument_list|(
 name|nodes
 argument_list|,
 name|nodeStorageTypes
+argument_list|,
+name|nodeStorageIDs
 argument_list|,
 name|newGS
 argument_list|,

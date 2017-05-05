@@ -444,7 +444,7 @@ block|}
 comment|/**      * Override createRbw to verify that the block length that is passed      * is correct. This requires both DFSOutputStream and BlockReceiver to      * correctly propagate the hint to FsDatasetSpi.      */
 annotation|@
 name|Override
-DECL|method|createRbw ( StorageType storageType, ExtendedBlock b, boolean allowLazyPersist)
+DECL|method|createRbw (StorageType storageType, String storageId, ExtendedBlock b, boolean allowLazyPersist)
 specifier|public
 specifier|synchronized
 name|ReplicaHandler
@@ -452,6 +452,9 @@ name|createRbw
 parameter_list|(
 name|StorageType
 name|storageType
+parameter_list|,
+name|String
+name|storageId
 parameter_list|,
 name|ExtendedBlock
 name|b
@@ -484,6 +487,8 @@ operator|.
 name|createRbw
 argument_list|(
 name|storageType
+argument_list|,
+name|storageId
 argument_list|,
 name|b
 argument_list|,

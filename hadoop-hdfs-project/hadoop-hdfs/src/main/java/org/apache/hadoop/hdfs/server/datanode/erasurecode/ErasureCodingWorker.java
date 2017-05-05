@@ -550,6 +550,11 @@ name|reconInfo
 operator|.
 name|getTargetStorageTypes
 argument_list|()
+argument_list|,
+name|reconInfo
+operator|.
+name|getTargetStorageIDs
+argument_list|()
 argument_list|)
 decl_stmt|;
 specifier|final

@@ -551,7 +551,7 @@ name|volumes
 argument_list|)
 return|;
 block|}
-DECL|method|chooseVolume (List<FsVolumeImpl> list, long blockSize)
+DECL|method|chooseVolume (List<FsVolumeImpl> list, long blockSize, String storageId)
 specifier|private
 name|FsVolumeReference
 name|chooseVolume
@@ -564,6 +564,9 @@ name|list
 parameter_list|,
 name|long
 name|blockSize
+parameter_list|,
+name|String
+name|storageId
 parameter_list|)
 throws|throws
 name|IOException
@@ -583,6 +586,8 @@ argument_list|(
 name|list
 argument_list|,
 name|blockSize
+argument_list|,
+name|storageId
 argument_list|)
 decl_stmt|;
 try|try
@@ -623,13 +628,16 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**     * Get next volume.    *    * @param blockSize free space needed on the volume    * @param storageType the desired {@link StorageType}     * @return next volume to store the block in.    */
-DECL|method|getNextVolume (StorageType storageType, long blockSize)
+comment|/**     * Get next volume.    *    * @param blockSize free space needed on the volume    * @param storageType the desired {@link StorageType}    * @param storageId the storage id which may or may not be used by    *                  the VolumeChoosingPolicy.    * @return next volume to store the block in.    */
+DECL|method|getNextVolume (StorageType storageType, String storageId, long blockSize)
 name|FsVolumeReference
 name|getNextVolume
 parameter_list|(
 name|StorageType
 name|storageType
+parameter_list|,
+name|String
+name|storageId
 parameter_list|,
 name|long
 name|blockSize
@@ -687,6 +695,8 @@ argument_list|(
 name|list
 argument_list|,
 name|blockSize
+argument_list|,
+name|storageId
 argument_list|)
 return|;
 block|}
@@ -760,6 +770,8 @@ argument_list|(
 name|list
 argument_list|,
 name|blockSize
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}

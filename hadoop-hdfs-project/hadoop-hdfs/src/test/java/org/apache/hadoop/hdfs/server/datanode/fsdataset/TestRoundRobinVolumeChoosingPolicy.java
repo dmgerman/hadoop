@@ -290,6 +290,8 @@ argument_list|(
 name|volumes
 argument_list|,
 literal|0
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -311,6 +313,8 @@ argument_list|(
 name|volumes
 argument_list|,
 literal|0
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -332,6 +336,8 @@ argument_list|(
 name|volumes
 argument_list|,
 literal|0
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -353,6 +359,8 @@ argument_list|(
 name|volumes
 argument_list|,
 literal|0
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -376,6 +384,8 @@ argument_list|(
 name|volumes
 argument_list|,
 literal|150
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -391,6 +401,8 @@ argument_list|,
 name|Long
 operator|.
 name|MAX_VALUE
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -553,6 +565,8 @@ argument_list|(
 name|volumes
 argument_list|,
 name|blockSize
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -911,6 +925,8 @@ argument_list|(
 name|diskVolumes
 argument_list|,
 literal|0
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -933,6 +949,8 @@ argument_list|(
 name|ssdVolumes
 argument_list|,
 literal|0
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -955,6 +973,8 @@ argument_list|(
 name|ssdVolumes
 argument_list|,
 literal|150L
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -976,6 +996,8 @@ argument_list|(
 name|diskVolumes
 argument_list|,
 literal|0
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -997,6 +1019,8 @@ argument_list|(
 name|diskVolumes
 argument_list|,
 literal|50L
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1009,6 +1033,8 @@ argument_list|(
 name|diskVolumes
 argument_list|,
 literal|200L
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|Assert

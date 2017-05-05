@@ -1262,7 +1262,7 @@ name|unbufIn
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|sendTransferBlock (final DatanodeInfo[] targets, final StorageType[] targetStorageTypes, final Token<BlockTokenIdentifier> blockToken)
+DECL|method|sendTransferBlock (final DatanodeInfo[] targets, final StorageType[] targetStorageTypes, final String[] targetStorageIDs, final Token<BlockTokenIdentifier> blockToken)
 name|void
 name|sendTransferBlock
 parameter_list|(
@@ -1275,6 +1275,11 @@ specifier|final
 name|StorageType
 index|[]
 name|targetStorageTypes
+parameter_list|,
+specifier|final
+name|String
+index|[]
+name|targetStorageIDs
 parameter_list|,
 specifier|final
 name|Token
@@ -1309,6 +1314,8 @@ argument_list|,
 name|targets
 argument_list|,
 name|targetStorageTypes
+argument_list|,
+name|targetStorageIDs
 argument_list|)
 expr_stmt|;
 name|out
@@ -6405,6 +6412,18 @@ name|d
 index|]
 block|}
 decl_stmt|;
+specifier|final
+name|String
+index|[]
+name|targetStorageIDs
+init|=
+block|{
+name|storageIDs
+index|[
+name|d
+index|]
+block|}
+decl_stmt|;
 try|try
 block|{
 name|transfer
@@ -6414,6 +6433,8 @@ argument_list|,
 name|targets
 argument_list|,
 name|targetStorageTypes
+argument_list|,
+name|targetStorageIDs
 argument_list|,
 name|lb
 operator|.
@@ -6556,7 +6577,7 @@ name|multi
 argument_list|)
 return|;
 block|}
-DECL|method|transfer (final DatanodeInfo src, final DatanodeInfo[] targets, final StorageType[] targetStorageTypes, final Token<BlockTokenIdentifier> blockToken)
+DECL|method|transfer (final DatanodeInfo src, final DatanodeInfo[] targets, final StorageType[] targetStorageTypes, final String[] targetStorageIDs, final Token<BlockTokenIdentifier> blockToken)
 specifier|private
 name|void
 name|transfer
@@ -6574,6 +6595,11 @@ specifier|final
 name|StorageType
 index|[]
 name|targetStorageTypes
+parameter_list|,
+specifier|final
+name|String
+index|[]
+name|targetStorageIDs
 parameter_list|,
 specifier|final
 name|Token
@@ -6639,6 +6665,8 @@ argument_list|(
 name|targets
 argument_list|,
 name|targetStorageTypes
+argument_list|,
+name|targetStorageIDs
 argument_list|,
 name|blockToken
 argument_list|)
@@ -6746,10 +6774,12 @@ argument_list|(
 name|nodes
 argument_list|,
 name|storageTypes
+argument_list|,
+name|storageIDs
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|setupPipelineInternal (DatanodeInfo[] datanodes, StorageType[] nodeStorageTypes)
+DECL|method|setupPipelineInternal (DatanodeInfo[] datanodes, StorageType[] nodeStorageTypes, String[] nodeStorageIDs)
 specifier|protected
 name|void
 name|setupPipelineInternal
@@ -6761,6 +6791,10 @@ parameter_list|,
 name|StorageType
 index|[]
 name|nodeStorageTypes
+parameter_list|,
+name|String
+index|[]
+name|nodeStorageIDs
 parameter_list|)
 throws|throws
 name|IOException
@@ -6851,6 +6885,8 @@ argument_list|(
 name|nodes
 argument_list|,
 name|storageTypes
+argument_list|,
+name|storageIDs
 argument_list|,
 name|newGS
 argument_list|,
@@ -7412,7 +7448,11 @@ name|nodes
 decl_stmt|;
 name|StorageType
 index|[]
-name|storageTypes
+name|nextStorageTypes
+decl_stmt|;
+name|String
+index|[]
+name|nextStorageIDs
 decl_stmt|;
 name|int
 name|count
@@ -7508,11 +7548,18 @@ operator|.
 name|getLocations
 argument_list|()
 expr_stmt|;
-name|storageTypes
+name|nextStorageTypes
 operator|=
 name|lb
 operator|.
 name|getStorageTypes
+argument_list|()
+expr_stmt|;
+name|nextStorageIDs
+operator|=
+name|lb
+operator|.
+name|getStorageIDs
 argument_list|()
 expr_stmt|;
 comment|// Connect to first DataNode in the list.
@@ -7522,7 +7569,9 @@ name|createBlockOutputStream
 argument_list|(
 name|nodes
 argument_list|,
-name|storageTypes
+name|nextStorageTypes
+argument_list|,
+name|nextStorageIDs
 argument_list|,
 literal|0L
 argument_list|,
@@ -7638,7 +7687,7 @@ block|}
 comment|// connects to the first datanode in the pipeline
 comment|// Returns true if success, otherwise return failure.
 comment|//
-DECL|method|createBlockOutputStream (DatanodeInfo[] nodes, StorageType[] nodeStorageTypes, long newGS, boolean recoveryFlag)
+DECL|method|createBlockOutputStream (DatanodeInfo[] nodes, StorageType[] nodeStorageTypes, String[] nodeStorageIDs, long newGS, boolean recoveryFlag)
 name|boolean
 name|createBlockOutputStream
 parameter_list|(
@@ -7649,6 +7698,10 @@ parameter_list|,
 name|StorageType
 index|[]
 name|nodeStorageTypes
+parameter_list|,
+name|String
+index|[]
+name|nodeStorageIDs
 parameter_list|,
 name|long
 name|newGS
@@ -7999,6 +8052,13 @@ index|]
 operator|)
 argument_list|,
 name|targetPinnings
+argument_list|,
+name|nodeStorageIDs
+index|[
+literal|0
+index|]
+argument_list|,
+name|nodeStorageIDs
 argument_list|)
 expr_stmt|;
 comment|// receive ack for connect

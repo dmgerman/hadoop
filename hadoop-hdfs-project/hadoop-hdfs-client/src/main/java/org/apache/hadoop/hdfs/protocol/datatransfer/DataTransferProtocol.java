@@ -304,8 +304,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Write a block to a datanode pipeline.    * The receiver datanode of this call is the next datanode in the pipeline.    * The other downstream datanodes are specified by the targets parameter.    * Note that the receiver {@link DatanodeInfo} is not required in the    * parameter list since the receiver datanode knows its info.  However, the    * {@link StorageType} for storing the replica in the receiver datanode is a    * parameter since the receiver datanode may support multiple storage types.    *    * @param blk the block being written.    * @param storageType for storing the replica in the receiver datanode.    * @param blockToken security token for accessing the block.    * @param clientName client's name.    * @param targets other downstream datanodes in the pipeline.    * @param targetStorageTypes target {@link StorageType}s corresponding    *                           to the target datanodes.    * @param source source datanode.    * @param stage pipeline stage.    * @param pipelineSize the size of the pipeline.    * @param minBytesRcvd minimum number of bytes received.    * @param maxBytesRcvd maximum number of bytes received.    * @param latestGenerationStamp the latest generation stamp of the block.    * @param requestedChecksum the requested checksum mechanism    * @param cachingStrategy the caching strategy    * @param allowLazyPersist hint to the DataNode that the block can be    *                         allocated on transient storage i.e. memory and    *                         written to disk lazily    * @param pinning whether to pin the block, so Balancer won't move it.    * @param targetPinnings whether to pin the block on target datanode    */
-DECL|method|writeBlock (final ExtendedBlock blk, final StorageType storageType, final Token<BlockTokenIdentifier> blockToken, final String clientName, final DatanodeInfo[] targets, final StorageType[] targetStorageTypes, final DatanodeInfo source, final BlockConstructionStage stage, final int pipelineSize, final long minBytesRcvd, final long maxBytesRcvd, final long latestGenerationStamp, final DataChecksum requestedChecksum, final CachingStrategy cachingStrategy, final boolean allowLazyPersist, final boolean pinning, final boolean[] targetPinnings)
+comment|/**    * Write a block to a datanode pipeline.    * The receiver datanode of this call is the next datanode in the pipeline.    * The other downstream datanodes are specified by the targets parameter.    * Note that the receiver {@link DatanodeInfo} is not required in the    * parameter list since the receiver datanode knows its info.  However, the    * {@link StorageType} for storing the replica in the receiver datanode is a    * parameter since the receiver datanode may support multiple storage types.    *    * @param blk the block being written.    * @param storageType for storing the replica in the receiver datanode.    * @param blockToken security token for accessing the block.    * @param clientName client's name.    * @param targets other downstream datanodes in the pipeline.    * @param targetStorageTypes target {@link StorageType}s corresponding    *                           to the target datanodes.    * @param source source datanode.    * @param stage pipeline stage.    * @param pipelineSize the size of the pipeline.    * @param minBytesRcvd minimum number of bytes received.    * @param maxBytesRcvd maximum number of bytes received.    * @param latestGenerationStamp the latest generation stamp of the block.    * @param requestedChecksum the requested checksum mechanism    * @param cachingStrategy the caching strategy    * @param allowLazyPersist hint to the DataNode that the block can be    *                         allocated on transient storage i.e. memory and    *                         written to disk lazily    * @param pinning whether to pin the block, so Balancer won't move it.    * @param targetPinnings whether to pin the block on target datanode    * @param storageID optional StorageIDs designating where to write the    *                  block. An empty String or null indicates that this    *                  has not been provided.    * @param targetStorageIDs target StorageIDs corresponding to the target    *                         datanodes.    */
+DECL|method|writeBlock (final ExtendedBlock blk, final StorageType storageType, final Token<BlockTokenIdentifier> blockToken, final String clientName, final DatanodeInfo[] targets, final StorageType[] targetStorageTypes, final DatanodeInfo source, final BlockConstructionStage stage, final int pipelineSize, final long minBytesRcvd, final long maxBytesRcvd, final long latestGenerationStamp, final DataChecksum requestedChecksum, final CachingStrategy cachingStrategy, final boolean allowLazyPersist, final boolean pinning, final boolean[] targetPinnings, final String storageID, final String[] targetStorageIDs)
 name|void
 name|writeBlock
 parameter_list|(
@@ -382,12 +382,21 @@ specifier|final
 name|boolean
 index|[]
 name|targetPinnings
+parameter_list|,
+specifier|final
+name|String
+name|storageID
+parameter_list|,
+specifier|final
+name|String
+index|[]
+name|targetStorageIDs
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Transfer a block to another datanode.    * The block stage must be    * either {@link BlockConstructionStage#TRANSFER_RBW}    * or {@link BlockConstructionStage#TRANSFER_FINALIZED}.    *    * @param blk the block being transferred.    * @param blockToken security token for accessing the block.    * @param clientName client's name.    * @param targets target datanodes.    */
-DECL|method|transferBlock (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, final String clientName, final DatanodeInfo[] targets, final StorageType[] targetStorageTypes)
+comment|/**    * Transfer a block to another datanode.    * The block stage must be    * either {@link BlockConstructionStage#TRANSFER_RBW}    * or {@link BlockConstructionStage#TRANSFER_FINALIZED}.    *    * @param blk the block being transferred.    * @param blockToken security token for accessing the block.    * @param clientName client's name.    * @param targets target datanodes.    * @param targetStorageIDs StorageID designating where to write the    *                     block.    */
+DECL|method|transferBlock (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, final String clientName, final DatanodeInfo[] targets, final StorageType[] targetStorageTypes, final String[] targetStorageIDs)
 name|void
 name|transferBlock
 parameter_list|(
@@ -415,6 +424,11 @@ specifier|final
 name|StorageType
 index|[]
 name|targetStorageTypes
+parameter_list|,
+specifier|final
+name|String
+index|[]
+name|targetStorageIDs
 parameter_list|)
 throws|throws
 name|IOException
@@ -470,8 +484,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Receive a block from a source datanode    * and then notifies the namenode    * to remove the copy from the original datanode.    * Note that the source datanode and the original datanode can be different.    * It is used for balancing purpose.    *    * @param blk the block being replaced.    * @param storageType the {@link StorageType} for storing the block.    * @param blockToken security token for accessing the block.    * @param delHint the hint for deleting the block in the original datanode.    * @param source the source datanode for receiving the block.    */
-DECL|method|replaceBlock (final ExtendedBlock blk, final StorageType storageType, final Token<BlockTokenIdentifier> blockToken, final String delHint, final DatanodeInfo source)
+comment|/**    * Receive a block from a source datanode    * and then notifies the namenode    * to remove the copy from the original datanode.    * Note that the source datanode and the original datanode can be different.    * It is used for balancing purpose.    *    * @param blk the block being replaced.    * @param storageType the {@link StorageType} for storing the block.    * @param blockToken security token for accessing the block.    * @param delHint the hint for deleting the block in the original datanode.    * @param source the source datanode for receiving the block.    * @param storageId an optional storage ID to designate where the block is    *                  replaced to.    */
+DECL|method|replaceBlock (final ExtendedBlock blk, final StorageType storageType, final Token<BlockTokenIdentifier> blockToken, final String delHint, final DatanodeInfo source, final String storageId)
 name|void
 name|replaceBlock
 parameter_list|(
@@ -497,6 +511,10 @@ parameter_list|,
 specifier|final
 name|DatanodeInfo
 name|source
+parameter_list|,
+specifier|final
+name|String
+name|storageId
 parameter_list|)
 throws|throws
 name|IOException

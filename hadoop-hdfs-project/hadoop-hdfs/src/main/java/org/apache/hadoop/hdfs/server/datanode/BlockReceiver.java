@@ -956,7 +956,7 @@ specifier|private
 name|long
 name|maxSendIdleTime
 decl_stmt|;
-DECL|method|BlockReceiver (final ExtendedBlock block, final StorageType storageType, final DataInputStream in, final String inAddr, final String myAddr, final BlockConstructionStage stage, final long newGs, final long minBytesRcvd, final long maxBytesRcvd, final String clientname, final DatanodeInfo srcDataNode, final DataNode datanode, DataChecksum requestedChecksum, CachingStrategy cachingStrategy, final boolean allowLazyPersist, final boolean pinning)
+DECL|method|BlockReceiver (final ExtendedBlock block, final StorageType storageType, final DataInputStream in, final String inAddr, final String myAddr, final BlockConstructionStage stage, final long newGs, final long minBytesRcvd, final long maxBytesRcvd, final String clientname, final DatanodeInfo srcDataNode, final DataNode datanode, DataChecksum requestedChecksum, CachingStrategy cachingStrategy, final boolean allowLazyPersist, final boolean pinning, final String storageId)
 name|BlockReceiver
 parameter_list|(
 specifier|final
@@ -1020,6 +1020,10 @@ parameter_list|,
 specifier|final
 name|boolean
 name|pinning
+parameter_list|,
+specifier|final
+name|String
+name|storageId
 parameter_list|)
 throws|throws
 name|IOException
@@ -1286,6 +1290,18 @@ operator|+
 literal|", responseInterval="
 operator|+
 name|responseInterval
+operator|+
+literal|", storageID="
+operator|+
+operator|(
+name|storageId
+operator|!=
+literal|null
+condition|?
+name|storageId
+else|:
+literal|"null"
+operator|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1307,6 +1323,8 @@ operator|.
 name|createTemporary
 argument_list|(
 name|storageType
+argument_list|,
+name|storageId
 argument_list|,
 name|block
 argument_list|)
@@ -1331,6 +1349,8 @@ operator|.
 name|createRbw
 argument_list|(
 name|storageType
+argument_list|,
+name|storageId
 argument_list|,
 name|block
 argument_list|,
@@ -1479,6 +1499,8 @@ operator|.
 name|createTemporary
 argument_list|(
 name|storageType
+argument_list|,
+name|storageId
 argument_list|,
 name|block
 argument_list|)

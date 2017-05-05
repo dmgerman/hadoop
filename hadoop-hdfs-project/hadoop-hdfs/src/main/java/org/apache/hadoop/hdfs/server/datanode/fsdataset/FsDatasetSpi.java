@@ -1285,12 +1285,15 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Creates a temporary replica and returns the meta information of the replica    * .    *     * @param b block    * @return the meta info of the replica which is being written to    * @throws IOException if an error occurs    */
-DECL|method|createTemporary (StorageType storageType, ExtendedBlock b)
+DECL|method|createTemporary (StorageType storageType, String storageId, ExtendedBlock b)
 name|ReplicaHandler
 name|createTemporary
 parameter_list|(
 name|StorageType
 name|storageType
+parameter_list|,
+name|String
+name|storageId
 parameter_list|,
 name|ExtendedBlock
 name|b
@@ -1299,12 +1302,15 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Creates a RBW replica and returns the meta info of the replica    *     * @param b block    * @return the meta info of the replica which is being written to    * @throws IOException if an error occurs    */
-DECL|method|createRbw (StorageType storageType, ExtendedBlock b, boolean allowLazyPersist)
+DECL|method|createRbw (StorageType storageType, String storageId, ExtendedBlock b, boolean allowLazyPersist)
 name|ReplicaHandler
 name|createRbw
 parameter_list|(
 name|StorageType
 name|storageType
+parameter_list|,
+name|String
+name|storageId
 parameter_list|,
 name|ExtendedBlock
 name|b
@@ -1792,7 +1798,7 @@ name|blockId
 parameter_list|)
 function_decl|;
 comment|/**      * Move block from one storage to another storage      */
-DECL|method|moveBlockAcrossStorage (final ExtendedBlock block, StorageType targetStorageType)
+DECL|method|moveBlockAcrossStorage (final ExtendedBlock block, StorageType targetStorageType, String storageId)
 name|ReplicaInfo
 name|moveBlockAcrossStorage
 parameter_list|(
@@ -1802,6 +1808,9 @@ name|block
 parameter_list|,
 name|StorageType
 name|targetStorageType
+parameter_list|,
+name|String
+name|storageId
 parameter_list|)
 throws|throws
 name|IOException
