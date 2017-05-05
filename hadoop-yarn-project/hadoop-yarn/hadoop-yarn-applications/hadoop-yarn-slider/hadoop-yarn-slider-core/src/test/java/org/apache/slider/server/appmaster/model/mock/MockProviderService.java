@@ -256,6 +256,24 @@ name|slider
 operator|.
 name|server
 operator|.
+name|appmaster
+operator|.
+name|timelineservice
+operator|.
+name|ServiceTimelinePublisher
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
+name|server
+operator|.
 name|services
 operator|.
 name|yarnregistry
@@ -567,6 +585,17 @@ return|return
 literal|false
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|setServiceTimelinePublisher ( ServiceTimelinePublisher serviceTimelinePublisher)
+specifier|public
+name|void
+name|setServiceTimelinePublisher
+parameter_list|(
+name|ServiceTimelinePublisher
+name|serviceTimelinePublisher
+parameter_list|)
+block|{    }
 block|}
 end_class
 
