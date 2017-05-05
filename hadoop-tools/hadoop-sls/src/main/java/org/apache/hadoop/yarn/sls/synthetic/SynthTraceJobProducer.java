@@ -767,6 +767,14 @@ return|return
 name|trace
 operator|.
 name|nodes_per_rack
+operator|<
+literal|1
+condition|?
+literal|1
+else|:
+name|trace
+operator|.
+name|nodes_per_rack
 return|;
 block|}
 DECL|method|getNumNodes ()

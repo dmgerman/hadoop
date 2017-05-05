@@ -2432,9 +2432,19 @@ range|:
 name|csList
 control|)
 block|{
+if|if
+condition|(
+name|cs
+operator|.
+name|getHostname
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
 name|String
-name|rackHostNames
 index|[]
+name|rackHostNames
 init|=
 name|SLSUtils
 operator|.
@@ -2589,6 +2599,7 @@ argument_list|,
 name|request
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|// any
 if|if
