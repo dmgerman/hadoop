@@ -1727,6 +1727,19 @@ expr_stmt|;
 block|}
 else|else
 block|{
+comment|// Remove the appAttempt in AMRMTokenSecretManager
+name|this
+operator|.
+name|secretManager
+operator|.
+name|applicationMasterFinished
+argument_list|(
+name|pipeline
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -2685,7 +2698,7 @@ argument_list|()
 condition|)
 block|{
 case|case
-name|FINISH_APPLICATION
+name|APPLICATION_RESOURCES_CLEANEDUP
 case|:
 name|LOG
 operator|.
