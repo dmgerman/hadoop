@@ -1483,7 +1483,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-literal|"Delete should suceed"
+literal|"Delete should succeed"
 argument_list|,
 name|fsView
 operator|.
@@ -1590,7 +1590,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-literal|"Delete should suceed"
+literal|"Delete should succeed"
 argument_list|,
 name|fsView
 operator|.
@@ -2356,7 +2356,7 @@ literal|"/user2/fooBarBar"
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|/* - code if we had wanted this to suceed     Assert.assertFalse(fSys.exists(new Path("/user/foo")));     Assert.assertFalse(fSysLocal.exists(new Path(targetTestRoot,"user/foo")));     Assert.assertTrue(fSys.isFile(FileSystemTestHelper.getTestRootPath(fSys,"/user2/fooBarBar")));     Assert.assertTrue(fSysLocal.isFile(new Path(targetTestRoot,"user/fooBarBar")));     */
+comment|/* - code if we had wanted this to succeed     Assert.assertFalse(fSys.exists(new Path("/user/foo")));     Assert.assertFalse(fSysLocal.exists(new Path(targetTestRoot,"user/foo")));     Assert.assertTrue(fSys.isFile(FileSystemTestHelper.getTestRootPath(fSys,"/user2/fooBarBar")));     Assert.assertTrue(fSysLocal.isFile(new Path(targetTestRoot,"user/fooBarBar")));     */
 block|}
 comment|// rename across mount points fail if the mount link targets are different
 comment|// even if the targets are part of the same target FS

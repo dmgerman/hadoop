@@ -4151,7 +4151,7 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-literal|"validateOrderNoFap() should have suceeded"
+literal|"validateOrderNoFap() should have succeeded"
 argument_list|,
 name|IterativePlanner
 operator|.
@@ -4293,7 +4293,7 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-literal|"validateOrderNoFap() should have suceeded"
+literal|"validateOrderNoFap() should have succeeded"
 argument_list|,
 name|IterativePlanner
 operator|.

@@ -1474,7 +1474,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-literal|"Delete should suceed"
+literal|"Delete should succeed"
 argument_list|,
 name|fcView
 operator|.

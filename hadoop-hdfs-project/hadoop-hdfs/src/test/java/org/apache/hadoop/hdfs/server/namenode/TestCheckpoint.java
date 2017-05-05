@@ -3145,7 +3145,7 @@ argument_list|()
 expr_stmt|;
 comment|// secondary namenode crash!
 comment|// start new instance of secondary and verify that
-comment|// a new rollEditLog suceedes inspite of the fact that
+comment|// a new rollEditLog succeeds inspite of the fact that
 comment|// edits.new already exists.
 comment|//
 name|secondary

@@ -374,7 +374,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Create and write to a given number of files.  Repeat each remote    * operation until is suceeds (does not throw an exception).    *    * @return the number of exceptions caught    */
+comment|/**    * Create and write to a given number of files.  Repeat each remote    * operation until is succeeds (does not throw an exception).    *    * @return the number of exceptions caught    */
 DECL|method|createWrite ()
 specifier|static
 name|int
@@ -769,7 +769,7 @@ return|return
 name|totalExceptions
 return|;
 block|}
-comment|/**    * Rename a given number of files.  Repeat each remote    * operation until is suceeds (does not throw an exception).    *    * @return the number of exceptions caught    */
+comment|/**    * Rename a given number of files.  Repeat each remote    * operation until is succeeds (does not throw an exception).    *    * @return the number of exceptions caught    */
 DECL|method|rename ()
 specifier|static
 name|int
@@ -881,7 +881,7 @@ return|return
 name|totalExceptions
 return|;
 block|}
-comment|/**    * Delete a given number of files.  Repeat each remote    * operation until is suceeds (does not throw an exception).    *    * @return the number of exceptions caught    */
+comment|/**    * Delete a given number of files.  Repeat each remote    * operation until is succeeds (does not throw an exception).    *    * @return the number of exceptions caught    */
 DECL|method|delete ()
 specifier|static
 name|int
