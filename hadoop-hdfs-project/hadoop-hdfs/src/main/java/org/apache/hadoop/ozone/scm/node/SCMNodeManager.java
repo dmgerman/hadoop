@@ -2533,6 +2533,11 @@ block|{
 name|unregisterMXBean
 argument_list|()
 expr_stmt|;
+name|nodePoolManager
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 name|executorService
 operator|.
 name|shutdown
