@@ -2006,8 +2006,8 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/**    * Load the SSL keystore / truststore into the HttpServer builder.    * @param builder the HttpServer2.Builder to populate with ssl config    * @param sslConf the Configuration instance to use during loading of SSL conf    */
-DECL|method|loadSslConfiguration ( HttpServer2.Builder builder, Configuration sslConf)
+comment|/**    * Load the SSL keystore / truststore into the HttpServer builder.    * @param builder the HttpServer2.Builder to populate with ssl config    * @param conf the Configuration instance to load custom SSL config from    *    * @return HttpServer2.Builder instance (passed in as the first parameter)    *         after loading SSL stores    */
+DECL|method|loadSslConfiguration ( HttpServer2.Builder builder, Configuration conf)
 specifier|public
 specifier|static
 name|HttpServer2
@@ -2021,31 +2021,17 @@ name|Builder
 name|builder
 parameter_list|,
 name|Configuration
-name|sslConf
+name|conf
 parameter_list|)
 block|{
-if|if
-condition|(
+name|Configuration
 name|sslConf
-operator|==
-literal|null
-condition|)
-block|{
-name|sslConf
-operator|=
+init|=
 operator|new
 name|Configuration
 argument_list|(
 literal|false
 argument_list|)
-expr_stmt|;
-block|}
-name|boolean
-name|needsClientAuth
-init|=
-name|YarnConfiguration
-operator|.
-name|YARN_SSL_CLIENT_HTTPS_NEED_AUTH_DEFAULT
 decl_stmt|;
 name|sslConf
 operator|.
@@ -2056,6 +2042,28 @@ operator|.
 name|YARN_SSL_SERVER_RESOURCE_DEFAULT
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|conf
+operator|!=
+literal|null
+condition|)
+block|{
+name|sslConf
+operator|.
+name|addResource
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+name|boolean
+name|needsClientAuth
+init|=
+name|YarnConfiguration
+operator|.
+name|YARN_SSL_CLIENT_HTTPS_NEED_AUTH_DEFAULT
+decl_stmt|;
 return|return
 name|builder
 operator|.
