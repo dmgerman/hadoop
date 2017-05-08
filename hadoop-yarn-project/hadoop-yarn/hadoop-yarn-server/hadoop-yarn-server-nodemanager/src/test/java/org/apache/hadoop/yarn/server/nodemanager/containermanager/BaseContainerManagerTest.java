@@ -23,6 +23,18 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|spy
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -109,36 +121,6 @@ operator|.
 name|util
 operator|.
 name|Map
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|nodemanager
-operator|.
-name|executor
-operator|.
-name|DeletionAsUserContext
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
 import|;
 end_import
 
@@ -934,6 +916,26 @@ name|server
 operator|.
 name|nodemanager
 operator|.
+name|executor
+operator|.
+name|DeletionAsUserContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
 name|metrics
 operator|.
 name|NodeManagerMetrics
@@ -1052,19 +1054,17 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Before
+name|Assert
 import|;
 end_import
 
 begin_import
-import|import static
+import|import
 name|org
 operator|.
-name|mockito
+name|junit
 operator|.
-name|Mockito
-operator|.
-name|spy
+name|Before
 import|;
 end_import
 
@@ -1789,18 +1789,6 @@ argument_list|,
 name|dirsHandler
 argument_list|)
 block|{
-annotation|@
-name|Override
-specifier|public
-name|void
-name|setBlockNewContainerRequests
-parameter_list|(
-name|boolean
-name|blockNewContainerRequests
-parameter_list|)
-block|{
-comment|// do nothing
-block|}
 annotation|@
 name|Override
 specifier|protected

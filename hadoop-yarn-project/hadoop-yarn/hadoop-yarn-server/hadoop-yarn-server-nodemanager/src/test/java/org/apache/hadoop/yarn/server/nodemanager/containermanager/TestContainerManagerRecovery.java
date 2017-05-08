@@ -4622,18 +4622,6 @@ argument_list|)
 block|{
 annotation|@
 name|Override
-specifier|public
-name|void
-name|setBlockNewContainerRequests
-parameter_list|(
-name|boolean
-name|blockNewContainerRequests
-parameter_list|)
-block|{
-comment|// do nothing
-block|}
-annotation|@
-name|Override
 specifier|protected
 name|void
 name|authorizeGetAndStopContainerRequest
@@ -5671,18 +5659,6 @@ block|{
 return|return
 name|launcher
 return|;
-block|}
-annotation|@
-name|Override
-specifier|public
-name|void
-name|setBlockNewContainerRequests
-parameter_list|(
-name|boolean
-name|blockNewContainerRequests
-parameter_list|)
-block|{
-comment|// do nothing
 block|}
 annotation|@
 name|Override

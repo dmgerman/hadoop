@@ -2731,20 +2731,6 @@ parameter_list|()
 block|{
 try|try
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Notifying ContainerManager to block new container-requests"
-argument_list|)
-expr_stmt|;
-name|containerManager
-operator|.
-name|setBlockNewContainerRequests
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 operator|!

@@ -2793,25 +2793,6 @@ argument_list|(
 name|successfullRegistrationMsg
 argument_list|)
 expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Notifying ContainerManager to unblock new container-requests"
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|context
-operator|.
-name|getContainerManager
-argument_list|()
-operator|.
-name|setBlockNewContainerRequests
-argument_list|(
-literal|false
-argument_list|)
-expr_stmt|;
 block|}
 DECL|method|createKeepAliveApplicationList ()
 specifier|private

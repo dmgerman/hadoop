@@ -207,14 +207,6 @@ name|ContainerQueuingLimit
 name|queuingLimit
 parameter_list|)
 function_decl|;
-DECL|method|setBlockNewContainerRequests (boolean blockNewContainerRequests)
-name|void
-name|setBlockNewContainerRequests
-parameter_list|(
-name|boolean
-name|blockNewContainerRequests
-parameter_list|)
-function_decl|;
 DECL|method|getContainerScheduler ()
 name|ContainerScheduler
 name|getContainerScheduler

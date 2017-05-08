@@ -1360,19 +1360,6 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setBlockNewContainerRequests (boolean blockNewContainerRequests)
-specifier|public
-name|void
-name|setBlockNewContainerRequests
-parameter_list|(
-name|boolean
-name|blockNewContainerRequests
-parameter_list|)
-block|{
-comment|// do nothing
-block|}
-annotation|@
-name|Override
 DECL|method|authorizeStartAndResourceIncreaseRequest ( NMTokenIdentifier nmTokenIdentifier, ContainerTokenIdentifier containerTokenIdentifier, boolean startRequest)
 specifier|protected
 name|void
