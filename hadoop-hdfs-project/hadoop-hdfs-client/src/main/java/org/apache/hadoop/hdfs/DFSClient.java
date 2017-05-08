@@ -2644,13 +2644,6 @@ specifier|final
 name|int
 name|smallBufferSize
 decl_stmt|;
-DECL|field|keyProviderUri
-specifier|private
-name|URI
-name|keyProviderUri
-init|=
-literal|null
-decl_stmt|;
 DECL|method|getConf ()
 specifier|public
 name|DfsClientConf
@@ -13637,17 +13630,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
+name|URI
 name|keyProviderUri
-operator|!=
+init|=
 literal|null
-condition|)
-block|{
-return|return
-name|keyProviderUri
-return|;
-block|}
+decl_stmt|;
 comment|// Lookup the secret in credentials object for namenodeuri.
 name|Credentials
 name|credentials
@@ -13802,25 +13789,6 @@ name|getKeyProviderUri
 argument_list|()
 argument_list|)
 return|;
-block|}
-comment|/*    * Should be used only for testing.    */
-annotation|@
-name|VisibleForTesting
-DECL|method|setKeyProviderUri (URI providerUri)
-specifier|public
-name|void
-name|setKeyProviderUri
-parameter_list|(
-name|URI
-name|providerUri
-parameter_list|)
-block|{
-name|this
-operator|.
-name|keyProviderUri
-operator|=
-name|providerUri
-expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting

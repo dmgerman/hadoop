@@ -11368,13 +11368,6 @@ argument_list|(
 name|credentials
 argument_list|)
 expr_stmt|;
-name|client
-operator|.
-name|setKeyProviderUri
-argument_list|(
-literal|null
-argument_list|)
-expr_stmt|;
 name|Assert
 operator|.
 name|assertEquals
@@ -11455,13 +11448,6 @@ name|getClient
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|mockClient
-operator|.
-name|setKeyProviderUri
-argument_list|(
-literal|null
-argument_list|)
-expr_stmt|;
 comment|// Namenode returning null as keyProviderUri in FSServerDefaults.
 name|FsServerDefaults
 name|serverDefaultsWithKeyProviderNull
@@ -11525,13 +11511,6 @@ name|dummyKeyProviderUri2
 init|=
 literal|"dummy://foo:bar@test_provider2"
 decl_stmt|;
-name|mockClient
-operator|.
-name|setKeyProviderUri
-argument_list|(
-literal|null
-argument_list|)
-expr_stmt|;
 name|FsServerDefaults
 name|serverDefaultsWithDummyKeyProvider
 init|=
@@ -11659,20 +11638,6 @@ operator|.
 name|HADOOP_SECURITY_KEY_PROVIDER_PATH
 argument_list|)
 expr_stmt|;
-comment|// Nullify the cached value for key provider uri on client
-name|cluster
-operator|.
-name|getFileSystem
-argument_list|()
-operator|.
-name|getClient
-argument_list|()
-operator|.
-name|setKeyProviderUri
-argument_list|(
-literal|null
-argument_list|)
-expr_stmt|;
 comment|// Even after unsetting the local conf, the client key provider should be
 comment|// the same as namenode's provider.
 name|Assert
@@ -11705,20 +11670,6 @@ operator|.
 name|HADOOP_SECURITY_KEY_PROVIDER_PATH
 argument_list|,
 literal|"dummy://foo:bar@test_provider1"
-argument_list|)
-expr_stmt|;
-comment|// Nullify the cached value for key provider uri on client
-name|cluster
-operator|.
-name|getFileSystem
-argument_list|()
-operator|.
-name|getClient
-argument_list|()
-operator|.
-name|setKeyProviderUri
-argument_list|(
-literal|null
 argument_list|)
 expr_stmt|;
 comment|// Even after pointing the conf to some dummy provider, the client key
@@ -11859,14 +11810,6 @@ name|getClient
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// Clear the cache value of keyProviderUri on client side.
-name|spyClient
-operator|.
-name|setKeyProviderUri
-argument_list|(
-literal|null
-argument_list|)
-expr_stmt|;
 name|Mockito
 operator|.
 name|doReturn
