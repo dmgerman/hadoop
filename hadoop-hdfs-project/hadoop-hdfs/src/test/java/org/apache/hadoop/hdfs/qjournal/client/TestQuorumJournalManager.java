@@ -668,22 +668,6 @@ name|Lists
 import|;
 end_import
 
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|MoreExecutors
-import|;
-end_import
-
 begin_comment
 comment|/**  * Functional tests for QuorumJournalManager.  * For true unit tests, see {@link TestQuorumJournalManagerUnit}.  */
 end_comment
@@ -4367,9 +4351,8 @@ block|{
 comment|// Don't parallelize calls to the quorum in the tests.
 comment|// This makes the tests more deterministic.
 return|return
-name|MoreExecutors
-operator|.
-name|newDirectExecutorService
+operator|new
+name|DirectExecutorService
 argument_list|()
 return|;
 block|}

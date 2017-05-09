@@ -256,20 +256,6 @@ name|google
 operator|.
 name|common
 operator|.
-name|base
-operator|.
-name|CharMatcher
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
 name|annotations
 operator|.
 name|VisibleForTesting
@@ -2027,7 +2013,8 @@ name|node
 parameter_list|)
 block|{
 comment|// use the same white space trim as in QueueMetrics() otherwise things fail
-comment|// guava uses a different definition for whitespace than java.
+comment|// This needs to trim additional Unicode whitespace characters beyond what
+comment|// the built-in JDK methods consider whitespace. See YARN-5272.
 return|return
 operator|!
 name|node
@@ -2039,12 +2026,9 @@ name|node
 operator|.
 name|equals
 argument_list|(
-name|CharMatcher
+name|FairSchedulerUtilities
 operator|.
-name|whitespace
-argument_list|()
-operator|.
-name|trimFrom
+name|trimQueueName
 argument_list|(
 name|node
 argument_list|)
