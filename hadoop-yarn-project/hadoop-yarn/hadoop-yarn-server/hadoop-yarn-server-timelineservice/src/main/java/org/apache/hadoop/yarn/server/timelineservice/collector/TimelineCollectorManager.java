@@ -919,6 +919,11 @@ operator|>
 literal|1
 condition|)
 block|{
+synchronized|synchronized
+init|(
+name|collectors
+init|)
+block|{
 for|for
 control|(
 name|TimelineCollector
@@ -935,6 +940,7 @@ operator|.
 name|serviceStop
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|// stop the flusher first
