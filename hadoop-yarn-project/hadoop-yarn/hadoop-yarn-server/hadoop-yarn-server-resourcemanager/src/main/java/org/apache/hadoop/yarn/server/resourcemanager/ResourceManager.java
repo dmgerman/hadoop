@@ -4787,8 +4787,7 @@ block|}
 annotation|@
 name|Private
 DECL|class|RMFatalEventDispatcher
-specifier|public
-specifier|static
+specifier|private
 class|class
 name|RMFatalEventDispatcher
 implements|implements
@@ -4810,33 +4809,61 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
-literal|"Received a "
+literal|"Received "
 operator|+
-name|RMFatalEvent
+name|event
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|HAUtil
 operator|.
-name|class
-operator|.
-name|getName
+name|isHAEnabled
+argument_list|(
+name|getConfig
 argument_list|()
-operator|+
-literal|" of type "
-operator|+
+argument_list|)
+condition|)
+block|{
+comment|// If we're in an HA config, the right answer is always to go into
+comment|// standby.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Transitioning the resource manager to standby."
+argument_list|)
+expr_stmt|;
+name|handleTransitionToStandByInNewThread
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// If we're stand-alone, we probably want to shut down, but the if and
+comment|// how depends on the event.
+switch|switch
+condition|(
 name|event
 operator|.
 name|getType
 argument_list|()
+condition|)
+block|{
+case|case
+name|STATE_STORE_FENCED
+case|:
+name|LOG
 operator|.
-name|name
-argument_list|()
+name|fatal
+argument_list|(
+literal|"State store fenced even though the resource manager "
 operator|+
-literal|". Cause:\n"
+literal|"is not configured for high availability. Shutting down this "
 operator|+
-name|event
-operator|.
-name|getCause
-argument_list|()
+literal|"resource manager to protect the integrity of the state store."
 argument_list|)
 expr_stmt|;
 name|ExitUtil
@@ -4847,15 +4874,95 @@ literal|1
 argument_list|,
 name|event
 operator|.
-name|getCause
+name|getExplanation
+argument_list|()
+argument_list|)
+expr_stmt|;
+break|break;
+case|case
+name|STATE_STORE_OP_FAILED
+case|:
+if|if
+condition|(
+name|YarnConfiguration
+operator|.
+name|shouldRMFailFast
+argument_list|(
+name|getConfig
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|fatal
+argument_list|(
+literal|"Shutting down the resource manager because a state "
+operator|+
+literal|"store operation failed, and the resource manager is "
+operator|+
+literal|"configured to fail fast. See the yarn.fail-fast and "
+operator|+
+literal|"yarn.resourcemanager.fail-fast properties."
+argument_list|)
+expr_stmt|;
+name|ExitUtil
+operator|.
+name|terminate
+argument_list|(
+literal|1
+argument_list|,
+name|event
+operator|.
+name|getExplanation
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Ignoring state store operation failure because the "
+operator|+
+literal|"resource manager is not configured to fail fast. See the "
+operator|+
+literal|"yarn.fail-fast and yarn.resourcemanager.fail-fast "
+operator|+
+literal|"properties."
+argument_list|)
+expr_stmt|;
+block|}
+break|break;
+default|default:
+name|LOG
+operator|.
+name|fatal
+argument_list|(
+literal|"Shutting down the resource manager."
+argument_list|)
+expr_stmt|;
+name|ExitUtil
+operator|.
+name|terminate
+argument_list|(
+literal|1
+argument_list|,
+name|event
+operator|.
+name|getExplanation
 argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+block|}
 comment|/**    * Transition to standby state in a new thread. The transition operation is    * asynchronous to avoid deadlock caused by cyclic dependency.    */
 DECL|method|handleTransitionToStandByInNewThread ()
-specifier|public
+specifier|private
 name|void
 name|handleTransitionToStandByInNewThread
 parameter_list|()

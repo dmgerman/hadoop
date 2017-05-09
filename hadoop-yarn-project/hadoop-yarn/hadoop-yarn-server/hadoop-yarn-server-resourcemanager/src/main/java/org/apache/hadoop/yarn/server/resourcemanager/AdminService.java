@@ -2141,15 +2141,6 @@ name|Exception
 name|e
 parameter_list|)
 block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"RefreshAll failed so firing fatal event"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
 name|rmContext
 operator|.
 name|getDispatcher
@@ -2168,6 +2159,8 @@ operator|.
 name|TRANSITION_TO_ACTIVE_FAILED
 argument_list|,
 name|e
+argument_list|,
+literal|"failure to refresh configuration settings"
 argument_list|)
 argument_list|)
 expr_stmt|;

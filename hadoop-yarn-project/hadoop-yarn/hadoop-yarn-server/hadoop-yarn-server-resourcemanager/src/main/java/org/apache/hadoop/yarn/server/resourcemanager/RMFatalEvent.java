@@ -50,6 +50,10 @@ name|AbstractEvent
 import|;
 end_import
 
+begin_comment
+comment|/**  * Event that indicates a non-recoverable error for the resource manager.  */
+end_comment
+
 begin_class
 DECL|class|RMFatalEvent
 specifier|public
@@ -63,10 +67,18 @@ argument_list|>
 block|{
 DECL|field|cause
 specifier|private
-name|String
+specifier|final
+name|Exception
 name|cause
 decl_stmt|;
-DECL|method|RMFatalEvent (RMFatalEventType rmFatalEventType, String cause)
+DECL|field|message
+specifier|private
+specifier|final
+name|String
+name|message
+decl_stmt|;
+comment|/**    * Create a new event of the given type with the given cause.    * @param rmFatalEventType The {@link RMFatalEventType} of the event    * @param message a text description of the reason for the event    */
+DECL|method|RMFatalEvent (RMFatalEventType rmFatalEventType, String message)
 specifier|public
 name|RMFatalEvent
 parameter_list|(
@@ -74,21 +86,20 @@ name|RMFatalEventType
 name|rmFatalEventType
 parameter_list|,
 name|String
-name|cause
+name|message
 parameter_list|)
 block|{
-name|super
+name|this
 argument_list|(
 name|rmFatalEventType
+argument_list|,
+literal|null
+argument_list|,
+name|message
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
-name|cause
-operator|=
-name|cause
-expr_stmt|;
 block|}
+comment|/**    * Create a new event of the given type around the given source    * {@link Exception}.    * @param rmFatalEventType The {@link RMFatalEventType} of the event    * @param cause the source exception    */
 DECL|method|RMFatalEvent (RMFatalEventType rmFatalEventType, Exception cause)
 specifier|public
 name|RMFatalEvent
@@ -100,6 +111,31 @@ name|Exception
 name|cause
 parameter_list|)
 block|{
+name|this
+argument_list|(
+name|rmFatalEventType
+argument_list|,
+name|cause
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Create a new event of the given type around the given source    * {@link Exception} with the given cause.    * @param rmFatalEventType The {@link RMFatalEventType} of the event    * @param cause the source exception    * @param message a text description of the reason for the event    */
+DECL|method|RMFatalEvent (RMFatalEventType rmFatalEventType, Exception cause, String message)
+specifier|public
+name|RMFatalEvent
+parameter_list|(
+name|RMFatalEventType
+name|rmFatalEventType
+parameter_list|,
+name|Exception
+name|cause
+parameter_list|,
+name|String
+name|message
+parameter_list|)
+block|{
 name|super
 argument_list|(
 name|rmFatalEventType
@@ -109,24 +145,110 @@ name|this
 operator|.
 name|cause
 operator|=
+name|cause
+expr_stmt|;
+name|this
+operator|.
+name|message
+operator|=
+name|message
+expr_stmt|;
+block|}
+comment|/**    * Get a text description of the reason for the event.  If a cause was, that    * {@link Exception} will be converted to a {@link String} and included in    * the result.    * @return a text description of the reason for the event    */
+DECL|method|getExplanation ()
+specifier|public
+name|String
+name|getExplanation
+parameter_list|()
+block|{
+name|StringBuilder
+name|sb
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|message
+operator|!=
+literal|null
+condition|)
+block|{
+name|sb
+operator|.
+name|append
+argument_list|(
+name|message
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|cause
+operator|!=
+literal|null
+condition|)
+block|{
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|": "
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+if|if
+condition|(
+name|cause
+operator|!=
+literal|null
+condition|)
+block|{
+name|sb
+operator|.
+name|append
+argument_list|(
 name|StringUtils
 operator|.
 name|stringifyException
 argument_list|(
 name|cause
 argument_list|)
+argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getCause ()
+return|return
+name|sb
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
 specifier|public
 name|String
-name|getCause
+name|toString
 parameter_list|()
 block|{
 return|return
-name|this
+name|String
 operator|.
-name|cause
+name|format
+argument_list|(
+literal|"RMFatalEvent of type %s, caused by %s"
+argument_list|,
+name|getType
+argument_list|()
+operator|.
+name|name
+argument_list|()
+argument_list|,
+name|getExplanation
+argument_list|()
+argument_list|)
 return|;
 block|}
 block|}

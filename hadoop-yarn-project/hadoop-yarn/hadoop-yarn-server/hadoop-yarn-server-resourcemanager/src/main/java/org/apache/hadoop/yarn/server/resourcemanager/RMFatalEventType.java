@@ -45,6 +45,9 @@ enum|enum
 name|RMFatalEventType
 block|{
 comment|// Source<- Store
+DECL|enumConstant|STATE_STORE_FENCED
+name|STATE_STORE_FENCED
+block|,
 DECL|enumConstant|STATE_STORE_OP_FAILED
 name|STATE_STORE_OP_FAILED
 block|,

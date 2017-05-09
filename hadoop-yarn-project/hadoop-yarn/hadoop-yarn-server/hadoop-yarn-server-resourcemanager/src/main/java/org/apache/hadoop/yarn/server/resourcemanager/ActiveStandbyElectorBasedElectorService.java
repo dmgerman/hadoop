@@ -696,11 +696,16 @@ condition|)
 block|{
 name|notifyFatalError
 argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"invalid data in znode, %s, "
+operator|+
+literal|"which may require the state store to be reformatted"
+argument_list|,
 name|electionZNode
-operator|+
-literal|" znode has invalid data! "
-operator|+
-literal|"Might need formatting!"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
