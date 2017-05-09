@@ -1353,7 +1353,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAddIfService ()
 specifier|public
@@ -1581,7 +1581,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAddUninitedChildBeforeInit ()
 specifier|public
@@ -1668,7 +1668,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAddUninitedChildInInit ()
 specifier|public
@@ -1788,7 +1788,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAddUninitedChildInStart ()
 specifier|public
@@ -1866,7 +1866,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAddUninitedChildInStop ()
 specifier|public
@@ -1935,7 +1935,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAddInitedChildBeforeInit ()
 specifier|public
@@ -2031,7 +2031,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAddInitedChildInInit ()
 specifier|public
@@ -2118,7 +2118,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAddInitedChildInStart ()
 specifier|public
@@ -2205,7 +2205,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAddInitedChildInStop ()
 specifier|public
@@ -2283,7 +2283,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAddStartedChildBeforeInit ()
 specifier|public
@@ -2385,7 +2385,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAddStartedChildInInit ()
 specifier|public
@@ -2477,7 +2477,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAddStartedChildInStart ()
 specifier|public
@@ -2569,7 +2569,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAddStartedChildInStop ()
 specifier|public
@@ -2652,7 +2652,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAddStoppedChildBeforeInit ()
 specifier|public
@@ -2759,7 +2759,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAddStoppedChildInInit ()
 specifier|public
@@ -2880,7 +2880,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAddStoppedChildInStart ()
 specifier|public
@@ -2959,7 +2959,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAddStoppedChildInStop ()
 specifier|public
@@ -3041,7 +3041,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAddUninitedSiblingBeforeInit ()
 specifier|public
@@ -3151,7 +3151,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAddUninitedSiblingInInit ()
 specifier|public
@@ -3252,7 +3252,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAddUninitedSiblingInStart ()
 specifier|public
@@ -3362,7 +3362,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAddUninitedSiblingInStop ()
 specifier|public
@@ -3472,7 +3472,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAddInitedSiblingBeforeInit ()
 specifier|public
@@ -3591,7 +3591,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAddInitedSiblingInInit ()
 specifier|public
@@ -3710,7 +3710,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAddInitedSiblingInStart ()
 specifier|public
@@ -3829,7 +3829,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAddInitedSiblingInStop ()
 specifier|public
@@ -3896,7 +3896,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAddStartedSiblingBeforeInit ()
 specifier|public
@@ -4020,7 +4020,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAddStartedSiblingInInit ()
 specifier|public
@@ -4144,7 +4144,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAddStartedSiblingInStart ()
 specifier|public
@@ -4268,7 +4268,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAddStartedSiblingInStop ()
 specifier|public
@@ -4392,7 +4392,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAddStoppedSiblingBeforeInit ()
 specifier|public
@@ -4521,7 +4521,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAddStoppedSiblingInInit ()
 specifier|public
@@ -4659,7 +4659,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAddStoppedSiblingInStart ()
 specifier|public
@@ -4788,7 +4788,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAddStoppedSiblingInStop ()
 specifier|public

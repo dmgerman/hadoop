@@ -195,7 +195,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testCompressorPoolCounts ()
 specifier|public
@@ -307,7 +307,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testCompressorNotReturnSameInstance ()
 specifier|public
@@ -412,7 +412,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testDecompressorPoolCounts ()
 specifier|public
@@ -524,7 +524,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testMultiThreadedCompressorPool ()
 specifier|public
@@ -727,7 +727,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testMultiThreadedDecompressorPool ()
 specifier|public
@@ -930,7 +930,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testDecompressorNotReturnSameInstance ()
 specifier|public

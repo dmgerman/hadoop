@@ -190,7 +190,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testMkdirExistingLink ()
 specifier|public
@@ -214,7 +214,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testCreateFileViaDanglingLinkParent ()
 specifier|public
@@ -238,7 +238,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testCreateFileDirExistingLink ()
 specifier|public
@@ -260,7 +260,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testAccessFileViaInterSymlinkAbsTarget ()
 specifier|public

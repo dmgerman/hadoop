@@ -507,7 +507,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testByteBufferRead ()
 specifier|public
@@ -529,7 +529,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testSyncable ()
 specifier|public
@@ -551,7 +551,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testCombinedOp ()
 specifier|public
@@ -573,7 +573,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testHasEnhancedByteBufferAccess ()
 specifier|public
@@ -595,7 +595,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testSeekToNewSource ()
 specifier|public
