@@ -128,16 +128,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Arrays
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Collections
 import|;
 end_import
@@ -158,7 +148,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|List
+name|HashSet
 import|;
 end_import
 
@@ -181,6 +171,16 @@ operator|.
 name|Map
 operator|.
 name|Entry
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
 import|;
 end_import
 
@@ -219,6 +219,20 @@ operator|.
 name|annotations
 operator|.
 name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
+name|Sets
 import|;
 end_import
 
@@ -1499,7 +1513,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * If tasks file is empty, delete the cgroup.    *    * @param file object referring to the cgroup to be deleted    * @return Boolean indicating whether cgroup was deleted    */
+comment|/**    * If tasks file is empty, delete the cgroup.    *    * @param cgf object referring to the cgroup to be deleted    * @return Boolean indicating whether cgroup was deleted    */
 annotation|@
 name|VisibleForTesting
 DECL|method|checkAndDeleteCgroup (File cgf)
@@ -2056,7 +2070,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|List
+name|Set
 argument_list|<
 name|String
 argument_list|>
@@ -2070,7 +2084,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|List
+name|Set
 argument_list|<
 name|String
 argument_list|>
@@ -2082,7 +2096,7 @@ name|HashMap
 argument_list|<
 name|String
 argument_list|,
-name|List
+name|Set
 argument_list|<
 name|String
 argument_list|>
@@ -2209,15 +2223,15 @@ name|CGROUPS_FSTYPE
 argument_list|)
 condition|)
 block|{
-name|List
+name|HashSet
 argument_list|<
 name|String
 argument_list|>
 name|value
 init|=
-name|Arrays
+name|Sets
 operator|.
-name|asList
+name|newHashSet
 argument_list|(
 name|options
 operator|.
@@ -2277,7 +2291,7 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|findControllerInMtab (String controller, Map<String, List<String>> entries)
+DECL|method|findControllerInMtab (String controller, Map<String, Set<String>> entries)
 name|String
 name|findControllerInMtab
 parameter_list|(
@@ -2288,7 +2302,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|List
+name|Set
 argument_list|<
 name|String
 argument_list|>
@@ -2302,7 +2316,7 @@ name|Entry
 argument_list|<
 name|String
 argument_list|,
-name|List
+name|Set
 argument_list|<
 name|String
 argument_list|>
@@ -2391,7 +2405,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|List
+name|Set
 argument_list|<
 name|String
 argument_list|>

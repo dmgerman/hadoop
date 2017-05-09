@@ -187,18 +187,6 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-comment|//We need to bypass mtab parsing for figuring out cgroups mount locations
-name|networkEnabledConf
-operator|.
-name|setBoolean
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|NM_LINUX_CONTAINER_CGROUPS_MOUNT
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
 name|ResourceHandlerModule
 operator|.
 name|nullifyResourceHandlerChain
