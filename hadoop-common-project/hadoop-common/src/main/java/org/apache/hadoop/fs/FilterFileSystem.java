@@ -2687,7 +2687,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|newFSDataOutputStreamBuilder (Path path)
-specifier|public
+specifier|protected
 name|FSDataOutputStreamBuilder
 name|newFSDataOutputStreamBuilder
 parameter_list|(

@@ -11811,9 +11811,13 @@ operator|.
 name|INSTANCE
 return|;
 block|}
-comment|/**    * Create a new FSDataOutputStreamBuilder for the file with path.    * @param path file path    * @return a FSDataOutputStreamBuilder object to build the file    */
+comment|/**    * Create a new FSDataOutputStreamBuilder for the file with path.    * @param path file path    * @return a FSDataOutputStreamBuilder object to build the file    *    * HADOOP-14384. Temporarily reduce the visibility of method before the    * builder interface becomes stable.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|newFSDataOutputStreamBuilder (Path path)
-specifier|public
+specifier|protected
 name|FSDataOutputStreamBuilder
 name|newFSDataOutputStreamBuilder
 parameter_list|(
