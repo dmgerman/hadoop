@@ -126,6 +126,17 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Deletes a container from SCM.    *    * @param containerName - Container Name    * @throws IOException    */
+DECL|method|deleteContainer (String containerName)
+name|void
+name|deleteContainer
+parameter_list|(
+name|String
+name|containerName
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

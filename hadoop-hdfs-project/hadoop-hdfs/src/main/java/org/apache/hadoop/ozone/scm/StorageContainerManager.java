@@ -2013,6 +2013,28 @@ name|containerName
 argument_list|)
 return|;
 block|}
+comment|/**    * {@inheritDoc}    */
+annotation|@
+name|Override
+DECL|method|deleteContainer (String containerName)
+specifier|public
+name|void
+name|deleteContainer
+parameter_list|(
+name|String
+name|containerName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|scmContainerManager
+operator|.
+name|deleteContainer
+argument_list|(
+name|containerName
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Asks SCM where a container should be allocated. SCM responds with the set    * of datanodes that should be used creating this container.    *    * @param containerName - Name of the container.    * @param replicationFactor - replication factor.    * @return Pipeline.    * @throws IOException    */
 annotation|@
 name|Override

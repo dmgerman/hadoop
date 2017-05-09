@@ -139,6 +139,17 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Deletes a container in SCM.    *    * @param containerName    * @throws IOException    *   if failed to delete the container mapping from db store    *   or container doesn't exist.    */
+DECL|method|deleteContainer (String containerName)
+name|void
+name|deleteContainer
+parameter_list|(
+name|String
+name|containerName
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

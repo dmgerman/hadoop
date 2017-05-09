@@ -1433,6 +1433,13 @@ argument_list|,
 name|data
 argument_list|)
 expr_stmt|;
+name|containerManager
+operator|.
+name|closeContainer
+argument_list|(
+name|containerName1
+argument_list|)
+expr_stmt|;
 name|data
 operator|=
 operator|new
@@ -1469,6 +1476,13 @@ name|containerName2
 argument_list|)
 argument_list|,
 name|data
+argument_list|)
+expr_stmt|;
+name|containerManager
+operator|.
+name|closeContainer
+argument_list|(
+name|containerName2
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1568,6 +1582,13 @@ name|containerName1
 argument_list|)
 argument_list|,
 name|data
+argument_list|)
+expr_stmt|;
+name|containerManager
+operator|.
+name|closeContainer
+argument_list|(
+name|containerName1
 argument_list|)
 expr_stmt|;
 comment|// Assert we still have both containers.

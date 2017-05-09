@@ -531,6 +531,16 @@ argument_list|,
 name|traceID
 argument_list|)
 expr_stmt|;
+name|storageContainerLocationClient
+operator|.
+name|deleteContainer
+argument_list|(
+name|pipeline
+operator|.
+name|getContainerName
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info
