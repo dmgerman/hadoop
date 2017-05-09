@@ -340,6 +340,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|StreamCapabilities
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|client
@@ -705,6 +719,8 @@ class|class
 name|DFSStripedOutputStream
 extends|extends
 name|DFSOutputStream
+implements|implements
+name|StreamCapabilities
 block|{
 DECL|field|BUFFER_POOL
 specifier|private
@@ -4597,6 +4613,22 @@ return|return
 name|numDataBlocks
 operator|*
 name|cellSize
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|hasCapability (String capability)
+specifier|public
+name|boolean
+name|hasCapability
+parameter_list|(
+name|String
+name|capability
+parameter_list|)
+block|{
+comment|// StreamCapabilities like hsync / hflush are not supported yet.
+return|return
+literal|false
 return|;
 block|}
 annotation|@

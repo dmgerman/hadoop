@@ -20,17 +20,11 @@ begin_import
 import|import static
 name|org
 operator|.
-name|apache
+name|junit
 operator|.
-name|hadoop
+name|Assert
 operator|.
-name|fs
-operator|.
-name|contract
-operator|.
-name|ContractTestUtils
-operator|.
-name|fail
+name|assertFalse
 import|;
 end_import
 
@@ -141,6 +135,22 @@ operator|.
 name|fs
 operator|.
 name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|StreamCapabilities
+operator|.
+name|StreamCapability
 import|;
 end_import
 
@@ -993,8 +1003,6 @@ operator|+
 literal|123
 argument_list|)
 decl_stmt|;
-try|try
-init|(
 name|FSDataOutputStream
 name|os
 init|=
@@ -1008,8 +1016,45 @@ argument_list|(
 literal|"/ec-file-1"
 argument_list|)
 argument_list|)
-init|)
-block|{
+decl_stmt|;
+name|assertFalse
+argument_list|(
+literal|"DFSStripedOutputStream should not have hflush() "
+operator|+
+literal|"capability yet!"
+argument_list|,
+name|os
+operator|.
+name|hasCapability
+argument_list|(
+name|StreamCapability
+operator|.
+name|HFLUSH
+operator|.
+name|getValue
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
+literal|"DFSStripedOutputStream should not have hsync() "
+operator|+
+literal|"capability yet!"
+argument_list|,
+name|os
+operator|.
+name|hasCapability
+argument_list|(
+name|StreamCapability
+operator|.
+name|HSYNC
+operator|.
+name|getValue
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|InputStream
 name|is
 init|=
@@ -1037,26 +1082,29 @@ operator|.
 name|hflush
 argument_list|()
 expr_stmt|;
+name|IOUtils
+operator|.
+name|copyBytes
+argument_list|(
+name|is
+argument_list|,
+name|os
+argument_list|,
+name|bytes
+operator|.
+name|length
+argument_list|)
+expr_stmt|;
 name|os
 operator|.
 name|hsync
 argument_list|()
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|e
-parameter_list|)
-block|{
-name|fail
-argument_list|(
-literal|"hflush()/hsync() on striped file output stream failed!"
-argument_list|,
-name|e
-argument_list|)
+name|os
+operator|.
+name|close
+argument_list|()
 expr_stmt|;
-block|}
 block|}
 DECL|method|testOneFile (String src, int writeBytes)
 specifier|private
