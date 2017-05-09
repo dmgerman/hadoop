@@ -7029,6 +7029,13 @@ name|folder
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|files
+operator|!=
+literal|null
+condition|)
+block|{
 for|for
 control|(
 name|File
@@ -7140,6 +7147,7 @@ name|NONE
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 return|return
 name|EXIT_SUCCESS

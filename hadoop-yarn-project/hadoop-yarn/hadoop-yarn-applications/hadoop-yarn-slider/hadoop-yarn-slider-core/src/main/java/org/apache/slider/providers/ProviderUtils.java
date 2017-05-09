@@ -254,20 +254,6 @@ name|slider
 operator|.
 name|api
 operator|.
-name|OptionKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|api
-operator|.
 name|ResourceKeys
 import|;
 end_import
@@ -629,16 +615,6 @@ operator|.
 name|io
 operator|.
 name|OutputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|URI
 import|;
 end_import
 
@@ -1540,7 +1516,7 @@ block|}
 block|}
 comment|// 1. Create all config files for a component on hdfs for localization
 comment|// 2. Add the config file to localResource
-DECL|method|createConfigFileAndAddLocalResource ( ContainerLauncher launcher, SliderFileSystem fs, Component component, Map<String, String> tokensForSubstitution, RoleInstance roleInstance)
+DECL|method|createConfigFileAndAddLocalResource ( ContainerLauncher launcher, SliderFileSystem fs, Component component, Map<String, String> tokensForSubstitution, RoleInstance roleInstance, StateAccessForProviders appState)
 specifier|public
 specifier|synchronized
 name|void
@@ -1565,6 +1541,9 @@ name|tokensForSubstitution
 parameter_list|,
 name|RoleInstance
 name|roleInstance
+parameter_list|,
+name|StateAccessForProviders
+name|appState
 parameter_list|)
 throws|throws
 name|IOException
@@ -1869,7 +1848,7 @@ name|configFile
 argument_list|,
 name|remoteFile
 argument_list|,
-name|roleInstance
+name|appState
 argument_list|)
 expr_stmt|;
 break|break;
@@ -1890,7 +1869,7 @@ name|configFile
 argument_list|,
 name|remoteFile
 argument_list|,
-name|roleInstance
+name|appState
 argument_list|)
 expr_stmt|;
 break|break;
@@ -2199,7 +2178,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|resolveHadoopXmlTemplateAndSaveOnHdfs (FileSystem fs, Map<String, String> tokensForSubstitution, ConfigFile configFile, Path remoteFile, RoleInstance roleInstance)
+DECL|method|resolveHadoopXmlTemplateAndSaveOnHdfs (FileSystem fs, Map<String, String> tokensForSubstitution, ConfigFile configFile, Path remoteFile, StateAccessForProviders appState)
 specifier|private
 name|void
 name|resolveHadoopXmlTemplateAndSaveOnHdfs
@@ -2221,8 +2200,8 @@ parameter_list|,
 name|Path
 name|remoteFile
 parameter_list|,
-name|RoleInstance
-name|roleInstance
+name|StateAccessForProviders
+name|appState
 parameter_list|)
 throws|throws
 name|IOException
@@ -2247,13 +2226,10 @@ argument_list|,
 name|String
 argument_list|>
 operator|)
-name|roleInstance
-operator|.
-name|providerRole
-operator|.
 name|appState
 operator|.
-name|configFileCache
+name|getConfigFileCache
+argument_list|()
 operator|.
 name|get
 argument_list|(
@@ -2506,7 +2482,7 @@ block|}
 comment|// 1) read the template as a string
 comment|// 2) do token substitution
 comment|// 3) save on hdfs
-DECL|method|resolvePlainTemplateAndSaveOnHdfs (FileSystem fs, Map<String, String> tokensForSubstitution, ConfigFile configFile, Path remoteFile, RoleInstance roleInstance)
+DECL|method|resolvePlainTemplateAndSaveOnHdfs (FileSystem fs, Map<String, String> tokensForSubstitution, ConfigFile configFile, Path remoteFile, StateAccessForProviders appState)
 specifier|private
 name|void
 name|resolvePlainTemplateAndSaveOnHdfs
@@ -2528,8 +2504,8 @@ parameter_list|,
 name|Path
 name|remoteFile
 parameter_list|,
-name|RoleInstance
-name|roleInstance
+name|StateAccessForProviders
+name|appState
 parameter_list|)
 block|{
 name|String
@@ -2542,13 +2518,10 @@ operator|=
 operator|(
 name|String
 operator|)
-name|roleInstance
-operator|.
-name|providerRole
-operator|.
 name|appState
 operator|.
-name|configFileCache
+name|getConfigFileCache
+argument_list|()
 operator|.
 name|get
 argument_list|(
@@ -2576,6 +2549,8 @@ expr_stmt|;
 return|return;
 block|}
 comment|// substitute tokens
+name|content
+operator|=
 name|substituteStrWithTokens
 argument_list|(
 name|content
@@ -2631,8 +2606,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Get initial token map to be substituted into config values.    * @param appConf app configurations    * @param clusterName app name    * @return tokens to replace    */
-DECL|method|getStandardTokenMap (Configuration appConf, RoleInstance roleInstance, String clusterName)
+comment|/**    * Get initial component token map to be substituted into config values.    * @param roleInstance role instance    * @return tokens to replace    */
+DECL|method|initCompTokensForSubstitute ( RoleInstance roleInstance)
 specifier|public
 name|Map
 argument_list|<
@@ -2640,16 +2615,10 @@ name|String
 argument_list|,
 name|String
 argument_list|>
-name|getStandardTokenMap
+name|initCompTokensForSubstitute
 parameter_list|(
-name|Configuration
-name|appConf
-parameter_list|,
 name|RoleInstance
 name|roleInstance
-parameter_list|,
-name|String
-name|clusterName
 parameter_list|)
 block|{
 name|Map
@@ -2665,109 +2634,6 @@ name|HashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
-name|String
-name|nnuri
-init|=
-name|appConf
-operator|.
-name|getProperty
-argument_list|(
-literal|"fs.defaultFS"
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|nnuri
-operator|!=
-literal|null
-operator|&&
-operator|!
-name|nnuri
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-name|tokens
-operator|.
-name|put
-argument_list|(
-literal|"${NN_URI}"
-argument_list|,
-name|nnuri
-argument_list|)
-expr_stmt|;
-name|tokens
-operator|.
-name|put
-argument_list|(
-literal|"${NN_HOST}"
-argument_list|,
-name|URI
-operator|.
-name|create
-argument_list|(
-name|nnuri
-argument_list|)
-operator|.
-name|getHost
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-name|tokens
-operator|.
-name|put
-argument_list|(
-literal|"${ZK_HOST}"
-argument_list|,
-name|appConf
-operator|.
-name|getProperty
-argument_list|(
-name|OptionKeys
-operator|.
-name|ZOOKEEPER_HOSTS
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|tokens
-operator|.
-name|put
-argument_list|(
-literal|"${DEFAULT_ZK_PATH}"
-argument_list|,
-name|appConf
-operator|.
-name|getProperty
-argument_list|(
-name|OptionKeys
-operator|.
-name|ZOOKEEPER_PATH
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|tokens
-operator|.
-name|put
-argument_list|(
-name|SERVICE_NAME_LC
-argument_list|,
-name|clusterName
-operator|.
-name|toLowerCase
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|tokens
-operator|.
-name|put
-argument_list|(
-name|SERVICE_NAME
-argument_list|,
-name|clusterName
-argument_list|)
-expr_stmt|;
 name|tokens
 operator|.
 name|put

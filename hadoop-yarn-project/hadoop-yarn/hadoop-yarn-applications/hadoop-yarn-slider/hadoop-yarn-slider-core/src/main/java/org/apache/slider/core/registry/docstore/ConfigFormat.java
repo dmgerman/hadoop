@@ -57,7 +57,7 @@ block|,
 DECL|enumConstant|HADOOP_XML
 name|HADOOP_XML
 argument_list|(
-literal|"hadoop-xml"
+literal|"hadoop_xml"
 argument_list|)
 block|,
 DECL|enumConstant|ENV

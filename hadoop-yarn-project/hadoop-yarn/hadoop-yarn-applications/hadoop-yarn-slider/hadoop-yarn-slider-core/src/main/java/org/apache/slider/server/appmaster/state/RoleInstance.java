@@ -500,18 +500,15 @@ operator|=
 name|role
 expr_stmt|;
 block|}
-DECL|method|RoleInstance (Container container, ProviderRole role, String compInstanceName)
+DECL|method|RoleInstance (Container container, RoleInstance failedInstance)
 specifier|public
 name|RoleInstance
 parameter_list|(
 name|Container
 name|container
 parameter_list|,
-name|ProviderRole
-name|role
-parameter_list|,
-name|String
-name|compInstanceName
+name|RoleInstance
+name|failedInstance
 parameter_list|)
 block|{
 name|this
@@ -521,15 +518,27 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
+name|componentId
+operator|=
+name|failedInstance
+operator|.
+name|componentId
+expr_stmt|;
+name|this
+operator|.
 name|compInstanceName
 operator|=
+name|failedInstance
+operator|.
 name|compInstanceName
 expr_stmt|;
 name|this
 operator|.
 name|providerRole
 operator|=
-name|role
+name|failedInstance
+operator|.
+name|providerRole
 expr_stmt|;
 block|}
 comment|/**    * Create an instance to track an allocated container    * @param container a container which must be non null, and have a non-null Id field.    */

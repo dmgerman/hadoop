@@ -280,7 +280,7 @@ operator|+
 name|ZK_USERS
 decl_stmt|;
 DECL|field|ZK_USERS_PATH_LIST
-specifier|public
+specifier|private
 specifier|static
 specifier|final
 name|List

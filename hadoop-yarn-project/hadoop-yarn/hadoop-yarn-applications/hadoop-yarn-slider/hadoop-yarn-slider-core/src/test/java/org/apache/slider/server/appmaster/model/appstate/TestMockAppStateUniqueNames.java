@@ -599,6 +599,15 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
+name|i
+argument_list|,
+name|instance
+operator|.
+name|componentId
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
 name|group
 argument_list|,
 name|instance
@@ -797,7 +806,6 @@ argument_list|,
 literal|"group12"
 argument_list|)
 expr_stmt|;
-comment|// fails because the names continue at N+1, with group12, group13, group14
 block|}
 annotation|@
 name|Test

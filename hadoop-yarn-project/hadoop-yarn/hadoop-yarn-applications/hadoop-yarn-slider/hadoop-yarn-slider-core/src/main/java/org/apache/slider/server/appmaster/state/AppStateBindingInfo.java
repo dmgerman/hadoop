@@ -136,6 +136,22 @@ name|apache
 operator|.
 name|slider
 operator|.
+name|common
+operator|.
+name|tools
+operator|.
+name|CoreFileSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
 name|providers
 operator|.
 name|ProviderRole
@@ -254,6 +270,13 @@ init|=
 operator|new
 name|SimpleReleaseSelector
 argument_list|()
+decl_stmt|;
+DECL|field|serviceHdfsDir
+specifier|public
+name|String
+name|serviceHdfsDir
+init|=
+literal|""
 decl_stmt|;
 comment|/** node reports off the RM. */
 DECL|field|nodeReports

@@ -3934,6 +3934,18 @@ return|return
 literal|null
 return|;
 block|}
+comment|// strip off quotes if any
+name|output
+operator|=
+name|output
+operator|.
+name|replaceAll
+argument_list|(
+literal|"['\"]"
+argument_list|,
+literal|""
+argument_list|)
+expr_stmt|;
 name|String
 name|ips
 init|=

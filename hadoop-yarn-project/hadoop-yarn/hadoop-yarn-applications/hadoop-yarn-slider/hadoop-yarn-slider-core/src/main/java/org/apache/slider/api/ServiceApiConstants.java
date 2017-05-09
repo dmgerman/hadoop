@@ -97,6 +97,24 @@ argument_list|(
 literal|"SERVICE_NAME.lc"
 argument_list|)
 decl_stmt|;
+DECL|field|USER
+name|String
+name|USER
+init|=
+name|$
+argument_list|(
+literal|"USER"
+argument_list|)
+decl_stmt|;
+DECL|field|DOMAIN
+name|String
+name|DOMAIN
+init|=
+name|$
+argument_list|(
+literal|"DOMAIN"
+argument_list|)
+decl_stmt|;
 comment|// Constants for component
 DECL|field|COMPONENT_NAME
 name|String
@@ -142,6 +160,56 @@ init|=
 name|$
 argument_list|(
 literal|"CONTAINER_ID"
+argument_list|)
+decl_stmt|;
+comment|// Constants for default cluster ZK
+DECL|field|CLUSTER_ZK_QUORUM
+name|String
+name|CLUSTER_ZK_QUORUM
+init|=
+name|$
+argument_list|(
+literal|"CLUSTER_ZK_QUORUM"
+argument_list|)
+decl_stmt|;
+comment|// URI for the default cluster fs
+DECL|field|CLUSTER_FS_URI
+name|String
+name|CLUSTER_FS_URI
+init|=
+name|$
+argument_list|(
+literal|"CLUSTER_FS_URI"
+argument_list|)
+decl_stmt|;
+comment|// the host component of the cluster fs UI
+DECL|field|CLUSTER_FS_HOST
+name|String
+name|CLUSTER_FS_HOST
+init|=
+name|$
+argument_list|(
+literal|"CLUSTER_FS_HOST"
+argument_list|)
+decl_stmt|;
+comment|// Path in zookeeper for a specific service
+DECL|field|SERVICE_ZK_PATH
+name|String
+name|SERVICE_ZK_PATH
+init|=
+name|$
+argument_list|(
+literal|"SERVICE_ZK_PATH"
+argument_list|)
+decl_stmt|;
+comment|// Constants for service specific hdfs dir
+DECL|field|SERVICE_HDFS_DIR
+name|String
+name|SERVICE_HDFS_DIR
+init|=
+name|$
+argument_list|(
+literal|"SERVICE_HDFS_DIR"
 argument_list|)
 decl_stmt|;
 block|}

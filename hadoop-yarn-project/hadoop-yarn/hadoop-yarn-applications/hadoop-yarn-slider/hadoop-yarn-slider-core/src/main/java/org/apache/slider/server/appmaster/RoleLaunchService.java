@@ -738,12 +738,12 @@ argument_list|(
 name|envVars
 argument_list|)
 expr_stmt|;
-name|String
+name|RoleInstance
 name|failedInstance
 init|=
 name|role
 operator|.
-name|failedInstanceName
+name|failedInstances
 operator|.
 name|poll
 argument_list|()
@@ -764,8 +764,6 @@ operator|new
 name|RoleInstance
 argument_list|(
 name|container
-argument_list|,
-name|role
 argument_list|,
 name|failedInstance
 argument_list|)

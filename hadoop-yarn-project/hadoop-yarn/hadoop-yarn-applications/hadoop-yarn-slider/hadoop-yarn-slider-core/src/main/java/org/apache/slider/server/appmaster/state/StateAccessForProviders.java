@@ -22,6 +22,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|cache
+operator|.
+name|LoadingCache
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -113,6 +127,22 @@ operator|.
 name|resource
 operator|.
 name|Application
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
+name|api
+operator|.
+name|resource
+operator|.
+name|ConfigFile
 import|;
 end_import
 
@@ -559,6 +589,28 @@ comment|/**    * Get the aggregate statistics across all roles    * @return role
 DECL|method|getRoleStatistics ()
 name|RoleStatistics
 name|getRoleStatistics
+parameter_list|()
+function_decl|;
+comment|/**    * Get global substitution tokens.    */
+DECL|method|getGlobalSubstitutionTokens ()
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|getGlobalSubstitutionTokens
+parameter_list|()
+function_decl|;
+comment|/**    * Get config file cache.    */
+DECL|method|getConfigFileCache ()
+name|LoadingCache
+argument_list|<
+name|ConfigFile
+argument_list|,
+name|Object
+argument_list|>
+name|getConfigFileCache
 parameter_list|()
 function_decl|;
 block|}

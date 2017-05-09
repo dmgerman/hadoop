@@ -60,27 +60,7 @@ name|appmaster
 operator|.
 name|state
 operator|.
-name|AppState
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|LinkedList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
+name|RoleInstance
 import|;
 end_import
 
@@ -184,24 +164,17 @@ name|componentIdCounter
 init|=
 literal|null
 decl_stmt|;
-DECL|field|appState
-specifier|public
-name|AppState
-name|appState
-decl_stmt|;
-DECL|field|failedInstanceName
+DECL|field|failedInstances
 specifier|public
 name|Queue
 argument_list|<
-name|String
+name|RoleInstance
 argument_list|>
-name|failedInstanceName
+name|failedInstances
 init|=
 operator|new
 name|ConcurrentLinkedQueue
-argument_list|<
-name|String
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 DECL|method|ProviderRole (String name, int id)
@@ -292,13 +265,11 @@ name|numberOfContainers
 argument_list|(
 literal|0L
 argument_list|)
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create a provider role with a role group    * @param name role/component name    * @param group role/component group    * @param id ID. This becomes the YARN priority    * @param policy placement policy    * @param nodeFailureThreshold threshold for node failures (within a reset interval) * after which a node failure is considered an app failure    * @param placementTimeoutSeconds for lax placement, timeout in seconds before    * @param labelExpression label expression for requests; may be null    */
-DECL|method|ProviderRole (String name, String group, int id, int policy, int nodeFailureThreshold, long placementTimeoutSeconds, String labelExpression, Component component, AppState state)
+comment|/**    * Create a provider role with a role group    * @param name role/component name    * @param group role/component group    * @param id ID. This becomes the YARN priority    * @param policy placement policy    * @param nodeFailureThreshold threshold for node failures (within a reset interval)    * after which a node failure is considered an app failure    * @param placementTimeoutSeconds for lax placement, timeout in seconds before    * @param labelExpression label expression for requests; may be null    */
+DECL|method|ProviderRole (String name, String group, int id, int policy, int nodeFailureThreshold, long placementTimeoutSeconds, String labelExpression, Component component)
 specifier|public
 name|ProviderRole
 parameter_list|(
@@ -325,9 +296,6 @@ name|labelExpression
 parameter_list|,
 name|Component
 name|component
-parameter_list|,
-name|AppState
-name|state
 parameter_list|)
 block|{
 name|this
@@ -412,12 +380,6 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-name|this
-operator|.
-name|appState
-operator|=
-name|state
-expr_stmt|;
 block|}
 annotation|@
 name|Override

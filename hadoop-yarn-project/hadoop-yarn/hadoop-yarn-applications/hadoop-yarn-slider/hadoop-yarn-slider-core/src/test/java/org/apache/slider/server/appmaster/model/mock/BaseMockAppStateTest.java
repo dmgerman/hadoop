@@ -1128,7 +1128,7 @@ name|assigned
 operator|.
 name|container
 decl_stmt|;
-name|String
+name|RoleInstance
 name|failedInstance
 init|=
 name|assigned
@@ -1138,7 +1138,7 @@ operator|.
 name|getProviderRole
 argument_list|()
 operator|.
-name|failedInstanceName
+name|failedInstances
 operator|.
 name|poll
 argument_list|()
@@ -1159,13 +1159,6 @@ operator|new
 name|RoleInstance
 argument_list|(
 name|target
-argument_list|,
-name|assigned
-operator|.
-name|role
-operator|.
-name|getProviderRole
-argument_list|()
 argument_list|,
 name|failedInstance
 argument_list|)
