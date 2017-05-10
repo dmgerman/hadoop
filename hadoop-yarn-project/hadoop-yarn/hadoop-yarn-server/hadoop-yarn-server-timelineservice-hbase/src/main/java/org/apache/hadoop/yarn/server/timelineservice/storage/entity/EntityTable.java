@@ -263,6 +263,18 @@ name|PREFIX
 operator|+
 literal|".table.metrics.ttl"
 decl_stmt|;
+comment|/**    * config param name that specifies max-versions for metrics column family in    * entity table.    */
+DECL|field|METRICS_MAX_VERSIONS
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|METRICS_MAX_VERSIONS
+init|=
+name|PREFIX
+operator|+
+literal|".table.metrics.max-versions"
+decl_stmt|;
 comment|/** default value for entity table name. */
 DECL|field|DEFAULT_TABLE_NAME
 specifier|public
@@ -291,7 +303,7 @@ specifier|final
 name|int
 name|DEFAULT_METRICS_MAX_VERSIONS
 init|=
-literal|1000
+literal|10000
 decl_stmt|;
 DECL|field|LOG
 specifier|private
@@ -489,7 +501,14 @@ name|metricsCF
 operator|.
 name|setMaxVersions
 argument_list|(
+name|hbaseConf
+operator|.
+name|getInt
+argument_list|(
+name|METRICS_MAX_VERSIONS
+argument_list|,
 name|DEFAULT_METRICS_MAX_VERSIONS
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|metricsCF
