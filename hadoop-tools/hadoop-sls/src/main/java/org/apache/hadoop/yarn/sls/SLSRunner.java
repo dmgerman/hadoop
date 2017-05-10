@@ -174,6 +174,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|concurrent
 operator|.
 name|ConcurrentHashMap
@@ -1140,7 +1150,7 @@ name|long
 name|maxRuntime
 decl_stmt|;
 DECL|field|simulateInfoMap
-specifier|public
+specifier|private
 specifier|final
 specifier|static
 name|Map
@@ -1408,6 +1418,28 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+comment|/**    * @return an unmodifiable view of the simulated info map.    */
+DECL|method|getSimulateInfoMap ()
+specifier|public
+specifier|static
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Object
+argument_list|>
+name|getSimulateInfoMap
+parameter_list|()
+block|{
+return|return
+name|Collections
+operator|.
+name|unmodifiableMap
+argument_list|(
+name|simulateInfoMap
+argument_list|)
+return|;
 block|}
 DECL|method|setSimulationParams (TraceType inType, String[] inTraces, String nodes, String outDir, Set<String> trackApps, boolean printsimulation)
 specifier|public

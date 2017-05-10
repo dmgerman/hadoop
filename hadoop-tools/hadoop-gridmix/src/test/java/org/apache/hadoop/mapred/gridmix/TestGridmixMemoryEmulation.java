@@ -299,9 +299,7 @@ name|getHeapUsageInMB
 parameter_list|()
 block|{
 return|return
-name|heapSpace
-operator|.
-name|size
+name|getHeapSpaceSize
 argument_list|()
 return|;
 block|}

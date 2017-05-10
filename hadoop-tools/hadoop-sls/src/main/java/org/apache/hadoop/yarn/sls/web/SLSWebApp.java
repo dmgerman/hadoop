@@ -1110,7 +1110,8 @@ if|if
 condition|(
 name|SLSRunner
 operator|.
-name|simulateInfoMap
+name|getSimulateInfoMap
+argument_list|()
 operator|.
 name|isEmpty
 argument_list|()
@@ -1158,7 +1159,8 @@ name|entry
 range|:
 name|SLSRunner
 operator|.
-name|simulateInfoMap
+name|getSimulateInfoMap
+argument_list|()
 operator|.
 name|entrySet
 argument_list|()

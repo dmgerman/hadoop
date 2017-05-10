@@ -44,6 +44,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -286,7 +300,7 @@ name|HeapUsageEmulatorCore
 block|{
 comment|// store the unit loads in a list
 DECL|field|heapSpace
-specifier|protected
+specifier|private
 specifier|static
 specifier|final
 name|ArrayList
@@ -343,6 +357,22 @@ index|]
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|/**      * Gets the total number of 1mb objects stored in the emulator.      *      * @return total number of 1mb objects.      */
+annotation|@
+name|VisibleForTesting
+DECL|method|getHeapSpaceSize ()
+specifier|public
+name|int
+name|getHeapSpaceSize
+parameter_list|()
+block|{
+return|return
+name|heapSpace
+operator|.
+name|size
+argument_list|()
+return|;
 block|}
 comment|/**      * This will initialize the core and check if the core can emulate the       * desired target on the underlying hardware.      */
 DECL|method|initialize (ResourceCalculatorPlugin monitor, long totalHeapUsageInMB)

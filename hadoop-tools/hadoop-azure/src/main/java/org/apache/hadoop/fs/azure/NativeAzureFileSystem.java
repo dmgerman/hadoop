@@ -10003,24 +10003,6 @@ name|String
 argument_list|>
 argument_list|()
 decl_stmt|;
-name|ArrayList
-argument_list|<
-name|String
-argument_list|>
-name|keysToUpdateAsFolder
-init|=
-operator|new
-name|ArrayList
-argument_list|<
-name|String
-argument_list|>
-argument_list|()
-decl_stmt|;
-name|boolean
-name|childCreated
-init|=
-literal|false
-decl_stmt|;
 comment|// Check that there is no file in the parent chain of the given path.
 for|for
 control|(
@@ -10114,32 +10096,6 @@ name|add
 argument_list|(
 name|currentKey
 argument_list|)
-expr_stmt|;
-name|childCreated
-operator|=
-literal|true
-expr_stmt|;
-block|}
-else|else
-block|{
-comment|// The directory already exists. Its last modified time need to be
-comment|// updated if there is a child directory created under it.
-if|if
-condition|(
-name|childCreated
-condition|)
-block|{
-name|keysToUpdateAsFolder
-operator|.
-name|add
-argument_list|(
-name|currentKey
-argument_list|)
-expr_stmt|;
-block|}
-name|childCreated
-operator|=
-literal|false
 expr_stmt|;
 block|}
 block|}

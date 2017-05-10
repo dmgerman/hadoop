@@ -926,7 +926,8 @@ name|maxReset
 operator|&&
 name|SLSRunner
 operator|.
-name|simulateInfoMap
+name|getSimulateInfoMap
+argument_list|()
 operator|.
 name|containsKey
 argument_list|(
@@ -935,7 +936,8 @@ argument_list|)
 operator|&&
 name|SLSRunner
 operator|.
-name|simulateInfoMap
+name|getSimulateInfoMap
+argument_list|()
 operator|.
 name|containsKey
 argument_list|(
@@ -944,7 +946,8 @@ argument_list|)
 operator|&&
 name|SLSRunner
 operator|.
-name|simulateInfoMap
+name|getSimulateInfoMap
+argument_list|()
 operator|.
 name|containsKey
 argument_list|(
@@ -961,7 +964,8 @@ name|parseInt
 argument_list|(
 name|SLSRunner
 operator|.
-name|simulateInfoMap
+name|getSimulateInfoMap
+argument_list|()
 operator|.
 name|get
 argument_list|(
@@ -981,7 +985,8 @@ name|parseInt
 argument_list|(
 name|SLSRunner
 operator|.
-name|simulateInfoMap
+name|getSimulateInfoMap
+argument_list|()
 operator|.
 name|get
 argument_list|(
@@ -1001,7 +1006,8 @@ name|parseInt
 argument_list|(
 name|SLSRunner
 operator|.
-name|simulateInfoMap
+name|getSimulateInfoMap
+argument_list|()
 operator|.
 name|get
 argument_list|(

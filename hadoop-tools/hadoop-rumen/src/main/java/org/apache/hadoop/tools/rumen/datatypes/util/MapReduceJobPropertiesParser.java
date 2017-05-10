@@ -449,12 +449,13 @@ literal|null
 return|;
 block|}
 comment|/**    * Extracts the -Xmx heap option from the specified string.    */
-DECL|method|extractMaxHeapOpts (String javaOptions, List<String> heapOpts, List<String> others)
+DECL|method|extractMaxHeapOpts (final String javaOptions, List<String> heapOpts, List<String> others)
 specifier|public
 specifier|static
 name|void
 name|extractMaxHeapOpts
 parameter_list|(
+specifier|final
 name|String
 name|javaOptions
 parameter_list|,
@@ -612,6 +613,15 @@ name|String
 name|value
 parameter_list|)
 block|{
+name|DefaultDataType
+name|defaultValue
+init|=
+operator|new
+name|DefaultDataType
+argument_list|(
+name|value
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|value
@@ -781,11 +791,7 @@ name|value
 argument_list|)
 expr_stmt|;
 return|return
-operator|new
-name|DefaultDataType
-argument_list|(
-name|value
-argument_list|)
+name|defaultValue
 return|;
 block|}
 catch|catch
@@ -813,19 +819,8 @@ name|value
 argument_list|)
 condition|)
 block|{
-name|Boolean
-operator|.
-name|parseBoolean
-argument_list|(
-name|value
-argument_list|)
-expr_stmt|;
 return|return
-operator|new
-name|DefaultDataType
-argument_list|(
-name|value
-argument_list|)
+name|defaultValue
 return|;
 block|}
 comment|// check if the config parameter represents a class
@@ -872,12 +867,9 @@ literal|".timestamps"
 argument_list|)
 condition|)
 block|{
-operator|new
-name|DefaultDataType
-argument_list|(
-name|value
-argument_list|)
-expr_stmt|;
+return|return
+name|defaultValue
+return|;
 block|}
 comment|// check if the config parameter represents a file-system path
 comment|//TODO: Make this concrete .location .path .dir .jar?
