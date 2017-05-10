@@ -489,7 +489,17 @@ throw|throw
 operator|new
 name|YarnException
 argument_list|(
-literal|"Timeline service v2 is not enabled"
+literal|"Looks like timeline_collector is set as an auxillary service in "
+operator|+
+name|YarnConfiguration
+operator|.
+name|NM_AUX_SERVICES
+operator|+
+literal|". But Timeline service v2 is not enabled,"
+operator|+
+literal|" so timeline_collector needs to be removed"
+operator|+
+literal|" from that list of auxillary services."
 argument_list|)
 throw|;
 block|}
