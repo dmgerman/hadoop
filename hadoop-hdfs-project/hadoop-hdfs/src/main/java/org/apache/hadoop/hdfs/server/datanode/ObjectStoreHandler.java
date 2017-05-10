@@ -172,6 +172,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConsts
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -518,7 +532,9 @@ decl_stmt|;
 comment|// Initialize Jersey container for object store web application.
 if|if
 condition|(
-literal|"distributed"
+name|OzoneConsts
+operator|.
+name|OZONE_HANDLER_DISTRIBUTED
 operator|.
 name|equalsIgnoreCase
 argument_list|(
@@ -624,7 +640,9 @@ else|else
 block|{
 if|if
 condition|(
-literal|"local"
+name|OzoneConsts
+operator|.
+name|OZONE_HANDLER_LOCAL
 operator|.
 name|equalsIgnoreCase
 argument_list|(
@@ -657,11 +675,21 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"Unrecognized value for %s: %s"
+literal|"Unrecognized value for %s: %s,"
+operator|+
+literal|" Allowed values are %s,%s"
 argument_list|,
 name|OZONE_HANDLER_TYPE_KEY
 argument_list|,
 name|shType
+argument_list|,
+name|OzoneConsts
+operator|.
+name|OZONE_HANDLER_DISTRIBUTED
+argument_list|,
+name|OzoneConsts
+operator|.
+name|OZONE_HANDLER_LOCAL
 argument_list|)
 argument_list|)
 throw|;

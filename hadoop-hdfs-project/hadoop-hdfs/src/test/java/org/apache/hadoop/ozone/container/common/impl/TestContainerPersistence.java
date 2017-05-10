@@ -854,7 +854,9 @@ argument_list|)
 operator|.
 name|setHandlerType
 argument_list|(
-literal|"distributed"
+name|OzoneConsts
+operator|.
+name|OZONE_HANDLER_DISTRIBUTED
 argument_list|)
 operator|.
 name|build

@@ -477,7 +477,9 @@ argument_list|)
 operator|.
 name|setHandlerType
 argument_list|(
-literal|"local"
+name|OzoneConsts
+operator|.
+name|OZONE_HANDLER_LOCAL
 argument_list|)
 operator|.
 name|build
