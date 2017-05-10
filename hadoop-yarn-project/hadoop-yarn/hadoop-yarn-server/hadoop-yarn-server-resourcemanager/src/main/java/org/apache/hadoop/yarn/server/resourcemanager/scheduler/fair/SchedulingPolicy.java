@@ -224,6 +224,10 @@ name|ConcurrentHashMap
 import|;
 end_import
 
+begin_comment
+comment|/**  * The SchedulingPolicy is used by the fair scheduler mainly to determine  * what a queue's fair share and steady fair share should be as well as  * calculating available headroom. This determines how resources can be  * shared between running applications within a queue.  *<p>  * Every queue has a policy, including parents and children. If a child  * queue doesn't specify one, it inherits the parent's policy.  * The policy for a child queue must be compatible with the policy of  * the parent queue; there are some combinations that aren't allowed.  * See {@link SchedulingPolicy#isChildPolicyAllowed(SchedulingPolicy)}.  * The policy for a queue is specified by setting property  *<i>schedulingPolicy</i> in the fair scheduler configuration file.  * The default policy is {@link FairSharePolicy} if not specified.  */
+end_comment
+
 begin_class
 annotation|@
 name|Public
@@ -280,8 +284,8 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * Returns a {@link SchedulingPolicy} instance corresponding to the passed clazz    */
-DECL|method|getInstance (Class<? extends SchedulingPolicy> clazz)
+comment|/**    * Returns a {@link SchedulingPolicy} instance corresponding    * to the passed clazz.    *    * @param clazz a class that extends {@link SchedulingPolicy}    * @return a {@link SchedulingPolicy} instance    */
+DECL|method|getInstance ( Class<? extends SchedulingPolicy> clazz)
 specifier|public
 specifier|static
 name|SchedulingPolicy
@@ -335,7 +339,7 @@ return|return
 name|policy
 return|;
 block|}
-comment|/**    * Returns {@link SchedulingPolicy} instance corresponding to the    * {@link SchedulingPolicy} passed as a string. The policy can be "fair" for    * FairSharePolicy, "fifo" for FifoPolicy, or "drf" for    * DominantResourceFairnessPolicy. For a custom    * {@link SchedulingPolicy}s in the RM classpath, the policy should be    * canonical class name of the {@link SchedulingPolicy}.    *     * @param policy canonical class name or "drf" or "fair" or "fifo"    * @throws AllocationConfigurationException    */
+comment|/**    * Returns {@link SchedulingPolicy} instance corresponding to the    * {@link SchedulingPolicy} passed as a string. The policy can be "fair" for    * FairSharePolicy, "fifo" for FifoPolicy, or "drf" for    * DominantResourceFairnessPolicy. For a custom    * {@link SchedulingPolicy}s in the RM classpath, the policy should be    * canonical class name of the {@link SchedulingPolicy}.    *     * @param policy canonical class name or "drf" or "fair" or "fifo"    * @return a {@link SchedulingPolicy} instance parsed from given policy    * @throws AllocationConfigurationException    *    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -491,7 +495,7 @@ name|clazz
 argument_list|)
 return|;
 block|}
-comment|/**    * Initialize the scheduling policy with cluster resources.    * @deprecated  Since it doesn't track cluster resource changes, replaced by    * {@link #initialize(FSContext)}.    *    * @param clusterCapacity cluster resources    */
+comment|/**    * Initialize the scheduling policy with cluster resources.    * @deprecated Since it doesn't track cluster resource changes, replaced by    * {@link #initialize(FSContext)}.    *    * @param clusterCapacity cluster resources    */
 annotation|@
 name|Deprecated
 DECL|method|initialize (Resource clusterCapacity)
@@ -578,7 +582,7 @@ name|Resource
 name|totalResources
 parameter_list|)
 function_decl|;
-comment|/**    * Check if the resource usage is over the fair share under this policy    *    * @param usage {@link Resource} the resource usage    * @param fairShare {@link Resource} the fair share    * @return true if check passes (is over) or false otherwise    */
+comment|/**    * Check if the resource usage is over the fair share under this policy.    *    * @param usage {@link Resource} the resource usage    * @param fairShare {@link Resource} the fair share    * @return true if check passes (is over) or false otherwise    */
 DECL|method|checkIfUsageOverFairShare ( Resource usage, Resource fairShare)
 specifier|public
 specifier|abstract
@@ -592,7 +596,7 @@ name|Resource
 name|fairShare
 parameter_list|)
 function_decl|;
-comment|/**    * Get headroom by calculating the min of<code>clusterAvailable</code> and    * (<code>queueFairShare</code> -<code>queueUsage</code>) resources that are    * applicable to this policy. For eg if only memory then leave other    * resources such as CPU to same as clusterAvailable.    *    * @param queueFairShare fairshare in the queue    * @param queueUsage resources used in the queue    * @param maxAvailable available resource in cluster for this queue    * @return calculated headroom    */
+comment|/**    * Get headroom by calculating the min of {@code clusterAvailable} and    * ({@code queueFairShare} - {@code queueUsage}) resources that are    * applicable to this policy. For eg if only memory then leave other    * resources such as CPU to same as {@code clusterAvailable}.    *    * @param queueFairShare fairshare in the queue    * @param queueUsage resources used in the queue    * @param maxAvailable available resource in cluster for this queue    * @return calculated headroom    */
 DECL|method|getHeadroom (Resource queueFairShare, Resource queueUsage, Resource maxAvailable)
 specifier|public
 specifier|abstract
