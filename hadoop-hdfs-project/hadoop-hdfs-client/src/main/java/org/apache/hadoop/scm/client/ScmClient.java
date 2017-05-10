@@ -40,6 +40,28 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|ContainerData
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|scm
 operator|.
 name|container
@@ -98,7 +120,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Delets an existing container.    * @param pipeline - Pipeline that represents the container.    * @param force - true to forcibly delete the container.    * @throws IOException    */
+comment|/**    * Deletes an existing container.    * @param pipeline - Pipeline that represents the container.    * @param force - true to forcibly delete the container.    * @throws IOException    */
 DECL|method|deleteContainer (Pipeline pipeline, boolean force)
 name|void
 name|deleteContainer
@@ -108,6 +130,17 @@ name|pipeline
 parameter_list|,
 name|boolean
 name|force
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Read meta data from an existing container.    * @param pipeline - Pipeline that represents the container.    * @return ContainerInfo    * @throws IOException    */
+DECL|method|readContainer (Pipeline pipeline)
+name|ContainerData
+name|readContainer
+parameter_list|(
+name|Pipeline
+name|pipeline
 parameter_list|)
 throws|throws
 name|IOException

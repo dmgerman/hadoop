@@ -26,6 +26,28 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|ContainerData
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|OzoneConsts
@@ -163,6 +185,38 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{    }
+comment|/**    * Create a instance of ContainerData by a given container id,    * since this is a testing class, there is no need set up the hold    * env to get the meta data of the container.    * @param pipeline    * @return    * @throws IOException    */
+annotation|@
+name|Override
+DECL|method|readContainer (Pipeline pipeline)
+specifier|public
+name|ContainerData
+name|readContainer
+parameter_list|(
+name|Pipeline
+name|pipeline
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|ContainerData
+operator|.
+name|newBuilder
+argument_list|()
+operator|.
+name|setName
+argument_list|(
+name|pipeline
+operator|.
+name|getContainerName
+argument_list|()
+argument_list|)
+operator|.
+name|build
+argument_list|()
+return|;
+block|}
 comment|/**    * Return reference to an *existing* container with given ID.    *    * @param containerId    * @return    * @throws IOException    */
 DECL|method|getContainer (String containerId)
 specifier|public

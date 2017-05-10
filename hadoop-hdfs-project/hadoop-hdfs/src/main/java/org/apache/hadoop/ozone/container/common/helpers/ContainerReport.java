@@ -57,7 +57,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Container Report iterates the closed containers and sends a container report  * to SCM.  *<p>  * The protobuf counter part of this class looks like this.  * message ContainerInfo {  * required string containerName = 1;  * repeated bytes finalhash = 2;  * optional int64 size = 3;  * optional int64 keycount = 4;  * }  */
+comment|/**  * Container Report iterates the closed containers and sends a container report  * to SCM.  *<p>  * The protobuf counter part of this class looks like this.  * message ContainerInfo {  * required string containerName = 1;  * required string finalhash = 2;  * optional int64 size = 3;  * optional int64 keycount = 4;  * }  */
 end_comment
 
 begin_class

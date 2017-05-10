@@ -216,6 +216,28 @@ name|CONTAINER_DELETE
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|scm
+operator|.
+name|cli
+operator|.
+name|container
+operator|.
+name|InfoContainerHandler
+operator|.
+name|CONTAINER_INFO
+import|;
+end_import
+
 begin_comment
 comment|/**  * The handler class of container-specific commands, e.g. createContainer.  */
 end_comment
@@ -325,6 +347,27 @@ name|handler
 operator|=
 operator|new
 name|DeleteContainerHandler
+argument_list|(
+name|getScmClient
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|cmd
+operator|.
+name|hasOption
+argument_list|(
+name|CONTAINER_INFO
+argument_list|)
+condition|)
+block|{
+name|handler
+operator|=
+operator|new
+name|InfoContainerHandler
 argument_list|(
 name|getScmClient
 argument_list|()
@@ -469,6 +512,19 @@ literal|"Create container"
 argument_list|)
 decl_stmt|;
 name|Option
+name|infoContainer
+init|=
+operator|new
+name|Option
+argument_list|(
+name|CONTAINER_INFO
+argument_list|,
+literal|true
+argument_list|,
+literal|"Info container"
+argument_list|)
+decl_stmt|;
+name|Option
 name|deleteContainer
 init|=
 operator|new
@@ -493,6 +549,13 @@ operator|.
 name|addOption
 argument_list|(
 name|deleteContainer
+argument_list|)
+expr_stmt|;
+name|options
+operator|.
+name|addOption
+argument_list|(
+name|infoContainer
 argument_list|)
 expr_stmt|;
 comment|// TODO : add other options such as delete, close etc.
