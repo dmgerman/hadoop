@@ -551,11 +551,6 @@ operator|.
 name|MB
 argument_list|)
 expr_stmt|;
-name|options
-operator|.
-name|createIfMissing
-argument_list|()
-expr_stmt|;
 comment|// Write the container name to pipeline mapping.
 name|File
 name|containerDBPath

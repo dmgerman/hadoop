@@ -566,11 +566,6 @@ operator|.
 name|MB
 argument_list|)
 expr_stmt|;
-name|options
-operator|.
-name|createIfMissing
-argument_list|()
-expr_stmt|;
 name|File
 name|nodePoolDBPath
 init|=

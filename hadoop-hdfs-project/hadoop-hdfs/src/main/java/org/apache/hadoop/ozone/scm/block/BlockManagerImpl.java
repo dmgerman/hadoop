@@ -730,11 +730,6 @@ operator|.
 name|MB
 argument_list|)
 expr_stmt|;
-name|options
-operator|.
-name|createIfMissing
-argument_list|()
-expr_stmt|;
 comment|// Write the block key to container name mapping.
 name|File
 name|blockContainerDbPath
