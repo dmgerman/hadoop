@@ -1832,6 +1832,11 @@ operator|)
 literal|10
 argument_list|)
 expr_stmt|;
+name|cluster
+operator|.
+name|triggerBlockReports
+argument_list|()
+expr_stmt|;
 comment|// underreplicated Blocks should be one after setrep
 name|GenericTestUtils
 operator|.

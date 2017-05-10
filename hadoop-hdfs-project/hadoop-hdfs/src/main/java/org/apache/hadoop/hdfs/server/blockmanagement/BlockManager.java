@@ -19430,6 +19430,12 @@ condition|(
 operator|!
 name|isPopulatingReplQueues
 argument_list|()
+operator|||
+operator|!
+name|block
+operator|.
+name|isComplete
+argument_list|()
 condition|)
 block|{
 return|return;

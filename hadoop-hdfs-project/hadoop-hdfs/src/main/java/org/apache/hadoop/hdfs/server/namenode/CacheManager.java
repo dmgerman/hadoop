@@ -1098,7 +1098,6 @@ block|}
 argument_list|)
 DECL|class|CacheManager
 specifier|public
-specifier|final
 class|class
 name|CacheManager
 block|{
