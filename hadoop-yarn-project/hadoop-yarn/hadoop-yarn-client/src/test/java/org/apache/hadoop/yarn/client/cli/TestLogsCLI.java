@@ -1084,7 +1084,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000l
+literal|10000l
 argument_list|)
 DECL|method|testInvalidOpts ()
 specifier|public
