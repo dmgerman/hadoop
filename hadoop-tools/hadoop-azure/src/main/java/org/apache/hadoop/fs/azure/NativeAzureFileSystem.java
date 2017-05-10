@@ -12222,6 +12222,7 @@ annotation|@
 name|Override
 DECL|method|getDelegationToken (final String renewer)
 specifier|public
+specifier|synchronized
 name|Token
 argument_list|<
 name|?
