@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.router.clientrm
+DECL|package|org.apache.hadoop.yarn.server.router.rmadmin
 package|package
 name|org
 operator|.
@@ -18,7 +18,7 @@ name|server
 operator|.
 name|router
 operator|.
-name|clientrm
+name|rmadmin
 package|;
 end_package
 
@@ -37,17 +37,17 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Implements the {@link ClientRequestInterceptor} interface and provides common  * functionality which can can be used and/or extended by other concrete  * intercepter classes.  *  */
+comment|/**  * Implements the {@link RMAdminRequestInterceptor} interface and provides  * common functionality which can can be used and/or extended by other concrete  * intercepter classes.  *  */
 end_comment
 
 begin_class
-DECL|class|AbstractClientRequestInterceptor
+DECL|class|AbstractRMAdminRequestInterceptor
 specifier|public
 specifier|abstract
 class|class
-name|AbstractClientRequestInterceptor
+name|AbstractRMAdminRequestInterceptor
 implements|implements
-name|ClientRequestInterceptor
+name|RMAdminRequestInterceptor
 block|{
 DECL|field|conf
 specifier|private
@@ -56,18 +56,18 @@ name|conf
 decl_stmt|;
 DECL|field|nextInterceptor
 specifier|private
-name|ClientRequestInterceptor
+name|RMAdminRequestInterceptor
 name|nextInterceptor
 decl_stmt|;
-comment|/**    * Sets the {@link ClientRequestInterceptor} in the chain.    */
+comment|/**    * Sets the {@link RMAdminRequestInterceptor} in the chain.    */
 annotation|@
 name|Override
-DECL|method|setNextInterceptor (ClientRequestInterceptor nextInterceptor)
+DECL|method|setNextInterceptor (RMAdminRequestInterceptor nextInterceptor)
 specifier|public
 name|void
 name|setNextInterceptor
 parameter_list|(
-name|ClientRequestInterceptor
+name|RMAdminRequestInterceptor
 name|nextInterceptor
 parameter_list|)
 block|{
@@ -131,7 +131,7 @@ operator|.
 name|conf
 return|;
 block|}
-comment|/**    * Initializes the {@link ClientRequestInterceptor}.    */
+comment|/**    * Initializes the {@link RMAdminRequestInterceptor}.    */
 annotation|@
 name|Override
 DECL|method|init (String user)
@@ -163,7 +163,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Disposes the {@link ClientRequestInterceptor}.    */
+comment|/**    * Disposes the {@link RMAdminRequestInterceptor}.    */
 annotation|@
 name|Override
 DECL|method|shutdown ()
@@ -190,12 +190,12 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Gets the next {@link ClientRequestInterceptor} in the chain.    */
+comment|/**    * Gets the next {@link RMAdminRequestInterceptor} in the chain.    */
 annotation|@
 name|Override
 DECL|method|getNextInterceptor ()
 specifier|public
-name|ClientRequestInterceptor
+name|RMAdminRequestInterceptor
 name|getNextInterceptor
 parameter_list|()
 block|{

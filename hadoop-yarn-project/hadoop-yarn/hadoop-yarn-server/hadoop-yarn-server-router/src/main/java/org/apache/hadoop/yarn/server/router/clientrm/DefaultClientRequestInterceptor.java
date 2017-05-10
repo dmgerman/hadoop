@@ -1213,7 +1213,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Extends the AbstractRequestInterceptorClient class and provides an  * implementation that simply forwards the client requests to the cluster  * resource manager.  *  */
+comment|/**  * Extends the {@code AbstractRequestInterceptorClient} class and provides an  * implementation that simply forwards the client requests to the cluster  * resource manager.  *  */
 end_comment
 
 begin_class

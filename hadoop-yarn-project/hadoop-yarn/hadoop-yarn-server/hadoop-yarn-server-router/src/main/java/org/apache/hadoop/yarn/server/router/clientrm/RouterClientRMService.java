@@ -1367,7 +1367,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * RouterClientRMService is a service that runs on each router that can be used  * to intercept and inspect ApplicationClientProtocol messages from client to  * the cluster resource manager. It listens ApplicationClientProtocol messages  * from the client and creates a request intercepting pipeline instance for each  * client. The pipeline is a chain of intercepter instances that can inspect and  * modify the request/response as needed. The main difference with  * AMRMProxyService is the protocol they implement.  */
+comment|/**  * RouterClientRMService is a service that runs on each router that can be used  * to intercept and inspect {@link ApplicationClientProtocol} messages from  * client to the cluster resource manager. It listens  * {@link ApplicationClientProtocol} messages from the client and creates a  * request intercepting pipeline instance for each client. The pipeline is a  * chain of {@link ClientRequestInterceptor} instances that can inspect and  * modify the request/response as needed. The main difference with  * AMRMProxyService is the protocol they implement.  */
 end_comment
 
 begin_class
@@ -1485,6 +1485,10 @@ name|getSocketAddr
 argument_list|(
 name|YarnConfiguration
 operator|.
+name|ROUTER_BIND_HOST
+argument_list|,
+name|YarnConfiguration
+operator|.
 name|ROUTER_CLIENTRM_ADDRESS
 argument_list|,
 name|YarnConfiguration
@@ -1505,11 +1509,11 @@ name|getInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|ROUTER_CLIENTRM_PIPELINE_CACHE_MAX_SIZE
+name|ROUTER_PIPELINE_CACHE_MAX_SIZE
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DEFAULT_ROUTER_CLIENTRM_PIPELINE_CACHE_MAX_SIZE
+name|DEFAULT_ROUTER_PIPELINE_CACHE_MAX_SIZE
 argument_list|)
 decl_stmt|;
 name|this

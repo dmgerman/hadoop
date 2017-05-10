@@ -65,7 +65,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Test class to validate the correctness of the LRUCacheHashMap.  *  */
+comment|/**  * Test class to validate the correctness of the {@code LRUCacheHashMap}.  *  */
 end_comment
 
 begin_class

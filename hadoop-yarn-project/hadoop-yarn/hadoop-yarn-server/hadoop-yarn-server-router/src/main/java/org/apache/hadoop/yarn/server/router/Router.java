@@ -170,6 +170,26 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|router
+operator|.
+name|rmadmin
+operator|.
+name|RouterRMAdminService
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -241,6 +261,11 @@ specifier|private
 name|RouterClientRMService
 name|clientRMProxyService
 decl_stmt|;
+DECL|field|rmAdminProxyService
+specifier|private
+name|RouterRMAdminService
+name|rmAdminProxyService
+decl_stmt|;
 comment|/**    * Priority of the Router shutdown hook.    */
 DECL|field|SHUTDOWN_HOOK_PRIORITY
 specifier|public
@@ -296,6 +321,7 @@ name|conf
 operator|=
 name|config
 expr_stmt|;
+comment|// ClientRM Proxy
 name|clientRMProxyService
 operator|=
 name|createClientRMProxyService
@@ -304,6 +330,17 @@ expr_stmt|;
 name|addService
 argument_list|(
 name|clientRMProxyService
+argument_list|)
+expr_stmt|;
+comment|// RMAdmin Proxy
+name|rmAdminProxyService
+operator|=
+name|createRMAdminProxyService
+argument_list|()
+expr_stmt|;
+name|addService
+argument_list|(
+name|rmAdminProxyService
 argument_list|)
 expr_stmt|;
 name|super
@@ -420,6 +457,18 @@ block|{
 return|return
 operator|new
 name|RouterClientRMService
+argument_list|()
+return|;
+block|}
+DECL|method|createRMAdminProxyService ()
+specifier|protected
+name|RouterRMAdminService
+name|createRMAdminProxyService
+parameter_list|()
+block|{
+return|return
+operator|new
+name|RouterRMAdminService
 argument_list|()
 return|;
 block|}

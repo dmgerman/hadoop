@@ -1412,7 +1412,7 @@ name|setInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|ROUTER_CLIENTRM_PIPELINE_CACHE_MAX_SIZE
+name|ROUTER_PIPELINE_CACHE_MAX_SIZE
 argument_list|,
 name|TEST_MAX_CACHE_SIZE
 argument_list|)
