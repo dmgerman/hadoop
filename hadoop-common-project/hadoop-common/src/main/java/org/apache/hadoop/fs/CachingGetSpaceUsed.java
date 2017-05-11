@@ -261,7 +261,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Keeps track of disk usage.    *    * @param path        the path to check disk usage in    * @param interval    refresh the disk usage at this interval    * @param initialUsed use this value until next refresh    * @throws IOException if we fail to refresh the disk usage    */
+comment|/**    * Keeps track of disk usage.    *    * @param path        the path to check disk usage in    * @param interval    refresh the disk usage at this interval    * @param jitter      randomize the refresh interval timing by this amount;    *                    the actual interval will be chosen uniformly between    *                    {@code interval-jitter} and {@code interval+jitter}    * @param initialUsed use this value until next refresh    * @throws IOException if we fail to refresh the disk usage    */
 DECL|method|CachingGetSpaceUsed (File path, long interval, long jitter, long initialUsed)
 name|CachingGetSpaceUsed
 parameter_list|(
