@@ -2904,6 +2904,8 @@ parameter_list|,
 name|String
 name|hostname
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 try|try
 block|{
@@ -3106,24 +3108,6 @@ operator|.
 name|warn
 argument_list|(
 literal|"Owned container {} not found - {}"
-argument_list|,
-name|containerId
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|log
-operator|.
-name|warn
-argument_list|(
-literal|"Error updating container {} service record in registry"
 argument_list|,
 name|containerId
 argument_list|,

@@ -1032,6 +1032,8 @@ return|return
 literal|false
 return|;
 block|}
+try|try
+block|{
 name|providerUtils
 operator|.
 name|updateServiceRecord
@@ -1060,6 +1062,31 @@ name|getHost
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+comment|// could not write service record to ZK, log and retry
+name|log
+operator|.
+name|warn
+argument_list|(
+literal|"Error updating container {} service record in registry, "
+operator|+
+literal|"retrying"
+argument_list|,
+name|containerId
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+return|return
+literal|true
+return|;
+block|}
 comment|// TODO publish ip and host
 name|org
 operator|.
