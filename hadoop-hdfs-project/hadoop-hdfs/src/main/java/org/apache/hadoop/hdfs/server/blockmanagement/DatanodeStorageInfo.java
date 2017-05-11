@@ -36,6 +36,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Iterator
 import|;
 end_import
@@ -1129,6 +1139,7 @@ name|size
 argument_list|()
 return|;
 block|}
+comment|/**    * @return iterator to an unmodifiable set of blocks    * related to this {@link DatanodeStorageInfo}    */
 DECL|method|getBlockIterator ()
 name|Iterator
 argument_list|<
@@ -1138,7 +1149,12 @@ name|getBlockIterator
 parameter_list|()
 block|{
 return|return
+name|Collections
+operator|.
+name|unmodifiableSet
+argument_list|(
 name|blocks
+argument_list|)
 operator|.
 name|iterator
 argument_list|()

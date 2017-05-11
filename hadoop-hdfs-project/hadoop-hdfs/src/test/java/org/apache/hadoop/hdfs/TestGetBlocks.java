@@ -1943,6 +1943,29 @@ operator|.
 name|next
 argument_list|()
 expr_stmt|;
+try|try
+block|{
+name|storageBlockIt
+operator|.
+name|remove
+argument_list|()
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"BlockInfo iterator should have been unmodifiable"
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|UnsupportedOperationException
+name|e
+parameter_list|)
+block|{
+comment|//expected exception
+block|}
 block|}
 block|}
 comment|// check iterator for every block as a starting point
