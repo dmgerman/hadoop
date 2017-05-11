@@ -36,43 +36,7 @@ name|iq80
 operator|.
 name|leveldb
 operator|.
-name|DB
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|iq80
-operator|.
-name|leveldb
-operator|.
-name|DBIterator
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|iq80
-operator|.
-name|leveldb
-operator|.
-name|Options
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|iq80
-operator|.
-name|leveldb
-operator|.
-name|WriteOptions
+name|*
 import|;
 end_import
 
@@ -443,6 +407,56 @@ name|dbFile
 argument_list|,
 name|dbOptions
 argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Returns a write batch for write multiple key-value pairs atomically.    * @return write batch that can be commit atomically.    */
+DECL|method|createWriteBatch ()
+specifier|public
+name|WriteBatch
+name|createWriteBatch
+parameter_list|()
+block|{
+return|return
+name|db
+operator|.
+name|createWriteBatch
+argument_list|()
+return|;
+block|}
+comment|/**    * Commit multiple writes of key-value pairs atomically.    * @param wb    */
+DECL|method|commitWriteBatch (WriteBatch wb)
+specifier|public
+name|void
+name|commitWriteBatch
+parameter_list|(
+name|WriteBatch
+name|wb
+parameter_list|)
+block|{
+name|db
+operator|.
+name|write
+argument_list|(
+name|wb
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Close a write batch of multiple writes to key-value pairs.    * @param wb - write batch.    * @throws IOException    */
+DECL|method|closeWriteBatch (WriteBatch wb)
+specifier|public
+name|void
+name|closeWriteBatch
+parameter_list|(
+name|WriteBatch
+name|wb
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|wb
+operator|.
+name|close
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Compacts the DB by removing deleted keys etc.    * @throws IOException if there is an error.    */

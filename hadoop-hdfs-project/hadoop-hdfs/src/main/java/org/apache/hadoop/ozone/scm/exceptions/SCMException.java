@@ -158,6 +158,9 @@ specifier|public
 enum|enum
 name|ResultCodes
 block|{
+DECL|enumConstant|SUCCEESS
+name|SUCCEESS
+block|,
 DECL|enumConstant|FAILED_TO_LOAD_NODEPOOL
 name|FAILED_TO_LOAD_NODEPOOL
 block|,
@@ -188,12 +191,21 @@ block|,
 DECL|enumConstant|FAILED_TO_ALLOCATE_CONTAINER
 name|FAILED_TO_ALLOCATE_CONTAINER
 block|,
+DECL|enumConstant|CONTAINER_EXISTS
+name|CONTAINER_EXISTS
+block|,
 DECL|enumConstant|FAILED_TO_FIND_CONTAINER
 name|FAILED_TO_FIND_CONTAINER
 block|,
 DECL|enumConstant|FAILED_TO_FIND_CONTAINER_WITH_SAPCE
 name|FAILED_TO_FIND_CONTAINER_WITH_SAPCE
-block|,   }
+block|,
+DECL|enumConstant|BLOCK_EXISTS
+name|BLOCK_EXISTS
+block|,
+DECL|enumConstant|FAILED_TO_FIND_BLOCK
+name|FAILED_TO_FIND_BLOCK
+block|}
 block|}
 end_class
 

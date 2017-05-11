@@ -34,6 +34,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Set
 import|;
 end_import
@@ -55,6 +65,26 @@ operator|.
 name|helpers
 operator|.
 name|AllocatedBlock
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|DeleteBlockResult
 import|;
 end_import
 
@@ -95,6 +125,21 @@ name|size
 parameter_list|)
 throws|throws
 name|IOException
+function_decl|;
+comment|/**    * Delete the set of keys specified.    *    * @param keys batch of block keys to delete.    * @return list of block deletion results.    * @throws IOException if there is any failure.    *    */
+DECL|method|deleteBlocks (Set<String> keys)
+name|List
+argument_list|<
+name|DeleteBlockResult
+argument_list|>
+name|deleteBlocks
+parameter_list|(
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|keys
+parameter_list|)
 function_decl|;
 block|}
 end_interface

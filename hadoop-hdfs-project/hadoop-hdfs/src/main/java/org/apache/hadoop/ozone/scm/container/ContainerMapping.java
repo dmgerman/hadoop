@@ -166,6 +166,24 @@ name|ozone
 operator|.
 name|scm
 operator|.
+name|exceptions
+operator|.
+name|SCMException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|scm
+operator|.
 name|node
 operator|.
 name|NodeManager
@@ -895,11 +913,17 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|SCMException
 argument_list|(
 literal|"Specified key does not exist. key : "
 operator|+
 name|containerName
+argument_list|,
+name|SCMException
+operator|.
+name|ResultCodes
+operator|.
+name|FAILED_TO_FIND_CONTAINER
 argument_list|)
 throw|;
 block|}
@@ -1017,9 +1041,15 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|SCMException
 argument_list|(
 literal|"Unable to create container while in chill mode"
+argument_list|,
+name|SCMException
+operator|.
+name|ResultCodes
+operator|.
+name|CHILL_MODE_EXCEPTION
 argument_list|)
 throw|;
 block|}
@@ -1055,11 +1085,17 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|SCMException
 argument_list|(
 literal|"Specified container already exists. key : "
 operator|+
 name|containerName
+argument_list|,
+name|SCMException
+operator|.
+name|ResultCodes
+operator|.
+name|CONTAINER_EXISTS
 argument_list|)
 throw|;
 block|}
@@ -1216,13 +1252,19 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|SCMException
 argument_list|(
 literal|"Failed to delete container "
 operator|+
 name|containerName
 operator|+
 literal|", reason : container doesn't exist."
+argument_list|,
+name|SCMException
+operator|.
+name|ResultCodes
+operator|.
+name|FAILED_TO_FIND_CONTAINER
 argument_list|)
 throw|;
 block|}
