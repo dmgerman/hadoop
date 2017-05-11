@@ -733,7 +733,7 @@ return|return
 name|myUri
 return|;
 block|}
-comment|/**    *      * Strip out the root from the path.    *     * @param p - fully qualified path p    * @return -  the remaining path  without the begining /    */
+comment|/**    *      * Strip out the root from the path.    *     * @param p - fully qualified path p    * @return -  the remaining path  without the beginning /    */
 DECL|method|stripOutRoot (final Path p)
 specifier|public
 name|String

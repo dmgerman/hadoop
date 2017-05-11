@@ -693,7 +693,7 @@ return|return
 name|myUri
 return|;
 block|}
-comment|/**    * Strip out the root from the path.    * @param p - fully qualified path p    * @return -  the remaining path  without the begining /    * @throws IOException if the p is not prefixed with root    */
+comment|/**    * Strip out the root from the path.    * @param p - fully qualified path p    * @return -  the remaining path  without the beginning /    * @throws IOException if the p is not prefixed with root    */
 DECL|method|stripOutRoot (final Path p)
 name|String
 name|stripOutRoot

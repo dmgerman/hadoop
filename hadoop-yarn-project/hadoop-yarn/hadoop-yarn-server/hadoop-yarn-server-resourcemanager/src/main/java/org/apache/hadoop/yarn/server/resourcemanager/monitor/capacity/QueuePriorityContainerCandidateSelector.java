@@ -1945,7 +1945,7 @@ operator|.
 name|currentTimeMillis
 argument_list|()
 decl_stmt|;
-comment|// From the begining of the list
+comment|// From the beginning of the list
 for|for
 control|(
 name|RMContainer

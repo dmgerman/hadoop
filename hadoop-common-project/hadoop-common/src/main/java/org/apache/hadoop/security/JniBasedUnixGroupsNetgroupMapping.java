@@ -409,7 +409,7 @@ literal|null
 decl_stmt|;
 try|try
 block|{
-comment|// JNI code does not expect '@' at the begining of the group name
+comment|// JNI code does not expect '@' at the beginning of the group name
 name|users
 operator|=
 name|getUsersForNetgroupJNI

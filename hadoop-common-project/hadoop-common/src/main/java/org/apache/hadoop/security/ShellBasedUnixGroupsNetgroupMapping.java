@@ -503,7 +503,7 @@ literal|""
 decl_stmt|;
 try|try
 block|{
-comment|// shell command does not expect '@' at the begining of the group name
+comment|// shell command does not expect '@' at the beginning of the group name
 name|result
 operator|=
 name|Shell
