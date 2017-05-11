@@ -64,7 +64,7 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|assertTrue
+name|fail
 import|;
 end_import
 
@@ -274,6 +274,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|federation
@@ -387,104 +401,55 @@ specifier|final
 class|class
 name|FederationTestUtils
 block|{
-DECL|field|NAMESERVICE1
+DECL|field|NAMESERVICES
 specifier|public
 specifier|final
 specifier|static
 name|String
-name|NAMESERVICE1
+index|[]
+name|NAMESERVICES
 init|=
+block|{
 literal|"ns0"
-decl_stmt|;
-DECL|field|NAMESERVICE2
-specifier|public
-specifier|final
-specifier|static
-name|String
-name|NAMESERVICE2
-init|=
+block|,
 literal|"ns1"
+block|}
 decl_stmt|;
-DECL|field|NAMENODE1
+DECL|field|NAMENODES
 specifier|public
 specifier|final
 specifier|static
 name|String
-name|NAMENODE1
+index|[]
+name|NAMENODES
 init|=
+block|{
 literal|"nn0"
-decl_stmt|;
-DECL|field|NAMENODE2
-specifier|public
-specifier|final
-specifier|static
-name|String
-name|NAMENODE2
-init|=
+block|,
 literal|"nn1"
-decl_stmt|;
-DECL|field|NAMENODE3
-specifier|public
-specifier|final
-specifier|static
-name|String
-name|NAMENODE3
-init|=
+block|,
 literal|"nn2"
-decl_stmt|;
-DECL|field|NAMENODE4
-specifier|public
-specifier|final
-specifier|static
-name|String
-name|NAMENODE4
-init|=
+block|,
 literal|"nn3"
+block|}
 decl_stmt|;
-DECL|field|ROUTER1
+DECL|field|ROUTERS
 specifier|public
 specifier|final
 specifier|static
 name|String
-name|ROUTER1
+index|[]
+name|ROUTERS
 init|=
+block|{
 literal|"router0"
-decl_stmt|;
-DECL|field|ROUTER2
-specifier|public
-specifier|final
-specifier|static
-name|String
-name|ROUTER2
-init|=
+block|,
 literal|"router1"
-decl_stmt|;
-DECL|field|ROUTER3
-specifier|public
-specifier|final
-specifier|static
-name|String
-name|ROUTER3
-init|=
+block|,
 literal|"router2"
-decl_stmt|;
-DECL|field|ROUTER4
-specifier|public
-specifier|final
-specifier|static
-name|String
-name|ROUTER4
-init|=
+block|,
 literal|"router3"
-decl_stmt|;
-DECL|field|BLOCK_SIZE_BYTES
-specifier|public
-specifier|final
-specifier|static
-name|long
-name|BLOCK_SIZE_BYTES
-init|=
-literal|134217728
+block|}
 decl_stmt|;
 DECL|method|FederationTestUtils ()
 specifier|private
@@ -591,7 +556,7 @@ condition|)
 block|{
 name|assertNotNull
 argument_list|(
-literal|"No exception was triggered, expected exception - "
+literal|"No exception was triggered, expected exception"
 operator|+
 name|exceptionClass
 operator|.
@@ -709,10 +674,9 @@ argument_list|(
 name|state
 argument_list|)
 expr_stmt|;
-name|report
-operator|.
-name|setNamespaceInfo
-argument_list|(
+name|NamespaceInfo
+name|nsInfo
+init|=
 operator|new
 name|NamespaceInfo
 argument_list|(
@@ -728,13 +692,19 @@ literal|"testbuildvesion"
 argument_list|,
 literal|"testsoftwareversion"
 argument_list|)
+decl_stmt|;
+name|report
+operator|.
+name|setNamespaceInfo
+argument_list|(
+name|nsInfo
 argument_list|)
 expr_stmt|;
 return|return
 name|report
 return|;
 block|}
-DECL|method|waitNamenodeRegistered (ActiveNamenodeResolver resolver, String nameserviceId, String namenodeId, FederationNamenodeServiceState finalState)
+DECL|method|waitNamenodeRegistered (ActiveNamenodeResolver resolver, String nsId, String nnId, FederationNamenodeServiceState finalState)
 specifier|public
 specifier|static
 name|void
@@ -744,10 +714,10 @@ name|ActiveNamenodeResolver
 name|resolver
 parameter_list|,
 name|String
-name|nameserviceId
+name|nsId
 parameter_list|,
 name|String
-name|namenodeId
+name|nnId
 parameter_list|,
 name|FederationNamenodeServiceState
 name|finalState
@@ -796,16 +766,14 @@ extends|extends
 name|FederationNamenodeContext
 argument_list|>
 name|namenodes
-decl_stmt|;
-name|namenodes
-operator|=
+init|=
 name|resolver
 operator|.
 name|getNamenodesForNameserviceId
 argument_list|(
-name|nameserviceId
+name|nsId
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 for|for
 control|(
 name|FederationNamenodeContext
@@ -814,13 +782,16 @@ range|:
 name|namenodes
 control|)
 block|{
+comment|// Check if this is the Namenode we are checking
 if|if
 condition|(
-name|namenodeId
-operator|!=
-literal|null
-operator|&&
-operator|!
+name|namenode
+operator|.
+name|getNamenodeId
+argument_list|()
+operator|==
+name|nnId
+operator|||
 name|namenode
 operator|.
 name|getNamenodeId
@@ -828,13 +799,10 @@ argument_list|()
 operator|.
 name|equals
 argument_list|(
-name|namenodeId
+name|nnId
 argument_list|)
 condition|)
 block|{
-comment|// Keep looking
-continue|continue;
-block|}
 if|if
 condition|(
 name|finalState
@@ -856,25 +824,27 @@ block|{
 comment|// Wrong state, wait a bit more
 break|break;
 block|}
-comment|// Found
+else|else
+block|{
+comment|// Found and verified
 return|return;
 block|}
 block|}
-name|assertTrue
+block|}
+block|}
+name|fail
 argument_list|(
-literal|"Failed to verify state store registration for state - "
+literal|"Failed to verify State Store registration of "
+operator|+
+name|nsId
+operator|+
+literal|" "
+operator|+
+name|nnId
+operator|+
+literal|" for state "
 operator|+
 name|finalState
-operator|+
-literal|" - "
-operator|+
-literal|" - "
-operator|+
-name|nameserviceId
-operator|+
-literal|" - "
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -894,8 +864,7 @@ name|long
 name|precision
 parameter_list|)
 block|{
-if|if
-condition|(
+return|return
 name|Math
 operator|.
 name|abs
@@ -912,14 +881,6 @@ argument_list|()
 argument_list|)
 operator|<
 name|precision
-condition|)
-block|{
-return|return
-literal|true
-return|;
-block|}
-return|return
-literal|false
 return|;
 block|}
 DECL|method|addDirectory (FileSystem context, String path)
@@ -1042,7 +1003,7 @@ return|return
 literal|false
 return|;
 block|}
-DECL|method|checkForFileInDirectory (FileSystem context, String testPath, String targetFile)
+DECL|method|checkForFileInDirectory ( FileSystem context, String testPath, String targetFile)
 specifier|public
 specifier|static
 name|boolean
@@ -1058,6 +1019,8 @@ name|String
 name|targetFile
 parameter_list|)
 throws|throws
+name|IOException
+throws|,
 name|AccessControlException
 throws|,
 name|FileNotFoundException
@@ -1065,8 +1028,6 @@ throws|,
 name|UnsupportedFileSystemException
 throws|,
 name|IllegalArgumentException
-throws|,
-name|IOException
 block|{
 name|FileStatus
 index|[]
@@ -1194,6 +1155,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|Path
+name|path
+init|=
+operator|new
+name|Path
+argument_list|(
+name|testPath
+argument_list|)
+decl_stmt|;
 name|FileStatus
 index|[]
 name|fileStatus
@@ -1202,11 +1172,7 @@ name|context
 operator|.
 name|listStatus
 argument_list|(
-operator|new
-name|Path
-argument_list|(
-name|testPath
-argument_list|)
+name|path
 argument_list|)
 decl_stmt|;
 return|return
@@ -1266,7 +1232,9 @@ name|short
 operator|)
 literal|1
 argument_list|,
-name|BLOCK_SIZE_BYTES
+name|DFSConfigKeys
+operator|.
+name|DFS_BLOCK_SIZE_DEFAULT
 argument_list|,
 literal|null
 argument_list|)

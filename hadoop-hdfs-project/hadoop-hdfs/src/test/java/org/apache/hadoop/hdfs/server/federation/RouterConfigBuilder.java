@@ -34,6 +34,20 @@ name|Configuration
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+import|;
+end_import
+
 begin_comment
 comment|/**  * Constructs a router configuration with individual features enabled/disabled.  */
 end_comment
@@ -48,6 +62,13 @@ DECL|field|conf
 specifier|private
 name|Configuration
 name|conf
+decl_stmt|;
+DECL|field|enableRpcServer
+specifier|private
+name|boolean
+name|enableRpcServer
+init|=
+literal|false
 decl_stmt|;
 DECL|method|RouterConfigBuilder (Configuration configuration)
 specifier|public
@@ -75,8 +96,60 @@ name|conf
 operator|=
 operator|new
 name|Configuration
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 expr_stmt|;
+block|}
+DECL|method|all ()
+specifier|public
+name|RouterConfigBuilder
+name|all
+parameter_list|()
+block|{
+name|this
+operator|.
+name|enableRpcServer
+operator|=
+literal|true
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|rpc (boolean enable)
+specifier|public
+name|RouterConfigBuilder
+name|rpc
+parameter_list|(
+name|boolean
+name|enable
+parameter_list|)
+block|{
+name|this
+operator|.
+name|enableRpcServer
+operator|=
+name|enable
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|rpc ()
+specifier|public
+name|RouterConfigBuilder
+name|rpc
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|rpc
+argument_list|(
+literal|true
+argument_list|)
+return|;
 block|}
 DECL|method|build ()
 specifier|public
@@ -84,6 +157,19 @@ name|Configuration
 name|build
 parameter_list|()
 block|{
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_ROUTER_RPC_ENABLE
+argument_list|,
+name|this
+operator|.
+name|enableRpcServer
+argument_list|)
+expr_stmt|;
 return|return
 name|conf
 return|;

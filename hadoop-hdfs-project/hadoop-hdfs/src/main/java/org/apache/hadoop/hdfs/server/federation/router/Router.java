@@ -94,29 +94,31 @@ end_import
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|apache
+name|net
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
+name|InetAddress
 import|;
 end_import
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|apache
+name|net
 operator|.
-name|commons
+name|InetSocketAddress
+import|;
+end_import
+
+begin_import
+import|import
+name|java
 operator|.
-name|logging
+name|net
 operator|.
-name|LogFactory
+name|UnknownHostException
 import|;
 end_import
 
@@ -159,6 +161,20 @@ operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
 import|;
 end_import
 
@@ -292,6 +308,26 @@ name|StringUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/**  * Router that provides a unified view of multiple federated HDFS clusters. It  * has two main roles: (1) federated interface and (2) NameNode heartbeat.  *<p>  * For the federated interface, the Router receives a client request, checks the  * State Store for the correct subcluster, and forwards the request to the  * active Namenode of that subcluster. The reply from the Namenode then flows in  * the opposite direction. The Routers are stateless and can be behind a load  * balancer. HDFS clients connect to the router using the same interfaces as are  * used to communicate with a namenode, namely the ClientProtocol RPC interface  * and the WebHdfs HTTP interface exposed by the router. {@link RouterRpcServer}  * {@link RouterHttpServer}  *<p>  * For NameNode heartbeat, the Router periodically checks the state of a  * NameNode (usually on the same server) and reports their high availability  * (HA) state and load/space status to the State Store. Note that this is an  * optional role as a Router can be independent of any subcluster.  * {@link StateStoreService} {@link NamenodeHeartbeatService}  */
 end_comment
@@ -316,12 +352,12 @@ DECL|field|LOG
 specifier|private
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|Router
 operator|.
@@ -345,6 +381,11 @@ DECL|field|rpcServer
 specifier|private
 name|RouterRpcServer
 name|rpcServer
+decl_stmt|;
+DECL|field|rpcAddress
+specifier|private
+name|InetSocketAddress
+name|rpcAddress
 decl_stmt|;
 comment|/** Interface with the State Store. */
 DECL|field|stateStore
@@ -425,13 +466,6 @@ name|conf
 operator|=
 name|configuration
 expr_stmt|;
-comment|// TODO Interface to the State Store
-name|this
-operator|.
-name|stateStore
-operator|=
-literal|null
-expr_stmt|;
 comment|// Resolver to track active NNs
 name|this
 operator|.
@@ -497,6 +531,48 @@ argument_list|(
 literal|"Cannot find subcluster resolver"
 argument_list|)
 throw|;
+block|}
+if|if
+condition|(
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_ROUTER_RPC_ENABLE
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_ROUTER_RPC_ENABLE_DEFAULT
+argument_list|)
+condition|)
+block|{
+comment|// Create RPC server
+name|this
+operator|.
+name|rpcServer
+operator|=
+name|createRpcServer
+argument_list|()
+expr_stmt|;
+name|addService
+argument_list|(
+name|this
+operator|.
+name|rpcServer
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|setRpcServerAddress
+argument_list|(
+name|rpcServer
+operator|.
+name|getRpcAddress
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 name|super
 operator|.
@@ -678,7 +754,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Failed to start router."
+literal|"Failed to start router"
 argument_list|,
 name|e
 argument_list|)
@@ -695,7 +771,7 @@ block|}
 comment|/////////////////////////////////////////////////////////
 comment|// RPC Server
 comment|/////////////////////////////////////////////////////////
-comment|/**    * Create a new Router RPC server to proxy ClientProtocol requests.    *    * @return RouterRpcServer    * @throws IOException If the router RPC server was not started.    */
+comment|/**    * Create a new Router RPC server to proxy ClientProtocol requests.    *    * @return New Router RPC Server.    * @throws IOException If the router RPC server was not started.    */
 DECL|method|createRpcServer ()
 specifier|protected
 name|RouterRpcServer
@@ -737,6 +813,93 @@ return|return
 name|this
 operator|.
 name|rpcServer
+return|;
+block|}
+comment|/**    * Set the current RPC socket for the router.    *    * @param rpcAddress RPC address.    */
+DECL|method|setRpcServerAddress (InetSocketAddress address)
+specifier|protected
+name|void
+name|setRpcServerAddress
+parameter_list|(
+name|InetSocketAddress
+name|address
+parameter_list|)
+block|{
+name|this
+operator|.
+name|rpcAddress
+operator|=
+name|address
+expr_stmt|;
+comment|// Use the RPC address as our unique router Id
+if|if
+condition|(
+name|this
+operator|.
+name|rpcAddress
+operator|!=
+literal|null
+condition|)
+block|{
+try|try
+block|{
+name|String
+name|hostname
+init|=
+name|InetAddress
+operator|.
+name|getLocalHost
+argument_list|()
+operator|.
+name|getHostName
+argument_list|()
+decl_stmt|;
+name|setRouterId
+argument_list|(
+name|hostname
+operator|+
+literal|":"
+operator|+
+name|this
+operator|.
+name|rpcAddress
+operator|.
+name|getPort
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|UnknownHostException
+name|ex
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Cannot set unique router ID, address not resolvable {}"
+argument_list|,
+name|this
+operator|.
+name|rpcAddress
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+comment|/**    * Get the current RPC socket address for the router.    *    * @return InetSocketAddress    */
+DECL|method|getRpcServerAddress ()
+specifier|public
+name|InetSocketAddress
+name|getRpcServerAddress
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|rpcAddress
 return|;
 block|}
 comment|/////////////////////////////////////////////////////////
