@@ -315,7 +315,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|FifoPolicy
+name|FairSharePolicy
 operator|.
 name|class
 argument_list|)
