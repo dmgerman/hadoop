@@ -156,15 +156,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|ozone
-operator|.
 name|protocol
 operator|.
-name|proto
-operator|.
-name|ContainerProtos
-operator|.
-name|Pipeline
+name|DatanodeID
 import|;
 end_import
 
@@ -176,11 +170,15 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|ozone
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
+name|proto
+operator|.
+name|OzoneProtos
+operator|.
+name|Pipeline
 import|;
 end_import
 

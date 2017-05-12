@@ -26,15 +26,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
 name|ozone
 operator|.
 name|protocol
 operator|.
 name|proto
 operator|.
-name|ContainerProtos
+name|OzoneProtos
 operator|.
 name|KeyValue
 import|;

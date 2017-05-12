@@ -44,15 +44,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
 name|ozone
 operator|.
 name|protocol
 operator|.
 name|proto
 operator|.
-name|ContainerProtos
+name|OzoneProtos
 import|;
 end_import
 
@@ -205,13 +203,13 @@ literal|null
 expr_stmt|;
 block|}
 comment|/**    * Gets pipeline object from protobuf.    *    * @param pipeline - ProtoBuf definition for the pipeline.    * @return Pipeline Object    */
-DECL|method|getFromProtoBuf (ContainerProtos.Pipeline pipeline)
+DECL|method|getFromProtoBuf (OzoneProtos.Pipeline pipeline)
 specifier|public
 specifier|static
 name|Pipeline
 name|getFromProtoBuf
 parameter_list|(
-name|ContainerProtos
+name|OzoneProtos
 operator|.
 name|Pipeline
 name|pipeline
@@ -340,20 +338,20 @@ block|}
 comment|/**    * Return a Protobuf Pipeline message from pipeline.    *    * @return Protobuf message    */
 DECL|method|getProtobufMessage ()
 specifier|public
-name|ContainerProtos
+name|OzoneProtos
 operator|.
 name|Pipeline
 name|getProtobufMessage
 parameter_list|()
 block|{
-name|ContainerProtos
+name|OzoneProtos
 operator|.
 name|Pipeline
 operator|.
 name|Builder
 name|builder
 init|=
-name|ContainerProtos
+name|OzoneProtos
 operator|.
 name|Pipeline
 operator|.
