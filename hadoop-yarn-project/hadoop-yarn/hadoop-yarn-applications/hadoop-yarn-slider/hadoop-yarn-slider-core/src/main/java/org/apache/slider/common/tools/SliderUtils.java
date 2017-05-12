@@ -7661,6 +7661,15 @@ operator|new
 name|ClasspathConstructor
 argument_list|()
 decl_stmt|;
+name|classpath
+operator|.
+name|append
+argument_list|(
+name|SliderKeys
+operator|.
+name|LOG4J_SERVER_PROP_FILENAME
+argument_list|)
+expr_stmt|;
 comment|// add the runtime classpath needed for tests to work
 if|if
 condition|(
