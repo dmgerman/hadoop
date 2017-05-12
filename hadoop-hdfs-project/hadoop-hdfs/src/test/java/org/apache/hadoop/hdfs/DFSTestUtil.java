@@ -9696,6 +9696,32 @@ name|abort
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|setPipeline (DFSOutputStream out, LocatedBlock lastBlock)
+specifier|public
+specifier|static
+name|void
+name|setPipeline
+parameter_list|(
+name|DFSOutputStream
+name|out
+parameter_list|,
+name|LocatedBlock
+name|lastBlock
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|out
+operator|.
+name|getStreamer
+argument_list|()
+operator|.
+name|setPipelineInConstruction
+argument_list|(
+name|lastBlock
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|asArray (ByteBuffer buf)
 specifier|public
 specifier|static
