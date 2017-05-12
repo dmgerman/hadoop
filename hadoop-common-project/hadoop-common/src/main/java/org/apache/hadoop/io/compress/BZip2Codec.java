@@ -1025,36 +1025,22 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|needsReset
-condition|)
+try|try
 block|{
-comment|// In the case that nothing is written to this stream, we still need to
-comment|// write out the header before closing, otherwise the stream won't be
-comment|// recognized by BZip2CompressionInputStream.
-name|internalReset
+name|super
+operator|.
+name|close
 argument_list|()
 expr_stmt|;
 block|}
-name|this
-operator|.
-name|output
-operator|.
-name|flush
-argument_list|()
-expr_stmt|;
-name|this
-operator|.
+finally|finally
+block|{
 name|output
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
-name|needsReset
-operator|=
-literal|true
-expr_stmt|;
+block|}
 block|}
 block|}
 comment|// end of class BZip2CompressionOutputStream
@@ -1468,6 +1454,8 @@ operator|!
 name|needsReset
 condition|)
 block|{
+try|try
+block|{
 name|input
 operator|.
 name|close
@@ -1477,6 +1465,15 @@ name|needsReset
 operator|=
 literal|true
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|super
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**     * This method updates compressed stream position exactly when the     * client of this code has read off at least one byte passed any BZip2     * end of block marker.     *     * This mechanism is very helpful to deal with data level record     * boundaries. Please see constructor and next methods of     * org.apache.hadoop.mapred.LineRecordReader as an example usage of this     * feature.  We elaborate it with an example in the following:     *     * Assume two different scenarios of the BZip2 compressed stream, where     * [m] represent end of block, \n is line delimiter and . represent compressed     * data.     *     * ............[m]......\n.......     *     * ..........\n[m]......\n.......     *     * Assume that end is right after [m].  In the first case the reading     * will stop at \n and there is no need to read one more line.  (To see the     * reason of reading one more line in the next() method is explained in LineRecordReader.)     * While in the second example LineRecordReader needs to read one more line     * (till the second \n).  Now since BZip2Codecs only update position     * at least one byte passed a maker, so it is straight forward to differentiate     * between the two cases mentioned.     *     */

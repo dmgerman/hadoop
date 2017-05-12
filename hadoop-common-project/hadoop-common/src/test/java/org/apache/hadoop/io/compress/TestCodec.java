@@ -1520,6 +1520,28 @@ operator|new
 name|DataOutputBuffer
 argument_list|()
 decl_stmt|;
+name|int
+name|leasedCompressorsBefore
+init|=
+name|codec
+operator|.
+name|getCompressorType
+argument_list|()
+operator|==
+literal|null
+condition|?
+operator|-
+literal|1
+else|:
+name|CodecPool
+operator|.
+name|getLeasedCompressorsCount
+argument_list|(
+name|codec
+argument_list|)
+decl_stmt|;
+try|try
+init|(
 name|CompressionOutputStream
 name|deflateFilter
 init|=
@@ -1529,10 +1551,10 @@ name|createOutputStream
 argument_list|(
 name|compressedDataBuffer
 argument_list|)
-decl_stmt|;
+init|;
 name|DataOutputStream
 name|deflateOut
-init|=
+operator|=
 operator|new
 name|DataOutputStream
 argument_list|(
@@ -1542,7 +1564,8 @@ argument_list|(
 name|deflateFilter
 argument_list|)
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|deflateOut
 operator|.
 name|write
@@ -1570,6 +1593,30 @@ operator|.
 name|finish
 argument_list|()
 expr_stmt|;
+block|}
+if|if
+condition|(
+name|leasedCompressorsBefore
+operator|>
+operator|-
+literal|1
+condition|)
+block|{
+name|assertEquals
+argument_list|(
+literal|"leased compressor not returned to the codec pool"
+argument_list|,
+name|leasedCompressorsBefore
+argument_list|,
+name|CodecPool
+operator|.
+name|getLeasedCompressorsCount
+argument_list|(
+name|codec
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 name|LOG
 operator|.
 name|info
@@ -1602,6 +1649,25 @@ name|getLength
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|DataInputBuffer
+name|originalData
+init|=
+operator|new
+name|DataInputBuffer
+argument_list|()
+decl_stmt|;
+name|int
+name|leasedDecompressorsBefore
+init|=
+name|CodecPool
+operator|.
+name|getLeasedDecompressorsCount
+argument_list|(
+name|codec
+argument_list|)
+decl_stmt|;
+try|try
+init|(
 name|CompressionInputStream
 name|inflateFilter
 init|=
@@ -1611,10 +1677,10 @@ name|createInputStream
 argument_list|(
 name|deCompressedDataBuffer
 argument_list|)
-decl_stmt|;
+init|;
 name|DataInputStream
 name|inflateIn
-init|=
+operator|=
 operator|new
 name|DataInputStream
 argument_list|(
@@ -1624,15 +1690,9 @@ argument_list|(
 name|inflateFilter
 argument_list|)
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 comment|// Check
-name|DataInputBuffer
-name|originalData
-init|=
-operator|new
-name|DataInputBuffer
-argument_list|()
-decl_stmt|;
 name|originalData
 operator|.
 name|reset
@@ -1753,7 +1813,8 @@ name|v2
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// original and compressed-then-decompressed-output have the same hashCode
+comment|// original and compressed-then-decompressed-output have the same
+comment|// hashCode
 name|Map
 argument_list|<
 name|RandomDatum
@@ -1839,6 +1900,21 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+name|assertEquals
+argument_list|(
+literal|"leased decompressor not returned to the codec pool"
+argument_list|,
+name|leasedDecompressorsBefore
+argument_list|,
+name|CodecPool
+operator|.
+name|getLeasedDecompressorsCount
+argument_list|(
+name|codec
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// De-compress data byte-at-a-time
 name|originalData
 operator|.
@@ -1874,16 +1950,19 @@ name|getLength
 argument_list|()
 argument_list|)
 expr_stmt|;
+try|try
+init|(
+name|CompressionInputStream
 name|inflateFilter
-operator|=
+init|=
 name|codec
 operator|.
 name|createInputStream
 argument_list|(
 name|deCompressedDataBuffer
 argument_list|)
-expr_stmt|;
-comment|// Check
+init|;
+name|DataInputStream
 name|originalIn
 operator|=
 operator|new
@@ -1895,7 +1974,9 @@ argument_list|(
 name|originalData
 argument_list|)
 argument_list|)
-expr_stmt|;
+init|)
+block|{
+comment|// Check
 name|int
 name|expected
 decl_stmt|;
@@ -1929,6 +2010,7 @@ operator|-
 literal|1
 condition|)
 do|;
+block|}
 name|LOG
 operator|.
 name|info

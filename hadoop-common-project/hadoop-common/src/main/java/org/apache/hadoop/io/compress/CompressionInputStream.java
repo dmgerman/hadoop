@@ -191,11 +191,16 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
 name|in
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
+finally|finally
+block|{
 if|if
 condition|(
 name|trackedDecompressor
@@ -214,6 +219,7 @@ name|trackedDecompressor
 operator|=
 literal|null
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * Read bytes from the stream.    * Made abstract to prevent leakage to underlying stream.    */
