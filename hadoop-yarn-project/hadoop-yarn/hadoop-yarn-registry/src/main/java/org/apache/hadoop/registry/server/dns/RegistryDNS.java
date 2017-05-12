@@ -6476,8 +6476,9 @@ name|processor
 decl_stmt|;
 try|try
 block|{
-if|if
-condition|(
+name|String
+name|yarnPersistanceValue
+init|=
 name|record
 operator|.
 name|get
@@ -6486,6 +6487,17 @@ name|YarnRegistryAttributes
 operator|.
 name|YARN_PERSISTENCE
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|yarnPersistanceValue
+operator|!=
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+name|yarnPersistanceValue
 operator|.
 name|equals
 argument_list|(
@@ -6494,8 +6506,8 @@ argument_list|)
 condition|)
 block|{
 comment|// container registration.  the logic to identify and create the
-comment|// container entry needs to be enhanced/more accurate and associate to
-comment|// correct host
+comment|// container entry needs to be enhanced/more accurate and associate
+comment|// to correct host
 name|processor
 operator|=
 operator|new
@@ -6513,6 +6525,15 @@ expr_stmt|;
 block|}
 else|else
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Creating ApplicationServiceRecordProcessor for {}"
+argument_list|,
+name|yarnPersistanceValue
+argument_list|)
+expr_stmt|;
 name|processor
 operator|=
 operator|new
@@ -6535,6 +6556,26 @@ argument_list|(
 name|command
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Yarn Resgistry record {} does not contain {} attribute "
+argument_list|,
+name|record
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|YarnRegistryAttributes
+operator|.
+name|YARN_PERSISTENCE
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
