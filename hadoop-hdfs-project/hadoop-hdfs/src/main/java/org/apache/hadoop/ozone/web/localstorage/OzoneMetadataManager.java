@@ -2224,6 +2224,8 @@ name|userName
 init|=
 literal|null
 decl_stmt|;
+try|try
+init|(
 name|DBIterator
 name|iterator
 init|=
@@ -2236,7 +2238,8 @@ argument_list|()
 operator|.
 name|iterator
 argument_list|()
-decl_stmt|;
+init|)
+block|{
 if|if
 condition|(
 name|prevKey
@@ -2483,6 +2486,7 @@ block|}
 return|return
 name|returnSet
 return|;
+block|}
 block|}
 comment|/**    * Returns the first user name from the UserDB.    *    * @return - UserName.    * @throws IOException    */
 DECL|method|getFirstUser (DBIterator iterator)

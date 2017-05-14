@@ -818,22 +818,6 @@ name|DFS_CBLOCK_SERVICE_LEVELDB_PATH_KEY
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|OzoneConfigKeys
-operator|.
-name|OZONE_LOCALSTORAGE_ROOT_DEFAULT
-import|;
-end_import
-
 begin_comment
 comment|/**  * The main entry point of CBlock operations, ALL the CBlock operations  * will go through this class. But NOTE that:  *  * volume operations (create/  * delete/info) are:  *    client -> CBlockManager -> StorageManager -> CBlock client  *  * IO operations (put/get block) are;  *    client -> CBlock client -> container  *  */
 end_comment
@@ -1633,7 +1617,11 @@ specifier|public
 name|void
 name|readFromPersistentStore
 parameter_list|()
+throws|throws
+name|IOException
 block|{
+try|try
+init|(
 name|DBIterator
 name|iter
 init|=
@@ -1641,7 +1629,8 @@ name|levelDBStore
 operator|.
 name|getIterator
 argument_list|()
-decl_stmt|;
+init|)
+block|{
 name|iter
 operator|.
 name|seekToFirst
@@ -1728,6 +1717,7 @@ operator|+
 name|e
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}
