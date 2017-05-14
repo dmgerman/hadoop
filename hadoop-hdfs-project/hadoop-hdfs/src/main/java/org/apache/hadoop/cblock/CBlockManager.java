@@ -2157,6 +2157,11 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
+name|cbm
+operator|.
+name|join
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 end_class
