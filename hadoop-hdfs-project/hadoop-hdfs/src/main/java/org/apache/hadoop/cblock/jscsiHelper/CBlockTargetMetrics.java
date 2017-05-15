@@ -149,7 +149,6 @@ specifier|private
 name|MutableCounterLong
 name|numReadCacheMiss
 decl_stmt|;
-comment|// Cblock internal Metrics
 DECL|field|numDirectBlockWrites
 annotation|@
 name|Metric
@@ -157,26 +156,13 @@ specifier|private
 name|MutableCounterLong
 name|numDirectBlockWrites
 decl_stmt|;
-DECL|field|numBlockBufferFlush
-annotation|@
-name|Metric
-specifier|private
-name|MutableCounterLong
-name|numBlockBufferFlush
-decl_stmt|;
+comment|// Cblock internal Metrics
 DECL|field|numDirtyLogBlockRead
 annotation|@
 name|Metric
 specifier|private
 name|MutableCounterLong
 name|numDirtyLogBlockRead
-decl_stmt|;
-DECL|field|numDirtyLogBlockUpdated
-annotation|@
-name|Metric
-specifier|private
-name|MutableCounterLong
-name|numDirtyLogBlockUpdated
 decl_stmt|;
 DECL|field|numBytesDirtyLogRead
 annotation|@
@@ -191,6 +177,27 @@ name|Metric
 specifier|private
 name|MutableCounterLong
 name|numBytesDirtyLogWritten
+decl_stmt|;
+DECL|field|numBlockBufferFlushCompleted
+annotation|@
+name|Metric
+specifier|private
+name|MutableCounterLong
+name|numBlockBufferFlushCompleted
+decl_stmt|;
+DECL|field|numBlockBufferFlushTriggered
+annotation|@
+name|Metric
+specifier|private
+name|MutableCounterLong
+name|numBlockBufferFlushTriggered
+decl_stmt|;
+DECL|field|numBlockBufferUpdates
+annotation|@
+name|Metric
+specifier|private
+name|MutableCounterLong
+name|numBlockBufferUpdates
 decl_stmt|;
 comment|// Failure Metrics
 DECL|field|numReadLostBlocks
@@ -228,12 +235,33 @@ specifier|private
 name|MutableCounterLong
 name|numFailedDirectBlockWrites
 decl_stmt|;
-DECL|field|numFailedDirtyBlockFlushes
+DECL|field|numIllegalDirtyLogFiles
 annotation|@
 name|Metric
 specifier|private
 name|MutableCounterLong
-name|numFailedDirtyBlockFlushes
+name|numIllegalDirtyLogFiles
+decl_stmt|;
+DECL|field|numFailedDirtyLogFileDeletes
+annotation|@
+name|Metric
+specifier|private
+name|MutableCounterLong
+name|numFailedDirtyLogFileDeletes
+decl_stmt|;
+DECL|field|numFailedBlockBufferFlushes
+annotation|@
+name|Metric
+specifier|private
+name|MutableCounterLong
+name|numFailedBlockBufferFlushes
+decl_stmt|;
+DECL|field|numInterruptedBufferWaits
+annotation|@
+name|Metric
+specifier|private
+name|MutableCounterLong
+name|numInterruptedBufferWaits
 decl_stmt|;
 comment|// Latency based Metrics
 DECL|field|dbReadLatency
@@ -433,13 +461,25 @@ name|incr
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|incNumBlockBufferFlush ()
+DECL|method|incNumBlockBufferFlushCompleted ()
 specifier|public
 name|void
-name|incNumBlockBufferFlush
+name|incNumBlockBufferFlushCompleted
 parameter_list|()
 block|{
-name|numBlockBufferFlush
+name|numBlockBufferFlushCompleted
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumBlockBufferFlushTriggered ()
+specifier|public
+name|void
+name|incNumBlockBufferFlushTriggered
+parameter_list|()
+block|{
+name|numBlockBufferFlushTriggered
 operator|.
 name|incr
 argument_list|()
@@ -474,13 +514,13 @@ name|bytes
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|incNumDirtyLogBlockUpdated ()
+DECL|method|incNumBlockBufferUpdates ()
 specifier|public
 name|void
-name|incNumDirtyLogBlockUpdated
+name|incNumBlockBufferUpdates
 parameter_list|()
 block|{
-name|numDirtyLogBlockUpdated
+name|numBlockBufferUpdates
 operator|.
 name|incr
 argument_list|()
@@ -503,13 +543,49 @@ name|bytes
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|incNumFailedDirtyBlockFlushes ()
+DECL|method|incNumFailedBlockBufferFlushes ()
 specifier|public
 name|void
-name|incNumFailedDirtyBlockFlushes
+name|incNumFailedBlockBufferFlushes
 parameter_list|()
 block|{
-name|numFailedDirtyBlockFlushes
+name|numFailedBlockBufferFlushes
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumInterruptedBufferWaits ()
+specifier|public
+name|void
+name|incNumInterruptedBufferWaits
+parameter_list|()
+block|{
+name|numInterruptedBufferWaits
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumIllegalDirtyLogFiles ()
+specifier|public
+name|void
+name|incNumIllegalDirtyLogFiles
+parameter_list|()
+block|{
+name|numIllegalDirtyLogFiles
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumFailedDirtyLogFileDeletes ()
+specifier|public
+name|void
+name|incNumFailedDirtyLogFileDeletes
+parameter_list|()
+block|{
+name|numFailedDirtyLogFileDeletes
 operator|.
 name|incr
 argument_list|()
@@ -769,14 +845,29 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getNumBlockBufferFlush ()
+DECL|method|getNumBlockBufferFlushCompleted ()
 specifier|public
 name|long
-name|getNumBlockBufferFlush
+name|getNumBlockBufferFlushCompleted
 parameter_list|()
 block|{
 return|return
-name|numBlockBufferFlush
+name|numBlockBufferFlushCompleted
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumBlockBufferFlushTriggered ()
+specifier|public
+name|long
+name|getNumBlockBufferFlushTriggered
+parameter_list|()
+block|{
+return|return
+name|numBlockBufferFlushTriggered
 operator|.
 name|value
 argument_list|()
@@ -814,14 +905,14 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getNumDirtyLogBlockUpdated ()
+DECL|method|getNumBlockBufferUpdates ()
 specifier|public
 name|long
-name|getNumDirtyLogBlockUpdated
+name|getNumBlockBufferUpdates
 parameter_list|()
 block|{
 return|return
-name|numDirtyLogBlockUpdated
+name|numBlockBufferUpdates
 operator|.
 name|value
 argument_list|()
@@ -844,14 +935,59 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getNumFailedDirtyBlockFlushes ()
+DECL|method|getNumFailedBlockBufferFlushes ()
 specifier|public
 name|long
-name|getNumFailedDirtyBlockFlushes
+name|getNumFailedBlockBufferFlushes
 parameter_list|()
 block|{
 return|return
-name|numFailedDirtyBlockFlushes
+name|numFailedBlockBufferFlushes
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumInterruptedBufferWaits ()
+specifier|public
+name|long
+name|getNumInterruptedBufferWaits
+parameter_list|()
+block|{
+return|return
+name|numInterruptedBufferWaits
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumIllegalDirtyLogFiles ()
+specifier|public
+name|long
+name|getNumIllegalDirtyLogFiles
+parameter_list|()
+block|{
+return|return
+name|numIllegalDirtyLogFiles
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumFailedDirtyLogFileDeletes ()
+specifier|public
+name|long
+name|getNumFailedDirtyLogFileDeletes
+parameter_list|()
+block|{
+return|return
+name|numFailedDirtyLogFileDeletes
 operator|.
 name|value
 argument_list|()

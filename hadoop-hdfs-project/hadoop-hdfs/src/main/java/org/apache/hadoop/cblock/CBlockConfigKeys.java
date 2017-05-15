@@ -363,6 +363,24 @@ name|DFS_CBLOCK_CACHE_BLOCK_BUFFER_SIZE_DEFAULT
 init|=
 literal|512
 decl_stmt|;
+DECL|field|DFS_CBLOCK_BLOCK_BUFFER_FLUSH_INTERVAL_SECONDS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_CBLOCK_BLOCK_BUFFER_FLUSH_INTERVAL_SECONDS
+init|=
+literal|"dfs.cblock.block.buffer.flush.interval.seconds"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|int
+DECL|field|DFS_CBLOCK_BLOCK_BUFFER_FLUSH_INTERVAL_SECONDS_DEFAULT
+name|DFS_CBLOCK_BLOCK_BUFFER_FLUSH_INTERVAL_SECONDS_DEFAULT
+init|=
+literal|60
+decl_stmt|;
 comment|// jscsi server settings
 DECL|field|DFS_CBLOCK_JSCSI_SERVER_ADDRESS_KEY
 specifier|public

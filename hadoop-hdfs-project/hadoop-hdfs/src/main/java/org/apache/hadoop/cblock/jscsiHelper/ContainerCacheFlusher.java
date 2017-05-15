@@ -2031,6 +2031,12 @@ condition|)
 block|{
 comment|// In theory this should never happen. But if it happened,
 comment|// we need to know it...
+name|getTargetMetrics
+argument_list|()
+operator|.
+name|incNumIllegalDirtyLogFiles
+argument_list|()
+expr_stmt|;
 name|LOG
 operator|.
 name|error
@@ -2696,6 +2702,14 @@ name|Exception
 name|e
 parameter_list|)
 block|{
+name|flusher
+operator|.
+name|getTargetMetrics
+argument_list|()
+operator|.
+name|incNumFailedDirtyLogFileDeletes
+argument_list|()
+expr_stmt|;
 name|LOG
 operator|.
 name|error
