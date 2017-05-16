@@ -1511,6 +1511,13 @@ block|}
 block|}
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|journalDirs
+operator|!=
+literal|null
+condition|)
+block|{
 for|for
 control|(
 name|File
@@ -1573,6 +1580,7 @@ argument_list|,
 name|jMap
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 return|return
