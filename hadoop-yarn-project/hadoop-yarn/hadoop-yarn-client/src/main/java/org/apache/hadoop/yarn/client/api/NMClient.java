@@ -314,6 +314,23 @@ return|return
 name|client
 return|;
 block|}
+DECL|enum|UpgradeOp
+specifier|protected
+enum|enum
+name|UpgradeOp
+block|{
+DECL|enumConstant|REINIT
+DECL|enumConstant|RESTART
+DECL|enumConstant|COMMIT
+DECL|enumConstant|ROLLBACK
+name|REINIT
+block|,
+name|RESTART
+block|,
+name|COMMIT
+block|,
+name|ROLLBACK
+block|}
 DECL|field|nmTokenCache
 specifier|private
 name|NMTokenCache
@@ -340,7 +357,7 @@ name|name
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    *<p>Start an allocated container.</p>    *    *<p>The<code>ApplicationMaster</code> or other applications that use the    * client must provide the details of the allocated container, including the    * Id, the assigned node's Id and the token via {@link Container}. In    * addition, the AM needs to provide the {@link ContainerLaunchContext} as    * well.</p>    *    * @param container the allocated container    * @param containerLaunchContext the context information needed by the    *<code>NodeManager</code> to launch the    *                               container    * @return a map between the auxiliary service names and their outputs    * @throws YarnException    * @throws IOException    */
+comment|/**    *<p>Start an allocated container.</p>    *    *<p>The<code>ApplicationMaster</code> or other applications that use the    * client must provide the details of the allocated container, including the    * Id, the assigned node's Id and the token via {@link Container}. In    * addition, the AM needs to provide the {@link ContainerLaunchContext} as    * well.</p>    *    * @param container the allocated container    * @param containerLaunchContext the context information needed by the    *<code>NodeManager</code> to launch the    *                               container    * @return a map between the auxiliary service names and their outputs    * @throws YarnException YarnException.    * @throws IOException IOException.    */
 DECL|method|startContainer (Container container, ContainerLaunchContext containerLaunchContext)
 specifier|public
 specifier|abstract
@@ -363,7 +380,7 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>Increase the resource of a container.</p>    *    *<p>The<code>ApplicationMaster</code> or other applications that use the    * client must provide the details of the container, including the Id and    * the target resource encapsulated in the updated container token via    * {@link Container}.    *</p>    *    * @param container the container with updated token    * @throws YarnException    * @throws IOException    */
+comment|/**    *<p>Increase the resource of a container.</p>    *    *<p>The<code>ApplicationMaster</code> or other applications that use the    * client must provide the details of the container, including the Id and    * the target resource encapsulated in the updated container token via    * {@link Container}.    *</p>    *    * @param container the container with updated token.    *    * @throws YarnException YarnException.    * @throws IOException IOException.    */
 DECL|method|increaseContainerResource (Container container)
 specifier|public
 specifier|abstract
@@ -378,7 +395,7 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>Stop an started container.</p>    *    * @param containerId the Id of the started container    * @param nodeId the Id of the<code>NodeManager</code>    *     * @throws YarnException    * @throws IOException    */
+comment|/**    *<p>Stop an started container.</p>    *    * @param containerId the Id of the started container    * @param nodeId the Id of the<code>NodeManager</code>    *    * @throws YarnException YarnException.    * @throws IOException IOException.    */
 DECL|method|stopContainer (ContainerId containerId, NodeId nodeId)
 specifier|public
 specifier|abstract
@@ -396,7 +413,7 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>Query the status of a container.</p>    *    * @param containerId the Id of the started container    * @param nodeId the Id of the<code>NodeManager</code>    *     * @return the status of a container    * @throws YarnException    * @throws IOException    */
+comment|/**    *<p>Query the status of a container.</p>    *    * @param containerId the Id of the started container    * @param nodeId the Id of the<code>NodeManager</code>    *     * @return the status of a container.    *    * @throws YarnException YarnException.    * @throws IOException IOException.    */
 DECL|method|getContainerStatus (ContainerId containerId, NodeId nodeId)
 specifier|public
 specifier|abstract
@@ -408,6 +425,72 @@ name|containerId
 parameter_list|,
 name|NodeId
 name|nodeId
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+function_decl|;
+comment|/**    *<p>Re-Initialize the Container.</p>    *    * @param containerId the Id of the container to Re-Initialize.    * @param containerLaunchContex the updated ContainerLaunchContext.    * @param autoCommit commit re-initialization automatically ?    *    * @throws YarnException YarnException.    * @throws IOException IOException.    */
+DECL|method|reInitializeContainer (ContainerId containerId, ContainerLaunchContext containerLaunchContex, boolean autoCommit)
+specifier|public
+specifier|abstract
+name|void
+name|reInitializeContainer
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|ContainerLaunchContext
+name|containerLaunchContex
+parameter_list|,
+name|boolean
+name|autoCommit
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+function_decl|;
+comment|/**    *<p>Restart the specified container.</p>    *    * @param containerId the Id of the container to restart.    *    * @throws YarnException YarnException.    * @throws IOException IOException.    */
+DECL|method|restartContainer (ContainerId containerId)
+specifier|public
+specifier|abstract
+name|void
+name|restartContainer
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+function_decl|;
+comment|/**    *<p>Rollback last reInitialization of the specified container.</p>    *    * @param containerId the Id of the container to restart.    *    * @throws YarnException YarnException.    * @throws IOException IOException.    */
+DECL|method|rollbackLastReInitialization (ContainerId containerId)
+specifier|public
+specifier|abstract
+name|void
+name|rollbackLastReInitialization
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+function_decl|;
+comment|/**    *<p>Commit last reInitialization of the specified container.</p>    *    * @param containerId the Id of the container to commit reInitialize.    *    * @throws YarnException YarnException.    * @throws IOException IOException.    */
+DECL|method|commitLastReInitialization (ContainerId containerId)
+specifier|public
+specifier|abstract
+name|void
+name|commitLastReInitialization
+parameter_list|(
+name|ContainerId
+name|containerId
 parameter_list|)
 throws|throws
 name|YarnException
@@ -451,6 +534,20 @@ parameter_list|()
 block|{
 return|return
 name|nmTokenCache
+return|;
+block|}
+comment|/**    * Get the NodeId of the node on which container is running. It returns    * null if the container if container is not found or if it is not running.    *    * @param containerId Container Id of the container.    * @return NodeId of the container on which it is running.    */
+DECL|method|getNodeIdOfStartedContainer (ContainerId containerId)
+specifier|public
+name|NodeId
+name|getNodeIdOfStartedContainer
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|)
+block|{
+return|return
+literal|null
 return|;
 block|}
 block|}

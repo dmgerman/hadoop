@@ -68,6 +68,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|text
+operator|.
+name|SimpleDateFormat
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|Arrays
@@ -81,6 +91,16 @@ operator|.
 name|util
 operator|.
 name|Collection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Date
 import|;
 end_import
 
@@ -1447,6 +1467,18 @@ name|cntxt
 return|;
 block|}
 block|}
+DECL|field|dateFormat
+specifier|private
+specifier|final
+name|SimpleDateFormat
+name|dateFormat
+init|=
+operator|new
+name|SimpleDateFormat
+argument_list|(
+literal|"yyyy-MM-dd HH:mm:ss.SSS"
+argument_list|)
+decl_stmt|;
 DECL|field|readLock
 specifier|private
 specifier|final
@@ -4543,6 +4575,19 @@ name|diagnostics
 operator|.
 name|append
 argument_list|(
+literal|"["
+operator|+
+name|dateFormat
+operator|.
+name|format
+argument_list|(
+operator|new
+name|Date
+argument_list|()
+argument_list|)
+operator|+
+literal|"]"
+operator|+
 name|s
 argument_list|)
 expr_stmt|;
@@ -5552,6 +5597,13 @@ comment|// This is a Restart...
 comment|// We also need to make sure that if Rollback is possible, the
 comment|// rollback state should be retained in the
 comment|// oldLaunchContext and oldResourceSet
+name|container
+operator|.
+name|addDiagnostics
+argument_list|(
+literal|"Container will be Restarted.\n"
+argument_list|)
+expr_stmt|;
 return|return
 operator|new
 name|ReInitializationContext
@@ -5594,6 +5646,13 @@ return|;
 block|}
 else|else
 block|{
+name|container
+operator|.
+name|addDiagnostics
+argument_list|(
+literal|"Container will be Re-initialized.\n"
+argument_list|)
+expr_stmt|;
 return|return
 operator|new
 name|ReInitializationContext
@@ -5662,6 +5721,13 @@ name|ContainerEvent
 name|event
 parameter_list|)
 block|{
+name|container
+operator|.
+name|addDiagnostics
+argument_list|(
+literal|"Container upgrade will be Rolled-back.\n"
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|warn

@@ -44,18 +44,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|ConcurrentMap
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -221,24 +209,6 @@ operator|.
 name|records
 operator|.
 name|Resource
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|Token
 import|;
 end_import
 
@@ -589,6 +559,56 @@ name|Container
 name|container
 parameter_list|)
 function_decl|;
+comment|/**    *<p>Re-Initialize the Container.</p>    *    * @param containerId the Id of the container to Re-Initialize.    * @param containerLaunchContex the updated ContainerLaunchContext.    * @param autoCommit commit re-initialization automatically ?    */
+DECL|method|reInitializeContainerAsync (ContainerId containerId, ContainerLaunchContext containerLaunchContex, boolean autoCommit)
+specifier|public
+specifier|abstract
+name|void
+name|reInitializeContainerAsync
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|ContainerLaunchContext
+name|containerLaunchContex
+parameter_list|,
+name|boolean
+name|autoCommit
+parameter_list|)
+function_decl|;
+comment|/**    *<p>Restart the specified container.</p>    *    * @param containerId the Id of the container to restart.    */
+DECL|method|restartContainerAsync (ContainerId containerId)
+specifier|public
+specifier|abstract
+name|void
+name|restartContainerAsync
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|)
+function_decl|;
+comment|/**    *<p>Rollback last reInitialization of the specified container.</p>    *    * @param containerId the Id of the container to restart.    */
+DECL|method|rollbackLastReInitializationAsync ( ContainerId containerId)
+specifier|public
+specifier|abstract
+name|void
+name|rollbackLastReInitializationAsync
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|)
+function_decl|;
+comment|/**    *<p>Commit last reInitialization of the specified container.</p>    *    * @param containerId the Id of the container to commit reInitialize.    */
+DECL|method|commitLastReInitializationAsync (ContainerId containerId)
+specifier|public
+specifier|abstract
+name|void
+name|commitLastReInitializationAsync
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|)
+function_decl|;
 DECL|method|stopContainerAsync ( ContainerId containerId, NodeId nodeId)
 specifier|public
 specifier|abstract
@@ -791,6 +811,98 @@ name|Throwable
 name|t
 parameter_list|)
 function_decl|;
+comment|/**      * Callback for container re-initialization request.      *      * @param containerId the Id of the container to be Re-Initialized.      */
+DECL|method|onContainerReInitialize (ContainerId containerId)
+specifier|public
+name|void
+name|onContainerReInitialize
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|)
+block|{}
+comment|/**      * Callback for container restart.      *      * @param containerId the Id of the container to restart.      */
+DECL|method|onContainerRestart (ContainerId containerId)
+specifier|public
+name|void
+name|onContainerRestart
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|)
+block|{}
+comment|/**      * Callback for rollback of last re-initialization.      *      * @param containerId the Id of the container to restart.      */
+DECL|method|onRollbackLastReInitialization (ContainerId containerId)
+specifier|public
+name|void
+name|onRollbackLastReInitialization
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|)
+block|{}
+comment|/**      * Callback for commit of last re-initialization.      *      * @param containerId the Id of the container to commit reInitialize.      */
+DECL|method|onCommitLastReInitialization (ContainerId containerId)
+specifier|public
+name|void
+name|onCommitLastReInitialization
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|)
+block|{}
+comment|/**      * Error Callback for container re-initialization request.      *      * @param containerId the Id of the container to be Re-Initialized.      * @param t a Throwable.      */
+DECL|method|onContainerReInitializeError (ContainerId containerId, Throwable t)
+specifier|public
+name|void
+name|onContainerReInitializeError
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|Throwable
+name|t
+parameter_list|)
+block|{}
+comment|/**      * Error Callback for container restart.      *      * @param containerId the Id of the container to restart.      * @param t a Throwable.      *      */
+DECL|method|onContainerRestartError (ContainerId containerId, Throwable t)
+specifier|public
+name|void
+name|onContainerRestartError
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|Throwable
+name|t
+parameter_list|)
+block|{}
+comment|/**      * Error Callback for rollback of last re-initialization.      *      * @param containerId the Id of the container to restart.      * @param t a Throwable.      */
+DECL|method|onRollbackLastReInitializationError (ContainerId containerId, Throwable t)
+specifier|public
+name|void
+name|onRollbackLastReInitializationError
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|Throwable
+name|t
+parameter_list|)
+block|{}
+comment|/**      * Error Callback for commit of last re-initialization.      *      * @param containerId the Id of the container to commit reInitialize.      * @param t a Throwable.      */
+DECL|method|onCommitLastReInitializationError (ContainerId containerId, Throwable t)
+specifier|public
+name|void
+name|onCommitLastReInitializationError
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|Throwable
+name|t
+parameter_list|)
+block|{}
 block|}
 comment|/**    * @deprecated Use {@link NMClientAsync.AbstractCallbackHandler} instead.    *    *<p>    * The callback interface needs to be implemented by {@link NMClientAsync}    * users. The APIs are called when responses from<code>NodeManager</code> are    * available.    *</p>    *    *<p>    * Once a callback happens, the users can chose to act on it in blocking or    * non-blocking manner. If the action on callback is done in a blocking    * manner, some of the threads performing requests on NodeManagers may get    * blocked depending on how many threads in the pool are busy.    *</p>    *    *<p>    * The implementation of the callback function should not throw the    * unexpected exception. Otherwise, {@link NMClientAsync} will just    * catch, log and then ignore it.    *</p>    */
 annotation|@
