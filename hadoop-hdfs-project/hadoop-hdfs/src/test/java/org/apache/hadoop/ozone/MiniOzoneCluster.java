@@ -146,6 +146,38 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
+name|ksm
+operator|.
+name|KSMConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|ksm
+operator|.
+name|KeySpaceManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|scm
 operator|.
 name|ScmConfigKeys
@@ -490,6 +522,12 @@ specifier|final
 name|StorageContainerManager
 name|scm
 decl_stmt|;
+DECL|field|ksm
+specifier|private
+specifier|final
+name|KeySpaceManager
+name|ksm
+decl_stmt|;
 DECL|field|tempPath
 specifier|private
 specifier|final
@@ -497,7 +535,7 @@ name|Path
 name|tempPath
 decl_stmt|;
 comment|/**    * Creates a new MiniOzoneCluster.    *    * @param builder cluster builder    * @param scm     StorageContainerManager, already running    * @throws IOException if there is an I/O error    */
-DECL|method|MiniOzoneCluster (Builder builder, StorageContainerManager scm)
+DECL|method|MiniOzoneCluster (Builder builder, StorageContainerManager scm, KeySpaceManager ksm)
 specifier|private
 name|MiniOzoneCluster
 parameter_list|(
@@ -506,6 +544,9 @@ name|builder
 parameter_list|,
 name|StorageContainerManager
 name|scm
+parameter_list|,
+name|KeySpaceManager
+name|ksm
 parameter_list|)
 throws|throws
 name|IOException
@@ -528,6 +569,12 @@ operator|.
 name|scm
 operator|=
 name|scm
+expr_stmt|;
+name|this
+operator|.
+name|ksm
+operator|=
+name|ksm
 expr_stmt|;
 name|tempPath
 operator|=
@@ -771,13 +818,36 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|scm
-operator|==
+name|ksm
+operator|!=
 literal|null
 condition|)
 block|{
-return|return;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Shutting down the keySpaceManager"
+argument_list|)
+expr_stmt|;
+name|ksm
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+name|ksm
+operator|.
+name|join
+argument_list|()
+expr_stmt|;
 block|}
+if|if
+condition|(
+name|scm
+operator|!=
+literal|null
+condition|)
+block|{
 name|LOG
 operator|.
 name|info
@@ -796,6 +866,7 @@ name|join
 argument_list|()
 expr_stmt|;
 block|}
+block|}
 DECL|method|getStorageContainerManager ()
 specifier|public
 name|StorageContainerManager
@@ -806,6 +877,18 @@ return|return
 name|this
 operator|.
 name|scm
+return|;
+block|}
+DECL|method|getKeySpaceManager ()
+specifier|public
+name|KeySpaceManager
+name|getKeySpaceManager
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|ksm
 return|;
 block|}
 comment|/**    * Creates an {@link OzoneClient} connected to this cluster's REST service.    * Callers take ownership of the client and must close it when done.    *    * @return OzoneClient connected to this cluster's REST service    * @throws OzoneException if Ozone encounters an error creating the client    */
@@ -1634,6 +1717,17 @@ argument_list|,
 literal|"127.0.0.1:0"
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|KSMConfigKeys
+operator|.
+name|OZONE_KSM_ADDRESS_KEY
+argument_list|,
+literal|"127.0.0.1:0"
+argument_list|)
+expr_stmt|;
 comment|// Use random ports for ozone containers in mini cluster,
 comment|// in order to launch multiple container servers per node.
 name|conf
@@ -1657,6 +1751,20 @@ name|conf
 argument_list|)
 decl_stmt|;
 name|scm
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+name|KeySpaceManager
+name|ksm
+init|=
+operator|new
+name|KeySpaceManager
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+name|ksm
 operator|.
 name|start
 argument_list|()
@@ -1702,6 +1810,8 @@ argument_list|(
 name|this
 argument_list|,
 name|scm
+argument_list|,
+name|ksm
 argument_list|)
 decl_stmt|;
 try|try

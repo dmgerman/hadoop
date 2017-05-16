@@ -30,7 +30,7 @@ name|ksm
 operator|.
 name|helpers
 operator|.
-name|VolumeArgs
+name|KsmVolumeArgs
 import|;
 end_import
 
@@ -65,11 +65,11 @@ interface|interface
 name|KeyspaceManagerProtocol
 block|{
 comment|/**    * Creates a volume.    * @param args - Arguments to create Volume.    * @throws IOException    */
-DECL|method|createVolume (VolumeArgs args)
+DECL|method|createVolume (KsmVolumeArgs args)
 name|void
 name|createVolume
 parameter_list|(
-name|VolumeArgs
+name|KsmVolumeArgs
 name|args
 parameter_list|)
 throws|throws
@@ -118,9 +118,9 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Gets the volume information.    * @param volume - Volume name.s    * @return VolumeArgs or exception is thrown.    * @throws IOException    */
-DECL|method|getVolumeinfo (String volume)
-name|VolumeArgs
-name|getVolumeinfo
+DECL|method|getVolumeInfo (String volume)
+name|KsmVolumeArgs
+name|getVolumeInfo
 parameter_list|(
 name|String
 name|volume
@@ -143,7 +143,7 @@ comment|/**    * Lists volume owned by a specific user.    * @param userName - u
 DECL|method|listVolumeByUser (String userName, String prefix, String prevKey, long maxKeys)
 name|List
 argument_list|<
-name|VolumeArgs
+name|KsmVolumeArgs
 argument_list|>
 name|listVolumeByUser
 parameter_list|(
@@ -166,7 +166,7 @@ comment|/**    * Lists volume all volumes in the cluster.    * @param prefix  - 
 DECL|method|listAllVolumes (String prefix, String prevKey, long maxKeys)
 name|List
 argument_list|<
-name|VolumeArgs
+name|KsmVolumeArgs
 argument_list|>
 name|listAllVolumes
 parameter_list|(

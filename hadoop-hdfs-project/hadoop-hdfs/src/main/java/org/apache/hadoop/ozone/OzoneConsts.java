@@ -376,6 +376,15 @@ name|OPEN_CONTAINERS_DB
 init|=
 literal|"openContainers.db"
 decl_stmt|;
+DECL|field|KSM_DB_NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KSM_DB_NAME
+init|=
+literal|"ksm.db"
+decl_stmt|;
 comment|/**    * Supports Bucket Versioning.    */
 DECL|enum|Versioning
 DECL|enumConstant|NOT_DEFINED
@@ -391,7 +400,7 @@ name|ENABLED
 block|,
 name|DISABLED
 block|}
-comment|/**    * Ozone handler types    */
+comment|/**    * Ozone handler types.    */
 DECL|field|OZONE_HANDLER_DISTRIBUTED
 specifier|public
 specifier|static

@@ -24,6 +24,20 @@ name|com
 operator|.
 name|google
 operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
 name|protobuf
 operator|.
 name|BlockingService
@@ -98,7 +112,7 @@ name|ksm
 operator|.
 name|helpers
 operator|.
-name|VolumeArgs
+name|KsmVolumeArgs
 import|;
 end_import
 
@@ -377,7 +391,6 @@ name|KeySpaceManager
 implements|implements
 name|KeyspaceManagerProtocol
 block|{
-comment|// TODO: Support JMX
 DECL|field|LOG
 specifier|private
 specifier|static
@@ -407,6 +420,18 @@ specifier|private
 specifier|final
 name|InetSocketAddress
 name|ksmRpcAddress
+decl_stmt|;
+DECL|field|volumeManager
+specifier|private
+specifier|final
+name|VolumeManager
+name|volumeManager
+decl_stmt|;
+DECL|field|metrics
+specifier|private
+specifier|final
+name|KSMMetrics
+name|metrics
 decl_stmt|;
 DECL|method|KeySpaceManager (OzoneConfiguration conf)
 specifier|public
@@ -499,7 +524,23 @@ argument_list|,
 name|ksmRpcServer
 argument_list|)
 expr_stmt|;
-comment|//TODO : Add call to register MXBean for JMX.
+name|volumeManager
+operator|=
+operator|new
+name|VolumeManagerImpl
+argument_list|(
+name|this
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+name|metrics
+operator|=
+name|KSMMetrics
+operator|.
+name|create
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Starts an RPC server, if configured.    *    * @param conf configuration    * @param addr configured address of RPC server    * @param protocol RPC protocol provided by RPC server    * @param instance RPC protocol implementation instance    * @param handlerCount RPC server handler count    *    * @return RPC server    * @throws IOException if there is an I/O error while creating RPC server    */
 DECL|method|startRpcServer (OzoneConfiguration conf, InetSocketAddress addr, Class<?> protocol, BlockingService instance, int handlerCount)
@@ -603,6 +644,29 @@ argument_list|)
 expr_stmt|;
 return|return
 name|rpcServer
+return|;
+block|}
+DECL|method|getMetrics ()
+specifier|public
+name|KSMMetrics
+name|getMetrics
+parameter_list|()
+block|{
+return|return
+name|metrics
+return|;
+block|}
+comment|/**    * Returns listening address of Key Space Manager RPC server.    *    * @return listen address of Key Space Manager RPC server    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getClientRpcAddress ()
+specifier|public
+name|InetSocketAddress
+name|getClientRpcAddress
+parameter_list|()
+block|{
+return|return
+name|ksmRpcAddress
 return|;
 block|}
 comment|/**    * Main entry point for starting KeySpaceManager.    *    * @param argv arguments    * @throws IOException if startup fails due to I/O error    */
@@ -812,11 +876,53 @@ name|ksmRpcAddress
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|volumeManager
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
 name|ksmRpcServer
 operator|.
 name|start
 argument_list|()
 expr_stmt|;
+block|}
+comment|/**    * Stop service.    */
+DECL|method|stop ()
+specifier|public
+name|void
+name|stop
+parameter_list|()
+block|{
+try|try
+block|{
+name|ksmRpcServer
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+name|volumeManager
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Key Space Manager stop failed."
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Wait until service has completed shutdown.    */
 DECL|method|join ()
@@ -852,6 +958,8 @@ operator|.
 name|info
 argument_list|(
 literal|"Interrupted during KeyspaceManager join."
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 block|}
@@ -859,17 +967,30 @@ block|}
 comment|/**    * Creates a volume.    *    * @param args - Arguments to create Volume.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|createVolume (VolumeArgs args)
+DECL|method|createVolume (KsmVolumeArgs args)
 specifier|public
 name|void
 name|createVolume
 parameter_list|(
-name|VolumeArgs
+name|KsmVolumeArgs
 name|args
 parameter_list|)
 throws|throws
 name|IOException
-block|{    }
+block|{
+name|metrics
+operator|.
+name|incNumVolumeCreates
+argument_list|()
+expr_stmt|;
+name|volumeManager
+operator|.
+name|createVolume
+argument_list|(
+name|args
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Changes the owner of a volume.    *    * @param volume - Name of the volume.    * @param owner - Name of the owner.    * @throws IOException    */
 annotation|@
 name|Override
@@ -924,10 +1045,10 @@ block|{    }
 comment|/**    * Gets the volume information.    *    * @param volume - Volume name.s    * @return VolumeArgs or exception is thrown.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|getVolumeinfo (String volume)
+DECL|method|getVolumeInfo (String volume)
 specifier|public
-name|VolumeArgs
-name|getVolumeinfo
+name|KsmVolumeArgs
+name|getVolumeInfo
 parameter_list|(
 name|String
 name|volume
@@ -960,7 +1081,7 @@ DECL|method|listVolumeByUser (String userName, String prefix, String prevKey, lo
 specifier|public
 name|List
 argument_list|<
-name|VolumeArgs
+name|KsmVolumeArgs
 argument_list|>
 name|listVolumeByUser
 parameter_list|(
@@ -990,7 +1111,7 @@ DECL|method|listAllVolumes (String prefix, String prevKey, long maxKeys)
 specifier|public
 name|List
 argument_list|<
-name|VolumeArgs
+name|KsmVolumeArgs
 argument_list|>
 name|listAllVolumes
 parameter_list|(
