@@ -224,6 +224,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|UnresolvedLinkException
 import|;
 end_import
@@ -315,22 +329,6 @@ operator|.
 name|protocol
 operator|.
 name|EncryptionZone
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|HdfsFileStatus
 import|;
 end_import
 
@@ -749,10 +747,10 @@ return|return
 name|metadata
 return|;
 block|}
-comment|/**    * Create an encryption zone on directory path using the specified key.    *    * @param fsd fsdirectory    * @param srcArg the path of a directory which will be the root of the    *               encryption zone. The directory must be empty    * @param pc permission checker to check fs permission    * @param cipher cipher    * @param keyName name of a key which must be present in the configured    *                KeyProvider    * @param logRetryCache whether to record RPC ids in editlog for retry cache    *                      rebuilding    * @return HdfsFileStatus    * @throws IOException    */
+comment|/**    * Create an encryption zone on directory path using the specified key.    *    * @param fsd fsdirectory    * @param srcArg the path of a directory which will be the root of the    *               encryption zone. The directory must be empty    * @param pc permission checker to check fs permission    * @param cipher cipher    * @param keyName name of a key which must be present in the configured    *                KeyProvider    * @param logRetryCache whether to record RPC ids in editlog for retry cache    *                      rebuilding    * @return FileStatus    * @throws IOException    */
 DECL|method|createEncryptionZone (final FSDirectory fsd, final String srcArg, final FSPermissionChecker pc, final String cipher, final String keyName, final boolean logRetryCache)
 specifier|static
-name|HdfsFileStatus
+name|FileStatus
 name|createEncryptionZone
 parameter_list|(
 specifier|final
@@ -911,7 +909,7 @@ name|Entry
 argument_list|<
 name|EncryptionZone
 argument_list|,
-name|HdfsFileStatus
+name|FileStatus
 argument_list|>
 name|getEZForPath
 parameter_list|(
@@ -1002,7 +1000,7 @@ name|readUnlock
 argument_list|()
 expr_stmt|;
 block|}
-name|HdfsFileStatus
+name|FileStatus
 name|auditStat
 init|=
 name|fsd

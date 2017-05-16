@@ -44,6 +44,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|permission
 operator|.
 name|AclEntry
@@ -170,22 +184,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|HdfsFileStatus
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|server
 operator|.
 name|namenode
@@ -233,7 +231,7 @@ name|FSDirAclOp
 block|{
 DECL|method|modifyAclEntries ( FSDirectory fsd, final String srcArg, List<AclEntry> aclSpec)
 specifier|static
-name|HdfsFileStatus
+name|FileStatus
 name|modifyAclEntries
 parameter_list|(
 name|FSDirectory
@@ -400,7 +398,7 @@ return|;
 block|}
 DECL|method|removeAclEntries ( FSDirectory fsd, final String srcArg, List<AclEntry> aclSpec)
 specifier|static
-name|HdfsFileStatus
+name|FileStatus
 name|removeAclEntries
 parameter_list|(
 name|FSDirectory
@@ -567,7 +565,7 @@ return|;
 block|}
 DECL|method|removeDefaultAcl (FSDirectory fsd, final String srcArg)
 specifier|static
-name|HdfsFileStatus
+name|FileStatus
 name|removeDefaultAcl
 parameter_list|(
 name|FSDirectory
@@ -726,7 +724,7 @@ return|;
 block|}
 DECL|method|removeAcl (FSDirectory fsd, final String srcArg)
 specifier|static
-name|HdfsFileStatus
+name|FileStatus
 name|removeAcl
 parameter_list|(
 name|FSDirectory
@@ -839,7 +837,7 @@ return|;
 block|}
 DECL|method|setAcl ( FSDirectory fsd, final String srcArg, List<AclEntry> aclSpec)
 specifier|static
-name|HdfsFileStatus
+name|FileStatus
 name|setAcl
 parameter_list|(
 name|FSDirectory

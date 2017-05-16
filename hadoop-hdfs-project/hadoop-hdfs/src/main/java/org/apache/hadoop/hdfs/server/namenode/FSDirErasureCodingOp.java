@@ -172,6 +172,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|XAttr
 import|;
 end_import
@@ -263,22 +277,6 @@ operator|.
 name|protocol
 operator|.
 name|ErasureCodingPolicy
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|HdfsFileStatus
 import|;
 end_import
 
@@ -497,10 +495,10 @@ return|return
 name|ecPolicy
 return|;
 block|}
-comment|/**    * Set an erasure coding policy on the given path.    *    * @param fsn The namespace    * @param srcArg The path of the target directory.    * @param ecPolicyName The erasure coding policy name to set on the target    *                    directory.    * @param logRetryCache whether to record RPC ids in editlog for retry    *          cache rebuilding    * @return {@link HdfsFileStatus}    * @throws IOException    * @throws HadoopIllegalArgumentException if the policy is not enabled    * @throws AccessControlException if the user does not have write access    */
+comment|/**    * Set an erasure coding policy on the given path.    *    * @param fsn The namespace    * @param srcArg The path of the target directory.    * @param ecPolicyName The erasure coding policy name to set on the target    *                    directory.    * @param logRetryCache whether to record RPC ids in editlog for retry    *          cache rebuilding    * @return {@link FileStatus}    * @throws IOException    * @throws HadoopIllegalArgumentException if the policy is not enabled    * @throws AccessControlException if the user does not have write access    */
 DECL|method|setErasureCodingPolicy (final FSNamesystem fsn, final String srcArg, final String ecPolicyName, final FSPermissionChecker pc, final boolean logRetryCache)
 specifier|static
-name|HdfsFileStatus
+name|FileStatus
 name|setErasureCodingPolicy
 parameter_list|(
 specifier|final
@@ -922,10 +920,10 @@ return|return
 name|xattrs
 return|;
 block|}
-comment|/**    * Unset erasure coding policy from the given directory.    *    * @param fsn The namespace    * @param srcArg The path of the target directory.    * @param logRetryCache whether to record RPC ids in editlog for retry    *          cache rebuilding    * @return {@link HdfsFileStatus}    * @throws IOException    * @throws AccessControlException if the user does not have write access    */
+comment|/**    * Unset erasure coding policy from the given directory.    *    * @param fsn The namespace    * @param srcArg The path of the target directory.    * @param logRetryCache whether to record RPC ids in editlog for retry    *          cache rebuilding    * @return {@link FileStatus}    * @throws IOException    * @throws AccessControlException if the user does not have write access    */
 DECL|method|unsetErasureCodingPolicy (final FSNamesystem fsn, final String srcArg, final FSPermissionChecker pc, final boolean logRetryCache)
 specifier|static
-name|HdfsFileStatus
+name|FileStatus
 name|unsetErasureCodingPolicy
 parameter_list|(
 specifier|final

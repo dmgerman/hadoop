@@ -58,6 +58,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|InvalidPathException
 import|;
 end_import
@@ -131,22 +145,6 @@ operator|.
 name|hdfs
 operator|.
 name|DistributedFileSystem
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|HdfsFileStatus
 import|;
 end_import
 
@@ -4230,7 +4228,7 @@ operator|!=
 literal|null
 operator|)
 decl_stmt|;
-name|HdfsFileStatus
+name|FileStatus
 name|auditStat
 init|=
 name|success
@@ -4270,7 +4268,7 @@ name|success
 decl_stmt|;
 DECL|field|auditStat
 specifier|final
-name|HdfsFileStatus
+name|FileStatus
 name|auditStat
 decl_stmt|;
 DECL|field|filesDeleted
@@ -4283,13 +4281,13 @@ specifier|final
 name|BlocksMapUpdateInfo
 name|collectedBlocks
 decl_stmt|;
-DECL|method|RenameResult (boolean success, HdfsFileStatus auditStat, boolean filesDeleted, BlocksMapUpdateInfo collectedBlocks)
+DECL|method|RenameResult (boolean success, FileStatus auditStat, boolean filesDeleted, BlocksMapUpdateInfo collectedBlocks)
 name|RenameResult
 parameter_list|(
 name|boolean
 name|success
 parameter_list|,
-name|HdfsFileStatus
+name|FileStatus
 name|auditStat
 parameter_list|,
 name|boolean

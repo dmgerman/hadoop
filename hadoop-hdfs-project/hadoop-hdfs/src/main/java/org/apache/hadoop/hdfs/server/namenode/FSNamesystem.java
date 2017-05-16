@@ -4547,7 +4547,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|logAuditEvent (boolean succeeded, String cmd, String src, String dst, HdfsFileStatus stat)
+DECL|method|logAuditEvent (boolean succeeded, String cmd, String src, String dst, FileStatus stat)
 specifier|private
 name|void
 name|logAuditEvent
@@ -4564,7 +4564,7 @@ parameter_list|,
 name|String
 name|dst
 parameter_list|,
-name|HdfsFileStatus
+name|FileStatus
 name|stat
 parameter_list|)
 throws|throws
@@ -4604,7 +4604,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|logAuditEvent (boolean succeeded, UserGroupInformation ugi, InetAddress addr, String cmd, String src, String dst, HdfsFileStatus stat)
+DECL|method|logAuditEvent (boolean succeeded, String cmd, String src, HdfsFileStatus stat)
 specifier|private
 name|void
 name|logAuditEvent
@@ -4612,25 +4612,31 @@ parameter_list|(
 name|boolean
 name|succeeded
 parameter_list|,
-name|UserGroupInformation
-name|ugi
-parameter_list|,
-name|InetAddress
-name|addr
-parameter_list|,
 name|String
 name|cmd
 parameter_list|,
 name|String
 name|src
 parameter_list|,
-name|String
-name|dst
-parameter_list|,
 name|HdfsFileStatus
 name|stat
 parameter_list|)
+throws|throws
+name|IOException
 block|{
+if|if
+condition|(
+operator|!
+name|isAuditEnabled
+argument_list|()
+operator|||
+operator|!
+name|isExternalInvocation
+argument_list|()
+condition|)
+block|{
+return|return;
+block|}
 name|FileStatus
 name|status
 init|=
@@ -4665,16 +4671,6 @@ decl_stmt|;
 name|Path
 name|path
 init|=
-name|dst
-operator|!=
-literal|null
-condition|?
-operator|new
-name|Path
-argument_list|(
-name|dst
-argument_list|)
-else|:
 operator|new
 name|Path
 argument_list|(
@@ -4737,6 +4733,47 @@ name|path
 argument_list|)
 expr_stmt|;
 block|}
+name|logAuditEvent
+argument_list|(
+name|succeeded
+argument_list|,
+name|cmd
+argument_list|,
+name|src
+argument_list|,
+literal|null
+argument_list|,
+name|status
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|logAuditEvent (boolean succeeded, UserGroupInformation ugi, InetAddress addr, String cmd, String src, String dst, FileStatus status)
+specifier|private
+name|void
+name|logAuditEvent
+parameter_list|(
+name|boolean
+name|succeeded
+parameter_list|,
+name|UserGroupInformation
+name|ugi
+parameter_list|,
+name|InetAddress
+name|addr
+parameter_list|,
+name|String
+name|cmd
+parameter_list|,
+name|String
+name|src
+parameter_list|,
+name|String
+name|dst
+parameter_list|,
+name|FileStatus
+name|status
+parameter_list|)
+block|{
 specifier|final
 name|String
 name|ugiStr
@@ -10116,7 +10153,7 @@ name|operationName
 init|=
 literal|"setPermission"
 decl_stmt|;
-name|HdfsFileStatus
+name|FileStatus
 name|auditStat
 decl_stmt|;
 name|checkOperation
@@ -10229,7 +10266,7 @@ name|operationName
 init|=
 literal|"setOwner"
 decl_stmt|;
-name|HdfsFileStatus
+name|FileStatus
 name|auditStat
 decl_stmt|;
 name|checkOperation
@@ -10833,7 +10870,7 @@ name|operationName
 init|=
 literal|"concat"
 decl_stmt|;
-name|HdfsFileStatus
+name|FileStatus
 name|stat
 init|=
 literal|null
@@ -10972,7 +11009,7 @@ name|operationName
 init|=
 literal|"setTimes"
 decl_stmt|;
-name|HdfsFileStatus
+name|FileStatus
 name|auditStat
 decl_stmt|;
 name|checkOperation
@@ -11332,7 +11369,7 @@ literal|"Symlinks not supported"
 argument_list|)
 throw|;
 block|}
-name|HdfsFileStatus
+name|FileStatus
 name|auditStat
 init|=
 literal|null
@@ -11568,7 +11605,7 @@ name|operationName
 init|=
 literal|"setStoragePolicy"
 decl_stmt|;
-name|HdfsFileStatus
+name|FileStatus
 name|auditStat
 decl_stmt|;
 name|checkOperation
@@ -11677,7 +11714,7 @@ name|operationName
 init|=
 literal|"unsetStoragePolicy"
 decl_stmt|;
-name|HdfsFileStatus
+name|FileStatus
 name|auditStat
 decl_stmt|;
 name|checkOperation
@@ -12151,8 +12188,6 @@ argument_list|,
 literal|"create"
 argument_list|,
 name|src
-argument_list|,
-literal|null
 argument_list|,
 name|status
 argument_list|)
@@ -15799,7 +15834,7 @@ name|operationName
 init|=
 literal|"mkdirs"
 decl_stmt|;
-name|HdfsFileStatus
+name|FileStatus
 name|auditStat
 init|=
 literal|null
@@ -31202,7 +31237,7 @@ name|operationName
 init|=
 literal|"modifyAclEntries"
 decl_stmt|;
-name|HdfsFileStatus
+name|FileStatus
 name|auditStat
 init|=
 literal|null
@@ -31324,7 +31359,7 @@ operator|.
 name|WRITE
 argument_list|)
 expr_stmt|;
-name|HdfsFileStatus
+name|FileStatus
 name|auditStat
 init|=
 literal|null
@@ -31426,7 +31461,7 @@ name|operationName
 init|=
 literal|"removeDefaultAcl"
 decl_stmt|;
-name|HdfsFileStatus
+name|FileStatus
 name|auditStat
 init|=
 literal|null
@@ -31533,7 +31568,7 @@ name|operationName
 init|=
 literal|"removeAcl"
 decl_stmt|;
-name|HdfsFileStatus
+name|FileStatus
 name|auditStat
 init|=
 literal|null
@@ -31646,7 +31681,7 @@ name|operationName
 init|=
 literal|"setAcl"
 decl_stmt|;
-name|HdfsFileStatus
+name|FileStatus
 name|auditStat
 init|=
 literal|null
@@ -31893,7 +31928,7 @@ name|WRITE
 argument_list|)
 expr_stmt|;
 specifier|final
-name|HdfsFileStatus
+name|FileStatus
 name|resultingStat
 decl_stmt|;
 name|writeLock
@@ -32011,7 +32046,7 @@ name|operationName
 init|=
 literal|"getEZForPath"
 decl_stmt|;
-name|HdfsFileStatus
+name|FileStatus
 name|resultingStat
 init|=
 literal|null
@@ -32054,7 +32089,7 @@ name|Entry
 argument_list|<
 name|EncryptionZone
 argument_list|,
-name|HdfsFileStatus
+name|FileStatus
 argument_list|>
 name|ezForPath
 init|=
@@ -32266,7 +32301,7 @@ operator|.
 name|WRITE
 argument_list|)
 expr_stmt|;
-name|HdfsFileStatus
+name|FileStatus
 name|resultingStat
 init|=
 literal|null
@@ -32520,7 +32555,7 @@ operator|.
 name|WRITE
 argument_list|)
 expr_stmt|;
-name|HdfsFileStatus
+name|FileStatus
 name|resultingStat
 init|=
 literal|null
@@ -32769,7 +32804,7 @@ name|operationName
 init|=
 literal|"setXAttr"
 decl_stmt|;
-name|HdfsFileStatus
+name|FileStatus
 name|auditStat
 init|=
 literal|null
@@ -33081,7 +33116,7 @@ name|operationName
 init|=
 literal|"removeXAttr"
 decl_stmt|;
-name|HdfsFileStatus
+name|FileStatus
 name|auditStat
 init|=
 literal|null

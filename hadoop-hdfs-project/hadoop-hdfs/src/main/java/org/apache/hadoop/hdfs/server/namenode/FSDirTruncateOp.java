@@ -62,6 +62,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|UnresolvedLinkException
 import|;
 end_import
@@ -111,22 +125,6 @@ operator|.
 name|protocol
 operator|.
 name|BlockStoragePolicy
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|HdfsFileStatus
 import|;
 end_import
 
@@ -1785,17 +1783,17 @@ decl_stmt|;
 DECL|field|stat
 specifier|private
 specifier|final
-name|HdfsFileStatus
+name|FileStatus
 name|stat
 decl_stmt|;
-DECL|method|TruncateResult (boolean result, HdfsFileStatus stat)
+DECL|method|TruncateResult (boolean result, FileStatus stat)
 specifier|public
 name|TruncateResult
 parameter_list|(
 name|boolean
 name|result
 parameter_list|,
-name|HdfsFileStatus
+name|FileStatus
 name|stat
 parameter_list|)
 block|{
@@ -1824,7 +1822,7 @@ return|;
 block|}
 comment|/**      * @return file information.      */
 DECL|method|getFileStatus ()
-name|HdfsFileStatus
+name|FileStatus
 name|getFileStatus
 parameter_list|()
 block|{

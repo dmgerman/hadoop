@@ -42,6 +42,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|InvalidPathException
 import|;
 end_import
@@ -177,22 +191,6 @@ operator|.
 name|protocol
 operator|.
 name|HdfsConstants
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|HdfsFileStatus
 import|;
 end_import
 
@@ -436,7 +434,7 @@ name|FSDirAttrOp
 block|{
 DECL|method|setPermission ( FSDirectory fsd, final String src, FsPermission permission)
 specifier|static
-name|HdfsFileStatus
+name|FileStatus
 name|setPermission
 parameter_list|(
 name|FSDirectory
@@ -556,7 +554,7 @@ return|;
 block|}
 DECL|method|setOwner ( FSDirectory fsd, String src, String username, String group)
 specifier|static
-name|HdfsFileStatus
+name|FileStatus
 name|setOwner
 parameter_list|(
 name|FSDirectory
@@ -751,7 +749,7 @@ return|;
 block|}
 DECL|method|setTimes ( FSDirectory fsd, String src, long mtime, long atime)
 specifier|static
-name|HdfsFileStatus
+name|FileStatus
 name|setTimes
 parameter_list|(
 name|FSDirectory
@@ -1059,7 +1057,7 @@ return|;
 block|}
 DECL|method|unsetStoragePolicy (FSDirectory fsd, BlockManager bm, String src)
 specifier|static
-name|HdfsFileStatus
+name|FileStatus
 name|unsetStoragePolicy
 parameter_list|(
 name|FSDirectory
@@ -1093,7 +1091,7 @@ return|;
 block|}
 DECL|method|setStoragePolicy (FSDirectory fsd, BlockManager bm, String src, final String policyName)
 specifier|static
-name|HdfsFileStatus
+name|FileStatus
 name|setStoragePolicy
 parameter_list|(
 name|FSDirectory
@@ -1160,7 +1158,7 @@ return|;
 block|}
 DECL|method|setStoragePolicy (FSDirectory fsd, BlockManager bm, String src, final byte policyId, final String operation)
 specifier|static
-name|HdfsFileStatus
+name|FileStatus
 name|setStoragePolicy
 parameter_list|(
 name|FSDirectory

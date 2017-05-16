@@ -72,6 +72,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|StorageType
 import|;
 end_import
@@ -89,22 +103,6 @@ operator|.
 name|protocol
 operator|.
 name|BlockStoragePolicy
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|HdfsFileStatus
 import|;
 end_import
 
@@ -237,7 +235,7 @@ name|FSDirConcatOp
 block|{
 DECL|method|concat (FSDirectory fsd, String target, String[] srcs, boolean logRetryCache)
 specifier|static
-name|HdfsFileStatus
+name|FileStatus
 name|concat
 parameter_list|(
 name|FSDirectory

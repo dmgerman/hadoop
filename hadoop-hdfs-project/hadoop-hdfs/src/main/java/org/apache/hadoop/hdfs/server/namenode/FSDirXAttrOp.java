@@ -84,6 +84,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|XAttr
 import|;
 end_import
@@ -157,22 +171,6 @@ operator|.
 name|hdfs
 operator|.
 name|XAttrHelper
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|HdfsFileStatus
 import|;
 end_import
 
@@ -374,7 +372,7 @@ decl_stmt|;
 comment|/**    * Set xattr for a file or directory.    *    * @param src    *          - path on which it sets the xattr    * @param xAttr    *          - xAttr details to set    * @param flag    *          - xAttrs flags    * @throws IOException    */
 DECL|method|setXAttr ( FSDirectory fsd, String src, XAttr xAttr, EnumSet<XAttrSetFlag> flag, boolean logRetryCache)
 specifier|static
-name|HdfsFileStatus
+name|FileStatus
 name|setXAttr
 parameter_list|(
 name|FSDirectory
@@ -935,7 +933,7 @@ block|}
 comment|/**    * Remove an xattr for a file or directory.    *    * @param src    *          - path to remove the xattr from    * @param xAttr    *          - xAttr to remove    * @throws IOException    */
 DECL|method|removeXAttr ( FSDirectory fsd, String src, XAttr xAttr, boolean logRetryCache)
 specifier|static
-name|HdfsFileStatus
+name|FileStatus
 name|removeXAttr
 parameter_list|(
 name|FSDirectory
