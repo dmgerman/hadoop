@@ -5786,12 +5786,12 @@ name|store
 return|;
 block|}
 comment|/**    * @param requestingAccessForPath - The path to the ancestor/parent/subtree/file that needs to be    *                                checked before granting access to originalPath    * @param accessType - The type of access READ/WRITE being requested    * @param operation - A string describing the operation being performed ("delete", "create" etc.).    * @param originalPath - The originalPath that was being accessed    */
-DECL|method|performAuthCheck (String requestingAccessForPath, WasbAuthorizationOperations accessType, String operation, String originalPath)
+DECL|method|performAuthCheck (Path requestingAccessForPath, WasbAuthorizationOperations accessType, String operation, Path originalPath)
 specifier|private
 name|void
 name|performAuthCheck
 parameter_list|(
-name|String
+name|Path
 name|requestingAccessForPath
 parameter_list|,
 name|WasbAuthorizationOperations
@@ -5800,7 +5800,7 @@ parameter_list|,
 name|String
 name|operation
 parameter_list|,
-name|String
+name|Path
 name|originalPath
 parameter_list|)
 throws|throws
@@ -5817,7 +5817,36 @@ operator|.
 name|authorizer
 operator|!=
 literal|null
-operator|&&
+condition|)
+block|{
+name|requestingAccessForPath
+operator|=
+name|requestingAccessForPath
+operator|.
+name|makeQualified
+argument_list|(
+name|getUri
+argument_list|()
+argument_list|,
+name|getWorkingDirectory
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|originalPath
+operator|=
+name|originalPath
+operator|.
+name|makeQualified
+argument_list|(
+name|getUri
+argument_list|()
+argument_list|,
+name|getWorkingDirectory
+argument_list|()
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
 operator|!
 name|this
 operator|.
@@ -5826,6 +5855,9 @@ operator|.
 name|authorize
 argument_list|(
 name|requestingAccessForPath
+operator|.
+name|toString
+argument_list|()
 argument_list|,
 name|accessType
 operator|.
@@ -5843,10 +5875,14 @@ operator|+
 literal|" operation for Path : "
 operator|+
 name|originalPath
+operator|.
+name|toString
+argument_list|()
 operator|+
 literal|" not allowed"
 argument_list|)
 throw|;
+block|}
 block|}
 block|}
 comment|/**    * Gets the metrics source for this file system.    * This is mainly here for unit testing purposes.    *    * @return the metrics source.    */
@@ -5914,9 +5950,6 @@ decl_stmt|;
 name|performAuthCheck
 argument_list|(
 name|absolutePath
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|WasbAuthorizationOperations
 operator|.
@@ -5925,9 +5958,6 @@ argument_list|,
 literal|"append"
 argument_list|,
 name|absolutePath
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|String
@@ -6786,9 +6816,6 @@ decl_stmt|;
 name|performAuthCheck
 argument_list|(
 name|ancestor
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|WasbAuthorizationOperations
 operator|.
@@ -6797,9 +6824,6 @@ argument_list|,
 literal|"create"
 argument_list|,
 name|absolutePath
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|String
@@ -6868,9 +6892,6 @@ block|{
 name|performAuthCheck
 argument_list|(
 name|absolutePath
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|WasbAuthorizationOperations
 operator|.
@@ -6879,9 +6900,6 @@ argument_list|,
 literal|"create"
 argument_list|,
 name|absolutePath
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -7277,9 +7295,6 @@ decl_stmt|;
 name|performAuthCheck
 argument_list|(
 name|parentPath
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|WasbAuthorizationOperations
 operator|.
@@ -7288,9 +7303,6 @@ argument_list|,
 literal|"delete"
 argument_list|,
 name|absolutePath
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|String
@@ -8072,9 +8084,6 @@ comment|// the absolute-path
 name|performAuthCheck
 argument_list|(
 name|absolutePath
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|WasbAuthorizationOperations
 operator|.
@@ -8083,9 +8092,6 @@ argument_list|,
 literal|"delete"
 argument_list|,
 name|absolutePath
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -8119,9 +8125,6 @@ decl_stmt|;
 name|performAuthCheck
 argument_list|(
 name|subTreeDir
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|WasbAuthorizationOperations
 operator|.
@@ -8130,9 +8133,6 @@ argument_list|,
 literal|"delete"
 argument_list|,
 name|absolutePath
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -8497,9 +8497,6 @@ decl_stmt|;
 name|performAuthCheck
 argument_list|(
 name|absolutePath
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|WasbAuthorizationOperations
 operator|.
@@ -8508,9 +8505,6 @@ argument_list|,
 literal|"getFileStatus"
 argument_list|,
 name|absolutePath
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|String
@@ -8870,9 +8864,6 @@ decl_stmt|;
 name|performAuthCheck
 argument_list|(
 name|absolutePath
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|WasbAuthorizationOperations
 operator|.
@@ -8881,9 +8872,6 @@ argument_list|,
 literal|"liststatus"
 argument_list|,
 name|absolutePath
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|String
@@ -9916,9 +9904,6 @@ decl_stmt|;
 name|performAuthCheck
 argument_list|(
 name|ancestor
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|WasbAuthorizationOperations
 operator|.
@@ -9927,9 +9912,6 @@ argument_list|,
 literal|"mkdirs"
 argument_list|,
 name|absolutePath
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|PermissionStatus
@@ -10168,9 +10150,6 @@ decl_stmt|;
 name|performAuthCheck
 argument_list|(
 name|absolutePath
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|WasbAuthorizationOperations
 operator|.
@@ -10179,9 +10158,6 @@ argument_list|,
 literal|"read"
 argument_list|,
 name|absolutePath
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|String
@@ -10479,9 +10455,6 @@ block|}
 name|performAuthCheck
 argument_list|(
 name|srcParentFolder
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|WasbAuthorizationOperations
 operator|.
@@ -10490,9 +10463,6 @@ argument_list|,
 literal|"rename"
 argument_list|,
 name|absoluteSrcPath
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|String
@@ -10538,9 +10508,6 @@ decl_stmt|;
 name|performAuthCheck
 argument_list|(
 name|dstParentFolder
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|WasbAuthorizationOperations
 operator|.
@@ -10549,9 +10516,6 @@ argument_list|,
 literal|"rename"
 argument_list|,
 name|absoluteDstPath
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|String

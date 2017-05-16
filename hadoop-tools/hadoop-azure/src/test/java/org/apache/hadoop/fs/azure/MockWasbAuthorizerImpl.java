@@ -64,6 +64,20 @@ name|Configuration
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|Path
+import|;
+end_import
+
 begin_comment
 comment|/**  * A mock wasb authorizer implementation.  */
 end_comment
@@ -86,6 +100,52 @@ name|Boolean
 argument_list|>
 name|authRules
 decl_stmt|;
+comment|// The full qualified URL to the root directory
+DECL|field|qualifiedPrefixUrl
+specifier|private
+name|String
+name|qualifiedPrefixUrl
+decl_stmt|;
+DECL|method|MockWasbAuthorizerImpl (NativeAzureFileSystem fs)
+specifier|public
+name|MockWasbAuthorizerImpl
+parameter_list|(
+name|NativeAzureFileSystem
+name|fs
+parameter_list|)
+block|{
+name|qualifiedPrefixUrl
+operator|=
+operator|new
+name|Path
+argument_list|(
+literal|"/"
+argument_list|)
+operator|.
+name|makeQualified
+argument_list|(
+name|fs
+operator|.
+name|getUri
+argument_list|()
+argument_list|,
+name|fs
+operator|.
+name|getWorkingDirectory
+argument_list|()
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+operator|.
+name|replaceAll
+argument_list|(
+literal|"/$"
+argument_list|,
+literal|""
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|init (Configuration conf)
@@ -124,6 +184,12 @@ name|boolean
 name|access
 parameter_list|)
 block|{
+name|wasbAbsolutePath
+operator|=
+name|qualifiedPrefixUrl
+operator|+
+name|wasbAbsolutePath
+expr_stmt|;
 name|AuthorizationComponent
 name|component
 init|=

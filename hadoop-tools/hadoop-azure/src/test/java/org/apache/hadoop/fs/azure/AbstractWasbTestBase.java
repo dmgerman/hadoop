@@ -32,15 +32,15 @@ end_import
 
 begin_import
 import|import
-name|org
+name|com
 operator|.
-name|apache
+name|google
 operator|.
-name|hadoop
+name|common
 operator|.
-name|fs
+name|annotations
 operator|.
-name|FileSystem
+name|VisibleForTesting
 import|;
 end_import
 
@@ -111,9 +111,11 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
 DECL|field|fs
 specifier|protected
-name|FileSystem
+name|NativeAzureFileSystem
 name|fs
 decl_stmt|;
 DECL|field|testAccount
