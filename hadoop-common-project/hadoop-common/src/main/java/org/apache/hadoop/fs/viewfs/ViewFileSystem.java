@@ -1080,6 +1080,8 @@ argument_list|,
 name|ugi
 argument_list|,
 name|myUri
+argument_list|,
+name|config
 argument_list|)
 return|;
 block|}
@@ -4984,7 +4986,7 @@ specifier|final
 name|URI
 name|myUri
 decl_stmt|;
-DECL|method|InternalDirOfViewFs (final InodeTree.INodeDir<FileSystem> dir, final long cTime, final UserGroupInformation ugi, URI uri)
+DECL|method|InternalDirOfViewFs (final InodeTree.INodeDir<FileSystem> dir, final long cTime, final UserGroupInformation ugi, URI uri, Configuration config)
 specifier|public
 name|InternalDirOfViewFs
 parameter_list|(
@@ -5007,6 +5009,9 @@ name|ugi
 parameter_list|,
 name|URI
 name|uri
+parameter_list|,
+name|Configuration
+name|config
 parameter_list|)
 throws|throws
 name|URISyntaxException
@@ -5021,9 +5026,7 @@ name|initialize
 argument_list|(
 name|myUri
 argument_list|,
-operator|new
-name|Configuration
-argument_list|()
+name|config
 argument_list|)
 expr_stmt|;
 block|}
