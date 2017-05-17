@@ -1205,6 +1205,14 @@ name|DEFAULT_REDUCER_PRIORITY
 init|=
 literal|10
 decl_stmt|;
+DECL|field|exitAtTheFinish
+specifier|private
+specifier|static
+name|boolean
+name|exitAtTheFinish
+init|=
+literal|false
+decl_stmt|;
 comment|/**    * The type of trace in input.    */
 DECL|enum|TraceType
 specifier|public
@@ -4931,6 +4939,19 @@ argument_list|(
 literal|"SLSRunner tears down."
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|exitAtTheFinish
+condition|)
+block|{
+name|System
+operator|.
+name|exit
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|stop ()
@@ -5414,6 +5435,10 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|exitAtTheFinish
+operator|=
+literal|true
+expr_stmt|;
 name|ToolRunner
 operator|.
 name|run
