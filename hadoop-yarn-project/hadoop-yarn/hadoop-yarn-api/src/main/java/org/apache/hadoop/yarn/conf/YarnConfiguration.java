@@ -5238,6 +5238,18 @@ name|YARN_CONTAINER_SANDBOX
 operator|+
 literal|".policy"
 decl_stmt|;
+comment|/** Prefix for group to policy file mapping.*/
+DECL|field|YARN_CONTAINER_SANDBOX_POLICY_GROUP_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|YARN_CONTAINER_SANDBOX_POLICY_GROUP_PREFIX
+init|=
+name|YARN_CONTAINER_SANDBOX_POLICY
+operator|+
+literal|".group."
+decl_stmt|;
 comment|/** The group which will run by default without the java security manager.*/
 DECL|field|YARN_CONTAINER_SANDBOX_WHITELIST_GROUP
 specifier|public
