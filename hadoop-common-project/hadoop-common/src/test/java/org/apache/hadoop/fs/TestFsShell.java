@@ -18,16 +18,6 @@ end_package
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|AssertionFailedError
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -255,7 +245,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|AssertionFailedError
+name|AssertionError
 argument_list|(
 literal|"Expected Runtime exception, got: "
 operator|+

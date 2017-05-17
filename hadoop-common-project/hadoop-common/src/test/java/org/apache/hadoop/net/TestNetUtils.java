@@ -202,16 +202,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|AssertionFailedError
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -1743,7 +1733,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|AssertionFailedError
+name|AssertionError
 argument_list|(
 literal|"Wrong text in message "
 operator|+
@@ -1802,7 +1792,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|AssertionFailedError
+name|AssertionError
 argument_list|(
 literal|"Empty text in exception "
 operator|+
@@ -1853,7 +1843,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|AssertionFailedError
+name|AssertionError
 argument_list|(
 literal|"Wrong text in message "
 operator|+
@@ -1946,7 +1936,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|AssertionFailedError
+name|AssertionError
 argument_list|(
 literal|"Wrong exception class; expected "
 operator|+
