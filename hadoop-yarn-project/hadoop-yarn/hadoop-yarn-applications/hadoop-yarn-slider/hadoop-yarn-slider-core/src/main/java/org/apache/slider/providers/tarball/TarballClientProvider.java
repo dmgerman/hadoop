@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.slider.providers.docker
+DECL|package|org.apache.slider.providers.tarball
 package|package
 name|org
 operator|.
@@ -14,7 +14,7 @@ name|slider
 operator|.
 name|providers
 operator|.
-name|docker
+name|tarball
 package|;
 end_package
 
@@ -43,6 +43,20 @@ operator|.
 name|fs
 operator|.
 name|FileSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|Path
 import|;
 end_import
 
@@ -130,28 +144,36 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|file
+operator|.
+name|Paths
+import|;
+end_import
+
 begin_class
-DECL|class|DockerClientProvider
+DECL|class|TarballClientProvider
 specifier|public
 class|class
-name|DockerClientProvider
+name|TarballClientProvider
 extends|extends
 name|AbstractClientProvider
 implements|implements
 name|SliderKeys
 block|{
-DECL|method|DockerClientProvider ()
+DECL|method|TarballClientProvider ()
 specifier|public
-name|DockerClientProvider
+name|TarballClientProvider
 parameter_list|()
-block|{
-name|super
-argument_list|()
-expr_stmt|;
-block|}
+block|{   }
 annotation|@
 name|Override
-DECL|method|validateArtifact (Artifact artifact, FileSystem fileSystem)
+DECL|method|validateArtifact (Artifact artifact, FileSystem fs)
 specifier|public
 name|void
 name|validateArtifact
@@ -160,8 +182,10 @@ name|Artifact
 name|artifact
 parameter_list|,
 name|FileSystem
-name|fileSystem
+name|fs
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 if|if
 condition|(
@@ -203,6 +227,42 @@ name|ERROR_ARTIFACT_ID_INVALID
 argument_list|)
 throw|;
 block|}
+name|Path
+name|p
+init|=
+operator|new
+name|Path
+argument_list|(
+name|artifact
+operator|.
+name|getId
+argument_list|()
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|fs
+operator|.
+name|exists
+argument_list|(
+name|p
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Artifact tarball does not exist "
+operator|+
+name|artifact
+operator|.
+name|getId
+argument_list|()
+argument_list|)
+throw|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -219,7 +279,38 @@ name|fileSystem
 parameter_list|)
 throws|throws
 name|IOException
-block|{   }
+block|{
+comment|// validate dest_file is not absolute
+if|if
+condition|(
+name|Paths
+operator|.
+name|get
+argument_list|(
+name|configFile
+operator|.
+name|getDestFile
+argument_list|()
+argument_list|)
+operator|.
+name|isAbsolute
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Dest_file must not be absolute path: "
+operator|+
+name|configFile
+operator|.
+name|getDestFile
+argument_list|()
+argument_list|)
+throw|;
+block|}
+block|}
 block|}
 end_class
 

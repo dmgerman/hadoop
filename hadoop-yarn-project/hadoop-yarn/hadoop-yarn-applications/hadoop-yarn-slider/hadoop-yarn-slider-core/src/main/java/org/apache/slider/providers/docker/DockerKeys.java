@@ -80,18 +80,6 @@ name|DEFAULT_DOCKER_USE_PRIVILEGED
 init|=
 literal|false
 decl_stmt|;
-DECL|field|OUT_FILE
-name|String
-name|OUT_FILE
-init|=
-literal|"stdout.txt"
-decl_stmt|;
-DECL|field|ERR_FILE
-name|String
-name|ERR_FILE
-init|=
-literal|"stderr.txt"
-decl_stmt|;
 block|}
 end_interface
 

@@ -46,20 +46,6 @@ name|apache
 operator|.
 name|slider
 operator|.
-name|providers
-operator|.
-name|ProviderService
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
 name|server
 operator|.
 name|appmaster
@@ -176,12 +162,6 @@ specifier|final
 name|StateAccessForProviders
 name|appState
 decl_stmt|;
-DECL|field|provider
-specifier|protected
-specifier|final
-name|ProviderService
-name|provider
-decl_stmt|;
 DECL|field|registryOperations
 specifier|private
 specifier|final
@@ -200,15 +180,12 @@ specifier|final
 name|QueueAccess
 name|queues
 decl_stmt|;
-DECL|method|WebAppApiImpl (StateAccessForProviders appState, ProviderService provider, RegistryOperations registryOperations, MetricsAndMonitoring metricsAndMonitoring, QueueAccess queues)
+DECL|method|WebAppApiImpl (StateAccessForProviders appState, RegistryOperations registryOperations, MetricsAndMonitoring metricsAndMonitoring, QueueAccess queues)
 specifier|public
 name|WebAppApiImpl
 parameter_list|(
 name|StateAccessForProviders
 name|appState
-parameter_list|,
-name|ProviderService
-name|provider
 parameter_list|,
 name|RegistryOperations
 name|registryOperations
@@ -225,11 +202,6 @@ argument_list|(
 name|appState
 argument_list|)
 expr_stmt|;
-name|checkNotNull
-argument_list|(
-name|provider
-argument_list|)
-expr_stmt|;
 name|this
 operator|.
 name|queues
@@ -247,12 +219,6 @@ operator|.
 name|appState
 operator|=
 name|appState
-expr_stmt|;
-name|this
-operator|.
-name|provider
-operator|=
-name|provider
 expr_stmt|;
 name|this
 operator|.
@@ -271,18 +237,6 @@ parameter_list|()
 block|{
 return|return
 name|appState
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|getProviderService ()
-specifier|public
-name|ProviderService
-name|getProviderService
-parameter_list|()
-block|{
-return|return
-name|provider
 return|;
 block|}
 annotation|@

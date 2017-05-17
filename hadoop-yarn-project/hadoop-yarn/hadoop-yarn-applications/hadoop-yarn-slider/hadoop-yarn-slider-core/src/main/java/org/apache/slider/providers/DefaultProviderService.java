@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.slider.providers.docker
+DECL|package|org.apache.slider.providers
 package|package
 name|org
 operator|.
@@ -13,8 +13,6 @@ operator|.
 name|slider
 operator|.
 name|providers
-operator|.
-name|docker
 package|;
 end_package
 
@@ -82,26 +80,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|slf4j
-operator|.
-name|Logger
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|slf4j
-operator|.
-name|LoggerFactory
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -111,39 +89,21 @@ import|;
 end_import
 
 begin_class
-DECL|class|DockerProviderService
+DECL|class|DefaultProviderService
 specifier|public
 class|class
-name|DockerProviderService
+name|DefaultProviderService
 extends|extends
 name|AbstractProviderService
-implements|implements
-name|DockerKeys
 block|{
-DECL|field|log
+DECL|method|DefaultProviderService ()
 specifier|protected
-specifier|static
-specifier|final
-name|Logger
-name|log
-init|=
-name|LoggerFactory
-operator|.
-name|getLogger
-argument_list|(
-name|DockerProviderService
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
-DECL|method|DockerProviderService ()
-specifier|protected
-name|DockerProviderService
+name|DefaultProviderService
 parameter_list|()
 block|{
 name|super
 argument_list|(
-name|DockerProviderService
+name|DefaultProviderService
 operator|.
 name|class
 operator|.
@@ -152,6 +112,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|processArtifact (ContainerLauncher launcher, Component component, SliderFileSystem fileSystem)
 specifier|public
 name|void
@@ -168,55 +130,7 @@ name|fileSystem
 parameter_list|)
 throws|throws
 name|IOException
-block|{
-name|launcher
-operator|.
-name|setYarnDockerMode
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-name|launcher
-operator|.
-name|setDockerImage
-argument_list|(
-name|component
-operator|.
-name|getArtifact
-argument_list|()
-operator|.
-name|getId
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|launcher
-operator|.
-name|setDockerNetwork
-argument_list|(
-name|component
-operator|.
-name|getConfiguration
-argument_list|()
-operator|.
-name|getProperty
-argument_list|(
-name|DOCKER_NETWORK
-argument_list|,
-name|DEFAULT_DOCKER_NETWORK
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|launcher
-operator|.
-name|setRunPrivilegedContainer
-argument_list|(
-name|component
-operator|.
-name|getRunPrivilegedContainer
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
+block|{   }
 block|}
 end_class
 

@@ -46,20 +46,6 @@ name|apache
 operator|.
 name|slider
 operator|.
-name|providers
-operator|.
-name|ProviderService
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
 name|server
 operator|.
 name|appmaster
@@ -138,12 +124,6 @@ comment|/**    * The {@link AppState} for the current cluster    */
 DECL|method|getAppState ()
 name|StateAccessForProviders
 name|getAppState
-parameter_list|()
-function_decl|;
-comment|/**    * The {@link ProviderService} for the current cluster    */
-DECL|method|getProviderService ()
-name|ProviderService
-name|getProviderService
 parameter_list|()
 function_decl|;
 comment|/**    * Registry operations accessor    * @return registry access    */

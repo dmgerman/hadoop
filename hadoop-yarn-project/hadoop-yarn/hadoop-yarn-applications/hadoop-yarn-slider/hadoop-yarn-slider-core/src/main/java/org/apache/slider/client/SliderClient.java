@@ -1878,20 +1878,6 @@ name|apache
 operator|.
 name|slider
 operator|.
-name|providers
-operator|.
-name|SliderProviderFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
 name|server
 operator|.
 name|appmaster
@@ -2671,12 +2657,6 @@ expr_stmt|;
 name|serviceArgs
 operator|.
 name|parse
-argument_list|()
-expr_stmt|;
-comment|// add the slider XML config
-name|ConfigHelper
-operator|.
-name|injectSliderXMLResource
 argument_list|()
 expr_stmt|;
 comment|// yarn-ify
@@ -4133,36 +4113,6 @@ argument_list|)
 expr_stmt|;
 return|return
 name|EXIT_SUCCESS
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|createClientProvider (String provider)
-specifier|public
-name|AbstractClientProvider
-name|createClientProvider
-parameter_list|(
-name|String
-name|provider
-parameter_list|)
-throws|throws
-name|SliderException
-block|{
-name|SliderProviderFactory
-name|factory
-init|=
-name|SliderProviderFactory
-operator|.
-name|createSliderProviderFactory
-argument_list|(
-name|provider
-argument_list|)
-decl_stmt|;
-return|return
-name|factory
-operator|.
-name|createClientProvider
-argument_list|()
 return|;
 block|}
 DECL|method|getApplicationFromArgs (String clusterName, AbstractClusterBuildingActionArgs args)
@@ -5703,7 +5653,7 @@ init|=
 operator|new
 name|FsPermission
 argument_list|(
-literal|"777"
+literal|"750"
 argument_list|)
 decl_stmt|;
 name|sliderFileSystem
@@ -7504,44 +7454,18 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|// TODO handle client install
 comment|// Only INSTALL is supported
-name|AbstractClientProvider
-name|provider
-init|=
-name|createClientProvider
-argument_list|(
-name|SliderProviderFactory
-operator|.
-name|DEFAULT_CLUSTER_TYPE
-argument_list|)
-decl_stmt|;
-name|provider
-operator|.
-name|processClientOperation
-argument_list|(
-name|sliderFileSystem
-argument_list|,
-name|getRegistryOperations
-argument_list|()
-argument_list|,
-name|getConfig
-argument_list|()
-argument_list|,
-literal|"INSTALL"
-argument_list|,
-name|clientInfo
-operator|.
-name|installLocation
-argument_list|,
-name|pkgFile
-argument_list|,
-name|config
-argument_list|,
-name|clientInfo
-operator|.
-name|name
-argument_list|)
-expr_stmt|;
+comment|//    ClientProvider
+comment|//        provider = createClientProvider(SliderProviderFactory.DEFAULT_CLUSTER_TYPE);
+comment|//    provider.processClientOperation(sliderFileSystem,
+comment|//        getRegistryOperations(),
+comment|//        getConfig(),
+comment|//        "INSTALL",
+comment|//        clientInfo.installLocation,
+comment|//        pkgFile,
+comment|//        config,
+comment|//        clientInfo.name);
 return|return
 name|EXIT_SUCCESS
 return|;

@@ -38,9 +38,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
+name|fs
 operator|.
-name|Configured
+name|FileSystem
 import|;
 end_import
 
@@ -59,6 +59,38 @@ operator|.
 name|api
 operator|.
 name|RegistryOperations
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
+name|api
+operator|.
+name|resource
+operator|.
+name|Artifact
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
+name|api
+operator|.
+name|resource
+operator|.
+name|ConfigFile
 import|;
 end_import
 
@@ -126,21 +158,11 @@ end_import
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|slf4j
+name|io
 operator|.
-name|Logger
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|slf4j
-operator|.
-name|LoggerFactory
+name|File
 import|;
 end_import
 
@@ -150,7 +172,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|File
+name|IOException
 import|;
 end_import
 
@@ -190,56 +212,12 @@ specifier|public
 specifier|abstract
 class|class
 name|AbstractClientProvider
-extends|extends
-name|Configured
 block|{
-DECL|field|log
-specifier|private
-specifier|static
-specifier|final
-name|Logger
-name|log
-init|=
-name|LoggerFactory
-operator|.
-name|getLogger
-argument_list|(
-name|AbstractClientProvider
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
-DECL|method|AbstractClientProvider (Configuration conf)
+DECL|method|AbstractClientProvider ()
 specifier|public
 name|AbstractClientProvider
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|getName ()
-specifier|public
-specifier|abstract
-name|String
-name|getName
 parameter_list|()
-function_decl|;
-DECL|method|getRoles ()
-specifier|public
-specifier|abstract
-name|List
-argument_list|<
-name|ProviderRole
-argument_list|>
-name|getRoles
-parameter_list|()
-function_decl|;
+block|{   }
 comment|/**    * Generates a fixed format of application tags given one or more of    * application name, version and description. This allows subsequent query for    * an application with a name only, version only or description only or any    * combination of those as filters.    *    * @param appName name of the application    * @param appVersion version of the application    * @param appDescription brief description of the application    * @return    */
 DECL|method|createApplicationTags (String appName, String appVersion, String appDescription)
 specifier|public
@@ -328,7 +306,73 @@ return|return
 name|tags
 return|;
 block|}
-comment|/**    * Process client operations for applications such as install, configure    * @param fileSystem    * @param registryOperations    * @param configuration    * @param operation    * @param clientInstallPath    * @param clientPackage    * @param clientConfig    * @param name    * @throws SliderException    */
+comment|/**    * Validate the artifact.    * @param artifact    */
+DECL|method|validateArtifact (Artifact artifact, FileSystem fileSystem)
+specifier|public
+specifier|abstract
+name|void
+name|validateArtifact
+parameter_list|(
+name|Artifact
+name|artifact
+parameter_list|,
+name|FileSystem
+name|fileSystem
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+DECL|method|validateConfigFile (ConfigFile configFile, FileSystem fileSystem)
+specifier|protected
+specifier|abstract
+name|void
+name|validateConfigFile
+parameter_list|(
+name|ConfigFile
+name|configFile
+parameter_list|,
+name|FileSystem
+name|fileSystem
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Validate the config files.    * @param configFiles config file list    * @param fileSystem file system    */
+DECL|method|validateConfigFiles (List<ConfigFile> configFiles, FileSystem fileSystem)
+specifier|public
+name|void
+name|validateConfigFiles
+parameter_list|(
+name|List
+argument_list|<
+name|ConfigFile
+argument_list|>
+name|configFiles
+parameter_list|,
+name|FileSystem
+name|fileSystem
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+for|for
+control|(
+name|ConfigFile
+name|configFile
+range|:
+name|configFiles
+control|)
+block|{
+name|validateConfigFile
+argument_list|(
+name|configFile
+argument_list|,
+name|fileSystem
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Process client operations for applications such as install, configure.    * @param fileSystem    * @param registryOperations    * @param configuration    * @param operation    * @param clientInstallPath    * @param clientPackage    * @param clientConfig    * @param name    * @throws SliderException    */
 DECL|method|processClientOperation (SliderFileSystem fileSystem, RegistryOperations registryOperations, Configuration configuration, String operation, File clientInstallPath, File clientPackage, JSONObject clientConfig, String name)
 specifier|public
 name|void

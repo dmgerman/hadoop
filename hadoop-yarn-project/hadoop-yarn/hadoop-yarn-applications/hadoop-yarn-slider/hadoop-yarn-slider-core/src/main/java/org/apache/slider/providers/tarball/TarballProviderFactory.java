@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.slider.providers.docker
+DECL|package|org.apache.slider.providers.tarball
 package|package
 name|org
 operator|.
@@ -14,7 +14,7 @@ name|slider
 operator|.
 name|providers
 operator|.
-name|docker
+name|tarball
 package|;
 end_package
 
@@ -61,10 +61,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|DockerProviderFactory
+DECL|class|TarballProviderFactory
 specifier|public
 class|class
-name|DockerProviderFactory
+name|TarballProviderFactory
 extends|extends
 name|SliderProviderFactory
 block|{
@@ -76,12 +76,12 @@ name|SliderProviderFactory
 name|FACTORY
 init|=
 operator|new
-name|DockerProviderFactory
+name|TarballProviderFactory
 argument_list|()
 decl_stmt|;
-DECL|method|DockerProviderFactory ()
+DECL|method|TarballProviderFactory ()
 specifier|private
-name|DockerProviderFactory
+name|TarballProviderFactory
 parameter_list|()
 block|{   }
 DECL|class|Client
@@ -97,7 +97,7 @@ name|AbstractClientProvider
 name|PROVIDER
 init|=
 operator|new
-name|DockerClientProvider
+name|TarballClientProvider
 argument_list|()
 decl_stmt|;
 block|}
@@ -114,7 +114,7 @@ name|ProviderService
 name|PROVIDER
 init|=
 operator|new
-name|DockerProviderService
+name|TarballProviderService
 argument_list|()
 decl_stmt|;
 block|}

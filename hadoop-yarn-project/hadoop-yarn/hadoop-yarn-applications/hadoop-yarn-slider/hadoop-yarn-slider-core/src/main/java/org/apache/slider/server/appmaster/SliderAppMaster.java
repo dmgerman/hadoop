@@ -786,24 +786,6 @@ name|client
 operator|.
 name|api
 operator|.
-name|TimelineClient
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|client
-operator|.
-name|api
-operator|.
 name|TimelineV2Client
 import|;
 end_import
@@ -3072,10 +3054,18 @@ name|SuppressWarnings
 argument_list|(
 literal|"FieldAccessedSynchronizedAndUnsynchronized"
 argument_list|)
-DECL|field|providerService
+DECL|field|providers
 specifier|private
+name|List
+argument_list|<
 name|ProviderService
-name|providerService
+argument_list|>
+name|providers
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
 decl_stmt|;
 comment|/**    * The YARN registry service    */
 annotation|@
@@ -3752,12 +3742,6 @@ argument_list|,
 name|args
 argument_list|)
 decl_stmt|;
-comment|// add the slider XML config
-name|ConfigHelper
-operator|.
-name|injectSliderXMLResource
-argument_list|()
-expr_stmt|;
 comment|//yarn-ify
 name|YarnConfiguration
 name|yarnConfiguration
@@ -4059,7 +4043,18 @@ argument_list|()
 decl_stmt|;
 comment|// obtain security state
 comment|// set the global security flag for the instance definition
-comment|//get our provider
+comment|// initialize our providers
+for|for
+control|(
+name|Component
+name|component
+range|:
+name|application
+operator|.
+name|getComponents
+argument_list|()
+control|)
+block|{
 name|SliderProviderFactory
 name|factory
 init|=
@@ -4067,22 +4062,34 @@ name|SliderProviderFactory
 operator|.
 name|createSliderProviderFactory
 argument_list|(
-literal|"docker"
+name|component
+operator|.
+name|getArtifact
+argument_list|()
 argument_list|)
 decl_stmt|;
+name|ProviderService
 name|providerService
-operator|=
+init|=
 name|factory
 operator|.
 name|createServerProvider
 argument_list|()
-expr_stmt|;
+decl_stmt|;
 comment|// init the provider BUT DO NOT START IT YET
 name|initAndAddService
 argument_list|(
 name|providerService
 argument_list|)
 expr_stmt|;
+name|providers
+operator|.
+name|add
+argument_list|(
+name|providerService
+argument_list|)
+expr_stmt|;
+block|}
 name|InetSocketAddress
 name|rmSchedulerAddress
 init|=
@@ -4352,6 +4359,14 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
+for|for
+control|(
+name|ProviderService
+name|providerService
+range|:
+name|providers
+control|)
+block|{
 name|providerService
 operator|.
 name|setServiceTimelinePublisher
@@ -4359,6 +4374,7 @@ argument_list|(
 name|serviceTimelinePublisher
 argument_list|)
 expr_stmt|;
+block|}
 name|appState
 operator|.
 name|setServiceTimelinePublisher
@@ -4513,8 +4529,6 @@ operator|new
 name|WebAppApiImpl
 argument_list|(
 name|stateForProviders
-argument_list|,
-name|providerService
 argument_list|,
 name|registryOperations
 argument_list|,
@@ -5036,8 +5050,6 @@ name|RoleLaunchService
 argument_list|(
 name|actionQueues
 argument_list|,
-name|providerService
-argument_list|,
 name|fs
 argument_list|,
 name|envVars
@@ -5049,6 +5061,14 @@ name|launchService
 argument_list|)
 expr_stmt|;
 comment|//Give the provider access to the state, and AM
+for|for
+control|(
+name|ProviderService
+name|providerService
+range|:
+name|providers
+control|)
+block|{
 name|providerService
 operator|.
 name|setAMState
@@ -5056,6 +5076,7 @@ argument_list|(
 name|stateForProviders
 argument_list|)
 expr_stmt|;
+block|}
 comment|// chaos monkey
 name|maybeStartMonkey
 argument_list|()
@@ -6016,6 +6037,14 @@ argument_list|,
 name|appAttemptID
 argument_list|)
 expr_stmt|;
+for|for
+control|(
+name|ProviderService
+name|providerService
+range|:
+name|providers
+control|)
+block|{
 name|providerService
 operator|.
 name|bindToYarnRegistry
@@ -6023,6 +6052,7 @@ argument_list|(
 name|yarnRegistryOperations
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Yarn registry
 name|ServiceRecord
 name|serviceRecord
@@ -8913,11 +8943,20 @@ throws|,
 name|SliderException
 block|{
 comment|// didn't start, so don't register
+for|for
+control|(
+name|ProviderService
+name|providerService
+range|:
+name|providers
+control|)
+block|{
 name|providerService
 operator|.
 name|start
 argument_list|()
 expr_stmt|;
+block|}
 comment|// and send the started event ourselves
 name|eventCallbackEvent
 argument_list|(
@@ -9291,6 +9330,51 @@ argument_list|,
 name|containerStatus
 argument_list|)
 expr_stmt|;
+name|RoleInstance
+name|cinfo
+init|=
+name|appState
+operator|.
+name|getOwnedContainer
+argument_list|(
+name|containerId
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|cinfo
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG_YARN
+operator|.
+name|error
+argument_list|(
+literal|"Owned container not found for {}"
+argument_list|,
+name|containerId
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+name|ProviderService
+name|providerService
+init|=
+name|SliderProviderFactory
+operator|.
+name|getProviderService
+argument_list|(
+name|cinfo
+operator|.
+name|providerRole
+operator|.
+name|component
+operator|.
+name|getArtifact
+argument_list|()
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|providerService
@@ -9319,23 +9403,6 @@ name|InterruptedException
 name|e
 parameter_list|)
 block|{       }
-name|RoleInstance
-name|cinfo
-init|=
-name|appState
-operator|.
-name|getOwnedContainer
-argument_list|(
-name|containerId
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|cinfo
-operator|!=
-literal|null
-condition|)
-block|{
 name|LOG_YARN
 operator|.
 name|info
@@ -9364,7 +9431,6 @@ name|getNodeId
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 elseif|else
 if|if
@@ -9492,16 +9558,6 @@ argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
-block|}
-DECL|method|getProviderService ()
-specifier|public
-name|ProviderService
-name|getProviderService
-parameter_list|()
-block|{
-return|return
-name|providerService
-return|;
 block|}
 comment|/**    * Queue an action for immediate execution in the executor thread    * @param action action to execute    */
 DECL|method|queue (AsyncAction action)

@@ -166,9 +166,7 @@ name|slider
 operator|.
 name|providers
 operator|.
-name|agent
-operator|.
-name|AgentKeys
+name|SliderProviderFactory
 import|;
 end_import
 
@@ -364,6 +362,22 @@ name|TimeUnit
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
+name|common
+operator|.
+name|SliderKeys
+operator|.
+name|KEY_CONTAINER_LAUNCH_DELAY
+import|;
+end_import
+
 begin_comment
 comment|/**  * A service for launching containers  */
 end_comment
@@ -411,13 +425,6 @@ specifier|final
 name|QueueAccess
 name|actionQueue
 decl_stmt|;
-comment|/**    * Provider building up the command    */
-DECL|field|provider
-specifier|private
-specifier|final
-name|ProviderService
-name|provider
-decl_stmt|;
 comment|/**    * Filesystem to use for the launch    */
 DECL|field|fs
 specifier|private
@@ -435,16 +442,13 @@ name|String
 argument_list|>
 name|envVars
 decl_stmt|;
-comment|/**    * Construct an instance of the launcher    * @param queueAccess    * @param provider the provider    * @param fs filesystem    * @param envVars environment variables    */
-DECL|method|RoleLaunchService (QueueAccess queueAccess, ProviderService provider, SliderFileSystem fs, Map<String, String> envVars)
+comment|/**    * Construct an instance of the launcher    * @param queueAccess    * @param fs filesystem    * @param envVars environment variables    */
+DECL|method|RoleLaunchService (QueueAccess queueAccess, SliderFileSystem fs, Map<String, String> envVars)
 specifier|public
 name|RoleLaunchService
 parameter_list|(
 name|QueueAccess
 name|queueAccess
-parameter_list|,
-name|ProviderService
-name|provider
 parameter_list|,
 name|SliderFileSystem
 name|fs
@@ -474,12 +478,6 @@ operator|.
 name|fs
 operator|=
 name|fs
-expr_stmt|;
-name|this
-operator|.
-name|provider
-operator|=
-name|provider
 expr_stmt|;
 name|this
 operator|.
@@ -853,6 +851,21 @@ name|environment
 operator|=
 name|envDescription
 expr_stmt|;
+name|ProviderService
+name|provider
+init|=
+name|SliderProviderFactory
+operator|.
+name|getProviderService
+argument_list|(
+name|role
+operator|.
+name|component
+operator|.
+name|getArtifact
+argument_list|()
+argument_list|)
+decl_stmt|;
 name|provider
 operator|.
 name|buildContainerLaunchContext
@@ -882,8 +895,6 @@ argument_list|()
 operator|.
 name|getPropertyLong
 argument_list|(
-name|AgentKeys
-operator|.
 name|KEY_CONTAINER_LAUNCH_DELAY
 argument_list|,
 literal|0

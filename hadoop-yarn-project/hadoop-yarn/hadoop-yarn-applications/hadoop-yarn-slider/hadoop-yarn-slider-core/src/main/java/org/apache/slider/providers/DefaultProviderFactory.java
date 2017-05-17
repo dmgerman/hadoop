@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.slider.providers.docker
+DECL|package|org.apache.slider.providers
 package|package
 name|org
 operator|.
@@ -13,58 +13,15 @@ operator|.
 name|slider
 operator|.
 name|providers
-operator|.
-name|docker
 package|;
 end_package
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|providers
-operator|.
-name|AbstractClientProvider
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|providers
-operator|.
-name|ProviderService
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|providers
-operator|.
-name|SliderProviderFactory
-import|;
-end_import
-
 begin_class
-DECL|class|DockerProviderFactory
+DECL|class|DefaultProviderFactory
 specifier|public
+specifier|final
 class|class
-name|DockerProviderFactory
+name|DefaultProviderFactory
 extends|extends
 name|SliderProviderFactory
 block|{
@@ -76,14 +33,14 @@ name|SliderProviderFactory
 name|FACTORY
 init|=
 operator|new
-name|DockerProviderFactory
+name|DefaultProviderFactory
 argument_list|()
 decl_stmt|;
-DECL|method|DockerProviderFactory ()
+DECL|method|DefaultProviderFactory ()
 specifier|private
-name|DockerProviderFactory
+name|DefaultProviderFactory
 parameter_list|()
-block|{   }
+block|{}
 DECL|class|Client
 specifier|private
 specifier|static
@@ -97,7 +54,7 @@ name|AbstractClientProvider
 name|PROVIDER
 init|=
 operator|new
-name|DockerClientProvider
+name|DefaultClientProvider
 argument_list|()
 decl_stmt|;
 block|}
@@ -114,7 +71,7 @@ name|ProviderService
 name|PROVIDER
 init|=
 operator|new
-name|DockerProviderService
+name|DefaultProviderService
 argument_list|()
 decl_stmt|;
 block|}

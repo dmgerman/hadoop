@@ -402,20 +402,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|providers
-operator|.
-name|AbstractClientProvider
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -463,17 +449,6 @@ throws|throws
 name|YarnException
 throws|,
 name|IOException
-function_decl|;
-comment|/**    * Get the provider for this cluster    * @param provider the name of the provider    * @return the provider instance    * @throws SliderException problems building the provider    */
-DECL|method|createClientProvider (String provider)
-name|AbstractClientProvider
-name|createClientProvider
-parameter_list|(
-name|String
-name|provider
-parameter_list|)
-throws|throws
-name|SliderException
 function_decl|;
 comment|/**    * Manage keytabs leveraged by slider    *    * @param keytabInfo the arguments needed to manage the keytab    * @throws YarnException Yarn problems    * @throws IOException other problems    * @throws BadCommandArgumentsException bad arguments.    */
 DECL|method|actionKeytab (ActionKeytabArgs keytabInfo)
