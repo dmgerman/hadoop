@@ -3634,6 +3634,10 @@ name|LOG
 operator|.
 name|isDebugEnabled
 argument_list|()
+operator|&&
+name|builder
+operator|!=
+literal|null
 condition|)
 block|{
 name|builder
@@ -3831,6 +3835,10 @@ name|LOG
 operator|.
 name|isDebugEnabled
 argument_list|()
+operator|&&
+name|builder
+operator|!=
+literal|null
 condition|)
 block|{
 name|builder
