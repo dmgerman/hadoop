@@ -1276,6 +1276,42 @@ name|tempConf
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|setConf (Configuration conf)
+specifier|public
+name|void
+name|setConf
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+if|if
+condition|(
+literal|null
+operator|!=
+name|conf
+condition|)
+block|{
+comment|// Override setConf to make sure all conf added load sls-runner.xml, see
+comment|// YARN-6560
+name|conf
+operator|.
+name|addResource
+argument_list|(
+literal|"sls-runner.xml"
+argument_list|)
+expr_stmt|;
+block|}
+name|super
+operator|.
+name|setConf
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|init (Configuration tempConf)
 specifier|private
 name|void
@@ -1316,15 +1352,6 @@ argument_list|<>
 argument_list|()
 expr_stmt|;
 comment|// runner configuration
-name|tempConf
-operator|.
-name|addResource
-argument_list|(
-literal|"sls-runner.xml"
-argument_list|)
-expr_stmt|;
-name|super
-operator|.
 name|setConf
 argument_list|(
 name|tempConf
