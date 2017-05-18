@@ -256,7 +256,23 @@ name|impl
 operator|.
 name|client
 operator|.
-name|DefaultHttpClient
+name|CloseableHttpClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|http
+operator|.
+name|impl
+operator|.
+name|client
+operator|.
+name|HttpClients
 import|;
 end_import
 
@@ -607,11 +623,12 @@ name|OzoneException
 block|{
 try|try
 block|{
-name|DefaultHttpClient
+name|CloseableHttpClient
 name|httpClient
 init|=
-operator|new
-name|DefaultHttpClient
+name|HttpClients
+operator|.
+name|createDefault
 argument_list|()
 decl_stmt|;
 name|OzoneUtils
@@ -724,11 +741,12 @@ name|OzoneException
 block|{
 try|try
 block|{
-name|DefaultHttpClient
+name|CloseableHttpClient
 name|httpClient
 init|=
-operator|new
-name|DefaultHttpClient
+name|HttpClients
+operator|.
+name|createDefault
 argument_list|()
 decl_stmt|;
 name|OzoneUtils
@@ -838,11 +856,12 @@ name|OzoneException
 block|{
 try|try
 block|{
-name|DefaultHttpClient
+name|CloseableHttpClient
 name|httpClient
 init|=
-operator|new
-name|DefaultHttpClient
+name|HttpClients
+operator|.
+name|createDefault
 argument_list|()
 decl_stmt|;
 name|URIBuilder
@@ -1046,11 +1065,12 @@ name|OzoneException
 block|{
 try|try
 block|{
-name|DefaultHttpClient
+name|CloseableHttpClient
 name|httpClient
 init|=
-operator|new
-name|DefaultHttpClient
+name|HttpClients
+operator|.
+name|createDefault
 argument_list|()
 decl_stmt|;
 name|URIBuilder
@@ -1209,11 +1229,12 @@ name|OzoneException
 block|{
 try|try
 block|{
-name|DefaultHttpClient
+name|CloseableHttpClient
 name|httpClient
 init|=
-operator|new
-name|DefaultHttpClient
+name|HttpClients
+operator|.
+name|createDefault
 argument_list|()
 decl_stmt|;
 name|OzoneUtils
@@ -1322,11 +1343,12 @@ throw|;
 block|}
 try|try
 block|{
-name|DefaultHttpClient
+name|CloseableHttpClient
 name|httpClient
 init|=
-operator|new
-name|DefaultHttpClient
+name|HttpClients
+operator|.
+name|createDefault
 argument_list|()
 decl_stmt|;
 name|OzoneUtils
@@ -1446,11 +1468,12 @@ throw|;
 block|}
 try|try
 block|{
-name|DefaultHttpClient
+name|CloseableHttpClient
 name|httpClient
 init|=
-operator|new
-name|DefaultHttpClient
+name|HttpClients
+operator|.
+name|createDefault
 argument_list|()
 decl_stmt|;
 name|OzoneUtils
@@ -1532,7 +1555,7 @@ throw|;
 block|}
 block|}
 comment|/**    * Sends the create Volume request to the server.    *    * @param httppost   - http post class    * @param httpClient - httpClient    * @throws IOException    -    * @throws OzoneException    */
-DECL|method|executeCreateVolume (HttpPost httppost, DefaultHttpClient httpClient)
+DECL|method|executeCreateVolume (HttpPost httppost, CloseableHttpClient httpClient)
 specifier|private
 name|void
 name|executeCreateVolume
@@ -1540,7 +1563,7 @@ parameter_list|(
 name|HttpPost
 name|httppost
 parameter_list|,
-name|DefaultHttpClient
+name|CloseableHttpClient
 name|httpClient
 parameter_list|)
 throws|throws
@@ -1652,7 +1675,7 @@ block|}
 block|}
 block|}
 comment|/**    * Sends the create Volume request to the server.    *    * @param httpGet - httpGet    * @return OzoneVolume    * @throws IOException    -    * @throws OzoneException    */
-DECL|method|executeInfoVolume (HttpGet httpGet, DefaultHttpClient httpClient)
+DECL|method|executeInfoVolume (HttpGet httpGet, CloseableHttpClient httpClient)
 specifier|private
 name|OzoneVolume
 name|executeInfoVolume
@@ -1660,7 +1683,7 @@ parameter_list|(
 name|HttpGet
 name|httpGet
 parameter_list|,
-name|DefaultHttpClient
+name|CloseableHttpClient
 name|httpClient
 parameter_list|)
 throws|throws
@@ -1787,7 +1810,7 @@ block|}
 block|}
 block|}
 comment|/**    * Sends update volume requests to the server.    *    * @param putRequest http request    * @throws IOException    * @throws OzoneException    */
-DECL|method|executePutVolume (HttpPut putRequest, DefaultHttpClient httpClient)
+DECL|method|executePutVolume (HttpPut putRequest, CloseableHttpClient httpClient)
 specifier|private
 name|void
 name|executePutVolume
@@ -1795,7 +1818,7 @@ parameter_list|(
 name|HttpPut
 name|putRequest
 parameter_list|,
-name|DefaultHttpClient
+name|CloseableHttpClient
 name|httpClient
 parameter_list|)
 throws|throws
@@ -1880,7 +1903,7 @@ block|}
 block|}
 block|}
 comment|/**    * List Volumes.    *    * @param httpGet - httpGet    * @return OzoneVolume    * @throws IOException    -    * @throws OzoneException    */
-DECL|method|executeListVolume (HttpGet httpGet, DefaultHttpClient httpClient)
+DECL|method|executeListVolume (HttpGet httpGet, CloseableHttpClient httpClient)
 specifier|private
 name|List
 argument_list|<
@@ -1891,7 +1914,7 @@ parameter_list|(
 name|HttpGet
 name|httpGet
 parameter_list|,
-name|DefaultHttpClient
+name|CloseableHttpClient
 name|httpClient
 parameter_list|)
 throws|throws
@@ -2053,7 +2076,7 @@ block|}
 block|}
 block|}
 comment|/**    * Delete Volume.    *    * @param httpDelete - Http Delete Request    * @throws IOException    * @throws OzoneException    */
-DECL|method|executeDeleteVolume (HttpDelete httpDelete, DefaultHttpClient httpClient)
+DECL|method|executeDeleteVolume (HttpDelete httpDelete, CloseableHttpClient httpClient)
 specifier|private
 name|void
 name|executeDeleteVolume
@@ -2061,7 +2084,7 @@ parameter_list|(
 name|HttpDelete
 name|httpDelete
 parameter_list|,
-name|DefaultHttpClient
+name|CloseableHttpClient
 name|httpClient
 parameter_list|)
 throws|throws

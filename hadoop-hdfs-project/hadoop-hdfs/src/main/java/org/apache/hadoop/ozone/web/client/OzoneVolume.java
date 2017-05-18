@@ -290,7 +290,23 @@ name|impl
 operator|.
 name|client
 operator|.
-name|DefaultHttpClient
+name|CloseableHttpClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|http
+operator|.
+name|impl
+operator|.
+name|client
+operator|.
+name|HttpClients
 import|;
 end_import
 
@@ -640,11 +656,12 @@ argument_list|(
 name|bucketName
 argument_list|)
 expr_stmt|;
-name|DefaultHttpClient
+name|CloseableHttpClient
 name|httpClient
 init|=
-operator|new
-name|DefaultHttpClient
+name|HttpClients
+operator|.
+name|createDefault
 argument_list|()
 decl_stmt|;
 name|URIBuilder
@@ -893,7 +910,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * execute a Create Bucket Request against Ozone server.    *    * @param httppost - httpPost    *    * @throws IOException    * @throws OzoneException    */
-DECL|method|executeCreateBucket (HttpPost httppost, DefaultHttpClient httpClient)
+DECL|method|executeCreateBucket (HttpPost httppost, CloseableHttpClient httpClient)
 specifier|private
 name|void
 name|executeCreateBucket
@@ -901,7 +918,7 @@ parameter_list|(
 name|HttpPost
 name|httppost
 parameter_list|,
-name|DefaultHttpClient
+name|CloseableHttpClient
 name|httpClient
 parameter_list|)
 throws|throws
@@ -1037,11 +1054,12 @@ argument_list|(
 name|bucketName
 argument_list|)
 expr_stmt|;
-name|DefaultHttpClient
+name|CloseableHttpClient
 name|httpClient
 init|=
-operator|new
-name|DefaultHttpClient
+name|HttpClients
+operator|.
+name|createDefault
 argument_list|()
 decl_stmt|;
 name|URIBuilder
@@ -1166,11 +1184,12 @@ argument_list|(
 name|bucketName
 argument_list|)
 expr_stmt|;
-name|DefaultHttpClient
+name|CloseableHttpClient
 name|httpClient
 init|=
-operator|new
-name|DefaultHttpClient
+name|HttpClients
+operator|.
+name|createDefault
 argument_list|()
 decl_stmt|;
 name|URIBuilder
@@ -1291,11 +1310,12 @@ argument_list|(
 name|bucketName
 argument_list|)
 expr_stmt|;
-name|DefaultHttpClient
+name|CloseableHttpClient
 name|httpClient
 init|=
-operator|new
-name|DefaultHttpClient
+name|HttpClients
+operator|.
+name|createDefault
 argument_list|()
 decl_stmt|;
 name|URIBuilder
@@ -1384,7 +1404,7 @@ throw|;
 block|}
 block|}
 comment|/**    * Execute the info bucket call.    *    * @param getRequest - httpGet Request    * @param httpClient - Http Client    *    * @return OzoneBucket    *    * @throws IOException    * @throws OzoneException    */
-DECL|method|executeInfoBucket (HttpGet getRequest, DefaultHttpClient httpClient)
+DECL|method|executeInfoBucket (HttpGet getRequest, CloseableHttpClient httpClient)
 specifier|private
 name|OzoneBucket
 name|executeInfoBucket
@@ -1392,7 +1412,7 @@ parameter_list|(
 name|HttpGet
 name|getRequest
 parameter_list|,
-name|DefaultHttpClient
+name|CloseableHttpClient
 name|httpClient
 parameter_list|)
 throws|throws
@@ -1524,7 +1544,7 @@ block|}
 block|}
 block|}
 comment|/**    * Execute the put bucket call.    *    * @param putRequest - http put request    * @param httpClient - Http Client    *    * @return OzoneBucket    *    * @throws IOException    * @throws OzoneException    */
-DECL|method|executePutBucket (HttpPut putRequest, DefaultHttpClient httpClient)
+DECL|method|executePutBucket (HttpPut putRequest, CloseableHttpClient httpClient)
 specifier|private
 name|void
 name|executePutBucket
@@ -1532,7 +1552,7 @@ parameter_list|(
 name|HttpPut
 name|putRequest
 parameter_list|,
-name|DefaultHttpClient
+name|CloseableHttpClient
 name|httpClient
 parameter_list|)
 throws|throws
@@ -1646,11 +1666,12 @@ name|OzoneException
 block|{
 try|try
 block|{
-name|DefaultHttpClient
+name|CloseableHttpClient
 name|httpClient
 init|=
-operator|new
-name|DefaultHttpClient
+name|HttpClients
+operator|.
+name|createDefault
 argument_list|()
 decl_stmt|;
 name|URIBuilder
@@ -1722,7 +1743,7 @@ throw|;
 block|}
 block|}
 comment|/**    * executes the List Bucket Call.    *    * @param getRequest - http Request    * @param httpClient - http Client    *    * @return List of OzoneBuckets    *    * @throws IOException    * @throws OzoneException    */
-DECL|method|executeListBuckets (HttpGet getRequest, DefaultHttpClient httpClient)
+DECL|method|executeListBuckets (HttpGet getRequest, CloseableHttpClient httpClient)
 specifier|private
 name|List
 argument_list|<
@@ -1733,7 +1754,7 @@ parameter_list|(
 name|HttpGet
 name|getRequest
 parameter_list|,
-name|DefaultHttpClient
+name|CloseableHttpClient
 name|httpClient
 parameter_list|)
 throws|throws
@@ -1912,11 +1933,12 @@ argument_list|(
 name|bucketName
 argument_list|)
 expr_stmt|;
-name|DefaultHttpClient
+name|CloseableHttpClient
 name|httpClient
 init|=
-operator|new
-name|DefaultHttpClient
+name|HttpClients
+operator|.
+name|createDefault
 argument_list|()
 decl_stmt|;
 name|URIBuilder
@@ -1993,7 +2015,7 @@ throw|;
 block|}
 block|}
 comment|/**    * Executes delete bucket call.    *    * @param delRequest - Delete Request    * @param httpClient - Http Client 7   *    * @throws IOException    * @throws OzoneException    */
-DECL|method|executeDeleteBucket (HttpDelete delRequest, DefaultHttpClient httpClient)
+DECL|method|executeDeleteBucket (HttpDelete delRequest, CloseableHttpClient httpClient)
 specifier|private
 name|void
 name|executeDeleteBucket
@@ -2001,7 +2023,7 @@ parameter_list|(
 name|HttpDelete
 name|delRequest
 parameter_list|,
-name|DefaultHttpClient
+name|CloseableHttpClient
 name|httpClient
 parameter_list|)
 throws|throws

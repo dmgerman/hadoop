@@ -1204,7 +1204,7 @@ argument_list|(
 name|value
 argument_list|)
 operator|.
-name|getHostText
+name|getHost
 argument_list|()
 argument_list|)
 return|;

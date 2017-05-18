@@ -172,7 +172,7 @@ name|impl
 operator|.
 name|client
 operator|.
-name|HttpClientBuilder
+name|HttpClients
 import|;
 end_import
 
@@ -283,12 +283,9 @@ name|createHttpClient
 parameter_list|()
 block|{
 return|return
-name|HttpClientBuilder
+name|HttpClients
 operator|.
-name|create
-argument_list|()
-operator|.
-name|build
+name|createDefault
 argument_list|()
 return|;
 block|}

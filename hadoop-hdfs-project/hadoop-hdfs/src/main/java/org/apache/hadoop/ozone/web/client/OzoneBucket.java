@@ -314,7 +314,23 @@ name|impl
 operator|.
 name|client
 operator|.
-name|DefaultHttpClient
+name|CloseableHttpClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|http
+operator|.
+name|impl
+operator|.
+name|client
+operator|.
+name|HttpClients
 import|;
 end_import
 
@@ -329,20 +345,6 @@ operator|.
 name|util
 operator|.
 name|EntityUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|javax
-operator|.
-name|ws
-operator|.
-name|rs
-operator|.
-name|core
-operator|.
-name|HttpHeaders
 import|;
 end_import
 
@@ -739,11 +741,12 @@ operator|.
 name|getClient
 argument_list|()
 decl_stmt|;
-name|DefaultHttpClient
+name|CloseableHttpClient
 name|httpClient
 init|=
-operator|new
-name|DefaultHttpClient
+name|HttpClients
+operator|.
+name|createDefault
 argument_list|()
 decl_stmt|;
 name|URIBuilder
@@ -1004,11 +1007,12 @@ operator|.
 name|getClient
 argument_list|()
 decl_stmt|;
-name|DefaultHttpClient
+name|CloseableHttpClient
 name|httpClient
 init|=
-operator|new
-name|DefaultHttpClient
+name|HttpClients
+operator|.
+name|createDefault
 argument_list|()
 decl_stmt|;
 name|URIBuilder
@@ -1118,42 +1122,6 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-name|putRequest
-operator|.
-name|setHeader
-argument_list|(
-name|HttpHeaders
-operator|.
-name|CONTENT_LENGTH
-argument_list|,
-name|Long
-operator|.
-name|toString
-argument_list|(
-name|file
-operator|.
-name|length
-argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|httpClient
-operator|.
-name|removeRequestInterceptorByClass
-argument_list|(
-name|org
-operator|.
-name|apache
-operator|.
-name|http
-operator|.
-name|protocol
-operator|.
-name|RequestContent
-operator|.
-name|class
-argument_list|)
-expr_stmt|;
 name|executePutKey
 argument_list|(
 name|putRequest
@@ -1183,7 +1151,7 @@ throw|;
 block|}
 block|}
 comment|/**    * executePutKey executes the Put request against the Ozone Server.    *    * @param putRequest - Http Put Request    * @param httpClient - httpClient    * @throws OzoneException    * @throws IOException    */
-DECL|method|executePutKey (HttpPut putRequest, DefaultHttpClient httpClient)
+DECL|method|executePutKey (HttpPut putRequest, CloseableHttpClient httpClient)
 specifier|private
 name|void
 name|executePutKey
@@ -1191,7 +1159,7 @@ parameter_list|(
 name|HttpPut
 name|putRequest
 parameter_list|,
-name|DefaultHttpClient
+name|CloseableHttpClient
 name|httpClient
 parameter_list|)
 throws|throws
@@ -1362,11 +1330,12 @@ operator|.
 name|getClient
 argument_list|()
 decl_stmt|;
-name|DefaultHttpClient
+name|CloseableHttpClient
 name|httpClient
 init|=
-operator|new
-name|DefaultHttpClient
+name|HttpClients
+operator|.
+name|createDefault
 argument_list|()
 decl_stmt|;
 name|FileOutputStream
@@ -1530,11 +1499,12 @@ operator|new
 name|ByteArrayOutputStream
 argument_list|()
 decl_stmt|;
-name|DefaultHttpClient
+name|CloseableHttpClient
 name|httpClient
 init|=
-operator|new
-name|DefaultHttpClient
+name|HttpClients
+operator|.
+name|createDefault
 argument_list|()
 decl_stmt|;
 name|URIBuilder
@@ -1633,7 +1603,7 @@ throw|;
 block|}
 block|}
 comment|/**    * Executes get key and returns the data.    *    * @param getRequest - http Get Request    * @param httpClient - Client    * @param stream     - Stream to write data to.    * @throws IOException    * @throws OzoneException    */
-DECL|method|executeGetKey (HttpGet getRequest, DefaultHttpClient httpClient, OutputStream stream)
+DECL|method|executeGetKey (HttpGet getRequest, CloseableHttpClient httpClient, OutputStream stream)
 specifier|private
 name|void
 name|executeGetKey
@@ -1641,7 +1611,7 @@ parameter_list|(
 name|HttpGet
 name|getRequest
 parameter_list|,
-name|DefaultHttpClient
+name|CloseableHttpClient
 name|httpClient
 parameter_list|,
 name|OutputStream
@@ -1796,11 +1766,12 @@ operator|.
 name|getClient
 argument_list|()
 decl_stmt|;
-name|DefaultHttpClient
+name|CloseableHttpClient
 name|httpClient
 init|=
-operator|new
-name|DefaultHttpClient
+name|HttpClients
+operator|.
+name|createDefault
 argument_list|()
 decl_stmt|;
 name|URIBuilder
@@ -1889,7 +1860,7 @@ throw|;
 block|}
 block|}
 comment|/**    * Executes deleteKey.    *    * @param deleteRequest - http Delete Request    * @param httpClient    - Client    * @throws IOException    * @throws OzoneException    */
-DECL|method|executeDeleteKey (HttpDelete deleteRequest, DefaultHttpClient httpClient)
+DECL|method|executeDeleteKey (HttpDelete deleteRequest, CloseableHttpClient httpClient)
 specifier|private
 name|void
 name|executeDeleteKey
@@ -1897,7 +1868,7 @@ parameter_list|(
 name|HttpDelete
 name|deleteRequest
 parameter_list|,
-name|DefaultHttpClient
+name|CloseableHttpClient
 name|httpClient
 parameter_list|)
 throws|throws
@@ -2020,11 +1991,12 @@ operator|.
 name|getClient
 argument_list|()
 decl_stmt|;
-name|DefaultHttpClient
+name|CloseableHttpClient
 name|httpClient
 init|=
-operator|new
-name|DefaultHttpClient
+name|HttpClients
+operator|.
+name|createDefault
 argument_list|()
 decl_stmt|;
 name|URIBuilder
@@ -2106,7 +2078,7 @@ throw|;
 block|}
 block|}
 comment|/**    * Execute list Key.    *    * @param getRequest - HttpGet    * @param httpClient - HttpClient    * @return List<OzoneKey>    * @throws IOException    * @throws OzoneException    */
-DECL|method|executeListKeys (HttpGet getRequest, DefaultHttpClient httpClient)
+DECL|method|executeListKeys (HttpGet getRequest, CloseableHttpClient httpClient)
 specifier|private
 name|List
 argument_list|<
@@ -2117,7 +2089,7 @@ parameter_list|(
 name|HttpGet
 name|getRequest
 parameter_list|,
-name|DefaultHttpClient
+name|CloseableHttpClient
 name|httpClient
 parameter_list|)
 throws|throws
