@@ -30,6 +30,22 @@ name|ksm
 operator|.
 name|helpers
 operator|.
+name|KsmBucketArgs
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ksm
+operator|.
+name|helpers
+operator|.
 name|KsmVolumeArgs
 import|;
 end_import
@@ -59,10 +75,10 @@ comment|/**  * Protocol to talk to KSM.  */
 end_comment
 
 begin_interface
-DECL|interface|KeyspaceManagerProtocol
+DECL|interface|KeySpaceManagerProtocol
 specifier|public
 interface|interface
-name|KeyspaceManagerProtocol
+name|KeySpaceManagerProtocol
 block|{
 comment|/**    * Creates a volume.    * @param args - Arguments to create Volume.    * @throws IOException    */
 DECL|method|createVolume (KsmVolumeArgs args)
@@ -178,6 +194,17 @@ name|prevKey
 parameter_list|,
 name|long
 name|maxKeys
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Creates a bucket.    * @param args - Arguments to create Bucket.    * @throws IOException    */
+DECL|method|createBucket (KsmBucketArgs args)
+name|void
+name|createBucket
+parameter_list|(
+name|KsmBucketArgs
+name|args
 parameter_list|)
 throws|throws
 name|IOException

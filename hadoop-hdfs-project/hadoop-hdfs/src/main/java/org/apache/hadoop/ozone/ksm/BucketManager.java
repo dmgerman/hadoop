@@ -30,40 +30,48 @@ name|ksm
 operator|.
 name|helpers
 operator|.
-name|KsmVolumeArgs
+name|KsmBucketArgs
 import|;
 end_import
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|io
+name|apache
 operator|.
-name|IOException
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|ksm
+operator|.
+name|exceptions
+operator|.
+name|KSMException
 import|;
 end_import
 
 begin_comment
-comment|/**  * KSM volume manager interface.  */
+comment|/**  * BucketManager handles all the bucket level operations.  */
 end_comment
 
 begin_interface
-DECL|interface|VolumeManager
+DECL|interface|BucketManager
 specifier|public
 interface|interface
-name|VolumeManager
+name|BucketManager
 block|{
-comment|/**    * Create a new volume.    * @param args - Volume args to create a volume    */
-DECL|method|createVolume (KsmVolumeArgs args)
+comment|/**    * Creates a bucket.    * @param args - KsmBucketArgs for creating bucket.    */
+DECL|method|createBucket (KsmBucketArgs args)
 name|void
-name|createVolume
+name|createBucket
 parameter_list|(
-name|KsmVolumeArgs
+name|KsmBucketArgs
 name|args
 parameter_list|)
 throws|throws
-name|IOException
+name|KSMException
 function_decl|;
 block|}
 end_interface

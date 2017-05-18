@@ -62,7 +62,7 @@ name|proto
 operator|.
 name|KeySpaceManagerProtocolProtos
 operator|.
-name|KeyspaceManagerService
+name|KeySpaceManagerService
 import|;
 end_import
 
@@ -76,7 +76,7 @@ name|ProtocolInfo
 argument_list|(
 name|protocolName
 operator|=
-literal|"org.apache.hadoop.ozone.protocol.KeyspaceManagerProtocol"
+literal|"org.apache.hadoop.ozone.protocol.KeySpaceManagerProtocol"
 argument_list|,
 name|protocolVersion
 operator|=
@@ -91,7 +91,7 @@ specifier|public
 interface|interface
 name|KeySpaceManagerProtocolPB
 extends|extends
-name|KeyspaceManagerService
+name|KeySpaceManagerService
 operator|.
 name|BlockingInterface
 block|{ }

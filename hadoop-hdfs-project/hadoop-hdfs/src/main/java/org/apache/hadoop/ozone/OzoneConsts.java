@@ -419,6 +419,16 @@ name|OZONE_HANDLER_LOCAL
 init|=
 literal|"local"
 decl_stmt|;
+comment|/**    * Ozone metadata key delimiter.    */
+DECL|field|DB_KEY_DELIMITER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DB_KEY_DELIMITER
+init|=
+literal|"/"
+decl_stmt|;
 DECL|method|OzoneConsts ()
 specifier|private
 name|OzoneConsts

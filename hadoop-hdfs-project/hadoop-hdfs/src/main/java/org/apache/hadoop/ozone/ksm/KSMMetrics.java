@@ -112,6 +112,13 @@ name|Metric
 name|MutableCounterLong
 name|numVolumeCreates
 decl_stmt|;
+DECL|field|numBucketCreates
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numBucketCreates
+decl_stmt|;
 comment|// Failure Metrics
 DECL|field|numVolumeCreateFails
 specifier|private
@@ -119,6 +126,13 @@ annotation|@
 name|Metric
 name|MutableCounterLong
 name|numVolumeCreateFails
+decl_stmt|;
+DECL|field|numBucketCreateFails
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numBucketCreateFails
 decl_stmt|;
 DECL|method|KSMMetrics ()
 specifier|public
@@ -167,6 +181,18 @@ name|incr
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|incNumBucketCreates ()
+specifier|public
+name|void
+name|incNumBucketCreates
+parameter_list|()
+block|{
+name|numBucketCreates
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
 DECL|method|incNumVolumeCreateFails ()
 specifier|public
 name|void
@@ -174,6 +200,18 @@ name|incNumVolumeCreateFails
 parameter_list|()
 block|{
 name|numVolumeCreates
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumBucketCreateFails ()
+specifier|public
+name|void
+name|incNumBucketCreateFails
+parameter_list|()
+block|{
+name|numBucketCreateFails
 operator|.
 name|incr
 argument_list|()
@@ -196,6 +234,21 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
+DECL|method|getNumBucketCreates ()
+specifier|public
+name|long
+name|getNumBucketCreates
+parameter_list|()
+block|{
+return|return
+name|numBucketCreates
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getNumVolumeCreateFails ()
 specifier|public
 name|long
@@ -204,6 +257,21 @@ parameter_list|()
 block|{
 return|return
 name|numVolumeCreateFails
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumBucketCreateFails ()
+specifier|public
+name|long
+name|getNumBucketCreateFails
+parameter_list|()
+block|{
+return|return
+name|numBucketCreateFails
 operator|.
 name|value
 argument_list|()
