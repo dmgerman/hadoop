@@ -406,6 +406,22 @@ name|s3
 operator|.
 name|model
 operator|.
+name|MultiObjectDeleteException
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|amazonaws
+operator|.
+name|services
+operator|.
+name|s3
+operator|.
+name|model
+operator|.
 name|ObjectListing
 import|;
 end_import
@@ -2471,8 +2487,9 @@ name|inputPolicy
 expr_stmt|;
 block|}
 comment|/**    * Turns a path (relative or otherwise) into an S3 key.    *    * @param path input path, may be relative to the working dir    * @return a key excluding the leading "/", or, if it is the root path, ""    */
+annotation|@
+name|VisibleForTesting
 DECL|method|pathToKey (Path path)
-specifier|private
 name|String
 name|pathToKey
 parameter_list|(
@@ -4361,7 +4378,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Perform a bulk object delete operation.    * Increments the {@code OBJECT_DELETE_REQUESTS} and write    * operation statistics.    * @param deleteRequest keys to delete on the s3-backend    */
+comment|/**    * Perform a bulk object delete operation.    * Increments the {@code OBJECT_DELETE_REQUESTS} and write    * operation statistics.    * @param deleteRequest keys to delete on the s3-backend    * @throws MultiObjectDeleteException one or more of the keys could not    * be deleted.    * @throws AmazonClientException amazon-layer failure.    */
 DECL|method|deleteObjects (DeleteObjectsRequest deleteRequest)
 specifier|private
 name|void
@@ -4370,6 +4387,10 @@ parameter_list|(
 name|DeleteObjectsRequest
 name|deleteRequest
 parameter_list|)
+throws|throws
+name|MultiObjectDeleteException
+throws|,
+name|AmazonClientException
 block|{
 name|incrementWriteOperations
 argument_list|()
@@ -4381,6 +4402,8 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|s3
 operator|.
 name|deleteObjects
@@ -4388,6 +4411,78 @@ argument_list|(
 name|deleteRequest
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|MultiObjectDeleteException
+name|e
+parameter_list|)
+block|{
+comment|// one or more of the operations failed.
+name|List
+argument_list|<
+name|MultiObjectDeleteException
+operator|.
+name|DeleteError
+argument_list|>
+name|errors
+init|=
+name|e
+operator|.
+name|getErrors
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Partial failure of delete, {} errors"
+argument_list|,
+name|errors
+operator|.
+name|size
+argument_list|()
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+for|for
+control|(
+name|MultiObjectDeleteException
+operator|.
+name|DeleteError
+name|error
+range|:
+name|errors
+control|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"{}: \"{}\" - {}"
+argument_list|,
+name|error
+operator|.
+name|getKey
+argument_list|()
+argument_list|,
+name|error
+operator|.
+name|getCode
+argument_list|()
+argument_list|,
+name|error
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+throw|throw
+name|e
+throw|;
+block|}
 block|}
 comment|/**    * Create a putObject request.    * Adds the ACL and metadata    * @param key key of object    * @param metadata metadata header    * @param srcfile source file    * @return the request    */
 DECL|method|newPutObjectRequest (String key, ObjectMetadata metadata, File srcfile)
@@ -4971,9 +5066,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * A helper method to delete a list of keys on a s3-backend.    *    * @param keysToDelete collection of keys to delete on the s3-backend.    *        if empty, no request is made of the object store.    * @param clearKeys clears the keysToDelete-list after processing the list    *            when set to true    * @param deleteFakeDir indicates whether this is for deleting fake dirs    * @throws InvalidRequestException if the request was rejected due to    * a mistaken attempt to delete the root directory.    */
+comment|/**    * A helper method to delete a list of keys on a s3-backend.    *    * @param keysToDelete collection of keys to delete on the s3-backend.    *        if empty, no request is made of the object store.    * @param clearKeys clears the keysToDelete-list after processing the list    *            when set to true    * @param deleteFakeDir indicates whether this is for deleting fake dirs    * @throws InvalidRequestException if the request was rejected due to    * a mistaken attempt to delete the root directory.    * @throws MultiObjectDeleteException one or more of the keys could not    * be deleted in a multiple object delete operation.    * @throws AmazonClientException amazon-layer failure.    */
+annotation|@
+name|VisibleForTesting
 DECL|method|removeKeys (List<DeleteObjectsRequest.KeyVersion> keysToDelete, boolean clearKeys, boolean deleteFakeDir)
-specifier|private
 name|void
 name|removeKeys
 parameter_list|(
@@ -4992,6 +5088,8 @@ name|boolean
 name|deleteFakeDir
 parameter_list|)
 throws|throws
+name|MultiObjectDeleteException
+throws|,
 name|AmazonClientException
 throws|,
 name|InvalidRequestException
