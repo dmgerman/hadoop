@@ -3211,11 +3211,22 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|FileUtils
-operator|.
-name|deleteQuietly
+comment|// Test renaming to an existing file
+name|assertTrue
 argument_list|(
-name|TEST_DIR
+name|targetFile
+operator|.
+name|exists
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|NativeIO
+operator|.
+name|renameTo
+argument_list|(
+name|sourceFile
+argument_list|,
+name|targetFile
 argument_list|)
 expr_stmt|;
 block|}
