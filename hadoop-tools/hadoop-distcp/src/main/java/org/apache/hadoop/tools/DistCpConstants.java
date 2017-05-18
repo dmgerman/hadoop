@@ -396,6 +396,16 @@ name|CONF_LABEL_COPY_LISTING_CLASS
 init|=
 literal|"distcp.copy.listing.class"
 decl_stmt|;
+comment|/* DistCp Copy Buffer Size */
+DECL|field|CONF_LABEL_COPY_BUFFER_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CONF_LABEL_COPY_BUFFER_SIZE
+init|=
+literal|"distcp.copy.buffer.size"
+decl_stmt|;
 comment|/**    * Constants for DistCp return code to shell / consumer of ToolRunner's run    */
 DECL|field|SUCCESS
 specifier|public
@@ -550,6 +560,17 @@ name|String
 name|HDFS_DISTCP_DIFF_DIRECTORY_NAME
 init|=
 literal|".distcp.diff.tmp"
+decl_stmt|;
+DECL|field|COPY_BUFFER_SIZE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|COPY_BUFFER_SIZE_DEFAULT
+init|=
+literal|8
+operator|*
+literal|1024
 decl_stmt|;
 block|}
 end_class

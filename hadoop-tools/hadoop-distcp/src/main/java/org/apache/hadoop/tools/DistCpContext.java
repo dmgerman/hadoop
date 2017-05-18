@@ -590,6 +590,19 @@ operator|>
 literal|0
 return|;
 block|}
+DECL|method|getCopyBufferSize ()
+specifier|public
+name|int
+name|getCopyBufferSize
+parameter_list|()
+block|{
+return|return
+name|options
+operator|.
+name|getCopyBufferSize
+argument_list|()
+return|;
+block|}
 DECL|method|setTargetPathExists (boolean targetPathExists)
 specifier|public
 name|void

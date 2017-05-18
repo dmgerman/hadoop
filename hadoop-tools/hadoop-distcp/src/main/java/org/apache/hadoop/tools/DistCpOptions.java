@@ -396,6 +396,12 @@ specifier|final
 name|int
 name|blocksPerChunk
 decl_stmt|;
+DECL|field|copyBufferSize
+specifier|private
+specifier|final
+name|int
+name|copyBufferSize
+decl_stmt|;
 comment|/**    * File attributes for preserve.    *    * Each enum entry uses the first char as its symbol.    */
 DECL|enum|FileAttribute
 specifier|public
@@ -693,6 +699,14 @@ name|builder
 operator|.
 name|blocksPerChunk
 expr_stmt|;
+name|this
+operator|.
+name|copyBufferSize
+operator|=
+name|builder
+operator|.
+name|copyBufferSize
+expr_stmt|;
 block|}
 DECL|method|getSourceFileListing ()
 specifier|public
@@ -976,7 +990,7 @@ name|preserveStatus
 argument_list|)
 return|;
 block|}
-comment|/**    * Checks if the input attribute should be preserved or not    *    * @param attribute - Attribute to check    * @return True if attribute should be preserved, false otherwise    */
+comment|/**    * Checks if the input attribute should be preserved or not.    *    * @param attribute - Attribute to check    * @return True if attribute should be preserved, false otherwise    */
 DECL|method|shouldPreserve (FileAttribute attribute)
 specifier|public
 name|boolean
@@ -1003,6 +1017,16 @@ parameter_list|()
 block|{
 return|return
 name|blocksPerChunk
+return|;
+block|}
+DECL|method|getCopyBufferSize ()
+specifier|public
+name|int
+name|getCopyBufferSize
+parameter_list|()
+block|{
+return|return
+name|copyBufferSize
 return|;
 block|}
 comment|/**    * Add options to configuration. These will be used in the Mapper/committer    *    * @param conf - Configuration object to which the options need to be added    */
@@ -1260,6 +1284,24 @@ name|blocksPerChunk
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|DistCpOptionSwitch
+operator|.
+name|addToConf
+argument_list|(
+name|conf
+argument_list|,
+name|DistCpOptionSwitch
+operator|.
+name|COPY_BUFFER_SIZE
+argument_list|,
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|copyBufferSize
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Utility to easily string-ify Options, for logging.    *    * @return String representation of the Options.    */
 annotation|@
@@ -1372,6 +1414,10 @@ operator|+
 literal|", blocksPerChunk="
 operator|+
 name|blocksPerChunk
+operator|+
+literal|", copyBufferSize="
+operator|+
+name|copyBufferSize
 operator|+
 literal|'}'
 return|;
@@ -1553,6 +1599,15 @@ name|int
 name|blocksPerChunk
 init|=
 literal|0
+decl_stmt|;
+DECL|field|copyBufferSize
+specifier|private
+name|int
+name|copyBufferSize
+init|=
+name|DistCpConstants
+operator|.
+name|COPY_BUFFER_SIZE_DEFAULT
 decl_stmt|;
 DECL|method|Builder (List<Path> sourcePaths, Path targetPath)
 specifier|public
@@ -2507,6 +2562,33 @@ operator|.
 name|blocksPerChunk
 operator|=
 name|newBlocksPerChunk
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|withCopyBufferSize (int newCopyBufferSize)
+specifier|public
+name|Builder
+name|withCopyBufferSize
+parameter_list|(
+name|int
+name|newCopyBufferSize
+parameter_list|)
+block|{
+name|this
+operator|.
+name|copyBufferSize
+operator|=
+name|newCopyBufferSize
+operator|>
+literal|0
+condition|?
+name|newCopyBufferSize
+else|:
+name|DistCpConstants
+operator|.
+name|COPY_BUFFER_SIZE_DEFAULT
 expr_stmt|;
 return|return
 name|this

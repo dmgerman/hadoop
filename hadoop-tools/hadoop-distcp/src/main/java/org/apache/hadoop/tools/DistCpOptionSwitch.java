@@ -476,6 +476,33 @@ literal|"system implements concat method"
 argument_list|)
 argument_list|)
 block|,
+comment|/**    * Configurable copy buffer size.    */
+DECL|enumConstant|COPY_BUFFER_SIZE
+name|COPY_BUFFER_SIZE
+argument_list|(
+name|DistCpConstants
+operator|.
+name|CONF_LABEL_COPY_BUFFER_SIZE
+argument_list|,
+operator|new
+name|Option
+argument_list|(
+literal|"copybuffersize"
+argument_list|,
+literal|true
+argument_list|,
+literal|"Size of the copy buffer to use. "
+operator|+
+literal|"By default<copybuffersize> is "
+operator|+
+name|DistCpConstants
+operator|.
+name|COPY_BUFFER_SIZE_DEFAULT
+operator|+
+literal|"B."
+argument_list|)
+argument_list|)
+block|,
 comment|/**    * Specify bandwidth per map in MB, accepts bandwidth as a fraction    */
 DECL|enumConstant|BANDWIDTH
 name|BANDWIDTH
