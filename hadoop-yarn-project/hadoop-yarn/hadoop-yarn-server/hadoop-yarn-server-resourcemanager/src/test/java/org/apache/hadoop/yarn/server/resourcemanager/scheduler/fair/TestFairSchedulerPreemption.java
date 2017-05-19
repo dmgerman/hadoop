@@ -162,6 +162,22 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|SystemClock
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|After
@@ -927,6 +943,21 @@ name|resourceManager
 operator|.
 name|getResourceScheduler
 argument_list|()
+expr_stmt|;
+comment|// YARN-6249, FSLeafQueue#lastTimeAtMinShare is initialized to the time in
+comment|// the real world, so we should keep the clock up with it.
+name|clock
+operator|.
+name|setTime
+argument_list|(
+name|SystemClock
+operator|.
+name|getInstance
+argument_list|()
+operator|.
+name|getTime
+argument_list|()
+argument_list|)
 expr_stmt|;
 name|scheduler
 operator|.
