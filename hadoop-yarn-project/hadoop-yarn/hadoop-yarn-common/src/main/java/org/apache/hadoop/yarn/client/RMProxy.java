@@ -450,11 +450,45 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|user
+specifier|private
+name|UserGroupInformation
+name|user
+decl_stmt|;
 DECL|method|RMProxy ()
 specifier|protected
 name|RMProxy
 parameter_list|()
-block|{}
+block|{
+try|try
+block|{
+name|this
+operator|.
+name|user
+operator|=
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|YarnRuntimeException
+argument_list|(
+literal|"Unable to determine user"
+argument_list|,
+name|ioe
+argument_list|)
+throw|;
+block|}
+block|}
 comment|/**    * Verify the passed protocol is supported.    */
 annotation|@
 name|Private
@@ -503,7 +537,7 @@ block|}
 comment|/**    * Currently, used by Client and AM only    * Create a proxy for the specified protocol. For non-HA,    * this is a direct connection to the ResourceManager address. When HA is    * enabled, the proxy handles the failover between the ResourceManagers as    * well.    */
 annotation|@
 name|Private
-DECL|method|createRMProxy (final Configuration configuration, final Class<T> protocol, RMProxy instance)
+DECL|method|createRMProxy (final Configuration configuration, final Class<T> protocol, RMProxy<T> instance)
 specifier|protected
 specifier|static
 parameter_list|<
@@ -524,6 +558,9 @@ argument_list|>
 name|protocol
 parameter_list|,
 name|RMProxy
+argument_list|<
+name|T
+argument_list|>
 name|instance
 parameter_list|)
 throws|throws
@@ -580,7 +617,7 @@ block|}
 comment|/**    * Currently, used by NodeManagers only.    * Create a proxy for the specified protocol. For non-HA,    * this is a direct connection to the ResourceManager address. When HA is    * enabled, the proxy handles the failover between the ResourceManagers as    * well.    */
 annotation|@
 name|Private
-DECL|method|createRMProxy (final Configuration configuration, final Class<T> protocol, RMProxy instance, final long retryTime, final long retryInterval)
+DECL|method|createRMProxy (final Configuration configuration, final Class<T> protocol, RMProxy<T> instance, final long retryTime, final long retryInterval)
 specifier|protected
 specifier|static
 parameter_list|<
@@ -601,6 +638,9 @@ argument_list|>
 name|protocol
 parameter_list|,
 name|RMProxy
+argument_list|<
+name|T
+argument_list|>
 name|instance
 parameter_list|,
 specifier|final
@@ -666,7 +706,7 @@ name|retryPolicy
 argument_list|)
 return|;
 block|}
-DECL|method|newProxyInstance (final YarnConfiguration conf, final Class<T> protocol, RMProxy instance, RetryPolicy retryPolicy)
+DECL|method|newProxyInstance (final YarnConfiguration conf, final Class<T> protocol, RMProxy<T> instance, RetryPolicy retryPolicy)
 specifier|private
 specifier|static
 parameter_list|<
@@ -687,6 +727,9 @@ argument_list|>
 name|protocol
 parameter_list|,
 name|RMProxy
+argument_list|<
+name|T
+argument_list|>
 name|instance
 parameter_list|,
 name|RetryPolicy
@@ -762,11 +805,8 @@ expr_stmt|;
 name|T
 name|proxy
 init|=
-name|RMProxy
+name|instance
 operator|.
-expr|<
-name|T
-operator|>
 name|getProxy
 argument_list|(
 name|conf
@@ -792,101 +832,14 @@ name|retryPolicy
 argument_list|)
 return|;
 block|}
-block|}
-comment|/**    * @deprecated    * This method is deprecated and is not used by YARN internally any more.    * To create a proxy to the RM, use ClientRMProxy#createRMProxy or    * ServerRMProxy#createRMProxy.    *    * Create a proxy to the ResourceManager at the specified address.    *    * @param conf Configuration to generate retry policy    * @param protocol Protocol for the proxy    * @param rmAddress Address of the ResourceManager    * @param<T> Type information of the proxy    * @return Proxy to the RM    * @throws IOException    */
-annotation|@
-name|Deprecated
-DECL|method|createRMProxy (final Configuration conf, final Class<T> protocol, InetSocketAddress rmAddress)
-specifier|public
-specifier|static
-parameter_list|<
-name|T
-parameter_list|>
-name|T
-name|createRMProxy
-parameter_list|(
-specifier|final
-name|Configuration
-name|conf
-parameter_list|,
-specifier|final
-name|Class
-argument_list|<
-name|T
-argument_list|>
-name|protocol
-parameter_list|,
-name|InetSocketAddress
-name|rmAddress
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|RetryPolicy
-name|retryPolicy
-init|=
-name|createRetryPolicy
-argument_list|(
-name|conf
-argument_list|,
-name|HAUtil
-operator|.
-name|isHAEnabled
-argument_list|(
-name|conf
-argument_list|)
-argument_list|)
-decl_stmt|;
-name|T
-name|proxy
-init|=
-name|RMProxy
-operator|.
-expr|<
-name|T
-operator|>
-name|getProxy
-argument_list|(
-name|conf
-argument_list|,
-name|protocol
-argument_list|,
-name|rmAddress
-argument_list|)
-decl_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Connecting to ResourceManager at "
-operator|+
-name|rmAddress
-argument_list|)
-expr_stmt|;
-return|return
-operator|(
-name|T
-operator|)
-name|RetryProxy
-operator|.
-name|create
-argument_list|(
-name|protocol
-argument_list|,
-name|proxy
-argument_list|,
-name|retryPolicy
-argument_list|)
-return|;
 block|}
 comment|/**    * Get a proxy to the RM at the specified address. To be used to create a    * RetryProxy.    */
 annotation|@
 name|Private
 DECL|method|getProxy (final Configuration conf, final Class<T> protocol, final InetSocketAddress rmAddress)
-specifier|static
-parameter_list|<
+argument_list|<
 name|T
-parameter_list|>
+argument_list|>
 name|T
 name|getProxy
 parameter_list|(
@@ -909,10 +862,7 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|UserGroupInformation
-operator|.
-name|getCurrentUser
-argument_list|()
+name|user
 operator|.
 name|doAs
 argument_list|(

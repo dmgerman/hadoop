@@ -466,7 +466,7 @@ name|protocol
 argument_list|)
 decl_stmt|;
 return|return
-name|RMProxy
+name|rmProxy
 operator|.
 name|getProxy
 argument_list|(

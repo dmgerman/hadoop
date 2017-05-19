@@ -628,11 +628,8 @@ decl_stmt|;
 name|T
 name|proxy
 init|=
-name|RMProxy
+name|rmProxy
 operator|.
-expr|<
-name|T
-operator|>
 name|getProxy
 argument_list|(
 name|conf

@@ -172,17 +172,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|INSTANCE
-specifier|private
-specifier|static
-specifier|final
-name|ServerRMProxy
-name|INSTANCE
-init|=
-operator|new
-name|ServerRMProxy
-argument_list|()
-decl_stmt|;
 DECL|method|ServerRMProxy ()
 specifier|private
 name|ServerRMProxy
@@ -276,6 +265,17 @@ argument_list|,
 name|rmRetryInterval
 argument_list|)
 decl_stmt|;
+name|ServerRMProxy
+argument_list|<
+name|T
+argument_list|>
+name|serverRMProxy
+init|=
+operator|new
+name|ServerRMProxy
+argument_list|<>
+argument_list|()
+decl_stmt|;
 return|return
 name|createRMProxy
 argument_list|(
@@ -283,7 +283,7 @@ name|configuration
 argument_list|,
 name|protocol
 argument_list|,
-name|INSTANCE
+name|serverRMProxy
 argument_list|,
 name|nmRmConnectWait
 argument_list|,
