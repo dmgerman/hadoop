@@ -6760,6 +6760,9 @@ name|timeout
 argument_list|(
 literal|10000
 argument_list|)
+operator|.
+name|atLeastOnce
+argument_list|()
 argument_list|)
 operator|.
 name|compactRange
