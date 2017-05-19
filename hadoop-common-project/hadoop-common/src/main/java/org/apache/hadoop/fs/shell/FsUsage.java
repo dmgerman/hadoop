@@ -820,7 +820,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"[-s] [-h] [-x]<path> ..."
+literal|"[-s] [-h] [-v] [-x]<path> ..."
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|public
@@ -841,6 +841,8 @@ literal|"-h: Formats the sizes of files in a human-readable fashion"
 operator|+
 literal|" rather than a number of bytes.\n"
 operator|+
+literal|"-v: option displays a header line.\n"
+operator|+
 literal|"-x: Excludes snapshots from being counted.\n\n"
 operator|+
 literal|"Note that, even without the -s option, this only shows size "
@@ -855,6 +857,13 @@ DECL|field|summary
 specifier|protected
 name|boolean
 name|summary
+init|=
+literal|false
+decl_stmt|;
+DECL|field|showHeaderLine
+specifier|private
+name|boolean
+name|showHeaderLine
 init|=
 literal|false
 decl_stmt|;
@@ -897,6 +906,8 @@ literal|"h"
 argument_list|,
 literal|"s"
 argument_list|,
+literal|"v"
+argument_list|,
 literal|"x"
 argument_list|)
 decl_stmt|;
@@ -924,6 +935,15 @@ operator|.
 name|getOpt
 argument_list|(
 literal|"s"
+argument_list|)
+expr_stmt|;
+name|showHeaderLine
+operator|=
+name|cf
+operator|.
+name|getOpt
+argument_list|(
+literal|"v"
 argument_list|)
 expr_stmt|;
 name|excludeSnapshots
@@ -968,6 +988,27 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|showHeaderLine
+condition|)
+block|{
+name|setUsagesTable
+argument_list|(
+operator|new
+name|TableBuilder
+argument_list|(
+literal|"SIZE"
+argument_list|,
+literal|"DISK_SPACE_CONSUMED_WITH_ALL_REPLICAS"
+argument_list|,
+literal|"FULL_PATH_NAME"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|setUsagesTable
 argument_list|(
 operator|new
@@ -977,6 +1018,7 @@ literal|3
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 name|super
 operator|.
 name|processArguments
