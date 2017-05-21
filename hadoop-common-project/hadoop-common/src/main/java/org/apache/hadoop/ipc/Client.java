@@ -4904,6 +4904,12 @@ operator|+
 name|call
 operator|.
 name|id
+operator|+
+literal|" "
+operator|+
+name|call
+operator|.
+name|rpcRequest
 argument_list|)
 expr_stmt|;
 block|}
