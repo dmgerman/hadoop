@@ -565,15 +565,13 @@ argument_list|,
 name|tas
 argument_list|,
 name|res
-argument_list|,
-name|partition
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 block|}
 block|}
-DECL|method|deductPreemptableResourcePerApp ( CapacitySchedulerPreemptionContext context, Resource totalPartitionResource, Collection<TempAppPerPartition> tas, Resource res, String partition)
+DECL|method|deductPreemptableResourcePerApp ( CapacitySchedulerPreemptionContext context, Resource totalPartitionResource, Collection<TempAppPerPartition> tas, Resource res)
 specifier|private
 specifier|static
 name|void
@@ -593,9 +591,6 @@ name|tas
 parameter_list|,
 name|Resource
 name|res
-parameter_list|,
-name|String
-name|partition
 parameter_list|)
 block|{
 for|for
@@ -618,8 +613,6 @@ argument_list|,
 name|totalPartitionResource
 argument_list|,
 name|res
-argument_list|,
-name|partition
 argument_list|)
 expr_stmt|;
 block|}
@@ -750,6 +743,16 @@ name|getAllocatedResource
 argument_list|()
 argument_list|,
 name|totalPreemptionAllowed
+argument_list|)
+operator|&&
+operator|!
+name|Resources
+operator|.
+name|isAnyMajorResourceZero
+argument_list|(
+name|rc
+argument_list|,
+name|toObtainByPartition
 argument_list|)
 condition|)
 block|{

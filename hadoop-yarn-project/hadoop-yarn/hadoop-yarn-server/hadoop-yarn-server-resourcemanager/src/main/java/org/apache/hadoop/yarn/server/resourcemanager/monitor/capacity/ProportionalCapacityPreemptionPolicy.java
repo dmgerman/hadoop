@@ -102,6 +102,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -662,6 +678,20 @@ name|SchedulingEditPolicy
 implements|,
 name|CapacitySchedulerPreemptionContext
 block|{
+comment|/**    * IntraQueuePreemptionOrder will be used to define various priority orders    * which could be configured by admin.    */
+annotation|@
+name|Unstable
+DECL|enum|IntraQueuePreemptionOrderPolicy
+specifier|public
+enum|enum
+name|IntraQueuePreemptionOrderPolicy
+block|{
+DECL|enumConstant|PRIORITY_FIRST
+DECL|enumConstant|USERLIMIT_FIRST
+name|PRIORITY_FIRST
+block|,
+name|USERLIMIT_FIRST
+block|;   }
 DECL|field|LOG
 specifier|private
 specifier|static
@@ -729,6 +759,11 @@ DECL|field|minimumThresholdForIntraQueuePreemption
 specifier|private
 name|float
 name|minimumThresholdForIntraQueuePreemption
+decl_stmt|;
+DECL|field|intraQueuePreemptionOrderPolicy
+specifier|private
+name|IntraQueuePreemptionOrderPolicy
+name|intraQueuePreemptionOrderPolicy
 decl_stmt|;
 comment|// Pointer to other RM components
 DECL|field|rmContext
@@ -1181,6 +1216,29 @@ operator|.
 name|DEFAULT_INTRAQUEUE_PREEMPTION_MINIMUM_THRESHOLD
 argument_list|)
 expr_stmt|;
+name|intraQueuePreemptionOrderPolicy
+operator|=
+name|IntraQueuePreemptionOrderPolicy
+operator|.
+name|valueOf
+argument_list|(
+name|csConfig
+operator|.
+name|get
+argument_list|(
+name|CapacitySchedulerConfiguration
+operator|.
+name|INTRAQUEUE_PREEMPTION_ORDER_POLICY
+argument_list|,
+name|CapacitySchedulerConfiguration
+operator|.
+name|DEFAULT_INTRAQUEUE_PREEMPTION_ORDER_POLICY
+argument_list|)
+operator|.
+name|toUpperCase
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|rc
 operator|=
 name|scheduler
@@ -1390,11 +1448,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
 DECL|method|preemptOrkillSelectedContainerAfterWait ( Map<ApplicationAttemptId, Set<RMContainer>> selectedCandidates, long currentTime)
 specifier|private
 name|void
@@ -3091,6 +3144,18 @@ argument_list|(
 name|queueName
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getIntraQueuePreemptionOrderPolicy ()
+specifier|public
+name|IntraQueuePreemptionOrderPolicy
+name|getIntraQueuePreemptionOrderPolicy
+parameter_list|()
+block|{
+return|return
+name|intraQueuePreemptionOrderPolicy
+return|;
 block|}
 block|}
 end_class

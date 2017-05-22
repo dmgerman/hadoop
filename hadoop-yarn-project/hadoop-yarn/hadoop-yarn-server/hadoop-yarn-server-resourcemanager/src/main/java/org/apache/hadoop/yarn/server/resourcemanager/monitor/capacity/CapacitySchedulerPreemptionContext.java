@@ -32,6 +32,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -75,6 +91,30 @@ operator|.
 name|resourcemanager
 operator|.
 name|RMContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|monitor
+operator|.
+name|capacity
+operator|.
+name|ProportionalCapacityPreemptionPolicy
+operator|.
+name|IntraQueuePreemptionOrderPolicy
 import|;
 end_import
 
@@ -272,6 +312,13 @@ function_decl|;
 DECL|method|getMaxAllowableLimitForIntraQueuePreemption ()
 name|float
 name|getMaxAllowableLimitForIntraQueuePreemption
+parameter_list|()
+function_decl|;
+annotation|@
+name|Unstable
+DECL|method|getIntraQueuePreemptionOrderPolicy ()
+name|IntraQueuePreemptionOrderPolicy
+name|getIntraQueuePreemptionOrderPolicy
 parameter_list|()
 function_decl|;
 block|}

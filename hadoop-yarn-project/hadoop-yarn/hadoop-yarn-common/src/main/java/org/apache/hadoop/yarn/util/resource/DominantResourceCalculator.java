@@ -1150,6 +1150,33 @@ name|getVirtualCores
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|isAnyMajorResourceZero (Resource resource)
+specifier|public
+name|boolean
+name|isAnyMajorResourceZero
+parameter_list|(
+name|Resource
+name|resource
+parameter_list|)
+block|{
+return|return
+name|resource
+operator|.
+name|getMemorySize
+argument_list|()
+operator|==
+literal|0f
+operator|||
+name|resource
+operator|.
+name|getVirtualCores
+argument_list|()
+operator|==
+literal|0
+return|;
+block|}
 block|}
 end_class
 

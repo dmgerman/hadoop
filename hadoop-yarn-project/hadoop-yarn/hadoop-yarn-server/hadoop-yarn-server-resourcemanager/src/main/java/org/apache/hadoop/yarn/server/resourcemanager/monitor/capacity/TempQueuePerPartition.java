@@ -142,6 +142,26 @@ name|Collection
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|LinkedHashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
 begin_comment
 comment|/**  * Temporary data-structure tracking resource availability, pending resource  * need, current utilization. This is per-queue-per-partition data structure  */
 end_comment
@@ -239,6 +259,22 @@ name|TempQueuePerPartition
 name|parent
 init|=
 literal|null
+decl_stmt|;
+comment|// This will hold a temp user data structure and will hold userlimit,
+comment|// idealAssigned, used etc.
+DECL|field|usersPerPartition
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|TempUserPerPartition
+argument_list|>
+name|usersPerPartition
+init|=
+operator|new
+name|LinkedHashMap
+argument_list|<>
+argument_list|()
 decl_stmt|;
 DECL|method|TempQueuePerPartition (String queueName, Resource current, boolean preemptionDisabled, String partition, Resource killable, float absCapacity, float absMaxCapacity, Resource totalPartitionResource, Resource reserved, CSQueue queue)
 name|TempQueuePerPartition
@@ -1500,6 +1536,45 @@ parameter_list|()
 block|{
 return|return
 name|apps
+return|;
+block|}
+DECL|method|addUserPerPartition (String userName, TempUserPerPartition tmpUser)
+specifier|public
+name|void
+name|addUserPerPartition
+parameter_list|(
+name|String
+name|userName
+parameter_list|,
+name|TempUserPerPartition
+name|tmpUser
+parameter_list|)
+block|{
+name|this
+operator|.
+name|usersPerPartition
+operator|.
+name|put
+argument_list|(
+name|userName
+argument_list|,
+name|tmpUser
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|getUsersPerPartition ()
+specifier|public
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|TempUserPerPartition
+argument_list|>
+name|getUsersPerPartition
+parameter_list|()
+block|{
+return|return
+name|usersPerPartition
 return|;
 block|}
 block|}

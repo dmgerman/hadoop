@@ -208,6 +208,17 @@ throws|throws
 name|IOException
 block|{
 comment|/**      * The simplest test preemption, Queue structure is:      *      *<pre>      *       root      *     /  | | \      *    a  b  c  d      *</pre>      *      * Guaranteed resource of a/b/c/d are 11:40:20:29 Total cluster resource =      * 100      * Scenario:      * Queue B has few running apps and two high priority apps have demand.      * Apps which are running at low priority (4) will preempt few of its      * resources to meet the demand.      */
+name|conf
+operator|.
+name|set
+argument_list|(
+name|CapacitySchedulerConfiguration
+operator|.
+name|INTRAQUEUE_PREEMPTION_ORDER_POLICY
+argument_list|,
+literal|"priority_first"
+argument_list|)
+expr_stmt|;
 name|String
 name|labelsConfig
 init|=
@@ -223,7 +234,7 @@ name|String
 name|queuesConfig
 init|=
 comment|// guaranteed,max,used,pending,reserved
-literal|"root(=[100 100 80 120 0]);"
+literal|"root(=[100 100 79 120 0]);"
 operator|+
 comment|// root
 literal|"-a(=[11 100 11 50 0]);"
@@ -994,6 +1005,17 @@ operator|)
 literal|0.5
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|CapacitySchedulerConfiguration
+operator|.
+name|INTRAQUEUE_PREEMPTION_ORDER_POLICY
+argument_list|,
+literal|"priority_first"
+argument_list|)
+expr_stmt|;
 name|String
 name|labelsConfig
 init|=
@@ -1116,6 +1138,17 @@ operator|(
 name|float
 operator|)
 literal|0.1
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|CapacitySchedulerConfiguration
+operator|.
+name|INTRAQUEUE_PREEMPTION_ORDER_POLICY
+argument_list|,
+literal|"priority_first"
 argument_list|)
 expr_stmt|;
 name|String
@@ -1241,6 +1274,17 @@ operator|)
 literal|0.5
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|CapacitySchedulerConfiguration
+operator|.
+name|INTRAQUEUE_PREEMPTION_ORDER_POLICY
+argument_list|,
+literal|"priority_first"
+argument_list|)
+expr_stmt|;
 name|String
 name|labelsConfig
 init|=
@@ -1259,7 +1303,7 @@ comment|// guaranteed,max,used,pending,reserved
 literal|"root(=[100 100 95 170 0]);"
 operator|+
 comment|// root
-literal|"-a(=[60 100 70 50 0]);"
+literal|"-a(=[60 100 70 35 0]);"
 operator|+
 comment|// a
 literal|"-b(=[40 100 25 120 0])"
@@ -1388,6 +1432,17 @@ operator|(
 name|float
 operator|)
 literal|0.5
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|CapacitySchedulerConfiguration
+operator|.
+name|INTRAQUEUE_PREEMPTION_ORDER_POLICY
+argument_list|,
+literal|"priority_first"
 argument_list|)
 expr_stmt|;
 name|String
@@ -1526,6 +1581,17 @@ throws|throws
 name|IOException
 block|{
 comment|/**      * Queue structure is:      *      *<pre>      *       root      *      /   \      *     a     b      *</pre>      *      * Scenario:      * Guaranteed resource of a/b are 50:50 Total cluster resource = 100      * Spare Am container from a lower priority app during its preemption      * cycle. Eventhough there are more demand and no other low priority      * apps are present, still AM contaier need to soared.      */
+name|conf
+operator|.
+name|set
+argument_list|(
+name|CapacitySchedulerConfiguration
+operator|.
+name|INTRAQUEUE_PREEMPTION_ORDER_POLICY
+argument_list|,
+literal|"priority_first"
+argument_list|)
+expr_stmt|;
 name|String
 name|labelsConfig
 init|=
@@ -1912,6 +1978,17 @@ operator|)
 literal|0.5
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|CapacitySchedulerConfiguration
+operator|.
+name|INTRAQUEUE_PREEMPTION_ORDER_POLICY
+argument_list|,
+literal|"priority_first"
+argument_list|)
+expr_stmt|;
 name|String
 name|labelsConfig
 init|=
@@ -2105,6 +2182,17 @@ operator|(
 name|float
 operator|)
 literal|0.5
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|CapacitySchedulerConfiguration
+operator|.
+name|INTRAQUEUE_PREEMPTION_ORDER_POLICY
+argument_list|,
+literal|"priority_first"
 argument_list|)
 expr_stmt|;
 name|String
@@ -2491,14 +2579,16 @@ name|editSchedule
 argument_list|()
 expr_stmt|;
 comment|// Considering user-limit of 50% since only 2 users are there, only preempt
-comment|// 15 more (5 is already running) eventhough demand is for 30.
+comment|// 14 more (5 is already running) eventhough demand is for 30. Ideally we
+comment|// must preempt 15. But 15th container will bring user1's usage to 20 which
+comment|// is same as user-limit. Hence skip 15th container.
 name|verify
 argument_list|(
 name|mDisp
 argument_list|,
 name|times
 argument_list|(
-literal|15
+literal|14
 argument_list|)
 argument_list|)
 operator|.
@@ -2544,6 +2634,17 @@ operator|(
 name|float
 operator|)
 literal|0.5
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|CapacitySchedulerConfiguration
+operator|.
+name|INTRAQUEUE_PREEMPTION_ORDER_POLICY
+argument_list|,
+literal|"priority_first"
 argument_list|)
 expr_stmt|;
 name|String

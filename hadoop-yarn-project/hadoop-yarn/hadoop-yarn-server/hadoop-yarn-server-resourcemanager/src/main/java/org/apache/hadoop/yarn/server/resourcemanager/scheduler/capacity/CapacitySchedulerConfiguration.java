@@ -5935,6 +5935,29 @@ name|DEFAULT_INTRAQUEUE_PREEMPTION_MAX_ALLOWABLE_LIMIT
 init|=
 literal|0.2f
 decl_stmt|;
+comment|/**    * For intra-queue preemption, enforce a preemption order such as    * "userlimit_first" or "priority_first".    */
+DECL|field|INTRAQUEUE_PREEMPTION_ORDER_POLICY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|INTRAQUEUE_PREEMPTION_ORDER_POLICY
+init|=
+name|PREEMPTION_CONFIG_PREFIX
+operator|+
+name|INTRA_QUEUE_PREEMPTION_CONFIG_PREFIX
+operator|+
+literal|"preemption-order-policy"
+decl_stmt|;
+DECL|field|DEFAULT_INTRAQUEUE_PREEMPTION_ORDER_POLICY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_INTRAQUEUE_PREEMPTION_ORDER_POLICY
+init|=
+literal|"userlimit_first"
+decl_stmt|;
 comment|/**    * Maximum application for a queue to be used when application per queue is    * not defined.To be consistent with previous version the default value is set    * as UNDEFINED.    */
 annotation|@
 name|Private

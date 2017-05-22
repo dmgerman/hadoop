@@ -120,6 +120,30 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|monitor
+operator|.
+name|capacity
+operator|.
+name|ProportionalCapacityPreemptionPolicy
+operator|.
+name|IntraQueuePreemptionOrderPolicy
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|nodelabels
 operator|.
 name|RMNodeLabelsManager
@@ -236,6 +260,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Comparator
 import|;
 end_import
@@ -246,7 +280,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Iterator
+name|HashMap
 import|;
 end_import
 
@@ -321,16 +355,16 @@ argument_list|>
 block|{
 annotation|@
 name|Override
-DECL|method|compare (TempAppPerPartition tq1, TempAppPerPartition tq2)
+DECL|method|compare (TempAppPerPartition ta1, TempAppPerPartition ta2)
 specifier|public
 name|int
 name|compare
 parameter_list|(
 name|TempAppPerPartition
-name|tq1
+name|ta1
 parameter_list|,
 name|TempAppPerPartition
-name|tq2
+name|ta2
 parameter_list|)
 block|{
 name|Priority
@@ -340,7 +374,7 @@ name|Priority
 operator|.
 name|newInstance
 argument_list|(
-name|tq1
+name|ta1
 operator|.
 name|getPriority
 argument_list|()
@@ -353,7 +387,7 @@ name|Priority
 operator|.
 name|newInstance
 argument_list|(
-name|tq2
+name|ta2
 operator|.
 name|getPriority
 argument_list|()
@@ -380,14 +414,14 @@ argument_list|)
 return|;
 block|}
 return|return
-name|tq1
+name|ta1
 operator|.
 name|getApplicationId
 argument_list|()
 operator|.
 name|compareTo
 argument_list|(
-name|tq2
+name|ta2
 operator|.
 name|getApplicationId
 argument_list|()
@@ -603,7 +637,52 @@ argument_list|,
 name|partition
 argument_list|)
 decl_stmt|;
-comment|// 6. Based on the selected resource demand per partition, select
+comment|// Default preemption iterator considers only FIFO+priority. For
+comment|// userlimit preemption, its possible that some lower priority apps
+comment|// needs from high priority app of another user. Hence use apps
+comment|// ordered by userlimit starvation as well.
+name|Collection
+argument_list|<
+name|FiCaSchedulerApp
+argument_list|>
+name|apps
+init|=
+name|fifoPreemptionComputePlugin
+operator|.
+name|getPreemptableApps
+argument_list|(
+name|queueName
+argument_list|,
+name|partition
+argument_list|)
+decl_stmt|;
+comment|// 6. Get user-limit to ensure that we do not preempt resources which
+comment|// will force user's resource to come under its UL.
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Resource
+argument_list|>
+name|rollingResourceUsagePerUser
+init|=
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
+decl_stmt|;
+name|initializeUsageAndUserLimitForCompute
+argument_list|(
+name|clusterResource
+argument_list|,
+name|partition
+argument_list|,
+name|leafQueue
+argument_list|,
+name|rollingResourceUsagePerUser
+argument_list|)
+expr_stmt|;
+comment|// 7. Based on the selected resource demand per partition, select
 comment|// containers with known policy from inter-queue preemption.
 try|try
 block|{
@@ -615,38 +694,20 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
-name|Iterator
-argument_list|<
-name|FiCaSchedulerApp
-argument_list|>
-name|desc
-init|=
-name|leafQueue
-operator|.
-name|getOrderingPolicy
-argument_list|()
-operator|.
-name|getPreemptionIterator
-argument_list|()
-decl_stmt|;
-while|while
-condition|(
-name|desc
-operator|.
-name|hasNext
-argument_list|()
-condition|)
-block|{
+for|for
+control|(
 name|FiCaSchedulerApp
 name|app
-init|=
-name|desc
-operator|.
-name|next
-argument_list|()
-decl_stmt|;
+range|:
+name|apps
+control|)
+block|{
 name|preemptFromLeastStarvedApp
 argument_list|(
+name|leafQueue
+argument_list|,
+name|app
+argument_list|,
 name|selectedCandidates
 argument_list|,
 name|clusterResource
@@ -655,9 +716,7 @@ name|totalPreemptedResourceAllowed
 argument_list|,
 name|resToObtainByPartition
 argument_list|,
-name|leafQueue
-argument_list|,
-name|app
+name|rollingResourceUsagePerUser
 argument_list|)
 expr_stmt|;
 block|}
@@ -679,11 +738,108 @@ return|return
 name|selectedCandidates
 return|;
 block|}
-DECL|method|preemptFromLeastStarvedApp ( Map<ApplicationAttemptId, Set<RMContainer>> selectedCandidates, Resource clusterResource, Resource totalPreemptedResourceAllowed, Map<String, Resource> resToObtainByPartition, LeafQueue leafQueue, FiCaSchedulerApp app)
+DECL|method|initializeUsageAndUserLimitForCompute (Resource clusterResource, String partition, LeafQueue leafQueue, Map<String, Resource> rollingResourceUsagePerUser)
+specifier|private
+name|void
+name|initializeUsageAndUserLimitForCompute
+parameter_list|(
+name|Resource
+name|clusterResource
+parameter_list|,
+name|String
+name|partition
+parameter_list|,
+name|LeafQueue
+name|leafQueue
+parameter_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Resource
+argument_list|>
+name|rollingResourceUsagePerUser
+parameter_list|)
+block|{
+for|for
+control|(
+name|String
+name|user
+range|:
+name|leafQueue
+operator|.
+name|getAllUsers
+argument_list|()
+control|)
+block|{
+comment|// Initialize used resource of a given user for rolling computation.
+name|rollingResourceUsagePerUser
+operator|.
+name|put
+argument_list|(
+name|user
+argument_list|,
+name|Resources
+operator|.
+name|clone
+argument_list|(
+name|leafQueue
+operator|.
+name|getUser
+argument_list|(
+name|user
+argument_list|)
+operator|.
+name|getResourceUsage
+argument_list|()
+operator|.
+name|getUsed
+argument_list|(
+name|partition
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Rolling resource usage for user:"
+operator|+
+name|user
+operator|+
+literal|" is : "
+operator|+
+name|rollingResourceUsagePerUser
+operator|.
+name|get
+argument_list|(
+name|user
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+DECL|method|preemptFromLeastStarvedApp (LeafQueue leafQueue, FiCaSchedulerApp app, Map<ApplicationAttemptId, Set<RMContainer>> selectedCandidates, Resource clusterResource, Resource totalPreemptedResourceAllowed, Map<String, Resource> resToObtainByPartition, Map<String, Resource> rollingResourceUsagePerUser)
 specifier|private
 name|void
 name|preemptFromLeastStarvedApp
 parameter_list|(
+name|LeafQueue
+name|leafQueue
+parameter_list|,
+name|FiCaSchedulerApp
+name|app
+parameter_list|,
 name|Map
 argument_list|<
 name|ApplicationAttemptId
@@ -709,11 +865,13 @@ name|Resource
 argument_list|>
 name|resToObtainByPartition
 parameter_list|,
-name|LeafQueue
-name|leafQueue
-parameter_list|,
-name|FiCaSchedulerApp
-name|app
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Resource
+argument_list|>
+name|rollingResourceUsagePerUser
 parameter_list|)
 block|{
 comment|// ToDo: Reuse reservation selector here.
@@ -756,6 +914,19 @@ name|totalPreemptedResourceAllowed
 argument_list|)
 expr_stmt|;
 block|}
+name|Resource
+name|rollingUsedResourcePerUser
+init|=
+name|rollingResourceUsagePerUser
+operator|.
+name|get
+argument_list|(
+name|app
+operator|.
+name|getUser
+argument_list|()
+argument_list|)
+decl_stmt|;
 for|for
 control|(
 name|RMContainer
@@ -827,7 +998,71 @@ condition|)
 block|{
 continue|continue;
 block|}
+comment|// If selected container brings down resource usage under its user's
+comment|// UserLimit (or equals to), we must skip such containers.
+if|if
+condition|(
+name|fifoPreemptionComputePlugin
+operator|.
+name|skipContainerBasedOnIntraQueuePolicy
+argument_list|(
+name|app
+argument_list|,
+name|clusterResource
+argument_list|,
+name|rollingUsedResourcePerUser
+argument_list|,
+name|c
+argument_list|)
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Skipping container: "
+operator|+
+name|c
+operator|.
+name|getContainerId
+argument_list|()
+operator|+
+literal|" with resource:"
+operator|+
+name|c
+operator|.
+name|getAllocatedResource
+argument_list|()
+operator|+
+literal|" as UserLimit for user:"
+operator|+
+name|app
+operator|.
+name|getUser
+argument_list|()
+operator|+
+literal|" with resource usage: "
+operator|+
+name|rollingUsedResourcePerUser
+operator|+
+literal|" is going under UL"
+argument_list|)
+expr_stmt|;
+block|}
+break|break;
+block|}
 comment|// Try to preempt this container
+name|boolean
+name|ret
+init|=
 name|CapacitySchedulerPreemptionUtils
 operator|.
 name|tryPreemptContainerAndDeductResToObtain
@@ -846,7 +1081,39 @@ name|selectedCandidates
 argument_list|,
 name|totalPreemptedResourceAllowed
 argument_list|)
+decl_stmt|;
+comment|// Subtract from respective user's resource usage once a container is
+comment|// selected for preemption.
+if|if
+condition|(
+name|ret
+operator|&&
+name|preemptionContext
+operator|.
+name|getIntraQueuePreemptionOrderPolicy
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|IntraQueuePreemptionOrderPolicy
+operator|.
+name|USERLIMIT_FIRST
+argument_list|)
+condition|)
+block|{
+name|Resources
+operator|.
+name|subtractFrom
+argument_list|(
+name|rollingUsedResourcePerUser
+argument_list|,
+name|c
+operator|.
+name|getAllocatedResource
+argument_list|()
+argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|computeIntraQueuePreemptionDemand (Resource clusterResource, Resource totalPreemptedResourceAllowed, Map<ApplicationAttemptId, Set<RMContainer>> selectedCandidates)
@@ -906,19 +1173,7 @@ condition|)
 block|{
 continue|continue;
 block|}
-comment|// 2. Its better to get partition based resource limit earlier before
-comment|// starting calculation
-name|Resource
-name|partitionBasedResource
-init|=
-name|context
-operator|.
-name|getPartitionResource
-argument_list|(
-name|partition
-argument_list|)
-decl_stmt|;
-comment|// 3. loop through all queues corresponding to a partition.
+comment|// 2. loop through all queues corresponding to a partition.
 for|for
 control|(
 name|String
@@ -956,7 +1211,7 @@ condition|)
 block|{
 continue|continue;
 block|}
-comment|// 4. Consider reassignableResource as (used - actuallyToBePreempted).
+comment|// 3. Consider reassignableResource as (used - actuallyToBePreempted).
 comment|// This provides as upper limit to split apps quota in a queue.
 name|Resource
 name|queueReassignableResource
@@ -976,7 +1231,7 @@ name|getActuallyToBePreempted
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// 5. Check queue's used capacity. Make sure that the used capacity is
+comment|// 4. Check queue's used capacity. Make sure that the used capacity is
 comment|// above certain limit to consider for intra queue preemption.
 if|if
 condition|(
@@ -998,15 +1253,13 @@ condition|)
 block|{
 continue|continue;
 block|}
-comment|// 6. compute the allocation of all apps based on queue's unallocated
+comment|// 5. compute the allocation of all apps based on queue's unallocated
 comment|// capacity
 name|fifoPreemptionComputePlugin
 operator|.
 name|computeAppsIdealAllocation
 argument_list|(
 name|clusterResource
-argument_list|,
-name|partitionBasedResource
 argument_list|,
 name|tq
 argument_list|,

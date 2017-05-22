@@ -473,6 +473,17 @@ name|Resource
 name|bigger
 parameter_list|)
 function_decl|;
+comment|/**    * Check if resource has any major resource types (which are all NodeManagers    * included) a zero value.    *    * @param resource resource    * @return returns true if any resource is zero.    */
+DECL|method|isAnyMajorResourceZero (Resource resource)
+specifier|public
+specifier|abstract
+name|boolean
+name|isAnyMajorResourceZero
+parameter_list|(
+name|Resource
+name|resource
+parameter_list|)
+function_decl|;
 block|}
 end_class
 

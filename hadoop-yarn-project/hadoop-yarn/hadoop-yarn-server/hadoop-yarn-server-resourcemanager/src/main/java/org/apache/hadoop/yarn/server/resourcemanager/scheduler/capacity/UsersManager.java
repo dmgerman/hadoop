@@ -1330,6 +1330,36 @@ operator|=
 name|userResourceLimit
 expr_stmt|;
 block|}
+DECL|method|getUserName ()
+specifier|public
+name|String
+name|getUserName
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|userName
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setResourceUsage (ResourceUsage resourceUsage)
+specifier|public
+name|void
+name|setResourceUsage
+parameter_list|(
+name|ResourceUsage
+name|resourceUsage
+parameter_list|)
+block|{
+name|this
+operator|.
+name|userResourceUsage
+operator|=
+name|resourceUsage
+expr_stmt|;
+block|}
 block|}
 comment|/* End of User class */
 comment|/**    * UsersManager Constructor.    *    * @param metrics    *          Queue Metrics    * @param lQueue    *          Leaf Queue Object    * @param labelManager    *          Label Manager instance    * @param scheduler    *          Capacity Scheduler Context    * @param resourceCalculator    *          rc    */
@@ -1545,7 +1575,7 @@ block|}
 block|}
 comment|/*    * Get all users of queue.    */
 DECL|method|getUsers ()
-specifier|private
+specifier|public
 name|Map
 argument_list|<
 name|String
