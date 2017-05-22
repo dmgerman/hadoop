@@ -21,6 +21,22 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|ExitUtil
+operator|.
+name|terminate
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -1679,6 +1695,8 @@ argument_list|,
 name|LOG
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|System
 operator|.
 name|exit
@@ -1695,6 +1713,31 @@ name|args
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Failed to start journalnode."
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|terminate
+argument_list|(
+operator|-
+literal|1
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|doPreUpgrade (String journalId)
 specifier|public
