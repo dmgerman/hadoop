@@ -123,8 +123,38 @@ index|[]
 name|value
 parameter_list|)
 function_decl|;
-comment|/**    * Performs a batch Put to Metadata DB.    * Can be used to do multiple puts atomically.    * @param list - list of Map.Entry    */
-DECL|method|batchPut (List<Map.Entry<byte[], byte[]>> list)
+comment|/**    * Performs batch Put and Delete to Metadata DB.    * Can be used to do multiple puts and deletes atomically.    * @param putList - list of Key/Value to put into DB    * @param delList - list of Key to delete from DB    */
+DECL|method|batchPutDelete (List<Map.Entry<byte[], byte[]>> putList, List<byte[]> delList)
+name|void
+name|batchPutDelete
+parameter_list|(
+name|List
+argument_list|<
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|byte
+index|[]
+argument_list|,
+name|byte
+index|[]
+argument_list|>
+argument_list|>
+name|putList
+parameter_list|,
+name|List
+argument_list|<
+name|byte
+index|[]
+argument_list|>
+name|delList
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Performs a batch Put to Metadata DB.    * Can be used to do multiple puts atomically.    * @param putList - list of Key/Value to put into DB    */
+DECL|method|batchPut (List<Map.Entry<byte[], byte[]>> putList)
 name|void
 name|batchPut
 parameter_list|(
@@ -141,10 +171,43 @@ name|byte
 index|[]
 argument_list|>
 argument_list|>
-name|list
+name|putList
 parameter_list|)
 throws|throws
 name|IOException
+function_decl|;
+comment|/**    * Given a volume return the corresponding DB key.    * @param volume - Volume name    */
+DECL|method|getVolumeKey (String volume)
+name|byte
+index|[]
+name|getVolumeKey
+parameter_list|(
+name|String
+name|volume
+parameter_list|)
+function_decl|;
+comment|/**    * Given a user return the corresponding DB key.    * @param user - User name    */
+DECL|method|getUserKey (String user)
+name|byte
+index|[]
+name|getUserKey
+parameter_list|(
+name|String
+name|user
+parameter_list|)
+function_decl|;
+comment|/**    * Given a volume and bucket, return the corresponding DB key.    * @param volume - User name    * @param bucket - Bucket name    */
+DECL|method|getBucketKey (String volume, String bucket)
+name|byte
+index|[]
+name|getBucketKey
+parameter_list|(
+name|String
+name|volume
+parameter_list|,
+name|String
+name|bucket
+parameter_list|)
 function_decl|;
 block|}
 end_interface

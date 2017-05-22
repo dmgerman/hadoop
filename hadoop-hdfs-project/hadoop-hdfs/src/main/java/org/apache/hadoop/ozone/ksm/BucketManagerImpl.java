@@ -40,20 +40,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|DFSUtil
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|ksm
 operator|.
 name|helpers
@@ -109,22 +95,6 @@ operator|.
 name|slf4j
 operator|.
 name|LoggerFactory
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|OzoneConsts
-operator|.
-name|DB_KEY_DELIMITER
 import|;
 end_import
 
@@ -210,7 +180,7 @@ name|lock
 argument_list|()
 expr_stmt|;
 name|String
-name|volumeNameString
+name|volumeName
 init|=
 name|args
 operator|.
@@ -218,7 +188,7 @@ name|getVolumeName
 argument_list|()
 decl_stmt|;
 name|String
-name|bucketNameString
+name|bucketName
 init|=
 name|args
 operator|.
@@ -228,35 +198,28 @@ decl_stmt|;
 try|try
 block|{
 comment|//bucket key: {volume/bucket}
-name|String
-name|bucketKeyString
-init|=
-name|volumeNameString
-operator|+
-name|DB_KEY_DELIMITER
-operator|+
-name|bucketNameString
-decl_stmt|;
 name|byte
 index|[]
-name|volumeName
+name|volumeKey
 init|=
-name|DFSUtil
+name|metadataManager
 operator|.
-name|string2Bytes
+name|getVolumeKey
 argument_list|(
-name|volumeNameString
+name|volumeName
 argument_list|)
 decl_stmt|;
 name|byte
 index|[]
 name|bucketKey
 init|=
-name|DFSUtil
+name|metadataManager
 operator|.
-name|string2Bytes
+name|getBucketKey
 argument_list|(
-name|bucketKeyString
+name|volumeName
+argument_list|,
+name|bucketName
 argument_list|)
 decl_stmt|;
 comment|//Check if the volume exists
@@ -266,7 +229,7 @@ name|metadataManager
 operator|.
 name|get
 argument_list|(
-name|volumeName
+name|volumeKey
 argument_list|)
 operator|==
 literal|null
@@ -278,7 +241,7 @@ name|error
 argument_list|(
 literal|"volume: {} not found "
 argument_list|,
-name|volumeNameString
+name|volumeName
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -314,7 +277,7 @@ name|error
 argument_list|(
 literal|"bucket: {} already exists "
 argument_list|,
-name|bucketNameString
+name|bucketName
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -348,13 +311,13 @@ argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"created bucket: {} in volume: {}"
 argument_list|,
-name|bucketNameString
+name|bucketName
 argument_list|,
-name|volumeNameString
+name|volumeName
 argument_list|)
 expr_stmt|;
 block|}
@@ -370,9 +333,9 @@ name|error
 argument_list|(
 literal|"Bucket creation failed for bucket:{} in volume:{}"
 argument_list|,
-name|volumeNameString
+name|bucketName
 argument_list|,
-name|bucketNameString
+name|volumeName
 argument_list|,
 name|ex
 argument_list|)

@@ -65,6 +65,45 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Changes the owner of a volume.    *    * @param volume - Name of the volume.    * @param owner - Name of the owner.    * @throws IOException    */
+DECL|method|setOwner (String volume, String owner)
+name|void
+name|setOwner
+parameter_list|(
+name|String
+name|volume
+parameter_list|,
+name|String
+name|owner
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Changes the Quota on a volume.    *    * @param volume - Name of the volume.    * @param quota - Quota in bytes.    * @throws IOException    */
+DECL|method|setQuota (String volume, long quota)
+name|void
+name|setQuota
+parameter_list|(
+name|String
+name|volume
+parameter_list|,
+name|long
+name|quota
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Gets the volume information.    * @param volume - Volume name.    * @return VolumeArgs or exception is thrown.    * @throws IOException    */
+DECL|method|getVolumeInfo (String volume)
+name|KsmVolumeArgs
+name|getVolumeInfo
+parameter_list|(
+name|String
+name|volume
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

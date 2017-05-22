@@ -133,7 +133,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Gets the volume information.    * @param volume - Volume name.s    * @return VolumeArgs or exception is thrown.    * @throws IOException    */
+comment|/**    * Gets the volume information.    * @param volume - Volume name.    * @return VolumeArgs or exception is thrown.    * @throws IOException    */
 DECL|method|getVolumeInfo (String volume)
 name|KsmVolumeArgs
 name|getVolumeInfo
@@ -144,7 +144,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Deletes the an exisiting empty volume.    * @param volume - Name of the volume.    * @throws IOException    */
+comment|/**    * Deletes an existing empty volume.    * @param volume - Name of the volume.    * @throws IOException    */
 DECL|method|deleteVolume (String volume)
 name|void
 name|deleteVolume

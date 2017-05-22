@@ -401,10 +401,29 @@ operator|.
 name|getMetrics
 argument_list|()
 operator|.
-name|getNumVolumeCreates
+name|getNumVolumeCreateFails
 argument_list|()
 argument_list|,
-literal|1
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Create Volumes with Quota.    *    * @throws IOException    */
+annotation|@
+name|Test
+DECL|method|testCreateVolumesWithQuota ()
+specifier|public
+name|void
+name|testCreateVolumesWithQuota
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|super
+operator|.
+name|testCreateVolumesWithQuota
+argument_list|(
+name|port
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -426,24 +445,9 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create Volumes with Quota.    *    * @throws IOException    */
-DECL|method|testCreateVolumesWithQuota ()
-specifier|public
-name|void
-name|testCreateVolumesWithQuota
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-name|super
-operator|.
-name|testCreateVolumesWithQuota
-argument_list|(
-name|port
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**    * Create Volumes with Invalid Quota.    *    * @throws IOException    */
+annotation|@
+name|Test
 DECL|method|testCreateVolumesWithInvalidQuota ()
 specifier|public
 name|void
@@ -459,8 +463,28 @@ argument_list|(
 name|port
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|cluster
+operator|.
+name|getKeySpaceManager
+argument_list|()
+operator|.
+name|getMetrics
+argument_list|()
+operator|.
+name|getNumVolumeCreateFails
+argument_list|()
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * To create a volume a user name must be specified using OZONE_USER header.    * This test verifies that we get an error in case we call without a OZONE    * user name.    *    * @throws IOException    */
+annotation|@
+name|Test
 DECL|method|testCreateVolumesWithInvalidUser ()
 specifier|public
 name|void
@@ -476,8 +500,28 @@ argument_list|(
 name|port
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|cluster
+operator|.
+name|getKeySpaceManager
+argument_list|()
+operator|.
+name|getMetrics
+argument_list|()
+operator|.
+name|getNumVolumeCreateFails
+argument_list|()
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Only Admins can create volumes in Ozone. This test uses simple userauth as    * backend and hdfs and root are admin users in the simple backend.    *<p>    * This test tries to create a volume as user bilbo.    *    * @throws IOException    */
+annotation|@
+name|Test
 DECL|method|testCreateVolumesWithOutAdminRights ()
 specifier|public
 name|void
@@ -493,8 +537,28 @@ argument_list|(
 name|port
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|cluster
+operator|.
+name|getKeySpaceManager
+argument_list|()
+operator|.
+name|getMetrics
+argument_list|()
+operator|.
+name|getNumVolumeCreateFails
+argument_list|()
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Create a bunch of volumes in a loop.    *    * @throws IOException    */
+annotation|@
+name|Test
 DECL|method|testCreateVolumesInLoop ()
 specifier|public
 name|void
@@ -508,6 +572,24 @@ operator|.
 name|testCreateVolumesInLoop
 argument_list|(
 name|port
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|cluster
+operator|.
+name|getKeySpaceManager
+argument_list|()
+operator|.
+name|getMetrics
+argument_list|()
+operator|.
+name|getNumVolumeCreateFails
+argument_list|()
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 block|}

@@ -24,20 +24,6 @@ name|com
 operator|.
 name|google
 operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
 name|protobuf
 operator|.
 name|BlockingService
@@ -700,19 +686,6 @@ return|return
 name|metrics
 return|;
 block|}
-comment|/**    * Returns listening address of Key Space Manager RPC server.    *    * @return listen address of Key Space Manager RPC server    */
-annotation|@
-name|VisibleForTesting
-DECL|method|getClientRpcAddress ()
-specifier|public
-name|InetSocketAddress
-name|getClientRpcAddress
-parameter_list|()
-block|{
-return|return
-name|ksmRpcAddress
-return|;
-block|}
 comment|/**    * Main entry point for starting KeySpaceManager.    *    * @param argv arguments    * @throws IOException if startup fails due to I/O error    */
 DECL|method|main (String[] argv)
 specifier|public
@@ -1069,7 +1042,40 @@ name|owner
 parameter_list|)
 throws|throws
 name|IOException
-block|{    }
+block|{
+try|try
+block|{
+name|metrics
+operator|.
+name|incNumVolumeModifies
+argument_list|()
+expr_stmt|;
+name|volumeManager
+operator|.
+name|setOwner
+argument_list|(
+name|volume
+argument_list|,
+name|owner
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|ex
+parameter_list|)
+block|{
+name|metrics
+operator|.
+name|incNumVolumeModifyFails
+argument_list|()
+expr_stmt|;
+throw|throw
+name|ex
+throw|;
+block|}
+block|}
 comment|/**    * Changes the Quota on a volume.    *    * @param volume - Name of the volume.    * @param quota - Quota in bytes.    * @throws IOException    */
 annotation|@
 name|Override
@@ -1086,7 +1092,40 @@ name|quota
 parameter_list|)
 throws|throws
 name|IOException
-block|{    }
+block|{
+try|try
+block|{
+name|metrics
+operator|.
+name|incNumVolumeModifies
+argument_list|()
+expr_stmt|;
+name|volumeManager
+operator|.
+name|setQuota
+argument_list|(
+name|volume
+argument_list|,
+name|quota
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|ex
+parameter_list|)
+block|{
+name|metrics
+operator|.
+name|incNumVolumeModifyFails
+argument_list|()
+expr_stmt|;
+throw|throw
+name|ex
+throw|;
+block|}
+block|}
 comment|/**    * Checks if the specified user can access this volume.    *    * @param volume - volume    * @param userName - user name    * @throws IOException    */
 annotation|@
 name|Override
@@ -1104,7 +1143,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{    }
-comment|/**    * Gets the volume information.    *    * @param volume - Volume name.s    * @return VolumeArgs or exception is thrown.    * @throws IOException    */
+comment|/**    * Gets the volume information.    *    * @param volume - Volume name.    * @return VolumeArgs or exception is thrown.    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|getVolumeInfo (String volume)
@@ -1118,11 +1157,39 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
+name|metrics
+operator|.
+name|incNumVolumeInfos
+argument_list|()
+expr_stmt|;
 return|return
-literal|null
+name|volumeManager
+operator|.
+name|getVolumeInfo
+argument_list|(
+name|volume
+argument_list|)
 return|;
 block|}
-comment|/**    * Deletes the an exisiting empty volume.    *    * @param volume - Name of the volume.    * @throws IOException    */
+catch|catch
+parameter_list|(
+name|Exception
+name|ex
+parameter_list|)
+block|{
+name|metrics
+operator|.
+name|incNumVolumeInfoFails
+argument_list|()
+expr_stmt|;
+throw|throw
+name|ex
+throw|;
+block|}
+block|}
+comment|/**    * Deletes an existing empty volume.    *    * @param volume - Name of the volume.    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|deleteVolume (String volume)

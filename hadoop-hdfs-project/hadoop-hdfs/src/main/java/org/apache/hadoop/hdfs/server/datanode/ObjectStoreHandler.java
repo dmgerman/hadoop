@@ -517,6 +517,12 @@ name|StorageContainerLocationProtocolClientSideTranslatorPB
 DECL|field|storageContainerLocationClient
 name|storageContainerLocationClient
 decl_stmt|;
+DECL|field|storageHandler
+specifier|private
+specifier|final
+name|StorageHandler
+name|storageHandler
+decl_stmt|;
 comment|/**    * Creates a new ObjectStoreHandler.    *    * @param conf configuration    * @throws IOException if there is an I/O error    */
 DECL|method|ObjectStoreHandler (Configuration conf)
 specifier|public
@@ -562,10 +568,6 @@ name|OZONE_TRACE_ENABLED_KEY
 argument_list|,
 name|OZONE_TRACE_ENABLED_DEFAULT
 argument_list|)
-decl_stmt|;
-specifier|final
-name|StorageHandler
-name|storageHandler
 decl_stmt|;
 comment|// Initialize Jersey container for object store web application.
 if|if
@@ -897,6 +899,19 @@ return|return
 name|this
 operator|.
 name|objectStoreJerseyContainer
+return|;
+block|}
+comment|/**    * Returns the storage handler.    *    * @return returns the storage handler    */
+DECL|method|getStorageHandler ()
+specifier|public
+name|StorageHandler
+name|getStorageHandler
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|storageHandler
 return|;
 block|}
 annotation|@
