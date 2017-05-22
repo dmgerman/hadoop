@@ -908,6 +908,13 @@ name|assignment
 operator|.
 name|getType
 argument_list|()
+operator|+
+literal|" requestedPartition="
+operator|+
+name|updatedContainer
+operator|.
+name|getNodeLabelExpression
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assignment
