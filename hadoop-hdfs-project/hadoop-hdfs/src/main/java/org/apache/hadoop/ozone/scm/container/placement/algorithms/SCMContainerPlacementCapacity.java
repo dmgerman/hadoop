@@ -311,6 +311,9 @@ name|size
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|DatanodeID
+name|chosenID
+decl_stmt|;
 comment|// There is a possibility that both numbers will be same.
 comment|// if that is so, we just return the node.
 if|if
@@ -320,15 +323,18 @@ operator|==
 name|secondNodeNdx
 condition|)
 block|{
-return|return
+name|chosenID
+operator|=
 name|healthyNodes
 operator|.
 name|get
 argument_list|(
 name|firstNodeNdx
 argument_list|)
-return|;
+expr_stmt|;
 block|}
+else|else
+block|{
 name|DatanodeID
 name|firstNodeID
 init|=
@@ -371,9 +377,8 @@ argument_list|(
 name|secondNodeID
 argument_list|)
 decl_stmt|;
-name|DatanodeID
 name|chosenID
-init|=
+operator|=
 name|firstNodeMetric
 operator|.
 name|isGreater
@@ -387,7 +392,8 @@ condition|?
 name|firstNodeID
 else|:
 name|secondNodeID
-decl_stmt|;
+expr_stmt|;
+block|}
 name|healthyNodes
 operator|.
 name|remove
