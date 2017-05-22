@@ -2684,6 +2684,17 @@ name|DEFAULT_CONFIGURATION_STORE
 init|=
 name|MEMORY_CONFIGURATION_STORE
 decl_stmt|;
+DECL|field|RM_SCHEDULER_MUTATION_ACL_POLICY_CLASS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_SCHEDULER_MUTATION_ACL_POLICY_CLASS
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"scheduler.configuration.mutation.acl-policy.class"
+decl_stmt|;
 DECL|field|YARN_AUTHORIZATION_PROVIDER
 specifier|public
 specifier|static

@@ -2218,6 +2218,28 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|resourcemanager
+operator|.
+name|webapp
+operator|.
+name|dao
+operator|.
+name|QueueConfigsUpdateInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|utils
 operator|.
 name|Lock
@@ -4494,6 +4516,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getQueue (String queueName)
 specifier|public
 name|CSQueue
@@ -13418,7 +13442,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|updateConfiguration (UserGroupInformation user, Map<String, String> confUpdate)
+DECL|method|updateConfiguration (UserGroupInformation user, QueueConfigsUpdateInfo confUpdate)
 specifier|public
 name|void
 name|updateConfiguration
@@ -13426,12 +13450,7 @@ parameter_list|(
 name|UserGroupInformation
 name|user
 parameter_list|,
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|String
-argument_list|>
+name|QueueConfigsUpdateInfo
 name|confUpdate
 parameter_list|)
 throws|throws
@@ -13454,9 +13473,6 @@ operator|.
 name|mutateConfiguration
 argument_list|(
 name|user
-operator|.
-name|getShortUserName
-argument_list|()
 argument_list|,
 name|confUpdate
 argument_list|)

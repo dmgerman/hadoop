@@ -30,9 +30,45 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|webapp
+operator|.
+name|dao
+operator|.
+name|QueueConfigsUpdateInfo
 import|;
 end_import
 
@@ -43,16 +79,6 @@ operator|.
 name|io
 operator|.
 name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
 import|;
 end_import
 
@@ -68,24 +94,34 @@ name|MutableConfScheduler
 extends|extends
 name|ResourceScheduler
 block|{
-comment|/**    * Update the scheduler's configuration.    * @param user Caller of this update    * @param confUpdate key-value map of the configuration update    * @throws IOException if update is invalid    */
-DECL|method|updateConfiguration (UserGroupInformation user, Map<String, String> confUpdate)
+comment|/**    * Update the scheduler's configuration.    * @param user Caller of this update    * @param confUpdate configuration update    * @throws IOException if update is invalid    */
+DECL|method|updateConfiguration (UserGroupInformation user, QueueConfigsUpdateInfo confUpdate)
 name|void
 name|updateConfiguration
 parameter_list|(
 name|UserGroupInformation
 name|user
 parameter_list|,
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|String
-argument_list|>
+name|QueueConfigsUpdateInfo
 name|confUpdate
 parameter_list|)
 throws|throws
 name|IOException
+function_decl|;
+comment|/**    * Get the scheduler configuration.    * @return the scheduler configuration    */
+DECL|method|getConfiguration ()
+name|Configuration
+name|getConfiguration
+parameter_list|()
+function_decl|;
+comment|/**    * Get queue object based on queue name.    * @param queueName the queue name    * @return the queue object    */
+DECL|method|getQueue (String queueName)
+name|Queue
+name|getQueue
+parameter_list|(
+name|String
+name|queueName
+parameter_list|)
 function_decl|;
 block|}
 end_interface

@@ -30,9 +30,41 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|RMContext
 import|;
 end_import
 
@@ -58,30 +90,32 @@ name|QueueConfigsUpdateInfo
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
 begin_comment
-comment|/**  * Interface for allowing changing scheduler configurations.  */
+comment|/**  * Interface for determining whether configuration mutations are allowed.  */
 end_comment
 
 begin_interface
-DECL|interface|MutableConfigurationProvider
+DECL|interface|ConfigurationMutationACLPolicy
 specifier|public
 interface|interface
-name|MutableConfigurationProvider
+name|ConfigurationMutationACLPolicy
 block|{
-comment|/**    * Update the scheduler configuration with the provided key value pairs.    * @param user User issuing the request    * @param confUpdate Key-value pairs for configurations to be updated.    * @throws IOException if scheduler could not be reinitialized    */
-DECL|method|mutateConfiguration (UserGroupInformation user, QueueConfigsUpdateInfo confUpdate)
+comment|/**    * Initialize ACL policy with configuration and RMContext.    * @param conf Configuration to initialize with.    * @param rmContext rmContext    */
+DECL|method|init (Configuration conf, RMContext rmContext)
 name|void
-name|mutateConfiguration
+name|init
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|RMContext
+name|rmContext
+parameter_list|)
+function_decl|;
+comment|/**    * Check if mutation is allowed.    * @param user User issuing the request    * @param confUpdate configurations to be updated    * @return whether provided mutation is allowed or not    */
+DECL|method|isMutationAllowed (UserGroupInformation user, QueueConfigsUpdateInfo confUpdate)
+name|boolean
+name|isMutationAllowed
 parameter_list|(
 name|UserGroupInformation
 name|user
@@ -89,8 +123,6 @@ parameter_list|,
 name|QueueConfigsUpdateInfo
 name|confUpdate
 parameter_list|)
-throws|throws
-name|IOException
 function_decl|;
 block|}
 end_interface
