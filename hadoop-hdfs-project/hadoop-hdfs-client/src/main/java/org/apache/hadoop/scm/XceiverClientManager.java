@@ -435,6 +435,11 @@ operator|.
 name|getContainerName
 argument_list|()
 decl_stmt|;
+synchronized|synchronized
+init|(
+name|openClient
+init|)
+block|{
 name|XceiverClientWithAccessInfo
 name|info
 init|=
@@ -528,11 +533,6 @@ operator|.
 name|incrementReference
 argument_list|()
 expr_stmt|;
-synchronized|synchronized
-init|(
-name|openClient
-init|)
-block|{
 name|openClient
 operator|.
 name|put
@@ -542,10 +542,10 @@ argument_list|,
 name|info
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|xceiverClient
 return|;
+block|}
 block|}
 block|}
 comment|/**    * Releases an XceiverClient after use.    *    * @param xceiverClient client to release    */
@@ -593,7 +593,6 @@ argument_list|(
 name|containerName
 argument_list|)
 expr_stmt|;
-block|}
 name|Preconditions
 operator|.
 name|checkNotNull
@@ -606,6 +605,7 @@ operator|.
 name|decrementReference
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 comment|/**    * A helper class for caching and cleaning XceiverClient. Three parameters:    * - the actual XceiverClient object    * - a time stamp representing the most recent access (acquire or release)    * - a reference count, +1 when acquire, -1 when release    */
 DECL|class|XceiverClientWithAccessInfo
