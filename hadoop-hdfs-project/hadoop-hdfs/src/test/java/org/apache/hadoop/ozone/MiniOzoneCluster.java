@@ -1712,6 +1712,17 @@ name|set
 argument_list|(
 name|ScmConfigKeys
 operator|.
+name|OZONE_SCM_BLOCK_CLIENT_ADDRESS_KEY
+argument_list|,
+literal|"127.0.0.1:0"
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|ScmConfigKeys
+operator|.
 name|OZONE_SCM_DATANODE_ADDRESS_KEY
 argument_list|,
 literal|"127.0.0.1:0"

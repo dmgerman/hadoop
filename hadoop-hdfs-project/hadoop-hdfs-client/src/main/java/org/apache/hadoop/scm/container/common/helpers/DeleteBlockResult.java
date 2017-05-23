@@ -36,7 +36,7 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|StorageContainerLocationProtocolProtos
+name|ScmBlockLocationProtocolProtos
 operator|.
 name|DeleteScmBlockResult
 import|;
