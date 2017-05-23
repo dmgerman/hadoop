@@ -22,6 +22,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -162,6 +172,20 @@ parameter_list|(
 name|String
 name|filePath
 parameter_list|)
+function_decl|;
+comment|/**    * Remove xAttr from the inode.    * @param id    * @param xattrName    * @throws IOException    */
+DECL|method|removeXattr (long id, String xattrName)
+name|void
+name|removeXattr
+parameter_list|(
+name|long
+name|id
+parameter_list|,
+name|String
+name|xattrName
+parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 block|}
 end_interface

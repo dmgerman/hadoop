@@ -1682,7 +1682,7 @@ name|xaName
 argument_list|)
 condition|)
 block|{
-name|FSDirAttrOp
+name|FSDirSatisfyStoragePolicyOp
 operator|.
 name|unprotectedSatisfyStoragePolicy
 argument_list|(
