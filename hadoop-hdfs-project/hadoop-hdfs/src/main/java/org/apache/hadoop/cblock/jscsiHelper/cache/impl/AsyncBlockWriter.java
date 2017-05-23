@@ -354,6 +354,15 @@ name|DIRTY_LOG_PREFIX
 init|=
 literal|"DirtyLog"
 decl_stmt|;
+DECL|field|RETRY_LOG_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RETRY_LOG_PREFIX
+init|=
+literal|"RetryLog"
+decl_stmt|;
 DECL|field|localIoCount
 specifier|private
 name|AtomicLong

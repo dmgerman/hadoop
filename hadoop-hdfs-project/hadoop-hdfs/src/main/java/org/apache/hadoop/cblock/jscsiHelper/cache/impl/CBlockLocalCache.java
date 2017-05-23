@@ -764,7 +764,7 @@ name|cacheDB
 operator|=
 name|flusher
 operator|.
-name|openDB
+name|getCacheDB
 argument_list|(
 name|dbPath
 operator|.
@@ -788,18 +788,6 @@ operator|.
 name|size
 argument_list|()
 index|]
-argument_list|)
-expr_stmt|;
-name|flusher
-operator|.
-name|register
-argument_list|(
-name|dbPath
-operator|.
-name|toString
-argument_list|()
-argument_list|,
-name|containerList
 argument_list|)
 expr_stmt|;
 name|this
@@ -1172,6 +1160,19 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|flusher
+operator|.
+name|register
+argument_list|(
+name|getDbPath
+argument_list|()
+operator|.
+name|getPath
+argument_list|()
+argument_list|,
+name|containerList
+argument_list|)
+expr_stmt|;
 name|blockWriter
 operator|.
 name|start
@@ -1212,7 +1213,7 @@ name|this
 operator|.
 name|flusher
 operator|.
-name|closeDB
+name|releaseCacheDB
 argument_list|(
 name|dbPath
 operator|.
@@ -1936,7 +1937,7 @@ name|checkNotNull
 argument_list|(
 name|clientManager
 argument_list|,
-literal|"Client Manager canoot be "
+literal|"Client Manager cannot be "
 operator|+
 literal|"null"
 argument_list|)

@@ -492,6 +492,27 @@ name|DFS_CBLOCK_CACHE_LEVELDB_CACHE_SIZE_MB_DEFAULT
 init|=
 literal|256
 decl_stmt|;
+comment|/**    * Cache does an best case attempt to write a block to a container.    * At some point of time, we will need to handle the case where we did try    * 64K times and is till not able to write to the container.    *    * TODO: We will need cBlock Server to allow us to do a remapping of the    * block location in case of failures, at that point we should reduce the    * retry count to a more normal number. This is approximately 18 hours of    * retry.    */
+DECL|field|DFS_CBLOCK_CACHE_MAX_RETRY_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_CBLOCK_CACHE_MAX_RETRY_KEY
+init|=
+literal|"dfs.cblock.cache.max.retry"
+decl_stmt|;
+DECL|field|DFS_CBLOCK_CACHE_MAX_RETRY_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DFS_CBLOCK_CACHE_MAX_RETRY_DEFAULT
+init|=
+literal|64
+operator|*
+literal|1024
+decl_stmt|;
 DECL|method|CBlockConfigKeys ()
 specifier|private
 name|CBlockConfigKeys
