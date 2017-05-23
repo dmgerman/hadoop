@@ -102,6 +102,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -12642,6 +12652,27 @@ operator|.
 name|getErasureCodingPolicies
 argument_list|()
 argument_list|)
+return|;
+block|}
+comment|/**    * Retrieve all the erasure coding codecs and coders supported by this file    * system.    *    * @return all erasure coding codecs and coders supported by this file system.    * @throws IOException    */
+DECL|method|getAllErasureCodingCodecs ()
+specifier|public
+name|HashMap
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|getAllErasureCodingCodecs
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|dfs
+operator|.
+name|getErasureCodingCodecs
+argument_list|()
 return|;
 block|}
 comment|/**    * Add Erasure coding policies to HDFS.    *    * @param policies The user defined ec policy list to add.    * @return Return the response list of adding operations.    * @throws IOException    */

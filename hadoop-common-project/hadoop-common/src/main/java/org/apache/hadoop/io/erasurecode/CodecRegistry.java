@@ -268,6 +268,18 @@ index|[]
 argument_list|>
 name|coderNameMap
 decl_stmt|;
+comment|// Protobuffer 2.5.0 doesn't support map<String, String[]> type well, so use
+comment|// the compact value instead
+DECL|field|coderNameCompactMap
+specifier|private
+name|HashMap
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|coderNameCompactMap
+decl_stmt|;
 DECL|method|CodecRegistry ()
 specifier|private
 name|CodecRegistry
@@ -281,6 +293,13 @@ argument_list|<>
 argument_list|()
 expr_stmt|;
 name|coderNameMap
+operator|=
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
+expr_stmt|;
+name|coderNameCompactMap
 operator|=
 operator|new
 name|HashMap
@@ -609,6 +628,35 @@ index|]
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|coderNameCompactMap
+operator|.
+name|put
+argument_list|(
+name|codecName
+argument_list|,
+name|coders
+operator|.
+name|stream
+argument_list|()
+operator|.
+name|map
+argument_list|(
+name|RawErasureCoderFactory
+operator|::
+name|getCoderName
+argument_list|)
+operator|.
+name|collect
+argument_list|(
+name|Collectors
+operator|.
+name|joining
+argument_list|(
+literal|", "
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Get all coder names of the given codec.    * @param codecName the name of codec    * @return an array of all coder names    */
@@ -783,6 +831,22 @@ operator|+
 name|codecName
 argument_list|)
 throw|;
+block|}
+comment|/**    * Get all codec names and their corresponding coder list.    * @return a map of all codec names, and their corresponding code list    * separated by ','.    */
+DECL|method|getCodec2CoderCompactMap ()
+specifier|public
+name|HashMap
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|getCodec2CoderCompactMap
+parameter_list|()
+block|{
+return|return
+name|coderNameCompactMap
+return|;
 block|}
 block|}
 end_class

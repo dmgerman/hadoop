@@ -44,6 +44,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -2119,7 +2129,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get the erasure coding policies loaded in Namenode    *    * @throws IOException    */
+comment|/**    * Get the erasure coding policies loaded in Namenode.    *    * @throws IOException    */
 annotation|@
 name|Idempotent
 DECL|method|getErasureCodingPolicies ()
@@ -2130,7 +2140,22 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get the information about the EC policy for the path    *    * @param src path to get the info for    * @throws IOException    */
+comment|/**    * Get the erasure coding codecs loaded in Namenode.    *    * @throws IOException    */
+annotation|@
+name|Idempotent
+DECL|method|getErasureCodingCodecs ()
+name|HashMap
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|getErasureCodingCodecs
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Get the information about the EC policy for the path.    *    * @param src path to get the info for    * @throws IOException    */
 annotation|@
 name|Idempotent
 DECL|method|getErasureCodingPolicy (String src)
