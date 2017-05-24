@@ -22,6 +22,34 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneClientUtils
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -257,22 +285,6 @@ operator|.
 name|client
 operator|.
 name|CloseableHttpClient
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|http
-operator|.
-name|impl
-operator|.
-name|client
-operator|.
-name|HttpClients
 import|;
 end_import
 
@@ -621,16 +633,20 @@ parameter_list|)
 throws|throws
 name|OzoneException
 block|{
+name|HttpPost
+name|httpPost
+init|=
+literal|null
+decl_stmt|;
 try|try
-block|{
+init|(
 name|CloseableHttpClient
 name|httpClient
 init|=
-name|HttpClients
-operator|.
-name|createDefault
+name|newHttpClient
 argument_list|()
-decl_stmt|;
+init|)
+block|{
 name|OzoneUtils
 operator|.
 name|verifyBucketName
@@ -675,9 +691,8 @@ name|quota
 argument_list|)
 expr_stmt|;
 block|}
-name|HttpPost
-name|httppost
-init|=
+name|httpPost
+operator|=
 name|getHttpPost
 argument_list|(
 name|onBehalfOf
@@ -690,10 +705,10 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|executeCreateVolume
 argument_list|(
-name|httppost
+name|httpPost
 argument_list|,
 name|httpClient
 argument_list|)
@@ -726,6 +741,16 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
+finally|finally
+block|{
+name|OzoneClientUtils
+operator|.
+name|releaseConnection
+argument_list|(
+name|httpPost
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Returns information about an existing Volume. if the Volume does not exist,    * or if the user does not have access rights OzoneException is thrown    *    * @param volumeName - volume name 3 - 63 chars, small letters.    * @return OzoneVolume Ozone Client Volume Class.    * @throws OzoneException    */
 DECL|method|getVolume (String volumeName)
@@ -739,16 +764,20 @@ parameter_list|)
 throws|throws
 name|OzoneException
 block|{
+name|HttpGet
+name|httpGet
+init|=
+literal|null
+decl_stmt|;
 try|try
-block|{
+init|(
 name|CloseableHttpClient
 name|httpClient
 init|=
-name|HttpClients
-operator|.
-name|createDefault
+name|newHttpClient
 argument_list|()
-decl_stmt|;
+init|)
+block|{
 name|OzoneUtils
 operator|.
 name|verifyBucketName
@@ -788,9 +817,8 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
-name|HttpGet
-name|httpget
-init|=
+name|httpGet
+operator|=
 name|getHttpGet
 argument_list|(
 name|builder
@@ -798,11 +826,11 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 return|return
 name|executeInfoVolume
 argument_list|(
-name|httpget
+name|httpGet
 argument_list|,
 name|httpClient
 argument_list|)
@@ -829,6 +857,16 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
+finally|finally
+block|{
+name|OzoneClientUtils
+operator|.
+name|releaseConnection
+argument_list|(
+name|httpGet
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * List all the volumes owned by the user or Owned by the user specified in    * the behalf of string.    *    * @param onBehalfOf - User Name of the user if it is not the caller. for    *                   example, an admin wants to list some other users    *                   volumes.    * @param prefix     - Return only volumes that match this prefix.    * @param maxKeys    - Maximum number of results to return, if the result set    *                   is smaller than requested size, it means that list is    *                   complete.    * @param prevKey    - The last key that client got, server will continue    *                   returning results from that point.    * @return List of Volumes    * @throws OzoneException    */
 DECL|method|listVolumes (String onBehalfOf, String prefix, int maxKeys, OzoneVolume prevKey)
@@ -854,16 +892,20 @@ parameter_list|)
 throws|throws
 name|OzoneException
 block|{
+name|HttpGet
+name|httpGet
+init|=
+literal|null
+decl_stmt|;
 try|try
-block|{
+init|(
 name|CloseableHttpClient
 name|httpClient
 init|=
-name|HttpClients
-operator|.
-name|createDefault
+name|newHttpClient
 argument_list|()
-decl_stmt|;
+init|)
+block|{
 name|URIBuilder
 name|builder
 init|=
@@ -955,9 +997,8 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
-name|HttpGet
-name|httpget
-init|=
+name|httpGet
+operator|=
 name|getHttpGet
 argument_list|(
 name|builder
@@ -965,7 +1006,7 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 name|onBehalfOf
@@ -973,7 +1014,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|httpget
+name|httpGet
 operator|.
 name|addHeader
 argument_list|(
@@ -988,7 +1029,7 @@ block|}
 return|return
 name|executeListVolume
 argument_list|(
-name|httpget
+name|httpGet
 argument_list|,
 name|httpClient
 argument_list|)
@@ -1012,6 +1053,16 @@ name|getMessage
 argument_list|()
 argument_list|)
 throw|;
+block|}
+finally|finally
+block|{
+name|OzoneClientUtils
+operator|.
+name|releaseConnection
+argument_list|(
+name|httpGet
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 comment|/**    * List volumes of the current user or if onBehalfof is not null lists volume    * owned by that user. You need admin privilege to read other users volume    * lists.    *    * @param onBehalfOf - Name of the user you want to get volume list    * @return - Volume list.    * @throws OzoneException    */
@@ -1063,16 +1114,20 @@ parameter_list|)
 throws|throws
 name|OzoneException
 block|{
+name|HttpGet
+name|httpGet
+init|=
+literal|null
+decl_stmt|;
 try|try
-block|{
+init|(
 name|CloseableHttpClient
 name|httpClient
 init|=
-name|HttpClients
-operator|.
-name|createDefault
+name|newHttpClient
 argument_list|()
-decl_stmt|;
+init|)
+block|{
 name|URIBuilder
 name|builder
 init|=
@@ -1175,9 +1230,8 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
-name|HttpGet
-name|httpget
-init|=
+name|httpGet
+operator|=
 name|getHttpGet
 argument_list|(
 name|builder
@@ -1185,11 +1239,11 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 return|return
 name|executeListVolume
 argument_list|(
-name|httpget
+name|httpGet
 argument_list|,
 name|httpClient
 argument_list|)
@@ -1214,6 +1268,16 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
+finally|finally
+block|{
+name|OzoneClientUtils
+operator|.
+name|releaseConnection
+argument_list|(
+name|httpGet
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**      * delete a given volume.      *      * @param volumeName - volume to be deleted.      * @throws OzoneException - Ozone Exception      */
 DECL|method|deleteVolume (String volumeName)
@@ -1227,16 +1291,20 @@ parameter_list|)
 throws|throws
 name|OzoneException
 block|{
+name|HttpDelete
+name|httpDelete
+init|=
+literal|null
+decl_stmt|;
 try|try
-block|{
+init|(
 name|CloseableHttpClient
 name|httpClient
 init|=
-name|HttpClients
-operator|.
-name|createDefault
+name|newHttpClient
 argument_list|()
-decl_stmt|;
+init|)
+block|{
 name|OzoneUtils
 operator|.
 name|verifyBucketName
@@ -1265,9 +1333,8 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
-name|HttpDelete
-name|httpdelete
-init|=
+name|httpDelete
+operator|=
 name|getHttpDelete
 argument_list|(
 name|builder
@@ -1275,10 +1342,10 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|executeDeleteVolume
 argument_list|(
-name|httpdelete
+name|httpDelete
 argument_list|,
 name|httpClient
 argument_list|)
@@ -1305,6 +1372,16 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
+finally|finally
+block|{
+name|OzoneClientUtils
+operator|.
+name|releaseConnection
+argument_list|(
+name|httpDelete
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Sets the Volume Owner.    *    * @param volumeName - Volume Name    * @param newOwner   - New Owner Name    * @throws OzoneException    */
 DECL|method|setVolumeOwner (String volumeName, String newOwner)
@@ -1321,6 +1398,11 @@ parameter_list|)
 throws|throws
 name|OzoneException
 block|{
+name|HttpPut
+name|putRequest
+init|=
+literal|null
+decl_stmt|;
 if|if
 condition|(
 name|newOwner
@@ -1342,15 +1424,14 @@ argument_list|)
 throw|;
 block|}
 try|try
-block|{
+init|(
 name|CloseableHttpClient
 name|httpClient
 init|=
-name|HttpClients
-operator|.
-name|createDefault
+name|newHttpClient
 argument_list|()
-decl_stmt|;
+init|)
+block|{
 name|OzoneUtils
 operator|.
 name|verifyBucketName
@@ -1379,9 +1460,8 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
-name|HttpPut
 name|putRequest
-init|=
+operator|=
 name|getHttpPut
 argument_list|(
 name|builder
@@ -1389,7 +1469,7 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|putRequest
 operator|.
 name|addHeader
@@ -1430,6 +1510,16 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
+finally|finally
+block|{
+name|OzoneClientUtils
+operator|.
+name|releaseConnection
+argument_list|(
+name|putRequest
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Sets the Volume Quota. Quota's are specified in a specific format. it is    *<integer>|(MB|GB|TB. for example 100TB.    *<p>    * To Remove a quota you can specify Header.OZONE_QUOTA_REMOVE    *    * @param volumeName - volume name    * @param quota      - Quota String or  Header.OZONE_QUOTA_REMOVE    * @throws OzoneException    */
 DECL|method|setVolumeQuota (String volumeName, String quota)
@@ -1466,16 +1556,20 @@ literal|"Invalid quota"
 argument_list|)
 throw|;
 block|}
+name|HttpPut
+name|putRequest
+init|=
+literal|null
+decl_stmt|;
 try|try
-block|{
+init|(
 name|CloseableHttpClient
 name|httpClient
 init|=
-name|HttpClients
-operator|.
-name|createDefault
+name|newHttpClient
 argument_list|()
-decl_stmt|;
+init|)
+block|{
 name|OzoneUtils
 operator|.
 name|verifyBucketName
@@ -1513,9 +1607,8 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
-name|HttpPut
 name|putRequest
-init|=
+operator|=
 name|getHttpPut
 argument_list|(
 name|builder
@@ -1523,7 +1616,7 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|executePutVolume
 argument_list|(
 name|putRequest
@@ -1553,9 +1646,19 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
+finally|finally
+block|{
+name|OzoneClientUtils
+operator|.
+name|releaseConnection
+argument_list|(
+name|putRequest
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Sends the create Volume request to the server.    *    * @param httppost   - http post class    * @param httpClient - httpClient    * @throws IOException    -    * @throws OzoneException    */
-DECL|method|executeCreateVolume (HttpPost httppost, CloseableHttpClient httpClient)
+DECL|method|executeCreateVolume (HttpPost httppost, final CloseableHttpClient httpClient)
 specifier|private
 name|void
 name|executeCreateVolume
@@ -1563,6 +1666,7 @@ parameter_list|(
 name|HttpPost
 name|httppost
 parameter_list|,
+specifier|final
 name|CloseableHttpClient
 name|httpClient
 parameter_list|)
@@ -1675,7 +1779,7 @@ block|}
 block|}
 block|}
 comment|/**    * Sends the create Volume request to the server.    *    * @param httpGet - httpGet    * @return OzoneVolume    * @throws IOException    -    * @throws OzoneException    */
-DECL|method|executeInfoVolume (HttpGet httpGet, CloseableHttpClient httpClient)
+DECL|method|executeInfoVolume (HttpGet httpGet, final CloseableHttpClient httpClient)
 specifier|private
 name|OzoneVolume
 name|executeInfoVolume
@@ -1683,6 +1787,7 @@ parameter_list|(
 name|HttpGet
 name|httpGet
 parameter_list|,
+specifier|final
 name|CloseableHttpClient
 name|httpClient
 parameter_list|)
@@ -1810,7 +1915,7 @@ block|}
 block|}
 block|}
 comment|/**    * Sends update volume requests to the server.    *    * @param putRequest http request    * @throws IOException    * @throws OzoneException    */
-DECL|method|executePutVolume (HttpPut putRequest, CloseableHttpClient httpClient)
+DECL|method|executePutVolume (HttpPut putRequest, final CloseableHttpClient httpClient)
 specifier|private
 name|void
 name|executePutVolume
@@ -1818,6 +1923,7 @@ parameter_list|(
 name|HttpPut
 name|putRequest
 parameter_list|,
+specifier|final
 name|CloseableHttpClient
 name|httpClient
 parameter_list|)
@@ -1903,7 +2009,7 @@ block|}
 block|}
 block|}
 comment|/**    * List Volumes.    *    * @param httpGet - httpGet    * @return OzoneVolume    * @throws IOException    -    * @throws OzoneException    */
-DECL|method|executeListVolume (HttpGet httpGet, CloseableHttpClient httpClient)
+DECL|method|executeListVolume (HttpGet httpGet, final CloseableHttpClient httpClient)
 specifier|private
 name|List
 argument_list|<
@@ -1914,6 +2020,7 @@ parameter_list|(
 name|HttpGet
 name|httpGet
 parameter_list|,
+specifier|final
 name|CloseableHttpClient
 name|httpClient
 parameter_list|)
@@ -2076,7 +2183,7 @@ block|}
 block|}
 block|}
 comment|/**    * Delete Volume.    *    * @param httpDelete - Http Delete Request    * @throws IOException    * @throws OzoneException    */
-DECL|method|executeDeleteVolume (HttpDelete httpDelete, CloseableHttpClient httpClient)
+DECL|method|executeDeleteVolume (HttpDelete httpDelete, final CloseableHttpClient httpClient)
 specifier|private
 name|void
 name|executeDeleteVolume
@@ -2084,6 +2191,7 @@ parameter_list|(
 name|HttpDelete
 name|httpDelete
 parameter_list|,
+specifier|final
 name|CloseableHttpClient
 name|httpClient
 parameter_list|)
@@ -2182,7 +2290,7 @@ name|uriString
 parameter_list|)
 block|{
 name|HttpPost
-name|httppost
+name|httpPost
 init|=
 operator|new
 name|HttpPost
@@ -2192,7 +2300,7 @@ argument_list|)
 decl_stmt|;
 name|addOzoneHeaders
 argument_list|(
-name|httppost
+name|httpPost
 argument_list|)
 expr_stmt|;
 if|if
@@ -2202,7 +2310,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|httppost
+name|httpPost
 operator|.
 name|addHeader
 argument_list|(
@@ -2215,7 +2323,7 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|httppost
+name|httpPost
 return|;
 block|}
 comment|/**    * Returns a standard HttpGet Object to use for ozone Get requests.    *    * @param uriString - The full Uri String    * @return HttpGet    */
@@ -2229,7 +2337,7 @@ name|uriString
 parameter_list|)
 block|{
 name|HttpGet
-name|httpget
+name|httpGet
 init|=
 operator|new
 name|HttpGet
@@ -2239,11 +2347,11 @@ argument_list|)
 decl_stmt|;
 name|addOzoneHeaders
 argument_list|(
-name|httpget
+name|httpGet
 argument_list|)
 expr_stmt|;
 return|return
-name|httpget
+name|httpGet
 return|;
 block|}
 comment|/**    * Returns httpDelete.    *    * @param uriString - uri    * @return HttpDelete    */
@@ -2402,6 +2510,21 @@ name|IOException
 block|{
 comment|// TODO : Currently we create a new HTTP client. We should switch
 comment|// This to a Pool and cleanup the pool here.
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|newHttpClient ()
+specifier|public
+name|CloseableHttpClient
+name|newHttpClient
+parameter_list|()
+block|{
+return|return
+name|OzoneClientUtils
+operator|.
+name|newHttpClient
+argument_list|()
+return|;
 block|}
 block|}
 end_class
