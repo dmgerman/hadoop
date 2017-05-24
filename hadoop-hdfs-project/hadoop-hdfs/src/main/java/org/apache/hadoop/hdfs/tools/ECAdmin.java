@@ -114,7 +114,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|AddingECPolicyResponse
+name|AddECPolicyResponse
 import|;
 end_import
 
@@ -1016,7 +1016,7 @@ operator|>
 literal|0
 condition|)
 block|{
-name|AddingECPolicyResponse
+name|AddECPolicyResponse
 index|[]
 name|responses
 init|=
@@ -1041,7 +1041,7 @@ argument_list|)
 decl_stmt|;
 for|for
 control|(
-name|AddingECPolicyResponse
+name|AddECPolicyResponse
 name|response
 range|:
 name|responses

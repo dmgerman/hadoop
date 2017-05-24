@@ -550,7 +550,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|AddingECPolicyResponse
+name|AddECPolicyResponse
 import|;
 end_import
 
@@ -1740,7 +1740,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|AddingECPolicyResponseProto
+name|AddECPolicyResponseProto
 import|;
 end_import
 
@@ -18966,22 +18966,22 @@ name|build
 argument_list|()
 return|;
 block|}
-DECL|method|convertAddingECPolicyResponse ( AddingECPolicyResponse response)
+DECL|method|convertAddECPolicyResponse ( AddECPolicyResponse response)
 specifier|public
 specifier|static
-name|AddingECPolicyResponseProto
-name|convertAddingECPolicyResponse
+name|AddECPolicyResponseProto
+name|convertAddECPolicyResponse
 parameter_list|(
-name|AddingECPolicyResponse
+name|AddECPolicyResponse
 name|response
 parameter_list|)
 block|{
-name|AddingECPolicyResponseProto
+name|AddECPolicyResponseProto
 operator|.
 name|Builder
 name|builder
 init|=
-name|AddingECPolicyResponseProto
+name|AddECPolicyResponseProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -19032,13 +19032,13 @@ name|build
 argument_list|()
 return|;
 block|}
-DECL|method|convertAddingECPolicyResponse ( AddingECPolicyResponseProto proto)
+DECL|method|convertAddECPolicyResponse ( AddECPolicyResponseProto proto)
 specifier|public
 specifier|static
-name|AddingECPolicyResponse
-name|convertAddingECPolicyResponse
+name|AddECPolicyResponse
+name|convertAddECPolicyResponse
 parameter_list|(
-name|AddingECPolicyResponseProto
+name|AddECPolicyResponseProto
 name|proto
 parameter_list|)
 block|{
@@ -19063,7 +19063,7 @@ condition|)
 block|{
 return|return
 operator|new
-name|AddingECPolicyResponse
+name|AddECPolicyResponse
 argument_list|(
 name|policy
 argument_list|)
@@ -19073,7 +19073,7 @@ else|else
 block|{
 return|return
 operator|new
-name|AddingECPolicyResponse
+name|AddECPolicyResponse
 argument_list|(
 name|policy
 argument_list|,

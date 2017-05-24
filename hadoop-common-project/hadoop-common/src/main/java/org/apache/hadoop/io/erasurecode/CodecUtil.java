@@ -676,6 +676,32 @@ return|return
 name|fact
 return|;
 block|}
+DECL|method|hasCodec (String codecName)
+specifier|public
+specifier|static
+name|boolean
+name|hasCodec
+parameter_list|(
+name|String
+name|codecName
+parameter_list|)
+block|{
+return|return
+operator|(
+name|CodecRegistry
+operator|.
+name|getInstance
+argument_list|()
+operator|.
+name|getCoderNames
+argument_list|(
+name|codecName
+argument_list|)
+operator|!=
+literal|null
+operator|)
+return|;
+block|}
 comment|// Return a list of coder names
 DECL|method|getRawCoderNames ( Configuration conf, String codecName)
 specifier|private

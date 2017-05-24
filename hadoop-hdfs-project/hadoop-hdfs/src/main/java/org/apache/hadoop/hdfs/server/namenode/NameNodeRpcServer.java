@@ -928,7 +928,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|AddingECPolicyResponse
+name|AddECPolicyResponse
 import|;
 end_import
 
@@ -12767,7 +12767,7 @@ annotation|@
 name|Override
 DECL|method|addErasureCodingPolicies ( ErasureCodingPolicy[] policies)
 specifier|public
-name|AddingECPolicyResponse
+name|AddECPolicyResponse
 index|[]
 name|addErasureCodingPolicies
 parameter_list|(
@@ -12779,6 +12779,11 @@ throws|throws
 name|IOException
 block|{
 name|checkNNStartup
+argument_list|()
+expr_stmt|;
+name|namesystem
+operator|.
+name|checkSuperuserPrivilege
 argument_list|()
 expr_stmt|;
 return|return

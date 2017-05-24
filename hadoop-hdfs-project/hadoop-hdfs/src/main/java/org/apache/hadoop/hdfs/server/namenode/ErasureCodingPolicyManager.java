@@ -128,11 +128,37 @@ end_import
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|util
+name|apache
 operator|.
-name|List
+name|hadoop
+operator|.
+name|io
+operator|.
+name|erasurecode
+operator|.
+name|CodecUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
 import|;
 end_import
 
@@ -200,6 +226,21 @@ specifier|final
 class|class
 name|ErasureCodingPolicyManager
 block|{
+DECL|field|LOG
+specifier|public
+specifier|static
+name|Logger
+name|LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|ErasureCodingPolicyManager
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 DECL|field|USER_DEFINED_POLICY_START_ID
 specifier|private
 specifier|static
@@ -207,7 +248,19 @@ specifier|final
 name|byte
 name|USER_DEFINED_POLICY_START_ID
 init|=
-literal|32
+operator|(
+name|byte
+operator|)
+literal|64
+decl_stmt|;
+DECL|field|maxCellSize
+specifier|private
+name|int
+name|maxCellSize
+init|=
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_EC_POLICIES_MAX_CELLSIZE_DEFAULT
 decl_stmt|;
 comment|// Supported storage policies for striped EC files
 DECL|field|SUITABLE_STORAGE_POLICIES_FOR_EC_STRIPED_MODE
@@ -316,23 +369,6 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
-name|this
-operator|.
-name|loadPolicies
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|loadPolicies (Configuration conf)
-specifier|private
-name|void
-name|loadPolicies
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
-block|{
 comment|// Populate the list of enabled policies from configuration
 specifier|final
 name|String
@@ -417,12 +453,55 @@ operator|==
 literal|null
 condition|)
 block|{
+name|ecPolicy
+operator|=
+name|userPoliciesByName
+operator|.
+name|get
+argument_list|(
+name|policyName
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|ecPolicy
+operator|==
+literal|null
+condition|)
+block|{
 name|String
-name|sysPolicies
+name|allPolicies
 init|=
 name|SystemErasureCodingPolicies
 operator|.
 name|getPolicies
+argument_list|()
+operator|.
+name|stream
+argument_list|()
+operator|.
+name|map
+argument_list|(
+name|ErasureCodingPolicy
+operator|::
+name|getName
+argument_list|)
+operator|.
+name|collect
+argument_list|(
+name|Collectors
+operator|.
+name|joining
+argument_list|(
+literal|", "
+argument_list|)
+argument_list|)
+operator|+
+literal|", "
+operator|+
+name|userPoliciesByName
+operator|.
+name|values
 argument_list|()
 operator|.
 name|stream
@@ -454,9 +533,9 @@ name|format
 argument_list|(
 literal|"EC policy '%s' specified at %s is not a "
 operator|+
-literal|"valid policy. Please choose from list of available policies: "
+literal|"valid policy. Please choose from list of available "
 operator|+
-literal|"[%s]"
+literal|"policies: [%s]"
 argument_list|,
 name|policyName
 argument_list|,
@@ -464,7 +543,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_EC_POLICIES_ENABLED_KEY
 argument_list|,
-name|sysPolicies
+name|allPolicies
 argument_list|)
 decl_stmt|;
 throw|throw
@@ -474,6 +553,7 @@ argument_list|(
 name|msg
 argument_list|)
 throw|;
+block|}
 block|}
 name|enabledPoliciesByName
 operator|.
@@ -488,6 +568,21 @@ name|ecPolicy
 argument_list|)
 expr_stmt|;
 block|}
+name|maxCellSize
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_EC_POLICIES_MAX_CELLSIZE_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_EC_POLICIES_MAX_CELLSIZE_DEFAULT
+argument_list|)
+expr_stmt|;
 comment|/**      * TODO: HDFS-7859 persist into NameNode      * load persistent policies from image and editlog, which is done only once      * during NameNode startup. This can be done here or in a separate method.      */
 block|}
 comment|/**    * Get the set of enabled policies.    * @return all policies    */
@@ -587,10 +682,8 @@ block|}
 comment|/**    * Get all system defined policies and user defined policies.    * @return all policies    */
 DECL|method|getPolicies ()
 specifier|public
-name|List
-argument_list|<
 name|ErasureCodingPolicy
-argument_list|>
+index|[]
 name|getPolicies
 parameter_list|()
 block|{
@@ -607,9 +700,7 @@ operator|.
 name|stream
 argument_list|()
 argument_list|,
-name|this
-operator|.
-name|userPoliciesByID
+name|userPoliciesByName
 operator|.
 name|values
 argument_list|()
@@ -618,12 +709,12 @@ name|stream
 argument_list|()
 argument_list|)
 operator|.
-name|collect
+name|toArray
 argument_list|(
-name|Collectors
-operator|.
-name|toList
-argument_list|()
+name|ErasureCodingPolicy
+index|[]
+operator|::
+operator|new
 argument_list|)
 return|;
 block|}
@@ -724,7 +815,7 @@ block|}
 DECL|method|addPolicy (ErasureCodingPolicy policy)
 specifier|public
 specifier|synchronized
-name|void
+name|ErasureCodingPolicy
 name|addPolicy
 parameter_list|(
 name|ErasureCodingPolicy
@@ -733,6 +824,64 @@ parameter_list|)
 throws|throws
 name|IllegalECPolicyException
 block|{
+if|if
+condition|(
+operator|!
+name|CodecUtil
+operator|.
+name|hasCodec
+argument_list|(
+name|policy
+operator|.
+name|getCodecName
+argument_list|()
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalECPolicyException
+argument_list|(
+literal|"Codec name "
+operator|+
+name|policy
+operator|.
+name|getCodecName
+argument_list|()
+operator|+
+literal|" is not supported"
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|policy
+operator|.
+name|getCellSize
+argument_list|()
+operator|>
+name|maxCellSize
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalECPolicyException
+argument_list|(
+literal|"Cell size "
+operator|+
+name|policy
+operator|.
+name|getCellSize
+argument_list|()
+operator|+
+literal|" should not exceed maximum "
+operator|+
+name|maxCellSize
+operator|+
+literal|" byte"
+argument_list|)
+throw|;
+block|}
 name|String
 name|assignedNewName
 init|=
@@ -777,7 +926,11 @@ throw|throw
 operator|new
 name|IllegalECPolicyException
 argument_list|(
-literal|"The policy name already exists"
+literal|"The policy name "
+operator|+
+name|assignedNewName
+operator|+
+literal|" already exists"
 argument_list|)
 throw|;
 block|}
@@ -811,9 +964,24 @@ throw|throw
 operator|new
 name|IllegalECPolicyException
 argument_list|(
-literal|"A policy with same schema and "
+literal|"A policy with same schema "
 operator|+
-literal|"cell size already exists"
+name|policy
+operator|.
+name|getSchema
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|" and cell size "
+operator|+
+name|p
+operator|.
+name|getCellSize
+argument_list|()
+operator|+
+literal|" is already exists"
 argument_list|)
 throw|;
 block|}
@@ -861,6 +1029,9 @@ argument_list|,
 name|policy
 argument_list|)
 expr_stmt|;
+return|return
+name|policy
+return|;
 block|}
 DECL|method|getNextAvailablePolicyID ()
 specifier|private

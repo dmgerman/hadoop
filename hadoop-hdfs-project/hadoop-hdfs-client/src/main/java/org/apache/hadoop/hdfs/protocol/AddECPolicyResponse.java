@@ -19,14 +19,14 @@ package|;
 end_package
 
 begin_comment
-comment|/**  * A response of adding an ErasureCoding policy.  */
+comment|/**  * A response of add an ErasureCoding policy.  */
 end_comment
 
 begin_class
-DECL|class|AddingECPolicyResponse
+DECL|class|AddECPolicyResponse
 specifier|public
 class|class
-name|AddingECPolicyResponse
+name|AddECPolicyResponse
 block|{
 DECL|field|succeed
 specifier|private
@@ -43,9 +43,9 @@ specifier|private
 name|String
 name|errorMsg
 decl_stmt|;
-DECL|method|AddingECPolicyResponse (ErasureCodingPolicy policy)
+DECL|method|AddECPolicyResponse (ErasureCodingPolicy policy)
 specifier|public
-name|AddingECPolicyResponse
+name|AddECPolicyResponse
 parameter_list|(
 name|ErasureCodingPolicy
 name|policy
@@ -64,9 +64,9 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
-DECL|method|AddingECPolicyResponse (ErasureCodingPolicy policy, String errorMsg)
+DECL|method|AddECPolicyResponse (ErasureCodingPolicy policy, String errorMsg)
 specifier|public
-name|AddingECPolicyResponse
+name|AddECPolicyResponse
 parameter_list|(
 name|ErasureCodingPolicy
 name|policy
@@ -94,9 +94,9 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
-DECL|method|AddingECPolicyResponse (ErasureCodingPolicy policy, IllegalECPolicyException e)
+DECL|method|AddECPolicyResponse (ErasureCodingPolicy policy, IllegalECPolicyException e)
 specifier|public
-name|AddingECPolicyResponse
+name|AddECPolicyResponse
 parameter_list|(
 name|ErasureCodingPolicy
 name|policy

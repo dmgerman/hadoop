@@ -274,7 +274,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|AddingECPolicyResponse
+name|AddECPolicyResponse
 import|;
 end_import
 
@@ -11637,7 +11637,7 @@ operator|::
 operator|new
 argument_list|)
 decl_stmt|;
-name|AddingECPolicyResponse
+name|AddECPolicyResponse
 index|[]
 name|result
 init|=
@@ -11652,7 +11652,7 @@ name|List
 argument_list|<
 name|HdfsProtos
 operator|.
-name|AddingECPolicyResponseProto
+name|AddECPolicyResponseProto
 argument_list|>
 name|responseProtos
 init|=
@@ -11667,7 +11667,7 @@ name|map
 argument_list|(
 name|PBHelperClient
 operator|::
-name|convertAddingECPolicyResponse
+name|convertAddECPolicyResponse
 argument_list|)
 operator|.
 name|collect

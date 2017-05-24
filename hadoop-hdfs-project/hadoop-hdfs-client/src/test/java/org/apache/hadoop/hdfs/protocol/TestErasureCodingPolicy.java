@@ -275,7 +275,7 @@ literal|"one"
 argument_list|,
 name|SCHEMA_1
 argument_list|,
-literal|321
+literal|1024
 argument_list|,
 operator|(
 name|byte
@@ -290,7 +290,7 @@ literal|"two"
 argument_list|,
 name|SCHEMA_1
 argument_list|,
-literal|321
+literal|1024
 argument_list|,
 operator|(
 name|byte
@@ -305,7 +305,7 @@ literal|"one"
 argument_list|,
 name|SCHEMA_2
 argument_list|,
-literal|321
+literal|1024
 argument_list|,
 operator|(
 name|byte
@@ -320,7 +320,7 @@ literal|"one"
 argument_list|,
 name|SCHEMA_1
 argument_list|,
-literal|123
+literal|2048
 argument_list|,
 operator|(
 name|byte
@@ -335,7 +335,7 @@ literal|"one"
 argument_list|,
 name|SCHEMA_1
 argument_list|,
-literal|321
+literal|1024
 argument_list|,
 operator|(
 name|byte

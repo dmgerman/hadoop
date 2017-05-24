@@ -222,6 +222,18 @@ name|junit
 operator|.
 name|Assert
 operator|.
+name|assertNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
 name|assertTrue
 import|;
 end_import
@@ -452,13 +464,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|expected
-operator|=
-name|IllegalArgumentException
-operator|.
-name|class
-argument_list|)
 DECL|method|testGetCodersWrong ()
 specifier|public
 name|void
@@ -481,6 +486,11 @@ argument_list|(
 literal|"WRONG_CODEC"
 argument_list|)
 decl_stmt|;
+name|assertNull
+argument_list|(
+name|coders
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Test
@@ -759,13 +769,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|expected
-operator|=
-name|IllegalArgumentException
-operator|.
-name|class
-argument_list|)
 DECL|method|testGetCoderByNameWrong ()
 specifier|public
 name|void
@@ -789,6 +792,11 @@ argument_list|,
 literal|"WRONG_RS"
 argument_list|)
 decl_stmt|;
+name|assertNull
+argument_list|(
+name|coder
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Test

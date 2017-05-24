@@ -1103,7 +1103,7 @@ return|;
 block|}
 DECL|method|addErasureCodePolicy (final FSNamesystem fsn, ErasureCodingPolicy policy)
 specifier|static
-name|void
+name|ErasureCodingPolicy
 name|addErasureCodePolicy
 parameter_list|(
 specifier|final
@@ -1123,6 +1123,7 @@ argument_list|(
 name|policy
 argument_list|)
 expr_stmt|;
+return|return
 name|fsn
 operator|.
 name|getErasureCodingPolicyManager
@@ -1132,7 +1133,7 @@ name|addPolicy
 argument_list|(
 name|policy
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 DECL|method|removeErasureCodingPolicyXAttr ( final FSNamesystem fsn, final INodesInPath srcIIP)
 specifier|private

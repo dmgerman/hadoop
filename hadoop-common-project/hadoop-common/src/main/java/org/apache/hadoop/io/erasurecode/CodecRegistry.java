@@ -659,7 +659,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Get all coder names of the given codec.    * @param codecName the name of codec    * @return an array of all coder names    */
+comment|/**    * Get all coder names of the given codec.    * @param codecName the name of codec    * @return an array of all coder names, null if not exist    */
 DECL|method|getCoderNames (String codecName)
 specifier|public
 name|String
@@ -681,28 +681,11 @@ argument_list|(
 name|codecName
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|coderNames
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IllegalArgumentException
-argument_list|(
-literal|"No available raw coder factory for "
-operator|+
-name|codecName
-argument_list|)
-throw|;
-block|}
 return|return
 name|coderNames
 return|;
 block|}
-comment|/**    * Get all coder factories of the given codec.    * @param codecName the name of codec    * @return a list of all coder factories    */
+comment|/**    * Get all coder factories of the given codec.    * @param codecName the name of codec    * @return a list of all coder factories, null if not exist    */
 DECL|method|getCoders (String codecName)
 specifier|public
 name|List
@@ -728,23 +711,6 @@ argument_list|(
 name|codecName
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|coders
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IllegalArgumentException
-argument_list|(
-literal|"No available raw coder factory for "
-operator|+
-name|codecName
-argument_list|)
-throw|;
-block|}
 return|return
 name|coders
 return|;
@@ -766,7 +732,7 @@ name|keySet
 argument_list|()
 return|;
 block|}
-comment|/**    * Get a specific coder factory defined by codec name and coder name.    * @param codecName name of the codec    * @param coderName name of the coder    * @return the specific coder    */
+comment|/**    * Get a specific coder factory defined by codec name and coder name.    * @param codecName name of the codec    * @param coderName name of the coder    * @return the specific coder, null if not exist    */
 DECL|method|getCoderByName ( String codecName, String coderName)
 specifier|public
 name|RawErasureCoderFactory
@@ -817,20 +783,9 @@ name|coder
 return|;
 block|}
 block|}
-comment|// if not found, throw exception
-throw|throw
-operator|new
-name|IllegalArgumentException
-argument_list|(
-literal|"No implementation for coder "
-operator|+
-name|coderName
-operator|+
-literal|" of codec "
-operator|+
-name|codecName
-argument_list|)
-throw|;
+return|return
+literal|null
+return|;
 block|}
 comment|/**    * Get all codec names and their corresponding coder list.    * @return a map of all codec names, and their corresponding code list    * separated by ','.    */
 DECL|method|getCodec2CoderCompactMap ()

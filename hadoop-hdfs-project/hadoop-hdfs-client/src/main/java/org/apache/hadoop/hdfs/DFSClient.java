@@ -1158,7 +1158,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|AddingECPolicyResponse
+name|AddECPolicyResponse
 import|;
 end_import
 
@@ -13129,7 +13129,7 @@ block|}
 block|}
 DECL|method|addErasureCodingPolicies ( ErasureCodingPolicy[] policies)
 specifier|public
-name|AddingECPolicyResponse
+name|AddECPolicyResponse
 index|[]
 name|addErasureCodingPolicies
 parameter_list|(

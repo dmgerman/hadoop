@@ -2114,11 +2114,11 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Add Erasure coding policies.    *    * @param policies The user defined ec policy list to add.    * @return Return the response list of adding operations.    * @throws IOException    */
+comment|/**    * Add Erasure coding policies to HDFS. For each policy input, schema and    * cellSize are musts, name and id are ignored. They will be automatically    * created and assigned by Namenode once the policy is successfully added, and    * will be returned in the response.    *    * @param policies The user defined ec policy list to add.    * @return Return the response list of adding operations.    * @throws IOException    */
 annotation|@
 name|AtMostOnce
 DECL|method|addErasureCodingPolicies ( ErasureCodingPolicy[] policies)
-name|AddingECPolicyResponse
+name|AddECPolicyResponse
 index|[]
 name|addErasureCodingPolicies
 parameter_list|(

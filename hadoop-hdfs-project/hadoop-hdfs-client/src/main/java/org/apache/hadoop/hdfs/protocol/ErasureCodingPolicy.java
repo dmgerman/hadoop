@@ -191,6 +191,19 @@ argument_list|,
 literal|"cellSize must be positive"
 argument_list|)
 expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|cellSize
+operator|%
+literal|1024
+operator|==
+literal|0
+argument_list|,
+literal|"cellSize must be 1024 aligned"
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|name
@@ -247,6 +260,38 @@ name|id
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|ErasureCodingPolicy (ECSchema schema, int cellSize)
+specifier|public
+name|ErasureCodingPolicy
+parameter_list|(
+name|ECSchema
+name|schema
+parameter_list|,
+name|int
+name|cellSize
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|composePolicyName
+argument_list|(
+name|schema
+argument_list|,
+name|cellSize
+argument_list|)
+argument_list|,
+name|schema
+argument_list|,
+name|cellSize
+argument_list|,
+operator|(
+name|byte
+operator|)
+operator|-
+literal|1
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|composePolicyName (ECSchema schema, int cellSize)
 specifier|public
 specifier|static
@@ -260,13 +305,19 @@ name|int
 name|cellSize
 parameter_list|)
 block|{
-assert|assert
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
 name|cellSize
 operator|%
 literal|1024
 operator|==
 literal|0
-assert|;
+argument_list|,
+literal|"cellSize must be 1024 aligned"
+argument_list|)
+expr_stmt|;
 return|return
 name|schema
 operator|.

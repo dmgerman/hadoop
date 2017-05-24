@@ -1587,12 +1587,6 @@ argument_list|(
 name|schema
 argument_list|,
 name|cellSize
-argument_list|,
-operator|(
-name|byte
-operator|)
-operator|-
-literal|1
 argument_list|)
 return|;
 block|}
