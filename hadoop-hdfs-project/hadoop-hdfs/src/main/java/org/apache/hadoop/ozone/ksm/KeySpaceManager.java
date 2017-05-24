@@ -98,7 +98,7 @@ name|ksm
 operator|.
 name|helpers
 operator|.
-name|KsmBucketArgs
+name|KsmBucketInfo
 import|;
 end_import
 
@@ -1260,16 +1260,16 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Creates a bucket.    *    * @param args - Arguments to create Bucket.    * @throws IOException    */
+comment|/**    * Creates a bucket.    *    * @param bucketInfo - BucketInfo to create bucket.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|createBucket (KsmBucketArgs args)
+DECL|method|createBucket (KsmBucketInfo bucketInfo)
 specifier|public
 name|void
 name|createBucket
 parameter_list|(
-name|KsmBucketArgs
-name|args
+name|KsmBucketInfo
+name|bucketInfo
 parameter_list|)
 throws|throws
 name|IOException
@@ -1285,7 +1285,7 @@ name|bucketManager
 operator|.
 name|createBucket
 argument_list|(
-name|args
+name|bucketInfo
 argument_list|)
 expr_stmt|;
 block|}
@@ -1298,6 +1298,57 @@ block|{
 name|metrics
 operator|.
 name|incNumBucketCreateFails
+argument_list|()
+expr_stmt|;
+throw|throw
+name|ex
+throw|;
+block|}
+block|}
+comment|/**    * Gets the bucket information.    *    * @param volume - Volume name.    * @param bucket - Bucket name.    * @return KsmBucketInfo or exception is thrown.    * @throws IOException    */
+annotation|@
+name|Override
+DECL|method|getBucketInfo (String volume, String bucket)
+specifier|public
+name|KsmBucketInfo
+name|getBucketInfo
+parameter_list|(
+name|String
+name|volume
+parameter_list|,
+name|String
+name|bucket
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+try|try
+block|{
+name|metrics
+operator|.
+name|incNumBucketInfos
+argument_list|()
+expr_stmt|;
+return|return
+name|bucketManager
+operator|.
+name|getBucketInfo
+argument_list|(
+name|volume
+argument_list|,
+name|bucket
+argument_list|)
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|ex
+parameter_list|)
+block|{
+name|metrics
+operator|.
+name|incNumBucketInfoFails
 argument_list|()
 expr_stmt|;
 throw|throw

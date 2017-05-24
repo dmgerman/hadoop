@@ -20,16 +20,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -78,7 +68,7 @@ name|proto
 operator|.
 name|KeySpaceManagerProtocolProtos
 operator|.
-name|BucketArgs
+name|BucketInfo
 import|;
 end_import
 
@@ -102,16 +92,36 @@ name|OzoneAclInfo
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|LinkedList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
 begin_comment
-comment|/**  * A class that encapsulates Bucket Arguments.  */
+comment|/**  * A class that encapsulates Bucket Info.  */
 end_comment
 
 begin_class
-DECL|class|KsmBucketArgs
+DECL|class|KsmBucketInfo
 specifier|public
 specifier|final
 class|class
-name|KsmBucketArgs
+name|KsmBucketInfo
 block|{
 comment|/**    * Name of the volume in which the bucket belongs to.    */
 DECL|field|volumeName
@@ -127,23 +137,14 @@ specifier|final
 name|String
 name|bucketName
 decl_stmt|;
-comment|/**    * ACL's that are to be added for the bucket.    */
-DECL|field|addAcls
+comment|/**    * ACL Information.    */
+DECL|field|acls
 specifier|private
 name|List
 argument_list|<
 name|OzoneAclInfo
 argument_list|>
-name|addAcls
-decl_stmt|;
-comment|/**    * ACL's that are to be removed from the bucket.    */
-DECL|field|removeAcls
-specifier|private
-name|List
-argument_list|<
-name|OzoneAclInfo
-argument_list|>
-name|removeAcls
+name|acls
 decl_stmt|;
 comment|/**    * Bucket Version flag.    */
 DECL|field|isVersionEnabled
@@ -157,10 +158,10 @@ specifier|private
 name|StorageTypeProto
 name|storageType
 decl_stmt|;
-comment|/**    * Private constructor, constructed via builder.    * @param volumeName - Volume name.    * @param bucketName - Bucket name.    * @param addAcls - ACL's to be added.    * @param removeAcls - ACL's to be removed.    * @param isVersionEnabled - Bucket version flag.    * @param storageType - Storage type to be used.    */
-DECL|method|KsmBucketArgs (String volumeName, String bucketName, List<OzoneAclInfo> addAcls, List<OzoneAclInfo> removeAcls, boolean isVersionEnabled, StorageTypeProto storageType)
+comment|/**    * Private constructor, constructed via builder.    * @param volumeName - Volume name.    * @param bucketName - Bucket name.    * @param acls - list of ACLs.    * @param isVersionEnabled - Bucket version flag.    * @param storageType - Storage type to be used.    */
+DECL|method|KsmBucketInfo (String volumeName, String bucketName, List<OzoneAclInfo> acls, boolean isVersionEnabled, StorageTypeProto storageType)
 specifier|private
-name|KsmBucketArgs
+name|KsmBucketInfo
 parameter_list|(
 name|String
 name|volumeName
@@ -172,13 +173,7 @@ name|List
 argument_list|<
 name|OzoneAclInfo
 argument_list|>
-name|addAcls
-parameter_list|,
-name|List
-argument_list|<
-name|OzoneAclInfo
-argument_list|>
-name|removeAcls
+name|acls
 parameter_list|,
 name|boolean
 name|isVersionEnabled
@@ -201,15 +196,9 @@ name|bucketName
 expr_stmt|;
 name|this
 operator|.
-name|addAcls
+name|acls
 operator|=
-name|addAcls
-expr_stmt|;
-name|this
-operator|.
-name|removeAcls
-operator|=
-name|removeAcls
+name|acls
 expr_stmt|;
 name|this
 operator|.
@@ -246,32 +235,18 @@ return|return
 name|bucketName
 return|;
 block|}
-comment|/**    * Returns the ACL's that are to be added.    * @return List<OzoneAclInfo>    */
-DECL|method|getAddAcls ()
+comment|/**    * Returns the ACL's associated with this bucket.    * @return List<OzoneAclInfo>    */
+DECL|method|getAcls ()
 specifier|public
 name|List
 argument_list|<
 name|OzoneAclInfo
 argument_list|>
-name|getAddAcls
+name|getAcls
 parameter_list|()
 block|{
 return|return
-name|addAcls
-return|;
-block|}
-comment|/**    * Returns the ACL's that are to be removed.    * @return List<OzoneAclInfo>    */
-DECL|method|getRemoveAcls ()
-specifier|public
-name|List
-argument_list|<
-name|OzoneAclInfo
-argument_list|>
-name|getRemoveAcls
-parameter_list|()
-block|{
-return|return
-name|removeAcls
+name|acls
 return|;
 block|}
 comment|/**    * Returns true if bucket version is enabled, else false.    * @return isVersionEnabled    */
@@ -285,7 +260,7 @@ return|return
 name|isVersionEnabled
 return|;
 block|}
-comment|/**    * Returns the type of storage to be used.    * @return StorageType    */
+comment|/**    * Returns the type of storage to be used.    * @return StorageTypeProto    */
 DECL|method|getStorageType ()
 specifier|public
 name|StorageTypeProto
@@ -296,7 +271,7 @@ return|return
 name|storageType
 return|;
 block|}
-comment|/**    * Returns new builder class that builds a KsmBucketArgs.    *    * @return Builder    */
+comment|/**    * Returns new builder class that builds a KsmBucketInfo.    *    * @return Builder    */
 DECL|method|newBuilder ()
 specifier|public
 specifier|static
@@ -310,7 +285,7 @@ name|Builder
 argument_list|()
 return|;
 block|}
-comment|/**    * Builder for KsmBucketArgs.    */
+comment|/**    * Builder for KsmBucketInfo.    */
 DECL|class|Builder
 specifier|public
 specifier|static
@@ -327,21 +302,13 @@ specifier|private
 name|String
 name|bucketName
 decl_stmt|;
-DECL|field|addAcls
+DECL|field|acls
 specifier|private
 name|List
 argument_list|<
 name|OzoneAclInfo
 argument_list|>
-name|addAcls
-decl_stmt|;
-DECL|field|removeAcls
-specifier|private
-name|List
-argument_list|<
-name|OzoneAclInfo
-argument_list|>
-name|removeAcls
+name|acls
 decl_stmt|;
 DECL|field|isVersionEnabled
 specifier|private
@@ -353,6 +320,35 @@ specifier|private
 name|StorageTypeProto
 name|storageType
 decl_stmt|;
+DECL|method|Builder ()
+name|Builder
+parameter_list|()
+block|{
+comment|//Default values
+name|this
+operator|.
+name|acls
+operator|=
+operator|new
+name|LinkedList
+argument_list|<>
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|isVersionEnabled
+operator|=
+literal|false
+expr_stmt|;
+name|this
+operator|.
+name|storageType
+operator|=
+name|StorageTypeProto
+operator|.
+name|DISK
+expr_stmt|;
+block|}
 DECL|method|setVolumeName (String volume)
 specifier|public
 name|Builder
@@ -391,45 +387,23 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setAddAcls (List<OzoneAclInfo> acls)
+DECL|method|setAcls (List<OzoneAclInfo> listOfAcls)
 specifier|public
 name|Builder
-name|setAddAcls
+name|setAcls
 parameter_list|(
 name|List
 argument_list|<
 name|OzoneAclInfo
 argument_list|>
-name|acls
+name|listOfAcls
 parameter_list|)
 block|{
 name|this
 operator|.
-name|addAcls
+name|acls
 operator|=
-name|acls
-expr_stmt|;
-return|return
-name|this
-return|;
-block|}
-DECL|method|setRemoveAcls (List<OzoneAclInfo> acls)
-specifier|public
-name|Builder
-name|setRemoveAcls
-parameter_list|(
-name|List
-argument_list|<
-name|OzoneAclInfo
-argument_list|>
-name|acls
-parameter_list|)
-block|{
-name|this
-operator|.
-name|removeAcls
-operator|=
-name|acls
+name|listOfAcls
 expr_stmt|;
 return|return
 name|this
@@ -473,10 +447,10 @@ return|return
 name|this
 return|;
 block|}
-comment|/**      * Constructs the KsmBucketArgs.      * @return instance of KsmBucketArgs.      */
+comment|/**      * Constructs the KsmBucketInfo.      * @return instance of KsmBucketInfo.      */
 DECL|method|build ()
 specifier|public
-name|KsmBucketArgs
+name|KsmBucketInfo
 name|build
 parameter_list|()
 block|{
@@ -494,17 +468,36 @@ argument_list|(
 name|bucketName
 argument_list|)
 expr_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|acls
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|isVersionEnabled
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|storageType
+argument_list|)
+expr_stmt|;
 return|return
 operator|new
-name|KsmBucketArgs
+name|KsmBucketInfo
 argument_list|(
 name|volumeName
 argument_list|,
 name|bucketName
 argument_list|,
-name|addAcls
-argument_list|,
-name|removeAcls
+name|acls
 argument_list|,
 name|isVersionEnabled
 argument_list|,
@@ -513,24 +506,18 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Creates BucketArgs protobuf from KsmBucketArgs.    */
+comment|/**    * Creates BucketInfo protobuf from KsmBucketInfo.    */
 DECL|method|getProtobuf ()
 specifier|public
-name|BucketArgs
+name|BucketInfo
 name|getProtobuf
 parameter_list|()
 block|{
-name|BucketArgs
-operator|.
-name|Builder
-name|builder
-init|=
-name|BucketArgs
+return|return
+name|BucketInfo
 operator|.
 name|newBuilder
 argument_list|()
-decl_stmt|;
-name|builder
 operator|.
 name|setVolumeName
 argument_list|(
@@ -541,127 +528,62 @@ name|setBucketName
 argument_list|(
 name|bucketName
 argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|addAcls
-operator|!=
-literal|null
-operator|&&
-operator|!
-name|addAcls
 operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-name|builder
-operator|.
-name|addAllAddAcls
+name|addAllAcls
 argument_list|(
-name|addAcls
+name|acls
 argument_list|)
-expr_stmt|;
-block|}
-if|if
-condition|(
-name|removeAcls
-operator|!=
-literal|null
-operator|&&
-operator|!
-name|removeAcls
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-name|builder
-operator|.
-name|addAllRemoveAcls
-argument_list|(
-name|removeAcls
-argument_list|)
-expr_stmt|;
-block|}
-if|if
-condition|(
-name|isVersionEnabled
-operator|!=
-literal|null
-condition|)
-block|{
-name|builder
 operator|.
 name|setIsVersionEnabled
 argument_list|(
 name|isVersionEnabled
 argument_list|)
-expr_stmt|;
-block|}
-if|if
-condition|(
-name|storageType
-operator|!=
-literal|null
-condition|)
-block|{
-name|builder
 operator|.
 name|setStorageType
 argument_list|(
 name|storageType
 argument_list|)
-expr_stmt|;
-block|}
-return|return
-name|builder
 operator|.
 name|build
 argument_list|()
 return|;
 block|}
-comment|/**    * Parses BucketInfo protobuf and creates KsmBucketArgs.    * @param bucketArgs    * @return instance of KsmBucketArgs    */
-DECL|method|getFromProtobuf (BucketArgs bucketArgs)
+comment|/**    * Parses BucketInfo protobuf and creates KsmBucketInfo.    * @param bucketInfo    * @return instance of KsmBucketInfo    */
+DECL|method|getFromProtobuf (BucketInfo bucketInfo)
 specifier|public
 specifier|static
-name|KsmBucketArgs
+name|KsmBucketInfo
 name|getFromProtobuf
 parameter_list|(
-name|BucketArgs
-name|bucketArgs
+name|BucketInfo
+name|bucketInfo
 parameter_list|)
 block|{
 return|return
 operator|new
-name|KsmBucketArgs
+name|KsmBucketInfo
 argument_list|(
-name|bucketArgs
+name|bucketInfo
 operator|.
 name|getVolumeName
 argument_list|()
 argument_list|,
-name|bucketArgs
+name|bucketInfo
 operator|.
 name|getBucketName
 argument_list|()
 argument_list|,
-name|bucketArgs
+name|bucketInfo
 operator|.
-name|getAddAclsList
+name|getAclsList
 argument_list|()
 argument_list|,
-name|bucketArgs
-operator|.
-name|getRemoveAclsList
-argument_list|()
-argument_list|,
-name|bucketArgs
+name|bucketInfo
 operator|.
 name|getIsVersionEnabled
 argument_list|()
 argument_list|,
-name|bucketArgs
+name|bucketInfo
 operator|.
 name|getStorageType
 argument_list|()

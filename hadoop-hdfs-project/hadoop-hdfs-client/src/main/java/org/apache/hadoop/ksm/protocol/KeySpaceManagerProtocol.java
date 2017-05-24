@@ -30,7 +30,7 @@ name|ksm
 operator|.
 name|helpers
 operator|.
-name|KsmBucketArgs
+name|KsmBucketInfo
 import|;
 end_import
 
@@ -198,13 +198,27 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Creates a bucket.    * @param args - Arguments to create Bucket.    * @throws IOException    */
-DECL|method|createBucket (KsmBucketArgs args)
+comment|/**    * Creates a bucket.    * @param bucketInfo - BucketInfo to create Bucket.    * @throws IOException    */
+DECL|method|createBucket (KsmBucketInfo bucketInfo)
 name|void
 name|createBucket
 parameter_list|(
-name|KsmBucketArgs
-name|args
+name|KsmBucketInfo
+name|bucketInfo
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Gets the bucket information.    * @param volumeName - Volume name.    * @param bucketName - Bucket name.    * @return KsmBucketInfo or exception is thrown.    * @throws IOException    */
+DECL|method|getBucketInfo (String volumeName, String bucketName)
+name|KsmBucketInfo
+name|getBucketInfo
+parameter_list|(
+name|String
+name|volumeName
+parameter_list|,
+name|String
+name|bucketName
 parameter_list|)
 throws|throws
 name|IOException

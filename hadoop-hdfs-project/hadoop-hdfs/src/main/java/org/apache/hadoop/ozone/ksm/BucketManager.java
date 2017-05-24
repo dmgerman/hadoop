@@ -30,25 +30,17 @@ name|ksm
 operator|.
 name|helpers
 operator|.
-name|KsmBucketArgs
+name|KsmBucketInfo
 import|;
 end_import
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|apache
+name|io
 operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|ksm
-operator|.
-name|exceptions
-operator|.
-name|KSMException
+name|IOException
 import|;
 end_import
 
@@ -62,16 +54,30 @@ specifier|public
 interface|interface
 name|BucketManager
 block|{
-comment|/**    * Creates a bucket.    * @param args - KsmBucketArgs for creating bucket.    */
-DECL|method|createBucket (KsmBucketArgs args)
+comment|/**    * Creates a bucket.    * @param bucketInfo - KsmBucketInfo for creating bucket.    */
+DECL|method|createBucket (KsmBucketInfo bucketInfo)
 name|void
 name|createBucket
 parameter_list|(
-name|KsmBucketArgs
-name|args
+name|KsmBucketInfo
+name|bucketInfo
 parameter_list|)
 throws|throws
-name|KSMException
+name|IOException
+function_decl|;
+comment|/**    * Returns Bucket Information.    * @param volumeName - Name of the Volume.    * @param bucketName - Name of the Bucket.    */
+DECL|method|getBucketInfo (String volumeName, String bucketName)
+name|KsmBucketInfo
+name|getBucketInfo
+parameter_list|(
+name|String
+name|volumeName
+parameter_list|,
+name|String
+name|bucketName
+parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 block|}
 end_interface
