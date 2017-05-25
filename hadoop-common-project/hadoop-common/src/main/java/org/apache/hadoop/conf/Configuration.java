@@ -10133,6 +10133,11 @@ name|confValue
 init|=
 literal|null
 decl_stmt|;
+name|String
+name|confInclude
+init|=
+literal|null
+decl_stmt|;
 name|boolean
 name|confFinal
 init|=
@@ -10385,11 +10390,10 @@ case|case
 literal|"include"
 case|:
 comment|// Determine href for xi:include
-name|String
 name|confInclude
-init|=
+operator|=
 literal|null
-decl_stmt|;
+expr_stmt|;
 name|attrCount
 operator|=
 name|reader
@@ -10493,6 +10497,34 @@ expr_stmt|;
 block|}
 else|else
 block|{
+name|URL
+name|url
+decl_stmt|;
+try|try
+block|{
+name|url
+operator|=
+operator|new
+name|URL
+argument_list|(
+name|confInclude
+argument_list|)
+expr_stmt|;
+name|url
+operator|.
+name|openConnection
+argument_list|()
+operator|.
+name|connect
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
 name|File
 name|href
 init|=
@@ -10554,12 +10586,8 @@ literal|true
 expr_stmt|;
 break|break;
 block|}
-name|Resource
-name|uriResource
-init|=
-operator|new
-name|Resource
-argument_list|(
+name|url
+operator|=
 name|href
 operator|.
 name|toURI
@@ -10567,6 +10595,15 @@ argument_list|()
 operator|.
 name|toURL
 argument_list|()
+expr_stmt|;
+block|}
+name|Resource
+name|uriResource
+init|=
+operator|new
+name|Resource
+argument_list|(
+name|url
 argument_list|,
 name|name
 argument_list|)
@@ -10756,9 +10793,11 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Fetch fail on include with no "
+literal|"Fetch fail on include for '"
 operator|+
-literal|"fallback while loading '"
+name|confInclude
+operator|+
+literal|"' with no fallback while loading '"
 operator|+
 name|name
 operator|+
