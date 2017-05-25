@@ -1959,6 +1959,13 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
+DECL|field|waitForRestart
+specifier|private
+name|boolean
+name|waitForRestart
+init|=
+literal|true
+decl_stmt|;
 DECL|field|restartingNodeIndex
 specifier|private
 name|int
@@ -2027,6 +2034,10 @@ name|restartingNodeDeadline
 operator|=
 literal|0
 expr_stmt|;
+name|waitForRestart
+operator|=
+literal|true
+expr_stmt|;
 block|}
 DECL|method|reset ()
 specifier|synchronized
@@ -2053,6 +2064,10 @@ expr_stmt|;
 name|restartingNodeDeadline
 operator|=
 literal|0
+expr_stmt|;
+name|waitForRestart
+operator|=
+literal|true
 expr_stmt|;
 block|}
 DECL|method|hasInternalError ()
@@ -2188,7 +2203,7 @@ return|return
 name|restartingNodeIndex
 return|;
 block|}
-DECL|method|initRestartingNode (int i, String message)
+DECL|method|initRestartingNode (int i, String message, boolean shouldWait)
 specifier|synchronized
 name|void
 name|initRestartingNode
@@ -2198,12 +2213,20 @@ name|i
 parameter_list|,
 name|String
 name|message
+parameter_list|,
+name|boolean
+name|shouldWait
 parameter_list|)
 block|{
 name|restartingNodeIndex
 operator|=
 name|i
 expr_stmt|;
+if|if
+condition|(
+name|shouldWait
+condition|)
+block|{
 name|restartingNodeDeadline
 operator|=
 name|Time
@@ -2222,6 +2245,16 @@ operator|=
 operator|-
 literal|1
 expr_stmt|;
+block|}
+else|else
+block|{
+name|this
+operator|.
+name|waitForRestart
+operator|=
+literal|false
+expr_stmt|;
+block|}
 name|LOG
 operator|.
 name|info
@@ -2253,8 +2286,13 @@ name|badNodeIndex
 operator|>=
 literal|0
 operator|||
+operator|(
 name|isRestartingNode
 argument_list|()
+operator|&&
+name|doWaitForRestart
+argument_list|()
+operator|)
 return|;
 block|}
 comment|/**      * This method is used when no explicit error report was received, but      * something failed. The first node is a suspect or unsure about the cause      * so that it is marked as failed.      */
@@ -2320,7 +2358,11 @@ name|restartingNodeIndex
 operator|--
 expr_stmt|;
 block|}
-else|else
+elseif|else
+if|if
+condition|(
+name|waitForRestart
+condition|)
 block|{
 throw|throw
 operator|new
@@ -2475,6 +2517,15 @@ block|}
 block|}
 block|}
 block|}
+DECL|method|doWaitForRestart ()
+name|boolean
+name|doWaitForRestart
+parameter_list|()
+block|{
+return|return
+name|waitForRestart
+return|;
+block|}
 block|}
 DECL|field|streamerClosed
 specifier|private
@@ -2580,6 +2631,20 @@ argument_list|<
 name|DatanodeInfo
 argument_list|>
 name|failed
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+decl_stmt|;
+comment|/** Restarting Nodes */
+DECL|field|restartingNodes
+specifier|private
+name|List
+argument_list|<
+name|DatanodeInfo
+argument_list|>
+name|restartingNodes
 init|=
 operator|new
 name|ArrayList
@@ -4989,6 +5054,22 @@ return|return
 literal|true
 return|;
 block|}
+comment|/*      * Treat all nodes as remote for test when skip enabled.      */
+if|if
+condition|(
+name|DFSClientFaultInjector
+operator|.
+name|get
+argument_list|()
+operator|.
+name|skipRollingRestartWait
+argument_list|()
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
 comment|// Is it a local node?
 name|InetAddress
 name|addr
@@ -5343,11 +5424,6 @@ name|isRestartOOBStatus
 argument_list|(
 name|reply
 argument_list|)
-operator|&&
-name|shouldWaitForRestart
-argument_list|(
-name|i
-argument_list|)
 condition|)
 block|{
 specifier|final
@@ -5372,6 +5448,11 @@ argument_list|(
 name|i
 argument_list|,
 name|message
+argument_list|,
+name|shouldWaitForRestart
+argument_list|(
+name|i
+argument_list|)
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -6931,6 +7012,33 @@ name|isRestartingNode
 argument_list|()
 condition|)
 block|{
+if|if
+condition|(
+operator|!
+name|errorState
+operator|.
+name|doWaitForRestart
+argument_list|()
+condition|)
+block|{
+comment|// If node is restarting and not worth to wait for restart then can go
+comment|// ahead with error recovery considering it as bad node for now. Later
+comment|// it should be able to re-consider the same node for future pipeline
+comment|// updates.
+name|errorState
+operator|.
+name|setBadNodeIndex
+argument_list|(
+name|errorState
+operator|.
+name|getRestartingNodeIndex
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+literal|true
+return|;
+block|}
 comment|// 4 seconds or the configured deadline period, whichever is shorter.
 comment|// This is the retry interval and recovery will be retried in this
 comment|// interval until timeout or success.
@@ -7056,6 +7164,36 @@ return|return
 literal|false
 return|;
 block|}
+name|String
+name|reason
+init|=
+literal|"bad."
+decl_stmt|;
+if|if
+condition|(
+name|errorState
+operator|.
+name|getRestartingNodeIndex
+argument_list|()
+operator|==
+name|badNodeIndex
+condition|)
+block|{
+name|reason
+operator|=
+literal|"restarting."
+expr_stmt|;
+name|restartingNodes
+operator|.
+name|add
+argument_list|(
+name|nodes
+index|[
+name|badNodeIndex
+index|]
+argument_list|)
+expr_stmt|;
+block|}
 name|LOG
 operator|.
 name|warn
@@ -7084,7 +7222,9 @@ index|[
 name|badNodeIndex
 index|]
 operator|+
-literal|") is bad."
+literal|") is "
+operator|+
+name|reason
 argument_list|)
 expr_stmt|;
 name|failed
@@ -8162,6 +8302,19 @@ operator|.
 name|resetInternalError
 argument_list|()
 expr_stmt|;
+comment|// remove all restarting nodes from failed nodes list
+name|failed
+operator|.
+name|removeAll
+argument_list|(
+name|restartingNodes
+argument_list|)
+expr_stmt|;
+name|restartingNodes
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -8315,11 +8468,6 @@ comment|// Check whether there is a restart worth waiting for.
 if|if
 condition|(
 name|checkRestart
-operator|&&
-name|shouldWaitForRestart
-argument_list|(
-name|i
-argument_list|)
 condition|)
 block|{
 name|errorState
@@ -8338,6 +8486,11 @@ name|nodes
 index|[
 name|i
 index|]
+argument_list|,
+name|shouldWaitForRestart
+argument_list|(
+name|i
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

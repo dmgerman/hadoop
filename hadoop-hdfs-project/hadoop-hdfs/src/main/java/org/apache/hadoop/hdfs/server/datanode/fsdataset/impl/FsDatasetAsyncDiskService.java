@@ -1113,6 +1113,61 @@ name|deletionTask
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Delete the block file and meta file from the disk synchronously, adjust    * dfsUsed statistics accordingly.    */
+DECL|method|deleteSync (FsVolumeReference volumeRef, ReplicaInfo replicaToDelete, ExtendedBlock block, String trashDirectory)
+name|void
+name|deleteSync
+parameter_list|(
+name|FsVolumeReference
+name|volumeRef
+parameter_list|,
+name|ReplicaInfo
+name|replicaToDelete
+parameter_list|,
+name|ExtendedBlock
+name|block
+parameter_list|,
+name|String
+name|trashDirectory
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Deleting "
+operator|+
+name|block
+operator|.
+name|getLocalBlock
+argument_list|()
+operator|+
+literal|" replica "
+operator|+
+name|replicaToDelete
+argument_list|)
+expr_stmt|;
+name|ReplicaFileDeleteTask
+name|deletionTask
+init|=
+operator|new
+name|ReplicaFileDeleteTask
+argument_list|(
+name|volumeRef
+argument_list|,
+name|replicaToDelete
+argument_list|,
+name|block
+argument_list|,
+name|trashDirectory
+argument_list|)
+decl_stmt|;
+name|deletionTask
+operator|.
+name|run
+argument_list|()
+expr_stmt|;
+block|}
 comment|/** A task for deleting a block file and its associated meta file, as well    *  as decrement the dfs usage of the volume.    *  Optionally accepts a trash directory. If one is specified then the files    *  are moved to trash instead of being deleted. If none is specified then the    *  files are deleted immediately.    */
 DECL|class|ReplicaFileDeleteTask
 class|class

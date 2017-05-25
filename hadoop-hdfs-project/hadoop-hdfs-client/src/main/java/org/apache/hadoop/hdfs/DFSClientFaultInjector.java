@@ -172,6 +172,16 @@ name|void
 name|readFromDatanodeDelay
 parameter_list|()
 block|{}
+DECL|method|skipRollingRestartWait ()
+specifier|public
+name|boolean
+name|skipRollingRestartWait
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
 block|}
 end_class
 

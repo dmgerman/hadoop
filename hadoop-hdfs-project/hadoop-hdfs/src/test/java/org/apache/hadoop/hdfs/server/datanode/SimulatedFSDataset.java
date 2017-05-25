@@ -5038,13 +5038,15 @@ argument_list|,
 name|storageId
 argument_list|,
 name|b
+argument_list|,
+literal|false
 argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
 comment|// FsDatasetSpi
-DECL|method|createTemporary ( StorageType storageType, String storageId, ExtendedBlock b)
+DECL|method|createTemporary (StorageType storageType, String storageId, ExtendedBlock b, boolean isTransfer)
 specifier|public
 specifier|synchronized
 name|ReplicaHandler
@@ -5058,6 +5060,9 @@ name|storageId
 parameter_list|,
 name|ExtendedBlock
 name|b
+parameter_list|,
+name|boolean
+name|isTransfer
 parameter_list|)
 throws|throws
 name|IOException

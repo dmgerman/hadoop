@@ -1285,7 +1285,7 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Creates a temporary replica and returns the meta information of the replica    * .    *     * @param b block    * @return the meta info of the replica which is being written to    * @throws IOException if an error occurs    */
-DECL|method|createTemporary (StorageType storageType, String storageId, ExtendedBlock b)
+DECL|method|createTemporary (StorageType storageType, String storageId, ExtendedBlock b, boolean isTransfer)
 name|ReplicaHandler
 name|createTemporary
 parameter_list|(
@@ -1297,6 +1297,9 @@ name|storageId
 parameter_list|,
 name|ExtendedBlock
 name|b
+parameter_list|,
+name|boolean
+name|isTransfer
 parameter_list|)
 throws|throws
 name|IOException

@@ -816,7 +816,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|createTemporary (StorageType t, String i, ExtendedBlock b)
+DECL|method|createTemporary (StorageType t, String i, ExtendedBlock b, boolean isTransfer)
 specifier|public
 name|ReplicaHandler
 name|createTemporary
@@ -829,6 +829,9 @@ name|i
 parameter_list|,
 name|ExtendedBlock
 name|b
+parameter_list|,
+name|boolean
+name|isTransfer
 parameter_list|)
 throws|throws
 name|IOException

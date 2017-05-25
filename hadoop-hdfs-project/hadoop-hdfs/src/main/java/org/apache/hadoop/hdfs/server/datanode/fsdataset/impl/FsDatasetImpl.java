@@ -8123,7 +8123,7 @@ block|}
 annotation|@
 name|Override
 comment|// FsDatasetSpi
-DECL|method|createTemporary ( StorageType storageType, String storageId, ExtendedBlock b)
+DECL|method|createTemporary (StorageType storageType, String storageId, ExtendedBlock b, boolean isTransfer)
 specifier|public
 name|ReplicaHandler
 name|createTemporary
@@ -8136,6 +8136,9 @@ name|storageId
 parameter_list|,
 name|ExtendedBlock
 name|b
+parameter_list|,
+name|boolean
+name|isTransfer
 parameter_list|)
 throws|throws
 name|IOException
@@ -8163,6 +8166,11 @@ name|ReplicaInfo
 name|lastFoundReplicaInfo
 init|=
 literal|null
+decl_stmt|;
+name|boolean
+name|isInPipeline
+init|=
+literal|false
 decl_stmt|;
 do|do
 block|{
@@ -8202,6 +8210,155 @@ operator|==
 name|lastFoundReplicaInfo
 condition|)
 block|{
+break|break;
+block|}
+else|else
+block|{
+name|isInPipeline
+operator|=
+name|currentReplicaInfo
+operator|.
+name|getState
+argument_list|()
+operator|==
+name|ReplicaState
+operator|.
+name|TEMPORARY
+operator|||
+name|currentReplicaInfo
+operator|.
+name|getState
+argument_list|()
+operator|==
+name|ReplicaState
+operator|.
+name|RBW
+expr_stmt|;
+comment|/*            * If the current block is old, reject.            * else If transfer request, then accept it.            * else if state is not RBW/Temporary, then reject            */
+if|if
+condition|(
+operator|(
+name|currentReplicaInfo
+operator|.
+name|getGenerationStamp
+argument_list|()
+operator|>=
+name|b
+operator|.
+name|getGenerationStamp
+argument_list|()
+operator|)
+operator|||
+operator|(
+operator|!
+name|isTransfer
+operator|&&
+operator|!
+name|isInPipeline
+operator|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|ReplicaAlreadyExistsException
+argument_list|(
+literal|"Block "
+operator|+
+name|b
+operator|+
+literal|" already exists in state "
+operator|+
+name|currentReplicaInfo
+operator|.
+name|getState
+argument_list|()
+operator|+
+literal|" and thus cannot be created."
+argument_list|)
+throw|;
+block|}
+name|lastFoundReplicaInfo
+operator|=
+name|currentReplicaInfo
+expr_stmt|;
+block|}
+block|}
+if|if
+condition|(
+operator|!
+name|isInPipeline
+condition|)
+block|{
+continue|continue;
+block|}
+comment|// Hang too long, just bail out. This is not supposed to happen.
+name|long
+name|writerStopMs
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+operator|-
+name|startTimeMs
+decl_stmt|;
+if|if
+condition|(
+name|writerStopMs
+operator|>
+name|writerStopTimeoutMs
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Unable to stop existing writer for block "
+operator|+
+name|b
+operator|+
+literal|" after "
+operator|+
+name|writerStopMs
+operator|+
+literal|" miniseconds."
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Unable to stop existing writer for block "
+operator|+
+name|b
+operator|+
+literal|" after "
+operator|+
+name|writerStopMs
+operator|+
+literal|" miniseconds."
+argument_list|)
+throw|;
+block|}
+comment|// Stop the previous writer
+operator|(
+operator|(
+name|ReplicaInPipeline
+operator|)
+name|lastFoundReplicaInfo
+operator|)
+operator|.
+name|stopWriter
+argument_list|(
+name|writerStopTimeoutMs
+argument_list|)
+expr_stmt|;
+block|}
+do|while
+condition|(
+literal|true
+condition|)
+do|;
 if|if
 condition|(
 name|lastFoundReplicaInfo
@@ -8209,6 +8366,9 @@ operator|!=
 literal|null
 condition|)
 block|{
+comment|// Old blockfile should be deleted synchronously as it might collide
+comment|// with the new block if allocated in same volume.
+comment|// Do the deletion outside of lock as its DISK IO.
 name|invalidate
 argument_list|(
 name|b
@@ -8222,9 +8382,22 @@ index|[]
 block|{
 name|lastFoundReplicaInfo
 block|}
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
+try|try
+init|(
+name|AutoCloseableLock
+name|lock
+init|=
+name|datasetLock
+operator|.
+name|acquire
+argument_list|()
+init|)
+block|{
 name|FsVolumeReference
 name|ref
 init|=
@@ -8312,137 +8485,6 @@ name|ref
 argument_list|)
 return|;
 block|}
-else|else
-block|{
-if|if
-condition|(
-operator|!
-operator|(
-name|currentReplicaInfo
-operator|.
-name|getGenerationStamp
-argument_list|()
-operator|<
-name|b
-operator|.
-name|getGenerationStamp
-argument_list|()
-operator|&&
-operator|(
-name|currentReplicaInfo
-operator|.
-name|getState
-argument_list|()
-operator|==
-name|ReplicaState
-operator|.
-name|TEMPORARY
-operator|||
-name|currentReplicaInfo
-operator|.
-name|getState
-argument_list|()
-operator|==
-name|ReplicaState
-operator|.
-name|RBW
-operator|)
-operator|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|ReplicaAlreadyExistsException
-argument_list|(
-literal|"Block "
-operator|+
-name|b
-operator|+
-literal|" already exists in state "
-operator|+
-name|currentReplicaInfo
-operator|.
-name|getState
-argument_list|()
-operator|+
-literal|" and thus cannot be created."
-argument_list|)
-throw|;
-block|}
-name|lastFoundReplicaInfo
-operator|=
-name|currentReplicaInfo
-expr_stmt|;
-block|}
-block|}
-comment|// Hang too long, just bail out. This is not supposed to happen.
-name|long
-name|writerStopMs
-init|=
-name|Time
-operator|.
-name|monotonicNow
-argument_list|()
-operator|-
-name|startTimeMs
-decl_stmt|;
-if|if
-condition|(
-name|writerStopMs
-operator|>
-name|writerStopTimeoutMs
-condition|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Unable to stop existing writer for block "
-operator|+
-name|b
-operator|+
-literal|" after "
-operator|+
-name|writerStopMs
-operator|+
-literal|" miniseconds."
-argument_list|)
-expr_stmt|;
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Unable to stop existing writer for block "
-operator|+
-name|b
-operator|+
-literal|" after "
-operator|+
-name|writerStopMs
-operator|+
-literal|" miniseconds."
-argument_list|)
-throw|;
-block|}
-comment|// Stop the previous writer
-operator|(
-operator|(
-name|ReplicaInPipeline
-operator|)
-name|lastFoundReplicaInfo
-operator|)
-operator|.
-name|stopWriter
-argument_list|(
-name|writerStopTimeoutMs
-argument_list|)
-expr_stmt|;
-block|}
-do|while
-condition|(
-literal|true
-condition|)
-do|;
 block|}
 comment|/**    * Sets the offset in the meta file so that the    * last checksum will be overwritten.    */
 annotation|@
@@ -9871,6 +9913,34 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|invalidate
+argument_list|(
+name|bpid
+argument_list|,
+name|invalidBlks
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|invalidate (String bpid, Block[] invalidBlks, boolean async)
+specifier|private
+name|void
+name|invalidate
+parameter_list|(
+name|String
+name|bpid
+parameter_list|,
+name|Block
+index|[]
+name|invalidBlks
+parameter_list|,
+name|boolean
+name|async
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 specifier|final
 name|List
 argument_list|<
@@ -10288,11 +10358,17 @@ name|getBlockId
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Delete the block asynchronously to make sure we can do it fast enough.
-comment|// It's ok to unlink the block file before the uncache operation
-comment|// finishes.
 try|try
 block|{
+if|if
+condition|(
+name|async
+condition|)
+block|{
+comment|// Delete the block asynchronously to make sure we can do it fast
+comment|// enough.
+comment|// It's ok to unlink the block file before the uncache operation
+comment|// finishes.
 name|asyncDiskService
 operator|.
 name|deleteAsync
@@ -10325,6 +10401,42 @@ name|removing
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|asyncDiskService
+operator|.
+name|deleteSync
+argument_list|(
+name|v
+operator|.
+name|obtainReference
+argument_list|()
+argument_list|,
+name|removing
+argument_list|,
+operator|new
+name|ExtendedBlock
+argument_list|(
+name|bpid
+argument_list|,
+name|invalidBlks
+index|[
+name|i
+index|]
+argument_list|)
+argument_list|,
+name|dataStorage
+operator|.
+name|getTrashDirectoryForReplica
+argument_list|(
+name|bpid
+argument_list|,
+name|removing
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
