@@ -1179,13 +1179,6 @@ name|ContentSummaryComputationContext
 name|summary
 parameter_list|)
 block|{
-name|summary
-operator|.
-name|nodeIncluded
-argument_list|(
-name|this
-argument_list|)
-expr_stmt|;
 return|return
 name|referred
 operator|.
@@ -2083,13 +2076,6 @@ name|ContentSummaryComputationContext
 name|summary
 parameter_list|)
 block|{
-name|summary
-operator|.
-name|nodeIncluded
-argument_list|(
-name|this
-argument_list|)
-expr_stmt|;
 specifier|final
 name|int
 name|s

@@ -182,6 +182,24 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|ContentCounts
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|ContentSummaryComputationContext
 import|;
 end_import
@@ -3381,15 +3399,30 @@ return|return
 name|counts
 return|;
 block|}
-DECL|method|computeContentSummary4Snapshot ( ContentSummaryComputationContext context)
+DECL|method|computeContentSummary4Snapshot (final BlockStoragePolicySuite bsps, final ContentCounts counts)
 specifier|public
 name|void
 name|computeContentSummary4Snapshot
 parameter_list|(
-name|ContentSummaryComputationContext
-name|context
+specifier|final
+name|BlockStoragePolicySuite
+name|bsps
+parameter_list|,
+specifier|final
+name|ContentCounts
+name|counts
 parameter_list|)
 block|{
+comment|// Create a new blank summary context for blocking processing of subtree.
+name|ContentSummaryComputationContext
+name|summary
+init|=
+operator|new
+name|ContentSummaryComputationContext
+argument_list|(
+name|bsps
+argument_list|)
+decl_stmt|;
 for|for
 control|(
 name|DirectoryDiff
@@ -3401,7 +3434,7 @@ block|{
 for|for
 control|(
 name|INode
-name|deletedNode
+name|deleted
 range|:
 name|d
 operator|.
@@ -3416,15 +3449,30 @@ name|DELETED
 argument_list|)
 control|)
 block|{
-name|context
+name|deleted
 operator|.
-name|reportDeletedSnapshottedNode
+name|computeContentSummary
 argument_list|(
-name|deletedNode
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
+argument_list|,
+name|summary
 argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|// Add the counts from deleted trees.
+name|counts
+operator|.
+name|addContents
+argument_list|(
+name|summary
+operator|.
+name|getCounts
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Compute the difference between Snapshots.    *    * @param fromSnapshot Start point of the diff computation. Null indicates    *          current tree.    * @param toSnapshot End point of the diff computation. Null indicates current    *          tree.    * @param diff Used to capture the changes happening to the children. Note    *          that the diff still represents (later_snapshot - earlier_snapshot)    *          although toSnapshot can be before fromSnapshot.    * @param currentINode The {@link INodeDirectory} this feature belongs to.    * @return Whether changes happened between the startSnapshot and endSnaphsot.    */
 DECL|method|computeDiffBetweenSnapshots (Snapshot fromSnapshot, Snapshot toSnapshot, ChildrenDiff diff, INodeDirectory currentINode)

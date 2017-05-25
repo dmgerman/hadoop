@@ -434,13 +434,6 @@ parameter_list|)
 block|{
 name|summary
 operator|.
-name|nodeIncluded
-argument_list|(
-name|this
-argument_list|)
-expr_stmt|;
-name|summary
-operator|.
 name|getCounts
 argument_list|()
 operator|.

@@ -935,13 +935,6 @@ name|ContentSummaryComputationContext
 name|summary
 parameter_list|)
 block|{
-name|summary
-operator|.
-name|nodeIncluded
-argument_list|(
-name|this
-argument_list|)
-expr_stmt|;
 return|return
 name|computeDirectoryContentSummary
 argument_list|(

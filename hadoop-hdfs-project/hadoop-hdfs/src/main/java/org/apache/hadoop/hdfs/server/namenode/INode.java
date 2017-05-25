@@ -1402,11 +1402,6 @@ argument_list|,
 name|summary
 argument_list|)
 expr_stmt|;
-name|summary
-operator|.
-name|tallyDeletedSnapshottedINodes
-argument_list|()
-expr_stmt|;
 specifier|final
 name|ContentCounts
 name|counts
