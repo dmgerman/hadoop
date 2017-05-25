@@ -85,11 +85,11 @@ comment|/**  * Names of the example configs.  */
 end_comment
 
 begin_class
-DECL|class|ExampleConfResources
+DECL|class|ExampleAppJson
 specifier|public
 specifier|final
 class|class
-name|ExampleConfResources
+name|ExampleAppJson
 block|{
 DECL|field|APP_JSON
 specifier|public
@@ -100,15 +100,6 @@ name|APP_JSON
 init|=
 literal|"app.json"
 decl_stmt|;
-DECL|field|APP_RES
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|APP_RES
-init|=
-literal|"app-resolved.json"
-decl_stmt|;
 DECL|field|OVERRIDE_JSON
 specifier|public
 specifier|static
@@ -118,14 +109,41 @@ name|OVERRIDE_JSON
 init|=
 literal|"app-override.json"
 decl_stmt|;
-DECL|field|OVERRIDE_RES
+DECL|field|DEFAULT_JSON
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|OVERRIDE_RES
+name|DEFAULT_JSON
 init|=
-literal|"app-override-resolved.json"
+literal|"default.json"
+decl_stmt|;
+DECL|field|EXTERNAL_JSON_0
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|EXTERNAL_JSON_0
+init|=
+literal|"external0.json"
+decl_stmt|;
+DECL|field|EXTERNAL_JSON_1
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|EXTERNAL_JSON_1
+init|=
+literal|"external1.json"
+decl_stmt|;
+DECL|field|EXTERNAL_JSON_2
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|EXTERNAL_JSON_2
+init|=
+literal|"external2.json"
 decl_stmt|;
 DECL|field|PACKAGE
 specifier|public
@@ -147,11 +165,9 @@ init|=
 block|{
 name|APP_JSON
 block|,
-name|APP_RES
-block|,
 name|OVERRIDE_JSON
 block|,
-name|OVERRIDE_RES
+name|DEFAULT_JSON
 block|}
 decl_stmt|;
 DECL|field|ALL_EXAMPLE_RESOURCES
@@ -190,9 +206,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|ExampleConfResources ()
+DECL|method|ExampleAppJson ()
 specifier|private
-name|ExampleConfResources
+name|ExampleAppJson
 parameter_list|()
 block|{   }
 DECL|method|loadResource (String name)
@@ -215,6 +231,24 @@ name|PACKAGE
 operator|+
 name|name
 argument_list|)
+return|;
+block|}
+DECL|method|resourceName (String name)
+specifier|public
+specifier|static
+name|String
+name|resourceName
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+block|{
+return|return
+literal|"target/test-classes"
+operator|+
+name|PACKAGE
+operator|+
+name|name
 return|;
 block|}
 block|}

@@ -190,7 +190,7 @@ argument_list|)
 operator|.
 name|name
 argument_list|(
-name|getTestName
+name|getValidTestName
 argument_list|()
 argument_list|)
 decl_stmt|;

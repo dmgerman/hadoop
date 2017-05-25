@@ -32,7 +32,7 @@ DECL|field|ERROR_APPLICATION_NAME_INVALID_FORMAT
 name|String
 name|ERROR_APPLICATION_NAME_INVALID_FORMAT
 init|=
-literal|"Application name is not valid - only lower case letters, digits,"
+literal|"Application name %s is not valid - only lower case letters, digits,"
 operator|+
 literal|" underscore and hyphen are allowed"
 decl_stmt|;
@@ -210,7 +210,7 @@ DECL|field|ERROR_ABSENT_LAUNCH_COMMAND
 name|String
 name|ERROR_ABSENT_LAUNCH_COMMAND
 init|=
-literal|"launch command should appear if type is slider-zip or none"
+literal|"Launch_command is required when type is not DOCKER"
 decl_stmt|;
 DECL|field|ERROR_QUICKLINKS_FOR_COMP_INVALID
 name|String

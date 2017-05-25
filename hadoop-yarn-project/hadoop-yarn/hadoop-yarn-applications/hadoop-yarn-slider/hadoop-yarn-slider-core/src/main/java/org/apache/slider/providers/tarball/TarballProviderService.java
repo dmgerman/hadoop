@@ -257,7 +257,7 @@ name|launcher
 operator|.
 name|addLocalResource
 argument_list|(
-name|APP_INSTALL_DIR
+name|APP_LIB_DIR
 argument_list|,
 name|packageResource
 argument_list|)

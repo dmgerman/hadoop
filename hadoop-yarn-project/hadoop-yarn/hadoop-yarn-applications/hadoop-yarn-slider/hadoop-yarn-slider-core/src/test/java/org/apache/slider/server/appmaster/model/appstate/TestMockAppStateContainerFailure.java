@@ -1291,6 +1291,11 @@ name|bindingInfo
 operator|.
 name|application
 operator|.
+name|getComponent
+argument_list|(
+name|ROLE0
+argument_list|)
+operator|.
 name|getConfiguration
 argument_list|()
 operator|.

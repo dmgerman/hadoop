@@ -594,6 +594,20 @@ name|apache
 operator|.
 name|slider
 operator|.
+name|util
+operator|.
+name|ServiceApiUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
 name|utils
 operator|.
 name|SliderTestBase
@@ -687,6 +701,16 @@ operator|.
 name|util
 operator|.
 name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Locale
 import|;
 end_import
 
@@ -960,7 +984,7 @@ operator|=
 operator|new
 name|ProviderAppState
 argument_list|(
-name|getTestName
+name|getValidTestName
 argument_list|()
 argument_list|,
 name|appState
@@ -973,6 +997,8 @@ specifier|protected
 name|AppStateBindingInfo
 name|buildBindingInfo
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|AppStateBindingInfo
 name|binding
@@ -987,6 +1013,17 @@ name|application
 operator|=
 name|buildApplication
 argument_list|()
+expr_stmt|;
+name|ServiceApiUtil
+operator|.
+name|validateAndResolveApplication
+argument_list|(
+name|binding
+operator|.
+name|application
+argument_list|,
+name|sliderFileSystem
+argument_list|)
 expr_stmt|;
 comment|//binding.roles = new ArrayList<>(factory.ROLES);
 name|binding
@@ -1035,7 +1072,7 @@ argument_list|)
 operator|.
 name|name
 argument_list|(
-name|getTestName
+name|getValidTestName
 argument_list|()
 argument_list|)
 return|;
@@ -1052,6 +1089,24 @@ name|methodName
 operator|.
 name|getMethodName
 argument_list|()
+return|;
+block|}
+DECL|method|getValidTestName ()
+specifier|public
+name|String
+name|getValidTestName
+parameter_list|()
+block|{
+return|return
+name|getTestName
+argument_list|()
+operator|.
+name|toLowerCase
+argument_list|(
+name|Locale
+operator|.
+name|ENGLISH
+argument_list|)
 return|;
 block|}
 DECL|method|getRole0Status ()

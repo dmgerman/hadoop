@@ -1144,6 +1144,23 @@ operator|=
 name|components
 expr_stmt|;
 block|}
+DECL|method|addComponent (Component component)
+specifier|public
+name|void
+name|addComponent
+parameter_list|(
+name|Component
+name|component
+parameter_list|)
+block|{
+name|components
+operator|.
+name|add
+argument_list|(
+name|component
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|getComponent (String name)
 specifier|public
 name|Component

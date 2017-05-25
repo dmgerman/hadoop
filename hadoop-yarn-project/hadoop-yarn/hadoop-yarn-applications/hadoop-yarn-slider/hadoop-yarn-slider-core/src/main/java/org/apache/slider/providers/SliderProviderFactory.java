@@ -84,20 +84,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|util
-operator|.
-name|RestApiErrorMessages
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -125,12 +111,12 @@ specifier|abstract
 class|class
 name|SliderProviderFactory
 block|{
-DECL|field|log
+DECL|field|LOG
 specifier|protected
 specifier|static
 specifier|final
 name|Logger
-name|log
+name|LOG
 init|=
 name|LoggerFactory
 operator|.
@@ -228,9 +214,9 @@ operator|==
 literal|null
 condition|)
 block|{
-name|log
+name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Loading service provider type default"
 argument_list|)
@@ -242,9 +228,9 @@ name|getInstance
 argument_list|()
 return|;
 block|}
-name|log
+name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Loading service provider type {}"
 argument_list|,
@@ -287,9 +273,19 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-name|RestApiErrorMessages
+name|String
 operator|.
-name|ERROR_ARTIFACT_INVALID
+name|format
+argument_list|(
+literal|"Resolution error, "
+operator|+
+literal|"%s should not be passed to createSliderProviderFactory"
+argument_list|,
+name|artifact
+operator|.
+name|getType
+argument_list|()
+argument_list|)
 argument_list|)
 throw|;
 block|}
