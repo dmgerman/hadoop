@@ -860,8 +860,8 @@ return|return
 name|staleReplicas
 return|;
 block|}
-comment|/**    * Initialize lease recovery for this block.    * Find the first alive data-node starting from the previous primary and    * make it primary.    */
-DECL|method|initializeBlockRecovery (BlockInfo blockInfo, long recoveryId)
+comment|/**    * Initialize lease recovery for this block.    * Find the first alive data-node starting from the previous primary and    * make it primary.    * @param blockInfo Block to be recovered    * @param recoveryId Recovery ID (new gen stamp)    * @param startRecovery Issue recovery command to datanode if true.    */
+DECL|method|initializeBlockRecovery (BlockInfo blockInfo, long recoveryId, boolean startRecovery)
 specifier|public
 name|void
 name|initializeBlockRecovery
@@ -871,6 +871,9 @@ name|blockInfo
 parameter_list|,
 name|long
 name|recoveryId
+parameter_list|,
+name|boolean
+name|startRecovery
 parameter_list|)
 block|{
 name|setBlockUCState
@@ -884,6 +887,14 @@ name|blockRecoveryId
 operator|=
 name|recoveryId
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|startRecovery
+condition|)
+block|{
+return|return;
+block|}
 if|if
 condition|(
 name|replicas

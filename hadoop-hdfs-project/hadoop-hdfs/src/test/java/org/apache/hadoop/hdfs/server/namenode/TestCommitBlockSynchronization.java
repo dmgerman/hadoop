@@ -489,6 +489,8 @@ argument_list|(
 name|blockInfo
 argument_list|,
 name|genStamp
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|doReturn

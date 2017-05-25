@@ -2230,6 +2230,12 @@ block|}
 name|boolean
 name|completed
 init|=
+literal|false
+decl_stmt|;
+try|try
+block|{
+name|completed
+operator|=
 name|fsnamesystem
 operator|.
 name|internalReleaseLease
@@ -2244,7 +2250,33 @@ name|HdfsServerConstants
 operator|.
 name|NAMENODE_LEASE_HOLDER
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Cannot release the path "
+operator|+
+name|p
+operator|+
+literal|" in the lease "
+operator|+
+name|leaseToCheck
+operator|+
+literal|". It will be retried."
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+continue|continue;
+block|}
 if|if
 condition|(
 name|LOG
@@ -2313,13 +2345,13 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|error
+name|warn
 argument_list|(
-literal|"Cannot release the path "
+literal|"Removing lease with an invalid path: "
 operator|+
 name|p
 operator|+
-literal|" in the lease "
+literal|","
 operator|+
 name|leaseToCheck
 argument_list|,

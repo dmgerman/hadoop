@@ -2965,6 +2965,7 @@ operator|.
 name|length
 condition|)
 block|{
+comment|// Error for pre-2.0.0-alpha clients.
 specifier|final
 name|String
 name|err
@@ -2980,7 +2981,7 @@ literal|"Missing storageIDs: It is likely that the HDFS client,"
 operator|+
 literal|" who made this call, is running in an older version of Hadoop"
 operator|+
-literal|" which does not support storageIDs."
+literal|"(pre-2.0.0-alpha)  which does not support storageIDs."
 else|:
 literal|"Length mismatched: storageIDs.length="
 operator|+

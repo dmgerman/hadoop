@@ -302,6 +302,8 @@ argument_list|(
 name|blockInfo
 argument_list|,
 literal|1
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|BlockInfo
@@ -372,6 +374,8 @@ argument_list|(
 name|blockInfo
 argument_list|,
 literal|2
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|blockInfoRecovery
@@ -440,6 +444,8 @@ argument_list|(
 name|blockInfo
 argument_list|,
 literal|3
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|blockInfoRecovery
@@ -506,6 +512,8 @@ argument_list|(
 name|blockInfo
 argument_list|,
 literal|3
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|blockInfoRecovery

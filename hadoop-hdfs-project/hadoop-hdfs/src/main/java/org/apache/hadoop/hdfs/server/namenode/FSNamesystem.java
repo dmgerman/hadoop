@@ -17023,6 +17023,8 @@ argument_list|(
 name|lastBlock
 argument_list|,
 name|blockRecoveryId
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|leaseManager
