@@ -38,7 +38,27 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Ignore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 
@@ -51,9 +71,9 @@ extends|extends
 name|FileSystemContractBaseTest
 block|{
 annotation|@
-name|Override
+name|Before
 DECL|method|setUp ()
-specifier|protected
+specifier|public
 name|void
 name|setUp
 parameter_list|()
@@ -74,6 +94,8 @@ block|}
 comment|/**    * The following tests are failing on Azure and the Azure     * file system code needs to be modified to make them pass.    * A separate work item has been opened for this.    */
 annotation|@
 name|Ignore
+annotation|@
+name|Test
 DECL|method|testMoveFileUnderParent ()
 specifier|public
 name|void
@@ -84,6 +106,8 @@ name|Throwable
 block|{   }
 annotation|@
 name|Ignore
+annotation|@
+name|Test
 DECL|method|testRenameFileToSelf ()
 specifier|public
 name|void
@@ -94,6 +118,8 @@ name|Throwable
 block|{   }
 annotation|@
 name|Ignore
+annotation|@
+name|Test
 DECL|method|testRenameChildDirForbidden ()
 specifier|public
 name|void
@@ -104,6 +130,8 @@ name|Exception
 block|{   }
 annotation|@
 name|Ignore
+annotation|@
+name|Test
 DECL|method|testMoveDirUnderParent ()
 specifier|public
 name|void
@@ -114,6 +142,8 @@ name|Throwable
 block|{   }
 annotation|@
 name|Ignore
+annotation|@
+name|Test
 DECL|method|testRenameDirToSelf ()
 specifier|public
 name|void

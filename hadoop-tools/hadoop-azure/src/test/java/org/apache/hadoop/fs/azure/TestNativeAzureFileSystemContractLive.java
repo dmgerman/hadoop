@@ -19,6 +19,18 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assume
+operator|.
+name|assumeNotNull
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -38,7 +50,37 @@ name|org
 operator|.
 name|junit
 operator|.
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Ignore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 
@@ -56,9 +98,9 @@ name|AzureBlobStorageTestAccount
 name|testAccount
 decl_stmt|;
 annotation|@
-name|Override
+name|Before
 DECL|method|setUp ()
-specifier|protected
+specifier|public
 name|void
 name|setUp
 parameter_list|()
@@ -87,11 +129,16 @@ name|getFileSystem
 argument_list|()
 expr_stmt|;
 block|}
+name|assumeNotNull
+argument_list|(
+name|fs
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
-name|Override
+name|After
 DECL|method|tearDown ()
-specifier|protected
+specifier|public
 name|void
 name|tearDown
 parameter_list|()
@@ -120,33 +167,11 @@ literal|null
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Override
-DECL|method|runTest ()
-specifier|protected
-name|void
-name|runTest
-parameter_list|()
-throws|throws
-name|Throwable
-block|{
-if|if
-condition|(
-name|testAccount
-operator|!=
-literal|null
-condition|)
-block|{
-name|super
-operator|.
-name|runTest
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 comment|/**    * The following tests are failing on Azure and the Azure     * file system code needs to be modified to make them pass.    * A separate work item has been opened for this.    */
 annotation|@
 name|Ignore
+annotation|@
+name|Test
 DECL|method|testMoveFileUnderParent ()
 specifier|public
 name|void
@@ -157,6 +182,8 @@ name|Throwable
 block|{   }
 annotation|@
 name|Ignore
+annotation|@
+name|Test
 DECL|method|testRenameFileToSelf ()
 specifier|public
 name|void
@@ -167,6 +194,8 @@ name|Throwable
 block|{   }
 annotation|@
 name|Ignore
+annotation|@
+name|Test
 DECL|method|testRenameChildDirForbidden ()
 specifier|public
 name|void
@@ -177,6 +206,8 @@ name|Exception
 block|{   }
 annotation|@
 name|Ignore
+annotation|@
+name|Test
 DECL|method|testMoveDirUnderParent ()
 specifier|public
 name|void
@@ -187,6 +218,8 @@ name|Throwable
 block|{   }
 annotation|@
 name|Ignore
+annotation|@
+name|Test
 DECL|method|testRenameDirToSelf ()
 specifier|public
 name|void

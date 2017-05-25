@@ -80,6 +80,38 @@ begin_import
 import|import
 name|org
 operator|.
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assume
+operator|.
+name|*
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|apache
 operator|.
 name|hadoop
@@ -147,7 +179,7 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 annotation|@
-name|Override
+name|Before
 DECL|method|setUp ()
 specifier|public
 name|void
@@ -172,10 +204,10 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|super
-operator|.
-name|setUp
-argument_list|()
+name|assumeNotNull
+argument_list|(
+name|fs
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@
@@ -191,7 +223,7 @@ name|testRootPath
 return|;
 block|}
 annotation|@
-name|Override
+name|Test
 DECL|method|testMkdirsWithUmask ()
 specifier|public
 name|void
@@ -203,7 +235,7 @@ block|{
 comment|// not supported
 block|}
 annotation|@
-name|Override
+name|Test
 DECL|method|testRootDirAlwaysExists ()
 specifier|public
 name|void
@@ -246,7 +278,7 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
-name|Override
+name|Test
 DECL|method|testRenameRootDirForbidden ()
 specifier|public
 name|void
@@ -255,15 +287,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-if|if
-condition|(
-operator|!
+name|assumeTrue
+argument_list|(
 name|renameSupported
 argument_list|()
-condition|)
-block|{
-return|return;
-block|}
+argument_list|)
+expr_stmt|;
 name|rename
 argument_list|(
 name|super
@@ -288,6 +317,8 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testDeleteSubdir ()
 specifier|public
 name|void
@@ -463,7 +494,7 @@ literal|true
 return|;
 block|}
 annotation|@
-name|Override
+name|Test
 DECL|method|testRenameNonExistentPath ()
 specifier|public
 name|void
@@ -472,14 +503,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-if|if
-condition|(
-name|this
-operator|.
+name|assumeTrue
+argument_list|(
 name|renameSupported
 argument_list|()
-condition|)
-block|{
+argument_list|)
+expr_stmt|;
 name|Path
 name|src
 init|=
@@ -532,9 +561,8 @@ block|{
 comment|// expected
 block|}
 block|}
-block|}
 annotation|@
-name|Override
+name|Test
 DECL|method|testRenameFileMoveToNonExistentDirectory ()
 specifier|public
 name|void
@@ -543,14 +571,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-if|if
-condition|(
-name|this
-operator|.
+name|assumeTrue
+argument_list|(
 name|renameSupported
 argument_list|()
-condition|)
-block|{
+argument_list|)
+expr_stmt|;
 name|Path
 name|src
 init|=
@@ -610,9 +636,8 @@ block|{
 comment|// expected
 block|}
 block|}
-block|}
 annotation|@
-name|Override
+name|Test
 DECL|method|testRenameDirectoryMoveToNonExistentDirectory ()
 specifier|public
 name|void
@@ -621,14 +646,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-if|if
-condition|(
-name|this
-operator|.
+name|assumeTrue
+argument_list|(
 name|renameSupported
 argument_list|()
-condition|)
-block|{
+argument_list|)
+expr_stmt|;
 name|Path
 name|src
 init|=
@@ -690,9 +713,8 @@ block|{
 comment|// expected
 block|}
 block|}
-block|}
 annotation|@
-name|Override
+name|Test
 DECL|method|testRenameFileMoveToExistingDirectory ()
 specifier|public
 name|void
@@ -708,7 +730,7 @@ argument_list|()
 expr_stmt|;
 block|}
 annotation|@
-name|Override
+name|Test
 DECL|method|testRenameFileAsExistingFile ()
 specifier|public
 name|void
@@ -717,14 +739,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-if|if
-condition|(
-name|this
-operator|.
+name|assumeTrue
+argument_list|(
 name|renameSupported
 argument_list|()
-condition|)
-block|{
+argument_list|)
+expr_stmt|;
 name|Path
 name|src
 init|=
@@ -791,9 +811,8 @@ block|{
 comment|// expected
 block|}
 block|}
-block|}
 annotation|@
-name|Override
+name|Test
 DECL|method|testRenameDirectoryAsExistingFile ()
 specifier|public
 name|void
@@ -802,14 +821,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-if|if
-condition|(
-name|this
-operator|.
+name|assumeTrue
+argument_list|(
 name|renameSupported
 argument_list|()
-condition|)
-block|{
+argument_list|)
+expr_stmt|;
 name|Path
 name|src
 init|=
@@ -878,7 +895,8 @@ block|{
 comment|// expected
 block|}
 block|}
-block|}
+annotation|@
+name|Test
 DECL|method|testGetFileStatusFileAndDirectory ()
 specifier|public
 name|void
@@ -1028,6 +1046,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testMkdirsForExistingFile ()
 specifier|public
 name|void

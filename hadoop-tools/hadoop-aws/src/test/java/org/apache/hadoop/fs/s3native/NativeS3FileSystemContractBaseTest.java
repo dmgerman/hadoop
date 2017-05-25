@@ -142,9 +142,51 @@ name|org
 operator|.
 name|junit
 operator|.
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|internal
 operator|.
 name|AssumptionViolatedException
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
 import|;
 end_import
 
@@ -180,9 +222,9 @@ throws|throws
 name|IOException
 function_decl|;
 annotation|@
-name|Override
+name|Before
 DECL|method|setUp ()
-specifier|protected
+specifier|public
 name|void
 name|setUp
 parameter_list|()
@@ -255,9 +297,9 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
-name|Override
+name|After
 DECL|method|tearDown ()
-specifier|protected
+specifier|public
 name|void
 name|tearDown
 parameter_list|()
@@ -271,12 +313,9 @@ argument_list|(
 literal|"test"
 argument_list|)
 expr_stmt|;
-name|super
-operator|.
-name|tearDown
-argument_list|()
-expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCanonicalName ()
 specifier|public
 name|void
@@ -296,6 +335,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testListStatusForRoot ()
 specifier|public
 name|void
@@ -385,6 +426,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testNoTrailingBackslashOnBucket ()
 specifier|public
 name|void
@@ -456,6 +499,8 @@ literal|"/dir/file3"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testDirWithDifferentMarkersWorks ()
 specifier|public
 name|void
@@ -641,6 +686,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testDeleteWithNoMarker ()
 specifier|public
 name|void
@@ -713,6 +760,8 @@ name|length
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testRenameWithNoMarker ()
 specifier|public
 name|void
@@ -816,6 +865,8 @@ name|length
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testEmptyFile ()
 specifier|public
 name|void
@@ -845,6 +896,8 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testBlockSize ()
 specifier|public
 name|void
@@ -931,6 +984,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testRetryOnIoException ()
 specifier|public
 name|void

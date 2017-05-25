@@ -19,6 +19,18 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -420,6 +432,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -528,9 +550,9 @@ throw|;
 block|}
 block|}
 annotation|@
-name|Override
+name|Before
 DECL|method|setUp ()
-specifier|protected
+specifier|public
 name|void
 name|setUp
 parameter_list|()
@@ -611,7 +633,7 @@ return|;
 block|}
 comment|/** HDFS throws AccessControlException    * when calling exist(..) on a path /foo/bar/file    * but /foo/bar is indeed a file in HDFS.    */
 annotation|@
-name|Override
+name|Test
 DECL|method|testMkdirsFailsForSubdirectoryOfExistingFile ()
 specifier|public
 name|void
@@ -772,6 +794,8 @@ comment|// also okay for HDFS.
 block|}
 block|}
 comment|//the following are new tests (i.e. not over-riding the super class methods)
+annotation|@
+name|Test
 DECL|method|testGetFileBlockLocations ()
 specifier|public
 name|void
@@ -986,6 +1010,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testCaseInsensitive ()
 specifier|public
 name|void
@@ -1177,6 +1203,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testOpenNonExistFile ()
 specifier|public
 name|void
@@ -1233,6 +1261,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testSeek ()
 specifier|public
 name|void
@@ -1629,6 +1659,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testRootDir ()
 specifier|public
 name|void
@@ -1835,6 +1867,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Test get with length parameter greater than actual file length.    */
+annotation|@
+name|Test
 DECL|method|testLengthParamLongerThanFile ()
 specifier|public
 name|void
@@ -2121,6 +2155,8 @@ block|}
 block|}
 block|}
 comment|/**    * Test get with offset and length parameters that combine to request a length    * greater than actual file length.    */
+annotation|@
+name|Test
 DECL|method|testOffsetPlusLengthParamsLongerThanFile ()
 specifier|public
 name|void
@@ -2422,6 +2458,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testResponseCode ()
 specifier|public
 name|void
@@ -3484,6 +3522,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testDatanodeCreateMissingParameter ()
 specifier|public
 name|void

@@ -48,16 +48,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|slf4j
@@ -134,8 +124,86 @@ name|StringUtils
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assume
+operator|.
+name|assumeTrue
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Rule
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|rules
+operator|.
+name|ExpectedException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|rules
+operator|.
+name|Timeout
+import|;
+end_import
+
 begin_comment
-comment|/**  *<p>  * A collection of tests for the contract of the {@link FileSystem}.  * This test should be used for general-purpose implementations of  * {@link FileSystem}, that is, implementations that provide implementations   * of all of the functionality of {@link FileSystem}.  *</p>  *<p>  * To test a given {@link FileSystem} implementation create a subclass of this  * test and override {@link #setUp()} to initialize the<code>fs</code>   * {@link FileSystem} instance variable.  *</p>  */
+comment|/**  *<p>  * A collection of tests for the contract of the {@link FileSystem}.  * This test should be used for general-purpose implementations of  * {@link FileSystem}, that is, implementations that provide implementations   * of all of the functionality of {@link FileSystem}.  *</p>  *<p>  * To test a given {@link FileSystem} implementation create a subclass of this  * test and add a @Before method to initialize the<code>fs</code>  * {@link FileSystem} instance variable.  *</p>  */
 end_comment
 
 begin_class
@@ -144,8 +212,6 @@ specifier|public
 specifier|abstract
 class|class
 name|FileSystemContractBaseTest
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|private
@@ -196,9 +262,34 @@ literal|255
 argument_list|)
 decl_stmt|;
 annotation|@
-name|Override
+name|Rule
+DECL|field|globalTimeout
+specifier|public
+name|Timeout
+name|globalTimeout
+init|=
+operator|new
+name|Timeout
+argument_list|(
+literal|30000
+argument_list|)
+decl_stmt|;
+annotation|@
+name|Rule
+DECL|field|thrown
+specifier|public
+name|ExpectedException
+name|thrown
+init|=
+name|ExpectedException
+operator|.
+name|none
+argument_list|()
+decl_stmt|;
+annotation|@
+name|After
 DECL|method|tearDown ()
-specifier|protected
+specifier|public
 name|void
 name|tearDown
 parameter_list|()
@@ -236,11 +327,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|super
-operator|.
-name|tearDown
-argument_list|()
-expr_stmt|;
 block|}
 DECL|method|cleanupDir (Path p)
 specifier|private
@@ -417,6 +503,8 @@ return|return
 literal|true
 return|;
 block|}
+annotation|@
+name|Test
 DECL|method|testFsStatus ()
 specifier|public
 name|void
@@ -470,6 +558,8 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testWorkingDirectory ()
 specifier|public
 name|void
@@ -609,6 +699,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testMkdirs ()
 specifier|public
 name|void
@@ -774,6 +866,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testMkdirsFailsForSubdirectoryOfExistingFile ()
 specifier|public
 name|void
@@ -935,6 +1029,8 @@ comment|// Expected : HDFS-11132 Checks on paths under file may be rejected by
 comment|// file missing execute permission.
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testMkdirsWithUmask ()
 specifier|public
 name|void
@@ -1112,6 +1208,8 @@ return|return
 literal|false
 return|;
 block|}
+annotation|@
+name|Test
 DECL|method|testGetFileStatusThrowsExceptionForNonExistentFile ()
 specifier|public
 name|void
@@ -1147,6 +1245,8 @@ block|{
 comment|// expected
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testListStatusThrowsExceptionForNonExistentFile ()
 specifier|public
 name|void
@@ -1182,6 +1282,8 @@ block|{
 comment|// expected
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testListStatus ()
 specifier|public
 name|void
@@ -1397,6 +1499,8 @@ name|length
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testWriteReadAndDeleteEmptyFile ()
 specifier|public
 name|void
@@ -1411,6 +1515,8 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testWriteReadAndDeleteHalfABlock ()
 specifier|public
 name|void
@@ -1428,6 +1534,8 @@ literal|2
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testWriteReadAndDeleteOneBlock ()
 specifier|public
 name|void
@@ -1443,6 +1551,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testWriteReadAndDeleteOneAndAHalfBlocks ()
 specifier|public
 name|void
@@ -1465,6 +1575,8 @@ operator|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testWriteReadAndDeleteTwoBlocks ()
 specifier|public
 name|void
@@ -1516,6 +1628,8 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testOverwrite ()
 specifier|public
 name|void
@@ -1668,6 +1782,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testWriteInNonExistentDirectory ()
 specifier|public
 name|void
@@ -1751,6 +1867,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testDeleteNonExistentFile ()
 specifier|public
 name|void
@@ -1796,6 +1914,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testDeleteRecursively ()
 specifier|public
 name|void
@@ -1993,6 +2113,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testDeleteEmptyDirectory ()
 specifier|public
 name|void
@@ -2058,6 +2180,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testRenameNonExistentPath ()
 specifier|public
 name|void
@@ -2066,13 +2190,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-if|if
-condition|(
-operator|!
+name|assumeTrue
+argument_list|(
 name|renameSupported
 argument_list|()
-condition|)
-return|return;
+argument_list|)
+expr_stmt|;
 name|Path
 name|src
 init|=
@@ -2103,6 +2226,8 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testRenameFileMoveToNonExistentDirectory ()
 specifier|public
 name|void
@@ -2111,13 +2236,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-if|if
-condition|(
-operator|!
+name|assumeTrue
+argument_list|(
 name|renameSupported
 argument_list|()
-condition|)
-return|return;
+argument_list|)
+expr_stmt|;
 name|Path
 name|src
 init|=
@@ -2153,6 +2277,8 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testRenameFileMoveToExistingDirectory ()
 specifier|public
 name|void
@@ -2161,13 +2287,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-if|if
-condition|(
-operator|!
+name|assumeTrue
+argument_list|(
 name|renameSupported
 argument_list|()
-condition|)
-return|return;
+argument_list|)
+expr_stmt|;
 name|Path
 name|src
 init|=
@@ -2213,6 +2338,8 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testRenameFileAsExistingFile ()
 specifier|public
 name|void
@@ -2221,13 +2348,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-if|if
-condition|(
-operator|!
+name|assumeTrue
+argument_list|(
 name|renameSupported
 argument_list|()
-condition|)
-return|return;
+argument_list|)
+expr_stmt|;
 name|Path
 name|src
 init|=
@@ -2268,6 +2394,8 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testRenameFileAsExistingDirectory ()
 specifier|public
 name|void
@@ -2276,13 +2404,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-if|if
-condition|(
-operator|!
+name|assumeTrue
+argument_list|(
 name|renameSupported
 argument_list|()
-condition|)
-return|return;
+argument_list|)
+expr_stmt|;
 name|Path
 name|src
 init|=
@@ -2333,6 +2460,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testRenameDirectoryMoveToNonExistentDirectory ()
 specifier|public
 name|void
@@ -2341,13 +2470,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-if|if
-condition|(
-operator|!
+name|assumeTrue
+argument_list|(
 name|renameSupported
 argument_list|()
-condition|)
-return|return;
+argument_list|)
+expr_stmt|;
 name|Path
 name|src
 init|=
@@ -2385,6 +2513,8 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testRenameDirectoryMoveToExistingDirectory ()
 specifier|public
 name|void
@@ -2393,13 +2523,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-if|if
-condition|(
-operator|!
+name|assumeTrue
+argument_list|(
 name|renameSupported
 argument_list|()
-condition|)
-return|return;
+argument_list|)
+expr_stmt|;
 name|Path
 name|src
 init|=
@@ -2535,6 +2664,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testRenameDirectoryAsExistingFile ()
 specifier|public
 name|void
@@ -2543,13 +2674,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-if|if
-condition|(
-operator|!
+name|assumeTrue
+argument_list|(
 name|renameSupported
 argument_list|()
-condition|)
-return|return;
+argument_list|)
+expr_stmt|;
 name|Path
 name|src
 init|=
@@ -2592,6 +2722,8 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testRenameDirectoryAsExistingDirectory ()
 specifier|public
 name|void
@@ -2600,13 +2732,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-if|if
-condition|(
-operator|!
+name|assumeTrue
+argument_list|(
 name|renameSupported
 argument_list|()
-condition|)
-return|return;
+argument_list|)
+expr_stmt|;
 specifier|final
 name|Path
 name|src
@@ -2758,6 +2889,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testInputStreamClosedTwice ()
 specifier|public
 name|void
@@ -2802,6 +2935,8 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testOutputStreamClosedTwice ()
 specifier|public
 name|void
@@ -2960,6 +3095,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Verify that if you take an existing file and overwrite it, the new values    * get picked up.    * This is a test for the behavior of eventually consistent    * filesystems.    *    * @throws Exception on any failure    */
+annotation|@
+name|Test
 DECL|method|testOverWriteAndRead ()
 specifier|public
 name|void
@@ -3098,6 +3235,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Assert that a filesystem is case sensitive.    * This is done by creating a mixed-case filename and asserting that    * its lower case version is not there.    * @throws Exception    */
+annotation|@
+name|Test
 DECL|method|testFilesystemIsCaseSensitive ()
 specifier|public
 name|void
@@ -3308,6 +3447,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Asserts that a zero byte file has a status of file and not    * directory or symlink    * @throws Exception on failures    */
+annotation|@
+name|Test
 DECL|method|testZeroByteFilesAreFiles ()
 specifier|public
 name|void
@@ -3347,6 +3488,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Asserts that a zero byte file has a status of file and not    * directory or symlink    * @throws Exception on failures    */
+annotation|@
+name|Test
 DECL|method|testMultiByteFilesAreFiles ()
 specifier|public
 name|void
@@ -3392,6 +3535,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Assert that root directory renames are not allowed    * @throws Exception on failures    */
+annotation|@
+name|Test
 DECL|method|testRootDirAlwaysExists ()
 specifier|public
 name|void
@@ -3430,6 +3575,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Assert that root directory renames are not allowed    * @throws Exception on failures    */
+annotation|@
+name|Test
 DECL|method|testRenameRootDirForbidden ()
 specifier|public
 name|void
@@ -3438,22 +3585,18 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-if|if
-condition|(
-operator|!
+name|assumeTrue
+argument_list|(
 name|rootDirTestEnabled
 argument_list|()
-condition|)
-block|{
-return|return;
-block|}
-if|if
-condition|(
-operator|!
+argument_list|)
+expr_stmt|;
+name|assumeTrue
+argument_list|(
 name|renameSupported
 argument_list|()
-condition|)
-return|return;
+argument_list|)
+expr_stmt|;
 name|rename
 argument_list|(
 name|path
@@ -3475,6 +3618,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Assert that renaming a parent directory to be a child    * of itself is forbidden    * @throws Exception on failures    */
+annotation|@
+name|Test
 DECL|method|testRenameChildDirForbidden ()
 specifier|public
 name|void
@@ -3483,13 +3628,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-if|if
-condition|(
-operator|!
+name|assumeTrue
+argument_list|(
 name|renameSupported
 argument_list|()
-condition|)
-return|return;
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -3587,6 +3731,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * This a sanity check to make sure that any filesystem's handling of    * renames doesn't cause any regressions    */
+annotation|@
+name|Test
 DECL|method|testRenameToDirWithSamePrefixAllowed ()
 specifier|public
 name|void
@@ -3595,13 +3741,12 @@ parameter_list|()
 throws|throws
 name|Throwable
 block|{
-if|if
-condition|(
-operator|!
+name|assumeTrue
+argument_list|(
 name|renameSupported
 argument_list|()
-condition|)
-return|return;
+argument_list|)
+expr_stmt|;
 specifier|final
 name|Path
 name|parentdir
@@ -3642,6 +3787,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * trying to rename a directory onto itself should fail,    * preserving everything underneath.    */
+annotation|@
+name|Test
 DECL|method|testRenameDirToSelf ()
 specifier|public
 name|void
@@ -3650,15 +3797,12 @@ parameter_list|()
 throws|throws
 name|Throwable
 block|{
-if|if
-condition|(
-operator|!
+name|assumeTrue
+argument_list|(
 name|renameSupported
 argument_list|()
-condition|)
-block|{
-return|return;
-block|}
+argument_list|)
+expr_stmt|;
 name|Path
 name|parentdir
 init|=
@@ -3711,6 +3855,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * trying to rename a directory onto its parent dir will build    * a destination path of its original name, which should then fail.    * The source path and the destination path should still exist afterwards    */
+annotation|@
+name|Test
 DECL|method|testMoveDirUnderParent ()
 specifier|public
 name|void
@@ -3719,15 +3865,12 @@ parameter_list|()
 throws|throws
 name|Throwable
 block|{
-if|if
-condition|(
-operator|!
+name|assumeTrue
+argument_list|(
 name|renameSupported
 argument_list|()
-condition|)
-block|{
-return|return;
-block|}
+argument_list|)
+expr_stmt|;
 name|Path
 name|testdir
 init|=
@@ -3795,6 +3938,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * trying to rename a file onto itself should succeed (it's a no-op)    *    */
+annotation|@
+name|Test
 DECL|method|testRenameFileToSelf ()
 specifier|public
 name|void
@@ -3803,13 +3948,12 @@ parameter_list|()
 throws|throws
 name|Throwable
 block|{
-if|if
-condition|(
-operator|!
+name|assumeTrue
+argument_list|(
 name|renameSupported
 argument_list|()
-condition|)
-return|return;
+argument_list|)
+expr_stmt|;
 name|Path
 name|filepath
 init|=
@@ -3845,6 +3989,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * trying to move a file into it's parent dir should succeed    * again: no-op    */
+annotation|@
+name|Test
 DECL|method|testMoveFileUnderParent ()
 specifier|public
 name|void
@@ -3853,13 +3999,12 @@ parameter_list|()
 throws|throws
 name|Throwable
 block|{
-if|if
-condition|(
-operator|!
+name|assumeTrue
+argument_list|(
 name|renameSupported
 argument_list|()
-condition|)
-return|return;
+argument_list|)
+expr_stmt|;
 name|Path
 name|filepath
 init|=
@@ -3894,6 +4039,8 @@ name|filepath
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testLSRootDir ()
 specifier|public
 name|void
@@ -3902,15 +4049,12 @@ parameter_list|()
 throws|throws
 name|Throwable
 block|{
-if|if
-condition|(
-operator|!
+name|assumeTrue
+argument_list|(
 name|rootDirTestEnabled
 argument_list|()
-condition|)
-block|{
-return|return;
-block|}
+argument_list|)
+expr_stmt|;
 name|Path
 name|dir
 init|=
@@ -3940,6 +4084,8 @@ name|child
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testListStatusRootDir ()
 specifier|public
 name|void
@@ -3948,15 +4094,12 @@ parameter_list|()
 throws|throws
 name|Throwable
 block|{
-if|if
-condition|(
-operator|!
+name|assumeTrue
+argument_list|(
 name|rootDirTestEnabled
 argument_list|()
-condition|)
-block|{
-return|return;
-block|}
+argument_list|)
+expr_stmt|;
 name|Path
 name|dir
 init|=

@@ -140,6 +140,38 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -208,9 +240,9 @@ literal|false
 return|;
 block|}
 annotation|@
-name|Override
+name|Before
 DECL|method|setUp ()
-specifier|protected
+specifier|public
 name|void
 name|setUp
 parameter_list|()
@@ -265,11 +297,6 @@ throw|throw
 name|e
 throw|;
 block|}
-name|super
-operator|.
-name|setUp
-argument_list|()
-expr_stmt|;
 block|}
 DECL|method|getFilesystemURI ()
 specifier|protected
@@ -312,7 +339,7 @@ name|swiftNativeFileSystem
 return|;
 block|}
 annotation|@
-name|Override
+name|Test
 DECL|method|testMkdirsFailsForSubdirectoryOfExistingFile ()
 specifier|public
 name|void
@@ -481,7 +508,7 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
-name|Override
+name|Test
 DECL|method|testWriteReadAndDeleteEmptyFile ()
 specifier|public
 name|void
@@ -516,7 +543,7 @@ expr_stmt|;
 block|}
 block|}
 annotation|@
-name|Override
+name|Test
 DECL|method|testMkdirsWithUmask ()
 specifier|public
 name|void
@@ -527,6 +554,8 @@ name|Exception
 block|{
 comment|//unsupported
 block|}
+annotation|@
+name|Test
 DECL|method|testZeroByteFilesAreFiles ()
 specifier|public
 name|void

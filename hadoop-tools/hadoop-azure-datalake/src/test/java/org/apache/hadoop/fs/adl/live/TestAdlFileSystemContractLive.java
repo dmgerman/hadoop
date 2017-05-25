@@ -68,7 +68,19 @@ name|org
 operator|.
 name|junit
 operator|.
+name|After
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
 name|Assume
+operator|.
+name|*
 import|;
 end_import
 
@@ -110,15 +122,18 @@ name|FileSystem
 name|adlStore
 decl_stmt|;
 annotation|@
-name|Override
+name|Before
 DECL|method|setUp ()
-specifier|protected
+specifier|public
 name|void
 name|setUp
 parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|skipTestCheck
+argument_list|()
+expr_stmt|;
 name|adlStore
 operator|=
 name|AdlStorageConfiguration
@@ -139,11 +154,16 @@ operator|=
 name|adlStore
 expr_stmt|;
 block|}
+name|assumeNotNull
+argument_list|(
+name|fs
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
-name|Override
+name|After
 DECL|method|tearDown ()
-specifier|protected
+specifier|public
 name|void
 name|tearDown
 parameter_list|()
@@ -190,41 +210,12 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Override
-DECL|method|runTest ()
-specifier|protected
-name|void
-name|runTest
-parameter_list|()
-throws|throws
-name|Throwable
-block|{
-if|if
-condition|(
-name|AdlStorageConfiguration
-operator|.
-name|isContractTestEnabled
-argument_list|()
-condition|)
-block|{
-name|super
-operator|.
-name|runTest
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-annotation|@
-name|Before
 DECL|method|skipTestCheck ()
-specifier|public
+specifier|private
 name|void
 name|skipTestCheck
 parameter_list|()
 block|{
-name|Assume
-operator|.
 name|assumeTrue
 argument_list|(
 name|AdlStorageConfiguration

@@ -44,6 +44,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|rules
 operator|.
 name|TestName
@@ -112,6 +122,30 @@ name|Path
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assume
+operator|.
+name|*
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
+import|;
+end_import
+
 begin_comment
 comment|/**  *  Tests a live S3 system. If your keys and bucket aren't specified, all tests  *  are marked as passed.  *  *  This uses BlockJUnit4ClassRunner because FileSystemContractBaseTest from  *  TestCase which uses the old Junit3 runner that doesn't ignore assumptions  *  properly making it impossible to skip the tests if we don't have a valid  *  bucket.  **/
 end_comment
@@ -156,10 +190,8 @@ operator|new
 name|TestName
 argument_list|()
 decl_stmt|;
-annotation|@
-name|Before
 DECL|method|nameThread ()
-specifier|public
+specifier|private
 name|void
 name|nameThread
 parameter_list|()
@@ -181,7 +213,7 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
-name|Override
+name|Before
 DECL|method|setUp ()
 specifier|public
 name|void
@@ -190,6 +222,9 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|nameThread
+argument_list|()
+expr_stmt|;
 name|Configuration
 name|conf
 init|=
@@ -204,6 +239,11 @@ operator|.
 name|createTestFileSystem
 argument_list|(
 name|conf
+argument_list|)
+expr_stmt|;
+name|assumeNotNull
+argument_list|(
+name|fs
 argument_list|)
 expr_stmt|;
 name|basePath
@@ -224,11 +264,6 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|super
-operator|.
-name|setUp
-argument_list|()
-expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -243,7 +278,7 @@ name|basePath
 return|;
 block|}
 annotation|@
-name|Override
+name|Test
 DECL|method|testMkdirsWithUmask ()
 specifier|public
 name|void
@@ -255,7 +290,7 @@ block|{
 comment|// not supported
 block|}
 annotation|@
-name|Override
+name|Test
 DECL|method|testRenameDirectoryAsExistingDirectory ()
 specifier|public
 name|void
@@ -264,15 +299,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-if|if
-condition|(
-operator|!
+name|assumeTrue
+argument_list|(
 name|renameSupported
 argument_list|()
-condition|)
-block|{
-return|return;
-block|}
+argument_list|)
+expr_stmt|;
 name|Path
 name|src
 init|=
@@ -405,7 +437,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|//  @Override
+annotation|@
+name|Test
 DECL|method|testMoveDirUnderParent ()
 specifier|public
 name|void
