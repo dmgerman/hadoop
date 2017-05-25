@@ -1485,7 +1485,12 @@ comment|// convert to milliseconds
 name|long
 name|accessTime
 init|=
-literal|0
+name|attr
+operator|.
+name|getATime
+argument_list|()
+operator|*
+literal|1000L
 decl_stmt|;
 name|FsPermission
 name|permission
