@@ -148,24 +148,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|NameNode
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|LightWeightGSet
@@ -1036,10 +1018,13 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-comment|/**    * Process the recorded replicas. When about to commit or finish the    * pipeline recovery sort out bad replicas.    * @param genStamp  The final generation stamp for the block.    */
-DECL|method|setGenerationStampAndVerifyReplicas (long genStamp)
+comment|/**    * Process the recorded replicas. When about to commit or finish the    * pipeline recovery sort out bad replicas.    * @param genStamp  The final generation stamp for the block.    * @return staleReplica's List.    */
+DECL|method|setGenerationStampAndVerifyReplicas ( long genStamp)
 specifier|public
-name|void
+name|List
+argument_list|<
+name|ReplicaUnderConstruction
+argument_list|>
 name|setGenerationStampAndVerifyReplicas
 parameter_list|(
 name|long
@@ -1065,63 +1050,21 @@ argument_list|(
 name|genStamp
 argument_list|)
 expr_stmt|;
-comment|// Remove the replicas with wrong gen stamp
-name|List
-argument_list|<
-name|ReplicaUnderConstruction
-argument_list|>
-name|staleReplicas
-init|=
+return|return
 name|uc
 operator|.
 name|getStaleReplicas
 argument_list|(
 name|genStamp
 argument_list|)
-decl_stmt|;
-for|for
-control|(
-name|ReplicaUnderConstruction
-name|r
-range|:
-name|staleReplicas
-control|)
-block|{
-name|r
-operator|.
-name|getExpectedStorageLocation
-argument_list|()
-operator|.
-name|removeBlock
-argument_list|(
-name|this
-argument_list|)
-expr_stmt|;
-name|NameNode
-operator|.
-name|blockStateChangeLog
-operator|.
-name|debug
-argument_list|(
-literal|"BLOCK* Removing stale replica {}"
-operator|+
-literal|" of {}"
-argument_list|,
-name|r
-argument_list|,
-name|Block
-operator|.
-name|toString
-argument_list|(
-name|r
-argument_list|)
-argument_list|)
-expr_stmt|;
+return|;
 block|}
-block|}
-comment|/**    * Commit block's length and generation stamp as reported by the client.    * Set block state to {@link BlockUCState#COMMITTED}.    * @param block - contains client reported block length and generation    * @throws IOException if block ids are inconsistent.    */
+comment|/**    * Commit block's length and generation stamp as reported by the client.    * Set block state to {@link BlockUCState#COMMITTED}.    * @param block - contains client reported block length and generation    * @return staleReplica's List.    * @throws IOException if block ids are inconsistent.    */
 DECL|method|commitBlock (Block block)
-name|void
+name|List
+argument_list|<
+name|ReplicaUnderConstruction
+argument_list|>
 name|commitBlock
 parameter_list|(
 name|Block
@@ -1184,6 +1127,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Sort out invalid replicas.
+return|return
 name|setGenerationStampAndVerifyReplicas
 argument_list|(
 name|block
@@ -1191,7 +1135,7 @@ operator|.
 name|getGenerationStamp
 argument_list|()
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 block|}
 end_class

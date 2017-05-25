@@ -23787,24 +23787,13 @@ argument_list|)
 throw|;
 block|}
 comment|// Update old block with the new generation stamp and new length
-name|lastBlock
+name|blockManager
 operator|.
-name|setNumBytes
+name|updateLastBlock
 argument_list|(
-name|newBlock
-operator|.
-name|getNumBytes
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|lastBlock
-operator|.
-name|setGenerationStampAndVerifyReplicas
-argument_list|(
+argument_list|,
 name|newBlock
-operator|.
-name|getGenerationStamp
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// find the DatanodeDescriptor objects
