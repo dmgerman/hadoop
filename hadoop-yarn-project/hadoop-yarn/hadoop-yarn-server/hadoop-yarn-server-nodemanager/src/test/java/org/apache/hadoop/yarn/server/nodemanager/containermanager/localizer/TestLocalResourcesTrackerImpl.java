@@ -3595,6 +3595,8 @@ argument_list|,
 name|conf
 argument_list|,
 name|stateStore
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 comment|// Container 1 needs lr1 resource
@@ -4136,6 +4138,8 @@ argument_list|,
 name|conf
 argument_list|,
 name|stateStore
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 comment|// Container 1 needs lr1 resource
@@ -4542,6 +4546,8 @@ argument_list|,
 name|conf
 argument_list|,
 name|stateStore
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 comment|// Container 1 needs lr1 resource
@@ -4908,6 +4914,8 @@ argument_list|,
 name|conf
 argument_list|,
 name|stateStore
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|LocalResourceRequest

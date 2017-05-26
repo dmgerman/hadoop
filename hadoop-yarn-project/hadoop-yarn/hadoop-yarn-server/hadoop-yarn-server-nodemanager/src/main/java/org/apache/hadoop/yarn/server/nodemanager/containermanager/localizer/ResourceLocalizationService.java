@@ -2922,6 +2922,8 @@ name|getConfig
 argument_list|()
 argument_list|,
 name|stateStore
+argument_list|,
+name|dirsHandler
 argument_list|)
 decl_stmt|;
 name|LocalResourcesTracker
@@ -3029,6 +3031,8 @@ name|getConfig
 argument_list|()
 argument_list|,
 name|stateStore
+argument_list|,
+name|dirsHandler
 argument_list|)
 decl_stmt|;
 name|LocalResourcesTracker
@@ -3695,6 +3699,8 @@ name|getConfig
 argument_list|()
 argument_list|,
 name|stateStore
+argument_list|,
+name|dirsHandler
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3738,6 +3744,8 @@ name|getConfig
 argument_list|()
 argument_list|,
 name|stateStore
+argument_list|,
+name|dirsHandler
 argument_list|)
 argument_list|)
 expr_stmt|;
