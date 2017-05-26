@@ -932,6 +932,24 @@ name|server
 operator|.
 name|utils
 operator|.
+name|AMRMClientUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|utils
+operator|.
 name|BuilderUtils
 import|;
 end_import
@@ -2288,7 +2306,9 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"Application Master is already registered : "
+name|AMRMClientUtils
+operator|.
+name|APP_ALREADY_REGISTERED_MESSAGE
 operator|+
 name|attempt
 operator|.

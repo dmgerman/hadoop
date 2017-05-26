@@ -1529,7 +1529,9 @@ block|{
 name|String
 name|message
 init|=
-literal|"Application Master is already registered : "
+name|AMRMClientUtils
+operator|.
+name|APP_ALREADY_REGISTERED_MESSAGE
 operator|+
 name|appID
 decl_stmt|;
