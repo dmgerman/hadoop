@@ -253,7 +253,10 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Could not get disk usage information"
+literal|"Could not get disk usage information for path {}"
+argument_list|,
+name|getDirPath
+argument_list|()
 argument_list|,
 name|ioe
 argument_list|)
