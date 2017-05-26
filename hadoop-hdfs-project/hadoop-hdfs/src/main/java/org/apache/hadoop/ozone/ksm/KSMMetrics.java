@@ -140,6 +140,13 @@ name|Metric
 name|MutableCounterLong
 name|numBucketInfos
 decl_stmt|;
+DECL|field|numKeyBlockAllocate
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numKeyBlockAllocate
+decl_stmt|;
 comment|// Failure Metrics
 DECL|field|numVolumeCreateFails
 specifier|private
@@ -175,6 +182,13 @@ annotation|@
 name|Metric
 name|MutableCounterLong
 name|numBucketInfoFails
+decl_stmt|;
+DECL|field|numKeyBlockAllocateFails
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numKeyBlockAllocateFails
 decl_stmt|;
 DECL|method|KSMMetrics ()
 specifier|public
@@ -331,6 +345,30 @@ name|incr
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|incNumKeyBlockAllocates ()
+specifier|public
+name|void
+name|incNumKeyBlockAllocates
+parameter_list|()
+block|{
+name|numKeyBlockAllocate
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumKeyBlockAllocateFails ()
+specifier|public
+name|void
+name|incNumKeyBlockAllocateFails
+parameter_list|()
+block|{
+name|numKeyBlockAllocateFails
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getNumVolumeCreates ()
@@ -476,6 +514,36 @@ parameter_list|()
 block|{
 return|return
 name|numBucketInfoFails
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumKeyBlockAllocates ()
+specifier|public
+name|long
+name|getNumKeyBlockAllocates
+parameter_list|()
+block|{
+return|return
+name|numKeyBlockAllocate
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumKeyBlockAllocateFailes ()
+specifier|public
+name|long
+name|getNumKeyBlockAllocateFailes
+parameter_list|()
+block|{
+return|return
+name|numKeyBlockAllocateFails
 operator|.
 name|value
 argument_list|()

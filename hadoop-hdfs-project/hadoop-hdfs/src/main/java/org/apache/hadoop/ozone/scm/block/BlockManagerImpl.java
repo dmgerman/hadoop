@@ -1213,8 +1213,6 @@ name|IOException
 block|{
 name|boolean
 name|createContainer
-init|=
-literal|false
 decl_stmt|;
 name|Pipeline
 name|pipeline
@@ -1308,6 +1306,10 @@ name|FAILED_TO_ALLOCATE_CONTAINER
 argument_list|)
 throw|;
 block|}
+name|createContainer
+operator|=
+literal|true
+expr_stmt|;
 block|}
 else|else
 block|{
@@ -1354,6 +1356,10 @@ operator|.
 name|toList
 argument_list|()
 argument_list|)
+expr_stmt|;
+name|createContainer
+operator|=
+literal|false
 expr_stmt|;
 block|}
 if|if

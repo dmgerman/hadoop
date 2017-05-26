@@ -567,7 +567,7 @@ specifier|final
 name|int
 name|OZONE_SCM_CONTAINER_PROVISION_BATCH_SIZE_DEFAULT
 init|=
-literal|10
+literal|1
 decl_stmt|;
 comment|/**    * Never constructed.    */
 DECL|method|ScmConfigKeys ()
