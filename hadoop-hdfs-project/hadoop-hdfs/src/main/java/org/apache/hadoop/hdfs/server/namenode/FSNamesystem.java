@@ -19375,6 +19375,25 @@ argument_list|(
 name|b
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|blockInfo
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Cannot find block info for block "
+operator|+
+name|b
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|BlockCollection
 name|bc
 init|=
@@ -19403,6 +19422,7 @@ argument_list|(
 name|bc
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 for|for
