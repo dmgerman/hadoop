@@ -201,7 +201,6 @@ DECL|enumConstant|TARGET
 DECL|enumConstant|RESULT
 DECL|enumConstant|IP
 DECL|enumConstant|PERMISSIONS
-specifier|static
 enum|enum
 name|Keys
 block|{

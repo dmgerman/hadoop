@@ -187,7 +187,6 @@ block|{
 comment|/**    * Type of metric.    */
 DECL|enum|Type
 specifier|public
-specifier|static
 enum|enum
 name|Type
 block|{

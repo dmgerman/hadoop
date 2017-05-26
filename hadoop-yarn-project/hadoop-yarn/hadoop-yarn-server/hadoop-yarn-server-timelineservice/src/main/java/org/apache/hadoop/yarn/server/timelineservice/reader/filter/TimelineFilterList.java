@@ -109,7 +109,6 @@ annotation|@
 name|Unstable
 DECL|enum|Operator
 specifier|public
-specifier|static
 enum|enum
 name|Operator
 block|{

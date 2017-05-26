@@ -1402,7 +1402,6 @@ annotation|@
 name|Private
 DECL|enum|DSEvent
 specifier|public
-specifier|static
 enum|enum
 name|DSEvent
 block|{
@@ -1424,7 +1423,6 @@ annotation|@
 name|Private
 DECL|enum|DSEntity
 specifier|public
-specifier|static
 enum|enum
 name|DSEntity
 block|{

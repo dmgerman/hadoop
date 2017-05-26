@@ -140,7 +140,6 @@ DECL|enumConstant|OPERATION
 DECL|enumConstant|TARGET
 DECL|enumConstant|RESULT
 DECL|enumConstant|IP
-specifier|static
 enum|enum
 name|Keys
 block|{

@@ -2333,7 +2333,6 @@ block|}
 block|}
 DECL|enum|ContainerState
 specifier|protected
-specifier|static
 enum|enum
 name|ContainerState
 block|{
@@ -2398,7 +2397,6 @@ block|}
 comment|/**    * The type of the event of interacting with a container    */
 DECL|enum|ContainerEventType
 specifier|protected
-specifier|static
 enum|enum
 name|ContainerEventType
 block|{

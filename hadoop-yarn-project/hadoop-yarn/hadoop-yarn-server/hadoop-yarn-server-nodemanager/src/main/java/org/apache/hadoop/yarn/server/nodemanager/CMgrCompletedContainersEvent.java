@@ -132,7 +132,6 @@ return|;
 block|}
 DECL|enum|Reason
 specifier|public
-specifier|static
 enum|enum
 name|Reason
 block|{

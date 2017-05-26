@@ -522,7 +522,6 @@ block|}
 comment|/**    * EventType which is used while publishing the events.    */
 DECL|enum|SystemMetricsEventType
 specifier|protected
-specifier|static
 enum|enum
 name|SystemMetricsEventType
 block|{

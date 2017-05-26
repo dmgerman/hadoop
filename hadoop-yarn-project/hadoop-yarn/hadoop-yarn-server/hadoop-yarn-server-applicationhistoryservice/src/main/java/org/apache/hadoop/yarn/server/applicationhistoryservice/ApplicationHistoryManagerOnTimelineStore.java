@@ -4550,7 +4550,6 @@ end_function
 begin_enum
 DECL|enum|ApplicationReportField
 specifier|private
-specifier|static
 enum|enum
 name|ApplicationReportField
 block|{
