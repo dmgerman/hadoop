@@ -66,8 +66,8 @@ name|WasbAuthorizationException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    * Authorizer API to authorize access in WASB.     * @param wasbAbolutePath : Absolute WASB Path used for access.    * @param accessType : Type of access    * @return : true - If access allowed false - If access is not allowed.    * @throws WasbAuthorizationException - On authorization exceptions    * @throws IOException - When not able to reach the authorizer    */
-DECL|method|authorize (String wasbAbolutePath, String accessType)
+comment|/**    * Authorizer API to authorize access in WASB.     * @param wasbAbolutePath : Absolute WASB Path used for access.    * @param accessType : Type of access    * @param owner : owner of the file/folder specified in the wasb path    * @return : true - If access allowed false - If access is not allowed.    * @throws WasbAuthorizationException - On authorization exceptions    * @throws IOException - When not able to reach the authorizer    */
+DECL|method|authorize (String wasbAbolutePath, String accessType, String owner)
 name|boolean
 name|authorize
 parameter_list|(
@@ -76,6 +76,9 @@ name|wasbAbolutePath
 parameter_list|,
 name|String
 name|accessType
+parameter_list|,
+name|String
+name|owner
 parameter_list|)
 throws|throws
 name|WasbAuthorizationException

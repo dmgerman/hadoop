@@ -425,6 +425,16 @@ name|DELEGATION_TOKEN_QUERY_PARAM_NAME
 init|=
 literal|"delegation"
 decl_stmt|;
+comment|/**    *  Query parameter name for sending owner of the specific resource {@value}    */
+DECL|field|WASB_RESOURCE_OWNER_QUERY_PARAM_NAME
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|WASB_RESOURCE_OWNER_QUERY_PARAM_NAME
+init|=
+literal|"wasb_resource_owner"
+decl_stmt|;
 DECL|field|remoteCallHelper
 specifier|private
 name|WasbRemoteCallHelper
@@ -556,7 +566,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|authorize (String wasbAbsolutePath, String accessType)
+DECL|method|authorize (String wasbAbsolutePath, String accessType, String resourceOwner)
 specifier|public
 name|boolean
 name|authorize
@@ -566,6 +576,9 @@ name|wasbAbsolutePath
 parameter_list|,
 name|String
 name|accessType
+parameter_list|,
+name|String
+name|resourceOwner
 parameter_list|)
 throws|throws
 name|WasbAuthorizationException
@@ -651,6 +664,30 @@ argument_list|(
 name|DELEGATION_TOKEN_QUERY_PARAM_NAME
 argument_list|,
 name|delegationToken
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|resourceOwner
+operator|!=
+literal|null
+operator|&&
+name|StringUtils
+operator|.
+name|isNotEmpty
+argument_list|(
+name|resourceOwner
+argument_list|)
+condition|)
+block|{
+name|uriBuilder
+operator|.
+name|addParameter
+argument_list|(
+name|WASB_RESOURCE_OWNER_QUERY_PARAM_NAME
+argument_list|,
+name|resourceOwner
 argument_list|)
 expr_stmt|;
 block|}
