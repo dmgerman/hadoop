@@ -311,23 +311,15 @@ name|ScmConfigKeys
 operator|.
 name|DFS_CONTAINER_RATIS_RPC_TYPE_DEFAULT
 decl_stmt|;
-DECL|field|DFS_CONTAINER_RATIS_CONF
+comment|/** A unique ID to identify a Ratis server. */
+DECL|field|DFS_CONTAINER_RATIS_SERVER_ID
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|DFS_CONTAINER_RATIS_CONF
+name|DFS_CONTAINER_RATIS_SERVER_ID
 init|=
-literal|"dfs.container.ratis.conf"
-decl_stmt|;
-DECL|field|DFS_CONTAINER_RATIS_DATANODE_ADDRESS
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DFS_CONTAINER_RATIS_DATANODE_ADDRESS
-init|=
-literal|"dfs.container.ratis.datanode.address"
+literal|"dfs.container.ratis.server.id"
 decl_stmt|;
 DECL|field|DFS_CONTAINER_RATIS_DATANODE_STORAGE_DIR
 specifier|public
