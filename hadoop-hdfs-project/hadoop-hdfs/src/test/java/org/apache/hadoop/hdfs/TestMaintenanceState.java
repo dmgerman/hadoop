@@ -36,18 +36,6 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|assertNull
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
 name|assertTrue
 import|;
 end_import
@@ -136,20 +124,6 @@ end_import
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|collect
-operator|.
-name|Lists
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -159,54 +133,6 @@ operator|.
 name|fs
 operator|.
 name|FSDataOutputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|NameNodeAdapter
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|slf4j
-operator|.
-name|Logger
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|slf4j
-operator|.
-name|LoggerFactory
 import|;
 end_import
 
@@ -418,6 +344,38 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|NameNodeAdapter
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|GenericTestUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|Time
@@ -430,7 +388,65 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Supplier
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
+name|Lists
 import|;
 end_import
 
@@ -745,8 +761,6 @@ argument_list|)
 decl_stmt|;
 comment|// When node is in ENTERING_MAINTENANCE state, it can still serve read
 comment|// requests
-name|assertNull
-argument_list|(
 name|checkWithRetry
 argument_list|(
 name|ns
@@ -760,7 +774,6 @@ argument_list|,
 literal|null
 argument_list|,
 name|nodeOutofService
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|putNodeInService
@@ -2053,8 +2066,6 @@ argument_list|)
 decl_stmt|;
 comment|// The block should be replicated to another datanode to meet
 comment|// expected replication count.
-name|assertNull
-argument_list|(
 name|checkWithRetry
 argument_list|(
 name|ns
@@ -2066,7 +2077,6 @@ argument_list|,
 name|expectedReplicasInRead
 argument_list|,
 name|nodeOutofService
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|cleanupFile
@@ -2834,8 +2844,6 @@ name|length
 argument_list|)
 expr_stmt|;
 comment|// test 1, verify the replica in IN_MAINTENANCE state isn't in LocatedBlock
-name|assertNull
-argument_list|(
 name|checkWithRetry
 argument_list|(
 name|ns
@@ -2849,7 +2857,6 @@ operator|-
 literal|1
 argument_list|,
 name|nodeOutofService
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|takeNodeOutofService
@@ -2872,8 +2879,6 @@ argument_list|)
 expr_stmt|;
 comment|// test 2 after decommission has completed, the replication count is
 comment|// replicas + 1 which includes the decommissioned node.
-name|assertNull
-argument_list|(
 name|checkWithRetry
 argument_list|(
 name|ns
@@ -2888,7 +2893,6 @@ literal|1
 argument_list|,
 literal|null
 argument_list|)
-argument_list|)
 expr_stmt|;
 comment|// test 3, put the node in service, replication count should restore.
 name|putNodeInService
@@ -2901,8 +2905,6 @@ name|getDatanodeUuid
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertNull
-argument_list|(
 name|checkWithRetry
 argument_list|(
 name|ns
@@ -2914,7 +2916,6 @@ argument_list|,
 name|replicas
 argument_list|,
 literal|null
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|cleanupFile
@@ -3043,8 +3044,6 @@ operator|.
 name|IN_MAINTENANCE
 argument_list|)
 expr_stmt|;
-name|assertNull
-argument_list|(
 name|checkWithRetry
 argument_list|(
 name|ns
@@ -3058,7 +3057,6 @@ operator|-
 literal|1
 argument_list|,
 name|nodeOutofService
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|cleanupFile
@@ -3268,8 +3266,6 @@ name|DECOMMISSIONED
 argument_list|)
 expr_stmt|;
 comment|// Out of the replicas returned, one is the decommissioned node.
-name|assertNull
-argument_list|(
 name|checkWithRetry
 argument_list|(
 name|ns
@@ -3282,7 +3278,6 @@ name|repl
 argument_list|,
 name|maintenanceDN
 argument_list|)
-argument_list|)
 expr_stmt|;
 name|putNodeInService
 argument_list|(
@@ -3291,8 +3286,6 @@ argument_list|,
 name|maintenanceDN
 argument_list|)
 expr_stmt|;
-name|assertNull
-argument_list|(
 name|checkWithRetry
 argument_list|(
 name|ns
@@ -3306,7 +3299,6 @@ operator|+
 literal|1
 argument_list|,
 literal|null
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|cleanupFile
@@ -3451,8 +3443,6 @@ name|IN_MAINTENANCE
 argument_list|)
 decl_stmt|;
 comment|// Verify file replication matches maintenance state min replication
-name|assertNull
-argument_list|(
 name|checkWithRetry
 argument_list|(
 name|ns
@@ -3469,7 +3459,6 @@ name|nodes
 index|[
 literal|0
 index|]
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Put the maintenance nodes back in service
@@ -3490,8 +3479,6 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Verify file replication catching up to the old state
-name|assertNull
-argument_list|(
 name|checkWithRetry
 argument_list|(
 name|ns
@@ -3503,7 +3490,6 @@ argument_list|,
 name|repl
 argument_list|,
 literal|null
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|cleanupFile
@@ -3681,8 +3667,6 @@ argument_list|)
 decl_stmt|;
 comment|// Verify that the nodeOutofService remains in blocksMap and
 comment|// # of live replicas For read operation is expected.
-name|assertNull
-argument_list|(
 name|checkWithRetry
 argument_list|(
 name|ns
@@ -3696,7 +3680,6 @@ operator|-
 literal|1
 argument_list|,
 name|nodeOutofService
-argument_list|)
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -3725,8 +3708,6 @@ argument_list|)
 expr_stmt|;
 comment|// Verify that the nodeOutofService remains in blocksMap and
 comment|// # of live replicas for read operation.
-name|assertNull
-argument_list|(
 name|checkWithRetry
 argument_list|(
 name|ns
@@ -3739,7 +3720,6 @@ name|expectedLiveReplicas
 argument_list|,
 name|nodeOutofService
 argument_list|)
-argument_list|)
 expr_stmt|;
 name|putNodeInService
 argument_list|(
@@ -3751,8 +3731,6 @@ name|getDatanodeUuid
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertNull
-argument_list|(
 name|checkWithRetry
 argument_list|(
 name|ns
@@ -3764,7 +3742,6 @@ argument_list|,
 name|newFactor
 argument_list|,
 literal|null
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|cleanupFile
@@ -3897,8 +3874,6 @@ operator|.
 name|IN_MAINTENANCE
 argument_list|)
 decl_stmt|;
-name|assertNull
-argument_list|(
 name|checkWithRetry
 argument_list|(
 name|ns
@@ -3912,7 +3887,6 @@ operator|-
 literal|1
 argument_list|,
 name|nodeOutofService
-argument_list|)
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -3991,8 +3965,6 @@ name|length
 argument_list|)
 expr_stmt|;
 comment|// Dead maintenance node's blocks should remain in block map.
-name|assertNull
-argument_list|(
 name|checkWithRetry
 argument_list|(
 name|ns
@@ -4006,7 +3978,6 @@ operator|-
 literal|1
 argument_list|,
 name|nodeOutofService
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// When dead maintenance mode is transitioned to out of maintenance mode,
@@ -4023,8 +3994,6 @@ name|getDatanodeUuid
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertNull
-argument_list|(
 name|checkWithRetry
 argument_list|(
 name|ns
@@ -4038,7 +4007,6 @@ argument_list|,
 name|nodeOutofService
 argument_list|,
 literal|null
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|cleanupFile
@@ -4166,8 +4134,6 @@ operator|.
 name|IN_MAINTENANCE
 argument_list|)
 decl_stmt|;
-name|assertNull
-argument_list|(
 name|checkWithRetry
 argument_list|(
 name|ns
@@ -4181,7 +4147,6 @@ operator|-
 literal|1
 argument_list|,
 name|nodeOutofService
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|DFSClient
@@ -4264,8 +4229,6 @@ name|length
 argument_list|)
 expr_stmt|;
 comment|// Dead maintenance node's blocks should remain in block map.
-name|assertNull
-argument_list|(
 name|checkWithRetry
 argument_list|(
 name|ns
@@ -4279,7 +4242,6 @@ operator|-
 literal|1
 argument_list|,
 name|nodeOutofService
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// restart nn, nn will restore 3 live replicas given it doesn't
@@ -4302,8 +4264,6 @@ argument_list|(
 literal|0
 argument_list|)
 expr_stmt|;
-name|assertNull
-argument_list|(
 name|checkWithRetry
 argument_list|(
 name|ns
@@ -4315,7 +4275,6 @@ argument_list|,
 name|replicas
 argument_list|,
 literal|null
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// restart dn, nn has 1 maintenance replica and 3 live replicas.
@@ -4335,8 +4294,6 @@ operator|.
 name|waitActive
 argument_list|()
 expr_stmt|;
-name|assertNull
-argument_list|(
 name|checkWithRetry
 argument_list|(
 name|ns
@@ -4348,7 +4305,6 @@ argument_list|,
 name|replicas
 argument_list|,
 name|nodeOutofService
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Put the node in service, a redundant replica should be removed.
@@ -4362,8 +4318,6 @@ name|getDatanodeUuid
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertNull
-argument_list|(
 name|checkWithRetry
 argument_list|(
 name|ns
@@ -4375,7 +4329,6 @@ argument_list|,
 name|replicas
 argument_list|,
 literal|null
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|cleanupFile
@@ -4487,8 +4440,6 @@ literal|2
 argument_list|)
 expr_stmt|;
 comment|// Verify nodeOutofService wasn't chosen for write operation.
-name|assertNull
-argument_list|(
 name|checkWithRetry
 argument_list|(
 name|ns
@@ -4505,7 +4456,6 @@ name|nodeOutofService
 argument_list|,
 literal|null
 argument_list|)
-argument_list|)
 expr_stmt|;
 comment|// Put the node back to service, live replicas should be restored.
 name|putNodeInService
@@ -4518,8 +4468,6 @@ name|getDatanodeUuid
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertNull
-argument_list|(
 name|checkWithRetry
 argument_list|(
 name|ns
@@ -4531,7 +4479,6 @@ argument_list|,
 name|replicas
 argument_list|,
 literal|null
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|cleanupFile
@@ -4765,8 +4712,6 @@ literal|1
 argument_list|)
 expr_stmt|;
 comment|// Verify the nodeOutofService remains in blocksMap.
-name|assertNull
-argument_list|(
 name|checkWithRetry
 argument_list|(
 name|ns
@@ -4778,7 +4723,6 @@ argument_list|,
 literal|1
 argument_list|,
 name|nodeOutofService
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Restart NN and verify the nodeOutofService remains in blocksMap.
@@ -4800,8 +4744,6 @@ argument_list|(
 literal|0
 argument_list|)
 expr_stmt|;
-name|assertNull
-argument_list|(
 name|checkWithRetry
 argument_list|(
 name|ns
@@ -4813,7 +4755,6 @@ argument_list|,
 literal|1
 argument_list|,
 name|nodeOutofService
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|cleanupFile
@@ -5623,7 +5564,7 @@ return|;
 block|}
 DECL|method|checkWithRetry (FSNamesystem ns, FileSystem fileSys, Path name, int repl, DatanodeInfo inMaintenanceNode)
 specifier|static
-name|String
+name|void
 name|checkWithRetry
 parameter_list|(
 name|FSNamesystem
@@ -5641,10 +5582,7 @@ parameter_list|,
 name|DatanodeInfo
 name|inMaintenanceNode
 parameter_list|)
-throws|throws
-name|IOException
 block|{
-return|return
 name|checkWithRetry
 argument_list|(
 name|ns
@@ -5659,61 +5597,65 @@ name|inMaintenanceNode
 argument_list|,
 name|inMaintenanceNode
 argument_list|)
-return|;
+expr_stmt|;
 block|}
-DECL|method|checkWithRetry (FSNamesystem ns, FileSystem fileSys, Path name, int repl, DatanodeInfo excludedNode, DatanodeInfo underMaintenanceNode)
+DECL|method|checkWithRetry (final FSNamesystem ns, final FileSystem fileSys, final Path name, final int repl, final DatanodeInfo excludedNode, final DatanodeInfo underMaintenanceNode)
 specifier|static
-name|String
+name|void
 name|checkWithRetry
 parameter_list|(
+specifier|final
 name|FSNamesystem
 name|ns
 parameter_list|,
+specifier|final
 name|FileSystem
 name|fileSys
 parameter_list|,
+specifier|final
 name|Path
 name|name
 parameter_list|,
+specifier|final
 name|int
 name|repl
 parameter_list|,
+specifier|final
 name|DatanodeInfo
 name|excludedNode
 parameter_list|,
+specifier|final
 name|DatanodeInfo
 name|underMaintenanceNode
 parameter_list|)
-throws|throws
-name|IOException
 block|{
-name|int
-name|tries
-init|=
-literal|0
-decl_stmt|;
+try|try
+block|{
+name|GenericTestUtils
+operator|.
+name|waitFor
+argument_list|(
+operator|new
+name|Supplier
+argument_list|<
+name|Boolean
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|Boolean
+name|get
+parameter_list|()
+block|{
 name|String
 name|output
 init|=
 literal|null
 decl_stmt|;
-while|while
-condition|(
-name|tries
-operator|++
-operator|<
-literal|200
-condition|)
-block|{
 try|try
 block|{
-name|Thread
-operator|.
-name|sleep
-argument_list|(
-literal|100
-argument_list|)
-expr_stmt|;
 name|output
 operator|=
 name|checkFile
@@ -5731,26 +5673,35 @@ argument_list|,
 name|underMaintenanceNode
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|output
-operator|==
-literal|null
-condition|)
-block|{
-break|break;
-block|}
 block|}
 catch|catch
 parameter_list|(
-name|InterruptedException
-name|ie
+name|Exception
+name|ignored
 parameter_list|)
-block|{       }
-block|}
+block|{           }
 return|return
+operator|(
 name|output
+operator|==
+literal|null
+operator|)
 return|;
+block|}
+block|}
+argument_list|,
+literal|100
+argument_list|,
+literal|60000
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|ignored
+parameter_list|)
+block|{     }
 block|}
 DECL|method|getFirstBlockReplicasDatanodeInfos ( FileSystem fileSys, Path name)
 specifier|static
