@@ -2812,8 +2812,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"defaultReplication         = "
-operator|+
+literal|"defaultReplication         = {}"
+argument_list|,
 name|defaultReplication
 argument_list|)
 expr_stmt|;
@@ -2821,8 +2821,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"maxReplication             = "
-operator|+
+literal|"maxReplication             = {}"
+argument_list|,
 name|maxReplication
 argument_list|)
 expr_stmt|;
@@ -2830,8 +2830,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"minReplication             = "
-operator|+
+literal|"minReplication             = {}"
+argument_list|,
 name|minReplication
 argument_list|)
 expr_stmt|;
@@ -2839,8 +2839,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"maxReplicationStreams      = "
-operator|+
+literal|"maxReplicationStreams      = {}"
+argument_list|,
 name|maxReplicationStreams
 argument_list|)
 expr_stmt|;
@@ -2848,19 +2848,17 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"redundancyRecheckInterval  = "
-operator|+
+literal|"redundancyRecheckInterval  = {}ms"
+argument_list|,
 name|redundancyRecheckIntervalMs
-operator|+
-literal|"ms"
 argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"encryptDataTransfer        = "
-operator|+
+literal|"encryptDataTransfer        = {}"
+argument_list|,
 name|encryptDataTransfer
 argument_list|)
 expr_stmt|;
@@ -2868,8 +2866,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"maxNumBlocksToLog          = "
-operator|+
+literal|"maxNumBlocksToLog          = {}"
+argument_list|,
 name|maxNumBlocksToLog
 argument_list|)
 expr_stmt|;
@@ -2908,12 +2906,12 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+literal|"{} = {}"
+argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_BLOCK_ACCESS_TOKEN_ENABLE_KEY
-operator|+
-literal|"="
-operator|+
+argument_list|,
 name|isEnabled
 argument_list|)
 expr_stmt|;
@@ -3011,32 +3009,24 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+literal|"{}={} min(s), {}={} min(s), {}={}"
+argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_BLOCK_ACCESS_KEY_UPDATE_INTERVAL_KEY
-operator|+
-literal|"="
-operator|+
+argument_list|,
 name|updateMin
-operator|+
-literal|" min(s), "
-operator|+
+argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_BLOCK_ACCESS_TOKEN_LIFETIME_KEY
-operator|+
-literal|"="
-operator|+
+argument_list|,
 name|lifetimeMin
-operator|+
-literal|" min(s), "
-operator|+
+argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_DATA_ENCRYPTION_ALGORITHM_KEY
-operator|+
-literal|"="
-operator|+
+argument_list|,
 name|encryptionAlgorithm
 argument_list|)
 expr_stmt|;
@@ -3754,12 +3744,12 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
+literal|"{} is corrupt but has no associated node."
+argument_list|,
 name|block
 operator|.
 name|getBlockId
 argument_list|()
-operator|+
-literal|" is corrupt but has no associated node."
 argument_list|)
 expr_stmt|;
 continue|continue;
@@ -5962,16 +5952,14 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Inconsistent number of corrupt replicas for "
+literal|"Inconsistent number of corrupt replicas for {}"
 operator|+
+literal|" blockMap has {} but corrupt replicas map has {}"
+argument_list|,
 name|blk
-operator|+
-literal|" blockMap has "
-operator|+
+argument_list|,
 name|numCorruptNodes
-operator|+
-literal|" but corrupt replicas map has "
-operator|+
+argument_list|,
 name|numCorruptReplicas
 argument_list|)
 expr_stmt|;
@@ -6443,8 +6431,8 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"blocks = "
-operator|+
+literal|"blocks = {}"
+argument_list|,
 name|java
 operator|.
 name|util
@@ -9199,13 +9187,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Block "
-operator|+
+literal|"Block {} cannot be reconstructed from any node"
+argument_list|,
 name|block
-operator|+
-literal|" cannot be reconstructed "
-operator|+
-literal|"from any node"
 argument_list|)
 expr_stmt|;
 return|return
@@ -11133,30 +11117,19 @@ condition|(
 name|trackBlockCounts
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
 literal|"Adjusting safe-mode totals for deletion."
 operator|+
-literal|"decreasing safeBlocks by "
-operator|+
+literal|"decreasing safeBlocks by {}, totalBlocks by {}"
+argument_list|,
 name|numRemovedSafe
-operator|+
-literal|", totalBlocks by "
-operator|+
+argument_list|,
 name|numRemovedComplete
 argument_list|)
 expr_stmt|;
-block|}
 name|bmSafeMode
 operator|.
 name|adjustBlockTotals
@@ -11919,30 +11892,19 @@ operator|==
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
 literal|"BLOCK* rescanPostponedMisreplicatedBlocks: "
 operator|+
-literal|"Postponed mis-replicated block "
-operator|+
-name|b
-operator|+
-literal|" no longer found "
+literal|"Postponed mis-replicated block {} no longer found "
 operator|+
 literal|"in block map."
+argument_list|,
+name|b
 argument_list|)
 expr_stmt|;
-block|}
 continue|continue;
 block|}
 name|MisReplicationResult
@@ -11953,30 +11915,19 @@ argument_list|(
 name|bi
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
 literal|"BLOCK* rescanPostponedMisreplicatedBlocks: "
 operator|+
-literal|"Re-scanned block "
-operator|+
+literal|"Re-scanned block {}, result is {}"
+argument_list|,
 name|b
-operator|+
-literal|", result is "
-operator|+
+argument_list|,
 name|res
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|res
@@ -12027,8 +11978,10 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Rescan of postponedMisreplicatedBlocks completed in "
+literal|"Rescan of postponedMisreplicatedBlocks completed in {}"
 operator|+
+literal|" msecs. {} blocks are left. {} blocks were removed."
+argument_list|,
 operator|(
 name|Time
 operator|.
@@ -12037,20 +11990,14 @@ argument_list|()
 operator|-
 name|startTime
 operator|)
-operator|+
-literal|" msecs. "
-operator|+
+argument_list|,
 name|endSize
-operator|+
-literal|" blocks are left. "
-operator|+
+argument_list|,
 operator|(
 name|startSize
 operator|-
 name|endSize
 operator|)
-operator|+
-literal|" blocks were removed."
 argument_list|)
 expr_stmt|;
 block|}
@@ -12689,29 +12636,23 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Initial report of block "
-operator|+
+literal|"Initial report of block {} on {} size {} replicaState = {}"
+argument_list|,
 name|iblk
 operator|.
 name|getBlockName
 argument_list|()
-operator|+
-literal|" on "
-operator|+
+argument_list|,
 name|storageInfo
 operator|.
 name|getDatanodeDescriptor
 argument_list|()
-operator|+
-literal|" size "
-operator|+
+argument_list|,
 name|iblk
 operator|.
 name|getNumBytes
 argument_list|()
-operator|+
-literal|" replicaState = "
-operator|+
+argument_list|,
 name|reportedState
 argument_list|)
 expr_stmt|;
@@ -13056,39 +12997,24 @@ operator|.
 name|getState
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Reported block "
-operator|+
+literal|"Reported block {} on {} size {} replicaState = {}"
+argument_list|,
 name|replica
-operator|+
-literal|" on "
-operator|+
+argument_list|,
 name|dn
-operator|+
-literal|" size "
-operator|+
+argument_list|,
 name|replica
 operator|.
 name|getNumBytes
 argument_list|()
-operator|+
-literal|" replicaState = "
-operator|+
+argument_list|,
 name|reportedState
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|shouldPostponeBlocksFromFuture
@@ -13400,24 +13326,15 @@ name|getBlockUCState
 argument_list|()
 decl_stmt|;
 comment|// Block is on the NN
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"In memory blockUCState = "
-operator|+
+literal|"In memory blockUCState = {}"
+argument_list|,
 name|ucState
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Ignore replicas already scheduled to be removed from the DN
 if|if
 condition|(
@@ -13597,41 +13514,26 @@ block|{
 assert|assert
 name|shouldPostponeBlocksFromFuture
 assert|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Queueing reported block "
+literal|"Queueing reported block {} in state {}"
 operator|+
+literal|" from datanode {} for later processing because {}."
+argument_list|,
 name|block
-operator|+
-literal|" in state "
-operator|+
+argument_list|,
 name|reportedState
-operator|+
-literal|" from datanode "
-operator|+
+argument_list|,
 name|storageInfo
 operator|.
 name|getDatanodeDescriptor
 argument_list|()
-operator|+
-literal|" for later processing because "
-operator|+
+argument_list|,
 name|reason
-operator|+
-literal|"."
 argument_list|)
 expr_stmt|;
-block|}
 name|pendingDNMessages
 operator|.
 name|enqueueReportedBlock
@@ -13707,24 +13609,15 @@ range|:
 name|rbis
 control|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Processing previouly queued message "
-operator|+
+literal|"Processing previouly queued message {}"
+argument_list|,
 name|rbi
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|rbi
@@ -13822,13 +13715,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Processing "
-operator|+
-name|count
-operator|+
-literal|" messages from DataNodes "
+literal|"Processing {} messages from DataNodes "
 operator|+
 literal|"that were previously queued during standby state"
+argument_list|,
+name|count
 argument_list|)
 expr_stmt|;
 block|}
@@ -14266,17 +14157,13 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Received an RBW replica for "
+literal|"Received an RBW replica for {} on {}: ignoring it, since "
 operator|+
+literal|"it is complete with the same genstamp"
+argument_list|,
 name|storedBlock
-operator|+
-literal|" on "
-operator|+
+argument_list|,
 name|dn
-operator|+
-literal|": ignoring it, since it is "
-operator|+
-literal|"complete with the same genstamp"
 argument_list|)
 expr_stmt|;
 return|return
@@ -14344,6 +14231,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
+literal|"{}"
+argument_list|,
 name|msg
 argument_list|)
 expr_stmt|;
@@ -15131,16 +15020,14 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Inconsistent number of corrupt replicas for "
+literal|"Inconsistent number of corrupt replicas for {}"
 operator|+
+literal|". blockMap has {} but corrupt replicas map has {}"
+argument_list|,
 name|storedBlock
-operator|+
-literal|". blockMap has "
-operator|+
+argument_list|,
 name|numCorruptNodes
-operator|+
-literal|" but corrupt replicas map has "
-operator|+
+argument_list|,
 name|corruptReplicasCount
 argument_list|)
 expr_stmt|;
@@ -15804,8 +15691,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Total number of blocks            = "
-operator|+
+literal|"Total number of blocks            = {}"
+argument_list|,
 name|blocksMap
 operator|.
 name|size
@@ -15816,8 +15703,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Number of invalid blocks          = "
-operator|+
+literal|"Number of invalid blocks          = {}"
+argument_list|,
 name|nrInvalid
 argument_list|)
 expr_stmt|;
@@ -15825,8 +15712,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Number of under-replicated blocks = "
-operator|+
+literal|"Number of under-replicated blocks = {}"
+argument_list|,
 name|nrUnderReplicated
 argument_list|)
 expr_stmt|;
@@ -15834,10 +15721,10 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Number of  over-replicated blocks = "
-operator|+
+literal|"Number of  over-replicated blocks = {}{}"
+argument_list|,
 name|nrOverReplicated
-operator|+
+argument_list|,
 operator|(
 operator|(
 name|nrPostponed
@@ -15861,8 +15748,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Number of blocks being written    = "
-operator|+
+literal|"Number of blocks being written    = {}"
+argument_list|,
 name|nrUnderConstruction
 argument_list|)
 expr_stmt|;
@@ -17854,39 +17741,24 @@ operator|.
 name|getDatanodeDescriptor
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Reported block "
-operator|+
+literal|"Reported block {} on {} size {} replicaState = {}"
+argument_list|,
 name|block
-operator|+
-literal|" on "
-operator|+
+argument_list|,
 name|node
-operator|+
-literal|" size "
-operator|+
+argument_list|,
 name|block
 operator|.
 name|getNumBytes
 argument_list|()
-operator|+
-literal|" replicaState = "
-operator|+
+argument_list|,
 name|reportedState
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|shouldPostponeBlocksFromFuture
@@ -17968,24 +17840,15 @@ name|getBlockUCState
 argument_list|()
 decl_stmt|;
 comment|// Block is on the NN
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"In memory blockUCState = "
-operator|+
+literal|"In memory blockUCState = {}"
+argument_list|,
 name|ucState
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Ignore replicas already scheduled to be removed from the DN
 if|if
 condition|(
@@ -19132,15 +18995,13 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Invalidated "
+literal|"Invalidated {} extra redundancy blocks on {} after "
 operator|+
+literal|"it is in service"
+argument_list|,
 name|numExtraRedundancy
-operator|+
-literal|" extra redundancy blocks on "
-operator|+
+argument_list|,
 name|srcNode
-operator|+
-literal|" after it is in service"
 argument_list|)
 expr_stmt|;
 block|}
@@ -19905,18 +19766,16 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"DataNode "
+literal|"DataNode {} cannot be found with UUID {}"
 operator|+
+literal|", removing block invalidation work."
+argument_list|,
 name|dn
-operator|+
-literal|" cannot be found with UUID "
-operator|+
+argument_list|,
 name|dn
 operator|.
 name|getDatanodeUuid
 argument_list|()
-operator|+
-literal|", removing block invalidation work."
 argument_list|)
 expr_stmt|;
 name|invalidateBlocks

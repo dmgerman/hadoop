@@ -378,12 +378,12 @@ name|log
 operator|.
 name|info
 argument_list|(
+literal|"{} is set to {}"
+argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_STARTUP_DELAY_BLOCK_DELETION_SEC_KEY
-operator|+
-literal|" is set to "
-operator|+
+argument_list|,
 name|DFSUtil
 operator|.
 name|durationToString
@@ -432,8 +432,8 @@ name|log
 operator|.
 name|info
 argument_list|(
-literal|"The block deletion will start around "
-operator|+
+literal|"The block deletion will start around {}"
+argument_list|,
 name|sdf
 operator|.
 name|format
@@ -916,16 +916,6 @@ operator|>
 literal|0
 condition|)
 block|{
-if|if
-condition|(
-name|BlockManager
-operator|.
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|BlockManager
 operator|.
 name|LOG
@@ -934,14 +924,11 @@ name|debug
 argument_list|(
 literal|"Block deletion is delayed during NameNode startup. "
 operator|+
-literal|"The deletion will start after "
-operator|+
+literal|"The deletion will start after {} ms."
+argument_list|,
 name|delay
-operator|+
-literal|" ms."
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|null
 return|;
