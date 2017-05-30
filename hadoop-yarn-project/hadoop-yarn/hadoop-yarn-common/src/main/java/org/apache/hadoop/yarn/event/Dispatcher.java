@@ -56,11 +56,6 @@ end_comment
 
 begin_interface
 annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"rawtypes"
-argument_list|)
-annotation|@
 name|Public
 annotation|@
 name|Evolving
