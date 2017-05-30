@@ -1591,7 +1591,7 @@ name|ex
 throw|;
 block|}
 block|}
-comment|/**    * Allocate a key block.    * @param args - attributes of the key.    * @return    * @throws IOException    */
+comment|/**    * Allocate a key.    *    * @param args - attributes of the key.    * @return KsmKeyInfo - the info about the allocated key.    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|allocateKey (KsmKeyArgs args)
@@ -1609,7 +1609,7 @@ try|try
 block|{
 name|metrics
 operator|.
-name|incNumKeyBlockAllocates
+name|incNumKeyAllocates
 argument_list|()
 expr_stmt|;
 return|return
@@ -1629,7 +1629,53 @@ parameter_list|)
 block|{
 name|metrics
 operator|.
-name|incNumKeyBlockAllocateFails
+name|incNumKeyAllocateFails
+argument_list|()
+expr_stmt|;
+throw|throw
+name|ex
+throw|;
+block|}
+block|}
+comment|/**    * Lookup a key.    *    * @param args - attributes of the key.    * @return KsmKeyInfo - the info about the requested key.    * @throws IOException    */
+annotation|@
+name|Override
+DECL|method|lookupKey (KsmKeyArgs args)
+specifier|public
+name|KsmKeyInfo
+name|lookupKey
+parameter_list|(
+name|KsmKeyArgs
+name|args
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+try|try
+block|{
+name|metrics
+operator|.
+name|incNumKeyLookups
+argument_list|()
+expr_stmt|;
+return|return
+name|keyManager
+operator|.
+name|lookupKey
+argument_list|(
+name|args
+argument_list|)
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|ex
+parameter_list|)
+block|{
+name|metrics
+operator|.
+name|incNumKeyLookupFails
 argument_list|()
 expr_stmt|;
 throw|throw

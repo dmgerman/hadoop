@@ -140,12 +140,19 @@ name|Metric
 name|MutableCounterLong
 name|numBucketInfos
 decl_stmt|;
-DECL|field|numKeyBlockAllocate
+DECL|field|numKeyAllocate
 specifier|private
 annotation|@
 name|Metric
 name|MutableCounterLong
-name|numKeyBlockAllocate
+name|numKeyAllocate
+decl_stmt|;
+DECL|field|numKeyLookup
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numKeyLookup
 decl_stmt|;
 comment|// Failure Metrics
 DECL|field|numVolumeCreateFails
@@ -183,12 +190,19 @@ name|Metric
 name|MutableCounterLong
 name|numBucketInfoFails
 decl_stmt|;
-DECL|field|numKeyBlockAllocateFails
+DECL|field|numKeyAllocateFails
 specifier|private
 annotation|@
 name|Metric
 name|MutableCounterLong
-name|numKeyBlockAllocateFails
+name|numKeyAllocateFails
+decl_stmt|;
+DECL|field|numKeyLookupFails
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numKeyLookupFails
 decl_stmt|;
 DECL|method|KSMMetrics ()
 specifier|public
@@ -345,25 +359,49 @@ name|incr
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|incNumKeyBlockAllocates ()
+DECL|method|incNumKeyAllocates ()
 specifier|public
 name|void
-name|incNumKeyBlockAllocates
+name|incNumKeyAllocates
 parameter_list|()
 block|{
-name|numKeyBlockAllocate
+name|numKeyAllocate
 operator|.
 name|incr
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|incNumKeyBlockAllocateFails ()
+DECL|method|incNumKeyAllocateFails ()
 specifier|public
 name|void
-name|incNumKeyBlockAllocateFails
+name|incNumKeyAllocateFails
 parameter_list|()
 block|{
-name|numKeyBlockAllocateFails
+name|numKeyAllocateFails
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumKeyLookups ()
+specifier|public
+name|void
+name|incNumKeyLookups
+parameter_list|()
+block|{
+name|numKeyLookup
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumKeyLookupFails ()
+specifier|public
+name|void
+name|incNumKeyLookupFails
+parameter_list|()
+block|{
+name|numKeyLookupFails
 operator|.
 name|incr
 argument_list|()
@@ -521,14 +559,14 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getNumKeyBlockAllocates ()
+DECL|method|getNumKeyAllocates ()
 specifier|public
 name|long
-name|getNumKeyBlockAllocates
+name|getNumKeyAllocates
 parameter_list|()
 block|{
 return|return
-name|numKeyBlockAllocate
+name|numKeyAllocate
 operator|.
 name|value
 argument_list|()
@@ -536,14 +574,44 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getNumKeyBlockAllocateFailes ()
+DECL|method|getNumKeyAllocateFails ()
 specifier|public
 name|long
-name|getNumKeyBlockAllocateFailes
+name|getNumKeyAllocateFails
 parameter_list|()
 block|{
 return|return
-name|numKeyBlockAllocateFails
+name|numKeyAllocateFails
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumKeyLookups ()
+specifier|public
+name|long
+name|getNumKeyLookups
+parameter_list|()
+block|{
+return|return
+name|numKeyLookup
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumKeyLookupFails ()
+specifier|public
+name|long
+name|getNumKeyLookupFails
+parameter_list|()
+block|{
+return|return
+name|numKeyLookupFails
 operator|.
 name|value
 argument_list|()

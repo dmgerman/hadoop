@@ -81,6 +81,17 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Look up an existing key. Return the info of the key to client side, which    * DistributedStorageHandler will use to access the data on datanode.    *    * @param args the args of the key provided by client.    * @return a KsmKeyInfo instance client uses to talk to container.    * @throws IOException    */
+DECL|method|lookupKey (KsmKeyArgs args)
+name|KsmKeyInfo
+name|lookupKey
+parameter_list|(
+name|KsmKeyArgs
+name|args
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 
