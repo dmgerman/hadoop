@@ -189,7 +189,6 @@ decl_stmt|;
 comment|/**    * The headers to detect from compressed data.    */
 DECL|enum|CompressionHeader
 specifier|public
-specifier|static
 enum|enum
 name|CompressionHeader
 block|{

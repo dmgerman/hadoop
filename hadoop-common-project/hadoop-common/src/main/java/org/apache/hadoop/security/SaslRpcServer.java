@@ -542,7 +542,6 @@ name|saslFactory
 decl_stmt|;
 DECL|enum|QualityOfProtection
 specifier|public
-specifier|static
 enum|enum
 name|QualityOfProtection
 block|{
@@ -1231,7 +1230,6 @@ operator|.
 name|Evolving
 DECL|enum|AuthMethod
 specifier|public
-specifier|static
 enum|enum
 name|AuthMethod
 block|{

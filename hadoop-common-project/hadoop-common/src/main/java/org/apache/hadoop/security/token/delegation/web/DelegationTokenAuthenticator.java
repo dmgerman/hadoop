@@ -478,7 +478,6 @@ operator|.
 name|Private
 DECL|enum|DelegationTokenOperation
 specifier|public
-specifier|static
 enum|enum
 name|DelegationTokenOperation
 block|{

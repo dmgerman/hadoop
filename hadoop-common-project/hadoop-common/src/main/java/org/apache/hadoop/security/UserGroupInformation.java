@@ -6723,7 +6723,6 @@ operator|.
 name|Evolving
 DECL|enum|AuthenticationMethod
 specifier|public
-specifier|static
 enum|enum
 name|AuthenticationMethod
 block|{

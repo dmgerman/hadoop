@@ -481,7 +481,6 @@ name|KMS
 block|{
 DECL|enum|KMSOp
 specifier|public
-specifier|static
 enum|enum
 name|KMSOp
 block|{

@@ -136,7 +136,6 @@ name|updateFields
 decl_stmt|;
 DECL|enum|SetAttrField
 specifier|public
-specifier|static
 enum|enum
 name|SetAttrField
 block|{

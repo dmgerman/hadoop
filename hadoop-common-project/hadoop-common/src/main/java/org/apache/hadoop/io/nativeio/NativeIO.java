@@ -2601,7 +2601,6 @@ function_decl|;
 comment|/** Supported list of Windows access right flags */
 DECL|enum|AccessRight
 specifier|public
-specifier|static
 enum|enum
 name|AccessRight
 block|{

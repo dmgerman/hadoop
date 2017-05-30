@@ -1840,7 +1840,6 @@ block|}
 block|}
 DECL|enum|NoEntry3Filter
 specifier|private
-specifier|static
 enum|enum
 name|NoEntry3Filter
 implements|implements

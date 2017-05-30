@@ -251,7 +251,6 @@ decl_stmt|;
 comment|/**    * The compression level for zlib library.    */
 DECL|enum|CompressionLevel
 specifier|public
-specifier|static
 enum|enum
 name|CompressionLevel
 block|{
@@ -365,7 +364,6 @@ empty_stmt|;
 comment|/**    * The compression level for zlib library.    */
 DECL|enum|CompressionStrategy
 specifier|public
-specifier|static
 enum|enum
 name|CompressionStrategy
 block|{
@@ -436,7 +434,6 @@ empty_stmt|;
 comment|/**    * The type of header for compressed data.    */
 DECL|enum|CompressionHeader
 specifier|public
-specifier|static
 enum|enum
 name|CompressionHeader
 block|{

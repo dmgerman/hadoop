@@ -101,7 +101,6 @@ name|exceptionToFailWith
 decl_stmt|;
 DECL|enum|TypeOfExceptionToFailWith
 specifier|public
-specifier|static
 enum|enum
 name|TypeOfExceptionToFailWith
 block|{

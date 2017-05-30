@@ -429,7 +429,6 @@ block|}
 block|}
 comment|/**    * Compression algorithms.    */
 DECL|enum|Algorithm
-specifier|static
 enum|enum
 name|Algorithm
 block|{

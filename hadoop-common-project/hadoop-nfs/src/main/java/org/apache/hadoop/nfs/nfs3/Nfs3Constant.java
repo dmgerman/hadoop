@@ -61,7 +61,6 @@ decl_stmt|;
 comment|// The procedures
 DECL|enum|NFSPROC3
 specifier|public
-specifier|static
 enum|enum
 name|NFSPROC3
 block|{

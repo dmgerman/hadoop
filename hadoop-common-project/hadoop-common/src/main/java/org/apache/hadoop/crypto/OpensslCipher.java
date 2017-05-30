@@ -225,7 +225,6 @@ decl_stmt|;
 comment|/** Currently only support AES/CTR/NoPadding. */
 DECL|enum|AlgMode
 specifier|private
-specifier|static
 enum|enum
 name|AlgMode
 block|{
@@ -288,7 +287,6 @@ block|}
 block|}
 DECL|enum|Padding
 specifier|private
-specifier|static
 enum|enum
 name|Padding
 block|{

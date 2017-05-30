@@ -30,7 +30,6 @@ block|{
 comment|/** Message type */
 DECL|enum|Type
 specifier|public
-specifier|static
 enum|enum
 name|Type
 block|{

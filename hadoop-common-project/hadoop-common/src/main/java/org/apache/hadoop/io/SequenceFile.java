@@ -728,7 +728,6 @@ comment|// 5KB*(16+4)
 comment|/**     * The compression type used to compress key/value pairs in the     * {@link SequenceFile}.    *     * @see SequenceFile.Writer    */
 DECL|enum|CompressionType
 specifier|public
-specifier|static
 enum|enum
 name|CompressionType
 block|{

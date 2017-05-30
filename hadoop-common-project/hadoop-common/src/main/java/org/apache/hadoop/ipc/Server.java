@@ -7666,7 +7666,6 @@ operator|.
 name|Private
 DECL|enum|AuthProtocol
 specifier|public
-specifier|static
 enum|enum
 name|AuthProtocol
 block|{

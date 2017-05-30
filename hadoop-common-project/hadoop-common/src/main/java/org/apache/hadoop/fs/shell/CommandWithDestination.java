@@ -601,7 +601,6 @@ block|}
 block|}
 DECL|enum|FileAttribute
 specifier|protected
-specifier|static
 enum|enum
 name|FileAttribute
 block|{

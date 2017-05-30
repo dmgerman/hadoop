@@ -213,7 +213,6 @@ block|}
 block|}
 DECL|enum|RequestSource
 specifier|public
-specifier|static
 enum|enum
 name|RequestSource
 block|{

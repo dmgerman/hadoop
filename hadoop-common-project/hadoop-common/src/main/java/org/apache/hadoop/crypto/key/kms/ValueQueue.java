@@ -888,7 +888,6 @@ block|}
 comment|/**    * Policy to decide how many values to return to client when client asks for    * "n" values and Queue is empty.    * This decides how many values to return when client calls "getAtMost"    */
 DECL|enum|SyncGenerationPolicy
 specifier|public
-specifier|static
 enum|enum
 name|SyncGenerationPolicy
 block|{

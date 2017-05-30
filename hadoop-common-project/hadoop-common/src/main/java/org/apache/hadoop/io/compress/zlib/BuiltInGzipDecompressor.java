@@ -311,7 +311,6 @@ decl_stmt|;
 comment|/**    * The current state of the gzip decoder, external to the Inflater context.    * (Technically, the private variables localBuf through hasHeaderCRC are    * also part of the state, so this enum is merely the label for it.)    */
 DECL|enum|GzipStateLabel
 specifier|private
-specifier|static
 enum|enum
 name|GzipStateLabel
 block|{

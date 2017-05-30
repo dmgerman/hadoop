@@ -484,7 +484,6 @@ literal|1000
 decl_stmt|;
 DECL|enum|ConnectionState
 specifier|private
-specifier|static
 enum|enum
 name|ConnectionState
 block|{
@@ -499,7 +498,6 @@ name|TERMINATED
 block|}
 empty_stmt|;
 DECL|enum|State
-specifier|static
 enum|enum
 name|State
 block|{

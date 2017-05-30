@@ -955,7 +955,6 @@ block|}
 comment|/**    * Enum to support the varargs for rename() options    */
 DECL|enum|Rename
 specifier|public
-specifier|static
 enum|enum
 name|Rename
 block|{

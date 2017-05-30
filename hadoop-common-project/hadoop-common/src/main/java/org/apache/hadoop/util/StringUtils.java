@@ -3163,7 +3163,6 @@ block|}
 comment|/**    * The traditional binary prefixes, kilo, mega, ..., exa,    * which can be represented by a 64-bit integer.    * TraditionalBinaryPrefix symbol are case insensitive.     */
 DECL|enum|TraditionalBinaryPrefix
 specifier|public
-specifier|static
 enum|enum
 name|TraditionalBinaryPrefix
 block|{

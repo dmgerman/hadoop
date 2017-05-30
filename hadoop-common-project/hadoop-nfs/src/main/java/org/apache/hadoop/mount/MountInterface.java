@@ -53,7 +53,6 @@ block|{
 comment|/** Mount procedures */
 DECL|enum|MNTPROC
 specifier|public
-specifier|static
 enum|enum
 name|MNTPROC
 block|{

@@ -1249,7 +1249,6 @@ DECL|enumConstant|isDir
 DECL|enumConstant|isFile
 DECL|enumConstant|isSymlink
 specifier|public
-specifier|static
 enum|enum
 name|fileType
 block|{

@@ -327,7 +327,6 @@ DECL|enum|Mode
 DECL|enumConstant|CLIENT
 DECL|enumConstant|SERVER
 specifier|public
-specifier|static
 enum|enum
 name|Mode
 block|{
