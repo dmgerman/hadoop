@@ -394,7 +394,6 @@ DECL|enum|JobTrackerStatus
 DECL|enumConstant|INITIALIZING
 DECL|enumConstant|RUNNING
 specifier|public
-specifier|static
 enum|enum
 name|JobTrackerStatus
 block|{

@@ -870,7 +870,6 @@ block|}
 block|}
 DECL|enum|ContainerState
 specifier|private
-specifier|static
 enum|enum
 name|ContainerState
 block|{

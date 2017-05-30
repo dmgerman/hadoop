@@ -550,7 +550,6 @@ DECL|enumConstant|FAILED
 DECL|enumConstant|SUCCEEDED
 DECL|enumConstant|ALL
 specifier|public
-specifier|static
 enum|enum
 name|TaskStatusFilter
 block|{

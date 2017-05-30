@@ -250,7 +250,6 @@ DECL|enumConstant|STOPPED
 DECL|enumConstant|STOPPING
 DECL|enumConstant|READY
 specifier|public
-specifier|static
 enum|enum
 name|ThreadState
 block|{

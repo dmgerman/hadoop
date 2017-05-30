@@ -292,7 +292,6 @@ DECL|enumConstant|RANDOM
 DECL|enumConstant|ASCENDING
 DECL|enumConstant|DESCENDING
 specifier|public
-specifier|static
 enum|enum
 name|Order
 block|{

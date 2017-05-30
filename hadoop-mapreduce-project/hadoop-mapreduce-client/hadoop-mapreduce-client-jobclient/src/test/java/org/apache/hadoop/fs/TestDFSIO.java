@@ -732,7 +732,6 @@ expr_stmt|;
 block|}
 DECL|enum|TestType
 specifier|private
-specifier|static
 enum|enum
 name|TestType
 block|{
@@ -817,7 +816,6 @@ return|;
 block|}
 block|}
 DECL|enum|ByteMultiple
-specifier|static
 enum|enum
 name|ByteMultiple
 block|{

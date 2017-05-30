@@ -842,7 +842,6 @@ argument_list|)
 decl_stmt|;
 DECL|enum|HistoryInfoState
 specifier|private
-specifier|static
 enum|enum
 name|HistoryInfoState
 block|{

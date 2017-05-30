@@ -101,7 +101,6 @@ init|=
 literal|";"
 decl_stmt|;
 DECL|enum|OutputType
-specifier|static
 enum|enum
 name|OutputType
 block|{

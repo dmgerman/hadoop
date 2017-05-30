@@ -487,7 +487,6 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|enum|StatSeries
-specifier|static
 enum|enum
 name|StatSeries
 block|{

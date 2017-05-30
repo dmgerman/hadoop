@@ -29,7 +29,6 @@ block|{
 comment|/**    *<code>State</code> is no longer used since M/R 2.x. It is kept in case    * that M/R 1.x applications may still use it.    */
 DECL|enum|State
 specifier|public
-specifier|static
 enum|enum
 name|State
 block|{

@@ -2135,7 +2135,6 @@ operator|.
 name|Private
 DECL|enum|LogName
 specifier|public
-specifier|static
 enum|enum
 name|LogName
 block|{

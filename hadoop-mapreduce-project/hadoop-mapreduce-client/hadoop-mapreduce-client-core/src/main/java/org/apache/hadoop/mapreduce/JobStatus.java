@@ -261,7 +261,6 @@ block|}
 comment|/**    * Current state of the job     */
 DECL|enum|State
 specifier|public
-specifier|static
 enum|enum
 name|State
 block|{

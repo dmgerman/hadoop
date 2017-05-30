@@ -250,7 +250,6 @@ DECL|enumConstant|RUNNING
 DECL|enumConstant|READY
 DECL|enumConstant|FAILED
 specifier|public
-specifier|static
 enum|enum
 name|State
 block|{

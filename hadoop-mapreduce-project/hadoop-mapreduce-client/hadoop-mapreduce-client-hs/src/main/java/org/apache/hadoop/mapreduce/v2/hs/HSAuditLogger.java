@@ -113,7 +113,6 @@ name|class
 argument_list|)
 decl_stmt|;
 DECL|enum|Keys
-specifier|static
 enum|enum
 name|Keys
 block|{

@@ -346,7 +346,6 @@ DECL|enum|JobState
 DECL|enumConstant|DEFINE
 DECL|enumConstant|RUNNING
 specifier|public
-specifier|static
 enum|enum
 name|JobState
 block|{
@@ -469,7 +468,6 @@ DECL|enumConstant|FAILED
 DECL|enumConstant|SUCCEEDED
 DECL|enumConstant|ALL
 specifier|public
-specifier|static
 enum|enum
 name|TaskStatusFilter
 block|{

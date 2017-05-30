@@ -862,7 +862,6 @@ return|;
 block|}
 comment|/**    * TimelineServer Performance counters    */
 DECL|enum|PerfCounters
-specifier|static
 enum|enum
 name|PerfCounters
 block|{

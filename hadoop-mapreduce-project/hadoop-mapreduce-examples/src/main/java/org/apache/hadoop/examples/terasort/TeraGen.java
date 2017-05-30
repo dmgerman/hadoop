@@ -453,7 +453,6 @@ decl_stmt|;
 DECL|enum|Counters
 DECL|enumConstant|CHECKSUM
 specifier|public
-specifier|static
 enum|enum
 name|Counters
 block|{

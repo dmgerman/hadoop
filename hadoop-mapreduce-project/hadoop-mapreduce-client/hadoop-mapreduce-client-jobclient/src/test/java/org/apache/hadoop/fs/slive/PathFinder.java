@@ -53,7 +53,6 @@ name|PathFinder
 block|{
 DECL|enum|Type
 specifier|private
-specifier|static
 enum|enum
 name|Type
 block|{

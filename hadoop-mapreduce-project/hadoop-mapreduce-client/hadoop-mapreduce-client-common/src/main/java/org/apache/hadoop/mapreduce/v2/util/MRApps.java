@@ -982,7 +982,6 @@ throw|;
 block|}
 DECL|enum|TaskAttemptStateUI
 specifier|public
-specifier|static
 enum|enum
 name|TaskAttemptStateUI
 block|{
@@ -1112,7 +1111,6 @@ block|}
 block|}
 DECL|enum|TaskStateUI
 specifier|public
-specifier|static
 enum|enum
 name|TaskStateUI
 block|{

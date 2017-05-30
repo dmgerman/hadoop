@@ -240,7 +240,6 @@ DECL|enumConstant|SORT
 DECL|enumConstant|REDUCE
 DECL|enumConstant|CLEANUP
 specifier|public
-specifier|static
 enum|enum
 name|Phase
 block|{
@@ -272,7 +271,6 @@ DECL|enumConstant|FAILED
 DECL|enumConstant|UNASSIGNED
 DECL|enumConstant|KILLED
 specifier|public
-specifier|static
 enum|enum
 name|State
 block|{

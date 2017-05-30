@@ -408,7 +408,6 @@ annotation|@
 name|Deprecated
 DECL|enum|Counter
 specifier|public
-specifier|static
 enum|enum
 name|Counter
 block|{

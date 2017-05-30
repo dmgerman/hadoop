@@ -412,7 +412,6 @@ comment|/**    * The integer codes to represent the different messages. These mu
 DECL|enum|MessageType
 DECL|enumConstant|START
 specifier|private
-specifier|static
 enum|enum
 name|MessageType
 block|{

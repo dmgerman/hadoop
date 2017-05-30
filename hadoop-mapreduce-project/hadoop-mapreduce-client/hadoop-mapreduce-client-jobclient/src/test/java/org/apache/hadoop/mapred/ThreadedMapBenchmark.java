@@ -352,7 +352,6 @@ comment|// result in only 1 spill
 DECL|enum|Counters
 DECL|enumConstant|RECORDS_WRITTEN
 DECL|enumConstant|BYTES_WRITTEN
-specifier|static
 enum|enum
 name|Counters
 block|{

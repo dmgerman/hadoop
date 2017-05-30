@@ -505,7 +505,6 @@ DECL|enumConstant|WRONG_LENGTH
 DECL|enumConstant|BAD_ID
 DECL|enumConstant|WRONG_MAP
 specifier|private
-specifier|static
 enum|enum
 name|ShuffleErrors
 block|{
