@@ -213,6 +213,16 @@ name|OZONE_KEY_CACHE_DEFAULT
 init|=
 literal|1024
 decl_stmt|;
+comment|/**    * Ozone administrator users delimited by comma.    * If not set, only the user who launches an ozone service will be the    * admin user. This property must be set if ozone services are started by    * different users. Otherwise the RPC layer will reject calls from    * other servers which are started by users not in the list.    * */
+DECL|field|OZONE_ADMINISTRATORS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_ADMINISTRATORS
+init|=
+literal|"ozone.administrators"
+decl_stmt|;
 DECL|field|OZONE_CONTAINER_TASK_WAIT
 specifier|public
 specifier|static
