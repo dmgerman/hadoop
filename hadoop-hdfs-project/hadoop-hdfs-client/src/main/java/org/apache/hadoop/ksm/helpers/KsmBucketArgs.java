@@ -158,7 +158,7 @@ name|StorageTypeProto
 name|storageType
 decl_stmt|;
 comment|/**    * Private constructor, constructed via builder.    * @param volumeName - Volume name.    * @param bucketName - Bucket name.    * @param addAcls - ACL's to be added.    * @param removeAcls - ACL's to be removed.    * @param isVersionEnabled - Bucket version flag.    * @param storageType - Storage type to be used.    */
-DECL|method|KsmBucketArgs (String volumeName, String bucketName, List<OzoneAclInfo> addAcls, List<OzoneAclInfo> removeAcls, boolean isVersionEnabled, StorageTypeProto storageType)
+DECL|method|KsmBucketArgs (String volumeName, String bucketName, List<OzoneAclInfo> addAcls, List<OzoneAclInfo> removeAcls, Boolean isVersionEnabled, StorageTypeProto storageType)
 specifier|private
 name|KsmBucketArgs
 parameter_list|(
@@ -180,7 +180,7 @@ name|OzoneAclInfo
 argument_list|>
 name|removeAcls
 parameter_list|,
-name|boolean
+name|Boolean
 name|isVersionEnabled
 parameter_list|,
 name|StorageTypeProto
@@ -277,7 +277,7 @@ block|}
 comment|/**    * Returns true if bucket version is enabled, else false.    * @return isVersionEnabled    */
 DECL|method|getIsVersionEnabled ()
 specifier|public
-name|boolean
+name|Boolean
 name|getIsVersionEnabled
 parameter_list|()
 block|{
@@ -658,13 +658,27 @@ argument_list|()
 argument_list|,
 name|bucketArgs
 operator|.
+name|hasIsVersionEnabled
+argument_list|()
+condition|?
+name|bucketArgs
+operator|.
 name|getIsVersionEnabled
 argument_list|()
+else|:
+literal|null
 argument_list|,
+name|bucketArgs
+operator|.
+name|hasStorageType
+argument_list|()
+condition|?
 name|bucketArgs
 operator|.
 name|getStorageType
 argument_list|()
+else|:
+literal|null
 argument_list|)
 return|;
 block|}

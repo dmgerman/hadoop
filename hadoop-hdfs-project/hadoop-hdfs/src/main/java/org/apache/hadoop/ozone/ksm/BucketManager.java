@@ -30,6 +30,22 @@ name|ksm
 operator|.
 name|helpers
 operator|.
+name|KsmBucketArgs
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ksm
+operator|.
+name|helpers
+operator|.
 name|KsmBucketInfo
 import|;
 end_import
@@ -75,6 +91,17 @@ name|volumeName
 parameter_list|,
 name|String
 name|bucketName
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Sets bucket property from args.    * @param args - BucketArgs.    * @throws IOException    */
+DECL|method|setBucketProperty (KsmBucketArgs args)
+name|void
+name|setBucketProperty
+parameter_list|(
+name|KsmBucketArgs
+name|args
 parameter_list|)
 throws|throws
 name|IOException

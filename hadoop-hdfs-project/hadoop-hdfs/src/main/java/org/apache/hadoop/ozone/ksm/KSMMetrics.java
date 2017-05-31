@@ -140,6 +140,13 @@ name|Metric
 name|MutableCounterLong
 name|numBucketInfos
 decl_stmt|;
+DECL|field|numBucketModifies
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numBucketModifies
+decl_stmt|;
 DECL|field|numKeyAllocate
 specifier|private
 annotation|@
@@ -189,6 +196,13 @@ annotation|@
 name|Metric
 name|MutableCounterLong
 name|numBucketInfoFails
+decl_stmt|;
+DECL|field|numBucketModifyFails
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numBucketModifyFails
 decl_stmt|;
 DECL|field|numKeyAllocateFails
 specifier|private
@@ -299,13 +313,25 @@ name|incr
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|incNumBucketModifies ()
+specifier|public
+name|void
+name|incNumBucketModifies
+parameter_list|()
+block|{
+name|numBucketModifies
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
 DECL|method|incNumVolumeCreateFails ()
 specifier|public
 name|void
 name|incNumVolumeCreateFails
 parameter_list|()
 block|{
-name|numVolumeCreates
+name|numVolumeCreateFails
 operator|.
 name|incr
 argument_list|()
@@ -354,6 +380,18 @@ name|incNumBucketInfoFails
 parameter_list|()
 block|{
 name|numBucketInfoFails
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumBucketModifyFails ()
+specifier|public
+name|void
+name|incNumBucketModifyFails
+parameter_list|()
+block|{
+name|numBucketModifyFails
 operator|.
 name|incr
 argument_list|()
@@ -484,6 +522,21 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
+DECL|method|getNumBucketModifies ()
+specifier|public
+name|long
+name|getNumBucketModifies
+parameter_list|()
+block|{
+return|return
+name|numBucketModifies
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getNumVolumeCreateFails ()
 specifier|public
 name|long
@@ -552,6 +605,21 @@ parameter_list|()
 block|{
 return|return
 name|numBucketInfoFails
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumBucketModifyFails ()
+specifier|public
+name|long
+name|getNumBucketModifyFails
+parameter_list|()
+block|{
+return|return
+name|numBucketModifyFails
 operator|.
 name|value
 argument_list|()
