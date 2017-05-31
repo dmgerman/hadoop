@@ -133,6 +133,13 @@ name|Metric
 name|MutableCounterLong
 name|numBucketCreates
 decl_stmt|;
+DECL|field|numVolumeDeletes
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numVolumeDeletes
+decl_stmt|;
 DECL|field|numBucketInfos
 specifier|private
 annotation|@
@@ -182,6 +189,13 @@ annotation|@
 name|Metric
 name|MutableCounterLong
 name|numVolumeInfoFails
+decl_stmt|;
+DECL|field|numVolumeDeleteFails
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numVolumeDeleteFails
 decl_stmt|;
 DECL|field|numBucketCreateFails
 specifier|private
@@ -289,6 +303,18 @@ name|incr
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|incNumVolumeDeletes ()
+specifier|public
+name|void
+name|incNumVolumeDeletes
+parameter_list|()
+block|{
+name|numVolumeDeletes
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
 DECL|method|incNumBucketCreates ()
 specifier|public
 name|void
@@ -356,6 +382,18 @@ name|incNumVolumeInfoFails
 parameter_list|()
 block|{
 name|numVolumeInfoFails
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumVolumeDeleteFails ()
+specifier|public
+name|void
+name|incNumVolumeDeleteFails
+parameter_list|()
+block|{
+name|numVolumeDeleteFails
 operator|.
 name|incr
 argument_list|()
@@ -492,6 +530,21 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
+DECL|method|getNumVolumeDeletes ()
+specifier|public
+name|long
+name|getNumVolumeDeletes
+parameter_list|()
+block|{
+return|return
+name|numVolumeDeletes
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getNumBucketCreates ()
 specifier|public
 name|long
@@ -575,6 +628,21 @@ parameter_list|()
 block|{
 return|return
 name|numVolumeInfoFails
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumVolumeDeleteFails ()
+specifier|public
+name|long
+name|getNumVolumeDeleteFails
+parameter_list|()
+block|{
+return|return
+name|numVolumeDeleteFails
 operator|.
 name|value
 argument_list|()

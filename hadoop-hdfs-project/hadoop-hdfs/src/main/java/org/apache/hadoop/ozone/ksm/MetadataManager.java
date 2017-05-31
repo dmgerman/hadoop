@@ -225,6 +225,17 @@ name|String
 name|key
 parameter_list|)
 function_decl|;
+comment|/**    * Given a volume, check if it is empty, i.e there are no buckets inside it.    * @param volume - Volume name    */
+DECL|method|isVolumeEmpty (String volume)
+name|boolean
+name|isVolumeEmpty
+parameter_list|(
+name|String
+name|volume
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

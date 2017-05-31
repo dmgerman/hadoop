@@ -1145,13 +1145,16 @@ name|IOException
 throws|,
 name|OzoneException
 block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
+name|keySpaceManagerClient
+operator|.
+name|deleteVolume
 argument_list|(
-literal|"deleteVolume not implemented"
+name|args
+operator|.
+name|getVolumeName
+argument_list|()
 argument_list|)
-throw|;
+expr_stmt|;
 block|}
 annotation|@
 name|Override

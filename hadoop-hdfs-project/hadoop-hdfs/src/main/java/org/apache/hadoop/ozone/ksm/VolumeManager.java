@@ -104,6 +104,17 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Deletes an existing empty volume.    *    * @param volume - Name of the volume.    * @throws IOException    */
+DECL|method|deleteVolume (String volume)
+name|void
+name|deleteVolume
+parameter_list|(
+name|String
+name|volume
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 
