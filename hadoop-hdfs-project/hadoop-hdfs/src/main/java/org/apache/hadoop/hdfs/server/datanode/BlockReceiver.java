@@ -5521,7 +5521,6 @@ return|;
 block|}
 DECL|enum|PacketResponderType
 specifier|private
-specifier|static
 enum|enum
 name|PacketResponderType
 block|{

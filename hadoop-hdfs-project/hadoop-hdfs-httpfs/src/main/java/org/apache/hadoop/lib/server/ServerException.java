@@ -71,7 +71,6 @@ operator|.
 name|Private
 DECL|enum|ERROR
 specifier|public
-specifier|static
 enum|enum
 name|ERROR
 implements|implements

@@ -60,7 +60,6 @@ name|delHints
 decl_stmt|;
 DECL|enum|BlockStatus
 specifier|public
-specifier|static
 enum|enum
 name|BlockStatus
 block|{

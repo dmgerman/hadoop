@@ -545,7 +545,6 @@ expr_stmt|;
 block|}
 DECL|enum|ENUM
 specifier|public
-specifier|static
 enum|enum
 name|ENUM
 block|{

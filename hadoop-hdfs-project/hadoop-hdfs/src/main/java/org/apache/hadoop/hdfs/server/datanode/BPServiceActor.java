@@ -813,7 +813,6 @@ name|DatanodeProtocolClientSideTranslatorPB
 name|bpNamenode
 decl_stmt|;
 DECL|enum|RunningState
-specifier|static
 enum|enum
 name|RunningState
 block|{

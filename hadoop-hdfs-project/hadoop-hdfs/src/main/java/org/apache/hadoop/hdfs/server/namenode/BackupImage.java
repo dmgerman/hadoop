@@ -242,7 +242,6 @@ name|BNState
 name|bnState
 decl_stmt|;
 DECL|enum|BNState
-specifier|static
 enum|enum
 name|BNState
 block|{

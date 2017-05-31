@@ -661,7 +661,6 @@ operator|*
 literal|1024
 decl_stmt|;
 DECL|enum|COMMIT_STATUS
-specifier|static
 enum|enum
 name|COMMIT_STATUS
 block|{

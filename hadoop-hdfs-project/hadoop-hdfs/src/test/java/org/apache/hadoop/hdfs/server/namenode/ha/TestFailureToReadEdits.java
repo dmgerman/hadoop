@@ -702,7 +702,6 @@ name|fs
 decl_stmt|;
 DECL|enum|TestType
 specifier|private
-specifier|static
 enum|enum
 name|TestType
 block|{

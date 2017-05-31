@@ -96,7 +96,6 @@ parameter_list|>
 block|{
 DECL|enum|ListType
 specifier|public
-specifier|static
 enum|enum
 name|ListType
 block|{

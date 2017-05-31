@@ -76,7 +76,6 @@ name|HTestCase
 block|{
 DECL|enum|TestERROR
 specifier|public
-specifier|static
 enum|enum
 name|TestERROR
 implements|implements

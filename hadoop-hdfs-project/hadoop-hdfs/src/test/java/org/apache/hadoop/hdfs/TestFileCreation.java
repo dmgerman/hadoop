@@ -6434,7 +6434,6 @@ expr_stmt|;
 block|}
 DECL|enum|CreationMethod
 specifier|private
-specifier|static
 enum|enum
 name|CreationMethod
 block|{

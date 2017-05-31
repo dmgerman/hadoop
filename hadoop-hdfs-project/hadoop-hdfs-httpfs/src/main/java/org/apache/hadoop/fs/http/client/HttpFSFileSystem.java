@@ -1162,7 +1162,6 @@ literal|"application/octet-stream"
 decl_stmt|;
 DECL|enum|FILE_TYPE
 specifier|public
-specifier|static
 enum|enum
 name|FILE_TYPE
 block|{
@@ -1628,7 +1627,6 @@ operator|.
 name|Private
 DECL|enum|Operation
 specifier|public
-specifier|static
 enum|enum
 name|Operation
 block|{

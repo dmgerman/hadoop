@@ -419,7 +419,6 @@ name|OpInstanceCache
 argument_list|()
 decl_stmt|;
 DECL|enum|ParseState
-specifier|static
 enum|enum
 name|ParseState
 block|{

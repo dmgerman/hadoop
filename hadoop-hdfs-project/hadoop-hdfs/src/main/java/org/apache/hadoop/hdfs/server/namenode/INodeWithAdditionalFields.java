@@ -152,7 +152,6 @@ implements|implements
 name|LinkedElement
 block|{
 DECL|enum|PermissionStatusFormat
-specifier|static
 enum|enum
 name|PermissionStatusFormat
 block|{

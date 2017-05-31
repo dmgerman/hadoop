@@ -1632,7 +1632,6 @@ name|remaining
 expr_stmt|;
 block|}
 DECL|enum|AddBlockResult
-specifier|static
 enum|enum
 name|AddBlockResult
 block|{

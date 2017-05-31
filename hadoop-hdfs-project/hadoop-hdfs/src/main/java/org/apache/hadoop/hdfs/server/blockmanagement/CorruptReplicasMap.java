@@ -193,7 +193,6 @@ block|{
 comment|/** The corruption reason code */
 DECL|enum|Reason
 specifier|public
-specifier|static
 enum|enum
 name|Reason
 block|{

@@ -179,7 +179,6 @@ DECL|enum|Key
 DECL|enumConstant|CURRENT
 DECL|enumConstant|SNAPSHOT
 specifier|public
-specifier|static
 enum|enum
 name|Key
 block|{

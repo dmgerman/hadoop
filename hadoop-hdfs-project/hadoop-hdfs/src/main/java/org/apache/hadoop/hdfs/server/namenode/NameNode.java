@@ -2179,7 +2179,6 @@ block|}
 comment|/**    * Categories of operations supported by the namenode.    */
 DECL|enum|OperationCategory
 specifier|public
-specifier|static
 enum|enum
 name|OperationCategory
 block|{
