@@ -1022,13 +1022,16 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|finalizeBlock (ExtendedBlock b)
+DECL|method|finalizeBlock (ExtendedBlock b, boolean fsyncDir)
 specifier|public
 name|void
 name|finalizeBlock
 parameter_list|(
 name|ExtendedBlock
 name|b
+parameter_list|,
+name|boolean
+name|fsyncDir
 parameter_list|)
 throws|throws
 name|IOException

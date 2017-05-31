@@ -2325,6 +2325,55 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Sync the parent directory changes to durable device.    * @throws IOException    */
+DECL|method|fsyncDirectory ()
+specifier|public
+name|void
+name|fsyncDirectory
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|File
+name|dir
+init|=
+name|getDir
+argument_list|()
+decl_stmt|;
+try|try
+block|{
+name|getFileIoProvider
+argument_list|()
+operator|.
+name|dirSync
+argument_list|(
+name|getVolume
+argument_list|()
+argument_list|,
+name|getDir
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Failed to sync "
+operator|+
+name|dir
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
+block|}
 block|}
 end_class
 

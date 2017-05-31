@@ -1406,13 +1406,16 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Finalizes the block previously opened for writing using writeToBlock.    * The block size is what is in the parameter b and it must match the amount    *  of data written    * @throws IOException    * @throws ReplicaNotFoundException if the replica can not be found when the    * block is been finalized. For instance, the block resides on an HDFS volume    * that has been removed.    */
-DECL|method|finalizeBlock (ExtendedBlock b)
+comment|/**    * Finalizes the block previously opened for writing using writeToBlock.    * The block size is what is in the parameter b and it must match the amount    *  of data written    * @param block Block to be finalized    * @param fsyncDir whether to sync the directory changes to durable device.    * @throws IOException    * @throws ReplicaNotFoundException if the replica can not be found when the    * block is been finalized. For instance, the block resides on an HDFS volume    * that has been removed.    */
+DECL|method|finalizeBlock (ExtendedBlock b, boolean fsyncDir)
 name|void
 name|finalizeBlock
 parameter_list|(
 name|ExtendedBlock
 name|b
+parameter_list|,
+name|boolean
+name|fsyncDir
 parameter_list|)
 throws|throws
 name|IOException

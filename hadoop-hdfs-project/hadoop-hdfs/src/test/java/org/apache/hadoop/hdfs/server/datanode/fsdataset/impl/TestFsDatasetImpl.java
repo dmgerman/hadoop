@@ -4342,6 +4342,8 @@ operator|.
 name|finalizeBlock
 argument_list|(
 name|eb
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|LOG

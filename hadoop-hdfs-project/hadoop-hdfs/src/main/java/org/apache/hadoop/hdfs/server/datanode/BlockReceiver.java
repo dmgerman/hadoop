@@ -895,6 +895,12 @@ specifier|private
 name|boolean
 name|syncOnClose
 decl_stmt|;
+DECL|field|dirSyncOnFinalize
+specifier|private
+specifier|volatile
+name|boolean
+name|dirSyncOnFinalize
+decl_stmt|;
 DECL|field|restartBudget
 specifier|private
 name|long
@@ -2908,6 +2914,14 @@ name|syncOnClose
 operator|=
 literal|false
 expr_stmt|;
+comment|// sync directory for finalize irrespective of syncOnClose config since
+comment|// sync is requested.
+name|this
+operator|.
+name|dirSyncOnFinalize
+operator|=
+literal|true
+expr_stmt|;
 block|}
 comment|// update received bytes
 specifier|final
@@ -4492,6 +4506,10 @@ argument_list|()
 operator|.
 name|syncOnClose
 expr_stmt|;
+name|dirSyncOnFinalize
+operator|=
+name|syncOnClose
+expr_stmt|;
 name|boolean
 name|responderClosed
 init|=
@@ -4666,6 +4684,8 @@ operator|.
 name|finalizeBlock
 argument_list|(
 name|block
+argument_list|,
+name|dirSyncOnFinalize
 argument_list|)
 expr_stmt|;
 block|}
@@ -6872,6 +6892,8 @@ operator|.
 name|finalizeBlock
 argument_list|(
 name|block
+argument_list|,
+name|dirSyncOnFinalize
 argument_list|)
 expr_stmt|;
 block|}

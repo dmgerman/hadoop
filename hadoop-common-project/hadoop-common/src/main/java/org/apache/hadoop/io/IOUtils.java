@@ -122,6 +122,18 @@ begin_import
 import|import
 name|java
 operator|.
+name|nio
+operator|.
+name|file
+operator|.
+name|StandardOpenOption
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -218,7 +230,7 @@ name|hadoop
 operator|.
 name|util
 operator|.
-name|ChunkedArrayList
+name|Shell
 import|;
 end_import
 
@@ -1324,6 +1336,158 @@ block|}
 return|return
 name|list
 return|;
+block|}
+comment|/**    * Ensure that any writes to the given file is written to the storage device    * that contains it. This method opens channel on given File and closes it    * once the sync is done.<br>    * Borrowed from Uwe Schindler in LUCENE-5588    * @param fileToSync the file to fsync    */
+DECL|method|fsync (File fileToSync)
+specifier|public
+specifier|static
+name|void
+name|fsync
+parameter_list|(
+name|File
+name|fileToSync
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+operator|!
+name|fileToSync
+operator|.
+name|exists
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|FileNotFoundException
+argument_list|(
+literal|"File/Directory "
+operator|+
+name|fileToSync
+operator|.
+name|getAbsolutePath
+argument_list|()
+operator|+
+literal|" does not exist"
+argument_list|)
+throw|;
+block|}
+name|boolean
+name|isDir
+init|=
+name|fileToSync
+operator|.
+name|isDirectory
+argument_list|()
+decl_stmt|;
+comment|// If the file is a directory we have to open read-only, for regular files
+comment|// we must open r/w for the fsync to have an effect. See
+comment|// http://blog.httrack.com/blog/2013/11/15/
+comment|// everything-you-always-wanted-to-know-about-fsync/
+try|try
+init|(
+name|FileChannel
+name|channel
+init|=
+name|FileChannel
+operator|.
+name|open
+argument_list|(
+name|fileToSync
+operator|.
+name|toPath
+argument_list|()
+argument_list|,
+name|isDir
+condition|?
+name|StandardOpenOption
+operator|.
+name|READ
+else|:
+name|StandardOpenOption
+operator|.
+name|WRITE
+argument_list|)
+init|)
+block|{
+name|fsync
+argument_list|(
+name|channel
+argument_list|,
+name|isDir
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Ensure that any writes to the given file is written to the storage device    * that contains it. This method opens channel on given File and closes it    * once the sync is done.    * Borrowed from Uwe Schindler in LUCENE-5588    * @param channel Channel to sync    * @param isDir if true, the given file is a directory (Channel should be    *          opened for read and ignore IOExceptions, because not all file    *          systems and operating systems allow to fsync on a directory)    * @throws IOException    */
+DECL|method|fsync (FileChannel channel, boolean isDir)
+specifier|public
+specifier|static
+name|void
+name|fsync
+parameter_list|(
+name|FileChannel
+name|channel
+parameter_list|,
+name|boolean
+name|isDir
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+try|try
+block|{
+name|channel
+operator|.
+name|force
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+if|if
+condition|(
+name|isDir
+condition|)
+block|{
+assert|assert
+operator|!
+operator|(
+name|Shell
+operator|.
+name|LINUX
+operator|||
+name|Shell
+operator|.
+name|MAC
+operator|)
+operator|:
+literal|"On Linux and MacOSX fsyncing a directory"
+operator|+
+literal|" should not throw IOException, we just don't want to rely"
+operator|+
+literal|" on that in production (undocumented)"
+operator|+
+literal|". Got: "
+operator|+
+name|ioe
+assert|;
+comment|// Ignore exception if it is a directory
+return|return;
+block|}
+comment|// Throw original exception
+throw|throw
+name|ioe
+throw|;
+block|}
 block|}
 block|}
 end_class

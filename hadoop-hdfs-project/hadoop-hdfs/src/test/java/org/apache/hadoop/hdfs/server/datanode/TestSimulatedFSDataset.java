@@ -668,6 +668,8 @@ operator|.
 name|finalizeBlock
 argument_list|(
 name|b
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1954,6 +1956,8 @@ operator|.
 name|finalizeBlock
 argument_list|(
 name|b
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertTrue
