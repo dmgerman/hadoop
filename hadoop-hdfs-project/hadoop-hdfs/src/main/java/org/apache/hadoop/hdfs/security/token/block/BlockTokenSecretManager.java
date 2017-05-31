@@ -334,6 +334,20 @@ name|StorageType
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Timer
+import|;
+end_import
+
 begin_comment
 comment|/**  * BlockTokenSecretManager can be instantiated in 2 modes, master mode  * and worker mode. Master can generate new block keys and export block  * keys to workers, while workers can only import and use block keys  * received from master. Both master and worker can generate and verify  * block tokens. Typically, master mode is used by NN and worker mode  * is used by DN.  */
 end_comment
@@ -468,6 +482,12 @@ init|=
 operator|new
 name|SecureRandom
 argument_list|()
+decl_stmt|;
+comment|/**    * Timer object for querying the current time. Separated out for    * unit testing.    */
+DECL|field|timer
+specifier|private
+name|Timer
+name|timer
 decl_stmt|;
 comment|/**    * Constructor for workers.    *    * @param keyUpdateInterval how often a new key will be generated    * @param tokenLifetime how long an individual token is valid    * @param useProto should we use new protobuf style tokens    */
 DECL|method|BlockTokenSecretManager (long keyUpdateInterval, long tokenLifetime, String blockPoolId, String encryptionAlgorithm, boolean useProto)
@@ -684,6 +704,14 @@ name|useProto
 operator|=
 name|useProto
 expr_stmt|;
+name|this
+operator|.
+name|timer
+operator|=
+operator|new
+name|Timer
+argument_list|()
+expr_stmt|;
 name|generateKeys
 argument_list|()
 expr_stmt|;
@@ -761,7 +789,7 @@ name|BlockKey
 argument_list|(
 name|serialNo
 argument_list|,
-name|Time
+name|timer
 operator|.
 name|now
 argument_list|()
@@ -790,7 +818,7 @@ name|BlockKey
 argument_list|(
 name|serialNo
 argument_list|,
-name|Time
+name|timer
 operator|.
 name|now
 argument_list|()
@@ -898,7 +926,7 @@ block|{
 name|long
 name|now
 init|=
-name|Time
+name|timer
 operator|.
 name|now
 argument_list|()
@@ -1143,7 +1171,7 @@ operator|.
 name|getKeyId
 argument_list|()
 argument_list|,
-name|Time
+name|timer
 operator|.
 name|now
 argument_list|()
@@ -1170,7 +1198,7 @@ operator|.
 name|getKeyId
 argument_list|()
 argument_list|,
-name|Time
+name|timer
 operator|.
 name|now
 argument_list|()
@@ -1214,7 +1242,7 @@ name|BlockKey
 argument_list|(
 name|serialNo
 argument_list|,
-name|Time
+name|timer
 operator|.
 name|now
 argument_list|()
@@ -2152,7 +2180,7 @@ name|identifier
 operator|.
 name|setExpiryDate
 argument_list|(
-name|Time
+name|timer
 operator|.
 name|now
 argument_list|()
@@ -2382,7 +2410,7 @@ name|nonce
 argument_list|,
 name|encryptionKey
 argument_list|,
-name|Time
+name|timer
 operator|.
 name|now
 argument_list|()

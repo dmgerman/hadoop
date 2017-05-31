@@ -56,34 +56,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -312,6 +284,40 @@ name|StringUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Timer
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/**  * The class provides utilities for key and token management.  */
 end_comment
@@ -334,12 +340,12 @@ DECL|field|LOG
 specifier|private
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|KeyManager
 operator|.
@@ -386,6 +392,12 @@ specifier|private
 name|DataEncryptionKey
 name|encryptionKey
 decl_stmt|;
+comment|/**    * Timer object for querying the current time. Separated out for    * unit testing.    */
+DECL|field|timer
+specifier|private
+name|Timer
+name|timer
+decl_stmt|;
 DECL|method|KeyManager (String blockpoolID, NamenodeProtocol namenode, boolean encryptDataTransfer, Configuration conf)
 specifier|public
 name|KeyManager
@@ -416,6 +428,14 @@ operator|.
 name|encryptDataTransfer
 operator|=
 name|encryptDataTransfer
+expr_stmt|;
+name|this
+operator|.
+name|timer
+operator|=
+operator|new
+name|Timer
+argument_list|()
 expr_stmt|;
 specifier|final
 name|ExportedBlockKeys
@@ -700,8 +720,52 @@ condition|(
 name|encryptionKey
 operator|==
 literal|null
+operator|||
+name|encryptionKey
+operator|.
+name|expiryDate
+operator|<
+name|timer
+operator|.
+name|now
+argument_list|()
 condition|)
 block|{
+comment|// Encryption Key (EK) is generated from Block Key (BK).
+comment|// Check if EK is expired, and generate a new one using the current BK
+comment|// if so, otherwise continue to use the previously generated EK.
+comment|//
+comment|// It's important to make sure that when EK is not expired, the BK
+comment|// used to generate the EK is not expired and removed, because
+comment|// the same BK will be used to re-generate the EK
+comment|// by BlockTokenSecretManager.
+comment|//
+comment|// The current implementation ensures that when an EK is not expired
+comment|// (within tokenLifetime), the BK that's used to generate it
+comment|// still has at least "keyUpdateInterval" of life time before
+comment|// the BK gets expired and removed.
+comment|// See BlockTokenSecretManager for details.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Generating new data encryption key because current key "
+operator|+
+operator|(
+name|encryptionKey
+operator|==
+literal|null
+condition|?
+literal|"is null."
+else|:
+literal|"expired on "
+operator|+
+name|encryptionKey
+operator|.
+name|expiryDate
+operator|)
+argument_list|)
+expr_stmt|;
 name|encryptionKey
 operator|=
 name|blockTokenSecretManager
