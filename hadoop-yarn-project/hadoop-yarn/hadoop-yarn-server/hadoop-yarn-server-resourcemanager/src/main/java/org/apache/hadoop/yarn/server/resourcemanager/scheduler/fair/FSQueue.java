@@ -1734,26 +1734,21 @@ return|return
 name|preemptable
 return|;
 block|}
-comment|/**    * Recomputes the shares for all child queues and applications based on this    * queue's current share, and checks for starvation.    *    * @param checkStarvation whether to check for fairshare or minshare    *                        starvation on update    */
-DECL|method|updateInternal (boolean checkStarvation)
+comment|/**    * Recomputes the shares for all child queues and applications based on this    * queue's current share.    *    * To be called holding the scheduler writelock.    */
+DECL|method|updateInternal ()
 specifier|abstract
 name|void
 name|updateInternal
-parameter_list|(
-name|boolean
-name|checkStarvation
-parameter_list|)
+parameter_list|()
 function_decl|;
-DECL|method|update (Resource fairShare, boolean checkStarvation)
+comment|/**    * Set the queue's fairshare and update the demand/fairshare of child    * queues/applications.    *    * To be called holding the scheduler writelock.    *    * @param fairShare    */
+DECL|method|update (Resource fairShare)
 specifier|public
 name|void
 name|update
 parameter_list|(
 name|Resource
 name|fairShare
-parameter_list|,
-name|boolean
-name|checkStarvation
 parameter_list|)
 block|{
 name|setFairShare
@@ -1762,9 +1757,7 @@ name|fairShare
 argument_list|)
 expr_stmt|;
 name|updateInternal
-argument_list|(
-name|checkStarvation
-argument_list|)
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Update the min/fair share preemption timeouts, threshold and preemption    * disabled flag for this queue.    */

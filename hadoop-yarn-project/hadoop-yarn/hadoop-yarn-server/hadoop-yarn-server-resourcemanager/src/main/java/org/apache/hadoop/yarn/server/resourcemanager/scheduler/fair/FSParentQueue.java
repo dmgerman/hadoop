@@ -525,14 +525,10 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|updateInternal (boolean checkStarvation)
-specifier|public
+DECL|method|updateInternal ()
 name|void
 name|updateInternal
-parameter_list|(
-name|boolean
-name|checkStarvation
-parameter_list|)
+parameter_list|()
 block|{
 name|readLock
 operator|.
@@ -575,9 +571,7 @@ expr_stmt|;
 name|childQueue
 operator|.
 name|updateInternal
-argument_list|(
-name|checkStarvation
-argument_list|)
+argument_list|()
 expr_stmt|;
 block|}
 block|}

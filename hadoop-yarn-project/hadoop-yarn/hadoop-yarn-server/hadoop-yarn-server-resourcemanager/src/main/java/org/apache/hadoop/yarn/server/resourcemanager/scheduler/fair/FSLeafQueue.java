@@ -1052,14 +1052,10 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|updateInternal (boolean checkStarvation)
-specifier|public
+DECL|method|updateInternal ()
 name|void
 name|updateInternal
-parameter_list|(
-name|boolean
-name|checkStarvation
-parameter_list|)
+parameter_list|()
 block|{
 name|readLock
 operator|.
@@ -1078,15 +1074,6 @@ name|getFairShare
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|checkStarvation
-condition|)
-block|{
-name|updateStarvedApps
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 finally|finally
 block|{
@@ -1326,9 +1313,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Helper method to identify starved applications. This needs to be called    * ONLY from {@link #updateInternal}, after the application shares    * are updated.    *    * A queue can be starving due to fairshare or minshare.    *    * Minshare is defined only on the queue and not the applications.    * Fairshare is defined for both the queue and the applications.    *    * If this queue is starved due to minshare, we need to identify the most    * deserving apps if they themselves are not starved due to fairshare.    *    * If this queue is starving due to fairshare, there must be at least    * one application that is starved. And, even if the queue is not    * starved due to fairshare, there might still be starved applications.    */
+comment|/**    * Helper method to identify starved applications. This needs to be called    * ONLY from {@link #updateInternal}, after the application shares    * are updated.    *    * A queue can be starving due to fairshare or minshare.    *    * Minshare is defined only on the queue and not the applications.    * Fairshare is defined for both the queue and the applications.    *    * If this queue is starved due to minshare, we need to identify the most    * deserving apps if they themselves are not starved due to fairshare.    *    * If this queue is starving due to fairshare, there must be at least    * one application that is starved. And, even if the queue is not    * starved due to fairshare, there might still be starved applications.    *    * Caller does not need read/write lock on the leaf queue.    */
 DECL|method|updateStarvedApps ()
-specifier|private
 name|void
 name|updateStarvedApps
 parameter_list|()
