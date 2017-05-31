@@ -916,6 +916,30 @@ name|server
 operator|.
 name|nodemanager
 operator|.
+name|containermanager
+operator|.
+name|deletion
+operator|.
+name|task
+operator|.
+name|DeletionTask
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
 name|executor
 operator|.
 name|DeletionAsUserContext
@@ -1966,15 +1990,8 @@ specifier|public
 name|void
 name|delete
 parameter_list|(
-name|String
-name|user
-parameter_list|,
-name|Path
-name|subDir
-parameter_list|,
-name|Path
-modifier|...
-name|baseDirs
+name|DeletionTask
+name|deletionTask
 parameter_list|)
 block|{
 comment|// Don't do any deletions.
@@ -1986,18 +2003,12 @@ literal|"Psuedo delete: user - "
 operator|+
 name|user
 operator|+
-literal|", subDir - "
+literal|", type - "
 operator|+
-name|subDir
-operator|+
-literal|", baseDirs - "
-operator|+
-name|Arrays
+name|deletionTask
 operator|.
-name|asList
-argument_list|(
-name|baseDirs
-argument_list|)
+name|getDeletionTaskType
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
