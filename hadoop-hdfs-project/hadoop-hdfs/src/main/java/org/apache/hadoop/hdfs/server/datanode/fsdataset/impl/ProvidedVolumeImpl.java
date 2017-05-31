@@ -1280,6 +1280,16 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|bpSlices
+operator|.
+name|containsKey
+argument_list|(
+name|bpid
+argument_list|)
+condition|)
+block|{
 return|return
 name|df
 operator|.
@@ -1288,6 +1298,21 @@ argument_list|(
 name|bpid
 argument_list|)
 return|;
+block|}
+else|else
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"block pool "
+operator|+
+name|bpid
+operator|+
+literal|" is not found"
+argument_list|)
+throw|;
+block|}
 block|}
 annotation|@
 name|Override
