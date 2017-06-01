@@ -191,7 +191,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Tests a live Aliyun OSS system.  *  * This uses BlockJUnit4ClassRunner because FileSystemContractBaseTest from  * TestCase which uses the old Junit3 runner that doesn't ignore assumptions  * properly making it impossible to skip the tests if we don't have a valid  * bucket.  */
+comment|/**  * Tests a live Aliyun OSS system.  */
 end_comment
 
 begin_class
