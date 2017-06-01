@@ -50,20 +50,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|avro
-operator|.
-name|reflect
-operator|.
-name|Nullable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -2149,14 +2135,12 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Returns a {@link CloseableHttpClient} configured by given configuration.    * If conf is null, returns a default instance.    *    * @param conf configuration    * @return a {@link CloseableHttpClient} instance.    */
-DECL|method|newHttpClient ( @ullable Configuration conf)
+DECL|method|newHttpClient (Configuration conf)
 specifier|public
 specifier|static
 name|CloseableHttpClient
 name|newHttpClient
 parameter_list|(
-annotation|@
-name|Nullable
 name|Configuration
 name|conf
 parameter_list|)

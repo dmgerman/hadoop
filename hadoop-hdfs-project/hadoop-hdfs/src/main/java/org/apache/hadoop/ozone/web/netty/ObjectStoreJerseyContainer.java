@@ -32,25 +32,9 @@ name|codec
 operator|.
 name|http
 operator|.
-name|HttpHeaderNames
+name|HttpHeaders
 operator|.
-name|CONNECTION
-import|;
-end_import
-
-begin_import
-import|import static
-name|io
-operator|.
-name|netty
-operator|.
-name|handler
-operator|.
-name|codec
-operator|.
-name|http
-operator|.
-name|HttpHeaderNames
+name|Names
 operator|.
 name|CONTENT_LENGTH
 import|;
@@ -68,9 +52,11 @@ name|codec
 operator|.
 name|http
 operator|.
-name|HttpHeaderNames
+name|HttpHeaders
 operator|.
-name|HOST
+name|Names
+operator|.
+name|CONNECTION
 import|;
 end_import
 
@@ -86,7 +72,9 @@ name|codec
 operator|.
 name|http
 operator|.
-name|HttpHeaderNames
+name|HttpHeaders
+operator|.
+name|Names
 operator|.
 name|TRANSFER_ENCODING
 import|;
@@ -104,9 +92,11 @@ name|codec
 operator|.
 name|http
 operator|.
-name|HttpHeaderValues
+name|HttpHeaders
 operator|.
-name|CLOSE
+name|Names
+operator|.
+name|HOST
 import|;
 end_import
 
@@ -122,9 +112,31 @@ name|codec
 operator|.
 name|http
 operator|.
-name|HttpHeaderValues
+name|HttpHeaders
+operator|.
+name|Values
 operator|.
 name|KEEP_ALIVE
+import|;
+end_import
+
+begin_import
+import|import static
+name|io
+operator|.
+name|netty
+operator|.
+name|handler
+operator|.
+name|codec
+operator|.
+name|http
+operator|.
+name|HttpHeaders
+operator|.
+name|Values
+operator|.
+name|CLOSE
 import|;
 end_import
 

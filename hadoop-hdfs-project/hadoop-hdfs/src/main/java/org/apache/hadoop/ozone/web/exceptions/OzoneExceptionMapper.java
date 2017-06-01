@@ -52,9 +52,7 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
-operator|.
-name|log4j
+name|slf4j
 operator|.
 name|MDC
 import|;

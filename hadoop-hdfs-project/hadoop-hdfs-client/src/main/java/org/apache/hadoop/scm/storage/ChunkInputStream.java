@@ -19,24 +19,6 @@ package|;
 end_package
 
 begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|scm
-operator|.
-name|storage
-operator|.
-name|ContainerProtocolCalls
-operator|.
-name|*
-import|;
-end_import
-
-begin_import
 import|import
 name|java
 operator|.
@@ -713,6 +695,8 @@ try|try
 block|{
 name|readChunkResponse
 operator|=
+name|ContainerProtocolCalls
+operator|.
 name|readChunk
 argument_list|(
 name|xceiverClient
