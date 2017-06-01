@@ -7766,6 +7766,13 @@ name|DatanodeDescriptor
 name|node
 parameter_list|)
 block|{
+name|providedStorageMap
+operator|.
+name|removeDatanode
+argument_list|(
+name|node
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|DatanodeStorageInfo
@@ -11914,6 +11921,8 @@ argument_list|(
 name|node
 argument_list|,
 name|storage
+argument_list|,
+name|context
 argument_list|)
 decl_stmt|;
 if|if
@@ -12564,7 +12573,6 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|processReport ( final DatanodeStorageInfo storageInfo, final BlockListAsLongs report, BlockReportContext context)
-specifier|private
 name|Collection
 argument_list|<
 name|Block

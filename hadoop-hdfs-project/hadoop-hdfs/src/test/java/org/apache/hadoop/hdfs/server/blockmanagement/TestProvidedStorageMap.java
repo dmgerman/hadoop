@@ -572,6 +572,8 @@ argument_list|(
 name|dn1
 argument_list|,
 name|dn1ProvidedStorage
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|DatanodeStorageInfo
@@ -584,6 +586,8 @@ argument_list|(
 name|dn1
 argument_list|,
 name|dn1DiskStorage
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|assertTrue
@@ -636,6 +640,8 @@ argument_list|(
 name|dn1
 argument_list|,
 name|dn1DiskStorage
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -678,6 +684,8 @@ argument_list|(
 name|dn2
 argument_list|,
 name|dn2ProvidedStorage
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|assertTrue
