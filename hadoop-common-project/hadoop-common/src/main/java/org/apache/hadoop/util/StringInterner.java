@@ -73,7 +73,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Provides equivalent behavior to String.intern() to optimize performance,   * whereby does not consume memory in the permanent generation.  */
+comment|/**  * Provides string interning utility methods. For weak interning,  * we use the standard String.intern() call, that performs very well  * (no problems with PermGen overflowing, etc.) starting from JDK 7.  */
 end_comment
 
 begin_class
@@ -91,7 +91,7 @@ class|class
 name|StringInterner
 block|{
 comment|/**    * Retains a strong reference to each string instance it has interned.    */
-DECL|field|strongInterner
+DECL|field|STRONG_INTERNER
 specifier|private
 specifier|final
 specifier|static
@@ -99,36 +99,13 @@ name|Interner
 argument_list|<
 name|String
 argument_list|>
-name|strongInterner
-decl_stmt|;
-comment|/**    * Retains a weak reference to each string instance it has interned.     */
-DECL|field|weakInterner
-specifier|private
-specifier|final
-specifier|static
-name|Interner
-argument_list|<
-name|String
-argument_list|>
-name|weakInterner
-decl_stmt|;
-static|static
-block|{
-name|strongInterner
-operator|=
+name|STRONG_INTERNER
+init|=
 name|Interners
 operator|.
 name|newStrongInterner
 argument_list|()
-expr_stmt|;
-name|weakInterner
-operator|=
-name|Interners
-operator|.
-name|newWeakInterner
-argument_list|()
-expr_stmt|;
-block|}
+decl_stmt|;
 comment|/**    * Interns and returns a reference to the representative instance     * for any of a collection of string instances that are equal to each other.    * Retains strong reference to the instance,     * thus preventing it from being garbage-collected.     *     * @param sample string instance to be interned    * @return strong reference to interned string instance    */
 DECL|method|strongIntern (String sample)
 specifier|public
@@ -152,7 +129,7 @@ literal|null
 return|;
 block|}
 return|return
-name|strongInterner
+name|STRONG_INTERNER
 operator|.
 name|intern
 argument_list|(
@@ -183,12 +160,58 @@ literal|null
 return|;
 block|}
 return|return
-name|weakInterner
+name|sample
 operator|.
 name|intern
+argument_list|()
+return|;
+block|}
+comment|/**    * Interns all the strings in the given array in place,    * returning the same array.    */
+DECL|method|internStringsInArray (String[] strings)
+specifier|public
+specifier|static
+name|String
+index|[]
+name|internStringsInArray
+parameter_list|(
+name|String
+index|[]
+name|strings
+parameter_list|)
+block|{
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|strings
+operator|.
+name|length
+condition|;
+name|i
+operator|++
+control|)
+block|{
+name|strings
+index|[
+name|i
+index|]
+operator|=
+name|weakIntern
 argument_list|(
-name|sample
+name|strings
+index|[
+name|i
+index|]
 argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|strings
 return|;
 block|}
 block|}
