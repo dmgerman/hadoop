@@ -1288,9 +1288,6 @@ argument_list|(
 name|fsd
 argument_list|,
 name|srcIIP
-operator|.
-name|getPath
-argument_list|()
 argument_list|,
 name|xattrs
 argument_list|)

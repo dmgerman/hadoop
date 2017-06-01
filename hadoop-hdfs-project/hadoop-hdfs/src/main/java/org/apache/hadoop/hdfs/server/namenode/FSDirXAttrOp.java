@@ -1055,7 +1055,7 @@ name|unprotectedRemoveXAttrs
 argument_list|(
 name|fsd
 argument_list|,
-name|src
+name|iip
 argument_list|,
 name|xAttrs
 argument_list|)
@@ -1116,7 +1116,7 @@ name|iip
 argument_list|)
 return|;
 block|}
-DECL|method|unprotectedRemoveXAttrs ( FSDirectory fsd, final String src, final List<XAttr> toRemove)
+DECL|method|unprotectedRemoveXAttrs ( FSDirectory fsd, final INodesInPath iip, final List<XAttr> toRemove)
 specifier|static
 name|List
 argument_list|<
@@ -1128,8 +1128,8 @@ name|FSDirectory
 name|fsd
 parameter_list|,
 specifier|final
-name|String
-name|src
+name|INodesInPath
+name|iip
 parameter_list|,
 specifier|final
 name|List
@@ -1147,20 +1147,6 @@ operator|.
 name|hasWriteLock
 argument_list|()
 assert|;
-name|INodesInPath
-name|iip
-init|=
-name|fsd
-operator|.
-name|getINodesInPath
-argument_list|(
-name|src
-argument_list|,
-name|DirOp
-operator|.
-name|WRITE
-argument_list|)
-decl_stmt|;
 name|INode
 name|inode
 init|=
