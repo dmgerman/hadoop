@@ -550,6 +550,7 @@ DECL|enumConstant|LIVE
 DECL|enumConstant|DEAD
 DECL|enumConstant|DECOMMISSIONING
 DECL|enumConstant|ENTERING_MAINTENANCE
+DECL|enumConstant|IN_MAINTENANCE
 name|ALL
 block|,
 name|LIVE
@@ -559,6 +560,8 @@ block|,
 name|DECOMMISSIONING
 block|,
 name|ENTERING_MAINTENANCE
+block|,
+name|IN_MAINTENANCE
 block|}
 comment|/* Hidden constructor */
 DECL|method|HdfsConstants ()
