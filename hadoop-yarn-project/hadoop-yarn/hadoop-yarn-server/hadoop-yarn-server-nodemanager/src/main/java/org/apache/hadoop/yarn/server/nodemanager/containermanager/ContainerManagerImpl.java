@@ -9329,7 +9329,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|warn
+name|info
 argument_list|(
 literal|"couldn't find application "
 operator|+
@@ -9337,7 +9337,11 @@ name|appID
 operator|+
 literal|" while processing"
 operator|+
-literal|" FINISH_APPS event"
+literal|" FINISH_APPS event. The ResourceManager allocated resources"
+operator|+
+literal|" for this application to the NodeManager but no active"
+operator|+
+literal|" containers were found to process."
 argument_list|)
 expr_stmt|;
 continue|continue;
