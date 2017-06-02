@@ -2089,6 +2089,23 @@ literal|"The Ozone handler type must be specified."
 argument_list|)
 throw|;
 block|}
+else|else
+block|{
+name|conf
+operator|.
+name|set
+argument_list|(
+name|OzoneConfigKeys
+operator|.
+name|OZONE_HANDLER_TYPE_KEY
+argument_list|,
+name|ozoneHandlerType
+operator|.
+name|get
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|configureTrace ()
 specifier|private

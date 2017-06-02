@@ -382,6 +382,11 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
+name|cluster
+operator|.
+name|waitOzoneReady
+argument_list|()
+expr_stmt|;
 name|ozoneClient
 operator|=
 name|cluster

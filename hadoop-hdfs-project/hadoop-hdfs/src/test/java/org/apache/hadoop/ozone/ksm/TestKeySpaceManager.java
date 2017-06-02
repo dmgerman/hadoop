@@ -2552,23 +2552,10 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|// try to put the same keyArg, should raise KEY_ALREADY_EXISTS exception
-name|exception
-operator|.
-name|expect
-argument_list|(
-name|IOException
-operator|.
-name|class
-argument_list|)
-expr_stmt|;
-name|exception
-operator|.
-name|expectMessage
-argument_list|(
-literal|"KEY_ALREADY_EXISTS"
-argument_list|)
-expr_stmt|;
+comment|// We allow the key overwrite to be successful. Please note : Till HDFS-11922
+comment|// is fixed this causes a data block leak on the data node side. That is
+comment|// this overwrite only overwrites the keys on KSM. We need to garbage
+comment|// collect those blocks from datanode.
 name|KeyArgs
 name|keyArgs2
 init|=
@@ -2595,8 +2582,6 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|1
-operator|+
 name|numKeyAllocateFails
 argument_list|,
 name|ksmMetrics

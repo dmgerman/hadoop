@@ -412,48 +412,18 @@ name|FAILED_BUCKET_NOT_FOUND
 argument_list|)
 throw|;
 block|}
-comment|// TODO throw exception if key exists, may change to support key
-comment|// overwrite in the future
-comment|//Check if key already exists.
-if|if
-condition|(
-name|metadataManager
-operator|.
-name|get
-argument_list|(
-name|keyKey
-argument_list|)
-operator|!=
-literal|null
-condition|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"key already exist: {}/{}/{} "
-argument_list|,
-name|volumeName
-argument_list|,
-name|bucketName
-argument_list|,
-name|keyName
-argument_list|)
-expr_stmt|;
-throw|throw
-operator|new
-name|KSMException
-argument_list|(
-literal|"Key already exist"
-argument_list|,
-name|KSMException
-operator|.
-name|ResultCodes
-operator|.
-name|FAILED_KEY_ALREADY_EXISTS
-argument_list|)
-throw|;
-block|}
+comment|// TODO: Garbage collect deleted blocks due to overwrite of a key.
+comment|// FIXME: BUG: Please see HDFS-11922.
+comment|// If user overwrites a key, then we are letting it pass without
+comment|// corresponding process.
+comment|// In reality we need to garbage collect those blocks by telling SCM to
+comment|// clean up those blocks when it can. Right now making this change
+comment|// allows us to pass tests that expect ozone can overwrite a key.
+comment|// When we talk to SCM make sure that we ask for at least a byte in the
+comment|// block. This way even if the call is for a zero length key, we back it
+comment|// with a actual SCM block.
+comment|// TODO : Review this decision later. We can get away with only a
+comment|// metadata entry in case of 0 length key.
 name|AllocatedBlock
 name|allocatedBlock
 init|=
@@ -461,10 +431,17 @@ name|scmBlockClient
 operator|.
 name|allocateBlock
 argument_list|(
+name|Math
+operator|.
+name|max
+argument_list|(
 name|args
 operator|.
 name|getDataSize
 argument_list|()
+argument_list|,
+literal|1
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|KsmKeyInfo
@@ -572,7 +549,7 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|DBException
+name|Exception
 name|ex
 parameter_list|)
 block|{
