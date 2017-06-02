@@ -862,6 +862,14 @@ argument_list|(
 name|dbVolumeRootKey
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|iterator
+operator|.
+name|hasNext
+argument_list|()
+condition|)
+block|{
 name|String
 name|firstBucketKey
 init|=
@@ -878,7 +886,7 @@ name|getKey
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// if the key starts with /<volume name>
+comment|// if the key starts with /<volume name>/
 comment|// then there is at least one bucket
 return|return
 operator|!
@@ -886,13 +894,16 @@ name|firstBucketKey
 operator|.
 name|startsWith
 argument_list|(
-name|OzoneConsts
-operator|.
-name|KSM_VOLUME_PREFIX
-operator|+
-name|volume
+name|dbVolumeRootName
 argument_list|)
 return|;
+block|}
+else|else
+block|{
+return|return
+literal|true
+return|;
+block|}
 block|}
 block|}
 block|}
