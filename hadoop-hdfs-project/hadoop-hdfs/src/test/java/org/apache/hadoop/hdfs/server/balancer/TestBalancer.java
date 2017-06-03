@@ -6936,8 +6936,9 @@ condition|)
 block|{
 name|excludeHostsFile
 operator|=
-operator|new
-name|File
+name|GenericTestUtils
+operator|.
+name|getTestDir
 argument_list|(
 literal|"exclude-hosts-file"
 argument_list|)
@@ -6988,7 +6989,10 @@ name|args
 operator|.
 name|add
 argument_list|(
-literal|"exclude-hosts-file"
+name|excludeHostsFile
+operator|.
+name|getAbsolutePath
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -7044,8 +7048,9 @@ condition|)
 block|{
 name|includeHostsFile
 operator|=
-operator|new
-name|File
+name|GenericTestUtils
+operator|.
+name|getTestDir
 argument_list|(
 literal|"include-hosts-file"
 argument_list|)
@@ -7096,7 +7101,10 @@ name|args
 operator|.
 name|add
 argument_list|(
-literal|"include-hosts-file"
+name|includeHostsFile
+operator|.
+name|getAbsolutePath
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
