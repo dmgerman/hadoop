@@ -148,8 +148,8 @@ return|return
 name|volumeName
 return|;
 block|}
-comment|/**    * Constructs  volume Args.    *    * @param userName - User name    * @param volumeName - volume Name    * @param requestID _ Request ID    * @param hostName - Host Name    * @param request  - Http Request    * @param info - URI info    * @param headers - http headers    */
-DECL|method|VolumeArgs (String userName, String volumeName, String requestID, String hostName, Request request, UriInfo info, HttpHeaders headers)
+comment|/**    * Constructs  volume Args.    *    * @param userName - User name    * @param volumeName - volume Name    * @param requestID _ Request ID    * @param hostName - Host Name    * @param request  - Http Request    * @param info - URI info    * @param headers - http headers    * @param groups - list of groups allowed to access the volume    */
+DECL|method|VolumeArgs (String userName, String volumeName, String requestID, String hostName, Request request, UriInfo info, HttpHeaders headers, String[] groups)
 specifier|public
 name|VolumeArgs
 parameter_list|(
@@ -173,6 +173,10 @@ name|info
 parameter_list|,
 name|HttpHeaders
 name|headers
+parameter_list|,
+name|String
+index|[]
+name|groups
 parameter_list|)
 block|{
 name|super
@@ -188,6 +192,13 @@ argument_list|,
 name|info
 argument_list|,
 name|headers
+argument_list|)
+expr_stmt|;
+name|super
+operator|.
+name|setGroups
+argument_list|(
+name|groups
 argument_list|)
 expr_stmt|;
 name|this
@@ -241,6 +252,11 @@ argument_list|,
 name|userArgs
 operator|.
 name|getHeaders
+argument_list|()
+argument_list|,
+name|userArgs
+operator|.
+name|getGroups
 argument_list|()
 argument_list|)
 expr_stmt|;

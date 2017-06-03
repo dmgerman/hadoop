@@ -125,6 +125,12 @@ specifier|final
 name|HttpHeaders
 name|headers
 decl_stmt|;
+DECL|field|groups
+specifier|private
+name|String
+index|[]
+name|groups
+decl_stmt|;
 comment|/**    * Constructs  user args.    *    * @param userName - User name    * @param requestID - Request ID    * @param hostName - Host Name    * @param req - Request    * @param info - Uri Info    * @param httpHeaders - http headers    */
 DECL|method|UserArgs (String userName, String requestID, String hostName, Request req, UriInfo info, HttpHeaders httpHeaders)
 specifier|public
@@ -286,6 +292,38 @@ operator|.
 name|userName
 operator|=
 name|userName
+expr_stmt|;
+block|}
+comment|/**    * Returns list of groups.    *    * @return String[]    */
+DECL|method|getGroups ()
+specifier|public
+name|String
+index|[]
+name|getGroups
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|groups
+return|;
+block|}
+comment|/**    * Sets the group list.    *    * @param groups list of groups    */
+DECL|method|setGroups (String[] groups)
+specifier|public
+name|void
+name|setGroups
+parameter_list|(
+name|String
+index|[]
+name|groups
+parameter_list|)
+block|{
+name|this
+operator|.
+name|groups
+operator|=
+name|groups
 expr_stmt|;
 block|}
 comment|/**    * Returns the resource Name.    *    * @return String Resource.    */

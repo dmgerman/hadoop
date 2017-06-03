@@ -100,6 +100,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|KeySpaceManagerProtocolProtos
+operator|.
+name|OzoneAclInfo
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -167,16 +187,16 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Checks if the specified user can access this volume.    * @param volume - volume    * @param userName - user name    * @throws IOException    */
-DECL|method|checkVolumeAccess (String volume, String userName)
-name|void
+comment|/**    * Checks if the specified user can access this volume.    * @param volume - volume    * @param userAcl - user acls which needs to be checked for access    * @return true if the user has required access for the volume,    *         false otherwise    * @throws IOException    */
+DECL|method|checkVolumeAccess (String volume, OzoneAclInfo userAcl)
+name|boolean
 name|checkVolumeAccess
 parameter_list|(
 name|String
 name|volume
 parameter_list|,
-name|String
-name|userName
+name|OzoneAclInfo
+name|userAcl
 parameter_list|)
 throws|throws
 name|IOException

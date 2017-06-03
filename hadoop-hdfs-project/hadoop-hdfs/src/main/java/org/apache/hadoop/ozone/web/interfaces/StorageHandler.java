@@ -156,6 +156,24 @@ name|ozone
 operator|.
 name|web
 operator|.
+name|request
+operator|.
+name|OzoneAcl
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|web
+operator|.
 name|response
 operator|.
 name|BucketInfo
@@ -310,13 +328,16 @@ name|IOException
 throws|,
 name|OzoneException
 function_decl|;
-comment|/**    * Checks if a Volume exists and the user specified has access to the    * Volume.    *    * @param args - Volume Args    *    * @return - Boolean - True if the user can modify the volume.    * This is possible for owners of the volume and admin users    *    * @throws IOException    * @throws OzoneException    */
-DECL|method|checkVolumeAccess (VolumeArgs args)
+comment|/**    * Checks if a Volume exists and the user with a role specified has access    * to the Volume.    *    * @param volume - Volume Name whose access permissions needs to be checked    * @param acl - requested acls which needs to be checked for access    *    * @return - Boolean - True if the user with a role can access the volume.    * This is possible for owners of the volume and admin users    *    * @throws IOException    * @throws OzoneException    */
+DECL|method|checkVolumeAccess (String volume, OzoneAcl acl)
 name|boolean
 name|checkVolumeAccess
 parameter_list|(
-name|VolumeArgs
-name|args
+name|String
+name|volume
+parameter_list|,
+name|OzoneAcl
+name|acl
 parameter_list|)
 throws|throws
 name|IOException

@@ -48,6 +48,26 @@ name|proto
 operator|.
 name|KeySpaceManagerProtocolProtos
 operator|.
+name|OzoneAclInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|KeySpaceManagerProtocolProtos
+operator|.
 name|VolumeInfo
 import|;
 end_import
@@ -69,6 +89,16 @@ operator|.
 name|OzoneProtos
 operator|.
 name|KeyValue
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
 import|;
 end_import
 
@@ -170,8 +200,14 @@ name|String
 argument_list|>
 name|keyValueMap
 decl_stmt|;
-comment|/**    * Private constructor, constructed via builder.    * @param adminName  - Administrator's name.    * @param ownerName  - Volume owner's name    * @param volume - volume name    * @param quotaInBytes - Volume Quota in bytes.    * @param  keyValueMap - keyValue map.    */
-DECL|method|KsmVolumeArgs (String adminName, String ownerName, String volume, long quotaInBytes, Map<String, String> keyValueMap)
+DECL|field|aclMap
+specifier|private
+specifier|final
+name|KsmOzoneAclMap
+name|aclMap
+decl_stmt|;
+comment|/**    * Private constructor, constructed via builder.    * @param adminName  - Administrator's name.    * @param ownerName  - Volume owner's name    * @param volume - volume name    * @param quotaInBytes - Volume Quota in bytes.    * @param keyValueMap - keyValue map.    * @param aclMap - User to access rights map.    */
+DECL|method|KsmVolumeArgs (String adminName, String ownerName, String volume, long quotaInBytes, Map<String, String> keyValueMap, KsmOzoneAclMap aclMap)
 specifier|private
 name|KsmVolumeArgs
 parameter_list|(
@@ -194,6 +230,9 @@ argument_list|,
 name|String
 argument_list|>
 name|keyValueMap
+parameter_list|,
+name|KsmOzoneAclMap
+name|aclMap
 parameter_list|)
 block|{
 name|this
@@ -225,6 +264,12 @@ operator|.
 name|keyValueMap
 operator|=
 name|keyValueMap
+expr_stmt|;
+name|this
+operator|.
+name|aclMap
+operator|=
+name|aclMap
 expr_stmt|;
 block|}
 comment|/**    * Returns the Admin Name.    * @return String.    */
@@ -286,6 +331,16 @@ return|return
 name|keyValueMap
 return|;
 block|}
+DECL|method|getAclMap ()
+specifier|public
+name|KsmOzoneAclMap
+name|getAclMap
+parameter_list|()
+block|{
+return|return
+name|aclMap
+return|;
+block|}
 comment|/**    * Returns new builder class that builds a KsmVolumeArgs.    *    * @return Builder    */
 DECL|method|newBuilder ()
 specifier|public
@@ -337,6 +392,11 @@ name|String
 argument_list|>
 name|keyValueMap
 decl_stmt|;
+DECL|field|aclMap
+specifier|private
+name|KsmOzoneAclMap
+name|aclMap
+decl_stmt|;
 comment|/**      * Constructs a builder.      */
 DECL|method|Builder ()
 name|Builder
@@ -347,6 +407,12 @@ operator|=
 operator|new
 name|HashMap
 argument_list|<>
+argument_list|()
+expr_stmt|;
+name|aclMap
+operator|=
+operator|new
+name|KsmOzoneAclMap
 argument_list|()
 expr_stmt|;
 block|}
@@ -452,6 +518,28 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|addOzoneAcls (OzoneAclInfo acl)
+specifier|public
+name|Builder
+name|addOzoneAcls
+parameter_list|(
+name|OzoneAclInfo
+name|acl
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|aclMap
+operator|.
+name|addAcl
+argument_list|(
+name|acl
+argument_list|)
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 comment|/**      * Constructs a CreateVolumeArgument.      * @return CreateVolumeArgs.      */
 DECL|method|build ()
 specifier|public
@@ -493,6 +581,8 @@ argument_list|,
 name|quotaInBytes
 argument_list|,
 name|keyValueMap
+argument_list|,
+name|aclMap
 argument_list|)
 return|;
 block|}
@@ -507,7 +597,7 @@ name|List
 argument_list|<
 name|KeyValue
 argument_list|>
-name|list
+name|metadataList
 init|=
 operator|new
 name|LinkedList
@@ -532,7 +622,7 @@ name|entrySet
 argument_list|()
 control|)
 block|{
-name|list
+name|metadataList
 operator|.
 name|add
 argument_list|(
@@ -562,6 +652,17 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|List
+argument_list|<
+name|OzoneAclInfo
+argument_list|>
+name|aclList
+init|=
+name|aclMap
+operator|.
+name|ozoneAclGetProtobuf
+argument_list|()
+decl_stmt|;
 return|return
 name|VolumeInfo
 operator|.
@@ -590,7 +691,12 @@ argument_list|)
 operator|.
 name|addAllMetadata
 argument_list|(
-name|list
+name|metadataList
+argument_list|)
+operator|.
+name|addAllVolumeAcls
+argument_list|(
+name|aclList
 argument_list|)
 operator|.
 name|build
@@ -607,6 +713,51 @@ name|VolumeInfo
 name|volInfo
 parameter_list|)
 block|{
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|kvMap
+init|=
+name|volInfo
+operator|.
+name|getMetadataList
+argument_list|()
+operator|.
+name|stream
+argument_list|()
+operator|.
+name|collect
+argument_list|(
+name|Collectors
+operator|.
+name|toMap
+argument_list|(
+name|KeyValue
+operator|::
+name|getKey
+argument_list|,
+name|KeyValue
+operator|::
+name|getValue
+argument_list|)
+argument_list|)
+decl_stmt|;
+name|KsmOzoneAclMap
+name|aclMap
+init|=
+name|KsmOzoneAclMap
+operator|.
+name|ozoneAclGetFromProtobuf
+argument_list|(
+name|volInfo
+operator|.
+name|getVolumeAclsList
+argument_list|()
+argument_list|)
+decl_stmt|;
 return|return
 operator|new
 name|KsmVolumeArgs
@@ -631,29 +782,9 @@ operator|.
 name|getQuotaInBytes
 argument_list|()
 argument_list|,
-name|volInfo
-operator|.
-name|getMetadataList
-argument_list|()
-operator|.
-name|stream
-argument_list|()
-operator|.
-name|collect
-argument_list|(
-name|Collectors
-operator|.
-name|toMap
-argument_list|(
-name|KeyValue
-operator|::
-name|getKey
+name|kvMap
 argument_list|,
-name|KeyValue
-operator|::
-name|getValue
-argument_list|)
-argument_list|)
+name|aclMap
 argument_list|)
 return|;
 block|}

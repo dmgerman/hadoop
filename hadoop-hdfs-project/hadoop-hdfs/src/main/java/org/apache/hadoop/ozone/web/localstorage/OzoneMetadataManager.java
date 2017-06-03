@@ -1608,14 +1608,17 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Checks if you are the owner of a specific volume.    *    * @param args - VolumeArgs    * @return - True if you are the owner, false otherwise    * @throws OzoneException    */
-DECL|method|checkVolumeAccess (VolumeArgs args)
+comment|/**    * Checks if you are the owner of a specific volume.    *    * @param volume - Volume Name whose access permissions needs to be checked    * @param acl - requested acls which needs to be checked for access    * @return - True if you are the owner, false otherwise    * @throws OzoneException    */
+DECL|method|checkVolumeAccess (String volume, OzoneAcl acl)
 specifier|public
 name|boolean
 name|checkVolumeAccess
 parameter_list|(
-name|VolumeArgs
-name|args
+name|String
+name|volume
+parameter_list|,
+name|OzoneAcl
+name|acl
 parameter_list|)
 throws|throws
 name|OzoneException
@@ -1638,10 +1641,7 @@ name|metadataDB
 operator|.
 name|get
 argument_list|(
-name|args
-operator|.
-name|getVolumeName
-argument_list|()
+name|volume
 operator|.
 name|getBytes
 argument_list|(
@@ -1665,7 +1665,7 @@ name|ErrorTable
 operator|.
 name|VOLUME_NOT_FOUND
 argument_list|,
-name|args
+literal|null
 argument_list|)
 throw|;
 block|}
@@ -1696,9 +1696,9 @@ argument_list|()
 operator|.
 name|equals
 argument_list|(
-name|args
+name|acl
 operator|.
-name|getUserName
+name|getName
 argument_list|()
 argument_list|)
 return|;
@@ -1720,7 +1720,7 @@ name|ErrorTable
 operator|.
 name|SERVER_ERROR
 argument_list|,
-name|args
+literal|null
 argument_list|,
 name|ex
 argument_list|)

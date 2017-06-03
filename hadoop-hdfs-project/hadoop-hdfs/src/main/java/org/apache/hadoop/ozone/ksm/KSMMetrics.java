@@ -126,6 +126,13 @@ name|Metric
 name|MutableCounterLong
 name|numVolumeInfos
 decl_stmt|;
+DECL|field|numVolumeCheckAccesses
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numVolumeCheckAccesses
+decl_stmt|;
 DECL|field|numBucketCreates
 specifier|private
 annotation|@
@@ -203,6 +210,13 @@ annotation|@
 name|Metric
 name|MutableCounterLong
 name|numBucketCreateFails
+decl_stmt|;
+DECL|field|numVolumeCheckAccessFails
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numVolumeCheckAccessFails
 decl_stmt|;
 DECL|field|numBucketInfoFails
 specifier|private
@@ -315,6 +329,18 @@ name|incr
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|incNumVolumeCheckAccesses ()
+specifier|public
+name|void
+name|incNumVolumeCheckAccesses
+parameter_list|()
+block|{
+name|numVolumeCheckAccesses
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
 DECL|method|incNumBucketCreates ()
 specifier|public
 name|void
@@ -394,6 +420,18 @@ name|incNumVolumeDeleteFails
 parameter_list|()
 block|{
 name|numVolumeDeleteFails
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumVolumeCheckAccessFails ()
+specifier|public
+name|void
+name|incNumVolumeCheckAccessFails
+parameter_list|()
+block|{
+name|numVolumeCheckAccessFails
 operator|.
 name|incr
 argument_list|()
@@ -545,6 +583,21 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
+DECL|method|getNumVolumeCheckAccesses ()
+specifier|public
+name|long
+name|getNumVolumeCheckAccesses
+parameter_list|()
+block|{
+return|return
+name|numVolumeCheckAccesses
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getNumBucketCreates ()
 specifier|public
 name|long
@@ -643,6 +696,21 @@ parameter_list|()
 block|{
 return|return
 name|numVolumeDeleteFails
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumVolumeCheckAccessFails ()
+specifier|public
+name|long
+name|getNumVolumeCheckAccessFails
+parameter_list|()
+block|{
+return|return
+name|numVolumeCheckAccessFails
 operator|.
 name|value
 argument_list|()

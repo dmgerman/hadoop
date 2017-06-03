@@ -190,6 +190,24 @@ name|web
 operator|.
 name|request
 operator|.
+name|OzoneAcl
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|web
+operator|.
+name|request
+operator|.
 name|OzoneQuota
 import|;
 end_import
@@ -479,16 +497,19 @@ name|QUOTA
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Checks if a Volume exists and the user specified has access to the volume.    *    * @param args - volumeArgs    * @return - Boolean - True if the user can modify the volume. This is    * possible for owners of the volume and admin users    * @throws IOException    */
+comment|/**    * Checks if a Volume exists and the user specified has access to the volume.    *    * @param volume - Volume Name    * @param acl - Ozone acl which needs to be compared for access    * @return - Boolean - True if the user can modify the volume. This is    * possible for owners of the volume and admin users    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|checkVolumeAccess (VolumeArgs args)
+DECL|method|checkVolumeAccess (String volume, OzoneAcl acl)
 specifier|public
 name|boolean
 name|checkVolumeAccess
 parameter_list|(
-name|VolumeArgs
-name|args
+name|String
+name|volume
+parameter_list|,
+name|OzoneAcl
+name|acl
 parameter_list|)
 throws|throws
 name|IOException
@@ -510,7 +531,9 @@ name|oz
 operator|.
 name|checkVolumeAccess
 argument_list|(
-name|args
+name|volume
+argument_list|,
+name|acl
 argument_list|)
 return|;
 block|}

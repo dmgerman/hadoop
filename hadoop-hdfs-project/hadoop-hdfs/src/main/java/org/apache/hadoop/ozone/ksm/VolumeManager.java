@@ -36,6 +36,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|KeySpaceManagerProtocolProtos
+operator|.
+name|OzoneAclInfo
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -111,6 +131,20 @@ name|deleteVolume
 parameter_list|(
 name|String
 name|volume
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Checks if the specified user with a role can access this volume.    *    * @param volume - volume    * @param userAcl - user acl which needs to be checked for access    * @return true if the user has access for the volume, false otherwise    * @throws IOException    */
+DECL|method|checkVolumeAccess (String volume, OzoneAclInfo userAcl)
+name|boolean
+name|checkVolumeAccess
+parameter_list|(
+name|String
+name|volume
+parameter_list|,
+name|OzoneAclInfo
+name|userAcl
 parameter_list|)
 throws|throws
 name|IOException
