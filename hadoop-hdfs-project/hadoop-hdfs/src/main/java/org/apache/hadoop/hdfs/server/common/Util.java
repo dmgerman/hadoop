@@ -1241,6 +1241,11 @@ name|finishedReceiving
 init|=
 literal|false
 decl_stmt|;
+name|int
+name|num
+init|=
+literal|1
+decl_stmt|;
 name|List
 argument_list|<
 name|FileOutputStream
@@ -1383,11 +1388,6 @@ argument_list|)
 throw|;
 block|}
 block|}
-name|int
-name|num
-init|=
-literal|1
-decl_stmt|;
 name|byte
 index|[]
 name|buf
@@ -1663,6 +1663,14 @@ operator|+
 literal|" is not of the advertised size "
 operator|+
 name|advertisedSize
+operator|+
+literal|". Fsimage name: "
+operator|+
+name|fsImageName
+operator|+
+literal|" lastReceived: "
+operator|+
+name|num
 argument_list|)
 throw|;
 block|}
