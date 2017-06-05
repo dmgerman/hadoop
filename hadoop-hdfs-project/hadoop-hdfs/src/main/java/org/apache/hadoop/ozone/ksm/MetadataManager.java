@@ -225,6 +225,16 @@ name|String
 name|key
 parameter_list|)
 function_decl|;
+comment|/**    * Deletes the key from DB.    *    * @param key - key name    */
+DECL|method|deleteKey (byte[] key)
+name|void
+name|deleteKey
+parameter_list|(
+name|byte
+index|[]
+name|key
+parameter_list|)
+function_decl|;
 comment|/**    * Given a volume, check if it is empty, i.e there are no buckets inside it.    * @param volume - Volume name    */
 DECL|method|isVolumeEmpty (String volume)
 name|boolean

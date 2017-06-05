@@ -792,9 +792,10 @@ operator|.
 name|checkArgument
 argument_list|(
 name|keys
-operator|==
+operator|!=
 literal|null
-operator|||
+operator|&&
+operator|!
 name|keys
 operator|.
 name|isEmpty

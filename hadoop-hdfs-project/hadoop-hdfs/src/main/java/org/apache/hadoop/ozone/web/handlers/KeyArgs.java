@@ -37,11 +37,6 @@ specifier|private
 name|String
 name|key
 decl_stmt|;
-DECL|field|delete
-specifier|private
-name|boolean
-name|delete
-decl_stmt|;
 DECL|field|hash
 specifier|private
 name|String
@@ -86,6 +81,30 @@ operator|=
 name|objectName
 expr_stmt|;
 block|}
+comment|/**    * Constructor for Key Args.    *    * @param objectName - Key    * @param args - Bucket Args    */
+DECL|method|KeyArgs (String objectName, BucketArgs args)
+specifier|public
+name|KeyArgs
+parameter_list|(
+name|String
+name|objectName
+parameter_list|,
+name|BucketArgs
+name|args
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|args
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|key
+operator|=
+name|objectName
+expr_stmt|;
+block|}
 comment|/**    * Get Key Name.    *    * @return String    */
 DECL|method|getKeyName ()
 specifier|public
@@ -98,34 +117,6 @@ name|this
 operator|.
 name|key
 return|;
-block|}
-comment|/**    * Checks if this request is for a Delete key.    *    * @return boolean    */
-DECL|method|isDelete ()
-specifier|public
-name|boolean
-name|isDelete
-parameter_list|()
-block|{
-return|return
-name|delete
-return|;
-block|}
-comment|/**    * Sets the key request as a Delete Request.    *    * @param delete bool, indicating if this is a delete request    */
-DECL|method|setDelete (boolean delete)
-specifier|public
-name|void
-name|setDelete
-parameter_list|(
-name|boolean
-name|delete
-parameter_list|)
-block|{
-name|this
-operator|.
-name|delete
-operator|=
-name|delete
-expr_stmt|;
 block|}
 comment|/**    * Computed File hash.    *    * @return String    */
 DECL|method|getHash ()

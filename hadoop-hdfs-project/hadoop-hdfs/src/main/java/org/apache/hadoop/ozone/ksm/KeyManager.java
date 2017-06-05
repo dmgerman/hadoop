@@ -92,6 +92,17 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Deletes an object by an object key. The key will be immediately removed    * from KSM namespace and become invisible to clients. The object data    * will be removed in async manner that might retain for some time.    *    * @param args the args of the key provided by client.    * @throws IOException if specified key doesn't exist or    * some other I/O errors while deleting an object.    */
+DECL|method|deleteKey (KsmKeyArgs args)
+name|void
+name|deleteKey
+parameter_list|(
+name|KsmKeyArgs
+name|args
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

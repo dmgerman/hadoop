@@ -324,6 +324,17 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Deletes an existing key.    *    * @param args the args of the key.    * @throws IOException    */
+DECL|method|deleteKey (KsmKeyArgs args)
+name|void
+name|deleteKey
+parameter_list|(
+name|KsmKeyArgs
+name|args
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

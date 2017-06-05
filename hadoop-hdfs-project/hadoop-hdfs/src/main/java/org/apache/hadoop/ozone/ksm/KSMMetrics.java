@@ -175,6 +175,13 @@ name|Metric
 name|MutableCounterLong
 name|numKeyLookup
 decl_stmt|;
+DECL|field|numKeyDeletes
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numKeyDeletes
+decl_stmt|;
 comment|// Failure Metrics
 DECL|field|numVolumeCreateFails
 specifier|private
@@ -245,6 +252,13 @@ annotation|@
 name|Metric
 name|MutableCounterLong
 name|numKeyLookupFails
+decl_stmt|;
+DECL|field|numKeyDeleteFails
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numKeyDeleteFails
 decl_stmt|;
 DECL|method|KSMMetrics ()
 specifier|public
@@ -516,6 +530,30 @@ name|incNumKeyLookupFails
 parameter_list|()
 block|{
 name|numKeyLookupFails
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumKeyDeleteFails ()
+specifier|public
+name|void
+name|incNumKeyDeleteFails
+parameter_list|()
+block|{
+name|numKeyDeleteFails
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumKeyDeletes ()
+specifier|public
+name|void
+name|incNumKeyDeletes
+parameter_list|()
+block|{
+name|numKeyDeletes
 operator|.
 name|incr
 argument_list|()
@@ -816,6 +854,36 @@ parameter_list|()
 block|{
 return|return
 name|numKeyLookupFails
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumKeyDeletes ()
+specifier|public
+name|long
+name|getNumKeyDeletes
+parameter_list|()
+block|{
+return|return
+name|numKeyDeletes
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumKeyDeletesFails ()
+specifier|public
+name|long
+name|getNumKeyDeletesFails
+parameter_list|()
+block|{
+return|return
+name|numKeyDeleteFails
 operator|.
 name|value
 argument_list|()

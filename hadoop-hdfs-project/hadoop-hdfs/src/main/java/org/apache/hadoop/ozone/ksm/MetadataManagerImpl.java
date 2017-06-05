@@ -550,6 +550,27 @@ name|keyKeyString
 argument_list|)
 return|;
 block|}
+comment|/**    * Deletes the key on Metadata DB.    *    * @param key - key name    */
+annotation|@
+name|Override
+DECL|method|deleteKey (byte[] key)
+specifier|public
+name|void
+name|deleteKey
+parameter_list|(
+name|byte
+index|[]
+name|key
+parameter_list|)
+block|{
+name|store
+operator|.
+name|delete
+argument_list|(
+name|key
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Returns the read lock used on Metadata DB.    * @return readLock    */
 annotation|@
 name|Override
