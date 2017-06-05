@@ -42,16 +42,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|BufferedInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|DataInputStream
 import|;
 end_import
@@ -7299,18 +7289,6 @@ argument_list|(
 name|key
 argument_list|)
 decl_stmt|;
-name|BufferedInputStream
-name|inBufStream
-init|=
-operator|new
-name|BufferedInputStream
-argument_list|(
-name|openInputStream
-argument_list|(
-name|blob
-argument_list|)
-argument_list|)
-decl_stmt|;
 comment|// Return a data input stream.
 name|DataInputStream
 name|inDataStream
@@ -7318,7 +7296,10 @@ init|=
 operator|new
 name|DataInputStream
 argument_list|(
-name|inBufStream
+name|openInputStream
+argument_list|(
+name|blob
+argument_list|)
 argument_list|)
 decl_stmt|;
 return|return
