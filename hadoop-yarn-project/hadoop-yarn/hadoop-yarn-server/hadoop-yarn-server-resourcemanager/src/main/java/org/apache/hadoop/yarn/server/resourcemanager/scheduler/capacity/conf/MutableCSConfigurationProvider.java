@@ -308,7 +308,7 @@ name|webapp
 operator|.
 name|dao
 operator|.
-name|QueueConfigsUpdateInfo
+name|SchedConfUpdateInfo
 import|;
 end_import
 
@@ -627,7 +627,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|mutateConfiguration (UserGroupInformation user, QueueConfigsUpdateInfo confUpdate)
+DECL|method|mutateConfiguration (UserGroupInformation user, SchedConfUpdateInfo confUpdate)
 specifier|public
 name|void
 name|mutateConfiguration
@@ -635,7 +635,7 @@ parameter_list|(
 name|UserGroupInformation
 name|user
 parameter_list|,
-name|QueueConfigsUpdateInfo
+name|SchedConfUpdateInfo
 name|confUpdate
 parameter_list|)
 throws|throws
@@ -816,7 +816,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|constructKeyValueConfUpdate ( QueueConfigsUpdateInfo mutationInfo)
+DECL|method|constructKeyValueConfUpdate ( SchedConfUpdateInfo mutationInfo)
 specifier|private
 name|Map
 argument_list|<
@@ -826,7 +826,7 @@ name|String
 argument_list|>
 name|constructKeyValueConfUpdate
 parameter_list|(
-name|QueueConfigsUpdateInfo
+name|SchedConfUpdateInfo
 name|mutationInfo
 parameter_list|)
 throws|throws
@@ -930,6 +930,43 @@ argument_list|,
 name|proposedConf
 argument_list|,
 name|confUpdate
+argument_list|)
+expr_stmt|;
+block|}
+for|for
+control|(
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|global
+range|:
+name|mutationInfo
+operator|.
+name|getGlobalParams
+argument_list|()
+operator|.
+name|entrySet
+argument_list|()
+control|)
+block|{
+name|confUpdate
+operator|.
+name|put
+argument_list|(
+name|global
+operator|.
+name|getKey
+argument_list|()
+argument_list|,
+name|global
+operator|.
+name|getValue
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

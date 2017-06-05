@@ -2224,7 +2224,7 @@ name|webapp
 operator|.
 name|dao
 operator|.
-name|QueueConfigsUpdateInfo
+name|SchedConfUpdateInfo
 import|;
 end_import
 
@@ -13442,7 +13442,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|updateConfiguration (UserGroupInformation user, QueueConfigsUpdateInfo confUpdate)
+DECL|method|updateConfiguration (UserGroupInformation user, SchedConfUpdateInfo confUpdate)
 specifier|public
 name|void
 name|updateConfiguration
@@ -13450,7 +13450,7 @@ parameter_list|(
 name|UserGroupInformation
 name|user
 parameter_list|,
-name|QueueConfigsUpdateInfo
+name|SchedConfUpdateInfo
 name|confUpdate
 parameter_list|)
 throws|throws

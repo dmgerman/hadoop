@@ -156,7 +156,7 @@ name|webapp
 operator|.
 name|dao
 operator|.
-name|QueueConfigsUpdateInfo
+name|SchedConfUpdateInfo
 import|;
 end_import
 
@@ -316,12 +316,12 @@ name|rmContext
 decl_stmt|;
 DECL|field|goodUpdate
 specifier|private
-name|QueueConfigsUpdateInfo
+name|SchedConfUpdateInfo
 name|goodUpdate
 decl_stmt|;
 DECL|field|badUpdate
 specifier|private
-name|QueueConfigsUpdateInfo
+name|SchedConfUpdateInfo
 name|badUpdate
 decl_stmt|;
 DECL|field|cs
@@ -413,7 +413,7 @@ expr_stmt|;
 name|goodUpdate
 operator|=
 operator|new
-name|QueueConfigsUpdateInfo
+name|SchedConfUpdateInfo
 argument_list|()
 expr_stmt|;
 name|Map
@@ -462,7 +462,7 @@ expr_stmt|;
 name|badUpdate
 operator|=
 operator|new
-name|QueueConfigsUpdateInfo
+name|SchedConfUpdateInfo
 argument_list|()
 expr_stmt|;
 name|Map

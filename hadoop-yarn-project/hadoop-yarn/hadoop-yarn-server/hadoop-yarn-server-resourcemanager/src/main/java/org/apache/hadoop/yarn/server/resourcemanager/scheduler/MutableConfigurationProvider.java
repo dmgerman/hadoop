@@ -54,7 +54,7 @@ name|webapp
 operator|.
 name|dao
 operator|.
-name|QueueConfigsUpdateInfo
+name|SchedConfUpdateInfo
 import|;
 end_import
 
@@ -79,14 +79,14 @@ interface|interface
 name|MutableConfigurationProvider
 block|{
 comment|/**    * Update the scheduler configuration with the provided key value pairs.    * @param user User issuing the request    * @param confUpdate Key-value pairs for configurations to be updated.    * @throws IOException if scheduler could not be reinitialized    */
-DECL|method|mutateConfiguration (UserGroupInformation user, QueueConfigsUpdateInfo confUpdate)
+DECL|method|mutateConfiguration (UserGroupInformation user, SchedConfUpdateInfo confUpdate)
 name|void
 name|mutateConfiguration
 parameter_list|(
 name|UserGroupInformation
 name|user
 parameter_list|,
-name|QueueConfigsUpdateInfo
+name|SchedConfUpdateInfo
 name|confUpdate
 parameter_list|)
 throws|throws

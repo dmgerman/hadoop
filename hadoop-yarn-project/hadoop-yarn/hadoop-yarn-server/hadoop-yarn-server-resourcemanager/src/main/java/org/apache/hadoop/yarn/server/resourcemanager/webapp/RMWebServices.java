@@ -16294,7 +16294,7 @@ name|PUT
 annotation|@
 name|Path
 argument_list|(
-literal|"/queues"
+literal|"/sched-conf"
 argument_list|)
 annotation|@
 name|Produces
@@ -16334,12 +16334,12 @@ operator|.
 name|APPLICATION_XML
 block|}
 argument_list|)
-DECL|method|updateSchedulerConfiguration (QueueConfigsUpdateInfo mutationInfo, @Context HttpServletRequest hsr)
+DECL|method|updateSchedulerConfiguration (SchedConfUpdateInfo mutationInfo, @Context HttpServletRequest hsr)
 specifier|public
 name|Response
 name|updateSchedulerConfiguration
 parameter_list|(
-name|QueueConfigsUpdateInfo
+name|SchedConfUpdateInfo
 name|mutationInfo
 parameter_list|,
 annotation|@

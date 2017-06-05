@@ -36,6 +36,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|HashMap
+import|;
+end_import
+
+begin_import
+import|import
 name|javax
 operator|.
 name|xml
@@ -73,6 +83,20 @@ operator|.
 name|annotation
 operator|.
 name|XmlElement
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|xml
+operator|.
+name|bind
+operator|.
+name|annotation
+operator|.
+name|XmlElementWrapper
 import|;
 end_import
 
@@ -91,7 +115,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Information for making scheduler configuration changes (supports adding,  * removing, or updating a queue).  */
+comment|/**  * Information for making scheduler configuration changes (supports adding,  * removing, or updating a queue, as well as global scheduler conf changes).  */
 end_comment
 
 begin_class
@@ -109,17 +133,17 @@ name|XmlAccessType
 operator|.
 name|FIELD
 argument_list|)
-DECL|class|QueueConfigsUpdateInfo
+DECL|class|SchedConfUpdateInfo
 specifier|public
 class|class
-name|QueueConfigsUpdateInfo
+name|SchedConfUpdateInfo
 block|{
 annotation|@
 name|XmlElement
 argument_list|(
 name|name
 operator|=
-literal|"add"
+literal|"add-queue"
 argument_list|)
 DECL|field|addQueueInfo
 specifier|private
@@ -139,7 +163,7 @@ name|XmlElement
 argument_list|(
 name|name
 operator|=
-literal|"remove"
+literal|"remove-queue"
 argument_list|)
 DECL|field|removeQueueInfo
 specifier|private
@@ -159,7 +183,7 @@ name|XmlElement
 argument_list|(
 name|name
 operator|=
-literal|"update"
+literal|"update-queue"
 argument_list|)
 DECL|field|updateQueueInfo
 specifier|private
@@ -174,9 +198,24 @@ name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
-DECL|method|QueueConfigsUpdateInfo ()
+DECL|field|global
+specifier|private
+name|HashMap
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|global
+init|=
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
+decl_stmt|;
+DECL|method|SchedConfUpdateInfo ()
 specifier|public
-name|QueueConfigsUpdateInfo
+name|SchedConfUpdateInfo
 parameter_list|()
 block|{
 comment|// JAXB needs this
@@ -218,6 +257,28 @@ parameter_list|()
 block|{
 return|return
 name|updateQueueInfo
+return|;
+block|}
+annotation|@
+name|XmlElementWrapper
+argument_list|(
+name|name
+operator|=
+literal|"global-updates"
+argument_list|)
+DECL|method|getGlobalParams ()
+specifier|public
+name|HashMap
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|getGlobalParams
+parameter_list|()
+block|{
+return|return
+name|global
 return|;
 block|}
 block|}

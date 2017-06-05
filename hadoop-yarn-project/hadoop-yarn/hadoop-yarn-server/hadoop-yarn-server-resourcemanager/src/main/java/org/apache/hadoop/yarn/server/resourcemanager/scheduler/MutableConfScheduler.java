@@ -68,7 +68,7 @@ name|webapp
 operator|.
 name|dao
 operator|.
-name|QueueConfigsUpdateInfo
+name|SchedConfUpdateInfo
 import|;
 end_import
 
@@ -95,14 +95,14 @@ extends|extends
 name|ResourceScheduler
 block|{
 comment|/**    * Update the scheduler's configuration.    * @param user Caller of this update    * @param confUpdate configuration update    * @throws IOException if update is invalid    */
-DECL|method|updateConfiguration (UserGroupInformation user, QueueConfigsUpdateInfo confUpdate)
+DECL|method|updateConfiguration (UserGroupInformation user, SchedConfUpdateInfo confUpdate)
 name|void
 name|updateConfiguration
 parameter_list|(
 name|UserGroupInformation
 name|user
 parameter_list|,
-name|QueueConfigsUpdateInfo
+name|SchedConfUpdateInfo
 name|confUpdate
 parameter_list|)
 throws|throws

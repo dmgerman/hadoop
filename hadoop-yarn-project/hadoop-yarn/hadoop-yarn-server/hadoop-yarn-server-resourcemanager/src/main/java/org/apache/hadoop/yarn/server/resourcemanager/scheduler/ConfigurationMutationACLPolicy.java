@@ -86,7 +86,7 @@ name|webapp
 operator|.
 name|dao
 operator|.
-name|QueueConfigsUpdateInfo
+name|SchedConfUpdateInfo
 import|;
 end_import
 
@@ -113,14 +113,14 @@ name|rmContext
 parameter_list|)
 function_decl|;
 comment|/**    * Check if mutation is allowed.    * @param user User issuing the request    * @param confUpdate configurations to be updated    * @return whether provided mutation is allowed or not    */
-DECL|method|isMutationAllowed (UserGroupInformation user, QueueConfigsUpdateInfo confUpdate)
+DECL|method|isMutationAllowed (UserGroupInformation user, SchedConfUpdateInfo confUpdate)
 name|boolean
 name|isMutationAllowed
 parameter_list|(
 name|UserGroupInformation
 name|user
 parameter_list|,
-name|QueueConfigsUpdateInfo
+name|SchedConfUpdateInfo
 name|confUpdate
 parameter_list|)
 function_decl|;

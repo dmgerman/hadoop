@@ -102,7 +102,7 @@ name|webapp
 operator|.
 name|dao
 operator|.
-name|QueueConfigsUpdateInfo
+name|SchedConfUpdateInfo
 import|;
 end_import
 
@@ -149,7 +149,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|isMutationAllowed (UserGroupInformation user, QueueConfigsUpdateInfo confUpdate)
+DECL|method|isMutationAllowed (UserGroupInformation user, SchedConfUpdateInfo confUpdate)
 specifier|public
 name|boolean
 name|isMutationAllowed
@@ -157,7 +157,7 @@ parameter_list|(
 name|UserGroupInformation
 name|user
 parameter_list|,
-name|QueueConfigsUpdateInfo
+name|SchedConfUpdateInfo
 name|confUpdate
 parameter_list|)
 block|{
