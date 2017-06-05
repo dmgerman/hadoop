@@ -456,6 +456,13 @@ operator|.
 name|getDatanodes
 argument_list|()
 expr_stmt|;
+name|BlockManagerTestUtil
+operator|.
+name|stopRedundancyThread
+argument_list|(
+name|bm
+argument_list|)
+expr_stmt|;
 name|assertEquals
 argument_list|(
 name|nodes
