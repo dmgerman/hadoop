@@ -419,7 +419,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Tests for Tests for local cache.  */
+comment|/**  * Tests for Local Cache Buffer Manager.  */
 end_comment
 
 begin_class
@@ -2046,6 +2046,15 @@ argument_list|(
 name|DFS_CBLOCK_ENABLE_SHORT_CIRCUIT_IO
 argument_list|,
 literal|true
+argument_list|)
+expr_stmt|;
+name|flushTestConfig
+operator|.
+name|setInt
+argument_list|(
+name|DFS_CBLOCK_BLOCK_BUFFER_FLUSH_INTERVAL_SECONDS
+argument_list|,
+literal|120
 argument_list|)
 expr_stmt|;
 name|String
