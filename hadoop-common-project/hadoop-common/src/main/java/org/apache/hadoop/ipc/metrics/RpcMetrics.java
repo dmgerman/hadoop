@@ -745,6 +745,24 @@ name|getCallQueueLen
 argument_list|()
 return|;
 block|}
+DECL|method|numDroppedConnections ()
+annotation|@
+name|Metric
+argument_list|(
+literal|"Number of dropped connections"
+argument_list|)
+specifier|public
+name|long
+name|numDroppedConnections
+parameter_list|()
+block|{
+return|return
+name|server
+operator|.
+name|getNumDroppedConnections
+argument_list|()
+return|;
+block|}
 comment|// Public instrumentation methods that could be extracted to an
 comment|// abstract class if we decide to do custom instrumentation classes a la
 comment|// JobTrackerInstrumentation. The methods with //@Override comment are

@@ -530,6 +530,20 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicLong
+import|;
+end_import
+
+begin_import
+import|import
 name|javax
 operator|.
 name|security
@@ -6139,6 +6153,13 @@ name|channel
 argument_list|)
 expr_stmt|;
 block|}
+name|connectionManager
+operator|.
+name|droppedConnections
+operator|.
+name|getAndIncrement
+argument_list|()
+expr_stmt|;
 continue|continue;
 block|}
 name|key
@@ -14823,6 +14844,20 @@ return|return
 literal|null
 return|;
 block|}
+comment|/**    * The number of RPC connections dropped due to    * too many connections.    * @return the number of dropped rpc connections    */
+DECL|method|getNumDroppedConnections ()
+specifier|public
+name|long
+name|getNumDroppedConnections
+parameter_list|()
+block|{
+return|return
+name|connectionManager
+operator|.
+name|getDroppedConnections
+argument_list|()
+return|;
+block|}
 comment|/**    * The number of rpc calls in the queue.    * @return The number of rpc calls in the queue.    */
 DECL|method|getCallQueueLen ()
 specifier|public
@@ -15182,6 +15217,16 @@ name|count
 init|=
 operator|new
 name|AtomicInteger
+argument_list|()
+decl_stmt|;
+DECL|field|droppedConnections
+specifier|final
+specifier|private
+name|AtomicLong
+name|droppedConnections
+init|=
+operator|new
+name|AtomicLong
 argument_list|()
 decl_stmt|;
 DECL|field|connections
@@ -15594,6 +15639,18 @@ parameter_list|()
 block|{
 return|return
 name|userToConnectionsMap
+return|;
+block|}
+DECL|method|getDroppedConnections ()
+name|long
+name|getDroppedConnections
+parameter_list|()
+block|{
+return|return
+name|droppedConnections
+operator|.
+name|get
+argument_list|()
 return|;
 block|}
 DECL|method|size ()

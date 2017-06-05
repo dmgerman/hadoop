@@ -7318,7 +7318,7 @@ name|setInt
 argument_list|(
 literal|"ipc.server.max.connections"
 argument_list|,
-literal|5
+literal|6
 argument_list|)
 expr_stmt|;
 name|Server
@@ -7502,14 +7502,25 @@ argument_list|(
 literal|1000
 argument_list|)
 expr_stmt|;
-comment|// server should only accept up to 5 connections
+comment|// server should only accept up to 6 connections
 name|assertEquals
 argument_list|(
-literal|5
+literal|6
 argument_list|,
 name|server
 operator|.
 name|getNumOpenConnections
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// server should drop the other 4 connections
+name|assertEquals
+argument_list|(
+literal|4
+argument_list|,
+name|server
+operator|.
+name|getNumDroppedConnections
 argument_list|()
 argument_list|)
 expr_stmt|;
