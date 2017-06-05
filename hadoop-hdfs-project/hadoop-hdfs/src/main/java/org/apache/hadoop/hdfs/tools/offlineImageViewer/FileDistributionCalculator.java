@@ -940,6 +940,9 @@ literal|1
 condition|?
 name|maxFileSize
 else|:
+operator|(
+name|long
+operator|)
 name|i
 operator|*
 name|steps
