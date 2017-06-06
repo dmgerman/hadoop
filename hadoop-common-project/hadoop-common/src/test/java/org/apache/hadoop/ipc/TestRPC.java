@@ -6249,7 +6249,7 @@ literal|1
 argument_list|)
 argument_list|)
 operator|.
-name|offer
+name|add
 argument_list|(
 name|Mockito
 operator|.
@@ -6665,7 +6665,7 @@ literal|1
 argument_list|)
 argument_list|)
 operator|.
-name|offer
+name|add
 argument_list|(
 name|Mockito
 operator|.
