@@ -1479,7 +1479,7 @@ operator|.
 name|getMTime
 argument_list|()
 operator|*
-literal|1000
+literal|1000L
 decl_stmt|;
 comment|// convert to milliseconds
 name|long
