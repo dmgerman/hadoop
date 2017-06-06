@@ -1373,14 +1373,6 @@ operator|==
 literal|0
 condition|)
 block|{
-name|long
-name|start
-init|=
-name|Time
-operator|.
-name|monotonicNow
-argument_list|()
-decl_stmt|;
 name|output
 operator|.
 name|hflush
@@ -1389,53 +1381,6 @@ expr_stmt|;
 name|writesSinceHFlush
 operator|=
 literal|0
-expr_stmt|;
-name|long
-name|end
-init|=
-name|Time
-operator|.
-name|monotonicNow
-argument_list|()
-decl_stmt|;
-comment|// A true, round-trip synchronous flush to Azure must take
-comment|// a significant amount of time or we are not syncing to storage correctly.
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"hflush duration = "
-operator|+
-operator|(
-name|end
-operator|-
-name|start
-operator|)
-operator|+
-literal|" msec."
-argument_list|)
-expr_stmt|;
-name|assertTrue
-argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"hflush duration of %d, less than minimum expected of %d"
-argument_list|,
-name|end
-operator|-
-name|start
-argument_list|,
-name|MINIMUM_EXPECTED_TIME
-argument_list|)
-argument_list|,
-name|end
-operator|-
-name|start
-operator|>=
-name|MINIMUM_EXPECTED_TIME
-argument_list|)
 expr_stmt|;
 block|}
 block|}
