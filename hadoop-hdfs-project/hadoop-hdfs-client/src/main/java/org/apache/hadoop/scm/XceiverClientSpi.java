@@ -18,6 +18,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -100,20 +114,152 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicInteger
+import|;
+end_import
+
 begin_comment
 comment|/**  * A Client for the storageContainer protocol.  */
 end_comment
 
-begin_interface
-DECL|interface|XceiverClientSpi
+begin_class
+DECL|class|XceiverClientSpi
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|XceiverClientSpi
-extends|extends
+implements|implements
 name|Closeable
 block|{
+DECL|field|referenceCount
+specifier|final
+specifier|private
+name|AtomicInteger
+name|referenceCount
+decl_stmt|;
+DECL|field|isEvicted
+specifier|private
+name|boolean
+name|isEvicted
+decl_stmt|;
+DECL|method|XceiverClientSpi ()
+name|XceiverClientSpi
+parameter_list|()
+block|{
+name|this
+operator|.
+name|referenceCount
+operator|=
+operator|new
+name|AtomicInteger
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|isEvicted
+operator|=
+literal|false
+expr_stmt|;
+block|}
+DECL|method|incrementReference ()
+name|void
+name|incrementReference
+parameter_list|()
+block|{
+name|this
+operator|.
+name|referenceCount
+operator|.
+name|incrementAndGet
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|decrementReference ()
+name|void
+name|decrementReference
+parameter_list|()
+block|{
+name|this
+operator|.
+name|referenceCount
+operator|.
+name|decrementAndGet
+argument_list|()
+expr_stmt|;
+name|cleanup
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|setEvicted ()
+name|void
+name|setEvicted
+parameter_list|()
+block|{
+name|isEvicted
+operator|=
+literal|true
+expr_stmt|;
+name|cleanup
+argument_list|()
+expr_stmt|;
+block|}
+comment|// close the xceiverClient only if,
+comment|// 1) there is no refcount on the client
+comment|// 2) it has been evicted from the cache.
+DECL|method|cleanup ()
+specifier|private
+name|void
+name|cleanup
+parameter_list|()
+block|{
+if|if
+condition|(
+name|referenceCount
+operator|.
+name|get
+argument_list|()
+operator|==
+literal|0
+operator|&&
+name|isEvicted
+condition|)
+block|{
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getRefcount ()
+specifier|public
+name|int
+name|getRefcount
+parameter_list|()
+block|{
+return|return
+name|referenceCount
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
 comment|/**    * Connects to the leader in the pipeline.    */
 DECL|method|connect ()
+specifier|public
+specifier|abstract
 name|void
 name|connect
 parameter_list|()
@@ -123,18 +269,24 @@ function_decl|;
 annotation|@
 name|Override
 DECL|method|close ()
+specifier|public
+specifier|abstract
 name|void
 name|close
 parameter_list|()
 function_decl|;
 comment|/**    * Returns the pipeline of machines that host the container used by this    * client.    *    * @return pipeline of machines that host the container    */
 DECL|method|getPipeline ()
+specifier|public
+specifier|abstract
 name|Pipeline
 name|getPipeline
 parameter_list|()
 function_decl|;
 comment|/**    * Sends a given command to server and gets the reply back.    * @param request Request    * @return Response to the command    * @throws IOException    */
 DECL|method|sendCommand ( ContainerCommandRequestProto request)
+specifier|public
+specifier|abstract
 name|ContainerCommandResponseProto
 name|sendCommand
 parameter_list|(
@@ -145,7 +297,7 @@ throws|throws
 name|IOException
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

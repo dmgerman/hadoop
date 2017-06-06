@@ -893,6 +893,13 @@ argument_list|(
 name|pipeline
 argument_list|)
 expr_stmt|;
+name|xceiverClientManager
+operator|.
+name|releaseClient
+argument_list|(
+name|client
+argument_list|)
+expr_stmt|;
 block|}
 return|return
 name|containerPipelines

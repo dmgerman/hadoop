@@ -260,7 +260,7 @@ specifier|public
 specifier|final
 class|class
 name|XceiverClientRatis
-implements|implements
+extends|extends
 name|XceiverClientSpi
 block|{
 DECL|field|LOG
@@ -361,6 +361,9 @@ name|RpcType
 name|rpcType
 parameter_list|)
 block|{
+name|super
+argument_list|()
+expr_stmt|;
 name|this
 operator|.
 name|pipeline

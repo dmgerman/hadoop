@@ -259,7 +259,7 @@ DECL|class|XceiverClient
 specifier|public
 class|class
 name|XceiverClient
-implements|implements
+extends|extends
 name|XceiverClientSpi
 block|{
 DECL|field|LOG
@@ -316,6 +316,9 @@ name|Configuration
 name|config
 parameter_list|)
 block|{
+name|super
+argument_list|()
+expr_stmt|;
 name|Preconditions
 operator|.
 name|checkNotNull

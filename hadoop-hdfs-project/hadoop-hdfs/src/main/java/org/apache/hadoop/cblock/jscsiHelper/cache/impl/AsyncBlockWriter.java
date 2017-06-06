@@ -738,6 +738,11 @@ operator|.
 name|getContainerName
 argument_list|()
 decl_stmt|;
+name|XceiverClientSpi
+name|client
+init|=
+literal|null
+decl_stmt|;
 try|try
 block|{
 name|long
@@ -748,9 +753,8 @@ operator|.
 name|monotonicNow
 argument_list|()
 decl_stmt|;
-name|XceiverClientSpi
 name|client
-init|=
+operator|=
 name|parentCache
 operator|.
 name|getClientManager
@@ -768,7 +772,7 @@ name|getBlockID
 argument_list|()
 argument_list|)
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 comment|// BUG: fix the trace ID.
 name|ContainerProtocolCalls
 operator|.
@@ -910,6 +914,24 @@ throw|;
 block|}
 finally|finally
 block|{
+if|if
+condition|(
+name|client
+operator|!=
+literal|null
+condition|)
+block|{
+name|parentCache
+operator|.
+name|getClientManager
+argument_list|()
+operator|.
+name|releaseClient
+argument_list|(
+name|client
+argument_list|)
+expr_stmt|;
+block|}
 name|block
 operator|.
 name|clearData
