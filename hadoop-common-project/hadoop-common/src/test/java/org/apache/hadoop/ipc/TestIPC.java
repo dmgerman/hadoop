@@ -7793,7 +7793,6 @@ name|IOException
 block|{
 try|try
 init|(
-specifier|final
 name|ServerSocket
 name|listenSocket
 init|=

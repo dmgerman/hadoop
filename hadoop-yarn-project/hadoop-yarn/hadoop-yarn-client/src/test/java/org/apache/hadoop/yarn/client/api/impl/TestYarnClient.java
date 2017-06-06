@@ -2529,7 +2529,6 @@ argument_list|)
 expr_stmt|;
 try|try
 init|(
-specifier|final
 name|YarnClient
 name|client
 init|=

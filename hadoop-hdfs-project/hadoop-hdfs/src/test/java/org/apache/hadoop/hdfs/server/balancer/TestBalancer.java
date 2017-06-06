@@ -11699,7 +11699,6 @@ argument_list|)
 decl_stmt|;
 try|try
 init|(
-specifier|final
 name|OutputStream
 name|out
 init|=

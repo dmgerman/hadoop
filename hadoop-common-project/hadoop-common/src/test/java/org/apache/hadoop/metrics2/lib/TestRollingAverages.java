@@ -186,7 +186,6 @@ decl_stmt|;
 comment|/* 5s interval and 2 windows */
 try|try
 init|(
-specifier|final
 name|RollingAverages
 name|rollingAverages
 init|=

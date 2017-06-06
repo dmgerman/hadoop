@@ -690,7 +690,6 @@ argument_list|()
 decl_stmt|;
 try|try
 init|(
-specifier|final
 name|FSDataOutputStream
 name|out
 init|=

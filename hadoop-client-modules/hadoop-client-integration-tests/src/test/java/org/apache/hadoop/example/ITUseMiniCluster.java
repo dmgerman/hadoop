@@ -364,7 +364,6 @@ name|IOException
 block|{
 try|try
 init|(
-specifier|final
 name|FileSystem
 name|fs
 init|=
@@ -440,7 +439,6 @@ throw|;
 block|}
 try|try
 init|(
-specifier|final
 name|FSDataOutputStream
 name|out
 init|=
@@ -462,7 +460,6 @@ expr_stmt|;
 block|}
 try|try
 init|(
-specifier|final
 name|FSDataInputStream
 name|in
 init|=
@@ -510,7 +507,6 @@ name|URISyntaxException
 block|{
 try|try
 init|(
-specifier|final
 name|FileSystem
 name|fs
 init|=
