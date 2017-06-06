@@ -810,13 +810,13 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Block pool ID needed, but service not yet registered with NN"
+literal|"Block pool ID needed, but service not yet registered with "
+operator|+
+literal|"NN, trace:"
 argument_list|,
 operator|new
 name|Exception
-argument_list|(
-literal|"trace"
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return

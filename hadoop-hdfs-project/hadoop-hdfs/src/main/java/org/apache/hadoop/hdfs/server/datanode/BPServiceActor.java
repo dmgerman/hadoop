@@ -2913,13 +2913,6 @@ operator|new
 name|Thread
 argument_list|(
 name|this
-argument_list|,
-name|formatThreadName
-argument_list|(
-literal|"heartbeating"
-argument_list|,
-name|nnAddr
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|bpThread
