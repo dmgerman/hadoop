@@ -496,6 +496,15 @@ name|SKIP_EXISTING_TABLE_OPTION_SHORT
 init|=
 literal|"s"
 decl_stmt|;
+DECL|field|APP_METRICS_TTL_OPTION_SHORT
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|APP_METRICS_TTL_OPTION_SHORT
+init|=
+literal|"ma"
+decl_stmt|;
 DECL|field|APP_TABLE_NAME_SHORT
 specifier|private
 specifier|static
@@ -514,14 +523,14 @@ name|APP_TO_FLOW_TABLE_NAME_SHORT
 init|=
 literal|"a2f"
 decl_stmt|;
-DECL|field|TTL_OPTION_SHORT
+DECL|field|ENTITY_METRICS_TTL_OPTION_SHORT
 specifier|private
 specifier|static
 specifier|final
 name|String
-name|TTL_OPTION_SHORT
+name|ENTITY_METRICS_TTL_OPTION_SHORT
 init|=
-literal|"m"
+literal|"me"
 decl_stmt|;
 DECL|field|ENTITY_TABLE_NAME_SHORT
 specifier|private
@@ -655,15 +664,15 @@ name|entityTableName
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Grab the TTL argument
+comment|// Grab the entity metrics TTL
 name|String
-name|entityTableTTLMetrics
+name|entityTableMetricsTTL
 init|=
 name|commandLine
 operator|.
 name|getOptionValue
 argument_list|(
-name|TTL_OPTION_SHORT
+name|ENTITY_METRICS_TTL_OPTION_SHORT
 argument_list|)
 decl_stmt|;
 if|if
@@ -672,18 +681,18 @@ name|StringUtils
 operator|.
 name|isNotBlank
 argument_list|(
-name|entityTableTTLMetrics
+name|entityTableMetricsTTL
 argument_list|)
 condition|)
 block|{
 name|int
-name|metricsTTL
+name|entityMetricsTTL
 init|=
 name|Integer
 operator|.
 name|parseInt
 argument_list|(
-name|entityTableTTLMetrics
+name|entityTableMetricsTTL
 argument_list|)
 decl_stmt|;
 operator|new
@@ -692,7 +701,7 @@ argument_list|()
 operator|.
 name|setMetricsTTL
 argument_list|(
-name|metricsTTL
+name|entityMetricsTTL
 argument_list|,
 name|hbaseConf
 argument_list|)
@@ -761,6 +770,49 @@ operator|.
 name|TABLE_NAME_CONF_NAME
 argument_list|,
 name|applicationTableName
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Grab the application metrics TTL
+name|String
+name|applicationTableMetricsTTL
+init|=
+name|commandLine
+operator|.
+name|getOptionValue
+argument_list|(
+name|APP_METRICS_TTL_OPTION_SHORT
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|StringUtils
+operator|.
+name|isNotBlank
+argument_list|(
+name|applicationTableMetricsTTL
+argument_list|)
+condition|)
+block|{
+name|int
+name|appMetricsTTL
+init|=
+name|Integer
+operator|.
+name|parseInt
+argument_list|(
+name|applicationTableMetricsTTL
+argument_list|)
+decl_stmt|;
+operator|new
+name|ApplicationTable
+argument_list|()
+operator|.
+name|setMetricsTTL
+argument_list|(
+name|appMetricsTTL
+argument_list|,
+name|hbaseConf
 argument_list|)
 expr_stmt|;
 block|}
@@ -911,9 +963,9 @@ operator|=
 operator|new
 name|Option
 argument_list|(
-name|TTL_OPTION_SHORT
+name|ENTITY_METRICS_TTL_OPTION_SHORT
 argument_list|,
-literal|"metricsTTL"
+literal|"entityMetricsTTL"
 argument_list|,
 literal|true
 argument_list|,
@@ -924,7 +976,7 @@ name|o
 operator|.
 name|setArgName
 argument_list|(
-literal|"metricsTTL"
+literal|"entityMetricsTTL"
 argument_list|)
 expr_stmt|;
 name|o
@@ -995,6 +1047,41 @@ operator|.
 name|setArgName
 argument_list|(
 literal|"applicationTableName"
+argument_list|)
+expr_stmt|;
+name|o
+operator|.
+name|setRequired
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+name|options
+operator|.
+name|addOption
+argument_list|(
+name|o
+argument_list|)
+expr_stmt|;
+name|o
+operator|=
+operator|new
+name|Option
+argument_list|(
+name|APP_METRICS_TTL_OPTION_SHORT
+argument_list|,
+literal|"applicationMetricsTTL"
+argument_list|,
+literal|true
+argument_list|,
+literal|"TTL for metrics column family"
+argument_list|)
+expr_stmt|;
+name|o
+operator|.
+name|setArgName
+argument_list|(
+literal|"applicationMetricsTTL"
 argument_list|)
 expr_stmt|;
 name|o
@@ -1174,7 +1261,7 @@ name|usage
 operator|.
 name|append
 argument_list|(
-literal|"[-metricsTTL<Entity Table Metrics TTL>]"
+literal|"[-entityMetricsTTL<Entity Table Metrics TTL>]"
 operator|+
 literal|" TTL for metrics in the Entity table\n"
 argument_list|)
@@ -1195,6 +1282,15 @@ argument_list|(
 literal|"[-applicationTableName<Application Table Name>]"
 operator|+
 literal|" The name of the Application table\n"
+argument_list|)
+expr_stmt|;
+name|usage
+operator|.
+name|append
+argument_list|(
+literal|"[-applicationMetricsTTL<Application Table Metrics TTL>]"
+operator|+
+literal|" TTL for metrics in the Application table\n"
 argument_list|)
 expr_stmt|;
 name|usage
