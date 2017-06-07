@@ -3176,7 +3176,9 @@ name|Singleton
 annotation|@
 name|Path
 argument_list|(
-literal|"/ws/v1/cluster"
+name|RMWSConsts
+operator|.
+name|RM_WEB_SERVICE_PATH
 argument_list|)
 DECL|class|RMWebServices
 specifier|public
@@ -3184,6 +3186,8 @@ class|class
 name|RMWebServices
 extends|extends
 name|WebServices
+implements|implements
+name|RMWebServiceProtocol
 block|{
 DECL|field|LOG
 specifier|private
@@ -3203,24 +3207,6 @@ operator|.
 name|getName
 argument_list|()
 argument_list|)
-decl_stmt|;
-DECL|field|EMPTY
-specifier|private
-specifier|static
-specifier|final
-name|String
-name|EMPTY
-init|=
-literal|""
-decl_stmt|;
-DECL|field|ANY
-specifier|private
-specifier|static
-specifier|final
-name|String
-name|ANY
-init|=
-literal|"*"
 decl_stmt|;
 DECL|field|rm
 specifier|private
@@ -3253,6 +3239,52 @@ annotation|@
 name|Context
 name|HttpServletResponse
 name|response
+decl_stmt|;
+comment|// -------Default values of QueryParams for RMWebServiceProtocol--------
+DECL|field|DEFAULT_QUEUE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_QUEUE
+init|=
+literal|"default"
+decl_stmt|;
+DECL|field|DEFAULT_RESERVATION_ID
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_RESERVATION_ID
+init|=
+literal|""
+decl_stmt|;
+DECL|field|DEFAULT_START_TIME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_START_TIME
+init|=
+literal|"0"
+decl_stmt|;
+DECL|field|DEFAULT_END_TIME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_END_TIME
+init|=
+literal|"-1"
+decl_stmt|;
+DECL|field|DEFAULT_INCLUDE_RESOURCE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_INCLUDE_RESOURCE
+init|=
+literal|"false"
 decl_stmt|;
 annotation|@
 name|VisibleForTesting
@@ -3380,7 +3412,9 @@ name|hsr
 operator|.
 name|getHeader
 argument_list|(
-literal|"X-Forwarded-For"
+name|RMWSConsts
+operator|.
+name|FORWARDED_FOR
 argument_list|)
 decl_stmt|;
 if|if
@@ -3480,7 +3514,7 @@ name|void
 name|init
 parameter_list|()
 block|{
-comment|//clear content type
+comment|// clear content type
 name|response
 operator|.
 name|setContentType
@@ -3516,6 +3550,8 @@ operator|.
 name|UTF_8
 block|}
 argument_list|)
+annotation|@
+name|Override
 DECL|method|get ()
 specifier|public
 name|ClusterInfo
@@ -3532,7 +3568,9 @@ name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/info"
+name|RMWSConsts
+operator|.
+name|INFO
 argument_list|)
 annotation|@
 name|Produces
@@ -3559,6 +3597,8 @@ operator|.
 name|UTF_8
 block|}
 argument_list|)
+annotation|@
+name|Override
 DECL|method|getClusterInfo ()
 specifier|public
 name|ClusterInfo
@@ -3583,7 +3623,9 @@ name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/metrics"
+name|RMWSConsts
+operator|.
+name|METRICS
 argument_list|)
 annotation|@
 name|Produces
@@ -3610,6 +3652,8 @@ operator|.
 name|UTF_8
 block|}
 argument_list|)
+annotation|@
+name|Override
 DECL|method|getClusterMetricsInfo ()
 specifier|public
 name|ClusterMetricsInfo
@@ -3634,7 +3678,9 @@ name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/scheduler"
+name|RMWSConsts
+operator|.
+name|SCHEDULER
 argument_list|)
 annotation|@
 name|Produces
@@ -3661,6 +3707,8 @@ operator|.
 name|UTF_8
 block|}
 argument_list|)
+annotation|@
+name|Override
 DECL|method|getSchedulerInfo ()
 specifier|public
 name|SchedulerTypeInfo
@@ -3782,7 +3830,9 @@ name|POST
 annotation|@
 name|Path
 argument_list|(
-literal|"/scheduler/logs"
+name|RMWSConsts
+operator|.
+name|SCHEDULER_LOGS
 argument_list|)
 annotation|@
 name|Produces
@@ -3809,7 +3859,9 @@ operator|.
 name|UTF_8
 block|}
 argument_list|)
-DECL|method|dumpSchedulerLogs (@ormParamR) String time, @Context HttpServletRequest hsr)
+annotation|@
+name|Override
+DECL|method|dumpSchedulerLogs (@ormParamRMWSConsts.TIME) String time, @Context HttpServletRequest hsr)
 specifier|public
 name|String
 name|dumpSchedulerLogs
@@ -3817,7 +3869,9 @@ parameter_list|(
 annotation|@
 name|FormParam
 argument_list|(
-literal|"time"
+name|RMWSConsts
+operator|.
+name|TIME
 argument_list|)
 name|String
 name|time
@@ -3984,13 +4038,14 @@ return|return
 literal|"Capacity scheduler logs are being created."
 return|;
 block|}
-comment|/**    * Returns all nodes in the cluster. If the states param is given, returns    * all nodes that are in the comma-separated list of states.    */
 annotation|@
 name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/nodes"
+name|RMWSConsts
+operator|.
+name|NODES
 argument_list|)
 annotation|@
 name|Produces
@@ -4017,7 +4072,9 @@ operator|.
 name|UTF_8
 block|}
 argument_list|)
-DECL|method|getNodes (@ueryParamR) String states)
+annotation|@
+name|Override
+DECL|method|getNodes (@ueryParamRMWSConsts.STATES) String states)
 specifier|public
 name|NodesInfo
 name|getNodes
@@ -4025,7 +4082,9 @@ parameter_list|(
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"states"
+name|RMWSConsts
+operator|.
+name|STATES
 argument_list|)
 name|String
 name|states
@@ -4207,6 +4266,8 @@ name|nodeInfo
 operator|.
 name|setNodeHTTPAddress
 argument_list|(
+name|RMWSConsts
+operator|.
 name|EMPTY
 argument_list|)
 expr_stmt|;
@@ -4228,7 +4289,9 @@ name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/nodes/{nodeId}"
+name|RMWSConsts
+operator|.
+name|NODES_NODEID
 argument_list|)
 annotation|@
 name|Produces
@@ -4255,7 +4318,9 @@ operator|.
 name|UTF_8
 block|}
 argument_list|)
-DECL|method|getNode (@athParamR) String nodeId)
+annotation|@
+name|Override
+DECL|method|getNode (@athParamRMWSConsts.NODEID) String nodeId)
 specifier|public
 name|NodeInfo
 name|getNode
@@ -4263,7 +4328,9 @@ parameter_list|(
 annotation|@
 name|PathParam
 argument_list|(
-literal|"nodeId"
+name|RMWSConsts
+operator|.
+name|NODEID
 argument_list|)
 name|String
 name|nodeId
@@ -4422,6 +4489,8 @@ name|nodeInfo
 operator|.
 name|setNodeHTTPAddress
 argument_list|(
+name|RMWSConsts
+operator|.
 name|EMPTY
 argument_list|)
 expr_stmt|;
@@ -4435,7 +4504,9 @@ name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/apps"
+name|RMWSConsts
+operator|.
+name|APPS
 argument_list|)
 annotation|@
 name|Produces
@@ -4462,7 +4533,9 @@ operator|.
 name|UTF_8
 block|}
 argument_list|)
-DECL|method|getApps (@ontext HttpServletRequest hsr, @QueryParam(R) String stateQuery, @QueryParam(R) Set<String> statesQuery, @QueryParam(R) String finalStatusQuery, @QueryParam(R) String userQuery, @QueryParam(R) String queueQuery, @QueryParam(R) String count, @QueryParam(R) String startedBegin, @QueryParam(R) String startedEnd, @QueryParam(R) String finishBegin, @QueryParam(R) String finishEnd, @QueryParam(R) Set<String> applicationTypes, @QueryParam(R) Set<String> applicationTags)
+annotation|@
+name|Override
+DECL|method|getApps (@ontext HttpServletRequest hsr, @QueryParam(RMWSConsts.STATE) String stateQuery, @QueryParam(RMWSConsts.STATES) Set<String> statesQuery, @QueryParam(RMWSConsts.FINAL_STATUS) String finalStatusQuery, @QueryParam(RMWSConsts.USER) String userQuery, @QueryParam(RMWSConsts.QUEUE) String queueQuery, @QueryParam(RMWSConsts.LIMIT) String count, @QueryParam(RMWSConsts.STARTED_TIME_BEGIN) String startedBegin, @QueryParam(RMWSConsts.STARTED_TIME_END) String startedEnd, @QueryParam(RMWSConsts.FINISHED_TIME_BEGIN) String finishBegin, @QueryParam(RMWSConsts.FINISHED_TIME_END) String finishEnd, @QueryParam(RMWSConsts.APPLICATION_TYPES) Set<String> applicationTypes, @QueryParam(RMWSConsts.APPLICATION_TAGS) Set<String> applicationTags)
 specifier|public
 name|AppsInfo
 name|getApps
@@ -4475,7 +4548,9 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"state"
+name|RMWSConsts
+operator|.
+name|STATE
 argument_list|)
 name|String
 name|stateQuery
@@ -4483,7 +4558,9 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"states"
+name|RMWSConsts
+operator|.
+name|STATES
 argument_list|)
 name|Set
 argument_list|<
@@ -4494,7 +4571,9 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"finalStatus"
+name|RMWSConsts
+operator|.
+name|FINAL_STATUS
 argument_list|)
 name|String
 name|finalStatusQuery
@@ -4502,7 +4581,9 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"user"
+name|RMWSConsts
+operator|.
+name|USER
 argument_list|)
 name|String
 name|userQuery
@@ -4510,7 +4591,9 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"queue"
+name|RMWSConsts
+operator|.
+name|QUEUE
 argument_list|)
 name|String
 name|queueQuery
@@ -4518,7 +4601,9 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"limit"
+name|RMWSConsts
+operator|.
+name|LIMIT
 argument_list|)
 name|String
 name|count
@@ -4526,7 +4611,9 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"startedTimeBegin"
+name|RMWSConsts
+operator|.
+name|STARTED_TIME_BEGIN
 argument_list|)
 name|String
 name|startedBegin
@@ -4534,7 +4621,9 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"startedTimeEnd"
+name|RMWSConsts
+operator|.
+name|STARTED_TIME_END
 argument_list|)
 name|String
 name|startedEnd
@@ -4542,7 +4631,9 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"finishedTimeBegin"
+name|RMWSConsts
+operator|.
+name|FINISHED_TIME_BEGIN
 argument_list|)
 name|String
 name|finishBegin
@@ -4550,7 +4641,9 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"finishedTimeEnd"
+name|RMWSConsts
+operator|.
+name|FINISHED_TIME_END
 argument_list|)
 name|String
 name|finishEnd
@@ -4558,7 +4651,9 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"applicationTypes"
+name|RMWSConsts
+operator|.
+name|APPLICATION_TYPES
 argument_list|)
 name|Set
 argument_list|<
@@ -4569,7 +4664,9 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"applicationTags"
+name|RMWSConsts
+operator|.
+name|APPLICATION_TAGS
 argument_list|)
 name|Set
 argument_list|<
@@ -5405,7 +5502,9 @@ name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/scheduler/activities"
+name|RMWSConsts
+operator|.
+name|SCHEDULER_ACTIVITIES
 argument_list|)
 annotation|@
 name|Produces
@@ -5432,7 +5531,9 @@ operator|.
 name|UTF_8
 block|}
 argument_list|)
-DECL|method|getActivities (@ontext HttpServletRequest hsr, @QueryParam(R) String nodeId)
+annotation|@
+name|Override
+DECL|method|getActivities (@ontext HttpServletRequest hsr, @QueryParam(RMWSConsts.NODEID) String nodeId)
 specifier|public
 name|ActivitiesInfo
 name|getActivities
@@ -5445,7 +5546,9 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"nodeId"
+name|RMWSConsts
+operator|.
+name|NODEID
 argument_list|)
 name|String
 name|nodeId
@@ -5766,7 +5869,9 @@ name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/scheduler/app-activities"
+name|RMWSConsts
+operator|.
+name|SCHEDULER_APP_ACTIVITIES
 argument_list|)
 annotation|@
 name|Produces
@@ -5793,7 +5898,9 @@ operator|.
 name|UTF_8
 block|}
 argument_list|)
-DECL|method|getAppActivities (@ontext HttpServletRequest hsr, @QueryParam(R) String appId, @QueryParam(R) String time)
+annotation|@
+name|Override
+DECL|method|getAppActivities (@ontext HttpServletRequest hsr, @QueryParam(RMWSConsts.APP_ID) String appId, @QueryParam(RMWSConsts.MAX_TIME) String time)
 specifier|public
 name|AppActivitiesInfo
 name|getAppActivities
@@ -5806,7 +5913,9 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"appId"
+name|RMWSConsts
+operator|.
+name|APP_ID
 argument_list|)
 name|String
 name|appId
@@ -5814,7 +5923,9 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"maxTime"
+name|RMWSConsts
+operator|.
+name|MAX_TIME
 argument_list|)
 name|String
 name|time
@@ -6013,7 +6124,9 @@ name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/appstatistics"
+name|RMWSConsts
+operator|.
+name|APP_STATISTICS
 argument_list|)
 annotation|@
 name|Produces
@@ -6040,7 +6153,9 @@ operator|.
 name|UTF_8
 block|}
 argument_list|)
-DECL|method|getAppStatistics ( @ontext HttpServletRequest hsr, @QueryParam(R) Set<String> stateQueries, @QueryParam(R) Set<String> typeQueries)
+annotation|@
+name|Override
+DECL|method|getAppStatistics ( @ontext HttpServletRequest hsr, @QueryParam(RMWSConsts.STATES) Set<String> stateQueries, @QueryParam(RMWSConsts.APPLICATION_TYPES) Set<String> typeQueries)
 specifier|public
 name|ApplicationStatisticsInfo
 name|getAppStatistics
@@ -6053,7 +6168,9 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"states"
+name|RMWSConsts
+operator|.
+name|STATES
 argument_list|)
 name|Set
 argument_list|<
@@ -6064,7 +6181,9 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"applicationTypes"
+name|RMWSConsts
+operator|.
+name|APPLICATION_TYPES
 argument_list|)
 name|Set
 argument_list|<
@@ -6119,6 +6238,8 @@ name|types
 operator|.
 name|add
 argument_list|(
+name|RMWSConsts
+operator|.
 name|ANY
 argument_list|)
 expr_stmt|;
@@ -6286,6 +6407,8 @@ name|types
 operator|.
 name|contains
 argument_list|(
+name|RMWSConsts
+operator|.
 name|ANY
 argument_list|)
 condition|)
@@ -6296,6 +6419,8 @@ name|scoreboard
 argument_list|,
 name|state
 argument_list|,
+name|RMWSConsts
+operator|.
 name|ANY
 argument_list|)
 expr_stmt|;
@@ -6610,7 +6735,9 @@ name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/apps/{appid}"
+name|RMWSConsts
+operator|.
+name|APPS_APPID
 argument_list|)
 annotation|@
 name|Produces
@@ -6637,7 +6764,9 @@ operator|.
 name|UTF_8
 block|}
 argument_list|)
-DECL|method|getApp (@ontext HttpServletRequest hsr, @PathParam(R) String appId)
+annotation|@
+name|Override
+DECL|method|getApp (@ontext HttpServletRequest hsr, @PathParam(RMWSConsts.APPID) String appId)
 specifier|public
 name|AppInfo
 name|getApp
@@ -6650,7 +6779,9 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
-literal|"appid"
+name|RMWSConsts
+operator|.
+name|APPID
 argument_list|)
 name|String
 name|appId
@@ -6735,7 +6866,9 @@ name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/apps/{appid}/appattempts"
+name|RMWSConsts
+operator|.
+name|APPS_APPID_APPATTEMPTS
 argument_list|)
 annotation|@
 name|Produces
@@ -6762,7 +6895,9 @@ operator|.
 name|UTF_8
 block|}
 argument_list|)
-DECL|method|getAppAttempts (@ontext HttpServletRequest hsr, @PathParam(R) String appId)
+annotation|@
+name|Override
+DECL|method|getAppAttempts (@ontext HttpServletRequest hsr, @PathParam(RMWSConsts.APPID) String appId)
 specifier|public
 name|AppAttemptsInfo
 name|getAppAttempts
@@ -6775,7 +6910,9 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
-literal|"appid"
+name|RMWSConsts
+operator|.
+name|APPID
 argument_list|)
 name|String
 name|appId
@@ -6892,7 +7029,9 @@ name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/apps/{appid}/appattempts/{appattemptid}"
+name|RMWSConsts
+operator|.
+name|APPS_APPID_APPATTEMPTS_APPATTEMPTID
 argument_list|)
 annotation|@
 name|Produces
@@ -6921,7 +7060,7 @@ block|}
 argument_list|)
 annotation|@
 name|Override
-DECL|method|getAppAttempt (@ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String appId, @PathParam(R) String appAttemptId)
+DECL|method|getAppAttempt ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(RMWSConsts.APPID) String appId, @PathParam(RMWSConsts.APPATTEMPTID) String appAttemptId)
 specifier|public
 name|org
 operator|.
@@ -6953,7 +7092,9 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
-literal|"appid"
+name|RMWSConsts
+operator|.
+name|APPID
 argument_list|)
 name|String
 name|appId
@@ -6961,7 +7102,9 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
-literal|"appattemptid"
+name|RMWSConsts
+operator|.
+name|APPATTEMPTID
 argument_list|)
 name|String
 name|appAttemptId
@@ -6992,7 +7135,9 @@ name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/apps/{appid}/appattempts/{appattemptid}/containers"
+name|RMWSConsts
+operator|.
+name|APPS_APPID_APPATTEMPTS_APPATTEMPTID_CONTAINERS
 argument_list|)
 annotation|@
 name|Produces
@@ -7021,7 +7166,7 @@ block|}
 argument_list|)
 annotation|@
 name|Override
-DECL|method|getContainers (@ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String appId, @PathParam(R) String appAttemptId)
+DECL|method|getContainers (@ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(RMWSConsts.APPID) String appId, @PathParam(RMWSConsts.APPATTEMPTID) String appAttemptId)
 specifier|public
 name|ContainersInfo
 name|getContainers
@@ -7039,7 +7184,9 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
-literal|"appid"
+name|RMWSConsts
+operator|.
+name|APPID
 argument_list|)
 name|String
 name|appId
@@ -7047,7 +7194,9 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
-literal|"appattemptid"
+name|RMWSConsts
+operator|.
+name|APPATTEMPTID
 argument_list|)
 name|String
 name|appAttemptId
@@ -7107,7 +7256,7 @@ block|}
 argument_list|)
 annotation|@
 name|Override
-DECL|method|getContainer (@ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String appId, @PathParam(R) String appAttemptId, @PathParam(R) String containerId)
+DECL|method|getContainer (@ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(RMWSConsts.APPID) String appId, @PathParam(RMWSConsts.APPATTEMPTID) String appAttemptId, @PathParam(R) String containerId)
 specifier|public
 name|ContainerInfo
 name|getContainer
@@ -7125,7 +7274,9 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
-literal|"appid"
+name|RMWSConsts
+operator|.
+name|APPID
 argument_list|)
 name|String
 name|appId
@@ -7133,7 +7284,9 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
-literal|"appattemptid"
+name|RMWSConsts
+operator|.
+name|APPATTEMPTID
 argument_list|)
 name|String
 name|appAttemptId
@@ -7201,7 +7354,9 @@ operator|.
 name|UTF_8
 block|}
 argument_list|)
-DECL|method|getAppState (@ontext HttpServletRequest hsr, @PathParam(R) String appId)
+annotation|@
+name|Override
+DECL|method|getAppState (@ontext HttpServletRequest hsr, @PathParam(RMWSConsts.APPID) String appId)
 specifier|public
 name|AppState
 name|getAppState
@@ -7214,7 +7369,9 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
-literal|"appid"
+name|RMWSConsts
+operator|.
+name|APPID
 argument_list|)
 name|String
 name|appId
@@ -7331,7 +7488,9 @@ name|PUT
 annotation|@
 name|Path
 argument_list|(
-literal|"/apps/{appid}/state"
+name|RMWSConsts
+operator|.
+name|APPS_APPID_STATE
 argument_list|)
 annotation|@
 name|Produces
@@ -7371,7 +7530,9 @@ operator|.
 name|APPLICATION_XML
 block|}
 argument_list|)
-DECL|method|updateAppState (AppState targetState, @Context HttpServletRequest hsr, @PathParam(R) String appId)
+annotation|@
+name|Override
+DECL|method|updateAppState (AppState targetState, @Context HttpServletRequest hsr, @PathParam(RMWSConsts.APPID) String appId)
 specifier|public
 name|Response
 name|updateAppState
@@ -7387,7 +7548,9 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
-literal|"appid"
+name|RMWSConsts
+operator|.
+name|APPID
 argument_list|)
 name|String
 name|appId
@@ -7640,7 +7803,9 @@ name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/get-node-to-labels"
+name|RMWSConsts
+operator|.
+name|GET_NODE_TO_LABELS
 argument_list|)
 annotation|@
 name|Produces
@@ -7667,6 +7832,8 @@ operator|.
 name|UTF_8
 block|}
 argument_list|)
+annotation|@
+name|Override
 DECL|method|getNodeToLabels (@ontext HttpServletRequest hsr)
 specifier|public
 name|NodeToLabelsInfo
@@ -7793,7 +7960,9 @@ name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/label-mappings"
+name|RMWSConsts
+operator|.
+name|LABEL_MAPPINGS
 argument_list|)
 annotation|@
 name|Produces
@@ -7820,7 +7989,9 @@ operator|.
 name|UTF_8
 block|}
 argument_list|)
-DECL|method|getLabelsToNodes ( @ueryParamR) Set<String> labels)
+annotation|@
+name|Override
+DECL|method|getLabelsToNodes ( @ueryParamRMWSConsts.LABELS) Set<String> labels)
 specifier|public
 name|LabelsToNodesInfo
 name|getLabelsToNodes
@@ -7828,7 +7999,9 @@ parameter_list|(
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"labels"
+name|RMWSConsts
+operator|.
+name|LABELS
 argument_list|)
 name|Set
 argument_list|<
@@ -8005,7 +8178,9 @@ name|POST
 annotation|@
 name|Path
 argument_list|(
-literal|"/replace-node-to-labels"
+name|RMWSConsts
+operator|.
+name|REPLACE_NODE_TO_LABELS
 argument_list|)
 annotation|@
 name|Produces
@@ -8032,7 +8207,9 @@ operator|.
 name|UTF_8
 block|}
 argument_list|)
-DECL|method|replaceLabelsOnNodes (final NodeToLabelsEntryList newNodeToLabels, @Context HttpServletRequest hsr)
+annotation|@
+name|Override
+DECL|method|replaceLabelsOnNodes ( final NodeToLabelsEntryList newNodeToLabels, @Context HttpServletRequest hsr)
 specifier|public
 name|Response
 name|replaceLabelsOnNodes
@@ -8127,7 +8304,9 @@ name|POST
 annotation|@
 name|Path
 argument_list|(
-literal|"/nodes/{nodeId}/replace-labels"
+name|RMWSConsts
+operator|.
+name|NODES_NODEID_REPLACE_LABELS
 argument_list|)
 annotation|@
 name|Produces
@@ -8154,6 +8333,8 @@ operator|.
 name|UTF_8
 block|}
 argument_list|)
+annotation|@
+name|Override
 DECL|method|replaceLabelsOnNode ( @ueryParamR) Set<String> newNodeLabelsName, @Context HttpServletRequest hsr, @PathParam(R) String nodeId)
 specifier|public
 name|Response
@@ -8407,7 +8588,9 @@ name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/get-node-labels"
+name|RMWSConsts
+operator|.
+name|GET_NODE_LABELS
 argument_list|)
 annotation|@
 name|Produces
@@ -8434,6 +8617,8 @@ operator|.
 name|UTF_8
 block|}
 argument_list|)
+annotation|@
+name|Override
 DECL|method|getClusterNodeLabels (@ontext HttpServletRequest hsr)
 specifier|public
 name|NodeLabelsInfo
@@ -8485,7 +8670,9 @@ name|POST
 annotation|@
 name|Path
 argument_list|(
-literal|"/add-node-labels"
+name|RMWSConsts
+operator|.
+name|ADD_NODE_LABELS
 argument_list|)
 annotation|@
 name|Produces
@@ -8512,6 +8699,8 @@ operator|.
 name|UTF_8
 block|}
 argument_list|)
+annotation|@
+name|Override
 DECL|method|addToClusterNodeLabels (final NodeLabelsInfo newNodeLabels, @Context HttpServletRequest hsr)
 specifier|public
 name|Response
@@ -8655,7 +8844,9 @@ name|POST
 annotation|@
 name|Path
 argument_list|(
-literal|"/remove-node-labels"
+name|RMWSConsts
+operator|.
+name|REMOVE_NODE_LABELS
 argument_list|)
 annotation|@
 name|Produces
@@ -8682,7 +8873,9 @@ operator|.
 name|UTF_8
 block|}
 argument_list|)
-DECL|method|removeFromCluserNodeLabels ( @ueryParamR) Set<String> oldNodeLabels, @Context HttpServletRequest hsr)
+annotation|@
+name|Override
+DECL|method|removeFromCluserNodeLabels ( @ueryParamRMWSConsts.LABELS) Set<String> oldNodeLabels, @Context HttpServletRequest hsr)
 specifier|public
 name|Response
 name|removeFromCluserNodeLabels
@@ -8690,7 +8883,9 @@ parameter_list|(
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"labels"
+name|RMWSConsts
+operator|.
+name|LABELS
 argument_list|)
 name|Set
 argument_list|<
@@ -8836,7 +9031,9 @@ name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/nodes/{nodeId}/get-labels"
+name|RMWSConsts
+operator|.
+name|NODES_NODEID_GETLABELS
 argument_list|)
 annotation|@
 name|Produces
@@ -8863,7 +9060,9 @@ operator|.
 name|UTF_8
 block|}
 argument_list|)
-DECL|method|getLabelsOnNode (@ontext HttpServletRequest hsr, @PathParam(R) String nodeId)
+annotation|@
+name|Override
+DECL|method|getLabelsOnNode (@ontext HttpServletRequest hsr, @PathParam(RMWSConsts.NODEID) String nodeId)
 specifier|public
 name|NodeLabelsInfo
 name|getLabelsOnNode
@@ -8876,7 +9075,9 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
-literal|"nodeId"
+name|RMWSConsts
+operator|.
+name|NODEID
 argument_list|)
 name|String
 name|nodeId
@@ -9255,7 +9456,9 @@ name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/apps/{appid}/priority"
+name|RMWSConsts
+operator|.
+name|APPS_APPID_PRIORITY
 argument_list|)
 annotation|@
 name|Produces
@@ -9282,7 +9485,9 @@ operator|.
 name|UTF_8
 block|}
 argument_list|)
-DECL|method|getAppPriority (@ontext HttpServletRequest hsr, @PathParam(R) String appId)
+annotation|@
+name|Override
+DECL|method|getAppPriority (@ontext HttpServletRequest hsr, @PathParam(RMWSConsts.APPID) String appId)
 specifier|public
 name|AppPriority
 name|getAppPriority
@@ -9295,7 +9500,9 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
-literal|"appid"
+name|RMWSConsts
+operator|.
+name|APPID
 argument_list|)
 name|String
 name|appId
@@ -9409,7 +9616,9 @@ name|PUT
 annotation|@
 name|Path
 argument_list|(
-literal|"/apps/{appid}/priority"
+name|RMWSConsts
+operator|.
+name|APPS_APPID_PRIORITY
 argument_list|)
 annotation|@
 name|Produces
@@ -9449,7 +9658,9 @@ operator|.
 name|APPLICATION_XML
 block|}
 argument_list|)
-DECL|method|updateApplicationPriority (AppPriority targetPriority, @Context HttpServletRequest hsr, @PathParam(R) String appId)
+annotation|@
+name|Override
+DECL|method|updateApplicationPriority (AppPriority targetPriority, @Context HttpServletRequest hsr, @PathParam(RMWSConsts.APPID) String appId)
 specifier|public
 name|Response
 name|updateApplicationPriority
@@ -9465,7 +9676,9 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
-literal|"appid"
+name|RMWSConsts
+operator|.
+name|APPID
 argument_list|)
 name|String
 name|appId
@@ -9939,7 +10152,9 @@ name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/apps/{appid}/queue"
+name|RMWSConsts
+operator|.
+name|APPS_APPID_QUEUE
 argument_list|)
 annotation|@
 name|Produces
@@ -9966,7 +10181,9 @@ operator|.
 name|UTF_8
 block|}
 argument_list|)
-DECL|method|getAppQueue (@ontext HttpServletRequest hsr, @PathParam(R) String appId)
+annotation|@
+name|Override
+DECL|method|getAppQueue (@ontext HttpServletRequest hsr, @PathParam(RMWSConsts.APPID) String appId)
 specifier|public
 name|AppQueue
 name|getAppQueue
@@ -9979,7 +10196,9 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
-literal|"appid"
+name|RMWSConsts
+operator|.
+name|APPID
 argument_list|)
 name|String
 name|appId
@@ -10090,7 +10309,9 @@ name|PUT
 annotation|@
 name|Path
 argument_list|(
-literal|"/apps/{appid}/queue"
+name|RMWSConsts
+operator|.
+name|APPS_APPID_QUEUE
 argument_list|)
 annotation|@
 name|Produces
@@ -10130,7 +10351,9 @@ operator|.
 name|APPLICATION_XML
 block|}
 argument_list|)
-DECL|method|updateAppQueue (AppQueue targetQueue, @Context HttpServletRequest hsr, @PathParam(R) String appId)
+annotation|@
+name|Override
+DECL|method|updateAppQueue (AppQueue targetQueue, @Context HttpServletRequest hsr, @PathParam(RMWSConsts.APPID) String appId)
 specifier|public
 name|Response
 name|updateAppQueue
@@ -10146,7 +10369,9 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
-literal|"appid"
+name|RMWSConsts
+operator|.
+name|APPID
 argument_list|)
 name|String
 name|appId
@@ -10807,13 +11032,14 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Generates a new ApplicationId which is then sent to the client    *     * @param hsr    *          the servlet request    * @return Response containing the app id and the maximum resource    *         capabilities    * @throws AuthorizationException    * @throws IOException    * @throws InterruptedException    */
 annotation|@
 name|POST
 annotation|@
 name|Path
 argument_list|(
-literal|"/apps/new-application"
+name|RMWSConsts
+operator|.
+name|APPS_NEW_APPLICATION
 argument_list|)
 annotation|@
 name|Produces
@@ -10840,6 +11066,8 @@ operator|.
 name|UTF_8
 block|}
 argument_list|)
+annotation|@
+name|Override
 DECL|method|createNewApplication (@ontext HttpServletRequest hsr)
 specifier|public
 name|Response
@@ -10952,13 +11180,14 @@ block|}
 comment|// reuse the code in ClientRMService to create new app
 comment|// get the new app id and submit app
 comment|// set location header with new app location
-comment|/**    * Function to submit an app to the RM    *     * @param newApp    *          structure containing information to construct the    *          ApplicationSubmissionContext    * @param hsr    *          the servlet request    * @return Response containing the status code    * @throws AuthorizationException    * @throws IOException    * @throws InterruptedException    */
 annotation|@
 name|POST
 annotation|@
 name|Path
 argument_list|(
-literal|"/apps"
+name|RMWSConsts
+operator|.
+name|APPS
 argument_list|)
 annotation|@
 name|Produces
@@ -10998,6 +11227,8 @@ operator|.
 name|APPLICATION_XML
 block|}
 argument_list|)
+annotation|@
+name|Override
 DECL|method|submitApplication (ApplicationSubmissionContextInfo newApp, @Context HttpServletRequest hsr)
 specifier|public
 name|Response
@@ -11320,7 +11551,7 @@ return|return
 name|appId
 return|;
 block|}
-comment|/**    * Create the actual ApplicationSubmissionContext to be submitted to the RM    * from the information provided by the user.    *     * @param newApp    *          the information provided by the user    * @return returns the constructed ApplicationSubmissionContext    * @throws IOException    */
+comment|/**    * Create the actual ApplicationSubmissionContext to be submitted to the RM    * from the information provided by the user.    *     * @param newApp the information provided by the user    * @return returns the constructed ApplicationSubmissionContext    * @throws IOException    */
 DECL|method|createAppSubmissionContext ( ApplicationSubmissionContextInfo newApp)
 specifier|protected
 name|ApplicationSubmissionContext
@@ -11656,7 +11887,7 @@ return|return
 name|r
 return|;
 block|}
-comment|/**    * Create the ContainerLaunchContext required for the    * ApplicationSubmissionContext. This function takes the user information and    * generates the ByteBuffer structures required by the ContainerLaunchContext    *     * @param newApp    *          the information provided by the user    * @return created context    * @throws BadRequestException    * @throws IOException    */
+comment|/**    * Create the ContainerLaunchContext required for the    * ApplicationSubmissionContext. This function takes the user information and    * generates the ByteBuffer structures required by the ContainerLaunchContext    *     * @param newApp the information provided by the user    * @return created context    * @throws BadRequestException    * @throws IOException    */
 DECL|method|createContainerLaunchContext ( ApplicationSubmissionContextInfo newApp)
 specifier|protected
 name|ContainerLaunchContext
@@ -11954,7 +12185,7 @@ return|return
 name|ctx
 return|;
 block|}
-comment|/**    * Generate a Credentials object from the information in the CredentialsInfo    * object.    *     * @param credentials    *          the CredentialsInfo provided by the user.    * @return    */
+comment|/**    * Generate a Credentials object from the information in the CredentialsInfo    * object.    *     * @param credentials the CredentialsInfo provided by the user.    * @return    */
 DECL|method|createCredentials (CredentialsInfo credentials)
 specifier|private
 name|Credentials
@@ -12313,7 +12544,9 @@ name|POST
 annotation|@
 name|Path
 argument_list|(
-literal|"/delegation-token"
+name|RMWSConsts
+operator|.
+name|DELEGATION_TOKEN
 argument_list|)
 annotation|@
 name|Produces
@@ -12353,6 +12586,8 @@ operator|.
 name|APPLICATION_XML
 block|}
 argument_list|)
+annotation|@
+name|Override
 DECL|method|postDelegationToken (DelegationToken tokenData, @Context HttpServletRequest hsr)
 specifier|public
 name|Response
@@ -12435,7 +12670,9 @@ name|POST
 annotation|@
 name|Path
 argument_list|(
-literal|"/delegation-token/expiration"
+name|RMWSConsts
+operator|.
+name|DELEGATION_TOKEN_EXPIRATION
 argument_list|)
 annotation|@
 name|Produces
@@ -12475,9 +12712,11 @@ operator|.
 name|APPLICATION_XML
 block|}
 argument_list|)
+annotation|@
+name|Override
+DECL|method|postDelegationTokenExpiration (@ontext HttpServletRequest hsr)
 specifier|public
 name|Response
-DECL|method|postDelegationTokenExpiration (@ontext HttpServletRequest hsr)
 name|postDelegationTokenExpiration
 parameter_list|(
 annotation|@
@@ -12933,8 +13172,6 @@ name|RenewDelegationTokenResponse
 name|run
 parameter_list|()
 throws|throws
-name|IOException
-throws|,
 name|YarnException
 block|{
 return|return
@@ -13147,7 +13384,9 @@ name|DELETE
 annotation|@
 name|Path
 argument_list|(
-literal|"/delegation-token"
+name|RMWSConsts
+operator|.
+name|DELEGATION_TOKEN
 argument_list|)
 annotation|@
 name|Produces
@@ -13174,6 +13413,8 @@ operator|.
 name|UTF_8
 block|}
 argument_list|)
+annotation|@
+name|Override
 DECL|method|cancelDelegationToken (@ontext HttpServletRequest hsr)
 specifier|public
 name|Response
@@ -13611,13 +13852,14 @@ return|return
 name|token
 return|;
 block|}
-comment|/**    * Generates a new ReservationId which is then sent to the client.    *    * @param hsr the servlet request    * @return Response containing the app id and the maximum resource    *         capabilities    * @throws AuthorizationException if the user is not authorized    *         to invoke this method.    * @throws IOException if creation fails.    * @throws InterruptedException if interrupted.    */
 annotation|@
 name|POST
 annotation|@
 name|Path
 argument_list|(
-literal|"/reservation/new-reservation"
+name|RMWSConsts
+operator|.
+name|RESERVATION_NEW
 argument_list|)
 annotation|@
 name|Produces
@@ -13644,6 +13886,8 @@ operator|.
 name|UTF_8
 block|}
 argument_list|)
+annotation|@
+name|Override
 DECL|method|createNewReservation (@ontext HttpServletRequest hsr)
 specifier|public
 name|Response
@@ -13841,13 +14085,14 @@ return|return
 name|reservationId
 return|;
 block|}
-comment|/**    * Function to submit a Reservation to the RM.    *    * @param resContext provides information to construct the    *          ReservationSubmissionRequest    * @param hsr the servlet request    * @return Response containing the status code    * @throws AuthorizationException    * @throws IOException    * @throws InterruptedException    */
 annotation|@
 name|POST
 annotation|@
 name|Path
 argument_list|(
-literal|"/reservation/submit"
+name|RMWSConsts
+operator|.
+name|RESERVATION_SUBMIT
 argument_list|)
 annotation|@
 name|Produces
@@ -13887,7 +14132,9 @@ operator|.
 name|APPLICATION_XML
 block|}
 argument_list|)
-DECL|method|submitReservation ( ReservationSubmissionRequestInfo resContext, @Context HttpServletRequest hsr)
+annotation|@
+name|Override
+DECL|method|submitReservation (ReservationSubmissionRequestInfo resContext, @Context HttpServletRequest hsr)
 specifier|public
 name|Response
 name|submitReservation
@@ -14361,13 +14608,14 @@ return|return
 name|request
 return|;
 block|}
-comment|/**    * Function to update a Reservation to the RM.    *    * @param resContext provides information to construct the    *          ReservationUpdateRequest    * @param hsr the servlet request    * @return Response containing the status code    * @throws AuthorizationException    * @throws IOException    * @throws InterruptedException    */
 annotation|@
 name|POST
 annotation|@
 name|Path
 argument_list|(
-literal|"/reservation/update"
+name|RMWSConsts
+operator|.
+name|RESERVATION_UPDATE
 argument_list|)
 annotation|@
 name|Produces
@@ -14407,6 +14655,8 @@ operator|.
 name|APPLICATION_XML
 block|}
 argument_list|)
+annotation|@
+name|Override
 DECL|method|updateReservation (ReservationUpdateRequestInfo resContext, @Context HttpServletRequest hsr)
 specifier|public
 name|Response
@@ -14903,13 +15153,14 @@ return|return
 name|request
 return|;
 block|}
-comment|/**    * Function to delete a Reservation to the RM.    *    * @param resContext provides information to construct    *          the ReservationDeleteRequest    * @param hsr the servlet request    * @return Response containing the status code    * @throws AuthorizationException when the user group information cannot be    *           retrieved.    * @throws IOException when a {@link ReservationDeleteRequest} cannot be    *           created from the {@link ReservationDeleteRequestInfo}. This    *           exception is also thrown on    *           {@code ClientRMService.deleteReservation} invokation failure.    * @throws InterruptedException if doAs action throws an InterruptedException.    */
 annotation|@
 name|POST
 annotation|@
 name|Path
 argument_list|(
-literal|"/reservation/delete"
+name|RMWSConsts
+operator|.
+name|RESERVATION_DELETE
 argument_list|)
 annotation|@
 name|Produces
@@ -14949,6 +15200,8 @@ operator|.
 name|APPLICATION_XML
 block|}
 argument_list|)
+annotation|@
+name|Override
 DECL|method|deleteReservation (ReservationDeleteRequestInfo resContext, @Context HttpServletRequest hsr)
 specifier|public
 name|Response
@@ -15189,13 +15442,14 @@ return|return
 name|request
 return|;
 block|}
-comment|/**    * Function to retrieve a list of all the reservations.    */
 annotation|@
 name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/reservation/list"
+name|RMWSConsts
+operator|.
+name|RESERVATION_LIST
 argument_list|)
 annotation|@
 name|Produces
@@ -15222,7 +15476,9 @@ operator|.
 name|UTF_8
 block|}
 argument_list|)
-DECL|method|listReservation ( @ueryParamR) @efaultValueR) String queue, @QueryParam(R) @DefaultValue(R) String reservationId, @QueryParam(R) @DefaultValue(R) long startTime, @QueryParam(R) @DefaultValue(R) long endTime, @QueryParam(R) @DefaultValue(R) boolean includeResourceAllocations, @Context HttpServletRequest hsr)
+annotation|@
+name|Override
+DECL|method|listReservation ( @ueryParamRMWSConsts.QUEUE) @efaultValueDEFAULT_QUEUE) String queue, @QueryParam(RMWSConsts.RESERVATION_ID) @DefaultValue(DEFAULT_RESERVATION_ID) String reservationId, @QueryParam(RMWSConsts.START_TIME) @DefaultValue(DEFAULT_START_TIME) long startTime, @QueryParam(RMWSConsts.END_TIME) @DefaultValue(DEFAULT_END_TIME) long endTime, @QueryParam(RMWSConsts.INCLUDE_RESOURCE) @DefaultValue(DEFAULT_INCLUDE_RESOURCE) boolean includeResourceAllocations, @Context HttpServletRequest hsr)
 specifier|public
 name|Response
 name|listReservation
@@ -15230,12 +15486,14 @@ parameter_list|(
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"queue"
+name|RMWSConsts
+operator|.
+name|QUEUE
 argument_list|)
 annotation|@
 name|DefaultValue
 argument_list|(
-literal|"default"
+name|DEFAULT_QUEUE
 argument_list|)
 name|String
 name|queue
@@ -15243,12 +15501,14 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"reservation-id"
+name|RMWSConsts
+operator|.
+name|RESERVATION_ID
 argument_list|)
 annotation|@
 name|DefaultValue
 argument_list|(
-literal|""
+name|DEFAULT_RESERVATION_ID
 argument_list|)
 name|String
 name|reservationId
@@ -15256,12 +15516,14 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"start-time"
+name|RMWSConsts
+operator|.
+name|START_TIME
 argument_list|)
 annotation|@
 name|DefaultValue
 argument_list|(
-literal|"0"
+name|DEFAULT_START_TIME
 argument_list|)
 name|long
 name|startTime
@@ -15269,12 +15531,14 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"end-time"
+name|RMWSConsts
+operator|.
+name|END_TIME
 argument_list|)
 annotation|@
 name|DefaultValue
 argument_list|(
-literal|"-1"
+name|DEFAULT_END_TIME
 argument_list|)
 name|long
 name|endTime
@@ -15282,12 +15546,14 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"include-resource-allocations"
+name|RMWSConsts
+operator|.
+name|INCLUDE_RESOURCE
 argument_list|)
 annotation|@
 name|DefaultValue
 argument_list|(
-literal|"false"
+name|DEFAULT_INCLUDE_RESOURCE
 argument_list|)
 name|boolean
 name|includeResourceAllocations
@@ -15509,7 +15775,9 @@ name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/apps/{appid}/timeouts/{type}"
+name|RMWSConsts
+operator|.
+name|APPS_TIMEOUTS_TYPE
 argument_list|)
 annotation|@
 name|Produces
@@ -15536,7 +15804,9 @@ operator|.
 name|UTF_8
 block|}
 argument_list|)
-DECL|method|getAppTimeout (@ontext HttpServletRequest hsr, @PathParam(R) String appId, @PathParam(R) String type)
+annotation|@
+name|Override
+DECL|method|getAppTimeout (@ontext HttpServletRequest hsr, @PathParam(RMWSConsts.APPID) String appId, @PathParam(RMWSConsts.TYPE) String type)
 specifier|public
 name|AppTimeoutInfo
 name|getAppTimeout
@@ -15549,7 +15819,9 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
-literal|"appid"
+name|RMWSConsts
+operator|.
+name|APPID
 argument_list|)
 name|String
 name|appId
@@ -15557,7 +15829,9 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
-literal|"type"
+name|RMWSConsts
+operator|.
+name|TYPE
 argument_list|)
 name|String
 name|type
@@ -15751,7 +16025,9 @@ name|GET
 annotation|@
 name|Path
 argument_list|(
-literal|"/apps/{appid}/timeouts"
+name|RMWSConsts
+operator|.
+name|APPS_TIMEOUTS
 argument_list|)
 annotation|@
 name|Produces
@@ -15778,7 +16054,9 @@ operator|.
 name|UTF_8
 block|}
 argument_list|)
-DECL|method|getAppTimeouts (@ontext HttpServletRequest hsr, @PathParam(R) String appId)
+annotation|@
+name|Override
+DECL|method|getAppTimeouts (@ontext HttpServletRequest hsr, @PathParam(RMWSConsts.APPID) String appId)
 specifier|public
 name|AppTimeoutsInfo
 name|getAppTimeouts
@@ -15791,7 +16069,9 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
-literal|"appid"
+name|RMWSConsts
+operator|.
+name|APPID
 argument_list|)
 name|String
 name|appId
@@ -16060,7 +16340,9 @@ name|PUT
 annotation|@
 name|Path
 argument_list|(
-literal|"/apps/{appid}/timeout"
+name|RMWSConsts
+operator|.
+name|APPS_TIMEOUT
 argument_list|)
 annotation|@
 name|Produces
@@ -16100,7 +16382,9 @@ operator|.
 name|APPLICATION_XML
 block|}
 argument_list|)
-DECL|method|updateApplicationTimeout (AppTimeoutInfo appTimeout, @Context HttpServletRequest hsr, @PathParam(R) String appId)
+annotation|@
+name|Override
+DECL|method|updateApplicationTimeout (AppTimeoutInfo appTimeout, @Context HttpServletRequest hsr, @PathParam(RMWSConsts.APPID) String appId)
 specifier|public
 name|Response
 name|updateApplicationTimeout
@@ -16116,7 +16400,9 @@ parameter_list|,
 annotation|@
 name|PathParam
 argument_list|(
-literal|"appid"
+name|RMWSConsts
+operator|.
+name|APPID
 argument_list|)
 name|String
 name|appId
