@@ -141,8 +141,8 @@ parameter_list|)
 throws|throws
 name|StorageContainerException
 function_decl|;
-comment|/**    * List keys in a container.    *    * @param pipeline - pipeline.    * @param prefix   - Prefix in needed.    * @param prevKey  - Key to Start from, EMPTY_STRING to begin.    * @param count    - Number of keys to return.    * @return List of Keys that match the criteria.    */
-DECL|method|listKey (Pipeline pipeline, String prefix, String prevKey, int count)
+comment|/**    * List keys in a container.    *    * @param pipeline - pipeline.    * @param prefix   - Prefix in needed.    * @param startKey  - Key to start from, EMPTY_STRING to begin.    * @param count    - Number of keys to return.    * @return List of Keys that match the criteria.    */
+DECL|method|listKey (Pipeline pipeline, String prefix, String startKey, int count)
 name|List
 argument_list|<
 name|KeyData
@@ -156,7 +156,7 @@ name|String
 name|prefix
 parameter_list|,
 name|String
-name|prevKey
+name|startKey
 parameter_list|,
 name|int
 name|count

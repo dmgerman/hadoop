@@ -4674,7 +4674,7 @@ name|getKeyName
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// List key with preKev filter
+comment|// List key with startKey filter
 name|String
 name|k6
 init|=
@@ -4704,7 +4704,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|3
+literal|4
 argument_list|,
 name|result
 operator|.
@@ -4717,7 +4717,7 @@ control|(
 name|int
 name|i
 init|=
-literal|7
+literal|6
 init|;
 name|i
 operator|<
@@ -4744,7 +4744,7 @@ name|get
 argument_list|(
 name|i
 operator|-
-literal|7
+literal|6
 argument_list|)
 operator|.
 name|getKeyName
@@ -4752,7 +4752,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|// List key with both prefix and preKey filter
+comment|// List key with both prefix and startKey filter
 name|String
 name|k7
 init|=
