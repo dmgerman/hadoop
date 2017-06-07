@@ -1333,6 +1333,14 @@ literal|false
 decl_stmt|;
 try|try
 block|{
+name|DataNodeFaultInjector
+operator|.
+name|get
+argument_list|()
+operator|.
+name|throwTooManyOpenFiles
+argument_list|()
+expr_stmt|;
 name|metaIn
 operator|=
 name|datanode
@@ -1450,6 +1458,31 @@ name|FileNotFoundException
 name|e
 parameter_list|)
 block|{
+if|if
+condition|(
+operator|(
+name|e
+operator|.
+name|getMessage
+argument_list|()
+operator|!=
+literal|null
+operator|)
+operator|&&
+operator|!
+operator|(
+name|e
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Too many open files"
+argument_list|)
+operator|)
+condition|)
+block|{
 comment|// The replica is on its volume map but not on disk
 name|datanode
 operator|.
@@ -1485,6 +1518,7 @@ argument_list|()
 block|}
 argument_list|)
 expr_stmt|;
+block|}
 throw|throw
 name|e
 throw|;
