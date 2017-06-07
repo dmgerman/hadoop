@@ -40,15 +40,39 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
-name|protocol
+name|protocolPB
 operator|.
-name|proto
+name|PBHelperClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|HdfsProtos
+name|apache
 operator|.
-name|StorageTypeProto
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneAcl
 import|;
 end_import
 
@@ -82,13 +106,9 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|protocol
+name|protocolPB
 operator|.
-name|proto
-operator|.
-name|KeySpaceManagerProtocolProtos
-operator|.
-name|OzoneAclInfo
+name|KSMPBHelper
 import|;
 end_import
 
@@ -109,6 +129,18 @@ operator|.
 name|util
 operator|.
 name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|stream
+operator|.
+name|Collectors
 import|;
 end_import
 
@@ -142,7 +174,7 @@ DECL|field|acls
 specifier|private
 name|List
 argument_list|<
-name|OzoneAclInfo
+name|OzoneAcl
 argument_list|>
 name|acls
 decl_stmt|;
@@ -155,11 +187,11 @@ decl_stmt|;
 comment|/**    * Type of storage to be used for this bucket.    * [RAM_DISK, SSD, DISK, ARCHIVE]    */
 DECL|field|storageType
 specifier|private
-name|StorageTypeProto
+name|StorageType
 name|storageType
 decl_stmt|;
 comment|/**    * Private constructor, constructed via builder.    * @param volumeName - Volume name.    * @param bucketName - Bucket name.    * @param acls - list of ACLs.    * @param isVersionEnabled - Bucket version flag.    * @param storageType - Storage type to be used.    */
-DECL|method|KsmBucketInfo (String volumeName, String bucketName, List<OzoneAclInfo> acls, boolean isVersionEnabled, StorageTypeProto storageType)
+DECL|method|KsmBucketInfo (String volumeName, String bucketName, List<OzoneAcl> acls, boolean isVersionEnabled, StorageType storageType)
 specifier|private
 name|KsmBucketInfo
 parameter_list|(
@@ -171,14 +203,14 @@ name|bucketName
 parameter_list|,
 name|List
 argument_list|<
-name|OzoneAclInfo
+name|OzoneAcl
 argument_list|>
 name|acls
 parameter_list|,
 name|boolean
 name|isVersionEnabled
 parameter_list|,
-name|StorageTypeProto
+name|StorageType
 name|storageType
 parameter_list|)
 block|{
@@ -235,12 +267,12 @@ return|return
 name|bucketName
 return|;
 block|}
-comment|/**    * Returns the ACL's associated with this bucket.    * @return List<OzoneAclInfo>    */
+comment|/**    * Returns the ACL's associated with this bucket.    * @return List<OzoneAcl>    */
 DECL|method|getAcls ()
 specifier|public
 name|List
 argument_list|<
-name|OzoneAclInfo
+name|OzoneAcl
 argument_list|>
 name|getAcls
 parameter_list|()
@@ -260,10 +292,10 @@ return|return
 name|isVersionEnabled
 return|;
 block|}
-comment|/**    * Returns the type of storage to be used.    * @return StorageTypeProto    */
+comment|/**    * Returns the type of storage to be used.    * @return StorageType    */
 DECL|method|getStorageType ()
 specifier|public
-name|StorageTypeProto
+name|StorageType
 name|getStorageType
 parameter_list|()
 block|{
@@ -306,7 +338,7 @@ DECL|field|acls
 specifier|private
 name|List
 argument_list|<
-name|OzoneAclInfo
+name|OzoneAcl
 argument_list|>
 name|acls
 decl_stmt|;
@@ -317,7 +349,7 @@ name|isVersionEnabled
 decl_stmt|;
 DECL|field|storageType
 specifier|private
-name|StorageTypeProto
+name|StorageType
 name|storageType
 decl_stmt|;
 DECL|method|Builder ()
@@ -344,7 +376,7 @@ name|this
 operator|.
 name|storageType
 operator|=
-name|StorageTypeProto
+name|StorageType
 operator|.
 name|DISK
 expr_stmt|;
@@ -387,14 +419,14 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setAcls (List<OzoneAclInfo> listOfAcls)
+DECL|method|setAcls (List<OzoneAcl> listOfAcls)
 specifier|public
 name|Builder
 name|setAcls
 parameter_list|(
 name|List
 argument_list|<
-name|OzoneAclInfo
+name|OzoneAcl
 argument_list|>
 name|listOfAcls
 parameter_list|)
@@ -428,12 +460,12 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setStorageType (StorageTypeProto storage)
+DECL|method|setStorageType (StorageType storage)
 specifier|public
 name|Builder
 name|setStorageType
 parameter_list|(
-name|StorageTypeProto
+name|StorageType
 name|storage
 parameter_list|)
 block|{
@@ -532,6 +564,24 @@ operator|.
 name|addAllAcls
 argument_list|(
 name|acls
+operator|.
+name|stream
+argument_list|()
+operator|.
+name|map
+argument_list|(
+name|KSMPBHelper
+operator|::
+name|convertOzoneAcl
+argument_list|)
+operator|.
+name|collect
+argument_list|(
+name|Collectors
+operator|.
+name|toList
+argument_list|()
+argument_list|)
 argument_list|)
 operator|.
 name|setIsVersionEnabled
@@ -541,7 +591,12 @@ argument_list|)
 operator|.
 name|setStorageType
 argument_list|(
+name|PBHelperClient
+operator|.
+name|convertStorageType
+argument_list|(
 name|storageType
+argument_list|)
 argument_list|)
 operator|.
 name|build
@@ -577,16 +632,39 @@ name|bucketInfo
 operator|.
 name|getAclsList
 argument_list|()
+operator|.
+name|stream
+argument_list|()
+operator|.
+name|map
+argument_list|(
+name|KSMPBHelper
+operator|::
+name|convertOzoneAcl
+argument_list|)
+operator|.
+name|collect
+argument_list|(
+name|Collectors
+operator|.
+name|toList
+argument_list|()
+argument_list|)
 argument_list|,
 name|bucketInfo
 operator|.
 name|getIsVersionEnabled
 argument_list|()
 argument_list|,
+name|PBHelperClient
+operator|.
+name|convertStorageType
+argument_list|(
 name|bucketInfo
 operator|.
 name|getStorageType
 argument_list|()
+argument_list|)
 argument_list|)
 return|;
 block|}

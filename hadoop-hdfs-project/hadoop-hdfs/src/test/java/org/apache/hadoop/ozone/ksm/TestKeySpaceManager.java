@@ -252,10 +252,6 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|web
-operator|.
-name|request
-operator|.
 name|OzoneAcl
 import|;
 end_import
