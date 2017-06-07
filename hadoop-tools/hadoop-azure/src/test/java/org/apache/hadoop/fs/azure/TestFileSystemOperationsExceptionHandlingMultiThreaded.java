@@ -398,6 +398,11 @@ argument_list|(
 literal|5
 argument_list|)
 expr_stmt|;
+name|inputStream
+operator|.
+name|read
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Test
