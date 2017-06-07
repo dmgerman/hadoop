@@ -140,7 +140,7 @@ name|hadoop
 operator|.
 name|service
 operator|.
-name|AbstractService
+name|CompositeService
 import|;
 end_import
 
@@ -280,7 +280,7 @@ specifier|public
 class|class
 name|TimelineCollectorManager
 extends|extends
-name|AbstractService
+name|CompositeService
 block|{
 DECL|field|LOG
 specifier|private
@@ -321,7 +321,7 @@ decl_stmt|;
 annotation|@
 name|Override
 DECL|method|serviceInit (Configuration conf)
-specifier|public
+specifier|protected
 name|void
 name|serviceInit
 parameter_list|(

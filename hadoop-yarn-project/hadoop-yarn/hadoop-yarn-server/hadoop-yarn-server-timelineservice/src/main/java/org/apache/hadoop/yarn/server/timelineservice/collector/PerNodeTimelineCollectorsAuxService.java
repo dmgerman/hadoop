@@ -428,7 +428,9 @@ name|this
 argument_list|(
 operator|new
 name|NodeTimelineCollectorManager
-argument_list|()
+argument_list|(
+literal|true
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -891,7 +893,13 @@ literal|null
 condition|?
 operator|new
 name|PerNodeTimelineCollectorsAuxService
-argument_list|()
+argument_list|(
+operator|new
+name|NodeTimelineCollectorManager
+argument_list|(
+literal|false
+argument_list|)
+argument_list|)
 else|:
 operator|new
 name|PerNodeTimelineCollectorsAuxService
