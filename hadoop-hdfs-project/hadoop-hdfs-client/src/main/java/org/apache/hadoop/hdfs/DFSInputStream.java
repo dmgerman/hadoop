@@ -2855,6 +2855,13 @@ name|retval
 operator|.
 name|storageType
 decl_stmt|;
+comment|// Latest block if refreshed by chooseDatanode()
+name|targetBlock
+operator|=
+name|retval
+operator|.
+name|block
+expr_stmt|;
 try|try
 block|{
 name|blockReader
@@ -4623,6 +4630,8 @@ argument_list|,
 name|targetAddr
 argument_list|,
 name|storageType
+argument_list|,
+name|block
 argument_list|)
 return|;
 block|}
@@ -4853,13 +4862,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|block
-operator|=
-name|refreshLocatedBlock
-argument_list|(
-name|block
-argument_list|)
-expr_stmt|;
 while|while
 condition|(
 literal|true
@@ -4875,13 +4877,18 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
+comment|// Latest block, if refreshed internally
+name|block
+operator|=
+name|addressPair
+operator|.
+name|block
+expr_stmt|;
 try|try
 block|{
 name|actualGetFromOneDataNode
 argument_list|(
 name|addressPair
-argument_list|,
-name|block
 argument_list|,
 name|start
 argument_list|,
@@ -4998,8 +5005,6 @@ name|actualGetFromOneDataNode
 argument_list|(
 name|datanode
 argument_list|,
-name|block
-argument_list|,
 name|start
 argument_list|,
 name|end
@@ -5017,17 +5022,14 @@ block|}
 block|}
 return|;
 block|}
-comment|/**    * Read data from one DataNode.    *    * @param datanode          the datanode from which to read data    * @param block             the located block containing the requested data    * @param startInBlk        the startInBlk offset of the block    * @param endInBlk          the endInBlk offset of the block    * @param buf               the given byte buffer into which the data is read    * @param corruptedBlocks   map recording list of datanodes with corrupted    *                          block replica    */
-DECL|method|actualGetFromOneDataNode (final DNAddrPair datanode, LocatedBlock block, final long startInBlk, final long endInBlk, ByteBuffer buf, CorruptedBlocks corruptedBlocks)
+comment|/**    * Read data from one DataNode.    *    * @param datanode          the datanode from which to read data    * @param startInBlk        the startInBlk offset of the block    * @param endInBlk          the endInBlk offset of the block    * @param buf               the given byte buffer into which the data is read    * @param corruptedBlocks   map recording list of datanodes with corrupted    *                          block replica    */
+DECL|method|actualGetFromOneDataNode (final DNAddrPair datanode, final long startInBlk, final long endInBlk, ByteBuffer buf, CorruptedBlocks corruptedBlocks)
 name|void
 name|actualGetFromOneDataNode
 parameter_list|(
 specifier|final
 name|DNAddrPair
 name|datanode
-parameter_list|,
-name|LocatedBlock
-name|block
 parameter_list|,
 specifier|final
 name|long
@@ -5081,21 +5083,18 @@ operator|+
 literal|1
 argument_list|)
 decl_stmt|;
+name|LocatedBlock
+name|block
+init|=
+name|datanode
+operator|.
+name|block
+decl_stmt|;
 while|while
 condition|(
 literal|true
 condition|)
 block|{
-comment|// cached block locations may have been updated by chooseDataNode()
-comment|// or fetchBlockAt(). Always get the latest list of locations at the
-comment|// start of the loop.
-name|block
-operator|=
-name|refreshLocatedBlock
-argument_list|(
-name|block
-argument_list|)
-expr_stmt|;
 name|BlockReader
 name|reader
 init|=
@@ -5483,6 +5482,15 @@ name|msg
 argument_list|)
 throw|;
 block|}
+comment|// Refresh the block for updated tokens in case of token failures or
+comment|// encryption key failures.
+name|block
+operator|=
+name|refreshLocatedBlock
+argument_list|(
+name|block
+argument_list|)
+expr_stmt|;
 block|}
 finally|finally
 block|{
@@ -5620,13 +5628,6 @@ name|hedgedReadId
 init|=
 literal|0
 decl_stmt|;
-name|block
-operator|=
-name|refreshLocatedBlock
-argument_list|(
-name|block
-argument_list|)
-expr_stmt|;
 while|while
 condition|(
 literal|true
@@ -5660,6 +5661,13 @@ name|block
 argument_list|,
 name|ignored
 argument_list|)
+expr_stmt|;
+comment|// Latest block, if refreshed internally
+name|block
+operator|=
+name|chosenNode
+operator|.
+name|block
 expr_stmt|;
 name|bb
 operator|=
@@ -5861,6 +5869,13 @@ name|ignored
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Latest block, if refreshed internally
+name|block
+operator|=
+name|chosenNode
+operator|.
+name|block
+expr_stmt|;
 name|bb
 operator|=
 name|ByteBuffer
@@ -7362,7 +7377,12 @@ specifier|final
 name|StorageType
 name|storageType
 decl_stmt|;
-DECL|method|DNAddrPair (DatanodeInfo info, InetSocketAddress addr, StorageType storageType)
+DECL|field|block
+specifier|final
+name|LocatedBlock
+name|block
+decl_stmt|;
+DECL|method|DNAddrPair (DatanodeInfo info, InetSocketAddress addr, StorageType storageType, LocatedBlock block)
 name|DNAddrPair
 parameter_list|(
 name|DatanodeInfo
@@ -7373,6 +7393,9 @@ name|addr
 parameter_list|,
 name|StorageType
 name|storageType
+parameter_list|,
+name|LocatedBlock
+name|block
 parameter_list|)
 block|{
 name|this
@@ -7392,6 +7415,12 @@ operator|.
 name|storageType
 operator|=
 name|storageType
+expr_stmt|;
+name|this
+operator|.
+name|block
+operator|=
+name|block
 expr_stmt|;
 block|}
 block|}
