@@ -384,6 +384,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|metrics2
+operator|.
+name|source
+operator|.
+name|JvmMetrics
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|tools
 operator|.
 name|rumen
@@ -1796,6 +1812,26 @@ return|;
 block|}
 block|}
 expr_stmt|;
+comment|// Across runs of parametrized tests, the JvmMetrics objects is retained,
+comment|// but is not registered correctly
+name|JvmMetrics
+name|jvmMetrics
+init|=
+name|JvmMetrics
+operator|.
+name|initSingleton
+argument_list|(
+literal|"ResourceManager"
+argument_list|,
+literal|null
+argument_list|)
+decl_stmt|;
+name|jvmMetrics
+operator|.
+name|registerIfNeeded
+argument_list|()
+expr_stmt|;
+comment|// Init and start the actual ResourceManager
 name|rm
 operator|.
 name|init

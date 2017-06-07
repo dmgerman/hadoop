@@ -392,6 +392,14 @@ name|timeTillShutDownInSec
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|setup ()
+specifier|public
+name|void
+name|setup
+parameter_list|()
+block|{    }
 block|}
 end_class
 
