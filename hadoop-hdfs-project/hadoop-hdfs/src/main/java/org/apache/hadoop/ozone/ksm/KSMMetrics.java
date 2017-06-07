@@ -161,6 +161,13 @@ name|Metric
 name|MutableCounterLong
 name|numBucketModifies
 decl_stmt|;
+DECL|field|numBucketDeletes
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numBucketDeletes
+decl_stmt|;
 DECL|field|numKeyAllocate
 specifier|private
 annotation|@
@@ -238,6 +245,13 @@ annotation|@
 name|Metric
 name|MutableCounterLong
 name|numBucketModifyFails
+decl_stmt|;
+DECL|field|numBucketDeleteFails
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numBucketDeleteFails
 decl_stmt|;
 DECL|field|numKeyAllocateFails
 specifier|private
@@ -391,6 +405,18 @@ name|incr
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|incNumBucketDeletes ()
+specifier|public
+name|void
+name|incNumBucketDeletes
+parameter_list|()
+block|{
+name|numBucketDeletes
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
 DECL|method|incNumVolumeCreateFails ()
 specifier|public
 name|void
@@ -482,6 +508,18 @@ name|incNumBucketModifyFails
 parameter_list|()
 block|{
 name|numBucketModifyFails
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumBucketDeleteFails ()
+specifier|public
+name|void
+name|incNumBucketDeleteFails
+parameter_list|()
+block|{
+name|numBucketDeleteFails
 operator|.
 name|incr
 argument_list|()
@@ -681,6 +719,21 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
+DECL|method|getNumBucketDeletes ()
+specifier|public
+name|long
+name|getNumBucketDeletes
+parameter_list|()
+block|{
+return|return
+name|numBucketDeletes
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getNumVolumeCreateFails ()
 specifier|public
 name|long
@@ -794,6 +847,21 @@ parameter_list|()
 block|{
 return|return
 name|numBucketModifyFails
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumBucketDeleteFails ()
+specifier|public
+name|long
+name|getNumBucketDeleteFails
+parameter_list|()
+block|{
+return|return
+name|numBucketDeleteFails
 operator|.
 name|value
 argument_list|()

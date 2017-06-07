@@ -1955,13 +1955,21 @@ name|IOException
 throws|,
 name|OzoneException
 block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
+name|keySpaceManagerClient
+operator|.
+name|deleteBucket
 argument_list|(
-literal|"deleteBucket not implemented"
+name|args
+operator|.
+name|getVolumeName
+argument_list|()
+argument_list|,
+name|args
+operator|.
+name|getBucketName
+argument_list|()
 argument_list|)
-throw|;
+expr_stmt|;
 block|}
 annotation|@
 name|Override

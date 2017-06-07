@@ -335,6 +335,20 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Deletes an existing empty bucket from volume.    * @param volume - Name of the volume.    * @param bucket - Name of the bucket.    * @throws IOException    */
+DECL|method|deleteBucket (String volume, String bucket)
+name|void
+name|deleteBucket
+parameter_list|(
+name|String
+name|volume
+parameter_list|,
+name|String
+name|bucket
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

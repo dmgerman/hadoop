@@ -123,6 +123,16 @@ index|[]
 name|value
 parameter_list|)
 function_decl|;
+comment|/**    * Deletes a Key from Metadata DB.    * @param key   - key    */
+DECL|method|delete (byte[] key)
+name|void
+name|delete
+parameter_list|(
+name|byte
+index|[]
+name|key
+parameter_list|)
+function_decl|;
 comment|/**    * Performs batch Put and Delete to Metadata DB.    * Can be used to do multiple puts and deletes atomically.    * @param putList - list of Key/Value to put into DB    * @param delList - list of Key to delete from DB    */
 DECL|method|batchPutDelete (List<Map.Entry<byte[], byte[]>> putList, List<byte[]> delList)
 name|void
@@ -235,13 +245,27 @@ index|[]
 name|key
 parameter_list|)
 function_decl|;
-comment|/**    * Given a volume, check if it is empty, i.e there are no buckets inside it.    * @param volume - Volume name    */
+comment|/**    * Given a volume, check if it is empty,    * i.e there are no buckets inside it.    * @param volume - Volume name    */
 DECL|method|isVolumeEmpty (String volume)
 name|boolean
 name|isVolumeEmpty
 parameter_list|(
 name|String
 name|volume
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Given a volume/bucket, check if it is empty,    * i.e there are no keys inside it.    * @param volume - Volume name    * @param  bucket - Bucket name    * @return true if the bucket is empty    */
+DECL|method|isBucketEmpty (String volume, String bucket)
+name|boolean
+name|isBucketEmpty
+parameter_list|(
+name|String
+name|volume
+parameter_list|,
+name|String
+name|bucket
 parameter_list|)
 throws|throws
 name|IOException
