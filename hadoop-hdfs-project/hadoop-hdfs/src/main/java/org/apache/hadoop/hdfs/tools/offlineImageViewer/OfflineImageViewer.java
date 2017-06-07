@@ -371,7 +371,7 @@ literal|"-p,--processor<arg>   Select which type of processor to apply\n"
 operator|+
 literal|"                       against image file."
 operator|+
-literal|" (Ls|XML|Delimited|Indented|FileDistribution).\n"
+literal|" (Ls|XML|Delimited|Indented|FileDistribution|NameDistribution).\n"
 operator|+
 literal|"-h,--help              Display usage information and exit\n"
 operator|+
