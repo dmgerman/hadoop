@@ -277,6 +277,25 @@ name|mockRm
 decl_stmt|;
 annotation|@
 name|Override
+DECL|method|createUnmanagedAMPoolManager ( ExecutorService threadPool)
+specifier|protected
+name|UnmanagedAMPoolManager
+name|createUnmanagedAMPoolManager
+parameter_list|(
+name|ExecutorService
+name|threadPool
+parameter_list|)
+block|{
+return|return
+operator|new
+name|TestableUnmanagedAMPoolManager
+argument_list|(
+name|threadPool
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|createHomeRMProxy ( AMRMProxyApplicationContext appContext)
 specifier|protected
 name|ApplicationMasterProtocol
