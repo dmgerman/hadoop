@@ -4387,7 +4387,7 @@ if|if
 condition|(
 name|leaseHolder
 operator|.
-name|equals
+name|startsWith
 argument_list|(
 name|HdfsServerConstants
 operator|.
