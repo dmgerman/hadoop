@@ -1649,7 +1649,7 @@ argument_list|(
 name|value
 argument_list|)
 operator|.
-name|getHost
+name|getHostText
 argument_list|()
 argument_list|)
 return|;
