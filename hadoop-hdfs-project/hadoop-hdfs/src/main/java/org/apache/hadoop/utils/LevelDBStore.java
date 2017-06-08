@@ -838,11 +838,6 @@ argument_list|(
 name|readOptions
 argument_list|)
 expr_stmt|;
-name|dbIter
-operator|.
-name|seekToFirst
-argument_list|()
-expr_stmt|;
 if|if
 condition|(
 name|startKey

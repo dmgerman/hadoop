@@ -470,6 +470,16 @@ literal|1024
 operator|*
 name|TB
 decl_stmt|;
+comment|/**    * Max number of keys returned per list buckets operation.    */
+DECL|field|MAX_LISTBUCKETS_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|MAX_LISTBUCKETS_SIZE
+init|=
+literal|1024
+decl_stmt|;
 DECL|method|OzoneConsts ()
 specifier|private
 name|OzoneConsts

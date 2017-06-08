@@ -60,6 +60,16 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
 begin_comment
 comment|/**  * BucketManager handles all the bucket level operations.  */
 end_comment
@@ -116,6 +126,29 @@ name|volumeName
 parameter_list|,
 name|String
 name|bucketName
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Returns a list of buckets represented by {@link KsmBucketInfo}    * in the given volume.    *    * @param volumeName    *   Required parameter volume name determines buckets in which volume    *   to return.    * @param startBucket    *   Optional start bucket name parameter indicating where to start    *   the bucket listing from.    * @param bucketPrefix    *   Optional start key parameter, restricting the response to buckets    *   that begin with the specified name.    * @param maxNumOfBuckets    *   The maximum number of buckets to return. It ensures    *   the size of the result will not exceed this limit.    * @return a list of buckets.    * @throws IOException    */
+DECL|method|listBuckets (String volumeName, String startBucket, String bucketPrefix, int maxNumOfBuckets)
+name|List
+argument_list|<
+name|KsmBucketInfo
+argument_list|>
+name|listBuckets
+parameter_list|(
+name|String
+name|volumeName
+parameter_list|,
+name|String
+name|startBucket
+parameter_list|,
+name|String
+name|bucketPrefix
+parameter_list|,
+name|int
+name|maxNumOfBuckets
 parameter_list|)
 throws|throws
 name|IOException

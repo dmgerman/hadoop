@@ -349,6 +349,29 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Returns a list of buckets represented by {@link KsmBucketInfo}    * in the given volume. Argument volumeName is required, others    * are optional.    *    * @param volumeName    *   the name of the volume.    * @param startBucketName    *   the start bucket name, only the buckets whose name is    *   after this value will be included in the result.    * @param bucketPrefix    *   bucket name prefix, only the buckets whose name has    *   this prefix will be included in the result.    * @param maxNumOfBuckets    *   the maximum number of buckets to return. It ensures    *   the size of the result will not exceed this limit.    * @return a list of buckets.    * @throws IOException    */
+DECL|method|listBuckets (String volumeName, String startBucketName, String bucketPrefix, int maxNumOfBuckets)
+name|List
+argument_list|<
+name|KsmBucketInfo
+argument_list|>
+name|listBuckets
+parameter_list|(
+name|String
+name|volumeName
+parameter_list|,
+name|String
+name|startBucketName
+parameter_list|,
+name|String
+name|bucketPrefix
+parameter_list|,
+name|int
+name|maxNumOfBuckets
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

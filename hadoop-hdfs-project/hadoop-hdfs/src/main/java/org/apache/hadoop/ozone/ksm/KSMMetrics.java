@@ -189,6 +189,13 @@ name|Metric
 name|MutableCounterLong
 name|numKeyDeletes
 decl_stmt|;
+DECL|field|numBucketLists
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numBucketLists
+decl_stmt|;
 comment|// Failure Metrics
 DECL|field|numVolumeCreateFails
 specifier|private
@@ -273,6 +280,13 @@ annotation|@
 name|Metric
 name|MutableCounterLong
 name|numKeyDeleteFails
+decl_stmt|;
+DECL|field|numBucketListFails
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numBucketListFails
 decl_stmt|;
 DECL|method|KSMMetrics ()
 specifier|public
@@ -412,6 +426,18 @@ name|incNumBucketDeletes
 parameter_list|()
 block|{
 name|numBucketDeletes
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumBucketLists ()
+specifier|public
+name|void
+name|incNumBucketLists
+parameter_list|()
+block|{
+name|numBucketLists
 operator|.
 name|incr
 argument_list|()
@@ -597,6 +623,18 @@ name|incr
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|incNumBucketListFails ()
+specifier|public
+name|void
+name|incNumBucketListFails
+parameter_list|()
+block|{
+name|numBucketListFails
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getNumVolumeCreates ()
@@ -727,6 +765,21 @@ parameter_list|()
 block|{
 return|return
 name|numBucketDeletes
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumBucketLists ()
+specifier|public
+name|long
+name|getNumBucketLists
+parameter_list|()
+block|{
+return|return
+name|numBucketLists
 operator|.
 name|value
 argument_list|()
@@ -952,6 +1005,21 @@ parameter_list|()
 block|{
 return|return
 name|numKeyDeleteFails
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumBucketListFails ()
+specifier|public
+name|long
+name|getNumBucketListFails
+parameter_list|()
+block|{
+return|return
+name|numBucketListFails
 operator|.
 name|value
 argument_list|()
