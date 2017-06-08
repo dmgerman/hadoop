@@ -524,14 +524,6 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-name|String
-name|scmMetaDataDir
-init|=
-name|metaDir
-operator|.
-name|getParent
-argument_list|()
-decl_stmt|;
 name|Options
 name|options
 init|=
@@ -559,7 +551,7 @@ init|=
 operator|new
 name|File
 argument_list|(
-name|scmMetaDataDir
+name|metaDir
 argument_list|,
 name|CONTAINER_DB
 argument_list|)
