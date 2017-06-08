@@ -2198,15 +2198,12 @@ name|r
 parameter_list|)
 block|{
 return|return
-operator|(
-operator|(
 name|ResourcePBImpl
-operator|)
-name|r
-operator|)
 operator|.
 name|getProto
-argument_list|()
+argument_list|(
+name|r
+argument_list|)
 return|;
 block|}
 DECL|method|convertFromProtoFormat (ResourceProto resource)

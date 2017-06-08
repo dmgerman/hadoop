@@ -1826,15 +1826,12 @@ name|e
 parameter_list|)
 block|{
 return|return
-operator|(
-operator|(
-name|ResourcePBImpl
-operator|)
-name|e
-operator|)
+name|ProtoUtils
 operator|.
-name|getProto
-argument_list|()
+name|convertToProtoFormat
+argument_list|(
+name|e
+argument_list|)
 return|;
 block|}
 DECL|method|convertFromProtoFormat (ResourceProto p)

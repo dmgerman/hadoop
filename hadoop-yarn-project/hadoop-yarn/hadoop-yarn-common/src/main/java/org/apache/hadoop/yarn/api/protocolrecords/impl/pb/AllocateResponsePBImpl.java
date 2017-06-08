@@ -3734,15 +3734,12 @@ name|r
 parameter_list|)
 block|{
 return|return
-operator|(
-operator|(
-name|ResourcePBImpl
-operator|)
-name|r
-operator|)
+name|ProtoUtils
 operator|.
-name|getProto
-argument_list|()
+name|convertToProtoFormat
+argument_list|(
+name|r
+argument_list|)
 return|;
 block|}
 DECL|method|convertFromProtoFormat (PreemptionMessageProto p)

@@ -558,15 +558,12 @@ name|p
 parameter_list|)
 block|{
 return|return
-operator|(
-operator|(
-name|ResourcePBImpl
-operator|)
-name|p
-operator|)
+name|ProtoUtils
 operator|.
-name|getProto
-argument_list|()
+name|convertToProtoFormat
+argument_list|(
+name|p
+argument_list|)
 return|;
 block|}
 DECL|method|mergeLocalToBuilder ()

@@ -3274,15 +3274,12 @@ name|t
 parameter_list|)
 block|{
 return|return
-operator|(
-operator|(
-name|ResourcePBImpl
-operator|)
-name|t
-operator|)
+name|ProtoUtils
 operator|.
-name|getProto
-argument_list|()
+name|convertToProtoFormat
+argument_list|(
+name|t
+argument_list|)
 return|;
 block|}
 DECL|method|convertFromProtoFormat (ApplicationIdProto p)
