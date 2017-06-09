@@ -534,7 +534,6 @@ name|KMSAudit
 name|kmsAudit
 decl_stmt|;
 DECL|field|LOG
-specifier|private
 specifier|static
 specifier|final
 name|Logger
