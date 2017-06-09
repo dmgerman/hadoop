@@ -2147,6 +2147,21 @@ argument_list|(
 name|i
 argument_list|)
 decl_stmt|;
+comment|// Check whether the block replica is already placed in the expected
+comment|// storage type in this source datanode.
+if|if
+condition|(
+operator|!
+name|expected
+operator|.
+name|contains
+argument_list|(
+name|existingTypeNodePair
+operator|.
+name|storageType
+argument_list|)
+condition|)
+block|{
 name|StorageTypeNodePair
 name|chosenTarget
 init|=
@@ -2214,6 +2229,7 @@ name|storageType
 argument_list|)
 expr_stmt|;
 comment|// TODO: We can increment scheduled block count for this node?
+block|}
 block|}
 comment|// To avoid choosing this excludeNodes as targets later
 name|excludeNodes
