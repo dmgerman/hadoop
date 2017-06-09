@@ -7659,7 +7659,7 @@ argument_list|,
 operator|(
 name|short
 operator|)
-literal|010640
+literal|010660
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -8519,7 +8519,7 @@ argument_list|,
 operator|(
 name|short
 operator|)
-literal|010750
+literal|010770
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -9546,7 +9546,7 @@ argument_list|,
 operator|(
 name|short
 operator|)
-literal|010640
+literal|010660
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -9813,7 +9813,7 @@ argument_list|,
 operator|(
 name|short
 operator|)
-literal|010750
+literal|010770
 argument_list|)
 expr_stmt|;
 name|assertAclFeature

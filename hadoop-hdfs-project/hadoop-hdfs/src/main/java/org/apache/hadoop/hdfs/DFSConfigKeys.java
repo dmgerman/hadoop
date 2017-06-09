@@ -1584,7 +1584,7 @@ name|boolean
 DECL|field|DFS_NAMENODE_POSIX_ACL_INHERITANCE_ENABLED_DEFAULT
 name|DFS_NAMENODE_POSIX_ACL_INHERITANCE_ENABLED_DEFAULT
 init|=
-literal|false
+literal|true
 decl_stmt|;
 DECL|field|DFS_NAMENODE_XATTRS_ENABLED_KEY
 specifier|public
