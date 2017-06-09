@@ -210,6 +210,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -298,6 +318,22 @@ name|DelegationTokenAuthenticatedURL
 extends|extends
 name|AuthenticatedURL
 block|{
+DECL|field|LOG
+specifier|private
+specifier|static
+specifier|final
+name|Logger
+name|LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|DelegationTokenAuthenticatedURL
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 comment|/**    * Constant used in URL's query string to perform a proxy user request, the    * value of the<code>DO_AS</code> parameter is the user the request will be    * done on behalf of.    */
 DECL|field|DO_AS
 specifier|static
@@ -903,6 +939,19 @@ name|dToken
 init|=
 literal|null
 decl_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Connecting to url {} with token {} as {}"
+argument_list|,
+name|url
+argument_list|,
+name|token
+argument_list|,
+name|doAs
+argument_list|)
+expr_stmt|;
 comment|// if we have valid auth token, it takes precedence over a delegation token
 comment|// and we don't even look for one.
 if|if
@@ -926,6 +975,27 @@ operator|.
 name|getCredentials
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Token not set, looking for delegation token. Creds:{}"
+argument_list|,
+name|creds
+operator|.
+name|getAllTokens
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 operator|!
@@ -971,6 +1041,17 @@ name|creds
 operator|.
 name|getToken
 argument_list|(
+name|service
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Using delegation token {} from service:{}"
+argument_list|,
+name|dToken
+argument_list|,
 name|service
 argument_list|)
 expr_stmt|;

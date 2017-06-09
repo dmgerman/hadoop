@@ -1781,6 +1781,29 @@ argument_list|(
 name|httpRequest
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Got token {} from httpRequest {}"
+argument_list|,
+name|token
+argument_list|,
+name|getRequestURL
+argument_list|(
+name|httpRequest
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -1843,12 +1866,17 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Request [{}] triggering authentication"
+literal|"Request [{}] triggering authentication. handler: {}"
 argument_list|,
 name|getRequestURL
 argument_list|(
 name|httpRequest
 argument_list|)
+argument_list|,
+name|authHandler
+operator|.
+name|getClass
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2151,6 +2179,31 @@ block|}
 block|}
 else|else
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"managementOperation returned false for request {}."
+operator|+
+literal|" token: {}"
+argument_list|,
+name|getRequestURL
+argument_list|(
+name|httpRequest
+argument_list|)
+argument_list|,
+name|token
+argument_list|)
+expr_stmt|;
+block|}
 name|unauthorizedResponse
 operator|=
 literal|false

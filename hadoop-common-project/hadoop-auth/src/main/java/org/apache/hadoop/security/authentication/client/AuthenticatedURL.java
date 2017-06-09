@@ -40,6 +40,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -108,6 +128,22 @@ specifier|public
 class|class
 name|AuthenticatedURL
 block|{
+DECL|field|LOG
+specifier|private
+specifier|static
+specifier|final
+name|Logger
+name|LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|AuthenticatedURL
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 comment|/**    * Name of the HTTP cookie used for the authentication token between the client and the server.    */
 DECL|field|AUTH_COOKIE
 specifier|public
@@ -726,6 +762,19 @@ operator|>
 literal|0
 condition|)
 block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Setting token value to {} ({}), resp={}"
+argument_list|,
+name|value
+argument_list|,
+name|token
+argument_list|,
+name|respCode
+argument_list|)
+expr_stmt|;
 name|token
 operator|.
 name|set
@@ -748,6 +797,17 @@ operator|.
 name|HTTP_NOT_FOUND
 condition|)
 block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Setting token value to null ({}), resp={}"
+argument_list|,
+name|token
+argument_list|,
+name|respCode
+argument_list|)
+expr_stmt|;
 name|token
 operator|.
 name|set
@@ -771,6 +831,17 @@ throw|;
 block|}
 else|else
 block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Setting token value to null ({}), resp={}"
+argument_list|,
+name|token
+argument_list|,
+name|respCode
+argument_list|)
+expr_stmt|;
 name|token
 operator|.
 name|set

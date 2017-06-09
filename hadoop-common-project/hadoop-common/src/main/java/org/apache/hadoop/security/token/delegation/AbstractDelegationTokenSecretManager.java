@@ -2639,6 +2639,18 @@ argument_list|(
 name|ident
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Removing expired token "
+operator|+
+name|formatTokenId
+argument_list|(
+name|ident
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|removeStoredToken
 argument_list|(
 name|ident

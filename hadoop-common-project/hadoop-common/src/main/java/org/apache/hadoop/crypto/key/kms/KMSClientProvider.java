@@ -3559,6 +3559,32 @@ comment|// Ideally, this should happen only when there is an Authentication
 comment|// failure. Unfortunately, the AuthenticationFilter returns 403 when it
 comment|// cannot authenticate (Since a 401 requires Server to send
 comment|// WWW-Authenticate header as well)..
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Response={}({}), resetting authToken"
+argument_list|,
+name|conn
+operator|.
+name|getResponseCode
+argument_list|()
+argument_list|,
+name|conn
+operator|.
+name|getResponseMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|KMSClientProvider
 operator|.
 name|this
@@ -3651,6 +3677,29 @@ argument_list|,
 name|authToken
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Extracted token, authToken={}, its dt={}"
+argument_list|,
+name|authToken
+argument_list|,
+name|authToken
+operator|.
+name|getDelegationToken
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -6417,6 +6466,17 @@ name|Exception
 block|{
 comment|// Not using the cached token here.. Creating a new token here
 comment|// everytime.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Getting new token from {}, renewer:{}"
+argument_list|,
+name|url
+argument_list|,
+name|renewer
+argument_list|)
+expr_stmt|;
 return|return
 name|authUrl
 operator|.
@@ -6446,6 +6506,15 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"New token received: ({})"
+argument_list|,
+name|token
+argument_list|)
+expr_stmt|;
 name|credentials
 operator|.
 name|addToken
