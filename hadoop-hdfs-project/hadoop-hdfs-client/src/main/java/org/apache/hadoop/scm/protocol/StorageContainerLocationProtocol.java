@@ -30,16 +30,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Set
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -84,23 +74,6 @@ specifier|public
 interface|interface
 name|StorageContainerLocationProtocol
 block|{
-comment|/**    * Find the set of nodes that currently host the container of an object, as    * identified by the object key hash.  This method supports batch lookup by    * passing multiple key hashes.    *    * @param keys batch of object keys to find    * @return located containers for each object key    * @throws IOException if there is any failure    */
-DECL|method|getStorageContainerLocations (Set<String> keys)
-name|Set
-argument_list|<
-name|LocatedContainer
-argument_list|>
-name|getStorageContainerLocations
-parameter_list|(
-name|Set
-argument_list|<
-name|String
-argument_list|>
-name|keys
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
 comment|/**    * Asks SCM where a container should be allocated. SCM responds with the    * set of datanodes that should be used creating this container.    * @param containerName - Name of the container.    * @return Pipeline.    * @throws IOException    */
 DECL|method|allocateContainer (String containerName)
 name|Pipeline

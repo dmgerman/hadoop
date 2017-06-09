@@ -382,22 +382,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|scm
-operator|.
-name|protocol
-operator|.
-name|LocatedContainer
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|ozone
 operator|.
 name|protocol
@@ -2218,35 +2202,6 @@ operator|.
 name|build
 argument_list|()
 return|;
-block|}
-comment|// TODO : This code will move into KSM later. Write now this code is stubbed
-comment|// implementation that lets the ozone tests pass.
-annotation|@
-name|Override
-DECL|method|getStorageContainerLocations (Set<String> keys)
-specifier|public
-name|Set
-argument_list|<
-name|LocatedContainer
-argument_list|>
-name|getStorageContainerLocations
-parameter_list|(
-name|Set
-argument_list|<
-name|String
-argument_list|>
-name|keys
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Not Implemented."
-argument_list|)
-throw|;
 block|}
 comment|/**    * Asks SCM where a container should be allocated. SCM responds with the set    * of datanodes that should be used creating this container.    *    * @param containerName - Name of the container.    * @return Pipeline.    * @throws IOException    */
 annotation|@
