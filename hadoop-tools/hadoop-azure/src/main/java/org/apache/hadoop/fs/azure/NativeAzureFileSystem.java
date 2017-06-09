@@ -2962,9 +2962,10 @@ empty_stmt|;
 block|}
 else|else
 block|{
-throw|throw
-operator|new
-name|IOException
+comment|// HADOOP-14512
+name|LOG
+operator|.
+name|warn
 argument_list|(
 literal|"Attempting to complete rename of file "
 operator|+
@@ -2976,9 +2977,19 @@ name|fileName
 operator|+
 literal|" during folder rename redo, and file was not found in source "
 operator|+
-literal|"or destination."
+literal|"or destination "
+operator|+
+name|dstKey
+operator|+
+literal|"/"
+operator|+
+name|fileName
+operator|+
+literal|". "
+operator|+
+literal|"This must mean the rename of this file has already completed"
 argument_list|)
-throw|;
+expr_stmt|;
 block|}
 block|}
 comment|// Return an absolute path for the specific fileName within the folder
