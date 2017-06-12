@@ -78,6 +78,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -145,6 +159,8 @@ name|RolloverSignerSecretProvider
 extends|extends
 name|SignerSecretProvider
 block|{
+annotation|@
+name|VisibleForTesting
 DECL|field|LOG
 specifier|static
 name|Logger
