@@ -18890,6 +18890,12 @@ name|void
 name|checkAvailableResources
 parameter_list|()
 block|{
+name|long
+name|resourceCheckTime
+init|=
+name|monotonicNow
+argument_list|()
+decl_stmt|;
 name|Preconditions
 operator|.
 name|checkState
@@ -18907,6 +18913,23 @@ name|nnResourceChecker
 operator|.
 name|hasAvailableDiskSpace
 argument_list|()
+expr_stmt|;
+name|resourceCheckTime
+operator|=
+name|monotonicNow
+argument_list|()
+operator|-
+name|resourceCheckTime
+expr_stmt|;
+name|NameNode
+operator|.
+name|getNameNodeMetrics
+argument_list|()
+operator|.
+name|addResourceCheckTime
+argument_list|(
+name|resourceCheckTime
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Close file.    * @param path    * @param file    */
