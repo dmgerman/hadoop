@@ -20,13 +20,13 @@ begin_import
 import|import
 name|com
 operator|.
-name|fasterxml
+name|ctc
 operator|.
-name|aalto
+name|wstx
 operator|.
 name|stax
 operator|.
-name|InputFactoryImpl
+name|WstxInputFactory
 import|;
 end_import
 
@@ -1337,15 +1337,15 @@ argument_list|>
 name|updatingResource
 decl_stmt|;
 comment|/**    * Specify exact input factory to avoid time finding correct one.    * Factory is reusable across un-synchronized threads once initialized    */
-DECL|field|factory
+DECL|field|XML_INPUT_FACTORY
 specifier|private
 specifier|static
 specifier|final
 name|XMLInputFactory2
-name|factory
+name|XML_INPUT_FACTORY
 init|=
 operator|new
-name|InputFactoryImpl
+name|WstxInputFactory
 argument_list|()
 decl_stmt|;
 comment|/**    * Class to keep the information about the keys which replace the deprecated    * ones.    *     * This class stores the new keys which replace the deprecated keys and also    * gives a provision to have a custom message for each of the deprecated key    * that is being replaced. It also provides method to get the appropriate    * warning message which can be logged whenever the deprecated key is used.    */
@@ -9720,7 +9720,7 @@ literal|null
 return|;
 block|}
 return|return
-name|factory
+name|XML_INPUT_FACTORY
 operator|.
 name|createXMLStreamReader
 argument_list|(
