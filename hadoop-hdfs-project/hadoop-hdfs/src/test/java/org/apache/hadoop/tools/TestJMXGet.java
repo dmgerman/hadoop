@@ -775,6 +775,10 @@ operator|new
 name|PipedInputStream
 argument_list|(
 name|pipeOut
+argument_list|,
+literal|1024
+operator|*
+literal|1024
 argument_list|)
 decl_stmt|;
 name|PrintStream
