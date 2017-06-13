@@ -8284,9 +8284,6 @@ name|DataNodePeerMetrics
 operator|.
 name|create
 argument_list|(
-name|getConf
-argument_list|()
-argument_list|,
 name|getDisplayName
 argument_list|()
 argument_list|)
