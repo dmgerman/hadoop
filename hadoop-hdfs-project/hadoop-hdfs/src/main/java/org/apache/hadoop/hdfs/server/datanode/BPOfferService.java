@@ -780,10 +780,13 @@ return|return
 name|nameserviceId
 return|;
 block|}
-DECL|method|getBlockPoolId ()
+DECL|method|getBlockPoolId (boolean quiet)
 name|String
 name|getBlockPoolId
-parameter_list|()
+parameter_list|(
+name|boolean
+name|quiet
+parameter_list|)
 block|{
 name|readLock
 argument_list|()
@@ -806,6 +809,12 @@ return|;
 block|}
 else|else
 block|{
+if|if
+condition|(
+operator|!
+name|quiet
+condition|)
+block|{
 name|LOG
 operator|.
 name|warn
@@ -819,6 +828,7 @@ name|Exception
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 literal|null
 return|;
@@ -830,6 +840,18 @@ name|readUnlock
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+DECL|method|getBlockPoolId ()
+name|String
+name|getBlockPoolId
+parameter_list|()
+block|{
+return|return
+name|getBlockPoolId
+argument_list|(
+literal|false
+argument_list|)
+return|;
 block|}
 DECL|method|hasBlockPoolId ()
 name|boolean
