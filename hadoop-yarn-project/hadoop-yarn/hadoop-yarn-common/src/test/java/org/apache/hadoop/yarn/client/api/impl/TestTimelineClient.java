@@ -1502,11 +1502,11 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-name|TestTimlineDelegationTokenSecretManager
+name|TestTimelineDelegationTokenSecretManager
 name|dtManager
 init|=
 operator|new
-name|TestTimlineDelegationTokenSecretManager
+name|TestTimelineDelegationTokenSecretManager
 argument_list|()
 decl_stmt|;
 try|try
@@ -2890,20 +2890,20 @@ name|reloaderStillAlive
 argument_list|)
 expr_stmt|;
 block|}
-DECL|class|TestTimlineDelegationTokenSecretManager
+DECL|class|TestTimelineDelegationTokenSecretManager
 specifier|private
 specifier|static
 class|class
-name|TestTimlineDelegationTokenSecretManager
+name|TestTimelineDelegationTokenSecretManager
 extends|extends
 name|AbstractDelegationTokenSecretManager
 argument_list|<
 name|TimelineDelegationTokenIdentifier
 argument_list|>
 block|{
-DECL|method|TestTimlineDelegationTokenSecretManager ()
+DECL|method|TestTimelineDelegationTokenSecretManager ()
 specifier|public
-name|TestTimlineDelegationTokenSecretManager
+name|TestTimelineDelegationTokenSecretManager
 parameter_list|()
 block|{
 name|super

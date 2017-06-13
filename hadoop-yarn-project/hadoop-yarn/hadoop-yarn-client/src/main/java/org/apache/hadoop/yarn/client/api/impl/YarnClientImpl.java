@@ -2794,7 +2794,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Add timline delegation token into credentials: "
+literal|"Add timeline delegation token into credentials: "
 operator|+
 name|timelineDelegationToken
 argument_list|)

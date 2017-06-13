@@ -677,7 +677,7 @@ name|TimelineServicePerformance
 operator|.
 name|class
 argument_list|,
-literal|"A job that launches mappers to test timline service "
+literal|"A job that launches mappers to test timeline service "
 operator|+
 literal|"performance."
 argument_list|)
