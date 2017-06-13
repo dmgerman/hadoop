@@ -741,26 +741,6 @@ parameter_list|)
 throws|throws
 name|InterruptedException
 block|{
-comment|// Do we need job-end notification?
-if|if
-condition|(
-name|userUrl
-operator|==
-literal|null
-condition|)
-block|{
-name|Log
-operator|.
-name|getLog
-argument_list|()
-operator|.
-name|info
-argument_list|(
-literal|"Job end notification URL not set, skipping."
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
 comment|//Do string replacements for jobId and jobStatus
 if|if
 condition|(
