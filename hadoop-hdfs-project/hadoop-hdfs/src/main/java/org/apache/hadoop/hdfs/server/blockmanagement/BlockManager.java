@@ -1742,10 +1742,10 @@ name|pendingReconstructionBlocksCount
 return|;
 block|}
 comment|/** Used by metrics */
-DECL|method|getUnderReplicatedBlocksCount ()
+DECL|method|getLowRedundancyBlocksCount ()
 specifier|public
 name|long
-name|getUnderReplicatedBlocksCount
+name|getLowRedundancyBlocksCount
 parameter_list|()
 block|{
 return|return
@@ -1852,6 +1852,132 @@ return|return
 name|pendingReconstruction
 operator|.
 name|getNumTimedOuts
+argument_list|()
+return|;
+block|}
+comment|/** Used by metrics. */
+DECL|method|getLowRedundancyBlocksStat ()
+specifier|public
+name|long
+name|getLowRedundancyBlocksStat
+parameter_list|()
+block|{
+return|return
+name|neededReconstruction
+operator|.
+name|getLowRedundancyBlocksStat
+argument_list|()
+return|;
+block|}
+comment|/** Used by metrics. */
+DECL|method|getCorruptBlocksStat ()
+specifier|public
+name|long
+name|getCorruptBlocksStat
+parameter_list|()
+block|{
+return|return
+name|corruptReplicas
+operator|.
+name|getCorruptBlocksStat
+argument_list|()
+return|;
+block|}
+comment|/** Used by metrics. */
+DECL|method|getMissingBlocksStat ()
+specifier|public
+name|long
+name|getMissingBlocksStat
+parameter_list|()
+block|{
+return|return
+name|neededReconstruction
+operator|.
+name|getCorruptBlocksStat
+argument_list|()
+return|;
+block|}
+comment|/** Used by metrics. */
+DECL|method|getMissingReplicationOneBlocksStat ()
+specifier|public
+name|long
+name|getMissingReplicationOneBlocksStat
+parameter_list|()
+block|{
+return|return
+name|neededReconstruction
+operator|.
+name|getCorruptReplicationOneBlocksStat
+argument_list|()
+return|;
+block|}
+comment|/** Used by metrics. */
+DECL|method|getPendingDeletionBlocksStat ()
+specifier|public
+name|long
+name|getPendingDeletionBlocksStat
+parameter_list|()
+block|{
+return|return
+name|invalidateBlocks
+operator|.
+name|getBlocksStat
+argument_list|()
+return|;
+block|}
+comment|/** Used by metrics. */
+DECL|method|getLowRedundancyECBlockGroupsStat ()
+specifier|public
+name|long
+name|getLowRedundancyECBlockGroupsStat
+parameter_list|()
+block|{
+return|return
+name|neededReconstruction
+operator|.
+name|getLowRedundancyECBlockGroupsStat
+argument_list|()
+return|;
+block|}
+comment|/** Used by metrics. */
+DECL|method|getCorruptECBlockGroupsStat ()
+specifier|public
+name|long
+name|getCorruptECBlockGroupsStat
+parameter_list|()
+block|{
+return|return
+name|corruptReplicas
+operator|.
+name|getCorruptECBlockGroupsStat
+argument_list|()
+return|;
+block|}
+comment|/** Used by metrics. */
+DECL|method|getMissingECBlockGroupsStat ()
+specifier|public
+name|long
+name|getMissingECBlockGroupsStat
+parameter_list|()
+block|{
+return|return
+name|neededReconstruction
+operator|.
+name|getCorruptECBlockGroupsStat
+argument_list|()
+return|;
+block|}
+comment|/** Used by metrics. */
+DECL|method|getPendingDeletionECBlockGroupsStat ()
+specifier|public
+name|long
+name|getPendingDeletionECBlockGroupsStat
+parameter_list|()
+block|{
+return|return
+name|invalidateBlocks
+operator|.
+name|getECBlockGroupsStat
 argument_list|()
 return|;
 block|}
@@ -11021,6 +11147,32 @@ return|return
 name|bmSafeMode
 operator|.
 name|getBytesInFuture
+argument_list|()
+return|;
+block|}
+DECL|method|getBytesInFutureReplicatedBlocksStat ()
+specifier|public
+name|long
+name|getBytesInFutureReplicatedBlocksStat
+parameter_list|()
+block|{
+return|return
+name|bmSafeMode
+operator|.
+name|getBytesInFutureBlocks
+argument_list|()
+return|;
+block|}
+DECL|method|getBytesInFutureStripedBlocksStat ()
+specifier|public
+name|long
+name|getBytesInFutureStripedBlocksStat
+parameter_list|()
+block|{
+return|return
+name|bmSafeMode
+operator|.
+name|getBytesInFutureECBlockGroups
 argument_list|()
 return|;
 block|}
@@ -20242,7 +20394,7 @@ name|this
 operator|.
 name|neededReconstruction
 operator|.
-name|getCorruptReplOneBlockSize
+name|getCorruptReplicationOneBlockSize
 argument_list|()
 return|;
 block|}

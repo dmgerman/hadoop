@@ -9467,11 +9467,11 @@ name|GET_STATS_PENDING_DELETION_BLOCKS_IDX
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns count of blocks with one of more replica missing.    * @throws IOException    */
-DECL|method|getUnderReplicatedBlocksCount ()
+comment|/**    * Returns aggregated count of blocks with less redundancy.    * @throws IOException    */
+DECL|method|getLowRedundancyBlocksCount ()
 specifier|public
 name|long
-name|getUnderReplicatedBlocksCount
+name|getLowRedundancyBlocksCount
 parameter_list|()
 throws|throws
 name|IOException
@@ -9481,7 +9481,7 @@ name|getStateByIndex
 argument_list|(
 name|ClientProtocol
 operator|.
-name|GET_STATS_UNDER_REPLICATED_IDX
+name|GET_STATS_LOW_REDUNDANCY_IDX
 argument_list|)
 return|;
 block|}

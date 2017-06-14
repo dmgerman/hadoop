@@ -523,7 +523,7 @@ literal|4
 argument_list|,
 name|dfs
 operator|.
-name|getUnderReplicatedBlocksCount
+name|getLowRedundancyBlocksCount
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -618,7 +618,7 @@ literal|2
 argument_list|,
 name|dfs
 operator|.
-name|getUnderReplicatedBlocksCount
+name|getLowRedundancyBlocksCount
 argument_list|()
 argument_list|)
 expr_stmt|;

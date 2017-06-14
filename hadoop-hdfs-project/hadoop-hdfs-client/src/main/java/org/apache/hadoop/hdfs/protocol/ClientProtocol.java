@@ -1122,6 +1122,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Constants to index the array of aggregated stats returned by    * {@link #getStats()}.    */
 DECL|field|GET_STATS_CAPACITY_IDX
 name|int
 name|GET_STATS_CAPACITY_IDX
@@ -1140,9 +1141,18 @@ name|GET_STATS_REMAINING_IDX
 init|=
 literal|2
 decl_stmt|;
+comment|/**    * Use {@link #GET_STATS_LOW_REDUNDANCY_IDX} instead.    */
+annotation|@
+name|Deprecated
 DECL|field|GET_STATS_UNDER_REPLICATED_IDX
 name|int
 name|GET_STATS_UNDER_REPLICATED_IDX
+init|=
+literal|3
+decl_stmt|;
+DECL|field|GET_STATS_LOW_REDUNDANCY_IDX
+name|int
+name|GET_STATS_LOW_REDUNDANCY_IDX
 init|=
 literal|3
 decl_stmt|;
@@ -1182,13 +1192,33 @@ name|STATS_ARRAY_LENGTH
 init|=
 literal|9
 decl_stmt|;
-comment|/**    * Get a set of statistics about the filesystem.    * Right now, only eight values are returned.    *<ul>    *<li> [0] contains the total storage capacity of the system, in bytes.</li>    *<li> [1] contains the total used space of the system, in bytes.</li>    *<li> [2] contains the available storage of the system, in bytes.</li>    *<li> [3] contains number of under replicated blocks in the system.</li>    *<li> [4] contains number of blocks with a corrupt replica.</li>    *<li> [5] contains number of blocks without any good replicas left.</li>    *<li> [6] contains number of blocks which have replication factor    *          1 and have lost the only replica.</li>    *<li> [7] contains number of bytes  that are at risk for deletion.</li>    *<li> [8] contains number of pending deletion blocks.</li>    *</ul>    * Use public constants like {@link #GET_STATS_CAPACITY_IDX} in place of    * actual numbers to index into the array.    */
+comment|/**    * Get an array of aggregated statistics combining blocks of both type    * {@link BlockType#CONTIGUOUS} and {@link BlockType#STRIPED} in the    * filesystem. Use public constants like {@link #GET_STATS_CAPACITY_IDX} in    * place of actual numbers to index into the array.    *<ul>    *<li> [0] contains the total storage capacity of the system, in bytes.</li>    *<li> [1] contains the total used space of the system, in bytes.</li>    *<li> [2] contains the available storage of the system, in bytes.</li>    *<li> [3] contains number of low redundancy blocks in the system.</li>    *<li> [4] contains number of corrupt blocks.</li>    *<li> [5] contains number of blocks without any good replicas left.</li>    *<li> [6] contains number of blocks which have replication factor    *          1 and have lost the only replica.</li>    *<li> [7] contains number of bytes that are at risk for deletion.</li>    *<li> [8] contains number of pending deletion blocks.</li>    *</ul>    */
 annotation|@
 name|Idempotent
 DECL|method|getStats ()
 name|long
 index|[]
 name|getStats
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Get statistics pertaining to blocks of type {@link BlockType#CONTIGUOUS}    * in the filesystem.    */
+annotation|@
+name|Idempotent
+DECL|method|getBlocksStats ()
+name|BlocksStats
+name|getBlocksStats
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Get statistics pertaining to blocks of type {@link BlockType#STRIPED}    * in the filesystem.    */
+annotation|@
+name|Idempotent
+DECL|method|getECBlockGroupsStats ()
+name|ECBlockGroupsStats
+name|getECBlockGroupsStats
 parameter_list|()
 throws|throws
 name|IOException

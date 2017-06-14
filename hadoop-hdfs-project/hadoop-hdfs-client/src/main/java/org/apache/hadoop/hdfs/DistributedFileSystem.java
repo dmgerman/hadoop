@@ -6764,11 +6764,11 @@ name|getMissingReplOneBlocksCount
 argument_list|()
 return|;
 block|}
-comment|/**    * Returns count of blocks with one of more replica missing.    *    * @throws IOException    */
-DECL|method|getUnderReplicatedBlocksCount ()
+comment|/**    * Returns aggregated count of blocks with less redundancy.    *    * @throws IOException    */
+DECL|method|getLowRedundancyBlocksCount ()
 specifier|public
 name|long
-name|getUnderReplicatedBlocksCount
+name|getLowRedundancyBlocksCount
 parameter_list|()
 throws|throws
 name|IOException
@@ -6776,7 +6776,7 @@ block|{
 return|return
 name|dfs
 operator|.
-name|getUnderReplicatedBlocksCount
+name|getLowRedundancyBlocksCount
 argument_list|()
 return|;
 block|}

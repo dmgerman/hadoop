@@ -2574,7 +2574,7 @@ name|underreplicated
 init|=
 name|bm
 operator|.
-name|getUnderReplicatedBlocksCount
+name|getLowRedundancyBlocksCount
 argument_list|()
 decl_stmt|;
 name|assertTrue
@@ -2746,7 +2746,7 @@ name|underreplicated
 argument_list|,
 name|bm
 operator|.
-name|getUnderReplicatedBlocksCount
+name|getLowRedundancyBlocksCount
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2789,7 +2789,7 @@ condition|(
 operator|(
 name|bm
 operator|.
-name|getUnderReplicatedBlocksCount
+name|getLowRedundancyBlocksCount
 argument_list|()
 operator|>
 literal|0
@@ -2822,7 +2822,7 @@ literal|0
 argument_list|,
 name|bm
 operator|.
-name|getUnderReplicatedBlocksCount
+name|getLowRedundancyBlocksCount
 argument_list|()
 argument_list|)
 expr_stmt|;

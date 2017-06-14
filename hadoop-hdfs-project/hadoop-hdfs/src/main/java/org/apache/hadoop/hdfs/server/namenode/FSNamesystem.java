@@ -1178,6 +1178,38 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|BlocksStats
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|ECBlockGroupsStats
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|protocol
@@ -3398,6 +3430,26 @@ name|namenode
 operator|.
 name|metrics
 operator|.
+name|ECBlockGroupsStatsMBean
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|metrics
+operator|.
 name|FSNamesystemMBean
 import|;
 end_import
@@ -3419,6 +3471,26 @@ operator|.
 name|metrics
 operator|.
 name|NameNodeMetrics
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|metrics
+operator|.
+name|ReplicatedBlocksStatsMBean
 import|;
 end_import
 
@@ -4450,6 +4522,10 @@ implements|,
 name|FSNamesystemMBean
 implements|,
 name|NameNodeMXBean
+implements|,
+name|ReplicatedBlocksStatsMBean
+implements|,
+name|ECBlockGroupsStatsMBean
 block|{
 DECL|field|LOG
 specifier|public
@@ -19940,10 +20016,10 @@ name|stats
 index|[
 name|ClientProtocol
 operator|.
-name|GET_STATS_UNDER_REPLICATED_IDX
+name|GET_STATS_LOW_REDUNDANCY_IDX
 index|]
 operator|=
-name|getUnderReplicatedBlocks
+name|getLowRedundancyBlocks
 argument_list|()
 expr_stmt|;
 name|stats
@@ -20002,6 +20078,63 @@ argument_list|()
 expr_stmt|;
 return|return
 name|stats
+return|;
+block|}
+comment|/**    * Get statistics pertaining to blocks of type {@link BlockType#CONTIGUOUS}    * in the filesystem.    *<p>    * @see ClientProtocol#getBlocksStats()    */
+DECL|method|getBlocksStats ()
+name|BlocksStats
+name|getBlocksStats
+parameter_list|()
+block|{
+return|return
+operator|new
+name|BlocksStats
+argument_list|(
+name|getLowRedundancyBlocksStat
+argument_list|()
+argument_list|,
+name|getCorruptBlocksStat
+argument_list|()
+argument_list|,
+name|getMissingBlocksStat
+argument_list|()
+argument_list|,
+name|getMissingReplicationOneBlocksStat
+argument_list|()
+argument_list|,
+name|getBlocksBytesInFutureStat
+argument_list|()
+argument_list|,
+name|getPendingDeletionBlocksStat
+argument_list|()
+argument_list|)
+return|;
+block|}
+comment|/**    * Get statistics pertaining to blocks of type {@link BlockType#STRIPED}    * in the filesystem.    *<p>    * @see ClientProtocol#getECBlockGroupsStats()    */
+DECL|method|getECBlockGroupsStats ()
+name|ECBlockGroupsStats
+name|getECBlockGroupsStats
+parameter_list|()
+block|{
+return|return
+operator|new
+name|ECBlockGroupsStats
+argument_list|(
+name|getLowRedundancyECBlockGroupsStat
+argument_list|()
+argument_list|,
+name|getCorruptECBlockGroupsStat
+argument_list|()
+argument_list|,
+name|getMissingECBlockGroupsStat
+argument_list|()
+argument_list|,
+name|getECBlocksBytesInFutureStat
+argument_list|()
+argument_list|,
+name|getPendingDeletionECBlockGroupsStat
+argument_list|()
+argument_list|)
 return|;
 block|}
 annotation|@
@@ -21834,11 +21967,14 @@ name|totalInodes
 argument_list|()
 return|;
 block|}
+comment|/**    * Get aggregated count of all blocks pending to be reconstructed.    */
 annotation|@
 name|Override
 comment|// FSNamesystemMBean
 annotation|@
 name|Metric
+annotation|@
+name|Deprecated
 DECL|method|getPendingReplicationBlocks ()
 specifier|public
 name|long
@@ -21852,11 +21988,33 @@ name|getPendingReconstructionBlocksCount
 argument_list|()
 return|;
 block|}
+comment|/**    * Get aggregated count of all blocks pending to be reconstructed.    */
 annotation|@
 name|Override
 comment|// FSNamesystemMBean
 annotation|@
 name|Metric
+DECL|method|getPendingReconstructionBlocks ()
+specifier|public
+name|long
+name|getPendingReconstructionBlocks
+parameter_list|()
+block|{
+return|return
+name|blockManager
+operator|.
+name|getPendingReconstructionBlocksCount
+argument_list|()
+return|;
+block|}
+comment|/**    * Get aggregated count of all blocks with low redundancy.    * @deprecated - Use {@link #getLowRedundancyBlocks()} instead.    */
+annotation|@
+name|Override
+comment|// FSNamesystemMBean
+annotation|@
+name|Metric
+annotation|@
+name|Deprecated
 DECL|method|getUnderReplicatedBlocks ()
 specifier|public
 name|long
@@ -21866,7 +22024,26 @@ block|{
 return|return
 name|blockManager
 operator|.
-name|getUnderReplicatedBlocksCount
+name|getLowRedundancyBlocksCount
+argument_list|()
+return|;
+block|}
+comment|/**    * Get aggregated count of all blocks with low redundancy.    */
+annotation|@
+name|Override
+comment|// FSNamesystemMBean
+annotation|@
+name|Metric
+DECL|method|getLowRedundancyBlocks ()
+specifier|public
+name|long
+name|getLowRedundancyBlocks
+parameter_list|()
+block|{
+return|return
+name|blockManager
+operator|.
+name|getLowRedundancyBlocksCount
 argument_list|()
 return|;
 block|}
@@ -21925,6 +22102,297 @@ return|return
 name|blockManager
 operator|.
 name|getPendingDeletionBlocksCount
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+comment|// ReplicatedBlocksMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"LowRedundancyReplicatedBlocks"
+block|,
+literal|"Number of low redundancy replicated blocks"
+block|}
+argument_list|)
+DECL|method|getLowRedundancyBlocksStat ()
+specifier|public
+name|long
+name|getLowRedundancyBlocksStat
+parameter_list|()
+block|{
+return|return
+name|blockManager
+operator|.
+name|getLowRedundancyBlocksStat
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+comment|// ReplicatedBlocksMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"CorruptReplicatedBlocks"
+block|,
+literal|"Number of corrupted replicated blocks"
+block|}
+argument_list|)
+DECL|method|getCorruptBlocksStat ()
+specifier|public
+name|long
+name|getCorruptBlocksStat
+parameter_list|()
+block|{
+return|return
+name|blockManager
+operator|.
+name|getCorruptBlocksStat
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+comment|// ReplicatedBlocksMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"MissingReplicatedBlocks"
+block|,
+literal|"Number of missing replicated blocks"
+block|}
+argument_list|)
+DECL|method|getMissingBlocksStat ()
+specifier|public
+name|long
+name|getMissingBlocksStat
+parameter_list|()
+block|{
+return|return
+name|blockManager
+operator|.
+name|getMissingBlocksStat
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+comment|// ReplicatedBlocksMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"MissingReplicatedOneBlocks"
+block|,
+literal|"Number of missing replicated blocks"
+operator|+
+literal|" with replication factor 1"
+block|}
+argument_list|)
+DECL|method|getMissingReplicationOneBlocksStat ()
+specifier|public
+name|long
+name|getMissingReplicationOneBlocksStat
+parameter_list|()
+block|{
+return|return
+name|blockManager
+operator|.
+name|getMissingReplicationOneBlocksStat
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+comment|// ReplicatedBlocksMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"BytesReplicatedFutureBlocks"
+block|,
+literal|"Total bytes in replicated blocks "
+operator|+
+literal|"with future generation stamp"
+block|}
+argument_list|)
+DECL|method|getBlocksBytesInFutureStat ()
+specifier|public
+name|long
+name|getBlocksBytesInFutureStat
+parameter_list|()
+block|{
+return|return
+name|blockManager
+operator|.
+name|getBytesInFutureReplicatedBlocksStat
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+comment|// ReplicatedBlocksMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"PendingDeletionReplicatedBlocks"
+block|,
+literal|"Number of replicated blocks "
+operator|+
+literal|"that are pending deletion"
+block|}
+argument_list|)
+DECL|method|getPendingDeletionBlocksStat ()
+specifier|public
+name|long
+name|getPendingDeletionBlocksStat
+parameter_list|()
+block|{
+return|return
+name|blockManager
+operator|.
+name|getPendingDeletionBlocksStat
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+comment|// ECBlockGroupsStatsMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"LowRedundancyECBlockGroups"
+block|,
+literal|"Number of erasure coded block "
+operator|+
+literal|"groups with low redundancy"
+block|}
+argument_list|)
+DECL|method|getLowRedundancyECBlockGroupsStat ()
+specifier|public
+name|long
+name|getLowRedundancyECBlockGroupsStat
+parameter_list|()
+block|{
+return|return
+name|blockManager
+operator|.
+name|getLowRedundancyECBlockGroupsStat
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+comment|// ECBlockGroupsStatsMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"CorruptECBlockGroups"
+block|,
+literal|"Number of erasure coded block groups that"
+operator|+
+literal|" are corrupt"
+block|}
+argument_list|)
+DECL|method|getCorruptECBlockGroupsStat ()
+specifier|public
+name|long
+name|getCorruptECBlockGroupsStat
+parameter_list|()
+block|{
+return|return
+name|blockManager
+operator|.
+name|getCorruptECBlockGroupsStat
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+comment|// ECBlockGroupsStatsMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"MissingECBlockGroups"
+block|,
+literal|"Number of erasure coded block groups that"
+operator|+
+literal|" are missing"
+block|}
+argument_list|)
+DECL|method|getMissingECBlockGroupsStat ()
+specifier|public
+name|long
+name|getMissingECBlockGroupsStat
+parameter_list|()
+block|{
+return|return
+name|blockManager
+operator|.
+name|getMissingECBlockGroupsStat
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+comment|// ECBlockGroupsStatsMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"BytesFutureECBlockGroups"
+block|,
+literal|"Total bytes in erasure coded block "
+operator|+
+literal|"groups with future generation stamp"
+block|}
+argument_list|)
+DECL|method|getECBlocksBytesInFutureStat ()
+specifier|public
+name|long
+name|getECBlocksBytesInFutureStat
+parameter_list|()
+block|{
+return|return
+name|blockManager
+operator|.
+name|getBytesInFutureStripedBlocksStat
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+comment|// ECBlockGroupsStatsMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"PendingDeletionECBlockGroups"
+block|,
+literal|"Number of erasure coded block "
+operator|+
+literal|"groups that are pending deletion"
+block|}
+argument_list|)
+DECL|method|getPendingDeletionECBlockGroupsStat ()
+specifier|public
+name|long
+name|getPendingDeletionECBlockGroupsStat
+parameter_list|()
+block|{
+return|return
+name|blockManager
+operator|.
+name|getPendingDeletionECBlockGroupsStat
 argument_list|()
 return|;
 block|}
@@ -22117,17 +22585,21 @@ else|:
 literal|"Operational"
 return|;
 block|}
-DECL|field|mbeanName
+DECL|field|namesystemMBeanName
+DECL|field|replicatedBlocksMBeanName
 specifier|private
 name|ObjectName
-name|mbeanName
+name|namesystemMBeanName
+decl_stmt|,
+name|replicatedBlocksMBeanName
+decl_stmt|,
+DECL|field|ecBlockGroupsMBeanName
+DECL|field|namenodeMXBeanName
+name|ecBlockGroupsMBeanName
+decl_stmt|,
+name|namenodeMXBeanName
 decl_stmt|;
-DECL|field|mxbeanName
-specifier|private
-name|ObjectName
-name|mxbeanName
-decl_stmt|;
-comment|/**    * Register the FSNamesystem MBean using the name    *        "hadoop:service=NameNode,name=FSNamesystemState"    */
+comment|/**    * Register following MBeans with their respective names.    * FSNamesystemMBean:    *        "hadoop:service=NameNode,name=FSNamesystemState"    * ReplicatedBlocksStatsMBean:    *        "hadoop:service=NameNode,name=ReplicatedBlocksState"    * ECBlockGroupsStatsMBean:    *        "hadoop:service=NameNode,name=ECBlockGroupsState"    */
 DECL|method|registerMBean ()
 specifier|private
 name|void
@@ -22138,7 +22610,7 @@ comment|// We can only implement one MXBean interface, so we keep the old one.
 try|try
 block|{
 name|StandardMBean
-name|bean
+name|namesystemBean
 init|=
 operator|new
 name|StandardMBean
@@ -22150,7 +22622,33 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|mbeanName
+name|StandardMBean
+name|replicaBean
+init|=
+operator|new
+name|StandardMBean
+argument_list|(
+name|this
+argument_list|,
+name|ReplicatedBlocksStatsMBean
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|StandardMBean
+name|ecBean
+init|=
+operator|new
+name|StandardMBean
+argument_list|(
+name|this
+argument_list|,
+name|ECBlockGroupsStatsMBean
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|namesystemMBeanName
 operator|=
 name|MBeans
 operator|.
@@ -22160,7 +22658,33 @@ literal|"NameNode"
 argument_list|,
 literal|"FSNamesystemState"
 argument_list|,
-name|bean
+name|namesystemBean
+argument_list|)
+expr_stmt|;
+name|replicatedBlocksMBeanName
+operator|=
+name|MBeans
+operator|.
+name|register
+argument_list|(
+literal|"NameNode"
+argument_list|,
+literal|"ReplicatedBlocksState"
+argument_list|,
+name|replicaBean
+argument_list|)
+expr_stmt|;
+name|ecBlockGroupsMBeanName
+operator|=
+name|MBeans
+operator|.
+name|register
+argument_list|(
+literal|"NameNode"
+argument_list|,
+literal|"ECBlockGroupsState"
+argument_list|,
+name|ecBean
 argument_list|)
 expr_stmt|;
 block|}
@@ -22184,11 +22708,13 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Registered FSNamesystemState MBean"
+literal|"Registered FSNamesystemState, ReplicatedBlocksState and "
+operator|+
+literal|"ECBlockGroupsState MBeans."
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * shutdown FSNamesystem    */
+comment|/**    * Shutdown FSNamesystem.    */
 DECL|method|shutdown ()
 name|void
 name|shutdown
@@ -22209,7 +22735,7 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|mbeanName
+name|namesystemMBeanName
 operator|!=
 literal|null
 condition|)
@@ -22218,17 +22744,17 @@ name|MBeans
 operator|.
 name|unregister
 argument_list|(
-name|mbeanName
+name|namesystemMBeanName
 argument_list|)
 expr_stmt|;
-name|mbeanName
+name|namesystemMBeanName
 operator|=
 literal|null
 expr_stmt|;
 block|}
 if|if
 condition|(
-name|mxbeanName
+name|replicatedBlocksMBeanName
 operator|!=
 literal|null
 condition|)
@@ -22237,10 +22763,48 @@ name|MBeans
 operator|.
 name|unregister
 argument_list|(
-name|mxbeanName
+name|replicatedBlocksMBeanName
 argument_list|)
 expr_stmt|;
-name|mxbeanName
+name|replicatedBlocksMBeanName
+operator|=
+literal|null
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|ecBlockGroupsMBeanName
+operator|!=
+literal|null
+condition|)
+block|{
+name|MBeans
+operator|.
+name|unregister
+argument_list|(
+name|ecBlockGroupsMBeanName
+argument_list|)
+expr_stmt|;
+name|ecBlockGroupsMBeanName
+operator|=
+literal|null
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|namenodeMXBeanName
+operator|!=
+literal|null
+condition|)
+block|{
+name|MBeans
+operator|.
+name|unregister
+argument_list|(
+name|namenodeMXBeanName
+argument_list|)
+expr_stmt|;
+name|namenodeMXBeanName
 operator|=
 literal|null
 expr_stmt|;
@@ -25409,14 +25973,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Register NameNodeMXBean    */
+comment|/**    * Register NameNodeMXBean.    */
 DECL|method|registerMXBean ()
 specifier|private
 name|void
 name|registerMXBean
 parameter_list|()
 block|{
-name|mxbeanName
+name|namenodeMXBeanName
 operator|=
 name|MBeans
 operator|.

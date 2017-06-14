@@ -2913,7 +2913,7 @@ name|file
 argument_list|,
 name|replicas
 argument_list|,
-literal|1
+literal|25
 argument_list|)
 expr_stmt|;
 name|DatanodeInfo

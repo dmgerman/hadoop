@@ -1867,7 +1867,7 @@ operator|.
 name|getBlockManager
 argument_list|()
 operator|.
-name|getUnderReplicatedBlocksCount
+name|getLowRedundancyBlocksCount
 argument_list|()
 operator|==
 literal|1

@@ -2960,7 +2960,7 @@ literal|"Under replicated blocks: "
 operator|+
 name|dfs
 operator|.
-name|getUnderReplicatedBlocksCount
+name|getLowRedundancyBlocksCount
 argument_list|()
 argument_list|)
 expr_stmt|;

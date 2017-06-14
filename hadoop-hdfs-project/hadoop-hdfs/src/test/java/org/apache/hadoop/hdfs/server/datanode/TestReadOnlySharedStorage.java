@@ -1298,7 +1298,7 @@ name|assertThat
 argument_list|(
 name|blockManager
 operator|.
-name|getUnderReplicatedBlocksCount
+name|getLowRedundancyBlocksCount
 argument_list|()
 argument_list|,
 name|is
@@ -1436,7 +1436,7 @@ name|assertThat
 argument_list|(
 name|blockManager
 operator|.
-name|getUnderReplicatedBlocksCount
+name|getLowRedundancyBlocksCount
 argument_list|()
 argument_list|,
 name|is
