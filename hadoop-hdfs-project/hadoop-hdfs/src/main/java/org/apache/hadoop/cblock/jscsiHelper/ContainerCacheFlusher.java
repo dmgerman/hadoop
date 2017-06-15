@@ -2290,7 +2290,7 @@ argument_list|()
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Remaining blocks count {} and {}"
 argument_list|,
