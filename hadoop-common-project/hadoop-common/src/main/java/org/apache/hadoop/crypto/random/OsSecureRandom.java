@@ -593,6 +593,20 @@ literal|null
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
+DECL|method|finalize ()
+specifier|protected
+name|void
+name|finalize
+parameter_list|()
+throws|throws
+name|Throwable
+block|{
+name|close
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 end_class
 
