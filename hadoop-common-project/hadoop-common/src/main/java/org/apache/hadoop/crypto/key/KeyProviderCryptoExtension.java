@@ -622,6 +622,8 @@ name|getConf
 argument_list|()
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 specifier|final
 name|byte
 index|[]
@@ -689,6 +691,15 @@ argument_list|,
 name|iv
 argument_list|)
 return|;
+block|}
+finally|finally
+block|{
+name|cc
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|generateEncryptedKey (final Encryptor encryptor, final KeyVersion encryptionKey, final byte[] key, final byte[] iv)
 specifier|private
@@ -966,6 +977,8 @@ name|getConf
 argument_list|()
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 specifier|final
 name|Encryptor
 name|encryptor
@@ -993,6 +1006,15 @@ name|getEncryptedKeyIv
 argument_list|()
 argument_list|)
 return|;
+block|}
+finally|finally
+block|{
+name|cc
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -1208,6 +1230,11 @@ name|get
 argument_list|(
 name|decryptedKey
 argument_list|)
+expr_stmt|;
+name|cc
+operator|.
+name|close
+argument_list|()
 expr_stmt|;
 return|return
 operator|new

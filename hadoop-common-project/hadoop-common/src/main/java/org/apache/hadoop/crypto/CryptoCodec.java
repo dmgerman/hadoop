@@ -20,6 +20,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|Closeable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|security
 operator|.
 name|GeneralSecurityException
@@ -250,6 +260,8 @@ class|class
 name|CryptoCodec
 implements|implements
 name|Configurable
+implements|,
+name|Closeable
 block|{
 DECL|field|LOG
 specifier|public

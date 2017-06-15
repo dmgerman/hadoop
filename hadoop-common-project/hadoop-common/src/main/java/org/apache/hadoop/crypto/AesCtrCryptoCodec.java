@@ -58,6 +58,16 @@ name|Preconditions
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
 begin_class
 annotation|@
 name|InterfaceAudience
@@ -235,6 +245,16 @@ name|sum
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+throws|throws
+name|IOException
+block|{   }
 block|}
 end_class
 

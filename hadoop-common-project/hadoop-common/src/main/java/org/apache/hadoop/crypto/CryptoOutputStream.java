@@ -1032,6 +1032,11 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+name|codec
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 block|}
 name|freeBuffers
 argument_list|()

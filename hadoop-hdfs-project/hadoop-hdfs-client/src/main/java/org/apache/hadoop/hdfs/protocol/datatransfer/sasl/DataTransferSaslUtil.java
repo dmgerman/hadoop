@@ -1599,6 +1599,11 @@ argument_list|(
 name|outIv
 argument_list|)
 expr_stmt|;
+name|codec
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 return|return
 operator|new
 name|CipherOption

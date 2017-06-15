@@ -1495,6 +1495,11 @@ expr_stmt|;
 name|freeBuffers
 argument_list|()
 expr_stmt|;
+name|codec
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 name|closed
 operator|=
 literal|true
