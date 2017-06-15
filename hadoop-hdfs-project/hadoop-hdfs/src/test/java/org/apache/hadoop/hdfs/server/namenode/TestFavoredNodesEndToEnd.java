@@ -1407,12 +1407,12 @@ name|out
 init|=
 name|dfs
 operator|.
-name|newFSDataOutputStreamBuilder
+name|createFile
 argument_list|(
 name|p
 argument_list|)
 operator|.
-name|setFavoredNodes
+name|favoredNodes
 argument_list|(
 name|dns
 argument_list|)

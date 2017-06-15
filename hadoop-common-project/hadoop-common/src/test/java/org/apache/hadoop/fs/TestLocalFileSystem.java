@@ -4134,7 +4134,7 @@ name|builder
 init|=
 name|fileSys
 operator|.
-name|newFSDataOutputStreamBuilder
+name|createFile
 argument_list|(
 name|path
 argument_list|)
@@ -4150,7 +4150,7 @@ decl_stmt|;
 name|String
 name|content
 init|=
-literal|"Create with a generic type of createBuilder!"
+literal|"Create with a generic type of createFile!"
 decl_stmt|;
 name|byte
 index|[]
@@ -4253,7 +4253,7 @@ name|builder
 init|=
 name|fileSys
 operator|.
-name|newFSDataOutputStreamBuilder
+name|createFile
 argument_list|(
 name|path
 argument_list|)
@@ -4343,24 +4343,24 @@ name|builder
 operator|=
 name|fileSys
 operator|.
-name|newFSDataOutputStreamBuilder
+name|createFile
 argument_list|(
 name|path
 argument_list|)
 expr_stmt|;
 name|builder
 operator|.
-name|setBufferSize
+name|bufferSize
 argument_list|(
 literal|0
 argument_list|)
 operator|.
-name|setBlockSize
+name|blockSize
 argument_list|(
 literal|0
 argument_list|)
 operator|.
-name|setReplication
+name|replication
 argument_list|(
 operator|(
 name|short

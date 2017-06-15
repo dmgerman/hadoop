@@ -3445,7 +3445,7 @@ expr_stmt|;
 comment|// null EC policy name value means inheriting parent directory's policy
 name|fs
 operator|.
-name|newFSDataOutputStreamBuilder
+name|createFile
 argument_list|(
 name|filePath0
 argument_list|)
@@ -3484,12 +3484,12 @@ try|try
 block|{
 name|fs
 operator|.
-name|newFSDataOutputStreamBuilder
+name|createFile
 argument_list|(
 name|filePath1
 argument_list|)
 operator|.
-name|setEcPolicyName
+name|ecPolicyName
 argument_list|(
 name|illegalPolicyName
 argument_list|)
@@ -3576,12 +3576,12 @@ argument_list|)
 expr_stmt|;
 name|fs
 operator|.
-name|newFSDataOutputStreamBuilder
+name|createFile
 argument_list|(
 name|filePath0
 argument_list|)
 operator|.
-name|setEcPolicyName
+name|ecPolicyName
 argument_list|(
 name|ecPolicyOnFile
 operator|.
@@ -3689,7 +3689,7 @@ literal|"RS-10-4-64k"
 decl_stmt|;
 name|fs
 operator|.
-name|newFSDataOutputStreamBuilder
+name|createFile
 argument_list|(
 name|filePath
 argument_list|)
@@ -3723,12 +3723,12 @@ argument_list|)
 expr_stmt|;
 name|fs
 operator|.
-name|newFSDataOutputStreamBuilder
+name|createFile
 argument_list|(
 name|filePath
 argument_list|)
 operator|.
-name|setEcPolicyName
+name|ecPolicyName
 argument_list|(
 name|ecPolicyName
 argument_list|)
@@ -3767,12 +3767,12 @@ try|try
 block|{
 name|fs
 operator|.
-name|newFSDataOutputStreamBuilder
+name|createFile
 argument_list|(
 name|filePath
 argument_list|)
 operator|.
-name|setEcPolicyName
+name|ecPolicyName
 argument_list|(
 name|ecPolicyName
 argument_list|)
@@ -3806,9 +3806,9 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"shouldReplicate and "
+literal|"SHOULD_REPLICATE flag and "
 operator|+
-literal|"ecPolicyName are exclusive parameters. Set both is not allowed!"
+literal|"ecPolicyName are exclusive parameters."
 argument_list|,
 name|e
 argument_list|)
@@ -3903,7 +3903,7 @@ expr_stmt|;
 block|}
 name|fs
 operator|.
-name|newFSDataOutputStreamBuilder
+name|createFile
 argument_list|(
 name|filePath
 argument_list|)

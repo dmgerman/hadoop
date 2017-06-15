@@ -38,6 +38,18 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|HadoopIllegalArgumentException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|classification
 operator|.
 name|InterfaceAudience
@@ -106,6 +118,16 @@ end_import
 
 begin_import
 import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nonnull
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -157,7 +179,7 @@ import|;
 end_import
 
 begin_comment
-comment|/** Base of specific file system FSDataOutputStreamBuilder. */
+comment|/**  * Builder for {@link FSDataOutputStream} and its subclasses.  *  * It is used to create {@link FSDataOutputStream} when creating a new file or  * appending an existing file on {@link FileSystem}.  *  * By default, it does not create parent directory that do not exist.  * {@link FileSystem#createNonRecursive(Path, boolean, int, short, long,  * Progressable)}.  *  * To create missing parent directory, use {@link #recursive()}.  */
 end_comment
 
 begin_class
@@ -171,15 +193,35 @@ operator|.
 name|Unstable
 DECL|class|FSDataOutputStreamBuilder
 specifier|public
+specifier|abstract
 class|class
 name|FSDataOutputStreamBuilder
+parameter_list|<
+name|S
+extends|extends
+name|FSDataOutputStream
+parameter_list|,
+name|B
+extends|extends
+name|FSDataOutputStreamBuilder
+parameter_list|<
+name|S
+parameter_list|,
+name|B
+parameter_list|>
+parameter_list|>
 block|{
+DECL|field|fs
+specifier|private
+specifier|final
+name|FileSystem
+name|fs
+decl_stmt|;
 DECL|field|path
 specifier|private
+specifier|final
 name|Path
 name|path
-init|=
-literal|null
 decl_stmt|;
 DECL|field|permission
 specifier|private
@@ -190,33 +232,49 @@ literal|null
 decl_stmt|;
 DECL|field|bufferSize
 specifier|private
-name|Integer
+name|int
 name|bufferSize
 decl_stmt|;
 DECL|field|replication
 specifier|private
-name|Short
+name|short
 name|replication
 decl_stmt|;
 DECL|field|blockSize
 specifier|private
-name|Long
+name|long
 name|blockSize
 decl_stmt|;
-DECL|field|progress
+comment|/** set to true to create missing directory. */
+DECL|field|recursive
 specifier|private
-name|Progressable
-name|progress
+name|boolean
+name|recursive
 init|=
-literal|null
+literal|false
 decl_stmt|;
 DECL|field|flags
 specifier|private
+specifier|final
 name|EnumSet
 argument_list|<
 name|CreateFlag
 argument_list|>
 name|flags
+init|=
+name|EnumSet
+operator|.
+name|noneOf
+argument_list|(
+name|CreateFlag
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+DECL|field|progress
+specifier|private
+name|Progressable
+name|progress
 init|=
 literal|null
 decl_stmt|;
@@ -227,23 +285,44 @@ name|checksumOpt
 init|=
 literal|null
 decl_stmt|;
-DECL|field|fs
-specifier|private
-specifier|final
-name|FileSystem
-name|fs
-decl_stmt|;
-DECL|method|FSDataOutputStreamBuilder (FileSystem fileSystem, Path p)
+comment|/**    * Return the concrete implementation of the builder instance.    */
+DECL|method|getThisBuilder ()
+specifier|protected
+specifier|abstract
+name|B
+name|getThisBuilder
+parameter_list|()
+function_decl|;
+comment|/**    * Constructor.    */
+DECL|method|FSDataOutputStreamBuilder (@onnull FileSystem fileSystem, @Nonnull Path p)
 specifier|protected
 name|FSDataOutputStreamBuilder
 parameter_list|(
+annotation|@
+name|Nonnull
 name|FileSystem
 name|fileSystem
 parameter_list|,
+annotation|@
+name|Nonnull
 name|Path
 name|p
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|fileSystem
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|p
+argument_list|)
+expr_stmt|;
 name|fs
 operator|=
 name|fileSystem
@@ -252,6 +331,48 @@ name|path
 operator|=
 name|p
 expr_stmt|;
+name|bufferSize
+operator|=
+name|fs
+operator|.
+name|getConf
+argument_list|()
+operator|.
+name|getInt
+argument_list|(
+name|IO_FILE_BUFFER_SIZE_KEY
+argument_list|,
+name|IO_FILE_BUFFER_SIZE_DEFAULT
+argument_list|)
+expr_stmt|;
+name|replication
+operator|=
+name|fs
+operator|.
+name|getDefaultReplication
+argument_list|(
+name|path
+argument_list|)
+expr_stmt|;
+name|blockSize
+operator|=
+name|fs
+operator|.
+name|getDefaultBlockSize
+argument_list|(
+name|p
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|getFS ()
+specifier|protected
+name|FileSystem
+name|getFS
+parameter_list|()
+block|{
+return|return
+name|fs
+return|;
 block|}
 DECL|method|getPath ()
 specifier|protected
@@ -276,22 +397,26 @@ operator|==
 literal|null
 condition|)
 block|{
-return|return
+name|permission
+operator|=
 name|FsPermission
 operator|.
 name|getFileDefault
 argument_list|()
-return|;
+expr_stmt|;
 block|}
 return|return
 name|permission
 return|;
 block|}
-DECL|method|setPermission (final FsPermission perm)
+comment|/**    * Set permission for the file.    */
+DECL|method|permission (@onnull final FsPermission perm)
 specifier|public
-name|FSDataOutputStreamBuilder
-name|setPermission
+name|B
+name|permission
 parameter_list|(
+annotation|@
+name|Nonnull
 specifier|final
 name|FsPermission
 name|perm
@@ -309,7 +434,8 @@ operator|=
 name|perm
 expr_stmt|;
 return|return
-name|this
+name|getThisBuilder
+argument_list|()
 return|;
 block|}
 DECL|method|getBufferSize ()
@@ -318,35 +444,15 @@ name|int
 name|getBufferSize
 parameter_list|()
 block|{
-if|if
-condition|(
-name|bufferSize
-operator|==
-literal|null
-condition|)
-block|{
-return|return
-name|fs
-operator|.
-name|getConf
-argument_list|()
-operator|.
-name|getInt
-argument_list|(
-name|IO_FILE_BUFFER_SIZE_KEY
-argument_list|,
-name|IO_FILE_BUFFER_SIZE_DEFAULT
-argument_list|)
-return|;
-block|}
 return|return
 name|bufferSize
 return|;
 block|}
-DECL|method|setBufferSize (int bufSize)
+comment|/**    * Set the size of the buffer to be used.    */
+DECL|method|bufferSize (int bufSize)
 specifier|public
-name|FSDataOutputStreamBuilder
-name|setBufferSize
+name|B
+name|bufferSize
 parameter_list|(
 name|int
 name|bufSize
@@ -357,7 +463,8 @@ operator|=
 name|bufSize
 expr_stmt|;
 return|return
-name|this
+name|getThisBuilder
+argument_list|()
 return|;
 block|}
 DECL|method|getReplication ()
@@ -366,31 +473,15 @@ name|short
 name|getReplication
 parameter_list|()
 block|{
-if|if
-condition|(
-name|replication
-operator|==
-literal|null
-condition|)
-block|{
-return|return
-name|fs
-operator|.
-name|getDefaultReplication
-argument_list|(
-name|getPath
-argument_list|()
-argument_list|)
-return|;
-block|}
 return|return
 name|replication
 return|;
 block|}
-DECL|method|setReplication (short replica)
+comment|/**    * Set replication factor.    */
+DECL|method|replication (short replica)
 specifier|public
-name|FSDataOutputStreamBuilder
-name|setReplication
+name|B
+name|replication
 parameter_list|(
 name|short
 name|replica
@@ -401,7 +492,8 @@ operator|=
 name|replica
 expr_stmt|;
 return|return
-name|this
+name|getThisBuilder
+argument_list|()
 return|;
 block|}
 DECL|method|getBlockSize ()
@@ -410,31 +502,15 @@ name|long
 name|getBlockSize
 parameter_list|()
 block|{
-if|if
-condition|(
-name|blockSize
-operator|==
-literal|null
-condition|)
-block|{
-return|return
-name|fs
-operator|.
-name|getDefaultBlockSize
-argument_list|(
-name|getPath
-argument_list|()
-argument_list|)
-return|;
-block|}
 return|return
 name|blockSize
 return|;
 block|}
-DECL|method|setBlockSize (long blkSize)
+comment|/**    * Set block size.    */
+DECL|method|blockSize (long blkSize)
 specifier|public
-name|FSDataOutputStreamBuilder
-name|setBlockSize
+name|B
+name|blockSize
 parameter_list|(
 name|long
 name|blkSize
@@ -445,7 +521,35 @@ operator|=
 name|blkSize
 expr_stmt|;
 return|return
-name|this
+name|getThisBuilder
+argument_list|()
+return|;
+block|}
+comment|/**    * Return true to create the parent directories if they do not exist.    */
+DECL|method|isRecursive ()
+specifier|protected
+name|boolean
+name|isRecursive
+parameter_list|()
+block|{
+return|return
+name|recursive
+return|;
+block|}
+comment|/**    * Create the parent directory if they do not exist.    */
+DECL|method|recursive ()
+specifier|public
+name|B
+name|recursive
+parameter_list|()
+block|{
+name|recursive
+operator|=
+literal|true
+expr_stmt|;
+return|return
+name|getThisBuilder
+argument_list|()
 return|;
 block|}
 DECL|method|getProgress ()
@@ -458,11 +562,14 @@ return|return
 name|progress
 return|;
 block|}
-DECL|method|setProgress (final Progressable prog)
+comment|/**    * Set the facility of reporting progress.    */
+DECL|method|progress (@onnull final Progressable prog)
 specifier|public
-name|FSDataOutputStreamBuilder
-name|setProgress
+name|B
+name|progress
 parameter_list|(
+annotation|@
+name|Nonnull
 specifier|final
 name|Progressable
 name|prog
@@ -480,7 +587,8 @@ operator|=
 name|prog
 expr_stmt|;
 return|return
-name|this
+name|getThisBuilder
+argument_list|()
 return|;
 block|}
 DECL|method|getFlags ()
@@ -492,58 +600,92 @@ argument_list|>
 name|getFlags
 parameter_list|()
 block|{
-if|if
-condition|(
-name|flags
-operator|==
-literal|null
-condition|)
-block|{
 return|return
-name|EnumSet
+name|flags
+return|;
+block|}
+comment|/**    * Create an FSDataOutputStream at the specified path.    */
+DECL|method|create ()
+specifier|public
+name|B
+name|create
+parameter_list|()
+block|{
+name|flags
 operator|.
-name|of
+name|add
 argument_list|(
 name|CreateFlag
 operator|.
 name|CREATE
-argument_list|,
+argument_list|)
+expr_stmt|;
+return|return
+name|getThisBuilder
+argument_list|()
+return|;
+block|}
+comment|/**    * Set to true to overwrite the existing file.    * Set it to false, an exception will be thrown when calling {@link #build()}    * if the file exists.    */
+DECL|method|overwrite (boolean overwrite)
+specifier|public
+name|B
+name|overwrite
+parameter_list|(
+name|boolean
+name|overwrite
+parameter_list|)
+block|{
+if|if
+condition|(
+name|overwrite
+condition|)
+block|{
+name|flags
+operator|.
+name|add
+argument_list|(
 name|CreateFlag
 operator|.
 name|OVERWRITE
 argument_list|)
-return|;
+expr_stmt|;
 block|}
-return|return
-name|flags
-return|;
-block|}
-DECL|method|setFlags ( final EnumSet<CreateFlag> enumFlags)
-specifier|public
-name|FSDataOutputStreamBuilder
-name|setFlags
-parameter_list|(
-specifier|final
-name|EnumSet
-argument_list|<
-name|CreateFlag
-argument_list|>
-name|enumFlags
-parameter_list|)
+else|else
 block|{
-name|Preconditions
+name|flags
 operator|.
-name|checkNotNull
+name|remove
 argument_list|(
-name|enumFlags
+name|CreateFlag
+operator|.
+name|OVERWRITE
 argument_list|)
 expr_stmt|;
+block|}
+return|return
+name|getThisBuilder
+argument_list|()
+return|;
+block|}
+comment|/**    * Append to an existing file (optional operation).    */
+DECL|method|append ()
+specifier|public
+name|B
+name|append
+parameter_list|()
+block|{
 name|flags
-operator|=
-name|enumFlags
+operator|.
+name|add
+argument_list|(
+name|CreateFlag
+operator|.
+name|APPEND
+argument_list|)
 expr_stmt|;
 return|return
-name|this
+name|getThisBuilder
+argument_list|()
 return|;
 block|}
 DECL|method|getChecksumOpt ()
@@ -556,11 +698,14 @@ return|return
 name|checksumOpt
 return|;
 block|}
-DECL|method|setChecksumOpt ( final ChecksumOpt chksumOpt)
+comment|/**    * Set checksum opt.    */
+DECL|method|checksumOpt (@onnull final ChecksumOpt chksumOpt)
 specifier|public
-name|FSDataOutputStreamBuilder
-name|setChecksumOpt
+name|B
+name|checksumOpt
 parameter_list|(
+annotation|@
+name|Nonnull
 specifier|final
 name|ChecksumOpt
 name|chksumOpt
@@ -578,48 +723,20 @@ operator|=
 name|chksumOpt
 expr_stmt|;
 return|return
-name|this
+name|getThisBuilder
+argument_list|()
 return|;
 block|}
+comment|/**    * Create the FSDataOutputStream to write on the file system.    *    * @throws HadoopIllegalArgumentException if the parameters are not valid.    * @throws IOException on errors when file system creates or appends the file.    */
 DECL|method|build ()
 specifier|public
-name|FSDataOutputStream
+specifier|abstract
+name|S
 name|build
 parameter_list|()
 throws|throws
 name|IOException
-block|{
-return|return
-name|fs
-operator|.
-name|create
-argument_list|(
-name|getPath
-argument_list|()
-argument_list|,
-name|getPermission
-argument_list|()
-argument_list|,
-name|getFlags
-argument_list|()
-argument_list|,
-name|getBufferSize
-argument_list|()
-argument_list|,
-name|getReplication
-argument_list|()
-argument_list|,
-name|getBlockSize
-argument_list|()
-argument_list|,
-name|getProgress
-argument_list|()
-argument_list|,
-name|getChecksumOpt
-argument_list|()
-argument_list|)
-return|;
-block|}
+function_decl|;
 block|}
 end_class
 

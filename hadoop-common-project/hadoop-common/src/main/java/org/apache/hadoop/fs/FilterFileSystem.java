@@ -2686,10 +2686,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|newFSDataOutputStreamBuilder (Path path)
-specifier|protected
+DECL|method|createFile (Path path)
+specifier|public
 name|FSDataOutputStreamBuilder
-name|newFSDataOutputStreamBuilder
+name|createFile
 parameter_list|(
 name|Path
 name|path
@@ -2698,7 +2698,7 @@ block|{
 return|return
 name|fs
 operator|.
-name|newFSDataOutputStreamBuilder
+name|createFile
 argument_list|(
 name|path
 argument_list|)
