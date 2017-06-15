@@ -2224,6 +2224,22 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * List open files in the system in batches. INode id is the cursor and the    * open files returned in a batch will have their INode ids greater than    * the cursor INode id. Open files can only be requested by super user and    * the the list across batches are not atomic.    *    * @param prevId the cursor INode id.    * @throws IOException    */
+annotation|@
+name|Idempotent
+DECL|method|listOpenFiles (long prevId)
+name|BatchedEntries
+argument_list|<
+name|OpenFileEntry
+argument_list|>
+name|listOpenFiles
+parameter_list|(
+name|long
+name|prevId
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 
