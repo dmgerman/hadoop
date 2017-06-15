@@ -6410,6 +6410,18 @@ argument_list|,
 name|cluster
 argument_list|)
 expr_stmt|;
+name|int
+name|retry
+init|=
+literal|5
+decl_stmt|;
+while|while
+condition|(
+name|retry
+operator|>
+literal|0
+condition|)
+block|{
 comment|// start rebalancing
 name|Collection
 argument_list|<
@@ -6426,7 +6438,7 @@ argument_list|)
 decl_stmt|;
 specifier|final
 name|int
-name|r
+name|run
 init|=
 name|runBalancer
 argument_list|(
@@ -6464,7 +6476,7 @@ operator|.
 name|getExitCode
 argument_list|()
 argument_list|,
-name|r
+name|run
 argument_list|)
 expr_stmt|;
 return|return;
@@ -6480,7 +6492,7 @@ operator|.
 name|getExitCode
 argument_list|()
 argument_list|,
-name|r
+name|run
 argument_list|)
 expr_stmt|;
 block|}
@@ -6502,6 +6514,8 @@ argument_list|(
 literal|"  ."
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|waitForBalancer
 argument_list|(
 name|totalUsedSpace
@@ -6517,6 +6531,40 @@ argument_list|,
 name|excludedNodes
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|TimeoutException
+name|e
+parameter_list|)
+block|{
+comment|// See HDFS-11682. NN may not get heartbeat to reflect the newest
+comment|// block changes.
+name|retry
+operator|--
+expr_stmt|;
+if|if
+condition|(
+name|retry
+operator|==
+literal|0
+condition|)
+block|{
+throw|throw
+name|e
+throw|;
+block|}
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"The cluster has not balanced yet, retry..."
+argument_list|)
+expr_stmt|;
+continue|continue;
+block|}
+break|break;
+block|}
 block|}
 DECL|method|runBalancer (Collection<URI> namenodes, final BalancerParameters p, Configuration conf)
 specifier|private
@@ -12482,7 +12530,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|100000
+literal|200000
 argument_list|)
 DECL|method|testBalancerWithStripedFile ()
 specifier|public
