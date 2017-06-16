@@ -1798,6 +1798,16 @@ operator|.
 name|toMillis
 argument_list|()
 decl_stmt|;
+name|accessTime1
+operator|=
+operator|(
+name|accessTime1
+operator|/
+literal|1000
+operator|)
+operator|*
+literal|1000
+expr_stmt|;
 name|long
 name|accessTime2
 init|=
