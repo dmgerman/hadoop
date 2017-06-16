@@ -100,18 +100,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
-operator|.
-name|log4j
-operator|.
-name|Logger
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|eclipse
 operator|.
 name|jetty
@@ -136,6 +124,26 @@ name|RequestLog
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/**  * RequestLog object for use with Http  */
 end_comment
@@ -150,12 +158,12 @@ DECL|field|LOG
 specifier|public
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|HttpRequestLog
 operator|.
@@ -320,6 +328,12 @@ name|Log4JLogger
 operator|)
 name|logger
 decl_stmt|;
+name|org
+operator|.
+name|apache
+operator|.
+name|log4j
+operator|.
 name|Logger
 name|httpLogger
 init|=
@@ -355,11 +369,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Http request log for "
-operator|+
+literal|"Http request log for {} could not be created"
+argument_list|,
 name|loggerName
-operator|+
-literal|" could not be created"
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -377,11 +389,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Http request log for "
-operator|+
+literal|"Http request log for {} is not defined"
+argument_list|,
 name|loggerName
-operator|+
-literal|" is not defined"
 argument_list|)
 expr_stmt|;
 return|return
@@ -440,11 +450,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Jetty request log for "
-operator|+
+literal|"Jetty request log for {} was of the wrong class"
+argument_list|,
 name|loggerName
-operator|+
-literal|" was of the wrong class"
 argument_list|)
 expr_stmt|;
 return|return
