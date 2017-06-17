@@ -11932,6 +11932,33 @@ literal|true
 argument_list|)
 return|;
 block|}
+comment|/**    * Create a Builder to append a file.    * @param path file path.    * @return a {@link FSDataOutputStreamBuilder} to build file append request.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+DECL|method|appendFile (Path path)
+specifier|protected
+name|FSDataOutputStreamBuilder
+name|appendFile
+parameter_list|(
+name|Path
+name|path
+parameter_list|)
+block|{
+return|return
+operator|new
+name|FileSystemDataOutputStreamBuilder
+argument_list|(
+name|this
+argument_list|,
+name|path
+argument_list|)
+operator|.
+name|append
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 
