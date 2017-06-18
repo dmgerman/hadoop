@@ -994,6 +994,14 @@ operator|.
 name|getStatus
 argument_list|()
 decl_stmt|;
+name|long
+name|trackId
+init|=
+name|storageMovementAttemptedResult
+operator|.
+name|getTrackId
+argument_list|()
+decl_stmt|;
 name|ItemInfo
 name|itemInfo
 decl_stmt|;
@@ -1009,10 +1017,7 @@ name|blockStorageMovementNeeded
 operator|.
 name|add
 argument_list|(
-name|storageMovementAttemptedResult
-operator|.
-name|getTrackId
-argument_list|()
+name|trackId
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -1025,10 +1030,7 @@ literal|" is reported from co-ordinating datanode, but result"
 operator|+
 literal|" status is FAILURE. So, added for retry"
 argument_list|,
-name|storageMovementAttemptedResult
-operator|.
-name|getTrackId
-argument_list|()
+name|trackId
 argument_list|)
 expr_stmt|;
 break|break;
@@ -1041,10 +1043,7 @@ name|storageMovementAttemptedItems
 operator|.
 name|get
 argument_list|(
-name|storageMovementAttemptedResult
-operator|.
-name|getTrackId
-argument_list|()
+name|trackId
 argument_list|)
 expr_stmt|;
 comment|// ItemInfo could be null. One case is, before the blocks movements
@@ -1055,12 +1054,24 @@ comment|// 'blockStorageMovementNeeded' queue for retries to handle the
 comment|// following condition. If all the block locations under the trackID
 comment|// are attempted and failed to find matching target nodes to satisfy
 comment|// storage policy in previous SPS iteration.
+name|String
+name|msg
+init|=
+literal|"Blocks storage movement is SUCCESS for the track id: "
+operator|+
+name|trackId
+operator|+
+literal|" reported from co-ordinating datanode."
+decl_stmt|;
 if|if
 condition|(
 name|itemInfo
 operator|!=
 literal|null
-operator|&&
+condition|)
+block|{
+if|if
+condition|(
 operator|!
 name|itemInfo
 operator|.
@@ -1072,28 +1083,20 @@ name|blockStorageMovementNeeded
 operator|.
 name|add
 argument_list|(
-name|storageMovementAttemptedResult
-operator|.
-name|getTrackId
-argument_list|()
+name|trackId
 argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Blocks storage movement is SUCCESS for the track id: {}"
+literal|"{} But adding trackID back to retry queue as some of"
 operator|+
-literal|" reported from co-ordinating datanode. But adding trackID"
+literal|" the blocks couldn't find matching target nodes in"
 operator|+
-literal|" back to retry queue as some of the blocks couldn't find"
-operator|+
-literal|" matching target nodes in previous SPS iteration."
+literal|" previous SPS iteration."
 argument_list|,
-name|storageMovementAttemptedResult
-operator|.
-name|getTrackId
-argument_list|()
+name|msg
 argument_list|)
 expr_stmt|;
 block|}
@@ -1103,16 +1106,35 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Blocks storage movement is SUCCESS for the track id: {}"
-operator|+
-literal|" reported from co-ordinating datanode. But the trackID "
-operator|+
-literal|"doesn't exists in storageMovementAttemptedItems list"
-argument_list|,
+name|msg
+argument_list|)
+expr_stmt|;
+comment|// Remove xattr for the track id.
+name|this
+operator|.
+name|sps
+operator|.
+name|postBlkStorageMovementCleanup
+argument_list|(
 name|storageMovementAttemptedResult
 operator|.
 name|getTrackId
 argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"{} But the trackID doesn't exists in "
+operator|+
+literal|"storageMovementAttemptedItems list"
+argument_list|,
+name|msg
 argument_list|)
 expr_stmt|;
 comment|// Remove xattr for the track id.
