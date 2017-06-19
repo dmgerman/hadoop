@@ -232,38 +232,29 @@ name|SUCCESS
 init|=
 literal|0
 decl_stmt|;
-DECL|field|sysDefaultPolicy
+DECL|field|ecPolicy
 specifier|private
-specifier|final
 name|ErasureCodingPolicy
-name|sysDefaultPolicy
-init|=
+name|ecPolicy
+decl_stmt|;
+DECL|field|groupSize
+specifier|private
+name|short
+name|groupSize
+decl_stmt|;
+DECL|method|getEcPolicy ()
+specifier|public
+name|ErasureCodingPolicy
+name|getEcPolicy
+parameter_list|()
+block|{
+return|return
 name|StripedFileTestUtil
 operator|.
 name|getDefaultECPolicy
 argument_list|()
-decl_stmt|;
-DECL|field|groupSize
-specifier|private
-specifier|final
-name|short
-name|groupSize
-init|=
-call|(
-name|short
-call|)
-argument_list|(
-name|sysDefaultPolicy
-operator|.
-name|getNumDataUnits
-argument_list|()
-operator|+
-name|sysDefaultPolicy
-operator|.
-name|getNumParityUnits
-argument_list|()
-argument_list|)
-decl_stmt|;
+return|;
+block|}
 annotation|@
 name|Before
 DECL|method|setupCluster ()
@@ -274,6 +265,28 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|ecPolicy
+operator|=
+name|getEcPolicy
+argument_list|()
+expr_stmt|;
+name|groupSize
+operator|=
+call|(
+name|short
+call|)
+argument_list|(
+name|ecPolicy
+operator|.
+name|getNumDataUnits
+argument_list|()
+operator|+
+name|ecPolicy
+operator|.
+name|getNumParityUnits
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|conf
 operator|=
 operator|new
@@ -288,7 +301,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_EC_POLICIES_ENABLED_KEY
 argument_list|,
-name|sysDefaultPolicy
+name|ecPolicy
 operator|.
 name|getName
 argument_list|()
@@ -430,7 +443,7 @@ name|setErasureCodingPolicy
 argument_list|(
 name|ecDir
 argument_list|,
-name|sysDefaultPolicy
+name|ecPolicy
 operator|.
 name|getName
 argument_list|()
@@ -498,7 +511,7 @@ name|assertEquals
 argument_list|(
 literal|"Got unexpected erasure coding policy"
 argument_list|,
-name|sysDefaultPolicy
+name|ecPolicy
 argument_list|,
 name|fs
 operator|.
@@ -578,7 +591,7 @@ name|setErasureCodingPolicy
 argument_list|(
 name|ecDir
 argument_list|,
-name|sysDefaultPolicy
+name|ecPolicy
 operator|.
 name|getName
 argument_list|()
@@ -627,7 +640,7 @@ name|assertEquals
 argument_list|(
 literal|"Got unexpected erasure coding policy"
 argument_list|,
-name|sysDefaultPolicy
+name|ecPolicy
 argument_list|,
 name|ezSnap3
 argument_list|)
@@ -637,7 +650,7 @@ name|assertEquals
 argument_list|(
 literal|"Got unexpected erasure coding policy"
 argument_list|,
-name|sysDefaultPolicy
+name|ecPolicy
 argument_list|,
 name|fs
 operator|.
@@ -651,7 +664,7 @@ name|assertEquals
 argument_list|(
 literal|"Got unexpected erasure coding policy"
 argument_list|,
-name|sysDefaultPolicy
+name|ecPolicy
 argument_list|,
 name|fs
 operator|.
@@ -723,7 +736,7 @@ name|assertEquals
 argument_list|(
 literal|"Got unexpected erasure coding policy"
 argument_list|,
-name|sysDefaultPolicy
+name|ecPolicy
 argument_list|,
 name|fs
 operator|.
@@ -737,7 +750,7 @@ name|assertEquals
 argument_list|(
 literal|"Got unexpected erasure coding policy"
 argument_list|,
-name|sysDefaultPolicy
+name|ecPolicy
 argument_list|,
 name|fs
 operator|.
@@ -763,7 +776,7 @@ name|assertEquals
 argument_list|(
 literal|"Got unexpected erasure coding policy"
 argument_list|,
-name|sysDefaultPolicy
+name|ecPolicy
 argument_list|,
 name|fs
 operator|.
@@ -820,7 +833,7 @@ name|setErasureCodingPolicy
 argument_list|(
 name|ecDir
 argument_list|,
-name|sysDefaultPolicy
+name|ecPolicy
 operator|.
 name|getName
 argument_list|()
@@ -843,7 +856,7 @@ name|assertEquals
 argument_list|(
 literal|"Got unexpected erasure coding policy"
 argument_list|,
-name|sysDefaultPolicy
+name|ecPolicy
 argument_list|,
 name|fs
 operator|.
@@ -901,7 +914,7 @@ name|setErasureCodingPolicy
 argument_list|(
 name|ecDir
 argument_list|,
-name|sysDefaultPolicy
+name|ecPolicy
 operator|.
 name|getName
 argument_list|()
@@ -934,7 +947,7 @@ name|assertEquals
 argument_list|(
 literal|"Got unexpected erasure coding policy"
 argument_list|,
-name|sysDefaultPolicy
+name|ecPolicy
 argument_list|,
 name|ecSnap
 argument_list|)
@@ -984,7 +997,7 @@ name|assertEquals
 argument_list|(
 literal|"Got unexpected erasure coding policy"
 argument_list|,
-name|sysDefaultPolicy
+name|ecPolicy
 argument_list|,
 name|ecSnap1
 argument_list|)
@@ -1070,7 +1083,7 @@ name|setErasureCodingPolicy
 argument_list|(
 name|ecDir
 argument_list|,
-name|sysDefaultPolicy
+name|ecPolicy
 operator|.
 name|getName
 argument_list|()
@@ -1201,7 +1214,7 @@ name|assertEquals
 argument_list|(
 literal|"Got unexpected erasure coding policy"
 argument_list|,
-name|sysDefaultPolicy
+name|ecPolicy
 argument_list|,
 name|fs
 operator|.
@@ -1299,7 +1312,7 @@ name|setErasureCodingPolicy
 argument_list|(
 name|ecDir
 argument_list|,
-name|sysDefaultPolicy
+name|ecPolicy
 operator|.
 name|getName
 argument_list|()

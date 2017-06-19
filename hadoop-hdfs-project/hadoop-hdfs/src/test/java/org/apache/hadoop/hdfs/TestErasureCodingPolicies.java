@@ -534,23 +534,29 @@ name|BLOCK_SIZE
 init|=
 literal|1024
 decl_stmt|;
-DECL|field|EC_POLICY
+DECL|field|ecPolicy
 specifier|private
-specifier|static
-specifier|final
 name|ErasureCodingPolicy
-name|EC_POLICY
-init|=
-name|StripedFileTestUtil
-operator|.
-name|getDefaultECPolicy
-argument_list|()
+name|ecPolicy
 decl_stmt|;
 DECL|field|namesystem
 specifier|private
 name|FSNamesystem
 name|namesystem
 decl_stmt|;
+DECL|method|getEcPolicy ()
+specifier|public
+name|ErasureCodingPolicy
+name|getEcPolicy
+parameter_list|()
+block|{
+return|return
+name|StripedFileTestUtil
+operator|.
+name|getDefaultECPolicy
+argument_list|()
+return|;
+block|}
 annotation|@
 name|Rule
 DECL|field|timeout
@@ -576,6 +582,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|ecPolicy
+operator|=
+name|getEcPolicy
+argument_list|()
+expr_stmt|;
 name|conf
 operator|=
 operator|new
@@ -725,10 +736,7 @@ name|setErasureCodingPolicy
 argument_list|(
 name|dir
 argument_list|,
-name|StripedFileTestUtil
-operator|.
-name|getDefaultECPolicy
-argument_list|()
+name|ecPolicy
 operator|.
 name|getName
 argument_list|()
@@ -1186,7 +1194,7 @@ name|setErasureCodingPolicy
 argument_list|(
 name|testDir
 argument_list|,
-name|EC_POLICY
+name|ecPolicy
 operator|.
 name|getName
 argument_list|()
@@ -1287,7 +1295,7 @@ name|setErasureCodingPolicy
 argument_list|(
 name|notEmpty
 argument_list|,
-name|EC_POLICY
+name|ecPolicy
 operator|.
 name|getName
 argument_list|()
@@ -1407,7 +1415,7 @@ name|setErasureCodingPolicy
 argument_list|(
 name|dir1
 argument_list|,
-name|EC_POLICY
+name|ecPolicy
 operator|.
 name|getName
 argument_list|()
@@ -1433,7 +1441,7 @@ name|setErasureCodingPolicy
 argument_list|(
 name|dir2
 argument_list|,
-name|EC_POLICY
+name|ecPolicy
 operator|.
 name|getName
 argument_list|()
@@ -1478,7 +1486,7 @@ name|setErasureCodingPolicy
 argument_list|(
 name|fPath
 argument_list|,
-name|EC_POLICY
+name|ecPolicy
 operator|.
 name|getName
 argument_list|()
@@ -1566,7 +1574,7 @@ name|assertEquals
 argument_list|(
 literal|"Dir does not have policy set"
 argument_list|,
-name|EC_POLICY
+name|ecPolicy
 argument_list|,
 name|fs
 operator|.
@@ -1592,7 +1600,7 @@ name|assertEquals
 argument_list|(
 literal|"File did not inherit dir's policy"
 argument_list|,
-name|EC_POLICY
+name|ecPolicy
 argument_list|,
 name|fs
 operator|.
@@ -1641,7 +1649,7 @@ name|assertEquals
 argument_list|(
 literal|"Dir does not have policy set"
 argument_list|,
-name|EC_POLICY
+name|ecPolicy
 argument_list|,
 name|fs
 operator|.
@@ -1657,7 +1665,7 @@ name|assertEquals
 argument_list|(
 literal|"File does not have policy set"
 argument_list|,
-name|EC_POLICY
+name|ecPolicy
 argument_list|,
 name|fs
 operator|.
@@ -1730,7 +1738,7 @@ name|setErasureCodingPolicy
 argument_list|(
 name|srcECDir
 argument_list|,
-name|EC_POLICY
+name|ecPolicy
 operator|.
 name|getName
 argument_list|()
@@ -1742,7 +1750,7 @@ name|setErasureCodingPolicy
 argument_list|(
 name|dstECDir
 argument_list|,
-name|EC_POLICY
+name|ecPolicy
 operator|.
 name|getName
 argument_list|()
@@ -1949,10 +1957,7 @@ name|setErasureCodingPolicy
 argument_list|(
 name|testDir
 argument_list|,
-name|StripedFileTestUtil
-operator|.
-name|getDefaultECPolicy
-argument_list|()
+name|ecPolicy
 operator|.
 name|getName
 argument_list|()
@@ -2324,7 +2329,7 @@ name|src
 argument_list|)
 decl_stmt|;
 name|ErasureCodingPolicy
-name|ecPolicy
+name|actualPolicy
 init|=
 name|hdfsFileStatus
 operator|.
@@ -2333,7 +2338,7 @@ argument_list|()
 decl_stmt|;
 name|assertNotNull
 argument_list|(
-name|ecPolicy
+name|actualPolicy
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -2342,7 +2347,7 @@ literal|"Actually used ecPolicy should be equal with target ecPolicy"
 argument_list|,
 name|usingECPolicy
 argument_list|,
-name|ecPolicy
+name|actualPolicy
 argument_list|)
 expr_stmt|;
 block|}
@@ -2382,7 +2387,7 @@ operator|*
 literal|1024
 decl_stmt|;
 name|ErasureCodingPolicy
-name|ecPolicy
+name|invalidPolicy
 init|=
 operator|new
 name|ErasureCodingPolicy
@@ -2438,7 +2443,7 @@ name|setErasureCodingPolicy
 argument_list|(
 name|src
 argument_list|,
-name|ecPolicy
+name|invalidPolicy
 operator|.
 name|getName
 argument_list|()
@@ -2931,10 +2936,7 @@ specifier|final
 name|String
 name|ecPolicyName
 init|=
-name|StripedFileTestUtil
-operator|.
-name|getDefaultECPolicy
-argument_list|()
+name|ecPolicy
 operator|.
 name|getName
 argument_list|()
@@ -3436,7 +3438,7 @@ name|setErasureCodingPolicy
 argument_list|(
 name|dirPath
 argument_list|,
-name|EC_POLICY
+name|ecPolicy
 operator|.
 name|getName
 argument_list|()
@@ -3468,7 +3470,7 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-name|EC_POLICY
+name|ecPolicy
 argument_list|,
 name|ecPolicyOnFile
 argument_list|)
@@ -3560,7 +3562,14 @@ argument_list|)
 decl_stmt|;
 name|ecPolicyOnFile
 operator|=
-name|EC_POLICY
+name|SystemErasureCodingPolicies
+operator|.
+name|getByID
+argument_list|(
+name|SystemErasureCodingPolicies
+operator|.
+name|RS_6_3_POLICY_ID
+argument_list|)
 expr_stmt|;
 name|fs
 operator|.
@@ -3675,7 +3684,7 @@ name|setErasureCodingPolicy
 argument_list|(
 name|dirPath
 argument_list|,
-name|EC_POLICY
+name|ecPolicy
 operator|.
 name|getName
 argument_list|()
@@ -3702,7 +3711,7 @@ argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|EC_POLICY
+name|ecPolicy
 argument_list|,
 name|fs
 operator|.
