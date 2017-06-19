@@ -271,11 +271,11 @@ import|;
 end_import
 
 begin_comment
-comment|// Keeps track of which datanodes/tasktrackers are allowed to connect to the
+comment|// Keeps track of which datanodes/nodemanagers are allowed to connect to the
 end_comment
 
 begin_comment
-comment|// namenode/jobtracker.
+comment|// namenode/resourcemanager.
 end_comment
 
 begin_class
