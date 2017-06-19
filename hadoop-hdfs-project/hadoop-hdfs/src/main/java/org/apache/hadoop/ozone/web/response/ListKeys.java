@@ -659,6 +659,26 @@ name|keyList
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Add a new key to the list of keys.    * @param keyInfo - key Info    */
+DECL|method|addKey (KeyInfo keyInfo)
+specifier|public
+name|void
+name|addKey
+parameter_list|(
+name|KeyInfo
+name|keyInfo
+parameter_list|)
+block|{
+name|this
+operator|.
+name|keyList
+operator|.
+name|add
+argument_list|(
+name|keyInfo
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * This class allows us to create custom filters for the Json serialization.    */
 annotation|@
 name|JsonFilter

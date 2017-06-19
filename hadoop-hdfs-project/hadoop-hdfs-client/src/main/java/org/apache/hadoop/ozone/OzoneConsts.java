@@ -480,6 +480,16 @@ name|MAX_LISTBUCKETS_SIZE
 init|=
 literal|1024
 decl_stmt|;
+comment|/**    * Max number of keys returned per list keys operation.    */
+DECL|field|MAX_LISTKEYS_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|MAX_LISTKEYS_SIZE
+init|=
+literal|1024
+decl_stmt|;
 DECL|method|OzoneConsts ()
 specifier|private
 name|OzoneConsts

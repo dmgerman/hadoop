@@ -196,6 +196,13 @@ name|Metric
 name|MutableCounterLong
 name|numBucketLists
 decl_stmt|;
+DECL|field|numKeyLists
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numKeyLists
+decl_stmt|;
 comment|// Failure Metrics
 DECL|field|numVolumeCreateFails
 specifier|private
@@ -287,6 +294,13 @@ annotation|@
 name|Metric
 name|MutableCounterLong
 name|numBucketListFails
+decl_stmt|;
+DECL|field|numKeyListFails
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numKeyListFails
 decl_stmt|;
 DECL|method|KSMMetrics ()
 specifier|public
@@ -438,6 +452,18 @@ name|incNumBucketLists
 parameter_list|()
 block|{
 name|numBucketLists
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumKeyLists ()
+specifier|public
+name|void
+name|incNumKeyLists
+parameter_list|()
+block|{
+name|numKeyLists
 operator|.
 name|incr
 argument_list|()
@@ -635,6 +661,18 @@ name|incr
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|incNumKeyListFails ()
+specifier|public
+name|void
+name|incNumKeyListFails
+parameter_list|()
+block|{
+name|numKeyListFails
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getNumVolumeCreates ()
@@ -780,6 +818,21 @@ parameter_list|()
 block|{
 return|return
 name|numBucketLists
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumKeyLists ()
+specifier|public
+name|long
+name|getNumKeyLists
+parameter_list|()
+block|{
+return|return
+name|numKeyLists
 operator|.
 name|value
 argument_list|()
@@ -1020,6 +1073,21 @@ parameter_list|()
 block|{
 return|return
 name|numBucketListFails
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumKeyListFails ()
+specifier|public
+name|long
+name|getNumKeyListFails
+parameter_list|()
+block|{
+return|return
+name|numKeyListFails
 operator|.
 name|value
 argument_list|()
