@@ -380,6 +380,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|nodelabels
+operator|.
+name|RMNodeLabelsManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|rmapp
 operator|.
 name|RMAppState
@@ -511,42 +531,6 @@ argument_list|)
 name|MutableCounterInt
 name|appsFailed
 decl_stmt|;
-DECL|field|allocatedMB
-annotation|@
-name|Metric
-argument_list|(
-literal|"Allocated memory in MB"
-argument_list|)
-name|MutableGaugeLong
-name|allocatedMB
-decl_stmt|;
-DECL|field|allocatedVCores
-annotation|@
-name|Metric
-argument_list|(
-literal|"Allocated CPU in virtual cores"
-argument_list|)
-name|MutableGaugeInt
-name|allocatedVCores
-decl_stmt|;
-DECL|field|allocatedContainers
-annotation|@
-name|Metric
-argument_list|(
-literal|"# of allocated containers"
-argument_list|)
-name|MutableGaugeInt
-name|allocatedContainers
-decl_stmt|;
-DECL|field|aggregateContainersAllocated
-annotation|@
-name|Metric
-argument_list|(
-literal|"Aggregate # of allocated containers"
-argument_list|)
-name|MutableCounterLong
-name|aggregateContainersAllocated
-decl_stmt|;
 annotation|@
 name|Metric
 argument_list|(
@@ -574,15 +558,6 @@ DECL|field|aggregateOffSwitchContainersAllocated
 name|MutableCounterLong
 name|aggregateOffSwitchContainersAllocated
 decl_stmt|;
-DECL|field|aggregateContainersReleased
-annotation|@
-name|Metric
-argument_list|(
-literal|"Aggregate # of released containers"
-argument_list|)
-name|MutableCounterLong
-name|aggregateContainersReleased
-decl_stmt|;
 annotation|@
 name|Metric
 argument_list|(
@@ -591,6 +566,79 @@ argument_list|)
 name|MutableCounterLong
 DECL|field|aggregateContainersPreempted
 name|aggregateContainersPreempted
+decl_stmt|;
+DECL|field|activeUsers
+annotation|@
+name|Metric
+argument_list|(
+literal|"# of active users"
+argument_list|)
+name|MutableGaugeInt
+name|activeUsers
+decl_stmt|;
+DECL|field|activeApplications
+annotation|@
+name|Metric
+argument_list|(
+literal|"# of active applications"
+argument_list|)
+name|MutableGaugeInt
+name|activeApplications
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"App Attempt First Container Allocation Delay"
+argument_list|)
+DECL|field|appAttemptFirstContainerAllocationDelay
+name|MutableRate
+name|appAttemptFirstContainerAllocationDelay
+decl_stmt|;
+comment|//Metrics updated only for "default" partition
+DECL|field|allocatedMB
+annotation|@
+name|Metric
+argument_list|(
+literal|"Allocated memory in MB"
+argument_list|)
+name|MutableGaugeLong
+name|allocatedMB
+decl_stmt|;
+DECL|field|allocatedVCores
+annotation|@
+name|Metric
+argument_list|(
+literal|"Allocated CPU in virtual cores"
+argument_list|)
+name|MutableGaugeInt
+name|allocatedVCores
+decl_stmt|;
+DECL|field|allocatedContainers
+annotation|@
+name|Metric
+argument_list|(
+literal|"# of allocated containers"
+argument_list|)
+name|MutableGaugeInt
+name|allocatedContainers
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Aggregate # of allocated containers"
+argument_list|)
+DECL|field|aggregateContainersAllocated
+name|MutableCounterLong
+name|aggregateContainersAllocated
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Aggregate # of released containers"
+argument_list|)
+DECL|field|aggregateContainersReleased
+name|MutableCounterLong
+name|aggregateContainersReleased
 decl_stmt|;
 DECL|field|availableMB
 annotation|@
@@ -619,12 +667,12 @@ argument_list|)
 name|MutableGaugeLong
 name|pendingMB
 decl_stmt|;
-DECL|field|pendingVCores
 annotation|@
 name|Metric
 argument_list|(
 literal|"Pending CPU allocation in virtual cores"
 argument_list|)
+DECL|field|pendingVCores
 name|MutableGaugeInt
 name|pendingVCores
 decl_stmt|;
@@ -663,33 +711,6 @@ literal|"# of reserved containers"
 argument_list|)
 name|MutableGaugeInt
 name|reservedContainers
-decl_stmt|;
-DECL|field|activeUsers
-annotation|@
-name|Metric
-argument_list|(
-literal|"# of active users"
-argument_list|)
-name|MutableGaugeInt
-name|activeUsers
-decl_stmt|;
-DECL|field|activeApplications
-annotation|@
-name|Metric
-argument_list|(
-literal|"# of active applications"
-argument_list|)
-name|MutableGaugeInt
-name|activeApplications
-decl_stmt|;
-DECL|field|appAttemptFirstContainerAllocationDelay
-annotation|@
-name|Metric
-argument_list|(
-literal|"App Attempt First Container Allocation Delay"
-argument_list|)
-name|MutableRate
-name|appAttemptFirstContainerAllocationDelay
 decl_stmt|;
 DECL|field|runningTime
 specifier|private
@@ -2117,15 +2138,34 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Set available resources. To be called by scheduler periodically as    * resources become available.    * @param limit resource limit    */
-DECL|method|setAvailableResourcesToQueue (Resource limit)
+comment|/**    * Set available resources. To be called by scheduler periodically as    * resources become available.    * @param partition Node Partition    * @param limit resource limit    */
+DECL|method|setAvailableResourcesToQueue (String partition, Resource limit)
 specifier|public
 name|void
 name|setAvailableResourcesToQueue
 parameter_list|(
+name|String
+name|partition
+parameter_list|,
 name|Resource
 name|limit
 parameter_list|)
+block|{
+if|if
+condition|(
+name|partition
+operator|==
+literal|null
+operator|||
+name|partition
+operator|.
+name|equals
+argument_list|(
+name|RMNodeLabelsManager
+operator|.
+name|NO_LABEL
+argument_list|)
+condition|)
 block|{
 name|availableMB
 operator|.
@@ -2148,18 +2188,60 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Set available resources. To be called by scheduler periodically as    * resources become available.    * @param user    * @param limit resource limit    */
-DECL|method|setAvailableResourcesToUser (String user, Resource limit)
+block|}
+comment|/**    * Set available resources. To be called by scheduler periodically as    * resources become available.    * @param limit resource limit    */
+DECL|method|setAvailableResourcesToQueue (Resource limit)
+specifier|public
+name|void
+name|setAvailableResourcesToQueue
+parameter_list|(
+name|Resource
+name|limit
+parameter_list|)
+block|{
+name|this
+operator|.
+name|setAvailableResourcesToQueue
+argument_list|(
+name|RMNodeLabelsManager
+operator|.
+name|NO_LABEL
+argument_list|,
+name|limit
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Set available resources. To be called by scheduler periodically as    * resources become available.    * @param partition Node Partition    * @param user    * @param limit resource limit    */
+DECL|method|setAvailableResourcesToUser (String partition, String user, Resource limit)
 specifier|public
 name|void
 name|setAvailableResourcesToUser
 parameter_list|(
+name|String
+name|partition
+parameter_list|,
 name|String
 name|user
 parameter_list|,
 name|Resource
 name|limit
 parameter_list|)
+block|{
+if|if
+condition|(
+name|partition
+operator|==
+literal|null
+operator|||
+name|partition
+operator|.
+name|equals
+argument_list|(
+name|RMNodeLabelsManager
+operator|.
+name|NO_LABEL
+argument_list|)
+condition|)
 block|{
 name|QueueMetrics
 name|userMetrics
@@ -2180,17 +2262,23 @@ name|userMetrics
 operator|.
 name|setAvailableResourcesToQueue
 argument_list|(
+name|partition
+argument_list|,
 name|limit
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Increment pending resource metrics    * @param user    * @param containers    * @param res the TOTAL delta of resources note this is different from    *            the other APIs which use per container resource    */
-DECL|method|incrPendingResources (String user, int containers, Resource res)
+block|}
+comment|/**    * Increment pending resource metrics    * @param partition Node Partition    * @param user    * @param containers    * @param res the TOTAL delta of resources note this is different from    *            the other APIs which use per container resource    */
+DECL|method|incrPendingResources (String partition, String user, int containers, Resource res)
 specifier|public
 name|void
 name|incrPendingResources
 parameter_list|(
+name|String
+name|partition
+parameter_list|,
 name|String
 name|user
 parameter_list|,
@@ -2200,6 +2288,22 @@ parameter_list|,
 name|Resource
 name|res
 parameter_list|)
+block|{
+if|if
+condition|(
+name|partition
+operator|==
+literal|null
+operator|||
+name|partition
+operator|.
+name|equals
+argument_list|(
+name|RMNodeLabelsManager
+operator|.
+name|NO_LABEL
+argument_list|)
+condition|)
 block|{
 name|_incrPendingResources
 argument_list|(
@@ -2227,6 +2331,8 @@ name|userMetrics
 operator|.
 name|incrPendingResources
 argument_list|(
+name|partition
+argument_list|,
 name|user
 argument_list|,
 name|containers
@@ -2246,6 +2352,8 @@ name|parent
 operator|.
 name|incrPendingResources
 argument_list|(
+name|partition
+argument_list|,
 name|user
 argument_list|,
 name|containers
@@ -2253,6 +2361,7 @@ argument_list|,
 name|res
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|_incrPendingResources (int containers, Resource res)
@@ -2299,11 +2408,14 @@ name|containers
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|decrPendingResources (String user, int containers, Resource res)
+DECL|method|decrPendingResources (String partition, String user, int containers, Resource res)
 specifier|public
 name|void
 name|decrPendingResources
 parameter_list|(
+name|String
+name|partition
+parameter_list|,
 name|String
 name|user
 parameter_list|,
@@ -2313,6 +2425,22 @@ parameter_list|,
 name|Resource
 name|res
 parameter_list|)
+block|{
+if|if
+condition|(
+name|partition
+operator|==
+literal|null
+operator|||
+name|partition
+operator|.
+name|equals
+argument_list|(
+name|RMNodeLabelsManager
+operator|.
+name|NO_LABEL
+argument_list|)
+condition|)
 block|{
 name|_decrPendingResources
 argument_list|(
@@ -2340,6 +2468,8 @@ name|userMetrics
 operator|.
 name|decrPendingResources
 argument_list|(
+name|partition
+argument_list|,
 name|user
 argument_list|,
 name|containers
@@ -2359,6 +2489,8 @@ name|parent
 operator|.
 name|decrPendingResources
 argument_list|(
+name|partition
+argument_list|,
 name|user
 argument_list|,
 name|containers
@@ -2366,6 +2498,7 @@ argument_list|,
 name|res
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|_decrPendingResources (int containers, Resource res)
@@ -2518,11 +2651,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|allocateResources (String user, int containers, Resource res, boolean decrPending)
+DECL|method|allocateResources (String partition, String user, int containers, Resource res, boolean decrPending)
 specifier|public
 name|void
 name|allocateResources
 parameter_list|(
+name|String
+name|partition
+parameter_list|,
 name|String
 name|user
 parameter_list|,
@@ -2535,6 +2671,22 @@ parameter_list|,
 name|boolean
 name|decrPending
 parameter_list|)
+block|{
+if|if
+condition|(
+name|partition
+operator|==
+literal|null
+operator|||
+name|partition
+operator|.
+name|equals
+argument_list|(
+name|RMNodeLabelsManager
+operator|.
+name|NO_LABEL
+argument_list|)
+condition|)
 block|{
 name|allocatedContainers
 operator|.
@@ -2606,6 +2758,8 @@ name|userMetrics
 operator|.
 name|allocateResources
 argument_list|(
+name|partition
+argument_list|,
 name|user
 argument_list|,
 name|containers
@@ -2627,6 +2781,8 @@ name|parent
 operator|.
 name|allocateResources
 argument_list|(
+name|partition
+argument_list|,
 name|user
 argument_list|,
 name|containers
@@ -2638,18 +2794,38 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Allocate Resource for container size change.    *    * @param user    * @param res    */
-DECL|method|allocateResources (String user, Resource res)
+block|}
+comment|/**    * Allocate Resource for container size change.    * @param partition Node Partition    * @param user    * @param res    */
+DECL|method|allocateResources (String partition, String user, Resource res)
 specifier|public
 name|void
 name|allocateResources
 parameter_list|(
+name|String
+name|partition
+parameter_list|,
 name|String
 name|user
 parameter_list|,
 name|Resource
 name|res
 parameter_list|)
+block|{
+if|if
+condition|(
+name|partition
+operator|==
+literal|null
+operator|||
+name|partition
+operator|.
+name|equals
+argument_list|(
+name|RMNodeLabelsManager
+operator|.
+name|NO_LABEL
+argument_list|)
+condition|)
 block|{
 name|allocatedMB
 operator|.
@@ -2710,6 +2886,8 @@ name|userMetrics
 operator|.
 name|allocateResources
 argument_list|(
+name|partition
+argument_list|,
 name|user
 argument_list|,
 name|res
@@ -2727,6 +2905,8 @@ name|parent
 operator|.
 name|allocateResources
 argument_list|(
+name|partition
+argument_list|,
 name|user
 argument_list|,
 name|res
@@ -2734,11 +2914,15 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|releaseResources (String user, int containers, Resource res)
+block|}
+DECL|method|releaseResources (String partition, String user, int containers, Resource res)
 specifier|public
 name|void
 name|releaseResources
 parameter_list|(
+name|String
+name|partition
+parameter_list|,
 name|String
 name|user
 parameter_list|,
@@ -2748,6 +2932,22 @@ parameter_list|,
 name|Resource
 name|res
 parameter_list|)
+block|{
+if|if
+condition|(
+name|partition
+operator|==
+literal|null
+operator|||
+name|partition
+operator|.
+name|equals
+argument_list|(
+name|RMNodeLabelsManager
+operator|.
+name|NO_LABEL
+argument_list|)
+condition|)
 block|{
 name|allocatedContainers
 operator|.
@@ -2806,6 +3006,8 @@ name|userMetrics
 operator|.
 name|releaseResources
 argument_list|(
+name|partition
+argument_list|,
 name|user
 argument_list|,
 name|containers
@@ -2825,6 +3027,8 @@ name|parent
 operator|.
 name|releaseResources
 argument_list|(
+name|partition
+argument_list|,
 name|user
 argument_list|,
 name|containers
@@ -2832,6 +3036,7 @@ argument_list|,
 name|res
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * Release Resource for container size change.    *    * @param user    * @param res    */
@@ -2932,6 +3137,46 @@ name|parent
 operator|.
 name|preemptContainer
 argument_list|()
+expr_stmt|;
+block|}
+block|}
+DECL|method|reserveResource (String partition, String user, Resource res)
+specifier|public
+name|void
+name|reserveResource
+parameter_list|(
+name|String
+name|partition
+parameter_list|,
+name|String
+name|user
+parameter_list|,
+name|Resource
+name|res
+parameter_list|)
+block|{
+if|if
+condition|(
+name|partition
+operator|==
+literal|null
+operator|||
+name|partition
+operator|.
+name|equals
+argument_list|(
+name|RMNodeLabelsManager
+operator|.
+name|NO_LABEL
+argument_list|)
+condition|)
+block|{
+name|reserveResource
+argument_list|(
+name|user
+argument_list|,
+name|res
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -3086,6 +3331,46 @@ condition|)
 block|{
 name|parent
 operator|.
+name|unreserveResource
+argument_list|(
+name|user
+argument_list|,
+name|res
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+DECL|method|unreserveResource (String partition, String user, Resource res)
+specifier|public
+name|void
+name|unreserveResource
+parameter_list|(
+name|String
+name|partition
+parameter_list|,
+name|String
+name|user
+parameter_list|,
+name|Resource
+name|res
+parameter_list|)
+block|{
+if|if
+condition|(
+name|partition
+operator|==
+literal|null
+operator|||
+name|partition
+operator|.
+name|equals
+argument_list|(
+name|RMNodeLabelsManager
+operator|.
+name|NO_LABEL
+argument_list|)
+condition|)
+block|{
 name|unreserveResource
 argument_list|(
 name|user

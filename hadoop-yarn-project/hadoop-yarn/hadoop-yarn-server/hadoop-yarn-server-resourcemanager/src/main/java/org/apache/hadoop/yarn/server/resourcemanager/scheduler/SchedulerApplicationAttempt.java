@@ -5369,6 +5369,11 @@ name|oldMetrics
 operator|.
 name|releaseResources
 argument_list|(
+name|liveContainer
+operator|.
+name|getNodeLabelExpression
+argument_list|()
+argument_list|,
 name|user
 argument_list|,
 literal|1
@@ -5380,6 +5385,11 @@ name|newMetrics
 operator|.
 name|allocateResources
 argument_list|(
+name|liveContainer
+operator|.
+name|getNodeLabelExpression
+argument_list|()
+argument_list|,
 name|user
 argument_list|,
 literal|1
@@ -5441,6 +5451,11 @@ name|oldMetrics
 operator|.
 name|unreserveResource
 argument_list|(
+name|reservedContainer
+operator|.
+name|getNodeLabelExpression
+argument_list|()
+argument_list|,
 name|user
 argument_list|,
 name|resource
@@ -5450,6 +5465,11 @@ name|newMetrics
 operator|.
 name|reserveResource
 argument_list|(
+name|reservedContainer
+operator|.
+name|getNodeLabelExpression
+argument_list|()
+argument_list|,
 name|user
 argument_list|,
 name|resource

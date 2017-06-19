@@ -16091,6 +16091,11 @@ name|queueA1M
 operator|.
 name|incrPendingResources
 argument_list|(
+name|rmContainer
+operator|.
+name|getNodeLabelExpression
+argument_list|()
+argument_list|,
 literal|"user1"
 argument_list|,
 literal|1
@@ -16102,6 +16107,11 @@ name|queueA1M
 operator|.
 name|allocateResources
 argument_list|(
+name|rmContainer
+operator|.
+name|getNodeLabelExpression
+argument_list|()
+argument_list|,
 literal|"user1"
 argument_list|,
 name|resource

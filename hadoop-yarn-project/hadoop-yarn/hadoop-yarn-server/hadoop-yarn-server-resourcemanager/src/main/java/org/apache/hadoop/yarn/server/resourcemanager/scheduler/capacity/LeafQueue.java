@@ -3528,6 +3528,8 @@ name|metrics
 operator|.
 name|setAMResouceLimit
 argument_list|(
+name|nodePartition
+argument_list|,
 name|amResouceLimit
 argument_list|)
 expr_stmt|;
@@ -4101,6 +4103,8 @@ name|metrics
 operator|.
 name|incAMUsed
 argument_list|(
+name|partitionName
+argument_list|,
 name|application
 operator|.
 name|getUser
@@ -4118,6 +4122,8 @@ name|metrics
 operator|.
 name|setAMResouceLimitForUser
 argument_list|(
+name|partitionName
+argument_list|,
 name|application
 operator|.
 name|getUser
@@ -4504,6 +4510,8 @@ name|metrics
 operator|.
 name|decAMUsed
 argument_list|(
+name|partitionName
+argument_list|,
 name|application
 operator|.
 name|getUser
@@ -6612,6 +6620,8 @@ name|metrics
 operator|.
 name|setAvailableResourcesToUser
 argument_list|(
+name|nodePartition
+argument_list|,
 name|user
 argument_list|,
 name|headroom
@@ -7573,6 +7583,8 @@ name|metrics
 operator|.
 name|setAvailableResourcesToUser
 argument_list|(
+name|nodePartition
+argument_list|,
 name|userName
 argument_list|,
 name|application
@@ -7784,6 +7796,8 @@ name|metrics
 operator|.
 name|setAvailableResourcesToUser
 argument_list|(
+name|nodePartition
+argument_list|,
 name|userName
 argument_list|,
 name|application

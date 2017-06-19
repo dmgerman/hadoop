@@ -26,6 +26,30 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|capacity
+operator|.
+name|TestUtils
+operator|.
+name|toSchedulerKey
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -434,30 +458,6 @@ name|Test
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
-name|capacity
-operator|.
-name|TestUtils
-operator|.
-name|toSchedulerKey
-import|;
-end_import
-
 begin_class
 DECL|class|TestSchedulerApplicationAttempt
 specifier|public
@@ -845,6 +845,11 @@ name|oldMetrics
 operator|.
 name|reserveResource
 argument_list|(
+name|container2
+operator|.
+name|getNodeLabelExpression
+argument_list|()
+argument_list|,
 name|user
 argument_list|,
 name|reservedResource

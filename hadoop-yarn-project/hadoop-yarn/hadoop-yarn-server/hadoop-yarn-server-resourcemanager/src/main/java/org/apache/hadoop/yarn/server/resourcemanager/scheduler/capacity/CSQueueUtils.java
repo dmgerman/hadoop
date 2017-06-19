@@ -1054,22 +1054,12 @@ argument_list|)
 expr_stmt|;
 comment|// QueueMetrics does not support per-label capacities,
 comment|// so we report values only for the default partition.
-if|if
-condition|(
-name|nodePartition
-operator|.
-name|equals
-argument_list|(
-name|CommonNodeLabelsManager
-operator|.
-name|NO_LABEL
-argument_list|)
-condition|)
-block|{
 name|queueMetrics
 operator|.
 name|setUsedCapacity
 argument_list|(
+name|nodePartition
+argument_list|,
 name|queueCapacities
 operator|.
 name|getUsedCapacity
@@ -1084,6 +1074,8 @@ name|queueMetrics
 operator|.
 name|setAbsoluteUsedCapacity
 argument_list|(
+name|nodePartition
+argument_list|,
 name|queueCapacities
 operator|.
 name|getAbsoluteUsedCapacity
@@ -1094,7 +1086,6 @@ name|NO_LABEL
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 DECL|method|getMaxAvailableResourceToQueue ( final ResourceCalculator rc, RMNodeLabelsManager nlm, CSQueue queue, Resource cluster)
 specifier|private
@@ -1381,6 +1372,8 @@ argument_list|()
 operator|.
 name|setAvailableResourcesToQueue
 argument_list|(
+name|nodePartition
+argument_list|,
 name|getMaxAvailableResourceToQueue
 argument_list|(
 name|rc

@@ -13108,7 +13108,7 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|0
+literal|5
 operator|*
 name|GB
 argument_list|,
@@ -13123,7 +13123,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|5
+literal|0
 operator|*
 name|GB
 argument_list|,
@@ -13736,7 +13736,7 @@ comment|// 3GB is used from label x quota. 1.5 GB is remaining from default labe
 comment|// 2GB is remaining from label x.
 name|assertEquals
 argument_list|(
-literal|3.5
+literal|6.5
 operator|*
 name|GB
 argument_list|,
@@ -13753,7 +13753,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|4
+literal|1
 operator|*
 name|GB
 argument_list|,
@@ -13865,7 +13865,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|5
+literal|2
 operator|*
 name|GB
 argument_list|,
