@@ -1589,6 +1589,17 @@ name|getContainerData
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|boolean
+name|forceUpdate
+init|=
+name|msg
+operator|.
+name|getUpdateContainer
+argument_list|()
+operator|.
+name|getForceUpdate
+argument_list|()
+decl_stmt|;
 name|this
 operator|.
 name|containerManager
@@ -1600,6 +1611,8 @@ argument_list|,
 name|containerName
 argument_list|,
 name|data
+argument_list|,
+name|forceUpdate
 argument_list|)
 expr_stmt|;
 return|return

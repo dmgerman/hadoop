@@ -276,8 +276,8 @@ parameter_list|)
 throws|throws
 name|StorageContainerException
 function_decl|;
-comment|/**    * Update an existing container.    *    * @param pipeline container nodes    * @param containerName name of the container    * @param data container data    * @throws StorageContainerException    */
-DECL|method|updateContainer (Pipeline pipeline, String containerName, ContainerData data)
+comment|/**    * Update an existing container.    *    * @param pipeline container nodes    * @param containerName name of the container    * @param data container data    * @param forceUpdate if true, update container forcibly.    * @throws StorageContainerException    */
+DECL|method|updateContainer (Pipeline pipeline, String containerName, ContainerData data, boolean forceUpdate)
 name|void
 name|updateContainer
 parameter_list|(
@@ -289,6 +289,9 @@ name|containerName
 parameter_list|,
 name|ContainerData
 name|data
+parameter_list|,
+name|boolean
+name|forceUpdate
 parameter_list|)
 throws|throws
 name|StorageContainerException
