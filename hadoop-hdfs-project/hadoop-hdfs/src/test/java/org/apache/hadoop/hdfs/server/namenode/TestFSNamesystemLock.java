@@ -290,6 +290,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_FSLOCK_FAIR_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|test
 operator|.
 name|MetricsAsserts
@@ -347,7 +363,7 @@ name|conf
 operator|.
 name|setBoolean
 argument_list|(
-literal|"dfs.namenode.fslock.fair"
+name|DFS_NAMENODE_FSLOCK_FAIR_KEY
 argument_list|,
 literal|true
 argument_list|)
@@ -377,7 +393,7 @@ name|conf
 operator|.
 name|setBoolean
 argument_list|(
-literal|"dfs.namenode.fslock.fair"
+name|DFS_NAMENODE_FSLOCK_FAIR_KEY
 argument_list|,
 literal|false
 argument_list|)
@@ -643,7 +659,7 @@ name|conf
 operator|.
 name|setBoolean
 argument_list|(
-literal|"dfs.namenode.fslock.fair"
+name|DFS_NAMENODE_FSLOCK_FAIR_KEY
 argument_list|,
 literal|true
 argument_list|)
