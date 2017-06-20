@@ -17838,6 +17838,16 @@ condition|(
 name|storedBlock
 operator|!=
 literal|null
+operator|&&
+name|block
+operator|.
+name|getGenerationStamp
+argument_list|()
+operator|==
+name|storedBlock
+operator|.
+name|getGenerationStamp
+argument_list|()
 condition|)
 block|{
 name|pendingReconstruction
