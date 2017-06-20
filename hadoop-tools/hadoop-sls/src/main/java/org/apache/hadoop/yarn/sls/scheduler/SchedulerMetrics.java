@@ -602,11 +602,19 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
-operator|.
-name|log4j
+name|slf4j
 operator|.
 name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
 import|;
 end_import
 
@@ -651,7 +659,7 @@ specifier|final
 name|Logger
 name|LOG
 init|=
-name|Logger
+name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
@@ -2281,8 +2289,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Cannot create directory "
-operator|+
+literal|"Cannot create directory {}"
+argument_list|,
 name|dir
 operator|.
 name|getAbsoluteFile

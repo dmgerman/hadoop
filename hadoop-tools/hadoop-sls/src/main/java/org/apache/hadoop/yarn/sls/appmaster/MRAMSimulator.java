@@ -44,16 +44,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|text
-operator|.
-name|MessageFormat
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|ArrayList
@@ -394,11 +384,19 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
-operator|.
-name|log4j
+name|slf4j
 operator|.
 name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
 import|;
 end_import
 
@@ -636,12 +634,13 @@ init|=
 literal|false
 decl_stmt|;
 DECL|field|LOG
-specifier|public
+specifier|private
+specifier|static
 specifier|final
 name|Logger
 name|LOG
 init|=
-name|Logger
+name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
@@ -809,11 +808,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-name|MessageFormat
-operator|.
-name|format
-argument_list|(
-literal|"Added new job with {0} mapper and {1} reducers"
+literal|"Added new job with {} mapper and {} reducers"
 argument_list|,
 name|allMaps
 operator|.
@@ -824,7 +819,6 @@ name|allReduces
 operator|.
 name|size
 argument_list|()
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|mapTotal
@@ -971,18 +965,11 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-name|MessageFormat
-operator|.
-name|format
-argument_list|(
-literal|"Application {0} has one"
-operator|+
-literal|"mapper finished ({1})."
+literal|"Application {} has one mapper finished ({})."
 argument_list|,
 name|appId
 argument_list|,
 name|containerId
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|assignedMaps
@@ -1014,18 +1001,11 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-name|MessageFormat
-operator|.
-name|format
-argument_list|(
-literal|"Application {0} has one"
-operator|+
-literal|"reducer finished ({1})."
+literal|"Application {} has one reducer finished ({})."
 argument_list|,
 name|appId
 argument_list|,
 name|containerId
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|assignedReduces
@@ -1065,16 +1045,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-name|MessageFormat
-operator|.
-name|format
-argument_list|(
-literal|"Application {0} goes to "
-operator|+
-literal|"finish."
+literal|"Application {} goes to finish."
 argument_list|,
 name|appId
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1111,18 +1084,11 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-name|MessageFormat
-operator|.
-name|format
-argument_list|(
-literal|"Application {0} has one "
-operator|+
-literal|"mapper killed ({1})."
+literal|"Application {} has one mapper killed ({})."
 argument_list|,
 name|appId
 argument_list|,
 name|containerId
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|pendingFailedMaps
@@ -1153,18 +1119,11 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-name|MessageFormat
-operator|.
-name|format
-argument_list|(
-literal|"Application {0} has one "
-operator|+
-literal|"reducer killed ({1})."
+literal|"Application {} has one reducer killed ({})."
 argument_list|,
 name|appId
 argument_list|,
 name|containerId
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|pendingFailedReduces
@@ -1198,16 +1157,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-name|MessageFormat
-operator|.
-name|format
-argument_list|(
-literal|"Application {0}'s AM is "
+literal|"Application {}'s AM is "
 operator|+
 literal|"going to be killed. Waiting for rescheduling..."
 argument_list|,
 name|appId
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1240,16 +1194,11 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-name|MessageFormat
-operator|.
-name|format
-argument_list|(
-literal|"Application {0} sends out event "
+literal|"Application {} sends out event to clean up"
 operator|+
-literal|"to clean up its AM container."
+literal|" its AM container."
 argument_list|,
 name|appId
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|isFinished
@@ -1291,13 +1240,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-name|MessageFormat
-operator|.
-name|format
-argument_list|(
-literal|"Application {0} starts a "
-operator|+
-literal|"launch a mapper ({1})."
+literal|"Application {} starts to launch a mapper ({})."
 argument_list|,
 name|appId
 argument_list|,
@@ -1305,7 +1248,6 @@ name|container
 operator|.
 name|getId
 argument_list|()
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|assignedMaps
@@ -1368,13 +1310,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-name|MessageFormat
-operator|.
-name|format
-argument_list|(
-literal|"Application {0} starts a "
-operator|+
-literal|"launch a reducer ({1})."
+literal|"Application {} starts to launch a reducer ({})."
 argument_list|,
 name|appId
 argument_list|,
@@ -1382,7 +1318,6 @@ name|container
 operator|.
 name|getId
 argument_list|()
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|assignedReduces
@@ -1647,13 +1582,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-name|MessageFormat
-operator|.
-name|format
-argument_list|(
-literal|"Application {0} sends out "
-operator|+
-literal|"request for {1} mappers."
+literal|"Application {} sends out request for {} mappers."
 argument_list|,
 name|appId
 argument_list|,
@@ -1661,7 +1590,6 @@ name|pendingMaps
 operator|.
 name|size
 argument_list|()
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|scheduledMaps
@@ -1705,13 +1633,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-name|MessageFormat
-operator|.
-name|format
-argument_list|(
-literal|"Application {0} sends out "
-operator|+
-literal|"requests for {1} failed mappers."
+literal|"Application {} sends out requests for {} failed mappers."
 argument_list|,
 name|appId
 argument_list|,
@@ -1719,7 +1641,6 @@ name|pendingFailedMaps
 operator|.
 name|size
 argument_list|()
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|scheduledMaps
@@ -1772,13 +1693,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-name|MessageFormat
-operator|.
-name|format
-argument_list|(
-literal|"Application {0} sends out "
-operator|+
-literal|"requests for {1} reducers."
+literal|"Application {} sends out requests for {} reducers."
 argument_list|,
 name|appId
 argument_list|,
@@ -1786,7 +1701,6 @@ name|pendingReduces
 operator|.
 name|size
 argument_list|()
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|scheduledReduces
@@ -1830,13 +1744,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-name|MessageFormat
-operator|.
-name|format
-argument_list|(
-literal|"Application {0} sends out "
-operator|+
-literal|"request for {1} failed reducers."
+literal|"Application {} sends out request for {} failed reducers."
 argument_list|,
 name|appId
 argument_list|,
@@ -1844,7 +1752,6 @@ name|pendingFailedReduces
 operator|.
 name|size
 argument_list|()
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|scheduledReduces

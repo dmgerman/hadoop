@@ -72,16 +72,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|text
-operator|.
-name|MessageFormat
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|ArrayList
@@ -1014,11 +1004,19 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
-operator|.
-name|log4j
+name|slf4j
 operator|.
 name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
 import|;
 end_import
 
@@ -1194,7 +1192,7 @@ specifier|static
 name|Logger
 name|LOG
 init|=
-name|Logger
+name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
@@ -2248,18 +2246,13 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-name|MessageFormat
-operator|.
-name|format
-argument_list|(
-literal|"SLSRunner is waiting for all "
+literal|"SLSRunner is waiting for all nodes RUNNING."
 operator|+
-literal|"nodes RUNNING. {0} of {1} NMs initialized."
+literal|" {} of {} NMs initialized."
 argument_list|,
 name|numRunningNodes
 argument_list|,
 name|numNMs
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|Thread
@@ -2274,21 +2267,14 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-name|MessageFormat
-operator|.
-name|format
-argument_list|(
-literal|"SLSRunner takes {0} ms to launch all nodes."
+literal|"SLSRunner takes {} ms to launch all nodes."
 argument_list|,
-operator|(
 name|System
 operator|.
 name|currentTimeMillis
 argument_list|()
 operator|-
 name|startTimeMS
-operator|)
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -2485,8 +2471,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Failed to create an AM: "
-operator|+
+literal|"Failed to create an AM: {}"
+argument_list|,
 name|e
 operator|.
 name|getMessage
@@ -3206,8 +3192,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Failed to create an AM: "
-operator|+
+literal|"Failed to create an AM: {}"
+argument_list|,
 name|e
 operator|.
 name|getMessage
@@ -3331,11 +3317,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Warning: reset job "
-operator|+
+literal|"Warning: reset job {} start time to 0."
+argument_list|,
 name|oldJobId
-operator|+
-literal|" start time to 0."
 argument_list|)
 expr_stmt|;
 name|jobFinishTimeMS
@@ -3817,11 +3801,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Warning: reset job "
-operator|+
+literal|"Warning: reset job {} start time to 0."
+argument_list|,
 name|oldJobId
-operator|+
-literal|" start time to 0."
 argument_list|)
 expr_stmt|;
 name|jobFinishTimeMS
@@ -4595,13 +4577,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-name|MessageFormat
-operator|.
-name|format
-argument_list|(
-literal|"# nodes = {0}, # racks = {1}, capacity "
+literal|"# nodes = {}, # racks = {}, capacity "
 operator|+
-literal|"of each node {2} MB memory and {3} vcores."
+literal|"of each node {} MB memory and {} vcores."
 argument_list|,
 name|numNMs
 argument_list|,
@@ -4610,7 +4588,6 @@ argument_list|,
 name|nmMemoryMB
 argument_list|,
 name|nmVCores
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -4625,13 +4602,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-name|MessageFormat
-operator|.
-name|format
-argument_list|(
-literal|"# applications = {0}, # total "
+literal|"# applications = {}, # total "
 operator|+
-literal|"tasks = {1}, average # tasks per application = {2}"
+literal|"tasks = {}, average # tasks per application = {}"
 argument_list|,
 name|numAMs
 argument_list|,
@@ -4652,7 +4625,6 @@ literal|0.0
 operator|)
 operator|/
 name|numAMs
-argument_list|)
 argument_list|)
 argument_list|)
 argument_list|)
@@ -4741,13 +4713,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-name|MessageFormat
-operator|.
-name|format
-argument_list|(
-literal|"number of queues = {0}  average "
-operator|+
-literal|"number of apps = {1}"
+literal|"number of queues = {}  average number of apps = {}"
 argument_list|,
 name|queueAppNumMap
 operator|.
@@ -4775,7 +4741,6 @@ argument_list|()
 argument_list|)
 argument_list|)
 argument_list|)
-argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
@@ -4789,13 +4754,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-name|MessageFormat
-operator|.
-name|format
-argument_list|(
-literal|"estimated simulation time is {0}"
-operator|+
-literal|" seconds"
+literal|"estimated simulation time is {} seconds"
 argument_list|,
 call|(
 name|long
@@ -4808,7 +4767,6 @@ argument_list|(
 name|maxRuntime
 operator|/
 literal|1000.0
-argument_list|)
 argument_list|)
 argument_list|)
 argument_list|)

@@ -66,16 +66,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|text
-operator|.
-name|MessageFormat
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|ArrayList
@@ -736,18 +726,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|log4j
-operator|.
-name|Logger
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|yarn
@@ -827,6 +805,26 @@ operator|.
 name|utils
 operator|.
 name|SLSUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
 import|;
 end_import
 
@@ -981,12 +979,13 @@ name|Container
 name|amContainer
 decl_stmt|;
 DECL|field|LOG
-specifier|protected
+specifier|private
+specifier|static
 specifier|final
 name|Logger
 name|LOG
 init|=
-name|Logger
+name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
@@ -1402,14 +1401,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-name|MessageFormat
-operator|.
-name|format
-argument_list|(
-literal|"Application {0} is shutting down."
+literal|"Application {} is shutting down."
 argument_list|,
 name|appId
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// unregister tracking
@@ -1434,14 +1428,12 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"AM container = "
-operator|+
+literal|"AM container = {} reported to finish"
+argument_list|,
 name|amContainer
 operator|.
 name|getId
 argument_list|()
-operator|+
-literal|" reported to finish"
 argument_list|)
 expr_stmt|;
 name|se
@@ -2118,14 +2110,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-name|MessageFormat
-operator|.
-name|format
-argument_list|(
-literal|"Submit a new application {0}"
+literal|"Submit a new application {}"
 argument_list|,
 name|appId
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -2265,14 +2252,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-name|MessageFormat
-operator|.
-name|format
-argument_list|(
-literal|"Register the application master for application {0}"
+literal|"Register the application master for application {}"
 argument_list|,
 name|appId
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

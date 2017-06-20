@@ -34,16 +34,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|text
-operator|.
-name|MessageFormat
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|ArrayList
@@ -512,18 +502,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|log4j
-operator|.
-name|Logger
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|yarn
@@ -569,6 +547,26 @@ operator|.
 name|utils
 operator|.
 name|SLSUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
 import|;
 end_import
 
@@ -662,7 +660,7 @@ specifier|static
 name|Logger
 name|LOG
 init|=
-name|Logger
+name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
@@ -953,17 +951,12 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-name|MessageFormat
-operator|.
-name|format
-argument_list|(
-literal|"Container {0} has completed"
+literal|"Container {} has completed"
 argument_list|,
 name|cs
 operator|.
 name|getId
 argument_list|()
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1131,13 +1124,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-name|MessageFormat
-operator|.
-name|format
-argument_list|(
-literal|"NodeManager {0} releases "
-operator|+
-literal|"an AM ({1})."
+literal|"NodeManager {} releases an AM ({})."
 argument_list|,
 name|node
 operator|.
@@ -1145,7 +1132,6 @@ name|getNodeID
 argument_list|()
 argument_list|,
 name|containerId
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1178,13 +1164,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-name|MessageFormat
-operator|.
-name|format
-argument_list|(
-literal|"NodeManager {0} releases a "
-operator|+
-literal|"container ({1})."
+literal|"NodeManager {} releases a container ({})."
 argument_list|,
 name|node
 operator|.
@@ -1192,7 +1172,6 @@ name|getNodeID
 argument_list|()
 argument_list|,
 name|containerId
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1334,13 +1313,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-name|MessageFormat
-operator|.
-name|format
-argument_list|(
-literal|"NodeManager {0} completed"
-operator|+
-literal|" container ({1})."
+literal|"NodeManager {} completed container ({})."
 argument_list|,
 name|node
 operator|.
@@ -1348,7 +1321,6 @@ name|getNodeID
 argument_list|()
 argument_list|,
 name|cId
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|csList
@@ -1394,13 +1366,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-name|MessageFormat
-operator|.
-name|format
-argument_list|(
-literal|"NodeManager {0} released container"
-operator|+
-literal|" ({1})."
+literal|"NodeManager {} released container ({})."
 argument_list|,
 name|node
 operator|.
@@ -1408,7 +1374,6 @@ name|getNodeID
 argument_list|()
 argument_list|,
 name|cId
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|csList
@@ -1519,13 +1484,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-name|MessageFormat
-operator|.
-name|format
-argument_list|(
-literal|"NodeManager {0} launches a new "
-operator|+
-literal|"container ({1})."
+literal|"NodeManager {} launches a new container ({})."
 argument_list|,
 name|node
 operator|.
@@ -1536,7 +1495,6 @@ name|container
 operator|.
 name|getId
 argument_list|()
-argument_list|)
 argument_list|)
 expr_stmt|;
 if|if
