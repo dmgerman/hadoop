@@ -1141,6 +1141,21 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+else|else
+block|{
+comment|// No "preserve" settings specified. Preserve block-size.
+name|builder
+operator|.
+name|preserve
+argument_list|(
+name|DistCpOptions
+operator|.
+name|FileAttribute
+operator|.
+name|BLOCKSIZE
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|command

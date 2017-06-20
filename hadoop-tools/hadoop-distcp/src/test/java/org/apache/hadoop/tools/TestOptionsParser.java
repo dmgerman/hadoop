@@ -1807,7 +1807,7 @@ argument_list|)
 decl_stmt|;
 name|Assert
 operator|.
-name|assertFalse
+name|assertTrue
 argument_list|(
 name|options
 operator|.
