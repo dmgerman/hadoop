@@ -2103,8 +2103,9 @@ name|pathName
 argument_list|)
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getFsAction (int accessGroup, FTPFile ftpFile)
-specifier|private
 name|FsAction
 name|getFsAction
 parameter_list|(
@@ -2137,6 +2138,8 @@ argument_list|)
 condition|)
 block|{
 name|action
+operator|=
+name|action
 operator|.
 name|or
 argument_list|(
@@ -2161,6 +2164,8 @@ argument_list|)
 condition|)
 block|{
 name|action
+operator|=
+name|action
 operator|.
 name|or
 argument_list|(
@@ -2184,6 +2189,8 @@ name|EXECUTE_PERMISSION
 argument_list|)
 condition|)
 block|{
+name|action
+operator|=
 name|action
 operator|.
 name|or
