@@ -1538,6 +1538,16 @@ name|getStoragespace
 argument_list|()
 argument_list|)
 operator|.
+name|erasureCodingPolicy
+argument_list|(
+name|summary
+operator|.
+name|getErasureCodingPolicyName
+argument_list|(
+name|this
+argument_list|)
+argument_list|)
+operator|.
 name|build
 argument_list|()
 return|;

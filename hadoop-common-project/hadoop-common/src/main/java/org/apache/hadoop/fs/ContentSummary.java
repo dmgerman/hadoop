@@ -170,6 +170,11 @@ specifier|private
 name|long
 name|snapshotSpaceConsumed
 decl_stmt|;
+DECL|field|erasureCodingPolicy
+specifier|private
+name|String
+name|erasureCodingPolicy
+decl_stmt|;
 comment|/** We don't use generics. Instead override spaceConsumed and other methods       in order to keep backward compatibility. */
 DECL|class|Builder
 specifier|public
@@ -314,6 +319,25 @@ operator|.
 name|snapshotSpaceConsumed
 operator|=
 name|snapshotSpaceConsumed
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|erasureCodingPolicy (String ecPolicy)
+specifier|public
+name|Builder
+name|erasureCodingPolicy
+parameter_list|(
+name|String
+name|ecPolicy
+parameter_list|)
+block|{
+name|this
+operator|.
+name|erasureCodingPolicy
+operator|=
+name|ecPolicy
 expr_stmt|;
 return|return
 name|this
@@ -548,6 +572,11 @@ specifier|private
 name|long
 name|snapshotSpaceConsumed
 decl_stmt|;
+DECL|field|erasureCodingPolicy
+specifier|private
+name|String
+name|erasureCodingPolicy
+decl_stmt|;
 block|}
 comment|/** Constructor deprecated by ContentSummary.Builder*/
 annotation|@
@@ -722,6 +751,14 @@ name|builder
 operator|.
 name|snapshotSpaceConsumed
 expr_stmt|;
+name|this
+operator|.
+name|erasureCodingPolicy
+operator|=
+name|builder
+operator|.
+name|erasureCodingPolicy
+expr_stmt|;
 block|}
 comment|/** @return the length */
 DECL|method|getLength ()
@@ -794,6 +831,16 @@ parameter_list|()
 block|{
 return|return
 name|snapshotSpaceConsumed
+return|;
+block|}
+DECL|method|getErasureCodingPolicy ()
+specifier|public
+name|String
+name|getErasureCodingPolicy
+parameter_list|()
+block|{
+return|return
+name|erasureCodingPolicy
 return|;
 block|}
 annotation|@
@@ -1023,6 +1070,17 @@ operator|.
 name|getSnapshotSpaceConsumed
 argument_list|()
 operator|&&
+name|getErasureCodingPolicy
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|right
+operator|.
+name|getErasureCodingPolicy
+argument_list|()
+argument_list|)
+operator|&&
 name|super
 operator|.
 name|equals
@@ -1073,6 +1131,12 @@ name|getSnapshotDirectoryCount
 argument_list|()
 operator|^
 name|getSnapshotSpaceConsumed
+argument_list|()
+operator|^
+name|getErasureCodingPolicy
+argument_list|()
+operator|.
+name|hashCode
 argument_list|()
 decl_stmt|;
 return|return

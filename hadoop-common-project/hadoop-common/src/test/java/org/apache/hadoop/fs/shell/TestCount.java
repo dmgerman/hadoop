@@ -2446,7 +2446,7 @@ decl_stmt|;
 name|String
 name|expected
 init|=
-literal|"-count [-q] [-h] [-v] [-t [<storage type>]] [-u] [-x]<path> ..."
+literal|"-count [-q] [-h] [-v] [-t [<storage type>]] [-u] [-x] [-e]<path> ..."
 decl_stmt|;
 name|assertEquals
 argument_list|(
@@ -2528,6 +2528,8 @@ operator|+
 literal|"The -u option shows the quota and \n"
 operator|+
 literal|"the usage against the quota without the detailed content summary."
+operator|+
+literal|"The -e option shows the erasure coding policy."
 decl_stmt|;
 name|assertEquals
 argument_list|(
