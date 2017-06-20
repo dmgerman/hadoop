@@ -209,7 +209,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Event log used by the fair scheduler for machine-readable debug info.  * This class uses a log4j rolling file appender to write the log, but uses  * a custom tab-separated event format of the form:  *<pre>  * DATE    EVENT_TYPE   PARAM_1   PARAM_2   ...  *</pre>  * Various event types are used by the fair scheduler. The purpose of logging  * in this format is to enable tools to parse the history log easily and read  * internal scheduler variables, rather than trying to make the log human  * readable. The fair scheduler also logs human readable messages in the  * JobTracker's main log.  *  * Constructing this class creates a disabled log. It must be initialized  * using {@link FairSchedulerEventLog#init(Configuration, String)} to begin  * writing to the file.  */
+comment|/**  * Event log used by the fair scheduler for machine-readable debug info.  * This class uses a log4j rolling file appender to write the log, but uses  * a custom tab-separated event format of the form:  *<pre>  * DATE    EVENT_TYPE   PARAM_1   PARAM_2   ...  *</pre>  * Various event types are used by the fair scheduler. The purpose of logging  * in this format is to enable tools to parse the history log easily and read  * internal scheduler variables, rather than trying to make the log human  * readable. The fair scheduler also logs human readable messages in the  * JobTracker's main log.  *  * Constructing this class creates a disabled log. It must be initialized  * using {@link FairSchedulerEventLog#init(FairSchedulerConfiguration)} to  * begin writing to the file.  */
 end_comment
 
 begin_class
