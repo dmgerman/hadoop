@@ -307,6 +307,24 @@ parameter_list|)
 block|{
 name|Preconditions
 operator|.
+name|checkNotNull
+argument_list|(
+name|schema
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|cellSize
+operator|>
+literal|0
+argument_list|,
+literal|"cellSize must be positive"
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
 name|checkArgument
 argument_list|(
 name|cellSize
