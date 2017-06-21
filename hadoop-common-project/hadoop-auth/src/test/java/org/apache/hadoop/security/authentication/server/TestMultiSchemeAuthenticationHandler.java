@@ -1420,7 +1420,11 @@ block|{
 name|Assert
 operator|.
 name|fail
-argument_list|()
+argument_list|(
+literal|"Wrong exception :"
+operator|+
+name|ex
+argument_list|)
 expr_stmt|;
 block|}
 block|}

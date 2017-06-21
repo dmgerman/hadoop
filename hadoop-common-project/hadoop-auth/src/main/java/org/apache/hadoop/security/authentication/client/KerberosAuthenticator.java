@@ -1307,10 +1307,7 @@ name|oid
 init|=
 name|KerberosUtil
 operator|.
-name|getOidInstance
-argument_list|(
-literal|"NT_GSS_KRB5_PRINCIPAL"
-argument_list|)
+name|NT_GSS_KRB5_PRINCIPAL_OID
 decl_stmt|;
 name|GSSName
 name|serviceName
@@ -1328,10 +1325,7 @@ name|oid
 operator|=
 name|KerberosUtil
 operator|.
-name|getOidInstance
-argument_list|(
-literal|"GSS_KRB5_MECH_OID"
-argument_list|)
+name|GSS_KRB5_MECH_OID
 expr_stmt|;
 name|gssContext
 operator|=
