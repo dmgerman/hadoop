@@ -1314,7 +1314,7 @@ block|{
 return|return
 name|getLongCounter
 argument_list|(
-literal|"StorageBlockReportOps"
+literal|"StorageBlockReportNumOps"
 argument_list|,
 name|getMetrics
 argument_list|(

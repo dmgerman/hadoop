@@ -9032,11 +9032,6 @@ block|}
 block|}
 argument_list|)
 expr_stmt|;
-name|metrics
-operator|.
-name|incrStorageBlockReportOps
-argument_list|()
-expr_stmt|;
 block|}
 name|bm
 operator|.

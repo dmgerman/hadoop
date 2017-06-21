@@ -11743,7 +11743,7 @@ condition|)
 block|{
 name|metrics
 operator|.
-name|addBlockReport
+name|addStorageBlockReport
 argument_list|(
 call|(
 name|int

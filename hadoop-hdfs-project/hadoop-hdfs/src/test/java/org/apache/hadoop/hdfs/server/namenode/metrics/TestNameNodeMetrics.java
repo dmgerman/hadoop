@@ -4651,7 +4651,7 @@ expr_stmt|;
 comment|// Each datanode reports in when the cluster comes up
 name|assertCounter
 argument_list|(
-literal|"BlockReportNumOps"
+literal|"StorageBlockReportNumOps"
 argument_list|,
 operator|(
 name|long
@@ -4690,7 +4690,7 @@ argument_list|)
 expr_stmt|;
 name|assertQuantileGauges
 argument_list|(
-literal|"BlockReport1s"
+literal|"StorageBlockReport1s"
 argument_list|,
 name|rb
 argument_list|)

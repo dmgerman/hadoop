@@ -468,15 +468,6 @@ decl_stmt|;
 annotation|@
 name|Metric
 argument_list|(
-literal|"Number of blockReports from individual storages"
-argument_list|)
-DECL|field|storageBlockReportOps
-name|MutableCounterLong
-name|storageBlockReportOps
-decl_stmt|;
-annotation|@
-name|Metric
-argument_list|(
 literal|"Number of blockReports and blockReceivedAndDeleted queued"
 argument_list|)
 DECL|field|blockOpsQueued
@@ -633,20 +624,20 @@ DECL|field|transactionsBatchedInSync
 name|MutableCounterLong
 name|transactionsBatchedInSync
 decl_stmt|;
-DECL|field|blockReport
 annotation|@
 name|Metric
 argument_list|(
-literal|"Block report"
+literal|"Number of blockReports from individual storages"
 argument_list|)
+DECL|field|storageBlockReport
 name|MutableRate
-name|blockReport
+name|storageBlockReport
 decl_stmt|;
-DECL|field|blockReportQuantiles
+DECL|field|storageBlockReportQuantiles
 specifier|final
 name|MutableQuantiles
 index|[]
-name|blockReportQuantiles
+name|storageBlockReportQuantiles
 decl_stmt|;
 DECL|field|cacheReport
 annotation|@
@@ -821,7 +812,7 @@ index|[
 name|len
 index|]
 expr_stmt|;
-name|blockReportQuantiles
+name|storageBlockReportQuantiles
 operator|=
 operator|new
 name|MutableQuantiles
@@ -908,7 +899,7 @@ argument_list|,
 name|interval
 argument_list|)
 expr_stmt|;
-name|blockReportQuantiles
+name|storageBlockReportQuantiles
 index|[
 name|i
 index|]
@@ -917,13 +908,13 @@ name|registry
 operator|.
 name|newQuantiles
 argument_list|(
-literal|"blockReport"
+literal|"storageBlockReport"
 operator|+
 name|interval
 operator|+
 literal|"s"
 argument_list|,
-literal|"Block report"
+literal|"Storage block report"
 argument_list|,
 literal|"ops"
 argument_list|,
@@ -1426,18 +1417,6 @@ name|incr
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|incrStorageBlockReportOps ()
-specifier|public
-name|void
-name|incrStorageBlockReportOps
-parameter_list|()
-block|{
-name|storageBlockReportOps
-operator|.
-name|incr
-argument_list|()
-expr_stmt|;
-block|}
 DECL|method|setBlockOpsQueued (int size)
 specifier|public
 name|void
@@ -1559,16 +1538,16 @@ name|elapsed
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addBlockReport (long latency)
+DECL|method|addStorageBlockReport (long latency)
 specifier|public
 name|void
-name|addBlockReport
+name|addStorageBlockReport
 parameter_list|(
 name|long
 name|latency
 parameter_list|)
 block|{
-name|blockReport
+name|storageBlockReport
 operator|.
 name|add
 argument_list|(
@@ -1580,7 +1559,7 @@ control|(
 name|MutableQuantiles
 name|q
 range|:
-name|blockReportQuantiles
+name|storageBlockReportQuantiles
 control|)
 block|{
 name|q
