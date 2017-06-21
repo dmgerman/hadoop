@@ -2159,6 +2159,19 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Remove erasure coding policy.    * @param ecPolicyName The name of the policy to be removed.    * @throws IOException    */
+annotation|@
+name|AtMostOnce
+DECL|method|removeErasureCodingPolicy (String ecPolicyName)
+name|void
+name|removeErasureCodingPolicy
+parameter_list|(
+name|String
+name|ecPolicyName
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Get the erasure coding policies loaded in Namenode.    *    * @throws IOException    */
 annotation|@
 name|Idempotent

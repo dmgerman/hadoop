@@ -1135,6 +1135,40 @@ name|policy
 argument_list|)
 return|;
 block|}
+comment|/**    * Remove an erasure coding policy.    *    * @param fsn namespace    * @param ecPolicyName the name of the policy to be removed    * @throws IOException    */
+DECL|method|removeErasureCodePolicy (final FSNamesystem fsn, String ecPolicyName)
+specifier|static
+name|void
+name|removeErasureCodePolicy
+parameter_list|(
+specifier|final
+name|FSNamesystem
+name|fsn
+parameter_list|,
+name|String
+name|ecPolicyName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|ecPolicyName
+argument_list|)
+expr_stmt|;
+name|fsn
+operator|.
+name|getErasureCodingPolicyManager
+argument_list|()
+operator|.
+name|removePolicy
+argument_list|(
+name|ecPolicyName
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|removeErasureCodingPolicyXAttr ( final FSNamesystem fsn, final INodesInPath srcIIP)
 specifier|private
 specifier|static

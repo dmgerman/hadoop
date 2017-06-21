@@ -13184,6 +13184,28 @@ name|policies
 argument_list|)
 return|;
 block|}
+DECL|method|removeErasureCodingPolicy (String ecPolicyName)
+specifier|public
+name|void
+name|removeErasureCodingPolicy
+parameter_list|(
+name|String
+name|ecPolicyName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|checkOpen
+argument_list|()
+expr_stmt|;
+name|namenode
+operator|.
+name|removeErasureCodingPolicy
+argument_list|(
+name|ecPolicyName
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|getInotifyEventStream ()
 specifier|public
 name|DFSInotifyEventInputStream

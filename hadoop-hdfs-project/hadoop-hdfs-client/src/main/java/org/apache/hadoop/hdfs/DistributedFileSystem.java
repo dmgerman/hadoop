@@ -12940,6 +12940,26 @@ name|policies
 argument_list|)
 return|;
 block|}
+comment|/**    * Remove erasure coding policy.    *    * @param ecPolicyName The name of the policy to be removed.    * @throws IOException    */
+DECL|method|removeErasureCodingPolicy (String ecPolicyName)
+specifier|public
+name|void
+name|removeErasureCodingPolicy
+parameter_list|(
+name|String
+name|ecPolicyName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|dfs
+operator|.
+name|removeErasureCodingPolicy
+argument_list|(
+name|ecPolicyName
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Unset the erasure coding policy from the source path.    *    * @param path     The directory to unset the policy    * @throws IOException    */
 DECL|method|unsetErasureCodingPolicy (final Path path)
 specifier|public
