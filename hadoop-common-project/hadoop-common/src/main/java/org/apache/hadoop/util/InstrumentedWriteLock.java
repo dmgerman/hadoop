@@ -36,20 +36,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -86,6 +72,16 @@ name|VisibleForTesting
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
 begin_comment
 comment|/**  * This is a wrap class of a<tt>WriteLock</tt>.  * It extends the class {@link InstrumentedLock}, and can be used to track  * whether a specific write lock is being held for too long and log  * warnings if so.  *  * The logged warnings are throttled so that logs are not spammed.  */
 end_comment
@@ -106,14 +102,14 @@ name|InstrumentedWriteLock
 extends|extends
 name|InstrumentedLock
 block|{
-DECL|method|InstrumentedWriteLock (String name, Log logger, ReentrantReadWriteLock readWriteLock, long minLoggingGapMs, long lockWarningThresholdMs)
+DECL|method|InstrumentedWriteLock (String name, Logger logger, ReentrantReadWriteLock readWriteLock, long minLoggingGapMs, long lockWarningThresholdMs)
 specifier|public
 name|InstrumentedWriteLock
 parameter_list|(
 name|String
 name|name
 parameter_list|,
-name|Log
+name|Logger
 name|logger
 parameter_list|,
 name|ReentrantReadWriteLock
@@ -146,13 +142,13 @@ expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|InstrumentedWriteLock (String name, Log logger, ReentrantReadWriteLock readWriteLock, long minLoggingGapMs, long lockWarningThresholdMs, Timer clock)
+DECL|method|InstrumentedWriteLock (String name, Logger logger, ReentrantReadWriteLock readWriteLock, long minLoggingGapMs, long lockWarningThresholdMs, Timer clock)
 name|InstrumentedWriteLock
 parameter_list|(
 name|String
 name|name
 parameter_list|,
-name|Log
+name|Logger
 name|logger
 parameter_list|,
 name|ReentrantReadWriteLock

@@ -114,20 +114,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -137,6 +123,16 @@ operator|.
 name|annotations
 operator|.
 name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
 import|;
 end_import
 
@@ -169,7 +165,7 @@ decl_stmt|;
 DECL|field|logger
 specifier|private
 specifier|final
-name|Log
+name|Logger
 name|logger
 decl_stmt|;
 DECL|field|name
@@ -224,14 +220,14 @@ literal|0
 argument_list|)
 decl_stmt|;
 comment|/**    * Create a instrumented lock instance which logs a warning message    * when lock held time is above given threshold.    *    * @param name the identifier of the lock object    * @param logger this class does not have its own logger, will log to the    *               given logger instead    * @param minLoggingGapMs  the minimum time gap between two log messages,    *                         this is to avoid spamming to many logs    * @param lockWarningThresholdMs the time threshold to view lock held    *                               time as being "too long"    */
-DECL|method|InstrumentedLock (String name, Log logger, long minLoggingGapMs, long lockWarningThresholdMs)
+DECL|method|InstrumentedLock (String name, Logger logger, long minLoggingGapMs, long lockWarningThresholdMs)
 specifier|public
 name|InstrumentedLock
 parameter_list|(
 name|String
 name|name
 parameter_list|,
-name|Log
+name|Logger
 name|logger
 parameter_list|,
 name|long
@@ -257,14 +253,14 @@ name|lockWarningThresholdMs
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|InstrumentedLock (String name, Log logger, Lock lock, long minLoggingGapMs, long lockWarningThresholdMs)
+DECL|method|InstrumentedLock (String name, Logger logger, Lock lock, long minLoggingGapMs, long lockWarningThresholdMs)
 specifier|public
 name|InstrumentedLock
 parameter_list|(
 name|String
 name|name
 parameter_list|,
-name|Log
+name|Logger
 name|logger
 parameter_list|,
 name|Lock
@@ -297,13 +293,13 @@ expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|InstrumentedLock (String name, Log logger, Lock lock, long minLoggingGapMs, long lockWarningThresholdMs, Timer clock)
+DECL|method|InstrumentedLock (String name, Logger logger, Lock lock, long minLoggingGapMs, long lockWarningThresholdMs, Timer clock)
 name|InstrumentedLock
 parameter_list|(
 name|String
 name|name
 parameter_list|,
-name|Log
+name|Logger
 name|logger
 parameter_list|,
 name|Lock

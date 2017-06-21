@@ -64,20 +64,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -97,6 +83,16 @@ operator|.
 name|classification
 operator|.
 name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
 import|;
 end_import
 
@@ -132,7 +128,7 @@ specifier|final
 name|Lock
 name|writeLock
 decl_stmt|;
-DECL|method|InstrumentedReadWriteLock (boolean fair, String name, Log logger, long minLoggingGapMs, long lockWarningThresholdMs)
+DECL|method|InstrumentedReadWriteLock (boolean fair, String name, Logger logger, long minLoggingGapMs, long lockWarningThresholdMs)
 name|InstrumentedReadWriteLock
 parameter_list|(
 name|boolean
@@ -141,7 +137,7 @@ parameter_list|,
 name|String
 name|name
 parameter_list|,
-name|Log
+name|Logger
 name|logger
 parameter_list|,
 name|long

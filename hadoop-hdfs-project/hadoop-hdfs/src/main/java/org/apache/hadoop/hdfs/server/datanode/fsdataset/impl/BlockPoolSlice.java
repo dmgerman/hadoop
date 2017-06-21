@@ -3712,6 +3712,10 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
+literal|"Getting exception while validating integrity "
+operator|+
+literal|"and setting length for blockFile"
+argument_list|,
 name|e
 argument_list|)
 expr_stmt|;

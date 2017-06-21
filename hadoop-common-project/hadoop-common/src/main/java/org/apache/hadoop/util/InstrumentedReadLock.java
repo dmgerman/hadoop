@@ -36,20 +36,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -83,6 +69,16 @@ operator|.
 name|annotations
 operator|.
 name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
 import|;
 end_import
 
@@ -145,14 +141,14 @@ block|}
 empty_stmt|;
 block|}
 decl_stmt|;
-DECL|method|InstrumentedReadLock (String name, Log logger, ReentrantReadWriteLock readWriteLock, long minLoggingGapMs, long lockWarningThresholdMs)
+DECL|method|InstrumentedReadLock (String name, Logger logger, ReentrantReadWriteLock readWriteLock, long minLoggingGapMs, long lockWarningThresholdMs)
 specifier|public
 name|InstrumentedReadLock
 parameter_list|(
 name|String
 name|name
 parameter_list|,
-name|Log
+name|Logger
 name|logger
 parameter_list|,
 name|ReentrantReadWriteLock
@@ -185,13 +181,13 @@ expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|InstrumentedReadLock (String name, Log logger, ReentrantReadWriteLock readWriteLock, long minLoggingGapMs, long lockWarningThresholdMs, Timer clock)
+DECL|method|InstrumentedReadLock (String name, Logger logger, ReentrantReadWriteLock readWriteLock, long minLoggingGapMs, long lockWarningThresholdMs, Timer clock)
 name|InstrumentedReadLock
 parameter_list|(
 name|String
 name|name
 parameter_list|,
-name|Log
+name|Logger
 name|logger
 parameter_list|,
 name|ReentrantReadWriteLock
