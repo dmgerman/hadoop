@@ -24,6 +24,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -68,7 +78,7 @@ name|DistributedSchedulingAMProtocol
 extends|,
 name|Configurable
 block|{
-comment|/**    * This method is called for initializing the intercepter. This is guaranteed    * to be called only once in the lifetime of this instance.    *    * @param ctx    */
+comment|/**    * This method is called for initializing the intercepter. This is guaranteed    * to be called only once in the lifetime of this instance.    *    * @param ctx AMRMProxy application context    */
 DECL|method|init (AMRMProxyApplicationContext ctx)
 name|void
 name|init
@@ -77,13 +87,28 @@ name|AMRMProxyApplicationContext
 name|ctx
 parameter_list|)
 function_decl|;
+comment|/**    * Recover intercepter state when NM recovery is enabled. AMRMProxy will    * recover the data map into    * AMRMProxyApplicationContext.getRecoveredDataMap(). All intercepters should    * recover state from it.    *    * For example, registerRequest has to be saved by the last intercepter (i.e.    * the one that actually connects to RM), in order to re-register when RM    * fails over.    *    * @param recoveredDataMap states for all intercepters recovered from NMSS    */
+DECL|method|recover (Map<String, byte[]> recoveredDataMap)
+name|void
+name|recover
+parameter_list|(
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|byte
+index|[]
+argument_list|>
+name|recoveredDataMap
+parameter_list|)
+function_decl|;
 comment|/**    * This method is called to release the resources held by the intercepter.    * This will be called when the application pipeline is being destroyed. The    * concrete implementations should dispose the resources and forward the    * request to the next intercepter, if any.    */
 DECL|method|shutdown ()
 name|void
 name|shutdown
 parameter_list|()
 function_decl|;
-comment|/**    * Sets the next intercepter in the pipeline. The concrete implementation of    * this interface should always pass the request to the nextInterceptor after    * inspecting the message. The last intercepter in the chain is responsible to    * send the messages to the resource manager service and so the last    * intercepter will not receive this method call.    *    * @param nextInterceptor    */
+comment|/**    * Sets the next intercepter in the pipeline. The concrete implementation of    * this interface should always pass the request to the nextInterceptor after    * inspecting the message. The last intercepter in the chain is responsible to    * send the messages to the resource manager service and so the last    * intercepter will not receive this method call.    *    * @param nextInterceptor the next intercepter to set    */
 DECL|method|setNextInterceptor (RequestInterceptor nextInterceptor)
 name|void
 name|setNextInterceptor

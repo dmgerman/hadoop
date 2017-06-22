@@ -24,15 +24,21 @@ end_package
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|apache
+name|io
 operator|.
-name|hadoop
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
 operator|.
-name|conf
+name|util
 operator|.
-name|Configuration
+name|Map
 import|;
 end_import
 
@@ -47,6 +53,20 @@ operator|.
 name|base
 operator|.
 name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
 import|;
 end_import
 
@@ -146,11 +166,21 @@ end_import
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|io
+name|apache
 operator|.
-name|IOException
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|recovery
+operator|.
+name|NMStateStoreService
 import|;
 end_import
 
@@ -313,6 +343,44 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Recover {@link RequestInterceptor} state from store.    */
+annotation|@
+name|Override
+DECL|method|recover (Map<String, byte[]> recoveredDataMap)
+specifier|public
+name|void
+name|recover
+parameter_list|(
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|byte
+index|[]
+argument_list|>
+name|recoveredDataMap
+parameter_list|)
+block|{
+if|if
+condition|(
+name|this
+operator|.
+name|nextInterceptor
+operator|!=
+literal|null
+condition|)
+block|{
+name|this
+operator|.
+name|nextInterceptor
+operator|.
+name|recover
+argument_list|(
+name|recoveredDataMap
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Disposes the {@link RequestInterceptor}.    */
 annotation|@
 name|Override
@@ -368,7 +436,7 @@ operator|.
 name|appContext
 return|;
 block|}
-comment|/**    * Default implementation that invokes the distributed scheduling version    * of the register method.    *    * @param request ApplicationMaster allocate request    * @return Distribtued Scheduler Allocate Response    * @throws YarnException    * @throws IOException    */
+comment|/**    * Default implementation that invokes the distributed scheduling version    * of the register method.    *    * @param request ApplicationMaster allocate request    * @return Distribtued Scheduler Allocate Response    * @throws YarnException if fails    * @throws IOException if fails    */
 annotation|@
 name|Override
 DECL|method|allocateForDistributedScheduling ( DistributedSchedulingAllocateRequest request)
@@ -405,7 +473,7 @@ else|:
 literal|null
 return|;
 block|}
-comment|/**    * Default implementation that invokes the distributed scheduling version    * of the allocate method.    *    * @param request ApplicationMaster registration request    * @return Distributed Scheduler Register Response    * @throws YarnException    * @throws IOException    */
+comment|/**    * Default implementation that invokes the distributed scheduling version    * of the allocate method.    *    * @param request ApplicationMaster registration request    * @return Distributed Scheduler Register Response    * @throws YarnException if fails    * @throws IOException if fails    */
 annotation|@
 name|Override
 specifier|public
@@ -440,6 +508,47 @@ name|request
 argument_list|)
 else|:
 literal|null
+return|;
+block|}
+comment|/**    * A helper method for getting NM state store.    *    * @return the NMSS instance    */
+DECL|method|getNMStateStore ()
+specifier|public
+name|NMStateStoreService
+name|getNMStateStore
+parameter_list|()
+block|{
+if|if
+condition|(
+name|this
+operator|.
+name|appContext
+operator|==
+literal|null
+operator|||
+name|this
+operator|.
+name|appContext
+operator|.
+name|getNMCotext
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+return|return
+name|this
+operator|.
+name|appContext
+operator|.
+name|getNMCotext
+argument_list|()
+operator|.
+name|getNMStateStore
+argument_list|()
 return|;
 block|}
 block|}

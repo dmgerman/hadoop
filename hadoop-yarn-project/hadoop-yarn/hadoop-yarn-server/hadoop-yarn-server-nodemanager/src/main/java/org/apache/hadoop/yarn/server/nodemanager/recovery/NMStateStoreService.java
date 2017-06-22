@@ -1206,6 +1206,124 @@ name|logDeleterMap
 return|;
 block|}
 block|}
+comment|/**    * Recovered states for AMRMProxy.    */
+DECL|class|RecoveredAMRMProxyState
+specifier|public
+specifier|static
+class|class
+name|RecoveredAMRMProxyState
+block|{
+DECL|field|currentMasterKey
+specifier|private
+name|MasterKey
+name|currentMasterKey
+decl_stmt|;
+DECL|field|nextMasterKey
+specifier|private
+name|MasterKey
+name|nextMasterKey
+decl_stmt|;
+comment|// For each app, stores amrmToken, user name, as well as various AMRMProxy
+comment|// intercepter states
+DECL|field|appContexts
+specifier|private
+name|Map
+argument_list|<
+name|ApplicationAttemptId
+argument_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|byte
+index|[]
+argument_list|>
+argument_list|>
+name|appContexts
+decl_stmt|;
+DECL|method|RecoveredAMRMProxyState ()
+specifier|public
+name|RecoveredAMRMProxyState
+parameter_list|()
+block|{
+name|appContexts
+operator|=
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|getCurrentMasterKey ()
+specifier|public
+name|MasterKey
+name|getCurrentMasterKey
+parameter_list|()
+block|{
+return|return
+name|currentMasterKey
+return|;
+block|}
+DECL|method|getNextMasterKey ()
+specifier|public
+name|MasterKey
+name|getNextMasterKey
+parameter_list|()
+block|{
+return|return
+name|nextMasterKey
+return|;
+block|}
+DECL|method|getAppContexts ()
+specifier|public
+name|Map
+argument_list|<
+name|ApplicationAttemptId
+argument_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|byte
+index|[]
+argument_list|>
+argument_list|>
+name|getAppContexts
+parameter_list|()
+block|{
+return|return
+name|appContexts
+return|;
+block|}
+DECL|method|setCurrentMasterKey (MasterKey currentKey)
+specifier|public
+name|void
+name|setCurrentMasterKey
+parameter_list|(
+name|MasterKey
+name|currentKey
+parameter_list|)
+block|{
+name|currentMasterKey
+operator|=
+name|currentKey
+expr_stmt|;
+block|}
+DECL|method|setNextMasterKey (MasterKey nextKey)
+specifier|public
+name|void
+name|setNextMasterKey
+parameter_list|(
+name|MasterKey
+name|nextKey
+parameter_list|)
+block|{
+name|nextMasterKey
+operator|=
+name|nextKey
+expr_stmt|;
+block|}
+block|}
 comment|/** Initialize the state storage */
 annotation|@
 name|Override
@@ -1772,6 +1890,91 @@ name|removeLogDeleter
 parameter_list|(
 name|ApplicationId
 name|appId
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Load the state of AMRMProxy.    * @return recovered state of AMRMProxy    * @throws IOException if fails    */
+DECL|method|loadAMRMProxyState ()
+specifier|public
+specifier|abstract
+name|RecoveredAMRMProxyState
+name|loadAMRMProxyState
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Record the current AMRMProxyTokenSecretManager master key.    * @param key the current master key    * @throws IOException if fails    */
+DECL|method|storeAMRMProxyCurrentMasterKey (MasterKey key)
+specifier|public
+specifier|abstract
+name|void
+name|storeAMRMProxyCurrentMasterKey
+parameter_list|(
+name|MasterKey
+name|key
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Record the next AMRMProxyTokenSecretManager master key.    * @param key the next master key    * @throws IOException if fails    */
+DECL|method|storeAMRMProxyNextMasterKey (MasterKey key)
+specifier|public
+specifier|abstract
+name|void
+name|storeAMRMProxyNextMasterKey
+parameter_list|(
+name|MasterKey
+name|key
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Add a context entry for an application attempt in AMRMProxyService.    * @param attempt app attempt ID    * @param key key string    * @param data state data to store    * @throws IOException if fails    */
+DECL|method|storeAMRMProxyAppContextEntry ( ApplicationAttemptId attempt, String key, byte[] data)
+specifier|public
+specifier|abstract
+name|void
+name|storeAMRMProxyAppContextEntry
+parameter_list|(
+name|ApplicationAttemptId
+name|attempt
+parameter_list|,
+name|String
+name|key
+parameter_list|,
+name|byte
+index|[]
+name|data
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Remove a context entry for an application attempt in AMRMProxyService.    * @param attempt attempt ID    * @param key key string    * @throws IOException if fails    */
+DECL|method|removeAMRMProxyAppContextEntry ( ApplicationAttemptId attempt, String key)
+specifier|public
+specifier|abstract
+name|void
+name|removeAMRMProxyAppContextEntry
+parameter_list|(
+name|ApplicationAttemptId
+name|attempt
+parameter_list|,
+name|String
+name|key
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Remove the entire context map for an application attempt in    * AMRMProxyService.    * @param attempt attempt ID    * @throws IOException if fails    */
+DECL|method|removeAMRMProxyAppContext (ApplicationAttemptId attempt)
+specifier|public
+specifier|abstract
+name|void
+name|removeAMRMProxyAppContext
+parameter_list|(
+name|ApplicationAttemptId
+name|attempt
 parameter_list|)
 throws|throws
 name|IOException

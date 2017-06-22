@@ -868,6 +868,99 @@ name|IOException
 block|{   }
 annotation|@
 name|Override
+DECL|method|loadAMRMProxyState ()
+specifier|public
+name|RecoveredAMRMProxyState
+name|loadAMRMProxyState
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Recovery not supported by this state store"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|storeAMRMProxyCurrentMasterKey (MasterKey key)
+specifier|public
+name|void
+name|storeAMRMProxyCurrentMasterKey
+parameter_list|(
+name|MasterKey
+name|key
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
+DECL|method|storeAMRMProxyNextMasterKey (MasterKey key)
+specifier|public
+name|void
+name|storeAMRMProxyNextMasterKey
+parameter_list|(
+name|MasterKey
+name|key
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
+DECL|method|storeAMRMProxyAppContextEntry (ApplicationAttemptId attempt, String key, byte[] data)
+specifier|public
+name|void
+name|storeAMRMProxyAppContextEntry
+parameter_list|(
+name|ApplicationAttemptId
+name|attempt
+parameter_list|,
+name|String
+name|key
+parameter_list|,
+name|byte
+index|[]
+name|data
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
+DECL|method|removeAMRMProxyAppContextEntry (ApplicationAttemptId attempt, String key)
+specifier|public
+name|void
+name|removeAMRMProxyAppContextEntry
+parameter_list|(
+name|ApplicationAttemptId
+name|attempt
+parameter_list|,
+name|String
+name|key
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
+DECL|method|removeAMRMProxyAppContext (ApplicationAttemptId attempt)
+specifier|public
+name|void
+name|removeAMRMProxyAppContext
+parameter_list|(
+name|ApplicationAttemptId
+name|attempt
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
 DECL|method|initStorage (Configuration conf)
 specifier|protected
 name|void

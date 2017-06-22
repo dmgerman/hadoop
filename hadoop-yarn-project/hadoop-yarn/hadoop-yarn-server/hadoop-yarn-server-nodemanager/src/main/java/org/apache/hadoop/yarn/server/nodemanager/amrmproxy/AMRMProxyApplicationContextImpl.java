@@ -203,7 +203,7 @@ name|AMRMTokenIdentifier
 argument_list|>
 name|localToken
 decl_stmt|;
-comment|/**    * Create an instance of the AMRMProxyApplicationContext.    *     * @param nmContext    * @param conf    * @param applicationAttemptId    * @param user    * @param amrmToken    */
+comment|/**    * Create an instance of the AMRMProxyApplicationContext.    *    * @param nmContext NM context    * @param conf configuration    * @param applicationAttemptId attempt id    * @param user user name of the application    * @param amrmToken amrmToken issued by RM    * @param localToken amrmToken issued by AMRMProxy    */
 DECL|method|AMRMProxyApplicationContextImpl (Context nmContext, Configuration conf, ApplicationAttemptId applicationAttemptId, String user, Token<AMRMTokenIdentifier> amrmToken, Token<AMRMTokenIdentifier> localToken)
 specifier|public
 name|AMRMProxyApplicationContextImpl
@@ -322,7 +322,7 @@ return|return
 name|amrmToken
 return|;
 block|}
-comment|/**    * Sets the application's AMRMToken.    */
+comment|/**    * Sets the application's AMRMToken.    *    * @param amrmToken amrmToken issued by RM    */
 DECL|method|setAMRMToken ( Token<AMRMTokenIdentifier> amrmToken)
 specifier|public
 specifier|synchronized
@@ -361,7 +361,7 @@ operator|.
 name|localToken
 return|;
 block|}
-comment|/**    * Sets the application's AMRMToken.    */
+comment|/**    * Sets the application's AMRMToken.    *    * @param localToken amrmToken issued by AMRMProxy    */
 DECL|method|setLocalAMRMToken ( Token<AMRMTokenIdentifier> localToken)
 specifier|public
 specifier|synchronized

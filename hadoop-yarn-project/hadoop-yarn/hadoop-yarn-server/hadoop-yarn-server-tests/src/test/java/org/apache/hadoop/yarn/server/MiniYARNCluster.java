@@ -74,6 +74,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|concurrent
 operator|.
 name|ConcurrentHashMap
@@ -5150,7 +5160,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|initializePipeline (ApplicationAttemptId applicationAttemptId, String user, Token<AMRMTokenIdentifier> amrmToken, Token<AMRMTokenIdentifier> localToken)
+DECL|method|initializePipeline (ApplicationAttemptId applicationAttemptId, String user, Token<AMRMTokenIdentifier> amrmToken, Token<AMRMTokenIdentifier> localToken, Map<String, byte[]> recoveredDataMap, boolean isRecovery)
 specifier|protected
 name|void
 name|initializePipeline
@@ -5172,6 +5182,18 @@ argument_list|<
 name|AMRMTokenIdentifier
 argument_list|>
 name|localToken
+parameter_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|byte
+index|[]
+argument_list|>
+name|recoveredDataMap
+parameter_list|,
+name|boolean
+name|isRecovery
 parameter_list|)
 block|{
 name|super
@@ -5185,6 +5207,10 @@ argument_list|,
 name|amrmToken
 argument_list|,
 name|localToken
+argument_list|,
+name|recoveredDataMap
+argument_list|,
+name|isRecovery
 argument_list|)
 expr_stmt|;
 name|RequestInterceptor
