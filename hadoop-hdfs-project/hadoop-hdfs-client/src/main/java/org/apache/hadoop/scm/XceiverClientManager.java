@@ -427,7 +427,7 @@ return|return
 name|clientCache
 return|;
 block|}
-comment|/**    * Acquires a SharedXceiverClient connected to a container capable of    * storing the specified key.    *    * If there is already a cached SharedXceiverClient, simply return    * the cached otherwise create a new one.    *    * @param pipeline the container pipeline for the client connection    * @return SharedXceiverClient connected to a container    * @throws IOException if an SharedXceiverClient cannot be acquired    */
+comment|/**    * Acquires a XceiverClientSpi connected to a container capable of    * storing the specified key.    *    * If there is already a cached XceiverClientSpi, simply return    * the cached otherwise create a new one.    *    * @param pipeline the container pipeline for the client connection    * @return XceiverClientSpi connected to a container    * @throws IOException if a XceiverClientSpi cannot be acquired    */
 DECL|method|acquireClient (Pipeline pipeline)
 specifier|public
 name|XceiverClientSpi
@@ -495,7 +495,7 @@ name|info
 return|;
 block|}
 block|}
-comment|/**    * Releases an SharedXceiverClient after use.    *    * @param client client to release    */
+comment|/**    * Releases a XceiverClientSpi after use.    *    * @param client client to release    */
 DECL|method|releaseClient (XceiverClientSpi client)
 specifier|public
 name|void
