@@ -1413,6 +1413,20 @@ literal|5
 operator|*
 name|MINUTE
 decl_stmt|;
+DECL|field|METRICS_SAMPLING_PERCENTAGE_KEY
+name|String
+name|METRICS_SAMPLING_PERCENTAGE_KEY
+init|=
+name|PREFIX
+operator|+
+literal|"metrics.sampling.percentage"
+decl_stmt|;
+DECL|field|METRICS_SAMPLING_PERCENTAGE_DEFAULT
+name|int
+name|METRICS_SAMPLING_PERCENTAGE_DEFAULT
+init|=
+literal|0
+decl_stmt|;
 block|}
 block|}
 comment|/** dfs.client.short.circuit configuration properties */
