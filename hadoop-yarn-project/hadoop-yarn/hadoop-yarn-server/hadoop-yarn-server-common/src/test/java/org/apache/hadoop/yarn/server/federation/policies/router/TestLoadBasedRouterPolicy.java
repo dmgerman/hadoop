@@ -554,6 +554,8 @@ name|getHomeSubcluster
 argument_list|(
 name|getApplicationSubmissionContext
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 comment|// check the "planted" best cluster is chosen

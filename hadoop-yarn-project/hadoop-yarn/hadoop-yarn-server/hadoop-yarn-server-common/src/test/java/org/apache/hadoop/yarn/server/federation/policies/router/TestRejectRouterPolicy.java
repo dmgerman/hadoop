@@ -218,6 +218,8 @@ name|getHomeSubcluster
 argument_list|(
 name|getApplicationSubmissionContext
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -291,6 +293,8 @@ operator|.
 name|getHomeSubcluster
 argument_list|(
 name|applicationSubmissionContext
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}

@@ -273,14 +273,22 @@ name|policyContext
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Simply picks a random active subcluster to start the AM (this does NOT    * depend on the weights in the policy).    *    * @param appSubmissionContext the context for the app being submitted    *          (ignored).    *    * @return a randomly chosen subcluster.    *    * @throws YarnException if there are no active subclusters.    */
-DECL|method|getHomeSubcluster ( ApplicationSubmissionContext appSubmissionContext)
+comment|/**    * Simply picks a random active subCluster to start the AM (this does NOT    * depend on the weights in the policy).    *    * @param appSubmissionContext the {@link ApplicationSubmissionContext} that    *          has to be routed to an appropriate subCluster for execution.    *    * @param blackListSubClusters the list of subClusters as identified by    *          {@link SubClusterId} to blackList from the selection of the home    *          subCluster.    *    * @return a randomly chosen subcluster.    *    * @throws YarnException if there are no active subclusters.    */
+annotation|@
+name|Override
+DECL|method|getHomeSubcluster ( ApplicationSubmissionContext appSubmissionContext, List<SubClusterId> blackListSubClusters)
 specifier|public
 name|SubClusterId
 name|getHomeSubcluster
 parameter_list|(
 name|ApplicationSubmissionContext
 name|appSubmissionContext
+parameter_list|,
+name|List
+argument_list|<
+name|SubClusterId
+argument_list|>
+name|blackListSubClusters
 parameter_list|)
 throws|throws
 name|YarnException
@@ -318,6 +326,31 @@ name|keySet
 argument_list|()
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|blackListSubClusters
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// Remove from the active SubClusters from StateStore the blacklisted ones
+for|for
+control|(
+name|SubClusterId
+name|scId
+range|:
+name|blackListSubClusters
+control|)
+block|{
+name|list
+operator|.
+name|remove
+argument_list|(
+name|scId
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 return|return
 name|list
 operator|.

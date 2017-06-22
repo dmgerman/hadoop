@@ -251,14 +251,22 @@ name|federationPolicyContext
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Simply picks from alphabetically-sorted active subclusters based on the    * hash of quey name. Jobs of the same queue will all be routed to the same    * sub-cluster, as far as the number of active sub-cluster and their names    * remain the same.    *    * @param appSubmissionContext the context for the app being submitted.    *    * @return a hash-based chosen subcluster.    *    * @throws YarnException if there are no active subclusters.    */
-DECL|method|getHomeSubcluster ( ApplicationSubmissionContext appSubmissionContext)
+comment|/**    * Simply picks from alphabetically-sorted active subclusters based on the    * hash of quey name. Jobs of the same queue will all be routed to the same    * sub-cluster, as far as the number of active sub-cluster and their names    * remain the same.    *    * @param appSubmissionContext the {@link ApplicationSubmissionContext} that    *          has to be routed to an appropriate subCluster for execution.    *    * @param blackListSubClusters the list of subClusters as identified by    *          {@link SubClusterId} to blackList from the selection of the home    *          subCluster.    *    * @return a hash-based chosen {@link SubClusterId} that will be the "home"    *         for this application.    *    * @throws YarnException if there are no active subclusters.    */
+annotation|@
+name|Override
+DECL|method|getHomeSubcluster ( ApplicationSubmissionContext appSubmissionContext, List<SubClusterId> blackListSubClusters)
 specifier|public
 name|SubClusterId
 name|getHomeSubcluster
 parameter_list|(
 name|ApplicationSubmissionContext
 name|appSubmissionContext
+parameter_list|,
+name|List
+argument_list|<
+name|SubClusterId
+argument_list|>
+name|blackListSubClusters
 parameter_list|)
 throws|throws
 name|YarnException
@@ -275,6 +283,31 @@ init|=
 name|getActiveSubclusters
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|blackListSubClusters
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// Remove from the active SubClusters from StateStore the blacklisted ones
+for|for
+control|(
+name|SubClusterId
+name|scId
+range|:
+name|blackListSubClusters
+control|)
+block|{
+name|activeSubclusters
+operator|.
+name|remove
+argument_list|(
+name|scId
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 name|validate
 argument_list|(
 name|appSubmissionContext

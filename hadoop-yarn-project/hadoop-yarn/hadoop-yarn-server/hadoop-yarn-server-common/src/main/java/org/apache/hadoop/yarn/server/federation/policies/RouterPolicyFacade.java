@@ -50,6 +50,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Map
 import|;
 end_import
@@ -638,14 +648,20 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * This method provides a wrapper of all policy functionalities for routing .    * Internally it manages configuration changes, and policy init/reinit.    *    * @param appSubmissionContext the application to route.    *    * @return the id of the subcluster that will be the "home" for this    *         application.    *    * @throws YarnException if there are issues initializing policies, or no    *           valid sub-cluster id could be found for this app.    */
-DECL|method|getHomeSubcluster ( ApplicationSubmissionContext appSubmissionContext)
+comment|/**    * This method provides a wrapper of all policy functionalities for routing .    * Internally it manages configuration changes, and policy init/reinit.    *    * @param appSubmissionContext the {@link ApplicationSubmissionContext} that    *          has to be routed to an appropriate subCluster for execution.    *    * @param blackListSubClusters the list of subClusters as identified by    *          {@link SubClusterId} to blackList from the selection of the home    *          subCluster.    *    * @return the {@link SubClusterId} that will be the "home" for this    *         application.    *    * @throws YarnException if there are issues initializing policies, or no    *           valid sub-cluster id could be found for this app.    */
+DECL|method|getHomeSubcluster ( ApplicationSubmissionContext appSubmissionContext, List<SubClusterId> blackListSubClusters)
 specifier|public
 name|SubClusterId
 name|getHomeSubcluster
 parameter_list|(
 name|ApplicationSubmissionContext
 name|appSubmissionContext
+parameter_list|,
+name|List
+argument_list|<
+name|SubClusterId
+argument_list|>
+name|blackListSubClusters
 parameter_list|)
 throws|throws
 name|YarnException
@@ -905,6 +921,8 @@ operator|.
 name|getHomeSubcluster
 argument_list|(
 name|appSubmissionContext
+argument_list|,
+name|blackListSubClusters
 argument_list|)
 return|;
 block|}

@@ -26,6 +26,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -165,7 +175,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This {@link FederationRouterPolicy} simply rejects all incoming requests.  * This is useful to prevent applications running in a queue to be run  * anywhere in the federated cluster.  */
+comment|/**  * This {@link FederationRouterPolicy} simply rejects all incoming requests.  * This is useful to prevent applications running in a queue to be run anywhere  * in the federated cluster.  */
 end_comment
 
 begin_class
@@ -210,14 +220,22 @@ name|federationPolicyContext
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * The policy always reject requests.    *    * @param appSubmissionContext the context for the app being submitted.    *    * @return (never).    *    * @throws YarnException (always) to prevent applications in this queue to    * be run anywhere in the federated cluster.    */
-DECL|method|getHomeSubcluster ( ApplicationSubmissionContext appSubmissionContext)
+comment|/**    * The policy always reject requests.    *    * @param appSubmissionContext the {@link ApplicationSubmissionContext} that    *          has to be routed to an appropriate subCluster for execution.    *    * @param blackListSubClusters the list of subClusters as identified by    *          {@link SubClusterId} to blackList from the selection of the home    *          subCluster.    *    * @return (never).    *    * @throws YarnException (always) to prevent applications in this queue to be    *           run anywhere in the federated cluster.    */
+annotation|@
+name|Override
+DECL|method|getHomeSubcluster ( ApplicationSubmissionContext appSubmissionContext, List<SubClusterId> blackListSubClusters)
 specifier|public
 name|SubClusterId
 name|getHomeSubcluster
 parameter_list|(
 name|ApplicationSubmissionContext
 name|appSubmissionContext
+parameter_list|,
+name|List
+argument_list|<
+name|SubClusterId
+argument_list|>
+name|blackListSubClusters
 parameter_list|)
 throws|throws
 name|YarnException
