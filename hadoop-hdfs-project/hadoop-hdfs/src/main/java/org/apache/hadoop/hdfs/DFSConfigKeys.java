@@ -6739,7 +6739,7 @@ specifier|final
 name|boolean
 name|DFS_USE_DFS_NETWORK_TOPOLOGY_DEFAULT
 init|=
-literal|false
+literal|true
 decl_stmt|;
 comment|// dfs.client.retry confs are moved to HdfsClientConfigKeys.Retry
 annotation|@

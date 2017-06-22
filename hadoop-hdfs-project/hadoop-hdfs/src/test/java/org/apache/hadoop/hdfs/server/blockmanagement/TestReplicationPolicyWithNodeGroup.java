@@ -24,6 +24,22 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_USE_DFS_NETWORK_TOPOLOGY_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -350,6 +366,17 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
+comment|// default is true, in this case this test will against DFSNetworkTopology
+comment|// but it run on NetworkTopologyWithNodeGroup, so set to false.
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|DFS_USE_DFS_NETWORK_TOPOLOGY_KEY
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
 name|conf
 operator|.
 name|set
