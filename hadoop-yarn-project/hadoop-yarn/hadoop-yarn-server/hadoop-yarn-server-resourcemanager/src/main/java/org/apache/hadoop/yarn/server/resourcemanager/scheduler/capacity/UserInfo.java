@@ -198,11 +198,21 @@ specifier|protected
 name|ResourcesInfo
 name|resources
 decl_stmt|;
+DECL|field|userWeight
+specifier|private
+name|float
+name|userWeight
+decl_stmt|;
+DECL|field|isActive
+specifier|private
+name|boolean
+name|isActive
+decl_stmt|;
 DECL|method|UserInfo ()
 name|UserInfo
 parameter_list|()
 block|{}
-DECL|method|UserInfo (String username, Resource resUsed, int activeApps, int pendingApps, Resource amResUsed, Resource resourceLimit, ResourceUsage resourceUsage)
+DECL|method|UserInfo (String username, Resource resUsed, int activeApps, int pendingApps, Resource amResUsed, Resource resourceLimit, ResourceUsage resourceUsage, float weight, boolean isActive)
 name|UserInfo
 parameter_list|(
 name|String
@@ -225,6 +235,12 @@ name|resourceLimit
 parameter_list|,
 name|ResourceUsage
 name|resourceUsage
+parameter_list|,
+name|float
+name|weight
+parameter_list|,
+name|boolean
+name|isActive
 parameter_list|)
 block|{
 name|this
@@ -284,6 +300,18 @@ name|ResourcesInfo
 argument_list|(
 name|resourceUsage
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|userWeight
+operator|=
+name|weight
+expr_stmt|;
+name|this
+operator|.
+name|isActive
+operator|=
+name|isActive
 expr_stmt|;
 block|}
 DECL|method|getUsername ()
@@ -354,6 +382,26 @@ parameter_list|()
 block|{
 return|return
 name|resources
+return|;
+block|}
+DECL|method|getUserWeight ()
+specifier|public
+name|float
+name|getUserWeight
+parameter_list|()
+block|{
+return|return
+name|userWeight
+return|;
+block|}
+DECL|method|getIsActive ()
+specifier|public
+name|boolean
+name|getIsActive
+parameter_list|()
+block|{
+return|return
+name|isActive
 return|;
 block|}
 block|}

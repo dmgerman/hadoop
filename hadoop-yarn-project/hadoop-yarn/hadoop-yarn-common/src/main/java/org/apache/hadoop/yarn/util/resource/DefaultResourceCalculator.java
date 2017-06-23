@@ -306,6 +306,37 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|divideAndCeil (Resource numerator, float denominator)
+specifier|public
+name|Resource
+name|divideAndCeil
+parameter_list|(
+name|Resource
+name|numerator
+parameter_list|,
+name|float
+name|denominator
+parameter_list|)
+block|{
+return|return
+name|Resources
+operator|.
+name|createResource
+argument_list|(
+name|divideAndCeil
+argument_list|(
+name|numerator
+operator|.
+name|getMemorySize
+argument_list|()
+argument_list|,
+name|denominator
+argument_list|)
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|normalize (Resource r, Resource minimumResource, Resource maximumResource, Resource stepFactor)
 specifier|public
 name|Resource

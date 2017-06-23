@@ -668,6 +668,20 @@ name|ConcurrentHashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
+DECL|field|activeUsersTimesWeights
+specifier|private
+name|float
+name|activeUsersTimesWeights
+init|=
+literal|0.0f
+decl_stmt|;
+DECL|field|allUsersTimesWeights
+specifier|private
+name|float
+name|allUsersTimesWeights
+init|=
+literal|0.0f
+decl_stmt|;
 comment|/**    * UsageRatios will store the total used resources ratio across all users of    * the queue.    */
 DECL|class|UsageRatios
 specifier|static
@@ -964,6 +978,11 @@ DECL|field|writeLock
 specifier|private
 name|WriteLock
 name|writeLock
+decl_stmt|;
+DECL|field|weight
+specifier|private
+name|float
+name|weight
 decl_stmt|;
 DECL|method|User (String name)
 specifier|public
@@ -1360,6 +1379,34 @@ operator|=
 name|resourceUsage
 expr_stmt|;
 block|}
+comment|/**      * @return the weight      */
+DECL|method|getWeight ()
+specifier|public
+name|float
+name|getWeight
+parameter_list|()
+block|{
+return|return
+name|weight
+return|;
+block|}
+comment|/**      * @param weight the weight to set      */
+DECL|method|setWeight (float weight)
+specifier|public
+name|void
+name|setWeight
+parameter_list|(
+name|float
+name|weight
+parameter_list|)
+block|{
+name|this
+operator|.
+name|weight
+operator|=
+name|weight
+expr_stmt|;
+block|}
 block|}
 comment|/* End of User class */
 comment|/**    * UsersManager Constructor.    *    * @param metrics    *          Queue Metrics    * @param lQueue    *          Leaf Queue Object    * @param labelManager    *          Label Manager instance    * @param scheduler    *          Capacity Scheduler Context    * @param resourceCalculator    *          rc    */
@@ -1649,6 +1696,16 @@ argument_list|(
 name|userName
 argument_list|)
 expr_stmt|;
+name|activeUsersTimesWeights
+operator|=
+name|sumActiveUsersTimesWeights
+argument_list|()
+expr_stmt|;
+name|allUsersTimesWeights
+operator|=
+name|sumAllUsersTimesWeights
+argument_list|()
+expr_stmt|;
 block|}
 finally|finally
 block|{
@@ -1764,6 +1821,21 @@ argument_list|,
 name|user
 argument_list|)
 expr_stmt|;
+name|user
+operator|.
+name|setWeight
+argument_list|(
+name|getUserWeightFromQueue
+argument_list|(
+name|userName
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|allUsersTimesWeights
+operator|=
+name|sumAllUsersTimesWeights
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * @return an ArrayList of UserInfo objects who are active in this queue    */
 DECL|method|getUsersInfo ()
@@ -1878,6 +1950,20 @@ name|user
 operator|.
 name|getResourceUsage
 argument_list|()
+argument_list|,
+name|user
+operator|.
+name|getWeight
+argument_list|()
+argument_list|,
+name|activeUsersSet
+operator|.
+name|contains
+argument_list|(
+name|user
+operator|.
+name|userName
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1894,6 +1980,43 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+DECL|method|getUserWeightFromQueue (String userName)
+specifier|private
+name|float
+name|getUserWeightFromQueue
+parameter_list|(
+name|String
+name|userName
+parameter_list|)
+block|{
+name|Float
+name|weight
+init|=
+name|lQueue
+operator|.
+name|getUserWeights
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|userName
+argument_list|)
+decl_stmt|;
+return|return
+operator|(
+name|weight
+operator|==
+literal|null
+operator|)
+condition|?
+literal|1.0f
+else|:
+name|weight
+operator|.
+name|floatValue
+argument_list|()
+return|;
 block|}
 comment|/**    * Get computed user-limit for all ACTIVE users in this queue. If cached data    * is invalidated due to resource change, this method also enforce to    * recompute user-limit.    *    * @param userName    *          Name of user who has submitted one/more app to given queue.    * @param clusterResource    *          total cluster resource    * @param nodePartition    *          partition name    * @param schedulingMode    *          scheduling mode    *          RESPECT_PARTITION_EXCLUSIVITY/IGNORE_PARTITION_EXCLUSIVITY    * @return Computed User Limit    */
 DECL|method|getComputedResourceLimitForActiveUsers (String userName, Resource clusterResource, String nodePartition, SchedulingMode schedulingMode)
@@ -1985,6 +2108,74 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
+name|Resource
+name|userLimitResource
+init|=
+name|userLimitPerSchedulingMode
+operator|.
+name|get
+argument_list|(
+name|schedulingMode
+argument_list|)
+decl_stmt|;
+name|User
+name|user
+init|=
+name|getUser
+argument_list|(
+name|userName
+argument_list|)
+decl_stmt|;
+name|float
+name|weight
+init|=
+operator|(
+name|user
+operator|==
+literal|null
+operator|)
+condition|?
+literal|1.0f
+else|:
+name|user
+operator|.
+name|getWeight
+argument_list|()
+decl_stmt|;
+name|Resource
+name|userSpecificUserLimit
+init|=
+name|Resources
+operator|.
+name|multiplyAndNormalizeDown
+argument_list|(
+name|resourceCalculator
+argument_list|,
+name|userLimitResource
+argument_list|,
+name|weight
+argument_list|,
+name|lQueue
+operator|.
+name|getMinimumAllocation
+argument_list|()
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|user
+operator|!=
+literal|null
+condition|)
+block|{
+name|user
+operator|.
+name|setUserResourceLimit
+argument_list|(
+name|userSpecificUserLimit
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|LOG
@@ -1997,14 +2188,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"userLimit is fetched. userLimit = "
+literal|"userLimit is fetched. userLimit="
 operator|+
-name|userLimitPerSchedulingMode
-operator|.
-name|get
-argument_list|(
-name|schedulingMode
-argument_list|)
+name|userLimitResource
+operator|+
+literal|", userSpecificUserLimit="
+operator|+
+name|userSpecificUserLimit
 operator|+
 literal|", schedulingMode="
 operator|+
@@ -2017,12 +2207,7 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|userLimitPerSchedulingMode
-operator|.
-name|get
-argument_list|(
-name|schedulingMode
-argument_list|)
+name|userSpecificUserLimit
 return|;
 block|}
 comment|/**    * Get computed user-limit for all users in this queue. If cached data is    * invalidated due to resource change, this method also enforce to recompute    * user-limit.    *    * @param userName    *          Name of user who has submitted one/more app to given queue.    * @param clusterResource    *          total cluster resource    * @param nodePartition    *          partition name    * @param schedulingMode    *          scheduling mode    *          RESPECT_PARTITION_EXCLUSIVITY/IGNORE_PARTITION_EXCLUSIVITY    * @return Computed User Limit    */
@@ -2115,6 +2300,59 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
+name|Resource
+name|userLimitResource
+init|=
+name|userLimitPerSchedulingMode
+operator|.
+name|get
+argument_list|(
+name|schedulingMode
+argument_list|)
+decl_stmt|;
+name|User
+name|user
+init|=
+name|getUser
+argument_list|(
+name|userName
+argument_list|)
+decl_stmt|;
+name|float
+name|weight
+init|=
+operator|(
+name|user
+operator|==
+literal|null
+operator|)
+condition|?
+literal|1.0f
+else|:
+name|user
+operator|.
+name|getWeight
+argument_list|()
+decl_stmt|;
+name|Resource
+name|userSpecificUserLimit
+init|=
+name|Resources
+operator|.
+name|multiplyAndNormalizeDown
+argument_list|(
+name|resourceCalculator
+argument_list|,
+name|userLimitResource
+argument_list|,
+name|weight
+argument_list|,
+name|lQueue
+operator|.
+name|getMinimumAllocation
+argument_list|()
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|LOG
@@ -2127,14 +2365,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"userLimit is fetched. userLimit = "
+literal|"userLimit is fetched. userLimit="
 operator|+
-name|userLimitPerSchedulingMode
-operator|.
-name|get
-argument_list|(
-name|schedulingMode
-argument_list|)
+name|userLimitResource
+operator|+
+literal|", userSpecificUserLimit="
+operator|+
+name|userSpecificUserLimit
 operator|+
 literal|", schedulingMode="
 operator|+
@@ -2147,12 +2384,7 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|userLimitPerSchedulingMode
-operator|.
-name|get
-argument_list|(
-name|schedulingMode
-argument_list|)
+name|userSpecificUserLimit
 return|;
 block|}
 comment|/*    * Recompute user-limit under following conditions: 1. cached user-limit does    * not exist in local map. 2. Total User count doesn't match with local cached    * version.    */
@@ -2617,7 +2849,7 @@ argument_list|,
 name|required
 argument_list|)
 expr_stmt|;
-comment|/*      * We want to base the userLimit calculation on max(queueCapacity,      * usedResources+required). However, we want usedResources to be based on      * the combined ratios of all the users in the queue so we use consumedRatio      * to calculate such. The calculation is dependent on how the      * resourceCalculator calculates the ratio between two Resources. DRF      * Example: If usedResources is greater than queueCapacity and users have      * the following [mem,cpu] usages: User1: [10%,20%] - Dominant resource is      * 20% User2: [30%,10%] - Dominant resource is 30% Then total consumedRatio      * is then 20+30=50%. Yes, this value can be larger than 100% but for the      * purposes of making sure all users are getting their fair share, it works.      */
+comment|/*      * We want to base the userLimit calculation on      * max(queueCapacity, usedResources+required). However, we want      * usedResources to be based on the combined ratios of all the users in the      * queue so we use consumedRatio to calculate such.      * The calculation is dependent on how the resourceCalculator calculates the      * ratio between two Resources. DRF Example: If usedResources is greater      * than queueCapacity and users have the following [mem,cpu] usages:      *      * User1: [10%,20%] - Dominant resource is 20%      * User2: [30%,10%] - Dominant resource is 30%      * Then total consumedRatio is then 20+30=50%. Yes, this value can be      * larger than 100% but for the purposes of making sure all users are      * getting their fair share, it works.      */
 name|Resource
 name|consumed
 init|=
@@ -2668,11 +2900,10 @@ name|required
 argument_list|)
 decl_stmt|;
 comment|/*      * Never allow a single user to take more than the queue's configured      * capacity * user-limit-factor. Also, the queue's configured capacity      * should be higher than queue-hard-limit * ulMin      */
-name|int
-name|usersCount
+name|float
+name|usersSummedByWeight
 init|=
-name|getNumActiveUsers
-argument_list|()
+name|activeUsersTimesWeights
 decl_stmt|;
 name|Resource
 name|resourceUsed
@@ -2695,15 +2926,12 @@ name|resourceUsed
 operator|=
 name|currentCapacity
 expr_stmt|;
-name|usersCount
+name|usersSummedByWeight
 operator|=
-name|users
-operator|.
-name|size
-argument_list|()
+name|allUsersTimesWeights
 expr_stmt|;
 block|}
-comment|/*      * User limit resource is determined by: max{currentCapacity / #activeUsers,      * currentCapacity * user-limit-percentage%)      */
+comment|/*      * User limit resource is determined by: max(currentCapacity / #activeUsers,      * currentCapacity * user-limit-percentage%)      */
 name|Resource
 name|userLimitResource
 init|=
@@ -2723,7 +2951,7 @@ name|resourceCalculator
 argument_list|,
 name|resourceUsed
 argument_list|,
-name|usersCount
+name|usersSummedByWeight
 argument_list|)
 argument_list|,
 name|Resources
@@ -2845,44 +3073,44 @@ literal|"User limit computation for "
 operator|+
 name|userName
 operator|+
-literal|" in queue "
+literal|",  in queue: "
 operator|+
 name|lQueue
 operator|.
 name|getQueueName
 argument_list|()
 operator|+
-literal|" userLimitPercent="
+literal|",  userLimitPercent="
 operator|+
 name|lQueue
 operator|.
 name|getUserLimit
 argument_list|()
 operator|+
-literal|" userLimitFactor="
+literal|",  userLimitFactor="
 operator|+
 name|lQueue
 operator|.
 name|getUserLimitFactor
 argument_list|()
 operator|+
-literal|" required: "
+literal|",  required="
 operator|+
 name|required
 operator|+
-literal|" consumed: "
+literal|",  consumed="
 operator|+
 name|consumed
 operator|+
-literal|" user-limit-resource: "
+literal|",  user-limit-resource="
 operator|+
 name|userLimitResource
 operator|+
-literal|" queueCapacity: "
+literal|",  queueCapacity="
 operator|+
 name|queueCapacity
 operator|+
-literal|" qconsumed: "
+literal|",  qconsumed="
 operator|+
 name|lQueue
 operator|.
@@ -2892,45 +3120,53 @@ operator|.
 name|getUsed
 argument_list|()
 operator|+
-literal|" currentCapacity: "
+literal|",  currentCapacity="
 operator|+
 name|currentCapacity
 operator|+
-literal|" activeUsers: "
+literal|",  activeUsers="
 operator|+
-name|usersCount
+name|usersSummedByWeight
 operator|+
-literal|" clusterCapacity: "
+literal|",  clusterCapacity="
 operator|+
 name|clusterResource
 operator|+
-literal|" resourceByLabel: "
+literal|",  resourceByLabel="
 operator|+
 name|partitionResource
 operator|+
-literal|" usageratio: "
+literal|",  usageratio="
 operator|+
 name|getUsageRatio
 argument_list|(
 name|nodePartition
 argument_list|)
 operator|+
-literal|" Partition: "
+literal|",  Partition="
 operator|+
 name|nodePartition
-argument_list|)
-expr_stmt|;
-block|}
+operator|+
+literal|",  resourceUsed="
+operator|+
+name|resourceUsed
+operator|+
+literal|",  maxUserLimit="
+operator|+
+name|maxUserLimit
+operator|+
+literal|",  userWeight="
+operator|+
 name|getUser
 argument_list|(
 name|userName
 argument_list|)
 operator|.
-name|setUserResourceLimit
-argument_list|(
-name|userLimitResource
+name|getWeight
+argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|userLimitResource
 return|;
@@ -3336,6 +3572,115 @@ name|get
 argument_list|()
 return|;
 block|}
+DECL|method|sumActiveUsersTimesWeights ()
+name|float
+name|sumActiveUsersTimesWeights
+parameter_list|()
+block|{
+name|float
+name|count
+init|=
+literal|0.0f
+decl_stmt|;
+try|try
+block|{
+name|this
+operator|.
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+for|for
+control|(
+name|String
+name|u
+range|:
+name|activeUsersSet
+control|)
+block|{
+name|count
+operator|+=
+name|getUser
+argument_list|(
+name|u
+argument_list|)
+operator|.
+name|getWeight
+argument_list|()
+expr_stmt|;
+block|}
+return|return
+name|count
+return|;
+block|}
+finally|finally
+block|{
+name|this
+operator|.
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+DECL|method|sumAllUsersTimesWeights ()
+name|float
+name|sumAllUsersTimesWeights
+parameter_list|()
+block|{
+name|float
+name|count
+init|=
+literal|0.0f
+decl_stmt|;
+try|try
+block|{
+name|this
+operator|.
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+for|for
+control|(
+name|String
+name|u
+range|:
+name|users
+operator|.
+name|keySet
+argument_list|()
+control|)
+block|{
+name|count
+operator|+=
+name|getUser
+argument_list|(
+name|u
+argument_list|)
+operator|.
+name|getWeight
+argument_list|()
+expr_stmt|;
+block|}
+return|return
+name|count
+return|;
+block|}
+finally|finally
+block|{
+name|this
+operator|.
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|updateActiveUsersResourceUsage (String userName)
 specifier|private
 name|void
@@ -3396,6 +3741,11 @@ name|add
 argument_list|(
 name|userName
 argument_list|)
+expr_stmt|;
+name|activeUsersTimesWeights
+operator|=
+name|sumActiveUsersTimesWeights
+argument_list|()
 expr_stmt|;
 comment|// Update total resource usage of active and non-active after user
 comment|// is moved from non-active to active.
@@ -3569,6 +3919,11 @@ name|add
 argument_list|(
 name|userName
 argument_list|)
+expr_stmt|;
+name|activeUsersTimesWeights
+operator|=
+name|sumActiveUsersTimesWeights
+argument_list|()
 expr_stmt|;
 comment|// Update total resource usage of active and non-active after user is
 comment|// moved from active to non-active.
@@ -3942,6 +4297,81 @@ operator|.
 name|getAllUsed
 argument_list|()
 argument_list|)
+expr_stmt|;
+block|}
+block|}
+DECL|method|updateUserWeights ()
+specifier|public
+name|void
+name|updateUserWeights
+parameter_list|()
+block|{
+try|try
+block|{
+name|this
+operator|.
+name|writeLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+for|for
+control|(
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|String
+argument_list|,
+name|User
+argument_list|>
+name|ue
+range|:
+name|users
+operator|.
+name|entrySet
+argument_list|()
+control|)
+block|{
+name|ue
+operator|.
+name|getValue
+argument_list|()
+operator|.
+name|setWeight
+argument_list|(
+name|getUserWeightFromQueue
+argument_list|(
+name|ue
+operator|.
+name|getKey
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+name|activeUsersTimesWeights
+operator|=
+name|sumActiveUsersTimesWeights
+argument_list|()
+expr_stmt|;
+name|allUsersTimesWeights
+operator|=
+name|sumAllUsersTimesWeights
+argument_list|()
+expr_stmt|;
+name|userLimitNeedsRecompute
+argument_list|()
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|this
+operator|.
+name|writeLock
+operator|.
+name|unlock
+argument_list|()
 expr_stmt|;
 block|}
 block|}

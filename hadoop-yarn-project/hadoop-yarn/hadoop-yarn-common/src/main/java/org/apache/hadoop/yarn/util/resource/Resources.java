@@ -1331,6 +1331,33 @@ name|rhs
 argument_list|)
 return|;
 block|}
+DECL|method|divideAndCeil ( ResourceCalculator resourceCalculator, Resource lhs, float rhs)
+specifier|public
+specifier|static
+name|Resource
+name|divideAndCeil
+parameter_list|(
+name|ResourceCalculator
+name|resourceCalculator
+parameter_list|,
+name|Resource
+name|lhs
+parameter_list|,
+name|float
+name|rhs
+parameter_list|)
+block|{
+return|return
+name|resourceCalculator
+operator|.
+name|divideAndCeil
+argument_list|(
+name|lhs
+argument_list|,
+name|rhs
+argument_list|)
+return|;
+block|}
 DECL|method|equals (Resource lhs, Resource rhs)
 specifier|public
 specifier|static

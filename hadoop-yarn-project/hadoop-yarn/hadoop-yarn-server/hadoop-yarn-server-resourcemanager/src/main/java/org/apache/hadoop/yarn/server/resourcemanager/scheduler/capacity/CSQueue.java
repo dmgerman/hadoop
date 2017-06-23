@@ -60,6 +60,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Set
 import|;
 end_import
@@ -1074,6 +1084,17 @@ comment|/**    * Get priority of queue    * @return queue priority    */
 DECL|method|getPriority ()
 name|Priority
 name|getPriority
+parameter_list|()
+function_decl|;
+comment|/**    * Get a map of usernames and weights    * @return map of usernames and corresponding weight    */
+DECL|method|getUserWeights ()
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Float
+argument_list|>
+name|getUserWeights
 parameter_list|()
 function_decl|;
 block|}

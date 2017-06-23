@@ -4823,6 +4823,9 @@ operator|.
 name|getUserAMResourceLimitPerPartition
 argument_list|(
 name|appAMNodePartitionName
+argument_list|,
+name|getUser
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
