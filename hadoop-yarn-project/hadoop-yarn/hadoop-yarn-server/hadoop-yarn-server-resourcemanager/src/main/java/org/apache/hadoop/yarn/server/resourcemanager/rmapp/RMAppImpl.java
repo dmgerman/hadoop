@@ -7725,6 +7725,14 @@ name|RMAppEvent
 name|event
 parameter_list|)
 block|{
+if|if
+condition|(
+name|event
+operator|.
+name|doStoreAppInfo
+argument_list|()
+condition|)
+block|{
 name|app
 operator|.
 name|rememberTargetTransitionsAndStoreState
@@ -7738,6 +7746,7 @@ argument_list|,
 name|stateToBeStored
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|class|AttemptUnregisteredTransition

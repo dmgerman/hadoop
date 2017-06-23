@@ -1111,6 +1111,11 @@ specifier|private
 name|int
 name|zkSessionTimeout
 decl_stmt|;
+DECL|field|zknodeLimit
+specifier|private
+name|int
+name|zknodeLimit
+decl_stmt|;
 comment|/* ACL and auth info */
 DECL|field|zkAcl
 specifier|private
@@ -1498,6 +1503,21 @@ argument_list|,
 name|YarnConfiguration
 operator|.
 name|DEFAULT_RM_ZK_TIMEOUT_MS
+argument_list|)
+expr_stmt|;
+name|zknodeLimit
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_ZK_ZNODE_SIZE_LIMIT_BYTES
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_ZK_ZNODE_SIZE_LIMIT_BYTES
 argument_list|)
 expr_stmt|;
 name|appIdNodeSplitIndex
@@ -3748,6 +3768,15 @@ operator|.
 name|toByteArray
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|appStateData
+operator|.
+name|length
+operator|<=
+name|zknodeLimit
+condition|)
+block|{
 name|safeCreate
 argument_list|(
 name|nodeCreatePath
@@ -3761,6 +3790,47 @@ operator|.
 name|PERSISTENT
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Application state data size for "
+operator|+
+name|appId
+operator|+
+literal|" is "
+operator|+
+name|appStateData
+operator|.
+name|length
+argument_list|)
+expr_stmt|;
+block|}
+throw|throw
+operator|new
+name|StoreLimitException
+argument_list|(
+literal|"Application "
+operator|+
+name|appId
+operator|+
+literal|" exceeds the maximum allowed size for application data. "
+operator|+
+literal|"See yarn.resourcemanager.zk-max-znode-size.bytes."
+argument_list|)
+throw|;
+block|}
 block|}
 annotation|@
 name|Override
