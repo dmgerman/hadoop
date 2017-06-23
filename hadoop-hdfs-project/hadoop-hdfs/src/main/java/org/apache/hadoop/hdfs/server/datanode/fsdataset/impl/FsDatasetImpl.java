@@ -3412,7 +3412,7 @@ name|storageType
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Removes a set of volumes from FsDataset.    * @param storageLocationsToRemove a set of    * {@link StorageLocation}s for each volume.    * @param clearFailure set true to clear failure information.    */
+comment|/**    * Removes a set of volumes from FsDataset.    * @param storageLocsToRemove a set of    * {@link StorageLocation}s for each volume.    * @param clearFailure set true to clear failure information.    */
 annotation|@
 name|Override
 DECL|method|removeVolumes ( final Collection<StorageLocation> storageLocsToRemove, boolean clearFailure)
@@ -12299,7 +12299,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to repot bad block "
+literal|"Failed to report bad block "
 operator|+
 name|corruptBlock
 argument_list|,
