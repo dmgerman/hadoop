@@ -1533,9 +1533,11 @@ name|this
 operator|.
 name|quota
 operator|=
-name|Long
+name|StringUtils
 operator|.
-name|parseLong
+name|TraditionalBinaryPrefix
+operator|.
+name|string2long
 argument_list|(
 name|parameters
 operator|.
@@ -5249,9 +5251,11 @@ try|try
 block|{
 name|bandwidth
 operator|=
-name|Long
+name|StringUtils
 operator|.
-name|parseLong
+name|TraditionalBinaryPrefix
+operator|.
+name|string2long
 argument_list|(
 name|argv
 index|[
