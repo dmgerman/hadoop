@@ -3800,7 +3800,7 @@ name|zkAcl
 argument_list|,
 name|stat
 operator|.
-name|getVersion
+name|getAversion
 argument_list|()
 argument_list|)
 expr_stmt|;
