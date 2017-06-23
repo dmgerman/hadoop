@@ -2239,6 +2239,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|// Configure Azure storage session.
+name|configureAzureStorageSession
+argument_list|()
+expr_stmt|;
 comment|// Start an Azure storage session.
 comment|//
 name|createAzureStorageSession
@@ -3196,10 +3200,6 @@ name|isAnonymousCredentials
 operator|=
 literal|true
 expr_stmt|;
-comment|// Configure Azure storage session.
-name|configureAzureStorageSession
-argument_list|()
-expr_stmt|;
 block|}
 DECL|method|connectUsingCredentials (String accountName, StorageCredentials credentials, String containerName)
 specifier|private
@@ -3307,10 +3307,6 @@ name|credentials
 operator|instanceof
 name|StorageCredentialsAccountAndKey
 expr_stmt|;
-comment|// Configure Azure storage session.
-name|configureAzureStorageSession
-argument_list|()
-expr_stmt|;
 block|}
 comment|/**    * Method to set up the Storage Interaction layer in Secure mode.    * @param accountName - Storage account provided in the initializer    * @param containerName - Container name provided in the initializer    * @param sessionUri - URI provided in the initializer    */
 DECL|method|connectToAzureStorageInSecureMode (String accountName, String containerName, URI sessionUri)
@@ -3392,9 +3388,6 @@ expr_stmt|;
 name|canCreateOrModifyContainer
 operator|=
 literal|true
-expr_stmt|;
-name|configureAzureStorageSession
-argument_list|()
 expr_stmt|;
 name|tolerateOobAppends
 operator|=
