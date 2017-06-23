@@ -673,6 +673,13 @@ operator|.
 name|listFiles
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|files
+operator|!=
+literal|null
+condition|)
+block|{
 for|for
 control|(
 name|File
@@ -686,6 +693,7 @@ argument_list|(
 name|child
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}

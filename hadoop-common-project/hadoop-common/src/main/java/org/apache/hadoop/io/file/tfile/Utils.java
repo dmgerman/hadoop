@@ -1345,9 +1345,9 @@ operator|(
 name|major
 operator|<<
 literal|16
+operator|)
 operator|+
 name|minor
-operator|)
 return|;
 block|}
 block|}

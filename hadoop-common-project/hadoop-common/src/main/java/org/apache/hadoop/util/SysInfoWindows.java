@@ -758,6 +758,7 @@ annotation|@
 name|Override
 DECL|method|getNumProcessors ()
 specifier|public
+specifier|synchronized
 name|int
 name|getNumProcessors
 parameter_list|()
@@ -820,6 +821,7 @@ annotation|@
 name|Override
 DECL|method|getCpuUsagePercentage ()
 specifier|public
+specifier|synchronized
 name|float
 name|getCpuUsagePercentage
 parameter_list|()
@@ -856,6 +858,7 @@ annotation|@
 name|Override
 DECL|method|getNumVCoresUsed ()
 specifier|public
+specifier|synchronized
 name|float
 name|getNumVCoresUsed
 parameter_list|()
