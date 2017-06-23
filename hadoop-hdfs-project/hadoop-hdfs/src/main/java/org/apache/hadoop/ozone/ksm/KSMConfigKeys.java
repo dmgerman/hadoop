@@ -56,7 +56,7 @@ specifier|final
 name|String
 name|OZONE_KSM_HANDLER_COUNT_KEY
 init|=
-literal|"ozone.scm.handler.count.key"
+literal|"ozone.ksm.handler.count.key"
 decl_stmt|;
 DECL|field|OZONE_KSM_HANDLER_COUNT_DEFAULT
 specifier|public
