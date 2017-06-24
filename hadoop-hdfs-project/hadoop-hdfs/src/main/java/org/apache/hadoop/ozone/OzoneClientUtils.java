@@ -1534,7 +1534,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Retrieve the hostname, trying the supplied config keys in order.    * Each config value may be absent, or if present in the format    * host:port (the :port part is optional).    *    * @param conf  - Conf    * @param keys a list of configuration key names.    *    * @return first hostname component found from the given keys, or absent.    * @throws IllegalArgumentException if any values are not in the 'host'    *             or host:port format.    */
-DECL|method|getHostNameFromConfigKeys ( Configuration conf, String... keys)
+DECL|method|getHostNameFromConfigKeys (Configuration conf, String... keys)
+specifier|public
 specifier|static
 name|Optional
 argument_list|<
@@ -2313,11 +2314,11 @@ argument_list|)
 return|;
 block|}
 comment|/**    * After starting an RPC server, updates configuration with the actual    * listening address of that server. The listening address may be different    * from the configured address if, for example, the configured address uses    * port 0 to request use of an ephemeral port.    *    * @param conf configuration to update    * @param rpcAddressKey configuration key for RPC server address    * @param addr configured address    * @param rpcServer started RPC server.    */
-DECL|method|updateListenAddress ( OzoneConfiguration conf, String rpcAddressKey, InetSocketAddress addr, RPC.Server rpcServer)
+DECL|method|updateRPCListenAddress ( OzoneConfiguration conf, String rpcAddressKey, InetSocketAddress addr, RPC.Server rpcServer)
 specifier|public
 specifier|static
 name|InetSocketAddress
-name|updateListenAddress
+name|updateRPCListenAddress
 parameter_list|(
 name|OzoneConfiguration
 name|conf
@@ -2334,14 +2335,42 @@ name|Server
 name|rpcServer
 parameter_list|)
 block|{
-name|InetSocketAddress
-name|listenAddr
-init|=
+return|return
+name|updateListenAddress
+argument_list|(
+name|conf
+argument_list|,
+name|rpcAddressKey
+argument_list|,
+name|addr
+argument_list|,
 name|rpcServer
 operator|.
 name|getListenerAddress
 argument_list|()
-decl_stmt|;
+argument_list|)
+return|;
+block|}
+comment|/**    * After starting an server, updates configuration with the actual    * listening address of that server. The listening address may be different    * from the configured address if, for example, the configured address uses    * port 0 to request use of an ephemeral port.    *    * @param conf       configuration to update    * @param addressKey configuration key for RPC server address    * @param addr       configured address    * @param listenAddr the real listening address.    */
+DECL|method|updateListenAddress (OzoneConfiguration conf, String addressKey, InetSocketAddress addr, InetSocketAddress listenAddr)
+specifier|public
+specifier|static
+name|InetSocketAddress
+name|updateListenAddress
+parameter_list|(
+name|OzoneConfiguration
+name|conf
+parameter_list|,
+name|String
+name|addressKey
+parameter_list|,
+name|InetSocketAddress
+name|addr
+parameter_list|,
+name|InetSocketAddress
+name|listenAddr
+parameter_list|)
+block|{
 name|InetSocketAddress
 name|updatedAddr
 init|=
@@ -2363,7 +2392,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|rpcAddressKey
+name|addressKey
 argument_list|,
 name|listenAddr
 operator|.

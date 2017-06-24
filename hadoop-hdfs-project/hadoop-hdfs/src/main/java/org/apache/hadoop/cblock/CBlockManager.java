@@ -1017,7 +1017,7 @@ name|cblockServiceRpcAddress
 init|=
 name|OzoneClientUtils
 operator|.
-name|updateListenAddress
+name|updateRPCListenAddress
 argument_list|(
 name|conf
 argument_list|,
@@ -1090,7 +1090,7 @@ name|cblockServerRpcAddress
 init|=
 name|OzoneClientUtils
 operator|.
-name|updateListenAddress
+name|updateRPCListenAddress
 argument_list|(
 name|conf
 argument_list|,

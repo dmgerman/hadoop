@@ -1311,6 +1311,12 @@ specifier|final
 name|InetSocketAddress
 name|blockRpcAddress
 decl_stmt|;
+DECL|field|httpServer
+specifier|private
+specifier|final
+name|StorageContainerManagerHttpServer
+name|httpServer
+decl_stmt|;
 comment|/** SCM mxbean. */
 DECL|field|scmInfoBeanName
 specifier|private
@@ -1546,7 +1552,7 @@ name|datanodeRpcAddress
 operator|=
 name|OzoneClientUtils
 operator|.
-name|updateListenAddress
+name|updateRPCListenAddress
 argument_list|(
 name|conf
 argument_list|,
@@ -1606,7 +1612,7 @@ name|clientRpcAddress
 operator|=
 name|OzoneClientUtils
 operator|.
-name|updateListenAddress
+name|updateRPCListenAddress
 argument_list|(
 name|conf
 argument_list|,
@@ -1666,7 +1672,7 @@ name|blockRpcAddress
 operator|=
 name|OzoneClientUtils
 operator|.
-name|updateListenAddress
+name|updateRPCListenAddress
 argument_list|(
 name|conf
 argument_list|,
@@ -1675,6 +1681,14 @@ argument_list|,
 name|scmBlockAddress
 argument_list|,
 name|blockRpcServer
+argument_list|)
+expr_stmt|;
+name|httpServer
+operator|=
+operator|new
+name|StorageContainerManagerHttpServer
+argument_list|(
+name|conf
 argument_list|)
 expr_stmt|;
 name|registerMXBean
@@ -2413,6 +2427,8 @@ specifier|public
 name|void
 name|start
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|LOG
 operator|.
@@ -2465,6 +2481,11 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
+name|httpServer
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Stop service.    */
 DECL|method|stop ()
@@ -2472,6 +2493,8 @@ specifier|public
 name|void
 name|stop
 parameter_list|()
+block|{
+try|try
 block|{
 name|LOG
 operator|.
@@ -2485,6 +2508,25 @@ operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|ex
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Storage Container Manager blockRpcServer stop failed."
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
+block|}
+try|try
+block|{
 name|LOG
 operator|.
 name|info
@@ -2497,6 +2539,25 @@ operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|ex
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Storage Container Manager clientRpcServer stop failed."
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
+block|}
+try|try
+block|{
 name|LOG
 operator|.
 name|info
@@ -2509,6 +2570,23 @@ operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|ex
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Storage Container Manager httpServer stop failed."
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
+block|}
 name|unregisterMXBean
 argument_list|()
 expr_stmt|;

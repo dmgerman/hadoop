@@ -611,6 +611,12 @@ specifier|final
 name|KSMMetrics
 name|metrics
 decl_stmt|;
+DECL|field|httpServer
+specifier|private
+specifier|final
+name|KeySpaceManagerHttpServer
+name|httpServer
+decl_stmt|;
 DECL|method|KeySpaceManager (OzoneConfiguration conf)
 specifier|public
 name|KeySpaceManager
@@ -693,7 +699,7 @@ name|ksmRpcAddress
 operator|=
 name|OzoneClientUtils
 operator|.
-name|updateListenAddress
+name|updateRPCListenAddress
 argument_list|(
 name|conf
 argument_list|,
@@ -748,6 +754,14 @@ name|conf
 argument_list|)
 argument_list|,
 name|metadataManager
+argument_list|)
+expr_stmt|;
+name|httpServer
+operator|=
+operator|new
+name|KeySpaceManagerHttpServer
+argument_list|(
+name|conf
 argument_list|)
 expr_stmt|;
 block|}
@@ -1083,6 +1097,8 @@ specifier|public
 name|void
 name|start
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|LOG
 operator|.
@@ -1102,6 +1118,11 @@ name|start
 argument_list|()
 expr_stmt|;
 name|ksmRpcServer
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+name|httpServer
 operator|.
 name|start
 argument_list|()
@@ -1126,16 +1147,21 @@ operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+name|httpServer
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
+name|Exception
 name|e
 parameter_list|)
 block|{
 name|LOG
 operator|.
-name|info
+name|error
 argument_list|(
 literal|"Key Space Manager stop failed."
 argument_list|,

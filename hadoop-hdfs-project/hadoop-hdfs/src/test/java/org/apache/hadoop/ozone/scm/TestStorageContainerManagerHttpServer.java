@@ -1,10 +1,10 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *  *     http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
+comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *<p>  * http://www.apache.org/licenses/LICENSE-2.0  *<p>  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.namenode
+DECL|package|org.apache.hadoop.ozone.scm
 package|package
 name|org
 operator|.
@@ -12,73 +12,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|ozone
 operator|.
-name|server
-operator|.
-name|namenode
+name|scm
 package|;
 end_package
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|File
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|InetSocketAddress
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|URL
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|URLConnection
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Arrays
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Collection
-import|;
-end_import
 
 begin_import
 import|import
@@ -190,6 +128,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|scm
+operator|.
+name|ScmConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|ssl
@@ -290,6 +242,70 @@ name|Parameters
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|File
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|InetSocketAddress
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|URL
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|URLConnection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Collection
+import|;
+end_import
+
+begin_comment
+comment|/**  * Test http server os SCM with various HTTP option.  */
+end_comment
+
 begin_class
 annotation|@
 name|RunWith
@@ -300,10 +316,10 @@ name|Parameterized
 operator|.
 name|class
 argument_list|)
-DECL|class|TestNameNodeHttpServer
+DECL|class|TestStorageContainerManagerHttpServer
 specifier|public
 class|class
-name|TestNameNodeHttpServer
+name|TestStorageContainerManagerHttpServer
 block|{
 DECL|field|BASEDIR
 specifier|private
@@ -316,7 +332,7 @@ name|GenericTestUtils
 operator|.
 name|getTempPath
 argument_list|(
-name|TestNameNodeHttpServer
+name|TestStorageContainerManagerHttpServer
 operator|.
 name|class
 operator|.
@@ -348,9 +364,9 @@ specifier|static
 name|URLConnectionFactory
 name|connectionFactory
 decl_stmt|;
+DECL|method|policy ()
 annotation|@
 name|Parameters
-DECL|method|policy ()
 specifier|public
 specifier|static
 name|Collection
@@ -413,9 +429,9 @@ operator|.
 name|Policy
 name|policy
 decl_stmt|;
-DECL|method|TestNameNodeHttpServer (Policy policy)
+DECL|method|TestStorageContainerManagerHttpServer (Policy policy)
 specifier|public
-name|TestNameNodeHttpServer
+name|TestStorageContainerManagerHttpServer
 parameter_list|(
 name|Policy
 name|policy
@@ -431,9 +447,9 @@ operator|=
 name|policy
 expr_stmt|;
 block|}
+DECL|method|setUp ()
 annotation|@
 name|BeforeClass
-DECL|method|setUp ()
 specifier|public
 specifier|static
 name|void
@@ -486,6 +502,18 @@ name|KeyStoreTestUtil
 operator|.
 name|getClasspathDir
 argument_list|(
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|TestNameNodeHttpServer
 operator|.
 name|class
@@ -542,9 +570,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|tearDown ()
 annotation|@
 name|AfterClass
-DECL|method|tearDown ()
 specifier|public
 specifier|static
 name|void
@@ -574,9 +602,9 @@ name|sslConfDir
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|testHttpPolicy ()
 annotation|@
 name|Test
-DECL|method|testHttpPolicy ()
 specifier|public
 name|void
 name|testHttpPolicy
@@ -602,9 +630,9 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFSConfigKeys
+name|ScmConfigKeys
 operator|.
-name|DFS_NAMENODE_HTTPS_ADDRESS_KEY
+name|OZONE_SCM_HTTPS_ADDRESS_KEY
 argument_list|,
 literal|"localhost:0"
 argument_list|)
@@ -621,7 +649,7 @@ argument_list|,
 literal|0
 argument_list|)
 decl_stmt|;
-name|NameNodeHttpServer
+name|StorageContainerManagerHttpServer
 name|server
 init|=
 literal|null
@@ -631,13 +659,9 @@ block|{
 name|server
 operator|=
 operator|new
-name|NameNodeHttpServer
+name|StorageContainerManagerHttpServer
 argument_list|(
 name|conf
-argument_list|,
-literal|null
-argument_list|,
-name|addr
 argument_list|)
 expr_stmt|;
 name|server
@@ -793,6 +817,8 @@ name|getHostPortString
 argument_list|(
 name|addr
 argument_list|)
+operator|+
+literal|"/jmx"
 argument_list|)
 decl_stmt|;
 name|URLConnection
