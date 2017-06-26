@@ -2885,7 +2885,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * The number of work items that are pending to be replicated    */
+comment|/**    * The number of work items that are pending to be replicated.    */
 DECL|method|getNumberOfBlocksToBeReplicated ()
 name|int
 name|getNumberOfBlocksToBeReplicated
@@ -2900,7 +2900,7 @@ name|size
 argument_list|()
 return|;
 block|}
-comment|/**    * The number of work items that are pending to be replicated    */
+comment|/**    * The number of work items that are pending to be reconstructed.    */
 annotation|@
 name|VisibleForTesting
 DECL|method|getNumberOfBlocksToBeErasureCoded ()
