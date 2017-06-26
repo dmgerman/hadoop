@@ -426,6 +426,16 @@ operator|.
 name|NM_CPU_RESOURCE_ENABLED
 argument_list|)
 expr_stmt|;
+comment|// Ignore all Router Federation variables
+name|configurationPrefixToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|ROUTER_CLIENTRM_SUBMIT_RETRY
+argument_list|)
+expr_stmt|;
 comment|// Set by container-executor.cfg
 name|configurationPrefixToSkipCompare
 operator|.

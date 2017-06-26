@@ -1345,22 +1345,19 @@ operator|.
 name|clientrmService
 return|;
 block|}
-annotation|@
-name|Before
-DECL|method|setUp ()
-specifier|public
-name|void
-name|setUp
+DECL|method|createConfiguration ()
+specifier|protected
+name|YarnConfiguration
+name|createConfiguration
 parameter_list|()
 block|{
-name|this
-operator|.
-name|conf
-operator|=
+name|YarnConfiguration
+name|config
+init|=
 operator|new
 name|YarnConfiguration
 argument_list|()
-expr_stmt|;
+decl_stmt|;
 name|String
 name|mockPassThroughInterceptorClass
 init|=
@@ -1374,9 +1371,7 @@ decl_stmt|;
 comment|// Create a request intercepter pipeline for testing. The last one in the
 comment|// chain will call the mock resource manager. The others in the chain will
 comment|// simply forward it to the next one in the chain
-name|this
-operator|.
-name|conf
+name|config
 operator|.
 name|set
 argument_list|(
@@ -1404,9 +1399,7 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
-name|conf
+name|config
 operator|.
 name|setInt
 argument_list|(
@@ -1416,6 +1409,25 @@ name|ROUTER_PIPELINE_CACHE_MAX_SIZE
 argument_list|,
 name|TEST_MAX_CACHE_SIZE
 argument_list|)
+expr_stmt|;
+return|return
+name|config
+return|;
+block|}
+annotation|@
+name|Before
+DECL|method|setUp ()
+specifier|public
+name|void
+name|setUp
+parameter_list|()
+block|{
+name|this
+operator|.
+name|conf
+operator|=
+name|createConfiguration
+argument_list|()
 expr_stmt|;
 name|this
 operator|.
@@ -1448,6 +1460,32 @@ operator|=
 name|createAndStartRouterClientRMService
 argument_list|()
 expr_stmt|;
+block|}
+DECL|method|setUpConfig ()
+specifier|public
+name|void
+name|setUpConfig
+parameter_list|()
+block|{
+name|this
+operator|.
+name|conf
+operator|=
+name|createConfiguration
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|getConf ()
+specifier|protected
+name|Configuration
+name|getConf
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|conf
+return|;
 block|}
 annotation|@
 name|After

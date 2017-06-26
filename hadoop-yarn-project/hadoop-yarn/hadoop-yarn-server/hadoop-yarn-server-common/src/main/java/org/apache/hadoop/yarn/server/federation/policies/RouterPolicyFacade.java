@@ -112,6 +112,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -421,11 +435,11 @@ name|FederationRouterPolicy
 argument_list|>
 name|globalPolicyMap
 decl_stmt|;
-DECL|method|RouterPolicyFacade (YarnConfiguration conf, FederationStateStoreFacade facade, SubClusterResolver resolver, SubClusterId homeSubcluster)
+DECL|method|RouterPolicyFacade (Configuration conf, FederationStateStoreFacade facade, SubClusterResolver resolver, SubClusterId homeSubcluster)
 specifier|public
 name|RouterPolicyFacade
 parameter_list|(
-name|YarnConfiguration
+name|Configuration
 name|conf
 parameter_list|,
 name|FederationStateStoreFacade

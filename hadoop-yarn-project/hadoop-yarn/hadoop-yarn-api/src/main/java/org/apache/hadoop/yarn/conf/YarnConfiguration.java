@@ -9033,6 +9033,27 @@ literal|"org.apache.hadoop.yarn.server.router.rmadmin."
 operator|+
 literal|"DefaultRMAdminRequestInterceptor"
 decl_stmt|;
+comment|/**    * The number of retries for GetNewApplication and SubmitApplication in    * {@code FederationClientInterceptor}.    */
+DECL|field|ROUTER_CLIENTRM_SUBMIT_RETRY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ROUTER_CLIENTRM_SUBMIT_RETRY
+init|=
+name|ROUTER_PREFIX
+operator|+
+literal|"submit.retry"
+decl_stmt|;
+DECL|field|DEFAULT_ROUTER_CLIENTRM_SUBMIT_RETRY
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_ROUTER_CLIENTRM_SUBMIT_RETRY
+init|=
+literal|3
+decl_stmt|;
 comment|////////////////////////////////
 comment|// Other Configs
 comment|////////////////////////////////

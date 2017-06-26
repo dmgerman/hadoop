@@ -30,6 +30,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -85,6 +95,26 @@ operator|.
 name|exceptions
 operator|.
 name|YarnException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|federation
+operator|.
+name|policies
+operator|.
+name|FederationPolicyUtils
 import|;
 end_import
 
@@ -252,6 +282,25 @@ init|=
 name|getActiveSubclusters
 argument_list|()
 decl_stmt|;
+name|FederationPolicyUtils
+operator|.
+name|validateSubClusterAvailability
+argument_list|(
+operator|new
+name|ArrayList
+argument_list|<
+name|SubClusterId
+argument_list|>
+argument_list|(
+name|activeSubclusters
+operator|.
+name|keySet
+argument_list|()
+argument_list|)
+argument_list|,
+name|blacklist
+argument_list|)
+expr_stmt|;
 comment|// note: we cannot pre-compute the weights, as the set of activeSubcluster
 comment|// changes dynamically (and this would unfairly spread the load to
 comment|// sub-clusters adjacent to an inactive one), hence we need to count/scan

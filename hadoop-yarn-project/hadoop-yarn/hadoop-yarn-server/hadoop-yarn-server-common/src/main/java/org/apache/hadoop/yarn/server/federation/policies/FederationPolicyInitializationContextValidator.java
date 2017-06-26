@@ -147,7 +147,7 @@ throw|throw
 operator|new
 name|FederationPolicyInitializationException
 argument_list|(
-literal|"The FederationStateStoreFacase provided is null. Cannot"
+literal|"The FederationSubclusterResolver provided is null. Cannot"
 operator|+
 literal|" reinitalize successfully."
 argument_list|)
