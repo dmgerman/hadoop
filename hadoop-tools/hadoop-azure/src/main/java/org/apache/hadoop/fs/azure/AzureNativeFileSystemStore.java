@@ -1680,6 +1680,23 @@ specifier|private
 name|String
 name|delegationToken
 decl_stmt|;
+comment|/** The error message template when container is not accessible. */
+DECL|field|NO_ACCESS_TO_CONTAINER_MSG
+specifier|static
+specifier|final
+name|String
+name|NO_ACCESS_TO_CONTAINER_MSG
+init|=
+literal|"No credentials found for "
+operator|+
+literal|"account %s in the configuration, and its container %s is not "
+operator|+
+literal|"accessible using anonymous credentials. Please check if the container "
+operator|+
+literal|"exists first. If it is not publicly available, you have to provide "
+operator|+
+literal|"account credentials."
+decl_stmt|;
 comment|/**    * A test hook interface that can modify the operation context we use for    * Azure Storage operations, e.g. to inject errors.    */
 annotation|@
 name|VisibleForTesting
@@ -3133,11 +3150,13 @@ literal|""
 argument_list|)
 expr_stmt|;
 comment|// Check for container existence, and our ability to access it.
+name|boolean
+name|canAccess
+decl_stmt|;
 try|try
 block|{
-if|if
-condition|(
-operator|!
+name|canAccess
+operator|=
 name|container
 operator|.
 name|exists
@@ -3145,28 +3164,7 @@ argument_list|(
 name|getInstrumentedContext
 argument_list|()
 argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|AzureException
-argument_list|(
-literal|"Container "
-operator|+
-name|containerName
-operator|+
-literal|" in account "
-operator|+
-name|accountName
-operator|+
-literal|" not found, and we can't create"
-operator|+
-literal|" it using anoynomous credentials, and no credentials found for them"
-operator|+
-literal|" in the configuration."
-argument_list|)
-throw|;
-block|}
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -3174,23 +3172,46 @@ name|StorageException
 name|ex
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Service returned StorageException when checking existence "
+operator|+
+literal|"of container {} in account {}"
+argument_list|,
+name|containerName
+argument_list|,
+name|accountName
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
+name|canAccess
+operator|=
+literal|false
+expr_stmt|;
+block|}
+if|if
+condition|(
+operator|!
+name|canAccess
+condition|)
+block|{
 throw|throw
 operator|new
 name|AzureException
 argument_list|(
-literal|"Unable to access container "
-operator|+
-name|containerName
-operator|+
-literal|" in account "
-operator|+
-name|accountName
-operator|+
-literal|" using anonymous credentials, and no credentials found for them "
-operator|+
-literal|" in the configuration."
+name|String
+operator|.
+name|format
+argument_list|(
+name|NO_ACCESS_TO_CONTAINER_MSG
 argument_list|,
-name|ex
+name|accountName
+argument_list|,
+name|containerName
+argument_list|)
 argument_list|)
 throw|;
 block|}
@@ -3914,9 +3935,12 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
+name|StringUtils
+operator|.
+name|isNotEmpty
+argument_list|(
 name|propertyValue
-operator|!=
-literal|null
+argument_list|)
 condition|)
 block|{
 comment|// Account key was found.
@@ -3936,16 +3960,26 @@ argument_list|,
 name|propertyValue
 argument_list|)
 expr_stmt|;
-comment|// Return to caller
-return|return;
 block|}
-comment|// The account access is not configured for this cluster. Try anonymous
-comment|// access.
+else|else
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"The account access key is not configured for {}. "
+operator|+
+literal|"Now try anonymous access."
+argument_list|,
+name|sessionUri
+argument_list|)
+expr_stmt|;
 name|connectUsingAnonymousCredentials
 argument_list|(
 name|sessionUri
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(

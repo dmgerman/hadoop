@@ -82,6 +82,26 @@ begin_import
 import|import
 name|org
 operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|apache
 operator|.
 name|hadoop
@@ -303,6 +323,22 @@ specifier|final
 class|class
 name|AzureBlobStorageTestAccount
 block|{
+DECL|field|LOG
+specifier|private
+specifier|static
+specifier|final
+name|Logger
+name|LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|AzureBlobStorageTestAccount
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 DECL|field|ACCOUNT_KEY_PROPERTY_NAME
 specifier|private
 specifier|static
@@ -1333,17 +1369,15 @@ argument_list|)
 condition|)
 block|{
 comment|// Not configured to test against the storage emulator.
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|warn
 argument_list|(
-literal|"Skipping emulator Azure test because configuration "
+literal|"Skipping emulator Azure test because configuration doesn't "
 operator|+
-literal|"doesn't indicate that it's running."
+literal|"indicate that it's running. Please see RunningLiveWasbTests.txt "
 operator|+
-literal|" Please see RunningLiveWasbTests.txt for guidance."
+literal|"for guidance."
 argument_list|)
 expr_stmt|;
 return|return
@@ -1937,6 +1971,7 @@ argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
+specifier|final
 name|StorageCredentials
 name|credentials
 decl_stmt|;
@@ -1945,7 +1980,10 @@ condition|(
 name|accountKey
 operator|==
 literal|null
-operator|&&
+condition|)
+block|{
+if|if
+condition|(
 name|allowAnonymous
 condition|)
 block|{
@@ -1955,6 +1993,28 @@ name|StorageCredentialsAnonymous
 operator|.
 name|ANONYMOUS
 expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Skipping live Azure test because of missing key for"
+operator|+
+literal|" account '"
+operator|+
+name|accountName
+operator|+
+literal|"'. "
+operator|+
+literal|"Please see RunningLiveWasbTests.txt for guidance."
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
 block|}
 else|else
 block|{
@@ -1977,19 +2037,6 @@ name|accountKey
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|credentials
-operator|==
-literal|null
-condition|)
-block|{
-return|return
-literal|null
-return|;
-block|}
-else|else
-block|{
 return|return
 operator|new
 name|CloudStorageAccount
@@ -1997,7 +2044,6 @@ argument_list|(
 name|credentials
 argument_list|)
 return|;
-block|}
 block|}
 DECL|method|createTestConfiguration ()
 specifier|public
@@ -2097,15 +2143,13 @@ operator|==
 literal|null
 condition|)
 block|{
-name|System
+name|LOG
 operator|.
-name|out
-operator|.
-name|println
+name|warn
 argument_list|(
-literal|"Skipping live Azure test because of missing test account."
+literal|"Skipping live Azure test because of missing test account. "
 operator|+
-literal|" Please see RunningLiveWasbTests.txt for guidance."
+literal|"Please see RunningLiveWasbTests.txt for guidance."
 argument_list|)
 expr_stmt|;
 return|return
