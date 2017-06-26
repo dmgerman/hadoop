@@ -7195,6 +7195,13 @@ name|pendingList
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|maxTransfers
+operator|-=
+name|pendingList
+operator|.
+name|size
+argument_list|()
+expr_stmt|;
 block|}
 comment|// check pending erasure coding tasks
 name|List
