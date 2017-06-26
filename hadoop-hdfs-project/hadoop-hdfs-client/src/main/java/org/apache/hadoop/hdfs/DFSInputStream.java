@@ -2999,15 +2999,16 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to connect to "
+literal|"Failed to connect to {} for block {}, "
 operator|+
+literal|"add to deadNodes and continue. "
+argument_list|,
 name|targetAddr
-operator|+
-literal|" for block"
-operator|+
-literal|", add to deadNodes and continue. "
-operator|+
-name|ex
+argument_list|,
+name|targetBlock
+operator|.
+name|getBlock
+argument_list|()
 argument_list|,
 name|ex
 argument_list|)
