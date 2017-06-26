@@ -530,7 +530,7 @@ name|useProto
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Constructor for masters.    *    * @param keyUpdateInterval how often a new key will be generated    * @param tokenLifetime how long an individual token is valid    * @param nnIndex namenode index of the namenode for which we are creating the manager    * @param blockPoolId block pool ID    * @param encryptionAlgorithm encryption algorithm to use    * @param numNNs number of namenodes possible    */
+comment|/**    * Constructor for masters.    *    * @param keyUpdateInterval how often a new key will be generated    * @param tokenLifetime how long an individual token is valid    * @param nnIndex namenode index of the namenode for which we are creating the manager    * @param blockPoolId block pool ID    * @param encryptionAlgorithm encryption algorithm to use    * @param numNNs number of namenodes possible    * @param useProto should we use new protobuf style tokens    */
 DECL|method|BlockTokenSecretManager (long keyUpdateInterval, long tokenLifetime, int nnIndex, int numNNs, String blockPoolId, String encryptionAlgorithm, boolean useProto)
 specifier|public
 name|BlockTokenSecretManager
