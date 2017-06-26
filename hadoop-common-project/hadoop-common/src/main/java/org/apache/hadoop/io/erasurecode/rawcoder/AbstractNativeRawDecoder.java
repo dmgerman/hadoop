@@ -54,6 +54,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|PerformanceAdvisory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -318,9 +332,11 @@ name|ByteArrayDecodingState
 name|decodingState
 parameter_list|)
 block|{
+name|PerformanceAdvisory
+operator|.
 name|LOG
 operator|.
-name|warn
+name|debug
 argument_list|(
 literal|"convertToByteBufferState is invoked, "
 operator|+
@@ -388,6 +404,18 @@ name|decodeLength
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|preferDirectBuffer ()
+specifier|public
+name|boolean
+name|preferDirectBuffer
+parameter_list|()
+block|{
+return|return
+literal|true
+return|;
 block|}
 comment|// To link with the underlying data structure in the native layer.
 comment|// No get/set as only used by native codes.
