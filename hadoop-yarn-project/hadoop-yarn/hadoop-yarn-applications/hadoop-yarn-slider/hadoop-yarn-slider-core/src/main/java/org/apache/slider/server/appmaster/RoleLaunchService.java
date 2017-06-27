@@ -687,14 +687,6 @@ name|name
 operator|+
 literal|'\''
 operator|+
-literal|", containerGroup='"
-operator|+
-name|role
-operator|.
-name|group
-operator|+
-literal|'\''
-operator|+
 literal|'}'
 return|;
 block|}

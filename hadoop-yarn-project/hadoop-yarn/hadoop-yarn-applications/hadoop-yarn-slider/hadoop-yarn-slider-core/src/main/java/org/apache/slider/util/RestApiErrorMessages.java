@@ -170,6 +170,22 @@ name|ERROR_CONTAINERS_COUNT_INVALID
 operator|+
 name|ERROR_SUFFIX_FOR_COMPONENT
 decl_stmt|;
+DECL|field|ERROR_DEPENDENCY_INVALID
+name|String
+name|ERROR_DEPENDENCY_INVALID
+init|=
+literal|"Dependency %s for component %s is "
+operator|+
+literal|"invalid, does not exist as a component"
+decl_stmt|;
+DECL|field|ERROR_DEPENDENCY_CYCLE
+name|String
+name|ERROR_DEPENDENCY_CYCLE
+init|=
+literal|"Invalid dependencies, a cycle may "
+operator|+
+literal|"exist: %s"
+decl_stmt|;
 DECL|field|ERROR_RESOURCE_PROFILE_MULTIPLE_VALUES_NOT_SUPPORTED
 name|String
 name|ERROR_RESOURCE_PROFILE_MULTIPLE_VALUES_NOT_SUPPORTED

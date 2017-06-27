@@ -28,326 +28,75 @@ specifier|public
 interface|interface
 name|MonitorKeys
 block|{
-comment|/**    * Prefix of all other configuration options: {@value}    */
-DECL|field|MONITOR_KEY_PREFIX
-name|String
-name|MONITOR_KEY_PREFIX
-init|=
-literal|"service.monitor."
-decl_stmt|;
-comment|/**    * Classname of the reporter Key: {@value}    */
-DECL|field|MONITOR_REPORTER
-name|String
-name|MONITOR_REPORTER
-init|=
-name|MONITOR_KEY_PREFIX
-operator|+
-literal|"report.classname"
-decl_stmt|;
-comment|/**    * Interval in milliseconds between reporting health status to the reporter    * Key: {@value}    */
-DECL|field|MONITOR_REPORT_INTERVAL
-name|String
-name|MONITOR_REPORT_INTERVAL
-init|=
-name|MONITOR_KEY_PREFIX
-operator|+
-literal|"report.interval"
-decl_stmt|;
-comment|/**    * Time in millis between the last probing cycle ending and the new one    * beginning. Key: {@value}    */
-DECL|field|MONITOR_PROBE_INTERVAL
-name|String
-name|MONITOR_PROBE_INTERVAL
-init|=
-name|MONITOR_KEY_PREFIX
-operator|+
-literal|"probe.interval"
-decl_stmt|;
-comment|/**    * How long in milliseconds does the probing loop have to be blocked before    * that is considered a liveness failure Key: {@value}    */
-DECL|field|MONITOR_PROBE_TIMEOUT
-name|String
-name|MONITOR_PROBE_TIMEOUT
-init|=
-name|MONITOR_KEY_PREFIX
-operator|+
-literal|"probe.timeout"
-decl_stmt|;
-comment|/**    * How long in milliseconds does the probing loop have to be blocked before    * that is considered a liveness failure Key: {@value}    */
-DECL|field|MONITOR_BOOTSTRAP_TIMEOUT
-name|String
-name|MONITOR_BOOTSTRAP_TIMEOUT
-init|=
-name|MONITOR_KEY_PREFIX
-operator|+
-literal|"bootstrap.timeout"
-decl_stmt|;
-comment|/**    * does the monitor depend on DFS being live    */
-DECL|field|MONITOR_DEPENDENCY_DFSLIVE
-name|String
-name|MONITOR_DEPENDENCY_DFSLIVE
-init|=
-name|MONITOR_KEY_PREFIX
-operator|+
-literal|"dependency.dfslive"
-decl_stmt|;
-comment|/**    * default timeout for the entire bootstrap phase {@value}    */
-DECL|field|BOOTSTRAP_TIMEOUT_DEFAULT
-name|int
-name|BOOTSTRAP_TIMEOUT_DEFAULT
-init|=
-literal|60000
-decl_stmt|;
-comment|/**    * Default value if the key is not in the config file: {@value}    */
-DECL|field|REPORT_INTERVAL_DEFAULT
-name|int
-name|REPORT_INTERVAL_DEFAULT
-init|=
-literal|10000
-decl_stmt|;
-comment|/**    * Default value if the key is not in the config file: {@value}    */
-DECL|field|PROBE_INTERVAL_DEFAULT
-name|int
-name|PROBE_INTERVAL_DEFAULT
-init|=
-literal|10000
-decl_stmt|;
-comment|/**    * Default value if the key is not in the config file: {@value}    */
-DECL|field|PROBE_TIMEOUT_DEFAULT
-name|int
-name|PROBE_TIMEOUT_DEFAULT
-init|=
-literal|60000
-decl_stmt|;
-comment|/**    * Port probe enabled/disabled flag Key: {@value}    */
-DECL|field|PORT_PROBE_ENABLED
-name|String
-name|PORT_PROBE_ENABLED
-init|=
-name|MONITOR_KEY_PREFIX
-operator|+
-literal|"portprobe.enabled"
-decl_stmt|;
-comment|/**    * Port probing key : port to attempt to create a TCP connection to {@value}    */
+comment|/**    * Port probing key : port to attempt to create a TCP connection to {@value}.    */
 DECL|field|PORT_PROBE_PORT
 name|String
 name|PORT_PROBE_PORT
 init|=
-name|MONITOR_KEY_PREFIX
-operator|+
-literal|"portprobe.port"
+literal|"port"
 decl_stmt|;
-comment|/**    * Port probing key : port to attempt to create a TCP connection to {@value}    */
-DECL|field|PORT_PROBE_HOST
-name|String
-name|PORT_PROBE_HOST
-init|=
-name|MONITOR_KEY_PREFIX
-operator|+
-literal|"portprobe.host"
-decl_stmt|;
-comment|/**    * Port probing key : timeout of the connection attempt {@value}    */
+comment|/**    * Port probing key : timeout for the the connection attempt {@value}.    */
 DECL|field|PORT_PROBE_CONNECT_TIMEOUT
 name|String
 name|PORT_PROBE_CONNECT_TIMEOUT
 init|=
-name|MONITOR_KEY_PREFIX
-operator|+
-literal|"portprobe.connect.timeout"
+literal|"timeout"
 decl_stmt|;
-comment|/**    * Port probing key : bootstrap timeout -how long in milliseconds should the    * port probing take to connect before the failure to connect is considered a    * liveness failure. That is: how long should the IPC port take to come up?    * {@value}    */
-DECL|field|PORT_PROBE_BOOTSTRAP_TIMEOUT
-name|String
-name|PORT_PROBE_BOOTSTRAP_TIMEOUT
-init|=
-name|MONITOR_KEY_PREFIX
-operator|+
-literal|"portprobe.bootstrap.timeout"
-decl_stmt|;
-comment|/**    * default timeout for port probes {@value}    */
-DECL|field|PORT_PROBE_BOOTSTRAP_TIMEOUT_DEFAULT
-name|int
-name|PORT_PROBE_BOOTSTRAP_TIMEOUT_DEFAULT
-init|=
-literal|60000
-decl_stmt|;
-comment|/**    * default value for port probe connection attempts {@value}    */
+comment|/**    * Port probing default : timeout for the connection attempt {@value}.    */
 DECL|field|PORT_PROBE_CONNECT_TIMEOUT_DEFAULT
 name|int
 name|PORT_PROBE_CONNECT_TIMEOUT_DEFAULT
 init|=
 literal|1000
 decl_stmt|;
-comment|/**    * default port for probes {@value}    */
-DECL|field|DEFAULT_PROBE_PORT
-name|int
-name|DEFAULT_PROBE_PORT
-init|=
-literal|8020
-decl_stmt|;
-comment|/**    * default host for probes {@value}    */
-DECL|field|DEFAULT_PROBE_HOST
-name|String
-name|DEFAULT_PROBE_HOST
-init|=
-literal|"localhost"
-decl_stmt|;
-comment|/**    * Probe enabled/disabled flag Key: {@value}    */
-DECL|field|LS_PROBE_ENABLED
-name|String
-name|LS_PROBE_ENABLED
-init|=
-name|MONITOR_KEY_PREFIX
-operator|+
-literal|"lsprobe.enabled"
-decl_stmt|;
-comment|/**    * Probe path for LS operation Key: {@value}    */
-DECL|field|LS_PROBE_PATH
-name|String
-name|LS_PROBE_PATH
-init|=
-name|MONITOR_KEY_PREFIX
-operator|+
-literal|"lsprobe.path"
-decl_stmt|;
-comment|/**    * Default path for LS operation Key: {@value}    */
-DECL|field|LS_PROBE_DEFAULT
-name|String
-name|LS_PROBE_DEFAULT
-init|=
-literal|"/"
-decl_stmt|;
-comment|/**    * Port probing key : bootstrap timeout -how long in milliseconds should the    * port probing take to connect before the failure to connect is considered a    * liveness failure. That is: how long should the IPC port take to come up?    * {@value}    */
-DECL|field|LS_PROBE_BOOTSTRAP_TIMEOUT
-name|String
-name|LS_PROBE_BOOTSTRAP_TIMEOUT
-init|=
-name|MONITOR_KEY_PREFIX
-operator|+
-literal|"lsprobe.bootstrap.timeout"
-decl_stmt|;
-comment|/**    * default timeout for port probes {@value}    */
-DECL|field|LS_PROBE_BOOTSTRAP_TIMEOUT_DEFAULT
-name|int
-name|LS_PROBE_BOOTSTRAP_TIMEOUT_DEFAULT
-init|=
-name|PORT_PROBE_BOOTSTRAP_TIMEOUT_DEFAULT
-decl_stmt|;
-comment|/**    * Probe enabled/disabled flag Key: {@value}    */
-DECL|field|WEB_PROBE_ENABLED
-name|String
-name|WEB_PROBE_ENABLED
-init|=
-name|MONITOR_KEY_PREFIX
-operator|+
-literal|"webprobe.enabled"
-decl_stmt|;
-comment|/**    * Probe URL Key: {@value}    */
+comment|/**    * Web probing key : URL {@value}.    */
 DECL|field|WEB_PROBE_URL
 name|String
 name|WEB_PROBE_URL
 init|=
-name|MONITOR_KEY_PREFIX
-operator|+
-literal|"webprobe.url"
+literal|"url"
 decl_stmt|;
-comment|/**    * Default path for web probe Key: {@value}    */
-DECL|field|WEB_PROBE_DEFAULT_URL
+comment|/**    * Web probing key : min success code {@value}.    */
+DECL|field|WEB_PROBE_MIN_SUCCESS
 name|String
-name|WEB_PROBE_DEFAULT_URL
+name|WEB_PROBE_MIN_SUCCESS
 init|=
-literal|"http://localhost:50070/"
+literal|"min.success"
 decl_stmt|;
-comment|/**    * min error code Key: {@value}    */
-DECL|field|WEB_PROBE_MIN
+comment|/**    * Web probing key : max success code {@value}.    */
+DECL|field|WEB_PROBE_MAX_SUCCESS
 name|String
-name|WEB_PROBE_MIN
+name|WEB_PROBE_MAX_SUCCESS
 init|=
-name|MONITOR_KEY_PREFIX
-operator|+
-literal|"webprobe.min"
+literal|"max.success"
 decl_stmt|;
-comment|/**    * min error code Key: {@value}    */
-DECL|field|WEB_PROBE_MAX
-name|String
-name|WEB_PROBE_MAX
+comment|/**    * Web probing default : min successful response code {@value}.    */
+DECL|field|WEB_PROBE_MIN_SUCCESS_DEFAULT
+name|int
+name|WEB_PROBE_MIN_SUCCESS_DEFAULT
 init|=
-name|MONITOR_KEY_PREFIX
-operator|+
-literal|"webprobe.max"
+literal|200
 decl_stmt|;
-comment|/**    * Port probing key : timeout of the connection attempt {@value}    */
+comment|/**    * Web probing default : max successful response code {@value}.    */
+DECL|field|WEB_PROBE_MAX_SUCCESS_DEFAULT
+name|int
+name|WEB_PROBE_MAX_SUCCESS_DEFAULT
+init|=
+literal|299
+decl_stmt|;
+comment|/**    * Web probing key : timeout for the connection attempt {@value}    */
 DECL|field|WEB_PROBE_CONNECT_TIMEOUT
 name|String
 name|WEB_PROBE_CONNECT_TIMEOUT
 init|=
-name|MONITOR_KEY_PREFIX
-operator|+
-literal|"webprobe.connect.timeout"
+literal|"timeout"
 decl_stmt|;
-comment|/**    * Default HTTP response code expected from the far end for    * the endpoint to be considered live.    */
-DECL|field|WEB_PROBE_DEFAULT_CODE
+comment|/**    * Port probing default : timeout for the connection attempt {@value}.    */
+DECL|field|WEB_PROBE_CONNECT_TIMEOUT_DEFAULT
 name|int
-name|WEB_PROBE_DEFAULT_CODE
+name|WEB_PROBE_CONNECT_TIMEOUT_DEFAULT
 init|=
-literal|200
-decl_stmt|;
-comment|/**    * Port probing key : bootstrap timeout -how long in milliseconds should the    * port probing take to connect before the failure to connect is considered a    * liveness failure. That is: how long should the IPC port take to come up?    * {@value}    */
-DECL|field|WEB_PROBE_BOOTSTRAP_TIMEOUT
-name|String
-name|WEB_PROBE_BOOTSTRAP_TIMEOUT
-init|=
-name|MONITOR_KEY_PREFIX
-operator|+
-literal|"webprobe.bootstrap.timeout"
-decl_stmt|;
-comment|/**    * default timeout for port probes {@value}    */
-DECL|field|WEB_PROBE_BOOTSTRAP_TIMEOUT_DEFAULT
-name|int
-name|WEB_PROBE_BOOTSTRAP_TIMEOUT_DEFAULT
-init|=
-name|PORT_PROBE_BOOTSTRAP_TIMEOUT_DEFAULT
-decl_stmt|;
-comment|/**    * Probe enabled/disabled flag Key: {@value}    */
-DECL|field|JT_PROBE_ENABLED
-name|String
-name|JT_PROBE_ENABLED
-init|=
-name|MONITOR_KEY_PREFIX
-operator|+
-literal|"jtprobe.enabled"
-decl_stmt|;
-comment|/**    * Port probing key : bootstrap timeout -how long in milliseconds should the    * port probing take to connect before the failure to connect is considered a    * liveness failure. That is: how long should the IPC port take to come up?    * {@value}    */
-DECL|field|JT_PROBE_BOOTSTRAP_TIMEOUT
-name|String
-name|JT_PROBE_BOOTSTRAP_TIMEOUT
-init|=
-name|MONITOR_KEY_PREFIX
-operator|+
-literal|"jtprobe.bootstrap.timeout"
-decl_stmt|;
-comment|/**    * default timeout for port probes {@value}    */
-DECL|field|JT_PROBE_BOOTSTRAP_TIMEOUT_DEFAULT
-name|int
-name|JT_PROBE_BOOTSTRAP_TIMEOUT_DEFAULT
-init|=
-name|PORT_PROBE_BOOTSTRAP_TIMEOUT_DEFAULT
-decl_stmt|;
-comment|/**    * Probe enabled/disabled flag Key: {@value}    */
-DECL|field|PID_PROBE_ENABLED
-name|String
-name|PID_PROBE_ENABLED
-init|=
-name|MONITOR_KEY_PREFIX
-operator|+
-literal|"pidprobe.enabled"
-decl_stmt|;
-comment|/**    * PID probing key : pid to attempt to create a TCP connection to {@value}    */
-DECL|field|PID_PROBE_PIDFILE
-name|String
-name|PID_PROBE_PIDFILE
-init|=
-name|MONITOR_KEY_PREFIX
-operator|+
-literal|"pidprobe.pidfile"
+literal|1000
 decl_stmt|;
 block|}
 end_interface

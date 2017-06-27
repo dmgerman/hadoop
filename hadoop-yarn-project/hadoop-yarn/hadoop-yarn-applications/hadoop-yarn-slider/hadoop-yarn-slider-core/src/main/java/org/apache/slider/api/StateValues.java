@@ -17,7 +17,7 @@ package|;
 end_package
 
 begin_comment
-comment|/**  * Enumeration of state values  */
+comment|/**  * Enumeration of state values.  */
 end_comment
 
 begin_class
@@ -26,7 +26,12 @@ specifier|public
 class|class
 name|StateValues
 block|{
-comment|/**    * Specification is incomplete& cannot    * be used: {@value}    */
+DECL|method|StateValues ()
+specifier|private
+name|StateValues
+parameter_list|()
+block|{}
+comment|/**    * Specification is incomplete& cannot    * be used: {@value}.    */
 DECL|field|STATE_INCOMPLETE
 specifier|public
 specifier|static
@@ -66,7 +71,27 @@ name|STATE_LIVE
 init|=
 literal|3
 decl_stmt|;
-comment|/**    * Stopped    */
+comment|/**    * Not ready.    */
+DECL|field|STATE_NOT_READY
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|STATE_NOT_READY
+init|=
+literal|4
+decl_stmt|;
+comment|/**    * Ready.    */
+DECL|field|STATE_READY
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|STATE_READY
+init|=
+literal|5
+decl_stmt|;
+comment|/**    * Stopped.    */
 DECL|field|STATE_STOPPED
 specifier|public
 specifier|static
@@ -74,9 +99,9 @@ specifier|final
 name|int
 name|STATE_STOPPED
 init|=
-literal|4
+literal|99
 decl_stmt|;
-comment|/**    * destroyed    */
+comment|/**    * Destroyed.    */
 DECL|field|STATE_DESTROYED
 specifier|public
 specifier|static
@@ -84,7 +109,7 @@ specifier|final
 name|int
 name|STATE_DESTROYED
 init|=
-literal|5
+literal|100
 decl_stmt|;
 block|}
 end_class

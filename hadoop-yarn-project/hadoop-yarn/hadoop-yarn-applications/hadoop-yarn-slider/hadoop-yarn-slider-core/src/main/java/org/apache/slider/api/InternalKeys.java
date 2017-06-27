@@ -331,6 +331,20 @@ name|DEFAULT_ESCALATION_CHECK_INTERVAL
 init|=
 literal|30
 decl_stmt|;
+comment|/**    * interval between readiness checks: {@value}    */
+DECL|field|MONITOR_INTERVAL
+name|String
+name|MONITOR_INTERVAL
+init|=
+literal|"monitor.interval.seconds"
+decl_stmt|;
+comment|/**    * default value: {@value}    */
+DECL|field|DEFAULT_MONITOR_INTERVAL
+name|int
+name|DEFAULT_MONITOR_INTERVAL
+init|=
+literal|30
+decl_stmt|;
 block|}
 end_interface
 

@@ -96,11 +96,6 @@ specifier|transient
 name|Probe
 name|originator
 decl_stmt|;
-DECL|field|probePhase
-specifier|private
-name|ProbePhase
-name|probePhase
-decl_stmt|;
 DECL|method|ProbeStatus ()
 specifier|public
 name|ProbeStatus
@@ -319,32 +314,6 @@ operator|=
 name|thrown
 expr_stmt|;
 block|}
-DECL|method|getProbePhase ()
-specifier|public
-name|ProbePhase
-name|getProbePhase
-parameter_list|()
-block|{
-return|return
-name|probePhase
-return|;
-block|}
-DECL|method|setProbePhase (ProbePhase probePhase)
-specifier|public
-name|void
-name|setProbePhase
-parameter_list|(
-name|ProbePhase
-name|probePhase
-parameter_list|)
-block|{
-name|this
-operator|.
-name|probePhase
-operator|=
-name|probePhase
-expr_stmt|;
-block|}
 comment|/**    * Get the probe that generated this result. May be null    * @return a possibly null reference to a probe    */
 DECL|method|getOriginator ()
 specifier|public
@@ -482,13 +451,6 @@ argument_list|)
 operator|.
 name|elt
 argument_list|(
-literal|"phase"
-argument_list|,
-name|probePhase
-argument_list|)
-operator|.
-name|elt
-argument_list|(
 literal|"outcome"
 argument_list|,
 operator|(
@@ -554,25 +516,6 @@ name|builder
 operator|.
 name|toString
 argument_list|()
-return|;
-block|}
-DECL|method|inPhase (ProbePhase phase)
-specifier|public
-name|boolean
-name|inPhase
-parameter_list|(
-name|ProbePhase
-name|phase
-parameter_list|)
-block|{
-return|return
-name|getProbePhase
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|phase
-argument_list|)
 return|;
 block|}
 comment|/**    * Flip the success bit on while the real outcome bit is kept false    */

@@ -1654,6 +1654,24 @@ name|appmaster
 operator|.
 name|actions
 operator|.
+name|MonitorComponentInstances
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
+name|server
+operator|.
+name|appmaster
+operator|.
+name|actions
+operator|.
 name|QueueExecutor
 import|;
 end_import
@@ -3040,14 +3058,14 @@ literal|"FieldAccessedSynchronizedAndUnsynchronized"
 argument_list|)
 DECL|field|providers
 specifier|private
-name|List
+name|Set
 argument_list|<
 name|ProviderService
 argument_list|>
 name|providers
 init|=
 operator|new
-name|ArrayList
+name|HashSet
 argument_list|<>
 argument_list|()
 decl_stmt|;
@@ -5095,6 +5113,14 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 name|scheduleEscalation
+argument_list|(
+name|application
+operator|.
+name|getConfiguration
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|scheduleMonitoring
 argument_list|(
 name|application
 operator|.
@@ -8120,7 +8146,83 @@ name|renew
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Look at where the current node state is -and whether it should be changed    * @param reason reason for operation    */
+comment|/**    * Schedule monitor action    */
+DECL|method|scheduleMonitoring ( org.apache.slider.api.resource.Configuration conf)
+specifier|private
+name|void
+name|scheduleMonitoring
+parameter_list|(
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
+name|api
+operator|.
+name|resource
+operator|.
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|MonitorComponentInstances
+name|monitor
+init|=
+operator|new
+name|MonitorComponentInstances
+argument_list|()
+decl_stmt|;
+name|long
+name|seconds
+init|=
+name|conf
+operator|.
+name|getPropertyLong
+argument_list|(
+name|InternalKeys
+operator|.
+name|MONITOR_INTERVAL
+argument_list|,
+name|InternalKeys
+operator|.
+name|DEFAULT_MONITOR_INTERVAL
+argument_list|)
+decl_stmt|;
+name|RenewingAction
+argument_list|<
+name|MonitorComponentInstances
+argument_list|>
+name|renew
+init|=
+operator|new
+name|RenewingAction
+argument_list|<>
+argument_list|(
+name|monitor
+argument_list|,
+name|seconds
+argument_list|,
+name|seconds
+argument_list|,
+name|TimeUnit
+operator|.
+name|SECONDS
+argument_list|,
+literal|0
+argument_list|)
+decl_stmt|;
+name|actionQueues
+operator|.
+name|renewing
+argument_list|(
+literal|"monitoring"
+argument_list|,
+name|renew
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Look at where the current node state is and whether it should be changed.    * @param reason reason for operation    */
 DECL|method|reviewRequestAndReleaseNodes (String reason)
 specifier|private
 specifier|synchronized
@@ -8328,6 +8430,30 @@ argument_list|(
 name|operations
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|monitorComponentInstances ()
+specifier|public
+name|void
+name|monitorComponentInstances
+parameter_list|()
+block|{
+comment|// TODO use health checks?
+comment|// TODO publish timeline events for monitoring changes?
+if|if
+condition|(
+name|appState
+operator|.
+name|monitorComponentInstances
+argument_list|()
+condition|)
+block|{
+comment|// monitoring change
+name|reviewRequestAndReleaseNodes
+argument_list|(
+literal|"monitoring change"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Shutdown operation: release all containers    */
 DECL|method|releaseAllContainers (Application application)

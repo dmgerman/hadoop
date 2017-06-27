@@ -231,12 +231,6 @@ specifier|final
 name|String
 name|name
 decl_stmt|;
-DECL|field|group
-specifier|private
-specifier|final
-name|String
-name|group
-decl_stmt|;
 comment|/**    * Role priority    */
 DECL|field|key
 specifier|private
@@ -298,14 +292,6 @@ operator|=
 name|providerRole
 operator|.
 name|name
-expr_stmt|;
-name|this
-operator|.
-name|group
-operator|=
-name|providerRole
-operator|.
-name|group
 expr_stmt|;
 name|this
 operator|.
@@ -427,16 +413,6 @@ parameter_list|()
 block|{
 return|return
 name|name
-return|;
-block|}
-DECL|method|getGroup ()
-specifier|public
-name|String
-name|getGroup
-parameter_list|()
-block|{
-return|return
-name|group
 return|;
 block|}
 DECL|method|getKey ()

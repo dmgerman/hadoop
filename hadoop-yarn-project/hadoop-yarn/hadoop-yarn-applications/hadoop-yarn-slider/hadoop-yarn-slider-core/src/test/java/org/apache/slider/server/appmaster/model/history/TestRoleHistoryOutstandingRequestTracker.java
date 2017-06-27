@@ -2377,7 +2377,7 @@ argument_list|(
 name|getRole0Status
 argument_list|()
 operator|.
-name|getGroup
+name|getName
 argument_list|()
 argument_list|)
 decl_stmt|;
