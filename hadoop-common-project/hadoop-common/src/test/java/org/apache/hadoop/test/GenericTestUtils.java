@@ -611,6 +611,9 @@ name|ERROR_INVALID_ARGUMENT
 init|=
 literal|"Total wait time should be greater than check interval time"
 decl_stmt|;
+comment|/**    * @deprecated use {@link #disableLog(org.slf4j.Logger)} instead    */
+annotation|@
+name|Deprecated
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -636,6 +639,8 @@ name|log
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Deprecated
 DECL|method|toLog4j (org.slf4j.Logger logger)
 specifier|public
 specifier|static
@@ -662,6 +667,9 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+comment|/**    * @deprecated use {@link #disableLog(org.slf4j.Logger)} instead    */
+annotation|@
+name|Deprecated
 DECL|method|disableLog (Log4JLogger log)
 specifier|public
 specifier|static
@@ -685,6 +693,9 @@ name|OFF
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * @deprecated use {@link #disableLog(org.slf4j.Logger)} instead    */
+annotation|@
+name|Deprecated
 DECL|method|disableLog (Logger logger)
 specifier|public
 specifier|static
@@ -728,6 +739,9 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * @deprecated    * use {@link #setLogLevel(org.slf4j.Logger, org.slf4j.event.Level)} instead    */
+annotation|@
+name|Deprecated
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -758,6 +772,9 @@ name|level
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * @deprecated    * use {@link #setLogLevel(org.slf4j.Logger, org.slf4j.event.Level)} instead    */
+annotation|@
+name|Deprecated
 DECL|method|setLogLevel (Log4JLogger log, Level level)
 specifier|public
 specifier|static
@@ -782,6 +799,9 @@ name|level
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * @deprecated    * use {@link #setLogLevel(org.slf4j.Logger, org.slf4j.event.Level)} instead    */
+annotation|@
+name|Deprecated
 DECL|method|setLogLevel (Logger logger, Level level)
 specifier|public
 specifier|static
@@ -803,6 +823,9 @@ name|level
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * @deprecated    * use {@link #setLogLevel(org.slf4j.Logger, org.slf4j.event.Level)} instead    */
+annotation|@
+name|Deprecated
 DECL|method|setLogLevel (org.slf4j.Logger logger, Level level)
 specifier|public
 specifier|static

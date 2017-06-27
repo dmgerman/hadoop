@@ -953,7 +953,9 @@ name|ret
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Close the Closeable objects and<b>ignore</b> any {@link Throwable} or    * null pointers. Must only be used for cleanup in exception handlers.    *    * @param log the log to record problems to at debug level. Can be null.    * @param closeables the objects to close    */
+comment|/**    * Close the Closeable objects and<b>ignore</b> any {@link Throwable} or    * null pointers. Must only be used for cleanup in exception handlers.    *    * @param log the log to record problems to at debug level. Can be null.    * @param closeables the objects to close    * @deprecated use {@link #cleanupWithLogger(Logger, java.io.Closeable...)}    * instead    */
+annotation|@
+name|Deprecated
 DECL|method|cleanup (Log log, java.io.Closeable... closeables)
 specifier|public
 specifier|static

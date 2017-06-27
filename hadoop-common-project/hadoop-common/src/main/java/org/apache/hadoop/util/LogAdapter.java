@@ -85,6 +85,9 @@ operator|=
 name|LOGGER
 expr_stmt|;
 block|}
+comment|/**    * @deprecated use {@link #create(Logger)} instead    */
+annotation|@
+name|Deprecated
 DECL|method|create (Log LOG)
 specifier|public
 specifier|static
