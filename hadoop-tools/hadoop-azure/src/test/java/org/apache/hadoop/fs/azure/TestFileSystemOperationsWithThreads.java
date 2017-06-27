@@ -43,6 +43,18 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -95,6 +107,22 @@ operator|.
 name|concurrent
 operator|.
 name|TimeUnit
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|impl
+operator|.
+name|Log4JLogger
 import|;
 end_import
 
@@ -223,26 +251,6 @@ operator|.
 name|mockito
 operator|.
 name|Mockito
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|slf4j
-operator|.
-name|Logger
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|slf4j
-operator|.
-name|LoggerFactory
 import|;
 end_import
 
@@ -382,13 +390,19 @@ name|LogCapturer
 operator|.
 name|captureLogs
 argument_list|(
-name|LoggerFactory
-operator|.
-name|getLogger
+operator|new
+name|Log4JLogger
 argument_list|(
+name|org
+operator|.
+name|apache
+operator|.
+name|log4j
+operator|.
 name|Logger
 operator|.
-name|ROOT_LOGGER_NAME
+name|getRootLogger
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -841,16 +855,13 @@ operator|.
 name|getOutput
 argument_list|()
 decl_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"ms with threads: "
 operator|+
 name|expectedThreadsCreated
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Validate thread executions
@@ -869,12 +880,10 @@ name|i
 operator|++
 control|)
 block|{
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"AzureBlobRenameThread-"
 operator|+
 name|Thread
@@ -888,7 +897,6 @@ operator|+
 literal|"-"
 operator|+
 name|i
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -915,12 +923,10 @@ name|i
 operator|++
 control|)
 block|{
-name|assertFalse
+name|assertNotInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"AzureBlobRenameThread-"
 operator|+
 name|Thread
@@ -934,7 +940,6 @@ operator|+
 literal|"-"
 operator|+
 name|i
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -976,16 +981,13 @@ operator|.
 name|getOutput
 argument_list|()
 decl_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"ms with threads: "
 operator|+
 name|renameThreads
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Validate thread executions
@@ -1004,12 +1006,10 @@ name|i
 operator|++
 control|)
 block|{
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"AzureBlobRenameThread-"
 operator|+
 name|Thread
@@ -1023,7 +1023,6 @@ operator|+
 literal|"-"
 operator|+
 name|i
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1101,14 +1100,11 @@ operator|.
 name|getOutput
 argument_list|()
 decl_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"Disabling threads for Rename operation as thread count 0"
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Validate no thread executions
@@ -1127,12 +1123,9 @@ name|i
 operator|++
 control|)
 block|{
-name|assertFalse
-argument_list|(
-name|content
-operator|.
-name|contains
-argument_list|(
+name|String
+name|term
+init|=
 literal|"AzureBlobRenameThread-"
 operator|+
 name|Thread
@@ -1146,7 +1139,143 @@ operator|+
 literal|"-"
 operator|+
 name|i
+decl_stmt|;
+name|assertNotInLog
+argument_list|(
+name|content
+argument_list|,
+name|term
 argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Assert that a log contains the given term.    * @param content log output    * @param term search term    */
+DECL|method|assertInLog (String content, String term)
+specifier|protected
+name|void
+name|assertInLog
+parameter_list|(
+name|String
+name|content
+parameter_list|,
+name|String
+name|term
+parameter_list|)
+block|{
+name|assertTrue
+argument_list|(
+literal|"Empty log"
+argument_list|,
+operator|!
+name|content
+operator|.
+name|isEmpty
+argument_list|()
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+operator|!
+name|content
+operator|.
+name|contains
+argument_list|(
+name|term
+argument_list|)
+condition|)
+block|{
+name|String
+name|message
+init|=
+literal|"No "
+operator|+
+name|term
+operator|+
+literal|" found in logs"
+decl_stmt|;
+name|LOG
+operator|.
+name|error
+argument_list|(
+name|message
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+name|content
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+name|message
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Assert that a log does not contain the given term.    * @param content log output    * @param term search term    */
+DECL|method|assertNotInLog (String content, String term)
+specifier|protected
+name|void
+name|assertNotInLog
+parameter_list|(
+name|String
+name|content
+parameter_list|,
+name|String
+name|term
+parameter_list|)
+block|{
+name|assertTrue
+argument_list|(
+literal|"Empty log"
+argument_list|,
+operator|!
+name|content
+operator|.
+name|isEmpty
+argument_list|()
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|content
+operator|.
+name|contains
+argument_list|(
+name|term
+argument_list|)
+condition|)
+block|{
+name|String
+name|message
+init|=
+name|term
+operator|+
+literal|" found in logs"
+decl_stmt|;
+name|LOG
+operator|.
+name|error
+argument_list|(
+name|message
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+name|content
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+name|message
 argument_list|)
 expr_stmt|;
 block|}
@@ -1235,14 +1364,11 @@ operator|.
 name|getOutput
 argument_list|()
 decl_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"Disabling threads for Rename operation as thread count 1"
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Validate no thread executions
@@ -1261,12 +1387,10 @@ name|i
 operator|++
 control|)
 block|{
-name|assertFalse
+name|assertNotInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"AzureBlobRenameThread-"
 operator|+
 name|Thread
@@ -1280,7 +1404,6 @@ operator|+
 literal|"-"
 operator|+
 name|i
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1496,16 +1619,13 @@ operator|.
 name|getOutput
 argument_list|()
 decl_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"ms with threads: "
 operator|+
 name|expectedThreadsCreated
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Validate thread executions
@@ -1524,12 +1644,10 @@ name|i
 operator|++
 control|)
 block|{
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"AzureBlobDeleteThread-"
 operator|+
 name|Thread
@@ -1543,7 +1661,6 @@ operator|+
 literal|"-"
 operator|+
 name|i
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1570,12 +1687,10 @@ name|i
 operator|++
 control|)
 block|{
-name|assertFalse
+name|assertNotInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"AzureBlobDeleteThread-"
 operator|+
 name|Thread
@@ -1589,7 +1704,6 @@ operator|+
 literal|"-"
 operator|+
 name|i
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1629,16 +1743,13 @@ operator|.
 name|getOutput
 argument_list|()
 decl_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"ms with threads: "
 operator|+
 name|deleteThreads
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Validate thread executions
@@ -1657,12 +1768,10 @@ name|i
 operator|++
 control|)
 block|{
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"AzureBlobDeleteThread-"
 operator|+
 name|Thread
@@ -1676,7 +1785,6 @@ operator|+
 literal|"-"
 operator|+
 name|i
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1751,14 +1859,11 @@ operator|.
 name|getOutput
 argument_list|()
 decl_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"Disabling threads for Delete operation as thread count 0"
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Validate no thread executions
@@ -1777,12 +1882,10 @@ name|i
 operator|++
 control|)
 block|{
-name|assertFalse
+name|assertNotInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"AzureBlobDeleteThread-"
 operator|+
 name|Thread
@@ -1796,7 +1899,6 @@ operator|+
 literal|"-"
 operator|+
 name|i
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1876,14 +1978,11 @@ operator|.
 name|getOutput
 argument_list|()
 decl_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"Disabling threads for Delete operation as thread count 1"
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Validate no thread executions
@@ -1902,12 +2001,10 @@ name|i
 operator|++
 control|)
 block|{
-name|assertFalse
+name|assertNotInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"AzureBlobDeleteThread-"
 operator|+
 name|Thread
@@ -1921,7 +2018,6 @@ operator|+
 literal|"-"
 operator|+
 name|i
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -2058,24 +2154,18 @@ operator|.
 name|getOutput
 argument_list|()
 decl_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"Failed to create thread pool with threads"
 argument_list|)
-argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"Serializing the Delete operation"
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -2248,24 +2338,18 @@ operator|.
 name|getOutput
 argument_list|()
 decl_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"Rejected execution of thread for Delete operation on blob"
 argument_list|)
-argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"Serializing the Delete operation"
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -2446,24 +2530,18 @@ operator|.
 name|getOutput
 argument_list|()
 decl_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"Using thread pool for Delete operation with threads 7"
 argument_list|)
-argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"6 threads not used for Delete operation on blob"
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -2716,34 +2794,25 @@ operator|.
 name|getOutput
 argument_list|()
 decl_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"Using thread pool for Delete operation with threads"
 argument_list|)
-argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"Threads got interrupted Delete blob operation"
 argument_list|)
-argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"Delete failed as operation on subfolders and files failed."
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -2864,46 +2933,34 @@ operator|.
 name|getOutput
 argument_list|()
 decl_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"Using thread pool for Delete operation with threads"
 argument_list|)
-argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"Delete operation failed for file "
 operator|+
 name|path
 argument_list|)
-argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"Terminating execution of Delete operation now as some other thread already got exception or operation failed"
 argument_list|)
-argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"Failed to delete files / subfolders in blob"
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -3040,36 +3097,27 @@ operator|.
 name|getOutput
 argument_list|()
 decl_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"Using thread pool for Delete operation with threads"
 argument_list|)
-argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"Encountered Exception for Delete operation for file "
 operator|+
 name|path
 argument_list|)
-argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"Terminating execution of Delete operation now as some other thread already got exception or operation failed"
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -3212,24 +3260,18 @@ operator|.
 name|getOutput
 argument_list|()
 decl_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"Failed to create thread pool with threads"
 argument_list|)
-argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"Serializing the Rename operation"
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -3404,24 +3446,18 @@ operator|.
 name|getOutput
 argument_list|()
 decl_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"Rejected execution of thread for Rename operation on blob"
 argument_list|)
-argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"Serializing the Rename operation"
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -3604,24 +3640,18 @@ operator|.
 name|getOutput
 argument_list|()
 decl_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"Using thread pool for Rename operation with threads 7"
 argument_list|)
-argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"6 threads not used for Rename operation on blob"
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -3877,34 +3907,25 @@ operator|.
 name|getOutput
 argument_list|()
 decl_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"Using thread pool for Rename operation with threads"
 argument_list|)
-argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"Threads got interrupted Rename blob operation"
 argument_list|)
-argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"Rename failed as operation on subfolders and files failed."
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -4123,36 +4144,27 @@ operator|.
 name|getOutput
 argument_list|()
 decl_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"Using thread pool for Rename operation with threads"
 argument_list|)
-argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"Encountered Exception for Rename operation for file "
 operator|+
 name|path
 argument_list|)
-argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertInLog
 argument_list|(
 name|content
-operator|.
-name|contains
-argument_list|(
+argument_list|,
 literal|"Terminating execution of Rename operation now as some other thread already got exception or operation failed"
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
