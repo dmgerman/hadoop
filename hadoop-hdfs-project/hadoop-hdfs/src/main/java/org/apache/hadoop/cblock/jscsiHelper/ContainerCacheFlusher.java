@@ -540,7 +540,7 @@ name|cblock
 operator|.
 name|CBlockConfigKeys
 operator|.
-name|DFS_CBLOCK_CACHE_CORE_POOL_SIZE
+name|DFS_CBLOCK_CACHE_CORE_MIN_POOL_SIZE
 import|;
 end_import
 
@@ -556,7 +556,7 @@ name|cblock
 operator|.
 name|CBlockConfigKeys
 operator|.
-name|DFS_CBLOCK_CACHE_CORE_POOL_SIZE_DEFAULT
+name|DFS_CBLOCK_CACHE_CORE_MIN_POOL_SIZE_DEFAULT
 import|;
 end_import
 
@@ -883,9 +883,9 @@ name|config
 operator|.
 name|getInt
 argument_list|(
-name|DFS_CBLOCK_CACHE_CORE_POOL_SIZE
+name|DFS_CBLOCK_CACHE_CORE_MIN_POOL_SIZE
 argument_list|,
-name|DFS_CBLOCK_CACHE_CORE_POOL_SIZE_DEFAULT
+name|DFS_CBLOCK_CACHE_CORE_MIN_POOL_SIZE_DEFAULT
 argument_list|)
 decl_stmt|;
 name|int
