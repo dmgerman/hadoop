@@ -62,6 +62,18 @@ name|junit
 operator|.
 name|Assert
 operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
 name|assertNotNull
 import|;
 end_import
@@ -75,18 +87,6 @@ operator|.
 name|Assert
 operator|.
 name|assertNull
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertTrue
 import|;
 end_import
 
@@ -771,23 +771,20 @@ argument_list|(
 name|cause
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
 literal|"Unexpected cause: "
 operator|+
 name|cause
 argument_list|,
+name|StorageErrorCodeStrings
+operator|.
+name|INVALID_MD5
+argument_list|,
 name|cause
 operator|.
 name|getErrorCode
 argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|StorageErrorCodeStrings
-operator|.
-name|INVALID_MD5
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
