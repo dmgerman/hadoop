@@ -5101,6 +5101,8 @@ argument_list|,
 name|emptySet
 argument_list|,
 name|emptySet
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|assertTrue
@@ -5146,6 +5148,8 @@ argument_list|,
 name|emptySet
 argument_list|,
 name|emptySet
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|assertTrue

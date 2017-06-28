@@ -820,13 +820,13 @@ name|String
 name|nodeId
 parameter_list|)
 function_decl|;
-comment|/**    * This method retrieves all the app reports in the cluster, and it is    * reachable by using {@link RMWSConsts#APPS}.    *    * @see ApplicationClientProtocol#getApplications    * @param hsr the servlet request    * @param stateQuery right now the stateQuery is deprecated    * @param statesQuery filter the result by states    * @param finalStatusQuery filter the result by final states    * @param userQuery filter the result by user    * @param queueQuery filter the result by queue    * @param count set a limit of the result    * @param startedBegin filter the result by started begin time    * @param startedEnd filter the result by started end time    * @param finishBegin filter the result by finish begin time    * @param finishEnd filter the result by finish end time    * @param applicationTypes filter the result by types    * @param applicationTags filter the result by tags    * @return all apps in the cluster    */
+comment|/**    * This method retrieves all the app reports in the cluster, and it is    * reachable by using {@link RMWSConsts#APPS}.    *    * @see ApplicationClientProtocol#getApplications    * @param hsr the servlet request    * @param stateQuery right now the stateQuery is deprecated    * @param statesQuery filter the result by states    * @param finalStatusQuery filter the result by final states    * @param userQuery filter the result by user    * @param queueQuery filter the result by queue    * @param count set a limit of the result    * @param startedBegin filter the result by started begin time    * @param startedEnd filter the result by started end time    * @param finishBegin filter the result by finish begin time    * @param finishEnd filter the result by finish end time    * @param applicationTypes filter the result by types    * @param applicationTags filter the result by tags    * @param unselectedFields De-selected params to avoid from report    * @return all apps in the cluster    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
 literal|"checkstyle:parameternumber"
 argument_list|)
-DECL|method|getApps (HttpServletRequest hsr, String stateQuery, Set<String> statesQuery, String finalStatusQuery, String userQuery, String queueQuery, String count, String startedBegin, String startedEnd, String finishBegin, String finishEnd, Set<String> applicationTypes, Set<String> applicationTags)
+DECL|method|getApps (HttpServletRequest hsr, String stateQuery, Set<String> statesQuery, String finalStatusQuery, String userQuery, String queueQuery, String count, String startedBegin, String startedEnd, String finishBegin, String finishEnd, Set<String> applicationTypes, Set<String> applicationTags, Set<String> unselectedFields)
 name|AppsInfo
 name|getApps
 parameter_list|(
@@ -877,6 +877,12 @@ argument_list|<
 name|String
 argument_list|>
 name|applicationTags
+parameter_list|,
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|unselectedFields
 parameter_list|)
 function_decl|;
 comment|/**    * This method retrieve all the activities in a specific node, and it is    * reachable by using {@link RMWSConsts#SCHEDULER_ACTIVITIES}.    *    * @param hsr the servlet request    * @param nodeId the node we want to retrieve the activities    * @return all the activities in the specific node    */
@@ -927,8 +933,8 @@ argument_list|>
 name|typeQueries
 parameter_list|)
 function_decl|;
-comment|/**    * This method retrieves the report for a specific app, and it is reachable by    * using {@link RMWSConsts#APPS_APPID}.    *    * @see ApplicationClientProtocol#getApplicationReport    * @param hsr the servlet request    * @param appId the Id of the application we want the report    * @return the app report for a specific application    */
-DECL|method|getApp (HttpServletRequest hsr, String appId)
+comment|/**    * This method retrieves the report for a specific app, and it is reachable by    * using {@link RMWSConsts#APPS_APPID}.    *    * @see ApplicationClientProtocol#getApplicationReport    * @param hsr the servlet request    * @param appId the Id of the application we want the report    * @param unselectedFields De-selected param list to avoid from report    * @return the app report for a specific application    */
+DECL|method|getApp (HttpServletRequest hsr, String appId, Set<String> unselectedFields)
 name|AppInfo
 name|getApp
 parameter_list|(
@@ -937,6 +943,12 @@ name|hsr
 parameter_list|,
 name|String
 name|appId
+parameter_list|,
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|unselectedFields
 parameter_list|)
 function_decl|;
 comment|/**    * This method retrieves the state for a specific app, and it is reachable by    * using {@link RMWSConsts#APPS_APPID_STATE}.    *    * @param hsr the servlet request    * @param appId the Id of the application we want the state    * @return the state for a specific application    * @throws AuthorizationException if the user is not authorized    */

@@ -4535,7 +4535,7 @@ block|}
 argument_list|)
 annotation|@
 name|Override
-DECL|method|getApps (@ontext HttpServletRequest hsr, @QueryParam(RMWSConsts.STATE) String stateQuery, @QueryParam(RMWSConsts.STATES) Set<String> statesQuery, @QueryParam(RMWSConsts.FINAL_STATUS) String finalStatusQuery, @QueryParam(RMWSConsts.USER) String userQuery, @QueryParam(RMWSConsts.QUEUE) String queueQuery, @QueryParam(RMWSConsts.LIMIT) String count, @QueryParam(RMWSConsts.STARTED_TIME_BEGIN) String startedBegin, @QueryParam(RMWSConsts.STARTED_TIME_END) String startedEnd, @QueryParam(RMWSConsts.FINISHED_TIME_BEGIN) String finishBegin, @QueryParam(RMWSConsts.FINISHED_TIME_END) String finishEnd, @QueryParam(RMWSConsts.APPLICATION_TYPES) Set<String> applicationTypes, @QueryParam(RMWSConsts.APPLICATION_TAGS) Set<String> applicationTags)
+DECL|method|getApps (@ontext HttpServletRequest hsr, @QueryParam(RMWSConsts.STATE) String stateQuery, @QueryParam(RMWSConsts.STATES) Set<String> statesQuery, @QueryParam(RMWSConsts.FINAL_STATUS) String finalStatusQuery, @QueryParam(RMWSConsts.USER) String userQuery, @QueryParam(RMWSConsts.QUEUE) String queueQuery, @QueryParam(RMWSConsts.LIMIT) String count, @QueryParam(RMWSConsts.STARTED_TIME_BEGIN) String startedBegin, @QueryParam(RMWSConsts.STARTED_TIME_END) String startedEnd, @QueryParam(RMWSConsts.FINISHED_TIME_BEGIN) String finishBegin, @QueryParam(RMWSConsts.FINISHED_TIME_END) String finishEnd, @QueryParam(RMWSConsts.APPLICATION_TYPES) Set<String> applicationTypes, @QueryParam(RMWSConsts.APPLICATION_TAGS) Set<String> applicationTags, @QueryParam(R) Set<String> unselectedFields)
 specifier|public
 name|AppsInfo
 name|getApps
@@ -4673,6 +4673,17 @@ argument_list|<
 name|String
 argument_list|>
 name|applicationTags
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"deSelects"
+argument_list|)
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|unselectedFields
 parameter_list|)
 block|{
 name|boolean
@@ -5460,6 +5471,20 @@ block|{
 continue|continue;
 block|}
 block|}
+name|DeSelectFields
+name|deSelectFields
+init|=
+operator|new
+name|DeSelectFields
+argument_list|()
+decl_stmt|;
+name|deSelectFields
+operator|.
+name|initFields
+argument_list|(
+name|unselectedFields
+argument_list|)
+expr_stmt|;
 name|AppInfo
 name|app
 init|=
@@ -5483,6 +5508,8 @@ name|getHttpSchemePrefix
 argument_list|(
 name|conf
 argument_list|)
+argument_list|,
+name|deSelectFields
 argument_list|)
 decl_stmt|;
 name|allApps
@@ -6766,7 +6793,7 @@ block|}
 argument_list|)
 annotation|@
 name|Override
-DECL|method|getApp (@ontext HttpServletRequest hsr, @PathParam(RMWSConsts.APPID) String appId)
+DECL|method|getApp (@ontext HttpServletRequest hsr, @PathParam(RMWSConsts.APPID) String appId, @QueryParam(R) Set<String> unselectedFields)
 specifier|public
 name|AppInfo
 name|getApp
@@ -6785,6 +6812,17 @@ name|APPID
 argument_list|)
 name|String
 name|appId
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
+literal|"deSelects"
+argument_list|)
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|unselectedFields
 parameter_list|)
 block|{
 name|init
@@ -6837,6 +6875,20 @@ literal|" not found"
 argument_list|)
 throw|;
 block|}
+name|DeSelectFields
+name|deSelectFields
+init|=
+operator|new
+name|DeSelectFields
+argument_list|()
+decl_stmt|;
+name|deSelectFields
+operator|.
+name|initFields
+argument_list|(
+name|unselectedFields
+argument_list|)
+expr_stmt|;
 return|return
 operator|new
 name|AppInfo
@@ -6858,6 +6910,8 @@ name|getScheme
 argument_list|()
 operator|+
 literal|"://"
+argument_list|,
+name|deSelectFields
 argument_list|)
 return|;
 block|}
