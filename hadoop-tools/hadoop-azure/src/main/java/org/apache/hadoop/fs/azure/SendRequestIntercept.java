@@ -183,7 +183,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Manages the lifetime of binding on the operation contexts to intercept send  * request events to Azure storage.  */
+comment|/**  * Manages the lifetime of binding on the operation contexts to intercept send  * request events to Azure storage and allow concurrent OOB I/Os.  */
 end_comment
 
 begin_class
@@ -227,122 +227,23 @@ name|ALLOW_ALL_REQUEST_PRECONDITIONS
 init|=
 literal|"*"
 decl_stmt|;
-DECL|field|storageCreds
-specifier|private
-specifier|final
-name|StorageCredentials
-name|storageCreds
-decl_stmt|;
-DECL|field|allowConcurrentOOBIo
-specifier|private
-specifier|final
-name|boolean
-name|allowConcurrentOOBIo
-decl_stmt|;
-DECL|field|opContext
-specifier|private
-specifier|final
-name|OperationContext
-name|opContext
-decl_stmt|;
-comment|/**    * Getter returning the storage account credentials.    *     * @return storageCreds - account storage credentials.    */
-DECL|method|getCredentials ()
-specifier|private
-name|StorageCredentials
-name|getCredentials
-parameter_list|()
-block|{
-return|return
-name|storageCreds
-return|;
-block|}
-comment|/**    * Query if out-of-band I/Os are allowed.    *     * return allowConcurrentOOBIo - true if OOB I/O is allowed, and false    * otherwise.    */
-DECL|method|isOutOfBandIoAllowed ()
-specifier|private
-name|boolean
-name|isOutOfBandIoAllowed
-parameter_list|()
-block|{
-return|return
-name|allowConcurrentOOBIo
-return|;
-block|}
-comment|/**    * Getter returning the operation context.    *     * @return storageCreds - account storage credentials.    */
-DECL|method|getOperationContext ()
-specifier|private
-name|OperationContext
-name|getOperationContext
-parameter_list|()
-block|{
-return|return
-name|opContext
-return|;
-block|}
-comment|/**    * Constructor for SendRequestThrottle.    *     * @param storageCreds    *          - storage account credentials for signing packets.    *     */
-DECL|method|SendRequestIntercept (StorageCredentials storageCreds, boolean allowConcurrentOOBIo, OperationContext opContext)
+comment|/**    * Hidden default constructor for SendRequestIntercept.    */
+DECL|method|SendRequestIntercept ()
 specifier|private
 name|SendRequestIntercept
-parameter_list|(
-name|StorageCredentials
-name|storageCreds
-parameter_list|,
-name|boolean
-name|allowConcurrentOOBIo
-parameter_list|,
-name|OperationContext
-name|opContext
-parameter_list|)
-block|{
-comment|// Capture the send delay callback interface.
-name|this
-operator|.
-name|storageCreds
-operator|=
-name|storageCreds
-expr_stmt|;
-name|this
-operator|.
-name|allowConcurrentOOBIo
-operator|=
-name|allowConcurrentOOBIo
-expr_stmt|;
-name|this
-operator|.
-name|opContext
-operator|=
-name|opContext
-expr_stmt|;
-block|}
-comment|/**    * Binds a new lister to the operation context so the WASB file system can    * appropriately intercept sends. By allowing concurrent OOB I/Os, we bypass    * the blob immutability check when reading streams.    *    * @param storageCreds The credential of blob storage.    * @param opContext    *          The operation context to bind to listener.    *     * @param allowConcurrentOOBIo    *          True if reads are allowed with concurrent OOB writes.    */
-DECL|method|bind (StorageCredentials storageCreds, OperationContext opContext, boolean allowConcurrentOOBIo)
+parameter_list|()
+block|{   }
+comment|/**    * Binds a new lister to the operation context so the WASB file system can    * appropriately intercept sends and allow concurrent OOB I/Os.  This    * by-passes the blob immutability check when reading streams.    *    * @param opContext the operation context assocated with this request.    */
+DECL|method|bind (OperationContext opContext)
 specifier|public
 specifier|static
 name|void
 name|bind
 parameter_list|(
-name|StorageCredentials
-name|storageCreds
-parameter_list|,
 name|OperationContext
 name|opContext
-parameter_list|,
-name|boolean
-name|allowConcurrentOOBIo
 parameter_list|)
 block|{
-name|SendRequestIntercept
-name|sendListener
-init|=
-operator|new
-name|SendRequestIntercept
-argument_list|(
-name|storageCreds
-argument_list|,
-name|allowConcurrentOOBIo
-argument_list|,
-name|opContext
-argument_list|)
-decl_stmt|;
 name|opContext
 operator|.
 name|getSendingRequestEventHandler
@@ -350,7 +251,9 @@ argument_list|()
 operator|.
 name|addListener
 argument_list|(
-name|sendListener
+operator|new
+name|SendRequestIntercept
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -410,9 +313,6 @@ name|equalsIgnoreCase
 argument_list|(
 literal|"GET"
 argument_list|)
-operator|&&
-name|isOutOfBandIoAllowed
-argument_list|()
 condition|)
 block|{
 comment|// If concurrent reads on OOB writes are allowed, reset the if-match
@@ -428,102 +328,6 @@ argument_list|,
 name|ALLOW_ALL_REQUEST_PRECONDITIONS
 argument_list|)
 expr_stmt|;
-comment|// In the Java AzureSDK the packet is signed before firing the
-comment|// SendRequest. Setting
-comment|// the conditional packet header property changes the contents of the
-comment|// packet, therefore the packet has to be re-signed.
-try|try
-block|{
-comment|// Sign the request. GET's have no payload so the content length is
-comment|// zero.
-name|StorageCredentialsHelper
-operator|.
-name|signBlobQueueAndFileRequest
-argument_list|(
-name|getCredentials
-argument_list|()
-argument_list|,
-name|urlConnection
-argument_list|,
-operator|-
-literal|1L
-argument_list|,
-name|getOperationContext
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|InvalidKeyException
-name|e
-parameter_list|)
-block|{
-comment|// Log invalid key exception to track signing error before the send
-comment|// fails.
-name|String
-name|errString
-init|=
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"Received invalid key exception when attempting sign packet."
-operator|+
-literal|" Cause: %s"
-argument_list|,
-name|e
-operator|.
-name|getCause
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|LOG
-operator|.
-name|error
-argument_list|(
-name|errString
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|StorageException
-name|e
-parameter_list|)
-block|{
-comment|// Log storage exception to track signing error before the call fails.
-name|String
-name|errString
-init|=
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"Received storage exception when attempting to sign packet."
-operator|+
-literal|" Cause: %s"
-argument_list|,
-name|e
-operator|.
-name|getCause
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|LOG
-operator|.
-name|error
-argument_list|(
-name|errString
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 block|}
 block|}

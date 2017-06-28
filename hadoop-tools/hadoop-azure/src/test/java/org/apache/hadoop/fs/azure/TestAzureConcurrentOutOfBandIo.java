@@ -197,7 +197,6 @@ literal|1024
 decl_stmt|;
 comment|// Number of blocks to be written before flush.
 DECL|field|NUMBER_OF_BLOCKS
-specifier|private
 specifier|static
 specifier|final
 name|int
@@ -206,7 +205,7 @@ init|=
 literal|2
 decl_stmt|;
 DECL|field|testAccount
-specifier|private
+specifier|protected
 name|AzureBlobStorageTestAccount
 name|testAccount
 decl_stmt|;

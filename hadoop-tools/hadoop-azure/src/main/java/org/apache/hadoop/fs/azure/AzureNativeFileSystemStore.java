@@ -3410,10 +3410,6 @@ name|canCreateOrModifyContainer
 operator|=
 literal|true
 expr_stmt|;
-name|tolerateOobAppends
-operator|=
-literal|false
-expr_stmt|;
 block|}
 comment|/**    * Connect to Azure storage using account key credentials.    */
 DECL|method|connectUsingConnectionStringCredentials ( final String accountName, final String containerName, final String accountKey)
@@ -6843,14 +6839,7 @@ name|SendRequestIntercept
 operator|.
 name|bind
 argument_list|(
-name|storageInteractionLayer
-operator|.
-name|getCredentials
-argument_list|()
-argument_list|,
 name|operationContext
-argument_list|,
-literal|true
 argument_list|)
 expr_stmt|;
 block|}

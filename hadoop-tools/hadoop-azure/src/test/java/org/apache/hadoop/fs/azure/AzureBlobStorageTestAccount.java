@@ -312,6 +312,24 @@ name|KEY_USE_LOCAL_SAS_KEY_MODE
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|azure
+operator|.
+name|AzureNativeFileSystemStore
+operator|.
+name|KEY_USE_SECURE_MODE
+import|;
+end_import
+
 begin_comment
 comment|/**  * Helper class to create WASB file systems backed by either a mock in-memory  * implementation or a real Azure Storage account. See RunningLiveWasbTests.txt  * for instructions on how to connect to a real Azure Storage account.  */
 end_comment
@@ -1495,6 +1513,35 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+return|return
+name|createOutOfBandStore
+argument_list|(
+name|uploadBlockSize
+argument_list|,
+name|downloadBlockSize
+argument_list|,
+literal|false
+argument_list|)
+return|;
+block|}
+DECL|method|createOutOfBandStore ( int uploadBlockSize, int downloadBlockSize, boolean enableSecureMode)
+specifier|public
+specifier|static
+name|AzureBlobStorageTestAccount
+name|createOutOfBandStore
+parameter_list|(
+name|int
+name|uploadBlockSize
+parameter_list|,
+name|int
+name|downloadBlockSize
+parameter_list|,
+name|boolean
+name|enableSecureMode
+parameter_list|)
+throws|throws
+name|Exception
+block|{
 name|saveMetricsConfigFile
 argument_list|()
 expr_stmt|;
@@ -1595,6 +1642,15 @@ argument_list|(
 name|KEY_READ_TOLERATE_CONCURRENT_APPEND
 argument_list|,
 literal|true
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|KEY_USE_SECURE_MODE
+argument_list|,
+name|enableSecureMode
 argument_list|)
 expr_stmt|;
 name|configureSecureModeTestSettings
