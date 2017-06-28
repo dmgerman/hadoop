@@ -3045,6 +3045,7 @@ name|DEFAULT_RM_NODE_GRACEFUL_DECOMMISSION_TIMEOUT
 init|=
 literal|3600
 decl_stmt|;
+comment|/**    * Period in seconds of the poll timer task inside DecommissioningNodesWatcher    * to identify and take care of DECOMMISSIONING nodes missing regular heart beat.    */
 DECL|field|RM_DECOMMISSIONING_NODES_WATCHER_POLL_INTERVAL
 specifier|public
 specifier|static
