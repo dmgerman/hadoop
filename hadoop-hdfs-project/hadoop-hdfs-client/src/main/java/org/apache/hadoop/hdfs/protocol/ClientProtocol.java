@@ -2172,6 +2172,32 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Enable erasure coding policy.    * @param ecPolicyName The name of the policy to be enabled.    * @throws IOException    */
+annotation|@
+name|AtMostOnce
+DECL|method|enableErasureCodingPolicy (String ecPolicyName)
+name|void
+name|enableErasureCodingPolicy
+parameter_list|(
+name|String
+name|ecPolicyName
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Disable erasure coding policy.    * @param ecPolicyName The name of the policy to be disabled.    * @throws IOException    */
+annotation|@
+name|AtMostOnce
+DECL|method|disableErasureCodingPolicy (String ecPolicyName)
+name|void
+name|disableErasureCodingPolicy
+parameter_list|(
+name|String
+name|ecPolicyName
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Get the erasure coding policies loaded in Namenode.    *    * @throws IOException    */
 annotation|@
 name|Idempotent

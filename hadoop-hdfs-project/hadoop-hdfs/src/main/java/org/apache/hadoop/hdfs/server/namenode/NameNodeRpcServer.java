@@ -12953,6 +12953,66 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+comment|// ClientProtocol
+DECL|method|enableErasureCodingPolicy (String ecPolicyName)
+specifier|public
+name|void
+name|enableErasureCodingPolicy
+parameter_list|(
+name|String
+name|ecPolicyName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
+name|namesystem
+operator|.
+name|checkSuperuserPrivilege
+argument_list|()
+expr_stmt|;
+name|namesystem
+operator|.
+name|enableErasureCodingPolicy
+argument_list|(
+name|ecPolicyName
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+comment|// ClientProtocol
+DECL|method|disableErasureCodingPolicy (String ecPolicyName)
+specifier|public
+name|void
+name|disableErasureCodingPolicy
+parameter_list|(
+name|String
+name|ecPolicyName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|checkNNStartup
+argument_list|()
+expr_stmt|;
+name|namesystem
+operator|.
+name|checkSuperuserPrivilege
+argument_list|()
+expr_stmt|;
+name|namesystem
+operator|.
+name|disableErasureCodingPolicy
+argument_list|(
+name|ecPolicyName
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 comment|// ReconfigurationProtocol
 DECL|method|startReconfiguration ()
 specifier|public

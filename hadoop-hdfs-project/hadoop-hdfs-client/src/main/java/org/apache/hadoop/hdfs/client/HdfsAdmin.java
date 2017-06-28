@@ -1454,6 +1454,46 @@ name|ecPolicyName
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Enable erasure coding policy.    *    * @param ecPolicyName The name of the policy to be enabled.    * @throws IOException    */
+DECL|method|enableErasureCodingPolicy (String ecPolicyName)
+specifier|public
+name|void
+name|enableErasureCodingPolicy
+parameter_list|(
+name|String
+name|ecPolicyName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|dfs
+operator|.
+name|enableErasureCodingPolicy
+argument_list|(
+name|ecPolicyName
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Disable erasure coding policy.    *    * @param ecPolicyName The name of the policy to be disabled.    * @throws IOException    */
+DECL|method|disableErasureCodingPolicy (String ecPolicyName)
+specifier|public
+name|void
+name|disableErasureCodingPolicy
+parameter_list|(
+name|String
+name|ecPolicyName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|dfs
+operator|.
+name|disableErasureCodingPolicy
+argument_list|(
+name|ecPolicyName
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|provisionEZTrash (Path path)
 specifier|private
 name|void
