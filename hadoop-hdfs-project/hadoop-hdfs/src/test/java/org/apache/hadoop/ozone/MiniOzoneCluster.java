@@ -204,6 +204,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
+name|web
+operator|.
+name|client
+operator|.
+name|OzoneRestClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|scm
 operator|.
 name|ScmConfigKeys
@@ -273,24 +291,6 @@ operator|.
 name|node
 operator|.
 name|SCMNodeManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|web
-operator|.
-name|client
-operator|.
-name|OzoneClient
 import|;
 end_import
 
@@ -1021,11 +1021,11 @@ operator|.
 name|ksm
 return|;
 block|}
-comment|/**    * Creates an {@link OzoneClient} connected to this cluster's REST service.    * Callers take ownership of the client and must close it when done.    *    * @return OzoneClient connected to this cluster's REST service    * @throws OzoneException if Ozone encounters an error creating the client    */
-DECL|method|createOzoneClient ()
+comment|/**    * Creates an {@link OzoneRestClient} connected to this cluster's REST    * service. Callers take ownership of the client and must close it when done.    *    * @return OzoneRestClient connected to this cluster's REST service    * @throws OzoneException if Ozone encounters an error creating the client    */
+DECL|method|createOzoneRestClient ()
 specifier|public
-name|OzoneClient
-name|createOzoneClient
+name|OzoneRestClient
+name|createOzoneRestClient
 parameter_list|()
 throws|throws
 name|OzoneException
@@ -1041,7 +1041,7 @@ operator|.
 name|isEmpty
 argument_list|()
 argument_list|,
-literal|"Cannot create OzoneClient if the cluster has no DataNodes."
+literal|"Cannot create OzoneRestClient if the cluster has no DataNodes."
 argument_list|)
 expr_stmt|;
 comment|// An Ozone request may originate at any DataNode, so pick one at random.
@@ -1099,7 +1099,7 @@ try|try
 block|{
 return|return
 operator|new
-name|OzoneClient
+name|OzoneRestClient
 argument_list|(
 name|uri
 argument_list|,

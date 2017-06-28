@@ -48,7 +48,7 @@ name|web
 operator|.
 name|client
 operator|.
-name|OzoneClient
+name|OzoneRestClient
 import|;
 end_import
 
@@ -66,7 +66,7 @@ name|web
 operator|.
 name|client
 operator|.
-name|OzoneClientException
+name|OzoneRestClientException
 import|;
 end_import
 
@@ -147,7 +147,7 @@ name|Handler
 block|{
 DECL|field|client
 specifier|protected
-name|OzoneClient
+name|OzoneRestClient
 name|client
 decl_stmt|;
 comment|/**    * Constructs a client object.    */
@@ -159,7 +159,7 @@ block|{
 name|client
 operator|=
 operator|new
-name|OzoneClient
+name|OzoneRestClient
 argument_list|()
 expr_stmt|;
 block|}
@@ -210,7 +210,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 literal|"Ozone URI is needed to execute this command."
 argument_list|)

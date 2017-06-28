@@ -717,7 +717,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 literal|"Invalid key Name."
 argument_list|)
@@ -732,7 +732,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 literal|"Invalid data."
 argument_list|)
@@ -899,7 +899,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 name|ex
 operator|.
@@ -947,7 +947,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 literal|"Invalid file object."
 argument_list|)
@@ -1000,7 +1000,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 literal|"Invalid key Name"
 argument_list|)
@@ -1015,7 +1015,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 literal|"Invalid data stream"
 argument_list|)
@@ -1160,7 +1160,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 name|ex
 operator|.
@@ -1265,7 +1265,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 literal|"Unexpected null in http payload"
 argument_list|)
@@ -1335,7 +1335,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 literal|"Invalid key Name"
 argument_list|)
@@ -1350,7 +1350,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 literal|"Invalid download path"
 argument_list|)
@@ -1469,7 +1469,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 name|ex
 operator|.
@@ -1524,7 +1524,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 literal|"Invalid key Name"
 argument_list|)
@@ -1641,7 +1641,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 name|ex
 operator|.
@@ -1748,7 +1748,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 literal|"Unexpected null in http payload"
 argument_list|)
@@ -1815,7 +1815,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 literal|"Invalid key Name"
 argument_list|)
@@ -1911,7 +1911,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 name|ex
 operator|.
@@ -2001,7 +2001,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 literal|"Unexpected null in http payload"
 argument_list|)
@@ -2068,7 +2068,7 @@ name|newHttpClient
 argument_list|()
 init|)
 block|{
-name|OzoneClient
+name|OzoneRestClient
 name|client
 init|=
 name|getVolume
@@ -2144,7 +2144,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 name|e
 operator|.
@@ -2241,7 +2241,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 literal|"Unexpected null in http payload"
 argument_list|)

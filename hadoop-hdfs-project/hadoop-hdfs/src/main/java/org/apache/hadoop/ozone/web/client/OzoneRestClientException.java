@@ -43,17 +43,17 @@ comment|/**  * This exception is thrown by the Ozone Clients.  */
 end_comment
 
 begin_class
-DECL|class|OzoneClientException
+DECL|class|OzoneRestClientException
 specifier|public
 class|class
-name|OzoneClientException
+name|OzoneRestClientException
 extends|extends
 name|OzoneException
 block|{
 comment|/**    * Constructor that allows the shortMessage.    *    * @param shortMessage Short Message    */
-DECL|method|OzoneClientException (String shortMessage)
+DECL|method|OzoneRestClientException (String shortMessage)
 specifier|public
-name|OzoneClientException
+name|OzoneRestClientException
 parameter_list|(
 name|String
 name|shortMessage
@@ -70,9 +70,9 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Constructor that allows the shortMessage and a longer message.    *    * @param shortMessage Short Message    * @param message long error message    */
-DECL|method|OzoneClientException (String shortMessage, String message)
+DECL|method|OzoneRestClientException (String shortMessage, String message)
 specifier|public
-name|OzoneClientException
+name|OzoneRestClientException
 parameter_list|(
 name|String
 name|shortMessage

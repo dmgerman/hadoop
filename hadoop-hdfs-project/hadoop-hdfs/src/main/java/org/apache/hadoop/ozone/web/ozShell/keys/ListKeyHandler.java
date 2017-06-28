@@ -68,7 +68,7 @@ name|web
 operator|.
 name|client
 operator|.
-name|OzoneClientException
+name|OzoneRestClientException
 import|;
 end_import
 
@@ -304,7 +304,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 literal|"Incorrect call : listKey is missing"
 argument_list|)
@@ -355,7 +355,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 literal|"volume/bucket is required in listKey"
 argument_list|)

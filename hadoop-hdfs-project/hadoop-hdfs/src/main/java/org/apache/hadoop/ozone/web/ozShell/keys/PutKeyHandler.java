@@ -84,7 +84,7 @@ name|web
 operator|.
 name|client
 operator|.
-name|OzoneClientException
+name|OzoneRestClientException
 import|;
 end_import
 
@@ -299,7 +299,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 literal|"Incorrect call : putKey is missing"
 argument_list|)
@@ -320,7 +320,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 literal|"put key needs a file to put"
 argument_list|)
@@ -407,7 +407,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 literal|"volume/bucket/key name required in putKey"
 argument_list|)

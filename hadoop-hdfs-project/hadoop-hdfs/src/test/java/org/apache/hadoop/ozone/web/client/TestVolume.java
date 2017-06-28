@@ -453,7 +453,7 @@ decl_stmt|;
 DECL|field|client
 specifier|private
 specifier|static
-name|OzoneClient
+name|OzoneRestClient
 name|client
 init|=
 literal|null
@@ -588,7 +588,7 @@ decl_stmt|;
 name|client
 operator|=
 operator|new
-name|OzoneClient
+name|OzoneRestClient
 argument_list|(
 name|String
 operator|.
@@ -657,7 +657,7 @@ operator|.
 name|OZONE_SIMPLE_HDFS_USER
 argument_list|)
 expr_stmt|;
-name|OzoneClient
+name|OzoneRestClient
 name|mockClient
 init|=
 name|Mockito
@@ -1486,8 +1486,8 @@ name|pagecount
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Returns a list of mocked {@link CloseableHttpClient} used for testing.    * The mocked client replaces the actual calls in    * {@link OzoneClient#newHttpClient()}, it is used to verify    * if the invocation of this client is expected.<b>Note</b>, the output    * of this method is always used as the input of    * {@link TestVolume#verifyHttpConnectionClosed(List)}.    *    * @param ozoneClient mocked ozone client.    * @return a list of mocked {@link CloseableHttpClient}.    * @throws IOException    */
-DECL|method|mockHttpClients (OzoneClient ozoneClient)
+comment|/**    * Returns a list of mocked {@link CloseableHttpClient} used for testing.    * The mocked client replaces the actual calls in    * {@link OzoneRestClient#newHttpClient()}, it is used to verify    * if the invocation of this client is expected.<b>Note</b>, the output    * of this method is always used as the input of    * {@link TestVolume#verifyHttpConnectionClosed(List)}.    *    * @param ozoneRestClient mocked ozone client.    * @return a list of mocked {@link CloseableHttpClient}.    * @throws IOException    */
+DECL|method|mockHttpClients ( OzoneRestClient ozoneRestClient)
 specifier|private
 name|List
 argument_list|<
@@ -1495,8 +1495,8 @@ name|CloseableHttpClient
 argument_list|>
 name|mockHttpClients
 parameter_list|(
-name|OzoneClient
-name|ozoneClient
+name|OzoneRestClient
+name|ozoneRestClient
 parameter_list|)
 throws|throws
 name|IOException
@@ -1575,7 +1575,7 @@ name|Mockito
 operator|.
 name|when
 argument_list|(
-name|ozoneClient
+name|ozoneRestClient
 operator|.
 name|newHttpClient
 argument_list|()
@@ -1609,7 +1609,7 @@ return|return
 name|spyHttpClients
 return|;
 block|}
-comment|/**    * This method is used together with    * {@link TestVolume#mockHttpClients(OzoneClient)} to verify    * if the http client is properly closed. It verifies that as long as    * a client calls {@link CloseableHttpClient#execute(HttpUriRequest)} to    * send request, then it must calls {@link CloseableHttpClient#close()}    * close the http connection.    *    * @param mockedHttpClients    */
+comment|/**    * This method is used together with    * {@link TestVolume#mockHttpClients(OzoneRestClient)} to verify    * if the http client is properly closed. It verifies that as long as    * a client calls {@link CloseableHttpClient#execute(HttpUriRequest)} to    * send request, then it must calls {@link CloseableHttpClient#close()}    * close the http connection.    *    * @param mockedHttpClients    */
 DECL|method|verifyHttpConnectionClosed ( List<CloseableHttpClient> mockedHttpClients)
 specifier|private
 name|void

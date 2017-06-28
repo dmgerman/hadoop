@@ -435,10 +435,10 @@ comment|/**  * Ozone client that connects to an Ozone server. Please note that t
 end_comment
 
 begin_class
-DECL|class|OzoneClient
+DECL|class|OzoneRestClient
 specifier|public
 class|class
-name|OzoneClient
+name|OzoneRestClient
 implements|implements
 name|Closeable
 block|{
@@ -452,16 +452,16 @@ specifier|private
 name|String
 name|userAuth
 decl_stmt|;
-comment|/**    * Constructor for OzoneClient.    */
-DECL|method|OzoneClient ()
+comment|/**    * Constructor for OzoneRestClient.    */
+DECL|method|OzoneRestClient ()
 specifier|public
-name|OzoneClient
+name|OzoneRestClient
 parameter_list|()
 block|{   }
-comment|/**    * Constructor for OzoneClient.    */
-DECL|method|OzoneClient (String ozoneURI)
+comment|/**    * Constructor for OzoneRestClient.    */
+DECL|method|OzoneRestClient (String ozoneURI)
 specifier|public
-name|OzoneClient
+name|OzoneRestClient
 parameter_list|(
 name|String
 name|ozoneURI
@@ -477,10 +477,10 @@ name|ozoneURI
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Constructor for OzoneClient.    */
-DECL|method|OzoneClient (String ozoneURI, String userAuth)
+comment|/**    * Constructor for OzoneRestClient.    */
+DECL|method|OzoneRestClient (String ozoneURI, String userAuth)
 specifier|public
-name|OzoneClient
+name|OzoneRestClient
 parameter_list|(
 name|String
 name|ozoneURI
@@ -548,7 +548,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 literal|"Invalid ozone URI"
 argument_list|)
@@ -615,7 +615,7 @@ operator|=
 name|userAuth
 expr_stmt|;
 block|}
-comment|/**    * create volume.    *    * @param volumeName - volume name 3 - 63 chars, small letters.    * @param onBehalfOf - The user on behalf we are making the call for    * @param quota      - Quota's are specified in a specific format. it is    *                   integer(MB|GB|TB), for example 100TB.    * @throws OzoneClientException    */
+comment|/**    * create volume.    *    * @param volumeName - volume name 3 - 63 chars, small letters.    * @param onBehalfOf - The user on behalf we are making the call for    * @param quota      - Quota's are specified in a specific format. it is    *                   integer(MB|GB|TB), for example 100TB.    * @throws OzoneRestClientException    */
 DECL|method|createVolume (String volumeName, String onBehalfOf, String quota)
 specifier|public
 name|OzoneVolume
@@ -732,7 +732,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 name|ex
 operator|.
@@ -848,7 +848,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 name|ex
 operator|.
@@ -1045,7 +1045,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 name|ex
 operator|.
@@ -1259,7 +1259,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 name|ex
 operator|.
@@ -1363,7 +1363,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 name|ex
 operator|.
@@ -1417,7 +1417,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 literal|"Invalid new owner name"
 argument_list|)
@@ -1501,7 +1501,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 name|ex
 operator|.
@@ -1550,7 +1550,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 literal|"Invalid quota"
 argument_list|)
@@ -1637,7 +1637,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 name|ex
 operator|.
@@ -1752,7 +1752,7 @@ else|else
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 literal|"Unexpected null in http payload"
 argument_list|)
@@ -1840,7 +1840,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 literal|"Unexpected null in http payload"
 argument_list|)
@@ -2084,7 +2084,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 literal|"Unexpected null in http payload"
 argument_list|)

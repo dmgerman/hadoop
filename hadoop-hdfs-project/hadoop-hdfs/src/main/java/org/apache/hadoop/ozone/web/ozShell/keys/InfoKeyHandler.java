@@ -50,7 +50,7 @@ name|web
 operator|.
 name|client
 operator|.
-name|OzoneClientException
+name|OzoneRestClientException
 import|;
 end_import
 
@@ -227,7 +227,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 literal|"Incorrect call : infoKey is missing"
 argument_list|)
@@ -314,7 +314,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 literal|"volume/bucket/key name required in infoKey"
 argument_list|)
@@ -420,7 +420,7 @@ comment|//    OzoneVolume vol = client.getVolume(volumeName);
 comment|//    OzoneBucket bucket = vol.createBucket(bucketName);
 throw|throw
 operator|new
-name|OzoneClientException
+name|OzoneRestClientException
 argument_list|(
 literal|"Not supported yet"
 argument_list|)

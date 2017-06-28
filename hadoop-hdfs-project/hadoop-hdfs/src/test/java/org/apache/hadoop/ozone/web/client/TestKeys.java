@@ -445,7 +445,7 @@ decl_stmt|;
 DECL|field|client
 specifier|private
 specifier|static
-name|OzoneClient
+name|OzoneRestClient
 name|client
 init|=
 literal|null
@@ -568,7 +568,7 @@ decl_stmt|;
 name|client
 operator|=
 operator|new
-name|OzoneClient
+name|OzoneRestClient
 argument_list|(
 name|String
 operator|.
