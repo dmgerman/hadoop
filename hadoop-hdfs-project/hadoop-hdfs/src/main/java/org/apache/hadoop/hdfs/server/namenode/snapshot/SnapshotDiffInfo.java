@@ -284,6 +284,20 @@ name|SignedBytes
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|ChunkedArrayList
+import|;
+end_import
+
 begin_comment
 comment|/**  * A class describing the difference between snapshots of a snapshottable  * directory.  */
 end_comment
@@ -1019,10 +1033,8 @@ argument_list|>
 name|diffReportList
 init|=
 operator|new
-name|ArrayList
-argument_list|<
-name|DiffReportEntry
-argument_list|>
+name|ChunkedArrayList
+argument_list|<>
 argument_list|()
 decl_stmt|;
 for|for
@@ -1183,10 +1195,8 @@ argument_list|>
 name|list
 init|=
 operator|new
-name|ArrayList
-argument_list|<
-name|DiffReportEntry
-argument_list|>
+name|ChunkedArrayList
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|List
