@@ -319,6 +319,11 @@ specifier|private
 name|ResourceInfo
 name|clusterResources
 decl_stmt|;
+DECL|field|reservedResources
+specifier|private
+name|ResourceInfo
+name|reservedResources
+decl_stmt|;
 DECL|field|pendingContainers
 specifier|private
 name|long
@@ -506,6 +511,17 @@ operator|.
 name|getClusterResource
 argument_list|()
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|reservedResources
+operator|=
+operator|new
+name|ResourceInfo
+argument_list|(
+name|queue
+operator|.
+name|getReservedResource
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|fractionMemSteadyFairShare
@@ -832,6 +848,16 @@ parameter_list|()
 block|{
 return|return
 name|maxResources
+return|;
+block|}
+DECL|method|getReservedResources ()
+specifier|public
+name|ResourceInfo
+name|getReservedResources
+parameter_list|()
+block|{
+return|return
+name|reservedResources
 return|;
 block|}
 DECL|method|getMaxApplications ()

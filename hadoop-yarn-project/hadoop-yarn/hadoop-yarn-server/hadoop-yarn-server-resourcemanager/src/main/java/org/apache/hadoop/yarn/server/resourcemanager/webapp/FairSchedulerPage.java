@@ -598,6 +598,19 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+operator|.
+name|_
+argument_list|(
+literal|"Reserved Resources:"
+argument_list|,
+name|qinfo
+operator|.
+name|getReservedResources
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|)
 decl_stmt|;
 name|int
 name|maxApps
@@ -790,6 +803,19 @@ argument_list|,
 name|qinfo
 operator|.
 name|getMaxResources
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+operator|.
+name|_
+argument_list|(
+literal|"Reserved Resources:"
+argument_list|,
+name|qinfo
+operator|.
+name|getReservedResources
 argument_list|()
 operator|.
 name|toString
