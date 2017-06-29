@@ -36,36 +36,6 @@ specifier|private
 name|Constants
 parameter_list|()
 block|{   }
-comment|/**    * Configuration parameter name expected in the Configuration    * object to provide the url of the remote service {@value}    */
-DECL|field|KEY_CRED_SERVICE_URL
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|KEY_CRED_SERVICE_URL
-init|=
-literal|"fs.azure.cred.service.url"
-decl_stmt|;
-comment|/**    * Default port of the remote service used as delegation token manager and Azure storage SAS key generator.    */
-DECL|field|DEFAULT_CRED_SERVICE_PORT
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|DEFAULT_CRED_SERVICE_PORT
-init|=
-literal|50911
-decl_stmt|;
-comment|/**    * Default remote delegation token manager endpoint.    */
-DECL|field|DEFAULT_DELEGATION_TOKEN_MANAGER_ENDPOINT
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DEFAULT_DELEGATION_TOKEN_MANAGER_ENDPOINT
-init|=
-literal|"/tokenmanager/v1"
-decl_stmt|;
 comment|/**    * The configuration property to enable Kerberos support.    */
 DECL|field|AZURE_KERBEROS_SUPPORT_PROPERTY_NAME
 specifier|public
@@ -85,6 +55,16 @@ name|String
 name|DOAS_PARAM
 init|=
 literal|"doas"
+decl_stmt|;
+comment|/**    * Error message for Authentication failures.    */
+DECL|field|AUTHENTICATION_FAILED_ERROR_MESSAGE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|AUTHENTICATION_FAILED_ERROR_MESSAGE
+init|=
+literal|"Authentication Failed "
 decl_stmt|;
 block|}
 end_class

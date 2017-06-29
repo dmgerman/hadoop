@@ -227,7 +227,7 @@ name|set
 argument_list|(
 name|RemoteWasbAuthorizerImpl
 operator|.
-name|KEY_REMOTE_AUTH_SERVICE_URL
+name|KEY_REMOTE_AUTH_SERVICE_URLS
 argument_list|,
 literal|"http://localhost/"
 argument_list|)
