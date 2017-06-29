@@ -3086,6 +3086,29 @@ name|date
 argument_list|)
 return|;
 block|}
+comment|/**    * Closes DistributedStorageHandler.    */
+annotation|@
+name|Override
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+block|{
+if|if
+condition|(
+name|xceiverClientManager
+operator|!=
+literal|null
+condition|)
+block|{
+name|xceiverClientManager
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 block|}
 end_class
 

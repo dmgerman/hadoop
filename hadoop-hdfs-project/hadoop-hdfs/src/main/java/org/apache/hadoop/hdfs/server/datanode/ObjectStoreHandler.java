@@ -1040,6 +1040,11 @@ argument_list|(
 literal|"Closing ObjectStoreHandler."
 argument_list|)
 expr_stmt|;
+name|storageHandler
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|this

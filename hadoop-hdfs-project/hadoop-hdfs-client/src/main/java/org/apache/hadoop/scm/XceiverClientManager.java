@@ -620,6 +620,25 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * Close and remove all the cached clients.    */
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+block|{
+comment|//closing is done through RemovalListener
+name|clientCache
+operator|.
+name|invalidateAll
+argument_list|()
+expr_stmt|;
+name|clientCache
+operator|.
+name|cleanUp
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 end_class
 

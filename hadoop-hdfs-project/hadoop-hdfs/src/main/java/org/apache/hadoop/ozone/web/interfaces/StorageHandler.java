@@ -551,6 +551,12 @@ name|IOException
 throws|,
 name|OzoneException
 function_decl|;
+comment|/**    * Closes all the opened resources.    */
+DECL|method|close ()
+name|void
+name|close
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
