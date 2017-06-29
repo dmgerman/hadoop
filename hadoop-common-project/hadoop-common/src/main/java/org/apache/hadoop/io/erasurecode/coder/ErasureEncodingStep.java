@@ -213,11 +213,7 @@ name|void
 name|finish
 parameter_list|()
 block|{
-name|rawEncoder
-operator|.
-name|release
-argument_list|()
-expr_stmt|;
+comment|// do nothing
 block|}
 block|}
 end_class
