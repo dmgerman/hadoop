@@ -220,15 +220,6 @@ name|DEFAULT_RACK
 init|=
 literal|"/default-rack"
 decl_stmt|;
-DECL|field|DEFAULT_HOST_LEVEL
-specifier|public
-specifier|final
-specifier|static
-name|int
-name|DEFAULT_HOST_LEVEL
-init|=
-literal|2
-decl_stmt|;
 DECL|field|LOG
 specifier|public
 specifier|static
