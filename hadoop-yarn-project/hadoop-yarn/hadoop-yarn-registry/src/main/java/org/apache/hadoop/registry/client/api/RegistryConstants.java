@@ -132,6 +132,13 @@ name|DNS_PREFIX
 operator|+
 literal|"domain-name"
 decl_stmt|;
+comment|/**    * Max length of a label (node delimited by a dot in the FQDN).    */
+DECL|field|MAX_FQDN_LABEL_LENGTH
+name|int
+name|MAX_FQDN_LABEL_LENGTH
+init|=
+literal|63
+decl_stmt|;
 comment|/**    * DNS bind address.    */
 DECL|field|KEY_DNS_BIND_ADDRESS
 name|String

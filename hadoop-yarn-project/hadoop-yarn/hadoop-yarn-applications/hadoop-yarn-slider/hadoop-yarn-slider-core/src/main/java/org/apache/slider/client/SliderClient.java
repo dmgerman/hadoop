@@ -4234,6 +4234,9 @@ argument_list|(
 name|application
 argument_list|,
 name|sliderFileSystem
+argument_list|,
+name|getConfig
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|persistApp
@@ -4287,6 +4290,9 @@ argument_list|(
 name|application
 argument_list|,
 name|sliderFileSystem
+argument_list|,
+name|getConfig
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|verifyNoLiveApp
@@ -10118,6 +10124,9 @@ argument_list|(
 name|application
 argument_list|,
 name|sliderFileSystem
+argument_list|,
+name|getConfig
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// see if it is actually running and bail out;

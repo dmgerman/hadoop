@@ -1023,6 +1023,11 @@ operator|.
 name|application
 argument_list|,
 name|sliderFileSystem
+argument_list|,
+name|SliderUtils
+operator|.
+name|createConfiguration
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|//binding.roles = new ArrayList<>(factory.ROLES);

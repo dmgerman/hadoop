@@ -32,9 +32,23 @@ DECL|field|ERROR_APPLICATION_NAME_INVALID_FORMAT
 name|String
 name|ERROR_APPLICATION_NAME_INVALID_FORMAT
 init|=
-literal|"Application name %s is not valid - only lower case letters, digits,"
+literal|"Application name %s is not valid - only lower case letters, digits, "
 operator|+
-literal|" underscore and hyphen are allowed"
+literal|"underscore and hyphen are allowed, and the name must be no more "
+operator|+
+literal|"than 63 characters"
+decl_stmt|;
+DECL|field|ERROR_COMPONENT_NAME_INVALID
+name|String
+name|ERROR_COMPONENT_NAME_INVALID
+init|=
+literal|"Component name must be no more than %s characters: %s"
+decl_stmt|;
+DECL|field|ERROR_USER_NAME_INVALID
+name|String
+name|ERROR_USER_NAME_INVALID
+init|=
+literal|"User name must be no more than 63 characters"
 decl_stmt|;
 DECL|field|ERROR_APPLICATION_NOT_RUNNING
 name|String
