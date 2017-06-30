@@ -2827,6 +2827,8 @@ argument_list|(
 name|application
 argument_list|,
 name|sfs
+argument_list|,
+name|CONF_DEFAULT_DNS
 argument_list|)
 expr_stmt|;
 name|Assert
