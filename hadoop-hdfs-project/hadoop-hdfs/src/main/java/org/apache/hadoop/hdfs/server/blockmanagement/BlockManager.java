@@ -9184,6 +9184,7 @@ operator|)
 return|;
 block|}
 DECL|method|scheduleReconstruction (BlockInfo block, int priority)
+specifier|private
 name|BlockReconstructionWork
 name|scheduleReconstruction
 parameter_list|(
@@ -9317,14 +9318,6 @@ argument_list|,
 name|block
 argument_list|)
 expr_stmt|;
-name|NameNode
-operator|.
-name|getNameNodeMetrics
-argument_list|()
-operator|.
-name|incNumTimesReReplicationNotScheduled
-argument_list|()
-expr_stmt|;
 return|return
 literal|null
 return|;
@@ -9383,14 +9376,6 @@ literal|" it has enough replicas"
 argument_list|,
 name|block
 argument_list|)
-expr_stmt|;
-name|NameNode
-operator|.
-name|getNameNodeMetrics
-argument_list|()
-operator|.
-name|incNumTimesReReplicationNotScheduled
-argument_list|()
 expr_stmt|;
 return|return
 literal|null
@@ -9454,14 +9439,6 @@ literal|0
 condition|)
 block|{
 comment|// Wait the previous reconstruction to finish.
-name|NameNode
-operator|.
-name|getNameNodeMetrics
-argument_list|()
-operator|.
-name|incNumTimesReReplicationNotScheduled
-argument_list|()
-expr_stmt|;
 return|return
 literal|null
 return|;
@@ -17758,7 +17735,6 @@ comment|/**    * The given node is reporting that it received a certain block.  
 annotation|@
 name|VisibleForTesting
 DECL|method|addBlock (DatanodeStorageInfo storageInfo, Block block, String delHint)
-specifier|public
 name|void
 name|addBlock
 parameter_list|(
@@ -17874,8 +17850,6 @@ name|getGenerationStamp
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
 name|pendingReconstruction
 operator|.
 name|decrement
@@ -17884,17 +17858,7 @@ name|storedBlock
 argument_list|,
 name|node
 argument_list|)
-condition|)
-block|{
-name|NameNode
-operator|.
-name|getNameNodeMetrics
-argument_list|()
-operator|.
-name|incSuccessfulReReplications
-argument_list|()
 expr_stmt|;
-block|}
 block|}
 name|processAndHandleReportedBlock
 argument_list|(

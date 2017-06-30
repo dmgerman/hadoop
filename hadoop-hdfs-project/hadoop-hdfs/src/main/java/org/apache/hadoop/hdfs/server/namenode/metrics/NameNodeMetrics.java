@@ -396,33 +396,6 @@ decl_stmt|;
 annotation|@
 name|Metric
 argument_list|(
-literal|"Number of successful re-replications"
-argument_list|)
-DECL|field|successfulReReplications
-name|MutableCounterLong
-name|successfulReReplications
-decl_stmt|;
-annotation|@
-name|Metric
-argument_list|(
-literal|"Number of times we failed to schedule a block re-replication."
-argument_list|)
-DECL|field|numTimesReReplicationNotScheduled
-name|MutableCounterLong
-name|numTimesReReplicationNotScheduled
-decl_stmt|;
-annotation|@
-name|Metric
-argument_list|(
-literal|"Number of timed out block re-replications"
-argument_list|)
-DECL|field|timeoutReReplications
-name|MutableCounterLong
-name|timeoutReReplications
-decl_stmt|;
-annotation|@
-name|Metric
-argument_list|(
 literal|"Number of allowSnapshot operations"
 argument_list|)
 DECL|field|allowSnapshotOps
@@ -1510,42 +1483,6 @@ name|incr
 argument_list|(
 name|count
 argument_list|)
-expr_stmt|;
-block|}
-DECL|method|incSuccessfulReReplications ()
-specifier|public
-name|void
-name|incSuccessfulReReplications
-parameter_list|()
-block|{
-name|successfulReReplications
-operator|.
-name|incr
-argument_list|()
-expr_stmt|;
-block|}
-DECL|method|incNumTimesReReplicationNotScheduled ()
-specifier|public
-name|void
-name|incNumTimesReReplicationNotScheduled
-parameter_list|()
-block|{
-name|numTimesReReplicationNotScheduled
-operator|.
-name|incr
-argument_list|()
-expr_stmt|;
-block|}
-DECL|method|incTimeoutReReplications ()
-specifier|public
-name|void
-name|incTimeoutReReplications
-parameter_list|()
-block|{
-name|timeoutReReplications
-operator|.
-name|incr
-argument_list|()
 expr_stmt|;
 block|}
 DECL|method|addSync (long elapsed)
