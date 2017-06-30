@@ -477,18 +477,20 @@ name|asDirectory
 argument_list|()
 return|;
 block|}
+comment|// Profiling shows that most of the file lists are between 1 and 4 elements.
+comment|// Thus allocate the corresponding ArrayLists with a small initial capacity.
 DECL|field|DEFAULT_FILES_PER_DIRECTORY
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|int
 name|DEFAULT_FILES_PER_DIRECTORY
 init|=
-literal|5
+literal|2
 decl_stmt|;
 DECL|field|ROOT_NAME
-specifier|final
 specifier|static
+specifier|final
 name|byte
 index|[]
 name|ROOT_NAME

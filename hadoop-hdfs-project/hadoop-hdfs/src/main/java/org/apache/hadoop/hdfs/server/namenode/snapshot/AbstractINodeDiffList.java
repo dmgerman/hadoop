@@ -98,6 +98,24 @@ name|INodeAttributes
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|INodeDirectory
+import|;
+end_import
+
 begin_comment
 comment|/**  * A list of snapshot diffs for storing snapshot data.  *  * @param<N> The {@link INode} type.  * @param<D> The diff type, which must extend {@link AbstractINodeDiff}.  */
 end_comment
@@ -133,22 +151,14 @@ argument_list|<
 name|D
 argument_list|>
 block|{
-comment|/** Diff list sorted by snapshot IDs, i.e. in chronological order. */
+comment|/** Diff list sorted by snapshot IDs, i.e. in chronological order.     * Created lazily to avoid wasting memory by empty lists. */
 DECL|field|diffs
 specifier|private
-specifier|final
 name|List
 argument_list|<
 name|D
 argument_list|>
 name|diffs
-init|=
-operator|new
-name|ArrayList
-argument_list|<
-name|D
-argument_list|>
-argument_list|()
 decl_stmt|;
 comment|/** @return this list as a unmodifiable {@link List}. */
 DECL|method|asList ()
@@ -162,15 +172,24 @@ name|asList
 parameter_list|()
 block|{
 return|return
+name|diffs
+operator|!=
+literal|null
+condition|?
 name|Collections
 operator|.
 name|unmodifiableList
 argument_list|(
 name|diffs
 argument_list|)
+else|:
+name|Collections
+operator|.
+name|emptyList
+argument_list|()
 return|;
 block|}
-comment|/** Get the size of the list and then clear it. */
+comment|/** Clear the list. */
 DECL|method|clear ()
 specifier|public
 name|void
@@ -178,9 +197,8 @@ name|clear
 parameter_list|()
 block|{
 name|diffs
-operator|.
-name|clear
-argument_list|()
+operator|=
+literal|null
 expr_stmt|;
 block|}
 comment|/** @return an {@link AbstractINodeDiff}. */
@@ -231,6 +249,15 @@ name|N
 name|currentINode
 parameter_list|)
 block|{
+if|if
+condition|(
+name|diffs
+operator|==
+literal|null
+condition|)
+block|{
+return|return;
+block|}
 name|int
 name|snapshotIndex
 init|=
@@ -289,6 +316,19 @@ argument_list|(
 literal|0
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|diffs
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|diffs
+operator|=
+literal|null
+expr_stmt|;
+block|}
 name|removed
 operator|.
 name|destroyDiffAndCollectBlocks
@@ -447,6 +487,9 @@ name|D
 name|diff
 parameter_list|)
 block|{
+name|createDiffsIfNeeded
+argument_list|()
+expr_stmt|;
 specifier|final
 name|D
 name|last
@@ -490,6 +533,9 @@ name|D
 name|diff
 parameter_list|)
 block|{
+name|createDiffsIfNeeded
+argument_list|()
+expr_stmt|;
 specifier|final
 name|D
 name|first
@@ -533,7 +579,17 @@ name|D
 name|getLast
 parameter_list|()
 block|{
-specifier|final
+if|if
+condition|(
+name|diffs
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
 name|int
 name|n
 init|=
@@ -558,6 +614,32 @@ operator|-
 literal|1
 argument_list|)
 return|;
+block|}
+DECL|method|createDiffsIfNeeded ()
+specifier|private
+name|void
+name|createDiffsIfNeeded
+parameter_list|()
+block|{
+if|if
+condition|(
+name|diffs
+operator|==
+literal|null
+condition|)
+block|{
+name|diffs
+operator|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|(
+name|INodeDirectory
+operator|.
+name|DEFAULT_FILES_PER_DIRECTORY
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/** @return the id of the last snapshot. */
 DECL|method|getLastSnapshotId ()
@@ -612,6 +694,19 @@ parameter_list|)
 block|{
 if|if
 condition|(
+name|diffs
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+name|Snapshot
+operator|.
+name|NO_SNAPSHOT_ID
+return|;
+block|}
+if|if
+condition|(
 name|anchorId
 operator|==
 name|Snapshot
@@ -633,11 +728,13 @@ name|last
 operator|==
 name|anchorId
 condition|)
+block|{
 return|return
 name|Snapshot
 operator|.
 name|NO_SNAPSHOT_ID
 return|;
+block|}
 return|return
 name|last
 return|;
@@ -857,6 +954,10 @@ operator|==
 name|Snapshot
 operator|.
 name|CURRENT_STATE_ID
+operator|||
+name|diffs
+operator|==
+literal|null
 condition|)
 block|{
 return|return
@@ -974,6 +1075,17 @@ name|Snapshot
 name|to
 parameter_list|)
 block|{
+if|if
+condition|(
+name|diffs
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
 name|Snapshot
 name|earlier
 init|=
@@ -1320,8 +1432,17 @@ parameter_list|()
 block|{
 return|return
 name|diffs
+operator|!=
+literal|null
+condition|?
+name|diffs
 operator|.
 name|iterator
+argument_list|()
+else|:
+name|Collections
+operator|.
+name|emptyIterator
 argument_list|()
 return|;
 block|}
@@ -1342,7 +1463,15 @@ argument_list|()
 operator|+
 literal|": "
 operator|+
+operator|(
 name|diffs
+operator|!=
+literal|null
+condition|?
+name|diffs
+else|:
+literal|"[]"
+operator|)
 return|;
 block|}
 block|}
