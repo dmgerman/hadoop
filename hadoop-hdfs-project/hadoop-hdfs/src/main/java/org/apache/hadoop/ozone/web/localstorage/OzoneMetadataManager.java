@@ -4527,7 +4527,7 @@ name|newError
 argument_list|(
 name|ErrorTable
 operator|.
-name|INVALID_BUCKET_NAME
+name|INVALID_RESOURCE_NAME
 argument_list|,
 name|args
 argument_list|)
@@ -5360,7 +5360,7 @@ name|newError
 argument_list|(
 name|ErrorTable
 operator|.
-name|INVALID_KEY
+name|INVALID_RESOURCE_NAME
 argument_list|,
 name|args
 argument_list|)
@@ -5486,7 +5486,7 @@ name|newError
 argument_list|(
 name|ErrorTable
 operator|.
-name|INVALID_BUCKET_NAME
+name|INVALID_RESOURCE_NAME
 argument_list|,
 name|bArgs
 argument_list|)
@@ -5525,7 +5525,7 @@ name|newError
 argument_list|(
 name|ErrorTable
 operator|.
-name|INVALID_BUCKET_NAME
+name|INVALID_RESOURCE_NAME
 argument_list|,
 name|bArgs
 argument_list|)

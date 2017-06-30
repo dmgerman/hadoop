@@ -259,6 +259,23 @@ argument_list|,
 literal|"Invalid query parameter."
 argument_list|)
 decl_stmt|;
+DECL|field|INVALID_RESOURCE_NAME
+specifier|public
+specifier|static
+specifier|final
+name|OzoneException
+name|INVALID_RESOURCE_NAME
+init|=
+operator|new
+name|OzoneException
+argument_list|(
+name|HTTP_BAD_REQUEST
+argument_list|,
+literal|"invalidResourceName"
+argument_list|,
+literal|"Invalid volume, bucket or key name."
+argument_list|)
+decl_stmt|;
 DECL|field|INVALID_BUCKET_NAME
 specifier|public
 specifier|static

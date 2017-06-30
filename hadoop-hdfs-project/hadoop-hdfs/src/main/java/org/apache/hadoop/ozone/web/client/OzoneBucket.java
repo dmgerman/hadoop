@@ -1189,7 +1189,8 @@ block|}
 block|}
 comment|/**    * executePutKey executes the Put request against the Ozone Server.    *    * @param putRequest - Http Put Request    * @param httpClient - httpClient    * @throws OzoneException    * @throws IOException    */
 DECL|method|executePutKey (HttpPut putRequest, CloseableHttpClient httpClient)
-specifier|private
+specifier|public
+specifier|static
 name|void
 name|executePutKey
 parameter_list|(
@@ -1670,7 +1671,8 @@ block|}
 block|}
 comment|/**    * Executes get key and returns the data.    *    * @param getRequest - http Get Request    * @param httpClient - Client    * @param stream     - Stream to write data to.    * @throws IOException    * @throws OzoneException    */
 DECL|method|executeGetKey (HttpGet getRequest, CloseableHttpClient httpClient, OutputStream stream)
-specifier|private
+specifier|public
+specifier|static
 name|void
 name|executeGetKey
 parameter_list|(
@@ -2166,7 +2168,8 @@ block|}
 block|}
 comment|/**    * Execute list Key.    *    * @param getRequest - HttpGet    * @param httpClient - HttpClient    * @return List<OzoneKey>    * @throws IOException    * @throws OzoneException    */
 DECL|method|executeListKeys (HttpGet getRequest, CloseableHttpClient httpClient)
-specifier|private
+specifier|public
+specifier|static
 name|List
 argument_list|<
 name|OzoneKey

@@ -675,7 +675,7 @@ init|)
 block|{
 name|OzoneUtils
 operator|.
-name|verifyBucketName
+name|verifyResourceName
 argument_list|(
 name|bucketName
 argument_list|)
@@ -1086,7 +1086,7 @@ init|)
 block|{
 name|OzoneUtils
 operator|.
-name|verifyBucketName
+name|verifyResourceName
 argument_list|(
 name|bucketName
 argument_list|)
@@ -1229,7 +1229,7 @@ init|)
 block|{
 name|OzoneUtils
 operator|.
-name|verifyBucketName
+name|verifyResourceName
 argument_list|(
 name|bucketName
 argument_list|)
@@ -1368,7 +1368,7 @@ init|)
 block|{
 name|OzoneUtils
 operator|.
-name|verifyBucketName
+name|verifyResourceName
 argument_list|(
 name|bucketName
 argument_list|)
@@ -2017,7 +2017,7 @@ init|)
 block|{
 name|OzoneUtils
 operator|.
-name|verifyBucketName
+name|verifyResourceName
 argument_list|(
 name|bucketName
 argument_list|)

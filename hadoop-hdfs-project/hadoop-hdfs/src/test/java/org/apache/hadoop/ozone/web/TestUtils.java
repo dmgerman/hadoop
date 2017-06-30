@@ -94,7 +94,7 @@ name|utils
 operator|.
 name|OzoneUtils
 operator|.
-name|verifyBucketName
+name|verifyResourceName
 import|;
 end_import
 
@@ -409,7 +409,7 @@ argument_list|)
 condition|)
 block|{
 comment|// For valid names there should be no exceptions at all
-name|verifyBucketName
+name|verifyResourceName
 argument_list|(
 name|key
 argument_list|)
@@ -419,7 +419,7 @@ else|else
 block|{
 try|try
 block|{
-name|verifyBucketName
+name|verifyResourceName
 argument_list|(
 name|key
 argument_list|)

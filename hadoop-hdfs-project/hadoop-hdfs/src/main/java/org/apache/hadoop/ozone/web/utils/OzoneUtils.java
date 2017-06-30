@@ -395,22 +395,22 @@ parameter_list|()
 block|{
 comment|// Never constructed
 block|}
-comment|/**    * verifies that bucket name / volume name is a valid DNS name.    *    * @param bucketName Bucket Name to be validated    *    * @throws IllegalArgumentException    */
-DECL|method|verifyBucketName (String bucketName)
+comment|/**    * verifies that bucket name / volume name is a valid DNS name.    *    * @param resName Bucket or volume Name to be validated    *    * @throws IllegalArgumentException    */
+DECL|method|verifyResourceName (String resName)
 specifier|public
 specifier|static
 name|void
-name|verifyBucketName
+name|verifyResourceName
 parameter_list|(
 name|String
-name|bucketName
+name|resName
 parameter_list|)
 throws|throws
 name|IllegalArgumentException
 block|{
 if|if
 condition|(
-name|bucketName
+name|resName
 operator|==
 literal|null
 condition|)
@@ -426,7 +426,7 @@ block|}
 if|if
 condition|(
 operator|(
-name|bucketName
+name|resName
 operator|.
 name|length
 argument_list|()
@@ -437,7 +437,7 @@ name|OZONE_MIN_BUCKET_NAME_LENGTH
 operator|)
 operator|||
 operator|(
-name|bucketName
+name|resName
 operator|.
 name|length
 argument_list|()
@@ -461,7 +461,7 @@ block|}
 if|if
 condition|(
 operator|(
-name|bucketName
+name|resName
 operator|.
 name|charAt
 argument_list|(
@@ -472,7 +472,7 @@ literal|'.'
 operator|)
 operator|||
 operator|(
-name|bucketName
+name|resName
 operator|.
 name|charAt
 argument_list|(
@@ -494,11 +494,11 @@ block|}
 if|if
 condition|(
 operator|(
-name|bucketName
+name|resName
 operator|.
 name|charAt
 argument_list|(
-name|bucketName
+name|resName
 operator|.
 name|length
 argument_list|()
@@ -510,11 +510,11 @@ literal|'.'
 operator|)
 operator|||
 operator|(
-name|bucketName
+name|resName
 operator|.
 name|charAt
 argument_list|(
-name|bucketName
+name|resName
 operator|.
 name|length
 argument_list|()
@@ -556,7 +556,7 @@ literal|0
 init|;
 name|index
 operator|<
-name|bucketName
+name|resName
 operator|.
 name|length
 argument_list|()
@@ -568,7 +568,7 @@ block|{
 name|char
 name|currChar
 init|=
-name|bucketName
+name|resName
 operator|.
 name|charAt
 argument_list|(

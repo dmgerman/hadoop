@@ -513,7 +513,7 @@ expr_stmt|;
 comment|// we use the same logic for both bucket and volume names
 name|OzoneUtils
 operator|.
-name|verifyBucketName
+name|verifyResourceName
 argument_list|(
 name|volume
 argument_list|)

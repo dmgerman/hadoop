@@ -546,7 +546,7 @@ argument_list|)
 expr_stmt|;
 name|OzoneUtils
 operator|.
-name|verifyBucketName
+name|verifyResourceName
 argument_list|(
 name|bucket
 argument_list|)
