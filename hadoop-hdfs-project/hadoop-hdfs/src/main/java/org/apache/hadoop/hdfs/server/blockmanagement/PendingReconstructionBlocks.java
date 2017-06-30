@@ -156,6 +156,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|NameNode
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|Daemon
@@ -382,9 +400,9 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * One reconstruction request for this block has finished.    * Decrement the number of pending reconstruction requests    * for this block.    *    * @param dn The DataNode that finishes the reconstruction    */
+comment|/**    * One reconstruction request for this block has finished.    * Decrement the number of pending reconstruction requests    * for this block.    *    * @param dn The DataNode that finishes the reconstruction    * @return true if the block is decremented to 0 and got removed.    */
 DECL|method|decrement (BlockInfo block, DatanodeDescriptor dn)
-name|void
+name|boolean
 name|decrement
 parameter_list|(
 name|BlockInfo
@@ -394,6 +412,11 @@ name|DatanodeDescriptor
 name|dn
 parameter_list|)
 block|{
+name|boolean
+name|removed
+init|=
+literal|false
+decl_stmt|;
 synchronized|synchronized
 init|(
 name|pendingReconstructions
@@ -449,9 +472,16 @@ argument_list|(
 name|block
 argument_list|)
 expr_stmt|;
+name|removed
+operator|=
+literal|true
+expr_stmt|;
 block|}
 block|}
 block|}
+return|return
+name|removed
+return|;
 block|}
 comment|/**    * Remove the record about the given block from pending reconstructions.    *    * @param block    *          The given block whose pending reconstruction requests need to be    *          removed    */
 DECL|method|remove (BlockInfo block)
@@ -987,6 +1017,14 @@ literal|"PendingReconstructionMonitor timed out "
 operator|+
 name|block
 argument_list|)
+expr_stmt|;
+name|NameNode
+operator|.
+name|getNameNodeMetrics
+argument_list|()
+operator|.
+name|incTimeoutReReplications
+argument_list|()
 expr_stmt|;
 name|iter
 operator|.
