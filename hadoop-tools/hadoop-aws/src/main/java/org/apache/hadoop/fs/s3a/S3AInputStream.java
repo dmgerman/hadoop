@@ -214,6 +214,16 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -345,15 +355,20 @@ name|String
 name|uri
 decl_stmt|;
 DECL|field|LOG
-specifier|public
+specifier|private
 specifier|static
 specifier|final
 name|Logger
 name|LOG
 init|=
-name|S3AFileSystem
+name|LoggerFactory
 operator|.
-name|LOG
+name|getLogger
+argument_list|(
+name|S3AInputStream
+operator|.
+name|class
+argument_list|)
 decl_stmt|;
 DECL|field|streamStatistics
 specifier|private
@@ -1686,6 +1701,21 @@ init|=
 name|remainingInCurrentRequest
 argument_list|()
 decl_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Closing stream {}: {}"
+argument_list|,
+name|reason
+argument_list|,
+name|forceAbort
+condition|?
+literal|"abort"
+else|:
+literal|"soft"
+argument_list|)
+expr_stmt|;
 name|boolean
 name|shouldAbort
 init|=
@@ -1705,18 +1735,51 @@ try|try
 block|{
 comment|// clean close. This will read to the end of the stream,
 comment|// so, while cleaner, can be pathological on a multi-GB object
+comment|// explicitly drain the stream
+name|long
+name|drained
+init|=
+literal|0
+decl_stmt|;
+while|while
+condition|(
+name|wrappedStream
+operator|.
+name|read
+argument_list|()
+operator|>=
+literal|0
+condition|)
+block|{
+name|drained
+operator|++
+expr_stmt|;
+block|}
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Drained stream of {} bytes"
+argument_list|,
+name|drained
+argument_list|)
+expr_stmt|;
+comment|// now close it
 name|wrappedStream
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
+comment|// this MUST come after the close, so that if the IO operations fail
+comment|// and an abort is triggered, the initial attempt's statistics
+comment|// aren't collected.
 name|streamStatistics
 operator|.
 name|streamClose
 argument_list|(
 literal|false
 argument_list|,
-name|remaining
+name|drained
 argument_list|)
 expr_stmt|;
 block|}
@@ -1753,6 +1816,13 @@ condition|)
 block|{
 comment|// Abort, rather than just close, the underlying stream.  Otherwise, the
 comment|// remaining object payload is read from S3 while closing the stream.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Aborting stream"
+argument_list|)
+expr_stmt|;
 name|wrappedStream
 operator|.
 name|abort
@@ -1772,7 +1842,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Stream {} {}: {}; streamPos={}, nextReadPos={},"
+literal|"Stream {} {}: {}; remaining={} streamPos={},"
+operator|+
+literal|" nextReadPos={},"
 operator|+
 literal|" request range {}-{} length={}"
 argument_list|,
@@ -1787,6 +1859,8 @@ literal|"closed"
 operator|)
 argument_list|,
 name|reason
+argument_list|,
+name|remaining
 argument_list|,
 name|pos
 argument_list|,
