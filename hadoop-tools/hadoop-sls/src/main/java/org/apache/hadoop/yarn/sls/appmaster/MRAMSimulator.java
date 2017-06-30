@@ -238,6 +238,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|Resource
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ContainerExitStatus
 import|;
 end_import
@@ -654,14 +672,11 @@ name|SuppressWarnings
 argument_list|(
 literal|"checkstyle:parameternumber"
 argument_list|)
-DECL|method|init (int id, int heartbeatInterval, List<ContainerSimulator> containerList, ResourceManager rm, SLSRunner se, long traceStartTime, long traceFinishTime, String user, String queue, boolean isTracked, String oldAppId, ReservationSubmissionRequest rr, long baselineStartTimeMS)
+DECL|method|init (int heartbeatInterval, List<ContainerSimulator> containerList, ResourceManager rm, SLSRunner se, long traceStartTime, long traceFinishTime, String user, String queue, boolean isTracked, String oldAppId, ReservationSubmissionRequest rr, long baselineStartTimeMS, Resource amContainerResource)
 specifier|public
 name|void
 name|init
 parameter_list|(
-name|int
-name|id
-parameter_list|,
 name|int
 name|heartbeatInterval
 parameter_list|,
@@ -700,14 +715,15 @@ name|rr
 parameter_list|,
 name|long
 name|baselineStartTimeMS
+parameter_list|,
+name|Resource
+name|amContainerResource
 parameter_list|)
 block|{
 name|super
 operator|.
 name|init
 argument_list|(
-name|id
-argument_list|,
 name|heartbeatInterval
 argument_list|,
 name|containerList
@@ -731,6 +747,8 @@ argument_list|,
 name|rr
 argument_list|,
 name|baselineStartTimeMS
+argument_list|,
+name|amContainerResource
 argument_list|)
 expr_stmt|;
 name|amtype

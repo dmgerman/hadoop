@@ -813,8 +813,6 @@ name|app
 operator|.
 name|init
 argument_list|(
-literal|1
-argument_list|,
 literal|1000
 argument_list|,
 name|containers
@@ -838,6 +836,13 @@ argument_list|,
 literal|null
 argument_list|,
 literal|0
+argument_list|,
+name|SLSConfiguration
+operator|.
+name|getAMContainerResource
+argument_list|(
+name|conf
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|app
