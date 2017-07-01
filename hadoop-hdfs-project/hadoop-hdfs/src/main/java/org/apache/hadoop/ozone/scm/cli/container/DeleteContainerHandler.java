@@ -176,6 +176,26 @@ name|CMD_WIDTH
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|scm
+operator|.
+name|cli
+operator|.
+name|SCMCLI
+operator|.
+name|HELP_OP
+import|;
+end_import
+
 begin_comment
 comment|/**  * This is the handler that process delete container command.  */
 end_comment
@@ -195,7 +215,7 @@ specifier|final
 name|String
 name|CONTAINER_DELETE
 init|=
-literal|"del"
+literal|"delete"
 decl_stmt|;
 DECL|field|OPT_FORCE
 specifier|protected
@@ -205,6 +225,15 @@ name|String
 name|OPT_FORCE
 init|=
 literal|"f"
+decl_stmt|;
+DECL|field|OPT_CONTAINER_NAME
+specifier|protected
+specifier|static
+specifier|final
+name|String
+name|OPT_CONTAINER_NAME
+init|=
+literal|"c"
 decl_stmt|;
 DECL|method|DeleteContainerHandler (ScmClient scmClient)
 specifier|public
@@ -244,9 +273,47 @@ argument_list|(
 name|CONTAINER_DELETE
 argument_list|)
 argument_list|,
-literal|"Expecting command del"
+literal|"Expecting command delete"
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|cmd
+operator|.
+name|hasOption
+argument_list|(
+name|OPT_CONTAINER_NAME
+argument_list|)
+condition|)
+block|{
+name|displayHelp
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+operator|!
+name|cmd
+operator|.
+name|hasOption
+argument_list|(
+name|HELP_OP
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Expecting container name"
+argument_list|)
+throw|;
+block|}
+else|else
+block|{
+return|return;
+block|}
+block|}
 name|String
 name|containerName
 init|=
@@ -254,7 +321,7 @@ name|cmd
 operator|.
 name|getOptionValue
 argument_list|(
-name|CONTAINER_DELETE
+name|OPT_CONTAINER_NAME
 argument_list|)
 decl_stmt|;
 name|Pipeline
@@ -315,9 +382,9 @@ name|containerName
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|displayHelp ()
 annotation|@
 name|Override
+DECL|method|displayHelp ()
 specifier|public
 name|void
 name|displayHelp
@@ -348,7 +415,7 @@ name|printHelp
 argument_list|(
 name|CMD_WIDTH
 argument_list|,
-literal|"hdfs scm -container -del<option>"
+literal|"hdfs scm -container -delete<option>"
 argument_list|,
 literal|"where<option> is"
 argument_list|,
@@ -386,6 +453,26 @@ operator|.
 name|addOption
 argument_list|(
 name|forceOpt
+argument_list|)
+expr_stmt|;
+name|Option
+name|containerNameOpt
+init|=
+operator|new
+name|Option
+argument_list|(
+name|OPT_CONTAINER_NAME
+argument_list|,
+literal|true
+argument_list|,
+literal|"Specify container name"
+argument_list|)
+decl_stmt|;
+name|options
+operator|.
+name|addOption
+argument_list|(
+name|containerNameOpt
 argument_list|)
 expr_stmt|;
 block|}

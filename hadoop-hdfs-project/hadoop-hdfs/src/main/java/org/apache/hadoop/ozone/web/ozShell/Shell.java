@@ -844,6 +844,20 @@ parameter_list|)
 block|{
 name|System
 operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"ERROR: "
+operator|+
+name|ex
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
 name|exit
 argument_list|(
 literal|1

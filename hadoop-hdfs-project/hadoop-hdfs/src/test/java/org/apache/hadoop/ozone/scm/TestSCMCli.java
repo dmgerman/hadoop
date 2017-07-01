@@ -1049,7 +1049,9 @@ index|[]
 block|{
 literal|"-container"
 block|,
-literal|"-del"
+literal|"-delete"
+block|,
+literal|"-c"
 block|,
 name|containerName
 block|}
@@ -1171,7 +1173,9 @@ index|[]
 block|{
 literal|"-container"
 block|,
-literal|"-del"
+literal|"-delete"
+block|,
+literal|"-c"
 block|,
 name|containerName
 block|,
@@ -1268,7 +1272,9 @@ index|[]
 block|{
 literal|"-container"
 block|,
-literal|"-del"
+literal|"-delete"
+block|,
+literal|"-c"
 block|,
 name|containerName
 block|}
@@ -1348,7 +1354,9 @@ index|[]
 block|{
 literal|"-container"
 block|,
-literal|"-del"
+literal|"-delete"
+block|,
+literal|"-c"
 block|,
 name|containerName
 block|}
@@ -1538,6 +1546,8 @@ literal|"-container"
 block|,
 literal|"-info"
 block|,
+literal|"-c"
+block|,
 name|cname
 block|}
 expr_stmt|;
@@ -1693,6 +1703,8 @@ block|{
 literal|"-container"
 block|,
 literal|"-info"
+block|,
+literal|"-c"
 block|,
 name|cname
 block|}
@@ -1913,6 +1925,8 @@ literal|"-container"
 block|,
 literal|"-info"
 block|,
+literal|"-c"
+block|,
 name|cname
 block|}
 expr_stmt|;
@@ -2014,6 +2028,8 @@ block|{
 literal|"-container"
 block|,
 literal|"-info"
+block|,
+literal|"-c"
 block|,
 name|cname
 block|}
@@ -2331,11 +2347,11 @@ literal|"usage: hdfs scm -container<commands><options>\n"
 operator|+
 literal|"where<commands> can be one of the following\n"
 operator|+
-literal|" -create       Create container\n"
+literal|" -create   Create container\n"
 operator|+
-literal|" -del<arg>    Delete container\n"
+literal|" -delete   Delete container\n"
 operator|+
-literal|" -info<arg>   Info container\n"
+literal|" -info     Info container\n"
 decl_stmt|;
 name|assertEquals
 argument_list|(
@@ -2396,6 +2412,113 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+expr_stmt|;
+name|testContent
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
+name|String
+index|[]
+name|args3
+init|=
+block|{
+literal|"-container"
+block|,
+literal|"-delete"
+block|,
+literal|"-help"
+block|}
+decl_stmt|;
+name|assertEquals
+argument_list|(
+name|ResultCode
+operator|.
+name|SUCCESS
+argument_list|,
+name|cli
+operator|.
+name|run
+argument_list|(
+name|args3
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|String
+name|expected3
+init|=
+literal|"usage: hdfs scm -container -delete<option>\n"
+operator|+
+literal|"where<option> is\n"
+operator|+
+literal|" -c<arg>   Specify container name\n"
+operator|+
+literal|" -f         forcibly delete a container\n"
+decl_stmt|;
+name|assertEquals
+argument_list|(
+name|expected3
+argument_list|,
+name|testContent
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|testContent
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
+name|String
+index|[]
+name|args4
+init|=
+block|{
+literal|"-container"
+block|,
+literal|"-info"
+block|,
+literal|"-help"
+block|}
+decl_stmt|;
+name|assertEquals
+argument_list|(
+name|ResultCode
+operator|.
+name|SUCCESS
+argument_list|,
+name|cli
+operator|.
+name|run
+argument_list|(
+name|args4
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|String
+name|expected4
+init|=
+literal|"usage: hdfs scm -container -info<option>\n"
+operator|+
+literal|"where<option> is\n"
+operator|+
+literal|" -c<arg>   Specify container name\n"
+decl_stmt|;
+name|assertEquals
+argument_list|(
+name|expected4
+argument_list|,
+name|testContent
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|testContent
+operator|.
+name|reset
+argument_list|()
 expr_stmt|;
 name|System
 operator|.

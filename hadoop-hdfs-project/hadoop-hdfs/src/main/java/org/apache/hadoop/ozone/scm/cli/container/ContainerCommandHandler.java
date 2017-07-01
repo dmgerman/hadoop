@@ -519,7 +519,7 @@ name|Option
 argument_list|(
 name|CONTAINER_INFO
 argument_list|,
-literal|true
+literal|false
 argument_list|,
 literal|"Info container"
 argument_list|)
@@ -532,7 +532,7 @@ name|Option
 argument_list|(
 name|CONTAINER_DELETE
 argument_list|,
-literal|true
+literal|false
 argument_list|,
 literal|"Delete container"
 argument_list|)
@@ -584,6 +584,13 @@ name|options
 argument_list|)
 expr_stmt|;
 name|DeleteContainerHandler
+operator|.
+name|addOptions
+argument_list|(
+name|options
+argument_list|)
+expr_stmt|;
+name|InfoContainerHandler
 operator|.
 name|addOptions
 argument_list|(
