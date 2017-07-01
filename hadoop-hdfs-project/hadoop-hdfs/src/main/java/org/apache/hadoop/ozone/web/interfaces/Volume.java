@@ -391,7 +391,7 @@ function_decl|;
 comment|/**    * Returns Volume info. This API can be invoked either    * by admin or the owner    *    * @param volume - Storage Volume Name    * @param req - Http Req    * @param headers - Http headers    *    * @return - Response    *    * @throws OzoneException    */
 annotation|@
 name|GET
-DECL|method|getVolumeInfo (@athParamR) String volume, @DefaultValue(Header.OZONE_LIST_QUERY_BUCKET) @QueryParam(Header.OZONE_LIST_QUERY_TAG) String info, @QueryParam(Header.OZONE_LIST_QUERY_PREFIX) String prefix, @QueryParam(Header.OZONE_LIST_QUERY_MAXKEYS) int keys, @QueryParam(Header.OZONE_LIST_QUERY_PREVKEY) String prevKey, @QueryParam(Header.OZONE_LIST_QUERY_ROOTSCAN) boolean rootScan, @Context Request req, @Context UriInfo uriInfo, @Context HttpHeaders headers)
+DECL|method|getVolumeInfo (@athParamR) String volume, @DefaultValue(Header.OZONE_LIST_QUERY_BUCKET) @QueryParam(Header.OZONE_LIST_QUERY_TAG) String info, @QueryParam(Header.OZONE_LIST_QUERY_PREFIX) String prefix, @DefaultValue(Header.OZONE_DEFAULT_LIST_SIZE) @QueryParam(Header.OZONE_LIST_QUERY_MAXKEYS) int keys, @QueryParam(Header.OZONE_LIST_QUERY_PREVKEY) String prevKey, @QueryParam(Header.OZONE_LIST_QUERY_ROOTSCAN) boolean rootScan, @Context Request req, @Context UriInfo uriInfo, @Context HttpHeaders headers)
 name|Response
 name|getVolumeInfo
 parameter_list|(
@@ -430,6 +430,13 @@ argument_list|)
 name|String
 name|prefix
 parameter_list|,
+annotation|@
+name|DefaultValue
+argument_list|(
+name|Header
+operator|.
+name|OZONE_DEFAULT_LIST_SIZE
+argument_list|)
 annotation|@
 name|QueryParam
 argument_list|(
