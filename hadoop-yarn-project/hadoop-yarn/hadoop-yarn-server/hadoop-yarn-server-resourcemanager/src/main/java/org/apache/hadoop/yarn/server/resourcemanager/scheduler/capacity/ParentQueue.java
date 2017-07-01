@@ -4537,6 +4537,18 @@ block|}
 block|}
 annotation|@
 name|Override
+DECL|method|hasChildQueues ()
+specifier|public
+name|boolean
+name|hasChildQueues
+parameter_list|()
+block|{
+return|return
+literal|true
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getChildQueues ()
 specifier|public
 name|List
