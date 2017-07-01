@@ -190,6 +190,24 @@ name|web
 operator|.
 name|response
 operator|.
+name|KeyInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|web
+operator|.
+name|response
+operator|.
 name|ListBuckets
 import|;
 end_import
@@ -544,6 +562,19 @@ name|ListKeys
 name|listKeys
 parameter_list|(
 name|ListArgs
+name|args
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|OzoneException
+function_decl|;
+comment|/**    * Get information of the specified Key.    *    * @param args Key Args    *    * @return KeyInfo    *    * @throws IOException    * @throws OzoneException    */
+DECL|method|getKeyInfo (KeyArgs args)
+name|KeyInfo
+name|getKeyInfo
+parameter_list|(
+name|KeyArgs
 name|args
 parameter_list|)
 throws|throws

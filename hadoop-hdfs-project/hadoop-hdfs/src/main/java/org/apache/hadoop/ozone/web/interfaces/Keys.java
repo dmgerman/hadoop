@@ -40,6 +40,24 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|web
+operator|.
+name|headers
+operator|.
+name|Header
+import|;
+end_import
+
+begin_import
+import|import
 name|javax
 operator|.
 name|ws
@@ -118,7 +136,7 @@ name|ws
 operator|.
 name|rs
 operator|.
-name|Produces
+name|QueryParam
 import|;
 end_import
 
@@ -290,17 +308,10 @@ parameter_list|)
 throws|throws
 name|OzoneException
 function_decl|;
-comment|/**    * Gets the Key if it exists.    *    * @param volume Storage Volume    * @param bucket Name of the bucket    * @param keys Object Name    * @param req Request    * @param headers Http Header    *    * @return Response    *    * @throws OzoneException    */
+comment|/**    * Gets the Key if it exists.    *    * @param volume Storage Volume    * @param bucket Name of the bucket    * @param keys Object Name    * @param info Tag info    * @param req Request    * @param uriInfo Uri info    * @param headers Http Header    *    * @return Response    *    * @throws OzoneException    */
 annotation|@
 name|GET
-annotation|@
-name|Produces
-argument_list|(
-name|MediaType
-operator|.
-name|APPLICATION_OCTET_STREAM
-argument_list|)
-DECL|method|getKey (@athParamR) String volume, @PathParam(R) String bucket, @PathParam(R) String keys, @Context Request req, @Context UriInfo info, @Context HttpHeaders headers)
+DECL|method|getKey (@athParamR) String volume, @PathParam(R) String bucket, @PathParam(R) String keys, @QueryParam(Header.OZONE_LIST_QUERY_TAG) String info, @Context Request req, @Context UriInfo uriInfo, @Context HttpHeaders headers)
 name|Response
 name|getKey
 parameter_list|(
@@ -329,6 +340,16 @@ name|String
 name|keys
 parameter_list|,
 annotation|@
+name|QueryParam
+argument_list|(
+name|Header
+operator|.
+name|OZONE_LIST_QUERY_TAG
+argument_list|)
+name|String
+name|info
+parameter_list|,
+annotation|@
 name|Context
 name|Request
 name|req
@@ -336,7 +357,7 @@ parameter_list|,
 annotation|@
 name|Context
 name|UriInfo
-name|info
+name|uriInfo
 parameter_list|,
 annotation|@
 name|Context
