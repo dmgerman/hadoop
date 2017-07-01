@@ -224,7 +224,7 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Lists volume owned by a specific user.    * @param userName - user name    * @param prefix  - Filter prefix -- Return only entries that match this.    * @param prevKey - Previous key -- List starts from the next from the prevkey    * @param maxKeys - Max number of keys to return.    * @return List of Volumes.    * @throws IOException    */
-DECL|method|listVolumeByUser (String userName, String prefix, String prevKey, long maxKeys)
+DECL|method|listVolumeByUser (String userName, String prefix, String prevKey, int maxKeys)
 name|List
 argument_list|<
 name|KsmVolumeArgs
@@ -240,14 +240,14 @@ parameter_list|,
 name|String
 name|prevKey
 parameter_list|,
-name|long
+name|int
 name|maxKeys
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Lists volume all volumes in the cluster.    * @param prefix  - Filter prefix -- Return only entries that match this.    * @param prevKey - Previous key -- List starts from the next from the prevkey    * @param maxKeys - Max number of keys to return.    * @return List of Volumes.    * @throws IOException    */
-DECL|method|listAllVolumes (String prefix, String prevKey, long maxKeys)
+DECL|method|listAllVolumes (String prefix, String prevKey, int maxKeys)
 name|List
 argument_list|<
 name|KsmVolumeArgs
@@ -260,7 +260,7 @@ parameter_list|,
 name|String
 name|prevKey
 parameter_list|,
-name|long
+name|int
 name|maxKeys
 parameter_list|)
 throws|throws

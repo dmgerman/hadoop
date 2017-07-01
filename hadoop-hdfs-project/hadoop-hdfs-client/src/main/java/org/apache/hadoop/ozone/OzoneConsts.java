@@ -490,6 +490,16 @@ name|MAX_LISTKEYS_SIZE
 init|=
 literal|1024
 decl_stmt|;
+comment|/**    * Max number of volumes returned per list volumes operation.    */
+DECL|field|MAX_LISTVOLUMES_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|MAX_LISTVOLUMES_SIZE
+init|=
+literal|1024
+decl_stmt|;
 DECL|method|OzoneConsts ()
 specifier|private
 name|OzoneConsts

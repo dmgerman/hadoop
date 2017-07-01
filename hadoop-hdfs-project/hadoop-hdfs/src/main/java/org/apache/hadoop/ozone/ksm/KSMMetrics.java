@@ -203,6 +203,13 @@ name|Metric
 name|MutableCounterLong
 name|numKeyLists
 decl_stmt|;
+DECL|field|numVolumeLists
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numVolumeLists
+decl_stmt|;
 comment|// Failure Metrics
 DECL|field|numVolumeCreateFails
 specifier|private
@@ -301,6 +308,13 @@ annotation|@
 name|Metric
 name|MutableCounterLong
 name|numKeyListFails
+decl_stmt|;
+DECL|field|numVolumeListFails
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numVolumeListFails
 decl_stmt|;
 DECL|method|KSMMetrics ()
 specifier|public
@@ -464,6 +478,18 @@ name|incNumKeyLists
 parameter_list|()
 block|{
 name|numKeyLists
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumVolumeLists ()
+specifier|public
+name|void
+name|incNumVolumeLists
+parameter_list|()
+block|{
+name|numVolumeLists
 operator|.
 name|incr
 argument_list|()
@@ -673,6 +699,18 @@ name|incr
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|incNumVolumeListFails ()
+specifier|public
+name|void
+name|incNumVolumeListFails
+parameter_list|()
+block|{
+name|numVolumeListFails
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getNumVolumeCreates ()
@@ -818,6 +856,21 @@ parameter_list|()
 block|{
 return|return
 name|numBucketLists
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumVolumeLists ()
+specifier|public
+name|long
+name|getNumVolumeLists
+parameter_list|()
+block|{
+return|return
+name|numVolumeLists
 operator|.
 name|value
 argument_list|()
@@ -1088,6 +1141,21 @@ parameter_list|()
 block|{
 return|return
 name|numKeyListFails
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumVolumeListFails ()
+specifier|public
+name|long
+name|getNumVolumeListFails
+parameter_list|()
+block|{
+return|return
+name|numVolumeListFails
 operator|.
 name|value
 argument_list|()

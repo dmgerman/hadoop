@@ -52,6 +52,22 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ksm
+operator|.
+name|helpers
+operator|.
+name|KsmVolumeArgs
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -344,6 +360,29 @@ name|startKey
 parameter_list|,
 name|String
 name|keyPrefix
+parameter_list|,
+name|int
+name|maxKeys
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Returns a list of volumes owned by a given user; if user is null,    * returns all volumes.    *    * @param userName    *   volume owner    * @param prefix    *   the volume prefix used to filter the listing result.    * @param startKey    *   the start volume name determines where to start listing from.    * @param maxKeys    *   the maximum number of volumes to return.    * @return a list of {@link KsmVolumeArgs}    * @throws IOException    */
+DECL|method|listVolumes (String userName, String prefix, String startKey, int maxKeys)
+name|List
+argument_list|<
+name|KsmVolumeArgs
+argument_list|>
+name|listVolumes
+parameter_list|(
+name|String
+name|userName
+parameter_list|,
+name|String
+name|prefix
+parameter_list|,
+name|String
+name|startKey
 parameter_list|,
 name|int
 name|maxKeys
