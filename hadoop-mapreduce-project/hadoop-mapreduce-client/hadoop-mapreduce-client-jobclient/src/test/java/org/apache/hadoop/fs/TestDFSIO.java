@@ -1760,6 +1760,23 @@ operator|+
 literal|" files"
 argument_list|)
 expr_stmt|;
+specifier|final
+name|int
+name|maxDirItems
+init|=
+name|config
+operator|.
+name|getInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_MAX_DIRECTORY_ITEMS_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_MAX_DIRECTORY_ITEMS_DEFAULT
+argument_list|)
+decl_stmt|;
 name|Path
 name|controlDir
 init|=
@@ -1768,6 +1785,37 @@ argument_list|(
 name|config
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|nrFiles
+operator|>
+name|maxDirItems
+condition|)
+block|{
+specifier|final
+name|String
+name|message
+init|=
+literal|"The directory item limit of "
+operator|+
+name|controlDir
+operator|+
+literal|" is exceeded: limit="
+operator|+
+name|maxDirItems
+operator|+
+literal|" items="
+operator|+
+name|nrFiles
+decl_stmt|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|message
+argument_list|)
+throw|;
+block|}
 name|fs
 operator|.
 name|delete
@@ -1890,11 +1938,13 @@ name|writer
 operator|!=
 literal|null
 condition|)
+block|{
 name|writer
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
 name|writer
 operator|=
 literal|null
