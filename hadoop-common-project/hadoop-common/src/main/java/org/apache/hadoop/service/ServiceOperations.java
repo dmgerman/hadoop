@@ -96,6 +96,16 @@ name|Evolving
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class contains a set of methods to work with services, especially  * to walk them through their lifecycle.  */
 end_comment
@@ -218,6 +228,58 @@ argument_list|()
 operator|+
 literal|" : "
 operator|+
+name|e
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+return|return
+name|e
+return|;
+block|}
+return|return
+literal|null
+return|;
+block|}
+comment|/**    * Stop a service; if it is null do nothing. Exceptions are caught and    * logged at warn level. (but not Throwables). This operation is intended to    * be used in cleanup operations    *    * @param log the log to warn at    * @param service a service; may be null    * @return any exception that was caught; null if none was.    * @see ServiceOperations#stopQuietly(Service)    */
+DECL|method|stopQuietly (Logger log, Service service)
+specifier|public
+specifier|static
+name|Exception
+name|stopQuietly
+parameter_list|(
+name|Logger
+name|log
+parameter_list|,
+name|Service
+name|service
+parameter_list|)
+block|{
+try|try
+block|{
+name|stop
+argument_list|(
+name|service
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|log
+operator|.
+name|warn
+argument_list|(
+literal|"When stopping the service {} : {}"
+argument_list|,
+name|service
+operator|.
+name|getName
+argument_list|()
+argument_list|,
 name|e
 argument_list|,
 name|e
