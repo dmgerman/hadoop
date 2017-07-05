@@ -40,6 +40,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|metrics2
 operator|.
 name|MetricsSystem
@@ -59,6 +73,22 @@ operator|.
 name|annotation
 operator|.
 name|Metric
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|metrics2
+operator|.
+name|annotation
+operator|.
+name|Metrics
 import|;
 end_import
 
@@ -99,11 +129,48 @@ comment|/**  * This class is for maintaining KeySpaceManager statistics.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|Metrics
+argument_list|(
+name|about
+operator|=
+literal|"Key Space Manager Metrics"
+argument_list|,
+name|context
+operator|=
+literal|"dfs"
+argument_list|)
 DECL|class|KSMMetrics
 specifier|public
 class|class
 name|KSMMetrics
 block|{
+comment|// KSM request type op metrics
+DECL|field|numVolumeOps
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numVolumeOps
+decl_stmt|;
+DECL|field|numBucketOps
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numBucketOps
+decl_stmt|;
+DECL|field|numKeyOps
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numKeyOps
+decl_stmt|;
 comment|// KSM op metrics
 DECL|field|numVolumeCreates
 specifier|private
@@ -112,12 +179,12 @@ name|Metric
 name|MutableCounterLong
 name|numVolumeCreates
 decl_stmt|;
-DECL|field|numVolumeModifies
+DECL|field|numVolumeUpdates
 specifier|private
 annotation|@
 name|Metric
 name|MutableCounterLong
-name|numVolumeModifies
+name|numVolumeUpdates
 decl_stmt|;
 DECL|field|numVolumeInfos
 specifier|private
@@ -154,12 +221,12 @@ name|Metric
 name|MutableCounterLong
 name|numBucketInfos
 decl_stmt|;
-DECL|field|numBucketModifies
+DECL|field|numBucketUpdates
 specifier|private
 annotation|@
 name|Metric
 name|MutableCounterLong
-name|numBucketModifies
+name|numBucketUpdates
 decl_stmt|;
 DECL|field|numBucketDeletes
 specifier|private
@@ -218,12 +285,12 @@ name|Metric
 name|MutableCounterLong
 name|numVolumeCreateFails
 decl_stmt|;
-DECL|field|numVolumeModifyFails
+DECL|field|numVolumeUpdateFails
 specifier|private
 annotation|@
 name|Metric
 name|MutableCounterLong
-name|numVolumeModifyFails
+name|numVolumeUpdateFails
 decl_stmt|;
 DECL|field|numVolumeInfoFails
 specifier|private
@@ -260,12 +327,12 @@ name|Metric
 name|MutableCounterLong
 name|numBucketInfoFails
 decl_stmt|;
-DECL|field|numBucketModifyFails
+DECL|field|numBucketUpdateFails
 specifier|private
 annotation|@
 name|Metric
 name|MutableCounterLong
-name|numBucketModifyFails
+name|numBucketUpdateFails
 decl_stmt|;
 DECL|field|numBucketDeleteFails
 specifier|private
@@ -357,19 +424,29 @@ name|void
 name|incNumVolumeCreates
 parameter_list|()
 block|{
+name|numVolumeOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
 name|numVolumeCreates
 operator|.
 name|incr
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|incNumVolumeModifies ()
+DECL|method|incNumVolumeUpdates ()
 specifier|public
 name|void
-name|incNumVolumeModifies
+name|incNumVolumeUpdates
 parameter_list|()
 block|{
-name|numVolumeModifies
+name|numVolumeOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+name|numVolumeUpdates
 operator|.
 name|incr
 argument_list|()
@@ -381,6 +458,11 @@ name|void
 name|incNumVolumeInfos
 parameter_list|()
 block|{
+name|numVolumeOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
 name|numVolumeInfos
 operator|.
 name|incr
@@ -393,6 +475,11 @@ name|void
 name|incNumVolumeDeletes
 parameter_list|()
 block|{
+name|numVolumeOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
 name|numVolumeDeletes
 operator|.
 name|incr
@@ -405,6 +492,11 @@ name|void
 name|incNumVolumeCheckAccesses
 parameter_list|()
 block|{
+name|numVolumeOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
 name|numVolumeCheckAccesses
 operator|.
 name|incr
@@ -417,6 +509,11 @@ name|void
 name|incNumBucketCreates
 parameter_list|()
 block|{
+name|numBucketOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
 name|numBucketCreates
 operator|.
 name|incr
@@ -429,19 +526,29 @@ name|void
 name|incNumBucketInfos
 parameter_list|()
 block|{
+name|numBucketOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
 name|numBucketInfos
 operator|.
 name|incr
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|incNumBucketModifies ()
+DECL|method|incNumBucketUpdates ()
 specifier|public
 name|void
-name|incNumBucketModifies
+name|incNumBucketUpdates
 parameter_list|()
 block|{
-name|numBucketModifies
+name|numBucketOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+name|numBucketUpdates
 operator|.
 name|incr
 argument_list|()
@@ -453,6 +560,11 @@ name|void
 name|incNumBucketDeletes
 parameter_list|()
 block|{
+name|numBucketOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
 name|numBucketDeletes
 operator|.
 name|incr
@@ -465,6 +577,11 @@ name|void
 name|incNumBucketLists
 parameter_list|()
 block|{
+name|numBucketOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
 name|numBucketLists
 operator|.
 name|incr
@@ -477,6 +594,11 @@ name|void
 name|incNumKeyLists
 parameter_list|()
 block|{
+name|numKeyOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
 name|numKeyLists
 operator|.
 name|incr
@@ -489,6 +611,11 @@ name|void
 name|incNumVolumeLists
 parameter_list|()
 block|{
+name|numVolumeOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
 name|numVolumeLists
 operator|.
 name|incr
@@ -507,13 +634,13 @@ name|incr
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|incNumVolumeModifyFails ()
+DECL|method|incNumVolumeUpdateFails ()
 specifier|public
 name|void
-name|incNumVolumeModifyFails
+name|incNumVolumeUpdateFails
 parameter_list|()
 block|{
-name|numVolumeModifyFails
+name|numVolumeUpdateFails
 operator|.
 name|incr
 argument_list|()
@@ -579,13 +706,13 @@ name|incr
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|incNumBucketModifyFails ()
+DECL|method|incNumBucketUpdateFails ()
 specifier|public
 name|void
-name|incNumBucketModifyFails
+name|incNumBucketUpdateFails
 parameter_list|()
 block|{
-name|numBucketModifyFails
+name|numBucketUpdateFails
 operator|.
 name|incr
 argument_list|()
@@ -609,6 +736,11 @@ name|void
 name|incNumKeyAllocates
 parameter_list|()
 block|{
+name|numKeyOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
 name|numKeyAllocate
 operator|.
 name|incr
@@ -633,6 +765,11 @@ name|void
 name|incNumKeyLookups
 parameter_list|()
 block|{
+name|numKeyOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
 name|numKeyLookup
 operator|.
 name|incr
@@ -669,6 +806,11 @@ name|void
 name|incNumKeyDeletes
 parameter_list|()
 block|{
+name|numKeyOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
 name|numKeyDeletes
 operator|.
 name|incr
@@ -728,14 +870,14 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getNumVolumeModifies ()
+DECL|method|getNumVolumeUpdates ()
 specifier|public
 name|long
-name|getNumVolumeModifies
+name|getNumVolumeUpdates
 parameter_list|()
 block|{
 return|return
-name|numVolumeModifies
+name|numVolumeUpdates
 operator|.
 name|value
 argument_list|()
@@ -818,14 +960,14 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getNumBucketModifies ()
+DECL|method|getNumBucketUpdates ()
 specifier|public
 name|long
-name|getNumBucketModifies
+name|getNumBucketUpdates
 parameter_list|()
 block|{
 return|return
-name|numBucketModifies
+name|numBucketUpdates
 operator|.
 name|value
 argument_list|()
@@ -908,14 +1050,14 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getNumVolumeModifyFails ()
+DECL|method|getNumVolumeUpdateFails ()
 specifier|public
 name|long
-name|getNumVolumeModifyFails
+name|getNumVolumeUpdateFails
 parameter_list|()
 block|{
 return|return
-name|numVolumeModifyFails
+name|numVolumeUpdateFails
 operator|.
 name|value
 argument_list|()
@@ -998,14 +1140,14 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getNumBucketModifyFails ()
+DECL|method|getNumBucketUpdateFails ()
 specifier|public
 name|long
-name|getNumBucketModifyFails
+name|getNumBucketUpdateFails
 parameter_list|()
 block|{
 return|return
-name|numBucketModifyFails
+name|numBucketUpdateFails
 operator|.
 name|value
 argument_list|()

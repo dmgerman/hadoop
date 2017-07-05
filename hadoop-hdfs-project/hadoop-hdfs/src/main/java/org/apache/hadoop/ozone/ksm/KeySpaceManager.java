@@ -1276,7 +1276,7 @@ try|try
 block|{
 name|metrics
 operator|.
-name|incNumVolumeModifies
+name|incNumVolumeUpdates
 argument_list|()
 expr_stmt|;
 name|volumeManager
@@ -1297,7 +1297,7 @@ parameter_list|)
 block|{
 name|metrics
 operator|.
-name|incNumVolumeModifyFails
+name|incNumVolumeUpdateFails
 argument_list|()
 expr_stmt|;
 throw|throw
@@ -1326,7 +1326,7 @@ try|try
 block|{
 name|metrics
 operator|.
-name|incNumVolumeModifies
+name|incNumVolumeUpdates
 argument_list|()
 expr_stmt|;
 name|volumeManager
@@ -1347,7 +1347,7 @@ parameter_list|)
 block|{
 name|metrics
 operator|.
-name|incNumVolumeModifyFails
+name|incNumVolumeUpdateFails
 argument_list|()
 expr_stmt|;
 throw|throw
@@ -2005,7 +2005,7 @@ try|try
 block|{
 name|metrics
 operator|.
-name|incNumBucketModifies
+name|incNumBucketUpdates
 argument_list|()
 expr_stmt|;
 name|bucketManager
@@ -2024,7 +2024,7 @@ parameter_list|)
 block|{
 name|metrics
 operator|.
-name|incNumBucketModifyFails
+name|incNumBucketUpdateFails
 argument_list|()
 expr_stmt|;
 throw|throw
