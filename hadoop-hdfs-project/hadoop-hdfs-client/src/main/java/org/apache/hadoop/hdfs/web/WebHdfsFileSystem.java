@@ -4384,7 +4384,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Retrying connect to namenode: {}. Already tried {}"
+literal|"Retrying connect to namenode: {}. Already retried {}"
 operator|+
 literal|" time(s); retry policy is {}, delay {}ms."
 argument_list|,
