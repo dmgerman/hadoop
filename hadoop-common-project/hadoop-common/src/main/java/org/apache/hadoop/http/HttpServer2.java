@@ -2403,6 +2403,13 @@ argument_list|(
 name|responseHeaderSize
 argument_list|)
 expr_stmt|;
+name|httpConfig
+operator|.
+name|setSendServerVersion
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|URI
