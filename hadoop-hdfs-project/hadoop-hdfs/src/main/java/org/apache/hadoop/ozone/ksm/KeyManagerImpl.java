@@ -631,7 +631,7 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|IOException
 name|ex
 parameter_list|)
 block|{
@@ -663,7 +663,7 @@ name|KSMException
 operator|.
 name|ResultCodes
 operator|.
-name|FAILED_INTERNAL_ERROR
+name|FAILED_KEY_ALLOCATION
 argument_list|)
 throw|;
 block|}
@@ -954,7 +954,7 @@ literal|"Delete result size from SCM is wrong"
 argument_list|,
 name|ResultCodes
 operator|.
-name|FAILED_INTERNAL_ERROR
+name|FAILED_KEY_DELETION
 argument_list|)
 throw|;
 block|}
@@ -1008,7 +1008,7 @@ literal|"Cannot delete key from SCM"
 argument_list|,
 name|ResultCodes
 operator|.
-name|FAILED_INTERNAL_ERROR
+name|FAILED_KEY_DELETION
 argument_list|)
 throw|;
 block|}
@@ -1054,7 +1054,7 @@ name|ex
 argument_list|,
 name|ResultCodes
 operator|.
-name|FAILED_INTERNAL_ERROR
+name|FAILED_KEY_DELETION
 argument_list|)
 throw|;
 block|}

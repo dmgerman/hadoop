@@ -2059,7 +2059,7 @@ name|volumeName
 argument_list|,
 name|ResultCodes
 operator|.
-name|FAILED_INTERNAL_ERROR
+name|FAILED_VOLUME_NOT_FOUND
 argument_list|)
 throw|;
 block|}
@@ -2193,7 +2193,7 @@ name|e
 argument_list|,
 name|ResultCodes
 operator|.
-name|FAILED_INTERNAL_ERROR
+name|FAILED_METADATA_ERROR
 argument_list|)
 throw|;
 block|}
