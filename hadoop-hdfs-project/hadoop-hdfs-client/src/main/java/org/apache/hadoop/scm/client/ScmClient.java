@@ -84,6 +84,16 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
 begin_comment
 comment|/**  * The interface to call into underlying container layer.  *  * Written as interface to allow easy testing: implement a mock container layer  * for standalone testing of CBlock API without actually calling into remote  * containers. Actual container layer can simply re-implement this.  *  * NOTE this is temporarily needed class. When SCM containers are full-fledged,  * this interface will likely be removed.  */
 end_comment
@@ -130,6 +140,26 @@ name|pipeline
 parameter_list|,
 name|boolean
 name|force
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Lists a range of containers and get the pipelines info.    *    * @param startName start name, if null, start searching at the head.    * @param prefixName prefix name, if null, then filter is disabled.    * @param count count, if count< 0, the max size is unlimited.(    *              Usually the count will be replace with a very big    *              value instead of being unlimited in case the db is very big)    *    * @return a list of pipeline.    * @throws IOException    */
+DECL|method|listContainer (String startName, String prefixName, int count)
+name|List
+argument_list|<
+name|Pipeline
+argument_list|>
+name|listContainer
+parameter_list|(
+name|String
+name|startName
+parameter_list|,
+name|String
+name|prefixName
+parameter_list|,
+name|int
+name|count
 parameter_list|)
 throws|throws
 name|IOException

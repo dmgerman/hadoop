@@ -2278,6 +2278,42 @@ block|}
 comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
+DECL|method|listContainer (String startName, String prefixName, int count)
+specifier|public
+name|List
+argument_list|<
+name|Pipeline
+argument_list|>
+name|listContainer
+parameter_list|(
+name|String
+name|startName
+parameter_list|,
+name|String
+name|prefixName
+parameter_list|,
+name|int
+name|count
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|scmContainerManager
+operator|.
+name|listContainer
+argument_list|(
+name|startName
+argument_list|,
+name|prefixName
+argument_list|,
+name|count
+argument_list|)
+return|;
+block|}
+comment|/**    * {@inheritDoc}    */
+annotation|@
+name|Override
 DECL|method|deleteContainer (String containerName)
 specifier|public
 name|void

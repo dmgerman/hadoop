@@ -100,6 +100,26 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class is the one that directly talks to SCM server.  *  * NOTE : this is only a mock class, only to allow testing volume  * creation without actually creating containers. In real world, need to be  * replaced with actual container look up calls.  *  */
 end_comment
@@ -185,6 +205,54 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{    }
+comment|/**    * This is a mock class, so returns the pipelines of start container    * and end container.    *    * @param startName start container name.    * @param prefixName prefix container name.    * @param count count.    * @return a list of pipeline.    * @throws IOException    */
+annotation|@
+name|Override
+DECL|method|listContainer (String startName, String prefixName, int count)
+specifier|public
+name|List
+argument_list|<
+name|Pipeline
+argument_list|>
+name|listContainer
+parameter_list|(
+name|String
+name|startName
+parameter_list|,
+name|String
+name|prefixName
+parameter_list|,
+name|int
+name|count
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|List
+argument_list|<
+name|Pipeline
+argument_list|>
+name|dataList
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+decl_stmt|;
+name|dataList
+operator|.
+name|add
+argument_list|(
+name|getContainer
+argument_list|(
+name|startName
+argument_list|)
+argument_list|)
+expr_stmt|;
+return|return
+name|dataList
+return|;
+block|}
 comment|/**    * Create a instance of ContainerData by a given container id,    * since this is a testing class, there is no need set up the hold    * env to get the meta data of the container.    * @param pipeline    * @return    * @throws IOException    */
 annotation|@
 name|Override
