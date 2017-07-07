@@ -100,21 +100,11 @@ name|org
 operator|.
 name|apache
 operator|.
-name|log4j
+name|hadoop
 operator|.
-name|Level
-import|;
-end_import
-
-begin_import
-import|import
-name|org
+name|test
 operator|.
-name|apache
-operator|.
-name|log4j
-operator|.
-name|Logger
+name|GenericTestUtils
 import|;
 end_import
 
@@ -125,6 +115,18 @@ operator|.
 name|junit
 operator|.
 name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|event
+operator|.
+name|Level
 import|;
 end_import
 
@@ -160,12 +162,9 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|Logger
+name|GenericTestUtils
 operator|.
-name|getRootLogger
-argument_list|()
-operator|.
-name|setLevel
+name|setRootLogLevel
 argument_list|(
 name|Level
 operator|.
@@ -257,12 +256,9 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|Logger
+name|GenericTestUtils
 operator|.
-name|getRootLogger
-argument_list|()
-operator|.
-name|setLevel
+name|setRootLogLevel
 argument_list|(
 name|Level
 operator|.
@@ -365,12 +361,9 @@ operator|+
 literal|" test the fall back functionality"
 argument_list|)
 expr_stmt|;
-name|Logger
+name|GenericTestUtils
 operator|.
-name|getRootLogger
-argument_list|()
-operator|.
-name|setLevel
+name|setRootLogLevel
 argument_list|(
 name|Level
 operator|.
@@ -473,12 +466,9 @@ operator|+
 literal|" test the fall back functionality"
 argument_list|)
 expr_stmt|;
-name|Logger
+name|GenericTestUtils
 operator|.
-name|getRootLogger
-argument_list|()
-operator|.
-name|setLevel
+name|setRootLogLevel
 argument_list|(
 name|Level
 operator|.
