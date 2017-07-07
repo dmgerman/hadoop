@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager.webapp.dao
+DECL|package|org.apache.hadoop.yarn.webapp.dao
 package|package
 name|org
 operator|.
@@ -13,10 +13,6 @@ operator|.
 name|hadoop
 operator|.
 name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
 operator|.
 name|webapp
 operator|.

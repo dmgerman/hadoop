@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager.webapp.dao
+DECL|package|org.apache.hadoop.yarn.webapp.dao
 package|package
 name|org
 operator|.
@@ -13,10 +13,6 @@ operator|.
 name|hadoop
 operator|.
 name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
 operator|.
 name|webapp
 operator|.
@@ -233,6 +229,25 @@ return|return
 name|addQueueInfo
 return|;
 block|}
+DECL|method|setAddQueueInfo (ArrayList<QueueConfigInfo> addQueueInfo)
+specifier|public
+name|void
+name|setAddQueueInfo
+parameter_list|(
+name|ArrayList
+argument_list|<
+name|QueueConfigInfo
+argument_list|>
+name|addQueueInfo
+parameter_list|)
+block|{
+name|this
+operator|.
+name|addQueueInfo
+operator|=
+name|addQueueInfo
+expr_stmt|;
+block|}
 DECL|method|getRemoveQueueInfo ()
 specifier|public
 name|ArrayList
@@ -246,6 +261,25 @@ return|return
 name|removeQueueInfo
 return|;
 block|}
+DECL|method|setRemoveQueueInfo (ArrayList<String> removeQueueInfo)
+specifier|public
+name|void
+name|setRemoveQueueInfo
+parameter_list|(
+name|ArrayList
+argument_list|<
+name|String
+argument_list|>
+name|removeQueueInfo
+parameter_list|)
+block|{
+name|this
+operator|.
+name|removeQueueInfo
+operator|=
+name|removeQueueInfo
+expr_stmt|;
+block|}
 DECL|method|getUpdateQueueInfo ()
 specifier|public
 name|ArrayList
@@ -258,6 +292,25 @@ block|{
 return|return
 name|updateQueueInfo
 return|;
+block|}
+DECL|method|setUpdateQueueInfo (ArrayList<QueueConfigInfo> updateQueueInfo)
+specifier|public
+name|void
+name|setUpdateQueueInfo
+parameter_list|(
+name|ArrayList
+argument_list|<
+name|QueueConfigInfo
+argument_list|>
+name|updateQueueInfo
+parameter_list|)
+block|{
+name|this
+operator|.
+name|updateQueueInfo
+operator|=
+name|updateQueueInfo
+expr_stmt|;
 block|}
 annotation|@
 name|XmlElementWrapper
@@ -280,6 +333,27 @@ block|{
 return|return
 name|global
 return|;
+block|}
+DECL|method|setGlobalParams (HashMap<String, String> globalInfo)
+specifier|public
+name|void
+name|setGlobalParams
+parameter_list|(
+name|HashMap
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|globalInfo
+parameter_list|)
+block|{
+name|this
+operator|.
+name|global
+operator|=
+name|globalInfo
+expr_stmt|;
 block|}
 block|}
 end_class

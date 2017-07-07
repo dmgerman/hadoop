@@ -278,10 +278,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|webapp
 operator|.
 name|dao
@@ -299,10 +295,6 @@ operator|.
 name|hadoop
 operator|.
 name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
 operator|.
 name|webapp
 operator|.
