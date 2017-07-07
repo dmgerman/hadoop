@@ -64,6 +64,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Iterator
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -205,6 +215,36 @@ name|getClassLoader
 argument_list|()
 argument_list|)
 decl_stmt|;
+comment|// Iterate through the serviceLoader to avoid lazy loading.
+comment|// Lazy loading would require synchronization in concurrent use cases.
+static|static
+block|{
+name|Iterator
+argument_list|<
+name|CredentialProviderFactory
+argument_list|>
+name|iterServices
+init|=
+name|serviceLoader
+operator|.
+name|iterator
+argument_list|()
+decl_stmt|;
+while|while
+condition|(
+name|iterServices
+operator|.
+name|hasNext
+argument_list|()
+condition|)
+block|{
+name|iterServices
+operator|.
+name|next
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|getProviders (Configuration conf )
 specifier|public
 specifier|static
