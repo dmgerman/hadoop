@@ -34,9 +34,11 @@ begin_import
 import|import
 name|org
 operator|.
-name|junit
+name|apache
 operator|.
-name|Test
+name|log4j
+operator|.
+name|Level
 import|;
 end_import
 
@@ -44,11 +46,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|slf4j
+name|junit
 operator|.
-name|event
-operator|.
-name|Level
+name|Test
 import|;
 end_import
 

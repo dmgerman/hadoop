@@ -272,6 +272,18 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|log4j
+operator|.
+name|Level
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|eclipse
 operator|.
 name|jetty
@@ -375,18 +387,6 @@ operator|.
 name|servlet
 operator|.
 name|ServletHolder
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|slf4j
-operator|.
-name|event
-operator|.
-name|Level
 import|;
 end_import
 
