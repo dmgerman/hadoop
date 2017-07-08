@@ -349,14 +349,19 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
+name|mapper
+operator|.
+name|setFilterProvider
+argument_list|(
+name|filters
+argument_list|)
+expr_stmt|;
 name|WRITER
 operator|=
 name|mapper
 operator|.
-name|writer
-argument_list|(
-name|filters
-argument_list|)
+name|writerWithDefaultPrettyPrinter
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Used for json filtering.    */
