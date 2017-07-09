@@ -72,6 +72,7 @@ name|starvedApps
 decl_stmt|;
 DECL|field|scheduler
 specifier|private
+specifier|final
 name|FairScheduler
 name|scheduler
 decl_stmt|;
