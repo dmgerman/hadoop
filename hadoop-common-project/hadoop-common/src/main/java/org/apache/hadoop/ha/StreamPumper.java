@@ -18,6 +18,16 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -68,20 +78,6 @@ name|StandardCharsets
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
 begin_comment
 comment|/**  * Class responsible for pumping the streams of the subprocess  * out to log4j. stderr is pumped to WARN level and stdout is  * pumped to INFO level  */
 end_comment
@@ -104,7 +100,7 @@ block|;   }
 DECL|field|log
 specifier|private
 specifier|final
-name|Log
+name|Logger
 name|log
 decl_stmt|;
 DECL|field|thread
@@ -137,11 +133,11 @@ name|started
 init|=
 literal|false
 decl_stmt|;
-DECL|method|StreamPumper (final Log log, final String logPrefix, final InputStream stream, final StreamType type)
+DECL|method|StreamPumper (final Logger log, final String logPrefix, final InputStream stream, final StreamType type)
 name|StreamPumper
 parameter_list|(
 specifier|final
-name|Log
+name|Logger
 name|log
 parameter_list|,
 specifier|final

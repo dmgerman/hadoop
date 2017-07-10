@@ -174,6 +174,26 @@ name|Session
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/**  * This fencing implementation sshes to the target node and uses   *<code>fuser</code> to kill the process listening on the service's  * TCP port. This is more accurate than using "jps" since it doesn't   * require parsing, and will work even if there are multiple service  * processes running on the same machine.<p>  * It returns a successful status code if:  *<ul>  *<li><code>fuser</code> indicates it successfully killed a process,<em>or</em>  *<li><code>nc -z</code> indicates that nothing is listening on the target port  *</ul>  *<p>  * This fencing mechanism is configured as following in the fencing method  * list:  *<code>sshfence([[username][:ssh-port]])</code>  * where the optional argument specifies the username and port to use  * with ssh.  *<p>  * In order to achieve passwordless SSH, the operator must also configure  *<code>dfs.ha.fencing.ssh.private-key-files<code> to point to an  * SSH key that has passphrase-less access to the given username and host.  */
 end_comment
@@ -191,12 +211,12 @@ block|{
 DECL|field|LOG
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|SshFenceByTcpPort
 operator|.
