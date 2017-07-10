@@ -1393,6 +1393,15 @@ name|maximumValue
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|ret
+operator|.
+name|setResourceInformation
+argument_list|(
+name|resource
+argument_list|,
+name|tmp
+argument_list|)
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
