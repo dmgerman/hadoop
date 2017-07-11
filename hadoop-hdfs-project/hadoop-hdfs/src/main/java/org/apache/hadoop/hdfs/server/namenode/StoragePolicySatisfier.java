@@ -639,7 +639,12 @@ comment|// Example conditions are if no blocks really exists in block collection
 comment|// if analysis is not required on ec files with unsuitable storage policies
 DECL|enumConstant|BLOCKS_TARGET_PAIRING_SKIPPED
 name|BLOCKS_TARGET_PAIRING_SKIPPED
-block|;   }
+block|,
+comment|// Represents that, All the reported blocks are satisfied the policy but
+comment|// some of the blocks are low redundant.
+DECL|enumConstant|FEW_LOW_REDUNDANCY_BLOCKS
+name|FEW_LOW_REDUNDANCY_BLOCKS
+block|}
 DECL|method|StoragePolicySatisfier (final Namesystem namesystem, final BlockStorageMovementNeeded storageMovementNeeded, final BlockManager blkManager, Configuration conf)
 specifier|public
 name|StoragePolicySatisfier
@@ -1137,6 +1142,41 @@ literal|false
 argument_list|)
 expr_stmt|;
 break|break;
+case|case
+name|FEW_LOW_REDUNDANCY_BLOCKS
+case|:
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Adding trackID "
+operator|+
+name|blockCollectionID
+operator|+
+literal|" back to retry queue as some of the blocks"
+operator|+
+literal|" are low redundant."
+argument_list|)
+expr_stmt|;
+block|}
+name|this
+operator|.
+name|storageMovementNeeded
+operator|.
+name|add
+argument_list|(
+name|blockCollectionID
+argument_list|)
+expr_stmt|;
+break|break;
 comment|// Just clean Xattrs
 case|case
 name|BLOCKS_TARGET_PAIRING_SKIPPED
@@ -1616,6 +1656,14 @@ operator|!=
 name|BlocksMovingAnalysisStatus
 operator|.
 name|FEW_BLOCKS_TARGETS_PAIRED
+operator|&&
+operator|!
+name|blockManager
+operator|.
+name|hasLowRedundancyBlocks
+argument_list|(
+name|blockCollection
+argument_list|)
 condition|)
 block|{
 name|status
@@ -1632,6 +1680,26 @@ operator|=
 name|BlocksMovingAnalysisStatus
 operator|.
 name|FEW_BLOCKS_TARGETS_PAIRED
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|blockManager
+operator|.
+name|hasLowRedundancyBlocks
+argument_list|(
+name|blockCollection
+argument_list|)
+condition|)
+block|{
+name|status
+operator|=
+name|BlocksMovingAnalysisStatus
+operator|.
+name|FEW_LOW_REDUNDANCY_BLOCKS
 expr_stmt|;
 block|}
 block|}
