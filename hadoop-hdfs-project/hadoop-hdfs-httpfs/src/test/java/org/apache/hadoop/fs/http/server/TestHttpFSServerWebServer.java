@@ -374,7 +374,7 @@ name|set
 argument_list|(
 name|HttpFSServerWebServer
 operator|.
-name|HTTP_HOST_KEY
+name|HTTP_HOSTNAME_KEY
 argument_list|,
 literal|"localhost"
 argument_list|)
