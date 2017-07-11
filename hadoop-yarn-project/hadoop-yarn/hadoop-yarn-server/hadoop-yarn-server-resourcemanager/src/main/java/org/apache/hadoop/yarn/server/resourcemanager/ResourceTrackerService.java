@@ -3714,6 +3714,23 @@ range|:
 name|runningApps
 control|)
 block|{
+name|RMApp
+name|app
+init|=
+name|rmApps
+operator|.
+name|get
+argument_list|(
+name|appId
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|app
+operator|!=
+literal|null
+condition|)
+block|{
 name|AppCollectorData
 name|appCollectorData
 init|=
@@ -3765,6 +3782,7 @@ operator|+
 literal|" hasn't registered yet!"
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}
