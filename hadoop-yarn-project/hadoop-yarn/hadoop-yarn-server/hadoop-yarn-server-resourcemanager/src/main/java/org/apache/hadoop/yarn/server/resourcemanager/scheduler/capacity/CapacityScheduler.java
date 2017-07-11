@@ -12473,11 +12473,24 @@ argument_list|(
 name|attemptId
 argument_list|)
 decl_stmt|;
+comment|// Required sanity check for attemptId - when async-scheduling enabled,
+comment|// proposal might be outdated if AM failover just finished
+comment|// and proposal queue was not be consumed in time
 if|if
 condition|(
 name|app
 operator|!=
 literal|null
+operator|&&
+name|attemptId
+operator|.
+name|equals
+argument_list|(
+name|app
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+argument_list|)
 condition|)
 block|{
 if|if
