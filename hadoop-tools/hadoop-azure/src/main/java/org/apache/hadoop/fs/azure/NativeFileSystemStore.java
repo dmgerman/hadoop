@@ -24,16 +24,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|DataInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|DataOutputStream
 import|;
 end_import
@@ -45,6 +35,16 @@ operator|.
 name|io
 operator|.
 name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|InputStream
 import|;
 end_import
 
@@ -197,7 +197,7 @@ throws|throws
 name|IOException
 function_decl|;
 DECL|method|retrieve (String key)
-name|DataInputStream
+name|InputStream
 name|retrieve
 parameter_list|(
 name|String
@@ -207,7 +207,7 @@ throws|throws
 name|IOException
 function_decl|;
 DECL|method|retrieve (String key, long byteRangeStart)
-name|DataInputStream
+name|InputStream
 name|retrieve
 parameter_list|(
 name|String

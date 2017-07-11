@@ -569,6 +569,13 @@ name|metricsConfigSaved
 init|=
 literal|false
 decl_stmt|;
+DECL|field|skipContainerDelete
+specifier|private
+name|boolean
+name|skipContainerDelete
+init|=
+literal|false
+decl_stmt|;
 DECL|method|AzureBlobStorageTestAccount (NativeAzureFileSystem fs, CloudStorageAccount account, CloudBlobContainer container)
 specifier|private
 name|AzureBlobStorageTestAccount
@@ -581,6 +588,35 @@ name|account
 parameter_list|,
 name|CloudBlobContainer
 name|container
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|fs
+argument_list|,
+name|account
+argument_list|,
+name|container
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|AzureBlobStorageTestAccount (NativeAzureFileSystem fs, CloudStorageAccount account, CloudBlobContainer container, boolean skipContainerDelete)
+specifier|private
+name|AzureBlobStorageTestAccount
+parameter_list|(
+name|NativeAzureFileSystem
+name|fs
+parameter_list|,
+name|CloudStorageAccount
+name|account
+parameter_list|,
+name|CloudBlobContainer
+name|container
+parameter_list|,
+name|boolean
+name|skipContainerDelete
 parameter_list|)
 block|{
 name|this
@@ -600,6 +636,12 @@ operator|.
 name|fs
 operator|=
 name|fs
+expr_stmt|;
+name|this
+operator|.
+name|skipContainerDelete
+operator|=
+name|skipContainerDelete
 expr_stmt|;
 block|}
 comment|/**    * Create a test account with an initialized storage reference.    *     * @param storage    *          -- store to be accessed by the account    * @param account    *          -- Windows Azure account object    * @param container    *          -- Windows Azure container object    */
@@ -2270,7 +2312,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-DECL|method|create (String containerNameSuffix, EnumSet<CreateOptions> createOptions, Configuration initialConfiguration)
+DECL|method|create ( String containerNameSuffix, EnumSet<CreateOptions> createOptions, Configuration initialConfiguration)
 specifier|public
 specifier|static
 name|AzureBlobStorageTestAccount
@@ -2287,6 +2329,43 @@ name|createOptions
 parameter_list|,
 name|Configuration
 name|initialConfiguration
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+return|return
+name|create
+argument_list|(
+name|containerNameSuffix
+argument_list|,
+name|createOptions
+argument_list|,
+name|initialConfiguration
+argument_list|,
+literal|false
+argument_list|)
+return|;
+block|}
+DECL|method|create ( String containerNameSuffix, EnumSet<CreateOptions> createOptions, Configuration initialConfiguration, boolean useContainerSuffixAsContainerName)
+specifier|public
+specifier|static
+name|AzureBlobStorageTestAccount
+name|create
+parameter_list|(
+name|String
+name|containerNameSuffix
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|CreateOptions
+argument_list|>
+name|createOptions
+parameter_list|,
+name|Configuration
+name|initialConfiguration
+parameter_list|,
+name|boolean
+name|useContainerSuffixAsContainerName
 parameter_list|)
 throws|throws
 name|Exception
@@ -2350,6 +2429,10 @@ expr_stmt|;
 name|String
 name|containerName
 init|=
+name|useContainerSuffixAsContainerName
+condition|?
+name|containerNameSuffix
+else|:
 name|String
 operator|.
 name|format
@@ -2396,7 +2479,7 @@ condition|)
 block|{
 name|container
 operator|.
-name|create
+name|createIfNotExists
 argument_list|()
 expr_stmt|;
 block|}
@@ -2564,6 +2647,8 @@ argument_list|,
 name|account
 argument_list|,
 name|container
+argument_list|,
+name|useContainerSuffixAsContainerName
 argument_list|)
 decl_stmt|;
 return|return
@@ -3460,6 +3545,9 @@ expr_stmt|;
 block|}
 if|if
 condition|(
+operator|!
+name|skipContainerDelete
+operator|&&
 name|container
 operator|!=
 literal|null

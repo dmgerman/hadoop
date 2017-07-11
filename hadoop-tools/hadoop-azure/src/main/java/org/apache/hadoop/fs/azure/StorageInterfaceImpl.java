@@ -1840,6 +1840,22 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|getStreamMinimumReadSizeInBytes ()
+specifier|public
+name|int
+name|getStreamMinimumReadSizeInBytes
+parameter_list|()
+block|{
+return|return
+name|getBlob
+argument_list|()
+operator|.
+name|getStreamMinimumReadSizeInBytes
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|setStreamMinimumReadSizeInBytes (int minimumReadSizeBytes)
 specifier|public
 name|void

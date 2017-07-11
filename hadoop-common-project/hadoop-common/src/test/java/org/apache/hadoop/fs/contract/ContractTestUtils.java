@@ -5393,6 +5393,20 @@ operator|-
 name|startTime
 return|;
 block|}
+comment|/**      * Elapsed time in milliseconds; no rounding.      * @return elapsed time      */
+DECL|method|elapsedTimeMs ()
+specifier|public
+name|long
+name|elapsedTimeMs
+parameter_list|()
+block|{
+return|return
+name|elapsedTime
+argument_list|()
+operator|/
+literal|1000000
+return|;
+block|}
 DECL|method|bandwidth (long bytes)
 specifier|public
 name|double

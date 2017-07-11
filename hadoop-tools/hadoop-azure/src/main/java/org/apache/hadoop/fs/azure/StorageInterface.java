@@ -853,7 +853,13 @@ parameter_list|()
 throws|throws
 name|StorageException
 function_decl|;
-comment|/**      * Sets the minimum read block size to use with this Blob.      *       * @param minimumReadSizeBytes      *          The maximum block size, in bytes, for reading from a block blob      *          while using a {@link BlobInputStream} object, ranging from 512      *          bytes to 64 MB, inclusive.      */
+comment|/**      * Gets the minimum read block size to use with this Blob.      *      * @return The minimum block size, in bytes, for reading from a block blob.      */
+DECL|method|getStreamMinimumReadSizeInBytes ()
+name|int
+name|getStreamMinimumReadSizeInBytes
+parameter_list|()
+function_decl|;
+comment|/**      * Sets the minimum read block size to use with this Blob.      *      * @param minimumReadSizeBytes      *          The maximum block size, in bytes, for reading from a block blob      *          while using a {@link BlobInputStream} object, ranging from 512      *          bytes to 64 MB, inclusive.      */
 DECL|method|setStreamMinimumReadSizeInBytes ( int minimumReadSizeBytes)
 name|void
 name|setStreamMinimumReadSizeInBytes

@@ -634,7 +634,7 @@ name|count
 init|=
 literal|0
 decl_stmt|;
-name|DataInputStream
+name|InputStream
 name|inputStream
 init|=
 literal|null
