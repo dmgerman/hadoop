@@ -279,13 +279,12 @@ literal|"0.0.0.0"
 decl_stmt|;
 comment|// SSL properties
 DECL|field|SSL_ENABLED_KEY
-specifier|private
 specifier|static
 specifier|final
 name|String
 name|SSL_ENABLED_KEY
 init|=
-literal|"hadoop.httpfs.ssl.enabled"
+literal|"httpfs.ssl.enabled"
 decl_stmt|;
 DECL|field|SSL_ENABLED_DEFAULT
 specifier|private

@@ -82,15 +82,6 @@ throws|throws
 name|ServletException
 block|{
 comment|//NOP overwrite to avoid Kerberos initialization
-name|config
-operator|.
-name|setProperty
-argument_list|(
-name|TOKEN_KIND
-argument_list|,
-literal|"t"
-argument_list|)
-expr_stmt|;
 name|initTokenManager
 argument_list|(
 name|config
