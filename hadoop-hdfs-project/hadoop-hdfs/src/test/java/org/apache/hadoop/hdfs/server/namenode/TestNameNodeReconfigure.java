@@ -951,6 +951,51 @@ name|getHeartbeatRecheckInterval
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// change to a value with time unit
+name|nameNode
+operator|.
+name|reconfigureProperty
+argument_list|(
+name|DFS_HEARTBEAT_INTERVAL_KEY
+argument_list|,
+literal|"1m"
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|DFS_HEARTBEAT_INTERVAL_KEY
+operator|+
+literal|" has wrong value"
+argument_list|,
+literal|60
+argument_list|,
+name|nameNode
+operator|.
+name|getConf
+argument_list|()
+operator|.
+name|getLong
+argument_list|(
+name|DFS_HEARTBEAT_INTERVAL_KEY
+argument_list|,
+name|DFS_HEARTBEAT_INTERVAL_DEFAULT
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|DFS_HEARTBEAT_INTERVAL_KEY
+operator|+
+literal|" has wrong value"
+argument_list|,
+literal|60
+argument_list|,
+name|datanodeManager
+operator|.
+name|getHeartbeatInterval
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// revert to defaults
 name|nameNode
 operator|.

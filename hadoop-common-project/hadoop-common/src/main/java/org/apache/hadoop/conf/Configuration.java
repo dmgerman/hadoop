@@ -6081,8 +6081,9 @@ argument_list|)
 return|;
 block|}
 block|}
+comment|/**    * Return time duration in the given time unit. Valid units are encoded in    * properties as suffixes: nanoseconds (ns), microseconds (us), milliseconds    * (ms), seconds (s), minutes (m), hours (h), and days (d).    * @param name Property name    * @param vStr The string value with time unit suffix to be converted.    * @param unit Unit to convert the stored property, if it exists.    */
 DECL|method|getTimeDurationHelper (String name, String vStr, TimeUnit unit)
-specifier|private
+specifier|public
 name|long
 name|getTimeDurationHelper
 parameter_list|(
