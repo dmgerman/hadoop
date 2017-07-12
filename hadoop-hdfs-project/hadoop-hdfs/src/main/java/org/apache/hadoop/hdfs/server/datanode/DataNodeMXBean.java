@@ -117,6 +117,13 @@ name|String
 name|getNamenodeAddresses
 parameter_list|()
 function_decl|;
+comment|/**    * Gets the datanode hostname.    *    * @return the datanode hostname for the datanode.    */
+DECL|method|getDatanodeHostname ()
+specifier|public
+name|String
+name|getDatanodeHostname
+parameter_list|()
+function_decl|;
 comment|/**    * Gets information of the block pool service actors.    *    * @return block pool service actors info    */
 DECL|method|getBPServiceActorInfo ()
 name|String

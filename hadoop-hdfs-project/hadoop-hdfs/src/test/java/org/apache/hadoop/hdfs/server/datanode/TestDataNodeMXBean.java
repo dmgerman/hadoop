@@ -629,6 +629,34 @@ argument_list|,
 name|namenodeAddresses
 argument_list|)
 expr_stmt|;
+comment|// get attribute "getDatanodeHostname"
+name|String
+name|datanodeHostname
+init|=
+operator|(
+name|String
+operator|)
+name|mbs
+operator|.
+name|getAttribute
+argument_list|(
+name|mxbeanName
+argument_list|,
+literal|"DatanodeHostname"
+argument_list|)
+decl_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|datanode
+operator|.
+name|getDatanodeHostname
+argument_list|()
+argument_list|,
+name|datanodeHostname
+argument_list|)
+expr_stmt|;
 comment|// get attribute "getVolumeInfo"
 name|String
 name|volumeInfo

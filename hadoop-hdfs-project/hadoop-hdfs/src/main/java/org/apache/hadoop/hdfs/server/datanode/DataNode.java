@@ -14940,6 +14940,22 @@ name|info
 argument_list|)
 return|;
 block|}
+comment|/**    * Return hostname of the datanode.    */
+annotation|@
+name|Override
+comment|// DataNodeMXBean
+DECL|method|getDatanodeHostname ()
+specifier|public
+name|String
+name|getDatanodeHostname
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|hostName
+return|;
+block|}
 comment|/**    * Returned information is a JSON representation of an array,    * each element of the array is a map contains the information    * about a block pool service actor.    */
 annotation|@
 name|Override
