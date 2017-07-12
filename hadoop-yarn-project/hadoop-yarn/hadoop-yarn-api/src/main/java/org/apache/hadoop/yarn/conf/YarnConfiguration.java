@@ -890,6 +890,28 @@ name|DEFAULT_RM_SCHEDULER_USE_PORT_FOR_NODE_NAME
 init|=
 literal|false
 decl_stmt|;
+comment|/** Configured scheduler queue placement rules. */
+DECL|field|QUEUE_PLACEMENT_RULES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|QUEUE_PLACEMENT_RULES
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"scheduler.queue-placement-rules"
+decl_stmt|;
+comment|/** UserGroupMappingPlacementRule configuration string. */
+DECL|field|USER_GROUP_PLACEMENT_RULE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|USER_GROUP_PLACEMENT_RULE
+init|=
+literal|"user-group"
+decl_stmt|;
 comment|/** Enable Resource Manager webapp ui actions */
 DECL|field|RM_WEBAPP_UI_ACTIONS_ENABLED
 specifier|public
