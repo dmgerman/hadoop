@@ -471,7 +471,15 @@ argument_list|,
 operator|new
 name|Class
 index|[]
-block|{}
+block|{
+name|OffsetParam
+operator|.
+name|class
+block|,
+name|LenParam
+operator|.
+name|class
+block|}
 argument_list|)
 expr_stmt|;
 name|PARAMS_DEF
