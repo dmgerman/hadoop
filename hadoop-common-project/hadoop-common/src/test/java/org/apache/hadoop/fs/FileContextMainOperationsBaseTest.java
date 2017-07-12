@@ -72,20 +72,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|lang
-operator|.
-name|RandomStringUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|HadoopIllegalArgumentException
@@ -5413,8 +5399,6 @@ literal|false
 argument_list|,
 literal|false
 argument_list|,
-literal|false
-argument_list|,
 name|Rename
 operator|.
 name|NONE
@@ -5454,8 +5438,6 @@ argument_list|(
 name|src
 argument_list|,
 name|dst
-argument_list|,
-literal|false
 argument_list|,
 literal|false
 argument_list|,
@@ -5544,8 +5526,6 @@ name|src
 argument_list|,
 name|dst
 argument_list|,
-literal|false
-argument_list|,
 literal|true
 argument_list|,
 literal|false
@@ -5589,8 +5569,6 @@ argument_list|(
 name|src
 argument_list|,
 name|dst
-argument_list|,
-literal|false
 argument_list|,
 literal|true
 argument_list|,
@@ -5687,8 +5665,6 @@ name|src
 argument_list|,
 name|dst
 argument_list|,
-literal|false
-argument_list|,
 literal|true
 argument_list|,
 literal|false
@@ -5719,8 +5695,6 @@ argument_list|(
 name|src
 argument_list|,
 name|dst
-argument_list|,
-literal|false
 argument_list|,
 literal|true
 argument_list|,
@@ -5810,8 +5784,6 @@ name|src
 argument_list|,
 name|dst
 argument_list|,
-literal|true
-argument_list|,
 literal|false
 argument_list|,
 literal|true
@@ -5862,11 +5834,9 @@ name|src
 argument_list|,
 name|src
 argument_list|,
-literal|false
-argument_list|,
 literal|true
 argument_list|,
-literal|false
+literal|true
 argument_list|,
 name|Rename
 operator|.
@@ -5909,11 +5879,9 @@ name|src
 argument_list|,
 name|src
 argument_list|,
-literal|false
-argument_list|,
 literal|true
 argument_list|,
-literal|false
+literal|true
 argument_list|,
 name|Rename
 operator|.
@@ -6004,11 +5972,9 @@ name|src
 argument_list|,
 name|dst
 argument_list|,
-literal|false
-argument_list|,
 literal|true
 argument_list|,
-literal|false
+literal|true
 argument_list|,
 name|Rename
 operator|.
@@ -6048,8 +6014,6 @@ argument_list|(
 name|src
 argument_list|,
 name|dst
-argument_list|,
-literal|true
 argument_list|,
 literal|false
 argument_list|,
@@ -6125,9 +6089,7 @@ name|src
 argument_list|,
 name|dst
 argument_list|,
-literal|false
-argument_list|,
-literal|false
+literal|true
 argument_list|,
 literal|true
 argument_list|,
@@ -6159,9 +6121,7 @@ name|src
 argument_list|,
 name|dst
 argument_list|,
-literal|false
-argument_list|,
-literal|false
+literal|true
 argument_list|,
 literal|true
 argument_list|,
@@ -6233,11 +6193,9 @@ name|src
 argument_list|,
 name|src
 argument_list|,
-literal|false
-argument_list|,
 literal|true
 argument_list|,
-literal|false
+literal|true
 argument_list|,
 name|Rename
 operator|.
@@ -6280,11 +6238,9 @@ name|src
 argument_list|,
 name|src
 argument_list|,
-literal|false
-argument_list|,
 literal|true
 argument_list|,
-literal|false
+literal|true
 argument_list|,
 name|Rename
 operator|.
@@ -6377,8 +6333,6 @@ name|src
 argument_list|,
 name|dst
 argument_list|,
-literal|false
-argument_list|,
 literal|true
 argument_list|,
 literal|false
@@ -6422,8 +6376,6 @@ argument_list|(
 name|src
 argument_list|,
 name|dst
-argument_list|,
-literal|false
 argument_list|,
 literal|true
 argument_list|,
@@ -6583,8 +6535,6 @@ argument_list|(
 name|src
 argument_list|,
 name|dst
-argument_list|,
-literal|true
 argument_list|,
 literal|false
 argument_list|,
@@ -6762,11 +6712,9 @@ name|src
 argument_list|,
 name|dst
 argument_list|,
-literal|false
-argument_list|,
 literal|true
 argument_list|,
-literal|false
+literal|true
 argument_list|,
 name|Rename
 operator|.
@@ -6807,8 +6755,6 @@ argument_list|(
 name|src
 argument_list|,
 name|dst
-argument_list|,
-literal|true
 argument_list|,
 literal|false
 argument_list|,
@@ -6922,11 +6868,9 @@ name|src
 argument_list|,
 name|dst
 argument_list|,
-literal|false
-argument_list|,
 literal|true
 argument_list|,
-literal|false
+literal|true
 argument_list|,
 name|Rename
 operator|.
@@ -6970,11 +6914,9 @@ name|src
 argument_list|,
 name|dst
 argument_list|,
-literal|false
-argument_list|,
 literal|true
 argument_list|,
-literal|false
+literal|true
 argument_list|,
 name|Rename
 operator|.
@@ -7062,8 +7004,6 @@ name|src
 argument_list|,
 name|dst
 argument_list|,
-literal|false
-argument_list|,
 literal|true
 argument_list|,
 literal|true
@@ -7095,8 +7035,6 @@ argument_list|(
 name|src
 argument_list|,
 name|dst
-argument_list|,
-literal|false
 argument_list|,
 literal|true
 argument_list|,
@@ -7416,8 +7354,8 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|rename (Path src, Path dst, boolean renameShouldSucceed, boolean srcExists, boolean dstExists, Rename... options)
-specifier|private
+DECL|method|rename (Path src, Path dst, boolean srcExists, boolean dstExists, Rename... options)
+specifier|protected
 name|void
 name|rename
 parameter_list|(
@@ -7426,9 +7364,6 @@ name|src
 parameter_list|,
 name|Path
 name|dst
-parameter_list|,
-name|boolean
-name|renameShouldSucceed
 parameter_list|,
 name|boolean
 name|srcExists
@@ -7443,6 +7378,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
 name|fc
 operator|.
 name|rename
@@ -7454,18 +7391,9 @@ argument_list|,
 name|options
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-operator|!
-name|renameShouldSucceed
-condition|)
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"rename should have thrown exception"
-argument_list|)
-expr_stmt|;
+block|}
+finally|finally
+block|{
 name|Assert
 operator|.
 name|assertEquals
@@ -7498,6 +7426,7 @@ name|dst
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|containsPath (Path path, FileStatus[] filteredPaths)
 specifier|private
