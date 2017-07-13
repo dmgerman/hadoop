@@ -61,11 +61,8 @@ literal|1L
 decl_stmt|;
 DECL|field|exitCode
 specifier|private
-name|int
+name|Integer
 name|exitCode
-init|=
-operator|-
-literal|1
 decl_stmt|;
 DECL|field|output
 specifier|private
@@ -100,14 +97,14 @@ name|message
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|PrivilegedOperationException (String message, int exitCode, String output, String errorOutput)
+DECL|method|PrivilegedOperationException (String message, Integer exitCode, String output, String errorOutput)
 specifier|public
 name|PrivilegedOperationException
 parameter_list|(
 name|String
 name|message
 parameter_list|,
-name|int
+name|Integer
 name|exitCode
 parameter_list|,
 name|String
@@ -155,14 +152,14 @@ name|cause
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|PrivilegedOperationException (Throwable cause, int exitCode, String output, String errorOutput)
+DECL|method|PrivilegedOperationException (Throwable cause, Integer exitCode, String output, String errorOutput)
 specifier|public
 name|PrivilegedOperationException
 parameter_list|(
 name|Throwable
 name|cause
 parameter_list|,
-name|int
+name|Integer
 name|exitCode
 parameter_list|,
 name|String
@@ -217,7 +214,7 @@ expr_stmt|;
 block|}
 DECL|method|getExitCode ()
 specifier|public
-name|int
+name|Integer
 name|getExitCode
 parameter_list|()
 block|{
