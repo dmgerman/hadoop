@@ -842,6 +842,11 @@ name|waitNum
 init|=
 literal|0
 decl_stmt|;
+name|int
+name|total
+init|=
+literal|0
+decl_stmt|;
 while|while
 condition|(
 name|waitNum
@@ -849,11 +854,10 @@ operator|<
 literal|500
 condition|)
 block|{
-name|int
 name|total
-init|=
+operator|=
 literal|0
-decl_stmt|;
+expr_stmt|;
 for|for
 control|(
 name|RMContainer
@@ -906,7 +910,15 @@ block|}
 name|Assert
 operator|.
 name|fail
-argument_list|()
+argument_list|(
+literal|"Check #live-container-on-node-from-app, actual="
+operator|+
+name|total
+operator|+
+literal|" expected="
+operator|+
+name|expected
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|checkNumberOfPreemptionCandidateFromApp ( ProportionalCapacityPreemptionPolicy policy, int expected, ApplicationAttemptId attemptId)

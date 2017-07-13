@@ -325,11 +325,14 @@ specifier|private
 name|PreemptableResourceCalculator
 name|preemptableAmountCalculator
 decl_stmt|;
-DECL|method|FifoCandidatesSelector ( CapacitySchedulerPreemptionContext preemptionContext)
+DECL|method|FifoCandidatesSelector (CapacitySchedulerPreemptionContext preemptionContext, boolean includeReservedResource)
 name|FifoCandidatesSelector
 parameter_list|(
 name|CapacitySchedulerPreemptionContext
 name|preemptionContext
+parameter_list|,
+name|boolean
+name|includeReservedResource
 parameter_list|)
 block|{
 name|super
@@ -344,7 +347,7 @@ name|PreemptableResourceCalculator
 argument_list|(
 name|preemptionContext
 argument_list|,
-literal|false
+name|includeReservedResource
 argument_list|)
 expr_stmt|;
 block|}
