@@ -8216,6 +8216,8 @@ argument_list|,
 name|SchedulingMode
 operator|.
 name|RESPECT_PARTITION_EXCLUSIVITY
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|//maxqueue 16G, userlimit 13G, - 4G used = 9G
@@ -8381,6 +8383,8 @@ argument_list|,
 name|SchedulingMode
 operator|.
 name|RESPECT_PARTITION_EXCLUSIVITY
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -8790,6 +8794,8 @@ argument_list|,
 name|SchedulingMode
 operator|.
 name|RESPECT_PARTITION_EXCLUSIVITY
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -8967,6 +8973,8 @@ argument_list|,
 name|SchedulingMode
 operator|.
 name|RESPECT_PARTITION_EXCLUSIVITY
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|qb
@@ -8982,6 +8990,8 @@ argument_list|,
 name|SchedulingMode
 operator|.
 name|RESPECT_PARTITION_EXCLUSIVITY
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|//app3 is user1, active from last test case
