@@ -101,7 +101,7 @@ DECL|field|EXIT_CODE_UNSET
 specifier|private
 specifier|static
 specifier|final
-name|Integer
+name|int
 name|EXIT_CODE_UNSET
 init|=
 operator|-
@@ -118,7 +118,7 @@ literal|"<unknown>"
 decl_stmt|;
 DECL|field|exitCode
 specifier|private
-name|Integer
+name|int
 name|exitCode
 decl_stmt|;
 DECL|field|output
@@ -183,14 +183,14 @@ operator|=
 name|OUTPUT_UNSET
 expr_stmt|;
 block|}
-DECL|method|ContainerExecutionException (String message, Integer exitCode, String output, String errorOutput)
+DECL|method|ContainerExecutionException (String message, int exitCode, String output, String errorOutput)
 specifier|public
 name|ContainerExecutionException
 parameter_list|(
 name|String
 name|message
 parameter_list|,
-name|Integer
+name|int
 name|exitCode
 parameter_list|,
 name|String
@@ -224,14 +224,14 @@ operator|=
 name|errorOutput
 expr_stmt|;
 block|}
-DECL|method|ContainerExecutionException (Throwable cause, Integer exitCode, String output, String errorOutput)
+DECL|method|ContainerExecutionException (Throwable cause, int exitCode, String output, String errorOutput)
 specifier|public
 name|ContainerExecutionException
 parameter_list|(
 name|Throwable
 name|cause
 parameter_list|,
-name|Integer
+name|int
 name|exitCode
 parameter_list|,
 name|String
@@ -267,7 +267,7 @@ expr_stmt|;
 block|}
 DECL|method|getExitCode ()
 specifier|public
-name|Integer
+name|int
 name|getExitCode
 parameter_list|()
 block|{
