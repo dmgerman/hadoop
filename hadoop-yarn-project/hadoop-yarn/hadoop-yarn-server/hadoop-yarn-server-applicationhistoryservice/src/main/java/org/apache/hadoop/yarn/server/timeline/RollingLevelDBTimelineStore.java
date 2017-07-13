@@ -124,6 +124,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|LinkedHashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -805,6 +815,18 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|nustaq
+operator|.
+name|serialization
+operator|.
+name|FSTClazzNameRegistry
+import|;
+end_import
+
+begin_import
 import|import static
 name|java
 operator|.
@@ -1287,6 +1309,28 @@ operator|.
 name|createDefaultConfiguration
 argument_list|()
 decl_stmt|;
+comment|// Fall back to 2.24 parsing if 2.50 parsing fails
+DECL|field|fstConf224
+specifier|private
+specifier|static
+name|FSTConfiguration
+name|fstConf224
+init|=
+name|FSTConfiguration
+operator|.
+name|createDefaultConfiguration
+argument_list|()
+decl_stmt|;
+comment|// Static class code for 2.24
+DECL|field|LINKED_HASH_MAP_224_CODE
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|LINKED_HASH_MAP_224_CODE
+init|=
+literal|83
+decl_stmt|;
 static|static
 block|{
 name|fstConf
@@ -1294,6 +1338,38 @@ operator|.
 name|setShareReferences
 argument_list|(
 literal|false
+argument_list|)
+expr_stmt|;
+name|fstConf224
+operator|.
+name|setShareReferences
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+comment|// YARN-6654 unable to find class for code 83 (LinkedHashMap)
+comment|// The linked hash map was changed between 2.24 and 2.50 so that
+comment|// the static code for LinkedHashMap (83) was changed to a dynamic
+comment|// code.
+name|FSTClazzNameRegistry
+name|registry
+init|=
+name|fstConf224
+operator|.
+name|getClassRegistry
+argument_list|()
+decl_stmt|;
+name|registry
+operator|.
+name|registerClass
+argument_list|(
+name|LinkedHashMap
+operator|.
+name|class
+argument_list|,
+name|LINKED_HASH_MAP_224_CODE
+argument_list|,
+name|fstConf224
 argument_list|)
 expr_stmt|;
 block|}
@@ -2402,7 +2478,6 @@ name|long
 name|ttlInterval
 decl_stmt|;
 DECL|method|EntityDeletionThread (Configuration conf)
-specifier|public
 name|EntityDeletionThread
 parameter_list|(
 name|Configuration
@@ -3028,6 +3103,40 @@ block|}
 catch|catch
 parameter_list|(
 name|Exception
+name|ignore
+parameter_list|)
+block|{
+try|try
+block|{
+comment|// Fall back to 2.24 parser
+name|o
+operator|=
+name|fstConf224
+operator|.
+name|asObject
+argument_list|(
+name|iterator
+operator|.
+name|peekNext
+argument_list|()
+operator|.
+name|getValue
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|entity
+operator|.
+name|addOtherInfo
+argument_list|(
+name|keyStr
+argument_list|,
+name|o
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
 name|e
 parameter_list|)
 block|{
@@ -3046,6 +3155,7 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}
@@ -7676,6 +7786,25 @@ block|}
 catch|catch
 parameter_list|(
 name|Exception
+name|ignore
+parameter_list|)
+block|{
+try|try
+block|{
+comment|// Fall back to 2.24 parser
+name|o
+operator|=
+name|fstConf224
+operator|.
+name|asObject
+argument_list|(
+name|value
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
 name|e
 parameter_list|)
 block|{
@@ -7690,6 +7819,7 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 if|if
 condition|(
@@ -7840,6 +7970,34 @@ block|}
 catch|catch
 parameter_list|(
 name|Exception
+name|ignore
+parameter_list|)
+block|{
+try|try
+block|{
+comment|// Fall back to 2.24 parser
+name|value
+operator|=
+name|fstConf224
+operator|.
+name|asObject
+argument_list|(
+name|bytes
+argument_list|)
+expr_stmt|;
+name|entity
+operator|.
+name|addPrimaryFilter
+argument_list|(
+name|name
+argument_list|,
+name|value
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
 name|e
 parameter_list|)
 block|{
@@ -7854,6 +8012,7 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * Creates a string representation of the byte array from the given offset to    * the end of the array (for parsing other info keys).    */
