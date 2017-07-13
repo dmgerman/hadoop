@@ -4889,7 +4889,13 @@ name|setErasureCodingPolicy
 argument_list|(
 name|fooDir
 argument_list|,
-literal|null
+name|StripedFileTestUtil
+operator|.
+name|getDefaultECPolicy
+argument_list|()
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// write file to fooDir
