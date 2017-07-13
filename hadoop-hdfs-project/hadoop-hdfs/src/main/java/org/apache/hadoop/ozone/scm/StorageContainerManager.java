@@ -2617,7 +2617,38 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Storage Container Manager httpServer stop failed."
+literal|"Storage Container Manager datanodeRpcServer stop failed."
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
+block|}
+try|try
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Stopping Storage Container Manager HTTP server."
+argument_list|)
+expr_stmt|;
+name|httpServer
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|ex
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Storage Container Manager HTTP server stop failed."
 argument_list|,
 name|ex
 argument_list|)
