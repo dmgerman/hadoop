@@ -174,6 +174,20 @@ name|Preconditions
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|AccessControlException
+import|;
+end_import
+
 begin_comment
 comment|/**  * An anonymous reference to an inode.  *  * This class and its subclasses are used to support multiple access paths.  * A file/directory may have multiple access paths when it is stored in some  * snapshots and it is renamed/moved to other locations.  *   * For example,  * (1) Suppose we have /abc/foo, say the inode of foo is inode(id=1000,name=foo)  * (2) create snapshot s0 for /abc  * (3) mv /abc/foo /xyz/bar, i.e. inode(id=1000,name=...) is renamed from "foo"  *     to "bar" and its parent becomes /xyz.  *   * Then, /xyz/bar and /abc/.snapshot/s0/foo are two different access paths to  * the same inode, inode(id=1000,name=bar).  *  * With references, we have the following  * - /abc has a child ref(id=1001,name=foo).  * - /xyz has a child ref(id=1002)   * - Both ref(id=1001,name=foo) and ref(id=1002) point to another reference,  *   ref(id=1003,count=2).  * - Finally, ref(id=1003,count=2) points to inode(id=1000,name=bar).  *   * Note 1: For a reference without name, e.g. ref(id=1002), it uses the name  *         of the referred inode.  * Note 2: getParent() always returns the parent in the current state, e.g.  *         inode(id=1000,name=bar).getParent() returns /xyz but not /abc.  */
 end_comment
@@ -1178,6 +1192,8 @@ parameter_list|,
 name|ContentSummaryComputationContext
 name|summary
 parameter_list|)
+throws|throws
+name|AccessControlException
 block|{
 return|return
 name|referred
