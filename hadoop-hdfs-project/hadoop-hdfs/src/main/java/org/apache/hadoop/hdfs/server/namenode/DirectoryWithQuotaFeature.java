@@ -150,6 +150,20 @@ name|EnumCounters
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|AccessControlException
+import|;
+end_import
+
 begin_comment
 comment|/**  * Quota feature for {@link INodeDirectory}.   */
 end_comment
@@ -579,6 +593,8 @@ specifier|final
 name|ContentSummaryComputationContext
 name|summary
 parameter_list|)
+throws|throws
+name|AccessControlException
 block|{
 specifier|final
 name|long
