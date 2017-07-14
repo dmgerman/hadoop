@@ -82,34 +82,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|conf
@@ -165,28 +137,6 @@ operator|.
 name|exceptions
 operator|.
 name|YarnException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|federation
-operator|.
-name|policies
-operator|.
-name|amrmproxy
-operator|.
-name|LocalityMulticastAMRMProxyPolicy
 import|;
 end_import
 
@@ -364,6 +314,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -390,14 +360,14 @@ DECL|field|LOG
 specifier|private
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
-name|LocalityMulticastAMRMProxyPolicy
+name|RouterPolicyFacade
 operator|.
 name|class
 argument_list|)
@@ -486,7 +456,7 @@ argument_list|()
 expr_stmt|;
 comment|// load default behavior from store if possible
 name|String
-name|defaulKey
+name|defaultKey
 init|=
 name|YarnConfiguration
 operator|.
@@ -505,7 +475,7 @@ name|federationFacade
 operator|.
 name|getPolicyConfiguration
 argument_list|(
-name|defaulKey
+name|defaultKey
 argument_list|)
 expr_stmt|;
 block|}
@@ -588,7 +558,7 @@ name|SubClusterPolicyConfiguration
 operator|.
 name|newInstance
 argument_list|(
-name|defaulKey
+name|defaultKey
 argument_list|,
 name|defaultFederationPolicyManager
 argument_list|,
@@ -629,7 +599,7 @@ name|fallbackPolicyManager
 operator|.
 name|setQueue
 argument_list|(
-name|defaulKey
+name|defaultKey
 argument_list|)
 expr_stmt|;
 comment|// add to the cache the fallback behavior
@@ -637,7 +607,7 @@ name|globalConfMap
 operator|.
 name|put
 argument_list|(
-name|defaulKey
+name|defaultKey
 argument_list|,
 name|fallbackContext
 operator|.
@@ -649,7 +619,7 @@ name|globalPolicyMap
 operator|.
 name|put
 argument_list|(
-name|defaulKey
+name|defaultKey
 argument_list|,
 name|fallbackPolicyManager
 operator|.
@@ -769,10 +739,21 @@ name|YarnException
 name|e
 parameter_list|)
 block|{
+name|String
+name|errMsg
+init|=
+literal|"There is no policy configured for the queue: "
+operator|+
+name|queue
+operator|+
+literal|", falling back to defaults."
+decl_stmt|;
 name|LOG
 operator|.
-name|debug
+name|warn
 argument_list|(
+name|errMsg
+argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
@@ -786,8 +767,6 @@ name|configuration
 operator|==
 literal|null
 condition|)
-block|{
-try|try
 block|{
 name|LOG
 operator|.
@@ -812,15 +791,15 @@ name|YarnConfiguration
 operator|.
 name|DEFAULT_FEDERATION_POLICY_KEY
 expr_stmt|;
+try|try
+block|{
 name|configuration
 operator|=
 name|federationFacade
 operator|.
 name|getPolicyConfiguration
 argument_list|(
-name|YarnConfiguration
-operator|.
-name|DEFAULT_FEDERATION_POLICY_KEY
+name|queue
 argument_list|)
 expr_stmt|;
 block|}
@@ -830,8 +809,35 @@ name|YarnException
 name|e
 parameter_list|)
 block|{
+name|String
+name|errMsg
+init|=
+literal|"Cannot retrieve policy configured for the queue: "
+operator|+
+name|queue
+operator|+
+literal|", falling back to defaults."
+decl_stmt|;
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|errMsg
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|// the fallback is not configure via store, but via XML, using
 comment|// previously loaded configuration.
+if|if
+condition|(
+name|configuration
+operator|==
+literal|null
+condition|)
+block|{
 name|configuration
 operator|=
 name|cachedConfs
@@ -843,7 +849,6 @@ operator|.
 name|DEFAULT_FEDERATION_POLICY_KEY
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|// if the configuration has changed since last loaded, reinit the policy
 comment|// based on current configuration

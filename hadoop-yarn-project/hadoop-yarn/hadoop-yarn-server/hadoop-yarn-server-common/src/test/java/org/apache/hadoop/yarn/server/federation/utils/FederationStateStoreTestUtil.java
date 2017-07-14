@@ -500,6 +500,15 @@ name|POLICY_PREFIX
 init|=
 literal|"policy-"
 decl_stmt|;
+DECL|field|INVALID
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|INVALID
+init|=
+literal|"dummy"
+decl_stmt|;
 DECL|field|stateStore
 specifier|private
 name|FederationStateStore

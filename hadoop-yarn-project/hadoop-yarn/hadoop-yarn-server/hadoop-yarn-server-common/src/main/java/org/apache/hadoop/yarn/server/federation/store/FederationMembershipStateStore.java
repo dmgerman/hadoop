@@ -337,7 +337,7 @@ parameter_list|)
 throws|throws
 name|YarnException
 function_decl|;
-comment|/**    * Get the membership information of<em>subcluster</em> as identified by    * {@code SubClusterId}. The membership information includes the cluster    * endpoint and current capabilities as represented by {@code SubClusterInfo}.    *    * @param subClusterRequest the subcluster whose information is required    * @return the {@code SubClusterInfo}    * @throws YarnException if the request is invalid/fails    */
+comment|/**    * Get the membership information of<em>subcluster</em> as identified by    * {@code SubClusterId}. The membership information includes the cluster    * endpoint and current capabilities as represented by {@code SubClusterInfo}.    *    * @param subClusterRequest the subcluster whose information is required    * @return the {@code SubClusterInfo}, or {@code null} if there is no mapping    *         for the subcluster    * @throws YarnException if the request is invalid/fails    */
 DECL|method|getSubCluster ( GetSubClusterInfoRequest subClusterRequest)
 name|GetSubClusterInfoResponse
 name|getSubCluster

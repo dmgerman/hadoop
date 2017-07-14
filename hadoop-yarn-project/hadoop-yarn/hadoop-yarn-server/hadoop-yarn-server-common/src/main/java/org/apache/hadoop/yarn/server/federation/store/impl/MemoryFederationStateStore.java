@@ -1460,27 +1460,18 @@ name|subClusterId
 argument_list|)
 condition|)
 block|{
-name|String
-name|errMsg
-init|=
-literal|"SubCluster "
-operator|+
-name|subClusterId
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|" does not exist"
-decl_stmt|;
-name|FederationStateStoreUtils
-operator|.
-name|logAndThrowStoreException
-argument_list|(
 name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"The queried SubCluster: {} does not exist."
 argument_list|,
-name|errMsg
+name|subClusterId
 argument_list|)
 expr_stmt|;
+return|return
+literal|null
+return|;
 block|}
 return|return
 name|GetSubClusterInfoResponse
@@ -1993,24 +1984,18 @@ name|queue
 argument_list|)
 condition|)
 block|{
-name|String
-name|errMsg
-init|=
-literal|"Policy for queue "
-operator|+
-name|queue
-operator|+
-literal|" does not exist"
-decl_stmt|;
-name|FederationStateStoreUtils
-operator|.
-name|logAndThrowStoreException
-argument_list|(
 name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Policy for queue: {} does not exist."
 argument_list|,
-name|errMsg
+name|queue
 argument_list|)
 expr_stmt|;
+return|return
+literal|null
+return|;
 block|}
 return|return
 name|GetSubClusterPolicyConfigurationResponse

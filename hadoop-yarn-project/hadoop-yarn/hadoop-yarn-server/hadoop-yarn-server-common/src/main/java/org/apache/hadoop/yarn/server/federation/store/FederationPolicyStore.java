@@ -216,7 +216,7 @@ specifier|public
 interface|interface
 name|FederationPolicyStore
 block|{
-comment|/**    * Get the policy configuration for a given queue.    *    * @param request the queue whose {@code SubClusterPolicyConfiguration} is    *          required    * @return the {@code SubClusterPolicyConfiguration} for the specified queue    * @throws YarnException if the request is invalid/fails    */
+comment|/**    * Get the policy configuration for a given queue.    *    * @param request the queue whose {@code SubClusterPolicyConfiguration} is    *          required    * @return the {@code SubClusterPolicyConfiguration} for the specified queue,    *         or {@code null} if there is no mapping for the queue    * @throws YarnException if the request is invalid/fails    */
 DECL|method|getPolicyConfiguration ( GetSubClusterPolicyConfigurationRequest request)
 name|GetSubClusterPolicyConfigurationResponse
 name|getPolicyConfiguration

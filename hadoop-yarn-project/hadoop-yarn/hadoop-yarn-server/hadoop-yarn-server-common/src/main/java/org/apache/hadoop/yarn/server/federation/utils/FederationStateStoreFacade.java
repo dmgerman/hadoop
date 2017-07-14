@@ -570,6 +570,28 @@ name|store
 operator|.
 name|records
 operator|.
+name|GetSubClusterInfoResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|federation
+operator|.
+name|store
+operator|.
+name|records
+operator|.
 name|GetSubClusterPoliciesConfigurationsRequest
 import|;
 end_import
@@ -1430,7 +1452,7 @@ return|return
 name|FACADE
 return|;
 block|}
-comment|/**    * Returns the {@link SubClusterInfo} for the specified {@link SubClusterId}.    *    * @param subClusterId the identifier of the sub-cluster    * @return the sub cluster information    * @throws YarnException if the call to the state store is unsuccessful    */
+comment|/**    * Returns the {@link SubClusterInfo} for the specified {@link SubClusterId}.    *    * @param subClusterId the identifier of the sub-cluster    * @return the sub cluster information, or    *         {@code null} if there is no mapping for the subClusterId    * @throws YarnException if the call to the state store is unsuccessful    */
 DECL|method|getSubCluster (final SubClusterId subClusterId)
 specifier|public
 name|SubClusterInfo
@@ -1463,7 +1485,9 @@ return|;
 block|}
 else|else
 block|{
-return|return
+name|GetSubClusterInfoResponse
+name|response
+init|=
 name|stateStore
 operator|.
 name|getSubCluster
@@ -1475,10 +1499,27 @@ argument_list|(
 name|subClusterId
 argument_list|)
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|response
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+else|else
+block|{
+return|return
+name|response
 operator|.
 name|getSubClusterInfo
 argument_list|()
 return|;
+block|}
 block|}
 block|}
 comment|/**    * Updates the cache with the central {@link FederationStateStore} and returns    * the {@link SubClusterInfo} for the specified {@link SubClusterId}.    *    * @param subClusterId the identifier of the sub-cluster    * @param flushCache flag to indicate if the cache should be flushed or not    * @return the sub cluster information    * @throws YarnException if the call to the state store is unsuccessful    */
@@ -1619,7 +1660,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Returns the {@link SubClusterPolicyConfiguration} for the specified queue.    *    * @param queue the queue whose policy is required    * @return the corresponding configured policy    * @throws YarnException if the call to the state store is unsuccessful    */
+comment|/**    * Returns the {@link SubClusterPolicyConfiguration} for the specified queue.    *    * @param queue the queue whose policy is required    * @return the corresponding configured policy, or {@code null} if there is no    *         mapping for the queue    * @throws YarnException if the call to the state store is unsuccessful    */
 DECL|method|getPolicyConfiguration ( final String queue)
 specifier|public
 name|SubClusterPolicyConfiguration
@@ -1672,17 +1713,9 @@ operator|==
 literal|null
 condition|)
 block|{
-throw|throw
-operator|new
-name|YarnException
-argument_list|(
-literal|"The stateStore returned a null for "
-operator|+
-literal|"GetSubClusterPolicyConfigurationResponse for queue "
-operator|+
-name|queue
-argument_list|)
-throw|;
+return|return
+literal|null
+return|;
 block|}
 else|else
 block|{

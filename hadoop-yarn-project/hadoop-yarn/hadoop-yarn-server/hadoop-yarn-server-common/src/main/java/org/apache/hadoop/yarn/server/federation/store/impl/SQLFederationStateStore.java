@@ -2455,6 +2455,35 @@ argument_list|(
 literal|5
 argument_list|)
 decl_stmt|;
+comment|// first check if the subCluster exists
+if|if
+condition|(
+operator|(
+name|amRMAddress
+operator|==
+literal|null
+operator|)
+operator|||
+operator|(
+name|clientRMAddress
+operator|==
+literal|null
+operator|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"The queried SubCluster: {} does not exist."
+argument_list|,
+name|subClusterId
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
 name|Timestamp
 name|heartBeatTimeStamp
 init|=
@@ -4337,27 +4366,21 @@ block|}
 block|}
 else|else
 block|{
-name|String
-name|errMsg
-init|=
-literal|"Policy for queue "
-operator|+
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Policy for queue: {} does not exist."
+argument_list|,
 name|request
 operator|.
 name|getQueue
 argument_list|()
-operator|+
-literal|" does not exist"
-decl_stmt|;
-name|FederationStateStoreUtils
-operator|.
-name|logAndThrowStoreException
-argument_list|(
-name|LOG
-argument_list|,
-name|errMsg
 argument_list|)
 expr_stmt|;
+return|return
+literal|null
+return|;
 block|}
 block|}
 catch|catch
