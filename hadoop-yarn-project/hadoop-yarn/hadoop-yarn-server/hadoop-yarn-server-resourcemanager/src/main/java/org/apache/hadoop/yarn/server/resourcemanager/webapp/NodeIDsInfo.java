@@ -98,13 +98,17 @@ name|XmlRootElement
 import|;
 end_import
 
+begin_comment
+comment|/**  * XML element uses to represent NodeIds' list.  */
+end_comment
+
 begin_class
 annotation|@
 name|XmlRootElement
 argument_list|(
 name|name
 operator|=
-literal|"labelsToNodesInfo"
+literal|"nodeIDsInfo"
 argument_list|)
 annotation|@
 name|XmlAccessorType

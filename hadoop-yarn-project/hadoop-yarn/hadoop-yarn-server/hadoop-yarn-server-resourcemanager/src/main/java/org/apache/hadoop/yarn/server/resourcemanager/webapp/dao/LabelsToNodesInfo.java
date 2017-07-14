@@ -151,6 +151,26 @@ name|LabelsToNodesInfo
 parameter_list|()
 block|{   }
 comment|// JAXB needs this
+DECL|method|LabelsToNodesInfo (Map<NodeLabelInfo, NodeIDsInfo> labelsToNodes)
+specifier|public
+name|LabelsToNodesInfo
+parameter_list|(
+name|Map
+argument_list|<
+name|NodeLabelInfo
+argument_list|,
+name|NodeIDsInfo
+argument_list|>
+name|labelsToNodes
+parameter_list|)
+block|{
+name|this
+operator|.
+name|labelsToNodes
+operator|=
+name|labelsToNodes
+expr_stmt|;
+block|}
 DECL|method|getLabelsToNodes ()
 specifier|public
 name|Map
