@@ -318,7 +318,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Returns a list of buckets represented by {@link KsmBucketInfo}    * in the given volume.    *    * @param volumeName    *   the name of the volume. This argument is required,    *   this method returns buckets in this given volume.    * @param startBucket    *   the start bucket name. Only the buckets whose name is    *   after this value will be included in the result.    * @param bucketPrefix    *   bucket name prefix. Only the buckets whose name has    *   this prefix will be included in the result.    * @param maxNumOfBuckets    *   the maximum number of buckets to return. It ensures    *   the size of the result will not exceed this limit.    * @return a list of buckets.    * @throws IOException    */
+comment|/**    * Returns a list of buckets represented by {@link KsmBucketInfo}    * in the given volume.    *    * @param volumeName    *   the name of the volume. This argument is required,    *   this method returns buckets in this given volume.    * @param startBucket    *   the start bucket name. Only the buckets whose name is    *   after this value will be included in the result.    *   This key is excluded from the result.    * @param bucketPrefix    *   bucket name prefix. Only the buckets whose name has    *   this prefix will be included in the result.    * @param maxNumOfBuckets    *   the maximum number of buckets to return. It ensures    *   the size of the result will not exceed this limit.    * @return a list of buckets.    * @throws IOException    */
 DECL|method|listBuckets (String volumeName, String startBucket, String bucketPrefix, int maxNumOfBuckets)
 name|List
 argument_list|<
@@ -341,7 +341,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Returns a list of keys represented by {@link KsmKeyInfo}    * in the given bucket.    *    * @param volumeName    *   the name of the volume.    * @param bucketName    *   the name of the bucket.    * @param startKey    *   the start key name, only the keys whose name is    *   after this value will be included in the result.    * @param keyPrefix    *   key name prefix, only the keys whose name has    *   this prefix will be included in the result.    * @param maxKeys    *   the maximum number of keys to return. It ensures    *   the size of the result will not exceed this limit.    * @return a list of keys.    * @throws IOException    */
+comment|/**    * Returns a list of keys represented by {@link KsmKeyInfo}    * in the given bucket.    *    * @param volumeName    *   the name of the volume.    * @param bucketName    *   the name of the bucket.    * @param startKey    *   the start key name, only the keys whose name is    *   after this value will be included in the result.    *   This key is excluded from the result.    * @param keyPrefix    *   key name prefix, only the keys whose name has    *   this prefix will be included in the result.    * @param maxKeys    *   the maximum number of keys to return. It ensures    *   the size of the result will not exceed this limit.    * @return a list of keys.    * @throws IOException    */
 DECL|method|listKeys (String volumeName, String bucketName, String startKey, String keyPrefix, int maxKeys)
 name|List
 argument_list|<
@@ -367,7 +367,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Returns a list of volumes owned by a given user; if user is null,    * returns all volumes.    *    * @param userName    *   volume owner    * @param prefix    *   the volume prefix used to filter the listing result.    * @param startKey    *   the start volume name determines where to start listing from.    * @param maxKeys    *   the maximum number of volumes to return.    * @return a list of {@link KsmVolumeArgs}    * @throws IOException    */
+comment|/**    * Returns a list of volumes owned by a given user; if user is null,    * returns all volumes.    *    * @param userName    *   volume owner    * @param prefix    *   the volume prefix used to filter the listing result.    * @param startKey    *   the start volume name determines where to start listing from,    *   this key is excluded from the result.    * @param maxKeys    *   the maximum number of volumes to return.    * @return a list of {@link KsmVolumeArgs}    * @throws IOException    */
 DECL|method|listVolumes (String userName, String prefix, String startKey, int maxKeys)
 name|List
 argument_list|<

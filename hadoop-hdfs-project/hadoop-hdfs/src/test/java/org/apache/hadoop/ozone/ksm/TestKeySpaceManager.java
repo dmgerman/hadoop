@@ -4832,7 +4832,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"bBucket_3"
+literal|"bBucket_4"
 argument_list|,
 name|result
 operator|.
@@ -4852,7 +4852,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"bBucket_4"
+literal|"bBucket_5"
 argument_list|,
 name|result
 operator|.
@@ -4948,7 +4948,7 @@ literal|"b"
 argument_list|,
 literal|5
 argument_list|,
-literal|"bBucket_8"
+literal|"bBucket_7"
 argument_list|)
 expr_stmt|;
 name|result
@@ -5705,7 +5705,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"bKey1"
+literal|"bKey11"
 argument_list|,
 name|result
 operator|.
@@ -5725,7 +5725,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"bKey11"
+literal|"bKey13"
 argument_list|,
 name|result
 operator|.
@@ -6422,6 +6422,16 @@ expr_stmt|;
 comment|// Make sure all available fields are returned
 specifier|final
 name|String
+name|user0vol4
+init|=
+literal|"Vol-"
+operator|+
+name|user0
+operator|+
+literal|"-4"
+decl_stmt|;
+specifier|final
+name|String
 name|user0vol5
 init|=
 literal|"Vol-"
@@ -6441,7 +6451,7 @@ literal|null
 argument_list|,
 literal|1
 argument_list|,
-name|user0vol5
+name|user0vol4
 argument_list|)
 expr_stmt|;
 name|listVolumeArgs

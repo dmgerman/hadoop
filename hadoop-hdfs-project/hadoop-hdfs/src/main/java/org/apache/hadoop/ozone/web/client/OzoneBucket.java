@@ -2056,8 +2056,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * List all keys in a bucket.    *    * @param resultLength The max length of listing result.    * @param startKey The start key where to start listing from.    * @param prefix The prefix that return list keys start with.    * @return List of OzoneKeys    * @throws OzoneException    */
-DECL|method|listKeys (String resultLength, String startKey, String prefix)
+comment|/**    * List all keys in a bucket.    *    * @param resultLength The max length of listing result.    * @param previousKey The key from where listing should start,    *                    this key is excluded in the result.    * @param prefix The prefix that return list keys start with.    * @return List of OzoneKeys    * @throws OzoneException    */
+DECL|method|listKeys (String resultLength, String previousKey, String prefix)
 specifier|public
 name|List
 argument_list|<
@@ -2069,7 +2069,7 @@ name|String
 name|resultLength
 parameter_list|,
 name|String
-name|startKey
+name|previousKey
 parameter_list|,
 name|String
 name|prefix
@@ -2168,7 +2168,7 @@ name|Strings
 operator|.
 name|isNullOrEmpty
 argument_list|(
-name|startKey
+name|previousKey
 argument_list|)
 condition|)
 block|{
@@ -2180,7 +2180,7 @@ name|Header
 operator|.
 name|OZONE_LIST_QUERY_PREVKEY
 argument_list|,
-name|startKey
+name|previousKey
 argument_list|)
 expr_stmt|;
 block|}

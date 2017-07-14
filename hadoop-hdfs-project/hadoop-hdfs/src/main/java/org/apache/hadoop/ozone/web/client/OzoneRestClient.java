@@ -996,8 +996,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * List all the volumes owned by the user or Owned by the user specified in    * the behalf of string.    *    * @param onBehalfOf    *  User Name of the user if it is not the caller. for example,    *  an admin wants to list some other users volumes.    * @param prefix    *   Return only volumes that match this prefix.    * @param maxKeys    *   Maximum number of results to return, if the result set    *   is smaller than requested size, it means that list is    *   complete.    * @param startVolume    *   The previous volume name.    * @return List of Volumes    * @throws OzoneException    */
-DECL|method|listVolumes (String onBehalfOf, String prefix, int maxKeys, String startVolume)
+comment|/**    * List all the volumes owned by the user or Owned by the user specified in    * the behalf of string.    *    * @param onBehalfOf    *  User Name of the user if it is not the caller. for example,    *  an admin wants to list some other users volumes.    * @param prefix    *   Return only volumes that match this prefix.    * @param maxKeys    *   Maximum number of results to return, if the result set    *   is smaller than requested size, it means that list is    *   complete.    * @param previousVolume    *   The previous volume name.    * @return List of Volumes    * @throws OzoneException    */
+DECL|method|listVolumes (String onBehalfOf, String prefix, int maxKeys, String previousVolume)
 specifier|public
 name|List
 argument_list|<
@@ -1015,7 +1015,7 @@ name|int
 name|maxKeys
 parameter_list|,
 name|String
-name|startVolume
+name|previousVolume
 parameter_list|)
 throws|throws
 name|OzoneException
@@ -1097,7 +1097,7 @@ name|Strings
 operator|.
 name|isNullOrEmpty
 argument_list|(
-name|startVolume
+name|previousVolume
 argument_list|)
 condition|)
 block|{
@@ -1109,7 +1109,7 @@ name|Header
 operator|.
 name|OZONE_LIST_QUERY_PREVKEY
 argument_list|,
-name|startVolume
+name|previousVolume
 argument_list|)
 expr_stmt|;
 block|}
@@ -2882,8 +2882,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * List all keys in the given bucket.    *    * @param volumeName - Volume name    * @param bucketName - Bucket name    * @param resultLength The max length of listing result.    * @param startKey The start key where to start listing from.    * @param prefix The prefix that return list keys start with.    *    * @return List of OzoneKeys    */
-DECL|method|listKeys (String volumeName, String bucketName, String resultLength, String startKey, String prefix)
+comment|/**    * List all keys in the given bucket.    *    * @param volumeName - Volume name    * @param bucketName - Bucket name    * @param resultLength The max length of listing result.    * @param previousKey The key from where listing should start,    *                    this key is excluded in the result.    * @param prefix The prefix that return list keys start with.    *    * @return List of OzoneKeys    */
+DECL|method|listKeys (String volumeName, String bucketName, String resultLength, String previousKey, String prefix)
 specifier|public
 name|List
 argument_list|<
@@ -2901,7 +2901,7 @@ name|String
 name|resultLength
 parameter_list|,
 name|String
-name|startKey
+name|previousKey
 parameter_list|,
 name|String
 name|prefix
@@ -2995,7 +2995,7 @@ name|Strings
 operator|.
 name|isNullOrEmpty
 argument_list|(
-name|startKey
+name|previousKey
 argument_list|)
 condition|)
 block|{
@@ -3007,7 +3007,7 @@ name|Header
 operator|.
 name|OZONE_LIST_QUERY_PREVKEY
 argument_list|,
-name|startKey
+name|previousKey
 argument_list|)
 expr_stmt|;
 block|}

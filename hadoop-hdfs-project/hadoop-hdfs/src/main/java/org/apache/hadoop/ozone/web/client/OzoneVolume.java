@@ -1731,7 +1731,7 @@ block|}
 block|}
 block|}
 comment|/**    * Gets a list of buckets on this volume.    *    * @return - List of buckets    *    * @throws OzoneException    */
-DECL|method|listBuckets (String resultLength, String startBucket, String prefix)
+DECL|method|listBuckets (String resultLength, String previousBucket, String prefix)
 specifier|public
 name|List
 argument_list|<
@@ -1743,7 +1743,7 @@ name|String
 name|resultLength
 parameter_list|,
 name|String
-name|startBucket
+name|previousBucket
 parameter_list|,
 name|String
 name|prefix
@@ -1821,7 +1821,7 @@ name|Strings
 operator|.
 name|isNullOrEmpty
 argument_list|(
-name|startBucket
+name|previousBucket
 argument_list|)
 condition|)
 block|{
@@ -1833,7 +1833,7 @@ name|Header
 operator|.
 name|OZONE_LIST_QUERY_PREVKEY
 argument_list|,
-name|startBucket
+name|previousBucket
 argument_list|)
 expr_stmt|;
 block|}
