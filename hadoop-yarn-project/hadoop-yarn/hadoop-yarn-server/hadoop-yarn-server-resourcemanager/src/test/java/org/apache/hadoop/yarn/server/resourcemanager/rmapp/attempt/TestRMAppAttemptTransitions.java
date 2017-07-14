@@ -4818,6 +4818,27 @@ name|getAppAttemptState
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+condition|)
+block|{
+comment|// Before SAVED state, can't create ClientToken as at this time
+comment|// ClientTokenMasterKey has not been registered in the SecretManager
+name|assertNull
+argument_list|(
+name|applicationAttempt
+operator|.
+name|createClientToken
+argument_list|(
+literal|"some client"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 name|applicationAttempt
 operator|.
 name|handle
@@ -4836,6 +4857,27 @@ name|ATTEMPT_NEW_SAVED
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+condition|)
+block|{
+comment|// Before SAVED state, can't create ClientToken as at this time
+comment|// ClientTokenMasterKey has not been registered in the SecretManager
+name|assertNotNull
+argument_list|(
+name|applicationAttempt
+operator|.
+name|createClientToken
+argument_list|(
+literal|"some client"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 name|testAppAttemptAllocatedState
 argument_list|(
 name|container
@@ -4854,27 +4896,6 @@ name|Container
 name|container
 parameter_list|)
 block|{
-if|if
-condition|(
-name|UserGroupInformation
-operator|.
-name|isSecurityEnabled
-argument_list|()
-condition|)
-block|{
-comment|// Before LAUNCHED state, can't create ClientToken as at this time
-comment|// ClientTokenMasterKey has not been registered in the SecretManager
-name|assertNull
-argument_list|(
-name|applicationAttempt
-operator|.
-name|createClientToken
-argument_list|(
-literal|"some client"
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
 name|applicationAttempt
 operator|.
 name|handle
@@ -9392,22 +9413,6 @@ argument_list|(
 name|token
 argument_list|)
 expr_stmt|;
-name|token
-operator|=
-name|applicationAttempt
-operator|.
-name|createClientToken
-argument_list|(
-literal|"clientuser"
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|assertNull
-argument_list|(
-name|token
-argument_list|)
-expr_stmt|;
 name|launchApplicationAttempt
 argument_list|(
 name|amContainer
@@ -9544,40 +9549,13 @@ decl_stmt|;
 name|boolean
 name|isMasterKeyExisted
 init|=
-literal|false
+name|clientToAMTokenManager
+operator|.
+name|hasMasterKey
+argument_list|(
+name|appid
+argument_list|)
 decl_stmt|;
-comment|// before attempt is launched, can not get MasterKey
-name|isMasterKeyExisted
-operator|=
-name|clientToAMTokenManager
-operator|.
-name|hasMasterKey
-argument_list|(
-name|appid
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|assertFalse
-argument_list|(
-name|isMasterKeyExisted
-argument_list|)
-expr_stmt|;
-name|launchApplicationAttempt
-argument_list|(
-name|amContainer
-argument_list|)
-expr_stmt|;
-comment|// after attempt is launched and in secure mode, can get MasterKey
-name|isMasterKeyExisted
-operator|=
-name|clientToAMTokenManager
-operator|.
-name|hasMasterKey
-argument_list|(
-name|appid
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|isSecurityEnabled
@@ -9613,6 +9591,11 @@ name|isMasterKeyExisted
 argument_list|)
 expr_stmt|;
 block|}
+name|launchApplicationAttempt
+argument_list|(
+name|amContainer
+argument_list|)
+expr_stmt|;
 name|applicationAttempt
 operator|.
 name|handle
