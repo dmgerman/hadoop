@@ -1660,6 +1660,16 @@ operator|.
 name|get
 argument_list|()
 return|;
+case|case
+name|UNKNOWN
+case|:
+comment|// This is unknown due to the fact that some nodes can be in
+comment|// transit between the other states. Returning a count for that is not
+comment|// possible. The fact that we have such state is to deal with the fact
+comment|// that this information might not be consistent always.
+return|return
+literal|0
+return|;
 default|default:
 throw|throw
 operator|new
@@ -1685,6 +1695,88 @@ return|return
 name|lastHBcheckFinished
 operator|!=
 literal|0
+return|;
+block|}
+comment|/**    * Returns the node state of a specific node.    *    * @param id - DatanodeID    * @return Healthy/Stale/Dead/Unknown.    */
+annotation|@
+name|Override
+DECL|method|getNodeState (DatanodeID id)
+specifier|public
+name|NODESTATE
+name|getNodeState
+parameter_list|(
+name|DatanodeID
+name|id
+parameter_list|)
+block|{
+comment|// There is a subtle race condition here, hence we also support
+comment|// the NODEState.UNKNOWN. It is possible that just before we check the
+comment|// healthyNodes, we have removed the node from the healthy list but stil
+comment|// not added it to Stale Nodes list.
+comment|// We can fix that by adding the node to stale list before we remove, but
+comment|// then the node is in 2 states to avoid this race condition. Instead we
+comment|// just deal with the possibilty of getting a state called unknown.
+if|if
+condition|(
+name|healthyNodes
+operator|.
+name|containsKey
+argument_list|(
+name|id
+operator|.
+name|getDatanodeUuid
+argument_list|()
+argument_list|)
+condition|)
+block|{
+return|return
+name|NODESTATE
+operator|.
+name|HEALTHY
+return|;
+block|}
+if|if
+condition|(
+name|staleNodes
+operator|.
+name|containsKey
+argument_list|(
+name|id
+operator|.
+name|getDatanodeUuid
+argument_list|()
+argument_list|)
+condition|)
+block|{
+return|return
+name|NODESTATE
+operator|.
+name|STALE
+return|;
+block|}
+if|if
+condition|(
+name|deadNodes
+operator|.
+name|containsKey
+argument_list|(
+name|id
+operator|.
+name|getDatanodeUuid
+argument_list|()
+argument_list|)
+condition|)
+block|{
+return|return
+name|NODESTATE
+operator|.
+name|DEAD
+return|;
+block|}
+return|return
+name|NODESTATE
+operator|.
+name|UNKNOWN
 return|;
 block|}
 comment|/**    * This is the real worker thread that processes the HB queue. We do the    * following things in this thread.    *<p>    * Process the Heartbeats that are in the HB Queue. Move Stale or Dead node to    * healthy if we got a heartbeat from them. Move Stales Node to dead node    * table if it is needed. Move healthy nodes to stale nodes if it is needed.    *<p>    * if it is a new node, we call register node and add it to the list of nodes.    * This will be replaced when we support registration of a node in SCM.    *    * @see Thread#run()    */

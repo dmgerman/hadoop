@@ -246,6 +246,9 @@ name|STALE
 block|,
 DECL|enumConstant|DEAD
 name|DEAD
+block|,
+DECL|enumConstant|UNKNOWN
+name|UNKNOWN
 block|}
 comment|/**    * Returns the aggregated node stats.    * @return the aggregated node stats.    */
 DECL|method|getStats ()
@@ -280,6 +283,15 @@ DECL|method|waitForHeartbeatProcessed ()
 name|boolean
 name|waitForHeartbeatProcessed
 parameter_list|()
+function_decl|;
+comment|/**    * Returns the node state of a specific node.    * @param id - DatanodeID    * @return Healthy/Stale/Dead.    */
+DECL|method|getNodeState (DatanodeID id)
+name|NODESTATE
+name|getNodeState
+parameter_list|(
+name|DatanodeID
+name|id
+parameter_list|)
 function_decl|;
 block|}
 end_interface

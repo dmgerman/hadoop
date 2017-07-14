@@ -250,6 +250,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeoutException
+import|;
+end_import
+
+begin_import
+import|import
 name|javax
 operator|.
 name|management
@@ -336,6 +348,10 @@ name|init
 parameter_list|()
 throws|throws
 name|IOException
+throws|,
+name|TimeoutException
+throws|,
+name|InterruptedException
 block|{
 name|conf
 operator|=
@@ -366,6 +382,11 @@ name|OZONE_HANDLER_DISTRIBUTED
 argument_list|)
 operator|.
 name|build
+argument_list|()
+expr_stmt|;
+name|cluster
+operator|.
+name|waitOzoneReady
 argument_list|()
 expr_stmt|;
 name|scm

@@ -668,6 +668,63 @@ name|OZONE_SCM_CONTAINER_PROVISION_BATCH_SIZE_DEFAULT
 init|=
 literal|1
 decl_stmt|;
+comment|/**    * Don't start processing a pool if we have not had a minimum number of    * seconds from the last processing.    */
+specifier|public
+specifier|static
+specifier|final
+name|String
+DECL|field|OZONE_SCM_CONTAINER_REPORT_PROCESSING_INTERVAL_SECONDS
+name|OZONE_SCM_CONTAINER_REPORT_PROCESSING_INTERVAL_SECONDS
+init|=
+literal|"ozone.scm.container.report.processing.interval.seconds"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|int
+DECL|field|OZONE_SCM_CONTAINER_REPORT_PROCESSING_INTERVAL_DEFAULT
+name|OZONE_SCM_CONTAINER_REPORT_PROCESSING_INTERVAL_DEFAULT
+init|=
+literal|60
+decl_stmt|;
+comment|/**    * These 2 settings control the number of threads in executor pool and time    * outs for thw container reports from all nodes.    */
+DECL|field|OZONE_SCM_MAX_CONTAINER_REPORT_THREADS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_SCM_MAX_CONTAINER_REPORT_THREADS
+init|=
+literal|"ozone.scm.max.container.report.threads"
+decl_stmt|;
+DECL|field|OZONE_SCM_MAX_CONTAINER_REPORT_THREADS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|OZONE_SCM_MAX_CONTAINER_REPORT_THREADS_DEFAULT
+init|=
+literal|100
+decl_stmt|;
+DECL|field|OZONE_SCM_CONTAINER_REPORTS_WAIT_TIMEOUT_SECONDS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_SCM_CONTAINER_REPORTS_WAIT_TIMEOUT_SECONDS
+init|=
+literal|"ozone.scm.container.reports.wait.timeout.seconds"
+decl_stmt|;
+DECL|field|OZONE_SCM_CONTAINER_REPORTS_WAIT_TIMEOUT_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|OZONE_SCM_CONTAINER_REPORTS_WAIT_TIMEOUT_DEFAULT
+init|=
+literal|300
+decl_stmt|;
+comment|// Default 5 minute wait.
 comment|/**    * Never constructed.    */
 DECL|method|ScmConfigKeys ()
 specifier|private
