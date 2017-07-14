@@ -453,20 +453,6 @@ import|;
 end_import
 
 begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|AccessControlException
-import|;
-end_import
-
-begin_import
 import|import static
 name|org
 operator|.
@@ -3426,8 +3412,6 @@ specifier|final
 name|ContentCounts
 name|counts
 parameter_list|)
-throws|throws
-name|AccessControlException
 block|{
 comment|// Create a new blank summary context for blocking processing of subtree.
 name|ContentSummaryComputationContext

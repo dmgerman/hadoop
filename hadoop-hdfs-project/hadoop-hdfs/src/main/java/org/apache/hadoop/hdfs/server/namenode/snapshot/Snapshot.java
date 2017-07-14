@@ -334,20 +334,6 @@ name|Lists
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|AccessControlException
-import|;
-end_import
-
 begin_comment
 comment|/** Snapshot of a sub-tree in the namesystem. */
 end_comment
@@ -948,8 +934,6 @@ parameter_list|,
 name|ContentSummaryComputationContext
 name|summary
 parameter_list|)
-throws|throws
-name|AccessControlException
 block|{
 return|return
 name|computeDirectoryContentSummary

@@ -58,20 +58,6 @@ name|ContentSummary
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|AccessControlException
-import|;
-end_import
-
 begin_comment
 comment|/**   * This interface is used by the block manager to expose a  * few characteristics of a collection of Block/BlockUnderConstruction.  */
 end_comment
@@ -102,8 +88,6 @@ parameter_list|(
 name|BlockStoragePolicySuite
 name|bsps
 parameter_list|)
-throws|throws
-name|AccessControlException
 function_decl|;
 comment|/**    * @return the number of blocks or block groups    */
 DECL|method|numBlocks ()

@@ -380,20 +380,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|security
-operator|.
-name|AccessControlException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|ChunkedArrayList
@@ -1370,7 +1356,7 @@ name|reclaimContext
 parameter_list|)
 function_decl|;
 comment|/** Compute {@link ContentSummary}. Blocking call */
-DECL|method|computeContentSummary ( BlockStoragePolicySuite bsps)
+DECL|method|computeContentSummary (BlockStoragePolicySuite bsps)
 specifier|public
 specifier|final
 name|ContentSummary
@@ -1379,8 +1365,6 @@ parameter_list|(
 name|BlockStoragePolicySuite
 name|bsps
 parameter_list|)
-throws|throws
-name|AccessControlException
 block|{
 return|return
 name|computeAndConvertContentSummary
@@ -1410,8 +1394,6 @@ parameter_list|,
 name|ContentSummaryComputationContext
 name|summary
 parameter_list|)
-throws|throws
-name|AccessControlException
 block|{
 name|computeContentSummary
 argument_list|(
@@ -1583,8 +1565,6 @@ parameter_list|,
 name|ContentSummaryComputationContext
 name|summary
 parameter_list|)
-throws|throws
-name|AccessControlException
 function_decl|;
 comment|/**    * Check and add namespace/storagespace/storagetype consumed to itself and the ancestors.    * @throws QuotaExceededException if quote is violated.    */
 DECL|method|addSpaceConsumed (QuotaCounts counts, boolean verify)
