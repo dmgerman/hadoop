@@ -1495,6 +1495,57 @@ init|=
 literal|43200000
 decl_stmt|;
 comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
+comment|/** Default value is the number of providers specified. */
+DECL|field|KMS_CLIENT_FAILOVER_MAX_RETRIES_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KMS_CLIENT_FAILOVER_MAX_RETRIES_KEY
+init|=
+literal|"hadoop.security.kms.client.failover.max.retries"
+decl_stmt|;
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
+DECL|field|KMS_CLIENT_FAILOVER_SLEEP_BASE_MILLIS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KMS_CLIENT_FAILOVER_SLEEP_BASE_MILLIS_KEY
+init|=
+literal|"hadoop.security.kms.client.failover.sleep.base.millis"
+decl_stmt|;
+comment|/**  Default value is 100 ms. */
+DECL|field|KMS_CLIENT_FAILOVER_SLEEP_BASE_MILLIS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|KMS_CLIENT_FAILOVER_SLEEP_BASE_MILLIS_DEFAULT
+init|=
+literal|100
+decl_stmt|;
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
+DECL|field|KMS_CLIENT_FAILOVER_SLEEP_MAX_MILLIS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KMS_CLIENT_FAILOVER_SLEEP_MAX_MILLIS_KEY
+init|=
+literal|"hadoop.security.kms.client.failover.sleep.max.millis"
+decl_stmt|;
+comment|/** Default value is 2 secs. */
+DECL|field|KMS_CLIENT_FAILOVER_SLEEP_MAX_MILLIS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|KMS_CLIENT_FAILOVER_SLEEP_MAX_MILLIS_DEFAULT
+init|=
+literal|2000
+decl_stmt|;
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_SECURITY_JAVA_SECURE_RANDOM_ALGORITHM_KEY
 specifier|public
 specifier|static
