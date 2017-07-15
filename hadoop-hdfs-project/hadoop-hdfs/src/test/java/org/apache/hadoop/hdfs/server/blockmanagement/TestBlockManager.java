@@ -7959,6 +7959,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testBlockManagerMachinesArray ()
 specifier|public
 name|void
@@ -8051,6 +8056,25 @@ operator|)
 literal|3
 argument_list|,
 literal|1L
+argument_list|)
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|waitForReplication
+argument_list|(
+operator|(
+name|DistributedFileSystem
+operator|)
+name|fs
+argument_list|,
+name|filePath
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|3
+argument_list|,
+literal|60000
 argument_list|)
 expr_stmt|;
 name|ArrayList
