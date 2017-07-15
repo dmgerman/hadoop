@@ -92,6 +92,25 @@ literal|"ozone-site.xml"
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|OzoneConfiguration ()
+specifier|public
+name|OzoneConfiguration
+parameter_list|()
+block|{   }
+DECL|method|OzoneConfiguration (Configuration conf)
+specifier|public
+name|OzoneConfiguration
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

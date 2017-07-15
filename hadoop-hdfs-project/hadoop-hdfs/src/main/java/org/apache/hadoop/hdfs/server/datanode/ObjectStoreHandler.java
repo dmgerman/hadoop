@@ -837,7 +837,9 @@ name|DistributedStorageHandler
 argument_list|(
 operator|new
 name|OzoneConfiguration
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 argument_list|,
 name|this
 operator|.

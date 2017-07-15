@@ -300,37 +300,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|AfterClass
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|BeforeClass
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Test
+name|*
 import|;
 end_import
 
@@ -496,11 +466,11 @@ name|cluster
 init|=
 literal|null
 decl_stmt|;
-DECL|field|client
+DECL|field|ozoneRestClient
 specifier|private
 specifier|static
 name|OzoneRestClient
-name|client
+name|ozoneRestClient
 init|=
 literal|null
 decl_stmt|;
@@ -631,7 +601,7 @@ operator|.
 name|getInfoPort
 argument_list|()
 decl_stmt|;
-name|client
+name|ozoneRestClient
 operator|=
 operator|new
 name|OzoneRestClient
@@ -678,6 +648,25 @@ specifier|public
 name|void
 name|testCreateVolume
 parameter_list|()
+throws|throws
+name|OzoneException
+throws|,
+name|IOException
+block|{
+name|runTestCreateVolume
+argument_list|(
+name|ozoneRestClient
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|runTestCreateVolume (OzoneRestClient client)
+specifier|static
+name|void
+name|runTestCreateVolume
+parameter_list|(
+name|OzoneRestClient
+name|client
+parameter_list|)
 throws|throws
 name|OzoneException
 throws|,
@@ -815,6 +804,23 @@ parameter_list|()
 throws|throws
 name|OzoneException
 block|{
+name|runTestCreateDuplicateVolume
+argument_list|(
+name|ozoneRestClient
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|runTestCreateDuplicateVolume (OzoneRestClient client)
+specifier|static
+name|void
+name|runTestCreateDuplicateVolume
+parameter_list|(
+name|OzoneRestClient
+name|client
+parameter_list|)
+throws|throws
+name|OzoneException
+block|{
 try|try
 block|{
 name|client
@@ -887,6 +893,23 @@ parameter_list|()
 throws|throws
 name|OzoneException
 block|{
+name|runTestDeleteVolume
+argument_list|(
+name|ozoneRestClient
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|runTestDeleteVolume (OzoneRestClient client)
+specifier|static
+name|void
+name|runTestDeleteVolume
+parameter_list|(
+name|OzoneRestClient
+name|client
+parameter_list|)
+throws|throws
+name|OzoneException
+block|{
 name|String
 name|volumeName
 init|=
@@ -939,6 +962,23 @@ specifier|public
 name|void
 name|testChangeOwnerOnVolume
 parameter_list|()
+throws|throws
+name|OzoneException
+block|{
+name|runTestChangeOwnerOnVolume
+argument_list|(
+name|ozoneRestClient
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|runTestChangeOwnerOnVolume (OzoneRestClient client)
+specifier|static
+name|void
+name|runTestChangeOwnerOnVolume
+parameter_list|(
+name|OzoneRestClient
+name|client
+parameter_list|)
 throws|throws
 name|OzoneException
 block|{
@@ -1013,6 +1053,25 @@ specifier|public
 name|void
 name|testChangeQuotaOnVolume
 parameter_list|()
+throws|throws
+name|OzoneException
+throws|,
+name|IOException
+block|{
+name|runTestChangeQuotaOnVolume
+argument_list|(
+name|ozoneRestClient
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|runTestChangeQuotaOnVolume (OzoneRestClient client)
+specifier|static
+name|void
+name|runTestChangeQuotaOnVolume
+parameter_list|(
+name|OzoneRestClient
+name|client
+parameter_list|)
 throws|throws
 name|OzoneException
 throws|,
@@ -1114,6 +1173,25 @@ name|OzoneException
 throws|,
 name|IOException
 block|{
+name|runTestListVolume
+argument_list|(
+name|ozoneRestClient
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|runTestListVolume (OzoneRestClient client)
+specifier|static
+name|void
+name|runTestListVolume
+parameter_list|(
+name|OzoneRestClient
+name|client
+parameter_list|)
+throws|throws
+name|OzoneException
+throws|,
+name|IOException
+block|{
 name|client
 operator|.
 name|setUserAuth
@@ -1193,13 +1271,38 @@ literal|10
 argument_list|)
 expr_stmt|;
 block|}
-comment|//@Test
-comment|// Takes 3m to run, disable for now.
+comment|// TODO: remove @Ignore below once the problem has been resolved.
+annotation|@
+name|Ignore
+argument_list|(
+literal|"Takes 3m to run, disable for now."
+argument_list|)
+annotation|@
+name|Test
 DECL|method|testListVolumePagination ()
 specifier|public
 name|void
 name|testListVolumePagination
 parameter_list|()
+throws|throws
+name|OzoneException
+throws|,
+name|IOException
+block|{
+name|runTestListVolumePagination
+argument_list|(
+name|ozoneRestClient
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|runTestListVolumePagination (OzoneRestClient client)
+specifier|static
+name|void
+name|runTestListVolumePagination
+parameter_list|(
+name|OzoneRestClient
+name|client
+parameter_list|)
 throws|throws
 name|OzoneException
 throws|,
@@ -1350,12 +1453,35 @@ name|pagecount
 argument_list|)
 expr_stmt|;
 block|}
-comment|//@Test
+comment|// TODO: remove @Ignore below once the problem has been resolved.
+annotation|@
+name|Ignore
+annotation|@
+name|Test
 DECL|method|testListAllVolumes ()
 specifier|public
 name|void
 name|testListAllVolumes
 parameter_list|()
+throws|throws
+name|OzoneException
+throws|,
+name|IOException
+block|{
+name|runTestListAllVolumes
+argument_list|(
+name|ozoneRestClient
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|runTestListAllVolumes (OzoneRestClient client)
+specifier|static
+name|void
+name|runTestListAllVolumes
+parameter_list|(
+name|OzoneRestClient
+name|client
+parameter_list|)
 throws|throws
 name|OzoneException
 throws|,
@@ -1543,6 +1669,25 @@ specifier|public
 name|void
 name|testListVolumes
 parameter_list|()
+throws|throws
+name|OzoneException
+throws|,
+name|IOException
+block|{
+name|runTestListVolumes
+argument_list|(
+name|ozoneRestClient
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|runTestListVolumes (OzoneRestClient client)
+specifier|static
+name|void
+name|runTestListVolumes
+parameter_list|(
+name|OzoneRestClient
+name|client
+parameter_list|)
 throws|throws
 name|OzoneException
 throws|,
@@ -1837,9 +1982,10 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Returns a list of mocked {@link CloseableHttpClient} used for testing.    * The mocked client replaces the actual calls in    * {@link OzoneRestClient#newHttpClient()}, it is used to verify    * if the invocation of this client is expected.<b>Note</b>, the output    * of this method is always used as the input of    * {@link TestVolume#verifyHttpConnectionClosed(List)}.    *    * @param ozoneRestClient mocked ozone client.    * @return a list of mocked {@link CloseableHttpClient}.    * @throws IOException    */
-DECL|method|mockHttpClients ( OzoneRestClient ozoneRestClient)
+comment|/**    * Returns a list of mocked {@link CloseableHttpClient} used for testing.    * The mocked client replaces the actual calls in    * {@link OzoneRestClient#newHttpClient()}, it is used to verify    * if the invocation of this client is expected.<b>Note</b>, the output    * of this method is always used as the input of    * {@link TestVolume#verifyHttpConnectionClosed(List)}.    *    * @param mockedClient mocked ozone client.    * @return a list of mocked {@link CloseableHttpClient}.    * @throws IOException    */
+DECL|method|mockHttpClients ( OzoneRestClient mockedClient)
 specifier|private
+specifier|static
 name|List
 argument_list|<
 name|CloseableHttpClient
@@ -1847,7 +1993,7 @@ argument_list|>
 name|mockHttpClients
 parameter_list|(
 name|OzoneRestClient
-name|ozoneRestClient
+name|mockedClient
 parameter_list|)
 throws|throws
 name|IOException
@@ -1926,7 +2072,7 @@ name|Mockito
 operator|.
 name|when
 argument_list|(
-name|ozoneRestClient
+name|mockedClient
 operator|.
 name|newHttpClient
 argument_list|()
@@ -1963,6 +2109,7 @@ block|}
 comment|/**    * This method is used together with    * {@link TestVolume#mockHttpClients(OzoneRestClient)} to verify    * if the http client is properly closed. It verifies that as long as    * a client calls {@link CloseableHttpClient#execute(HttpUriRequest)} to    * send request, then it must calls {@link CloseableHttpClient#close()}    * close the http connection.    *    * @param mockedHttpClients    */
 DECL|method|verifyHttpConnectionClosed ( List<CloseableHttpClient> mockedHttpClients)
 specifier|private
+specifier|static
 name|void
 name|verifyHttpConnectionClosed
 parameter_list|(
