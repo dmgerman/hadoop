@@ -108,7 +108,7 @@ name|shell
 operator|.
 name|CopyCommands
 operator|.
-name|CopyFromLocal
+name|Put
 import|;
 end_import
 
@@ -180,7 +180,7 @@ specifier|static
 class|class
 name|MoveFromLocal
 extends|extends
-name|CopyFromLocal
+name|Put
 block|{
 DECL|field|NAME
 specifier|public
