@@ -118,7 +118,7 @@ name|hadoop
 operator|.
 name|utils
 operator|.
-name|LevelDBStore
+name|MetadataStore
 import|;
 end_import
 
@@ -309,11 +309,11 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|LevelDBStore
+name|MetadataStore
 name|db
 init|=
 operator|(
-name|LevelDBStore
+name|MetadataStore
 operator|)
 name|entry
 operator|.
@@ -362,10 +362,10 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Returns a DB handle if available, null otherwise.    *    * @param containerName - Name of the container.    * @return OzoneLevelDBStore.    */
+comment|/**    * Returns a DB handle if available, null otherwise.    *    * @param containerName - Name of the container.    * @return MetadataStore.    */
 DECL|method|getDB (String containerName)
 specifier|public
-name|LevelDBStore
+name|MetadataStore
 name|getDB
 parameter_list|(
 name|String
@@ -399,7 +399,7 @@ try|try
 block|{
 return|return
 operator|(
-name|LevelDBStore
+name|MetadataStore
 operator|)
 name|this
 operator|.
@@ -453,7 +453,7 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|LevelDBStore
+name|MetadataStore
 name|db
 init|=
 name|this
@@ -513,7 +513,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Add a new DB to the cache.    *    * @param containerName - Name of the container    * @param db            - DB handle    */
-DECL|method|putDB (String containerName, LevelDBStore db)
+DECL|method|putDB (String containerName, MetadataStore db)
 specifier|public
 name|void
 name|putDB
@@ -521,7 +521,7 @@ parameter_list|(
 name|String
 name|containerName
 parameter_list|,
-name|LevelDBStore
+name|MetadataStore
 name|db
 parameter_list|)
 block|{

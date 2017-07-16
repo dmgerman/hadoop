@@ -2863,6 +2863,8 @@ expr_stmt|;
 comment|// TODO: define node pool policy for non-default node pool.
 comment|// For now, all nodes are added to the "DefaultNodePool" upon registration
 comment|// if it has not been added to any node pool yet.
+try|try
+block|{
 if|if
 condition|(
 name|nodePoolManager
@@ -2886,6 +2888,31 @@ argument_list|,
 name|datanodeID
 argument_list|)
 expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+comment|// TODO: make sure registration failure is handled correctly.
+return|return
+name|RegisteredCommand
+operator|.
+name|newBuilder
+argument_list|()
+operator|.
+name|setErrorCode
+argument_list|(
+name|ErrorCode
+operator|.
+name|errorNodeNotPermitted
+argument_list|)
+operator|.
+name|build
+argument_list|()
+return|;
 block|}
 name|LOG
 operator|.

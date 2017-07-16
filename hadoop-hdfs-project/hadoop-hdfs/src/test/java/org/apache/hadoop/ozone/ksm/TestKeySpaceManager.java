@@ -1973,6 +1973,15 @@ argument_list|(
 name|createVolumeArgs
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
+name|fail
+argument_list|(
+literal|"Expecting deletion should fail "
+operator|+
+literal|"because volume is not empty"
+argument_list|)
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(

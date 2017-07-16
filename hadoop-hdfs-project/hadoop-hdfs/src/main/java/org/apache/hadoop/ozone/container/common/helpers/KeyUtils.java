@@ -140,7 +140,21 @@ name|hadoop
 operator|.
 name|utils
 operator|.
-name|LevelDBStore
+name|MetadataStore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|utils
+operator|.
+name|MetadataStoreBuilder
 import|;
 end_import
 
@@ -284,11 +298,11 @@ specifier|private
 name|KeyUtils
 parameter_list|()
 block|{   }
-comment|/**    * Get a DB handler for a given container.    * If the handler doesn't exist in cache yet, first create one and    * add into cache. This function is called with containerManager    * ReadLock held.    *    * @param container container.    * @param conf configuration.    * @return LevelDB handle.    * @throws StorageContainerException    */
+comment|/**    * Get a DB handler for a given container.    * If the handler doesn't exist in cache yet, first create one and    * add into cache. This function is called with containerManager    * ReadLock held.    *    * @param container container.    * @param conf configuration.    * @return MetadataStore handle.    * @throws StorageContainerException    */
 DECL|method|getDB (ContainerData container, Configuration conf)
 specifier|public
 specifier|static
-name|LevelDBStore
+name|MetadataStore
 name|getDB
 parameter_list|(
 name|ContainerData
@@ -326,7 +340,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|LevelDBStore
+name|MetadataStore
 name|db
 init|=
 name|cache
@@ -348,8 +362,12 @@ condition|)
 block|{
 name|db
 operator|=
-operator|new
-name|LevelDBStore
+name|MetadataStoreBuilder
+operator|.
+name|newBuilder
+argument_list|()
+operator|.
+name|setDbFile
 argument_list|(
 operator|new
 name|File
@@ -359,9 +377,15 @@ operator|.
 name|getDBPath
 argument_list|()
 argument_list|)
-argument_list|,
+argument_list|)
+operator|.
+name|setCreateIfMissing
+argument_list|(
 literal|false
 argument_list|)
+operator|.
+name|build
+argument_list|()
 expr_stmt|;
 name|cache
 operator|.
@@ -494,12 +518,12 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|LevelDBStore
+name|MetadataStore
 index|[]
 name|handles
 init|=
 operator|new
-name|LevelDBStore
+name|MetadataStore
 index|[
 name|cache
 operator|.
@@ -539,7 +563,7 @@ argument_list|)
 expr_stmt|;
 for|for
 control|(
-name|LevelDBStore
+name|MetadataStore
 name|db
 range|:
 name|handles

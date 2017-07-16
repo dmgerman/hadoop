@@ -49,16 +49,16 @@ comment|/**  * An utility class to filter levelDB keys.  */
 end_comment
 
 begin_class
-DECL|class|LevelDBKeyFilters
+DECL|class|MetadataKeyFilters
 specifier|public
 class|class
-name|LevelDBKeyFilters
+name|MetadataKeyFilters
 block|{
 comment|/**    * Interface for levelDB key filters.    */
-DECL|interface|LevelDBKeyFilter
+DECL|interface|MetadataKeyFilter
 specifier|public
 interface|interface
-name|LevelDBKeyFilter
+name|MetadataKeyFilter
 block|{
 comment|/**      * Filter levelDB key with a certain condition.      *      * @param preKey     previous key.      * @param currentKey current key.      * @param nextKey    next key.      * @return true if a certain condition satisfied, return false otherwise.      */
 DECL|method|filterKey (byte[] preKey, byte[] currentKey, byte[] nextKey)
@@ -86,7 +86,7 @@ specifier|static
 class|class
 name|KeyPrefixFilter
 implements|implements
-name|LevelDBKeyFilter
+name|MetadataKeyFilter
 block|{
 DECL|field|keyPrefix
 specifier|private

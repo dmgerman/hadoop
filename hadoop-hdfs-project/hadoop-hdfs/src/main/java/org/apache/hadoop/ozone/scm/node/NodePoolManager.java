@@ -68,6 +68,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|List
@@ -97,6 +107,8 @@ parameter_list|,
 name|DatanodeID
 name|node
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 comment|/**    * Remove a node from a node pool.    * @param pool - name of the node pool.    * @param node - data node.    * @throws SCMException    */
 DECL|method|removeNode (String pool, DatanodeID node)
@@ -141,6 +153,8 @@ parameter_list|(
 name|DatanodeID
 name|datanodeID
 parameter_list|)
+throws|throws
+name|SCMException
 function_decl|;
 block|}
 end_interface

@@ -174,9 +174,15 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|utils
+name|scm
 operator|.
-name|LevelDBStore
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|StorageContainerException
 import|;
 end_import
 
@@ -188,15 +194,23 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|scm
+name|utils
 operator|.
-name|container
+name|MetadataStore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|common
+name|apache
 operator|.
-name|helpers
+name|hadoop
 operator|.
-name|StorageContainerException
+name|utils
+operator|.
+name|MetadataStoreBuilder
 import|;
 end_import
 
@@ -1036,7 +1050,7 @@ throw|;
 block|}
 block|}
 comment|/**    * creates a Metadata DB for the specified container.    *    * @param containerPath - Container Path.    * @throws IOException    */
-DECL|method|createMetadata (Path containerPath)
+DECL|method|createMetadata (Path containerPath, Configuration conf)
 specifier|public
 specifier|static
 name|Path
@@ -1044,6 +1058,9 @@ name|createMetadata
 parameter_list|(
 name|Path
 name|containerPath
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 throws|throws
 name|IOException
@@ -1112,11 +1129,25 @@ name|metadataPath
 argument_list|)
 throw|;
 block|}
-name|LevelDBStore
+name|MetadataStore
 name|store
 init|=
-operator|new
-name|LevelDBStore
+name|MetadataStoreBuilder
+operator|.
+name|newBuilder
+argument_list|()
+operator|.
+name|setConf
+argument_list|(
+name|conf
+argument_list|)
+operator|.
+name|setCreateIfMissing
+argument_list|(
+literal|true
+argument_list|)
+operator|.
+name|setDbFile
 argument_list|(
 name|metadataPath
 operator|.
@@ -1129,9 +1160,10 @@ argument_list|)
 operator|.
 name|toFile
 argument_list|()
-argument_list|,
-literal|true
 argument_list|)
+operator|.
+name|build
+argument_list|()
 decl_stmt|;
 comment|// we close since the SCM pre-creates containers.
 comment|// we will open and put Db handle into a cache when keys are being created
@@ -1433,7 +1465,7 @@ name|getDBPath
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|LevelDBStore
+name|MetadataStore
 name|db
 init|=
 name|KeyUtils

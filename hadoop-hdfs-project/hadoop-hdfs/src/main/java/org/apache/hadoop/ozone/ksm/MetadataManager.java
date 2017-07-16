@@ -68,6 +68,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|utils
+operator|.
+name|BatchOperation
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -83,16 +97,6 @@ operator|.
 name|util
 operator|.
 name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
 import|;
 end_import
 
@@ -156,6 +160,8 @@ name|byte
 index|[]
 name|key
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 comment|/**    * Puts a Key into Metadata DB.    * @param key   - key    * @param value - value    */
 DECL|method|put (byte[] key, byte[] value)
@@ -170,6 +176,8 @@ name|byte
 index|[]
 name|value
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 comment|/**    * Deletes a Key from Metadata DB.    * @param key   - key    */
 DECL|method|delete (byte[] key)
@@ -180,56 +188,16 @@ name|byte
 index|[]
 name|key
 parameter_list|)
-function_decl|;
-comment|/**    * Performs batch Put and Delete to Metadata DB.    * Can be used to do multiple puts and deletes atomically.    * @param putList - list of Key/Value to put into DB    * @param delList - list of Key to delete from DB    */
-DECL|method|batchPutDelete (List<Map.Entry<byte[], byte[]>> putList, List<byte[]> delList)
-name|void
-name|batchPutDelete
-parameter_list|(
-name|List
-argument_list|<
-name|Map
-operator|.
-name|Entry
-argument_list|<
-name|byte
-index|[]
-argument_list|,
-name|byte
-index|[]
-argument_list|>
-argument_list|>
-name|putList
-parameter_list|,
-name|List
-argument_list|<
-name|byte
-index|[]
-argument_list|>
-name|delList
-parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Performs a batch Put to Metadata DB.    * Can be used to do multiple puts atomically.    * @param putList - list of Key/Value to put into DB    */
-DECL|method|batchPut (List<Map.Entry<byte[], byte[]>> putList)
+comment|/**    * Atomic write a batch of operations.    * @param batch    * @throws IOException    */
+DECL|method|writeBatch (BatchOperation batch)
 name|void
-name|batchPut
+name|writeBatch
 parameter_list|(
-name|List
-argument_list|<
-name|Map
-operator|.
-name|Entry
-argument_list|<
-name|byte
-index|[]
-argument_list|,
-name|byte
-index|[]
-argument_list|>
-argument_list|>
-name|putList
+name|BatchOperation
+name|batch
 parameter_list|)
 throws|throws
 name|IOException
@@ -292,6 +260,8 @@ name|byte
 index|[]
 name|key
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 comment|/**    * Given a volume, check if it is empty,    * i.e there are no buckets inside it.    * @param volume - Volume name    */
 DECL|method|isVolumeEmpty (String volume)

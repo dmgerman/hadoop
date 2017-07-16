@@ -205,6 +205,9 @@ name|BLOCK_EXISTS
 block|,
 DECL|enumConstant|FAILED_TO_FIND_BLOCK
 name|FAILED_TO_FIND_BLOCK
+block|,
+DECL|enumConstant|IO_EXCEPTION
+name|IO_EXCEPTION
 block|}
 block|}
 end_class
