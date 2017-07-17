@@ -321,6 +321,8 @@ extends|extends
 name|JobContextImpl
 implements|implements
 name|JobContext
+implements|,
+name|AutoCloseable
 block|{
 DECL|field|LOG
 specifier|private
@@ -5258,6 +5260,35 @@ name|reservationId
 operator|=
 name|reservationId
 expr_stmt|;
+block|}
+comment|/**    * Close the<code>Job</code>.    * @throws IOException if fail to close.    */
+annotation|@
+name|Override
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|cluster
+operator|!=
+literal|null
+condition|)
+block|{
+name|cluster
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+name|cluster
+operator|=
+literal|null
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class
