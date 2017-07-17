@@ -1934,7 +1934,6 @@ block|}
 comment|/**    * Block movement status code.    */
 DECL|enum|BlockMovementStatus
 specifier|public
-specifier|static
 enum|enum
 name|BlockMovementStatus
 block|{
@@ -1962,7 +1961,6 @@ name|int
 name|code
 decl_stmt|;
 DECL|method|BlockMovementStatus (int code)
-specifier|private
 name|BlockMovementStatus
 parameter_list|(
 name|int
@@ -2018,7 +2016,6 @@ name|BlockMovementStatus
 name|status
 decl_stmt|;
 DECL|method|BlockMovementResult (long trackId, long blockId, DatanodeInfo target, BlockMovementStatus status)
-specifier|public
 name|BlockMovementResult
 parameter_list|(
 name|long

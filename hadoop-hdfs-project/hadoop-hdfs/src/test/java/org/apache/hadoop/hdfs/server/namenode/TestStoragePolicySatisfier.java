@@ -2724,8 +2724,8 @@ operator|.
 name|triggerHeartbeats
 argument_list|()
 expr_stmt|;
-comment|// No block movement will be scheduled as there is no target node available
-comment|// with the required storage type.
+comment|// No block movement will be scheduled as there is no target node
+comment|// available with the required storage type.
 name|waitForAttemptedItems
 argument_list|(
 literal|1
@@ -6342,7 +6342,7 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|startAdditionalDNs (final Configuration conf, int newNodesRequired, int existingNodesNum, StorageType[][] newTypes, int storagesPerDatanode, long capacity, final MiniDFSCluster cluster)
+DECL|method|startAdditionalDNs (final Configuration conf, int newNodesRequired, int existingNodesNum, StorageType[][] newTypes, int storagesPerDn, long nodeCapacity, final MiniDFSCluster cluster)
 specifier|private
 name|void
 name|startAdditionalDNs
@@ -6363,10 +6363,10 @@ index|[]
 name|newTypes
 parameter_list|,
 name|int
-name|storagesPerDatanode
+name|storagesPerDn
 parameter_list|,
 name|long
-name|capacity
+name|nodeCapacity
 parameter_list|,
 specifier|final
 name|MiniDFSCluster
@@ -6392,7 +6392,7 @@ index|[
 name|newNodesRequired
 index|]
 index|[
-name|storagesPerDatanode
+name|storagesPerDn
 index|]
 expr_stmt|;
 for|for
@@ -6419,7 +6419,7 @@ literal|0
 init|;
 name|j
 operator|<
-name|storagesPerDatanode
+name|storagesPerDn
 condition|;
 name|j
 operator|++
@@ -6433,7 +6433,7 @@ index|[
 name|j
 index|]
 operator|=
-name|capacity
+name|nodeCapacity
 expr_stmt|;
 block|}
 block|}

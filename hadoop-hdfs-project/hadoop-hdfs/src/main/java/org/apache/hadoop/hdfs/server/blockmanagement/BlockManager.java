@@ -2372,7 +2372,7 @@ specifier|final
 name|BlockIdManager
 name|blockIdManager
 decl_stmt|;
-comment|/** For satisfying block storage policies */
+comment|/** For satisfying block storage policies. */
 DECL|field|sps
 specifier|private
 specifier|final

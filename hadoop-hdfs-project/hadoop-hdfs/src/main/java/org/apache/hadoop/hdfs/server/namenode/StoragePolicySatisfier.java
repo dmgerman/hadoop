@@ -3332,21 +3332,20 @@ class|class
 name|StorageTypeNodePair
 block|{
 DECL|field|storageType
-specifier|public
+specifier|private
 name|StorageType
 name|storageType
 init|=
 literal|null
 decl_stmt|;
 DECL|field|dn
-specifier|public
+specifier|private
 name|DatanodeDescriptor
 name|dn
 init|=
 literal|null
 decl_stmt|;
 DECL|method|StorageTypeNodePair (StorageType storageType, DatanodeDescriptor dn)
-specifier|public
 name|StorageTypeNodePair
 parameter_list|(
 name|StorageType

@@ -340,8 +340,6 @@ literal|11
 decl_stmt|;
 comment|// erasure coding reconstruction command
 DECL|field|DNA_BLOCK_STORAGE_MOVEMENT
-specifier|final
-specifier|static
 name|int
 name|DNA_BLOCK_STORAGE_MOVEMENT
 init|=
@@ -349,15 +347,12 @@ literal|12
 decl_stmt|;
 comment|// block storage movement command
 DECL|field|DNA_DROP_SPS_WORK_COMMAND
-specifier|final
-specifier|static
 name|int
 name|DNA_DROP_SPS_WORK_COMMAND
 init|=
 literal|13
 decl_stmt|;
-comment|// block storage movement
-comment|// command
+comment|// drop sps work command
 comment|/**     * Register Datanode.    *    * @see org.apache.hadoop.hdfs.server.namenode.FSNamesystem#registerDatanode(DatanodeRegistration)    * @param registration datanode registration information    * @return the given {@link org.apache.hadoop.hdfs.server.protocol.DatanodeRegistration} with    *  updated registration information    */
 annotation|@
 name|Idempotent
