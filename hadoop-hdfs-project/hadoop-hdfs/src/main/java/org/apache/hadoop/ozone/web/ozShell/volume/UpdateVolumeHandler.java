@@ -322,7 +322,7 @@ name|hasOption
 argument_list|(
 name|Shell
 operator|.
-name|OWNER
+name|USER
 argument_list|)
 condition|)
 block|{
@@ -334,7 +334,7 @@ name|getOptionValue
 argument_list|(
 name|Shell
 operator|.
-name|OWNER
+name|USER
 argument_list|)
 expr_stmt|;
 block|}
