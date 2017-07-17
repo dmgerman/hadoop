@@ -1916,11 +1916,11 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-comment|// start 10 datanodes
+comment|// start 9 datanodes
 name|int
 name|numOfDatanodes
 init|=
-literal|10
+literal|9
 decl_stmt|;
 name|int
 name|storagesPerDatanode
@@ -2062,16 +2062,6 @@ name|StorageType
 index|[]
 index|[]
 block|{
-block|{
-name|StorageType
-operator|.
-name|DISK
-block|,
-name|StorageType
-operator|.
-name|ARCHIVE
-block|}
-block|,
 block|{
 name|StorageType
 operator|.
@@ -2325,9 +2315,7 @@ literal|0
 init|;
 name|i
 operator|<
-name|numOfDatanodes
-operator|/
-literal|2
+literal|5
 condition|;
 name|i
 operator|++
@@ -2344,7 +2332,7 @@ argument_list|(
 name|i
 argument_list|)
 argument_list|,
-literal|true
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -2360,13 +2348,27 @@ argument_list|(
 name|fooFile
 argument_list|)
 expr_stmt|;
-name|Thread
+name|DFSTestUtil
 operator|.
-name|sleep
+name|waitExpectedStorageType
 argument_list|(
-literal|3000
-operator|*
-literal|6
+name|fooFile
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|StorageType
+operator|.
+name|ARCHIVE
+argument_list|,
+literal|5
+argument_list|,
+literal|30000
+argument_list|,
+name|cluster
+operator|.
+name|getFileSystem
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|//Start reaming datanodes
@@ -2380,10 +2382,8 @@ operator|-
 literal|1
 init|;
 name|i
-operator|>
-name|numOfDatanodes
-operator|/
-literal|2
+operator|>=
+literal|5
 condition|;
 name|i
 operator|--
@@ -2400,7 +2400,7 @@ argument_list|(
 name|i
 argument_list|)
 argument_list|,
-literal|true
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
