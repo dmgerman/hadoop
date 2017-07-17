@@ -4818,7 +4818,12 @@ name|getPmemAllocatedForContainers
 parameter_list|()
 block|{
 return|return
-literal|10240
+operator|(
+name|long
+operator|)
+literal|2048
+operator|<<
+literal|20
 return|;
 block|}
 annotation|@

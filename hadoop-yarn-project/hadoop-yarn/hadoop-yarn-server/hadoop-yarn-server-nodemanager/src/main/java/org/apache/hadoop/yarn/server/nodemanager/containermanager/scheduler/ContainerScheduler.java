@@ -937,11 +937,17 @@ name|getContainerId
 argument_list|()
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
+comment|// only a running container releases resources upon completion
+name|boolean
+name|resourceReleased
+init|=
 name|completedContainer
 operator|!=
 literal|null
+decl_stmt|;
+if|if
+condition|(
+name|resourceReleased
 condition|)
 block|{
 name|this
@@ -1068,21 +1074,12 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|this
-operator|.
-name|utilizationTracker
-operator|.
-name|hasResourcesAvailable
+name|tryStartContainer
 argument_list|(
 name|container
 argument_list|)
 condition|)
 block|{
-name|startAllocatedContainer
-argument_list|(
-name|container
-argument_list|)
-expr_stmt|;
 name|cIter
 operator|.
 name|remove
@@ -1101,43 +1098,53 @@ return|return
 name|resourcesAvailable
 return|;
 block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|scheduleContainer (Container container)
-specifier|protected
-name|void
-name|scheduleContainer
+DECL|method|tryStartContainer (Container container)
+specifier|private
+name|boolean
+name|tryStartContainer
 parameter_list|(
 name|Container
 name|container
 parameter_list|)
 block|{
+name|boolean
+name|containerStarted
+init|=
+literal|false
+decl_stmt|;
 if|if
 condition|(
-name|maxOppQueueLength
-operator|<=
-literal|0
+name|resourceAvailableToStartContainer
+argument_list|(
+name|container
+argument_list|)
 condition|)
 block|{
-name|startAllocatedContainer
+name|startContainer
 argument_list|(
 name|container
 argument_list|)
 expr_stmt|;
-return|return;
+name|containerStarted
+operator|=
+literal|true
+expr_stmt|;
 block|}
-if|if
-condition|(
-name|queuedGuaranteedContainers
-operator|.
-name|isEmpty
-argument_list|()
-operator|&&
-name|queuedOpportunisticContainers
-operator|.
-name|isEmpty
-argument_list|()
-operator|&&
+return|return
+name|containerStarted
+return|;
+block|}
+comment|/**    * Check if there is resource available to start a given container    * immediately. (This can be extended to include overallocated resources)    * @param container the container to start    * @return true if container can be launched directly    */
+DECL|method|resourceAvailableToStartContainer (Container container)
+specifier|private
+name|boolean
+name|resourceAvailableToStartContainer
+parameter_list|(
+name|Container
+name|container
+parameter_list|)
+block|{
+return|return
 name|this
 operator|.
 name|utilizationTracker
@@ -1146,37 +1153,20 @@ name|hasResourcesAvailable
 argument_list|(
 name|container
 argument_list|)
-condition|)
-block|{
-name|startAllocatedContainer
-argument_list|(
-name|container
-argument_list|)
-expr_stmt|;
+return|;
 block|}
-else|else
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"No available resources for container {} to start its execution "
-operator|+
-literal|"immediately."
-argument_list|,
-name|container
-operator|.
-name|getContainerId
-argument_list|()
-argument_list|)
-expr_stmt|;
+DECL|method|enqueueContainer (Container container)
+specifier|private
 name|boolean
-name|isQueued
+name|enqueueContainer
+parameter_list|(
+name|Container
+name|container
+parameter_list|)
+block|{
+name|boolean
+name|isGuaranteedContainer
 init|=
-literal|true
-decl_stmt|;
-if|if
-condition|(
 name|container
 operator|.
 name|getContainerTokenIdentifier
@@ -1188,6 +1178,13 @@ operator|==
 name|ExecutionType
 operator|.
 name|GUARANTEED
+decl_stmt|;
+name|boolean
+name|isQueued
+decl_stmt|;
+if|if
+condition|(
+name|isGuaranteedContainer
 condition|)
 block|{
 name|queuedGuaranteedContainers
@@ -1202,12 +1199,9 @@ argument_list|,
 name|container
 argument_list|)
 expr_stmt|;
-comment|// Kill running opportunistic containers to make space for
-comment|// guaranteed container.
-name|killOpportunisticContainers
-argument_list|(
-name|container
-argument_list|)
+name|isQueued
+operator|=
+literal|true
 expr_stmt|;
 block|}
 else|else
@@ -1218,7 +1212,7 @@ name|queuedOpportunisticContainers
 operator|.
 name|size
 argument_list|()
-operator|<=
+operator|<
 name|maxOppQueueLength
 condition|)
 block|{
@@ -1246,13 +1240,13 @@ argument_list|,
 name|container
 argument_list|)
 expr_stmt|;
+name|isQueued
+operator|=
+literal|true
+expr_stmt|;
 block|}
 else|else
 block|{
-name|isQueued
-operator|=
-literal|false
-expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -1279,6 +1273,10 @@ name|KILLED_BY_CONTAINER_SCHEDULER
 argument_list|,
 literal|"Opportunistic container queue is full."
 argument_list|)
+expr_stmt|;
+name|isQueued
+operator|=
+literal|false
 expr_stmt|;
 block|}
 block|}
@@ -1328,6 +1326,105 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+return|return
+name|isQueued
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|scheduleContainer (Container container)
+specifier|protected
+name|void
+name|scheduleContainer
+parameter_list|(
+name|Container
+name|container
+parameter_list|)
+block|{
+name|boolean
+name|isGuaranteedContainer
+init|=
+name|container
+operator|.
+name|getContainerTokenIdentifier
+argument_list|()
+operator|.
+name|getExecutionType
+argument_list|()
+operator|==
+name|ExecutionType
+operator|.
+name|GUARANTEED
+decl_stmt|;
+comment|// Given a guaranteed container, we enqueue it first and then try to start
+comment|// as many queuing guaranteed containers as possible followed by queuing
+comment|// opportunistic containers based on remaining resources available. If the
+comment|// container still stays in the queue afterwards, we need to preempt just
+comment|// enough number of opportunistic containers.
+if|if
+condition|(
+name|isGuaranteedContainer
+condition|)
+block|{
+name|enqueueContainer
+argument_list|(
+name|container
+argument_list|)
+expr_stmt|;
+name|startPendingContainers
+argument_list|()
+expr_stmt|;
+comment|// if the guaranteed container is queued, we need to preempt opportunistic
+comment|// containers for make room for it
+if|if
+condition|(
+name|queuedGuaranteedContainers
+operator|.
+name|containsKey
+argument_list|(
+name|container
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|killOpportunisticContainers
+argument_list|(
+name|container
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+comment|// Given an opportunistic container, we first try to start as many queuing
+comment|// guaranteed containers as possible followed by queuing opportunistic
+comment|// containers based on remaining resource available, then enqueue the
+comment|// opportunistic container. If the container is enqueued, we do another
+comment|// pass to try to start the newly enqueued opportunistic container.
+name|startPendingContainers
+argument_list|()
+expr_stmt|;
+name|boolean
+name|containerQueued
+init|=
+name|enqueueContainer
+argument_list|(
+name|container
+argument_list|)
+decl_stmt|;
+comment|// container may not get queued because the max opportunistic container
+comment|// queue length is reached. If so, there is no point doing another pass
+if|if
+condition|(
+name|containerQueued
+condition|)
+block|{
+name|startPendingContainers
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 block|}
@@ -1407,10 +1504,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|startAllocatedContainer (Container container)
+DECL|method|startContainer (Container container)
 specifier|private
 name|void
-name|startAllocatedContainer
+name|startContainer
 parameter_list|(
 name|Container
 name|container
