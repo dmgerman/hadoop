@@ -88,14 +88,12 @@ name|BlockCollection
 block|{
 comment|/**    * Get the last block of the collection.    */
 DECL|method|getLastBlock ()
-specifier|public
 name|BlockInfo
 name|getLastBlock
 parameter_list|()
 function_decl|;
 comment|/**     * Get content summary.    */
 DECL|method|computeContentSummary (BlockStoragePolicySuite bsps)
-specifier|public
 name|ContentSummary
 name|computeContentSummary
 parameter_list|(
@@ -107,14 +105,12 @@ name|AccessControlException
 function_decl|;
 comment|/**    * @return the number of blocks or block groups    */
 DECL|method|numBlocks ()
-specifier|public
 name|int
 name|numBlocks
 parameter_list|()
 function_decl|;
 comment|/**    * Get the blocks (striped or contiguous).    */
 DECL|method|getBlocks ()
-specifier|public
 name|BlockInfo
 index|[]
 name|getBlocks
@@ -122,35 +118,30 @@ parameter_list|()
 function_decl|;
 comment|/**    * Get preferred block size for the collection     * @return preferred block size in bytes    */
 DECL|method|getPreferredBlockSize ()
-specifier|public
 name|long
 name|getPreferredBlockSize
 parameter_list|()
 function_decl|;
 comment|/**    * Get block replication for the collection.    * @return block replication value. Return 0 if the file is erasure coded.    */
 DECL|method|getPreferredBlockReplication ()
-specifier|public
 name|short
 name|getPreferredBlockReplication
 parameter_list|()
 function_decl|;
 comment|/**    * @return the storage policy ID.    */
 DECL|method|getStoragePolicyID ()
-specifier|public
 name|byte
 name|getStoragePolicyID
 parameter_list|()
 function_decl|;
 comment|/**    * Get the name of the collection.    */
 DECL|method|getName ()
-specifier|public
 name|String
 name|getName
 parameter_list|()
 function_decl|;
 comment|/**    * Set the block (contiguous or striped) at the given index.    */
 DECL|method|setBlock (int index, BlockInfo blk)
-specifier|public
 name|void
 name|setBlock
 parameter_list|(
@@ -163,7 +154,6 @@ parameter_list|)
 function_decl|;
 comment|/**    * Convert the last block of the collection to an under-construction block    * and set the locations.    */
 DECL|method|convertLastBlockToUC (BlockInfo lastBlock, DatanodeStorageInfo[] targets)
-specifier|public
 name|void
 name|convertLastBlockToUC
 parameter_list|(
@@ -179,7 +169,6 @@ name|IOException
 function_decl|;
 comment|/**    * @return whether the block collection is under construction.    */
 DECL|method|isUnderConstruction ()
-specifier|public
 name|boolean
 name|isUnderConstruction
 parameter_list|()
