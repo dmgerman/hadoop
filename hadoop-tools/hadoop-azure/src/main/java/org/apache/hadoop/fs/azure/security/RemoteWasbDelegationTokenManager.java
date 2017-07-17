@@ -1,6 +1,6 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *<p>  * http://www.apache.org/licenses/LICENSE-2.0  *<p>  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
+comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *  *     http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
 end_comment
 
 begin_package
@@ -217,7 +217,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *  Class to manage delegation token operations by making rest call to remote service.  */
+comment|/**  * Class to manage delegation token operations by making rest call to remote service.  */
 end_comment
 
 begin_class
@@ -276,7 +276,7 @@ specifier|final
 name|String
 name|DT_MANAGER_HTTP_CLIENT_RETRY_POLICY_SPEC_DEFAULT
 init|=
-literal|"1000,3,10000,2"
+literal|"10,3,100,2"
 decl_stmt|;
 specifier|private
 specifier|static
@@ -300,7 +300,7 @@ argument_list|(
 literal|"WASB_DT_SERVICE"
 argument_list|)
 decl_stmt|;
-comment|/**    *  Query parameter value for Getting delegation token http request    */
+comment|/**    * Query parameter value for Getting delegation token http request    */
 DECL|field|GET_DELEGATION_TOKEN_OP
 specifier|private
 specifier|static
@@ -381,6 +381,11 @@ name|String
 index|[]
 name|dtServiceUrls
 decl_stmt|;
+DECL|field|isSpnegoTokenCacheEnabled
+specifier|private
+name|boolean
+name|isSpnegoTokenCacheEnabled
+decl_stmt|;
 DECL|method|RemoteWasbDelegationTokenManager (Configuration conf)
 specifier|public
 name|RemoteWasbDelegationTokenManager
@@ -409,6 +414,21 @@ argument_list|,
 name|DT_MANAGER_HTTP_CLIENT_RETRY_POLICY_SPEC_DEFAULT
 argument_list|)
 decl_stmt|;
+name|this
+operator|.
+name|isSpnegoTokenCacheEnabled
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|Constants
+operator|.
+name|AZURE_ENABLE_SPNEGO_TOKEN_CACHE
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 name|remoteCallHelper
 operator|=
 operator|new
@@ -417,6 +437,8 @@ argument_list|(
 name|retryPolicy
 argument_list|,
 literal|true
+argument_list|,
+name|isSpnegoTokenCacheEnabled
 argument_list|)
 expr_stmt|;
 name|this

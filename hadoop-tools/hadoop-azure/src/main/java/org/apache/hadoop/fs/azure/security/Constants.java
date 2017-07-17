@@ -31,11 +31,6 @@ specifier|final
 class|class
 name|Constants
 block|{
-DECL|method|Constants ()
-specifier|private
-name|Constants
-parameter_list|()
-block|{   }
 comment|/**    * The configuration property to enable Kerberos support.    */
 DECL|field|AZURE_KERBEROS_SUPPORT_PROPERTY_NAME
 specifier|public
@@ -45,6 +40,16 @@ name|String
 name|AZURE_KERBEROS_SUPPORT_PROPERTY_NAME
 init|=
 literal|"fs.azure.enable.kerberos.support"
+decl_stmt|;
+comment|/**    * The configuration property to enable SPNEGO token cache.    */
+DECL|field|AZURE_ENABLE_SPNEGO_TOKEN_CACHE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|AZURE_ENABLE_SPNEGO_TOKEN_CACHE
+init|=
+literal|"fs.azure.enable.spnego.token.cache"
 decl_stmt|;
 comment|/**    * Parameter to be used for impersonation.    */
 DECL|field|DOAS_PARAM
@@ -66,6 +71,11 @@ name|AUTHENTICATION_FAILED_ERROR_MESSAGE
 init|=
 literal|"Authentication Failed "
 decl_stmt|;
+DECL|method|Constants ()
+specifier|private
+name|Constants
+parameter_list|()
+block|{   }
 block|}
 end_class
 
