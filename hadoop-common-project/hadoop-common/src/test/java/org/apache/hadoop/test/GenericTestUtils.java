@@ -1542,6 +1542,7 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * Wait for the specified test to return true. The test will be performed    * initially and then every {@code checkEveryMillis} until at least    * {@code waitForMillis} time has expired. If {@code check} is null or    * {@code waitForMillis} is less than {@code checkEveryMillis} this method    * will throw an {@link IllegalArgumentException}.    *    * @param check the test to perform    * @param checkEveryMillis how often to perform the test    * @param waitForMillis the amount of time after which no more tests will be    * performed    * @throws TimeoutException if the test does not return true in the allotted    * time    * @throws InterruptedException if the method is interrupted while waiting    */
 DECL|method|waitFor (Supplier<Boolean> check, int checkEveryMillis, int waitForMillis)
 specifier|public
 specifier|static
@@ -1579,7 +1580,7 @@ operator|.
 name|checkArgument
 argument_list|(
 name|waitForMillis
-operator|>
+operator|>=
 name|checkEveryMillis
 argument_list|,
 name|ERROR_INVALID_ARGUMENT
@@ -1593,8 +1594,6 @@ operator|.
 name|now
 argument_list|()
 decl_stmt|;
-do|do
-block|{
 name|boolean
 name|result
 init|=
@@ -1603,23 +1602,12 @@ operator|.
 name|get
 argument_list|()
 decl_stmt|;
-if|if
+while|while
 condition|(
+operator|!
 name|result
-condition|)
-block|{
-return|return;
-block|}
-name|Thread
-operator|.
-name|sleep
-argument_list|(
-name|checkEveryMillis
-argument_list|)
-expr_stmt|;
-block|}
-do|while
-condition|(
+operator|&&
+operator|(
 name|Time
 operator|.
 name|now
@@ -1628,8 +1616,30 @@ operator|-
 name|st
 operator|<
 name|waitForMillis
+operator|)
 condition|)
-do|;
+block|{
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+name|checkEveryMillis
+argument_list|)
+expr_stmt|;
+name|result
+operator|=
+name|check
+operator|.
+name|get
+argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
+operator|!
+name|result
+condition|)
+block|{
 throw|throw
 operator|new
 name|TimeoutException
@@ -1644,6 +1654,7 @@ name|buildThreadDiagnosticString
 argument_list|()
 argument_list|)
 throw|;
+block|}
 block|}
 comment|/**    * Prints output to one {@link PrintStream} while copying to the other.    *<p>    * Closing the main {@link PrintStream} will NOT close the other.    */
 DECL|class|TeePrintStream
