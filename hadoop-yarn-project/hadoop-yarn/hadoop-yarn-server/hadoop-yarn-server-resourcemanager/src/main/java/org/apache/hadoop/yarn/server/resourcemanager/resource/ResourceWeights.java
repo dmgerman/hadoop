@@ -93,6 +93,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|weights
 specifier|private
+specifier|final
 name|float
 index|[]
 name|weights
@@ -165,6 +166,7 @@ parameter_list|()
 block|{ }
 DECL|method|setWeight (float weight)
 specifier|public
+specifier|final
 name|void
 name|setWeight
 parameter_list|(
