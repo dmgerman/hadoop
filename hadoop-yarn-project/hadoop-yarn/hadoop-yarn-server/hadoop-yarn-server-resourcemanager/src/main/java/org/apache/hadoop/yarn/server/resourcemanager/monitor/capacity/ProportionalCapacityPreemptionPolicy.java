@@ -1316,26 +1316,23 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+name|boolean
+name|additionalPreemptionBasedOnReservedResource
+init|=
+name|csConfig
+operator|.
+name|getBoolean
+argument_list|(
+name|CapacitySchedulerConfiguration
+operator|.
+name|ADDITIONAL_RESOURCE_BALANCE_BASED_ON_RESERVED_CONTAINERS
+argument_list|,
+name|CapacitySchedulerConfiguration
+operator|.
+name|DEFAULT_ADDITIONAL_RESOURCE_BALANCE_BASED_ON_RESERVED_CONTAINERS
+argument_list|)
+decl_stmt|;
 comment|// initialize candidates preemption selection policies
-comment|// When select candidates for reserved containers is enabled, exclude reserved
-comment|// resource in fifo policy (less aggressive). Otherwise include reserved
-comment|// resource.
-comment|//
-comment|// Why doing this? In YARN-4390, we added preemption-based-on-reserved-container
-comment|// Support. To reduce unnecessary preemption for large containers. We will
-comment|// not include reserved resources while calculating ideal-allocation in
-comment|// FifoCandidatesSelector.
-comment|//
-comment|// Changes in YARN-4390 will significantly reduce number of containers preempted
-comment|// When cluster has heterogeneous container requests. (Please check test
-comment|// report: https://issues.apache.org/jira/secure/attachment/12796197/YARN-4390-test-results.pdf
-comment|//
-comment|// However, on the other hand, in some corner cases, especially for
-comment|// fragmented cluster. It could lead to preemption cannot kick in in some
-comment|// cases. Please see YARN-5731.
-comment|//
-comment|// So to solve the problem, we will include reserved when surgical preemption
-comment|// for reserved container, which reverts behavior when YARN-4390 is disabled.
 name|candidatesSelectionPolicies
 operator|.
 name|add
@@ -1345,8 +1342,7 @@ name|FifoCandidatesSelector
 argument_list|(
 name|this
 argument_list|,
-operator|!
-name|selectCandidatesForResevedContainers
+name|additionalPreemptionBasedOnReservedResource
 argument_list|)
 argument_list|)
 expr_stmt|;

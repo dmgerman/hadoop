@@ -4472,15 +4472,17 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+comment|// Set additional_balance_queue_based_on_reserved_res to true to get
+comment|// additional preemptions.
 name|conf
 operator|.
 name|setBoolean
 argument_list|(
 name|CapacitySchedulerConfiguration
 operator|.
-name|PREEMPTION_SELECT_CANDIDATES_FOR_RESERVED_CONTAINERS
+name|ADDITIONAL_RESOURCE_BALANCE_BASED_ON_RESERVED_CONTAINERS
 argument_list|,
-literal|false
+literal|true
 argument_list|)
 expr_stmt|;
 comment|/**      * Two queues, a/b, each of them are 50/50      * 5 nodes in the cluster, each of them is 30G.      *      * Submit first app, AM = 3G, and 4 * 21G containers.      * Submit second app, AM = 3G, and 4 * 21G containers,      *      * We can get one container preempted from 1st app.      */

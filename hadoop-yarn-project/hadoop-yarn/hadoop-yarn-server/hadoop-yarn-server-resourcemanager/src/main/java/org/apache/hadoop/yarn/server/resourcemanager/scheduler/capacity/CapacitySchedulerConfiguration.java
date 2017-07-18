@@ -5878,6 +5878,27 @@ name|DEFAULT_PREEMPTION_NATURAL_TERMINATION_FACTOR
 init|=
 literal|0.2f
 decl_stmt|;
+comment|/**    * By default, reserved resource will be excluded while balancing capacities    * of queues.    *    * Why doing this? In YARN-4390, we added preemption-based-on-reserved-container    * Support. To reduce unnecessary preemption for large containers. We will    * not include reserved resources while calculating ideal-allocation in    * FifoCandidatesSelector.    *    * Changes in YARN-4390 will significantly reduce number of containers preempted    * When cluster has heterogeneous container requests. (Please check test    * report: https://issues.apache.org/jira/secure/attachment/12796197/YARN-4390-test-results.pdf    *    * However, on the other hand, in some corner cases, especially for    * fragmented cluster. It could lead to preemption cannot kick in in some    * cases. Please see YARN-5731.    *    * So to solve the problem, make this change to be configurable, and please    * note that it is an experimental option.    */
+specifier|public
+specifier|static
+specifier|final
+name|String
+DECL|field|ADDITIONAL_RESOURCE_BALANCE_BASED_ON_RESERVED_CONTAINERS
+name|ADDITIONAL_RESOURCE_BALANCE_BASED_ON_RESERVED_CONTAINERS
+init|=
+name|PREEMPTION_CONFIG_PREFIX
+operator|+
+literal|"additional_res_balance_based_on_reserved_containers"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+DECL|field|DEFAULT_ADDITIONAL_RESOURCE_BALANCE_BASED_ON_RESERVED_CONTAINERS
+name|DEFAULT_ADDITIONAL_RESOURCE_BALANCE_BASED_ON_RESERVED_CONTAINERS
+init|=
+literal|false
+decl_stmt|;
 comment|/**    * When calculating which containers to be preempted, we will try to preempt    * containers for reserved containers first. By default is false.    */
 DECL|field|PREEMPTION_SELECT_CANDIDATES_FOR_RESERVED_CONTAINERS
 specifier|public
