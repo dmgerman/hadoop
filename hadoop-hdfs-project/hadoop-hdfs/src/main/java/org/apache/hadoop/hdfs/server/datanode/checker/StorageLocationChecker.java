@@ -653,7 +653,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Initiate a check of the supplied storage volumes and return    * a list of failed volumes.    *    * StorageLocations are returned in the same order as the input    * for compatibility with existing unit tests.    *    * @param conf HDFS configuration.    * @param dataDirs list of volumes to check.    * @return returns a list of failed volumes. Returns the empty list if    *         there are no failed volumes.    *    * @throws InterruptedException if the check was interrupted.    * @throws IOException if the number of failed volumes exceeds the    *                     maximum allowed or if there are no good    *                     volumes.    */
+comment|/**    * Initiate a check on the supplied storage volumes and return    * a list of healthy volumes.    *    * StorageLocations are returned in the same order as the input    * for compatibility with existing unit tests.    *    * @param conf HDFS configuration.    * @param dataDirs list of volumes to check.    * @return returns a list of healthy volumes. Returns an empty list if    *         there are no healthy volumes.    *    * @throws InterruptedException if the check was interrupted.    * @throws IOException if the number of failed volumes exceeds the    *                     maximum allowed or if there are no good    *                     volumes.    */
 DECL|method|check ( final Configuration conf, final Collection<StorageLocation> dataDirs)
 specifier|public
 name|List
