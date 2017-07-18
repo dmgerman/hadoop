@@ -180,9 +180,21 @@ specifier|public
 interface|interface
 name|ApplicationMasterServiceProcessor
 block|{
-comment|/**    * Register AM attempt.    * @param applicationAttemptId applicationAttemptId.    * @param request Register Request.    * @return Register Response.    * @throws IOException IOException.    */
-DECL|method|registerApplicationMaster ( ApplicationAttemptId applicationAttemptId, RegisterApplicationMasterRequest request)
-name|RegisterApplicationMasterResponse
+comment|/**    * Initialize with and ApplicationMasterService Context as well as the    * next processor in the chain.    * @param amsContext AMSContext.    * @param nextProcessor next ApplicationMasterServiceProcessor    */
+DECL|method|init (ApplicationMasterServiceContext amsContext, ApplicationMasterServiceProcessor nextProcessor)
+name|void
+name|init
+parameter_list|(
+name|ApplicationMasterServiceContext
+name|amsContext
+parameter_list|,
+name|ApplicationMasterServiceProcessor
+name|nextProcessor
+parameter_list|)
+function_decl|;
+comment|/**    * Register AM attempt.    * @param applicationAttemptId applicationAttemptId.    * @param request Register Request.    * @param response Register Response.    * @throws IOException IOException.    */
+DECL|method|registerApplicationMaster ( ApplicationAttemptId applicationAttemptId, RegisterApplicationMasterRequest request, RegisterApplicationMasterResponse response)
+name|void
 name|registerApplicationMaster
 parameter_list|(
 name|ApplicationAttemptId
@@ -190,13 +202,16 @@ name|applicationAttemptId
 parameter_list|,
 name|RegisterApplicationMasterRequest
 name|request
+parameter_list|,
+name|RegisterApplicationMasterResponse
+name|response
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Allocate call.    * @param appAttemptId appAttemptId.    * @param request Allocate Request.    * @return Allocate Response.    * @throws YarnException YarnException.    */
-DECL|method|allocate (ApplicationAttemptId appAttemptId, AllocateRequest request)
-name|AllocateResponse
+comment|/**    * Allocate call.    * @param appAttemptId appAttemptId.    * @param request Allocate Request.    * @param response Allocate Response.    * @throws YarnException YarnException.    */
+DECL|method|allocate (ApplicationAttemptId appAttemptId, AllocateRequest request, AllocateResponse response)
+name|void
 name|allocate
 parameter_list|(
 name|ApplicationAttemptId
@@ -204,13 +219,16 @@ name|appAttemptId
 parameter_list|,
 name|AllocateRequest
 name|request
+parameter_list|,
+name|AllocateResponse
+name|response
 parameter_list|)
 throws|throws
 name|YarnException
 function_decl|;
-comment|/**    * Finish AM.    * @param applicationAttemptId applicationAttemptId.    * @param request Finish AM Request.    * @return Finish AM response.    */
-DECL|method|finishApplicationMaster ( ApplicationAttemptId applicationAttemptId, FinishApplicationMasterRequest request)
-name|FinishApplicationMasterResponse
+comment|/**    * Finish AM.    * @param applicationAttemptId applicationAttemptId.    * @param request Finish AM Request.    * @param response Finish AM Response.    */
+DECL|method|finishApplicationMaster ( ApplicationAttemptId applicationAttemptId, FinishApplicationMasterRequest request, FinishApplicationMasterResponse response)
+name|void
 name|finishApplicationMaster
 parameter_list|(
 name|ApplicationAttemptId
@@ -218,6 +236,9 @@ name|applicationAttemptId
 parameter_list|,
 name|FinishApplicationMasterRequest
 name|request
+parameter_list|,
+name|FinishApplicationMasterResponse
+name|response
 parameter_list|)
 function_decl|;
 block|}

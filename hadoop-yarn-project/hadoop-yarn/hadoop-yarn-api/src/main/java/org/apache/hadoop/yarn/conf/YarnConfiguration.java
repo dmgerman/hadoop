@@ -647,6 +647,17 @@ literal|"0.0.0.0:"
 operator|+
 name|DEFAULT_RM_PORT
 decl_stmt|;
+DECL|field|RM_APPLICATION_MASTER_SERVICE_PROCESSORS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_APPLICATION_MASTER_SERVICE_PROCESSORS
+init|=
+name|RM_PREFIX
+operator|+
+literal|"application-master-service.processors"
+decl_stmt|;
 comment|/** The actual bind address for the RM.*/
 DECL|field|RM_BIND_HOST
 specifier|public

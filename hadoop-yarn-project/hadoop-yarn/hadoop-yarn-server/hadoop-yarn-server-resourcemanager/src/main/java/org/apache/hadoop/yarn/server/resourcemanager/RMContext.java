@@ -82,6 +82,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|ams
+operator|.
+name|ApplicationMasterServiceContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|api
 operator|.
 name|records
@@ -575,6 +591,8 @@ DECL|interface|RMContext
 specifier|public
 interface|interface
 name|RMContext
+extends|extends
+name|ApplicationMasterServiceContext
 block|{
 DECL|method|getDispatcher ()
 name|Dispatcher

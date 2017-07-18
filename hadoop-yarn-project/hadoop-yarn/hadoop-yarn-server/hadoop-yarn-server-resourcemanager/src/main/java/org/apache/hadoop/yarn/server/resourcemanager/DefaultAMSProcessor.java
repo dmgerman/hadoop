@@ -74,6 +74,22 @@ name|yarn
 operator|.
 name|ams
 operator|.
+name|ApplicationMasterServiceContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|ams
+operator|.
 name|ApplicationMasterServiceUtils
 import|;
 end_import
@@ -984,8 +1000,13 @@ name|Set
 import|;
 end_import
 
+begin_comment
+comment|/**  * This is the default Application Master Service processor. It has be the  * last processor in the @{@link AMSProcessingChain}.  */
+end_comment
+
 begin_class
 DECL|class|DefaultAMSProcessor
+specifier|final
 class|class
 name|DefaultAMSProcessor
 implements|implements
@@ -1065,42 +1086,38 @@ argument_list|)
 decl_stmt|;
 DECL|field|rmContext
 specifier|private
-specifier|final
 name|RMContext
 name|rmContext
 decl_stmt|;
-DECL|field|scheduler
-specifier|private
-specifier|final
-name|YarnScheduler
-name|scheduler
-decl_stmt|;
-DECL|method|DefaultAMSProcessor (RMContext rmContext, YarnScheduler scheduler)
-name|DefaultAMSProcessor
+annotation|@
+name|Override
+DECL|method|init (ApplicationMasterServiceContext amsContext, ApplicationMasterServiceProcessor nextProcessor)
+specifier|public
+name|void
+name|init
 parameter_list|(
-name|RMContext
-name|rmContext
+name|ApplicationMasterServiceContext
+name|amsContext
 parameter_list|,
-name|YarnScheduler
-name|scheduler
+name|ApplicationMasterServiceProcessor
+name|nextProcessor
 parameter_list|)
 block|{
 name|this
 operator|.
 name|rmContext
 operator|=
-name|rmContext
-expr_stmt|;
-name|this
-operator|.
-name|scheduler
-operator|=
-name|scheduler
+operator|(
+name|RMContext
+operator|)
+name|amsContext
 expr_stmt|;
 block|}
-DECL|method|registerApplicationMaster ( ApplicationAttemptId applicationAttemptId, RegisterApplicationMasterRequest request)
+annotation|@
+name|Override
+DECL|method|registerApplicationMaster ( ApplicationAttemptId applicationAttemptId, RegisterApplicationMasterRequest request, RegisterApplicationMasterResponse response)
 specifier|public
-name|RegisterApplicationMasterResponse
+name|void
 name|registerApplicationMaster
 parameter_list|(
 name|ApplicationAttemptId
@@ -1108,6 +1125,9 @@ name|applicationAttemptId
 parameter_list|,
 name|RegisterApplicationMasterRequest
 name|request
+parameter_list|,
+name|RegisterApplicationMasterResponse
+name|response
 parameter_list|)
 throws|throws
 name|IOException
@@ -1196,18 +1216,6 @@ argument_list|,
 name|applicationAttemptId
 argument_list|)
 expr_stmt|;
-name|RegisterApplicationMasterResponse
-name|response
-init|=
-name|recordFactory
-operator|.
-name|newRecordInstance
-argument_list|(
-name|RegisterApplicationMasterResponse
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
 name|response
 operator|.
 name|setMaximumResourceCapability
@@ -1483,13 +1491,12 @@ name|getSchedulingResourceTypes
 argument_list|()
 argument_list|)
 expr_stmt|;
-return|return
-name|response
-return|;
 block|}
-DECL|method|allocate (ApplicationAttemptId appAttemptId, AllocateRequest request)
+annotation|@
+name|Override
+DECL|method|allocate (ApplicationAttemptId appAttemptId, AllocateRequest request, AllocateResponse response)
 specifier|public
-name|AllocateResponse
+name|void
 name|allocate
 parameter_list|(
 name|ApplicationAttemptId
@@ -1497,6 +1504,9 @@ name|appAttemptId
 parameter_list|,
 name|AllocateRequest
 name|request
+parameter_list|,
+name|AllocateResponse
+name|response
 parameter_list|)
 throws|throws
 name|YarnException
@@ -1939,18 +1949,6 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 decl_stmt|;
-name|AllocateResponse
-name|allocateResponse
-init|=
-name|recordFactory
-operator|.
-name|newRecordInstance
-argument_list|(
-name|AllocateResponse
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
 name|allocation
@@ -1970,7 +1968,7 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-name|allocateResponse
+name|response
 operator|.
 name|setNMTokens
 argument_list|(
@@ -1986,7 +1984,7 @@ name|ApplicationMasterServiceUtils
 operator|.
 name|addToUpdateContainerErrors
 argument_list|(
-name|allocateResponse
+name|response
 argument_list|,
 name|updateErrors
 argument_list|)
@@ -1996,14 +1994,14 @@ name|handleNodeUpdates
 argument_list|(
 name|app
 argument_list|,
-name|allocateResponse
+name|response
 argument_list|)
 expr_stmt|;
 name|ApplicationMasterServiceUtils
 operator|.
 name|addToAllocatedContainers
 argument_list|(
-name|allocateResponse
+name|response
 argument_list|,
 name|allocation
 operator|.
@@ -2011,7 +2009,7 @@ name|getContainers
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|allocateResponse
+name|response
 operator|.
 name|setCompletedContainersStatuses
 argument_list|(
@@ -2021,7 +2019,7 @@ name|pullJustFinishedContainers
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|allocateResponse
+name|response
 operator|.
 name|setAvailableResources
 argument_list|(
@@ -2033,7 +2031,7 @@ argument_list|)
 expr_stmt|;
 name|addToContainerUpdates
 argument_list|(
-name|allocateResponse
+name|response
 argument_list|,
 name|allocation
 argument_list|,
@@ -2054,7 +2052,7 @@ name|pullUpdateContainerErrors
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|allocateResponse
+name|response
 operator|.
 name|setNumClusterNodes
 argument_list|(
@@ -2080,7 +2078,7 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-name|allocateResponse
+name|response
 operator|.
 name|setCollectorAddr
 argument_list|(
@@ -2104,7 +2102,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// add preemption to the allocateResponse message (if any)
-name|allocateResponse
+name|response
 operator|.
 name|setPreemptionMessage
 argument_list|(
@@ -2115,7 +2113,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Set application priority
-name|allocateResponse
+name|response
 operator|.
 name|setApplicationPriority
 argument_list|(
@@ -2125,9 +2123,6 @@ name|getApplicationPriority
 argument_list|()
 argument_list|)
 expr_stmt|;
-return|return
-name|allocateResponse
-return|;
 block|}
 DECL|method|handleNodeUpdates (RMApp app, AllocateResponse allocateResponse)
 specifier|private
@@ -2406,9 +2401,11 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|finishApplicationMaster ( ApplicationAttemptId applicationAttemptId, FinishApplicationMasterRequest request)
+annotation|@
+name|Override
+DECL|method|finishApplicationMaster ( ApplicationAttemptId applicationAttemptId, FinishApplicationMasterRequest request, FinishApplicationMasterResponse response)
 specifier|public
-name|FinishApplicationMasterResponse
+name|void
 name|finishApplicationMaster
 parameter_list|(
 name|ApplicationAttemptId
@@ -2416,6 +2413,9 @@ name|applicationAttemptId
 parameter_list|,
 name|FinishApplicationMasterRequest
 name|request
+parameter_list|,
+name|FinishApplicationMasterResponse
+name|response
 parameter_list|)
 block|{
 name|RMApp
@@ -2436,12 +2436,9 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// For UnmanagedAMs, return true so they don't retry
-name|FinishApplicationMasterResponse
 name|response
-init|=
-name|FinishApplicationMasterResponse
 operator|.
-name|newInstance
+name|setIsUnregistered
 argument_list|(
 name|app
 operator|.
@@ -2451,7 +2448,7 @@ operator|.
 name|getUnmanagedAM
 argument_list|()
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|getRmContext
 argument_list|()
 operator|.
@@ -2485,9 +2482,6 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-return|return
-name|response
-return|;
 block|}
 DECL|method|generatePreemptionMessage (Allocation allocation)
 specifier|private
@@ -2811,7 +2805,10 @@ name|getScheduler
 parameter_list|()
 block|{
 return|return
-name|scheduler
+name|rmContext
+operator|.
+name|getScheduler
+argument_list|()
 return|;
 block|}
 DECL|method|addToContainerUpdates (AllocateResponse allocateResponse, Allocation allocation, List<UpdateContainerError> updateContainerErrors)
