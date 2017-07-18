@@ -1122,7 +1122,7 @@ finally|finally
 block|{
 name|IOUtils
 operator|.
-name|cleanup
+name|cleanupWithLogger
 argument_list|(
 name|DomainSocket
 operator|.

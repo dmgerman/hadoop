@@ -22,34 +22,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -76,6 +48,26 @@ name|Evolving
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/**  * This is a state change listener that logs events at INFO level  */
 end_comment
@@ -96,12 +88,12 @@ DECL|field|LOG
 specifier|private
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|LoggingStateChangeListener
 operator|.
@@ -111,15 +103,15 @@ decl_stmt|;
 DECL|field|log
 specifier|private
 specifier|final
-name|Log
+name|Logger
 name|log
 decl_stmt|;
 comment|/**    * Log events to the given log    * @param log destination for events    */
-DECL|method|LoggingStateChangeListener (Log log)
+DECL|method|LoggingStateChangeListener (Logger log)
 specifier|public
 name|LoggingStateChangeListener
 parameter_list|(
-name|Log
+name|Logger
 name|log
 parameter_list|)
 block|{

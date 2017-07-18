@@ -66,20 +66,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -212,6 +198,16 @@ name|Shell
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class is the home for file permissions related commands.  * Moved to this separate class since FsShell is getting too large.  */
 end_comment
@@ -234,7 +230,8 @@ name|FsCommand
 block|{
 DECL|field|LOG
 specifier|static
-name|Log
+specifier|final
+name|Logger
 name|LOG
 init|=
 name|FsShell

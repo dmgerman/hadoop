@@ -584,34 +584,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -1408,6 +1380,26 @@ name|Message
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/** An abstract IPC service.  IPC calls take a single {@link Writable} as a  * parameter, and return a {@link Writable} as their value.  A service runs on  * a port and is defined by a parameter class and a value class.  *   * @see Client  */
 end_comment
@@ -2003,12 +1995,12 @@ DECL|field|LOG
 specifier|public
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|Server
 operator|.
@@ -2019,12 +2011,12 @@ DECL|field|AUDITLOG
 specifier|public
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|AUDITLOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 literal|"SecurityLogger."
 operator|+
@@ -5653,7 +5645,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 literal|"Bug in read selector!"
 argument_list|,
@@ -12531,7 +12523,7 @@ argument_list|)
 expr_stmt|;
 name|IOUtils
 operator|.
-name|cleanup
+name|cleanupWithLogger
 argument_list|(
 name|LOG
 argument_list|,
@@ -12559,11 +12551,11 @@ block|}
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|logException (Log logger, Throwable e, Call call)
+DECL|method|logException (Logger logger, Throwable e, Call call)
 name|void
 name|logException
 parameter_list|(
-name|Log
+name|Logger
 name|logger
 parameter_list|,
 name|Throwable

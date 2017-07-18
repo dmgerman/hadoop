@@ -128,34 +128,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|HadoopIllegalArgumentException
@@ -514,6 +486,26 @@ name|ThreadFactoryBuilder
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_class
 annotation|@
 name|InterfaceAudience
@@ -531,12 +523,12 @@ block|{
 DECL|field|LOG
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|ZKFailoverController
 operator|.
@@ -951,7 +943,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 literal|"Automatic failover is not enabled for "
 operator|+
@@ -1044,7 +1036,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 literal|"The failover controller encounters runtime error: "
 operator|+
@@ -1092,7 +1084,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 literal|"Unable to start failover controller. Unable to connect "
 operator|+
@@ -1245,7 +1237,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 literal|"Unable to start failover controller. "
 operator|+
@@ -1274,7 +1266,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 literal|"Fencing is not configured for "
 operator|+
@@ -1908,7 +1900,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 literal|"Fatal error occurred:"
 operator|+
@@ -2018,7 +2010,7 @@ literal|" active"
 decl_stmt|;
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 name|msg
 argument_list|,
