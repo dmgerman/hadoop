@@ -79,11 +79,6 @@ specifier|final
 name|String
 name|diagnosticMsg
 decl_stmt|;
-DECL|field|storeAppInfo
-specifier|private
-name|boolean
-name|storeAppInfo
-decl_stmt|;
 DECL|method|RMAppEvent (ApplicationId appId, RMAppEventType type)
 specifier|public
 name|RMAppEvent
@@ -136,46 +131,6 @@ name|diagnosticMsg
 operator|=
 name|diagnostic
 expr_stmt|;
-name|this
-operator|.
-name|storeAppInfo
-operator|=
-literal|true
-expr_stmt|;
-block|}
-comment|/**    * Constructor to create RM Application Event type.    *    * @param appId application Id    * @param type RM Event type    * @param diagnostic Diagnostic message for event    * @param storeApp Application should be saved or not    */
-DECL|method|RMAppEvent (ApplicationId appId, RMAppEventType type, String diagnostic, boolean storeApp)
-specifier|public
-name|RMAppEvent
-parameter_list|(
-name|ApplicationId
-name|appId
-parameter_list|,
-name|RMAppEventType
-name|type
-parameter_list|,
-name|String
-name|diagnostic
-parameter_list|,
-name|boolean
-name|storeApp
-parameter_list|)
-block|{
-name|this
-argument_list|(
-name|appId
-argument_list|,
-name|type
-argument_list|,
-name|diagnostic
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|storeAppInfo
-operator|=
-name|storeApp
-expr_stmt|;
 block|}
 DECL|method|getApplicationId ()
 specifier|public
@@ -199,17 +154,6 @@ return|return
 name|this
 operator|.
 name|diagnosticMsg
-return|;
-block|}
-comment|/**    * Store application to state store or not.    *    * @return boolean application should be saved to store.    */
-DECL|method|doStoreAppInfo ()
-specifier|public
-name|boolean
-name|doStoreAppInfo
-parameter_list|()
-block|{
-return|return
-name|storeAppInfo
 return|;
 block|}
 block|}

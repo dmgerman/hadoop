@@ -2047,7 +2047,7 @@ block|{
 return|return
 name|dispatcher
 operator|.
-name|apprejectedEvnt
+name|appsavefailedEvnt
 return|;
 block|}
 block|}
@@ -2065,10 +2065,10 @@ name|TestAppRejDispatcher
 extends|extends
 name|TestDispatcher
 block|{
-DECL|field|apprejectedEvnt
+DECL|field|appsavefailedEvnt
 specifier|private
 name|boolean
-name|apprejectedEvnt
+name|appsavefailedEvnt
 decl_stmt|;
 DECL|method|handle (Event event)
 specifier|public
@@ -2094,11 +2094,11 @@ name|equals
 argument_list|(
 name|RMAppEventType
 operator|.
-name|APP_REJECTED
+name|APP_SAVE_FAILED
 argument_list|)
 condition|)
 block|{
-name|apprejectedEvnt
+name|appsavefailedEvnt
 operator|=
 literal|true
 expr_stmt|;

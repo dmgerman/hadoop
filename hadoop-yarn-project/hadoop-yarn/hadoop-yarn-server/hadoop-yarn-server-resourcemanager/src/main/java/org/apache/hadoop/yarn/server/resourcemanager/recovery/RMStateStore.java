@@ -1711,14 +1711,12 @@ name|appId
 argument_list|,
 name|RMAppEventType
 operator|.
-name|APP_REJECTED
+name|APP_SAVE_FAILED
 argument_list|,
 name|e
 operator|.
 name|getMessage
 argument_list|()
-argument_list|,
-literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;

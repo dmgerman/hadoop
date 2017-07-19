@@ -80,6 +80,9 @@ name|APP_NEW_SAVED
 block|,
 DECL|enumConstant|APP_UPDATE_SAVED
 name|APP_UPDATE_SAVED
+block|,
+DECL|enumConstant|APP_SAVE_FAILED
+name|APP_SAVE_FAILED
 block|, }
 end_enum
 
