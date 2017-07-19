@@ -138,14 +138,11 @@ operator|.
 name|NET_TOPOLOGY_SCRIPT_FILE_NAME_KEY
 argument_list|)
 decl_stmt|;
-name|assertTrue
-argument_list|(
-name|scriptFile
-operator|.
-name|equals
+name|assertEquals
 argument_list|(
 literal|"xyz"
-argument_list|)
+argument_list|,
+name|scriptFile
 argument_list|)
 expr_stmt|;
 block|}

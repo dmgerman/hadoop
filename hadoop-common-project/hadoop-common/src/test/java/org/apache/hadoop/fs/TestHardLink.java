@@ -1493,19 +1493,16 @@ name|length
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
+literal|"hardlink"
+argument_list|,
 name|win
 operator|.
 name|getLinkCountCommand
 index|[
 literal|1
 index|]
-operator|.
-name|equals
-argument_list|(
-literal|"hardlink"
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|//make sure "-c%h" was not munged

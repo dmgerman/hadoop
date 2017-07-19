@@ -1480,8 +1480,10 @@ argument_list|(
 name|path
 argument_list|)
 decl_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
+literal|"rw-------"
+argument_list|,
 name|s
 operator|.
 name|getPermission
@@ -1489,11 +1491,6 @@ argument_list|()
 operator|.
 name|toString
 argument_list|()
-operator|.
-name|equals
-argument_list|(
-literal|"rw-------"
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -1647,7 +1644,7 @@ argument_list|(
 name|path
 argument_list|)
 decl_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
 literal|"Unexpected permissions: "
 operator|+
@@ -1659,6 +1656,8 @@ operator|.
 name|toString
 argument_list|()
 argument_list|,
+literal|"rw-------"
+argument_list|,
 name|s
 operator|.
 name|getPermission
@@ -1666,11 +1665,6 @@ argument_list|()
 operator|.
 name|toString
 argument_list|()
-operator|.
-name|equals
-argument_list|(
-literal|"rw-------"
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -1863,11 +1857,13 @@ argument_list|(
 name|path
 argument_list|)
 decl_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
 literal|"Permissions should have been retained from the preexisting "
 operator|+
 literal|"keystore."
+argument_list|,
+literal|"rwxrwxrwx"
 argument_list|,
 name|s
 operator|.
@@ -1876,11 +1872,6 @@ argument_list|()
 operator|.
 name|toString
 argument_list|()
-operator|.
-name|equals
-argument_list|(
-literal|"rwxrwxrwx"
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

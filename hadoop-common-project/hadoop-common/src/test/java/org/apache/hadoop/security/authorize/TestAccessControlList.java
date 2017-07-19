@@ -692,17 +692,14 @@ argument_list|(
 literal|"*"
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
+literal|"All users are allowed"
+argument_list|,
 name|acl
 operator|.
 name|toString
 argument_list|()
-operator|.
-name|equals
-argument_list|(
-literal|"All users are allowed"
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|validateGetAclString
@@ -718,17 +715,14 @@ argument_list|(
 literal|" "
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
+literal|"No users are allowed"
+argument_list|,
 name|acl
 operator|.
 name|toString
 argument_list|()
-operator|.
-name|equals
-argument_list|(
-literal|"No users are allowed"
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|acl
@@ -739,17 +733,14 @@ argument_list|(
 literal|"user1,user2"
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
+literal|"Users [user1, user2] are allowed"
+argument_list|,
 name|acl
 operator|.
 name|toString
 argument_list|()
-operator|.
-name|equals
-argument_list|(
-literal|"Users [user1, user2] are allowed"
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|validateGetAclString
@@ -766,17 +757,14 @@ literal|"user1,user2 "
 argument_list|)
 expr_stmt|;
 comment|// with space
-name|assertTrue
+name|assertEquals
 argument_list|(
+literal|"Users [user1, user2] are allowed"
+argument_list|,
 name|acl
 operator|.
 name|toString
 argument_list|()
-operator|.
-name|equals
-argument_list|(
-literal|"Users [user1, user2] are allowed"
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|validateGetAclString

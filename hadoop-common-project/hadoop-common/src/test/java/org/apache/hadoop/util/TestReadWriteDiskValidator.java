@@ -24,6 +24,18 @@ name|junit
 operator|.
 name|Assert
 operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
 name|assertTrue
 import|;
 end_import
@@ -682,17 +694,14 @@ name|DiskErrorException
 name|e
 parameter_list|)
 block|{
-name|assertTrue
+name|assertEquals
 argument_list|(
+literal|"Disk Check failed!"
+argument_list|,
 name|e
 operator|.
 name|getMessage
 argument_list|()
-operator|.
-name|equals
-argument_list|(
-literal|"Disk Check failed!"
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -751,17 +760,14 @@ name|DiskErrorException
 name|e
 parameter_list|)
 block|{
-name|assertTrue
+name|assertEquals
 argument_list|(
+literal|"Disk Check failed!"
+argument_list|,
 name|e
 operator|.
 name|getMessage
 argument_list|()
-operator|.
-name|equals
-argument_list|(
-literal|"Disk Check failed!"
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
