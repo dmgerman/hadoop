@@ -320,7 +320,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|INode
+name|ContentSummaryComputationContext
 operator|.
 name|class
 argument_list|)
