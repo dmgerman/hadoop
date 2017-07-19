@@ -579,7 +579,7 @@ return|return
 name|json
 return|;
 block|}
-comment|/**    * @param fileStatuses list of FileStatus objects    * @return JSON map suitable for wire transport    */
+comment|/**    * @param fileStatuses list of FileStatus objects    * @param isFile is the fileStatuses from a file path    * @return JSON map suitable for wire transport    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -587,7 +587,7 @@ block|{
 literal|"unchecked"
 block|}
 argument_list|)
-DECL|method|toJson (FileStatus[] fileStatuses)
+DECL|method|toJson (FileStatus[] fileStatuses, boolean isFile)
 specifier|private
 specifier|static
 name|Map
@@ -601,6 +601,9 @@ parameter_list|(
 name|FileStatus
 index|[]
 name|fileStatuses
+parameter_list|,
+name|boolean
+name|isFile
 parameter_list|)
 block|{
 name|Map
@@ -652,7 +655,7 @@ name|toJsonInner
 argument_list|(
 name|f
 argument_list|,
-literal|false
+name|isFile
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -953,8 +956,8 @@ return|return
 name|json
 return|;
 block|}
-comment|/**    * Serializes a DirectoryEntries object into the JSON for a    * WebHDFS {@link org.apache.hadoop.hdfs.protocol.DirectoryListing}.    *<p>    * These two classes are slightly different, due to the impedance    * mismatches between the WebHDFS and FileSystem APIs.    * @param entries    * @return json    */
-DECL|method|toJson (FileSystem.DirectoryEntries entries)
+comment|/**    * Serializes a DirectoryEntries object into the JSON for a    * WebHDFS {@link org.apache.hadoop.hdfs.protocol.DirectoryListing}.    *<p>    * These two classes are slightly different, due to the impedance    * mismatches between the WebHDFS and FileSystem APIs.    * @param entries    * @param isFile is the entries from a file path    * @return json    */
+DECL|method|toJson (FileSystem.DirectoryEntries entries, boolean isFile)
 specifier|private
 specifier|static
 name|Map
@@ -969,6 +972,9 @@ name|FileSystem
 operator|.
 name|DirectoryEntries
 name|entries
+parameter_list|,
+name|boolean
+name|isFile
 parameter_list|)
 block|{
 name|Map
@@ -1011,6 +1017,8 @@ name|entries
 operator|.
 name|getEntries
 argument_list|()
+argument_list|,
+name|isFile
 argument_list|)
 decl_stmt|;
 name|inner
@@ -3026,6 +3034,16 @@ return|return
 name|toJson
 argument_list|(
 name|fileStatuses
+argument_list|,
+name|fs
+operator|.
+name|getFileStatus
+argument_list|(
+name|path
+argument_list|)
+operator|.
+name|isFile
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -3204,6 +3222,16 @@ return|return
 name|toJson
 argument_list|(
 name|entries
+argument_list|,
+name|wrappedFS
+operator|.
+name|getFileStatus
+argument_list|(
+name|path
+argument_list|)
+operator|.
+name|isFile
+argument_list|()
 argument_list|)
 return|;
 block|}
