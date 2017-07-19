@@ -2237,7 +2237,7 @@ argument_list|(
 name|mockHttpResponseServiceLocal
 argument_list|)
 expr_stmt|;
-comment|//Need 3 times because performop()  does 3 fs operations.
+comment|//Need 2 times because performop()  does 2 fs operations.
 name|Mockito
 operator|.
 name|when
@@ -2313,7 +2313,7 @@ name|mockHttpClient
 argument_list|,
 name|times
 argument_list|(
-literal|3
+literal|2
 argument_list|)
 argument_list|)
 operator|.
@@ -2337,7 +2337,7 @@ name|mockHttpClient
 argument_list|,
 name|times
 argument_list|(
-literal|3
+literal|2
 argument_list|)
 argument_list|)
 operator|.

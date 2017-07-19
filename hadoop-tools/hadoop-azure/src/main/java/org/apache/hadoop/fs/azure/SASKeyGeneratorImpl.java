@@ -68,12 +68,12 @@ init|=
 literal|"fs.azure.sas.expiry.period"
 decl_stmt|;
 comment|/**    * Default value for the SAS key expiry period in days. {@value}    */
-DECL|field|DEFAUL_CONTAINER_SAS_KEY_PERIOD
+DECL|field|DEFAULT_CONTAINER_SAS_KEY_PERIOD
 specifier|public
 specifier|static
 specifier|final
 name|long
-name|DEFAUL_CONTAINER_SAS_KEY_PERIOD
+name|DEFAULT_CONTAINER_SAS_KEY_PERIOD
 init|=
 literal|90
 decl_stmt|;
@@ -111,7 +111,7 @@ name|getTimeDuration
 argument_list|(
 name|KEY_SAS_KEY_EXPIRY_PERIOD
 argument_list|,
-name|DEFAUL_CONTAINER_SAS_KEY_PERIOD
+name|DEFAULT_CONTAINER_SAS_KEY_PERIOD
 argument_list|,
 name|TimeUnit
 operator|.

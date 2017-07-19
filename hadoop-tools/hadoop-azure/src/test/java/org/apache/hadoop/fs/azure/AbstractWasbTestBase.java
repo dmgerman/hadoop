@@ -48,6 +48,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|After
@@ -190,6 +204,18 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
+block|}
+DECL|method|getConfiguration ()
+specifier|public
+name|Configuration
+name|getConfiguration
+parameter_list|()
+block|{
+return|return
+operator|new
+name|Configuration
+argument_list|()
+return|;
 block|}
 DECL|method|createTestAccount ()
 specifier|protected

@@ -133,7 +133,10 @@ name|authorizer
 operator|.
 name|init
 argument_list|(
-literal|null
+name|fs
+operator|.
+name|getConf
+argument_list|()
 argument_list|,
 literal|true
 argument_list|)
