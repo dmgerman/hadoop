@@ -763,6 +763,66 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * Verifies that max key length is a valid value.    *    * @param length    *          The max key length to be validated    *    * @throws IllegalArgumentException    */
+DECL|method|verifyMaxKeyLength (String length)
+specifier|public
+specifier|static
+name|void
+name|verifyMaxKeyLength
+parameter_list|(
+name|String
+name|length
+parameter_list|)
+throws|throws
+name|IllegalArgumentException
+block|{
+name|int
+name|maxKey
+init|=
+literal|0
+decl_stmt|;
+try|try
+block|{
+name|maxKey
+operator|=
+name|Integer
+operator|.
+name|parseInt
+argument_list|(
+name|length
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|NumberFormatException
+name|nfe
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Invalid max key length, the vaule should be digital."
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|maxKey
+operator|<=
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Invalid max key length, the vaule should be a positive number."
+argument_list|)
+throw|;
+block|}
+block|}
 comment|/**    * Returns a random Request ID.    *    * Request ID is returned to the client as well as flows through the system    * facilitating debugging on why a certain request failed.    *    * @return String random request ID    */
 DECL|method|getRequestID ()
 specifier|public

@@ -2004,6 +2004,27 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|IllegalArgumentException
+name|ex
+parameter_list|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|printf
+argument_list|(
+literal|"Illegal argument: %s%n"
+argument_list|,
+name|ex
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 literal|1
 return|;

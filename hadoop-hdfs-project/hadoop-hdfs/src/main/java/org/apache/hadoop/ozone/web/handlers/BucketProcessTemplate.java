@@ -860,6 +860,11 @@ argument_list|,
 name|fsExp
 argument_list|)
 expr_stmt|;
+name|OzoneException
+name|exp
+init|=
+literal|null
+decl_stmt|;
 if|if
 condition|(
 name|fsExp
@@ -867,7 +872,8 @@ operator|instanceof
 name|FileAlreadyExistsException
 condition|)
 block|{
-throw|throw
+name|exp
+operator|=
 name|ErrorTable
 operator|.
 name|newError
@@ -882,7 +888,7 @@ name|bucket
 argument_list|,
 name|hostName
 argument_list|)
-throw|;
+expr_stmt|;
 block|}
 if|if
 condition|(
@@ -891,7 +897,8 @@ operator|instanceof
 name|DirectoryNotEmptyException
 condition|)
 block|{
-throw|throw
+name|exp
+operator|=
 name|ErrorTable
 operator|.
 name|newError
@@ -906,7 +913,7 @@ name|bucket
 argument_list|,
 name|hostName
 argument_list|)
-throw|;
+expr_stmt|;
 block|}
 if|if
 condition|(
@@ -915,7 +922,8 @@ operator|instanceof
 name|NoSuchFileException
 condition|)
 block|{
-throw|throw
+name|exp
+operator|=
 name|ErrorTable
 operator|.
 name|newError
@@ -930,10 +938,19 @@ name|bucket
 argument_list|,
 name|hostName
 argument_list|)
-throw|;
+expr_stmt|;
 block|}
-comment|// default we don't handle this exception yet.
-throw|throw
+comment|// Default we don't handle this exception yet,
+comment|// report a Server Internal Error.
+if|if
+condition|(
+name|exp
+operator|==
+literal|null
+condition|)
+block|{
+name|exp
+operator|=
 name|ErrorTable
 operator|.
 name|newError
@@ -948,6 +965,28 @@ name|bucket
 argument_list|,
 name|hostName
 argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|fsExp
+operator|!=
+literal|null
+condition|)
+block|{
+name|exp
+operator|.
+name|setMessage
+argument_list|(
+name|fsExp
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+throw|throw
+name|exp
 throw|;
 block|}
 comment|/**    * Abstract function that gets implemented in the BucketHandler functions.    * This function will just deal with the core file system related logic    * and will rely on handleCall function for repetitive error checks    *    * @param args - parsed bucket args, name, userName, ACLs etc    *    * @return Response    *    * @throws OzoneException    * @throws IOException    */
