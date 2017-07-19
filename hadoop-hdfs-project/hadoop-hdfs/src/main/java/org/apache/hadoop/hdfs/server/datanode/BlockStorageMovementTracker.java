@@ -377,7 +377,15 @@ name|InterruptedException
 name|ignore
 parameter_list|)
 block|{
-comment|// ignore
+comment|// Sets interrupt flag of this thread.
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 try|try
@@ -508,6 +516,11 @@ name|trackId
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|running
+condition|)
+block|{
 comment|// handle completed or inprogress blocks movements per trackId.
 name|blksMovementsStatusHandler
 operator|.
@@ -516,6 +529,7 @@ argument_list|(
 name|resultPerTrackIdList
 argument_list|)
 expr_stmt|;
+block|}
 name|movementResults
 operator|.
 name|remove
@@ -528,9 +542,31 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|ExecutionException
-decl||
 name|InterruptedException
+name|e
+parameter_list|)
+block|{
+if|if
+condition|(
+name|running
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Exception while moving block replica to target storage"
+operator|+
+literal|" type"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|ExecutionException
 name|e
 parameter_list|)
 block|{

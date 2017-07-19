@@ -956,14 +956,14 @@ name|void
 name|stop
 parameter_list|()
 block|{
-name|movementTrackerThread
-operator|.
-name|interrupt
-argument_list|()
-expr_stmt|;
 name|movementTracker
 operator|.
 name|stopTracking
+argument_list|()
+expr_stmt|;
+name|movementTrackerThread
+operator|.
+name|interrupt
 argument_list|()
 expr_stmt|;
 block|}
@@ -986,9 +986,11 @@ block|}
 catch|catch
 parameter_list|(
 name|InterruptedException
-name|ie
+name|ignore
 parameter_list|)
-block|{     }
+block|{
+comment|// ignore
+block|}
 block|}
 DECL|method|initializeBlockMoverThreadPool (int num)
 specifier|private
