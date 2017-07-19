@@ -5857,11 +5857,19 @@ decl_stmt|;
 name|String
 name|genericRefresh
 init|=
-literal|"-refresh: Arguments are<hostname:port><resource_identifier> [arg1..argn]\n"
+literal|"-refresh: Arguments are<hostname:ipc_port>"
 operator|+
-literal|"\tTriggers a runtime-refresh of the resource specified by<resource_identifier>\n"
+literal|"<resource_identifier> [arg1..argn]\n"
 operator|+
-literal|"\ton<hostname:port>. All other args after are sent to the host.\n"
+literal|"\tTriggers a runtime-refresh of the resource specified by "
+operator|+
+literal|"<resource_identifier> on<hostname:ipc_port>.\n"
+operator|+
+literal|"\tAll other args after are sent to the host.\n"
+operator|+
+literal|"\tThe ipc_port is determined by 'dfs.datanode.ipc.address',"
+operator|+
+literal|"default is DFS_DATANODE_IPC_DEFAULT_PORT.\n"
 decl_stmt|;
 name|String
 name|printTopology
@@ -5873,39 +5881,51 @@ decl_stmt|;
 name|String
 name|refreshNamenodes
 init|=
-literal|"-refreshNamenodes: Takes a datanodehost:port as argument,\n"
+literal|"-refreshNamenodes: Takes a "
 operator|+
-literal|"\t\tFor the given datanode, reloads the configuration files,\n"
+literal|"datanodehost:ipc_port as argument,For the given datanode\n"
 operator|+
-literal|"\t\tstops serving the removed block-pools\n"
+literal|"\t\treloads the configuration files,stops serving the removed\n"
 operator|+
-literal|"\t\tand starts serving new block-pools\n"
+literal|"\t\tblock-pools and starts serving new block-pools.\n"
+operator|+
+literal|"\t\tThe ipc_port is determined by 'dfs.datanode.ipc.address',"
+operator|+
+literal|"default is DFS_DATANODE_IPC_DEFAULT_PORT.\n"
 decl_stmt|;
 name|String
 name|getVolumeReport
 init|=
-literal|"-getVolumeReport: Takes a datanodehost:port as "
+literal|"-getVolumeReport: Takes a datanodehost:ipc_port"
 operator|+
-literal|"argument,\n\t\tFor the given datanode, get the volume report\n"
+literal|" as argument,For the given datanode,get the volume report.\n"
+operator|+
+literal|"\t\tThe ipc_port is determined by 'dfs.datanode.ipc.address',"
+operator|+
+literal|"default is DFS_DATANODE_IPC_DEFAULT_PORT.\n"
 decl_stmt|;
 name|String
 name|deleteBlockPool
 init|=
-literal|"-deleteBlockPool: Arguments are datanodehost:port, blockpool id\n"
+literal|"-deleteBlockPool: Arguments are "
 operator|+
-literal|"\t\t and an optional argument \"force\". If force is passed,\n"
+literal|"datanodehost:ipc_port, blockpool id and an optional argument\n"
 operator|+
-literal|"\t\t block pool directory for the given blockpool id on the given\n"
+literal|"\t\t\"force\". If force is passed,block pool directory for\n"
 operator|+
-literal|"\t\t datanode is deleted along with its contents, otherwise\n"
+literal|"\t\tthe given blockpool id on the given datanode is deleted\n"
 operator|+
-literal|"\t\t the directory is deleted only if it is empty. The command\n"
+literal|"\t\talong with its contents,otherwise the directory is deleted\n"
 operator|+
-literal|"\t\t will fail if datanode is still serving the block pool.\n"
+literal|"\t\tonly if it is empty.The command will fail if datanode is\n"
 operator|+
-literal|"\t\t   Refer to refreshNamenodes to shutdown a block pool\n"
+literal|"\t\tstill serving the block pool.Refer to refreshNamenodes to\n"
 operator|+
-literal|"\t\t service on a datanode.\n"
+literal|"\t\tshutdown a block pool service on a datanode.\n"
+operator|+
+literal|"\t\tThe ipc_port is determined by 'dfs.datanode.ipc.address',"
+operator|+
+literal|"default is DFS_DATANODE_IPC_DEFAULT_PORT.\n"
 decl_stmt|;
 name|String
 name|setBalancerBandwidth
@@ -10270,7 +10290,7 @@ name|println
 argument_list|(
 literal|"Usage: hdfs dfsadmin"
 operator|+
-literal|" [-reconfig<namenode|datanode><host:port> "
+literal|" [-reconfig<namenode|datanode><host:ipc_port> "
 operator|+
 literal|"<start|status|properties>]"
 argument_list|)
@@ -10295,7 +10315,9 @@ name|println
 argument_list|(
 literal|"Usage: hdfs dfsadmin"
 operator|+
-literal|" [-refresh<hostname:port><resource_identifier> [arg1..argn]"
+literal|" [-refresh<hostname:ipc_port> "
+operator|+
+literal|"<resource_identifier> [arg1..argn]"
 argument_list|)
 expr_stmt|;
 block|}
@@ -10341,7 +10363,7 @@ name|println
 argument_list|(
 literal|"Usage: hdfs dfsadmin"
 operator|+
-literal|" [-refreshNamenodes datanode-host:port]"
+literal|" [-refreshNamenodes datanode-host:ipc_port]"
 argument_list|)
 expr_stmt|;
 block|}
@@ -10364,7 +10386,7 @@ name|println
 argument_list|(
 literal|"Usage: hdfs dfsadmin"
 operator|+
-literal|" [-getVolumeReport datanode-host:port]"
+literal|" [-getVolumeReport datanode-host:ipc_port]"
 argument_list|)
 expr_stmt|;
 block|}
@@ -10387,7 +10409,7 @@ name|println
 argument_list|(
 literal|"Usage: hdfs dfsadmin"
 operator|+
-literal|" [-deleteBlockPool datanode-host:port blockpoolId [force]]"
+literal|" [-deleteBlockPool datanode-host:ipc_port blockpoolId [force]]"
 argument_list|)
 expr_stmt|;
 block|}
