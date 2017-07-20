@@ -7779,6 +7779,78 @@ literal|"]."
 argument_list|)
 throw|;
 block|}
+name|long
+name|bytesOnDisk
+init|=
+name|rbw
+operator|.
+name|getBytesOnDisk
+argument_list|()
+decl_stmt|;
+name|long
+name|blockDataLength
+init|=
+name|rbw
+operator|.
+name|getReplicaInfo
+argument_list|()
+operator|.
+name|getBlockDataLength
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|bytesOnDisk
+operator|!=
+name|blockDataLength
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Resetting bytesOnDisk to match blockDataLength (={}) for "
+operator|+
+literal|"replica {}"
+argument_list|,
+name|blockDataLength
+argument_list|,
+name|rbw
+argument_list|)
+expr_stmt|;
+name|bytesOnDisk
+operator|=
+name|blockDataLength
+expr_stmt|;
+name|rbw
+operator|.
+name|setLastChecksumAndDataLen
+argument_list|(
+name|bytesOnDisk
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|bytesOnDisk
+operator|<
+name|bytesAcked
+condition|)
+block|{
+throw|throw
+operator|new
+name|ReplicaNotFoundException
+argument_list|(
+literal|"Found fewer bytesOnDisk than "
+operator|+
+literal|"bytesAcked for replica "
+operator|+
+name|rbw
+argument_list|)
+throw|;
+block|}
 name|FsVolumeReference
 name|ref
 init|=
@@ -7800,7 +7872,7 @@ comment|// If the source was client and the last node in the pipeline was lost,
 comment|// any corrupt data written after the acked length can go unnoticed.
 if|if
 condition|(
-name|numBytes
+name|bytesOnDisk
 operator|>
 name|bytesAcked
 condition|)
@@ -12678,9 +12750,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"THIS IS NOT SUPPOSED TO HAPPEN:"
-operator|+
-literal|" getBytesOnDisk()< getVisibleLength(), rip="
+literal|"getBytesOnDisk()< getVisibleLength(), rip="
 operator|+
 name|replica
 argument_list|)
