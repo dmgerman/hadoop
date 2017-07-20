@@ -366,19 +366,6 @@ block|{
 comment|// Override configuration with deprecated environment variables.
 name|deprecateEnv
 argument_list|(
-literal|"HTTPFS_TEMP"
-argument_list|,
-name|conf
-argument_list|,
-name|HttpServer2
-operator|.
-name|HTTP_TEMP_DIR_KEY
-argument_list|,
-name|HTTPFS_SITE_XML
-argument_list|)
-expr_stmt|;
-name|deprecateEnv
-argument_list|(
 literal|"HTTPFS_HTTP_HOSTNAME"
 argument_list|,
 name|conf
