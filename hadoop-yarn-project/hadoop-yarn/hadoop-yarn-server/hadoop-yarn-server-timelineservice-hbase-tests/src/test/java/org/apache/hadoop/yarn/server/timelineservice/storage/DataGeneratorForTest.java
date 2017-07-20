@@ -311,7 +311,7 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|loadApps (HBaseTestingUtility util)
+DECL|method|loadApps (HBaseTestingUtility util, long ts)
 specifier|public
 specifier|static
 name|void
@@ -319,6 +319,9 @@ name|loadApps
 parameter_list|(
 name|HBaseTestingUtility
 name|util
+parameter_list|,
+name|long
+name|ts
 parameter_list|)
 throws|throws
 name|IOException
@@ -576,14 +579,6 @@ init|=
 operator|new
 name|HashSet
 argument_list|<>
-argument_list|()
-decl_stmt|;
-name|long
-name|ts
-init|=
-name|System
-operator|.
-name|currentTimeMillis
 argument_list|()
 decl_stmt|;
 name|metrics
@@ -894,7 +889,9 @@ operator|.
 name|addMetrics
 argument_list|(
 name|getMetrics4
-argument_list|()
+argument_list|(
+name|ts
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|TimelineEvent
@@ -1132,7 +1129,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|getMetrics4 ()
+DECL|method|getMetrics4 (long ts)
 specifier|private
 specifier|static
 name|Set
@@ -1140,7 +1137,10 @@ argument_list|<
 name|TimelineMetric
 argument_list|>
 name|getMetrics4
-parameter_list|()
+parameter_list|(
+name|long
+name|ts
+parameter_list|)
 block|{
 name|Set
 argument_list|<
@@ -1167,14 +1167,6 @@ argument_list|(
 literal|"MAP1_SLOT_MILLIS"
 argument_list|)
 expr_stmt|;
-name|long
-name|ts1
-init|=
-name|System
-operator|.
-name|currentTimeMillis
-argument_list|()
-decl_stmt|;
 name|Map
 argument_list|<
 name|Long
@@ -1192,7 +1184,7 @@ name|metricValues1
 operator|.
 name|put
 argument_list|(
-name|ts1
+name|ts
 operator|-
 literal|120000
 argument_list|,
@@ -1203,7 +1195,7 @@ name|metricValues1
 operator|.
 name|put
 argument_list|(
-name|ts1
+name|ts
 operator|-
 literal|100000
 argument_list|,
@@ -1214,7 +1206,7 @@ name|metricValues1
 operator|.
 name|put
 argument_list|(
-name|ts1
+name|ts
 operator|-
 literal|80000
 argument_list|,
@@ -1225,7 +1217,7 @@ name|metricValues1
 operator|.
 name|put
 argument_list|(
-name|ts1
+name|ts
 operator|-
 literal|60000
 argument_list|,
@@ -1236,7 +1228,7 @@ name|metricValues1
 operator|.
 name|put
 argument_list|(
-name|ts1
+name|ts
 operator|-
 literal|40000
 argument_list|,
@@ -1247,7 +1239,7 @@ name|metricValues1
 operator|.
 name|put
 argument_list|(
-name|ts1
+name|ts
 operator|-
 literal|20000
 argument_list|,
@@ -2162,7 +2154,7 @@ return|return
 name|metricValues
 return|;
 block|}
-DECL|method|loadEntities (HBaseTestingUtility util)
+DECL|method|loadEntities (HBaseTestingUtility util, long ts)
 specifier|public
 specifier|static
 name|void
@@ -2170,6 +2162,9 @@ name|loadEntities
 parameter_list|(
 name|HBaseTestingUtility
 name|util
+parameter_list|,
+name|long
+name|ts
 parameter_list|)
 throws|throws
 name|IOException
@@ -2286,14 +2281,6 @@ argument_list|(
 literal|"MAP_SLOT_MILLIS"
 argument_list|)
 expr_stmt|;
-name|long
-name|ts
-init|=
-name|System
-operator|.
-name|currentTimeMillis
-argument_list|()
-decl_stmt|;
 name|m1
 operator|.
 name|setType
@@ -2581,14 +2568,6 @@ argument_list|(
 literal|"MAP1_SLOT_MILLIS"
 argument_list|)
 expr_stmt|;
-name|long
-name|ts1
-init|=
-name|System
-operator|.
-name|currentTimeMillis
-argument_list|()
-decl_stmt|;
 name|m2
 operator|.
 name|setType
@@ -2604,7 +2583,7 @@ name|setValues
 argument_list|(
 name|getMetricValues2
 argument_list|(
-name|ts1
+name|ts
 argument_list|)
 argument_list|)
 expr_stmt|;

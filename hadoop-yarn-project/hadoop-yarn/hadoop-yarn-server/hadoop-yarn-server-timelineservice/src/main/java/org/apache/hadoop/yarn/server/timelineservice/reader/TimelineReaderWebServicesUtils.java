@@ -421,7 +421,7 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Parse the passed fields represented as strings and convert them into a    * {@link TimelineDataToRetrieve} object.    * @param confs confs to retrieve.    * @param metrics metrics to retrieve.    * @param fields fields to retrieve.    * @param metricsLimit upper limit on number of metrics to return.    * @return a {@link TimelineDataToRetrieve} object.    * @throws TimelineParseException if any problem occurs during parsing.    */
-DECL|method|createTimelineDataToRetrieve (String confs, String metrics, String fields, String metricsLimit)
+DECL|method|createTimelineDataToRetrieve (String confs, String metrics, String fields, String metricsLimit, String metricsTimeBegin, String metricsTimeEnd)
 specifier|static
 name|TimelineDataToRetrieve
 name|createTimelineDataToRetrieve
@@ -437,6 +437,12 @@ name|fields
 parameter_list|,
 name|String
 name|metricsLimit
+parameter_list|,
+name|String
+name|metricsTimeBegin
+parameter_list|,
+name|String
+name|metricsTimeEnd
 parameter_list|)
 throws|throws
 name|TimelineParseException
@@ -467,6 +473,16 @@ argument_list|,
 name|parseIntStr
 argument_list|(
 name|metricsLimit
+argument_list|)
+argument_list|,
+name|parseLongStr
+argument_list|(
+name|metricsTimeBegin
+argument_list|)
+argument_list|,
+name|parseLongStr
+argument_list|(
+name|metricsTimeEnd
 argument_list|)
 argument_list|)
 return|;

@@ -3638,6 +3638,10 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -3811,6 +3815,10 @@ argument_list|(
 literal|null
 argument_list|,
 name|metricsToRetrieve
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|,
@@ -4235,6 +4243,10 @@ name|Field
 operator|.
 name|METRICS
 argument_list|)
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|)
@@ -5857,6 +5869,10 @@ name|METRICS
 argument_list|)
 argument_list|,
 literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -5990,6 +6006,10 @@ name|Field
 operator|.
 name|METRICS
 argument_list|)
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|)
@@ -6126,6 +6146,10 @@ name|METRICS
 argument_list|)
 argument_list|,
 literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -6216,6 +6240,10 @@ name|Field
 operator|.
 name|METRICS
 argument_list|)
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|)
@@ -6404,6 +6432,10 @@ name|Field
 operator|.
 name|ALL
 argument_list|)
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|)
