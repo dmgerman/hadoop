@@ -377,11 +377,6 @@ expr_stmt|;
 name|runMake
 argument_list|()
 expr_stmt|;
-name|runMake
-argument_list|()
-expr_stmt|;
-comment|// The second make is a workaround for HADOOP-9215.  It can be
-comment|// removed when cmake 2.6 is no longer supported.
 name|long
 name|end
 init|=
