@@ -467,7 +467,7 @@ name|bucket
 init|=
 name|vol
 operator|.
-name|createBucket
+name|getBucket
 argument_list|(
 name|bucketName
 argument_list|)

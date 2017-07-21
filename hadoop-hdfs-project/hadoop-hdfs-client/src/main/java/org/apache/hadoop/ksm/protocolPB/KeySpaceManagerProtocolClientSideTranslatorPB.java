@@ -2575,7 +2575,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Get key failed, error:"
+literal|"Create key failed, error:"
 operator|+
 name|resp
 operator|.

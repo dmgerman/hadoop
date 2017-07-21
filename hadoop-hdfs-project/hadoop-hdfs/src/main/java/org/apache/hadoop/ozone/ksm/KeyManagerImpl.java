@@ -631,6 +631,16 @@ return|;
 block|}
 catch|catch
 parameter_list|(
+name|KSMException
+name|e
+parameter_list|)
+block|{
+throw|throw
+name|e
+throw|;
+block|}
+catch|catch
+parameter_list|(
 name|IOException
 name|ex
 parameter_list|)

@@ -1127,7 +1127,7 @@ name|assertExceptionContains
 argument_list|(
 name|Status
 operator|.
-name|INTERNAL_ERROR
+name|VOLUME_NOT_FOUND
 operator|.
 name|toString
 argument_list|()
@@ -1180,7 +1180,7 @@ name|assertExceptionContains
 argument_list|(
 name|Status
 operator|.
-name|INTERNAL_ERROR
+name|BUCKET_NOT_FOUND
 operator|.
 name|toString
 argument_list|()
