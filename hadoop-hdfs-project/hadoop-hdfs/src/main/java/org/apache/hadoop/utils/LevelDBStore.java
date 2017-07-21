@@ -575,11 +575,19 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|db
+operator|!=
+literal|null
+condition|)
+block|{
 name|db
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Returns true if the DB is empty.    *    * @return boolean    * @throws IOException    */
 annotation|@
@@ -657,6 +665,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|close
+argument_list|()
+expr_stmt|;
 name|JniDBFactory
 operator|.
 name|factory
