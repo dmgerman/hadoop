@@ -485,7 +485,7 @@ name|name
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|processArtifact (ContainerLauncher launcher, Component component, SliderFileSystem fileSystem)
+DECL|method|processArtifact (ContainerLauncher launcher, Application application, RoleInstance roleInstance, SliderFileSystem fileSystem)
 specifier|public
 specifier|abstract
 name|void
@@ -494,8 +494,11 @@ parameter_list|(
 name|ContainerLauncher
 name|launcher
 parameter_list|,
-name|Component
-name|component
+name|Application
+name|application
+parameter_list|,
+name|RoleInstance
+name|roleInstance
 parameter_list|,
 name|SliderFileSystem
 name|fileSystem
@@ -578,7 +581,9 @@ name|processArtifact
 argument_list|(
 name|launcher
 argument_list|,
-name|component
+name|application
+argument_list|,
+name|roleInstance
 argument_list|,
 name|fileSystem
 argument_list|)

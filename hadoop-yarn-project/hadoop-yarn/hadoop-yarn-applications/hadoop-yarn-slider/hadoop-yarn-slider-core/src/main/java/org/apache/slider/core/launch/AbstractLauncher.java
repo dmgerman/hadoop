@@ -632,6 +632,11 @@ name|dockerNetwork
 init|=
 name|DEFAULT_DOCKER_NETWORK
 decl_stmt|;
+DECL|field|dockerHostname
+specifier|protected
+name|String
+name|dockerHostname
+decl_stmt|;
 DECL|field|yarnContainerMountPoints
 specifier|protected
 name|String
@@ -1177,6 +1182,15 @@ argument_list|(
 literal|"YARN_CONTAINER_RUNTIME_DOCKER_CONTAINER_NETWORK"
 argument_list|,
 name|dockerNetwork
+argument_list|)
+expr_stmt|;
+name|env
+operator|.
+name|put
+argument_list|(
+literal|"YARN_CONTAINER_RUNTIME_DOCKER_CONTAINER_HOSTNAME"
+argument_list|,
+name|dockerHostname
 argument_list|)
 expr_stmt|;
 name|env
@@ -2227,6 +2241,22 @@ operator|.
 name|dockerNetwork
 operator|=
 name|dockerNetwork
+expr_stmt|;
+block|}
+DECL|method|setDockerHostname (String dockerHostname)
+specifier|public
+name|void
+name|setDockerHostname
+parameter_list|(
+name|String
+name|dockerHostname
+parameter_list|)
+block|{
+name|this
+operator|.
+name|dockerHostname
+operator|=
+name|dockerHostname
 expr_stmt|;
 block|}
 DECL|method|setYarnContainerMountPoints (String yarnContainerMountPoints)

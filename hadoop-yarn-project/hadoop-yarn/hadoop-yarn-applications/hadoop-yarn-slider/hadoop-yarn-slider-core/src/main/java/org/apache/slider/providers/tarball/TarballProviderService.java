@@ -80,6 +80,22 @@ name|api
 operator|.
 name|resource
 operator|.
+name|Application
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
+name|api
+operator|.
+name|resource
+operator|.
 name|Component
 import|;
 end_import
@@ -132,6 +148,24 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
+name|server
+operator|.
+name|appmaster
+operator|.
+name|state
+operator|.
+name|RoleInstance
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -166,7 +200,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|processArtifact (ContainerLauncher launcher, Component component, SliderFileSystem fileSystem)
+DECL|method|processArtifact (ContainerLauncher launcher, Application application, RoleInstance roleInstance, SliderFileSystem fileSystem)
 specifier|public
 name|void
 name|processArtifact
@@ -174,8 +208,11 @@ parameter_list|(
 name|ContainerLauncher
 name|launcher
 parameter_list|,
-name|Component
-name|component
+name|Application
+name|application
+parameter_list|,
+name|RoleInstance
+name|roleInstance
 parameter_list|,
 name|SliderFileSystem
 name|fileSystem
@@ -189,6 +226,10 @@ init|=
 operator|new
 name|Path
 argument_list|(
+name|roleInstance
+operator|.
+name|providerRole
+operator|.
 name|component
 operator|.
 name|getArtifact

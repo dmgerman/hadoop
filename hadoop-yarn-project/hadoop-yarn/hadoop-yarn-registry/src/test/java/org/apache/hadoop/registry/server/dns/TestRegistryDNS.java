@@ -613,7 +613,7 @@ literal|"{\n"
 operator|+
 literal|"  \"type\" : \"JSONServiceRecord\",\n"
 operator|+
-literal|"  \"description\" : \"YCLOUD\",\n"
+literal|"  \"description\" : \"COMP-NAME\",\n"
 operator|+
 literal|"  \"external\" : [ ],\n"
 operator|+
@@ -640,7 +640,7 @@ literal|"{\n"
 operator|+
 literal|"  \"type\" : \"JSONServiceRecord\",\n"
 operator|+
-literal|"  \"description\" : \"YCLOUD\",\n"
+literal|"  \"description\" : \"COMP-NAME\",\n"
 operator|+
 literal|"  \"external\" : [ ],\n"
 operator|+
@@ -663,7 +663,7 @@ literal|"{\n"
 operator|+
 literal|"  \"type\" : \"JSONServiceRecord\",\n"
 operator|+
-literal|"  \"description\" : \"YCLOUD\",\n"
+literal|"  \"description\" : \"COMP-NAME\",\n"
 operator|+
 literal|"  \"external\" : [ ],\n"
 operator|+
@@ -1193,7 +1193,7 @@ name|register
 argument_list|(
 literal|"/registry/users/root/services/org-apache-slider/test1/components/"
 operator|+
-literal|"container-e50-1451931954322-0016-01-000002"
+literal|"ctr-e50-1451931954322-0016-01-000002"
 argument_list|,
 name|record
 argument_list|)
@@ -1235,7 +1235,7 @@ name|recs
 operator|=
 name|assertDNSQuery
 argument_list|(
-literal|"ycloud.test1.root.hwx.test."
+literal|"comp-name.test1.root.hwx.test."
 argument_list|,
 literal|1
 argument_list|)
@@ -1284,7 +1284,7 @@ name|register
 argument_list|(
 literal|"/registry/users/root/services/org-apache-slider/test1/components/"
 operator|+
-literal|"container-e50-1451931954322-0016-01-000003"
+literal|"ctr-e50-1451931954322-0016-01-000003"
 argument_list|,
 name|record
 argument_list|)
@@ -1397,7 +1397,7 @@ name|register
 argument_list|(
 literal|"/registry/users/root/services/org-apache-slider/test1/components/"
 operator|+
-literal|"container-e50-1451931954322-0016-01-000002"
+literal|"ctr-e50-1451931954322-0016-01-000002"
 argument_list|,
 name|record
 argument_list|)
@@ -1454,7 +1454,7 @@ name|recs
 operator|=
 name|assertDNSQuery
 argument_list|(
-literal|"ycloud.test1.root.hwx.test."
+literal|"comp-name.test1.root.hwx.test."
 argument_list|,
 literal|1
 argument_list|)
@@ -1520,7 +1520,7 @@ name|register
 argument_list|(
 literal|"/registry/users/root/services/org-apache-slider/test1/components/"
 operator|+
-literal|"container-e50-1451931954322-0016-01-000002"
+literal|"ctr-e50-1451931954322-0016-01-000002"
 argument_list|,
 name|record
 argument_list|)
@@ -1545,7 +1545,7 @@ name|assertEquals
 argument_list|(
 literal|"wrong result"
 argument_list|,
-literal|"ctr-e50-1451931954322-0016-01-000002.hwx.test."
+literal|"comp-name.test1.root.hwx.test."
 argument_list|,
 operator|(
 operator|(
@@ -1673,7 +1673,7 @@ name|register
 argument_list|(
 literal|"/registry/users/root/services/org-apache-slider/test1/components/"
 operator|+
-literal|"container-e50-1451931954322-0016-01-000002"
+literal|"ctr-e50-1451931954322-0016-01-000002"
 argument_list|,
 name|record
 argument_list|)
@@ -1698,7 +1698,7 @@ name|assertEquals
 argument_list|(
 literal|"wrong result"
 argument_list|,
-literal|"ctr-e50-1451931954322-0016-01-000002.hwx.test."
+literal|"comp-name.test1.root.hwx.test."
 argument_list|,
 operator|(
 operator|(
@@ -1751,7 +1751,7 @@ name|register
 argument_list|(
 literal|"/registry/users/root/services/org-apache-slider/test1/components/"
 operator|+
-literal|"container-e50-1451931954322-0016-01-000002"
+literal|"ctr-e50-1451931954322-0016-01-000002"
 argument_list|,
 name|record
 argument_list|)
@@ -1896,7 +1896,7 @@ name|register
 argument_list|(
 literal|"/registry/users/root/services/org-apache-slider/test1/components/"
 operator|+
-literal|"container-e50-1451931954322-0016-01-000002"
+literal|"ctr-e50-1451931954322-0016-01-000002"
 argument_list|,
 name|record
 argument_list|)
@@ -2582,7 +2582,7 @@ name|register
 argument_list|(
 literal|"/registry/users/root/services/org-apache-slider/test1/components/"
 operator|+
-literal|"container-e50-1451931954322-0016-01-000002"
+literal|"ctr-e50-1451931954322-0016-01-000002"
 argument_list|,
 name|record
 argument_list|)
@@ -2630,7 +2630,7 @@ name|recs
 operator|=
 name|assertDNSQuery
 argument_list|(
-literal|"ycloud.test1.root.hwx.test."
+literal|"comp-name.test1.root.hwx.test."
 argument_list|,
 name|Type
 operator|.
@@ -2685,7 +2685,7 @@ name|register
 argument_list|(
 literal|"/registry/users/root/services/org-apache-slider/test1/components/"
 operator|+
-literal|"container-e50-1451931954322-0016-01-000002"
+literal|"ctr-e50-1451931954322-0016-01-000002"
 argument_list|,
 name|record
 argument_list|)
@@ -3034,7 +3034,7 @@ name|register
 argument_list|(
 literal|"/registry/users/root/services/org-apache-slider/test1/components/"
 operator|+
-literal|"container-e50-1451931954322-0016-01-000002"
+literal|"ctr-e50-1451931954322-0016-01-000002"
 argument_list|,
 name|record
 argument_list|)
@@ -3076,7 +3076,7 @@ name|recs
 operator|=
 name|assertDNSQuery
 argument_list|(
-literal|"ycloud.test1.root.hwx.test."
+literal|"comp-name.test1.root.hwx.test."
 argument_list|,
 literal|1
 argument_list|)
@@ -3111,7 +3111,7 @@ name|assertEquals
 argument_list|(
 literal|"wrong result"
 argument_list|,
-literal|"ctr-e50-1451931954322-0016-01-000002.hwx.test."
+literal|"comp-name.test1.root.hwx.test."
 argument_list|,
 operator|(
 operator|(

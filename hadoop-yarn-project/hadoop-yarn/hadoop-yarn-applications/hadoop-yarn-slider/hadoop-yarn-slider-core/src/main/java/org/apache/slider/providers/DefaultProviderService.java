@@ -28,7 +28,7 @@ name|api
 operator|.
 name|resource
 operator|.
-name|Component
+name|Application
 import|;
 end_import
 
@@ -72,9 +72,13 @@ name|apache
 operator|.
 name|slider
 operator|.
-name|providers
+name|server
 operator|.
-name|AbstractProviderService
+name|appmaster
+operator|.
+name|state
+operator|.
+name|RoleInstance
 import|;
 end_import
 
@@ -114,7 +118,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|processArtifact (ContainerLauncher launcher, Component component, SliderFileSystem fileSystem)
+DECL|method|processArtifact (ContainerLauncher launcher, Application application, RoleInstance roleInstance, SliderFileSystem fileSystem)
 specifier|public
 name|void
 name|processArtifact
@@ -122,8 +126,11 @@ parameter_list|(
 name|ContainerLauncher
 name|launcher
 parameter_list|,
-name|Component
-name|component
+name|Application
+name|application
+parameter_list|,
+name|RoleInstance
+name|roleInstance
 parameter_list|,
 name|SliderFileSystem
 name|fileSystem

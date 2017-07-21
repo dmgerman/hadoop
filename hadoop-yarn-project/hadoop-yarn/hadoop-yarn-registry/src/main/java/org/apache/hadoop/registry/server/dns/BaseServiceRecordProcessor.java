@@ -996,17 +996,6 @@ name|getPath
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|containerID
-operator|=
-name|containerID
-operator|.
-name|replace
-argument_list|(
-literal|"container"
-argument_list|,
-literal|"ctr"
-argument_list|)
-expr_stmt|;
 return|return
 name|Name
 operator|.
