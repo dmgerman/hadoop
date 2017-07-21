@@ -487,6 +487,7 @@ implements|implements
 name|Closeable
 block|{
 DECL|field|LOG
+specifier|public
 specifier|static
 specifier|final
 name|Logger
