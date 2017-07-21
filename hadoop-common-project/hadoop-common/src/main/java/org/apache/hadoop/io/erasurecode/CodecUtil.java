@@ -805,9 +805,17 @@ name|e
 parameter_list|)
 block|{
 comment|// Fallback to next coder if possible
+if|if
+condition|(
 name|LOG
 operator|.
-name|warn
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Failed to create raw erasure encoder "
 operator|+
@@ -818,6 +826,7 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 throw|throw
@@ -905,9 +914,17 @@ name|e
 parameter_list|)
 block|{
 comment|// Fallback to next coder if possible
+if|if
+condition|(
 name|LOG
 operator|.
-name|warn
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Failed to create raw erasure decoder "
 operator|+
@@ -920,13 +937,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
 throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
 literal|"Fail to create raw erasure "
 operator|+
-literal|"encoder with given codec: "
+literal|"decoder with given codec: "
 operator|+
 name|codecName
 argument_list|)

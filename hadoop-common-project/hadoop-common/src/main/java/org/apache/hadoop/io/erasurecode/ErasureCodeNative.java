@@ -164,6 +164,23 @@ operator|=
 name|problem
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|LOADING_FAILURE_REASON
+operator|!=
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"ISA-L support is not available in your platform... "
+operator|+
+literal|"using builtin-java codec where applicable"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|ErasureCodeNative ()
 specifier|private
