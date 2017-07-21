@@ -4071,6 +4071,15 @@ init|=
 name|getConf
 argument_list|()
 decl_stmt|;
+name|conf
+operator|.
+name|setLong
+argument_list|(
+name|OZONE_SCM_HEARTBEAT_PROCESS_INTERVAL_MS
+argument_list|,
+literal|1000
+argument_list|)
+expr_stmt|;
 specifier|final
 name|int
 name|nodeCount
