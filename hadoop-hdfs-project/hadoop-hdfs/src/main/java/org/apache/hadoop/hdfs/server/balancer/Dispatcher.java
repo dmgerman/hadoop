@@ -378,6 +378,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|DFSUtil
 import|;
 end_import
@@ -1090,6 +1104,12 @@ specifier|final
 name|int
 name|maxConcurrentMovesPerNode
 decl_stmt|;
+DECL|field|maxMoverThreads
+specifier|private
+specifier|final
+name|int
+name|maxMoverThreads
+decl_stmt|;
 DECL|field|getBlocksSize
 specifier|private
 specifier|final
@@ -1150,6 +1170,13 @@ name|count
 init|=
 literal|0
 decl_stmt|;
+DECL|field|lotSize
+specifier|private
+name|int
+name|lotSize
+init|=
+literal|1
+decl_stmt|;
 DECL|method|Allocator (int max)
 name|Allocator
 parameter_list|(
@@ -1164,6 +1191,7 @@ operator|=
 name|max
 expr_stmt|;
 block|}
+comment|/** Allocate specified number of items */
 DECL|method|allocate (int n)
 specifier|synchronized
 name|int
@@ -1215,6 +1243,19 @@ name|allocated
 return|;
 block|}
 block|}
+comment|/** Aloocate a single lot of items */
+DECL|method|allocate ()
+name|int
+name|allocate
+parameter_list|()
+block|{
+return|return
+name|allocate
+argument_list|(
+name|lotSize
+argument_list|)
+return|;
+block|}
 DECL|method|reset ()
 specifier|synchronized
 name|void
@@ -1224,6 +1265,23 @@ block|{
 name|count
 operator|=
 literal|0
+expr_stmt|;
+block|}
+comment|/** Set the lot size */
+DECL|method|setLotSize (int lotSize)
+specifier|synchronized
+name|void
+name|setLotSize
+parameter_list|(
+name|int
+name|lotSize
+parameter_list|)
+block|{
+name|this
+operator|.
+name|lotSize
+operator|=
+name|lotSize
 expr_stmt|;
 block|}
 block|}
@@ -5262,6 +5320,12 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
+name|maxMoverThreads
+operator|=
+name|moverThreads
+expr_stmt|;
+name|this
+operator|.
 name|maxConcurrentMovesPerNode
 operator|=
 name|maxConcurrentMovesPerNode
@@ -5759,9 +5823,7 @@ init|=
 name|moverThreadAllocator
 operator|.
 name|allocate
-argument_list|(
-name|maxConcurrentMovesPerNode
-argument_list|)
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
@@ -5968,6 +6030,96 @@ operator|+
 name|concurrentThreads
 operator|/
 name|BALANCER_NUM_RPC_PER_SEC
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Determine the size of each mover thread pool per target
+name|int
+name|threadsPerTarget
+init|=
+name|maxMoverThreads
+operator|/
+name|targets
+operator|.
+name|size
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|threadsPerTarget
+operator|==
+literal|0
+condition|)
+block|{
+comment|// Some scheduled moves will get ignored as some targets won't have
+comment|// any threads allocated.
+name|moverThreadAllocator
+operator|.
+name|setLotSize
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_BALANCER_MOVERTHREADS_KEY
+operator|+
+literal|"="
+operator|+
+name|maxMoverThreads
+operator|+
+literal|" is too small for moving blocks to "
+operator|+
+name|targets
+operator|.
+name|size
+argument_list|()
+operator|+
+literal|" targets. Balancing may be slower."
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|threadsPerTarget
+operator|>
+name|maxConcurrentMovesPerNode
+condition|)
+block|{
+name|threadsPerTarget
+operator|=
+name|maxConcurrentMovesPerNode
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Limiting threads per target to the specified max."
+argument_list|)
+expr_stmt|;
+block|}
+name|moverThreadAllocator
+operator|.
+name|setLotSize
+argument_list|(
+name|threadsPerTarget
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Allocating "
+operator|+
+name|threadsPerTarget
+operator|+
+literal|" threads per target."
 argument_list|)
 expr_stmt|;
 block|}
