@@ -5018,7 +5018,7 @@ literal|"c0"
 operator|+
 name|RandomStringUtils
 operator|.
-name|randomAscii
+name|randomAlphanumeric
 argument_list|(
 literal|10
 argument_list|)
