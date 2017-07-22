@@ -874,6 +874,21 @@ name|userName
 operator|=
 literal|"hadoop"
 expr_stmt|;
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Got exception when getting Hadoop user name."
+operator|+
+literal|" Set the user name to '"
+operator|+
+name|userName
+operator|+
+literal|"'."
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 block|}
 name|this
 operator|.
