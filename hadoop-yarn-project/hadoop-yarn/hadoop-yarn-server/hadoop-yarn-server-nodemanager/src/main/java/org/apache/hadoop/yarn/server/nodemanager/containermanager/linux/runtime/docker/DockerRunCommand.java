@@ -371,28 +371,6 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setHostname (String hostname)
-specifier|public
-name|DockerRunCommand
-name|setHostname
-parameter_list|(
-name|String
-name|hostname
-parameter_list|)
-block|{
-name|super
-operator|.
-name|addCommandArguments
-argument_list|(
-literal|"--hostname="
-operator|+
-name|hostname
-argument_list|)
-expr_stmt|;
-return|return
-name|this
-return|;
-block|}
 DECL|method|addDevice (String sourceDevice, String destinationDevice)
 specifier|public
 name|DockerRunCommand

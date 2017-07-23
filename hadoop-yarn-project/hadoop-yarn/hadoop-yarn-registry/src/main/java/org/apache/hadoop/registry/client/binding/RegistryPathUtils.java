@@ -829,13 +829,6 @@ name|yarnId
 operator|.
 name|replace
 argument_list|(
-literal|"container"
-argument_list|,
-literal|"ctr"
-argument_list|)
-operator|.
-name|replace
-argument_list|(
 literal|"_"
 argument_list|,
 literal|"-"

@@ -56,9 +56,11 @@ name|fasterxml
 operator|.
 name|jackson
 operator|.
+name|databind
+operator|.
 name|annotation
 operator|.
-name|JsonInclude
+name|JsonSerialize
 import|;
 end_import
 
@@ -158,11 +160,13 @@ name|InterfaceStability
 operator|.
 name|Evolving
 annotation|@
-name|JsonInclude
+name|JsonSerialize
 argument_list|(
-name|JsonInclude
+name|include
+operator|=
+name|JsonSerialize
 operator|.
-name|Include
+name|Inclusion
 operator|.
 name|NON_NULL
 argument_list|)
