@@ -274,11 +274,6 @@ specifier|private
 name|CuratorFramework
 name|curator
 decl_stmt|;
-DECL|field|rmContext
-specifier|private
-name|RMContext
-name|rmContext
-decl_stmt|;
 DECL|field|latchPath
 specifier|private
 name|String
@@ -294,13 +289,10 @@ specifier|private
 name|ResourceManager
 name|rm
 decl_stmt|;
-DECL|method|CuratorBasedElectorService (RMContext rmContext, ResourceManager rm)
+DECL|method|CuratorBasedElectorService (ResourceManager rm)
 specifier|public
 name|CuratorBasedElectorService
 parameter_list|(
-name|RMContext
-name|rmContext
-parameter_list|,
 name|ResourceManager
 name|rm
 parameter_list|)
@@ -314,12 +306,6 @@ operator|.
 name|getName
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|rmContext
-operator|=
-name|rmContext
 expr_stmt|;
 name|this
 operator|.
@@ -534,7 +520,10 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|rmContext
+name|rm
+operator|.
+name|getRMContext
+argument_list|()
 operator|.
 name|getRMAdminService
 argument_list|()
@@ -621,7 +610,10 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|rmContext
+name|rm
+operator|.
+name|getRMContext
+argument_list|()
 operator|.
 name|getRMAdminService
 argument_list|()

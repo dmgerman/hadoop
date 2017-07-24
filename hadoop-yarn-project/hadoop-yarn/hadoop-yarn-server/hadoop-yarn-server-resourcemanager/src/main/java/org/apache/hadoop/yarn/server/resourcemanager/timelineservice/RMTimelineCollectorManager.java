@@ -126,7 +126,7 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|RMContext
+name|ResourceManager
 import|;
 end_import
 
@@ -264,17 +264,17 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|rmContext
+DECL|field|rm
 specifier|private
-name|RMContext
-name|rmContext
+name|ResourceManager
+name|rm
 decl_stmt|;
-DECL|method|RMTimelineCollectorManager (RMContext rmContext)
+DECL|method|RMTimelineCollectorManager (ResourceManager resourceManager)
 specifier|public
 name|RMTimelineCollectorManager
 parameter_list|(
-name|RMContext
-name|rmContext
+name|ResourceManager
+name|resourceManager
 parameter_list|)
 block|{
 name|super
@@ -289,9 +289,9 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|rmContext
+name|rm
 operator|=
-name|rmContext
+name|resourceManager
 expr_stmt|;
 block|}
 annotation|@
@@ -311,7 +311,10 @@ block|{
 name|RMApp
 name|app
 init|=
-name|rmContext
+name|rm
+operator|.
+name|getRMContext
+argument_list|()
 operator|.
 name|getRMApps
 argument_list|()

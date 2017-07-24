@@ -440,6 +440,28 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|scheduler
+operator|.
+name|distributed
+operator|.
+name|QueueLimitCalculator
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|security
 operator|.
 name|AMRMTokenSecretManager
@@ -556,26 +578,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|timelineservice
-operator|.
-name|RMTimelineCollectorManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|util
 operator|.
 name|Clock
@@ -599,7 +601,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The RMActiveServiceContext is the class that maintains all the  * RMActiveService contexts.This is expected to be used only by ResourceManager  * and RMContext.  */
+comment|/**  * The RMActiveServiceContext is the class that maintains<b>Active</b> service  * context. Services that need to run only on the Active RM. This is expected to  * be used only by RMContext.  */
 end_comment
 
 begin_class
@@ -795,11 +797,6 @@ specifier|private
 name|ApplicationMasterService
 name|applicationMasterService
 decl_stmt|;
-DECL|field|timelineCollectorManager
-specifier|private
-name|RMTimelineCollectorManager
-name|timelineCollectorManager
-decl_stmt|;
 DECL|field|nodeLabelManager
 specifier|private
 name|RMNodeLabelsManager
@@ -864,6 +861,11 @@ DECL|field|rmAppLifetimeMonitor
 specifier|private
 name|RMAppLifetimeMonitor
 name|rmAppLifetimeMonitor
+decl_stmt|;
+DECL|field|queueLimitCalculator
+specifier|private
+name|QueueLimitCalculator
+name|queueLimitCalculator
 decl_stmt|;
 DECL|method|RMActiveServiceContext ()
 specifier|public
@@ -1678,40 +1680,6 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|getRMTimelineCollectorManager ()
-specifier|public
-name|RMTimelineCollectorManager
-name|getRMTimelineCollectorManager
-parameter_list|()
-block|{
-return|return
-name|timelineCollectorManager
-return|;
-block|}
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|setRMTimelineCollectorManager ( RMTimelineCollectorManager collectorManager)
-specifier|public
-name|void
-name|setRMTimelineCollectorManager
-parameter_list|(
-name|RMTimelineCollectorManager
-name|collectorManager
-parameter_list|)
-block|{
-name|this
-operator|.
-name|timelineCollectorManager
-operator|=
-name|collectorManager
-expr_stmt|;
-block|}
-annotation|@
-name|Private
-annotation|@
-name|Unstable
 DECL|method|getEpoch ()
 specifier|public
 name|long
@@ -2013,6 +1981,42 @@ name|this
 operator|.
 name|rmAppLifetimeMonitor
 return|;
+block|}
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|getNodeManagerQueueLimitCalculator ()
+specifier|public
+name|QueueLimitCalculator
+name|getNodeManagerQueueLimitCalculator
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|queueLimitCalculator
+return|;
+block|}
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setContainerQueueLimitCalculator ( QueueLimitCalculator limitCalculator)
+specifier|public
+name|void
+name|setContainerQueueLimitCalculator
+parameter_list|(
+name|QueueLimitCalculator
+name|limitCalculator
+parameter_list|)
+block|{
+name|this
+operator|.
+name|queueLimitCalculator
+operator|=
+name|limitCalculator
+expr_stmt|;
 block|}
 block|}
 end_class

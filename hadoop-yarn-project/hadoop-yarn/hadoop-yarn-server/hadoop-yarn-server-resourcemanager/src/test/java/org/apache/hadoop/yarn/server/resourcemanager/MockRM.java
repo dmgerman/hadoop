@@ -6553,9 +6553,6 @@ operator|new
 name|AdminService
 argument_list|(
 name|this
-argument_list|,
-name|getRMContext
-argument_list|()
 argument_list|)
 block|{
 annotation|@

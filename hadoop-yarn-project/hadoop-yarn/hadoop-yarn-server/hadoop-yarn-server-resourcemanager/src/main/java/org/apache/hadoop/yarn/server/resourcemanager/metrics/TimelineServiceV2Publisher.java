@@ -522,24 +522,6 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|RMContext
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|RMServerUtils
 import|;
 end_import
@@ -802,12 +784,12 @@ specifier|private
 name|boolean
 name|publishContainerEvents
 decl_stmt|;
-DECL|method|TimelineServiceV2Publisher (RMContext rmContext)
+DECL|method|TimelineServiceV2Publisher ( RMTimelineCollectorManager timelineCollectorManager)
 specifier|public
 name|TimelineServiceV2Publisher
 parameter_list|(
-name|RMContext
-name|rmContext
+name|RMTimelineCollectorManager
+name|timelineCollectorManager
 parameter_list|)
 block|{
 name|super
@@ -817,10 +799,7 @@ argument_list|)
 expr_stmt|;
 name|rmTimelineCollectorManager
 operator|=
-name|rmContext
-operator|.
-name|getRMTimelineCollectorManager
-argument_list|()
+name|timelineCollectorManager
 expr_stmt|;
 block|}
 annotation|@

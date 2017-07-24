@@ -718,6 +718,13 @@ name|rm
 init|=
 literal|null
 decl_stmt|;
+DECL|field|nm
+specifier|private
+name|MockNM
+name|nm
+init|=
+literal|null
+decl_stmt|;
 DECL|field|app
 specifier|private
 name|RMApp
@@ -1090,6 +1097,8 @@ operator|.
 name|getNewAppId
 argument_list|()
 expr_stmt|;
+name|nm
+operator|=
 name|rm
 operator|.
 name|registerNode
@@ -3112,6 +3121,54 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
+name|assertNotNull
+argument_list|(
+literal|"Node not registered"
+argument_list|,
+name|nm
+argument_list|)
+expr_stmt|;
+name|rm
+operator|.
+name|adminService
+operator|.
+name|transitionToStandby
+argument_list|(
+name|requestInfo
+argument_list|)
+expr_stmt|;
+name|checkMonitorHealth
+argument_list|()
+expr_stmt|;
+name|checkStandbyRMFunctionality
+argument_list|()
+expr_stmt|;
+comment|// race condition causes to register/node heartbeat node even after service
+comment|// is stopping/stopped. New RMContext is being created on every transition
+comment|// to standby, so metrics should be 0 which indicates new context reference
+comment|// has taken.
+name|nm
+operator|.
+name|registerNode
+argument_list|()
+expr_stmt|;
+name|verifyClusterMetrics
+argument_list|(
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
 comment|// 3. Create new RM
 name|rm
 operator|=
@@ -3336,9 +3393,6 @@ operator|new
 name|AdminService
 argument_list|(
 name|this
-argument_list|,
-name|getRMContext
-argument_list|()
 argument_list|)
 block|{
 name|int

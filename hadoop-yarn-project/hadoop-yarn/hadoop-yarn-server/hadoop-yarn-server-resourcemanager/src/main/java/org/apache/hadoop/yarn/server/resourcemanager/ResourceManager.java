@@ -1688,16 +1688,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileNotFoundException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|IOException
 import|;
 end_import
@@ -2611,8 +2601,6 @@ operator|=
 operator|new
 name|CuratorBasedElectorService
 argument_list|(
-name|rmContext
-argument_list|,
 name|this
 argument_list|)
 expr_stmt|;
@@ -2624,7 +2612,7 @@ operator|=
 operator|new
 name|ActiveStandbyElectorBasedElectorService
 argument_list|(
-name|rmContext
+name|this
 argument_list|)
 expr_stmt|;
 block|}
@@ -3398,7 +3386,7 @@ return|return
 operator|new
 name|RMTimelineCollectorManager
 argument_list|(
-name|rmContext
+name|this
 argument_list|)
 return|;
 block|}
@@ -3454,6 +3442,9 @@ operator|new
 name|TimelineServiceV2Publisher
 argument_list|(
 name|rmContext
+operator|.
+name|getRMTimelineCollectorManager
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -3659,11 +3650,6 @@ specifier|private
 name|ResourceManager
 name|rm
 decl_stmt|;
-DECL|field|activeServiceContext
-specifier|private
-name|RMActiveServiceContext
-name|activeServiceContext
-decl_stmt|;
 DECL|field|fromActive
 specifier|private
 name|boolean
@@ -3713,19 +3699,6 @@ operator|=
 operator|new
 name|StandByTransitionRunnable
 argument_list|()
-expr_stmt|;
-name|activeServiceContext
-operator|=
-operator|new
-name|RMActiveServiceContext
-argument_list|()
-expr_stmt|;
-name|rmContext
-operator|.
-name|setActiveServiceContext
-argument_list|(
-name|activeServiceContext
-argument_list|)
 expr_stmt|;
 name|rmSecretManagerService
 operator|=
@@ -6202,7 +6175,7 @@ condition|(
 name|initialize
 condition|)
 block|{
-name|resetDispatcher
+name|resetRMContext
 argument_list|()
 expr_stmt|;
 name|createAndInitActiveServices
@@ -6868,8 +6841,6 @@ operator|new
 name|AdminService
 argument_list|(
 name|this
-argument_list|,
-name|rmContext
 argument_list|)
 return|;
 block|}
@@ -7327,12 +7298,31 @@ return|return
 name|dispatcher
 return|;
 block|}
-DECL|method|resetDispatcher ()
+DECL|method|resetRMContext ()
 specifier|private
 name|void
-name|resetDispatcher
+name|resetRMContext
 parameter_list|()
 block|{
+name|RMContextImpl
+name|rmContextImpl
+init|=
+operator|new
+name|RMContextImpl
+argument_list|()
+decl_stmt|;
+comment|// transfer service context to new RM service Context
+name|rmContextImpl
+operator|.
+name|setServiceContext
+argument_list|(
+name|rmContext
+operator|.
+name|getServiceContext
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// reset dispatcher
 name|Dispatcher
 name|dispatcher
 init|=
@@ -7392,12 +7382,16 @@ argument_list|(
 name|rmDispatcher
 argument_list|)
 expr_stmt|;
-name|rmContext
+name|rmContextImpl
 operator|.
 name|setDispatcher
 argument_list|(
-name|rmDispatcher
+name|dispatcher
 argument_list|)
+expr_stmt|;
+name|rmContext
+operator|=
+name|rmContextImpl
 expr_stmt|;
 block|}
 DECL|method|setSchedulerRecoveryStartAndWaitTime (RMState state, Configuration conf)
