@@ -423,6 +423,8 @@ argument_list|(
 name|columnFamily
 argument_list|,
 name|converter
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|this
