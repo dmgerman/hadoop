@@ -460,11 +460,6 @@ operator|.
 name|emptyList
 argument_list|()
 decl_stmt|;
-DECL|field|scheduler
-specifier|private
-name|FairScheduler
-name|scheduler
-decl_stmt|;
 DECL|field|context
 specifier|private
 name|FSContext
@@ -586,12 +581,6 @@ name|scheduler
 argument_list|,
 name|parent
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|scheduler
-operator|=
-name|scheduler
 expr_stmt|;
 name|this
 operator|.
