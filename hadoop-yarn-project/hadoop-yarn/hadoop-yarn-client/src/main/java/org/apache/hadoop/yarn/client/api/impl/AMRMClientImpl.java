@@ -4612,7 +4612,7 @@ condition|)
 block|{
 return|return;
 block|}
-comment|// Don't support specifying>= 2 node labels in a node label expression now
+comment|// Don't support specifying> 1 node labels in a node label expression now
 if|if
 condition|(
 name|exp
@@ -4634,7 +4634,7 @@ throw|throw
 operator|new
 name|InvalidContainerRequestException
 argument_list|(
-literal|"Cannot specify more than two node labels"
+literal|"Cannot specify more than one node label"
 operator|+
 literal|" in a single node label expression"
 argument_list|)
