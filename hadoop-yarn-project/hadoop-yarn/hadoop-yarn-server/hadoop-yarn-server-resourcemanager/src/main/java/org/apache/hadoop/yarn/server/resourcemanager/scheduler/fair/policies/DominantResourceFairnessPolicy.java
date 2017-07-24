@@ -48,6 +48,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -972,6 +986,8 @@ name|res
 return|;
 block|}
 comment|/**      * Calculates and orders a resource's share of a pool in terms of two vectors.      * The shares vector contains, for each resource, the fraction of the pool that      * it takes up.  The resourceOrder vector contains an ordering of resources      * by largest share.  So if resource=<10 MB, 5 CPU>, and pool=<100 MB, 10 CPU>,      * shares will be [.1, .5] and resourceOrder will be [CPU, MEMORY].      */
+annotation|@
+name|VisibleForTesting
 DECL|method|calculateShares (Resource resource, Resource pool, ResourceWeights shares, ResourceType[] resourceOrder, ResourceWeights weights)
 name|void
 name|calculateShares
