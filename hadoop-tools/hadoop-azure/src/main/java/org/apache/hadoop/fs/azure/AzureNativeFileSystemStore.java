@@ -514,6 +514,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|VersionInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|eclipse
 operator|.
 name|jetty
@@ -696,6 +710,64 @@ name|azure
 operator|.
 name|storage
 operator|.
+name|Constants
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|microsoft
+operator|.
+name|azure
+operator|.
+name|storage
+operator|.
+name|StorageEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|microsoft
+operator|.
+name|azure
+operator|.
+name|storage
+operator|.
+name|core
+operator|.
+name|BaseRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|microsoft
+operator|.
+name|azure
+operator|.
+name|storage
+operator|.
+name|SendingRequestEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|microsoft
+operator|.
+name|azure
+operator|.
+name|storage
+operator|.
 name|blob
 operator|.
 name|BlobListingDetails
@@ -831,7 +903,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Core implementation of Windows Azure Filesystem for Hadoop.  * Provides the bridging logic between Hadoop's abstract filesystem and Azure Storage   *  */
+comment|/**  * Core implementation of Windows Azure Filesystem for Hadoop.  * Provides the bridging logic between Hadoop's abstract filesystem and Azure Storage  *  */
 end_comment
 
 begin_class
@@ -881,6 +953,23 @@ name|String
 name|STORAGE_EMULATOR_ACCOUNT_NAME_PROPERTY_NAME
 init|=
 literal|"fs.azure.storage.emulator.account.name"
+decl_stmt|;
+comment|/**    * Configuration for User-Agent field.    */
+DECL|field|USER_AGENT_ID_KEY
+specifier|static
+specifier|final
+name|String
+name|USER_AGENT_ID_KEY
+init|=
+literal|"fs.azure.user.agent.prefix"
+decl_stmt|;
+DECL|field|USER_AGENT_ID_DEFAULT
+specifier|static
+specifier|final
+name|String
+name|USER_AGENT_ID_DEFAULT
+init|=
+literal|"unknown"
 decl_stmt|;
 DECL|field|LOG
 specifier|public
@@ -1691,6 +1780,12 @@ name|useLocalSasKeyMode
 init|=
 literal|false
 decl_stmt|;
+comment|// User-Agent
+DECL|field|userAgentId
+specifier|private
+name|String
+name|userAgentId
+decl_stmt|;
 DECL|field|delegationToken
 specifier|private
 name|String
@@ -1742,7 +1837,7 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
-comment|/**    * Add a test hook to modify the operation context we use for Azure Storage    * operations.    *     * @param testHook    *          The test hook, or null to unset previous hooks.    */
+comment|/**    * Add a test hook to modify the operation context we use for Azure Storage    * operations.    *    * @param testHook    *          The test hook, or null to unset previous hooks.    */
 annotation|@
 name|VisibleForTesting
 DECL|method|addTestHookToOperationContext (TestHookOperationContext testHook)
@@ -1783,7 +1878,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Creates a JSON serializer that can serialize a PermissionStatus object into    * the JSON string we want in the blob metadata.    *     * @return The JSON serializer.    */
+comment|/**    * Creates a JSON serializer that can serialize a PermissionStatus object into    * the JSON string we want in the blob metadata.    *    * @return The JSON serializer.    */
 DECL|method|createPermissionJsonSerializer ()
 specifier|private
 specifier|static
@@ -2082,7 +2177,7 @@ return|return
 name|bandwidthGaugeUpdater
 return|;
 block|}
-comment|/**    * Check if concurrent reads and writes on the same blob are allowed.    *     * @return true if concurrent reads and OOB writes has been configured, false    *         otherwise.    */
+comment|/**    * Check if concurrent reads and writes on the same blob are allowed.    *    * @return true if concurrent reads and OOB writes has been configured, false    *         otherwise.    */
 DECL|method|isConcurrentOOBAppendAllowed ()
 specifier|private
 name|boolean
@@ -2093,7 +2188,7 @@ return|return
 name|tolerateOobAppends
 return|;
 block|}
-comment|/**    * Method for the URI and configuration object necessary to create a storage    * session with an Azure session. It parses the scheme to ensure it matches    * the storage protocol supported by this file system.    *     * @param uri - URI for target storage blob.    * @param conf - reference to configuration object.    * @param instrumentation - the metrics source that will keep track of operations here.    *     * @throws IllegalArgumentException if URI or job object is null, or invalid scheme.    */
+comment|/**    * Method for the URI and configuration object necessary to create a storage    * session with an Azure session. It parses the scheme to ensure it matches    * the storage protocol supported by this file system.    *    * @param uri - URI for target storage blob.    * @param conf - reference to configuration object.    * @param instrumentation - the metrics source that will keep track of operations here.    *    * @throws IllegalArgumentException if URI or job object is null, or invalid scheme.    */
 annotation|@
 name|Override
 DECL|method|initialize (URI uri, Configuration conf, AzureFileSystemInstrumentation instrumentation)
@@ -2301,6 +2396,18 @@ name|pageBlobDirs
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// User-agent
+name|userAgentId
+operator|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|USER_AGENT_ID_KEY
+argument_list|,
+name|USER_AGENT_ID_DEFAULT
+argument_list|)
+expr_stmt|;
 comment|// Extract directories that should have atomic rename applied.
 name|atomicRenameDirs
 operator|=
@@ -2443,7 +2550,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    * Method to extract the account name from an Azure URI.    *     * @param uri    *          -- WASB blob URI    * @returns accountName -- the account name for the URI.    * @throws URISyntaxException    *           if the URI does not have an authority it is badly formed.    */
+comment|/**    * Method to extract the account name from an Azure URI.    *    * @param uri    *          -- WASB blob URI    * @returns accountName -- the account name for the URI.    * @throws URISyntaxException    *           if the URI does not have an authority it is badly formed.    */
 DECL|method|getAccountFromAuthority (URI uri)
 specifier|private
 name|String
@@ -2579,7 +2686,7 @@ literal|1
 index|]
 return|;
 block|}
-comment|/**    * Method to extract the container name from an Azure URI.    *     * @param uri    *          -- WASB blob URI    * @returns containerName -- the container name for the URI. May be null.    * @throws URISyntaxException    *           if the uri does not have an authority it is badly formed.    */
+comment|/**    * Method to extract the container name from an Azure URI.    *    * @param uri    *          -- WASB blob URI    * @returns containerName -- the container name for the URI. May be null.    * @throws URISyntaxException    *           if the uri does not have an authority it is badly formed.    */
 DECL|method|getContainerFromAuthority (URI uri)
 specifier|private
 name|String
@@ -2714,7 +2821,7 @@ literal|0
 index|]
 return|;
 block|}
-comment|/**    * Get the appropriate return the appropriate scheme for communicating with    * Azure depending on whether wasb or wasbs is specified in the target URI.    *     * return scheme - HTTPS or HTTP as appropriate.    */
+comment|/**    * Get the appropriate return the appropriate scheme for communicating with    * Azure depending on whether wasb or wasbs is specified in the target URI.    *    * return scheme - HTTPS or HTTP as appropriate.    */
 DECL|method|getHTTPScheme ()
 specifier|private
 name|String
@@ -2768,7 +2875,7 @@ name|HTTP_SCHEME
 return|;
 block|}
 block|}
-comment|/**    * Set the configuration parameters for this client storage session with    * Azure.    *     * @throws AzureException    */
+comment|/**    * Set the configuration parameters for this client storage session with    * Azure.    *    * @throws AzureException    */
 DECL|method|configureAzureStorageSession ()
 specifier|private
 name|void
@@ -3094,7 +3201,7 @@ name|selfThrottlingWriteFactor
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Connect to Azure storage using anonymous credentials.    *     * @param uri    *          - URI to target blob (R/O access to public blob)    *     * @throws StorageException    *           raised on errors communicating with Azure storage.    * @throws IOException    *           raised on errors performing I/O or setting up the session.    * @throws URISyntaxException    *           raised on creating mal-formed URI's.    */
+comment|/**    * Connect to Azure storage using anonymous credentials.    *    * @param uri    *          - URI to target blob (R/O access to public blob)    *    * @throws StorageException    *           raised on errors communicating with Azure storage.    * @throws IOException    *           raised on errors performing I/O or setting up the session.    * @throws URISyntaxException    *           raised on creating mal-formed URI's.    */
 DECL|method|connectUsingAnonymousCredentials (final URI uri)
 specifier|private
 name|void
@@ -3724,7 +3831,7 @@ return|return
 name|key
 return|;
 block|}
-comment|/**    * Establish a session with Azure blob storage based on the target URI. The    * method determines whether or not the URI target contains an explicit    * account or an implicit default cluster-wide account.    *     * @throws AzureException    * @throws IOException    */
+comment|/**    * Establish a session with Azure blob storage based on the target URI. The    * method determines whether or not the URI target contains an explicit    * account or an implicit default cluster-wide account.    *    * @throws AzureException    * @throws IOException    */
 DECL|method|createAzureStorageSession ()
 specifier|private
 name|void
@@ -5117,7 +5224,7 @@ operator|.
 name|PureWrite
 argument_list|)
 expr_stmt|;
-comment|/**        * Note: Windows Azure Blob Storage does not allow the creation of arbitrary directory        *      paths under the default $root directory.  This is by design to eliminate        *      ambiguity in specifying a implicit blob address. A blob in the $root conatiner        *      cannot include a / in its name and must be careful not to include a trailing        *      '/' when referencing  blobs in the $root container.        *      A '/; in the $root container permits ambiguous blob names as in the following        *      example involving two containers $root and mycontainer:        *                http://myaccount.blob.core.windows.net/$root        *                http://myaccount.blob.core.windows.net/mycontainer        *      If the URL "mycontainer/somefile.txt were allowed in $root then the URL:        *                http://myaccount.blob.core.windows.net/mycontainer/myblob.txt        *      could mean either:        *        (1) container=mycontainer; blob=myblob.txt        *        (2) container=$root; blob=mycontainer/myblob.txt        *         * To avoid this type of ambiguity the Azure blob storage prevents        * arbitrary path under $root. For a simple and more consistent user        * experience it was decided to eliminate the opportunity for creating        * such paths by making the $root container read-only under WASB.         */
+comment|/**        * Note: Windows Azure Blob Storage does not allow the creation of arbitrary directory        *      paths under the default $root directory.  This is by design to eliminate        *      ambiguity in specifying a implicit blob address. A blob in the $root conatiner        *      cannot include a / in its name and must be careful not to include a trailing        *      '/' when referencing  blobs in the $root container.        *      A '/; in the $root container permits ambiguous blob names as in the following        *      example involving two containers $root and mycontainer:        *                http://myaccount.blob.core.windows.net/$root        *                http://myaccount.blob.core.windows.net/mycontainer        *      If the URL "mycontainer/somefile.txt were allowed in $root then the URL:        *                http://myaccount.blob.core.windows.net/mycontainer/myblob.txt        *      could mean either:        *        (1) container=mycontainer; blob=myblob.txt        *        (2) container=$root; blob=mycontainer/myblob.txt        *        * To avoid this type of ambiguity the Azure blob storage prevents        * arbitrary path under $root. For a simple and more consistent user        * experience it was decided to eliminate the opportunity for creating        * such paths by making the $root container read-only under WASB.        */
 comment|// Check that no attempt is made to write to blobs on default
 comment|// $root containers.
 if|if
@@ -5385,7 +5492,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Default permission to use when no permission metadata is found.    *     * @return The default permission to use.    */
+comment|/**    * Default permission to use when no permission metadata is found.    *    * @return The default permission to use.    */
 DECL|method|defaultPermissionNoBlobMetadata ()
 specifier|private
 specifier|static
@@ -6435,7 +6542,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Private method to check for authenticated access.    *     * @ returns boolean -- true if access is credentialed and authenticated and    * false otherwise.    */
+comment|/**    * Private method to check for authenticated access.    *    * @ returns boolean -- true if access is credentialed and authenticated and    * false otherwise.    */
 DECL|method|isAuthenticatedAccess ()
 specifier|private
 name|boolean
@@ -6459,7 +6566,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * This private method uses the root directory or the original container to    * list blobs under the directory or container depending on whether the    * original file system object was constructed with a short- or long-form URI.    * If the root directory is non-null the URI in the file constructor was in    * the long form.    *     * @param includeMetadata    *          if set, the listed items will have their metadata populated    *          already.    * @param useFlatBlobListing    *          if set the list is flat, otherwise it is hierarchical.    *    * @returns blobItems : iterable collection of blob items.    * @throws URISyntaxException    *     */
+comment|/**    * This private method uses the root directory or the original container to    * list blobs under the directory or container depending on whether the    * original file system object was constructed with a short- or long-form URI.    * If the root directory is non-null the URI in the file constructor was in    * the long form.    *    * @param includeMetadata    *          if set, the listed items will have their metadata populated    *          already.    * @param useFlatBlobListing    *          if set the list is flat, otherwise it is hierarchical.    *    * @returns blobItems : iterable collection of blob items.    * @throws URISyntaxException    *    */
 DECL|method|listRootBlobs (boolean includeMetadata, boolean useFlatBlobListing)
 specifier|private
 name|Iterable
@@ -6515,7 +6622,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * This private method uses the root directory or the original container to    * list blobs under the directory or container given a specified prefix for    * the directory depending on whether the original file system object was    * constructed with a short- or long-form URI. If the root directory is    * non-null the URI in the file constructor was in the long form.    *     * @param aPrefix    *          : string name representing the prefix of containing blobs.    * @param includeMetadata    *          if set, the listed items will have their metadata populated    *          already.    * @param useFlatBlobListing    *          if set the list is flat, otherwise it is hierarchical.    *     * @returns blobItems : iterable collection of blob items.    * @throws URISyntaxException    *     */
+comment|/**    * This private method uses the root directory or the original container to    * list blobs under the directory or container given a specified prefix for    * the directory depending on whether the original file system object was    * constructed with a short- or long-form URI. If the root directory is    * non-null the URI in the file constructor was in the long form.    *    * @param aPrefix    *          : string name representing the prefix of containing blobs.    * @param includeMetadata    *          if set, the listed items will have their metadata populated    *          already.    * @param useFlatBlobListing    *          if set the list is flat, otherwise it is hierarchical.    *    * @returns blobItems : iterable collection of blob items.    * @throws URISyntaxException    *    */
 DECL|method|listRootBlobs (String aPrefix, boolean includeMetadata, boolean useFlatBlobListing)
 specifier|private
 name|Iterable
@@ -6582,7 +6689,7 @@ return|return
 name|list
 return|;
 block|}
-comment|/**    * This private method uses the root directory or the original container to    * list blobs under the directory or container given a specified prefix for    * the directory depending on whether the original file system object was    * constructed with a short- or long-form URI. It also uses the specified flat    * or hierarchical option, listing details options, request options, and    * operation context.    *     * @param aPrefix    *          string name representing the prefix of containing blobs.    * @param useFlatBlobListing    *          - the list is flat if true, or hierarchical otherwise.    * @param listingDetails    *          - determine whether snapshots, metadata, committed/uncommitted    *          data    * @param options    *          - object specifying additional options for the request. null =    *          default options    * @param opContext    *          - context of the current operation    * @returns blobItems : iterable collection of blob items.    * @throws URISyntaxException    *     */
+comment|/**    * This private method uses the root directory or the original container to    * list blobs under the directory or container given a specified prefix for    * the directory depending on whether the original file system object was    * constructed with a short- or long-form URI. It also uses the specified flat    * or hierarchical option, listing details options, request options, and    * operation context.    *    * @param aPrefix    *          string name representing the prefix of containing blobs.    * @param useFlatBlobListing    *          - the list is flat if true, or hierarchical otherwise.    * @param listingDetails    *          - determine whether snapshots, metadata, committed/uncommitted    *          data    * @param options    *          - object specifying additional options for the request. null =    *          default options    * @param opContext    *          - context of the current operation    * @returns blobItems : iterable collection of blob items.    * @throws URISyntaxException    *    */
 DECL|method|listRootBlobs (String aPrefix, boolean useFlatBlobListing, EnumSet<BlobListingDetails> listingDetails, BlobRequestOptions options, OperationContext opContext)
 specifier|private
 name|Iterable
@@ -6643,7 +6750,7 @@ name|opContext
 argument_list|)
 return|;
 block|}
-comment|/**    * This private method uses the root directory or the original container to    * get the block blob reference depending on whether the original file system    * object was constructed with a short- or long-form URI. If the root    * directory is non-null the URI in the file constructor was in the long form.    *     * @param aKey    *          : a key used to query Azure for the block blob.    * @returns blob : a reference to the Azure block blob corresponding to the    *          key.    * @throws URISyntaxException    *     */
+comment|/**    * This private method uses the root directory or the original container to    * get the block blob reference depending on whether the original file system    * object was constructed with a short- or long-form URI. If the root    * directory is non-null the URI in the file constructor was in the long form.    *    * @param aKey    *          : a key used to query Azure for the block blob.    * @returns blob : a reference to the Azure block blob corresponding to the    *          key.    * @throws URISyntaxException    *    */
 DECL|method|getBlobReference (String aKey)
 specifier|private
 name|CloudBlobWrapper
@@ -6714,7 +6821,7 @@ return|return
 name|blob
 return|;
 block|}
-comment|/**    * This private method normalizes the key by stripping the container name from    * the path and returns a path relative to the root directory of the    * container.    *     * @param keyUri    *          - adjust this key to a path relative to the root directory    *     * @returns normKey    */
+comment|/**    * This private method normalizes the key by stripping the container name from    * the path and returns a path relative to the root directory of the    * container.    *    * @param keyUri    *          - adjust this key to a path relative to the root directory    *    * @returns normKey    */
 DECL|method|normalizeKey (URI keyUri)
 specifier|private
 name|String
@@ -6764,7 +6871,7 @@ return|return
 name|normKey
 return|;
 block|}
-comment|/**    * This private method normalizes the key by stripping the container name from    * the path and returns a path relative to the root directory of the    * container.    *     * @param blob    *          - adjust the key to this blob to a path relative to the root    *          directory    *     * @returns normKey    */
+comment|/**    * This private method normalizes the key by stripping the container name from    * the path and returns a path relative to the root directory of the    * container.    *    * @param blob    *          - adjust the key to this blob to a path relative to the root    *          directory    *    * @returns normKey    */
 DECL|method|normalizeKey (CloudBlobWrapper blob)
 specifier|private
 name|String
@@ -6784,7 +6891,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * This private method normalizes the key by stripping the container name from    * the path and returns a path relative to the root directory of the    * container.    *     * @param directory    *          - adjust the key to this directory to a path relative to the root    *          directory    *     * @returns normKey    */
+comment|/**    * This private method normalizes the key by stripping the container name from    * the path and returns a path relative to the root directory of the    * container.    *    * @param directory    *          - adjust the key to this directory to a path relative to the root    *          directory    *    * @returns normKey    */
 DECL|method|normalizeKey (CloudBlobDirectoryWrapper directory)
 specifier|private
 name|String
@@ -6837,7 +6944,7 @@ return|return
 name|dirKey
 return|;
 block|}
-comment|/**    * Default method to creates a new OperationContext for the Azure Storage    * operation that has listeners hooked to it that will update the metrics for    * this file system. This method does not bind to receive send request    * callbacks by default.    *     * @return The OperationContext object to use.    */
+comment|/**    * Default method to creates a new OperationContext for the Azure Storage    * operation that has listeners hooked to it that will update the metrics for    * this file system. This method does not bind to receive send request    * callbacks by default.    *    * @return The OperationContext object to use.    */
 DECL|method|getInstrumentedContext ()
 specifier|private
 name|OperationContext
@@ -6852,7 +6959,7 @@ literal|false
 argument_list|)
 return|;
 block|}
-comment|/**    * Creates a new OperationContext for the Azure Storage operation that has    * listeners hooked to it that will update the metrics for this file system.    *     * @param bindConcurrentOOBIo    *          - bind to intercept send request call backs to handle OOB I/O.    *     * @return The OperationContext object to use.    */
+comment|/**    * Creates a new OperationContext for the Azure Storage operation that has    * listeners hooked to it that will update the metrics for this file system.    *    * @param bindConcurrentOOBIo    *          - bind to intercept send request call backs to handle OOB I/O.    *    * @return The OperationContext object to use.    */
 DECL|method|getInstrumentedContext (boolean bindConcurrentOOBIo)
 specifier|private
 name|OperationContext
@@ -6869,6 +6976,85 @@ operator|new
 name|OperationContext
 argument_list|()
 decl_stmt|;
+comment|// Set User-Agent
+name|operationContext
+operator|.
+name|getSendingRequestEventHandler
+argument_list|()
+operator|.
+name|addListener
+argument_list|(
+operator|new
+name|StorageEvent
+argument_list|<
+name|SendingRequestEvent
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|void
+name|eventOccurred
+parameter_list|(
+name|SendingRequestEvent
+name|eventArg
+parameter_list|)
+block|{
+name|HttpURLConnection
+name|connection
+init|=
+operator|(
+name|HttpURLConnection
+operator|)
+name|eventArg
+operator|.
+name|getConnectionObject
+argument_list|()
+decl_stmt|;
+name|String
+name|userAgentInfo
+init|=
+name|String
+operator|.
+name|format
+argument_list|(
+name|Utility
+operator|.
+name|LOCALE_US
+argument_list|,
+literal|"WASB/%s (%s) %s"
+argument_list|,
+name|VersionInfo
+operator|.
+name|getVersion
+argument_list|()
+argument_list|,
+name|userAgentId
+argument_list|,
+name|BaseRequest
+operator|.
+name|getUserAgent
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|connection
+operator|.
+name|setRequestProperty
+argument_list|(
+name|Constants
+operator|.
+name|HeaderConstants
+operator|.
+name|USER_AGENT
+argument_list|,
+name|userAgentInfo
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|selfThrottlingEnabled
@@ -7573,7 +7759,7 @@ name|priorLastKey
 argument_list|)
 return|;
 block|}
-comment|/**    * Searches the given list of {@link FileMetadata} objects for a directory    * with the given key.    *     * @param list    *          The list to search.    * @param key    *          The key to search for.    * @return The wanted directory, or null if not found.    */
+comment|/**    * Searches the given list of {@link FileMetadata} objects for a directory    * with the given key.    *    * @param list    *          The list to search.    * @param key    *          The key to search for.    * @return The wanted directory, or null if not found.    */
 DECL|method|getFileMetadataInList ( final Iterable<FileMetadata> list, String key)
 specifier|private
 specifier|static
@@ -8118,7 +8304,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Build up a metadata list of blobs in an Azure blob directory. This method    * uses a in-order first traversal of blob directory structures to maintain    * the sorted order of the blob names.    *     * @param aCloudBlobDirectory Azure blob directory    * @param aFileMetadataList a list of file metadata objects for each    *                          non-directory blob.    * @param maxListingCount maximum length of the built up list.    */
+comment|/**    * Build up a metadata list of blobs in an Azure blob directory. This method    * uses a in-order first traversal of blob directory structures to maintain    * the sorted order of the blob names.    *    * @param aCloudBlobDirectory Azure blob directory    * @param aFileMetadataList a list of file metadata objects for each    *                          non-directory blob.    * @param maxListingCount maximum length of the built up list.    */
 DECL|method|buildUpList (CloudBlobDirectoryWrapper aCloudBlobDirectory, ArrayList<FileMetadata> aFileMetadataList, final int maxListingCount, final int maxListingDepth)
 specifier|private
 name|void
