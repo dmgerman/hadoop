@@ -56,6 +56,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|FileStatus
 import|;
 end_import
@@ -2651,6 +2665,49 @@ name|status
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Assert that a file exists and whose {@link FileStatus} entry    * declares that this is a file and not a symlink or directory.    *    * @param fileContext filesystem to resolve path against    * @param filename    name of the file    * @throws IOException IO problems during file operations    */
+DECL|method|assertIsFile (FileContext fileContext, Path filename)
+specifier|public
+specifier|static
+name|void
+name|assertIsFile
+parameter_list|(
+name|FileContext
+name|fileContext
+parameter_list|,
+name|Path
+name|filename
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|assertPathExists
+argument_list|(
+name|fileContext
+argument_list|,
+literal|"Expected file"
+argument_list|,
+name|filename
+argument_list|)
+expr_stmt|;
+name|FileStatus
+name|status
+init|=
+name|fileContext
+operator|.
+name|getFileStatus
+argument_list|(
+name|filename
+argument_list|)
+decl_stmt|;
+name|assertIsFile
+argument_list|(
+name|filename
+argument_list|,
+name|status
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Assert that a file exists and whose {@link FileStatus} entry    * declares that this is a file and not a symlink or directory.    * @param filename name of the file    * @param status file status    */
 DECL|method|assertIsFile (Path filename, FileStatus status)
 specifier|public
@@ -2826,6 +2883,60 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * Assert that a path exists -but make no assertions as to the    * type of that entry.    *    * @param fileContext fileContext to examine    * @param message     message to include in the assertion failure message    * @param path        path in the filesystem    * @throws FileNotFoundException raised if the path is missing    * @throws IOException           IO problems    */
+DECL|method|assertPathExists (FileContext fileContext, String message, Path path)
+specifier|public
+specifier|static
+name|void
+name|assertPathExists
+parameter_list|(
+name|FileContext
+name|fileContext
+parameter_list|,
+name|String
+name|message
+parameter_list|,
+name|Path
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+operator|!
+name|fileContext
+operator|.
+name|util
+argument_list|()
+operator|.
+name|exists
+argument_list|(
+name|path
+argument_list|)
+condition|)
+block|{
+comment|//failure, report it
+throw|throw
+operator|new
+name|FileNotFoundException
+argument_list|(
+name|message
+operator|+
+literal|": not found "
+operator|+
+name|path
+operator|+
+literal|" in "
+operator|+
+name|path
+operator|.
+name|getParent
+argument_list|()
+argument_list|)
+throw|;
+block|}
+block|}
 comment|/**    * Assert that a path does not exist.    *    * @param fileSystem filesystem to examine    * @param message message to include in the assertion failure message    * @param path path in the filesystem    * @throws IOException IO problems    */
 DECL|method|assertPathDoesNotExist (FileSystem fileSystem, String message, Path path)
 specifier|public
@@ -2851,6 +2962,60 @@ name|FileStatus
 name|status
 init|=
 name|fileSystem
+operator|.
+name|getFileStatus
+argument_list|(
+name|path
+argument_list|)
+decl_stmt|;
+name|fail
+argument_list|(
+name|message
+operator|+
+literal|": unexpectedly found "
+operator|+
+name|path
+operator|+
+literal|" as  "
+operator|+
+name|status
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|expected
+parameter_list|)
+block|{
+comment|//this is expected
+block|}
+block|}
+comment|/**    * Assert that a path does not exist.    *    * @param fileContext fileContext to examine    * @param message     message to include in the assertion failure message    * @param path        path in the filesystem    * @throws IOException IO problems    */
+DECL|method|assertPathDoesNotExist (FileContext fileContext, String message, Path path)
+specifier|public
+specifier|static
+name|void
+name|assertPathDoesNotExist
+parameter_list|(
+name|FileContext
+name|fileContext
+parameter_list|,
+name|String
+name|message
+parameter_list|,
+name|Path
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+try|try
+block|{
+name|FileStatus
+name|status
+init|=
+name|fileContext
 operator|.
 name|getFileStatus
 argument_list|(

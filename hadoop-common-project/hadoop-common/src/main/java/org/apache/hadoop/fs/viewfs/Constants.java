@@ -134,6 +134,12 @@ operator|)
 literal|0555
 argument_list|)
 decl_stmt|;
+DECL|field|CONFIG_VIEWFS_RENAME_STRATEGY
+name|String
+name|CONFIG_VIEWFS_RENAME_STRATEGY
+init|=
+literal|"fs.viewfs.rename.strategy"
+decl_stmt|;
 block|}
 end_interface
 

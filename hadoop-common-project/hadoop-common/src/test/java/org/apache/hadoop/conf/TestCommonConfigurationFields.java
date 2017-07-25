@@ -440,6 +440,13 @@ argument_list|(
 literal|"test.fs.s3n.name"
 argument_list|)
 expr_stmt|;
+name|xmlPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+literal|"fs.viewfs.rename.strategy"
+argument_list|)
+expr_stmt|;
 comment|// S3N/S3A properties are in a different subtree.
 comment|// - org.apache.hadoop.fs.s3native.S3NativeFileSystemConfigKeys
 name|xmlPrefixToSkipCompare
