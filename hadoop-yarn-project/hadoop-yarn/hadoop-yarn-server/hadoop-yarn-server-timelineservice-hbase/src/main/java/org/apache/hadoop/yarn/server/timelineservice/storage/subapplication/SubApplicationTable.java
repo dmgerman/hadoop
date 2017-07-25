@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.timelineservice.storage.application
+DECL|package|org.apache.hadoop.yarn.server.timelineservice.storage.subapplication
 package|package
 name|org
 operator|.
@@ -20,7 +20,7 @@ name|timelineservice
 operator|.
 name|storage
 operator|.
-name|application
+name|subapplication
 package|;
 end_package
 
@@ -31,6 +31,34 @@ operator|.
 name|io
 operator|.
 name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|Log
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|LogFactory
 import|;
 end_import
 
@@ -182,42 +210,22 @@ name|TimelineHBaseSchemaConstants
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|slf4j
-operator|.
-name|Logger
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|slf4j
-operator|.
-name|LoggerFactory
-import|;
-end_import
-
 begin_comment
-comment|/**  * The application table as column families info, config and metrics. Info  * stores information about a YARN application entity, config stores  * configuration data of a YARN application, metrics stores the metrics of a  * YARN application. This table is entirely analogous to the entity table but  * created for better performance.  *  * Example application table record:  *  *<pre>  * |-------------------------------------------------------------------------|  * |  Row       | Column Family                | Column Family| Column Family|  * |  key       | info                         | metrics      | config       |  * |-------------------------------------------------------------------------|  * | clusterId! | id:appId                     | metricId1:   | configKey1:  |  * | userName!  |                              | metricValue1 | configValue1 |  * | flowName!  | created_time:                | @timestamp1  |              |  * | flowRunId! | 1392993084018                |              | configKey2:  |  * | AppId      |                              | metriciD1:   | configValue2 |  * |            | i!infoKey:                   | metricValue2 |              |  * |            | infoValue                    | @timestamp2  |              |  * |            |                              |              |              |  * |            | r!relatesToKey:              | metricId2:   |              |  * |            | id3=id4=id5                  | metricValue1 |              |  * |            |                              | @timestamp2  |              |  * |            | s!isRelatedToKey:            |              |              |  * |            | id7=id9=id6                  |              |              |  * |            |                              |              |              |  * |            | e!eventId=timestamp=infoKey: |              |              |  * |            | eventInfoValue               |              |              |  * |            |                              |              |              |  * |            | flowVersion:                 |              |              |  * |            | versionValue                 |              |              |  * |-------------------------------------------------------------------------|  *</pre>  */
+comment|/**  * The sub application table has column families:  * info, config and metrics.  * Info stores information about a timeline entity object  * config stores configuration data of a timeline entity object  * metrics stores the metrics of a timeline entity object  *  * Example sub application table record:  *  *<pre>  * |-------------------------------------------------------------------------|  * |  Row          | Column Family             | Column Family| Column Family|  * |  key          | info                      | metrics      | config       |  * |-------------------------------------------------------------------------|  * | subAppUserId! | id:entityId               | metricId1:   | configKey1:  |  * | clusterId!    | type:entityType           | metricValue1 | configValue1 |  * | entityType!   |                           | @timestamp1  |              |  * | idPrefix!|    |                           |              | configKey2:  |  * | entityId!     | created_time:             | metricId1:   | configValue2 |  * | userId        | 1392993084018             | metricValue2 |              |  * |               |                           | @timestamp2  |              |  * |               | i!infoKey:                |              |              |  * |               | infoValue                 | metricId1:   |              |  * |               |                           | metricValue1 |              |  * |               |                           | @timestamp2  |              |  * |               | e!eventId=timestamp=      |              |              |  * |               | infoKey:                  |              |              |  * |               | eventInfoValue            |              |              |  * |               |                           |              |              |  * |               | r!relatesToKey:           |              |              |  * |               | id3=id4=id5               |              |              |  * |               |                           |              |              |  * |               | s!isRelatedToKey          |              |              |  * |               | id7=id9=id6               |              |              |  * |               |                           |              |              |  * |               | flowVersion:              |              |              |  * |               | versionValue              |              |              |  * |-------------------------------------------------------------------------|  *</pre>  */
 end_comment
 
 begin_class
-DECL|class|ApplicationTable
+DECL|class|SubApplicationTable
 specifier|public
 class|class
-name|ApplicationTable
+name|SubApplicationTable
 extends|extends
 name|BaseTable
 argument_list|<
-name|ApplicationTable
+name|SubApplicationTable
 argument_list|>
 block|{
-comment|/** application prefix. */
+comment|/** sub app prefix. */
 DECL|field|PREFIX
 specifier|private
 specifier|static
@@ -229,9 +237,9 @@ name|YarnConfiguration
 operator|.
 name|TIMELINE_SERVICE_PREFIX
 operator|+
-literal|"application"
+literal|"subapplication"
 decl_stmt|;
-comment|/** config param name that specifies the application table name. */
+comment|/** config param name that specifies the subapplication table name. */
 DECL|field|TABLE_NAME_CONF_NAME
 specifier|public
 specifier|static
@@ -243,7 +251,7 @@ name|PREFIX
 operator|+
 literal|".table.name"
 decl_stmt|;
-comment|/**    * config param name that specifies the TTL for metrics column family in    * application table.    */
+comment|/**    * config param name that specifies the TTL for metrics column family in    * subapplication table.    */
 DECL|field|METRICS_TTL_CONF_NAME
 specifier|private
 specifier|static
@@ -255,7 +263,7 @@ name|PREFIX
 operator|+
 literal|".table.metrics.ttl"
 decl_stmt|;
-comment|/**    * config param name that specifies max-versions for metrics column family in    * entity table.    */
+comment|/**    * config param name that specifies max-versions for    * metrics column family in subapplication table.    */
 DECL|field|METRICS_MAX_VERSIONS
 specifier|private
 specifier|static
@@ -267,15 +275,15 @@ name|PREFIX
 operator|+
 literal|".table.metrics.max-versions"
 decl_stmt|;
-comment|/** default value for application table name. */
+comment|/** default value for subapplication table name. */
 DECL|field|DEFAULT_TABLE_NAME
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|String
 name|DEFAULT_TABLE_NAME
 init|=
-literal|"timelineservice.application"
+literal|"timelineservice.subapplication"
 decl_stmt|;
 comment|/** default TTL is 30 days for metrics timeseries. */
 DECL|field|DEFAULT_METRICS_TTL
@@ -301,21 +309,21 @@ DECL|field|LOG
 specifier|private
 specifier|static
 specifier|final
-name|Logger
+name|Log
 name|LOG
 init|=
-name|LoggerFactory
+name|LogFactory
 operator|.
-name|getLogger
+name|getLog
 argument_list|(
-name|ApplicationTable
+name|SubApplicationTable
 operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|method|ApplicationTable ()
+DECL|method|SubApplicationTable ()
 specifier|public
-name|ApplicationTable
+name|SubApplicationTable
 parameter_list|()
 block|{
 name|super
@@ -378,7 +386,7 @@ argument_list|)
 throw|;
 block|}
 name|HTableDescriptor
-name|applicationTableDescp
+name|subAppTableDescp
 init|=
 operator|new
 name|HTableDescriptor
@@ -392,7 +400,7 @@ init|=
 operator|new
 name|HColumnDescriptor
 argument_list|(
-name|ApplicationColumnFamily
+name|SubApplicationColumnFamily
 operator|.
 name|INFO
 operator|.
@@ -409,7 +417,7 @@ operator|.
 name|ROWCOL
 argument_list|)
 expr_stmt|;
-name|applicationTableDescp
+name|subAppTableDescp
 operator|.
 name|addFamily
 argument_list|(
@@ -422,7 +430,7 @@ init|=
 operator|new
 name|HColumnDescriptor
 argument_list|(
-name|ApplicationColumnFamily
+name|SubApplicationColumnFamily
 operator|.
 name|CONFIGS
 operator|.
@@ -446,7 +454,7 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-name|applicationTableDescp
+name|subAppTableDescp
 operator|.
 name|addFamily
 argument_list|(
@@ -459,7 +467,7 @@ init|=
 operator|new
 name|HColumnDescriptor
 argument_list|(
-name|ApplicationColumnFamily
+name|SubApplicationColumnFamily
 operator|.
 name|METRICS
 operator|.
@@ -467,7 +475,7 @@ name|getBytes
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|applicationTableDescp
+name|subAppTableDescp
 operator|.
 name|addFamily
 argument_list|(
@@ -517,14 +525,14 @@ name|DEFAULT_METRICS_TTL
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|applicationTableDescp
+name|subAppTableDescp
 operator|.
 name|setRegionSplitPolicyClassName
 argument_list|(
 literal|"org.apache.hadoop.hbase.regionserver.KeyPrefixRegionSplitPolicy"
 argument_list|)
 expr_stmt|;
-name|applicationTableDescp
+name|subAppTableDescp
 operator|.
 name|setValue
 argument_list|(
@@ -539,7 +547,7 @@ name|admin
 operator|.
 name|createTable
 argument_list|(
-name|applicationTableDescp
+name|subAppTableDescp
 argument_list|,
 name|TimelineHBaseSchemaConstants
 operator|.
@@ -569,7 +577,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * @param metricsTTL time to live parameter for the metrics in this table.    * @param hbaseConf configuration in which to set the metrics TTL config    *          variable.    */
+comment|/**    * @param metricsTTL time to live parameter for the metricss in this table.    * @param hbaseConf configururation in which to set the metrics TTL config    *          variable.    */
 DECL|method|setMetricsTTL (int metricsTTL, Configuration hbaseConf)
 specifier|public
 name|void

@@ -104,6 +104,10 @@ name|Test
 import|;
 end_import
 
+begin_comment
+comment|/**  * Unit tests for key converters for various tables' row keys.  *  */
+end_comment
+
 begin_class
 DECL|class|TestKeyConverters
 specifier|public
