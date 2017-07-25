@@ -718,6 +718,10 @@ name|AuthenticationFilter
 import|;
 end_import
 
+begin_comment
+comment|/**  * Main test class for HttpFSServer.  */
+end_comment
+
 begin_class
 DECL|class|TestHttpFSServer
 specifier|public
@@ -788,6 +792,7 @@ name|destroy
 argument_list|()
 expr_stmt|;
 block|}
+comment|/**    * Mock groups.    */
 DECL|class|MockGroups
 specifier|public
 specifier|static
@@ -872,7 +877,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|serverStatusChange (org.apache.hadoop.lib.server.Server.Status oldStatus, org.apache.hadoop.lib.server.Server.Status newStatus)
+DECL|method|serverStatusChange ( org.apache.hadoop.lib.server.Server.Status oldStatus, org.apache.hadoop.lib.server.Server.Status newStatus)
 specifier|public
 name|void
 name|serverStatusChange
@@ -2621,7 +2626,7 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Talks to the http interface to create a file.    *    * @param filename The file to create    * @param perms The permission field, if any (may be null)    * @throws Exception    */
-DECL|method|createWithHttp ( String filename, String perms )
+DECL|method|createWithHttp (String filename, String perms)
 specifier|private
 name|void
 name|createWithHttp
@@ -3045,7 +3050,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Given the JSON output from the GETFILESTATUS call, return the    * 'permission' value.    *    * @param statusJson JSON from GETFILESTATUS    * @return The value of 'permission' in statusJson    * @throws Exception    */
-DECL|method|getPerms ( String statusJson )
+DECL|method|getPerms (String statusJson)
 specifier|private
 name|String
 name|getPerms
@@ -3146,7 +3151,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Given the JSON output from the GETACLSTATUS call, return the    * 'entries' value as a List<String>.    * @param statusJson JSON from GETACLSTATUS    * @return A List of Strings which are the elements of the ACL entries    * @throws Exception    */
-DECL|method|getAclEntries ( String statusJson )
+DECL|method|getAclEntries (String statusJson)
 specifier|private
 name|List
 argument_list|<
@@ -3384,7 +3389,7 @@ return|return
 name|xAttrs
 return|;
 block|}
-comment|/** Decode xattr value from string */
+comment|/** Decode xattr value from string. */
 DECL|method|decodeXAttrValue (String value)
 specifier|private
 name|byte
@@ -3927,7 +3932,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Params for setting an xAttr */
+comment|/** Params for setting an xAttr. */
 DECL|method|setXAttrParam (String name, byte[] value)
 specifier|public
 specifier|static

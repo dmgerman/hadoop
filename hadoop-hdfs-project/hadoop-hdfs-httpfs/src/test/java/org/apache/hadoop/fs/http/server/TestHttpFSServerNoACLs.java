@@ -1401,7 +1401,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Ensure that    *<ol>    *<li>GETFILESTATUS and LISTSTATUS work happily</li>    *<li>ACLSTATUS throws an exception</li>    *<li>The ACL SET, REMOVE, etc calls all fail</li>    *</ol>    *    * @throws Exception    */
+comment|/**    * Test without ACLs.    * Ensure that    *<ol>    *<li>GETFILESTATUS and LISTSTATUS work happily</li>    *<li>ACLSTATUS throws an exception</li>    *<li>The ACL SET, REMOVE, etc calls all fail</li>    *</ol>    *    * @throws Exception    */
 annotation|@
 name|Test
 annotation|@
