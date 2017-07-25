@@ -92,6 +92,26 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|OzoneProtos
+operator|.
+name|NodeState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|scm
 operator|.
 name|container
@@ -185,25 +205,25 @@ parameter_list|)
 throws|throws
 name|UnregisteredNodeException
 function_decl|;
-comment|/**    * Gets all Live Datanodes that is currently communicating with SCM.    * @param nodestate - State of the node    * @return List of Datanodes that are Heartbeating SCM.    */
-DECL|method|getNodes (NODESTATE nodestate)
+comment|/**    * Gets all Live Datanodes that is currently communicating with SCM.    * @param nodeState - State of the node    * @return List of Datanodes that are Heartbeating SCM.    */
+DECL|method|getNodes (NodeState nodeState)
 name|List
 argument_list|<
 name|DatanodeID
 argument_list|>
 name|getNodes
 parameter_list|(
-name|NODESTATE
-name|nodestate
+name|NodeState
+name|nodeState
 parameter_list|)
 function_decl|;
-comment|/**    * Returns the Number of Datanodes that are communicating with SCM.    * @param nodestate - State of the node    * @return int -- count    */
-DECL|method|getNodeCount (NODESTATE nodestate)
+comment|/**    * Returns the Number of Datanodes that are communicating with SCM.    * @param nodeState - State of the node    * @return int -- count    */
+DECL|method|getNodeCount (NodeState nodeState)
 name|int
 name|getNodeCount
 parameter_list|(
-name|NODESTATE
-name|nodestate
+name|NodeState
+name|nodeState
 parameter_list|)
 function_decl|;
 comment|/**    * Get all datanodes known to SCM.    *    * @return List of DatanodeIDs known to SCM.    */
@@ -233,23 +253,6 @@ name|void
 name|clearChillModeFlag
 parameter_list|()
 function_decl|;
-comment|/**    * Enum that represents the Node State. This is used in calls to getNodeList    * and getNodeCount. TODO: Add decommission when we support it.    */
-DECL|enum|NODESTATE
-enum|enum
-name|NODESTATE
-block|{
-DECL|enumConstant|HEALTHY
-name|HEALTHY
-block|,
-DECL|enumConstant|STALE
-name|STALE
-block|,
-DECL|enumConstant|DEAD
-name|DEAD
-block|,
-DECL|enumConstant|UNKNOWN
-name|UNKNOWN
-block|}
 comment|/**    * Returns the aggregated node stats.    * @return the aggregated node stats.    */
 DECL|method|getStats ()
 name|SCMNodeStat
@@ -286,7 +289,7 @@ parameter_list|()
 function_decl|;
 comment|/**    * Returns the node state of a specific node.    * @param id - DatanodeID    * @return Healthy/Stale/Dead.    */
 DECL|method|getNodeState (DatanodeID id)
-name|NODESTATE
+name|NodeState
 name|getNodeState
 parameter_list|(
 name|DatanodeID

@@ -232,6 +232,26 @@ name|Map
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|OzoneProtos
+operator|.
+name|NodeState
+import|;
+end_import
+
 begin_comment
 comment|/**  * A Node Manager to test replication.  */
 end_comment
@@ -251,12 +271,12 @@ name|Map
 argument_list|<
 name|DatanodeID
 argument_list|,
-name|NODESTATE
+name|NodeState
 argument_list|>
 name|nodeStateMap
 decl_stmt|;
 comment|/**    * A list of Datanodes and current states.    * @param nodeState A node state map.    */
-DECL|method|ReplicationNodeManagerMock (Map<DatanodeID, NODESTATE> nodeState)
+DECL|method|ReplicationNodeManagerMock (Map<DatanodeID, NodeState> nodeState)
 specifier|public
 name|ReplicationNodeManagerMock
 parameter_list|(
@@ -264,7 +284,7 @@ name|Map
 argument_list|<
 name|DatanodeID
 argument_list|,
-name|NODESTATE
+name|NodeState
 argument_list|>
 name|nodeState
 parameter_list|)
@@ -380,7 +400,7 @@ block|}
 comment|/**    * Gets all Live Datanodes that is currently communicating with SCM.    *    * @param nodestate - State of the node    * @return List of Datanodes that are Heartbeating SCM.    */
 annotation|@
 name|Override
-DECL|method|getNodes (NODESTATE nodestate)
+DECL|method|getNodes (NodeState nodestate)
 specifier|public
 name|List
 argument_list|<
@@ -388,7 +408,7 @@ name|DatanodeID
 argument_list|>
 name|getNodes
 parameter_list|(
-name|NODESTATE
+name|NodeState
 name|nodestate
 parameter_list|)
 block|{
@@ -399,12 +419,12 @@ block|}
 comment|/**    * Returns the Number of Datanodes that are communicating with SCM.    *    * @param nodestate - State of the node    * @return int -- count    */
 annotation|@
 name|Override
-DECL|method|getNodeCount (NODESTATE nodestate)
+DECL|method|getNodeCount (NodeState nodestate)
 specifier|public
 name|int
 name|getNodeCount
 parameter_list|(
-name|NODESTATE
+name|NodeState
 name|nodestate
 parameter_list|)
 block|{
@@ -520,7 +540,7 @@ annotation|@
 name|Override
 DECL|method|getNodeState (DatanodeID id)
 specifier|public
-name|NODESTATE
+name|NodeState
 name|getNodeState
 parameter_list|(
 name|DatanodeID
@@ -626,7 +646,7 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Adds a node to the existing Node manager. This is used only for test    * purposes.    * @param id - DatanodeID    * @param state State you want to put that node to.    */
-DECL|method|addNode (DatanodeID id, NODESTATE state)
+DECL|method|addNode (DatanodeID id, NodeState state)
 specifier|public
 name|void
 name|addNode
@@ -634,7 +654,7 @@ parameter_list|(
 name|DatanodeID
 name|id
 parameter_list|,
-name|NODESTATE
+name|NodeState
 name|state
 parameter_list|)
 block|{

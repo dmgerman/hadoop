@@ -388,6 +388,28 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|OzoneProtos
+operator|.
+name|NodeState
+operator|.
+name|HEALTHY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|scm
 operator|.
 name|ScmConfigKeys
@@ -409,28 +431,6 @@ operator|.
 name|ScmConfigKeys
 operator|.
 name|OZONE_SCM_DB_CACHE_SIZE_MB
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|scm
-operator|.
-name|node
-operator|.
-name|NodeManager
-operator|.
-name|NODESTATE
-operator|.
-name|HEALTHY
 import|;
 end_import
 

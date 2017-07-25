@@ -224,6 +224,28 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|OzoneProtos
+operator|.
+name|NodeState
+operator|.
+name|HEALTHY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -267,10 +289,6 @@ name|nodeManager
 operator|.
 name|getNodes
 argument_list|(
-name|NodeManager
-operator|.
-name|NODESTATE
-operator|.
 name|HEALTHY
 argument_list|)
 control|)

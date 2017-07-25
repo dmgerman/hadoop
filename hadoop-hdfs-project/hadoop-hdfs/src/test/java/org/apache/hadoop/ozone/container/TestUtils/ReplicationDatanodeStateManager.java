@@ -158,6 +158,28 @@ name|Random
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|OzoneProtos
+operator|.
+name|NodeState
+operator|.
+name|HEALTHY
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class  manages the state of datanode  * in conjunction with the node pool and node managers.  */
 end_comment
@@ -343,10 +365,6 @@ argument_list|(
 name|id
 argument_list|)
 operator|==
-name|NodeManager
-operator|.
-name|NODESTATE
-operator|.
 name|HEALTHY
 condition|)
 block|{

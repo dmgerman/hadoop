@@ -266,6 +266,26 @@ name|protocol
 operator|.
 name|proto
 operator|.
+name|OzoneProtos
+operator|.
+name|NodeState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
 name|SCMRegisteredCmdResponseProto
@@ -585,6 +605,94 @@ operator|.
 name|stream
 operator|.
 name|Collectors
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|OzoneProtos
+operator|.
+name|NodeState
+operator|.
+name|DEAD
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|OzoneProtos
+operator|.
+name|NodeState
+operator|.
+name|HEALTHY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|OzoneProtos
+operator|.
+name|NodeState
+operator|.
+name|STALE
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|OzoneProtos
+operator|.
+name|NodeState
+operator|.
+name|UNKNOWN
 import|;
 end_import
 
@@ -1137,7 +1245,7 @@ block|}
 comment|/**    * Gets all datanodes that are in a certain state. This function works by    * taking a snapshot of the current collection and then returning the list    * from that collection. This means that real map might have changed by the    * time we return this list.    *    * @return List of Datanodes that are known to SCM in the requested state.    */
 annotation|@
 name|Override
-DECL|method|getNodes (NODESTATE nodestate)
+DECL|method|getNodes (NodeState nodestate)
 specifier|public
 name|List
 argument_list|<
@@ -1145,7 +1253,7 @@ name|DatanodeID
 argument_list|>
 name|getNodes
 parameter_list|(
-name|NODESTATE
+name|NodeState
 name|nodestate
 parameter_list|)
 throws|throws
@@ -1619,12 +1727,12 @@ block|}
 comment|/**    * Returns the Number of Datanodes by State they are in.    *    * @return int -- count    */
 annotation|@
 name|Override
-DECL|method|getNodeCount (NODESTATE nodestate)
+DECL|method|getNodeCount (NodeState nodestate)
 specifier|public
 name|int
 name|getNodeCount
 parameter_list|(
-name|NODESTATE
+name|NodeState
 name|nodestate
 parameter_list|)
 block|{
@@ -1671,13 +1779,9 @@ return|return
 literal|0
 return|;
 default|default:
-throw|throw
-operator|new
-name|IllegalArgumentException
-argument_list|(
-literal|"Unknown node state requested."
-argument_list|)
-throw|;
+return|return
+literal|0
+return|;
 block|}
 block|}
 comment|/**    * Used for testing.    *    * @return true if the HB check is done.    */
@@ -1702,7 +1806,7 @@ annotation|@
 name|Override
 DECL|method|getNodeState (DatanodeID id)
 specifier|public
-name|NODESTATE
+name|NodeState
 name|getNodeState
 parameter_list|(
 name|DatanodeID
@@ -1730,8 +1834,6 @@ argument_list|)
 condition|)
 block|{
 return|return
-name|NODESTATE
-operator|.
 name|HEALTHY
 return|;
 block|}
@@ -1749,8 +1851,6 @@ argument_list|)
 condition|)
 block|{
 return|return
-name|NODESTATE
-operator|.
 name|STALE
 return|;
 block|}
@@ -1768,14 +1868,10 @@ argument_list|)
 condition|)
 block|{
 return|return
-name|NODESTATE
-operator|.
 name|DEAD
 return|;
 block|}
 return|return
-name|NODESTATE
-operator|.
 name|UNKNOWN
 return|;
 block|}
@@ -3211,14 +3307,10 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|NodeManager
-operator|.
-name|NODESTATE
+name|NodeState
 name|state
 range|:
-name|NodeManager
-operator|.
-name|NODESTATE
+name|NodeState
 operator|.
 name|values
 argument_list|()
