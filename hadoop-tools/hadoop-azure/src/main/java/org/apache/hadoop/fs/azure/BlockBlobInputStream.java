@@ -1345,8 +1345,6 @@ parameter_list|()
 block|{
 return|return
 name|length
-operator|-
-name|offset
 return|;
 block|}
 comment|/**      * Writes the next byte to the stream.      * @param b the byte to be written.      * @throws IOException IO failure      */
