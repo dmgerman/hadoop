@@ -760,6 +760,28 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|container
+operator|.
+name|Container
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|resourcemanager
 operator|.
 name|rmapp
@@ -1171,8 +1193,14 @@ name|delete
 argument_list|()
 expr_stmt|;
 block|}
+comment|/*    * Run two tests: one with no security ("simple") and one with "Secure"    * The first parameter is just the test name to make it easier to debug    * and to give details in say an IDE.  The second is the configuraiton    * object to use.    */
 annotation|@
 name|Parameters
+argument_list|(
+name|name
+operator|=
+literal|"{0}"
+argument_list|)
 DECL|method|configs ()
 specifier|public
 specifier|static
@@ -1281,24 +1309,40 @@ index|[]
 index|[]
 block|{
 block|{
+literal|"Simple"
+block|,
 name|configurationWithoutSecurity
 block|}
 block|,
 block|{
+literal|"Secure"
+block|,
 name|configurationWithSecurity
 block|}
 block|}
 argument_list|)
 return|;
 block|}
-DECL|method|TestContainerManagerSecurity (Configuration conf)
+DECL|method|TestContainerManagerSecurity (String name, Configuration conf)
 specifier|public
 name|TestContainerManagerSecurity
 parameter_list|(
+name|String
+name|name
+parameter_list|,
 name|Configuration
 name|conf
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"RUNNING TEST "
+operator|+
+name|name
+argument_list|)
+expr_stmt|;
 name|conf
 operator|.
 name|setLong
@@ -1319,11 +1363,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|120000
-argument_list|)
 DECL|method|testContainerManager ()
 specifier|public
 name|void
@@ -1351,13 +1390,14 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testNMTokens (Configuration conf)
+comment|/**    * Run a series of tests using different NMTokens.  A configuration is    * provided for managing creating of the tokens and rpc.    */
+DECL|method|testNMTokens (Configuration testConf)
 specifier|private
 name|void
 name|testNMTokens
 parameter_list|(
 name|Configuration
-name|conf
+name|testConf
 parameter_list|)
 throws|throws
 name|Exception
@@ -1451,7 +1491,7 @@ name|YarnRPC
 operator|.
 name|create
 argument_list|(
-name|conf
+name|testConf
 argument_list|)
 decl_stmt|;
 name|String
@@ -1688,7 +1728,7 @@ init|=
 operator|new
 name|NMTokenSecretManagerInRM
 argument_list|(
-name|conf
+name|testConf
 argument_list|)
 decl_stmt|;
 name|tempManager
@@ -1780,6 +1820,23 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
+literal|"In calling "
+operator|+
+name|validNode
+operator|+
+literal|" exception was '"
+operator|+
+name|errorMsg
+operator|+
+literal|"' but doesn't contain '"
+operator|+
+name|sb
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|"'"
+argument_list|,
 name|errorMsg
 operator|.
 name|contains
@@ -1952,7 +2009,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// using correct tokens. nmtoken for app attempt should get saved.
-name|conf
+name|testConf
 operator|.
 name|setInt
 argument_list|(
@@ -2494,8 +2551,8 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// using appAttempt-1 NMtoken for launching container for appAttempt-2 should
-comment|// succeed.
+comment|// using appAttempt-1 NMtoken for launching container for appAttempt-2
+comment|// should succeed.
 name|ApplicationAttemptId
 name|attempt2
 init|=
@@ -2602,7 +2659,7 @@ name|containerId
 parameter_list|)
 block|{
 name|Context
-name|nmContet
+name|nmContext
 init|=
 name|yarnCluster
 operator|.
@@ -2626,7 +2683,7 @@ name|Assert
 operator|.
 name|assertNotNull
 argument_list|(
-name|nmContet
+name|nmContext
 operator|.
 name|getContainers
 argument_list|()
@@ -2637,6 +2694,23 @@ name|containerId
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// Get the container first, as it may be removed from the Context
+comment|// by asynchronous calls.
+comment|// This was leading to a flakey test as otherwise the container could
+comment|// be removed and end up null.
+name|Container
+name|waitContainer
+init|=
+name|nmContext
+operator|.
+name|getContainers
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|containerId
+argument_list|)
+decl_stmt|;
 while|while
 condition|(
 operator|(
@@ -2647,15 +2721,7 @@ literal|0
 operator|)
 operator|&&
 operator|!
-name|nmContet
-operator|.
-name|getContainers
-argument_list|()
-operator|.
-name|get
-argument_list|(
-name|containerId
-argument_list|)
+name|waitContainer
 operator|.
 name|cloneAndGetContainerStatus
 argument_list|()
@@ -2716,7 +2782,16 @@ argument_list|(
 name|containerId
 argument_list|)
 expr_stmt|;
-name|nmContet
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Removing container from NMContext, containerID = "
+operator|+
+name|containerId
+argument_list|)
+expr_stmt|;
+name|nmContext
 operator|.
 name|getContainers
 argument_list|()
@@ -3696,9 +3771,8 @@ specifier|final
 name|InetSocketAddress
 name|addr
 init|=
-name|NetUtils
-operator|.
-name|createSocketAddr
+operator|new
+name|InetSocketAddress
 argument_list|(
 name|nodeId
 operator|.
@@ -3955,7 +4029,8 @@ argument_list|(
 name|containerToken
 argument_list|)
 decl_stmt|;
-comment|// Verify new compatible version ContainerTokenIdentifier can work successfully.
+comment|// Verify new compatible version ContainerTokenIdentifier
+comment|// can work successfully.
 name|ContainerTokenIdentifierForTest
 name|newVersionTokenIdentifier
 init|=
