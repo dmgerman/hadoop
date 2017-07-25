@@ -42,11 +42,9 @@ name|fasterxml
 operator|.
 name|jackson
 operator|.
-name|databind
-operator|.
 name|annotation
 operator|.
-name|JsonSerialize
+name|JsonInclude
 import|;
 end_import
 
@@ -199,13 +197,11 @@ operator|=
 literal|true
 argument_list|)
 annotation|@
-name|JsonSerialize
+name|JsonInclude
 argument_list|(
-name|include
-operator|=
-name|JsonSerialize
+name|JsonInclude
 operator|.
-name|Inclusion
+name|Include
 operator|.
 name|NON_NULL
 argument_list|)
