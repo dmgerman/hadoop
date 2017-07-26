@@ -8905,7 +8905,7 @@ name|ROUTER_CLIENTRM_ADDRESS
 init|=
 name|ROUTER_CLIENTRM_PREFIX
 operator|+
-literal|".address"
+literal|"address"
 decl_stmt|;
 DECL|field|DEFAULT_ROUTER_CLIENTRM_PORT
 specifier|public
@@ -8989,7 +8989,7 @@ name|ROUTER_RMADMIN_ADDRESS
 init|=
 name|ROUTER_RMADMIN_PREFIX
 operator|+
-literal|".address"
+literal|"address"
 decl_stmt|;
 DECL|field|DEFAULT_ROUTER_RMADMIN_PORT
 specifier|public

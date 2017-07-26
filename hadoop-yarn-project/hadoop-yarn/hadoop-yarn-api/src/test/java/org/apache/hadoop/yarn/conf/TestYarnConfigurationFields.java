@@ -215,6 +215,24 @@ operator|.
 name|RM_EPOCH
 argument_list|)
 expr_stmt|;
+name|configurationPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|ROUTER_CLIENTRM_ADDRESS
+argument_list|)
+expr_stmt|;
+name|configurationPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|ROUTER_RMADMIN_ADDRESS
+argument_list|)
+expr_stmt|;
 comment|// Federation policies configs to be ignored
 name|configurationPropsToSkipCompare
 operator|.
