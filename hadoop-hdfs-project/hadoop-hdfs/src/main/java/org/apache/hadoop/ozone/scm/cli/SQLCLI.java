@@ -172,6 +172,20 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|OzoneConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|protocol
 operator|.
 name|proto
@@ -653,6 +667,12 @@ argument_list|(
 literal|"UTF-8"
 argument_list|)
 decl_stmt|;
+DECL|field|conf
+specifier|private
+specifier|final
+name|OzoneConfiguration
+name|conf
+decl_stmt|;
 comment|// for container.db
 DECL|field|CREATE_CONTAINER_INFO
 specifier|private
@@ -1001,10 +1021,13 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|method|SQLCLI ()
+DECL|method|SQLCLI (OzoneConfiguration conf)
 specifier|public
 name|SQLCLI
-parameter_list|()
+parameter_list|(
+name|OzoneConfiguration
+name|conf
+parameter_list|)
 block|{
 name|this
 operator|.
@@ -1020,6 +1043,12 @@ operator|=
 operator|new
 name|BasicParser
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|conf
+operator|=
+name|conf
 expr_stmt|;
 block|}
 annotation|@
@@ -2224,6 +2253,11 @@ operator|.
 name|newBuilder
 argument_list|()
 operator|.
+name|setConf
+argument_list|(
+name|conf
+argument_list|)
+operator|.
 name|setDbFile
 argument_list|(
 name|dbFile
@@ -2636,6 +2670,11 @@ operator|.
 name|newBuilder
 argument_list|()
 operator|.
+name|setConf
+argument_list|(
+name|conf
+argument_list|)
+operator|.
 name|setDbFile
 argument_list|(
 name|dbFile
@@ -2781,6 +2820,11 @@ name|MetadataStoreBuilder
 operator|.
 name|newBuilder
 argument_list|()
+operator|.
+name|setConf
+argument_list|(
+name|conf
+argument_list|)
 operator|.
 name|setDbFile
 argument_list|(
@@ -3031,6 +3075,11 @@ operator|.
 name|newBuilder
 argument_list|()
 operator|.
+name|setConf
+argument_list|(
+name|conf
+argument_list|)
+operator|.
 name|setDbFile
 argument_list|(
 name|dbFile
@@ -3181,7 +3230,11 @@ name|shell
 init|=
 operator|new
 name|SQLCLI
+argument_list|(
+operator|new
+name|OzoneConfiguration
 argument_list|()
+argument_list|)
 decl_stmt|;
 name|int
 name|res
