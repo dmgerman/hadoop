@@ -242,7 +242,7 @@ begin_interface
 annotation|@
 name|Path
 argument_list|(
-literal|"/{volume}/{bucket}/{keys}"
+literal|"/{volume}/{bucket}/{keys:.*}"
 argument_list|)
 DECL|interface|Keys
 specifier|public
