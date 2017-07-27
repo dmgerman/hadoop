@@ -4393,7 +4393,7 @@ block|}
 argument_list|)
 annotation|@
 name|Override
-DECL|method|getApps (@ontext HttpServletRequest hsr, @QueryParam(RMWSConsts.STATE) String stateQuery, @QueryParam(RMWSConsts.STATES) Set<String> statesQuery, @QueryParam(RMWSConsts.FINAL_STATUS) String finalStatusQuery, @QueryParam(RMWSConsts.USER) String userQuery, @QueryParam(RMWSConsts.QUEUE) String queueQuery, @QueryParam(RMWSConsts.LIMIT) String count, @QueryParam(RMWSConsts.STARTED_TIME_BEGIN) String startedBegin, @QueryParam(RMWSConsts.STARTED_TIME_END) String startedEnd, @QueryParam(RMWSConsts.FINISHED_TIME_BEGIN) String finishBegin, @QueryParam(RMWSConsts.FINISHED_TIME_END) String finishEnd, @QueryParam(RMWSConsts.APPLICATION_TYPES) Set<String> applicationTypes, @QueryParam(RMWSConsts.APPLICATION_TAGS) Set<String> applicationTags, @QueryParam(R) Set<String> unselectedFields)
+DECL|method|getApps (@ontext HttpServletRequest hsr, @QueryParam(RMWSConsts.STATE) String stateQuery, @QueryParam(RMWSConsts.STATES) Set<String> statesQuery, @QueryParam(RMWSConsts.FINAL_STATUS) String finalStatusQuery, @QueryParam(RMWSConsts.USER) String userQuery, @QueryParam(RMWSConsts.QUEUE) String queueQuery, @QueryParam(RMWSConsts.LIMIT) String count, @QueryParam(RMWSConsts.STARTED_TIME_BEGIN) String startedBegin, @QueryParam(RMWSConsts.STARTED_TIME_END) String startedEnd, @QueryParam(RMWSConsts.FINISHED_TIME_BEGIN) String finishBegin, @QueryParam(RMWSConsts.FINISHED_TIME_END) String finishEnd, @QueryParam(RMWSConsts.APPLICATION_TYPES) Set<String> applicationTypes, @QueryParam(RMWSConsts.APPLICATION_TAGS) Set<String> applicationTags, @QueryParam(RMWSConsts.DESELECTS) Set<String> unselectedFields)
 specifier|public
 name|AppsInfo
 name|getApps
@@ -4535,7 +4535,9 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"deSelects"
+name|RMWSConsts
+operator|.
+name|DESELECTS
 argument_list|)
 name|Set
 argument_list|<
@@ -6651,7 +6653,7 @@ block|}
 argument_list|)
 annotation|@
 name|Override
-DECL|method|getApp (@ontext HttpServletRequest hsr, @PathParam(RMWSConsts.APPID) String appId, @QueryParam(R) Set<String> unselectedFields)
+DECL|method|getApp (@ontext HttpServletRequest hsr, @PathParam(RMWSConsts.APPID) String appId, @QueryParam(RMWSConsts.DESELECTS) Set<String> unselectedFields)
 specifier|public
 name|AppInfo
 name|getApp
@@ -6674,7 +6676,9 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
-literal|"deSelects"
+name|RMWSConsts
+operator|.
+name|DESELECTS
 argument_list|)
 name|Set
 argument_list|<

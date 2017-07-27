@@ -788,7 +788,7 @@ name|SchedulerTypeInfo
 name|getSchedulerInfo
 parameter_list|()
 function_decl|;
-comment|/**    * This method dumps the scheduler logs for the time got in input, and it is    * reachable by using {@link RMWSConsts#SCHEDULER_LOGS}.    *    * @param time the period of time    * @param hsr the servlet request    * @return the result of the operation    * @throws IOException when it cannot create dump log file    */
+comment|/**    * This method dumps the scheduler logs for the time got in input, and it is    * reachable by using {@link RMWSConsts#SCHEDULER_LOGS}.    *    * @param time the period of time. It is a FormParam.    * @param hsr the servlet request    * @return the result of the operation    * @throws IOException when it cannot create dump log file    */
 DECL|method|dumpSchedulerLogs (String time, HttpServletRequest hsr)
 name|String
 name|dumpSchedulerLogs
@@ -802,7 +802,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * This method retrieves all the nodes information in the cluster, and it is    * reachable by using {@link RMWSConsts#NODES}.    *    * @see ApplicationClientProtocol#getClusterNodes    * @param states the states we want to filter    * @return all nodes in the cluster. If the states param is given, returns all    *         nodes that are in the comma-separated list of states    */
+comment|/**    * This method retrieves all the nodes information in the cluster, and it is    * reachable by using {@link RMWSConsts#NODES}.    *    * @see ApplicationClientProtocol#getClusterNodes    * @param states the states we want to filter. It is a QueryParam.    * @return all nodes in the cluster. If the states param is given, returns all    *         nodes that are in the comma-separated list of states    */
 DECL|method|getNodes (String states)
 name|NodesInfo
 name|getNodes
@@ -811,7 +811,7 @@ name|String
 name|states
 parameter_list|)
 function_decl|;
-comment|/**    * This method retrieves a specific node information, and it is reachable by    * using {@link RMWSConsts#NODES_NODEID}.    *    * @param nodeId the node we want to retrieve the information    * @return the information about the node in input    */
+comment|/**    * This method retrieves a specific node information, and it is reachable by    * using {@link RMWSConsts#NODES_NODEID}.    *    * @param nodeId the node we want to retrieve the information. It is a    *          PathParam.    * @return the information about the node in input    */
 DECL|method|getNode (String nodeId)
 name|NodeInfo
 name|getNode
@@ -820,7 +820,7 @@ name|String
 name|nodeId
 parameter_list|)
 function_decl|;
-comment|/**    * This method retrieves all the app reports in the cluster, and it is    * reachable by using {@link RMWSConsts#APPS}.    *    * @see ApplicationClientProtocol#getApplications    * @param hsr the servlet request    * @param stateQuery right now the stateQuery is deprecated    * @param statesQuery filter the result by states    * @param finalStatusQuery filter the result by final states    * @param userQuery filter the result by user    * @param queueQuery filter the result by queue    * @param count set a limit of the result    * @param startedBegin filter the result by started begin time    * @param startedEnd filter the result by started end time    * @param finishBegin filter the result by finish begin time    * @param finishEnd filter the result by finish end time    * @param applicationTypes filter the result by types    * @param applicationTags filter the result by tags    * @param unselectedFields De-selected params to avoid from report    * @return all apps in the cluster    */
+comment|/**    * This method retrieves all the app reports in the cluster, and it is    * reachable by using {@link RMWSConsts#APPS}.    *    * @see ApplicationClientProtocol#getApplications    * @param hsr the servlet request    * @param stateQuery right now the stateQuery is deprecated. It is a    *          QueryParam.    * @param statesQuery filter the result by states. It is a QueryParam.    * @param finalStatusQuery filter the result by final states. It is a    *          QueryParam.    * @param userQuery filter the result by user. It is a QueryParam.    * @param queueQuery filter the result by queue. It is a QueryParam.    * @param count set a limit of the result. It is a QueryParam.    * @param startedBegin filter the result by started begin time. It is a    *          QueryParam.    * @param startedEnd filter the result by started end time. It is a    *          QueryParam.    * @param finishBegin filter the result by finish begin time. It is a    *          QueryParam.    * @param finishEnd filter the result by finish end time. It is a QueryParam.    * @param applicationTypes filter the result by types. It is a QueryParam.    * @param applicationTags filter the result by tags. It is a QueryParam.    * @param unselectedFields De-selected params to avoid from report. It is a    *          QueryParam.    * @return all apps in the cluster    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -885,7 +885,7 @@ argument_list|>
 name|unselectedFields
 parameter_list|)
 function_decl|;
-comment|/**    * This method retrieve all the activities in a specific node, and it is    * reachable by using {@link RMWSConsts#SCHEDULER_ACTIVITIES}.    *    * @param hsr the servlet request    * @param nodeId the node we want to retrieve the activities    * @return all the activities in the specific node    */
+comment|/**    * This method retrieve all the activities in a specific node, and it is    * reachable by using {@link RMWSConsts#SCHEDULER_ACTIVITIES}.    *    * @param hsr the servlet request    * @param nodeId the node we want to retrieve the activities. It is a    *          QueryParam.    * @return all the activities in the specific node    */
 DECL|method|getActivities (HttpServletRequest hsr, String nodeId)
 name|ActivitiesInfo
 name|getActivities
@@ -897,7 +897,7 @@ name|String
 name|nodeId
 parameter_list|)
 function_decl|;
-comment|/**    * This method retrieves all the activities for a specific app for a specific    * period of time, and it is reachable by using    * {@link RMWSConsts#SCHEDULER_APP_ACTIVITIES}.    *    * @param hsr the servlet request    * @param appId the applicationId we want to retrieve the activities    * @param time for how long we want to retrieve the activities    * @return all the activities about a specific app for a specific time    */
+comment|/**    * This method retrieves all the activities for a specific app for a specific    * period of time, and it is reachable by using    * {@link RMWSConsts#SCHEDULER_APP_ACTIVITIES}.    *    * @param hsr the servlet request    * @param appId the applicationId we want to retrieve the activities. It is a    *          QueryParam.    * @param time for how long we want to retrieve the activities. It is a    *          QueryParam.    * @return all the activities about a specific app for a specific time    */
 DECL|method|getAppActivities (HttpServletRequest hsr, String appId, String time)
 name|AppActivitiesInfo
 name|getAppActivities
@@ -912,7 +912,7 @@ name|String
 name|time
 parameter_list|)
 function_decl|;
-comment|/**    * This method retrieves all the statistics for a specific app, and it is    * reachable by using {@link RMWSConsts#APP_STATISTICS}.    *    * @param hsr the servlet request    * @param stateQueries filter the result by states    * @param typeQueries filter the result by type names    * @return the application's statistics for specific states and types    */
+comment|/**    * This method retrieves all the statistics for a specific app, and it is    * reachable by using {@link RMWSConsts#APP_STATISTICS}.    *    * @param hsr the servlet request    * @param stateQueries filter the result by states. It is a QueryParam.    * @param typeQueries filter the result by type names. It is a QueryParam.    * @return the application's statistics for specific states and types    */
 DECL|method|getAppStatistics (HttpServletRequest hsr, Set<String> stateQueries, Set<String> typeQueries)
 name|ApplicationStatisticsInfo
 name|getAppStatistics
@@ -933,7 +933,7 @@ argument_list|>
 name|typeQueries
 parameter_list|)
 function_decl|;
-comment|/**    * This method retrieves the report for a specific app, and it is reachable by    * using {@link RMWSConsts#APPS_APPID}.    *    * @see ApplicationClientProtocol#getApplicationReport    * @param hsr the servlet request    * @param appId the Id of the application we want the report    * @param unselectedFields De-selected param list to avoid from report    * @return the app report for a specific application    */
+comment|/**    * This method retrieves the report for a specific app, and it is reachable by    * using {@link RMWSConsts#APPS_APPID}.    *    * @see ApplicationClientProtocol#getApplicationReport    * @param hsr the servlet request    * @param appId the Id of the application we want the report. It is a    *          PathParam.    * @param unselectedFields De-selected param list to avoid from report. It is    *          a QueryParam.    * @return the app report for a specific application    */
 DECL|method|getApp (HttpServletRequest hsr, String appId, Set<String> unselectedFields)
 name|AppInfo
 name|getApp
@@ -951,7 +951,7 @@ argument_list|>
 name|unselectedFields
 parameter_list|)
 function_decl|;
-comment|/**    * This method retrieves the state for a specific app, and it is reachable by    * using {@link RMWSConsts#APPS_APPID_STATE}.    *    * @param hsr the servlet request    * @param appId the Id of the application we want the state    * @return the state for a specific application    * @throws AuthorizationException if the user is not authorized    */
+comment|/**    * This method retrieves the state for a specific app, and it is reachable by    * using {@link RMWSConsts#APPS_APPID_STATE}.    *    * @param hsr the servlet request    * @param appId the Id of the application we want the state. It is a    *          PathParam.    * @return the state for a specific application    * @throws AuthorizationException if the user is not authorized    */
 DECL|method|getAppState (HttpServletRequest hsr, String appId)
 name|AppState
 name|getAppState
@@ -965,7 +965,7 @@ parameter_list|)
 throws|throws
 name|AuthorizationException
 function_decl|;
-comment|/**    * This method updates the state of the app in input, and it is reachable by    * using {@link RMWSConsts#APPS_APPID_STATE}.    *    * @param targetState the target state for the app    * @param hsr the servlet request    * @param appId the Id of the application we want to update the state    * @return Response containing the status code    * @throws AuthorizationException if the user is not authorized to invoke this    *           method    * @throws YarnException if app does not exist    * @throws InterruptedException if interrupted    * @throws IOException if doAs action throws an IOException    */
+comment|/**    * This method updates the state of the app in input, and it is reachable by    * using {@link RMWSConsts#APPS_APPID_STATE}.    *    * @param targetState the target state for the app. It is a content param.    * @param hsr the servlet request    * @param appId the Id of the application we want to update the state. It is a    *          PathParam.    * @return Response containing the status code    * @throws AuthorizationException if the user is not authorized to invoke this    *           method    * @throws YarnException if app does not exist    * @throws InterruptedException if interrupted    * @throws IOException if doAs action throws an IOException    */
 DECL|method|updateAppState (AppState targetState, HttpServletRequest hsr, String appId)
 name|Response
 name|updateAppState
@@ -999,7 +999,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * This method retrieves all the node within multiple node labels in the    * cluster, and it is reachable by using {@link RMWSConsts#LABEL_MAPPINGS}.    *    * @see ApplicationClientProtocol#getLabelsToNodes    * @param labels filter the result by node labels    * @return all the nodes within multiple node labels    * @throws IOException if an IOException happened    */
+comment|/**    * This method retrieves all the node within multiple node labels in the    * cluster, and it is reachable by using {@link RMWSConsts#LABEL_MAPPINGS}.    *    * @see ApplicationClientProtocol#getLabelsToNodes    * @param labels filter the result by node labels. It is a QueryParam.    * @return all the nodes within multiple node labels    * @throws IOException if an IOException happened    */
 DECL|method|getLabelsToNodes (Set<String> labels)
 name|LabelsToNodesInfo
 name|getLabelsToNodes
@@ -1013,7 +1013,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * This method replaces all the node labels for specific nodes, and it is    * reachable by using {@link RMWSConsts#REPLACE_NODE_TO_LABELS}.    *    * @see ResourceManagerAdministrationProtocol#replaceLabelsOnNode    * @param newNodeToLabels the list of new labels    * @param hsr the servlet request    * @return Response containing the status code    * @throws Exception if an exception happened    */
+comment|/**    * This method replaces all the node labels for specific nodes, and it is    * reachable by using {@link RMWSConsts#REPLACE_NODE_TO_LABELS}.    *    * @see ResourceManagerAdministrationProtocol#replaceLabelsOnNode    * @param newNodeToLabels the list of new labels. It is a content param.    * @param hsr the servlet request    * @return Response containing the status code    * @throws Exception if an exception happened    */
 DECL|method|replaceLabelsOnNodes (NodeToLabelsEntryList newNodeToLabels, HttpServletRequest hsr)
 name|Response
 name|replaceLabelsOnNodes
@@ -1027,7 +1027,7 @@ parameter_list|)
 throws|throws
 name|Exception
 function_decl|;
-comment|/**    * This method replaces all the node labels for specific node, and it is    * reachable by using {@link RMWSConsts#NODES_NODEID_REPLACE_LABELS}.    *    * @see ResourceManagerAdministrationProtocol#replaceLabelsOnNode    * @param newNodeLabelsName the list of new labels    * @param hsr the servlet request    * @param nodeId the node we want to replace the node labels    * @return Response containing the status code    * @throws Exception if an exception happened    */
+comment|/**    * This method replaces all the node labels for specific node, and it is    * reachable by using {@link RMWSConsts#NODES_NODEID_REPLACE_LABELS}.    *    * @see ResourceManagerAdministrationProtocol#replaceLabelsOnNode    * @param newNodeLabelsName the list of new labels. It is a QueryParam.    * @param hsr the servlet request    * @param nodeId the node we want to replace the node labels. It is a    *          PathParam.    * @return Response containing the status code    * @throws Exception if an exception happened    */
 DECL|method|replaceLabelsOnNode (Set<String> newNodeLabelsName, HttpServletRequest hsr, String nodeId)
 name|Response
 name|replaceLabelsOnNode
@@ -1058,7 +1058,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * This method adds specific node labels for specific nodes, and it is    * reachable by using {@link RMWSConsts#ADD_NODE_LABELS}.    *    * @see ResourceManagerAdministrationProtocol#addToClusterNodeLabels    * @param newNodeLabels the node labels to add    * @param hsr the servlet request    * @return Response containing the status code    * @throws Exception in case of bad request    */
+comment|/**    * This method adds specific node labels for specific nodes, and it is    * reachable by using {@link RMWSConsts#ADD_NODE_LABELS}.    *    * @see ResourceManagerAdministrationProtocol#addToClusterNodeLabels    * @param newNodeLabels the node labels to add. It is a content param.    * @param hsr the servlet request    * @return Response containing the status code    * @throws Exception in case of bad request    */
 DECL|method|addToClusterNodeLabels (NodeLabelsInfo newNodeLabels, HttpServletRequest hsr)
 name|Response
 name|addToClusterNodeLabels
@@ -1072,7 +1072,7 @@ parameter_list|)
 throws|throws
 name|Exception
 function_decl|;
-comment|/**    * This method removes all the node labels for specific nodes, and it is    * reachable by using {@link RMWSConsts#REMOVE_NODE_LABELS}.    *    * @see ResourceManagerAdministrationProtocol#removeFromClusterNodeLabels    * @param oldNodeLabels the node labels to remove    * @param hsr the servlet request    * @return Response containing the status code    * @throws Exception in case of bad request    */
+comment|/**    * This method removes all the node labels for specific nodes, and it is    * reachable by using {@link RMWSConsts#REMOVE_NODE_LABELS}.    *    * @see ResourceManagerAdministrationProtocol#removeFromClusterNodeLabels    * @param oldNodeLabels the node labels to remove. It is a QueryParam.    * @param hsr the servlet request    * @return Response containing the status code    * @throws Exception in case of bad request    */
 DECL|method|removeFromCluserNodeLabels (Set<String> oldNodeLabels, HttpServletRequest hsr)
 name|Response
 name|removeFromCluserNodeLabels
@@ -1089,7 +1089,7 @@ parameter_list|)
 throws|throws
 name|Exception
 function_decl|;
-comment|/**    * This method retrieves all the node labels for specific node, and it is    * reachable by using {@link RMWSConsts#NODES_NODEID_GETLABELS}.    *    * @param hsr the servlet request    * @param nodeId the node we want to get all the node labels    * @return all the labels for a specific node.    * @throws IOException if an IOException happened    */
+comment|/**    * This method retrieves all the node labels for specific node, and it is    * reachable by using {@link RMWSConsts#NODES_NODEID_GETLABELS}.    *    * @param hsr the servlet request    * @param nodeId the node we want to get all the node labels. It is a    *          PathParam.    * @return all the labels for a specific node.    * @throws IOException if an IOException happened    */
 DECL|method|getLabelsOnNode (HttpServletRequest hsr, String nodeId)
 name|NodeLabelsInfo
 name|getLabelsOnNode
@@ -1103,7 +1103,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * This method retrieves the priority for a specific app, and it is reachable    * by using {@link RMWSConsts#APPS_APPID_PRIORITY}.    *    * @param hsr the servlet request    * @param appId the app we want to get the priority    * @return the priority for a specific application    * @throws AuthorizationException in case of the user is not authorized    */
+comment|/**    * This method retrieves the priority for a specific app, and it is reachable    * by using {@link RMWSConsts#APPS_APPID_PRIORITY}.    *    * @param hsr the servlet request    * @param appId the app we want to get the priority. It is a PathParam.    * @return the priority for a specific application    * @throws AuthorizationException in case of the user is not authorized    */
 DECL|method|getAppPriority (HttpServletRequest hsr, String appId)
 name|AppPriority
 name|getAppPriority
@@ -1117,7 +1117,7 @@ parameter_list|)
 throws|throws
 name|AuthorizationException
 function_decl|;
-comment|/**    * This method updates the priority for a specific application, and it is    * reachable by using {@link RMWSConsts#APPS_APPID_PRIORITY}.    *    * @param targetPriority the priority we want to set for the app    * @param hsr the servlet request    * @param appId the application we want to update its priority    * @return Response containing the status code    * @throws AuthorizationException if the user is not authenticated    * @throws YarnException if the target is null    * @throws IOException if the update fails.    * @throws InterruptedException if interrupted.    */
+comment|/**    * This method updates the priority for a specific application, and it is    * reachable by using {@link RMWSConsts#APPS_APPID_PRIORITY}.    *    * @param targetPriority the priority we want to set for the app. It is a    *          content param.    * @param hsr the servlet request    * @param appId the application we want to update its priority. It is a    *          PathParam.    * @return Response containing the status code    * @throws AuthorizationException if the user is not authenticated    * @throws YarnException if the target is null    * @throws IOException if the update fails.    * @throws InterruptedException if interrupted.    */
 DECL|method|updateApplicationPriority (AppPriority targetPriority, HttpServletRequest hsr, String appId)
 name|Response
 name|updateApplicationPriority
@@ -1140,7 +1140,7 @@ name|InterruptedException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    * This method retrieves the queue for a specific app, and it is reachable by    * using {@link RMWSConsts#APPS_APPID_QUEUE}.    *    * @param hsr the servlet request    * @param appId the application we want to retrieve its queue    * @return the Queue for a specific application.    * @throws AuthorizationException if the user is not authenticated    */
+comment|/**    * This method retrieves the queue for a specific app, and it is reachable by    * using {@link RMWSConsts#APPS_APPID_QUEUE}.    *    * @param hsr the servlet request    * @param appId the application we want to retrieve its queue. It is a    *          PathParam.    * @return the Queue for a specific application.    * @throws AuthorizationException if the user is not authenticated    */
 DECL|method|getAppQueue (HttpServletRequest hsr, String appId)
 name|AppQueue
 name|getAppQueue
@@ -1154,7 +1154,7 @@ parameter_list|)
 throws|throws
 name|AuthorizationException
 function_decl|;
-comment|/**    * This method updates the queue for a specific application, and it is    * reachable by using {@link RMWSConsts#APPS_APPID_QUEUE}.    *    * @param targetQueue the queue we want to set    * @param hsr the servlet request    * @param appId the application we want to change its queue    * @return Response containing the status code    * @throws AuthorizationException if the user is not authenticated    * @throws YarnException if the app is not found    * @throws IOException if the update fails.    * @throws InterruptedException if interrupted.    */
+comment|/**    * This method updates the queue for a specific application, and it is    * reachable by using {@link RMWSConsts#APPS_APPID_QUEUE}.    *    * @param targetQueue the queue we want to set. It is a content param.    * @param hsr the servlet request    * @param appId the application we want to change its queue. It is a    *          PathParam.    * @return Response containing the status code    * @throws AuthorizationException if the user is not authenticated    * @throws YarnException if the app is not found    * @throws IOException if the update fails.    * @throws InterruptedException if interrupted.    */
 DECL|method|updateAppQueue (AppQueue targetQueue, HttpServletRequest hsr, String appId)
 name|Response
 name|updateAppQueue
@@ -1192,7 +1192,7 @@ name|IOException
 throws|,
 name|InterruptedException
 function_decl|;
-comment|/**    * Function to submit an app to the RM. This method is reachable by using    * {@link RMWSConsts#APPS}.    *    * @see ApplicationClientProtocol#submitApplication    *    * @param newApp structure containing information to construct the    *          ApplicationSubmissionContext    * @param hsr the servlet request    * @return Response containing the status code    * @throws AuthorizationException if the user is not authorized to invoke this    *           method    * @throws IOException if the submission failed    * @throws InterruptedException if interrupted    */
+comment|/**    * Function to submit an app to the RM. This method is reachable by using    * {@link RMWSConsts#APPS}.    *    * @see ApplicationClientProtocol#submitApplication    *    * @param newApp structure containing information to construct the    *          ApplicationSubmissionContext. It is a content param.    * @param hsr the servlet request    * @return Response containing the status code    * @throws AuthorizationException if the user is not authorized to invoke this    *           method    * @throws IOException if the submission failed    * @throws InterruptedException if interrupted    */
 DECL|method|submitApplication (ApplicationSubmissionContextInfo newApp, HttpServletRequest hsr)
 name|Response
 name|submitApplication
@@ -1210,7 +1210,7 @@ name|IOException
 throws|,
 name|InterruptedException
 function_decl|;
-comment|/**    * This method posts a delegation token from the client, and it is reachable    * by using {@link RMWSConsts#DELEGATION_TOKEN}.    *    * @see ApplicationBaseProtocol#getDelegationToken    * @param tokenData the token to delegate    * @param hsr the servlet request    * @return Response containing the status code    * @throws AuthorizationException if Kerberos auth failed    * @throws IOException if the delegation failed    * @throws InterruptedException if interrupted    * @throws Exception in case of bad request    */
+comment|/**    * This method posts a delegation token from the client, and it is reachable    * by using {@link RMWSConsts#DELEGATION_TOKEN}.    *    * @see ApplicationBaseProtocol#getDelegationToken    * @param tokenData the token to delegate. It is a content param.    * @param hsr the servlet request    * @return Response containing the status code    * @throws AuthorizationException if Kerberos auth failed    * @throws IOException if the delegation failed    * @throws InterruptedException if interrupted    * @throws Exception in case of bad request    */
 DECL|method|postDelegationToken (DelegationToken tokenData, HttpServletRequest hsr)
 name|Response
 name|postDelegationToken
@@ -1277,7 +1277,7 @@ name|IOException
 throws|,
 name|InterruptedException
 function_decl|;
-comment|/**    * Function to submit a Reservation to the RM.This method is reachable by    * using {@link RMWSConsts#RESERVATION_SUBMIT}.    *    * @see ApplicationClientProtocol#submitReservation    *    * @param resContext provides information to construct the    *          ReservationSubmissionRequest    * @param hsr the servlet request    * @return Response containing the status code    * @throws AuthorizationException if the user is not authorized to invoke this    *           method    * @throws IOException if creation failed    * @throws InterruptedException if interrupted    */
+comment|/**    * Function to submit a Reservation to the RM.This method is reachable by    * using {@link RMWSConsts#RESERVATION_SUBMIT}.    *    * @see ApplicationClientProtocol#submitReservation    *    * @param resContext provides information to construct the    *          ReservationSubmissionRequest. It is a content param.    * @param hsr the servlet request    * @return Response containing the status code    * @throws AuthorizationException if the user is not authorized to invoke this    *           method    * @throws IOException if creation failed    * @throws InterruptedException if interrupted    */
 DECL|method|submitReservation (ReservationSubmissionRequestInfo resContext, HttpServletRequest hsr)
 name|Response
 name|submitReservation
@@ -1295,7 +1295,7 @@ name|IOException
 throws|,
 name|InterruptedException
 function_decl|;
-comment|/**    * Function to update a Reservation to the RM. This method is reachable by    * using {@link RMWSConsts#RESERVATION_UPDATE}.    *    * @see ApplicationClientProtocol#updateReservation    *    * @param resContext provides information to construct the    *          ReservationUpdateRequest    * @param hsr the servlet request    * @return Response containing the status code    * @throws AuthorizationException if the user is not authorized to invoke this    *           method    * @throws IOException if the operation failed    * @throws InterruptedException if interrupted    */
+comment|/**    * Function to update a Reservation to the RM. This method is reachable by    * using {@link RMWSConsts#RESERVATION_UPDATE}.    *    * @see ApplicationClientProtocol#updateReservation    *    * @param resContext provides information to construct the    *          ReservationUpdateRequest. It is a content param.    * @param hsr the servlet request    * @return Response containing the status code    * @throws AuthorizationException if the user is not authorized to invoke this    *           method    * @throws IOException if the operation failed    * @throws InterruptedException if interrupted    */
 DECL|method|updateReservation (ReservationUpdateRequestInfo resContext, HttpServletRequest hsr)
 name|Response
 name|updateReservation
@@ -1313,7 +1313,7 @@ name|IOException
 throws|,
 name|InterruptedException
 function_decl|;
-comment|/**    * Function to delete a Reservation to the RM. This method is reachable by    * using {@link RMWSConsts#RESERVATION_DELETE}.    *    * @see ApplicationClientProtocol#deleteReservation    *    * @param resContext provides information to construct the    *          ReservationDeleteRequest    * @param hsr the servlet request    * @return Response containing the status code    * @throws AuthorizationException when the user group information cannot be    *           retrieved.    * @throws IOException when a {@link ReservationDeleteRequest} cannot be    *           created from the {@link ReservationDeleteRequestInfo}. This    *           exception is also thrown on    *           {@code ClientRMService.deleteReservation} invokation failure.    * @throws InterruptedException if doAs action throws an InterruptedException.    */
+comment|/**    * Function to delete a Reservation to the RM. This method is reachable by    * using {@link RMWSConsts#RESERVATION_DELETE}.    *    * @see ApplicationClientProtocol#deleteReservation    *    * @param resContext provides information to construct the    *          ReservationDeleteRequest. It is a content param.    * @param hsr the servlet request    * @return Response containing the status code    * @throws AuthorizationException when the user group information cannot be    *           retrieved.    * @throws IOException when a {@link ReservationDeleteRequest} cannot be    *           created from the {@link ReservationDeleteRequestInfo}. This    *           exception is also thrown on    *           {@code ClientRMService.deleteReservation} invokation failure.    * @throws InterruptedException if doAs action throws an InterruptedException.    */
 DECL|method|deleteReservation (ReservationDeleteRequestInfo resContext, HttpServletRequest hsr)
 name|Response
 name|deleteReservation
@@ -1331,7 +1331,7 @@ name|IOException
 throws|,
 name|InterruptedException
 function_decl|;
-comment|/**    * Function to retrieve a list of all the reservations. This method is    * reachable by using {@link RMWSConsts#RESERVATION_LIST}.    *    * @see ApplicationClientProtocol#listReservations    * @param queue filter the result by queue    * @param reservationId filter the result by reservationId    * @param startTime filter the result by start time    * @param endTime filter the result by end time    * @param includeResourceAllocations true if the resource allocation should be    *          in the result, false otherwise    * @param hsr the servlet request    * @return Response containing the status code    * @throws Exception in case of bad request    */
+comment|/**    * Function to retrieve a list of all the reservations. This method is    * reachable by using {@link RMWSConsts#RESERVATION_LIST}.    *    * @see ApplicationClientProtocol#listReservations    * @param queue filter the result by queue. It is a QueryParam.    * @param reservationId filter the result by reservationId. It is a    *          QueryParam.    * @param startTime filter the result by start time. It is a QueryParam.    * @param endTime filter the result by end time. It is a QueryParam.    * @param includeResourceAllocations true if the resource allocation should be    *          in the result, false otherwise. It is a QueryParam.    * @param hsr the servlet request    * @return Response containing the status code    * @throws Exception in case of bad request    */
 DECL|method|listReservation (String queue, String reservationId, long startTime, long endTime, boolean includeResourceAllocations, HttpServletRequest hsr)
 name|Response
 name|listReservation
@@ -1357,7 +1357,7 @@ parameter_list|)
 throws|throws
 name|Exception
 function_decl|;
-comment|/**    * This method retrieves the timeout information for a specific app with a    * specific type, and it is reachable by using    * {@link RMWSConsts#APPS_TIMEOUTS_TYPE}.    *    * @param hsr the servlet request    * @param appId the application we want to get the timeout    * @param type the type of the timeouts    * @return the timeout for a specific application with a specific type.    * @throws AuthorizationException if the user is not authorized    */
+comment|/**    * This method retrieves the timeout information for a specific app with a    * specific type, and it is reachable by using    * {@link RMWSConsts#APPS_TIMEOUTS_TYPE}.    *    * @param hsr the servlet request    * @param appId the application we want to get the timeout. It is a PathParam.    * @param type the type of the timeouts. It is a PathParam.    * @return the timeout for a specific application with a specific type.    * @throws AuthorizationException if the user is not authorized    */
 DECL|method|getAppTimeout (HttpServletRequest hsr, String appId, String type)
 name|AppTimeoutInfo
 name|getAppTimeout
@@ -1374,7 +1374,7 @@ parameter_list|)
 throws|throws
 name|AuthorizationException
 function_decl|;
-comment|/**    * This method retrieves the timeout information for a specific app, and it is    * reachable by using {@link RMWSConsts#APPS_TIMEOUTS}.    *    * @param hsr the servlet request    * @param appId the application we want to get the timeouts    * @return the timeouts for a specific application    * @throws AuthorizationException if the user is not authorized    */
+comment|/**    * This method retrieves the timeout information for a specific app, and it is    * reachable by using {@link RMWSConsts#APPS_TIMEOUTS}.    *    * @param hsr the servlet request    * @param appId the application we want to get the timeouts. It is a    *          PathParam.    * @return the timeouts for a specific application    * @throws AuthorizationException if the user is not authorized    */
 DECL|method|getAppTimeouts (HttpServletRequest hsr, String appId)
 name|AppTimeoutsInfo
 name|getAppTimeouts
@@ -1388,7 +1388,7 @@ parameter_list|)
 throws|throws
 name|AuthorizationException
 function_decl|;
-comment|/**    * This method updates the timeout information for a specific app, and it is    * reachable by using {@link RMWSConsts#APPS_TIMEOUT}.    *    * @see ApplicationClientProtocol#updateApplicationTimeouts    * @param appTimeout the appTimeoutInfo    * @param hsr the servlet request    * @param appId the application we want to update    * @return Response containing the status code    * @throws AuthorizationException if the user is not authorized to invoke this    *           method    * @throws YarnException in case of bad request    * @throws IOException if the operation failed    * @throws InterruptedException if interrupted    */
+comment|/**    * This method updates the timeout information for a specific app, and it is    * reachable by using {@link RMWSConsts#APPS_TIMEOUT}.    *    * @see ApplicationClientProtocol#updateApplicationTimeouts    * @param appTimeout the appTimeoutInfo. It is a content param.    * @param hsr the servlet request    * @param appId the application we want to update. It is a PathParam.    * @return Response containing the status code    * @throws AuthorizationException if the user is not authorized to invoke this    *           method    * @throws YarnException in case of bad request    * @throws IOException if the operation failed    * @throws InterruptedException if interrupted    */
 DECL|method|updateApplicationTimeout (AppTimeoutInfo appTimeout, HttpServletRequest hsr, String appId)
 name|Response
 name|updateApplicationTimeout
@@ -1411,7 +1411,7 @@ name|InterruptedException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    * This method retrieves all the attempts information for a specific app, and    * it is reachable by using {@link RMWSConsts#APPS_APPID_APPATTEMPTS}.    *    * @see ApplicationBaseProtocol#getApplicationAttempts    * @param hsr the servlet request    * @param appId the application we want to get the attempts    * @return all the attempts info for a specific application    */
+comment|/**    * This method retrieves all the attempts information for a specific app, and    * it is reachable by using {@link RMWSConsts#APPS_APPID_APPATTEMPTS}.    *    * @see ApplicationBaseProtocol#getApplicationAttempts    * @param hsr the servlet request    * @param appId the application we want to get the attempts. It is a    *          PathParam.    * @return all the attempts info for a specific application    */
 DECL|method|getAppAttempts (HttpServletRequest hsr, String appId)
 name|AppAttemptsInfo
 name|getAppAttempts
