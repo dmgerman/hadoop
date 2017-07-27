@@ -7904,6 +7904,7 @@ comment|// used only for testing
 annotation|@
 name|VisibleForTesting
 DECL|method|setHeartbeatsDisabledForTests ( boolean heartbeatsDisabledForTests)
+specifier|public
 name|void
 name|setHeartbeatsDisabledForTests
 parameter_list|(
