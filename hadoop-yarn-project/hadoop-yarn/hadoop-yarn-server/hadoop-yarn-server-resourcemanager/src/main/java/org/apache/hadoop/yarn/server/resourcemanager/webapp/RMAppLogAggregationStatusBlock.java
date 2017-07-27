@@ -338,7 +338,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 import|;
@@ -356,7 +356,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -376,7 +376,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -607,7 +607,7 @@ argument_list|,
 literal|"Description"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|table_description
@@ -630,7 +630,7 @@ argument_list|(
 literal|"Log Aggregation is Disabled."
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|table_description
@@ -653,7 +653,7 @@ argument_list|(
 literal|"Log Aggregation does not Start."
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|table_description
@@ -676,7 +676,7 @@ argument_list|(
 literal|"Log Aggregation is Running."
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|table_description
@@ -701,7 +701,7 @@ operator|+
 literal|"in previous cycles"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|table_description
@@ -726,7 +726,7 @@ operator|+
 literal|"aggregated successfully."
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|table_description
@@ -751,7 +751,7 @@ operator|+
 literal|"have not been aggregated."
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|table_description
@@ -778,17 +778,17 @@ operator|+
 literal|"is finished or not."
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|table_description
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|div_description
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|RMApp
@@ -924,7 +924,7 @@ operator|+
 literal|" Failure Messages"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 if|if
@@ -1095,7 +1095,7 @@ else|:
 name|failureMessage
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -1103,12 +1103,12 @@ block|}
 block|}
 name|table
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|div
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}

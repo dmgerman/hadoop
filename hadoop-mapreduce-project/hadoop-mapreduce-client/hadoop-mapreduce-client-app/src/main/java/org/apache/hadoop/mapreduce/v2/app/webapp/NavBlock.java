@@ -122,7 +122,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 import|;
@@ -140,7 +140,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -264,7 +264,7 @@ argument_list|,
 literal|"About"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -284,7 +284,7 @@ argument_list|,
 literal|"Applications"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -304,10 +304,10 @@ argument_list|,
 literal|"Scheduler"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|h3
@@ -331,7 +331,7 @@ argument_list|,
 literal|"About"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -347,10 +347,10 @@ argument_list|,
 literal|"Jobs"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 decl_stmt|;
 if|if
@@ -448,7 +448,7 @@ argument_list|,
 literal|"Overview"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -466,7 +466,7 @@ argument_list|,
 literal|"Counters"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -484,7 +484,7 @@ argument_list|,
 literal|"Configuration"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -504,7 +504,7 @@ argument_list|,
 literal|"Map tasks"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -524,7 +524,7 @@ argument_list|,
 literal|"Reduce tasks"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -567,10 +567,10 @@ argument_list|,
 literal|"AM Logs"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 if|if
@@ -624,7 +624,7 @@ argument_list|,
 literal|"Task Overview"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -642,10 +642,10 @@ argument_list|,
 literal|"Counters"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -670,7 +670,7 @@ argument_list|,
 literal|"Configuration"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -683,7 +683,7 @@ argument_list|,
 literal|"Local logs"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -696,7 +696,7 @@ argument_list|,
 literal|"Server stacks"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -709,13 +709,13 @@ argument_list|,
 literal|"Server metrics"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}

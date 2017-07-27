@@ -4,13 +4,8 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_comment
-comment|/**  * Deprecated.  * Use org.apache.hadoop.yarn.webapp.hamlet2 package instead.  */
+comment|/**  * This package is the replacement for org.apache.hadoop.yarn.webapp.hamlet.  * The old package is using _ as a one-character identifier,  * which is banned from JDK9.  */
 end_comment
-
-begin_annotation
-annotation|@
-name|Deprecated
-end_annotation
 
 begin_annotation
 annotation|@
@@ -27,7 +22,7 @@ argument_list|)
 end_annotation
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.webapp.hamlet
+DECL|package|org.apache.hadoop.yarn.webapp.hamlet2
 package|package
 name|org
 operator|.
@@ -39,7 +34,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 package|;
 end_package
 

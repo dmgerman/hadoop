@@ -42,20 +42,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|util
-operator|.
-name|VersionInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|yarn
 operator|.
 name|api
@@ -65,22 +51,6 @@ operator|.
 name|timeline
 operator|.
 name|TimelineAbout
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|YarnVersionInfo
 import|;
 end_import
 
@@ -205,7 +175,7 @@ argument_list|(
 literal|"Timeline Server Overview"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Timeline Server Version:"
 argument_list|,
@@ -222,7 +192,7 @@ name|getTimelineServiceVersionBuiltOn
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Hadoop Version:"
 argument_list|,
@@ -241,7 +211,7 @@ argument_list|)
 expr_stmt|;
 name|html
 operator|.
-name|_
+name|__
 argument_list|(
 name|InfoBlock
 operator|.

@@ -80,42 +80,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|webapp
-operator|.
-name|view
-operator|.
-name|HtmlBlock
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|webapp
-operator|.
-name|view
-operator|.
-name|HtmlPage
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|junit
 operator|.
 name|Test
@@ -166,12 +130,12 @@ argument_list|(
 literal|"#testid"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"test note"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -200,7 +164,7 @@ operator|.
 name|p
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"should throw"
 argument_list|)
@@ -217,7 +181,7 @@ name|HtmlPage
 block|{
 annotation|@
 name|Override
-DECL|method|render (Page.HTML<_> html)
+DECL|method|render (Page.HTML<__> html)
 specifier|public
 name|void
 name|render
@@ -226,7 +190,7 @@ name|Page
 operator|.
 name|HTML
 argument_list|<
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|)
@@ -238,7 +202,7 @@ argument_list|(
 literal|"short test"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 name|ShortBlock
 operator|.

@@ -132,7 +132,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 import|;
@@ -150,7 +150,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -319,12 +319,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Apps Submitted"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -335,12 +335,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Apps Pending"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -351,12 +351,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Apps Running"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -367,12 +367,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Apps Completed"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -383,12 +383,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Containers Running"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -399,12 +399,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Memory Used"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -415,12 +415,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Memory Total"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -431,12 +431,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Memory Reserved"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -447,12 +447,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"VCores Used"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -463,12 +463,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"VCores Total"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -479,18 +479,18 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"VCores Reserved"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|tbody
@@ -663,13 +663,13 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|div
@@ -703,12 +703,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Active Nodes"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -719,12 +719,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Decommissioning Nodes"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -735,12 +735,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Decommissioned Nodes"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -751,12 +751,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Lost Nodes"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -767,12 +767,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Unhealthy Nodes"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -783,12 +783,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Rebooted Nodes"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -799,18 +799,18 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Shutdown Nodes"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|tbody
@@ -845,7 +845,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|td
@@ -869,7 +869,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|td
@@ -893,7 +893,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|td
@@ -917,7 +917,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|td
@@ -941,7 +941,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|td
@@ -965,7 +965,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|td
@@ -989,16 +989,16 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|String
@@ -1071,12 +1071,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Apps Submitted"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1087,12 +1087,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Apps Pending"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1103,12 +1103,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Apps Running"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1119,12 +1119,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Apps Completed"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1135,12 +1135,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Containers Running"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1151,12 +1151,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Containers Pending"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1167,12 +1167,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Containers Reserved"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1183,12 +1183,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Memory Used"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1199,12 +1199,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Memory Pending"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1215,12 +1215,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Memory Reserved"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1231,12 +1231,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"VCores Used"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1247,12 +1247,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"VCores Pending"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1263,18 +1263,18 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"VCores Reserved"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|tbody
@@ -1475,13 +1475,13 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -1528,12 +1528,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Scheduler Type"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1544,12 +1544,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Scheduling Resource Type"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1560,12 +1560,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Minimum Allocation"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1576,12 +1576,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Maximum Allocation"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1592,18 +1592,18 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Maximum Cluster Application Priority"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|tbody
@@ -1678,18 +1678,18 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|div
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}

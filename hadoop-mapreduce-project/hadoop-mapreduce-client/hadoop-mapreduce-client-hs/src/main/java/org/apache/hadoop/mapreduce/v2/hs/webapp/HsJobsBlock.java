@@ -158,7 +158,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 import|;
@@ -176,7 +176,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -196,7 +196,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -216,7 +216,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|HamletSpec
 operator|.
@@ -406,10 +406,10 @@ argument_list|(
 literal|"Elapsed Time"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|tbody
@@ -798,19 +798,19 @@ argument_list|(
 literal|"text/javascript"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"var jobsTableData="
 operator|+
 name|jobsTableData
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|tbody
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|tfoot
@@ -844,10 +844,10 @@ argument_list|(
 literal|"Submit Time"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -875,10 +875,10 @@ argument_list|(
 literal|"Start Time"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -906,10 +906,10 @@ argument_list|(
 literal|"Finish Time"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -937,10 +937,10 @@ argument_list|(
 literal|"Job ID"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -968,10 +968,10 @@ argument_list|(
 literal|"Name"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -999,10 +999,10 @@ argument_list|(
 literal|"User"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1030,10 +1030,10 @@ argument_list|(
 literal|"Queue"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1061,10 +1061,10 @@ argument_list|(
 literal|"State"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1092,10 +1092,10 @@ argument_list|(
 literal|"Maps Total"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1123,10 +1123,10 @@ argument_list|(
 literal|"Maps Completed"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1154,10 +1154,10 @@ argument_list|(
 literal|"Reduces Total"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1185,10 +1185,10 @@ argument_list|(
 literal|"Reduces Completed"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1216,19 +1216,19 @@ argument_list|(
 literal|"Elapsed Time"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}

@@ -118,7 +118,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 import|;

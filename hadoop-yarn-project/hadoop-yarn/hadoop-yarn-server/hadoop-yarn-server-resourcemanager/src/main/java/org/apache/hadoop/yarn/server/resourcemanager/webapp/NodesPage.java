@@ -242,7 +242,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 import|;
@@ -260,7 +260,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -280,7 +280,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -537,7 +537,7 @@ parameter_list|)
 block|{
 name|html
 operator|.
-name|_
+name|__
 argument_list|(
 name|MetricsOverviewTable
 operator|.
@@ -785,10 +785,10 @@ argument_list|,
 literal|"Version"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|tbody
@@ -1558,29 +1558,29 @@ argument_list|(
 literal|"text/javascript"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"var nodeTableData="
 operator|+
 name|nodeTableData
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|tbody
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
 block|}
 annotation|@
 name|Override
-DECL|method|preHead (Page.HTML<_> html)
+DECL|method|preHead (Page.HTML<__> html)
 specifier|protected
 name|void
 name|preHead
@@ -1589,7 +1589,7 @@ name|Page
 operator|.
 name|HTML
 argument_list|<
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|)

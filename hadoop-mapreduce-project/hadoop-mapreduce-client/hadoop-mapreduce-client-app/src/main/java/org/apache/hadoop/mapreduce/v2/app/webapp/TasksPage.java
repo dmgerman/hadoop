@@ -66,7 +66,7 @@ name|TasksPage
 extends|extends
 name|AppView
 block|{
-DECL|method|preHead (Page.HTML<_> html)
+DECL|method|preHead (Page.HTML<__> html)
 annotation|@
 name|Override
 specifier|protected
@@ -77,7 +77,7 @@ name|Page
 operator|.
 name|HTML
 argument_list|<
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|)

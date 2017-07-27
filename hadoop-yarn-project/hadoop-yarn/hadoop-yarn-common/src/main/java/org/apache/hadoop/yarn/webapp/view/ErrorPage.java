@@ -79,7 +79,7 @@ name|HtmlPage
 block|{
 annotation|@
 name|Override
-DECL|method|render (Page.HTML<_> html)
+DECL|method|render (Page.HTML<__> html)
 specifier|protected
 name|void
 name|render
@@ -88,7 +88,7 @@ name|Page
 operator|.
 name|HTML
 argument_list|<
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|)
@@ -127,7 +127,7 @@ literal|"yarn.css"
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 name|JQueryUI
 operator|.
@@ -155,7 +155,7 @@ operator|.
 name|div
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Please consult"
 argument_list|)
@@ -167,12 +167,12 @@ argument_list|,
 literal|"RFC 2616"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|" for meanings of the error code."
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|h1
@@ -183,19 +183,19 @@ operator|.
 name|pre
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 name|errorDetails
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}

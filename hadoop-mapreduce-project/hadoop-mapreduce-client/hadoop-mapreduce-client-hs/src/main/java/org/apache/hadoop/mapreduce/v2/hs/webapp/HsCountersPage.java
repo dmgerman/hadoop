@@ -91,7 +91,7 @@ extends|extends
 name|HsView
 block|{
 comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.mapreduce.v2.hs.webapp.HsView#preHead(org.apache.hadoop.yarn.webapp.hamlet.Hamlet.HTML)    */
-DECL|method|preHead (Page.HTML<_> html)
+DECL|method|preHead (Page.HTML<__> html)
 annotation|@
 name|Override
 specifier|protected
@@ -102,7 +102,7 @@ name|Page
 operator|.
 name|HTML
 argument_list|<
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|)
@@ -134,7 +134,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.yarn.webapp.view.TwoColumnLayout#postHead(org.apache.hadoop.yarn.webapp.hamlet.Hamlet.HTML)    */
-DECL|method|postHead (Page.HTML<_> html)
+DECL|method|postHead (Page.HTML<__> html)
 annotation|@
 name|Override
 specifier|protected
@@ -145,7 +145,7 @@ name|Page
 operator|.
 name|HTML
 argument_list|<
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|)

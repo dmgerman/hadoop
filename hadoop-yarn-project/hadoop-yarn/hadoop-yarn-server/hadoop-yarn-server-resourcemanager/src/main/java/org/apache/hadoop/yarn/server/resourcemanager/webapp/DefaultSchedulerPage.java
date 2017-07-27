@@ -162,7 +162,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 import|;
@@ -180,7 +180,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -200,7 +200,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -372,7 +372,7 @@ operator|+
 literal|"\' Queue Status"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Queue State:"
 argument_list|,
@@ -382,7 +382,7 @@ name|getState
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Minimum Queue Memory Capacity:"
 argument_list|,
@@ -397,7 +397,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Maximum Queue Memory Capacity:"
 argument_list|,
@@ -412,7 +412,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Number of Nodes:"
 argument_list|,
@@ -427,7 +427,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Used Node Capacity:"
 argument_list|,
@@ -442,7 +442,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Available Node Capacity:"
 argument_list|,
@@ -457,7 +457,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Total Node Capacity:"
 argument_list|,
@@ -472,7 +472,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Number of Node Containers:"
 argument_list|,
@@ -489,7 +489,7 @@ argument_list|)
 expr_stmt|;
 name|html
 operator|.
-name|_
+name|__
 argument_list|(
 name|InfoBlock
 operator|.
@@ -556,7 +556,7 @@ parameter_list|)
 block|{
 name|html
 operator|.
-name|_
+name|__
 argument_list|(
 name|MetricsOverviewTable
 operator|.
@@ -587,12 +587,12 @@ argument_list|(
 literal|".ui-widget-header.ui-corner-top"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"FifoScheduler Queue"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|div
@@ -636,12 +636,12 @@ argument_list|(
 name|Q_END
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"100% "
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|span
@@ -651,10 +651,10 @@ argument_list|,
 literal|"default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -729,12 +729,12 @@ argument_list|(
 name|Q_END
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"100%"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|span
@@ -777,12 +777,12 @@ argument_list|)
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"."
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|span
@@ -795,26 +795,26 @@ name|getQueueName
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 name|QueueInfoBlock
 operator|.
 name|class
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
 name|ul
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|script
@@ -825,18 +825,18 @@ argument_list|(
 literal|"text/javascript"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"$('#cs').hide();"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 name|AppsBlock
 operator|.
@@ -845,7 +845,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|postHead (Page.HTML<_> html)
+DECL|method|postHead (Page.HTML<__> html)
 annotation|@
 name|Override
 specifier|protected
@@ -856,7 +856,7 @@ name|Page
 operator|.
 name|HTML
 argument_list|<
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|)
@@ -871,7 +871,7 @@ argument_list|(
 literal|"text/css"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"#cs { padding: 0.5em 0 1em 0; margin-bottom: 1em; position: relative }"
 argument_list|,
@@ -886,7 +886,7 @@ argument_list|,
 literal|"table.info tr th {width: 50%}"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 comment|// to center info table
@@ -903,7 +903,7 @@ argument_list|(
 literal|"text/javascript"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"$(function() {"
 argument_list|,
@@ -942,7 +942,7 @@ argument_list|,
 literal|"});"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}

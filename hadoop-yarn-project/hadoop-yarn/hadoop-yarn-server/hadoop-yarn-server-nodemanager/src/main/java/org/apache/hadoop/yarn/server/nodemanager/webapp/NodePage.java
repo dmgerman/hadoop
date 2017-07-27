@@ -172,7 +172,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -249,14 +249,14 @@ literal|1024
 decl_stmt|;
 annotation|@
 name|Override
-DECL|method|commonPreHead (HTML<_> html)
+DECL|method|commonPreHead (HTML<__> html)
 specifier|protected
 name|void
 name|commonPreHead
 parameter_list|(
 name|HTML
 argument_list|<
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|)
@@ -377,7 +377,7 @@ argument_list|(
 literal|"NodeManager information"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Total Vmem allocated for Containers"
 argument_list|,
@@ -394,7 +394,7 @@ name|BYTES_IN_MB
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Vmem enforcement enabled"
 argument_list|,
@@ -404,7 +404,7 @@ name|isVmemCheckEnabled
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Total Pmem allocated for Container"
 argument_list|,
@@ -421,7 +421,7 @@ name|BYTES_IN_MB
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Pmem enforcement enabled"
 argument_list|,
@@ -431,7 +431,7 @@ name|isPmemCheckEnabled
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Total VCores allocated for Containers"
 argument_list|,
@@ -446,7 +446,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"NodeHealthyStatus"
 argument_list|,
@@ -456,7 +456,7 @@ name|getHealthStatus
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"LastNodeHealthTime"
 argument_list|,
@@ -470,7 +470,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"NodeHealthReport"
 argument_list|,
@@ -480,7 +480,7 @@ name|getHealthReport
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"NodeManager started on"
 argument_list|,
@@ -494,7 +494,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"NodeManager Version:"
 argument_list|,
@@ -511,7 +511,7 @@ name|getNMVersionBuiltOn
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Hadoop Version:"
 argument_list|,
@@ -530,7 +530,7 @@ argument_list|)
 expr_stmt|;
 name|html
 operator|.
-name|_
+name|__
 argument_list|(
 name|InfoBlock
 operator|.

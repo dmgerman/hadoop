@@ -112,7 +112,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 import|;
@@ -130,7 +130,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -150,7 +150,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -170,7 +170,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -297,7 +297,7 @@ argument_list|,
 literal|"About"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -313,7 +313,7 @@ argument_list|,
 literal|"Nodes"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -329,7 +329,7 @@ argument_list|,
 literal|"Node Labels"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 decl_stmt|;
 name|UL
@@ -370,7 +370,7 @@ operator|.
 name|li
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 for|for
@@ -407,16 +407,16 @@ name|toString
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
 name|subAppsList
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|UL
@@ -443,10 +443,10 @@ argument_list|,
 literal|"Scheduler"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|h3
@@ -469,7 +469,7 @@ argument_list|,
 literal|"Configuration"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -482,7 +482,7 @@ argument_list|,
 literal|"Local logs"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -495,7 +495,7 @@ argument_list|,
 literal|"Server stacks"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -508,7 +508,7 @@ argument_list|,
 literal|"Server metrics"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 if|if
@@ -531,16 +531,16 @@ argument_list|,
 literal|"Errors/Warnings"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
 name|tools
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}

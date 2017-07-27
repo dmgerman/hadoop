@@ -324,25 +324,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|util
-operator|.
-name|ConverterUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 import|;
@@ -360,7 +344,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -380,7 +364,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -670,12 +654,12 @@ operator|.
 name|p
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 name|message
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 return|return;
@@ -896,7 +880,7 @@ operator|.
 name|p
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Sorry, Failed to get containers for application attempt"
 operator|+
@@ -905,7 +889,7 @@ operator|+
 literal|"."
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 return|return;
@@ -917,7 +901,7 @@ argument_list|)
 expr_stmt|;
 name|html
 operator|.
-name|_
+name|__
 argument_list|(
 name|InfoBlock
 operator|.
@@ -980,10 +964,10 @@ argument_list|,
 literal|"Logs"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|tbody
@@ -1218,22 +1202,22 @@ argument_list|(
 literal|"text/javascript"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"var containersTableData="
 operator|+
 name|containersTableData
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|tbody
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -1271,7 +1255,7 @@ argument_list|(
 literal|"Application Attempt Overview"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Application Attempt State:"
 argument_list|,
@@ -1290,7 +1274,7 @@ name|getAppAttemptState
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"AM Container:"
 argument_list|,
@@ -1331,14 +1315,14 @@ else|:
 name|amContainerId
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Node:"
 argument_list|,
 name|node
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Tracking URL:"
 argument_list|,
@@ -1420,7 +1404,7 @@ else|:
 literal|"ApplicationMaster"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Diagnostics Info:"
 argument_list|,

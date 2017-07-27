@@ -306,7 +306,7 @@ name|SCMOverviewPage
 extends|extends
 name|TwoColumnLayout
 block|{
-DECL|method|preHead (Page.HTML<_> html)
+DECL|method|preHead (Page.HTML<__> html)
 annotation|@
 name|Override
 specifier|protected
@@ -317,7 +317,7 @@ name|Page
 operator|.
 name|HTML
 argument_list|<
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|)
@@ -424,7 +424,7 @@ argument_list|,
 literal|"Configuration"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -437,7 +437,7 @@ argument_list|,
 literal|"Thread dump"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -450,7 +450,7 @@ argument_list|,
 literal|"Logs"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -463,13 +463,13 @@ argument_list|,
 literal|"Metrics"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -549,7 +549,7 @@ argument_list|(
 literal|"Shared Cache Manager overview"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Started on:"
 argument_list|,
@@ -564,7 +564,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Cache hits: "
 argument_list|,
@@ -574,7 +574,7 @@ name|getCacheHits
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Cache misses: "
 argument_list|,
@@ -584,7 +584,7 @@ name|getCacheMisses
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Cache releases: "
 argument_list|,
@@ -594,7 +594,7 @@ name|getCacheReleases
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Accepted uploads: "
 argument_list|,
@@ -604,7 +604,7 @@ name|getAcceptedUploads
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Rejected uploads: "
 argument_list|,
@@ -614,7 +614,7 @@ name|getRejectUploads
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Deleted files by the cleaner: "
 argument_list|,
@@ -624,7 +624,7 @@ name|getTotalDeletedFiles
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Processed files by the cleaner: "
 argument_list|,
@@ -636,7 +636,7 @@ argument_list|)
 expr_stmt|;
 name|html
 operator|.
-name|_
+name|__
 argument_list|(
 name|InfoBlock
 operator|.

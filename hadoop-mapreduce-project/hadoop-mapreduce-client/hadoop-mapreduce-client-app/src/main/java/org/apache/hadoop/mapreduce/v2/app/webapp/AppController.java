@@ -579,7 +579,7 @@ argument_list|(
 literal|"Application Master Overview"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Application ID:"
 argument_list|,
@@ -589,7 +589,7 @@ name|getId
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Application Name:"
 argument_list|,
@@ -599,7 +599,7 @@ name|getName
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"User:"
 argument_list|,
@@ -609,7 +609,7 @@ name|getUser
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Started on:"
 argument_list|,
@@ -624,7 +624,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Elasped: "
 argument_list|,

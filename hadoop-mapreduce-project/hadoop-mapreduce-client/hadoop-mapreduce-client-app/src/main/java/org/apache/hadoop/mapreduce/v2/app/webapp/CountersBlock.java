@@ -286,7 +286,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 import|;
@@ -304,7 +304,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -324,7 +324,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -344,7 +344,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -364,7 +364,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -384,7 +384,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -404,7 +404,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -516,7 +516,7 @@ operator|.
 name|p
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Sorry, no counters for nonexistent"
 argument_list|,
@@ -528,7 +528,7 @@ literal|"job"
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 return|return;
@@ -554,7 +554,7 @@ operator|.
 name|p
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Sorry, no counters for nonexistent"
 argument_list|,
@@ -566,7 +566,7 @@ literal|"task"
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 return|return;
@@ -627,7 +627,7 @@ operator|.
 name|p
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Sorry it looks like "
 argument_list|,
@@ -636,7 +636,7 @@ argument_list|,
 literal|" has no counters."
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 return|return;
@@ -739,10 +739,10 @@ argument_list|,
 literal|"Counters"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|tbody
@@ -848,7 +848,7 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 name|fixGroupDisplayName
 argument_list|(
@@ -859,7 +859,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|td
@@ -961,10 +961,10 @@ else|:
 literal|"Total"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|tbody
@@ -1039,7 +1039,7 @@ name|getName
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 name|counter
 operator|.
@@ -1047,7 +1047,7 @@ name|getDisplayName
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -1091,7 +1091,7 @@ name|getDisplayName
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -1202,34 +1202,34 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
 name|group
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
 name|tbody
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}

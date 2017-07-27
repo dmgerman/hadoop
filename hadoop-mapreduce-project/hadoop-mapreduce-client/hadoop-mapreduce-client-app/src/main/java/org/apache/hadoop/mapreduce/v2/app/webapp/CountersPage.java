@@ -88,7 +88,7 @@ name|CountersPage
 extends|extends
 name|AppView
 block|{
-DECL|method|preHead (Page.HTML<_> html)
+DECL|method|preHead (Page.HTML<__> html)
 annotation|@
 name|Override
 specifier|protected
@@ -99,7 +99,7 @@ name|Page
 operator|.
 name|HTML
 argument_list|<
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|)
@@ -173,7 +173,7 @@ literal|"{bJQueryUI:true, sDom:'t', iDisplayLength:-1}"
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|postHead (Page.HTML<_> html)
+DECL|method|postHead (Page.HTML<__> html)
 annotation|@
 name|Override
 specifier|protected
@@ -184,7 +184,7 @@ name|Page
 operator|.
 name|HTML
 argument_list|<
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|)

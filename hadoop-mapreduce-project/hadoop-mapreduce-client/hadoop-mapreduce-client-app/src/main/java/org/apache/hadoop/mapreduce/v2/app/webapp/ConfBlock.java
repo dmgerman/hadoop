@@ -220,7 +220,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 import|;
@@ -238,7 +238,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -258,7 +258,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -278,7 +278,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|HamletSpec
 operator|.
@@ -380,12 +380,12 @@ operator|.
 name|p
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Sorry, can't do anything without a JobID."
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 return|return;
@@ -422,7 +422,7 @@ operator|.
 name|p
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Sorry, "
 argument_list|,
@@ -431,7 +431,7 @@ argument_list|,
 literal|" not found."
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 return|return;
@@ -472,7 +472,7 @@ name|toString
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|TBODY
@@ -519,10 +519,10 @@ argument_list|,
 literal|"source chain"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|tbody
@@ -641,13 +641,13 @@ name|toString
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
 name|tbody
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|tfoot
@@ -681,10 +681,10 @@ argument_list|(
 literal|"key"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -712,10 +712,10 @@ argument_list|(
 literal|"value"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -743,19 +743,19 @@ argument_list|(
 literal|"source chain"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -781,7 +781,7 @@ operator|.
 name|p
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Sorry got an error while reading conf file. "
 argument_list|,

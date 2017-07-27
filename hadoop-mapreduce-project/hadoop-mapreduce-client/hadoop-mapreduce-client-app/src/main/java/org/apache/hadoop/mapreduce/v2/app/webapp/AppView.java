@@ -84,7 +84,7 @@ name|AppView
 extends|extends
 name|TwoColumnLayout
 block|{
-DECL|method|preHead (Page.HTML<_> html)
+DECL|method|preHead (Page.HTML<__> html)
 annotation|@
 name|Override
 specifier|protected
@@ -95,7 +95,7 @@ name|Page
 operator|.
 name|HTML
 argument_list|<
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|)
@@ -133,7 +133,7 @@ literal|"jobs"
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|commonPreHead (Page.HTML<_> html)
+DECL|method|commonPreHead (Page.HTML<__> html)
 specifier|protected
 name|void
 name|commonPreHead
@@ -142,7 +142,7 @@ name|Page
 operator|.
 name|HTML
 argument_list|<
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|)

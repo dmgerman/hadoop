@@ -113,7 +113,7 @@ operator|.
 name|p
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 name|$
 argument_list|(
@@ -121,7 +121,7 @@ name|ERROR_MESSAGE
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}

@@ -160,7 +160,7 @@ name|HelloView
 extends|extends
 name|HtmlPage
 block|{
-DECL|method|render (Page.HTML<_> html)
+DECL|method|render (Page.HTML<__> html)
 annotation|@
 name|Override
 specifier|protected
@@ -171,7 +171,7 @@ name|Page
 operator|.
 name|HTML
 argument_list|<
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|)
@@ -192,7 +192,7 @@ argument_list|(
 literal|"#hello-for-css"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 name|$
 argument_list|(
@@ -200,10 +200,10 @@ literal|"title"
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}

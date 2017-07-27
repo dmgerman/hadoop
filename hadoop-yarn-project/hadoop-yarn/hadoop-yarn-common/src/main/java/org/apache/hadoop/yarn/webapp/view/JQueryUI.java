@@ -126,7 +126,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|HamletSpec
 operator|.
@@ -527,12 +527,12 @@ argument_list|(
 literal|"text/javascript"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"$(function() {"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 name|list
 operator|.
@@ -540,12 +540,12 @@ name|toArray
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"});"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -567,14 +567,14 @@ argument_list|(
 literal|"#jsnotice.ui-state-error"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"This page will not function without javascript enabled."
 operator|+
 literal|" Please enable javascript on your browser."
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|html
@@ -587,12 +587,12 @@ argument_list|(
 literal|"text/javascript"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"$('#jsnotice').hide();"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}

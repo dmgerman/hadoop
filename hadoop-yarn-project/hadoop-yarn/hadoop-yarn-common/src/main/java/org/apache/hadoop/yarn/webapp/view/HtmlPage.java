@@ -114,14 +114,14 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 import|;
 end_import
 
 begin_comment
-comment|/**  * The parent class of all HTML pages.  Override   * {@link #render(org.apache.hadoop.yarn.webapp.hamlet.Hamlet.HTML)}  * to actually render the page.  */
+comment|/**  * The parent class of all HTML pages.  Override   * {@link #render(org.apache.hadoop.yarn.webapp.hamlet2.Hamlet.HTML)}  * to actually render the page.  */
 end_comment
 
 begin_class
@@ -144,15 +144,15 @@ name|HtmlPage
 extends|extends
 name|TextView
 block|{
-DECL|class|_
+DECL|class|__
 specifier|public
 specifier|static
 class|class
-name|_
+name|__
 implements|implements
 name|Hamlet
 operator|.
-name|_
+name|__
 block|{   }
 DECL|class|Page
 specifier|public
@@ -227,7 +227,7 @@ name|HTML
 argument_list|<
 name|HtmlPage
 operator|.
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|()
@@ -238,7 +238,7 @@ name|HTML
 argument_list|<
 name|HtmlPage
 operator|.
-name|_
+name|__
 argument_list|>
 argument_list|(
 literal|"html"
@@ -394,7 +394,7 @@ throw|;
 block|}
 block|}
 comment|/**    * Render the the HTML page.    * @param html the page to render data to.    */
-DECL|method|render (Page.HTML<_> html)
+DECL|method|render (Page.HTML<__> html)
 specifier|protected
 specifier|abstract
 name|void
@@ -404,7 +404,7 @@ name|Page
 operator|.
 name|HTML
 argument_list|<
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|)

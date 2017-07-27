@@ -224,22 +224,6 @@ name|yarn
 operator|.
 name|util
 operator|.
-name|ConverterUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
 name|Times
 import|;
 end_import
@@ -526,12 +510,12 @@ operator|.
 name|p
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 name|message
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 return|return;
@@ -576,7 +560,7 @@ argument_list|(
 literal|"Container Overview"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Container State:"
 argument_list|,
@@ -595,7 +579,7 @@ name|getContainerState
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Exit Status:"
 argument_list|,
@@ -605,7 +589,7 @@ name|getContainerExitStatus
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Node:"
 argument_list|,
@@ -638,7 +622,7 @@ name|getNodeHttpAddress
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Priority:"
 argument_list|,
@@ -648,7 +632,7 @@ name|getPriority
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Started:"
 argument_list|,
@@ -663,7 +647,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Elapsed:"
 argument_list|,
@@ -688,7 +672,7 @@ argument_list|)
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Resource:"
 argument_list|,
@@ -707,7 +691,7 @@ operator|+
 literal|" VCores"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Logs:"
 argument_list|,
@@ -737,7 +721,7 @@ else|:
 literal|"Logs"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Diagnostics:"
 argument_list|,
@@ -758,7 +742,7 @@ argument_list|)
 expr_stmt|;
 name|html
 operator|.
-name|_
+name|__
 argument_list|(
 name|InfoBlock
 operator|.

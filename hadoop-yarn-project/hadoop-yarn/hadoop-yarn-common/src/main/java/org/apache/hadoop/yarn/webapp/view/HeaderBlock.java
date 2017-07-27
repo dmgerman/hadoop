@@ -103,12 +103,12 @@ argument_list|(
 literal|"#user"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 name|loggedIn
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|div
@@ -121,7 +121,7 @@ argument_list|(
 literal|"/static/hadoop-st.png"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|h1
@@ -132,7 +132,7 @@ name|TITLE
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}

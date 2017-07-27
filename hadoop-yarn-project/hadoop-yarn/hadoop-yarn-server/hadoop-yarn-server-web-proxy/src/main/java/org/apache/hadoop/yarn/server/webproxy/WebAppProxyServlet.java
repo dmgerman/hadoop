@@ -514,7 +514,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 import|;
@@ -881,15 +881,15 @@ name|DELETE
 block|}
 empty_stmt|;
 comment|/**    * Empty Hamlet class.    */
-DECL|class|_
+DECL|class|__
 specifier|private
 specifier|static
 class|class
-name|_
+name|__
 implements|implements
 name|Hamlet
 operator|.
-name|_
+name|__
 block|{
 comment|//Empty
 block|}
@@ -924,7 +924,7 @@ name|HTML
 argument_list|<
 name|WebAppProxyServlet
 operator|.
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|()
@@ -1147,7 +1147,7 @@ operator|.
 name|h3
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"click "
 argument_list|)
@@ -1159,17 +1159,17 @@ argument_list|,
 literal|"here"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|" to continue to an Application Master web interface owned by "
 argument_list|,
 name|user
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}

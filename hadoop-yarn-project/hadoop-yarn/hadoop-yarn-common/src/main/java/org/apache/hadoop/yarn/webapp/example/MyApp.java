@@ -213,7 +213,7 @@ block|{
 comment|// You can inject the app in views if needed.
 annotation|@
 name|Override
-DECL|method|render (Page.HTML<_> html)
+DECL|method|render (Page.HTML<__> html)
 specifier|public
 name|void
 name|render
@@ -222,7 +222,7 @@ name|Page
 operator|.
 name|HTML
 argument_list|<
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|)
@@ -239,7 +239,7 @@ argument_list|(
 literal|"#content_id_for_css_styling"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"You can have"
 argument_list|,
@@ -249,13 +249,13 @@ literal|"anything"
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
-comment|// Note, there is no _(); (to parent element) method at root level.
+comment|// Note, there is no __(); (to parent element) method at root level.
 comment|// and IDE provides instant feedback on what level you're on in
 comment|// the auto-completion drop-downs.
 block|}

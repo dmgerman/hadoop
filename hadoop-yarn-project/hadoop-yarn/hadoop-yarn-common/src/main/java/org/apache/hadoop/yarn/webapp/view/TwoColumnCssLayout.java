@@ -73,7 +73,7 @@ name|TwoColumnCssLayout
 extends|extends
 name|HtmlPage
 block|{
-DECL|method|render (Page.HTML<_> html)
+DECL|method|render (Page.HTML<__> html)
 annotation|@
 name|Override
 specifier|protected
@@ -84,7 +84,7 @@ name|Page
 operator|.
 name|HTML
 argument_list|<
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|)
@@ -145,7 +145,7 @@ argument_list|,
 literal|"  right: 12em; overflow: hidden; }"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 name|JQueryUI
 operator|.
@@ -171,7 +171,7 @@ argument_list|(
 literal|".main.ui-widget-content"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 name|header
 argument_list|()
@@ -197,16 +197,16 @@ argument_list|(
 literal|".content"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 name|content
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|div
@@ -214,7 +214,7 @@ argument_list|(
 literal|".nav"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 name|nav
 argument_list|()
@@ -225,19 +225,19 @@ argument_list|(
 literal|".push"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|div
@@ -245,20 +245,20 @@ argument_list|(
 literal|".footer.ui-widget-content"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 name|footer
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|preHead (Page.HTML<_> html)
+DECL|method|preHead (Page.HTML<__> html)
 specifier|protected
 name|void
 name|preHead
@@ -267,12 +267,12 @@ name|Page
 operator|.
 name|HTML
 argument_list|<
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|)
 block|{   }
-DECL|method|postHead (Page.HTML<_> html)
+DECL|method|postHead (Page.HTML<__> html)
 specifier|protected
 name|void
 name|postHead
@@ -281,7 +281,7 @@ name|Page
 operator|.
 name|HTML
 argument_list|<
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|)

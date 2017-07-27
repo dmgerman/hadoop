@@ -124,7 +124,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 import|;
@@ -301,12 +301,12 @@ operator|.
 name|h3
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"ResourceManager"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|ul
@@ -322,21 +322,21 @@ argument_list|,
 literal|"RM Home"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|h3
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"NodeManager"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 comment|// TODO: Problem if no header like this
 operator|.
@@ -356,7 +356,7 @@ argument_list|,
 literal|"Node Information"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -372,7 +372,7 @@ argument_list|,
 literal|"List of Applications"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -388,10 +388,10 @@ argument_list|,
 literal|"List of Containers"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|h3
@@ -412,7 +412,7 @@ argument_list|,
 literal|"Configuration"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -425,7 +425,7 @@ argument_list|,
 literal|"Local logs"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -438,7 +438,7 @@ argument_list|,
 literal|"Server stacks"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -451,7 +451,7 @@ argument_list|,
 literal|"Server metrics"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 decl_stmt|;
 if|if
@@ -474,16 +474,16 @@ argument_list|,
 literal|"Errors/Warnings"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
 name|ul
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}

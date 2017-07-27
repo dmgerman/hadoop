@@ -178,7 +178,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 import|;
@@ -441,15 +441,15 @@ operator|.
 name|p
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"This page is for admins only."
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 return|return;
@@ -463,7 +463,7 @@ condition|)
 block|{
 name|html
 operator|.
-name|_
+name|__
 argument_list|(
 name|ErrorMetrics
 operator|.
@@ -472,7 +472,7 @@ argument_list|)
 expr_stmt|;
 name|html
 operator|.
-name|_
+name|__
 argument_list|(
 name|WarningMetrics
 operator|.
@@ -497,7 +497,7 @@ argument_list|(
 literal|"View data for the last "
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|select
@@ -516,12 +516,12 @@ argument_list|(
 literal|"60"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"1 min"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|option
@@ -532,12 +532,12 @@ argument_list|(
 literal|"300"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"5 min"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|option
@@ -548,12 +548,12 @@ argument_list|(
 literal|"900"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"15 min"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|option
@@ -564,12 +564,12 @@ argument_list|(
 literal|"3600"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"1 hour"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|option
@@ -580,12 +580,12 @@ argument_list|(
 literal|"21600"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"6 hours"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|option
@@ -596,12 +596,12 @@ argument_list|(
 literal|"43200"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"12 hours"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|option
@@ -612,18 +612,18 @@ argument_list|(
 literal|"86400"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"24 hours"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|String
@@ -657,12 +657,12 @@ argument_list|(
 literal|"text/javascript"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 name|script
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|html
@@ -754,10 +754,10 @@ argument_list|,
 literal|"Latest Message Time"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|tbody
@@ -1106,15 +1106,15 @@ argument_list|(
 literal|"white-space: pre"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 name|displayMessage
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|div
@@ -1128,18 +1128,18 @@ operator|.
 name|pre
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 name|message
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -1150,15 +1150,15 @@ operator|.
 name|pre
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 name|message
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -1205,7 +1205,7 @@ literal|1000
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -1213,10 +1213,10 @@ block|}
 block|}
 name|errorsTable
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -1510,12 +1510,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Last 1 minute"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1526,12 +1526,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Last 5 minutes"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1542,12 +1542,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Last 15 minutes"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1558,12 +1558,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Last 1 hour"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1574,12 +1574,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Last 6 hours"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1590,12 +1590,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Last 12 hours"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1606,18 +1606,18 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Last 24 hours"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|tbody
@@ -1736,18 +1736,18 @@ argument_list|)
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|div
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}

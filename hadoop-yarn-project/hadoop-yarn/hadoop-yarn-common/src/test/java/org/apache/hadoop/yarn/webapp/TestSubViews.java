@@ -144,7 +144,7 @@ name|HtmlPage
 block|{
 annotation|@
 name|Override
-DECL|method|render (Page.HTML<_> html)
+DECL|method|render (Page.HTML<__> html)
 specifier|public
 name|void
 name|render
@@ -153,7 +153,7 @@ name|Page
 operator|.
 name|HTML
 argument_list|<
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|)
@@ -166,14 +166,14 @@ operator|.
 name|div
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 name|Sub1
 operator|.
 name|class
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|div
@@ -184,20 +184,20 @@ argument_list|(
 literal|"inline text"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 name|Sub2
 operator|.
 name|class
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -228,12 +228,12 @@ argument_list|(
 literal|"#sub1"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"sub1 text"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -262,12 +262,12 @@ operator|.
 name|pre
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"sub2 text"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}

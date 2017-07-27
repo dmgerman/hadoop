@@ -112,7 +112,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 import|;
@@ -236,7 +236,7 @@ argument_list|,
 literal|"About"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -280,7 +280,7 @@ name|toString
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -308,7 +308,7 @@ name|toString
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -336,16 +336,16 @@ name|toString
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 decl_stmt|;
 name|Hamlet
@@ -383,7 +383,7 @@ argument_list|,
 literal|"Configuration"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -396,7 +396,7 @@ argument_list|,
 literal|"Local logs"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -409,7 +409,7 @@ argument_list|,
 literal|"Server stacks"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -422,7 +422,7 @@ argument_list|,
 literal|"Server metrics"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 if|if
@@ -445,16 +445,16 @@ argument_list|,
 literal|"Errors/Warnings"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
 name|tools
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}

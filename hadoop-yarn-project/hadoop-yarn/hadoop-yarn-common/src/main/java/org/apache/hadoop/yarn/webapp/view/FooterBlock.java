@@ -71,7 +71,7 @@ argument_list|(
 literal|"#footer.ui-widget"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}

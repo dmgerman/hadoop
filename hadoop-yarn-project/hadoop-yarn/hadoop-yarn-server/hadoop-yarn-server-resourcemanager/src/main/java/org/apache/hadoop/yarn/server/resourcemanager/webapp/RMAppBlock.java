@@ -330,7 +330,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 import|;
@@ -348,7 +348,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -603,7 +603,7 @@ name|pdiv
 init|=
 name|html
 operator|.
-name|_
+name|__
 argument_list|(
 name|InfoBlock
 operator|.
@@ -628,7 +628,7 @@ argument_list|(
 literal|"Application Metrics"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Total Resource Preempted:"
 argument_list|,
@@ -644,7 +644,7 @@ name|getResourcePreempted
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Total Number of Non-AM Containers Preempted:"
 argument_list|,
@@ -660,7 +660,7 @@ name|getNumNonAMContainersPreempted
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Total Number of AM Containers Preempted:"
 argument_list|,
@@ -676,21 +676,21 @@ name|getNumAMContainersPreempted
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Resource Preempted from Current Attempt:"
 argument_list|,
 name|attemptResourcePreempted
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Number of Non-AM Containers Preempted from Current Attempt:"
 argument_list|,
 name|attemptNumNonAMContainerPreempted
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Aggregate Resource Allocation:"
 argument_list|,
@@ -724,7 +724,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Aggregate Preempted Resource Allocation:"
 argument_list|,
@@ -760,7 +760,7 @@ argument_list|)
 expr_stmt|;
 name|pdiv
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -859,10 +859,10 @@ argument_list|,
 literal|"Nodes blacklisted by the system"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|tbody
@@ -1267,22 +1267,22 @@ argument_list|(
 literal|"text/javascript"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"var attemptsTableData="
 operator|+
 name|attemptsTableData
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|tbody
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}

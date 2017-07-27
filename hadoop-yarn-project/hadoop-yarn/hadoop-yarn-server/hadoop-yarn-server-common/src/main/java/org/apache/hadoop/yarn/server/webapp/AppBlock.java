@@ -604,7 +604,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 import|;
@@ -622,7 +622,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -642,7 +642,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -967,12 +967,12 @@ operator|.
 name|p
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 name|message
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 return|return;
@@ -1060,10 +1060,10 @@ argument_list|(
 literal|"Kill Application"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|StringBuilder
@@ -1203,7 +1203,7 @@ argument_list|(
 literal|"text/javascript"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 name|script
 operator|.
@@ -1211,7 +1211,7 @@ name|toString
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -1335,12 +1335,12 @@ operator|.
 name|p
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 name|message
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 return|return;
@@ -1352,7 +1352,7 @@ argument_list|)
 expr_stmt|;
 name|html
 operator|.
-name|_
+name|__
 argument_list|(
 name|InfoBlock
 operator|.
@@ -1396,7 +1396,7 @@ argument_list|(
 literal|"Application Overview"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"User:"
 argument_list|,
@@ -1408,7 +1408,7 @@ name|getUser
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Name:"
 argument_list|,
@@ -1418,7 +1418,7 @@ name|getName
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Application Type:"
 argument_list|,
@@ -1428,7 +1428,7 @@ name|getType
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Application Tags:"
 argument_list|,
@@ -1447,7 +1447,7 @@ name|getApplicationTags
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Application Priority:"
 argument_list|,
@@ -1460,7 +1460,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"YarnApplicationState:"
 argument_list|,
@@ -1482,7 +1482,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Queue:"
 argument_list|,
@@ -1494,7 +1494,7 @@ name|getQueue
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"FinalStatus Reported by AM:"
 argument_list|,
@@ -1507,7 +1507,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Started:"
 argument_list|,
@@ -1522,7 +1522,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Elapsed:"
 argument_list|,
@@ -1547,7 +1547,7 @@ argument_list|)
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Tracking URL:"
 argument_list|,
@@ -1660,7 +1660,7 @@ condition|)
 block|{
 name|overviewTable
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Log Aggregation Status:"
 argument_list|,
@@ -1692,7 +1692,7 @@ condition|)
 block|{
 name|overviewTable
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Log Aggregation Status:"
 argument_list|,
@@ -1707,7 +1707,7 @@ else|else
 block|{
 name|overviewTable
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Log Aggregation Status:"
 argument_list|,
@@ -1755,7 +1755,7 @@ condition|)
 block|{
 name|overviewTable
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Application Timeout (Remaining Time):"
 argument_list|,
@@ -1767,7 +1767,7 @@ else|else
 block|{
 name|overviewTable
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Application Timeout (Remaining Time):"
 argument_list|,
@@ -1785,7 +1785,7 @@ block|}
 block|}
 name|overviewTable
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Diagnostics:"
 argument_list|,
@@ -1806,7 +1806,7 @@ argument_list|)
 expr_stmt|;
 name|overviewTable
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Unmanaged Application:"
 argument_list|,
@@ -1818,7 +1818,7 @@ argument_list|)
 expr_stmt|;
 name|overviewTable
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Application Node Label expression:"
 argument_list|,
@@ -1839,7 +1839,7 @@ argument_list|)
 expr_stmt|;
 name|overviewTable
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"AM container Node Label expression:"
 argument_list|,
@@ -1928,10 +1928,10 @@ argument_list|,
 literal|"Logs"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|tbody
@@ -2116,12 +2116,12 @@ operator|.
 name|p
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 name|message
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 return|return;
@@ -2360,22 +2360,22 @@ argument_list|(
 literal|"text/javascript"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"var attemptsTableData="
 operator|+
 name|attemptsTableData
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|tbody
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}

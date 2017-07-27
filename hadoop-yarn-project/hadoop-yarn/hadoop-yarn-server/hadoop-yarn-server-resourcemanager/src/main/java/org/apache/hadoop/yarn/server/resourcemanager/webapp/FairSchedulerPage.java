@@ -232,7 +232,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 import|;
@@ -250,7 +250,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -270,7 +270,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -290,7 +290,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -527,7 +527,7 @@ operator|+
 literal|"\' Queue Status"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Used Resources:"
 argument_list|,
@@ -540,7 +540,7 @@ name|toString
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Demand Resources:"
 argument_list|,
@@ -553,7 +553,7 @@ name|toString
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Num Active Applications:"
 argument_list|,
@@ -563,7 +563,7 @@ name|getNumActiveApplications
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Num Pending Applications:"
 argument_list|,
@@ -573,7 +573,7 @@ name|getNumPendingApplications
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Min Resources:"
 argument_list|,
@@ -586,7 +586,7 @@ name|toString
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Max Resources:"
 argument_list|,
@@ -599,7 +599,7 @@ name|toString
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Reserved Resources:"
 argument_list|,
@@ -631,7 +631,7 @@ condition|)
 block|{
 name|ri
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Max Running Applications:"
 argument_list|,
@@ -644,7 +644,7 @@ expr_stmt|;
 block|}
 name|ri
 operator|.
-name|_
+name|__
 argument_list|(
 name|STEADY_FAIR_SHARE
 operator|+
@@ -661,7 +661,7 @@ argument_list|)
 expr_stmt|;
 name|ri
 operator|.
-name|_
+name|__
 argument_list|(
 name|INSTANTANEOUS_FAIR_SHARE
 operator|+
@@ -678,7 +678,7 @@ argument_list|)
 expr_stmt|;
 name|ri
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Preemptable:"
 argument_list|,
@@ -690,7 +690,7 @@ argument_list|)
 expr_stmt|;
 name|html
 operator|.
-name|_
+name|__
 argument_list|(
 name|InfoBlock
 operator|.
@@ -770,7 +770,7 @@ operator|+
 literal|"\' Queue Status"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Used Resources:"
 argument_list|,
@@ -783,7 +783,7 @@ name|toString
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Min Resources:"
 argument_list|,
@@ -796,7 +796,7 @@ name|toString
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Max Resources:"
 argument_list|,
@@ -809,7 +809,7 @@ name|toString
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Reserved Resources:"
 argument_list|,
@@ -841,7 +841,7 @@ condition|)
 block|{
 name|ri
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Max Running Applications:"
 argument_list|,
@@ -854,7 +854,7 @@ expr_stmt|;
 block|}
 name|ri
 operator|.
-name|_
+name|__
 argument_list|(
 name|STEADY_FAIR_SHARE
 operator|+
@@ -871,7 +871,7 @@ argument_list|)
 expr_stmt|;
 name|ri
 operator|.
-name|_
+name|__
 argument_list|(
 name|INSTANTANEOUS_FAIR_SHARE
 operator|+
@@ -888,7 +888,7 @@ argument_list|)
 expr_stmt|;
 name|html
 operator|.
-name|_
+name|__
 argument_list|(
 name|InfoBlock
 operator|.
@@ -1087,12 +1087,12 @@ argument_list|)
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|'.'
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|span
@@ -1115,12 +1115,12 @@ argument_list|)
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|'.'
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|span
@@ -1149,12 +1149,12 @@ name|Q_UNDER
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|'.'
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|span
@@ -1167,7 +1167,7 @@ name|getQueueName
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|span
@@ -1186,7 +1186,7 @@ name|Q_STATS_POS
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 name|join
 argument_list|(
@@ -1199,7 +1199,7 @@ literal|" used"
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 decl_stmt|;
 name|fsqinfo
@@ -1225,17 +1225,17 @@ operator|.
 name|li
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 name|LeafQueueBlock
 operator|.
 name|class
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -1251,22 +1251,22 @@ operator|.
 name|li
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 name|ParentQueueBlock
 operator|.
 name|class
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|li
 operator|.
-name|_
+name|__
 argument_list|(
 name|QueueBlock
 operator|.
@@ -1276,13 +1276,13 @@ expr_stmt|;
 block|}
 name|li
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
 name|ul
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -1344,7 +1344,7 @@ parameter_list|)
 block|{
 name|html
 operator|.
-name|_
+name|__
 argument_list|(
 name|MetricsOverviewTable
 operator|.
@@ -1375,12 +1375,12 @@ argument_list|(
 literal|".ui-widget-header.ui-corner-top"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Application Queues"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|div
@@ -1424,12 +1424,12 @@ argument_list|(
 name|Q_END
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"100% "
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|span
@@ -1439,10 +1439,10 @@ argument_list|,
 literal|"default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -1494,12 +1494,12 @@ argument_list|(
 literal|"font-weight: bold"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Legend:"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|span
@@ -1522,12 +1522,12 @@ operator|+
 literal|"both active (with running applications) and inactive."
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 name|STEADY_FAIR_SHARE
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|span
@@ -1550,12 +1550,12 @@ operator|+
 literal|"queues (with running applications)."
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 name|INSTANTANEOUS_FAIR_SHARE
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|span
@@ -1571,12 +1571,12 @@ argument_list|(
 name|Q_UNDER
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Used"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|span
@@ -1592,12 +1592,12 @@ argument_list|(
 name|Q_OVER
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Used (over fair share)"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|span
@@ -1608,15 +1608,15 @@ argument_list|(
 literal|"qlegend ui-corner-all ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Max Capacity"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -1659,12 +1659,12 @@ name|Q_UNDER
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"."
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|span
@@ -1674,7 +1674,7 @@ argument_list|,
 literal|"root"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|span
@@ -1693,7 +1693,7 @@ name|Q_STATS_POS
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 name|join
 argument_list|(
@@ -1706,26 +1706,26 @@ literal|" used"
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 name|QueueBlock
 operator|.
 name|class
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
 name|ul
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|script
@@ -1736,18 +1736,18 @@ argument_list|(
 literal|"text/javascript"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"$('#cs').hide();"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 name|FairSchedulerAppsBlock
 operator|.
@@ -1756,7 +1756,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|postHead (Page.HTML<_> html)
+DECL|method|postHead (Page.HTML<__> html)
 annotation|@
 name|Override
 specifier|protected
@@ -1767,7 +1767,7 @@ name|Page
 operator|.
 name|HTML
 argument_list|<
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|)
@@ -1782,7 +1782,7 @@ argument_list|(
 literal|"text/css"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"#cs { padding: 0.5em 0 1em 0; margin-bottom: 1em; position: relative }"
 argument_list|,
@@ -1801,7 +1801,7 @@ argument_list|,
 literal|"table.info tr th {width: 50%}"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 comment|// to center info table
@@ -1818,7 +1818,7 @@ argument_list|(
 literal|"text/javascript"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"$(function() {"
 argument_list|,
@@ -1863,10 +1863,10 @@ argument_list|,
 literal|"});"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 name|SchedulerPageUtil
 operator|.

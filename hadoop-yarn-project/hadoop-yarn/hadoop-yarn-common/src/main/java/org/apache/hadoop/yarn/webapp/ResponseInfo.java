@@ -318,10 +318,10 @@ return|return
 name|about
 return|;
 block|}
-DECL|method|_ (String key, Object value)
+DECL|method|__ (String key, Object value)
 specifier|public
 name|ResponseInfo
-name|_
+name|__
 parameter_list|(
 name|String
 name|key
@@ -350,10 +350,10 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|_ (String key, String url, Object anchor)
+DECL|method|__ (String key, String url, Object anchor)
 specifier|public
 name|ResponseInfo
-name|_
+name|__
 parameter_list|(
 name|String
 name|key

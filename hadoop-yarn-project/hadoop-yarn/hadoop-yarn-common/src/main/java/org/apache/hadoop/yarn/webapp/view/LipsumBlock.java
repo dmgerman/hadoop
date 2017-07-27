@@ -69,7 +69,7 @@ operator|.
 name|p
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Lorem ipsum dolor sit amet, consectetur adipiscing elit."
 argument_list|,
@@ -110,7 +110,7 @@ argument_list|,
 literal|"Quisque elit elit, vulputate eget porta vel, laoreet ac lacus."
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}

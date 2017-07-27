@@ -72,7 +72,7 @@ argument_list|(
 literal|"text/javascript"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"function reopenQueryNodes() {"
 argument_list|,
@@ -127,7 +127,7 @@ argument_list|,
 literal|"}"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -150,7 +150,7 @@ argument_list|(
 literal|"text/javascript"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"function storeExpandedQueue(e, data) {"
 argument_list|,
@@ -371,7 +371,7 @@ argument_list|,
 literal|"}"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}

@@ -216,25 +216,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|util
-operator|.
-name|StringUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 import|;
@@ -252,7 +238,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -272,7 +258,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -292,7 +278,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -312,7 +298,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -332,7 +318,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -352,7 +338,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|HamletSpec
 operator|.
@@ -576,12 +562,12 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Task"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -597,15 +583,15 @@ argument_list|(
 literal|"ui-state-default"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Successful Attempt"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|TR
@@ -743,10 +729,10 @@ name|tbody
 init|=
 name|theadRow
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|tbody
@@ -1242,14 +1228,14 @@ argument_list|(
 literal|"text/javascript"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"var tasksTableData="
 operator|+
 name|tasksTableData
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|TR
@@ -1266,7 +1252,7 @@ name|footRow
 init|=
 name|tbody
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|tfoot
@@ -1302,10 +1288,10 @@ argument_list|(
 literal|"ID"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1333,10 +1319,10 @@ argument_list|(
 literal|"State"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1364,10 +1350,10 @@ argument_list|(
 literal|"Start Time"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1395,10 +1381,10 @@ argument_list|(
 literal|"Finish Time"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1426,10 +1412,10 @@ argument_list|(
 literal|"Elapsed Time"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|th
@@ -1457,10 +1443,10 @@ argument_list|(
 literal|"Start Time"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 if|if
@@ -1499,10 +1485,10 @@ argument_list|(
 literal|"Shuffle Time"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|footRow
@@ -1532,10 +1518,10 @@ argument_list|(
 literal|"Merge Time"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -1566,10 +1552,10 @@ argument_list|(
 literal|"Finish Time"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 if|if
@@ -1608,10 +1594,10 @@ argument_list|(
 literal|"Elapsed Shuffle Time"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|footRow
@@ -1641,10 +1627,10 @@ argument_list|(
 literal|"Elapsed Merge Time"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|footRow
@@ -1674,10 +1660,10 @@ argument_list|(
 literal|"Elapsed Reduce Time"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -1708,21 +1694,21 @@ argument_list|(
 literal|"Elapsed Time"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|footRow
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}

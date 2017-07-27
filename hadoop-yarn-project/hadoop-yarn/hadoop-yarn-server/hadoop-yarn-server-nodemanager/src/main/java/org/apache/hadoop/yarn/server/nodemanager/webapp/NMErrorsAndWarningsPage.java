@@ -123,7 +123,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|preHead (HtmlPage.Page.HTML<HtmlPage._> html)
+DECL|method|preHead (HtmlPage.Page.HTML<__> html)
 specifier|protected
 name|void
 name|preHead
@@ -134,9 +134,7 @@ name|Page
 operator|.
 name|HTML
 argument_list|<
-name|HtmlPage
-operator|.
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|)

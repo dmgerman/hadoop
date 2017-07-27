@@ -94,7 +94,7 @@ argument_list|(
 literal|"..."
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|h3
@@ -115,7 +115,7 @@ argument_list|,
 literal|"Configuration"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -128,7 +128,7 @@ argument_list|,
 literal|"Thread dump"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -141,7 +141,7 @@ argument_list|,
 literal|"Logs"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|li
@@ -154,13 +154,13 @@ argument_list|,
 literal|"Metrics"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}

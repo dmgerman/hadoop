@@ -48,7 +48,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 import|;
@@ -192,15 +192,15 @@ name|LOCATION
 init|=
 literal|"Location"
 decl_stmt|;
-DECL|class|_
+DECL|class|__
 specifier|public
 specifier|static
 class|class
-name|_
+name|__
 implements|implements
 name|Hamlet
 operator|.
-name|_
+name|__
 block|{
 comment|//Empty
 block|}
@@ -235,7 +235,7 @@ name|HTML
 argument_list|<
 name|ProxyUtils
 operator|.
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|()
@@ -375,7 +375,7 @@ argument_list|(
 literal|"Moved"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|body
@@ -389,7 +389,7 @@ operator|.
 name|div
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Content has moved "
 argument_list|)
@@ -401,13 +401,13 @@ argument_list|,
 literal|"here"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|writer
@@ -472,7 +472,7 @@ argument_list|(
 name|message
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}

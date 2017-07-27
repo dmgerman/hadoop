@@ -402,22 +402,6 @@ name|yarn
 operator|.
 name|util
 operator|.
-name|ConverterUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
 name|Times
 import|;
 end_import
@@ -434,7 +418,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 import|;
@@ -452,7 +436,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -669,14 +653,14 @@ operator|.
 name|h1
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Aggregation is not enabled. Try the nodemanager at "
 operator|+
 name|nodeId
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 if|if
@@ -691,14 +675,14 @@ operator|.
 name|h1
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Or see application log at "
 operator|+
 name|nmApplicationLogUrl
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -799,7 +783,7 @@ operator|.
 name|h1
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Logs not available for "
 operator|+
@@ -812,7 +796,7 @@ operator|+
 name|nodeId
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 if|if
@@ -827,14 +811,14 @@ operator|.
 name|h1
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Or see application log at "
 operator|+
 name|nmApplicationLogUrl
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -851,14 +835,14 @@ operator|.
 name|h1
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Error getting logs at "
 operator|+
 name|nodeId
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 return|return;
@@ -1152,7 +1136,7 @@ operator|.
 name|h1
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"User ["
 operator|+
@@ -1175,7 +1159,7 @@ operator|+
 literal|"]"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|LOG
@@ -1257,11 +1241,13 @@ name|reader
 operator|!=
 literal|null
 condition|)
+block|{
 name|reader
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 block|}
 if|if
@@ -1323,14 +1309,14 @@ operator|.
 name|h1
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Error getting logs for "
 operator|+
 name|logEntity
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|LOG
@@ -1443,12 +1429,12 @@ operator|.
 name|pre
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"\n\n"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -1457,14 +1443,14 @@ operator|.
 name|p
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Log Type: "
 operator|+
 name|logType
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|html
@@ -1472,7 +1458,7 @@ operator|.
 name|p
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Log Upload Time: "
 operator|+
@@ -1484,7 +1470,7 @@ name|logUpLoadTime
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|html
@@ -1492,7 +1478,7 @@ operator|.
 name|p
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Log Length: "
 operator|+
@@ -1504,7 +1490,7 @@ name|logLength
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|long
@@ -1614,7 +1600,7 @@ operator|.
 name|p
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Showing "
 operator|+
@@ -1661,12 +1647,12 @@ argument_list|,
 literal|"here"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|" for the full log."
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -1793,7 +1779,7 @@ condition|)
 block|{
 name|pre
 operator|.
-name|_
+name|__
 argument_list|(
 operator|new
 name|String
@@ -1828,7 +1814,7 @@ expr_stmt|;
 block|}
 name|pre
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|foundLog
@@ -1882,12 +1868,12 @@ operator|.
 name|h1
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Cannot get container logs without a ContainerId"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 return|return
@@ -1922,14 +1908,14 @@ operator|.
 name|h1
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Cannot get container logs for invalid containerId: "
 operator|+
 name|containerIdStr
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 return|return
@@ -1974,12 +1960,12 @@ operator|.
 name|h1
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Cannot get container logs without a NodeId"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 return|return
@@ -2014,14 +2000,14 @@ operator|.
 name|h1
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Cannot get container logs. Invalid nodeId: "
 operator|+
 name|nodeIdStr
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 return|return
@@ -2066,12 +2052,12 @@ operator|.
 name|h1
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Cannot get container logs without an app owner"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -2169,14 +2155,14 @@ operator|.
 name|h1
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Invalid log start value: "
 operator|+
 name|startStr
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -2229,14 +2215,14 @@ operator|.
 name|h1
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Invalid log end value: "
 operator|+
 name|endStr
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}

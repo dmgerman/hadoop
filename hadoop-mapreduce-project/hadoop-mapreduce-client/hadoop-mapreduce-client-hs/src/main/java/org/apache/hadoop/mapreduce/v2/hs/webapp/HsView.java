@@ -231,7 +231,7 @@ extends|extends
 name|TwoColumnLayout
 block|{
 comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.yarn.webapp.view.TwoColumnLayout#preHead(org.apache.hadoop.yarn.webapp.hamlet.Hamlet.HTML)    */
-DECL|method|preHead (Page.HTML<_> html)
+DECL|method|preHead (Page.HTML<__> html)
 annotation|@
 name|Override
 specifier|protected
@@ -242,7 +242,7 @@ name|Page
 operator|.
 name|HTML
 argument_list|<
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|)
@@ -294,7 +294,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * The prehead that should be common to all subclasses.    * @param html used to render.    */
-DECL|method|commonPreHead (Page.HTML<_> html)
+DECL|method|commonPreHead (Page.HTML<__> html)
 specifier|protected
 name|void
 name|commonPreHead
@@ -303,7 +303,7 @@ name|Page
 operator|.
 name|HTML
 argument_list|<
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|)

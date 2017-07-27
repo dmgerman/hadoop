@@ -175,7 +175,7 @@ argument_list|()
 expr_stmt|;
 name|resInfo
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"User_Name"
 argument_list|,
@@ -245,7 +245,7 @@ argument_list|()
 expr_stmt|;
 name|resInfo
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Multiple_line_value"
 argument_list|,
@@ -254,7 +254,7 @@ argument_list|)
 expr_stmt|;
 name|resInfo
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Multiple_line_value"
 argument_list|,

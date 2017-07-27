@@ -210,20 +210,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|http
-operator|.
-name|HttpConfig
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|mapreduce
 operator|.
 name|v2
@@ -420,7 +406,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 import|;
@@ -438,7 +424,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -458,7 +444,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -573,12 +559,12 @@ operator|.
 name|p
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Sorry, can't do anything without a JobID."
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 return|return;
@@ -615,7 +601,7 @@ operator|.
 name|p
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Sorry, "
 argument_list|,
@@ -624,7 +610,7 @@ argument_list|,
 literal|" not found."
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 return|return;
@@ -670,7 +656,7 @@ argument_list|(
 literal|"Job Overview"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Job Name:"
 argument_list|,
@@ -680,7 +666,7 @@ name|getName
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"User Name:"
 argument_list|,
@@ -690,7 +676,7 @@ name|getUserName
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Queue Name:"
 argument_list|,
@@ -700,7 +686,7 @@ name|getQueueName
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"State:"
 argument_list|,
@@ -710,7 +696,7 @@ name|getState
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Uberized:"
 argument_list|,
@@ -720,7 +706,7 @@ name|isUberized
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Started:"
 argument_list|,
@@ -734,7 +720,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Elapsed:"
 argument_list|,
@@ -757,7 +743,7 @@ name|div
 init|=
 name|html
 operator|.
-name|_
+name|__
 argument_list|(
 name|InfoBlock
 operator|.
@@ -796,7 +782,7 @@ argument_list|(
 name|amString
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|tr
@@ -830,7 +816,7 @@ argument_list|,
 literal|"Logs"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 for|for
@@ -919,7 +905,7 @@ name|getNodeHttpAddress
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|td
@@ -940,21 +926,21 @@ argument_list|,
 literal|"logs"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
 name|table
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|div
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|html
@@ -1015,7 +1001,7 @@ argument_list|,
 literal|"Complete"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|tr
@@ -1070,13 +1056,13 @@ literal|'%'
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|td
@@ -1106,7 +1092,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|td
@@ -1136,7 +1122,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|td
@@ -1166,7 +1152,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|td
@@ -1196,10 +1182,10 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|tr
@@ -1254,13 +1240,13 @@ literal|'%'
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|td
@@ -1290,7 +1276,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|td
@@ -1320,7 +1306,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|td
@@ -1350,7 +1336,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|td
@@ -1380,13 +1366,13 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 comment|// Attempts table
@@ -1440,7 +1426,7 @@ argument_list|,
 literal|"Successful"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|tr
@@ -1485,7 +1471,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|td
@@ -1520,7 +1506,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|td
@@ -1555,7 +1541,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|td
@@ -1590,7 +1576,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|td
@@ -1625,10 +1611,10 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|tr
@@ -1673,7 +1659,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|td
@@ -1708,7 +1694,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|td
@@ -1743,7 +1729,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|td
@@ -1778,7 +1764,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|td
@@ -1813,16 +1799,16 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}

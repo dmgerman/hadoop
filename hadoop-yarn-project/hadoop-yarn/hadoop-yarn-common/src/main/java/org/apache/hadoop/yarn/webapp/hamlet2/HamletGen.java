@@ -4,7 +4,7 @@ comment|/** * Licensed to the Apache Software Foundation (ASF) under one * or mo
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.webapp.hamlet
+DECL|package|org.apache.hadoop.yarn.webapp.hamlet2
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 package|;
 end_package
 
@@ -245,12 +245,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Generates a specific hamlet implementation class from a spec class  * using a generic hamlet implementation class.  * @deprecated Use org.apache.hadoop.yarn.webapp.hamlet2 package instead.  */
+comment|/**  * Generates a specific hamlet implementation class from a spec class  * using a generic hamlet implementation class.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -956,7 +954,7 @@ literal|"public class "
 argument_list|,
 name|className
 argument_list|,
-literal|"<T extends _>"
+literal|"<T extends __>"
 argument_list|,
 literal|" extends EImp<T> implements "
 argument_list|,
@@ -1249,9 +1247,9 @@ argument_list|)
 operator|.
 name|replace
 argument_list|(
-literal|'_'
+literal|"__"
 argument_list|,
-literal|'-'
+literal|"-"
 argument_list|)
 decl_stmt|;
 name|Type
@@ -1533,7 +1531,7 @@ name|indent
 argument_list|,
 literal|"\n"
 argument_list|,
-literal|"private<T extends _> "
+literal|"private<T extends __> "
 argument_list|,
 name|retName
 argument_list|,
@@ -1541,7 +1539,7 @@ literal|"<T> "
 argument_list|,
 name|methodName
 argument_list|,
-literal|"_(T e, boolean inline) {\n"
+literal|"__(T e, boolean inline) {\n"
 argument_list|,
 literal|"  return new "
 argument_list|,
@@ -1686,7 +1684,7 @@ argument_list|(
 name|retName
 argument_list|)
 argument_list|,
-literal|"_"
+literal|"__"
 operator|+
 literal|"(this, "
 argument_list|,
@@ -1957,7 +1955,7 @@ name|puts
 argument_list|(
 name|indent
 argument_list|,
-literal|"  return base().$href(href)._();\n"
+literal|"  return base().$href(href).__();\n"
 argument_list|,
 literal|"}"
 argument_list|)
@@ -1985,7 +1983,7 @@ name|puts
 argument_list|(
 name|indent
 argument_list|,
-literal|"  return setScriptSrc(script(), src)._();\n"
+literal|"  return setScriptSrc(script(), src).__();\n"
 argument_list|,
 literal|"}"
 argument_list|)
@@ -2013,7 +2011,7 @@ name|puts
 argument_list|(
 name|indent
 argument_list|,
-literal|"  return style().$type(\"text/css\")._(lines)._();\n"
+literal|"  return style().$type(\"text/css\").__(lines).__();\n"
 argument_list|,
 literal|"}"
 argument_list|)
@@ -2045,7 +2043,7 @@ literal|"  return "
 argument_list|,
 name|methodName
 argument_list|,
-literal|"().$src(src)._();\n"
+literal|"().$src(src).__();\n"
 argument_list|,
 literal|"}"
 argument_list|)
@@ -2091,7 +2089,7 @@ literal|"  return setSelector("
 argument_list|,
 name|methodName
 argument_list|,
-literal|"(), selector)._();\n"
+literal|"(), selector).__();\n"
 argument_list|,
 literal|"}"
 argument_list|)
@@ -2123,7 +2121,7 @@ literal|"  return setLinkHref("
 argument_list|,
 name|methodName
 argument_list|,
-literal|"(), href)._();\n"
+literal|"(), href).__();\n"
 argument_list|,
 literal|"}"
 argument_list|)
@@ -2136,7 +2134,7 @@ name|methodName
 operator|.
 name|equals
 argument_list|(
-literal|"_"
+literal|"__"
 argument_list|)
 condition|)
 block|{
@@ -2259,7 +2257,7 @@ literal|"  return "
 argument_list|,
 name|methodName
 argument_list|,
-literal|"()._(cdata)._();\n"
+literal|"().__(cdata).__();\n"
 argument_list|,
 literal|"}"
 argument_list|)
@@ -2297,7 +2295,7 @@ name|puts
 argument_list|(
 name|indent
 argument_list|,
-literal|"  return meta().$name(name).$content(content)._();\n"
+literal|"  return meta().$name(name).$content(content).__();\n"
 argument_list|,
 literal|"}"
 argument_list|)
@@ -2325,7 +2323,7 @@ name|puts
 argument_list|(
 name|indent
 argument_list|,
-literal|"  return meta().$http_equiv(header).$content(content)._();\n"
+literal|"  return meta().$http_equiv(header).$content(content).__();\n"
 argument_list|,
 literal|"}"
 argument_list|)
@@ -2353,7 +2351,7 @@ name|puts
 argument_list|(
 name|indent
 argument_list|,
-literal|"  return a().$href(href)._(anchorText)._();\n"
+literal|"  return a().$href(href).__(anchorText).__();\n"
 argument_list|,
 literal|"}"
 argument_list|)
@@ -2381,7 +2379,7 @@ name|puts
 argument_list|(
 name|indent
 argument_list|,
-literal|"  return bdo().$dir(dir)._(cdata)._();\n"
+literal|"  return bdo().$dir(dir).__(cdata).__();\n"
 argument_list|,
 literal|"}"
 argument_list|)
@@ -2409,7 +2407,7 @@ name|puts
 argument_list|(
 name|indent
 argument_list|,
-literal|"  return label().$for(forId)._(cdata)._();\n"
+literal|"  return label().$for(forId).__(cdata).__();\n"
 argument_list|,
 literal|"}"
 argument_list|)
@@ -2437,7 +2435,7 @@ name|puts
 argument_list|(
 name|indent
 argument_list|,
-literal|"  return param().$name(name).$value(value)._();\n"
+literal|"  return param().$name(name).$value(value).__();\n"
 argument_list|,
 literal|"}"
 argument_list|)
@@ -2460,7 +2458,7 @@ literal|"  return setSelector("
 argument_list|,
 name|methodName
 argument_list|,
-literal|"(), selector)._(cdata)._();\n"
+literal|"(), selector).__(cdata).__();\n"
 argument_list|,
 literal|"}"
 argument_list|)
@@ -2500,7 +2498,7 @@ name|indent
 argument_list|,
 literal|"  return setSelector(a(), selector)"
 argument_list|,
-literal|".$href(href)._(anchorText)._();\n"
+literal|".$href(href).__(anchorText).__();\n"
 argument_list|,
 literal|"}"
 argument_list|)

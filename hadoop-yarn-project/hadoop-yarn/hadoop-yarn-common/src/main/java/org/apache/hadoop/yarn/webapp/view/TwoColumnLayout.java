@@ -116,7 +116,7 @@ extends|extends
 name|HtmlPage
 block|{
 comment|/*    * (non-Javadoc)    * @see org.apache.hadoop.yarn.webapp.view.HtmlPage#render(org.apache.hadoop.yarn.webapp.hamlet.Hamlet.HTML)    */
-DECL|method|render (Page.HTML<_> html)
+DECL|method|render (Page.HTML<__> html)
 annotation|@
 name|Override
 specifier|protected
@@ -127,7 +127,7 @@ name|Page
 operator|.
 name|HTML
 argument_list|<
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|)
@@ -172,7 +172,7 @@ argument_list|,
 literal|"#layout tfoot td { height: 4em; }"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 name|JQueryUI
 operator|.
@@ -212,19 +212,19 @@ argument_list|(
 literal|2
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 name|header
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|tfoot
@@ -241,19 +241,19 @@ argument_list|(
 literal|2
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 name|footer
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|tbody
@@ -270,13 +270,13 @@ argument_list|(
 literal|"navcell"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 name|nav
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|td
@@ -287,30 +287,30 @@ argument_list|(
 literal|"content"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 name|content
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Do what needs to be done before the header is rendered.  This usually    * involves setting page variables for Javascript and CSS rendering.    * @param html the html to use to render.     */
-DECL|method|preHead (Page.HTML<_> html)
+DECL|method|preHead (Page.HTML<__> html)
 specifier|protected
 name|void
 name|preHead
@@ -319,13 +319,13 @@ name|Page
 operator|.
 name|HTML
 argument_list|<
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|)
 block|{   }
 comment|/**    * Do what needs to be done after the header is rendered.    * @param html the html to use to render.     */
-DECL|method|postHead (Page.HTML<_> html)
+DECL|method|postHead (Page.HTML<__> html)
 specifier|protected
 name|void
 name|postHead
@@ -334,7 +334,7 @@ name|Page
 operator|.
 name|HTML
 argument_list|<
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|)
@@ -412,7 +412,7 @@ name|class
 return|;
 block|}
 comment|/**    * Sets up a table to be a consistent style.    * @param html the HTML to use to render.    * @param tableId the ID of the table to set styles on.    * @param innerStyles any other styles to add to the table.    */
-DECL|method|setTableStyles (Page.HTML<_> html, String tableId, String... innerStyles)
+DECL|method|setTableStyles (Page.HTML<__> html, String tableId, String... innerStyles)
 specifier|protected
 name|void
 name|setTableStyles
@@ -421,7 +421,7 @@ name|Page
 operator|.
 name|HTML
 argument_list|<
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|,

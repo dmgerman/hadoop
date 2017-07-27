@@ -4,7 +4,7 @@ comment|/** * Licensed to the Apache Software Foundation (ASF) under one * or mo
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.webapp.hamlet
+DECL|package|org.apache.hadoop.yarn.webapp.hamlet2
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 package|;
 end_package
 
@@ -73,12 +73,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * HTML5 compatible HTML4 builder interfaces.  *  *<p>Generated from HTML 4.01 strict DTD and HTML5 diffs.  *<br>cf. http://www.w3.org/TR/html4/  *<br>cf. http://www.w3.org/TR/html5-diff/  *<p> The omitted attributes and elements (from the 4.01 DTD)  * are for HTML5 compatibility.  *  *<p>Note, the common argument selector uses the same syntax as Haml/Sass:  *<pre>  selector ::= (#id)?(.class)*</pre>  * cf. http://haml-lang.com/  *  *<p>The naming convention used in this class is slightly different from  * normal classes. A CamelCase interface corresponds to an entity in the DTD.  * _CamelCase is for internal refactoring. An element builder interface is in  * UPPERCASE, corresponding to an element definition in the DTD. $lowercase is  * used as attribute builder methods to differentiate from element builder  * methods.  * @deprecated Use org.apache.hadoop.yarn.webapp.hamlet2 package instead.  */
+comment|/**  * HTML5 compatible HTML4 builder interfaces.  *  *<p>Generated from HTML 4.01 strict DTD and HTML5 diffs.  *<br>cf. http://www.w3.org/TR/html4/  *<br>cf. http://www.w3.org/TR/html5-diff/  *<p> The omitted attributes and elements (from the 4.01 DTD)  * are for HTML5 compatibility.  *  *<p>Note, the common argument selector uses the same syntax as Haml/Sass:  *<pre>  selector ::= (#id)?(.class)*</pre>  * cf. http://haml-lang.com/  *  *<p>The naming convention used in this class is slightly different from  * normal classes. A CamelCase interface corresponds to an entity in the DTD.  * _CamelCase is for internal refactoring. An element builder interface is in  * UPPERCASE, corresponding to an element definition in the DTD. $lowercase is  * used as attribute builder methods to differentiate from element builder  * methods.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -393,10 +391,10 @@ literal|true
 function_decl|;
 block|}
 comment|/**    *    */
-DECL|interface|_
+DECL|interface|__
 specifier|public
 interface|interface
-name|_
+name|__
 block|{}
 comment|/**    *    */
 DECL|interface|_Child
@@ -404,12 +402,12 @@ specifier|public
 interface|interface
 name|_Child
 extends|extends
-name|_
+name|__
 block|{
 comment|/**      * Finish the current element.      * @return the parent element      */
-DECL|method|_ ()
-name|_
-name|_
+DECL|method|__ ()
+name|__
+name|__
 parameter_list|()
 function_decl|;
 block|}
@@ -489,7 +487,7 @@ name|META
 name|meta
 parameter_list|()
 function_decl|;
-comment|/**      * Add a meta element.      * Shortcut of<code>meta().$name(name).$content(content)._();</code>      * @param name of the meta element      * @param content of the meta element      * @return the current element builder      */
+comment|/**      * Add a meta element.      * Shortcut of<code>meta().$name(name).$content(content).__();</code>      * @param name of the meta element      * @param content of the meta element      * @return the current element builder      */
 DECL|method|meta (String name, String content)
 name|HeadMisc
 name|meta
@@ -501,7 +499,7 @@ name|String
 name|content
 parameter_list|)
 function_decl|;
-comment|/**      * Add a meta element with http-equiv attribute.      * Shortcut of<br>      *<code>meta().$http_equiv(header).$content(content)._();</code>      * @param header for the http-equiv attribute      * @param content of the header      * @return the current element builder      */
+comment|/**      * Add a meta element with http-equiv attribute.      * Shortcut of<br>      *<code>meta().$http_equiv(header).$content(content).__();</code>      * @param header for the http-equiv attribute      * @param content of the header      * @return the current element builder      */
 DECL|method|meta_http (String header, String content)
 name|HeadMisc
 name|meta_http
@@ -519,7 +517,7 @@ name|LINK
 name|link
 parameter_list|()
 function_decl|;
-comment|/**      * Add a link element.      * Implementation should try to figure out type by the suffix of href.      * So<code>link("style.css");</code> is a shortcut of      *<code>link().$rel("stylesheet").$type("text/css").$href("style.css")._();      *</code>      * @param href of the link      * @return the current element builder      */
+comment|/**      * Add a link element.      * Implementation should try to figure out type by the suffix of href.      * So<code>link("style.css");</code> is a shortcut of      *<code>link().$rel("stylesheet").$type("text/css").$href("style.css").__();      *</code>      * @param href of the link      * @return the current element builder      */
 DECL|method|link (String href)
 name|HeadMisc
 name|link
@@ -949,7 +947,7 @@ name|SMALL
 name|small
 parameter_list|()
 function_decl|;
-comment|/**      * Add a complete small (small print) element.      * Shortcut of: small()._(cdata)._();      * @param cdata the content of the element      * @return the current element builder      */
+comment|/**      * Add a complete small (small print) element.      * Shortcut of: small().__(cdata).__();      * @param cdata the content of the element      * @return the current element builder      */
 DECL|method|small (String cdata)
 name|_FontSize
 name|small
@@ -958,7 +956,7 @@ name|String
 name|cdata
 parameter_list|)
 function_decl|;
-comment|/**      * Add a complete small (small print) element.      * Shortcut of: small().$id(id).$class(class)._(cdata)._();      * @param selector css selector in the form of (#id)?(.class)*      * @param cdata the content of the element      * @return the current element builder      */
+comment|/**      * Add a complete small (small print) element.      * Shortcut of: small().$id(id).$class(class).__(cdata).__();      * @param selector css selector in the form of (#id)?(.class)*      * @param cdata the content of the element      * @return the current element builder      */
 DECL|method|small (String selector, String cdata)
 name|_FontSize
 name|small
@@ -1408,7 +1406,7 @@ name|String
 name|selector
 parameter_list|)
 function_decl|;
-comment|/** Shortcut for<code>a().$href(href)._(anchorText)._();</code>      * @param href the URI      * @param anchorText for the URI      * @return the current element builder      */
+comment|/** Shortcut for<code>a().$href(href).__(anchorText).__();</code>      * @param href the URI      * @param anchorText for the URI      * @return the current element builder      */
 DECL|method|a (String href, String anchorText)
 name|_Anchor
 name|a
@@ -1420,7 +1418,7 @@ name|String
 name|anchorText
 parameter_list|)
 function_decl|;
-comment|/** Shortcut for<code>a(selector).$href(href)._(anchorText)._();</code>      * @param selector in the form of (#id)?(.class)*      * @param href the URI      * @param anchorText for the URI      * @return the current element builder      */
+comment|/** Shortcut for<code>a(selector).$href(href).__(anchorText).__();</code>      * @param selector in the form of (#id)?(.class)*      * @param href the URI      * @param anchorText for the URI      * @return the current element builder      */
 DECL|method|a (String selector, String href, String anchorText)
 name|_Anchor
 name|a
@@ -1614,7 +1612,7 @@ name|LABEL
 name|label
 parameter_list|()
 function_decl|;
-comment|/**      * Add a LABEL element.      * Shortcut of<code>label().$for(forId)._(cdata)._();</code>      * @param forId the for attribute      * @param cdata the content      * @return the current element builder      */
+comment|/**      * Add a LABEL element.      * Shortcut of<code>label().$for(forId).__(cdata).__();</code>      * @param forId the for attribute      * @param cdata the content      * @return the current element builder      */
 DECL|method|label (String forId, String cdata)
 name|_Label
 name|label
@@ -1737,9 +1735,9 @@ extends|extends
 name|_Child
 block|{
 comment|/**      * Content of the element      * @param lines of content      * @return the current element builder      */
-DECL|method|_ (Object... lines)
+DECL|method|__ (Object... lines)
 name|_Content
-name|_
+name|__
 parameter_list|(
 name|Object
 modifier|...
@@ -2176,9 +2174,9 @@ name|cdata
 parameter_list|)
 function_decl|;
 comment|/**      * Embed a sub-view.      * @param cls the sub-view class      * @return the current element builder      */
-DECL|method|_ (Class<? extends SubView> cls)
+DECL|method|__ (Class<? extends SubView> cls)
 name|_Block
-name|_
+name|__
 parameter_list|(
 name|Class
 argument_list|<
@@ -2713,7 +2711,7 @@ name|PARAM
 name|param
 parameter_list|()
 function_decl|;
-comment|/**      * Add a PARAM element.      * Shortcut of<code>param().$name(name).$value(value)._();</code>      * @param name of the value      * @param value the value      * @return the current element builder      */
+comment|/**      * Add a PARAM element.      * Shortcut of<code>param().$name(name).$value(value).__();</code>      * @param name of the value      * @param value the value      * @return the current element builder      */
 DECL|method|param (String name, String value)
 name|_Param
 name|param
@@ -4684,7 +4682,7 @@ name|_Head
 extends|,
 name|_Body
 extends|,
-name|_
+name|__
 block|{
 comment|/**      * Add a HEAD element.      * @return a new HEAD element builder      */
 DECL|method|head ()

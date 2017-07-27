@@ -4,7 +4,7 @@ comment|/** * Licensed to the Apache Software Foundation (ASF) under one * or mo
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.webapp.hamlet
+DECL|package|org.apache.hadoop.yarn.webapp.hamlet2
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 package|;
 end_package
 
@@ -148,7 +148,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|HamletImpl
 operator|.
@@ -205,12 +205,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A simple unbuffered generic hamlet implementation.  *  * Zero copy but allocation on every element, which could be  * optimized to use a thread-local element pool.  *  * Prints HTML as it builds. So the order is important.  * @deprecated Use org.apache.hadoop.yarn.webapp.hamlet2 package instead.  */
+comment|/**  * A simple unbuffered generic hamlet implementation.  *  * Zero copy but allocation on every element, which could be  * optimized to use a thread-local element pool.  *  * Prints HTML as it builds. So the order is important.  */
 end_comment
 
 begin_class
-annotation|@
-name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -355,7 +353,7 @@ name|EImp
 parameter_list|<
 name|T
 extends|extends
-name|_
+name|__
 parameter_list|>
 implements|implements
 name|_Child
@@ -434,10 +432,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|_ ()
+DECL|method|__ ()
 specifier|public
 name|T
-name|_
+name|__
 parameter_list|()
 block|{
 name|closeAttrs
@@ -874,7 +872,7 @@ name|Generic
 parameter_list|<
 name|T
 extends|extends
-name|_
+name|__
 parameter_list|>
 extends|extends
 name|EImp
@@ -1067,13 +1065,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|_ (Object... lines)
+DECL|method|__ (Object... lines)
 specifier|public
 name|Generic
 argument_list|<
 name|T
 argument_list|>
-name|_
+name|__
 parameter_list|(
 name|Object
 modifier|...
@@ -1200,7 +1198,7 @@ specifier|public
 parameter_list|<
 name|T
 extends|extends
-name|_
+name|__
 parameter_list|>
 DECL|method|root (String name, EnumSet<EOpt> opts)
 name|Generic
@@ -1239,7 +1237,7 @@ specifier|public
 parameter_list|<
 name|T
 extends|extends
-name|_
+name|__
 parameter_list|>
 name|Generic
 argument_list|<

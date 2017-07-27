@@ -103,7 +103,7 @@ block|{
 comment|/*    * (non-Javadoc)    *     * @see    * org.apache.hadoop.yarn.server.applicationhistoryservice.webapp.AHSView#    * preHead(org.apache.hadoop .yarn.webapp.hamlet.Hamlet.HTML)    */
 annotation|@
 name|Override
-DECL|method|preHead (Page.HTML<_> html)
+DECL|method|preHead (Page.HTML<__> html)
 specifier|protected
 name|void
 name|preHead
@@ -112,7 +112,7 @@ name|Page
 operator|.
 name|HTML
 argument_list|<
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|)

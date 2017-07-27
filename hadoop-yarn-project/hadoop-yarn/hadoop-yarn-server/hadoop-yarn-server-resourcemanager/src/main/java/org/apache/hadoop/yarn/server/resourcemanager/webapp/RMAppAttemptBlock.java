@@ -482,7 +482,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 import|;
@@ -500,7 +500,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -520,7 +520,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -540,7 +540,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -814,10 +814,10 @@ argument_list|,
 literal|"NodeLabelExpression"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
 name|tbody
@@ -1031,27 +1031,27 @@ argument_list|(
 literal|"text/javascript"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"var resourceRequestsTableData="
 operator|+
 name|resourceRequestTableData
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|tbody
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|div
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -1281,7 +1281,7 @@ argument_list|,
 literal|"Off Switch Request"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|String
@@ -1414,18 +1414,18 @@ index|]
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
 name|table
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|div
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -1518,7 +1518,7 @@ name|pdiv
 init|=
 name|html
 operator|.
-name|_
+name|__
 argument_list|(
 name|InfoBlock
 operator|.
@@ -1543,7 +1543,7 @@ argument_list|(
 literal|"Application Attempt Metrics"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Application Attempt Headroom : "
 argument_list|,
@@ -1561,7 +1561,7 @@ argument_list|)
 expr_stmt|;
 name|pdiv
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -1690,7 +1690,7 @@ argument_list|(
 literal|"Application Attempt Overview"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Application Attempt State:"
 argument_list|,
@@ -1709,7 +1709,7 @@ name|getAppAttemptState
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Started:"
 argument_list|,
@@ -1724,7 +1724,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Elapsed:"
 argument_list|,
@@ -1757,7 +1757,7 @@ argument_list|)
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"AM Container:"
 argument_list|,
@@ -1815,14 +1815,14 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Node:"
 argument_list|,
 name|node
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Tracking URL:"
 argument_list|,
@@ -1904,7 +1904,7 @@ else|:
 literal|"ApplicationMaster"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Diagnostics Info:"
 argument_list|,
@@ -1923,14 +1923,14 @@ name|getDiagnosticsInfo
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Nodes blacklisted by the application:"
 argument_list|,
 name|appBlacklistedNodes
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Nodes blacklisted by the system:"
 argument_list|,

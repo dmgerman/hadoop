@@ -276,22 +276,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|util
-operator|.
-name|ConverterUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|webapp
 operator|.
 name|NotFoundException
@@ -342,7 +326,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 import|;
@@ -360,7 +344,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -415,7 +399,7 @@ name|REDIRECT_URL
 init|=
 literal|"redirect.url"
 decl_stmt|;
-DECL|method|preHead (Page.HTML<_> html)
+DECL|method|preHead (Page.HTML<__> html)
 annotation|@
 name|Override
 specifier|protected
@@ -426,7 +410,7 @@ name|Page
 operator|.
 name|HTML
 argument_list|<
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|)
@@ -973,7 +957,7 @@ operator|.
 name|p
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Showing "
 operator|+
@@ -1009,12 +993,12 @@ argument_list|,
 literal|"here"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|" for full log"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
@@ -1114,7 +1098,7 @@ condition|)
 block|{
 name|pre
 operator|.
-name|_
+name|__
 argument_list|(
 operator|new
 name|String
@@ -1149,7 +1133,7 @@ expr_stmt|;
 block|}
 name|pre
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 name|reader
@@ -1337,7 +1321,7 @@ operator|+
 literal|" bytes."
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}

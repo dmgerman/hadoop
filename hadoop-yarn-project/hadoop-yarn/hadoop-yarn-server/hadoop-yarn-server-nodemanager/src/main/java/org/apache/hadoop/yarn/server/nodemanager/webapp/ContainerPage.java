@@ -152,22 +152,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|util
-operator|.
-name|ConverterUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|webapp
 operator|.
 name|SubView
@@ -202,7 +186,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 import|;
@@ -220,7 +204,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -288,7 +272,7 @@ name|YarnWebParams
 block|{
 annotation|@
 name|Override
-DECL|method|preHead (Page.HTML<_> html)
+DECL|method|preHead (Page.HTML<__> html)
 specifier|protected
 name|void
 name|preHead
@@ -297,7 +281,7 @@ name|Page
 operator|.
 name|HTML
 argument_list|<
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|)
@@ -422,7 +406,7 @@ operator|.
 name|p
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Invalid containerId "
 operator|+
@@ -432,7 +416,7 @@ name|CONTAINER_ID
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 return|return;
@@ -481,7 +465,7 @@ operator|+
 literal|"please go back to the previous page and retry."
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 return|return;
@@ -504,7 +488,7 @@ argument_list|(
 literal|"Container information"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"ContainerID"
 argument_list|,
@@ -514,7 +498,7 @@ name|getId
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"ContainerState"
 argument_list|,
@@ -524,7 +508,7 @@ name|getState
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"ExitStatus"
 argument_list|,
@@ -534,7 +518,7 @@ name|getExitStatus
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Diagnostics"
 argument_list|,
@@ -544,7 +528,7 @@ name|getDiagnostics
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"User"
 argument_list|,
@@ -554,7 +538,7 @@ name|getUser
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"TotalMemoryNeeded"
 argument_list|,
@@ -564,7 +548,7 @@ name|getMemoryNeeded
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"TotalVCoresNeeded"
 argument_list|,
@@ -574,7 +558,7 @@ name|getVCoresNeeded
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"ExecutionType"
 argument_list|,
@@ -584,7 +568,7 @@ name|getExecutionType
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"logs"
 argument_list|,
@@ -598,7 +582,7 @@ argument_list|)
 expr_stmt|;
 name|html
 operator|.
-name|_
+name|__
 argument_list|(
 name|InfoBlock
 operator|.

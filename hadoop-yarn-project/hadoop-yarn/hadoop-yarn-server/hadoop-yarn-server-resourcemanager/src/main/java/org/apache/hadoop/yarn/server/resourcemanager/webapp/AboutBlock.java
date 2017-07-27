@@ -176,7 +176,7 @@ parameter_list|)
 block|{
 name|html
 operator|.
-name|_
+name|__
 argument_list|(
 name|MetricsOverviewTable
 operator|.
@@ -207,7 +207,7 @@ argument_list|(
 literal|"Cluster overview"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Cluster ID:"
 argument_list|,
@@ -217,7 +217,7 @@ name|getClusterId
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"ResourceManager state:"
 argument_list|,
@@ -227,7 +227,7 @@ name|getState
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"ResourceManager HA state:"
 argument_list|,
@@ -237,7 +237,7 @@ name|getHAState
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"ResourceManager HA zookeeper connection state:"
 argument_list|,
@@ -247,7 +247,7 @@ name|getHAZookeeperConnectionState
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"ResourceManager RMStateStore:"
 argument_list|,
@@ -257,7 +257,7 @@ name|getRMStateStore
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"ResourceManager started on:"
 argument_list|,
@@ -272,7 +272,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"ResourceManager version:"
 argument_list|,
@@ -289,7 +289,7 @@ name|getRMVersionBuiltOn
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Hadoop version:"
 argument_list|,
@@ -308,7 +308,7 @@ argument_list|)
 expr_stmt|;
 name|html
 operator|.
-name|_
+name|__
 argument_list|(
 name|InfoBlock
 operator|.

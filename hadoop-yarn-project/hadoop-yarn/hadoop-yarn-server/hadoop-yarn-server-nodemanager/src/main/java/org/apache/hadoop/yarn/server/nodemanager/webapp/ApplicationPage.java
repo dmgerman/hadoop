@@ -240,22 +240,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|util
-operator|.
-name|ConverterUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|webapp
 operator|.
 name|SubView
@@ -290,7 +274,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 import|;
@@ -308,7 +292,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -328,7 +312,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|hamlet
+name|hamlet2
 operator|.
 name|Hamlet
 operator|.
@@ -394,7 +378,7 @@ name|NMView
 implements|implements
 name|YarnWebParams
 block|{
-DECL|method|preHead (Page.HTML<_> html)
+DECL|method|preHead (Page.HTML<__> html)
 annotation|@
 name|Override
 specifier|protected
@@ -405,7 +389,7 @@ name|Page
 operator|.
 name|HTML
 argument_list|<
-name|_
+name|__
 argument_list|>
 name|html
 parameter_list|)
@@ -588,7 +572,7 @@ operator|.
 name|p
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"Invalid Application Id "
 operator|+
@@ -598,7 +582,7 @@ name|APPLICATION_ID
 argument_list|)
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 return|return;
@@ -649,7 +633,7 @@ operator|+
 literal|". Application might have been completed"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 return|return;
@@ -668,7 +652,7 @@ argument_list|(
 literal|"Application's information"
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"ApplicationId"
 argument_list|,
@@ -678,7 +662,7 @@ name|getId
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"ApplicationState"
 argument_list|,
@@ -688,7 +672,7 @@ name|getState
 argument_list|()
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|(
 literal|"User"
 argument_list|,
@@ -706,7 +690,7 @@ name|containersListBody
 init|=
 name|html
 operator|.
-name|_
+name|__
 argument_list|(
 name|InfoBlock
 operator|.
@@ -749,16 +733,16 @@ argument_list|,
 name|containerIdStr
 argument_list|)
 operator|.
-name|_
+name|__
 argument_list|()
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
 name|containersListBody
 operator|.
-name|_
+name|__
 argument_list|()
 expr_stmt|;
 block|}
