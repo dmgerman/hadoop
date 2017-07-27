@@ -594,9 +594,9 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Get OzoneKey.    *    * @param volumeName Name of the Volume    * @param bucketName Name of the Bucket    * @param keyName Key name    *    * @return OzoneKey    *    * @throws IOException    */
-DECL|method|getkeyDetails (String volumeName, String bucketName, String keyName)
+DECL|method|getKeyDetails (String volumeName, String bucketName, String keyName)
 name|OzoneKey
-name|getkeyDetails
+name|getKeyDetails
 parameter_list|(
 name|String
 name|volumeName
