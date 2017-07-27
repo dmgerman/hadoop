@@ -1188,11 +1188,6 @@ argument_list|()
 expr_stmt|;
 block|}
 annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"resource"
-argument_list|)
-annotation|@
 name|Test
 DECL|method|testContainerCleanup ()
 specifier|public
@@ -2027,20 +2022,6 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
-name|MemoryRMStateStore
-name|memStore
-init|=
-operator|new
-name|MemoryRMStateStore
-argument_list|()
-decl_stmt|;
-name|memStore
-operator|.
-name|init
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 comment|// start RM
 name|MockRM
 name|rm1
@@ -2049,8 +2030,6 @@ operator|new
 name|MockRM
 argument_list|(
 name|conf
-argument_list|,
-name|memStore
 argument_list|)
 decl_stmt|;
 name|rm1
@@ -2141,7 +2120,10 @@ name|MockRM
 argument_list|(
 name|conf
 argument_list|,
-name|memStore
+name|rm1
+operator|.
+name|getRMStateStore
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|rm2
@@ -2242,20 +2224,6 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
-name|MemoryRMStateStore
-name|memStore
-init|=
-operator|new
-name|MemoryRMStateStore
-argument_list|()
-decl_stmt|;
-name|memStore
-operator|.
-name|init
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 comment|// start RM
 name|MockRM
 name|rm1
@@ -2264,8 +2232,6 @@ operator|new
 name|MockRM
 argument_list|(
 name|conf
-argument_list|,
-name|memStore
 argument_list|)
 decl_stmt|;
 name|rm1
@@ -2432,7 +2398,10 @@ name|MockRM
 argument_list|(
 name|conf
 argument_list|,
-name|memStore
+name|rm1
+operator|.
+name|getRMStateStore
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|rm2
@@ -2590,11 +2559,6 @@ argument_list|()
 expr_stmt|;
 block|}
 annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"resource"
-argument_list|)
-annotation|@
 name|Test
 argument_list|(
 name|timeout
@@ -2620,20 +2584,6 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
-name|MemoryRMStateStore
-name|memStore
-init|=
-operator|new
-name|MemoryRMStateStore
-argument_list|()
-decl_stmt|;
-name|memStore
-operator|.
-name|init
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 comment|// start RM
 name|MockRM
 name|rm1
@@ -2642,8 +2592,6 @@ operator|new
 name|MockRM
 argument_list|(
 name|conf
-argument_list|,
-name|memStore
 argument_list|)
 decl_stmt|;
 name|rm1
@@ -2734,7 +2682,10 @@ name|MockRM
 argument_list|(
 name|conf
 argument_list|,
-name|memStore
+name|rm1
+operator|.
+name|getRMStateStore
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|rm2
@@ -2848,20 +2799,6 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
-name|MemoryRMStateStore
-name|memStore
-init|=
-operator|new
-name|MemoryRMStateStore
-argument_list|()
-decl_stmt|;
-name|memStore
-operator|.
-name|init
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 comment|// start RM
 name|MockRM
 name|rm1
@@ -2870,8 +2807,6 @@ operator|new
 name|MockRM
 argument_list|(
 name|conf
-argument_list|,
-name|memStore
 argument_list|)
 decl_stmt|;
 name|rm1
@@ -3033,20 +2968,6 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
-name|MemoryRMStateStore
-name|memStore
-init|=
-operator|new
-name|MemoryRMStateStore
-argument_list|()
-decl_stmt|;
-name|memStore
-operator|.
-name|init
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 comment|// 1. Start the cluster-RM,NM,Submit app with 1024MB,Launch& register AM
 name|MockRM
 name|rm1
@@ -3055,8 +2976,6 @@ operator|new
 name|MockRM
 argument_list|(
 name|conf
-argument_list|,
-name|memStore
 argument_list|)
 decl_stmt|;
 name|rm1
