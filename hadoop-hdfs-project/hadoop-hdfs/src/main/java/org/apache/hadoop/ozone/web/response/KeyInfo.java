@@ -368,6 +368,11 @@ specifier|private
 name|String
 name|createdOn
 decl_stmt|;
+DECL|field|modifiedOn
+specifier|private
+name|String
+name|modifiedOn
+decl_stmt|;
 DECL|field|size
 specifier|private
 name|long
@@ -394,6 +399,17 @@ return|return
 name|createdOn
 return|;
 block|}
+comment|/**    * When this key was modified.    *    * @return Date String    */
+DECL|method|getModifiedOn ()
+specifier|public
+name|String
+name|getModifiedOn
+parameter_list|()
+block|{
+return|return
+name|modifiedOn
+return|;
+block|}
 comment|/**    * When this key was created.    *    * @param createdOn - Date String    */
 DECL|method|setCreatedOn (String createdOn)
 specifier|public
@@ -409,6 +425,23 @@ operator|.
 name|createdOn
 operator|=
 name|createdOn
+expr_stmt|;
+block|}
+comment|/**    * When this key was modified.    *    * @param modifiedOn - Date String    */
+DECL|method|setModifiedOn (String modifiedOn)
+specifier|public
+name|void
+name|setModifiedOn
+parameter_list|(
+name|String
+name|modifiedOn
+parameter_list|)
+block|{
+name|this
+operator|.
+name|modifiedOn
+operator|=
+name|modifiedOn
 expr_stmt|;
 block|}
 comment|/**    * Full path to where the actual data for this key is stored.    *    * @return String    */

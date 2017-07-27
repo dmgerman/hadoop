@@ -93,7 +93,19 @@ specifier|final
 name|boolean
 name|shouldCreateContainer
 decl_stmt|;
-DECL|method|KsmKeyInfo (String volumeName, String bucketName, String keyName, long dataSize, String blockID, String containerName, boolean shouldCreateContainer)
+DECL|field|creationTime
+specifier|private
+specifier|final
+name|long
+name|creationTime
+decl_stmt|;
+DECL|field|modificationTime
+specifier|private
+specifier|final
+name|long
+name|modificationTime
+decl_stmt|;
+DECL|method|KsmKeyInfo (String volumeName, String bucketName, String keyName, long dataSize, String blockID, String containerName, boolean shouldCreateContainer, long creationTime, long modificationTime)
 specifier|private
 name|KsmKeyInfo
 parameter_list|(
@@ -117,6 +129,12 @@ name|containerName
 parameter_list|,
 name|boolean
 name|shouldCreateContainer
+parameter_list|,
+name|long
+name|creationTime
+parameter_list|,
+name|long
+name|modificationTime
 parameter_list|)
 block|{
 name|this
@@ -160,6 +178,18 @@ operator|.
 name|shouldCreateContainer
 operator|=
 name|shouldCreateContainer
+expr_stmt|;
+name|this
+operator|.
+name|creationTime
+operator|=
+name|creationTime
+expr_stmt|;
+name|this
+operator|.
+name|modificationTime
+operator|=
+name|modificationTime
 expr_stmt|;
 block|}
 DECL|method|getVolumeName ()
@@ -232,6 +262,26 @@ return|return
 name|shouldCreateContainer
 return|;
 block|}
+DECL|method|getCreationTime ()
+specifier|public
+name|long
+name|getCreationTime
+parameter_list|()
+block|{
+return|return
+name|creationTime
+return|;
+block|}
+DECL|method|getModificationTime ()
+specifier|public
+name|long
+name|getModificationTime
+parameter_list|()
+block|{
+return|return
+name|modificationTime
+return|;
+block|}
 comment|/**    * Builder of KsmKeyInfo.    */
 DECL|class|Builder
 specifier|public
@@ -273,6 +323,16 @@ DECL|field|shouldCreateContainer
 specifier|private
 name|boolean
 name|shouldCreateContainer
+decl_stmt|;
+DECL|field|creationTime
+specifier|private
+name|long
+name|creationTime
+decl_stmt|;
+DECL|field|modificationTime
+specifier|private
+name|long
+name|modificationTime
 decl_stmt|;
 DECL|method|setVolumeName (String volume)
 specifier|public
@@ -407,6 +467,44 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|setCreationTime (long creationTime)
+specifier|public
+name|Builder
+name|setCreationTime
+parameter_list|(
+name|long
+name|creationTime
+parameter_list|)
+block|{
+name|this
+operator|.
+name|creationTime
+operator|=
+name|creationTime
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|setModificationTime (long modificationTime)
+specifier|public
+name|Builder
+name|setModificationTime
+parameter_list|(
+name|long
+name|modificationTime
+parameter_list|)
+block|{
+name|this
+operator|.
+name|modificationTime
+operator|=
+name|modificationTime
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|build ()
 specifier|public
 name|KsmKeyInfo
@@ -430,6 +528,10 @@ argument_list|,
 name|containerName
 argument_list|,
 name|shouldCreateContainer
+argument_list|,
+name|creationTime
+argument_list|,
+name|modificationTime
 argument_list|)
 return|;
 block|}
@@ -479,6 +581,16 @@ operator|.
 name|setShouldCreateContainer
 argument_list|(
 name|shouldCreateContainer
+argument_list|)
+operator|.
+name|setCreationTime
+argument_list|(
+name|creationTime
+argument_list|)
+operator|.
+name|setModificationTime
+argument_list|(
+name|modificationTime
 argument_list|)
 operator|.
 name|build
@@ -532,6 +644,16 @@ argument_list|,
 name|keyInfo
 operator|.
 name|getShouldCreateContainer
+argument_list|()
+argument_list|,
+name|keyInfo
+operator|.
+name|getCreationTime
+argument_list|()
+argument_list|,
+name|keyInfo
+operator|.
+name|getModificationTime
 argument_list|()
 argument_list|)
 return|;
