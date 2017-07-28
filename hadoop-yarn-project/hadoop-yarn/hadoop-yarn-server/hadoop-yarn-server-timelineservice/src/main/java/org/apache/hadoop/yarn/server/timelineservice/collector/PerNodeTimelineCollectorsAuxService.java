@@ -620,7 +620,7 @@ name|AppLevelTimelineCollector
 name|collector
 init|=
 operator|new
-name|AppLevelTimelineCollector
+name|AppLevelTimelineCollectorWithAgg
 argument_list|(
 name|appId
 argument_list|)
