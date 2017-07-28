@@ -514,7 +514,6 @@ return|return
 name|firstViolation
 return|;
 block|}
-comment|// This allows initialization of global settings and not for an instance
 DECL|method|reset (Configuration conf)
 specifier|public
 specifier|static
@@ -534,23 +533,6 @@ name|init
 argument_list|(
 name|conf
 argument_list|)
-expr_stmt|;
-block|}
-comment|// This allows resetting of an instance to allow reuse
-DECL|method|reset ()
-specifier|public
-specifier|synchronized
-name|void
-name|reset
-parameter_list|()
-block|{
-name|totalCounters
-operator|=
-literal|0
-expr_stmt|;
-name|firstViolation
-operator|=
-literal|null
 expr_stmt|;
 block|}
 block|}
