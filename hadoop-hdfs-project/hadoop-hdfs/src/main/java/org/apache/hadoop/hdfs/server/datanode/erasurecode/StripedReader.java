@@ -418,6 +418,13 @@ specifier|final
 name|int
 name|minRequiredSources
 decl_stmt|;
+comment|// the number of xmits used by the re-construction task.
+DECL|field|xmits
+specifier|private
+specifier|final
+name|int
+name|xmits
+decl_stmt|;
 comment|// The buffers and indices for striped blocks whose length is 0
 DECL|field|zeroStripeBuffers
 specifier|private
@@ -639,6 +646,33 @@ name|zeroStripNum
 index|]
 expr_stmt|;
 block|}
+comment|// It is calculated by the maximum number of connections from either sources
+comment|// or targets.
+name|xmits
+operator|=
+name|Math
+operator|.
+name|max
+argument_list|(
+name|minRequiredSources
+argument_list|,
+name|stripedReconInfo
+operator|.
+name|getTargets
+argument_list|()
+operator|!=
+literal|null
+condition|?
+name|stripedReconInfo
+operator|.
+name|getTargets
+argument_list|()
+operator|.
+name|length
+else|:
+literal|0
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|liveIndices
@@ -2365,6 +2399,16 @@ name|reconstructor
 operator|.
 name|getCachingStrategy
 argument_list|()
+return|;
+block|}
+comment|/**    * Return the xmits of this EC reconstruction task.    *<p>    * DN uses it to coordinate with NN to adjust the speed of scheduling the    * EC reconstruction tasks to this DN.    *    * @return the xmits of this reconstruction task.    */
+DECL|method|getXmits ()
+name|int
+name|getXmits
+parameter_list|()
+block|{
+return|return
+name|xmits
 return|;
 block|}
 block|}

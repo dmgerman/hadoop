@@ -158,6 +158,18 @@ name|util
 operator|.
 name|concurrent
 operator|.
+name|LinkedBlockingQueue
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
 name|SynchronousQueue
 import|;
 end_import
@@ -479,6 +491,11 @@ name|numThreads
 argument_list|,
 literal|60
 argument_list|,
+operator|new
+name|LinkedBlockingQueue
+argument_list|<>
+argument_list|()
+argument_list|,
 literal|"StripedBlockReconstruction-"
 argument_list|,
 literal|false
@@ -513,6 +530,11 @@ range|:
 name|ecTasks
 control|)
 block|{
+name|int
+name|xmitsSubmitted
+init|=
+literal|0
+decl_stmt|;
 try|try
 block|{
 name|StripedReconstructionInfo
@@ -557,6 +579,8 @@ name|getTargetStorageIDs
 argument_list|()
 argument_list|)
 decl_stmt|;
+comment|// It may throw IllegalArgumentException from task#stripedReader
+comment|// constructor.
 specifier|final
 name|StripedBlockReconstructor
 name|task
@@ -577,6 +601,26 @@ name|hasValidTargets
 argument_list|()
 condition|)
 block|{
+comment|// See HDFS-12044. We increase xmitsInProgress even the task is only
+comment|// enqueued, so that
+comment|//   1) NN will not send more tasks than what DN can execute and
+comment|//   2) DN will not throw away reconstruction tasks, and instead keeps
+comment|//      an unbounded number of tasks in the executor's task queue.
+name|xmitsSubmitted
+operator|=
+name|task
+operator|.
+name|getXmits
+argument_list|()
+expr_stmt|;
+name|getDatanode
+argument_list|()
+operator|.
+name|incrementXmitsInProcess
+argument_list|(
+name|xmitsSubmitted
+argument_list|)
+expr_stmt|;
 name|stripedReconstructionPool
 operator|.
 name|submit
@@ -604,6 +648,14 @@ name|Throwable
 name|e
 parameter_list|)
 block|{
+name|getDatanode
+argument_list|()
+operator|.
+name|decrementXmitsInProgress
+argument_list|(
+name|xmitsSubmitted
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|warn

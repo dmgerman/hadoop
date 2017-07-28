@@ -423,6 +423,24 @@ return|return
 name|targetStorageIds
 return|;
 block|}
+comment|/**    * Return the weight of this EC reconstruction task.    *    * DN uses it to coordinate with NN to adjust the speed of scheduling the    * reconstructions tasks to this DN.    *    * @return the weight of this reconstruction task.    * @see HDFS-12044    */
+DECL|method|getWeight ()
+name|int
+name|getWeight
+parameter_list|()
+block|{
+comment|// See HDFS-12044. The weight of a RS(n, k) is calculated by the network
+comment|// connections it opens.
+return|return
+name|sources
+operator|.
+name|length
+operator|+
+name|targets
+operator|.
+name|length
+return|;
+block|}
 block|}
 end_class
 

@@ -152,12 +152,6 @@ name|void
 name|run
 parameter_list|()
 block|{
-name|getDatanode
-argument_list|()
-operator|.
-name|incrementXmitsInProgress
-argument_list|()
-expr_stmt|;
 try|try
 block|{
 name|initDecoderIfNecessary
@@ -219,7 +213,10 @@ name|getDatanode
 argument_list|()
 operator|.
 name|decrementXmitsInProgress
+argument_list|(
+name|getXmits
 argument_list|()
+argument_list|)
 expr_stmt|;
 specifier|final
 name|DataNodeMetrics

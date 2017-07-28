@@ -11388,6 +11388,33 @@ name|getAndIncrement
 argument_list|()
 expr_stmt|;
 block|}
+comment|/**    * Increments the xmitInProgress count by given value.    *    * @param delta the amount of xmitsInProgress to increase.    * @see #incrementXmitsInProgress()    */
+DECL|method|incrementXmitsInProcess (int delta)
+specifier|public
+name|void
+name|incrementXmitsInProcess
+parameter_list|(
+name|int
+name|delta
+parameter_list|)
+block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|delta
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
+name|xmitsInProgress
+operator|.
+name|getAndAdd
+argument_list|(
+name|delta
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Decrements the xmitsInProgress count    */
 DECL|method|decrementXmitsInProgress ()
 specifier|public
@@ -11399,6 +11426,35 @@ name|xmitsInProgress
 operator|.
 name|getAndDecrement
 argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Decrements the xmitsInProgress count by given value.    *    * @see #decrementXmitsInProgress()    */
+DECL|method|decrementXmitsInProgress (int delta)
+specifier|public
+name|void
+name|decrementXmitsInProgress
+parameter_list|(
+name|int
+name|delta
+parameter_list|)
+block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|delta
+operator|>=
+literal|0
+argument_list|)
+expr_stmt|;
+name|xmitsInProgress
+operator|.
+name|getAndAdd
+argument_list|(
+literal|0
+operator|-
+name|delta
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|reportBadBlock (final BPOfferService bpos, final ExtendedBlock block, final String msg)

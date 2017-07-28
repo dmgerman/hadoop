@@ -966,6 +966,19 @@ return|return
 name|blockGroup
 return|;
 block|}
+comment|/**    * Get the xmits that _will_ be used for this reconstruction task.    */
+DECL|method|getXmits ()
+name|int
+name|getXmits
+parameter_list|()
+block|{
+return|return
+name|stripedReader
+operator|.
+name|getXmits
+argument_list|()
+return|;
+block|}
 DECL|method|getLiveBitSet ()
 name|BitSet
 name|getLiveBitSet
