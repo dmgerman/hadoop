@@ -45,39 +45,39 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|interface|ECBlockGroupsStatsMBean
+DECL|interface|ECBlockGroupsMBean
 specifier|public
 interface|interface
-name|ECBlockGroupsStatsMBean
+name|ECBlockGroupsMBean
 block|{
 comment|/**    * Return count of erasure coded block groups with low redundancy.    */
-DECL|method|getLowRedundancyECBlockGroupsStat ()
+DECL|method|getLowRedundancyECBlockGroups ()
 name|long
-name|getLowRedundancyECBlockGroupsStat
+name|getLowRedundancyECBlockGroups
 parameter_list|()
 function_decl|;
 comment|/**    * Return count of erasure coded block groups that are corrupt.    */
-DECL|method|getCorruptECBlockGroupsStat ()
+DECL|method|getCorruptECBlockGroups ()
 name|long
-name|getCorruptECBlockGroupsStat
+name|getCorruptECBlockGroups
 parameter_list|()
 function_decl|;
 comment|/**    * Return count of erasure coded block groups that are missing.    */
-DECL|method|getMissingECBlockGroupsStat ()
+DECL|method|getMissingECBlockGroups ()
 name|long
-name|getMissingECBlockGroupsStat
+name|getMissingECBlockGroups
 parameter_list|()
 function_decl|;
 comment|/**    * Return total bytes of erasure coded future block groups.    */
-DECL|method|getECBlocksBytesInFutureStat ()
+DECL|method|getBytesInFutureECBlockGroups ()
 name|long
-name|getECBlocksBytesInFutureStat
+name|getBytesInFutureECBlockGroups
 parameter_list|()
 function_decl|;
 comment|/**    * Return count of erasure coded block groups that are pending deletion.    */
-DECL|method|getPendingDeletionECBlockGroupsStat ()
+DECL|method|getPendingDeletionECBlockGroups ()
 name|long
-name|getPendingDeletionECBlockGroupsStat
+name|getPendingDeletionECBlockGroups
 parameter_list|()
 function_decl|;
 block|}

@@ -1228,6 +1228,26 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|namenode
+operator|.
+name|metrics
+operator|.
+name|ReplicatedBlocksMBean
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|protocol
 operator|.
 name|SlowDiskReports
@@ -3446,7 +3466,7 @@ name|namenode
 operator|.
 name|metrics
 operator|.
-name|ECBlockGroupsStatsMBean
+name|ECBlockGroupsMBean
 import|;
 end_import
 
@@ -3487,26 +3507,6 @@ operator|.
 name|metrics
 operator|.
 name|NameNodeMetrics
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|metrics
-operator|.
-name|ReplicatedBlocksStatsMBean
 import|;
 end_import
 
@@ -4539,9 +4539,9 @@ name|FSNamesystemMBean
 implements|,
 name|NameNodeMXBean
 implements|,
-name|ReplicatedBlocksStatsMBean
+name|ReplicatedBlocksMBean
 implements|,
-name|ECBlockGroupsStatsMBean
+name|ECBlockGroupsMBean
 block|{
 DECL|field|LOG
 specifier|public
@@ -20253,22 +20253,22 @@ return|return
 operator|new
 name|BlocksStats
 argument_list|(
-name|getLowRedundancyBlocksStat
+name|getLowRedundancyReplicatedBlocks
 argument_list|()
 argument_list|,
-name|getCorruptBlocksStat
+name|getCorruptReplicatedBlocks
 argument_list|()
 argument_list|,
-name|getMissingBlocksStat
+name|getMissingReplicatedBlocks
 argument_list|()
 argument_list|,
-name|getMissingReplicationOneBlocksStat
+name|getMissingReplicationOneBlocks
 argument_list|()
 argument_list|,
-name|getBlocksBytesInFutureStat
+name|getBytesInFutureReplicatedBlocks
 argument_list|()
 argument_list|,
-name|getPendingDeletionBlocksStat
+name|getPendingDeletionReplicatedBlocks
 argument_list|()
 argument_list|)
 return|;
@@ -20283,19 +20283,19 @@ return|return
 operator|new
 name|ECBlockGroupsStats
 argument_list|(
-name|getLowRedundancyECBlockGroupsStat
+name|getLowRedundancyECBlockGroups
 argument_list|()
 argument_list|,
-name|getCorruptECBlockGroupsStat
+name|getCorruptECBlockGroups
 argument_list|()
 argument_list|,
-name|getMissingECBlockGroupsStat
+name|getMissingECBlockGroups
 argument_list|()
 argument_list|,
-name|getECBlocksBytesInFutureStat
+name|getBytesInFutureECBlockGroups
 argument_list|()
 argument_list|,
-name|getPendingDeletionECBlockGroupsStat
+name|getPendingDeletionECBlockGroups
 argument_list|()
 argument_list|)
 return|;
@@ -22280,16 +22280,16 @@ block|,
 literal|"Number of low redundancy replicated blocks"
 block|}
 argument_list|)
-DECL|method|getLowRedundancyBlocksStat ()
+DECL|method|getLowRedundancyReplicatedBlocks ()
 specifier|public
 name|long
-name|getLowRedundancyBlocksStat
+name|getLowRedundancyReplicatedBlocks
 parameter_list|()
 block|{
 return|return
 name|blockManager
 operator|.
-name|getLowRedundancyBlocksStat
+name|getLowRedundancyBlocks
 argument_list|()
 return|;
 block|}
@@ -22305,16 +22305,16 @@ block|,
 literal|"Number of corrupted replicated blocks"
 block|}
 argument_list|)
-DECL|method|getCorruptBlocksStat ()
+DECL|method|getCorruptReplicatedBlocks ()
 specifier|public
 name|long
-name|getCorruptBlocksStat
+name|getCorruptReplicatedBlocks
 parameter_list|()
 block|{
 return|return
 name|blockManager
 operator|.
-name|getCorruptBlocksStat
+name|getCorruptBlocks
 argument_list|()
 return|;
 block|}
@@ -22330,16 +22330,16 @@ block|,
 literal|"Number of missing replicated blocks"
 block|}
 argument_list|)
-DECL|method|getMissingBlocksStat ()
+DECL|method|getMissingReplicatedBlocks ()
 specifier|public
 name|long
-name|getMissingBlocksStat
+name|getMissingReplicatedBlocks
 parameter_list|()
 block|{
 return|return
 name|blockManager
 operator|.
-name|getMissingBlocksStat
+name|getMissingBlocks
 argument_list|()
 return|;
 block|}
@@ -22350,23 +22350,23 @@ annotation|@
 name|Metric
 argument_list|(
 block|{
-literal|"MissingReplicatedOneBlocks"
+literal|"MissingReplicationOneBlocks"
 block|,
-literal|"Number of missing replicated blocks"
+literal|"Number of missing replicated "
 operator|+
-literal|" with replication factor 1"
+literal|"blocks with replication factor 1"
 block|}
 argument_list|)
-DECL|method|getMissingReplicationOneBlocksStat ()
+DECL|method|getMissingReplicationOneBlocks ()
 specifier|public
 name|long
-name|getMissingReplicationOneBlocksStat
+name|getMissingReplicationOneBlocks
 parameter_list|()
 block|{
 return|return
 name|blockManager
 operator|.
-name|getMissingReplicationOneBlocksStat
+name|getMissingReplicationOneBlocks
 argument_list|()
 return|;
 block|}
@@ -22377,23 +22377,23 @@ annotation|@
 name|Metric
 argument_list|(
 block|{
-literal|"BytesReplicatedFutureBlocks"
+literal|"BytesInFutureReplicatedBlocks"
 block|,
-literal|"Total bytes in replicated blocks "
+literal|"Total bytes in replicated "
 operator|+
-literal|"with future generation stamp"
+literal|"blocks with future generation stamp"
 block|}
 argument_list|)
-DECL|method|getBlocksBytesInFutureStat ()
+DECL|method|getBytesInFutureReplicatedBlocks ()
 specifier|public
 name|long
-name|getBlocksBytesInFutureStat
+name|getBytesInFutureReplicatedBlocks
 parameter_list|()
 block|{
 return|return
 name|blockManager
 operator|.
-name|getBytesInFutureReplicatedBlocksStat
+name|getBytesInFutureReplicatedBlocks
 argument_list|()
 return|;
 block|}
@@ -22411,22 +22411,22 @@ operator|+
 literal|"that are pending deletion"
 block|}
 argument_list|)
-DECL|method|getPendingDeletionBlocksStat ()
+DECL|method|getPendingDeletionReplicatedBlocks ()
 specifier|public
 name|long
-name|getPendingDeletionBlocksStat
+name|getPendingDeletionReplicatedBlocks
 parameter_list|()
 block|{
 return|return
 name|blockManager
 operator|.
-name|getPendingDeletionBlocksStat
+name|getPendingDeletionReplicatedBlocks
 argument_list|()
 return|;
 block|}
 annotation|@
 name|Override
-comment|// ECBlockGroupsStatsMBean
+comment|// ECBlockGroupsMBean
 annotation|@
 name|Metric
 argument_list|(
@@ -22438,22 +22438,22 @@ operator|+
 literal|"groups with low redundancy"
 block|}
 argument_list|)
-DECL|method|getLowRedundancyECBlockGroupsStat ()
+DECL|method|getLowRedundancyECBlockGroups ()
 specifier|public
 name|long
-name|getLowRedundancyECBlockGroupsStat
+name|getLowRedundancyECBlockGroups
 parameter_list|()
 block|{
 return|return
 name|blockManager
 operator|.
-name|getLowRedundancyECBlockGroupsStat
+name|getLowRedundancyECBlockGroups
 argument_list|()
 return|;
 block|}
 annotation|@
 name|Override
-comment|// ECBlockGroupsStatsMBean
+comment|// ECBlockGroupsMBean
 annotation|@
 name|Metric
 argument_list|(
@@ -22465,22 +22465,22 @@ operator|+
 literal|" are corrupt"
 block|}
 argument_list|)
-DECL|method|getCorruptECBlockGroupsStat ()
+DECL|method|getCorruptECBlockGroups ()
 specifier|public
 name|long
-name|getCorruptECBlockGroupsStat
+name|getCorruptECBlockGroups
 parameter_list|()
 block|{
 return|return
 name|blockManager
 operator|.
-name|getCorruptECBlockGroupsStat
+name|getCorruptECBlockGroups
 argument_list|()
 return|;
 block|}
 annotation|@
 name|Override
-comment|// ECBlockGroupsStatsMBean
+comment|// ECBlockGroupsMBean
 annotation|@
 name|Metric
 argument_list|(
@@ -22492,49 +22492,49 @@ operator|+
 literal|" are missing"
 block|}
 argument_list|)
-DECL|method|getMissingECBlockGroupsStat ()
+DECL|method|getMissingECBlockGroups ()
 specifier|public
 name|long
-name|getMissingECBlockGroupsStat
+name|getMissingECBlockGroups
 parameter_list|()
 block|{
 return|return
 name|blockManager
 operator|.
-name|getMissingECBlockGroupsStat
+name|getMissingECBlockGroups
 argument_list|()
 return|;
 block|}
 annotation|@
 name|Override
-comment|// ECBlockGroupsStatsMBean
+comment|// ECBlockGroupsMBean
 annotation|@
 name|Metric
 argument_list|(
 block|{
-literal|"BytesFutureECBlockGroups"
+literal|"BytesInFutureECBlockGroups"
 block|,
 literal|"Total bytes in erasure coded block "
 operator|+
 literal|"groups with future generation stamp"
 block|}
 argument_list|)
-DECL|method|getECBlocksBytesInFutureStat ()
+DECL|method|getBytesInFutureECBlockGroups ()
 specifier|public
 name|long
-name|getECBlocksBytesInFutureStat
+name|getBytesInFutureECBlockGroups
 parameter_list|()
 block|{
 return|return
 name|blockManager
 operator|.
-name|getBytesInFutureStripedBlocksStat
+name|getBytesInFutureECBlockGroups
 argument_list|()
 return|;
 block|}
 annotation|@
 name|Override
-comment|// ECBlockGroupsStatsMBean
+comment|// ECBlockGroupsMBean
 annotation|@
 name|Metric
 argument_list|(
@@ -22546,16 +22546,16 @@ operator|+
 literal|"groups that are pending deletion"
 block|}
 argument_list|)
-DECL|method|getPendingDeletionECBlockGroupsStat ()
+DECL|method|getPendingDeletionECBlockGroups ()
 specifier|public
 name|long
-name|getPendingDeletionECBlockGroupsStat
+name|getPendingDeletionECBlockGroups
 parameter_list|()
 block|{
 return|return
 name|blockManager
 operator|.
-name|getPendingDeletionECBlockGroupsStat
+name|getPendingDeletionECBlockGroups
 argument_list|()
 return|;
 block|}
@@ -22762,7 +22762,7 @@ name|ecBlockGroupsMBeanName
 decl_stmt|,
 name|namenodeMXBeanName
 decl_stmt|;
-comment|/**    * Register following MBeans with their respective names.    * FSNamesystemMBean:    *        "hadoop:service=NameNode,name=FSNamesystemState"    * ReplicatedBlocksStatsMBean:    *        "hadoop:service=NameNode,name=ReplicatedBlocksState"    * ECBlockGroupsStatsMBean:    *        "hadoop:service=NameNode,name=ECBlockGroupsState"    */
+comment|/**    * Register following MBeans with their respective names.    * FSNamesystemMBean:    *        "hadoop:service=NameNode,name=FSNamesystemState"    * ReplicatedBlocksMBean:    *        "hadoop:service=NameNode,name=ReplicatedBlocksState"    * ECBlockGroupsMBean:    *        "hadoop:service=NameNode,name=ECBlockGroupsState"    */
 DECL|method|registerMBean ()
 specifier|private
 name|void
@@ -22793,7 +22793,7 @@ name|StandardMBean
 argument_list|(
 name|this
 argument_list|,
-name|ReplicatedBlocksStatsMBean
+name|ReplicatedBlocksMBean
 operator|.
 name|class
 argument_list|)
@@ -22806,7 +22806,7 @@ name|StandardMBean
 argument_list|(
 name|this
 argument_list|,
-name|ECBlockGroupsStatsMBean
+name|ECBlockGroupsMBean
 operator|.
 name|class
 argument_list|)

@@ -5917,7 +5917,7 @@ name|getAttribute
 argument_list|(
 name|replStateMBeanName
 argument_list|,
-literal|"MissingBlocksStat"
+literal|"MissingReplicatedBlocks"
 argument_list|)
 decl_stmt|;
 name|Long
@@ -5932,7 +5932,7 @@ name|getAttribute
 argument_list|(
 name|ecBlkGrpStateMBeanName
 argument_list|,
-literal|"MissingECBlockGroupsStat"
+literal|"MissingECBlockGroups"
 argument_list|)
 decl_stmt|;
 name|assertEquals
@@ -5993,7 +5993,7 @@ name|getAttribute
 argument_list|(
 name|replStateMBeanName
 argument_list|,
-literal|"CorruptBlocksStat"
+literal|"CorruptReplicatedBlocks"
 argument_list|)
 decl_stmt|;
 name|Long
@@ -6008,7 +6008,7 @@ name|getAttribute
 argument_list|(
 name|ecBlkGrpStateMBeanName
 argument_list|,
-literal|"CorruptECBlockGroupsStat"
+literal|"CorruptECBlockGroups"
 argument_list|)
 decl_stmt|;
 name|assertEquals

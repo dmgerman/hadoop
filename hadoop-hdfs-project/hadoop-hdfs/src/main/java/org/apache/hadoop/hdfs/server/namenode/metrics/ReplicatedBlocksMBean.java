@@ -45,45 +45,45 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|interface|ReplicatedBlocksStatsMBean
+DECL|interface|ReplicatedBlocksMBean
 specifier|public
 interface|interface
-name|ReplicatedBlocksStatsMBean
+name|ReplicatedBlocksMBean
 block|{
 comment|/**    * Return low redundancy blocks count.    */
-DECL|method|getLowRedundancyBlocksStat ()
+DECL|method|getLowRedundancyReplicatedBlocks ()
 name|long
-name|getLowRedundancyBlocksStat
+name|getLowRedundancyReplicatedBlocks
 parameter_list|()
 function_decl|;
 comment|/**    * Return corrupt blocks count.    */
-DECL|method|getCorruptBlocksStat ()
+DECL|method|getCorruptReplicatedBlocks ()
 name|long
-name|getCorruptBlocksStat
+name|getCorruptReplicatedBlocks
 parameter_list|()
 function_decl|;
 comment|/**    * Return missing blocks count.    */
-DECL|method|getMissingBlocksStat ()
+DECL|method|getMissingReplicatedBlocks ()
 name|long
-name|getMissingBlocksStat
+name|getMissingReplicatedBlocks
 parameter_list|()
 function_decl|;
 comment|/**    * Return count of missing blocks with replication factor one.    */
-DECL|method|getMissingReplicationOneBlocksStat ()
+DECL|method|getMissingReplicationOneBlocks ()
 name|long
-name|getMissingReplicationOneBlocksStat
+name|getMissingReplicationOneBlocks
 parameter_list|()
 function_decl|;
 comment|/**    * Return total bytes of future blocks.    */
-DECL|method|getBlocksBytesInFutureStat ()
+DECL|method|getBytesInFutureReplicatedBlocks ()
 name|long
-name|getBlocksBytesInFutureStat
+name|getBytesInFutureReplicatedBlocks
 parameter_list|()
 function_decl|;
 comment|/**    * Return count of blocks that are pending deletion.    */
-DECL|method|getPendingDeletionBlocksStat ()
+DECL|method|getPendingDeletionReplicatedBlocks ()
 name|long
-name|getPendingDeletionBlocksStat
+name|getPendingDeletionReplicatedBlocks
 parameter_list|()
 function_decl|;
 block|}

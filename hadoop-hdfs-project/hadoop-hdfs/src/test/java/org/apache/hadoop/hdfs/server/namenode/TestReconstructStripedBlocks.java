@@ -2772,7 +2772,7 @@ name|blockGroups
 argument_list|,
 name|bm
 operator|.
-name|getLowRedundancyECBlockGroupsStat
+name|getLowRedundancyECBlockGroups
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2817,7 +2817,7 @@ literal|0
 argument_list|,
 name|bm
 operator|.
-name|getLowRedundancyECBlockGroupsStat
+name|getLowRedundancyECBlockGroups
 argument_list|()
 argument_list|)
 expr_stmt|;

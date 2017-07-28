@@ -1856,10 +1856,10 @@ argument_list|()
 return|;
 block|}
 comment|/** Used by metrics. */
-DECL|method|getLowRedundancyBlocksStat ()
+DECL|method|getLowRedundancyBlocks ()
 specifier|public
 name|long
-name|getLowRedundancyBlocksStat
+name|getLowRedundancyBlocks
 parameter_list|()
 block|{
 return|return
@@ -1870,10 +1870,10 @@ argument_list|()
 return|;
 block|}
 comment|/** Used by metrics. */
-DECL|method|getCorruptBlocksStat ()
+DECL|method|getCorruptBlocks ()
 specifier|public
 name|long
-name|getCorruptBlocksStat
+name|getCorruptBlocks
 parameter_list|()
 block|{
 return|return
@@ -1884,10 +1884,10 @@ argument_list|()
 return|;
 block|}
 comment|/** Used by metrics. */
-DECL|method|getMissingBlocksStat ()
+DECL|method|getMissingBlocks ()
 specifier|public
 name|long
-name|getMissingBlocksStat
+name|getMissingBlocks
 parameter_list|()
 block|{
 return|return
@@ -1898,10 +1898,10 @@ argument_list|()
 return|;
 block|}
 comment|/** Used by metrics. */
-DECL|method|getMissingReplicationOneBlocksStat ()
+DECL|method|getMissingReplicationOneBlocks ()
 specifier|public
 name|long
-name|getMissingReplicationOneBlocksStat
+name|getMissingReplicationOneBlocks
 parameter_list|()
 block|{
 return|return
@@ -1912,10 +1912,10 @@ argument_list|()
 return|;
 block|}
 comment|/** Used by metrics. */
-DECL|method|getPendingDeletionBlocksStat ()
+DECL|method|getPendingDeletionReplicatedBlocks ()
 specifier|public
 name|long
-name|getPendingDeletionBlocksStat
+name|getPendingDeletionReplicatedBlocks
 parameter_list|()
 block|{
 return|return
@@ -1926,10 +1926,10 @@ argument_list|()
 return|;
 block|}
 comment|/** Used by metrics. */
-DECL|method|getLowRedundancyECBlockGroupsStat ()
+DECL|method|getLowRedundancyECBlockGroups ()
 specifier|public
 name|long
-name|getLowRedundancyECBlockGroupsStat
+name|getLowRedundancyECBlockGroups
 parameter_list|()
 block|{
 return|return
@@ -1940,10 +1940,10 @@ argument_list|()
 return|;
 block|}
 comment|/** Used by metrics. */
-DECL|method|getCorruptECBlockGroupsStat ()
+DECL|method|getCorruptECBlockGroups ()
 specifier|public
 name|long
-name|getCorruptECBlockGroupsStat
+name|getCorruptECBlockGroups
 parameter_list|()
 block|{
 return|return
@@ -1954,10 +1954,10 @@ argument_list|()
 return|;
 block|}
 comment|/** Used by metrics. */
-DECL|method|getMissingECBlockGroupsStat ()
+DECL|method|getMissingECBlockGroups ()
 specifier|public
 name|long
-name|getMissingECBlockGroupsStat
+name|getMissingECBlockGroups
 parameter_list|()
 block|{
 return|return
@@ -1968,10 +1968,10 @@ argument_list|()
 return|;
 block|}
 comment|/** Used by metrics. */
-DECL|method|getPendingDeletionECBlockGroupsStat ()
+DECL|method|getPendingDeletionECBlockGroups ()
 specifier|public
 name|long
-name|getPendingDeletionECBlockGroupsStat
+name|getPendingDeletionECBlockGroups
 parameter_list|()
 block|{
 return|return
@@ -11173,10 +11173,10 @@ name|getBytesInFuture
 argument_list|()
 return|;
 block|}
-DECL|method|getBytesInFutureReplicatedBlocksStat ()
+DECL|method|getBytesInFutureReplicatedBlocks ()
 specifier|public
 name|long
-name|getBytesInFutureReplicatedBlocksStat
+name|getBytesInFutureReplicatedBlocks
 parameter_list|()
 block|{
 return|return
@@ -11186,10 +11186,10 @@ name|getBytesInFutureBlocks
 argument_list|()
 return|;
 block|}
-DECL|method|getBytesInFutureStripedBlocksStat ()
+DECL|method|getBytesInFutureECBlockGroups ()
 specifier|public
 name|long
-name|getBytesInFutureStripedBlocksStat
+name|getBytesInFutureECBlockGroups
 parameter_list|()
 block|{
 return|return

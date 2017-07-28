@@ -3217,7 +3217,7 @@ literal|1
 argument_list|,
 name|ns
 operator|.
-name|getCorruptECBlockGroupsStat
+name|getCorruptECBlockGroups
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3241,7 +3241,7 @@ literal|0
 argument_list|,
 name|ns
 operator|.
-name|getCorruptBlocksStat
+name|getCorruptReplicatedBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
