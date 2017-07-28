@@ -12945,6 +12945,11 @@ argument_list|()
 expr_stmt|;
 name|namesystem
 operator|.
+name|checkSuperuserPrivilege
+argument_list|()
+expr_stmt|;
+name|namesystem
+operator|.
 name|removeErasureCodingPolicy
 argument_list|(
 name|ecPolicyName
