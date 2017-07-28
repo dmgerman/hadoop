@@ -936,7 +936,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Retrieve the socket address that should be used by clients to connect    * to the SCM for block service.    *    * @param conf    * @return Target InetSocketAddress for the SCM block client endpoint.    */
+comment|/**    * Retrieve the socket address that should be used by clients to connect    * to the SCM for block service. If    * {@link ScmConfigKeys#OZONE_SCM_BLOCK_CLIENT_ADDRESS_KEY} is not defined    * then {@link ScmConfigKeys#OZONE_SCM_CLIENT_ADDRESS_KEY} is used.    *    * @param conf    * @return Target InetSocketAddress for the SCM block client endpoint.    * @throws IllegalArgumentException if configuration is not defined.    */
 DECL|method|getScmAddressForBlockClients ( Configuration conf)
 specifier|public
 specifier|static
@@ -947,7 +947,6 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
-specifier|final
 name|Optional
 argument_list|<
 name|String
@@ -972,6 +971,26 @@ name|isPresent
 argument_list|()
 condition|)
 block|{
+name|host
+operator|=
+name|getHostNameFromConfigKeys
+argument_list|(
+name|conf
+argument_list|,
+name|ScmConfigKeys
+operator|.
+name|OZONE_SCM_CLIENT_ADDRESS_KEY
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+operator|!
+name|host
+operator|.
+name|isPresent
+argument_list|()
+condition|)
+block|{
 throw|throw
 operator|new
 name|IllegalArgumentException
@@ -987,6 +1006,7 @@ operator|+
 literal|" on configuring Ozone."
 argument_list|)
 throw|;
+block|}
 block|}
 specifier|final
 name|Optional
