@@ -436,6 +436,8 @@ name|getSchedulerReadLock
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void
@@ -451,13 +453,11 @@ name|interrupted
 argument_list|()
 condition|)
 block|{
-name|FSAppAttempt
-name|starvedApp
-decl_stmt|;
 try|try
 block|{
+name|FSAppAttempt
 name|starvedApp
-operator|=
+init|=
 name|context
 operator|.
 name|getStarvedApps
@@ -465,7 +465,7 @@ argument_list|()
 operator|.
 name|take
 argument_list|()
-expr_stmt|;
+decl_stmt|;
 comment|// Hold the scheduler readlock so this is not concurrent with the
 comment|// update thread.
 name|schedulerReadLock
@@ -513,7 +513,14 @@ argument_list|(
 literal|"Preemption thread interrupted! Exiting."
 argument_list|)
 expr_stmt|;
-return|return;
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 block|}
@@ -595,6 +602,13 @@ name|getResourceName
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|int
+name|maxAMContainers
+init|=
+name|Integer
+operator|.
+name|MAX_VALUE
+decl_stmt|;
 for|for
 control|(
 name|FSSchedulerNode
@@ -603,21 +617,6 @@ range|:
 name|potentialNodes
 control|)
 block|{
-name|int
-name|maxAMContainers
-init|=
-name|bestContainers
-operator|==
-literal|null
-condition|?
-name|Integer
-operator|.
-name|MAX_VALUE
-else|:
-name|bestContainers
-operator|.
-name|numAMContainers
-decl_stmt|;
 name|PreemptableContainers
 name|preemptableContainers
 init|=
@@ -645,11 +644,15 @@ name|bestContainers
 operator|=
 name|preemptableContainers
 expr_stmt|;
-if|if
-condition|(
-name|preemptableContainers
+name|maxAMContainers
+operator|=
+name|bestContainers
 operator|.
 name|numAMContainers
+expr_stmt|;
+if|if
+condition|(
+name|maxAMContainers
 operator|==
 literal|0
 condition|)
@@ -851,42 +854,10 @@ name|preemptableContainers
 return|;
 block|}
 block|}
+comment|// Return null if the sum of all preemptable containers' resources
+comment|// isn't enough to satisfy the starved request.
 return|return
 literal|null
-return|;
-block|}
-DECL|method|isNodeAlreadyReserved ( FSSchedulerNode node, FSAppAttempt app)
-specifier|private
-name|boolean
-name|isNodeAlreadyReserved
-parameter_list|(
-name|FSSchedulerNode
-name|node
-parameter_list|,
-name|FSAppAttempt
-name|app
-parameter_list|)
-block|{
-name|FSAppAttempt
-name|nodeReservedApp
-init|=
-name|node
-operator|.
-name|getReservedAppSchedulable
-argument_list|()
-decl_stmt|;
-return|return
-name|nodeReservedApp
-operator|!=
-literal|null
-operator|&&
-operator|!
-name|nodeReservedApp
-operator|.
-name|equals
-argument_list|(
-name|app
-argument_list|)
 return|;
 block|}
 DECL|method|trackPreemptionsAgainstNode (List<RMContainer> containers, FSAppAttempt app)
@@ -1025,6 +996,7 @@ name|TimerTask
 block|{
 DECL|field|containers
 specifier|private
+specifier|final
 name|List
 argument_list|<
 name|RMContainer
