@@ -564,7 +564,7 @@ name|Limits
 operator|.
 name|reset
 argument_list|(
-name|jobConf
+name|conf
 argument_list|)
 expr_stmt|;
 block|}
