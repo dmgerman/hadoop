@@ -484,20 +484,6 @@ return|return
 literal|false
 return|;
 block|}
-name|float
-name|vCores
-init|=
-operator|(
-name|float
-operator|)
-name|cpuVcores
-operator|/
-name|getContainersMonitor
-argument_list|()
-operator|.
-name|getVCoresAllocatedForContainers
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
 name|LOG
@@ -519,23 +505,36 @@ operator|.
 name|getCPU
 argument_list|()
 argument_list|,
-name|vCores
+name|getContainersMonitor
+argument_list|()
+operator|.
+name|getVCoresAllocatedForContainers
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Check CPU.
+comment|// Check CPU. Compare using integral values of cores to avoid decimal
+comment|// inaccuracies.
 if|if
 condition|(
+operator|!
+name|hasEnoughCpu
+argument_list|(
 name|this
 operator|.
 name|containersAllocation
 operator|.
 name|getCPU
 argument_list|()
-operator|+
-name|vCores
-operator|>
-literal|1.0f
+argument_list|,
+name|getContainersMonitor
+argument_list|()
+operator|.
+name|getVCoresAllocatedForContainers
+argument_list|()
+argument_list|,
+name|cpuVcores
+argument_list|)
 condition|)
 block|{
 return|return
@@ -544,6 +543,38 @@ return|;
 block|}
 return|return
 literal|true
+return|;
+block|}
+comment|/**    * Returns whether there is enough space for coresRequested in totalCores.    * Converts currentAllocation usage to nearest integer count before comparing,    * as floats are inherently imprecise. NOTE: this calculation assumes that    * requested core counts must be integers, and currentAllocation core count    * must also be an integer.    *    * @param currentAllocation The current allocation, a float value from 0 to 1.    * @param totalCores The total cores in the system.    * @param coresRequested The number of cores requested.    * @return True if currentAllocationtotalCores*coresRequested&lt;=    *         totalCores.    */
+DECL|method|hasEnoughCpu (float currentAllocation, long totalCores, int coresRequested)
+specifier|public
+name|boolean
+name|hasEnoughCpu
+parameter_list|(
+name|float
+name|currentAllocation
+parameter_list|,
+name|long
+name|totalCores
+parameter_list|,
+name|int
+name|coresRequested
+parameter_list|)
+block|{
+comment|// Must not cast here, as it would truncate the decimal digits.
+return|return
+name|Math
+operator|.
+name|round
+argument_list|(
+name|currentAllocation
+operator|*
+name|totalCores
+argument_list|)
+operator|+
+name|coresRequested
+operator|<=
+name|totalCores
 return|;
 block|}
 DECL|method|getContainersMonitor ()

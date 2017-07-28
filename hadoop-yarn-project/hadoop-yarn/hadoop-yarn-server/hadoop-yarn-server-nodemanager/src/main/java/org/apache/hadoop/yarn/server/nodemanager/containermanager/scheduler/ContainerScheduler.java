@@ -1766,12 +1766,25 @@ argument_list|()
 operator|<=
 literal|0
 operator|&&
+comment|// Convert the number of cores to nearest integral number, due to
+comment|// imprecision of direct float comparison.
+name|Math
+operator|.
+name|round
+argument_list|(
 name|resourcesToFreeUp
 operator|.
 name|getCPU
 argument_list|()
+operator|*
+name|getContainersMonitor
+argument_list|()
+operator|.
+name|getVCoresAllocatedForContainers
+argument_list|()
+argument_list|)
 operator|<=
-literal|0.0f
+literal|0
 return|;
 block|}
 DECL|method|resourcesToFreeUp ( ContainerId containerToStartId)
