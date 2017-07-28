@@ -276,6 +276,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -383,6 +397,26 @@ operator|.
 name|timeline
 operator|.
 name|GenericObjectMapper
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timelineservice
+operator|.
+name|collector
+operator|.
+name|TimelineCollectorContext
 import|;
 end_import
 
@@ -783,9 +817,22 @@ argument_list|(
 name|c1
 argument_list|)
 expr_stmt|;
+name|UserGroupInformation
+name|remoteUser
+init|=
+name|UserGroupInformation
+operator|.
+name|createRemoteUser
+argument_list|(
+name|user
+argument_list|)
+decl_stmt|;
 name|hbi
 operator|.
 name|write
+argument_list|(
+operator|new
+name|TimelineCollectorContext
 argument_list|(
 name|cluster
 argument_list|,
@@ -798,8 +845,11 @@ argument_list|,
 name|runid
 argument_list|,
 name|appName
+argument_list|)
 argument_list|,
 name|te
+argument_list|,
+name|remoteUser
 argument_list|)
 expr_stmt|;
 comment|// write another entity with the right min start time
@@ -824,6 +874,9 @@ name|hbi
 operator|.
 name|write
 argument_list|(
+operator|new
+name|TimelineCollectorContext
+argument_list|(
 name|cluster
 argument_list|,
 name|user
@@ -835,8 +888,11 @@ argument_list|,
 name|runid
 argument_list|,
 name|appName
+argument_list|)
 argument_list|,
 name|te
+argument_list|,
+name|remoteUser
 argument_list|)
 expr_stmt|;
 comment|// writer another entity for max end time
@@ -871,6 +927,9 @@ name|hbi
 operator|.
 name|write
 argument_list|(
+operator|new
+name|TimelineCollectorContext
+argument_list|(
 name|cluster
 argument_list|,
 name|user
@@ -882,8 +941,11 @@ argument_list|,
 name|runid
 argument_list|,
 name|appName
+argument_list|)
 argument_list|,
 name|te
+argument_list|,
+name|remoteUser
 argument_list|)
 expr_stmt|;
 comment|// writer another entity with greater start time
@@ -918,6 +980,9 @@ name|hbi
 operator|.
 name|write
 argument_list|(
+operator|new
+name|TimelineCollectorContext
+argument_list|(
 name|cluster
 argument_list|,
 name|user
@@ -929,8 +994,11 @@ argument_list|,
 name|runid
 argument_list|,
 name|appName
+argument_list|)
 argument_list|,
 name|te
+argument_list|,
+name|remoteUser
 argument_list|)
 expr_stmt|;
 comment|// flush everything to hbase
@@ -1462,6 +1530,9 @@ name|hbi
 operator|.
 name|write
 argument_list|(
+operator|new
+name|TimelineCollectorContext
+argument_list|(
 name|cluster
 argument_list|,
 name|user
@@ -1473,8 +1544,16 @@ argument_list|,
 name|runid
 argument_list|,
 name|appName
+argument_list|)
 argument_list|,
 name|te
+argument_list|,
+name|UserGroupInformation
+operator|.
+name|createRemoteUser
+argument_list|(
+name|user
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|hbi
@@ -2107,6 +2186,16 @@ argument_list|(
 name|c1
 argument_list|)
 expr_stmt|;
+name|UserGroupInformation
+name|remoteUser
+init|=
+name|UserGroupInformation
+operator|.
+name|createRemoteUser
+argument_list|(
+name|user
+argument_list|)
+decl_stmt|;
 name|String
 name|appName
 init|=
@@ -2115,6 +2204,9 @@ decl_stmt|;
 name|hbi
 operator|.
 name|write
+argument_list|(
+operator|new
+name|TimelineCollectorContext
 argument_list|(
 name|cluster
 argument_list|,
@@ -2127,8 +2219,11 @@ argument_list|,
 name|runid1
 argument_list|,
 name|appName
+argument_list|)
 argument_list|,
 name|te
+argument_list|,
+name|remoteUser
 argument_list|)
 expr_stmt|;
 comment|// write an application with to this flow but a different runid/ version
@@ -2153,6 +2248,9 @@ name|hbi
 operator|.
 name|write
 argument_list|(
+operator|new
+name|TimelineCollectorContext
+argument_list|(
 name|cluster
 argument_list|,
 name|user
@@ -2164,8 +2262,11 @@ argument_list|,
 name|runid2
 argument_list|,
 name|appName
+argument_list|)
 argument_list|,
 name|te
+argument_list|,
+name|remoteUser
 argument_list|)
 expr_stmt|;
 comment|// write an application with to this flow but a different runid/ version
@@ -2190,6 +2291,9 @@ name|hbi
 operator|.
 name|write
 argument_list|(
+operator|new
+name|TimelineCollectorContext
+argument_list|(
 name|cluster
 argument_list|,
 name|user
@@ -2201,8 +2305,11 @@ argument_list|,
 name|runid3
 argument_list|,
 name|appName
+argument_list|)
 argument_list|,
 name|te
+argument_list|,
+name|remoteUser
 argument_list|)
 expr_stmt|;
 name|hbi

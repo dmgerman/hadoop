@@ -103,37 +103,6 @@ name|userId
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Creates a prefix which generates the following rowKeyPrefixes for the sub    * application table:    * {@code subAppUserId!clusterId!entityType!entityPrefix!entityId!userId}.    *    * subAppUserId is usually the doAsUser.    * userId is the yarn user that the AM runs as.    *    * @param clusterId    *          identifying the cluster    * @param subAppUserId    *          identifying the sub app user    * @param userId    *          identifying the user who runs the AM    */
-DECL|method|SubApplicationRowKeyPrefix (String clusterId, String subAppUserId, String userId)
-specifier|public
-name|SubApplicationRowKeyPrefix
-parameter_list|(
-name|String
-name|clusterId
-parameter_list|,
-name|String
-name|subAppUserId
-parameter_list|,
-name|String
-name|userId
-parameter_list|)
-block|{
-name|this
-argument_list|(
-name|subAppUserId
-argument_list|,
-name|clusterId
-argument_list|,
-literal|null
-argument_list|,
-literal|null
-argument_list|,
-literal|null
-argument_list|,
-name|userId
-argument_list|)
-expr_stmt|;
-block|}
 comment|/*    * (non-Javadoc)    *    * @see org.apache.hadoop.yarn.server.timelineservice.storage.subapplication.    * RowKeyPrefix#getRowKeyPrefix()    */
 DECL|method|getRowKeyPrefix ()
 specifier|public
