@@ -555,6 +555,32 @@ argument_list|)
 operator|.
 name|__
 argument_list|(
+literal|"AM Used Resources:"
+argument_list|,
+name|qinfo
+operator|.
+name|getAMUsedResources
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+operator|.
+name|__
+argument_list|(
+literal|"AM Max Resources:"
+argument_list|,
+name|qinfo
+operator|.
+name|getAMMaxResources
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+operator|.
+name|__
+argument_list|(
 literal|"Num Active Applications:"
 argument_list|,
 name|qinfo
