@@ -606,14 +606,17 @@ expr_stmt|;
 block|}
 comment|// these methods can be used as the basis for future service methods if the
 comment|// per-node collector runs separate from the node manager
-comment|/**    * Creates and adds an app level collector for the specified application id.    * The collector is also initialized and started. If the service already    * exists, no new service is created.    *    * @param appId Application Id to be added.    * @return whether it was added successfully    */
-DECL|method|addApplication (ApplicationId appId)
+comment|/**    * Creates and adds an app level collector for the specified application id.    * The collector is also initialized and started. If the service already    * exists, no new service is created.    *    * @param appId Application Id to be added.    * @param user Application Master container user.    * @return whether it was added successfully    */
+DECL|method|addApplication (ApplicationId appId, String user)
 specifier|public
 name|boolean
 name|addApplication
 parameter_list|(
 name|ApplicationId
 name|appId
+parameter_list|,
+name|String
+name|user
 parameter_list|)
 block|{
 name|AppLevelTimelineCollector
@@ -623,6 +626,8 @@ operator|new
 name|AppLevelTimelineCollectorWithAgg
 argument_list|(
 name|appId
+argument_list|,
+name|user
 argument_list|)
 decl_stmt|;
 return|return
@@ -702,6 +707,11 @@ decl_stmt|;
 name|addApplication
 argument_list|(
 name|appId
+argument_list|,
+name|context
+operator|.
+name|getUser
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

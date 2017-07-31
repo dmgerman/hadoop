@@ -86,6 +86,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Token
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|api
@@ -157,7 +175,7 @@ return|return
 name|request
 return|;
 block|}
-DECL|method|newInstance ( ApplicationId id, String collectorAddr)
+DECL|method|newInstance ( ApplicationId id, String collectorAddr, Token token)
 specifier|public
 specifier|static
 name|ReportNewCollectorInfoRequest
@@ -168,6 +186,9 @@ name|id
 parameter_list|,
 name|String
 name|collectorAddr
+parameter_list|,
+name|Token
+name|token
 parameter_list|)
 block|{
 name|ReportNewCollectorInfoRequest
@@ -197,6 +218,8 @@ argument_list|(
 name|id
 argument_list|,
 name|collectorAddr
+argument_list|,
+name|token
 argument_list|)
 argument_list|)
 argument_list|)

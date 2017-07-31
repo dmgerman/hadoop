@@ -681,6 +681,8 @@ operator|new
 name|AppLevelTimelineCollectorWithAgg
 argument_list|(
 name|appId
+argument_list|,
+literal|"user"
 argument_list|)
 decl_stmt|;
 return|return
@@ -894,6 +896,8 @@ operator|new
 name|AppLevelTimelineCollectorWithAgg
 argument_list|(
 name|appId
+argument_list|,
+literal|"user"
 argument_list|)
 decl_stmt|;
 name|boolean

@@ -226,6 +226,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|CollectorInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|FinalApplicationStatus
 import|;
 end_import
@@ -576,7 +594,7 @@ name|String
 name|getTrackingUrl
 parameter_list|()
 function_decl|;
-comment|/**    * The timeline collector information for the application. It should be used    * only if the timeline service v.2 is enabled.    *    * @return the data for the application's collector, including collector    * address, collector ID. Return null if the timeline service v.2 is not    * enabled.    */
+comment|/**    * The timeline collector information for the application. It should be used    * only if the timeline service v.2 is enabled.    *    * @return the data for the application's collector, including collector    * address, RM ID, version and collector token. Return null if the timeline    * service v.2 is not enabled.    */
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -588,6 +606,20 @@ name|Unstable
 DECL|method|getCollectorData ()
 name|AppCollectorData
 name|getCollectorData
+parameter_list|()
+function_decl|;
+comment|/**    * The timeline collector information to be sent to AM. It should be used    * only if the timeline service v.2 is enabled.    *    * @return collector info, including collector address and collector token.    * Return null if the timeline service v.2 is not enabled.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|method|getCollectorInfo ()
+name|CollectorInfo
+name|getCollectorInfo
 parameter_list|()
 function_decl|;
 comment|/**    * The original tracking url for the application master.    * @return the original tracking url for the application master.    */

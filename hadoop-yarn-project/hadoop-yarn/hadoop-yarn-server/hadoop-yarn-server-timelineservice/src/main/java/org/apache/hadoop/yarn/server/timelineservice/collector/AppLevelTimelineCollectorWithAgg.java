@@ -316,17 +316,22 @@ specifier|private
 name|AppLevelAggregator
 name|appAggregator
 decl_stmt|;
-DECL|method|AppLevelTimelineCollectorWithAgg (ApplicationId appId)
+DECL|method|AppLevelTimelineCollectorWithAgg (ApplicationId appId, String user)
 specifier|public
 name|AppLevelTimelineCollectorWithAgg
 parameter_list|(
 name|ApplicationId
 name|appId
+parameter_list|,
+name|String
+name|user
 parameter_list|)
 block|{
 name|super
 argument_list|(
 name|appId
+argument_list|,
+name|user
 argument_list|)
 expr_stmt|;
 block|}

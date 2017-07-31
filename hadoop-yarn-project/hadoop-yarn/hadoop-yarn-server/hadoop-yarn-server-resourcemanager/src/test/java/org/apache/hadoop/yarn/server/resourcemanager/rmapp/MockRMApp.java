@@ -214,6 +214,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|CollectorInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|FinalApplicationStatus
 import|;
 end_import
@@ -1510,6 +1528,22 @@ block|{
 return|return
 literal|false
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getCollectorInfo ()
+specifier|public
+name|CollectorInfo
+name|getCollectorInfo
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
 block|}
 block|}
 end_class

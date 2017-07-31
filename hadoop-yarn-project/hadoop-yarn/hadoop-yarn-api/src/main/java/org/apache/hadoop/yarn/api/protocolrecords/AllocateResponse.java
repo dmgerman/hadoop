@@ -150,6 +150,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|CollectorInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|AMCommand
 import|;
 end_import
@@ -471,10 +489,10 @@ argument_list|()
 return|;
 block|}
 annotation|@
-name|Public
+name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance (int responseId, List<ContainerStatus> completedContainers, List<Container> allocatedContainers, List<NodeReport> updatedNodes, Resource availResources, AMCommand command, int numClusterNodes, PreemptionMessage preempt, List<NMToken> nmTokens, List<UpdatedContainer> updatedContainers)
+DECL|method|newInstance (int responseId, List<ContainerStatus> completedContainers, List<Container> allocatedContainers, List<NodeReport> updatedNodes, Resource availResources, AMCommand command, int numClusterNodes, PreemptionMessage preempt, List<NMToken> nmTokens, CollectorInfo collectorInfo)
 specifier|public
 specifier|static
 name|AllocateResponse
@@ -519,11 +537,8 @@ name|NMToken
 argument_list|>
 name|nmTokens
 parameter_list|,
-name|List
-argument_list|<
-name|UpdatedContainer
-argument_list|>
-name|updatedContainers
+name|CollectorInfo
+name|collectorInfo
 parameter_list|)
 block|{
 return|return
@@ -577,9 +592,9 @@ argument_list|(
 name|nmTokens
 argument_list|)
 operator|.
-name|updatedContainers
+name|collectorInfo
 argument_list|(
-name|updatedContainers
+name|collectorInfo
 argument_list|)
 operator|.
 name|build
@@ -714,7 +729,7 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|newInstance (int responseId, List<ContainerStatus> completedContainers, List<Container> allocatedContainers, List<NodeReport> updatedNodes, Resource availResources, AMCommand command, int numClusterNodes, PreemptionMessage preempt, List<NMToken> nmTokens, Token amRMToken, List<UpdatedContainer> updatedContainers, String collectorAddr)
+DECL|method|newInstance (int responseId, List<ContainerStatus> completedContainers, List<Container> allocatedContainers, List<NodeReport> updatedNodes, Resource availResources, AMCommand command, int numClusterNodes, PreemptionMessage preempt, List<NMToken> nmTokens, Token amRMToken, List<UpdatedContainer> updatedContainers, CollectorInfo collectorInfo)
 specifier|public
 specifier|static
 name|AllocateResponse
@@ -768,8 +783,8 @@ name|UpdatedContainer
 argument_list|>
 name|updatedContainers
 parameter_list|,
-name|String
-name|collectorAddr
+name|CollectorInfo
+name|collectorInfo
 parameter_list|)
 block|{
 return|return
@@ -833,9 +848,9 @@ argument_list|(
 name|amRMToken
 argument_list|)
 operator|.
-name|collectorAddr
+name|collectorInfo
 argument_list|(
-name|collectorAddr
+name|collectorInfo
 argument_list|)
 operator|.
 name|build
@@ -1187,30 +1202,30 @@ name|Priority
 name|priority
 parameter_list|)
 function_decl|;
-comment|/**    * The address of collector that belong to this app    *    * @return The address of collector that belong to this attempt    */
+comment|/**    * The data associated with the collector that belongs to this app. Contains    * address and token alongwith identification information.    *    * @return The data of collector that belong to this attempt    */
 annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|getCollectorAddr ()
+DECL|method|getCollectorInfo ()
 specifier|public
 specifier|abstract
-name|String
-name|getCollectorAddr
+name|CollectorInfo
+name|getCollectorInfo
 parameter_list|()
 function_decl|;
 annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|setCollectorAddr (String collectorAddr)
+DECL|method|setCollectorInfo (CollectorInfo info)
 specifier|public
 specifier|abstract
 name|void
-name|setCollectorAddr
+name|setCollectorInfo
 parameter_list|(
-name|String
-name|collectorAddr
+name|CollectorInfo
+name|info
 parameter_list|)
 function_decl|;
 comment|/**    * Get the list of container update errors to inform the    * Application Master about the container updates that could not be    * satisfied due to error.    *    * @return List of Update Container Errors.    */
@@ -1627,25 +1642,25 @@ return|return
 name|this
 return|;
 block|}
-comment|/**      * Set the<code>collectorAddr</code> of the response.      * @see AllocateResponse#setCollectorAddr(String)      * @param collectorAddr<code>collectorAddr</code> of the response      * @return {@link AllocateResponseBuilder}      */
+comment|/**      * Set the<code>collectorInfo</code> of the response.      * @see AllocateResponse#setCollectorInfo(CollectorInfo)      * @param collectorInfo<code>collectorInfo</code> of the response which      *    contains collector address, RM id, version and collector token.      * @return {@link AllocateResponseBuilder}      */
 annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|collectorAddr (String collectorAddr)
+DECL|method|collectorInfo ( CollectorInfo collectorInfo)
 specifier|public
 name|AllocateResponseBuilder
-name|collectorAddr
+name|collectorInfo
 parameter_list|(
-name|String
-name|collectorAddr
+name|CollectorInfo
+name|collectorInfo
 parameter_list|)
 block|{
 name|allocateResponse
 operator|.
-name|setCollectorAddr
+name|setCollectorInfo
 argument_list|(
-name|collectorAddr
+name|collectorInfo
 argument_list|)
 expr_stmt|;
 return|return
