@@ -1437,6 +1437,40 @@ name|ex
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"RetryInfo{"
+operator|+
+literal|"retryTime="
+operator|+
+name|retryTime
+operator|+
+literal|", delay="
+operator|+
+name|delay
+operator|+
+literal|", action="
+operator|+
+name|action
+operator|+
+literal|", expectedFailoverCount="
+operator|+
+name|expectedFailoverCount
+operator|+
+literal|", failException="
+operator|+
+name|failException
+operator|+
+literal|'}'
+return|;
+block|}
 block|}
 DECL|field|proxyDescriptor
 specifier|private
