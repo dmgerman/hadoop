@@ -20,6 +20,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -82,6 +96,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|utils
+operator|.
+name|MetadataStore
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -137,6 +165,14 @@ name|stop
 parameter_list|()
 throws|throws
 name|IOException
+function_decl|;
+comment|/**    * Get metadata store.    * @return metadata store.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getStore ()
+name|MetadataStore
+name|getStore
+parameter_list|()
 function_decl|;
 comment|/**    * Returns the read lock used on Metadata DB.    * @return readLock    */
 DECL|method|readLock ()
@@ -249,6 +285,17 @@ name|bucket
 parameter_list|,
 name|String
 name|key
+parameter_list|)
+function_decl|;
+comment|/**    * Returns the DB key name of a deleted key in KSM metadata store.    * The name for a deleted key has prefix #deleting# followed by    * the actual key name.    * @param keyName - key name    * @return bytes of DB key.    */
+DECL|method|getDeletedKeyName (byte[] keyName)
+name|byte
+index|[]
+name|getDeletedKeyName
+parameter_list|(
+name|byte
+index|[]
+name|keyName
 parameter_list|)
 function_decl|;
 comment|/**    * Deletes the key from DB.    *    * @param key - key name    */

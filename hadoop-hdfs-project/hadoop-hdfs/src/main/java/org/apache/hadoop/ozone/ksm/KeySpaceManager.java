@@ -963,6 +963,17 @@ return|return
 name|rpcServer
 return|;
 block|}
+comment|/**    * Get metadata manager.    * @return metadata manager.    */
+DECL|method|getMetadataManager ()
+specifier|public
+name|MetadataManager
+name|getMetadataManager
+parameter_list|()
+block|{
+return|return
+name|metadataManager
+return|;
+block|}
 DECL|method|getMetrics ()
 specifier|public
 name|KSMMetrics

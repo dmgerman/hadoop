@@ -419,6 +419,15 @@ name|OZONE_HANDLER_LOCAL
 init|=
 literal|"local"
 decl_stmt|;
+DECL|field|DELETING_KEY_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DELETING_KEY_PREFIX
+init|=
+literal|"#deleting#"
+decl_stmt|;
 comment|/**    * KSM LevelDB prefixes.    */
 DECL|field|KSM_VOLUME_PREFIX
 specifier|public

@@ -26,6 +26,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|base
 operator|.
 name|Strings
@@ -466,6 +480,22 @@ name|ozone
 operator|.
 name|OzoneConsts
 operator|.
+name|DELETING_KEY_PREFIX
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConsts
+operator|.
 name|KSM_DB_NAME
 import|;
 end_import
@@ -650,6 +680,21 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+comment|/**    * Get metadata store.    * @return store - metadata store.    */
+annotation|@
+name|VisibleForTesting
+annotation|@
+name|Override
+DECL|method|getStore ()
+specifier|public
+name|MetadataStore
+name|getStore
+parameter_list|()
+block|{
+return|return
+name|store
+return|;
 block|}
 comment|/**    * Given a volume return the corresponding DB key.    * @param volume - Volume name    */
 DECL|method|getVolumeKey (String volume)
@@ -910,6 +955,35 @@ operator|.
 name|string2Bytes
 argument_list|(
 name|keyKeyString
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getDeletedKeyName (byte[] keyName)
+specifier|public
+name|byte
+index|[]
+name|getDeletedKeyName
+parameter_list|(
+name|byte
+index|[]
+name|keyName
+parameter_list|)
+block|{
+return|return
+name|DFSUtil
+operator|.
+name|string2Bytes
+argument_list|(
+name|DELETING_KEY_PREFIX
+operator|+
+name|DFSUtil
+operator|.
+name|bytes2String
+argument_list|(
+name|keyName
+argument_list|)
 argument_list|)
 return|;
 block|}
