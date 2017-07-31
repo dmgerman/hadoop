@@ -66,6 +66,26 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|Serializable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|List
@@ -96,6 +116,8 @@ comment|/**    * LogMutation encapsulates the fields needed for configuration mu
 DECL|class|LogMutation
 class|class
 name|LogMutation
+implements|implements
+name|Serializable
 block|{
 DECL|field|updates
 specifier|private
@@ -238,7 +260,7 @@ name|id
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Initialize the configuration store.    * @param conf configuration to initialize store with    * @param schedConf Initial key-value configuration to persist    */
+comment|/**    * Initialize the configuration store.    * @param conf configuration to initialize store with    * @param schedConf Initial key-value configuration to persist    * @throws IOException if initialization fails    */
 DECL|method|initialize (Configuration conf, Configuration schedConf)
 name|void
 name|initialize
@@ -249,8 +271,10 @@ parameter_list|,
 name|Configuration
 name|schedConf
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
-comment|/**    * Logs the configuration change to backing store. Generates an id associated    * with this mutation, sets it in {@code logMutation}, and returns it.    * @param logMutation configuration change to be persisted in write ahead log    * @return id which configuration store associates with this mutation    */
+comment|/**    * Logs the configuration change to backing store. Generates an id associated    * with this mutation, sets it in {@code logMutation}, and returns it.    * @param logMutation configuration change to be persisted in write ahead log    * @return id which configuration store associates with this mutation    * @throws IOException if logging fails    */
 DECL|method|logMutation (LogMutation logMutation)
 name|long
 name|logMutation
@@ -258,8 +282,10 @@ parameter_list|(
 name|LogMutation
 name|logMutation
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
-comment|/**    * Should be called after {@code logMutation}. Gets the pending mutation    * associated with {@code id} and marks the mutation as persisted (no longer    * pending). If isValid is true, merge the mutation with the persisted    * configuration.    *    * If {@code confirmMutation} is called with ids in a different order than    * was returned by {@code logMutation}, the result is implementation    * dependent.    * @param id id of mutation to be confirmed    * @param isValid if true, update persisted configuration with mutation    *                associated with {@code id}.    * @return true on success    */
+comment|/**    * Should be called after {@code logMutation}. Gets the pending mutation    * associated with {@code id} and marks the mutation as persisted (no longer    * pending). If isValid is true, merge the mutation with the persisted    * configuration.    *    * If {@code confirmMutation} is called with ids in a different order than    * was returned by {@code logMutation}, the result is implementation    * dependent.    * @param id id of mutation to be confirmed    * @param isValid if true, update persisted configuration with mutation    *                associated with {@code id}.    * @return true on success    * @throws IOException if mutation confirmation fails    */
 DECL|method|confirmMutation (long id, boolean isValid)
 name|boolean
 name|confirmMutation
@@ -270,6 +296,8 @@ parameter_list|,
 name|boolean
 name|isValid
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 comment|/**    * Retrieve the persisted configuration.    * @return configuration as key-value    */
 DECL|method|retrieve ()

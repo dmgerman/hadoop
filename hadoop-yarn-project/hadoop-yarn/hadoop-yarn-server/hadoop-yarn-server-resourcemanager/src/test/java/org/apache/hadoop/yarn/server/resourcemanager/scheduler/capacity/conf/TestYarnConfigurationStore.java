@@ -90,6 +90,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|HashMap
@@ -188,6 +198,8 @@ specifier|public
 name|void
 name|testInMemoryConfigurationStore
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|confStore
 operator|=

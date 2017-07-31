@@ -74,6 +74,14 @@ specifier|public
 interface|interface
 name|MutableConfigurationProvider
 block|{
+comment|/**    * Apply transactions which were not committed.    * @throws IOException if recovery fails    */
+DECL|method|recoverConf ()
+name|void
+name|recoverConf
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Update the scheduler configuration with the provided key value pairs.    * @param user User issuing the request    * @param confUpdate Key-value pairs for configurations to be updated.    * @throws IOException if scheduler could not be reinitialized    */
 DECL|method|mutateConfiguration (UserGroupInformation user, SchedConfUpdateInfo confUpdate)
 name|void
