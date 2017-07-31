@@ -1468,32 +1468,12 @@ literal|1000
 operator|*
 name|heartbeatIntervalSeconds
 expr_stmt|;
+comment|// Effected block invalidate limit is the bigger value between
+comment|// value configured in hdfs-site.xml, and 20 * HB interval.
 specifier|final
 name|int
-name|blockInvalidateLimit
+name|configuredBlockInvalidateLimit
 init|=
-name|Math
-operator|.
-name|max
-argument_list|(
-literal|20
-operator|*
-call|(
-name|int
-call|)
-argument_list|(
-name|heartbeatIntervalSeconds
-argument_list|)
-argument_list|,
-name|DFSConfigKeys
-operator|.
-name|DFS_BLOCK_INVALIDATE_LIMIT_DEFAULT
-argument_list|)
-decl_stmt|;
-name|this
-operator|.
-name|blockInvalidateLimit
-operator|=
 name|conf
 operator|.
 name|getInt
@@ -1502,7 +1482,35 @@ name|DFSConfigKeys
 operator|.
 name|DFS_BLOCK_INVALIDATE_LIMIT_KEY
 argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_BLOCK_INVALIDATE_LIMIT_DEFAULT
+argument_list|)
+decl_stmt|;
+specifier|final
+name|int
+name|countedBlockInvalidateLimit
+init|=
+literal|20
+operator|*
+call|(
+name|int
+call|)
+argument_list|(
+name|heartbeatIntervalSeconds
+argument_list|)
+decl_stmt|;
+name|this
+operator|.
 name|blockInvalidateLimit
+operator|=
+name|Math
+operator|.
+name|max
+argument_list|(
+name|countedBlockInvalidateLimit
+argument_list|,
+name|configuredBlockInvalidateLimit
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -1513,10 +1521,16 @@ name|DFSConfigKeys
 operator|.
 name|DFS_BLOCK_INVALIDATE_LIMIT_KEY
 operator|+
-literal|"="
+literal|": configured="
 operator|+
-name|this
-operator|.
+name|configuredBlockInvalidateLimit
+operator|+
+literal|", counted="
+operator|+
+name|countedBlockInvalidateLimit
+operator|+
+literal|", effected="
+operator|+
 name|blockInvalidateLimit
 argument_list|)
 expr_stmt|;
@@ -1943,7 +1957,10 @@ return|return
 name|fsClusterStats
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getBlockInvalidateLimit ()
+specifier|public
 name|int
 name|getBlockInvalidateLimit
 parameter_list|()
@@ -8126,9 +8143,7 @@ argument_list|(
 name|intervalSeconds
 argument_list|)
 argument_list|,
-name|DFSConfigKeys
-operator|.
-name|DFS_BLOCK_INVALIDATE_LIMIT_DEFAULT
+name|blockInvalidateLimit
 argument_list|)
 expr_stmt|;
 block|}
