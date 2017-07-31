@@ -602,7 +602,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"HTTP server of SCM is listening at %s"
+literal|"HTTP server of SCM is listening at http://%s"
 argument_list|,
 name|realAddress
 argument_list|)
@@ -626,6 +626,16 @@ argument_list|(
 name|connIdx
 argument_list|)
 expr_stmt|;
+name|String
+name|realAddress
+init|=
+name|NetUtils
+operator|.
+name|getHostPortString
+argument_list|(
+name|httpsAddress
+argument_list|)
+decl_stmt|;
 name|conf
 operator|.
 name|set
@@ -633,11 +643,20 @@ argument_list|(
 name|getHttpsAddressKey
 argument_list|()
 argument_list|,
-name|NetUtils
+name|realAddress
+argument_list|)
+expr_stmt|;
+name|LOG
 operator|.
-name|getHostPortString
+name|info
 argument_list|(
-name|httpsAddress
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"HTTP server of SCM is listening at https://%s"
+argument_list|,
+name|realAddress
 argument_list|)
 argument_list|)
 expr_stmt|;
