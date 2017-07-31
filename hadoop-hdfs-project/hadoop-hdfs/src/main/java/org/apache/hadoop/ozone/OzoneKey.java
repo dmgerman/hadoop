@@ -32,6 +32,32 @@ name|KsmKeyInfo
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ksm
+operator|.
+name|helpers
+operator|.
+name|KsmKeyLocationInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
 begin_comment
 comment|/**  * A class that encapsulates OzoneKey.  */
 end_comment
@@ -63,26 +89,22 @@ specifier|final
 name|String
 name|keyName
 decl_stmt|;
-comment|/**    * Name of the Container the Key resides in.    */
-DECL|field|containerName
-specifier|private
-specifier|final
-name|String
-name|containerName
-decl_stmt|;
-comment|/**    * Name of the block id SCM assigned for the key.    */
-DECL|field|blockID
-specifier|private
-specifier|final
-name|String
-name|blockID
-decl_stmt|;
 comment|/**    * Size of the data.    */
 DECL|field|dataSize
 specifier|private
 specifier|final
 name|long
 name|dataSize
+decl_stmt|;
+comment|/**    * All the locations of this key, in an ordered list.    */
+DECL|field|keyLocations
+specifier|private
+specifier|final
+name|List
+argument_list|<
+name|KsmKeyLocationInfo
+argument_list|>
+name|keyLocations
 decl_stmt|;
 comment|/**    * Constructs OzoneKey from KsmKeyInfo.    *    * @param ksmKeyInfo    */
 DECL|method|OzoneKey (KsmKeyInfo ksmKeyInfo)
@@ -122,29 +144,20 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|containerName
-operator|=
-name|ksmKeyInfo
-operator|.
-name|getContainerName
-argument_list|()
-expr_stmt|;
-name|this
-operator|.
-name|blockID
-operator|=
-name|ksmKeyInfo
-operator|.
-name|getBlockID
-argument_list|()
-expr_stmt|;
-name|this
-operator|.
 name|dataSize
 operator|=
 name|ksmKeyInfo
 operator|.
 name|getDataSize
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|keyLocations
+operator|=
+name|ksmKeyInfo
+operator|.
+name|getKeyLocationList
 argument_list|()
 expr_stmt|;
 block|}
@@ -181,28 +194,6 @@ return|return
 name|keyName
 return|;
 block|}
-comment|/**    * Returns Container Name associated with the Key.    *    * @return containerName    */
-DECL|method|getContainerName ()
-specifier|public
-name|String
-name|getContainerName
-parameter_list|()
-block|{
-return|return
-name|containerName
-return|;
-block|}
-comment|/**    * Returns BlockID associated with the Key.    *    * @return blockID    */
-DECL|method|getBlockID ()
-specifier|public
-name|String
-name|getBlockID
-parameter_list|()
-block|{
-return|return
-name|blockID
-return|;
-block|}
 comment|/**    * Returns the size of the data.    *    * @return dataSize    */
 DECL|method|getDataSize ()
 specifier|public
@@ -212,6 +203,20 @@ parameter_list|()
 block|{
 return|return
 name|dataSize
+return|;
+block|}
+comment|/**    * Retruns the list of the key locations.    *    * @return key locations    */
+DECL|method|getKeyLocations ()
+specifier|public
+name|List
+argument_list|<
+name|KsmKeyLocationInfo
+argument_list|>
+name|getKeyLocations
+parameter_list|()
+block|{
+return|return
+name|keyLocations
 return|;
 block|}
 block|}

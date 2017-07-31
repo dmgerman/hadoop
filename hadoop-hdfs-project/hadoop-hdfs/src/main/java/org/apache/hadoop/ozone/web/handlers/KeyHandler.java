@@ -689,6 +689,13 @@ argument_list|(
 name|newLen
 argument_list|)
 decl_stmt|;
+name|args
+operator|.
+name|setSize
+argument_list|(
+name|contentLen
+argument_list|)
+expr_stmt|;
 name|MessageDigest
 name|md5
 init|=

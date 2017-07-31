@@ -26,6 +26,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
+name|web
+operator|.
+name|storage
+operator|.
+name|ChunkGroupInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|scm
 operator|.
 name|storage
@@ -69,15 +87,15 @@ block|{
 DECL|field|inputStream
 specifier|private
 specifier|final
-name|ChunkInputStream
+name|ChunkGroupInputStream
 name|inputStream
 decl_stmt|;
 comment|/**    * Constructs OzoneInputStream with ChunkInputStream.    *    * @param inputStream    */
-DECL|method|OzoneInputStream (ChunkInputStream inputStream)
+DECL|method|OzoneInputStream (ChunkGroupInputStream inputStream)
 specifier|public
 name|OzoneInputStream
 parameter_list|(
-name|ChunkInputStream
+name|ChunkGroupInputStream
 name|inputStream
 parameter_list|)
 block|{

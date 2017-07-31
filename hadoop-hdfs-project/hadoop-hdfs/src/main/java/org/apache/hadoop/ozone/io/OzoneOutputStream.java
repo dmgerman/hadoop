@@ -26,11 +26,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|scm
+name|ozone
+operator|.
+name|web
 operator|.
 name|storage
 operator|.
-name|ChunkOutputStream
+name|ChunkGroupOutputStream
 import|;
 end_import
 
@@ -55,7 +57,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * OzoneOutputStream is used to write data into Ozone.  * It uses SCM's {@link ChunkOutputStream} for writing the data.  */
+comment|/**  * OzoneOutputStream is used to write data into Ozone.  * It uses SCM's {@link ChunkGroupOutputStream} for writing the data.  */
 end_comment
 
 begin_class
@@ -69,15 +71,15 @@ block|{
 DECL|field|outputStream
 specifier|private
 specifier|final
-name|ChunkOutputStream
+name|ChunkGroupOutputStream
 name|outputStream
 decl_stmt|;
-comment|/**    * Constructs OzoneOutputStream with ChunkOutputStream.    *    * @param outputStream    */
-DECL|method|OzoneOutputStream (ChunkOutputStream outputStream)
+comment|/**    * Constructs OzoneOutputStream with ChunkGroupOutputStream.    *    * @param outputStream    */
+DECL|method|OzoneOutputStream (ChunkGroupOutputStream outputStream)
 specifier|public
 name|OzoneOutputStream
 parameter_list|(
-name|ChunkOutputStream
+name|ChunkGroupOutputStream
 name|outputStream
 parameter_list|)
 block|{

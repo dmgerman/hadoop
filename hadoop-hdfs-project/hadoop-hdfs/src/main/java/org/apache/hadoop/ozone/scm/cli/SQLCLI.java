@@ -2036,6 +2036,8 @@ argument_list|(
 name|value
 argument_list|)
 decl_stmt|;
+comment|// TODO : the two fields container name and block id are no longer used,
+comment|// need to revisit this later.
 name|String
 name|insertKeyInfo
 init|=
@@ -2065,15 +2067,9 @@ operator|.
 name|getDataSize
 argument_list|()
 argument_list|,
-name|keyInfo
-operator|.
-name|getBlockKey
-argument_list|()
+literal|"EMPTY"
 argument_list|,
-name|keyInfo
-operator|.
-name|getContainerName
-argument_list|()
+literal|"EMPTY"
 argument_list|)
 decl_stmt|;
 name|executeSQL
