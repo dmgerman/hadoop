@@ -514,27 +514,6 @@ return|return
 name|firstViolation
 return|;
 block|}
-DECL|method|reset (Configuration conf)
-specifier|public
-specifier|static
-specifier|synchronized
-name|void
-name|reset
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
-block|{
-name|isInited
-operator|=
-literal|false
-expr_stmt|;
-name|init
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 end_class
 
