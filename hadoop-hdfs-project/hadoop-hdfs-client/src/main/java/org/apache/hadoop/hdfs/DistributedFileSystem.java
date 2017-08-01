@@ -13858,6 +13858,16 @@ name|CreateFlag
 operator|.
 name|CREATE
 argument_list|)
+operator|||
+name|getFlags
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+name|CreateFlag
+operator|.
+name|OVERWRITE
+argument_list|)
 condition|)
 block|{
 if|if

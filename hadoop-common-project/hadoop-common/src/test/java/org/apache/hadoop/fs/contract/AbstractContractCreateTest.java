@@ -261,19 +261,53 @@ name|CREATE_TIMEOUT
 init|=
 literal|15000
 decl_stmt|;
-annotation|@
-name|Test
-DECL|method|testCreateNewFile ()
-specifier|public
+DECL|method|path (String filepath, boolean useBuilder)
+specifier|protected
+name|Path
+name|path
+parameter_list|(
+name|String
+name|filepath
+parameter_list|,
+name|boolean
+name|useBuilder
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|super
+operator|.
+name|path
+argument_list|(
+name|filepath
+operator|+
+operator|(
+name|useBuilder
+condition|?
+literal|""
+else|:
+literal|"-builder"
+operator|)
+argument_list|)
+return|;
+block|}
+DECL|method|testCreateNewFile (boolean useBuilder)
+specifier|private
 name|void
 name|testCreateNewFile
-parameter_list|()
+parameter_list|(
+name|boolean
+name|useBuilder
+parameter_list|)
 throws|throws
 name|Throwable
 block|{
 name|describe
 argument_list|(
-literal|"Foundational 'create a file' test"
+literal|"Foundational 'create a file' test, using builder API="
+operator|+
+name|useBuilder
 argument_list|)
 expr_stmt|;
 name|Path
@@ -282,6 +316,8 @@ init|=
 name|path
 argument_list|(
 literal|"testCreateNewFile"
+argument_list|,
+name|useBuilder
 argument_list|)
 decl_stmt|;
 name|byte
@@ -315,6 +351,8 @@ operator|*
 literal|1024
 argument_list|,
 literal|false
+argument_list|,
+name|useBuilder
 argument_list|)
 expr_stmt|;
 name|ContractTestUtils
@@ -332,17 +370,41 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testCreateFileOverExistingFileNoOverwrite ()
+DECL|method|testCreateNewFile ()
 specifier|public
 name|void
-name|testCreateFileOverExistingFileNoOverwrite
+name|testCreateNewFile
 parameter_list|()
+throws|throws
+name|Throwable
+block|{
+name|testCreateNewFile
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|testCreateNewFile
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|testCreateFileOverExistingFileNoOverwrite (boolean useBuilder)
+specifier|private
+name|void
+name|testCreateFileOverExistingFileNoOverwrite
+parameter_list|(
+name|boolean
+name|useBuilder
+parameter_list|)
 throws|throws
 name|Throwable
 block|{
 name|describe
 argument_list|(
-literal|"Verify overwriting an existing file fails"
+literal|"Verify overwriting an existing file fails, using builder API="
+operator|+
+name|useBuilder
 argument_list|)
 expr_stmt|;
 name|Path
@@ -351,6 +413,8 @@ init|=
 name|path
 argument_list|(
 literal|"testCreateFileOverExistingFileNoOverwrite"
+argument_list|,
+name|useBuilder
 argument_list|)
 decl_stmt|;
 name|byte
@@ -417,6 +481,8 @@ argument_list|,
 literal|1024
 argument_list|,
 literal|false
+argument_list|,
+name|useBuilder
 argument_list|)
 expr_stmt|;
 name|fail
@@ -455,20 +521,45 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * This test catches some eventual consistency problems that blobstores exhibit,    * as we are implicitly verifying that updates are consistent. This    * is why different file lengths and datasets are used    * @throws Throwable    */
 annotation|@
 name|Test
-DECL|method|testOverwriteExistingFile ()
+DECL|method|testCreateFileOverExistingFileNoOverwrite ()
 specifier|public
 name|void
-name|testOverwriteExistingFile
+name|testCreateFileOverExistingFileNoOverwrite
 parameter_list|()
+throws|throws
+name|Throwable
+block|{
+name|testCreateFileOverExistingFileNoOverwrite
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+name|testCreateFileOverExistingFileNoOverwrite
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|testOverwriteExistingFile (boolean useBuilder)
+specifier|private
+name|void
+name|testOverwriteExistingFile
+parameter_list|(
+name|boolean
+name|useBuilder
+parameter_list|)
 throws|throws
 name|Throwable
 block|{
 name|describe
 argument_list|(
-literal|"Overwrite an existing file and verify the new data is there"
+literal|"Overwrite an existing file and verify the new data is there, "
+operator|+
+literal|"use builder API="
+operator|+
+name|useBuilder
 argument_list|)
 expr_stmt|;
 name|Path
@@ -477,6 +568,8 @@ init|=
 name|path
 argument_list|(
 literal|"testOverwriteExistingFile"
+argument_list|,
+name|useBuilder
 argument_list|)
 decl_stmt|;
 name|byte
@@ -508,6 +601,8 @@ argument_list|,
 literal|1024
 argument_list|,
 literal|false
+argument_list|,
+name|useBuilder
 argument_list|)
 expr_stmt|;
 name|ContractTestUtils
@@ -553,6 +648,8 @@ argument_list|,
 literal|1024
 argument_list|,
 literal|true
+argument_list|,
+name|useBuilder
 argument_list|)
 expr_stmt|;
 name|ContractTestUtils
@@ -568,19 +665,46 @@ name|data2
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * This test catches some eventual consistency problems that blobstores exhibit,    * as we are implicitly verifying that updates are consistent. This    * is why different file lengths and datasets are used    * @throws Throwable    */
 annotation|@
 name|Test
-DECL|method|testOverwriteEmptyDirectory ()
+DECL|method|testOverwriteExistingFile ()
 specifier|public
 name|void
-name|testOverwriteEmptyDirectory
+name|testOverwriteExistingFile
 parameter_list|()
+throws|throws
+name|Throwable
+block|{
+name|testOverwriteExistingFile
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+name|testOverwriteExistingFile
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|testOverwriteEmptyDirectory (boolean useBuilder)
+specifier|private
+name|void
+name|testOverwriteEmptyDirectory
+parameter_list|(
+name|boolean
+name|useBuilder
+parameter_list|)
 throws|throws
 name|Throwable
 block|{
 name|describe
 argument_list|(
-literal|"verify trying to create a file over an empty dir fails"
+literal|"verify trying to create a file over an empty dir fails, "
+operator|+
+literal|"use builder API="
+operator|+
+name|useBuilder
 argument_list|)
 expr_stmt|;
 name|Path
@@ -632,6 +756,8 @@ argument_list|,
 literal|1024
 argument_list|,
 literal|true
+argument_list|,
+name|useBuilder
 argument_list|)
 expr_stmt|;
 name|assertIsDirectory
@@ -698,17 +824,43 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testOverwriteNonEmptyDirectory ()
+DECL|method|testOverwriteEmptyDirectory ()
 specifier|public
 name|void
-name|testOverwriteNonEmptyDirectory
+name|testOverwriteEmptyDirectory
 parameter_list|()
+throws|throws
+name|Throwable
+block|{
+name|testOverwriteEmptyDirectory
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+name|testOverwriteEmptyDirectory
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|testOverwriteNonEmptyDirectory (boolean useBuilder)
+specifier|private
+name|void
+name|testOverwriteNonEmptyDirectory
+parameter_list|(
+name|boolean
+name|useBuilder
+parameter_list|)
 throws|throws
 name|Throwable
 block|{
 name|describe
 argument_list|(
-literal|"verify trying to create a file over a non-empty dir fails"
+literal|"verify trying to create a file over a non-empty dir fails, "
+operator|+
+literal|"use builder API="
+operator|+
+name|useBuilder
 argument_list|)
 expr_stmt|;
 name|Path
@@ -819,6 +971,8 @@ argument_list|,
 literal|1024
 argument_list|,
 literal|true
+argument_list|,
+name|useBuilder
 argument_list|)
 expr_stmt|;
 name|FileStatus
@@ -918,6 +1072,27 @@ expr_stmt|;
 name|assertIsFile
 argument_list|(
 name|child
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testOverwriteNonEmptyDirectory ()
+specifier|public
+name|void
+name|testOverwriteNonEmptyDirectory
+parameter_list|()
+throws|throws
+name|Throwable
+block|{
+name|testOverwriteNonEmptyDirectory
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+name|testOverwriteNonEmptyDirectory
+argument_list|(
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
