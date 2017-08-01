@@ -16530,9 +16530,9 @@ return|;
 block|}
 block|}
 decl_stmt|;
-comment|// rm should successfully start with app1 loaded back in FAILED state
-comment|// due to node label not enabled but am resource request contains
-comment|// node label expression.
+comment|// rm should successfully start with app1 loaded back in SUCCESS state
+comment|// by pushing app to run default label for am container and let other
+comment|// containers to run normally.
 try|try
 block|{
 name|rm2
@@ -16565,20 +16565,6 @@ argument_list|()
 operator|.
 name|size
 argument_list|()
-argument_list|)
-expr_stmt|;
-name|rm2
-operator|.
-name|waitForState
-argument_list|(
-name|app1
-operator|.
-name|getApplicationId
-argument_list|()
-argument_list|,
-name|RMAppState
-operator|.
-name|FAILED
 argument_list|)
 expr_stmt|;
 block|}
