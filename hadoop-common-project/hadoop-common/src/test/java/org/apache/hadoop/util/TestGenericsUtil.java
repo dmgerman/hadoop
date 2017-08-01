@@ -566,6 +566,41 @@ name|c2
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|testIsLog4jLogger ()
+specifier|public
+name|void
+name|testIsLog4jLogger
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|assertFalse
+argument_list|(
+literal|"False if clazz is null"
+argument_list|,
+name|GenericsUtil
+operator|.
+name|isLog4jLogger
+argument_list|(
+literal|null
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"The implementation is Log4j"
+argument_list|,
+name|GenericsUtil
+operator|.
+name|isLog4jLogger
+argument_list|(
+name|TestGenericsUtil
+operator|.
+name|class
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 
