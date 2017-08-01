@@ -6866,7 +6866,7 @@ name|currentTime
 init|=
 name|Time
 operator|.
-name|monotonicNow
+name|now
 argument_list|()
 decl_stmt|;
 name|VolumeArgs
@@ -6996,11 +6996,14 @@ argument_list|(
 name|keyArgs
 argument_list|)
 decl_stmt|;
+comment|// Compare the time in second unit since the date string reparsed to
+comment|// millisecond will lose precision.
 name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|Time
+operator|(
+name|OzoneUtils
 operator|.
 name|formatDate
 argument_list|(
@@ -7009,15 +7012,23 @@ operator|.
 name|getCreatedOn
 argument_list|()
 argument_list|)
+operator|/
+literal|1000
+operator|)
 operator|>=
+operator|(
 name|currentTime
+operator|/
+literal|1000
+operator|)
 argument_list|)
 expr_stmt|;
 name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|Time
+operator|(
+name|OzoneUtils
 operator|.
 name|formatDate
 argument_list|(
@@ -7026,8 +7037,15 @@ operator|.
 name|getModifiedOn
 argument_list|()
 argument_list|)
+operator|/
+literal|1000
+operator|)
 operator|>=
+operator|(
 name|currentTime
+operator|/
+literal|1000
+operator|)
 argument_list|)
 expr_stmt|;
 name|Assert

@@ -153,6 +153,16 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|text
+operator|.
+name|ParseException
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -504,6 +514,8 @@ throws|throws
 name|OzoneException
 throws|,
 name|IOException
+throws|,
+name|ParseException
 block|{
 name|runTestPutAndListKey
 argument_list|(
@@ -554,6 +566,8 @@ throws|throws
 name|OzoneException
 throws|,
 name|IOException
+throws|,
+name|ParseException
 block|{
 name|runTestGetKeyInfo
 argument_list|(
