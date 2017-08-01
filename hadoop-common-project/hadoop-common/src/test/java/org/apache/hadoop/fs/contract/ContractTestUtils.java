@@ -5533,7 +5533,6 @@ name|NanoTimer
 block|{
 DECL|field|startTime
 specifier|private
-specifier|final
 name|long
 name|startTime
 decl_stmt|;
@@ -5547,6 +5546,23 @@ specifier|public
 name|NanoTimer
 parameter_list|()
 block|{
+name|startTime
+operator|=
+name|now
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**      * Reset the timer.  Equivalent to the reset button of a stopwatch.      */
+DECL|method|reset ()
+specifier|public
+name|void
+name|reset
+parameter_list|()
+block|{
+name|endTime
+operator|=
+literal|0
+expr_stmt|;
 name|startTime
 operator|=
 name|now

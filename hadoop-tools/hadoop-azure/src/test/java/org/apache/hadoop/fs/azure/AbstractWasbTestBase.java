@@ -226,6 +226,16 @@ parameter_list|()
 throws|throws
 name|Exception
 function_decl|;
+DECL|method|getTestAccount ()
+specifier|protected
+name|AzureBlobStorageTestAccount
+name|getTestAccount
+parameter_list|()
+block|{
+return|return
+name|testAccount
+return|;
+block|}
 block|}
 end_class
 
