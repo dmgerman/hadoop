@@ -1129,6 +1129,8 @@ condition|(
 name|captureOpenFiles
 condition|)
 block|{
+try|try
+block|{
 name|Set
 argument_list|<
 name|INodesInPath
@@ -1171,6 +1173,36 @@ name|getLatestSnapshotId
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|SnapshotException
+argument_list|(
+literal|"Failed to add snapshot: Unable to "
+operator|+
+literal|"capture all open files under the snapshot dir "
+operator|+
+name|snapshotRoot
+operator|.
+name|getFullPathName
+argument_list|()
+operator|+
+literal|" for snapshot '"
+operator|+
+name|name
+operator|+
+literal|"'"
+argument_list|,
+name|e
+argument_list|)
+throw|;
 block|}
 block|}
 return|return

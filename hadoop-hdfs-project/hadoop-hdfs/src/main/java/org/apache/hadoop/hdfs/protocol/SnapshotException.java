@@ -79,6 +79,27 @@ name|cause
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|SnapshotException (final String message, final Throwable cause)
+specifier|public
+name|SnapshotException
+parameter_list|(
+specifier|final
+name|String
+name|message
+parameter_list|,
+specifier|final
+name|Throwable
+name|cause
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|message
+argument_list|,
+name|cause
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

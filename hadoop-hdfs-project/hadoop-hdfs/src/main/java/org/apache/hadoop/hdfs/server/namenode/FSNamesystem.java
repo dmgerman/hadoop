@@ -23637,7 +23637,6 @@ name|blockId
 return|;
 block|}
 DECL|method|isFileDeleted (INodeFile file)
-specifier|private
 name|boolean
 name|isFileDeleted
 parameter_list|(
