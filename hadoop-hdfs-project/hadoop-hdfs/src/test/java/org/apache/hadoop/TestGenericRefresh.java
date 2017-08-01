@@ -359,7 +359,7 @@ argument_list|)
 expr_stmt|;
 name|Mockito
 operator|.
-name|stub
+name|when
 argument_list|(
 name|firstHandler
 operator|.
@@ -382,7 +382,7 @@ argument_list|)
 argument_list|)
 argument_list|)
 operator|.
-name|toReturn
+name|thenReturn
 argument_list|(
 name|RefreshResponse
 operator|.
@@ -416,7 +416,7 @@ argument_list|)
 expr_stmt|;
 name|Mockito
 operator|.
-name|stub
+name|when
 argument_list|(
 name|secondHandler
 operator|.
@@ -435,7 +435,7 @@ block|}
 argument_list|)
 argument_list|)
 operator|.
-name|toReturn
+name|thenReturn
 argument_list|(
 operator|new
 name|RefreshResponse
@@ -448,7 +448,7 @@ argument_list|)
 expr_stmt|;
 name|Mockito
 operator|.
-name|stub
+name|when
 argument_list|(
 name|secondHandler
 operator|.
@@ -465,7 +465,7 @@ block|}
 argument_list|)
 argument_list|)
 operator|.
-name|toReturn
+name|thenReturn
 argument_list|(
 operator|new
 name|RefreshResponse
@@ -1161,7 +1161,7 @@ argument_list|)
 decl_stmt|;
 name|Mockito
 operator|.
-name|stub
+name|when
 argument_list|(
 name|handlerOne
 operator|.
@@ -1184,7 +1184,7 @@ argument_list|)
 argument_list|)
 argument_list|)
 operator|.
-name|toReturn
+name|thenReturn
 argument_list|(
 operator|new
 name|RefreshResponse
@@ -1209,7 +1209,7 @@ argument_list|)
 decl_stmt|;
 name|Mockito
 operator|.
-name|stub
+name|when
 argument_list|(
 name|handlerTwo
 operator|.
@@ -1232,7 +1232,7 @@ argument_list|)
 argument_list|)
 argument_list|)
 operator|.
-name|toReturn
+name|thenReturn
 argument_list|(
 operator|new
 name|RefreshResponse
@@ -1388,7 +1388,7 @@ argument_list|)
 decl_stmt|;
 name|Mockito
 operator|.
-name|stub
+name|when
 argument_list|(
 name|exceptionalHandler
 operator|.
@@ -1411,7 +1411,7 @@ argument_list|)
 argument_list|)
 argument_list|)
 operator|.
-name|toThrow
+name|thenThrow
 argument_list|(
 operator|new
 name|RuntimeException
@@ -1434,7 +1434,7 @@ argument_list|)
 decl_stmt|;
 name|Mockito
 operator|.
-name|stub
+name|when
 argument_list|(
 name|otherExceptionalHandler
 operator|.
@@ -1457,7 +1457,7 @@ argument_list|)
 argument_list|)
 argument_list|)
 operator|.
-name|toThrow
+name|thenThrow
 argument_list|(
 operator|new
 name|RuntimeException

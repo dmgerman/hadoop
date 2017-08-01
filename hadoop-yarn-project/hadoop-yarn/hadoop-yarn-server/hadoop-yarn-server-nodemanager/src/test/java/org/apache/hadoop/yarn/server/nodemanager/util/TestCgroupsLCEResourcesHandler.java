@@ -466,7 +466,7 @@ comment|// Test 1, tasks file is empty
 comment|// tasks file has no data, should return true
 name|Mockito
 operator|.
-name|stub
+name|when
 argument_list|(
 name|fspy
 operator|.
@@ -474,7 +474,7 @@ name|delete
 argument_list|()
 argument_list|)
 operator|.
-name|toReturn
+name|thenReturn
 argument_list|(
 literal|true
 argument_list|)
