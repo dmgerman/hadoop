@@ -183,18 +183,6 @@ name|DF
 extends|extends
 name|Shell
 block|{
-comment|/** Default DF refresh interval. */
-DECL|field|DF_INTERVAL_DEFAULT
-specifier|public
-specifier|static
-specifier|final
-name|long
-name|DF_INTERVAL_DEFAULT
-init|=
-literal|3
-operator|*
-literal|1000
-decl_stmt|;
 DECL|field|dirPath
 specifier|private
 specifier|final
@@ -250,9 +238,9 @@ name|CommonConfigurationKeys
 operator|.
 name|FS_DF_INTERVAL_KEY
 argument_list|,
-name|DF
+name|CommonConfigurationKeysPublic
 operator|.
-name|DF_INTERVAL_DEFAULT
+name|FS_DF_INTERVAL_DEFAULT
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1035,7 +1023,9 @@ argument_list|(
 name|path
 argument_list|)
 argument_list|,
-name|DF_INTERVAL_DEFAULT
+name|CommonConfigurationKeysPublic
+operator|.
+name|FS_DF_INTERVAL_DEFAULT
 argument_list|)
 operator|.
 name|toString
