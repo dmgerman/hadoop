@@ -1050,7 +1050,7 @@ finally|finally
 block|{
 name|IOUtils
 operator|.
-name|cleanupWithLogger
+name|cleanup
 argument_list|(
 literal|null
 argument_list|,
