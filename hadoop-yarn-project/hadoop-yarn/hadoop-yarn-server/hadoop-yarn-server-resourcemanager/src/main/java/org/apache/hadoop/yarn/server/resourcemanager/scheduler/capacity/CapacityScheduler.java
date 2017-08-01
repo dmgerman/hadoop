@@ -13471,12 +13471,13 @@ name|confUpdate
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|YarnException
 block|{
 if|if
 condition|(
-name|csConfProvider
-operator|instanceof
-name|MutableConfigurationProvider
+name|isConfigurationMutable
+argument_list|()
 condition|)
 block|{
 operator|(
@@ -13506,6 +13507,20 @@ literal|"provider does not support updating configuration."
 argument_list|)
 throw|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|isConfigurationMutable ()
+specifier|public
+name|boolean
+name|isConfigurationMutable
+parameter_list|()
+block|{
+return|return
+name|csConfProvider
+operator|instanceof
+name|MutableConfigurationProvider
+return|;
 block|}
 block|}
 end_class

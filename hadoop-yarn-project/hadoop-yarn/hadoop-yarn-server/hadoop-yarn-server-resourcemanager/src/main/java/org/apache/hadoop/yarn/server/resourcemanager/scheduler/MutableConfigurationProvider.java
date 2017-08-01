@@ -46,6 +46,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|exceptions
+operator|.
+name|YarnException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|webapp
 operator|.
 name|dao
@@ -82,7 +98,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Update the scheduler configuration with the provided key value pairs.    * @param user User issuing the request    * @param confUpdate Key-value pairs for configurations to be updated.    * @throws IOException if scheduler could not be reinitialized    */
+comment|/**    * Update the scheduler configuration with the provided key value pairs.    * @param user User issuing the request    * @param confUpdate Key-value pairs for configurations to be updated.    * @throws IOException if scheduler could not be reinitialized    * @throws YarnException if reservation system could not be reinitialized    */
 DECL|method|mutateConfiguration (UserGroupInformation user, SchedConfUpdateInfo confUpdate)
 name|void
 name|mutateConfiguration
@@ -95,6 +111,8 @@ name|confUpdate
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|YarnException
 function_decl|;
 block|}
 end_interface

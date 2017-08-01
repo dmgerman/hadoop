@@ -60,6 +60,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|exceptions
+operator|.
+name|YarnException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|webapp
 operator|.
 name|dao
@@ -90,7 +106,7 @@ name|MutableConfScheduler
 extends|extends
 name|ResourceScheduler
 block|{
-comment|/**    * Update the scheduler's configuration.    * @param user Caller of this update    * @param confUpdate configuration update    * @throws IOException if update is invalid    */
+comment|/**    * Update the scheduler's configuration.    * @param user Caller of this update    * @param confUpdate configuration update    * @throws IOException if scheduler could not be reinitialized    * @throws YarnException if reservation system could not be reinitialized    */
 DECL|method|updateConfiguration (UserGroupInformation user, SchedConfUpdateInfo confUpdate)
 name|void
 name|updateConfiguration
@@ -103,6 +119,8 @@ name|confUpdate
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|YarnException
 function_decl|;
 comment|/**    * Get the scheduler configuration.    * @return the scheduler configuration    */
 DECL|method|getConfiguration ()
@@ -118,6 +136,12 @@ parameter_list|(
 name|String
 name|queueName
 parameter_list|)
+function_decl|;
+comment|/**    * Return whether the scheduler configuration is mutable.    * @return whether scheduler configuration is mutable or not.    */
+DECL|method|isConfigurationMutable ()
+name|boolean
+name|isConfigurationMutable
+parameter_list|()
 function_decl|;
 block|}
 end_interface
