@@ -508,6 +508,22 @@ name|build
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Heartbeat only
+name|testRouterStartup
+argument_list|(
+operator|new
+name|RouterConfigBuilder
+argument_list|(
+name|conf
+argument_list|)
+operator|.
+name|heartbeat
+argument_list|()
+operator|.
+name|build
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// Run with all services
 name|testRouterStartup
 argument_list|(

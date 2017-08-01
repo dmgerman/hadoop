@@ -420,6 +420,29 @@ name|defaultNamespace
 init|=
 literal|null
 decl_stmt|;
+DECL|method|MockResolver ()
+specifier|public
+name|MockResolver
+parameter_list|()
+block|{
+name|this
+operator|.
+name|cleanRegistrations
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|MockResolver (Configuration conf)
+specifier|public
+name|MockResolver
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|this
+argument_list|()
+expr_stmt|;
+block|}
 DECL|method|MockResolver (Configuration conf, StateStoreService store)
 specifier|public
 name|MockResolver
@@ -432,8 +455,6 @@ name|store
 parameter_list|)
 block|{
 name|this
-operator|.
-name|cleanRegistrations
 argument_list|()
 expr_stmt|;
 block|}

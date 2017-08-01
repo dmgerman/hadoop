@@ -3313,6 +3313,30 @@ operator|=
 name|startOpt
 expr_stmt|;
 block|}
+DECL|method|getNameserviceId ()
+specifier|public
+name|String
+name|getNameserviceId
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|nameserviceId
+return|;
+block|}
+DECL|method|getNamenodeId ()
+specifier|public
+name|String
+name|getNamenodeId
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|nnId
+return|;
+block|}
 block|}
 comment|/**    * This null constructor is used only when wishing to start a data node cluster    * without a name node (ie when the name node is started elsewhere).    */
 DECL|method|MiniDFSCluster ()
