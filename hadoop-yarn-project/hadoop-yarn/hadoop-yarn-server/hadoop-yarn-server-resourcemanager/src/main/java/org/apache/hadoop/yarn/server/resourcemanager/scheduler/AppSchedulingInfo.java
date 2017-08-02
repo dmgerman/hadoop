@@ -2522,13 +2522,16 @@ name|getBlackList
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|recoverContainer (RMContainer rmContainer)
+DECL|method|recoverContainer (RMContainer rmContainer, String partition)
 specifier|public
 name|void
 name|recoverContainer
 parameter_list|(
 name|RMContainer
 name|rmContainer
+parameter_list|,
+name|String
+name|partition
 parameter_list|)
 block|{
 try|try
@@ -2591,10 +2594,7 @@ name|metrics
 operator|.
 name|allocateResources
 argument_list|(
-name|rmContainer
-operator|.
-name|getNodeLabelExpression
-argument_list|()
+name|partition
 argument_list|,
 name|user
 argument_list|,

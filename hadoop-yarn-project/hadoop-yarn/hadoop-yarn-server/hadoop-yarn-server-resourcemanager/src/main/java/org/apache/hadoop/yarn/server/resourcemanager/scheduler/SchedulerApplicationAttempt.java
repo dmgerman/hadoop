@@ -5532,6 +5532,11 @@ operator|.
 name|recoverContainer
 argument_list|(
 name|rmContainer
+argument_list|,
+name|node
+operator|.
+name|getPartition
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
