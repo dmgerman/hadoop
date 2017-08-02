@@ -6167,6 +6167,17 @@ operator|)
 literal|777
 argument_list|)
 argument_list|,
+name|EnumSet
+operator|.
+name|noneOf
+argument_list|(
+name|HdfsFileStatus
+operator|.
+name|Flags
+operator|.
+name|class
+argument_list|)
+argument_list|,
 literal|"owner"
 argument_list|,
 literal|"group"

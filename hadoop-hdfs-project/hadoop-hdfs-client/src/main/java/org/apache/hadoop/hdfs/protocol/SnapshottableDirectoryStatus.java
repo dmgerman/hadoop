@@ -60,6 +60,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|EnumSet
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -217,7 +227,7 @@ name|byte
 index|[]
 name|parentFullPath
 decl_stmt|;
-DECL|method|SnapshottableDirectoryStatus (long modification_time, long access_time, FsPermission permission, String owner, String group, byte[] localName, long inodeId, int childrenNum, int snapshotNumber, int snapshotQuota, byte[] parentFullPath)
+DECL|method|SnapshottableDirectoryStatus (long modification_time, long access_time, FsPermission permission, EnumSet<HdfsFileStatus.Flags> flags, String owner, String group, byte[] localName, long inodeId, int childrenNum, int snapshotNumber, int snapshotQuota, byte[] parentFullPath)
 specifier|public
 name|SnapshottableDirectoryStatus
 parameter_list|(
@@ -229,6 +239,14 @@ name|access_time
 parameter_list|,
 name|FsPermission
 name|permission
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|HdfsFileStatus
+operator|.
+name|Flags
+argument_list|>
+name|flags
 parameter_list|,
 name|String
 name|owner
@@ -277,6 +295,8 @@ argument_list|,
 name|access_time
 argument_list|,
 name|permission
+argument_list|,
+name|flags
 argument_list|,
 name|owner
 argument_list|,

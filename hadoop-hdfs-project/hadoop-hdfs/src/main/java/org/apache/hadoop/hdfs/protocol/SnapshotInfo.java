@@ -60,7 +60,7 @@ name|protocol
 operator|.
 name|proto
 operator|.
-name|HdfsProtos
+name|AclProtos
 operator|.
 name|FsPermissionProto
 import|;

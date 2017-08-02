@@ -52,7 +52,13 @@ begin_comment
 comment|/**  * HDFS permission subclass used to indicate an ACL is present and/or that the  * underlying file/dir is encrypted. The ACL/encrypted bits are not visible  * directly to users of {@link FsPermission} serialization.  This is  * done for backwards compatibility in case any existing clients assume the  * value of FsPermission is in a particular range.  */
 end_comment
 
+begin_comment
+comment|/**  * @deprecated ACLs, encryption, and erasure coding are managed on FileStatus.  */
+end_comment
+
 begin_class
+annotation|@
+name|Deprecated
 annotation|@
 name|InterfaceAudience
 operator|.

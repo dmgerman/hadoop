@@ -6429,11 +6429,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|assertSameAclBit (FileSystem expected, FileSystem actual, Path path)
+DECL|method|assertSameAcls (FileSystem expected, FileSystem actual, Path path)
 specifier|private
 specifier|static
 name|void
-name|assertSameAclBit
+name|assertSameAcls
 parameter_list|(
 name|FileSystem
 name|expected
@@ -6467,6 +6467,19 @@ argument_list|(
 name|path
 argument_list|)
 decl_stmt|;
+name|assertEquals
+argument_list|(
+name|actualFileStatus
+operator|.
+name|hasAcl
+argument_list|()
+argument_list|,
+name|expectedFileStatus
+operator|.
+name|hasAcl
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|assertEquals
 argument_list|(
 name|actualFileStatus
@@ -6620,7 +6633,7 @@ argument_list|,
 name|proxyAclStat
 argument_list|)
 expr_stmt|;
-name|assertSameAclBit
+name|assertSameAcls
 argument_list|(
 name|httpfs
 argument_list|,
@@ -6670,7 +6683,7 @@ argument_list|,
 name|proxyAclStat
 argument_list|)
 expr_stmt|;
-name|assertSameAclBit
+name|assertSameAcls
 argument_list|(
 name|httpfs
 argument_list|,
@@ -6720,7 +6733,7 @@ argument_list|,
 name|proxyAclStat
 argument_list|)
 expr_stmt|;
-name|assertSameAclBit
+name|assertSameAcls
 argument_list|(
 name|httpfs
 argument_list|,
@@ -6770,7 +6783,7 @@ argument_list|,
 name|proxyAclStat
 argument_list|)
 expr_stmt|;
-name|assertSameAclBit
+name|assertSameAcls
 argument_list|(
 name|httpfs
 argument_list|,
@@ -6811,7 +6824,7 @@ argument_list|,
 name|proxyAclStat
 argument_list|)
 expr_stmt|;
-name|assertSameAclBit
+name|assertSameAcls
 argument_list|(
 name|httpfs
 argument_list|,
@@ -6895,7 +6908,7 @@ argument_list|,
 name|proxyAclStat
 argument_list|)
 expr_stmt|;
-name|assertSameAclBit
+name|assertSameAcls
 argument_list|(
 name|httpfs
 argument_list|,
@@ -6948,7 +6961,7 @@ argument_list|,
 name|proxyAclStat
 argument_list|)
 expr_stmt|;
-name|assertSameAclBit
+name|assertSameAcls
 argument_list|(
 name|httpfs
 argument_list|,
@@ -6990,7 +7003,7 @@ argument_list|,
 name|proxyAclStat
 argument_list|)
 expr_stmt|;
-name|assertSameAclBit
+name|assertSameAcls
 argument_list|(
 name|httpfs
 argument_list|,

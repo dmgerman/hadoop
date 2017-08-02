@@ -18,6 +18,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|Serializable
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -119,7 +129,18 @@ DECL|class|FileEncryptionInfo
 specifier|public
 class|class
 name|FileEncryptionInfo
+implements|implements
+name|Serializable
 block|{
+DECL|field|serialVersionUID
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|serialVersionUID
+init|=
+literal|0x156abe03
+decl_stmt|;
 DECL|field|cipherSuite
 specifier|private
 specifier|final

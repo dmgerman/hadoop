@@ -626,6 +626,8 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+annotation|@
+name|Deprecated
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -648,6 +650,8 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+annotation|@
+name|Deprecated
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void
@@ -772,6 +776,8 @@ name|s
 return|;
 block|}
 comment|/**    * Encodes the object to a short.  Unlike {@link #toShort()}, this method may    * return values outside the fixed range 00000 - 01777 if extended features    * are encoded into this permission, such as the ACL bit.    *    * @return short extended short representation of this permission    */
+annotation|@
+name|Deprecated
 DECL|method|toExtendedShort ()
 specifier|public
 name|short
@@ -1222,7 +1228,9 @@ return|return
 name|stickyBit
 return|;
 block|}
-comment|/**    * Returns true if there is also an ACL (access control list).    *    * @return boolean true if there is also an ACL (access control list).    */
+comment|/**    * Returns true if there is also an ACL (access control list).    *    * @return boolean true if there is also an ACL (access control list).    * @deprecated Get acl bit from the {@link org.apache.hadoop.fs.FileStatus}    * object.    */
+annotation|@
+name|Deprecated
 DECL|method|getAclBit ()
 specifier|public
 name|boolean
@@ -1234,7 +1242,9 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * Returns true if the file is encrypted or directory is in an encryption zone    */
+comment|/**    * Returns true if the file is encrypted or directory is in an encryption zone    * @deprecated Get encryption bit from the    * {@link org.apache.hadoop.fs.FileStatus} object.    */
+annotation|@
+name|Deprecated
 DECL|method|getEncryptedBit ()
 specifier|public
 name|boolean
@@ -1245,7 +1255,9 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * Returns true if the file or directory is erasure coded.    */
+comment|/**    * Returns true if the file or directory is erasure coded.    * @deprecated Get ec bit from the {@link org.apache.hadoop.fs.FileStatus}    * object.    */
+annotation|@
+name|Deprecated
 DECL|method|getErasureCodedBit ()
 specifier|public
 name|boolean
