@@ -3686,7 +3686,7 @@ argument_list|()
 decl_stmt|;
 name|LOG
 operator|.
-name|info
+name|trace
 argument_list|(
 literal|"checking for block "
 operator|+
