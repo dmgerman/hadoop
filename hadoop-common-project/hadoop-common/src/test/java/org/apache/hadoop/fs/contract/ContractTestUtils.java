@@ -434,7 +434,7 @@ name|DEFAULT_IO_CHUNK_MODULUS_SIZE
 init|=
 literal|128
 decl_stmt|;
-comment|/**    * Assert that a property in the property set matches the expected value.    * @param props property set    * @param key property name    * @param expected expected value. If null, the property must not be in the set    */
+comment|/**    * Assert that a property in the property set matches the expected value.    * @param props property set    * @param key property name    * @param expected expected value. If null, the property must not be in the    *                 set    */
 DECL|method|assertPropertyEquals (Properties props, String key, String expected)
 specifier|public
 specifier|static
@@ -1123,7 +1123,7 @@ init|=
 literal|0
 decl_stmt|;
 name|int
-name|first_error_byte
+name|firstErrorByte
 init|=
 operator|-
 literal|1
@@ -1163,7 +1163,7 @@ operator|==
 literal|0
 condition|)
 block|{
-name|first_error_byte
+name|firstErrorByte
 operator|=
 name|i
 expr_stmt|;
@@ -1220,7 +1220,7 @@ name|max
 argument_list|(
 literal|0
 argument_list|,
-name|first_error_byte
+name|firstErrorByte
 operator|-
 name|overlap
 argument_list|)
@@ -1231,7 +1231,7 @@ name|Math
 operator|.
 name|min
 argument_list|(
-name|first_error_byte
+name|firstErrorByte
 operator|+
 name|overlap
 argument_list|,
@@ -2625,7 +2625,8 @@ operator|==
 literal|null
 condition|)
 block|{
-comment|//surfaces when someone calls getParent() on something at the top of the path
+comment|// surfaces when someone calls getParent() on something at the top of the
+comment|// path
 return|return
 literal|"/"
 return|;
@@ -3246,7 +3247,7 @@ name|found
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Test for the host being an OSX machine    * @return true if the JVM thinks that is running on OSX    */
+comment|/**    * Test for the host being an OSX machine.    * @return true if the JVM thinks that is running on OSX    */
 DECL|method|isOSX ()
 specifier|public
 specifier|static
@@ -3334,7 +3335,9 @@ if|if
 condition|(
 name|mismatch
 condition|)
+block|{
 break|break;
+block|}
 block|}
 name|assertFalse
 argument_list|(
