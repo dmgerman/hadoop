@@ -468,7 +468,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|DecommissionManager
+name|DatanodeAdminManager
 import|;
 end_import
 
@@ -845,7 +845,7 @@ name|Logger
 operator|.
 name|getLogger
 argument_list|(
-name|DecommissionManager
+name|DatanodeAdminManager
 operator|.
 name|class
 argument_list|)
@@ -2122,7 +2122,7 @@ name|Logger
 operator|.
 name|getLogger
 argument_list|(
-name|DecommissionManager
+name|DatanodeAdminManager
 operator|.
 name|class
 argument_list|)

@@ -2379,7 +2379,7 @@ parameter_list|()
 throws|throws
 name|ServiceFailedException
 block|{     }
-comment|/**      * Start services for BackupNode.      *<p>      * The following services should be muted      * (not run or not pass any control commands to DataNodes)      * on BackupNode:      * {@link LeaseManager.Monitor} protected by SafeMode.      * {@link BlockManager.RedundancyMonitor} protected by SafeMode.      * {@link HeartbeatManager.Monitor} protected by SafeMode.      * {@link DecommissionManager.Monitor} need to prohibit refreshNodes().      * {@link PendingReconstructionBlocks.PendingReconstructionMonitor}      * harmless, because RedundancyMonitor is muted.      */
+comment|/**      * Start services for BackupNode.      *<p>      * The following services should be muted      * (not run or not pass any control commands to DataNodes)      * on BackupNode:      * {@link LeaseManager.Monitor} protected by SafeMode.      * {@link BlockManager.RedundancyMonitor} protected by SafeMode.      * {@link HeartbeatManager.Monitor} protected by SafeMode.      * {@link DatanodeAdminManager.Monitor} need to prohibit refreshNodes().      * {@link PendingReconstructionBlocks.PendingReconstructionMonitor}      * harmless, because RedundancyMonitor is muted.      */
 annotation|@
 name|Override
 DECL|method|startActiveServices ()

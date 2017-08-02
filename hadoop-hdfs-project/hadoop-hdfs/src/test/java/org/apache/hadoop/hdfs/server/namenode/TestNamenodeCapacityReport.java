@@ -1996,7 +1996,7 @@ condition|)
 block|{
 name|dnm
 operator|.
-name|getDecomManager
+name|getDatanodeAdminManager
 argument_list|()
 operator|.
 name|startDecommission
@@ -2009,7 +2009,7 @@ else|else
 block|{
 name|dnm
 operator|.
-name|getDecomManager
+name|getDatanodeAdminManager
 argument_list|()
 operator|.
 name|startMaintenance
@@ -2045,7 +2045,7 @@ condition|)
 block|{
 name|dnm
 operator|.
-name|getDecomManager
+name|getDatanodeAdminManager
 argument_list|()
 operator|.
 name|stopDecommission
@@ -2058,7 +2058,7 @@ else|else
 block|{
 name|dnm
 operator|.
-name|getDecomManager
+name|getDatanodeAdminManager
 argument_list|()
 operator|.
 name|stopMaintenance

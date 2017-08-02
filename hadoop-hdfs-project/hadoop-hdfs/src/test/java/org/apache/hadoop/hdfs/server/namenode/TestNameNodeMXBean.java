@@ -2977,7 +2977,7 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-comment|// Wait for the DecommissionManager to complete refresh nodes
+comment|// Wait for the DatanodeAdminManager to complete refresh nodes
 name|GenericTestUtils
 operator|.
 name|waitFor
@@ -3178,7 +3178,7 @@ name|getNumDecomDeadDataNodes
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Wait for the DecommissionManager to complete check
+comment|// Wait for the DatanodeAdminManager to complete check
 name|GenericTestUtils
 operator|.
 name|waitFor
@@ -3866,7 +3866,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Wait for the DecommissionManager to complete check
+comment|// Wait for the DatanodeAdminManager to complete check
 comment|// and perform state transition
 while|while
 condition|(

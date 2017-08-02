@@ -486,7 +486,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|DecommissionManager
+name|DatanodeAdminManager
 import|;
 end_import
 
@@ -1645,9 +1645,10 @@ argument_list|(
 literal|3
 argument_list|)
 expr_stmt|;
-comment|// Step 1, create a cluster with 4 DNs. Blocks are stored on the first 3 DNs.
-comment|// The last DN is empty. Also configure the last DN to have slow heartbeat
-comment|// so that it will be chosen as excess replica candidate during recommission.
+comment|// Step 1, create a cluster with 4 DNs. Blocks are stored on the
+comment|// first 3 DNs. The last DN is empty. Also configure the last DN to have
+comment|// slow heartbeat so that it will be chosen as excess replica candidate
+comment|// during recommission.
 comment|// Step 1.a, copy blocks to the first 3 DNs. Given the replica count is the
 comment|// same as # of DNs, each DN will have a replica for any block.
 name|Path
@@ -1818,9 +1819,9 @@ argument_list|)
 decl_stmt|;
 comment|// Step 3, recommission the first DN on SBN and ANN to create excess replica
 comment|// It recommissions the node on SBN first to create potential
-comment|// inconsistent state. In production cluster, such insistent state can happen
-comment|// even if recommission command was issued on ANN first given the async nature
-comment|// of the system.
+comment|// inconsistent state. In production cluster, such insistent state can
+comment|// happen even if recommission command was issued on ANN first given the
+comment|// async nature of the system.
 comment|// Step 3.a, ask SBN to recomm the first DN.
 comment|// SBN has been fixed so that it no longer invalidates excess replica during
 comment|// recommission.
@@ -1828,10 +1829,10 @@ comment|// Before the fix, SBN could get into the following state.
 comment|//    1. the last DN would have been chosen as excess replica, given its
 comment|//    heartbeat is considered old.
 comment|//    Please refer to BlockPlacementPolicyDefault#chooseReplicaToDelete
-comment|//    2. After recommissionNode finishes, SBN has 3 live replicas ( 0, 1, 2 )
+comment|//    2. After recommissionNode finishes, SBN has 3 live replicas (0, 1, 2)
 comment|//    and one excess replica ( 3 )
 comment|// After the fix,
-comment|//    After recommissionNode finishes, SBN has 4 live replicas ( 0, 1, 2, 3 )
+comment|//    After recommissionNode finishes, SBN has 4 live replicas (0, 1, 2, 3)
 name|Thread
 operator|.
 name|sleep
@@ -4181,7 +4182,7 @@ name|assertTrackedAndPending
 argument_list|(
 name|dm
 operator|.
-name|getDecomManager
+name|getDatanodeAdminManager
 argument_list|()
 argument_list|,
 literal|2
@@ -5062,7 +5063,7 @@ name|Logger
 operator|.
 name|getLogger
 argument_list|(
-name|DecommissionManager
+name|DatanodeAdminManager
 operator|.
 name|class
 argument_list|)
@@ -5136,12 +5137,12 @@ name|getDatanodeManager
 argument_list|()
 decl_stmt|;
 specifier|final
-name|DecommissionManager
+name|DatanodeAdminManager
 name|decomManager
 init|=
 name|datanodeManager
 operator|.
-name|getDecomManager
+name|getDatanodeAdminManager
 argument_list|()
 decl_stmt|;
 comment|// Write a 3 block file, so each node has one block. Should scan 3 nodes.
@@ -5273,7 +5274,7 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|doDecomCheck (DatanodeManager datanodeManager, DecommissionManager decomManager, int expectedNumCheckedNodes)
+DECL|method|doDecomCheck (DatanodeManager datanodeManager, DatanodeAdminManager decomManager, int expectedNumCheckedNodes)
 specifier|private
 name|void
 name|doDecomCheck
@@ -5281,7 +5282,7 @@ parameter_list|(
 name|DatanodeManager
 name|datanodeManager
 parameter_list|,
-name|DecommissionManager
+name|DatanodeAdminManager
 name|decomManager
 parameter_list|,
 name|int
@@ -5410,7 +5411,7 @@ name|Logger
 operator|.
 name|getLogger
 argument_list|(
-name|DecommissionManager
+name|DatanodeAdminManager
 operator|.
 name|class
 argument_list|)
@@ -5484,12 +5485,12 @@ name|getDatanodeManager
 argument_list|()
 decl_stmt|;
 specifier|final
-name|DecommissionManager
+name|DatanodeAdminManager
 name|decomManager
 init|=
 name|datanodeManager
 operator|.
-name|getDecomManager
+name|getDatanodeAdminManager
 argument_list|()
 decl_stmt|;
 comment|// Keep a file open to prevent decom from progressing
@@ -5717,12 +5718,12 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|assertTrackedAndPending (DecommissionManager decomManager, int tracked, int pending)
+DECL|method|assertTrackedAndPending (DatanodeAdminManager decomManager, int tracked, int pending)
 specifier|private
 name|void
 name|assertTrackedAndPending
 parameter_list|(
-name|DecommissionManager
+name|DatanodeAdminManager
 name|decomManager
 parameter_list|,
 name|int

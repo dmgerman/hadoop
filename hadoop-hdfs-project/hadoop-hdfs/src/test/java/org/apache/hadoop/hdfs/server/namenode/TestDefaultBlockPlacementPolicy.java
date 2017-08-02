@@ -982,7 +982,7 @@ argument_list|)
 expr_stmt|;
 name|dnm
 operator|.
-name|getDecomManager
+name|getDatanodeAdminManager
 argument_list|()
 operator|.
 name|startDecommission
@@ -1006,7 +1006,7 @@ finally|finally
 block|{
 name|dnm
 operator|.
-name|getDecomManager
+name|getDatanodeAdminManager
 argument_list|()
 operator|.
 name|stopDecommission

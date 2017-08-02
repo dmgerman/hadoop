@@ -7060,7 +7060,7 @@ operator|.
 name|getDatanodeManager
 argument_list|()
 operator|.
-name|getDecomManager
+name|getDatanodeAdminManager
 argument_list|()
 operator|.
 name|startDecommission
@@ -7387,7 +7387,7 @@ operator|.
 name|getDatanodeManager
 argument_list|()
 operator|.
-name|getDecomManager
+name|getDatanodeAdminManager
 argument_list|()
 operator|.
 name|startMaintenance
@@ -10871,7 +10871,7 @@ operator|.
 name|getDatanodeManager
 argument_list|()
 operator|.
-name|getDecomManager
+name|getDatanodeAdminManager
 argument_list|()
 operator|.
 name|startDecommission
@@ -11420,7 +11420,7 @@ operator|.
 name|getDatanodeManager
 argument_list|()
 operator|.
-name|getDecomManager
+name|getDatanodeAdminManager
 argument_list|()
 operator|.
 name|startMaintenance
@@ -12964,7 +12964,7 @@ operator|.
 name|getDatanodeManager
 argument_list|()
 operator|.
-name|getDecomManager
+name|getDatanodeAdminManager
 argument_list|()
 operator|.
 name|startDecommission
@@ -13468,7 +13468,7 @@ operator|.
 name|getDatanodeManager
 argument_list|()
 operator|.
-name|getDecomManager
+name|getDatanodeAdminManager
 argument_list|()
 operator|.
 name|startMaintenance

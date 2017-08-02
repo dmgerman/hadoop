@@ -2169,11 +2169,11 @@ name|satisfied
 argument_list|)
 expr_stmt|;
 specifier|final
-name|DecommissionManager
+name|DatanodeAdminManager
 name|decomManager
 init|=
 operator|(
-name|DecommissionManager
+name|DatanodeAdminManager
 operator|)
 name|Whitebox
 operator|.
@@ -2181,7 +2181,7 @@ name|getInternalState
 argument_list|(
 name|dm
 argument_list|,
-literal|"decomManager"
+literal|"datanodeAdminManager"
 argument_list|)
 decl_stmt|;
 name|cluster

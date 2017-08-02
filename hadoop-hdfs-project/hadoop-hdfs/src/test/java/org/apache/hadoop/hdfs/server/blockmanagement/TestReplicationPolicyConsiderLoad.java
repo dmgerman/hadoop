@@ -559,7 +559,7 @@ index|]
 decl_stmt|;
 name|dnManager
 operator|.
-name|getDecomManager
+name|getDatanodeAdminManager
 argument_list|()
 operator|.
 name|startDecommission

@@ -1494,7 +1494,7 @@ name|InterruptedException
 block|{
 name|dm
 operator|.
-name|getDecomManager
+name|getDatanodeAdminManager
 argument_list|()
 operator|.
 name|runMonitorForTest

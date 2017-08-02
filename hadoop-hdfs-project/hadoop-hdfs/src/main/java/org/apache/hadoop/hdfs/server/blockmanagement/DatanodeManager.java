@@ -719,11 +719,11 @@ specifier|final
 name|BlockManager
 name|blockManager
 decl_stmt|;
-DECL|field|decomManager
+DECL|field|datanodeAdminManager
 specifier|private
 specifier|final
-name|DecommissionManager
-name|decomManager
+name|DatanodeAdminManager
+name|datanodeAdminManager
 decl_stmt|;
 DECL|field|heartbeatManager
 specifier|private
@@ -1067,10 +1067,10 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|decomManager
+name|datanodeAdminManager
 operator|=
 operator|new
-name|DecommissionManager
+name|DatanodeAdminManager
 argument_list|(
 name|namesystem
 argument_list|,
@@ -1855,7 +1855,7 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
-name|decomManager
+name|datanodeAdminManager
 operator|.
 name|activate
 argument_list|(
@@ -1873,7 +1873,7 @@ name|void
 name|close
 parameter_list|()
 block|{
-name|decomManager
+name|datanodeAdminManager
 operator|.
 name|close
 argument_list|()
@@ -1907,14 +1907,14 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getDecomManager ()
+DECL|method|getDatanodeAdminManager ()
 specifier|public
-name|DecommissionManager
-name|getDecomManager
+name|DatanodeAdminManager
+name|getDatanodeAdminManager
 parameter_list|()
 block|{
 return|return
-name|decomManager
+name|datanodeAdminManager
 return|;
 block|}
 DECL|method|getHostConfigManager ()
@@ -4388,7 +4388,7 @@ name|nodeReg
 argument_list|)
 condition|)
 block|{
-name|decomManager
+name|datanodeAdminManager
 operator|.
 name|startDecommission
 argument_list|(
@@ -4407,7 +4407,7 @@ name|maintenanceExpireTimeInMS
 argument_list|)
 condition|)
 block|{
-name|decomManager
+name|datanodeAdminManager
 operator|.
 name|startMaintenance
 argument_list|(
@@ -5291,7 +5291,7 @@ name|maintenanceExpireTimeInMS
 argument_list|)
 condition|)
 block|{
-name|decomManager
+name|datanodeAdminManager
 operator|.
 name|startMaintenance
 argument_list|(
@@ -5312,7 +5312,7 @@ name|node
 argument_list|)
 condition|)
 block|{
-name|decomManager
+name|datanodeAdminManager
 operator|.
 name|startDecommission
 argument_list|(
@@ -5322,14 +5322,14 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|decomManager
+name|datanodeAdminManager
 operator|.
 name|stopMaintenance
 argument_list|(
 name|node
 argument_list|)
 expr_stmt|;
-name|decomManager
+name|datanodeAdminManager
 operator|.
 name|stopDecommission
 argument_list|(

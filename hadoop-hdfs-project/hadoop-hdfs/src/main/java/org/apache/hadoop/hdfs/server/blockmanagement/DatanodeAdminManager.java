@@ -377,7 +377,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Manages datanode decommissioning. A background monitor thread   * periodically checks the status of datanodes that are in-progress of   * decommissioning.  *<p/>  * A datanode can be decommissioned in a few situations:  *<ul>  *<li>If a DN is dead, it is decommissioned immediately.</li>  *<li>If a DN is alive, it is decommissioned after all of its blocks   * are sufficiently replicated. Merely under-replicated blocks do not   * block decommissioning as long as they are above a replication   * threshold.</li>  *</ul>  * In the second case, the datanode transitions to a   * decommission-in-progress state and is tracked by the monitor thread. The   * monitor periodically scans through the list of insufficiently replicated  * blocks on these datanodes to   * determine if they can be decommissioned. The monitor also prunes this list   * as blocks become replicated, so monitor scans will become more efficient   * over time.  *<p/>  * Decommission-in-progress nodes that become dead do not progress to   * decommissioned until they become live again. This prevents potential   * durability loss for singly-replicated blocks (see HDFS-6791).  *<p/>  * This class depends on the FSNamesystem lock for synchronization.  */
+comment|/**  * Manages decommissioning and maintenance state for DataNodes. A background  * monitor thread periodically checks the status of DataNodes that are  * decommissioning or entering maintenance state.  *<p/>  * A DataNode can be decommissioned in a few situations:  *<ul>  *<li>If a DN is dead, it is decommissioned immediately.</li>  *<li>If a DN is alive, it is decommissioned after all of its blocks  * are sufficiently replicated. Merely under-replicated blocks do not  * block decommissioning as long as they are above a replication  * threshold.</li>  *</ul>  * In the second case, the DataNode transitions to a DECOMMISSION_INPROGRESS  * state and is tracked by the monitor thread. The monitor periodically scans  * through the list of insufficiently replicated blocks on these DataNodes to  * determine if they can be DECOMMISSIONED. The monitor also prunes this list  * as blocks become replicated, so monitor scans will become more efficient  * over time.  *<p/>  * DECOMMISSION_INPROGRESS nodes that become dead do not progress to  * DECOMMISSIONED until they become live again. This prevents potential  * durability loss for singly-replicated blocks (see HDFS-6791).  *<p/>  * DataNodes can also be put under maintenance state for any short duration  * maintenance operations. Unlike decommissioning, blocks are not always  * re-replicated for the DataNodes to enter maintenance state. When the  * blocks are replicated at least dfs.namenode.maintenance.replication.min,  * DataNodes transition to IN_MAINTENANCE state. Otherwise, just like  * decommissioning, DataNodes transition to ENTERING_MAINTENANCE state and  * wait for the blocks to be sufficiently replicated and then transition to  * IN_MAINTENANCE state. The block replication factor is relaxed for a maximum  * of maintenance expiry time. When DataNodes don't transition or join the  * cluster back by expiry time, blocks are re-replicated just as in  * decommissioning case as to avoid read or write performance degradation.  *<p/>  * This class depends on the FSNamesystem lock for synchronization.  */
 end_comment
 
 begin_class
@@ -385,10 +385,10 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|DecommissionManager
+DECL|class|DatanodeAdminManager
 specifier|public
 class|class
-name|DecommissionManager
+name|DatanodeAdminManager
 block|{
 DECL|field|LOG
 specifier|private
@@ -401,7 +401,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|DecommissionManager
+name|DatanodeAdminManager
 operator|.
 name|class
 argument_list|)
@@ -430,7 +430,7 @@ specifier|final
 name|ScheduledExecutorService
 name|executor
 decl_stmt|;
-comment|/**    * Map containing the DECOMMISSION_INPROGRESS or ENTERING_MAINTENANCE    * datanodes that are being tracked so they can be be marked as    * DECOMMISSIONED or IN_MAINTENANCE. Even after the node is marked as    * IN_MAINTENANCE, the node remains in the map until    * maintenance expires checked during a monitor tick.    *<p/>    * This holds a set of references to the under-replicated blocks on the DN at    * the time the DN is added to the map, i.e. the blocks that are preventing    * the node from being marked as decommissioned. During a monitor tick, this    * list is pruned as blocks becomes replicated.    *<p/>    * Note also that the reference to the list of under-replicated blocks     * will be null on initial add    *<p/>    * However, this map can become out-of-date since it is not updated by block    * reports or other events. Before being finally marking as decommissioned,    * another check is done with the actual block map.    */
+comment|/**    * Map containing the DECOMMISSION_INPROGRESS or ENTERING_MAINTENANCE    * datanodes that are being tracked so they can be be marked as    * DECOMMISSIONED or IN_MAINTENANCE. Even after the node is marked as    * IN_MAINTENANCE, the node remains in the map until    * maintenance expires checked during a monitor tick.    *<p/>    * This holds a set of references to the under-replicated blocks on the DN at    * the time the DN is added to the map, i.e. the blocks that are preventing    * the node from being marked as decommissioned. During a monitor tick, this    * list is pruned as blocks becomes replicated.    *<p/>    * Note also that the reference to the list of under-replicated blocks    * will be null on initial add    *<p/>    * However, this map can become out-of-date since it is not updated by block    * reports or other events. Before being finally marking as decommissioned,    * another check is done with the actual block map.    */
 specifier|private
 specifier|final
 name|TreeMap
@@ -462,8 +462,8 @@ name|monitor
 init|=
 literal|null
 decl_stmt|;
-DECL|method|DecommissionManager (final Namesystem namesystem, final BlockManager blockManager, final HeartbeatManager hbManager)
-name|DecommissionManager
+DECL|method|DatanodeAdminManager (final Namesystem namesystem, final BlockManager blockManager, final HeartbeatManager hbManager)
+name|DatanodeAdminManager
 parameter_list|(
 specifier|final
 name|Namesystem
@@ -510,7 +510,7 @@ argument_list|()
 operator|.
 name|setNameFormat
 argument_list|(
-literal|"DecommissionMonitor-%d"
+literal|"DatanodeAdminMonitor-%d"
 argument_list|)
 operator|.
 name|setDaemon
@@ -537,7 +537,7 @@ argument_list|<>
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Start the decommission monitor thread.    * @param conf    */
+comment|/**    * Start the DataNode admin monitor thread.    * @param conf    */
 DECL|method|activate (Configuration conf)
 name|void
 name|activate
@@ -720,7 +720,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Activating DecommissionManager with interval {} seconds, "
+literal|"Activating DatanodeAdminManager with interval {} seconds, "
 operator|+
 literal|"{} max blocks per interval, "
 operator|+
@@ -734,7 +734,7 @@ name|maxConcurrentTrackedNodes
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Stop the decommission monitor thread, waiting briefly for it to terminate.    */
+comment|/**    * Stop the admin monitor thread, waiting briefly for it to terminate.    */
 DECL|method|close ()
 name|void
 name|close
@@ -766,7 +766,7 @@ name|e
 parameter_list|)
 block|{}
 block|}
-comment|/**    * Start decommissioning the specified datanode.     * @param node    */
+comment|/**    * Start decommissioning the specified datanode.    * @param node    */
 annotation|@
 name|VisibleForTesting
 DECL|method|startDecommission (DatanodeDescriptor node)
@@ -876,7 +876,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Stop decommissioning the specified datanode.     * @param node    */
+comment|/**    * Stop decommissioning the specified datanode.    * @param node    */
 annotation|@
 name|VisibleForTesting
 DECL|method|stopDecommission (DatanodeDescriptor node)
@@ -927,7 +927,7 @@ name|node
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Remove from tracking in DecommissionManager
+comment|// Remove from tracking in DatanodeAdminManager
 name|pendingNodes
 operator|.
 name|remove
@@ -1157,7 +1157,7 @@ name|node
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Remove from tracking in DecommissionManager
+comment|// Remove from tracking in DatanodeAdminManager
 name|pendingNodes
 operator|.
 name|remove
@@ -1239,7 +1239,7 @@ name|dn
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Checks whether a block is sufficiently replicated/stored for    * decommissioning. For replicated blocks or striped blocks, full-strength    * replication or storage is not always necessary, hence "sufficient".    * @return true if sufficient, else false.    */
+comment|/**    * Checks whether a block is sufficiently replicated/stored for    * DECOMMISSION_INPROGRESS or ENTERING_MAINTENANCE datanodes. For replicated    * blocks or striped blocks, full-strength replication or storage is not    * always necessary, hence "sufficient".    * @return true if sufficient, else false.    */
 DECL|method|isSufficient (BlockInfo block, BlockCollection bc, NumberReplicas numberReplicas, boolean isDecommission)
 specifier|private
 name|boolean
@@ -1664,7 +1664,7 @@ operator|.
 name|numNodesChecked
 return|;
 block|}
-comment|/**    * Checks to see if DNs have finished decommissioning.    *<p/>    * Since this is done while holding the namesystem lock,     * the amount of work per monitor tick is limited.    */
+comment|/**    * Checks to see if datanodes have finished DECOMMISSION_INPROGRESS or    * ENTERING_MAINTENANCE state.    *<p/>    * Since this is done while holding the namesystem lock,    * the amount of work per monitor tick is limited.    */
 DECL|class|Monitor
 specifier|private
 class|class
@@ -1702,7 +1702,7 @@ name|numBlocksCheckedPerLock
 init|=
 literal|0
 decl_stmt|;
-comment|/**      * The number of nodes that have been checked on this tick. Used for       * statistics.      */
+comment|/**      * The number of nodes that have been checked on this tick. Used for      * statistics.      */
 DECL|field|numNodesChecked
 specifier|private
 name|int
@@ -1710,7 +1710,7 @@ name|numNodesChecked
 init|=
 literal|0
 decl_stmt|;
-comment|/**      * The last datanode in outOfServiceNodeBlocks that we've processed      */
+comment|/**      * The last datanode in outOfServiceNodeBlocks that we've processed.      */
 DECL|field|iterkey
 specifier|private
 name|DatanodeDescriptor
@@ -1803,9 +1803,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Namesystem is not running, skipping decommissioning checks"
+literal|"Namesystem is not running, skipping "
 operator|+
-literal|"."
+literal|"decommissioning/maintenance checks."
 argument_list|)
 expr_stmt|;
 return|return;
@@ -1868,7 +1868,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**      * Pop datanodes off the pending list and into decomNodeBlocks,       * subject to the maxConcurrentTrackedNodes limit.      */
+comment|/**      * Pop datanodes off the pending list and into decomNodeBlocks,      * subject to the maxConcurrentTrackedNodes limit.      */
 DECL|method|processPendingNodes ()
 specifier|private
 name|void
@@ -2106,7 +2106,8 @@ block|}
 else|else
 block|{
 comment|// This is a known datanode, check if its # of insufficiently
-comment|// replicated blocks has dropped to zero and if it can be decommed
+comment|// replicated blocks has dropped to zero and if it can move
+comment|// to the next state.
 name|LOG
 operator|.
 name|debug
@@ -2150,7 +2151,7 @@ comment|// full block map.
 comment|//
 comment|// We've replicated all the known insufficiently replicated
 comment|// blocks. Re-check with the full block map before finally
-comment|// marking the datanode as decommissioned
+comment|// marking the datanode as DECOMMISSIONED or IN_MAINTENANCE.
 name|LOG
 operator|.
 name|debug
@@ -2180,7 +2181,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// If the full scan is clean AND the node liveness is okay,
-comment|// we can finally mark as decommissioned.
+comment|// we can finally mark as DECOMMISSIONED or IN_MAINTENANCE.
 specifier|final
 name|boolean
 name|isHealthy
@@ -2331,7 +2332,7 @@ operator|=
 name|dn
 expr_stmt|;
 block|}
-comment|// Remove the datanodes that are decommissioned or in service after
+comment|// Remove the datanodes that are DECOMMISSIONED or in service after
 comment|// maintenance expiration.
 for|for
 control|(
@@ -2399,7 +2400,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Returns a list of blocks on a datanode that are insufficiently replicated      * or require recovery, i.e. requiring recovery and should prevent      * decommission.      *<p/>      * As part of this, it also schedules replication/recovery work.      *      * @return List of blocks requiring recovery      */
+comment|/**      * Returns a list of blocks on a datanode that are insufficiently      * replicated or require recovery, i.e. requiring recovery and      * should prevent decommission or maintenance.      *<p/>      * As part of this, it also schedules replication/recovery work.      *      * @return List of blocks requiring recovery      */
 DECL|method|handleInsufficientlyStored ( final DatanodeDescriptor datanode)
 specifier|private
 name|AbstractList
@@ -2442,7 +2443,7 @@ return|return
 name|insufficient
 return|;
 block|}
-comment|/**      * Used while checking if decommission-in-progress datanodes can be marked      * as decommissioned. Combines shared logic of       * pruneReliableBlocks and handleInsufficientlyStored.      *      * @param datanode                    Datanode      * @param it                          Iterator over the blocks on the      *                                    datanode      * @param insufficientList            Return parameter. If it's not null,      *                                    will contain the insufficiently      *                                    replicated-blocks from the list.      * @param pruneReliableBlocks         whether to remove blocks reliable      *                                    enough from the iterator      */
+comment|/**      * Used while checking if DECOMMISSION_INPROGRESS datanodes can be      * marked as DECOMMISSIONED or ENTERING_MAINTENANCE datanodes can be      * marked as IN_MAINTENANCE. Combines shared logic of pruneReliableBlocks      * and handleInsufficientlyStored.      *      * @param datanode                    Datanode      * @param it                          Iterator over the blocks on the      *                                    datanode      * @param insufficientList            Return parameter. If it's not null,      *                                    will contain the insufficiently      *                                    replicated-blocks from the list.      * @param pruneReliableBlocks         whether to remove blocks reliable      *                                    enough from the iterator      */
 DECL|method|processBlocksInternal ( final DatanodeDescriptor datanode, final Iterator<BlockInfo> it, final List<BlockInfo> insufficientList, boolean pruneReliableBlocks)
 specifier|private
 name|void
@@ -2530,7 +2531,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Yielded lock during decommission check"
+literal|"Yielded lock during decommission/maintenance check"
 argument_list|)
 expr_stmt|;
 name|Thread
@@ -2660,8 +2661,8 @@ operator|.
 name|liveReplicas
 argument_list|()
 decl_stmt|;
-comment|// Schedule low redundancy blocks for reconstruction if not already
-comment|// pending
+comment|// Schedule low redundancy blocks for reconstruction
+comment|// if not already pending.
 name|boolean
 name|isDecommission
 init|=
@@ -2759,7 +2760,8 @@ expr_stmt|;
 block|}
 block|}
 comment|// Even if the block is without sufficient redundancy,
-comment|// it doesn't block decommission if has sufficient redundancy
+comment|// it might not block decommission/maintenance if it
+comment|// has sufficient redundancy.
 if|if
 condition|(
 name|isSufficient
