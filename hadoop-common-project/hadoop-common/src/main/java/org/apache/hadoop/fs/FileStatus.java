@@ -170,7 +170,7 @@ name|Writable
 implements|,
 name|Comparable
 argument_list|<
-name|FileStatus
+name|Object
 argument_list|>
 implements|,
 name|Serializable
@@ -1296,8 +1296,6 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Compare this FileStatus to another FileStatus    * @param   o the FileStatus to be compared.    * @return  a negative integer, zero, or a positive integer as this object    *   is less than, equal to, or greater than the specified object.    */
-annotation|@
-name|Override
 DECL|method|compareTo (FileStatus o)
 specifier|public
 name|int
@@ -1319,6 +1317,33 @@ name|o
 operator|.
 name|getPath
 argument_list|()
+argument_list|)
+return|;
+block|}
+comment|/**    * Compare this FileStatus to another FileStatus.    * This method was added back by HADOOP-14683 to keep binary compatibility.    *    * @param   o the FileStatus to be compared.    * @return  a negative integer, zero, or a positive integer as this object    *   is less than, equal to, or greater than the specified object.    * @throws ClassCastException if the specified object is not FileStatus    */
+annotation|@
+name|Override
+DECL|method|compareTo (Object o)
+specifier|public
+name|int
+name|compareTo
+parameter_list|(
+name|Object
+name|o
+parameter_list|)
+block|{
+name|FileStatus
+name|other
+init|=
+operator|(
+name|FileStatus
+operator|)
+name|o
+decl_stmt|;
+return|return
+name|compareTo
+argument_list|(
+name|other
 argument_list|)
 return|;
 block|}
