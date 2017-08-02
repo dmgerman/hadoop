@@ -5154,21 +5154,16 @@ name|maxAssign
 return|;
 block|}
 block|}
-comment|/**    * Assign preempted containers to the applications that have reserved    * resources for preempted containers.    * @param node Node to check    * @return assignment has occurred    */
+comment|/**    * Assign preempted containers to the applications that have reserved    * resources for preempted containers.    * @param node Node to check    */
 DECL|method|assignPreemptedContainers (FSSchedulerNode node)
 specifier|static
-name|boolean
+name|void
 name|assignPreemptedContainers
 parameter_list|(
 name|FSSchedulerNode
 name|node
 parameter_list|)
 block|{
-name|boolean
-name|assignedAny
-init|=
-literal|false
-decl_stmt|;
 for|for
 control|(
 name|Entry
@@ -5244,15 +5239,20 @@ name|isNone
 argument_list|(
 name|assigned
 argument_list|)
+operator|||
+name|assigned
+operator|.
+name|equals
+argument_list|(
+name|FairScheduler
+operator|.
+name|CONTAINER_RESERVED
+argument_list|)
 condition|)
 block|{
 comment|// Fail to assign, let's not try further
 break|break;
 block|}
-name|assignedAny
-operator|=
-literal|true
-expr_stmt|;
 name|Resources
 operator|.
 name|subtractFromNonNegative
@@ -5264,9 +5264,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-return|return
-name|assignedAny
-return|;
 block|}
 annotation|@
 name|VisibleForTesting

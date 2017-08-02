@@ -2816,6 +2816,16 @@ name|none
 argument_list|()
 expr_stmt|;
 block|}
+comment|/**    * Get last computed minshare starvation.    *    * @return last computed minshare starvation    */
+DECL|method|getMinshareStarvation ()
+name|Resource
+name|getMinshareStarvation
+parameter_list|()
+block|{
+return|return
+name|minshareStarvation
+return|;
+block|}
 DECL|method|trackContainerForPreemption (RMContainer container)
 name|void
 name|trackContainerForPreemption
@@ -4002,11 +4012,21 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// The desired container won't fit here, so reserve
+comment|// Reserve only, if app does not wait for preempted resources on the node,
+comment|// otherwise we may end up with duplicate reservations
 if|if
 condition|(
 name|isReservable
 argument_list|(
 name|capability
+argument_list|)
+operator|&&
+operator|!
+name|node
+operator|.
+name|isPreemptedForApp
+argument_list|(
+name|this
 argument_list|)
 operator|&&
 name|reserve
@@ -5285,7 +5305,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Is application starved for fairshare or minshare    */
+comment|/**    * Is application starved for fairshare or minshare.    */
 DECL|method|isStarved ()
 name|boolean
 name|isStarved
