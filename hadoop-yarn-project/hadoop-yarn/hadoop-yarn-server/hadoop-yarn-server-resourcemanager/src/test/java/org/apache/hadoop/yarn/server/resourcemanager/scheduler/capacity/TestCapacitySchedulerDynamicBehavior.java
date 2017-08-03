@@ -1347,14 +1347,11 @@ argument_list|()
 decl_stmt|;
 name|Assert
 operator|.
-name|assertTrue
-argument_list|(
-name|queue
-operator|.
-name|equals
+name|assertEquals
 argument_list|(
 literal|"b1"
-argument_list|)
+argument_list|,
+name|queue
 argument_list|)
 expr_stmt|;
 name|List

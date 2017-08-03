@@ -1404,17 +1404,14 @@ argument_list|)
 expr_stmt|;
 name|Assert
 operator|.
-name|assertTrue
+name|assertEquals
 argument_list|(
+literal|"[ ]"
+argument_list|,
 name|p
 operator|.
 name|toString
 argument_list|()
-operator|.
-name|equals
-argument_list|(
-literal|"[ ]"
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

@@ -324,7 +324,7 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|assertFalse
+name|assertEquals
 import|;
 end_import
 
@@ -336,7 +336,7 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|assertTrue
+name|assertFalse
 import|;
 end_import
 
@@ -484,9 +484,11 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
 literal|"Should have received DENY x-frame options header"
+argument_list|,
+literal|"DENY"
 argument_list|,
 name|response
 operator|.
@@ -503,11 +505,6 @@ operator|.
 name|get
 argument_list|(
 literal|0
-argument_list|)
-operator|.
-name|equals
-argument_list|(
-literal|"DENY"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -783,9 +780,11 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
 literal|"Should have received SAMEORIGIN x-frame options header"
+argument_list|,
+literal|"SAMEORIGIN"
 argument_list|,
 name|response
 operator|.
@@ -802,11 +801,6 @@ operator|.
 name|get
 argument_list|(
 literal|0
-argument_list|)
-operator|.
-name|equals
-argument_list|(
-literal|"SAMEORIGIN"
 argument_list|)
 argument_list|)
 expr_stmt|;

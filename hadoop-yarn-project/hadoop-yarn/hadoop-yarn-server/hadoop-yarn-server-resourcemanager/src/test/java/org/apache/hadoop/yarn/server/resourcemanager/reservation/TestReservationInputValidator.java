@@ -925,14 +925,13 @@ argument_list|()
 decl_stmt|;
 name|Assert
 operator|.
-name|assertTrue
+name|assertEquals
 argument_list|(
+literal|"The queue is not specified. Please try again with a "
+operator|+
+literal|"valid reservable queue."
+argument_list|,
 name|message
-operator|.
-name|equals
-argument_list|(
-literal|"The queue is not specified. Please try again with a valid reservable queue."
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -1128,14 +1127,13 @@ argument_list|()
 decl_stmt|;
 name|Assert
 operator|.
-name|assertTrue
+name|assertEquals
 argument_list|(
+literal|"Missing reservation definition. Please try again by "
+operator|+
+literal|"specifying a reservation definition."
+argument_list|,
 name|message
-operator|.
-name|equals
-argument_list|(
-literal|"Missing reservation definition. Please try again by specifying a reservation definition."
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|LOG

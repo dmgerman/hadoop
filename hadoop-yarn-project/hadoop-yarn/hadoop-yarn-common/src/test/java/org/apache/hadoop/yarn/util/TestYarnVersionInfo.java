@@ -32,22 +32,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|YarnVersionInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|junit
 operator|.
 name|Test
@@ -63,6 +47,18 @@ operator|.
 name|Assert
 operator|.
 name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNotEquals
 import|;
 end_import
 
@@ -101,52 +97,40 @@ name|IOException
 block|{
 comment|// can't easily know what the correct values are going to be so just
 comment|// make sure they aren't Unknown
-name|assertTrue
+name|assertNotEquals
 argument_list|(
 literal|"getVersion returned Unknown"
 argument_list|,
-operator|!
+literal|"Unknown"
+argument_list|,
 name|YarnVersionInfo
 operator|.
 name|getVersion
 argument_list|()
-operator|.
-name|equals
-argument_list|(
-literal|"Unknown"
-argument_list|)
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertNotEquals
 argument_list|(
 literal|"getUser returned Unknown"
 argument_list|,
-operator|!
+literal|"Unknown"
+argument_list|,
 name|YarnVersionInfo
 operator|.
 name|getUser
 argument_list|()
-operator|.
-name|equals
-argument_list|(
-literal|"Unknown"
-argument_list|)
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertNotEquals
 argument_list|(
 literal|"getSrcChecksum returned Unknown"
 argument_list|,
-operator|!
+literal|"Unknown"
+argument_list|,
 name|YarnVersionInfo
 operator|.
 name|getSrcChecksum
 argument_list|()
-operator|.
-name|equals
-argument_list|(
-literal|"Unknown"
-argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// these could be Unknown if the VersionInfo generated from code not in svn or git

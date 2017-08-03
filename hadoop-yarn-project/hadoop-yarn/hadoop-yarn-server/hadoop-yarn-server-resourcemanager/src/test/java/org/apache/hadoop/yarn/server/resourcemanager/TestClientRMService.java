@@ -11664,8 +11664,10 @@ argument_list|()
 decl_stmt|;
 name|Assert
 operator|.
-name|assertTrue
+name|assertEquals
 argument_list|(
+literal|"R_ALL"
+argument_list|,
 name|reservationRequests
 operator|.
 name|getInterpreter
@@ -11673,11 +11675,6 @@ argument_list|()
 operator|.
 name|toString
 argument_list|()
-operator|.
-name|equals
-argument_list|(
-literal|"R_ALL"
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|Assert

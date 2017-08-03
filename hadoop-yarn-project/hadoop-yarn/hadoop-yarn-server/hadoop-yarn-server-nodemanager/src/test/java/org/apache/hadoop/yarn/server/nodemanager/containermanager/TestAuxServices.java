@@ -1581,14 +1581,11 @@ expr_stmt|;
 block|}
 name|Assert
 operator|.
-name|assertTrue
-argument_list|(
-name|auxName
-operator|.
-name|equals
+name|assertEquals
 argument_list|(
 literal|"ServiceC"
-argument_list|)
+argument_list|,
+name|auxName
 argument_list|)
 expr_stmt|;
 name|aux
