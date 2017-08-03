@@ -1111,17 +1111,16 @@ parameter_list|)
 block|{
 if|if
 condition|(
-operator|(
 name|currentProxy
 operator|!=
 literal|null
-operator|)
-operator|&&
-operator|(
+condition|)
+block|{
+if|if
+condition|(
 name|currentProxy
 operator|instanceof
 name|Closeable
-operator|)
 condition|)
 block|{
 try|try
@@ -1163,6 +1162,7 @@ argument_list|(
 name|currentProxy
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * Close all the proxy objects which have been opened over the lifetime of    * this proxy provider.    */
