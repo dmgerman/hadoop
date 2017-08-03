@@ -23053,6 +23053,15 @@ block|}
 annotation|@
 name|Override
 comment|// FSNamesystemMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"NumLiveDataNodes"
+block|,
+literal|"Number of datanodes which are currently live"
+block|}
+argument_list|)
 DECL|method|getNumLiveDataNodes ()
 specifier|public
 name|int
@@ -23073,6 +23082,15 @@ block|}
 annotation|@
 name|Override
 comment|// FSNamesystemMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"NumDeadDataNodes"
+block|,
+literal|"Number of datanodes which are currently dead"
+block|}
+argument_list|)
 DECL|method|getNumDeadDataNodes ()
 specifier|public
 name|int
@@ -23093,6 +23111,15 @@ block|}
 annotation|@
 name|Override
 comment|// FSNamesystemMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"NumDecomLiveDataNodes"
+block|,
+literal|"Number of datanodes which have been decommissioned and are now live"
+block|}
+argument_list|)
 DECL|method|getNumDecomLiveDataNodes ()
 specifier|public
 name|int
@@ -23160,6 +23187,15 @@ block|}
 annotation|@
 name|Override
 comment|// FSNamesystemMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"NumDecomDeadDataNodes"
+block|,
+literal|"Number of datanodes which have been decommissioned and are now dead"
+block|}
+argument_list|)
 DECL|method|getNumDecomDeadDataNodes ()
 specifier|public
 name|int
@@ -23227,6 +23263,15 @@ block|}
 annotation|@
 name|Override
 comment|// FSNamesystemMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"VolumeFailuresTotal"
+block|,
+literal|"Total number of volume failures across all Datanodes"
+block|}
+argument_list|)
 DECL|method|getVolumeFailuresTotal ()
 specifier|public
 name|int
@@ -23289,6 +23334,15 @@ block|}
 annotation|@
 name|Override
 comment|// FSNamesystemMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"EstimatedCapacityLostTotal"
+block|,
+literal|"An estimate of the total capacity lost due to volume failures"
+block|}
+argument_list|)
 DECL|method|getEstimatedCapacityLostTotal ()
 specifier|public
 name|long
@@ -23367,6 +23421,15 @@ block|}
 annotation|@
 name|Override
 comment|// FSNamesystemMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"NumDecommissioningDataNodes"
+block|,
+literal|"Number of datanodes in decommissioning state"
+block|}
+argument_list|)
 DECL|method|getNumDecommissioningDataNodes ()
 specifier|public
 name|int
@@ -23420,6 +23483,15 @@ comment|/**    * Storages are marked as "content stale" after NN restart or fail
 annotation|@
 name|Override
 comment|// FSNamesystemMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"NumStaleStorages"
+block|,
+literal|"Number of storages marked as content stale"
+block|}
+argument_list|)
 DECL|method|getNumStaleStorages ()
 specifier|public
 name|int
@@ -35511,6 +35583,15 @@ block|}
 annotation|@
 name|Override
 comment|// FSNamesystemMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"NumInMaintenanceLiveDataNodes"
+block|,
+literal|"Number of live Datanodes which are in maintenance state"
+block|}
+argument_list|)
 DECL|method|getNumInMaintenanceLiveDataNodes ()
 specifier|public
 name|int
@@ -35578,6 +35659,15 @@ block|}
 annotation|@
 name|Override
 comment|// FSNamesystemMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"NumInMaintenanceDeadDataNodes"
+block|,
+literal|"Number of dead Datanodes which are in maintenance state"
+block|}
+argument_list|)
 DECL|method|getNumInMaintenanceDeadDataNodes ()
 specifier|public
 name|int
@@ -35645,6 +35735,15 @@ block|}
 annotation|@
 name|Override
 comment|// FSNamesystemMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"NumEnteringMaintenanceDataNodes"
+block|,
+literal|"Number of Datanodes that are entering the maintenance state"
+block|}
+argument_list|)
 DECL|method|getNumEnteringMaintenanceDataNodes ()
 specifier|public
 name|int
