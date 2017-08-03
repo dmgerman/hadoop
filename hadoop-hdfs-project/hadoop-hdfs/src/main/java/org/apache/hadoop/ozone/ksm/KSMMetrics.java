@@ -149,6 +149,20 @@ specifier|public
 class|class
 name|KSMMetrics
 block|{
+DECL|field|SOURCE_NAME
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|SOURCE_NAME
+init|=
+name|KSMMetrics
+operator|.
+name|class
+operator|.
+name|getSimpleName
+argument_list|()
+decl_stmt|;
 comment|// KSM request type op metrics
 DECL|field|numVolumeOps
 specifier|private
@@ -408,7 +422,7 @@ name|ms
 operator|.
 name|register
 argument_list|(
-literal|"KSMMetrics"
+name|SOURCE_NAME
 argument_list|,
 literal|"Key Space Manager Metrics"
 argument_list|,
@@ -1302,6 +1316,28 @@ operator|.
 name|value
 argument_list|()
 return|;
+block|}
+DECL|method|unRegister ()
+specifier|public
+name|void
+name|unRegister
+parameter_list|()
+block|{
+name|MetricsSystem
+name|ms
+init|=
+name|DefaultMetricsSystem
+operator|.
+name|instance
+argument_list|()
+decl_stmt|;
+name|ms
+operator|.
+name|unregisterSource
+argument_list|(
+name|SOURCE_NAME
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

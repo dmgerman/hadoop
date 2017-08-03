@@ -1243,6 +1243,11 @@ operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+name|metrics
+operator|.
+name|unRegister
+argument_list|()
+expr_stmt|;
 name|unregisterMXBean
 argument_list|()
 expr_stmt|;
