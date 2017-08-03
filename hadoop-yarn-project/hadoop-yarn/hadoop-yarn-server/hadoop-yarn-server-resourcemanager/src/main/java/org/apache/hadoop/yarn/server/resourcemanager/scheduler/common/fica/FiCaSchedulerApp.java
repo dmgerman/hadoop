@@ -2695,6 +2695,62 @@ operator|.
 name|RESERVED
 condition|)
 block|{
+comment|// Check if node currently reserved by other application, there may
+comment|// be some outdated proposals in async-scheduling environment
+if|if
+condition|(
+name|schedulerContainer
+operator|.
+name|getRmContainer
+argument_list|()
+operator|!=
+name|schedulerContainer
+operator|.
+name|getSchedulerNode
+argument_list|()
+operator|.
+name|getReservedContainer
+argument_list|()
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Try to re-reserve a container, but node "
+operator|+
+name|schedulerContainer
+operator|.
+name|getSchedulerNode
+argument_list|()
+operator|+
+literal|" is already reserved by another container"
+operator|+
+name|schedulerContainer
+operator|.
+name|getSchedulerNode
+argument_list|()
+operator|.
+name|getReservedContainer
+argument_list|()
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+literal|false
+return|;
+block|}
 comment|// Set reReservation == true
 name|reReservation
 operator|=
