@@ -3150,8 +3150,10 @@ argument_list|)
 expr_stmt|;
 name|Assert
 operator|.
-name|assertTrue
+name|assertEquals
 argument_list|(
+literal|"h3"
+argument_list|,
 name|event
 operator|.
 name|getContainer
@@ -3162,11 +3164,6 @@ argument_list|()
 operator|.
 name|getHost
 argument_list|()
-operator|.
-name|equals
-argument_list|(
-literal|"h3"
-argument_list|)
 argument_list|)
 expr_stmt|;
 break|break;

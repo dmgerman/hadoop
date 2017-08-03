@@ -928,19 +928,16 @@ argument_list|)
 expr_stmt|;
 name|Assert
 operator|.
-name|assertTrue
+name|assertEquals
 argument_list|(
 literal|"Proxy should have been set but wasn't "
+argument_list|,
+literal|"HTTP @ somehost:1000"
 argument_list|,
 name|proxyToUse
 operator|.
 name|toString
 argument_list|()
-operator|.
-name|equals
-argument_list|(
-literal|"HTTP @ somehost:1000"
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|conf
@@ -961,19 +958,16 @@ argument_list|)
 expr_stmt|;
 name|Assert
 operator|.
-name|assertTrue
+name|assertEquals
 argument_list|(
 literal|"Proxy should have been socks but wasn't "
+argument_list|,
+literal|"SOCKS @ somehost:1000"
 argument_list|,
 name|proxyToUse
 operator|.
 name|toString
 argument_list|()
-operator|.
-name|equals
-argument_list|(
-literal|"SOCKS @ somehost:1000"
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|conf
@@ -994,19 +988,16 @@ argument_list|)
 expr_stmt|;
 name|Assert
 operator|.
-name|assertTrue
+name|assertEquals
 argument_list|(
 literal|"Proxy should have been socks but wasn't "
+argument_list|,
+literal|"SOCKS @ somehost:1000"
 argument_list|,
 name|proxyToUse
 operator|.
 name|toString
 argument_list|()
-operator|.
-name|equals
-argument_list|(
-literal|"SOCKS @ somehost:1000"
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|conf
@@ -1027,19 +1018,16 @@ argument_list|)
 expr_stmt|;
 name|Assert
 operator|.
-name|assertTrue
+name|assertEquals
 argument_list|(
 literal|"Proxy should have been http but wasn't "
+argument_list|,
+literal|"HTTP @ somehost:1000"
 argument_list|,
 name|proxyToUse
 operator|.
 name|toString
 argument_list|()
-operator|.
-name|equals
-argument_list|(
-literal|"HTTP @ somehost:1000"
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
