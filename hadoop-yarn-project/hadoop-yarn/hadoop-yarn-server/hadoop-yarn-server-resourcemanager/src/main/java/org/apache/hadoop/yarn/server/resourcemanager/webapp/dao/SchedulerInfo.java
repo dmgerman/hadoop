@@ -30,6 +30,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|EnumSet
 import|;
 end_import
@@ -395,6 +405,10 @@ name|getSchedulerResourceTypes
 parameter_list|()
 block|{
 return|return
+name|Arrays
+operator|.
+name|toString
+argument_list|(
 name|minAllocResource
 operator|.
 name|getResource
@@ -402,12 +416,7 @@ argument_list|()
 operator|.
 name|getResources
 argument_list|()
-operator|.
-name|keySet
-argument_list|()
-operator|.
-name|toString
-argument_list|()
+argument_list|)
 return|;
 block|}
 DECL|method|getMaxClusterLevelAppPriority ()

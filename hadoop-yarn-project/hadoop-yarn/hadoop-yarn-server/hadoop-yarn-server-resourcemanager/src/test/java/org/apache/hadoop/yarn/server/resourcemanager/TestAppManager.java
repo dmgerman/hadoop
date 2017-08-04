@@ -1995,6 +1995,17 @@ operator|new
 name|Configuration
 argument_list|()
 decl_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NODE_LABELS_ENABLED
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 operator|(
 operator|(
 name|RMContextImpl
