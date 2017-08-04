@@ -338,43 +338,43 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
+name|ContainerUpdateRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|ContainerUpdateResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
 name|GetContainerStatusesRequest
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|protocolrecords
-operator|.
-name|IncreaseContainersResourceRequest
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|protocolrecords
-operator|.
-name|IncreaseContainersResourceResponse
 import|;
 end_import
 
@@ -1882,7 +1882,7 @@ operator|)
 name|nm
 operator|)
 operator|.
-name|increaseContainersResource
+name|updateContainerResource
 argument_list|()
 expr_stmt|;
 comment|// Simulate RM restart by sending a RESYNC event
@@ -3221,10 +3221,10 @@ name|TestNodeManager4
 extends|extends
 name|NodeManager
 block|{
-DECL|field|increaseContainerResourceThread
+DECL|field|containerUpdateResourceThread
 specifier|private
 name|Thread
-name|increaseContainerResourceThread
+name|containerUpdateResourceThread
 init|=
 literal|null
 decl_stmt|;
@@ -3778,10 +3778,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Increase container resource in a thread
-DECL|method|increaseContainersResource ()
+DECL|method|updateContainerResource ()
 specifier|public
 name|void
-name|increaseContainersResource
+name|updateContainerResource
 parameter_list|()
 throws|throws
 name|InterruptedException
@@ -3793,13 +3793,13 @@ argument_list|(
 literal|"Increase a container resource in a separate thread"
 argument_list|)
 expr_stmt|;
-name|increaseContainerResourceThread
+name|containerUpdateResourceThread
 operator|=
 operator|new
-name|IncreaseContainersResourceThread
+name|ContainerUpdateResourceThread
 argument_list|()
 expr_stmt|;
-name|increaseContainerResourceThread
+name|containerUpdateResourceThread
 operator|.
 name|start
 argument_list|()
@@ -3934,7 +3934,7 @@ argument_list|()
 expr_stmt|;
 comment|// Call the actual rebootNodeStatusUpdaterAndRegisterWithRM().
 comment|// This function should be synchronized with
-comment|// increaseContainersResource().
+comment|// updateContainer().
 name|updateBarrier
 operator|.
 name|await
@@ -4024,9 +4024,9 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|class|IncreaseContainersResourceThread
+DECL|class|ContainerUpdateResourceThread
 class|class
-name|IncreaseContainersResourceThread
+name|ContainerUpdateResourceThread
 extends|extends
 name|Thread
 block|{
@@ -4084,25 +4084,25 @@ name|targetResource
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|IncreaseContainersResourceRequest
-name|increaseRequest
+name|ContainerUpdateRequest
+name|updateRequest
 init|=
-name|IncreaseContainersResourceRequest
+name|ContainerUpdateRequest
 operator|.
 name|newInstance
 argument_list|(
 name|increaseTokens
 argument_list|)
 decl_stmt|;
-name|IncreaseContainersResourceResponse
-name|increaseResponse
+name|ContainerUpdateResponse
+name|updateResponse
 init|=
 name|getContainerManager
 argument_list|()
 operator|.
-name|increaseContainersResource
+name|updateContainer
 argument_list|(
-name|increaseRequest
+name|updateRequest
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -4111,9 +4111,9 @@ name|assertEquals
 argument_list|(
 literal|1
 argument_list|,
-name|increaseResponse
+name|updateResponse
 operator|.
-name|getSuccessfullyIncreasedContainers
+name|getSuccessfullyUpdatedContainers
 argument_list|()
 operator|.
 name|size
@@ -4124,7 +4124,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|increaseResponse
+name|updateResponse
 operator|.
 name|getFailedRequests
 argument_list|()
