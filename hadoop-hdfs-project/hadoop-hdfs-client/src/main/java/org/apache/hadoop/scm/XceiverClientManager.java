@@ -22,6 +22,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|Closeable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -241,6 +251,8 @@ DECL|class|XceiverClientManager
 specifier|public
 class|class
 name|XceiverClientManager
+implements|implements
+name|Closeable
 block|{
 comment|//TODO : change this to SCM configuration class
 DECL|field|conf
@@ -399,6 +411,11 @@ decl_stmt|;
 name|info
 operator|.
 name|setEvicted
+argument_list|()
+expr_stmt|;
+name|info
+operator|.
+name|close
 argument_list|()
 expr_stmt|;
 block|}
