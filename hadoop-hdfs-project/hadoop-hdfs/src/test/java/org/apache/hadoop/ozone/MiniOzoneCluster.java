@@ -1609,6 +1609,21 @@ name|randomContainerPort
 init|=
 literal|true
 decl_stmt|;
+comment|// Use relative smaller number of handlers for testing
+DECL|field|numOfKsmHandlers
+specifier|private
+name|int
+name|numOfKsmHandlers
+init|=
+literal|20
+decl_stmt|;
+DECL|field|numOfScmHandlers
+specifier|private
+name|int
+name|numOfScmHandlers
+init|=
+literal|20
+decl_stmt|;
 comment|/**      * Creates a new Builder.      *      * @param conf configuration      */
 DECL|method|Builder (OzoneConfiguration conf)
 specifier|public
@@ -1861,6 +1876,40 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|setNumOfKSMHandlers (int numOfHandlers)
+specifier|public
+name|Builder
+name|setNumOfKSMHandlers
+parameter_list|(
+name|int
+name|numOfHandlers
+parameter_list|)
+block|{
+name|numOfKsmHandlers
+operator|=
+name|numOfHandlers
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|setNumOfSCMHandlers (int numOfHandlers)
+specifier|public
+name|Builder
+name|setNumOfSCMHandlers
+parameter_list|(
+name|int
+name|numOfHandlers
+parameter_list|)
+block|{
+name|numOfScmHandlers
+operator|=
+name|numOfHandlers
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|getPath ()
 specifier|public
 name|String
@@ -1970,6 +2019,29 @@ operator|.
 name|OZONE_KSM_HTTP_ADDRESS_KEY
 argument_list|,
 literal|"127.0.0.1:0"
+argument_list|)
+expr_stmt|;
+comment|// Configure KSM and SCM handlers
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|ScmConfigKeys
+operator|.
+name|OZONE_SCM_HANDLER_COUNT_KEY
+argument_list|,
+name|numOfScmHandlers
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|KSMConfigKeys
+operator|.
+name|OZONE_KSM_HANDLER_COUNT_KEY
+argument_list|,
+name|numOfKsmHandlers
 argument_list|)
 expr_stmt|;
 comment|// Use random ports for ozone containers in mini cluster,
