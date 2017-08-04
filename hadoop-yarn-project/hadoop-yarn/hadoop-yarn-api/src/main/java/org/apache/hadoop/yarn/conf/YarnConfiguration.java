@@ -7033,6 +7033,17 @@ name|TIMELINE_SERVICE_PREFIX
 operator|+
 literal|"entity-file.fs-support-append"
 decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|String
+DECL|field|TIMELINE_SERVICE_ENTITYGROUP_FS_STORE_WITH_USER_DIR
+name|TIMELINE_SERVICE_ENTITYGROUP_FS_STORE_WITH_USER_DIR
+init|=
+name|TIMELINE_SERVICE_ENTITYGROUP_FS_STORE_PREFIX
+operator|+
+literal|"with-user-dir"
+decl_stmt|;
 comment|/**    * Settings for timeline service v2.0    */
 DECL|field|TIMELINE_SERVICE_WRITER_CLASS
 specifier|public
