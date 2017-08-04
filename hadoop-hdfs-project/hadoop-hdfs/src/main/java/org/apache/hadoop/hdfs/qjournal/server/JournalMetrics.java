@@ -193,6 +193,16 @@ DECL|field|batchesWrittenWhileLagging
 name|MutableCounterLong
 name|batchesWrittenWhileLagging
 decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Number of edit logs downloaded by JournalNodeSyncer"
+argument_list|)
+DECL|field|numEditLogsSynced
+specifier|private
+name|MutableCounterLong
+name|numEditLogsSynced
+decl_stmt|;
 DECL|field|QUANTILE_INTERVALS
 specifier|private
 specifier|final
@@ -514,6 +524,28 @@ name|us
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+DECL|method|getNumEditLogsSynced ()
+specifier|public
+name|MutableCounterLong
+name|getNumEditLogsSynced
+parameter_list|()
+block|{
+return|return
+name|numEditLogsSynced
+return|;
+block|}
+DECL|method|incrNumEditLogsSynced ()
+specifier|public
+name|void
+name|incrNumEditLogsSynced
+parameter_list|()
+block|{
+name|numEditLogsSynced
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 end_class

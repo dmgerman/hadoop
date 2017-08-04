@@ -749,7 +749,7 @@ name|getMetrics
 argument_list|(
 name|journal
 operator|.
-name|getMetricsForTests
+name|getMetrics
 argument_list|()
 operator|.
 name|getName
@@ -888,7 +888,7 @@ name|getMetrics
 argument_list|(
 name|journal
 operator|.
-name|getMetricsForTests
+name|getMetrics
 argument_list|()
 operator|.
 name|getName
@@ -989,7 +989,7 @@ name|getMetrics
 argument_list|(
 name|journal
 operator|.
-name|getMetricsForTests
+name|getMetrics
 argument_list|()
 operator|.
 name|getName

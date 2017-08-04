@@ -563,6 +563,12 @@ specifier|final
 name|DataTransferThrottler
 name|throttler
 decl_stmt|;
+DECL|field|metrics
+specifier|private
+specifier|final
+name|JournalMetrics
+name|metrics
+decl_stmt|;
 DECL|method|JournalNodeSyncer (JournalNode jouranlNode, Journal journal, String jid, Configuration conf)
 name|JournalNodeSyncer
 parameter_list|(
@@ -659,6 +665,13 @@ name|getThrottler
 argument_list|(
 name|conf
 argument_list|)
+expr_stmt|;
+name|metrics
+operator|=
+name|journal
+operator|.
+name|getMetrics
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|stopSync ()
@@ -2261,6 +2274,14 @@ block|}
 return|return
 literal|false
 return|;
+block|}
+else|else
+block|{
+name|metrics
+operator|.
+name|incrNumEditLogsSynced
+argument_list|()
+expr_stmt|;
 block|}
 return|return
 literal|true

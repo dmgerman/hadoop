@@ -1524,11 +1524,9 @@ name|val
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|getMetricsForTests ()
+DECL|method|getMetrics ()
 name|JournalMetrics
-name|getMetricsForTests
+name|getMetrics
 parameter_list|()
 block|{
 return|return
