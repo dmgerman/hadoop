@@ -183,9 +183,7 @@ name|void
 name|testCreateVolume
 parameter_list|()
 throws|throws
-name|OzoneException
-throws|,
-name|IOException
+name|Exception
 block|{
 name|TestVolume
 operator|.
@@ -335,9 +333,7 @@ name|void
 name|testListAllVolumes
 parameter_list|()
 throws|throws
-name|OzoneException
-throws|,
-name|IOException
+name|Exception
 block|{
 name|TestVolume
 operator|.
@@ -355,9 +351,7 @@ name|void
 name|testListVolumes
 parameter_list|()
 throws|throws
-name|OzoneException
-throws|,
-name|IOException
+name|Exception
 block|{
 name|TestVolume
 operator|.

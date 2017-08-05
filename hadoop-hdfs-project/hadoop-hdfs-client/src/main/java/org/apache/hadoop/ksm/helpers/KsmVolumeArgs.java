@@ -183,6 +183,12 @@ specifier|final
 name|String
 name|volume
 decl_stmt|;
+DECL|field|creationTime
+specifier|private
+specifier|final
+name|long
+name|creationTime
+decl_stmt|;
 DECL|field|quotaInBytes
 specifier|private
 specifier|final
@@ -206,8 +212,8 @@ specifier|final
 name|KsmOzoneAclMap
 name|aclMap
 decl_stmt|;
-comment|/**    * Private constructor, constructed via builder.    * @param adminName  - Administrator's name.    * @param ownerName  - Volume owner's name    * @param volume - volume name    * @param quotaInBytes - Volume Quota in bytes.    * @param keyValueMap - keyValue map.    * @param aclMap - User to access rights map.    */
-DECL|method|KsmVolumeArgs (String adminName, String ownerName, String volume, long quotaInBytes, Map<String, String> keyValueMap, KsmOzoneAclMap aclMap)
+comment|/**    * Private constructor, constructed via builder.    * @param adminName  - Administrator's name.    * @param ownerName  - Volume owner's name    * @param volume - volume name    * @param quotaInBytes - Volume Quota in bytes.    * @param keyValueMap - keyValue map.    * @param aclMap - User to access rights map.    * @param creationTime - Volume creation time.    */
+DECL|method|KsmVolumeArgs (String adminName, String ownerName, String volume, long quotaInBytes, Map<String, String> keyValueMap, KsmOzoneAclMap aclMap, long creationTime)
 specifier|private
 name|KsmVolumeArgs
 parameter_list|(
@@ -233,6 +239,9 @@ name|keyValueMap
 parameter_list|,
 name|KsmOzoneAclMap
 name|aclMap
+parameter_list|,
+name|long
+name|creationTime
 parameter_list|)
 block|{
 name|this
@@ -271,6 +280,12 @@ name|aclMap
 operator|=
 name|aclMap
 expr_stmt|;
+name|this
+operator|.
+name|creationTime
+operator|=
+name|creationTime
+expr_stmt|;
 block|}
 comment|/**    * Returns the Admin Name.    * @return String.    */
 DECL|method|getAdminName ()
@@ -303,6 +318,17 @@ parameter_list|()
 block|{
 return|return
 name|volume
+return|;
+block|}
+comment|/**    * Returns creation time.    * @return long    */
+DECL|method|getCreationTime ()
+specifier|public
+name|long
+name|getCreationTime
+parameter_list|()
+block|{
+return|return
+name|creationTime
 return|;
 block|}
 comment|/**    * Returns Quota in Bytes.    * @return long, Quota in bytes.    */
@@ -376,6 +402,11 @@ DECL|field|volume
 specifier|private
 name|String
 name|volume
+decl_stmt|;
+DECL|field|creationTime
+specifier|private
+name|long
+name|creationTime
 decl_stmt|;
 DECL|field|quotaInBytes
 specifier|private
@@ -468,6 +499,25 @@ operator|.
 name|volume
 operator|=
 name|volume
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|setCreationTime (long createdOn)
+specifier|public
+name|Builder
+name|setCreationTime
+parameter_list|(
+name|long
+name|createdOn
+parameter_list|)
+block|{
+name|this
+operator|.
+name|creationTime
+operator|=
+name|createdOn
 expr_stmt|;
 return|return
 name|this
@@ -583,6 +633,8 @@ argument_list|,
 name|keyValueMap
 argument_list|,
 name|aclMap
+argument_list|,
+name|creationTime
 argument_list|)
 return|;
 block|}
@@ -699,6 +751,11 @@ argument_list|(
 name|aclList
 argument_list|)
 operator|.
+name|setCreationTime
+argument_list|(
+name|creationTime
+argument_list|)
+operator|.
 name|build
 argument_list|()
 return|;
@@ -785,6 +842,11 @@ argument_list|,
 name|kvMap
 argument_list|,
 name|aclMap
+argument_list|,
+name|volInfo
+operator|.
+name|getCreationTime
+argument_list|()
 argument_list|)
 return|;
 block|}

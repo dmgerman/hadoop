@@ -620,6 +620,20 @@ name|getQuota
 argument_list|()
 return|;
 block|}
+comment|/**    * Returns creation time of Volume.    *    * @return String    */
+DECL|method|getCreatedOn ()
+specifier|public
+name|String
+name|getCreatedOn
+parameter_list|()
+block|{
+return|return
+name|volumeInfo
+operator|.
+name|getCreatedOn
+argument_list|()
+return|;
+block|}
 comment|/**    * Returns a Http header from the Last Volume related call.    *    * @param headerName - Name of the header    * @return - Header Value    */
 DECL|method|getHeader (String headerName)
 specifier|public
