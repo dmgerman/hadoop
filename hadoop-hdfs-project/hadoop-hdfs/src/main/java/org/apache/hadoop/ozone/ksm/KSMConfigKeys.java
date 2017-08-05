@@ -65,7 +65,7 @@ specifier|final
 name|int
 name|OZONE_KSM_HANDLER_COUNT_DEFAULT
 init|=
-literal|200
+literal|20
 decl_stmt|;
 DECL|field|OZONE_KSM_ADDRESS_KEY
 specifier|public
