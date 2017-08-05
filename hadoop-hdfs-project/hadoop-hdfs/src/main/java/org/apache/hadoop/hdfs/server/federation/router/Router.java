@@ -564,8 +564,6 @@ operator|.
 name|conf
 argument_list|,
 name|this
-operator|.
-name|stateStore
 argument_list|)
 expr_stmt|;
 if|if
