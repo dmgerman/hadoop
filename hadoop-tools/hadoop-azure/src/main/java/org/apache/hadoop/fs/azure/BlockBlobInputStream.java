@@ -202,6 +202,7 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
+comment|// position of next network read within stream
 DECL|field|streamPosition
 specifier|private
 name|long
@@ -209,6 +210,7 @@ name|streamPosition
 init|=
 literal|0
 decl_stmt|;
+comment|// length of stream
 DECL|field|streamLength
 specifier|private
 name|long
@@ -223,17 +225,20 @@ name|closed
 init|=
 literal|false
 decl_stmt|;
+comment|// internal buffer, re-used for performance optimization
 DECL|field|streamBuffer
 specifier|private
 name|byte
 index|[]
 name|streamBuffer
 decl_stmt|;
+comment|// zero-based offset within streamBuffer of current read position
 DECL|field|streamBufferPosition
 specifier|private
 name|int
 name|streamBufferPosition
 decl_stmt|;
+comment|// length of data written to streamBuffer, streamBuffer may be larger
 DECL|field|streamBufferLength
 specifier|private
 name|int
@@ -349,6 +354,22 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * Reset the internal stream buffer but do not release the memory.    * The buffer can be reused to avoid frequent memory allocations of    * a large buffer.    */
+DECL|method|resetStreamBuffer ()
+specifier|private
+name|void
+name|resetStreamBuffer
+parameter_list|()
+block|{
+name|streamBufferPosition
+operator|=
+literal|0
+expr_stmt|;
+name|streamBufferLength
+operator|=
+literal|0
+expr_stmt|;
+block|}
 comment|/**    * Gets the read position of the stream.    * @return the zero-based byte offset of the read position.    * @throws IOException IO failure    */
 annotation|@
 name|Override
@@ -365,6 +386,18 @@ name|checkState
 argument_list|()
 expr_stmt|;
 return|return
+operator|(
+name|streamBuffer
+operator|!=
+literal|null
+operator|)
+condition|?
+name|streamPosition
+operator|-
+name|streamBufferLength
+operator|+
+name|streamBufferPosition
+else|:
 name|streamPosition
 return|;
 block|}
@@ -428,12 +461,20 @@ name|pos
 argument_list|)
 throw|;
 block|}
-if|if
-condition|(
+comment|// calculate offset between the target and current position in the stream
+name|long
+name|offset
+init|=
 name|pos
-operator|==
+operator|-
 name|getPos
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|offset
+operator|==
+literal|0
 condition|)
 block|{
 comment|// no=op, no state change
@@ -441,51 +482,78 @@ return|return;
 block|}
 if|if
 condition|(
+name|offset
+operator|>
+literal|0
+condition|)
+block|{
+comment|// forward seek, data can be skipped as an optimization
+if|if
+condition|(
+name|skip
+argument_list|(
+name|offset
+argument_list|)
+operator|!=
+name|offset
+condition|)
+block|{
+throw|throw
+operator|new
+name|EOFException
+argument_list|(
+name|FSExceptionMessages
+operator|.
+name|EOF_IN_READ_FULLY
+argument_list|)
+throw|;
+block|}
+return|return;
+block|}
+comment|// reverse seek, offset is negative
+if|if
+condition|(
 name|streamBuffer
 operator|!=
 literal|null
 condition|)
 block|{
-name|long
-name|offset
-init|=
-name|streamPosition
-operator|-
-name|pos
-decl_stmt|;
 if|if
 condition|(
+name|streamBufferPosition
+operator|+
 name|offset
-operator|>
+operator|>=
 literal|0
-operator|&&
-name|offset
-operator|<
-name|streamBufferLength
 condition|)
 block|{
+comment|// target position is inside the stream buffer,
+comment|// only need to move backwards within the stream buffer
 name|streamBufferPosition
-operator|=
-name|streamBufferLength
-operator|-
-operator|(
-name|int
-operator|)
+operator|+=
 name|offset
 expr_stmt|;
 block|}
 else|else
 block|{
-name|streamBufferPosition
-operator|=
-name|streamBufferLength
+comment|// target position is outside the stream buffer,
+comment|// need to reset stream buffer and move position for next network read
+name|resetStreamBuffer
+argument_list|()
 expr_stmt|;
-block|}
-block|}
 name|streamPosition
 operator|=
 name|pos
 expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+name|streamPosition
+operator|=
+name|pos
+expr_stmt|;
+block|}
 comment|// close BlobInputStream after seek is invoked because BlobInputStream
 comment|// does not support seek
 name|closeBlobInputStream
@@ -680,13 +748,8 @@ argument_list|)
 index|]
 expr_stmt|;
 block|}
-name|streamBufferPosition
-operator|=
-literal|0
-expr_stmt|;
-name|streamBufferLength
-operator|=
-literal|0
+name|resetStreamBuffer
+argument_list|()
 expr_stmt|;
 name|outputStream
 operator|=
@@ -1114,7 +1177,7 @@ literal|0
 index|]
 return|;
 block|}
-comment|/**    * Skips over and discards n bytes of data from this input stream.    * @param n the number of bytes to be skipped.    * @return the actual number of bytes skipped.    * @throws IOException IO failure    */
+comment|/**    * Skips over and discards n bytes of data from this input stream.    * @param n the number of bytes to be skipped.    * @return the actual number of bytes skipped.    * @throws IOException IO failure    * @throws IndexOutOfBoundsException if n is negative or if the sum of n    * and the current value of getPos() is greater than the length of the stream.    */
 annotation|@
 name|Override
 DECL|method|skip (long n)
@@ -1139,28 +1202,39 @@ operator|!=
 literal|null
 condition|)
 block|{
-return|return
+comment|// blobInput stream is open; delegate the work to it
+name|long
+name|skipped
+init|=
 name|blobInputStream
 operator|.
 name|skip
 argument_list|(
 name|n
 argument_list|)
+decl_stmt|;
+comment|// update position to the actual skip value
+name|streamPosition
+operator|+=
+name|skipped
+expr_stmt|;
+return|return
+name|skipped
 return|;
 block|}
-else|else
-block|{
+comment|// no blob stream; implement the skip logic directly
 if|if
 condition|(
 name|n
 argument_list|<
 literal|0
 operator|||
-name|streamPosition
-operator|+
 name|n
 argument_list|>
 name|streamLength
+operator|-
+name|getPos
+argument_list|()
 condition|)
 block|{
 throw|throw
@@ -1178,34 +1252,54 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|streamBufferPosition
-operator|=
-operator|(
+comment|// there's a buffer, so seek with it
+if|if
+condition|(
 name|n
 operator|<
 name|streamBufferLength
 operator|-
 name|streamBufferPosition
-operator|)
-condition|?
+condition|)
+block|{
+comment|// new range is in the buffer, so just update the buffer position
+comment|// skip within the buffer.
 name|streamBufferPosition
-operator|+
+operator|+=
 operator|(
 name|int
 operator|)
 name|n
-else|:
-name|streamBufferLength
 expr_stmt|;
 block|}
+else|else
+block|{
+comment|// skip is out of range, so move position to ne value and reset
+comment|// the buffer ready for the next read()
+name|streamPosition
+operator|=
+name|getPos
+argument_list|()
+operator|+
+name|n
+expr_stmt|;
+name|resetStreamBuffer
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+comment|// no stream buffer; increment the stream position ready for
+comment|// the next triggered connection& read
 name|streamPosition
 operator|+=
 name|n
 expr_stmt|;
+block|}
 return|return
 name|n
 return|;
-block|}
 block|}
 comment|/**    * An<code>OutputStream</code> backed by a user-supplied buffer.    */
 DECL|class|MemoryOutputStream
