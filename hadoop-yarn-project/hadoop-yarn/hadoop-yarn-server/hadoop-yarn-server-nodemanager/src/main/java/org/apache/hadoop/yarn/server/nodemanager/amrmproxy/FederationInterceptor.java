@@ -1182,12 +1182,13 @@ name|start
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Sends the application master's registration request to the home RM.    *    * Between AM and AMRMProxy, FederationInterceptor modifies the RM behavior,    * so that when AM registers more than once, it returns the same register    * success response instead of throwing    * {@link InvalidApplicationMasterRequestException}. Furthermore, we present    * to AM as if we are the RM that never fails over. When actual RM fails over,    * we always re-register automatically.    *    * We did this because FederationInterceptor can receive concurrent register    * requests from AM because of timeout between AM and AMRMProxy, which is    * shorter than the timeout + failOver between FederationInterceptor    * (AMRMProxy) and RM.    */
+comment|/**    * Sends the application master's registration request to the home RM.    *    * Between AM and AMRMProxy, FederationInterceptor modifies the RM behavior,    * so that when AM registers more than once, it returns the same register    * success response instead of throwing    * {@link InvalidApplicationMasterRequestException}. Furthermore, we present    * to AM as if we are the RM that never fails over. When actual RM fails over,    * we always re-register automatically.    *    * We did this because FederationInterceptor can receive concurrent register    * requests from AM because of timeout between AM and AMRMProxy, which is    * shorter than the timeout + failOver between FederationInterceptor    * (AMRMProxy) and RM.    *    * For the same reason, this method needs to be synchronized.    */
 annotation|@
 name|Override
-DECL|method|registerApplicationMaster ( RegisterApplicationMasterRequest request)
 specifier|public
+specifier|synchronized
 name|RegisterApplicationMasterResponse
+DECL|method|registerApplicationMaster (RegisterApplicationMasterRequest request)
 name|registerApplicationMaster
 parameter_list|(
 name|RegisterApplicationMasterRequest
@@ -1206,7 +1207,10 @@ operator|.
 name|amRegistrationRequest
 operator|!=
 literal|null
-operator|&&
+condition|)
+block|{
+if|if
+condition|(
 operator|!
 name|this
 operator|.
@@ -1222,12 +1226,15 @@ throw|throw
 operator|new
 name|YarnException
 argument_list|(
-literal|"A different request body recieved. AM should"
+literal|"AM should not call "
 operator|+
-literal|" not call registerApplicationMaster with different request body"
+literal|"registerApplicationMaster with a different request body"
 argument_list|)
 throw|;
 block|}
+block|}
+else|else
+block|{
 comment|// Save the registration request. This will be used for registering with
 comment|// secondary sub-clusters using UAMs, as well as re-register later
 name|this
@@ -1236,6 +1243,7 @@ name|amRegistrationRequest
 operator|=
 name|request
 expr_stmt|;
+block|}
 comment|/*      * Present to AM as if we are the RM that never fails over. When actual RM      * fails over, we always re-register automatically.      *      * We did this because it is possible for AM to send duplicate register      * request because of timeout. When it happens, it is fine to simply return      * the success message. Out of all outstanding register threads, only the      * last one will still have an unbroken RPC connection and successfully      * return the response.      */
 if|if
 condition|(
@@ -1253,8 +1261,6 @@ name|amRegistrationResponse
 return|;
 block|}
 comment|/*      * Send a registration request to the home resource manager. Note that here      * we don't register with other sub-cluster resource managers because that      * will prevent us from using new sub-clusters that get added while the AM      * is running and will breaks the elasticity feature. The registration with      * the other sub-cluster RM will be done lazily as needed later.      */
-try|try
-block|{
 name|this
 operator|.
 name|amRegistrationResponse
@@ -1268,59 +1274,6 @@ argument_list|(
 name|request
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|InvalidApplicationMasterRequestException
-name|e
-parameter_list|)
-block|{
-if|if
-condition|(
-name|e
-operator|.
-name|getMessage
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-name|AMRMClientUtils
-operator|.
-name|APP_ALREADY_REGISTERED_MESSAGE
-argument_list|)
-condition|)
-block|{
-comment|// Some other register thread might have succeeded in the meantime
-if|if
-condition|(
-name|this
-operator|.
-name|amRegistrationResponse
-operator|!=
-literal|null
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Other concurrent thread registered successfully, "
-operator|+
-literal|"simply return the same success register response"
-argument_list|)
-expr_stmt|;
-return|return
-name|this
-operator|.
-name|amRegistrationResponse
-return|;
-block|}
-block|}
-comment|// This is a real issue, throw back to AM
-throw|throw
-name|e
-throw|;
-block|}
 comment|// the queue this application belongs will be used for getting
 comment|// AMRMProxy policy from state store.
 name|String
