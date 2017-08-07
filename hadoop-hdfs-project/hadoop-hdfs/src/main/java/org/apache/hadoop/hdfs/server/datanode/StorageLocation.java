@@ -411,6 +411,29 @@ argument_list|)
 condition|)
 block|{
 comment|// make sure all URIs that point to a file have the same scheme
+name|uri
+operator|=
+name|normalizeFileURI
+argument_list|(
+name|uri
+argument_list|)
+expr_stmt|;
+block|}
+name|baseURI
+operator|=
+name|uri
+expr_stmt|;
+block|}
+DECL|method|normalizeFileURI (URI uri)
+specifier|public
+specifier|static
+name|URI
+name|normalizeFileURI
+parameter_list|(
+name|URI
+name|uri
+parameter_list|)
+block|{
 try|try
 block|{
 name|File
@@ -466,14 +489,13 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
-name|uri
-operator|=
+return|return
 operator|new
 name|URI
 argument_list|(
 name|uriStr
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 catch|catch
 parameter_list|(
@@ -493,11 +515,6 @@ literal|" is not in the expected format"
 argument_list|)
 throw|;
 block|}
-block|}
-name|baseURI
-operator|=
-name|uri
-expr_stmt|;
 block|}
 DECL|method|getStorageType ()
 specifier|public
