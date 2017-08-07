@@ -52,6 +52,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|FileSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|server
@@ -114,7 +128,7 @@ name|FinalizedProvidedReplica
 extends|extends
 name|ProvidedReplica
 block|{
-DECL|method|FinalizedProvidedReplica (long blockId, URI fileURI, long fileOffset, long blockLen, long genStamp, FsVolumeSpi volume, Configuration conf)
+DECL|method|FinalizedProvidedReplica (long blockId, URI fileURI, long fileOffset, long blockLen, long genStamp, FsVolumeSpi volume, Configuration conf, FileSystem remoteFS)
 specifier|public
 name|FinalizedProvidedReplica
 parameter_list|(
@@ -138,6 +152,9 @@ name|volume
 parameter_list|,
 name|Configuration
 name|conf
+parameter_list|,
+name|FileSystem
+name|remoteFS
 parameter_list|)
 block|{
 name|super
@@ -155,6 +172,8 @@ argument_list|,
 name|volume
 argument_list|,
 name|conf
+argument_list|,
+name|remoteFS
 argument_list|)
 expr_stmt|;
 block|}

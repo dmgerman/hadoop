@@ -360,7 +360,7 @@ name|FileSystem
 name|remoteFS
 decl_stmt|;
 comment|/**    * Constructor.    * @param blockId block id    * @param fileURI remote URI this block is to be read from    * @param fileOffset the offset in the remote URI    * @param blockLen the length of the block    * @param genStamp the generation stamp of the block    * @param volume the volume this block belongs to    */
-DECL|method|ProvidedReplica (long blockId, URI fileURI, long fileOffset, long blockLen, long genStamp, FsVolumeSpi volume, Configuration conf)
+DECL|method|ProvidedReplica (long blockId, URI fileURI, long fileOffset, long blockLen, long genStamp, FsVolumeSpi volume, Configuration conf, FileSystem remoteFS)
 specifier|public
 name|ProvidedReplica
 parameter_list|(
@@ -384,6 +384,9 @@ name|volume
 parameter_list|,
 name|Configuration
 name|conf
+parameter_list|,
+name|FileSystem
+name|remoteFS
 parameter_list|)
 block|{
 name|super
@@ -414,6 +417,31 @@ operator|.
 name|conf
 operator|=
 name|conf
+expr_stmt|;
+if|if
+condition|(
+name|remoteFS
+operator|!=
+literal|null
+condition|)
+block|{
+name|this
+operator|.
+name|remoteFS
+operator|=
+name|remoteFS
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Creating an reference to the remote FS for provided block "
+operator|+
+name|this
+argument_list|)
 expr_stmt|;
 try|try
 block|{
@@ -456,6 +484,7 @@ literal|null
 expr_stmt|;
 block|}
 block|}
+block|}
 DECL|method|ProvidedReplica (ProvidedReplica r)
 specifier|public
 name|ProvidedReplica
@@ -493,37 +522,14 @@ name|r
 operator|.
 name|conf
 expr_stmt|;
-try|try
-block|{
 name|this
 operator|.
 name|remoteFS
 operator|=
-name|FileSystem
-operator|.
-name|newInstance
-argument_list|(
-name|fileURI
-argument_list|,
-name|this
-operator|.
-name|conf
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|this
+name|r
 operator|.
 name|remoteFS
-operator|=
-literal|null
 expr_stmt|;
-block|}
 block|}
 annotation|@
 name|Override

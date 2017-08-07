@@ -142,6 +142,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|StorageType
 import|;
 end_import
@@ -759,7 +773,7 @@ operator|=
 name|newProvider
 expr_stmt|;
 block|}
-DECL|method|getVolumeMap (ReplicaMap volumeMap, RamDiskReplicaTracker ramDiskReplicaMap)
+DECL|method|getVolumeMap (ReplicaMap volumeMap, RamDiskReplicaTracker ramDiskReplicaMap, FileSystem remoteFS)
 specifier|public
 name|void
 name|getVolumeMap
@@ -769,6 +783,9 @@ name|volumeMap
 parameter_list|,
 name|RamDiskReplicaTracker
 name|ramDiskReplicaMap
+parameter_list|,
+name|FileSystem
+name|remoteFS
 parameter_list|)
 throws|throws
 name|IOException
@@ -908,10 +925,14 @@ argument_list|(
 name|conf
 argument_list|)
 operator|.
+name|setRemoteFS
+argument_list|(
+name|remoteFS
+argument_list|)
+operator|.
 name|build
 argument_list|()
 decl_stmt|;
-comment|// check if the replica already exists
 name|ReplicaInfo
 name|oldReplica
 init|=
@@ -1153,6 +1174,12 @@ specifier|private
 name|ProvidedVolumeDF
 name|df
 decl_stmt|;
+comment|//the remote FileSystem to which this ProvidedVolume points to.
+DECL|field|remoteFS
+specifier|private
+name|FileSystem
+name|remoteFS
+decl_stmt|;
 DECL|method|ProvidedVolumeImpl (FsDatasetImpl dataset, String storageID, StorageDirectory sd, FileIoProvider fileIoProvider, Configuration conf)
 name|ProvidedVolumeImpl
 parameter_list|(
@@ -1240,6 +1267,17 @@ operator|.
 name|newInstance
 argument_list|(
 name|dfClass
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+name|remoteFS
+operator|=
+name|FileSystem
+operator|.
+name|get
+argument_list|(
+name|baseURI
 argument_list|,
 name|conf
 argument_list|)
@@ -2109,6 +2147,8 @@ argument_list|(
 name|volumeMap
 argument_list|,
 name|ramDiskReplicaMap
+argument_list|,
+name|remoteFS
 argument_list|)
 expr_stmt|;
 block|}
@@ -2186,6 +2226,8 @@ argument_list|(
 name|volumeMap
 argument_list|,
 name|ramDiskReplicaMap
+argument_list|,
+name|remoteFS
 argument_list|)
 expr_stmt|;
 block|}

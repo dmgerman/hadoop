@@ -48,6 +48,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|FileSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|server
@@ -226,6 +240,11 @@ DECL|field|fileRegion
 specifier|private
 name|FileRegion
 name|fileRegion
+decl_stmt|;
+DECL|field|remoteFS
+specifier|private
+name|FileSystem
+name|remoteFS
 decl_stmt|;
 DECL|method|ReplicaBuilder (ReplicaState state)
 specifier|public
@@ -555,6 +574,25 @@ operator|.
 name|fileRegion
 operator|=
 name|fileRegion
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|setRemoteFS (FileSystem remoteFS)
+specifier|public
+name|ReplicaBuilder
+name|setRemoteFS
+parameter_list|(
+name|FileSystem
+name|remoteFS
+parameter_list|)
+block|{
+name|this
+operator|.
+name|remoteFS
+operator|=
+name|remoteFS
 expr_stmt|;
 return|return
 name|this
@@ -1282,6 +1320,8 @@ argument_list|,
 name|volume
 argument_list|,
 name|conf
+argument_list|,
+name|remoteFS
 argument_list|)
 expr_stmt|;
 block|}
@@ -1332,6 +1372,8 @@ argument_list|,
 name|volume
 argument_list|,
 name|conf
+argument_list|,
+name|remoteFS
 argument_list|)
 expr_stmt|;
 block|}
