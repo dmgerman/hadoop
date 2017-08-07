@@ -1128,7 +1128,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|cleanup
+name|cleanupWithLogger
 argument_list|(
 literal|null
 argument_list|,
