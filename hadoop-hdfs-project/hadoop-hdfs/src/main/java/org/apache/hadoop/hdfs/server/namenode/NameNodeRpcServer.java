@@ -12940,7 +12940,7 @@ expr_stmt|;
 return|return
 name|namesystem
 operator|.
-name|addECPolicies
+name|addErasureCodingPolicies
 argument_list|(
 name|policies
 argument_list|)
