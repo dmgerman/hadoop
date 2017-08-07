@@ -1702,7 +1702,7 @@ literal|"Resource handler chain enabled = "
 operator|+
 operator|(
 name|resourceHandlerChain
-operator|==
+operator|!=
 literal|null
 operator|)
 argument_list|)
