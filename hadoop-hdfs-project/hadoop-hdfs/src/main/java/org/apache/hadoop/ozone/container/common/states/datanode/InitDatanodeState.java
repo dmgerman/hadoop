@@ -78,6 +78,8 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|client
+operator|.
 name|OzoneClientUtils
 import|;
 end_import

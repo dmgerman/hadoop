@@ -28,15 +28,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|io
 operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|fsdataset
-operator|.
-name|LengthInputStream
+name|IOUtils
 import|;
 end_import
 
@@ -48,9 +42,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
+name|client
+operator|.
 name|io
 operator|.
-name|IOUtils
+name|LengthInputStream
 import|;
 end_import
 

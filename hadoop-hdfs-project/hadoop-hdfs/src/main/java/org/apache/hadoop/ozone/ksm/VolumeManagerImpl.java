@@ -40,6 +40,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
 name|ksm
 operator|.
 name|helpers

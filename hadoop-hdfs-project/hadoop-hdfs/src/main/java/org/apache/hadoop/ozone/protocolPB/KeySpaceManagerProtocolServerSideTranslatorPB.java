@@ -64,6 +64,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
 name|ksm
 operator|.
 name|helpers
@@ -79,6 +81,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|ozone
 operator|.
 name|ksm
 operator|.
@@ -96,6 +100,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
 name|ksm
 operator|.
 name|helpers
@@ -111,6 +117,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|ozone
 operator|.
 name|ksm
 operator|.
@@ -128,6 +136,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
 name|ksm
 operator|.
 name|helpers
@@ -144,6 +154,8 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
 name|ksm
 operator|.
 name|protocol
@@ -159,6 +171,8 @@ operator|.
 name|apache
 operator|.
 name|hadoop
+operator|.
+name|ozone
 operator|.
 name|ksm
 operator|.
@@ -787,7 +801,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class is the server-side translator that forwards requests received on  * {@link org.apache.hadoop.ksm.protocolPB.KeySpaceManagerProtocolPB} to the  * KeySpaceManagerService server implementation.  */
+comment|/**  * This class is the server-side translator that forwards requests received on  * {@link org.apache.hadoop.ozone.ksm.protocolPB.KeySpaceManagerProtocolPB}  * to the KeySpaceManagerService server implementation.  */
 end_comment
 
 begin_class

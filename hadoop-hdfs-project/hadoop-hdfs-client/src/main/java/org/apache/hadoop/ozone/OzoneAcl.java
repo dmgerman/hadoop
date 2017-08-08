@@ -268,6 +268,26 @@ name|rights
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|type
+operator|+
+literal|":"
+operator|+
+name|name
+operator|+
+literal|":"
+operator|+
+name|rights
+return|;
+block|}
 comment|/**    * Returns a hash code value for the object. This method is    * supported for the benefit of hash tables.    *    * @return a hash code value for this object.    *    * @see Object#equals(Object)    * @see System#identityHashCode    */
 annotation|@
 name|Override

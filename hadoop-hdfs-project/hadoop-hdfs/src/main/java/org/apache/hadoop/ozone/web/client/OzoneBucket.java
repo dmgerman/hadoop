@@ -74,6 +74,8 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|client
+operator|.
 name|OzoneClientUtils
 import|;
 end_import
@@ -120,7 +122,9 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|web
+name|client
+operator|.
+name|rest
 operator|.
 name|headers
 operator|.

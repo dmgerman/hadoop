@@ -42,9 +42,9 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|web
+name|client
 operator|.
-name|storage
+name|io
 operator|.
 name|ChunkGroupInputStream
 import|;
@@ -60,9 +60,9 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|web
+name|client
 operator|.
-name|storage
+name|io
 operator|.
 name|ChunkGroupOutputStream
 import|;

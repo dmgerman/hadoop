@@ -98,13 +98,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|ozone
 operator|.
-name|server
+name|client
 operator|.
-name|datanode
-operator|.
-name|fsdataset
+name|io
 operator|.
 name|LengthInputStream
 import|;
@@ -174,7 +172,9 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|web
+name|client
+operator|.
+name|rest
 operator|.
 name|headers
 operator|.

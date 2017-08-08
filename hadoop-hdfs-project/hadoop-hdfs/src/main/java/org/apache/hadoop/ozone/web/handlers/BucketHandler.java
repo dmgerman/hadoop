@@ -66,7 +66,9 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|web
+name|client
+operator|.
+name|rest
 operator|.
 name|headers
 operator|.
