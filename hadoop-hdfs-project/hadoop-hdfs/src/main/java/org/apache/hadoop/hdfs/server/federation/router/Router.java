@@ -431,6 +431,17 @@ specifier|private
 name|InetSocketAddress
 name|rpcAddress
 decl_stmt|;
+comment|/** RPC interface for the admin. */
+DECL|field|adminServer
+specifier|private
+name|RouterAdminServer
+name|adminServer
+decl_stmt|;
+DECL|field|adminAddress
+specifier|private
+name|InetSocketAddress
+name|adminAddress
+decl_stmt|;
 comment|/** Interface with the State Store. */
 DECL|field|stateStore
 specifier|private
@@ -519,6 +530,39 @@ name|conf
 operator|=
 name|configuration
 expr_stmt|;
+if|if
+condition|(
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_ROUTER_STORE_ENABLE
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_ROUTER_STORE_ENABLE_DEFAULT
+argument_list|)
+condition|)
+block|{
+comment|// Service that maintains the State Store connection
+name|this
+operator|.
+name|stateStore
+operator|=
+operator|new
+name|StateStoreService
+argument_list|()
+expr_stmt|;
+name|addService
+argument_list|(
+name|this
+operator|.
+name|stateStore
+argument_list|)
+expr_stmt|;
+block|}
 comment|// Resolver to track active NNs
 name|this
 operator|.
@@ -622,6 +666,38 @@ name|rpcServer
 operator|.
 name|getRpcAddress
 argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_ROUTER_ADMIN_ENABLE
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_ROUTER_ADMIN_ENABLE_DEFAULT
+argument_list|)
+condition|)
+block|{
+comment|// Create admin server
+name|this
+operator|.
+name|adminServer
+operator|=
+name|createAdminServer
+argument_list|()
+expr_stmt|;
+name|addService
+argument_list|(
+name|this
+operator|.
+name|adminServer
 argument_list|)
 expr_stmt|;
 block|}
@@ -1010,6 +1086,58 @@ return|return
 name|this
 operator|.
 name|rpcAddress
+return|;
+block|}
+comment|/////////////////////////////////////////////////////////
+comment|// Admin server
+comment|/////////////////////////////////////////////////////////
+comment|/**    * Create a new router admin server to handle the router admin interface.    *    * @return RouterAdminServer    * @throws IOException If the admin server was not successfully started.    */
+DECL|method|createAdminServer ()
+specifier|protected
+name|RouterAdminServer
+name|createAdminServer
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+operator|new
+name|RouterAdminServer
+argument_list|(
+name|this
+operator|.
+name|conf
+argument_list|,
+name|this
+argument_list|)
+return|;
+block|}
+comment|/**    * Set the current Admin socket for the router.    *    * @param adminAddress Admin RPC address.    */
+DECL|method|setAdminServerAddress (InetSocketAddress address)
+specifier|protected
+name|void
+name|setAdminServerAddress
+parameter_list|(
+name|InetSocketAddress
+name|address
+parameter_list|)
+block|{
+name|this
+operator|.
+name|adminAddress
+operator|=
+name|address
+expr_stmt|;
+block|}
+comment|/**    * Get the current Admin socket address for the router.    *    * @return InetSocketAddress Admin address.    */
+DECL|method|getAdminServerAddress ()
+specifier|public
+name|InetSocketAddress
+name|getAdminServerAddress
+parameter_list|()
+block|{
+return|return
+name|adminAddress
 return|;
 block|}
 comment|/////////////////////////////////////////////////////////

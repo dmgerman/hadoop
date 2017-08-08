@@ -502,7 +502,6 @@ decl_stmt|;
 comment|/** Membership State Store interface. */
 DECL|field|membershipInterface
 specifier|private
-specifier|final
 name|MembershipStore
 name|membershipInterface
 decl_stmt|;
@@ -600,7 +599,26 @@ argument_list|(
 name|this
 argument_list|)
 expr_stmt|;
-comment|// Initialize the interface to get the membership
+block|}
+block|}
+DECL|method|getMembershipStore ()
+specifier|private
+specifier|synchronized
+name|MembershipStore
+name|getMembershipStore
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|this
+operator|.
+name|membershipInterface
+operator|==
+literal|null
+condition|)
+block|{
 name|this
 operator|.
 name|membershipInterface
@@ -616,16 +634,6 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
-block|}
-else|else
-block|{
-name|this
-operator|.
-name|membershipInterface
-operator|=
-literal|null
-expr_stmt|;
-block|}
 if|if
 condition|(
 name|this
@@ -651,6 +659,12 @@ argument_list|)
 throw|;
 block|}
 block|}
+return|return
+name|this
+operator|.
+name|membershipInterface
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|loadCache (boolean force)
@@ -665,9 +679,13 @@ block|{
 comment|// Our cache depends on the store, update it first
 try|try
 block|{
-name|this
-operator|.
-name|membershipInterface
+name|MembershipStore
+name|membership
+init|=
+name|getMembershipStore
+argument_list|()
+decl_stmt|;
+name|membership
 operator|.
 name|loadCache
 argument_list|(
@@ -775,12 +793,16 @@ argument_list|(
 name|partial
 argument_list|)
 decl_stmt|;
+name|MembershipStore
+name|membership
+init|=
+name|getMembershipStore
+argument_list|()
+decl_stmt|;
 name|GetNamenodeRegistrationsResponse
 name|response
 init|=
-name|this
-operator|.
-name|membershipInterface
+name|membership
 operator|.
 name|getNamenodeRegistrations
 argument_list|(
@@ -842,9 +864,7 @@ argument_list|,
 name|ACTIVE
 argument_list|)
 decl_stmt|;
-name|this
-operator|.
-name|membershipInterface
+name|membership
 operator|.
 name|updateNamenodeRegistration
 argument_list|(
@@ -1329,9 +1349,8 @@ name|record
 argument_list|)
 expr_stmt|;
 return|return
-name|this
-operator|.
-name|membershipInterface
+name|getMembershipStore
+argument_list|()
 operator|.
 name|namenodeHeartbeat
 argument_list|(
@@ -1366,9 +1385,8 @@ decl_stmt|;
 name|GetNamespaceInfoResponse
 name|response
 init|=
-name|this
-operator|.
-name|membershipInterface
+name|getMembershipStore
+argument_list|()
 operator|.
 name|getNamespaceInfo
 argument_list|(
@@ -1406,12 +1424,16 @@ block|{
 comment|// Retrieve a list of all registrations that match this query.
 comment|// This may include all NN records for a namespace/blockpool, including
 comment|// duplicate records for the same NN from different routers.
+name|MembershipStore
+name|membershipStore
+init|=
+name|getMembershipStore
+argument_list|()
+decl_stmt|;
 name|GetNamenodeRegistrationsResponse
 name|response
 init|=
-name|this
-operator|.
-name|membershipInterface
+name|membershipStore
 operator|.
 name|getNamenodeRegistrations
 argument_list|(
