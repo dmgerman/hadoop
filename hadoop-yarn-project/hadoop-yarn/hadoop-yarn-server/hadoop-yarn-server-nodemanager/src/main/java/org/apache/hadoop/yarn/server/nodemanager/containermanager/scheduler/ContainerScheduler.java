@@ -2078,6 +2078,23 @@ name|getContainersMonitor
 argument_list|()
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getCurrentUtilization ()
+specifier|public
+name|ResourceUtilization
+name|getCurrentUtilization
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|utilizationTracker
+operator|.
+name|getCurrentUtilization
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

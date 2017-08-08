@@ -7329,6 +7329,27 @@ name|isMarkeForKilling
 operator|=
 literal|false
 expr_stmt|;
+comment|// Ensure Resources are decremented.
+name|container
+operator|.
+name|dispatcher
+operator|.
+name|getEventHandler
+argument_list|()
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|ContainerSchedulerEvent
+argument_list|(
+name|container
+argument_list|,
+name|ContainerSchedulerEventType
+operator|.
+name|CONTAINER_COMPLETED
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|container
 operator|.
 name|sendScheduleEvent
