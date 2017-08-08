@@ -168,6 +168,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|UserGroupInformation
@@ -757,6 +771,13 @@ name|appID
 init|=
 literal|null
 decl_stmt|;
+DECL|field|unsecuredUI
+specifier|private
+name|boolean
+name|unsecuredUI
+init|=
+literal|true
+decl_stmt|;
 annotation|@
 name|Inject
 DECL|method|AppBlock (ApplicationBaseProtocol appBaseProt, ViewContext ctx, Configuration conf)
@@ -789,6 +810,36 @@ operator|.
 name|conf
 operator|=
 name|conf
+expr_stmt|;
+comment|// check if UI is unsecured.
+name|String
+name|httpAuth
+init|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|CommonConfigurationKeys
+operator|.
+name|HADOOP_HTTP_AUTHENTICATION_TYPE
+argument_list|)
+decl_stmt|;
+name|this
+operator|.
+name|unsecuredUI
+operator|=
+operator|(
+name|httpAuth
+operator|!=
+literal|null
+operator|)
+operator|&&
+name|httpAuth
+operator|.
+name|equals
+argument_list|(
+literal|"simple"
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@
@@ -1012,6 +1063,20 @@ name|aid
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// YARN-6890. for secured cluster allow anonymous UI access, application kill
+comment|// shouldn't be there.
+name|boolean
+name|unsecuredUIForSecuredCluster
+init|=
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+operator|&&
+name|this
+operator|.
+name|unsecuredUI
+decl_stmt|;
 if|if
 condition|(
 name|webUiType
@@ -1039,6 +1104,9 @@ name|YarnConfiguration
 operator|.
 name|DEFAULT_RM_WEBAPP_UI_ACTIONS_ENABLED
 argument_list|)
+operator|&&
+operator|!
+name|unsecuredUIForSecuredCluster
 condition|)
 block|{
 comment|// Application Kill

@@ -1256,6 +1256,15 @@ name|HADOOP_TOKEN_FILES
 init|=
 literal|"hadoop.token.files"
 decl_stmt|;
+DECL|field|HADOOP_HTTP_AUTHENTICATION_TYPE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_HTTP_AUTHENTICATION_TYPE
+init|=
+literal|"hadoop.http.authentication.type"
+decl_stmt|;
 comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 DECL|field|HADOOP_KERBEROS_MIN_SECONDS_BEFORE_RELOGIN
 specifier|public
