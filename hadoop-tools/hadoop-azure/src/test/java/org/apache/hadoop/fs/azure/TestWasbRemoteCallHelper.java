@@ -1753,6 +1753,23 @@ parameter_list|()
 throws|throws
 name|Throwable
 block|{
+name|boolean
+name|isAuthorizationCachingEnabled
+init|=
+name|fs
+operator|.
+name|getConf
+argument_list|()
+operator|.
+name|getBoolean
+argument_list|(
+name|CachingAuthorizer
+operator|.
+name|KEY_AUTH_SERVICE_CACHING_ENABLE
+argument_list|,
+literal|false
+argument_list|)
+decl_stmt|;
 comment|// set up mocks
 name|HttpClient
 name|mockHttpClient
@@ -2305,6 +2322,15 @@ argument_list|(
 name|mockHttpClient
 argument_list|)
 expr_stmt|;
+name|int
+name|expectedNumberOfInvocations
+init|=
+name|isAuthorizationCachingEnabled
+condition|?
+literal|1
+else|:
+literal|2
+decl_stmt|;
 name|Mockito
 operator|.
 name|verify
@@ -2313,7 +2339,7 @@ name|mockHttpClient
 argument_list|,
 name|times
 argument_list|(
-literal|2
+name|expectedNumberOfInvocations
 argument_list|)
 argument_list|)
 operator|.
@@ -2337,7 +2363,7 @@ name|mockHttpClient
 argument_list|,
 name|times
 argument_list|(
-literal|2
+name|expectedNumberOfInvocations
 argument_list|)
 argument_list|)
 operator|.
