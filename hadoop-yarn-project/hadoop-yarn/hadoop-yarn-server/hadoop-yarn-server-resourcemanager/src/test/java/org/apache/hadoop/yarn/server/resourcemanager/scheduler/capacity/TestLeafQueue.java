@@ -6182,8 +6182,6 @@ operator|==
 literal|0
 condition|)
 do|;
-comment|//LOG.info("user_0: " + queueUser0.getUsed());
-comment|//LOG.info("user_1: " + queueUser1.getUsed());
 name|assertTrue
 argument_list|(
 literal|"Verify user_0 got resources "
