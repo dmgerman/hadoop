@@ -304,6 +304,19 @@ name|TaskAttemptFinishingMonitor
 name|getTaskAttemptFinishingMonitor
 parameter_list|()
 function_decl|;
+DECL|method|getHistoryUrl ()
+name|String
+name|getHistoryUrl
+parameter_list|()
+function_decl|;
+DECL|method|setHistoryUrl (String historyUrl)
+name|void
+name|setHistoryUrl
+parameter_list|(
+name|String
+name|historyUrl
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

@@ -4576,6 +4576,31 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getHistoryUrl ()
+specifier|public
+name|String
+name|getHistoryUrl
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setHistoryUrl (String historyUrl)
+specifier|public
+name|void
+name|setHistoryUrl
+parameter_list|(
+name|String
+name|historyUrl
+parameter_list|)
+block|{
+return|return;
+block|}
 block|}
 block|}
 end_class

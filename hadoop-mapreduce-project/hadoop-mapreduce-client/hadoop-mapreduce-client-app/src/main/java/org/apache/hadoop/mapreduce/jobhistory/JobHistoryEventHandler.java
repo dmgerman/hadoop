@@ -654,6 +654,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|util
+operator|.
+name|MRWebAppUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|UserGroupInformation
@@ -8884,13 +8902,49 @@ name|doneJobHistoryFileName
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|moveToDoneNow
 argument_list|(
 name|qualifiedLogFile
 argument_list|,
 name|qualifiedDoneFile
 argument_list|)
+condition|)
+block|{
+name|String
+name|historyUrl
+init|=
+name|MRWebAppUtil
+operator|.
+name|getApplicationWebURLOnJHSWithScheme
+argument_list|(
+name|getConfig
+argument_list|()
+argument_list|,
+name|context
+operator|.
+name|getApplicationID
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|context
+operator|.
+name|setHistoryUrl
+argument_list|(
+name|historyUrl
+argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Set historyUrl to "
+operator|+
+name|historyUrl
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|// Move confFile to Done Folder
 name|Path
@@ -9763,7 +9817,7 @@ block|}
 block|}
 block|}
 DECL|method|moveTmpToDone (Path tmpPath)
-specifier|private
+specifier|protected
 name|void
 name|moveTmpToDone
 parameter_list|(
@@ -9837,8 +9891,8 @@ block|}
 comment|// TODO If the FS objects are the same, this should be a rename instead of a
 comment|// copy.
 DECL|method|moveToDoneNow (Path fromPath, Path toPath)
-specifier|private
-name|void
+specifier|protected
+name|boolean
 name|moveToDoneNow
 parameter_list|(
 name|Path
@@ -9850,6 +9904,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|boolean
+name|success
+init|=
+literal|false
+decl_stmt|;
 comment|// check if path exists, in case of retries it may not exist
 if|if
 condition|(
@@ -9911,27 +9970,6 @@ name|getConfig
 argument_list|()
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|copied
-condition|)
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Copied to done location: "
-operator|+
-name|toPath
-argument_list|)
-expr_stmt|;
-else|else
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"copy failed"
-argument_list|)
-expr_stmt|;
 name|doneDirFS
 operator|.
 name|setPermission
@@ -9947,7 +9985,61 @@ name|HISTORY_INTERMEDIATE_FILE_PERMISSIONS
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|copied
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Copied from: "
+operator|+
+name|fromPath
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|" to done location: "
+operator|+
+name|toPath
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|success
+operator|=
+literal|true
+expr_stmt|;
 block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Copy failed from: "
+operator|+
+name|fromPath
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|" to done location: "
+operator|+
+name|toPath
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+return|return
+name|success
+return|;
 block|}
 DECL|method|getTempFileName (String srcFile)
 specifier|private
