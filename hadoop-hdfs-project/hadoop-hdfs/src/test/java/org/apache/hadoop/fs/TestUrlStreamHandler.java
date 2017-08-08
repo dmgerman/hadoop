@@ -41,6 +41,18 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNull
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -172,6 +184,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|BeforeClass
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -202,6 +224,38 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|HANDLER_FACTORY
+specifier|private
+specifier|static
+specifier|final
+name|FsUrlStreamHandlerFactory
+name|HANDLER_FACTORY
+init|=
+operator|new
+name|FsUrlStreamHandlerFactory
+argument_list|()
+decl_stmt|;
+annotation|@
+name|BeforeClass
+DECL|method|setupHandler ()
+specifier|public
+specifier|static
+name|void
+name|setupHandler
+parameter_list|()
+block|{
+comment|// Setup our own factory
+comment|// setURLStreamHandlerFactor is can be set at most once in the JVM
+comment|// the new URLStreamHandler is valid for all tests cases
+comment|// in TestStreamHandler
+name|URL
+operator|.
+name|setURLStreamHandlerFactory
+argument_list|(
+name|HANDLER_FACTORY
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Test opening and reading from an InputStream through a hdfs:// URL.    *<p>    * First generate a file with some content through the FileSystem API, then    * try to open and read the file through the URL stream API.    *     * @throws IOException    */
 annotation|@
 name|Test
@@ -247,36 +301,6 @@ operator|.
 name|getFileSystem
 argument_list|()
 decl_stmt|;
-comment|// Setup our own factory
-comment|// setURLSteramHandlerFactor is can be set at most once in the JVM
-comment|// the new URLStreamHandler is valid for all tests cases
-comment|// in TestStreamHandler
-name|FsUrlStreamHandlerFactory
-name|factory
-init|=
-operator|new
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|FsUrlStreamHandlerFactory
-argument_list|()
-decl_stmt|;
-name|java
-operator|.
-name|net
-operator|.
-name|URL
-operator|.
-name|setURLStreamHandlerFactory
-argument_list|(
-name|factory
-argument_list|)
-expr_stmt|;
 name|Path
 name|filePath
 init|=
@@ -729,6 +753,75 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Test
+DECL|method|testHttpDefaultHandler ()
+specifier|public
+name|void
+name|testHttpDefaultHandler
+parameter_list|()
+throws|throws
+name|Throwable
+block|{
+name|assertNull
+argument_list|(
+literal|"Handler for HTTP is the Hadoop one"
+argument_list|,
+name|HANDLER_FACTORY
+operator|.
+name|createURLStreamHandler
+argument_list|(
+literal|"http"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testHttpsDefaultHandler ()
+specifier|public
+name|void
+name|testHttpsDefaultHandler
+parameter_list|()
+throws|throws
+name|Throwable
+block|{
+name|assertNull
+argument_list|(
+literal|"Handler for HTTPS is the Hadoop one"
+argument_list|,
+name|HANDLER_FACTORY
+operator|.
+name|createURLStreamHandler
+argument_list|(
+literal|"https"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testUnknownProtocol ()
+specifier|public
+name|void
+name|testUnknownProtocol
+parameter_list|()
+throws|throws
+name|Throwable
+block|{
+name|assertNull
+argument_list|(
+literal|"Unknown protocols are not handled"
+argument_list|,
+name|HANDLER_FACTORY
+operator|.
+name|createURLStreamHandler
+argument_list|(
+literal|"gopher"
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class
