@@ -828,6 +828,22 @@ name|VisibleForTesting
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|zaxxer
+operator|.
+name|hikari
+operator|.
+name|pool
+operator|.
+name|HikariPool
+operator|.
+name|PoolInitializationException
+import|;
+end_import
+
 begin_comment
 comment|/**  *  * The FederationStateStoreFacade is an utility wrapper that provides singleton  * access to the Federation state store. It abstracts out retries and in  * addition, it also implements the caching for various objects.  *  */
 end_comment
@@ -1168,6 +1184,17 @@ operator|.
 name|put
 argument_list|(
 name|CacheLoaderException
+operator|.
+name|class
+argument_list|,
+name|basePolicy
+argument_list|)
+expr_stmt|;
+name|exceptionToPolicyMap
+operator|.
+name|put
+argument_list|(
+name|PoolInitializationException
 operator|.
 name|class
 argument_list|,
