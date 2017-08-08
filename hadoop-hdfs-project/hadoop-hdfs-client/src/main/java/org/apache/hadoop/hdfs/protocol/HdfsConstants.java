@@ -246,7 +246,6 @@ name|COLD_STORAGE_POLICY_NAME
 init|=
 literal|"COLD"
 decl_stmt|;
-comment|// TODO should be conf injected?
 DECL|field|DEFAULT_DATA_SOCKET_SIZE
 specifier|public
 specifier|static
@@ -254,9 +253,7 @@ specifier|final
 name|int
 name|DEFAULT_DATA_SOCKET_SIZE
 init|=
-literal|128
-operator|*
-literal|1024
+literal|0
 decl_stmt|;
 comment|/**    * A special path component contained in the path for a snapshot file/dir    */
 DECL|field|DOT_SNAPSHOT_DIR

@@ -138,24 +138,6 @@ name|client
 operator|.
 name|HdfsClientConfigKeys
 operator|.
-name|DFS_CLIENT_SOCKET_SEND_BUFFER_SIZE_DEFAULT
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|client
-operator|.
-name|HdfsClientConfigKeys
-operator|.
 name|DFS_CLIENT_SOCKET_SEND_BUFFER_SIZE_KEY
 import|;
 end_import
@@ -210,7 +192,7 @@ name|ALL
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * The setting of socket send buffer size in    * {@link java.net.Socket#setSendBufferSize(int)} is only a hint.  Actual    * value may differ.  We just sanity check that it is somewhere close.    */
+comment|/**    * Test that the send buffer size default value is 0, in which case the socket    * will use a TCP auto-tuned value.    */
 annotation|@
 name|Test
 DECL|method|testDefaultSendBufferSize ()
@@ -221,20 +203,35 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|assertTrue
-argument_list|(
-literal|"Send buffer size should be somewhere near default."
-argument_list|,
+specifier|final
+name|int
+name|sendBufferSize
+init|=
 name|getSendBufferSize
 argument_list|(
 operator|new
 name|Configuration
 argument_list|()
 argument_list|)
-operator|>=
-name|DFS_CLIENT_SOCKET_SEND_BUFFER_SIZE_DEFAULT
-operator|/
-literal|2
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"If not specified, the auto tuned send buffer size is: {}"
+argument_list|,
+name|sendBufferSize
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"Send buffer size should be non-negative value which is "
+operator|+
+literal|"determined by system (kernel)."
+argument_list|,
+name|sendBufferSize
+operator|>
+literal|0
 argument_list|)
 expr_stmt|;
 block|}
@@ -326,6 +323,7 @@ name|sendBufferSize2
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Test that if the send buffer size is 0, the socket will use a TCP    * auto-tuned value.    */
 annotation|@
 name|Test
 DECL|method|testAutoTuningSendBufferSize ()
