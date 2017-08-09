@@ -3151,6 +3151,12 @@ specifier|final
 name|String
 name|minimumDataNodeVersion
 decl_stmt|;
+DECL|field|defaultECPolicyName
+specifier|private
+specifier|final
+name|String
+name|defaultECPolicyName
+decl_stmt|;
 DECL|method|NameNodeRpcServer (Configuration conf, NameNode nn)
 specifier|public
 name|NameNodeRpcServer
@@ -4420,6 +4426,21 @@ argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_MIN_SUPPORTED_DATANODE_VERSION_DEFAULT
+argument_list|)
+expr_stmt|;
+name|defaultECPolicyName
+operator|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_EC_SYSTEM_DEFAULT_POLICY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_EC_SYSTEM_DEFAULT_POLICY_DEFAULT
 argument_list|)
 expr_stmt|;
 comment|// Set terse exception whose stack trace won't be logged
@@ -11805,6 +11826,40 @@ literal|false
 decl_stmt|;
 try|try
 block|{
+if|if
+condition|(
+name|ecPolicyName
+operator|==
+literal|null
+condition|)
+block|{
+name|ecPolicyName
+operator|=
+name|defaultECPolicyName
+expr_stmt|;
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"No policy name is specified, "
+operator|+
+literal|"set the default policy name instead"
+argument_list|)
+expr_stmt|;
+block|}
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Set erasure coding policy "
+operator|+
+name|ecPolicyName
+operator|+
+literal|" on "
+operator|+
+name|src
+argument_list|)
+expr_stmt|;
 name|namesystem
 operator|.
 name|setErasureCodingPolicy

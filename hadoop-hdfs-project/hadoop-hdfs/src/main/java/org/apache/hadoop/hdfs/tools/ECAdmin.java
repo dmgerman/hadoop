@@ -1756,29 +1756,6 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|ecPolicyName
-operator|==
-literal|null
-condition|)
-block|{
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-literal|"Please specify the policy name.\nUsage: "
-operator|+
-name|getLongUsage
-argument_list|()
-argument_list|)
-expr_stmt|;
-return|return
-literal|1
-return|;
-block|}
-if|if
-condition|(
 name|args
 operator|.
 name|size
@@ -1840,6 +1817,29 @@ argument_list|,
 name|ecPolicyName
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|ecPolicyName
+operator|==
+literal|null
+condition|)
+block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Set default erasure coding policy"
+operator|+
+literal|" on "
+operator|+
+name|path
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|System
 operator|.
 name|out
@@ -1855,6 +1855,7 @@ operator|+
 name|path
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(

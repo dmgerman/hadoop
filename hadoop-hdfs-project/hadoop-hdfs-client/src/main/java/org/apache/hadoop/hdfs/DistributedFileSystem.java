@@ -12641,17 +12641,6 @@ argument_list|(
 name|path
 argument_list|)
 decl_stmt|;
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|ecPolicyName
-argument_list|,
-literal|"Erasure coding policy cannot be"
-operator|+
-literal|" null."
-argument_list|)
-expr_stmt|;
 operator|new
 name|FileSystemLinkResolver
 argument_list|<

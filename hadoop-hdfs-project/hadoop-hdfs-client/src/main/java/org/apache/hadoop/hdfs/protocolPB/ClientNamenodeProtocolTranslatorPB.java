@@ -10416,6 +10416,13 @@ argument_list|(
 name|src
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|ecPolicyName
+operator|!=
+literal|null
+condition|)
+block|{
 name|builder
 operator|.
 name|setEcPolicyName
@@ -10423,6 +10430,7 @@ argument_list|(
 name|ecPolicyName
 argument_list|)
 expr_stmt|;
+block|}
 name|SetErasureCodingPolicyRequestProto
 name|req
 init|=

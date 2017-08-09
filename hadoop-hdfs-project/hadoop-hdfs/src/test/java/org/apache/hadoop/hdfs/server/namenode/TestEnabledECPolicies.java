@@ -401,7 +401,7 @@ name|expectValidPolicy
 argument_list|(
 name|defaultECPolicies
 argument_list|,
-literal|0
+literal|1
 argument_list|)
 expr_stmt|;
 block|}
@@ -502,7 +502,7 @@ name|expectValidPolicy
 argument_list|(
 literal|","
 argument_list|,
-literal|0
+literal|1
 argument_list|)
 expr_stmt|;
 name|expectValidPolicy
@@ -518,14 +518,14 @@ name|expectValidPolicy
 argument_list|(
 literal|" "
 argument_list|,
-literal|0
+literal|1
 argument_list|)
 expr_stmt|;
 name|expectValidPolicy
 argument_list|(
 literal|" , "
 argument_list|,
-literal|0
+literal|1
 argument_list|)
 expr_stmt|;
 block|}
@@ -783,6 +783,8 @@ name|found
 operator|.
 name|size
 argument_list|()
+operator|-
+literal|1
 argument_list|)
 expr_stmt|;
 comment|// Check that getEnabledPolicyByName only returns enabled policies
