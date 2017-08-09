@@ -959,6 +959,23 @@ name|line
 operator|.
 name|equals
 argument_list|(
+literal|"Metasave: Blocks currently missing: 0"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|line
+operator|=
+name|reader
+operator|.
+name|readLine
+argument_list|()
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|line
+operator|.
+name|equals
+argument_list|(
 literal|"Mis-replicated blocks that have been postponed:"
 argument_list|)
 argument_list|)
