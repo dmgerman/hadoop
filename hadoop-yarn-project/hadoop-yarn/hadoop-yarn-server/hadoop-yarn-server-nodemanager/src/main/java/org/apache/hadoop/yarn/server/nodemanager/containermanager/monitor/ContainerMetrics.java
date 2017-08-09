@@ -665,7 +665,7 @@ name|timer
 decl_stmt|;
 comment|// lazily initialized
 comment|/**    * Simple metrics cache to help prevent re-registrations.    */
-specifier|protected
+specifier|private
 specifier|final
 specifier|static
 name|Map
