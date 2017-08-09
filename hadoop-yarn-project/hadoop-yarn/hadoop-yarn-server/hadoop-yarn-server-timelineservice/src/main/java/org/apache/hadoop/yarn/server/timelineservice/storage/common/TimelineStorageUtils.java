@@ -80,34 +80,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -392,22 +364,6 @@ specifier|private
 name|TimelineStorageUtils
 parameter_list|()
 block|{   }
-DECL|field|LOG
-specifier|private
-specifier|static
-specifier|final
-name|Log
-name|LOG
-init|=
-name|LogFactory
-operator|.
-name|getLog
-argument_list|(
-name|TimelineStorageUtils
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
 comment|/**    * Matches key-values filter. Used for relatesTo/isRelatedTo filters.    *    * @param entity entity which holds relatesTo/isRelatedTo relations which we    *     will match against.    * @param keyValuesFilter key-values filter.    * @param entityFiltersType type of filters we are trying to match.    * @return true, if filter matches, false otherwise.    */
 DECL|method|matchKeyValuesFilter (TimelineEntity entity, TimelineKeyValuesFilter keyValuesFilter, TimelineEntityFiltersType entityFiltersType)
 specifier|private
