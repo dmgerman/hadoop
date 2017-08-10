@@ -5723,14 +5723,18 @@ argument_list|(
 name|firstRequest
 argument_list|)
 expr_stmt|;
-try|try
-block|{
 name|Future
 argument_list|<
 name|ByteBuffer
 argument_list|>
 name|future
 init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|future
+operator|=
 name|hedgedService
 operator|.
 name|poll
@@ -5744,7 +5748,7 @@ name|TimeUnit
 operator|.
 name|MILLISECONDS
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 name|future
@@ -5794,16 +5798,6 @@ operator|.
 name|info
 argument_list|)
 expr_stmt|;
-comment|// Ignore this node on next go around.
-name|ignored
-operator|.
-name|add
-argument_list|(
-name|chosenNode
-operator|.
-name|info
-argument_list|)
-expr_stmt|;
 name|dfsClient
 operator|.
 name|getHedgedReadMetrics
@@ -5820,7 +5814,13 @@ name|ExecutionException
 name|e
 parameter_list|)
 block|{
-comment|// Ignore
+name|futures
+operator|.
+name|remove
+argument_list|(
+name|future
+argument_list|)
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -5836,6 +5836,18 @@ literal|"Interrupted while waiting for reading task"
 argument_list|)
 throw|;
 block|}
+comment|// Ignore this node on next go around.
+comment|// If poll timeout and the request still ongoing, don't consider it
+comment|// again. If read data failed, don't consider it either.
+name|ignored
+operator|.
+name|add
+argument_list|(
+name|chosenNode
+operator|.
+name|info
+argument_list|)
+expr_stmt|;
 block|}
 else|else
 block|{
