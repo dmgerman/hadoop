@@ -806,6 +806,11 @@ expr_stmt|;
 block|}
 else|else
 block|{
+synchronized|synchronized
+init|(
+name|collector
+init|)
+block|{
 name|postRemove
 argument_list|(
 name|appId
@@ -819,6 +824,7 @@ operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+block|}
 name|LOG
 operator|.
 name|info

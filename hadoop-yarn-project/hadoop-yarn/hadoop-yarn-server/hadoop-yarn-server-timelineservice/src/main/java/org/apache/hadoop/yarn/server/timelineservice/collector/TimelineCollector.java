@@ -394,6 +394,14 @@ name|readyToAggregate
 init|=
 literal|false
 decl_stmt|;
+DECL|field|isStopped
+specifier|private
+specifier|volatile
+name|boolean
+name|isStopped
+init|=
+literal|false
+decl_stmt|;
 DECL|method|TimelineCollector (String name)
 specifier|public
 name|TimelineCollector
@@ -455,11 +463,24 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|isStopped
+operator|=
+literal|true
+expr_stmt|;
 name|super
 operator|.
 name|serviceStop
 argument_list|()
 expr_stmt|;
+block|}
+DECL|method|isStopped ()
+name|boolean
+name|isStopped
+parameter_list|()
+block|{
+return|return
+name|isStopped
+return|;
 block|}
 DECL|method|setWriter (TimelineWriter w)
 specifier|protected

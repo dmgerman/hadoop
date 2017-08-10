@@ -261,6 +261,35 @@ name|renewer
 argument_list|)
 return|;
 block|}
+DECL|method|renewToken (Token<TimelineDelegationTokenIdentifier> token, String renewer)
+specifier|public
+name|long
+name|renewToken
+parameter_list|(
+name|Token
+argument_list|<
+name|TimelineDelegationTokenIdentifier
+argument_list|>
+name|token
+parameter_list|,
+name|String
+name|renewer
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|getTimelineDelegationTokenSecretManager
+argument_list|()
+operator|.
+name|renewToken
+argument_list|(
+name|token
+argument_list|,
+name|renewer
+argument_list|)
+return|;
+block|}
 DECL|method|cancelToken (Token<TimelineDelegationTokenIdentifier> token, String canceller)
 specifier|public
 name|void
