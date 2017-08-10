@@ -3676,6 +3676,18 @@ name|MR_JOB_SEND_TOKEN_CONF
 init|=
 literal|"mapreduce.job.send-token-conf"
 decl_stmt|;
+DECL|field|FINISH_JOB_WHEN_REDUCERS_DONE
+name|String
+name|FINISH_JOB_WHEN_REDUCERS_DONE
+init|=
+literal|"mapreduce.job.finish-when-all-reducers-done"
+decl_stmt|;
+DECL|field|DEFAULT_FINISH_JOB_WHEN_REDUCERS_DONE
+name|boolean
+name|DEFAULT_FINISH_JOB_WHEN_REDUCERS_DONE
+init|=
+literal|true
+decl_stmt|;
 block|}
 end_interface
 
