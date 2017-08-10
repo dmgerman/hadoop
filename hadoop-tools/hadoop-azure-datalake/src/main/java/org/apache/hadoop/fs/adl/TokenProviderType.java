@@ -29,6 +29,12 @@ block|,
 DECL|enumConstant|ClientCredential
 name|ClientCredential
 block|,
+DECL|enumConstant|MSI
+name|MSI
+block|,
+DECL|enumConstant|DeviceCode
+name|DeviceCode
+block|,
 DECL|enumConstant|Custom
 name|Custom
 block|}
