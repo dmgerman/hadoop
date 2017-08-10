@@ -344,7 +344,37 @@ name|Exception
 name|e
 parameter_list|)
 block|{
-comment|//LOG.warn("Exception trying to get groups for user " + user, e);
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Unable to get groups for user {} via {} because: {}"
+argument_list|,
+name|user
+argument_list|,
+name|provider
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+argument_list|,
+name|e
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Stacktrace: "
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 block|}
 if|if
 condition|(
