@@ -11973,6 +11973,12 @@ argument_list|,
 name|config
 argument_list|,
 name|propertyName
+argument_list|,
+operator|new
+name|ConfigRedactor
+argument_list|(
+name|config
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|dumpGenerator
@@ -12042,6 +12048,15 @@ operator|.
 name|flush
 argument_list|()
 expr_stmt|;
+name|ConfigRedactor
+name|redactor
+init|=
+operator|new
+name|ConfigRedactor
+argument_list|(
+name|config
+argument_list|)
+decl_stmt|;
 synchronized|synchronized
 init|(
 name|config
@@ -12081,6 +12096,8 @@ argument_list|()
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+name|redactor
 argument_list|)
 expr_stmt|;
 block|}
@@ -12102,7 +12119,7 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Write property and its attributes as json format to given    * {@link JsonGenerator}.    *    * @param jsonGen json writer    * @param config configuration    * @param name property name    * @throws IOException    */
-DECL|method|appendJSONProperty (JsonGenerator jsonGen, Configuration config, String name)
+DECL|method|appendJSONProperty (JsonGenerator jsonGen, Configuration config, String name, ConfigRedactor redactor)
 specifier|private
 specifier|static
 name|void
@@ -12116,6 +12133,9 @@ name|config
 parameter_list|,
 name|String
 name|name
+parameter_list|,
+name|ConfigRedactor
+name|redactor
 parameter_list|)
 throws|throws
 name|IOException
@@ -12156,11 +12176,18 @@ name|writeStringField
 argument_list|(
 literal|"value"
 argument_list|,
+name|redactor
+operator|.
+name|redact
+argument_list|(
+name|name
+argument_list|,
 name|config
 operator|.
 name|get
 argument_list|(
 name|name
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
