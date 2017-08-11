@@ -2250,7 +2250,7 @@ name|Thread
 operator|.
 name|sleep
 argument_list|(
-literal|2000
+literal|1000
 argument_list|)
 expr_stmt|;
 name|containerStatus
@@ -2288,7 +2288,7 @@ argument_list|)
 expr_stmt|;
 name|timeoutSecs
 operator|+=
-literal|2
+literal|1
 expr_stmt|;
 block|}
 do|while
@@ -2635,7 +2635,7 @@ name|Thread
 operator|.
 name|sleep
 argument_list|(
-literal|2000
+literal|1000
 argument_list|)
 expr_stmt|;
 name|container
@@ -2693,7 +2693,7 @@ expr_stmt|;
 block|}
 name|timeoutSecs
 operator|+=
-literal|2
+literal|1
 expr_stmt|;
 block|}
 do|while
@@ -2707,7 +2707,6 @@ name|currentState
 argument_list|)
 operator|&&
 name|timeoutSecs
-operator|++
 operator|<
 name|timeOutMax
 condition|)
