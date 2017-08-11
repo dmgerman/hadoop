@@ -9236,6 +9236,29 @@ literal|"org.apache.hadoop.yarn.server.router.webapp."
 operator|+
 literal|"DefaultRequestInterceptorREST"
 decl_stmt|;
+comment|/**    * The interceptor class used in FederationInterceptorREST to communicate with    * each SubCluster.    */
+DECL|field|ROUTER_WEBAPP_DEFAULT_INTERCEPTOR_CLASS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ROUTER_WEBAPP_DEFAULT_INTERCEPTOR_CLASS
+init|=
+name|ROUTER_WEBAPP_PREFIX
+operator|+
+literal|"default-interceptor-class"
+decl_stmt|;
+DECL|field|DEFAULT_ROUTER_WEBAPP_DEFAULT_INTERCEPTOR_CLASS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_ROUTER_WEBAPP_DEFAULT_INTERCEPTOR_CLASS
+init|=
+literal|"org.apache.hadoop.yarn.server.router.webapp."
+operator|+
+literal|"DefaultRequestInterceptorREST"
+decl_stmt|;
 comment|////////////////////////////////
 comment|// Other Configs
 comment|////////////////////////////////
