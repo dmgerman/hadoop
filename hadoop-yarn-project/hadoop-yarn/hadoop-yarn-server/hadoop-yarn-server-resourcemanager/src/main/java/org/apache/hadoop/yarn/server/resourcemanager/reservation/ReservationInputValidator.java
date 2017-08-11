@@ -788,8 +788,9 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// verify the allocation is possible (skip for ANY)
-if|if
-condition|(
+name|long
+name|duration
+init|=
 name|contract
 operator|.
 name|getDeadline
@@ -799,6 +800,10 @@ name|contract
 operator|.
 name|getArrival
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|duration
 operator|<
 name|minDuration
 operator|&&
@@ -814,15 +819,7 @@ operator|=
 literal|"The time difference ("
 operator|+
 operator|(
-name|contract
-operator|.
-name|getDeadline
-argument_list|()
-operator|-
-name|contract
-operator|.
-name|getArrival
-argument_list|()
+name|duration
 operator|)
 operator|+
 literal|") between arrival ("
@@ -956,7 +953,7 @@ argument_list|()
 decl_stmt|;
 try|try
 block|{
-name|Long
+name|long
 name|recurrence
 init|=
 name|Long
@@ -981,7 +978,40 @@ name|recurrenceExpression
 operator|+
 literal|". Please try"
 operator|+
-literal|" again with a non-negative long value as period"
+literal|" again with a non-negative long value as period."
+expr_stmt|;
+throw|throw
+name|RPCUtil
+operator|.
+name|getRemoteException
+argument_list|(
+name|message
+argument_list|)
+throw|;
+block|}
+comment|// verify duration is less than recurrence for periodic reservations
+if|if
+condition|(
+name|recurrence
+operator|>
+literal|0
+operator|&&
+name|duration
+operator|>
+name|recurrence
+condition|)
+block|{
+name|message
+operator|=
+literal|"Duration of the requested reservation: "
+operator|+
+name|duration
+operator|+
+literal|" is greater than the recurrence: "
+operator|+
+name|recurrence
+operator|+
+literal|". Please try again with a smaller duration."
 expr_stmt|;
 throw|throw
 name|RPCUtil
@@ -1007,7 +1037,7 @@ name|recurrenceExpression
 operator|+
 literal|". Please try"
 operator|+
-literal|" again with a non-negative long value as period"
+literal|" again with a non-negative long value as period."
 expr_stmt|;
 throw|throw
 name|RPCUtil
