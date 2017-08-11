@@ -1864,6 +1864,7 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getContainerMap ()
+specifier|public
 name|ConcurrentSkipListMap
 argument_list|<
 name|String
