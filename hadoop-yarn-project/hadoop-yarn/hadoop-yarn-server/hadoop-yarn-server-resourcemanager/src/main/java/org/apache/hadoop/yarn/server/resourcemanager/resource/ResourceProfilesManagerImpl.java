@@ -571,7 +571,7 @@ name|next
 argument_list|()
 decl_stmt|;
 name|String
-name|key
+name|profileName
 init|=
 name|entry
 operator|.
@@ -583,7 +583,7 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|key
+name|profileName
 operator|.
 name|isEmpty
 argument_list|()
@@ -608,7 +608,7 @@ name|Map
 condition|)
 block|{
 name|Map
-name|value
+name|profileInfo
 init|=
 operator|(
 name|Map
@@ -622,7 +622,7 @@ comment|// ensure memory and vcores are specified
 if|if
 condition|(
 operator|!
-name|value
+name|profileInfo
 operator|.
 name|containsKey
 argument_list|(
@@ -630,7 +630,7 @@ name|MEMORY
 argument_list|)
 operator|||
 operator|!
-name|value
+name|profileInfo
 operator|.
 name|containsKey
 argument_list|(
@@ -644,7 +644,7 @@ name|IOException
 argument_list|(
 literal|"Illegal resource profile definition; profile '"
 operator|+
-name|key
+name|profileName
 operator|+
 literal|"' must contain '"
 operator|+
@@ -663,16 +663,14 @@ name|resource
 init|=
 name|parseResource
 argument_list|(
-name|key
-argument_list|,
-name|value
+name|profileInfo
 argument_list|)
 decl_stmt|;
 name|profiles
 operator|.
 name|put
 argument_list|(
-name|key
+name|profileName
 argument_list|,
 name|resource
 argument_list|)
@@ -683,7 +681,7 @@ name|info
 argument_list|(
 literal|"Added profile '"
 operator|+
-name|key
+name|profileName
 operator|+
 literal|"' with resources "
 operator|+
@@ -747,16 +745,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|parseResource (String key, Map value)
+DECL|method|parseResource (Map profileInfo)
 specifier|private
 name|Resource
 name|parseResource
 parameter_list|(
-name|String
-name|key
-parameter_list|,
 name|Map
-name|value
+name|profileInfo
 parameter_list|)
 throws|throws
 name|IOException
@@ -776,7 +771,7 @@ decl_stmt|;
 name|Iterator
 name|iterator
 init|=
-name|value
+name|profileInfo
 operator|.
 name|entrySet
 argument_list|()
