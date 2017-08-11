@@ -229,7 +229,7 @@ specifier|final
 name|String
 name|OZONE_METADATA_STORE_IMPL_DEFAULT
 init|=
-name|OZONE_METADATA_STORE_IMPL_LEVELDB
+name|OZONE_METADATA_STORE_IMPL_ROCKSDB
 decl_stmt|;
 DECL|field|OZONE_KEY_CACHE
 specifier|public
