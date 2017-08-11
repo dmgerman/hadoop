@@ -1005,8 +1005,6 @@ name|blockManager
 operator|=
 name|blockManager
 expr_stmt|;
-comment|// TODO: Enables DFSNetworkTopology by default after more stress
-comment|// testings/validations.
 name|this
 operator|.
 name|useDfsNetworkTopology
