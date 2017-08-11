@@ -470,6 +470,29 @@ argument_list|(
 literal|"s3native."
 argument_list|)
 expr_stmt|;
+comment|// WASB properties are in a different subtree.
+comment|// - org.apache.hadoop.fs.azure.NativeAzureFileSystem
+name|xmlPrefixToSkipCompare
+operator|.
+name|add
+argument_list|(
+literal|"fs.wasb.impl"
+argument_list|)
+expr_stmt|;
+name|xmlPrefixToSkipCompare
+operator|.
+name|add
+argument_list|(
+literal|"fs.wasbs.impl"
+argument_list|)
+expr_stmt|;
+name|xmlPrefixToSkipCompare
+operator|.
+name|add
+argument_list|(
+literal|"fs.azure."
+argument_list|)
+expr_stmt|;
 comment|// ADL properties are in a different subtree
 comment|// - org.apache.hadoop.hdfs.web.ADLConfKeys
 name|xmlPrefixToSkipCompare
