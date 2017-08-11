@@ -70,7 +70,7 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|PreemptableResourceScheduler
+name|ResourceScheduler
 import|;
 end_import
 
@@ -80,7 +80,7 @@ specifier|public
 interface|interface
 name|SchedulingEditPolicy
 block|{
-DECL|method|init (Configuration config, RMContext context, PreemptableResourceScheduler scheduler)
+DECL|method|init (Configuration config, RMContext context, ResourceScheduler scheduler)
 name|void
 name|init
 parameter_list|(
@@ -90,7 +90,7 @@ parameter_list|,
 name|RMContext
 name|context
 parameter_list|,
-name|PreemptableResourceScheduler
+name|ResourceScheduler
 name|scheduler
 parameter_list|)
 function_decl|;

@@ -174,26 +174,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
-name|PreemptableResourceScheduler
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -335,9 +315,6 @@ name|conf
 argument_list|,
 name|rmContext
 argument_list|,
-operator|(
-name|PreemptableResourceScheduler
-operator|)
 name|rmContext
 operator|.
 name|getScheduler

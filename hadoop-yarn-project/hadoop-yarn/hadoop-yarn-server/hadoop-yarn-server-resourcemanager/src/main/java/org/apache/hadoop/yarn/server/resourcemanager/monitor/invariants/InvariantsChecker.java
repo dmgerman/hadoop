@@ -92,7 +92,7 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|PreemptableResourceScheduler
+name|ResourceScheduler
 import|;
 end_import
 
@@ -175,7 +175,7 @@ name|context
 decl_stmt|;
 DECL|field|scheduler
 specifier|private
-name|PreemptableResourceScheduler
+name|ResourceScheduler
 name|scheduler
 decl_stmt|;
 DECL|field|throwOnInvariantViolation
@@ -190,7 +190,7 @@ name|monitoringInterval
 decl_stmt|;
 annotation|@
 name|Override
-DECL|method|init (Configuration config, RMContext rmContext, PreemptableResourceScheduler preemptableResourceScheduler)
+DECL|method|init (Configuration config, RMContext rmContext, ResourceScheduler scheduler)
 specifier|public
 name|void
 name|init
@@ -201,8 +201,8 @@ parameter_list|,
 name|RMContext
 name|rmContext
 parameter_list|,
-name|PreemptableResourceScheduler
-name|preemptableResourceScheduler
+name|ResourceScheduler
+name|scheduler
 parameter_list|)
 block|{
 name|this
@@ -221,7 +221,7 @@ name|this
 operator|.
 name|scheduler
 operator|=
-name|preemptableResourceScheduler
+name|scheduler
 expr_stmt|;
 name|this
 operator|.
@@ -372,7 +372,7 @@ return|;
 block|}
 DECL|method|getScheduler ()
 specifier|public
-name|PreemptableResourceScheduler
+name|ResourceScheduler
 name|getScheduler
 parameter_list|()
 block|{

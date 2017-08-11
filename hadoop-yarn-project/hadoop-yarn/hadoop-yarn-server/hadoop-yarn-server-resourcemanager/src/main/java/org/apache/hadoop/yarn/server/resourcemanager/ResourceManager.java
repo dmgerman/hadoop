@@ -1286,26 +1286,6 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|PreemptableResourceScheduler
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
 name|QueueMetrics
 import|;
 end_import
@@ -4154,8 +4134,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// creating monitors that handle preemption
-name|createPolicyMonitors
+name|createSchedulerMonitors
 argument_list|()
 expr_stmt|;
 name|masterService
@@ -4579,18 +4558,14 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|createPolicyMonitors ()
+DECL|method|createSchedulerMonitors ()
 specifier|protected
 name|void
-name|createPolicyMonitors
+name|createSchedulerMonitors
 parameter_list|()
 block|{
 if|if
 condition|(
-name|scheduler
-operator|instanceof
-name|PreemptableResourceScheduler
-operator|&&
 name|conf
 operator|.
 name|getBoolean

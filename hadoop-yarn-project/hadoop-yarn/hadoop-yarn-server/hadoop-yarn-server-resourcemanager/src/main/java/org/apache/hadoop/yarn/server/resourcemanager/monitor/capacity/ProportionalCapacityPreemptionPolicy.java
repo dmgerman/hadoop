@@ -288,7 +288,7 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|PreemptableResourceScheduler
+name|ResourceScheduler
 import|;
 end_import
 
@@ -990,7 +990,7 @@ operator|.
 name|EMPTY_MAP
 expr_stmt|;
 block|}
-DECL|method|init (Configuration config, RMContext context, PreemptableResourceScheduler sched)
+DECL|method|init (Configuration config, RMContext context, ResourceScheduler sched)
 specifier|public
 name|void
 name|init
@@ -1001,7 +1001,7 @@ parameter_list|,
 name|RMContext
 name|context
 parameter_list|,
-name|PreemptableResourceScheduler
+name|ResourceScheduler
 name|sched
 parameter_list|)
 block|{

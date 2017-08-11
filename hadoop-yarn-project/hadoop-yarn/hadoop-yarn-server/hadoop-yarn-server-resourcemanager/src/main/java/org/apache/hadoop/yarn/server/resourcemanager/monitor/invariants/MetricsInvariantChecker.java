@@ -190,7 +190,7 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|PreemptableResourceScheduler
+name|QueueMetrics
 import|;
 end_import
 
@@ -210,7 +210,7 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|QueueMetrics
+name|ResourceScheduler
 import|;
 end_import
 
@@ -334,18 +334,6 @@ name|Map
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|stream
-operator|.
-name|Collectors
-import|;
-end_import
-
 begin_comment
 comment|/**  * This policy checks at every invocation that a given set of invariants  * (specified in a file) are respected over QueueMetrics and JvmMetrics. The  * file may contain arbitrary (Javascrip) boolean expression over the metrics  * variables.  *  * The right set of invariants depends on the deployment environment, a large  * number of complex invariant can make this check expensive.  *  * The MetricsInvariantChecker can be configured to throw a RuntimeException or  * simlpy warn in the logs if an invariant is not respected.  */
 end_comment
@@ -441,7 +429,7 @@ name|jvmMetrics
 decl_stmt|;
 annotation|@
 name|Override
-DECL|method|init (Configuration config, RMContext rmContext, PreemptableResourceScheduler preemptableResourceScheduler)
+DECL|method|init (Configuration config, RMContext rmContext, ResourceScheduler scheduler)
 specifier|public
 name|void
 name|init
@@ -452,8 +440,8 @@ parameter_list|,
 name|RMContext
 name|rmContext
 parameter_list|,
-name|PreemptableResourceScheduler
-name|preemptableResourceScheduler
+name|ResourceScheduler
+name|scheduler
 parameter_list|)
 block|{
 name|super
@@ -464,7 +452,7 @@ name|config
 argument_list|,
 name|rmContext
 argument_list|,
-name|preemptableResourceScheduler
+name|scheduler
 argument_list|)
 expr_stmt|;
 name|this
