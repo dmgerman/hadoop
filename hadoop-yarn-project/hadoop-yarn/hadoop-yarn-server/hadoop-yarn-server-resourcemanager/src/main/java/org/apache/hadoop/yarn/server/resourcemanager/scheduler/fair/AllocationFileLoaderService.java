@@ -1555,9 +1555,7 @@ name|queueType
 argument_list|,
 operator|new
 name|HashSet
-argument_list|<
-name|String
-argument_list|>
+argument_list|<>
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1642,9 +1640,7 @@ name|queueElements
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|Element
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|Element
