@@ -498,6 +498,10 @@ specifier|static
 name|Path
 name|TEST_ROOT_DIR
 init|=
+name|localFs
+operator|.
+name|makeQualified
+argument_list|(
 operator|new
 name|Path
 argument_list|(
@@ -512,10 +516,6 @@ argument_list|()
 operator|+
 literal|"-tmpDir"
 argument_list|)
-operator|.
-name|makeQualified
-argument_list|(
-name|localFs
 argument_list|)
 decl_stmt|;
 DECL|field|APP_JAR

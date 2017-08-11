@@ -1483,6 +1483,10 @@ block|{
 name|Path
 name|home
 init|=
+name|fileSys
+operator|.
+name|makeQualified
+argument_list|(
 operator|new
 name|Path
 argument_list|(
@@ -1493,10 +1497,6 @@ argument_list|(
 literal|"user.home"
 argument_list|)
 argument_list|)
-operator|.
-name|makeQualified
-argument_list|(
-name|fileSys
 argument_list|)
 decl_stmt|;
 name|Path
@@ -1557,11 +1557,11 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-name|path
+name|fileSys
 operator|.
 name|makeQualified
 argument_list|(
-name|fileSys
+name|path
 argument_list|)
 argument_list|,
 name|status

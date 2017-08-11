@@ -1168,6 +1168,10 @@ condition|)
 block|{
 name|root
 operator|=
+name|fs
+operator|.
+name|makeQualified
+argument_list|(
 operator|new
 name|Path
 argument_list|(
@@ -1177,10 +1181,6 @@ operator|++
 name|i
 index|]
 argument_list|)
-operator|.
-name|makeQualified
-argument_list|(
-name|fs
 argument_list|)
 expr_stmt|;
 name|System

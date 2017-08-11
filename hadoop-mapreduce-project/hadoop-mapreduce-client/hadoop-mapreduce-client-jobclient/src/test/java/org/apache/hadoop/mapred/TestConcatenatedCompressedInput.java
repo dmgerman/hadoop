@@ -625,8 +625,9 @@ specifier|static
 name|Path
 name|workDir
 init|=
-operator|new
-name|Path
+name|localFs
+operator|.
+name|makeQualified
 argument_list|(
 operator|new
 name|Path
@@ -639,14 +640,9 @@ literal|"test.build.data"
 argument_list|,
 literal|"/tmp"
 argument_list|)
-argument_list|)
 argument_list|,
 literal|"TestConcatenatedCompressedInput"
 argument_list|)
-operator|.
-name|makeQualified
-argument_list|(
-name|localFs
 argument_list|)
 decl_stmt|;
 DECL|method|makeStream (String str)

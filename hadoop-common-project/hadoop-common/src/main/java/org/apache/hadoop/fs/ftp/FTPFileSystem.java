@@ -2602,11 +2602,11 @@ name|blockSize
 argument_list|,
 name|modTime
 argument_list|,
-name|root
+name|this
 operator|.
 name|makeQualified
 argument_list|(
-name|this
+name|root
 argument_list|)
 argument_list|)
 return|;
@@ -2832,11 +2832,11 @@ name|user
 argument_list|,
 name|group
 argument_list|,
-name|filePath
+name|this
 operator|.
 name|makeQualified
 argument_list|(
-name|this
+name|filePath
 argument_list|)
 argument_list|)
 return|;

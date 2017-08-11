@@ -384,19 +384,15 @@ argument_list|)
 throw|;
 block|}
 block|}
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|field|workDir
 specifier|private
 specifier|static
 name|Path
 name|workDir
 init|=
-operator|new
-name|Path
+name|localFs
+operator|.
+name|makeQualified
 argument_list|(
 operator|new
 name|Path
@@ -409,14 +405,9 @@ literal|"test.build.data"
 argument_list|,
 literal|"/tmp"
 argument_list|)
-argument_list|)
 argument_list|,
 literal|"TestCombineTextInputFormat"
 argument_list|)
-operator|.
-name|makeQualified
-argument_list|(
-name|localFs
 argument_list|)
 decl_stmt|;
 comment|// A reporter that does nothing

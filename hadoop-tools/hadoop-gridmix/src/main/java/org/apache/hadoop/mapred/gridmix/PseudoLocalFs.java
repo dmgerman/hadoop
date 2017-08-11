@@ -434,11 +434,11 @@ name|FileNotFoundException
 block|{
 name|path
 operator|=
-name|path
+name|this
 operator|.
 name|makeQualified
 argument_list|(
-name|this
+name|path
 argument_list|)
 expr_stmt|;
 name|boolean
@@ -1380,6 +1380,35 @@ operator|+
 literal|"is not supported in pseudo local file system."
 argument_list|)
 throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|makeQualified (Path path)
+specifier|public
+name|Path
+name|makeQualified
+parameter_list|(
+name|Path
+name|path
+parameter_list|)
+block|{
+comment|// skip FileSystem#checkPath() to validate some other Filesystems
+return|return
+name|path
+operator|.
+name|makeQualified
+argument_list|(
+name|this
+operator|.
+name|getUri
+argument_list|()
+argument_list|,
+name|this
+operator|.
+name|getWorkingDirectory
+argument_list|()
+argument_list|)
+return|;
 block|}
 block|}
 end_class

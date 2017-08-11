@@ -1202,11 +1202,11 @@ block|{
 name|String
 name|srcq
 init|=
-name|src
+name|srcFS
 operator|.
 name|makeQualified
 argument_list|(
-name|srcFS
+name|src
 argument_list|)
 operator|.
 name|toString
@@ -1219,11 +1219,11 @@ decl_stmt|;
 name|String
 name|dstq
 init|=
-name|dst
+name|dstFS
 operator|.
 name|makeQualified
 argument_list|(
-name|dstFS
+name|dst
 argument_list|)
 operator|.
 name|toString

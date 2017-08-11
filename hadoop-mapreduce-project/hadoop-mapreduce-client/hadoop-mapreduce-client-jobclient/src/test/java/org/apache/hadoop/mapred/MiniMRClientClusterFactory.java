@@ -226,6 +226,10 @@ decl_stmt|;
 name|Path
 name|testRootDir
 init|=
+name|fs
+operator|.
+name|makeQualified
+argument_list|(
 operator|new
 name|Path
 argument_list|(
@@ -235,10 +239,6 @@ name|identifier
 operator|+
 literal|"-tmpDir"
 argument_list|)
-operator|.
-name|makeQualified
-argument_list|(
-name|fs
 argument_list|)
 decl_stmt|;
 name|Path

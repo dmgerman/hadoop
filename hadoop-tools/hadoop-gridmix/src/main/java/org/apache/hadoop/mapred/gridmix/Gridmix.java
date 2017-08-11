@@ -2046,11 +2046,11 @@ argument_list|)
 decl_stmt|;
 name|ioPath
 operator|=
-name|ioPath
+name|inputFs
 operator|.
 name|makeQualified
 argument_list|(
-name|inputFs
+name|ioPath
 argument_list|)
 expr_stmt|;
 name|boolean

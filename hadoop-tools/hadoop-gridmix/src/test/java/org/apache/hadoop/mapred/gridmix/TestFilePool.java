@@ -305,6 +305,10 @@ name|getRaw
 argument_list|()
 decl_stmt|;
 return|return
+name|fs
+operator|.
+name|makeQualified
+argument_list|(
 operator|new
 name|Path
 argument_list|(
@@ -319,10 +323,6 @@ argument_list|)
 argument_list|,
 literal|"testFilePool"
 argument_list|)
-operator|.
-name|makeQualified
-argument_list|(
-name|fs
 argument_list|)
 return|;
 block|}

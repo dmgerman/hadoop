@@ -719,11 +719,11 @@ specifier|final
 name|Path
 name|qualifiedPath
 init|=
-name|path
+name|fs
 operator|.
 name|makeQualified
 argument_list|(
-name|fs
+name|path
 argument_list|)
 decl_stmt|;
 name|status
@@ -1176,11 +1176,11 @@ specifier|final
 name|Path
 name|qualifiedPath
 init|=
-name|path
+name|fs
 operator|.
 name|makeQualified
 argument_list|(
-name|fs
+name|path
 argument_list|)
 decl_stmt|;
 name|FileStatus

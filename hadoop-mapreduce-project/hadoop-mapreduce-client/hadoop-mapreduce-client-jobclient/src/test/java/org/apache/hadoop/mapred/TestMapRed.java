@@ -1559,6 +1559,10 @@ block|}
 name|Path
 name|testdir
 init|=
+name|fs
+operator|.
+name|makeQualified
+argument_list|(
 operator|new
 name|Path
 argument_list|(
@@ -1571,10 +1575,6 @@ argument_list|,
 literal|"/tmp"
 argument_list|)
 argument_list|)
-operator|.
-name|makeQualified
-argument_list|(
-name|fs
 argument_list|)
 decl_stmt|;
 name|fs

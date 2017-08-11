@@ -921,11 +921,11 @@ argument_list|)
 expr_stmt|;
 name|path
 operator|=
-name|path
+name|pfs
 operator|.
 name|makeQualified
 argument_list|(
-name|pfs
+name|path
 argument_list|)
 expr_stmt|;
 name|validateGetFileStatus
