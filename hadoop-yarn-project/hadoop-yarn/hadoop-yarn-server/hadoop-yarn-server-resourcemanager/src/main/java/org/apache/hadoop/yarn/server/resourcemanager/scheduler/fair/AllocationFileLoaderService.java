@@ -1795,7 +1795,9 @@ operator|instanceof
 name|Element
 operator|)
 condition|)
+block|{
 continue|continue;
+block|}
 name|Element
 name|field
 init|=
@@ -3160,7 +3162,9 @@ operator|instanceof
 name|Element
 operator|)
 condition|)
+block|{
 continue|continue;
+block|}
 name|Element
 name|field
 init|=
