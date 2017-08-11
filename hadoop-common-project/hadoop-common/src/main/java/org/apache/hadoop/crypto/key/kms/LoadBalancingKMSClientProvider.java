@@ -1571,11 +1571,14 @@ block|}
 end_function
 
 begin_function
-DECL|method|reencryptEncryptedKey (EncryptedKeyVersion ekv)
+annotation|@
+name|Override
+DECL|method|reencryptEncryptedKey ( final EncryptedKeyVersion ekv)
 specifier|public
 name|EncryptedKeyVersion
 name|reencryptEncryptedKey
 parameter_list|(
+specifier|final
 name|EncryptedKeyVersion
 name|ekv
 parameter_list|)
