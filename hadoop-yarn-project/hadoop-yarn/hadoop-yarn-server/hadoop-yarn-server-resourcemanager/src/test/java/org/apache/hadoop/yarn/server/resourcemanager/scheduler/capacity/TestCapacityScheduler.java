@@ -28242,9 +28242,9 @@ expr_stmt|;
 block|}
 name|assertEquals
 argument_list|(
-literal|"P2 Used Resource should be 8 GB"
+literal|"P2 Used Resource should be 7 GB"
 argument_list|,
-literal|8
+literal|7
 operator|*
 name|GB
 argument_list|,

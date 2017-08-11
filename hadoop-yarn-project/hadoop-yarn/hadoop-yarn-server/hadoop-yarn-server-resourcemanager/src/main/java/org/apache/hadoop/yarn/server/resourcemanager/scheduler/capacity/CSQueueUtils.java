@@ -808,7 +808,7 @@ block|}
 block|}
 block|}
 comment|/**    * Update partitioned resource usage, if nodePartition == null, will update    * used resource for all partitions of this queue.    */
-DECL|method|updateUsedCapacity (final ResourceCalculator rc, final Resource totalPartitionResource, String nodePartition, AbstractCSQueue childQueue)
+DECL|method|updateUsedCapacity (final ResourceCalculator rc, final Resource totalPartitionResource, Resource clusterResource, String nodePartition, AbstractCSQueue childQueue)
 specifier|public
 specifier|static
 name|void
@@ -821,6 +821,9 @@ parameter_list|,
 specifier|final
 name|Resource
 name|totalPartitionResource
+parameter_list|,
+name|Resource
+name|clusterResource
 parameter_list|,
 name|String
 name|nodePartition
@@ -900,23 +903,14 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-comment|// queueGuaranteed = totalPartitionedResource *
-comment|// absolute_capacity(partition)
 name|Resource
 name|queueGuranteedResource
 init|=
-name|Resources
+name|childQueue
 operator|.
-name|multiply
-argument_list|(
-name|totalPartitionResource
-argument_list|,
-name|queueCapacities
-operator|.
-name|getAbsoluteCapacity
+name|getEffectiveCapacity
 argument_list|(
 name|nodePartition
-argument_list|)
 argument_list|)
 decl_stmt|;
 comment|// make queueGuranteed>= minimum_allocation to avoid divided by 0.
@@ -1143,28 +1137,11 @@ comment|// (total label resource) * (absolute capacity of label in that queue)
 name|Resource
 name|queueGuranteedResource
 init|=
-name|Resources
-operator|.
-name|multiply
-argument_list|(
-name|nlm
-operator|.
-name|getResourceByLabel
-argument_list|(
-name|partition
-argument_list|,
-name|cluster
-argument_list|)
-argument_list|,
 name|queue
 operator|.
-name|getQueueCapacities
-argument_list|()
-operator|.
-name|getAbsoluteCapacity
+name|getEffectiveCapacity
 argument_list|(
 name|partition
-argument_list|)
 argument_list|)
 decl_stmt|;
 comment|// Available resource in queue for a specific label will be calculated as
@@ -1335,6 +1312,8 @@ argument_list|,
 name|cluster
 argument_list|)
 argument_list|,
+name|cluster
+argument_list|,
 name|partition
 argument_list|,
 name|childQueue
@@ -1356,6 +1335,8 @@ name|nodePartition
 argument_list|,
 name|cluster
 argument_list|)
+argument_list|,
+name|cluster
 argument_list|,
 name|nodePartition
 argument_list|,

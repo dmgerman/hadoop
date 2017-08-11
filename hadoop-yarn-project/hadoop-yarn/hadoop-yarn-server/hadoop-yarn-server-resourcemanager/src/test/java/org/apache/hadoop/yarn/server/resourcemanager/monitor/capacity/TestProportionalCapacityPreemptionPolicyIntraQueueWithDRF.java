@@ -235,13 +235,13 @@ expr_stmt|;
 name|String
 name|labelsConfig
 init|=
-literal|"=100:200,true;"
+literal|"=100:50,true;"
 decl_stmt|;
 name|String
 name|nodesConfig
 init|=
 comment|// n1 has no label
-literal|"n1= res=100:200"
+literal|"n1= res=100:50"
 decl_stmt|;
 name|String
 name|queuesConfig
@@ -364,7 +364,7 @@ name|mDisp
 argument_list|,
 name|times
 argument_list|(
-literal|7
+literal|3
 argument_list|)
 argument_list|)
 operator|.

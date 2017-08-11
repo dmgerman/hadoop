@@ -2802,6 +2802,33 @@ name|resource
 argument_list|)
 return|;
 block|}
+DECL|method|normalizeDown (ResourceCalculator calculator, Resource resource, Resource factor)
+specifier|public
+specifier|static
+name|Resource
+name|normalizeDown
+parameter_list|(
+name|ResourceCalculator
+name|calculator
+parameter_list|,
+name|Resource
+name|resource
+parameter_list|,
+name|Resource
+name|factor
+parameter_list|)
+block|{
+return|return
+name|calculator
+operator|.
+name|normalizeDown
+argument_list|(
+name|resource
+argument_list|,
+name|factor
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 

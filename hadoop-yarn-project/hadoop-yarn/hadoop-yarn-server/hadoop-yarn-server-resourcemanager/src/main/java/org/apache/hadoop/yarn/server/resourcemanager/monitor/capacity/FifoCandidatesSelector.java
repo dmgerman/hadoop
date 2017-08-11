@@ -711,16 +711,13 @@ name|Resources
 operator|.
 name|multiply
 argument_list|(
-name|Resources
-operator|.
-name|multiply
-argument_list|(
-name|clusterResource
-argument_list|,
 name|leafQueue
 operator|.
-name|getAbsoluteCapacity
-argument_list|()
+name|getEffectiveCapacity
+argument_list|(
+name|RMNodeLabelsManager
+operator|.
+name|NO_LABEL
 argument_list|)
 argument_list|,
 name|leafQueue
@@ -894,11 +891,6 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Given a target preemption for a specific application, select containers    * to preempt (after unreserving all reservation for that app).    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
 DECL|method|preemptFrom (FiCaSchedulerApp app, Resource clusterResource, Map<String, Resource> resToObtainByPartition, List<RMContainer> skippedAMContainerlist, Resource skippedAMSize, Map<ApplicationAttemptId, Set<RMContainer>> selectedContainers, Resource totalPreemptionAllowed)
 specifier|private
 name|void

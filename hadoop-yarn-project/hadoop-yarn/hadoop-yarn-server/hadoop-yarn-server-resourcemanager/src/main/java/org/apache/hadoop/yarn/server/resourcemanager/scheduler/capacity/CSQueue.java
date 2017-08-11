@@ -380,6 +380,26 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
+name|QueueResourceQuotas
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
 name|ResourceLimits
 import|;
 end_import
@@ -441,6 +461,30 @@ operator|.
 name|scheduler
 operator|.
 name|SchedulerQueue
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|capacity
+operator|.
+name|AbstractCSQueue
+operator|.
+name|CapacityConfigType
 import|;
 end_import
 
@@ -1038,6 +1082,68 @@ name|Float
 argument_list|>
 name|getUserWeights
 parameter_list|()
+function_decl|;
+comment|/**    * Get QueueResourceQuotas associated with each queue.    * @return QueueResourceQuotas    */
+DECL|method|getQueueResourceQuotas ()
+specifier|public
+name|QueueResourceQuotas
+name|getQueueResourceQuotas
+parameter_list|()
+function_decl|;
+comment|/**    * Get CapacityConfigType as PERCENTAGE or ABSOLUTE_RESOURCE    * @return CapacityConfigType    */
+DECL|method|getCapacityConfigType ()
+specifier|public
+name|CapacityConfigType
+name|getCapacityConfigType
+parameter_list|()
+function_decl|;
+comment|/**    * Get effective capacity of queue. If min/max resource is configured,    * preference will be given to absolute configuration over normal capacity.    * Also round down the result to normalizeDown.    *    * @param label    *          partition    * @return effective queue capacity    */
+DECL|method|getEffectiveCapacity (String label)
+name|Resource
+name|getEffectiveCapacity
+parameter_list|(
+name|String
+name|label
+parameter_list|)
+function_decl|;
+DECL|method|getEffectiveCapacityUp (String label)
+name|Resource
+name|getEffectiveCapacityUp
+parameter_list|(
+name|String
+name|label
+parameter_list|)
+function_decl|;
+DECL|method|getEffectiveCapacityDown (String label, Resource factor)
+name|Resource
+name|getEffectiveCapacityDown
+parameter_list|(
+name|String
+name|label
+parameter_list|,
+name|Resource
+name|factor
+parameter_list|)
+function_decl|;
+comment|/**    * Get effective max capacity of queue. If min/max resource is configured,    * preference will be given to absolute configuration over normal capacity.    * Also round down the result to normalizeDown.    *    * @param label    *          partition    * @return effective max queue capacity    */
+DECL|method|getEffectiveMaxCapacity (String label)
+name|Resource
+name|getEffectiveMaxCapacity
+parameter_list|(
+name|String
+name|label
+parameter_list|)
+function_decl|;
+DECL|method|getEffectiveMaxCapacityDown (String label, Resource factor)
+name|Resource
+name|getEffectiveMaxCapacityDown
+parameter_list|(
+name|String
+name|label
+parameter_list|,
+name|Resource
+name|factor
+parameter_list|)
 function_decl|;
 block|}
 end_interface

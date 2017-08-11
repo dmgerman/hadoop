@@ -5665,6 +5665,29 @@ return|return
 name|rmApp
 return|;
 block|}
+DECL|method|unRegisterNode (MockNM nm)
+specifier|public
+name|MockNM
+name|unRegisterNode
+parameter_list|(
+name|MockNM
+name|nm
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+name|nm
+operator|.
+name|unRegisterNode
+argument_list|()
+expr_stmt|;
+name|drainEventsImplicitly
+argument_list|()
+expr_stmt|;
+return|return
+name|nm
+return|;
+block|}
 DECL|method|registerNode (String nodeIdStr, int memory)
 specifier|public
 name|MockNM

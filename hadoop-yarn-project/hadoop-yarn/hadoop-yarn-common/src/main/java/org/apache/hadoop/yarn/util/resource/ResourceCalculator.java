@@ -571,6 +571,20 @@ name|Resource
 name|resource
 parameter_list|)
 function_decl|;
+comment|/**    * Get resource<code>r</code>and normalize down using step-factor    *<code>stepFactor</code>.    *    * @param r    *          resource to be multiplied    * @param stepFactor    *          factor by which to normalize down    * @return resulting normalized resource    */
+DECL|method|normalizeDown (Resource r, Resource stepFactor)
+specifier|public
+specifier|abstract
+name|Resource
+name|normalizeDown
+parameter_list|(
+name|Resource
+name|r
+parameter_list|,
+name|Resource
+name|stepFactor
+parameter_list|)
+function_decl|;
 block|}
 end_class
 

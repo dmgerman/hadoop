@@ -1865,6 +1865,19 @@ argument_list|(
 name|numNodes
 argument_list|)
 expr_stmt|;
+name|root
+operator|.
+name|updateClusterResource
+argument_list|(
+name|clusterResource
+argument_list|,
+operator|new
+name|ResourceLimits
+argument_list|(
+name|clusterResource
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// Start testing
 name|LeafQueue
 name|a
@@ -3544,6 +3557,19 @@ operator|.
 name|thenReturn
 argument_list|(
 name|numNodes
+argument_list|)
+expr_stmt|;
+name|root
+operator|.
+name|updateClusterResource
+argument_list|(
+name|clusterResource
+argument_list|,
+operator|new
+name|ResourceLimits
+argument_list|(
+name|clusterResource
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Start testing
@@ -5248,6 +5274,19 @@ argument_list|(
 name|numNodes
 argument_list|)
 expr_stmt|;
+name|root
+operator|.
+name|updateClusterResource
+argument_list|(
+name|clusterResource
+argument_list|,
+operator|new
+name|ResourceLimits
+argument_list|(
+name|clusterResource
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// Start testing
 name|LeafQueue
 name|a
@@ -5883,6 +5922,19 @@ operator|.
 name|thenReturn
 argument_list|(
 name|numNodes
+argument_list|)
+expr_stmt|;
+name|root
+operator|.
+name|updateClusterResource
+argument_list|(
+name|clusterResource
+argument_list|,
+operator|new
+name|ResourceLimits
+argument_list|(
+name|clusterResource
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Start testing
