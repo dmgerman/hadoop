@@ -7316,6 +7316,50 @@ name|TIMELINE_SERVICE_PREFIX
 operator|+
 literal|"hbase.configuration.file"
 decl_stmt|;
+comment|/**    * The name for setting that enables or disables authentication checks    * for reading timeline service v2 data.    */
+DECL|field|TIMELINE_SERVICE_READ_AUTH_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_READ_AUTH_ENABLED
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"read.authentication.enabled"
+decl_stmt|;
+comment|/**    * The default setting for authentication checks for reading timeline    * service v2 data.    */
+DECL|field|DEFAULT_TIMELINE_SERVICE_READ_AUTH_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|Boolean
+name|DEFAULT_TIMELINE_SERVICE_READ_AUTH_ENABLED
+init|=
+literal|false
+decl_stmt|;
+comment|/**    * The name for setting that lists the users and groups who are allowed    * to read timeline service v2 data. It is a comma separated list of    * user, followed by space, then comma separated list of groups.    * It will allow this list of users and groups to read the data    * and reject everyone else.    */
+DECL|field|TIMELINE_SERVICE_READ_ALLOWED_USERS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_READ_ALLOWED_USERS
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"read.allowed.users"
+decl_stmt|;
+comment|/**    * The default value for list of the users who are allowed to read    * timeline service v2 data.    */
+DECL|field|DEFAULT_TIMELINE_SERVICE_READ_ALLOWED_USERS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_TIMELINE_SERVICE_READ_ALLOWED_USERS
+init|=
+literal|""
+decl_stmt|;
 comment|/**    * The setting that controls how long the final value of a metric of a    * completed app is retained before merging into the flow sum. Up to this time    * after an application is completed out-of-order values that arrive can be    * recognized and discarded at the cost of increased storage.    */
 DECL|field|DEFAULT_APP_FINAL_VALUE_RETENTION_THRESHOLD
 specifier|public

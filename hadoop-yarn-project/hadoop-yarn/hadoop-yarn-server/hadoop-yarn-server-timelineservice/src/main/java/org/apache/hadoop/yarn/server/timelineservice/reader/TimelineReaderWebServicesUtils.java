@@ -26,6 +26,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|security
+operator|.
+name|Principal
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|EnumSet
@@ -136,6 +146,7 @@ end_comment
 
 begin_class
 DECL|class|TimelineReaderWebServicesUtils
+specifier|public
 specifier|final
 class|class
 name|TimelineReaderWebServicesUtils
@@ -787,8 +798,9 @@ name|str
 argument_list|)
 return|;
 block|}
-comment|/**    * Get UGI from HTTP request.    * @param req HTTP request.    * @return UGI.    */
+comment|/**    * Get UGI based on the remote user in the HTTP request.    *    * @param req HTTP request.    * @return UGI.    */
 DECL|method|getUser (HttpServletRequest req)
+specifier|public
 specifier|static
 name|UserGroupInformation
 name|getUser
@@ -797,14 +809,64 @@ name|HttpServletRequest
 name|req
 parameter_list|)
 block|{
+return|return
+name|getCallerUserGroupInformation
+argument_list|(
+name|req
+argument_list|,
+literal|false
+argument_list|)
+return|;
+block|}
+comment|/**    * Get UGI from the HTTP request.    *    * @param hsr HTTP request.    * @param usePrincipal if true, use principal name else use remote user name    * @return UGI.    */
+DECL|method|getCallerUserGroupInformation ( HttpServletRequest hsr, boolean usePrincipal)
+specifier|public
+specifier|static
+name|UserGroupInformation
+name|getCallerUserGroupInformation
+parameter_list|(
+name|HttpServletRequest
+name|hsr
+parameter_list|,
+name|boolean
+name|usePrincipal
+parameter_list|)
+block|{
 name|String
 name|remoteUser
 init|=
-name|req
+name|hsr
 operator|.
 name|getRemoteUser
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|usePrincipal
+condition|)
+block|{
+name|Principal
+name|princ
+init|=
+name|hsr
+operator|.
+name|getUserPrincipal
+argument_list|()
+decl_stmt|;
+name|remoteUser
+operator|=
+name|princ
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
+name|princ
+operator|.
+name|getName
+argument_list|()
+expr_stmt|;
+block|}
 name|UserGroupInformation
 name|callerUGI
 init|=
