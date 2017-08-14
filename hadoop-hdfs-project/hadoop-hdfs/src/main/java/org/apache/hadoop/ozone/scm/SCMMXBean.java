@@ -34,6 +34,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|jmx
+operator|.
+name|ServiceRuntimeInfo
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|util
@@ -55,6 +69,8 @@ DECL|interface|SCMMXBean
 specifier|public
 interface|interface
 name|SCMMXBean
+extends|extends
+name|ServiceRuntimeInfo
 block|{
 comment|/**    * Get the number of data nodes that in all states.    *    * @return A state to number of nodes that in this state mapping    */
 DECL|method|getNodeCount ()

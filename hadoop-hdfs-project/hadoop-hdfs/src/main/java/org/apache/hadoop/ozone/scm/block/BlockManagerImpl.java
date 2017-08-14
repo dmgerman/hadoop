@@ -70,6 +70,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|metrics2
+operator|.
+name|util
+operator|.
+name|MBeans
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|OzoneConsts
@@ -280,6 +296,16 @@ end_import
 
 begin_import
 import|import
+name|javax
+operator|.
+name|management
+operator|.
+name|ObjectName
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -316,6 +342,18 @@ name|util
 operator|.
 name|concurrent
 operator|.
+name|ConcurrentHashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
 name|locks
 operator|.
 name|Lock
@@ -333,16 +371,6 @@ operator|.
 name|locks
 operator|.
 name|ReentrantLock
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|HashMap
 import|;
 end_import
 
@@ -595,6 +623,8 @@ class|class
 name|BlockManagerImpl
 implements|implements
 name|BlockManager
+implements|,
+name|BlockmanagerMXBean
 block|{
 DECL|field|LOG
 specifier|private
@@ -675,6 +705,12 @@ specifier|private
 specifier|final
 name|Random
 name|rand
+decl_stmt|;
+DECL|field|mxBean
+specifier|private
+specifier|final
+name|ObjectName
+name|mxBean
 decl_stmt|;
 comment|/**    * Constructor.    * @param conf - configuration.    * @param nodeManager - node manager.    * @param containerManager - container manager.    * @param cacheSizeMB - cache size for level db store.    * @throws IOException    */
 DECL|method|BlockManagerImpl (final Configuration conf, final NodeManager nodeManager, final Mapping containerManager, final int cacheSizeMB)
@@ -846,7 +882,7 @@ expr_stmt|;
 name|openContainers
 operator|=
 operator|new
-name|HashMap
+name|ConcurrentHashMap
 argument_list|<>
 argument_list|()
 expr_stmt|;
@@ -883,6 +919,19 @@ operator|=
 operator|new
 name|ReentrantLock
 argument_list|()
+expr_stmt|;
+name|mxBean
+operator|=
+name|MBeans
+operator|.
+name|register
+argument_list|(
+literal|"BlockManager"
+argument_list|,
+literal|"BlockManagerImpl"
+argument_list|,
+name|this
+argument_list|)
 expr_stmt|;
 block|}
 comment|// TODO: close full (or almost full) containers with a separate thread.
@@ -1905,6 +1954,28 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+name|MBeans
+operator|.
+name|unregister
+argument_list|(
+name|mxBean
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getOpenContainersNo ()
+specifier|public
+name|int
+name|getOpenContainersNo
+parameter_list|()
+block|{
+return|return
+name|openContainers
+operator|.
+name|size
+argument_list|()
+return|;
 block|}
 block|}
 end_class

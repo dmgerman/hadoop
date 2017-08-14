@@ -16,136 +16,42 @@ name|jmx
 package|;
 end_package
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|VersionInfo
-import|;
-end_import
-
 begin_comment
-comment|/**  * Helper base class to report the standard version and runtime information.  */
+comment|/**  * Common runtime information for any service components.  *  * Note: it's intentional to not use MXBean or MBean as a suffix  of the name.  *  * Most of the services extends the ServiceRuntimeInfoImpl class and also  * implements a specific MXBean interface which extends this interface.  *  * This inheritance from multiple path could confuse the jmx system and  * some jmx properties could be disappeared.  *  * The solution is to always extend this interface and use the jmx naming  * convention in the new interface..  */
 end_comment
 
-begin_class
-DECL|class|ServiceRuntimeInfo
+begin_interface
+DECL|interface|ServiceRuntimeInfo
 specifier|public
-class|class
+interface|interface
 name|ServiceRuntimeInfo
-implements|implements
-name|ServiceRuntimeInfoMBean
 block|{
-DECL|field|startedTimeInMillis
-specifier|private
-name|long
-name|startedTimeInMillis
-decl_stmt|;
-annotation|@
-name|Override
+comment|/**    * Gets the version of Hadoop.    *    * @return the version    */
 DECL|method|getVersion ()
-specifier|public
 name|String
 name|getVersion
 parameter_list|()
-block|{
-return|return
-name|VersionInfo
-operator|.
-name|getVersion
-argument_list|()
-operator|+
-literal|", r"
-operator|+
-name|VersionInfo
-operator|.
-name|getRevision
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
+function_decl|;
+comment|/**    * Get the version of software running on the Namenode    *    * @return a string representing the version    */
 DECL|method|getSoftwareVersion ()
-specifier|public
 name|String
 name|getSoftwareVersion
 parameter_list|()
-block|{
-return|return
-name|VersionInfo
-operator|.
-name|getVersion
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
+function_decl|;
+comment|/**    * Get the compilation information which contains date, user and branch    *    * @return the compilation information, as a JSON string.    */
 DECL|method|getCompileInfo ()
-specifier|public
 name|String
 name|getCompileInfo
 parameter_list|()
-block|{
-return|return
-name|VersionInfo
-operator|.
-name|getDate
-argument_list|()
-operator|+
-literal|" by "
-operator|+
-name|VersionInfo
-operator|.
-name|getUser
-argument_list|()
-operator|+
-literal|" from "
-operator|+
-name|VersionInfo
-operator|.
-name|getBranch
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
+function_decl|;
+comment|/**    * Gets the NN start time in milliseconds.    *    * @return the NN start time in msec    */
 DECL|method|getStartedTimeInMillis ()
-specifier|public
 name|long
 name|getStartedTimeInMillis
 parameter_list|()
-block|{
-return|return
-name|System
-operator|.
-name|currentTimeMillis
-argument_list|()
-operator|-
-name|startedTimeInMillis
-return|;
+function_decl|;
 block|}
-DECL|method|setStartTime ()
-specifier|public
-name|void
-name|setStartTime
-parameter_list|()
-block|{
-name|startedTimeInMillis
-operator|=
-name|System
-operator|.
-name|currentTimeMillis
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-end_class
+end_interface
 
 end_unit
 

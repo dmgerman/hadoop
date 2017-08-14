@@ -441,7 +441,9 @@ name|ObjectName
 argument_list|(
 literal|"Hadoop:service=StorageContainerManager,"
 operator|+
-literal|"name=StorageContainerManagerInfo"
+literal|"name=StorageContainerManagerInfo,"
+operator|+
+literal|"component=ServerRuntime"
 argument_list|)
 decl_stmt|;
 name|String

@@ -42,17 +42,7 @@ name|hadoop
 operator|.
 name|jmx
 operator|.
-name|ServiceRuntimeInfoMBean
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
+name|ServiceRuntimeInfo
 import|;
 end_import
 
@@ -70,7 +60,7 @@ specifier|public
 interface|interface
 name|KSMMXBean
 extends|extends
-name|ServiceRuntimeInfoMBean
+name|ServiceRuntimeInfo
 block|{
 DECL|method|getRpcPort ()
 name|String

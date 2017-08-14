@@ -604,7 +604,12 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"HTTP server of SCM is listening at http://%s"
+literal|"HTTP server of %s is listening at http://%s"
+argument_list|,
+name|name
+operator|.
+name|toUpperCase
+argument_list|()
 argument_list|,
 name|realAddress
 argument_list|)
@@ -656,7 +661,12 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"HTTP server of SCM is listening at https://%s"
+literal|"HTTP server of %s is listening at https://%s"
+argument_list|,
+name|name
+operator|.
+name|toUpperCase
+argument_list|()
 argument_list|,
 name|realAddress
 argument_list|)
