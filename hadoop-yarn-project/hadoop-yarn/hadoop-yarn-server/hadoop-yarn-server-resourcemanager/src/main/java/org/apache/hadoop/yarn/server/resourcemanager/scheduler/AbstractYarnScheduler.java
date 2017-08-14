@@ -2214,6 +2214,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|// TODO: Rename it to getCurrentApplicationAttempt
 DECL|method|getApplicationAttempt (ApplicationAttemptId applicationAttemptId)
 specifier|public
 name|T

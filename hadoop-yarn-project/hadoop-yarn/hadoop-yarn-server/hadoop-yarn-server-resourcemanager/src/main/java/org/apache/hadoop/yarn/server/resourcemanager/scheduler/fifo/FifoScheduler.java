@@ -2423,9 +2423,44 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Calling allocate on removed "
+literal|"Calling allocate on removed or non existent application "
 operator|+
-literal|"or non-existent application "
+name|applicationAttemptId
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|EMPTY_ALLOCATION
+return|;
+block|}
+comment|// The allocate may be the leftover from previous attempt, and it will
+comment|// impact current attempt, such as confuse the request and allocation for
+comment|// current attempt's AM container.
+comment|// Note outside precondition check for the attempt id may be
+comment|// outdated here, so double check it here is necessary.
+if|if
+condition|(
+operator|!
+name|application
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|applicationAttemptId
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Calling allocate on previous or removed "
+operator|+
+literal|"or non existent application attempt "
 operator|+
 name|applicationAttemptId
 argument_list|)
