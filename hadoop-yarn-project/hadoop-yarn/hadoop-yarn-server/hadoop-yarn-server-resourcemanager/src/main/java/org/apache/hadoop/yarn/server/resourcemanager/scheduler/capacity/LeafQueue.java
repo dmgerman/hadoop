@@ -2148,27 +2148,6 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Override
-DECL|method|getQueuePath ()
-specifier|public
-name|String
-name|getQueuePath
-parameter_list|()
-block|{
-return|return
-name|getParent
-argument_list|()
-operator|.
-name|getQueuePath
-argument_list|()
-operator|+
-literal|"."
-operator|+
-name|getQueueName
-argument_list|()
-return|;
-block|}
 comment|/**    * Used only by tests.    */
 annotation|@
 name|Private
