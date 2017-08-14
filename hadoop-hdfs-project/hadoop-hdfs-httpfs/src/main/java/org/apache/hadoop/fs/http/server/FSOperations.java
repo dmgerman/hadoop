@@ -2960,7 +2960,7 @@ specifier|private
 name|PathFilter
 name|filter
 decl_stmt|;
-comment|/**      * Creates a list-status executor.      *      * @param path the directory to retrieve the status of its contents.      * @param filter glob filter to use.      *      * @throws IOException thrown if the filter expression is incorrect.      */
+comment|/**      * Creates a list-status executor.      *      * @param path the directory/file to retrieve the status of its contents.      * @param filter glob filter to use.      *      * @throws IOException thrown if the filter expression is incorrect.      */
 DECL|method|FSListStatus (String path, String filter)
 specifier|public
 name|FSListStatus
