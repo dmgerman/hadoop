@@ -256,9 +256,7 @@ name|yarn
 operator|.
 name|util
 operator|.
-name|resource
-operator|.
-name|ResourceUtils
+name|UnitsConversionUtil
 import|;
 end_import
 
@@ -274,7 +272,9 @@ name|yarn
 operator|.
 name|util
 operator|.
-name|UnitsConversionUtil
+name|resource
+operator|.
+name|ResourceUtils
 import|;
 end_import
 
@@ -1016,7 +1016,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|setResourceValue (String resource, Long value)
+DECL|method|setResourceValue (String resource, long value)
 specifier|public
 name|void
 name|setResourceValue
@@ -1024,7 +1024,7 @@ parameter_list|(
 name|String
 name|resource
 parameter_list|,
-name|Long
+name|long
 name|value
 parameter_list|)
 throws|throws
