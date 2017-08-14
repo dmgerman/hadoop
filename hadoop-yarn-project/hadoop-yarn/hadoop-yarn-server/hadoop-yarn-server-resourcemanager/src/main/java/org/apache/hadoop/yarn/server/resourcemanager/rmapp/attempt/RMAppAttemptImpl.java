@@ -5259,7 +5259,11 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't handle this event at current state"
+literal|"App attempt: "
+operator|+
+name|appAttemptID
+operator|+
+literal|" can't handle this event at current state"
 argument_list|,
 name|e
 argument_list|)
