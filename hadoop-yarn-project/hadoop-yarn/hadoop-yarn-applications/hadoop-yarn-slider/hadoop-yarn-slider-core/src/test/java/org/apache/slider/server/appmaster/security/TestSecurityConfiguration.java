@@ -84,9 +84,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
+operator|.
+name|service
+operator|.
+name|conf
 operator|.
 name|SliderKeys
 import|;
@@ -98,9 +102,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
+operator|.
+name|service
+operator|.
+name|conf
 operator|.
 name|SliderXmlConfKeys
 import|;
@@ -230,8 +238,7 @@ specifier|public
 class|class
 name|TestSecurityConfiguration
 block|{
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testValidLocalConfiguration ()
 specifier|public
 name|void
@@ -336,8 +343,7 @@ literal|"testCluster"
 argument_list|)
 decl_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testValidDistributedConfiguration ()
 specifier|public
 name|void
@@ -442,8 +448,7 @@ literal|"testCluster"
 argument_list|)
 decl_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testMissingPrincipalNoLoginWithDistributedConfig ()
 specifier|public
 name|void
@@ -568,8 +573,7 @@ block|{
 comment|// expected
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testMissingPrincipalNoLoginWithLocalConfig ()
 specifier|public
 name|void
@@ -694,8 +698,7 @@ block|{
 comment|// expected
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testBothKeytabMechanismsConfigured ()
 specifier|public
 name|void
@@ -827,8 +830,7 @@ block|{
 comment|// expected
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testMissingPrincipalButLoginWithDistributedConfig ()
 specifier|public
 name|void
@@ -922,8 +924,7 @@ literal|"testCluster"
 argument_list|)
 decl_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testMissingPrincipalButLoginWithLocalConfig ()
 specifier|public
 name|void
@@ -1017,8 +1018,7 @@ literal|"testCluster"
 argument_list|)
 decl_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testKeypathLocationOnceLocalized ()
 specifier|public
 name|void
@@ -1136,8 +1136,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testAMKeytabProvided ()
 specifier|public
 name|void

@@ -432,8 +432,7 @@ return|return
 literal|"TestMockAppStateRMOperations"
 return|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testPriorityOnly ()
 specifier|public
 name|void
@@ -458,8 +457,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testPriorityRoundTrip ()
 specifier|public
 name|void
@@ -484,8 +482,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testPriorityRoundTripWithRequest ()
 specifier|public
 name|void
@@ -515,8 +512,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testMockAddOp ()
 specifier|public
 name|void
@@ -623,8 +619,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test of a flex up and down op which verifies that outstanding    * requests are cancelled first.    *<ol>    *<li>request 5 nodes, assert 5 request made</li>    *<li>allocate 1 of them</li>    *<li>flex cluster size to 3</li>    *<li>assert this generates 2 cancel requests</li>    *</ol>    */
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testRequestThenCancelOps ()
 specifier|public
 name|void
@@ -907,8 +902,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testCancelNoActualContainers ()
 specifier|public
 name|void
@@ -981,8 +975,7 @@ literal|5
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFlexDownOutstandingRequests ()
 specifier|public
 name|void
@@ -1148,8 +1141,7 @@ expr_stmt|;
 comment|// TODO releasing?
 comment|//    assertEquals(1, role0.getReleasing());
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testCancelAllOutstandingRequests ()
 specifier|public
 name|void
@@ -1261,8 +1253,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFlexUpOutstandingRequests ()
 specifier|public
 name|void
@@ -1398,8 +1389,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFlexUpNoSpace ()
 specifier|public
 name|void
@@ -1487,8 +1477,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testAllocateReleaseOp ()
 specifier|public
 name|void
@@ -1780,8 +1769,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testComplexAllocation ()
 specifier|public
 name|void
@@ -2033,8 +2021,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testDoubleNodeManagerStartEvent ()
 specifier|public
 name|void
@@ -2244,8 +2231,7 @@ name|ri3
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testDoubleAllocate ()
 specifier|public
 name|void

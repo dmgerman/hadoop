@@ -160,15 +160,15 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|server
+name|yarn
 operator|.
-name|appmaster
+name|service
 operator|.
 name|metrics
 operator|.
-name|SliderMetrics
+name|ServiceMetrics
 import|;
 end_import
 
@@ -252,7 +252,7 @@ name|resourceRequirements
 decl_stmt|;
 DECL|field|componentMetrics
 specifier|private
-name|SliderMetrics
+name|ServiceMetrics
 name|componentMetrics
 decl_stmt|;
 comment|/** any pending AA request */
@@ -303,7 +303,7 @@ name|id
 expr_stmt|;
 name|componentMetrics
 operator|=
-name|SliderMetrics
+name|ServiceMetrics
 operator|.
 name|register
 argument_list|(
@@ -332,7 +332,7 @@ expr_stmt|;
 block|}
 DECL|method|getComponentMetrics ()
 specifier|public
-name|SliderMetrics
+name|ServiceMetrics
 name|getComponentMetrics
 parameter_list|()
 block|{
@@ -822,13 +822,9 @@ name|long
 name|getFailedRecently
 parameter_list|()
 block|{
+comment|//    return componentMetrics.failedSinceLastThreshold.value();
 return|return
-name|componentMetrics
-operator|.
-name|failedSinceLastThreshold
-operator|.
-name|value
-argument_list|()
+literal|0
 return|;
 block|}
 DECL|method|resetFailedRecently ()
@@ -837,27 +833,11 @@ name|long
 name|resetFailedRecently
 parameter_list|()
 block|{
-name|long
-name|count
-init|=
-name|componentMetrics
-operator|.
-name|failedSinceLastThreshold
-operator|.
-name|value
-argument_list|()
-decl_stmt|;
-name|componentMetrics
-operator|.
-name|failedSinceLastThreshold
-operator|.
-name|set
-argument_list|(
-literal|0
-argument_list|)
-expr_stmt|;
+comment|//    long count =
+comment|//        componentMetrics.failedSinceLastThreshold.value();
+comment|//    componentMetrics.failedSinceLastThreshold.set(0);
 return|return
-name|count
+literal|0
 return|;
 block|}
 DECL|method|getFailed ()

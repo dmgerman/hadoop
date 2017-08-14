@@ -537,8 +537,7 @@ return|return
 name|application
 return|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testShortLivedFail ()
 specifier|public
 name|void
@@ -733,8 +732,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testLongLivedFail ()
 specifier|public
 name|void
@@ -916,8 +914,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testNodeStartFailure ()
 specifier|public
 name|void
@@ -1103,8 +1100,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testRecurrentStartupFailure ()
 specifier|public
 name|void
@@ -1269,8 +1265,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testRecurrentStartupFailureWithUnlimitedFailures ()
 specifier|public
 name|void
@@ -1478,8 +1473,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testRoleStatusFailureWindow ()
 specifier|public
 name|void
@@ -1647,8 +1641,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testRoleStatusFailed ()
 specifier|public
 name|void
@@ -1766,8 +1759,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testRoleStatusFailedLimitsExceeded ()
 specifier|public
 name|void
@@ -1895,8 +1887,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testRoleStatusFailedPrempted ()
 specifier|public
 name|void
@@ -1994,8 +1985,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testRoleStatusFailedNode ()
 specifier|public
 name|void
@@ -2073,8 +2063,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testNodeEntryCompleted ()
 specifier|public
 name|void
@@ -2162,8 +2151,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testNodeEntryFailed ()
 specifier|public
 name|void
@@ -2276,8 +2264,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testNodeEntryLimitsExceeded ()
 specifier|public
 name|void
@@ -2347,8 +2334,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testNodeEntryPreempted ()
 specifier|public
 name|void
@@ -2418,8 +2404,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testNodeEntryNodeFailure ()
 specifier|public
 name|void

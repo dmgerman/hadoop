@@ -218,15 +218,15 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|server
+name|yarn
 operator|.
-name|appmaster
+name|service
 operator|.
 name|metrics
 operator|.
-name|SliderMetrics
+name|ServiceMetrics
 import|;
 end_import
 
@@ -1035,7 +1035,7 @@ operator|++
 expr_stmt|;
 block|}
 block|}
-name|SliderMetrics
+name|ServiceMetrics
 name|metrics
 init|=
 name|status

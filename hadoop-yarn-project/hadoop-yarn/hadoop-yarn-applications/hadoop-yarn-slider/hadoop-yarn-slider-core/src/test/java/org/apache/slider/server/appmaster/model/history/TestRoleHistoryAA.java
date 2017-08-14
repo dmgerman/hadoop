@@ -461,8 +461,7 @@ literal|"GPU"
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFindNodesInFullCluster ()
 specifier|public
 name|void
@@ -487,8 +486,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFindNodesInUnhealthyCluster ()
 specifier|public
 name|void
@@ -572,8 +570,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFindNoNodesWrongLabel ()
 specifier|public
 name|void
@@ -598,8 +595,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFindSomeNodesSomeLabel ()
 specifier|public
 name|void
@@ -715,8 +711,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFindNoNodesRightLabel ()
 specifier|public
 name|void
@@ -741,8 +736,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFindNoNodesNoLabel ()
 specifier|public
 name|void
@@ -767,8 +761,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFindNoNodesClusterRequested ()
 specifier|public
 name|void
@@ -806,8 +799,7 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFindNoNodesClusterBusy ()
 specifier|public
 name|void
@@ -846,8 +838,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Tag all nodes as starting, then walk one through a bit    * more of its lifecycle.    */
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFindNoNodesLifecycle ()
 specifier|public
 name|void
@@ -1000,8 +991,7 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testRolesIndependent ()
 specifier|public
 name|void
@@ -1132,8 +1122,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testNodeEntryAvailablity ()
 specifier|public
 name|void
@@ -1225,8 +1214,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testNodeInstanceSerialization ()
 specifier|public
 name|void
@@ -1495,8 +1483,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testBuildRolenames ()
 specifier|public
 name|void

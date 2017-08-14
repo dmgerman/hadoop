@@ -351,8 +351,7 @@ literal|0
 return|;
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testHasWindowsDrive ()
 specifier|public
 name|void
@@ -370,8 +369,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testStartPosition ()
 specifier|public
 name|void
@@ -391,8 +389,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testPathHandling ()
 specifier|public
 name|void
@@ -506,8 +503,7 @@ block|{
 comment|// expected
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testExecNonexistentBinary ()
 specifier|public
 name|void
@@ -574,8 +570,7 @@ throw|;
 block|}
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testExecNonexistentBinary2 ()
 specifier|public
 name|void
@@ -603,8 +598,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testEmitKillCommand ()
 specifier|public
 name|void
@@ -636,8 +630,7 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testHadoopHomeDefined ()
 specifier|public
 name|void
@@ -667,8 +660,7 @@ name|hadoopHome
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testHasWinutils ()
 specifier|public
 name|void
@@ -686,8 +678,7 @@ name|maybeVerifyWinUtilsValid
 argument_list|()
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testExecWinutils ()
 specifier|public
 name|void
@@ -750,8 +741,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testPath ()
 specifier|public
 name|void
@@ -776,8 +766,7 @@ name|path
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFindJavac ()
 specifier|public
 name|void
@@ -806,8 +795,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testHadoopDLL ()
 specifier|public
 name|void

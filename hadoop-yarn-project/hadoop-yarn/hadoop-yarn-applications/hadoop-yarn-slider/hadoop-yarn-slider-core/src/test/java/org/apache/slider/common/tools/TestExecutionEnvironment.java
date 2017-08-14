@@ -90,8 +90,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testClientEnv ()
 specifier|public
 name|void
@@ -108,8 +107,7 @@ name|LOG
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testWinutils ()
 specifier|public
 name|void
@@ -124,8 +122,7 @@ name|maybeVerifyWinUtilsValid
 argument_list|()
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testServerEnv ()
 specifier|public
 name|void
@@ -144,8 +141,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testServerEnvNoDependencies ()
 specifier|public
 name|void
@@ -164,8 +160,7 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testopenSSLEnv ()
 specifier|public
 name|void
@@ -182,8 +177,7 @@ name|LOG
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testValidatePythonEnv ()
 specifier|public
 name|void
@@ -200,8 +194,7 @@ name|LOG
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testNativeLibs ()
 specifier|public
 name|void

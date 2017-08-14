@@ -80,8 +80,7 @@ name|TestSliderTestUtils
 extends|extends
 name|SliderTestUtils
 block|{
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testAssumeTrue ()
 specifier|public
 name|void
@@ -115,8 +114,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testAssumeFalse ()
 specifier|public
 name|void
@@ -149,8 +147,7 @@ block|{
 comment|//expected
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testAssumeBoolOptionSetInConf ()
 specifier|public
 name|void
@@ -204,8 +201,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testAssumeBoolOptionUnsetInConf ()
 specifier|public
 name|void
@@ -250,8 +246,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testAssumeBoolOptionFalseInConf ()
 specifier|public
 name|void
@@ -304,8 +299,7 @@ block|{
 comment|//expected
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testAssumeBoolOptionFalseUnsetInConf ()
 specifier|public
 name|void

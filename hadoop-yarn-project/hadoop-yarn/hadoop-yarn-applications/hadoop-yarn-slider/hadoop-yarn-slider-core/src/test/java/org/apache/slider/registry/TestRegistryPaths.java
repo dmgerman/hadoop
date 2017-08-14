@@ -108,8 +108,7 @@ specifier|public
 class|class
 name|TestRegistryPaths
 block|{
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testHomedirKerberos ()
 specifier|public
 name|void
@@ -155,8 +154,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testHomedirKerberosHost ()
 specifier|public
 name|void
@@ -204,8 +202,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testRegistryPathForInstance ()
 specifier|public
 name|void
@@ -235,8 +232,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testPathResolution ()
 specifier|public
 name|void

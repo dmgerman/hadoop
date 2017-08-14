@@ -272,9 +272,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
+operator|.
+name|service
+operator|.
+name|conf
 operator|.
 name|SliderKeys
 import|;

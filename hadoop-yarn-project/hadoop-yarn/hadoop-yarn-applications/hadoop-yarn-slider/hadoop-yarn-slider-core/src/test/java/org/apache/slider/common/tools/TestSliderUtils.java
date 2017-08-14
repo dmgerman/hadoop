@@ -229,8 +229,7 @@ operator|new
 name|TemporaryFolder
 argument_list|()
 decl_stmt|;
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testTruncate ()
 specifier|public
 name|void
@@ -383,8 +382,7 @@ literal|""
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testApplicationReportComparison ()
 specifier|public
 name|void
@@ -1005,8 +1003,7 @@ return|return
 name|ar
 return|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testGetHdpVersion ()
 specifier|public
 name|void
@@ -1033,8 +1030,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testIsHdp ()
 specifier|public
 name|void
@@ -1054,8 +1050,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testWrite ()
 specifier|public
 name|void

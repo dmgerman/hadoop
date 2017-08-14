@@ -38,8 +38,7 @@ name|TestWorkflowServiceTerminatingRunnable
 extends|extends
 name|WorkflowServiceTestBase
 block|{
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testNoservice ()
 specifier|public
 name|void
@@ -75,8 +74,7 @@ block|{
 comment|// expected
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testBasicRun ()
 specifier|public
 name|void
@@ -120,8 +118,7 @@ name|svc
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFailureRun ()
 specifier|public
 name|void

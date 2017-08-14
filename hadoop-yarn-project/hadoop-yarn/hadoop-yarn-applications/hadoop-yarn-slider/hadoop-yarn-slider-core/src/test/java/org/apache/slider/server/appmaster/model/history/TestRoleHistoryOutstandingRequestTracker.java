@@ -684,8 +684,7 @@ return|return
 name|application
 return|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testAddRetrieveEntry ()
 specifier|public
 name|void
@@ -745,8 +744,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testAddCompleteEntry ()
 specifier|public
 name|void
@@ -881,8 +879,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testResetOpenRequests ()
 specifier|public
 name|void
@@ -971,8 +968,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testRemoveOpenRequestUnissued ()
 specifier|public
 name|void
@@ -1095,8 +1091,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testIssuedOpenRequest ()
 specifier|public
 name|void
@@ -1306,8 +1301,7 @@ name|req1
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testResetEntries ()
 specifier|public
 name|void
@@ -1445,8 +1439,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testEscalation ()
 specifier|public
 name|void
@@ -1893,8 +1886,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * If the placement does include a label, the initial request must    *<i>not</i> include it.    * The escalation request will contain the label, while    * leaving out the node list.    * retains the node list, but sets relaxLocality==true    * @throws Throwable    */
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testRequestLabelledPlacement ()
 specifier|public
 name|void
@@ -2023,8 +2015,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * If the placement doesnt include a label, then the escalation request    * retains the node list, but sets relaxLocality==true.    * @throws Throwable    */
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testRequestUnlabelledPlacement ()
 specifier|public
 name|void
@@ -2138,15 +2129,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
-argument_list|(
-name|expected
-operator|=
-name|IllegalArgumentException
-operator|.
-name|class
-argument_list|)
+comment|//@Test(expected = IllegalArgumentException.class)
 DECL|method|testAARequestNoNodes ()
 specifier|public
 name|void
@@ -2174,8 +2157,7 @@ literal|""
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testAARequest ()
 specifier|public
 name|void
@@ -2232,8 +2214,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testAARequestPair ()
 specifier|public
 name|void
@@ -2348,8 +2329,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testBuildResourceRequirements ()
 specifier|public
 name|void

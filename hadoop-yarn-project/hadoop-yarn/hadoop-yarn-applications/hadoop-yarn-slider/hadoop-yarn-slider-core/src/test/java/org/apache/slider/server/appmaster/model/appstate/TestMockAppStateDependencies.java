@@ -46,6 +46,24 @@ name|org
 operator|.
 name|apache
 operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|service
+operator|.
+name|compinstance
+operator|.
+name|ComponentInstance
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|slider
 operator|.
 name|api
@@ -277,7 +295,7 @@ specifier|public
 name|ProbeStatus
 name|ping
 parameter_list|(
-name|RoleInstance
+name|ComponentInstance
 name|roleInstance
 parameter_list|)
 block|{
@@ -340,7 +358,7 @@ specifier|public
 name|ProbeStatus
 name|ping
 parameter_list|(
-name|RoleInstance
+name|ComponentInstance
 name|roleInstance
 parameter_list|)
 block|{
@@ -380,8 +398,7 @@ return|return
 literal|"TestMockAppStateDependencies"
 return|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testDependencies ()
 specifier|public
 name|void

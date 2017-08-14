@@ -104,9 +104,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
+operator|.
+name|service
+operator|.
+name|conf
 operator|.
 name|SliderXmlConfKeys
 import|;
@@ -394,8 +398,7 @@ name|PLACEHOLDER_VALUE_2
 init|=
 literal|"2.0.0"
 decl_stmt|;
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testGeneratePlaceholderKeyValueMap ()
 specifier|public
 name|void
@@ -507,8 +510,7 @@ name|placeholders
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testSetAmLaunchEnv ()
 specifier|public
 name|void
@@ -663,8 +665,7 @@ name|amLaunchEnv
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testSetAmLaunchEnvMulti ()
 specifier|public
 name|void

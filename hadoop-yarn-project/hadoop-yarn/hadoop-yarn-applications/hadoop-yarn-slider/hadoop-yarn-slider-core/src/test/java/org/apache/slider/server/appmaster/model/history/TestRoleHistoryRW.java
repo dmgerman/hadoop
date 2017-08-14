@@ -466,8 +466,7 @@ name|getRole1Status
 argument_list|()
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testWriteReadEmpty ()
 specifier|public
 name|void
@@ -537,8 +536,7 @@ name|history
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testWriteReadData ()
 specifier|public
 name|void
@@ -717,8 +715,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testWriteReadActiveData ()
 specifier|public
 name|void
@@ -1193,8 +1190,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testWriteThaw ()
 specifier|public
 name|void
@@ -1367,8 +1363,7 @@ name|savetime
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testPurgeOlderEntries ()
 specifier|public
 name|void
@@ -1598,8 +1593,7 @@ return|return
 name|path
 return|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testSkipEmptyFileOnRead ()
 specifier|public
 name|void
@@ -1781,8 +1775,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testSkipBrokenFileOnRead ()
 specifier|public
 name|void
@@ -1999,8 +1992,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test that a v1 JSON file can be read. Here the number of roles    * matches the current state.    * @throws Throwable    */
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testReloadDataV13Role ()
 specifier|public
 name|void
@@ -2066,8 +2058,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test that a v1 JSON file can be read. Here more roles than expected    * @throws Throwable    */
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testReloadDataV16Role ()
 specifier|public
 name|void
@@ -2133,8 +2124,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test that a v1 JSON file can be read. Here the number of roles    * is less than the current state.    * @throws Throwable    */
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testReloadLessRoles ()
 specifier|public
 name|void
@@ -2219,8 +2209,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test that a v1b JSON file can be read. Here more roles than expected    * @throws Throwable    */
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testReloadDataV1B1Role ()
 specifier|public
 name|void

@@ -942,7 +942,7 @@ operator|=
 name|numberOfRunningContainers
 expr_stmt|;
 block|}
-comment|/**    * Life time (in seconds) of the application from the time it reaches the    * STARTED state (after which it is automatically destroyed by YARN). For    * unlimited lifetime do not set a lifetime value.    **/
+comment|/**    * Life time (in seconds) of the application from the time it reaches the    * RUNNING_BUT_UNREADY state (after which it is automatically destroyed by YARN). For    * unlimited lifetime do not set a lifetime value.    **/
 DECL|method|lifetime (Long lifetime)
 specifier|public
 name|Application
@@ -971,7 +971,7 @@ literal|"null"
 argument_list|,
 name|value
 operator|=
-literal|"Life time (in seconds) of the application from the time it reaches the STARTED state (after which it is automatically destroyed by YARN). For unlimited lifetime do not set a lifetime value."
+literal|"Life time (in seconds) of the application from the time it reaches the RUNNING_BUT_UNREADY state (after which it is automatically destroyed by YARN). For unlimited lifetime do not set a lifetime value."
 argument_list|)
 annotation|@
 name|JsonProperty

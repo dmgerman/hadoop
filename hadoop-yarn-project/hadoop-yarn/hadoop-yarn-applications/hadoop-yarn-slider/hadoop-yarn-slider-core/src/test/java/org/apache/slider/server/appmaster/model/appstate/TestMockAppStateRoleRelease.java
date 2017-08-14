@@ -211,8 +211,7 @@ literal|4
 argument_list|)
 return|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testAllocateReleaseRealloc ()
 specifier|public
 name|void

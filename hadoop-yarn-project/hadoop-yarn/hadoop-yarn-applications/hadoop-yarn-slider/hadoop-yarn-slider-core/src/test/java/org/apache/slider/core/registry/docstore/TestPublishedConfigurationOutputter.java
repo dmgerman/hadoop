@@ -323,8 +323,7 @@ literal|"val1"
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testJson ()
 specifier|public
 name|void
@@ -447,8 +446,7 @@ argument_list|)
 argument_list|)
 assert|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testXml ()
 specifier|public
 name|void
@@ -543,8 +541,7 @@ literal|"<name>key1</name><value>val1</value>"
 argument_list|)
 assert|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testHadoopXml ()
 specifier|public
 name|void
@@ -639,8 +636,7 @@ literal|"<name>key1</name><value>val1</value>"
 argument_list|)
 assert|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testProperties ()
 specifier|public
 name|void
@@ -771,8 +767,7 @@ argument_list|)
 argument_list|)
 assert|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testYaml ()
 specifier|public
 name|void
@@ -928,8 +923,7 @@ argument_list|)
 argument_list|)
 assert|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testEnv ()
 specifier|public
 name|void
@@ -1034,8 +1028,7 @@ argument_list|)
 argument_list|)
 assert|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testTemplate1 ()
 specifier|public
 name|void

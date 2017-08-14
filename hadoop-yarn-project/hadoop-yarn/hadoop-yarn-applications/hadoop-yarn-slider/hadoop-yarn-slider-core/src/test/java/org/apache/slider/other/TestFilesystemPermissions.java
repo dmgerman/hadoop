@@ -392,8 +392,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testJavaFSOperations ()
 specifier|public
 name|void
@@ -455,8 +454,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testDiskCheckerOperations ()
 specifier|public
 name|void
@@ -494,8 +492,7 @@ name|subdir
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testDiskCheckerMkdir ()
 specifier|public
 name|void
@@ -578,8 +575,7 @@ return|return
 name|testdir
 return|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testPermsMap ()
 specifier|public
 name|void
@@ -624,8 +620,7 @@ name|diruri
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testInitLocaldir ()
 specifier|public
 name|void
@@ -698,8 +693,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testValidateMiniclusterPerms ()
 specifier|public
 name|void

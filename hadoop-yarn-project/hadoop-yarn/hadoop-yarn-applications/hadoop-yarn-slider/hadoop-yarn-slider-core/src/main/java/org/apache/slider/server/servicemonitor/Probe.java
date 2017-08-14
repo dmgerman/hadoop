@@ -52,6 +52,24 @@ name|org
 operator|.
 name|apache
 operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|service
+operator|.
+name|compinstance
+operator|.
+name|ComponentInstance
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|slider
 operator|.
 name|server
@@ -322,15 +340,15 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{    }
-comment|/**    * Ping the endpoint. All exceptions must be caught and included in the    * (failure) status.    *    * @param roleInstance instance to ping    * @return the status    */
-DECL|method|ping (RoleInstance roleInstance)
+comment|/**    * Ping the endpoint. All exceptions must be caught and included in the    * (failure) status.    *    * @param instance instance to ping    * @return the status    */
+DECL|method|ping (ComponentInstance instance)
 specifier|public
 specifier|abstract
 name|ProbeStatus
 name|ping
 parameter_list|(
-name|RoleInstance
-name|roleInstance
+name|ComponentInstance
+name|instance
 parameter_list|)
 function_decl|;
 block|}

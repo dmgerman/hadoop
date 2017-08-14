@@ -416,8 +416,7 @@ return|return
 name|zki
 return|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testListUserClustersWithoutAnyClusters ()
 specifier|public
 name|void
@@ -466,8 +465,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testListUserClustersWithOneCluster ()
 specifier|public
 name|void
@@ -560,8 +558,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testListUserClustersWithTwoCluster ()
 specifier|public
 name|void
@@ -694,8 +691,7 @@ operator|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testCreateAndDeleteDefaultZKPath ()
 specifier|public
 name|void

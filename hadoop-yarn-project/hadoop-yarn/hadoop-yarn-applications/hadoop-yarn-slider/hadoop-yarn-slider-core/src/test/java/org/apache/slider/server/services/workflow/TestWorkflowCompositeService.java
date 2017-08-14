@@ -102,8 +102,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testSingleChild ()
 specifier|public
 name|void
@@ -128,8 +127,7 @@ name|stop
 argument_list|()
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testSingleChildTerminating ()
 specifier|public
 name|void
@@ -160,8 +158,7 @@ name|parent
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testSingleChildFailing ()
 specifier|public
 name|void
@@ -200,8 +197,7 @@ operator|!=
 literal|null
 assert|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testTwoChildren ()
 specifier|public
 name|void
@@ -262,8 +258,7 @@ name|two
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testCallableChild ()
 specifier|public
 name|void
@@ -386,8 +381,7 @@ name|s
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testNestedComposite ()
 specifier|public
 name|void
@@ -461,8 +455,7 @@ name|two
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFailingComposite ()
 specifier|public
 name|void

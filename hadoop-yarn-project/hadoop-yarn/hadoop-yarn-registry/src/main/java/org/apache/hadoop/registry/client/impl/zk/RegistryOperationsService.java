@@ -518,17 +518,26 @@ argument_list|,
 name|record
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"Bound at {} : {}"
+literal|"Bound at {} : ServiceRecord = {}"
 argument_list|,
 name|path
 argument_list|,
 name|record
 argument_list|)
 expr_stmt|;
+block|}
 name|CreateMode
 name|mode
 init|=

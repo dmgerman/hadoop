@@ -50,6 +50,24 @@ name|org
 operator|.
 name|apache
 operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|service
+operator|.
+name|provider
+operator|.
+name|AbstractClientProvider
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|slider
 operator|.
 name|api
@@ -265,8 +283,7 @@ throws|throws
 name|IOException
 block|{     }
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testConfigFiles ()
 specifier|public
 name|void

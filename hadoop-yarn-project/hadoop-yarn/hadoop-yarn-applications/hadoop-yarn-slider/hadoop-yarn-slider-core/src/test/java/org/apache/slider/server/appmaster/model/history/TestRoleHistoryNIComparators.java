@@ -416,8 +416,7 @@ return|return
 literal|"TestNIComparators"
 return|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testPreferred ()
 specifier|public
 name|void
@@ -464,8 +463,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * The preferred sort still includes failures; up to next phase in process    * to handle that.    * @throws Throwable    */
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testPreferredWithFailures ()
 specifier|public
 name|void
@@ -517,8 +515,7 @@ name|age4Active1
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testPreferredComparatorDowngradesFailures ()
 specifier|public
 name|void
@@ -573,8 +570,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testNewerThanNoRole ()
 specifier|public
 name|void
@@ -622,8 +618,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testMoreActiveThan ()
 specifier|public
 name|void
@@ -669,8 +664,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testMoreActiveThanEmpty ()
 specifier|public
 name|void

@@ -72,8 +72,7 @@ name|TestGauges
 extends|extends
 name|SliderTestBase
 block|{
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testLongGaugeOperations ()
 specifier|public
 name|void

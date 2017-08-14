@@ -71,8 +71,7 @@ name|CLUSTER_JSON
 init|=
 literal|"json/cluster.json"
 decl_stmt|;
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testNoInstances ()
 specifier|public
 name|void
@@ -107,8 +106,7 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testEmptyInstances ()
 specifier|public
 name|void
@@ -147,7 +145,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// TODO test metrics retrieval
-comment|//  @Test
+comment|//  //@Test
 comment|//  public void testLiveInstances() throws Throwable {
 comment|//    InputStream stream = getClass().getClassLoader().getResourceAsStream(
 comment|//        CLUSTER_JSON);

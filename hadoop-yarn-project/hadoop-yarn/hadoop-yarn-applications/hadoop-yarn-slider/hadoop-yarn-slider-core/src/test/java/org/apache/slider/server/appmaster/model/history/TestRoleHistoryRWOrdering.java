@@ -42,9 +42,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
+operator|.
+name|service
+operator|.
+name|conf
 operator|.
 name|SliderKeys
 import|;
@@ -463,8 +467,7 @@ literal|"TestHistoryRWOrdering"
 return|;
 block|}
 comment|/**    * This tests regexp pattern matching. It uses the current time so isn't    * repeatable -but it does test a wider range of values in the process    * @throws Throwable    */
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testPatternRoundTrip ()
 specifier|public
 name|void
@@ -545,8 +548,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testWriteSequenceReadData ()
 specifier|public
 name|void
@@ -748,8 +750,7 @@ name|history1
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testPathStructure ()
 specifier|public
 name|void
@@ -769,8 +770,7 @@ literal|"history-5fffa.json"
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testPathnameComparator ()
 specifier|public
 name|void
@@ -871,8 +871,7 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testPathSort ()
 specifier|public
 name|void

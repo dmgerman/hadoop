@@ -412,8 +412,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    *    * @throws Throwable    */
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testAskForTooMany ()
 specifier|public
 name|void
@@ -780,8 +779,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testClusterSizeChangesDuringRequestSequence ()
 specifier|public
 name|void

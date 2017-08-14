@@ -310,8 +310,7 @@ return|return
 literal|"TestMockAppStateRolePlacement"
 return|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testAllocateReleaseRealloc ()
 specifier|public
 name|void

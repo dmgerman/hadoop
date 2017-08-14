@@ -565,8 +565,7 @@ literal|"dynamicAdd7"
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testDynamicFlexDropRole ()
 specifier|public
 name|void
@@ -598,8 +597,7 @@ literal|"dynamic-6"
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testHistorySaveFlexLoad ()
 specifier|public
 name|void
@@ -719,8 +717,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testHistoryFlexSaveResetLoad ()
 specifier|public
 name|void

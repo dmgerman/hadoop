@@ -805,8 +805,7 @@ name|count
 argument_list|)
 return|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testGetContainerInstances ()
 specifier|public
 name|void
@@ -916,8 +915,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testGenerateRoleDetailsWithTwoColumns ()
 specifier|public
 name|void
@@ -1053,8 +1051,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testGenerateRoleDetailsWithOneColumn ()
 specifier|public
 name|void
@@ -1189,8 +1186,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testGenerateRoleDetailsWithNoData ()
 specifier|public
 name|void
@@ -1310,8 +1306,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testClusterNodeNameComparator ()
 specifier|public
 name|void
@@ -1432,8 +1427,7 @@ name|name
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testTableContent ()
 specifier|public
 name|void
@@ -1529,8 +1523,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testTableAnchorContent ()
 specifier|public
 name|void

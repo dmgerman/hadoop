@@ -112,8 +112,7 @@ specifier|public
 class|class
 name|TestPortScan
 block|{
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testScanPorts ()
 specifier|public
 name|void
@@ -184,8 +183,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testRequestedPortsLogic ()
 specifier|public
 name|void
@@ -258,8 +256,7 @@ name|ports
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testRequestedPortsOutOfOrder ()
 specifier|public
 name|void
@@ -332,8 +329,7 @@ name|ports
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFindAvailablePortInRange ()
 specifier|public
 name|void
@@ -429,8 +425,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFindAvailablePortInList ()
 specifier|public
 name|void
@@ -526,8 +521,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testNoAvailablePorts ()
 specifier|public
 name|void
@@ -628,8 +622,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testPortRemovedFromRange ()
 specifier|public
 name|void
@@ -738,15 +731,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Test
-argument_list|(
-name|expected
-operator|=
-name|BadConfigException
-operator|.
-name|class
-argument_list|)
+comment|//@Test(expected = BadConfigException.class)
 DECL|method|testBadRange ()
 specifier|public
 name|void
@@ -771,15 +756,7 @@ literal|"2000â2010"
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
-argument_list|(
-name|expected
-operator|=
-name|BadConfigException
-operator|.
-name|class
-argument_list|)
+comment|//@Test(expected = BadConfigException.class)
 DECL|method|testEndBeforeStart ()
 specifier|public
 name|void
@@ -803,15 +780,7 @@ literal|"2001-2000"
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
-argument_list|(
-name|expected
-operator|=
-name|BadConfigException
-operator|.
-name|class
-argument_list|)
+comment|//@Test(expected = BadConfigException.class)
 DECL|method|testEmptyRange ()
 specifier|public
 name|void
@@ -835,15 +804,7 @@ literal|""
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
-argument_list|(
-name|expected
-operator|=
-name|BadConfigException
-operator|.
-name|class
-argument_list|)
+comment|//@Test(expected = BadConfigException.class)
 DECL|method|testBlankRange ()
 specifier|public
 name|void
@@ -867,8 +828,7 @@ literal|" "
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testExtraComma ()
 specifier|public
 name|void
@@ -925,8 +885,7 @@ name|ports
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testExtraCommas ()
 specifier|public
 name|void

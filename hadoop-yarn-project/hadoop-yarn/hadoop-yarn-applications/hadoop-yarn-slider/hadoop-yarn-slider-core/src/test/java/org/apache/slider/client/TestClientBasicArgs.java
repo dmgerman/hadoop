@@ -38,9 +38,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
+operator|.
+name|service
+operator|.
+name|client
 operator|.
 name|params
 operator|.
@@ -54,9 +58,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
+operator|.
+name|service
+operator|.
+name|client
 operator|.
 name|params
 operator|.
@@ -153,8 +161,7 @@ extends|extends
 name|SliderTestBase
 block|{
 comment|/**    * Help should print out help string and then succeed.    * @throws Throwable    */
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testHelp ()
 specifier|public
 name|void
@@ -198,8 +205,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testNoArgs ()
 specifier|public
 name|void
@@ -225,8 +231,7 @@ name|EMPTY_LIST
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testListUnknownRM ()
 specifier|public
 name|void

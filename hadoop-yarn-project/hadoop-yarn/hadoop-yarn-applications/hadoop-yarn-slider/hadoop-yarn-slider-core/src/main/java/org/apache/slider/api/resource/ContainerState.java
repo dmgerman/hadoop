@@ -28,12 +28,15 @@ specifier|public
 enum|enum
 name|ContainerState
 block|{
-DECL|enumConstant|INIT
+DECL|enumConstant|RUNNING_BUT_UNREADY
 DECL|enumConstant|READY
-name|INIT
+DECL|enumConstant|STOPPED
+name|RUNNING_BUT_UNREADY
 block|,
 name|READY
-block|; }
+block|,
+name|STOPPED
+block|}
 end_enum
 
 end_unit

@@ -432,8 +432,7 @@ name|configuration
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testMonkeyStart ()
 specifier|public
 name|void
@@ -453,8 +452,7 @@ name|stop
 argument_list|()
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testMonkeyPlay ()
 specifier|public
 name|void
@@ -508,8 +506,7 @@ name|count
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testMonkeySchedule ()
 specifier|public
 name|void
@@ -587,8 +584,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testMonkeyDoesntAddProb0Actions ()
 specifier|public
 name|void
@@ -640,8 +636,7 @@ name|count
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testMonkeyScheduleProb0Actions ()
 specifier|public
 name|void
@@ -697,8 +692,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testMonkeyPlaySometimes ()
 specifier|public
 name|void
@@ -818,8 +812,7 @@ name|count
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testAMKiller ()
 specifier|public
 name|void
@@ -875,8 +868,7 @@ name|ActionHalt
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testContainerKillerEmptyApp ()
 specifier|public
 name|void
@@ -920,8 +912,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Ignore
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testContainerKillerIgnoresAM ()
 specifier|public
 name|void
@@ -980,8 +971,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testContainerKiller ()
 specifier|public
 name|void

@@ -269,8 +269,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testNormalAllocations ()
 specifier|public
 name|void
@@ -446,8 +445,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|//TODO replace with resource profile feature in yarn
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testMaxMemAllocations ()
 specifier|public
 name|void
@@ -626,8 +624,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testMaxDefaultAllocations ()
 specifier|public
 name|void

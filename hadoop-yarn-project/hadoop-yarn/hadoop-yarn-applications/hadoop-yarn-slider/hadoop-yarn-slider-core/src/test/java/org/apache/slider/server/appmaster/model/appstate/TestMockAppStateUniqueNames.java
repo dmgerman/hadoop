@@ -643,8 +643,7 @@ operator|++
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testDynamicFlexDown ()
 specifier|public
 name|void
@@ -797,8 +796,7 @@ literal|"group12"
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testDynamicFlexUp ()
 specifier|public
 name|void

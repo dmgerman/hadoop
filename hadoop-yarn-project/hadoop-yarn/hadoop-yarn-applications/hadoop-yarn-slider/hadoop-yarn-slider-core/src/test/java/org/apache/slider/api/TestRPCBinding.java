@@ -108,8 +108,7 @@ specifier|public
 class|class
 name|TestRPCBinding
 block|{
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testRegistration ()
 specifier|public
 name|void
@@ -147,8 +146,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testGetProxy ()
 specifier|public
 name|void

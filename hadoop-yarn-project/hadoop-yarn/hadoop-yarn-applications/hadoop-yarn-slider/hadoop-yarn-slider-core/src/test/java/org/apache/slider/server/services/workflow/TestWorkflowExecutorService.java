@@ -54,8 +54,7 @@ name|TestWorkflowExecutorService
 extends|extends
 name|WorkflowServiceTestBase
 block|{
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testAsyncRun ()
 specifier|public
 name|void
@@ -108,8 +107,7 @@ name|svc
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFailureRun ()
 specifier|public
 name|void

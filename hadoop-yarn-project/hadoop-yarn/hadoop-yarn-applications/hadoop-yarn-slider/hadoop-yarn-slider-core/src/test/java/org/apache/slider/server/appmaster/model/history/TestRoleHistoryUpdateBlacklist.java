@@ -415,8 +415,7 @@ name|roleStatus
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testUpdateBlacklist ()
 specifier|public
 name|void
@@ -556,8 +555,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testBlacklistOperations ()
 specifier|public
 name|void

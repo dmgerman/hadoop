@@ -551,8 +551,7 @@ return|return
 name|found
 return|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFind1NodeR0 ()
 specifier|public
 name|void
@@ -596,8 +595,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFind2NodeR0 ()
 specifier|public
 name|void
@@ -686,8 +684,7 @@ name|found2
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFind3NodeR0ReturnsNull ()
 specifier|public
 name|void
@@ -725,8 +722,7 @@ name|found
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFindNodesOneEntry ()
 specifier|public
 name|void
@@ -759,8 +755,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFindNodesIndependent ()
 specifier|public
 name|void
@@ -803,8 +798,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFindNodesFallsBackWhenUsed ()
 specifier|public
 name|void
@@ -908,8 +902,7 @@ name|found
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFindNodesSkipsFailingNode ()
 specifier|public
 name|void

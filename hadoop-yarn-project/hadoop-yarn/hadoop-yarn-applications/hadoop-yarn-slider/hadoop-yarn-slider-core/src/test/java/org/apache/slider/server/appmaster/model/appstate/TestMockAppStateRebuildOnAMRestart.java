@@ -272,8 +272,7 @@ return|return
 literal|"TestMockAppStateRebuildOnAMRestart"
 return|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testRebuild ()
 specifier|public
 name|void

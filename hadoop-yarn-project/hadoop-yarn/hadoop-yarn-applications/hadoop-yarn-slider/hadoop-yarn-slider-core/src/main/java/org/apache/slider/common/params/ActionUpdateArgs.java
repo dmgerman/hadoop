@@ -30,6 +30,26 @@ name|Parameters
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|service
+operator|.
+name|client
+operator|.
+name|params
+operator|.
+name|SliderActions
+import|;
+end_import
+
 begin_class
 annotation|@
 name|Parameters

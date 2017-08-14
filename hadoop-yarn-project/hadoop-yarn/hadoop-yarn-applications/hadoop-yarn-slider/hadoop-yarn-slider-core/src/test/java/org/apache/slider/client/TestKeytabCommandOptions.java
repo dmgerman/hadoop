@@ -132,9 +132,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
+operator|.
+name|service
+operator|.
+name|client
 operator|.
 name|params
 operator|.
@@ -148,9 +152,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
+operator|.
+name|service
+operator|.
+name|client
 operator|.
 name|params
 operator|.
@@ -473,8 +481,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testInstallKeytab ()
 specifier|public
 name|void
@@ -627,8 +634,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testInstallThenDeleteKeytab ()
 specifier|public
 name|void
@@ -828,8 +834,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testInstallThenListKeytab ()
 specifier|public
 name|void
@@ -1296,8 +1301,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testDeleteNonExistentKeytab ()
 specifier|public
 name|void
@@ -1369,8 +1373,7 @@ block|{
 comment|// expected
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testInstallKeytabWithNoFolder ()
 specifier|public
 name|void
@@ -1474,8 +1477,7 @@ block|{
 comment|// expected
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testInstallKeytabWithNoKeytab ()
 specifier|public
 name|void
@@ -1576,8 +1578,7 @@ block|{
 comment|// expected
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testInstallKeytabAllowingOverwrite ()
 specifier|public
 name|void
@@ -1798,8 +1799,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testInstallKeytabNotAllowingOverwrite ()
 specifier|public
 name|void
@@ -2007,8 +2007,7 @@ block|{
 comment|// expected
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testInstallKeytabWithMissingKeytab ()
 specifier|public
 name|void

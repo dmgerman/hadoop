@@ -38,6 +38,40 @@ name|org
 operator|.
 name|apache
 operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|service
+operator|.
+name|compinstance
+operator|.
+name|ComponentInstance
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|slider
+operator|.
+name|common
+operator|.
+name|tools
+operator|.
+name|SliderUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|slider
 operator|.
 name|server
@@ -263,16 +297,16 @@ name|timeout
 argument_list|)
 return|;
 block|}
-comment|/**    * Try to connect to the (host,port); a failure to connect within    * the specified timeout is a failure.    * @param roleInstance role instance    * @return the outcome    */
+comment|/**    * Try to connect to the (host,port); a failure to connect within    * the specified timeout is a failure.    * @param instance role instance    * @return the outcome    */
 annotation|@
 name|Override
-DECL|method|ping (RoleInstance roleInstance)
+DECL|method|ping (ComponentInstance instance)
 specifier|public
 name|ProbeStatus
 name|ping
 parameter_list|(
-name|RoleInstance
-name|roleInstance
+name|ComponentInstance
+name|instance
 parameter_list|)
 block|{
 name|ProbeStatus
@@ -282,18 +316,27 @@ operator|new
 name|ProbeStatus
 argument_list|()
 decl_stmt|;
-name|String
-name|ip
-init|=
-name|roleInstance
-operator|.
-name|ip
-decl_stmt|;
 if|if
 condition|(
-name|ip
+name|instance
+operator|.
+name|getContainerStatus
+argument_list|()
 operator|==
 literal|null
+operator|||
+name|SliderUtils
+operator|.
+name|isEmpty
+argument_list|(
+name|instance
+operator|.
+name|getContainerStatus
+argument_list|()
+operator|.
+name|getIPs
+argument_list|()
+argument_list|)
 condition|)
 block|{
 name|status
@@ -305,7 +348,12 @@ argument_list|,
 operator|new
 name|IOException
 argument_list|(
-literal|"IP is not available yet"
+name|instance
+operator|.
+name|getCompInstanceName
+argument_list|()
+operator|+
+literal|": IP is not available yet"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -313,6 +361,22 @@ return|return
 name|status
 return|;
 block|}
+name|String
+name|ip
+init|=
+name|instance
+operator|.
+name|getContainerStatus
+argument_list|()
+operator|.
+name|getIPs
+argument_list|()
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
 name|InetSocketAddress
 name|sockAddr
 init|=
@@ -345,14 +409,19 @@ name|log
 operator|.
 name|debug
 argument_list|(
-literal|"Connecting to "
+name|instance
+operator|.
+name|getCompInstanceName
+argument_list|()
+operator|+
+literal|": Connecting "
 operator|+
 name|sockAddr
 operator|.
 name|toString
 argument_list|()
 operator|+
-literal|"timeout="
+literal|", timeout="
 operator|+
 name|MonitorUtils
 operator|.
@@ -389,13 +458,16 @@ block|{
 name|String
 name|error
 init|=
-literal|"Probe "
+name|instance
+operator|.
+name|getCompInstanceName
+argument_list|()
+operator|+
+literal|": Probe "
 operator|+
 name|sockAddr
 operator|+
-literal|" failed: "
-operator|+
-name|e
+literal|" failed"
 decl_stmt|;
 name|log
 operator|.

@@ -651,8 +651,7 @@ name|DEF_YARN_MEMORY
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFindAndCreate ()
 specifier|public
 name|void
@@ -876,8 +875,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testCreateAndRelease ()
 specifier|public
 name|void
@@ -1262,8 +1260,7 @@ name|hostname
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testStartWithoutWarning ()
 specifier|public
 name|void
@@ -1389,8 +1386,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testStartFailed ()
 specifier|public
 name|void
@@ -1625,8 +1621,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testStartFailedWithoutWarning ()
 specifier|public
 name|void
@@ -1805,8 +1800,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testContainerFailed ()
 specifier|public
 name|void
@@ -2025,8 +2019,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testContainerFailedWithoutWarning ()
 specifier|public
 name|void
@@ -2211,8 +2204,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testAllocationListPrep ()
 specifier|public
 name|void
@@ -2435,8 +2427,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testNodeUpdated ()
 specifier|public
 name|void

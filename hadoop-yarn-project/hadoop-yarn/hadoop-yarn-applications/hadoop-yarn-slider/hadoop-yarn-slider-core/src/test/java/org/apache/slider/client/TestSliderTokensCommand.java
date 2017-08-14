@@ -54,9 +54,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
+operator|.
+name|service
+operator|.
+name|client
 operator|.
 name|params
 operator|.
@@ -70,9 +74,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
+operator|.
+name|service
+operator|.
+name|client
 operator|.
 name|params
 operator|.
@@ -196,8 +204,7 @@ return|return
 name|configuration
 return|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testBadSourceArgs ()
 specifier|public
 name|void
@@ -241,8 +248,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testKTNoPrincipal ()
 specifier|public
 name|void
@@ -280,8 +286,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testPrincipalNoKT ()
 specifier|public
 name|void
@@ -320,8 +325,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * A missing keytab is an error.    * @throws Throwable    */
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testMissingKT ()
 specifier|public
 name|void
@@ -382,8 +386,7 @@ name|ex
 throw|;
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testMissingSourceFile ()
 specifier|public
 name|void
@@ -438,8 +441,7 @@ name|ex
 throw|;
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testListHarmlessWhenInsecure ()
 specifier|public
 name|void
@@ -465,8 +467,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testCreateFailsWhenInsecure ()
 specifier|public
 name|void

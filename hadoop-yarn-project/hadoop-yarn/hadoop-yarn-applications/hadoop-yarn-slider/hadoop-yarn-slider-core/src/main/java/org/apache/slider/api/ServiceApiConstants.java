@@ -50,9 +50,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|util
+name|yarn
+operator|.
+name|service
+operator|.
+name|utils
 operator|.
 name|ServiceApiUtil
 operator|.

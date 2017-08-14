@@ -617,8 +617,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testAvailableListBuiltForRoles ()
 specifier|public
 name|void
@@ -658,8 +657,7 @@ name|available0
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testRequestedNodeOffList ()
 specifier|public
 name|void
@@ -717,8 +715,7 @@ name|resource
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testRequestedNodeOffListWithFailures ()
 specifier|public
 name|void
@@ -959,8 +956,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Verify that strict placement policies generate requests for nodes    * irrespective of their failed status.    * @throws Throwable    */
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testStrictPlacementIgnoresFailures ()
 specifier|public
 name|void
@@ -1137,8 +1133,7 @@ name|ni2
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFindAndRequestNode ()
 specifier|public
 name|void
@@ -1203,8 +1198,7 @@ name|a2
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testRequestedNodeIntoReqList ()
 specifier|public
 name|void
@@ -1256,8 +1250,7 @@ name|hostname
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testCompletedRequestDropsNode ()
 specifier|public
 name|void
@@ -1470,8 +1463,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testTwoRequests ()
 specifier|public
 name|void
@@ -1587,8 +1579,7 @@ name|assertNoOutstandingPlacedRequests
 argument_list|()
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testThreeRequestsOneUnsatisified ()
 specifier|public
 name|void
@@ -1782,8 +1773,7 @@ name|a2
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testThreeRequests ()
 specifier|public
 name|void

@@ -181,8 +181,7 @@ argument_list|(
 literal|"one"
 argument_list|)
 decl_stmt|;
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testRelaxedNohostsOrLabels ()
 specifier|public
 name|void
@@ -201,8 +200,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testRelaxedLabels ()
 specifier|public
 name|void
@@ -221,8 +219,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testNonRelaxedLabels ()
 specifier|public
 name|void
@@ -241,8 +238,7 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testRelaxedHostNoLabel ()
 specifier|public
 name|void

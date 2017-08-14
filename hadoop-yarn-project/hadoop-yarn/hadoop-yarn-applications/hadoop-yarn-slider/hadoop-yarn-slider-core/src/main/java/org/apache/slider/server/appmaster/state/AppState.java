@@ -578,9 +578,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
+operator|.
+name|service
+operator|.
+name|conf
 operator|.
 name|SliderExitCodes
 import|;
@@ -592,9 +596,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
+operator|.
+name|service
+operator|.
+name|conf
 operator|.
 name|SliderKeys
 import|;
@@ -798,15 +806,15 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|server
+name|yarn
 operator|.
-name|appmaster
+name|service
 operator|.
 name|metrics
 operator|.
-name|SliderMetrics
+name|ServiceMetrics
 import|;
 end_import
 
@@ -888,11 +896,11 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|server
+name|yarn
 operator|.
-name|appmaster
+name|service
 operator|.
 name|timelineservice
 operator|.
@@ -906,9 +914,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|util
+name|yarn
+operator|.
+name|service
+operator|.
+name|utils
 operator|.
 name|ServiceApiUtil
 import|;
@@ -1562,7 +1574,7 @@ name|maxResource
 decl_stmt|;
 DECL|field|appMetrics
 specifier|private
-name|SliderMetrics
+name|ServiceMetrics
 name|appMetrics
 decl_stmt|;
 DECL|field|serviceTimelinePublisher
@@ -1901,7 +1913,7 @@ name|application
 expr_stmt|;
 name|appMetrics
 operator|=
-name|SliderMetrics
+name|ServiceMetrics
 operator|.
 name|register
 argument_list|(
@@ -4720,14 +4732,14 @@ operator|.
 name|getComponentMetrics
 argument_list|()
 operator|.
-name|containersCompleted
+name|containersSucceeded
 operator|.
 name|incr
 argument_list|()
 expr_stmt|;
 name|appMetrics
 operator|.
-name|containersCompleted
+name|containersSucceeded
 operator|.
 name|incr
 argument_list|()
@@ -4811,135 +4823,26 @@ name|incr
 argument_list|()
 expr_stmt|;
 break|break;
-case|case
-name|Failed
-case|:
-name|appMetrics
-operator|.
-name|failedSinceLastThreshold
-operator|.
-name|incr
-argument_list|()
-expr_stmt|;
-name|appMetrics
-operator|.
-name|containersFailed
-operator|.
-name|incr
-argument_list|()
-expr_stmt|;
-name|role
-operator|.
-name|getComponentMetrics
-argument_list|()
-operator|.
-name|failedSinceLastThreshold
-operator|.
-name|incr
-argument_list|()
-expr_stmt|;
-name|role
-operator|.
-name|getComponentMetrics
-argument_list|()
-operator|.
-name|containersFailed
-operator|.
-name|incr
-argument_list|()
-expr_stmt|;
-break|break;
-case|case
-name|Failed_limits_exceeded
-case|:
-name|appMetrics
-operator|.
-name|containersLimitsExceeded
-operator|.
-name|incr
-argument_list|()
-expr_stmt|;
-name|appMetrics
-operator|.
-name|failedSinceLastThreshold
-operator|.
-name|incr
-argument_list|()
-expr_stmt|;
-name|appMetrics
-operator|.
-name|containersFailed
-operator|.
-name|incr
-argument_list|()
-expr_stmt|;
-name|role
-operator|.
-name|getComponentMetrics
-argument_list|()
-operator|.
-name|containersLimitsExceeded
-operator|.
-name|incr
-argument_list|()
-expr_stmt|;
-name|role
-operator|.
-name|getComponentMetrics
-argument_list|()
-operator|.
-name|failedSinceLastThreshold
-operator|.
-name|incr
-argument_list|()
-expr_stmt|;
-name|role
-operator|.
-name|getComponentMetrics
-argument_list|()
-operator|.
-name|containersFailed
-operator|.
-name|incr
-argument_list|()
-expr_stmt|;
-break|break;
-default|default:
-name|appMetrics
-operator|.
-name|failedSinceLastThreshold
-operator|.
-name|incr
-argument_list|()
-expr_stmt|;
-name|appMetrics
-operator|.
-name|containersFailed
-operator|.
-name|incr
-argument_list|()
-expr_stmt|;
-name|role
-operator|.
-name|getComponentMetrics
-argument_list|()
-operator|.
-name|failedSinceLastThreshold
-operator|.
-name|incr
-argument_list|()
-expr_stmt|;
-name|role
-operator|.
-name|getComponentMetrics
-argument_list|()
-operator|.
-name|containersFailed
-operator|.
-name|incr
-argument_list|()
-expr_stmt|;
-break|break;
+comment|//    case Failed:
+comment|//      appMetrics.failedSinceLastThreshold.incr();
+comment|//      appMetrics.containersFailed.incr();
+comment|//      role.getComponentMetrics().failedSinceLastThreshold.incr();
+comment|//      role.getComponentMetrics().containersFailed.incr();
+comment|//      break;
+comment|//    case Failed_limits_exceeded:
+comment|//      appMetrics.containersLimitsExceeded.incr();
+comment|//      appMetrics.failedSinceLastThreshold.incr();
+comment|//      appMetrics.containersFailed.incr();
+comment|//      role.getComponentMetrics().containersLimitsExceeded.incr();
+comment|//      role.getComponentMetrics().failedSinceLastThreshold.incr();
+comment|//      role.getComponentMetrics().containersFailed.incr();
+comment|//      break;
+comment|//    default:
+comment|//      appMetrics.failedSinceLastThreshold.incr();
+comment|//      appMetrics.containersFailed.incr();
+comment|//      role.getComponentMetrics().failedSinceLastThreshold.incr();
+comment|//      role.getComponentMetrics().containersFailed.incr();
+comment|//      break;
 block|}
 block|}
 comment|/**    * Build up the resource requirements for this role from the cluster    * specification, including substituting max allowed values if the    * specification asked for it (except when    * {@link org.apache.slider.api.ResourceKeys#YARN_RESOURCE_NORMALIZATION_ENABLED}    * is set to false).    * @param role role    * during normalization    */
@@ -6070,7 +5973,7 @@ operator|.
 name|getComponentMetrics
 argument_list|()
 operator|.
-name|containersCompleted
+name|containersSucceeded
 operator|.
 name|value
 argument_list|()
@@ -7640,7 +7543,7 @@ name|probe
 operator|.
 name|ping
 argument_list|(
-name|instance
+literal|null
 argument_list|)
 operator|.
 name|isSuccess

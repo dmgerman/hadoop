@@ -52,9 +52,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
+operator|.
+name|service
+operator|.
+name|client
 operator|.
 name|params
 operator|.
@@ -68,9 +72,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
+operator|.
+name|service
+operator|.
+name|client
 operator|.
 name|params
 operator|.
@@ -218,8 +226,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testNoAction ()
 specifier|public
 name|void
@@ -243,8 +250,7 @@ name|EMPTY_LIST
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testUnknownAction ()
 specifier|public
 name|void
@@ -273,8 +279,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testActionWithoutOptions ()
 specifier|public
 name|void
@@ -305,8 +310,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testActionWithoutEnoughArgs ()
 specifier|public
 name|void
@@ -339,8 +343,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testActionWithTooManyArgs ()
 specifier|public
 name|void
@@ -375,8 +378,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testBadImageArg ()
 specifier|public
 name|void
@@ -411,8 +413,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testRegistryUsage ()
 specifier|public
 name|void
@@ -465,8 +466,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testRegistryExportBadUsage1 ()
 specifier|public
 name|void
@@ -527,8 +527,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testRegistryExportBadUsage2 ()
 specifier|public
 name|void
@@ -593,8 +592,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testRegistryExportBadUsage3 ()
 specifier|public
 name|void
@@ -661,8 +659,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testUpgradeUsage ()
 specifier|public
 name|void
@@ -745,8 +742,7 @@ return|;
 block|}
 annotation|@
 name|Ignore
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testUpgradeWithTemplateResourcesAndContainersOption ()
 specifier|public
 name|void
@@ -821,8 +817,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Ignore
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testUpgradeWithTemplateResourcesAndComponentsOption ()
 specifier|public
 name|void
@@ -895,8 +890,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testNodesMissingFile ()
 specifier|public
 name|void
@@ -941,8 +935,7 @@ name|BadCommandArgumentsException
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFlexWithNoComponents ()
 specifier|public
 name|void

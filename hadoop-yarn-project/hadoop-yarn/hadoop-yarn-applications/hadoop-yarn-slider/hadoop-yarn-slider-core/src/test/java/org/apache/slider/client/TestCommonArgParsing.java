@@ -94,9 +94,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
+operator|.
+name|service
+operator|.
+name|conf
 operator|.
 name|SliderXmlConfKeys
 import|;
@@ -124,9 +128,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
+operator|.
+name|service
+operator|.
+name|client
 operator|.
 name|params
 operator|.
@@ -140,9 +148,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
+operator|.
+name|service
+operator|.
+name|client
 operator|.
 name|params
 operator|.
@@ -156,9 +168,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
+operator|.
+name|service
+operator|.
+name|client
 operator|.
 name|params
 operator|.
@@ -188,9 +204,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
+operator|.
+name|service
+operator|.
+name|client
 operator|.
 name|params
 operator|.
@@ -284,9 +304,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
+operator|.
+name|service
+operator|.
+name|client
 operator|.
 name|params
 operator|.
@@ -300,9 +324,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
+operator|.
+name|service
+operator|.
+name|client
 operator|.
 name|params
 operator|.
@@ -316,9 +344,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
+operator|.
+name|service
+operator|.
+name|client
 operator|.
 name|params
 operator|.
@@ -332,9 +364,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
+operator|.
+name|service
+operator|.
+name|client
 operator|.
 name|params
 operator|.
@@ -537,8 +573,7 @@ name|CLUSTERNAME
 init|=
 literal|"clustername"
 decl_stmt|;
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testCreateActionArgs ()
 specifier|public
 name|void
@@ -573,8 +608,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testCreateFailsNoClustername ()
 specifier|public
 name|void
@@ -594,8 +628,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testCreateFailsTwoClusternames ()
 specifier|public
 name|void
@@ -619,8 +652,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testHelp ()
 specifier|public
 name|void
@@ -651,8 +683,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testSliderBasePath ()
 specifier|public
 name|void
@@ -693,8 +724,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testNoSliderBasePath ()
 specifier|public
 name|void
@@ -725,8 +755,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testListNoClusternames ()
 specifier|public
 name|void
@@ -757,8 +786,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testListNoClusternamesDefinition ()
 specifier|public
 name|void
@@ -793,8 +821,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testList1Clustername ()
 specifier|public
 name|void
@@ -839,8 +866,7 @@ name|ActionListArgs
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testListFailsTwoClusternames ()
 specifier|public
 name|void
@@ -864,8 +890,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testDefinitions ()
 specifier|public
 name|void
@@ -958,8 +983,7 @@ name|DFS_DATANODE_KERBEROS_PRINCIPAL_KEY
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testDefinitionsSettingBaseSliderDir ()
 specifier|public
 name|void
@@ -1059,8 +1083,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test a start command.    * @throws Throwable    */
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testComplexThaw ()
 specifier|public
 name|void
@@ -1130,8 +1153,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test a force kill command where the app comes at the end of the line.    * @throws Throwable    *    */
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testStatusSplit ()
 specifier|public
 name|void
@@ -1195,8 +1217,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFreezeFailsNoArg ()
 specifier|public
 name|void
@@ -1216,8 +1237,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFreezeWorks1Arg ()
 specifier|public
 name|void
@@ -1262,8 +1282,7 @@ name|ActionFreezeArgs
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFreezeFails2Arg ()
 specifier|public
 name|void
@@ -1287,8 +1306,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFreezeForceWaitAndMessage ()
 specifier|public
 name|void
@@ -1370,8 +1388,7 @@ name|force
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testGetStatusWorks1Arg ()
 specifier|public
 name|void
@@ -1416,8 +1433,7 @@ name|ActionStatusArgs
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testExistsWorks1Arg ()
 specifier|public
 name|void
@@ -1474,8 +1490,7 @@ name|live
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testDestroy1Arg ()
 specifier|public
 name|void
@@ -1643,8 +1658,7 @@ return|return
 name|args
 return|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testSingleRoleArg ()
 specifier|public
 name|void
@@ -1725,8 +1739,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testNoRoleArg ()
 specifier|public
 name|void
@@ -1789,8 +1802,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testMultiRoleArgBuild ()
 specifier|public
 name|void
@@ -1927,8 +1939,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testArgUpdate ()
 specifier|public
 name|void
@@ -2002,8 +2013,7 @@ name|appDef
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFlexArgs ()
 specifier|public
 name|void
@@ -2115,8 +2125,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testDuplicateRole ()
 specifier|public
 name|void
@@ -2223,8 +2232,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testOddRoleCount ()
 specifier|public
 name|void
@@ -2436,8 +2444,7 @@ return|return
 name|createArgs
 return|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testRoleOptionParse ()
 specifier|public
 name|void
@@ -2563,8 +2570,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testRoleOptionsMerge ()
 specifier|public
 name|void
@@ -2677,8 +2683,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testEnvVariableApply ()
 specifier|public
 name|void

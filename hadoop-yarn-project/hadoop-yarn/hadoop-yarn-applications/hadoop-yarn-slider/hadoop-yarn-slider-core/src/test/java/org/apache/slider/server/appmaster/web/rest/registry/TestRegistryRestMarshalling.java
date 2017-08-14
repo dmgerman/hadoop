@@ -106,8 +106,7 @@ specifier|public
 class|class
 name|TestRegistryRestMarshalling
 block|{
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testDeser ()
 specifier|public
 name|void

@@ -428,8 +428,7 @@ name|queues
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testBasicService ()
 specifier|public
 name|void
@@ -444,8 +443,7 @@ name|start
 argument_list|()
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testDelayLogic ()
 specifier|public
 name|void
@@ -547,8 +545,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testActionDelayedExecutorTermination ()
 specifier|public
 name|void
@@ -632,8 +629,7 @@ literal|1500
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testImmediateQueue ()
 specifier|public
 name|void
@@ -706,8 +702,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testActionOrdering ()
 specifier|public
 name|void
@@ -808,8 +803,7 @@ name|stop
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testDelayedQueueWithReschedule ()
 specifier|public
 name|void
@@ -999,8 +993,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testRenewedActionFiresOnceAtLeast ()
 specifier|public
 name|void
@@ -1109,8 +1102,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testRenewingActionOperations ()
 specifier|public
 name|void

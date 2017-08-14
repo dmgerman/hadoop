@@ -102,8 +102,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testSingleSequence ()
 specifier|public
 name|void
@@ -128,8 +127,7 @@ name|stop
 argument_list|()
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testEmptySequence ()
 specifier|public
 name|void
@@ -150,8 +148,7 @@ name|parent
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testSequence ()
 specifier|public
 name|void
@@ -228,8 +225,7 @@ name|two
 argument_list|)
 assert|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testCallableChild ()
 specifier|public
 name|void
@@ -352,8 +348,7 @@ name|s
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFailingSequence ()
 specifier|public
 name|void
@@ -433,8 +428,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFailInStartNext ()
 specifier|public
 name|void
@@ -554,8 +548,7 @@ name|NOTINITED
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testSequenceInSequence ()
 specifier|public
 name|void
@@ -624,8 +617,7 @@ name|two
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testVarargsConstructor ()
 specifier|public
 name|void
@@ -703,8 +695,7 @@ name|two
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testAddChild ()
 specifier|public
 name|void

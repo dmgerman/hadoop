@@ -115,8 +115,7 @@ name|SIZE
 init|=
 literal|0x200000
 decl_stmt|;
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testTempDir ()
 specifier|public
 name|void
@@ -181,8 +180,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testTargetDir ()
 specifier|public
 name|void
@@ -285,8 +283,7 @@ return|return
 name|target
 return|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testRenameInTargetDir ()
 specifier|public
 name|void
@@ -392,8 +389,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testRenameInTmpDir ()
 specifier|public
 name|void

@@ -319,6 +319,34 @@ operator|=
 name|memory
 expr_stmt|;
 block|}
+DECL|method|getMemoryMB ()
+specifier|public
+name|long
+name|getMemoryMB
+parameter_list|()
+block|{
+if|if
+condition|(
+name|this
+operator|.
+name|memory
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|0
+return|;
+block|}
+return|return
+name|Long
+operator|.
+name|valueOf
+argument_list|(
+name|memory
+argument_list|)
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|equals (java.lang.Object o)

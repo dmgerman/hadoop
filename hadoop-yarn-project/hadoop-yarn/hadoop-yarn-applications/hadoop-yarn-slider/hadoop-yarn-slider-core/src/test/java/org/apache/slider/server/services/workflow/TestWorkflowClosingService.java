@@ -72,8 +72,7 @@ name|TestWorkflowClosingService
 extends|extends
 name|WorkflowServiceTestBase
 block|{
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testSimpleClose ()
 specifier|public
 name|void
@@ -121,8 +120,7 @@ name|closed
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testNullClose ()
 specifier|public
 name|void
@@ -176,8 +174,7 @@ name|stop
 argument_list|()
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFailingClose ()
 specifier|public
 name|void
@@ -243,8 +240,7 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testDoubleClose ()
 specifier|public
 name|void
@@ -326,8 +322,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * This does not recurse forever, as the service has already entered the    * STOPPED state before the inner close tries to stop it -that operation    * is a no-op    * @throws Throwable    */
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testCloseSelf ()
 specifier|public
 name|void

@@ -1046,24 +1046,15 @@ argument_list|,
 name|DEFAULT_ZK_RETRY_CEILING
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
 name|LOG
 operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
+name|info
 argument_list|(
 literal|"Creating CuratorService with connection {}"
 argument_list|,
 name|connectionDescription
 argument_list|)
 expr_stmt|;
-block|}
 name|CuratorFramework
 name|framework
 decl_stmt|;

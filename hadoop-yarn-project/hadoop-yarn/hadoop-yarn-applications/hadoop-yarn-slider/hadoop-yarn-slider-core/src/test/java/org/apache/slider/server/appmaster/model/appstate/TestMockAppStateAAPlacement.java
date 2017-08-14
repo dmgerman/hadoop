@@ -535,8 +535,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * This is the simplest AA allocation: no labels, so allocate anywhere.    * @throws Throwable    */
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testAllocateAANoLabel ()
 specifier|public
 name|void
@@ -1083,8 +1082,7 @@ name|live
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testAllocateFlexUp ()
 specifier|public
 name|void
@@ -1352,8 +1350,7 @@ name|assertAllContainersAA
 argument_list|()
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testAllocateFlexDownDecrementsPending ()
 specifier|public
 name|void
@@ -1487,8 +1484,7 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Here flex down while there is only one outstanding request.    * The outstanding flex should be cancelled    * @throws Throwable    */
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testAllocateFlexDownForcesCancel ()
 specifier|public
 name|void
@@ -1653,8 +1649,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    *    * @throws Throwable    */
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testAskForTooMany ()
 specifier|public
 name|void
@@ -1972,8 +1967,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testClusterSizeChangesDuringRequestSequence ()
 specifier|public
 name|void
@@ -2068,8 +2062,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testBindingInfoMustHaveNodeMap ()
 specifier|public
 name|void
@@ -2116,8 +2109,7 @@ name|expected
 parameter_list|)
 block|{     }
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testAMRestart ()
 specifier|public
 name|void

@@ -994,6 +994,42 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|service
+operator|.
+name|provider
+operator|.
+name|ProviderService
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|service
+operator|.
+name|provider
+operator|.
+name|ProviderFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|util
 operator|.
 name|ConverterUtils
@@ -1162,9 +1198,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
+operator|.
+name|service
+operator|.
+name|conf
 operator|.
 name|SliderExitCodes
 import|;
@@ -1176,9 +1216,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
+operator|.
+name|service
+operator|.
+name|conf
 operator|.
 name|SliderKeys
 import|;
@@ -1190,9 +1234,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
+operator|.
+name|service
+operator|.
+name|client
 operator|.
 name|params
 operator|.
@@ -1206,9 +1254,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
+operator|.
+name|service
+operator|.
+name|client
 operator|.
 name|params
 operator|.
@@ -1222,9 +1274,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
+operator|.
+name|service
+operator|.
+name|client
 operator|.
 name|params
 operator|.
@@ -1238,9 +1294,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
+operator|.
+name|service
+operator|.
+name|client
 operator|.
 name|params
 operator|.
@@ -1501,34 +1561,6 @@ operator|.
 name|providers
 operator|.
 name|ProviderCompleted
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|providers
-operator|.
-name|ProviderService
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|providers
-operator|.
-name|SliderProviderFactory
 import|;
 end_import
 
@@ -2096,11 +2128,11 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|server
+name|yarn
 operator|.
-name|appmaster
+name|service
 operator|.
 name|timelineservice
 operator|.
@@ -2114,15 +2146,15 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|server
+name|yarn
 operator|.
-name|appmaster
+name|service
 operator|.
 name|timelineservice
 operator|.
-name|SliderMetricsSink
+name|ServiceMetricsSink
 import|;
 end_import
 
@@ -2380,9 +2412,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|util
+name|yarn
+operator|.
+name|service
+operator|.
+name|utils
 operator|.
 name|ServiceApiUtil
 import|;
@@ -3942,7 +3978,7 @@ argument_list|(
 operator|(
 name|serviceArgs
 operator|.
-name|getAppDefDir
+name|getAppDefPath
 argument_list|()
 operator|)
 argument_list|)
@@ -4007,10 +4043,10 @@ name|getComponents
 argument_list|()
 control|)
 block|{
-name|SliderProviderFactory
+name|ProviderFactory
 name|factory
 init|=
-name|SliderProviderFactory
+name|ProviderFactory
 operator|.
 name|createSliderProviderFactory
 argument_list|(
@@ -4029,11 +4065,7 @@ name|createServerProvider
 argument_list|()
 decl_stmt|;
 comment|// init the provider BUT DO NOT START IT YET
-name|initAndAddService
-argument_list|(
-name|providerService
-argument_list|)
-expr_stmt|;
+comment|//      initAndAddService(providerService);
 name|providers
 operator|.
 name|add
@@ -4318,15 +4350,7 @@ name|providerService
 range|:
 name|providers
 control|)
-block|{
-name|providerService
-operator|.
-name|setServiceTimelinePublisher
-argument_list|(
-name|serviceTimelinePublisher
-argument_list|)
-expr_stmt|;
-block|}
+block|{         }
 name|appState
 operator|.
 name|setServiceTimelinePublisher
@@ -4787,12 +4811,12 @@ argument_list|()
 operator|.
 name|register
 argument_list|(
-literal|"SliderMetricsSink"
+literal|"ServiceMetricsSink"
 argument_list|,
 literal|"For processing metrics to ATS"
 argument_list|,
 operator|new
-name|SliderMetricsSink
+name|ServiceMetricsSink
 argument_list|(
 name|serviceTimelinePublisher
 argument_list|)
@@ -4802,7 +4826,7 @@ name|log
 operator|.
 name|info
 argument_list|(
-literal|"SliderMetricsSink registered."
+literal|"ServiceMetricsSink registered."
 argument_list|)
 expr_stmt|;
 block|}
@@ -4830,7 +4854,7 @@ name|binding
 operator|.
 name|serviceConfig
 operator|=
-name|serviceConf
+literal|null
 expr_stmt|;
 name|binding
 operator|.
@@ -5029,13 +5053,7 @@ range|:
 name|providers
 control|)
 block|{
-name|providerService
-operator|.
-name|setAMState
-argument_list|(
-name|stateForProviders
-argument_list|)
-expr_stmt|;
+comment|//      providerService.setAMState(stateForProviders);
 block|}
 comment|// chaos monkey
 name|maybeStartMonkey
@@ -5987,13 +6005,7 @@ range|:
 name|providers
 control|)
 block|{
-name|providerService
-operator|.
-name|bindToYarnRegistry
-argument_list|(
-name|yarnRegistryOperations
-argument_list|)
-expr_stmt|;
+comment|//      providerService.bindToYarnRegistry(yarnRegistryOperations);
 block|}
 comment|// Yarn registry
 name|ServiceRecord
@@ -6138,7 +6150,7 @@ name|serviceTimelinePublisher
 operator|.
 name|serviceAttemptRegistered
 argument_list|(
-name|appState
+name|application
 argument_list|)
 expr_stmt|;
 block|}
@@ -6291,7 +6303,7 @@ name|resource
 operator|.
 name|ContainerState
 operator|.
-name|INIT
+name|RUNNING_BUT_UNREADY
 argument_list|)
 expr_stmt|;
 name|container
@@ -6336,14 +6348,7 @@ name|componentInstanceStarted
 argument_list|(
 name|container
 argument_list|,
-name|instance
-operator|.
-name|providerRole
-operator|.
-name|component
-operator|.
-name|getName
-argument_list|()
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -6517,36 +6522,11 @@ name|toString
 argument_list|()
 argument_list|)
 decl_stmt|;
-try|try
-block|{
-name|yarnRegistryOperations
-operator|.
-name|deleteComponent
-argument_list|(
-name|cid
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|log
-operator|.
-name|warn
-argument_list|(
-literal|"Failed to delete container {} : {}"
-argument_list|,
-name|containerId
-argument_list|,
-name|e
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
+comment|//    try {
+comment|//      yarnRegistryOperations.deleteComponent(cid);
+comment|//    } catch (IOException e) {
+comment|//      log.warn("Failed to delete container {} : {}", containerId, e, e);
+comment|//    }
 comment|// remove component instance dir
 try|try
 block|{
@@ -8993,11 +8973,7 @@ range|:
 name|providers
 control|)
 block|{
-name|providerService
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
+comment|//      providerService.start();
 block|}
 comment|// and send the started event ourselves
 name|eventCallbackEvent
@@ -9056,80 +9032,6 @@ name|ActionStopSlider
 argument_list|(
 name|e
 argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-comment|/**    * report container loss. If this isn't already known about, react    *    * @param containerId       id of the container which has failed    * @throws SliderException    */
-DECL|method|providerLostContainer ( ContainerId containerId)
-specifier|public
-specifier|synchronized
-name|void
-name|providerLostContainer
-parameter_list|(
-name|ContainerId
-name|containerId
-parameter_list|)
-throws|throws
-name|SliderException
-block|{
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"containerLostContactWithProvider: container {} lost"
-argument_list|,
-name|containerId
-argument_list|)
-expr_stmt|;
-name|RoleInstance
-name|activeContainer
-init|=
-name|appState
-operator|.
-name|getOwnedContainer
-argument_list|(
-name|containerId
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|activeContainer
-operator|!=
-literal|null
-condition|)
-block|{
-name|execute
-argument_list|(
-name|appState
-operator|.
-name|releaseContainer
-argument_list|(
-name|containerId
-argument_list|)
-argument_list|)
-expr_stmt|;
-comment|// ask for more containers if needed
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"Container released; triggering review"
-argument_list|)
-expr_stmt|;
-name|reviewRequestAndReleaseNodes
-argument_list|(
-literal|"Loss of container"
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"Container not in active set - ignoring"
 argument_list|)
 expr_stmt|;
 block|}
@@ -9403,7 +9305,7 @@ block|}
 name|ProviderService
 name|providerService
 init|=
-name|SliderProviderFactory
+name|ProviderFactory
 operator|.
 name|getProviderService
 argument_list|(
@@ -9417,139 +9319,27 @@ name|getArtifact
 argument_list|()
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|providerService
-operator|.
-name|processContainerStatus
-argument_list|(
-name|containerId
-argument_list|,
-name|containerStatus
-argument_list|)
-condition|)
-block|{
-try|try
-block|{
-name|Thread
-operator|.
-name|sleep
-argument_list|(
-literal|1000
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|e
-parameter_list|)
-block|{       }
-name|LOG_YARN
-operator|.
-name|info
-argument_list|(
-literal|"Re-requesting status for role {}, {}"
-argument_list|,
-name|cinfo
-operator|.
-name|role
-argument_list|,
-name|containerId
-argument_list|)
-expr_stmt|;
-comment|//trigger another async container status
-name|nmClientAsync
-operator|.
-name|getContainerStatusAsync
-argument_list|(
-name|containerId
-argument_list|,
-name|cinfo
-operator|.
-name|container
-operator|.
-name|getNodeId
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-elseif|else
-if|if
-condition|(
-name|timelineServiceEnabled
-condition|)
-block|{
-name|RoleInstance
-name|instance
-init|=
-name|appState
-operator|.
-name|getOwnedContainer
-argument_list|(
-name|containerId
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|instance
-operator|!=
-literal|null
-condition|)
-block|{
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|api
-operator|.
-name|resource
-operator|.
-name|Container
-name|container
-init|=
-name|instance
-operator|.
-name|providerRole
-operator|.
-name|component
-operator|.
-name|getContainer
-argument_list|(
-name|containerId
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|container
-operator|!=
-literal|null
-condition|)
-block|{
-name|serviceTimelinePublisher
-operator|.
-name|componentInstanceUpdated
-argument_list|(
-name|container
-argument_list|,
-name|instance
-operator|.
-name|providerRole
-operator|.
-name|component
-operator|.
-name|getName
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-block|}
+comment|//    if (providerService.processContainerStatus(containerId, containerStatus)) {
+comment|//      try {
+comment|//        Thread.sleep(1000);
+comment|//      } catch (InterruptedException e) {
+comment|//      }
+comment|//      LOG_YARN.info("Re-requesting status for role {}, {}",
+comment|//          cinfo.role, containerId);
+comment|//      //trigger another async container status
+comment|//      nmClientAsync.getContainerStatusAsync(containerId,
+comment|//          cinfo.container.getNodeId());
+comment|//    } else if (timelineServiceEnabled) {
+comment|//      RoleInstance instance = appState.getOwnedContainer(containerId);
+comment|//      if (instance != null) {
+comment|//        org.apache.slider.api.resource.Container container =
+comment|//            instance.providerRole.component
+comment|//                .getContainer(containerId.toString());
+comment|//        if (container != null) {
+comment|//          serviceTimelinePublisher.componentInstanceUpdated(container);
+comment|//        }
+comment|//      }
+comment|//    }
 block|}
 annotation|@
 name|Override

@@ -66,9 +66,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
+operator|.
+name|service
+operator|.
+name|conf
 operator|.
 name|SliderXmlConfKeys
 import|;
@@ -155,8 +159,7 @@ return|return
 name|conf
 return|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testSliderBasePathDefaultValue ()
 specifier|public
 name|void
@@ -212,8 +215,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testSliderBasePathCustomValue ()
 specifier|public
 name|void

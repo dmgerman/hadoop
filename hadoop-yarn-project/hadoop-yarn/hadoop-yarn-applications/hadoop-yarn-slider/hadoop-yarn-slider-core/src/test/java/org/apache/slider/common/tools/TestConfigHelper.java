@@ -98,8 +98,7 @@ name|TestConfigHelper
 extends|extends
 name|YarnMiniClusterTestBase
 block|{
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testConfigLoaderIteration ()
 specifier|public
 name|void
@@ -192,8 +191,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testConfigDeprecation ()
 specifier|public
 name|void

@@ -309,8 +309,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    *    * @throws Throwable    */
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testOvercapacityRecovery ()
 specifier|public
 name|void

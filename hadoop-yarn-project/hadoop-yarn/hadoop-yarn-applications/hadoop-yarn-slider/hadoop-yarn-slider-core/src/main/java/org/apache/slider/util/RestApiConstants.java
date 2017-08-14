@@ -74,7 +74,7 @@ DECL|field|DEFAULT_COMPONENT_NAME
 name|String
 name|DEFAULT_COMPONENT_NAME
 init|=
-literal|"DEFAULT"
+literal|"default"
 decl_stmt|;
 DECL|field|DEFAULT_IMAGE
 name|String
@@ -189,7 +189,7 @@ DECL|field|COMMAND_ORDER_SUFFIX_STARTED
 name|String
 name|COMMAND_ORDER_SUFFIX_STARTED
 init|=
-literal|"-STARTED"
+literal|"-RUNNING_BUT_UNREADY"
 decl_stmt|;
 DECL|field|EXPORT_GROUP_NAME
 name|String

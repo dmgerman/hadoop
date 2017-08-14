@@ -294,8 +294,7 @@ name|class
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testJsonGeneration ()
 specifier|public
 name|void

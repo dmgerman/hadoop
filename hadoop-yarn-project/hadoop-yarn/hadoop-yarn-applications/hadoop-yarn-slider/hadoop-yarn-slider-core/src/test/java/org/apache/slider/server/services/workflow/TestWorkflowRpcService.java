@@ -114,8 +114,7 @@ name|TestWorkflowRpcService
 extends|extends
 name|WorkflowServiceTestBase
 block|{
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testCreateMockRPCService ()
 specifier|public
 name|void
@@ -161,8 +160,7 @@ name|stopped
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testLifecycle ()
 specifier|public
 name|void
@@ -219,8 +217,7 @@ name|stopped
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testStartFailure ()
 specifier|public
 name|void

@@ -860,6 +860,23 @@ name|container
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|removeContainer (Container container)
+specifier|public
+name|void
+name|removeContainer
+parameter_list|(
+name|Container
+name|container
+parameter_list|)
+block|{
+name|containers
+operator|.
+name|remove
+argument_list|(
+name|container
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|getContainer (String id)
 specifier|public
 name|Container

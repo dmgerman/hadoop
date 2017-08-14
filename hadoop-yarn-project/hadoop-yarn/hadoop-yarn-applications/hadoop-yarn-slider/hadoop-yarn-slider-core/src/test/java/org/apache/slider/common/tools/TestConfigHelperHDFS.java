@@ -158,8 +158,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testConfigHelperHDFS ()
 specifier|public
 name|void

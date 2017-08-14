@@ -534,8 +534,7 @@ return|return
 name|application
 return|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testAllocateReleaseRealloc ()
 specifier|public
 name|void
@@ -641,8 +640,7 @@ return|return
 name|ops
 return|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testStrictPlacementInitialRequest ()
 specifier|public
 name|void
@@ -721,8 +719,7 @@ name|actions
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testPolicyPropagation ()
 specifier|public
 name|void
@@ -774,8 +771,7 @@ operator|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testNodeFailureThresholdPropagation ()
 specifier|public
 name|void
@@ -815,8 +811,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testLaxPlacementSecondRequestRole4 ()
 specifier|public
 name|void
@@ -1114,8 +1109,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testStrictPlacementSecondRequestRole5 ()
 specifier|public
 name|void

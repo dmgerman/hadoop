@@ -310,8 +310,7 @@ return|return
 literal|"TestMockAppStateFlexing"
 return|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFlexDuringLaunchPhase ()
 specifier|public
 name|void
@@ -531,8 +530,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFlexBeforeAllocationPhase ()
 specifier|public
 name|void
@@ -630,8 +628,7 @@ decl_stmt|;
 comment|// TODO cluster status returns liveness info
 comment|//    assertEquals(1, cd.liveness.requestsOutstanding);
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFlexDownTwice ()
 specifier|public
 name|void
@@ -848,8 +845,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testFlexNegative ()
 specifier|public
 name|void
@@ -974,8 +970,7 @@ name|e
 parameter_list|)
 block|{     }
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testCancelWithRequestsOutstanding ()
 specifier|public
 name|void

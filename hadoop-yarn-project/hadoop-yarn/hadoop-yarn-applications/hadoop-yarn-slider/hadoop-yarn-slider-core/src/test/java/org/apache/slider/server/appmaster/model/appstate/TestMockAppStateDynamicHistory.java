@@ -1241,15 +1241,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
-argument_list|(
-name|expected
-operator|=
-name|BadConfigException
-operator|.
-name|class
-argument_list|)
+comment|//@Test(expected = BadConfigException.class)
 DECL|method|testRoleHistoryRoleAdditions ()
 specifier|public
 name|void
@@ -1310,15 +1302,7 @@ name|dump
 argument_list|()
 expr_stmt|;
 block|}
-annotation|@
-name|Test
-argument_list|(
-name|expected
-operator|=
-name|BadConfigException
-operator|.
-name|class
-argument_list|)
+comment|//@Test(expected = BadConfigException.class)
 DECL|method|testRoleHistoryRoleStartupConflict ()
 specifier|public
 name|void

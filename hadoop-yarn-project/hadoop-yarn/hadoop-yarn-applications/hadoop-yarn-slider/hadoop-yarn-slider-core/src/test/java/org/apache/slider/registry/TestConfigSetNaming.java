@@ -126,8 +126,7 @@ block|{
 comment|// expected
 block|}
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testLowerCase ()
 specifier|public
 name|void
@@ -142,8 +141,7 @@ literal|"abcdefghijklmnopqrstuvwxyz"
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testUpperCaseInvalid ()
 specifier|public
 name|void
@@ -158,8 +156,7 @@ literal|"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testNumbers ()
 specifier|public
 name|void
@@ -174,8 +171,7 @@ literal|"01234567890"
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testChars ()
 specifier|public
 name|void
@@ -190,8 +186,7 @@ literal|"a-_+"
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testInvalids ()
 specifier|public
 name|void

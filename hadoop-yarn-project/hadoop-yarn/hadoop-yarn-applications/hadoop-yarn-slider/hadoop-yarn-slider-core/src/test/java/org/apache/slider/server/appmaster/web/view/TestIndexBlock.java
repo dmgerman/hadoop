@@ -619,8 +619,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
+comment|//@Test
 DECL|method|testIndex ()
 specifier|public
 name|void
