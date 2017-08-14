@@ -267,6 +267,10 @@ argument_list|)
 argument_list|)
 decl_stmt|;
 return|return
+name|HBaseTimelineStorageUtils
+operator|.
+name|convertApplicationIdToString
+argument_list|(
 name|ApplicationId
 operator|.
 name|newInstance
@@ -275,9 +279,7 @@ name|clusterTs
 argument_list|,
 name|seqId
 argument_list|)
-operator|.
-name|toString
-argument_list|()
+argument_list|)
 return|;
 block|}
 comment|/**    * Returns the size of app id after encoding.    *    * @return size of app id after encoding.    */
