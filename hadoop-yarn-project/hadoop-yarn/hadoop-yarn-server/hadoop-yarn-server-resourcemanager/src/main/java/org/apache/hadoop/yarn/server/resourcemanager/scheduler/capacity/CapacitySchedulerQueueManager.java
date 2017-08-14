@@ -1758,6 +1758,33 @@ argument_list|)
 throw|;
 block|}
 block|}
+elseif|else
+if|if
+condition|(
+name|oldQueue
+operator|instanceof
+name|ParentQueue
+operator|&&
+name|newQueue
+operator|instanceof
+name|LeafQueue
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Converting the parent queue: "
+operator|+
+name|oldQueue
+operator|.
+name|getQueuePath
+argument_list|()
+operator|+
+literal|" to leaf queue."
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 block|}
