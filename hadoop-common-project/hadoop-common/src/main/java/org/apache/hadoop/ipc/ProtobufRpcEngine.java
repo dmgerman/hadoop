@@ -1155,7 +1155,7 @@ name|startTime
 operator|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 block|}
@@ -1462,7 +1462,7 @@ name|callTime
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|startTime
@@ -2149,7 +2149,7 @@ name|setupTime
 operator|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 block|}
@@ -2169,7 +2169,7 @@ name|processingTime
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|setupTime
@@ -2212,7 +2212,7 @@ name|processingTime
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|setupTime
@@ -2679,7 +2679,7 @@ name|startTime
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|int
@@ -2840,7 +2840,7 @@ call|)
 argument_list|(
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|startTime
