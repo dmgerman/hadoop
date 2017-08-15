@@ -33313,6 +33313,18 @@ control|)
 block|{
 try|try
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
+name|checkNameNodeSafeMode
+argument_list|(
+literal|"Cannot add erasure coding policy"
+argument_list|)
+expr_stmt|;
 name|ErasureCodingPolicy
 name|newPolicy
 init|=
