@@ -3031,8 +3031,8 @@ name|YarnException
 name|e
 parameter_list|)
 block|{
-comment|// NM container will only be in SCHEDULED state, so expect the increase
-comment|// action to fail.
+comment|// NM container increase container resource should fail without a version
+comment|// increase action to fail.
 if|if
 condition|(
 operator|!
@@ -3043,7 +3043,12 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"can only be changed when a container is in RUNNING state"
+name|container
+operator|.
+name|getId
+argument_list|()
+operator|+
+literal|" has update version "
 argument_list|)
 condition|)
 block|{

@@ -40,6 +40,9 @@ block|,
 DECL|enumConstant|CONTAINER_COMPLETED
 name|CONTAINER_COMPLETED
 block|,
+DECL|enumConstant|UPDATE_CONTAINER
+name|UPDATE_CONTAINER
+block|,
 comment|// Producer: Node HB response - RM has asked to shed the queue
 DECL|enumConstant|SHED_QUEUED_CONTAINERS
 name|SHED_QUEUED_CONTAINERS

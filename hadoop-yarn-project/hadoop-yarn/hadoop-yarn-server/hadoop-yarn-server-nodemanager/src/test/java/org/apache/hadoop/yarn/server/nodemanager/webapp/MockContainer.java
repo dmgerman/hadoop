@@ -833,13 +833,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setResource (Resource targetResource)
+DECL|method|setContainerTokenIdentifier (ContainerTokenIdentifier token)
 specifier|public
 name|void
-name|setResource
+name|setContainerTokenIdentifier
 parameter_list|(
-name|Resource
-name|targetResource
+name|ContainerTokenIdentifier
+name|token
 parameter_list|)
 block|{   }
 annotation|@

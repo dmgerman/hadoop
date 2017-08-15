@@ -3505,6 +3505,11 @@ name|getNodeLabelExpression
 argument_list|()
 argument_list|,
 name|containerType
+argument_list|,
+name|container
+operator|.
+name|getExecutionType
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;

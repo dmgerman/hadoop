@@ -3138,65 +3138,6 @@ argument_list|)
 return|;
 block|}
 block|}
-DECL|method|changeContainerResource ( ContainerId containerId, Resource resource)
-specifier|private
-name|void
-name|changeContainerResource
-parameter_list|(
-name|ContainerId
-name|containerId
-parameter_list|,
-name|Resource
-name|resource
-parameter_list|)
-block|{
-name|Container
-name|container
-init|=
-name|context
-operator|.
-name|getContainers
-argument_list|()
-operator|.
-name|get
-argument_list|(
-name|containerId
-argument_list|)
-decl_stmt|;
-comment|// Check container existence
-if|if
-condition|(
-name|container
-operator|==
-literal|null
-condition|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Container "
-operator|+
-name|containerId
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|"does not exist"
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
-comment|// YARN-5860: Route this through the ContainerScheduler to
-comment|//       fix containerAllocation
-name|container
-operator|.
-name|setResource
-argument_list|(
-name|resource
-argument_list|)
-expr_stmt|;
-block|}
 DECL|method|updateContainerMetrics (ContainersMonitorEvent monitoringEvent)
 specifier|private
 name|void
@@ -3778,16 +3719,6 @@ name|cpuVcores
 argument_list|)
 expr_stmt|;
 block|}
-name|changeContainerResource
-argument_list|(
-name|containerId
-argument_list|,
-name|changeEvent
-operator|.
-name|getResource
-argument_list|()
-argument_list|)
-expr_stmt|;
 block|}
 DECL|method|onStopMonitoringContainer ( ContainersMonitorEvent monitoringEvent, ContainerId containerId)
 specifier|private
