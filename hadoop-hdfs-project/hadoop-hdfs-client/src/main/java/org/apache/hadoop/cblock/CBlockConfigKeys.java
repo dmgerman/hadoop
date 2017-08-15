@@ -363,7 +363,7 @@ specifier|final
 name|String
 name|DFS_CBLOCK_JSCSI_SERVER_ADDRESS_DEFAULT
 init|=
-literal|"127.0.0.1"
+literal|"0.0.0.0"
 decl_stmt|;
 DECL|field|DFS_CBLOCK_JSCSI_CBLOCK_SERVER_ADDRESS_KEY
 specifier|public
