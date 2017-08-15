@@ -320,7 +320,7 @@ name|testString
 init|=
 name|curator
 operator|.
-name|getSringData
+name|getStringData
 argument_list|(
 literal|"/test"
 argument_list|)

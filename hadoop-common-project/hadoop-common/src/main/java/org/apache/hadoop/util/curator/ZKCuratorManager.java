@@ -212,6 +212,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|zookeeper
+operator|.
+name|data
+operator|.
+name|Stat
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -225,6 +239,20 @@ operator|.
 name|slf4j
 operator|.
 name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
 import|;
 end_import
 
@@ -749,7 +777,7 @@ name|path
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the data in a ZNode.    * @param path Path of the ZNode.    * @param stat Output statistics of the ZNode.    * @return The data in the ZNode.    * @throws Exception If it cannot contact Zookeeper.    */
+comment|/**    * Get the data in a ZNode.    * @param path Path of the ZNode.    * @return The data in the ZNode.    * @throws Exception If it cannot contact Zookeeper.    */
 DECL|method|getData (final String path)
 specifier|public
 name|byte
@@ -775,11 +803,45 @@ name|path
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the data in a ZNode.    * @param path Path of the ZNode.    * @param stat Output statistics of the ZNode.    * @return The data in the ZNode.    * @throws Exception If it cannot contact Zookeeper.    */
-DECL|method|getSringData (final String path)
+comment|/**    * Get the data in a ZNode.    * @param path Path of the ZNode.    * @param stat    * @return The data in the ZNode.    * @throws Exception If it cannot contact Zookeeper.    */
+DECL|method|getData (final String path, Stat stat)
+specifier|public
+name|byte
+index|[]
+name|getData
+parameter_list|(
+specifier|final
+name|String
+name|path
+parameter_list|,
+name|Stat
+name|stat
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+return|return
+name|curator
+operator|.
+name|getData
+argument_list|()
+operator|.
+name|storingStatIn
+argument_list|(
+name|stat
+argument_list|)
+operator|.
+name|forPath
+argument_list|(
+name|path
+argument_list|)
+return|;
+block|}
+comment|/**    * Get the data in a ZNode.    * @param path Path of the ZNode.    * @return The data in the ZNode.    * @throws Exception If it cannot contact Zookeeper.    */
+DECL|method|getStringData (final String path)
 specifier|public
 name|String
-name|getSringData
+name|getStringData
 parameter_list|(
 specifier|final
 name|String
@@ -795,6 +857,48 @@ init|=
 name|getData
 argument_list|(
 name|path
+argument_list|)
+decl_stmt|;
+return|return
+operator|new
+name|String
+argument_list|(
+name|bytes
+argument_list|,
+name|Charset
+operator|.
+name|forName
+argument_list|(
+literal|"UTF-8"
+argument_list|)
+argument_list|)
+return|;
+block|}
+comment|/**    * Get the data in a ZNode.    * @param path Path of the ZNode.    * @param stat Output statistics of the ZNode.    * @return The data in the ZNode.    * @throws Exception If it cannot contact Zookeeper.    */
+DECL|method|getStringData (final String path, Stat stat)
+specifier|public
+name|String
+name|getStringData
+parameter_list|(
+specifier|final
+name|String
+name|path
+parameter_list|,
+name|Stat
+name|stat
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+name|byte
+index|[]
+name|bytes
+init|=
+name|getData
+argument_list|(
+name|path
+argument_list|,
+name|stat
 argument_list|)
 decl_stmt|;
 return|return
@@ -1036,10 +1140,105 @@ return|return
 name|created
 return|;
 block|}
-comment|/**    * Delete a ZNode.    * @param path Path of the ZNode.    * @throws Exception If it cannot contact ZooKeeper.    */
-DECL|method|delete (final String path)
+comment|/**    * Utility function to ensure that the configured base znode exists.    * This recursively creates the znode as well as all of its parents.    * @param path Path of the znode to create.    * @throws Exception If it cannot create the file.    */
+DECL|method|createRootDirRecursively (String path)
 specifier|public
 name|void
+name|createRootDirRecursively
+parameter_list|(
+name|String
+name|path
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+name|String
+index|[]
+name|pathParts
+init|=
+name|path
+operator|.
+name|split
+argument_list|(
+literal|"/"
+argument_list|)
+decl_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|pathParts
+operator|.
+name|length
+operator|>=
+literal|1
+operator|&&
+name|pathParts
+index|[
+literal|0
+index|]
+operator|.
+name|isEmpty
+argument_list|()
+argument_list|,
+literal|"Invalid path: %s"
+argument_list|,
+name|path
+argument_list|)
+expr_stmt|;
+name|StringBuilder
+name|sb
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|1
+init|;
+name|i
+operator|<
+name|pathParts
+operator|.
+name|length
+condition|;
+name|i
+operator|++
+control|)
+block|{
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"/"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|pathParts
+index|[
+name|i
+index|]
+argument_list|)
+expr_stmt|;
+name|create
+argument_list|(
+name|sb
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Delete a ZNode.    * @param path Path of the ZNode.    * @return If the znode was deleted.    * @throws Exception If it cannot contact ZooKeeper.    */
+DECL|method|delete (final String path)
+specifier|public
+name|boolean
 name|delete
 parameter_list|(
 specifier|final
@@ -1070,7 +1269,13 @@ argument_list|(
 name|path
 argument_list|)
 expr_stmt|;
+return|return
+literal|true
+return|;
 block|}
+return|return
+literal|false
+return|;
 block|}
 comment|/**    * Get the path for a ZNode.    * @param root Root of the ZNode.    * @param nodeName Name of the ZNode.    * @return Path for the ZNode.    */
 DECL|method|getNodePath (String root, String nodeName)
