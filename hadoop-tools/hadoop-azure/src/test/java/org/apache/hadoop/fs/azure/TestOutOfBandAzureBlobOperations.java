@@ -349,7 +349,7 @@ index|[
 literal|0
 index|]
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -407,7 +407,7 @@ index|[
 literal|0
 index|]
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -454,7 +454,7 @@ name|assertTrue
 argument_list|(
 name|dirStatus
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -652,7 +652,7 @@ index|[
 literal|0
 index|]
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 argument_list|)
 expr_stmt|;

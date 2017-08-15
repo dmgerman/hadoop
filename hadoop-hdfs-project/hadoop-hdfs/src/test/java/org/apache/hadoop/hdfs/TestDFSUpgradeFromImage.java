@@ -442,24 +442,6 @@ begin_import
 import|import static
 name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|inotify
-operator|.
-name|Event
-operator|.
-name|CreateEvent
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
 name|junit
 operator|.
 name|Assert
@@ -3057,7 +3039,7 @@ condition|(
 operator|!
 name|status
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 condition|)
 block|{

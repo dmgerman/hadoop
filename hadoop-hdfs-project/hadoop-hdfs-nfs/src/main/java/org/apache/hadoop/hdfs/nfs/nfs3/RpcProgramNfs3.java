@@ -8270,7 +8270,7 @@ if|if
 condition|(
 name|fstat
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 condition|)
 block|{
@@ -8766,7 +8766,7 @@ condition|(
 operator|!
 name|fstat
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 condition|)
 block|{
@@ -10365,7 +10365,7 @@ condition|(
 operator|!
 name|dirStatus
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 condition|)
 block|{
@@ -11285,7 +11285,7 @@ condition|(
 operator|!
 name|dirStatus
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 condition|)
 block|{

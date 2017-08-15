@@ -193,26 +193,6 @@ return|;
 block|}
 annotation|@
 name|Override
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
-DECL|method|isDir ()
-specifier|public
-name|boolean
-name|isDir
-parameter_list|()
-block|{
-return|return
-name|myFs
-operator|.
-name|isDirectory
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
 DECL|method|isSymlink ()
 specifier|public
 name|boolean

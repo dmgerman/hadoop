@@ -953,7 +953,8 @@ parameter_list|()
 block|{
 return|return
 operator|!
-name|isdir
+name|isDirectory
+argument_list|()
 operator|&&
 operator|!
 name|isSymlink
@@ -971,17 +972,19 @@ return|return
 name|isdir
 return|;
 block|}
-comment|/**    * Old interface, instead use the explicit {@link FileStatus#isFile()},     * {@link FileStatus#isDirectory()}, and {@link FileStatus#isSymlink()}     * @return true if this is a directory.    * @deprecated Use {@link FileStatus#isFile()},      * {@link FileStatus#isDirectory()}, and {@link FileStatus#isSymlink()}     * instead.    */
+comment|/**    * Old interface, instead use the explicit {@link FileStatus#isFile()},    * {@link FileStatus#isDirectory()}, and {@link FileStatus#isSymlink()}    * @return true if this is a directory.    * @deprecated Use {@link FileStatus#isFile()},    * {@link FileStatus#isDirectory()}, and {@link FileStatus#isSymlink()}    * instead.    */
 annotation|@
 name|Deprecated
 DECL|method|isDir ()
 specifier|public
+specifier|final
 name|boolean
 name|isDir
 parameter_list|()
 block|{
 return|return
-name|isdir
+name|isDirectory
+argument_list|()
 return|;
 block|}
 comment|/**    * Is this a symbolic link?    * @return true if this is a symbolic link    */
@@ -1721,13 +1724,6 @@ operator|=
 name|other
 operator|.
 name|getLen
-argument_list|()
-expr_stmt|;
-name|isdir
-operator|=
-name|other
-operator|.
-name|isDirectory
 argument_list|()
 expr_stmt|;
 name|block_replication

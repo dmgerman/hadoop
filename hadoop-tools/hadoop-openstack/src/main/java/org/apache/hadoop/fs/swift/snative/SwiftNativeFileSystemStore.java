@@ -2332,7 +2332,7 @@ init|=
 operator|!
 name|srcMetadata
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 decl_stmt|;
 if|if
@@ -3575,7 +3575,7 @@ condition|(
 operator|!
 name|fileStatus
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 condition|)
 block|{

@@ -373,7 +373,7 @@ name|stat
 argument_list|,
 name|stat
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -561,7 +561,7 @@ name|assertFalse
 argument_list|(
 name|status
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 argument_list|)
 expr_stmt|;

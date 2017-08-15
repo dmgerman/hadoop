@@ -362,7 +362,7 @@ name|fileType
 init|=
 name|fs
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 condition|?
 name|NfsFileType
@@ -599,7 +599,7 @@ name|size
 init|=
 name|fstat
 operator|.
-name|isDir
+name|isDirectory
 argument_list|()
 condition|?
 name|getDirSize

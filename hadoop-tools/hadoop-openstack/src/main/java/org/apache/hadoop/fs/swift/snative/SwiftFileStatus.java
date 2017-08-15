@@ -247,10 +247,10 @@ block|}
 comment|/**    * Declare that the path represents a directory, which in the    * SwiftNativeFileSystem means "is a directory or a 0 byte file"    *    * @return true if the status is considered to be a file    */
 annotation|@
 name|Override
-DECL|method|isDir ()
+DECL|method|isDirectory ()
 specifier|public
 name|boolean
-name|isDir
+name|isDirectory
 parameter_list|()
 block|{
 return|return
@@ -265,7 +265,7 @@ operator|==
 literal|0
 return|;
 block|}
-comment|/**    * A entry is a file if it is not a directory.    * By implementing it<i>and not marking as an override</i> this    * subclass builds and runs in both Hadoop versions.    * @return the opposite value to {@link #isDir()}    */
+comment|/**    * A entry is a file if it is not a directory.    * By implementing it<i>and not marking as an override</i> this    * subclass builds and runs in both Hadoop versions.    * @return the opposite value to {@link #isDirectory()}    */
 annotation|@
 name|Override
 DECL|method|isFile ()
@@ -276,19 +276,9 @@ parameter_list|()
 block|{
 return|return
 operator|!
-name|isDir
-argument_list|()
-return|;
-block|}
-comment|/**    * Directory test    * @return true if the file is considered to be a directory    */
-DECL|method|isDirectory ()
-specifier|public
-name|boolean
+name|this
+operator|.
 name|isDirectory
-parameter_list|()
-block|{
-return|return
-name|isDir
 argument_list|()
 return|;
 block|}
@@ -347,7 +337,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|isDir
+name|isDirectory
 argument_list|()
 argument_list|)
 expr_stmt|;
