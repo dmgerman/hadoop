@@ -214,6 +214,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|utils
 operator|.
 name|BackgroundService
@@ -831,6 +845,14 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|long
+name|startTime
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+decl_stmt|;
 comment|// Scan container's db and get list of under deletion blocks
 name|MetadataStore
 name|meta
@@ -892,7 +914,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"No under deletion block found in container : {}"
 argument_list|,
@@ -916,7 +938,7 @@ argument_list|()
 decl_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Container : {}, To-Delete blocks : {}"
 argument_list|,
@@ -953,7 +975,7 @@ argument_list|)
 decl_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Deleting block {}"
 argument_list|,
@@ -1016,7 +1038,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"block {} chunk {} deleted"
 argument_list|,
@@ -1091,6 +1113,32 @@ operator|.
 name|writeBatch
 argument_list|(
 name|batch
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"The elapsed time of task@{} for"
+operator|+
+literal|" deleting blocks: {}ms."
+argument_list|,
+name|Integer
+operator|.
+name|toHexString
+argument_list|(
+name|this
+operator|.
+name|hashCode
+argument_list|()
+argument_list|)
+argument_list|,
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+operator|-
+name|startTime
 argument_list|)
 expr_stmt|;
 name|ContainerBackgroundTaskResult
