@@ -6693,6 +6693,13 @@ block|}
 block|}
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|otherNames
+operator|!=
+literal|null
+condition|)
+block|{
 for|for
 control|(
 name|int
@@ -6709,6 +6716,7 @@ condition|;
 name|i
 operator|++
 control|)
+block|{
 name|linkBlocksHelper
 argument_list|(
 operator|new
@@ -6744,6 +6752,8 @@ argument_list|,
 name|idBasedLayoutSingleLinks
 argument_list|)
 expr_stmt|;
+block|}
+block|}
 block|}
 comment|/**    * Get the BlockPoolSliceStorage from {@link bpStorageMap}.    * If the object is not found, create a new object and put it to the map.    */
 DECL|method|getBlockPoolSliceStorage ( final NamespaceInfo nsInfo)

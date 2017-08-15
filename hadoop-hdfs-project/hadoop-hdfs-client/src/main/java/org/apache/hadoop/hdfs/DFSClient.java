@@ -13788,8 +13788,11 @@ operator|==
 literal|null
 condition|)
 block|{
-name|STRIPED_READ_THREAD_POOL
-operator|=
+comment|// Only after thread pool is fully constructed then save it to
+comment|// volatile field.
+name|ThreadPoolExecutor
+name|threadPool
+init|=
 name|DFSUtilClient
 operator|.
 name|getThreadPoolExecutor
@@ -13804,13 +13807,17 @@ literal|"StripedRead-"
 argument_list|,
 literal|true
 argument_list|)
-expr_stmt|;
-name|STRIPED_READ_THREAD_POOL
+decl_stmt|;
+name|threadPool
 operator|.
 name|allowCoreThreadTimeOut
 argument_list|(
 literal|true
 argument_list|)
+expr_stmt|;
+name|STRIPED_READ_THREAD_POOL
+operator|=
+name|threadPool
 expr_stmt|;
 block|}
 block|}

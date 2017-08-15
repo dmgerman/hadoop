@@ -1264,6 +1264,10 @@ comment|// Check whether there is any work to do.
 if|if
 condition|(
 name|filesInStorage
+operator|!=
+literal|null
+operator|&&
+name|filesInStorage
 operator|.
 name|length
 operator|<=
@@ -1286,6 +1290,13 @@ name|Long
 argument_list|>
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|filesInStorage
+operator|!=
+literal|null
+condition|)
+block|{
 for|for
 control|(
 name|String
@@ -1351,6 +1362,7 @@ name|fTxId
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|int
 name|numFilesToDelete
