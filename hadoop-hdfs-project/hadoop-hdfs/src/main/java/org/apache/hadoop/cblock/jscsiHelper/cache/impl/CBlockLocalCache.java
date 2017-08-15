@@ -188,20 +188,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|util
-operator|.
-name|Time
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|utils
 operator|.
 name|LevelDBStore
@@ -254,16 +240,6 @@ name|java
 operator|.
 name|net
 operator|.
-name|InetAddress
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
 name|URI
 import|;
 end_import
@@ -275,16 +251,6 @@ operator|.
 name|net
 operator|.
 name|URISyntaxException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|UnknownHostException
 import|;
 end_import
 
@@ -343,16 +309,6 @@ operator|.
 name|util
 operator|.
 name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|UUID
 import|;
 end_import
 
@@ -507,7 +463,7 @@ specifier|final
 name|LevelDBStore
 name|cacheDB
 decl_stmt|;
-comment|/**    * Asyncblock writer updates the cacheDB and writes the blocks async to    * remote containers.    */
+comment|/**    * AsyncBlock writer updates the cacheDB and writes the blocks async to    * remote containers.    */
 DECL|field|blockWriter
 specifier|private
 specifier|final
@@ -521,7 +477,6 @@ specifier|final
 name|SyncBlockReader
 name|blockReader
 decl_stmt|;
-comment|/**    * We create a trace ID to make it easy to debug issues.    * A trace ID is in the following format. IPAddress:VolumeName:blockID:second    *<p>    * This will get written down on the data node if we get any failures, so    * with this trace ID we can correlate cBlock failures across machines.    */
 DECL|field|userName
 specifier|private
 specifier|final
@@ -533,18 +488,6 @@ specifier|private
 specifier|final
 name|String
 name|volumeName
-decl_stmt|;
-DECL|field|ipAddressString
-specifier|private
-specifier|final
-name|String
-name|ipAddressString
-decl_stmt|;
-DECL|field|tracePrefix
-specifier|private
-specifier|final
-name|String
-name|tracePrefix
 decl_stmt|;
 comment|/**    * From a block ID we are able to get the pipeline by indexing this array.    */
 DECL|field|containerList
@@ -789,25 +732,6 @@ name|size
 argument_list|()
 index|]
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|ipAddressString
-operator|=
-name|getHostIP
-argument_list|()
-expr_stmt|;
-name|this
-operator|.
-name|tracePrefix
-operator|=
-name|ipAddressString
-operator|+
-literal|":"
-operator|+
-name|this
-operator|.
-name|volumeName
 expr_stmt|;
 name|this
 operator|.
@@ -1251,63 +1175,6 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * Tries to get the local host IP Address for creating trace IDs.    */
-DECL|method|getHostIP ()
-specifier|private
-name|String
-name|getHostIP
-parameter_list|()
-block|{
-name|String
-name|tmp
-decl_stmt|;
-try|try
-block|{
-name|tmp
-operator|=
-name|InetAddress
-operator|.
-name|getLocalHost
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|UnknownHostException
-name|ex
-parameter_list|)
-block|{
-name|tmp
-operator|=
-name|UUID
-operator|.
-name|randomUUID
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-expr_stmt|;
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Unable to read the host address. Using a GUID for "
-operator|+
-literal|"hostname:{} "
-argument_list|,
-name|tmp
-argument_list|,
-name|ex
-argument_list|)
-expr_stmt|;
-block|}
-return|return
-name|tmp
-return|;
-block|}
 comment|/**    * Returns the local cache DB.    *    * @return - DB    */
 DECL|method|getCacheDB ()
 name|LevelDBStore
@@ -1425,7 +1292,6 @@ name|containerIdx
 index|]
 return|;
 block|}
-comment|/**    * Returns a traceID based in Block ID.    * The format is HostIP:VolumeName:BlockID:timeStamp, in case of error this    * will be logged on the container side.    *    * @param blockID - Block ID    * @return trace ID    */
 DECL|method|getTraceID (long blockID)
 name|String
 name|getTraceID
@@ -1434,24 +1300,15 @@ name|long
 name|blockID
 parameter_list|)
 block|{
-comment|// mapping to seconds to make the string smaller.
 return|return
-name|this
+name|flusher
 operator|.
-name|tracePrefix
-operator|+
-literal|":"
-operator|+
+name|getTraceID
+argument_list|(
+name|dbPath
+argument_list|,
 name|blockID
-operator|+
-literal|":"
-operator|+
-name|Time
-operator|.
-name|monotonicNow
-argument_list|()
-operator|/
-literal|1000
+argument_list|)
 return|;
 block|}
 comment|/**    * Returns tracer.    *    * @return - Logger    */

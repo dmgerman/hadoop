@@ -495,7 +495,6 @@ operator|.
 name|monotonicNow
 argument_list|()
 expr_stmt|;
-comment|// BUG: fix the trace ID.
 name|ContainerProtocolCalls
 operator|.
 name|writeSmallFile
@@ -516,7 +515,21 @@ argument_list|)
 argument_list|,
 name|data
 argument_list|,
-literal|""
+name|flusher
+operator|.
+name|getTraceID
+argument_list|(
+operator|new
+name|File
+argument_list|(
+name|dbPath
+argument_list|)
+argument_list|,
+name|block
+operator|.
+name|getBlockID
+argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|endTime

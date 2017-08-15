@@ -773,7 +773,6 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// BUG: fix the trace ID.
 name|ContainerProtocolCalls
 operator|.
 name|writeSmallFile
@@ -800,7 +799,15 @@ operator|.
 name|array
 argument_list|()
 argument_list|,
-literal|""
+name|parentCache
+operator|.
+name|getTraceID
+argument_list|(
+name|block
+operator|.
+name|getBlockID
+argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|long
