@@ -2804,6 +2804,38 @@ argument_list|)
 expr_stmt|;
 comment|// expected
 block|}
+try|try
+block|{
+name|dfs
+operator|.
+name|removeErasureCodingPolicy
+argument_list|(
+literal|"testECName"
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"RemoveErasureCodingPolicy should have failed."
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+argument_list|(
+literal|"Cannot remove erasure coding policy"
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+comment|// expected
+block|}
 name|assertFalse
 argument_list|(
 literal|"Could not leave SM"

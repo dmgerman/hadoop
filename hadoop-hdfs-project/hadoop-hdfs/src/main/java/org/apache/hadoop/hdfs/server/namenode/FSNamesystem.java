@@ -33462,6 +33462,20 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
+name|checkNameNodeSafeMode
+argument_list|(
+literal|"Cannot remove erasure coding policy "
+operator|+
+name|ecPolicyName
+argument_list|)
+expr_stmt|;
 name|FSDirErasureCodingOp
 operator|.
 name|removeErasureCodePolicy
