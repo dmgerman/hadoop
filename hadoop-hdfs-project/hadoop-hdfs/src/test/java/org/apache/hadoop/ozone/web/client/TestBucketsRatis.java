@@ -213,9 +213,7 @@ name|void
 name|testCreateBucket
 parameter_list|()
 throws|throws
-name|OzoneException
-throws|,
-name|IOException
+name|Exception
 block|{
 name|TestBuckets
 operator|.
@@ -233,9 +231,7 @@ name|void
 name|testAddBucketAcls
 parameter_list|()
 throws|throws
-name|OzoneException
-throws|,
-name|IOException
+name|Exception
 block|{
 name|TestBuckets
 operator|.
@@ -253,9 +249,7 @@ name|void
 name|testRemoveBucketAcls
 parameter_list|()
 throws|throws
-name|OzoneException
-throws|,
-name|IOException
+name|Exception
 block|{
 name|TestBuckets
 operator|.
@@ -293,9 +287,7 @@ name|void
 name|testListBucket
 parameter_list|()
 throws|throws
-name|OzoneException
-throws|,
-name|IOException
+name|Exception
 block|{
 name|TestBuckets
 operator|.

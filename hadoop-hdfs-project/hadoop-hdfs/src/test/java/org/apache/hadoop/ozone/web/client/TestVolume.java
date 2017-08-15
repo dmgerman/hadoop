@@ -1009,7 +1009,7 @@ name|void
 name|testChangeOwnerOnVolume
 parameter_list|()
 throws|throws
-name|OzoneException
+name|Exception
 block|{
 name|runTestChangeOwnerOnVolume
 argument_list|(
@@ -1027,6 +1027,8 @@ name|client
 parameter_list|)
 throws|throws
 name|OzoneException
+throws|,
+name|ParseException
 block|{
 name|String
 name|volumeName
@@ -1091,6 +1093,22 @@ argument_list|,
 literal|"frodo"
 argument_list|)
 expr_stmt|;
+comment|// verify if the creation time is missing after setting owner operation
+name|assertTrue
+argument_list|(
+name|OzoneUtils
+operator|.
+name|formatDate
+argument_list|(
+name|newVol
+operator|.
+name|getCreatedOn
+argument_list|()
+argument_list|)
+operator|>
+literal|0
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Test
@@ -1100,9 +1118,7 @@ name|void
 name|testChangeQuotaOnVolume
 parameter_list|()
 throws|throws
-name|OzoneException
-throws|,
-name|IOException
+name|Exception
 block|{
 name|runTestChangeQuotaOnVolume
 argument_list|(
@@ -1122,6 +1138,8 @@ throws|throws
 name|OzoneException
 throws|,
 name|IOException
+throws|,
+name|ParseException
 block|{
 name|String
 name|volumeName
@@ -1204,6 +1222,22 @@ operator|.
 name|Units
 operator|.
 name|MB
+argument_list|)
+expr_stmt|;
+comment|// verify if the creation time is missing after setting quota operation
+name|assertTrue
+argument_list|(
+name|OzoneUtils
+operator|.
+name|formatDate
+argument_list|(
+name|newVol
+operator|.
+name|getCreatedOn
+argument_list|()
+argument_list|)
+operator|>
+literal|0
 argument_list|)
 expr_stmt|;
 block|}

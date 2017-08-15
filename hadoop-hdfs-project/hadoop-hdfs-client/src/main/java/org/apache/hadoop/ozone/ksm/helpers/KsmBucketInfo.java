@@ -192,8 +192,15 @@ specifier|private
 name|StorageType
 name|storageType
 decl_stmt|;
-comment|/**    * Private constructor, constructed via builder.    * @param volumeName - Volume name.    * @param bucketName - Bucket name.    * @param acls - list of ACLs.    * @param isVersionEnabled - Bucket version flag.    * @param storageType - Storage type to be used.    */
-DECL|method|KsmBucketInfo (String volumeName, String bucketName, List<OzoneAcl> acls, boolean isVersionEnabled, StorageType storageType)
+comment|/**    * Creation time of bucket.    */
+DECL|field|creationTime
+specifier|private
+specifier|final
+name|long
+name|creationTime
+decl_stmt|;
+comment|/**    * Private constructor, constructed via builder.    * @param volumeName - Volume name.    * @param bucketName - Bucket name.    * @param acls - list of ACLs.    * @param isVersionEnabled - Bucket version flag.    * @param storageType - Storage type to be used.    * @param creationTime - Bucket creation time.    */
+DECL|method|KsmBucketInfo (String volumeName, String bucketName, List<OzoneAcl> acls, boolean isVersionEnabled, StorageType storageType, long creationTime)
 specifier|private
 name|KsmBucketInfo
 parameter_list|(
@@ -214,6 +221,9 @@ name|isVersionEnabled
 parameter_list|,
 name|StorageType
 name|storageType
+parameter_list|,
+name|long
+name|creationTime
 parameter_list|)
 block|{
 name|this
@@ -245,6 +255,12 @@ operator|.
 name|storageType
 operator|=
 name|storageType
+expr_stmt|;
+name|this
+operator|.
+name|creationTime
+operator|=
+name|creationTime
 expr_stmt|;
 block|}
 comment|/**    * Returns the Volume Name.    * @return String.    */
@@ -305,6 +321,17 @@ return|return
 name|storageType
 return|;
 block|}
+comment|/**    * Returns creation time.    *    * @return long    */
+DECL|method|getCreationTime ()
+specifier|public
+name|long
+name|getCreationTime
+parameter_list|()
+block|{
+return|return
+name|creationTime
+return|;
+block|}
 comment|/**    * Returns new builder class that builds a KsmBucketInfo.    *    * @return Builder    */
 DECL|method|newBuilder ()
 specifier|public
@@ -353,6 +380,11 @@ DECL|field|storageType
 specifier|private
 name|StorageType
 name|storageType
+decl_stmt|;
+DECL|field|creationTime
+specifier|private
+name|long
+name|creationTime
 decl_stmt|;
 DECL|method|Builder ()
 name|Builder
@@ -481,6 +513,25 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|setCreationTime (long createdOn)
+specifier|public
+name|Builder
+name|setCreationTime
+parameter_list|(
+name|long
+name|createdOn
+parameter_list|)
+block|{
+name|this
+operator|.
+name|creationTime
+operator|=
+name|createdOn
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 comment|/**      * Constructs the KsmBucketInfo.      * @return instance of KsmBucketInfo.      */
 DECL|method|build ()
 specifier|public
@@ -536,6 +587,8 @@ argument_list|,
 name|isVersionEnabled
 argument_list|,
 name|storageType
+argument_list|,
+name|creationTime
 argument_list|)
 return|;
 block|}
@@ -599,6 +652,11 @@ name|convertStorageType
 argument_list|(
 name|storageType
 argument_list|)
+argument_list|)
+operator|.
+name|setCreationTime
+argument_list|(
+name|creationTime
 argument_list|)
 operator|.
 name|build
@@ -667,6 +725,11 @@ operator|.
 name|getStorageType
 argument_list|()
 argument_list|)
+argument_list|,
+name|bucketInfo
+operator|.
+name|getCreationTime
+argument_list|()
 argument_list|)
 return|;
 block|}

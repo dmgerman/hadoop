@@ -237,7 +237,7 @@ name|void
 name|testChangeOwnerOnVolume
 parameter_list|()
 throws|throws
-name|OzoneException
+name|Exception
 block|{
 name|TestVolume
 operator|.
@@ -255,9 +255,7 @@ name|void
 name|testChangeQuotaOnVolume
 parameter_list|()
 throws|throws
-name|OzoneException
-throws|,
-name|IOException
+name|Exception
 block|{
 name|TestVolume
 operator|.

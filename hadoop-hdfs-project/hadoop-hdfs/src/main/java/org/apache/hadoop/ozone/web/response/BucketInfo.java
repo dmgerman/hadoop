@@ -399,6 +399,11 @@ specifier|private
 name|String
 name|bucketName
 decl_stmt|;
+DECL|field|createdOn
+specifier|private
+name|String
+name|createdOn
+decl_stmt|;
 DECL|field|acls
 specifier|private
 name|List
@@ -613,6 +618,34 @@ name|bucketName
 operator|=
 name|bucketName
 expr_stmt|;
+block|}
+comment|/**    * Sets creation time of the bucket.    *    * @param creationTime - Date String    */
+DECL|method|setCreatedOn (String creationTime)
+specifier|public
+name|void
+name|setCreatedOn
+parameter_list|(
+name|String
+name|creationTime
+parameter_list|)
+block|{
+name|this
+operator|.
+name|createdOn
+operator|=
+name|creationTime
+expr_stmt|;
+block|}
+comment|/**    * Returns creation time.    *    * @return creation time of bucket.    */
+DECL|method|getCreatedOn ()
+specifier|public
+name|String
+name|getCreatedOn
+parameter_list|()
+block|{
+return|return
+name|createdOn
+return|;
 block|}
 comment|/**    * Returns a JSON string of this object.    * After stripping out bytesUsed and keyCount    *    * @return String    */
 DECL|method|toJsonString ()

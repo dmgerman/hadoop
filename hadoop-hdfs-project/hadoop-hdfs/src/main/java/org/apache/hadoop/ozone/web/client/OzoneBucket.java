@@ -739,6 +739,20 @@ name|getStorageType
 argument_list|()
 return|;
 block|}
+comment|/**    * Gets the creation time of the bucket.    *    * @return String    */
+DECL|method|getCreatedOn ()
+specifier|public
+name|String
+name|getCreatedOn
+parameter_list|()
+block|{
+return|return
+name|bucketInfo
+operator|.
+name|getCreatedOn
+argument_list|()
+return|;
+block|}
 comment|/**    * Puts an Object in Ozone bucket.    *    * @param keyName - Name of the key    * @param data    - Data that you want to put    * @throws OzoneException    */
 DECL|method|putKey (String keyName, String data)
 specifier|public

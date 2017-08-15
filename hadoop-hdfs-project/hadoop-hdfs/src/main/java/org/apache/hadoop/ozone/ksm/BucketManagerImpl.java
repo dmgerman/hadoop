@@ -939,6 +939,16 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|bucketInfoBuilder
+operator|.
+name|setCreationTime
+argument_list|(
+name|oldBucketInfo
+operator|.
+name|getCreationTime
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|metadataManager
 operator|.
 name|put
