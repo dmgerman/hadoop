@@ -288,6 +288,16 @@ operator|.
 name|DEFAULT_FEDERATION_POLICY_MANAGER_PARAMS
 argument_list|)
 expr_stmt|;
+comment|// Federation StateStore ZK implementation configs to be ignored
+name|configurationPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|FEDERATION_STATESTORE_ZK_PARENT_PATH
+argument_list|)
+expr_stmt|;
 comment|// Federation StateStore SQL implementation configs to be ignored
 name|configurationPropsToSkipCompare
 operator|.
