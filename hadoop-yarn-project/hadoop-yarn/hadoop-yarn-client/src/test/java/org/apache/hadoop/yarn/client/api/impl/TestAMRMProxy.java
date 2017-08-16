@@ -987,7 +987,7 @@ name|YarnConfiguration
 operator|.
 name|RM_NM_EXPIRY_INTERVAL_MS
 argument_list|,
-literal|1500
+literal|4500
 argument_list|)
 expr_stmt|;
 name|conf
@@ -998,7 +998,7 @@ name|YarnConfiguration
 operator|.
 name|RM_NM_HEARTBEAT_INTERVAL_MS
 argument_list|,
-literal|1500
+literal|4500
 argument_list|)
 expr_stmt|;
 name|conf
@@ -1009,7 +1009,7 @@ name|YarnConfiguration
 operator|.
 name|RM_AM_EXPIRY_INTERVAL_MS
 argument_list|,
-literal|1500
+literal|4500
 argument_list|)
 expr_stmt|;
 comment|// RM_AMRM_TOKEN_MASTER_KEY_ROLLING_INTERVAL_SECS should be at least
@@ -1022,7 +1022,7 @@ name|YarnConfiguration
 operator|.
 name|RM_AMRM_TOKEN_MASTER_KEY_ROLLING_INTERVAL_SECS
 argument_list|,
-literal|6
+literal|20
 argument_list|)
 expr_stmt|;
 name|cluster
@@ -1227,7 +1227,7 @@ name|Thread
 operator|.
 name|sleep
 argument_list|(
-literal|1500
+literal|4500
 argument_list|)
 expr_stmt|;
 block|}
