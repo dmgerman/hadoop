@@ -568,17 +568,6 @@ operator|=
 operator|new
 name|ResourceInfo
 argument_list|(
-name|queue
-operator|.
-name|getMaxShare
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|maxResources
-operator|=
-operator|new
-name|ResourceInfo
-argument_list|(
 name|Resources
 operator|.
 name|componentwiseMin
