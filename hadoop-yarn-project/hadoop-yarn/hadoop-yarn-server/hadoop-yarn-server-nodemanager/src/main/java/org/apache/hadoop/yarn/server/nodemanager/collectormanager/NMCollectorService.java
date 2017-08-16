@@ -493,7 +493,6 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-comment|// TODO Security settings.
 name|YarnRPC
 name|rpc
 init|=
@@ -504,6 +503,8 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
+comment|// Kerberos based authentication to be used for CollectorNodemanager
+comment|// protocol if security is enabled.
 name|server
 operator|=
 name|rpc
@@ -520,12 +521,7 @@ name|collectorServerAddress
 argument_list|,
 name|serverConf
 argument_list|,
-name|this
-operator|.
-name|context
-operator|.
-name|getNMTokenSecretManager
-argument_list|()
+literal|null
 argument_list|,
 name|conf
 operator|.
