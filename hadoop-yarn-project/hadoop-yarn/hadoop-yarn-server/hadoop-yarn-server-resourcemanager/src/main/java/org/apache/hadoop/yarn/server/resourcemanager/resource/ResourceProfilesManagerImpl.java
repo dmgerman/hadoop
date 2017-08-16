@@ -378,6 +378,8 @@ block|,
 name|MAXIMUM_PROFILE
 block|}
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|init (Configuration config)
 specifier|public
 name|void
@@ -940,6 +942,8 @@ return|return
 name|resource
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getProfile (String profile)
 specifier|public
 name|Resource
@@ -963,6 +967,8 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getResourceProfiles ()
 specifier|public
 name|Map
@@ -984,6 +990,8 @@ argument_list|)
 return|;
 block|}
 annotation|@
+name|Override
+annotation|@
 name|VisibleForTesting
 DECL|method|reloadProfiles ()
 specifier|public
@@ -1002,6 +1010,8 @@ name|loadProfiles
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getDefaultProfile ()
 specifier|public
 name|Resource
@@ -1015,6 +1025,8 @@ name|DEFAULT_PROFILE
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getMinimumProfile ()
 specifier|public
 name|Resource
@@ -1028,6 +1040,8 @@ name|MINIMUM_PROFILE
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getMaximumProfile ()
 specifier|public
 name|Resource

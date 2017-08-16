@@ -30,6 +30,38 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -79,11 +111,16 @@ comment|/**  * Interface for the resource profiles manager. Provides an interfac
 end_comment
 
 begin_interface
+annotation|@
+name|Public
+annotation|@
+name|Unstable
 DECL|interface|ResourceProfilesManager
 specifier|public
 interface|interface
 name|ResourceProfilesManager
 block|{
+comment|/**    * Method to handle all initialization steps for ResourceProfilesManager.    * @param config Configuration object    * @throws IOException when invalid resource profile names are loaded    */
 DECL|method|init (Configuration config)
 name|void
 name|init
@@ -94,6 +131,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Get the resource capability associated with given profile name.    * @param profile name of resource profile    * @return resource capability for given profile    */
 DECL|method|getProfile (String profile)
 name|Resource
 name|getProfile
@@ -102,6 +140,7 @@ name|String
 name|profile
 parameter_list|)
 function_decl|;
+comment|/**    * Get all supported resource profiles.    * @return a map of resource objects associated with each profile    */
 DECL|method|getResourceProfiles ()
 name|Map
 argument_list|<
@@ -112,6 +151,7 @@ argument_list|>
 name|getResourceProfiles
 parameter_list|()
 function_decl|;
+comment|/**    * Reload profiles based on updated configuration.    * @throws IOException when invalid resource profile names are loaded    */
 DECL|method|reloadProfiles ()
 name|void
 name|reloadProfiles
@@ -119,16 +159,19 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Get default supported resource profile.    * @return resource object which is default    */
 DECL|method|getDefaultProfile ()
 name|Resource
 name|getDefaultProfile
 parameter_list|()
 function_decl|;
+comment|/**    * Get minimum supported resource profile.    * @return resource object which is minimum    */
 DECL|method|getMinimumProfile ()
 name|Resource
 name|getMinimumProfile
 parameter_list|()
 function_decl|;
+comment|/**    * Get maximum supported resource profile.    * @return resource object which is maximum    */
 DECL|method|getMaximumProfile ()
 name|Resource
 name|getMaximumProfile
