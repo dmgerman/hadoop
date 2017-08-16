@@ -109,7 +109,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>  * {@link ReservationId} represents the<em>globally unique</em> identifier for  * a reservation.  *</p>  *   *<p>  * The globally unique nature of the identifier is achieved by using the  *<em>cluster timestamp</em> i.e. start-time of the {@code ResourceManager}  * along with a monotonically increasing counter for the reservation.  *</p>  */
+comment|/**  *<p>  * {@link ReservationId} represents the<em>globally unique</em> identifier for  * a reservation.  *</p>  *  *<p>  * The globally unique nature of the identifier is achieved by using the  *<em>cluster timestamp</em> i.e. start-time of the {@code ResourceManager}  * along with a monotonically increasing counter for the reservation.  *</p>  */
 end_comment
 
 begin_class
@@ -203,7 +203,7 @@ return|return
 name|reservationId
 return|;
 block|}
-comment|/**    * Get the long identifier of the {@link ReservationId} which is unique for    * all Reservations started by a particular instance of the    * {@code ResourceManager}.    *     * @return long identifier of the {@link ReservationId}    */
+comment|/**    * Get the long identifier of the {@link ReservationId} which is unique for    * all Reservations started by a particular instance of the    * {@code ResourceManager}.    *    * @return long identifier of the {@link ReservationId}    */
 annotation|@
 name|Public
 annotation|@
@@ -229,7 +229,7 @@ name|long
 name|id
 parameter_list|)
 function_decl|;
-comment|/**    * Get the<em>start time</em> of the {@code ResourceManager} which is used to    * generate globally unique {@link ReservationId}.    *     * @return<em>start time</em> of the {@code ResourceManager}    */
+comment|/**    * Get the<em>start time</em> of the {@code ResourceManager} which is used to    * generate globally unique {@link ReservationId}.    *    * @return<em>start time</em> of the {@code ResourceManager}    */
 annotation|@
 name|Public
 annotation|@
@@ -298,55 +298,35 @@ literal|0
 condition|)
 block|{
 return|return
+name|Long
+operator|.
+name|compare
+argument_list|(
 name|getId
 argument_list|()
-operator|>
+argument_list|,
+name|other
+operator|.
 name|getId
 argument_list|()
-condition|?
-literal|1
-else|:
-name|getId
-argument_list|()
-operator|<
-name|getId
-argument_list|()
-condition|?
-operator|-
-literal|1
-else|:
-literal|0
+argument_list|)
 return|;
 block|}
 else|else
 block|{
 return|return
-name|this
+name|Long
 operator|.
+name|compare
+argument_list|(
 name|getClusterTimestamp
 argument_list|()
-operator|>
+argument_list|,
 name|other
 operator|.
 name|getClusterTimestamp
 argument_list|()
-condition|?
-literal|1
-else|:
-name|this
-operator|.
-name|getClusterTimestamp
-argument_list|()
-operator|<
-name|other
-operator|.
-name|getClusterTimestamp
-argument_list|()
-condition|?
-operator|-
-literal|1
-else|:
-literal|0
+argument_list|)
 return|;
 block|}
 block|}
