@@ -333,7 +333,7 @@ operator|new
 name|Counters
 argument_list|()
 decl_stmt|;
-comment|/**     * Create an event to record the unsuccessful completion of attempts    * @param id Attempt ID    * @param taskType Type of the task    * @param status Status of the attempt    * @param finishTime Finish time of the attempt    * @param hostname Name of the host where the attempt executed    * @param port rpc port for for the tracker    * @param rackName Name of the rack where the attempt executed    * @param error Error string    * @param counters Counters for the attempt    * @param allSplits the "splits", or a pixelated graph of various    *        measurable worker node state variables against progress.    *        Currently there are four; wallclock time, CPU time,    *        virtual memory and physical memory.      */
+comment|/**    * Create an event to record the unsuccessful completion of attempts    * @param id Attempt ID    * @param taskType Type of the task    * @param status Status of the attempt    * @param finishTime Finish time of the attempt    * @param hostname Name of the host where the attempt executed    * @param port rpc port for for the tracker    * @param rackName Name of the rack where the attempt executed    * @param error Error string    * @param counters Counters for the attempt    * @param allSplits the "splits", or a pixelated graph of various    *        measurable worker node state variables against progress.    *        Currently there are four; wallclock time, CPU time,    *        virtual memory and physical memory.    */
 DECL|method|TaskAttemptUnsuccessfulCompletionEvent (TaskAttemptID id, TaskType taskType, String status, long finishTime, String hostname, int port, String rackName, String error, Counters counters, int[][] allSplits)
 specifier|public
 name|TaskAttemptUnsuccessfulCompletionEvent
@@ -476,7 +476,7 @@ name|allSplits
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**     * @deprecated please use the constructor with an additional    *              argument, an array of splits arrays instead.  See    *              {@link org.apache.hadoop.mapred.ProgressSplitsBlock}    *              for an explanation of the meaning of that parameter.    *    * Create an event to record the unsuccessful completion of attempts    * @param id Attempt ID    * @param taskType Type of the task    * @param status Status of the attempt    * @param finishTime Finish time of the attempt    * @param hostname Name of the host where the attempt executed    * @param error Error string    */
+comment|/**    * @deprecated please use the constructor with an additional    *              argument, an array of splits arrays instead.  See    *              {@link org.apache.hadoop.mapred.ProgressSplitsBlock}    *              for an explanation of the meaning of that parameter.    *    * Create an event to record the unsuccessful completion of attempts    * @param id Attempt ID    * @param taskType Type of the task    * @param status Status of the attempt    * @param finishTime Finish time of the attempt    * @param hostname Name of the host where the attempt executed    * @param error Error string    */
 DECL|method|TaskAttemptUnsuccessfulCompletionEvent (TaskAttemptID id, TaskType taskType, String status, long finishTime, String hostname, String error)
 specifier|public
 name|TaskAttemptUnsuccessfulCompletionEvent
@@ -579,7 +579,7 @@ name|error
 argument_list|,
 name|EMPTY_COUNTERS
 argument_list|,
-literal|null
+name|allSplits
 argument_list|)
 expr_stmt|;
 block|}
