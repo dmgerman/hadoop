@@ -152,22 +152,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
-operator|.
-name|permission
-operator|.
-name|FsPermission
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|mapreduce
 operator|.
 name|MRJobConfig
@@ -1421,14 +1405,6 @@ argument_list|,
 name|statCache
 argument_list|)
 decl_stmt|;
-name|FsPermission
-name|perms
-init|=
-name|status
-operator|.
-name|getPermission
-argument_list|()
-decl_stmt|;
 comment|// Encrypted files are always treated as private. This stance has two
 comment|// important side effects.  The first is that the encrypted files will be
 comment|// downloaded as the job owner instead of the YARN user, which is required
@@ -1439,16 +1415,19 @@ comment|// permissions.
 if|if
 condition|(
 operator|!
-name|perms
+name|status
 operator|.
-name|getEncryptedBit
+name|isEncrypted
 argument_list|()
 condition|)
 block|{
 name|FsAction
 name|otherAction
 init|=
-name|perms
+name|status
+operator|.
+name|getPermission
+argument_list|()
 operator|.
 name|getOtherAction
 argument_list|()

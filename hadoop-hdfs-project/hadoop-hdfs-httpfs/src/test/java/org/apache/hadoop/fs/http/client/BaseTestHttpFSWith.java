@@ -6506,6 +6506,7 @@ name|hasAcl
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// backwards compat
 name|assertEquals
 argument_list|(
 name|actualFileStatus

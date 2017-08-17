@@ -1129,10 +1129,7 @@ operator|+
 operator|(
 name|stat
 operator|.
-name|getPermission
-argument_list|()
-operator|.
-name|getAclBit
+name|hasAcl
 argument_list|()
 condition|?
 literal|"+"
@@ -1252,10 +1249,7 @@ operator|+
 operator|(
 name|stat
 operator|.
-name|getPermission
-argument_list|()
-operator|.
-name|getAclBit
+name|hasAcl
 argument_list|()
 condition|?
 literal|"+"

@@ -716,9 +716,12 @@ argument_list|()
 decl_stmt|;
 name|p
 operator|.
-name|readFields
+name|fromShort
 argument_list|(
 name|in
+operator|.
+name|readShort
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
