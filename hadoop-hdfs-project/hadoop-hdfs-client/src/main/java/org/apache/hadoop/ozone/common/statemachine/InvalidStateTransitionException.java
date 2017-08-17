@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.scm.container.common.helpers.StateMachine
+DECL|package|org.apache.hadoop.ozone.common.statemachine
 package|package
 name|org
 operator|.
@@ -12,15 +12,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|scm
-operator|.
-name|container
+name|ozone
 operator|.
 name|common
 operator|.
-name|helpers
-operator|.
-name|StateMachine
+name|statemachine
 package|;
 end_package
 

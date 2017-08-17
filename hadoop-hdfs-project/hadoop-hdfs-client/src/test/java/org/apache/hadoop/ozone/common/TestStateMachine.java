@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one or mor
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.scm
+DECL|package|org.apache.hadoop.ozone.common
 package|package
 name|org
 operator|.
@@ -12,7 +12,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|scm
+name|ozone
+operator|.
+name|common
 package|;
 end_package
 
@@ -38,15 +40,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|scm
-operator|.
-name|container
+name|ozone
 operator|.
 name|common
 operator|.
-name|helpers
-operator|.
-name|StateMachine
+name|statemachine
 operator|.
 name|InvalidStateTransitionException
 import|;
@@ -60,15 +58,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|scm
-operator|.
-name|container
+name|ozone
 operator|.
 name|common
 operator|.
-name|helpers
-operator|.
-name|StateMachine
+name|statemachine
 operator|.
 name|StateMachine
 import|;
@@ -144,7 +138,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|scm
+name|ozone
+operator|.
+name|common
 operator|.
 name|TestStateMachine
 operator|.
@@ -162,7 +158,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|scm
+name|ozone
+operator|.
+name|common
 operator|.
 name|TestStateMachine
 operator|.
@@ -180,7 +178,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|scm
+name|ozone
+operator|.
+name|common
 operator|.
 name|TestStateMachine
 operator|.
@@ -198,7 +198,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|scm
+name|ozone
+operator|.
+name|common
 operator|.
 name|TestStateMachine
 operator|.
@@ -216,7 +218,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|scm
+name|ozone
+operator|.
+name|common
 operator|.
 name|TestStateMachine
 operator|.
@@ -234,7 +238,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|scm
+name|ozone
+operator|.
+name|common
 operator|.
 name|TestStateMachine
 operator|.
@@ -244,12 +250,17 @@ name|FINAL
 import|;
 end_import
 
+begin_comment
+comment|/**  * This class is to test ozone common state machine.  */
+end_comment
+
 begin_class
 DECL|class|TestStateMachine
 specifier|public
 class|class
 name|TestStateMachine
 block|{
+comment|/**    * STATES used by the test state machine.    */
 DECL|enum|STATES
 DECL|enumConstant|INIT
 DECL|enumConstant|CREATING
@@ -274,6 +285,7 @@ block|,
 name|FINAL
 block|}
 empty_stmt|;
+comment|/**    * EVENTS used by the test state machine.    */
 DECL|enum|EVENTS
 DECL|enumConstant|ALLOCATE
 DECL|enumConstant|CREATE

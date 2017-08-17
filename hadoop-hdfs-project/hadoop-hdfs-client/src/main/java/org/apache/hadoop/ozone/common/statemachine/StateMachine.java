@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.scm.container.common.helpers.StateMachine
+DECL|package|org.apache.hadoop.ozone.common.statemachine
 package|package
 name|org
 operator|.
@@ -12,15 +12,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|scm
-operator|.
-name|container
+name|ozone
 operator|.
 name|common
 operator|.
-name|helpers
-operator|.
-name|StateMachine
+name|statemachine
 package|;
 end_package
 
@@ -35,20 +31,6 @@ operator|.
 name|base
 operator|.
 name|Supplier
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|cache
-operator|.
-name|Cache
 import|;
 end_import
 
@@ -77,6 +59,20 @@ operator|.
 name|cache
 operator|.
 name|CacheLoader
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|cache
+operator|.
+name|LoadingCache
 import|;
 end_import
 
@@ -151,7 +147,7 @@ decl_stmt|;
 DECL|field|transitions
 specifier|private
 specifier|final
-name|Cache
+name|LoadingCache
 argument_list|<
 name|EVENT
 argument_list|,
@@ -308,8 +304,6 @@ parameter_list|,
 name|EVENT
 name|e
 parameter_list|)
-throws|throws
-name|InvalidStateTransitionException
 block|{
 name|transitions
 operator|.
