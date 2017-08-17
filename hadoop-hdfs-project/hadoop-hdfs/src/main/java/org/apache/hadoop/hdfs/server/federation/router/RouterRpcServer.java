@@ -12278,6 +12278,17 @@ name|accessTime
 argument_list|,
 name|permission
 argument_list|,
+name|EnumSet
+operator|.
+name|noneOf
+argument_list|(
+name|HdfsFileStatus
+operator|.
+name|Flags
+operator|.
+name|class
+argument_list|)
+argument_list|,
 name|owner
 argument_list|,
 name|group
