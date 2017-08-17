@@ -275,10 +275,8 @@ if|if
 condition|(
 name|ResourceUtils
 operator|.
-name|getResourceTypesArray
+name|getNumberOfKnownResourceTypes
 argument_list|()
-operator|.
-name|length
 operator|>
 literal|2
 condition|)
@@ -344,10 +342,8 @@ if|if
 condition|(
 name|ResourceUtils
 operator|.
-name|getResourceTypesArray
+name|getNumberOfKnownResourceTypes
 argument_list|()
-operator|.
-name|length
 operator|>
 literal|2
 condition|)
@@ -432,10 +428,8 @@ if|if
 condition|(
 name|ResourceUtils
 operator|.
-name|getResourceTypesArray
+name|getNumberOfKnownResourceTypes
 argument_list|()
-operator|.
-name|length
 operator|>
 literal|2
 condition|)

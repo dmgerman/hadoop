@@ -142,6 +142,18 @@ name|readOnlyResources
 init|=
 literal|null
 decl_stmt|;
+comment|// Number of mandatory resources, this is added to avoid invoke
+comment|// MandatoryResources.values().length, since values() internally will
+comment|// copy array, etc.
+DECL|field|NUM_MANDATORY_RESOURCES
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|NUM_MANDATORY_RESOURCES
+init|=
+literal|2
+decl_stmt|;
 DECL|enum|MandatoryResources
 specifier|protected
 enum|enum
@@ -250,12 +262,7 @@ operator|=
 operator|new
 name|ResourceInformation
 index|[
-name|MandatoryResources
-operator|.
-name|values
-argument_list|()
-operator|.
-name|length
+name|NUM_MANDATORY_RESOURCES
 index|]
 expr_stmt|;
 name|readOnlyResources
@@ -263,12 +270,7 @@ operator|=
 operator|new
 name|ResourceInformation
 index|[
-name|MandatoryResources
-operator|.
-name|values
-argument_list|()
-operator|.
-name|length
+name|NUM_MANDATORY_RESOURCES
 index|]
 expr_stmt|;
 name|resources
