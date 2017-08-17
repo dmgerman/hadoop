@@ -1575,11 +1575,11 @@ return|;
 block|}
 block|}
 comment|/** Command to check storage policy satisfier status. */
-DECL|class|IsSPSRunningCommand
+DECL|class|IsSatisfierRunningCommand
 specifier|private
 specifier|static
 class|class
-name|IsSPSRunningCommand
+name|IsSatisfierRunningCommand
 implements|implements
 name|AdminHelper
 operator|.
@@ -1594,7 +1594,7 @@ name|getName
 parameter_list|()
 block|{
 return|return
-literal|"-isSPSRunning"
+literal|"-isSatisfierRunning"
 return|;
 block|}
 annotation|@
@@ -2019,7 +2019,7 @@ name|SatisfyStoragePolicyCommand
 argument_list|()
 block|,
 operator|new
-name|IsSPSRunningCommand
+name|IsSatisfierRunningCommand
 argument_list|()
 block|}
 decl_stmt|;

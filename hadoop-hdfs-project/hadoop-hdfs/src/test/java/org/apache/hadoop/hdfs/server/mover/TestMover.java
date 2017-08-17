@@ -1233,7 +1233,7 @@ name|setBoolean
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 argument_list|,
 literal|false
 argument_list|)
@@ -1391,7 +1391,7 @@ name|setBoolean
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 argument_list|,
 literal|false
 argument_list|)
@@ -3274,7 +3274,7 @@ name|setBoolean
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 argument_list|,
 literal|false
 argument_list|)
@@ -3561,7 +3561,7 @@ name|setBoolean
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 argument_list|,
 literal|false
 argument_list|)
@@ -3762,7 +3762,7 @@ name|setBoolean
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 argument_list|,
 literal|false
 argument_list|)
@@ -3811,7 +3811,7 @@ name|setBoolean
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 argument_list|,
 literal|false
 argument_list|)
@@ -4114,7 +4114,7 @@ name|setBoolean
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 argument_list|,
 literal|false
 argument_list|)
@@ -4163,7 +4163,7 @@ name|setBoolean
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 argument_list|,
 literal|false
 argument_list|)
@@ -4649,7 +4649,7 @@ name|setBoolean
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 argument_list|,
 literal|false
 argument_list|)
@@ -4855,7 +4855,7 @@ name|setBoolean
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 argument_list|,
 literal|true
 argument_list|)
@@ -5693,7 +5693,7 @@ name|setBoolean
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 argument_list|,
 literal|false
 argument_list|)

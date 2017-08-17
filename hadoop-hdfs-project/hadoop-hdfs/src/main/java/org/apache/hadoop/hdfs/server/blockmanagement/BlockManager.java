@@ -2379,6 +2379,17 @@ specifier|final
 name|StoragePolicySatisfier
 name|sps
 decl_stmt|;
+DECL|field|storagePolicyEnabled
+specifier|private
+specifier|final
+name|boolean
+name|storagePolicyEnabled
+decl_stmt|;
+DECL|field|spsEnabled
+specifier|private
+name|boolean
+name|spsEnabled
+decl_stmt|;
 DECL|field|storageMovementNeeded
 specifier|private
 specifier|final
@@ -2403,13 +2414,6 @@ specifier|final
 name|ProvidedStorageMap
 name|providedStorageMap
 decl_stmt|;
-comment|/**    * Whether HA is enabled.    */
-DECL|field|haEnabled
-specifier|private
-specifier|final
-name|boolean
-name|haEnabled
-decl_stmt|;
 DECL|method|BlockManager (final Namesystem namesystem, boolean haEnabled, final Configuration conf)
 specifier|public
 name|BlockManager
@@ -2433,12 +2437,6 @@ operator|.
 name|namesystem
 operator|=
 name|namesystem
-expr_stmt|;
-name|this
-operator|.
-name|haEnabled
-operator|=
-name|haEnabled
 expr_stmt|;
 name|datanodeManager
 operator|=
@@ -2598,10 +2596,8 @@ operator|*
 literal|1000L
 argument_list|)
 expr_stmt|;
-specifier|final
-name|boolean
 name|storagePolicyEnabled
-init|=
+operator|=
 name|conf
 operator|.
 name|getBoolean
@@ -2614,31 +2610,22 @@ name|DFSConfigKeys
 operator|.
 name|DFS_STORAGE_POLICY_ENABLED_DEFAULT
 argument_list|)
-decl_stmt|;
-specifier|final
-name|boolean
+expr_stmt|;
 name|spsEnabled
-init|=
+operator|=
 name|conf
 operator|.
 name|getBoolean
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 argument_list|,
 name|DFSConfigKeys
 operator|.
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_DEFAULT
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_DEFAULT
 argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|storagePolicyEnabled
-operator|&&
-name|spsEnabled
-condition|)
-block|{
+expr_stmt|;
 name|sps
 operator|=
 operator|new
@@ -2653,35 +2640,6 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
-block|}
-else|else
-block|{
-name|sps
-operator|=
-literal|null
-expr_stmt|;
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Failed to start StoragePolicySatisfier"
-operator|+
-literal|" since {} set to {} and {} set to {}."
-argument_list|,
-name|DFSConfigKeys
-operator|.
-name|DFS_STORAGE_POLICY_ENABLED_KEY
-argument_list|,
-name|storagePolicyEnabled
-argument_list|,
-name|DFSConfigKeys
-operator|.
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
-argument_list|,
-name|spsEnabled
-argument_list|)
-expr_stmt|;
-block|}
 name|blockTokenSecretManager
 operator|=
 name|createBlockTokenSecretManager
@@ -3822,24 +3780,6 @@ argument_list|(
 name|blockTotal
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|sps
-operator|!=
-literal|null
-operator|&&
-operator|!
-name|haEnabled
-condition|)
-block|{
-name|sps
-operator|.
-name|start
-argument_list|(
-literal|false
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 DECL|method|close ()
 specifier|public
@@ -3847,21 +3787,11 @@ name|void
 name|close
 parameter_list|()
 block|{
-if|if
-condition|(
-name|sps
-operator|!=
-literal|null
-condition|)
-block|{
-name|sps
-operator|.
-name|deactivate
+name|stopSPS
 argument_list|(
 literal|false
 argument_list|)
 expr_stmt|;
-block|}
 name|bmSafeMode
 operator|.
 name|close
@@ -23571,25 +23501,42 @@ return|return
 name|sps
 return|;
 block|}
-comment|/**    * Activate the storage policy satisfier by starting its service.    */
-DECL|method|activateSPS ()
+comment|/**    * Start storage policy satisfier service.    */
+DECL|method|startSPS ()
 specifier|public
 name|void
-name|activateSPS
+name|startSPS
 parameter_list|()
 block|{
 if|if
 condition|(
-name|sps
-operator|==
-literal|null
+operator|!
+operator|(
+name|storagePolicyEnabled
+operator|&&
+name|spsEnabled
+operator|)
 condition|)
 block|{
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Storage policy satisfier is not initialized."
+literal|"Failed to start StoragePolicySatisfier "
+operator|+
+literal|" as {} set to {} and {} set to {}."
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_STORAGE_POLICY_ENABLED_KEY
+argument_list|,
+name|storagePolicyEnabled
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
+argument_list|,
+name|spsEnabled
 argument_list|)
 expr_stmt|;
 return|return;
@@ -23616,29 +23563,35 @@ name|sps
 operator|.
 name|start
 argument_list|(
-literal|true
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Deactivate the storage policy satisfier by stopping its services.    */
-DECL|method|deactivateSPS ()
+comment|/**    * Stop storage policy satisfier service.    *    * @param forceStop    *          true represents that it should stop SPS service by clearing all    *          pending SPS work    */
+DECL|method|stopSPS (boolean forceStop)
 specifier|public
 name|void
-name|deactivateSPS
-parameter_list|()
+name|stopSPS
+parameter_list|(
+name|boolean
+name|forceStop
+parameter_list|)
 block|{
 if|if
 condition|(
-name|sps
-operator|==
-literal|null
+operator|!
+operator|(
+name|storagePolicyEnabled
+operator|&&
+name|spsEnabled
+operator|)
 condition|)
 block|{
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Storage policy satisfier is not initialized."
+literal|"Storage policy satisfier is not enabled."
 argument_list|)
 expr_stmt|;
 return|return;
@@ -23664,7 +23617,110 @@ return|return;
 block|}
 name|sps
 operator|.
-name|deactivate
+name|disable
+argument_list|(
+name|forceStop
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Enable storage policy satisfier by starting its service.    */
+DECL|method|enableSPS ()
+specifier|public
+name|void
+name|enableSPS
+parameter_list|()
+block|{
+if|if
+condition|(
+operator|!
+name|storagePolicyEnabled
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Failed to start StoragePolicySatisfier as {} set to {}."
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_STORAGE_POLICY_ENABLED_KEY
+argument_list|,
+name|storagePolicyEnabled
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+name|spsEnabled
+operator|=
+literal|true
+expr_stmt|;
+if|if
+condition|(
+name|sps
+operator|.
+name|isRunning
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Storage policy satisfier is already running."
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+name|sps
+operator|.
+name|start
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Disable the storage policy satisfier by stopping its services.    */
+DECL|method|disableSPS ()
+specifier|public
+name|void
+name|disableSPS
+parameter_list|()
+block|{
+name|spsEnabled
+operator|=
+literal|false
+expr_stmt|;
+if|if
+condition|(
+operator|!
+name|sps
+operator|.
+name|isRunning
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Storage policy satisfier is already stopped."
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Stopping StoragePolicySatisfier, as admin requested to "
+operator|+
+literal|"stop it."
+argument_list|)
+expr_stmt|;
+name|sps
+operator|.
+name|disable
 argument_list|(
 literal|true
 argument_list|)
@@ -23677,19 +23733,11 @@ name|void
 name|stopSPSGracefully
 parameter_list|()
 block|{
-if|if
-condition|(
-name|sps
-operator|!=
-literal|null
-condition|)
-block|{
 name|sps
 operator|.
 name|stopGracefully
 argument_list|()
 expr_stmt|;
-block|}
 block|}
 comment|/**    * @return True if storage policy satisfier running.    */
 DECL|method|isStoragePolicySatisfierRunning ()
@@ -23699,12 +23747,6 @@ name|isStoragePolicySatisfierRunning
 parameter_list|()
 block|{
 return|return
-name|sps
-operator|==
-literal|null
-condition|?
-literal|false
-else|:
 name|sps
 operator|.
 name|isRunning

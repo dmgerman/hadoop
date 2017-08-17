@@ -166,6 +166,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|DistributedFileSystem
 import|;
 end_import
@@ -338,7 +352,7 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 import|;
 end_import
 
@@ -354,7 +368,7 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_DEFAULT
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_DEFAULT
 import|;
 end_import
 
@@ -1204,7 +1218,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Tests activate/deactivate Storage Policy Satisfier dynamically.    */
+comment|/**    * Tests enable/disable Storage Policy Satisfier dynamically when    * "dfs.storage.policy.enabled" feature is disabled.    *    * @throws ReconfigurationException    * @throws IOException    */
 annotation|@
 name|Test
 argument_list|(
@@ -1212,10 +1226,145 @@ name|timeout
 operator|=
 literal|30000
 argument_list|)
-DECL|method|testReconfigureStoragePolicySatisfierActivated ()
+DECL|method|testReconfigureSPSWithStoragePolicyDisabled ()
 specifier|public
 name|void
-name|testReconfigureStoragePolicySatisfierActivated
+name|testReconfigureSPSWithStoragePolicyDisabled
+parameter_list|()
+throws|throws
+name|ReconfigurationException
+throws|,
+name|IOException
+block|{
+comment|// shutdown cluster
+name|cluster
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+name|Configuration
+name|conf
+init|=
+operator|new
+name|HdfsConfiguration
+argument_list|()
+decl_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_STORAGE_POLICY_ENABLED_KEY
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+name|cluster
+operator|=
+operator|new
+name|MiniDFSCluster
+operator|.
+name|Builder
+argument_list|(
+name|conf
+argument_list|)
+operator|.
+name|build
+argument_list|()
+expr_stmt|;
+name|cluster
+operator|.
+name|waitActive
+argument_list|()
+expr_stmt|;
+specifier|final
+name|NameNode
+name|nameNode
+init|=
+name|cluster
+operator|.
+name|getNameNode
+argument_list|()
+decl_stmt|;
+name|verifySPSEnabled
+argument_list|(
+name|nameNode
+argument_list|,
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+comment|// enable SPS
+name|nameNode
+operator|.
+name|reconfigureProperty
+argument_list|(
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
+argument_list|,
+literal|"true"
+argument_list|)
+expr_stmt|;
+comment|// Since DFS_STORAGE_POLICY_ENABLED_KEY is disabled, SPS can't be enabled.
+name|assertEquals
+argument_list|(
+literal|"SPS shouldn't start as "
+operator|+
+name|DFSConfigKeys
+operator|.
+name|DFS_STORAGE_POLICY_ENABLED_KEY
+operator|+
+literal|" is disabled"
+argument_list|,
+literal|false
+argument_list|,
+name|nameNode
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getBlockManager
+argument_list|()
+operator|.
+name|isStoragePolicySatisfierRunning
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
+operator|+
+literal|" has wrong value"
+argument_list|,
+literal|true
+argument_list|,
+name|nameNode
+operator|.
+name|getConf
+argument_list|()
+operator|.
+name|getBoolean
+argument_list|(
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
+argument_list|,
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_DEFAULT
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Tests enable/disable Storage Policy Satisfier dynamically.    */
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
+DECL|method|testReconfigureStoragePolicySatisfierEnabled ()
+specifier|public
+name|void
+name|testReconfigureStoragePolicySatisfierEnabled
 parameter_list|()
 throws|throws
 name|ReconfigurationException
@@ -1229,13 +1378,13 @@ operator|.
 name|getNameNode
 argument_list|()
 decl_stmt|;
-name|verifySPSActivated
+name|verifySPSEnabled
 argument_list|(
 name|nameNode
 argument_list|,
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 argument_list|,
-literal|true
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// try invalid values
@@ -1245,7 +1394,7 @@ name|nameNode
 operator|.
 name|reconfigureProperty
 argument_list|(
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 argument_list|,
 literal|"text"
 argument_list|)
@@ -1266,7 +1415,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"For activating or deactivating storage policy satisfier, "
+literal|"For enabling or disabling storage policy satisfier, "
 operator|+
 literal|"we must pass true/false only"
 argument_list|,
@@ -1282,16 +1431,16 @@ name|nameNode
 operator|.
 name|reconfigureProperty
 argument_list|(
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 argument_list|,
 literal|"true"
 argument_list|)
 expr_stmt|;
-name|verifySPSActivated
+name|verifySPSEnabled
 argument_list|(
 name|nameNode
 argument_list|,
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 argument_list|,
 literal|true
 argument_list|)
@@ -1301,33 +1450,33 @@ name|nameNode
 operator|.
 name|reconfigureProperty
 argument_list|(
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 argument_list|,
 literal|"false"
 argument_list|)
 expr_stmt|;
-name|verifySPSActivated
+name|verifySPSEnabled
 argument_list|(
 name|nameNode
 argument_list|,
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-comment|// revert to default
+comment|// enable SPS
 name|nameNode
 operator|.
 name|reconfigureProperty
 argument_list|(
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 argument_list|,
 literal|"true"
 argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 operator|+
 literal|" has wrong value"
 argument_list|,
@@ -1347,7 +1496,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 operator|+
 literal|" has wrong value"
 argument_list|,
@@ -1360,14 +1509,14 @@ argument_list|()
 operator|.
 name|getBoolean
 argument_list|(
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 argument_list|,
 literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Test to satisfy storage policy after deactivating storage policy satisfier.    */
+comment|/**    * Test to satisfy storage policy after disabled storage policy satisfier.    */
 annotation|@
 name|Test
 argument_list|(
@@ -1375,10 +1524,10 @@ name|timeout
 operator|=
 literal|30000
 argument_list|)
-DECL|method|testSatisfyStoragePolicyAfterSatisfierDeactivated ()
+DECL|method|testSatisfyStoragePolicyAfterSatisfierDisabled ()
 specifier|public
 name|void
-name|testSatisfyStoragePolicyAfterSatisfierDeactivated
+name|testSatisfyStoragePolicyAfterSatisfierDisabled
 parameter_list|()
 throws|throws
 name|ReconfigurationException
@@ -1394,21 +1543,21 @@ operator|.
 name|getNameNode
 argument_list|()
 decl_stmt|;
-comment|// deactivate SPS
+comment|// disable SPS
 name|nameNode
 operator|.
 name|reconfigureProperty
 argument_list|(
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 argument_list|,
 literal|"false"
 argument_list|)
 expr_stmt|;
-name|verifySPSActivated
+name|verifySPSEnabled
 argument_list|(
 name|nameNode
 argument_list|,
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 argument_list|,
 literal|false
 argument_list|)
@@ -1457,7 +1606,7 @@ argument_list|)
 expr_stmt|;
 name|fail
 argument_list|(
-literal|"Expected to fail, as storage policy feature has deactivated."
+literal|"Expected to fail, as storage policy feature has disabled."
 argument_list|)
 expr_stmt|;
 block|}
@@ -1473,9 +1622,9 @@ name|assertExceptionContains
 argument_list|(
 literal|"Cannot request to satisfy storage policy "
 operator|+
-literal|"when storage policy satisfier feature has been deactivated"
+literal|"when storage policy satisfier feature has been disabled"
 operator|+
-literal|" by admin. Seek for an admin help to activate it "
+literal|" by admin. Seek for an admin help to enable it "
 operator|+
 literal|"or use Mover tool."
 argument_list|,
@@ -1488,14 +1637,14 @@ name|nameNode
 operator|.
 name|reconfigureProperty
 argument_list|(
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 argument_list|,
 literal|"true"
 argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 operator|+
 literal|" has wrong value"
 argument_list|,
@@ -1515,7 +1664,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 operator|+
 literal|" has wrong value"
 argument_list|,
@@ -1528,16 +1677,16 @@ argument_list|()
 operator|.
 name|getBoolean
 argument_list|(
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 argument_list|,
 literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|verifySPSActivated (final NameNode nameNode, String property, boolean expected)
+DECL|method|verifySPSEnabled (final NameNode nameNode, String property, boolean expected)
 name|void
-name|verifySPSActivated
+name|verifySPSEnabled
 parameter_list|(
 specifier|final
 name|NameNode
@@ -1587,7 +1736,7 @@ name|getBoolean
 argument_list|(
 name|property
 argument_list|,
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_DEFAULT
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_DEFAULT
 argument_list|)
 argument_list|)
 expr_stmt|;

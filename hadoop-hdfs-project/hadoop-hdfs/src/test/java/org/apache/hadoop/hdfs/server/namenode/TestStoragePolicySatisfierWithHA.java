@@ -467,6 +467,17 @@ argument_list|,
 name|DEFAULT_BLOCK_SIZE
 argument_list|)
 expr_stmt|;
+name|config
+operator|.
+name|setBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 name|startCluster
 argument_list|(
 name|config
@@ -827,7 +838,7 @@ name|reconfigurePropertyImpl
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 argument_list|,
 literal|"false"
 argument_list|)
@@ -836,7 +847,7 @@ name|Assert
 operator|.
 name|fail
 argument_list|(
-literal|"It's not allowed to activate or deactivate"
+literal|"It's not allowed to enable or disable"
 operator|+
 literal|" StoragePolicySatisfier on Standby NameNode"
 argument_list|)
@@ -856,7 +867,7 @@ literal|"Could not change property "
 operator|+
 name|DFSConfigKeys
 operator|.
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 operator|+
 literal|" from 'true' to 'false'"
 argument_list|,
@@ -867,7 +878,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"Activating or deactivating storage policy satisfier service on "
+literal|"Enabling or disabling storage policy satisfier service on "
 operator|+
 literal|"standby NameNode is not allowed"
 argument_list|,

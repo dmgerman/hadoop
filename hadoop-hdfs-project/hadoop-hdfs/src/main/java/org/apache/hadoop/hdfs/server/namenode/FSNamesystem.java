@@ -8660,7 +8660,7 @@ expr_stmt|;
 block|}
 name|blockManager
 operator|.
-name|activateSPS
+name|startSPS
 argument_list|()
 expr_stmt|;
 block|}
@@ -8765,8 +8765,10 @@ condition|)
 block|{
 name|blockManager
 operator|.
-name|deactivateSPS
-argument_list|()
+name|stopSPS
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 block|}
 name|stopSecretManager
@@ -12648,6 +12650,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+specifier|final
+name|String
+name|operationName
+init|=
+literal|"satisfyStoragePolicy"
+decl_stmt|;
+name|FileStatus
+name|auditStat
+decl_stmt|;
 name|checkOperation
 argument_list|(
 name|OperationCategory
@@ -12725,14 +12736,16 @@ name|UnsupportedActionException
 argument_list|(
 literal|"Cannot request to satisfy storage policy "
 operator|+
-literal|"when storage policy satisfier feature has been deactivated"
+literal|"when storage policy satisfier feature has been disabled"
 operator|+
-literal|" by admin. Seek for an admin help to activate it "
+literal|" by admin. Seek for an admin help to enable it "
 operator|+
 literal|"or use Mover tool."
 argument_list|)
 throw|;
 block|}
+name|auditStat
+operator|=
 name|FSDirSatisfyStoragePolicyOp
 operator|.
 name|satisfyStoragePolicy
@@ -12747,10 +12760,31 @@ name|logRetryCache
 argument_list|)
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|AccessControlException
+name|e
+parameter_list|)
+block|{
+name|logAuditEvent
+argument_list|(
+literal|false
+argument_list|,
+name|operationName
+argument_list|,
+name|src
+argument_list|)
+expr_stmt|;
+throw|throw
+name|e
+throw|;
+block|}
 finally|finally
 block|{
 name|writeUnlock
-argument_list|()
+argument_list|(
+name|operationName
+argument_list|)
 expr_stmt|;
 block|}
 name|getEditLog
@@ -12758,6 +12792,19 @@ argument_list|()
 operator|.
 name|logSync
 argument_list|()
+expr_stmt|;
+name|logAuditEvent
+argument_list|(
+literal|true
+argument_list|,
+name|operationName
+argument_list|,
+name|src
+argument_list|,
+literal|null
+argument_list|,
+name|auditStat
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * unset storage policy set for a given file or a directory.    *    * @param src file/directory path    */

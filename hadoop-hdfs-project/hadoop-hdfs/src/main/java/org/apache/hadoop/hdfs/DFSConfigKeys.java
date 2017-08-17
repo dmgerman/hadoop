@@ -3839,23 +3839,23 @@ literal|1000
 decl_stmt|;
 comment|// One minute
 comment|// SPS related configurations
-DECL|field|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+DECL|field|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 init|=
-literal|"dfs.storage.policy.satisfier.activate"
+literal|"dfs.storage.policy.satisfier.enabled"
 decl_stmt|;
-DECL|field|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_DEFAULT
+DECL|field|DFS_STORAGE_POLICY_SATISFIER_ENABLED_DEFAULT
 specifier|public
 specifier|static
 specifier|final
 name|boolean
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_DEFAULT
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_DEFAULT
 init|=
-literal|true
+literal|false
 decl_stmt|;
 DECL|field|DFS_STORAGE_POLICY_SATISFIER_RECHECK_TIMEOUT_MILLIS_KEY
 specifier|public

@@ -2152,7 +2152,7 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 import|;
 end_import
 
@@ -2400,7 +2400,7 @@ name|FS_PROTECTED_DIRECTORIES
 argument_list|,
 name|HADOOP_CALLER_CONTEXT_ENABLED_KEY
 argument_list|,
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -10080,12 +10080,12 @@ name|property
 operator|.
 name|equals
 argument_list|(
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 argument_list|)
 condition|)
 block|{
 return|return
-name|reconfigureSPSActivate
+name|reconfigureSPSEnabled
 argument_list|(
 name|newVal
 argument_list|,
@@ -10504,9 +10504,9 @@ name|clientBackoffEnabled
 argument_list|)
 return|;
 block|}
-DECL|method|reconfigureSPSActivate (String newVal, String property)
+DECL|method|reconfigureSPSEnabled (String newVal, String property)
 name|String
-name|reconfigureSPSActivate
+name|reconfigureSPSEnabled
 parameter_list|(
 name|String
 name|newVal
@@ -10570,7 +10570,7 @@ argument_list|,
 operator|new
 name|HadoopIllegalArgumentException
 argument_list|(
-literal|"For activating or deactivating storage policy satisfier, "
+literal|"For enabling or disabling storage policy satisfier, "
 operator|+
 literal|"we must pass true/false only"
 argument_list|)
@@ -10603,7 +10603,7 @@ argument_list|,
 operator|new
 name|HadoopIllegalArgumentException
 argument_list|(
-literal|"Activating or deactivating storage policy satisfier service on "
+literal|"Enabling or disabling storage policy satisfier service on "
 operator|+
 name|state
 operator|+
@@ -10613,7 +10613,7 @@ argument_list|)
 throw|;
 block|}
 name|boolean
-name|activateSPS
+name|enableSPS
 init|=
 name|Boolean
 operator|.
@@ -10624,7 +10624,7 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|activateSPS
+name|enableSPS
 condition|)
 block|{
 name|namesystem
@@ -10632,7 +10632,7 @@ operator|.
 name|getBlockManager
 argument_list|()
 operator|.
-name|activateSPS
+name|enableSPS
 argument_list|()
 expr_stmt|;
 block|}
@@ -10643,7 +10643,7 @@ operator|.
 name|getBlockManager
 argument_list|()
 operator|.
-name|deactivateSPS
+name|disableSPS
 argument_list|()
 expr_stmt|;
 block|}

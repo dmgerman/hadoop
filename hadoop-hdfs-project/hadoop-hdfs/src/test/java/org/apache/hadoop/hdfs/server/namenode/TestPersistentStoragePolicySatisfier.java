@@ -514,6 +514,17 @@ argument_list|,
 literal|"3000"
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 specifier|final
 name|int
 name|dnNumber
@@ -1254,6 +1265,17 @@ operator|new
 name|HdfsConfiguration
 argument_list|()
 expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 name|haCluster
 operator|=
 operator|new
@@ -1649,7 +1671,7 @@ operator|.
 name|getBlockManager
 argument_list|()
 operator|.
-name|deactivateSPS
+name|disableSPS
 argument_list|()
 expr_stmt|;
 comment|// Make sure satisfy xattr has been removed.

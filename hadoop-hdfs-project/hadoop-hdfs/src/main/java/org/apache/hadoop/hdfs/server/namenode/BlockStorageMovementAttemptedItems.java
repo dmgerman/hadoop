@@ -497,11 +497,11 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Sets running flag to false. Also, this will interrupt monitor thread and    * clear all the queued up tasks.    */
-DECL|method|deactivate ()
+DECL|method|stop ()
 specifier|public
 specifier|synchronized
 name|void
-name|deactivate
+name|stop
 parameter_list|()
 block|{
 name|monitorRunning
@@ -548,7 +548,7 @@ condition|(
 name|monitorRunning
 condition|)
 block|{
-name|deactivate
+name|stop
 argument_list|()
 expr_stmt|;
 block|}

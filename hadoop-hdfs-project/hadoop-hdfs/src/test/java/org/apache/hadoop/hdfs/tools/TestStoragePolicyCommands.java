@@ -278,6 +278,17 @@ operator|new
 name|HdfsConfiguration
 argument_list|()
 expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 name|StorageType
 index|[]
 index|[]
@@ -1044,6 +1055,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testStoragePolicySatisfierCommand ()
 specifier|public
 name|void
@@ -1168,10 +1184,15 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testIsSPSRunningCommand ()
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
+DECL|method|testIsSatisfierRunningCommand ()
 specifier|public
 name|void
-name|testIsSPSRunningCommand
+name|testIsSatisfierRunningCommand
 parameter_list|()
 throws|throws
 name|Exception
@@ -1180,7 +1201,7 @@ specifier|final
 name|String
 name|file
 init|=
-literal|"/testIsSPSRunningCommand"
+literal|"/testIsSatisfierRunningCommand"
 decl_stmt|;
 name|DFSTestUtil
 operator|.
@@ -1217,7 +1238,7 @@ name|toolRun
 argument_list|(
 name|admin
 argument_list|,
-literal|"-isSPSRunning"
+literal|"-isSatisfierRunning"
 argument_list|,
 literal|0
 argument_list|,
@@ -1233,7 +1254,7 @@ name|reconfigureProperty
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_STORAGE_POLICY_SATISFIER_ACTIVATE_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_KEY
 argument_list|,
 literal|"false"
 argument_list|)
@@ -1249,7 +1270,7 @@ name|toolRun
 argument_list|(
 name|admin
 argument_list|,
-literal|"-isSPSRunning"
+literal|"-isSatisfierRunning"
 argument_list|,
 literal|0
 argument_list|,
@@ -1263,7 +1284,7 @@ name|toolRun
 argument_list|(
 name|admin
 argument_list|,
-literal|"-isSPSRunning status"
+literal|"-isSatisfierRunning status"
 argument_list|,
 literal|1
 argument_list|,

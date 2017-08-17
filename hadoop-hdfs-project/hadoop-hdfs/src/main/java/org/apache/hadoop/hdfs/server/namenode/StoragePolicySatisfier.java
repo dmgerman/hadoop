@@ -778,7 +778,7 @@ name|info
 argument_list|(
 literal|"Starting StoragePolicySatisfier, as admin requested to "
 operator|+
-literal|"activate it."
+literal|"start it."
 argument_list|)
 expr_stmt|;
 block|}
@@ -825,15 +825,15 @@ name|start
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Deactivates storage policy satisfier by stopping its services.    *    * @param reconfig    *          true represents deactivating SPS service as requested by admin,    *          false otherwise    */
-DECL|method|deactivate (boolean reconfig)
+comment|/**    * Disables storage policy satisfier by stopping its services.    *    * @param forceStop    *          true represents that it should stop SPS service by clearing all    *          pending SPS work    */
+DECL|method|disable (boolean forceStop)
 specifier|public
 specifier|synchronized
 name|void
-name|deactivate
+name|disable
 parameter_list|(
 name|boolean
-name|reconfig
+name|forceStop
 parameter_list|)
 block|{
 name|isRunning
@@ -858,23 +858,14 @@ name|this
 operator|.
 name|storageMovementsMonitor
 operator|.
-name|deactivate
+name|stop
 argument_list|()
 expr_stmt|;
 if|if
 condition|(
-name|reconfig
+name|forceStop
 condition|)
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Stopping StoragePolicySatisfier, as admin requested to "
-operator|+
-literal|"deactivate it."
-argument_list|)
-expr_stmt|;
 name|this
 operator|.
 name|clearQueuesWithNotification
@@ -908,7 +899,7 @@ condition|(
 name|isRunning
 condition|)
 block|{
-name|deactivate
+name|disable
 argument_list|(
 literal|true
 argument_list|)
