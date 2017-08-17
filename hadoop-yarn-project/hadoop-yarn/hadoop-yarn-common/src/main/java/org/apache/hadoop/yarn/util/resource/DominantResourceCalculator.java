@@ -513,7 +513,7 @@ literal|2
 condition|)
 block|{
 comment|// Special case to handle the common scenario of only CPU and memory
-comment|// so the we can optimize for performance
+comment|// so that we can optimize for performance
 name|diff
 operator|=
 name|calculateSharesForMandatoryResources
