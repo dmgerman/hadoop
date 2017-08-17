@@ -242,16 +242,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|LinkedList
 import|;
 end_import
@@ -2245,7 +2235,7 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
-name|HashMap
+name|Map
 argument_list|<
 name|String
 argument_list|,

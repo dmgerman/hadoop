@@ -106,7 +106,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
+name|List
 import|;
 end_import
 
@@ -116,7 +116,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|List
+name|Map
 import|;
 end_import
 
@@ -1602,7 +1602,7 @@ block|}
 comment|/**    * Get available erasure coding codecs and coders.    *    * @param fsn namespace    * @return {@link java.util.HashMap} array    */
 DECL|method|getErasureCodingCodecs (final FSNamesystem fsn)
 specifier|static
-name|HashMap
+name|Map
 argument_list|<
 name|String
 argument_list|,

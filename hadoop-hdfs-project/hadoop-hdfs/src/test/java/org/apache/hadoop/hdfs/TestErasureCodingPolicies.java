@@ -462,7 +462,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
+name|List
 import|;
 end_import
 
@@ -472,7 +472,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|List
+name|Map
 import|;
 end_import
 
@@ -4056,7 +4056,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|HashMap
+name|Map
 argument_list|<
 name|String
 argument_list|,

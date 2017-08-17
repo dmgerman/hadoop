@@ -34030,7 +34030,7 @@ block|}
 block|}
 comment|/**    * Get available erasure coding codecs and corresponding coders.    */
 DECL|method|getErasureCodingCodecs ()
-name|HashMap
+name|Map
 argument_list|<
 name|String
 argument_list|,
@@ -34072,7 +34072,7 @@ name|READ
 argument_list|)
 expr_stmt|;
 specifier|final
-name|HashMap
+name|Map
 argument_list|<
 name|String
 argument_list|,

@@ -102,16 +102,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -12896,7 +12886,7 @@ block|}
 comment|/**    * Retrieve all the erasure coding codecs and coders supported by this file    * system.    *    * @return all erasure coding codecs and coders supported by this file system.    * @throws IOException    */
 DECL|method|getAllErasureCodingCodecs ()
 specifier|public
-name|HashMap
+name|Map
 argument_list|<
 name|String
 argument_list|,

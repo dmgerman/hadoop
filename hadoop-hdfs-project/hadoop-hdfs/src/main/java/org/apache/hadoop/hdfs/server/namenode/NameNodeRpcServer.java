@@ -286,16 +286,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|HashSet
 import|;
 end_import
@@ -307,6 +297,16 @@ operator|.
 name|util
 operator|.
 name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
 import|;
 end_import
 
@@ -12844,7 +12844,7 @@ name|Override
 comment|// ClientProtocol
 DECL|method|getErasureCodingCodecs ()
 specifier|public
-name|HashMap
+name|Map
 argument_list|<
 name|String
 argument_list|,

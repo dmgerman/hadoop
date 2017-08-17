@@ -44,7 +44,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
+name|List
 import|;
 end_import
 
@@ -54,7 +54,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|List
+name|Map
 import|;
 end_import
 
@@ -2213,7 +2213,7 @@ comment|/**    * Get the erasure coding codecs loaded in Namenode.    *    * @th
 annotation|@
 name|Idempotent
 DECL|method|getErasureCodingCodecs ()
-name|HashMap
+name|Map
 argument_list|<
 name|String
 argument_list|,

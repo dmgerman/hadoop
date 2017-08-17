@@ -98,6 +98,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|concurrent
 operator|.
 name|TimeUnit
@@ -11700,7 +11710,7 @@ annotation|@
 name|Override
 DECL|method|getErasureCodingCodecs ()
 specifier|public
-name|HashMap
+name|Map
 argument_list|<
 name|String
 argument_list|,
@@ -11725,7 +11735,7 @@ argument_list|,
 name|VOID_GET_EC_CODEC_REQUEST
 argument_list|)
 decl_stmt|;
-name|HashMap
+name|Map
 argument_list|<
 name|String
 argument_list|,
@@ -11735,11 +11745,7 @@ name|ecCodecs
 init|=
 operator|new
 name|HashMap
-argument_list|<
-name|String
-argument_list|,
-name|String
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 for|for

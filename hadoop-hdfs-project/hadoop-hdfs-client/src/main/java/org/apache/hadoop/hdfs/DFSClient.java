@@ -13124,7 +13124,7 @@ block|}
 block|}
 DECL|method|getErasureCodingCodecs ()
 specifier|public
-name|HashMap
+name|Map
 argument_list|<
 name|String
 argument_list|,
