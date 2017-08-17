@@ -2198,7 +2198,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get the erasure coding policies loaded in Namenode.    *    * @throws IOException    */
+comment|/**    * Get the erasure coding policies loaded in Namenode, excluding REPLICATION    * policy.    *    * @throws IOException    */
 annotation|@
 name|Idempotent
 DECL|method|getErasureCodingPolicies ()
@@ -2224,7 +2224,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get the information about the EC policy for the path.    *    * @param src path to get the info for    * @throws IOException    */
+comment|/**    * Get the information about the EC policy for the path. Null will be returned    * if directory or file has REPLICATION policy.    *    * @param src path to get the info for    * @throws IOException    */
 annotation|@
 name|Idempotent
 DECL|method|getErasureCodingPolicy (String src)

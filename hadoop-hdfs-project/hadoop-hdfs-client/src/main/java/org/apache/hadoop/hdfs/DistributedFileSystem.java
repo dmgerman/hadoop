@@ -12738,7 +12738,7 @@ name|absF
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get erasure coding policy information for the specified path    *    * @param path The path of the file or directory    * @return Returns the policy information if file or directory on the path    * is erasure coded, null otherwise    * @throws IOException    */
+comment|/**    * Get erasure coding policy information for the specified path    *    * @param path The path of the file or directory    * @return Returns the policy information if file or directory on the path    * is erasure coded, null otherwise. Null will be returned if directory or    * file has REPLICATION policy.    * @throws IOException    */
 DECL|method|getErasureCodingPolicy (final Path path)
 specifier|public
 name|ErasureCodingPolicy
@@ -12859,7 +12859,7 @@ name|absF
 argument_list|)
 return|;
 block|}
-comment|/**    * Retrieve all the erasure coding policies supported by this file system.    *    * @return all erasure coding policies supported by this file system.    * @throws IOException    */
+comment|/**    * Retrieve all the erasure coding policies supported by this file system,    * excluding REPLICATION policy.    *    * @return all erasure coding policies supported by this file system.    * @throws IOException    */
 DECL|method|getAllErasureCodingPolicies ()
 specifier|public
 name|Collection

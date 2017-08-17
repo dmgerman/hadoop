@@ -14305,7 +14305,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get the erasure coding policy information for the specified path    *    * @param src path to get the information for    * @return Returns the policy information if file or directory on the path is    * erasure coded, null otherwise    * @throws IOException    */
+comment|/**    * Get the erasure coding policy information for the specified path    *    * @param src path to get the information for    * @return Returns the policy information if file or directory on the path is    * erasure coded, null otherwise. Null will be returned if directory or file    * has REPLICATION policy.    * @throws IOException    */
 DECL|method|getErasureCodingPolicy (String src)
 specifier|public
 name|ErasureCodingPolicy

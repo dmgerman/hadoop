@@ -3450,6 +3450,14 @@ condition|(
 name|ecPolicy
 operator|!=
 literal|null
+operator|&&
+operator|(
+operator|!
+name|ecPolicy
+operator|.
+name|isReplicationPolicy
+argument_list|()
+operator|)
 condition|)
 block|{
 name|isStriped

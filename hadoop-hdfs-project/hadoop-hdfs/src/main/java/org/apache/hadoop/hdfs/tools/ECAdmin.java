@@ -158,6 +158,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|erasurecode
+operator|.
+name|ErasureCodeConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|tools
 operator|.
 name|TableListing
@@ -1621,7 +1637,7 @@ operator|+
 name|getName
 argument_list|()
 operator|+
-literal|" -path<path> -policy<policy>]\n"
+literal|" -path<path> [-policy<policy>] [-replicate]]\n"
 return|;
 block|}
 annotation|@
@@ -1660,6 +1676,15 @@ argument_list|,
 literal|"The name of the erasure coding policy"
 argument_list|)
 expr_stmt|;
+name|listing
+operator|.
+name|addRow
+argument_list|(
+literal|"-replicate"
+argument_list|,
+literal|"force 3x replication scheme on the directory"
+argument_list|)
+expr_stmt|;
 return|return
 name|getShortUsage
 argument_list|()
@@ -1672,6 +1697,12 @@ name|listing
 operator|.
 name|toString
 argument_list|()
+operator|+
+literal|"\n"
+operator|+
+literal|"-replicate and -policy are optional arguments. They cannot been "
+operator|+
+literal|"used at the same time"
 return|;
 block|}
 annotation|@
@@ -1731,7 +1762,6 @@ return|return
 literal|1
 return|;
 block|}
-specifier|final
 name|String
 name|ecPolicyName
 init|=
@@ -1740,6 +1770,19 @@ operator|.
 name|popOptionWithArgument
 argument_list|(
 literal|"-policy"
+argument_list|,
+name|args
+argument_list|)
+decl_stmt|;
+specifier|final
+name|boolean
+name|replicate
+init|=
+name|StringUtils
+operator|.
+name|popOption
+argument_list|(
+literal|"-replicate"
 argument_list|,
 name|args
 argument_list|)
@@ -1769,6 +1812,41 @@ expr_stmt|;
 return|return
 literal|1
 return|;
+block|}
+if|if
+condition|(
+name|replicate
+condition|)
+block|{
+if|if
+condition|(
+name|ecPolicyName
+operator|!=
+literal|null
+condition|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+name|getName
+argument_list|()
+operator|+
+literal|": -replicate and -policy cannot been used at the same time"
+argument_list|)
+expr_stmt|;
+return|return
+literal|2
+return|;
+block|}
+name|ecPolicyName
+operator|=
+name|ErasureCodeConstants
+operator|.
+name|REPLICATION_POLICY_NAME
+expr_stmt|;
 block|}
 specifier|final
 name|Path
@@ -1868,7 +1946,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 return|return
-literal|2
+literal|3
 return|;
 block|}
 return|return

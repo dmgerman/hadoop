@@ -404,7 +404,7 @@ specifier|private
 name|FSDirErasureCodingOp
 parameter_list|()
 block|{}
-comment|/**    * Check if the ecPolicyName is valid and enabled, return the corresponding    * EC policy if is.    * @param fsn namespace    * @param ecPolicyName name of EC policy to be checked    * @return an erasure coding policy if ecPolicyName is valid and enabled    * @throws IOException    */
+comment|/**    * Check if the ecPolicyName is valid and enabled, return the corresponding    * EC policy if is, including the REPLICATION EC policy.    * @param fsn namespace    * @param ecPolicyName name of EC policy to be checked    * @return an erasure coding policy if ecPolicyName is valid and enabled    * @throws IOException    */
 DECL|method|getErasureCodingPolicyByName ( final FSNamesystem fsn, final String ecPolicyName)
 specifier|static
 name|ErasureCodingPolicy
@@ -1497,13 +1497,35 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
-return|return
+name|ErasureCodingPolicy
+name|ecPolicy
+init|=
 name|getErasureCodingPolicyForPath
 argument_list|(
 name|fsd
 argument_list|,
 name|iip
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|ecPolicy
+operator|!=
+literal|null
+operator|&&
+name|ecPolicy
+operator|.
+name|isReplicationPolicy
+argument_list|()
+condition|)
+block|{
+name|ecPolicy
+operator|=
+literal|null
+expr_stmt|;
+block|}
+return|return
+name|ecPolicy
 return|;
 block|}
 comment|/**    * Check if the file or directory has an erasure coding policy.    *    * @param fsn namespace    * @param iip inodes in the path containing the file    * @return Whether the file or directory has an erasure coding policy.    * @throws IOException    */
@@ -1534,7 +1556,7 @@ operator|!=
 literal|null
 return|;
 block|}
-comment|/**    * Get the erasure coding policy. This does not do any permission checking.    *    * @param fsn namespace    * @param iip inodes in the path containing the file    * @return {@link ErasureCodingPolicy}    * @throws IOException    */
+comment|/**    * Get the erasure coding policy, including the REPLICATION policy. This does    * not do any permission checking.    *    * @param fsn namespace    * @param iip inodes in the path containing the file    * @return {@link ErasureCodingPolicy}    * @throws IOException    */
 DECL|method|unprotectedGetErasureCodingPolicy ( final FSNamesystem fsn, final INodesInPath iip)
 specifier|static
 name|ErasureCodingPolicy
@@ -1633,6 +1655,7 @@ name|getCodec2CoderCompactMap
 argument_list|()
 return|;
 block|}
+comment|//return erasure coding policy for path, including REPLICATION policy
 DECL|method|getErasureCodingPolicyForPath ( FSDirectory fsd, INodesInPath iip)
 specifier|private
 specifier|static

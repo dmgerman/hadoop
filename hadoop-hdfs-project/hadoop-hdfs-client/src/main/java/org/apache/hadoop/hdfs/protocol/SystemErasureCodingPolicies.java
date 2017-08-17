@@ -289,6 +289,32 @@ argument_list|,
 name|RS_10_4_POLICY_ID
 argument_list|)
 decl_stmt|;
+comment|// REPLICATION policy is always enabled.
+DECL|field|REPLICATION_POLICY
+specifier|private
+specifier|static
+specifier|final
+name|ErasureCodingPolicy
+name|REPLICATION_POLICY
+init|=
+operator|new
+name|ErasureCodingPolicy
+argument_list|(
+name|ErasureCodeConstants
+operator|.
+name|REPLICATION_POLICY_NAME
+argument_list|,
+name|ErasureCodeConstants
+operator|.
+name|REPLICATION_1_2_SCHEMA
+argument_list|,
+name|DEFAULT_CELLSIZE
+argument_list|,
+name|ErasureCodeConstants
+operator|.
+name|REPLICATION_POLICY_ID
+argument_list|)
+decl_stmt|;
 DECL|field|SYS_POLICIES
 specifier|private
 specifier|static
@@ -449,6 +475,18 @@ name|get
 argument_list|(
 name|name
 argument_list|)
+return|;
+block|}
+comment|/**    * Get the special REPLICATION policy.    */
+DECL|method|getReplicationPolicy ()
+specifier|public
+specifier|static
+name|ErasureCodingPolicy
+name|getReplicationPolicy
+parameter_list|()
+block|{
+return|return
+name|REPLICATION_POLICY
 return|;
 block|}
 block|}

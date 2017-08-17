@@ -118,6 +118,22 @@ name|ECSchema
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|erasurecode
+operator|.
+name|ErasureCodeConstants
+import|;
+end_import
+
 begin_comment
 comment|/**  * A policy about how to write/read/code an erasure coding file.  */
 end_comment
@@ -499,6 +515,22 @@ name|id
 operator|=
 name|id
 expr_stmt|;
+block|}
+DECL|method|isReplicationPolicy ()
+specifier|public
+name|boolean
+name|isReplicationPolicy
+parameter_list|()
+block|{
+return|return
+operator|(
+name|id
+operator|==
+name|ErasureCodeConstants
+operator|.
+name|REPLICATION_POLICY_ID
+operator|)
+return|;
 block|}
 annotation|@
 name|Override
