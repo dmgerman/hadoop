@@ -3127,6 +3127,46 @@ return|return
 name|ret
 return|;
 block|}
+comment|/**    * Get default unit by given resource type.    * @param resourceType resourceType    * @return default unit    */
+DECL|method|getDefaultUnit (String resourceType)
+specifier|public
+specifier|static
+name|String
+name|getDefaultUnit
+parameter_list|(
+name|String
+name|resourceType
+parameter_list|)
+block|{
+name|ResourceInformation
+name|ri
+init|=
+name|getResourceTypes
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|resourceType
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+literal|null
+operator|!=
+name|ri
+condition|)
+block|{
+return|return
+name|ri
+operator|.
+name|getUnits
+argument_list|()
+return|;
+block|}
+return|return
+literal|""
+return|;
+block|}
 block|}
 end_class
 

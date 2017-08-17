@@ -426,6 +426,9 @@ operator|.
 name|newBuilder
 argument_list|()
 expr_stmt|;
+name|initResources
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|ResourcePBImpl (ResourceProto proto)
 specifier|public
@@ -539,9 +542,6 @@ name|getMemorySize
 parameter_list|()
 block|{
 comment|// memory should always be present
-name|initResources
-argument_list|()
-expr_stmt|;
 name|ResourceInformation
 name|ri
 init|=
@@ -653,9 +653,6 @@ name|getVirtualCores
 parameter_list|()
 block|{
 comment|// vcores should always be present
-name|initResources
-argument_list|()
-expr_stmt|;
 return|return
 operator|(
 name|int
@@ -774,6 +771,7 @@ name|ResourceTypes
 operator|.
 name|COUNTABLE
 decl_stmt|;
+comment|// When unit not specified in proto, use the default unit.
 name|String
 name|units
 init|=
@@ -787,7 +785,15 @@ operator|.
 name|getUnits
 argument_list|()
 else|:
-literal|""
+name|ResourceUtils
+operator|.
+name|getDefaultUnit
+argument_list|(
+name|entry
+operator|.
+name|getKey
+argument_list|()
+argument_list|)
 decl_stmt|;
 name|long
 name|value
@@ -1068,9 +1074,6 @@ index|[]
 name|getResources
 parameter_list|()
 block|{
-name|initResources
-argument_list|()
-expr_stmt|;
 return|return
 name|super
 operator|.
@@ -1091,9 +1094,6 @@ parameter_list|)
 throws|throws
 name|ResourceNotFoundException
 block|{
-name|initResources
-argument_list|()
-expr_stmt|;
 return|return
 name|super
 operator|.
@@ -1116,9 +1116,6 @@ parameter_list|)
 throws|throws
 name|ResourceNotFoundException
 block|{
-name|initResources
-argument_list|()
-expr_stmt|;
 return|return
 name|super
 operator|.

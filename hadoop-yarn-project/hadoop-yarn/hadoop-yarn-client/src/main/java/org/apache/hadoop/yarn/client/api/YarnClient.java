@@ -744,6 +744,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ResourceTypeInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|SignalContainerCommand
 import|;
 end_import
@@ -1748,6 +1766,10 @@ argument_list|)
 throw|;
 block|}
 comment|/**    *<p>    * Get the resource profiles available in the RM.    *</p>    * @return a Map of the resource profile names to their capabilities    * @throws YarnException if resource profiles are not enabled    * @throws IOException in case of other errors    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
 DECL|method|getResourceProfiles ()
 specifier|public
 specifier|abstract
@@ -1765,6 +1787,10 @@ throws|,
 name|IOException
 function_decl|;
 comment|/**    *<p>    * Get the details of a specific resource profile from the RM.    *</p>    * @param profile the profile name    * @return the capabilities of the resource profile    * @throws YarnException if resource profiles are not enabled or the profile    *         cannot be found    * @throws IOException in case of other others    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
 DECL|method|getResourceProfile (String profile)
 specifier|public
 specifier|abstract
@@ -1774,6 +1800,25 @@ parameter_list|(
 name|String
 name|profile
 parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+function_decl|;
+comment|/**    *<p>    * Get available resource types supported by RM.    *</p>    * @return list of supported resource types with detailed information    * @throws YarnException if resource profiles are not enabled or the profile    *         cannot be found    * @throws IOException in case of other others    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getResourceTypeInfo ()
+specifier|public
+specifier|abstract
+name|List
+argument_list|<
+name|ResourceTypeInfo
+argument_list|>
+name|getResourceTypeInfo
+parameter_list|()
 throws|throws
 name|YarnException
 throws|,

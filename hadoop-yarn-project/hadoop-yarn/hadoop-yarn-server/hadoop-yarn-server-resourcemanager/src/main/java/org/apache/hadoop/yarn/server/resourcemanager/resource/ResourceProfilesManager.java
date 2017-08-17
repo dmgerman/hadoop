@@ -88,11 +88,39 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ResourceTypeInfo
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
 operator|.
 name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
 import|;
 end_import
 
@@ -175,6 +203,15 @@ comment|/**    * Get maximum supported resource profile.    * @return resource o
 DECL|method|getMaximumProfile ()
 name|Resource
 name|getMaximumProfile
+parameter_list|()
+function_decl|;
+comment|/**    * List of ResourceTypeInfo objects which carry all resources supported by RM.    * @return list of ResourceTypeInfo objects    */
+DECL|method|getAllResourceTypeInfo ()
+name|List
+argument_list|<
+name|ResourceTypeInfo
+argument_list|>
+name|getAllResourceTypeInfo
 parameter_list|()
 function_decl|;
 block|}
