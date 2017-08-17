@@ -2950,8 +2950,19 @@ name|size
 argument_list|()
 return|;
 block|}
+DECL|method|getNumberOfReplicateBlocks ()
+name|int
+name|getNumberOfReplicateBlocks
+parameter_list|()
+block|{
+return|return
+name|replicateBlocks
+operator|.
+name|size
+argument_list|()
+return|;
+block|}
 DECL|method|getReplicationCommand (int maxTransfers)
-specifier|public
 name|List
 argument_list|<
 name|BlockTargetPair
