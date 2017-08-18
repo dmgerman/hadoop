@@ -642,6 +642,16 @@ name|storageContainerLocationClient
 operator|.
 name|allocateContainer
 argument_list|(
+name|xceiverClientManager
+operator|.
+name|getType
+argument_list|()
+argument_list|,
+name|xceiverClientManager
+operator|.
+name|getFactor
+argument_list|()
+argument_list|,
 name|containerName
 argument_list|)
 decl_stmt|;

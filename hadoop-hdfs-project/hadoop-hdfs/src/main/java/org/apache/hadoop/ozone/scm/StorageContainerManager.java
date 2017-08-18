@@ -830,22 +830,6 @@ name|hadoop
 operator|.
 name|scm
 operator|.
-name|client
-operator|.
-name|ScmClient
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|scm
-operator|.
 name|container
 operator|.
 name|common
@@ -2333,38 +2317,6 @@ name|build
 argument_list|()
 return|;
 block|}
-comment|/**    * Asks SCM where a container should be allocated. SCM responds with the set    * of datanodes that should be used creating this container.    *    * @param containerName - Name of the container.    * @return Pipeline.    * @throws IOException    */
-annotation|@
-name|Override
-DECL|method|allocateContainer (String containerName)
-specifier|public
-name|Pipeline
-name|allocateContainer
-parameter_list|(
-name|String
-name|containerName
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|checkAdminAccess
-argument_list|()
-expr_stmt|;
-return|return
-name|scmContainerManager
-operator|.
-name|allocateContainer
-argument_list|(
-name|containerName
-argument_list|,
-name|ScmClient
-operator|.
-name|ReplicationFactor
-operator|.
-name|ONE
-argument_list|)
-return|;
-block|}
 comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
@@ -2572,6 +2524,37 @@ name|poolBuilder
 operator|.
 name|build
 argument_list|()
+return|;
+block|}
+comment|/**    * Creates a replication pipeline of a specified type.    */
+annotation|@
+name|Override
+DECL|method|createReplicationPipeline ( OzoneProtos.ReplicationType replicationType, OzoneProtos.ReplicationFactor factor, OzoneProtos.NodePool nodePool)
+specifier|public
+name|Pipeline
+name|createReplicationPipeline
+parameter_list|(
+name|OzoneProtos
+operator|.
+name|ReplicationType
+name|replicationType
+parameter_list|,
+name|OzoneProtos
+operator|.
+name|ReplicationFactor
+name|factor
+parameter_list|,
+name|OzoneProtos
+operator|.
+name|NodePool
+name|nodePool
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// TODO: will be addressed in future patch.
+return|return
+literal|null
 return|;
 block|}
 comment|/**    * Queries a list of Node that match a set of statuses.    *<p>    * For example, if the nodeStatuses is HEALTHY and RAFT_MEMBER,    * then this call will return all healthy nodes which members in    * Raft pipeline.    *<p>    * Right now we don't support operations, so we assume it is an AND operation    * between the operators.    *    * @param nodeStatuses - A set of NodeStates.    * @return List of Datanodes.    */
@@ -2816,18 +2799,23 @@ block|}
 comment|/**    * Asks SCM where a container should be allocated. SCM responds with the set    * of datanodes that should be used creating this container.    *    * @param containerName - Name of the container.    * @param replicationFactor - replication factor.    * @return Pipeline.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|allocateContainer (String containerName, ScmClient.ReplicationFactor replicationFactor)
+DECL|method|allocateContainer (OzoneProtos.ReplicationType replicationType, OzoneProtos.ReplicationFactor replicationFactor, String containerName)
 specifier|public
 name|Pipeline
 name|allocateContainer
 parameter_list|(
-name|String
-name|containerName
+name|OzoneProtos
+operator|.
+name|ReplicationType
+name|replicationType
 parameter_list|,
-name|ScmClient
+name|OzoneProtos
 operator|.
 name|ReplicationFactor
 name|replicationFactor
+parameter_list|,
+name|String
+name|containerName
 parameter_list|)
 throws|throws
 name|IOException
@@ -2840,9 +2828,11 @@ name|scmContainerManager
 operator|.
 name|allocateContainer
 argument_list|(
-name|containerName
+name|replicationType
 argument_list|,
 name|replicationFactor
+argument_list|,
+name|containerName
 argument_list|)
 return|;
 block|}

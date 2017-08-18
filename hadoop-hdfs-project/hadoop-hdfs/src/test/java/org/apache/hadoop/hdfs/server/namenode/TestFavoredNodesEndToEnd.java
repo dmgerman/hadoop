@@ -588,7 +588,7 @@ name|i
 argument_list|)
 decl_stmt|;
 comment|//pass a new created rand so as to get a uniform distribution each time
-comment|//without too much collisions (look at the do-while loop in getDatanodes)
+comment|//without too much collisions (look at the do-while loop in getMembers)
 name|InetSocketAddress
 name|datanode
 index|[]
@@ -1196,7 +1196,7 @@ name|i
 argument_list|)
 decl_stmt|;
 comment|// pass a new created rand so as to get a uniform distribution each time
-comment|// without too much collisions (look at the do-while loop in getDatanodes)
+comment|// without too much collisions (look at the do-while loop in getMembers)
 name|InetSocketAddress
 name|datanode
 index|[]
@@ -1381,7 +1381,7 @@ name|i
 argument_list|)
 decl_stmt|;
 comment|//pass a new created rand so as to get a uniform distribution each time
-comment|//without too much collisions (look at the do-while loop in getDatanodes)
+comment|//without too much collisions (look at the do-while loop in getMembers)
 name|InetSocketAddress
 index|[]
 name|dns

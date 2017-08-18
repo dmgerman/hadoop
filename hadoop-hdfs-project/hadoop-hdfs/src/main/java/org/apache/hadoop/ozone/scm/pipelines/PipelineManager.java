@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one or mor
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.scm.ratis
+DECL|package|org.apache.hadoop.ozone.scm.pipelines
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|ozone
 operator|.
 name|scm
 operator|.
-name|ratis
+name|pipelines
 package|;
 end_package
 
@@ -46,7 +46,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|OzoneConfigKeys
+name|protocol
+operator|.
+name|proto
+operator|.
+name|OzoneProtos
 import|;
 end_import
 
@@ -58,9 +62,15 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|scm
 operator|.
-name|OzoneConfiguration
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
+name|Pipeline
 import|;
 end_import
 
@@ -85,22 +95,38 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Manage Ratis clusters.  */
+comment|/**  * Manage Ozone pipelines.  */
 end_comment
 
 begin_interface
-DECL|interface|RatisManager
+DECL|interface|PipelineManager
 specifier|public
 interface|interface
-name|RatisManager
+name|PipelineManager
 block|{
-comment|/**    * Create a new Ratis cluster with the given clusterId and datanodes.    */
-DECL|method|createRatisCluster (String clusterId, List<DatanodeID> datanodes)
-name|void
-name|createRatisCluster
+comment|/**    * This function is called by the Container Manager while allocating a new    * container. The client specifies what kind of replication pipeline is    * needed and based on the replication type in the request appropriate    * Interface is invoked.    *    * @param containerName Name of the container    * @param replicationFactor - Replication Factor    * @return a Pipeline.    */
+DECL|method|getPipeline (String containerName, OzoneProtos.ReplicationFactor replicationFactor)
+name|Pipeline
+name|getPipeline
 parameter_list|(
 name|String
-name|clusterId
+name|containerName
+parameter_list|,
+name|OzoneProtos
+operator|.
+name|ReplicationFactor
+name|replicationFactor
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Creates a pipeline from a specified set of Nodes.    * @param pipelineID - Name of the pipeline    * @param datanodes - The list of datanodes that make this pipeline.    */
+DECL|method|createPipeline (String pipelineID, List<DatanodeID> datanodes)
+name|void
+name|createPipeline
+parameter_list|(
+name|String
+name|pipelineID
 parameter_list|,
 name|List
 argument_list|<
@@ -111,38 +137,39 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Close the Ratis cluster with the given clusterId.    */
-DECL|method|closeRatisCluster (String clusterId)
+empty_stmt|;
+comment|/**    * Close the  pipeline with the given clusterId.    */
+DECL|method|closePipeline (String pipelineID)
 name|void
-name|closeRatisCluster
+name|closePipeline
 parameter_list|(
 name|String
-name|clusterId
+name|pipelineID
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * @return the datanode list of the Ratis cluster with the given clusterId.    */
-DECL|method|getDatanodes (String clusterId)
+comment|/**    * list members in the pipeline .    * @return the datanode    */
+DECL|method|getMembers (String pipelineID)
 name|List
 argument_list|<
 name|DatanodeID
 argument_list|>
-name|getDatanodes
+name|getMembers
 parameter_list|(
 name|String
-name|clusterId
+name|pipelineID
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Update the datanode list of the Ratis cluster with the given clusterId.    */
-DECL|method|updateDatanodes (String clusterId, List<DatanodeID> newDatanodes)
+comment|/**    * Update the datanode list of the pipeline.    */
+DECL|method|updatePipeline (String pipelineID, List<DatanodeID> newDatanodes)
 name|void
-name|updateDatanodes
+name|updatePipeline
 parameter_list|(
 name|String
-name|clusterId
+name|pipelineID
 parameter_list|,
 name|List
 argument_list|<
@@ -153,40 +180,6 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-DECL|method|newRatisManager (OzoneConfiguration conf)
-specifier|static
-name|RatisManager
-name|newRatisManager
-parameter_list|(
-name|OzoneConfiguration
-name|conf
-parameter_list|)
-block|{
-specifier|final
-name|String
-name|rpc
-init|=
-name|conf
-operator|.
-name|get
-argument_list|(
-name|OzoneConfigKeys
-operator|.
-name|DFS_CONTAINER_RATIS_RPC_TYPE_KEY
-argument_list|,
-name|OzoneConfigKeys
-operator|.
-name|DFS_CONTAINER_RATIS_RPC_TYPE_DEFAULT
-argument_list|)
-decl_stmt|;
-return|return
-operator|new
-name|RatisManagerImpl
-argument_list|(
-name|rpc
-argument_list|)
-return|;
-block|}
 block|}
 end_interface
 

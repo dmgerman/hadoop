@@ -321,7 +321,7 @@ operator|=
 name|size
 expr_stmt|;
 block|}
-comment|/**    * Create a container with the given ID as its name.    * @param containerId - String container ID    * @return A Pipeline object to actually write/read from the container.    * @throws IOException    */
+comment|/**    * @inheritDoc    */
 annotation|@
 name|Override
 DECL|method|createContainer (String containerId)
@@ -349,6 +349,16 @@ name|storageContainerLocationClient
 operator|.
 name|allocateContainer
 argument_list|(
+name|xceiverClientManager
+operator|.
+name|getType
+argument_list|()
+argument_list|,
+name|xceiverClientManager
+operator|.
+name|getFactor
+argument_list|()
+argument_list|,
 name|containerId
 argument_list|)
 decl_stmt|;
@@ -436,21 +446,26 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Creates a Container on SCM with specified replication factor.    * @param containerId - String container ID    * @param replicationFactor - replication factor    * @return Pipeline    * @throws IOException    */
+comment|/**    * @inheritDoc    */
 annotation|@
 name|Override
-DECL|method|createContainer (String containerId, ScmClient.ReplicationFactor replicationFactor)
+DECL|method|createContainer (OzoneProtos.ReplicationType type, OzoneProtos.ReplicationFactor factor, String containerId)
 specifier|public
 name|Pipeline
 name|createContainer
 parameter_list|(
-name|String
-name|containerId
+name|OzoneProtos
+operator|.
+name|ReplicationType
+name|type
 parameter_list|,
-name|ScmClient
+name|OzoneProtos
 operator|.
 name|ReplicationFactor
-name|replicationFactor
+name|factor
+parameter_list|,
+name|String
+name|containerId
 parameter_list|)
 throws|throws
 name|IOException
@@ -470,9 +485,11 @@ name|storageContainerLocationClient
 operator|.
 name|allocateContainer
 argument_list|(
-name|containerId
+name|type
 argument_list|,
-name|replicationFactor
+name|factor
+argument_list|,
+name|containerId
 argument_list|)
 decl_stmt|;
 comment|// connect to pipeline leader and allocate container on leader datanode.
@@ -529,10 +546,7 @@ argument_list|()
 operator|+
 literal|" replication factor:"
 operator|+
-name|replicationFactor
-operator|.
-name|getValue
-argument_list|()
+name|factor
 argument_list|)
 expr_stmt|;
 return|return
@@ -597,6 +611,45 @@ argument_list|,
 name|queryScope
 argument_list|,
 name|poolName
+argument_list|)
+return|;
+block|}
+comment|/**    * Creates a specified replication pipeline.    */
+annotation|@
+name|Override
+DECL|method|createReplicationPipeline (OzoneProtos.ReplicationType type, OzoneProtos.ReplicationFactor factor, OzoneProtos.NodePool nodePool)
+specifier|public
+name|Pipeline
+name|createReplicationPipeline
+parameter_list|(
+name|OzoneProtos
+operator|.
+name|ReplicationType
+name|type
+parameter_list|,
+name|OzoneProtos
+operator|.
+name|ReplicationFactor
+name|factor
+parameter_list|,
+name|OzoneProtos
+operator|.
+name|NodePool
+name|nodePool
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|storageContainerLocationClient
+operator|.
+name|createReplicationPipeline
+argument_list|(
+name|type
+argument_list|,
+name|factor
+argument_list|,
+name|nodePool
 argument_list|)
 return|;
 block|}

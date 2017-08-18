@@ -509,6 +509,16 @@ name|MAX_LISTVOLUMES_SIZE
 init|=
 literal|1024
 decl_stmt|;
+DECL|field|INVALID_PORT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|INVALID_PORT
+init|=
+operator|-
+literal|1
+decl_stmt|;
 DECL|method|OzoneConsts ()
 specifier|private
 name|OzoneConsts

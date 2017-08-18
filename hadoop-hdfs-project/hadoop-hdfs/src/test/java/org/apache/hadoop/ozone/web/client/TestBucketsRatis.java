@@ -78,6 +78,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Ignore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Rule
 import|;
 end_import
@@ -119,6 +129,11 @@ comment|/** The same as {@link TestBuckets} except that this test is Ratis enabl
 end_comment
 
 begin_class
+annotation|@
+name|Ignore
+argument_list|(
+literal|"Disabling Ratis tests for pipeline work."
+argument_list|)
 DECL|class|TestBucketsRatis
 specifier|public
 class|class

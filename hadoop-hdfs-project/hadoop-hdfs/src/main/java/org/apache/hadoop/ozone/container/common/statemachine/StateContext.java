@@ -298,6 +298,22 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|OzoneConsts
+operator|.
+name|INVALID_PORT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|protocol
 operator|.
 name|proto
@@ -499,8 +515,7 @@ name|parent
 operator|==
 literal|null
 condition|?
-operator|-
-literal|1
+name|INVALID_PORT
 else|:
 name|parent
 operator|.
@@ -508,6 +523,29 @@ name|getContainer
 argument_list|()
 operator|.
 name|getContainerServerPort
+argument_list|()
+return|;
+block|}
+comment|/**    * Gets the Ratis Port.    * @return int , return -1 if not valid.    */
+DECL|method|getRatisPort ()
+specifier|public
+name|int
+name|getRatisPort
+parameter_list|()
+block|{
+return|return
+name|parent
+operator|==
+literal|null
+condition|?
+name|INVALID_PORT
+else|:
+name|parent
+operator|.
+name|getContainer
+argument_list|()
+operator|.
+name|getRatisContainerServerPort
 argument_list|()
 return|;
 block|}

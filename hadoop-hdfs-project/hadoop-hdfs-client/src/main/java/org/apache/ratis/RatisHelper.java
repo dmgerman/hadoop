@@ -238,7 +238,7 @@ literal|":"
 operator|+
 name|id
 operator|.
-name|getContainerPort
+name|getRatisPort
 argument_list|()
 return|;
 block|}

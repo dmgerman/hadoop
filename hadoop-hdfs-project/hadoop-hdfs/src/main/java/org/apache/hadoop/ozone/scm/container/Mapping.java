@@ -28,11 +28,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|scm
+name|ozone
 operator|.
-name|client
+name|protocol
 operator|.
-name|ScmClient
+name|proto
+operator|.
+name|OzoneProtos
 import|;
 end_import
 
@@ -129,29 +131,23 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Allocates a new container for a given keyName.    *    * @param containerName - Name    * @return - Pipeline that makes up this container.    * @throws IOException    */
-DECL|method|allocateContainer (String containerName)
-name|Pipeline
-name|allocateContainer
-parameter_list|(
-name|String
-name|containerName
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
 comment|/**    * Allocates a new container for a given keyName and replication factor.    *    * @param containerName - Name.    * @param replicationFactor - replication factor of the container.    * @return - Pipeline that makes up this container.    * @throws IOException    */
-DECL|method|allocateContainer (String containerName, ScmClient.ReplicationFactor replicationFactor)
+DECL|method|allocateContainer (OzoneProtos.ReplicationType type, OzoneProtos.ReplicationFactor replicationFactor, String containerName)
 name|Pipeline
 name|allocateContainer
 parameter_list|(
-name|String
-name|containerName
+name|OzoneProtos
+operator|.
+name|ReplicationType
+name|type
 parameter_list|,
-name|ScmClient
+name|OzoneProtos
 operator|.
 name|ReplicationFactor
 name|replicationFactor
+parameter_list|,
+name|String
+name|containerName
 parameter_list|)
 throws|throws
 name|IOException

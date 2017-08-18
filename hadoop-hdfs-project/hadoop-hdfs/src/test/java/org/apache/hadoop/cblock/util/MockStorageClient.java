@@ -362,18 +362,23 @@ comment|// 5GB
 block|}
 annotation|@
 name|Override
-DECL|method|createContainer (String containerId, ScmClient.ReplicationFactor replicationFactor)
+DECL|method|createContainer (OzoneProtos.ReplicationType type, OzoneProtos.ReplicationFactor replicationFactor, String containerId)
 specifier|public
 name|Pipeline
 name|createContainer
 parameter_list|(
-name|String
-name|containerId
+name|OzoneProtos
+operator|.
+name|ReplicationType
+name|type
 parameter_list|,
-name|ScmClient
+name|OzoneProtos
 operator|.
 name|ReplicationFactor
 name|replicationFactor
+parameter_list|,
+name|String
+name|containerId
 parameter_list|)
 throws|throws
 name|IOException
@@ -436,6 +441,36 @@ name|queryScope
 parameter_list|,
 name|String
 name|poolName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+literal|null
+return|;
+block|}
+comment|/**    * Creates a specified replication pipeline.    *    * @param type - Type    * @param factor - Replication factor    * @param nodePool - Set of machines.    * @throws IOException    */
+annotation|@
+name|Override
+DECL|method|createReplicationPipeline (OzoneProtos.ReplicationType type, OzoneProtos.ReplicationFactor factor, OzoneProtos.NodePool nodePool)
+specifier|public
+name|Pipeline
+name|createReplicationPipeline
+parameter_list|(
+name|OzoneProtos
+operator|.
+name|ReplicationType
+name|type
+parameter_list|,
+name|OzoneProtos
+operator|.
+name|ReplicationFactor
+name|factor
+parameter_list|,
+name|OzoneProtos
+operator|.
+name|NodePool
+name|nodePool
 parameter_list|)
 throws|throws
 name|IOException

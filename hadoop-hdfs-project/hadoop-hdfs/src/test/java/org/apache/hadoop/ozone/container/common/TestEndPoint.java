@@ -74,6 +74,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSTestUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|DatanodeID
@@ -91,6 +105,20 @@ operator|.
 name|ipc
 operator|.
 name|RPC
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConfigKeys
 import|;
 end_import
 
@@ -519,6 +547,22 @@ operator|.
 name|DFSConfigKeys
 operator|.
 name|DFS_DATANODE_DATA_DIR_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConfigKeys
+operator|.
+name|OZONE_CONTAINER_METADATA_DIRS
 import|;
 end_import
 
@@ -1770,6 +1814,32 @@ name|getAbsolutePath
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|OZONE_CONTAINER_METADATA_DIRS
+argument_list|,
+name|testDir
+operator|.
+name|getAbsolutePath
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Mini Ozone cluster will not come up if the port is not true, since
+comment|// Ratis will exit if the server port cannot be bound. We can remove this
+comment|// hard coding once we fix the Ratis default behaviour.
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|OzoneConfigKeys
+operator|.
+name|DFS_CONTAINER_RATIS_IPC_RANDOM_PORT
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 comment|// Create a datanode state machine for stateConext used by endpoint task
 try|try
 init|(
@@ -1779,6 +1849,11 @@ init|=
 operator|new
 name|DatanodeStateMachine
 argument_list|(
+name|DFSTestUtil
+operator|.
+name|getLocalDatanodeID
+argument_list|()
+argument_list|,
 name|conf
 argument_list|)
 init|;

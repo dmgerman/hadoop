@@ -26,6 +26,24 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|OzoneProtos
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -62,6 +80,14 @@ comment|/** Get server IPC port. */
 DECL|method|getIPCPort ()
 name|int
 name|getIPCPort
+parameter_list|()
+function_decl|;
+comment|/**    * Returns the Replication type supported by this end-point.    * @return enum -- {Stand_Alone, Ratis, Chained}    */
+DECL|method|getServerType ()
+name|OzoneProtos
+operator|.
+name|ReplicationType
+name|getServerType
 parameter_list|()
 function_decl|;
 block|}

@@ -38,24 +38,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|DataNode
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|ozone
 operator|.
 name|container
@@ -175,18 +157,6 @@ operator|.
 name|net
 operator|.
 name|URISyntaxException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|stream
-operator|.
-name|Collectors
 import|;
 end_import
 
@@ -498,39 +468,10 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|cluster
-operator|.
-name|getRatisManager
-argument_list|()
-operator|.
-name|createRatisCluster
-argument_list|(
-literal|"ratis0"
-argument_list|,
-name|cluster
-operator|.
-name|getDataNodes
-argument_list|()
-operator|.
-name|stream
-argument_list|()
-operator|.
-name|map
-argument_list|(
-name|DataNode
-operator|::
-name|getDatanodeId
-argument_list|)
-operator|.
-name|collect
-argument_list|(
-name|Collectors
-operator|.
-name|toList
-argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
+comment|//    cluster.getRatisManager().createPipeline("ratis0",
+comment|//        cluster.getDataNodes().stream()
+comment|//            .map(DataNode::getDatanodeId)
+comment|//            .collect(Collectors.toList()));
 return|return
 name|cluster
 return|;

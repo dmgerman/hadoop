@@ -1,6 +1,6 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *  *     http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
+comment|/**  * Licensed to the Apache Software Foundation (ASF) under one or more  * contributor license agreements.  See the NOTICE file distributed with this  * work for additional information regarding copyright ownership.  The ASF  * licenses this file to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance with the License.  * You may obtain a copy of the License at  *<p>  * http://www.apache.org/licenses/LICENSE-2.0  *<p>  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the  * License for the specific language governing permissions and limitations under  * the License.  */
 end_comment
 
 begin_package
@@ -58,22 +58,6 @@ name|hadoop
 operator|.
 name|scm
 operator|.
-name|client
-operator|.
-name|ScmClient
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|scm
-operator|.
 name|container
 operator|.
 name|common
@@ -112,29 +96,23 @@ specifier|public
 interface|interface
 name|StorageContainerLocationProtocol
 block|{
-comment|/**    * Asks SCM where a container should be allocated. SCM responds with the    * set of datanodes that should be used creating this container.    * @param containerName - Name of the container.    * @return Pipeline.    * @throws IOException    */
-DECL|method|allocateContainer (String containerName)
+comment|/**    * Asks SCM where a container should be allocated. SCM responds with the    * set of datanodes that should be used creating this container.    *    */
+DECL|method|allocateContainer (OzoneProtos.ReplicationType replicationType, OzoneProtos.ReplicationFactor factor, String containerName)
 name|Pipeline
 name|allocateContainer
 parameter_list|(
-name|String
-name|containerName
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-comment|/**    * Asks SCM where a container should be allocated. SCM responds with the    * set of datanodes that should be used creating this container.    * @param containerName - Name of the container.    * @param replicationFactor - replication factor.    * @return Pipeline.    * @throws IOException    */
-DECL|method|allocateContainer (String containerName, ScmClient.ReplicationFactor replicationFactor)
-name|Pipeline
-name|allocateContainer
-parameter_list|(
-name|String
-name|containerName
+name|OzoneProtos
+operator|.
+name|ReplicationType
+name|replicationType
 parameter_list|,
-name|ScmClient
+name|OzoneProtos
 operator|.
 name|ReplicationFactor
-name|replicationFactor
+name|factor
+parameter_list|,
+name|String
+name|containerName
 parameter_list|)
 throws|throws
 name|IOException
@@ -203,6 +181,29 @@ name|queryScope
 parameter_list|,
 name|String
 name|poolName
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Creates a replication pipeline of a specified type.    * @param type - replication type    * @param factor - factor 1 or 3    * @param nodePool - optional machine list to build a pipeline.    * @throws IOException    */
+DECL|method|createReplicationPipeline (OzoneProtos.ReplicationType type, OzoneProtos.ReplicationFactor factor, OzoneProtos.NodePool nodePool)
+name|Pipeline
+name|createReplicationPipeline
+parameter_list|(
+name|OzoneProtos
+operator|.
+name|ReplicationType
+name|type
+parameter_list|,
+name|OzoneProtos
+operator|.
+name|ReplicationFactor
+name|factor
+parameter_list|,
+name|OzoneProtos
+operator|.
+name|NodePool
+name|nodePool
 parameter_list|)
 throws|throws
 name|IOException
