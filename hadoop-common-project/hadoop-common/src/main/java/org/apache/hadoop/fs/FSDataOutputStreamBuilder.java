@@ -225,7 +225,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Builder for {@link FSDataOutputStream} and its subclasses.  *  * It is used to create {@link FSDataOutputStream} when creating a new file or  * appending an existing file on {@link FileSystem}.  *  * By default, it does not create parent directory that do not exist.  * {@link FileSystem#createNonRecursive(Path, boolean, int, short, long,  * Progressable)}.  *  * To create missing parent directory, use {@link #recursive()}.  *  * To be more generic, {@link #opt(String, int)} and {@link #must(String, int)}  * variants provide implementation-agnostic way to customize the builder.  * Each FS-specific builder implementation can interpret the FS-specific  * options accordingly, for example:  *  *<code>  * FSDataOutputStreamBuilder builder = fs.createFile(path);  * builder.permission(perm)  *   .bufferSize(bufSize)  *   .opt("dfs.outputstream.builder.lazy-persist", true)  *   .opt("dfs.outputstream.builder.ec.policy-name", "rs-3-2-64k")  *   .opt("fs.local.o-direct", true)  *   .must("fs.s3a.fast-upload", true)  *   .must("fs.azure.buffer-size", 256 * 1024 * 1024);  * FSDataOutputStream out = builder.build();  * ...  *</code>  *  * If the option is not related to the file system, the option will be ignored.  * If the option is must, but not supported by the file system, a  * {@link IllegalArgumentException} will be thrown.  *  */
+comment|/**  * Builder for {@link FSDataOutputStream} and its subclasses.  *  * It is used to create {@link FSDataOutputStream} when creating a new file or  * appending an existing file on {@link FileSystem}.  *  * By default, it does not create parent directory that do not exist.  * {@link FileSystem#createNonRecursive(Path, boolean, int, short, long,  * Progressable)}.  *  * To create missing parent directory, use {@link #recursive()}.  *  * To be more generic, {@link #opt(String, int)} and {@link #must(String, int)}  * variants provide implementation-agnostic way to customize the builder.  * Each FS-specific builder implementation can interpret the FS-specific  * options accordingly, for example:  *  *<code>  *  * // Don't  * if (fs instanceof FooFileSystem) {  *   FooFileSystem fs = (FooFileSystem) fs;  *   OutputStream out = dfs.createFile(path)  *     .optionA()  *     .optionB("value")  *     .cache()  *   .build()  * } else if (fs instanceof BarFileSystem) {  *   ...  * }  *  * // Do  * OutputStream out = fs.createFile(path)  *   .permission(perm)  *   .bufferSize(bufSize)  *   .opt("foofs:option.a", true)  *   .opt("foofs:option.b", "value")  *   .opt("barfs:cache", true)  *   .must("foofs:cache", true)  *   .must("barfs:cache-size", 256 * 1024 * 1024)  *   .build();  *</code>  *  * If the option is not related to the file system, the option will be ignored.  * If the option is must, but not supported by the file system, a  * {@link IllegalArgumentException} will be thrown.  *  */
 end_comment
 
 begin_class
@@ -841,7 +841,7 @@ name|getThisBuilder
 argument_list|()
 return|;
 block|}
-comment|/**    * Set optional boolean parameter for the Builder.    */
+comment|/**    * Set optional boolean parameter for the Builder.    *    * @see #opt(String, String)    */
 DECL|method|opt (@onnull final String key, boolean value)
 specifier|public
 name|B
@@ -878,7 +878,7 @@ name|getThisBuilder
 argument_list|()
 return|;
 block|}
-comment|/**    * Set optional int parameter for the Builder.    */
+comment|/**    * Set optional int parameter for the Builder.    *    * @see #opt(String, String)    */
 DECL|method|opt (@onnull final String key, int value)
 specifier|public
 name|B
@@ -915,7 +915,7 @@ name|getThisBuilder
 argument_list|()
 return|;
 block|}
-comment|/**    * Set optional float parameter for the Builder.    */
+comment|/**    * Set optional float parameter for the Builder.    *    * @see #opt(String, String)    */
 DECL|method|opt (@onnull final String key, float value)
 specifier|public
 name|B
@@ -952,7 +952,7 @@ name|getThisBuilder
 argument_list|()
 return|;
 block|}
-comment|/**    * Set optional double parameter for the Builder.    */
+comment|/**    * Set optional double parameter for the Builder.    *    * @see #opt(String, String)    */
 DECL|method|opt (@onnull final String key, double value)
 specifier|public
 name|B
@@ -989,7 +989,7 @@ name|getThisBuilder
 argument_list|()
 return|;
 block|}
-comment|/**    * Set an array of string values as optional parameter for the Builder.    */
+comment|/**    * Set an array of string values as optional parameter for the Builder.    *    * @see #opt(String, String)    */
 DECL|method|opt (@onnull final String key, @Nonnull final String... values)
 specifier|public
 name|B
@@ -1030,7 +1030,7 @@ name|getThisBuilder
 argument_list|()
 return|;
 block|}
-comment|/**    * Set mandatory option to the Builder.    *    * If the option is not supported or unavailable on the {@link FileSystem},    * the client should expect {@link #build()} throws    * {@link IllegalArgumentException}.    */
+comment|/**    * Set mandatory option to the Builder.    *    * If the option is not supported or unavailable on the {@link FileSystem},    * the client should expect {@link #build()} throws IllegalArgumentException.    */
 DECL|method|must (@onnull final String key, @Nonnull final String value)
 specifier|public
 name|B
@@ -1070,7 +1070,7 @@ name|getThisBuilder
 argument_list|()
 return|;
 block|}
-comment|/** Set mandatory boolean option. */
+comment|/**    * Set mandatory boolean option.    *    * @see #must(String, String)    */
 DECL|method|must (@onnull final String key, boolean value)
 specifier|public
 name|B
@@ -1107,7 +1107,7 @@ name|getThisBuilder
 argument_list|()
 return|;
 block|}
-comment|/** Set mandatory int option. */
+comment|/**    * Set mandatory int option.    *    * @see #must(String, String)    */
 DECL|method|must (@onnull final String key, int value)
 specifier|public
 name|B
@@ -1144,7 +1144,7 @@ name|getThisBuilder
 argument_list|()
 return|;
 block|}
-comment|/** Set mandatory float option. */
+comment|/**    * Set mandatory float option.    *    * @see #must(String, String)    */
 DECL|method|must (@onnull final String key, float value)
 specifier|public
 name|B
@@ -1181,7 +1181,7 @@ name|getThisBuilder
 argument_list|()
 return|;
 block|}
-comment|/** Set mandatory double option. */
+comment|/**    * Set mandatory double option.    *    * @see #must(String, String)    */
 DECL|method|must (@onnull final String key, double value)
 specifier|public
 name|B
@@ -1218,7 +1218,7 @@ name|getThisBuilder
 argument_list|()
 return|;
 block|}
-comment|/** Set a string array as mandatory option. */
+comment|/**    * Set a string array as mandatory option.    *    * @see #must(String, String)    */
 DECL|method|must (@onnull final String key, @Nonnull final String... values)
 specifier|public
 name|B
