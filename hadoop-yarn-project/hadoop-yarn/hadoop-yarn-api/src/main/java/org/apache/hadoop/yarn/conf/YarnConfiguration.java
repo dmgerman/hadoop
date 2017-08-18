@@ -6149,6 +6149,15 @@ name|YARN_SECURITY_SERVICE_AUTHORIZATION_APPLICATIONHISTORY_PROTOCOL
 init|=
 literal|"security.applicationhistory.protocol.acl"
 decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|String
+DECL|field|YARN_SECURITY_SERVICE_AUTHORIZATION_COLLECTOR_NODEMANAGER_PROTOCOL
+name|YARN_SECURITY_SERVICE_AUTHORIZATION_COLLECTOR_NODEMANAGER_PROTOCOL
+init|=
+literal|"security.collector-nodemanager.protocol.acl"
+decl_stmt|;
 comment|/** No. of milliseconds to wait between sending a SIGTERM and SIGKILL    * to a running container */
 DECL|field|NM_SLEEP_DELAY_BEFORE_SIGKILL_MS
 specifier|public
