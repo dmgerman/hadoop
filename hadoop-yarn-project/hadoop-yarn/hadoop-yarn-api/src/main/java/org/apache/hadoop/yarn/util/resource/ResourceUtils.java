@@ -1325,14 +1325,15 @@ block|}
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|initializeResourcesMap (Configuration conf, Map<String, ResourceInformation> resourceInformationMap)
+DECL|method|initializeResourcesMap (Configuration conf)
 specifier|static
 name|void
 name|initializeResourcesMap
 parameter_list|(
 name|Configuration
 name|conf
-parameter_list|,
+parameter_list|)
+block|{
 name|Map
 argument_list|<
 name|String
@@ -1340,8 +1341,12 @@ argument_list|,
 name|ResourceInformation
 argument_list|>
 name|resourceInformationMap
-parameter_list|)
-block|{
+init|=
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
+decl_stmt|;
 name|String
 index|[]
 name|resourceNames
@@ -2006,19 +2011,6 @@ operator|!
 name|initializedResources
 condition|)
 block|{
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|ResourceInformation
-argument_list|>
-name|resources
-init|=
-operator|new
-name|HashMap
-argument_list|<>
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
 name|conf
@@ -2056,8 +2048,6 @@ expr_stmt|;
 name|initializeResourcesMap
 argument_list|(
 name|conf
-argument_list|,
-name|resources
 argument_list|)
 expr_stmt|;
 name|initializedResources
@@ -2087,8 +2077,6 @@ expr_stmt|;
 name|initializeResourcesMap
 argument_list|(
 name|conf
-argument_list|,
-name|resources
 argument_list|)
 expr_stmt|;
 name|initializedResources
@@ -2373,10 +2361,15 @@ expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|resetResourceTypes (Configuration conf)
 specifier|public
 specifier|static
-name|void
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|ResourceInformation
+argument_list|>
+DECL|method|resetResourceTypes (Configuration conf)
 name|resetResourceTypes
 parameter_list|(
 name|Configuration
@@ -2395,11 +2388,12 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
+return|return
 name|getResourceTypes
 argument_list|(
 name|conf
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 DECL|method|getUnits (String resourceValue)
 specifier|public

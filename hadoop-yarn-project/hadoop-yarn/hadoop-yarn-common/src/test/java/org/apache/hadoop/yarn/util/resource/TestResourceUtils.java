@@ -1155,20 +1155,13 @@ name|ResourceInformation
 argument_list|>
 name|ret
 init|=
-operator|new
-name|HashMap
-argument_list|<>
-argument_list|()
-decl_stmt|;
 name|ResourceUtils
 operator|.
-name|initializeResourcesMap
+name|resetResourceTypes
 argument_list|(
 name|conf
-argument_list|,
-name|ret
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 comment|// for test1, 4 - length will be 1, 4
 comment|// for the others, len will be 3
 name|int
@@ -1607,19 +1600,6 @@ index|]
 argument_list|)
 expr_stmt|;
 block|}
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|ResourceInformation
-argument_list|>
-name|ret
-init|=
-operator|new
-name|HashMap
-argument_list|<>
-argument_list|()
-decl_stmt|;
 try|try
 block|{
 name|ResourceUtils
@@ -1627,8 +1607,6 @@ operator|.
 name|initializeResourcesMap
 argument_list|(
 name|conf
-argument_list|,
-name|ret
 argument_list|)
 expr_stmt|;
 name|Assert
