@@ -290,13 +290,6 @@ name|fractionMemFairShare
 decl_stmt|;
 annotation|@
 name|XmlTransient
-DECL|field|fractionMemMinShare
-specifier|private
-name|float
-name|fractionMemMinShare
-decl_stmt|;
-annotation|@
-name|XmlTransient
 DECL|field|fractionMemMaxShare
 specifier|private
 name|float
@@ -351,11 +344,6 @@ DECL|field|reservedResources
 specifier|private
 name|ResourceInfo
 name|reservedResources
-decl_stmt|;
-DECL|field|pendingContainers
-specifier|private
-name|long
-name|pendingContainers
 decl_stmt|;
 DECL|field|allocatedContainers
 specifier|private
@@ -625,21 +613,6 @@ operator|.
 name|getMemorySize
 argument_list|()
 expr_stmt|;
-name|fractionMemMinShare
-operator|=
-operator|(
-name|float
-operator|)
-name|minResources
-operator|.
-name|getMemorySize
-argument_list|()
-operator|/
-name|clusterResources
-operator|.
-name|getMemorySize
-argument_list|()
-expr_stmt|;
 name|fractionMemMaxShare
 operator|=
 operator|(
@@ -660,16 +633,6 @@ operator|=
 name|queue
 operator|.
 name|getMaxRunningApps
-argument_list|()
-expr_stmt|;
-name|pendingContainers
-operator|=
-name|queue
-operator|.
-name|getMetrics
-argument_list|()
-operator|.
-name|getPendingContainers
 argument_list|()
 expr_stmt|;
 name|allocatedContainers
@@ -728,16 +691,6 @@ argument_list|,
 name|scheduler
 argument_list|)
 expr_stmt|;
-block|}
-DECL|method|getPendingContainers ()
-specifier|public
-name|long
-name|getPendingContainers
-parameter_list|()
-block|{
-return|return
-name|pendingContainers
-return|;
 block|}
 DECL|method|getAllocatedContainers ()
 specifier|public
@@ -992,17 +945,6 @@ parameter_list|()
 block|{
 return|return
 name|demandResources
-return|;
-block|}
-comment|/**    * Returns the queue's min share in as a fraction of the entire    * cluster capacity.    */
-DECL|method|getMinShareMemoryFraction ()
-specifier|public
-name|float
-name|getMinShareMemoryFraction
-parameter_list|()
-block|{
-return|return
-name|fractionMemMinShare
 return|;
 block|}
 comment|/**    * Returns the memory used by this queue as a fraction of the entire     * cluster capacity.    */
