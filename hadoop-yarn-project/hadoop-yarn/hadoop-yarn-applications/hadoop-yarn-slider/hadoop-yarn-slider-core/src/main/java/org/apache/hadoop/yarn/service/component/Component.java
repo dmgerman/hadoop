@@ -452,6 +452,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|text
+operator|.
+name|MessageFormat
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -2718,6 +2728,16 @@ return|return
 name|priority
 return|;
 block|}
+DECL|method|getAllocateId ()
+specifier|public
+name|long
+name|getAllocateId
+parameter_list|()
+block|{
+return|return
+name|allocateId
+return|;
+block|}
 DECL|method|getName ()
 specifier|public
 name|String
@@ -2825,23 +2845,24 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Invalid event "
-operator|+
-name|event
+name|MessageFormat
 operator|.
-name|getType
-argument_list|()
-operator|+
-literal|" at "
-operator|+
-name|oldState
-operator|+
-literal|" for component "
-operator|+
+name|format
+argument_list|(
+literal|"[COMPONENT {0}]: Invalid event {1} at {2}"
+argument_list|,
 name|componentSpec
 operator|.
 name|getName
 argument_list|()
+argument_list|,
+name|event
+operator|.
+name|getType
+argument_list|()
+argument_list|,
+name|oldState
+argument_list|)
 argument_list|,
 name|e
 argument_list|)

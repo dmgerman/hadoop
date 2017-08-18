@@ -482,6 +482,9 @@ argument_list|,
 name|instance
 argument_list|,
 name|fs
+argument_list|,
+name|getConfig
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|instance

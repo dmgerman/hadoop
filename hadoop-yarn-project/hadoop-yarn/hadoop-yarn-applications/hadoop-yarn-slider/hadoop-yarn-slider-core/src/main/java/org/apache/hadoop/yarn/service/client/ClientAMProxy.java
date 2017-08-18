@@ -124,7 +124,7 @@ name|service
 operator|.
 name|conf
 operator|.
-name|YarnServiceConfKeys
+name|YarnServiceConf
 import|;
 end_import
 
@@ -186,7 +186,7 @@ name|createRetryPolicy
 argument_list|(
 name|conf
 argument_list|,
-name|YarnServiceConfKeys
+name|YarnServiceConf
 operator|.
 name|CLIENT_AM_RETRY_MAX_WAIT_MS
 argument_list|,
@@ -196,7 +196,7 @@ literal|60
 operator|*
 literal|1000
 argument_list|,
-name|YarnServiceConfKeys
+name|YarnServiceConf
 operator|.
 name|CLIENT_AM_RETRY_MAX_INTERVAL_MS
 argument_list|,

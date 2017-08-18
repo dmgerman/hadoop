@@ -26,6 +26,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|slider
 operator|.
 name|api
@@ -119,7 +133,7 @@ interface|interface
 name|ProviderService
 block|{
 comment|/**    * Set up the entire container launch context    */
-DECL|method|buildContainerLaunchContext (AbstractLauncher containerLauncher, Application application, ComponentInstance instance, SliderFileSystem sliderFileSystem)
+DECL|method|buildContainerLaunchContext (AbstractLauncher containerLauncher, Application application, ComponentInstance instance, SliderFileSystem sliderFileSystem, Configuration yarnConf)
 name|void
 name|buildContainerLaunchContext
 parameter_list|(
@@ -134,6 +148,9 @@ name|instance
 parameter_list|,
 name|SliderFileSystem
 name|sliderFileSystem
+parameter_list|,
+name|Configuration
+name|yarnConf
 parameter_list|)
 throws|throws
 name|IOException

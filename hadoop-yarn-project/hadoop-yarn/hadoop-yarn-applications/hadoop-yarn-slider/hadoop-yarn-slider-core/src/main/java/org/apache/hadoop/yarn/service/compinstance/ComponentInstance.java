@@ -1795,7 +1795,10 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Invalid event "
+name|getCompInstanceId
+argument_list|()
+operator|+
+literal|": Invalid event "
 operator|+
 name|event
 operator|.
@@ -1805,10 +1808,6 @@ operator|+
 literal|" at "
 operator|+
 name|oldState
-operator|+
-literal|" for component instance "
-operator|+
-name|compInstanceId
 argument_list|,
 name|e
 argument_list|)
