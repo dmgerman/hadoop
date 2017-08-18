@@ -254,6 +254,30 @@ name|Mockito
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|mockito
+operator|.
+name|invocation
+operator|.
+name|InvocationOnMock
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|mockito
+operator|.
+name|stubbing
+operator|.
+name|Answer
+import|;
+end_import
+
 begin_comment
 comment|/**  * Tests the Native Azure file system (WASB) using parallel threads for rename and delete operations.  */
 end_comment
@@ -2816,25 +2840,63 @@ literal|"Delete failed as operation on subfolders and files failed."
 argument_list|)
 expr_stmt|;
 block|}
-comment|/*    * Test case for delete operation with multiple threads and flat listing enabled.    */
+comment|/*    * Validate that when a directory is deleted recursively, the operation succeeds    * even if a child directory delete fails because the directory does not exist.    * This can happen if a child directory is deleted by an external agent while    * the parent is in progress of being deleted recursively.    */
 annotation|@
 name|Test
-DECL|method|testDeleteSingleDeleteFailure ()
+DECL|method|testRecursiveDirectoryDeleteWhenChildDirectoryDeleted ()
 specifier|public
 name|void
-name|testDeleteSingleDeleteFailure
+name|testRecursiveDirectoryDeleteWhenChildDirectoryDeleted
 parameter_list|()
 throws|throws
 name|Exception
 block|{
-comment|// Spy azure file system object and return false for deleting one file
-name|LOG
-operator|.
-name|info
+name|testRecusiveDirectoryDelete
 argument_list|(
-literal|"testDeleteSingleDeleteFailure"
+literal|true
 argument_list|)
 expr_stmt|;
+block|}
+comment|/*    * Validate that when a directory is deleted recursively, the operation succeeds    * even if a file delete fails because it does not exist.    * This can happen if a file is deleted by an external agent while    * the parent directory is in progress of being deleted.    */
+annotation|@
+name|Test
+DECL|method|testRecursiveDirectoryDeleteWhenDeletingChildFileReturnsFalse ()
+specifier|public
+name|void
+name|testRecursiveDirectoryDeleteWhenDeletingChildFileReturnsFalse
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|testRecusiveDirectoryDelete
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|testRecusiveDirectoryDelete (boolean useDir)
+specifier|private
+name|void
+name|testRecusiveDirectoryDelete
+parameter_list|(
+name|boolean
+name|useDir
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+name|String
+name|childPathToBeDeletedByExternalAgent
+init|=
+operator|(
+name|useDir
+operator|)
+condition|?
+literal|"root/0"
+else|:
+literal|"root/0/fileToRename"
+decl_stmt|;
+comment|// Spy azure file system object and return false for deleting one file
 name|NativeAzureFileSystem
 name|mockFs
 init|=
@@ -2862,10 +2924,89 @@ argument_list|(
 operator|new
 name|Path
 argument_list|(
-literal|"root/0"
+name|childPathToBeDeletedByExternalAgent
 argument_list|)
 argument_list|)
 argument_list|)
+decl_stmt|;
+name|Answer
+argument_list|<
+name|Boolean
+argument_list|>
+name|answer
+init|=
+operator|new
+name|Answer
+argument_list|<
+name|Boolean
+argument_list|>
+argument_list|()
+block|{
+specifier|public
+name|Boolean
+name|answer
+parameter_list|(
+name|InvocationOnMock
+name|invocation
+parameter_list|)
+throws|throws
+name|Throwable
+block|{
+name|String
+name|path
+init|=
+operator|(
+name|String
+operator|)
+name|invocation
+operator|.
+name|getArguments
+argument_list|()
+index|[
+literal|0
+index|]
+decl_stmt|;
+name|boolean
+name|isDir
+init|=
+operator|(
+name|boolean
+operator|)
+name|invocation
+operator|.
+name|getArguments
+argument_list|()
+index|[
+literal|1
+index|]
+decl_stmt|;
+name|boolean
+name|realResult
+init|=
+name|fs
+operator|.
+name|deleteFile
+argument_list|(
+name|path
+argument_list|,
+name|isDir
+argument_list|)
+decl_stmt|;
+name|assertTrue
+argument_list|(
+name|realResult
+argument_list|)
+expr_stmt|;
+name|boolean
+name|fakeResult
+init|=
+literal|false
+decl_stmt|;
+return|return
+name|fakeResult
+return|;
+block|}
+block|}
 decl_stmt|;
 name|Mockito
 operator|.
@@ -2877,13 +3018,13 @@ name|deleteFile
 argument_list|(
 name|path
 argument_list|,
-literal|true
+name|useDir
 argument_list|)
 argument_list|)
 operator|.
-name|thenReturn
+name|thenAnswer
 argument_list|(
-literal|false
+name|answer
 argument_list|)
 expr_stmt|;
 name|createFolder
@@ -2902,7 +3043,7 @@ argument_list|(
 literal|"root"
 argument_list|)
 decl_stmt|;
-name|assertFalse
+name|assertTrue
 argument_list|(
 name|mockFs
 operator|.
@@ -2914,7 +3055,7 @@ literal|true
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertFalse
 argument_list|(
 name|mockFs
 operator|.
@@ -2924,7 +3065,9 @@ name|sourceFolder
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Validate from logs that threads are enabled and delete operation failed.
+comment|// Validate from logs that threads are enabled, that a child directory was
+comment|// deleted by an external caller, and the parent delete operation still
+comment|// succeeds.
 name|String
 name|content
 init|=
@@ -2944,23 +3087,20 @@ name|assertInLog
 argument_list|(
 name|content
 argument_list|,
-literal|"Delete operation failed for file "
-operator|+
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Attempt to delete non-existent %s %s"
+argument_list|,
+name|useDir
+condition|?
+literal|"directory"
+else|:
+literal|"file"
+argument_list|,
 name|path
 argument_list|)
-expr_stmt|;
-name|assertInLog
-argument_list|(
-name|content
-argument_list|,
-literal|"Terminating execution of Delete operation now as some other thread already got exception or operation failed"
-argument_list|)
-expr_stmt|;
-name|assertInLog
-argument_list|(
-name|content
-argument_list|,
-literal|"Failed to delete files / subfolders in blob"
 argument_list|)
 expr_stmt|;
 block|}

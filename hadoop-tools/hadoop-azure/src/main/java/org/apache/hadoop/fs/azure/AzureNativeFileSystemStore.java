@@ -8998,11 +8998,24 @@ name|StorageException
 name|e
 parameter_list|)
 block|{
+if|if
+condition|(
+operator|!
+name|NativeAzureFileSystemHelper
+operator|.
+name|isFileNotFoundException
+argument_list|(
+name|e
+argument_list|)
+condition|)
+block|{
 name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Encountered Storage Exception for delete on Blob: {}, Exception Details: {} Error Code: {}"
+literal|"Encountered Storage Exception for delete on Blob: {}"
+operator|+
+literal|", Exception Details: {} Error Code: {}"
 argument_list|,
 name|blob
 operator|.
@@ -9020,6 +9033,7 @@ name|getErrorCode
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 comment|// On exception, check that if:
 comment|// 1. It's a BlobNotFound exception AND
 comment|// 2. It got there after one-or-more retries THEN
@@ -9154,17 +9168,6 @@ argument_list|(
 name|key
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|blob
-operator|.
-name|exists
-argument_list|(
-name|getInstrumentedContext
-argument_list|()
-argument_list|)
-condition|)
-block|{
 name|safeDelete
 argument_list|(
 name|blob
@@ -9176,20 +9179,34 @@ return|return
 literal|true
 return|;
 block|}
-else|else
-block|{
-return|return
-literal|false
-return|;
-block|}
-block|}
 catch|catch
 parameter_list|(
 name|Exception
 name|e
 parameter_list|)
 block|{
-comment|// Re-throw as an Azure storage exception.
+if|if
+condition|(
+name|e
+operator|instanceof
+name|StorageException
+operator|&&
+name|NativeAzureFileSystemHelper
+operator|.
+name|isFileNotFoundException
+argument_list|(
+operator|(
+name|StorageException
+operator|)
+name|e
+argument_list|)
+condition|)
+block|{
+comment|// the file or directory does not exist
+return|return
+literal|false
+return|;
+block|}
 throw|throw
 operator|new
 name|AzureException
