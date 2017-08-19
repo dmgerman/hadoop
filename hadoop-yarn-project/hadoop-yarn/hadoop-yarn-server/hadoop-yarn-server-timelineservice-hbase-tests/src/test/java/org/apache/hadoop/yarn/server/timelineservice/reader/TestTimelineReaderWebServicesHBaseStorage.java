@@ -660,6 +660,14 @@ argument_list|(
 name|ts
 argument_list|)
 decl_stmt|;
+DECL|field|doAsUser
+specifier|private
+specifier|static
+name|String
+name|doAsUser
+init|=
+literal|"remoteuser"
+decl_stmt|;
 annotation|@
 name|BeforeClass
 DECL|method|setupBeforeClass ()
@@ -2735,7 +2743,7 @@ name|UserGroupInformation
 operator|.
 name|createRemoteUser
 argument_list|(
-name|user
+name|doAsUser
 argument_list|)
 decl_stmt|;
 try|try
@@ -15964,18 +15972,6 @@ argument_list|()
 decl_stmt|;
 try|try
 block|{
-name|int
-name|limit
-init|=
-literal|10
-decl_stmt|;
-name|String
-name|queryParam
-init|=
-literal|"?limit="
-operator|+
-name|limit
-decl_stmt|;
 name|String
 name|resourceUri
 init|=
@@ -15989,6 +15985,71 @@ operator|+
 literal|"timeline/clusters/cluster1/apps/application_1111111111_1111/"
 operator|+
 literal|"entities/entitytype"
+decl_stmt|;
+name|verifyEntitiesForPagination
+argument_list|(
+name|client
+argument_list|,
+name|resourceUri
+argument_list|)
+expr_stmt|;
+name|resourceUri
+operator|=
+literal|"http://localhost:"
+operator|+
+name|getServerPort
+argument_list|()
+operator|+
+literal|"/ws/v2/"
+operator|+
+literal|"timeline/clusters/cluster1/users/"
+operator|+
+name|doAsUser
+operator|+
+literal|"/entities/entitytype"
+expr_stmt|;
+name|verifyEntitiesForPagination
+argument_list|(
+name|client
+argument_list|,
+name|resourceUri
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|client
+operator|.
+name|destroy
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+DECL|method|verifyEntitiesForPagination (Client client, String resourceUri)
+specifier|private
+name|void
+name|verifyEntitiesForPagination
+parameter_list|(
+name|Client
+name|client
+parameter_list|,
+name|String
+name|resourceUri
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+name|int
+name|limit
+init|=
+literal|10
+decl_stmt|;
+name|String
+name|queryParam
+init|=
+literal|"?limit="
+operator|+
+name|limit
 decl_stmt|;
 name|URI
 name|uri
@@ -16031,7 +16092,7 @@ name|TimelineEntity
 argument_list|>
 argument_list|>
 argument_list|()
-block|{           }
+block|{         }
 argument_list|)
 decl_stmt|;
 comment|// verify for entity-10 to entity-1 in descending order.
@@ -16089,7 +16150,7 @@ name|TimelineEntity
 argument_list|>
 argument_list|>
 argument_list|()
-block|{       }
+block|{     }
 argument_list|)
 expr_stmt|;
 comment|// verify for entity-10 to entity-7 in descending order.
@@ -16160,7 +16221,7 @@ name|TimelineEntity
 argument_list|>
 argument_list|>
 argument_list|()
-block|{       }
+block|{     }
 argument_list|)
 expr_stmt|;
 comment|// verify for entity-7 to entity-4 in descending order.
@@ -16230,7 +16291,7 @@ name|TimelineEntity
 argument_list|>
 argument_list|>
 argument_list|()
-block|{       }
+block|{     }
 argument_list|)
 expr_stmt|;
 comment|// verify for entity-4 to entity-1 in descending order.
@@ -16300,7 +16361,7 @@ name|TimelineEntity
 argument_list|>
 argument_list|>
 argument_list|()
-block|{       }
+block|{     }
 argument_list|)
 expr_stmt|;
 comment|// always entity-1 will be retrieved
@@ -16315,15 +16376,6 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
-block|}
-finally|finally
-block|{
-name|client
-operator|.
-name|destroy
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|verifyPaginatedEntites (List<TimelineEntity> entities, int limit, int startFrom)
 specifier|private

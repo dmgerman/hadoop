@@ -537,6 +537,37 @@ name|getId
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|context
+operator|.
+name|getDoAsUser
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+name|entity
+operator|.
+name|setUID
+argument_list|(
+name|TimelineReaderUtils
+operator|.
+name|UID_KEY
+argument_list|,
+name|TimelineUIDConverter
+operator|.
+name|SUB_APPLICATION_ENTITY_UID
+operator|.
+name|encodeUID
+argument_list|(
+name|context
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|entity
 operator|.
 name|setUID
@@ -555,6 +586,7 @@ name|context
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Get a set of entities matching given predicates by making a call to    * backend storage implementation. The meaning of each argument has been    * documented in detail with {@link TimelineReader#getEntities}.If cluster ID    * has not been supplied by the client, fills the cluster id from config    * before making a call to backend storage. After fetching entities from    * backend, fills the appropriate UID based on entity type for each entity.    *    * @param context Timeline context within the scope of which entities have to    *     be fetched.    * @param filters Filters which limit the number of entities to be returned.    * @param dataToRetrieve Data to carry in each entity fetched.    * @return a set of<cite>TimelineEntity</cite> objects.    * @throws IOException if any problem occurs while getting entities.    * @see TimelineReader#getEntities    */
 DECL|method|getEntities (TimelineReaderContext context, TimelineEntityFilters filters, TimelineDataToRetrieve dataToRetrieve)

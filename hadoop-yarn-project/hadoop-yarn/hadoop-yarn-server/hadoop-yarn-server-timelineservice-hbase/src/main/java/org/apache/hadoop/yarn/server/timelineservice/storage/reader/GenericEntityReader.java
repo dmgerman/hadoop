@@ -1084,7 +1084,7 @@ return|;
 block|}
 comment|/**    * Check if we need to fetch only some of the event columns.    *    * @return true if we need to fetch some of the columns, false otherwise.    */
 DECL|method|fetchPartialEventCols (TimelineFilterList eventFilters, EnumSet<Field> fieldsToRetrieve)
-specifier|private
+specifier|protected
 name|boolean
 name|fetchPartialEventCols
 parameter_list|(
@@ -1127,7 +1127,7 @@ return|;
 block|}
 comment|/**    * Check if we need to fetch only some of the relates_to columns.    *    * @return true if we need to fetch some of the columns, false otherwise.    */
 DECL|method|fetchPartialRelatesToCols (TimelineFilterList relatesTo, EnumSet<Field> fieldsToRetrieve)
-specifier|private
+specifier|protected
 name|boolean
 name|fetchPartialRelatesToCols
 parameter_list|(
