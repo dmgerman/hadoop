@@ -519,8 +519,8 @@ init|=
 literal|null
 decl_stmt|;
 DECL|field|path
-specifier|static
 specifier|private
+specifier|static
 name|String
 name|path
 decl_stmt|;
@@ -531,6 +531,12 @@ name|OzoneRestClient
 name|ozoneRestClient
 init|=
 literal|null
+decl_stmt|;
+DECL|field|currentTime
+specifier|private
+specifier|static
+name|long
+name|currentTime
 decl_stmt|;
 comment|/**    * Create a MiniDFSCluster for testing.    *    * Ozone is made active by setting OZONE_ENABLED = true and    * OZONE_HANDLER_TYPE_KEY = "local" , which uses a local    * directory to emulate Ozone backend.    *    * @throws IOException    */
 annotation|@
@@ -661,6 +667,13 @@ argument_list|,
 name|port
 argument_list|)
 argument_list|)
+expr_stmt|;
+name|currentTime
+operator|=
+name|Time
+operator|.
+name|now
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * shutdown MiniDFSCluster    */
@@ -2305,14 +2318,6 @@ name|getFile
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|long
-name|currentTime
-init|=
-name|Time
-operator|.
-name|now
-argument_list|()
-decl_stmt|;
 comment|// add keys [list-key0, list-key1, ..., list-key9]
 for|for
 control|(
@@ -2968,14 +2973,6 @@ name|OzoneException
 throws|,
 name|ParseException
 block|{
-name|long
-name|currentTime
-init|=
-name|Time
-operator|.
-name|now
-argument_list|()
-decl_stmt|;
 name|String
 name|keyName
 init|=

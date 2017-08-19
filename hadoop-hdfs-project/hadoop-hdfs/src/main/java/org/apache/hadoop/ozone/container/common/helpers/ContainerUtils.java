@@ -642,7 +642,15 @@ name|log
 operator|.
 name|info
 argument_list|(
-literal|"Trace ID: {} : Message: {} : Result: {}"
+literal|"Operation: {} : Trace ID: {} : Message: {} : Result: {}"
+argument_list|,
+name|msg
+operator|.
+name|getCmdType
+argument_list|()
+operator|.
+name|name
+argument_list|()
 argument_list|,
 name|msg
 operator|.
@@ -711,7 +719,15 @@ name|log
 operator|.
 name|info
 argument_list|(
-literal|"Trace ID: {} : Message: {} "
+literal|"Operation: {} : Trace ID: {} : Message: {} "
+argument_list|,
+name|msg
+operator|.
+name|getCmdType
+argument_list|()
+operator|.
+name|name
+argument_list|()
 argument_list|,
 name|msg
 operator|.

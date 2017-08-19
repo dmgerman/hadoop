@@ -3216,6 +3216,26 @@ operator|=
 name|ipcPort
 expr_stmt|;
 block|}
+DECL|method|getConf ()
+specifier|public
+name|Configuration
+name|getConf
+parameter_list|()
+block|{
+return|return
+name|conf
+return|;
+block|}
+DECL|method|getDatanode ()
+specifier|public
+name|DataNode
+name|getDatanode
+parameter_list|()
+block|{
+return|return
+name|datanode
+return|;
+block|}
 DECL|method|setDnArgs (String .... args)
 specifier|public
 name|void
