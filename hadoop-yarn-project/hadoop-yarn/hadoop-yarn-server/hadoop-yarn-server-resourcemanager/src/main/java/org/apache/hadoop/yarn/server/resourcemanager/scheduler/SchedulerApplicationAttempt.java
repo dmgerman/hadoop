@@ -928,7 +928,7 @@ name|resourcemanager
 operator|.
 name|rmnode
 operator|.
-name|RMNodeDecreaseContainerEvent
+name|RMNodeUpdateContainerEvent
 import|;
 end_import
 
@@ -3551,20 +3551,9 @@ condition|(
 name|updateType
 operator|==
 literal|null
-operator|||
-name|ContainerUpdateType
-operator|.
-name|PROMOTE_EXECUTION_TYPE
-operator|==
-name|updateType
-operator|||
-name|ContainerUpdateType
-operator|.
-name|DEMOTE_EXECUTION_TYPE
-operator|==
-name|updateType
 condition|)
 block|{
+comment|// This is a newly allocated container
 name|rmContainer
 operator|.
 name|handle
@@ -3580,6 +3569,82 @@ argument_list|,
 name|RMContainerEventType
 operator|.
 name|ACQUIRED
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// Resource increase is handled as follows:
+comment|// If the AM does not use the updated token to increase the container
+comment|// for a configured period of time, the RM will automatically rollback
+comment|// the update by performing a container decrease. This rollback (which
+comment|// essentially is another resource decrease update) is notified to the
+comment|// NM heartbeat response. If autoUpdate flag is set, then AM does not
+comment|// need to do anything - same code path as resource decrease.
+comment|//
+comment|// Resource Decrease is always automatic: the AM never has to do
+comment|// anything. It is always via NM heartbeat response.
+comment|//
+comment|// ExecutionType updates (both Promotion and Demotion) are either
+comment|// always automatic (if the flag is set) or the AM has to explicitly
+comment|// call updateContainer() on the NM. There is no expiry
+name|boolean
+name|autoUpdate
+init|=
+name|ContainerUpdateType
+operator|.
+name|DECREASE_RESOURCE
+operator|==
+name|updateType
+operator|||
+operator|(
+operator|(
+name|AbstractYarnScheduler
+operator|)
+name|rmContext
+operator|.
+name|getScheduler
+argument_list|()
+operator|)
+operator|.
+name|shouldContainersBeAutoUpdated
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|autoUpdate
+condition|)
+block|{
+name|this
+operator|.
+name|rmContext
+operator|.
+name|getDispatcher
+argument_list|()
+operator|.
+name|getEventHandler
+argument_list|()
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|RMNodeUpdateContainerEvent
+argument_list|(
+name|rmContainer
+operator|.
+name|getNodeId
+argument_list|()
+argument_list|,
+name|Collections
+operator|.
+name|singletonList
+argument_list|(
+name|rmContainer
+operator|.
+name|getContainer
+argument_list|()
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3603,47 +3668,6 @@ operator|.
 name|INCREASE_RESOURCE
 operator|==
 name|updateType
-argument_list|)
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|ContainerUpdateType
-operator|.
-name|DECREASE_RESOURCE
-operator|==
-name|updateType
-condition|)
-block|{
-name|this
-operator|.
-name|rmContext
-operator|.
-name|getDispatcher
-argument_list|()
-operator|.
-name|getEventHandler
-argument_list|()
-operator|.
-name|handle
-argument_list|(
-operator|new
-name|RMNodeDecreaseContainerEvent
-argument_list|(
-name|rmContainer
-operator|.
-name|getNodeId
-argument_list|()
-argument_list|,
-name|Collections
-operator|.
-name|singletonList
-argument_list|(
-name|rmContainer
-operator|.
-name|getContainer
-argument_list|()
-argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;

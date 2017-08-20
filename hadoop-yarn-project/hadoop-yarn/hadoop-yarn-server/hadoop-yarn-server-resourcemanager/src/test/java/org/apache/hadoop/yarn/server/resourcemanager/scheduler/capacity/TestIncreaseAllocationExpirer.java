@@ -2216,7 +2216,7 @@ argument_list|(
 literal|true
 argument_list|)
 operator|.
-name|getContainersToDecrease
+name|getContainersToUpdate
 argument_list|()
 decl_stmt|;
 name|Assert
@@ -3027,7 +3027,7 @@ argument_list|(
 literal|true
 argument_list|)
 operator|.
-name|getContainersToDecrease
+name|getContainersToUpdate
 argument_list|()
 decl_stmt|;
 name|Assert

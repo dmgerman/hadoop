@@ -1458,7 +1458,7 @@ name|ApplicationId
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|field|toBeDecreasedContainers
+DECL|field|toBeUpdatedContainers
 specifier|private
 specifier|final
 name|Map
@@ -1467,7 +1467,7 @@ name|ContainerId
 argument_list|,
 name|Container
 argument_list|>
-name|toBeDecreasedContainers
+name|toBeUpdatedContainers
 init|=
 operator|new
 name|HashMap
@@ -1836,10 +1836,10 @@ name|RUNNING
 argument_list|,
 name|RMNodeEventType
 operator|.
-name|DECREASE_CONTAINER
+name|UPDATE_CONTAINER
 argument_list|,
 operator|new
-name|DecreaseContainersTransition
+name|UpdateContainersTransition
 argument_list|()
 argument_list|)
 operator|.
@@ -3636,17 +3636,17 @@ block|}
 empty_stmt|;
 annotation|@
 name|VisibleForTesting
-DECL|method|getToBeDecreasedContainers ()
+DECL|method|getToBeUpdatedContainers ()
 specifier|public
 name|Collection
 argument_list|<
 name|Container
 argument_list|>
-name|getToBeDecreasedContainers
+name|getToBeUpdatedContainers
 parameter_list|()
 block|{
 return|return
-name|toBeDecreasedContainers
+name|toBeUpdatedContainers
 operator|.
 name|values
 argument_list|()
@@ -3654,10 +3654,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|updateNodeHeartbeatResponseForContainersDecreasing ( NodeHeartbeatResponse response)
+DECL|method|updateNodeHeartbeatResponseForUpdatedContainers ( NodeHeartbeatResponse response)
 specifier|public
 name|void
-name|updateNodeHeartbeatResponseForContainersDecreasing
+name|updateNodeHeartbeatResponseForUpdatedContainers
 parameter_list|(
 name|NodeHeartbeatResponse
 name|response
@@ -3674,15 +3674,15 @@ try|try
 block|{
 name|response
 operator|.
-name|addAllContainersToDecrease
+name|addAllContainersToUpdate
 argument_list|(
-name|toBeDecreasedContainers
+name|toBeUpdatedContainers
 operator|.
 name|values
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|toBeDecreasedContainers
+name|toBeUpdatedContainers
 operator|.
 name|clear
 argument_list|()
@@ -5559,11 +5559,12 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|class|DecreaseContainersTransition
+comment|/**    * Transition to Update a container.    */
+DECL|class|UpdateContainersTransition
 specifier|public
 specifier|static
 class|class
-name|DecreaseContainersTransition
+name|UpdateContainersTransition
 implements|implements
 name|SingleArcTransition
 argument_list|<
@@ -5586,11 +5587,11 @@ name|RMNodeEvent
 name|event
 parameter_list|)
 block|{
-name|RMNodeDecreaseContainerEvent
+name|RMNodeUpdateContainerEvent
 name|de
 init|=
 operator|(
-name|RMNodeDecreaseContainerEvent
+name|RMNodeUpdateContainerEvent
 operator|)
 name|event
 decl_stmt|;
@@ -5601,13 +5602,13 @@ name|c
 range|:
 name|de
 operator|.
-name|getToBeDecreasedContainers
+name|getToBeUpdatedContainers
 argument_list|()
 control|)
 block|{
 name|rmNode
 operator|.
-name|toBeDecreasedContainers
+name|toBeUpdatedContainers
 operator|.
 name|put
 argument_list|(

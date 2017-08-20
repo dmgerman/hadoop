@@ -752,6 +752,26 @@ name|RM_PREFIX
 operator|+
 literal|"application-master-service.processors"
 decl_stmt|;
+DECL|field|RM_AUTO_UPDATE_CONTAINERS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_AUTO_UPDATE_CONTAINERS
+init|=
+name|RM_PREFIX
+operator|+
+literal|"auto-update.containers"
+decl_stmt|;
+DECL|field|DEFAULT_RM_AUTO_UPDATE_CONTAINERS
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_RM_AUTO_UPDATE_CONTAINERS
+init|=
+literal|false
+decl_stmt|;
 comment|/** The actual bind address for the RM.*/
 DECL|field|RM_BIND_HOST
 specifier|public

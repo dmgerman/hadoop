@@ -754,10 +754,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|updateNodeHeartbeatResponseForContainersDecreasing ( NodeHeartbeatResponse response)
+DECL|method|updateNodeHeartbeatResponseForUpdatedContainers ( NodeHeartbeatResponse response)
 specifier|public
 name|void
-name|updateNodeHeartbeatResponseForContainersDecreasing
+name|updateNodeHeartbeatResponseForUpdatedContainers
 parameter_list|(
 name|NodeHeartbeatResponse
 name|response

@@ -902,6 +902,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
+comment|// Is Queued or localizing..
 name|updateEvent
 operator|.
 name|getContainer

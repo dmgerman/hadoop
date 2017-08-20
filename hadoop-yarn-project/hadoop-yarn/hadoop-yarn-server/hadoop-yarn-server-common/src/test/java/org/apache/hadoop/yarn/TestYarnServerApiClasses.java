@@ -1323,7 +1323,7 @@ argument_list|()
 decl_stmt|;
 name|original
 operator|.
-name|addAllContainersToDecrease
+name|addAllContainersToUpdate
 argument_list|(
 name|Arrays
 operator|.
@@ -1371,7 +1371,7 @@ literal|1
 argument_list|,
 name|copy
 operator|.
-name|getContainersToDecrease
+name|getContainersToUpdate
 argument_list|()
 operator|.
 name|get
@@ -1392,7 +1392,7 @@ literal|1024
 argument_list|,
 name|copy
 operator|.
-name|getContainersToDecrease
+name|getContainersToUpdate
 argument_list|()
 operator|.
 name|get

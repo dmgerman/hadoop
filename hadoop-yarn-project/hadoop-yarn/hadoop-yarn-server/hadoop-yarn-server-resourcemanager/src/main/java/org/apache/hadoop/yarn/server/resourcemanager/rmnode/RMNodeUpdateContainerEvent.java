@@ -68,25 +68,29 @@ name|NodeId
 import|;
 end_import
 
+begin_comment
+comment|/**  * This class is used to create update container event  * for the containers running on a node.  *  */
+end_comment
+
 begin_class
-DECL|class|RMNodeDecreaseContainerEvent
+DECL|class|RMNodeUpdateContainerEvent
 specifier|public
 class|class
-name|RMNodeDecreaseContainerEvent
+name|RMNodeUpdateContainerEvent
 extends|extends
 name|RMNodeEvent
 block|{
-DECL|field|toBeDecreasedContainers
-specifier|final
+DECL|field|toBeUpdatedContainers
+specifier|private
 name|List
 argument_list|<
 name|Container
 argument_list|>
-name|toBeDecreasedContainers
+name|toBeUpdatedContainers
 decl_stmt|;
-DECL|method|RMNodeDecreaseContainerEvent (NodeId nodeId, List<Container> toBeDecreasedContainers)
+DECL|method|RMNodeUpdateContainerEvent (NodeId nodeId, List<Container> toBeUpdatedContainers)
 specifier|public
-name|RMNodeDecreaseContainerEvent
+name|RMNodeUpdateContainerEvent
 parameter_list|(
 name|NodeId
 name|nodeId
@@ -95,7 +99,7 @@ name|List
 argument_list|<
 name|Container
 argument_list|>
-name|toBeDecreasedContainers
+name|toBeUpdatedContainers
 parameter_list|)
 block|{
 name|super
@@ -104,27 +108,27 @@ name|nodeId
 argument_list|,
 name|RMNodeEventType
 operator|.
-name|DECREASE_CONTAINER
+name|UPDATE_CONTAINER
 argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|toBeDecreasedContainers
+name|toBeUpdatedContainers
 operator|=
-name|toBeDecreasedContainers
+name|toBeUpdatedContainers
 expr_stmt|;
 block|}
-DECL|method|getToBeDecreasedContainers ()
+DECL|method|getToBeUpdatedContainers ()
 specifier|public
 name|List
 argument_list|<
 name|Container
 argument_list|>
-name|getToBeDecreasedContainers
+name|getToBeUpdatedContainers
 parameter_list|()
 block|{
 return|return
-name|toBeDecreasedContainers
+name|toBeUpdatedContainers
 return|;
 block|}
 block|}

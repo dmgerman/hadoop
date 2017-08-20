@@ -370,7 +370,6 @@ parameter_list|()
 function_decl|;
 comment|/**    * Update a {@link NodeHeartbeatResponse} with the list of containers and    * applications to clean up for this node.    * @param response the {@link NodeHeartbeatResponse} to update    */
 DECL|method|updateNodeHeartbeatResponseForCleanup (NodeHeartbeatResponse response)
-specifier|public
 name|void
 name|updateNodeHeartbeatResponseForCleanup
 parameter_list|(
@@ -410,11 +409,10 @@ argument_list|>
 name|getNodeLabels
 parameter_list|()
 function_decl|;
-comment|/**    * Update containers to be decreased    */
-DECL|method|updateNodeHeartbeatResponseForContainersDecreasing ( NodeHeartbeatResponse response)
-specifier|public
+comment|/**    * Update containers to be updated    */
+DECL|method|updateNodeHeartbeatResponseForUpdatedContainers ( NodeHeartbeatResponse response)
 name|void
-name|updateNodeHeartbeatResponseForContainersDecreasing
+name|updateNodeHeartbeatResponseForUpdatedContainers
 parameter_list|(
 name|NodeHeartbeatResponse
 name|response

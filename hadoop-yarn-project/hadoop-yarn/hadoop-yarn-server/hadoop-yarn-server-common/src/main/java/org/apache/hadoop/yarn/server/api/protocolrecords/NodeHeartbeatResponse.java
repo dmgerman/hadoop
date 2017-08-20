@@ -511,27 +511,27 @@ name|Resource
 name|resource
 parameter_list|)
 function_decl|;
-DECL|method|getContainersToDecrease ()
+DECL|method|getContainersToUpdate ()
 specifier|public
 specifier|abstract
 name|List
 argument_list|<
 name|Container
 argument_list|>
-name|getContainersToDecrease
+name|getContainersToUpdate
 parameter_list|()
 function_decl|;
-DECL|method|addAllContainersToDecrease ( Collection<Container> containersToDecrease)
+DECL|method|addAllContainersToUpdate ( Collection<Container> containersToUpdate)
 specifier|public
 specifier|abstract
 name|void
-name|addAllContainersToDecrease
+name|addAllContainersToUpdate
 parameter_list|(
 name|Collection
 argument_list|<
 name|Container
 argument_list|>
-name|containersToDecrease
+name|containersToUpdate
 parameter_list|)
 function_decl|;
 DECL|method|getContainerQueuingLimit ()

@@ -5900,7 +5900,7 @@ name|containersToDecrease
 init|=
 name|response
 operator|.
-name|getContainersToDecrease
+name|getContainersToUpdate
 argument_list|()
 decl_stmt|;
 if|if

@@ -1474,6 +1474,15 @@ operator|.
 name|WriteLock
 name|writeLock
 decl_stmt|;
+comment|// If set to true, then ALL container updates will be automatically sent to
+comment|// the NM in the next heartbeat.
+DECL|field|autoUpdateContainers
+specifier|private
+name|boolean
+name|autoUpdateContainers
+init|=
+literal|false
+decl_stmt|;
 comment|/**    * Construct the service.    *    * @param name service name    */
 DECL|method|AbstractYarnScheduler (String name)
 specifier|public
@@ -1592,6 +1601,21 @@ argument_list|)
 expr_stmt|;
 name|createReleaseCache
 argument_list|()
+expr_stmt|;
+name|autoUpdateContainers
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_AUTO_UPDATE_CONTAINERS
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_AUTO_UPDATE_CONTAINERS
+argument_list|)
 expr_stmt|;
 name|super
 operator|.
@@ -1846,6 +1870,18 @@ name|getNodes
 argument_list|(
 name|nodeFilter
 argument_list|)
+return|;
+block|}
+DECL|method|shouldContainersBeAutoUpdated ()
+specifier|public
+name|boolean
+name|shouldContainersBeAutoUpdated
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|autoUpdateContainers
 return|;
 block|}
 annotation|@

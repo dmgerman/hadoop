@@ -3351,7 +3351,7 @@ argument_list|)
 expr_stmt|;
 name|rmNode
 operator|.
-name|updateNodeHeartbeatResponseForContainersDecreasing
+name|updateNodeHeartbeatResponseForUpdatedContainers
 argument_list|(
 name|nodeHeartBeatResponse
 argument_list|)

@@ -594,7 +594,7 @@ name|resourcemanager
 operator|.
 name|rmnode
 operator|.
-name|RMNodeDecreaseContainerEvent
+name|RMNodeUpdateContainerEvent
 import|;
 end_import
 
@@ -3250,7 +3250,7 @@ name|isIncreasedContainer
 argument_list|()
 condition|)
 block|{
-comment|// If container is increased but not acquired by AM, we will start
+comment|// If container is increased but not started by AM, we will start
 comment|// containerAllocationExpirer for this container in this transition.
 name|container
 operator|.
@@ -3413,7 +3413,7 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|RMNodeDecreaseContainerEvent
+name|RMNodeUpdateContainerEvent
 argument_list|(
 name|container
 operator|.

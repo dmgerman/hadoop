@@ -69,8 +69,8 @@ block|,
 DECL|enumConstant|CLEANUP_CONTAINER
 name|CLEANUP_CONTAINER
 block|,
-DECL|enumConstant|DECREASE_CONTAINER
-name|DECREASE_CONTAINER
+DECL|enumConstant|UPDATE_CONTAINER
+name|UPDATE_CONTAINER
 block|,
 comment|// Source: ClientRMService
 DECL|enumConstant|SIGNAL_CONTAINER
