@@ -48,61 +48,67 @@ name|List
 import|;
 end_import
 
+begin_comment
+comment|/**  * Event used by the NodeStatusUpdater to notify the ContainerManager of  * container update commands it received from the RM.  */
+end_comment
+
 begin_class
-DECL|class|CMgrDecreaseContainersResourceEvent
+DECL|class|CMgrUpdateContainersEvent
 specifier|public
 class|class
-name|CMgrDecreaseContainersResourceEvent
+name|CMgrUpdateContainersEvent
 extends|extends
 name|ContainerManagerEvent
 block|{
-DECL|field|containersToDecrease
+DECL|field|containersToUpdate
 specifier|private
 specifier|final
 name|List
 argument_list|<
 name|Container
 argument_list|>
-name|containersToDecrease
+name|containersToUpdate
 decl_stmt|;
-DECL|method|CMgrDecreaseContainersResourceEvent (List<Container> containersToDecrease)
+comment|/**    * Create event.    * @param containersToUpdate Container to update.    */
+DECL|method|CMgrUpdateContainersEvent (List<Container> containersToUpdate)
 specifier|public
-name|CMgrDecreaseContainersResourceEvent
+name|CMgrUpdateContainersEvent
 parameter_list|(
 name|List
 argument_list|<
 name|Container
 argument_list|>
-name|containersToDecrease
+name|containersToUpdate
 parameter_list|)
 block|{
 name|super
 argument_list|(
 name|ContainerManagerEventType
 operator|.
-name|DECREASE_CONTAINERS_RESOURCE
+name|UPDATE_CONTAINERS
 argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|containersToDecrease
+name|containersToUpdate
 operator|=
-name|containersToDecrease
+name|containersToUpdate
 expr_stmt|;
 block|}
-DECL|method|getContainersToDecrease ()
+comment|/**    * Get containers to update.    * @return List of containers to update.    */
+DECL|method|getContainersToUpdate ()
 specifier|public
 name|List
 argument_list|<
 name|Container
 argument_list|>
-name|getContainersToDecrease
+name|getContainersToUpdate
 parameter_list|()
 block|{
 return|return
 name|this
 operator|.
-name|containersToDecrease
+name|containersToUpdate
 return|;
 block|}
 block|}

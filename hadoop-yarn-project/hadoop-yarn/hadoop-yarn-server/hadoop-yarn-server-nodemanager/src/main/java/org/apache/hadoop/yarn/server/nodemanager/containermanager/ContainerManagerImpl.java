@@ -1366,7 +1366,7 @@ name|server
 operator|.
 name|nodemanager
 operator|.
-name|CMgrDecreaseContainersResourceEvent
+name|CMgrUpdateContainersEvent
 import|;
 end_import
 
@@ -10049,13 +10049,13 @@ expr_stmt|;
 block|}
 break|break;
 case|case
-name|DECREASE_CONTAINERS_RESOURCE
+name|UPDATE_CONTAINERS
 case|:
-name|CMgrDecreaseContainersResourceEvent
+name|CMgrUpdateContainersEvent
 name|containersDecreasedEvent
 init|=
 operator|(
-name|CMgrDecreaseContainersResourceEvent
+name|CMgrUpdateContainersEvent
 operator|)
 name|event
 decl_stmt|;
@@ -10078,7 +10078,7 @@ name|container
 range|:
 name|containersDecreasedEvent
 operator|.
-name|getContainersToDecrease
+name|getContainersToUpdate
 argument_list|()
 control|)
 block|{

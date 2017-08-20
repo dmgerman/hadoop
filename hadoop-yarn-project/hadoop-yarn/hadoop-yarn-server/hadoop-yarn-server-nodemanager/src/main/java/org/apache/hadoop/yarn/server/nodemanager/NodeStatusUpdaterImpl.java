@@ -5896,7 +5896,7 @@ name|records
 operator|.
 name|Container
 argument_list|>
-name|containersToDecrease
+name|containersToUpdate
 init|=
 name|response
 operator|.
@@ -5906,7 +5906,7 @@ decl_stmt|;
 if|if
 condition|(
 operator|!
-name|containersToDecrease
+name|containersToUpdate
 operator|.
 name|isEmpty
 argument_list|()
@@ -5920,9 +5920,9 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|CMgrDecreaseContainersResourceEvent
+name|CMgrUpdateContainersEvent
 argument_list|(
-name|containersToDecrease
+name|containersToUpdate
 argument_list|)
 argument_list|)
 expr_stmt|;
