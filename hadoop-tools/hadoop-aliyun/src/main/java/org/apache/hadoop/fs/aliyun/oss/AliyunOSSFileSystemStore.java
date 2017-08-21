@@ -982,6 +982,26 @@ argument_list|,
 literal|""
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|StringUtils
+operator|.
+name|isEmpty
+argument_list|(
+name|endPoint
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Aliyun OSS endpoint should not be "
+operator|+
+literal|"null or empty. Please set proper endpoint with 'fs.oss.endpoint'."
+argument_list|)
+throw|;
+block|}
 name|CredentialsProvider
 name|provider
 init|=
