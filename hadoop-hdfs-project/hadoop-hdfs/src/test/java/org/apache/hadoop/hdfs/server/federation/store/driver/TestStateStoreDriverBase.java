@@ -524,7 +524,7 @@ block|{
 name|String
 name|randomString
 init|=
-literal|"/randomString-"
+literal|"randomString-"
 operator|+
 name|RANDOM
 operator|.
