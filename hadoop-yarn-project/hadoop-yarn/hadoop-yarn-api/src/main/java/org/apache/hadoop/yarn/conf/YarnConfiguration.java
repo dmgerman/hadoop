@@ -7427,6 +7427,16 @@ name|DEFAULT_NUMBER_OF_ASYNC_ENTITIES_TO_MERGE
 init|=
 literal|10
 decl_stmt|;
+comment|/** default version for any flow. */
+DECL|field|DEFAULT_FLOW_VERSION
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_FLOW_VERSION
+init|=
+literal|"1"
+decl_stmt|;
 comment|/**    * The time period for which timeline v2 client will wait for draining    * leftover entities after stop.    */
 DECL|field|TIMELINE_V2_CLIENT_DRAIN_TIME_MILLIS
 specifier|public

@@ -3920,6 +3920,57 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+else|else
+block|{
+comment|// in upgrade situations, where there is no prior existing flow context,
+comment|// default would be used.
+name|fc
+operator|=
+operator|new
+name|FlowContext
+argument_list|(
+name|TimelineUtils
+operator|.
+name|generateDefaultFlowName
+argument_list|(
+literal|null
+argument_list|,
+name|appId
+argument_list|)
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_FLOW_VERSION
+argument_list|,
+name|appId
+operator|.
+name|getClusterTimestamp
+argument_list|()
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"No prior existing flow context found. Using default Flow context: "
+operator|+
+name|fc
+operator|+
+literal|" for an application "
+operator|+
+name|appId
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 name|LOG
 operator|.
 name|info
