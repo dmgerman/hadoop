@@ -4150,6 +4150,38 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+return|return
+name|chooseDataNode
+argument_list|(
+name|block
+argument_list|,
+name|ignoredNodes
+argument_list|,
+literal|true
+argument_list|)
+return|;
+block|}
+comment|/**    * Choose datanode to read from.    *    * @param block             Block to choose datanode addr from    * @param ignoredNodes      Ignored nodes inside.    * @param refetchIfRequired Whether to refetch if no nodes to chose    *                          from.    * @return Returns chosen DNAddrPair; Can be null if refetchIfRequired is    * false.    */
+DECL|method|chooseDataNode (LocatedBlock block, Collection<DatanodeInfo> ignoredNodes, boolean refetchIfRequired)
+specifier|private
+name|DNAddrPair
+name|chooseDataNode
+parameter_list|(
+name|LocatedBlock
+name|block
+parameter_list|,
+name|Collection
+argument_list|<
+name|DatanodeInfo
+argument_list|>
+name|ignoredNodes
+parameter_list|,
+name|boolean
+name|refetchIfRequired
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 while|while
 condition|(
 literal|true
@@ -4176,7 +4208,46 @@ return|return
 name|result
 return|;
 block|}
+elseif|else
+if|if
+condition|(
+name|refetchIfRequired
+condition|)
+block|{
+name|block
+operator|=
+name|refetchLocations
+argument_list|(
+name|block
+argument_list|,
+name|ignoredNodes
+argument_list|)
+expr_stmt|;
+block|}
 else|else
+block|{
+return|return
+literal|null
+return|;
+block|}
+block|}
+block|}
+DECL|method|refetchLocations (LocatedBlock block, Collection<DatanodeInfo> ignoredNodes)
+specifier|private
+name|LocatedBlock
+name|refetchLocations
+parameter_list|(
+name|LocatedBlock
+name|block
+parameter_list|,
+name|Collection
+argument_list|<
+name|DatanodeInfo
+argument_list|>
+name|ignoredNodes
+parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|String
 name|errMsg
@@ -4330,6 +4401,7 @@ operator|.
 name|getTimeWindow
 argument_list|()
 decl_stmt|;
+comment|// grace period for the last round of attempt
 name|double
 name|waitTime
 init|=
@@ -4337,7 +4409,6 @@ name|timeWindow
 operator|*
 name|failures
 operator|+
-comment|// grace period for the last round of attempt
 comment|// expanding time window for each failure
 name|timeWindow
 operator|*
@@ -4430,8 +4501,9 @@ expr_stmt|;
 name|failures
 operator|++
 expr_stmt|;
-block|}
-block|}
+return|return
+name|block
+return|;
 block|}
 comment|/**    * Get the best node from which to stream the data.    * @param block LocatedBlock, containing nodes in priority order.    * @param ignoredNodes Do not choose nodes in this array (may be null)    * @return The DNAddrPair of the best node. Null if no node can be chosen.    */
 DECL|method|getBestNodeDNAddrPair (LocatedBlock block, Collection<DatanodeInfo> ignoredNodes)
@@ -4982,6 +5054,14 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|DFSClientFaultInjector
+operator|.
+name|get
+argument_list|()
+operator|.
+name|sleepBeforeHedgedGet
+argument_list|()
+expr_stmt|;
 try|try
 init|(
 name|TraceScope
@@ -5854,23 +5934,12 @@ block|{
 comment|// We are starting up a 'hedged' read. We have a read already
 comment|// ongoing. Call getBestNodeDNAddrPair instead of chooseDataNode.
 comment|// If no nodes to do hedged reads against, pass.
+name|boolean
+name|refetch
+init|=
+literal|false
+decl_stmt|;
 try|try
-block|{
-name|chosenNode
-operator|=
-name|getBestNodeDNAddrPair
-argument_list|(
-name|block
-argument_list|,
-name|ignored
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|chosenNode
-operator|==
-literal|null
-condition|)
 block|{
 name|chosenNode
 operator|=
@@ -5879,9 +5948,17 @@ argument_list|(
 name|block
 argument_list|,
 name|ignored
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
-block|}
+if|if
+condition|(
+name|chosenNode
+operator|!=
+literal|null
+condition|)
+block|{
 comment|// Latest block, if refreshed internally
 name|block
 operator|=
@@ -5942,6 +6019,14 @@ argument_list|(
 name|oneMoreRequest
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|refetch
+operator|=
+literal|true
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -6013,6 +6098,19 @@ name|ie
 parameter_list|)
 block|{
 comment|// Ignore and retry
+block|}
+if|if
+condition|(
+name|refetch
+condition|)
+block|{
+name|refetchLocations
+argument_list|(
+name|block
+argument_list|,
+name|ignored
+argument_list|)
+expr_stmt|;
 block|}
 comment|// We got here if exception. Ignore this node on next go around IFF
 comment|// we found a chosenNode to hedge read against.

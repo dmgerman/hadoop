@@ -182,6 +182,12 @@ return|return
 literal|false
 return|;
 block|}
+DECL|method|sleepBeforeHedgedGet ()
+specifier|public
+name|void
+name|sleepBeforeHedgedGet
+parameter_list|()
+block|{}
 block|}
 end_class
 
