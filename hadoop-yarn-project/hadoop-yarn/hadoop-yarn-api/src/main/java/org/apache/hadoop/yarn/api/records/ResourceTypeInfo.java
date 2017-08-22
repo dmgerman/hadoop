@@ -411,24 +411,58 @@ name|String
 name|toString
 parameter_list|()
 block|{
-return|return
-literal|"name: "
-operator|+
+name|StringBuilder
+name|sb
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"<name="
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|this
 operator|.
 name|getName
 argument_list|()
-operator|+
-literal|", units: "
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" default-unit="
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|this
 operator|.
 name|getDefaultUnit
 argument_list|()
-operator|+
-literal|", type: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" type="
 operator|+
 name|getResourceType
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|">"
+argument_list|)
+expr_stmt|;
+return|return
+name|sb
+operator|.
+name|toString
 argument_list|()
 return|;
 block|}
