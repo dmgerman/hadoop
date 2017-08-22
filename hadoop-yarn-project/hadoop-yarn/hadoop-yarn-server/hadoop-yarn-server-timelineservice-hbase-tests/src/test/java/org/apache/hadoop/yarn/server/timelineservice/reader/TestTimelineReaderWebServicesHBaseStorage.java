@@ -3008,10 +3008,12 @@ name|appEntity
 operator|.
 name|setId
 argument_list|(
-name|appId
+name|HBaseTimelineStorageUtils
 operator|.
-name|toString
-argument_list|()
+name|convertApplicationIdToString
+argument_list|(
+name|appId
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|appEntity
