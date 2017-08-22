@@ -151,6 +151,15 @@ name|INVALIDATECACHE_RESOURCE
 init|=
 literal|"_invalidatecache"
 decl_stmt|;
+DECL|field|REENCRYPT_BATCH_SUB_RESOURCE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|REENCRYPT_BATCH_SUB_RESOURCE
+init|=
+literal|"_reencryptbatch"
+decl_stmt|;
 DECL|field|KEY
 specifier|public
 specifier|static

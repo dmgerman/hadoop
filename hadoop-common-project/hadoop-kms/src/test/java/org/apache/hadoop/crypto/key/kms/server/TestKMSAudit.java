@@ -785,6 +785,41 @@ operator|.
 name|evictCacheForTesting
 argument_list|()
 expr_stmt|;
+name|kmsAudit
+operator|.
+name|ok
+argument_list|(
+name|luser
+argument_list|,
+name|KMSOp
+operator|.
+name|REENCRYPT_EEK_BATCH
+argument_list|,
+literal|"k1"
+argument_list|,
+literal|"testmsg"
+argument_list|)
+expr_stmt|;
+name|kmsAudit
+operator|.
+name|ok
+argument_list|(
+name|luser
+argument_list|,
+name|KMSOp
+operator|.
+name|REENCRYPT_EEK_BATCH
+argument_list|,
+literal|"k1"
+argument_list|,
+literal|"testmsg"
+argument_list|)
+expr_stmt|;
+name|kmsAudit
+operator|.
+name|evictCacheForTesting
+argument_list|()
+expr_stmt|;
 name|String
 name|out
 init|=
@@ -825,6 +860,10 @@ operator|+
 literal|"OK\\[op=REENCRYPT_EEK, key=k1, user=luser, accessCount=1, interval=[^m]{1,4}ms\\] testmsg"
 operator|+
 literal|"OK\\[op=REENCRYPT_EEK, key=k1, user=luser, accessCount=3, interval=[^m]{1,4}ms\\] testmsg"
+operator|+
+literal|"OK\\[op=REENCRYPT_EEK_BATCH, key=k1, user=luser\\] testmsg"
+operator|+
+literal|"OK\\[op=REENCRYPT_EEK_BATCH, key=k1, user=luser\\] testmsg"
 argument_list|)
 argument_list|)
 expr_stmt|;

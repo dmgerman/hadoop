@@ -626,6 +626,32 @@ name|ekv
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|reencryptEncryptedKeys (List<EncryptedKeyVersion> ekvs)
+specifier|public
+name|void
+name|reencryptEncryptedKeys
+parameter_list|(
+name|List
+argument_list|<
+name|EncryptedKeyVersion
+argument_list|>
+name|ekvs
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|GeneralSecurityException
+block|{
+name|keyProviderCryptoExtension
+operator|.
+name|reencryptEncryptedKeys
+argument_list|(
+name|ekvs
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * This class is a proxy for a<code>KeyProviderCryptoExtension</code> that    * decorates the underlying<code>CryptoExtension</code> with one that eagerly    * caches pre-generated Encrypted Keys using a<code>ValueQueue</code>    *     * @param conf Configuration object to load parameters from    * @param keyProviderCryptoExtension<code>KeyProviderCryptoExtension</code>    * to delegate calls to.    */
 DECL|method|EagerKeyGeneratorKeyProviderCryptoExtension (Configuration conf, KeyProviderCryptoExtension keyProviderCryptoExtension)

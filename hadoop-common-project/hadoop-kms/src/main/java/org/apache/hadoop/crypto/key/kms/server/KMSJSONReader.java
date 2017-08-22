@@ -180,6 +180,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Map
 import|;
 end_import
@@ -205,7 +215,7 @@ name|KMSJSONReader
 implements|implements
 name|MessageBodyReader
 argument_list|<
-name|Map
+name|Object
 argument_list|>
 block|{
 annotation|@
@@ -241,18 +251,27 @@ name|Map
 operator|.
 name|class
 argument_list|)
+operator|||
+name|type
+operator|.
+name|isAssignableFrom
+argument_list|(
+name|List
+operator|.
+name|class
+argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|readFrom (Class<Map> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
+DECL|method|readFrom (Class<Object> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
 specifier|public
-name|Map
+name|Object
 name|readFrom
 parameter_list|(
 name|Class
 argument_list|<
-name|Map
+name|Object
 argument_list|>
 name|type
 parameter_list|,
