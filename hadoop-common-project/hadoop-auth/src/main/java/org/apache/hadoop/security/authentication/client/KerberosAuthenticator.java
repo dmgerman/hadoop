@@ -749,11 +749,6 @@ specifier|private
 name|URL
 name|url
 decl_stmt|;
-DECL|field|conn
-specifier|private
-name|HttpURLConnection
-name|conn
-decl_stmt|;
 DECL|field|base64
 specifier|private
 name|Base64
@@ -825,33 +820,18 @@ argument_list|(
 literal|0
 argument_list|)
 expr_stmt|;
-name|conn
-operator|=
-operator|(
 name|HttpURLConnection
-operator|)
-name|url
+name|conn
+init|=
+name|token
 operator|.
 name|openConnection
-argument_list|()
-expr_stmt|;
-if|if
-condition|(
-name|connConfigurator
-operator|!=
-literal|null
-condition|)
-block|{
-name|conn
-operator|=
-name|connConfigurator
-operator|.
-name|configure
 argument_list|(
-name|conn
+name|url
+argument_list|,
+name|connConfigurator
 argument_list|)
-expr_stmt|;
-block|}
+decl_stmt|;
 name|conn
 operator|.
 name|setRequestMethod
@@ -920,7 +900,9 @@ operator|!
 name|needFallback
 operator|&&
 name|isNegotiate
-argument_list|()
+argument_list|(
+name|conn
+argument_list|)
 condition|)
 block|{
 name|LOG
@@ -1075,11 +1057,14 @@ literal|false
 return|;
 block|}
 comment|/*   * Indicates if the response is starting a SPNEGO negotiation.   */
-DECL|method|isNegotiate ()
+DECL|method|isNegotiate (HttpURLConnection conn)
 specifier|private
 name|boolean
 name|isNegotiate
-parameter_list|()
+parameter_list|(
+name|HttpURLConnection
+name|conn
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -1132,11 +1117,12 @@ name|negotiate
 return|;
 block|}
 comment|/**    * Implements the SPNEGO authentication sequence interaction using the current default principal    * in the Kerberos cache (normally set via kinit).    *    * @param token the authentication token being used for the user.    *    * @throws IOException if an IO error occurred.    * @throws AuthenticationException if an authentication error occurred.    */
-DECL|method|doSpnegoSequence (AuthenticatedURL.Token token)
+DECL|method|doSpnegoSequence (final AuthenticatedURL.Token token)
 specifier|private
 name|void
 name|doSpnegoSequence
 parameter_list|(
+specifier|final
 name|AuthenticatedURL
 operator|.
 name|Token
@@ -1384,6 +1370,18 @@ operator|!
 name|established
 condition|)
 block|{
+name|HttpURLConnection
+name|conn
+init|=
+name|token
+operator|.
+name|openConnection
+argument_list|(
+name|url
+argument_list|,
+name|connConfigurator
+argument_list|)
+decl_stmt|;
 name|outToken
 operator|=
 name|gssContext
@@ -1408,6 +1406,8 @@ condition|)
 block|{
 name|sendToken
 argument_list|(
+name|conn
+argument_list|,
 name|outToken
 argument_list|)
 expr_stmt|;
@@ -1424,7 +1424,9 @@ block|{
 name|inToken
 operator|=
 name|readToken
-argument_list|()
+argument_list|(
+name|conn
+argument_list|)
 expr_stmt|;
 block|}
 else|else
@@ -1518,22 +1520,16 @@ name|ex
 argument_list|)
 throw|;
 block|}
-name|AuthenticatedURL
-operator|.
-name|extractToken
-argument_list|(
-name|conn
-argument_list|,
-name|token
-argument_list|)
-expr_stmt|;
 block|}
 comment|/*   * Sends the Kerberos token to the server.   */
-DECL|method|sendToken (byte[] outToken)
+DECL|method|sendToken (HttpURLConnection conn, byte[] outToken)
 specifier|private
 name|void
 name|sendToken
 parameter_list|(
+name|HttpURLConnection
+name|conn
+parameter_list|,
 name|byte
 index|[]
 name|outToken
@@ -1551,33 +1547,6 @@ argument_list|(
 name|outToken
 argument_list|)
 decl_stmt|;
-name|conn
-operator|=
-operator|(
-name|HttpURLConnection
-operator|)
-name|url
-operator|.
-name|openConnection
-argument_list|()
-expr_stmt|;
-if|if
-condition|(
-name|connConfigurator
-operator|!=
-literal|null
-condition|)
-block|{
-name|conn
-operator|=
-name|connConfigurator
-operator|.
-name|configure
-argument_list|(
-name|conn
-argument_list|)
-expr_stmt|;
-block|}
 name|conn
 operator|.
 name|setRequestMethod
@@ -1605,12 +1574,15 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/*   * Retrieves the Kerberos token returned by the server.   */
-DECL|method|readToken ()
+DECL|method|readToken (HttpURLConnection conn)
 specifier|private
 name|byte
 index|[]
 name|readToken
-parameter_list|()
+parameter_list|(
+name|HttpURLConnection
+name|conn
+parameter_list|)
 throws|throws
 name|IOException
 throws|,
