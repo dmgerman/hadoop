@@ -192,8 +192,8 @@ name|ApplicationMasterServiceProcessor
 name|nextProcessor
 parameter_list|)
 function_decl|;
-comment|/**    * Register AM attempt.    * @param applicationAttemptId applicationAttemptId.    * @param request Register Request.    * @param response Register Response.    * @throws IOException IOException.    */
-DECL|method|registerApplicationMaster ( ApplicationAttemptId applicationAttemptId, RegisterApplicationMasterRequest request, RegisterApplicationMasterResponse response)
+comment|/**    * Register AM attempt.    * @param applicationAttemptId applicationAttemptId.    * @param request Register Request.    * @param response Register Response.    * @throws IOException IOException.    * @throws YarnException in critical situation where invalid    *         profiles/resources are added.    */
+DECL|method|registerApplicationMaster (ApplicationAttemptId applicationAttemptId, RegisterApplicationMasterRequest request, RegisterApplicationMasterResponse response)
 name|void
 name|registerApplicationMaster
 parameter_list|(
@@ -208,6 +208,8 @@ name|response
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|YarnException
 function_decl|;
 comment|/**    * Allocate call.    * @param appAttemptId appAttemptId.    * @param request Allocate Request.    * @param response Allocate Response.    * @throws YarnException YarnException.    */
 DECL|method|allocate (ApplicationAttemptId appAttemptId, AllocateRequest request, AllocateResponse response)

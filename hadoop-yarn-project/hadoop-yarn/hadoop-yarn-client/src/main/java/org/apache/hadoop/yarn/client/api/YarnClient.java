@@ -916,6 +916,22 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
+name|YARNFeatureNotEnabledException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
 name|YarnException
 import|;
 end_import
@@ -1765,7 +1781,7 @@ literal|" is expected to implement this !"
 argument_list|)
 throw|;
 block|}
-comment|/**    *<p>    * Get the resource profiles available in the RM.    *</p>    * @return a Map of the resource profile names to their capabilities    * @throws YarnException if resource profiles are not enabled    * @throws IOException in case of other errors    */
+comment|/**    *<p>    * Get the resource profiles available in the RM.    *</p>    * @return a Map of the resource profile names to their capabilities    * @throws YARNFeatureNotEnabledException if resource-profile is disabled    * @throws YarnException if any error happens inside YARN    * @throws IOException in case of other errors    */
 annotation|@
 name|Public
 annotation|@
@@ -1786,7 +1802,7 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>    * Get the details of a specific resource profile from the RM.    *</p>    * @param profile the profile name    * @return the capabilities of the resource profile    * @throws YarnException if resource profiles are not enabled or the profile    *         cannot be found    * @throws IOException in case of other others    */
+comment|/**    *<p>    * Get the details of a specific resource profile from the RM.    *</p>    * @param profile the profile name    * @return resource profile name with its capabilities    * @throws YARNFeatureNotEnabledException if resource-profile is disabled    * @throws YarnException if any error happens inside YARN    * @throws IOException in case of other others    */
 annotation|@
 name|Public
 annotation|@
@@ -1805,7 +1821,7 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>    * Get available resource types supported by RM.    *</p>    * @return list of supported resource types with detailed information    * @throws YarnException if resource profiles are not enabled or the profile    *         cannot be found    * @throws IOException in case of other others    */
+comment|/**    *<p>    * Get available resource types supported by RM.    *</p>    * @return list of supported resource types with detailed information    * @throws YarnException if any issue happens inside YARN    * @throws IOException in case of other others    */
 annotation|@
 name|Public
 annotation|@

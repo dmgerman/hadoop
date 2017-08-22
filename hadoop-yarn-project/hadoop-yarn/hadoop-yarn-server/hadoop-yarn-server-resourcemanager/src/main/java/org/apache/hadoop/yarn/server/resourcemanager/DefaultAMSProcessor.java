@@ -1183,6 +1183,8 @@ name|response
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|YarnException
 block|{
 name|RMApp
 name|app

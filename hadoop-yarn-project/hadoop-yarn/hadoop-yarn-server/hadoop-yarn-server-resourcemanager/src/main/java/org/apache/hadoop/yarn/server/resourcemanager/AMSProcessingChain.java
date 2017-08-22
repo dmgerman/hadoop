@@ -440,6 +440,8 @@ name|resp
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|YarnException
 block|{
 name|this
 operator|.

@@ -30,38 +30,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-operator|.
-name|Public
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceStability
-operator|.
-name|Unstable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|conf
 operator|.
 name|Configuration
@@ -96,11 +64,25 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|api
+name|exceptions
 operator|.
-name|records
+name|YARNFeatureNotEnabledException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|ResourceTypeInfo
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
+name|YarnException
 import|;
 end_import
 
@@ -120,16 +102,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Map
 import|;
 end_import
@@ -139,10 +111,6 @@ comment|/**  * Interface for the resource profiles manager. Provides an interfac
 end_comment
 
 begin_interface
-annotation|@
-name|Public
-annotation|@
-name|Unstable
 DECL|interface|ResourceProfilesManager
 specifier|public
 interface|interface
@@ -159,7 +127,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get the resource capability associated with given profile name.    * @param profile name of resource profile    * @return resource capability for given profile    */
+comment|/**    * Get the resource capability associated with given profile name.    * @param profile name of resource profile    * @return resource capability for given profile    *    * @throws YarnException when any invalid profile name or feature is disabled    */
 DECL|method|getProfile (String profile)
 name|Resource
 name|getProfile
@@ -167,8 +135,10 @@ parameter_list|(
 name|String
 name|profile
 parameter_list|)
+throws|throws
+name|YarnException
 function_decl|;
-comment|/**    * Get all supported resource profiles.    * @return a map of resource objects associated with each profile    */
+comment|/**    * Get all supported resource profiles.    * @return a map of resource objects associated with each profile    *    * @throws YARNFeatureNotEnabledException when feature is disabled    */
 DECL|method|getResourceProfiles ()
 name|Map
 argument_list|<
@@ -178,6 +148,8 @@ name|Resource
 argument_list|>
 name|getResourceProfiles
 parameter_list|()
+throws|throws
+name|YARNFeatureNotEnabledException
 function_decl|;
 comment|/**    * Reload profiles based on updated configuration.    * @throws IOException when invalid resource profile names are loaded    */
 DECL|method|reloadProfiles ()
@@ -187,32 +159,29 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get default supported resource profile.    * @return resource object which is default    */
+comment|/**    * Get default supported resource profile.    * @return resource object which is default    * @throws YarnException when any invalid profile name or feature is disabled    */
 DECL|method|getDefaultProfile ()
 name|Resource
 name|getDefaultProfile
 parameter_list|()
+throws|throws
+name|YarnException
 function_decl|;
-comment|/**    * Get minimum supported resource profile.    * @return resource object which is minimum    */
+comment|/**    * Get minimum supported resource profile.    * @return resource object which is minimum    * @throws YarnException when any invalid profile name or feature is disabled    */
 DECL|method|getMinimumProfile ()
 name|Resource
 name|getMinimumProfile
 parameter_list|()
+throws|throws
+name|YarnException
 function_decl|;
-comment|/**    * Get maximum supported resource profile.    * @return resource object which is maximum    */
+comment|/**    * Get maximum supported resource profile.    * @return resource object which is maximum    * @throws YarnException when any invalid profile name or feature is disabled    */
 DECL|method|getMaximumProfile ()
 name|Resource
 name|getMaximumProfile
 parameter_list|()
-function_decl|;
-comment|/**    * List of ResourceTypeInfo objects which carry all resources supported by RM.    * @return list of ResourceTypeInfo objects    */
-DECL|method|getAllResourceTypeInfo ()
-name|List
-argument_list|<
-name|ResourceTypeInfo
-argument_list|>
-name|getAllResourceTypeInfo
-parameter_list|()
+throws|throws
+name|YarnException
 function_decl|;
 block|}
 end_interface

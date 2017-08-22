@@ -1114,6 +1114,22 @@ name|YarnException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
+name|YARNFeatureNotEnabledException
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>The protocol between clients and the<code>ResourceManager</code>  * to submit/abort jobs and to get information on applications, cluster metrics,  * nodes, queues and ACLs.</p>   */
 end_comment
@@ -1511,7 +1527,7 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>    * The interface used by clients to get all the resource profiles that are    * available on the ResourceManager.    *</p>    * @param request request to get all the resource profiles    * @return Response containing a map of the profile name to Resource    *         capabilities    * @throws YarnException if resource profiles are not enabled on the RM    * @throws IOException in case of other errors    */
+comment|/**    *<p>    * The interface used by clients to get all the resource profiles that are    * available on the ResourceManager.    *</p>    * @param request request to get all the resource profiles    * @return Response containing a map of the profile name to Resource    *         capabilities    * @throws YARNFeatureNotEnabledException if resource-profile is disabled    * @throws YarnException if any error happens inside YARN    * @throws IOException in case of other errors    */
 annotation|@
 name|Public
 annotation|@
@@ -1528,7 +1544,7 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>    * The interface to get the details for a specific resource profile.    *</p>    * @param request request to get the details of a resource profile    * @return Response containing the details for a particular resource profile    * @throws YarnException if resource profiles are not enabled on the RM or    *         the profile cannot be found    * @throws IOException in case of other errors    */
+comment|/**    *<p>    * The interface to get the details for a specific resource profile.    *</p>    * @param request request to get the details of a resource profile    * @return Response containing the details for a particular resource profile    * @throws YARNFeatureNotEnabledException if resource-profile is disabled    * @throws YarnException if any error happens inside YARN    * @throws IOException in case of other errors    */
 annotation|@
 name|Public
 annotation|@
@@ -1545,7 +1561,7 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>    * The interface to get the details for a specific resource profile.    *</p>    * @param request request to get the details of a resource profile    * @return Response containing the details for a particular resource profile    * @throws YarnException if resource profiles are not enabled on the RM or    *         the profile cannot be found    * @throws IOException in case of other errors    */
+comment|/**    *<p>    * The interface to get the details for a specific resource profile.    *</p>    * @param request request to get the details of a resource profile    * @return Response containing the details for a particular resource profile    * @throws YarnException if any error happens inside YARN    * @throws IOException in case of other errors    */
 annotation|@
 name|Public
 annotation|@

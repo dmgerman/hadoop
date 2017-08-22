@@ -1056,7 +1056,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|registerApplicationMaster (ApplicationAttemptId applicationAttemptId, RegisterApplicationMasterRequest request, RegisterApplicationMasterResponse response)
+DECL|method|registerApplicationMaster ( ApplicationAttemptId applicationAttemptId, RegisterApplicationMasterRequest request, RegisterApplicationMasterResponse response)
 specifier|public
 name|void
 name|registerApplicationMaster
@@ -1072,6 +1072,8 @@ name|response
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|YarnException
 block|{
 name|nextProcessor
 operator|.
@@ -1211,6 +1213,8 @@ name|response
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|YarnException
 block|{
 name|beforeRegCount
 operator|.
