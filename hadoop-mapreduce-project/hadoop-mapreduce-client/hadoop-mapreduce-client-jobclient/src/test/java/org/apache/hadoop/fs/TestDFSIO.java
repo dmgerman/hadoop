@@ -5100,12 +5100,10 @@ name|resultLine
 init|=
 literal|"Seq Test exec time sec: "
 operator|+
-operator|(
-name|float
-operator|)
+name|msToSecs
+argument_list|(
 name|execTime
-operator|/
-literal|1000
+argument_list|)
 decl_stmt|;
 name|LOG
 operator|.
@@ -5363,6 +5361,21 @@ name|bytes
 operator|)
 operator|/
 name|MEGA
+return|;
+block|}
+DECL|method|msToSecs (long timeMillis)
+specifier|static
+name|float
+name|msToSecs
+parameter_list|(
+name|long
+name|timeMillis
+parameter_list|)
+block|{
+return|return
+name|timeMillis
+operator|/
+literal|1000.0f
 return|;
 block|}
 DECL|method|checkErasureCodePolicy (String erasureCodePolicyName, FileSystem fs, TestType testType)
@@ -6170,34 +6183,15 @@ name|df
 operator|.
 name|format
 argument_list|(
-name|size
-operator|*
-literal|1000.0
-operator|/
-operator|(
-name|time
-operator|*
-name|MEGA
-operator|)
-argument_list|)
-block|,
-literal|"Total Throughput mb/sec: "
-operator|+
-name|df
-operator|.
-name|format
-argument_list|(
 name|toMB
 argument_list|(
 name|size
 argument_list|)
 operator|/
-operator|(
-operator|(
-name|float
-operator|)
-name|execTime
-operator|)
+name|msToSecs
+argument_list|(
+name|time
+argument_list|)
 argument_list|)
 block|,
 literal|" Average IO rate mb/sec: "
@@ -6224,12 +6218,10 @@ name|df
 operator|.
 name|format
 argument_list|(
-operator|(
-name|float
-operator|)
+name|msToSecs
+argument_list|(
 name|execTime
-operator|/
-literal|1000
+argument_list|)
 argument_list|)
 block|,
 literal|""
