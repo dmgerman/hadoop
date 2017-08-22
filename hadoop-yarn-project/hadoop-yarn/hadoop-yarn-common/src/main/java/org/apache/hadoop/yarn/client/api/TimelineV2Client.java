@@ -92,6 +92,42 @@ name|api
 operator|.
 name|records
 operator|.
+name|CollectorInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Token
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|timelineservice
 operator|.
 name|TimelineEntity
@@ -223,15 +259,15 @@ name|IOException
 throws|,
 name|YarnException
 function_decl|;
-comment|/**    *<p>    * Update the timeline service address where the request will be sent to.    *</p>    *    * @param address the timeline service address    */
-DECL|method|setTimelineServiceAddress (String address)
+comment|/**    *<p>    * Update collector info received in AllocateResponse which contains the    * timeline service address where the request will be sent to and the timeline    * delegation token which will be used to send the request.    *</p>    *    * @param collectorInfo Collector info which contains the timeline service    * address and timeline delegation token.    */
+DECL|method|setTimelineCollectorInfo (CollectorInfo collectorInfo)
 specifier|public
 specifier|abstract
 name|void
-name|setTimelineServiceAddress
+name|setTimelineCollectorInfo
 parameter_list|(
-name|String
-name|address
+name|CollectorInfo
+name|collectorInfo
 parameter_list|)
 function_decl|;
 block|}

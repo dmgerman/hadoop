@@ -194,6 +194,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|CollectorInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ContainerId
 import|;
 end_import
@@ -831,15 +849,20 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
-comment|// set the timeline service address manually
+comment|// Set the timeline service address manually.
 name|client
 operator|.
-name|setTimelineServiceAddress
+name|setTimelineCollectorInfo
+argument_list|(
+name|CollectorInfo
+operator|.
+name|newInstance
 argument_list|(
 name|collectorManager
 operator|.
 name|getRestServerBindAddress
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|client
@@ -978,15 +1001,20 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
-comment|// set the timeline service address manually
+comment|// Set the timeline service address manually.
 name|client
 operator|.
-name|setTimelineServiceAddress
+name|setTimelineCollectorInfo
+argument_list|(
+name|CollectorInfo
+operator|.
+name|newInstance
 argument_list|(
 name|collectorManager
 operator|.
 name|getRestServerBindAddress
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|client

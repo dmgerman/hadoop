@@ -93,6 +93,25 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
+DECL|method|newInstance (String collectorAddr)
+specifier|public
+specifier|static
+name|CollectorInfo
+name|newInstance
+parameter_list|(
+name|String
+name|collectorAddr
+parameter_list|)
+block|{
+return|return
+name|newInstance
+argument_list|(
+name|collectorAddr
+argument_list|,
+literal|null
+argument_list|)
+return|;
+block|}
 DECL|method|newInstance (String collectorAddr, Token token)
 specifier|public
 specifier|static
