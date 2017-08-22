@@ -1389,8 +1389,9 @@ argument_list|(
 literal|"KILLED"
 argument_list|)
 decl_stmt|;
-try|try
-block|{
+name|Response
+name|response
+init|=
 name|interceptor
 operator|.
 name|updateAppState
@@ -1404,39 +1405,19 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|Assert
 operator|.
-name|fail
-argument_list|()
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|YarnException
-name|e
-parameter_list|)
-block|{
-name|Assert
-operator|.
-name|assertTrue
+name|assertEquals
 argument_list|(
-name|e
+name|BAD_REQUEST
+argument_list|,
+name|response
 operator|.
-name|getMessage
+name|getStatus
 argument_list|()
-operator|.
-name|equals
-argument_list|(
-literal|"Application "
-operator|+
-name|appId
-operator|+
-literal|" does not exist"
-argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|/**    * This test validates the correctness of ForceKillApplication in case of    * application in wrong format.    */
 annotation|@
