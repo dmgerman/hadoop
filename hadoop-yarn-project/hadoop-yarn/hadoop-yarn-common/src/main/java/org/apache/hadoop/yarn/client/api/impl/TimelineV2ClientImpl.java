@@ -1107,8 +1107,7 @@ operator|=
 name|timelineServiceAddress
 expr_stmt|;
 block|}
-comment|// Token need not be updated if either address or token service does not
-comment|// exist.
+comment|// Token need not be updated if both address and token service do not exist.
 name|String
 name|service
 init|=
