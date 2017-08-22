@@ -144,20 +144,6 @@ name|ResourceTypesProto
 import|;
 end_import
 
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Preconditions
-import|;
-end_import
-
 begin_comment
 comment|/**  * {@code ResourceTypeInfoPBImpl} which implements the  * {@link ResourceTypeInfo} class which represents different resource types  * supported in YARN.  */
 end_comment

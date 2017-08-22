@@ -44,39 +44,7 @@ name|hadoop
 operator|.
 name|classification
 operator|.
-name|InterfaceAudience
-operator|.
-name|Public
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
 name|InterfaceStability
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceStability
-operator|.
-name|Evolving
 import|;
 end_import
 
@@ -291,7 +259,7 @@ return|return
 name|resourceType
 return|;
 block|}
-comment|/**    * Create a new instance of ResourceTypeInfo from name, units    *    * @param name name of resource type    * @param units units of resource type    * @return the new ResourceTypeInfo object    */
+comment|/**    * Create a new instance of ResourceTypeInfo from name, units.    *    * @param name name of resource type    * @param units units of resource type    * @return the new ResourceTypeInfo object    */
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -328,7 +296,7 @@ name|COUNTABLE
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a new instance of ResourceTypeInfo from name    *    * @param name name of resource type    * @return the new ResourceTypeInfo object    */
+comment|/**    * Create a new instance of ResourceTypeInfo from name.    *    * @param name name of resource type    * @return the new ResourceTypeInfo object    */
 annotation|@
 name|InterfaceAudience
 operator|.

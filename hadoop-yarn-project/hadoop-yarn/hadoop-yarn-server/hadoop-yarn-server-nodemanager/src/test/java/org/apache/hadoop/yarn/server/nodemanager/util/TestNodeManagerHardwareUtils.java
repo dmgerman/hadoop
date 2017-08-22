@@ -790,7 +790,7 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|int
+name|long
 name|mem
 init|=
 name|NodeManagerHardwareUtils

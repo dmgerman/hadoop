@@ -136,6 +136,10 @@ name|Map
 import|;
 end_import
 
+begin_comment
+comment|/**  * Common test class for resource profile related tests.  */
+end_comment
+
 begin_class
 DECL|class|TestResourceProfiles
 specifier|public

@@ -356,6 +356,10 @@ name|ReentrantReadWriteLock
 import|;
 end_import
 
+begin_comment
+comment|/**  * PBImpl class to handle all proto related implementation for  * ResourceProfilesManager.  */
+end_comment
+
 begin_class
 DECL|class|ResourceProfilesManagerImpl
 specifier|public

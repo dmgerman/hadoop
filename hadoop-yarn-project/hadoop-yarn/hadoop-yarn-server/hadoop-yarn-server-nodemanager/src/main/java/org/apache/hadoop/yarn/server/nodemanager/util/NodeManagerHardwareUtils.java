@@ -809,19 +809,19 @@ block|}
 DECL|method|getConfiguredMemoryMB (Configuration conf)
 specifier|private
 specifier|static
-name|int
+name|long
 name|getConfiguredMemoryMB
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
 block|{
-name|int
+name|long
 name|memoryMb
 init|=
 name|conf
 operator|.
-name|getInt
+name|getLong
 argument_list|(
 name|YarnConfiguration
 operator|.
@@ -855,7 +855,7 @@ comment|/**    * Function to return how much memory we should set aside for YARN
 DECL|method|getContainerMemoryMB (Configuration conf)
 specifier|public
 specifier|static
-name|int
+name|long
 name|getContainerMemoryMB
 parameter_list|(
 name|Configuration
@@ -917,7 +917,7 @@ comment|/**    * Function to return how much memory we should set aside for YARN
 DECL|method|getContainerMemoryMB (ResourceCalculatorPlugin plugin, Configuration conf)
 specifier|public
 specifier|static
-name|int
+name|long
 name|getContainerMemoryMB
 parameter_list|(
 name|ResourceCalculatorPlugin
@@ -959,7 +959,7 @@ block|}
 DECL|method|getContainerMemoryMBInternal (ResourceCalculatorPlugin plugin, Configuration conf)
 specifier|private
 specifier|static
-name|int
+name|long
 name|getContainerMemoryMBInternal
 parameter_list|(
 name|ResourceCalculatorPlugin
@@ -969,7 +969,7 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
-name|int
+name|long
 name|memoryMb
 init|=
 name|conf
@@ -992,13 +992,10 @@ operator|-
 literal|1
 condition|)
 block|{
-name|int
+name|long
 name|physicalMemoryMB
 init|=
-call|(
-name|int
-call|)
-argument_list|(
+operator|(
 name|plugin
 operator|.
 name|getPhysicalMemorySize
@@ -1009,15 +1006,12 @@ literal|1024
 operator|*
 literal|1024
 operator|)
-argument_list|)
+operator|)
 decl_stmt|;
-name|int
+name|long
 name|hadoopHeapSizeMB
 init|=
-call|(
-name|int
-call|)
-argument_list|(
+operator|(
 name|Runtime
 operator|.
 name|getRuntime
@@ -1031,13 +1025,13 @@ literal|1024
 operator|*
 literal|1024
 operator|)
-argument_list|)
+operator|)
 decl_stmt|;
-name|int
+name|long
 name|containerPhysicalMemoryMB
 init|=
 call|(
-name|int
+name|long
 call|)
 argument_list|(
 literal|0.8f
@@ -1053,7 +1047,7 @@ operator|)
 operator|)
 argument_list|)
 decl_stmt|;
-name|int
+name|long
 name|reservedMemoryMB
 init|=
 name|conf
@@ -1340,7 +1334,7 @@ condition|)
 block|{
 name|ret
 operator|.
-name|setMemory
+name|setMemorySize
 argument_list|(
 name|getContainerMemoryMB
 argument_list|(
@@ -1356,7 +1350,7 @@ literal|"Set memory to "
 operator|+
 name|ret
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 argument_list|)
 expr_stmt|;

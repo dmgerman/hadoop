@@ -502,22 +502,6 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
-annotation|@
-name|Override
-DECL|method|hashCode ()
-specifier|public
-name|int
-name|hashCode
-parameter_list|()
-block|{
-return|return
-name|getProto
-argument_list|()
-operator|.
-name|hashCode
-argument_list|()
-return|;
-block|}
 block|}
 end_class
 

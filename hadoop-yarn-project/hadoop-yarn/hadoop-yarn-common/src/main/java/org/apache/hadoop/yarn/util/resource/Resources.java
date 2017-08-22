@@ -176,6 +176,10 @@ name|Arrays
 import|;
 end_import
 
+begin_comment
+comment|/**  * Resources is a computation class which provides a set of apis to do  * mathematical operations on Resource object.  */
+end_comment
+
 begin_class
 annotation|@
 name|InterfaceAudience
@@ -229,7 +233,7 @@ specifier|private
 name|String
 name|name
 decl_stmt|;
-comment|/**      * Constructor for a fixed value resource      * @param rName the name of the resource      * @param value the fixed value to be returned for all resource types      */
+comment|/**      * Constructor for a fixed value resource.      * @param rName the name of the resource      * @param value the fixed value to be returned for all resource types      */
 DECL|method|FixedValueResource (String rName, long value)
 name|FixedValueResource
 parameter_list|(

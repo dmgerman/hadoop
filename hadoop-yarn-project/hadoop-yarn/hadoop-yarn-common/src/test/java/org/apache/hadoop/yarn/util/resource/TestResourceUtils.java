@@ -188,6 +188,10 @@ name|Map
 import|;
 end_import
 
+begin_comment
+comment|/**  * Test class to verify all resource utility methods.  */
+end_comment
+
 begin_class
 DECL|class|TestResourceUtils
 specifier|public

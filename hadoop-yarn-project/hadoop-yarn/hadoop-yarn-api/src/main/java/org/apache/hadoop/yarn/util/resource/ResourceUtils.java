@@ -2610,6 +2610,7 @@ return|return
 name|readOnlyNodeResources
 return|;
 block|}
+DECL|method|initializeNodeResourceInformation ( Configuration conf)
 specifier|private
 specifier|static
 name|Map
@@ -2618,7 +2619,6 @@ name|String
 argument_list|,
 name|ResourceInformation
 argument_list|>
-DECL|method|initializeNodeResourceInformation (Configuration conf)
 name|initializeNodeResourceInformation
 parameter_list|(
 name|Configuration

@@ -56,6 +56,10 @@ name|Test
 import|;
 end_import
 
+begin_comment
+comment|/**  * Test class to verify various resource informations in a given resource.  */
+end_comment
+
 begin_class
 DECL|class|TestResourceInformation
 specifier|public

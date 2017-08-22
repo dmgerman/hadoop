@@ -1613,12 +1613,12 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|int
+name|long
 name|memoryMb
 init|=
 name|totalResource
 operator|.
-name|getMemory
+name|getMemorySize
 argument_list|()
 decl_stmt|;
 name|float
@@ -1637,11 +1637,11 @@ operator|.
 name|DEFAULT_NM_VMEM_PMEM_RATIO
 argument_list|)
 decl_stmt|;
-name|int
+name|long
 name|virtualMemoryMb
 init|=
 operator|(
-name|int
+name|long
 operator|)
 name|Math
 operator|.
@@ -1699,7 +1699,7 @@ name|totalResource
 argument_list|)
 expr_stmt|;
 comment|// Get actual node physical resources
-name|int
+name|long
 name|physicalMemoryMb
 init|=
 name|memoryMb
@@ -1728,10 +1728,6 @@ condition|)
 block|{
 name|physicalMemoryMb
 operator|=
-call|(
-name|int
-call|)
-argument_list|(
 name|rcp
 operator|.
 name|getPhysicalMemorySize
@@ -1742,7 +1738,6 @@ literal|1024
 operator|*
 literal|1024
 operator|)
-argument_list|)
 expr_stmt|;
 name|physicalCores
 operator|=

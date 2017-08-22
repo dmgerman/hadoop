@@ -38,6 +38,10 @@ name|Test
 import|;
 end_import
 
+begin_comment
+comment|/**  * Test class to handle all test cases needed to verify basic unit conversion  * scenarios.  */
+end_comment
+
 begin_class
 DECL|class|TestUnitsConversionUtil
 specifier|public
@@ -524,7 +528,6 @@ name|IllegalArgumentException
 name|ie
 parameter_list|)
 block|{
-empty_stmt|;
 comment|// do nothing
 block|}
 try|try
@@ -558,7 +561,6 @@ name|IllegalArgumentException
 name|ie
 parameter_list|)
 block|{
-empty_stmt|;
 comment|// do nothing
 block|}
 block|}
