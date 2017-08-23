@@ -3425,6 +3425,11 @@ name|DatanodeProtocol
 operator|.
 name|DNA_BLOCK_STORAGE_MOVEMENT
 case|:
+case|case
+name|DatanodeProtocol
+operator|.
+name|DNA_DROP_SPS_WORK_COMMAND
+case|:
 name|LOG
 operator|.
 name|warn

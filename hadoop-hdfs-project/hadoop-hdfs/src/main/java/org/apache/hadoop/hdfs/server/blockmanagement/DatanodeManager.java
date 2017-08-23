@@ -7632,6 +7632,33 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+if|if
+condition|(
+name|nodeinfo
+operator|.
+name|shouldDropSPSWork
+argument_list|()
+condition|)
+block|{
+name|cmds
+operator|.
+name|add
+argument_list|(
+name|DropSPSWorkCommand
+operator|.
+name|DNA_DROP_SPS_WORK_COMMAND
+argument_list|)
+expr_stmt|;
+comment|// Set back to false to indicate that the new value has been sent to the
+comment|// datanode.
+name|nodeinfo
+operator|.
+name|setDropSPSWork
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
 comment|// check pending block storage movement tasks
 name|BlockStorageMovementInfosBatch
 name|blkStorageMovementInfosBatch
@@ -7671,33 +7698,6 @@ operator|.
 name|getBlockMovingInfo
 argument_list|()
 argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-if|if
-condition|(
-name|nodeinfo
-operator|.
-name|shouldDropSPSWork
-argument_list|()
-condition|)
-block|{
-name|cmds
-operator|.
-name|add
-argument_list|(
-name|DropSPSWorkCommand
-operator|.
-name|DNA_DROP_SPS_WORK_COMMAND
-argument_list|)
-expr_stmt|;
-comment|// Set back to false to indicate that the new value has been sent to the
-comment|// datanode.
-name|nodeinfo
-operator|.
-name|setDropSPSWork
-argument_list|(
-literal|false
 argument_list|)
 expr_stmt|;
 block|}

@@ -130,6 +130,26 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|namenode
+operator|.
+name|StoragePolicySatisfier
+operator|.
+name|ItemInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|protocol
 operator|.
 name|BlocksStorageMovementResult
@@ -238,7 +258,7 @@ name|Map
 argument_list|<
 name|Long
 argument_list|,
-name|ItemInfo
+name|AttemptedItemInfo
 argument_list|>
 name|storageMovementAttemptedItems
 decl_stmt|;
@@ -379,14 +399,14 @@ operator|=
 name|sps
 expr_stmt|;
 block|}
-comment|/**    * Add item to block storage movement attempted items map which holds the    * tracking/blockCollection id versus time stamp.    *    * @param blockCollectionID    *          - tracking id / block collection id    * @param allBlockLocsAttemptedToSatisfy    *          - failed to find matching target nodes to satisfy storage type for    *          all the block locations of the given blockCollectionID    */
-DECL|method|add (Long blockCollectionID, boolean allBlockLocsAttemptedToSatisfy)
+comment|/**    * Add item to block storage movement attempted items map which holds the    * tracking/blockCollection id versus time stamp.    *    * @param itemInfo    *          - tracking info    * @param allBlockLocsAttemptedToSatisfy    *          - failed to find matching target nodes to satisfy storage type    *          for all the block locations of the given blockCollectionID    */
+DECL|method|add (ItemInfo itemInfo, boolean allBlockLocsAttemptedToSatisfy)
 specifier|public
 name|void
 name|add
 parameter_list|(
-name|Long
-name|blockCollectionID
+name|ItemInfo
+name|itemInfo
 parameter_list|,
 name|boolean
 name|allBlockLocsAttemptedToSatisfy
@@ -397,12 +417,22 @@ init|(
 name|storageMovementAttemptedItems
 init|)
 block|{
-name|ItemInfo
-name|itemInfo
+name|AttemptedItemInfo
+name|attemptedItemInfo
 init|=
 operator|new
-name|ItemInfo
+name|AttemptedItemInfo
 argument_list|(
+name|itemInfo
+operator|.
+name|getRootId
+argument_list|()
+argument_list|,
+name|itemInfo
+operator|.
+name|getTrackId
+argument_list|()
+argument_list|,
 name|monotonicNow
 argument_list|()
 argument_list|,
@@ -413,9 +443,12 @@ name|storageMovementAttemptedItems
 operator|.
 name|put
 argument_list|(
-name|blockCollectionID
-argument_list|,
 name|itemInfo
+operator|.
+name|getTrackId
+argument_list|()
+argument_list|,
+name|attemptedItemInfo
 argument_list|)
 expr_stmt|;
 block|}
@@ -570,11 +603,13 @@ parameter_list|)
 block|{     }
 block|}
 comment|/**    * This class contains information of an attempted trackID. Information such    * as, (a)last attempted or reported time stamp, (b)whether all the blocks in    * the trackID were attempted and blocks movement has been scheduled to    * satisfy storage policy. This is used by    * {@link BlockStorageMovementAttemptedItems#storageMovementAttemptedItems}.    */
-DECL|class|ItemInfo
+DECL|class|AttemptedItemInfo
 specifier|private
 specifier|final
 specifier|static
 class|class
+name|AttemptedItemInfo
+extends|extends
 name|ItemInfo
 block|{
 DECL|field|lastAttemptedOrReportedTime
@@ -588,11 +623,17 @@ specifier|final
 name|boolean
 name|allBlockLocsAttemptedToSatisfy
 decl_stmt|;
-comment|/**      * ItemInfo constructor.      *      * @param lastAttemptedOrReportedTime      *          last attempted or reported time      * @param allBlockLocsAttemptedToSatisfy      *          whether all the blocks in the trackID were attempted and blocks      *          movement has been scheduled to satisfy storage policy      */
-DECL|method|ItemInfo (long lastAttemptedOrReportedTime, boolean allBlockLocsAttemptedToSatisfy)
+comment|/**      * AttemptedItemInfo constructor.      *      * @param rootId      *          rootId for trackId      * @param trackId      *          trackId for file.      * @param lastAttemptedOrReportedTime      *          last attempted or reported time      * @param allBlockLocsAttemptedToSatisfy      *          whether all the blocks in the trackID were attempted and blocks      *          movement has been scheduled to satisfy storage policy      */
+DECL|method|AttemptedItemInfo (long rootId, long trackId, long lastAttemptedOrReportedTime, boolean allBlockLocsAttemptedToSatisfy)
 specifier|private
-name|ItemInfo
+name|AttemptedItemInfo
 parameter_list|(
+name|long
+name|rootId
+parameter_list|,
+name|long
+name|trackId
+parameter_list|,
 name|long
 name|lastAttemptedOrReportedTime
 parameter_list|,
@@ -600,6 +641,13 @@ name|boolean
 name|allBlockLocsAttemptedToSatisfy
 parameter_list|)
 block|{
+name|super
+argument_list|(
+name|rootId
+argument_list|,
+name|trackId
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|lastAttemptedOrReportedTime
@@ -745,7 +793,7 @@ name|Entry
 argument_list|<
 name|Long
 argument_list|,
-name|ItemInfo
+name|AttemptedItemInfo
 argument_list|>
 argument_list|>
 name|iter
@@ -776,7 +824,7 @@ name|Entry
 argument_list|<
 name|Long
 argument_list|,
-name|ItemInfo
+name|AttemptedItemInfo
 argument_list|>
 name|entry
 init|=
@@ -785,7 +833,7 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
-name|ItemInfo
+name|AttemptedItemInfo
 name|itemInfo
 init|=
 name|entry
@@ -827,11 +875,25 @@ name|blockCollectionID
 argument_list|)
 condition|)
 block|{
+name|ItemInfo
+name|candidate
+init|=
+operator|new
+name|ItemInfo
+argument_list|(
+name|itemInfo
+operator|.
+name|getRootId
+argument_list|()
+argument_list|,
+name|blockCollectionID
+argument_list|)
+decl_stmt|;
 name|blockStorageMovementNeeded
 operator|.
 name|add
 argument_list|(
-name|blockCollectionID
+name|candidate
 argument_list|)
 expr_stmt|;
 name|iter
@@ -1002,8 +1064,41 @@ operator|.
 name|getTrackId
 argument_list|()
 decl_stmt|;
+name|AttemptedItemInfo
+name|attemptedItemInfo
+init|=
+name|storageMovementAttemptedItems
+operator|.
+name|get
+argument_list|(
+name|trackId
+argument_list|)
+decl_stmt|;
+comment|// itemInfo is null means no root for trackId, using trackId only as
+comment|// root and handling it in
+comment|// blockStorageMovementNeeded#removeIteamTrackInfo() for cleaning
+comment|// the xAttr
 name|ItemInfo
 name|itemInfo
+init|=
+operator|new
+name|ItemInfo
+argument_list|(
+operator|(
+name|attemptedItemInfo
+operator|!=
+literal|null
+operator|)
+condition|?
+name|attemptedItemInfo
+operator|.
+name|getRootId
+argument_list|()
+else|:
+name|trackId
+argument_list|,
+name|trackId
+argument_list|)
 decl_stmt|;
 switch|switch
 condition|(
@@ -1013,39 +1108,61 @@ block|{
 case|case
 name|FAILURE
 case|:
+if|if
+condition|(
+name|attemptedItemInfo
+operator|!=
+literal|null
+condition|)
+block|{
 name|blockStorageMovementNeeded
 operator|.
 name|add
 argument_list|(
-name|trackId
+name|itemInfo
 argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Blocks storage movement results for the tracking id: {}"
+literal|"Blocks storage movement results for the tracking id:"
 operator|+
-literal|" is reported from co-ordinating datanode, but result"
+literal|"{} is reported from co-ordinating datanode, but result"
 operator|+
 literal|" status is FAILURE. So, added for retry"
 argument_list|,
 name|trackId
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Blocks storage movement is FAILURE for the track"
+operator|+
+literal|" id {}. But the trackID doesn't exists in"
+operator|+
+literal|" storageMovementAttemptedItems list."
+argument_list|,
+name|trackId
+argument_list|)
+expr_stmt|;
+name|blockStorageMovementNeeded
+operator|.
+name|removeItemTrackInfo
+argument_list|(
+name|itemInfo
+argument_list|)
+expr_stmt|;
+block|}
 break|break;
 case|case
 name|SUCCESS
 case|:
-name|itemInfo
-operator|=
-name|storageMovementAttemptedItems
-operator|.
-name|get
-argument_list|(
-name|trackId
-argument_list|)
-expr_stmt|;
 comment|// ItemInfo could be null. One case is, before the blocks movements
 comment|// result arrives the attempted trackID became timed out and then
 comment|// removed the trackID from the storageMovementAttemptedItems list.
@@ -1065,7 +1182,7 @@ literal|" reported from co-ordinating datanode."
 decl_stmt|;
 if|if
 condition|(
-name|itemInfo
+name|attemptedItemInfo
 operator|!=
 literal|null
 condition|)
@@ -1073,7 +1190,7 @@ block|{
 if|if
 condition|(
 operator|!
-name|itemInfo
+name|attemptedItemInfo
 operator|.
 name|isAllBlockLocsAttemptedToSatisfy
 argument_list|()
@@ -1083,7 +1200,16 @@ name|blockStorageMovementNeeded
 operator|.
 name|add
 argument_list|(
+operator|new
+name|ItemInfo
+argument_list|(
+name|attemptedItemInfo
+operator|.
+name|getRootId
+argument_list|()
+argument_list|,
 name|trackId
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -1109,17 +1235,11 @@ argument_list|(
 name|msg
 argument_list|)
 expr_stmt|;
-comment|// Remove xattr for the track id.
-name|this
+name|blockStorageMovementNeeded
 operator|.
-name|sps
-operator|.
-name|postBlkStorageMovementCleanup
+name|removeItemTrackInfo
 argument_list|(
-name|storageMovementAttemptedResult
-operator|.
-name|getTrackId
-argument_list|()
+name|itemInfo
 argument_list|)
 expr_stmt|;
 block|}
@@ -1137,17 +1257,11 @@ argument_list|,
 name|msg
 argument_list|)
 expr_stmt|;
-comment|// Remove xattr for the track id.
-name|this
+name|blockStorageMovementNeeded
 operator|.
-name|sps
-operator|.
-name|postBlkStorageMovementCleanup
+name|removeItemTrackInfo
 argument_list|(
-name|storageMovementAttemptedResult
-operator|.
-name|getTrackId
-argument_list|()
+name|itemInfo
 argument_list|)
 expr_stmt|;
 block|}
@@ -1159,7 +1273,7 @@ name|isInprogress
 operator|=
 literal|true
 expr_stmt|;
-name|itemInfo
+name|attemptedItemInfo
 operator|=
 name|storageMovementAttemptedItems
 operator|.
@@ -1173,13 +1287,13 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|itemInfo
+name|attemptedItemInfo
 operator|!=
 literal|null
 condition|)
 block|{
 comment|// update the attempted expiration time to next cycle.
-name|itemInfo
+name|attemptedItemInfo
 operator|.
 name|touchLastReportedTimeStamp
 argument_list|()

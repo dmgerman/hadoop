@@ -1060,24 +1060,6 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|BlockStorageMovementNeeded
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
 name|StoragePolicySatisfier
 import|;
 end_import
@@ -2390,16 +2372,6 @@ specifier|private
 name|boolean
 name|spsEnabled
 decl_stmt|;
-DECL|field|storageMovementNeeded
-specifier|private
-specifier|final
-name|BlockStorageMovementNeeded
-name|storageMovementNeeded
-init|=
-operator|new
-name|BlockStorageMovementNeeded
-argument_list|()
-decl_stmt|;
 comment|/** Minimum live replicas needed for the datanode to be transitioned    * from ENTERING_MAINTENANCE to IN_MAINTENANCE.    */
 DECL|field|minReplicationToBeInMaintenance
 specifier|private
@@ -2632,8 +2604,6 @@ operator|new
 name|StoragePolicySatisfier
 argument_list|(
 name|namesystem
-argument_list|,
-name|storageMovementNeeded
 argument_list|,
 name|this
 argument_list|,
@@ -23451,44 +23421,6 @@ block|{
 return|return
 name|providedStorageMap
 return|;
-block|}
-comment|/**    * Set file block collection for which storage movement needed for its blocks.    *    * @param id    *          - file block collection id.    */
-DECL|method|satisfyStoragePolicy (long id)
-specifier|public
-name|void
-name|satisfyStoragePolicy
-parameter_list|(
-name|long
-name|id
-parameter_list|)
-block|{
-name|storageMovementNeeded
-operator|.
-name|add
-argument_list|(
-name|id
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Added block collection id {} to block "
-operator|+
-literal|"storageMovementNeeded queue"
-argument_list|,
-name|id
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Gets the storage policy satisfier instance.    *    * @return sps    */
 DECL|method|getStoragePolicySatisfier ()

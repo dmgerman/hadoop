@@ -21,36 +21,6 @@ package|;
 end_package
 
 begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|HdfsServerConstants
-operator|.
-name|XATTR_SATISFY_STORAGE_POLICY
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
 import|import
 name|java
 operator|.
@@ -645,17 +615,13 @@ comment|// some of the blocks are low redundant.
 DECL|enumConstant|FEW_LOW_REDUNDANCY_BLOCKS
 name|FEW_LOW_REDUNDANCY_BLOCKS
 block|}
-DECL|method|StoragePolicySatisfier (final Namesystem namesystem, final BlockStorageMovementNeeded storageMovementNeeded, final BlockManager blkManager, Configuration conf)
+DECL|method|StoragePolicySatisfier (final Namesystem namesystem, final BlockManager blkManager, Configuration conf)
 specifier|public
 name|StoragePolicySatisfier
 parameter_list|(
 specifier|final
 name|Namesystem
 name|namesystem
-parameter_list|,
-specifier|final
-name|BlockStorageMovementNeeded
-name|storageMovementNeeded
 parameter_list|,
 specifier|final
 name|BlockManager
@@ -675,7 +641,13 @@ name|this
 operator|.
 name|storageMovementNeeded
 operator|=
-name|storageMovementNeeded
+operator|new
+name|BlockStorageMovementNeeded
+argument_list|(
+name|namesystem
+argument_list|,
+name|this
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -797,6 +769,11 @@ comment|// be stopped in all datanodes.
 name|addDropSPSWorkCommandsToAllDNs
 argument_list|()
 expr_stmt|;
+name|storageMovementNeeded
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
 name|storagePolicySatisfierThread
 operator|=
 operator|new
@@ -849,6 +826,11 @@ condition|)
 block|{
 return|return;
 block|}
+name|storageMovementNeeded
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
 name|storagePolicySatisfierThread
 operator|.
 name|interrupt
@@ -866,7 +848,7 @@ condition|(
 name|forceStop
 condition|)
 block|{
-name|this
+name|storageMovementNeeded
 operator|.
 name|clearQueuesWithNotification
 argument_list|()
@@ -1022,8 +1004,8 @@ name|isInSafeMode
 argument_list|()
 condition|)
 block|{
-name|Long
-name|blockCollectionID
+name|ItemInfo
+name|itemInfo
 init|=
 name|storageMovementNeeded
 operator|.
@@ -1032,11 +1014,19 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|blockCollectionID
+name|itemInfo
 operator|!=
 literal|null
 condition|)
 block|{
+name|long
+name|trackId
+init|=
+name|itemInfo
+operator|.
+name|getTrackId
+argument_list|()
+decl_stmt|;
 name|BlockCollection
 name|blockCollection
 init|=
@@ -1044,7 +1034,7 @@ name|namesystem
 operator|.
 name|getBlockCollection
 argument_list|(
-name|blockCollectionID
+name|trackId
 argument_list|)
 decl_stmt|;
 comment|// Check blockCollectionId existence.
@@ -1083,7 +1073,7 @@ name|storageMovementsMonitor
 operator|.
 name|add
 argument_list|(
-name|blockCollectionID
+name|itemInfo
 argument_list|,
 literal|true
 argument_list|)
@@ -1101,7 +1091,7 @@ name|storageMovementsMonitor
 operator|.
 name|add
 argument_list|(
-name|blockCollectionID
+name|itemInfo
 argument_list|,
 literal|false
 argument_list|)
@@ -1124,7 +1114,7 @@ name|debug
 argument_list|(
 literal|"Adding trackID "
 operator|+
-name|blockCollectionID
+name|trackId
 operator|+
 literal|" back to retry queue as some of the blocks"
 operator|+
@@ -1138,7 +1128,7 @@ name|storageMovementNeeded
 operator|.
 name|add
 argument_list|(
-name|blockCollectionID
+name|itemInfo
 argument_list|)
 expr_stmt|;
 break|break;
@@ -1159,13 +1149,27 @@ operator|+
 literal|" with storages. So, Cleaning up the Xattrs."
 argument_list|)
 expr_stmt|;
-name|postBlkStorageMovementCleanup
+name|storageMovementNeeded
+operator|.
+name|removeItemTrackInfo
 argument_list|(
-name|blockCollectionID
+name|itemInfo
 argument_list|)
 expr_stmt|;
 break|break;
 block|}
+block|}
+else|else
+block|{
+comment|// File doesn't exists (maybe got deleted), remove trackId from
+comment|// the queue
+name|storageMovementNeeded
+operator|.
+name|removeItemTrackInfo
+argument_list|(
+name|itemInfo
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 block|}
@@ -3834,83 +3838,164 @@ name|clearAll
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Clean all the movements in storageMovementNeeded and notify    * to clean up required resources.    * @throws IOException    */
-DECL|method|clearQueuesWithNotification ()
-specifier|private
+comment|/**    * Set file inode in queue for which storage movement needed for its blocks.    *    * @param inodeId    *          - file inode/blockcollection id.    */
+DECL|method|satisfyStoragePolicy (Long inodeId)
+specifier|public
 name|void
-name|clearQueuesWithNotification
-parameter_list|()
-block|{
+name|satisfyStoragePolicy
+parameter_list|(
 name|Long
-name|id
-decl_stmt|;
-while|while
-condition|(
-operator|(
-name|id
-operator|=
+name|inodeId
+parameter_list|)
+block|{
+comment|//For file rootId and trackId is same
 name|storageMovementNeeded
 operator|.
-name|get
-argument_list|()
-operator|)
-operator|!=
-literal|null
-condition|)
-block|{
-try|try
-block|{
-name|postBlkStorageMovementCleanup
+name|add
 argument_list|(
-name|id
+operator|new
+name|ItemInfo
+argument_list|(
+name|inodeId
+argument_list|,
+name|inodeId
+argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ie
-parameter_list|)
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
 block|{
 name|LOG
 operator|.
-name|warn
+name|debug
 argument_list|(
-literal|"Failed to remove SPS "
+literal|"Added track info for inode {} to block "
 operator|+
-literal|"xattr for collection id "
-operator|+
-name|id
+literal|"storageMovementNeeded queue"
 argument_list|,
-name|ie
+name|inodeId
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-block|}
-comment|/**    * When block movement has been finished successfully, some additional    * operations should be notified, for example, SPS xattr should be    * removed.    * @param trackId track id i.e., block collection id.    * @throws IOException    */
-DECL|method|postBlkStorageMovementCleanup (long trackId)
+DECL|method|addInodeToPendingDirQueue (long id)
 specifier|public
 name|void
-name|postBlkStorageMovementCleanup
+name|addInodeToPendingDirQueue
+parameter_list|(
+name|long
+name|id
+parameter_list|)
+block|{
+name|storageMovementNeeded
+operator|.
+name|addToPendingDirQueue
+argument_list|(
+name|id
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Clear queues for given track id.    */
+DECL|method|clearQueue (long trackId)
+specifier|public
+name|void
+name|clearQueue
 parameter_list|(
 name|long
 name|trackId
 parameter_list|)
-throws|throws
-name|IOException
+block|{
+name|storageMovementNeeded
+operator|.
+name|clearQueue
+argument_list|(
+name|trackId
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * ItemInfo is a file info object for which need to satisfy the    * policy.    */
+DECL|class|ItemInfo
+specifier|public
+specifier|static
+class|class
+name|ItemInfo
+block|{
+DECL|field|rootId
+specifier|private
+name|long
+name|rootId
+decl_stmt|;
+DECL|field|trackId
+specifier|private
+name|long
+name|trackId
+decl_stmt|;
+DECL|method|ItemInfo (long rootId, long trackId)
+specifier|public
+name|ItemInfo
+parameter_list|(
+name|long
+name|rootId
+parameter_list|,
+name|long
+name|trackId
+parameter_list|)
 block|{
 name|this
 operator|.
-name|namesystem
-operator|.
-name|removeXattr
-argument_list|(
-name|trackId
-argument_list|,
-name|XATTR_SATISFY_STORAGE_POLICY
-argument_list|)
+name|rootId
+operator|=
+name|rootId
 expr_stmt|;
+name|this
+operator|.
+name|trackId
+operator|=
+name|trackId
+expr_stmt|;
+block|}
+comment|/**      * Return the root of the current track Id.      */
+DECL|method|getRootId ()
+specifier|public
+name|long
+name|getRootId
+parameter_list|()
+block|{
+return|return
+name|rootId
+return|;
+block|}
+comment|/**      * Return the File inode Id for which needs to satisfy the policy.      */
+DECL|method|getTrackId ()
+specifier|public
+name|long
+name|getTrackId
+parameter_list|()
+block|{
+return|return
+name|trackId
+return|;
+block|}
+comment|/**      * Returns true if the tracking path is a directory, false otherwise.      */
+DECL|method|isDir ()
+specifier|public
+name|boolean
+name|isDir
+parameter_list|()
+block|{
+return|return
+operator|(
+name|rootId
+operator|!=
+name|trackId
+operator|)
+return|;
+block|}
 block|}
 block|}
 end_class

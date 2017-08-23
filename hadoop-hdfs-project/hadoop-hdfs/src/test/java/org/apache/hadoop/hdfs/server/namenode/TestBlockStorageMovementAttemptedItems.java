@@ -60,6 +60,26 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|namenode
+operator|.
+name|StoragePolicySatisfier
+operator|.
+name|ItemInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|protocol
 operator|.
 name|BlocksStorageMovementResult
@@ -152,7 +172,25 @@ name|unsatisfiedStorageMovementFiles
 operator|=
 operator|new
 name|BlockStorageMovementNeeded
-argument_list|()
+argument_list|(
+name|Mockito
+operator|.
+name|mock
+argument_list|(
+name|Namesystem
+operator|.
+name|class
+argument_list|)
+argument_list|,
+name|Mockito
+operator|.
+name|mock
+argument_list|(
+name|StoragePolicySatisfier
+operator|.
+name|class
+argument_list|)
+argument_list|)
 expr_stmt|;
 name|StoragePolicySatisfier
 name|sps
@@ -249,7 +287,7 @@ name|stopTime
 operator|)
 condition|)
 block|{
-name|Long
+name|ItemInfo
 name|ele
 init|=
 literal|null
@@ -271,13 +309,10 @@ block|{
 if|if
 condition|(
 name|item
-operator|.
-name|longValue
-argument_list|()
 operator|==
 name|ele
 operator|.
-name|longValue
+name|getTrackId
 argument_list|()
 condition|)
 block|{
@@ -345,7 +380,13 @@ name|bsmAttemptedItems
 operator|.
 name|add
 argument_list|(
+operator|new
+name|ItemInfo
+argument_list|(
+literal|0L
+argument_list|,
 name|item
+argument_list|)
 argument_list|,
 literal|true
 argument_list|)
@@ -420,7 +461,13 @@ name|bsmAttemptedItems
 operator|.
 name|add
 argument_list|(
+operator|new
+name|ItemInfo
+argument_list|(
+literal|0L
+argument_list|,
 name|item
+argument_list|)
 argument_list|,
 literal|true
 argument_list|)
@@ -495,7 +542,13 @@ name|bsmAttemptedItems
 operator|.
 name|add
 argument_list|(
+operator|new
+name|ItemInfo
+argument_list|(
+literal|0L
+argument_list|,
 name|item
+argument_list|)
 argument_list|,
 literal|true
 argument_list|)
@@ -555,7 +608,13 @@ name|bsmAttemptedItems
 operator|.
 name|add
 argument_list|(
+operator|new
+name|ItemInfo
+argument_list|(
+literal|0L
+argument_list|,
 name|item
+argument_list|)
 argument_list|,
 literal|false
 argument_list|)
@@ -645,7 +704,13 @@ name|bsmAttemptedItems
 operator|.
 name|add
 argument_list|(
+operator|new
+name|ItemInfo
+argument_list|(
+literal|0L
+argument_list|,
 name|item
+argument_list|)
 argument_list|,
 literal|false
 argument_list|)
@@ -720,7 +785,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Partial block movement with only BlocksStorageMovementResult#FAILURE result    * and storageMovementAttemptedItems list is empty.    */
+comment|/**    * Partial block movement with only BlocksStorageMovementResult#FAILURE    * result and storageMovementAttemptedItems list is empty.    */
 annotation|@
 name|Test
 argument_list|(
@@ -728,10 +793,10 @@ name|timeout
 operator|=
 literal|30000
 argument_list|)
-DECL|method|testPartialBlockMovementShouldBeRetried3 ()
+DECL|method|testPartialBlockMovementWithEmptyAttemptedQueue ()
 specifier|public
 name|void
-name|testPartialBlockMovementShouldBeRetried3
+name|testPartialBlockMovementWithEmptyAttemptedQueue
 parameter_list|()
 throws|throws
 name|Exception
@@ -757,9 +822,6 @@ operator|new
 name|BlocksStorageMovementResult
 argument_list|(
 name|item
-operator|.
-name|longValue
-argument_list|()
 argument_list|,
 name|BlocksStorageMovementResult
 operator|.
@@ -775,9 +837,11 @@ operator|.
 name|blockStorageMovementResultCheck
 argument_list|()
 expr_stmt|;
-name|assertTrue
+name|assertFalse
 argument_list|(
-literal|"Failed to add to the retry list"
+literal|"Should not add in queue again if it is not there in"
+operator|+
+literal|" storageMovementAttemptedItems"
 argument_list|,
 name|checkItemMovedForRetry
 argument_list|(
@@ -829,7 +893,13 @@ name|bsmAttemptedItems
 operator|.
 name|add
 argument_list|(
+operator|new
+name|ItemInfo
+argument_list|(
+literal|0L
+argument_list|,
 name|item
+argument_list|)
 argument_list|,
 literal|false
 argument_list|)
