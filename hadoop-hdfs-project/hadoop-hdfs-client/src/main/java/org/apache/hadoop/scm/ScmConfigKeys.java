@@ -666,7 +666,7 @@ specifier|final
 name|int
 name|OZONE_SCM_CONTAINER_PROVISION_BATCH_SIZE_DEFAULT
 init|=
-literal|1
+literal|5
 decl_stmt|;
 comment|/**    * Don't start processing a pool if we have not had a minimum number of    * seconds from the last processing.    */
 specifier|public

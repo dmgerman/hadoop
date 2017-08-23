@@ -54,6 +54,26 @@ name|common
 operator|.
 name|helpers
 operator|.
+name|ContainerInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
 name|Pipeline
 import|;
 end_import
@@ -100,9 +120,9 @@ name|Mapping
 extends|extends
 name|Closeable
 block|{
-comment|/**    * Returns the Pipeline from the container name.    *    * @param containerName - Name    * @return - Pipeline that makes up this container.    * @throws IOException    */
+comment|/**    * Returns the ContainerInfo from the container name.    *    * @param containerName - Name    * @return - ContainerInfo such as creation state and the pipeline.    * @throws IOException    */
 DECL|method|getContainer (String containerName)
-name|Pipeline
+name|ContainerInfo
 name|getContainer
 parameter_list|(
 name|String
@@ -131,9 +151,9 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Allocates a new container for a given keyName and replication factor.    *    * @param containerName - Name.    * @param replicationFactor - replication factor of the container.    * @return - Pipeline that makes up this container.    * @throws IOException    */
+comment|/**    * Allocates a new container for a given keyName and replication factor.    *    * @param containerName - Name.    * @param replicationFactor - replication factor of the container.    * @return - Container Info.    * @throws IOException    */
 DECL|method|allocateContainer (OzoneProtos.ReplicationType type, OzoneProtos.ReplicationFactor replicationFactor, String containerName)
-name|Pipeline
+name|ContainerInfo
 name|allocateContainer
 parameter_list|(
 name|OzoneProtos
@@ -159,6 +179,24 @@ name|deleteContainer
 parameter_list|(
 name|String
 name|containerName
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Update container state.    * @param containerName - Container Name    * @param event - container life cycle event    * @return - new container state    * @throws IOException    */
+DECL|method|updateContainerState (String containerName, OzoneProtos.LifeCycleEvent event)
+name|OzoneProtos
+operator|.
+name|LifeCycleState
+name|updateContainerState
+parameter_list|(
+name|String
+name|containerName
+parameter_list|,
+name|OzoneProtos
+operator|.
+name|LifeCycleEvent
+name|event
 parameter_list|)
 throws|throws
 name|IOException

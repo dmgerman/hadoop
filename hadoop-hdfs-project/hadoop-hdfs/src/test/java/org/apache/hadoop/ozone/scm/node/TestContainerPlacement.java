@@ -962,6 +962,9 @@ argument_list|()
 argument_list|,
 name|container1
 argument_list|)
+operator|.
+name|getPipeline
+argument_list|()
 decl_stmt|;
 name|assertEquals
 argument_list|(

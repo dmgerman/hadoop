@@ -114,6 +114,26 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerLocationProtocolProtos
+operator|.
+name|NotifyObjectCreationStageRequestProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|scm
 operator|.
 name|XceiverClientManager
@@ -272,26 +292,6 @@ name|ArrayList
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|HashSet
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Set
-import|;
-end_import
-
 begin_comment
 comment|/**  * Maintaining a list of ChunkInputStream. Write based on offset.  *  * Note that this may write to multiple containers in one write call. In case  * that first container succeeded but later ones failed, the succeeded writes  * are not rolled back.  *  * TODO : currently not support multi-thread access.  */
 end_comment
@@ -344,22 +344,6 @@ DECL|field|byteOffset
 specifier|private
 name|long
 name|byteOffset
-decl_stmt|;
-comment|//This has to be removed once HDFS-11888 is resolved.
-comment|//local cache which will have list of created container names.
-DECL|field|containersCreated
-specifier|private
-specifier|static
-name|Set
-argument_list|<
-name|String
-argument_list|>
-name|containersCreated
-init|=
-operator|new
-name|HashSet
-argument_list|<>
-argument_list|()
 decl_stmt|;
 DECL|method|ChunkGroupOutputStream ()
 specifier|public
@@ -1357,51 +1341,17 @@ name|pipeline
 argument_list|)
 decl_stmt|;
 comment|// create container if needed
-comment|// TODO : should be subKeyInfo.getShouldCreateContainer(), but for now
-comment|//The following change has to reverted once HDFS-11888 is fixed.
 if|if
 condition|(
-operator|!
-name|containersCreated
+name|subKeyInfo
 operator|.
-name|contains
-argument_list|(
-name|containerName
-argument_list|)
-condition|)
-block|{
-synchronized|synchronized
-init|(
-name|containerName
-operator|.
-name|intern
+name|getShouldCreateContainer
 argument_list|()
-init|)
-block|{
-comment|//checking again, there is a chance that some other thread has
-comment|// created it.
-if|if
-condition|(
-operator|!
-name|containersCreated
-operator|.
-name|contains
-argument_list|(
-name|containerName
-argument_list|)
 condition|)
 block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Need to create container {}."
-argument_list|,
-name|containerName
-argument_list|)
-expr_stmt|;
 try|try
 block|{
+comment|// Block manager sets the container creation stage begin.
 name|ContainerProtocolCalls
 operator|.
 name|createContainer
@@ -1409,6 +1359,25 @@ argument_list|(
 name|xceiverClient
 argument_list|,
 name|requestId
+argument_list|)
+expr_stmt|;
+name|storageContainerLocationClient
+operator|.
+name|notifyObjectCreationStage
+argument_list|(
+name|NotifyObjectCreationStageRequestProto
+operator|.
+name|Type
+operator|.
+name|container
+argument_list|,
+name|containerName
+argument_list|,
+name|NotifyObjectCreationStageRequestProto
+operator|.
+name|Stage
+operator|.
+name|complete
 argument_list|)
 expr_stmt|;
 block|}
@@ -1433,7 +1402,7 @@ name|CONTAINER_EXISTS
 argument_list|)
 condition|)
 block|{
-comment|//container already exist.
+comment|//container already exist, this should never happen
 name|LOG
 operator|.
 name|debug
@@ -1460,15 +1429,6 @@ expr_stmt|;
 throw|throw
 name|ex
 throw|;
-block|}
-block|}
-name|containersCreated
-operator|.
-name|add
-argument_list|(
-name|containerName
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 block|}
