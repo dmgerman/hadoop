@@ -538,7 +538,7 @@ specifier|static
 name|long
 name|currentTime
 decl_stmt|;
-comment|/**    * Create a MiniDFSCluster for testing.    *    * Ozone is made active by setting OZONE_ENABLED = true and    * OZONE_HANDLER_TYPE_KEY = "local" , which uses a local    * directory to emulate Ozone backend.    *    * @throws IOException    */
+comment|/**    * Create a MiniDFSCluster for testing.    * @throws IOException    */
 annotation|@
 name|BeforeClass
 DECL|method|init ()
@@ -569,32 +569,6 @@ name|class
 operator|.
 name|getSimpleName
 argument_list|()
-argument_list|)
-expr_stmt|;
-name|path
-operator|+=
-name|conf
-operator|.
-name|getTrimmed
-argument_list|(
-name|OzoneConfigKeys
-operator|.
-name|OZONE_LOCALSTORAGE_ROOT
-argument_list|,
-name|OzoneConfigKeys
-operator|.
-name|OZONE_LOCALSTORAGE_ROOT_DEFAULT
-argument_list|)
-expr_stmt|;
-name|conf
-operator|.
-name|set
-argument_list|(
-name|OzoneConfigKeys
-operator|.
-name|OZONE_LOCALSTORAGE_ROOT
-argument_list|,
-name|path
 argument_list|)
 expr_stmt|;
 name|Logger
