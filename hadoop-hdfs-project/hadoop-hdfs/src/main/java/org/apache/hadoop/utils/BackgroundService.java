@@ -110,6 +110,18 @@ name|util
 operator|.
 name|concurrent
 operator|.
+name|TimeoutException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
 name|ScheduledExecutorService
 import|;
 end_import
@@ -209,8 +221,10 @@ specifier|abstract
 class|class
 name|BackgroundService
 block|{
+annotation|@
+name|VisibleForTesting
 DECL|field|LOG
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|Logger
@@ -256,13 +270,19 @@ specifier|final
 name|int
 name|interval
 decl_stmt|;
+DECL|field|serviceTimeout
+specifier|private
+specifier|final
+name|long
+name|serviceTimeout
+decl_stmt|;
 DECL|field|unit
 specifier|private
 specifier|final
 name|TimeUnit
 name|unit
 decl_stmt|;
-DECL|method|BackgroundService (String serviceName, int interval, TimeUnit unit, int threadPoolSize)
+DECL|method|BackgroundService (String serviceName, int interval, TimeUnit unit, int threadPoolSize, long serviceTimeout)
 specifier|public
 name|BackgroundService
 parameter_list|(
@@ -277,6 +297,9 @@ name|unit
 parameter_list|,
 name|int
 name|threadPoolSize
+parameter_list|,
+name|long
+name|serviceTimeout
 parameter_list|)
 block|{
 name|this
@@ -296,6 +319,12 @@ operator|.
 name|serviceName
 operator|=
 name|serviceName
+expr_stmt|;
+name|this
+operator|.
+name|serviceTimeout
+operator|=
+name|serviceTimeout
 expr_stmt|;
 name|threadGroup
 operator|=
@@ -547,10 +576,24 @@ block|{
 try|try
 block|{
 comment|// Collect task results
-comment|// TODO timeout in case task hangs
 name|BackgroundTaskResult
 name|result
 init|=
+name|serviceTimeout
+operator|>
+literal|0
+condition|?
+name|taskResultFuture
+operator|.
+name|get
+argument_list|(
+name|serviceTimeout
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+argument_list|)
+else|:
 name|taskResultFuture
 operator|.
 name|get
@@ -591,6 +634,24 @@ operator|.
 name|warn
 argument_list|(
 literal|"Background task fails to execute, "
+operator|+
+literal|"retrying in next interval"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|TimeoutException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Background task executes timed out, "
 operator|+
 literal|"retrying in next interval"
 argument_list|,

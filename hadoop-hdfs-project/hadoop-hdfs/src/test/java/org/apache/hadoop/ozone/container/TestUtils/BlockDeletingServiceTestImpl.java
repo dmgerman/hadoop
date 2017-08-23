@@ -168,6 +168,16 @@ name|BlockDeletingServiceTestImpl
 extends|extends
 name|BlockDeletingService
 block|{
+comment|// the service timeout
+DECL|field|SERVICE_TIMEOUT_IN_MILLISECONDS
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|SERVICE_TIMEOUT_IN_MILLISECONDS
+init|=
+literal|0
+decl_stmt|;
 comment|// tests only
 DECL|field|latch
 specifier|private
@@ -209,6 +219,8 @@ argument_list|(
 name|containerManager
 argument_list|,
 name|serviceInterval
+argument_list|,
+name|SERVICE_TIMEOUT_IN_MILLISECONDS
 argument_list|,
 name|conf
 argument_list|)

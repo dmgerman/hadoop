@@ -467,6 +467,18 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -543,6 +555,38 @@ operator|.
 name|OzoneConsts
 operator|.
 name|INVALID_PORT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConfigKeys
+operator|.
+name|OZONE_BLOCK_DELETING_SERVICE_TIMEOUT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConfigKeys
+operator|.
+name|OZONE_BLOCK_DELETING_SERVICE_TIMEOUT_DEFAULT
 import|;
 end_import
 
@@ -784,6 +828,22 @@ argument_list|,
 name|OZONE_BLOCK_DELETING_SERVICE_INTERVAL_MS_DEFAULT
 argument_list|)
 decl_stmt|;
+name|long
+name|serviceTimeout
+init|=
+name|ozoneConfig
+operator|.
+name|getTimeDuration
+argument_list|(
+name|OZONE_BLOCK_DELETING_SERVICE_TIMEOUT
+argument_list|,
+name|OZONE_BLOCK_DELETING_SERVICE_TIMEOUT_DEFAULT
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+argument_list|)
+decl_stmt|;
 name|this
 operator|.
 name|blockDeletingService
@@ -794,6 +854,8 @@ argument_list|(
 name|manager
 argument_list|,
 name|svcInterval
+argument_list|,
+name|serviceTimeout
 argument_list|,
 name|ozoneConfig
 argument_list|)

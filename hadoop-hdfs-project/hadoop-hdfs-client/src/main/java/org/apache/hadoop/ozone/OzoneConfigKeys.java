@@ -374,6 +374,25 @@ name|OZONE_BLOCK_DELETING_SERVICE_INTERVAL_MS_DEFAULT
 init|=
 literal|60000
 decl_stmt|;
+DECL|field|OZONE_BLOCK_DELETING_SERVICE_TIMEOUT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_BLOCK_DELETING_SERVICE_TIMEOUT
+init|=
+literal|"ozone.block.deleting.service.timeout"
+decl_stmt|;
+DECL|field|OZONE_BLOCK_DELETING_SERVICE_TIMEOUT_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|OZONE_BLOCK_DELETING_SERVICE_TIMEOUT_DEFAULT
+init|=
+literal|300000
+decl_stmt|;
+comment|// 300s for default
 DECL|field|OZONE_BLOCK_DELETING_LIMIT_PER_CONTAINER
 specifier|public
 specifier|static
