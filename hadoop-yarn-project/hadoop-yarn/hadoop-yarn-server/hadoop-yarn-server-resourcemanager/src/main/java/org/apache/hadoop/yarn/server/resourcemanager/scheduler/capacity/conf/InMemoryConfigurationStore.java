@@ -328,7 +328,12 @@ name|getPendingMutations
 parameter_list|()
 block|{
 return|return
+operator|new
+name|LinkedList
+argument_list|<>
+argument_list|(
 name|pendingMutations
+argument_list|)
 return|;
 block|}
 annotation|@

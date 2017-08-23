@@ -456,6 +456,7 @@ specifier|private
 name|DB
 name|db
 decl_stmt|;
+comment|// Txnid for the last transaction logged to the store.
 DECL|field|txnId
 specifier|private
 name|long
@@ -650,6 +651,9 @@ name|getValue
 argument_list|()
 argument_list|)
 argument_list|)
+expr_stmt|;
+name|txnId
+operator|++
 expr_stmt|;
 block|}
 comment|// Get the earliest txnId stored in logs
@@ -1842,7 +1846,12 @@ name|getPendingMutations
 parameter_list|()
 block|{
 return|return
+operator|new
+name|LinkedList
+argument_list|<>
+argument_list|(
 name|pendingMutations
+argument_list|)
 return|;
 block|}
 annotation|@
