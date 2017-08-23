@@ -56,11 +56,15 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|service
 operator|.
 name|api
 operator|.
-name|resource
+name|records
 operator|.
 name|Artifact
 import|;
@@ -72,11 +76,15 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|service
 operator|.
 name|api
 operator|.
-name|resource
+name|records
 operator|.
 name|ConfigFile
 import|;
@@ -96,7 +104,7 @@ name|service
 operator|.
 name|conf
 operator|.
-name|SliderKeys
+name|YarnServiceConstants
 import|;
 end_import
 
@@ -124,9 +132,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|util
+name|yarn
+operator|.
+name|service
+operator|.
+name|exceptions
 operator|.
 name|RestApiErrorMessages
 import|;
@@ -150,7 +162,7 @@ name|DockerClientProvider
 extends|extends
 name|AbstractClientProvider
 implements|implements
-name|SliderKeys
+name|YarnServiceConstants
 block|{
 DECL|method|DockerClientProvider ()
 specifier|public

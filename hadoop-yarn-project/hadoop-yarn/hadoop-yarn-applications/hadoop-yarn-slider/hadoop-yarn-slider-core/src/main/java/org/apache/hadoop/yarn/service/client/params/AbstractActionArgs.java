@@ -54,25 +54,11 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
 operator|.
-name|params
-operator|.
-name|PathArgumentConverter
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|slider
-operator|.
-name|core
+name|service
 operator|.
 name|exceptions
 operator|.
@@ -86,9 +72,11 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|core
+name|yarn
+operator|.
+name|service
 operator|.
 name|exceptions
 operator|.
@@ -102,9 +90,11 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|core
+name|yarn
+operator|.
+name|service
 operator|.
 name|exceptions
 operator|.
@@ -220,7 +210,7 @@ block|}
 argument_list|,
 name|description
 operator|=
-literal|"Slider base path on the filesystem"
+literal|"Service base path on the filesystem"
 argument_list|,
 name|converter
 operator|=
@@ -476,7 +466,7 @@ operator|+
 name|getActionName
 argument_list|()
 operator|+
-literal|" Expected minimum "
+literal|", Expected minimum "
 operator|+
 name|minArgs
 operator|+
@@ -579,9 +569,15 @@ operator|.
 name|append
 argument_list|(
 literal|" \""
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|actionArg
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|"\" "
 argument_list|)
 expr_stmt|;
@@ -616,28 +612,6 @@ literal|": "
 operator|+
 name|getActionName
 argument_list|()
-return|;
-block|}
-comment|/**    * Override point:     * Flag to indicate that core hadoop API services are needed (HDFS, YARN, etc)    * âand that validation of the client state should take place.    *     * @return a flag to indicate that the core hadoop services will be needed.    */
-DECL|method|getHadoopServicesRequired ()
-specifier|public
-name|boolean
-name|getHadoopServicesRequired
-parameter_list|()
-block|{
-return|return
-literal|true
-return|;
-block|}
-comment|/**    * Flag to disable secure login.    * This MUST only be set if the action is bypassing security or setting    * it itself    * @return true if login at slider client init time is to be skipped    */
-DECL|method|disableSecureLogin ()
-specifier|public
-name|boolean
-name|disableSecureLogin
-parameter_list|()
-block|{
-return|return
-literal|false
 return|;
 block|}
 block|}

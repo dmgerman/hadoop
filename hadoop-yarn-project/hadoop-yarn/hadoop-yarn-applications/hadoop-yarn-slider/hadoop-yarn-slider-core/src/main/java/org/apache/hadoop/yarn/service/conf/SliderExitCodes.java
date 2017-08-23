@@ -26,11 +26,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|core
+name|yarn
 operator|.
-name|main
+name|service
+operator|.
+name|exceptions
 operator|.
 name|LauncherExitCodes
 import|;

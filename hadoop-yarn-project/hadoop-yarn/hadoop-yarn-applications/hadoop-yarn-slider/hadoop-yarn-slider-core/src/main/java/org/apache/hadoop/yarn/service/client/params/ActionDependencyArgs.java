@@ -28,9 +28,11 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|core
+name|yarn
+operator|.
+name|service
 operator|.
 name|exceptions
 operator|.
@@ -44,9 +46,11 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|core
+name|yarn
+operator|.
+name|service
 operator|.
 name|exceptions
 operator|.

@@ -104,11 +104,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
 operator|.
-name|tools
+name|service
+operator|.
+name|utils
 operator|.
 name|SliderUtils
 import|;
@@ -120,9 +122,11 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|core
+name|yarn
+operator|.
+name|service
 operator|.
 name|exceptions
 operator|.
@@ -136,9 +140,11 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|core
+name|yarn
+operator|.
+name|service
 operator|.
 name|exceptions
 operator|.
@@ -152,9 +158,11 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|core
+name|yarn
+operator|.
+name|service
 operator|.
 name|exceptions
 operator|.
@@ -168,9 +176,11 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|core
+name|yarn
+operator|.
+name|service
 operator|.
 name|exceptions
 operator|.
@@ -494,7 +504,7 @@ name|helperMessage
 operator|.
 name|append
 argument_list|(
-literal|"\nUsage: slider COMMAND [options]\n"
+literal|"\nUsage: service COMMAND [options]\n"
 argument_list|)
 expr_stmt|;
 name|helperMessage
@@ -571,7 +581,7 @@ name|helperMessage
 operator|.
 name|append
 argument_list|(
-literal|"\nUsage: slider "
+literal|"\nUsage: service "
 argument_list|)
 operator|.
 name|append
@@ -957,17 +967,6 @@ name|syspropsMap
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get the core action -type depends on the action    * @return the action class    */
-DECL|method|getCoreAction ()
-specifier|public
-name|AbstractActionArgs
-name|getCoreAction
-parameter_list|()
-block|{
-return|return
-name|coreAction
-return|;
-block|}
 comment|/**    * Validate the arguments against the action requested    */
 DECL|method|validate ()
 specifier|public
@@ -1029,10 +1028,13 @@ name|badArgMsgBuilder
 init|=
 name|e
 operator|.
-name|toString
+name|getMessage
 argument_list|()
 operator|+
-literal|"\n"
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
 operator|+
 name|usage
 argument_list|(
@@ -1153,21 +1155,6 @@ name|commander
 operator|.
 name|getParsedCommand
 argument_list|()
-return|;
-block|}
-DECL|method|getActionArgs ()
-specifier|public
-name|List
-argument_list|<
-name|String
-argument_list|>
-name|getActionArgs
-parameter_list|()
-block|{
-return|return
-name|coreAction
-operator|.
-name|parameters
 return|;
 block|}
 block|}

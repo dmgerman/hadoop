@@ -251,15 +251,6 @@ name|DESCRIPTION
 init|=
 literal|"DESCRIPTION"
 decl_stmt|;
-DECL|field|UNIQUE_COMPONENT_SUPPORT
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|UNIQUE_COMPONENT_SUPPORT
-init|=
-literal|"UNIQUE_COMPONENT_SUPPORT"
-decl_stmt|;
 DECL|field|RUN_PRIVILEGED_CONTAINER
 specifier|public
 specifier|static

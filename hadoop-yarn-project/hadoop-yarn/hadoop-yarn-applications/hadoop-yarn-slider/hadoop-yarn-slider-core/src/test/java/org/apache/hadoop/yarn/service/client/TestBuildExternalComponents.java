@@ -76,9 +76,11 @@ name|yarn
 operator|.
 name|service
 operator|.
-name|conf
+name|api
 operator|.
-name|ExampleAppJson
+name|records
+operator|.
+name|Component
 import|;
 end_import
 
@@ -88,13 +90,15 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|api
+name|yarn
 operator|.
-name|resource
+name|service
 operator|.
-name|Component
+name|conf
+operator|.
+name|ExampleAppJson
 import|;
 end_import
 
@@ -124,13 +128,15 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
 operator|.
-name|tools
+name|service
 operator|.
-name|SliderFileSystem
+name|utils
+operator|.
+name|ServiceApiUtil
 import|;
 end_import
 
@@ -148,7 +154,7 @@ name|service
 operator|.
 name|utils
 operator|.
-name|ServiceApiUtil
+name|SliderFileSystem
 import|;
 end_import
 
@@ -278,9 +284,9 @@ name|service
 operator|.
 name|conf
 operator|.
-name|SliderXmlConfKeys
+name|YarnServiceConf
 operator|.
-name|KEY_SLIDER_BASE_PATH
+name|YARN_SERVICE_BASE_PATH
 import|;
 end_import
 
@@ -540,7 +546,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|KEY_SLIDER_BASE_PATH
+name|YARN_SERVICE_BASE_PATH
 argument_list|,
 name|basedir
 operator|.

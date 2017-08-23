@@ -52,9 +52,11 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|core
+name|yarn
+operator|.
+name|service
 operator|.
 name|exceptions
 operator|.
@@ -150,22 +152,6 @@ return|return
 name|componentDelegate
 operator|.
 name|getComponentMap
-argument_list|()
-return|;
-block|}
-DECL|method|getComponentTuples ()
-specifier|public
-name|List
-argument_list|<
-name|String
-argument_list|>
-name|getComponentTuples
-parameter_list|()
-block|{
-return|return
-name|componentDelegate
-operator|.
-name|getComponentTuples
 argument_list|()
 return|;
 block|}

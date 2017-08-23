@@ -122,13 +122,17 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|api
+name|yarn
 operator|.
-name|ResourceKeys
+name|service
 operator|.
-name|NODE_FAILURE_THRESHOLD
+name|conf
+operator|.
+name|YarnServiceConf
+operator|.
+name|NODE_BLACKLIST_THRESHOLD
 import|;
 end_import
 
@@ -237,7 +241,7 @@ argument_list|()
 operator|.
 name|getPropertyInt
 argument_list|(
-name|NODE_FAILURE_THRESHOLD
+name|NODE_BLACKLIST_THRESHOLD
 argument_list|,
 literal|3
 argument_list|)

@@ -32,12 +32,6 @@ specifier|public
 interface|interface
 name|SliderActions
 block|{
-DECL|field|ACTION_AM_SUICIDE
-name|String
-name|ACTION_AM_SUICIDE
-init|=
-literal|"am-suicide"
-decl_stmt|;
 DECL|field|ACTION_BUILD
 name|String
 name|ACTION_BUILD
@@ -55,12 +49,6 @@ name|String
 name|ACTION_CREATE
 init|=
 literal|"create"
-decl_stmt|;
-DECL|field|ACTION_DIAGNOSTICS
-name|String
-name|ACTION_DIAGNOSTICS
-init|=
-literal|"diagnostics"
 decl_stmt|;
 DECL|field|ACTION_DEPENDENCY
 name|String
@@ -85,12 +73,6 @@ name|String
 name|ACTION_DESTROY
 init|=
 literal|"destroy"
-decl_stmt|;
-DECL|field|ACTION_ECHO
-name|String
-name|ACTION_ECHO
-init|=
-literal|"echo"
 decl_stmt|;
 DECL|field|ACTION_EXISTS
 name|String
@@ -134,41 +116,11 @@ name|ACTION_KEYTAB
 init|=
 literal|"keytab"
 decl_stmt|;
-DECL|field|ACTION_KILL_CONTAINER
-name|String
-name|ACTION_KILL_CONTAINER
-init|=
-literal|"kill-container"
-decl_stmt|;
 DECL|field|ACTION_LIST
 name|String
 name|ACTION_LIST
 init|=
 literal|"list"
-decl_stmt|;
-DECL|field|ACTION_LOOKUP
-name|String
-name|ACTION_LOOKUP
-init|=
-literal|"lookup"
-decl_stmt|;
-DECL|field|ACTION_NODES
-name|String
-name|ACTION_NODES
-init|=
-literal|"nodes"
-decl_stmt|;
-DECL|field|ACTION_PREFLIGHT
-name|String
-name|ACTION_PREFLIGHT
-init|=
-literal|"preflight"
-decl_stmt|;
-DECL|field|ACTION_RECONFIGURE
-name|String
-name|ACTION_RECONFIGURE
-init|=
-literal|"reconfigure"
 decl_stmt|;
 DECL|field|ACTION_REGISTRY
 name|String
@@ -206,41 +158,29 @@ name|ACTION_TOKENS
 init|=
 literal|"tokens"
 decl_stmt|;
-DECL|field|ACTION_VERSION
-name|String
-name|ACTION_VERSION
-init|=
-literal|"version"
-decl_stmt|;
-DECL|field|DESCRIBE_ACTION_AM_SUICIDE
-name|String
-name|DESCRIBE_ACTION_AM_SUICIDE
-init|=
-literal|"Tell the Slider Application Master to simulate a process failure by terminating itself"
-decl_stmt|;
 DECL|field|DESCRIBE_ACTION_BUILD
 name|String
 name|DESCRIBE_ACTION_BUILD
 init|=
-literal|"Build a Slider cluster specification, but do not start it"
+literal|"Build a service specification, but do not start it"
 decl_stmt|;
 DECL|field|DESCRIBE_ACTION_CREATE
 name|String
 name|DESCRIBE_ACTION_CREATE
 init|=
-literal|"Create a live Slider application"
+literal|"Build and start a service, it's equivalent to first invoke build and then start"
 decl_stmt|;
 DECL|field|DESCRIBE_ACTION_DEPENDENCY
 name|String
 name|DESCRIBE_ACTION_DEPENDENCY
 init|=
-literal|"Slider AM and agent dependency (libraries) management"
+literal|"Yarn service framework dependency (libraries) management"
 decl_stmt|;
 DECL|field|DESCRIBE_ACTION_UPDATE
 name|String
 name|DESCRIBE_ACTION_UPDATE
 init|=
-literal|"Update template for a Slider application"
+literal|"Update template for service"
 decl_stmt|;
 DECL|field|DESCRIBE_ACTION_UPGRADE
 name|String
@@ -252,7 +192,7 @@ DECL|field|DESCRIBE_ACTION_DESTROY
 name|String
 name|DESCRIBE_ACTION_DESTROY
 init|=
-literal|"Destroy a stopped Slider application"
+literal|"Destroy a stopped service, service must be stopped first before destroying."
 decl_stmt|;
 DECL|field|DESCRIBE_ACTION_EXISTS
 name|String
@@ -264,31 +204,19 @@ DECL|field|DESCRIBE_ACTION_FLEX
 name|String
 name|DESCRIBE_ACTION_FLEX
 init|=
-literal|"Flex a Slider application"
+literal|"Flex a service's component by increasing or decreasing the number of containers."
 decl_stmt|;
 DECL|field|DESCRIBE_ACTION_FREEZE
 name|String
 name|DESCRIBE_ACTION_FREEZE
 init|=
-literal|"Stop a running application"
-decl_stmt|;
-DECL|field|DESCRIBE_ACTION_GETCONF
-name|String
-name|DESCRIBE_ACTION_GETCONF
-init|=
-literal|"Get the configuration of an application"
+literal|"Stop a running service"
 decl_stmt|;
 DECL|field|DESCRIBE_ACTION_KDIAG
 name|String
 name|DESCRIBE_ACTION_KDIAG
 init|=
 literal|"Diagnose Kerberos problems"
-decl_stmt|;
-DECL|field|DESCRIBE_ACTION_KILL_CONTAINER
-name|String
-name|DESCRIBE_ACTION_KILL_CONTAINER
-init|=
-literal|"Kill a container in the application"
 decl_stmt|;
 DECL|field|DESCRIBE_ACTION_HELP
 name|String
@@ -300,55 +228,25 @@ DECL|field|DESCRIBE_ACTION_LIST
 name|String
 name|DESCRIBE_ACTION_LIST
 init|=
-literal|"List running Slider applications"
-decl_stmt|;
-DECL|field|DESCRIBE_ACTION_LOOKUP
-name|String
-name|DESCRIBE_ACTION_LOOKUP
-init|=
-literal|"look up a YARN application"
-decl_stmt|;
-DECL|field|DESCRIBE_ACTION_NODES
-name|String
-name|DESCRIBE_ACTION_NODES
-init|=
-literal|"List the node information for the YARN cluster or a running application"
-decl_stmt|;
-DECL|field|DESCRIBE_ACTION_MONITOR
-name|String
-name|DESCRIBE_ACTION_MONITOR
-init|=
-literal|"Monitor a running application"
+literal|"List running services"
 decl_stmt|;
 DECL|field|DESCRIBE_ACTION_REGISTRY
 name|String
 name|DESCRIBE_ACTION_REGISTRY
 init|=
-literal|"Query the registry of a YARN application"
-decl_stmt|;
-DECL|field|DESCRIBE_ACTION_RESOLVE
-name|String
-name|DESCRIBE_ACTION_RESOLVE
-init|=
-literal|"Resolve or list records in the YARN registry"
+literal|"Query the registry of a service"
 decl_stmt|;
 DECL|field|DESCRIBE_ACTION_STATUS
 name|String
 name|DESCRIBE_ACTION_STATUS
 init|=
-literal|"Get the status of an application"
+literal|"Get the status of a service"
 decl_stmt|;
 DECL|field|DESCRIBE_ACTION_THAW
 name|String
 name|DESCRIBE_ACTION_THAW
 init|=
-literal|"Start a stopped application"
-decl_stmt|;
-DECL|field|DESCRIBE_ACTION_VERSION
-name|String
-name|DESCRIBE_ACTION_VERSION
-init|=
-literal|"Print the Slider version information"
+literal|"Start a service with pre-built specification or a previously stopped service"
 decl_stmt|;
 DECL|field|DESCRIBE_ACTION_CLIENT
 name|String
@@ -361,12 +259,6 @@ name|String
 name|DESCRIBE_ACTION_KEYTAB
 init|=
 literal|"Manage a Kerberos keytab file (install, delete, list) in the sub-folder 'keytabs' of the user's Slider base directory"
-decl_stmt|;
-DECL|field|DESCRIBE_ACTION_DIAGNOSTIC
-name|String
-name|DESCRIBE_ACTION_DIAGNOSTIC
-init|=
-literal|"Diagnose the configuration of the running slider application and slider client"
 decl_stmt|;
 DECL|field|DESCRIBE_ACTION_RESOURCE
 name|String

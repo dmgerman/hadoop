@@ -26,11 +26,13 @@ name|org
 operator|.
 name|apache
 operator|.
-name|slider
+name|hadoop
 operator|.
-name|common
+name|yarn
 operator|.
-name|tools
+name|service
+operator|.
+name|utils
 operator|.
 name|SliderUtils
 import|;
