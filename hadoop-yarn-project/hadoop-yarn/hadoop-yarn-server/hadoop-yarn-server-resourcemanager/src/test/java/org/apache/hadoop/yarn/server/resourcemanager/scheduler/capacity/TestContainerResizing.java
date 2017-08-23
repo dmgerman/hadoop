@@ -308,6 +308,38 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|event
+operator|.
+name|Dispatcher
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|event
+operator|.
+name|DrainDispatcher
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -1225,6 +1257,14 @@ throws|throws
 name|Exception
 block|{
 comment|/**      * Application has a container running, try to decrease the container and      * check queue's usage and container resource will be updated.      */
+specifier|final
+name|DrainDispatcher
+name|dispatcher
+init|=
+operator|new
+name|DrainDispatcher
+argument_list|()
+decl_stmt|;
 name|MockRM
 name|rm1
 init|=
@@ -1241,6 +1281,17 @@ parameter_list|()
 block|{
 return|return
 name|mgr
+return|;
+block|}
+annotation|@
+name|Override
+specifier|protected
+name|Dispatcher
+name|createDispatcher
+parameter_list|()
+block|{
+return|return
+name|dispatcher
 return|;
 block|}
 block|}
@@ -1417,6 +1468,12 @@ literal|1
 operator|*
 name|GB
 argument_list|)
+expr_stmt|;
+comment|// Wait for scheduler to finish processing kill events..
+name|dispatcher
+operator|.
+name|waitForEventThreadToWait
+argument_list|()
 expr_stmt|;
 name|checkUsedResource
 argument_list|(
@@ -3431,6 +3488,14 @@ throws|throws
 name|Exception
 block|{
 comment|/**      * Very similar to testExcessiveReservationWhenCancelIncreaseRequest, after      * the increase request reserved, it decreases the reserved container,      * container should be decreased and reservation will be cancelled      */
+specifier|final
+name|DrainDispatcher
+name|dispatcher
+init|=
+operator|new
+name|DrainDispatcher
+argument_list|()
+decl_stmt|;
 name|MockRM
 name|rm1
 init|=
@@ -3447,6 +3512,17 @@ parameter_list|()
 block|{
 return|return
 name|mgr
+return|;
+block|}
+annotation|@
+name|Override
+specifier|protected
+name|Dispatcher
+name|createDispatcher
+parameter_list|()
+block|{
+return|return
+name|dispatcher
 return|;
 block|}
 block|}
@@ -3970,6 +4046,11 @@ name|rmNode1
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|dispatcher
+operator|.
+name|waitForEventThreadToWait
+argument_list|()
+expr_stmt|;
 comment|/* Check statuses after reservation satisfied */
 comment|// Increase request should be unreserved
 name|Assert
@@ -4140,6 +4221,14 @@ throws|throws
 name|Exception
 block|{
 comment|/**      * App has two containers on the same node (node.resource = 8G), container1      * = 2G, container2 = 2G. App asks to increase container2 to 8G.      *      * So increase container request will be reserved. When app releases      * container2, reserved part should be released as well.      */
+specifier|final
+name|DrainDispatcher
+name|dispatcher
+init|=
+operator|new
+name|DrainDispatcher
+argument_list|()
+decl_stmt|;
 name|MockRM
 name|rm1
 init|=
@@ -4156,6 +4245,17 @@ parameter_list|()
 block|{
 return|return
 name|mgr
+return|;
+block|}
+annotation|@
+name|Override
+specifier|protected
+name|Dispatcher
+name|createDispatcher
+parameter_list|()
+block|{
+return|return
+name|dispatcher
 return|;
 block|}
 block|}
@@ -4648,6 +4748,12 @@ literal|null
 argument_list|,
 literal|null
 argument_list|)
+expr_stmt|;
+comment|// Wait for scheduler to process all events.
+name|dispatcher
+operator|.
+name|waitForEventThreadToWait
+argument_list|()
 expr_stmt|;
 comment|/* Check statuses after reservation satisfied */
 comment|// Increase request should be unreserved

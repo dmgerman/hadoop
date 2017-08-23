@@ -4443,6 +4443,10 @@ argument_list|(
 literal|null
 argument_list|)
 expr_stmt|;
+comment|// Release this container async-ly so as to prevent
+comment|// 'LeafQueue::completedContainer()' from trying to acquire a lock
+comment|// on the app and queue which can contended for in the reverse order
+comment|// by the Scheduler thread.
 operator|(
 operator|(
 name|AbstractYarnScheduler
@@ -4453,27 +4457,9 @@ name|getScheduler
 argument_list|()
 operator|)
 operator|.
-name|completedContainer
+name|asyncContainerRelease
 argument_list|(
 name|c
-argument_list|,
-name|SchedulerUtils
-operator|.
-name|createAbnormalContainerStatus
-argument_list|(
-name|c
-operator|.
-name|getContainerId
-argument_list|()
-argument_list|,
-name|SchedulerUtils
-operator|.
-name|UPDATED_CONTAINER
-argument_list|)
-argument_list|,
-name|RMContainerEventType
-operator|.
-name|KILL
 argument_list|)
 expr_stmt|;
 name|tempIter

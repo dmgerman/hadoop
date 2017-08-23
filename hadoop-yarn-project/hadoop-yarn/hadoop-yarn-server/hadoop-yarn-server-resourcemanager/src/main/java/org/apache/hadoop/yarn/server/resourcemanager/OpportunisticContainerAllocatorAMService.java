@@ -2323,6 +2323,10 @@ case|case
 name|NODE_LABELS_UPDATE
 case|:
 break|break;
+case|case
+name|RELEASE_CONTAINER
+case|:
+break|break;
 comment|//<-- IGNORED EVENTS : END -->
 default|default:
 name|LOG

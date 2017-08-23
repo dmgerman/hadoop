@@ -1331,7 +1331,10 @@ name|getOpportunisticContainersStatus
 parameter_list|()
 block|{
 return|return
-literal|null
+name|OpportunisticContainersStatus
+operator|.
+name|newInstance
+argument_list|()
 return|;
 block|}
 annotation|@

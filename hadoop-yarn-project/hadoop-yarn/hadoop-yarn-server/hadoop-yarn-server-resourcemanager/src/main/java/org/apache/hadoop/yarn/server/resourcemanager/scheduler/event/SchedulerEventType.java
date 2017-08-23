@@ -64,6 +64,10 @@ comment|// Source: ContainerAllocationExpirer
 DECL|enumConstant|CONTAINER_EXPIRED
 name|CONTAINER_EXPIRED
 block|,
+comment|// Source: SchedulerAppAttempt::pullNewlyUpdatedContainer.
+DECL|enumConstant|RELEASE_CONTAINER
+name|RELEASE_CONTAINER
+block|,
 comment|/* Source: SchedulingEditPolicy */
 DECL|enumConstant|KILL_RESERVED_CONTAINER
 name|KILL_RESERVED_CONTAINER
