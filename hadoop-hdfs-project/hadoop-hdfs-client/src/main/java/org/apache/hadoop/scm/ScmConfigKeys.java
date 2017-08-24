@@ -725,6 +725,24 @@ init|=
 literal|300
 decl_stmt|;
 comment|// Default 5 minute wait.
+DECL|field|OZONE_SCM_BLOCK_DELETION_MAX_RETRY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_SCM_BLOCK_DELETION_MAX_RETRY
+init|=
+literal|"ozone.scm.block.deletion.max.retry"
+decl_stmt|;
+DECL|field|OZONE_SCM_BLOCK_DELETION_MAX_RETRY_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|OZONE_SCM_BLOCK_DELETION_MAX_RETRY_DEFAULT
+init|=
+literal|4096
+decl_stmt|;
 comment|/**    * Never constructed.    */
 DECL|method|ScmConfigKeys ()
 specifier|private

@@ -376,6 +376,15 @@ name|OPEN_CONTAINERS_DB
 init|=
 literal|"openContainers.db"
 decl_stmt|;
+DECL|field|DELETED_BLOCK_DB
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DELETED_BLOCK_DB
+init|=
+literal|"deletedBlock.db"
+decl_stmt|;
 DECL|field|KSM_DB_NAME
 specifier|public
 specifier|static
