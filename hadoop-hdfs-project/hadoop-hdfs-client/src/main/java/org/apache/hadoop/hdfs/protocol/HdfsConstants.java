@@ -560,6 +560,18 @@ name|ENTERING_MAINTENANCE
 block|,
 name|IN_MAINTENANCE
 block|}
+comment|/**    * Re-encrypt encryption zone actions.    */
+DECL|enum|ReencryptAction
+specifier|public
+enum|enum
+name|ReencryptAction
+block|{
+DECL|enumConstant|CANCEL
+DECL|enumConstant|START
+name|CANCEL
+block|,
+name|START
+block|}
 comment|/* Hidden constructor */
 DECL|method|HdfsConstants ()
 specifier|protected

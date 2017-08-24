@@ -350,6 +350,24 @@ name|protocol
 operator|.
 name|HdfsConstants
 operator|.
+name|ReencryptAction
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|HdfsConstants
+operator|.
 name|RollingUpgradeAction
 import|;
 end_import
@@ -2006,6 +2024,38 @@ argument_list|<
 name|EncryptionZone
 argument_list|>
 name|listEncryptionZones
+parameter_list|(
+name|long
+name|prevId
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Used to implement re-encryption of encryption zones.    *    * @param zone the encryption zone to re-encrypt.    * @param action the action for the re-encryption.    * @throws IOException    */
+annotation|@
+name|AtMostOnce
+DECL|method|reencryptEncryptionZone (String zone, ReencryptAction action)
+name|void
+name|reencryptEncryptionZone
+parameter_list|(
+name|String
+name|zone
+parameter_list|,
+name|ReencryptAction
+name|action
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Used to implement cursor-based batched listing of    * {@ZoneReencryptionStatus}s.    *    * @param prevId ID of the last item in the previous batch. If there is no    *               previous batch, a negative value can be used.    * @return Batch of encryption zones.    * @throws IOException    */
+annotation|@
+name|Idempotent
+DECL|method|listReencryptionStatus (long prevId)
+name|BatchedEntries
+argument_list|<
+name|ZoneReencryptionStatus
+argument_list|>
+name|listReencryptionStatus
 parameter_list|(
 name|long
 name|prevId

@@ -109,6 +109,36 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{}
+annotation|@
+name|VisibleForTesting
+DECL|method|reencryptEncryptedKeys ()
+specifier|public
+name|void
+name|reencryptEncryptedKeys
+parameter_list|()
+throws|throws
+name|IOException
+block|{}
+annotation|@
+name|VisibleForTesting
+DECL|method|reencryptUpdaterProcessOneTask ()
+specifier|public
+name|void
+name|reencryptUpdaterProcessOneTask
+parameter_list|()
+throws|throws
+name|IOException
+block|{}
+annotation|@
+name|VisibleForTesting
+DECL|method|reencryptUpdaterProcessCheckpoint ()
+specifier|public
+name|void
+name|reencryptUpdaterProcessCheckpoint
+parameter_list|()
+throws|throws
+name|IOException
+block|{}
 block|}
 end_class
 
