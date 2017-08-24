@@ -1260,6 +1260,18 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getlastBlockBeingWrittenLengthForTesting ()
+specifier|public
+name|long
+name|getlastBlockBeingWrittenLengthForTesting
+parameter_list|()
+block|{
+return|return
+name|lastBlockBeingWrittenLength
+return|;
+block|}
 comment|/**    * Grab the open-file info from namenode    * @param refreshLocatedBlocks whether to re-fetch locatedblocks    */
 DECL|method|openInfo (boolean refreshLocatedBlocks)
 name|void
@@ -1362,6 +1374,11 @@ expr_stmt|;
 block|}
 if|if
 condition|(
+name|lastBlockBeingWrittenLength
+operator|==
+operator|-
+literal|1
+operator|&&
 name|retriesForLastBlockLength
 operator|==
 literal|0
