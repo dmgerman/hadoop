@@ -2117,9 +2117,7 @@ literal|"Unable to find '"
 operator|+
 name|resourceFile
 operator|+
-literal|"'. Falling back to memory and vcores as resources"
-argument_list|,
-name|fe
+literal|"'. Falling back to memory and vcores as resources."
 argument_list|)
 expr_stmt|;
 name|initializeResourcesMap
