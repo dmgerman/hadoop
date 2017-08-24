@@ -868,7 +868,7 @@ name|DB_SCHEMA_VERSION_KEY
 init|=
 literal|"nm-schema-version"
 decl_stmt|;
-comment|/**    * Changes from 1.0 to 1.1: Save AMRMProxy state in NMSS.    * Changes from 1.2 to 1.2: Save queued container information.    */
+comment|/**    * Changes from 1.0 to 1.1: Save AMRMProxy state in NMSS.    * Changes from 1.1 to 1.2: Save queued container information.    */
 DECL|field|CURRENT_VERSION_INFO
 specifier|private
 specifier|static
