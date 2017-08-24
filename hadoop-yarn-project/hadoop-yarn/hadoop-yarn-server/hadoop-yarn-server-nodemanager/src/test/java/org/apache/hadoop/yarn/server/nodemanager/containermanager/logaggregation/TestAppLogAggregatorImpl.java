@@ -314,9 +314,9 @@ name|yarn
 operator|.
 name|logaggregation
 operator|.
-name|AggregatedLogFormat
+name|filecontroller
 operator|.
-name|LogWriter
+name|LogAggregationTFileController
 import|;
 end_import
 
@@ -1575,10 +1575,11 @@ name|verify
 argument_list|(
 name|appLogAggregator
 operator|.
-name|logWriter
+name|getLogAggregationFileController
+argument_list|()
 argument_list|)
 operator|.
-name|append
+name|write
 argument_list|(
 name|any
 argument_list|(
@@ -1866,6 +1867,25 @@ name|getAbsolutePath
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|LogAggregationTFileController
+name|format
+init|=
+name|spy
+argument_list|(
+operator|new
+name|LogAggregationTFileController
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|format
+operator|.
+name|initialize
+argument_list|(
+name|config
+argument_list|,
+literal|"TFile"
+argument_list|)
+expr_stmt|;
 return|return
 operator|new
 name|AppLogAggregatorInTest
@@ -1895,6 +1915,8 @@ argument_list|,
 name|fakeLfs
 argument_list|,
 name|recoveredLogInitedTimeMillis
+argument_list|,
+name|format
 argument_list|)
 return|;
 block|}
@@ -2372,11 +2394,6 @@ specifier|final
 name|ApplicationId
 name|applicationId
 decl_stmt|;
-DECL|field|logWriter
-specifier|final
-name|LogWriter
-name|logWriter
-decl_stmt|;
 DECL|field|logValue
 specifier|final
 name|ArgumentCaptor
@@ -2385,7 +2402,7 @@ name|LogValue
 argument_list|>
 name|logValue
 decl_stmt|;
-DECL|method|AppLogAggregatorInTest (Dispatcher dispatcher, DeletionService deletionService, Configuration conf, ApplicationId appId, UserGroupInformation ugi, NodeId nodeId, LocalDirsHandlerService dirsHandler, Path remoteNodeLogFileForApp, Map<ApplicationAccessType, String> appAcls, LogAggregationContext logAggregationContext, Context context, FileContext lfs, long recoveredLogInitedTime)
+DECL|method|AppLogAggregatorInTest (Dispatcher dispatcher, DeletionService deletionService, Configuration conf, ApplicationId appId, UserGroupInformation ugi, NodeId nodeId, LocalDirsHandlerService dirsHandler, Path remoteNodeLogFileForApp, Map<ApplicationAccessType, String> appAcls, LogAggregationContext logAggregationContext, Context context, FileContext lfs, long recoveredLogInitedTime, LogAggregationTFileController format)
 specifier|public
 name|AppLogAggregatorInTest
 parameter_list|(
@@ -2432,6 +2449,9 @@ name|lfs
 parameter_list|,
 name|long
 name|recoveredLogInitedTime
+parameter_list|,
+name|LogAggregationTFileController
+name|format
 parameter_list|)
 throws|throws
 name|IOException
@@ -2466,6 +2486,8 @@ operator|-
 literal|1
 argument_list|,
 name|recoveredLogInitedTime
+argument_list|,
+name|format
 argument_list|)
 expr_stmt|;
 name|this
@@ -2482,17 +2504,6 @@ name|deletionService
 expr_stmt|;
 name|this
 operator|.
-name|logWriter
-operator|=
-name|spy
-argument_list|(
-operator|new
-name|LogWriter
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
 name|logValue
 operator|=
 name|ArgumentCaptor
@@ -2504,20 +2515,6 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|createLogWriter ()
-specifier|protected
-name|LogWriter
-name|createLogWriter
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|logWriter
-return|;
 block|}
 block|}
 block|}

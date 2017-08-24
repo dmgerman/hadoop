@@ -606,6 +606,13 @@ argument_list|(
 literal|"hadoop.registry"
 argument_list|)
 expr_stmt|;
+name|xmlPrefixToSkipCompare
+operator|.
+name|add
+argument_list|(
+literal|"yarn.log-aggregation.file-controller.TFile.class"
+argument_list|)
+expr_stmt|;
 comment|// Add the filters used for checking for collision of default values.
 name|initDefaultValueCollisionCheck
 argument_list|()
