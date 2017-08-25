@@ -44,6 +44,24 @@ name|ContainerId
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|ContainerType
+import|;
+end_import
+
 begin_class
 DECL|class|LogHandlerContainerFinishedEvent
 specifier|public
@@ -58,18 +76,27 @@ specifier|final
 name|ContainerId
 name|containerId
 decl_stmt|;
+DECL|field|containerType
+specifier|private
+specifier|final
+name|ContainerType
+name|containerType
+decl_stmt|;
 DECL|field|exitCode
 specifier|private
 specifier|final
 name|int
 name|exitCode
 decl_stmt|;
-DECL|method|LogHandlerContainerFinishedEvent (ContainerId containerId, int exitCode)
+DECL|method|LogHandlerContainerFinishedEvent (ContainerId containerId, ContainerType containerType, int exitCode)
 specifier|public
 name|LogHandlerContainerFinishedEvent
 parameter_list|(
 name|ContainerId
 name|containerId
+parameter_list|,
+name|ContainerType
+name|containerType
 parameter_list|,
 name|int
 name|exitCode
@@ -90,6 +117,12 @@ name|containerId
 expr_stmt|;
 name|this
 operator|.
+name|containerType
+operator|=
+name|containerType
+expr_stmt|;
+name|this
+operator|.
 name|exitCode
 operator|=
 name|exitCode
@@ -105,6 +138,16 @@ return|return
 name|this
 operator|.
 name|containerId
+return|;
+block|}
+DECL|method|getContainerType ()
+specifier|public
+name|ContainerType
+name|getContainerType
+parameter_list|()
+block|{
+return|return
+name|containerType
 return|;
 block|}
 DECL|method|getExitCode ()

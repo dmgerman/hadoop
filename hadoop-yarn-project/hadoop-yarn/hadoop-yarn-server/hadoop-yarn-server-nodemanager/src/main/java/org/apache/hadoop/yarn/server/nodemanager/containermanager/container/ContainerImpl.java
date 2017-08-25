@@ -4191,6 +4191,11 @@ name|LogHandlerContainerFinishedEvent
 argument_list|(
 name|containerId
 argument_list|,
+name|containerTokenIdentifier
+operator|.
+name|getContainerType
+argument_list|()
+argument_list|,
 name|exitCode
 argument_list|)
 argument_list|)
