@@ -184,11 +184,33 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
 import|;
 end_import
 
@@ -197,8 +219,6 @@ DECL|class|TestIndexCache
 specifier|public
 class|class
 name|TestIndexCache
-extends|extends
-name|TestCase
 block|{
 DECL|field|conf
 specifier|private
@@ -216,7 +236,7 @@ name|Path
 name|p
 decl_stmt|;
 annotation|@
-name|Override
+name|Before
 DECL|method|setUp ()
 specifier|public
 name|void
@@ -274,6 +294,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testLRCPolicy ()
 specifier|public
 name|void
@@ -841,6 +863,8 @@ name|totalsize
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testBadIndex ()
 specifier|public
 name|void
@@ -1064,6 +1088,8 @@ throw|;
 block|}
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testInvalidReduceNumberOrLength ()
 specifier|public
 name|void
@@ -1243,6 +1269,8 @@ throw|;
 block|}
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testRemoveMap ()
 specifier|public
 name|void
@@ -1473,6 +1501,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testCreateRace ()
 specifier|public
 name|void

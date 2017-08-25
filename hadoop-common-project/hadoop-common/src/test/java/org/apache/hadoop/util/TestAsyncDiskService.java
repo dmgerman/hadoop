@@ -18,35 +18,23 @@ end_package
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|AsyncDiskService
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|junit
 operator|.
 name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
 import|;
 end_import
 
@@ -79,8 +67,6 @@ DECL|class|TestAsyncDiskService
 specifier|public
 class|class
 name|TestAsyncDiskService
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|public

@@ -64,34 +64,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|FileBasedIPList
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|IPList
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|junit
 operator|.
 name|After
@@ -109,12 +81,14 @@ import|;
 end_import
 
 begin_import
-import|import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Assert
 operator|.
-name|TestCase
+name|*
 import|;
 end_import
 
@@ -123,8 +97,6 @@ DECL|class|TestFileBasedIPList
 specifier|public
 class|class
 name|TestFileBasedIPList
-extends|extends
-name|TestCase
 block|{
 annotation|@
 name|After
@@ -463,6 +435,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Do not specify the file    * test for inclusion    * should be true as if the feature is turned off    */
+annotation|@
+name|Test
 DECL|method|testFileNotSpecified ()
 specifier|public
 name|void
@@ -492,6 +466,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Specify a non existent file    * test for inclusion    * should be true as if the feature is turned off    */
+annotation|@
+name|Test
 DECL|method|testFileMissing ()
 specifier|public
 name|void
@@ -521,6 +497,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Specify an existing file, but empty    * test for inclusion    * should be true as if the feature is turned off    */
+annotation|@
+name|Test
 DECL|method|testWithEmptyList ()
 specifier|public
 name|void
@@ -565,6 +543,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Specify an existing file, but ips in wrong format    * test for inclusion    * should be true as if the feature is turned off    */
+annotation|@
+name|Test
 DECL|method|testForBadFIle ()
 specifier|public
 name|void
@@ -610,6 +590,8 @@ comment|//expects Exception
 block|}
 block|}
 comment|/**    * Add a bunch of subnets and IPSs to the file. Keep one entry wrong.    * The good entries will still be used.    * Check  for inclusion with good entries    * Check for exclusion    */
+annotation|@
+name|Test
 DECL|method|testWithAWrongEntry ()
 specifier|public
 name|void

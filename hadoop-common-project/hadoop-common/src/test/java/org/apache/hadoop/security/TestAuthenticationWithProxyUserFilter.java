@@ -18,11 +18,23 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
 import|;
 end_import
 
@@ -121,14 +133,14 @@ DECL|class|TestAuthenticationWithProxyUserFilter
 specifier|public
 class|class
 name|TestAuthenticationWithProxyUserFilter
-extends|extends
-name|TestCase
 block|{
 annotation|@
 name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
+annotation|@
+name|Test
 DECL|method|testConfiguration ()
 specifier|public
 name|void

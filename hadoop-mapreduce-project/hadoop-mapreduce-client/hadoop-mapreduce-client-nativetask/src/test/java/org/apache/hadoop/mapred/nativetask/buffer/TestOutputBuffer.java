@@ -22,11 +22,11 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
-operator|.
-name|TestCase
+name|Test
 import|;
 end_import
 
@@ -45,9 +45,9 @@ DECL|class|TestOutputBuffer
 specifier|public
 class|class
 name|TestOutputBuffer
-extends|extends
-name|TestCase
 block|{
+annotation|@
+name|Test
 DECL|method|testOutputBuffer ()
 specifier|public
 name|void

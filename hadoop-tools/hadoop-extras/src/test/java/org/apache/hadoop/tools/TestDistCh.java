@@ -296,6 +296,26 @@ begin_import
 import|import
 name|org
 operator|.
+name|junit
+operator|.
+name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|event
@@ -321,12 +341,6 @@ DECL|class|TestDistCh
 specifier|public
 class|class
 name|TestDistCh
-extends|extends
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 block|{
 block|{
 name|GenericTestUtils
@@ -536,6 +550,8 @@ operator|++
 name|fcount
 argument_list|)
 decl_stmt|;
+name|Assert
+operator|.
 name|assertTrue
 argument_list|(
 operator|!
@@ -578,6 +594,8 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+name|Assert
+operator|.
 name|assertTrue
 argument_list|(
 name|fs
@@ -602,6 +620,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|Assert
+operator|.
 name|assertTrue
 argument_list|(
 name|fs
@@ -612,6 +632,8 @@ name|dir
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertTrue
 argument_list|(
 name|fs
@@ -885,6 +907,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testDistCh ()
 specifier|public
 name|void
@@ -1398,6 +1422,8 @@ name|FileStatus
 name|actual
 parameter_list|)
 block|{
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|expected
@@ -1411,6 +1437,8 @@ name|getOwner
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|expected
@@ -1454,6 +1482,8 @@ name|UMASK
 argument_list|)
 expr_stmt|;
 block|}
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|perm
@@ -1553,6 +1583,8 @@ name|results
 decl_stmt|;
 try|try
 block|{
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|returnvalue

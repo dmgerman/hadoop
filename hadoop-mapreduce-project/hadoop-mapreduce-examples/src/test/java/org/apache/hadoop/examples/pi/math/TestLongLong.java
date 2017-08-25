@@ -40,17 +40,31 @@ name|Random
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+import|;
+end_import
+
 begin_class
 DECL|class|TestLongLong
 specifier|public
 class|class
 name|TestLongLong
-extends|extends
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 block|{
 DECL|field|RAN
 specifier|static
@@ -176,6 +190,8 @@ name|b
 argument_list|)
 decl_stmt|;
 comment|//System.out.println(s);
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|s
@@ -189,6 +205,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testMultiplication ()
 specifier|public
 name|void
@@ -363,6 +381,8 @@ argument_list|,
 name|b
 argument_list|)
 decl_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|s
@@ -402,6 +422,8 @@ name|b
 argument_list|)
 decl_stmt|;
 comment|//System.out.println(s);
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|s
@@ -415,6 +437,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testRightShift ()
 specifier|public
 name|void

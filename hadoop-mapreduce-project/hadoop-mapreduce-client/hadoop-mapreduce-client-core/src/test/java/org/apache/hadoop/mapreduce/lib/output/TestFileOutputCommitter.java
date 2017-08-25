@@ -108,11 +108,43 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
 import|;
 end_import
 
@@ -464,8 +496,6 @@ DECL|class|TestFileOutputCommitter
 specifier|public
 class|class
 name|TestFileOutputCommitter
-extends|extends
-name|TestCase
 block|{
 DECL|field|outDir
 specifier|private
@@ -676,7 +706,7 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
-name|Override
+name|Before
 DECL|method|setUp ()
 specifier|public
 name|void
@@ -690,7 +720,7 @@ argument_list|()
 expr_stmt|;
 block|}
 annotation|@
-name|Override
+name|After
 DECL|method|tearDown ()
 specifier|public
 name|void
@@ -1326,6 +1356,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testRecoveryV1 ()
 specifier|public
 name|void
@@ -1342,6 +1374,8 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testRecoveryV2 ()
 specifier|public
 name|void
@@ -1358,6 +1392,8 @@ literal|2
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testRecoveryUpgradeV1V2 ()
 specifier|public
 name|void
@@ -1871,6 +1907,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCommitterV1 ()
 specifier|public
 name|void
@@ -1885,6 +1923,8 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCommitterV2 ()
 specifier|public
 name|void
@@ -1899,6 +1939,8 @@ literal|2
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCommitterWithDuplicatedCommitV1 ()
 specifier|public
 name|void
@@ -1913,6 +1955,8 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCommitterWithDuplicatedCommitV2 ()
 specifier|public
 name|void
@@ -2145,6 +2189,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCommitterWithFailureV1 ()
 specifier|public
 name|void
@@ -2168,6 +2214,8 @@ literal|2
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCommitterWithFailureV2 ()
 specifier|public
 name|void
@@ -2419,6 +2467,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCommitterRepeatableV1 ()
 specifier|public
 name|void
@@ -2433,6 +2483,8 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCommitterRepeatableV2 ()
 specifier|public
 name|void
@@ -2932,6 +2984,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testMapFileOutputCommitterV1 ()
 specifier|public
 name|void
@@ -2946,6 +3000,8 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testMapFileOutputCommitterV2 ()
 specifier|public
 name|void
@@ -2960,6 +3016,8 @@ literal|2
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testInvalidVersionNumber ()
 specifier|public
 name|void
@@ -3304,6 +3362,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testAbortV1 ()
 specifier|public
 name|void
@@ -3320,6 +3380,8 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testAbortV2 ()
 specifier|public
 name|void
@@ -3782,6 +3844,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testFailAbortV1 ()
 specifier|public
 name|void
@@ -3796,6 +3860,8 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testFailAbortV2 ()
 specifier|public
 name|void
@@ -4383,6 +4449,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testConcurrentCommitTaskWithSubDirV1 ()
 specifier|public
 name|void
@@ -4397,6 +4465,8 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testConcurrentCommitTaskWithSubDirV2 ()
 specifier|public
 name|void

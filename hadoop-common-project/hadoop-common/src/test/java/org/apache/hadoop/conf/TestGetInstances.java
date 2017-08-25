@@ -28,11 +28,23 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
 import|;
 end_import
 
@@ -41,8 +53,6 @@ DECL|class|TestGetInstances
 specifier|public
 class|class
 name|TestGetInstances
-extends|extends
-name|TestCase
 block|{
 DECL|interface|SampleInterface
 interface|interface
@@ -79,6 +89,8 @@ parameter_list|()
 block|{}
 block|}
 comment|/**    * Makes sure<code>Configuration.getInstances()</code> returns    * instances of the required type.    */
+annotation|@
+name|Test
 DECL|method|testGetInstances ()
 specifier|public
 name|void

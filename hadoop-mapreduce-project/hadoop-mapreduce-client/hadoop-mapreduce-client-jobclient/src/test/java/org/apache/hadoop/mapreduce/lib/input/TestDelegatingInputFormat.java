@@ -52,11 +52,23 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
 import|;
 end_import
 
@@ -149,14 +161,14 @@ DECL|class|TestDelegatingInputFormat
 specifier|public
 class|class
 name|TestDelegatingInputFormat
-extends|extends
-name|TestCase
 block|{
 annotation|@
 name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
+annotation|@
+name|Test
 DECL|method|testSplitting ()
 specifier|public
 name|void

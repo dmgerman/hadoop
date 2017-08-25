@@ -76,11 +76,21 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Assert
 import|;
 end_import
 
@@ -89,9 +99,9 @@ DECL|class|TestTaskContext
 specifier|public
 class|class
 name|TestTaskContext
-extends|extends
-name|TestCase
 block|{
+annotation|@
+name|Test
 DECL|method|testTaskContext ()
 specifier|public
 name|void
@@ -128,6 +138,8 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|IntWritable
@@ -155,6 +167,8 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|Text
@@ -182,6 +196,8 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|LongWritable
@@ -209,6 +225,8 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|FloatWritable

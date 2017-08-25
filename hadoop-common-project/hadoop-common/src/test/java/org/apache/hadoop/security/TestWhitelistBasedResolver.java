@@ -48,11 +48,23 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
 import|;
 end_import
 
@@ -78,20 +90,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|security
-operator|.
-name|WhitelistBasedResolver
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|TestFileBasedIPList
@@ -103,8 +101,6 @@ DECL|class|TestWhitelistBasedResolver
 specifier|public
 class|class
 name|TestWhitelistBasedResolver
-extends|extends
-name|TestCase
 block|{
 DECL|field|SASL_PRIVACY_PROPS
 specifier|public
@@ -127,6 +123,8 @@ name|Configuration
 argument_list|()
 argument_list|)
 decl_stmt|;
+annotation|@
+name|Test
 DECL|method|testFixedVariableAndLocalWhiteList ()
 specifier|public
 name|void
@@ -382,6 +380,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Add a bunch of subnets and IPSs to the whitelist    * Check  for inclusion in whitelist    * Check for exclusion from whitelist    */
+annotation|@
+name|Test
 DECL|method|testFixedAndLocalWhiteList ()
 specifier|public
 name|void
@@ -632,6 +632,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Add a bunch of subnets and IPSs to the whitelist    * Check  for inclusion in whitelist with a null value    */
+annotation|@
+name|Test
 DECL|method|testNullIPAddress ()
 specifier|public
 name|void

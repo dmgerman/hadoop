@@ -112,11 +112,23 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
 import|;
 end_import
 
@@ -129,8 +141,6 @@ DECL|class|TestToken
 specifier|public
 class|class
 name|TestToken
-extends|extends
-name|TestCase
 block|{
 DECL|method|isEqual (Object a, Object b)
 specifier|static
@@ -238,6 +248,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Test token serialization    */
+annotation|@
+name|Test
 DECL|method|testTokenSerialization ()
 specifier|public
 name|void
@@ -445,9 +457,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testEncodeWritable ()
 specifier|public
-specifier|static
 name|void
 name|testEncodeWritable
 parameter_list|()
@@ -603,6 +616,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testDecodeIdentifier ()
 specifier|public
 name|void

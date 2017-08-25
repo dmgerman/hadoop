@@ -58,17 +58,31 @@ name|Timer
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_class
 DECL|class|TestModular
 specifier|public
 class|class
 name|TestModular
-extends|extends
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 block|{
 DECL|field|RANDOM
 specifier|private
@@ -219,6 +233,8 @@ operator|-
 name|DIV_LIMIT
 return|;
 block|}
+annotation|@
+name|Test
 DECL|method|testDiv ()
 specifier|public
 name|void
@@ -309,6 +325,8 @@ argument_list|,
 name|b
 argument_list|)
 decl_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|s
@@ -1011,6 +1029,9 @@ name|s
 operator|!=
 name|answer
 condition|)
+block|{
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"r="
@@ -1034,6 +1055,7 @@ argument_list|,
 name|s
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 name|t
@@ -1165,6 +1187,9 @@ name|s
 operator|!=
 name|answer
 condition|)
+block|{
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"r="
@@ -1188,6 +1213,7 @@ argument_list|,
 name|s
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 name|t
@@ -1326,6 +1352,9 @@ name|s
 operator|!=
 name|answer
 condition|)
+block|{
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"r="
@@ -1349,6 +1378,7 @@ argument_list|,
 name|s
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 name|t
@@ -1484,6 +1514,9 @@ name|s
 operator|!=
 name|answer
 condition|)
+block|{
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"r="
@@ -1507,6 +1540,7 @@ argument_list|,
 name|s
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 name|t
@@ -2217,6 +2251,9 @@ name|s
 operator|!=
 name|answer
 condition|)
+block|{
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"e="
@@ -2240,6 +2277,7 @@ argument_list|,
 name|s
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 name|t
@@ -2363,6 +2401,9 @@ name|s
 operator|!=
 name|answer
 condition|)
+block|{
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"e="
@@ -2386,6 +2427,7 @@ argument_list|,
 name|s
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 name|t
@@ -2501,6 +2543,9 @@ name|s
 operator|!=
 name|answer
 condition|)
+block|{
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"e="
@@ -2524,6 +2569,7 @@ argument_list|,
 name|s
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 name|t
@@ -2653,6 +2699,9 @@ name|s
 operator|!=
 name|answer
 condition|)
+block|{
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"e="
@@ -2676,6 +2725,7 @@ argument_list|,
 name|s
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 name|t

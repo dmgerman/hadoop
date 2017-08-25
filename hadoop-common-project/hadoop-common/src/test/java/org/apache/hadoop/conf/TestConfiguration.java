@@ -290,11 +290,57 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
 import|;
 end_import
 
@@ -540,16 +586,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|junit
-operator|.
-name|Assert
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|mockito
 operator|.
 name|Mockito
@@ -561,9 +597,16 @@ DECL|class|TestConfiguration
 specifier|public
 class|class
 name|TestConfiguration
-extends|extends
-name|TestCase
 block|{
+DECL|field|DOUBLE_DELTA
+specifier|private
+specifier|static
+specifier|final
+name|double
+name|DOUBLE_DELTA
+init|=
+literal|0.000000001f
+decl_stmt|;
 DECL|field|conf
 specifier|private
 name|Configuration
@@ -712,20 +755,15 @@ name|BufferedWriter
 name|out
 decl_stmt|;
 annotation|@
-name|Override
+name|Before
 DECL|method|setUp ()
-specifier|protected
+specifier|public
 name|void
 name|setUp
 parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|super
-operator|.
-name|setUp
-argument_list|()
-expr_stmt|;
 name|conf
 operator|=
 operator|new
@@ -734,9 +772,9 @@ argument_list|()
 expr_stmt|;
 block|}
 annotation|@
-name|Override
+name|After
 DECL|method|tearDown ()
-specifier|protected
+specifier|public
 name|void
 name|tearDown
 parameter_list|()
@@ -756,11 +794,6 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
-name|super
-operator|.
-name|tearDown
-argument_list|()
-expr_stmt|;
 operator|new
 name|File
 argument_list|(
@@ -1064,6 +1097,8 @@ literal|"\">\n]>"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testInputStreamResource ()
 specifier|public
 name|void
@@ -1202,6 +1237,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testFinalWarnings ()
 specifier|public
 name|void
@@ -1442,6 +1479,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testNoFinalWarnings ()
 specifier|public
 name|void
@@ -1624,6 +1663,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testFinalWarningsMultiple ()
 specifier|public
 name|void
@@ -1802,6 +1843,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testFinalWarningsMultipleOverride ()
 specifier|public
 name|void
@@ -2076,6 +2119,8 @@ return|;
 block|}
 block|}
 comment|/**    * Tests use of multi-byte characters in property names and values.  This test    * round-trips multi-byte string literals through saving and loading of config    * and asserts that the same values were read.    */
+annotation|@
+name|Test
 DECL|method|testMultiByteCharacters ()
 specifier|public
 name|void
@@ -2254,6 +2299,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testVariableSubstitution ()
 specifier|public
 name|void
@@ -2520,6 +2567,8 @@ literal|42
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testEnvDefault ()
 specifier|public
 name|void
@@ -2816,6 +2865,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testFinalParam ()
 specifier|public
 name|void
@@ -2954,6 +3005,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCompactFormat ()
 specifier|public
 name|void
@@ -3612,6 +3665,8 @@ literal|"/>\n"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testOverlay ()
 specifier|public
 name|void
@@ -3823,6 +3878,8 @@ literal|"f"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCommentsInValue ()
 specifier|public
 name|void
@@ -3886,6 +3943,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testEscapedCharactersInValue ()
 specifier|public
 name|void
@@ -3949,6 +4008,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testTrim ()
 specifier|public
 name|void
@@ -4144,6 +4205,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testGetLocalPath ()
 specifier|public
 name|void
@@ -4294,6 +4357,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testGetFile ()
 specifier|public
 name|void
@@ -4444,6 +4509,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testToString ()
 specifier|public
 name|void
@@ -4507,6 +4574,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testWriteXml ()
 specifier|public
 name|void
@@ -4569,6 +4638,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testIncludes ()
 specifier|public
 name|void
@@ -4807,6 +4878,8 @@ name|tearDown
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCharsetInDocumentEncoding ()
 specifier|public
 name|void
@@ -4913,6 +4986,8 @@ name|tearDown
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testEntityReference ()
 specifier|public
 name|void
@@ -5013,6 +5088,8 @@ name|tearDown
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testSystemEntityReference ()
 specifier|public
 name|void
@@ -5137,6 +5214,8 @@ name|tearDown
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testIncludesWithFallback ()
 specifier|public
 name|void
@@ -5365,6 +5444,8 @@ name|tearDown
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testRelativeIncludes ()
 specifier|public
 name|void
@@ -5559,6 +5640,8 @@ name|delete
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testIntegerRanges ()
 specifier|public
 name|void
@@ -5885,6 +5968,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testGetRangeIterator ()
 specifier|public
 name|void
@@ -6141,6 +6226,8 @@ name|found
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testHexValues ()
 specifier|public
 name|void
@@ -6349,6 +6436,8 @@ block|{
 comment|// pass
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testIntegerValues ()
 specifier|public
 name|void
@@ -6626,6 +6715,8 @@ block|{
 comment|// pass
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testHumanReadableValues ()
 specifier|public
 name|void
@@ -6743,6 +6834,8 @@ block|{
 comment|// pass
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testBooleanValues ()
 specifier|public
 name|void
@@ -6954,6 +7047,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testFloatValues ()
 specifier|public
 name|void
@@ -7043,6 +7138,8 @@ literal|"test.float1"
 argument_list|,
 literal|0.0f
 argument_list|)
+argument_list|,
+name|DOUBLE_DELTA
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -7057,6 +7154,8 @@ literal|"test.float2"
 argument_list|,
 literal|0.0f
 argument_list|)
+argument_list|,
+name|DOUBLE_DELTA
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -7072,6 +7171,8 @@ literal|"test.float3"
 argument_list|,
 literal|0.0f
 argument_list|)
+argument_list|,
+name|DOUBLE_DELTA
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -7087,6 +7188,8 @@ literal|"test.float4"
 argument_list|,
 literal|0.0f
 argument_list|)
+argument_list|,
+name|DOUBLE_DELTA
 argument_list|)
 expr_stmt|;
 try|try
@@ -7115,6 +7218,8 @@ block|{
 comment|// pass
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testDoubleValues ()
 specifier|public
 name|void
@@ -7204,6 +7309,8 @@ literal|"test.double1"
 argument_list|,
 literal|0.0
 argument_list|)
+argument_list|,
+name|DOUBLE_DELTA
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -7218,6 +7325,8 @@ literal|"test.double2"
 argument_list|,
 literal|0.0
 argument_list|)
+argument_list|,
+name|DOUBLE_DELTA
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -7233,6 +7342,8 @@ literal|"test.double3"
 argument_list|,
 literal|0.0
 argument_list|)
+argument_list|,
+name|DOUBLE_DELTA
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -7248,6 +7359,8 @@ literal|"test.double4"
 argument_list|,
 literal|0.0
 argument_list|)
+argument_list|,
+name|DOUBLE_DELTA
 argument_list|)
 expr_stmt|;
 try|try
@@ -7276,6 +7389,8 @@ block|{
 comment|// pass
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testGetClass ()
 specifier|public
 name|void
@@ -7367,6 +7482,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testGetClasses ()
 specifier|public
 name|void
@@ -7495,6 +7612,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testGetStringCollection ()
 specifier|public
 name|void
@@ -7601,6 +7720,8 @@ literal|"z"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testGetTrimmedStringCollection ()
 specifier|public
 name|void
@@ -7791,6 +7912,8 @@ block|,
 name|FOO
 block|}
 empty_stmt|;
+annotation|@
+name|Test
 DECL|method|testEnum ()
 specifier|public
 name|void
@@ -7909,6 +8032,8 @@ name|fail
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testEnumFromXml ()
 specifier|public
 name|void
@@ -8026,6 +8151,8 @@ name|fail
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testTimeDuration ()
 specifier|public
 name|void
@@ -8430,6 +8557,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testTimeDurationWarning ()
 specifier|public
 name|void
@@ -8740,6 +8869,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testPattern ()
 specifier|public
 name|void
@@ -8908,6 +9039,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testPropertySource ()
 specifier|public
 name|void
@@ -9025,9 +9158,11 @@ literal|"fs.defaultFS"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|assertArrayEquals
 argument_list|(
-literal|"Resource string returned for an unset property must be null"
+literal|"Resource string returned for an unset property must "
+operator|+
+literal|"be null"
 argument_list|,
 literal|null
 argument_list|,
@@ -9040,6 +9175,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testMultiplePropertySource ()
 specifier|public
 name|void
@@ -9166,6 +9303,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testSocketAddress ()
 specifier|public
 name|void
@@ -9387,6 +9526,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testSetSocketAddress ()
 specifier|public
 name|void
@@ -9447,6 +9588,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testUpdateSocketAddress ()
 specifier|public
 name|void
@@ -9528,6 +9671,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testReload ()
 specifier|public
 name|void
@@ -9791,6 +9936,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testSize ()
 specifier|public
 name|void
@@ -9835,6 +9982,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testClear ()
 specifier|public
 name|void
@@ -9903,6 +10052,8 @@ name|Fake_ClassLoader
 extends|extends
 name|ClassLoader
 block|{   }
+annotation|@
+name|Test
 DECL|method|testClassLoader ()
 specifier|public
 name|void
@@ -10197,6 +10348,8 @@ return|return
 name|ac
 return|;
 block|}
+annotation|@
+name|Test
 DECL|method|testGetSetTrimmedNames ()
 specifier|public
 name|void
@@ -10260,6 +10413,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testDumpProperty ()
 specifier|public
 name|void
@@ -10987,6 +11142,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testDumpConfiguration ()
 specifier|public
 name|void
@@ -11601,6 +11758,8 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testDumpConfiguratioWithoutDefaults ()
 specifier|public
 name|void
@@ -11917,6 +12076,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testDumpSensitiveProperty ()
 specifier|public
 name|void
@@ -12026,6 +12187,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testDumpSensitiveConfiguration ()
 specifier|public
 name|void
@@ -12133,6 +12296,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testGetValByRegex ()
 specifier|public
 name|void
@@ -12276,6 +12441,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testGetClassesShouldReturnDefaultValue ()
 specifier|public
 name|void
@@ -12339,6 +12506,8 @@ index|]
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testGetClassesShouldReturnEmptyArray ()
 specifier|public
 name|void
@@ -12397,6 +12566,8 @@ name|length
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testSettingValueNull ()
 specifier|public
 name|void
@@ -12454,6 +12625,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testSettingKeyNull ()
 specifier|public
 name|void
@@ -12511,6 +12684,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testInvalidSubstitution ()
 specifier|public
 name|void
@@ -12595,6 +12770,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testIncompleteSubbing ()
 specifier|public
 name|void
@@ -12695,6 +12872,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testBoolean ()
 specifier|public
 name|void
@@ -12737,6 +12916,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testBooleanIfUnset ()
 specifier|public
 name|void
@@ -12802,6 +12983,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testFloat ()
 specifier|public
 name|void
@@ -12841,9 +13024,13 @@ literal|"value"
 argument_list|,
 literal|0.0F
 argument_list|)
+argument_list|,
+name|DOUBLE_DELTA
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testDouble ()
 specifier|public
 name|void
@@ -12883,9 +13070,13 @@ literal|"value"
 argument_list|,
 literal|0.0D
 argument_list|)
+argument_list|,
+name|DOUBLE_DELTA
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testInt ()
 specifier|public
 name|void
@@ -12928,6 +13119,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testLong ()
 specifier|public
 name|void
@@ -12970,6 +13163,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testStrings ()
 specifier|public
 name|void
@@ -13045,6 +13240,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testSetPattern ()
 specifier|public
 name|void
@@ -13103,6 +13300,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testGetClassByNameOrNull ()
 specifier|public
 name|void
@@ -13137,6 +13336,8 @@ name|clazz
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testGetFinalParameters ()
 specifier|public
 name|void
@@ -13267,6 +13468,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * A test to check whether this thread goes into infinite loop because of    * destruction of data structure by resize of Map. This problem was reported    * by SPARK-2546.    * @throws Exception    */
+annotation|@
+name|Test
 DECL|method|testConcurrentAccesses ()
 specifier|public
 name|void
@@ -13477,6 +13680,8 @@ block|}
 comment|// If this test completes without going into infinite loop,
 comment|// it's expected behaviour.
 block|}
+annotation|@
+name|Test
 DECL|method|testNullValueProperties ()
 specifier|public
 name|void
@@ -13564,6 +13769,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testGetPasswordDeprecatedKeyStored ()
 specifier|public
 name|void
@@ -13694,8 +13901,6 @@ argument_list|,
 name|newKey
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertThat
 argument_list|(
 name|conf
@@ -13716,8 +13921,6 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertThat
 argument_list|(
 name|conf
@@ -13746,6 +13949,8 @@ name|tmpDir
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testGetPasswordByDeprecatedKey ()
 specifier|public
 name|void
@@ -13876,8 +14081,6 @@ argument_list|,
 name|newKey
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertThat
 argument_list|(
 name|conf
@@ -13898,8 +14101,6 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertThat
 argument_list|(
 name|conf

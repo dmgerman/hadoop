@@ -30,37 +30,21 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|CacheableIPList
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|FileBasedIPList
-import|;
-end_import
-
-begin_import
-import|import
 name|junit
 operator|.
-name|framework
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
 import|;
 end_import
 
@@ -69,10 +53,10 @@ DECL|class|TestCacheableIPList
 specifier|public
 class|class
 name|TestCacheableIPList
-extends|extends
-name|TestCase
 block|{
 comment|/**    * Add a bunch of subnets and IPSs to the file    * setup a low cache refresh    * test for inclusion    * Check for exclusion    * Add a bunch of subnets and Ips    * wait for cache timeout.    * test for inclusion    * Check for exclusion    */
+annotation|@
+name|Test
 DECL|method|testAddWithSleepForCacheTimeout ()
 specifier|public
 name|void
@@ -215,6 +199,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Add a bunch of subnets and IPSs to the file    * setup a low cache refresh    * test for inclusion    * Check for exclusion    * Remove a bunch of subnets and Ips    * wait for cache timeout.    * test for inclusion    * Check for exclusion    */
+annotation|@
+name|Test
 DECL|method|testRemovalWithSleepForCacheTimeout ()
 specifier|public
 name|void
@@ -357,6 +343,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Add a bunch of subnets and IPSs to the file    * setup a low cache refresh    * test for inclusion    * Check for exclusion    * Add a bunch of subnets and Ips    * do a refresh    * test for inclusion    * Check for exclusion    */
+annotation|@
+name|Test
 DECL|method|testAddWithRefresh ()
 specifier|public
 name|void
@@ -497,6 +485,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Add a bunch of subnets and IPSs to the file    * setup a low cache refresh    * test for inclusion    * Check for exclusion    * Remove a bunch of subnets and Ips    * wait for cache timeout.    * test for inclusion    * Check for exclusion    */
+annotation|@
+name|Test
 DECL|method|testRemovalWithRefresh ()
 specifier|public
 name|void

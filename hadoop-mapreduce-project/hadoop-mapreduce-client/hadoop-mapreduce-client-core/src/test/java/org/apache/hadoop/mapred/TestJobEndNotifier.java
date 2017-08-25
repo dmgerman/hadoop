@@ -134,11 +134,33 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
 import|;
 end_import
 
@@ -170,13 +192,21 @@ name|HttpServer2
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_class
 DECL|class|TestJobEndNotifier
 specifier|public
 class|class
 name|TestJobEndNotifier
-extends|extends
-name|TestCase
 block|{
 DECL|field|server
 name|HttpServer2
@@ -435,6 +465,8 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|Before
 DECL|method|setUp ()
 specifier|public
 name|void
@@ -586,6 +618,8 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
+annotation|@
+name|After
 DECL|method|tearDown ()
 specifier|public
 name|void
@@ -601,6 +635,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Basic validation for localRunnerNotification.    */
+annotation|@
+name|Test
 DECL|method|testLocalJobRunnerUriSubstitution ()
 specifier|public
 name|void
@@ -672,6 +708,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Validate job.end.retry.attempts for the localJobRunner.    */
+annotation|@
+name|Test
 DECL|method|testLocalJobRunnerRetryCount ()
 specifier|public
 name|void
@@ -736,6 +774,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Validate that the notification times out after reaching    * mapreduce.job.end-notification.timeout.    */
+annotation|@
+name|Test
 DECL|method|testNotificationTimeout ()
 specifier|public
 name|void

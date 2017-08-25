@@ -44,20 +44,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|fs
 operator|.
 name|CommonConfigurationKeys
@@ -75,12 +61,14 @@ import|;
 end_import
 
 begin_import
-import|import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Assert
 operator|.
-name|TestCase
+name|*
 import|;
 end_import
 
@@ -89,10 +77,10 @@ DECL|class|TestDeprecatedKeys
 specifier|public
 class|class
 name|TestDeprecatedKeys
-extends|extends
-name|TestCase
 block|{
 comment|//Tests a deprecated key
+annotation|@
+name|Test
 DECL|method|testDeprecatedKeys ()
 specifier|public
 name|void
@@ -147,6 +135,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|//Tests reading / writing a conf file with deprecation after setting
+annotation|@
+name|Test
 DECL|method|testReadWriteWithDeprecatedKeys ()
 specifier|public
 name|void

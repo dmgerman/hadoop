@@ -38,11 +38,23 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
 import|;
 end_import
 
@@ -65,9 +77,9 @@ DECL|class|TestGenericsUtil
 specifier|public
 class|class
 name|TestGenericsUtil
-extends|extends
-name|TestCase
 block|{
+annotation|@
+name|Test
 DECL|method|testToArray ()
 specifier|public
 name|void
@@ -158,6 +170,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testWithEmptyList ()
 specifier|public
 name|void
@@ -215,6 +229,8 @@ block|{
 comment|//test case is successful
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testWithEmptyList2 ()
 specifier|public
 name|void
@@ -330,6 +346,8 @@ name|arr
 return|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testWithGenericClass ()
 specifier|public
 name|void
@@ -410,6 +428,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testGenericOptionsParser ()
 specifier|public
 name|void
@@ -484,6 +504,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testGetClass ()
 specifier|public
 name|void
@@ -566,6 +588,8 @@ name|c2
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testIsLog4jLogger ()
 specifier|public
 name|void

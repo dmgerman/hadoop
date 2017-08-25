@@ -122,11 +122,23 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
 import|;
 end_import
 
@@ -408,16 +420,6 @@ name|JTConfig
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Test
-import|;
-end_import
-
 begin_comment
 comment|/**  * Tests the use of the  * {@link org.apache.hadoop.mapreduce.filecache.DistributedCache} within the  * full MR flow as well as the LocalJobRunner. This ought to be part of the  * filecache package, but that package is not currently in mapred, so cannot  * depend on MR for testing.  *   * We use the distributed.* namespace for temporary files.  *   * See {@link TestMiniMRLocalFS}, {@link TestMiniMRDFSCaching}, and  * {@link MRCaching} for other tests that test the distributed cache.  *   * This test is not fast: it uses MiniMRCluster.  */
 end_comment
@@ -432,8 +434,6 @@ DECL|class|TestMRWithDistributedCache
 specifier|public
 class|class
 name|TestMRWithDistributedCache
-extends|extends
-name|TestCase
 block|{
 DECL|field|TEST_ROOT_DIR
 specifier|private
@@ -622,7 +622,7 @@ name|conf
 argument_list|)
 decl_stmt|;
 comment|// Check that 2 files and 2 archives are present
-name|TestCase
+name|Assert
 operator|.
 name|assertEquals
 argument_list|(
@@ -633,7 +633,7 @@ operator|.
 name|length
 argument_list|)
 expr_stmt|;
-name|TestCase
+name|Assert
 operator|.
 name|assertEquals
 argument_list|(
@@ -644,7 +644,7 @@ operator|.
 name|length
 argument_list|)
 expr_stmt|;
-name|TestCase
+name|Assert
 operator|.
 name|assertEquals
 argument_list|(
@@ -655,7 +655,7 @@ operator|.
 name|length
 argument_list|)
 expr_stmt|;
-name|TestCase
+name|Assert
 operator|.
 name|assertEquals
 argument_list|(
@@ -667,7 +667,7 @@ name|length
 argument_list|)
 expr_stmt|;
 comment|// Check the file name
-name|TestCase
+name|Assert
 operator|.
 name|assertTrue
 argument_list|(
@@ -685,7 +685,7 @@ literal|"distributed.first"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|TestCase
+name|Assert
 operator|.
 name|assertTrue
 argument_list|(
@@ -704,7 +704,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Check lengths of the files
-name|TestCase
+name|Assert
 operator|.
 name|assertEquals
 argument_list|(
@@ -724,7 +724,7 @@ name|getLen
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|TestCase
+name|Assert
 operator|.
 name|assertTrue
 argument_list|(
@@ -745,7 +745,7 @@ literal|1
 argument_list|)
 expr_stmt|;
 comment|// Check extraction of the archive
-name|TestCase
+name|Assert
 operator|.
 name|assertTrue
 argument_list|(
@@ -766,7 +766,7 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|TestCase
+name|Assert
 operator|.
 name|assertTrue
 argument_list|(
@@ -815,7 +815,7 @@ argument_list|()
 decl_stmt|;
 comment|// Both the file and the archive were added to classpath, so both
 comment|// should be reachable via the class loader.
-name|TestCase
+name|Assert
 operator|.
 name|assertNotNull
 argument_list|(
@@ -827,7 +827,7 @@ literal|"distributed.jar.inside2"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|TestCase
+name|Assert
 operator|.
 name|assertNotNull
 argument_list|(
@@ -839,7 +839,7 @@ literal|"distributed.jar.inside3"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|TestCase
+name|Assert
 operator|.
 name|assertNull
 argument_list|(
@@ -852,7 +852,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Check that the symlink for the renaming was created in the cwd;
-name|TestCase
+name|Assert
 operator|.
 name|assertTrue
 argument_list|(
@@ -864,7 +864,7 @@ name|exists
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|TestCase
+name|Assert
 operator|.
 name|assertEquals
 argument_list|(
@@ -879,7 +879,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|//This last one is a difference between MRv2 and MRv1
-name|TestCase
+name|Assert
 operator|.
 name|assertTrue
 argument_list|(
@@ -1169,6 +1169,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Tests using the local job runner. */
+annotation|@
+name|Test
 DECL|method|testLocalJobRunner ()
 specifier|public
 name|void

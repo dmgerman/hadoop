@@ -90,11 +90,33 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
 import|;
 end_import
 
@@ -228,16 +250,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|junit
-operator|.
-name|Test
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|mockito
 operator|.
 name|Mockito
@@ -299,8 +311,6 @@ DECL|class|TestFairCallQueue
 specifier|public
 class|class
 name|TestFairCallQueue
-extends|extends
-name|TestCase
 block|{
 DECL|field|fcq
 specifier|private
@@ -427,6 +437,8 @@ name|SuppressWarnings
 argument_list|(
 literal|"deprecation"
 argument_list|)
+annotation|@
+name|Before
 DECL|method|setUp ()
 specifier|public
 name|void
@@ -473,6 +485,8 @@ expr_stmt|;
 block|}
 comment|// Validate that the total capacity of all subqueues equals
 comment|// the maxQueueSize for different values of maxQueueSize
+annotation|@
+name|Test
 DECL|method|testTotalCapacityOfSubQueues ()
 specifier|public
 name|void
@@ -2183,7 +2197,8 @@ expr_stmt|;
 block|}
 comment|//
 comment|// Ensure that FairCallQueue properly implements BlockingQueue
-comment|//
+annotation|@
+name|Test
 DECL|method|testPollReturnsNullWhenEmpty ()
 specifier|public
 name|void
@@ -2199,6 +2214,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testPollReturnsTopCallWhenNotEmpty ()
 specifier|public
 name|void
@@ -2245,6 +2262,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testOfferSucceeds ()
 specifier|public
 name|void
@@ -2292,6 +2311,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testOfferFailsWhenFull ()
 specifier|public
 name|void
@@ -2352,6 +2373,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testOfferSucceedsWhenScheduledLowPriority ()
 specifier|public
 name|void
@@ -2442,6 +2465,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testPeekNullWhenEmpty ()
 specifier|public
 name|void
@@ -2457,6 +2482,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testPeekNonDestructive ()
 specifier|public
 name|void
@@ -2515,6 +2542,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testPeekPointsAtHead ()
 specifier|public
 name|void
@@ -2567,6 +2596,8 @@ argument_list|)
 expr_stmt|;
 comment|// Peek points at the head
 block|}
+annotation|@
+name|Test
 DECL|method|testPollTimeout ()
 specifier|public
 name|void
@@ -2590,6 +2621,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testPollSuccess ()
 specifier|public
 name|void
@@ -2645,6 +2678,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testOfferTimeout ()
 specifier|public
 name|void
@@ -2724,6 +2759,8 @@ name|SuppressWarnings
 argument_list|(
 literal|"deprecation"
 argument_list|)
+annotation|@
+name|Test
 DECL|method|testDrainTo ()
 specifier|public
 name|void
@@ -2831,6 +2868,8 @@ name|SuppressWarnings
 argument_list|(
 literal|"deprecation"
 argument_list|)
+annotation|@
+name|Test
 DECL|method|testDrainToWithLimit ()
 specifier|public
 name|void
@@ -2935,6 +2974,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testInitialRemainingCapacity ()
 specifier|public
 name|void
@@ -2952,6 +2993,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testFirstQueueFullRemainingCapacity ()
 specifier|public
 name|void
@@ -2983,6 +3026,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testAllQueuesFullRemainingCapacity ()
 specifier|public
 name|void
@@ -3062,6 +3107,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testQueuesPartialFilledRemainingCapacity ()
 specifier|public
 name|void
@@ -3666,6 +3713,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|// Make sure put will overflow into lower queues when the top is full
+annotation|@
+name|Test
 DECL|method|testPutOverflows ()
 specifier|public
 name|void
@@ -3695,6 +3744,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testPutBlocksWhenAllFull ()
 specifier|public
 name|void
@@ -3735,6 +3786,8 @@ argument_list|)
 expr_stmt|;
 comment|// Will block
 block|}
+annotation|@
+name|Test
 DECL|method|testTakeBlocksWhenEmpty ()
 specifier|public
 name|void
@@ -3753,6 +3806,8 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testTakeRemovesCall ()
 specifier|public
 name|void
@@ -3797,6 +3852,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testTakeTriesNextQueue ()
 specifier|public
 name|void
@@ -3876,6 +3933,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testFairCallQueueMXBean ()
 specifier|public
 name|void

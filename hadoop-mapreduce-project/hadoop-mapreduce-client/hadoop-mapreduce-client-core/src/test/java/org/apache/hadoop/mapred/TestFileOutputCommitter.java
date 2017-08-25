@@ -58,11 +58,23 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
 import|;
 end_import
 
@@ -212,8 +224,6 @@ DECL|class|TestFileOutputCommitter
 specifier|public
 class|class
 name|TestFileOutputCommitter
-extends|extends
-name|TestCase
 block|{
 DECL|field|outDir
 specifier|private
@@ -958,6 +968,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testRecoveryV1 ()
 specifier|public
 name|void
@@ -974,6 +986,8 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testRecoveryV2 ()
 specifier|public
 name|void
@@ -990,6 +1004,8 @@ literal|2
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testRecoveryUpgradeV1V2 ()
 specifier|public
 name|void
@@ -1309,6 +1325,8 @@ name|indexFileFound
 operator|)
 assert|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCommitterWithFailureV1 ()
 specifier|public
 name|void
@@ -1332,6 +1350,8 @@ literal|2
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCommitterWithFailureV2 ()
 specifier|public
 name|void
@@ -1611,6 +1631,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCommitterWithDuplicatedCommitV1 ()
 specifier|public
 name|void
@@ -1625,6 +1647,8 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCommitterWithDuplicatedCommitV2 ()
 specifier|public
 name|void
@@ -2061,6 +2085,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCommitterV1 ()
 specifier|public
 name|void
@@ -2075,6 +2101,8 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testCommitterV2 ()
 specifier|public
 name|void
@@ -2282,6 +2310,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testMapFileOutputCommitterV1 ()
 specifier|public
 name|void
@@ -2296,6 +2326,8 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testMapFileOutputCommitterV2 ()
 specifier|public
 name|void
@@ -2310,6 +2342,8 @@ literal|2
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testMapOnlyNoOutputV1 ()
 specifier|public
 name|void
@@ -2324,6 +2358,8 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testMapOnlyNoOutputV2 ()
 specifier|public
 name|void
@@ -2749,6 +2785,8 @@ name|out
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testAbortV1 ()
 specifier|public
 name|void
@@ -2763,6 +2801,8 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testAbortV2 ()
 specifier|public
 name|void
@@ -3237,6 +3277,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testFailAbortV1 ()
 specifier|public
 name|void
@@ -3251,6 +3293,8 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testFailAbortV2 ()
 specifier|public
 name|void

@@ -42,11 +42,21 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 
@@ -186,16 +196,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|junit
-operator|.
-name|Before
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|mockito
 operator|.
 name|Matchers
@@ -226,8 +226,6 @@ DECL|class|TestKVSerializer
 specifier|public
 class|class
 name|TestKVSerializer
-extends|extends
-name|TestCase
 block|{
 DECL|field|inputArraySize
 name|int
@@ -278,8 +276,6 @@ specifier|private
 name|KVSerializer
 name|serializer
 decl_stmt|;
-annotation|@
-name|Override
 annotation|@
 name|Before
 DECL|method|setUp ()
@@ -375,6 +371,8 @@ name|value
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testUpdateLength ()
 specifier|public
 name|void
@@ -473,6 +471,8 @@ name|length
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testSerializeKV ()
 specifier|public
 name|void
@@ -648,6 +648,8 @@ name|SIZEOF_KV_LENGTH
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testSerializeNoFlush ()
 specifier|public
 name|void
@@ -817,6 +819,8 @@ name|SIZEOF_KV_LENGTH
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testSerializePartitionKV ()
 specifier|public
 name|void
@@ -1002,6 +1006,8 @@ name|SIZEOF_PARTITION_LENGTH
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testDeserializerNoData ()
 specifier|public
 name|void
@@ -1057,6 +1063,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testDeserializer ()
 specifier|public
 name|void

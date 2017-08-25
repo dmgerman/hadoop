@@ -164,11 +164,43 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
 import|;
 end_import
 
@@ -246,26 +278,6 @@ name|Time
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Before
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Test
-import|;
-end_import
-
 begin_comment
 comment|/**  * This class tests commands from Trash.  */
 end_comment
@@ -275,8 +287,6 @@ DECL|class|TestTrash
 specifier|public
 class|class
 name|TestTrash
-extends|extends
-name|TestCase
 block|{
 DECL|field|TEST_DIR
 specifier|private
@@ -2739,6 +2749,8 @@ block|}
 block|}
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testTrash ()
 specifier|public
 name|void
@@ -2782,6 +2794,8 @@ name|TEST_DIR
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testNonDefaultFS ()
 specifier|public
 name|void
@@ -2827,6 +2841,8 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testPluggableTrash ()
 specifier|public
 name|void
@@ -3204,6 +3220,8 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testTrashEmptier ()
 specifier|public
 name|void
@@ -3567,11 +3585,10 @@ name|join
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * @see TestCase#tearDown()    */
 annotation|@
-name|Override
+name|After
 DECL|method|tearDown ()
-specifier|protected
+specifier|public
 name|void
 name|tearDown
 parameter_list|()

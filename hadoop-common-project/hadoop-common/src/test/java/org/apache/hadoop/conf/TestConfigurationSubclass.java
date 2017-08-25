@@ -18,11 +18,23 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
 import|;
 end_import
 
@@ -45,8 +57,6 @@ DECL|class|TestConfigurationSubclass
 specifier|public
 class|class
 name|TestConfigurationSubclass
-extends|extends
-name|TestCase
 block|{
 DECL|field|EMPTY_CONFIGURATION_XML
 specifier|private
@@ -57,6 +67,8 @@ name|EMPTY_CONFIGURATION_XML
 init|=
 literal|"/org/apache/hadoop/conf/empty-configuration.xml"
 decl_stmt|;
+annotation|@
+name|Test
 DECL|method|testGetProps ()
 specifier|public
 name|void
@@ -93,6 +105,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testReload ()
 specifier|public
 name|void
@@ -142,6 +156,8 @@ name|getProperties
 argument_list|()
 decl_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testReloadNotQuiet ()
 specifier|public
 name|void

@@ -22,11 +22,21 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Assert
 import|;
 end_import
 
@@ -48,23 +58,11 @@ name|ReadWriteBuffer
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-import|;
-end_import
-
 begin_class
 DECL|class|TestReadWriteBuffer
 specifier|public
 class|class
 name|TestReadWriteBuffer
-extends|extends
-name|TestCase
 block|{
 DECL|field|bytes
 specifier|private
@@ -90,6 +88,8 @@ block|,
 literal|'9'
 block|}
 decl_stmt|;
+annotation|@
+name|Test
 DECL|method|testReadWriteBuffer ()
 specifier|public
 name|void

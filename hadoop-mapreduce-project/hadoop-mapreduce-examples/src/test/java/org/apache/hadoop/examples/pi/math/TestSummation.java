@@ -150,17 +150,31 @@ name|Montgomery2
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+import|;
+end_import
+
 begin_class
 DECL|class|TestSummation
 specifier|public
 class|class
 name|TestSummation
-extends|extends
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 block|{
 DECL|field|RANDOM
 specifier|static
@@ -184,6 +198,15 @@ name|valueOf
 argument_list|(
 literal|2
 argument_list|)
+decl_stmt|;
+DECL|field|DOUBLE_DELTA
+specifier|private
+specifier|static
+specifier|final
+name|double
+name|DOUBLE_DELTA
+init|=
+literal|0.000000001f
 decl_stmt|;
 DECL|method|newSummation (final long base, final long range, final long delta)
 specifier|private
@@ -359,6 +382,8 @@ name|a
 argument_list|)
 decl_stmt|;
 comment|//    Util.out.println("combined=" + combined);
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -369,6 +394,8 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|sigma
@@ -382,6 +409,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testSubtract ()
 specifier|public
 name|void
@@ -858,6 +887,8 @@ operator|+
 name|value
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|value
@@ -866,6 +897,8 @@ name|sigma
 operator|.
 name|compute_modular
 argument_list|()
+argument_list|,
+name|DOUBLE_DELTA
 argument_list|)
 expr_stmt|;
 name|t
@@ -875,6 +908,8 @@ argument_list|(
 literal|"compute_modular"
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|value
@@ -883,6 +918,8 @@ name|sigma
 operator|.
 name|compute_montgomery
 argument_list|()
+argument_list|,
+name|DOUBLE_DELTA
 argument_list|)
 expr_stmt|;
 name|t
@@ -892,6 +929,8 @@ argument_list|(
 literal|"compute_montgomery"
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|value
@@ -900,6 +939,8 @@ name|sigma
 operator|.
 name|compute_montgomery2
 argument_list|()
+argument_list|,
+name|DOUBLE_DELTA
 argument_list|)
 expr_stmt|;
 name|t
@@ -909,6 +950,8 @@ argument_list|(
 literal|"compute_montgomery2"
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|value
@@ -917,6 +960,8 @@ name|sigma
 operator|.
 name|compute_modBigInteger
 argument_list|()
+argument_list|,
+name|DOUBLE_DELTA
 argument_list|)
 expr_stmt|;
 name|t
@@ -926,6 +971,8 @@ argument_list|(
 literal|"compute_modBigInteger"
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|value
@@ -934,6 +981,8 @@ name|sigma
 operator|.
 name|compute_modPow
 argument_list|()
+argument_list|,
+name|DOUBLE_DELTA
 argument_list|)
 expr_stmt|;
 name|t

@@ -181,12 +181,6 @@ DECL|class|TestJobControl
 specifier|public
 class|class
 name|TestJobControl
-extends|extends
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 block|{
 comment|/**    * This is a main function for testing JobControl class.    * It first cleans all the dirs it will use. Then it generates some random text    * data in TestJobControlData/indir. Then it creates 4 jobs:     *      Job 1: copy data from indir to outdir_1    *      Job 2: copy data from indir to outdir_2    *      Job 3: copy data from outdir_1 and outdir_2 to outdir_3    *      Job 4: copy data from outdir to outdir_4    * The jobs 1 and 2 have no dependency. The job 3 depends on jobs 1 and 2.    * The job 4 depends on job 3.    *     * Then it creates a JobControl object and add the 4 jobs to the JobControl object.    * Finally, it creates a thread to run the JobControl object and monitors/reports    * the job states.    */
 DECL|method|doJobControlTest ()
@@ -1709,6 +1703,8 @@ name|jc
 argument_list|)
 decl_stmt|;
 comment|//Just make sure no exception is thrown
+name|Assert
+operator|.
 name|assertNull
 argument_list|(
 name|j
@@ -1801,6 +1797,8 @@ argument_list|,
 literal|0
 argument_list|)
 decl_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|expected

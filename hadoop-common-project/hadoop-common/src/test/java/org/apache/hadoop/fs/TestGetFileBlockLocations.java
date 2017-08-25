@@ -58,11 +58,43 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
 import|;
 end_import
 
@@ -103,8 +135,6 @@ DECL|class|TestGetFileBlockLocations
 specifier|public
 class|class
 name|TestGetFileBlockLocations
-extends|extends
-name|TestCase
 block|{
 DECL|field|TEST_ROOT_DIR
 specifier|private
@@ -153,11 +183,10 @@ specifier|private
 name|Random
 name|random
 decl_stmt|;
-comment|/**    * @see TestCase#setUp()    */
 annotation|@
-name|Override
+name|Before
 DECL|method|setUp ()
-specifier|protected
+specifier|public
 name|void
 name|setUp
 parameter_list|()
@@ -511,11 +540,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * @see TestCase#tearDown()    */
 annotation|@
-name|Override
+name|After
 DECL|method|tearDown ()
-specifier|protected
+specifier|public
 name|void
 name|tearDown
 parameter_list|()
@@ -537,6 +565,8 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testFailureNegativeParameters ()
 specifier|public
 name|void
@@ -616,6 +646,8 @@ name|e
 parameter_list|)
 block|{      }
 block|}
+annotation|@
+name|Test
 DECL|method|testGetFileBlockLocations1 ()
 specifier|public
 name|void
@@ -789,6 +821,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testGetFileBlockLocations2 ()
 specifier|public
 name|void

@@ -26,6 +26,26 @@ name|BigInteger
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+import|;
+end_import
+
 begin_comment
 comment|/** Tests for BaileyBorweinPlouffe */
 end_comment
@@ -35,13 +55,9 @@ DECL|class|TestBaileyBorweinPlouffe
 specifier|public
 class|class
 name|TestBaileyBorweinPlouffe
-extends|extends
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 block|{
+annotation|@
+name|Test
 DECL|method|testMod ()
 specifier|public
 name|void
@@ -119,6 +135,8 @@ operator|.
 name|longValue
 argument_list|()
 decl_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"e="
@@ -144,6 +162,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testHexDigit ()
 specifier|public
 name|void
@@ -191,6 +211,8 @@ name|i
 operator|++
 control|)
 block|{
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"d="
@@ -215,6 +237,8 @@ operator|*=
 literal|10
 expr_stmt|;
 block|}
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|0x243FL

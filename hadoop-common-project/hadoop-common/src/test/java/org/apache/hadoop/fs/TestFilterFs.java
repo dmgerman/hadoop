@@ -62,16 +62,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -114,13 +104,21 @@ name|ConfigUtil
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_class
 DECL|class|TestFilterFs
 specifier|public
 class|class
 name|TestFilterFs
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|private
@@ -185,6 +183,8 @@ literal|null
 return|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testFilterFileSystem ()
 specifier|public
 name|void
@@ -333,6 +333,8 @@ block|}
 block|}
 comment|// Test that FilterFs will accept an AbstractFileSystem to be filtered which
 comment|// has an optional authority, such as ViewFs
+annotation|@
+name|Test
 DECL|method|testFilteringWithNonrequiredAuthority ()
 specifier|public
 name|void

@@ -18,11 +18,43 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
 import|;
 end_import
 
@@ -117,8 +149,6 @@ DECL|class|TestDU
 specifier|public
 class|class
 name|TestDU
-extends|extends
-name|TestCase
 block|{
 DECL|field|DU_DIR
 specifier|final
@@ -135,7 +165,7 @@ literal|"dutmp"
 argument_list|)
 decl_stmt|;
 annotation|@
-name|Override
+name|Before
 DECL|method|setUp ()
 specifier|public
 name|void
@@ -159,7 +189,7 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
-name|Override
+name|After
 DECL|method|tearDown ()
 specifier|public
 name|void
@@ -254,6 +284,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Verify that du returns expected used space for a file.    * We assume here that if a file system crates a file of size    * that is a multiple of the block size in this file system,    * then the used size for the file will be exactly that size.    * This is true for most file systems.    *    * @throws IOException    * @throws InterruptedException    */
+annotation|@
+name|Test
 DECL|method|testDU ()
 specifier|public
 name|void
@@ -456,6 +488,8 @@ operator|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testDUGetUsedWillNotReturnNegative ()
 specifier|public
 name|void
@@ -550,6 +584,8 @@ literal|0L
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testDUSetInitialValue ()
 specifier|public
 name|void

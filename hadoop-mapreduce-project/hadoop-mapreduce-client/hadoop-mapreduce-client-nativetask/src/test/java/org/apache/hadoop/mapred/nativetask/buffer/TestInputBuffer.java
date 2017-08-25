@@ -32,11 +32,11 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
-operator|.
-name|TestCase
+name|Test
 import|;
 end_import
 
@@ -55,9 +55,9 @@ DECL|class|TestInputBuffer
 specifier|public
 class|class
 name|TestInputBuffer
-extends|extends
-name|TestCase
 block|{
+annotation|@
+name|Test
 DECL|method|testInputBuffer ()
 specifier|public
 name|void

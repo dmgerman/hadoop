@@ -17,12 +17,14 @@ package|;
 end_package
 
 begin_import
-import|import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Assert
 operator|.
-name|TestCase
+name|*
 import|;
 end_import
 
@@ -65,6 +67,16 @@ operator|.
 name|http
 operator|.
 name|FilterContainer
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 
@@ -117,14 +129,14 @@ DECL|class|TestAuthenticationFilter
 specifier|public
 class|class
 name|TestAuthenticationFilter
-extends|extends
-name|TestCase
 block|{
 annotation|@
 name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
+annotation|@
+name|Test
 DECL|method|testConfiguration ()
 specifier|public
 name|void

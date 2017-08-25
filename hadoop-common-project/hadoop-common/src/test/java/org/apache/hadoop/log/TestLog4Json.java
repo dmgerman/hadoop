@@ -48,11 +48,23 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
 import|;
 end_import
 
@@ -216,16 +228,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Test
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -289,8 +291,6 @@ DECL|class|TestLog4Json
 specifier|public
 class|class
 name|TestLog4Json
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|private

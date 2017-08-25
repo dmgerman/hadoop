@@ -22,11 +22,11 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
-operator|.
-name|TestCase
+name|Test
 import|;
 end_import
 
@@ -86,9 +86,9 @@ DECL|class|TestSizedWritable
 specifier|public
 class|class
 name|TestSizedWritable
-extends|extends
-name|TestCase
 block|{
+annotation|@
+name|Test
 DECL|method|testSizedWritable ()
 specifier|public
 name|void

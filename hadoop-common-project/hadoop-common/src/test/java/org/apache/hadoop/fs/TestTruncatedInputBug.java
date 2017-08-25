@@ -37,12 +37,14 @@ import|;
 end_import
 
 begin_import
-import|import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Assert
 operator|.
-name|TestCase
+name|*
 import|;
 end_import
 
@@ -74,6 +76,16 @@ name|GenericTestUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/**  * test for the input truncation bug when mark/reset is used.  * HADOOP-1489  */
 end_comment
@@ -83,8 +95,6 @@ DECL|class|TestTruncatedInputBug
 specifier|public
 class|class
 name|TestTruncatedInputBug
-extends|extends
-name|TestCase
 block|{
 DECL|field|TEST_ROOT_DIR
 specifier|private
@@ -157,6 +167,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * When mark() is used on BufferedInputStream, the request    * size on the checksum file system can be small.  However,    * checksum file system currently depends on the request size    *>= bytesPerSum to work properly.    */
+annotation|@
+name|Test
 DECL|method|testTruncatedInputBug ()
 specifier|public
 name|void

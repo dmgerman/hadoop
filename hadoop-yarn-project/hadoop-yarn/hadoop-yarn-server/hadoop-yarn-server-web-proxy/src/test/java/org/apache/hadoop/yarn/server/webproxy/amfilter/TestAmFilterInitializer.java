@@ -64,11 +64,33 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
 import|;
 end_import
 
@@ -162,39 +184,26 @@ name|WebAppUtils
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Test
-import|;
-end_import
+begin_comment
+comment|/**  * Test class for {@Link AmFilterInitializer}.  */
+end_comment
 
 begin_class
 DECL|class|TestAmFilterInitializer
 specifier|public
 class|class
 name|TestAmFilterInitializer
-extends|extends
-name|TestCase
 block|{
 annotation|@
-name|Override
+name|Before
 DECL|method|setUp ()
-specifier|protected
+specifier|public
 name|void
 name|setUp
 parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|super
-operator|.
-name|setUp
-argument_list|()
-expr_stmt|;
 name|NetUtils
 operator|.
 name|addStaticResolution

@@ -44,11 +44,23 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
 import|;
 end_import
 
@@ -75,9 +87,9 @@ DECL|class|TestFsPermission
 specifier|public
 class|class
 name|TestFsPermission
-extends|extends
-name|TestCase
 block|{
+annotation|@
+name|Test
 DECL|method|testFsAction ()
 specifier|public
 name|void
@@ -262,6 +274,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Ensure that when manually specifying permission modes we get    * the expected values back out for all combinations    */
+annotation|@
+name|Test
 DECL|method|testConvertingPermissions ()
 specifier|public
 name|void
@@ -433,6 +447,8 @@ name|s
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testSpecialBitsToString ()
 specifier|public
 name|void
@@ -630,6 +646,8 @@ block|}
 block|}
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testFsPermission ()
 specifier|public
 name|void
@@ -824,6 +842,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testSymbolicPermission ()
 specifier|public
 name|void
@@ -957,6 +977,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testUMaskParser ()
 specifier|public
 name|void
@@ -1066,6 +1088,8 @@ block|}
 block|}
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testSymbolicUmasks ()
 specifier|public
 name|void
@@ -1175,6 +1199,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testBadUmasks ()
 specifier|public
 name|void
