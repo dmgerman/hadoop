@@ -509,19 +509,21 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRuntimeException
-name|e
+name|Throwable
+name|t
 parameter_list|)
 block|{
+comment|// The preemption monitor does not alter structures nor do structures
+comment|// persist across invocations. Therefore, log, skip, and retry.
 name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"YarnRuntimeException raised while executing preemption"
+literal|"Exception raised while executing preemption"
 operator|+
 literal|" checker, skip this run..., exception="
 argument_list|,
-name|e
+name|t
 argument_list|)
 expr_stmt|;
 block|}
