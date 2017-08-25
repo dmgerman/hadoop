@@ -897,6 +897,16 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|PRE_REGISTER_RESPONSE_ID
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|PRE_REGISTER_RESPONSE_ID
+init|=
+operator|-
+literal|1
+decl_stmt|;
 DECL|field|amLivelinessMonitor
 specifier|private
 specifier|final
@@ -2035,6 +2045,28 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
+DECL|method|getNextResponseId (int responseId)
+specifier|private
+name|int
+name|getNextResponseId
+parameter_list|(
+name|int
+name|responseId
+parameter_list|)
+block|{
+comment|// Loop between 0 to Integer.MAX_VALUE
+return|return
+operator|(
+name|responseId
+operator|+
+literal|1
+operator|)
+operator|&
+name|Integer
+operator|.
+name|MAX_VALUE
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|allocate (AllocateRequest request)
@@ -2158,16 +2190,16 @@ name|message
 argument_list|)
 throw|;
 block|}
+comment|// Normally request.getResponseId() == lastResponse.getResponseId()
 if|if
 condition|(
-operator|(
+name|getNextResponseId
+argument_list|(
 name|request
 operator|.
 name|getResponseId
 argument_list|()
-operator|+
-literal|1
-operator|)
+argument_list|)
 operator|==
 name|lastResponse
 operator|.
@@ -2175,7 +2207,7 @@ name|getResponseId
 argument_list|()
 condition|)
 block|{
-comment|/* old heartbeat */
+comment|// heartbeat one step old, simply return lastReponse
 return|return
 name|lastResponse
 return|;
@@ -2187,9 +2219,7 @@ name|request
 operator|.
 name|getResponseId
 argument_list|()
-operator|+
-literal|1
-operator|<
+operator|!=
 name|lastResponse
 operator|.
 name|getResponseId
@@ -2205,14 +2235,17 @@ name|appAttemptId
 operator|+
 literal|", expect responseId to be "
 operator|+
-operator|(
 name|lastResponse
 operator|.
 name|getResponseId
 argument_list|()
 operator|+
-literal|1
-operator|)
+literal|", but get "
+operator|+
+name|request
+operator|.
+name|getResponseId
+argument_list|()
 decl_stmt|;
 throw|throw
 operator|new
@@ -2435,12 +2468,13 @@ name|response
 operator|.
 name|setResponseId
 argument_list|(
+name|getNextResponseId
+argument_list|(
 name|lastResponse
 operator|.
 name|getResponseId
 argument_list|()
-operator|+
-literal|1
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|lock
@@ -2482,8 +2516,7 @@ name|response
 operator|.
 name|setResponseId
 argument_list|(
-operator|-
-literal|1
+name|PRE_REGISTER_RESPONSE_ID
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -2518,6 +2551,62 @@ argument_list|(
 name|attemptId
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setAttemptLastResponseId (ApplicationAttemptId attemptId, int lastResponseId)
+specifier|protected
+name|boolean
+name|setAttemptLastResponseId
+parameter_list|(
+name|ApplicationAttemptId
+name|attemptId
+parameter_list|,
+name|int
+name|lastResponseId
+parameter_list|)
+block|{
+name|AllocateResponseLock
+name|lock
+init|=
+name|responseMap
+operator|.
+name|get
+argument_list|(
+name|attemptId
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|lock
+operator|==
+literal|null
+operator|||
+name|lock
+operator|.
+name|getAllocateResponse
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+name|lock
+operator|.
+name|getAllocateResponse
+argument_list|()
+operator|.
+name|setResponseId
+argument_list|(
+name|lastResponseId
+argument_list|)
+expr_stmt|;
+return|return
+literal|true
+return|;
 block|}
 DECL|method|unregisterAttempt (ApplicationAttemptId attemptId)
 specifier|public
