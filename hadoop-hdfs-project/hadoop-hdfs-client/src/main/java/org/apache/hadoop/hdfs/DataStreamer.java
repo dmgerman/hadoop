@@ -7487,8 +7487,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** update pipeline at the namenode */
+annotation|@
+name|VisibleForTesting
 DECL|method|updatePipeline (long newGS)
-specifier|private
+specifier|public
 name|void
 name|updatePipeline
 parameter_list|(
