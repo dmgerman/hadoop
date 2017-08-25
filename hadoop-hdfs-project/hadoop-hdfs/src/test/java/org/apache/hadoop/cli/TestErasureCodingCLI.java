@@ -247,7 +247,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_EC_POLICIES_ENABLED_KEY
 argument_list|,
-literal|"RS-6-3-64k,RS-3-2-64k,XOR-2-1-64k"
+literal|"RS-6-3-1024k,RS-3-2-1024k,XOR-2-1-1024k"
 argument_list|)
 expr_stmt|;
 name|dfsCluster

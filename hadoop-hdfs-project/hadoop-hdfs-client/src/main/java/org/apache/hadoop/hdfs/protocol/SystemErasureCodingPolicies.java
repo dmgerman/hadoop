@@ -137,7 +137,7 @@ specifier|private
 name|SystemErasureCodingPolicies
 parameter_list|()
 block|{}
-comment|// 64 KB
+comment|// 1 MB
 DECL|field|DEFAULT_CELLSIZE
 specifier|private
 specifier|static
@@ -145,7 +145,7 @@ specifier|final
 name|int
 name|DEFAULT_CELLSIZE
 init|=
-literal|64
+literal|1024
 operator|*
 literal|1024
 decl_stmt|;
