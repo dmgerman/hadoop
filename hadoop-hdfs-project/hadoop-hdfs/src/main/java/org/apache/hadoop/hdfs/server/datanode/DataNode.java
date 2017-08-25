@@ -14673,6 +14673,9 @@ literal|0
 condition|)
 block|{
 operator|new
+name|Daemon
+argument_list|(
+operator|new
 name|DataTransfer
 argument_list|(
 name|targets
@@ -14687,8 +14690,9 @@ name|stage
 argument_list|,
 name|client
 argument_list|)
+argument_list|)
 operator|.
-name|run
+name|start
 argument_list|()
 expr_stmt|;
 block|}
