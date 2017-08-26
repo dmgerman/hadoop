@@ -630,6 +630,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|BlocksStats
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|ClientDatanodeProtocol
 import|;
 end_import
@@ -695,6 +711,22 @@ operator|.
 name|protocol
 operator|.
 name|DatanodeVolumeInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|ECBlockGroupsStats
 import|;
 end_import
 
@@ -3031,17 +3063,40 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|/* These counts are not always upto date. They are updated after        * iteration of an internal list. Should be updated in a few seconds to       * minutes. Use "-metaSave" to list of all such blocks and accurate       * counts.      */
+name|BlocksStats
+name|blocksStats
+init|=
+name|dfs
+operator|.
+name|getClient
+argument_list|()
+operator|.
+name|getNamenode
+argument_list|()
+operator|.
+name|getBlocksStats
+argument_list|()
+decl_stmt|;
 name|System
 operator|.
 name|out
 operator|.
 name|println
 argument_list|(
-literal|"Under replicated blocks: "
-operator|+
-name|dfs
+literal|"Replicated Blocks:"
+argument_list|)
+expr_stmt|;
+name|System
 operator|.
-name|getLowRedundancyBlocksCount
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"\tUnder replicated blocks: "
+operator|+
+name|blocksStats
+operator|.
+name|getLowRedundancyBlocksStat
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3051,11 +3106,11 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"Blocks with corrupt replicas: "
+literal|"\tBlocks with corrupt replicas: "
 operator|+
-name|dfs
+name|blocksStats
 operator|.
-name|getCorruptBlocksCount
+name|getCorruptBlocksStat
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3065,11 +3120,11 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"Missing blocks: "
+literal|"\tMissing blocks: "
 operator|+
-name|dfs
+name|blocksStats
 operator|.
-name|getMissingBlocksCount
+name|getMissingReplicaBlocksStat
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3079,11 +3134,11 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"Missing blocks (with replication factor 1): "
+literal|"\tMissing blocks (with replication factor 1): "
 operator|+
-name|dfs
+name|blocksStats
 operator|.
-name|getMissingReplOneBlocksCount
+name|getMissingReplicationOneBlocksStat
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3093,11 +3148,90 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"Pending deletion blocks: "
+literal|"\tPending deletion blocks: "
 operator|+
+name|blocksStats
+operator|.
+name|getPendingDeletionBlocksStat
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|ECBlockGroupsStats
+name|ecBlockGroupsStats
+init|=
 name|dfs
 operator|.
-name|getPendingDeletionBlocksCount
+name|getClient
+argument_list|()
+operator|.
+name|getNamenode
+argument_list|()
+operator|.
+name|getECBlockGroupsStats
+argument_list|()
+decl_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Erasure Coded Block Groups: "
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"\tLow redundancy block groups: "
+operator|+
+name|ecBlockGroupsStats
+operator|.
+name|getLowRedundancyBlockGroupsStat
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"\tBlock groups with corrupt internal blocks: "
+operator|+
+name|ecBlockGroupsStats
+operator|.
+name|getCorruptBlockGroupsStat
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"\tMissing block groups: "
+operator|+
+name|ecBlockGroupsStats
+operator|.
+name|getMissingBlockGroupsStat
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"\tPending deletion block groups: "
+operator|+
+name|ecBlockGroupsStats
+operator|.
+name|getPendingDeletionBlockGroupsStat
 argument_list|()
 argument_list|)
 expr_stmt|;
