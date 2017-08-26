@@ -46,10 +46,12 @@ end_comment
 
 begin_class
 DECL|class|CheckpointFaultInjector
+specifier|public
 class|class
 name|CheckpointFaultInjector
 block|{
 DECL|field|instance
+specifier|public
 specifier|static
 name|CheckpointFaultInjector
 name|instance
@@ -59,6 +61,7 @@ name|CheckpointFaultInjector
 argument_list|()
 decl_stmt|;
 DECL|method|getInstance ()
+specifier|public
 specifier|static
 name|CheckpointFaultInjector
 name|getInstance
@@ -67,6 +70,23 @@ block|{
 return|return
 name|instance
 return|;
+block|}
+DECL|method|set (CheckpointFaultInjector instance)
+specifier|public
+specifier|static
+name|void
+name|set
+parameter_list|(
+name|CheckpointFaultInjector
+name|instance
+parameter_list|)
+block|{
+name|CheckpointFaultInjector
+operator|.
+name|instance
+operator|=
+name|instance
+expr_stmt|;
 block|}
 DECL|method|beforeGetImageSetsHeaders ()
 specifier|public
@@ -153,6 +173,16 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{}
+DECL|method|duringUploadInProgess ()
+specifier|public
+name|void
+name|duringUploadInProgess
+parameter_list|()
+throws|throws
+name|InterruptedException
+throws|,
+name|IOException
+block|{   }
 block|}
 end_class
 

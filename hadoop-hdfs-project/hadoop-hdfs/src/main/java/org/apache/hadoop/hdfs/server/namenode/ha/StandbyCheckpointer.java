@@ -254,6 +254,24 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|CheckpointFaultInjector
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|FSImage
 import|;
 end_import
@@ -1275,7 +1293,17 @@ name|call
 parameter_list|()
 throws|throws
 name|IOException
+throws|,
+name|InterruptedException
 block|{
+name|CheckpointFaultInjector
+operator|.
+name|getInstance
+argument_list|()
+operator|.
+name|duringUploadInProgess
+argument_list|()
+expr_stmt|;
 return|return
 name|TransferFsImage
 operator|.
@@ -1425,6 +1453,18 @@ expr_stmt|;
 break|break;
 block|}
 block|}
+if|if
+condition|(
+name|ie
+operator|==
+literal|null
+operator|&&
+name|ioe
+operator|==
+literal|null
+condition|)
+block|{
+comment|//Update only when response from remote about success or
 name|lastUploadTime
 operator|=
 name|monotonicNow
@@ -1437,6 +1477,7 @@ name|isPrimaryCheckPointer
 operator|=
 name|success
 expr_stmt|;
+block|}
 comment|// cleaner than copying code for multiple catch statements and better than catching all
 comment|// exceptions, so we just handle the ones we expect.
 if|if
