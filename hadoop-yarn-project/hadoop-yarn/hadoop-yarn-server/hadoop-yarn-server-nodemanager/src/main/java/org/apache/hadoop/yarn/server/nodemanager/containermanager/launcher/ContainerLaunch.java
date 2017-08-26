@@ -3711,6 +3711,19 @@ argument_list|,
 name|tailBuffer
 argument_list|)
 expr_stmt|;
+name|String
+name|tailBufferMsg
+init|=
+operator|new
+name|String
+argument_list|(
+name|tailBuffer
+argument_list|,
+name|StandardCharsets
+operator|.
+name|UTF_8
+argument_list|)
+decl_stmt|;
 name|diagnosticInfo
 operator|.
 name|append
@@ -3743,14 +3756,19 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-operator|new
-name|String
-argument_list|(
-name|tailBuffer
-argument_list|,
-name|StandardCharsets
+name|tailBufferMsg
+argument_list|)
 operator|.
-name|UTF_8
+name|append
+argument_list|(
+literal|"\n"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|analysesErrorMsgOfContainerExitWithFailure
+argument_list|(
+name|tailBufferMsg
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3811,6 +3829,112 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|analysesErrorMsgOfContainerExitWithFailure (String errorMsg)
+specifier|private
+name|String
+name|analysesErrorMsgOfContainerExitWithFailure
+parameter_list|(
+name|String
+name|errorMsg
+parameter_list|)
+block|{
+name|StringBuilder
+name|analysis
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|errorMsg
+operator|.
+name|indexOf
+argument_list|(
+literal|"Error: Could not find or load main class"
+operator|+
+literal|" org.apache.hadoop.mapreduce"
+argument_list|)
+operator|!=
+operator|-
+literal|1
+condition|)
+block|{
+name|analysis
+operator|.
+name|append
+argument_list|(
+literal|"Please check whether your etc/hadoop/mapred-site.xml "
+operator|+
+literal|"contains the below configuration:\n"
+argument_list|)
+expr_stmt|;
+name|analysis
+operator|.
+name|append
+argument_list|(
+literal|"<property>\n"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"<name>yarn.app.mapreduce.am.env</name>\n"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"<value>HADOOP_MAPRED_HOME=${full path of your hadoop "
+operator|+
+literal|"distribution directory}</value>\n"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"</property>\n<property>\n"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"<name>mapreduce.map.env</name>\n"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"<value>HADOOP_MAPRED_HOME=${full path of your hadoop "
+operator|+
+literal|"distribution directory}</value>\n"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"</property>\n<property>\n"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"<name>mapreduce.reduce.e nv</name>\n"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"<value>HADOOP_MAPRED_HOME=${full path of your hadoop "
+operator|+
+literal|"distribution directory}</value>\n"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"</property>\n"
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|analysis
+operator|.
+name|toString
+argument_list|()
+return|;
 block|}
 DECL|method|getPidFileSubpath (String appIdStr, String containerIdStr)
 specifier|protected
