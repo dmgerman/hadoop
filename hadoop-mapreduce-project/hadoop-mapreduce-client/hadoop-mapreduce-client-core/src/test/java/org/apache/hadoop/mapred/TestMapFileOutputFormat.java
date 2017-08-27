@@ -92,6 +92,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -186,8 +196,10 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|After
 DECL|method|tearDown ()
-specifier|protected
+specifier|public
 name|void
 name|tearDown
 parameter_list|()
@@ -202,7 +214,6 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-empty_stmt|;
 DECL|class|MyPartitioner
 specifier|private
 specifier|static
