@@ -2214,10 +2214,15 @@ operator|+
 literal|" bytes."
 argument_list|)
 expr_stmt|;
-specifier|final
 name|boolean
 name|moveSuccess
 init|=
+literal|false
+decl_stmt|;
+try|try
+block|{
+name|moveSuccess
+operator|=
 name|journal
 operator|.
 name|moveTmpSegmentToCurrent
@@ -2231,27 +2236,33 @@ operator|.
 name|getEndTxId
 argument_list|()
 argument_list|)
-decl_stmt|;
-if|if
-condition|(
-operator|!
-name|moveSuccess
-condition|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
 block|{
-comment|// If move is not successful, delete the tmpFile
 name|LOG
 operator|.
-name|debug
+name|info
 argument_list|(
-literal|"Move to current directory unsuccessful. Deleting temporary "
-operator|+
-literal|"file: "
-operator|+
+literal|"Could not move %s to current directory."
+argument_list|,
 name|tmpEditsFile
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
 if|if
 condition|(
+name|tmpEditsFile
+operator|.
+name|exists
+argument_list|()
+operator|&&
 operator|!
 name|tmpEditsFile
 operator|.
@@ -2271,21 +2282,27 @@ literal|" has failed"
 argument_list|)
 expr_stmt|;
 block|}
-return|return
-literal|false
-return|;
 block|}
-else|else
+if|if
+condition|(
+name|moveSuccess
+condition|)
 block|{
 name|metrics
 operator|.
 name|incrNumEditLogsSynced
 argument_list|()
 expr_stmt|;
-block|}
 return|return
 literal|true
 return|;
+block|}
+else|else
+block|{
+return|return
+literal|false
+return|;
+block|}
 block|}
 DECL|method|getThrottler (Configuration conf)
 specifier|private
