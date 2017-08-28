@@ -1157,11 +1157,6 @@ name|candidate
 operator|.
 name|isDirectory
 argument_list|()
-operator|&&
-name|candidate
-operator|.
-name|canWrite
-argument_list|()
 condition|)
 block|{
 name|pathSubsystemMappings
@@ -1183,9 +1178,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"The following cgroup is not a directory or it is not"
-operator|+
-literal|" writable"
+literal|"The following cgroup is not a directory "
 operator|+
 name|candidate
 operator|.
