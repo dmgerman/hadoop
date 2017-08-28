@@ -2002,6 +2002,33 @@ operator|.
 name|getResourceUsage
 argument_list|()
 decl_stmt|;
+comment|// perUserAMUsed was populated with running apps, now we are looping
+comment|// through both running and pending apps.
+name|Resource
+name|userSpecificAmUsed
+init|=
+name|perUserAMUsed
+operator|.
+name|get
+argument_list|(
+name|userName
+argument_list|)
+decl_stmt|;
+name|amUsed
+operator|=
+operator|(
+name|userSpecificAmUsed
+operator|==
+literal|null
+operator|)
+condition|?
+name|Resources
+operator|.
+name|none
+argument_list|()
+else|:
+name|userSpecificAmUsed
+expr_stmt|;
 name|TempUserPerPartition
 name|tmpUser
 init|=
@@ -2037,12 +2064,7 @@ name|Resources
 operator|.
 name|clone
 argument_list|(
-name|perUserAMUsed
-operator|.
-name|get
-argument_list|(
-name|userName
-argument_list|)
+name|userSpecificAmUsed
 argument_list|)
 argument_list|,
 name|Resources
@@ -2764,6 +2786,11 @@ argument_list|,
 literal|0
 argument_list|)
 decl_stmt|;
+synchronized|synchronized
+init|(
+name|leafQueue
+init|)
+block|{
 for|for
 control|(
 name|FiCaSchedulerApp
@@ -2844,6 +2871,7 @@ name|partition
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 return|return
 name|amUsed
