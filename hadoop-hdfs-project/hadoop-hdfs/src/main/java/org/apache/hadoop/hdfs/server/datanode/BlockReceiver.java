@@ -1778,7 +1778,12 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"IOException in BlockReceiver constructor"
+literal|"IOException in BlockReceiver constructor :"
+operator|+
+name|ioe
+operator|.
+name|getMessage
+argument_list|()
 operator|+
 operator|(
 name|cause

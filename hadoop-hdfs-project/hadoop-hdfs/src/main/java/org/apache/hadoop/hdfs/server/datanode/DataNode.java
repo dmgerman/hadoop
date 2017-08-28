@@ -12831,7 +12831,16 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"IOException in DataTransfer#run(). Cause is "
+literal|"IOException in DataTransfer#run() "
+operator|+
+name|ie
+operator|.
+name|getMessage
+argument_list|()
+operator|+
+literal|". "
+operator|+
+literal|"Cause is "
 argument_list|,
 name|cause
 argument_list|)
