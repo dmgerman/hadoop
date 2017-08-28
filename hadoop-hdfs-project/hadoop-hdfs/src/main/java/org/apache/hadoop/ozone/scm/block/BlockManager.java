@@ -125,6 +125,28 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * @return the block deletion transaction log maintained by SCM.    */
+DECL|method|getDeletedBlockLog ()
+name|DeletedBlockLog
+name|getDeletedBlockLog
+parameter_list|()
+function_decl|;
+comment|/**    * Start block manager background services.    * @throws IOException    */
+DECL|method|start ()
+name|void
+name|start
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Shutdown block manager background services.    * @throws IOException    */
+DECL|method|stop ()
+name|void
+name|stop
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

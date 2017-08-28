@@ -96,6 +96,17 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Return all failed transactions in the log. A transaction is considered    * to be failed if it has been sent more than MAX_RETRY limit and its    * count is reset to -1.    *    * @return a list of failed deleted block transactions.    * @throws IOException    */
+DECL|method|getFailedTransactions ()
+name|List
+argument_list|<
+name|DeletedBlocksTransaction
+argument_list|>
+name|getFailedTransactions
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Increments count for given list of transactions by 1.    * The log maintains a valid range of counts for each transaction    * [0, MAX_RETRY]. If exceed this range, resets it to -1 to indicate    * the transaction is no longer valid.    *    * @param txIDs - transaction ID.    */
 DECL|method|incrementCount (List<Long> txIDs)
 name|void
@@ -138,6 +149,14 @@ name|String
 argument_list|>
 name|blocks
 parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Returns the total number of valid transactions. A transaction is    * considered to be valid as long as its count is in range [0, MAX_RETRY].    *    * @return number of a valid transactions.    * @throws IOException    */
+DECL|method|getNumOfValidTransactions ()
+name|int
+name|getNumOfValidTransactions
+parameter_list|()
 throws|throws
 name|IOException
 function_decl|;

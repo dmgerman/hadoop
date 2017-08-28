@@ -94,6 +94,24 @@ name|ozone
 operator|.
 name|protocol
 operator|.
+name|commands
+operator|.
+name|SCMCommand
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
 name|proto
 operator|.
 name|OzoneProtos
@@ -296,6 +314,19 @@ name|DatanodeID
 name|id
 parameter_list|)
 function_decl|;
+comment|/**    * Add a {@link SCMCommand} to the command queue, which are    * handled by HB thread asynchronously.    * @param id    * @param command    */
+DECL|method|addDatanodeCommand (DatanodeID id, SCMCommand command)
+specifier|default
+name|void
+name|addDatanodeCommand
+parameter_list|(
+name|DatanodeID
+name|id
+parameter_list|,
+name|SCMCommand
+name|command
+parameter_list|)
+block|{}
 block|}
 end_interface
 

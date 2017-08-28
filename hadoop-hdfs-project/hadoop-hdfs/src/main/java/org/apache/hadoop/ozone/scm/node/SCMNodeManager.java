@@ -3338,6 +3338,32 @@ return|return
 name|nodeCountMap
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|addDatanodeCommand (DatanodeID id, SCMCommand command)
+specifier|public
+name|void
+name|addDatanodeCommand
+parameter_list|(
+name|DatanodeID
+name|id
+parameter_list|,
+name|SCMCommand
+name|command
+parameter_list|)
+block|{
+name|this
+operator|.
+name|commandQueue
+operator|.
+name|addCommand
+argument_list|(
+name|id
+argument_list|,
+name|command
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

@@ -26,12 +26,45 @@ specifier|public
 interface|interface
 name|BackgroundTaskResult
 block|{
-comment|/**    *   Returns the size of entries included in this result.    */
+comment|/**    * Returns the size of entries included in this result.    */
 DECL|method|getSize ()
 name|int
 name|getSize
 parameter_list|()
 function_decl|;
+comment|/**    * An empty task result implementation.    */
+DECL|class|EmptyTaskResult
+class|class
+name|EmptyTaskResult
+implements|implements
+name|BackgroundTaskResult
+block|{
+DECL|method|newResult ()
+specifier|public
+specifier|static
+name|EmptyTaskResult
+name|newResult
+parameter_list|()
+block|{
+return|return
+operator|new
+name|EmptyTaskResult
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getSize ()
+specifier|public
+name|int
+name|getSize
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
+block|}
 block|}
 end_interface
 
