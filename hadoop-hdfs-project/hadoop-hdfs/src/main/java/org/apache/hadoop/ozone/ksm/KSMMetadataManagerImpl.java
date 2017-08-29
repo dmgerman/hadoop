@@ -547,12 +547,12 @@ comment|/**  * KSM metadata manager interface.  */
 end_comment
 
 begin_class
-DECL|class|MetadataManagerImpl
+DECL|class|KSMMetadataManagerImpl
 specifier|public
 class|class
-name|MetadataManagerImpl
+name|KSMMetadataManagerImpl
 implements|implements
-name|MetadataManager
+name|KSMMetadataManager
 block|{
 DECL|field|store
 specifier|private
@@ -566,9 +566,9 @@ specifier|final
 name|ReadWriteLock
 name|lock
 decl_stmt|;
-DECL|method|MetadataManagerImpl (OzoneConfiguration conf)
+DECL|method|KSMMetadataManagerImpl (OzoneConfiguration conf)
 specifier|public
-name|MetadataManagerImpl
+name|KSMMetadataManagerImpl
 parameter_list|(
 name|OzoneConfiguration
 name|conf

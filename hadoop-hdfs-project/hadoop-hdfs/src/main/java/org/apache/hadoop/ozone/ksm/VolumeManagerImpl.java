@@ -293,7 +293,7 @@ decl_stmt|;
 DECL|field|metadataManager
 specifier|private
 specifier|final
-name|MetadataManager
+name|KSMMetadataManager
 name|metadataManager
 decl_stmt|;
 DECL|field|maxUserVolumeCount
@@ -303,11 +303,11 @@ name|int
 name|maxUserVolumeCount
 decl_stmt|;
 comment|/**    * Constructor.    * @param conf - Ozone configuration.    * @throws IOException    */
-DECL|method|VolumeManagerImpl (MetadataManager metadataManager, OzoneConfiguration conf)
+DECL|method|VolumeManagerImpl (KSMMetadataManager metadataManager, OzoneConfiguration conf)
 specifier|public
 name|VolumeManagerImpl
 parameter_list|(
-name|MetadataManager
+name|KSMMetadataManager
 name|metadataManager
 parameter_list|,
 name|OzoneConfiguration

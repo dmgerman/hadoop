@@ -153,10 +153,10 @@ comment|/**  * KSM metadata manager interface.  */
 end_comment
 
 begin_interface
-DECL|interface|MetadataManager
+DECL|interface|KSMMetadataManager
 specifier|public
 interface|interface
-name|MetadataManager
+name|KSMMetadataManager
 block|{
 comment|/**    * Start metadata manager.    */
 DECL|method|start ()

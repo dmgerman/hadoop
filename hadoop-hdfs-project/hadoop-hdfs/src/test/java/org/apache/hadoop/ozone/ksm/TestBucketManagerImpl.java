@@ -349,7 +349,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Tests BucketManagerImpl, mocks MetadataManager for testing.  */
+comment|/**  * Tests BucketManagerImpl, mocks KSMMetadataManager for testing.  */
 end_comment
 
 begin_class
@@ -379,7 +379,7 @@ argument_list|()
 decl_stmt|;
 DECL|method|getMetadataManagerMock (String... volumesToCreate)
 specifier|private
-name|MetadataManager
+name|KSMMetadataManager
 name|getMetadataManagerMock
 parameter_list|(
 name|String
@@ -389,14 +389,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|MetadataManager
+name|KSMMetadataManager
 name|metadataManager
 init|=
 name|Mockito
 operator|.
 name|mock
 argument_list|(
-name|MetadataManager
+name|KSMMetadataManager
 operator|.
 name|class
 argument_list|)
@@ -942,7 +942,7 @@ argument_list|(
 literal|"Volume doesn't exist"
 argument_list|)
 expr_stmt|;
-name|MetadataManager
+name|KSMMetadataManager
 name|metaMgr
 init|=
 name|getMetadataManagerMock
@@ -1023,7 +1023,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|MetadataManager
+name|KSMMetadataManager
 name|metaMgr
 init|=
 name|getMetadataManagerMock
@@ -1100,7 +1100,7 @@ argument_list|(
 literal|"Bucket already exist"
 argument_list|)
 expr_stmt|;
-name|MetadataManager
+name|KSMMetadataManager
 name|metaMgr
 init|=
 name|getMetadataManagerMock
@@ -1199,7 +1199,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|MetadataManager
+name|KSMMetadataManager
 name|metaMgr
 init|=
 name|getMetadataManagerMock
@@ -1261,7 +1261,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|MetadataManager
+name|KSMMetadataManager
 name|metaMgr
 init|=
 name|getMetadataManagerMock
@@ -1391,7 +1391,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|MetadataManager
+name|KSMMetadataManager
 name|metaMgr
 init|=
 name|getMetadataManagerMock
@@ -1668,7 +1668,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|MetadataManager
+name|KSMMetadataManager
 name|metaMgr
 init|=
 name|getMetadataManagerMock
@@ -1928,7 +1928,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|MetadataManager
+name|KSMMetadataManager
 name|metaMgr
 init|=
 name|getMetadataManagerMock
@@ -2078,7 +2078,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|MetadataManager
+name|KSMMetadataManager
 name|metaMgr
 init|=
 name|getMetadataManagerMock
@@ -2223,7 +2223,7 @@ argument_list|(
 literal|"Bucket not found"
 argument_list|)
 expr_stmt|;
-name|MetadataManager
+name|KSMMetadataManager
 name|metaMgr
 init|=
 name|getMetadataManagerMock
@@ -2422,7 +2422,7 @@ argument_list|(
 literal|"Bucket is not empty"
 argument_list|)
 expr_stmt|;
-name|MetadataManager
+name|KSMMetadataManager
 name|metaMgr
 init|=
 name|getMetadataManagerMock

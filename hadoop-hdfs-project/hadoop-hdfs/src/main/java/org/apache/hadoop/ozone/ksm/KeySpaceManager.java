@@ -680,7 +680,7 @@ decl_stmt|;
 DECL|field|metadataManager
 specifier|private
 specifier|final
-name|MetadataManager
+name|KSMMetadataManager
 name|metadataManager
 decl_stmt|;
 DECL|field|volumeManager
@@ -814,7 +814,7 @@ expr_stmt|;
 name|metadataManager
 operator|=
 operator|new
-name|MetadataManagerImpl
+name|KSMMetadataManagerImpl
 argument_list|(
 name|conf
 argument_list|)
@@ -1069,7 +1069,7 @@ block|}
 comment|/**    * Get metadata manager.    * @return metadata manager.    */
 DECL|method|getMetadataManager ()
 specifier|public
-name|MetadataManager
+name|KSMMetadataManager
 name|getMetadataManager
 parameter_list|()
 block|{

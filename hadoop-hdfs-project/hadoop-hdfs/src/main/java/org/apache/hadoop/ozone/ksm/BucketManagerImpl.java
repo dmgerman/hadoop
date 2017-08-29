@@ -214,19 +214,19 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * MetadataManager is used for accessing KSM MetadataDB and ReadWriteLock.    */
+comment|/**    * KSMMetadataManager is used for accessing KSM MetadataDB and ReadWriteLock.    */
 DECL|field|metadataManager
 specifier|private
 specifier|final
-name|MetadataManager
+name|KSMMetadataManager
 name|metadataManager
 decl_stmt|;
 comment|/**    * Constructs BucketManager.    * @param metadataManager    */
-DECL|method|BucketManagerImpl (MetadataManager metadataManager)
+DECL|method|BucketManagerImpl (KSMMetadataManager metadataManager)
 specifier|public
 name|BucketManagerImpl
 parameter_list|(
-name|MetadataManager
+name|KSMMetadataManager
 name|metadataManager
 parameter_list|)
 block|{

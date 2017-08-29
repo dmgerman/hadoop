@@ -354,7 +354,7 @@ decl_stmt|;
 DECL|field|metadataManager
 specifier|private
 specifier|final
-name|MetadataManager
+name|KSMMetadataManager
 name|metadataManager
 decl_stmt|;
 DECL|field|scmBlockSize
@@ -363,14 +363,14 @@ specifier|final
 name|long
 name|scmBlockSize
 decl_stmt|;
-DECL|method|KeyManagerImpl (ScmBlockLocationProtocol scmBlockClient, MetadataManager metadataManager, OzoneConfiguration conf)
+DECL|method|KeyManagerImpl (ScmBlockLocationProtocol scmBlockClient, KSMMetadataManager metadataManager, OzoneConfiguration conf)
 specifier|public
 name|KeyManagerImpl
 parameter_list|(
 name|ScmBlockLocationProtocol
 name|scmBlockClient
 parameter_list|,
-name|MetadataManager
+name|KSMMetadataManager
 name|metadataManager
 parameter_list|,
 name|OzoneConfiguration
