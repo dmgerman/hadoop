@@ -388,7 +388,16 @@ try|try
 block|{
 name|apiWebApp
 operator|.
-name|startWebApp
+name|init
+argument_list|(
+operator|new
+name|YarnConfiguration
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|apiWebApp
+operator|.
+name|serviceStart
 argument_list|()
 expr_stmt|;
 block|}
@@ -398,6 +407,15 @@ name|Exception
 name|e
 parameter_list|)
 block|{
+name|logger
+operator|.
+name|error
+argument_list|(
+literal|"Got exception starting"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 name|apiWebApp
 operator|.
 name|close
