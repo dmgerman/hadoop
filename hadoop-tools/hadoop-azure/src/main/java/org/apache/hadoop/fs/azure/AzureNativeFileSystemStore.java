@@ -7353,6 +7353,8 @@ argument_list|,
 name|key
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 comment|// The blob exists, so capture the metadata from the blob
 comment|// properties.
 name|blob
@@ -7452,6 +7454,29 @@ name|blob
 argument_list|)
 argument_list|)
 return|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|StorageException
+name|e
+parameter_list|)
+block|{
+if|if
+condition|(
+operator|!
+name|NativeAzureFileSystemHelper
+operator|.
+name|isFileNotFoundException
+argument_list|(
+name|e
+argument_list|)
+condition|)
+block|{
+throw|throw
+name|e
+throw|;
+block|}
 block|}
 block|}
 comment|// There is no file with that key name, but maybe it is a folder.
