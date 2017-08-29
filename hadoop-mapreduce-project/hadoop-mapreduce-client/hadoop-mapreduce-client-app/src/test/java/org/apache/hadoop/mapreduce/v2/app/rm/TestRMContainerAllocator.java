@@ -2076,28 +2076,6 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|timelineservice
-operator|.
-name|security
-operator|.
-name|TimelineV2DelegationTokenSecretManagerService
-operator|.
-name|TimelineV2DelegationTokenSecretManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
 name|utils
 operator|.
 name|BuilderUtils
@@ -23572,6 +23550,7 @@ block|}
 block|}
 DECL|class|MockSchedulerForTimelineCollector
 specifier|private
+specifier|final
 specifier|static
 class|class
 name|MockSchedulerForTimelineCollector
@@ -23579,11 +23558,12 @@ implements|implements
 name|ApplicationMasterProtocol
 block|{
 DECL|field|collectorInfo
+specifier|private
 name|CollectorInfo
 name|collectorInfo
 decl_stmt|;
 DECL|method|MockSchedulerForTimelineCollector (CollectorInfo info)
-specifier|public
+specifier|private
 name|MockSchedulerForTimelineCollector
 parameter_list|(
 name|CollectorInfo
@@ -23598,6 +23578,7 @@ name|info
 expr_stmt|;
 block|}
 DECL|method|updateCollectorInfo (CollectorInfo info)
+specifier|private
 name|void
 name|updateCollectorInfo
 parameter_list|(

@@ -174,13 +174,13 @@ name|NMPolicyProvider
 extends|extends
 name|PolicyProvider
 block|{
-DECL|field|nodeManagerServices
+DECL|field|NODE_MANAGER_SERVICES
 specifier|private
 specifier|static
 specifier|final
 name|Service
 index|[]
-name|nodeManagerServices
+name|NODE_MANAGER_SERVICES
 init|=
 operator|new
 name|Service
@@ -233,7 +233,7 @@ name|getServices
 parameter_list|()
 block|{
 return|return
-name|nodeManagerServices
+name|NODE_MANAGER_SERVICES
 return|;
 block|}
 block|}

@@ -582,7 +582,7 @@ return|return
 name|filterConfig
 return|;
 block|}
-comment|/**    * Initializes {@link TimelineAuthenticationFilter}    *<p>    * Propagates to {@link TimelineAuthenticationFilter} configuration all YARN    * configuration properties prefixed with {@value #PREFIX}    *    * @param container    *          The filter container    * @param conf    *          Configuration for run-time parameters    */
+comment|/**    * Initializes {@link TimelineAuthenticationFilter}.    *<p>    * Propagates to {@link TimelineAuthenticationFilter} configuration all YARN    * configuration properties prefixed with {@value #PREFIX}.    *    * @param container    *          The filter container.    * @param conf    *          Configuration for run-time parameters.    */
 annotation|@
 name|Override
 DECL|method|initFilter (FilterContainer container, Configuration conf)

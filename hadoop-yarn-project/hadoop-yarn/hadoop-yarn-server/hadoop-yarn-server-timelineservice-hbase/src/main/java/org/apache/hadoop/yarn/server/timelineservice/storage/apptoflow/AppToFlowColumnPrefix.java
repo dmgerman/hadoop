@@ -342,7 +342,6 @@ index|[]
 name|columnPrefixBytes
 decl_stmt|;
 DECL|method|AppToFlowColumnPrefix (ColumnFamily<AppToFlowTable> columnFamily, String columnPrefix)
-specifier|private
 name|AppToFlowColumnPrefix
 parameter_list|(
 name|ColumnFamily
