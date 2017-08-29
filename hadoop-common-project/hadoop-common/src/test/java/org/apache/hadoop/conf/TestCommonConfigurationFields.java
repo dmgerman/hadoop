@@ -558,6 +558,13 @@ name|xmlPropsToSkipCompare
 operator|.
 name|add
 argument_list|(
+literal|"fs.azure.saskey.usecontainersaskeyforallaccess"
+argument_list|)
+expr_stmt|;
+name|xmlPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
 literal|"fs.azure.user.agent.prefix"
 argument_list|)
 expr_stmt|;
