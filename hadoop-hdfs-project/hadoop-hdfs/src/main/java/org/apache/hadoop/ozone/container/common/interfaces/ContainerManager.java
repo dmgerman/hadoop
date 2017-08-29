@@ -319,6 +319,20 @@ parameter_list|)
 throws|throws
 name|StorageContainerException
 function_decl|;
+comment|/**    * Choose containers for block deletion.    *    * @param count   - how many to return    * @throws StorageContainerException    */
+DECL|method|chooseContainerForBlockDeletion (int count)
+name|List
+argument_list|<
+name|ContainerData
+argument_list|>
+name|chooseContainerForBlockDeletion
+parameter_list|(
+name|int
+name|count
+parameter_list|)
+throws|throws
+name|StorageContainerException
+function_decl|;
 comment|/**    * Get metadata about a specific container.    *    * @param containerName - Name of the container    * @return ContainerData - Container Data.    * @throws StorageContainerException    */
 DECL|method|readContainer (String containerName)
 name|ContainerData

@@ -1283,8 +1283,6 @@ name|containerName
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|ContainerManagerImpl
-operator|.
 name|ContainerStatus
 name|status
 init|=

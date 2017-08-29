@@ -653,17 +653,13 @@ block|{
 comment|// We at most list a number of containers a time,
 comment|// in case there are too many containers and start too many workers.
 comment|// We must ensure there is no empty container in this result.
+name|containers
+operator|=
 name|containerManager
 operator|.
-name|listContainer
+name|chooseContainerForBlockDeletion
 argument_list|(
-literal|null
-argument_list|,
 name|containerLimitPerInterval
-argument_list|,
-literal|null
-argument_list|,
-name|containers
 argument_list|)
 expr_stmt|;
 comment|// TODO
