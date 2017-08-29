@@ -5204,8 +5204,6 @@ operator|.
 name|getApplications
 argument_list|(
 name|request
-argument_list|,
-literal|false
 argument_list|)
 operator|.
 name|getApplicationList

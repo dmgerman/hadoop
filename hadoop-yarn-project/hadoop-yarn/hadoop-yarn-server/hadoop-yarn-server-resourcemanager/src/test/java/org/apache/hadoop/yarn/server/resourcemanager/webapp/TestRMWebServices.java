@@ -84,18 +84,6 @@ name|mockito
 operator|.
 name|Matchers
 operator|.
-name|anyBoolean
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Matchers
-operator|.
 name|isA
 import|;
 end_import
@@ -4932,9 +4920,6 @@ name|GetApplicationsRequest
 operator|.
 name|class
 argument_list|)
-argument_list|,
-name|anyBoolean
-argument_list|()
 argument_list|)
 argument_list|)
 operator|.
