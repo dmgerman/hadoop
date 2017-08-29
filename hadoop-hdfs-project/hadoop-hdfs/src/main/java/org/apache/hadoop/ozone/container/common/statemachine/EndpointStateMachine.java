@@ -138,6 +138,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|time
+operator|.
+name|ZonedDateTime
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|concurrent
@@ -187,6 +197,8 @@ class|class
 name|EndpointStateMachine
 implements|implements
 name|Closeable
+implements|,
+name|EndpointStateMachineMBean
 block|{
 specifier|static
 specifier|final
@@ -242,6 +254,11 @@ DECL|field|version
 specifier|private
 name|VersionResponse
 name|version
+decl_stmt|;
+DECL|field|lastSuccessfulHeartbeat
+specifier|private
+name|ZonedDateTime
+name|lastSuccessfulHeartbeat
 decl_stmt|;
 comment|/**    * Constructs RPC Endpoints.    *    * @param endPoint - RPC endPoint.    */
 DECL|method|EndpointStateMachine (InetSocketAddress address, StorageContainerDatanodeProtocolClientSideTranslatorPB endPoint, Configuration conf)
@@ -365,6 +382,39 @@ return|return
 name|state
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getVersionNumber ()
+specifier|public
+name|int
+name|getVersionNumber
+parameter_list|()
+block|{
+if|if
+condition|(
+name|version
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+name|version
+operator|.
+name|getProtobufMessage
+argument_list|()
+operator|.
+name|getSoftwareVersion
+argument_list|()
+return|;
+block|}
+else|else
+block|{
+return|return
+operator|-
+literal|1
+return|;
+block|}
+block|}
 comment|/**    * Sets the endpoint state.    *    * @param epState - end point state.    */
 DECL|method|setState (EndPointStates epState)
 specifier|public
@@ -440,6 +490,22 @@ operator|.
 name|missedCount
 operator|.
 name|get
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getAddressString ()
+specifier|public
+name|String
+name|getAddressString
+parameter_list|()
+block|{
+return|return
+name|getAddress
+argument_list|()
+operator|.
+name|toString
 argument_list|()
 return|;
 block|}
@@ -729,6 +795,41 @@ name|getLastState
 argument_list|()
 return|;
 block|}
+block|}
+DECL|method|getLastSuccessfulHeartbeat ()
+specifier|public
+name|long
+name|getLastSuccessfulHeartbeat
+parameter_list|()
+block|{
+return|return
+name|lastSuccessfulHeartbeat
+operator|==
+literal|null
+condition|?
+literal|0
+else|:
+name|lastSuccessfulHeartbeat
+operator|.
+name|toEpochSecond
+argument_list|()
+return|;
+block|}
+DECL|method|setLastSuccessfulHeartbeat ( ZonedDateTime lastSuccessfulHeartbeat)
+specifier|public
+name|void
+name|setLastSuccessfulHeartbeat
+parameter_list|(
+name|ZonedDateTime
+name|lastSuccessfulHeartbeat
+parameter_list|)
+block|{
+name|this
+operator|.
+name|lastSuccessfulHeartbeat
+operator|=
+name|lastSuccessfulHeartbeat
+expr_stmt|;
 block|}
 block|}
 end_class
