@@ -147,6 +147,26 @@ return|return
 name|app
 return|;
 block|}
+DECL|method|addAll (ArrayList<AppInfo> appsInfo)
+specifier|public
+name|void
+name|addAll
+parameter_list|(
+name|ArrayList
+argument_list|<
+name|AppInfo
+argument_list|>
+name|appsInfo
+parameter_list|)
+block|{
+name|app
+operator|.
+name|addAll
+argument_list|(
+name|appsInfo
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

@@ -9355,6 +9355,27 @@ literal|"org.apache.hadoop.yarn.server.router.webapp."
 operator|+
 literal|"DefaultRequestInterceptorREST"
 decl_stmt|;
+comment|/**    * The interceptor class used in FederationInterceptorREST should return    * partial AppReports.    */
+DECL|field|ROUTER_WEBAPP_PARTIAL_RESULTS_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ROUTER_WEBAPP_PARTIAL_RESULTS_ENABLED
+init|=
+name|ROUTER_WEBAPP_PREFIX
+operator|+
+literal|"partial-result.enabled"
+decl_stmt|;
+DECL|field|DEFAULT_ROUTER_WEBAPP_PARTIAL_RESULTS_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_ROUTER_WEBAPP_PARTIAL_RESULTS_ENABLED
+init|=
+literal|false
+decl_stmt|;
 comment|////////////////////////////////
 comment|// Other Configs
 comment|////////////////////////////////

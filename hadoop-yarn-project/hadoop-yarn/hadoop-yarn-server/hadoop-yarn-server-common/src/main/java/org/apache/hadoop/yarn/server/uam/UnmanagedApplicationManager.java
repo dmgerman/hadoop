@@ -854,7 +854,7 @@ init|=
 literal|10000
 decl_stmt|;
 DECL|field|APP_NAME
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|String

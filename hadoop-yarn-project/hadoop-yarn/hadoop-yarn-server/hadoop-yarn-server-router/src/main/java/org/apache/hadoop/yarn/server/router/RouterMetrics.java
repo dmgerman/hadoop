@@ -235,6 +235,16 @@ specifier|private
 name|MutableGaugeInt
 name|numAppsFailedRetrieved
 decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"# of multiple applications reports failed to be retrieved"
+argument_list|)
+DECL|field|numMultipleAppsFailedRetrieved
+specifier|private
+name|MutableGaugeInt
+name|numMultipleAppsFailedRetrieved
+decl_stmt|;
 comment|// Aggregate metrics are shared, and don't have to be looked up per call
 annotation|@
 name|Metric
@@ -276,6 +286,18 @@ specifier|private
 name|MutableRate
 name|totalSucceededAppsRetrieved
 decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Total number of successful Retrieved multiple apps reports and "
+operator|+
+literal|"latency(ms)"
+argument_list|)
+DECL|field|totalSucceededMultipleAppsRetrieved
+specifier|private
+name|MutableRate
+name|totalSucceededMultipleAppsRetrieved
+decl_stmt|;
 comment|/**    * Provide quantile counters for all latencies.    */
 DECL|field|submitApplicationLatency
 specifier|private
@@ -296,6 +318,11 @@ DECL|field|getApplicationReportLatency
 specifier|private
 name|MutableQuantiles
 name|getApplicationReportLatency
+decl_stmt|;
+DECL|field|getApplicationsReportLatency
+specifier|private
+name|MutableQuantiles
+name|getApplicationsReportLatency
 decl_stmt|;
 DECL|field|INSTANCE
 specifier|private
@@ -394,6 +421,23 @@ argument_list|(
 literal|"getApplicationReportLatency"
 argument_list|,
 literal|"latency of get application report"
+argument_list|,
+literal|"ops"
+argument_list|,
+literal|"latency"
+argument_list|,
+literal|10
+argument_list|)
+expr_stmt|;
+name|getApplicationsReportLatency
+operator|=
+name|registry
+operator|.
+name|newQuantiles
+argument_list|(
+literal|"getApplicationsReportLatency"
+argument_list|,
+literal|"latency of get applications report"
 argument_list|,
 literal|"ops"
 argument_list|,
@@ -560,6 +604,24 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
+DECL|method|getNumSucceededMultipleAppsRetrieved ()
+specifier|public
+name|long
+name|getNumSucceededMultipleAppsRetrieved
+parameter_list|()
+block|{
+return|return
+name|totalSucceededMultipleAppsRetrieved
+operator|.
+name|lastStat
+argument_list|()
+operator|.
+name|numSamples
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getLatencySucceededAppsCreated ()
 specifier|public
 name|double
@@ -632,6 +694,24 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
+DECL|method|getLatencySucceededMultipleGetAppReport ()
+specifier|public
+name|double
+name|getLatencySucceededMultipleGetAppReport
+parameter_list|()
+block|{
+return|return
+name|totalSucceededMultipleAppsRetrieved
+operator|.
+name|lastStat
+argument_list|()
+operator|.
+name|mean
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getAppsFailedCreated ()
 specifier|public
 name|int
@@ -685,6 +765,21 @@ parameter_list|()
 block|{
 return|return
 name|numAppsFailedRetrieved
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getMultipleAppsFailedRetrieved ()
+specifier|public
+name|int
+name|getMultipleAppsFailedRetrieved
+parameter_list|()
+block|{
+return|return
+name|numMultipleAppsFailedRetrieved
 operator|.
 name|value
 argument_list|()
@@ -786,6 +881,30 @@ name|duration
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|succeededMultipleAppsRetrieved (long duration)
+specifier|public
+name|void
+name|succeededMultipleAppsRetrieved
+parameter_list|(
+name|long
+name|duration
+parameter_list|)
+block|{
+name|totalSucceededMultipleAppsRetrieved
+operator|.
+name|add
+argument_list|(
+name|duration
+argument_list|)
+expr_stmt|;
+name|getApplicationsReportLatency
+operator|.
+name|add
+argument_list|(
+name|duration
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|incrAppsFailedCreated ()
 specifier|public
 name|void
@@ -829,6 +948,18 @@ name|incrAppsFailedRetrieved
 parameter_list|()
 block|{
 name|numAppsFailedRetrieved
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incrMultipleAppsFailedRetrieved ()
+specifier|public
+name|void
+name|incrMultipleAppsFailedRetrieved
+parameter_list|()
+block|{
+name|numMultipleAppsFailedRetrieved
 operator|.
 name|incr
 argument_list|()
