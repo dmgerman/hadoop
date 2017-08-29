@@ -1407,6 +1407,12 @@ name|param
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Add "set -o pipefail -e" to validate launch_container script.
+name|sb
+operator|.
+name|setExitOnFailure
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|environment

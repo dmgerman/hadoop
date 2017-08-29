@@ -5349,6 +5349,14 @@ name|LINE_SEPARATOR
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|setExitOnFailure ()
+specifier|public
+name|void
+name|setExitOnFailure
+parameter_list|()
+block|{
+comment|// Dummy implementation
+block|}
 DECL|method|link (Path src, Path dst)
 specifier|protected
 specifier|abstract
@@ -5760,6 +5768,20 @@ name|toString
 argument_list|()
 argument_list|,
 literal|"\""
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|setExitOnFailure ()
+specifier|public
+name|void
+name|setExitOnFailure
+parameter_list|()
+block|{
+name|line
+argument_list|(
+literal|"set -o pipefail -e"
 argument_list|)
 expr_stmt|;
 block|}
