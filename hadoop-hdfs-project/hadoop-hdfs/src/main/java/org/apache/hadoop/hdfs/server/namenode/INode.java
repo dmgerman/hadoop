@@ -2472,7 +2472,7 @@ name|accessTime
 parameter_list|)
 function_decl|;
 comment|/**    * Set last access time of inode.    */
-DECL|method|setAccessTime (long accessTime, int latestSnapshotId)
+DECL|method|setAccessTime (long accessTime, int latestSnapshotId, boolean skipCaptureAccessTimeOnlyChangeInSnapshot)
 specifier|public
 specifier|final
 name|INode
@@ -2483,13 +2483,23 @@ name|accessTime
 parameter_list|,
 name|int
 name|latestSnapshotId
+parameter_list|,
+name|boolean
+name|skipCaptureAccessTimeOnlyChangeInSnapshot
 parameter_list|)
+block|{
+if|if
+condition|(
+operator|!
+name|skipCaptureAccessTimeOnlyChangeInSnapshot
+condition|)
 block|{
 name|recordModification
 argument_list|(
 name|latestSnapshotId
 argument_list|)
 expr_stmt|;
+block|}
 name|setAccessTime
 argument_list|(
 name|accessTime

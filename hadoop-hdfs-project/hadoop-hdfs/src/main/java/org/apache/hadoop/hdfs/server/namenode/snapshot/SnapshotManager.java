@@ -55,6 +55,38 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_SNAPSHOT_SKIP_CAPTURE_ACCESSTIME_ONLY_CHANGE
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_SNAPSHOT_SKIP_CAPTURE_ACCESSTIME_ONLY_CHANGE_DEFAULT
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -165,6 +197,34 @@ operator|.
 name|management
 operator|.
 name|ObjectName
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|Log
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|LogFactory
 import|;
 end_import
 
@@ -496,6 +556,22 @@ name|SnapshotManager
 implements|implements
 name|SnapshotStatsMXBean
 block|{
+DECL|field|LOG
+specifier|public
+specifier|static
+specifier|final
+name|Log
+name|LOG
+init|=
+name|LogFactory
+operator|.
+name|getLog
+argument_list|(
+name|SnapshotManager
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 DECL|field|fsdir
 specifier|private
 specifier|final
@@ -507,6 +583,14 @@ specifier|private
 specifier|final
 name|boolean
 name|captureOpenFiles
+decl_stmt|;
+comment|/**    * If skipCaptureAccessTimeOnlyChange is set to true, if accessTime    * of a file changed but there is no other modification made to the file,    * it will not be captured in next snapshot. However, if there is other    * modification made to the file, the last access time will be captured    * together with the modification in next snapshot.    */
+DECL|field|skipCaptureAccessTimeOnlyChange
+specifier|private
+name|boolean
+name|skipCaptureAccessTimeOnlyChange
+init|=
+literal|false
 decl_stmt|;
 DECL|field|numSnapshots
 specifier|private
@@ -594,6 +678,43 @@ argument_list|,
 name|DFS_NAMENODE_SNAPSHOT_CAPTURE_OPENFILES_DEFAULT
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|skipCaptureAccessTimeOnlyChange
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFS_NAMENODE_SNAPSHOT_SKIP_CAPTURE_ACCESSTIME_ONLY_CHANGE
+argument_list|,
+name|DFS_NAMENODE_SNAPSHOT_SKIP_CAPTURE_ACCESSTIME_ONLY_CHANGE_DEFAULT
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Loaded config captureOpenFiles: "
+operator|+
+name|captureOpenFiles
+operator|+
+literal|"skipCaptureAccessTimeOnlyChange: "
+operator|+
+name|skipCaptureAccessTimeOnlyChange
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * @return skipCaptureAccessTimeOnlyChange    */
+DECL|method|getSkipCaptureAccessTimeOnlyChange ()
+specifier|public
+name|boolean
+name|getSkipCaptureAccessTimeOnlyChange
+parameter_list|()
+block|{
+return|return
+name|skipCaptureAccessTimeOnlyChange
+return|;
 block|}
 comment|/** Used in tests only */
 DECL|method|setAllowNestedSnapshots (boolean allowNestedSnapshots)

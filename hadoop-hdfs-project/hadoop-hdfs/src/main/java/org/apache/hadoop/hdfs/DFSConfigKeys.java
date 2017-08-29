@@ -2198,6 +2198,24 @@ name|HdfsClientConfigKeys
 operator|.
 name|DFS_NAMENODE_SNAPSHOT_CAPTURE_OPENFILES_DEFAULT
 decl_stmt|;
+DECL|field|DFS_NAMENODE_SNAPSHOT_SKIP_CAPTURE_ACCESSTIME_ONLY_CHANGE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NAMENODE_SNAPSHOT_SKIP_CAPTURE_ACCESSTIME_ONLY_CHANGE
+init|=
+literal|"dfs.namenode.snapshot.skip.capture.accesstime-only-change"
+decl_stmt|;
+DECL|field|DFS_NAMENODE_SNAPSHOT_SKIP_CAPTURE_ACCESSTIME_ONLY_CHANGE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_NAMENODE_SNAPSHOT_SKIP_CAPTURE_ACCESSTIME_ONLY_CHANGE_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 comment|// Whether to enable datanode's stale state detection and usage for reads
 DECL|field|DFS_NAMENODE_AVOID_STALE_DATANODE_FOR_READ_KEY
 specifier|public

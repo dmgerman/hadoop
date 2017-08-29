@@ -2957,6 +2957,17 @@ argument_list|(
 name|atime
 argument_list|,
 name|latest
+argument_list|,
+name|fsd
+operator|.
+name|getFSNamesystem
+argument_list|()
+operator|.
+name|getSnapshotManager
+argument_list|()
+operator|.
+name|getSkipCaptureAccessTimeOnlyChange
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|status
