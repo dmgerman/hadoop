@@ -84,20 +84,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|DistributedFileSystem
 import|;
 end_import
@@ -631,15 +617,7 @@ argument_list|()
 operator|+
 literal|"\n"
 operator|+
-literal|"Get the list of enabled erasure coding policies.\n"
-operator|+
-literal|"Policies can be enabled on the NameNode via `"
-operator|+
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_EC_POLICIES_ENABLED_KEY
-operator|+
-literal|"`.\n"
+literal|"Get the list of all erasure coding policies.\n"
 return|;
 block|}
 annotation|@
@@ -725,28 +703,9 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"No erasure coding policies are enabled on the "
+literal|"There is no erasure coding policies in the "
 operator|+
 literal|"cluster."
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"The set of enabled policies can be "
-operator|+
-literal|"configured at '"
-operator|+
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_EC_POLICIES_ENABLED_KEY
-operator|+
-literal|"' on the "
-operator|+
-literal|"NameNode."
 argument_list|)
 expr_stmt|;
 block|}
@@ -782,11 +741,9 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"\t"
-operator|+
 name|policy
 operator|.
-name|getName
+name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
