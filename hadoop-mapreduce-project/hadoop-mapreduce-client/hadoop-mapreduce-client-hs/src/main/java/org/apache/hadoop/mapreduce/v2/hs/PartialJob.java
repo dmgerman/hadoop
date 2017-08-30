@@ -972,6 +972,58 @@ literal|"Can't set job's priority in history"
 argument_list|)
 throw|;
 block|}
+annotation|@
+name|Override
+DECL|method|getFailedMaps ()
+specifier|public
+name|int
+name|getFailedMaps
+parameter_list|()
+block|{
+return|return
+operator|-
+literal|1
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getFailedReduces ()
+specifier|public
+name|int
+name|getFailedReduces
+parameter_list|()
+block|{
+return|return
+operator|-
+literal|1
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getKilledMaps ()
+specifier|public
+name|int
+name|getKilledMaps
+parameter_list|()
+block|{
+return|return
+operator|-
+literal|1
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getKilledReduces ()
+specifier|public
+name|int
+name|getKilledReduces
+parameter_list|()
+block|{
+return|return
+operator|-
+literal|1
+return|;
+block|}
 block|}
 end_class
 

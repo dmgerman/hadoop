@@ -405,6 +405,26 @@ name|int
 name|getCompletedReduces
 parameter_list|()
 function_decl|;
+DECL|method|getFailedMaps ()
+name|int
+name|getFailedMaps
+parameter_list|()
+function_decl|;
+DECL|method|getFailedReduces ()
+name|int
+name|getFailedReduces
+parameter_list|()
+function_decl|;
+DECL|method|getKilledMaps ()
+name|int
+name|getKilledMaps
+parameter_list|()
+function_decl|;
+DECL|method|getKilledReduces ()
+name|int
+name|getKilledReduces
+parameter_list|()
+function_decl|;
 DECL|method|getProgress ()
 name|float
 name|getProgress

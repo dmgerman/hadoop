@@ -2532,6 +2532,66 @@ name|Priority
 name|priority
 parameter_list|)
 block|{     }
+annotation|@
+name|Override
+DECL|method|getFailedMaps ()
+specifier|public
+name|int
+name|getFailedMaps
+parameter_list|()
+block|{
+return|return
+name|mockJob
+operator|.
+name|getFailedMaps
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getFailedReduces ()
+specifier|public
+name|int
+name|getFailedReduces
+parameter_list|()
+block|{
+return|return
+name|mockJob
+operator|.
+name|getFailedReduces
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getKilledMaps ()
+specifier|public
+name|int
+name|getKilledMaps
+parameter_list|()
+block|{
+return|return
+name|mockJob
+operator|.
+name|getKilledMaps
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getKilledReduces ()
+specifier|public
+name|int
+name|getKilledReduces
+parameter_list|()
+block|{
+return|return
+name|mockJob
+operator|.
+name|getKilledReduces
+argument_list|()
+return|;
+block|}
 block|}
 block|}
 end_class

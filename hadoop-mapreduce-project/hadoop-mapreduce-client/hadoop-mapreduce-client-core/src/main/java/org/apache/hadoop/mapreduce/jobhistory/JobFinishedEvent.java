@@ -205,15 +205,15 @@ specifier|private
 name|long
 name|finishTime
 decl_stmt|;
-DECL|field|finishedMaps
+DECL|field|succeededMaps
 specifier|private
 name|int
-name|finishedMaps
+name|succeededMaps
 decl_stmt|;
-DECL|field|finishedReduces
+DECL|field|succeededReduces
 specifier|private
 name|int
-name|finishedReduces
+name|succeededReduces
 decl_stmt|;
 DECL|field|failedMaps
 specifier|private
@@ -224,6 +224,16 @@ DECL|field|failedReduces
 specifier|private
 name|int
 name|failedReduces
+decl_stmt|;
+DECL|field|killedMaps
+specifier|private
+name|int
+name|killedMaps
+decl_stmt|;
+DECL|field|killedReduces
+specifier|private
+name|int
+name|killedReduces
 decl_stmt|;
 DECL|field|mapCounters
 specifier|private
@@ -240,8 +250,8 @@ specifier|private
 name|Counters
 name|totalCounters
 decl_stmt|;
-comment|/**     * Create an event to record successful job completion    * @param id Job ID    * @param finishTime Finish time of the job    * @param finishedMaps The number of finished maps    * @param finishedReduces The number of finished reduces    * @param failedMaps The number of failed maps    * @param failedReduces The number of failed reduces    * @param mapCounters Map Counters for the job    * @param reduceCounters Reduce Counters for the job    * @param totalCounters Total Counters for the job    */
-DECL|method|JobFinishedEvent (JobID id, long finishTime, int finishedMaps, int finishedReduces, int failedMaps, int failedReduces, Counters mapCounters, Counters reduceCounters, Counters totalCounters)
+comment|/**     * Create an event to record successful job completion    * @param id Job ID    * @param finishTime Finish time of the job    * @param succeededMaps The number of succeeded maps    * @param succeededReduces The number of succeeded reduces    * @param failedMaps The number of failed maps    * @param failedReduces The number of failed reduces    * @param mapCounters Map Counters for the job    * @param reduceCounters Reduce Counters for the job    * @param totalCounters Total Counters for the job    */
+DECL|method|JobFinishedEvent (JobID id, long finishTime, int succeededMaps, int succeededReduces, int failedMaps, int failedReduces, int killedMaps, int killedReduces, Counters mapCounters, Counters reduceCounters, Counters totalCounters)
 specifier|public
 name|JobFinishedEvent
 parameter_list|(
@@ -252,16 +262,22 @@ name|long
 name|finishTime
 parameter_list|,
 name|int
-name|finishedMaps
+name|succeededMaps
 parameter_list|,
 name|int
-name|finishedReduces
+name|succeededReduces
 parameter_list|,
 name|int
 name|failedMaps
 parameter_list|,
 name|int
 name|failedReduces
+parameter_list|,
+name|int
+name|killedMaps
+parameter_list|,
+name|int
+name|killedReduces
 parameter_list|,
 name|Counters
 name|mapCounters
@@ -287,15 +303,15 @@ name|finishTime
 expr_stmt|;
 name|this
 operator|.
-name|finishedMaps
+name|succeededMaps
 operator|=
-name|finishedMaps
+name|succeededMaps
 expr_stmt|;
 name|this
 operator|.
-name|finishedReduces
+name|succeededReduces
 operator|=
-name|finishedReduces
+name|succeededReduces
 expr_stmt|;
 name|this
 operator|.
@@ -308,6 +324,18 @@ operator|.
 name|failedReduces
 operator|=
 name|failedReduces
+expr_stmt|;
+name|this
+operator|.
+name|killedMaps
+operator|=
+name|killedMaps
+expr_stmt|;
+name|this
+operator|.
+name|killedReduces
+operator|=
+name|killedReduces
 expr_stmt|;
 name|this
 operator|.
@@ -372,18 +400,20 @@ argument_list|(
 name|finishTime
 argument_list|)
 expr_stmt|;
+comment|// using finishedMaps& finishedReduces in the Avro schema for backward
+comment|// compatibility
 name|datum
 operator|.
 name|setFinishedMaps
 argument_list|(
-name|finishedMaps
+name|succeededMaps
 argument_list|)
 expr_stmt|;
 name|datum
 operator|.
 name|setFinishedReduces
 argument_list|(
-name|finishedReduces
+name|succeededReduces
 argument_list|)
 expr_stmt|;
 name|datum
@@ -398,6 +428,20 @@ operator|.
 name|setFailedReduces
 argument_list|(
 name|failedReduces
+argument_list|)
+expr_stmt|;
+name|datum
+operator|.
+name|setKilledMaps
+argument_list|(
+name|killedMaps
+argument_list|)
+expr_stmt|;
+name|datum
+operator|.
+name|setKilledReduces
+argument_list|(
+name|killedReduces
 argument_list|)
 expr_stmt|;
 name|datum
@@ -493,7 +537,7 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|finishedMaps
+name|succeededMaps
 operator|=
 name|datum
 operator|.
@@ -502,7 +546,7 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|finishedReduces
+name|succeededReduces
 operator|=
 name|datum
 operator|.
@@ -525,6 +569,24 @@ operator|=
 name|datum
 operator|.
 name|getFailedReduces
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|killedMaps
+operator|=
+name|datum
+operator|.
+name|getKilledMaps
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|killedReduces
+operator|=
+name|datum
+operator|.
+name|getKilledReduces
 argument_list|()
 expr_stmt|;
 name|this
@@ -605,25 +667,25 @@ name|finishTime
 return|;
 block|}
 comment|/** Get the number of finished maps for the job */
-DECL|method|getFinishedMaps ()
+DECL|method|getSucceededMaps ()
 specifier|public
 name|int
-name|getFinishedMaps
+name|getSucceededMaps
 parameter_list|()
 block|{
 return|return
-name|finishedMaps
+name|succeededMaps
 return|;
 block|}
 comment|/** Get the number of finished reducers for the job */
-DECL|method|getFinishedReduces ()
+DECL|method|getSucceededReduces ()
 specifier|public
 name|int
-name|getFinishedReduces
+name|getSucceededReduces
 parameter_list|()
 block|{
 return|return
-name|finishedReduces
+name|succeededReduces
 return|;
 block|}
 comment|/** Get the number of failed maps for the job */
@@ -646,6 +708,28 @@ parameter_list|()
 block|{
 return|return
 name|failedReduces
+return|;
+block|}
+comment|/** Get the number of killed maps */
+DECL|method|getKilledMaps ()
+specifier|public
+name|int
+name|getKilledMaps
+parameter_list|()
+block|{
+return|return
+name|killedMaps
+return|;
+block|}
+comment|/** Get the number of killed reduces */
+DECL|method|getKilledReduces ()
+specifier|public
+name|int
+name|getKilledReduces
+parameter_list|()
+block|{
+return|return
+name|killedReduces
 return|;
 block|}
 comment|/** Get the counters for the job */
@@ -728,7 +812,13 @@ name|addInfo
 argument_list|(
 literal|"NUM_MAPS"
 argument_list|,
-name|getFinishedMaps
+name|getSucceededMaps
+argument_list|()
+operator|+
+name|getFailedMaps
+argument_list|()
+operator|+
+name|getKilledMaps
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -738,7 +828,13 @@ name|addInfo
 argument_list|(
 literal|"NUM_REDUCES"
 argument_list|,
-name|getFinishedReduces
+name|getSucceededReduces
+argument_list|()
+operator|+
+name|getFailedReduces
+argument_list|()
+operator|+
+name|getKilledReduces
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -766,9 +862,9 @@ name|tEvent
 operator|.
 name|addInfo
 argument_list|(
-literal|"FINISHED_MAPS"
+literal|"SUCCESSFUL_MAPS"
 argument_list|,
-name|getFinishedMaps
+name|getSucceededMaps
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -776,9 +872,29 @@ name|tEvent
 operator|.
 name|addInfo
 argument_list|(
-literal|"FINISHED_REDUCES"
+literal|"SUCCESSFUL_REDUCES"
 argument_list|,
-name|getFinishedReduces
+name|getSucceededReduces
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|tEvent
+operator|.
+name|addInfo
+argument_list|(
+literal|"KILLED_MAPS"
+argument_list|,
+name|getKilledMaps
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|tEvent
+operator|.
+name|addInfo
+argument_list|(
+literal|"KILLED_REDUCES"
+argument_list|,
+name|getKilledReduces
 argument_list|()
 argument_list|)
 expr_stmt|;

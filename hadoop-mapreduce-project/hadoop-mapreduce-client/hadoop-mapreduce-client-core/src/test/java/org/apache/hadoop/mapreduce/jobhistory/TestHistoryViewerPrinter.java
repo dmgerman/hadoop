@@ -2219,13 +2219,13 @@ literal|0
 expr_stmt|;
 name|job
 operator|.
-name|finishedMaps
+name|succeededMaps
 operator|=
 literal|5
 expr_stmt|;
 name|job
 operator|.
-name|finishedReduces
+name|succeededReduces
 operator|=
 literal|1
 expr_stmt|;

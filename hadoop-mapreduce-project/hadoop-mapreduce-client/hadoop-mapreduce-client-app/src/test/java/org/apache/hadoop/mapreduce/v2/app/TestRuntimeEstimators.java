@@ -3111,6 +3111,54 @@ parameter_list|)
 block|{
 comment|// do nothing
 block|}
+annotation|@
+name|Override
+DECL|method|getFailedMaps ()
+specifier|public
+name|int
+name|getFailedMaps
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getFailedReduces ()
+specifier|public
+name|int
+name|getFailedReduces
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getKilledMaps ()
+specifier|public
+name|int
+name|getKilledMaps
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getKilledReduces ()
+specifier|public
+name|int
+name|getKilledReduces
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
 block|}
 comment|/*    * We follow the pattern of the real XxxImpl .  We create a job and initialize    * it with a full suite of tasks which in turn have one attempt each in the    * NEW state.  Attempts transition only from NEW to RUNNING to SUCCEEDED .    */
 DECL|class|MyTaskAttemptImpl

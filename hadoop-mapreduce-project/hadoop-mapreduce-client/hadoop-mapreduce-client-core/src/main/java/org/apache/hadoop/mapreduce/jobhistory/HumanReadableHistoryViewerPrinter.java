@@ -1753,7 +1753,7 @@ name|append
 argument_list|(
 name|job
 operator|.
-name|getFinishedMaps
+name|getSucceededMaps
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1858,7 +1858,7 @@ name|append
 argument_list|(
 name|job
 operator|.
-name|getFinishedReduces
+name|getSucceededReduces
 argument_list|()
 argument_list|)
 expr_stmt|;
