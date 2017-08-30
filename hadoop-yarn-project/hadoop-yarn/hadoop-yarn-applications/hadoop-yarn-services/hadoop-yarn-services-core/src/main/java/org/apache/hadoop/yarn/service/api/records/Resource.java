@@ -66,6 +66,20 @@ name|jackson
 operator|.
 name|annotation
 operator|.
+name|JsonIgnore
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|fasterxml
+operator|.
+name|jackson
+operator|.
+name|annotation
+operator|.
 name|JsonProperty
 import|;
 end_import
@@ -359,6 +373,8 @@ operator|=
 name|memory
 expr_stmt|;
 block|}
+annotation|@
+name|JsonIgnore
 DECL|method|getMemoryMB ()
 specifier|public
 name|long
