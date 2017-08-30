@@ -107,7 +107,7 @@ block|{
 if|if
 condition|(
 operator|!
-name|TimelineStorageUtils
+name|HBaseTimelineStorageUtils
 operator|.
 name|isIntegralValue
 argument_list|(

@@ -68,6 +68,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|service
 operator|.
 name|Service
@@ -134,6 +148,26 @@ name|TimelineWriteResponse
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|timelineservice
+operator|.
+name|collector
+operator|.
+name|TimelineCollectorContext
+import|;
+end_import
+
 begin_comment
 comment|/**  * This interface is for storing application timeline information.  */
 end_comment
@@ -154,31 +188,19 @@ name|TimelineWriter
 extends|extends
 name|Service
 block|{
-comment|/**    * Stores the entire information in {@link TimelineEntities} to the    * timeline store. Any errors occurring for individual write request objects    * will be reported in the response.    *    * @param clusterId context cluster ID    * @param userId context user ID    * @param flowName context flow name    * @param flowVersion context flow version    * @param flowRunId run id for the flow.    * @param appId context app ID.    * @param data    *          a {@link TimelineEntities} object.    * @return a {@link TimelineWriteResponse} object.    * @throws IOException if there is any exception encountered while storing    *     or writing entities to the backend storage.    */
-DECL|method|write (String clusterId, String userId, String flowName, String flowVersion, long flowRunId, String appId, TimelineEntities data)
+comment|/**    * Stores the entire information in {@link TimelineEntities} to the timeline    * store. Any errors occurring for individual write request objects will be    * reported in the response.    *    * @param context a {@link TimelineCollectorContext}    * @param data a {@link TimelineEntities} object.    * @param callerUgi {@link UserGroupInformation}.    * @return a {@link TimelineWriteResponse} object.    * @throws IOException if there is any exception encountered while storing or    *           writing entities to the back end storage.    */
+DECL|method|write (TimelineCollectorContext context, TimelineEntities data, UserGroupInformation callerUgi)
 name|TimelineWriteResponse
 name|write
 parameter_list|(
-name|String
-name|clusterId
-parameter_list|,
-name|String
-name|userId
-parameter_list|,
-name|String
-name|flowName
-parameter_list|,
-name|String
-name|flowVersion
-parameter_list|,
-name|long
-name|flowRunId
-parameter_list|,
-name|String
-name|appId
+name|TimelineCollectorContext
+name|context
 parameter_list|,
 name|TimelineEntities
 name|data
+parameter_list|,
+name|UserGroupInformation
+name|callerUgi
 parameter_list|)
 throws|throws
 name|IOException

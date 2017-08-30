@@ -394,6 +394,14 @@ name|readyToAggregate
 init|=
 literal|false
 decl_stmt|;
+DECL|field|isStopped
+specifier|private
+specifier|volatile
+name|boolean
+name|isStopped
+init|=
+literal|false
+decl_stmt|;
 DECL|method|TimelineCollector (String name)
 specifier|public
 name|TimelineCollector
@@ -455,11 +463,24 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|isStopped
+operator|=
+literal|true
+expr_stmt|;
 name|super
 operator|.
 name|serviceStop
 argument_list|()
 expr_stmt|;
+block|}
+DECL|method|isStopped ()
+name|boolean
+name|isStopped
+parameter_list|()
+block|{
+return|return
+name|isStopped
+return|;
 block|}
 DECL|method|setWriter (TimelineWriter w)
 specifier|protected
@@ -589,6 +610,8 @@ operator|=
 name|writeTimelineEntities
 argument_list|(
 name|entities
+argument_list|,
+name|callerUgi
 argument_list|)
 expr_stmt|;
 name|flushBufferedTimelineEntities
@@ -599,13 +622,16 @@ return|return
 name|response
 return|;
 block|}
-DECL|method|writeTimelineEntities ( TimelineEntities entities)
+DECL|method|writeTimelineEntities ( TimelineEntities entities, UserGroupInformation callerUgi)
 specifier|private
 name|TimelineWriteResponse
 name|writeTimelineEntities
 parameter_list|(
 name|TimelineEntities
 name|entities
+parameter_list|,
+name|UserGroupInformation
+name|callerUgi
 parameter_list|)
 throws|throws
 name|IOException
@@ -634,36 +660,10 @@ operator|.
 name|write
 argument_list|(
 name|context
-operator|.
-name|getClusterId
-argument_list|()
-argument_list|,
-name|context
-operator|.
-name|getUserId
-argument_list|()
-argument_list|,
-name|context
-operator|.
-name|getFlowName
-argument_list|()
-argument_list|,
-name|context
-operator|.
-name|getFlowVersion
-argument_list|()
-argument_list|,
-name|context
-operator|.
-name|getFlowRunId
-argument_list|()
-argument_list|,
-name|context
-operator|.
-name|getAppId
-argument_list|()
 argument_list|,
 name|entities
+argument_list|,
+name|callerUgi
 argument_list|)
 return|;
 block|}
@@ -724,6 +724,8 @@ block|}
 name|writeTimelineEntities
 argument_list|(
 name|entities
+argument_list|,
+name|callerUgi
 argument_list|)
 expr_stmt|;
 block|}

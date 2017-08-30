@@ -8670,6 +8670,10 @@ argument_list|()
 operator|.
 name|burst
 argument_list|()
+argument_list|,
+name|taskAttempt
+operator|.
+name|launchTime
 argument_list|)
 decl_stmt|;
 return|return
@@ -10899,6 +10903,8 @@ argument_list|()
 operator|.
 name|burst
 argument_list|()
+argument_list|,
+name|launchTime
 argument_list|)
 decl_stmt|;
 name|eventHandler
@@ -10998,6 +11004,8 @@ argument_list|()
 operator|.
 name|burst
 argument_list|()
+argument_list|,
+name|launchTime
 argument_list|)
 decl_stmt|;
 name|eventHandler

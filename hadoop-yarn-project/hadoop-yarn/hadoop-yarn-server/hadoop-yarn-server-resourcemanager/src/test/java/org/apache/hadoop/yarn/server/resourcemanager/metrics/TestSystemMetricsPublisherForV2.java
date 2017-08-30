@@ -850,6 +850,22 @@ name|yarn
 operator|.
 name|util
 operator|.
+name|TimelineServiceHelper
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
 name|timeline
 operator|.
 name|TimelineUtils
@@ -1627,6 +1643,8 @@ operator|.
 name|CREATED_EVENT_TYPE
 argument_list|,
 literal|8
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 block|}
@@ -1834,6 +1852,16 @@ operator|.
 name|REGISTERED_EVENT_TYPE
 argument_list|,
 literal|0
+argument_list|,
+name|TimelineServiceHelper
+operator|.
+name|invertLong
+argument_list|(
+name|appAttemptId
+operator|.
+name|getAttemptId
+argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -2025,6 +2053,8 @@ operator|.
 name|CREATED_IN_RM_EVENT_TYPE
 argument_list|,
 literal|0
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 block|}
@@ -2077,7 +2107,7 @@ return|return
 name|app
 return|;
 block|}
-DECL|method|verifyEntity (File entityFile, long expectedEvents, String eventForCreatedTime, long expectedMetrics)
+DECL|method|verifyEntity (File entityFile, long expectedEvents, String eventForCreatedTime, long expectedMetrics, long idPrefix)
 specifier|private
 specifier|static
 name|void
@@ -2094,6 +2124,9 @@ name|eventForCreatedTime
 parameter_list|,
 name|long
 name|expectedMetrics
+parameter_list|,
+name|long
+name|idPrefix
 parameter_list|)
 throws|throws
 name|IOException
@@ -2183,6 +2216,16 @@ argument_list|()
 operator|.
 name|size
 argument_list|()
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|idPrefix
+argument_list|,
+name|entity
+operator|.
+name|getIdPrefix
+argument_list|()
+argument_list|)
 expr_stmt|;
 for|for
 control|(
@@ -2843,6 +2886,19 @@ operator|.
 name|thenReturn
 argument_list|(
 literal|"test original tracking url"
+argument_list|)
+expr_stmt|;
+name|when
+argument_list|(
+name|appAttempt
+operator|.
+name|getStartTime
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+literal|200L
 argument_list|)
 expr_stmt|;
 return|return

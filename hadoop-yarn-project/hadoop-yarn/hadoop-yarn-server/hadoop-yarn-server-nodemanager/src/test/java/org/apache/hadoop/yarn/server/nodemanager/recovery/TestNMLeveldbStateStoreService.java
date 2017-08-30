@@ -1944,6 +1944,14 @@ name|containerId
 argument_list|)
 decl_stmt|;
 comment|// store a container and verify recovered
+name|long
+name|containerStartTime
+init|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+decl_stmt|;
 name|stateStore
 operator|.
 name|storeContainer
@@ -1951,6 +1959,8 @@ argument_list|(
 name|containerId
 argument_list|,
 literal|0
+argument_list|,
+name|containerStartTime
 argument_list|,
 name|containerReq
 argument_list|)
@@ -2024,6 +2034,16 @@ argument_list|,
 name|rcs
 operator|.
 name|getVersion
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|containerStartTime
+argument_list|,
+name|rcs
+operator|.
+name|getStartTime
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -7237,6 +7257,8 @@ operator|.
 name|storeContainer
 argument_list|(
 name|containerId
+argument_list|,
+literal|0
 argument_list|,
 literal|0
 argument_list|,

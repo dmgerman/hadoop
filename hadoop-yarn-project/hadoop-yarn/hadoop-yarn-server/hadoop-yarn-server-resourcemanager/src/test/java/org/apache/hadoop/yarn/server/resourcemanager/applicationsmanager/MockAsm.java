@@ -226,6 +226,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|CollectorInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Container
 import|;
 end_import
@@ -425,6 +443,26 @@ operator|.
 name|protocolrecords
 operator|.
 name|LogAggregationReport
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|AppCollectorData
 import|;
 end_import
 
@@ -738,45 +776,10 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|getCollectorAddr ()
+DECL|method|getCollectorData ()
 specifier|public
-name|String
-name|getCollectorAddr
-parameter_list|()
-block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|(
-literal|"Not supported yet."
-argument_list|)
-throw|;
-block|}
-annotation|@
-name|Override
-DECL|method|setCollectorAddr (String collectorAddr)
-specifier|public
-name|void
-name|setCollectorAddr
-parameter_list|(
-name|String
-name|collectorAddr
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|(
-literal|"Not supported yet."
-argument_list|)
-throw|;
-block|}
-annotation|@
-name|Override
-DECL|method|removeCollectorAddr ()
-specifier|public
-name|void
-name|removeCollectorAddr
+name|AppCollectorData
+name|getCollectorData
 parameter_list|()
 block|{
 throw|throw
@@ -1317,6 +1320,22 @@ DECL|method|isAppInCompletedStates ()
 specifier|public
 name|boolean
 name|isAppInCompletedStates
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|getCollectorInfo ()
+specifier|public
+name|CollectorInfo
+name|getCollectorInfo
 parameter_list|()
 block|{
 throw|throw

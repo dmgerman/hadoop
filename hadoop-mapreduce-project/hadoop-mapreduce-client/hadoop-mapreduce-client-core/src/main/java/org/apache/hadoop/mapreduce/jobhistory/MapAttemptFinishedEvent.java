@@ -210,8 +210,24 @@ name|TimelineMetric
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|SystemClock
+import|;
+end_import
+
 begin_comment
-comment|/**  * Event to record successful completion of a map attempt  *  */
+comment|/**  * Event to record successful completion of a map attempt.  *  */
 end_comment
 
 begin_class
@@ -313,8 +329,13 @@ name|int
 index|[]
 name|physMemKbytes
 decl_stmt|;
-comment|/**     * Create an event for successful completion of map attempts    * @param id Task Attempt ID    * @param taskType Type of the task    * @param taskStatus Status of the task    * @param mapFinishTime Finish time of the map phase    * @param finishTime Finish time of the attempt    * @param hostname Name of the host where the map executed    * @param port RPC port for the tracker host.    * @param rackName Name of the rack where the map executed    * @param state State string for the attempt    * @param counters Counters for the attempt    * @param allSplits the "splits", or a pixelated graph of various    *        measurable worker node state variables against progress.    *        Currently there are four; wallclock time, CPU time,    *        virtual memory and physical memory.     *    *        If you have no splits data, code {@code null} for this    *        parameter.     */
-DECL|method|MapAttemptFinishedEvent (TaskAttemptID id, TaskType taskType, String taskStatus, long mapFinishTime, long finishTime, String hostname, int port, String rackName, String state, Counters counters, int[][] allSplits)
+DECL|field|startTime
+specifier|private
+name|long
+name|startTime
+decl_stmt|;
+comment|/**     * Create an event for successful completion of map attempts.    * @param id Task Attempt ID    * @param taskType Type of the task    * @param taskStatus Status of the task    * @param mapFinishTime Finish time of the map phase    * @param finishTime Finish time of the attempt    * @param hostname Name of the host where the map executed    * @param port RPC port for the tracker host.    * @param rackName Name of the rack where the map executed    * @param state State string for the attempt    * @param counters Counters for the attempt    * @param allSplits the "splits", or a pixelated graph of various    *        measurable worker node state variables against progress.    *        Currently there are four; wallclock time, CPU time,    *        virtual memory and physical memory.     *    *        If you have no splits data, code {@code null} for this    *        parameter.    * @param startTs Task start time to be used for writing entity to ATSv2.    */
+DECL|method|MapAttemptFinishedEvent (TaskAttemptID id, TaskType taskType, String taskStatus, long mapFinishTime, long finishTime, String hostname, int port, String rackName, String state, Counters counters, int[][] allSplits, long startTs)
 specifier|public
 name|MapAttemptFinishedEvent
 parameter_list|(
@@ -352,6 +373,9 @@ name|int
 index|[]
 index|[]
 name|allSplits
+parameter_list|,
+name|long
+name|startTs
 parameter_list|)
 block|{
 name|this
@@ -462,6 +486,86 @@ operator|.
 name|arrayGetPhysMemKbytes
 argument_list|(
 name|allSplits
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|startTime
+operator|=
+name|startTs
+expr_stmt|;
+block|}
+DECL|method|MapAttemptFinishedEvent (TaskAttemptID id, TaskType taskType, String taskStatus, long mapFinishTime, long finishTime, String hostname, int port, String rackName, String state, Counters counters, int[][] allSplits)
+specifier|public
+name|MapAttemptFinishedEvent
+parameter_list|(
+name|TaskAttemptID
+name|id
+parameter_list|,
+name|TaskType
+name|taskType
+parameter_list|,
+name|String
+name|taskStatus
+parameter_list|,
+name|long
+name|mapFinishTime
+parameter_list|,
+name|long
+name|finishTime
+parameter_list|,
+name|String
+name|hostname
+parameter_list|,
+name|int
+name|port
+parameter_list|,
+name|String
+name|rackName
+parameter_list|,
+name|String
+name|state
+parameter_list|,
+name|Counters
+name|counters
+parameter_list|,
+name|int
+index|[]
+index|[]
+name|allSplits
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|id
+argument_list|,
+name|taskType
+argument_list|,
+name|taskStatus
+argument_list|,
+name|mapFinishTime
+argument_list|,
+name|finishTime
+argument_list|,
+name|hostname
+argument_list|,
+name|port
+argument_list|,
+name|rackName
+argument_list|,
+name|state
+argument_list|,
+name|counters
+argument_list|,
+name|allSplits
+argument_list|,
+name|SystemClock
+operator|.
+name|getInstance
+argument_list|()
+operator|.
+name|getTime
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -948,7 +1052,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Get the task ID */
+comment|/** Gets the task ID. */
 DECL|method|getTaskId ()
 specifier|public
 name|TaskID
@@ -962,7 +1066,7 @@ name|getTaskID
 argument_list|()
 return|;
 block|}
-comment|/** Get the attempt id */
+comment|/** Gets the attempt id. */
 DECL|method|getAttemptId ()
 specifier|public
 name|TaskAttemptID
@@ -973,7 +1077,7 @@ return|return
 name|attemptId
 return|;
 block|}
-comment|/** Get the task type */
+comment|/** Gets the task type. */
 DECL|method|getTaskType ()
 specifier|public
 name|TaskType
@@ -984,7 +1088,7 @@ return|return
 name|taskType
 return|;
 block|}
-comment|/** Get the task status */
+comment|/** Gets the task status. */
 DECL|method|getTaskStatus ()
 specifier|public
 name|String
@@ -998,7 +1102,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/** Get the map phase finish time */
+comment|/** Gets the map phase finish time. */
 DECL|method|getMapFinishTime ()
 specifier|public
 name|long
@@ -1009,7 +1113,7 @@ return|return
 name|mapFinishTime
 return|;
 block|}
-comment|/** Get the attempt finish time */
+comment|/** Gets the attempt finish time. */
 DECL|method|getFinishTime ()
 specifier|public
 name|long
@@ -1020,7 +1124,18 @@ return|return
 name|finishTime
 return|;
 block|}
-comment|/** Get the host name */
+comment|/**    * Gets the task attempt start time.    * @return task attempt start time.    */
+DECL|method|getStartTime ()
+specifier|public
+name|long
+name|getStartTime
+parameter_list|()
+block|{
+return|return
+name|startTime
+return|;
+block|}
+comment|/** Gets the host name. */
 DECL|method|getHostname ()
 specifier|public
 name|String
@@ -1034,7 +1149,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/** Get the tracker rpc port */
+comment|/** Gets the tracker rpc port. */
 DECL|method|getPort ()
 specifier|public
 name|int
@@ -1045,7 +1160,7 @@ return|return
 name|port
 return|;
 block|}
-comment|/** Get the rack name */
+comment|/** Gets the rack name. */
 DECL|method|getRackName ()
 specifier|public
 name|String
@@ -1065,7 +1180,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/** Get the state string */
+comment|/**    * Gets the attempt state string.    * @return map attempt state    */
 DECL|method|getState ()
 specifier|public
 name|String
@@ -1079,7 +1194,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/** Get the counters */
+comment|/**    * Gets the counters.    * @return counters    */
 DECL|method|getCounters ()
 name|Counters
 name|getCounters
@@ -1089,7 +1204,7 @@ return|return
 name|counters
 return|;
 block|}
-comment|/** Get the event type */
+comment|/** Gets the event type. */
 DECL|method|getEventType ()
 specifier|public
 name|EventType

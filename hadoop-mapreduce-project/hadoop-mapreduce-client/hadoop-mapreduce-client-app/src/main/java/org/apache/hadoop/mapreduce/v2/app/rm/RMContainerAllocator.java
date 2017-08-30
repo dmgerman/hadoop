@@ -4704,15 +4704,7 @@ argument_list|(
 name|response
 argument_list|)
 expr_stmt|;
-comment|// handle receiving the timeline collector address for this app
-name|String
-name|collectorAddr
-init|=
-name|response
-operator|.
-name|getCollectorAddr
-argument_list|()
-decl_stmt|;
+comment|// Handle receiving the timeline collector address and token for this app.
 name|MRAppMaster
 operator|.
 name|RunningAppContext
@@ -4730,16 +4722,6 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|collectorAddr
-operator|!=
-literal|null
-operator|&&
-operator|!
-name|collectorAddr
-operator|.
-name|isEmpty
-argument_list|()
-operator|&&
 name|appContext
 operator|.
 name|getTimelineV2Client
@@ -4753,11 +4735,11 @@ operator|.
 name|getTimelineV2Client
 argument_list|()
 operator|.
-name|setTimelineServiceAddress
+name|setTimelineCollectorInfo
 argument_list|(
 name|response
 operator|.
-name|getCollectorAddr
+name|getCollectorInfo
 argument_list|()
 argument_list|)
 expr_stmt|;

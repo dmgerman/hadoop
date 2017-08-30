@@ -175,6 +175,15 @@ name|add
 argument_list|(
 name|YarnConfiguration
 operator|.
+name|YARN_SECURITY_SERVICE_AUTHORIZATION_COLLECTOR_NODEMANAGER_PROTOCOL
+argument_list|)
+expr_stmt|;
+name|configurationPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|YarnConfiguration
+operator|.
 name|CURATOR_LEADER_ELECTOR
 argument_list|)
 expr_stmt|;

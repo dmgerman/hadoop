@@ -86,13 +86,31 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Token
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|api
 operator|.
 name|records
 operator|.
-name|AppCollectorsMap
+name|AppCollectorData
 import|;
 end_import
 
@@ -121,7 +139,7 @@ specifier|abstract
 class|class
 name|ReportNewCollectorInfoRequest
 block|{
-DECL|method|newInstance ( List<AppCollectorsMap> appCollectorsList)
+DECL|method|newInstance ( List<AppCollectorData> appCollectorsList)
 specifier|public
 specifier|static
 name|ReportNewCollectorInfoRequest
@@ -129,7 +147,7 @@ name|newInstance
 parameter_list|(
 name|List
 argument_list|<
-name|AppCollectorsMap
+name|AppCollectorData
 argument_list|>
 name|appCollectorsList
 parameter_list|)
@@ -157,7 +175,7 @@ return|return
 name|request
 return|;
 block|}
-DECL|method|newInstance ( ApplicationId id, String collectorAddr)
+DECL|method|newInstance ( ApplicationId id, String collectorAddr, Token token)
 specifier|public
 specifier|static
 name|ReportNewCollectorInfoRequest
@@ -168,6 +186,9 @@ name|id
 parameter_list|,
 name|String
 name|collectorAddr
+parameter_list|,
+name|Token
+name|token
 parameter_list|)
 block|{
 name|ReportNewCollectorInfoRequest
@@ -190,13 +211,15 @@ name|Arrays
 operator|.
 name|asList
 argument_list|(
-name|AppCollectorsMap
+name|AppCollectorData
 operator|.
 name|newInstance
 argument_list|(
 name|id
 argument_list|,
 name|collectorAddr
+argument_list|,
+name|token
 argument_list|)
 argument_list|)
 argument_list|)
@@ -210,12 +233,12 @@ specifier|public
 specifier|abstract
 name|List
 argument_list|<
-name|AppCollectorsMap
+name|AppCollectorData
 argument_list|>
 name|getAppCollectorsList
 parameter_list|()
 function_decl|;
-DECL|method|setAppCollectorsList ( List<AppCollectorsMap> appCollectorsList)
+DECL|method|setAppCollectorsList ( List<AppCollectorData> appCollectorsList)
 specifier|public
 specifier|abstract
 name|void
@@ -223,7 +246,7 @@ name|setAppCollectorsList
 parameter_list|(
 name|List
 argument_list|<
-name|AppCollectorsMap
+name|AppCollectorData
 argument_list|>
 name|appCollectorsList
 parameter_list|)

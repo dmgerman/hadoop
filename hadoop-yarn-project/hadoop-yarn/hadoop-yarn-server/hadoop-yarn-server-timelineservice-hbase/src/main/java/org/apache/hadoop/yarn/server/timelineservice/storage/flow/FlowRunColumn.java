@@ -469,6 +469,8 @@ argument_list|(
 name|columnFamily
 argument_list|,
 name|converter
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -607,54 +609,6 @@ name|columnQualifierBytes
 argument_list|)
 return|;
 block|}
-comment|/**    * Retrieve an {@link FlowRunColumn} given a name, or null if there is no    * match. The following holds true: {@code columnFor(x) == columnFor(y)} if    * and only if {@code x.equals(y)} or {@code (x == y == null)}    *    * @param columnQualifier    *          Name of the column to retrieve    * @return the corresponding {@link FlowRunColumn} or null    */
-DECL|method|columnFor (String columnQualifier)
-specifier|public
-specifier|static
-specifier|final
-name|FlowRunColumn
-name|columnFor
-parameter_list|(
-name|String
-name|columnQualifier
-parameter_list|)
-block|{
-comment|// Match column based on value, assume column family matches.
-for|for
-control|(
-name|FlowRunColumn
-name|ec
-range|:
-name|FlowRunColumn
-operator|.
-name|values
-argument_list|()
-control|)
-block|{
-comment|// Find a match based only on name.
-if|if
-condition|(
-name|ec
-operator|.
-name|getColumnQualifier
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|columnQualifier
-argument_list|)
-condition|)
-block|{
-return|return
-name|ec
-return|;
-block|}
-block|}
-comment|// Default to null
-return|return
-literal|null
-return|;
-block|}
 annotation|@
 name|Override
 DECL|method|getValueConverter ()
@@ -668,65 +622,6 @@ name|column
 operator|.
 name|getValueConverter
 argument_list|()
-return|;
-block|}
-comment|/**    * Retrieve an {@link FlowRunColumn} given a name, or null if there is no    * match. The following holds true: {@code columnFor(a,x) == columnFor(b,y)}    * if and only if {@code a.equals(b)& x.equals(y)} or    * {@code (x == y == null)}    *    * @param columnFamily    *          The columnFamily for which to retrieve the column.    * @param name    *          Name of the column to retrieve    * @return the corresponding {@link FlowRunColumn} or null if both arguments    *         don't match.    */
-DECL|method|columnFor (FlowRunColumnFamily columnFamily, String name)
-specifier|public
-specifier|static
-specifier|final
-name|FlowRunColumn
-name|columnFor
-parameter_list|(
-name|FlowRunColumnFamily
-name|columnFamily
-parameter_list|,
-name|String
-name|name
-parameter_list|)
-block|{
-for|for
-control|(
-name|FlowRunColumn
-name|ec
-range|:
-name|FlowRunColumn
-operator|.
-name|values
-argument_list|()
-control|)
-block|{
-comment|// Find a match based column family and on name.
-if|if
-condition|(
-name|ec
-operator|.
-name|columnFamily
-operator|.
-name|equals
-argument_list|(
-name|columnFamily
-argument_list|)
-operator|&&
-name|ec
-operator|.
-name|getColumnQualifier
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|name
-argument_list|)
-condition|)
-block|{
-return|return
-name|ec
-return|;
-block|}
-block|}
-comment|// Default to null
-return|return
-literal|null
 return|;
 block|}
 block|}

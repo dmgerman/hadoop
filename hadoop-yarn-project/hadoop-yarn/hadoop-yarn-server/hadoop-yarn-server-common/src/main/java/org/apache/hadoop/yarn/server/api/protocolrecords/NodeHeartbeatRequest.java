@@ -104,6 +104,26 @@ name|api
 operator|.
 name|records
 operator|.
+name|AppCollectorData
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|MasterKey
 import|;
 end_import
@@ -217,7 +237,7 @@ return|return
 name|nodeHeartbeatRequest
 return|;
 block|}
-DECL|method|newInstance (NodeStatus nodeStatus, MasterKey lastKnownContainerTokenMasterKey, MasterKey lastKnownNMTokenMasterKey, Set<NodeLabel> nodeLabels, Map<ApplicationId, String> registeredCollectors)
+DECL|method|newInstance (NodeStatus nodeStatus, MasterKey lastKnownContainerTokenMasterKey, MasterKey lastKnownNMTokenMasterKey, Set<NodeLabel> nodeLabels, Map<ApplicationId, AppCollectorData> registeringCollectors)
 specifier|public
 specifier|static
 name|NodeHeartbeatRequest
@@ -242,9 +262,9 @@ name|Map
 argument_list|<
 name|ApplicationId
 argument_list|,
-name|String
+name|AppCollectorData
 argument_list|>
-name|registeredCollectors
+name|registeringCollectors
 parameter_list|)
 block|{
 name|NodeHeartbeatRequest
@@ -289,9 +309,9 @@ argument_list|)
 expr_stmt|;
 name|nodeHeartbeatRequest
 operator|.
-name|setRegisteredCollectors
+name|setRegisteringCollectors
 argument_list|(
-name|registeredCollectors
+name|registeringCollectors
 argument_list|)
 expr_stmt|;
 return|return
@@ -396,29 +416,29 @@ name|logAggregationReportsForApps
 parameter_list|)
 function_decl|;
 comment|// This tells RM registered collectors' address info on this node
-DECL|method|getRegisteredCollectors ()
 specifier|public
 specifier|abstract
 name|Map
 argument_list|<
 name|ApplicationId
 argument_list|,
-name|String
+name|AppCollectorData
 argument_list|>
-name|getRegisteredCollectors
+DECL|method|getRegisteringCollectors ()
+name|getRegisteringCollectors
 parameter_list|()
 function_decl|;
-DECL|method|setRegisteredCollectors (Map<ApplicationId, String> appCollectorsMap)
+DECL|method|setRegisteringCollectors (Map<ApplicationId, AppCollectorData> appCollectorsMap)
 specifier|public
 specifier|abstract
 name|void
-name|setRegisteredCollectors
+name|setRegisteringCollectors
 parameter_list|(
 name|Map
 argument_list|<
 name|ApplicationId
 argument_list|,
-name|String
+name|AppCollectorData
 argument_list|>
 name|appCollectorsMap
 parameter_list|)

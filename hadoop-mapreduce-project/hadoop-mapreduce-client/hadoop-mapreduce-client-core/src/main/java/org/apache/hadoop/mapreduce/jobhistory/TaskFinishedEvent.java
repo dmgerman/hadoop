@@ -210,6 +210,22 @@ name|TimelineMetric
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|SystemClock
+import|;
+end_import
+
 begin_comment
 comment|/**  * Event to record the successful completion of a task  *  */
 end_comment
@@ -267,8 +283,13 @@ specifier|private
 name|Counters
 name|counters
 decl_stmt|;
-comment|/**    * Create an event to record the successful completion of a task    * @param id Task ID    * @param attemptId Task Attempt ID of the successful attempt for this task    * @param finishTime Finish time of the task    * @param taskType Type of the task    * @param status Status string    * @param counters Counters for the task    */
-DECL|method|TaskFinishedEvent (TaskID id, TaskAttemptID attemptId, long finishTime, TaskType taskType, String status, Counters counters)
+DECL|field|startTime
+specifier|private
+name|long
+name|startTime
+decl_stmt|;
+comment|/**    * Create an event to record the successful completion of a task.    * @param id Task ID    * @param attemptId Task Attempt ID of the successful attempt for this task    * @param finishTime Finish time of the task    * @param taskType Type of the task    * @param status Status string    * @param counters Counters for the task    * @param startTs task start time    */
+DECL|method|TaskFinishedEvent (TaskID id, TaskAttemptID attemptId, long finishTime, TaskType taskType, String status, Counters counters, long startTs)
 specifier|public
 name|TaskFinishedEvent
 parameter_list|(
@@ -289,6 +310,9 @@ name|status
 parameter_list|,
 name|Counters
 name|counters
+parameter_list|,
+name|long
+name|startTs
 parameter_list|)
 block|{
 name|this
@@ -326,6 +350,59 @@ operator|.
 name|counters
 operator|=
 name|counters
+expr_stmt|;
+name|this
+operator|.
+name|startTime
+operator|=
+name|startTs
+expr_stmt|;
+block|}
+DECL|method|TaskFinishedEvent (TaskID id, TaskAttemptID attemptId, long finishTime, TaskType taskType, String status, Counters counters)
+specifier|public
+name|TaskFinishedEvent
+parameter_list|(
+name|TaskID
+name|id
+parameter_list|,
+name|TaskAttemptID
+name|attemptId
+parameter_list|,
+name|long
+name|finishTime
+parameter_list|,
+name|TaskType
+name|taskType
+parameter_list|,
+name|String
+name|status
+parameter_list|,
+name|Counters
+name|counters
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|id
+argument_list|,
+name|attemptId
+argument_list|,
+name|finishTime
+argument_list|,
+name|taskType
+argument_list|,
+name|status
+argument_list|,
+name|counters
+argument_list|,
+name|SystemClock
+operator|.
+name|getInstance
+argument_list|()
+operator|.
+name|getTime
+argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|TaskFinishedEvent ()
@@ -552,7 +629,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Get task id */
+comment|/** Gets task id. */
 DECL|method|getTaskId ()
 specifier|public
 name|TaskID
@@ -563,7 +640,7 @@ return|return
 name|taskid
 return|;
 block|}
-comment|/** Get successful task attempt id */
+comment|/** Gets successful task attempt id. */
 DECL|method|getSuccessfulTaskAttemptId ()
 specifier|public
 name|TaskAttemptID
@@ -574,7 +651,7 @@ return|return
 name|successfulAttemptId
 return|;
 block|}
-comment|/** Get the task finish time */
+comment|/** Gets the task finish time. */
 DECL|method|getFinishTime ()
 specifier|public
 name|long
@@ -585,7 +662,18 @@ return|return
 name|finishTime
 return|;
 block|}
-comment|/** Get task counters */
+comment|/**    * Gets the task start time to be reported to ATSv2.    * @return task start time    */
+DECL|method|getStartTime ()
+specifier|public
+name|long
+name|getStartTime
+parameter_list|()
+block|{
+return|return
+name|startTime
+return|;
+block|}
+comment|/** Gets task counters. */
 DECL|method|getCounters ()
 specifier|public
 name|Counters
@@ -596,7 +684,7 @@ return|return
 name|counters
 return|;
 block|}
-comment|/** Get task type */
+comment|/** Gets task type. */
 DECL|method|getTaskType ()
 specifier|public
 name|TaskType
@@ -607,7 +695,7 @@ return|return
 name|taskType
 return|;
 block|}
-comment|/** Get task status */
+comment|/**    * Gets task status.    * @return task status    */
 DECL|method|getTaskStatus ()
 specifier|public
 name|String
@@ -621,7 +709,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/** Get event type */
+comment|/** Gets event type. */
 DECL|method|getEventType ()
 specifier|public
 name|EventType

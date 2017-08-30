@@ -204,6 +204,7 @@ end_comment
 
 begin_class
 DECL|class|TestFlowDataGenerator
+specifier|public
 specifier|final
 class|class
 name|TestFlowDataGenerator
@@ -241,6 +242,7 @@ init|=
 literal|10000L
 decl_stmt|;
 DECL|method|getEntityMetricsApp1 (long insertTs, Configuration c1)
+specifier|public
 specifier|static
 name|TimelineEntity
 name|getEntityMetricsApp1
@@ -518,6 +520,7 @@ name|entity
 return|;
 block|}
 DECL|method|getEntityMetricsApp1Complete (long insertTs, Configuration c1)
+specifier|public
 specifier|static
 name|TimelineEntity
 name|getEntityMetricsApp1Complete
@@ -775,6 +778,7 @@ name|entity
 return|;
 block|}
 DECL|method|getEntityMetricsApp1 (long insertTs)
+specifier|public
 specifier|static
 name|TimelineEntity
 name|getEntityMetricsApp1
@@ -1064,6 +1068,7 @@ name|entity
 return|;
 block|}
 DECL|method|getEntityMetricsApp2 (long insertTs)
+specifier|public
 specifier|static
 name|TimelineEntity
 name|getEntityMetricsApp2
@@ -1279,6 +1284,7 @@ name|entity
 return|;
 block|}
 DECL|method|getEntity1 ()
+specifier|public
 specifier|static
 name|TimelineEntity
 name|getEntity1
@@ -1579,6 +1585,7 @@ name|entity
 return|;
 block|}
 DECL|method|getAFullEntity (long ts, long endTs)
+specifier|public
 specifier|static
 name|TimelineEntity
 name|getAFullEntity
@@ -1942,6 +1949,7 @@ name|entity
 return|;
 block|}
 DECL|method|getEntityGreaterStartTime (long startTs)
+specifier|public
 specifier|static
 name|TimelineEntity
 name|getEntityGreaterStartTime
@@ -2042,6 +2050,7 @@ name|entity
 return|;
 block|}
 DECL|method|getEntityMaxEndTime (long endTs)
+specifier|public
 specifier|static
 name|TimelineEntity
 name|getEntityMaxEndTime
@@ -2130,6 +2139,7 @@ name|entity
 return|;
 block|}
 DECL|method|getEntityMinStartTime (long startTs)
+specifier|public
 specifier|static
 name|TimelineEntity
 name|getEntityMinStartTime
@@ -2216,6 +2226,7 @@ name|entity
 return|;
 block|}
 DECL|method|getMinFlushEntity (long startTs)
+specifier|public
 specifier|static
 name|TimelineEntity
 name|getMinFlushEntity
@@ -2302,6 +2313,7 @@ name|entity
 return|;
 block|}
 DECL|method|getMaxFlushEntity (long startTs)
+specifier|public
 specifier|static
 name|TimelineEntity
 name|getMaxFlushEntity
@@ -2390,6 +2402,7 @@ name|entity
 return|;
 block|}
 DECL|method|getFlowApp1 (long appCreatedTime)
+specifier|public
 specifier|static
 name|TimelineEntity
 name|getFlowApp1

@@ -168,6 +168,26 @@ name|api
 operator|.
 name|records
 operator|.
+name|AppCollectorData
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ContainerQueuingLimit
 import|;
 end_import
@@ -268,29 +288,29 @@ name|getApplicationsToCleanup
 parameter_list|()
 function_decl|;
 comment|// This tells NM the collectors' address info of related apps
-DECL|method|getAppCollectorsMap ()
+DECL|method|getAppCollectors ()
 specifier|public
 specifier|abstract
 name|Map
 argument_list|<
 name|ApplicationId
 argument_list|,
-name|String
+name|AppCollectorData
 argument_list|>
-name|getAppCollectorsMap
+name|getAppCollectors
 parameter_list|()
 function_decl|;
-DECL|method|setAppCollectorsMap ( Map<ApplicationId, String> appCollectorsMap)
+DECL|method|setAppCollectors ( Map<ApplicationId, AppCollectorData> appCollectorsMap)
 specifier|public
 specifier|abstract
 name|void
-name|setAppCollectorsMap
+name|setAppCollectors
 parameter_list|(
 name|Map
 argument_list|<
 name|ApplicationId
 argument_list|,
-name|String
+name|AppCollectorData
 argument_list|>
 name|appCollectorsMap
 parameter_list|)

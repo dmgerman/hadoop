@@ -140,7 +140,7 @@ name|hadoop
 operator|.
 name|service
 operator|.
-name|AbstractService
+name|CompositeService
 import|;
 end_import
 
@@ -280,7 +280,7 @@ specifier|public
 class|class
 name|TimelineCollectorManager
 extends|extends
-name|AbstractService
+name|CompositeService
 block|{
 DECL|field|LOG
 specifier|private
@@ -321,7 +321,7 @@ decl_stmt|;
 annotation|@
 name|Override
 DECL|method|serviceInit (Configuration conf)
-specifier|public
+specifier|protected
 name|void
 name|serviceInit
 parameter_list|(
@@ -806,6 +806,11 @@ expr_stmt|;
 block|}
 else|else
 block|{
+synchronized|synchronized
+init|(
+name|collector
+init|)
+block|{
 name|postRemove
 argument_list|(
 name|appId
@@ -819,6 +824,7 @@ operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+block|}
 name|LOG
 operator|.
 name|info

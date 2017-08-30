@@ -514,6 +514,10 @@ name|Parameterized
 import|;
 end_import
 
+begin_comment
+comment|/**  * Test cases for authentication via TimelineAuthenticationFilter while  * publishing entities for ATSv1.  */
+end_comment
+
 begin_class
 annotation|@
 name|RunWith
@@ -522,10 +526,10 @@ name|Parameterized
 operator|.
 name|class
 argument_list|)
-DECL|class|TestTimelineAuthenticationFilter
+DECL|class|TestTimelineAuthenticationFilterForV1
 specifier|public
 class|class
-name|TestTimelineAuthenticationFilter
+name|TestTimelineAuthenticationFilterForV1
 block|{
 DECL|field|FOO_USER
 specifier|private
@@ -554,12 +558,12 @@ name|HTTP_USER
 init|=
 literal|"HTTP"
 decl_stmt|;
-DECL|field|testRootDir
+DECL|field|TEST_ROOT_DIR
 specifier|private
 specifier|static
 specifier|final
 name|File
-name|testRootDir
+name|TEST_ROOT_DIR
 init|=
 operator|new
 name|File
@@ -573,7 +577,7 @@ argument_list|,
 literal|"target/test-dir"
 argument_list|)
 argument_list|,
-name|TestTimelineAuthenticationFilter
+name|TestTimelineAuthenticationFilterForV1
 operator|.
 name|class
 operator|.
@@ -627,7 +631,7 @@ argument_list|)
 operator|+
 literal|"/"
 operator|+
-name|TestTimelineAuthenticationFilter
+name|TestTimelineAuthenticationFilterForV1
 operator|.
 name|class
 operator|.
@@ -706,15 +710,15 @@ specifier|static
 name|boolean
 name|withSsl
 decl_stmt|;
-DECL|method|TestTimelineAuthenticationFilter (boolean withSsl)
+DECL|method|TestTimelineAuthenticationFilterForV1 (boolean withSsl)
 specifier|public
-name|TestTimelineAuthenticationFilter
+name|TestTimelineAuthenticationFilterForV1
 parameter_list|(
 name|boolean
 name|withSsl
 parameter_list|)
 block|{
-name|TestTimelineAuthenticationFilter
+name|TestTimelineAuthenticationFilterForV1
 operator|.
 name|withSsl
 operator|=
@@ -742,7 +746,7 @@ operator|.
 name|createConf
 argument_list|()
 argument_list|,
-name|testRootDir
+name|TEST_ROOT_DIR
 argument_list|)
 expr_stmt|;
 name|testMiniKDC
@@ -1025,7 +1029,7 @@ name|KeyStoreTestUtil
 operator|.
 name|getClasspathDir
 argument_list|(
-name|TestTimelineAuthenticationFilter
+name|TestTimelineAuthenticationFilterForV1
 operator|.
 name|class
 argument_list|)
@@ -1070,6 +1074,11 @@ name|Exception
 name|e
 parameter_list|)
 block|{
+name|e
+operator|.
+name|printStackTrace
+argument_list|()
+expr_stmt|;
 name|assertTrue
 argument_list|(
 literal|"Couldn't setup TimelineServer"
@@ -1229,7 +1238,7 @@ name|entityToStore
 operator|.
 name|setEntityType
 argument_list|(
-name|TestTimelineAuthenticationFilter
+name|TestTimelineAuthenticationFilterForV1
 operator|.
 name|class
 operator|.
@@ -1288,7 +1297,7 @@ name|getEntity
 argument_list|(
 literal|"entity1"
 argument_list|,
-name|TestTimelineAuthenticationFilter
+name|TestTimelineAuthenticationFilterForV1
 operator|.
 name|class
 operator|.
@@ -1364,7 +1373,7 @@ name|domainToStore
 operator|.
 name|setId
 argument_list|(
-name|TestTimelineAuthenticationFilter
+name|TestTimelineAuthenticationFilterForV1
 operator|.
 name|class
 operator|.
@@ -1403,7 +1412,7 @@ argument_list|()
 operator|.
 name|getDomain
 argument_list|(
-name|TestTimelineAuthenticationFilter
+name|TestTimelineAuthenticationFilterForV1
 operator|.
 name|class
 operator|.

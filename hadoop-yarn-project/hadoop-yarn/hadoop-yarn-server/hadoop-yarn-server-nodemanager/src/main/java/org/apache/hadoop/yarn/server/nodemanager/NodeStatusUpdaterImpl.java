@@ -810,6 +810,26 @@ name|api
 operator|.
 name|records
 operator|.
+name|AppCollectorData
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ContainerQueuingLimit
 import|;
 end_import
@@ -5635,7 +5655,7 @@ name|this
 operator|.
 name|context
 operator|.
-name|getRegisteredCollectors
+name|getRegisteringCollectors
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -6045,7 +6065,7 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-name|updateTimelineClientsAddress
+name|updateTimelineCollectorData
 argument_list|(
 name|response
 argument_list|)
@@ -6147,10 +6167,10 @@ block|}
 block|}
 block|}
 block|}
-DECL|method|updateTimelineClientsAddress ( NodeHeartbeatResponse response)
+DECL|method|updateTimelineCollectorData ( NodeHeartbeatResponse response)
 specifier|private
 name|void
-name|updateTimelineClientsAddress
+name|updateTimelineCollectorData
 parameter_list|(
 name|NodeHeartbeatResponse
 name|response
@@ -6160,18 +6180,18 @@ name|Map
 argument_list|<
 name|ApplicationId
 argument_list|,
-name|String
+name|AppCollectorData
 argument_list|>
-name|knownCollectorsMap
+name|incomingCollectorsMap
 init|=
 name|response
 operator|.
-name|getAppCollectorsMap
+name|getAppCollectors
 argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|knownCollectorsMap
+name|incomingCollectorsMap
 operator|==
 literal|null
 condition|)
@@ -6192,25 +6212,19 @@ literal|"No collectors to update RM"
 argument_list|)
 expr_stmt|;
 block|}
+return|return;
 block|}
-else|else
-block|{
-name|Set
-argument_list|<
 name|Map
-operator|.
-name|Entry
 argument_list|<
 name|ApplicationId
 argument_list|,
-name|String
+name|AppCollectorData
 argument_list|>
-argument_list|>
-name|rmKnownCollectors
+name|knownCollectors
 init|=
-name|knownCollectorsMap
+name|context
 operator|.
-name|entrySet
+name|getKnownCollectors
 argument_list|()
 decl_stmt|;
 for|for
@@ -6221,11 +6235,14 @@ name|Entry
 argument_list|<
 name|ApplicationId
 argument_list|,
-name|String
+name|AppCollectorData
 argument_list|>
 name|entry
 range|:
-name|rmKnownCollectors
+name|incomingCollectorsMap
+operator|.
+name|entrySet
+argument_list|()
 control|)
 block|{
 name|ApplicationId
@@ -6236,8 +6253,8 @@ operator|.
 name|getKey
 argument_list|()
 decl_stmt|;
-name|String
-name|collectorAddr
+name|AppCollectorData
+name|collectorData
 init|=
 name|entry
 operator|.
@@ -6245,7 +6262,6 @@ name|getValue
 argument_list|()
 decl_stmt|;
 comment|// Only handle applications running on local node.
-comment|// Not include apps with timeline collectors running in local
 name|Application
 name|application
 init|=
@@ -6259,23 +6275,34 @@ argument_list|(
 name|appId
 argument_list|)
 decl_stmt|;
-comment|// TODO this logic could be problematic if the collector address
-comment|// gets updated due to NM restart or collector service failure
 if|if
 condition|(
 name|application
 operator|!=
 literal|null
-operator|&&
-operator|!
-name|context
+condition|)
+block|{
+comment|// Update collector data if the newly received data happens after
+comment|// the known data (updates the known data).
+name|AppCollectorData
+name|existingData
+init|=
+name|knownCollectors
 operator|.
-name|getRegisteredCollectors
-argument_list|()
-operator|.
-name|containsKey
+name|get
 argument_list|(
 name|appId
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|AppCollectorData
+operator|.
+name|happensBefore
+argument_list|(
+name|existingData
+argument_list|,
+name|collectorData
 argument_list|)
 condition|)
 block|{
@@ -6293,7 +6320,10 @@ name|debug
 argument_list|(
 literal|"Sync a new collector address: "
 operator|+
-name|collectorAddr
+name|collectorData
+operator|.
+name|getCollectorAddr
+argument_list|()
 operator|+
 literal|" for application: "
 operator|+
@@ -6303,6 +6333,7 @@ literal|" from RM."
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Update information for clients.
 name|NMTimelinePublisher
 name|nmTimelinePublisher
 init|=
@@ -6327,12 +6358,39 @@ operator|.
 name|getAppId
 argument_list|()
 argument_list|,
-name|collectorAddr
+name|collectorData
+operator|.
+name|getCollectorAddr
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Update information for the node manager itself.
+name|knownCollectors
+operator|.
+name|put
+argument_list|(
+name|appId
+argument_list|,
+name|collectorData
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-block|}
+comment|// Remove the registering collector data
+name|context
+operator|.
+name|getRegisteringCollectors
+argument_list|()
+operator|.
+name|remove
+argument_list|(
+name|entry
+operator|.
+name|getKey
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 DECL|method|updateMasterKeys (NodeHeartbeatResponse response)

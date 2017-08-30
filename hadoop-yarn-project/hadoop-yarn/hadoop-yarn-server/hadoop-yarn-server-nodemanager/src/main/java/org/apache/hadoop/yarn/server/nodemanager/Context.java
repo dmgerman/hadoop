@@ -172,6 +172,26 @@ name|api
 operator|.
 name|records
 operator|.
+name|AppCollectorData
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|NodeHealthStatus
 import|;
 end_import
@@ -398,15 +418,26 @@ argument_list|>
 name|getSystemCredentialsForApps
 parameter_list|()
 function_decl|;
-comment|/**    * Get the registered collectors that located on this NM.    * @return registered collectors, or null if the timeline service v.2 is not    * enabled    */
-DECL|method|getRegisteredCollectors ()
-name|Map
+comment|/**    * Get the list of collectors that are registering with the RM from this node.    * @return registering collectors, or null if the timeline service v.2 is not    * enabled    */
+DECL|method|getRegisteringCollectors ()
+name|ConcurrentMap
 argument_list|<
 name|ApplicationId
 argument_list|,
-name|String
+name|AppCollectorData
 argument_list|>
-name|getRegisteredCollectors
+name|getRegisteringCollectors
+parameter_list|()
+function_decl|;
+comment|/**    * Get the list of collectors registered with the RM and known by this node.    * @return known collectors, or null if the timeline service v.2 is not    * enabled.    */
+DECL|method|getKnownCollectors ()
+name|ConcurrentMap
+argument_list|<
+name|ApplicationId
+argument_list|,
+name|AppCollectorData
+argument_list|>
+name|getKnownCollectors
 parameter_list|()
 function_decl|;
 DECL|method|getContainers ()

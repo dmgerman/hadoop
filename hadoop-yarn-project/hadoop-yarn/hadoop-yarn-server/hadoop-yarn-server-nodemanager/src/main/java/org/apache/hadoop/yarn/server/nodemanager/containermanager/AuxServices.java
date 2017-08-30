@@ -1459,6 +1459,9 @@ name|ContainerInitializationContext
 argument_list|(
 name|event
 operator|.
+name|getContainer
+argument_list|()
+operator|.
 name|getUser
 argument_list|()
 argument_list|,

@@ -250,6 +250,12 @@ specifier|final
 name|ValueConverter
 name|converter
 decl_stmt|;
+DECL|field|supplementTs
+specifier|private
+specifier|final
+name|boolean
+name|supplementTs
+decl_stmt|;
 DECL|method|ColumnHelper (ColumnFamily<T> columnFamily)
 specifier|public
 name|ColumnHelper
@@ -284,6 +290,34 @@ name|columnFamily
 parameter_list|,
 name|ValueConverter
 name|converter
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|columnFamily
+argument_list|,
+name|converter
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * @param columnFamily column family implementation.    * @param converter converter use to encode/decode values stored in the column    *     or column prefix.    * @param needSupplementTs flag to indicate if cell timestamp needs to be    *     modified for this column by calling    *     {@link TimestampGenerator#getSupplementedTimestamp(long, String)}. This    *     would be required for columns(such as metrics in flow run table) where    *     potential collisions can occur due to same timestamp.    */
+DECL|method|ColumnHelper (ColumnFamily<T> columnFamily, ValueConverter converter, boolean needSupplementTs)
+specifier|public
+name|ColumnHelper
+parameter_list|(
+name|ColumnFamily
+argument_list|<
+name|T
+argument_list|>
+name|columnFamily
+parameter_list|,
+name|ValueConverter
+name|converter
+parameter_list|,
+name|boolean
+name|needSupplementTs
 parameter_list|)
 block|{
 name|this
@@ -325,6 +359,12 @@ operator|=
 name|converter
 expr_stmt|;
 block|}
+name|this
+operator|.
+name|supplementTs
+operator|=
+name|needSupplementTs
+expr_stmt|;
 block|}
 comment|/**    * Sends a Mutation to the table. The mutations will be buffered and sent over    * the wire as part of a batch.    *    * @param rowKey    *          identifying the row to write. Nothing gets written when null.    * @param tableMutator    *          used to modify the underlying HBase table    * @param columnQualifier    *          column qualifier. Nothing gets written when null.    * @param timestamp    *          version timestamp. When null the current timestamp multiplied with    *          TimestampGenerator.TS_MULTIPLIER and added with last 3 digits of    *          app id will be used    * @param inputValue    *          the value to write to the rowKey and column qualifier. Nothing    *          gets written when null.    * @param attributes Attributes to be set for HBase Put.    * @throws IOException if any problem occurs during store operation(sending    *          mutation to table).    */
 DECL|method|store (byte[] rowKey, TypedBufferedMutator<?> tableMutator, byte[] columnQualifier, Long timestamp, Object inputValue, Attribute... attributes)
@@ -468,7 +508,7 @@ name|p
 argument_list|)
 expr_stmt|;
 block|}
-comment|/*    * Figures out the cell timestamp used in the Put For storing into flow run    * table. We would like to left shift the timestamp and supplement it with the    * AppId id so that there are no collisions in the flow run table's cells    */
+comment|/*    * Figures out the cell timestamp used in the Put For storing.    * Will supplement the timestamp if required. Typically done for flow run    * table.If we supplement the timestamp, we left shift the timestamp and    * supplement it with the AppId id so that there are no collisions in the flow    * run table's cells.    */
 DECL|method|getPutTimestamp (Long timestamp, Attribute[] attributes)
 specifier|private
 name|long
@@ -497,6 +537,20 @@ name|currentTimeMillis
 argument_list|()
 expr_stmt|;
 block|}
+if|if
+condition|(
+operator|!
+name|this
+operator|.
+name|supplementTs
+condition|)
+block|{
+return|return
+name|timestamp
+return|;
+block|}
+else|else
+block|{
 name|String
 name|appId
 init|=
@@ -520,6 +574,7 @@ decl_stmt|;
 return|return
 name|supplementedTS
 return|;
+block|}
 block|}
 DECL|method|getAppIdFromAttributes (Attribute[] attributes)
 specifier|private
@@ -1032,10 +1087,11 @@ name|getValue
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|cellResults
-operator|.
-name|put
-argument_list|(
+name|Long
+name|ts
+init|=
+name|supplementTs
+condition|?
 name|TimestampGenerator
 operator|.
 name|getTruncatedTimestamp
@@ -1045,6 +1101,17 @@ operator|.
 name|getKey
 argument_list|()
 argument_list|)
+else|:
+name|cell
+operator|.
+name|getKey
+argument_list|()
+decl_stmt|;
+name|cellResults
+operator|.
+name|put
+argument_list|(
+name|ts
 argument_list|,
 name|value
 argument_list|)
@@ -1359,7 +1426,7 @@ return|return
 name|results
 return|;
 block|}
-comment|/**    * @param columnPrefixBytes The byte representation for the column prefix.    *          Should not contain {@link Separator#QUALIFIERS}.    * @param qualifier for the remainder of the column. Any    *          {@link Separator#QUALIFIERS} will be encoded in the qualifier.    * @return fully sanitized column qualifier that is a combination of prefix    *         and qualifier. If prefix is null, the result is simply the encoded    *         qualifier without any separator.    */
+comment|/**    * @param columnPrefixBytes The byte representation for the column prefix.    *          Should not contain {@link Separator#QUALIFIERS}.    * @param qualifier for the remainder of the column.    *          {@link Separator#QUALIFIERS} is permissible in the qualifier    *          as it is joined only with the column prefix bytes.    * @return fully sanitized column qualifier that is a combination of prefix    *         and qualifier. If prefix is null, the result is simply the encoded    *         qualifier without any separator.    */
 DECL|method|getColumnQualifier (byte[] columnPrefixBytes, String qualifier)
 specifier|public
 specifier|static

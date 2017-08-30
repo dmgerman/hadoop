@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_comment
-comment|/**  * Package org.apache.hadoop.server.timelineservice contains classes to be used  * across timeline reader and collector.  */
+comment|/**  * Package org.apache.hadoop.yarn.server.timelineservice.storage contains  * classes which define and implement reading and writing to backend storage.  */
 end_comment
 
 begin_annotation

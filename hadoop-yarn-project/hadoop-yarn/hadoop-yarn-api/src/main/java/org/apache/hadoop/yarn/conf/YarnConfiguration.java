@@ -6149,6 +6149,15 @@ name|YARN_SECURITY_SERVICE_AUTHORIZATION_APPLICATIONHISTORY_PROTOCOL
 init|=
 literal|"security.applicationhistory.protocol.acl"
 decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|String
+DECL|field|YARN_SECURITY_SERVICE_AUTHORIZATION_COLLECTOR_NODEMANAGER_PROTOCOL
+name|YARN_SECURITY_SERVICE_AUTHORIZATION_COLLECTOR_NODEMANAGER_PROTOCOL
+init|=
+literal|"security.collector-nodemanager.protocol.acl"
+decl_stmt|;
 comment|/** No. of milliseconds to wait between sending a SIGTERM and SIGKILL    * to a running container */
 DECL|field|NM_SLEEP_DELAY_BEFORE_SIGKILL_MS
 specifier|public
@@ -7182,7 +7191,7 @@ name|TIMELINE_SERVICE_ENTITYGROUP_FS_STORE_PREFIX
 operator|+
 literal|"with-user-dir"
 decl_stmt|;
-comment|/**    * Settings for timeline service v2.0    */
+comment|/**    * Settings for timeline service v2.0.    */
 DECL|field|TIMELINE_SERVICE_WRITER_CLASS
 specifier|public
 specifier|static
@@ -7223,9 +7232,31 @@ specifier|final
 name|String
 name|DEFAULT_TIMELINE_SERVICE_READER_CLASS
 init|=
-literal|"org.apache.hadoop.yarn.server.timelineservice"
+literal|"org.apache.hadoop.yarn.server.timelineservice.storage"
 operator|+
-literal|".storage.HBaseTimelineReaderImpl"
+literal|".HBaseTimelineReaderImpl"
+decl_stmt|;
+comment|/**    * default schema prefix for hbase tables.    */
+DECL|field|DEFAULT_TIMELINE_SERVICE_HBASE_SCHEMA_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_TIMELINE_SERVICE_HBASE_SCHEMA_PREFIX
+init|=
+literal|"prod."
+decl_stmt|;
+comment|/**    * config param name to override schema prefix.    */
+DECL|field|TIMELINE_SERVICE_HBASE_SCHEMA_PREFIX_NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_HBASE_SCHEMA_PREFIX_NAME
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"hbase-schema.prefix"
 decl_stmt|;
 comment|/** The setting that controls how often the timeline collector flushes the    * timeline writer.    */
 DECL|field|TIMELINE_SERVICE_WRITER_FLUSH_INTERVAL_SECONDS
@@ -7259,6 +7290,84 @@ init|=
 name|TIMELINE_SERVICE_PREFIX
 operator|+
 literal|"hbase.coprocessor.app-final-value-retention-milliseconds"
+decl_stmt|;
+comment|/**    * The name of the setting for the location of the coprocessor    * jar on hdfs.    */
+DECL|field|FLOW_RUN_COPROCESSOR_JAR_HDFS_LOCATION
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FLOW_RUN_COPROCESSOR_JAR_HDFS_LOCATION
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"hbase.coprocessor.jar.hdfs.location"
+decl_stmt|;
+comment|/** default hdfs location for flowrun coprocessor jar. */
+DECL|field|DEFAULT_HDFS_LOCATION_FLOW_RUN_COPROCESSOR_JAR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_HDFS_LOCATION_FLOW_RUN_COPROCESSOR_JAR
+init|=
+literal|"/hbase/coprocessor/hadoop-yarn-server-timelineservice.jar"
+decl_stmt|;
+comment|/**    * The name for setting that points to an optional HBase configuration    * (hbase-site.xml file) with settings that will override the ones found on    * the classpath.    */
+DECL|field|TIMELINE_SERVICE_HBASE_CONFIGURATION_FILE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_HBASE_CONFIGURATION_FILE
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"hbase.configuration.file"
+decl_stmt|;
+comment|/**    * The name for setting that enables or disables authentication checks    * for reading timeline service v2 data.    */
+DECL|field|TIMELINE_SERVICE_READ_AUTH_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_READ_AUTH_ENABLED
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"read.authentication.enabled"
+decl_stmt|;
+comment|/**    * The default setting for authentication checks for reading timeline    * service v2 data.    */
+DECL|field|DEFAULT_TIMELINE_SERVICE_READ_AUTH_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|Boolean
+name|DEFAULT_TIMELINE_SERVICE_READ_AUTH_ENABLED
+init|=
+literal|false
+decl_stmt|;
+comment|/**    * The name for setting that lists the users and groups who are allowed    * to read timeline service v2 data. It is a comma separated list of    * user, followed by space, then comma separated list of groups.    * It will allow this list of users and groups to read the data    * and reject everyone else.    */
+DECL|field|TIMELINE_SERVICE_READ_ALLOWED_USERS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TIMELINE_SERVICE_READ_ALLOWED_USERS
+init|=
+name|TIMELINE_SERVICE_PREFIX
+operator|+
+literal|"read.allowed.users"
+decl_stmt|;
+comment|/**    * The default value for list of the users who are allowed to read    * timeline service v2 data.    */
+DECL|field|DEFAULT_TIMELINE_SERVICE_READ_ALLOWED_USERS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_TIMELINE_SERVICE_READ_ALLOWED_USERS
+init|=
+literal|""
 decl_stmt|;
 comment|/**    * The setting that controls how long the final value of a metric of a    * completed app is retained before merging into the flow sum. Up to this time    * after an application is completed out-of-order values that arrive can be    * recognized and discarded at the cost of increased storage.    */
 DECL|field|DEFAULT_APP_FINAL_VALUE_RETENTION_THRESHOLD
@@ -7317,6 +7426,16 @@ name|int
 name|DEFAULT_NUMBER_OF_ASYNC_ENTITIES_TO_MERGE
 init|=
 literal|10
+decl_stmt|;
+comment|/** default version for any flow. */
+DECL|field|DEFAULT_FLOW_VERSION
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_FLOW_VERSION
+init|=
+literal|"1"
 decl_stmt|;
 comment|/**    * The time period for which timeline v2 client will wait for draining    * leftover entities after stop.    */
 DECL|field|TIMELINE_V2_CLIENT_DRAIN_TIME_MILLIS

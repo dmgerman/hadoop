@@ -214,6 +214,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|CollectorInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|FinalApplicationStatus
 import|;
 end_import
@@ -399,6 +417,26 @@ operator|.
 name|protocolrecords
 operator|.
 name|LogAggregationReport
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|AppCollectorData
 import|;
 end_import
 
@@ -1431,46 +1469,13 @@ literal|"Not supported yet."
 argument_list|)
 throw|;
 block|}
-DECL|method|getCollectorAddr ()
-specifier|public
-name|String
-name|getCollectorAddr
-parameter_list|()
-block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|(
-literal|"Not supported yet."
-argument_list|)
-throw|;
-block|}
 annotation|@
 name|Override
-DECL|method|removeCollectorAddr ()
+DECL|method|getCollectorData ()
 specifier|public
-name|void
-name|removeCollectorAddr
+name|AppCollectorData
+name|getCollectorData
 parameter_list|()
-block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|(
-literal|"Not supported yet."
-argument_list|)
-throw|;
-block|}
-annotation|@
-name|Override
-DECL|method|setCollectorAddr (String collectorAddr)
-specifier|public
-name|void
-name|setCollectorAddr
-parameter_list|(
-name|String
-name|collectorAddr
-parameter_list|)
 block|{
 throw|throw
 operator|new
@@ -1523,6 +1528,22 @@ block|{
 return|return
 literal|false
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getCollectorInfo ()
+specifier|public
+name|CollectorInfo
+name|getCollectorInfo
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
 block|}
 block|}
 end_class

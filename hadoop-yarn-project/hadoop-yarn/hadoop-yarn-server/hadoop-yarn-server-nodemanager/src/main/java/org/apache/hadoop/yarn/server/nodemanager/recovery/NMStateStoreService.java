@@ -535,6 +535,11 @@ name|RecoveredContainerType
 operator|.
 name|RECOVER
 decl_stmt|;
+DECL|field|startTime
+specifier|private
+name|long
+name|startTime
+decl_stmt|;
 DECL|method|getStatus ()
 specifier|public
 name|RecoveredContainerStatus
@@ -584,6 +589,30 @@ block|{
 return|return
 name|version
 return|;
+block|}
+DECL|method|getStartTime ()
+specifier|public
+name|long
+name|getStartTime
+parameter_list|()
+block|{
+return|return
+name|startTime
+return|;
+block|}
+DECL|method|setStartTime (long ts)
+specifier|public
+name|void
+name|setStartTime
+parameter_list|(
+name|long
+name|ts
+parameter_list|)
+block|{
+name|startTime
+operator|=
+name|ts
+expr_stmt|;
 block|}
 DECL|method|getStartRequest ()
 specifier|public
@@ -722,6 +751,16 @@ operator|.
 name|append
 argument_list|(
 name|version
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", Start Time: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|startTime
 argument_list|)
 operator|.
 name|append
@@ -1446,8 +1485,8 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Record a container start request    * @param containerId the container ID    * @param containerVersion the container Version    * @param startRequest the container start request    * @throws IOException    */
-DECL|method|storeContainer (ContainerId containerId, int containerVersion, StartContainerRequest startRequest)
+comment|/**    * Record a container start request    * @param containerId the container ID    * @param containerVersion the container Version    * @param startTime container start time    * @param startRequest the container start request    * @throws IOException    */
+DECL|method|storeContainer (ContainerId containerId, int containerVersion, long startTime, StartContainerRequest startRequest)
 specifier|public
 specifier|abstract
 name|void
@@ -1458,6 +1497,9 @@ name|containerId
 parameter_list|,
 name|int
 name|containerVersion
+parameter_list|,
+name|long
+name|startTime
 parameter_list|,
 name|StartContainerRequest
 name|startRequest

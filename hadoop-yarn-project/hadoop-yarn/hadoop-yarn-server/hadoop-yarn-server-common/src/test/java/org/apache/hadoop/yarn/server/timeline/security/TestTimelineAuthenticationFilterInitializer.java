@@ -118,6 +118,10 @@ name|Mockito
 import|;
 end_import
 
+begin_comment
+comment|/**  * Tests {@link TimelineAuthenticationFilterInitializer}.  */
+end_comment
+
 begin_class
 DECL|class|TestTimelineAuthenticationFilterInitializer
 specifier|public

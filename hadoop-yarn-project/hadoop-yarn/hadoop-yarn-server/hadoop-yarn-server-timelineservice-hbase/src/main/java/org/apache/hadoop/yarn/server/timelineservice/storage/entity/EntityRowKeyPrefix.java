@@ -63,8 +63,8 @@ argument_list|<
 name|EntityRowKey
 argument_list|>
 block|{
-comment|/**    * Creates a prefix which generates the following rowKeyPrefixes for the    * entity table:    * {@code userName!clusterId!flowName!flowRunId!AppId!entityType!}.    *    * @param clusterId identifying the cluster    * @param userId identifying the user    * @param flowName identifying the flow    * @param flowRunId identifying the individual run of this flow    * @param appId identifying the application    * @param entityType which entity type    */
-DECL|method|EntityRowKeyPrefix (String clusterId, String userId, String flowName, Long flowRunId, String appId, String entityType)
+comment|/**    * Creates a prefix which generates the following rowKeyPrefixes for the    * entity table:    * {@code userName!clusterId!flowName!flowRunId!AppId!entityType!}.    * @param clusterId identifying the cluster    * @param userId identifying the user    * @param flowName identifying the flow    * @param flowRunId identifying the individual run of this flow    * @param appId identifying the application    * @param entityType which entity type    * @param entityIdPrefix for entityId    * @param entityId for an entity    */
+DECL|method|EntityRowKeyPrefix (String clusterId, String userId, String flowName, Long flowRunId, String appId, String entityType, Long entityIdPrefix, String entityId)
 specifier|public
 name|EntityRowKeyPrefix
 parameter_list|(
@@ -85,6 +85,12 @@ name|appId
 parameter_list|,
 name|String
 name|entityType
+parameter_list|,
+name|Long
+name|entityIdPrefix
+parameter_list|,
+name|String
+name|entityId
 parameter_list|)
 block|{
 name|super
@@ -101,7 +107,9 @@ name|appId
 argument_list|,
 name|entityType
 argument_list|,
-literal|null
+name|entityIdPrefix
+argument_list|,
+name|entityId
 argument_list|)
 expr_stmt|;
 block|}
@@ -126,7 +134,7 @@ name|String
 name|appId
 parameter_list|)
 block|{
-name|super
+name|this
 argument_list|(
 name|clusterId
 argument_list|,
@@ -137,6 +145,8 @@ argument_list|,
 name|flowRunId
 argument_list|,
 name|appId
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|,

@@ -788,136 +788,6 @@ name|keyConverter
 argument_list|)
 return|;
 block|}
-comment|/**    * Retrieve an {@link FlowActivityColumnPrefix} given a name, or null if there    * is no match. The following holds true: {@code columnFor(x) == columnFor(y)}    * if and only if {@code x.equals(y)} or {@code (x == y == null)}    *    * @param columnPrefix    *          Name of the column to retrieve    * @return the corresponding {@link FlowActivityColumnPrefix} or null    */
-DECL|method|columnFor (String columnPrefix)
-specifier|public
-specifier|static
-specifier|final
-name|FlowActivityColumnPrefix
-name|columnFor
-parameter_list|(
-name|String
-name|columnPrefix
-parameter_list|)
-block|{
-comment|// Match column based on value, assume column family matches.
-for|for
-control|(
-name|FlowActivityColumnPrefix
-name|flowActivityColPrefix
-range|:
-name|FlowActivityColumnPrefix
-operator|.
-name|values
-argument_list|()
-control|)
-block|{
-comment|// Find a match based only on name.
-if|if
-condition|(
-name|flowActivityColPrefix
-operator|.
-name|getColumnPrefix
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|columnPrefix
-argument_list|)
-condition|)
-block|{
-return|return
-name|flowActivityColPrefix
-return|;
-block|}
-block|}
-comment|// Default to null
-return|return
-literal|null
-return|;
-block|}
-comment|/**    * Retrieve an {@link FlowActivityColumnPrefix} given a name, or null if there    * is no match. The following holds true:    * {@code columnFor(a,x) == columnFor(b,y)} if and only if    * {@code (x == y == null)} or {@code a.equals(b)& x.equals(y)}    *    * @param columnFamily    *          The columnFamily for which to retrieve the column.    * @param columnPrefix    *          Name of the column to retrieve    * @return the corresponding {@link FlowActivityColumnPrefix} or null if both    *         arguments don't match.    */
-DECL|method|columnFor ( FlowActivityColumnFamily columnFamily, String columnPrefix)
-specifier|public
-specifier|static
-specifier|final
-name|FlowActivityColumnPrefix
-name|columnFor
-parameter_list|(
-name|FlowActivityColumnFamily
-name|columnFamily
-parameter_list|,
-name|String
-name|columnPrefix
-parameter_list|)
-block|{
-comment|// TODO: needs unit test to confirm and need to update javadoc to explain
-comment|// null prefix case.
-for|for
-control|(
-name|FlowActivityColumnPrefix
-name|flowActivityColumnPrefix
-range|:
-name|FlowActivityColumnPrefix
-operator|.
-name|values
-argument_list|()
-control|)
-block|{
-comment|// Find a match based column family and on name.
-if|if
-condition|(
-name|flowActivityColumnPrefix
-operator|.
-name|columnFamily
-operator|.
-name|equals
-argument_list|(
-name|columnFamily
-argument_list|)
-operator|&&
-operator|(
-operator|(
-operator|(
-name|columnPrefix
-operator|==
-literal|null
-operator|)
-operator|&&
-operator|(
-name|flowActivityColumnPrefix
-operator|.
-name|getColumnPrefix
-argument_list|()
-operator|==
-literal|null
-operator|)
-operator|)
-operator|||
-operator|(
-name|flowActivityColumnPrefix
-operator|.
-name|getColumnPrefix
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|columnPrefix
-argument_list|)
-operator|)
-operator|)
-condition|)
-block|{
-return|return
-name|flowActivityColumnPrefix
-return|;
-block|}
-block|}
-comment|// Default to null
-return|return
-literal|null
-return|;
-block|}
 comment|/*    * (non-Javadoc)    *    * @see    * org.apache.hadoop.yarn.server.timelineservice.storage.common.ColumnPrefix    * #store(byte[],    * org.apache.hadoop.yarn.server.timelineservice.storage.common.    * TypedBufferedMutator, java.lang.String, java.lang.Long, java.lang.Object,    * org.apache.hadoop.yarn.server.timelineservice.storage.flow.Attribute[])    */
 annotation|@
 name|Override
@@ -1010,7 +880,7 @@ name|tableMutator
 argument_list|,
 name|columnQualifier
 argument_list|,
-literal|null
+name|timestamp
 argument_list|,
 name|inputValue
 argument_list|,

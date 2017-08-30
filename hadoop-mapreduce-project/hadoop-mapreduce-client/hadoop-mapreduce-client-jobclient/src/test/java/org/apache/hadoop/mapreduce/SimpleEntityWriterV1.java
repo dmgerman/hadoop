@@ -206,26 +206,6 @@ name|TimelineClient
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|client
-operator|.
-name|api
-operator|.
-name|impl
-operator|.
-name|TimelineClientImpl
-import|;
-end_import
-
 begin_comment
 comment|/**    * Adds simple entities with random string payload, events, metrics, and    * configuration.    */
 end_comment
@@ -292,8 +272,9 @@ block|{
 name|TimelineClient
 name|tlc
 init|=
-operator|new
-name|TimelineClientImpl
+name|TimelineClient
+operator|.
+name|createTimelineClient
 argument_list|()
 decl_stmt|;
 name|Configuration
