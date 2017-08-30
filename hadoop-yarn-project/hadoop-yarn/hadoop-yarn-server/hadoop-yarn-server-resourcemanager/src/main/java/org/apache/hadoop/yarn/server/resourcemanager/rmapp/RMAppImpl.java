@@ -6608,19 +6608,6 @@ name|submissionContext
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// set the memory free
-name|app
-operator|.
-name|submissionContext
-operator|.
-name|getAMContainerSpec
-argument_list|()
-operator|.
-name|setTokensConf
-argument_list|(
-literal|null
-argument_list|)
-expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -6900,19 +6887,6 @@ name|app
 operator|.
 name|sendATSCreateEvent
 argument_list|()
-expr_stmt|;
-comment|// Set the memory free after submission context is persisted
-name|app
-operator|.
-name|submissionContext
-operator|.
-name|getAMContainerSpec
-argument_list|()
-operator|.
-name|setTokensConf
-argument_list|(
-literal|null
-argument_list|)
 expr_stmt|;
 block|}
 block|}
