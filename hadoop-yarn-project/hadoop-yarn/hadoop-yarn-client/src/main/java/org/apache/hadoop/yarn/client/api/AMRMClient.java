@@ -661,6 +661,8 @@ DECL|field|relaxLocality
 specifier|private
 name|boolean
 name|relaxLocality
+init|=
+literal|true
 decl_stmt|;
 DECL|field|nodeLabelsExpression
 specifier|private
@@ -671,6 +673,11 @@ DECL|field|executionTypeRequest
 specifier|private
 name|ExecutionTypeRequest
 name|executionTypeRequest
+init|=
+name|ExecutionTypeRequest
+operator|.
+name|newInstance
+argument_list|()
 decl_stmt|;
 comment|/**      * Instantiates a {@link ContainerRequest} with the given constraints and      * locality relaxation enabled.      *       * @param capability      *          The {@link Resource} to be requested for each container.      * @param nodes      *          Any hosts to request that the containers are placed on.      * @param racks      *          Any racks to request that the containers are placed on. The      *          racks corresponding to any hosts requested will be automatically      *          added to this list.      * @param priority      *          The priority at which to request the containers. Higher      *          priorities have lower numerical values.      */
 DECL|method|ContainerRequest (Resource capability, String[] nodes, String[] racks, Priority priority)
