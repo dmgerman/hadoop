@@ -2619,6 +2619,32 @@ name|SEPARATOR_CHAR
 argument_list|)
 return|;
 block|}
+comment|/**    * Verifies if the path informed is a valid absolute path.    * @param path the absolute path to validate.    * @return true if the path is valid.    */
+DECL|method|isValidAbsolutePath (final String path)
+specifier|static
+name|boolean
+name|isValidAbsolutePath
+parameter_list|(
+specifier|final
+name|String
+name|path
+parameter_list|)
+block|{
+return|return
+name|path
+operator|!=
+literal|null
+operator|&&
+name|path
+operator|.
+name|startsWith
+argument_list|(
+name|Path
+operator|.
+name|SEPARATOR
+argument_list|)
+return|;
+block|}
 DECL|method|checkAbsolutePath (final String path)
 specifier|private
 specifier|static
@@ -2632,18 +2658,10 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|path
-operator|==
-literal|null
-operator|||
 operator|!
-name|path
-operator|.
-name|startsWith
+name|isValidAbsolutePath
 argument_list|(
-name|Path
-operator|.
-name|SEPARATOR
+name|path
 argument_list|)
 condition|)
 block|{
