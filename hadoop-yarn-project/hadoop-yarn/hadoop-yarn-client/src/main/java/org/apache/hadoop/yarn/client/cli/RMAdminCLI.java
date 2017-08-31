@@ -1078,7 +1078,9 @@ literal|"-side tracking is blocking, while the server-side tracking"
 operator|+
 literal|" is not. Omitting the timeout, or a timeout of -1, indicates"
 operator|+
-literal|" an infinite timeout."
+literal|" an infinite timeout. Known Issue: the server-side tracking"
+operator|+
+literal|" will immediately decommission if an RM HA failover occurs."
 argument_list|)
 argument_list|)
 decl|.
