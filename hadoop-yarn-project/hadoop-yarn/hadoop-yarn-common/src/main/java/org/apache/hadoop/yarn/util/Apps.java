@@ -902,6 +902,10 @@ name|PARAMETER_EXPANSION_RIGHT
 return|;
 block|}
 comment|// Check if should black list the node based on container exit status
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|shouldCountTowardsNodeBlacklisting (int exitStatus)
 specifier|public
 specifier|static
