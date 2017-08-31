@@ -147,6 +147,26 @@ return|return
 name|node
 return|;
 block|}
+DECL|method|addAll (ArrayList<NodeInfo> nodesInfo)
+specifier|public
+name|void
+name|addAll
+parameter_list|(
+name|ArrayList
+argument_list|<
+name|NodeInfo
+argument_list|>
+name|nodesInfo
+parameter_list|)
+block|{
+name|node
+operator|.
+name|addAll
+argument_list|(
+name|nodesInfo
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 
