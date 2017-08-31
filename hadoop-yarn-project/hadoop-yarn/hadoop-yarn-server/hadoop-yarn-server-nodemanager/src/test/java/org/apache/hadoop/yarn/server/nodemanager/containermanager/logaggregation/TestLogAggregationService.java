@@ -1228,6 +1228,8 @@ name|logaggregation
 operator|.
 name|filecontroller
 operator|.
+name|tfile
+operator|.
 name|LogAggregationTFileController
 import|;
 end_import
