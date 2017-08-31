@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager.rmapp.attempt
+DECL|package|org.apache.hadoop.yarn.util
 package|package
 name|org
 operator|.
@@ -14,13 +14,7 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|rmapp
-operator|.
-name|attempt
+name|util
 package|;
 end_package
 
@@ -65,30 +59,6 @@ operator|.
 name|Assert
 operator|.
 name|assertEquals
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|rmapp
-operator|.
-name|attempt
-operator|.
-name|RMAppAttemptImpl
-operator|.
-name|BoundedAppender
 import|;
 end_import
 
