@@ -1875,7 +1875,7 @@ name|OzoneProtos
 operator|.
 name|LifeCycleState
 operator|.
-name|ALLOCATED
+name|CREATING
 argument_list|)
 decl_stmt|;
 for|for
@@ -1943,7 +1943,7 @@ name|OzoneProtos
 operator|.
 name|LifeCycleState
 operator|.
-name|ALLOCATED
+name|CREATING
 argument_list|,
 name|containerName
 argument_list|,
