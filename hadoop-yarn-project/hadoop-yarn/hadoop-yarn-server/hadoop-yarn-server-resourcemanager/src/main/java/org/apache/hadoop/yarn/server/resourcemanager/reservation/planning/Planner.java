@@ -120,7 +120,7 @@ specifier|public
 interface|interface
 name|Planner
 block|{
-comment|/**    * Update the existing {@link Plan}, by adding/removing/updating existing    * reservations, and adding a subset of the reservation requests in the    * contracts parameter.    *    * @param plan the {@link Plan} to replan    * @param contracts the list of reservation requests    * @throws PlanningException    */
+comment|/**    * Update the existing {@link Plan}, by adding/removing/updating existing    * reservations, and adding a subset of the reservation requests in the    * contracts parameter.    *    * @param plan the {@link Plan} to replan    * @param contracts the list of reservation requests    * @throws PlanningException if operation is unsuccessful    */
 DECL|method|plan (Plan plan, List<ReservationDefinition> contracts)
 specifier|public
 name|void

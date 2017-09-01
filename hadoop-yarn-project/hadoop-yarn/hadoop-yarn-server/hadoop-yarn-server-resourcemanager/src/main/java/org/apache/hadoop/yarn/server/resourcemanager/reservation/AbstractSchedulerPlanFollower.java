@@ -24,6 +24,76 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Comparator
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|HashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -265,76 +335,6 @@ operator|.
 name|slf4j
 operator|.
 name|LoggerFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Collection
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Collections
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Comparator
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|HashSet
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Set
 import|;
 end_import
 
@@ -580,7 +580,9 @@ name|planQueue
 operator|==
 literal|null
 condition|)
+block|{
 return|return;
+block|}
 comment|// first we publish to the plan the current availability of resources
 name|Resource
 name|clusterResources
@@ -1306,7 +1308,7 @@ return|return
 name|reservationId
 return|;
 block|}
-comment|/**    * First sets entitlement of queues to zero to prevent new app submission.    * Then move all apps in the set of queues to the parent plan queue's default    * reservation queue if move is enabled. Finally cleanups the queue by killing    * any apps (if move is disabled or move failed) and removing the queue    */
+comment|/**    * First sets entitlement of queues to zero to prevent new app submission.    * Then move all apps in the set of queues to the parent plan queue's default    * reservation queue if move is enabled. Finally cleanups the queue by killing    * any apps (if move is disabled or move failed) and removing the queue    *    * @param planQueueName the name of {@code PlanQueue}    * @param shouldMove flag to indicate if any running apps should be moved or    *          killed    * @param toRemove the remnant apps to clean up    * @param defReservationQueue the default {@code ReservationQueue} of the    *          {@link Plan}    */
 DECL|method|cleanupExpiredQueues (String planQueueName, boolean shouldMove, Set<String> toRemove, String defReservationQueue)
 specifier|protected
 name|void
@@ -1615,7 +1617,7 @@ return|return
 name|numRes
 return|;
 block|}
-comment|/**    * Sort in the order from the least new amount of resources asked (likely    * negative) to the highest. This prevents "order-of-operation" errors related    * to exceeding 100% capacity temporarily.    */
+comment|/**    * Sort in the order from the least new amount of resources asked (likely    * negative) to the highest. This prevents "order-of-operation" errors related    * to exceeding 100% capacity temporarily.    *    * @param currentReservations the currently active reservations    * @param now the current time    * @param plan the {@link Plan} that is being considered    *    * @return the sorted list of {@link ReservationAllocation}s    */
 DECL|method|sortByDelta ( List<ReservationAllocation> currentReservations, long now, Plan plan)
 specifier|protected
 name|List
@@ -1658,7 +1660,7 @@ return|return
 name|currentReservations
 return|;
 block|}
-comment|/**    * Get queue associated with reservable queue named    * @param planQueueName Name of the reservable queue    * @return queue associated with the reservable queue    */
+comment|/**    * Get queue associated with reservable queue named.    *    * @param planQueueName name of the reservable queue    * @return queue associated with the reservable queue    */
 DECL|method|getPlanQueue (String planQueueName)
 specifier|protected
 specifier|abstract
@@ -1669,7 +1671,7 @@ name|String
 name|planQueueName
 parameter_list|)
 function_decl|;
-comment|/**    * Resizes reservations based on currently available resources    */
+comment|/**    * Resizes reservations based on currently available resources.    */
 DECL|method|calculateReservationToPlanProportion ( ResourceCalculator rescCalculator, Resource availablePlanResources, Resource totalReservationResources, Resource reservationResources)
 specifier|private
 name|Resource
@@ -1708,7 +1710,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Calculates ratio of reservationResources to planResources    */
+comment|/**    * Calculates ratio of reservationResources to planResources.    */
 DECL|method|calculateReservationToPlanRatio ( ResourceCalculator rescCalculator, Resource clusterResources, Resource planResources, Resource reservationResources)
 specifier|private
 name|float
@@ -1742,7 +1744,7 @@ name|planResources
 argument_list|)
 return|;
 block|}
-comment|/**    * Check if plan resources are less than expected reservation resources    */
+comment|/**    * Check if plan resources are less than expected reservation resources.    */
 DECL|method|arePlanResourcesLessThanReservations ( ResourceCalculator rescCalculator, Resource clusterResources, Resource planResources, Resource reservedResources)
 specifier|private
 name|boolean
@@ -1776,7 +1778,7 @@ name|planResources
 argument_list|)
 return|;
 block|}
-comment|/**    * Get a list of reservation queues for this planQueue    */
+comment|/**    * Get a list of reservation queues for this planQueue.    *    * @param planQueue the queue for the current {@link Plan}    *    * @return the queues corresponding to the reservations    */
 DECL|method|getChildReservationQueues ( Queue planQueue)
 specifier|protected
 specifier|abstract
@@ -1792,8 +1794,8 @@ name|Queue
 name|planQueue
 parameter_list|)
 function_decl|;
-comment|/**    * Add a new reservation queue for reservation currResId for this planQueue    */
-DECL|method|addReservationQueue ( String planQueueName, Queue queue, String currResId)
+comment|/**    * Add a new reservation queue for reservation currResId for this planQueue.    */
+DECL|method|addReservationQueue (String planQueueName, Queue queue, String currResId)
 specifier|protected
 specifier|abstract
 name|void
@@ -1809,8 +1811,8 @@ name|String
 name|currResId
 parameter_list|)
 function_decl|;
-comment|/**    * Creates the default reservation queue for use when no reservation is    * used for applications submitted to this planQueue    */
-DECL|method|createDefaultReservationQueue ( String planQueueName, Queue queue, String defReservationQueue)
+comment|/**    * Creates the default reservation queue for use when no reservation is used    * for applications submitted to this planQueue.    *    * @param planQueueName name of the reservable queue    * @param queue the queue for the current {@link Plan}    * @param defReservationQueue name of the default {@code ReservationQueue}    */
+DECL|method|createDefaultReservationQueue (String planQueueName, Queue queue, String defReservationQueue)
 specifier|protected
 specifier|abstract
 name|void
@@ -1826,8 +1828,8 @@ name|String
 name|defReservationQueue
 parameter_list|)
 function_decl|;
-comment|/**    * Get plan resources for this planQueue    */
-DECL|method|getPlanResources ( Plan plan, Queue queue, Resource clusterResources)
+comment|/**    * Get plan resources for this planQueue.    *    * @param plan the current {@link Plan} being considered    * @param clusterResources the resources available in the cluster    *    * @return the resources allocated to the specified {@link Plan}    */
+DECL|method|getPlanResources (Plan plan, Queue queue, Resource clusterResources)
 specifier|protected
 specifier|abstract
 name|Resource
@@ -1843,7 +1845,7 @@ name|Resource
 name|clusterResources
 parameter_list|)
 function_decl|;
-comment|/**    * Get reservation queue resources if it exists otherwise return null.    */
+comment|/**    * Get reservation queue resources if it exists otherwise return null.    *    * @param plan the current {@link Plan} being considered    * @param reservationId the identifier of the reservation    *    * @return the resources allocated to the specified reservation    */
 DECL|method|getReservationQueueResourceIfExists (Plan plan, ReservationId reservationId)
 specifier|protected
 specifier|abstract
