@@ -3618,12 +3618,6 @@ name|BlockConstructionStage
 operator|.
 name|DATA_STREAMING
 operator|||
-name|stage
-operator|==
-name|BlockConstructionStage
-operator|.
-name|DATA_STREAMING
-operator|&&
 name|now
 operator|-
 name|lastPacket
