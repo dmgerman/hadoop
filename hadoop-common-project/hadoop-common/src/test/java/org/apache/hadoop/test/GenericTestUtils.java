@@ -1260,7 +1260,7 @@ operator|+
 name|subpath
 return|;
 block|}
-comment|/**    * Get a temp path. This may or may not be relative; it depends on what the    * {@link #SYSPROP_TEST_DATA_DIR} is set to. If unset, it returns a path    * under the relative path {@link #DEFAULT_TEST_DATA_PATH}    * @param subpath sub path, with no leading "/" character    * @return a string to use in paths    */
+comment|/**    * Get a temp path. This may or may not be relative; it depends on what the    * {@link #SYSPROP_TEST_DATA_DIR} is set to. If unset, it returns a path    * under the relative path {@link #DEFAULT_TEST_DATA_PATH}    * @return a string to use in paths    */
 DECL|method|getRandomizedTempPath ()
 specifier|public
 specifier|static
