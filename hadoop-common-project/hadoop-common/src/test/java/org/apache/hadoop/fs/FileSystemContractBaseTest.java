@@ -3730,7 +3730,59 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * This a sanity check to make sure that any filesystem's handling of    * renames doesn't cause any regressions    */
+comment|/**    * This a sanity check to make sure that any filesystem's handling of    * renames empty dirs doesn't cause any regressions.    */
+DECL|method|testRenameEmptyToDirWithSamePrefixAllowed ()
+specifier|public
+name|void
+name|testRenameEmptyToDirWithSamePrefixAllowed
+parameter_list|()
+throws|throws
+name|Throwable
+block|{
+name|assumeTrue
+argument_list|(
+name|renameSupported
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Path
+name|parentdir
+init|=
+name|path
+argument_list|(
+literal|"testRenameEmptyToDirWithSamePrefixAllowed"
+argument_list|)
+decl_stmt|;
+name|fs
+operator|.
+name|mkdirs
+argument_list|(
+name|parentdir
+argument_list|)
+expr_stmt|;
+name|Path
+name|dest
+init|=
+name|path
+argument_list|(
+literal|"testRenameEmptyToDirWithSamePrefixAllowedDest"
+argument_list|)
+decl_stmt|;
+name|rename
+argument_list|(
+name|parentdir
+argument_list|,
+name|dest
+argument_list|,
+literal|true
+argument_list|,
+literal|false
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * This a sanity check to make sure that any filesystem's handling of    * renames non-empty dirs doesn't cause any regressions.    */
 annotation|@
 name|Test
 DECL|method|testRenameToDirWithSamePrefixAllowed ()
@@ -3761,6 +3813,18 @@ operator|.
 name|mkdirs
 argument_list|(
 name|parentdir
+argument_list|)
+expr_stmt|;
+comment|// Before renaming, we create one file under the source parent directory
+name|createFile
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+name|parentdir
+argument_list|,
+literal|"mychild"
+argument_list|)
 argument_list|)
 expr_stmt|;
 specifier|final

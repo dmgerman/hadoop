@@ -46,22 +46,6 @@ end_import
 
 begin_import
 import|import
-name|com
-operator|.
-name|amazonaws
-operator|.
-name|services
-operator|.
-name|s3
-operator|.
-name|transfer
-operator|.
-name|Upload
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -479,8 +463,8 @@ name|length
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|Upload
-name|upload
+name|UploadInfo
+name|info
 init|=
 name|fs
 operator|.
@@ -508,19 +492,28 @@ name|fs
 argument_list|,
 name|key
 argument_list|,
-name|upload
+name|info
+operator|.
+name|getUpload
+argument_list|()
 argument_list|,
 name|progress
 argument_list|)
 decl_stmt|;
-name|upload
+name|info
+operator|.
+name|getUpload
+argument_list|()
 operator|.
 name|addProgressListener
 argument_list|(
 name|listener
 argument_list|)
 expr_stmt|;
-name|upload
+name|info
+operator|.
+name|getUpload
+argument_list|()
 operator|.
 name|waitForUploadResult
 argument_list|()
@@ -530,12 +523,18 @@ operator|.
 name|uploadCompleted
 argument_list|()
 expr_stmt|;
-comment|// This will delete unnecessary fake parent directories
+comment|// This will delete unnecessary fake parent directories, update any
+comment|// MetadataStore
 name|fs
 operator|.
 name|finishedWrite
 argument_list|(
 name|key
+argument_list|,
+name|info
+operator|.
+name|getLength
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

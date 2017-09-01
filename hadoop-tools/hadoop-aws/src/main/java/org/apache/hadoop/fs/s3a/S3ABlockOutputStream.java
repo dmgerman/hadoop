@@ -510,6 +510,12 @@ specifier|final
 name|int
 name|blockSize
 decl_stmt|;
+comment|/** Total bytes for uploads submitted so far. */
+DECL|field|bytesSubmitted
+specifier|private
+name|long
+name|bytesSubmitted
+decl_stmt|;
 comment|/** Callback for progress. */
 DECL|field|progressListener
 specifier|private
@@ -1183,6 +1189,14 @@ name|getActiveBlock
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|bytesSubmitted
+operator|+=
+name|getActiveBlock
+argument_list|()
+operator|.
+name|dataSize
+argument_list|()
+expr_stmt|;
 block|}
 finally|finally
 block|{
@@ -1254,6 +1268,11 @@ else|:
 literal|"(none)"
 argument_list|)
 expr_stmt|;
+name|long
+name|bytes
+init|=
+literal|0
+decl_stmt|;
 try|try
 block|{
 if|if
@@ -1271,6 +1290,8 @@ block|{
 comment|// no uploads of data have taken place, put the single block up.
 comment|// This must happen even if there is no data, so that 0 byte files
 comment|// are created.
+name|bytes
+operator|=
 name|putObject
 argument_list|()
 expr_stmt|;
@@ -1315,6 +1336,10 @@ name|complete
 argument_list|(
 name|partETags
 argument_list|)
+expr_stmt|;
+name|bytes
+operator|=
+name|bytesSubmitted
 expr_stmt|;
 block|}
 name|LOG
@@ -1379,13 +1404,15 @@ comment|// All end of write operations, including deleting fake parent directori
 name|writeOperationHelper
 operator|.
 name|writeSuccessful
-argument_list|()
+argument_list|(
+name|bytes
+argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Upload the current block as a single PUT request; if the buffer    * is empty a 0-byte PUT will be invoked, as it is needed to create an    * entry at the far end.    * @throws IOException any problem.    */
+comment|/**    * Upload the current block as a single PUT request; if the buffer    * is empty a 0-byte PUT will be invoked, as it is needed to create an    * entry at the far end.    * @throws IOException any problem.    * @return number of bytes uploaded. If thread was interrupted while    * waiting for upload to complete, returns zero with interrupted flag set    * on this thread.    */
 DECL|method|putObject ()
 specifier|private
-name|void
+name|int
 name|putObject
 parameter_list|()
 throws|throws
@@ -1565,6 +1592,9 @@ operator|.
 name|get
 argument_list|()
 expr_stmt|;
+return|return
+name|size
+return|;
 block|}
 catch|catch
 parameter_list|(
@@ -1589,6 +1619,9 @@ operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
+return|return
+literal|0
+return|;
 block|}
 catch|catch
 parameter_list|(

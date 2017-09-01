@@ -574,6 +574,15 @@ argument_list|,
 name|getFileStatusCalls
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|fs
+operator|.
+name|hasMetadataStore
+argument_list|()
+condition|)
+block|{
 name|assertEquals
 argument_list|(
 name|listRequests
@@ -589,6 +598,7 @@ name|diff
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|reset
 argument_list|(
 name|metadataRequests

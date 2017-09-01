@@ -28,6 +28,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|FileSystem
 import|;
 end_import
@@ -184,13 +198,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
+name|test
 operator|.
-name|s3a
+name|GenericTestUtils
 operator|.
-name|S3ATestUtils
-operator|.
-name|MetricDiff
+name|getTestDir
 import|;
 end_import
 
@@ -198,15 +210,11 @@ begin_import
 import|import static
 name|org
 operator|.
-name|apache
+name|junit
 operator|.
-name|hadoop
+name|Assume
 operator|.
-name|test
-operator|.
-name|GenericTestUtils
-operator|.
-name|getTestDir
+name|assumeFalse
 import|;
 end_import
 
@@ -329,7 +337,7 @@ expr_stmt|;
 name|resetMetricDiffs
 argument_list|()
 expr_stmt|;
-name|S3AFileStatus
+name|FileStatus
 name|status
 init|=
 name|fs
@@ -351,6 +359,15 @@ name|isFile
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|fs
+operator|.
+name|hasMetadataStore
+argument_list|()
+condition|)
+block|{
 name|metadataRequests
 operator|.
 name|assertDiffEquals
@@ -358,6 +375,7 @@ argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
+block|}
 name|listRequests
 operator|.
 name|assertDiffEquals
@@ -424,9 +442,11 @@ name|status
 init|=
 name|fs
 operator|.
-name|getFileStatus
+name|innerGetFileStatus
 argument_list|(
 name|dir
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 name|assertTrue
@@ -439,8 +459,21 @@ name|status
 operator|.
 name|isEmptyDirectory
 argument_list|()
+operator|==
+name|Tristate
+operator|.
+name|TRUE
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|fs
+operator|.
+name|hasMetadataStore
+argument_list|()
+condition|)
+block|{
 name|metadataRequests
 operator|.
 name|assertDiffEquals
@@ -448,6 +481,7 @@ argument_list|(
 literal|2
 argument_list|)
 expr_stmt|;
+block|}
 name|listRequests
 operator|.
 name|assertDiffEquals
@@ -490,7 +524,7 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|S3AFileStatus
+name|FileStatus
 name|status
 init|=
 name|fs
@@ -565,7 +599,7 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|S3AFileStatus
+name|FileStatus
 name|status
 init|=
 name|fs
@@ -668,9 +702,11 @@ name|status
 init|=
 name|fs
 operator|.
-name|getFileStatus
+name|innerGetFileStatus
 argument_list|(
 name|dir
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 if|if
@@ -679,6 +715,10 @@ name|status
 operator|.
 name|isEmptyDirectory
 argument_list|()
+operator|==
+name|Tristate
+operator|.
+name|TRUE
 condition|)
 block|{
 comment|// erroneous state
@@ -713,6 +753,15 @@ name|fsState
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+operator|!
+name|fs
+operator|.
+name|hasMetadataStore
+argument_list|()
+condition|)
+block|{
 name|metadataRequests
 operator|.
 name|assertDiffEquals
@@ -727,6 +776,7 @@ argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Test
@@ -1005,6 +1055,18 @@ init|=
 name|getFileSystem
 argument_list|()
 decl_stmt|;
+comment|// As this test uses the s3 metrics to count the number of fake directory
+comment|// operations, it depends on side effects happening internally. With
+comment|// metadata store enabled, it is brittle to change. We disable this test
+comment|// before the internal behavior w/ or w/o metadata store.
+name|assumeFalse
+argument_list|(
+name|fs
+operator|.
+name|hasMetadataStore
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|Path
 name|srcBaseDir
 init|=

@@ -648,6 +648,23 @@ parameter_list|)
 block|{
 comment|// expected
 block|}
+catch|catch
+parameter_list|(
+name|AWSServiceIOException
+name|e
+parameter_list|)
+block|{
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+argument_list|(
+literal|"UnrecognizedClientException"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+comment|// expected
+block|}
 block|}
 DECL|class|GoodCredentialsProvider
 specifier|static

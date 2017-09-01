@@ -88,6 +88,42 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|s3guard
+operator|.
+name|MetadataStore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|s3guard
+operator|.
+name|NullMetadataStore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|After
@@ -127,7 +163,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Abstract base class for S3A unit tests using a mock S3 client.  */
+comment|/**  * Abstract base class for S3A unit tests using a mock S3 client and a null  * metadata store.  */
 end_comment
 
 begin_class
@@ -221,6 +257,23 @@ operator|.
 name|class
 argument_list|,
 name|S3ClientFactory
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+comment|// We explicitly disable MetadataStore even if it's configured. For unit
+comment|// test we don't issue request to AWS DynamoDB service.
+name|conf
+operator|.
+name|setClass
+argument_list|(
+name|S3_METADATA_STORE_IMPL
+argument_list|,
+name|NullMetadataStore
+operator|.
+name|class
+argument_list|,
+name|MetadataStore
 operator|.
 name|class
 argument_list|)

@@ -381,8 +381,9 @@ name|createScaleConfiguration
 parameter_list|()
 block|{
 return|return
-operator|new
-name|Configuration
+name|super
+operator|.
+name|createConfiguration
 argument_list|()
 return|;
 block|}

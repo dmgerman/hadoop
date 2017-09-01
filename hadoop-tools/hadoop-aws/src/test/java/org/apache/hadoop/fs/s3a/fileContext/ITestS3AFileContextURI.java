@@ -70,6 +70,22 @@ name|fs
 operator|.
 name|s3a
 operator|.
+name|S3AFileSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
 name|S3ATestUtils
 import|;
 end_import
@@ -104,6 +120,42 @@ name|Test
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3ATestUtils
+operator|.
+name|assume
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3ATestUtils
+operator|.
+name|createTestFileSystem
+import|;
+end_import
+
 begin_comment
 comment|/**  * S3a implementation of FileContextURIBase.  */
 end_comment
@@ -116,6 +168,16 @@ name|ITestS3AFileContextURI
 extends|extends
 name|FileContextURIBase
 block|{
+DECL|field|conf
+specifier|private
+name|Configuration
+name|conf
+decl_stmt|;
+DECL|field|hasMetadataStore
+specifier|private
+name|boolean
+name|hasMetadataStore
+decl_stmt|;
 annotation|@
 name|Before
 DECL|method|setUp ()
@@ -128,13 +190,31 @@ name|IOException
 throws|,
 name|Exception
 block|{
-name|Configuration
 name|conf
-init|=
+operator|=
 operator|new
 name|Configuration
 argument_list|()
-decl_stmt|;
+expr_stmt|;
+try|try
+init|(
+name|S3AFileSystem
+name|s3aFS
+init|=
+name|createTestFileSystem
+argument_list|(
+name|conf
+argument_list|)
+init|)
+block|{
+name|hasMetadataStore
+operator|=
+name|s3aFS
+operator|.
+name|hasMetadataStore
+argument_list|()
+expr_stmt|;
+block|}
 name|fc1
 operator|=
 name|S3ATestUtils
@@ -174,6 +254,33 @@ name|IOException
 block|{
 comment|// test disabled
 comment|// (the statistics tested with this method are not relevant for an S3FS)
+block|}
+annotation|@
+name|Test
+annotation|@
+name|Override
+DECL|method|testModificationTime ()
+specifier|public
+name|void
+name|testModificationTime
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// skip modtime tests as there may be some inconsistency during creation
+name|assume
+argument_list|(
+literal|"modification time tests are skipped"
+argument_list|,
+operator|!
+name|hasMetadataStore
+argument_list|)
+expr_stmt|;
+name|super
+operator|.
+name|testModificationTime
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 end_class

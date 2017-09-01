@@ -74,6 +74,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|FileSystem
+operator|.
+name|Statistics
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|metrics2
 operator|.
 name|MetricStringBuilder
@@ -178,6 +194,22 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|metrics2
+operator|.
+name|lib
+operator|.
+name|MutableQuantiles
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -251,22 +283,6 @@ operator|.
 name|atomic
 operator|.
 name|AtomicLong
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|FileSystem
-operator|.
-name|Statistics
 import|;
 end_import
 
@@ -521,6 +537,17 @@ argument_list|(
 literal|30
 argument_list|)
 decl_stmt|;
+comment|/** Instantiate this without caring whether or not S3Guard is enabled. */
+DECL|field|s3GuardInstrumentation
+specifier|private
+specifier|final
+name|S3GuardInstrumentation
+name|s3GuardInstrumentation
+init|=
+operator|new
+name|S3GuardInstrumentation
+argument_list|()
+decl_stmt|;
 DECL|field|COUNTERS_TO_CREATE
 specifier|private
 specifier|static
@@ -581,7 +608,11 @@ block|,
 name|STREAM_WRITE_TOTAL_TIME
 block|,
 name|STREAM_WRITE_TOTAL_DATA
-block|,   }
+block|,
+name|S3GUARD_METADATASTORE_PUT_PATH_REQUEST
+block|,
+name|S3GUARD_METADATASTORE_INITIALIZATION
+block|}
 decl_stmt|;
 DECL|field|GAUGES_TO_CREATE
 specifier|private
@@ -858,6 +889,18 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|//todo need a config for the quantiles interval?
+name|quantiles
+argument_list|(
+name|S3GUARD_METADATASTORE_PUT_PATH_LATENCY
+argument_list|,
+literal|"ops"
+argument_list|,
+literal|"latency"
+argument_list|,
+literal|1
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Create a counter in the registry.    * @param name counter name    * @param desc counter description    * @return a new counter    */
 DECL|method|counter (String name, String desc)
@@ -1007,6 +1050,49 @@ argument_list|,
 name|desc
 argument_list|,
 literal|0L
+argument_list|)
+return|;
+block|}
+comment|/**    * Create a quantiles in the registry.    * @param op  statistic to collect    * @param sampleName sample name of the quantiles    * @param valueName value name of the quantiles    * @param interval interval of the quantiles in seconds    * @return the created quantiles metric    */
+DECL|method|quantiles (Statistic op, String sampleName, String valueName, int interval)
+specifier|protected
+specifier|final
+name|MutableQuantiles
+name|quantiles
+parameter_list|(
+name|Statistic
+name|op
+parameter_list|,
+name|String
+name|sampleName
+parameter_list|,
+name|String
+name|valueName
+parameter_list|,
+name|int
+name|interval
+parameter_list|)
+block|{
+return|return
+name|registry
+operator|.
+name|newQuantiles
+argument_list|(
+name|op
+operator|.
+name|getSymbol
+argument_list|()
+argument_list|,
+name|op
+operator|.
+name|getDescription
+argument_list|()
+argument_list|,
+name|sampleName
+argument_list|,
+name|valueName
+argument_list|,
+name|interval
 argument_list|)
 return|;
 block|}
@@ -1266,6 +1352,48 @@ operator|)
 name|metric
 return|;
 block|}
+comment|/**    * Look up a quantiles.    * @param name quantiles name    * @return the quantiles or null    * @throws ClassCastException if the metric is not a Quantiles.    */
+DECL|method|lookupQuantiles (String name)
+specifier|public
+name|MutableQuantiles
+name|lookupQuantiles
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+block|{
+name|MutableMetric
+name|metric
+init|=
+name|lookupMetric
+argument_list|(
+name|name
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|metric
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"No quantiles {}"
+argument_list|,
+name|name
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+operator|(
+name|MutableQuantiles
+operator|)
+name|metric
+return|;
+block|}
 comment|/**    * Look up a metric from both the registered set and the lighter weight    * stream entries.    * @param name metric name    * @return the metric or null    */
 DECL|method|lookupMetric (String name)
 specifier|public
@@ -1464,6 +1592,46 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Add a value to a quantiles statistic. No-op if the quantile    * isn't found.    * @param op operation to look up.    * @param value value to add.    * @throws ClassCastException if the metric is not a Quantiles.    */
+DECL|method|addValueToQuantiles (Statistic op, long value)
+specifier|public
+name|void
+name|addValueToQuantiles
+parameter_list|(
+name|Statistic
+name|op
+parameter_list|,
+name|long
+name|value
+parameter_list|)
+block|{
+name|MutableQuantiles
+name|quantiles
+init|=
+name|lookupQuantiles
+argument_list|(
+name|op
+operator|.
+name|getSymbol
+argument_list|()
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|quantiles
+operator|!=
+literal|null
+condition|)
+block|{
+name|quantiles
+operator|.
+name|add
+argument_list|(
+name|value
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Increment a specific counter.    * No-op if not defined.    * @param op operation    * @param count atomic long containing value    */
 DECL|method|incrementCounter (Statistic op, AtomicLong count)
 specifier|public
@@ -1602,6 +1770,17 @@ return|return
 operator|new
 name|InputStreamStatistics
 argument_list|()
+return|;
+block|}
+comment|/**    * Create a S3Guard instrumentation instance.    * There's likely to be at most one instance of this per FS instance.    * @return the S3Guard instrumentation point.    */
+DECL|method|getS3GuardInstrumentation ()
+specifier|public
+name|S3GuardInstrumentation
+name|getS3GuardInstrumentation
+parameter_list|()
+block|{
+return|return
+name|s3GuardInstrumentation
 return|;
 block|}
 comment|/**    * Merge in the statistics of a single input stream into    * the filesystem-wide statistics.    * @param statistics stream statistics    */
@@ -3218,6 +3397,35 @@ name|toString
 argument_list|()
 return|;
 block|}
+block|}
+comment|/**    * Instrumentation exported to S3Guard.    */
+DECL|class|S3GuardInstrumentation
+specifier|public
+specifier|final
+class|class
+name|S3GuardInstrumentation
+block|{
+comment|/** Initialized event. */
+DECL|method|initialized ()
+specifier|public
+name|void
+name|initialized
+parameter_list|()
+block|{
+name|incrementCounter
+argument_list|(
+name|S3GUARD_METADATASTORE_INITIALIZATION
+argument_list|,
+literal|1
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|storeClosed ()
+specifier|public
+name|void
+name|storeClosed
+parameter_list|()
+block|{      }
 block|}
 block|}
 end_class

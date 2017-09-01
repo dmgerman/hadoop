@@ -66,6 +66,24 @@ name|AbstractFSContract
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3ATestUtils
+operator|.
+name|maybeEnableS3Guard
+import|;
+end_import
+
 begin_comment
 comment|/**  * S3A contract tests opening files.  */
 end_comment
@@ -78,6 +96,33 @@ name|ITestS3AContractOpen
 extends|extends
 name|AbstractContractOpenTest
 block|{
+comment|/**    * Create a configuration, possibly patching in S3Guard options.    * @return a configuration    */
+annotation|@
+name|Override
+DECL|method|createConfiguration ()
+specifier|protected
+name|Configuration
+name|createConfiguration
+parameter_list|()
+block|{
+name|Configuration
+name|conf
+init|=
+name|super
+operator|.
+name|createConfiguration
+argument_list|()
+decl_stmt|;
+comment|// patch in S3Guard options
+name|maybeEnableS3Guard
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+return|return
+name|conf
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|createContract (Configuration conf)

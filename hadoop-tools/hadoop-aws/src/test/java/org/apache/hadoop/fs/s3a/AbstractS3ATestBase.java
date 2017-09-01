@@ -202,6 +202,24 @@ name|writeDataset
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3ATestUtils
+operator|.
+name|maybeEnableS3Guard
+import|;
+end_import
+
 begin_comment
 comment|/**  * An extension of the contract test base set up for S3A tests.  */
 end_comment
@@ -317,6 +335,33 @@ return|return
 name|S3A_TEST_TIMEOUT
 return|;
 block|}
+comment|/**    * Create a configuration, possibly patching in S3Guard options.    * @return a configuration    */
+annotation|@
+name|Override
+DECL|method|createConfiguration ()
+specifier|protected
+name|Configuration
+name|createConfiguration
+parameter_list|()
+block|{
+name|Configuration
+name|conf
+init|=
+name|super
+operator|.
+name|createConfiguration
+argument_list|()
+decl_stmt|;
+comment|// patch in S3Guard options
+name|maybeEnableS3Guard
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+return|return
+name|conf
+return|;
+block|}
 DECL|method|getConfiguration ()
 specifier|protected
 name|Configuration
@@ -409,6 +454,32 @@ argument_list|(
 name|name
 argument_list|)
 decl_stmt|;
+name|writeThenReadFile
+argument_list|(
+name|path
+argument_list|,
+name|len
+argument_list|)
+expr_stmt|;
+return|return
+name|path
+return|;
+block|}
+comment|/**    * Write a file, read it back, validate the dataset. Overwrites the file    * if it is present    * @param path path to file    * @param len length of file    * @throws IOException any IO problem    */
+DECL|method|writeThenReadFile (Path path, int len)
+specifier|protected
+name|void
+name|writeThenReadFile
+parameter_list|(
+name|Path
+name|path
+parameter_list|,
+name|int
+name|len
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 name|byte
 index|[]
 name|data
@@ -454,9 +525,6 @@ argument_list|,
 name|data
 argument_list|)
 expr_stmt|;
-return|return
-name|path
-return|;
 block|}
 comment|/**    * Assert that an exception failed with a specific status code.    * @param e exception    * @param code expected status code    * @throws AWSS3IOException rethrown if the status code does not match.    */
 DECL|method|assertStatusCode (AWSS3IOException e, int code)

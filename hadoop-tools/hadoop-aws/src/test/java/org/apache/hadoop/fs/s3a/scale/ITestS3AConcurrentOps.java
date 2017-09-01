@@ -679,8 +679,7 @@ decl_stmt|;
 name|Configuration
 name|conf
 init|=
-operator|new
-name|Configuration
+name|createScaleConfiguration
 argument_list|()
 decl_stmt|;
 name|URI
@@ -720,6 +719,11 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|super
+operator|.
+name|teardown
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|auxFs

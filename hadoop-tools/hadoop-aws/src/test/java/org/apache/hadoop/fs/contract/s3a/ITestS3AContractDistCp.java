@@ -57,6 +57,24 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3ATestUtils
+operator|.
+name|maybeEnableS3Guard
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -119,6 +137,7 @@ return|return
 name|SCALE_TEST_TIMEOUT_MILLIS
 return|;
 block|}
+comment|/**    * Create a configuration, possibly patching in S3Guard options.    * @return a configuration    */
 annotation|@
 name|Override
 DECL|method|createConfiguration ()
@@ -160,6 +179,12 @@ argument_list|(
 name|FAST_UPLOAD_BUFFER
 argument_list|,
 name|FAST_UPLOAD_BUFFER_DISK
+argument_list|)
+expr_stmt|;
+comment|// patch in S3Guard options
+name|maybeEnableS3Guard
+argument_list|(
+name|newConf
 argument_list|)
 expr_stmt|;
 return|return

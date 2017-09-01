@@ -541,6 +541,31 @@ literal|"stream_write_queue_duration"
 argument_list|,
 literal|"Total queue duration of all block uploads"
 argument_list|)
+block|,
+comment|// S3Guard stats
+DECL|enumConstant|S3GUARD_METADATASTORE_PUT_PATH_REQUEST
+name|S3GUARD_METADATASTORE_PUT_PATH_REQUEST
+argument_list|(
+literal|"s3guard_metadatastore_put_path_request"
+argument_list|,
+literal|"s3guard metadata store put one metadata path request"
+argument_list|)
+block|,
+DECL|enumConstant|S3GUARD_METADATASTORE_PUT_PATH_LATENCY
+name|S3GUARD_METADATASTORE_PUT_PATH_LATENCY
+argument_list|(
+literal|"s3guard_metadatastore_put_path_latency"
+argument_list|,
+literal|"s3guard metadata store put one metadata path lantency"
+argument_list|)
+block|,
+DECL|enumConstant|S3GUARD_METADATASTORE_INITIALIZATION
+name|S3GUARD_METADATASTORE_INITIALIZATION
+argument_list|(
+literal|"s3guard_metadatastore_initialization"
+argument_list|,
+literal|"s3guard metadata store initialization times"
+argument_list|)
 block|;
 DECL|field|SYMBOL_MAP
 specifier|private

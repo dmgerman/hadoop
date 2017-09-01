@@ -42,6 +42,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|Path
 import|;
 end_import
@@ -212,6 +226,24 @@ name|TEST_FS_S3A_NAME
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3ATestUtils
+operator|.
+name|assumeS3GuardState
+import|;
+end_import
+
 begin_comment
 comment|/**  * Tests that credentials can go into the URL. This includes a valid  * set, and a check that an invalid set do at least get stripped out  * of the final URI  */
 end_comment
@@ -296,6 +328,15 @@ operator|new
 name|Configuration
 argument_list|()
 decl_stmt|;
+comment|// Skip in the case of S3Guard with DynamoDB because it cannot get
+comment|// credentials for its own use if they're only in S3 URLs
+name|assumeS3GuardState
+argument_list|(
+literal|false
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
 name|String
 name|accessKey
 init|=
@@ -693,6 +734,13 @@ argument_list|(
 name|fsname
 argument_list|)
 expr_stmt|;
+name|assumeS3GuardState
+argument_list|(
+literal|false
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
 name|URI
 name|original
 init|=
@@ -726,6 +774,8 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|fs
 operator|=
 name|S3ATestUtils
@@ -735,9 +785,7 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-try|try
-block|{
-name|S3AFileStatus
+name|FileStatus
 name|status
 init|=
 name|fs

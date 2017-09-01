@@ -98,6 +98,24 @@ name|S3ATestUtils
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3ATestUtils
+operator|.
+name|maybeEnableS3Guard
+import|;
+end_import
+
 begin_comment
 comment|/**  * S3A contract tests covering getFileStatus.  */
 end_comment
@@ -189,6 +207,12 @@ operator|.
 name|MAX_PAGING_KEYS
 argument_list|,
 literal|2
+argument_list|)
+expr_stmt|;
+comment|// patch in S3Guard options
+name|maybeEnableS3Guard
+argument_list|(
+name|conf
 argument_list|)
 expr_stmt|;
 return|return
