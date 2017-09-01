@@ -142,6 +142,26 @@ name|api
 operator|.
 name|records
 operator|.
+name|Component
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|service
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Service
 import|;
 end_import
@@ -201,44 +221,6 @@ operator|.
 name|client
 operator|.
 name|ServiceClient
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|service
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|Component
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|service
-operator|.
-name|utils
-operator|.
-name|SliderUtils
 import|;
 end_import
 
@@ -462,6 +444,28 @@ name|yarn
 operator|.
 name|service
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ServiceState
+operator|.
+name|ACCEPTED
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|service
+operator|.
 name|conf
 operator|.
 name|RestApiConstants
@@ -575,10 +579,6 @@ block|{
 name|MediaType
 operator|.
 name|APPLICATION_JSON
-block|,
-name|MediaType
-operator|.
-name|TEXT_PLAIN
 block|}
 argument_list|)
 DECL|method|getVersion ()
@@ -607,7 +607,11 @@ name|Response
 operator|.
 name|ok
 argument_list|(
+literal|"{ \"hadoop_version\": \""
+operator|+
 name|version
+operator|+
+literal|"\"}"
 argument_list|)
 operator|.
 name|build
@@ -696,8 +700,6 @@ name|serviceStatus
 operator|.
 name|setState
 argument_list|(
-name|ServiceState
-operator|.
 name|ACCEPTED
 argument_list|)
 expr_stmt|;
@@ -724,7 +726,7 @@ name|status
 argument_list|(
 name|Status
 operator|.
-name|CREATED
+name|ACCEPTED
 argument_list|)
 operator|.
 name|entity
@@ -1316,6 +1318,13 @@ name|build
 argument_list|()
 return|;
 block|}
+name|ServiceStatus
+name|status
+init|=
+operator|new
+name|ServiceStatus
+argument_list|()
+decl_stmt|;
 try|try
 block|{
 name|Map
@@ -1348,19 +1357,15 @@ argument_list|()
 argument_list|)
 argument_list|)
 decl_stmt|;
-return|return
-name|Response
+name|status
 operator|.
-name|ok
-argument_list|()
-operator|.
-name|entity
+name|setDiagnostics
 argument_list|(
-literal|"Updating component "
+literal|"Updating component ("
 operator|+
 name|componentName
 operator|+
-literal|" size from "
+literal|") size from "
 operator|+
 name|original
 operator|.
@@ -1376,6 +1381,17 @@ operator|.
 name|getNumberOfContainers
 argument_list|()
 argument_list|)
+expr_stmt|;
+return|return
+name|Response
+operator|.
+name|ok
+argument_list|()
+operator|.
+name|entity
+argument_list|(
+name|status
+argument_list|)
 operator|.
 name|build
 argument_list|()
@@ -1389,13 +1405,6 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-name|ServiceStatus
-name|status
-init|=
-operator|new
-name|ServiceStatus
-argument_list|()
-decl_stmt|;
 name|status
 operator|.
 name|setDiagnostics
@@ -1646,6 +1655,13 @@ name|Service
 name|updateAppData
 parameter_list|)
 block|{
+name|ServiceStatus
+name|status
+init|=
+operator|new
+name|ServiceStatus
+argument_list|()
+decl_stmt|;
 try|try
 block|{
 name|String
@@ -1663,25 +1679,34 @@ name|getLifetime
 argument_list|()
 argument_list|)
 decl_stmt|;
-return|return
-name|Response
+name|status
 operator|.
-name|ok
+name|setDiagnostics
 argument_list|(
-literal|"Service "
+literal|"Service ("
 operator|+
 name|appName
 operator|+
-literal|" lifeTime is successfully updated to "
+literal|")'s lifeTime is updated to "
+operator|+
+name|newLifeTime
+operator|+
+literal|", "
 operator|+
 name|updateAppData
 operator|.
 name|getLifetime
 argument_list|()
 operator|+
-literal|" seconds from now: "
-operator|+
-name|newLifeTime
+literal|" seconds remaining"
+argument_list|)
+expr_stmt|;
+return|return
+name|Response
+operator|.
+name|ok
+argument_list|(
+name|status
 argument_list|)
 operator|.
 name|build
@@ -1701,14 +1726,12 @@ literal|"Failed to update service ("
 operator|+
 name|appName
 operator|+
-literal|") lifetime ("
+literal|")'s lifetime to "
 operator|+
 name|updateAppData
 operator|.
 name|getLifetime
 argument_list|()
-operator|+
-literal|")"
 decl_stmt|;
 name|LOG
 operator|.
@@ -1717,6 +1740,20 @@ argument_list|(
 name|message
 argument_list|,
 name|e
+argument_list|)
+expr_stmt|;
+name|status
+operator|.
+name|setDiagnostics
+argument_list|(
+name|message
+operator|+
+literal|": "
+operator|+
+name|e
+operator|.
+name|getMessage
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
@@ -1731,14 +1768,7 @@ argument_list|)
 operator|.
 name|entity
 argument_list|(
-name|message
-operator|+
-literal|" : "
-operator|+
-name|e
-operator|.
-name|getMessage
-argument_list|()
+name|status
 argument_list|)
 operator|.
 name|build
@@ -1755,6 +1785,13 @@ name|String
 name|appName
 parameter_list|)
 block|{
+name|ServiceStatus
+name|status
+init|=
+operator|new
+name|ServiceStatus
+argument_list|()
+decl_stmt|;
 try|try
 block|{
 name|SERVICE_CLIENT
@@ -1773,16 +1810,32 @@ operator|+
 name|appName
 argument_list|)
 expr_stmt|;
-return|return
-name|Response
+name|status
 operator|.
-name|ok
+name|setDiagnostics
 argument_list|(
 literal|"Service "
 operator|+
 name|appName
 operator|+
-literal|" is successfully started"
+literal|" is successfully started."
+argument_list|)
+expr_stmt|;
+name|status
+operator|.
+name|setState
+argument_list|(
+name|ServiceState
+operator|.
+name|ACCEPTED
+argument_list|)
+expr_stmt|;
+return|return
+name|Response
+operator|.
+name|ok
+argument_list|(
+name|status
 argument_list|)
 operator|.
 name|build
@@ -1802,6 +1855,20 @@ literal|"Failed to start service "
 operator|+
 name|appName
 decl_stmt|;
+name|status
+operator|.
+name|setDiagnostics
+argument_list|(
+name|message
+operator|+
+literal|": "
+operator|+
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -1823,14 +1890,7 @@ argument_list|)
 operator|.
 name|entity
 argument_list|(
-name|message
-operator|+
-literal|": "
-operator|+
-name|e
-operator|.
-name|getMessage
-argument_list|()
+name|status
 argument_list|)
 operator|.
 name|build
