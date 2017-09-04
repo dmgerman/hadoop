@@ -146,20 +146,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|service
 operator|.
 name|AbstractService
@@ -394,22 +380,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|conf
-operator|.
-name|YarnConfiguration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|exceptions
 operator|.
 name|YarnException
@@ -521,11 +491,6 @@ specifier|private
 name|TimelineV2Client
 name|timelineV2Client
 decl_stmt|;
-DECL|field|timelineServiceV2Enabled
-specifier|private
-name|boolean
-name|timelineServiceV2Enabled
-decl_stmt|;
 comment|/**    * Create a new instance of AMRMClient.    * For usage:    *<pre>    * {@code    * AMRMClient.<T>createAMRMClientContainerRequest()    * }</pre>    * @return the newly create AMRMClient instance.    */
 annotation|@
 name|Public
@@ -587,36 +552,6 @@ name|NMTokenCache
 operator|.
 name|getSingleton
 argument_list|()
-expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|serviceInit (Configuration conf)
-specifier|protected
-name|void
-name|serviceInit
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
-throws|throws
-name|Exception
-block|{
-name|super
-operator|.
-name|serviceInit
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-name|timelineServiceV2Enabled
-operator|=
-name|YarnConfiguration
-operator|.
-name|timelineServiceV2Enabled
-argument_list|(
-name|conf
-argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Object to represent a single container request for resources. Scheduler    * documentation should be consulted for the specifics of how the parameters    * are honored.    *     * By default, YARN schedulers try to allocate containers at the requested    * locations but they may relax the constraints in order to expedite meeting    * allocations limits. They first relax the constraint to the same rack as the    * requested node and then to anywhere in the cluster. The relaxLocality flag    * may be used to disable locality relaxation and request containers at only     * specific locations. The following conditions apply.    *<ul>    *<li>Within a priority, all container requests must have the same value for    * locality relaxation. Either enabled or disabled.</li>    *<li>If locality relaxation is disabled, then across requests, locations at    * different network levels may not be specified. E.g. its invalid to make a    * request for a specific node and another request for a specific rack.</li>    *<li>If locality relaxation is disabled, then only within the same request,      * a node and its rack may be specified together. This allows for a specific       * rack with a preference for a specific node within that rack.</li>    *<li></li>    *</ul>    * To re-enable locality relaxation at a given priority, all pending requests     * with locality relaxation disabled must be first removed. Then they can be     * added back with locality relaxation enabled.    *     * All getters return immutable values.    */
@@ -1892,7 +1827,7 @@ return|return
 name|nmTokenCache
 return|;
 block|}
-comment|/**    * Register TimelineV2Client to AMRMClient. Writer's address for the timeline    * V2 client will be updated dynamically if registered.    *    * @param client the timeline v2 client to register    * @throws YarnException when this method is invoked even when ATS V2 is not    *           configured.    */
+comment|/**    * Register TimelineV2Client to AMRMClient. Writer's address for the timeline    * V2 client will be updated dynamically if registered.    *    * @param client the timeline v2 client to register    */
 DECL|method|registerTimelineV2Client (TimelineV2Client client)
 specifier|public
 name|void
@@ -1901,36 +1836,11 @@ parameter_list|(
 name|TimelineV2Client
 name|client
 parameter_list|)
-throws|throws
-name|YarnException
-block|{
-if|if
-condition|(
-name|timelineServiceV2Enabled
-condition|)
 block|{
 name|timelineV2Client
 operator|=
 name|client
 expr_stmt|;
-block|}
-else|else
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Trying to register timeline v2 client when not configured."
-argument_list|)
-expr_stmt|;
-throw|throw
-operator|new
-name|YarnException
-argument_list|(
-literal|"register timeline v2 client when not configured."
-argument_list|)
-throw|;
-block|}
 block|}
 comment|/**    * Get registered timeline v2 client.    * @return the registered timeline v2 client    */
 DECL|method|getRegisteredTimelineV2Client ()
