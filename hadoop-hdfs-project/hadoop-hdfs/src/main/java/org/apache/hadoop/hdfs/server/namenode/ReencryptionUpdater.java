@@ -302,6 +302,18 @@ name|util
 operator|.
 name|concurrent
 operator|.
+name|CancellationException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
 name|CompletionService
 import|;
 end_import
@@ -463,6 +475,14 @@ name|long
 name|faultRetryInterval
 init|=
 literal|60000
+decl_stmt|;
+DECL|field|isRunning
+specifier|private
+specifier|volatile
+name|boolean
+name|isRunning
+init|=
+literal|false
 decl_stmt|;
 comment|/**    * Class to track re-encryption submissions of a single zone. It contains    * all the submitted futures, and statistics about how far the futures are    * processed.    */
 DECL|class|ZoneSubmissionTracker
@@ -924,6 +944,17 @@ operator|=
 name|zoneId
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|isRunning ()
+name|boolean
+name|isRunning
+parameter_list|()
+block|{
+return|return
+name|isRunning
+return|;
+block|}
 DECL|field|dir
 specifier|private
 specifier|final
@@ -1067,6 +1098,10 @@ name|void
 name|run
 parameter_list|()
 block|{
+name|isRunning
+operator|=
+literal|true
+expr_stmt|;
 name|throttleTimerAll
 operator|.
 name|start
@@ -1105,12 +1140,18 @@ operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
+name|isRunning
+operator|=
+literal|false
+expr_stmt|;
 return|return;
 block|}
 catch|catch
 parameter_list|(
 name|IOException
-name|ioe
+decl||
+name|CancellationException
+name|e
 parameter_list|)
 block|{
 name|LOG
@@ -1119,7 +1160,7 @@ name|warn
 argument_list|(
 literal|"Re-encryption updater thread exception."
 argument_list|,
-name|ioe
+name|e
 argument_list|)
 expr_stmt|;
 block|}
@@ -1137,6 +1178,10 @@ literal|"Re-encryption updater thread exiting."
 argument_list|,
 name|t
 argument_list|)
+expr_stmt|;
+name|isRunning
+operator|=
+literal|false
 expr_stmt|;
 return|return;
 block|}
@@ -1909,6 +1954,7 @@ operator|.
 name|lastFile
 argument_list|)
 expr_stmt|;
+return|return;
 block|}
 name|boolean
 name|shouldRetry
