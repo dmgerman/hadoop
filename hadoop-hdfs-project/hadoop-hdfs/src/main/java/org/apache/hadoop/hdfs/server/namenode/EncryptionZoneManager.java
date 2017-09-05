@@ -2655,7 +2655,10 @@ return|;
 block|}
 comment|/**    * Re-encrypts the given encryption zone path. If the given path is not the    * root of an encryption zone, an exception is thrown.    */
 DECL|method|reencryptEncryptionZone (final INodesInPath zoneIIP, final String keyVersionName)
+name|List
+argument_list|<
 name|XAttr
+argument_list|>
 name|reencryptEncryptionZone
 parameter_list|(
 specifier|final
@@ -2692,6 +2695,20 @@ literal|"operation is rejected"
 argument_list|)
 throw|;
 block|}
+specifier|final
+name|List
+argument_list|<
+name|XAttr
+argument_list|>
+name|xAttrs
+init|=
+name|Lists
+operator|.
+name|newArrayListWithCapacity
+argument_list|(
+literal|1
+argument_list|)
+decl_stmt|;
 specifier|final
 name|INode
 name|inode
@@ -2757,8 +2774,9 @@ name|getId
 argument_list|()
 argument_list|)
 expr_stmt|;
+specifier|final
 name|XAttr
-name|ret
+name|xattr
 init|=
 name|FSDirEncryptionZoneOp
 operator|.
@@ -2771,13 +2789,20 @@ argument_list|,
 name|keyVersionName
 argument_list|)
 decl_stmt|;
+name|xAttrs
+operator|.
+name|add
+argument_list|(
+name|xattr
+argument_list|)
+expr_stmt|;
 name|reencryptionHandler
 operator|.
 name|notifyNewSubmission
 argument_list|()
 expr_stmt|;
 return|return
-name|ret
+name|xAttrs
 return|;
 block|}
 comment|/**    * Cancels the currently-running re-encryption of the given encryption zone.    * If the given path is not the root of an encryption zone,    * * an exception is thrown.    */

@@ -872,7 +872,7 @@ name|NO_TRASH
 argument_list|)
 decl_stmt|;
 DECL|method|getKeyProviderURI ()
-specifier|private
+specifier|protected
 name|String
 name|getKeyProviderURI
 parameter_list|()
@@ -1175,7 +1175,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|setProvider ()
-specifier|private
+specifier|protected
 name|void
 name|setProvider
 parameter_list|()
