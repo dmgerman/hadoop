@@ -1710,6 +1710,11 @@ operator|.
 name|newBuilder
 argument_list|()
 operator|.
+name|setConf
+argument_list|(
+name|conf
+argument_list|)
+operator|.
 name|setDbFile
 argument_list|(
 name|dbFile

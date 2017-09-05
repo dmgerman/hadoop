@@ -499,7 +499,6 @@ name|TestKSMSQLCli
 block|{
 DECL|field|cluster
 specifier|private
-specifier|static
 name|MiniOzoneCluster
 name|cluster
 init|=
@@ -507,31 +506,26 @@ literal|null
 decl_stmt|;
 DECL|field|storageHandler
 specifier|private
-specifier|static
 name|StorageHandler
 name|storageHandler
 decl_stmt|;
 DECL|field|userArgs
 specifier|private
-specifier|static
 name|UserArgs
 name|userArgs
 decl_stmt|;
 DECL|field|conf
 specifier|private
-specifier|static
 name|OzoneConfiguration
 name|conf
 decl_stmt|;
 DECL|field|cli
 specifier|private
-specifier|static
 name|SQLCLI
 name|cli
 decl_stmt|;
 DECL|field|userName
 specifier|private
-specifier|static
 name|String
 name|userName
 init|=
@@ -539,7 +533,6 @@ literal|"userTest"
 decl_stmt|;
 DECL|field|adminName
 specifier|private
-specifier|static
 name|String
 name|adminName
 init|=
@@ -547,7 +540,6 @@ literal|"adminTest"
 decl_stmt|;
 DECL|field|volumeName0
 specifier|private
-specifier|static
 name|String
 name|volumeName0
 init|=
@@ -555,7 +547,6 @@ literal|"volumeTest0"
 decl_stmt|;
 DECL|field|volumeName1
 specifier|private
-specifier|static
 name|String
 name|volumeName1
 init|=
@@ -563,7 +554,6 @@ literal|"volumeTest1"
 decl_stmt|;
 DECL|field|bucketName0
 specifier|private
-specifier|static
 name|String
 name|bucketName0
 init|=
@@ -571,7 +561,6 @@ literal|"bucketTest0"
 decl_stmt|;
 DECL|field|bucketName1
 specifier|private
-specifier|static
 name|String
 name|bucketName1
 init|=
@@ -579,7 +568,6 @@ literal|"bucketTest1"
 decl_stmt|;
 DECL|field|bucketName2
 specifier|private
-specifier|static
 name|String
 name|bucketName2
 init|=
@@ -587,7 +575,6 @@ literal|"bucketTest2"
 decl_stmt|;
 DECL|field|keyName0
 specifier|private
-specifier|static
 name|String
 name|keyName0
 init|=
@@ -595,7 +582,6 @@ literal|"key0"
 decl_stmt|;
 DECL|field|keyName1
 specifier|private
-specifier|static
 name|String
 name|keyName1
 init|=
@@ -603,7 +589,6 @@ literal|"key1"
 decl_stmt|;
 DECL|field|keyName2
 specifier|private
-specifier|static
 name|String
 name|keyName2
 init|=
@@ -611,7 +596,6 @@ literal|"key2"
 decl_stmt|;
 DECL|field|keyName3
 specifier|private
-specifier|static
 name|String
 name|keyName3
 init|=
@@ -659,7 +643,6 @@ return|;
 block|}
 DECL|field|metaStoreType
 specifier|private
-specifier|static
 name|String
 name|metaStoreType
 decl_stmt|;
@@ -678,10 +661,9 @@ expr_stmt|;
 block|}
 comment|/**    * Create a MiniDFSCluster for testing.    *<p>    * Ozone is made active by setting OZONE_ENABLED = true and    * OZONE_HANDLER_TYPE_KEY = "distributed"    *    * @throws IOException    */
 annotation|@
-name|BeforeClass
+name|Before
 DECL|method|setup ()
 specifier|public
-specifier|static
 name|void
 name|setup
 parameter_list|()
@@ -1038,17 +1020,6 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
-block|}
-annotation|@
-name|Before
-DECL|method|init ()
-specifier|public
-name|void
-name|init
-parameter_list|()
-throws|throws
-name|Exception
-block|{
 name|conf
 operator|.
 name|set
