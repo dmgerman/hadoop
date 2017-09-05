@@ -2388,7 +2388,7 @@ literal|"Failed: the number of failed blocks = "
 operator|+
 name|failCount
 operator|+
-literal|"> the number of data blocks = "
+literal|"> the number of parity blocks = "
 operator|+
 operator|(
 name|numAllBlocks
