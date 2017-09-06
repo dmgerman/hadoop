@@ -315,6 +315,13 @@ specifier|final
 name|boolean
 name|useRdiff
 decl_stmt|;
+comment|/** Whether to log additional info (path, size) in the SKIP/COPY log. */
+DECL|field|verboseLog
+specifier|private
+specifier|final
+name|boolean
+name|verboseLog
+decl_stmt|;
 comment|// For both -diff and -rdiff, given the example command line switches, two
 comment|// steps are taken:
 comment|//   1. Sync Step. This step does renaming/deletion ops in the snapshot diff,
@@ -707,6 +714,14 @@ name|builder
 operator|.
 name|copyBufferSize
 expr_stmt|;
+name|this
+operator|.
+name|verboseLog
+operator|=
+name|builder
+operator|.
+name|verboseLog
+expr_stmt|;
 block|}
 DECL|method|getSourceFileListing ()
 specifier|public
@@ -1029,6 +1044,16 @@ return|return
 name|copyBufferSize
 return|;
 block|}
+DECL|method|shouldVerboseLog ()
+specifier|public
+name|boolean
+name|shouldVerboseLog
+parameter_list|()
+block|{
+return|return
+name|verboseLog
+return|;
+block|}
 comment|/**    * Add options to configuration. These will be used in the Mapper/committer    *    * @param conf - Configuration object to which the options need to be added    */
 DECL|method|appendToConf (Configuration conf)
 specifier|public
@@ -1302,6 +1327,24 @@ name|copyBufferSize
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|DistCpOptionSwitch
+operator|.
+name|addToConf
+argument_list|(
+name|conf
+argument_list|,
+name|DistCpOptionSwitch
+operator|.
+name|VERBOSE_LOG
+argument_list|,
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|verboseLog
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Utility to easily string-ify Options, for logging.    *    * @return String representation of the Options.    */
 annotation|@
@@ -1419,6 +1462,10 @@ literal|", copyBufferSize="
 operator|+
 name|copyBufferSize
 operator|+
+literal|", verboseLog="
+operator|+
+name|verboseLog
+operator|+
 literal|'}'
 return|;
 block|}
@@ -1507,6 +1554,13 @@ name|boolean
 name|blocking
 init|=
 literal|true
+decl_stmt|;
+DECL|field|verboseLog
+specifier|private
+name|boolean
+name|verboseLog
+init|=
+literal|false
 decl_stmt|;
 DECL|field|useDiff
 specifier|private
@@ -2018,6 +2072,23 @@ operator|new
 name|IllegalArgumentException
 argument_list|(
 literal|"-diff and -rdiff are mutually exclusive"
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|verboseLog
+operator|&&
+name|logPath
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"-v is valid only with -log option"
 argument_list|)
 throw|;
 block|}
@@ -2589,6 +2660,25 @@ else|:
 name|DistCpConstants
 operator|.
 name|COPY_BUFFER_SIZE_DEFAULT
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|withVerboseLog (boolean newVerboseLog)
+specifier|public
+name|Builder
+name|withVerboseLog
+parameter_list|(
+name|boolean
+name|newVerboseLog
+parameter_list|)
+block|{
+name|this
+operator|.
+name|verboseLog
+operator|=
+name|newVerboseLog
 expr_stmt|;
 return|return
 name|this

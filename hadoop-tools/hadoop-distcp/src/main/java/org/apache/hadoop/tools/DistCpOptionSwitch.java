@@ -272,6 +272,25 @@ literal|"Folder on DFS where distcp execution logs are saved"
 argument_list|)
 argument_list|)
 block|,
+comment|/**    * Log additional info (path, size) in the SKIP/COPY log.    */
+DECL|enumConstant|VERBOSE_LOG
+name|VERBOSE_LOG
+argument_list|(
+name|DistCpConstants
+operator|.
+name|CONF_LABEL_VERBOSE_LOG
+argument_list|,
+operator|new
+name|Option
+argument_list|(
+literal|"v"
+argument_list|,
+literal|false
+argument_list|,
+literal|"Log additional info (path, size) in the SKIP/COPY log"
+argument_list|)
+argument_list|)
+block|,
 comment|/**    * Copy strategy is use. This could be dynamic or uniform size etc.    * DistCp would use an appropriate input format based on this.    */
 DECL|enumConstant|COPY_STRATEGY
 name|COPY_STRATEGY

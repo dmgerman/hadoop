@@ -108,6 +108,15 @@ name|CONF_LABEL_LOG_PATH
 init|=
 literal|"distcp.log.path"
 decl_stmt|;
+DECL|field|CONF_LABEL_VERBOSE_LOG
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CONF_LABEL_VERBOSE_LOG
+init|=
+literal|"distcp.verbose.log"
+decl_stmt|;
 DECL|field|CONF_LABEL_IGNORE_FAILURES
 specifier|public
 specifier|static

@@ -342,6 +342,10 @@ DECL|enumConstant|COPY
 name|COPY
 block|,
 comment|// Number of files received by the mapper for copy.
+DECL|enumConstant|DIR_COPY
+name|DIR_COPY
+block|,
+comment|// Number of directories received by the mapper for copy.
 DECL|enumConstant|SKIP
 name|SKIP
 block|,
@@ -446,6 +450,13 @@ DECL|field|append
 specifier|private
 name|boolean
 name|append
+init|=
+literal|false
+decl_stmt|;
+DECL|field|verboseLog
+specifier|private
+name|boolean
+name|verboseLog
 init|=
 literal|false
 decl_stmt|;
@@ -588,6 +599,22 @@ argument_list|(
 name|DistCpOptionSwitch
 operator|.
 name|APPEND
+operator|.
+name|getConfigLabel
+argument_list|()
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+name|verboseLog
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DistCpOptionSwitch
+operator|.
+name|VERBOSE_LOG
 operator|.
 name|getConfigLabel
 argument_list|()
@@ -1084,6 +1111,58 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|verboseLog
+condition|)
+block|{
+name|context
+operator|.
+name|write
+argument_list|(
+literal|null
+argument_list|,
+operator|new
+name|Text
+argument_list|(
+literal|"FILE_SKIPPED: source="
+operator|+
+name|sourceFileStatus
+operator|.
+name|getPath
+argument_list|()
+operator|+
+literal|", size="
+operator|+
+name|sourceFileStatus
+operator|.
+name|getLen
+argument_list|()
+operator|+
+literal|" --> "
+operator|+
+literal|"target="
+operator|+
+name|target
+operator|+
+literal|", size="
+operator|+
+operator|(
+name|targetStatus
+operator|==
+literal|null
+condition|?
+literal|0
+else|:
+name|targetStatus
+operator|.
+name|getLen
+argument_list|()
+operator|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 else|else
 block|{
@@ -1136,6 +1215,8 @@ argument_list|,
 name|sourceCurrStatus
 argument_list|,
 name|tmpTarget
+argument_list|,
+name|targetStatus
 argument_list|,
 name|context
 argument_list|,
@@ -1291,7 +1372,7 @@ name|attributeString
 argument_list|)
 return|;
 block|}
-DECL|method|copyFileWithRetry (String description, CopyListingFileStatus sourceFileStatus, Path target, Context context, FileAction action, EnumSet<DistCpOptions.FileAttribute> fileAttributes)
+DECL|method|copyFileWithRetry (String description, CopyListingFileStatus sourceFileStatus, Path target, FileStatus targrtFileStatus, Context context, FileAction action, EnumSet<DistCpOptions.FileAttribute> fileAttributes)
 specifier|private
 name|void
 name|copyFileWithRetry
@@ -1304,6 +1385,9 @@ name|sourceFileStatus
 parameter_list|,
 name|Path
 name|target
+parameter_list|,
+name|FileStatus
+name|targrtFileStatus
 parameter_list|,
 name|Context
 name|context
@@ -1321,6 +1405,8 @@ name|fileAttributes
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|InterruptedException
 block|{
 name|long
 name|bytesCopied
@@ -1431,6 +1517,60 @@ name|totalBytesCopied
 operator|+=
 name|bytesCopied
 expr_stmt|;
+if|if
+condition|(
+name|verboseLog
+condition|)
+block|{
+name|context
+operator|.
+name|write
+argument_list|(
+literal|null
+argument_list|,
+operator|new
+name|Text
+argument_list|(
+literal|"FILE_COPIED: source="
+operator|+
+name|sourceFileStatus
+operator|.
+name|getPath
+argument_list|()
+operator|+
+literal|","
+operator|+
+literal|" size="
+operator|+
+name|sourceFileStatus
+operator|.
+name|getLen
+argument_list|()
+operator|+
+literal|" --> "
+operator|+
+literal|"target="
+operator|+
+name|target
+operator|+
+literal|", size="
+operator|+
+operator|(
+name|targrtFileStatus
+operator|==
+literal|null
+condition|?
+literal|0
+else|:
+name|targrtFileStatus
+operator|.
+name|getLen
+argument_list|()
+operator|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|createTargetDirsWithRetry (String description, Path target, Context context)
 specifier|private
@@ -1489,7 +1629,7 @@ name|context
 argument_list|,
 name|Counter
 operator|.
-name|COPY
+name|DIR_COPY
 argument_list|,
 literal|1
 argument_list|)
