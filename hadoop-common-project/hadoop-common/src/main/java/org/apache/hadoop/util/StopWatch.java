@@ -50,6 +50,12 @@ name|StopWatch
 implements|implements
 name|Closeable
 block|{
+DECL|field|timer
+specifier|private
+specifier|final
+name|Timer
+name|timer
+decl_stmt|;
 DECL|field|isStarted
 specifier|private
 name|boolean
@@ -69,7 +75,31 @@ DECL|method|StopWatch ()
 specifier|public
 name|StopWatch
 parameter_list|()
-block|{   }
+block|{
+name|this
+argument_list|(
+operator|new
+name|Timer
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Used for tests to be able to create a StopWatch which does not follow real    * time.    * @param timer The timer to base this StopWatch's timekeeping off of.    */
+DECL|method|StopWatch (Timer timer)
+specifier|public
+name|StopWatch
+parameter_list|(
+name|Timer
+name|timer
+parameter_list|)
+block|{
+name|this
+operator|.
+name|timer
+operator|=
+name|timer
+expr_stmt|;
+block|}
 comment|/**    * The method is used to find out if the StopWatch is started.    * @return boolean If the StopWatch is started.    */
 DECL|method|isRunning ()
 specifier|public
@@ -107,9 +137,9 @@ literal|true
 expr_stmt|;
 name|startNanos
 operator|=
-name|System
+name|timer
 operator|.
-name|nanoTime
+name|monotonicNowNanos
 argument_list|()
 expr_stmt|;
 return|return
@@ -140,9 +170,9 @@ block|}
 name|long
 name|now
 init|=
-name|System
+name|timer
 operator|.
-name|nanoTime
+name|monotonicNowNanos
 argument_list|()
 decl_stmt|;
 name|isStarted
@@ -212,9 +242,9 @@ block|{
 return|return
 name|isStarted
 condition|?
-name|System
+name|timer
 operator|.
-name|nanoTime
+name|monotonicNowNanos
 argument_list|()
 operator|-
 name|startNanos
