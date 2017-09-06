@@ -3268,7 +3268,7 @@ name|atBeginning
 init|=
 literal|true
 decl_stmt|;
-comment|/**      * Returns the owner of the application.      *       * @return the application owner.      * @throws IOException      */
+comment|/**      * Returns the owner of the application.      *      * @return the application owner.      * @throws IOException if we can not get the application owner.      */
 DECL|method|getApplicationOwner ()
 specifier|public
 name|String
@@ -3387,7 +3387,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**      * Returns ACLs for the application. An empty map is returned if no ACLs are      * found.      *       * @return a map of the Application ACLs.      * @throws IOException      */
+comment|/**      * Returns ACLs for the application. An empty map is returned if no ACLs are      * found.      *      * @return a map of the Application ACLs.      * @throws IOException if we can not get the application acls.      */
 DECL|method|getApplicationAcls ()
 specifier|public
 name|Map
@@ -3598,7 +3598,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**      * Read the next key and return the value-stream.      *       * @param key      * @return the valueStream if there are more keys or null otherwise.      * @throws IOException      */
+comment|/**      * Read the next key and return the value-stream.      *       * @param key the log key      * @return the valueStream if there are more keys or null otherwise      * @throws IOException if we can not get the dataInputStream      * for the next key      */
 DECL|method|next (LogKey key)
 specifier|public
 name|DataInputStream
@@ -3708,7 +3708,7 @@ return|return
 name|valueStream
 return|;
 block|}
-comment|/**      * Get a ContainerLogsReader to read the logs for      * the specified container.      *      * @param containerId      * @return object to read the container's logs or null if the      *         logs could not be found      * @throws IOException      */
+comment|/**      * Get a ContainerLogsReader to read the logs for      * the specified container.      *      * @param containerId the containerId      * @return object to read the container's logs or null if the      *         logs could not be found      * @throws IOException if we can not get the container log reader.      */
 annotation|@
 name|Private
 DECL|method|getContainerLogsReader ( ContainerId containerId)
@@ -3837,7 +3837,7 @@ comment|//      } catch (EOFException e) {
 comment|//        return null;
 comment|//      }
 comment|//    }
-comment|/**      * Writes all logs for a single container to the provided writer.      * @param valueStream      * @param writer      * @param logUploadedTime      * @throws IOException      */
+comment|/**      * Writes all logs for a single container to the provided writer.      * @param valueStream the valueStream      * @param writer the log writer      * @param logUploadedTime the time stamp      * @throws IOException if we can not read the container logs.      */
 DECL|method|readAcontainerLogs (DataInputStream valueStream, Writer writer, long logUploadedTime)
 specifier|public
 specifier|static
@@ -3941,7 +3941,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**      * Writes all logs for a single container to the provided writer.      * @param valueStream      * @param writer      * @throws IOException      */
+comment|/**      * Writes all logs for a single container to the provided writer.      * @param valueStream the value stream      * @param writer the log writer      * @throws IOException if we can not read the container logs.      */
 DECL|method|readAcontainerLogs (DataInputStream valueStream, Writer writer)
 specifier|public
 specifier|static
@@ -4319,7 +4319,7 @@ literal|""
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Keep calling this till you get a {@link EOFException} for getting logs of      * all types for a single container.      *       * @param valueStream      * @param out      * @param logUploadedTime      * @throws IOException      */
+comment|/**      * Keep calling this till you get a {@link EOFException} for getting logs of      * all types for a single container.      *       * @param valueStream the value stream      * @param out the print stream      * @param logUploadedTime the time stamp      * @throws IOException if we can not read the container log by specifying      * the container log type.      */
 DECL|method|readAContainerLogsForALogType ( DataInputStream valueStream, PrintStream out, long logUploadedTime)
 specifier|public
 specifier|static
@@ -4352,7 +4352,7 @@ name|MAX_VALUE
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Keep calling this till you get a {@link EOFException} for getting logs of      * all types for a single container for the specific bytes.      *      * @param valueStream      * @param out      * @param logUploadedTime      * @param bytes      * @throws IOException      */
+comment|/**      * Keep calling this till you get a {@link EOFException} for getting logs of      * all types for a single container for the specific bytes.      *      * @param valueStream the value stream      * @param out the output print stream      * @param logUploadedTime the log upload time stamp      * @param bytes the output size of the log      * @throws IOException if we can not read the container log      */
 DECL|method|readAContainerLogsForALogType ( DataInputStream valueStream, PrintStream out, long logUploadedTime, long bytes)
 specifier|public
 specifier|static
@@ -4386,7 +4386,7 @@ name|bytes
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Keep calling this till you get a {@link EOFException} for getting logs of      * all types for a single container.      *       * @param valueStream      * @param out      * @throws IOException      */
+comment|/**      * Keep calling this till you get a {@link EOFException} for getting logs of      * all types for a single container.      *       * @param valueStream the value stream      * @param out the output print stream      * @throws IOException if we can not read the container log      */
 DECL|method|readAContainerLogsForALogType ( DataInputStream valueStream, PrintStream out)
 specifier|public
 specifier|static
@@ -4413,7 +4413,7 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Keep calling this till you get a {@link EOFException} for getting logs of      * the specific types for a single container.      * @param valueStream      * @param out      * @param logUploadedTime      * @param logType      * @throws IOException      */
+comment|/**      * Keep calling this till you get a {@link EOFException} for getting logs of      * the specific types for a single container.      * @param valueStream the value stream      * @param out the output print stream      * @param logUploadedTime the log uploaded time stamp      * @param logType the given log type      * @throws IOException if we can not read the container logs      */
 DECL|method|readContainerLogsForALogType ( DataInputStream valueStream, PrintStream out, long logUploadedTime, List<String> logType)
 specifier|public
 specifier|static
@@ -4455,7 +4455,7 @@ name|MAX_VALUE
 argument_list|)
 return|;
 block|}
-comment|/**      * Keep calling this till you get a {@link EOFException} for getting logs of      * the specific types for a single container.      * @param valueStream      * @param out      * @param logUploadedTime      * @param logType      * @throws IOException      */
+comment|/**      * Keep calling this till you get a {@link EOFException} for getting logs of      * the specific types for a single container.      * @param valueStream the value stream      * @param out the output print stream      * @param logUploadedTime the log uploaded time stamp      * @param logType the given log type      * @throws IOException if we can not read the container logs      */
 DECL|method|readContainerLogsForALogType ( DataInputStream valueStream, PrintStream out, long logUploadedTime, List<String> logType, long bytes)
 specifier|public
 specifier|static

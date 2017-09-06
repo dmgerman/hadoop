@@ -997,7 +997,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Output container log.    * @param logRequest {@link ContainerLogsRequest}    * @param os the output stream    * @throws IOException if we can not access the log file.    */
+comment|/**    * Output container log.    * @param logRequest {@link ContainerLogsRequest}    * @param os the output stream    * @return true if we can read the aggregated logs successfully    * @throws IOException if we can not access the log file.    */
 DECL|method|readAggregatedLogs (ContainerLogsRequest logRequest, OutputStream os)
 specifier|public
 specifier|abstract
@@ -1043,7 +1043,7 @@ name|ViewContext
 name|context
 parameter_list|)
 function_decl|;
-comment|/**    * Returns the owner of the application.    *    * @param the aggregatedLog path.    * @return the application owner.    * @throws IOException    */
+comment|/**    * Returns the owner of the application.    *    * @param aggregatedLogPath the aggregatedLog path    * @return the application owner    * @throws IOException if we can not get the application owner    */
 DECL|method|getApplicationOwner (Path aggregatedLogPath)
 specifier|public
 specifier|abstract
@@ -1056,7 +1056,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Returns ACLs for the application. An empty map is returned if no ACLs are    * found.    *    * @param the aggregatedLog path.    * @return a map of the Application ACLs.    * @throws IOException    */
+comment|/**    * Returns ACLs for the application. An empty map is returned if no ACLs are    * found.    *    * @param aggregatedLogPath the aggregatedLog path.    * @return a map of the Application ACLs.    * @throws IOException if we can not get the application acls    */
 DECL|method|getApplicationAcls ( Path aggregatedLogPath)
 specifier|public
 specifier|abstract

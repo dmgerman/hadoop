@@ -2192,7 +2192,7 @@ name|Configuration
 name|configuration
 init|=
 operator|new
-name|Configuration
+name|YarnConfiguration
 argument_list|()
 decl_stmt|;
 name|configuration
@@ -4783,7 +4783,7 @@ name|Configuration
 name|configuration
 init|=
 operator|new
-name|Configuration
+name|YarnConfiguration
 argument_list|()
 decl_stmt|;
 name|FileSystem
@@ -5897,7 +5897,7 @@ name|Configuration
 name|configuration
 init|=
 operator|new
-name|Configuration
+name|YarnConfiguration
 argument_list|()
 decl_stmt|;
 name|configuration
@@ -6678,7 +6678,7 @@ name|Configuration
 name|configuration
 init|=
 operator|new
-name|Configuration
+name|YarnConfiguration
 argument_list|()
 decl_stmt|;
 name|FileSystem
@@ -7082,7 +7082,7 @@ name|Configuration
 name|configuration
 init|=
 operator|new
-name|Configuration
+name|YarnConfiguration
 argument_list|()
 decl_stmt|;
 name|configuration
@@ -7756,7 +7756,7 @@ name|Configuration
 name|configuration
 init|=
 operator|new
-name|Configuration
+name|YarnConfiguration
 argument_list|()
 decl_stmt|;
 name|configuration
@@ -8445,7 +8445,7 @@ name|Configuration
 name|configuration
 init|=
 operator|new
-name|Configuration
+name|YarnConfiguration
 argument_list|()
 decl_stmt|;
 name|configuration
@@ -8795,7 +8795,7 @@ name|Configuration
 name|configuration
 init|=
 operator|new
-name|Configuration
+name|YarnConfiguration
 argument_list|()
 decl_stmt|;
 name|configuration

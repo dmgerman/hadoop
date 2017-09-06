@@ -197,7 +197,7 @@ name|TMP_FILE_SUFFIX
 init|=
 literal|".tmp"
 decl_stmt|;
-comment|/**    * Constructs the full filename for an application's log file per node.    * @param remoteRootLogDir    * @param appId    * @param user    * @param nodeId    * @param suffix    * @return the remote log file.    */
+comment|/**    * Constructs the full filename for an application's log file per node.    * @param remoteRootLogDir the aggregated remote root log dir    * @param appId the application Id    * @param user the application owner    * @param nodeId the node id    * @param suffix the log dir suffix    * @return the remote log file.    */
 DECL|method|getRemoteNodeLogFileForApp (Path remoteRootLogDir, ApplicationId appId, String user, NodeId nodeId, String suffix)
 specifier|public
 specifier|static
@@ -242,7 +242,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Gets the remote app log dir.    * @param remoteRootLogDir    * @param appId    * @param user    * @param suffix    * @return the remote application specific log dir.    */
+comment|/**    * Gets the remote app log dir.    * @param remoteRootLogDir the aggregated log remote root log dir    * @param appId the application id    * @param user the application owner    * @param suffix the log directory suffix    * @return the remote application specific log dir.    */
 DECL|method|getRemoteAppLogDir (Path remoteRootLogDir, ApplicationId appId, String user, String suffix)
 specifier|public
 specifier|static
@@ -282,7 +282,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Gets the remote suffixed log dir for the user.    * @param remoteRootLogDir    * @param user    * @param suffix    * @return the remote suffixed log dir.    */
+comment|/**    * Gets the remote suffixed log dir for the user.    * @param remoteRootLogDir the aggregated log remote root log dir    * @param user the application owner    * @param suffix the log dir suffix    * @return the remote suffixed log dir.    */
 DECL|method|getRemoteLogSuffixedDir (Path remoteRootLogDir, String user, String suffix)
 specifier|public
 specifier|static
@@ -336,7 +336,7 @@ name|suffix
 argument_list|)
 return|;
 block|}
-comment|/**    * Gets the remote log user dir.    * @param remoteRootLogDir    * @param user    * @return the remote per user log dir.    */
+comment|/**    * Gets the remote log user dir.    * @param remoteRootLogDir the aggregated log remote root log dir    * @param user the application owner    * @return the remote per user log dir.    */
 DECL|method|getRemoteLogUserDir (Path remoteRootLogDir, String user)
 specifier|public
 specifier|static
@@ -360,7 +360,7 @@ name|user
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns the suffix component of the log dir.    * @param conf    * @return the suffix which will be appended to the user log dir.    */
+comment|/**    * Returns the suffix component of the log dir.    * @param conf the configuration    * @return the suffix which will be appended to the user log dir.    */
 DECL|method|getRemoteNodeLogDirSuffix (Configuration conf)
 specifier|public
 specifier|static
@@ -386,7 +386,7 @@ name|DEFAULT_NM_REMOTE_APP_LOG_DIR_SUFFIX
 argument_list|)
 return|;
 block|}
-comment|/**    * Converts a nodeId to a form used in the app log file name.    * @param nodeId    * @return the node string to be used to construct the file name.    */
+comment|/**    * Converts a nodeId to a form used in the app log file name.    * @param nodeId the nodeId    * @return the node string to be used to construct the file name.    */
 annotation|@
 name|VisibleForTesting
 DECL|method|getNodeString (NodeId nodeId)
