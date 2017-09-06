@@ -177,6 +177,8 @@ name|reservation
 operator|.
 name|getEndTime
 argument_list|()
+argument_list|,
+literal|0
 argument_list|)
 decl_stmt|;
 comment|// test the reservation does not exceed what is available

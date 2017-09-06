@@ -24,6 +24,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -200,16 +210,6 @@ name|ReservationsACLsManager
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-import|;
-end_import
-
 begin_comment
 comment|/**  * This interface is the one implemented by any system that wants to support  * Reservations i.e. make {@code Resource} allocations in future. Implementors  * need to bootstrap all configured {@link Plan}s in the active  * {@link ResourceScheduler} along with their corresponding  * {@code ReservationAgent} and {@link SharingPolicy}. It is also responsible  * for managing the {@link PlanFollower} to ensure the {@link Plan}s are in sync  * with the {@link ResourceScheduler}.  */
 end_comment
@@ -238,7 +238,7 @@ name|RMContext
 name|rmContext
 parameter_list|)
 function_decl|;
-comment|/**    * Re-initialize the {@link ReservationSystem}.    *     * @param conf configuration    * @param rmContext current context of the {@code ResourceManager}    * @throws YarnException    */
+comment|/**    * Re-initialize the {@link ReservationSystem}.    *     * @param conf configuration    * @param rmContext current context of the {@code ResourceManager}    * @throws YarnException if initialization of the configured plan fails    */
 DECL|method|reinitialize (Configuration conf, RMContext rmContext)
 name|void
 name|reinitialize

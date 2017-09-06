@@ -286,7 +286,16 @@ name|LoggerFactory
 import|;
 end_import
 
+begin_comment
+comment|/**  * Testing the class {@link RLESparseResourceAllocation}.  */
+end_comment
+
 begin_class
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"checkstyle:nowhitespaceafter"
+argument_list|)
 DECL|class|TestRLESparseResourceAllocation
 specifier|public
 class|class
@@ -1209,7 +1218,8 @@ parameter_list|)
 block|{
 comment|// Expected!
 block|}
-comment|// Testing that the subtractTestNonNegative detects problems even if only one
+comment|// Testing that the subtractTestNonNegative detects problems even if only
+comment|// one
 comment|// of the resource dimensions is "<0"
 name|a
 operator|.
@@ -4219,7 +4229,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|setupArrays ( TreeMap<Long, Resource> a, TreeMap<Long, Resource> b)
+DECL|method|setupArrays (TreeMap<Long, Resource> a, TreeMap<Long, Resource> b)
 specifier|private
 name|void
 name|setupArrays

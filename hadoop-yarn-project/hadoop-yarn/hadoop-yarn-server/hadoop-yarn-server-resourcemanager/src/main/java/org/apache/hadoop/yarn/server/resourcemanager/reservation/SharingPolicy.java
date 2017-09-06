@@ -113,7 +113,6 @@ name|SharingPolicy
 block|{
 comment|/**    * Initialize this policy.    *     * @param planQueuePath the name of the queue for this plan    * @param conf the system configuration    */
 DECL|method|init (String planQueuePath, ReservationSchedulerConfiguration conf)
-specifier|public
 name|void
 name|init
 parameter_list|(
@@ -126,7 +125,6 @@ parameter_list|)
 function_decl|;
 comment|/**    * This method runs the policy validation logic, and return true/false on    * whether the {@link ReservationAllocation} is acceptable according to this    * sharing policy.    *     * @param plan the {@link Plan} we validate against    * @param newAllocation the allocation proposed to be added to the    *          {@link Plan}    * @throws PlanningException if the policy is respected if we add this    *           {@link ReservationAllocation} to the {@link Plan}    */
 DECL|method|validate (Plan plan, ReservationAllocation newAllocation)
-specifier|public
 name|void
 name|validate
 parameter_list|(
@@ -139,9 +137,8 @@ parameter_list|)
 throws|throws
 name|PlanningException
 function_decl|;
-comment|/**    * This method provide a (partial) instantaneous validation by applying    * business rules (such as max number of parallel containers allowed for a    * user). To provide the agent with more feedback the returned parameter is    * expressed in number of containers that can be fit in this time according to    * the business rules.    *    * @param available the amount of resources that would be offered if not    *          constrained by the policy    * @param plan reference the the current Plan    * @param user the username    * @param start the start time for the range we are querying    * @param end the end time for the range we are querying    * @param oldId (optional) the id of a reservation being updated    * @throws PlanningException throws if the request is not valid    */
+comment|/**    * This method provide a (partial) instantaneous validation by applying    * business rules (such as max number of parallel containers allowed for a    * user). To provide the agent with more feedback the returned parameter is    * expressed in number of containers that can be fit in this time according to    * the business rules.    *    * @param available the amount of resources that would be offered if not    *          constrained by the policy    * @param plan reference the the current Plan    * @param user the username    * @param start the start time for the range we are querying    * @param end the end time for the range we are querying    * @param oldId (optional) the id of a reservation being updated    *    * @return the available resources expressed as a    *         {@link RLESparseResourceAllocation}    *    * @throws PlanningException throws if the request is not valid    */
 DECL|method|availableResources ( RLESparseResourceAllocation available, Plan plan, String user, ReservationId oldId, long start, long end)
-specifier|public
 name|RLESparseResourceAllocation
 name|availableResources
 parameter_list|(
@@ -168,7 +165,6 @@ name|PlanningException
 function_decl|;
 comment|/**    * Returns the time range before and after the current reservation considered    * by this policy. In particular, this informs the archival process for the    * {@link Plan}, i.e., reservations regarding times before (now - validWindow)    * can be deleted.    *     * @return validWindow the window of validity considered by the policy.    */
 DECL|method|getValidWindow ()
-specifier|public
 name|long
 name|getValidWindow
 parameter_list|()
