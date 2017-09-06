@@ -1435,6 +1435,16 @@ argument_list|,
 name|cellSize
 argument_list|)
 expr_stmt|;
+name|buffers
+index|[
+name|i
+index|]
+operator|.
+name|limit
+argument_list|(
+name|cellSize
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 DECL|method|getBuffers ()
@@ -1557,6 +1567,16 @@ index|]
 operator|.
 name|clear
 argument_list|()
+expr_stmt|;
+name|buffers
+index|[
+name|i
+index|]
+operator|.
+name|limit
+argument_list|(
+name|cellSize
+argument_list|)
 expr_stmt|;
 block|}
 block|}
