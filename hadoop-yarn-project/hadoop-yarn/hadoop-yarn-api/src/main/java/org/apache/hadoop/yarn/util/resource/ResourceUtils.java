@@ -346,16 +346,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashSet
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -367,16 +357,6 @@ operator|.
 name|util
 operator|.
 name|Map
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Set
 import|;
 end_import
 
@@ -474,45 +454,6 @@ operator|.
 name|getName
 argument_list|()
 decl_stmt|;
-DECL|field|DISALLOWED_NAMES
-specifier|private
-specifier|static
-specifier|final
-name|Set
-argument_list|<
-name|String
-argument_list|>
-name|DISALLOWED_NAMES
-init|=
-operator|new
-name|HashSet
-argument_list|<>
-argument_list|()
-decl_stmt|;
-static|static
-block|{
-name|DISALLOWED_NAMES
-operator|.
-name|add
-argument_list|(
-literal|"memory"
-argument_list|)
-expr_stmt|;
-name|DISALLOWED_NAMES
-operator|.
-name|add
-argument_list|(
-name|MEMORY
-argument_list|)
-expr_stmt|;
-name|DISALLOWED_NAMES
-operator|.
-name|add
-argument_list|(
-name|VCORES
-argument_list|)
-expr_stmt|;
-block|}
 DECL|field|initializedResources
 specifier|private
 specifier|static
@@ -622,11 +563,11 @@ specifier|private
 name|ResourceUtils
 parameter_list|()
 block|{   }
-DECL|method|checkMandatatoryResources ( Map<String, ResourceInformation> resourceInformationMap)
+DECL|method|checkMandatoryResources ( Map<String, ResourceInformation> resourceInformationMap)
 specifier|private
 specifier|static
 name|void
-name|checkMandatatoryResources
+name|checkMandatoryResources
 parameter_list|(
 name|Map
 argument_list|<
@@ -639,6 +580,45 @@ parameter_list|)
 throws|throws
 name|YarnRuntimeException
 block|{
+comment|/*      * Supporting 'memory' also as invalid resource name, in addition to      * 'MEMORY' for historical reasons      */
+name|String
+name|key
+init|=
+literal|"memory"
+decl_stmt|;
+if|if
+condition|(
+name|resourceInformationMap
+operator|.
+name|containsKey
+argument_list|(
+name|key
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Attempt to define resource '"
+operator|+
+name|key
+operator|+
+literal|"', but it is not allowed."
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|YarnRuntimeException
+argument_list|(
+literal|"Attempt to re-define mandatory resource '"
+operator|+
+name|key
+operator|+
+literal|"'."
+argument_list|)
+throw|;
+block|}
 if|if
 condition|(
 name|resourceInformationMap
@@ -792,11 +772,11 @@ throw|;
 block|}
 block|}
 block|}
-DECL|method|addManadtoryResources ( Map<String, ResourceInformation> res)
+DECL|method|addMandatoryResources ( Map<String, ResourceInformation> res)
 specifier|private
 specifier|static
 name|void
-name|addManadtoryResources
+name|addMandatoryResources
 parameter_list|(
 name|Map
 argument_list|<
@@ -1548,28 +1528,6 @@ literal|"'. One of name, units or type is configured incorrectly."
 argument_list|)
 throw|;
 block|}
-if|if
-condition|(
-name|DISALLOWED_NAMES
-operator|.
-name|contains
-argument_list|(
-name|resourceName
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|YarnRuntimeException
-argument_list|(
-literal|"Resource type cannot be named '"
-operator|+
-name|resourceName
-operator|+
-literal|"'. That name is disallowed."
-argument_list|)
-throw|;
-block|}
 name|ResourceTypes
 name|resourceType
 init|=
@@ -1645,12 +1603,12 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|checkMandatatoryResources
+name|checkMandatoryResources
 argument_list|(
 name|resourceInformationMap
 argument_list|)
 expr_stmt|;
-name|addManadtoryResources
+name|addMandatoryResources
 argument_list|(
 name|resourceInformationMap
 argument_list|)
@@ -2564,12 +2522,12 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-name|addManadtoryResources
+name|addMandatoryResources
 argument_list|(
 name|nodeResources
 argument_list|)
 expr_stmt|;
-name|checkMandatatoryResources
+name|checkMandatoryResources
 argument_list|(
 name|nodeResources
 argument_list|)
