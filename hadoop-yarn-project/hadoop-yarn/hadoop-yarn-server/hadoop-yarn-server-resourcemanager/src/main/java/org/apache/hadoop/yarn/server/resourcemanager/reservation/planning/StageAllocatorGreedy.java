@@ -388,8 +388,6 @@ argument_list|,
 name|stageEarliestStart
 argument_list|,
 name|stageDeadline
-argument_list|,
-literal|0
 argument_list|)
 decl_stmt|;
 name|netAvailable

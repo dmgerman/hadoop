@@ -271,7 +271,7 @@ name|PlanningAlgorithm
 implements|implements
 name|ReservationAgent
 block|{
-comment|/**    * Performs the actual allocation for a ReservationDefinition within a Plan.    *    * @param reservationId the identifier of the reservation    * @param user the user who owns the reservation    * @param plan the Plan to which the reservation must be fitted    * @param contract encapsulates the resources required by the user for his    *          session    * @param oldReservation the existing reservation (null if none)    * @return whether the allocateUser function was successful or not    *    * @throws PlanningException if the session cannot be fitted into the plan    * @throws ContractValidationException if validation fails    */
+comment|/**    * Performs the actual allocation for a ReservationDefinition within a Plan.    *    * @param reservationId the identifier of the reservation    * @param user the user who owns the reservation    * @param plan the Plan to which the reservation must be fitted    * @param contract encapsulates the resources required by the user for his    *          session    * @param oldReservation the existing reservation (null if none)    * @return whether the allocateUser function was successful or not    *    * @throws PlanningException if the session cannot be fitted into the plan    * @throws ContractValidationException    */
 DECL|method|allocateUser (ReservationId reservationId, String user, Plan plan, ReservationDefinition contract, ReservationAllocation oldReservation)
 specifier|protected
 name|boolean

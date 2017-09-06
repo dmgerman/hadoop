@@ -57,11 +57,7 @@ block|{
 annotation|@
 name|SuppressWarnings
 argument_list|(
-block|{
 literal|"deprecation"
-block|,
-literal|"methodlength"
-block|}
 argument_list|)
 annotation|@
 name|Override
@@ -189,15 +185,6 @@ argument_list|(
 name|YarnConfiguration
 operator|.
 name|CURATOR_LEADER_ELECTOR
-argument_list|)
-expr_stmt|;
-name|configurationPropsToSkipCompare
-operator|.
-name|add
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|RM_RESERVATION_SYSTEM_MAX_PERIODICITY
 argument_list|)
 expr_stmt|;
 comment|// Federation default configs to be ignored

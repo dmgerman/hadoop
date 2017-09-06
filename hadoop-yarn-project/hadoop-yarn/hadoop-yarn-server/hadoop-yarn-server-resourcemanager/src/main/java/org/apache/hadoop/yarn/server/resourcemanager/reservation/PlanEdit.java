@@ -94,8 +94,9 @@ name|PlanContext
 extends|,
 name|PlanView
 block|{
-comment|/**    * Add a new {@link ReservationAllocation} to the plan.    *     * @param reservation the {@link ReservationAllocation} to be added to the    *          plan    * @param isRecovering flag to indicate if reservation is being added as part    *          of failover or not    * @return true if addition is successful, false otherwise    * @throws PlanningException if addition is unsuccessful    */
+comment|/**    * Add a new {@link ReservationAllocation} to the plan    *     * @param reservation the {@link ReservationAllocation} to be added to the    *          plan    * @param isRecovering flag to indicate if reservation is being added as part    *          of failover or not    * @return true if addition is successful, false otherwise    */
 DECL|method|addReservation (ReservationAllocation reservation, boolean isRecovering)
+specifier|public
 name|boolean
 name|addReservation
 parameter_list|(
@@ -108,8 +109,9 @@ parameter_list|)
 throws|throws
 name|PlanningException
 function_decl|;
-comment|/**    * Updates an existing {@link ReservationAllocation} in the plan. This is    * required for re-negotiation.    *     * @param reservation the {@link ReservationAllocation} to be updated the plan    * @return true if update is successful, false otherwise    * @throws PlanningException if update is unsuccessful    */
+comment|/**    * Updates an existing {@link ReservationAllocation} in the plan. This is    * required for re-negotiation    *     * @param reservation the {@link ReservationAllocation} to be updated the plan    * @return true if update is successful, false otherwise    */
 DECL|method|updateReservation (ReservationAllocation reservation)
+specifier|public
 name|boolean
 name|updateReservation
 parameter_list|(
@@ -119,8 +121,9 @@ parameter_list|)
 throws|throws
 name|PlanningException
 function_decl|;
-comment|/**    * Delete an existing {@link ReservationAllocation} from the plan identified    * uniquely by its {@link ReservationId}. This will generally be used for    * garbage collection.    *     * @param reservationID the {@link ReservationAllocation} to be deleted from    *          the plan identified uniquely by its {@link ReservationId}    * @return true if delete is successful, false otherwise    * @throws PlanningException if deletion is unsuccessful    */
+comment|/**    * Delete an existing {@link ReservationAllocation} from the plan identified    * uniquely by its {@link ReservationId}. This will generally be used for    * garbage collection    *     * @param reservationID the {@link ReservationAllocation} to be deleted from    *          the plan identified uniquely by its {@link ReservationId}    * @return true if delete is successful, false otherwise    */
 DECL|method|deleteReservation (ReservationId reservationID)
+specifier|public
 name|boolean
 name|deleteReservation
 parameter_list|(
@@ -130,8 +133,9 @@ parameter_list|)
 throws|throws
 name|PlanningException
 function_decl|;
-comment|/**    * Method invoked to garbage collect old reservations. It cleans up expired    * reservations that have fallen out of the sliding archival window.    *     * @param tick the current time from which the archival window is computed    * @throws PlanningException if archival is unsuccessful    */
+comment|/**    * Method invoked to garbage collect old reservations. It cleans up expired    * reservations that have fallen out of the sliding archival window    *     * @param tick the current time from which the archival window is computed    */
 DECL|method|archiveCompletedReservations (long tick)
+specifier|public
 name|void
 name|archiveCompletedReservations
 parameter_list|(
@@ -141,8 +145,9 @@ parameter_list|)
 throws|throws
 name|PlanningException
 function_decl|;
-comment|/**    * Sets the overall capacity in terms of {@link Resource} assigned to this    * plan.    *     * @param capacity the overall capacity in terms of {@link Resource} assigned    *          to this plan    */
+comment|/**    * Sets the overall capacity in terms of {@link Resource} assigned to this    * plan    *     * @param capacity the overall capacity in terms of {@link Resource} assigned    *          to this plan    */
 DECL|method|setTotalCapacity (Resource capacity)
+specifier|public
 name|void
 name|setTotalCapacity
 parameter_list|(

@@ -427,8 +427,6 @@ argument_list|,
 name|stageArrival
 argument_list|,
 name|stageDeadline
-argument_list|,
-literal|0
 argument_list|)
 decl_stmt|;
 name|long

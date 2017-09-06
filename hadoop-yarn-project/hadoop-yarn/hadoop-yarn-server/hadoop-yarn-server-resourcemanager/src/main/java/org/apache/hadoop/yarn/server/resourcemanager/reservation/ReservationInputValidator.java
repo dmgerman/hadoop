@@ -348,7 +348,7 @@ specifier|final
 name|Clock
 name|clock
 decl_stmt|;
-comment|/**    * Utility class to validate reservation requests.    *    * @param clock the {@link Clock} to use    */
+comment|/**    * Utility class to validate reservation requests.    */
 DECL|method|ReservationInputValidator (Clock clock)
 specifier|public
 name|ReservationInputValidator
@@ -1204,7 +1204,7 @@ return|return
 name|plan
 return|;
 block|}
-comment|/**    * Quick validation on the input to check some obvious fail conditions (fail    * fast) the input and returns the appropriate {@link Plan} associated with    * the specified {@link Queue} or throws an exception message illustrating the    * details of any validation check failures    *     * @param reservationSystem the {@link ReservationSystem} to validate against    * @param request the {@link ReservationSubmissionRequest} defining the    *          resources required over time for the request    * @param reservationId the {@link ReservationId} associated with the current    *          request    * @return the {@link Plan} to submit the request to    * @throws YarnException if validation fails    */
+comment|/**    * Quick validation on the input to check some obvious fail conditions (fail    * fast) the input and returns the appropriate {@link Plan} associated with    * the specified {@link Queue} or throws an exception message illustrating the    * details of any validation check failures    *     * @param reservationSystem the {@link ReservationSystem} to validate against    * @param request the {@link ReservationSubmissionRequest} defining the    *          resources required over time for the request    * @param reservationId the {@link ReservationId} associated with the current    *          request    * @return the {@link Plan} to submit the request to    * @throws YarnException    */
 DECL|method|validateReservationSubmissionRequest ( ReservationSystem reservationSystem, ReservationSubmissionRequest request, ReservationId reservationId)
 specifier|public
 name|Plan
@@ -1234,9 +1234,9 @@ condition|)
 block|{
 name|message
 operator|=
-literal|"Reservation id cannot be null. Please try again specifying "
+literal|"Reservation id cannot be null. Please try again "
 operator|+
-literal|" a valid reservation id by creating a new reservation id."
+literal|"specifying a valid reservation id by creating a new reservation id."
 expr_stmt|;
 throw|throw
 name|RPCUtil
@@ -1290,7 +1290,7 @@ return|return
 name|plan
 return|;
 block|}
-comment|/**    * Quick validation on the input to check some obvious fail conditions (fail    * fast) the input and returns the appropriate {@link Plan} associated with    * the specified {@link Queue} or throws an exception message illustrating the    * details of any validation check failures    *     * @param reservationSystem the {@link ReservationSystem} to validate against    * @param request the {@link ReservationUpdateRequest} defining the resources    *          required over time for the request    * @return the {@link Plan} to submit the request to    * @throws YarnException if validation fails    */
+comment|/**    * Quick validation on the input to check some obvious fail conditions (fail    * fast) the input and returns the appropriate {@link Plan} associated with    * the specified {@link Queue} or throws an exception message illustrating the    * details of any validation check failures    *     * @param reservationSystem the {@link ReservationSystem} to validate against    * @param request the {@link ReservationUpdateRequest} defining the resources    *          required over time for the request    * @return the {@link Plan} to submit the request to    * @throws YarnException    */
 DECL|method|validateReservationUpdateRequest ( ReservationSystem reservationSystem, ReservationUpdateRequest request)
 specifier|public
 name|Plan
@@ -1347,7 +1347,7 @@ return|return
 name|plan
 return|;
 block|}
-comment|/**    * Quick validation on the input to check some obvious fail conditions (fail    * fast) the input and returns the appropriate {@link Plan} associated with    * the specified {@link Queue} or throws an exception message illustrating the    * details of any validation check failures.    *    * @param reservationSystem the {@link ReservationSystem} to validate against    * @param request the {@link ReservationListRequest} defining search    *          parameters for reservations in the {@link ReservationSystem} that    *          is being validated against.    * @return the {@link Plan} to list reservations of.    * @throws YarnException if validation fails    */
+comment|/**    * Quick validation on the input to check some obvious fail conditions (fail    * fast) the input and returns the appropriate {@link Plan} associated with    * the specified {@link Queue} or throws an exception message illustrating the    * details of any validation check failures.    *    * @param reservationSystem the {@link ReservationSystem} to validate against    * @param request the {@link ReservationListRequest} defining search    *                parameters for reservations in the {@link ReservationSystem}    *                that is being validated against.    * @return the {@link Plan} to list reservations of.    * @throws YarnException    */
 DECL|method|validateReservationListRequest ( ReservationSystem reservationSystem, ReservationListRequest request)
 specifier|public
 name|Plan
@@ -1430,7 +1430,7 @@ name|LIST_RESERVATION_REQUEST
 argument_list|)
 return|;
 block|}
-comment|/**    * Quick validation on the input to check some obvious fail conditions (fail    * fast) the input and returns the appropriate {@link Plan} associated with    * the specified {@link Queue} or throws an exception message illustrating the    * details of any validation check failures    *     * @param reservationSystem the {@link ReservationSystem} to validate against    * @param request the {@link ReservationDeleteRequest} defining the resources    *          required over time for the request    * @return the {@link Plan} to submit the request to    * @throws YarnException if validation fails    */
+comment|/**    * Quick validation on the input to check some obvious fail conditions (fail    * fast) the input and returns the appropriate {@link Plan} associated with    * the specified {@link Queue} or throws an exception message illustrating the    * details of any validation check failures    *     * @param reservationSystem the {@link ReservationSystem} to validate against    * @param request the {@link ReservationDeleteRequest} defining the resources    *          required over time for the request    * @return the {@link Plan} to submit the request to    * @throws YarnException    */
 DECL|method|validateReservationDeleteRequest ( ReservationSystem reservationSystem, ReservationDeleteRequest request)
 specifier|public
 name|Plan

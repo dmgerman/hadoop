@@ -1124,27 +1124,6 @@ name|DEFAULT_RM_RESERVATION_SYSTEM_PLAN_FOLLOWER_TIME_STEP
 init|=
 literal|1000L
 decl_stmt|;
-comment|/** The maximum periodicity for the Reservation System. */
-DECL|field|RM_RESERVATION_SYSTEM_MAX_PERIODICITY
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|RM_RESERVATION_SYSTEM_MAX_PERIODICITY
-init|=
-name|RM_PREFIX
-operator|+
-literal|"reservation-system.max-periodicity"
-decl_stmt|;
-DECL|field|DEFAULT_RM_RESERVATION_SYSTEM_MAX_PERIODICITY
-specifier|public
-specifier|static
-specifier|final
-name|long
-name|DEFAULT_RM_RESERVATION_SYSTEM_MAX_PERIODICITY
-init|=
-literal|86400000L
-decl_stmt|;
 comment|/**    * Enable periodic monitor threads.    * @see #RM_SCHEDULER_MONITOR_POLICIES    */
 DECL|field|RM_SCHEDULER_ENABLE_MONITORS
 specifier|public
