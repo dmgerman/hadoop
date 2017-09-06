@@ -108,6 +108,13 @@ name|CONFIG_VIEWFS_LINK_MERGE
 init|=
 literal|"linkMerge"
 decl_stmt|;
+comment|/**    * Config variable for specifying an nfly link. Nfly writes to multiple    * locations, and allows reads from the closest one.    */
+DECL|field|CONFIG_VIEWFS_LINK_NFLY
+name|String
+name|CONFIG_VIEWFS_LINK_NFLY
+init|=
+literal|"linkNfly"
+decl_stmt|;
 comment|/**    * Config variable for specifying a merge of the root of the mount-table    *  with the root of another file system.     */
 DECL|field|CONFIG_VIEWFS_LINK_MERGE_SLASH
 specifier|public

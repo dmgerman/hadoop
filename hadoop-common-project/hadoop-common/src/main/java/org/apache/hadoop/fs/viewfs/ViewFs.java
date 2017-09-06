@@ -1022,6 +1022,11 @@ specifier|protected
 name|AbstractFileSystem
 name|getTargetFileSystem
 parameter_list|(
+specifier|final
+name|String
+name|settings
+parameter_list|,
+specifier|final
 name|URI
 index|[]
 name|mergeFsURIList
