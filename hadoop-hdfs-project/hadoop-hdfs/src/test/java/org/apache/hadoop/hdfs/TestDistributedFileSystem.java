@@ -10060,7 +10060,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"does not exists"
+literal|"does not exist"
 argument_list|,
 name|e
 argument_list|)
@@ -10095,7 +10095,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"does not exists"
+literal|"does not exist"
 argument_list|,
 name|e
 argument_list|)

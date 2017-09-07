@@ -56,6 +56,18 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|HadoopIllegalArgumentException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|classification
 operator|.
 name|InterfaceAudience
@@ -103,22 +115,6 @@ operator|.
 name|protocol
 operator|.
 name|ErasureCodingPolicyState
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|IllegalECPolicyException
 import|;
 end_import
 
@@ -648,7 +644,7 @@ argument_list|)
 decl_stmt|;
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|HadoopIllegalArgumentException
 argument_list|(
 name|msg
 argument_list|)
@@ -886,7 +882,7 @@ comment|// TODO: we should only clear policies loaded from NN metadata.
 comment|// This is a placeholder for HDFS-7337.
 block|}
 comment|/**    * Add an erasure coding policy.    * @return the added policy    */
-DECL|method|addPolicy (ErasureCodingPolicy policy)
+DECL|method|addPolicy ( ErasureCodingPolicy policy)
 specifier|public
 specifier|synchronized
 name|ErasureCodingPolicy
@@ -895,8 +891,6 @@ parameter_list|(
 name|ErasureCodingPolicy
 name|policy
 parameter_list|)
-throws|throws
-name|IllegalECPolicyException
 block|{
 comment|// Set policy state into DISABLED when adding into Hadoop.
 name|policy
@@ -924,7 +918,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalECPolicyException
+name|HadoopIllegalArgumentException
 argument_list|(
 literal|"Codec name "
 operator|+
@@ -949,7 +943,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalECPolicyException
+name|HadoopIllegalArgumentException
 argument_list|(
 literal|"Cell size "
 operator|+
@@ -962,7 +956,7 @@ literal|" should not exceed maximum "
 operator|+
 name|maxCellSize
 operator|+
-literal|" byte"
+literal|" bytes"
 argument_list|)
 throw|;
 block|}
@@ -1008,7 +1002,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalECPolicyException
+name|HadoopIllegalArgumentException
 argument_list|(
 literal|"The policy name "
 operator|+
@@ -1046,7 +1040,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalECPolicyException
+name|HadoopIllegalArgumentException
 argument_list|(
 literal|"A policy with same schema "
 operator|+
@@ -1065,7 +1059,7 @@ operator|.
 name|getCellSize
 argument_list|()
 operator|+
-literal|" is already exists"
+literal|" already exists"
 argument_list|)
 throw|;
 block|}
@@ -1218,13 +1212,13 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|HadoopIllegalArgumentException
 argument_list|(
 literal|"The policy name "
 operator|+
 name|name
 operator|+
-literal|" does not exists"
+literal|" does not exist"
 argument_list|)
 throw|;
 block|}
@@ -1238,7 +1232,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|HadoopIllegalArgumentException
 argument_list|(
 literal|"System erasure coding policy "
 operator|+
@@ -1387,13 +1381,13 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|HadoopIllegalArgumentException
 argument_list|(
 literal|"The policy name "
 operator|+
 name|name
 operator|+
-literal|" does not exists"
+literal|" does not exist"
 argument_list|)
 throw|;
 block|}
@@ -1480,13 +1474,13 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|HadoopIllegalArgumentException
 argument_list|(
 literal|"The policy name "
 operator|+
 name|name
 operator|+
-literal|" does not exists"
+literal|" does not exist"
 argument_list|)
 throw|;
 block|}

@@ -18,6 +18,18 @@ name|protocol
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|HadoopIllegalArgumentException
+import|;
+end_import
+
 begin_comment
 comment|/**  * A response of add an ErasureCoding policy.  */
 end_comment
@@ -94,14 +106,14 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
-DECL|method|AddECPolicyResponse (ErasureCodingPolicy policy, IllegalECPolicyException e)
+DECL|method|AddECPolicyResponse (ErasureCodingPolicy policy, HadoopIllegalArgumentException e)
 specifier|public
 name|AddECPolicyResponse
 parameter_list|(
 name|ErasureCodingPolicy
 name|policy
 parameter_list|,
-name|IllegalECPolicyException
+name|HadoopIllegalArgumentException
 name|e
 parameter_list|)
 block|{
