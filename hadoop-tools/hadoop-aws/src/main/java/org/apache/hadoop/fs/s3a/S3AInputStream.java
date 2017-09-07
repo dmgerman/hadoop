@@ -682,6 +682,8 @@ argument_list|(
 name|targetPos
 argument_list|,
 name|contentRangeFinish
+operator|-
+literal|1
 argument_list|)
 decl_stmt|;
 if|if
