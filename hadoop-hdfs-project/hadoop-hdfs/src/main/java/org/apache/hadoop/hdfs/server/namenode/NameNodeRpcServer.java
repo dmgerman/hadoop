@@ -1150,7 +1150,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ECBlockGroupsStats
+name|ECBlockGroupStats
 import|;
 end_import
 
@@ -1446,7 +1446,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|BlocksStats
+name|ReplicatedBlockStats
 import|;
 end_import
 
@@ -7565,7 +7565,7 @@ name|Override
 comment|// ClientProtocol
 DECL|method|getBlocksStats ()
 specifier|public
-name|BlocksStats
+name|ReplicatedBlockStats
 name|getBlocksStats
 parameter_list|()
 throws|throws
@@ -7595,7 +7595,7 @@ name|Override
 comment|// ClientProtocol
 DECL|method|getECBlockGroupsStats ()
 specifier|public
-name|ECBlockGroupsStats
+name|ECBlockGroupStats
 name|getECBlockGroupsStats
 parameter_list|()
 throws|throws

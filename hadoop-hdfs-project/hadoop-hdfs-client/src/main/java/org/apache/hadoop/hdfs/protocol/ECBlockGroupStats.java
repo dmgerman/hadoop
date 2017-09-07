@@ -59,11 +59,11 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Evolving
-DECL|class|ECBlockGroupsStats
+DECL|class|ECBlockGroupStats
 specifier|public
 specifier|final
 class|class
-name|ECBlockGroupsStats
+name|ECBlockGroupStats
 block|{
 DECL|field|lowRedundancyBlockGroupsStat
 specifier|private
@@ -95,9 +95,9 @@ specifier|final
 name|long
 name|pendingDeletionBlockGroupsStat
 decl_stmt|;
-DECL|method|ECBlockGroupsStats (long lowRedundancyBlockGroupsStat, long corruptBlockGroupsStat, long missingBlockGroupsStat, long bytesInFutureBlockGroupsStat, long pendingDeletionBlockGroupsStat)
+DECL|method|ECBlockGroupStats (long lowRedundancyBlockGroupsStat, long corruptBlockGroupsStat, long missingBlockGroupsStat, long bytesInFutureBlockGroupsStat, long pendingDeletionBlockGroupsStat)
 specifier|public
-name|ECBlockGroupsStats
+name|ECBlockGroupStats
 parameter_list|(
 name|long
 name|lowRedundancyBlockGroupsStat
@@ -215,7 +215,7 @@ name|statsBuilder
 operator|.
 name|append
 argument_list|(
-literal|"ECBlockGroupsStats=["
+literal|"ECBlockGroupStats=["
 argument_list|)
 operator|.
 name|append

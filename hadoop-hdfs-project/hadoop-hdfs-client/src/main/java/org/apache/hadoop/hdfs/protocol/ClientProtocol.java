@@ -1225,7 +1225,7 @@ comment|/**    * Get statistics pertaining to blocks of type {@link BlockType#CO
 annotation|@
 name|Idempotent
 DECL|method|getBlocksStats ()
-name|BlocksStats
+name|ReplicatedBlockStats
 name|getBlocksStats
 parameter_list|()
 throws|throws
@@ -1235,7 +1235,7 @@ comment|/**    * Get statistics pertaining to blocks of type {@link BlockType#ST
 annotation|@
 name|Idempotent
 DECL|method|getECBlockGroupsStats ()
-name|ECBlockGroupsStats
+name|ECBlockGroupStats
 name|getECBlockGroupsStats
 parameter_list|()
 throws|throws

@@ -842,7 +842,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ECBlockGroupsStats
+name|ECBlockGroupStats
 import|;
 end_import
 
@@ -1106,7 +1106,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|BlocksStats
+name|ReplicatedBlockStats
 import|;
 end_import
 
@@ -13273,7 +13273,7 @@ block|}
 DECL|method|convert ( GetFsBlocksStatsResponseProto res)
 specifier|public
 specifier|static
-name|BlocksStats
+name|ReplicatedBlockStats
 name|convert
 parameter_list|(
 name|GetFsBlocksStatsResponseProto
@@ -13282,7 +13282,7 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|BlocksStats
+name|ReplicatedBlockStats
 argument_list|(
 name|res
 operator|.
@@ -13319,7 +13319,7 @@ block|}
 DECL|method|convert ( GetFsECBlockGroupsStatsResponseProto res)
 specifier|public
 specifier|static
-name|ECBlockGroupsStats
+name|ECBlockGroupStats
 name|convert
 parameter_list|(
 name|GetFsECBlockGroupsStatsResponseProto
@@ -13328,7 +13328,7 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|ECBlockGroupsStats
+name|ECBlockGroupStats
 argument_list|(
 name|res
 operator|.
@@ -16004,14 +16004,14 @@ name|build
 argument_list|()
 return|;
 block|}
-DECL|method|convert ( BlocksStats blocksStats)
+DECL|method|convert ( ReplicatedBlockStats replicatedBlockStats)
 specifier|public
 specifier|static
 name|GetFsBlocksStatsResponseProto
 name|convert
 parameter_list|(
-name|BlocksStats
-name|blocksStats
+name|ReplicatedBlockStats
+name|replicatedBlockStats
 parameter_list|)
 block|{
 name|GetFsBlocksStatsResponseProto
@@ -16028,7 +16028,7 @@ name|result
 operator|.
 name|setLowRedundancy
 argument_list|(
-name|blocksStats
+name|replicatedBlockStats
 operator|.
 name|getLowRedundancyBlocksStat
 argument_list|()
@@ -16038,7 +16038,7 @@ name|result
 operator|.
 name|setCorruptBlocks
 argument_list|(
-name|blocksStats
+name|replicatedBlockStats
 operator|.
 name|getCorruptBlocksStat
 argument_list|()
@@ -16048,7 +16048,7 @@ name|result
 operator|.
 name|setMissingBlocks
 argument_list|(
-name|blocksStats
+name|replicatedBlockStats
 operator|.
 name|getMissingReplicaBlocksStat
 argument_list|()
@@ -16058,7 +16058,7 @@ name|result
 operator|.
 name|setMissingReplOneBlocks
 argument_list|(
-name|blocksStats
+name|replicatedBlockStats
 operator|.
 name|getMissingReplicationOneBlocksStat
 argument_list|()
@@ -16068,7 +16068,7 @@ name|result
 operator|.
 name|setBlocksInFuture
 argument_list|(
-name|blocksStats
+name|replicatedBlockStats
 operator|.
 name|getBytesInFutureBlocksStat
 argument_list|()
@@ -16078,7 +16078,7 @@ name|result
 operator|.
 name|setPendingDeletionBlocks
 argument_list|(
-name|blocksStats
+name|replicatedBlockStats
 operator|.
 name|getPendingDeletionBlocksStat
 argument_list|()
@@ -16091,14 +16091,14 @@ name|build
 argument_list|()
 return|;
 block|}
-DECL|method|convert ( ECBlockGroupsStats ecBlockGroupsStats)
+DECL|method|convert ( ECBlockGroupStats ecBlockGroupStats)
 specifier|public
 specifier|static
 name|GetFsECBlockGroupsStatsResponseProto
 name|convert
 parameter_list|(
-name|ECBlockGroupsStats
-name|ecBlockGroupsStats
+name|ECBlockGroupStats
+name|ecBlockGroupStats
 parameter_list|)
 block|{
 name|GetFsECBlockGroupsStatsResponseProto
@@ -16115,7 +16115,7 @@ name|result
 operator|.
 name|setLowRedundancy
 argument_list|(
-name|ecBlockGroupsStats
+name|ecBlockGroupStats
 operator|.
 name|getLowRedundancyBlockGroupsStat
 argument_list|()
@@ -16125,7 +16125,7 @@ name|result
 operator|.
 name|setCorruptBlocks
 argument_list|(
-name|ecBlockGroupsStats
+name|ecBlockGroupStats
 operator|.
 name|getCorruptBlockGroupsStat
 argument_list|()
@@ -16135,7 +16135,7 @@ name|result
 operator|.
 name|setMissingBlocks
 argument_list|(
-name|ecBlockGroupsStats
+name|ecBlockGroupStats
 operator|.
 name|getMissingBlockGroupsStat
 argument_list|()
@@ -16145,7 +16145,7 @@ name|result
 operator|.
 name|setBlocksInFuture
 argument_list|(
-name|ecBlockGroupsStats
+name|ecBlockGroupStats
 operator|.
 name|getBytesInFutureBlockGroupsStat
 argument_list|()
@@ -16155,7 +16155,7 @@ name|result
 operator|.
 name|setPendingDeletionBlocks
 argument_list|(
-name|ecBlockGroupsStats
+name|ecBlockGroupStats
 operator|.
 name|getPendingDeletionBlockGroupsStat
 argument_list|()

@@ -630,7 +630,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|BlocksStats
+name|ReplicatedBlockStats
 import|;
 end_import
 
@@ -726,7 +726,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ECBlockGroupsStats
+name|ECBlockGroupStats
 import|;
 end_import
 
@@ -3063,8 +3063,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|/* These counts are not always upto date. They are updated after        * iteration of an internal list. Should be updated in a few seconds to       * minutes. Use "-metaSave" to list of all such blocks and accurate       * counts.      */
-name|BlocksStats
-name|blocksStats
+name|ReplicatedBlockStats
+name|replicatedBlockStats
 init|=
 name|dfs
 operator|.
@@ -3094,7 +3094,7 @@ name|println
 argument_list|(
 literal|"\tUnder replicated blocks: "
 operator|+
-name|blocksStats
+name|replicatedBlockStats
 operator|.
 name|getLowRedundancyBlocksStat
 argument_list|()
@@ -3108,7 +3108,7 @@ name|println
 argument_list|(
 literal|"\tBlocks with corrupt replicas: "
 operator|+
-name|blocksStats
+name|replicatedBlockStats
 operator|.
 name|getCorruptBlocksStat
 argument_list|()
@@ -3122,7 +3122,7 @@ name|println
 argument_list|(
 literal|"\tMissing blocks: "
 operator|+
-name|blocksStats
+name|replicatedBlockStats
 operator|.
 name|getMissingReplicaBlocksStat
 argument_list|()
@@ -3136,7 +3136,7 @@ name|println
 argument_list|(
 literal|"\tMissing blocks (with replication factor 1): "
 operator|+
-name|blocksStats
+name|replicatedBlockStats
 operator|.
 name|getMissingReplicationOneBlocksStat
 argument_list|()
@@ -3150,14 +3150,14 @@ name|println
 argument_list|(
 literal|"\tPending deletion blocks: "
 operator|+
-name|blocksStats
+name|replicatedBlockStats
 operator|.
 name|getPendingDeletionBlocksStat
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|ECBlockGroupsStats
-name|ecBlockGroupsStats
+name|ECBlockGroupStats
+name|ecBlockGroupStats
 init|=
 name|dfs
 operator|.
@@ -3187,7 +3187,7 @@ name|println
 argument_list|(
 literal|"\tLow redundancy block groups: "
 operator|+
-name|ecBlockGroupsStats
+name|ecBlockGroupStats
 operator|.
 name|getLowRedundancyBlockGroupsStat
 argument_list|()
@@ -3201,7 +3201,7 @@ name|println
 argument_list|(
 literal|"\tBlock groups with corrupt internal blocks: "
 operator|+
-name|ecBlockGroupsStats
+name|ecBlockGroupStats
 operator|.
 name|getCorruptBlockGroupsStat
 argument_list|()
@@ -3215,7 +3215,7 @@ name|println
 argument_list|(
 literal|"\tMissing block groups: "
 operator|+
-name|ecBlockGroupsStats
+name|ecBlockGroupStats
 operator|.
 name|getMissingBlockGroupsStat
 argument_list|()
@@ -3229,7 +3229,7 @@ name|println
 argument_list|(
 literal|"\tPending deletion block groups: "
 operator|+
-name|ecBlockGroupsStats
+name|ecBlockGroupStats
 operator|.
 name|getPendingDeletionBlockGroupsStat
 argument_list|()

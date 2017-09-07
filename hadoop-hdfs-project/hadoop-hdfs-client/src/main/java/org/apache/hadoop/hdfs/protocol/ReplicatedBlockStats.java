@@ -59,11 +59,11 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Evolving
-DECL|class|BlocksStats
+DECL|class|ReplicatedBlockStats
 specifier|public
 specifier|final
 class|class
-name|BlocksStats
+name|ReplicatedBlockStats
 block|{
 DECL|field|lowRedundancyBlocksStat
 specifier|private
@@ -101,9 +101,9 @@ specifier|final
 name|long
 name|pendingDeletionBlocksStat
 decl_stmt|;
-DECL|method|BlocksStats (long lowRedundancyBlocksStat, long corruptBlocksStat, long missingBlocksStat, long missingReplicationOneBlocksStat, long bytesInFutureBlocksStat, long pendingDeletionBlocksStat)
+DECL|method|ReplicatedBlockStats (long lowRedundancyBlocksStat, long corruptBlocksStat, long missingBlocksStat, long missingReplicationOneBlocksStat, long bytesInFutureBlocksStat, long pendingDeletionBlocksStat)
 specifier|public
-name|BlocksStats
+name|ReplicatedBlockStats
 parameter_list|(
 name|long
 name|lowRedundancyBlocksStat

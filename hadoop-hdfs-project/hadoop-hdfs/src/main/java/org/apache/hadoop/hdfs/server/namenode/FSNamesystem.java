@@ -1176,11 +1176,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|crypto
 operator|.
-name|protocol
+name|key
 operator|.
-name|BlocksStats
+name|KeyProvider
+operator|.
+name|KeyVersion
 import|;
 end_import
 
@@ -1196,7 +1198,23 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ECBlockGroupsStats
+name|ReplicatedBlockStats
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|ECBlockGroupStats
 import|;
 end_import
 
@@ -20284,13 +20302,13 @@ return|;
 block|}
 comment|/**    * Get statistics pertaining to blocks of type {@link BlockType#CONTIGUOUS}    * in the filesystem.    *<p>    * @see ClientProtocol#getBlocksStats()    */
 DECL|method|getBlocksStats ()
-name|BlocksStats
+name|ReplicatedBlockStats
 name|getBlocksStats
 parameter_list|()
 block|{
 return|return
 operator|new
-name|BlocksStats
+name|ReplicatedBlockStats
 argument_list|(
 name|getLowRedundancyReplicatedBlocks
 argument_list|()
@@ -20314,13 +20332,13 @@ return|;
 block|}
 comment|/**    * Get statistics pertaining to blocks of type {@link BlockType#STRIPED}    * in the filesystem.    *<p>    * @see ClientProtocol#getECBlockGroupsStats()    */
 DECL|method|getECBlockGroupsStats ()
-name|ECBlockGroupsStats
+name|ECBlockGroupStats
 name|getECBlockGroupsStats
 parameter_list|()
 block|{
 return|return
 operator|new
-name|ECBlockGroupsStats
+name|ECBlockGroupStats
 argument_list|(
 name|getLowRedundancyECBlockGroups
 argument_list|()
