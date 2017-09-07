@@ -136,6 +136,22 @@ name|AtomicInteger
 import|;
 end_import
 
+begin_import
+import|import static
+name|com
+operator|.
+name|microsoft
+operator|.
+name|azure
+operator|.
+name|storage
+operator|.
+name|StorageErrorCodeStrings
+operator|.
+name|LEASE_ALREADY_PRESENT
+import|;
+end_import
+
 begin_comment
 comment|/**  * An Azure blob lease that automatically renews itself indefinitely  * using a background thread. Use it to synchronize distributed processes,  * or to prevent writes to the blob by other processes that don't  * have the lease.  *  * Creating a new Lease object blocks the caller until the Azure blob lease is  * acquired.  *  * Attempting to get a lease on a non-existent blob throws StorageException.  *  * Call free() to release the Lease.  *  * You can use this Lease like a distributed lock. If the holder process  * dies, the lease will time out since it won't be renewed.  */
 end_comment
@@ -229,12 +245,15 @@ name|LEASE_ACQUIRE_RETRY_INTERVAL
 init|=
 literal|2000
 decl_stmt|;
-DECL|method|SelfRenewingLease (CloudBlobWrapper blobWrapper)
+DECL|method|SelfRenewingLease (CloudBlobWrapper blobWrapper, boolean throwIfPresent)
 specifier|public
 name|SelfRenewingLease
 parameter_list|(
 name|CloudBlobWrapper
 name|blobWrapper
+parameter_list|,
+name|boolean
+name|throwIfPresent
 parameter_list|)
 throws|throws
 name|StorageException
@@ -287,13 +306,32 @@ name|StorageException
 name|e
 parameter_list|)
 block|{
+if|if
+condition|(
+name|throwIfPresent
+operator|&&
+name|e
+operator|.
+name|getErrorCode
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|LEASE_ALREADY_PRESENT
+argument_list|)
+condition|)
+block|{
+throw|throw
+name|e
+throw|;
+block|}
 comment|// Throw again if we don't want to keep waiting.
 comment|// We expect it to be that the lease is already present,
 comment|// or in some cases that the blob does not exist.
 if|if
 condition|(
 operator|!
-literal|"LeaseAlreadyPresent"
+name|LEASE_ALREADY_PRESENT
 operator|.
 name|equals
 argument_list|(

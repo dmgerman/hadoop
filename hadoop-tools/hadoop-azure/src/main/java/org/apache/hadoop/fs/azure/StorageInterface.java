@@ -928,13 +928,16 @@ name|IOException
 throws|,
 name|StorageException
 function_decl|;
-comment|/**      *      * @param blockId      A String that represents the Base-64 encoded block ID. Note for a given blob      *                     the length of all Block IDs must be identical.      * @param sourceStream An {@link InputStream} object that represents the input stream to write to the      *                     block blob.      * @param length       A long which represents the length, in bytes, of the stream data,      *                     or -1 if unknown.      * @param options      A {@link BlobRequestOptions} object that specifies any additional options for the      *                     request. Specifying null will use the default request options from the      *                     associated service client ( CloudBlobClient).      * @param opContext    An {@link OperationContext} object that represents the context for the current operation.      *                     This object is used to track requests to the storage service, and to provide      *                     additional runtime information about the operation.      * @throws IOException  If an I/O error occurred.      * @throws StorageException If a storage service error occurred.      */
-DECL|method|uploadBlock (String blockId, InputStream sourceStream, long length, BlobRequestOptions options, OperationContext opContext)
+comment|/**      *      * @param blockId      A String that represents the Base-64 encoded block ID. Note for a given blob      *                     the length of all Block IDs must be identical.      * @param accessCondition An {@link AccessCondition} object that represents the access conditions for the blob.      * @param sourceStream An {@link InputStream} object that represents the input stream to write to the      *                     block blob.      * @param length       A long which represents the length, in bytes, of the stream data,      *                     or -1 if unknown.      * @param options      A {@link BlobRequestOptions} object that specifies any additional options for the      *                     request. Specifying null will use the default request options from the      *                     associated service client ( CloudBlobClient).      * @param opContext    An {@link OperationContext} object that represents the context for the current operation.      *                     This object is used to track requests to the storage service, and to provide      *                     additional runtime information about the operation.      * @throws IOException  If an I/O error occurred.      * @throws StorageException If a storage service error occurred.      */
+DECL|method|uploadBlock (String blockId, AccessCondition accessCondition, InputStream sourceStream, long length, BlobRequestOptions options, OperationContext opContext)
 name|void
 name|uploadBlock
 parameter_list|(
 name|String
 name|blockId
+parameter_list|,
+name|AccessCondition
+name|accessCondition
 parameter_list|,
 name|InputStream
 name|sourceStream

@@ -2724,13 +2724,16 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|uploadBlock (String blockId, InputStream sourceStream, long length, BlobRequestOptions options, OperationContext opContext)
+DECL|method|uploadBlock (String blockId, AccessCondition accessCondition, InputStream sourceStream, long length, BlobRequestOptions options, OperationContext opContext)
 specifier|public
 name|void
 name|uploadBlock
 parameter_list|(
 name|String
 name|blockId
+parameter_list|,
+name|AccessCondition
+name|accessCondition
 parameter_list|,
 name|InputStream
 name|sourceStream

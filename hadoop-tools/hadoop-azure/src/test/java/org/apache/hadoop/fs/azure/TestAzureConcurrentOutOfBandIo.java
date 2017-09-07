@@ -410,6 +410,8 @@ operator|.
 name|getDefault
 argument_list|()
 argument_list|)
+argument_list|,
+name|key
 argument_list|)
 expr_stmt|;
 name|Arrays
@@ -565,6 +567,8 @@ operator|.
 name|getDefault
 argument_list|()
 argument_list|)
+argument_list|,
+literal|"WASB_String.txt"
 argument_list|)
 decl_stmt|;
 name|Arrays

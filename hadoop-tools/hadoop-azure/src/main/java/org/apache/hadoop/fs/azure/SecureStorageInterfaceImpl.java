@@ -2483,6 +2483,8 @@ operator|new
 name|SelfRenewingLease
 argument_list|(
 name|this
+argument_list|,
+literal|false
 argument_list|)
 return|;
 block|}
@@ -2650,13 +2652,16 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|uploadBlock (String blockId, InputStream sourceStream, long length, BlobRequestOptions options, OperationContext opContext)
+DECL|method|uploadBlock (String blockId, AccessCondition accessCondition, InputStream sourceStream, long length, BlobRequestOptions options, OperationContext opContext)
 specifier|public
 name|void
 name|uploadBlock
 parameter_list|(
 name|String
 name|blockId
+parameter_list|,
+name|AccessCondition
+name|accessCondition
 parameter_list|,
 name|InputStream
 name|sourceStream
@@ -2691,7 +2696,7 @@ name|sourceStream
 argument_list|,
 name|length
 argument_list|,
-literal|null
+name|accessCondition
 argument_list|,
 name|options
 argument_list|,

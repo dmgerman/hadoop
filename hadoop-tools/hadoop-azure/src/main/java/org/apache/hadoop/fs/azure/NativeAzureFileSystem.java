@@ -552,6 +552,34 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|StreamCapabilities
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|Syncable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|azure
 operator|.
 name|metrics
@@ -1957,7 +1985,7 @@ return|return
 name|contents
 return|;
 block|}
-comment|/**      * This is an exact copy of org.codehaus.jettison.json.JSONObject.quote       * method.      *       * Produce a string in double quotes with backslash sequences in all the      * right places. A backslash will be inserted within</, allowing JSON      * text to be delivered in HTML. In JSON text, a string cannot contain a      * control character or an unescaped quote or backslash.      * @param string A String      * @return  A String correctly formatted for insertion in a JSON text.      */
+comment|/**      * This is an exact copy of org.codehaus.jettison.json.JSONObject.quote      * method.      *      * Produce a string in double quotes with backslash sequences in all the      * right places. A backslash will be inserted within</, allowing JSON      * text to be delivered in HTML. In JSON text, a string cannot contain a      * control character or an unescaped quote or backslash.      * @param string A String      * @return  A String correctly formatted for insertion in a JSON text.      */
 DECL|method|quote (String string)
 specifier|private
 name|String
@@ -4132,17 +4160,18 @@ throw|;
 block|}
 block|}
 block|}
+comment|/**    * Azure output stream; wraps an inner stream of different types.    */
 DECL|class|NativeAzureFsOutputStream
-specifier|private
+specifier|public
 class|class
 name|NativeAzureFsOutputStream
 extends|extends
 name|OutputStream
+implements|implements
+name|Syncable
+implements|,
+name|StreamCapabilities
 block|{
-comment|// We should not override flush() to actually close current block and flush
-comment|// to DFS, this will break applications that assume flush() is a no-op.
-comment|// Applications are advised to use Syncable.hflush() for that purpose.
-comment|// NativeAzureFsOutputStream needs to implement Syncable if needed.
 DECL|field|key
 specifier|private
 name|String
@@ -4254,6 +4283,136 @@ name|anEncodedKey
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**      * Get a reference to the wrapped output stream.      *      * @return the underlying output stream      */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"HDFS"
+block|}
+argument_list|)
+DECL|method|getOutStream ()
+specifier|public
+name|OutputStream
+name|getOutStream
+parameter_list|()
+block|{
+return|return
+name|out
+return|;
+block|}
+annotation|@
+name|Override
+comment|// Syncable
+DECL|method|hflush ()
+specifier|public
+name|void
+name|hflush
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|out
+operator|instanceof
+name|Syncable
+condition|)
+block|{
+operator|(
+operator|(
+name|Syncable
+operator|)
+name|out
+operator|)
+operator|.
+name|hflush
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+name|flush
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|Override
+comment|// Syncable
+DECL|method|hsync ()
+specifier|public
+name|void
+name|hsync
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|out
+operator|instanceof
+name|Syncable
+condition|)
+block|{
+operator|(
+operator|(
+name|Syncable
+operator|)
+name|out
+operator|)
+operator|.
+name|hsync
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+name|flush
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+comment|/**      * Propagate probe of stream capabilities to nested stream      * (if supported), else return false.      * @param capability string to query the stream support for.      * @return true if the nested stream supports the specific capability.      */
+annotation|@
+name|Override
+comment|// StreamCapability
+DECL|method|hasCapability (String capability)
+specifier|public
+name|boolean
+name|hasCapability
+parameter_list|(
+name|String
+name|capability
+parameter_list|)
+block|{
+if|if
+condition|(
+name|out
+operator|instanceof
+name|StreamCapabilities
+condition|)
+block|{
+return|return
+operator|(
+operator|(
+name|StreamCapabilities
+operator|)
+name|out
+operator|)
+operator|.
+name|hasCapability
+argument_list|(
+name|capability
+argument_list|)
+return|;
+block|}
+return|return
+literal|false
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|close ()
@@ -4280,13 +4439,19 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|restoreKey
 argument_list|()
 expr_stmt|;
+block|}
+finally|finally
+block|{
 name|out
 operator|=
 literal|null
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**      * Writes the specified byte to this output stream. The general contract for      * write is that one byte is written to the output stream. The byte to be      * written is the eight low-order bits of the argument b. The 24 high-order      * bits of b are ignored.      *       * @param b      *          32-bit integer of block of 4 bytes      */
@@ -4446,7 +4611,7 @@ name|e
 throw|;
 block|}
 block|}
-comment|/**      * Writes<code>len</code> from the specified byte array starting at offset      *<code>off</code> to the output stream. The general contract for write(b,      * off, len) is that some of the bytes in the array<code>      * b</code b> are written to the output stream in order; element      *<code>b[off]</code> is the first byte written and      *<code>b[off+len-1]</code> is the last byte written by this operation.      *       * @param b      *          Byte array to be written.      * @param off      *          Write this offset in stream.      * @param len      *          Number of bytes to be written.      */
+comment|/**      * Writes<code>len</code> from the specified byte array starting at offset      *<code>off</code> to the output stream. The general contract for write(b,      * off, len) is that some of the bytes in the array<code>b</code>      * are written to the output stream in order; element<code>b[off]</code>      * is the first byte written and<code>b[off+len-1]</code> is the last      * byte written by this operation.      *       * @param b      *          Byte array to be written.      * @param off      *          Write this offset in stream.      * @param len      *          Number of bytes to be written.      */
 annotation|@
 name|Override
 DECL|method|write (byte[] b, int off, int len)
@@ -7188,6 +7353,8 @@ argument_list|(
 name|key
 argument_list|,
 name|permissionStatus
+argument_list|,
+name|key
 argument_list|)
 expr_stmt|;
 block|}
@@ -7244,6 +7411,8 @@ argument_list|(
 name|keyEncoded
 argument_list|,
 name|permissionStatus
+argument_list|,
+name|key
 argument_list|)
 argument_list|,
 name|key

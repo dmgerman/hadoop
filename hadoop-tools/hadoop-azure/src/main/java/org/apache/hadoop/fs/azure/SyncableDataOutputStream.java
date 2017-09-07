@@ -76,6 +76,20 @@ name|Syncable
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
 begin_comment
 comment|/**  * Support the Syncable interface on top of a DataOutputStream.  * This allows passing the sync/hflush/hsync calls through to the  * wrapped stream passed in to the constructor. This is required  * for HBase when wrapping a PageBlobOutputStream used as a write-ahead log.  */
 end_comment
@@ -105,6 +119,26 @@ argument_list|(
 name|out
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Get a reference to the wrapped output stream.    *    * @return the underlying output stream    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"HDFS"
+block|}
+argument_list|)
+DECL|method|getOutStream ()
+specifier|public
+name|OutputStream
+name|getOutStream
+parameter_list|()
+block|{
+return|return
+name|out
+return|;
 block|}
 annotation|@
 name|Override

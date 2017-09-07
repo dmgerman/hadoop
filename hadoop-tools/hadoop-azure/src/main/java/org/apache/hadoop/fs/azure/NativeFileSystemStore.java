@@ -219,15 +219,18 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-DECL|method|storefile (String key, PermissionStatus permissionStatus)
+DECL|method|storefile (String keyEncoded, PermissionStatus permissionStatus, String key)
 name|DataOutputStream
 name|storefile
 parameter_list|(
 name|String
-name|key
+name|keyEncoded
 parameter_list|,
 name|PermissionStatus
 name|permissionStatus
+parameter_list|,
+name|String
+name|key
 parameter_list|)
 throws|throws
 name|AzureException
