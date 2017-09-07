@@ -462,14 +462,14 @@ name|getCorruptReplicationOneBlockSize
 parameter_list|()
 block|{
 return|return
-name|getCorruptReplicationOneBlocksStat
+name|getCorruptReplicationOneBlocks
 argument_list|()
 return|;
 block|}
 comment|/**    * Return under replicated block count excluding corrupt replicas.    */
-DECL|method|getLowRedundancyBlocksStat ()
+DECL|method|getLowRedundancyBlocks ()
 name|long
-name|getLowRedundancyBlocksStat
+name|getLowRedundancyBlocks
 parameter_list|()
 block|{
 return|return
@@ -478,13 +478,13 @@ operator|.
 name|longValue
 argument_list|()
 operator|-
-name|getCorruptBlocksStat
+name|getCorruptBlocks
 argument_list|()
 return|;
 block|}
-DECL|method|getCorruptBlocksStat ()
+DECL|method|getCorruptBlocks ()
 name|long
-name|getCorruptBlocksStat
+name|getCorruptBlocks
 parameter_list|()
 block|{
 return|return
@@ -494,9 +494,9 @@ name|longValue
 argument_list|()
 return|;
 block|}
-DECL|method|getCorruptReplicationOneBlocksStat ()
+DECL|method|getCorruptReplicationOneBlocks ()
 name|long
-name|getCorruptReplicationOneBlocksStat
+name|getCorruptReplicationOneBlocks
 parameter_list|()
 block|{
 return|return
@@ -507,9 +507,9 @@ argument_list|()
 return|;
 block|}
 comment|/**    *  Return low redundancy striped blocks excluding corrupt blocks.    */
-DECL|method|getLowRedundancyECBlockGroupsStat ()
+DECL|method|getLowRedundancyECBlockGroups ()
 name|long
-name|getLowRedundancyECBlockGroupsStat
+name|getLowRedundancyECBlockGroups
 parameter_list|()
 block|{
 return|return
@@ -518,13 +518,13 @@ operator|.
 name|longValue
 argument_list|()
 operator|-
-name|getCorruptECBlockGroupsStat
+name|getCorruptECBlockGroups
 argument_list|()
 return|;
 block|}
-DECL|method|getCorruptECBlockGroupsStat ()
+DECL|method|getCorruptECBlockGroups ()
 name|long
-name|getCorruptECBlockGroupsStat
+name|getCorruptECBlockGroups
 parameter_list|()
 block|{
 return|return

@@ -7563,10 +7563,10 @@ block|}
 annotation|@
 name|Override
 comment|// ClientProtocol
-DECL|method|getBlocksStats ()
+DECL|method|getReplicatedBlockStats ()
 specifier|public
 name|ReplicatedBlockStats
-name|getBlocksStats
+name|getReplicatedBlockStats
 parameter_list|()
 throws|throws
 name|IOException
@@ -7586,17 +7586,17 @@ expr_stmt|;
 return|return
 name|namesystem
 operator|.
-name|getBlocksStats
+name|getReplicatedBlockStats
 argument_list|()
 return|;
 block|}
 annotation|@
 name|Override
 comment|// ClientProtocol
-DECL|method|getECBlockGroupsStats ()
+DECL|method|getECBlockGroupStats ()
 specifier|public
 name|ECBlockGroupStats
-name|getECBlockGroupsStats
+name|getECBlockGroupStats
 parameter_list|()
 throws|throws
 name|IOException
@@ -7616,7 +7616,7 @@ expr_stmt|;
 return|return
 name|namesystem
 operator|.
-name|getECBlockGroupsStats
+name|getECBlockGroupStats
 argument_list|()
 return|;
 block|}

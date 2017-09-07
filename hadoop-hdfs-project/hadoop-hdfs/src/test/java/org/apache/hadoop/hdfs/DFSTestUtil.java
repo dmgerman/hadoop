@@ -10683,7 +10683,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Verify the aggregated {@link ClientProtocol#getStats()} block counts equal    * the sum of {@link ClientProtocol#getBlocksStats()} and    * {@link ClientProtocol#getECBlockGroupsStats()}.    * @throws Exception    */
+comment|/**    * Verify the aggregated {@link ClientProtocol#getStats()} block counts equal    * the sum of {@link ClientProtocol#getReplicatedBlockStats()} and    * {@link ClientProtocol#getECBlockGroupStats()}.    * @throws Exception    */
 DECL|method|verifyClientStats (Configuration conf, MiniDFSCluster cluster)
 specifier|public
 specifier|static
@@ -10746,7 +10746,7 @@ name|replicatedBlockStats
 init|=
 name|client
 operator|.
-name|getBlocksStats
+name|getReplicatedBlockStats
 argument_list|()
 decl_stmt|;
 name|ECBlockGroupStats
@@ -10754,7 +10754,7 @@ name|ecBlockGroupStats
 init|=
 name|client
 operator|.
-name|getECBlockGroupsStats
+name|getECBlockGroupStats
 argument_list|()
 decl_stmt|;
 name|assertEquals
@@ -10789,12 +10789,12 @@ index|]
 argument_list|,
 name|replicatedBlockStats
 operator|.
-name|getLowRedundancyBlocksStat
+name|getLowRedundancyBlocks
 argument_list|()
 operator|+
 name|ecBlockGroupStats
 operator|.
-name|getLowRedundancyBlockGroupsStat
+name|getLowRedundancyBlockGroups
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -10811,12 +10811,12 @@ index|]
 argument_list|,
 name|replicatedBlockStats
 operator|.
-name|getCorruptBlocksStat
+name|getCorruptBlocks
 argument_list|()
 operator|+
 name|ecBlockGroupStats
 operator|.
-name|getCorruptBlockGroupsStat
+name|getCorruptBlockGroups
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -10833,12 +10833,12 @@ index|]
 argument_list|,
 name|replicatedBlockStats
 operator|.
-name|getMissingReplicaBlocksStat
+name|getMissingReplicaBlocks
 argument_list|()
 operator|+
 name|ecBlockGroupStats
 operator|.
-name|getMissingBlockGroupsStat
+name|getMissingBlockGroups
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -10855,7 +10855,7 @@ index|]
 argument_list|,
 name|replicatedBlockStats
 operator|.
-name|getMissingReplicationOneBlocksStat
+name|getMissingReplicationOneBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -10872,12 +10872,12 @@ index|]
 argument_list|,
 name|replicatedBlockStats
 operator|.
-name|getBytesInFutureBlocksStat
+name|getBytesInFutureBlocks
 argument_list|()
 operator|+
 name|ecBlockGroupStats
 operator|.
-name|getBytesInFutureBlockGroupsStat
+name|getBytesInFutureBlockGroups
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -10894,12 +10894,12 @@ index|]
 argument_list|,
 name|replicatedBlockStats
 operator|.
-name|getPendingDeletionBlocksStat
+name|getPendingDeletionBlocks
 argument_list|()
 operator|+
 name|ecBlockGroupStats
 operator|.
-name|getPendingDeletionBlockGroupsStat
+name|getPendingDeletionBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -1176,24 +1176,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|crypto
-operator|.
-name|key
-operator|.
-name|KeyProvider
-operator|.
-name|KeyVersion
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|hdfs
 operator|.
 name|protocol
@@ -20300,10 +20282,10 @@ return|return
 name|stats
 return|;
 block|}
-comment|/**    * Get statistics pertaining to blocks of type {@link BlockType#CONTIGUOUS}    * in the filesystem.    *<p>    * @see ClientProtocol#getBlocksStats()    */
-DECL|method|getBlocksStats ()
+comment|/**    * Get statistics pertaining to blocks of type {@link BlockType#CONTIGUOUS}    * in the filesystem.    *<p>    * @see ClientProtocol#getReplicatedBlockStats()    */
+DECL|method|getReplicatedBlockStats ()
 name|ReplicatedBlockStats
-name|getBlocksStats
+name|getReplicatedBlockStats
 parameter_list|()
 block|{
 return|return
@@ -20330,10 +20312,10 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Get statistics pertaining to blocks of type {@link BlockType#STRIPED}    * in the filesystem.    *<p>    * @see ClientProtocol#getECBlockGroupsStats()    */
-DECL|method|getECBlockGroupsStats ()
+comment|/**    * Get statistics pertaining to blocks of type {@link BlockType#STRIPED}    * in the filesystem.    *<p>    * @see ClientProtocol#getECBlockGroupStats()    */
+DECL|method|getECBlockGroupStats ()
 name|ECBlockGroupStats
-name|getECBlockGroupsStats
+name|getECBlockGroupStats
 parameter_list|()
 block|{
 return|return
@@ -20352,7 +20334,7 @@ argument_list|,
 name|getBytesInFutureECBlockGroups
 argument_list|()
 argument_list|,
-name|getPendingDeletionECBlockGroups
+name|getPendingDeletionECBlocks
 argument_list|()
 argument_list|)
 return|;
@@ -22596,23 +22578,23 @@ annotation|@
 name|Metric
 argument_list|(
 block|{
-literal|"PendingDeletionECBlockGroups"
+literal|"PendingDeletionECBlocks"
 block|,
-literal|"Number of erasure coded block "
+literal|"Number of erasure coded blocks "
 operator|+
-literal|"groups that are pending deletion"
+literal|"that are pending deletion"
 block|}
 argument_list|)
-DECL|method|getPendingDeletionECBlockGroups ()
+DECL|method|getPendingDeletionECBlocks ()
 specifier|public
 name|long
-name|getPendingDeletionECBlockGroups
+name|getPendingDeletionECBlocks
 parameter_list|()
 block|{
 return|return
 name|blockManager
 operator|.
-name|getPendingDeletionECBlockGroups
+name|getPendingDeletionECBlocks
 argument_list|()
 return|;
 block|}

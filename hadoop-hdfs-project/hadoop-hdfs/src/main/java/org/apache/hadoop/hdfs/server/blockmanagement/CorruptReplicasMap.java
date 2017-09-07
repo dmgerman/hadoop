@@ -957,12 +957,12 @@ argument_list|()
 return|;
 block|}
 comment|/**    * method to get the set of corrupt blocks in corruptReplicasMap.    * @return Set of Block objects    */
-DECL|method|getCorruptBlocks ()
+DECL|method|getCorruptBlocksSet ()
 name|Set
 argument_list|<
 name|Block
 argument_list|>
-name|getCorruptBlocks
+name|getCorruptBlocksSet
 parameter_list|()
 block|{
 name|Set
@@ -1071,9 +1071,9 @@ literal|null
 return|;
 block|}
 block|}
-DECL|method|getCorruptBlocksStat ()
+DECL|method|getCorruptBlocks ()
 name|long
-name|getCorruptBlocksStat
+name|getCorruptBlocks
 parameter_list|()
 block|{
 return|return
@@ -1083,9 +1083,9 @@ name|longValue
 argument_list|()
 return|;
 block|}
-DECL|method|getCorruptECBlockGroupsStat ()
+DECL|method|getCorruptECBlockGroups ()
 name|long
-name|getCorruptECBlockGroupsStat
+name|getCorruptECBlockGroups
 parameter_list|()
 block|{
 return|return

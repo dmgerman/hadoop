@@ -47,7 +47,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Get statistics pertaining to blocks of type {@link BlockType#STRIPED}  * in the filesystem.  *<p>  * @see ClientProtocol#getECBlockGroupsStats()  */
+comment|/**  * Get statistics pertaining to blocks of type {@link BlockType#STRIPED}  * in the filesystem.  *<p>  * @see ClientProtocol#getECBlockGroupStats()  */
 end_comment
 
 begin_class
@@ -65,135 +65,135 @@ specifier|final
 class|class
 name|ECBlockGroupStats
 block|{
-DECL|field|lowRedundancyBlockGroupsStat
+DECL|field|lowRedundancyBlockGroups
 specifier|private
 specifier|final
 name|long
-name|lowRedundancyBlockGroupsStat
+name|lowRedundancyBlockGroups
 decl_stmt|;
-DECL|field|corruptBlockGroupsStat
+DECL|field|corruptBlockGroups
 specifier|private
 specifier|final
 name|long
-name|corruptBlockGroupsStat
+name|corruptBlockGroups
 decl_stmt|;
-DECL|field|missingBlockGroupsStat
+DECL|field|missingBlockGroups
 specifier|private
 specifier|final
 name|long
-name|missingBlockGroupsStat
+name|missingBlockGroups
 decl_stmt|;
-DECL|field|bytesInFutureBlockGroupsStat
+DECL|field|bytesInFutureBlockGroups
 specifier|private
 specifier|final
 name|long
-name|bytesInFutureBlockGroupsStat
+name|bytesInFutureBlockGroups
 decl_stmt|;
-DECL|field|pendingDeletionBlockGroupsStat
+DECL|field|pendingDeletionBlocks
 specifier|private
 specifier|final
 name|long
-name|pendingDeletionBlockGroupsStat
+name|pendingDeletionBlocks
 decl_stmt|;
-DECL|method|ECBlockGroupStats (long lowRedundancyBlockGroupsStat, long corruptBlockGroupsStat, long missingBlockGroupsStat, long bytesInFutureBlockGroupsStat, long pendingDeletionBlockGroupsStat)
+DECL|method|ECBlockGroupStats (long lowRedundancyBlockGroups, long corruptBlockGroups, long missingBlockGroups, long bytesInFutureBlockGroups, long pendingDeletionBlocks)
 specifier|public
 name|ECBlockGroupStats
 parameter_list|(
 name|long
-name|lowRedundancyBlockGroupsStat
+name|lowRedundancyBlockGroups
 parameter_list|,
 name|long
-name|corruptBlockGroupsStat
+name|corruptBlockGroups
 parameter_list|,
 name|long
-name|missingBlockGroupsStat
+name|missingBlockGroups
 parameter_list|,
 name|long
-name|bytesInFutureBlockGroupsStat
+name|bytesInFutureBlockGroups
 parameter_list|,
 name|long
-name|pendingDeletionBlockGroupsStat
+name|pendingDeletionBlocks
 parameter_list|)
 block|{
 name|this
 operator|.
-name|lowRedundancyBlockGroupsStat
+name|lowRedundancyBlockGroups
 operator|=
-name|lowRedundancyBlockGroupsStat
+name|lowRedundancyBlockGroups
 expr_stmt|;
 name|this
 operator|.
-name|corruptBlockGroupsStat
+name|corruptBlockGroups
 operator|=
-name|corruptBlockGroupsStat
+name|corruptBlockGroups
 expr_stmt|;
 name|this
 operator|.
-name|missingBlockGroupsStat
+name|missingBlockGroups
 operator|=
-name|missingBlockGroupsStat
+name|missingBlockGroups
 expr_stmt|;
 name|this
 operator|.
-name|bytesInFutureBlockGroupsStat
+name|bytesInFutureBlockGroups
 operator|=
-name|bytesInFutureBlockGroupsStat
+name|bytesInFutureBlockGroups
 expr_stmt|;
 name|this
 operator|.
-name|pendingDeletionBlockGroupsStat
+name|pendingDeletionBlocks
 operator|=
-name|pendingDeletionBlockGroupsStat
+name|pendingDeletionBlocks
 expr_stmt|;
 block|}
-DECL|method|getBytesInFutureBlockGroupsStat ()
+DECL|method|getBytesInFutureBlockGroups ()
 specifier|public
 name|long
-name|getBytesInFutureBlockGroupsStat
+name|getBytesInFutureBlockGroups
 parameter_list|()
 block|{
 return|return
-name|bytesInFutureBlockGroupsStat
+name|bytesInFutureBlockGroups
 return|;
 block|}
-DECL|method|getCorruptBlockGroupsStat ()
+DECL|method|getCorruptBlockGroups ()
 specifier|public
 name|long
-name|getCorruptBlockGroupsStat
+name|getCorruptBlockGroups
 parameter_list|()
 block|{
 return|return
-name|corruptBlockGroupsStat
+name|corruptBlockGroups
 return|;
 block|}
-DECL|method|getLowRedundancyBlockGroupsStat ()
+DECL|method|getLowRedundancyBlockGroups ()
 specifier|public
 name|long
-name|getLowRedundancyBlockGroupsStat
+name|getLowRedundancyBlockGroups
 parameter_list|()
 block|{
 return|return
-name|lowRedundancyBlockGroupsStat
+name|lowRedundancyBlockGroups
 return|;
 block|}
-DECL|method|getMissingBlockGroupsStat ()
+DECL|method|getMissingBlockGroups ()
 specifier|public
 name|long
-name|getMissingBlockGroupsStat
+name|getMissingBlockGroups
 parameter_list|()
 block|{
 return|return
-name|missingBlockGroupsStat
+name|missingBlockGroups
 return|;
 block|}
-DECL|method|getPendingDeletionBlockGroupsStat ()
+DECL|method|getPendingDeletionBlocks ()
 specifier|public
 name|long
-name|getPendingDeletionBlockGroupsStat
+name|getPendingDeletionBlocks
 parameter_list|()
 block|{
 return|return
-name|pendingDeletionBlockGroupsStat
+name|pendingDeletionBlocks
 return|;
 block|}
 annotation|@
@@ -225,7 +225,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|getLowRedundancyBlockGroupsStat
+name|getLowRedundancyBlockGroups
 argument_list|()
 argument_list|)
 operator|.
@@ -236,7 +236,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|getCorruptBlockGroupsStat
+name|getCorruptBlockGroups
 argument_list|()
 argument_list|)
 operator|.
@@ -247,7 +247,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|getMissingBlockGroupsStat
+name|getMissingBlockGroups
 argument_list|()
 argument_list|)
 operator|.
@@ -258,18 +258,18 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|getBytesInFutureBlockGroupsStat
+name|getBytesInFutureBlockGroups
 argument_list|()
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|", PendingDeletionBlockGroups="
+literal|", PendingDeletionBlocks="
 argument_list|)
 operator|.
 name|append
 argument_list|(
-name|getPendingDeletionBlockGroupsStat
+name|getPendingDeletionBlocks
 argument_list|()
 argument_list|)
 operator|.

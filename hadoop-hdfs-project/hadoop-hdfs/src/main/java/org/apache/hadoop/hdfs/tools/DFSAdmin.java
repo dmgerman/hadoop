@@ -3074,7 +3074,7 @@ operator|.
 name|getNamenode
 argument_list|()
 operator|.
-name|getBlocksStats
+name|getReplicatedBlockStats
 argument_list|()
 decl_stmt|;
 name|System
@@ -3096,7 +3096,7 @@ literal|"\tUnder replicated blocks: "
 operator|+
 name|replicatedBlockStats
 operator|.
-name|getLowRedundancyBlocksStat
+name|getLowRedundancyBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3110,7 +3110,7 @@ literal|"\tBlocks with corrupt replicas: "
 operator|+
 name|replicatedBlockStats
 operator|.
-name|getCorruptBlocksStat
+name|getCorruptBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3124,7 +3124,7 @@ literal|"\tMissing blocks: "
 operator|+
 name|replicatedBlockStats
 operator|.
-name|getMissingReplicaBlocksStat
+name|getMissingReplicaBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3138,7 +3138,7 @@ literal|"\tMissing blocks (with replication factor 1): "
 operator|+
 name|replicatedBlockStats
 operator|.
-name|getMissingReplicationOneBlocksStat
+name|getMissingReplicationOneBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3152,7 +3152,7 @@ literal|"\tPending deletion blocks: "
 operator|+
 name|replicatedBlockStats
 operator|.
-name|getPendingDeletionBlocksStat
+name|getPendingDeletionBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3167,7 +3167,7 @@ operator|.
 name|getNamenode
 argument_list|()
 operator|.
-name|getECBlockGroupsStats
+name|getECBlockGroupStats
 argument_list|()
 decl_stmt|;
 name|System
@@ -3189,7 +3189,7 @@ literal|"\tLow redundancy block groups: "
 operator|+
 name|ecBlockGroupStats
 operator|.
-name|getLowRedundancyBlockGroupsStat
+name|getLowRedundancyBlockGroups
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3203,7 +3203,7 @@ literal|"\tBlock groups with corrupt internal blocks: "
 operator|+
 name|ecBlockGroupStats
 operator|.
-name|getCorruptBlockGroupsStat
+name|getCorruptBlockGroups
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3217,7 +3217,7 @@ literal|"\tMissing block groups: "
 operator|+
 name|ecBlockGroupStats
 operator|.
-name|getMissingBlockGroupsStat
+name|getMissingBlockGroups
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3227,11 +3227,11 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"\tPending deletion block groups: "
+literal|"\tPending deletion blocks: "
 operator|+
 name|ecBlockGroupStats
 operator|.
-name|getPendingDeletionBlockGroupsStat
+name|getPendingDeletionBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;

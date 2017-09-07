@@ -1224,9 +1224,9 @@ function_decl|;
 comment|/**    * Get statistics pertaining to blocks of type {@link BlockType#CONTIGUOUS}    * in the filesystem.    */
 annotation|@
 name|Idempotent
-DECL|method|getBlocksStats ()
+DECL|method|getReplicatedBlockStats ()
 name|ReplicatedBlockStats
-name|getBlocksStats
+name|getReplicatedBlockStats
 parameter_list|()
 throws|throws
 name|IOException
@@ -1234,9 +1234,9 @@ function_decl|;
 comment|/**    * Get statistics pertaining to blocks of type {@link BlockType#STRIPED}    * in the filesystem.    */
 annotation|@
 name|Idempotent
-DECL|method|getECBlockGroupsStats ()
+DECL|method|getECBlockGroupStats ()
 name|ECBlockGroupStats
-name|getECBlockGroupsStats
+name|getECBlockGroupStats
 parameter_list|()
 throws|throws
 name|IOException

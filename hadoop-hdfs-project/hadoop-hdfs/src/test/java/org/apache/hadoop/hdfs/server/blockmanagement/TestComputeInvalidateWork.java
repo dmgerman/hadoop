@@ -1774,7 +1774,7 @@ name|totalReplicas
 argument_list|,
 name|invalidateBlocks
 operator|.
-name|getBlocksStat
+name|getBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1786,7 +1786,7 @@ name|totalStripedDataBlocks
 argument_list|,
 name|invalidateBlocks
 operator|.
-name|getECBlockGroupsStat
+name|getECBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;

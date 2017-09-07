@@ -339,8 +339,8 @@ argument_list|<
 name|Block
 argument_list|>
 argument_list|>
-DECL|field|nodeToECBlockGroups
-name|nodeToECBlockGroups
+DECL|field|nodeToECBlocks
+name|nodeToECBlocks
 init|=
 operator|new
 name|HashMap
@@ -357,11 +357,11 @@ operator|new
 name|LongAdder
 argument_list|()
 decl_stmt|;
-DECL|field|numECBlockGroups
+DECL|field|numECBlocks
 specifier|private
 specifier|final
 name|LongAdder
-name|numECBlockGroups
+name|numECBlocks
 init|=
 operator|new
 name|LongAdder
@@ -512,17 +512,17 @@ name|numBlocks
 parameter_list|()
 block|{
 return|return
-name|getECBlockGroupsStat
+name|getECBlocks
 argument_list|()
 operator|+
-name|getBlocksStat
+name|getBlocks
 argument_list|()
 return|;
 block|}
 comment|/**    * @return The total number of blocks of type    * {@link org.apache.hadoop.hdfs.protocol.BlockType#CONTIGUOUS}    * to be invalidated.    */
-DECL|method|getBlocksStat ()
+DECL|method|getBlocks ()
 name|long
-name|getBlocksStat
+name|getBlocks
 parameter_list|()
 block|{
 return|return
@@ -533,13 +533,13 @@ argument_list|()
 return|;
 block|}
 comment|/**    * @return The total number of blocks of type    * {@link org.apache.hadoop.hdfs.protocol.BlockType#STRIPED}    * to be invalidated.    */
-DECL|method|getECBlockGroupsStat ()
+DECL|method|getECBlocks ()
 name|long
-name|getECBlockGroupsStat
+name|getECBlocks
 parameter_list|()
 block|{
 return|return
-name|numECBlockGroups
+name|numECBlocks
 operator|.
 name|longValue
 argument_list|()
@@ -581,13 +581,13 @@ return|return
 literal|null
 return|;
 block|}
-DECL|method|getECBlockGroupsSet (final DatanodeInfo dn)
+DECL|method|getECBlocksSet (final DatanodeInfo dn)
 specifier|private
 name|LightWeightHashSet
 argument_list|<
 name|Block
 argument_list|>
-name|getECBlockGroupsSet
+name|getECBlocksSet
 parameter_list|(
 specifier|final
 name|DatanodeInfo
@@ -596,7 +596,7 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|nodeToECBlockGroups
+name|nodeToECBlocks
 operator|.
 name|containsKey
 argument_list|(
@@ -605,7 +605,7 @@ argument_list|)
 condition|)
 block|{
 return|return
-name|nodeToECBlockGroups
+name|nodeToECBlocks
 operator|.
 name|get
 argument_list|(
@@ -648,7 +648,7 @@ argument_list|)
 condition|)
 block|{
 return|return
-name|getECBlockGroupsSet
+name|getECBlocksSet
 argument_list|(
 name|dn
 argument_list|)
@@ -696,14 +696,14 @@ argument_list|)
 condition|)
 block|{
 assert|assert
-name|getECBlockGroupsSet
+name|getECBlocksSet
 argument_list|(
 name|dn
 argument_list|)
 operator|==
 literal|null
 assert|;
-name|nodeToECBlockGroups
+name|nodeToECBlocks
 operator|.
 name|put
 argument_list|(
@@ -761,7 +761,7 @@ name|Block
 argument_list|>
 name|stripedBlocks
 init|=
-name|getECBlockGroupsSet
+name|getECBlocksSet
 argument_list|(
 name|dn
 argument_list|)
@@ -942,7 +942,7 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-name|numECBlockGroups
+name|numECBlocks
 operator|.
 name|increment
 argument_list|()
@@ -1032,9 +1032,9 @@ name|LightWeightHashSet
 argument_list|<
 name|Block
 argument_list|>
-name|blockGroupSets
+name|ecBlocksSet
 init|=
-name|nodeToECBlockGroups
+name|nodeToECBlocks
 operator|.
 name|remove
 argument_list|(
@@ -1043,16 +1043,16 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|blockGroupSets
+name|ecBlocksSet
 operator|!=
 literal|null
 condition|)
 block|{
-name|numECBlockGroups
+name|numECBlocks
 operator|.
 name|add
 argument_list|(
-name|blockGroupSets
+name|ecBlocksSet
 operator|.
 name|size
 argument_list|()
@@ -1119,7 +1119,7 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-name|numECBlockGroups
+name|numECBlocks
 operator|.
 name|decrement
 argument_list|()
@@ -1273,7 +1273,7 @@ operator|.
 name|size
 argument_list|()
 operator|+
-name|nodeToECBlockGroups
+name|nodeToECBlocks
 operator|.
 name|values
 argument_list|()
@@ -1315,7 +1315,7 @@ argument_list|)
 expr_stmt|;
 name|dumpBlockSet
 argument_list|(
-name|nodeToECBlockGroups
+name|nodeToECBlocks
 argument_list|,
 name|out
 argument_list|)
@@ -1356,7 +1356,7 @@ name|set
 operator|.
 name|addAll
 argument_list|(
-name|nodeToECBlockGroups
+name|nodeToECBlocks
 operator|.
 name|keySet
 argument_list|()
@@ -1572,7 +1572,7 @@ literal|0
 operator|)
 operator|&&
 operator|(
-name|nodeToECBlockGroups
+name|nodeToECBlocks
 operator|.
 name|get
 argument_list|(
@@ -1585,7 +1585,7 @@ condition|)
 block|{
 name|getBlocksToInvalidateByLimit
 argument_list|(
-name|nodeToECBlockGroups
+name|nodeToECBlocks
 operator|.
 name|get
 argument_list|(
@@ -1594,7 +1594,7 @@ argument_list|)
 argument_list|,
 name|toInvalidate
 argument_list|,
-name|numECBlockGroups
+name|numECBlocks
 argument_list|,
 name|remainingLimit
 argument_list|)
@@ -1645,7 +1645,7 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
-name|nodeToECBlockGroups
+name|nodeToECBlocks
 operator|.
 name|clear
 argument_list|()
@@ -1655,7 +1655,7 @@ operator|.
 name|reset
 argument_list|()
 expr_stmt|;
-name|numECBlockGroups
+name|numECBlocks
 operator|.
 name|reset
 argument_list|()

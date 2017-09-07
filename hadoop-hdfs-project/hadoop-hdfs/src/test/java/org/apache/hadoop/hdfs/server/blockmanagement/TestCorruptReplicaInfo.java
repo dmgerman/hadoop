@@ -450,7 +450,7 @@ name|expectedReplicaCount
 argument_list|,
 name|corruptReplicasMap
 operator|.
-name|getCorruptBlocksStat
+name|getCorruptBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -462,7 +462,7 @@ name|expectedStripedBlockCount
 argument_list|,
 name|corruptReplicasMap
 operator|.
-name|getCorruptECBlockGroupsStat
+name|getCorruptECBlockGroups
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -507,7 +507,7 @@ literal|0
 argument_list|,
 name|crm
 operator|.
-name|getCorruptBlocksStat
+name|getCorruptBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -519,7 +519,7 @@ literal|0
 argument_list|,
 name|crm
 operator|.
-name|getCorruptECBlockGroupsStat
+name|getCorruptECBlockGroups
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -1680,7 +1680,7 @@ name|proto
 operator|.
 name|ClientNamenodeProtocolProtos
 operator|.
-name|GetFsECBlockGroupsStatsResponseProto
+name|GetFsECBlockGroupStatsResponseProto
 import|;
 end_import
 
@@ -1700,7 +1700,7 @@ name|proto
 operator|.
 name|ClientNamenodeProtocolProtos
 operator|.
-name|GetFsBlocksStatsResponseProto
+name|GetFsReplicatedBlockStatsResponseProto
 import|;
 end_import
 
@@ -13270,13 +13270,13 @@ return|return
 name|result
 return|;
 block|}
-DECL|method|convert ( GetFsBlocksStatsResponseProto res)
+DECL|method|convert ( GetFsReplicatedBlockStatsResponseProto res)
 specifier|public
 specifier|static
 name|ReplicatedBlockStats
 name|convert
 parameter_list|(
-name|GetFsBlocksStatsResponseProto
+name|GetFsReplicatedBlockStatsResponseProto
 name|res
 parameter_list|)
 block|{
@@ -13316,13 +13316,13 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|convert ( GetFsECBlockGroupsStatsResponseProto res)
+DECL|method|convert ( GetFsECBlockGroupStatsResponseProto res)
 specifier|public
 specifier|static
 name|ECBlockGroupStats
 name|convert
 parameter_list|(
-name|GetFsECBlockGroupsStatsResponseProto
+name|GetFsECBlockGroupStatsResponseProto
 name|res
 parameter_list|)
 block|{
@@ -16007,19 +16007,19 @@ block|}
 DECL|method|convert ( ReplicatedBlockStats replicatedBlockStats)
 specifier|public
 specifier|static
-name|GetFsBlocksStatsResponseProto
+name|GetFsReplicatedBlockStatsResponseProto
 name|convert
 parameter_list|(
 name|ReplicatedBlockStats
 name|replicatedBlockStats
 parameter_list|)
 block|{
-name|GetFsBlocksStatsResponseProto
+name|GetFsReplicatedBlockStatsResponseProto
 operator|.
 name|Builder
 name|result
 init|=
-name|GetFsBlocksStatsResponseProto
+name|GetFsReplicatedBlockStatsResponseProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -16030,7 +16030,7 @@ name|setLowRedundancy
 argument_list|(
 name|replicatedBlockStats
 operator|.
-name|getLowRedundancyBlocksStat
+name|getLowRedundancyBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -16040,7 +16040,7 @@ name|setCorruptBlocks
 argument_list|(
 name|replicatedBlockStats
 operator|.
-name|getCorruptBlocksStat
+name|getCorruptBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -16050,7 +16050,7 @@ name|setMissingBlocks
 argument_list|(
 name|replicatedBlockStats
 operator|.
-name|getMissingReplicaBlocksStat
+name|getMissingReplicaBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -16060,7 +16060,7 @@ name|setMissingReplOneBlocks
 argument_list|(
 name|replicatedBlockStats
 operator|.
-name|getMissingReplicationOneBlocksStat
+name|getMissingReplicationOneBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -16070,7 +16070,7 @@ name|setBlocksInFuture
 argument_list|(
 name|replicatedBlockStats
 operator|.
-name|getBytesInFutureBlocksStat
+name|getBytesInFutureBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -16080,7 +16080,7 @@ name|setPendingDeletionBlocks
 argument_list|(
 name|replicatedBlockStats
 operator|.
-name|getPendingDeletionBlocksStat
+name|getPendingDeletionBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -16094,19 +16094,19 @@ block|}
 DECL|method|convert ( ECBlockGroupStats ecBlockGroupStats)
 specifier|public
 specifier|static
-name|GetFsECBlockGroupsStatsResponseProto
+name|GetFsECBlockGroupStatsResponseProto
 name|convert
 parameter_list|(
 name|ECBlockGroupStats
 name|ecBlockGroupStats
 parameter_list|)
 block|{
-name|GetFsECBlockGroupsStatsResponseProto
+name|GetFsECBlockGroupStatsResponseProto
 operator|.
 name|Builder
 name|result
 init|=
-name|GetFsECBlockGroupsStatsResponseProto
+name|GetFsECBlockGroupStatsResponseProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -16117,7 +16117,7 @@ name|setLowRedundancy
 argument_list|(
 name|ecBlockGroupStats
 operator|.
-name|getLowRedundancyBlockGroupsStat
+name|getLowRedundancyBlockGroups
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -16127,7 +16127,7 @@ name|setCorruptBlocks
 argument_list|(
 name|ecBlockGroupStats
 operator|.
-name|getCorruptBlockGroupsStat
+name|getCorruptBlockGroups
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -16137,7 +16137,7 @@ name|setMissingBlocks
 argument_list|(
 name|ecBlockGroupStats
 operator|.
-name|getMissingBlockGroupsStat
+name|getMissingBlockGroups
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -16147,7 +16147,7 @@ name|setBlocksInFuture
 argument_list|(
 name|ecBlockGroupStats
 operator|.
-name|getBytesInFutureBlockGroupsStat
+name|getBytesInFutureBlockGroups
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -16157,7 +16157,7 @@ name|setPendingDeletionBlocks
 argument_list|(
 name|ecBlockGroupStats
 operator|.
-name|getPendingDeletionBlockGroupsStat
+name|getPendingDeletionBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;

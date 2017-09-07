@@ -1865,7 +1865,7 @@ block|{
 return|return
 name|neededReconstruction
 operator|.
-name|getLowRedundancyBlocksStat
+name|getLowRedundancyBlocks
 argument_list|()
 return|;
 block|}
@@ -1879,7 +1879,7 @@ block|{
 return|return
 name|corruptReplicas
 operator|.
-name|getCorruptBlocksStat
+name|getCorruptBlocks
 argument_list|()
 return|;
 block|}
@@ -1893,7 +1893,7 @@ block|{
 return|return
 name|neededReconstruction
 operator|.
-name|getCorruptBlocksStat
+name|getCorruptBlocks
 argument_list|()
 return|;
 block|}
@@ -1907,7 +1907,7 @@ block|{
 return|return
 name|neededReconstruction
 operator|.
-name|getCorruptReplicationOneBlocksStat
+name|getCorruptReplicationOneBlocks
 argument_list|()
 return|;
 block|}
@@ -1921,7 +1921,7 @@ block|{
 return|return
 name|invalidateBlocks
 operator|.
-name|getBlocksStat
+name|getBlocks
 argument_list|()
 return|;
 block|}
@@ -1935,7 +1935,7 @@ block|{
 return|return
 name|neededReconstruction
 operator|.
-name|getLowRedundancyECBlockGroupsStat
+name|getLowRedundancyECBlockGroups
 argument_list|()
 return|;
 block|}
@@ -1949,7 +1949,7 @@ block|{
 return|return
 name|corruptReplicas
 operator|.
-name|getCorruptECBlockGroupsStat
+name|getCorruptECBlockGroups
 argument_list|()
 return|;
 block|}
@@ -1963,21 +1963,21 @@ block|{
 return|return
 name|neededReconstruction
 operator|.
-name|getCorruptECBlockGroupsStat
+name|getCorruptECBlockGroups
 argument_list|()
 return|;
 block|}
 comment|/** Used by metrics. */
-DECL|method|getPendingDeletionECBlockGroups ()
+DECL|method|getPendingDeletionECBlocks ()
 specifier|public
 name|long
-name|getPendingDeletionECBlockGroups
+name|getPendingDeletionECBlocks
 parameter_list|()
 block|{
 return|return
 name|invalidateBlocks
 operator|.
-name|getECBlockGroupsStat
+name|getECBlocks
 argument_list|()
 return|;
 block|}
@@ -3934,7 +3934,7 @@ name|corruptBlocks
 init|=
 name|corruptReplicas
 operator|.
-name|getCorruptBlocks
+name|getCorruptBlocksSet
 argument_list|()
 decl_stmt|;
 name|out

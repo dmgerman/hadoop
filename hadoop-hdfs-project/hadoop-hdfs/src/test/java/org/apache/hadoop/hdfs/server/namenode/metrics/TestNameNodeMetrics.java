@@ -3248,7 +3248,7 @@ argument_list|()
 operator|+
 name|namesystem
 operator|.
-name|getPendingDeletionECBlockGroups
+name|getPendingDeletionECBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;

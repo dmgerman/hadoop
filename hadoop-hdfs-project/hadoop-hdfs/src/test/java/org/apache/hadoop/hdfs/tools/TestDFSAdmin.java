@@ -5254,10 +5254,10 @@ operator|.
 name|getNamenode
 argument_list|()
 operator|.
-name|getBlocksStats
+name|getReplicatedBlockStats
 argument_list|()
 operator|.
-name|getCorruptBlocksStat
+name|getCorruptBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5270,10 +5270,10 @@ operator|.
 name|getNamenode
 argument_list|()
 operator|.
-name|getECBlockGroupsStats
+name|getECBlockGroupStats
 argument_list|()
 operator|.
-name|getCorruptBlockGroupsStat
+name|getCorruptBlockGroups
 argument_list|()
 argument_list|)
 expr_stmt|;

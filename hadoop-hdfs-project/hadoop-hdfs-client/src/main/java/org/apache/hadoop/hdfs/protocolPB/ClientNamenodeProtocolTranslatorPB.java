@@ -1730,7 +1730,7 @@ name|proto
 operator|.
 name|ClientNamenodeProtocolProtos
 operator|.
-name|GetFsECBlockGroupsStatsRequestProto
+name|GetFsECBlockGroupStatsRequestProto
 import|;
 end_import
 
@@ -1750,7 +1750,7 @@ name|proto
 operator|.
 name|ClientNamenodeProtocolProtos
 operator|.
-name|GetFsBlocksStatsRequestProto
+name|GetFsReplicatedBlockStatsRequestProto
 import|;
 end_import
 
@@ -3816,11 +3816,11 @@ decl_stmt|;
 specifier|private
 specifier|final
 specifier|static
-name|GetFsBlocksStatsRequestProto
-DECL|field|VOID_GET_FS_REPLICABLOCKS_STATS_REQUEST
-name|VOID_GET_FS_REPLICABLOCKS_STATS_REQUEST
+name|GetFsReplicatedBlockStatsRequestProto
+DECL|field|VOID_GET_FS_REPLICATED_BLOCK_STATS_REQUEST
+name|VOID_GET_FS_REPLICATED_BLOCK_STATS_REQUEST
 init|=
-name|GetFsBlocksStatsRequestProto
+name|GetFsReplicatedBlockStatsRequestProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -3831,11 +3831,11 @@ decl_stmt|;
 specifier|private
 specifier|final
 specifier|static
-name|GetFsECBlockGroupsStatsRequestProto
-DECL|field|VOID_GET_FS_ECBLOCKGROUPS_STATS_REQUEST
-name|VOID_GET_FS_ECBLOCKGROUPS_STATS_REQUEST
+name|GetFsECBlockGroupStatsRequestProto
+DECL|field|VOID_GET_FS_ECBLOCKGROUP_STATS_REQUEST
+name|VOID_GET_FS_ECBLOCKGROUP_STATS_REQUEST
 init|=
-name|GetFsECBlockGroupsStatsRequestProto
+name|GetFsECBlockGroupStatsRequestProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -6250,10 +6250,10 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getBlocksStats ()
+DECL|method|getReplicatedBlockStats ()
 specifier|public
 name|ReplicatedBlockStats
-name|getBlocksStats
+name|getReplicatedBlockStats
 parameter_list|()
 throws|throws
 name|IOException
@@ -6267,11 +6267,11 @@ name|convert
 argument_list|(
 name|rpcProxy
 operator|.
-name|getFsBlocksStats
+name|getFsReplicatedBlockStats
 argument_list|(
 literal|null
 argument_list|,
-name|VOID_GET_FS_REPLICABLOCKS_STATS_REQUEST
+name|VOID_GET_FS_REPLICATED_BLOCK_STATS_REQUEST
 argument_list|)
 argument_list|)
 return|;
@@ -6294,10 +6294,10 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getECBlockGroupsStats ()
+DECL|method|getECBlockGroupStats ()
 specifier|public
 name|ECBlockGroupStats
-name|getECBlockGroupsStats
+name|getECBlockGroupStats
 parameter_list|()
 throws|throws
 name|IOException
@@ -6311,11 +6311,11 @@ name|convert
 argument_list|(
 name|rpcProxy
 operator|.
-name|getFsECBlockGroupsStats
+name|getFsECBlockGroupStats
 argument_list|(
 literal|null
 argument_list|,
-name|VOID_GET_FS_ECBLOCKGROUPS_STATS_REQUEST
+name|VOID_GET_FS_ECBLOCKGROUP_STATS_REQUEST
 argument_list|)
 argument_list|)
 return|;

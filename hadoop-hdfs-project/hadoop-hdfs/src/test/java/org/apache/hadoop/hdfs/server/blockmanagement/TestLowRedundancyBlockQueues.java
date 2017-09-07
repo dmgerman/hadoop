@@ -247,7 +247,7 @@ name|lowRedundancyReplicaCount
 argument_list|,
 name|queues
 operator|.
-name|getLowRedundancyBlocksStat
+name|getLowRedundancyBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -259,7 +259,7 @@ name|corruptReplicaCount
 argument_list|,
 name|queues
 operator|.
-name|getCorruptBlocksStat
+name|getCorruptBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -271,7 +271,7 @@ name|corruptReplicationOneCount
 argument_list|,
 name|queues
 operator|.
-name|getCorruptReplicationOneBlocksStat
+name|getCorruptReplicationOneBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -283,7 +283,7 @@ name|lowRedundancyStripedCount
 argument_list|,
 name|queues
 operator|.
-name|getLowRedundancyECBlockGroupsStat
+name|getLowRedundancyECBlockGroups
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -295,7 +295,7 @@ name|corruptStripedCount
 argument_list|,
 name|queues
 operator|.
-name|getCorruptECBlockGroupsStat
+name|getCorruptECBlockGroups
 argument_list|()
 argument_list|)
 expr_stmt|;

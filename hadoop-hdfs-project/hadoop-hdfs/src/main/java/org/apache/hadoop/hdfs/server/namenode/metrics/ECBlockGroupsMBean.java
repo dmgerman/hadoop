@@ -74,10 +74,10 @@ name|long
 name|getBytesInFutureECBlockGroups
 parameter_list|()
 function_decl|;
-comment|/**    * Return count of erasure coded block groups that are pending deletion.    */
-DECL|method|getPendingDeletionECBlockGroups ()
+comment|/**    * Return count of erasure coded blocks that are pending deletion.    */
+DECL|method|getPendingDeletionECBlocks ()
 name|long
-name|getPendingDeletionECBlockGroups
+name|getPendingDeletionECBlocks
 parameter_list|()
 function_decl|;
 block|}
