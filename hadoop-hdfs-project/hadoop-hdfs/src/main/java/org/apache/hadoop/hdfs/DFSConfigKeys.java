@@ -6017,7 +6017,7 @@ specifier|final
 name|boolean
 name|DFS_JOURNALNODE_ENABLE_SYNC_DEFAULT
 init|=
-literal|false
+literal|true
 decl_stmt|;
 DECL|field|DFS_JOURNALNODE_SYNC_INTERVAL_KEY
 specifier|public
