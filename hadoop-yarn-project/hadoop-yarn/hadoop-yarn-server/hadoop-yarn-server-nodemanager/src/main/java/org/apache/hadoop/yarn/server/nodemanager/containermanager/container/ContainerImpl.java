@@ -1698,6 +1698,11 @@ specifier|private
 name|ResourceSet
 name|resourceSet
 decl_stmt|;
+DECL|field|resourceMappings
+specifier|private
+name|ResourceMappings
+name|resourceMappings
+decl_stmt|;
 DECL|method|ContainerImpl (Configuration conf, Dispatcher dispatcher, ContainerLaunchContext launchContext, Credentials creds, NodeManagerMetrics metrics, ContainerTokenIdentifier containerTokenIdentifier, Context context)
 specifier|public
 name|ContainerImpl
@@ -2038,6 +2043,14 @@ operator|new
 name|ResourceSet
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|resourceMappings
+operator|=
+operator|new
+name|ResourceMappings
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|configureRetryContext ( Configuration conf, ContainerLaunchContext launchContext, ContainerId containerId)
 specifier|private
@@ -2274,6 +2287,15 @@ operator|=
 name|rcs
 operator|.
 name|getLogDir
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|resourceMappings
+operator|=
+name|rcs
+operator|.
+name|getResourceMappings
 argument_list|()
 expr_stmt|;
 block|}
@@ -8911,6 +8933,19 @@ operator|)
 decl_stmt|;
 return|return
 name|isRecovering
+return|;
+block|}
+comment|/**    * Get assigned resource mappings to the container.    *    * @return Resource Mappings of the container    */
+annotation|@
+name|Override
+DECL|method|getResourceMappings ()
+specifier|public
+name|ResourceMappings
+name|getResourceMappings
+parameter_list|()
+block|{
+return|return
+name|resourceMappings
 return|;
 block|}
 block|}

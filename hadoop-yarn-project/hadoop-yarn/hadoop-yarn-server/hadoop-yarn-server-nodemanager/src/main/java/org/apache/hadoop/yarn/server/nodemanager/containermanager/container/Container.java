@@ -435,6 +435,12 @@ name|boolean
 name|isRecovering
 parameter_list|()
 function_decl|;
+comment|/**    * Get assigned resource mappings to the container.    *    * @return Resource Mappings of the container    */
+DECL|method|getResourceMappings ()
+name|ResourceMappings
+name|getResourceMappings
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

@@ -36,6 +36,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|Serializable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|List
@@ -958,6 +968,28 @@ name|removeAMRMProxyAppContext
 parameter_list|(
 name|ApplicationAttemptId
 name|attempt
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
+DECL|method|storeAssignedResources (ContainerId containerId, String resourceType, List<Serializable> assignedResources)
+specifier|public
+name|void
+name|storeAssignedResources
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|String
+name|resourceType
+parameter_list|,
+name|List
+argument_list|<
+name|Serializable
+argument_list|>
+name|assignedResources
 parameter_list|)
 throws|throws
 name|IOException
