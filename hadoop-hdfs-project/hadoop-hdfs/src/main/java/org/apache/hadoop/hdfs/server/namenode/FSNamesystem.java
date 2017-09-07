@@ -23755,6 +23755,10 @@ name|INodeFile
 name|file
 parameter_list|)
 block|{
+assert|assert
+name|hasReadLock
+argument_list|()
+assert|;
 comment|// Not in the inodeMap or in the snapshot but marked deleted.
 if|if
 condition|(
