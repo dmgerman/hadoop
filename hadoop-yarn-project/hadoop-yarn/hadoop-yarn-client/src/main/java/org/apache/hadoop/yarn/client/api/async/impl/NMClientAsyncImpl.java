@@ -1544,6 +1544,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Deprecated
 DECL|method|increaseContainerResourceAsync (Container container)
 specifier|public
 name|void
@@ -1629,9 +1631,11 @@ operator|.
 name|put
 argument_list|(
 operator|new
-name|IncreaseContainerResourceEvent
+name|UpdateContainerResourceEvent
 argument_list|(
 name|container
+argument_list|,
+literal|true
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1659,6 +1663,136 @@ expr_stmt|;
 name|handler
 operator|.
 name|onIncreaseContainerResourceError
+argument_list|(
+name|container
+operator|.
+name|getId
+argument_list|()
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|Override
+DECL|method|updateContainerResourceAsync (Container container)
+specifier|public
+name|void
+name|updateContainerResourceAsync
+parameter_list|(
+name|Container
+name|container
+parameter_list|)
+block|{
+if|if
+condition|(
+operator|!
+operator|(
+name|callbackHandler
+operator|instanceof
+name|AbstractCallbackHandler
+operator|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Callback handler does not implement container resource "
+operator|+
+literal|"increase callback methods"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+name|AbstractCallbackHandler
+name|handler
+init|=
+operator|(
+name|AbstractCallbackHandler
+operator|)
+name|callbackHandler
+decl_stmt|;
+if|if
+condition|(
+name|containers
+operator|.
+name|get
+argument_list|(
+name|container
+operator|.
+name|getId
+argument_list|()
+argument_list|)
+operator|==
+literal|null
+condition|)
+block|{
+name|handler
+operator|.
+name|onUpdateContainerResourceError
+argument_list|(
+name|container
+operator|.
+name|getId
+argument_list|()
+argument_list|,
+name|RPCUtil
+operator|.
+name|getRemoteException
+argument_list|(
+literal|"Container "
+operator|+
+name|container
+operator|.
+name|getId
+argument_list|()
+operator|+
+literal|" is neither started nor scheduled to start"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+try|try
+block|{
+name|events
+operator|.
+name|put
+argument_list|(
+operator|new
+name|UpdateContainerResourceEvent
+argument_list|(
+name|container
+argument_list|,
+literal|false
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Exception when scheduling the event of increasing resource of "
+operator|+
+literal|"Container "
+operator|+
+name|container
+operator|.
+name|getId
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|handler
+operator|.
+name|onUpdateContainerResourceError
 argument_list|(
 name|container
 operator|.
@@ -2409,8 +2543,8 @@ block|,
 DECL|enumConstant|QUERY_CONTAINER
 name|QUERY_CONTAINER
 block|,
-DECL|enumConstant|INCREASE_CONTAINER_RESOURCE
-name|INCREASE_CONTAINER_RESOURCE
+DECL|enumConstant|UPDATE_CONTAINER_RESOURCE
+name|UPDATE_CONTAINER_RESOURCE
 block|,
 DECL|enumConstant|REINITIALIZE_CONTAINER
 name|REINITIALIZE_CONTAINER
@@ -2689,11 +2823,11 @@ name|autoCommit
 return|;
 block|}
 block|}
-DECL|class|IncreaseContainerResourceEvent
+DECL|class|UpdateContainerResourceEvent
 specifier|protected
 specifier|static
 class|class
-name|IncreaseContainerResourceEvent
+name|UpdateContainerResourceEvent
 extends|extends
 name|ContainerEvent
 block|{
@@ -2702,12 +2836,23 @@ specifier|private
 name|Container
 name|container
 decl_stmt|;
-DECL|method|IncreaseContainerResourceEvent (Container container)
+DECL|field|isIncreaseEvent
+specifier|private
+name|boolean
+name|isIncreaseEvent
+decl_stmt|;
+comment|// UpdateContainerResourceEvent constructor takes in a
+comment|// flag to support callback API's calling through the deprecated
+comment|// increaseContainerResource
+DECL|method|UpdateContainerResourceEvent (Container container, boolean isIncreaseEvent)
 specifier|public
-name|IncreaseContainerResourceEvent
+name|UpdateContainerResourceEvent
 parameter_list|(
 name|Container
 name|container
+parameter_list|,
+name|boolean
+name|isIncreaseEvent
 parameter_list|)
 block|{
 name|super
@@ -2729,7 +2874,7 @@ argument_list|()
 argument_list|,
 name|ContainerEventType
 operator|.
-name|INCREASE_CONTAINER_RESOURCE
+name|UPDATE_CONTAINER_RESOURCE
 argument_list|)
 expr_stmt|;
 name|this
@@ -2737,6 +2882,12 @@ operator|.
 name|container
 operator|=
 name|container
+expr_stmt|;
+name|this
+operator|.
+name|isIncreaseEvent
+operator|=
+name|isIncreaseEvent
 expr_stmt|;
 block|}
 DECL|method|getContainer ()
@@ -2855,10 +3006,10 @@ name|RUNNING
 argument_list|,
 name|ContainerEventType
 operator|.
-name|INCREASE_CONTAINER_RESOURCE
+name|UPDATE_CONTAINER_RESOURCE
 argument_list|,
 operator|new
-name|IncreaseContainerResourceTransition
+name|UpdateContainerResourceTransition
 argument_list|()
 argument_list|)
 comment|// Transitions for Container Upgrade
@@ -3028,7 +3179,7 @@ name|STOP_CONTAINER
 argument_list|,
 name|ContainerEventType
 operator|.
-name|INCREASE_CONTAINER_RESOURCE
+name|UPDATE_CONTAINER_RESOURCE
 argument_list|)
 argument_list|)
 comment|// Transition from FAILED state
@@ -3073,7 +3224,7 @@ name|ROLLBACK_LAST_REINIT
 argument_list|,
 name|ContainerEventType
 operator|.
-name|INCREASE_CONTAINER_RESOURCE
+name|UPDATE_CONTAINER_RESOURCE
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -3331,11 +3482,11 @@ name|FAILED
 return|;
 block|}
 block|}
-DECL|class|IncreaseContainerResourceTransition
+DECL|class|UpdateContainerResourceTransition
 specifier|protected
 specifier|static
 class|class
-name|IncreaseContainerResourceTransition
+name|UpdateContainerResourceTransition
 implements|implements
 name|SingleArcTransition
 argument_list|<
@@ -3344,6 +3495,11 @@ argument_list|,
 name|ContainerEvent
 argument_list|>
 block|{
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 annotation|@
 name|Override
 DECL|method|transition ( StatefulContainer container, ContainerEvent event)
@@ -3358,6 +3514,11 @@ name|ContainerEvent
 name|event
 parameter_list|)
 block|{
+name|boolean
+name|isIncreaseEvent
+init|=
+literal|false
+decl_stmt|;
 if|if
 condition|(
 operator|!
@@ -3379,7 +3540,7 @@ name|error
 argument_list|(
 literal|"Callback handler does not implement container resource "
 operator|+
-literal|"increase callback methods"
+literal|"update callback methods"
 argument_list|)
 expr_stmt|;
 return|return;
@@ -3405,7 +3566,7 @@ operator|!
 operator|(
 name|event
 operator|instanceof
-name|IncreaseContainerResourceEvent
+name|UpdateContainerResourceEvent
 operator|)
 condition|)
 block|{
@@ -3415,17 +3576,17 @@ name|AssertionError
 argument_list|(
 literal|"Unexpected event type. Expecting:"
 operator|+
-literal|"IncreaseContainerResourceEvent. Got:"
+literal|"UpdateContainerResourceEvent. Got:"
 operator|+
 name|event
 argument_list|)
 throw|;
 block|}
-name|IncreaseContainerResourceEvent
-name|increaseEvent
+name|UpdateContainerResourceEvent
+name|updateEvent
 init|=
 operator|(
-name|IncreaseContainerResourceEvent
+name|UpdateContainerResourceEvent
 operator|)
 name|event
 decl_stmt|;
@@ -3436,26 +3597,39 @@ operator|.
 name|getClient
 argument_list|()
 operator|.
-name|increaseContainerResource
+name|updateContainerResource
 argument_list|(
-name|increaseEvent
+name|updateEvent
 operator|.
 name|getContainer
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|isIncreaseEvent
+operator|=
+name|updateEvent
+operator|.
+name|isIncreaseEvent
+expr_stmt|;
 try|try
+block|{
+comment|//If isIncreaseEvent is set, set the appropriate callbacks
+comment|//for backward compatibility
+if|if
+condition|(
+name|isIncreaseEvent
+condition|)
 block|{
 name|handler
 operator|.
 name|onContainerResourceIncreased
 argument_list|(
-name|increaseEvent
+name|updateEvent
 operator|.
 name|getContainerId
 argument_list|()
 argument_list|,
-name|increaseEvent
+name|updateEvent
 operator|.
 name|getContainer
 argument_list|()
@@ -3464,6 +3638,28 @@ name|getResource
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|handler
+operator|.
+name|onContainerResourceUpdated
+argument_list|(
+name|updateEvent
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|,
+name|updateEvent
+operator|.
+name|getContainer
+argument_list|()
+operator|.
+name|getResource
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -3478,7 +3674,7 @@ name|info
 argument_list|(
 literal|"Unchecked exception is thrown from "
 operator|+
-literal|"onContainerResourceIncreased for Container "
+literal|"onContainerResourceUpdated for Container "
 operator|+
 name|event
 operator|.
@@ -3498,6 +3694,11 @@ parameter_list|)
 block|{
 try|try
 block|{
+if|if
+condition|(
+name|isIncreaseEvent
+condition|)
+block|{
 name|handler
 operator|.
 name|onIncreaseContainerResourceError
@@ -3510,6 +3711,22 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|handler
+operator|.
+name|onUpdateContainerResourceError
+argument_list|(
+name|event
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -3524,7 +3741,7 @@ name|info
 argument_list|(
 literal|"Unchecked exception is thrown from "
 operator|+
-literal|"onIncreaseContainerResourceError for Container "
+literal|"onUpdateContainerResourceError for Container "
 operator|+
 name|event
 operator|.

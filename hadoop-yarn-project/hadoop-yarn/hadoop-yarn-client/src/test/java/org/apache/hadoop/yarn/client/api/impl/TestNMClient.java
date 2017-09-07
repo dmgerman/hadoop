@@ -2057,13 +2057,13 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|// increaseContainerResource shouldn't be called before startContainer,
+comment|// upadateContainerResource shouldn't be called before startContainer,
 comment|// otherwise, NodeManager cannot find the container
 try|try
 block|{
 name|nmClient
 operator|.
-name|increaseContainerResource
+name|updateContainerResource
 argument_list|(
 name|container
 argument_list|)
@@ -3002,6 +3002,11 @@ break|break;
 block|}
 block|}
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|testIncreaseContainerResource (Container container)
 specifier|private
 name|void

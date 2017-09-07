@@ -5325,20 +5325,6 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|onContainerResourceIncreased ( ContainerId containerId, Resource resource)
-specifier|public
-name|void
-name|onContainerResourceIncreased
-parameter_list|(
-name|ContainerId
-name|containerId
-parameter_list|,
-name|Resource
-name|resource
-parameter_list|)
-block|{}
-annotation|@
-name|Override
 DECL|method|onStartContainerError (ContainerId containerId, Throwable t)
 specifier|public
 name|void
@@ -5440,6 +5426,8 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
+name|Deprecated
+annotation|@
 name|Override
 DECL|method|onIncreaseContainerResourceError ( ContainerId containerId, Throwable t)
 specifier|public
@@ -5453,6 +5441,50 @@ name|Throwable
 name|t
 parameter_list|)
 block|{}
+annotation|@
+name|Deprecated
+annotation|@
+name|Override
+DECL|method|onContainerResourceIncreased ( ContainerId containerId, Resource resource)
+specifier|public
+name|void
+name|onContainerResourceIncreased
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|Resource
+name|resource
+parameter_list|)
+block|{}
+annotation|@
+name|Override
+DECL|method|onUpdateContainerResourceError ( ContainerId containerId, Throwable t)
+specifier|public
+name|void
+name|onUpdateContainerResourceError
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|Throwable
+name|t
+parameter_list|)
+block|{     }
+annotation|@
+name|Override
+DECL|method|onContainerResourceUpdated (ContainerId containerId, Resource resource)
+specifier|public
+name|void
+name|onContainerResourceUpdated
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|Resource
+name|resource
+parameter_list|)
+block|{     }
 block|}
 comment|/**    * Thread to connect to the {@link ContainerManagementProtocol} and launch the container    * that will execute the shell command.    */
 DECL|class|LaunchContainerRunnable

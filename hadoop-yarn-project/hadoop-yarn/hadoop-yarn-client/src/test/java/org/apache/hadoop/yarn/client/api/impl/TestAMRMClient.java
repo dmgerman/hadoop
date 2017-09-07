@@ -9256,6 +9256,11 @@ name|clear
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|updateContainerExecType (AllocateResponse allocResponse, ExecutionType expectedExecType, NMClientImpl nmClient)
 specifier|private
 name|void

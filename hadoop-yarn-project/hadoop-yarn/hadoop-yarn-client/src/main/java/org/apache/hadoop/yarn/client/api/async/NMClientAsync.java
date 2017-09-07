@@ -549,11 +549,24 @@ name|ContainerLaunchContext
 name|containerLaunchContext
 parameter_list|)
 function_decl|;
+annotation|@
+name|Deprecated
 DECL|method|increaseContainerResourceAsync (Container container)
 specifier|public
 specifier|abstract
 name|void
 name|increaseContainerResourceAsync
+parameter_list|(
+name|Container
+name|container
+parameter_list|)
+function_decl|;
+comment|/**    *<p>Update the resources of a container.</p>    *    *<p>The<code>ApplicationMaster</code> or other applications that use the    * client must provide the details of the container, including the Id and    * the target resource encapsulated in the updated container token via    * {@link Container}.    *</p>    *    * @param container the container with updated token.    */
+DECL|method|updateContainerResourceAsync (Container container)
+specifier|public
+specifier|abstract
+name|void
+name|updateContainerResourceAsync
 parameter_list|(
 name|Container
 name|container
@@ -756,11 +769,27 @@ name|t
 parameter_list|)
 function_decl|;
 comment|/**      * The API is called when<code>NodeManager</code> responds to indicate      * the container resource has been successfully increased.      *      * @param containerId the Id of the container      * @param resource the target resource of the container      */
+annotation|@
+name|Deprecated
 DECL|method|onContainerResourceIncreased ( ContainerId containerId, Resource resource)
 specifier|public
 specifier|abstract
 name|void
 name|onContainerResourceIncreased
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|Resource
+name|resource
+parameter_list|)
+function_decl|;
+comment|/**      * The API is called when<code>NodeManager</code> responds to indicate      * the container resource has been successfully updated.      *      * @param containerId the Id of the container      * @param resource the target resource of the container      */
+DECL|method|onContainerResourceUpdated ( ContainerId containerId, Resource resource)
+specifier|public
+specifier|abstract
+name|void
+name|onContainerResourceUpdated
 parameter_list|(
 name|ContainerId
 name|containerId
@@ -784,11 +813,27 @@ name|t
 parameter_list|)
 function_decl|;
 comment|/**      * The API is called when an exception is raised in the process of      * increasing container resource.      *      * @param containerId the Id of the container      * @param t the raised exception      */
+annotation|@
+name|Deprecated
 DECL|method|onIncreaseContainerResourceError ( ContainerId containerId, Throwable t)
 specifier|public
 specifier|abstract
 name|void
 name|onIncreaseContainerResourceError
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|Throwable
+name|t
+parameter_list|)
+function_decl|;
+comment|/**      * The API is called when an exception is raised in the process of      * updating container resource.      *      * @param containerId the Id of the container      * @param t the raised exception      */
+DECL|method|onUpdateContainerResourceError ( ContainerId containerId, Throwable t)
+specifier|public
+specifier|abstract
+name|void
+name|onUpdateContainerResourceError
 parameter_list|(
 name|ContainerId
 name|containerId

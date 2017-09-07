@@ -1621,7 +1621,7 @@ literal|0
 case|:
 name|asyncClient
 operator|.
-name|increaseContainerResourceAsync
+name|updateContainerResourceAsync
 argument_list|(
 name|container
 argument_list|)
@@ -1797,7 +1797,7 @@ argument_list|)
 decl_stmt|;
 name|asyncClient
 operator|.
-name|increaseContainerResourceAsync
+name|updateContainerResourceAsync
 argument_list|(
 name|container
 argument_list|)
@@ -1849,6 +1849,111 @@ operator|+
 name|containerId
 operator|+
 literal|" should throw the exception onContainerResourceIncreased"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+name|TestData
+name|td
+init|=
+name|testMap
+operator|.
+name|get
+argument_list|(
+name|OpsToTest
+operator|.
+name|INCR
+argument_list|)
+decl_stmt|;
+name|td
+operator|.
+name|success
+operator|.
+name|addAndGet
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
+name|td
+operator|.
+name|successArray
+operator|.
+name|set
+argument_list|(
+name|containerId
+operator|.
+name|getId
+argument_list|()
+argument_list|,
+literal|1
+argument_list|)
+expr_stmt|;
+comment|// move on to the following success tests
+name|asyncClient
+operator|.
+name|reInitializeContainerAsync
+argument_list|(
+name|containerId
+argument_list|,
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|ContainerLaunchContext
+operator|.
+name|class
+argument_list|)
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+comment|// throw a fake user exception, and shouldn't crash the test
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"Ignorable Exception"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+annotation|@
+name|Override
+DECL|method|onContainerResourceUpdated (ContainerId containerId, Resource resource)
+specifier|public
+name|void
+name|onContainerResourceUpdated
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|Resource
+name|resource
+parameter_list|)
+block|{
+if|if
+condition|(
+name|containerId
+operator|.
+name|getId
+argument_list|()
+operator|>=
+name|expectedSuccess
+condition|)
+block|{
+name|errorMsgs
+operator|.
+name|add
+argument_list|(
+literal|"Container "
+operator|+
+name|containerId
+operator|+
+literal|" should throw the exception onContainerResourceUpdated"
 argument_list|)
 expr_stmt|;
 return|return;
@@ -2525,6 +2630,110 @@ operator|+
 name|containerId
 operator|+
 literal|" shouldn't throw the exception onIncreaseContainerResourceError"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+name|TestData
+name|td
+init|=
+name|testMap
+operator|.
+name|get
+argument_list|(
+name|OpsToTest
+operator|.
+name|INCR
+argument_list|)
+decl_stmt|;
+name|td
+operator|.
+name|failure
+operator|.
+name|addAndGet
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
+name|td
+operator|.
+name|failureArray
+operator|.
+name|set
+argument_list|(
+name|containerId
+operator|.
+name|getId
+argument_list|()
+operator|-
+name|expectedSuccess
+operator|-
+name|expectedFailure
+argument_list|,
+literal|1
+argument_list|)
+expr_stmt|;
+comment|// increase container resource error should NOT change the
+comment|// the container status to FAILED
+comment|// move on to the following failure tests
+name|asyncClient
+operator|.
+name|stopContainerAsync
+argument_list|(
+name|containerId
+argument_list|,
+name|nodeId
+argument_list|)
+expr_stmt|;
+comment|// Shouldn't crash the test thread
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"Ignorable Exception"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+annotation|@
+name|Override
+DECL|method|onUpdateContainerResourceError (ContainerId containerId, Throwable t)
+specifier|public
+name|void
+name|onUpdateContainerResourceError
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|Throwable
+name|t
+parameter_list|)
+block|{
+if|if
+condition|(
+name|containerId
+operator|.
+name|getId
+argument_list|()
+operator|<
+name|expectedSuccess
+operator|+
+name|expectedFailure
+condition|)
+block|{
+name|errorMsgs
+operator|.
+name|add
+argument_list|(
+literal|"Container "
+operator|+
+name|containerId
+operator|+
+literal|" shouldn't throw the exception onUpdatedContainerResourceError"
 argument_list|)
 expr_stmt|;
 return|return;
@@ -4065,7 +4274,7 @@ argument_list|(
 name|client
 argument_list|)
 operator|.
-name|increaseContainerResource
+name|updateContainerResource
 argument_list|(
 name|any
 argument_list|(
@@ -4370,7 +4579,7 @@ argument_list|(
 name|client
 argument_list|)
 operator|.
-name|increaseContainerResource
+name|updateContainerResource
 argument_list|(
 name|any
 argument_list|(
@@ -4991,6 +5200,8 @@ name|containerStatus
 parameter_list|)
 block|{     }
 annotation|@
+name|Deprecated
+annotation|@
 name|Override
 DECL|method|onContainerResourceIncreased ( ContainerId containerId, Resource resource)
 specifier|public
@@ -5004,6 +5215,20 @@ name|Resource
 name|resource
 parameter_list|)
 block|{}
+annotation|@
+name|Override
+DECL|method|onContainerResourceUpdated (ContainerId containerId, Resource resource)
+specifier|public
+name|void
+name|onContainerResourceUpdated
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|Resource
+name|resource
+parameter_list|)
+block|{     }
 annotation|@
 name|Override
 DECL|method|onContainerStopped (ContainerId containerId)
@@ -5106,6 +5331,8 @@ name|t
 parameter_list|)
 block|{     }
 annotation|@
+name|Deprecated
+annotation|@
 name|Override
 DECL|method|onIncreaseContainerResourceError ( ContainerId containerId, Throwable t)
 specifier|public
@@ -5119,6 +5346,20 @@ name|Throwable
 name|t
 parameter_list|)
 block|{}
+annotation|@
+name|Override
+DECL|method|onUpdateContainerResourceError (ContainerId containerId, Throwable t)
+specifier|public
+name|void
+name|onUpdateContainerResourceError
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|Throwable
+name|t
+parameter_list|)
+block|{     }
 annotation|@
 name|Override
 DECL|method|onStopContainerError (ContainerId containerId, Throwable t)
