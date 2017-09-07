@@ -114,6 +114,21 @@ specifier|private
 name|LinuxContainerRuntimeConstants
 parameter_list|()
 block|{   }
+comment|/**    * Linux container runtime types for {@link DelegatingLinuxContainerRuntime}.    */
+DECL|enum|RuntimeType
+specifier|public
+enum|enum
+name|RuntimeType
+block|{
+DECL|enumConstant|DEFAULT
+name|DEFAULT
+block|,
+DECL|enumConstant|DOCKER
+name|DOCKER
+block|,
+DECL|enumConstant|JAVASANDBOX
+name|JAVASANDBOX
+block|;   }
 DECL|field|LOCALIZED_RESOURCES
 specifier|public
 specifier|static

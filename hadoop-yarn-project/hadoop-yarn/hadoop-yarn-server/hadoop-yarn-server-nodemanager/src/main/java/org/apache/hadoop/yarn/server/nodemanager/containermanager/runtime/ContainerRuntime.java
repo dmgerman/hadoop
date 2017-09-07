@@ -136,7 +136,7 @@ parameter_list|)
 throws|throws
 name|ContainerExecutionException
 function_decl|;
-comment|/**    * Return the host and ip of the container    */
+comment|/**    * Return the host and ip of the container    *    * @param container the {@link Container}    * @throws ContainerExecutionException if an error occurs while getting the ip    * and hostname    */
 DECL|method|getIpAndHost (Container container)
 name|String
 index|[]
@@ -145,6 +145,8 @@ parameter_list|(
 name|Container
 name|container
 parameter_list|)
+throws|throws
+name|ContainerExecutionException
 function_decl|;
 block|}
 end_interface

@@ -3355,6 +3355,8 @@ parameter_list|(
 name|Container
 name|container
 parameter_list|)
+throws|throws
+name|ContainerExecutionException
 block|{
 return|return
 name|linuxContainerRuntime
