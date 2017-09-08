@@ -1488,6 +1488,8 @@ argument_list|,
 name|clientMachine
 argument_list|,
 name|blockType
+argument_list|,
+name|ecPolicy
 argument_list|)
 return|;
 block|}
@@ -1982,6 +1984,10 @@ argument_list|,
 name|r
 operator|.
 name|blockType
+argument_list|,
+name|r
+operator|.
+name|ecPolicy
 argument_list|,
 name|flags
 argument_list|)
@@ -4936,7 +4942,12 @@ specifier|final
 name|BlockType
 name|blockType
 decl_stmt|;
-DECL|method|ValidateAddBlockResult ( long blockSize, int numTargets, byte storagePolicyID, String clientMachine, BlockType blockType)
+DECL|field|ecPolicy
+specifier|final
+name|ErasureCodingPolicy
+name|ecPolicy
+decl_stmt|;
+DECL|method|ValidateAddBlockResult ( long blockSize, int numTargets, byte storagePolicyID, String clientMachine, BlockType blockType, ErasureCodingPolicy ecPolicy)
 name|ValidateAddBlockResult
 parameter_list|(
 name|long
@@ -4953,6 +4964,9 @@ name|clientMachine
 parameter_list|,
 name|BlockType
 name|blockType
+parameter_list|,
+name|ErasureCodingPolicy
+name|ecPolicy
 parameter_list|)
 block|{
 name|this
@@ -4985,6 +4999,33 @@ name|blockType
 operator|=
 name|blockType
 expr_stmt|;
+name|this
+operator|.
+name|ecPolicy
+operator|=
+name|ecPolicy
+expr_stmt|;
+if|if
+condition|(
+name|blockType
+operator|==
+name|BlockType
+operator|.
+name|STRIPED
+condition|)
+block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|ecPolicy
+operator|!=
+literal|null
+argument_list|,
+literal|"ecPolicy is not specified for striped block"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 block|}

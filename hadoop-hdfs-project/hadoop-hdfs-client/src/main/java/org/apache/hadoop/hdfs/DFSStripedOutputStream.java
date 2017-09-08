@@ -1675,6 +1675,12 @@ specifier|final
 name|CellBuffers
 name|cellBuffers
 decl_stmt|;
+DECL|field|ecPolicy
+specifier|private
+specifier|final
+name|ErasureCodingPolicy
+name|ecPolicy
+decl_stmt|;
 DECL|field|encoder
 specifier|private
 specifier|final
@@ -1836,15 +1842,13 @@ name|src
 argument_list|)
 expr_stmt|;
 block|}
-specifier|final
-name|ErasureCodingPolicy
 name|ecPolicy
-init|=
+operator|=
 name|stat
 operator|.
 name|getErasureCodingPolicy
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 specifier|final
 name|int
 name|numParityBlocks
@@ -2892,41 +2896,6 @@ operator|.
 name|isStriped
 argument_list|()
 assert|;
-if|if
-condition|(
-name|lb
-operator|.
-name|getLocations
-argument_list|()
-operator|.
-name|length
-operator|<
-name|numDataBlocks
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Failed to get "
-operator|+
-name|numDataBlocks
-operator|+
-literal|" nodes from namenode: blockGroupSize= "
-operator|+
-name|numAllBlocks
-operator|+
-literal|", blocks.length= "
-operator|+
-name|lb
-operator|.
-name|getLocations
-argument_list|()
-operator|.
-name|length
-argument_list|)
-throw|;
-block|}
 comment|// assign the new block to the current block group
 name|currentBlockGroup
 operator|=
@@ -3002,15 +2971,31 @@ operator|==
 literal|null
 condition|)
 block|{
+comment|// allocBlock() should guarantee that all data blocks are successfully
+comment|// allocated.
+assert|assert
+name|i
+operator|>=
+name|numDataBlocks
+assert|;
 comment|// Set exception and close streamer as there is no block locations
 comment|// found for the parity block.
 name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to get block location for parity block, index="
+literal|"Cannot allocate parity block(index={}, policy={}). "
 operator|+
+literal|"Not enough datanodes? Excluded nodes={}"
+argument_list|,
 name|i
+argument_list|,
+name|ecPolicy
+operator|.
+name|getName
+argument_list|()
+argument_list|,
+name|excludedNodes
 argument_list|)
 expr_stmt|;
 name|si
@@ -3023,7 +3008,7 @@ argument_list|(
 operator|new
 name|IOException
 argument_list|(
-literal|"Failed to get following block, i="
+literal|"Failed to get parity block, index="
 operator|+
 name|i
 argument_list|)
