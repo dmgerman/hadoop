@@ -1794,6 +1794,25 @@ name|ekv
 argument_list|)
 return|;
 block|}
+comment|/**    * Calls {@link CryptoExtension#drain(String)} for the given key name on the    * underlying {@link CryptoExtension}.    *    * @param keyName    */
+DECL|method|drain (String keyName)
+specifier|public
+name|void
+name|drain
+parameter_list|(
+name|String
+name|keyName
+parameter_list|)
+block|{
+name|getExtension
+argument_list|()
+operator|.
+name|drain
+argument_list|(
+name|keyName
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Batched version of {@link #reencryptEncryptedKey(EncryptedKeyVersion)}.    *<p>    * For each encrypted key version, re-encrypts an encrypted key version,    * using its initialization vector and key material, but with the latest    * key version name of its key name. If the latest key version name in the    * provider is the same as the one encrypted the passed-in encrypted key    * version, the same encrypted key version is returned.    *<p>    * NOTE: The generated key is not stored by the<code>KeyProvider</code>    *    * @param  ekvs List containing the EncryptedKeyVersion's    * @return      The re-encrypted EncryptedKeyVersion's, in the same order.    * @throws IOException If any EncryptedKeyVersion could not be re-encrypted    * @throws GeneralSecurityException If any EncryptedKeyVersion could not be    *                            re-encrypted because of a cryptographic issue.    */
 DECL|method|reencryptEncryptedKeys (List<EncryptedKeyVersion> ekvs)
 specifier|public

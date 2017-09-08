@@ -196,24 +196,6 @@ name|key
 operator|.
 name|KeyProviderCryptoExtension
 operator|.
-name|CryptoExtension
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|crypto
-operator|.
-name|key
-operator|.
-name|KeyProviderCryptoExtension
-operator|.
 name|EncryptedKeyVersion
 import|;
 end_import
@@ -3469,32 +3451,16 @@ block|}
 comment|// drain the local cache of the key provider.
 comment|// Do not invalidateCache on the server, since that's the responsibility
 comment|// when rolling the key version.
-if|if
-condition|(
 name|dir
 operator|.
 name|getProvider
 argument_list|()
-operator|instanceof
-name|CryptoExtension
-condition|)
-block|{
-operator|(
-operator|(
-name|CryptoExtension
-operator|)
-name|dir
-operator|.
-name|getProvider
-argument_list|()
-operator|)
 operator|.
 name|drain
 argument_list|(
 name|keyName
 argument_list|)
 expr_stmt|;
-block|}
 specifier|final
 name|EncryptedKeyVersion
 name|edek

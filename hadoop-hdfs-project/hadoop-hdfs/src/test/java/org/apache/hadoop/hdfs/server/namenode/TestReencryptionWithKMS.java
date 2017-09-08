@@ -517,6 +517,31 @@ name|testReencryptionBasic
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|rollKey (final String keyName)
+specifier|protected
+name|void
+name|rollKey
+parameter_list|(
+specifier|final
+name|String
+name|keyName
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+name|dfsAdmin
+operator|.
+name|getKeyProvider
+argument_list|()
+operator|.
+name|rollNewVersion
+argument_list|(
+name|keyName
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

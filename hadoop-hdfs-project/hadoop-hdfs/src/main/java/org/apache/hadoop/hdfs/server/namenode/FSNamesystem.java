@@ -33551,6 +33551,19 @@ name|zone
 argument_list|)
 throw|;
 block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Re-encryption using key version "
+operator|+
+name|keyVersionName
+operator|+
+literal|" for zone "
+operator|+
+name|zone
+argument_list|)
+expr_stmt|;
 block|}
 name|writeLock
 argument_list|()
