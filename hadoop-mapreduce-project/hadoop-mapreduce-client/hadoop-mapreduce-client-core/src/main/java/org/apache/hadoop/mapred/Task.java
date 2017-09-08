@@ -4081,7 +4081,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-comment|// Intent of the lock is to not send an interupt in the middle of an
+comment|// Intent of the lock is to not send an interrupt in the middle of an
 comment|// umbilical.ping or umbilical.statusUpdate
 synchronized|synchronized
 init|(

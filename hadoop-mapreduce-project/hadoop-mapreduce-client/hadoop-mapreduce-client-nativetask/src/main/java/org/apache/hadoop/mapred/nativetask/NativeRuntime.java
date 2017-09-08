@@ -532,7 +532,7 @@ return|return
 name|ret
 return|;
 block|}
-comment|/**    * destroy native object We use to destory native handlers    */
+comment|/**    * destroy native object We use to destroy native handlers    */
 DECL|method|releaseNativeObject (long addr)
 specifier|public
 specifier|synchronized

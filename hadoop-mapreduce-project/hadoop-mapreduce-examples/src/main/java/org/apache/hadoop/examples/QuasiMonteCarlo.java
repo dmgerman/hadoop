@@ -783,7 +783,7 @@ argument_list|,
 name|LongWritable
 argument_list|>
 block|{
-comment|/** Map method.      * @param offset samples starting from the (offset+1)th sample.      * @param size the number of samples for this map      * @param context output {ture-&gt;numInside, false-&gt;numOutside}      */
+comment|/** Map method.      * @param offset samples starting from the (offset+1)th sample.      * @param size the number of samples for this map      * @param context output {true-&gt;numInside, false-&gt;numOutside}      */
 DECL|method|map (LongWritable offset, LongWritable size, Context context)
 specifier|public
 name|void
