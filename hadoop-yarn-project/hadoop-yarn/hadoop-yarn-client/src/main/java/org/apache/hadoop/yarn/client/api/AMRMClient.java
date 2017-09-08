@@ -46,6 +46,18 @@ name|java
 operator|.
 name|util
 operator|.
+name|function
+operator|.
+name|Supplier
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -415,20 +427,6 @@ operator|.
 name|base
 operator|.
 name|Preconditions
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Supplier
 import|;
 end_import
 
@@ -1855,7 +1853,7 @@ operator|.
 name|timelineV2Client
 return|;
 block|}
-comment|/**    * Wait for<code>check</code> to return true for each 1000 ms.    * See also {@link #waitFor(com.google.common.base.Supplier, int)}    * and {@link #waitFor(com.google.common.base.Supplier, int, int)}    * @param check the condition for which it should wait    */
+comment|/**    * Wait for<code>check</code> to return true for each 1000 ms.    * See also {@link #waitFor(java.util.function.Supplier, int)}    * and {@link #waitFor(java.util.function.Supplier, int, int)}    * @param check the condition for which it should wait    */
 DECL|method|waitFor (Supplier<Boolean> check)
 specifier|public
 name|void
@@ -1878,7 +1876,7 @@ literal|1000
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Wait for<code>check</code> to return true for each    *<code>checkEveryMillis</code> ms.    * See also {@link #waitFor(com.google.common.base.Supplier, int, int)}    * @param check user defined checker    * @param checkEveryMillis interval to call<code>check</code>    */
+comment|/**    * Wait for<code>check</code> to return true for each    *<code>checkEveryMillis</code> ms.    * See also {@link #waitFor(java.util.function.Supplier, int, int)}    * @param check user defined checker    * @param checkEveryMillis interval to call<code>check</code>    */
 DECL|method|waitFor (Supplier<Boolean> check, int checkEveryMillis)
 specifier|public
 name|void
