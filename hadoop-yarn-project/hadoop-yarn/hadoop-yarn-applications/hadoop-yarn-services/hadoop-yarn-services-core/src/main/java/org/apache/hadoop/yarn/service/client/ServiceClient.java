@@ -1767,7 +1767,7 @@ name|file
 init|=
 name|args
 operator|.
-name|getAppDef
+name|getFile
 argument_list|()
 decl_stmt|;
 name|Path
@@ -1828,16 +1828,6 @@ name|lifetime
 argument_list|)
 expr_stmt|;
 block|}
-name|service
-operator|.
-name|setName
-argument_list|(
-name|args
-operator|.
-name|getClusterName
-argument_list|()
-argument_list|)
-expr_stmt|;
 return|return
 name|service
 return|;
@@ -3311,7 +3301,7 @@ name|verifyNoLiveAppInRM
 argument_list|(
 name|serviceName
 argument_list|,
-literal|"Destroy"
+literal|"destroy"
 argument_list|)
 expr_stmt|;
 name|Path
@@ -3840,19 +3830,50 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-throw|throw
-operator|new
-name|YarnException
+name|String
+name|message
+init|=
+literal|""
+decl_stmt|;
+if|if
+condition|(
+name|action
+operator|.
+name|equals
 argument_list|(
+literal|"destroy"
+argument_list|)
+condition|)
+block|{
+name|message
+operator|=
+literal|"Failed to destroy service "
+operator|+
+name|serviceName
+operator|+
+literal|", because it is still running."
+expr_stmt|;
+block|}
+else|else
+block|{
+name|message
+operator|=
 literal|"Failed to "
 operator|+
 name|action
 operator|+
-literal|" service, as "
+literal|" service "
 operator|+
 name|serviceName
 operator|+
-literal|" already exists."
+literal|", because it already exists."
+expr_stmt|;
+block|}
+throw|throw
+operator|new
+name|YarnException
+argument_list|(
+name|message
 argument_list|)
 throw|;
 block|}
@@ -4448,7 +4469,7 @@ name|add
 argument_list|(
 name|Arguments
 operator|.
-name|ARG_CLUSTER_URI
+name|ARG_SERVICE_DEF_PATH
 argument_list|,
 operator|new
 name|Path

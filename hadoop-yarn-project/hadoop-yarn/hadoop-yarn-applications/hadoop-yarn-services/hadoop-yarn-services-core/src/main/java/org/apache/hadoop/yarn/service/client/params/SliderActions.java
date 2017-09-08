@@ -23,7 +23,7 @@ package|;
 end_package
 
 begin_comment
-comment|/**  * Actions.  * Only some of these are supported by specific Slider Services; they  * are listed here to ensure the names are consistent  */
+comment|/**  * Actions by client  */
 end_comment
 
 begin_interface
@@ -80,6 +80,12 @@ name|ACTION_EXISTS
 init|=
 literal|"exists"
 decl_stmt|;
+DECL|field|ACTION_EXAMPLES
+name|String
+name|ACTION_EXAMPLES
+init|=
+literal|"examples"
+decl_stmt|;
 DECL|field|ACTION_FLEX
 name|String
 name|ACTION_FLEX
@@ -103,12 +109,6 @@ name|String
 name|ACTION_INSTALL_KEYTAB
 init|=
 literal|"install-keytab"
-decl_stmt|;
-DECL|field|ACTION_KDIAG
-name|String
-name|ACTION_KDIAG
-init|=
-literal|"kdiag"
 decl_stmt|;
 DECL|field|ACTION_KEYTAB
 name|String
@@ -168,7 +168,7 @@ DECL|field|DESCRIBE_ACTION_CREATE
 name|String
 name|DESCRIBE_ACTION_CREATE
 init|=
-literal|"Build and start a service, it's equivalent to first invoke build and then start"
+literal|"Create a service, it's equivalent to first invoke build and then start"
 decl_stmt|;
 DECL|field|DESCRIBE_ACTION_DEPENDENCY
 name|String
@@ -199,6 +199,12 @@ name|String
 name|DESCRIBE_ACTION_EXISTS
 init|=
 literal|"Probe for a service running"
+decl_stmt|;
+DECL|field|DESCRIBE_ACTION_EXAMPLES
+name|String
+name|DESCRIBE_ACTION_EXAMPLES
+init|=
+literal|"Run an example service on YARN"
 decl_stmt|;
 DECL|field|DESCRIBE_ACTION_FLEX
 name|String

@@ -22,6 +22,18 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|beust
+operator|.
+name|jcommander
+operator|.
+name|ParameterException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -104,7 +116,7 @@ name|service
 operator|.
 name|exceptions
 operator|.
-name|BadCommandArgumentsException
+name|SliderException
 import|;
 end_import
 
@@ -531,7 +543,9 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|BadCommandArgumentsException
+name|ParameterException
+decl||
+name|SliderException
 name|e
 parameter_list|)
 block|{

@@ -27,24 +27,24 @@ comment|/**  * Parameters sent by the Client to the AM  */
 end_comment
 
 begin_class
-DECL|class|SliderAMArgs
+DECL|class|ServiceAMArgs
 specifier|public
 class|class
-name|SliderAMArgs
+name|ServiceAMArgs
 extends|extends
 name|CommonArgs
 block|{
 DECL|field|createAction
-name|SliderAMCreateAction
+name|ServiceAMCreateAction
 name|createAction
 init|=
 operator|new
-name|SliderAMCreateAction
+name|ServiceAMCreateAction
 argument_list|()
 decl_stmt|;
-DECL|method|SliderAMArgs (String[] args)
+DECL|method|ServiceAMArgs (String[] args)
 specifier|public
-name|SliderAMArgs
+name|ServiceAMArgs
 parameter_list|(
 name|String
 index|[]
@@ -71,29 +71,17 @@ name|createAction
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getImage ()
+comment|// This is the path in hdfs to the service definition JSON file
+DECL|method|getServiceDefPath ()
 specifier|public
 name|String
-name|getImage
+name|getServiceDefPath
 parameter_list|()
 block|{
 return|return
 name|createAction
 operator|.
-name|image
-return|;
-block|}
-comment|/**    * This is the URI in the FS to the Slider cluster; the conf file (and any    * other cluster-specifics) can be picked up here    */
-DECL|method|getAppDefPath ()
-specifier|public
-name|String
-name|getAppDefPath
-parameter_list|()
-block|{
-return|return
-name|createAction
-operator|.
-name|sliderClusterURI
+name|serviceDefPath
 return|;
 block|}
 comment|/**    * Am binding is simple: there is only one action    */

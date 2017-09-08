@@ -124,22 +124,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
-operator|.
-name|YarnException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|service
 operator|.
 name|ClientAMProtocol
@@ -380,7 +364,7 @@ name|params
 operator|.
 name|Arguments
 operator|.
-name|ARG_APPDEF
+name|ARG_FILE
 import|;
 end_import
 
@@ -446,14 +430,11 @@ specifier|private
 name|SliderFileSystem
 name|fs
 decl_stmt|;
-DECL|method|buildApp (String appName, String appDef)
+DECL|method|buildApp (String appDef)
 specifier|private
 name|void
 name|buildApp
 parameter_list|(
-name|String
-name|appName
-parameter_list|,
 name|String
 name|appDef
 parameter_list|)
@@ -467,9 +448,7 @@ init|=
 block|{
 literal|"build"
 block|,
-name|appName
-block|,
-name|ARG_APPDEF
+name|ARG_FILE
 block|,
 name|ExampleAppJson
 operator|.
@@ -775,10 +754,13 @@ parameter_list|()
 throws|throws
 name|Throwable
 block|{
+name|String
+name|serviceName
+init|=
+literal|"app-1"
+decl_stmt|;
 name|buildApp
 argument_list|(
-literal|"service-1"
-argument_list|,
 name|ExampleAppJson
 operator|.
 name|APP_JSON
@@ -787,6 +769,8 @@ expr_stmt|;
 name|checkCompCount
 argument_list|(
 literal|"master"
+argument_list|,
+name|serviceName
 argument_list|,
 literal|1L
 argument_list|)
@@ -799,7 +783,7 @@ init|=
 block|{
 literal|"flex"
 block|,
-literal|"service-1"
+name|serviceName
 block|,
 literal|"--component"
 block|,
@@ -833,6 +817,8 @@ name|checkCompCount
 argument_list|(
 literal|"master"
 argument_list|,
+name|serviceName
+argument_list|,
 literal|3L
 argument_list|)
 expr_stmt|;
@@ -844,7 +830,7 @@ init|=
 block|{
 literal|"flex"
 block|,
-literal|"service-1"
+name|serviceName
 block|,
 literal|"--component"
 block|,
@@ -877,6 +863,8 @@ name|checkCompCount
 argument_list|(
 literal|"master"
 argument_list|,
+name|serviceName
+argument_list|,
 literal|2L
 argument_list|)
 expr_stmt|;
@@ -887,7 +875,7 @@ init|=
 block|{
 literal|"flex"
 block|,
-literal|"service-1"
+name|serviceName
 block|,
 literal|"--component"
 block|,
@@ -920,17 +908,22 @@ name|checkCompCount
 argument_list|(
 literal|"master"
 argument_list|,
+name|serviceName
+argument_list|,
 literal|10L
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|checkCompCount (String compName, long count)
+DECL|method|checkCompCount (String compName, String serviceName, long count)
 specifier|private
 name|void
 name|checkCompCount
 parameter_list|(
 name|String
 name|compName
+parameter_list|,
+name|String
+name|serviceName
 parameter_list|,
 name|long
 name|count
@@ -950,7 +943,7 @@ name|getComponents
 argument_list|(
 name|fs
 argument_list|,
-literal|"service-1"
+name|serviceName
 argument_list|)
 decl_stmt|;
 for|for

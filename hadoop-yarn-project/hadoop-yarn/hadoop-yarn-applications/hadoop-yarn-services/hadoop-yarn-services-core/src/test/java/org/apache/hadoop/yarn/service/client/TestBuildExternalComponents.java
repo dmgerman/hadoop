@@ -266,7 +266,7 @@ name|params
 operator|.
 name|Arguments
 operator|.
-name|ARG_APPDEF
+name|ARG_FILE
 import|;
 end_import
 
@@ -374,7 +374,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// 1. Build the appDef and store on fs
+comment|// 1. Build the def file and store on fs
 comment|// 2. check component names
 DECL|method|buildAndCheckComponents (String appName, String appDef, SliderFileSystem sfs, Set<String> names)
 specifier|private
@@ -406,9 +406,7 @@ init|=
 block|{
 literal|"build"
 block|,
-name|appName
-block|,
-name|ARG_APPDEF
+name|ARG_FILE
 block|,
 name|ExampleAppJson
 operator|.

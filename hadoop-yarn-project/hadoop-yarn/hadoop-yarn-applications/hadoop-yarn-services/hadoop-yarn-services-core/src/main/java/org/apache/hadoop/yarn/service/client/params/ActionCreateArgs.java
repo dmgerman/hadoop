@@ -73,6 +73,18 @@ operator|.
 name|ACTION_CREATE
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getMinParams ()
+specifier|public
+name|int
+name|getMinParams
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
 block|}
 end_class
 

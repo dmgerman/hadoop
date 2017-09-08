@@ -278,7 +278,7 @@ name|client
 operator|.
 name|params
 operator|.
-name|SliderAMArgs
+name|ServiceAMArgs
 import|;
 end_import
 
@@ -439,7 +439,7 @@ decl_stmt|;
 DECL|field|amArgs
 specifier|private
 specifier|static
-name|SliderAMArgs
+name|ServiceAMArgs
 name|amArgs
 decl_stmt|;
 DECL|field|context
@@ -730,7 +730,7 @@ name|Path
 argument_list|(
 name|amArgs
 operator|.
-name|getAppDefPath
+name|getServiceDefPath
 argument_list|()
 argument_list|)
 operator|.
@@ -788,7 +788,7 @@ name|Path
 argument_list|(
 name|amArgs
 operator|.
-name|getAppDefPath
+name|getServiceDefPath
 argument_list|()
 argument_list|)
 argument_list|)
@@ -913,7 +913,7 @@ expr_stmt|;
 name|amArgs
 operator|=
 operator|new
-name|SliderAMArgs
+name|ServiceAMArgs
 argument_list|(
 name|args
 argument_list|)

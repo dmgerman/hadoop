@@ -130,9 +130,13 @@ block|{
 name|ARG_UPLOAD
 block|}
 argument_list|,
+name|required
+operator|=
+literal|true
+argument_list|,
 name|description
 operator|=
-literal|"Upload AM and agent libraries to HDFS for this client"
+literal|"Upload AM libraries to HDFS for this client version"
 argument_list|)
 DECL|field|upload
 specifier|public

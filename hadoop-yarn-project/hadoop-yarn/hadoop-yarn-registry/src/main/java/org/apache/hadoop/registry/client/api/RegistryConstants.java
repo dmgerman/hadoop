@@ -162,7 +162,7 @@ DECL|field|DEFAULT_DNS_PORT
 name|int
 name|DEFAULT_DNS_PORT
 init|=
-literal|53
+literal|5353
 decl_stmt|;
 comment|/**    * DNSSEC Enabled?    */
 DECL|field|KEY_DNSSEC_ENABLED

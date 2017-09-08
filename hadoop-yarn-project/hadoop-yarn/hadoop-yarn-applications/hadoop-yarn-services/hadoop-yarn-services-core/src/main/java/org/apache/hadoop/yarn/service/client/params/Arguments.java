@@ -32,11 +32,17 @@ specifier|public
 interface|interface
 name|Arguments
 block|{
-DECL|field|ARG_APPDEF
+DECL|field|ARG_FILE
 name|String
-name|ARG_APPDEF
+name|ARG_FILE
 init|=
-literal|"--appdef"
+literal|"--file"
+decl_stmt|;
+DECL|field|ARG_FILE_SHORT
+name|String
+name|ARG_FILE_SHORT
+init|=
+literal|"-f"
 decl_stmt|;
 DECL|field|ARG_BASE_PATH
 name|String
@@ -411,10 +417,10 @@ init|=
 literal|"--wait"
 decl_stmt|;
 comment|/*  STOP: DO NOT ADD YOUR ARGUMENTS HERE. GO BACK AND INSERT THEM IN THE  RIGHT PLACE IN THE LIST  */
-comment|/**    * server: URI for the cluster    */
-DECL|field|ARG_CLUSTER_URI
+comment|// Tha path in hdfs to be read by Service AM
+DECL|field|ARG_SERVICE_DEF_PATH
 name|String
-name|ARG_CLUSTER_URI
+name|ARG_SERVICE_DEF_PATH
 init|=
 literal|"-cluster-uri"
 decl_stmt|;

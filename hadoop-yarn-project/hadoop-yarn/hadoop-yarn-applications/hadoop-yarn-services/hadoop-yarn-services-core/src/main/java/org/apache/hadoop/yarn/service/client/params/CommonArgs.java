@@ -774,40 +774,18 @@ name|ParameterException
 name|e
 parameter_list|)
 block|{
+name|commander
+operator|.
+name|usage
+argument_list|(
+name|args
+index|[
+literal|0
+index|]
+argument_list|)
+expr_stmt|;
 throw|throw
-operator|new
-name|BadCommandArgumentsException
-argument_list|(
 name|e
-argument_list|,
-literal|"%s in %s"
-argument_list|,
-name|e
-operator|.
-name|toString
-argument_list|()
-argument_list|,
-operator|(
-name|args
-operator|!=
-literal|null
-condition|?
-operator|(
-name|SliderUtils
-operator|.
-name|join
-argument_list|(
-name|args
-argument_list|,
-literal|" "
-argument_list|,
-literal|false
-argument_list|)
-operator|)
-else|:
-literal|"[]"
-operator|)
-argument_list|)
 throw|;
 block|}
 comment|//now copy back to this class some of the attributes that are common to all
@@ -1075,27 +1053,6 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * If the Filesystem binding was provided, it overrides anything in    * the configuration    * @param conf configuration    */
-DECL|method|applyFileSystemBinding (Configuration conf)
-specifier|public
-name|void
-name|applyFileSystemBinding
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
-block|{
-name|ArgOps
-operator|.
-name|applyFileSystemBinding
-argument_list|(
-name|getFilesystemBinding
-argument_list|()
-argument_list|,
-name|conf
-argument_list|)
-expr_stmt|;
-block|}
 DECL|method|isDebug ()
 specifier|public
 name|boolean
@@ -1106,42 +1063,6 @@ return|return
 name|coreAction
 operator|.
 name|debug
-return|;
-block|}
-DECL|method|getFilesystemBinding ()
-specifier|public
-name|String
-name|getFilesystemBinding
-parameter_list|()
-block|{
-return|return
-name|coreAction
-operator|.
-name|filesystemBinding
-return|;
-block|}
-DECL|method|getBasePath ()
-specifier|public
-name|Path
-name|getBasePath
-parameter_list|()
-block|{
-return|return
-name|coreAction
-operator|.
-name|basePath
-return|;
-block|}
-DECL|method|getManager ()
-specifier|public
-name|String
-name|getManager
-parameter_list|()
-block|{
-return|return
-name|coreAction
-operator|.
-name|manager
 return|;
 block|}
 DECL|method|getAction ()
