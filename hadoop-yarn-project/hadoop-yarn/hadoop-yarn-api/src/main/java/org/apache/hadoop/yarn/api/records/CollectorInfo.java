@@ -31,6 +31,8 @@ operator|.
 name|classification
 operator|.
 name|InterfaceStability
+operator|.
+name|Evolving
 import|;
 end_import
 
@@ -46,7 +48,7 @@ name|classification
 operator|.
 name|InterfaceAudience
 operator|.
-name|Private
+name|Public
 import|;
 end_import
 
@@ -72,11 +74,9 @@ end_comment
 
 begin_class
 annotation|@
-name|Private
+name|Public
 annotation|@
-name|InterfaceStability
-operator|.
-name|Unstable
+name|Evolving
 DECL|class|CollectorInfo
 specifier|public
 specifier|abstract
