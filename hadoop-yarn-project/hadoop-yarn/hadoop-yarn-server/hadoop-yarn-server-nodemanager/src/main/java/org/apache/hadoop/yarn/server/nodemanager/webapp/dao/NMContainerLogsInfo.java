@@ -158,7 +158,7 @@ name|yarn
 operator|.
 name|logaggregation
 operator|.
-name|PerContainerLogFileInfo
+name|ContainerLogFileInfo
 import|;
 end_import
 
@@ -338,7 +338,7 @@ specifier|private
 specifier|static
 name|List
 argument_list|<
-name|PerContainerLogFileInfo
+name|ContainerLogFileInfo
 argument_list|>
 name|getContainerLogsInfo
 parameter_list|(
@@ -356,7 +356,7 @@ name|YarnException
 block|{
 name|List
 argument_list|<
-name|PerContainerLogFileInfo
+name|ContainerLogFileInfo
 argument_list|>
 name|logFiles
 init|=
@@ -422,11 +422,11 @@ name|isFile
 argument_list|()
 condition|)
 block|{
-name|PerContainerLogFileInfo
+name|ContainerLogFileInfo
 name|logMeta
 init|=
 operator|new
-name|PerContainerLogFileInfo
+name|ContainerLogFileInfo
 argument_list|(
 name|log
 operator|.

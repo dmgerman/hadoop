@@ -450,7 +450,7 @@ name|yarn
 operator|.
 name|logaggregation
 operator|.
-name|PerContainerLogFileInfo
+name|ContainerLogFileInfo
 import|;
 end_import
 
@@ -4287,7 +4287,7 @@ argument_list|)
 expr_stmt|;
 name|List
 argument_list|<
-name|PerContainerLogFileInfo
+name|ContainerLogFileInfo
 argument_list|>
 name|logMeta
 init|=
@@ -4518,7 +4518,7 @@ condition|)
 block|{
 name|List
 argument_list|<
-name|PerContainerLogFileInfo
+name|ContainerLogFileInfo
 argument_list|>
 name|meta
 init|=
@@ -4572,7 +4572,7 @@ argument_list|)
 expr_stmt|;
 name|List
 argument_list|<
-name|PerContainerLogFileInfo
+name|ContainerLogFileInfo
 argument_list|>
 name|meta
 init|=

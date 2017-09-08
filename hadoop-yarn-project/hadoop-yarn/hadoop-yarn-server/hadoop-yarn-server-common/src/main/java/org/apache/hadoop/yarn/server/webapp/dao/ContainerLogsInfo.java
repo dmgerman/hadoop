@@ -158,12 +158,12 @@ name|yarn
 operator|.
 name|logaggregation
 operator|.
-name|PerContainerLogFileInfo
+name|ContainerLogFileInfo
 import|;
 end_import
 
 begin_comment
-comment|/**  * {@code ContainerLogsInfo} includes the log meta-data of containers.  *<p>  * The container log meta-data includes details such as:  *<ul>  *<li>A list of {@link PerContainerLogFileInfo}.</li>  *<li>The container Id.</li>  *<li>The NodeManager Id.</li>  *<li>The logType: could be local or aggregated</li>  *</ul>  */
+comment|/**  * {@code ContainerLogsInfo} includes the log meta-data of containers.  *<p>  * The container log meta-data includes details such as:  *<ul>  *<li>A list of {@link ContainerLogFileInfo}.</li>  *<li>The container Id.</li>  *<li>The NodeManager Id.</li>  *<li>The logType: could be local or aggregated</li>  *</ul>  */
 end_comment
 
 begin_class
@@ -197,7 +197,7 @@ DECL|field|containerLogsInfo
 specifier|protected
 name|List
 argument_list|<
-name|PerContainerLogFileInfo
+name|ContainerLogFileInfo
 argument_list|>
 name|containerLogsInfo
 decl_stmt|;
@@ -263,7 +263,7 @@ operator|=
 operator|new
 name|ArrayList
 argument_list|<
-name|PerContainerLogFileInfo
+name|ContainerLogFileInfo
 argument_list|>
 argument_list|(
 name|logMeta
@@ -304,7 +304,7 @@ DECL|method|getContainerLogsInfo ()
 specifier|public
 name|List
 argument_list|<
-name|PerContainerLogFileInfo
+name|ContainerLogFileInfo
 argument_list|>
 name|getContainerLogsInfo
 parameter_list|()

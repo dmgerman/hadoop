@@ -60,6 +60,7 @@ end_comment
 
 begin_class
 DECL|class|BoundedRangeFileInputStream
+specifier|public
 class|class
 name|BoundedRangeFileInputStream
 extends|extends

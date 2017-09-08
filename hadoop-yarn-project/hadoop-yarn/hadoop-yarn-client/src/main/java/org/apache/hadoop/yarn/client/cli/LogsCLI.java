@@ -610,6 +610,22 @@ name|yarn
 operator|.
 name|logaggregation
 operator|.
+name|ContainerLogFileInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|logaggregation
+operator|.
 name|ContainerLogsRequest
 import|;
 end_import
@@ -642,7 +658,7 @@ name|yarn
 operator|.
 name|logaggregation
 operator|.
-name|PerContainerLogFileInfo
+name|LogToolUtils
 import|;
 end_import
 
@@ -2756,7 +2772,7 @@ name|List
 argument_list|<
 name|Pair
 argument_list|<
-name|PerContainerLogFileInfo
+name|ContainerLogFileInfo
 argument_list|,
 name|String
 argument_list|>
@@ -2779,7 +2795,7 @@ name|List
 argument_list|<
 name|Pair
 argument_list|<
-name|PerContainerLogFileInfo
+name|ContainerLogFileInfo
 argument_list|,
 name|String
 argument_list|>
@@ -3109,7 +3125,7 @@ argument_list|(
 operator|new
 name|Pair
 argument_list|<
-name|PerContainerLogFileInfo
+name|ContainerLogFileInfo
 argument_list|,
 name|String
 argument_list|>
@@ -3145,7 +3161,7 @@ argument_list|(
 operator|new
 name|Pair
 argument_list|<
-name|PerContainerLogFileInfo
+name|ContainerLogFileInfo
 argument_list|,
 name|String
 argument_list|>
@@ -3233,7 +3249,7 @@ return|;
 block|}
 DECL|method|generatePerContainerLogFileInfoFromJSON ( JSONObject meta)
 specifier|private
-name|PerContainerLogFileInfo
+name|ContainerLogFileInfo
 name|generatePerContainerLogFileInfoFromJSON
 parameter_list|(
 name|JSONObject
@@ -3301,7 +3317,7 @@ literal|"N/A"
 decl_stmt|;
 return|return
 operator|new
-name|PerContainerLogFileInfo
+name|ContainerLogFileInfo
 argument_list|(
 name|fileName
 argument_list|,
@@ -3412,7 +3428,7 @@ decl_stmt|;
 name|PrintStream
 name|out
 init|=
-name|logCliHelper
+name|LogToolUtils
 operator|.
 name|createPrintStream
 argument_list|(
@@ -7565,7 +7581,7 @@ name|List
 argument_list|<
 name|Pair
 argument_list|<
-name|PerContainerLogFileInfo
+name|ContainerLogFileInfo
 argument_list|,
 name|String
 argument_list|>
@@ -7586,7 +7602,7 @@ for|for
 control|(
 name|Pair
 argument_list|<
-name|PerContainerLogFileInfo
+name|ContainerLogFileInfo
 argument_list|,
 name|String
 argument_list|>
@@ -7660,7 +7676,7 @@ name|List
 argument_list|<
 name|Pair
 argument_list|<
-name|PerContainerLogFileInfo
+name|ContainerLogFileInfo
 argument_list|,
 name|String
 argument_list|>
@@ -7700,7 +7716,7 @@ for|for
 control|(
 name|Pair
 argument_list|<
-name|PerContainerLogFileInfo
+name|ContainerLogFileInfo
 argument_list|,
 name|String
 argument_list|>

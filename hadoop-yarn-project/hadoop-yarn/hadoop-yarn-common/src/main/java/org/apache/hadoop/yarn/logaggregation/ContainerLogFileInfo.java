@@ -19,14 +19,14 @@ package|;
 end_package
 
 begin_comment
-comment|/**  * PerContainerLogFileInfo represents the meta data for a container log file,  * which includes:  *<ul>  *<li>The filename of the container log.</li>  *<li>The size of the container log.</li>  *<li>The last modification time of the container log.</li>  *</ul>  *  */
+comment|/**  * ContainerLogFileInfo represents the meta data for a container log file,  * which includes:  *<ul>  *<li>The filename of the container log.</li>  *<li>The size of the container log.</li>  *<li>The last modification time of the container log.</li>  *</ul>  *  */
 end_comment
 
 begin_class
-DECL|class|PerContainerLogFileInfo
+DECL|class|ContainerLogFileInfo
 specifier|public
 class|class
-name|PerContainerLogFileInfo
+name|ContainerLogFileInfo
 block|{
 DECL|field|fileName
 specifier|private
@@ -44,14 +44,14 @@ name|String
 name|lastModifiedTime
 decl_stmt|;
 comment|//JAXB needs this
-DECL|method|PerContainerLogFileInfo ()
+DECL|method|ContainerLogFileInfo ()
 specifier|public
-name|PerContainerLogFileInfo
+name|ContainerLogFileInfo
 parameter_list|()
 block|{}
-DECL|method|PerContainerLogFileInfo (String fileName, String fileSize, String lastModifiedTime)
+DECL|method|ContainerLogFileInfo (String fileName, String fileSize, String lastModifiedTime)
 specifier|public
-name|PerContainerLogFileInfo
+name|ContainerLogFileInfo
 parameter_list|(
 name|String
 name|fileName
@@ -277,7 +277,7 @@ operator|!
 operator|(
 name|otherObj
 operator|instanceof
-name|PerContainerLogFileInfo
+name|ContainerLogFileInfo
 operator|)
 condition|)
 block|{
@@ -285,11 +285,11 @@ return|return
 literal|false
 return|;
 block|}
-name|PerContainerLogFileInfo
+name|ContainerLogFileInfo
 name|other
 init|=
 operator|(
-name|PerContainerLogFileInfo
+name|ContainerLogFileInfo
 operator|)
 name|otherObj
 decl_stmt|;

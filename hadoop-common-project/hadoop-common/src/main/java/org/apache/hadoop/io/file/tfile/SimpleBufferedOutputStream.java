@@ -56,6 +56,7 @@ end_comment
 
 begin_class
 DECL|class|SimpleBufferedOutputStream
+specifier|public
 class|class
 name|SimpleBufferedOutputStream
 extends|extends

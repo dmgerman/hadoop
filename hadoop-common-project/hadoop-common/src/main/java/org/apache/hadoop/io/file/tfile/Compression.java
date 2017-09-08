@@ -304,6 +304,7 @@ end_comment
 
 begin_class
 DECL|class|Compression
+specifier|public
 specifier|final
 class|class
 name|Compression
@@ -421,6 +422,7 @@ block|}
 block|}
 comment|/**    * Compression algorithms.    */
 DECL|enum|Algorithm
+specifier|public
 enum|enum
 name|Algorithm
 block|{
@@ -1547,6 +1549,7 @@ return|;
 block|}
 block|}
 DECL|method|getCompressionAlgorithmByName (String compressName)
+specifier|public
 specifier|static
 name|Algorithm
 name|getCompressionAlgorithmByName

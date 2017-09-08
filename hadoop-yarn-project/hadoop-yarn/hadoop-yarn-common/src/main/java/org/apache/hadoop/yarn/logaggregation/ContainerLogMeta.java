@@ -39,7 +39,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The ContainerLogMeta includes:  *<ul>  *<li>The Container Id.</li>  *<li>The NodeManager Id.</li>  *<li>A list of {@link PerContainerLogFileInfo}.</li>  *</ul>  *  */
+comment|/**  * The ContainerLogMeta includes:  *<ul>  *<li>The Container Id.</li>  *<li>The NodeManager Id.</li>  *<li>A list of {@link ContainerLogFileInfo}.</li>  *</ul>  *  */
 end_comment
 
 begin_class
@@ -62,7 +62,7 @@ DECL|field|logMeta
 specifier|private
 name|List
 argument_list|<
-name|PerContainerLogFileInfo
+name|ContainerLogFileInfo
 argument_list|>
 name|logMeta
 decl_stmt|;
@@ -141,7 +141,7 @@ operator|.
 name|add
 argument_list|(
 operator|new
-name|PerContainerLogFileInfo
+name|ContainerLogFileInfo
 argument_list|(
 name|fileName
 argument_list|,
@@ -156,7 +156,7 @@ DECL|method|getContainerLogMeta ()
 specifier|public
 name|List
 argument_list|<
-name|PerContainerLogFileInfo
+name|ContainerLogFileInfo
 argument_list|>
 name|getContainerLogMeta
 parameter_list|()
