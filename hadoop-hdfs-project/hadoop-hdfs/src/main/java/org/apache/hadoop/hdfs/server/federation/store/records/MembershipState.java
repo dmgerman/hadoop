@@ -631,8 +631,6 @@ specifier|abstract
 name|MembershipStats
 name|getStats
 parameter_list|()
-throws|throws
-name|IOException
 function_decl|;
 DECL|method|setLastContact (long contact)
 specifier|public

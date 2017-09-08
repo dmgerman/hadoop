@@ -1363,8 +1363,6 @@ specifier|public
 name|MembershipStats
 name|getStats
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 name|NamenodeMembershipStatsRecordProto
 name|statsProto
@@ -1421,7 +1419,7 @@ else|else
 block|{
 throw|throw
 operator|new
-name|IOException
+name|IllegalArgumentException
 argument_list|(
 literal|"Cannot get stats for the membership"
 argument_list|)

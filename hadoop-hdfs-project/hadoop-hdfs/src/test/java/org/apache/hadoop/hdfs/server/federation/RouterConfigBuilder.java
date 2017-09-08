@@ -98,6 +98,13 @@ name|enableStateStore
 init|=
 literal|false
 decl_stmt|;
+DECL|field|enableMetrics
+specifier|private
+name|boolean
+name|enableMetrics
+init|=
+literal|false
+decl_stmt|;
 DECL|method|RouterConfigBuilder (Configuration configuration)
 specifier|public
 name|RouterConfigBuilder
@@ -162,6 +169,12 @@ expr_stmt|;
 name|this
 operator|.
 name|enableStateStore
+operator|=
+literal|true
+expr_stmt|;
+name|this
+operator|.
+name|enableMetrics
 operator|=
 literal|true
 expr_stmt|;
@@ -264,6 +277,25 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|metrics (boolean enable)
+specifier|public
+name|RouterConfigBuilder
+name|metrics
+parameter_list|(
+name|boolean
+name|enable
+parameter_list|)
+block|{
+name|this
+operator|.
+name|enableMetrics
+operator|=
+name|enable
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|rpc ()
 specifier|public
 name|RouterConfigBuilder
@@ -319,6 +351,21 @@ return|return
 name|this
 operator|.
 name|stateStore
+argument_list|(
+literal|true
+argument_list|)
+return|;
+block|}
+DECL|method|metrics ()
+specifier|public
+name|RouterConfigBuilder
+name|metrics
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|metrics
 argument_list|(
 literal|true
 argument_list|)
@@ -393,6 +440,19 @@ argument_list|,
 name|this
 operator|.
 name|enableLocalHeartbeat
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_ROUTER_METRICS_ENABLE
+argument_list|,
+name|this
+operator|.
+name|enableMetrics
 argument_list|)
 expr_stmt|;
 return|return

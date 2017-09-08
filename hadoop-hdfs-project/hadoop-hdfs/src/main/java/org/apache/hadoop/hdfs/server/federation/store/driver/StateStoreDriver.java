@@ -72,6 +72,26 @@ name|server
 operator|.
 name|federation
 operator|.
+name|metrics
+operator|.
+name|StateStoreMetrics
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|federation
+operator|.
 name|store
 operator|.
 name|StateStoreService
@@ -215,8 +235,14 @@ specifier|private
 name|String
 name|identifier
 decl_stmt|;
+comment|/** State Store metrics. */
+DECL|field|metrics
+specifier|private
+name|StateStoreMetrics
+name|metrics
+decl_stmt|;
 comment|/**    * Initialize the state store connection.    *    * @param config Configuration for the driver.    * @param id Identifier for the driver.    * @param records Records that are supported.    * @return If initialized and ready, false if failed to initialize driver.    */
-DECL|method|init (final Configuration config, final String id, final Collection<Class<? extends BaseRecord>> records)
+DECL|method|init (final Configuration config, final String id, final Collection<Class<? extends BaseRecord>> records, final StateStoreMetrics stateStoreMetrics)
 specifier|public
 name|boolean
 name|init
@@ -240,6 +266,10 @@ name|BaseRecord
 argument_list|>
 argument_list|>
 name|records
+parameter_list|,
+specifier|final
+name|StateStoreMetrics
+name|stateStoreMetrics
 parameter_list|)
 block|{
 name|this
@@ -253,6 +283,12 @@ operator|.
 name|identifier
 operator|=
 name|id
+expr_stmt|;
+name|this
+operator|.
+name|metrics
+operator|=
+name|stateStoreMetrics
 expr_stmt|;
 if|if
 condition|(
@@ -376,6 +412,19 @@ return|return
 name|this
 operator|.
 name|identifier
+return|;
+block|}
+comment|/**    * Get the metrics for the State Store.    *    * @return State Store metrics.    */
+DECL|method|getMetrics ()
+specifier|public
+name|StateStoreMetrics
+name|getMetrics
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|metrics
 return|;
 block|}
 comment|/**    * Prepare the driver to access data storage.    *    * @return True if the driver was successfully initialized. If false is    *         returned, the state store will periodically attempt to    *         re-initialize the driver and the router will remain in safe mode    *         until the driver is initialized.    */

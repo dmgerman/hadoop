@@ -74,6 +74,26 @@ name|server
 operator|.
 name|federation
 operator|.
+name|metrics
+operator|.
+name|StateStoreMetrics
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|federation
+operator|.
 name|store
 operator|.
 name|driver
@@ -145,7 +165,7 @@ name|serializer
 decl_stmt|;
 annotation|@
 name|Override
-DECL|method|init (final Configuration config, final String id, final Collection<Class<? extends BaseRecord>> records)
+DECL|method|init (final Configuration config, final String id, final Collection<Class<? extends BaseRecord>> records, final StateStoreMetrics metrics)
 specifier|public
 name|boolean
 name|init
@@ -169,6 +189,10 @@ name|BaseRecord
 argument_list|>
 argument_list|>
 name|records
+parameter_list|,
+specifier|final
+name|StateStoreMetrics
+name|metrics
 parameter_list|)
 block|{
 name|boolean
@@ -183,6 +207,8 @@ argument_list|,
 name|id
 argument_list|,
 name|records
+argument_list|,
+name|metrics
 argument_list|)
 decl_stmt|;
 name|this

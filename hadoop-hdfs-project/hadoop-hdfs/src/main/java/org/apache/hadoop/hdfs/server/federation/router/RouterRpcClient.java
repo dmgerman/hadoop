@@ -615,6 +615,13 @@ specifier|final
 name|RetryPolicy
 name|retryPolicy
 decl_stmt|;
+comment|/** Optional perf monitor. */
+DECL|field|rpcMonitor
+specifier|private
+specifier|final
+name|RouterRpcMonitor
+name|rpcMonitor
+decl_stmt|;
 comment|/** Pattern to parse a stack trace line. */
 DECL|field|STACK_TRACE_PATTERN
 specifier|private
@@ -631,7 +638,7 @@ literal|"\\tat (.*)\\.(.*)\\((.*):(\\d*)\\)"
 argument_list|)
 decl_stmt|;
 comment|/**    * Create a router RPC client to manage remote procedure calls to NNs.    *    * @param conf Hdfs Configuation.    * @param resolver A NN resolver to determine the currently active NN in HA.    * @param monitor Optional performance monitor.    */
-DECL|method|RouterRpcClient (Configuration conf, String identifier, ActiveNamenodeResolver resolver)
+DECL|method|RouterRpcClient (Configuration conf, String identifier, ActiveNamenodeResolver resolver, RouterRpcMonitor monitor)
 specifier|public
 name|RouterRpcClient
 parameter_list|(
@@ -643,6 +650,9 @@ name|identifier
 parameter_list|,
 name|ActiveNamenodeResolver
 name|resolver
+parameter_list|,
+name|RouterRpcMonitor
+name|monitor
 parameter_list|)
 block|{
 name|this
@@ -699,6 +709,12 @@ name|newCachedThreadPool
 argument_list|(
 name|threadFactory
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|rpcMonitor
+operator|=
+name|monitor
 expr_stmt|;
 name|int
 name|maxFailoverAttempts
@@ -905,6 +921,22 @@ operator|.
 name|connectionManager
 operator|.
 name|getNumCreatingConnections
+argument_list|()
+return|;
+block|}
+comment|/**    * JSON representation of the connection pool.    *    * @return String representation of the JSON.    */
+DECL|method|getJSON ()
+specifier|public
+name|String
+name|getJSON
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|connectionManager
+operator|.
+name|getJSON
 argument_list|()
 return|;
 block|}
@@ -1205,6 +1237,19 @@ name|ret
 init|=
 literal|null
 decl_stmt|;
+if|if
+condition|(
+name|rpcMonitor
+operator|!=
+literal|null
+condition|)
+block|{
+name|rpcMonitor
+operator|.
+name|proxyOp
+argument_list|()
+expr_stmt|;
+block|}
 name|boolean
 name|failover
 init|=
@@ -1323,6 +1368,25 @@ name|address
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|this
+operator|.
+name|rpcMonitor
+operator|!=
+literal|null
+condition|)
+block|{
+name|this
+operator|.
+name|rpcMonitor
+operator|.
+name|proxyOpComplete
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|ret
 return|;
@@ -1350,6 +1414,23 @@ name|StandbyException
 condition|)
 block|{
 comment|// Fail over indicated by retry policy and/or NN
+if|if
+condition|(
+name|this
+operator|.
+name|rpcMonitor
+operator|!=
+literal|null
+condition|)
+block|{
+name|this
+operator|.
+name|rpcMonitor
+operator|.
+name|proxyOpFailureStandby
+argument_list|()
+expr_stmt|;
+block|}
 name|failover
 operator|=
 literal|true
@@ -1363,6 +1444,25 @@ operator|instanceof
 name|RemoteException
 condition|)
 block|{
+if|if
+condition|(
+name|this
+operator|.
+name|rpcMonitor
+operator|!=
+literal|null
+condition|)
+block|{
+name|this
+operator|.
+name|rpcMonitor
+operator|.
+name|proxyOpComplete
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
 comment|// RemoteException returned by NN
 throw|throw
 operator|(
@@ -1375,6 +1475,32 @@ else|else
 block|{
 comment|// Other communication error, this is a failure
 comment|// Communication retries are handled by the retry policy
+if|if
+condition|(
+name|this
+operator|.
+name|rpcMonitor
+operator|!=
+literal|null
+condition|)
+block|{
+name|this
+operator|.
+name|rpcMonitor
+operator|.
+name|proxyOpFailureCommunicate
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|rpcMonitor
+operator|.
+name|proxyOpComplete
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
 throw|throw
 name|ioe
 throw|;
@@ -1396,6 +1522,25 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+block|}
+if|if
+condition|(
+name|this
+operator|.
+name|rpcMonitor
+operator|!=
+literal|null
+condition|)
+block|{
+name|this
+operator|.
+name|rpcMonitor
+operator|.
+name|proxyOpComplete
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
 block|}
 comment|// All namenodes were unavailable or in standby
 name|String
@@ -3035,6 +3180,19 @@ block|}
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+if|if
+condition|(
+name|rpcMonitor
+operator|!=
+literal|null
+condition|)
+block|{
+name|rpcMonitor
+operator|.
+name|proxyOp
+argument_list|()
+expr_stmt|;
 block|}
 try|try
 block|{
