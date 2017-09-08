@@ -1043,6 +1043,35 @@ name|Resource
 name|requestedResource
 parameter_list|)
 function_decl|;
+comment|/**    * Verify whether a submitted application lifetime is valid as per configured    * Queue lifetime.    * @param queueName Name of the Queue    * @param lifetime configured application lifetime    * @return valid lifetime as per queue    */
+annotation|@
+name|Public
+annotation|@
+name|Evolving
+DECL|method|checkAndGetApplicationLifetime (String queueName, long lifetime)
+name|long
+name|checkAndGetApplicationLifetime
+parameter_list|(
+name|String
+name|queueName
+parameter_list|,
+name|long
+name|lifetime
+parameter_list|)
+function_decl|;
+comment|/**    * Get maximum lifetime for a queue.    * @param queueName to get lifetime    * @return maximum lifetime in seconds    */
+annotation|@
+name|Public
+annotation|@
+name|Evolving
+DECL|method|getMaximumApplicationLifetime (String queueName)
+name|long
+name|getMaximumApplicationLifetime
+parameter_list|(
+name|String
+name|queueName
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

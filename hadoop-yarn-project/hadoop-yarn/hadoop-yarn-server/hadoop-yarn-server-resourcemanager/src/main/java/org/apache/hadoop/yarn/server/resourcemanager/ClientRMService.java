@@ -10315,6 +10315,13 @@ argument_list|,
 name|applicationId
 argument_list|)
 expr_stmt|;
+name|response
+operator|.
+name|setApplicationTimeouts
+argument_list|(
+name|applicationTimeouts
+argument_list|)
+expr_stmt|;
 return|return
 name|response
 return|;
@@ -10359,6 +10366,8 @@ throw|;
 block|}
 try|try
 block|{
+name|applicationTimeouts
+operator|=
 name|rmAppManager
 operator|.
 name|updateApplicationTimeout
@@ -10418,6 +10427,13 @@ argument_list|,
 literal|"ClientRMService"
 argument_list|,
 name|applicationId
+argument_list|)
+expr_stmt|;
+name|response
+operator|.
+name|setApplicationTimeouts
+argument_list|(
+name|applicationTimeouts
 argument_list|)
 expr_stmt|;
 return|return

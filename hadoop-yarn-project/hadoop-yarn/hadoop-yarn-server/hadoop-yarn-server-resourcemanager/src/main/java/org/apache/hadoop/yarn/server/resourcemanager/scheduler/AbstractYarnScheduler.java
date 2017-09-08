@@ -6529,6 +6529,42 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|checkAndGetApplicationLifetime (String queueName, long lifetime)
+specifier|public
+name|long
+name|checkAndGetApplicationLifetime
+parameter_list|(
+name|String
+name|queueName
+parameter_list|,
+name|long
+name|lifetime
+parameter_list|)
+block|{
+comment|// -1 indicates, lifetime is not configured.
+return|return
+operator|-
+literal|1
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getMaximumApplicationLifetime (String queueName)
+specifier|public
+name|long
+name|getMaximumApplicationLifetime
+parameter_list|(
+name|String
+name|queueName
+parameter_list|)
+block|{
+return|return
+operator|-
+literal|1
+return|;
+block|}
 block|}
 end_class
 

@@ -72,6 +72,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ApplicationTimeoutType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|util
 operator|.
 name|Records
@@ -116,6 +134,35 @@ return|return
 name|response
 return|;
 block|}
+comment|/**    * Get<code>ApplicationTimeouts</code> of the application. Timeout value is    * in ISO8601 standard with format<b>yyyy-MM-dd'T'HH:mm:ss.SSSZ</b>.    * @return all<code>ApplicationTimeouts</code> of the application.    */
+DECL|method|getApplicationTimeouts ()
+specifier|public
+specifier|abstract
+name|Map
+argument_list|<
+name|ApplicationTimeoutType
+argument_list|,
+name|String
+argument_list|>
+name|getApplicationTimeouts
+parameter_list|()
+function_decl|;
+comment|/**    * Set the<code>ApplicationTimeouts</code> for the application. Timeout value    * is absolute. Timeout value should meet ISO8601 format. Support ISO8601    * format is<b>yyyy-MM-dd'T'HH:mm:ss.SSSZ</b>. All pre-existing Map entries    * are cleared before adding the new Map.    * @param applicationTimeouts<code>ApplicationTimeouts</code>s for the    *          application    */
+DECL|method|setApplicationTimeouts ( Map<ApplicationTimeoutType, String> applicationTimeouts)
+specifier|public
+specifier|abstract
+name|void
+name|setApplicationTimeouts
+parameter_list|(
+name|Map
+argument_list|<
+name|ApplicationTimeoutType
+argument_list|,
+name|String
+argument_list|>
+name|applicationTimeouts
+parameter_list|)
+function_decl|;
 block|}
 end_class
 

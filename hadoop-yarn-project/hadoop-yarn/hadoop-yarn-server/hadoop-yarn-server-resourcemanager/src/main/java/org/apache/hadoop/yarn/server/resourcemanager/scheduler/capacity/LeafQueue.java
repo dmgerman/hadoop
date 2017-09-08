@@ -426,6 +426,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|exceptions
+operator|.
+name|YarnRuntimeException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|factories
 operator|.
 name|RecordFactory
@@ -1281,6 +1297,25 @@ name|AppPriorityACLGroup
 argument_list|>
 argument_list|()
 decl_stmt|;
+comment|// -1 indicates lifetime is disabled
+DECL|field|maxApplicationLifetime
+specifier|private
+specifier|volatile
+name|long
+name|maxApplicationLifetime
+init|=
+operator|-
+literal|1
+decl_stmt|;
+DECL|field|defaultApplicationLifetime
+specifier|private
+specifier|volatile
+name|long
+name|defaultApplicationLifetime
+init|=
+operator|-
+literal|1
+decl_stmt|;
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -1821,6 +1856,61 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|maxApplicationLifetime
+operator|=
+name|conf
+operator|.
+name|getMaximumLifetimePerQueue
+argument_list|(
+operator|(
+name|getQueuePath
+argument_list|()
+operator|)
+argument_list|)
+expr_stmt|;
+name|defaultApplicationLifetime
+operator|=
+name|conf
+operator|.
+name|getDefaultLifetimePerQueue
+argument_list|(
+operator|(
+name|getQueuePath
+argument_list|()
+operator|)
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|defaultApplicationLifetime
+operator|>
+name|maxApplicationLifetime
+condition|)
+block|{
+throw|throw
+operator|new
+name|YarnRuntimeException
+argument_list|(
+literal|"Default lifetime"
+operator|+
+name|defaultApplicationLifetime
+operator|+
+literal|" can't exceed maximum lifetime "
+operator|+
+name|maxApplicationLifetime
+argument_list|)
+throw|;
+block|}
+name|defaultApplicationLifetime
+operator|=
+name|defaultApplicationLifetime
+operator|>
+literal|0
+condition|?
+name|defaultApplicationLifetime
+else|:
+name|maxApplicationLifetime
+expr_stmt|;
 comment|// Validate leaf queue's user's weights.
 name|int
 name|queueUL
@@ -2136,6 +2226,18 @@ operator|+
 literal|"\npriority = "
 operator|+
 name|priority
+operator|+
+literal|"\nmaxLifetime = "
+operator|+
+name|maxApplicationLifetime
+operator|+
+literal|" seconds"
+operator|+
+literal|"\ndefaultLifetime = "
+operator|+
+name|defaultApplicationLifetime
+operator|+
+literal|" seconds"
 argument_list|)
 expr_stmt|;
 block|}
@@ -9894,6 +9996,26 @@ operator|=
 name|userLimit
 expr_stmt|;
 block|}
+block|}
+DECL|method|getMaximumApplicationLifetime ()
+specifier|public
+name|long
+name|getMaximumApplicationLifetime
+parameter_list|()
+block|{
+return|return
+name|maxApplicationLifetime
+return|;
+block|}
+DECL|method|getDefaultApplicationLifetime ()
+specifier|public
+name|long
+name|getDefaultApplicationLifetime
+parameter_list|()
+block|{
+return|return
+name|defaultApplicationLifetime
+return|;
 block|}
 block|}
 end_class
