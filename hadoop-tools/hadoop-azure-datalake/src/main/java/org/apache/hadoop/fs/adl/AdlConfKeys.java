@@ -192,15 +192,6 @@ name|MSI_PORT
 init|=
 literal|"fs.adl.oauth2.msi.port"
 decl_stmt|;
-DECL|field|MSI_TENANT_GUID
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|MSI_TENANT_GUID
-init|=
-literal|"fs.adl.oauth2.msi.tenantguid"
-decl_stmt|;
 comment|// DeviceCode Auth configuration
 DECL|field|DEVICE_CODE_CLIENT_APP_ID
 specifier|public
