@@ -3180,6 +3180,16 @@ name|getVersion
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|container
+operator|.
+name|setExecutionType
+argument_list|(
+name|status
+operator|.
+name|getExecutionType
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|ApplicationAttemptId
 name|attemptId
 init|=

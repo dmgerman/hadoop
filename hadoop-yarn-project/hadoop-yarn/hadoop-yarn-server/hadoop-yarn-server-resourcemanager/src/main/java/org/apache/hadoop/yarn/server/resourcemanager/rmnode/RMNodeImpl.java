@@ -4604,6 +4604,15 @@ operator|==
 name|ContainerState
 operator|.
 name|RUNNING
+operator|||
+name|container
+operator|.
+name|getContainerState
+argument_list|()
+operator|==
+name|ContainerState
+operator|.
+name|SCHEDULED
 condition|)
 block|{
 name|rmNode

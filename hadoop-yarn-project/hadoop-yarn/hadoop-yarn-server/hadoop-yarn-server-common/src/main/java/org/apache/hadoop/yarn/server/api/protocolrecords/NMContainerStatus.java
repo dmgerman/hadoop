@@ -90,6 +90,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ExecutionType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Priority
 import|;
 end_import
@@ -209,10 +227,14 @@ argument_list|,
 name|CommonNodeLabelsManager
 operator|.
 name|NO_LABEL
+argument_list|,
+name|ExecutionType
+operator|.
+name|GUARANTEED
 argument_list|)
 return|;
 block|}
-DECL|method|newInstance (ContainerId containerId, int version, ContainerState containerState, Resource allocatedResource, String diagnostics, int containerExitStatus, Priority priority, long creationTime, String nodeLabelExpression)
+DECL|method|newInstance (ContainerId containerId, int version, ContainerState containerState, Resource allocatedResource, String diagnostics, int containerExitStatus, Priority priority, long creationTime, String nodeLabelExpression, ExecutionType executionType)
 specifier|public
 specifier|static
 name|NMContainerStatus
@@ -244,6 +266,9 @@ name|creationTime
 parameter_list|,
 name|String
 name|nodeLabelExpression
+parameter_list|,
+name|ExecutionType
+name|executionType
 parameter_list|)
 block|{
 name|NMContainerStatus
@@ -319,6 +344,13 @@ operator|.
 name|setNodeLabelExpression
 argument_list|(
 name|nodeLabelExpression
+argument_list|)
+expr_stmt|;
+name|status
+operator|.
+name|setExecutionType
+argument_list|(
+name|executionType
 argument_list|)
 expr_stmt|;
 return|return
@@ -487,6 +519,28 @@ name|int
 name|version
 parameter_list|)
 block|{    }
+comment|/**    * Get the<code>ExecutionType</code> of the container.    * @return<code>ExecutionType</code> of the container    */
+DECL|method|getExecutionType ()
+specifier|public
+name|ExecutionType
+name|getExecutionType
+parameter_list|()
+block|{
+return|return
+name|ExecutionType
+operator|.
+name|GUARANTEED
+return|;
+block|}
+DECL|method|setExecutionType (ExecutionType executionType)
+specifier|public
+name|void
+name|setExecutionType
+parameter_list|(
+name|ExecutionType
+name|executionType
+parameter_list|)
+block|{ }
 block|}
 end_class
 

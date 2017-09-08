@@ -5588,9 +5588,7 @@ name|getContainerId
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|liveContainers
-operator|.
-name|put
+name|addRMContainer
 argument_list|(
 name|rmContainer
 operator|.
@@ -5600,6 +5598,18 @@ argument_list|,
 name|rmContainer
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|rmContainer
+operator|.
+name|getExecutionType
+argument_list|()
+operator|==
+name|ExecutionType
+operator|.
+name|GUARANTEED
+condition|)
+block|{
 name|attemptResourceUsage
 operator|.
 name|incUsed
@@ -5618,6 +5628,7 @@ name|getResource
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 comment|// resourceLimit: updated when LeafQueue#recoverContainer#allocateResource
 comment|// is called.
 comment|// newlyAllocatedContainers.add(rmContainer);

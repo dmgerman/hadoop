@@ -8723,6 +8723,20 @@ condition|)
 block|{
 return|return;
 block|}
+if|if
+condition|(
+name|rmContainer
+operator|.
+name|getExecutionType
+argument_list|()
+operator|!=
+name|ExecutionType
+operator|.
+name|GUARANTEED
+condition|)
+block|{
+return|return;
+block|}
 comment|// Careful! Locking order is important!
 try|try
 block|{
