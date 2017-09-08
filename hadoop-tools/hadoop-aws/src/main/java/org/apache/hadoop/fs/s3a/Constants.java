@@ -1224,6 +1224,33 @@ name|FAIL_INJECT_INCONSISTENCY_PROBABILITY
 init|=
 literal|"fs.s3a.failinject.inconsistency.probability"
 decl_stmt|;
+comment|/**    * S3 API level parameters.    */
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|field|LIST_VERSION
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|LIST_VERSION
+init|=
+literal|"fs.s3a.list.version"
+decl_stmt|;
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|field|DEFAULT_LIST_VERSION
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_LIST_VERSION
+init|=
+literal|2
+decl_stmt|;
 block|}
 end_class
 

@@ -40,38 +40,6 @@ name|s3
 operator|.
 name|model
 operator|.
-name|ListObjectsRequest
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|amazonaws
-operator|.
-name|services
-operator|.
-name|s3
-operator|.
-name|model
-operator|.
-name|ObjectListing
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|amazonaws
-operator|.
-name|services
-operator|.
-name|s3
-operator|.
-name|model
-operator|.
 name|S3ObjectSummary
 import|;
 end_import
@@ -435,14 +403,14 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Create a FileStatus iterator against a path, with a given list object    * request.    *    * @param listPath path of the listing    * @param request initial request to make    * @param filter the filter on which paths to accept    * @param acceptor the class/predicate to decide which entries to accept    * in the listing based on the full file status.    * @return the iterator    * @throws IOException IO Problems    */
-DECL|method|createFileStatusListingIterator ( Path listPath, ListObjectsRequest request, PathFilter filter, Listing.FileStatusAcceptor acceptor)
+DECL|method|createFileStatusListingIterator ( Path listPath, S3ListRequest request, PathFilter filter, Listing.FileStatusAcceptor acceptor)
 name|FileStatusListingIterator
 name|createFileStatusListingIterator
 parameter_list|(
 name|Path
 name|listPath
 parameter_list|,
-name|ListObjectsRequest
+name|S3ListRequest
 name|request
 parameter_list|,
 name|PathFilter
@@ -472,14 +440,14 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Create a FileStatus iterator against a path, with a given    * list object request.    * @param listPath path of the listing    * @param request initial request to make    * @param filter the filter on which paths to accept    * @param acceptor the class/predicate to decide which entries to accept    * in the listing based on the full file status.    * @param providedStatus the provided list of file status, which may contain    *                       items that are not listed from source.    * @return the iterator    * @throws IOException IO Problems    */
-DECL|method|createFileStatusListingIterator ( Path listPath, ListObjectsRequest request, PathFilter filter, Listing.FileStatusAcceptor acceptor, RemoteIterator<FileStatus> providedStatus)
+DECL|method|createFileStatusListingIterator ( Path listPath, S3ListRequest request, PathFilter filter, Listing.FileStatusAcceptor acceptor, RemoteIterator<FileStatus> providedStatus)
 name|FileStatusListingIterator
 name|createFileStatusListingIterator
 parameter_list|(
 name|Path
 name|listPath
 parameter_list|,
-name|ListObjectsRequest
+name|S3ListRequest
 name|request
 parameter_list|,
 name|PathFilter
@@ -1250,12 +1218,12 @@ literal|false
 return|;
 block|}
 comment|/**      * Build the next status batch from a listing.      * @param objects the next object listing      * @return true if this added any entries after filtering      */
-DECL|method|buildNextStatusBatch (ObjectListing objects)
+DECL|method|buildNextStatusBatch (S3ListResult objects)
 specifier|private
 name|boolean
 name|buildNextStatusBatch
 parameter_list|(
-name|ObjectListing
+name|S3ListResult
 name|objects
 parameter_list|)
 block|{
@@ -1587,7 +1555,7 @@ name|ObjectListingIterator
 implements|implements
 name|RemoteIterator
 argument_list|<
-name|ObjectListing
+name|S3ListResult
 argument_list|>
 block|{
 comment|/** The path listed. */
@@ -1600,8 +1568,14 @@ decl_stmt|;
 comment|/** The most recent listing results. */
 DECL|field|objects
 specifier|private
-name|ObjectListing
+name|S3ListResult
 name|objects
+decl_stmt|;
+comment|/** The most recent listing request. */
+DECL|field|request
+specifier|private
+name|S3ListRequest
+name|request
 decl_stmt|;
 comment|/** Indicator that this is the first listing. */
 DECL|field|firstListing
@@ -1626,13 +1600,13 @@ name|int
 name|maxKeys
 decl_stmt|;
 comment|/**      * Constructor -calls `listObjects()` on the request to populate the      * initial set of results/fail if there was a problem talking to the bucket.      * @param listPath path of the listing      * @param request initial request to make      * */
-DECL|method|ObjectListingIterator ( Path listPath, ListObjectsRequest request)
+DECL|method|ObjectListingIterator ( Path listPath, S3ListRequest request)
 name|ObjectListingIterator
 parameter_list|(
 name|Path
 name|listPath
 parameter_list|,
-name|ListObjectsRequest
+name|S3ListRequest
 name|request
 parameter_list|)
 block|{
@@ -1662,6 +1636,12 @@ argument_list|(
 name|request
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|request
+operator|=
+name|request
+expr_stmt|;
 block|}
 comment|/**      * Declare that the iterator has data if it is either is the initial      * iteration or it is a later one and the last listing obtained was      * incomplete.      * @throws IOException never: there is no IO in this operation.      */
 annotation|@
@@ -1688,7 +1668,7 @@ annotation|@
 name|Override
 DECL|method|next ()
 specifier|public
-name|ObjectListing
+name|S3ListResult
 name|next
 parameter_list|()
 throws|throws
@@ -1751,6 +1731,8 @@ name|owner
 operator|.
 name|continueListObjects
 argument_list|(
+name|request
+argument_list|,
 name|objects
 argument_list|)
 expr_stmt|;
