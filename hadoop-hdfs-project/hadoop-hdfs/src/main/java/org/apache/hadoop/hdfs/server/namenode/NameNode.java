@@ -3328,8 +3328,8 @@ name|address
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Fetches the address for services to use when connecting to namenode    * based on the value of fallback returns null if the special    * address is not specified or returns the default namenode address    * to be used by both clients and services.    * Services here are datanodes, backup node, any non client connection    */
-DECL|method|getServiceAddress (Configuration conf, boolean fallback)
+comment|/**    * Fetches the address for services to use when connecting to namenode    * Services here are datanodes, backup node, any non client connection    */
+DECL|method|getServiceAddress (Configuration conf)
 specifier|public
 specifier|static
 name|InetSocketAddress
@@ -3337,13 +3337,10 @@ name|getServiceAddress
 parameter_list|(
 name|Configuration
 name|conf
-parameter_list|,
-name|boolean
-name|fallback
 parameter_list|)
 block|{
 name|String
-name|addr
+name|address
 init|=
 name|conf
 operator|.
@@ -3354,35 +3351,52 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|addr
+name|address
 operator|==
 literal|null
 operator|||
-name|addr
+name|address
 operator|.
 name|isEmpty
 argument_list|()
 condition|)
 block|{
-return|return
-name|fallback
-condition|?
+name|InetSocketAddress
+name|rpcAddress
+init|=
 name|DFSUtilClient
 operator|.
 name|getNNAddress
 argument_list|(
 name|conf
 argument_list|)
-else|:
-literal|null
+decl_stmt|;
+return|return
+name|NetUtils
+operator|.
+name|createSocketAddr
+argument_list|(
+name|rpcAddress
+operator|.
+name|getHostName
+argument_list|()
+argument_list|,
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_NAMENODE_SERVICE_RPC_PORT_DEFAULT
+argument_list|)
 return|;
 block|}
 return|return
-name|DFSUtilClient
+name|NetUtils
 operator|.
-name|getNNAddress
+name|createSocketAddr
 argument_list|(
-name|addr
+name|address
+argument_list|,
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_NAMENODE_SERVICE_RPC_PORT_DEFAULT
 argument_list|)
 return|;
 block|}
@@ -3487,8 +3501,6 @@ operator|.
 name|getServiceAddress
 argument_list|(
 name|conf
-argument_list|,
-literal|false
 argument_list|)
 return|;
 block|}
@@ -3646,7 +3658,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Modifies the configuration passed to contain the service rpc address setting    */
+comment|/**    * Modifies the configuration passed to contain the service rpc address    * setting.    */
 DECL|method|setRpcServiceServerAddress (Configuration conf, InetSocketAddress serviceRPCAddress)
 specifier|protected
 name|void
@@ -5426,6 +5438,23 @@ name|getNameNodeAddress
 argument_list|()
 else|:
 name|serviceAddr
+return|;
+block|}
+comment|/**    * @return NameNode service RPC address in "host:port" string form    */
+DECL|method|getServiceRpcAddressHostPortString ()
+specifier|public
+name|String
+name|getServiceRpcAddressHostPortString
+parameter_list|()
+block|{
+return|return
+name|NetUtils
+operator|.
+name|getHostPortString
+argument_list|(
+name|getServiceRpcAddress
+argument_list|()
+argument_list|)
 return|;
 block|}
 comment|/**    * @return NameNode HTTP address, used by the Web UI, image transfer,    *    and HTTP-based file system clients like WebHDFS    */

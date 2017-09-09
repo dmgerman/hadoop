@@ -8027,26 +8027,16 @@ operator|.
 name|getServiceAddress
 argument_list|(
 name|conf
-argument_list|,
-literal|true
 argument_list|)
 decl_stmt|;
 name|this
 operator|.
 name|nameNodeHostName
 operator|=
-operator|(
-name|serviceAddress
-operator|!=
-literal|null
-operator|)
-condition|?
 name|serviceAddress
 operator|.
 name|getHostName
 argument_list|()
-else|:
-literal|""
 expr_stmt|;
 block|}
 comment|/**     * Stop services common to both active and standby states    */

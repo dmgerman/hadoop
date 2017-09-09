@@ -602,6 +602,15 @@ name|conf
 operator|.
 name|set
 argument_list|(
+name|DFS_NAMENODE_SERVICE_RPC_ADDRESS_KEY
+argument_list|,
+literal|"0.0.0.0:0"
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
 name|DFS_NAMENODE_HTTP_ADDRESS_KEY
 argument_list|,
 literal|"0.0.0.0:0"

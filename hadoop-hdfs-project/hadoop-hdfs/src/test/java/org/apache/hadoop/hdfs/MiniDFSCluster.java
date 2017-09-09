@@ -1854,6 +1854,13 @@ name|nameNodePort
 init|=
 literal|0
 decl_stmt|;
+DECL|field|nameNodeServicePort
+specifier|private
+name|int
+name|nameNodeServicePort
+init|=
+literal|0
+decl_stmt|;
 DECL|field|nameNodeHttpPort
 specifier|private
 name|int
@@ -2101,6 +2108,26 @@ block|{
 name|this
 operator|.
 name|nameNodePort
+operator|=
+name|val
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+comment|/**      * Default: 0      */
+DECL|method|nameNodeServicePort (int val)
+specifier|public
+name|Builder
+name|nameNodeServicePort
+parameter_list|(
+name|int
+name|val
+parameter_list|)
+block|{
+name|this
+operator|.
+name|nameNodeServicePort
 operator|=
 name|val
 expr_stmt|;
@@ -2557,7 +2584,7 @@ return|return
 name|this
 return|;
 block|}
-comment|/**      * Default: false      * When true the hosts file/include file for the cluster is setup      */
+comment|/**      * Default: false.      * When true the hosts file/include file for the cluster is setup.      */
 DECL|method|setupHostsFile (boolean val)
 specifier|public
 name|Builder
@@ -2577,7 +2604,7 @@ return|return
 name|this
 return|;
 block|}
-comment|/**      * Default: a single namenode.      * See {@link MiniDFSNNTopology#simpleFederatedTopology(int)} to set up      * federated nameservices      */
+comment|/**      * Default: a single namenode.      * See {@link MiniDFSNNTopology#simpleFederatedTopology(int)} to set up      * federated nameservices.      */
 DECL|method|nnTopology (MiniDFSNNTopology topology)
 specifier|public
 name|Builder
@@ -2707,6 +2734,10 @@ argument_list|(
 name|builder
 operator|.
 name|nameNodePort
+argument_list|,
+name|builder
+operator|.
+name|nameNodeServicePort
 argument_list|,
 name|builder
 operator|.
@@ -3691,6 +3722,8 @@ operator|.
 name|simpleSingleNN
 argument_list|(
 name|nameNodePort
+argument_list|,
+literal|0
 argument_list|,
 literal|0
 argument_list|)
@@ -6400,6 +6433,36 @@ name|getIpcPort
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|key
+operator|=
+name|DFSUtil
+operator|.
+name|addKeySuffixes
+argument_list|(
+name|DFS_NAMENODE_SERVICE_RPC_ADDRESS_KEY
+argument_list|,
+name|nameserviceId
+argument_list|,
+name|nnConf
+operator|.
+name|getNnId
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|key
+argument_list|,
+literal|"127.0.0.1:"
+operator|+
+name|nnConf
+operator|.
+name|getServicePort
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|createArgs (StartupOption operation)
 specifier|private
@@ -6591,6 +6654,27 @@ argument_list|,
 name|nn
 operator|.
 name|getNameNodeAddressHostPortString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|hdfsConf
+operator|.
+name|set
+argument_list|(
+name|DFSUtil
+operator|.
+name|addKeySuffixes
+argument_list|(
+name|DFS_NAMENODE_SERVICE_RPC_ADDRESS_KEY
+argument_list|,
+name|nameserviceId
+argument_list|,
+name|nnId
+argument_list|)
+argument_list|,
+name|nn
+operator|.
+name|getServiceRpcAddressHostPortString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6861,6 +6945,17 @@ argument_list|(
 name|nnIndex
 argument_list|)
 operator|.
+name|conf
+return|;
+block|}
+comment|/**    * Return the cluster-wide configuration.    * @return    */
+DECL|method|getClusterConfiguration ()
+specifier|public
+name|Configuration
+name|getClusterConfiguration
+parameter_list|()
+block|{
+return|return
 name|conf
 return|;
 block|}
@@ -9164,6 +9259,23 @@ argument_list|()
 operator|.
 name|getPort
 argument_list|()
+return|;
+block|}
+comment|/**    * Gets the service rpc port used by the NameNode, because the caller    * supplied port is not necessarily the actual port used.    * Assumption: cluster has a single namenode    */
+DECL|method|getNameNodeServicePort ()
+specifier|public
+name|int
+name|getNameNodeServicePort
+parameter_list|()
+block|{
+name|checkSingleNameNode
+argument_list|()
+expr_stmt|;
+return|return
+name|getNameNodeServicePort
+argument_list|(
+literal|0
+argument_list|)
 return|;
 block|}
 comment|/**    * @return the service rpc port used by the NameNode at the given index.    */
@@ -11560,17 +11672,17 @@ name|nnIndex
 argument_list|)
 decl_stmt|;
 name|InetSocketAddress
-name|addr
+name|nameNodeAddress
 init|=
 name|info
 operator|.
 name|nameNode
 operator|.
-name|getServiceRpcAddress
+name|getNameNodeAddress
 argument_list|()
 decl_stmt|;
 assert|assert
-name|addr
+name|nameNodeAddress
 operator|.
 name|getPort
 argument_list|()
@@ -11583,12 +11695,22 @@ init|=
 operator|new
 name|DFSClient
 argument_list|(
-name|addr
+name|nameNodeAddress
 argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
 comment|// ensure all datanodes have registered and sent heartbeat to the namenode
+name|InetSocketAddress
+name|serviceAddress
+init|=
+name|info
+operator|.
+name|nameNode
+operator|.
+name|getServiceRpcAddress
+argument_list|()
+decl_stmt|;
 while|while
 condition|(
 name|shouldWait
@@ -11602,7 +11724,7 @@ operator|.
 name|LIVE
 argument_list|)
 argument_list|,
-name|addr
+name|serviceAddress
 argument_list|)
 condition|)
 block|{
@@ -13594,7 +13716,6 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Add a namenode to a federated cluster and start it. Configuration of    * datanodes in the cluster is refreshed to register with the new namenode.    *     * @return newly started namenode    */
 DECL|method|addNameNode (Configuration conf, int namenodePort)
 specifier|public
 name|void
@@ -13605,6 +13726,34 @@ name|conf
 parameter_list|,
 name|int
 name|namenodePort
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|addNameNode
+argument_list|(
+name|conf
+argument_list|,
+name|namenodePort
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Add a namenode to a federated cluster and start it. Configuration of    * datanodes in the cluster is refreshed to register with the new namenode.    *     * @return newly started namenode    */
+DECL|method|addNameNode (Configuration conf, int namenodePort, int servicePort)
+specifier|public
+name|void
+name|addNameNode
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|int
+name|namenodePort
+parameter_list|,
+name|int
+name|servicePort
 parameter_list|)
 throws|throws
 name|IOException
@@ -13694,6 +13843,11 @@ operator|.
 name|setIpcPort
 argument_list|(
 name|namenodePort
+argument_list|)
+operator|.
+name|setServicePort
+argument_list|(
+name|servicePort
 argument_list|)
 argument_list|)
 expr_stmt|;

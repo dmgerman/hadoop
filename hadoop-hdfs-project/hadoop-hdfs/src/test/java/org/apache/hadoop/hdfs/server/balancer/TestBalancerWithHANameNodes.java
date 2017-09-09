@@ -534,7 +534,10 @@ name|cluster
 operator|.
 name|startDataNodes
 argument_list|(
-name|conf
+name|cluster
+operator|.
+name|getClusterConfiguration
+argument_list|()
 argument_list|,
 literal|1
 argument_list|,

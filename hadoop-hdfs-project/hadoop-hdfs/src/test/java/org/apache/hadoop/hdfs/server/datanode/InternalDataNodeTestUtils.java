@@ -619,7 +619,7 @@ name|spy
 return|;
 block|}
 comment|/**    * Starts an instance of DataNode with NN mocked. Called should ensure to    * shutdown the DN    *    * @throws IOException    */
-DECL|method|startDNWithMockNN (Configuration conf, final InetSocketAddress nnSocketAddr, final String dnDataDir)
+DECL|method|startDNWithMockNN ( Configuration conf, final InetSocketAddress nnSocketAddr, final InetSocketAddress nnServiceAddr, final String dnDataDir)
 specifier|public
 specifier|static
 name|DataNode
@@ -631,6 +631,10 @@ parameter_list|,
 specifier|final
 name|InetSocketAddress
 name|nnSocketAddr
+parameter_list|,
+specifier|final
+name|InetSocketAddress
+name|nnServiceAddr
 parameter_list|,
 specifier|final
 name|String
@@ -953,7 +957,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-name|nnSocketAddr
+name|nnServiceAddr
 argument_list|,
 name|nnAddr
 argument_list|)

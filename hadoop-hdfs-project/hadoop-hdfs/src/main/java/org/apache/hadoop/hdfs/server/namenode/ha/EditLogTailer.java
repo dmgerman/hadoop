@@ -883,8 +883,6 @@ name|info
 operator|.
 name|getConfiguration
 argument_list|()
-argument_list|,
-literal|true
 argument_list|)
 decl_stmt|;
 comment|// sanity check the ipc address

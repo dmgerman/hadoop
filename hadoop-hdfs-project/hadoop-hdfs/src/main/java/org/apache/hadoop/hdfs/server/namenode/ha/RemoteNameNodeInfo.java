@@ -302,8 +302,6 @@ operator|.
 name|getServiceAddress
 argument_list|(
 name|otherNode
-argument_list|,
-literal|true
 argument_list|)
 decl_stmt|;
 specifier|final

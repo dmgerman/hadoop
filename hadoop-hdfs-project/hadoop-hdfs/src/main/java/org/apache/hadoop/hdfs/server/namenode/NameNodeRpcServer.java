@@ -3516,13 +3516,6 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|serviceRpcAddr
-operator|!=
-literal|null
-condition|)
-block|{
 name|String
 name|bindHost
 init|=
@@ -3733,7 +3726,8 @@ argument_list|,
 name|serviceRpcServer
 argument_list|)
 expr_stmt|;
-comment|// We support Refreshing call queue here in case the client RPC queue is full
+comment|// We support Refreshing call queue here in case the client RPC queue
+comment|// is full.
 name|DFSUtil
 operator|.
 name|addPBProtocol
@@ -3794,7 +3788,7 @@ argument_list|,
 name|serviceRpcServer
 argument_list|)
 expr_stmt|;
-comment|// Update the address with the correct port
+comment|// Update the address with the correct port.
 name|InetSocketAddress
 name|listenAddr
 init|=
@@ -3828,18 +3822,6 @@ argument_list|,
 name|serviceRPCAddress
 argument_list|)
 expr_stmt|;
-block|}
-else|else
-block|{
-name|serviceRpcServer
-operator|=
-literal|null
-expr_stmt|;
-name|serviceRPCAddress
-operator|=
-literal|null
-expr_stmt|;
-block|}
 name|InetSocketAddress
 name|lifelineRpcAddr
 init|=
@@ -3872,16 +3854,15 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
-name|String
 name|bindHost
-init|=
+operator|=
 name|nn
 operator|.
 name|getLifelineRpcServerBindHost
 argument_list|(
 name|conf
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 name|bindHost
@@ -4033,14 +4014,13 @@ name|lifelineRpcServer
 argument_list|)
 expr_stmt|;
 comment|// Update the address with the correct port
-name|InetSocketAddress
 name|listenAddr
-init|=
+operator|=
 name|lifelineRpcServer
 operator|.
 name|getListenerAddress
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 name|lifelineRPCAddress
 operator|=
 operator|new
@@ -4088,16 +4068,15 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-name|String
 name|bindHost
-init|=
+operator|=
 name|nn
 operator|.
 name|getRpcServerBindHost
 argument_list|(
 name|conf
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 name|bindHost
@@ -4374,13 +4353,6 @@ name|HDFSPolicyProvider
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|serviceRpcServer
-operator|!=
-literal|null
-condition|)
-block|{
 name|serviceRpcServer
 operator|.
 name|refreshServiceAcl
@@ -4392,7 +4364,6 @@ name|HDFSPolicyProvider
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|lifelineRpcServer
@@ -4414,14 +4385,13 @@ expr_stmt|;
 block|}
 block|}
 comment|// The rpc-server port can be ephemeral... ensure we have the correct info
-name|InetSocketAddress
 name|listenAddr
-init|=
+operator|=
 name|clientRpcServer
 operator|.
 name|getListenerAddress
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 name|clientRpcAddress
 operator|=
 operator|new
@@ -4585,13 +4555,6 @@ operator|.
 name|tracer
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|serviceRpcServer
-operator|!=
-literal|null
-condition|)
-block|{
 name|serviceRpcServer
 operator|.
 name|setTracer
@@ -4601,7 +4564,6 @@ operator|.
 name|tracer
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|lifelineRpcServer
@@ -4674,19 +4636,11 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|serviceRpcServer
-operator|!=
-literal|null
-condition|)
-block|{
 name|serviceRpcServer
 operator|.
 name|start
 argument_list|()
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|lifelineRpcServer
@@ -4714,19 +4668,11 @@ operator|.
 name|join
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|serviceRpcServer
-operator|!=
-literal|null
-condition|)
-block|{
 name|serviceRpcServer
 operator|.
 name|join
 argument_list|()
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|lifelineRpcServer
@@ -4760,19 +4706,11 @@ name|stop
 argument_list|()
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|serviceRpcServer
-operator|!=
-literal|null
-condition|)
-block|{
 name|serviceRpcServer
 operator|.
 name|stop
 argument_list|()
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|lifelineRpcServer

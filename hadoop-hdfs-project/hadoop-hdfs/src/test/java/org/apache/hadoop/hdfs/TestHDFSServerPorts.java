@@ -210,6 +210,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Ignore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -1343,11 +1353,6 @@ argument_list|(
 name|conf2
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|withService
-condition|)
-block|{
 name|assertFalse
 argument_list|(
 literal|"Should've failed on service port"
@@ -1397,7 +1402,6 @@ argument_list|(
 name|conf2
 argument_list|)
 expr_stmt|;
-block|}
 name|assertTrue
 argument_list|(
 name|started
@@ -1752,7 +1756,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**      * Verify BackupNode port usage.      */
+comment|/**    * Verify BackupNode port usage.    */
+annotation|@
+name|Ignore
 annotation|@
 name|Test
 argument_list|(
