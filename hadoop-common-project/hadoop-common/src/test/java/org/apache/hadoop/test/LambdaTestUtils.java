@@ -137,18 +137,18 @@ interface|interface
 name|TimeoutHandler
 block|{
 comment|/**      * Create an exception (or throw one, if desired).      * @param timeoutMillis timeout which has arisen      * @param caught any exception which was caught; may be null      * @return an exception which will then be thrown      * @throws Exception if the handler wishes to raise an exception      * that way.      */
-DECL|method|evaluate (int timeoutMillis, Exception caught)
-name|Exception
+DECL|method|evaluate (int timeoutMillis, Throwable caught)
+name|Throwable
 name|evaluate
 parameter_list|(
 name|int
 name|timeoutMillis
 parameter_list|,
-name|Exception
+name|Throwable
 name|caught
 parameter_list|)
 throws|throws
-name|Exception
+name|Throwable
 function_decl|;
 block|}
 comment|/**    * Wait for a condition to be met, with a retry policy returning the    * sleep time before the next attempt is made. If, at the end    * of the timeout period, the condition is still false (or failing with    * an exception), the timeout handler is invoked, passing in the timeout    * and any exception raised in the last invocation. The exception returned    * by this timeout handler is then rethrown.    *<p>    * Example: Wait 30s for a condition to be met, with a sleep of 30s    * between each probe.    * If the operation is failing, then, after 30s, the timeout handler    * is called. This returns the exception passed in (if any),    * or generates a new one.    *<pre>    * await(    *   30 * 1000,    *   () -> { return 0 == filesystem.listFiles(new Path("/")).length); },    *   () -> 500),    *   (timeout, ex) -> ex != null ? ex : new TimeoutException("timeout"));    *</pre>    *    * @param timeoutMillis timeout in milliseconds.    * Can be zero, in which case only one attempt is made.    * @param check predicate to evaluate    * @param retry retry escalation logic    * @param timeoutHandler handler invoked on timeout;    * the returned exception will be thrown    * @return the number of iterations before the condition was satisfied    * @throws Exception the exception returned by {@code timeoutHandler} on    * timeout    * @throws FailFastException immediately if the evaluated operation raises it    * @throws InterruptedException if interrupted.    */
@@ -207,7 +207,7 @@ argument_list|()
 operator|+
 name|timeoutMillis
 decl_stmt|;
-name|Exception
+name|Throwable
 name|ex
 init|=
 literal|null
@@ -256,6 +256,8 @@ parameter_list|(
 name|InterruptedException
 decl||
 name|FailFastException
+decl||
+name|VirtualMachineError
 name|e
 parameter_list|)
 block|{
@@ -265,7 +267,7 @@ throw|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|Throwable
 name|e
 parameter_list|)
 block|{
@@ -332,9 +334,13 @@ block|}
 block|}
 block|}
 comment|// timeout
-name|Exception
+name|Throwable
 name|evaluate
-init|=
+decl_stmt|;
+try|try
+block|{
+name|evaluate
+operator|=
 name|timeoutHandler
 operator|.
 name|evaluate
@@ -343,7 +349,7 @@ name|timeoutMillis
 argument_list|,
 name|ex
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 name|evaluate
@@ -376,9 +382,24 @@ name|ex
 argument_list|)
 expr_stmt|;
 block|}
-throw|throw
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|throwable
+parameter_list|)
+block|{
 name|evaluate
-throw|;
+operator|=
+name|throwable
+expr_stmt|;
+block|}
+return|return
+name|raise
+argument_list|(
+name|evaluate
+argument_list|)
+return|;
 block|}
 comment|/**    * Simplified {@link #await(int, Callable, Callable, TimeoutHandler)}    * operation with a fixed interval    * and {@link GenerateTimeout} handler to generate a {@code TimeoutException}.    *<p>    * Example: await for probe to succeed:    *<pre>    * await(    *   30 * 1000, 500,    *   () -> { return 0 == filesystem.listFiles(new Path("/")).length); });    *</pre>    *    * @param timeoutMillis timeout in milliseconds.    * Can be zero, in which case only one attempt is made.    * @param intervalMillis interval in milliseconds between checks    * @param check predicate to evaluate    * @return the number of iterations before the condition was satisfied    * @throws Exception returned by {@code failure} on timeout    * @throws FailFastException immediately if the evaluated operation raises it    * @throws InterruptedException if interrupted.    */
 DECL|method|await (int timeoutMillis, int intervalMillis, Callable<Boolean> check)
@@ -421,7 +442,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Repeatedly execute a closure until it returns a value rather than    * raise an exception.    * Exceptions are caught and, with one exception,    * trigger a sleep and retry. This is similar of ScalaTest's    * {@code eventually(timeout, closure)} operation, though that lacks    * the ability to fail fast if the inner closure has determined that    * a failure condition is non-recoverable.    *<p>    * Example: spin until an the number of files in a filesystem is non-zero,    * returning the files found.    * The sleep interval backs off by 500 ms each iteration to a maximum of 5s.    *<pre>    * FileStatus[] files = eventually( 30 * 1000,    *   () -> {    *     FileStatus[] f = filesystem.listFiles(new Path("/"));    *     assertEquals(0, f.length);    *     return f;    *   },    *   new ProportionalRetryInterval(500, 5000));    *</pre>    * This allows for a fast exit, yet reduces probe frequency over time.    *    * @param<T> return type    * @param timeoutMillis timeout in milliseconds.    * Can be zero, in which case only one attempt is made before failing.    * @param eval expression to evaluate    * @param retry retry interval generator    * @return result of the first successful eval call    * @throws Exception the last exception thrown before timeout was triggered    * @throws FailFastException if raised -without any retry attempt.    * @throws InterruptedException if interrupted during the sleep operation.    */
+comment|/**    * Repeatedly execute a closure until it returns a value rather than    * raise an exception.    * Exceptions are caught and, with one exception,    * trigger a sleep and retry. This is similar of ScalaTest's    * {@code eventually(timeout, closure)} operation, though that lacks    * the ability to fail fast if the inner closure has determined that    * a failure condition is non-recoverable.    *<p>    * Example: spin until an the number of files in a filesystem is non-zero,    * returning the files found.    * The sleep interval backs off by 500 ms each iteration to a maximum of 5s.    *<pre>    * FileStatus[] files = eventually( 30 * 1000,    *   () -> {    *     FileStatus[] f = filesystem.listFiles(new Path("/"));    *     assertEquals(0, f.length);    *     return f;    *   },    *   new ProportionalRetryInterval(500, 5000));    *</pre>    * This allows for a fast exit, yet reduces probe frequency over time.    *    * @param<T> return type    * @param timeoutMillis timeout in milliseconds.    * Can be zero, in which case only one attempt is made before failing.    * @param eval expression to evaluate    * @param retry retry interval generator    * @return result of the first successful eval call    * @throws Exception the last exception thrown before timeout was triggered    * @throws FailFastException if raised -without any retry attempt.    * @throws InterruptedException if interrupted during the sleep operation.    * @throws OutOfMemoryError you've run out of memory.    */
 DECL|method|eventually (int timeoutMillis, Callable<T> eval, Callable<Integer> retry)
 specifier|public
 specifier|static
@@ -470,7 +491,7 @@ argument_list|()
 operator|+
 name|timeoutMillis
 decl_stmt|;
-name|Exception
+name|Throwable
 name|ex
 decl_stmt|;
 name|boolean
@@ -503,6 +524,8 @@ parameter_list|(
 name|InterruptedException
 decl||
 name|FailFastException
+decl||
+name|VirtualMachineError
 name|e
 parameter_list|)
 block|{
@@ -513,7 +536,7 @@ throw|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|Throwable
 name|e
 parameter_list|)
 block|{
@@ -573,9 +596,52 @@ name|running
 condition|)
 do|;
 comment|// timeout. Throw the last exception raised
-throw|throw
+return|return
+name|raise
+argument_list|(
 name|ex
+argument_list|)
+return|;
+block|}
+comment|/**    * Take the throwable and raise it as an exception or an error, depending    * upon its type. This allows callers to declare that they only throw    * Exception (i.e. can be invoked by Callable) yet still rethrow a    * previously caught Throwable.    * @param throwable Throwable to rethrow    * @param<T> expected return type    * @return never    * @throws Exception if throwable is an Exception    * @throws Error if throwable is not an Exception    */
+DECL|method|raise (Throwable throwable)
+specifier|private
+specifier|static
+parameter_list|<
+name|T
+parameter_list|>
+name|T
+name|raise
+parameter_list|(
+name|Throwable
+name|throwable
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+if|if
+condition|(
+name|throwable
+operator|instanceof
+name|Exception
+condition|)
+block|{
+throw|throw
+operator|(
+name|Exception
+operator|)
+name|throwable
 throw|;
+block|}
+else|else
+block|{
+throw|throw
+operator|(
+name|Error
+operator|)
+name|throwable
+throw|;
+block|}
 block|}
 comment|/**    * Variant of {@link #eventually(int, Callable, Callable)} method for    * void lambda expressions.    * @param timeoutMillis timeout in milliseconds.    * Can be zero, in which case only one attempt is made before failing.    * @param eval expression to evaluate    * @param retry retry interval generator    * @throws Exception the last exception thrown before timeout was triggered    * @throws FailFastException if raised -without any retry attempt.    * @throws InterruptedException if interrupted during the sleep operation.    */
 DECL|method|eventually (int timeoutMillis, VoidCallable eval, Callable<Integer> retry)
@@ -775,6 +841,11 @@ throw|;
 block|}
 block|}
 comment|/**    * Variant of {@link #intercept(Class, Callable)} to simplify void    * invocations.    * @param clazz class of exception; the raised exception must be this class    *<i>or a subclass</i>.    * @param eval expression to eval    * @param<E> exception class    * @return the caught exception if it was of the expected type    * @throws Exception any other exception raised    * @throws AssertionError if the evaluation call didn't raise an exception.    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|intercept ( Class<E> clazz, VoidCallable eval)
 specifier|public
 specifier|static
@@ -1053,19 +1124,19 @@ block|}
 comment|/**      * Evaluate operation creates a new {@code TimeoutException}.      * @param timeoutMillis timeout in millis      * @param caught optional caught exception      * @return TimeoutException      */
 annotation|@
 name|Override
-DECL|method|evaluate (int timeoutMillis, Exception caught)
+DECL|method|evaluate (int timeoutMillis, Throwable caught)
 specifier|public
-name|Exception
+name|Throwable
 name|evaluate
 parameter_list|(
 name|int
 name|timeoutMillis
 parameter_list|,
-name|Exception
+name|Throwable
 name|caught
 parameter_list|)
 throws|throws
-name|Exception
+name|Throwable
 block|{
 name|String
 name|s
@@ -1100,10 +1171,7 @@ else|:
 literal|""
 decl_stmt|;
 return|return
-call|(
-name|TimeoutException
-call|)
-argument_list|(
+operator|(
 operator|new
 name|TimeoutException
 argument_list|(
@@ -1116,7 +1184,7 @@ name|initCause
 argument_list|(
 name|caught
 argument_list|)
-argument_list|)
+operator|)
 return|;
 block|}
 block|}
