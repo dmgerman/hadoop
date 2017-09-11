@@ -10197,7 +10197,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Choose target datanodes for creating a new block.    *     * @throws IOException    *           if the number of targets< minimum replication.    * @see BlockPlacementPolicy#chooseTarget(String, int, Node,    *      Set, long, List, BlockStoragePolicy, EnumSet)    */
-DECL|method|chooseTarget4NewBlock (final String src, final int numOfReplicas, final Node client, final Set<Node> excludedNodes, final long blocksize, final List<String> favoredNodes, final byte storagePolicyID, final BlockType blockType, final ErasureCodingPolicy ecPolicy, final EnumSet<AddBlockFlag> flags)
+DECL|method|chooseTarget4NewBlock (final String src, final int numOfReplicas, final Node client, final Set<Node> excludedNodes, final long blocksize, final List<String> favoredNodes, final byte storagePolicyID, final BlockType blockType, final EnumSet<AddBlockFlag> flags)
 specifier|public
 name|DatanodeStorageInfo
 index|[]
@@ -10240,10 +10240,6 @@ parameter_list|,
 specifier|final
 name|BlockType
 name|blockType
-parameter_list|,
-specifier|final
-name|ErasureCodingPolicy
-name|ecPolicy
 parameter_list|,
 specifier|final
 name|EnumSet
@@ -10314,24 +10310,8 @@ argument_list|,
 name|flags
 argument_list|)
 decl_stmt|;
-specifier|final
-name|String
-name|ERROR_MESSAGE
-init|=
-literal|"File %s could only be written to %d of "
-operator|+
-literal|"the %d %s. There are %d datanode(s) running and %s "
-operator|+
-literal|"node(s) are excluded in this operation."
-decl_stmt|;
 if|if
 condition|(
-name|blockType
-operator|==
-name|BlockType
-operator|.
-name|CONTIGUOUS
-operator|&&
 name|targets
 operator|.
 name|length
@@ -10343,24 +10323,22 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-name|ERROR_MESSAGE
-argument_list|,
+literal|"File "
+operator|+
 name|src
-argument_list|,
+operator|+
+literal|" could only be replicated to "
+operator|+
 name|targets
 operator|.
 name|length
-argument_list|,
+operator|+
+literal|" nodes instead of minReplication (="
+operator|+
 name|minReplication
-argument_list|,
-literal|"minReplication"
-argument_list|,
-name|minReplication
-argument_list|,
+operator|+
+literal|").  There are "
+operator|+
 name|getDatanodeManager
 argument_list|()
 operator|.
@@ -10369,7 +10347,9 @@ argument_list|()
 operator|.
 name|getNumOfLeaves
 argument_list|()
-argument_list|,
+operator|+
+literal|" datanode(s) running and "
+operator|+
 operator|(
 name|excludedNodes
 operator|==
@@ -10382,84 +10362,8 @@ operator|.
 name|size
 argument_list|()
 operator|)
-argument_list|)
-argument_list|)
-throw|;
-block|}
-elseif|else
-if|if
-condition|(
-name|blockType
-operator|==
-name|BlockType
-operator|.
-name|STRIPED
-operator|&&
-name|targets
-operator|.
-name|length
-operator|<
-name|ecPolicy
-operator|.
-name|getNumDataUnits
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-name|ERROR_MESSAGE
-argument_list|,
-name|src
-argument_list|,
-name|targets
-operator|.
-name|length
-argument_list|,
-name|ecPolicy
-operator|.
-name|getNumDataUnits
-argument_list|()
-argument_list|,
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"required nodes for %s"
-argument_list|,
-name|ecPolicy
-operator|.
-name|getName
-argument_list|()
-argument_list|)
-argument_list|,
-name|getDatanodeManager
-argument_list|()
-operator|.
-name|getNetworkTopology
-argument_list|()
-operator|.
-name|getNumOfLeaves
-argument_list|()
-argument_list|,
-operator|(
-name|excludedNodes
-operator|==
-literal|null
-condition|?
-literal|"no"
-else|:
-name|excludedNodes
-operator|.
-name|size
-argument_list|()
-operator|)
-argument_list|)
+operator|+
+literal|" node(s) are excluded in this operation."
 argument_list|)
 throw|;
 block|}

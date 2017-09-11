@@ -432,20 +432,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|test
-operator|.
-name|LambdaTestUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|StringUtils
@@ -2046,7 +2032,7 @@ name|void
 name|testAddBlockWhenNoSufficientDataBlockNumOfNodes
 parameter_list|()
 throws|throws
-name|Exception
+name|IOException
 block|{
 name|HdfsConfiguration
 name|conf
@@ -2161,42 +2147,13 @@ argument_list|,
 literal|"ecfile"
 argument_list|)
 decl_stmt|;
-name|LambdaTestUtils
-operator|.
-name|intercept
-argument_list|(
-name|IOException
-operator|.
-name|class
-argument_list|,
-literal|"File "
-operator|+
-name|dirFile
-operator|+
-literal|" could only be written to "
-operator|+
-name|numDatanodes
-operator|+
-literal|" of the "
-operator|+
-name|dataBlocks
-operator|+
-literal|" required nodes for "
-operator|+
-name|getEcPolicy
-argument_list|()
-operator|.
-name|getName
-argument_list|()
-argument_list|,
-parameter_list|()
-lambda|->
-block|{
-try|try
-init|(
 name|FSDataOutputStream
 name|out
-init|=
+decl_stmt|;
+try|try
+block|{
+name|out
+operator|=
 name|dfs
 operator|.
 name|create
@@ -2205,8 +2162,7 @@ name|dirFile
 argument_list|,
 literal|true
 argument_list|)
-init|)
-block|{
+expr_stmt|;
 name|out
 operator|.
 name|write
@@ -2222,13 +2178,50 @@ operator|.
 name|flush
 argument_list|()
 expr_stmt|;
-block|}
-return|return
-literal|0
-return|;
-block|}
+name|out
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+name|Assert
+operator|.
+name|fail
+argument_list|(
+literal|"Failed to validate available dns against blkGroupSize"
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+comment|// expected
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+argument_list|(
+literal|"Failed to get "
+operator|+
+name|dataBlocks
+operator|+
+literal|" nodes from namenode: blockGroupSize= "
+operator|+
+operator|(
+name|dataBlocks
+operator|+
+name|parityBlocks
+operator|)
+operator|+
+literal|", blocks.length= "
+operator|+
+name|numDatanodes
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 finally|finally
 block|{

@@ -1278,7 +1278,9 @@ name|clientNode
 argument_list|,
 operator|new
 name|HashSet
-argument_list|<>
+argument_list|<
+name|Node
+argument_list|>
 argument_list|()
 argument_list|,
 literal|256
@@ -1297,8 +1299,6 @@ argument_list|,
 name|BlockType
 operator|.
 name|CONTIGUOUS
-argument_list|,
-literal|null
 argument_list|,
 literal|null
 argument_list|)
