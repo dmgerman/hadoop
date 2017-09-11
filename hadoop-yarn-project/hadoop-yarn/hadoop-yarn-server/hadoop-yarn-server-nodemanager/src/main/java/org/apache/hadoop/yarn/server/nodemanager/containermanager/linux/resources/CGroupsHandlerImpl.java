@@ -1822,50 +1822,6 @@ name|controller
 argument_list|)
 expr_stmt|;
 block|}
-else|else
-block|{
-name|String
-name|controllerPath
-init|=
-name|getControllerPath
-argument_list|(
-name|controller
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|controllerPath
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|ResourceHandlerException
-argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"Controller %s not mounted."
-operator|+
-literal|" You either need to mount it with %s"
-operator|+
-literal|" or mount cgroups before launching Yarn"
-argument_list|,
-name|controller
-operator|.
-name|getName
-argument_list|()
-argument_list|,
-name|YarnConfiguration
-operator|.
-name|NM_LINUX_CONTAINER_CGROUPS_MOUNT
-argument_list|)
-argument_list|)
-throw|;
-block|}
-block|}
 comment|// We are working with a pre-mounted contoller
 comment|// Make sure that Yarn cgroup hierarchy path exists
 name|initializePreMountedCGroupController
