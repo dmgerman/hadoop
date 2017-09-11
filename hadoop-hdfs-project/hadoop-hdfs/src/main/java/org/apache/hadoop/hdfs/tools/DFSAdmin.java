@@ -12636,6 +12636,10 @@ name|LOG
 operator|.
 name|isDebugEnabled
 argument_list|()
+operator|&&
+name|debugException
+operator|!=
+literal|null
 condition|)
 block|{
 name|LOG
