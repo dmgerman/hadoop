@@ -214,6 +214,8 @@ name|apache
 operator|.
 name|sshd
 operator|.
+name|server
+operator|.
 name|SshServer
 import|;
 end_import
@@ -256,6 +258,10 @@ name|sshd
 operator|.
 name|server
 operator|.
+name|auth
+operator|.
+name|password
+operator|.
 name|PasswordAuthenticator
 import|;
 end_import
@@ -269,6 +275,8 @@ operator|.
 name|sshd
 operator|.
 name|server
+operator|.
+name|auth
 operator|.
 name|UserAuth
 import|;
@@ -286,7 +294,9 @@ name|server
 operator|.
 name|auth
 operator|.
-name|UserAuthPassword
+name|password
+operator|.
+name|UserAuthPasswordFactory
 import|;
 end_import
 
@@ -332,9 +342,11 @@ name|sshd
 operator|.
 name|server
 operator|.
+name|subsystem
+operator|.
 name|sftp
 operator|.
-name|SftpSubsystem
+name|SftpSubsystemFactory
 import|;
 end_import
 
@@ -563,9 +575,7 @@ operator|.
 name|add
 argument_list|(
 operator|new
-name|UserAuthPassword
-operator|.
-name|Factory
+name|UserAuthPasswordFactory
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -643,9 +653,7 @@ operator|>
 name|asList
 argument_list|(
 operator|new
-name|SftpSubsystem
-operator|.
-name|Factory
+name|SftpSubsystemFactory
 argument_list|()
 argument_list|)
 argument_list|)
@@ -874,7 +882,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|InterruptedException
+name|IOException
 name|e
 parameter_list|)
 block|{
