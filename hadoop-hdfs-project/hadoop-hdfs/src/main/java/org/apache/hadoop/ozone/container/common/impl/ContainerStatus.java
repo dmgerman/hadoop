@@ -64,6 +64,12 @@ specifier|final
 name|boolean
 name|active
 decl_stmt|;
+comment|/**    * Number of pending deletion blocks in container.    */
+DECL|field|numPendingDeletionBlocks
+specifier|private
+name|int
+name|numPendingDeletionBlocks
+decl_stmt|;
 comment|/**    * Creates a Container Status class.    *    * @param containerData - ContainerData.    * @param active - Active or not active.    */
 DECL|method|ContainerStatus (ContainerData containerData, boolean active)
 name|ContainerStatus
@@ -75,6 +81,12 @@ name|boolean
 name|active
 parameter_list|)
 block|{
+name|this
+operator|.
+name|numPendingDeletionBlocks
+operator|=
+literal|0
+expr_stmt|;
 name|this
 operator|.
 name|containerData
@@ -117,6 +129,53 @@ parameter_list|()
 block|{
 return|return
 name|active
+return|;
+block|}
+comment|/**    * Increase the count of pending deletion blocks.    *    * @param numBlocks increment number    */
+DECL|method|incrPendingDeletionBlocks (int numBlocks)
+specifier|public
+name|void
+name|incrPendingDeletionBlocks
+parameter_list|(
+name|int
+name|numBlocks
+parameter_list|)
+block|{
+name|this
+operator|.
+name|numPendingDeletionBlocks
+operator|+=
+name|numBlocks
+expr_stmt|;
+block|}
+comment|/**    * Decrease the count of pending deletion blocks.    *    * @param numBlocks decrement number    */
+DECL|method|decrPendingDeletionBlocks (int numBlocks)
+specifier|public
+name|void
+name|decrPendingDeletionBlocks
+parameter_list|(
+name|int
+name|numBlocks
+parameter_list|)
+block|{
+name|this
+operator|.
+name|numPendingDeletionBlocks
+operator|-=
+name|numBlocks
+expr_stmt|;
+block|}
+comment|/**    * Get the number of pending deletion blocks.    */
+DECL|method|getNumPendingDeletionBlocks ()
+specifier|public
+name|int
+name|getNumPendingDeletionBlocks
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|numPendingDeletionBlocks
 return|;
 block|}
 block|}

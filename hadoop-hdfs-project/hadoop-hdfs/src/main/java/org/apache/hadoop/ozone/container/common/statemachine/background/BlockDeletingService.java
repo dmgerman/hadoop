@@ -653,6 +653,8 @@ block|{
 comment|// We at most list a number of containers a time,
 comment|// in case there are too many containers and start too many workers.
 comment|// We must ensure there is no empty container in this result.
+comment|// The chosen result depends on what container deletion policy is
+comment|// configured.
 name|containers
 operator|=
 name|containerManager
@@ -662,9 +664,6 @@ argument_list|(
 name|containerLimitPerInterval
 argument_list|)
 expr_stmt|;
-comment|// TODO
-comment|// in case we always fetch a few same containers,
-comment|// should we list some more containers a time and shuffle them?
 for|for
 control|(
 name|ContainerData
@@ -1220,6 +1219,22 @@ operator|.
 name|writeBatch
 argument_list|(
 name|batch
+argument_list|)
+expr_stmt|;
+comment|// update count of pending deletion blocks in in-memory container status
+name|containerManager
+operator|.
+name|decrPendingDeletionBlocks
+argument_list|(
+name|succeedBlocks
+operator|.
+name|size
+argument_list|()
+argument_list|,
+name|containerData
+operator|.
+name|getContainerName
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if

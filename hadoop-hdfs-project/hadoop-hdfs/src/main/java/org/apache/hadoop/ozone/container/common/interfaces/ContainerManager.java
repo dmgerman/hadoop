@@ -425,6 +425,30 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Increase pending deletion blocks count number of specified container.    *    * @param numBlocks    *          increment  count number    * @param containerId    *          container id    */
+DECL|method|incrPendingDeletionBlocks (int numBlocks, String containerId)
+name|void
+name|incrPendingDeletionBlocks
+parameter_list|(
+name|int
+name|numBlocks
+parameter_list|,
+name|String
+name|containerId
+parameter_list|)
+function_decl|;
+comment|/**    * Decrease pending deletion blocks count number of specified container.    *    * @param numBlocks    *          decrement count number    * @param containerId    *          container id    */
+DECL|method|decrPendingDeletionBlocks (int numBlocks, String containerId)
+name|void
+name|decrPendingDeletionBlocks
+parameter_list|(
+name|int
+name|numBlocks
+parameter_list|,
+name|String
+name|containerId
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

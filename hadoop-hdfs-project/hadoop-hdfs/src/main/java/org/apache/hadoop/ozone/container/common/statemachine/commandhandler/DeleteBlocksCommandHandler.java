@@ -907,6 +907,11 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|int
+name|newDeletionBlocks
+init|=
+literal|0
+decl_stmt|;
 name|MetadataStore
 name|containerDB
 init|=
@@ -1002,6 +1007,9 @@ argument_list|(
 name|batch
 argument_list|)
 expr_stmt|;
+name|newDeletionBlocks
+operator|++
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -1056,6 +1064,16 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|// update pending deletion blocks count in in-memory container status
+name|containerManager
+operator|.
+name|incrPendingDeletionBlocks
+argument_list|(
+name|newDeletionBlocks
+argument_list|,
+name|containerId
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
