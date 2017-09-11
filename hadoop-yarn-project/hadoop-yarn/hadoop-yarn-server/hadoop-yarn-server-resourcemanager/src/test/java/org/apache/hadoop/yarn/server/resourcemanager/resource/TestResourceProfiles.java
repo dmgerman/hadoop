@@ -146,6 +146,15 @@ specifier|public
 class|class
 name|TestResourceProfiles
 block|{
+DECL|field|TEST_CONF_RESET_RESOURCE_TYPES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TEST_CONF_RESET_RESOURCE_TYPES
+init|=
+literal|"yarn.test.reset-resource-types"
+decl_stmt|;
 annotation|@
 name|Test
 DECL|method|testProfilesEnabled ()

@@ -1330,6 +1330,28 @@ name|VisibleForTesting
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|resource
+operator|.
+name|TestResourceProfiles
+operator|.
+name|TEST_CONF_RESET_RESOURCE_TYPES
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>  * Embedded Yarn minicluster for testcases that need to interact with a cluster.  *</p>  *<p>  * In a real cluster, resource request matching is done using the hostname, and  * by default Yarn minicluster works in the exact same way as a real cluster.  *</p>  *<p>  * If a testcase needs to use multiple nodes and exercise resource request  * matching to a specific node, then the property   * {@value org.apache.hadoop.yarn.conf.YarnConfiguration#RM_SCHEDULER_INCLUDE_PORT_IN_NODE_NAME}  * should be set<code>true</code> in the configuration used to initialize  * the minicluster.  *</p>  * With this property set to<code>true</code>, the matching will be done using  * the<code>hostname:port</code> of the namenodes. In such case, the AM must  * do resource request using<code>hostname:port</code> as the location.  */
 end_comment
@@ -1901,6 +1923,18 @@ operator|.
 name|DEFAULT_RM_ZK_TIMEOUT_MS
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|TEST_CONF_RESET_RESOURCE_TYPES
+argument_list|,
+literal|true
+argument_list|)
+condition|)
+block|{
 name|ResourceUtils
 operator|.
 name|resetResourceTypes
@@ -1908,6 +1942,7 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|useRpc

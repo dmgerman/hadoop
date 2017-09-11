@@ -1627,6 +1627,30 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
+name|initializeResourcesFromResourceInformationMap
+argument_list|(
+name|resourceInformationMap
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * This method is visible for testing, unit test can construct a    * resourceInformationMap and pass it to this method to initialize multiple resources.    * @param resourceInformationMap constructed resource information map.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|initializeResourcesFromResourceInformationMap ( Map<String, ResourceInformation> resourceInformationMap)
+specifier|public
+specifier|static
+name|void
+name|initializeResourcesFromResourceInformationMap
+parameter_list|(
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|ResourceInformation
+argument_list|>
+name|resourceInformationMap
+parameter_list|)
+block|{
 name|resourceTypes
 operator|=
 name|Collections
@@ -1641,6 +1665,10 @@ argument_list|()
 expr_stmt|;
 name|updateResourceTypeIndex
 argument_list|()
+expr_stmt|;
+name|initializedResources
+operator|=
+literal|true
 expr_stmt|;
 block|}
 DECL|method|updateKnownResources ()
@@ -2051,15 +2079,6 @@ operator|+
 literal|", adding to configuration"
 argument_list|)
 expr_stmt|;
-name|initializeResourcesMap
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-name|initializedResources
-operator|=
-literal|true
-expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -2078,16 +2097,12 @@ operator|+
 literal|"'. Falling back to memory and vcores as resources."
 argument_list|)
 expr_stmt|;
+block|}
 name|initializeResourcesMap
 argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|initializedResources
-operator|=
-literal|true
-expr_stmt|;
-block|}
 block|}
 block|}
 block|}
@@ -3149,9 +3164,9 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-literal|null
-operator|!=
 name|ri
+operator|!=
+literal|null
 condition|)
 block|{
 return|return
