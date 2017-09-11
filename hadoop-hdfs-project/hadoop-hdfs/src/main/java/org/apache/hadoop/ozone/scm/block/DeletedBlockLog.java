@@ -70,6 +70,16 @@ name|List
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
 begin_comment
 comment|/**  * The DeletedBlockLog is a persisted log in SCM to keep tracking  * container blocks which are under deletion. It maintains info  * about under-deletion container blocks that notified by KSM,  * and the state how it is processed.  */
 end_comment
@@ -148,6 +158,25 @@ argument_list|<
 name|String
 argument_list|>
 name|blocks
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Creates block deletion transactions for a set of containers,    * add into the log and persist them atomically. An object key    * might be stored in multiple containers and multiple blocks,    * this API ensures that these updates are done in atomic manner    * so if any of them fails, the entire operation fails without    * any updates to the log. Note, this doesn't mean to create only    * one transaction, it creates multiple transactions (depends on the    * number of containers) together (on success) or non (on failure).    *    * @param containerBlocksMap a map of containerBlocks.    * @throws IOException    */
+DECL|method|addTransactions (Map<String, List<String>> containerBlocksMap)
+name|void
+name|addTransactions
+parameter_list|(
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+argument_list|>
+name|containerBlocksMap
 parameter_list|)
 throws|throws
 name|IOException

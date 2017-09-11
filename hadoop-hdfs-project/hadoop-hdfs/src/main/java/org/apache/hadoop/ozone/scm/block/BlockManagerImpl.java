@@ -412,6 +412,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|concurrent
 operator|.
 name|ConcurrentHashMap
@@ -2602,17 +2612,19 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Given a block key, delete a block.    * @param key - block key assigned by SCM.    * @throws IOException    */
+comment|/**    * Deletes a list of blocks in an atomic operation. Internally, SCM    * writes these blocks into a {@link DeletedBlockLog} and deletes them    * from SCM DB. If this is successful, given blocks are entering pending    * deletion state and becomes invisible from SCM namespace.    *    * @param blockIDs block IDs. This is often the list of blocks of    *                 a particular object key.    * @throws IOException if exception happens, non of the blocks is deleted.    */
 annotation|@
 name|Override
-DECL|method|deleteBlock (final String key)
+DECL|method|deleteBlocks (List<String> blockIDs)
 specifier|public
 name|void
-name|deleteBlock
+name|deleteBlocks
 parameter_list|(
-specifier|final
+name|List
+argument_list|<
 name|String
-name|key
+argument_list|>
+name|blockIDs
 parameter_list|)
 throws|throws
 name|IOException
@@ -2641,8 +2653,75 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Deleting blocks {}"
+argument_list|,
+name|String
+operator|.
+name|join
+argument_list|(
+literal|","
+argument_list|,
+name|blockIDs
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+argument_list|>
+name|containerBlocks
+init|=
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
+decl_stmt|;
+name|BatchOperation
+name|batch
+init|=
+operator|new
+name|BatchOperation
+argument_list|()
+decl_stmt|;
+name|BatchOperation
+name|rollbackBatch
+init|=
+operator|new
+name|BatchOperation
+argument_list|()
+decl_stmt|;
+comment|// TODO: track the block size info so that we can reclaim the container
+comment|// TODO: used space when the block is deleted.
 try|try
 block|{
+for|for
+control|(
+name|String
+name|blockKey
+range|:
+name|blockIDs
+control|)
+block|{
+name|byte
+index|[]
+name|blockKeyBytes
+init|=
+name|DFSUtil
+operator|.
+name|string2Bytes
+argument_list|(
+name|blockKey
+argument_list|)
+decl_stmt|;
 name|byte
 index|[]
 name|containerBytes
@@ -2651,12 +2730,7 @@ name|blockStore
 operator|.
 name|get
 argument_list|(
-name|DFSUtil
-operator|.
-name|string2Bytes
-argument_list|(
-name|key
-argument_list|)
+name|blockKeyBytes
 argument_list|)
 decl_stmt|;
 if|if
@@ -2672,57 +2746,99 @@ name|SCMException
 argument_list|(
 literal|"Specified block key does not exist. key : "
 operator|+
-name|key
+name|blockKey
 argument_list|,
 name|FAILED_TO_FIND_BLOCK
 argument_list|)
 throw|;
 block|}
-comment|// TODO: track the block size info so that we can reclaim the container
-comment|// TODO: used space when the block is deleted.
-name|BatchOperation
-name|batch
-init|=
-operator|new
-name|BatchOperation
-argument_list|()
-decl_stmt|;
-name|String
-name|deletedKeyName
-init|=
-name|getDeletedKeyName
-argument_list|(
-name|key
-argument_list|)
-decl_stmt|;
-comment|// Add a tombstone for the deleted key
-name|batch
-operator|.
-name|put
-argument_list|(
-name|DFSUtil
-operator|.
-name|string2Bytes
-argument_list|(
-name|deletedKeyName
-argument_list|)
-argument_list|,
-name|containerBytes
-argument_list|)
-expr_stmt|;
-comment|// Delete the block key
 name|batch
 operator|.
 name|delete
 argument_list|(
-name|DFSUtil
-operator|.
-name|string2Bytes
-argument_list|(
-name|key
-argument_list|)
+name|blockKeyBytes
 argument_list|)
 expr_stmt|;
+name|rollbackBatch
+operator|.
+name|put
+argument_list|(
+name|blockKeyBytes
+argument_list|,
+name|containerBytes
+argument_list|)
+expr_stmt|;
+comment|// Merge blocks to a container to blocks mapping,
+comment|// prepare to persist this info to the deletedBlocksLog.
+name|String
+name|containerName
+init|=
+name|DFSUtil
+operator|.
+name|bytes2String
+argument_list|(
+name|containerBytes
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|containerBlocks
+operator|.
+name|containsKey
+argument_list|(
+name|containerName
+argument_list|)
+condition|)
+block|{
+name|containerBlocks
+operator|.
+name|get
+argument_list|(
+name|containerName
+argument_list|)
+operator|.
+name|add
+argument_list|(
+name|blockKey
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|item
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+decl_stmt|;
+name|item
+operator|.
+name|add
+argument_list|(
+name|blockKey
+argument_list|)
+expr_stmt|;
+name|containerBlocks
+operator|.
+name|put
+argument_list|(
+name|containerName
+argument_list|,
+name|item
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|// We update SCM DB first, so if this step fails, we end up here,
+comment|// nothing gets into the delLog so no blocks will be accidentally
+comment|// removed. If we write the log first, once log is written, the
+comment|// async deleting service will start to scan and might be picking
+comment|// up some blocks to do real deletions, that might cause data loss.
 name|blockStore
 operator|.
 name|writeBatch
@@ -2730,8 +2846,95 @@ argument_list|(
 name|batch
 argument_list|)
 expr_stmt|;
-comment|// TODO: Add async tombstone clean thread to send delete command to
-comment|// datanodes in the pipeline to clean up the blocks from containers.
+try|try
+block|{
+name|deletedBlockLog
+operator|.
+name|addTransactions
+argument_list|(
+name|containerBlocks
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+try|try
+block|{
+comment|// If delLog update is failed, we need to rollback the changes.
+name|blockStore
+operator|.
+name|writeBatch
+argument_list|(
+name|rollbackBatch
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|rollbackException
+parameter_list|)
+block|{
+comment|// This is a corner case. AddTX fails and rollback also fails,
+comment|// this will leave these blocks in inconsistent state. They were
+comment|// moved to pending deletion state in SCM DB but were not written
+comment|// into delLog so real deletions would not be done. Blocks become
+comment|// to be invisible from namespace but actual data are not removed.
+comment|// We log an error here so admin can manually check and fix such
+comment|// errors.
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Blocks might be in inconsistent state because"
+operator|+
+literal|" they were moved to pending deletion state in SCM DB but"
+operator|+
+literal|" not written into delLog. Admin can manually add them"
+operator|+
+literal|" into delLog for deletions. Inconsistent block list: {}"
+argument_list|,
+name|String
+operator|.
+name|join
+argument_list|(
+literal|","
+argument_list|,
+name|blockIDs
+argument_list|)
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+throw|throw
+name|rollbackException
+throw|;
+block|}
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Skip writing the deleted blocks info to"
+operator|+
+literal|" the delLog because addTransaction fails. Batch skipped: "
+operator|+
+name|String
+operator|.
+name|join
+argument_list|(
+literal|","
+argument_list|,
+name|blockIDs
+argument_list|)
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
 comment|// TODO: Container report handling of the deleted blocks:
 comment|// Remove tombstone and update open container usage.
 comment|// We will revisit this when the closed container replication is done.

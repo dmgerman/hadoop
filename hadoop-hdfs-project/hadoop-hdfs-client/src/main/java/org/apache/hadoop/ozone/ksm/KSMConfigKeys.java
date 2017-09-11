@@ -261,6 +261,24 @@ name|OzoneACLRights
 operator|.
 name|READ_WRITE
 decl_stmt|;
+DECL|field|OZONE_KEY_DELETING_LIMIT_PER_TASK
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_KEY_DELETING_LIMIT_PER_TASK
+init|=
+literal|"ozone.key.deleting.limit.per.task"
+decl_stmt|;
+DECL|field|OZONE_KEY_DELETING_LIMIT_PER_TASK_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|OZONE_KEY_DELETING_LIMIT_PER_TASK_DEFAULT
+init|=
+literal|1000
+decl_stmt|;
 block|}
 end_class
 

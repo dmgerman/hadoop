@@ -60,6 +60,22 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|common
+operator|.
+name|BlockGroup
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|ksm
 operator|.
 name|helpers
@@ -397,6 +413,20 @@ name|startKey
 parameter_list|,
 name|int
 name|maxKeys
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Returns a list of pending deletion key info that ups to the given count.    * Each entry is a {@link BlockGroup}, which contains the info about the    * key name and all its associated block IDs. A pending deletion key is    * stored with #deleting# prefix in KSM DB.    *    * @param count max number of keys to return.    * @return a list of {@link BlockGroup} represent keys and blocks.    * @throws IOException    */
+DECL|method|getPendingDeletionKeys (int count)
+name|List
+argument_list|<
+name|BlockGroup
+argument_list|>
+name|getPendingDeletionKeys
+parameter_list|(
+name|int
+name|count
 parameter_list|)
 throws|throws
 name|IOException

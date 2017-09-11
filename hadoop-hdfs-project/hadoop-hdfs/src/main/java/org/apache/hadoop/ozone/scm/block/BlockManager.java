@@ -80,6 +80,16 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
 begin_comment
 comment|/**  *  *  Block APIs.  *  Container is transparent to these APIs.  */
 end_comment
@@ -114,13 +124,16 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Given a key of the block, delete the block.    * @param key - key of the block.    * @throws IOException    */
-DECL|method|deleteBlock (String key)
+comment|/**    * Deletes a list of blocks in an atomic operation. Internally, SCM    * writes these blocks into a {@link DeletedBlockLog} and deletes them    * from SCM DB. If this is successful, given blocks are entering pending    * deletion state and becomes invisible from SCM namespace.    *    * @param blockIDs block IDs. This is often the list of blocks of    *                 a particular object key.    * @throws IOException if exception happens, non of the blocks is deleted.    */
+DECL|method|deleteBlocks (List<String> blockIDs)
 name|void
-name|deleteBlock
+name|deleteBlocks
 parameter_list|(
+name|List
+argument_list|<
 name|String
-name|key
+argument_list|>
+name|blockIDs
 parameter_list|)
 throws|throws
 name|IOException

@@ -28,6 +28,22 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|common
+operator|.
+name|BlockGroup
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|ksm
 operator|.
 name|helpers
@@ -84,6 +100,20 @@ specifier|public
 interface|interface
 name|KeyManager
 block|{
+comment|/**    * Start key manager.    */
+DECL|method|start ()
+name|void
+name|start
+parameter_list|()
+function_decl|;
+comment|/**    * Stop key manager.    */
+DECL|method|stop ()
+name|void
+name|stop
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Given the args of a key to put, return a pipeline for the key. Writes    * the key to pipeline mapping to meta data.    *    * Note that this call only allocate a block for key, and adds the    * corresponding entry to metadata. The block will be returned to client side    * handler DistributedStorageHandler. Which will make another call to    * datanode to create container (if needed) and writes the key.    *    * In case that the container creation or key write failed on    * DistributedStorageHandler, this key's metadata will still stay in KSM.    *    * @param args the args of the key provided by client.    * @return a KsmKeyInfo instance client uses to talk to container.    * @throws Exception    */
 DECL|method|allocateKey (KsmKeyArgs args)
 name|KsmKeyInfo
@@ -139,6 +169,31 @@ name|keyPrefix
 parameter_list|,
 name|int
 name|maxKeys
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Returns a list of pending deletion key info that ups to the given count.    * Each entry is a {@link BlockGroup}, which contains the info about the    * key name and all its associated block IDs. A pending deletion key is    * stored with #deleting# prefix in KSM DB.    *    * @param count max number of keys to return.    * @return a list of {@link BlockGroup} representing keys and blocks.    * @throws IOException    */
+DECL|method|getPendingDeletionKeys (int count)
+name|List
+argument_list|<
+name|BlockGroup
+argument_list|>
+name|getPendingDeletionKeys
+parameter_list|(
+name|int
+name|count
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Deletes a pending deletion key by its name. This is often called when    * key can be safely deleted from this layer. Once called, all footprints    * of the key will be purged from KSM DB.    *    * @param objectKeyName object key name with #deleting# prefix.    * @throws IOException if specified key doesn't exist or other I/O errors.    */
+DECL|method|deletePendingDeletionKey (String objectKeyName)
+name|void
+name|deletePendingDeletionKey
+parameter_list|(
+name|String
+name|objectKeyName
 parameter_list|)
 throws|throws
 name|IOException

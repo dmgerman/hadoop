@@ -56,15 +56,27 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|scm
-operator|.
-name|container
+name|ozone
 operator|.
 name|common
 operator|.
-name|helpers
+name|DeleteBlockGroupResult
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|AllocatedBlock
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|common
+operator|.
+name|BlockGroup
 import|;
 end_import
 
@@ -84,7 +96,7 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|DeleteBlockResult
+name|AllocatedBlock
 import|;
 end_import
 
@@ -126,19 +138,19 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Delete the set of keys specified.    *    * @param keys batch of block keys to delete.    * @return list of block deletion results.    * @throws IOException if there is any failure.    *    */
-DECL|method|deleteBlocks (Set<String> keys)
+comment|/**    * Delete blocks for a set of object keys.    *    * @param keyBlocksInfoList Map of object key and its blocks.    * @return list of block deletion results.    * @throws IOException if there is any failure.    *    */
+DECL|method|deleteKeyBlocks ( List<BlockGroup> keyBlocksInfoList)
 name|List
 argument_list|<
-name|DeleteBlockResult
+name|DeleteBlockGroupResult
 argument_list|>
-name|deleteBlocks
+name|deleteKeyBlocks
 parameter_list|(
-name|Set
+name|List
 argument_list|<
-name|String
+name|BlockGroup
 argument_list|>
-name|keys
+name|keyBlocksInfoList
 parameter_list|)
 throws|throws
 name|IOException
