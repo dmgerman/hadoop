@@ -1616,11 +1616,8 @@ operator|.
 name|error
 argument_list|(
 literal|"Error in creating hbase tables: "
-operator|+
+argument_list|,
 name|e
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|exceptions
