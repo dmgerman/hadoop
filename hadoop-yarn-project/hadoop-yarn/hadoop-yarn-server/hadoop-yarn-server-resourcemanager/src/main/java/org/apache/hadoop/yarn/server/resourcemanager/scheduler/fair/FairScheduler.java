@@ -6786,7 +6786,6 @@ name|UPDATE_INTERVAL_MS
 operator|+
 literal|" is invalid, so using default value "
 operator|+
-operator|+
 name|FairSchedulerConfiguration
 operator|.
 name|DEFAULT_UPDATE_INTERVAL_MS
