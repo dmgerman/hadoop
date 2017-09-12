@@ -140,6 +140,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -858,8 +872,9 @@ name|serializedJWT
 return|;
 block|}
 comment|/**    * Create the URL to be used for authentication of the user in the absence of    * a JWT token within the incoming request.    *    * @param request for getting the original request URL    * @return url to use as login url for redirect    */
+annotation|@
+name|VisibleForTesting
 DECL|method|constructLoginURL (HttpServletRequest request)
-specifier|protected
 name|String
 name|constructLoginURL
 parameter_list|(
