@@ -3810,6 +3810,20 @@ name|Resource
 name|resource
 parameter_list|)
 block|{      }
+DECL|method|onContainerResourceUpdated (ContainerId containerId, Resource resource)
+annotation|@
+name|Override
+specifier|public
+name|void
+name|onContainerResourceUpdated
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|Resource
+name|resource
+parameter_list|)
+block|{      }
 DECL|method|onGetContainerStatusError (ContainerId containerId, Throwable t)
 annotation|@
 name|Override
@@ -3830,6 +3844,20 @@ DECL|method|onIncreaseContainerResourceError (ContainerId containerId, Throwable
 specifier|public
 name|void
 name|onIncreaseContainerResourceError
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|Throwable
+name|t
+parameter_list|)
+block|{      }
+annotation|@
+name|Override
+DECL|method|onUpdateContainerResourceError (ContainerId containerId, Throwable t)
+specifier|public
+name|void
+name|onUpdateContainerResourceError
 parameter_list|(
 name|ContainerId
 name|containerId
