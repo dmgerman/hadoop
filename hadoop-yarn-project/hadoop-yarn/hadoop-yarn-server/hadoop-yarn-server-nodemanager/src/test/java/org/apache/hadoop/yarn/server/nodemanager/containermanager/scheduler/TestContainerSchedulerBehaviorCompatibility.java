@@ -235,7 +235,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Make sure CantainerScheduler related changes are compatible to old behaviors  */
+comment|/**  * Make sure ContainerScheduler related changes are compatible  * with old behavior.  */
 end_comment
 
 begin_class
