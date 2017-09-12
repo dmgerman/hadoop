@@ -377,14 +377,6 @@ comment|/**  * Helper class to read the resource-types to be supported by the sy
 end_comment
 
 begin_class
-annotation|@
-name|InterfaceAudience
-operator|.
-name|Public
-annotation|@
-name|InterfaceStability
-operator|.
-name|Unstable
 DECL|class|ResourceUtils
 specifier|public
 class|class
@@ -495,14 +487,6 @@ argument_list|,
 name|ResourceInformation
 argument_list|>
 name|resourceTypes
-decl_stmt|;
-DECL|field|resourceNamesArray
-specifier|private
-specifier|static
-specifier|volatile
-name|String
-index|[]
-name|resourceNamesArray
 decl_stmt|;
 DECL|field|resourceTypesArray
 specifier|private
@@ -1679,17 +1663,6 @@ name|updateKnownResources
 parameter_list|()
 block|{
 comment|// Update resource names.
-name|resourceNamesArray
-operator|=
-operator|new
-name|String
-index|[
-name|resourceTypes
-operator|.
-name|size
-argument_list|()
-index|]
-expr_stmt|;
 name|resourceTypesArray
 operator|=
 operator|new
@@ -1747,13 +1720,6 @@ name|MEMORY
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|resourceNamesArray
-index|[
-literal|0
-index|]
-operator|=
-name|MEMORY
-expr_stmt|;
 block|}
 elseif|else
 if|if
@@ -1786,13 +1752,6 @@ name|VCORES
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|resourceNamesArray
-index|[
-literal|1
-index|]
-operator|=
-name|VCORES
-expr_stmt|;
 block|}
 else|else
 block|{
@@ -1807,16 +1766,6 @@ name|newInstance
 argument_list|(
 name|resInfo
 argument_list|)
-expr_stmt|;
-name|resourceNamesArray
-index|[
-name|index
-index|]
-operator|=
-name|resInfo
-operator|.
-name|getName
-argument_list|()
 expr_stmt|;
 name|index
 operator|++
@@ -1914,28 +1863,6 @@ name|YarnConfiguration
 operator|.
 name|RESOURCE_TYPES_CONFIGURATION_FILE
 argument_list|)
-return|;
-block|}
-comment|/**    * Get resource names array, this is mostly for performance perspective. Never    * modify returned array.    *    * @return resourceNamesArray    */
-DECL|method|getResourceNamesArray ()
-specifier|public
-specifier|static
-name|String
-index|[]
-name|getResourceNamesArray
-parameter_list|()
-block|{
-name|initializeResourceTypesIfNeeded
-argument_list|(
-literal|null
-argument_list|,
-name|YarnConfiguration
-operator|.
-name|RESOURCE_TYPES_CONFIGURATION_FILE
-argument_list|)
-expr_stmt|;
-return|return
-name|resourceNamesArray
 return|;
 block|}
 DECL|method|getResourceTypesArray ()

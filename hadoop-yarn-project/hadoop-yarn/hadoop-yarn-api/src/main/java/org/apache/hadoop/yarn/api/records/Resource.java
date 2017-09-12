@@ -601,9 +601,13 @@ parameter_list|)
 function_decl|;
 comment|/**    * Get ResourceInformation for all resources.    *    * @return Map of resource name to ResourceInformation    */
 annotation|@
-name|Public
+name|InterfaceAudience
+operator|.
+name|Private
 annotation|@
-name|Evolving
+name|InterfaceStability
+operator|.
+name|Unstable
 DECL|method|getResources ()
 specifier|public
 name|ResourceInformation
@@ -619,7 +623,9 @@ comment|/**    * Get ResourceInformation for a specified resource.    *    * @pa
 annotation|@
 name|Public
 annotation|@
-name|Evolving
+name|InterfaceStability
+operator|.
+name|Unstable
 DECL|method|getResourceInformation (String resource)
 specifier|public
 name|ResourceInformation
@@ -679,9 +685,13 @@ throw|;
 block|}
 comment|/**    * Get ResourceInformation for a specified resource from a given index.    *    * @param index    *          of the resource    * @return the ResourceInformation object for the resource    * @throws ResourceNotFoundException    *           if the resource can't be found    */
 annotation|@
-name|Public
+name|InterfaceAudience
+operator|.
+name|Private
 annotation|@
-name|Evolving
+name|InterfaceStability
+operator|.
+name|Unstable
 DECL|method|getResourceInformation (int index)
 specifier|public
 name|ResourceInformation
@@ -728,7 +738,9 @@ comment|/**    * Get the value for a specified resource. No information about th
 annotation|@
 name|Public
 annotation|@
-name|Evolving
+name|InterfaceStability
+operator|.
+name|Unstable
 DECL|method|getResourceValue (String resource)
 specifier|public
 name|long
@@ -754,7 +766,9 @@ comment|/**    * Set the ResourceInformation object for a particular resource.  
 annotation|@
 name|Public
 annotation|@
-name|Evolving
+name|InterfaceStability
+operator|.
+name|Unstable
 DECL|method|setResourceInformation (String resource, ResourceInformation resourceInformation)
 specifier|public
 name|void
@@ -840,9 +854,13 @@ expr_stmt|;
 block|}
 comment|/**    * Set the ResourceInformation object for a particular resource.    *    * @param index    *          the resource index for which the ResourceInformation is provided    * @param resourceInformation    *          ResourceInformation object    * @throws ResourceNotFoundException    *           if the resource is not found    */
 annotation|@
-name|Public
+name|InterfaceAudience
+operator|.
+name|Private
 annotation|@
-name|Evolving
+name|InterfaceStability
+operator|.
+name|Unstable
 DECL|method|setResourceInformation (int index, ResourceInformation resourceInformation)
 specifier|public
 name|void
@@ -906,7 +924,9 @@ comment|/**    * Set the value of a resource in the ResourceInformation object. 
 annotation|@
 name|Public
 annotation|@
-name|Evolving
+name|InterfaceStability
+operator|.
+name|Unstable
 DECL|method|setResourceValue (String resource, long value)
 specifier|public
 name|void
@@ -984,9 +1004,13 @@ expr_stmt|;
 block|}
 comment|/**    * Set the value of a resource in the ResourceInformation object. The unit of    * the value is assumed to be the one in the ResourceInformation object.    *    * @param index    *          the resource index for which the value is provided.    * @param value    *          the value to set    * @throws ResourceNotFoundException    *           if the resource is not found    */
 annotation|@
-name|Public
+name|InterfaceAudience
+operator|.
+name|Private
 annotation|@
-name|Evolving
+name|InterfaceStability
+operator|.
+name|Unstable
 DECL|method|setResourceValue (int index, long value)
 specifier|public
 name|void

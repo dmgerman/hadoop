@@ -7,20 +7,6 @@ begin_comment
 comment|/**  * Package org.apache.hadoop.yarn.util.resource contains classes  * which is used as utility class for resource profile computations.  */
 end_comment
 
-begin_annotation
-annotation|@
-name|InterfaceAudience
-operator|.
-name|Public
-end_annotation
-
-begin_annotation
-annotation|@
-name|InterfaceStability
-operator|.
-name|Unstable
-end_annotation
-
 begin_package
 DECL|package|org.apache.hadoop.yarn.util.resource
 package|package
@@ -37,34 +23,6 @@ operator|.
 name|resource
 package|;
 end_package
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceStability
-import|;
-end_import
 
 end_unit
 

@@ -57,6 +57,20 @@ operator|.
 name|classification
 operator|.
 name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
 operator|.
 name|Evolving
 import|;
@@ -414,7 +428,7 @@ block|}
 annotation|@
 name|Public
 annotation|@
-name|Evolving
+name|Unstable
 DECL|method|newInstance (Priority priority, String hostName, Resource capability, int numContainers, boolean relaxLocality, String labelExpression, ExecutionTypeRequest executionTypeRequest, ProfileCapability profile)
 specifier|public
 specifier|static
@@ -799,7 +813,9 @@ comment|/**      * Set the<code>resourceProfile</code> of the request.      * @s
 annotation|@
 name|Public
 annotation|@
-name|Evolving
+name|InterfaceStability
+operator|.
+name|Unstable
 DECL|method|profileCapability ( ProfileCapability profileCapability)
 specifier|public
 name|ResourceRequestBuilder
@@ -1215,7 +1231,9 @@ function_decl|;
 annotation|@
 name|Public
 annotation|@
-name|Evolving
+name|InterfaceStability
+operator|.
+name|Unstable
 DECL|method|getProfileCapability ()
 specifier|public
 specifier|abstract
@@ -1226,7 +1244,9 @@ function_decl|;
 annotation|@
 name|Public
 annotation|@
-name|Evolving
+name|InterfaceStability
+operator|.
+name|Unstable
 DECL|method|setProfileCapability (ProfileCapability p)
 specifier|public
 specifier|abstract
