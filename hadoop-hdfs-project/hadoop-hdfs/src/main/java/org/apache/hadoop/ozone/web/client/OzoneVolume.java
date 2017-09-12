@@ -559,6 +559,19 @@ name|volInfoString
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * @return the volume info.    */
+DECL|method|getVolumeInfo ()
+specifier|public
+name|VolumeInfo
+name|getVolumeInfo
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|volumeInfo
+return|;
+block|}
 comment|/**    * Returns volume Name.    *    * @return Volume Name.    */
 DECL|method|getVolumeName ()
 specifier|public
