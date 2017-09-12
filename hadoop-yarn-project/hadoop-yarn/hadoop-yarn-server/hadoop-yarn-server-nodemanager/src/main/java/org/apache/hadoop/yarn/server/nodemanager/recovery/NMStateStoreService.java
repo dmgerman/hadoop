@@ -496,6 +496,9 @@ name|LAUNCHED
 block|,
 DECL|enumConstant|COMPLETED
 name|COMPLETED
+block|,
+DECL|enumConstant|PAUSED
+name|PAUSED
 block|}
 DECL|class|RecoveredContainerState
 specifier|public
@@ -1500,7 +1503,7 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * Load the state of applications    * @return recovered state for applications    * @throws IOException    */
+comment|/**    * Load the state of applications.    * @return recovered state for applications.    * @throws IOException IO Exception.    */
 DECL|method|loadApplicationsState ()
 specifier|public
 specifier|abstract
@@ -1580,6 +1583,32 @@ specifier|public
 specifier|abstract
 name|void
 name|storeContainerQueued
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Record that a container has been paused at the NM.    * @param containerId the container ID.    * @throws IOException IO Exception.    */
+DECL|method|storeContainerPaused (ContainerId containerId)
+specifier|public
+specifier|abstract
+name|void
+name|storeContainerPaused
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Record that a container has been resumed at the NM by removing the    * fact that it has be paused.    * @param containerId the container ID.    * @throws IOException IO Exception.    */
+DECL|method|removeContainerPaused (ContainerId containerId)
+specifier|public
+specifier|abstract
+name|void
+name|removeContainerPaused
 parameter_list|(
 name|ContainerId
 name|containerId

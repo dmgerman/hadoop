@@ -425,6 +425,32 @@ name|IOException
 block|{   }
 annotation|@
 name|Override
+DECL|method|storeContainerPaused (ContainerId containerId)
+specifier|public
+name|void
+name|storeContainerPaused
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
+DECL|method|removeContainerPaused (ContainerId containerId)
+specifier|public
+name|void
+name|removeContainerPaused
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
+annotation|@
+name|Override
 DECL|method|storeContainerDiagnostics (ContainerId containerId, StringBuilder diagnostics)
 specifier|public
 name|void

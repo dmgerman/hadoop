@@ -4935,6 +4935,46 @@ name|void
 name|sendScheduleEvent
 parameter_list|()
 block|{
+if|if
+condition|(
+name|recoveredStatus
+operator|==
+name|RecoveredContainerStatus
+operator|.
+name|PAUSED
+condition|)
+block|{
+comment|// Recovery is not supported for paused container so we raise the
+comment|// launch event which will proceed to kill the paused container instead
+comment|// of raising the schedule event.
+name|ContainersLauncherEventType
+name|launcherEvent
+decl_stmt|;
+name|launcherEvent
+operator|=
+name|ContainersLauncherEventType
+operator|.
+name|RECOVER_PAUSED_CONTAINER
+expr_stmt|;
+name|dispatcher
+operator|.
+name|getEventHandler
+argument_list|()
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|ContainersLauncherEvent
+argument_list|(
+name|this
+argument_list|,
+name|launcherEvent
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|dispatcher
 operator|.
 name|getEventHandler
@@ -4953,6 +4993,7 @@ name|SCHEDULE_CONTAINER
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|SuppressWarnings

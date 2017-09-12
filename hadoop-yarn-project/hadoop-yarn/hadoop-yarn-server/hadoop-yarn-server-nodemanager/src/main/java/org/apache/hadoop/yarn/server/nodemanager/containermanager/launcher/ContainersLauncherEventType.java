@@ -55,6 +55,9 @@ name|PAUSE_CONTAINER
 block|,
 DECL|enumConstant|RESUME_CONTAINER
 name|RESUME_CONTAINER
+block|,
+DECL|enumConstant|RECOVER_PAUSED_CONTAINER
+name|RECOVER_PAUSED_CONTAINER
 block|}
 end_enum
 
