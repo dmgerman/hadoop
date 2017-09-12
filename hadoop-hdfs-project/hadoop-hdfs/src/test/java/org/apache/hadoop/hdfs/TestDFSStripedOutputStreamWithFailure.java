@@ -1884,6 +1884,14 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+comment|// TODO: this is very flaky, re-enable it later. See HDFS-12417.
+name|assumeTrue
+argument_list|(
+literal|"Test has been temporarily disabled. See HDFS-12417."
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
 specifier|final
 name|int
 name|length
@@ -4040,6 +4048,14 @@ init|=
 name|getBase
 argument_list|()
 decl_stmt|;
+comment|// TODO: Fix and re-enable these flaky tests. See HDFS-12417.
+name|assumeTrue
+argument_list|(
+literal|"Test has been temporarily disabled. See HDFS-12417."
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
 name|assumeTrue
 argument_list|(
 name|base
