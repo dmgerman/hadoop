@@ -1144,6 +1144,23 @@ name|size
 argument_list|()
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumRunningContainers ()
+specifier|public
+name|int
+name|getNumRunningContainers
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|runningContainers
+operator|.
+name|size
+argument_list|()
+return|;
+block|}
 DECL|method|getOpportunisticContainersStatus ()
 specifier|public
 name|OpportunisticContainersStatus
@@ -1329,26 +1346,34 @@ argument_list|)
 expr_stmt|;
 block|}
 name|startPendingContainers
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|startPendingContainers ()
+comment|/**    * Start pending containers in the queue.    * @param forceStartGuaranteedContaieners When this is true, start guaranteed    *        container without looking at available resource    */
+DECL|method|startPendingContainers (boolean forceStartGuaranteedContaieners)
 specifier|private
 name|void
 name|startPendingContainers
-parameter_list|()
+parameter_list|(
+name|boolean
+name|forceStartGuaranteedContaieners
+parameter_list|)
 block|{
 comment|// Start pending guaranteed containers, if resources available.
 name|boolean
 name|resourcesAvailable
 init|=
-name|startContainersFromQueue
+name|startContainers
 argument_list|(
 name|queuedGuaranteedContainers
 operator|.
 name|values
 argument_list|()
+argument_list|,
+name|forceStartGuaranteedContaieners
 argument_list|)
 decl_stmt|;
 comment|// Start opportunistic containers, if resources available.
@@ -1357,26 +1382,31 @@ condition|(
 name|resourcesAvailable
 condition|)
 block|{
-name|startContainersFromQueue
+name|startContainers
 argument_list|(
 name|queuedOpportunisticContainers
 operator|.
 name|values
 argument_list|()
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|startContainersFromQueue ( Collection<Container> queuedContainers)
+DECL|method|startContainers ( Collection<Container> containersToBeStarted, boolean force)
 specifier|private
 name|boolean
-name|startContainersFromQueue
+name|startContainers
 parameter_list|(
 name|Collection
 argument_list|<
 name|Container
 argument_list|>
-name|queuedContainers
+name|containersToBeStarted
+parameter_list|,
+name|boolean
+name|force
 parameter_list|)
 block|{
 name|Iterator
@@ -1385,7 +1415,7 @@ name|Container
 argument_list|>
 name|cIter
 init|=
-name|queuedContainers
+name|containersToBeStarted
 operator|.
 name|iterator
 argument_list|()
@@ -1418,6 +1448,8 @@ condition|(
 name|tryStartContainer
 argument_list|(
 name|container
+argument_list|,
+name|force
 argument_list|)
 condition|)
 block|{
@@ -1439,13 +1471,16 @@ return|return
 name|resourcesAvailable
 return|;
 block|}
-DECL|method|tryStartContainer (Container container)
+DECL|method|tryStartContainer (Container container, boolean force)
 specifier|private
 name|boolean
 name|tryStartContainer
 parameter_list|(
 name|Container
 name|container
+parameter_list|,
+name|boolean
+name|force
 parameter_list|)
 block|{
 name|boolean
@@ -1453,8 +1488,11 @@ name|containerStarted
 init|=
 literal|false
 decl_stmt|;
+comment|// call startContainer without checking available resource when force==true
 if|if
 condition|(
+name|force
+operator|||
 name|resourceAvailableToStartContainer
 argument_list|(
 name|container
@@ -1713,8 +1751,22 @@ argument_list|(
 name|container
 argument_list|)
 expr_stmt|;
+comment|// When opportunistic container not allowed (which is determined by
+comment|// max-queue length of pending opportunistic containers<= 0), start
+comment|// guaranteed containers without looking at available resources.
+name|boolean
+name|forceStartGuaranteedContainers
+init|=
+operator|(
+name|maxOppQueueLength
+operator|<=
+literal|0
+operator|)
+decl_stmt|;
 name|startPendingContainers
-argument_list|()
+argument_list|(
+name|forceStartGuaranteedContainers
+argument_list|)
 expr_stmt|;
 comment|// if the guaranteed container is queued, we need to preempt opportunistic
 comment|// containers for make room for it
@@ -1746,7 +1798,9 @@ comment|// containers based on remaining resource available, then enqueue the
 comment|// opportunistic container. If the container is enqueued, we do another
 comment|// pass to try to start the newly enqueued opportunistic container.
 name|startPendingContainers
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 expr_stmt|;
 name|boolean
 name|containerQueued
@@ -1764,7 +1818,9 @@ name|containerQueued
 condition|)
 block|{
 name|startPendingContainers
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 expr_stmt|;
 block|}
 block|}

@@ -1592,7 +1592,7 @@ name|YarnConfiguration
 operator|.
 name|NM_OPPORTUNISTIC_CONTAINERS_MAX_QUEUE_LENGTH
 argument_list|,
-literal|10
+literal|0
 argument_list|)
 expr_stmt|;
 name|super
