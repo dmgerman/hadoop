@@ -571,6 +571,29 @@ name|ContainerQueuingLimit
 name|containerQueuingLimit
 parameter_list|)
 function_decl|;
+DECL|method|getContainersToDecrease ()
+specifier|public
+specifier|abstract
+name|List
+argument_list|<
+name|Container
+argument_list|>
+name|getContainersToDecrease
+parameter_list|()
+function_decl|;
+DECL|method|addAllContainersToDecrease ( Collection<Container> containersToDecrease)
+specifier|public
+specifier|abstract
+name|void
+name|addAllContainersToDecrease
+parameter_list|(
+name|Collection
+argument_list|<
+name|Container
+argument_list|>
+name|containersToDecrease
+parameter_list|)
+function_decl|;
 block|}
 end_class
 

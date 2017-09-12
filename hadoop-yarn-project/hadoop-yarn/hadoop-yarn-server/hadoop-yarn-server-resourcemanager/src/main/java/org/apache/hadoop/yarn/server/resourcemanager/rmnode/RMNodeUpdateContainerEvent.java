@@ -34,6 +34,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -47,6 +57,24 @@ operator|.
 name|records
 operator|.
 name|Container
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ContainerUpdateType
 import|;
 end_import
 
@@ -82,22 +110,26 @@ name|RMNodeEvent
 block|{
 DECL|field|toBeUpdatedContainers
 specifier|private
-name|List
+name|Map
 argument_list|<
 name|Container
+argument_list|,
+name|ContainerUpdateType
 argument_list|>
 name|toBeUpdatedContainers
 decl_stmt|;
-DECL|method|RMNodeUpdateContainerEvent (NodeId nodeId, List<Container> toBeUpdatedContainers)
+DECL|method|RMNodeUpdateContainerEvent (NodeId nodeId, Map<Container, ContainerUpdateType> toBeUpdatedContainers)
 specifier|public
 name|RMNodeUpdateContainerEvent
 parameter_list|(
 name|NodeId
 name|nodeId
 parameter_list|,
-name|List
+name|Map
 argument_list|<
 name|Container
+argument_list|,
+name|ContainerUpdateType
 argument_list|>
 name|toBeUpdatedContainers
 parameter_list|)
@@ -120,9 +152,11 @@ expr_stmt|;
 block|}
 DECL|method|getToBeUpdatedContainers ()
 specifier|public
-name|List
+name|Map
 argument_list|<
 name|Container
+argument_list|,
+name|ContainerUpdateType
 argument_list|>
 name|getToBeUpdatedContainers
 parameter_list|()

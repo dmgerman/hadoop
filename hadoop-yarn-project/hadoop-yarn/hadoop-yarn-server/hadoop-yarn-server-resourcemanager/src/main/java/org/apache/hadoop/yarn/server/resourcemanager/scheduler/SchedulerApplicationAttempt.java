@@ -3638,12 +3638,14 @@ argument_list|()
 argument_list|,
 name|Collections
 operator|.
-name|singletonList
+name|singletonMap
 argument_list|(
 name|rmContainer
 operator|.
 name|getContainer
 argument_list|()
+argument_list|,
+name|updateType
 argument_list|)
 argument_list|)
 argument_list|)
