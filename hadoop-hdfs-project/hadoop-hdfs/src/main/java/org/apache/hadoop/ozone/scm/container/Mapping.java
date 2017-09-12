@@ -183,6 +183,17 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Close a container.    *    * @param containerName - name of the container to close.    * @throws IOException    */
+DECL|method|closeContainer (String containerName)
+name|void
+name|closeContainer
+parameter_list|(
+name|String
+name|containerName
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Update container state.    * @param containerName - Container Name    * @param event - container life cycle event    * @return - new container state    * @throws IOException    */
 DECL|method|updateContainerState (String containerName, OzoneProtos.LifeCycleEvent event)
 name|OzoneProtos

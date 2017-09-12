@@ -188,6 +188,28 @@ name|cli
 operator|.
 name|container
 operator|.
+name|CloseContainerHandler
+operator|.
+name|CONTAINER_CLOSE
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|scm
+operator|.
+name|cli
+operator|.
+name|container
+operator|.
 name|CreateContainerHandler
 operator|.
 name|CONTAINER_CREATE
@@ -417,6 +439,27 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+elseif|else
+if|if
+condition|(
+name|cmd
+operator|.
+name|hasOption
+argument_list|(
+name|CONTAINER_CLOSE
+argument_list|)
+condition|)
+block|{
+name|handler
+operator|=
+operator|new
+name|CloseContainerHandler
+argument_list|(
+name|getScmClient
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|// execute the sub command, throw exception if no sub command found
 comment|// unless -help option is given.
 if|if
@@ -593,6 +636,19 @@ argument_list|,
 literal|"List container"
 argument_list|)
 decl_stmt|;
+name|Option
+name|closeContainer
+init|=
+operator|new
+name|Option
+argument_list|(
+name|CONTAINER_CLOSE
+argument_list|,
+literal|false
+argument_list|,
+literal|"Close container"
+argument_list|)
+decl_stmt|;
 name|options
 operator|.
 name|addOption
@@ -621,7 +677,14 @@ argument_list|(
 name|listContainer
 argument_list|)
 expr_stmt|;
-comment|// TODO : add other options such as delete, close etc.
+name|options
+operator|.
+name|addOption
+argument_list|(
+name|closeContainer
+argument_list|)
+expr_stmt|;
+comment|// Every new option should add it's option here.
 block|}
 DECL|method|addOptions (Options options)
 specifier|public
@@ -667,7 +730,14 @@ argument_list|(
 name|options
 argument_list|)
 expr_stmt|;
-comment|// TODO : add other options such as delete, close etc.
+name|CloseContainerHandler
+operator|.
+name|addOptions
+argument_list|(
+name|options
+argument_list|)
+expr_stmt|;
+comment|// Every new option should add it's option here.
 block|}
 block|}
 end_class

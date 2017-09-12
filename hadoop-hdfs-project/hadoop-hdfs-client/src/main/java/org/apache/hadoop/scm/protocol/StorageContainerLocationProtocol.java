@@ -249,6 +249,17 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Clsoe a container.    *    * @param containerName the name of the container to close.    * @throws IOException    */
+DECL|method|closeContainer (String containerName)
+name|void
+name|closeContainer
+parameter_list|(
+name|String
+name|containerName
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

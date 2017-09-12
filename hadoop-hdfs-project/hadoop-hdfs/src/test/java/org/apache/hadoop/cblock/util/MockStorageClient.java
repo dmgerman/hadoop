@@ -339,6 +339,22 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|closeContainer (Pipeline container)
+specifier|public
+name|void
+name|closeContainer
+parameter_list|(
+name|Pipeline
+name|container
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// Do nothing, because the mock container does not have the notion of
+comment|// "open" and "close".
+block|}
+annotation|@
+name|Override
 DECL|method|getContainerSize (Pipeline pipeline)
 specifier|public
 name|long

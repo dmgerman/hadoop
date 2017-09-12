@@ -2612,6 +2612,27 @@ name|getPipeline
 argument_list|()
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getContainerInfo (String containerName)
+name|ContainerInfo
+name|getContainerInfo
+parameter_list|(
+name|String
+name|containerName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|scmContainerManager
+operator|.
+name|getContainer
+argument_list|(
+name|containerName
+argument_list|)
+return|;
+block|}
 comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
@@ -2943,6 +2964,30 @@ comment|// TODO: will be addressed in future patch.
 return|return
 literal|null
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|closeContainer (String containerName)
+specifier|public
+name|void
+name|closeContainer
+parameter_list|(
+name|String
+name|containerName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|checkAdminAccess
+argument_list|()
+expr_stmt|;
+name|scmContainerManager
+operator|.
+name|closeContainer
+argument_list|(
+name|containerName
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Queries a list of Node that match a set of statuses.    *<p>    * For example, if the nodeStatuses is HEALTHY and RAFT_MEMBER,    * then this call will return all healthy nodes which members in    * Raft pipeline.    *<p>    * Right now we don't support operations, so we assume it is an AND operation    * between the operators.    *    * @param nodeStatuses - A set of NodeStates.    * @return List of Datanodes.    */
 DECL|method|queryNode (EnumSet<NodeState> nodeStatuses)

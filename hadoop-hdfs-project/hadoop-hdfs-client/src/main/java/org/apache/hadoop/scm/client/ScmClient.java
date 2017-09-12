@@ -158,6 +158,17 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Close a container by name.    *    * @param pipeline the container to be closed.    * @throws IOException    */
+DECL|method|closeContainer (Pipeline pipeline)
+name|void
+name|closeContainer
+parameter_list|(
+name|Pipeline
+name|pipeline
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Deletes an existing container.    * @param pipeline - Pipeline that represents the container.    * @param force - true to forcibly delete the container.    * @throws IOException    */
 DECL|method|deleteContainer (Pipeline pipeline, boolean force)
 name|void

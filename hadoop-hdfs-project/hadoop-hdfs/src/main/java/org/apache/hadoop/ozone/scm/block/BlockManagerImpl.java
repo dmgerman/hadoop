@@ -636,7 +636,7 @@ name|SCMException
 operator|.
 name|ResultCodes
 operator|.
-name|FAILED_TO_FIND_CONTAINER_WITH_SAPCE
+name|FAILED_TO_FIND_CONTAINER_WITH_SPACE
 import|;
 end_import
 
@@ -2165,7 +2165,7 @@ name|size
 operator|+
 literal|"."
 argument_list|,
-name|FAILED_TO_FIND_CONTAINER_WITH_SAPCE
+name|FAILED_TO_FIND_CONTAINER_WITH_SPACE
 argument_list|)
 throw|;
 block|}
