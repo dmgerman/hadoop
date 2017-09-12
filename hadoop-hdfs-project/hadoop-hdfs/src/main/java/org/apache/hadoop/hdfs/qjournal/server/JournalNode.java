@@ -966,6 +966,8 @@ argument_list|,
 literal|"JN already running"
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|validateAndCreateJournalDir
 argument_list|(
 name|localDir
@@ -1072,6 +1074,34 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+comment|//Shutdown JournalNode of JournalNodeRpcServer fails to start
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Failed to start JournalNode."
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|stop
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
+throw|throw
+name|ioe
+throw|;
+block|}
 block|}
 DECL|method|isStarted ()
 specifier|public
