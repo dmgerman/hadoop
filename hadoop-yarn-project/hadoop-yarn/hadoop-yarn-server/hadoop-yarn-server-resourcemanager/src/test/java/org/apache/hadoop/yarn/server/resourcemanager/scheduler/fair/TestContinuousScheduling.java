@@ -1902,10 +1902,10 @@ block|}
 block|}
 annotation|@
 name|Test
-DECL|method|testThreadLifeCycle ()
+DECL|method|testSchedulerThreadLifeCycle ()
 specifier|public
 name|void
-name|testThreadLifeCycle
+name|testSchedulerThreadLifeCycle
 parameter_list|()
 throws|throws
 name|InterruptedException
@@ -1916,27 +1916,12 @@ name|start
 argument_list|()
 expr_stmt|;
 name|Thread
-name|updateThread
-init|=
-name|scheduler
-operator|.
-name|updateThread
-decl_stmt|;
-name|Thread
 name|schedulingThread
 init|=
 name|scheduler
 operator|.
 name|schedulingThread
 decl_stmt|;
-name|assertTrue
-argument_list|(
-name|updateThread
-operator|.
-name|isAlive
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|assertTrue
 argument_list|(
 name|schedulingThread
@@ -1962,17 +1947,10 @@ operator|--
 operator|>
 literal|0
 operator|&&
-operator|(
-name|updateThread
-operator|.
-name|isAlive
-argument_list|()
-operator|||
 name|schedulingThread
 operator|.
 name|isAlive
 argument_list|()
-operator|)
 condition|)
 block|{
 name|Thread
@@ -1985,7 +1963,7 @@ expr_stmt|;
 block|}
 name|assertNotEquals
 argument_list|(
-literal|"One of the threads is still alive"
+literal|"The Scheduling thread is still alive"
 argument_list|,
 literal|0
 argument_list|,

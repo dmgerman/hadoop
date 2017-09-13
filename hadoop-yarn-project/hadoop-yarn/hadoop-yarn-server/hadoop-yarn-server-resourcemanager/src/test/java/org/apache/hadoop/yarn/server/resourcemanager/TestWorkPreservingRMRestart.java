@@ -1400,6 +1400,22 @@ name|rm2
 init|=
 literal|null
 decl_stmt|;
+DECL|method|TestWorkPreservingRMRestart (SchedulerType type)
+specifier|public
+name|TestWorkPreservingRMRestart
+parameter_list|(
+name|SchedulerType
+name|type
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|super
+argument_list|(
+name|type
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Before
 DECL|method|setup ()
