@@ -670,22 +670,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|BlocksStats
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|CacheDirectiveEntry
 import|;
 end_import
@@ -830,7 +814,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ECBlockGroupsStats
+name|ECBlockGroupStats
 import|;
 end_import
 
@@ -1031,6 +1015,22 @@ operator|.
 name|protocol
 operator|.
 name|OpenFileEntry
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|ReplicatedBlockStats
 import|;
 end_import
 
@@ -12065,10 +12065,10 @@ end_function
 begin_function
 annotation|@
 name|Override
-DECL|method|getECBlockGroupsStats ()
+DECL|method|getECBlockGroupStats ()
 specifier|public
-name|ECBlockGroupsStats
-name|getECBlockGroupsStats
+name|ECBlockGroupStats
+name|getECBlockGroupStats
 parameter_list|()
 throws|throws
 name|IOException
@@ -12093,7 +12093,7 @@ annotation|@
 name|Override
 DECL|method|getErasureCodingCodecs ()
 specifier|public
-name|HashMap
+name|Map
 argument_list|<
 name|String
 argument_list|,
@@ -12122,10 +12122,10 @@ end_function
 begin_function
 annotation|@
 name|Override
-DECL|method|getBlocksStats ()
+DECL|method|getReplicatedBlockStats ()
 specifier|public
-name|BlocksStats
-name|getBlocksStats
+name|ReplicatedBlockStats
+name|getReplicatedBlockStats
 parameter_list|()
 throws|throws
 name|IOException
