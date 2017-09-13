@@ -1644,7 +1644,7 @@ name|Factory
 extends|extends
 name|KeyProviderFactory
 block|{
-comment|/**      * This provider expects URIs in the following form :      * kms://<PROTO>@<AUTHORITY>/<PATH>      *      * where :      * - PROTO = http or https      * - AUTHORITY =<HOSTS>[:<PORT>]      * - HOSTS =<HOSTNAME>[;<HOSTS>]      * - HOSTNAME = string      * - PORT = integer      *      * This will always create a {@link LoadBalancingKMSClientProvider}      * if the uri is correct.      */
+comment|/**      * This provider expects URIs in the following form :      * kms://<PROTO>@<AUTHORITY>/<PATH>      *      * where :      * - PROTO = http or https      * - AUTHORITY =<HOSTS>[:<PORT>]      * - HOSTS =<HOSTNAME>[;<HOSTS>]      * - HOSTNAME = string      * - PORT = integer      *      * If multiple hosts are provider, the Factory will create a      * {@link LoadBalancingKMSClientProvider} that round-robins requests      * across the provided list of hosts.      */
 annotation|@
 name|Override
 DECL|method|createProvider (URI providerUri, Configuration conf)
@@ -1798,6 +1798,8 @@ block|}
 return|return
 name|createProvider
 argument_list|(
+name|providerUri
+argument_list|,
 name|conf
 argument_list|,
 name|origUrl
@@ -1812,11 +1814,14 @@ return|return
 literal|null
 return|;
 block|}
-DECL|method|createProvider (Configuration conf, URL origUrl, int port, String hostsPart)
+DECL|method|createProvider (URI providerUri, Configuration conf, URL origUrl, int port, String hostsPart)
 specifier|private
 name|KeyProvider
 name|createProvider
 parameter_list|(
+name|URI
+name|providerUri
+parameter_list|,
 name|Configuration
 name|conf
 parameter_list|,
@@ -1843,6 +1848,27 @@ argument_list|(
 literal|";"
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|hosts
+operator|.
+name|length
+operator|==
+literal|1
+condition|)
+block|{
+return|return
+operator|new
+name|KMSClientProvider
+argument_list|(
+name|providerUri
+argument_list|,
+name|conf
+argument_list|)
+return|;
+block|}
+else|else
+block|{
 name|KMSClientProvider
 index|[]
 name|providers
@@ -1923,7 +1949,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Could not instantiate KMSProvider."
+literal|"Could not instantiate KMSProvider.."
 argument_list|,
 name|e
 argument_list|)
@@ -1939,6 +1965,7 @@ argument_list|,
 name|conf
 argument_list|)
 return|;
+block|}
 block|}
 block|}
 DECL|field|kmsUrl
@@ -6320,22 +6347,6 @@ name|Exception
 name|e
 parameter_list|)
 block|{
-if|if
-condition|(
-name|e
-operator|instanceof
-name|IOException
-condition|)
-block|{
-throw|throw
-operator|(
-name|IOException
-operator|)
-name|e
-throw|;
-block|}
-else|else
-block|{
 throw|throw
 operator|new
 name|IOException
@@ -6343,7 +6354,6 @@ argument_list|(
 name|e
 argument_list|)
 throw|;
-block|}
 block|}
 block|}
 return|return
