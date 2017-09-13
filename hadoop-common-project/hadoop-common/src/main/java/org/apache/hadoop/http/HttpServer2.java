@@ -6274,6 +6274,15 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"opening listeners: {}"
+argument_list|,
+name|listeners
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|ServerConnector
