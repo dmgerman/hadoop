@@ -812,6 +812,7 @@ name|recursive
 argument_list|)
 return|;
 block|}
+comment|/**    * The returned BlockLocation will have different formats for replicated    * and erasure coded file.    *    * Please refer to    * {@link FileContext#getFileBlockLocations(Path, long, long)}    * for more details.    */
 annotation|@
 name|Override
 DECL|method|getFileBlockLocations (Path p, long start, long len)
@@ -1061,6 +1062,7 @@ name|getServerDefaults
 argument_list|()
 return|;
 block|}
+comment|/**    * The BlockLocation of returned LocatedFileStatus will have different    * formats for replicated and erasure coded file.    * Please refer to    * {@link FileContext#getFileBlockLocations(Path, long, long)} for    * more details.    */
 annotation|@
 name|Override
 DECL|method|listLocatedStatus ( final Path p)

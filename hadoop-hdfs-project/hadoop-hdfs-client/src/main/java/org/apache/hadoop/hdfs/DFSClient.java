@@ -718,6 +718,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|FileSystem
 import|;
 end_import
@@ -5276,7 +5290,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Get block location info about file    *    * getBlockLocations() returns a list of hostnames that store    * data for a specific file region.  It returns a set of hostnames    * for every block within the indicated region.    *    * This function is very useful when writing code that considers    * data-placement when performing operations.  For example, the    * MapReduce system tries to schedule tasks on the same machines    * as the data-block the task processes.    */
+comment|/**    * Get block location info about file    *    * getBlockLocations() returns a list of hostnames that store    * data for a specific file region.  It returns a set of hostnames    * for every block within the indicated region.    *    * This function is very useful when writing code that considers    * data-placement when performing operations.  For example, the    * MapReduce system tries to schedule tasks on the same machines    * as the data-block the task processes.    *    * Please refer to    * {@link FileSystem#getFileBlockLocations(FileStatus, long, long)}    * for more details.    */
 DECL|method|getBlockLocations (String src, long start, long length)
 specifier|public
 name|BlockLocation

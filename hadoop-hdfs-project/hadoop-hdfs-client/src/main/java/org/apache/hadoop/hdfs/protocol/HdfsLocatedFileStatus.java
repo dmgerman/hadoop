@@ -293,6 +293,7 @@ return|return
 name|locations
 return|;
 block|}
+comment|/**    * This function is used to transform the underlying HDFS LocatedBlocks to    * BlockLocations.    *    * The returned BlockLocation will have different formats for replicated    * and erasure coded file.    * Please refer to    * {@link org.apache.hadoop.fs.FileSystem#getFileBlockLocations    * (FileStatus, long, long)}    * for examples.    */
 DECL|method|makeQualifiedLocated (URI defaultUri, Path path)
 specifier|public
 specifier|final

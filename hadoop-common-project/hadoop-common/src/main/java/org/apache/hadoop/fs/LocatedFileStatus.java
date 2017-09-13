@@ -432,7 +432,7 @@ operator|=
 name|locations
 expr_stmt|;
 block|}
-comment|/**    * Get the file's block locations    * @return the file's block locations    */
+comment|/**    * Get the file's block locations    *    * In HDFS, the returned BlockLocation will have different formats for    * replicated and erasure coded file.    * Please refer to    * {@link FileSystem#getFileBlockLocations(FileStatus, long, long)}    * for more details.    *    * @return the file's block locations    */
 DECL|method|getBlockLocations ()
 specifier|public
 name|BlockLocation

@@ -3674,7 +3674,7 @@ block|}
 block|}
 return|;
 block|}
-comment|/**    * The specification of this method matches that of    * {@link FileContext#listLocatedStatus(Path)} except that Path f     * must be for this file system.    */
+comment|/**    * The specification of this method matches that of    * {@link FileContext#listLocatedStatus(Path)} except that Path f     * must be for this file system.    *    * In HDFS implementation, the BlockLocation of returned LocatedFileStatus    * will have different formats for replicated and erasure coded file. Please    * refer to {@link FileSystem#getFileBlockLocations(FileStatus, long, long)}    * for more details.    */
 DECL|method|listLocatedStatus (final Path f)
 specifier|public
 name|RemoteIterator

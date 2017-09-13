@@ -1741,6 +1741,7 @@ name|len
 argument_list|)
 return|;
 block|}
+comment|/**    * The returned BlockLocation will have different formats for replicated    * and erasure coded file.    * Please refer to    * {@link FileSystem#getFileBlockLocations(FileStatus, long, long)}    * for more details.    */
 annotation|@
 name|Override
 DECL|method|getFileBlockLocations (Path p, final long start, final long len)
@@ -5971,6 +5972,7 @@ name|absF
 argument_list|)
 return|;
 block|}
+comment|/**    * The BlockLocation of returned LocatedFileStatus will have different    * formats for replicated and erasure coded file.    * Please refer to    * {@link FileSystem#getFileBlockLocations(FileStatus, long, long)} for    * more details.    */
 annotation|@
 name|Override
 DECL|method|listLocatedStatus (final Path p, final PathFilter filter)
