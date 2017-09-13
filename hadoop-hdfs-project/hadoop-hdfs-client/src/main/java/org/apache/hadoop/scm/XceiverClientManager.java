@@ -296,6 +296,12 @@ specifier|final
 name|boolean
 name|useRatis
 decl_stmt|;
+DECL|field|metrics
+specifier|private
+specifier|static
+name|XceiverClientMetrics
+name|metrics
+decl_stmt|;
 comment|/**    * Creates a new XceiverClientManager.    *    * @param conf configuration    */
 DECL|method|XceiverClientManager (Configuration conf)
 specifier|public
@@ -668,6 +674,19 @@ operator|.
 name|cleanUp
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|metrics
+operator|!=
+literal|null
+condition|)
+block|{
+name|metrics
+operator|.
+name|unRegister
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Tells us if Ratis is enabled for this cluster.    * @return True if Ratis is enabled.    */
 DECL|method|isUseRatis ()
@@ -741,6 +760,34 @@ operator|.
 name|ReplicationType
 operator|.
 name|STAND_ALONE
+return|;
+block|}
+comment|/**    * Get xceiver client metric.    */
+DECL|method|getXceiverClientMetrics ()
+specifier|public
+specifier|synchronized
+specifier|static
+name|XceiverClientMetrics
+name|getXceiverClientMetrics
+parameter_list|()
+block|{
+if|if
+condition|(
+name|metrics
+operator|==
+literal|null
+condition|)
+block|{
+name|metrics
+operator|=
+name|XceiverClientMetrics
+operator|.
+name|create
+argument_list|()
+expr_stmt|;
+block|}
+return|return
+name|metrics
 return|;
 block|}
 block|}
