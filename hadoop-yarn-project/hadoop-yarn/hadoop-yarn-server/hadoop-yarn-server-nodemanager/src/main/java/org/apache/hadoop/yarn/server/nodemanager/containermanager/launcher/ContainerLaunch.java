@@ -6520,7 +6520,7 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|putEnvIfAbsent
+name|putEnvIfNotNull
 argument_list|(
 name|environment
 argument_list|,
@@ -6530,6 +6530,18 @@ name|HADOOP_CONF_DIR
 operator|.
 name|name
 argument_list|()
+argument_list|,
+name|System
+operator|.
+name|getenv
+argument_list|(
+name|Environment
+operator|.
+name|HADOOP_CONF_DIR
+operator|.
+name|name
+argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 if|if
