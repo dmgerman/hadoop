@@ -284,20 +284,7 @@ operator|=
 name|conf
 expr_stmt|;
 name|initializeStripedReadThreadPool
-argument_list|(
-name|conf
-operator|.
-name|getInt
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_DN_EC_RECONSTRUCTION_STRIPED_READ_THREADS_KEY
-argument_list|,
-name|DFSConfigKeys
-operator|.
-name|DFS_DN_EC_RECONSTRUCTION_STRIPED_READ_THREADS_DEFAULT
-argument_list|)
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|initializeStripedBlkReconstructionThreadPool
 argument_list|(
@@ -316,32 +303,30 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|initializeStripedReadThreadPool (int num)
+DECL|method|initializeStripedReadThreadPool ()
 specifier|private
 name|void
 name|initializeStripedReadThreadPool
-parameter_list|(
-name|int
-name|num
-parameter_list|)
+parameter_list|()
 block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Using striped reads; pool threads={}"
-argument_list|,
-name|num
+literal|"Using striped reads"
 argument_list|)
 expr_stmt|;
+comment|// Essentially, this is a cachedThreadPool.
 name|stripedReadPool
 operator|=
 operator|new
 name|ThreadPoolExecutor
 argument_list|(
-literal|1
+literal|0
 argument_list|,
-name|num
+name|Integer
+operator|.
+name|MAX_VALUE
 argument_list|,
 literal|60
 argument_list|,
@@ -351,9 +336,7 @@ name|SECONDS
 argument_list|,
 operator|new
 name|SynchronousQueue
-argument_list|<
-name|Runnable
-argument_list|>
+argument_list|<>
 argument_list|()
 argument_list|,
 operator|new
