@@ -1563,24 +1563,6 @@ operator|.
 name|backoff
 argument_list|)
 expr_stmt|;
-for|for
-control|(
-name|TaskAttemptID
-name|left
-range|:
-name|remaining
-control|)
-block|{
-name|scheduler
-operator|.
-name|putBackKnownMapOutput
-argument_list|(
-name|host
-argument_list|,
-name|left
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 catch|catch
 parameter_list|(
@@ -1653,25 +1635,6 @@ argument_list|,
 literal|false
 argument_list|,
 name|connectExcpt
-argument_list|)
-expr_stmt|;
-block|}
-comment|// Add back all the remaining maps, WITHOUT marking them as failed
-for|for
-control|(
-name|TaskAttemptID
-name|left
-range|:
-name|remaining
-control|)
-block|{
-name|scheduler
-operator|.
-name|putBackKnownMapOutput
-argument_list|(
-name|host
-argument_list|,
-name|left
 argument_list|)
 expr_stmt|;
 block|}
@@ -1783,6 +1746,12 @@ decl_stmt|;
 name|DataInputStream
 name|input
 init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|input
+operator|=
 name|openShuffleUrl
 argument_list|(
 name|host
@@ -1791,7 +1760,7 @@ name|remaining
 argument_list|,
 name|url
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 name|input
@@ -1801,8 +1770,6 @@ condition|)
 block|{
 return|return;
 block|}
-try|try
-block|{
 comment|// Loop through available map-outputs and fetch them
 comment|// On any error, faildTasks is not null and we exit
 comment|// after putting back the remaining maps to the

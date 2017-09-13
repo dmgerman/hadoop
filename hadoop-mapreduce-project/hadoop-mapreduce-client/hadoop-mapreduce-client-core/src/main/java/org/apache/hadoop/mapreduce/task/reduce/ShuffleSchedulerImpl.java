@@ -1482,6 +1482,23 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Aborting already-finished MapOutput for "
+operator|+
+name|mapId
+argument_list|)
+expr_stmt|;
+name|output
+operator|.
+name|abort
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|updateStatus (String individualProgress)
 specifier|private
