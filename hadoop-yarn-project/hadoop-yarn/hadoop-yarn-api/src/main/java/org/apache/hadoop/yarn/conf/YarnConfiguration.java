@@ -10425,6 +10425,27 @@ name|NM_SCRIPT_BASED_NODE_LABELS_PROVIDER_PREFIX
 operator|+
 literal|"opts"
 decl_stmt|;
+comment|/*    * Support to view apps for given user in secure cluster.    */
+DECL|field|DISPLAY_APPS_FOR_LOGGED_IN_USER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DISPLAY_APPS_FOR_LOGGED_IN_USER
+init|=
+name|RM_PREFIX
+operator|+
+literal|"display.per-user-apps"
+decl_stmt|;
+DECL|field|DEFAULT_DISPLAY_APPS_FOR_LOGGED_IN_USER
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_DISPLAY_APPS_FOR_LOGGED_IN_USER
+init|=
+literal|false
+decl_stmt|;
 comment|// RM and NM CSRF props
 DECL|field|REST_CSRF
 specifier|public
