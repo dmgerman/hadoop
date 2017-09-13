@@ -664,6 +664,22 @@ argument_list|(
 name|containerLimitPerInterval
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Plan to choose {} containers for block deletion, "
+operator|+
+literal|"actually returns {} valid containers."
+argument_list|,
+name|containerLimitPerInterval
+argument_list|,
+name|containers
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|ContainerData

@@ -884,6 +884,7 @@ name|HashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
+comment|// create [numContainers + 1] containers
 for|for
 control|(
 name|int
@@ -892,7 +893,7 @@ init|=
 literal|0
 init|;
 name|i
-operator|<
+operator|<=
 name|numContainers
 condition|;
 name|i
@@ -943,6 +944,16 @@ name|containerName
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// don't create deletion blocks in the last container.
+if|if
+condition|(
+name|i
+operator|==
+name|numContainers
+condition|)
+block|{
+break|break;
+block|}
 comment|// create random number of deletion blocks and write to container db
 name|int
 name|deletionBlocks
@@ -1095,8 +1106,23 @@ operator|.
 name|chooseContainerForBlockDeletion
 argument_list|(
 name|numContainers
+operator|+
+literal|1
 argument_list|)
 decl_stmt|;
+comment|// the empty deletion blocks container should not be chosen
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|numContainers
+argument_list|,
+name|result1
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// verify the order of return list
 name|int
 name|lastCount

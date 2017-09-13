@@ -339,6 +339,16 @@ operator|<
 name|count
 condition|)
 block|{
+if|if
+condition|(
+name|entry
+operator|.
+name|getNumPendingDeletionBlocks
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
 name|result
 operator|.
 name|add
@@ -374,6 +384,20 @@ name|getNumPendingDeletionBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Stop looking for next container, there is no"
+operator|+
+literal|" pending deletion block contained in remaining containers."
+argument_list|)
+expr_stmt|;
+break|break;
+block|}
 block|}
 else|else
 block|{
