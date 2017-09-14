@@ -888,7 +888,17 @@ throw|throw
 operator|new
 name|UnsupportedOperationException
 argument_list|(
-literal|"this stream does not "
+literal|"this stream "
+operator|+
+name|in
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|" does not "
 operator|+
 literal|"support unbuffering."
 argument_list|)
