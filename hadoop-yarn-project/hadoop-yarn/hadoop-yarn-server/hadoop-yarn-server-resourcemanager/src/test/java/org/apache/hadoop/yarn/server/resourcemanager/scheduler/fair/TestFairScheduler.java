@@ -880,26 +880,6 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|resource
-operator|.
-name|ResourceType
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|rmapp
 operator|.
 name|MockRMApp
@@ -13311,15 +13291,8 @@ literal|1.0
 argument_list|,
 name|leaf
 operator|.
-name|getWeights
-argument_list|()
-operator|.
 name|getWeight
-argument_list|(
-name|ResourceType
-operator|.
-name|MEMORY
-argument_list|)
+argument_list|()
 argument_list|,
 literal|0
 argument_list|)
@@ -33726,7 +33699,7 @@ name|childQueueString
 init|=
 literal|"{Name: root.parent.child1,"
 operator|+
-literal|" Weight:<memory weight=1.0, cpu weight=1.0>,"
+literal|" Weight: 1.0,"
 operator|+
 literal|" Policy: fair,"
 operator|+
@@ -33763,17 +33736,16 @@ argument_list|()
 operator|+
 literal|"}"
 decl_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
+literal|"Unexpected state dump string"
+argument_list|,
+name|childQueueString
+argument_list|,
 name|child1
 operator|.
 name|dumpState
 argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|childQueueString
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|FSParentQueue
@@ -33808,7 +33780,7 @@ name|parentQueueString
 init|=
 literal|"{Name: root.parent,"
 operator|+
-literal|" Weight:<memory weight=1.0, cpu weight=1.0>,"
+literal|" Weight: 1.0,"
 operator|+
 literal|" Policy: fair,"
 operator|+
@@ -33828,21 +33800,20 @@ literal|" MaxAMShare: 0.5,"
 operator|+
 literal|" Runnable: 0}"
 decl_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
-name|parent
-operator|.
-name|dumpState
-argument_list|()
-operator|.
-name|equals
-argument_list|(
+literal|"Unexpected state dump string"
+argument_list|,
 name|parentQueueString
 operator|+
 literal|", "
 operator|+
 name|childQueueString
-argument_list|)
+argument_list|,
+name|parent
+operator|.
+name|dumpState
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

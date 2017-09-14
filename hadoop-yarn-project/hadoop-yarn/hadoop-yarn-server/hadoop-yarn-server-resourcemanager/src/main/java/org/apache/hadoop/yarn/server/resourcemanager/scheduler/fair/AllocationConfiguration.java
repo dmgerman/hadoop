@@ -208,26 +208,6 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|resource
-operator|.
-name|ResourceWeights
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|scheduler
 operator|.
 name|SchedulerUtils
@@ -392,7 +372,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|ResourceWeights
+name|Float
 argument_list|>
 name|queueWeights
 decl_stmt|;
@@ -598,7 +578,7 @@ name|String
 argument_list|>
 name|nonPreemptableQueues
 decl_stmt|;
-DECL|method|AllocationConfiguration (Map<String, Resource> minQueueResources, Map<String, Resource> maxQueueResources, Map<String, Resource> maxChildQueueResources, Map<String, Integer> queueMaxApps, Map<String, Integer> userMaxApps, Map<String, ResourceWeights> queueWeights, Map<String, Float> queueMaxAMShares, int userMaxAppsDefault, int queueMaxAppsDefault, Resource queueMaxResourcesDefault, float queueMaxAMShareDefault, Map<String, SchedulingPolicy> schedulingPolicies, SchedulingPolicy defaultSchedulingPolicy, Map<String, Long> minSharePreemptionTimeouts, Map<String, Long> fairSharePreemptionTimeouts, Map<String, Float> fairSharePreemptionThresholds, Map<String, Map<AccessType, AccessControlList>> queueAcls, Map<String, Map<ReservationACL, AccessControlList>> resAcls, QueuePlacementPolicy placementPolicy, Map<FSQueueType, Set<String>> configuredQueues, ReservationQueueConfiguration globalReservationQueueConfig, Set<String> reservableQueues, Set<String> nonPreemptableQueues)
+DECL|method|AllocationConfiguration (Map<String, Resource> minQueueResources, Map<String, Resource> maxQueueResources, Map<String, Resource> maxChildQueueResources, Map<String, Integer> queueMaxApps, Map<String, Integer> userMaxApps, Map<String, Float> queueWeights, Map<String, Float> queueMaxAMShares, int userMaxAppsDefault, int queueMaxAppsDefault, Resource queueMaxResourcesDefault, float queueMaxAMShareDefault, Map<String, SchedulingPolicy> schedulingPolicies, SchedulingPolicy defaultSchedulingPolicy, Map<String, Long> minSharePreemptionTimeouts, Map<String, Long> fairSharePreemptionTimeouts, Map<String, Float> fairSharePreemptionThresholds, Map<String, Map<AccessType, AccessControlList>> queueAcls, Map<String, Map<ReservationACL, AccessControlList>> resAcls, QueuePlacementPolicy placementPolicy, Map<FSQueueType, Set<String>> configuredQueues, ReservationQueueConfiguration globalReservationQueueConfig, Set<String> reservableQueues, Set<String> nonPreemptableQueues)
 specifier|public
 name|AllocationConfiguration
 parameter_list|(
@@ -646,7 +626,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|ResourceWeights
+name|Float
 argument_list|>
 name|queueWeights
 parameter_list|,
@@ -1340,14 +1320,14 @@ return|;
 block|}
 DECL|method|getQueueWeight (String queue)
 specifier|private
-name|ResourceWeights
+name|float
 name|getQueueWeight
 parameter_list|(
 name|String
 name|queue
 parameter_list|)
 block|{
-name|ResourceWeights
+name|Float
 name|weight
 init|=
 name|queueWeights
@@ -1364,9 +1344,7 @@ operator|==
 literal|null
 operator|)
 condition|?
-name|ResourceWeights
-operator|.
-name|NEUTRAL
+literal|1.0f
 else|:
 name|weight
 return|;

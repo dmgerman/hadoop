@@ -2015,13 +2015,13 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Unable to find '"
 operator|+
 name|resourceFile
 operator|+
-literal|"'. Falling back to memory and vcores as resources."
+literal|"'."
 argument_list|)
 expr_stmt|;
 block|}

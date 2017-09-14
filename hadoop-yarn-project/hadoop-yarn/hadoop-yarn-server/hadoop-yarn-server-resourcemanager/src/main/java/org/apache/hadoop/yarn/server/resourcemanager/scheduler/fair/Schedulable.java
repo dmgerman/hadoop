@@ -92,26 +92,6 @@ name|Resource
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|resource
-operator|.
-name|ResourceWeights
-import|;
-end_import
-
 begin_comment
 comment|/**  * A Schedulable represents an entity that can be scheduled such as an  * application or a queue. It provides a common interface so that algorithms  * such as fair sharing can be applied both within a queue and across queues.  *  * A Schedulable is responsible for three roles:  * 1) Assign resources through {@link #assignContainer}.  * 2) It provides information about the app/queue to the scheduler, including:  *    - Demand (maximum number of tasks required)  *    - Minimum share (for queues)  *    - Job/queue weight (for fair sharing)  *    - Start time and priority (for FIFO)  * 3) It can be assigned a fair share, for use with fair scheduling.  *  * Schedulable also contains two methods for performing scheduling computations:  * - updateDemand() is called periodically to compute the demand of the various  *   jobs and queues, which may be expensive (e.g. jobs must iterate through all  *   their tasks to count failed tasks, tasks that can be speculated, etc).  * - redistributeShare() is called after demands are updated and a Schedulable's  *   fair share has been set by its parent to let it distribute its share among  *   the other Schedulables within it (e.g. for queues that want to perform fair  *   sharing among their jobs).  */
 end_comment
@@ -156,10 +136,10 @@ name|Resource
 name|getMaxShare
 parameter_list|()
 function_decl|;
-comment|/** Job/queue weight in fair sharing. */
-DECL|method|getWeights ()
-name|ResourceWeights
-name|getWeights
+comment|/**    * Job/queue weight in fair sharing. Weights are only meaningful when    * compared. A weight of 2.0f has twice the weight of a weight of 1.0f,    * which has twice the weight of a weight of 0.5f. A weight of 1.0f is    * considered unweighted or a neutral weight. A weight of 0 is no weight.    *    * @return the weight    */
+DECL|method|getWeight ()
+name|float
+name|getWeight
 parameter_list|()
 function_decl|;
 comment|/** Start time for jobs in FIFO queues; meaningless for QueueSchedulables.*/

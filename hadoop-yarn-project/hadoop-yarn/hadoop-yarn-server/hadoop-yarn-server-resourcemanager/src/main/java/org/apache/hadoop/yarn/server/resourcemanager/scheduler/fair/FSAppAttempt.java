@@ -388,26 +388,6 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|resource
-operator|.
-name|ResourceWeights
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|rmcontainer
 operator|.
 name|RMContainer
@@ -765,12 +745,6 @@ specifier|final
 name|Priority
 name|appPriority
 decl_stmt|;
-DECL|field|resourceWeights
-specifier|private
-specifier|final
-name|ResourceWeights
-name|resourceWeights
-decl_stmt|;
 DECL|field|demand
 specifier|private
 name|Resource
@@ -1000,23 +974,6 @@ argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
-name|resourceWeights
-operator|=
-operator|new
-name|ResourceWeights
-argument_list|()
-expr_stmt|;
-block|}
-DECL|method|getResourceWeights ()
-name|ResourceWeights
-name|getResourceWeights
-parameter_list|()
-block|{
-return|return
-name|resourceWeights
-return|;
 block|}
 comment|/**    * Get metrics reference from containing queue.    */
 DECL|method|getMetrics ()
@@ -5683,10 +5640,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getWeights ()
+DECL|method|getWeight ()
 specifier|public
-name|ResourceWeights
-name|getWeights
+name|float
+name|getWeight
 parameter_list|()
 block|{
 return|return

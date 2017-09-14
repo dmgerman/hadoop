@@ -172,26 +172,6 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|resource
-operator|.
-name|ResourceWeights
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|scheduler
 operator|.
 name|fair
@@ -751,28 +731,16 @@ block|}
 decl_stmt|;
 DECL|field|weightsCollection
 specifier|private
-name|ResourceWeights
+name|float
 index|[]
 name|weightsCollection
 init|=
 block|{
-operator|new
-name|ResourceWeights
-argument_list|(
 literal|0.0f
-argument_list|)
 block|,
-operator|new
-name|ResourceWeights
-argument_list|(
 literal|1.0f
-argument_list|)
 block|,
-operator|new
-name|ResourceWeights
-argument_list|(
 literal|2.0f
-argument_list|)
 block|}
 decl_stmt|;
 DECL|method|FairShareComparatorTester ( Comparator<Schedulable> fairShareComparator)
@@ -1287,10 +1255,10 @@ name|usage
 decl_stmt|;
 DECL|field|weights
 specifier|private
-name|ResourceWeights
+name|float
 name|weights
 decl_stmt|;
-DECL|method|MockSchedulable (Resource minShare, Resource demand, String name, long startTime, Resource usage, ResourceWeights weights)
+DECL|method|MockSchedulable (Resource minShare, Resource demand, String name, long startTime, Resource usage, float weights)
 specifier|public
 name|MockSchedulable
 parameter_list|(
@@ -1309,7 +1277,7 @@ parameter_list|,
 name|Resource
 name|usage
 parameter_list|,
-name|ResourceWeights
+name|float
 name|weights
 parameter_list|)
 block|{
@@ -1400,10 +1368,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getWeights ()
+DECL|method|getWeight ()
 specifier|public
-name|ResourceWeights
-name|getWeights
+name|float
+name|getWeight
 parameter_list|()
 block|{
 return|return

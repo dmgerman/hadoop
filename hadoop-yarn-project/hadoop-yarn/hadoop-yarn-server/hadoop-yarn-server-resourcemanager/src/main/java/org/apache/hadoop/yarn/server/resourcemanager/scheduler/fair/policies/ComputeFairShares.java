@@ -78,26 +78,6 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|resource
-operator|.
-name|ResourceType
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|scheduler
 operator|.
 name|fair
@@ -148,7 +128,7 @@ init|=
 literal|25
 decl_stmt|;
 comment|/**    * Compute fair share of the given schedulables.Fair share is an allocation of    * shares considering only active schedulables ie schedulables which have    * running apps.    *     * @param schedulables    * @param totalResources    * @param type    */
-DECL|method|computeShares ( Collection<? extends Schedulable> schedulables, Resource totalResources, ResourceType type)
+DECL|method|computeShares ( Collection<? extends Schedulable> schedulables, Resource totalResources, String type)
 specifier|public
 specifier|static
 name|void
@@ -165,7 +145,7 @@ parameter_list|,
 name|Resource
 name|totalResources
 parameter_list|,
-name|ResourceType
+name|String
 name|type
 parameter_list|)
 block|{
@@ -182,7 +162,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Compute the steady fair share of the given queues. The steady fair    * share is an allocation of shares considering all queues, i.e.,    * active and inactive.    *    * @param queues    * @param totalResources    * @param type    */
-DECL|method|computeSteadyShares ( Collection<? extends FSQueue> queues, Resource totalResources, ResourceType type)
+DECL|method|computeSteadyShares ( Collection<? extends FSQueue> queues, Resource totalResources, String type)
 specifier|public
 specifier|static
 name|void
@@ -199,7 +179,7 @@ parameter_list|,
 name|Resource
 name|totalResources
 parameter_list|,
-name|ResourceType
+name|String
 name|type
 parameter_list|)
 block|{
@@ -216,7 +196,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Given a set of Schedulables and a number of slots, compute their weighted    * fair shares. The min and max shares and of the Schedulables are assumed to    * be set beforehand. We compute the fairest possible allocation of shares to    * the Schedulables that respects their min and max shares.    *<p>    * To understand what this method does, we must first define what weighted    * fair sharing means in the presence of min and max shares. If there    * were no minimum or maximum shares, then weighted fair sharing would be    * achieved if the ratio of slotsAssigned / weight was equal for each    * Schedulable and all slots were assigned. Minimum and maximum shares add a    * further twist - Some Schedulables may have a min share higher than their    * assigned share or a max share lower than their assigned share.    *<p>    * To deal with these possibilities, we define an assignment of slots as being    * fair if there exists a ratio R such that: Schedulables S where S.minShare    * {@literal>} R * S.weight are given share S.minShare - Schedulables S    * where S.maxShare {@literal<} R * S.weight are given S.maxShare -    * All other Schedulables S are assigned share R * S.weight -    * The sum of all the shares is totalSlots.    *<p>    * We call R the weight-to-slots ratio because it converts a Schedulable's    * weight to the number of slots it is assigned.    *<p>    * We compute a fair allocation by finding a suitable weight-to-slot ratio R.    * To do this, we use binary search. Given a ratio R, we compute the number of    * slots that would be used in total with this ratio (the sum of the shares    * computed using the conditions above). If this number of slots is less than    * totalSlots, then R is too small and more slots could be assigned. If the    * number of slots is more than totalSlots, then R is too large.    *<p>    * We begin the binary search with a lower bound on R of 0 (which means that    * all Schedulables are only given their minShare) and an upper bound computed    * to be large enough that too many slots are given (by doubling R until we    * use more than totalResources resources). The helper method    * resourceUsedWithWeightToResourceRatio computes the total resources used with a    * given value of R.    *<p>    * The running time of this algorithm is linear in the number of Schedulables,    * because resourceUsedWithWeightToResourceRatio is linear-time and the number of    * iterations of binary search is a constant (dependent on desired precision).    */
-DECL|method|computeSharesInternal ( Collection<? extends Schedulable> allSchedulables, Resource totalResources, ResourceType type, boolean isSteadyShare)
+DECL|method|computeSharesInternal ( Collection<? extends Schedulable> allSchedulables, Resource totalResources, String type, boolean isSteadyShare)
 specifier|private
 specifier|static
 name|void
@@ -233,7 +213,7 @@ parameter_list|,
 name|Resource
 name|totalResources
 parameter_list|,
-name|ResourceType
+name|String
 name|type
 parameter_list|,
 name|boolean
@@ -248,9 +228,7 @@ name|schedulables
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|Schedulable
-argument_list|>
+argument_list|<>
 argument_list|()
 decl_stmt|;
 name|int
@@ -296,13 +274,13 @@ block|{
 name|long
 name|maxShare
 init|=
-name|getResourceValue
-argument_list|(
 name|sched
 operator|.
 name|getMaxShare
 argument_list|()
-argument_list|,
+operator|.
+name|getResourceValue
+argument_list|(
 name|type
 argument_list|)
 decl_stmt|;
@@ -347,10 +325,10 @@ operator|.
 name|max
 argument_list|(
 operator|(
+name|totalResources
+operator|.
 name|getResourceValue
 argument_list|(
-name|totalResources
-argument_list|,
 name|type
 argument_list|)
 operator|-
@@ -487,22 +465,16 @@ range|:
 name|schedulables
 control|)
 block|{
+name|Resource
+name|target
+decl_stmt|;
 if|if
 condition|(
 name|isSteadyShare
 condition|)
 block|{
-name|setResourceValue
-argument_list|(
-name|computeShare
-argument_list|(
-name|sched
-argument_list|,
-name|right
-argument_list|,
-name|type
-argument_list|)
-argument_list|,
+name|target
+operator|=
 operator|(
 operator|(
 name|FSQueue
@@ -512,15 +484,27 @@ operator|)
 operator|.
 name|getSteadyFairShare
 argument_list|()
-argument_list|,
-name|type
-argument_list|)
 expr_stmt|;
 block|}
 else|else
 block|{
+name|target
+operator|=
+name|sched
+operator|.
+name|getFairShare
+argument_list|()
+expr_stmt|;
+block|}
+name|target
+operator|.
 name|setResourceValue
 argument_list|(
+name|type
+argument_list|,
+operator|(
+name|long
+operator|)
 name|computeShare
 argument_list|(
 name|sched
@@ -529,20 +513,12 @@ name|right
 argument_list|,
 name|type
 argument_list|)
-argument_list|,
-name|sched
-operator|.
-name|getFairShare
-argument_list|()
-argument_list|,
-name|type
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-block|}
 comment|/**    * Compute the resources that would be used given a weight-to-resource ratio    * w2rRatio, for use in the computeFairShares algorithm as described in #    */
-DECL|method|resourceUsedWithWeightToResourceRatio (double w2rRatio, Collection<? extends Schedulable> schedulables, ResourceType type)
+DECL|method|resourceUsedWithWeightToResourceRatio (double w2rRatio, Collection<? extends Schedulable> schedulables, String type)
 specifier|private
 specifier|static
 name|int
@@ -559,7 +535,7 @@ name|Schedulable
 argument_list|>
 name|schedulables
 parameter_list|,
-name|ResourceType
+name|String
 name|type
 parameter_list|)
 block|{
@@ -598,7 +574,7 @@ name|resourcesTaken
 return|;
 block|}
 comment|/**    * Compute the resources assigned to a Schedulable given a particular    * weight-to-resource ratio w2rRatio.    */
-DECL|method|computeShare (Schedulable sched, double w2rRatio, ResourceType type)
+DECL|method|computeShare (Schedulable sched, double w2rRatio, String type)
 specifier|private
 specifier|static
 name|int
@@ -610,7 +586,7 @@ parameter_list|,
 name|double
 name|w2rRatio
 parameter_list|,
-name|ResourceType
+name|String
 name|type
 parameter_list|)
 block|{
@@ -619,13 +595,8 @@ name|share
 init|=
 name|sched
 operator|.
-name|getWeights
-argument_list|()
-operator|.
 name|getWeight
-argument_list|(
-name|type
-argument_list|)
+argument_list|()
 operator|*
 name|w2rRatio
 decl_stmt|;
@@ -637,13 +608,13 @@ name|max
 argument_list|(
 name|share
 argument_list|,
-name|getResourceValue
-argument_list|(
 name|sched
 operator|.
 name|getMinShare
 argument_list|()
-argument_list|,
+operator|.
+name|getResourceValue
+argument_list|(
 name|type
 argument_list|)
 argument_list|)
@@ -656,13 +627,13 @@ name|min
 argument_list|(
 name|share
 argument_list|,
-name|getResourceValue
-argument_list|(
 name|sched
 operator|.
 name|getMaxShare
 argument_list|()
-argument_list|,
+operator|.
+name|getResourceValue
+argument_list|(
 name|type
 argument_list|)
 argument_list|)
@@ -675,7 +646,7 @@ name|share
 return|;
 block|}
 comment|/**    * Helper method to handle Schedulabes with fixed fairshares.    * Returns the resources taken by fixed fairshare schedulables,    * and adds the remaining to the passed nonFixedSchedulables.    */
-DECL|method|handleFixedFairShares ( Collection<? extends Schedulable> schedulables, Collection<Schedulable> nonFixedSchedulables, boolean isSteadyShare, ResourceType type)
+DECL|method|handleFixedFairShares ( Collection<? extends Schedulable> schedulables, Collection<Schedulable> nonFixedSchedulables, boolean isSteadyShare, String type)
 specifier|private
 specifier|static
 name|int
@@ -698,7 +669,7 @@ parameter_list|,
 name|boolean
 name|isSteadyShare
 parameter_list|,
-name|ResourceType
+name|String
 name|type
 parameter_list|)
 block|{
@@ -744,12 +715,16 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|setResourceValue
-argument_list|(
-name|fixedShare
-argument_list|,
+name|Resource
+name|target
+decl_stmt|;
+if|if
+condition|(
 name|isSteadyShare
-condition|?
+condition|)
+block|{
+name|target
+operator|=
 operator|(
 operator|(
 name|FSQueue
@@ -759,13 +734,25 @@ operator|)
 operator|.
 name|getSteadyFairShare
 argument_list|()
-else|:
+expr_stmt|;
+block|}
+else|else
+block|{
+name|target
+operator|=
 name|sched
 operator|.
 name|getFairShare
 argument_list|()
-argument_list|,
+expr_stmt|;
+block|}
+name|target
+operator|.
+name|setResourceValue
+argument_list|(
 name|type
+argument_list|,
+name|fixedShare
 argument_list|)
 expr_stmt|;
 name|totalResource
@@ -799,7 +786,7 @@ name|totalResource
 return|;
 block|}
 comment|/**    * Get the fairshare for the {@link Schedulable} if it is fixed, -1 otherwise.    *    * The fairshare is fixed if either the maxShare is 0, weight is 0,    * or the Schedulable is not active for instantaneous fairshare.    */
-DECL|method|getFairShareIfFixed (Schedulable sched, boolean isSteadyShare, ResourceType type)
+DECL|method|getFairShareIfFixed (Schedulable sched, boolean isSteadyShare, String type)
 specifier|private
 specifier|static
 name|long
@@ -811,20 +798,20 @@ parameter_list|,
 name|boolean
 name|isSteadyShare
 parameter_list|,
-name|ResourceType
+name|String
 name|type
 parameter_list|)
 block|{
 comment|// Check if maxShare is 0
 if|if
 condition|(
-name|getResourceValue
-argument_list|(
 name|sched
 operator|.
 name|getMaxShare
 argument_list|()
-argument_list|,
+operator|.
+name|getResourceValue
+argument_list|(
 name|type
 argument_list|)
 operator|<=
@@ -868,13 +855,8 @@ if|if
 condition|(
 name|sched
 operator|.
-name|getWeights
-argument_list|()
-operator|.
 name|getWeight
-argument_list|(
-name|type
-argument_list|)
+argument_list|()
 operator|<=
 literal|0
 condition|)
@@ -882,13 +864,13 @@ block|{
 name|long
 name|minShare
 init|=
-name|getResourceValue
-argument_list|(
 name|sched
 operator|.
 name|getMinShare
 argument_list|()
-argument_list|,
+operator|.
+name|getResourceValue
+argument_list|(
 name|type
 argument_list|)
 decl_stmt|;
@@ -908,108 +890,6 @@ return|return
 operator|-
 literal|1
 return|;
-block|}
-DECL|method|getResourceValue (Resource resource, ResourceType type)
-specifier|private
-specifier|static
-name|long
-name|getResourceValue
-parameter_list|(
-name|Resource
-name|resource
-parameter_list|,
-name|ResourceType
-name|type
-parameter_list|)
-block|{
-switch|switch
-condition|(
-name|type
-condition|)
-block|{
-case|case
-name|MEMORY
-case|:
-return|return
-name|resource
-operator|.
-name|getMemorySize
-argument_list|()
-return|;
-case|case
-name|CPU
-case|:
-return|return
-name|resource
-operator|.
-name|getVirtualCores
-argument_list|()
-return|;
-default|default:
-throw|throw
-operator|new
-name|IllegalArgumentException
-argument_list|(
-literal|"Invalid resource"
-argument_list|)
-throw|;
-block|}
-block|}
-DECL|method|setResourceValue (long val, Resource resource, ResourceType type)
-specifier|private
-specifier|static
-name|void
-name|setResourceValue
-parameter_list|(
-name|long
-name|val
-parameter_list|,
-name|Resource
-name|resource
-parameter_list|,
-name|ResourceType
-name|type
-parameter_list|)
-block|{
-switch|switch
-condition|(
-name|type
-condition|)
-block|{
-case|case
-name|MEMORY
-case|:
-name|resource
-operator|.
-name|setMemorySize
-argument_list|(
-name|val
-argument_list|)
-expr_stmt|;
-break|break;
-case|case
-name|CPU
-case|:
-name|resource
-operator|.
-name|setVirtualCores
-argument_list|(
-operator|(
-name|int
-operator|)
-name|val
-argument_list|)
-expr_stmt|;
-break|break;
-default|default:
-throw|throw
-operator|new
-name|IllegalArgumentException
-argument_list|(
-literal|"Invalid resource"
-argument_list|)
-throw|;
-block|}
 block|}
 block|}
 end_class

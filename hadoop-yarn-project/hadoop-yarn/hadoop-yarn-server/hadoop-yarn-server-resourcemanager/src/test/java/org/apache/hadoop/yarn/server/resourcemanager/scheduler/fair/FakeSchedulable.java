@@ -70,46 +70,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|resource
-operator|.
-name|ResourceWeights
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|rmcontainer
-operator|.
-name|RMContainer
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|util
 operator|.
 name|Records
@@ -168,7 +128,7 @@ name|fairShare
 decl_stmt|;
 DECL|field|weights
 specifier|private
-name|ResourceWeights
+name|float
 name|weights
 decl_stmt|;
 DECL|field|priority
@@ -257,14 +217,14 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|FakeSchedulable (int minShare, double memoryWeight)
+DECL|method|FakeSchedulable (int minShare, float memoryWeight)
 specifier|public
 name|FakeSchedulable
 parameter_list|(
 name|int
 name|minShare
 parameter_list|,
-name|double
+name|float
 name|memoryWeight
 parameter_list|)
 block|{
@@ -286,7 +246,7 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|FakeSchedulable (int minShare, int maxShare, double memoryWeight)
+DECL|method|FakeSchedulable (int minShare, int maxShare, float memoryWeight)
 specifier|public
 name|FakeSchedulable
 parameter_list|(
@@ -296,7 +256,7 @@ parameter_list|,
 name|int
 name|maxShare
 parameter_list|,
-name|double
+name|float
 name|memoryWeight
 parameter_list|)
 block|{
@@ -316,7 +276,7 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|FakeSchedulable (int minShare, int maxShare, double weight, int fairShare, int usage, long startTime)
+DECL|method|FakeSchedulable (int minShare, int maxShare, float weight, int fairShare, int usage, long startTime)
 specifier|public
 name|FakeSchedulable
 parameter_list|(
@@ -326,7 +286,7 @@ parameter_list|,
 name|int
 name|maxShare
 parameter_list|,
-name|double
+name|float
 name|weight
 parameter_list|,
 name|int
@@ -359,14 +319,7 @@ argument_list|,
 literal|0
 argument_list|)
 argument_list|,
-operator|new
-name|ResourceWeights
-argument_list|(
-operator|(
-name|float
-operator|)
 name|weight
-argument_list|)
 argument_list|,
 name|Resources
 operator|.
@@ -390,14 +343,14 @@ name|startTime
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|FakeSchedulable (Resource minShare, ResourceWeights weights)
+DECL|method|FakeSchedulable (Resource minShare, float weights)
 specifier|public
 name|FakeSchedulable
 parameter_list|(
 name|Resource
 name|minShare
 parameter_list|,
-name|ResourceWeights
+name|float
 name|weights
 parameter_list|)
 block|{
@@ -442,7 +395,7 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|FakeSchedulable (Resource minShare, Resource maxShare, ResourceWeights weight, Resource fairShare, Resource usage, long startTime)
+DECL|method|FakeSchedulable (Resource minShare, Resource maxShare, float weight, Resource fairShare, Resource usage, long startTime)
 specifier|public
 name|FakeSchedulable
 parameter_list|(
@@ -452,7 +405,7 @@ parameter_list|,
 name|Resource
 name|maxShare
 parameter_list|,
-name|ResourceWeights
+name|float
 name|weight
 parameter_list|,
 name|Resource
@@ -628,10 +581,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getWeights ()
+DECL|method|getWeight ()
 specifier|public
-name|ResourceWeights
-name|getWeights
+name|float
+name|getWeight
 parameter_list|()
 block|{
 return|return

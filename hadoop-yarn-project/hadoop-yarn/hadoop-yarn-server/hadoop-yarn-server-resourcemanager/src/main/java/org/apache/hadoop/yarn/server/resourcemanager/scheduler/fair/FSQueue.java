@@ -392,26 +392,6 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|resource
-operator|.
-name|ResourceWeights
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|scheduler
 operator|.
 name|Queue
@@ -606,7 +586,7 @@ name|DEFAULT_POLICY
 decl_stmt|;
 DECL|field|weights
 specifier|protected
-name|ResourceWeights
+name|float
 name|weights
 decl_stmt|;
 DECL|field|minShare
@@ -887,12 +867,12 @@ operator|=
 name|policy
 expr_stmt|;
 block|}
-DECL|method|setWeights (ResourceWeights weights)
+DECL|method|setWeights (float weights)
 specifier|public
 name|void
 name|setWeights
 parameter_list|(
-name|ResourceWeights
+name|float
 name|weights
 parameter_list|)
 block|{
@@ -905,10 +885,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getWeights ()
+DECL|method|getWeight ()
 specifier|public
-name|ResourceWeights
-name|getWeights
+name|float
+name|getWeight
 parameter_list|()
 block|{
 return|return
@@ -2122,7 +2102,7 @@ argument_list|()
 argument_list|,
 name|fairShare
 argument_list|,
-name|getWeights
+name|getWeight
 argument_list|()
 argument_list|)
 return|;

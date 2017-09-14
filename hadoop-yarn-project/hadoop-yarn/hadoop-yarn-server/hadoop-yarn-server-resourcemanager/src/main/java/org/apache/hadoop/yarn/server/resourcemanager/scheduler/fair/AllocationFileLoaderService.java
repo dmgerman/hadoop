@@ -388,26 +388,6 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|resource
-operator|.
-name|ResourceWeights
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|scheduler
 operator|.
 name|fair
@@ -1323,7 +1303,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|ResourceWeights
+name|Float
 argument_list|>
 name|queueWeights
 init|=
@@ -2851,7 +2831,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Loads a queue from a queue element in the configuration file    */
-DECL|method|loadQueue (String parentName, Element element, Map<String, Resource> minQueueResources, Map<String, Resource> maxQueueResources, Map<String, Resource> maxChildQueueResources, Map<String, Integer> queueMaxApps, Map<String, Integer> userMaxApps, Map<String, Float> queueMaxAMShares, Map<String, ResourceWeights> queueWeights, Map<String, SchedulingPolicy> queuePolicies, Map<String, Long> minSharePreemptionTimeouts, Map<String, Long> fairSharePreemptionTimeouts, Map<String, Float> fairSharePreemptionThresholds, Map<String, Map<AccessType, AccessControlList>> queueAcls, Map<String, Map<ReservationACL, AccessControlList>> resAcls, Map<FSQueueType, Set<String>> configuredQueues, Set<String> reservableQueues, Set<String> nonPreemptableQueues)
+DECL|method|loadQueue (String parentName, Element element, Map<String, Resource> minQueueResources, Map<String, Resource> maxQueueResources, Map<String, Resource> maxChildQueueResources, Map<String, Integer> queueMaxApps, Map<String, Integer> userMaxApps, Map<String, Float> queueMaxAMShares, Map<String, Float> queueWeights, Map<String, SchedulingPolicy> queuePolicies, Map<String, Long> minSharePreemptionTimeouts, Map<String, Long> fairSharePreemptionTimeouts, Map<String, Float> fairSharePreemptionThresholds, Map<String, Map<AccessType, AccessControlList>> queueAcls, Map<String, Map<ReservationACL, AccessControlList>> resAcls, Map<FSQueueType, Set<String>> configuredQueues, Set<String> reservableQueues, Set<String> nonPreemptableQueues)
 specifier|private
 name|void
 name|loadQueue
@@ -2914,7 +2894,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|ResourceWeights
+name|Float
 argument_list|>
 name|queueWeights
 parameter_list|,
@@ -3493,14 +3473,10 @@ name|put
 argument_list|(
 name|queueName
 argument_list|,
-operator|new
-name|ResourceWeights
-argument_list|(
 operator|(
 name|float
 operator|)
 name|val
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
