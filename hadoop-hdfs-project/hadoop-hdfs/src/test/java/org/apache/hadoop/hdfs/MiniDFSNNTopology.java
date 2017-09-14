@@ -138,20 +138,17 @@ name|MiniDFSNNTopology
 parameter_list|()
 block|{   }
 comment|/**    * Set up a simple non-federated non-HA NN.    */
-DECL|method|simpleSingleNN ( int rpcPort, int servicePort, int httpPort)
+DECL|method|simpleSingleNN ( int nameNodePort, int nameNodeHttpPort)
 specifier|public
 specifier|static
 name|MiniDFSNNTopology
 name|simpleSingleNN
 parameter_list|(
 name|int
-name|rpcPort
+name|nameNodePort
 parameter_list|,
 name|int
-name|servicePort
-parameter_list|,
-name|int
-name|httpPort
+name|nameNodeHttpPort
 parameter_list|)
 block|{
 return|return
@@ -179,19 +176,14 @@ argument_list|(
 literal|null
 argument_list|)
 operator|.
-name|setIpcPort
-argument_list|(
-name|rpcPort
-argument_list|)
-operator|.
-name|setServicePort
-argument_list|(
-name|servicePort
-argument_list|)
-operator|.
 name|setHttpPort
 argument_list|(
-name|httpPort
+name|nameNodeHttpPort
+argument_list|)
+operator|.
+name|setIpcPort
+argument_list|(
+name|nameNodePort
 argument_list|)
 argument_list|)
 argument_list|)
@@ -902,11 +894,6 @@ specifier|private
 name|int
 name|ipcPort
 decl_stmt|;
-DECL|field|servicePort
-specifier|private
-name|int
-name|servicePort
-decl_stmt|;
 DECL|field|clusterId
 specifier|private
 name|String
@@ -943,15 +930,6 @@ parameter_list|()
 block|{
 return|return
 name|ipcPort
-return|;
-block|}
-DECL|method|getServicePort ()
-name|int
-name|getServicePort
-parameter_list|()
-block|{
-return|return
-name|servicePort
 return|;
 block|}
 DECL|method|getHttpPort ()
@@ -1005,25 +983,6 @@ operator|.
 name|ipcPort
 operator|=
 name|ipcPort
-expr_stmt|;
-return|return
-name|this
-return|;
-block|}
-DECL|method|setServicePort (int servicePort)
-specifier|public
-name|NNConf
-name|setServicePort
-parameter_list|(
-name|int
-name|servicePort
-parameter_list|)
-block|{
-name|this
-operator|.
-name|servicePort
-operator|=
-name|servicePort
 expr_stmt|;
 return|return
 name|this

@@ -804,7 +804,7 @@ name|equals
 argument_list|(
 name|nn2
 operator|.
-name|getServiceRpcAddress
+name|getNameNodeAddress
 argument_list|()
 argument_list|)
 condition|)
@@ -834,7 +834,7 @@ argument_list|)
 argument_list|,
 name|nn1
 operator|.
-name|getServiceRpcAddress
+name|getNameNodeAddress
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -849,7 +849,7 @@ argument_list|)
 argument_list|,
 name|nn2
 operator|.
-name|getServiceRpcAddress
+name|getNameNodeAddress
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1271,7 +1271,7 @@ argument_list|)
 argument_list|,
 name|nn1
 operator|.
-name|getServiceRpcAddress
+name|getNameNodeAddress
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -7144,7 +7144,7 @@ argument_list|(
 literal|0
 argument_list|)
 operator|.
-name|getServiceRpcAddress
+name|getNameNodeAddress
 argument_list|()
 decl_stmt|;
 name|InetSocketAddress
@@ -7157,7 +7157,7 @@ argument_list|(
 literal|1
 argument_list|)
 operator|.
-name|getServiceRpcAddress
+name|getNameNodeAddress
 argument_list|()
 decl_stmt|;
 name|String
@@ -9621,14 +9621,6 @@ name|getNameNodePort
 argument_list|()
 decl_stmt|;
 name|int
-name|origServicePort
-init|=
-name|cluster
-operator|.
-name|getNameNodeServicePort
-argument_list|()
-decl_stmt|;
-name|int
 name|origHttpPort
 init|=
 name|cluster
@@ -9739,11 +9731,6 @@ operator|.
 name|nameNodePort
 argument_list|(
 name|origPort
-argument_list|)
-operator|.
-name|nameNodeServicePort
-argument_list|(
-name|origServicePort
 argument_list|)
 operator|.
 name|nameNodeHttpPort

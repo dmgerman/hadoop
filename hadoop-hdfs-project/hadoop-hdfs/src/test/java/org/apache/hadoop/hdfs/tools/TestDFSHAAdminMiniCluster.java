@@ -513,7 +513,7 @@ name|nn1Port
 operator|=
 name|cluster
 operator|.
-name|getNameNodeServicePort
+name|getNameNodePort
 argument_list|(
 literal|0
 argument_list|)

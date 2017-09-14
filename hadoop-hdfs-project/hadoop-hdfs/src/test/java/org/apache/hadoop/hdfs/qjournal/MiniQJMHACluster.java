@@ -471,12 +471,6 @@ name|startingPort
 operator|++
 argument_list|)
 operator|.
-name|setServicePort
-argument_list|(
-name|startingPort
-operator|++
-argument_list|)
-operator|.
 name|setHttpPort
 argument_list|(
 name|startingPort
@@ -841,11 +835,10 @@ operator|+
 name|port
 argument_list|)
 expr_stmt|;
-comment|// increment by 3 each time to account for the http and the service port
-comment|// in the config setting
+comment|// increment by 2 each time to account for the http port in the config setting
 name|port
 operator|+=
-literal|3
+literal|2
 expr_stmt|;
 block|}
 comment|// use standard failover configurations

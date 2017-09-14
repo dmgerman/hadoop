@@ -228,38 +228,6 @@ name|nnPort4
 init|=
 literal|2230
 decl_stmt|;
-DECL|field|nnServicePort1
-specifier|private
-specifier|final
-name|int
-name|nnServicePort1
-init|=
-literal|2222
-decl_stmt|;
-DECL|field|nnServicePort2
-specifier|private
-specifier|final
-name|int
-name|nnServicePort2
-init|=
-literal|2225
-decl_stmt|;
-DECL|field|nnServicePort3
-specifier|private
-specifier|final
-name|int
-name|nnServicePort3
-init|=
-literal|2228
-decl_stmt|;
-DECL|field|nnServicePort4
-specifier|private
-specifier|final
-name|int
-name|nnServicePort4
-init|=
-literal|2231
-decl_stmt|;
 annotation|@
 name|Test
 DECL|method|testRefreshNamenodes ()
@@ -311,11 +279,6 @@ operator|.
 name|setIpcPort
 argument_list|(
 name|nnPort1
-argument_list|)
-operator|.
-name|setServicePort
-argument_list|(
-name|nnServicePort1
 argument_list|)
 argument_list|)
 argument_list|)
@@ -376,8 +339,6 @@ argument_list|(
 name|conf
 argument_list|,
 name|nnPort2
-argument_list|,
-name|nnServicePort2
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -400,8 +361,6 @@ argument_list|(
 name|conf
 argument_list|,
 name|nnPort3
-argument_list|,
-name|nnServicePort3
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -424,8 +383,6 @@ argument_list|(
 name|conf
 argument_list|,
 name|nnPort4
-argument_list|,
-name|nnServicePort4
 argument_list|)
 expr_stmt|;
 comment|// Ensure a BPOfferService in the datanodes corresponds to
@@ -469,7 +426,7 @@ argument_list|(
 name|i
 argument_list|)
 operator|.
-name|getServiceRpcAddress
+name|getNameNodeAddress
 argument_list|()
 argument_list|)
 argument_list|)

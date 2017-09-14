@@ -889,7 +889,7 @@ name|printMap
 argument_list|(
 name|DFSUtil
 operator|.
-name|getNNServiceRpcAddresses
+name|getNNServiceRpcAddressesForCluster
 argument_list|(
 name|tool
 operator|.
@@ -1038,7 +1038,7 @@ name|flattenAddressMap
 argument_list|(
 name|DFSUtil
 operator|.
-name|getNNServiceRpcAddresses
+name|getNNServiceRpcAddressesForCluster
 argument_list|(
 name|config
 argument_list|)

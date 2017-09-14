@@ -22,24 +22,6 @@ begin_import
 import|import static
 name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|client
-operator|.
-name|HdfsClientConfigKeys
-operator|.
-name|DFS_NAMENODE_SERVICE_RPC_PORT_DEFAULT
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
 name|junit
 operator|.
 name|Assert
@@ -1171,7 +1153,7 @@ name|HOST_A
 operator|+
 literal|":"
 operator|+
-name|DFS_NAMENODE_SERVICE_RPC_PORT_DEFAULT
+literal|12345
 operator|)
 argument_list|,
 name|STANDBY_READY_RESULT
@@ -1194,7 +1176,7 @@ name|HOST_B
 operator|+
 literal|":"
 operator|+
-name|DFS_NAMENODE_SERVICE_RPC_PORT_DEFAULT
+literal|12345
 operator|)
 argument_list|,
 name|STANDBY_READY_RESULT
