@@ -2642,6 +2642,11 @@ expr_stmt|;
 if|if
 condition|(
 name|logAggregationSuccessfullyInThisCyCle
+operator|&&
+name|record
+operator|.
+name|isLogAggregationInRolling
+argument_list|()
 condition|)
 block|{
 name|deleteFileWithRetries
