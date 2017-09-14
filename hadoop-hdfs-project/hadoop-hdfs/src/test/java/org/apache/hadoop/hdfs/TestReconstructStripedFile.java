@@ -3048,7 +3048,7 @@ name|setInt
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_DN_EC_RECONSTRUCTION_STRIPED_BLK_THREADS_KEY
+name|DFS_DN_EC_RECONSTRUCTION_THREADS_KEY
 argument_list|,
 literal|2
 argument_list|)

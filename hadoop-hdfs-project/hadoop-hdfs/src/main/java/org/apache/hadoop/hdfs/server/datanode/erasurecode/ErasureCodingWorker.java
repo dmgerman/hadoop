@@ -294,11 +294,11 @@ name|getInt
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_DN_EC_RECONSTRUCTION_STRIPED_BLK_THREADS_KEY
+name|DFS_DN_EC_RECONSTRUCTION_THREADS_KEY
 argument_list|,
 name|DFSConfigKeys
 operator|.
-name|DFS_DN_EC_RECONSTRUCTION_STRIPED_BLK_THREADS_DEFAULT
+name|DFS_DN_EC_RECONSTRUCTION_THREADS_DEFAULT
 argument_list|)
 argument_list|)
 expr_stmt|;
