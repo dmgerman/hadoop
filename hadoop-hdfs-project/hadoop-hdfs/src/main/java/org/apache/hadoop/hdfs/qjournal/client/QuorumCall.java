@@ -104,7 +104,7 @@ name|hadoop
 operator|.
 name|util
 operator|.
-name|Time
+name|Timer
 import|;
 end_import
 
@@ -303,12 +303,14 @@ specifier|private
 specifier|final
 name|StopWatch
 name|quorumStopWatch
-init|=
-operator|new
-name|StopWatch
-argument_list|()
 decl_stmt|;
-DECL|method|create ( Map<KEY, ? extends ListenableFuture<RESULT>> calls)
+DECL|field|timer
+specifier|private
+specifier|final
+name|Timer
+name|timer
+decl_stmt|;
+DECL|method|create ( Map<KEY, ? extends ListenableFuture<RESULT>> calls, Timer timer)
 specifier|static
 parameter_list|<
 name|KEY
@@ -335,6 +337,9 @@ name|RESULT
 argument_list|>
 argument_list|>
 name|calls
+parameter_list|,
+name|Timer
+name|timer
 parameter_list|)
 block|{
 specifier|final
@@ -353,7 +358,9 @@ name|KEY
 argument_list|,
 name|RESULT
 argument_list|>
-argument_list|()
+argument_list|(
+name|timer
+argument_list|)
 decl_stmt|;
 for|for
 control|(
@@ -466,13 +473,87 @@ return|return
 name|qr
 return|;
 block|}
+DECL|method|create ( Map<KEY, ? extends ListenableFuture<RESULT>> calls)
+specifier|static
+parameter_list|<
+name|KEY
+parameter_list|,
+name|RESULT
+parameter_list|>
+name|QuorumCall
+argument_list|<
+name|KEY
+argument_list|,
+name|RESULT
+argument_list|>
+name|create
+parameter_list|(
+name|Map
+argument_list|<
+name|KEY
+argument_list|,
+name|?
+extends|extends
+name|ListenableFuture
+argument_list|<
+name|RESULT
+argument_list|>
+argument_list|>
+name|calls
+parameter_list|)
+block|{
+return|return
+name|create
+argument_list|(
+name|calls
+argument_list|,
+operator|new
+name|Timer
+argument_list|()
+argument_list|)
+return|;
+block|}
+comment|/**    * Not intended for outside use.    */
 DECL|method|QuorumCall ()
 specifier|private
 name|QuorumCall
 parameter_list|()
 block|{
-comment|// Only instantiated from factory method above
+name|this
+argument_list|(
+operator|new
+name|Timer
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
+DECL|method|QuorumCall (Timer timer)
+specifier|private
+name|QuorumCall
+parameter_list|(
+name|Timer
+name|timer
+parameter_list|)
+block|{
+comment|// Only instantiated from factory method above
+name|this
+operator|.
+name|timer
+operator|=
+name|timer
+expr_stmt|;
+name|this
+operator|.
+name|quorumStopWatch
+operator|=
+operator|new
+name|StopWatch
+argument_list|(
+name|timer
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Used in conjunction with {@link #getQuorumTimeoutIncreaseMillis(long, int)}    * to check for pauses.    */
 DECL|method|restartQuorumStopWatch ()
 specifier|private
 name|void
@@ -488,10 +569,11 @@ name|start
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|shouldIncreaseQuorumTimeout (long offset, int millis)
+comment|/**    * Check for a pause (e.g. GC) since the last time    * {@link #restartQuorumStopWatch()} was called. If detected, return the    * length of the pause; else, -1.    * @param offset Offset the elapsed time by this amount; use if some amount    *               of pause was expected    * @param millis Total length of timeout in milliseconds    * @return Length of pause, if detected, else -1    */
+DECL|method|getQuorumTimeoutIncreaseMillis (long offset, int millis)
 specifier|private
-name|boolean
-name|shouldIncreaseQuorumTimeout
+name|long
+name|getQuorumTimeoutIncreaseMillis
 parameter_list|(
 name|long
 name|offset
@@ -512,17 +594,52 @@ operator|.
 name|MILLISECONDS
 argument_list|)
 decl_stmt|;
-return|return
+name|long
+name|pauseTime
+init|=
 name|elapsed
 operator|+
 name|offset
+decl_stmt|;
+if|if
+condition|(
+name|pauseTime
 operator|>
 operator|(
 name|millis
 operator|*
 name|WAIT_PROGRESS_INFO_THRESHOLD
 operator|)
+condition|)
+block|{
+name|QuorumJournalManager
+operator|.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Pause detected while waiting for "
+operator|+
+literal|"QuorumCall response; increasing timeout threshold by pause time "
+operator|+
+literal|"of "
+operator|+
+name|pauseTime
+operator|+
+literal|" ms."
+argument_list|)
+expr_stmt|;
+return|return
+name|pauseTime
 return|;
+block|}
+else|else
+block|{
+return|return
+operator|-
+literal|1
+return|;
+block|}
 block|}
 comment|/**    * Wait for the quorum to achieve a certain number of responses.    *     * Note that, even after this returns, more responses may arrive,    * causing the return value of other methods in this class to change.    *    * @param minResponses return as soon as this many responses have been    * received, regardless of whether they are successes or exceptions    * @param minSuccesses return as soon as this many successful (non-exception)    * responses have been received    * @param maxExceptions return as soon as this many exception responses    * have been received. Pass 0 to return immediately if any exception is    * received.    * @param millis the number of milliseconds to wait for    * @throws InterruptedException if the thread is interrupted while waiting    * @throws TimeoutException if the specified timeout elapses before    * achieving the desired conditions    */
 DECL|method|waitFor ( int minResponses, int minSuccesses, int maxExceptions, int millis, String operationName)
@@ -554,7 +671,7 @@ block|{
 name|long
 name|st
 init|=
-name|Time
+name|timer
 operator|.
 name|monotonicNow
 argument_list|()
@@ -630,7 +747,7 @@ return|return;
 name|long
 name|now
 init|=
-name|Time
+name|timer
 operator|.
 name|monotonicNow
 argument_list|()
@@ -786,21 +903,26 @@ literal|0
 condition|)
 block|{
 comment|// Increase timeout if a full GC occurred after restarting stopWatch
-if|if
-condition|(
-name|shouldIncreaseQuorumTimeout
+name|long
+name|timeoutIncrease
+init|=
+name|getQuorumTimeoutIncreaseMillis
 argument_list|(
 literal|0
 argument_list|,
 name|millis
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|timeoutIncrease
+operator|>
+literal|0
 condition|)
 block|{
 name|et
-operator|=
-name|et
-operator|+
-name|millis
+operator|+=
+name|timeoutIncrease
 expr_stmt|;
 block|}
 else|else
@@ -845,22 +967,27 @@ name|rem
 argument_list|)
 expr_stmt|;
 comment|// Increase timeout if a full GC occurred after restarting stopWatch
-if|if
-condition|(
-name|shouldIncreaseQuorumTimeout
+name|long
+name|timeoutIncrease
+init|=
+name|getQuorumTimeoutIncreaseMillis
 argument_list|(
 operator|-
 name|rem
 argument_list|,
 name|millis
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|timeoutIncrease
+operator|>
+literal|0
 condition|)
 block|{
 name|et
-operator|=
-name|et
-operator|+
-name|millis
+operator|+=
+name|timeoutIncrease
 expr_stmt|;
 block|}
 block|}
