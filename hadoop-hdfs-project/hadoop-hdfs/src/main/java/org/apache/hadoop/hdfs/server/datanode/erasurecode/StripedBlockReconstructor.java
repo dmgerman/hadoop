@@ -76,6 +76,20 @@ name|DataNodeMetrics
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_comment
 comment|/**  * StripedBlockReconstructor reconstruct one or more missed striped block in  * the striped block group, the minimum number of live striped blocks should  * be no less than data block number.  */
 end_comment
@@ -318,6 +332,14 @@ argument_list|,
 name|remaining
 argument_list|)
 decl_stmt|;
+name|long
+name|start
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+decl_stmt|;
 comment|// step1: read from minimum source DNs required for reconstruction.
 comment|// The returned success list is the source DNs we do real read from
 name|getStripedReader
@@ -328,12 +350,28 @@ argument_list|(
 name|toReconstructLen
 argument_list|)
 expr_stmt|;
+name|long
+name|readEnd
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+decl_stmt|;
 comment|// step2: decode to reconstruct targets
 name|reconstructTargets
 argument_list|(
 name|toReconstructLen
 argument_list|)
 expr_stmt|;
+name|long
+name|decodeEnd
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+decl_stmt|;
 comment|// step3: transfer data
 if|if
 condition|(
@@ -358,6 +396,52 @@ name|error
 argument_list|)
 throw|;
 block|}
+name|long
+name|writeEnd
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+decl_stmt|;
+comment|// Only the succeed reconstructions are recorded.
+specifier|final
+name|DataNodeMetrics
+name|metrics
+init|=
+name|getDatanode
+argument_list|()
+operator|.
+name|getMetrics
+argument_list|()
+decl_stmt|;
+name|metrics
+operator|.
+name|incrECReconstructionReadTime
+argument_list|(
+name|readEnd
+operator|-
+name|start
+argument_list|)
+expr_stmt|;
+name|metrics
+operator|.
+name|incrECReconstructionDecodingTime
+argument_list|(
+name|decodeEnd
+operator|-
+name|readEnd
+argument_list|)
+expr_stmt|;
+name|metrics
+operator|.
+name|incrECReconstructionWriteTime
+argument_list|(
+name|writeEnd
+operator|-
+name|decodeEnd
+argument_list|)
+expr_stmt|;
 name|updatePositionInBlock
 argument_list|(
 name|toReconstructLen
