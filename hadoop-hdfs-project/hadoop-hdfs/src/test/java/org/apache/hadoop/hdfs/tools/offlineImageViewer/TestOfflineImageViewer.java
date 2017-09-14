@@ -1257,20 +1257,6 @@ operator|+
 literal|"DEFAULT"
 argument_list|)
 expr_stmt|;
-name|conf
-operator|.
-name|set
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_EC_POLICIES_ENABLED_KEY
-argument_list|,
-name|ecPolicy
-operator|.
-name|getName
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|cluster
 operator|=
 operator|new
@@ -1302,6 +1288,16 @@ operator|.
 name|getFileSystem
 argument_list|()
 decl_stmt|;
+name|hdfs
+operator|.
+name|enableErasureCodingPolicy
+argument_list|(
+name|ecPolicy
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// Create a reasonable namespace
 for|for
 control|(

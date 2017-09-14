@@ -128,20 +128,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|XAttrHelper
 import|;
 end_import
@@ -480,17 +466,13 @@ literal|"Policy '%s' does not match any "
 operator|+
 literal|"enabled erasure"
 operator|+
-literal|" coding policies: [%s]. The set of enabled erasure coding "
+literal|" coding policies: [%s]. An erasure coding policy can be"
 operator|+
-literal|"policies can be configured at '%s'."
+literal|" enabled by enableErasureCodingPolicy API."
 argument_list|,
 name|ecPolicyName
 argument_list|,
 name|sysPolicies
-argument_list|,
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_EC_POLICIES_ENABLED_KEY
 argument_list|)
 decl_stmt|;
 throw|throw

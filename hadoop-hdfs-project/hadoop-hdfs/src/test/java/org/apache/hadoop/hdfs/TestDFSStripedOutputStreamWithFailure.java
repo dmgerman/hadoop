@@ -1665,13 +1665,6 @@ name|CODER_NAME
 argument_list|)
 expr_stmt|;
 block|}
-name|DFSTestUtil
-operator|.
-name|enableAllECPolicies
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 name|cluster
 operator|=
 operator|new
@@ -1701,6 +1694,13 @@ name|cluster
 operator|.
 name|getFileSystem
 argument_list|()
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|enableAllECPolicies
+argument_list|(
+name|dfs
+argument_list|)
 expr_stmt|;
 name|dfs
 operator|.

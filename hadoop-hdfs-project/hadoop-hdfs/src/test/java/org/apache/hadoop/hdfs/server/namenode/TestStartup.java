@@ -3606,17 +3606,6 @@ argument_list|(
 literal|"/f1"
 argument_list|)
 decl_stmt|;
-name|config
-operator|.
-name|set
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_EC_POLICIES_ENABLED_KEY
-argument_list|,
-name|policy
-argument_list|)
-expr_stmt|;
 name|MiniDFSCluster
 name|cluster
 init|=
@@ -3656,6 +3645,13 @@ operator|.
 name|getFileSystem
 argument_list|()
 decl_stmt|;
+name|fs
+operator|.
+name|enableErasureCodingPolicy
+argument_list|(
+name|policy
+argument_list|)
+expr_stmt|;
 comment|// set root directory to use the default ec policy
 name|Path
 name|srcECDir

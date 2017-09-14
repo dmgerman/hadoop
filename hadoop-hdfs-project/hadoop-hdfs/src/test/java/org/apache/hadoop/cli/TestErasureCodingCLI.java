@@ -74,9 +74,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
+name|hdfs
 operator|.
-name|FileSystem
+name|DFSConfigKeys
 import|;
 end_import
 
@@ -90,7 +90,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|DistributedFileSystem
 import|;
 end_import
 
@@ -197,7 +197,7 @@ literal|null
 decl_stmt|;
 DECL|field|fs
 specifier|private
-name|FileSystem
+name|DistributedFileSystem
 name|fs
 init|=
 literal|null
@@ -238,17 +238,6 @@ name|super
 operator|.
 name|setUp
 argument_list|()
-expr_stmt|;
-name|conf
-operator|.
-name|set
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_EC_POLICIES_ENABLED_KEY
-argument_list|,
-literal|"RS-6-3-1024k,RS-3-2-1024k,XOR-2-1-1024k"
-argument_list|)
 expr_stmt|;
 name|dfsCluster
 operator|=
@@ -301,6 +290,27 @@ name|dfsCluster
 operator|.
 name|getFileSystem
 argument_list|()
+expr_stmt|;
+name|fs
+operator|.
+name|enableErasureCodingPolicy
+argument_list|(
+literal|"RS-6-3-1024k"
+argument_list|)
+expr_stmt|;
+name|fs
+operator|.
+name|enableErasureCodingPolicy
+argument_list|(
+literal|"RS-3-2-1024k"
+argument_list|)
+expr_stmt|;
+name|fs
+operator|.
+name|enableErasureCodingPolicy
+argument_list|(
+literal|"XOR-2-1-1024k"
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@

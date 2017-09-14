@@ -622,13 +622,6 @@ argument_list|,
 name|BLOCK_SIZE
 argument_list|)
 expr_stmt|;
-name|DFSTestUtil
-operator|.
-name|enableAllECPolicies
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 name|cluster
 operator|=
 operator|new
@@ -673,6 +666,13 @@ name|cluster
 operator|.
 name|getNamesystem
 argument_list|()
+expr_stmt|;
+name|DFSTestUtil
+operator|.
+name|enableAllECPolicies
+argument_list|(
+name|fs
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@
@@ -1540,22 +1540,6 @@ expr_stmt|;
 block|}
 comment|// Verify that policies are successfully loaded even when policies
 comment|// are disabled
-name|cluster
-operator|.
-name|getConfiguration
-argument_list|(
-literal|0
-argument_list|)
-operator|.
-name|set
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_EC_POLICIES_ENABLED_KEY
-argument_list|,
-literal|""
-argument_list|)
-expr_stmt|;
 name|cluster
 operator|.
 name|restartNameNodes
