@@ -484,6 +484,9 @@ init|=
 literal|"fs.s3a.buffer.dir"
 decl_stmt|;
 comment|// switch to the fast block-by-block upload mechanism
+comment|// this is the only supported upload mechanism
+annotation|@
+name|Deprecated
 DECL|field|FAST_UPLOAD
 specifier|public
 specifier|static
@@ -493,6 +496,8 @@ name|FAST_UPLOAD
 init|=
 literal|"fs.s3a.fast.upload"
 decl_stmt|;
+annotation|@
+name|Deprecated
 DECL|field|DEFAULT_FAST_UPLOAD
 specifier|public
 specifier|static

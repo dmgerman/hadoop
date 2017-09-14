@@ -173,8 +173,6 @@ literal|"fs.s3a.server-side-encryption.key"
 argument_list|,
 literal|"fs.s3a.bucket.engineering.server-side-encryption.key"
 argument_list|,
-literal|"fs.s3n.awsSecretKey"
-argument_list|,
 literal|"fs.azure.account.key.abcdefg.blob.core.windows.net"
 argument_list|,
 literal|"fs.adl.oauth2.refresh.token"

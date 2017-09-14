@@ -128,17 +128,6 @@ expr_stmt|;
 block|}
 name|conf
 operator|.
-name|setBoolean
-argument_list|(
-name|Constants
-operator|.
-name|FAST_UPLOAD
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
-name|conf
-operator|.
 name|set
 argument_list|(
 name|Constants
