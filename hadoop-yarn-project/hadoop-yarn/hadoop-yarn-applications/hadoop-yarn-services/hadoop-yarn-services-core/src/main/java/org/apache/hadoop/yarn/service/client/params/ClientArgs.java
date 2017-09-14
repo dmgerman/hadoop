@@ -46,40 +46,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|conf
-operator|.
-name|YarnConfiguration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|service
-operator|.
-name|conf
-operator|.
-name|YarnServiceConf
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|service
 operator|.
 name|utils
@@ -467,26 +433,6 @@ return|return
 name|actionDependencyArgs
 return|;
 block|}
-DECL|method|getActionDestroyArgs ()
-specifier|public
-name|ActionDestroyArgs
-name|getActionDestroyArgs
-parameter_list|()
-block|{
-return|return
-name|actionDestroyArgs
-return|;
-block|}
-DECL|method|getActionExistsArgs ()
-specifier|public
-name|ActionExistsArgs
-name|getActionExistsArgs
-parameter_list|()
-block|{
-return|return
-name|actionExistsArgs
-return|;
-block|}
 DECL|method|getActionFlexArgs ()
 specifier|public
 name|ActionFlexArgs
@@ -495,86 +441,6 @@ parameter_list|()
 block|{
 return|return
 name|actionFlexArgs
-return|;
-block|}
-DECL|method|getActionFreezeArgs ()
-specifier|public
-name|ActionFreezeArgs
-name|getActionFreezeArgs
-parameter_list|()
-block|{
-return|return
-name|actionFreezeArgs
-return|;
-block|}
-DECL|method|getActionListArgs ()
-specifier|public
-name|ActionListArgs
-name|getActionListArgs
-parameter_list|()
-block|{
-return|return
-name|actionListArgs
-return|;
-block|}
-DECL|method|getActionRegistryArgs ()
-specifier|public
-name|ActionRegistryArgs
-name|getActionRegistryArgs
-parameter_list|()
-block|{
-return|return
-name|actionRegistryArgs
-return|;
-block|}
-DECL|method|getActionResolveArgs ()
-specifier|public
-name|ActionResolveArgs
-name|getActionResolveArgs
-parameter_list|()
-block|{
-return|return
-name|actionResolveArgs
-return|;
-block|}
-DECL|method|getActionResourceArgs ()
-specifier|public
-name|ActionResourceArgs
-name|getActionResourceArgs
-parameter_list|()
-block|{
-return|return
-name|actionResourceArgs
-return|;
-block|}
-DECL|method|getActionStatusArgs ()
-specifier|public
-name|ActionStatusArgs
-name|getActionStatusArgs
-parameter_list|()
-block|{
-return|return
-name|actionStatusArgs
-return|;
-block|}
-DECL|method|getActionThawArgs ()
-specifier|public
-name|ActionThawArgs
-name|getActionThawArgs
-parameter_list|()
-block|{
-return|return
-name|actionThawArgs
-return|;
-block|}
-DECL|method|getActionTokenArgs ()
-specifier|public
-name|ActionTokensArgs
-name|getActionTokenArgs
-parameter_list|()
-block|{
-return|return
-name|actionTokenArgs
 return|;
 block|}
 comment|/**    * Look at the chosen action and bind it as the core action for the operation.    * @throws SliderException bad argument or similar    */

@@ -80,12 +80,6 @@ name|ACTION_EXISTS
 init|=
 literal|"exists"
 decl_stmt|;
-DECL|field|ACTION_EXAMPLES
-name|String
-name|ACTION_EXAMPLES
-init|=
-literal|"examples"
-decl_stmt|;
 DECL|field|ACTION_FLEX
 name|String
 name|ACTION_FLEX
@@ -199,12 +193,6 @@ name|String
 name|DESCRIBE_ACTION_EXISTS
 init|=
 literal|"Probe for a service running"
-decl_stmt|;
-DECL|field|DESCRIBE_ACTION_EXAMPLES
-name|String
-name|DESCRIBE_ACTION_EXAMPLES
-init|=
-literal|"Run an example service on YARN"
 decl_stmt|;
 DECL|field|DESCRIBE_ACTION_FLEX
 name|String

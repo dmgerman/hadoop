@@ -68,10 +68,6 @@ block|,
 name|ARG_FILE_SHORT
 block|}
 argument_list|,
-name|required
-operator|=
-literal|true
-argument_list|,
 name|description
 operator|=
 literal|"The path to the service definition file in JSON format."

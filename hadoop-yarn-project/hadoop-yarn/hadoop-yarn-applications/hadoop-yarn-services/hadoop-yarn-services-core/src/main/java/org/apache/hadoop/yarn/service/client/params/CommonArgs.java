@@ -92,20 +92,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
-operator|.
-name|Path
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|yarn
 operator|.
 name|service
@@ -375,7 +361,7 @@ block|{
 return|return
 name|coreAction
 operator|.
-name|getClusterName
+name|getServiceName
 argument_list|()
 return|;
 block|}
@@ -727,25 +713,6 @@ return|return
 name|result
 return|;
 block|}
-DECL|method|usage (CommonArgs serviceArgs)
-specifier|public
-specifier|static
-name|String
-name|usage
-parameter_list|(
-name|CommonArgs
-name|serviceArgs
-parameter_list|)
-block|{
-return|return
-name|usage
-argument_list|(
-name|serviceArgs
-argument_list|,
-literal|null
-argument_list|)
-return|;
-block|}
 comment|/**    * Parse routine -includes registering the action-specific argument classes    * and postprocess it    * @throws SliderException on any problem    */
 DECL|method|parse ()
 specifier|public
@@ -792,29 +759,6 @@ comment|//now copy back to this class some of the attributes that are common to 
 comment|//actions
 name|postProcess
 argument_list|()
-expr_stmt|;
-block|}
-comment|/**    * Add a command    * @param name action    * @param arg value    */
-DECL|method|addAction (String name, Object arg)
-specifier|protected
-name|void
-name|addAction
-parameter_list|(
-name|String
-name|name
-parameter_list|,
-name|Object
-name|arg
-parameter_list|)
-block|{
-name|commander
-operator|.
-name|addCommand
-argument_list|(
-name|name
-argument_list|,
-name|arg
-argument_list|)
 expr_stmt|;
 block|}
 DECL|method|addActions (Object... actions)

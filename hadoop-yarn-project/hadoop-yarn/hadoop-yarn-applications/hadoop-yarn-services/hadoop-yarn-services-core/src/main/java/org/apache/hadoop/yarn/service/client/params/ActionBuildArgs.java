@@ -34,6 +34,24 @@ name|Parameters
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|service
+operator|.
+name|exceptions
+operator|.
+name|BadCommandArgumentsException
+import|;
+end_import
+
 begin_class
 annotation|@
 name|Parameters
@@ -75,15 +93,29 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getMinParams ()
+DECL|method|validate ()
 specifier|public
-name|int
-name|getMinParams
+name|void
+name|validate
 parameter_list|()
+throws|throws
+name|BadCommandArgumentsException
 block|{
-return|return
-literal|0
-return|;
+if|if
+condition|(
+name|file
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|BadCommandArgumentsException
+argument_list|(
+literal|"No service definition provided."
+argument_list|)
+throw|;
+block|}
 block|}
 block|}
 end_class

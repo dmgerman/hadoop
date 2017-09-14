@@ -195,10 +195,10 @@ argument_list|<>
 argument_list|()
 decl_stmt|;
 comment|/**    * get the name: relies on arg 1 being the cluster name in all operations     * @return the name argument, null if there is none    */
-DECL|method|getClusterName ()
+DECL|method|getServiceName ()
 specifier|public
 name|String
-name|getClusterName
+name|getServiceName
 parameter_list|()
 block|{
 return|return
