@@ -886,7 +886,6 @@ name|rand
 decl_stmt|;
 DECL|field|mxBean
 specifier|private
-specifier|final
 name|ObjectName
 name|mxBean
 decl_stmt|;
@@ -3039,6 +3038,13 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|mxBean
+operator|!=
+literal|null
+condition|)
+block|{
 name|MBeans
 operator|.
 name|unregister
@@ -3046,6 +3052,11 @@ argument_list|(
 name|mxBean
 argument_list|)
 expr_stmt|;
+name|mxBean
+operator|=
+literal|null
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
