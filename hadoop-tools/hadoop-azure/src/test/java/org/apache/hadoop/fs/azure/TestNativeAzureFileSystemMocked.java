@@ -38,6 +38,10 @@ name|Ignore
 import|;
 end_import
 
+begin_comment
+comment|/**  * Run {@link NativeAzureFileSystemBaseTest} tests against a mocked store,  * skipping tests of unsupported features  */
+end_comment
+
 begin_class
 DECL|class|TestNativeAzureFileSystemMocked
 specifier|public

@@ -1872,7 +1872,7 @@ argument_list|()
 argument_list|,
 name|randomSeekFile
 argument_list|,
-literal|false
+literal|true
 argument_list|,
 name|buf
 argument_list|)

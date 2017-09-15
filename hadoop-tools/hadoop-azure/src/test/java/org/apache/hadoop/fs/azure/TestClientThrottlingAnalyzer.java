@@ -46,30 +46,6 @@ name|Test
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertTrue
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
-import|;
-end_import
-
 begin_comment
 comment|/**  * Tests for<code>ClientThrottlingAnalyzer</code>.  */
 end_comment
@@ -79,6 +55,8 @@ DECL|class|TestClientThrottlingAnalyzer
 specifier|public
 class|class
 name|TestClientThrottlingAnalyzer
+extends|extends
+name|AbstractWasbTestWithTimeout
 block|{
 DECL|field|ANALYSIS_PERIOD
 specifier|private

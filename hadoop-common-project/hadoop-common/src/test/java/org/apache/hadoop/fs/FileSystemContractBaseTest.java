@@ -271,9 +271,23 @@ init|=
 operator|new
 name|Timeout
 argument_list|(
-literal|30000
+name|getGlobalTimeout
+argument_list|()
 argument_list|)
 decl_stmt|;
+comment|/**    * Get the timeout in milliseconds for each test case.    * @return a time in milliseconds.    */
+DECL|method|getGlobalTimeout ()
+specifier|protected
+name|int
+name|getGlobalTimeout
+parameter_list|()
+block|{
+return|return
+literal|30
+operator|*
+literal|1000
+return|;
+block|}
 annotation|@
 name|Rule
 DECL|field|thrown

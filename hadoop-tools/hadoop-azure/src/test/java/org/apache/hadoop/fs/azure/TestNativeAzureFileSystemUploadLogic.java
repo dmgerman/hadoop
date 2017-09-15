@@ -19,30 +19,6 @@ package|;
 end_package
 
 begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertNotNull
-import|;
-end_import
-
-begin_import
 import|import
 name|java
 operator|.
@@ -92,26 +68,6 @@ name|org
 operator|.
 name|junit
 operator|.
-name|After
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Before
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
 name|Ignore
 import|;
 end_import
@@ -135,12 +91,9 @@ DECL|class|TestNativeAzureFileSystemUploadLogic
 specifier|public
 class|class
 name|TestNativeAzureFileSystemUploadLogic
+extends|extends
+name|AbstractWasbTestBase
 block|{
-DECL|field|testAccount
-specifier|private
-name|AzureBlobStorageTestAccount
-name|testAccount
-decl_stmt|;
 comment|// Just an arbitrary number so that the values I write have a predictable
 comment|// pattern: 0, 1, 2, .. , 45, 46, 0, 1, 2, ...
 DECL|field|byteValuePeriod
@@ -152,50 +105,21 @@ init|=
 literal|47
 decl_stmt|;
 annotation|@
-name|Before
-DECL|method|setUp ()
-specifier|public
-name|void
-name|setUp
+name|Override
+DECL|method|createTestAccount ()
+specifier|protected
+name|AzureBlobStorageTestAccount
+name|createTestAccount
 parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|testAccount
-operator|=
+return|return
 name|AzureBlobStorageTestAccount
 operator|.
 name|createMock
 argument_list|()
-expr_stmt|;
-block|}
-annotation|@
-name|After
-DECL|method|tearDown ()
-specifier|public
-name|void
-name|tearDown
-parameter_list|()
-throws|throws
-name|Exception
-block|{
-if|if
-condition|(
-name|testAccount
-operator|!=
-literal|null
-condition|)
-block|{
-name|testAccount
-operator|.
-name|cleanup
-argument_list|()
-expr_stmt|;
-name|testAccount
-operator|=
-literal|null
-expr_stmt|;
-block|}
+return|;
 block|}
 comment|/**    * Various scenarios to test in how often we flush data while uploading.    */
 DECL|enum|FlushFrequencyVariation
@@ -355,11 +279,11 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+try|try
+init|(
 name|InputStream
 name|inStream
 init|=
-name|testAccount
-operator|.
 name|getFileSystem
 argument_list|()
 operator|.
@@ -367,7 +291,8 @@ name|open
 argument_list|(
 name|file
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|assertDataInStream
 argument_list|(
 name|inStream
@@ -375,11 +300,7 @@ argument_list|,
 name|expectedSize
 argument_list|)
 expr_stmt|;
-name|inStream
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
+block|}
 block|}
 comment|/**    * Checks that the data in the current temporary upload blob    * is what I'd expect.    * @param expectedSize The expected size of the data in there.    */
 DECL|method|assertDataInTempBlob (int expectedSize)
@@ -397,7 +318,8 @@ comment|// Look for the temporary upload blob in the backing store.
 name|InMemoryBlockBlobStore
 name|backingStore
 init|=
-name|testAccount
+name|getTestAccount
+argument_list|()
 operator|.
 name|getMockStorage
 argument_list|()
@@ -446,6 +368,8 @@ argument_list|(
 name|tempKey
 argument_list|)
 expr_stmt|;
+try|try
+init|(
 name|InputStream
 name|inStream
 init|=
@@ -459,7 +383,8 @@ argument_list|(
 name|tempKey
 argument_list|)
 argument_list|)
-decl_stmt|;
+init|)
+block|{
 name|assertDataInStream
 argument_list|(
 name|inStream
@@ -467,11 +392,7 @@ argument_list|,
 name|expectedSize
 argument_list|)
 expr_stmt|;
-name|inStream
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
+block|}
 block|}
 comment|/**    * Tests the given scenario for uploading a file while flushing    * periodically and making sure the data is always consistent    * with what I'd expect.    * @param variation The variation/scenario to test.    */
 DECL|method|testConsistencyAfterManyFlushes (FlushFrequencyVariation variation)
@@ -488,17 +409,14 @@ block|{
 name|Path
 name|uploadedFile
 init|=
-operator|new
-name|Path
-argument_list|(
-literal|"/uploadedFile"
-argument_list|)
+name|methodPath
+argument_list|()
 decl_stmt|;
+try|try
+block|{
 name|OutputStream
 name|outStream
 init|=
-name|testAccount
-operator|.
 name|getFileSystem
 argument_list|()
 operator|.
@@ -619,6 +537,20 @@ argument_list|,
 name|totalSize
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|getFileSystem
+argument_list|()
+operator|.
+name|delete
+argument_list|(
+name|uploadedFile
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class

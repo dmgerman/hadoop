@@ -62,6 +62,10 @@ name|Test
 import|;
 end_import
 
+begin_comment
+comment|/**  * Mocked testing of FileSystemContractBaseTest.  */
+end_comment
+
 begin_class
 DECL|class|TestNativeAzureFileSystemContractMocked
 specifier|public

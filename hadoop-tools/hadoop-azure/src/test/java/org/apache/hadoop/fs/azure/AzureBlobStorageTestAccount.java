@@ -68,13 +68,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|junit
 operator|.
-name|commons
-operator|.
-name|configuration2
-operator|.
-name|SubsetConfiguration
+name|Assert
 import|;
 end_import
 
@@ -104,6 +100,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|configuration2
+operator|.
+name|SubsetConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|conf
@@ -123,6 +133,24 @@ operator|.
 name|fs
 operator|.
 name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|azure
+operator|.
+name|integration
+operator|.
+name|AzureTestConstants
 import|;
 end_import
 
@@ -238,6 +266,26 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|File
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|net
 operator|.
 name|URI
@@ -331,7 +379,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Helper class to create WASB file systems backed by either a mock in-memory  * implementation or a real Azure Storage account. See RunningLiveWasbTests.txt  * for instructions on how to connect to a real Azure Storage account.  */
+comment|/**  * Helper class to create WASB file systems backed by either a mock in-memory  * implementation or a real Azure Storage account.  */
 end_comment
 
 begin_class
@@ -340,6 +388,10 @@ specifier|public
 specifier|final
 class|class
 name|AzureBlobStorageTestAccount
+implements|implements
+name|AutoCloseable
+implements|,
+name|AzureTestConstants
 block|{
 DECL|field|LOG
 specifier|private
@@ -853,6 +905,8 @@ name|DEFAULT_PAGE_BLOB_DIRECTORY
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Deprecated
 DECL|method|pageBlobPath (String fileName)
 specifier|public
 specifier|static
@@ -994,6 +1048,30 @@ name|MetricsRecord
 name|currentRecord
 parameter_list|)
 block|{
+name|Assert
+operator|.
+name|assertNotNull
+argument_list|(
+literal|"null filesystem"
+argument_list|,
+name|fs
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertNotNull
+argument_list|(
+literal|"null filesystemn instance ID"
+argument_list|,
+name|fs
+operator|.
+name|getInstrumentation
+argument_list|()
+operator|.
+name|getFileSystemInstanceId
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|String
 name|myFsId
 init|=
@@ -1147,6 +1225,8 @@ specifier|static
 name|void
 name|saveMetricsConfigFile
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 if|if
 condition|(
@@ -1154,6 +1234,36 @@ operator|!
 name|metricsConfigSaved
 condition|)
 block|{
+name|String
+name|testFilename
+init|=
+name|TestMetricsConfig
+operator|.
+name|getTestFilename
+argument_list|(
+literal|"hadoop-metrics2-azure-file-system"
+argument_list|)
+decl_stmt|;
+name|File
+name|dest
+init|=
+operator|new
+name|File
+argument_list|(
+name|testFilename
+argument_list|)
+operator|.
+name|getCanonicalFile
+argument_list|()
+decl_stmt|;
+name|dest
+operator|.
+name|getParentFile
+argument_list|()
+operator|.
+name|mkdirs
+argument_list|()
+expr_stmt|;
 operator|new
 name|org
 operator|.
@@ -1182,12 +1292,7 @@ argument_list|)
 operator|.
 name|save
 argument_list|(
-name|TestMetricsConfig
-operator|.
-name|getTestFilename
-argument_list|(
-literal|"hadoop-metrics2-azure-file-system.properties"
-argument_list|)
+name|testFilename
 argument_list|)
 expr_stmt|;
 name|metricsConfigSaved
@@ -1433,11 +1538,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Skipping emulator Azure test because configuration doesn't "
+literal|"Skipping emulator Azure test because configuration "
 operator|+
-literal|"indicate that it's running. Please see RunningLiveWasbTests.txt "
-operator|+
-literal|"for guidance."
+literal|"doesn't indicate that it's running."
 argument_list|)
 expr_stmt|;
 return|return
@@ -2104,9 +2207,7 @@ literal|" account '"
 operator|+
 name|accountName
 operator|+
-literal|"'. "
-operator|+
-literal|"Please see RunningLiveWasbTests.txt for guidance."
+literal|"'."
 argument_list|)
 expr_stmt|;
 return|return
@@ -2245,9 +2346,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Skipping live Azure test because of missing test account. "
-operator|+
-literal|"Please see RunningLiveWasbTests.txt for guidance."
+literal|"Skipping live Azure test because of missing test account"
 argument_list|)
 expr_stmt|;
 return|return
@@ -3583,6 +3682,20 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|cleanup
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|getFileSystem ()
 specifier|public

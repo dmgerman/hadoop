@@ -1835,6 +1835,7 @@ name|delegationToken
 decl_stmt|;
 comment|/** The error message template when container is not accessible. */
 DECL|field|NO_ACCESS_TO_CONTAINER_MSG
+specifier|public
 specifier|static
 specifier|final
 name|String

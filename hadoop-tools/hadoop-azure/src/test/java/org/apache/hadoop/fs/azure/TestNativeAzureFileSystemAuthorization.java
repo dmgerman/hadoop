@@ -144,16 +144,6 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Before
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
 name|Rule
 import|;
 end_import
@@ -245,10 +235,10 @@ name|authorizer
 decl_stmt|;
 annotation|@
 name|Override
-DECL|method|getConfiguration ()
+DECL|method|createConfiguration ()
 specifier|public
 name|Configuration
-name|getConfiguration
+name|createConfiguration
 parameter_list|()
 block|{
 name|Configuration
@@ -256,7 +246,7 @@ name|conf
 init|=
 name|super
 operator|.
-name|getConfiguration
+name|createConfiguration
 argument_list|()
 decl_stmt|;
 name|conf
@@ -306,29 +296,31 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|Configuration
-name|conf
-init|=
-name|getConfiguration
-argument_list|()
-decl_stmt|;
 return|return
 name|AzureBlobStorageTestAccount
 operator|.
 name|create
 argument_list|(
-name|conf
+name|createConfiguration
+argument_list|()
 argument_list|)
 return|;
 block|}
 annotation|@
-name|Before
-DECL|method|beforeMethod ()
+name|Override
+DECL|method|setUp ()
 specifier|public
 name|void
-name|beforeMethod
+name|setUp
 parameter_list|()
+throws|throws
+name|Exception
 block|{
+name|super
+operator|.
+name|setUp
+argument_list|()
+expr_stmt|;
 name|boolean
 name|useSecureMode
 init|=
@@ -511,7 +503,7 @@ name|authorizer
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Setup the expected exception class, and exception message that the test is supposed to fail with    */
+comment|/**    * Setup the expected exception class, and exception message that the test is supposed to fail with.    */
 DECL|method|setExpectedFailureMessage (String operation, Path path)
 specifier|protected
 name|void
@@ -563,7 +555,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Positive test to verify Create access check    * The file is created directly under an existing folder.    * No intermediate folders need to be created.    * @throws Throwable    */
+comment|/**    * Positive test to verify Create access check.    * The file is created directly under an existing folder.    * No intermediate folders need to be created.    * @throws Throwable    */
 annotation|@
 name|Test
 DECL|method|testCreateAccessWithoutCreateIntermediateFoldersCheckPositive ()
@@ -651,7 +643,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Positive test to verify Create access check    * The test tries to create a file whose parent is non-existent to ensure that    * the intermediate folders between ancestor and direct parent are being created    * when proper ranger policies are configured.    * @throws Throwable    */
+comment|/**    * Positive test to verify Create access check.    * The test tries to create a file whose parent is non-existent to ensure that    * the intermediate folders between ancestor and direct parent are being created    * when proper ranger policies are configured.    * @throws Throwable    */
 annotation|@
 name|Test
 DECL|method|testCreateAccessWithCreateIntermediateFoldersCheckPositive ()
@@ -750,7 +742,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Negative test to verify that create fails when trying to overwrite an existing file    * without proper write permissions on the file being overwritten.    * @throws Throwable    */
+comment|/**    * Negative test to verify that create fails when trying to overwrite an existing file.    * without proper write permissions on the file being overwritten.    * @throws Throwable    */
 annotation|@
 name|Test
 comment|// (expected=WasbAuthorizationException.class)
@@ -855,7 +847,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Positive test to verify that create succeeds when trying to overwrite an existing file    * when proper write permissions on the file being overwritten are provided.    * @throws Throwable    */
+comment|/**    * Positive test to verify that create succeeds when trying to overwrite an existing file.    * when proper write permissions on the file being overwritten are provided.    * @throws Throwable    */
 annotation|@
 name|Test
 DECL|method|testCreateAccessWithOverwriteCheckPositive ()
@@ -1067,7 +1059,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Positive test to verify listStatus access check    * @throws Throwable    */
+comment|/**    * Positive test to verify listStatus access check.    * @throws Throwable    */
 annotation|@
 name|Test
 DECL|method|testListAccessCheckPositive ()
@@ -1191,7 +1183,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Negative test to verify listStatus access check    * @throws Throwable    */
+comment|/**    * Negative test to verify listStatus access check.    * @throws Throwable    */
 annotation|@
 name|Test
 comment|//(expected=WasbAuthorizationException.class)
@@ -1641,7 +1633,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Negative test to verify rename access check - the dstFolder disallows rename    * @throws Throwable    */
+comment|/**    * Negative test to verify rename access check - the dstFolder disallows rename.    * @throws Throwable    */
 annotation|@
 name|Test
 comment|//(expected=WasbAuthorizationException.class)
@@ -1837,7 +1829,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Positive test to verify rename access check - the dstFolder allows rename    * @throws Throwable    */
+comment|/**    * Positive test to verify rename access check - the dstFolder allows rename.    * @throws Throwable    */
 annotation|@
 name|Test
 DECL|method|testRenameAccessCheckPositiveOnDstFolder ()
@@ -2437,7 +2429,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Positive test to verify file delete access check    * @throws Throwable    */
+comment|/**    * Positive test to verify file delete access check.    * @throws Throwable    */
 annotation|@
 name|Test
 DECL|method|testFileDeleteAccessCheckPositive ()
@@ -2536,7 +2528,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Negative test to verify file delete access check    * @throws Throwable    */
+comment|/**    * Negative test to verify file delete access check.    * @throws Throwable    */
 annotation|@
 name|Test
 comment|//(expected=WasbAuthorizationException.class)
@@ -2710,7 +2702,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Positive test to verify file delete access check, with intermediate folders    * Uses wildcard recursive permissions    * @throws Throwable    */
+comment|/**    * Positive test to verify file delete access check, with intermediate folders    * Uses wildcard recursive permissions.    * @throws Throwable    */
 annotation|@
 name|Test
 DECL|method|testFileDeleteAccessWithIntermediateFoldersCheckPositive ()
@@ -2876,7 +2868,7 @@ name|testPath
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Positive test for mkdirs access check    * @throws Throwable    */
+comment|/**    * Positive test for mkdirs access check.    * @throws Throwable    */
 annotation|@
 name|Test
 DECL|method|testMkdirsCheckPositive ()
@@ -3256,7 +3248,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Negative test for mkdirs access check    * @throws Throwable    */
+comment|/**    * Negative test for mkdirs access check.    * @throws Throwable    */
 annotation|@
 name|Test
 comment|//(expected=WasbAuthorizationException.class)
@@ -3352,7 +3344,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Positive test triple slash format (wasb:///) access check    * @throws Throwable    */
+comment|/**    * Positive test triple slash format (wasb:///) access check.    * @throws Throwable    */
 annotation|@
 name|Test
 DECL|method|testListStatusWithTripleSlashCheckPositive ()
@@ -3417,7 +3409,7 @@ name|testPathWithTripleSlash
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Negative test for setOwner when Authorization is enabled    */
+comment|/**    * Negative test for setOwner when Authorization is enabled.    */
 annotation|@
 name|Test
 DECL|method|testSetOwnerThrowsForUnauthorisedUsers ()
@@ -3591,7 +3583,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Test for setOwner when Authorization is enabled and    * the user is specified in chown allowed user list    * */
+comment|/**    * Test for setOwner when Authorization is enabled and    * the user is specified in chown allowed user list.    * */
 annotation|@
 name|Test
 DECL|method|testSetOwnerSucceedsForAuthorisedUsers ()
@@ -3793,7 +3785,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Test for setOwner when Authorization is enabled and    * the userlist is specified as '*'    * */
+comment|/**    * Test for setOwner when Authorization is enabled and    * the userlist is specified as '*'.    * */
 annotation|@
 name|Test
 DECL|method|testSetOwnerSucceedsForAnyUserWhenWildCardIsSpecified ()
@@ -4028,7 +4020,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/** Test for setOwner  throws for illegal setup of chown    * allowed testSetOwnerSucceedsForAuthorisedUsers    */
+comment|/** Test for setOwner  throws for illegal setup of chown    * allowed testSetOwnerSucceedsForAuthorisedUsers.    */
 annotation|@
 name|Test
 DECL|method|testSetOwnerFailsForIllegalSetup ()

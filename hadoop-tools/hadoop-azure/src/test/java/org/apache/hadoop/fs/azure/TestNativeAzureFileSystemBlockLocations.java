@@ -19,18 +19,6 @@ package|;
 end_package
 
 begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
-import|;
-end_import
-
-begin_import
 import|import
 name|java
 operator|.
@@ -120,11 +108,17 @@ name|Test
 import|;
 end_import
 
+begin_comment
+comment|/**  * Test block location logic.  */
+end_comment
+
 begin_class
 DECL|class|TestNativeAzureFileSystemBlockLocations
 specifier|public
 class|class
 name|TestNativeAzureFileSystemBlockLocations
+extends|extends
+name|AbstractWasbTestWithTimeout
 block|{
 annotation|@
 name|Test
