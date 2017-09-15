@@ -42,6 +42,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -282,6 +296,26 @@ name|TokenCache
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/** A base class for {@link OutputFormat}s that read from {@link FileSystem}s.*/
 end_comment
@@ -313,6 +347,22 @@ argument_list|,
 name|V
 argument_list|>
 block|{
+DECL|field|LOG
+specifier|private
+specifier|static
+specifier|final
+name|Logger
+name|LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|FileOutputFormat
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 comment|/** Construct output file names so that, when an output directory listing is    * sorted lexicographically, positions correspond to output partitions.*/
 DECL|field|NUMBER_FORMAT
 specifier|private
@@ -363,11 +413,12 @@ expr_stmt|;
 block|}
 DECL|field|committer
 specifier|private
-name|FileOutputCommitter
+name|PathOutputCommitter
 name|committer
 init|=
 literal|null
 decl_stmt|;
+comment|/** Configuration option: should output be compressed? {@value}. */
 DECL|field|COMPRESS
 specifier|public
 specifier|static
@@ -377,6 +428,7 @@ name|COMPRESS
 init|=
 literal|"mapreduce.output.fileoutputformat.compress"
 decl_stmt|;
+comment|/** If compression is enabled, name of codec: {@value}. */
 DECL|field|COMPRESS_CODEC
 specifier|public
 specifier|static
@@ -386,6 +438,7 @@ name|COMPRESS_CODEC
 init|=
 literal|"mapreduce.output.fileoutputformat.compress.codec"
 decl_stmt|;
+comment|/**    * Type of compression {@value}: NONE, RECORD, BLOCK.    * Generally only used in {@code SequenceFileOutputFormat}.    */
 DECL|field|COMPRESS_TYPE
 specifier|public
 specifier|static
@@ -395,6 +448,7 @@ name|COMPRESS_TYPE
 init|=
 literal|"mapreduce.output.fileoutputformat.compress.type"
 decl_stmt|;
+comment|/** Destination directory of work: {@value}. */
 DECL|field|OUTDIR
 specifier|public
 specifier|static
@@ -861,22 +915,36 @@ name|IOException
 throws|,
 name|InterruptedException
 block|{
-name|FileOutputCommitter
+name|PathOutputCommitter
 name|committer
 init|=
 operator|(
-name|FileOutputCommitter
+name|PathOutputCommitter
 operator|)
 name|context
 operator|.
 name|getOutputCommitter
 argument_list|()
 decl_stmt|;
-return|return
+name|Path
+name|workPath
+init|=
 name|committer
 operator|.
 name|getWorkPath
 argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Work path is {}"
+argument_list|,
+name|workPath
+argument_list|)
+expr_stmt|;
+return|return
+name|workPath
 return|;
 block|}
 comment|/**    * Helper function to generate a {@link Path} for a file that is unique for    * the task within the job output directory.    *    *<p>The path can be used to create custom files from within the map and    * reduce tasks. The path name will be unique for each task. The path parent    * will be the job output directory.</p>ls    *    *<p>This method uses the {@link #getUniqueFile} method to make the file name    * unique for the task.</p>    *    * @param context the context for the task.    * @param name the name for the file.    * @param extension the extension for the file    * @return a unique path accross all tasks of the job.    */
@@ -1050,25 +1118,58 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|FileOutputCommitter
-name|committer
+name|OutputCommitter
+name|c
 init|=
-operator|(
-name|FileOutputCommitter
-operator|)
 name|getOutputCommitter
 argument_list|(
 name|context
 argument_list|)
 decl_stmt|;
-return|return
-operator|new
-name|Path
+name|Preconditions
+operator|.
+name|checkState
 argument_list|(
-name|committer
+name|c
+operator|instanceof
+name|PathOutputCommitter
+argument_list|,
+literal|"Committer %s is not a PathOutputCommitter"
+argument_list|,
+name|c
+argument_list|)
+expr_stmt|;
+name|Path
+name|workPath
+init|=
+operator|(
+operator|(
+name|PathOutputCommitter
+operator|)
+name|c
+operator|)
 operator|.
 name|getWorkPath
 argument_list|()
+decl_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|workPath
+argument_list|,
+literal|"Null workPath returned by committer %s"
+argument_list|,
+name|c
+argument_list|)
+expr_stmt|;
+name|Path
+name|workFile
+init|=
+operator|new
+name|Path
+argument_list|(
+name|workPath
 argument_list|,
 name|getUniqueFile
 argument_list|(
@@ -1082,6 +1183,22 @@ argument_list|,
 name|extension
 argument_list|)
 argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Work file for {} extension '{}' is {}"
+argument_list|,
+name|context
+argument_list|,
+name|extension
+argument_list|,
+name|workFile
+argument_list|)
+expr_stmt|;
+return|return
+name|workFile
 return|;
 block|}
 comment|/**    * Get the base output name for the output file.    */
