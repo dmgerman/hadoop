@@ -5520,7 +5520,7 @@ name|assertCounter
 argument_list|(
 literal|"SyncsNumOps"
 argument_list|,
-literal|3L
+literal|4L
 argument_list|,
 name|rb
 argument_list|)
