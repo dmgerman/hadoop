@@ -14681,9 +14681,14 @@ operator|>
 literal|0
 condition|)
 block|{
+name|Daemon
+name|daemon
+init|=
 operator|new
 name|Daemon
 argument_list|(
+name|threadGroup
+argument_list|,
 operator|new
 name|DataTransfer
 argument_list|(
@@ -14700,10 +14705,40 @@ argument_list|,
 name|client
 argument_list|)
 argument_list|)
+decl_stmt|;
+name|daemon
 operator|.
 name|start
 argument_list|()
 expr_stmt|;
+try|try
+block|{
+name|daemon
+operator|.
+name|join
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Pipeline recovery for "
+operator|+
+name|b
+operator|+
+literal|" is interrupted."
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
 block|}
 block|}
 comment|/**    * Finalize a pending upgrade in response to DNA_FINALIZE.    * @param blockPoolId the block pool to finalize    */
