@@ -1578,7 +1578,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|5000l
+literal|10000
 argument_list|)
 DECL|method|testHelpMessage ()
 specifier|public
@@ -1696,448 +1696,602 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -am<AM Containers>                     Prints the AM Container logs for"
+literal|" -am<AM Containers>                          Prints the AM Container logs"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         this application. Specify"
+literal|"                                              for this application."
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         comma-separated value to get logs"
+literal|"                                              Specify comma-separated"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         for related AM Container. For"
+literal|"                                              value to get logs for"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         example, If we specify -am 1,2,"
+literal|"                                              related AM Container. For"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         we will get the logs for the"
+literal|"                                              example, If we specify -am"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         first AM Container as well as the"
+literal|"                                              1,2, we will get the logs"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         second AM Container. To get logs"
+literal|"                                              for the first AM Container"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         for all AM Containers, use -am"
+literal|"                                              as well as the second AM"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         ALL. To get logs for the latest"
+literal|"                                              Container. To get logs for"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         AM Container, use -am -1. By"
+literal|"                                              all AM Containers, use -am"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         default, it will print all"
+literal|"                                              ALL. To get logs for the"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         available logs. Work with"
+literal|"                                              latest AM Container, use -am"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         -log_files to get only specific"
+literal|"                                              -1. By default, it will"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         logs."
+literal|"                                              print all available logs."
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -appOwner<Application Owner>           AppOwner (assumed to be current"
+literal|"                                              Work with -log_files to get"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         user if not specified)"
+literal|"                                              only specific logs."
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -containerId<Container ID>             ContainerId. By default, it will"
+literal|" -appOwner<Application Owner>                AppOwner (assumed to be"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         print all available logs. Work"
+literal|"                                              current user if not"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         with -log_files to get only"
+literal|"                                              specified)"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         specific logs. If specified, the"
+literal|" -client_max_retries<Max Retries>            Set max retry number for a"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         applicationId can be omitted"
+literal|"                                              retry client to get the"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -help                                   Displays help for all commands."
+literal|"                                              container logs for the"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -list_nodes                             Show the list of nodes that"
+literal|"                                              running applications. Use a"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         successfully aggregated logs."
+literal|"                                              negative value to make retry"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         This option can only be used with"
+literal|"                                              forever. The default value"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         finished applications."
+literal|"                                              is 30."
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -log_files<Log File Name>              Specify comma-separated value to"
+literal|" -client_retry_interval_ms<Retry Interval>   Work with"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         get exact matched log files. Use"
+literal|"                                              --client_max_retries to"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         \"ALL\" or \"*\" to fetch all the log"
+literal|"                                              create a retry client. The"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         files for the container."
+literal|"                                              default value is 1000."
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -log_files_pattern<Log File Pattern>   Specify comma-separated value to"
+literal|" -containerId<Container ID>                  ContainerId. By default, it"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         get matched log files by using"
+literal|"                                              will print all available"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         java regex. Use \".*\" to fetch all"
+literal|"                                              logs. Work with -log_files"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         the log files for the container."
+literal|"                                              to get only specific logs."
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -nodeAddress<Node Address>             NodeAddress in the format"
+literal|"                                              If specified, the"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         nodename:port"
+literal|"                                              applicationId can be omitted"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -out<Local Directory>                  Local directory for storing"
+literal|" -help                                        Displays help for all"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         individual container logs. The"
+literal|"                                              commands."
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         container logs will be stored"
+literal|" -list_nodes                                  Show the list of nodes that"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         based on the node the container"
+literal|"                                              successfully aggregated"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         ran on."
+literal|"                                              logs. This option can only"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -show_application_log_info              Show the containerIds which"
+literal|"                                              be used with finished"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         belong to the specific"
+literal|"                                              applications."
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         Application. You can combine this"
+literal|" -log_files<Log File Name>                   Specify comma-separated"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         with --nodeAddress to get"
+literal|"                                              value to get exact matched"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         containerIds for all the"
+literal|"                                              log files. Use \"ALL\" or \"*\""
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         containers on the specific"
+literal|"                                              to fetch all the log files"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         NodeManager."
+literal|"                                              for the container."
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -show_container_log_info                Show the container log metadata,"
+literal|" -log_files_pattern<Log File Pattern>        Specify comma-separated"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         including log-file names, the"
+literal|"                                              value to get matched log"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         size of the log files. You can"
+literal|"                                              files by using java regex."
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         combine this with --containerId"
+literal|"                                              Use \".*\" to fetch all the"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         to get log metadata for the"
+literal|"                                              log files for the container."
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         specific container, or with"
+literal|" -nodeAddress<Node Address>                  NodeAddress in the format"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         --nodeAddress to get log metadata"
+literal|"                                              nodename:port"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         for all the containers on the"
+literal|" -out<Local Directory>                       Local directory for storing"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         specific NodeManager."
+literal|"                                              individual container logs."
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -size<size>                            Prints the log file's first 'n'"
+literal|"                                              The container logs will be"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         bytes or the last 'n' bytes. Use"
+literal|"                                              stored based on the node the"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         negative values as bytes to read"
+literal|"                                              container ran on."
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         from the end and positive values"
+literal|" -show_application_log_info                   Show the containerIds which"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         as bytes to read from the"
+literal|"                                              belong to the specific"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                         beginning."
+literal|"                                              Application. You can combine"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                              this with --nodeAddress to"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                              get containerIds for all the"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                              containers on the specific"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                              NodeManager."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|" -show_container_log_info                     Show the container log"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                              metadata, including log-file"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                              names, the size of the log"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                              files. You can combine this"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                              with --containerId to get"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                              log metadata for the"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                              specific container, or with"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                              --nodeAddress to get log"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                              metadata for all the"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                              containers on the specific"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                              NodeManager."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|" -size<size>                                 Prints the log file's first"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                              'n' bytes or the last 'n'"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                              bytes. Use negative values"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                              as bytes to read from the"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                              end and positive values as"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                              bytes to read from the"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                              beginning."
 argument_list|)
 expr_stmt|;
 name|pw
@@ -2157,14 +2311,17 @@ argument_list|)
 decl_stmt|;
 name|Assert
 operator|.
-name|assertEquals
+name|assertTrue
 argument_list|(
-name|appReportStr
-argument_list|,
 name|sysOutStream
 operator|.
 name|toString
 argument_list|()
+operator|.
+name|contains
+argument_list|(
+name|appReportStr
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -4548,6 +4705,325 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testCheckRetryCount ()
+specifier|public
+name|void
+name|testCheckRetryCount
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|UserGroupInformation
+name|ugi
+init|=
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+decl_stmt|;
+name|NodeId
+name|nodeId
+init|=
+name|NodeId
+operator|.
+name|newInstance
+argument_list|(
+literal|"localhost"
+argument_list|,
+literal|1234
+argument_list|)
+decl_stmt|;
+name|ApplicationId
+name|appId
+init|=
+name|ApplicationId
+operator|.
+name|newInstance
+argument_list|(
+literal|0
+argument_list|,
+literal|1
+argument_list|)
+decl_stmt|;
+name|ApplicationAttemptId
+name|appAttemptId
+init|=
+name|ApplicationAttemptId
+operator|.
+name|newInstance
+argument_list|(
+name|appId
+argument_list|,
+literal|1
+argument_list|)
+decl_stmt|;
+comment|// Create a mock ApplicationAttempt Report
+name|ApplicationAttemptReport
+name|mockAttemptReport
+init|=
+name|mock
+argument_list|(
+name|ApplicationAttemptReport
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|doReturn
+argument_list|(
+name|appAttemptId
+argument_list|)
+operator|.
+name|when
+argument_list|(
+name|mockAttemptReport
+argument_list|)
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+expr_stmt|;
+name|List
+argument_list|<
+name|ApplicationAttemptReport
+argument_list|>
+name|attemptReports
+init|=
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|mockAttemptReport
+argument_list|)
+decl_stmt|;
+comment|// Create one mock containerReport
+name|ContainerId
+name|containerId1
+init|=
+name|ContainerId
+operator|.
+name|newContainerId
+argument_list|(
+name|appAttemptId
+argument_list|,
+literal|1
+argument_list|)
+decl_stmt|;
+name|ContainerReport
+name|mockContainerReport1
+init|=
+name|mock
+argument_list|(
+name|ContainerReport
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|doReturn
+argument_list|(
+name|containerId1
+argument_list|)
+operator|.
+name|when
+argument_list|(
+name|mockContainerReport1
+argument_list|)
+operator|.
+name|getContainerId
+argument_list|()
+expr_stmt|;
+name|doReturn
+argument_list|(
+name|nodeId
+argument_list|)
+operator|.
+name|when
+argument_list|(
+name|mockContainerReport1
+argument_list|)
+operator|.
+name|getAssignedNode
+argument_list|()
+expr_stmt|;
+name|doReturn
+argument_list|(
+literal|"http://localhost:2345"
+argument_list|)
+operator|.
+name|when
+argument_list|(
+name|mockContainerReport1
+argument_list|)
+operator|.
+name|getNodeHttpAddress
+argument_list|()
+expr_stmt|;
+name|doReturn
+argument_list|(
+name|ContainerState
+operator|.
+name|RUNNING
+argument_list|)
+operator|.
+name|when
+argument_list|(
+name|mockContainerReport1
+argument_list|)
+operator|.
+name|getContainerState
+argument_list|()
+expr_stmt|;
+name|List
+argument_list|<
+name|ContainerReport
+argument_list|>
+name|containerReports
+init|=
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|mockContainerReport1
+argument_list|)
+decl_stmt|;
+comment|// Mock the YarnClient, and it would report the previous created
+comment|// mockAttemptReport and previous two created mockContainerReports
+name|YarnClient
+name|mockYarnClient
+init|=
+name|createMockYarnClient
+argument_list|(
+name|YarnApplicationState
+operator|.
+name|RUNNING
+argument_list|,
+name|ugi
+operator|.
+name|getShortUserName
+argument_list|()
+argument_list|,
+literal|true
+argument_list|,
+name|attemptReports
+argument_list|,
+name|containerReports
+argument_list|)
+decl_stmt|;
+name|doReturn
+argument_list|(
+name|mockContainerReport1
+argument_list|)
+operator|.
+name|when
+argument_list|(
+name|mockYarnClient
+argument_list|)
+operator|.
+name|getContainerReport
+argument_list|(
+name|any
+argument_list|(
+name|ContainerId
+operator|.
+name|class
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|LogsCLI
+name|cli
+init|=
+operator|new
+name|LogsCLIForTest
+argument_list|(
+name|mockYarnClient
+argument_list|)
+decl_stmt|;
+name|cli
+operator|.
+name|setConf
+argument_list|(
+operator|new
+name|YarnConfiguration
+argument_list|()
+argument_list|)
+expr_stmt|;
+try|try
+block|{
+name|cli
+operator|.
+name|run
+argument_list|(
+operator|new
+name|String
+index|[]
+block|{
+literal|"-containerId"
+block|,
+name|containerId1
+operator|.
+name|toString
+argument_list|()
+block|,
+literal|"-client_max_retries"
+block|,
+literal|"5"
+block|}
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|fail
+argument_list|(
+literal|"Exception expected! "
+operator|+
+literal|"NodeManager should be off to run this test. "
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|RuntimeException
+name|ce
+parameter_list|)
+block|{
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+literal|"Handler exception for reason other than retry: "
+operator|+
+name|ce
+operator|.
+name|getMessage
+argument_list|()
+argument_list|,
+name|ce
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Connection retries limit exceeded"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+literal|"Retry filter didn't perform any retries! "
+argument_list|,
+name|cli
+operator|.
+name|connectionRetry
+operator|.
+name|getRetired
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Test
