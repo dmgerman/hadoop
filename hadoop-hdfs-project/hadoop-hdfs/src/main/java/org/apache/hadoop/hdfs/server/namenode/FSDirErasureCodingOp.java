@@ -1067,10 +1067,11 @@ name|iip
 argument_list|)
 return|;
 block|}
-DECL|method|addErasureCodePolicy (final FSNamesystem fsn, ErasureCodingPolicy policy)
+comment|/**    * Add an erasure coding policy.    *    * @param fsn namespace    * @param policy the new policy to be added into system    * @param logRetryCache whether to record RPC ids in editlog for retry cache    *                      rebuilding    * @throws IOException    */
+DECL|method|addErasureCodingPolicy (final FSNamesystem fsn, ErasureCodingPolicy policy, final boolean logRetryCache)
 specifier|static
 name|ErasureCodingPolicy
-name|addErasureCodePolicy
+name|addErasureCodingPolicy
 parameter_list|(
 specifier|final
 name|FSNamesystem
@@ -1078,6 +1079,10 @@ name|fsn
 parameter_list|,
 name|ErasureCodingPolicy
 name|policy
+parameter_list|,
+specifier|final
+name|boolean
+name|logRetryCache
 parameter_list|)
 block|{
 name|Preconditions
@@ -1087,7 +1092,9 @@ argument_list|(
 name|policy
 argument_list|)
 expr_stmt|;
-return|return
+name|ErasureCodingPolicy
+name|retPolicy
+init|=
 name|fsn
 operator|.
 name|getErasureCodingPolicyManager
@@ -1097,13 +1104,28 @@ name|addPolicy
 argument_list|(
 name|policy
 argument_list|)
+decl_stmt|;
+name|fsn
+operator|.
+name|getEditLog
+argument_list|()
+operator|.
+name|logAddErasureCodingPolicy
+argument_list|(
+name|policy
+argument_list|,
+name|logRetryCache
+argument_list|)
+expr_stmt|;
+return|return
+name|retPolicy
 return|;
 block|}
-comment|/**    * Remove an erasure coding policy.    *    * @param fsn namespace    * @param ecPolicyName the name of the policy to be removed    * @throws IOException    */
-DECL|method|removeErasureCodePolicy (final FSNamesystem fsn, String ecPolicyName)
+comment|/**    * Remove an erasure coding policy.    *    * @param fsn namespace    * @param ecPolicyName the name of the policy to be removed    * @param logRetryCache whether to record RPC ids in editlog for retry cache    *                      rebuilding    * @throws IOException    */
+DECL|method|removeErasureCodingPolicy (final FSNamesystem fsn, String ecPolicyName, final boolean logRetryCache)
 specifier|static
 name|void
-name|removeErasureCodePolicy
+name|removeErasureCodingPolicy
 parameter_list|(
 specifier|final
 name|FSNamesystem
@@ -1111,6 +1133,10 @@ name|fsn
 parameter_list|,
 name|String
 name|ecPolicyName
+parameter_list|,
+specifier|final
+name|boolean
+name|logRetryCache
 parameter_list|)
 throws|throws
 name|IOException
@@ -1132,11 +1158,24 @@ argument_list|(
 name|ecPolicyName
 argument_list|)
 expr_stmt|;
+name|fsn
+operator|.
+name|getEditLog
+argument_list|()
+operator|.
+name|logRemoveErasureCodingPolicy
+argument_list|(
+name|ecPolicyName
+argument_list|,
+name|logRetryCache
+argument_list|)
+expr_stmt|;
 block|}
-DECL|method|enableErasureCodePolicy (final FSNamesystem fsn, String ecPolicyName)
+comment|/**    * Enable an erasure coding policy.    *    * @param fsn namespace    * @param ecPolicyName the name of the policy to be enabled    * @param logRetryCache whether to record RPC ids in editlog for retry cache    *                      rebuilding    * @throws IOException    */
+DECL|method|enableErasureCodingPolicy (final FSNamesystem fsn, String ecPolicyName, final boolean logRetryCache)
 specifier|static
 name|void
-name|enableErasureCodePolicy
+name|enableErasureCodingPolicy
 parameter_list|(
 specifier|final
 name|FSNamesystem
@@ -1144,6 +1183,10 @@ name|fsn
 parameter_list|,
 name|String
 name|ecPolicyName
+parameter_list|,
+specifier|final
+name|boolean
+name|logRetryCache
 parameter_list|)
 throws|throws
 name|IOException
@@ -1165,11 +1208,24 @@ argument_list|(
 name|ecPolicyName
 argument_list|)
 expr_stmt|;
+name|fsn
+operator|.
+name|getEditLog
+argument_list|()
+operator|.
+name|logEnableErasureCodingPolicy
+argument_list|(
+name|ecPolicyName
+argument_list|,
+name|logRetryCache
+argument_list|)
+expr_stmt|;
 block|}
-DECL|method|disableErasureCodePolicy (final FSNamesystem fsn, String ecPolicyName)
+comment|/**    * Disable an erasure coding policy.    *    * @param fsn namespace    * @param ecPolicyName the name of the policy to be disabled    * @param logRetryCache whether to record RPC ids in editlog for retry cache    *                      rebuilding    * @throws IOException    */
+DECL|method|disableErasureCodingPolicy (final FSNamesystem fsn, String ecPolicyName, final boolean logRetryCache)
 specifier|static
 name|void
-name|disableErasureCodePolicy
+name|disableErasureCodingPolicy
 parameter_list|(
 specifier|final
 name|FSNamesystem
@@ -1177,6 +1233,10 @@ name|fsn
 parameter_list|,
 name|String
 name|ecPolicyName
+parameter_list|,
+specifier|final
+name|boolean
+name|logRetryCache
 parameter_list|)
 throws|throws
 name|IOException
@@ -1196,6 +1256,18 @@ operator|.
 name|disablePolicy
 argument_list|(
 name|ecPolicyName
+argument_list|)
+expr_stmt|;
+name|fsn
+operator|.
+name|getEditLog
+argument_list|()
+operator|.
+name|logDisableErasureCodingPolicy
+argument_list|(
+name|ecPolicyName
+argument_list|,
+name|logRetryCache
 argument_list|)
 expr_stmt|;
 block|}

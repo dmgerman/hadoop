@@ -33880,8 +33880,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Add multiple erasure coding policies to the ErasureCodingPolicyManager.    * @param policies The policies to add.    * @return The according result of add operation.    */
-DECL|method|addErasureCodingPolicies (ErasureCodingPolicy[] policies)
+comment|/**    * Add multiple erasure coding policies to the ErasureCodingPolicyManager.    * @param policies The policies to add.    * @param logRetryCache whether to record RPC ids in editlog for retry cache    *                      rebuilding    * @return The according result of add operation.    */
+DECL|method|addErasureCodingPolicies (ErasureCodingPolicy[] policies, final boolean logRetryCache)
 name|AddECPolicyResponse
 index|[]
 name|addErasureCodingPolicies
@@ -33889,6 +33889,10 @@ parameter_list|(
 name|ErasureCodingPolicy
 index|[]
 name|policies
+parameter_list|,
+specifier|final
+name|boolean
+name|logRetryCache
 parameter_list|)
 throws|throws
 name|IOException
@@ -33939,6 +33943,11 @@ operator|.
 name|WRITE
 argument_list|)
 expr_stmt|;
+name|checkNameNodeSafeMode
+argument_list|(
+literal|"Cannot add erasure coding policy"
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|ErasureCodingPolicy
@@ -33949,28 +33958,18 @@ control|)
 block|{
 try|try
 block|{
-name|checkOperation
-argument_list|(
-name|OperationCategory
-operator|.
-name|WRITE
-argument_list|)
-expr_stmt|;
-name|checkNameNodeSafeMode
-argument_list|(
-literal|"Cannot add erasure coding policy"
-argument_list|)
-expr_stmt|;
 name|ErasureCodingPolicy
 name|newPolicy
 init|=
 name|FSDirErasureCodingOp
 operator|.
-name|addErasureCodePolicy
+name|addErasureCodingPolicy
 argument_list|(
 name|this
 argument_list|,
 name|policy
+argument_list|,
+name|logRetryCache
 argument_list|)
 decl_stmt|;
 name|addECPolicyName
@@ -34064,13 +34063,17 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Remove an erasure coding policy.    * @param ecPolicyName the name of the policy to be removed    * @throws IOException    */
-DECL|method|removeErasureCodingPolicy (String ecPolicyName)
+comment|/**    * Remove an erasure coding policy.    * @param ecPolicyName the name of the policy to be removed    * @param logRetryCache whether to record RPC ids in editlog for retry cache    *                      rebuilding    * @throws IOException    */
+DECL|method|removeErasureCodingPolicy (String ecPolicyName, final boolean logRetryCache)
 name|void
 name|removeErasureCodingPolicy
 parameter_list|(
 name|String
 name|ecPolicyName
+parameter_list|,
+specifier|final
+name|boolean
+name|logRetryCache
 parameter_list|)
 throws|throws
 name|IOException
@@ -34114,11 +34117,13 @@ argument_list|)
 expr_stmt|;
 name|FSDirErasureCodingOp
 operator|.
-name|removeErasureCodePolicy
+name|removeErasureCodingPolicy
 argument_list|(
 name|this
 argument_list|,
 name|ecPolicyName
+argument_list|,
+name|logRetryCache
 argument_list|)
 expr_stmt|;
 name|success
@@ -34151,7 +34156,7 @@ name|success
 argument_list|,
 name|operationName
 argument_list|,
-literal|null
+name|ecPolicyName
 argument_list|,
 literal|null
 argument_list|,
@@ -34160,13 +34165,17 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Enable an erasure coding policy.    * @param ecPolicyName the name of the policy to be enabled    * @throws IOException    */
-DECL|method|enableErasureCodingPolicy (String ecPolicyName)
+comment|/**    * Enable an erasure coding policy.    * @param ecPolicyName the name of the policy to be enabled    * @param logRetryCache whether to record RPC ids in editlog for retry cache    *                      rebuilding    * @throws IOException    */
+DECL|method|enableErasureCodingPolicy (String ecPolicyName, final boolean logRetryCache)
 name|void
 name|enableErasureCodingPolicy
 parameter_list|(
 name|String
 name|ecPolicyName
+parameter_list|,
+specifier|final
+name|boolean
+name|logRetryCache
 parameter_list|)
 throws|throws
 name|IOException
@@ -34219,11 +34228,13 @@ argument_list|)
 expr_stmt|;
 name|FSDirErasureCodingOp
 operator|.
-name|enableErasureCodePolicy
+name|enableErasureCodingPolicy
 argument_list|(
 name|this
 argument_list|,
 name|ecPolicyName
+argument_list|,
+name|logRetryCache
 argument_list|)
 expr_stmt|;
 name|success
@@ -34265,13 +34276,17 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Disable an erasure coding policy.    * @param ecPolicyName the name of the policy to be disabled    * @throws IOException    */
-DECL|method|disableErasureCodingPolicy (String ecPolicyName)
+comment|/**    * Disable an erasure coding policy.    * @param ecPolicyName the name of the policy to be disabled    * @param logRetryCache whether to record RPC ids in editlog for retry cache    *                      rebuilding    * @throws IOException    */
+DECL|method|disableErasureCodingPolicy (String ecPolicyName, final boolean logRetryCache)
 name|void
 name|disableErasureCodingPolicy
 parameter_list|(
 name|String
 name|ecPolicyName
+parameter_list|,
+specifier|final
+name|boolean
+name|logRetryCache
 parameter_list|)
 throws|throws
 name|IOException
@@ -34324,11 +34339,13 @@ argument_list|)
 expr_stmt|;
 name|FSDirErasureCodingOp
 operator|.
-name|disableErasureCodePolicy
+name|disableErasureCodingPolicy
 argument_list|(
 name|this
 argument_list|,
 name|ecPolicyName
+argument_list|,
+name|logRetryCache
 argument_list|)
 expr_stmt|;
 name|success
