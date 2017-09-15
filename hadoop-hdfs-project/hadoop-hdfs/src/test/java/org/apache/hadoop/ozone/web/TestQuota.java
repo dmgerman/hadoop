@@ -122,10 +122,10 @@ name|TestQuota
 block|{
 annotation|@
 name|Test
-DECL|method|TestParseQuota ()
+DECL|method|testParseQuota ()
 specifier|public
 name|void
-name|TestParseQuota
+name|testParseQuota
 parameter_list|()
 block|{
 name|HashMap
@@ -460,10 +460,10 @@ block|}
 block|}
 annotation|@
 name|Test
-DECL|method|TestVerifyQuota ()
+DECL|method|testVerifyQuota ()
 specifier|public
 name|void
-name|TestVerifyQuota
+name|testVerifyQuota
 parameter_list|()
 block|{
 name|OzoneQuota
@@ -708,10 +708,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|TestVerifyRemove ()
+DECL|method|testVerifyRemove ()
 specifier|public
 name|void
-name|TestVerifyRemove
+name|testVerifyRemove
 parameter_list|()
 block|{
 name|assertTrue

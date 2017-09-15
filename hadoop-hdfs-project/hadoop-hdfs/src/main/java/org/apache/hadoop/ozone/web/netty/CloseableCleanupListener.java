@@ -89,7 +89,6 @@ name|closeables
 decl_stmt|;
 comment|/**    * Creates a new CloseableCleanupListener.    *    * @param closeables any number of closeable resources    */
 DECL|method|CloseableCleanupListener (Closeable... closeables)
-specifier|public
 name|CloseableCleanupListener
 parameter_list|(
 name|Closeable

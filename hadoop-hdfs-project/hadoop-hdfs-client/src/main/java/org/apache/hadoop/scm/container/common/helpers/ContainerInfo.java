@@ -331,6 +331,7 @@ name|build
 argument_list|()
 return|;
 block|}
+comment|/** Builder class for ContainerInfo. */
 DECL|class|Builder
 specifier|public
 specifier|static
@@ -354,7 +355,7 @@ specifier|private
 name|long
 name|stateEnterTime
 decl_stmt|;
-DECL|method|setState (OzoneProtos.LifeCycleState state)
+DECL|method|setState (OzoneProtos.LifeCycleState lifeCycleState)
 specifier|public
 name|Builder
 name|setState
@@ -362,14 +363,14 @@ parameter_list|(
 name|OzoneProtos
 operator|.
 name|LifeCycleState
-name|state
+name|lifeCycleState
 parameter_list|)
 block|{
 name|this
 operator|.
 name|state
 operator|=
-name|state
+name|lifeCycleState
 expr_stmt|;
 return|return
 name|this

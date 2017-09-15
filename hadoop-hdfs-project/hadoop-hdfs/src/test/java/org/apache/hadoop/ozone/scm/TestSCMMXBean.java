@@ -284,6 +284,10 @@ name|TabularData
 import|;
 end_import
 
+begin_comment
+comment|/**  *  * This class is to test JMX management interface for scm information.  */
+end_comment
+
 begin_class
 DECL|class|TestSCMMXBean
 specifier|public

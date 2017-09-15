@@ -105,10 +105,10 @@ block|{
 comment|/**    * Test Error Generator functions.    */
 annotation|@
 name|Test
-DECL|method|TestErrorGen ()
+DECL|method|testErrorGen ()
 specifier|public
 name|void
-name|TestErrorGen
+name|testErrorGen
 parameter_list|()
 block|{
 name|OzoneException
@@ -158,10 +158,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|TestErrorGenWithException ()
+DECL|method|testErrorGenWithException ()
 specifier|public
 name|void
-name|TestErrorGenWithException
+name|testErrorGenWithException
 parameter_list|()
 block|{
 name|OzoneException

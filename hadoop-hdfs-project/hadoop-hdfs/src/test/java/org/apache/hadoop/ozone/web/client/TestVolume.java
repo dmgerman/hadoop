@@ -631,7 +631,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * shutdown MiniDFSCluster    */
+comment|/**    * shutdown MiniDFSCluster.    */
 annotation|@
 name|AfterClass
 DECL|method|shutdown ()

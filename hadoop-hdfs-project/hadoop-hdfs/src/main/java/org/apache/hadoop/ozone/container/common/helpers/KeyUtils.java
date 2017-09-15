@@ -126,30 +126,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|utils
-operator|.
-name|MetadataStoreBuilder
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|File
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -607,7 +583,9 @@ throw|throw
 operator|new
 name|StorageContainerException
 argument_list|(
-literal|"Failed to parse key data from the bytes array."
+literal|"Failed to parse key data from the"
+operator|+
+literal|" bytes array."
 argument_list|,
 name|NO_SUCH_KEY
 argument_list|)

@@ -443,9 +443,9 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Since netty is async, we send a work request and then wait until a response    * appears in the reply queue. This is simple sync interface for clients. we    * should consider building async interfaces for client if this turns out to    * be a performance bottleneck.    *    * @param request - request.    * @return -- response    */
+DECL|method|sendCommand ( ContainerProtos.ContainerCommandRequestProto request)
 specifier|public
 name|ContainerCommandResponseProto
-DECL|method|sendCommand (ContainerProtos.ContainerCommandRequestProto request)
 name|sendCommand
 parameter_list|(
 name|ContainerProtos
@@ -477,12 +477,12 @@ argument_list|()
 return|;
 block|}
 comment|/**    * SendCommandAsyc queues a command to the Netty Subsystem and returns a    * CompletableFuture. This Future is marked compeleted in the channelRead0    * when the call comes back.    * @param request - Request to execute    * @return CompletableFuture    */
+DECL|method|sendCommandAsync ( ContainerProtos.ContainerCommandRequestProto request)
 specifier|public
 name|CompletableFuture
 argument_list|<
 name|ContainerCommandResponseProto
 argument_list|>
-DECL|method|sendCommandAsync (ContainerProtos.ContainerCommandRequestProto request)
 name|sendCommandAsync
 parameter_list|(
 name|ContainerProtos

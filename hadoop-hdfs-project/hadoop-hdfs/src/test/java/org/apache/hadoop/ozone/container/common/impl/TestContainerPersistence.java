@@ -804,11 +804,11 @@ argument_list|(
 literal|300000
 argument_list|)
 decl_stmt|;
-DECL|field|LOG
+DECL|field|log
 specifier|private
 specifier|static
 name|Logger
-name|LOG
+name|log
 init|=
 name|LoggerFactory
 operator|.
@@ -1157,7 +1157,7 @@ throws|throws
 name|IOException
 block|{
 comment|// Clean up SCM metadata
-name|LOG
+name|log
 operator|.
 name|info
 argument_list|(

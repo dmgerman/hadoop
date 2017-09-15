@@ -70,6 +70,10 @@ name|fail
 import|;
 end_import
 
+begin_comment
+comment|/**  * This class is to test acl stoarge and retreival in ozone store.  */
+end_comment
+
 begin_class
 DECL|class|TestOzoneAcls
 specifier|public
@@ -78,10 +82,10 @@ name|TestOzoneAcls
 block|{
 annotation|@
 name|Test
-DECL|method|TestACLParse ()
+DECL|method|testAclParse ()
 specifier|public
 name|void
-name|TestACLParse
+name|testAclParse
 parameter_list|()
 block|{
 name|HashMap
@@ -610,10 +614,10 @@ block|}
 block|}
 annotation|@
 name|Test
-DECL|method|TestACLValues ()
+DECL|method|testAclValues ()
 specifier|public
 name|void
-name|TestACLValues
+name|testAclValues
 parameter_list|()
 block|{
 name|OzoneAcl

@@ -61,26 +61,6 @@ operator|.
 name|proto
 operator|.
 name|ContainerProtos
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|ozone
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|ContainerProtos
 operator|.
 name|ContainerCommandRequestProto
 import|;
@@ -629,12 +609,12 @@ block|}
 comment|/**    * Sends a given command to server gets a waitable future back.    *    * @param request Request    * @return Response to the command    * @throws IOException    */
 annotation|@
 name|Override
+DECL|method|sendCommandAsync ( ContainerCommandRequestProto request)
 specifier|public
 name|CompletableFuture
 argument_list|<
 name|ContainerCommandResponseProto
 argument_list|>
-DECL|method|sendCommandAsync (ContainerCommandRequestProto request)
 name|sendCommandAsync
 parameter_list|(
 name|ContainerCommandRequestProto

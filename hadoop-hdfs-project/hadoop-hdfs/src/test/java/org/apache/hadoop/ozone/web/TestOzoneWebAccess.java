@@ -356,7 +356,7 @@ specifier|public
 class|class
 name|TestOzoneWebAccess
 block|{
-comment|/**    * Set the timeout for every test    */
+comment|/**    * Set the timeout for every test.    */
 annotation|@
 name|Rule
 DECL|field|testTimeout

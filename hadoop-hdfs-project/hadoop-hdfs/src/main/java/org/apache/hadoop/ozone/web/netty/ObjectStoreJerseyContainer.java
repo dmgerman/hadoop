@@ -1016,7 +1016,6 @@ name|nettyResp
 decl_stmt|;
 comment|/**      * Creates a new RequestRunner.      *      * @param nettyReq HTTP request      * @param reqIn input stream for reading request body      * @param respOut output stream for writing response body      * @param latch for coordinating asynchronous return of HTTP response      */
 DECL|method|RequestRunner (HttpRequest nettyReq, InputStream reqIn, OutputStream respOut, CountDownLatch latch)
-specifier|public
 name|RequestRunner
 parameter_list|(
 name|HttpRequest

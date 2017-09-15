@@ -131,10 +131,10 @@ block|{
 comment|/**    * Tests if the bucket name handling is correct.    */
 annotation|@
 name|Test
-DECL|method|TestValidBucketNames ()
+DECL|method|testValidBucketNames ()
 specifier|public
 name|void
-name|TestValidBucketNames
+name|testValidBucketNames
 parameter_list|()
 block|{
 name|HashMap
@@ -443,10 +443,10 @@ block|}
 comment|/**    *  Just calls Request ID many times and assert we    *  got different values, ideally this should be    *  run under parallel threads. Since the function under    *  test has no external dependencies it is assumed    *  that this test is good enough.    */
 annotation|@
 name|Test
-DECL|method|TestRequestIDisRandom ()
+DECL|method|testRequestIDisRandom ()
 specifier|public
 name|void
-name|TestRequestIDisRandom
+name|testRequestIDisRandom
 parameter_list|()
 block|{
 name|HashSet

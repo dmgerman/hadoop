@@ -321,13 +321,13 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Sends a given command to server gets a waitable future back.    * @param request Request    * @return Response to the command    * @throws IOException    */
+DECL|method|sendCommandAsync ( ContainerCommandRequestProto request)
 specifier|public
 specifier|abstract
 name|CompletableFuture
 argument_list|<
 name|ContainerCommandResponseProto
 argument_list|>
-DECL|method|sendCommandAsync (ContainerCommandRequestProto request)
 name|sendCommandAsync
 parameter_list|(
 name|ContainerCommandRequestProto

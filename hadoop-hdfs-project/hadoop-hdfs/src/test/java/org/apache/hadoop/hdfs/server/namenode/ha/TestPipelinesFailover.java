@@ -2332,7 +2332,7 @@ name|scmds
 control|)
 block|{
 name|String
-name|scmd_str
+name|scmdStr
 init|=
 name|StringUtils
 operator|.
@@ -2365,7 +2365,7 @@ name|info
 argument_list|(
 literal|"'"
 operator|+
-name|scmd_str
+name|scmdStr
 operator|+
 literal|"' output:\n"
 operator|+
@@ -2388,7 +2388,7 @@ name|warn
 argument_list|(
 literal|"Error when running '"
 operator|+
-name|scmd_str
+name|scmdStr
 operator|+
 literal|"'"
 argument_list|,

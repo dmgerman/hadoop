@@ -126,10 +126,10 @@ name|TestBucketInfo
 block|{
 annotation|@
 name|Test
-DECL|method|TestBucketInfoJson ()
+DECL|method|testBucketInfoJson ()
 specifier|public
 name|void
-name|TestBucketInfoJson
+name|testBucketInfoJson
 parameter_list|()
 throws|throws
 name|IOException
@@ -176,10 +176,10 @@ assert|;
 block|}
 annotation|@
 name|Test
-DECL|method|TestBucketInfoDBString ()
+DECL|method|testBucketInfoDBString ()
 specifier|public
 name|void
-name|TestBucketInfoDBString
+name|testBucketInfoDBString
 parameter_list|()
 throws|throws
 name|IOException
@@ -226,10 +226,10 @@ assert|;
 block|}
 annotation|@
 name|Test
-DECL|method|TestBucketInfoAddAcls ()
+DECL|method|testBucketInfoAddAcls ()
 specifier|public
 name|void
-name|TestBucketInfoAddAcls
+name|testBucketInfoAddAcls
 parameter_list|()
 throws|throws
 name|IOException
@@ -341,10 +341,10 @@ assert|;
 block|}
 annotation|@
 name|Test
-DECL|method|TestBucketInfoVersionAndType ()
+DECL|method|testBucketInfoVersionAndType ()
 specifier|public
 name|void
-name|TestBucketInfoVersionAndType
+name|testBucketInfoVersionAndType
 parameter_list|()
 throws|throws
 name|IOException

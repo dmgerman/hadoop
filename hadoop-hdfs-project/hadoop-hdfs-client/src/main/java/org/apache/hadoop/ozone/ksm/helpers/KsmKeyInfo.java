@@ -406,39 +406,39 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setCreationTime (long creationTime)
+DECL|method|setCreationTime (long crTime)
 specifier|public
 name|Builder
 name|setCreationTime
 parameter_list|(
 name|long
-name|creationTime
+name|crTime
 parameter_list|)
 block|{
 name|this
 operator|.
 name|creationTime
 operator|=
-name|creationTime
+name|crTime
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
-DECL|method|setModificationTime (long modificationTime)
+DECL|method|setModificationTime (long mTime)
 specifier|public
 name|Builder
 name|setModificationTime
 parameter_list|(
 name|long
-name|modificationTime
+name|mTime
 parameter_list|)
 block|{
 name|this
 operator|.
 name|modificationTime
 operator|=
-name|modificationTime
+name|mTime
 expr_stmt|;
 return|return
 name|this

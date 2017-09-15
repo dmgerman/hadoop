@@ -950,7 +950,7 @@ name|now
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * shutdown MiniDFSCluster    */
+comment|/**    * shutdown MiniDFSCluster.    */
 annotation|@
 name|AfterClass
 DECL|method|shutdown ()
@@ -974,7 +974,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Creates a file with Random Data    *    * @return File.    */
+comment|/**    * Creates a file with Random Data.    *    * @return File.    */
 DECL|method|createRandomDataFile (String dir, String fileName, long size)
 specifier|static
 name|File
@@ -1209,14 +1209,17 @@ name|String
 name|keyName
 decl_stmt|;
 DECL|field|vol
+specifier|private
 name|OzoneVolume
 name|vol
 decl_stmt|;
 DECL|field|bucket
+specifier|private
 name|OzoneBucket
 name|bucket
 decl_stmt|;
 DECL|field|file
+specifier|private
 name|File
 name|file
 decl_stmt|;

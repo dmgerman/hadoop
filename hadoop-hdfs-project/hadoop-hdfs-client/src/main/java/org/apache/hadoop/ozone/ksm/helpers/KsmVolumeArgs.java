@@ -449,58 +449,58 @@ name|KsmOzoneAclMap
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|setAdminName (String adminName)
+DECL|method|setAdminName (String admin)
 specifier|public
 name|Builder
 name|setAdminName
 parameter_list|(
 name|String
-name|adminName
+name|admin
 parameter_list|)
 block|{
 name|this
 operator|.
 name|adminName
 operator|=
-name|adminName
+name|admin
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
-DECL|method|setOwnerName (String ownerName)
+DECL|method|setOwnerName (String owner)
 specifier|public
 name|Builder
 name|setOwnerName
 parameter_list|(
 name|String
-name|ownerName
+name|owner
 parameter_list|)
 block|{
 name|this
 operator|.
 name|ownerName
 operator|=
-name|ownerName
+name|owner
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
-DECL|method|setVolume (String volume)
+DECL|method|setVolume (String volumeName)
 specifier|public
 name|Builder
 name|setVolume
 parameter_list|(
 name|String
-name|volume
+name|volumeName
 parameter_list|)
 block|{
 name|this
 operator|.
 name|volume
 operator|=
-name|volume
+name|volumeName
 expr_stmt|;
 return|return
 name|this
@@ -525,20 +525,20 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setQuotaInBytes (long quotaInBytes)
+DECL|method|setQuotaInBytes (long quota)
 specifier|public
 name|Builder
 name|setQuotaInBytes
 parameter_list|(
 name|long
-name|quotaInBytes
+name|quota
 parameter_list|)
 block|{
 name|this
 operator|.
 name|quotaInBytes
 operator|=
-name|quotaInBytes
+name|quota
 expr_stmt|;
 return|return
 name|this
