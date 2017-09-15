@@ -1550,26 +1550,6 @@ operator|.
 name|waitActive
 argument_list|()
 expr_stmt|;
-comment|// Only default policy should be enabled after restart
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|"Only default policy should be enabled after restart"
-argument_list|,
-literal|1
-argument_list|,
-name|ErasureCodingPolicyManager
-operator|.
-name|getInstance
-argument_list|()
-operator|.
-name|getEnabledPolicies
-argument_list|()
-operator|.
-name|length
-argument_list|)
-expr_stmt|;
 comment|// Already set directory-level policies should still be in effect
 name|Path
 name|disabledPolicy

@@ -103,6 +103,15 @@ literal|"CacheEntries"
 argument_list|,
 literal|"cache entries"
 argument_list|)
+block|,
+comment|/**    * The namenode is performing an operation related to erasure coding policies.    */
+DECL|enumConstant|ERASURE_CODING_POLICIES
+name|ERASURE_CODING_POLICIES
+argument_list|(
+literal|"ErasureCodingPolicies"
+argument_list|,
+literal|"erasure coding policies"
+argument_list|)
 block|;
 DECL|field|name
 DECL|field|description
