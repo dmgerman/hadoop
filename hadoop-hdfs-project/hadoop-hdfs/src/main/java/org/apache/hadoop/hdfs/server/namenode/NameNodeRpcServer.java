@@ -4561,10 +4561,6 @@ operator|.
 name|MaxDirectoryItemsExceededException
 operator|.
 name|class
-argument_list|,
-name|UnresolvedPathException
-operator|.
-name|class
 argument_list|)
 expr_stmt|;
 name|clientRpcServer
@@ -4572,6 +4568,10 @@ operator|.
 name|addSuppressedLoggingExceptions
 argument_list|(
 name|StandbyException
+operator|.
+name|class
+argument_list|,
+name|UnresolvedPathException
 operator|.
 name|class
 argument_list|)
