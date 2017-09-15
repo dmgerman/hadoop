@@ -1898,14 +1898,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-comment|// TODO: this is very flaky, re-enable it later. See HDFS-12417.
-name|assumeTrue
-argument_list|(
-literal|"Test has been temporarily disabled. See HDFS-12417."
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
 specifier|final
 name|int
 name|length
@@ -3295,14 +3287,14 @@ operator|.
 name|getBlockTokenSecretManager
 argument_list|()
 decl_stmt|;
-comment|// set a short token lifetime (1 second)
+comment|// set a short token lifetime (6 second)
 name|SecurityTestUtil
 operator|.
 name|setBlockTokenLifetime
 argument_list|(
 name|sm
 argument_list|,
-literal|1000L
+literal|6000L
 argument_list|)
 expr_stmt|;
 block|}
