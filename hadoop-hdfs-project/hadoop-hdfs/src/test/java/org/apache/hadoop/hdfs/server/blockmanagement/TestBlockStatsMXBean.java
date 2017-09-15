@@ -1340,7 +1340,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"could only be replicated to 0 nodes instead"
+literal|"could only be written to 0 of the 1 minReplication"
 argument_list|)
 argument_list|)
 expr_stmt|;

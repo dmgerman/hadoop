@@ -834,7 +834,7 @@ name|exception
 operator|.
 name|expectMessage
 argument_list|(
-literal|"could only be replicated to 0 nodes"
+literal|"could only be written to 0"
 argument_list|)
 expr_stmt|;
 name|doTest
@@ -949,7 +949,7 @@ operator|.
 name|getMessage
 argument_list|()
 argument_list|,
-literal|"could only be replicated to 0 nodes"
+literal|"could only be written to 0"
 argument_list|)
 expr_stmt|;
 block|}

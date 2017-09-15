@@ -6965,9 +6965,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"nodes instead of "
-operator|+
-literal|"minReplication"
+literal|"of the 1 minReplication"
 argument_list|,
 name|re
 argument_list|)
