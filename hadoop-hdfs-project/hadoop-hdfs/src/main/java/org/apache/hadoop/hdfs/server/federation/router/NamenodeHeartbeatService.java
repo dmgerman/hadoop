@@ -470,13 +470,29 @@ operator|.
 name|getSimpleName
 argument_list|()
 operator|+
+operator|(
+name|nsId
+operator|==
+literal|null
+condition|?
+literal|""
+else|:
 literal|" "
 operator|+
 name|nsId
+operator|)
 operator|+
+operator|(
+name|nnId
+operator|==
+literal|null
+condition|?
+literal|""
+else|:
 literal|" "
 operator|+
 name|nnId
+operator|)
 argument_list|)
 expr_stmt|;
 name|this
@@ -517,6 +533,11 @@ name|conf
 operator|=
 name|configuration
 expr_stmt|;
+name|String
+name|nnDesc
+init|=
+name|nameserviceId
+decl_stmt|;
 if|if
 condition|(
 name|this
@@ -548,6 +569,12 @@ argument_list|,
 name|namenodeId
 argument_list|)
 expr_stmt|;
+name|nnDesc
+operator|+=
+literal|"-"
+operator|+
+name|namenodeId
+expr_stmt|;
 block|}
 else|else
 block|{
@@ -576,11 +603,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"{}-{} RPC address: {}"
+literal|"{} RPC address: {}"
 argument_list|,
-name|nameserviceId
-argument_list|,
-name|namenodeId
+name|nnDesc
 argument_list|,
 name|rpcAddress
 argument_list|)
@@ -614,13 +639,11 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Cannot locate RPC service address for NN {}-{}, "
+literal|"Cannot locate RPC service address for NN {}, "
 operator|+
 literal|"using RPC address {}"
 argument_list|,
-name|nameserviceId
-argument_list|,
-name|namenodeId
+name|nnDesc
 argument_list|,
 name|this
 operator|.
@@ -640,11 +663,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"{}-{} Service RPC address: {}"
+literal|"{} Service RPC address: {}"
 argument_list|,
-name|nameserviceId
-argument_list|,
-name|namenodeId
+name|nnDesc
 argument_list|,
 name|serviceAddress
 argument_list|)
@@ -687,11 +708,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"{}-{} Lifeline RPC address: {}"
+literal|"{} Lifeline RPC address: {}"
 argument_list|,
-name|nameserviceId
-argument_list|,
-name|namenodeId
+name|nnDesc
 argument_list|,
 name|lifelineAddress
 argument_list|)
@@ -716,11 +735,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"{}-{} Web address: {}"
+literal|"{} Web address: {}"
 argument_list|,
-name|nameserviceId
-argument_list|,
-name|namenodeId
+name|nnDesc
 argument_list|,
 name|webAddress
 argument_list|)
@@ -799,7 +816,7 @@ condition|(
 name|nsId
 operator|!=
 literal|null
-operator|&&
+operator|||
 name|nnId
 operator|!=
 literal|null
@@ -855,26 +872,61 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|rpcAddresses
-operator|.
-name|containsKey
-argument_list|(
-name|nnId
-argument_list|)
-condition|)
-block|{
 name|InetSocketAddress
 name|sockAddr
 init|=
+literal|null
+decl_stmt|;
+if|if
+condition|(
+name|nnId
+operator|!=
+literal|null
+condition|)
+block|{
+name|sockAddr
+operator|=
 name|rpcAddresses
 operator|.
 name|get
 argument_list|(
 name|nnId
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|rpcAddresses
+operator|.
+name|size
+argument_list|()
+operator|==
+literal|1
+condition|)
+block|{
+comment|// Get the only namenode in the namespace
+name|sockAddr
+operator|=
+name|rpcAddresses
+operator|.
+name|values
+argument_list|()
+operator|.
+name|iterator
+argument_list|()
+operator|.
+name|next
+argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|sockAddr
+operator|!=
+literal|null
+condition|)
+block|{
 name|InetAddress
 name|addr
 init|=
@@ -887,7 +939,7 @@ name|ret
 operator|=
 name|addr
 operator|.
-name|getHostAddress
+name|getHostName
 argument_list|()
 operator|+
 literal|":"
@@ -1295,6 +1347,36 @@ name|Throwable
 name|e
 parameter_list|)
 block|{
+if|if
+condition|(
+name|e
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|startsWith
+argument_list|(
+literal|"HA for namenode is not enabled"
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"HA for {} is not enabled"
+argument_list|,
+name|getNamenodeDesc
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|localTarget
+operator|=
+literal|null
+expr_stmt|;
+block|}
+else|else
+block|{
 comment|// Failed to fetch HA status, ignoring failure
 name|LOG
 operator|.
@@ -1313,6 +1395,7 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}
