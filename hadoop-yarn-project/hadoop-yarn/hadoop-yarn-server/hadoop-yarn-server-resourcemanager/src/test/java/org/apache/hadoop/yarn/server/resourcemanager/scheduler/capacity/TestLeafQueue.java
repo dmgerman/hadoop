@@ -9031,7 +9031,7 @@ comment|//maxqueue 16G, userlimit 7G, used 8G, headroom 5G
 comment|//(8G used is 6G from this test case - app4, 2 from last test case, app_1)
 name|assertEquals
 argument_list|(
-literal|0
+literal|1
 operator|*
 name|GB
 argument_list|,
@@ -10280,7 +10280,7 @@ expr_stmt|;
 comment|// TODO, fix headroom in the future patch
 name|assertEquals
 argument_list|(
-literal|0
+literal|1
 operator|*
 name|GB
 argument_list|,
@@ -10388,7 +10388,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|0
+literal|1
 operator|*
 name|GB
 argument_list|,
@@ -10404,7 +10404,7 @@ expr_stmt|;
 comment|// 4G - 3G
 name|assertEquals
 argument_list|(
-literal|0
+literal|1
 operator|*
 name|GB
 argument_list|,

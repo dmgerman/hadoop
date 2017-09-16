@@ -2908,11 +2908,18 @@ decl_stmt|;
 name|Resource
 name|resourceUsed
 init|=
+name|Resources
+operator|.
+name|add
+argument_list|(
 name|totalResUsageForActiveUsers
 operator|.
 name|getUsed
 argument_list|(
 name|nodePartition
+argument_list|)
+argument_list|,
+name|required
 argument_list|)
 decl_stmt|;
 comment|// For non-activeUser calculation, consider all users count.
