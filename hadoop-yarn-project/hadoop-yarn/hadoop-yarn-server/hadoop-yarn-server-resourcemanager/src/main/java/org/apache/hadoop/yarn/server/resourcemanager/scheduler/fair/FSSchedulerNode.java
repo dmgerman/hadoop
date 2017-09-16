@@ -144,6 +144,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|Container
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ContainerId
 import|;
 end_import
@@ -1162,6 +1180,68 @@ argument_list|,
 name|launchedOnNode
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+specifier|final
+name|Container
+name|container
+init|=
+name|rmContainer
+operator|.
+name|getContainer
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Assigned container "
+operator|+
+name|container
+operator|.
+name|getId
+argument_list|()
+operator|+
+literal|" of capacity "
+operator|+
+name|container
+operator|.
+name|getResource
+argument_list|()
+operator|+
+literal|" on host "
+operator|+
+name|getRMNode
+argument_list|()
+operator|.
+name|getNodeAddress
+argument_list|()
+operator|+
+literal|", which has "
+operator|+
+name|getNumContainers
+argument_list|()
+operator|+
+literal|" containers, "
+operator|+
+name|getAllocatedResource
+argument_list|()
+operator|+
+literal|" used and "
+operator|+
+name|getUnallocatedResource
+argument_list|()
+operator|+
+literal|" available after allocation"
+argument_list|)
+expr_stmt|;
+block|}
 name|Resource
 name|allocated
 init|=

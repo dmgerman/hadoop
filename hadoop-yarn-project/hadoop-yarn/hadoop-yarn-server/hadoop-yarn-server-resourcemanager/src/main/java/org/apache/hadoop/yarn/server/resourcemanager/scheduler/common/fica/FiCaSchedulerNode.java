@@ -943,6 +943,82 @@ name|killableContainers
 argument_list|)
 return|;
 block|}
+DECL|method|allocateContainer (RMContainer rmContainer, boolean launchedOnNode)
+specifier|protected
+specifier|synchronized
+name|void
+name|allocateContainer
+parameter_list|(
+name|RMContainer
+name|rmContainer
+parameter_list|,
+name|boolean
+name|launchedOnNode
+parameter_list|)
+block|{
+name|super
+operator|.
+name|allocateContainer
+argument_list|(
+name|rmContainer
+argument_list|,
+name|launchedOnNode
+argument_list|)
+expr_stmt|;
+specifier|final
+name|Container
+name|container
+init|=
+name|rmContainer
+operator|.
+name|getContainer
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Assigned container "
+operator|+
+name|container
+operator|.
+name|getId
+argument_list|()
+operator|+
+literal|" of capacity "
+operator|+
+name|container
+operator|.
+name|getResource
+argument_list|()
+operator|+
+literal|" on host "
+operator|+
+name|getRMNode
+argument_list|()
+operator|.
+name|getNodeAddress
+argument_list|()
+operator|+
+literal|", which has "
+operator|+
+name|getNumContainers
+argument_list|()
+operator|+
+literal|" containers, "
+operator|+
+name|getAllocatedResource
+argument_list|()
+operator|+
+literal|" used and "
+operator|+
+name|getUnallocatedResource
+argument_list|()
+operator|+
+literal|" available after allocation"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

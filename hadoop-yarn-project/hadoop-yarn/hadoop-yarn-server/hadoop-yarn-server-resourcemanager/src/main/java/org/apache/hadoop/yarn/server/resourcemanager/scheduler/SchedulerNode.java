@@ -880,57 +880,6 @@ name|launchedOnNode
 argument_list|)
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Assigned container "
-operator|+
-name|container
-operator|.
-name|getId
-argument_list|()
-operator|+
-literal|" of capacity "
-operator|+
-name|container
-operator|.
-name|getResource
-argument_list|()
-operator|+
-literal|" on host "
-operator|+
-name|rmNode
-operator|.
-name|getNodeAddress
-argument_list|()
-operator|+
-literal|", which has "
-operator|+
-name|numContainers
-operator|+
-literal|" containers, "
-operator|+
-name|getAllocatedResource
-argument_list|()
-operator|+
-literal|" used and "
-operator|+
-name|getUnallocatedResource
-argument_list|()
-operator|+
-literal|" available after allocation"
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Get unallocated resources on the node.    * @return Unallocated resources on the node    */
 DECL|method|getUnallocatedResource ()
