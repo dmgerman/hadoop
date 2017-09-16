@@ -290,6 +290,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Rule
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -310,6 +320,18 @@ name|JSON
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|rules
+operator|.
+name|Timeout
+import|;
+end_import
+
 begin_comment
 comment|/**  * Class for testing {@link BlockStatsMXBean} implementation  */
 end_comment
@@ -324,6 +346,19 @@ DECL|field|cluster
 specifier|private
 name|MiniDFSCluster
 name|cluster
+decl_stmt|;
+annotation|@
+name|Rule
+DECL|field|globalTimeout
+specifier|public
+name|Timeout
+name|globalTimeout
+init|=
+operator|new
+name|Timeout
+argument_list|(
+literal|300000
+argument_list|)
 decl_stmt|;
 annotation|@
 name|Before
