@@ -3946,6 +3946,11 @@ name|this
 operator|.
 name|getNodeHttpAddress
 argument_list|()
+argument_list|,
+name|this
+operator|.
+name|getExecutionType
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

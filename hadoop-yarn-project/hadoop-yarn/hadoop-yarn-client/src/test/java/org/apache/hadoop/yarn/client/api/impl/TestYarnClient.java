@@ -4530,6 +4530,16 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
+name|assertNotNull
+argument_list|(
+name|report
+operator|.
+name|getExecutionType
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|client
 operator|.
 name|stop
