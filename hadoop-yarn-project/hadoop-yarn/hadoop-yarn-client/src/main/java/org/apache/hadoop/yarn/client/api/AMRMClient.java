@@ -634,6 +634,10 @@ DECL|field|resourceProfile
 specifier|private
 name|String
 name|resourceProfile
+init|=
+name|ProfileCapability
+operator|.
+name|DEFAULT_PROFILE
 decl_stmt|;
 comment|/**      * Instantiates a {@link ContainerRequest} with the given constraints and      * locality relaxation enabled.      *       * @param capability      *          The {@link Resource} to be requested for each container.      * @param nodes      *          Any hosts to request that the containers are placed on.      * @param racks      *          Any racks to request that the containers are placed on. The      *          racks corresponding to any hosts requested will be automatically      *          added to this list.      * @param priority      *          The priority at which to request the containers. Higher      *          priorities have lower numerical values.      */
 DECL|method|ContainerRequest (Resource capability, String[] nodes, String[] racks, Priority priority)
@@ -1773,6 +1777,25 @@ operator|.
 name|executionTypeRequest
 operator|=
 name|executionTypeRequest
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|resourceProfile (String resourceProfile)
+specifier|public
+name|ContainerRequestBuilder
+name|resourceProfile
+parameter_list|(
+name|String
+name|resourceProfile
+parameter_list|)
+block|{
+name|containerRequest
+operator|.
+name|resourceProfile
+operator|=
+name|resourceProfile
 expr_stmt|;
 return|return
 name|this
