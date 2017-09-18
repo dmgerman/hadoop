@@ -505,6 +505,15 @@ name|NUM_OF_KEYS
 init|=
 literal|"numOfKeys"
 decl_stmt|;
+DECL|field|KEY_SIZE
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|KEY_SIZE
+init|=
+literal|"keySize"
+decl_stmt|;
 DECL|field|MODE_DEFAULT
 specifier|private
 specifier|static
@@ -560,6 +569,15 @@ name|String
 name|NUM_OF_KEYS_DEFAULT
 init|=
 literal|"500000"
+decl_stmt|;
+DECL|field|KEY_SIZE_DEFAULT
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|KEY_SIZE_DEFAULT
+init|=
+literal|10240
 decl_stmt|;
 DECL|field|LOG
 specifier|private
@@ -627,6 +645,11 @@ DECL|field|numOfKeys
 specifier|private
 name|String
 name|numOfKeys
+decl_stmt|;
+DECL|field|keySize
+specifier|private
+name|int
+name|keySize
 decl_stmt|;
 DECL|field|validateWrites
 specifier|private
@@ -815,13 +838,13 @@ argument_list|(
 name|getConf
 argument_list|()
 argument_list|,
-name|getOzonePetaGenOptions
+name|getOptions
 argument_list|()
 argument_list|,
 name|args
 argument_list|)
 decl_stmt|;
-name|parseOzonePetaGenOptions
+name|parseOptions
 argument_list|(
 name|parser
 operator|.
@@ -926,6 +949,15 @@ argument_list|(
 literal|"Number of Keys per Bucket: {}."
 argument_list|,
 name|numOfKeys
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Key size: {} bytes"
+argument_list|,
+name|keySize
 argument_list|)
 expr_stmt|;
 for|for
@@ -1096,10 +1128,10 @@ return|return
 literal|0
 return|;
 block|}
-DECL|method|getOzonePetaGenOptions ()
+DECL|method|getOptions ()
 specifier|private
 name|Options
-name|getOzonePetaGenOptions
+name|getOptions
 parameter_list|()
 block|{
 name|Options
@@ -1331,6 +1363,37 @@ argument_list|(
 name|NUM_OF_KEYS
 argument_list|)
 decl_stmt|;
+name|OptionBuilder
+operator|.
+name|withArgName
+argument_list|(
+literal|"value"
+argument_list|)
+expr_stmt|;
+name|OptionBuilder
+operator|.
+name|hasArg
+argument_list|()
+expr_stmt|;
+name|OptionBuilder
+operator|.
+name|withDescription
+argument_list|(
+literal|"specifies the size of Key in bytes to be "
+operator|+
+literal|"created in offline mode"
+argument_list|)
+expr_stmt|;
+name|Option
+name|optKeySize
+init|=
+name|OptionBuilder
+operator|.
+name|create
+argument_list|(
+name|KEY_SIZE
+argument_list|)
+decl_stmt|;
 name|options
 operator|.
 name|addOption
@@ -1387,14 +1450,21 @@ argument_list|(
 name|optNumOfKeys
 argument_list|)
 expr_stmt|;
+name|options
+operator|.
+name|addOption
+argument_list|(
+name|optKeySize
+argument_list|)
+expr_stmt|;
 return|return
 name|options
 return|;
 block|}
-DECL|method|parseOzonePetaGenOptions (CommandLine cmdLine)
+DECL|method|parseOptions (CommandLine cmdLine)
 specifier|private
 name|void
-name|parseOzonePetaGenOptions
+name|parseOptions
 parameter_list|(
 name|CommandLine
 name|cmdLine
@@ -1526,6 +1596,29 @@ argument_list|)
 else|:
 name|NUM_OF_KEYS_DEFAULT
 expr_stmt|;
+name|keySize
+operator|=
+name|cmdLine
+operator|.
+name|hasOption
+argument_list|(
+name|KEY_SIZE
+argument_list|)
+condition|?
+name|Integer
+operator|.
+name|parseInt
+argument_list|(
+name|cmdLine
+operator|.
+name|getOptionValue
+argument_list|(
+name|KEY_SIZE
+argument_list|)
+argument_list|)
+else|:
+name|KEY_SIZE_DEFAULT
+expr_stmt|;
 block|}
 DECL|method|usage ()
 specifier|private
@@ -1625,6 +1718,17 @@ operator|+
 literal|"specifies number of Keys to be created per Bucket "
 operator|+
 literal|"in offline mode"
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"-keySize<value>                "
+operator|+
+literal|"specifies the size of Key in bytes to be created in offline mode"
 argument_list|)
 expr_stmt|;
 name|System
@@ -1878,7 +1982,7 @@ name|RandomStringUtils
 operator|.
 name|randomAscii
 argument_list|(
-literal|10240
+name|keySize
 argument_list|)
 argument_list|)
 decl_stmt|;
