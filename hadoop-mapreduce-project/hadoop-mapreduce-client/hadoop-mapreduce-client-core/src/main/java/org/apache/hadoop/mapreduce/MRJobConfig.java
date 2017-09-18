@@ -3688,20 +3688,6 @@ name|DEFAULT_FINISH_JOB_WHEN_REDUCERS_DONE
 init|=
 literal|true
 decl_stmt|;
-DECL|field|MR_AM_STAGING_DIR_ERASURECODING_ENABLED
-name|String
-name|MR_AM_STAGING_DIR_ERASURECODING_ENABLED
-init|=
-name|MR_AM_STAGING_DIR
-operator|+
-literal|"erasurecoding.enabled"
-decl_stmt|;
-DECL|field|DEFAULT_MR_AM_STAGING_ERASURECODING_ENABLED
-name|boolean
-name|DEFAULT_MR_AM_STAGING_ERASURECODING_ENABLED
-init|=
-literal|false
-decl_stmt|;
 block|}
 end_interface
 
