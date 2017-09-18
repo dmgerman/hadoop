@@ -1155,6 +1155,10 @@ argument_list|,
 name|ContainerState
 operator|.
 name|SCHEDULED
+argument_list|,
+name|ContainerState
+operator|.
+name|NEW
 argument_list|)
 argument_list|,
 literal|20
