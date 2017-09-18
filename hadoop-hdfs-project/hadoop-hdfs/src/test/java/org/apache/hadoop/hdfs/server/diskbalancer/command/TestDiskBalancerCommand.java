@@ -2728,6 +2728,27 @@ literal|"a87654a9-54c7-4693-8dd9-c9c7021dc340"
 argument_list|)
 decl_stmt|;
 specifier|final
+name|Path
+name|testPath
+init|=
+operator|new
+name|Path
+argument_list|(
+name|PathUtils
+operator|.
+name|getTestPath
+argument_list|(
+name|getClass
+argument_list|()
+argument_list|)
+argument_list|,
+name|GenericTestUtils
+operator|.
+name|getMethodName
+argument_list|()
+argument_list|)
+decl_stmt|;
+specifier|final
 name|String
 name|cmdLine
 init|=
@@ -2735,7 +2756,9 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"hdfs diskbalancer %s"
+literal|"hdfs diskbalancer -out %s %s"
+argument_list|,
+name|testPath
 argument_list|,
 name|planArg
 argument_list|)
