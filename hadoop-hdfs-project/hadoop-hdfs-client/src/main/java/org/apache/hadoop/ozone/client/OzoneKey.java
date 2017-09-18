@@ -1,6 +1,6 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  *  with the License.  You may obtain a copy of the License at  *  *      http://www.apache.org/licenses/LICENSE-2.0  *  *  Unless required by applicable law or agreed to in writing, software  *  distributed under the License is distributed on an "AS IS" BASIS,  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  *  See the License for the specific language governing permissions and  *  limitations under the License.  */
+comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *  *     http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
 end_comment
 
 begin_package
@@ -17,52 +17,6 @@ operator|.
 name|client
 package|;
 end_package
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|ksm
-operator|.
-name|helpers
-operator|.
-name|KsmKeyInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|ksm
-operator|.
-name|helpers
-operator|.
-name|KsmKeyLocationInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
 
 begin_comment
 comment|/**  * A class that encapsulates OzoneKey.  */
@@ -89,11 +43,11 @@ name|String
 name|bucketName
 decl_stmt|;
 comment|/**    * Name of the Key.    */
-DECL|field|keyName
+DECL|field|name
 specifier|private
 specifier|final
 name|String
-name|keyName
+name|name
 decl_stmt|;
 comment|/**    * Size of the data.    */
 DECL|field|dataSize
@@ -102,69 +56,47 @@ specifier|final
 name|long
 name|dataSize
 decl_stmt|;
-comment|/**    * All the locations of this key, in an ordered list.    */
-DECL|field|keyLocations
-specifier|private
-specifier|final
-name|List
-argument_list|<
-name|KsmKeyLocationInfo
-argument_list|>
-name|keyLocations
-decl_stmt|;
-comment|/**    * Constructs OzoneKey from KsmKeyInfo.    *    * @param ksmKeyInfo    */
-DECL|method|OzoneKey (KsmKeyInfo ksmKeyInfo)
+comment|/**    * Constructs OzoneKey from KsmKeyInfo.    *    */
+DECL|method|OzoneKey (String volumeName, String bucketName, String keyName, long size)
 specifier|public
 name|OzoneKey
 parameter_list|(
-name|KsmKeyInfo
-name|ksmKeyInfo
+name|String
+name|volumeName
+parameter_list|,
+name|String
+name|bucketName
+parameter_list|,
+name|String
+name|keyName
+parameter_list|,
+name|long
+name|size
 parameter_list|)
 block|{
 name|this
 operator|.
 name|volumeName
 operator|=
-name|ksmKeyInfo
-operator|.
-name|getVolumeName
-argument_list|()
+name|volumeName
 expr_stmt|;
 name|this
 operator|.
 name|bucketName
 operator|=
-name|ksmKeyInfo
-operator|.
-name|getBucketName
-argument_list|()
+name|bucketName
 expr_stmt|;
 name|this
 operator|.
-name|keyName
+name|name
 operator|=
-name|ksmKeyInfo
-operator|.
-name|getKeyName
-argument_list|()
+name|keyName
 expr_stmt|;
 name|this
 operator|.
 name|dataSize
 operator|=
-name|ksmKeyInfo
-operator|.
-name|getDataSize
-argument_list|()
-expr_stmt|;
-name|this
-operator|.
-name|keyLocations
-operator|=
-name|ksmKeyInfo
-operator|.
-name|getKeyLocationList
-argument_list|()
+name|size
 expr_stmt|;
 block|}
 comment|/**    * Returns Volume Name associated with the Key.    *    * @return volumeName    */
@@ -190,14 +122,14 @@ name|bucketName
 return|;
 block|}
 comment|/**    * Returns the Key Name.    *    * @return keyName    */
-DECL|method|getKeyName ()
+DECL|method|getName ()
 specifier|public
 name|String
-name|getKeyName
+name|getName
 parameter_list|()
 block|{
 return|return
-name|keyName
+name|name
 return|;
 block|}
 comment|/**    * Returns the size of the data.    *    * @return dataSize    */
@@ -209,20 +141,6 @@ parameter_list|()
 block|{
 return|return
 name|dataSize
-return|;
-block|}
-comment|/**    * Retruns the list of the key locations.    *    * @return key locations    */
-DECL|method|getKeyLocations ()
-specifier|public
-name|List
-argument_list|<
-name|KsmKeyLocationInfo
-argument_list|>
-name|getKeyLocations
-parameter_list|()
-block|{
-return|return
-name|keyLocations
 return|;
 block|}
 block|}
