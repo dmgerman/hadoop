@@ -955,9 +955,9 @@ name|assignedNewName
 argument_list|)
 condition|)
 block|{
-throw|throw
-operator|new
-name|HadoopIllegalArgumentException
+name|LOG
+operator|.
+name|info
 argument_list|(
 literal|"The policy name "
 operator|+
@@ -965,7 +965,10 @@ name|assignedNewName
 operator|+
 literal|" already exists"
 argument_list|)
-throw|;
+expr_stmt|;
+return|return
+name|p
+return|;
 block|}
 if|if
 condition|(
@@ -993,9 +996,9 @@ name|getCellSize
 argument_list|()
 condition|)
 block|{
-throw|throw
-operator|new
-name|HadoopIllegalArgumentException
+name|LOG
+operator|.
+name|info
 argument_list|(
 literal|"A policy with same schema "
 operator|+
@@ -1016,7 +1019,10 @@ argument_list|()
 operator|+
 literal|" already exists"
 argument_list|)
-throw|;
+expr_stmt|;
+return|return
+name|p
+return|;
 block|}
 block|}
 name|policy
