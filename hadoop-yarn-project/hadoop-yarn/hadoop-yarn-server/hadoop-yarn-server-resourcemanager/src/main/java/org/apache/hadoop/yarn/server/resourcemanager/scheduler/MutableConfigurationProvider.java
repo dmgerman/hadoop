@@ -46,37 +46,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
-operator|.
-name|YarnException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|webapp
 operator|.
 name|dao
 operator|.
 name|SchedConfUpdateInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
 import|;
 end_import
 
@@ -90,18 +64,24 @@ specifier|public
 interface|interface
 name|MutableConfigurationProvider
 block|{
-comment|/**    * Apply transactions which were not committed.    * @throws IOException if recovery fails    */
-DECL|method|recoverConf ()
+comment|/**    * Get the acl mutation policy for this configuration provider.    * @return The acl mutation policy.    */
+DECL|method|getAclMutationPolicy ()
+name|ConfigurationMutationACLPolicy
+name|getAclMutationPolicy
+parameter_list|()
+function_decl|;
+comment|/**    * Called when a new ResourceManager is starting/becomes active. Ensures    * configuration is up-to-date.    * @throws Exception if configuration could not be refreshed from store    */
+DECL|method|reloadConfigurationFromStore ()
 name|void
-name|recoverConf
+name|reloadConfigurationFromStore
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 function_decl|;
-comment|/**    * Update the scheduler configuration with the provided key value pairs.    * @param user User issuing the request    * @param confUpdate Key-value pairs for configurations to be updated.    * @throws IOException if scheduler could not be reinitialized    * @throws YarnException if reservation system could not be reinitialized    */
-DECL|method|mutateConfiguration (UserGroupInformation user, SchedConfUpdateInfo confUpdate)
+comment|/**    * Log user's requested configuration mutation, and applies it in-memory.    * @param user User who requested the change    * @param confUpdate User's requested configuration change    * @throws Exception if logging the mutation fails    */
+DECL|method|logAndApplyMutation (UserGroupInformation user, SchedConfUpdateInfo confUpdate)
 name|void
-name|mutateConfiguration
+name|logAndApplyMutation
 parameter_list|(
 name|UserGroupInformation
 name|user
@@ -110,9 +90,18 @@ name|SchedConfUpdateInfo
 name|confUpdate
 parameter_list|)
 throws|throws
-name|IOException
-throws|,
-name|YarnException
+name|Exception
+function_decl|;
+comment|/**    * Confirm last logged mutation.    * @param isValid if the last logged mutation is applied to scheduler    *                properly.    * @throws Exception if confirming mutation fails    */
+DECL|method|confirmPendingMutation (boolean isValid)
+name|void
+name|confirmPendingMutation
+parameter_list|(
+name|boolean
+name|isValid
+parameter_list|)
+throws|throws
+name|Exception
 function_decl|;
 block|}
 end_interface

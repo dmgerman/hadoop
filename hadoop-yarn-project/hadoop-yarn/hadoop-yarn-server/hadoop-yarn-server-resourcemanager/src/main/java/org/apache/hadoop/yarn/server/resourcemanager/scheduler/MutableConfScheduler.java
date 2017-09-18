@@ -36,64 +36,6 @@ name|Configuration
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|UserGroupInformation
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|exceptions
-operator|.
-name|YarnException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|webapp
-operator|.
-name|dao
-operator|.
-name|SchedConfUpdateInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
 begin_comment
 comment|/**  * Interface for a scheduler that supports changing configuration at runtime.  *  */
 end_comment
@@ -106,22 +48,6 @@ name|MutableConfScheduler
 extends|extends
 name|ResourceScheduler
 block|{
-comment|/**    * Update the scheduler's configuration.    * @param user Caller of this update    * @param confUpdate configuration update    * @throws IOException if scheduler could not be reinitialized    * @throws YarnException if reservation system could not be reinitialized    */
-DECL|method|updateConfiguration (UserGroupInformation user, SchedConfUpdateInfo confUpdate)
-name|void
-name|updateConfiguration
-parameter_list|(
-name|UserGroupInformation
-name|user
-parameter_list|,
-name|SchedConfUpdateInfo
-name|confUpdate
-parameter_list|)
-throws|throws
-name|IOException
-throws|,
-name|YarnException
-function_decl|;
 comment|/**    * Get the scheduler configuration.    * @return the scheduler configuration    */
 DECL|method|getConfiguration ()
 name|Configuration
@@ -141,6 +67,12 @@ comment|/**    * Return whether the scheduler configuration is mutable.    * @re
 DECL|method|isConfigurationMutable ()
 name|boolean
 name|isConfigurationMutable
+parameter_list|()
+function_decl|;
+comment|/**    * Get scheduler's configuration provider, so other classes can directly    * call mutation APIs on configuration provider.    * @return scheduler's configuration provider    */
+DECL|method|getMutableConfProvider ()
+name|MutableConfigurationProvider
+name|getMutableConfProvider
 parameter_list|()
 function_decl|;
 block|}

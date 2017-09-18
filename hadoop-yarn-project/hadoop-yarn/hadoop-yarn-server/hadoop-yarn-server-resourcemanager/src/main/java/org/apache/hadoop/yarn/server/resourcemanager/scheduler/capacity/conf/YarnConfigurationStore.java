@@ -32,11 +32,95 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|Log
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|LogFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|records
+operator|.
+name|Version
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|RMContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|recovery
+operator|.
+name|RMStateVersionIncompatibleException
 import|;
 end_import
 
@@ -106,14 +190,32 @@ begin_comment
 comment|/**  * YarnConfigurationStore exposes the methods needed for retrieving and  * persisting {@link CapacityScheduler} configuration via key-value  * using write-ahead logging. When configuration mutation is requested, caller  * should first log it with {@code logMutation}, which persists this pending  * mutation. This mutation is merged to the persisted configuration only after  * {@code confirmMutation} is called.  *  * On startup/recovery, caller should call {@code retrieve} to get all  * confirmed mutations, then get pending mutations which were not confirmed via  * {@code getPendingMutations}, and replay/confirm them via  * {@code confirmMutation} as in the normal case.  */
 end_comment
 
-begin_interface
-DECL|interface|YarnConfigurationStore
+begin_class
+DECL|class|YarnConfigurationStore
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|YarnConfigurationStore
 block|{
+DECL|field|LOG
+specifier|public
+specifier|static
+specifier|final
+name|Log
+name|LOG
+init|=
+name|LogFactory
+operator|.
+name|getLog
+argument_list|(
+name|YarnConfigurationStore
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 comment|/**    * LogMutation encapsulates the fields needed for configuration mutation    * audit logging and recovery.    */
 DECL|class|LogMutation
+specifier|static
 class|class
 name|LogMutation
 implements|implements
@@ -134,14 +236,8 @@ specifier|private
 name|String
 name|user
 decl_stmt|;
-DECL|field|id
-specifier|private
-name|long
-name|id
-decl_stmt|;
-comment|/**      * Create log mutation prior to logging.      * @param updates key-value configuration updates      * @param user user who requested configuration change      */
+comment|/**      * Create log mutation.      * @param updates key-value configuration updates      * @param user user who requested configuration change      */
 DECL|method|LogMutation (Map<String, String> updates, String user)
-specifier|public
 name|LogMutation
 parameter_list|(
 name|Map
@@ -157,35 +253,6 @@ name|user
 parameter_list|)
 block|{
 name|this
-argument_list|(
-name|updates
-argument_list|,
-name|user
-argument_list|,
-literal|0
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**      * Create log mutation for recovery.      * @param updates key-value configuration updates      * @param user user who requested configuration change      * @param id transaction id of configuration change      */
-DECL|method|LogMutation (Map<String, String> updates, String user, long id)
-name|LogMutation
-parameter_list|(
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|String
-argument_list|>
-name|updates
-parameter_list|,
-name|String
-name|user
-parameter_list|,
-name|long
-name|id
-parameter_list|)
-block|{
-name|this
 operator|.
 name|updates
 operator|=
@@ -196,12 +263,6 @@ operator|.
 name|user
 operator|=
 name|user
-expr_stmt|;
-name|this
-operator|.
-name|id
-operator|=
-name|id
 expr_stmt|;
 block|}
 comment|/**      * Get key-value configuration updates.      * @return map of configuration updates      */
@@ -231,37 +292,11 @@ return|return
 name|user
 return|;
 block|}
-comment|/**      * Get transaction id of this configuration change.      * @return transaction id      */
-DECL|method|getId ()
+block|}
+comment|/**    * Initialize the configuration store, with schedConf as the initial    * scheduler configuration. If a persisted store already exists, use the    * scheduler configuration stored there, and ignore schedConf.    * @param conf configuration to initialize store with    * @param schedConf Initial key-value scheduler configuration to persist.    * @param rmContext RMContext for this configuration store    * @throws IOException if initialization fails    */
+DECL|method|initialize (Configuration conf, Configuration schedConf, RMContext rmContext)
 specifier|public
-name|long
-name|getId
-parameter_list|()
-block|{
-return|return
-name|id
-return|;
-block|}
-comment|/**      * Set transaction id of this configuration change.      * @param id transaction id      */
-DECL|method|setId (long id)
-specifier|public
-name|void
-name|setId
-parameter_list|(
-name|long
-name|id
-parameter_list|)
-block|{
-name|this
-operator|.
-name|id
-operator|=
-name|id
-expr_stmt|;
-block|}
-block|}
-comment|/**    * Initialize the configuration store.    * @param conf configuration to initialize store with    * @param schedConf Initial key-value configuration to persist    * @throws IOException if initialization fails    */
-DECL|method|initialize (Configuration conf, Configuration schedConf)
+specifier|abstract
 name|void
 name|initialize
 parameter_list|(
@@ -270,52 +305,51 @@ name|conf
 parameter_list|,
 name|Configuration
 name|schedConf
+parameter_list|,
+name|RMContext
+name|rmContext
 parameter_list|)
 throws|throws
-name|IOException
+name|Exception
 function_decl|;
-comment|/**    * Logs the configuration change to backing store. Generates an id associated    * with this mutation, sets it in {@code logMutation}, and returns it.    * @param logMutation configuration change to be persisted in write ahead log    * @return id which configuration store associates with this mutation    * @throws IOException if logging fails    */
+comment|/**    * Logs the configuration change to backing store.    * @param logMutation configuration change to be persisted in write ahead log    * @throws IOException if logging fails    */
 DECL|method|logMutation (LogMutation logMutation)
-name|long
+specifier|public
+specifier|abstract
+name|void
 name|logMutation
 parameter_list|(
 name|LogMutation
 name|logMutation
 parameter_list|)
 throws|throws
-name|IOException
+name|Exception
 function_decl|;
-comment|/**    * Should be called after {@code logMutation}. Gets the pending mutation    * associated with {@code id} and marks the mutation as persisted (no longer    * pending). If isValid is true, merge the mutation with the persisted    * configuration.    *    * If {@code confirmMutation} is called with ids in a different order than    * was returned by {@code logMutation}, the result is implementation    * dependent.    * @param id id of mutation to be confirmed    * @param isValid if true, update persisted configuration with mutation    *                associated with {@code id}.    * @return true on success    * @throws IOException if mutation confirmation fails    */
-DECL|method|confirmMutation (long id, boolean isValid)
-name|boolean
+comment|/**    * Should be called after {@code logMutation}. Gets the pending mutation    * last logged by {@code logMutation} and marks the mutation as persisted (no    * longer pending). If isValid is true, merge the mutation with the persisted    * configuration.    * @param isValid if true, update persisted configuration with pending    *                mutation.    * @throws Exception if mutation confirmation fails    */
+DECL|method|confirmMutation (boolean isValid)
+specifier|public
+specifier|abstract
+name|void
 name|confirmMutation
 parameter_list|(
-name|long
-name|id
-parameter_list|,
 name|boolean
 name|isValid
 parameter_list|)
 throws|throws
-name|IOException
+name|Exception
 function_decl|;
 comment|/**    * Retrieve the persisted configuration.    * @return configuration as key-value    */
 DECL|method|retrieve ()
+specifier|public
+specifier|abstract
 name|Configuration
 name|retrieve
 parameter_list|()
 function_decl|;
-comment|/**    * Get the list of pending mutations, in the order they were logged.    * @return list of mutations    */
-DECL|method|getPendingMutations ()
-name|List
-argument_list|<
-name|LogMutation
-argument_list|>
-name|getPendingMutations
-parameter_list|()
-function_decl|;
 comment|/**    * Get a list of confirmed configuration mutations starting from a given id.    * @param fromId id from which to start getting mutations, inclusive    * @return list of configuration mutations    */
 DECL|method|getConfirmedConfHistory (long fromId)
+specifier|public
+specifier|abstract
 name|List
 argument_list|<
 name|LogMutation
@@ -326,8 +360,134 @@ name|long
 name|fromId
 parameter_list|)
 function_decl|;
+comment|/**    * Get schema version of persisted conf store, for detecting compatibility    * issues when changing conf store schema.    * @return Schema version currently used by the persisted configuration store.    * @throws Exception On version fetch failure    */
+DECL|method|getConfStoreVersion ()
+specifier|protected
+specifier|abstract
+name|Version
+name|getConfStoreVersion
+parameter_list|()
+throws|throws
+name|Exception
+function_decl|;
+comment|/**    * Persist the hard-coded schema version to the conf store.    * @throws Exception On storage failure    */
+DECL|method|storeVersion ()
+specifier|protected
+specifier|abstract
+name|void
+name|storeVersion
+parameter_list|()
+throws|throws
+name|Exception
+function_decl|;
+comment|/**    * Get the hard-coded schema version, for comparison against the schema    * version currently persisted.    * @return Current hard-coded schema version    */
+DECL|method|getCurrentVersion ()
+specifier|protected
+specifier|abstract
+name|Version
+name|getCurrentVersion
+parameter_list|()
+function_decl|;
+DECL|method|checkVersion ()
+specifier|public
+name|void
+name|checkVersion
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+comment|// TODO this was taken from RMStateStore. Should probably refactor
+name|Version
+name|loadedVersion
+init|=
+name|getConfStoreVersion
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Loaded configuration store version info "
+operator|+
+name|loadedVersion
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|loadedVersion
+operator|!=
+literal|null
+operator|&&
+name|loadedVersion
+operator|.
+name|equals
+argument_list|(
+name|getCurrentVersion
+argument_list|()
+argument_list|)
+condition|)
+block|{
+return|return;
 block|}
-end_interface
+comment|// if there is no version info, treat it as CURRENT_VERSION_INFO;
+if|if
+condition|(
+name|loadedVersion
+operator|==
+literal|null
+condition|)
+block|{
+name|loadedVersion
+operator|=
+name|getCurrentVersion
+argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|loadedVersion
+operator|.
+name|isCompatibleTo
+argument_list|(
+name|getCurrentVersion
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Storing configuration store version info "
+operator|+
+name|getCurrentVersion
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|storeVersion
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+throw|throw
+operator|new
+name|RMStateVersionIncompatibleException
+argument_list|(
+literal|"Expecting configuration store version "
+operator|+
+name|getCurrentVersion
+argument_list|()
+operator|+
+literal|", but loading version "
+operator|+
+name|loadedVersion
+argument_list|)
+throw|;
+block|}
+block|}
+block|}
+end_class
 
 end_unit
 
