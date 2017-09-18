@@ -2057,11 +2057,6 @@ operator|.
 name|getResourceCalculator
 argument_list|()
 argument_list|,
-name|scheduler
-operator|.
-name|getClusterResource
-argument_list|()
-argument_list|,
 name|targetResource
 argument_list|,
 name|rmNode

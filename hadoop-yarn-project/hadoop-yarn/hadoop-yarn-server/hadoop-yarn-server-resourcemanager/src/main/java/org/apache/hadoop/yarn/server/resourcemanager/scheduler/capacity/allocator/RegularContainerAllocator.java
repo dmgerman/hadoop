@@ -2956,8 +2956,6 @@ name|fitsIn
 argument_list|(
 name|rc
 argument_list|,
-name|clusterResource
-argument_list|,
 name|capability
 argument_list|,
 name|availableAndKillable
@@ -3035,8 +3033,6 @@ name|application
 operator|.
 name|findNodeToUnreserve
 argument_list|(
-name|clusterResource
-argument_list|,
 name|node
 argument_list|,
 name|schedulerKey

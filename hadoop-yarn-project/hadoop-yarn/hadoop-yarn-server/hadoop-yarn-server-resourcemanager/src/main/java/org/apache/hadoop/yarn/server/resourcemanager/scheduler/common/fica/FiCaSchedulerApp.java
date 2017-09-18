@@ -2252,14 +2252,11 @@ return|return
 literal|false
 return|;
 block|}
-DECL|method|commonCheckContainerAllocation ( Resource cluster, ContainerAllocationProposal<FiCaSchedulerApp, FiCaSchedulerNode> allocation, SchedulerContainer<FiCaSchedulerApp, FiCaSchedulerNode> schedulerContainer)
+DECL|method|commonCheckContainerAllocation ( ContainerAllocationProposal<FiCaSchedulerApp, FiCaSchedulerNode> allocation, SchedulerContainer<FiCaSchedulerApp, FiCaSchedulerNode> schedulerContainer)
 specifier|private
 name|boolean
 name|commonCheckContainerAllocation
 parameter_list|(
-name|Resource
-name|cluster
-parameter_list|,
 name|ContainerAllocationProposal
 argument_list|<
 name|FiCaSchedulerApp
@@ -2443,8 +2440,6 @@ operator|.
 name|fitsIn
 argument_list|(
 name|rc
-argument_list|,
-name|cluster
 argument_list|,
 name|allocation
 operator|.
@@ -2668,8 +2663,6 @@ comment|// Common part of check container allocation regardless if it is a
 comment|// increase container or regular container
 name|commonCheckContainerAllocation
 argument_list|(
-name|cluster
-argument_list|,
 name|allocation
 argument_list|,
 name|schedulerContainer
@@ -4037,7 +4030,7 @@ block|}
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getNodeIdToUnreserve ( SchedulerRequestKey schedulerKey, Resource resourceNeedUnreserve, ResourceCalculator rc, Resource clusterResource)
+DECL|method|getNodeIdToUnreserve (SchedulerRequestKey schedulerKey, Resource resourceNeedUnreserve, ResourceCalculator resourceCalculator)
 specifier|public
 name|NodeId
 name|getNodeIdToUnreserve
@@ -4049,10 +4042,7 @@ name|Resource
 name|resourceNeedUnreserve
 parameter_list|,
 name|ResourceCalculator
-name|rc
-parameter_list|,
-name|Resource
-name|clusterResource
+name|resourceCalculator
 parameter_list|)
 block|{
 comment|// first go around make this algorithm simple and just grab first
@@ -4141,9 +4131,7 @@ name|Resources
 operator|.
 name|fitsIn
 argument_list|(
-name|rc
-argument_list|,
-name|clusterResource
+name|resourceCalculator
 argument_list|,
 name|resourceNeedUnreserve
 argument_list|,
@@ -4390,14 +4378,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|findNodeToUnreserve (Resource clusterResource, FiCaSchedulerNode node, SchedulerRequestKey schedulerKey, Resource minimumUnreservedResource)
+DECL|method|findNodeToUnreserve (FiCaSchedulerNode node, SchedulerRequestKey schedulerKey, Resource minimumUnreservedResource)
 specifier|public
 name|RMContainer
 name|findNodeToUnreserve
 parameter_list|(
-name|Resource
-name|clusterResource
-parameter_list|,
 name|FiCaSchedulerNode
 name|node
 parameter_list|,
@@ -4426,8 +4411,6 @@ argument_list|,
 name|minimumUnreservedResource
 argument_list|,
 name|rc
-argument_list|,
-name|clusterResource
 argument_list|)
 decl_stmt|;
 if|if

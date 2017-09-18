@@ -591,14 +591,11 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|fitsIn (Resource cluster, Resource smaller, Resource bigger)
+DECL|method|fitsIn (Resource smaller, Resource bigger)
 specifier|public
 name|boolean
 name|fitsIn
 parameter_list|(
-name|Resource
-name|cluster
-parameter_list|,
 name|Resource
 name|smaller
 parameter_list|,

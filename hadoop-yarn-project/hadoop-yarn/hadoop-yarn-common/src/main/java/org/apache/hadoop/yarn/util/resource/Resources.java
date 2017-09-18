@@ -2283,7 +2283,7 @@ return|return
 literal|true
 return|;
 block|}
-DECL|method|fitsIn (ResourceCalculator rc, Resource cluster, Resource smaller, Resource bigger)
+DECL|method|fitsIn (ResourceCalculator rc, Resource smaller, Resource bigger)
 specifier|public
 specifier|static
 name|boolean
@@ -2291,9 +2291,6 @@ name|fitsIn
 parameter_list|(
 name|ResourceCalculator
 name|rc
-parameter_list|,
-name|Resource
-name|cluster
 parameter_list|,
 name|Resource
 name|smaller
@@ -2307,8 +2304,6 @@ name|rc
 operator|.
 name|fitsIn
 argument_list|(
-name|cluster
-argument_list|,
 name|smaller
 argument_list|,
 name|bigger

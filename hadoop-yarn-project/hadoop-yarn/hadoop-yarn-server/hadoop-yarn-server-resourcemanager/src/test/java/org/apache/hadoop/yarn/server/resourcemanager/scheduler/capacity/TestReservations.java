@@ -7938,20 +7938,6 @@ operator|*
 name|GB
 argument_list|)
 decl_stmt|;
-name|Resource
-name|clusterResource
-init|=
-name|Resources
-operator|.
-name|createResource
-argument_list|(
-literal|2
-operator|*
-literal|8
-operator|*
-name|GB
-argument_list|)
-decl_stmt|;
 comment|// Setup resource-requests
 name|Priority
 name|p
@@ -8254,8 +8240,6 @@ name|cs
 operator|.
 name|getResourceCalculator
 argument_list|()
-argument_list|,
-name|clusterResource
 argument_list|)
 decl_stmt|;
 name|assertEquals
@@ -8304,8 +8288,6 @@ name|cs
 operator|.
 name|getResourceCalculator
 argument_list|()
-argument_list|,
-name|clusterResource
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -8343,8 +8325,6 @@ name|cs
 operator|.
 name|getResourceCalculator
 argument_list|()
-argument_list|,
-name|clusterResource
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -8382,8 +8362,6 @@ name|cs
 operator|.
 name|getResourceCalculator
 argument_list|()
-argument_list|,
-name|clusterResource
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -8737,11 +8715,6 @@ name|app_0
 operator|.
 name|findNodeToUnreserve
 argument_list|(
-name|csContext
-operator|.
-name|getClusterResource
-argument_list|()
-argument_list|,
 name|node_1
 argument_list|,
 name|priorityMap
@@ -8787,11 +8760,6 @@ name|app_0
 operator|.
 name|findNodeToUnreserve
 argument_list|(
-name|csContext
-operator|.
-name|getClusterResource
-argument_list|()
-argument_list|,
 name|node_1
 argument_list|,
 name|priorityMap

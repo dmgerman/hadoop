@@ -547,15 +547,12 @@ name|denominator
 parameter_list|)
 function_decl|;
 comment|/**    * Check if a smaller resource can be contained by bigger resource.    */
-DECL|method|fitsIn (Resource cluster, Resource smaller, Resource bigger)
+DECL|method|fitsIn (Resource smaller, Resource bigger)
 specifier|public
 specifier|abstract
 name|boolean
 name|fitsIn
 parameter_list|(
-name|Resource
-name|cluster
-parameter_list|,
 name|Resource
 name|smaller
 parameter_list|,

@@ -735,8 +735,6 @@ name|fitsIn
 argument_list|(
 name|rc
 argument_list|,
-name|clusterResource
-argument_list|,
 name|rmContainer
 operator|.
 name|getAllocatedResource

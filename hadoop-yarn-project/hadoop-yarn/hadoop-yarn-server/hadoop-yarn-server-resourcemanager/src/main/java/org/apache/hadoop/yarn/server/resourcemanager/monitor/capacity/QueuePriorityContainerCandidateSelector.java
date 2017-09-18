@@ -1170,8 +1170,6 @@ name|fitsIn
 argument_list|(
 name|rc
 argument_list|,
-name|clusterResource
-argument_list|,
 name|lacking
 argument_list|,
 name|Resources
@@ -1336,8 +1334,6 @@ operator|.
 name|fitsIn
 argument_list|(
 name|rc
-argument_list|,
-name|clusterResource
 argument_list|,
 name|lacking
 argument_list|,

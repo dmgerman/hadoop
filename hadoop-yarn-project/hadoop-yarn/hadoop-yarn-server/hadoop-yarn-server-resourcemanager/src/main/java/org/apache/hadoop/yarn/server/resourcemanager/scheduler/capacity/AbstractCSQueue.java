@@ -4559,8 +4559,6 @@ name|fitsIn
 argument_list|(
 name|resourceCalculator
 argument_list|,
-name|cluster
-argument_list|,
 name|Resources
 operator|.
 name|add

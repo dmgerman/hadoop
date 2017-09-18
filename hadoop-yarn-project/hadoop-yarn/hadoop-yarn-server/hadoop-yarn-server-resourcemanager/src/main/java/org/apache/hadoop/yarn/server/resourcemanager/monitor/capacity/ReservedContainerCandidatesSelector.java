@@ -463,8 +463,6 @@ name|nodesForPreemption
 init|=
 name|getNodesForPreemption
 argument_list|(
-name|clusterResource
-argument_list|,
 name|queueToPreemptableResourceByPartition
 argument_list|,
 name|selectedCandidates
@@ -507,8 +505,6 @@ argument_list|(
 name|nfp
 operator|.
 name|schedulerNode
-argument_list|,
-name|clusterResource
 argument_list|,
 name|queueToPreemptableResourceByPartition
 argument_list|,
@@ -698,14 +694,11 @@ return|return
 name|preemptable
 return|;
 block|}
-DECL|method|tryToPreemptFromQueue (Resource cluster, String queueName, String partitionName, Map<String, Map<String, Resource>> queueToPreemptableResourceByPartition, Resource required, Resource totalPreemptionAllowed, boolean readOnly)
+DECL|method|tryToPreemptFromQueue (String queueName, String partitionName, Map<String, Map<String, Resource>> queueToPreemptableResourceByPartition, Resource required, Resource totalPreemptionAllowed, boolean readOnly)
 specifier|private
 name|boolean
 name|tryToPreemptFromQueue
 parameter_list|(
-name|Resource
-name|cluster
-parameter_list|,
 name|String
 name|queueName
 parameter_list|,
@@ -767,8 +760,6 @@ name|fitsIn
 argument_list|(
 name|rc
 argument_list|,
-name|cluster
-argument_list|,
 name|required
 argument_list|,
 name|preemptable
@@ -787,8 +778,6 @@ operator|.
 name|fitsIn
 argument_list|(
 name|rc
-argument_list|,
-name|cluster
 argument_list|,
 name|required
 argument_list|,
@@ -829,17 +818,14 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Try to check if we can preempt resources for reserved container in given node    * @param node    * @param cluster    * @param queueToPreemptableResourceByPartition it's a map of    *<queueName,<partition, preemptable-resource>>    * @param readOnly do we want to modify preemptable resource after we selected    *                 candidates    * @return NodeForPreemption if it's possible to preempt containers on the node    * to satisfy reserved resource    */
-DECL|method|getPreemptionCandidatesOnNode ( FiCaSchedulerNode node, Resource cluster, Map<String, Map<String, Resource>> queueToPreemptableResourceByPartition, Map<ApplicationAttemptId, Set<RMContainer>> selectedCandidates, Resource totalPreemptionAllowed, boolean readOnly)
+comment|/**    * Try to check if we can preempt resources for reserved container in given node    * @param node    * @param queueToPreemptableResourceByPartition it's a map of    *<queueName,<partition, preemptable-resource>>    * @param readOnly do we want to modify preemptable resource after we selected    *                 candidates    * @return NodeForPreemption if it's possible to preempt containers on the node    * to satisfy reserved resource    */
+DECL|method|getPreemptionCandidatesOnNode ( FiCaSchedulerNode node, Map<String, Map<String, Resource>> queueToPreemptableResourceByPartition, Map<ApplicationAttemptId, Set<RMContainer>> selectedCandidates, Resource totalPreemptionAllowed, boolean readOnly)
 specifier|private
 name|NodeForPreemption
 name|getPreemptionCandidatesOnNode
 parameter_list|(
 name|FiCaSchedulerNode
 name|node
-parameter_list|,
-name|Resource
-name|cluster
 parameter_list|,
 name|Map
 argument_list|<
@@ -1027,8 +1013,6 @@ name|fitsIn
 argument_list|(
 name|rc
 argument_list|,
-name|cluster
-argument_list|,
 name|reservedContainer
 operator|.
 name|getReservedResource
@@ -1127,8 +1111,6 @@ name|canPreempt
 init|=
 name|tryToPreemptFromQueue
 argument_list|(
-name|cluster
-argument_list|,
 name|containerQueueName
 argument_list|,
 name|partition
@@ -1210,8 +1192,6 @@ operator|.
 name|fitsIn
 argument_list|(
 name|rc
-argument_list|,
-name|cluster
 argument_list|,
 name|reservedContainer
 operator|.
@@ -1333,7 +1313,7 @@ return|return
 name|nfp
 return|;
 block|}
-DECL|method|getNodesForPreemption (Resource cluster, Map<String, Map<String, Resource>> queueToPreemptableResourceByPartition, Map<ApplicationAttemptId, Set<RMContainer>> selectedCandidates, Resource totalPreemptionAllowed)
+DECL|method|getNodesForPreemption ( Map<String, Map<String, Resource>> queueToPreemptableResourceByPartition, Map<ApplicationAttemptId, Set<RMContainer>> selectedCandidates, Resource totalPreemptionAllowed)
 specifier|private
 name|List
 argument_list|<
@@ -1341,9 +1321,6 @@ name|NodeForPreemption
 argument_list|>
 name|getNodesForPreemption
 parameter_list|(
-name|Resource
-name|cluster
-parameter_list|,
 name|Map
 argument_list|<
 name|String
@@ -1414,8 +1391,6 @@ init|=
 name|getPreemptionCandidatesOnNode
 argument_list|(
 name|node
-argument_list|,
-name|cluster
 argument_list|,
 name|queueToPreemptableResourceByPartition
 argument_list|,
