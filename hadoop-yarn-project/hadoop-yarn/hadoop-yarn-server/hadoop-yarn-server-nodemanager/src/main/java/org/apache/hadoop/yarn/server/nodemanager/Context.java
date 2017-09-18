@@ -571,6 +571,11 @@ name|ContainerExecutor
 name|getContainerExecutor
 parameter_list|()
 function_decl|;
+DECL|method|getContainerStateTransitionListener ()
+name|ContainerStateTransitionListener
+name|getContainerStateTransitionListener
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

@@ -2027,6 +2027,15 @@ operator|.
 name|make
 argument_list|(
 name|this
+argument_list|,
+name|ContainerState
+operator|.
+name|NEW
+argument_list|,
+name|context
+operator|.
+name|getContainerStateTransitionListener
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|this

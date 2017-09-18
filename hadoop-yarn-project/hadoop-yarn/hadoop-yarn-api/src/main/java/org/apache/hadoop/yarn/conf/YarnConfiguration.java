@@ -3596,6 +3596,18 @@ name|NM_PREFIX
 operator|+
 literal|"container-executor.class"
 decl_stmt|;
+comment|/** List of container state transition listeners.*/
+DECL|field|NM_CONTAINER_STATE_TRANSITION_LISTENERS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_CONTAINER_STATE_TRANSITION_LISTENERS
+init|=
+name|NM_PREFIX
+operator|+
+literal|"container-state-transition-listener.classes"
+decl_stmt|;
 comment|/**      * Adjustment to make to the container os scheduling priority.    * The valid values for this could vary depending on the platform.    * On Linux, higher values mean run the containers at a less     * favorable priority than the NM.     * The value specified is an int.    */
 DECL|field|NM_CONTAINER_EXECUTOR_SCHED_PRIORITY
 specifier|public
