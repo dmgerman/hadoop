@@ -3116,8 +3116,6 @@ name|ecPolicy
 operator|.
 name|getNumDataUnits
 argument_list|()
-operator|*
-literal|2
 decl_stmt|;
 for|for
 control|(
@@ -3128,7 +3126,7 @@ literal|0
 init|;
 name|i
 operator|<
-literal|100
+literal|50
 condition|;
 name|i
 operator|++
