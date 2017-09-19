@@ -117,6 +117,14 @@ block|,
 name|DFSConfigKeys
 operator|.
 name|class
+block|,
+name|HdfsClientConfigKeys
+operator|.
+name|BlockWrite
+operator|.
+name|ReplaceDatanodeOnFailure
+operator|.
+name|class
 block|}
 expr_stmt|;
 comment|// Set error modes

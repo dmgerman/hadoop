@@ -6443,12 +6443,89 @@ comment|//find the new datanode
 specifier|final
 name|int
 name|d
-init|=
+decl_stmt|;
+try|try
+block|{
+name|d
+operator|=
 name|findNewDatanode
 argument_list|(
 name|original
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+comment|// check the minimal number of nodes available to decide whether to
+comment|// continue the write.
+comment|//if live block location datanodes is greater than or equal to
+comment|// HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.
+comment|// MIN_REPLICATION threshold value, continue writing to the
+comment|// remaining nodes. Otherwise throw exception.
+comment|//
+comment|// If HdfsClientConfigKeys.BlockWrite.ReplaceDatanodeOnFailure.
+comment|// MIN_REPLICATION is set to 0 or less than zero, an exception will be
+comment|// thrown if a replacement could not be found.
+if|if
+condition|(
+name|dfsClient
+operator|.
+name|dtpReplaceDatanodeOnFailureReplication
+operator|>
+literal|0
+operator|&&
+name|nodes
+operator|.
+name|length
+operator|>=
+name|dfsClient
+operator|.
+name|dtpReplaceDatanodeOnFailureReplication
+condition|)
+block|{
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to find a new datanode to add to the write pipeline, "
+operator|+
+literal|" continue to write to the pipeline with "
+operator|+
+name|nodes
+operator|.
+name|length
+operator|+
+literal|" nodes since it's no less than minimum replication: "
+operator|+
+name|dfsClient
+operator|.
+name|dtpReplaceDatanodeOnFailureReplication
+operator|+
+literal|" configured by "
+operator|+
+name|BlockWrite
+operator|.
+name|ReplaceDatanodeOnFailure
+operator|.
+name|MIN_REPLICATION
+operator|+
+literal|"."
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+throw|throw
+name|ioe
+throw|;
+block|}
 comment|//transfer replica. pick a source from the original nodes
 specifier|final
 name|DatanodeInfo

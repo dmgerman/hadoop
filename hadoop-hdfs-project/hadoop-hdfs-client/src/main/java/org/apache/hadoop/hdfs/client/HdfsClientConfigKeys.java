@@ -1290,6 +1290,20 @@ name|BEST_EFFORT_DEFAULT
 init|=
 literal|false
 decl_stmt|;
+DECL|field|MIN_REPLICATION
+name|String
+name|MIN_REPLICATION
+init|=
+name|PREFIX
+operator|+
+literal|"min-replication"
+decl_stmt|;
+DECL|field|MIN_REPLICATION_DEFAULT
+name|short
+name|MIN_REPLICATION_DEFAULT
+init|=
+literal|0
+decl_stmt|;
 block|}
 block|}
 comment|/** dfs.client.read configuration properties */
