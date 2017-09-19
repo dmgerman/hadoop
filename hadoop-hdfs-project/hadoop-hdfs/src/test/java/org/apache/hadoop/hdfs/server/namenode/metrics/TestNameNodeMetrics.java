@@ -5248,7 +5248,7 @@ name|assertGauge
 argument_list|(
 literal|"LastWrittenTransactionId"
 argument_list|,
-literal|3L
+literal|4L
 argument_list|,
 name|getMetrics
 argument_list|(
@@ -5260,7 +5260,7 @@ name|assertGauge
 argument_list|(
 literal|"TransactionsSinceLastCheckpoint"
 argument_list|,
-literal|3L
+literal|4L
 argument_list|,
 name|getMetrics
 argument_list|(
@@ -5272,7 +5272,7 @@ name|assertGauge
 argument_list|(
 literal|"TransactionsSinceLastLogRoll"
 argument_list|,
-literal|3L
+literal|4L
 argument_list|,
 name|getMetrics
 argument_list|(
@@ -5309,7 +5309,7 @@ name|assertGauge
 argument_list|(
 literal|"LastWrittenTransactionId"
 argument_list|,
-literal|4L
+literal|5L
 argument_list|,
 name|getMetrics
 argument_list|(
@@ -5321,7 +5321,7 @@ name|assertGauge
 argument_list|(
 literal|"TransactionsSinceLastCheckpoint"
 argument_list|,
-literal|4L
+literal|5L
 argument_list|,
 name|getMetrics
 argument_list|(
@@ -5333,7 +5333,7 @@ name|assertGauge
 argument_list|(
 literal|"TransactionsSinceLastLogRoll"
 argument_list|,
-literal|4L
+literal|5L
 argument_list|,
 name|getMetrics
 argument_list|(
@@ -5365,7 +5365,7 @@ name|assertGauge
 argument_list|(
 literal|"LastWrittenTransactionId"
 argument_list|,
-literal|6L
+literal|7L
 argument_list|,
 name|getMetrics
 argument_list|(
@@ -5377,7 +5377,7 @@ name|assertGauge
 argument_list|(
 literal|"TransactionsSinceLastCheckpoint"
 argument_list|,
-literal|6L
+literal|7L
 argument_list|,
 name|getMetrics
 argument_list|(
@@ -5463,7 +5463,7 @@ name|assertGauge
 argument_list|(
 literal|"LastWrittenTransactionId"
 argument_list|,
-literal|8L
+literal|9L
 argument_list|,
 name|getMetrics
 argument_list|(
