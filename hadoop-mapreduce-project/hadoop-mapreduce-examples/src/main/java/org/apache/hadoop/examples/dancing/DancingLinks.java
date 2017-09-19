@@ -1573,7 +1573,7 @@ return|return
 name|result
 return|;
 block|}
-comment|/**    * Make one move from a prefix    * @param goalRow the row that should be choosen    * @return the row that was found    */
+comment|/**    * Make one move from a prefix    * @param goalRow the row that should be chosen    * @return the row that was found    */
 DECL|method|advance (int goalRow)
 specifier|private
 name|Node

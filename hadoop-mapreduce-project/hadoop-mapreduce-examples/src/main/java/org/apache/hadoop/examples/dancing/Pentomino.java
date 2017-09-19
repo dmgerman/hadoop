@@ -2096,7 +2096,7 @@ name|depth
 argument_list|)
 return|;
 block|}
-comment|/**    * Find all of the solutions that start with the given prefix. The printer    * is given each solution as it is found.    * @param split a list of row indexes that should be choosen for each row    *        in order    * @return the number of solutions found    */
+comment|/**    * Find all of the solutions that start with the given prefix. The printer    * is given each solution as it is found.    * @param split a list of row indexes that should be chosen for each row    *        in order    * @return the number of solutions found    */
 DECL|method|solve (int[] split)
 specifier|public
 name|int

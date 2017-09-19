@@ -16832,7 +16832,7 @@ decl_stmt|;
 for|for
 control|(
 name|DatanodeStorageInfo
-name|choosenReplica
+name|chosenReplica
 range|:
 name|replicasToDelete
 control|)
@@ -16841,7 +16841,7 @@ name|processChosenExcessRedundancy
 argument_list|(
 name|nonExcess
 argument_list|,
-name|choosenReplica
+name|chosenReplica
 argument_list|,
 name|storedBlock
 argument_list|)

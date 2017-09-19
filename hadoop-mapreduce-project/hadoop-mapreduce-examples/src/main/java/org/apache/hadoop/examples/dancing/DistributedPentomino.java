@@ -211,7 +211,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Launch a distributed pentomino solver.  * It generates a complete list of prefixes of length N with each unique prefix  * as a separate line. A prefix is a sequence of N integers that denote the   * index of the row that is choosen for each column in order. Note that the  * next column is heuristically choosen by the solver, so it is dependant on  * the previous choice. That file is given as the input to  * map/reduce. The output key/value are the move prefix/solution as Text/Text.  */
+comment|/**  * Launch a distributed pentomino solver.  * It generates a complete list of prefixes of length N with each unique prefix  * as a separate line. A prefix is a sequence of N integers that denote the   * index of the row that is chosen for each column in order. Note that the  * next column is heuristically chosen by the solver, so it is dependant on  * the previous choice. That file is given as the input to  * map/reduce. The output key/value are the move prefix/solution as Text/Text.  */
 end_comment
 
 begin_class

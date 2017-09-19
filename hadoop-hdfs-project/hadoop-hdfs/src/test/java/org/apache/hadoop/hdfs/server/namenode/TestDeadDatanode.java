@@ -1313,7 +1313,7 @@ control|)
 block|{
 name|assertFalse
 argument_list|(
-literal|"Dead node should not be choosen"
+literal|"Dead node should not be chosen"
 argument_list|,
 name|datanodeStorageInfo
 operator|.
