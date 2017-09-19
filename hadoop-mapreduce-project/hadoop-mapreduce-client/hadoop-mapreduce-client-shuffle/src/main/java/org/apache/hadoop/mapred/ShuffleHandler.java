@@ -6258,45 +6258,6 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
-comment|// this audit log is disabled by default,
-comment|// to turn it on please enable this audit log
-comment|// on log4j.properties by uncommenting the setting
-if|if
-condition|(
-name|AUDITLOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|AUDITLOG
-operator|.
-name|debug
-argument_list|(
-literal|"shuffle for "
-operator|+
-name|jobQ
-operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
-operator|+
-literal|" mappers: "
-operator|+
-name|mapIds
-operator|+
-literal|" reducer "
-operator|+
-name|reduceQ
-operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
 name|int
 name|reduceId
 decl_stmt|;
@@ -7345,6 +7306,78 @@ argument_list|,
 name|contentLength
 argument_list|)
 expr_stmt|;
+comment|// this audit log is disabled by default,
+comment|// to turn it on please enable this audit log
+comment|// on log4j.properties by uncommenting the setting
+if|if
+condition|(
+name|AUDITLOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|StringBuilder
+name|sb
+init|=
+operator|new
+name|StringBuilder
+argument_list|(
+literal|"shuffle for "
+argument_list|)
+decl_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+name|jobId
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" reducer "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|reduce
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|" length "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|contentLength
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|" mappers: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|mapIds
+argument_list|)
+expr_stmt|;
+name|AUDITLOG
+operator|.
+name|debug
+argument_list|(
+name|sb
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|setResponseHeaders (HttpResponse response, boolean keepAliveParam, long contentLength)
 specifier|protected
