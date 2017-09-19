@@ -1304,11 +1304,11 @@ argument_list|)
 decl_stmt|;
 name|Assert
 operator|.
-name|assertTrue
+name|assertNotNull
 argument_list|(
 name|status
 operator|.
-name|isActive
+name|getContainer
 argument_list|()
 argument_list|)
 expr_stmt|;

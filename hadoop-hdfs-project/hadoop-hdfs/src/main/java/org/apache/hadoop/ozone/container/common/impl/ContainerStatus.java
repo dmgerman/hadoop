@@ -58,27 +58,18 @@ specifier|final
 name|ContainerData
 name|containerData
 decl_stmt|;
-DECL|field|active
-specifier|private
-specifier|final
-name|boolean
-name|active
-decl_stmt|;
 comment|/**    * Number of pending deletion blocks in container.    */
 DECL|field|numPendingDeletionBlocks
 specifier|private
 name|int
 name|numPendingDeletionBlocks
 decl_stmt|;
-comment|/**    * Creates a Container Status class.    *    * @param containerData - ContainerData.    * @param active - Active or not active.    */
-DECL|method|ContainerStatus (ContainerData containerData, boolean active)
+comment|/**    * Creates a Container Status class.    *    * @param containerData - ContainerData.    */
+DECL|method|ContainerStatus (ContainerData containerData)
 name|ContainerStatus
 parameter_list|(
 name|ContainerData
 name|containerData
-parameter_list|,
-name|boolean
-name|active
 parameter_list|)
 block|{
 name|this
@@ -93,12 +84,6 @@ name|containerData
 operator|=
 name|containerData
 expr_stmt|;
-name|this
-operator|.
-name|active
-operator|=
-name|active
-expr_stmt|;
 block|}
 comment|/**    * Returns container if it is active. It is not active if we have had an    * error and we are waiting for the background threads to fix the issue.    *    * @return ContainerData.    */
 DECL|method|getContainer ()
@@ -107,28 +92,8 @@ name|ContainerData
 name|getContainer
 parameter_list|()
 block|{
-if|if
-condition|(
-name|active
-condition|)
-block|{
 return|return
 name|containerData
-return|;
-block|}
-return|return
-literal|null
-return|;
-block|}
-comment|/**    * Indicates if a container is Active.    *    * @return true if it is active.    */
-DECL|method|isActive ()
-specifier|public
-name|boolean
-name|isActive
-parameter_list|()
-block|{
-return|return
-name|active
 return|;
 block|}
 comment|/**    * Increase the count of pending deletion blocks.    *    * @param numBlocks increment number    */
