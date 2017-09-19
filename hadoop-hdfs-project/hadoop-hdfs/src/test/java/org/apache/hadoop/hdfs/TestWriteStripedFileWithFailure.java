@@ -966,6 +966,9 @@ name|StripedFileTestUtil
 operator|.
 name|verifyPread
 argument_list|(
+operator|(
+name|DistributedFileSystem
+operator|)
 name|fs
 argument_list|,
 name|srcPath
