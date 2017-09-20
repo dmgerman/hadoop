@@ -375,7 +375,49 @@ operator|=
 name|httpCode
 expr_stmt|;
 block|}
-comment|/**    * Returns the Resource that was involved in the exception.    *    * @return String    */
+comment|/**    * Constructor that allows a shortMessage, a long message and an exception.    *    * @param httpCode Error code    * @param shortMessage Short message    * @param message Long error message    * @param ex Exception    */
+DECL|method|OzoneException (long httpCode, String shortMessage, String message, Exception ex)
+specifier|public
+name|OzoneException
+parameter_list|(
+name|long
+name|httpCode
+parameter_list|,
+name|String
+name|shortMessage
+parameter_list|,
+name|String
+name|message
+parameter_list|,
+name|Exception
+name|ex
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|ex
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|shortMessage
+operator|=
+name|shortMessage
+expr_stmt|;
+name|this
+operator|.
+name|message
+operator|=
+name|message
+expr_stmt|;
+name|this
+operator|.
+name|httpCode
+operator|=
+name|httpCode
+expr_stmt|;
+block|}
+comment|/**    * Returns the Resource that was involved in the stackTraceString.    *    * @return String    */
 DECL|method|getResource ()
 specifier|public
 name|String

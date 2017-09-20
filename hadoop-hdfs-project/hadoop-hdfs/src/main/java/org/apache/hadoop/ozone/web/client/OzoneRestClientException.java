@@ -69,6 +69,30 @@ name|shortMessage
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Constructor that allows a shortMessage and an exception.    *    * @param shortMessage short message    * @param ex exception    */
+DECL|method|OzoneRestClientException (String shortMessage, Exception ex)
+specifier|public
+name|OzoneRestClientException
+parameter_list|(
+name|String
+name|shortMessage
+parameter_list|,
+name|Exception
+name|ex
+parameter_list|)
+block|{
+name|super
+argument_list|(
+literal|0
+argument_list|,
+name|shortMessage
+argument_list|,
+name|shortMessage
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Constructor that allows the shortMessage and a longer message.    *    * @param shortMessage Short Message    * @param message long error message    */
 DECL|method|OzoneRestClientException (String shortMessage, String message)
 specifier|public
