@@ -506,15 +506,6 @@ literal|"Couldn't create protocol "
 operator|+
 name|protocolClass
 decl_stmt|;
-name|LOG
-operator|.
-name|warn
-argument_list|(
-name|message
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|e

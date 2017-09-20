@@ -1457,6 +1457,90 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+comment|/**    * Retrieve the socket address that should be used by clients to connect    * to KSM.    * @param conf    * @return Target InetSocketAddress for the KSM service endpoint.    */
+DECL|method|getKsmAddressForClients ( Configuration conf)
+specifier|public
+specifier|static
+name|InetSocketAddress
+name|getKsmAddressForClients
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+specifier|final
+name|Optional
+argument_list|<
+name|String
+argument_list|>
+name|host
+init|=
+name|getHostNameFromConfigKeys
+argument_list|(
+name|conf
+argument_list|,
+name|OZONE_KSM_ADDRESS_KEY
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|host
+operator|.
+name|isPresent
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+name|OZONE_KSM_ADDRESS_KEY
+operator|+
+literal|" must be defined. See"
+operator|+
+literal|" https://wiki.apache.org/hadoop/Ozone#Configuration for"
+operator|+
+literal|" details on configuring Ozone."
+argument_list|)
+throw|;
+block|}
+comment|// If no port number is specified then we'll just try the defaultBindPort.
+specifier|final
+name|Optional
+argument_list|<
+name|Integer
+argument_list|>
+name|port
+init|=
+name|getPortNumberFromConfigKeys
+argument_list|(
+name|conf
+argument_list|,
+name|OZONE_KSM_ADDRESS_KEY
+argument_list|)
+decl_stmt|;
+return|return
+name|NetUtils
+operator|.
+name|createSocketAddr
+argument_list|(
+name|host
+operator|.
+name|get
+argument_list|()
+operator|+
+literal|":"
+operator|+
+name|port
+operator|.
+name|or
+argument_list|(
+name|OZONE_KSM_PORT_DEFAULT
+argument_list|)
+argument_list|)
+return|;
+block|}
 comment|/**    * Retrieve the socket address that is used by CBlock Service.    * @param conf    * @return Target InetSocketAddress for the CBlock Service endpoint.    */
 DECL|method|getCblockServiceRpcAddr ( Configuration conf)
 specifier|public
