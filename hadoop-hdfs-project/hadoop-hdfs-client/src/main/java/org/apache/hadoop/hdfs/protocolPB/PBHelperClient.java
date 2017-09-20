@@ -550,7 +550,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 import|;
 end_import
 
@@ -1978,7 +1978,7 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|AddECPolicyResponseProto
+name|AddErasureCodingPolicyResponseProto
 import|;
 end_import
 
@@ -20692,22 +20692,22 @@ name|build
 argument_list|()
 return|;
 block|}
-DECL|method|convertAddECPolicyResponse ( AddECPolicyResponse response)
 specifier|public
 specifier|static
-name|AddECPolicyResponseProto
-name|convertAddECPolicyResponse
+name|AddErasureCodingPolicyResponseProto
+DECL|method|convertAddErasureCodingPolicyResponse ( AddErasureCodingPolicyResponse response)
+name|convertAddErasureCodingPolicyResponse
 parameter_list|(
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 name|response
 parameter_list|)
 block|{
-name|AddECPolicyResponseProto
+name|AddErasureCodingPolicyResponseProto
 operator|.
 name|Builder
 name|builder
 init|=
-name|AddECPolicyResponseProto
+name|AddErasureCodingPolicyResponseProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -20758,13 +20758,13 @@ name|build
 argument_list|()
 return|;
 block|}
-DECL|method|convertAddECPolicyResponse ( AddECPolicyResponseProto proto)
 specifier|public
 specifier|static
-name|AddECPolicyResponse
-name|convertAddECPolicyResponse
+name|AddErasureCodingPolicyResponse
+DECL|method|convertAddErasureCodingPolicyResponse ( AddErasureCodingPolicyResponseProto proto)
+name|convertAddErasureCodingPolicyResponse
 parameter_list|(
-name|AddECPolicyResponseProto
+name|AddErasureCodingPolicyResponseProto
 name|proto
 parameter_list|)
 block|{
@@ -20789,7 +20789,7 @@ condition|)
 block|{
 return|return
 operator|new
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 argument_list|(
 name|policy
 argument_list|)
@@ -20799,7 +20799,7 @@ else|else
 block|{
 return|return
 operator|new
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 argument_list|(
 name|policy
 argument_list|,

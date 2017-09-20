@@ -2198,7 +2198,7 @@ comment|/**    * Add Erasure coding policies to HDFS. For each policy input, sch
 annotation|@
 name|AtMostOnce
 DECL|method|addErasureCodingPolicies ( ErasureCodingPolicy[] policies)
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 index|[]
 name|addErasureCodingPolicies
 parameter_list|(

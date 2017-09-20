@@ -2330,7 +2330,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 import|;
 end_import
 
@@ -33881,8 +33881,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Add multiple erasure coding policies to the ErasureCodingPolicyManager.    * @param policies The policies to add.    * @param logRetryCache whether to record RPC ids in editlog for retry cache    *                      rebuilding    * @return The according result of add operation.    */
-DECL|method|addErasureCodingPolicies (ErasureCodingPolicy[] policies, final boolean logRetryCache)
-name|AddECPolicyResponse
+DECL|method|addErasureCodingPolicies ( ErasureCodingPolicy[] policies, final boolean logRetryCache)
+name|AddErasureCodingPolicyResponse
 index|[]
 name|addErasureCodingPolicies
 parameter_list|(
@@ -33917,7 +33917,7 @@ argument_list|)
 expr_stmt|;
 name|List
 argument_list|<
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 argument_list|>
 name|responses
 init|=
@@ -33984,7 +33984,7 @@ operator|.
 name|add
 argument_list|(
 operator|new
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 argument_list|(
 name|newPolicy
 argument_list|)
@@ -34002,7 +34002,7 @@ operator|.
 name|add
 argument_list|(
 operator|new
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 argument_list|(
 name|policy
 argument_list|,
@@ -34022,7 +34022,7 @@ operator|.
 name|toArray
 argument_list|(
 operator|new
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 index|[
 literal|0
 index|]

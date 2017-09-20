@@ -35,10 +35,10 @@ comment|/**  * A response of add an ErasureCoding policy.  */
 end_comment
 
 begin_class
-DECL|class|AddECPolicyResponse
+DECL|class|AddErasureCodingPolicyResponse
 specifier|public
 class|class
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 block|{
 DECL|field|succeed
 specifier|private
@@ -55,9 +55,9 @@ specifier|private
 name|String
 name|errorMsg
 decl_stmt|;
-DECL|method|AddECPolicyResponse (ErasureCodingPolicy policy)
+DECL|method|AddErasureCodingPolicyResponse (ErasureCodingPolicy policy)
 specifier|public
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 parameter_list|(
 name|ErasureCodingPolicy
 name|policy
@@ -76,9 +76,9 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
-DECL|method|AddECPolicyResponse (ErasureCodingPolicy policy, String errorMsg)
+DECL|method|AddErasureCodingPolicyResponse (ErasureCodingPolicy policy, String errorMsg)
 specifier|public
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 parameter_list|(
 name|ErasureCodingPolicy
 name|policy
@@ -106,9 +106,9 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
-DECL|method|AddECPolicyResponse (ErasureCodingPolicy policy, HadoopIllegalArgumentException e)
+DECL|method|AddErasureCodingPolicyResponse (ErasureCodingPolicy policy, HadoopIllegalArgumentException e)
 specifier|public
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 parameter_list|(
 name|ErasureCodingPolicy
 name|policy

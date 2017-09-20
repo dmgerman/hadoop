@@ -356,7 +356,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 import|;
 end_import
 
@@ -4572,7 +4572,7 @@ block|{
 name|newPolicy
 block|}
 decl_stmt|;
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 index|[]
 name|responses
 init|=

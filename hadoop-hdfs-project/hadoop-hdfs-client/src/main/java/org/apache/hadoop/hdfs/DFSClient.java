@@ -1172,7 +1172,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 import|;
 end_import
 
@@ -13376,7 +13376,7 @@ block|}
 block|}
 DECL|method|addErasureCodingPolicies ( ErasureCodingPolicy[] policies)
 specifier|public
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 index|[]
 name|addErasureCodingPolicies
 parameter_list|(
@@ -13424,6 +13424,10 @@ operator|.
 name|unwrapRemoteException
 argument_list|(
 name|AccessControlException
+operator|.
+name|class
+argument_list|,
+name|SafeModeException
 operator|.
 name|class
 argument_list|)
@@ -13477,6 +13481,10 @@ operator|.
 name|unwrapRemoteException
 argument_list|(
 name|AccessControlException
+operator|.
+name|class
+argument_list|,
+name|SafeModeException
 operator|.
 name|class
 argument_list|)

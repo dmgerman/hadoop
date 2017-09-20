@@ -100,7 +100,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 import|;
 end_import
 
@@ -979,7 +979,7 @@ operator|>
 literal|0
 condition|)
 block|{
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 index|[]
 name|responses
 init|=
@@ -1004,7 +1004,7 @@ argument_list|)
 decl_stmt|;
 for|for
 control|(
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 name|response
 range|:
 name|responses

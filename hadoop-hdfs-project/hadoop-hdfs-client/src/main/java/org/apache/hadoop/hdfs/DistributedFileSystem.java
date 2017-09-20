@@ -680,7 +680,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 import|;
 end_import
 
@@ -13095,7 +13095,7 @@ block|}
 comment|/**    * Add Erasure coding policies to HDFS. For each policy input, schema and    * cellSize are musts, name and id are ignored. They will be automatically    * created and assigned by Namenode once the policy is successfully added,    * and will be returned in the response; policy states will be set to    * DISABLED automatically.    *    * @param policies The user defined ec policy list to add.    * @return Return the response list of adding operations.    * @throws IOException    */
 DECL|method|addErasureCodingPolicies ( ErasureCodingPolicy[] policies)
 specifier|public
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 index|[]
 name|addErasureCodingPolicies
 parameter_list|(

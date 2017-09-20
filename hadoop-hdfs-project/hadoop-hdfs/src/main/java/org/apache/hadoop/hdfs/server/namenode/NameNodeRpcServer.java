@@ -942,7 +942,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 import|;
 end_import
 
@@ -13131,7 +13131,7 @@ annotation|@
 name|Override
 DECL|method|addErasureCodingPolicies ( ErasureCodingPolicy[] policies)
 specifier|public
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 index|[]
 name|addErasureCodingPolicies
 parameter_list|(
@@ -13177,7 +13177,7 @@ condition|)
 block|{
 return|return
 operator|(
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 index|[]
 operator|)
 name|cacheEntry
@@ -13191,12 +13191,12 @@ name|success
 init|=
 literal|false
 decl_stmt|;
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 index|[]
 name|responses
 init|=
 operator|new
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 index|[
 literal|0
 index|]

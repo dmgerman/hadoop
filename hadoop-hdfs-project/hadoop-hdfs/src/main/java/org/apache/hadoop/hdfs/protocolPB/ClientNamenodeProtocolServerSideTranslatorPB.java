@@ -264,7 +264,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 import|;
 end_import
 
@@ -12254,7 +12254,7 @@ operator|::
 operator|new
 argument_list|)
 decl_stmt|;
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 index|[]
 name|result
 init|=
@@ -12269,7 +12269,7 @@ name|List
 argument_list|<
 name|HdfsProtos
 operator|.
-name|AddECPolicyResponseProto
+name|AddErasureCodingPolicyResponseProto
 argument_list|>
 name|responseProtos
 init|=
@@ -12284,7 +12284,7 @@ name|map
 argument_list|(
 name|PBHelperClient
 operator|::
-name|convertAddECPolicyResponse
+name|convertAddErasureCodingPolicyResponse
 argument_list|)
 operator|.
 name|collect

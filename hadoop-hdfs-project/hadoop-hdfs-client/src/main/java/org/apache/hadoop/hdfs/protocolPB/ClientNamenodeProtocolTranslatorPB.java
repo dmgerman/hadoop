@@ -434,7 +434,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 import|;
 end_import
 
@@ -11615,7 +11615,7 @@ annotation|@
 name|Override
 DECL|method|addErasureCodingPolicies ( ErasureCodingPolicy[] policies)
 specifier|public
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 index|[]
 name|addErasureCodingPolicies
 parameter_list|(
@@ -11684,7 +11684,7 @@ argument_list|,
 name|req
 argument_list|)
 decl_stmt|;
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 index|[]
 name|responses
 init|=
@@ -11700,12 +11700,12 @@ name|map
 argument_list|(
 name|PBHelperClient
 operator|::
-name|convertAddECPolicyResponse
+name|convertAddErasureCodingPolicyResponse
 argument_list|)
 operator|.
 name|toArray
 argument_list|(
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 index|[]
 operator|::
 operator|new
