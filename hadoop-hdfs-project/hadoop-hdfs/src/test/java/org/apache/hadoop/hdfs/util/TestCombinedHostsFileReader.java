@@ -40,16 +40,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Set
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -121,7 +111,7 @@ import|;
 end_import
 
 begin_comment
-comment|/*  * Test for JSON based HostsFileReader  */
+comment|/**  * Test for JSON based HostsFileReader.  */
 end_comment
 
 begin_class
@@ -131,11 +121,11 @@ class|class
 name|TestCombinedHostsFileReader
 block|{
 comment|// Using /test/build/data/tmp directory to store temporary files
-DECL|field|HOSTS_TEST_DIR
+DECL|field|HOSTSTESTDIR
 specifier|static
 specifier|final
 name|String
-name|HOSTS_TEST_DIR
+name|HOSTSTESTDIR
 init|=
 name|GenericTestUtils
 operator|.
@@ -145,23 +135,25 @@ operator|.
 name|getAbsolutePath
 argument_list|()
 decl_stmt|;
-DECL|field|NEW_FILE
+DECL|field|newFile
+specifier|private
+specifier|final
 name|File
-name|NEW_FILE
+name|newFile
 init|=
 operator|new
 name|File
 argument_list|(
-name|HOSTS_TEST_DIR
+name|HOSTSTESTDIR
 argument_list|,
 literal|"dfs.hosts.new.json"
 argument_list|)
 decl_stmt|;
-DECL|field|TEST_CACHE_DATA_DIR
+DECL|field|TESTCACHEDATADIR
 specifier|static
 specifier|final
 name|String
-name|TEST_CACHE_DATA_DIR
+name|TESTCACHEDATADIR
 init|=
 name|System
 operator|.
@@ -172,16 +164,32 @@ argument_list|,
 literal|"build/test/cache"
 argument_list|)
 decl_stmt|;
-DECL|field|EXISTING_FILE
+DECL|field|jsonFile
+specifier|private
+specifier|final
 name|File
-name|EXISTING_FILE
+name|jsonFile
 init|=
 operator|new
 name|File
 argument_list|(
-name|TEST_CACHE_DATA_DIR
+name|TESTCACHEDATADIR
 argument_list|,
 literal|"dfs.hosts.json"
+argument_list|)
+decl_stmt|;
+DECL|field|legacyFile
+specifier|private
+specifier|final
+name|File
+name|legacyFile
+init|=
+operator|new
+name|File
+argument_list|(
+name|TESTCACHEDATADIR
+argument_list|,
+literal|"legacy.dfs.hosts.json"
 argument_list|)
 decl_stmt|;
 annotation|@
@@ -205,34 +213,32 @@ throws|throws
 name|Exception
 block|{
 comment|// Delete test file after running tests
-name|NEW_FILE
+name|newFile
 operator|.
 name|delete
 argument_list|()
 expr_stmt|;
 block|}
-comment|/*    * Load the existing test json file    */
+comment|/*    * Load the legacy test json file    */
 annotation|@
 name|Test
-DECL|method|testLoadExistingJsonFile ()
+DECL|method|testLoadLegacyJsonFile ()
 specifier|public
 name|void
-name|testLoadExistingJsonFile
+name|testLoadLegacyJsonFile
 parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|Set
-argument_list|<
 name|DatanodeAdminProperties
-argument_list|>
+index|[]
 name|all
 init|=
 name|CombinedHostsFileReader
 operator|.
 name|readFile
 argument_list|(
-name|EXISTING_FILE
+name|legacyFile
 operator|.
 name|getAbsolutePath
 argument_list|()
@@ -244,8 +250,42 @@ literal|7
 argument_list|,
 name|all
 operator|.
-name|size
+name|length
+argument_list|)
+expr_stmt|;
+block|}
+comment|/*    * Load the test json file    */
+annotation|@
+name|Test
+DECL|method|testLoadExistingJsonFile ()
+specifier|public
+name|void
+name|testLoadExistingJsonFile
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|DatanodeAdminProperties
+index|[]
+name|all
+init|=
+name|CombinedHostsFileReader
+operator|.
+name|readFile
+argument_list|(
+name|jsonFile
+operator|.
+name|getAbsolutePath
 argument_list|()
+argument_list|)
+decl_stmt|;
+name|assertEquals
+argument_list|(
+literal|7
+argument_list|,
+name|all
+operator|.
+name|length
 argument_list|)
 expr_stmt|;
 block|}
@@ -266,7 +306,7 @@ init|=
 operator|new
 name|FileWriter
 argument_list|(
-name|NEW_FILE
+name|newFile
 argument_list|)
 decl_stmt|;
 name|hosts
@@ -281,17 +321,15 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-name|Set
-argument_list|<
 name|DatanodeAdminProperties
-argument_list|>
+index|[]
 name|all
 init|=
 name|CombinedHostsFileReader
 operator|.
 name|readFile
 argument_list|(
-name|NEW_FILE
+name|newFile
 operator|.
 name|getAbsolutePath
 argument_list|()
@@ -303,8 +341,7 @@ literal|0
 argument_list|,
 name|all
 operator|.
-name|size
-argument_list|()
+name|length
 argument_list|)
 expr_stmt|;
 block|}

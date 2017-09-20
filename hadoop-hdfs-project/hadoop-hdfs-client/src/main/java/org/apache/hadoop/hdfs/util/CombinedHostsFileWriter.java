@@ -127,7 +127,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Writer support for JSON based datanode configuration, an alternative  * to the exclude/include files configuration.  * The JSON file format is the array of elements where each element  * in the array describes the properties of a datanode. The properties of  * a datanode is defined in {@link DatanodeAdminProperties}. For example,  *  * {"hostName": "host1"}  * {"hostName": "host2", "port": 50, "upgradeDomain": "ud0"}  * {"hostName": "host3", "port": 0, "adminState": "DECOMMISSIONED"}  */
+comment|/**  * Writer support for JSON-based datanode configuration, an alternative format  * to the exclude/include files configuration.  * The JSON file format defines the array of elements where each element  * in the array describes the properties of a datanode. The properties of  * a datanode is defined by {@link DatanodeAdminProperties}. For example,  *  * [  *   {"hostName": "host1"},  *   {"hostName": "host2", "port": 50, "upgradeDomain": "ud0"},  *   {"hostName": "host3", "port": 0, "adminState": "DECOMMISSIONED"}  * ]  */
 end_comment
 
 begin_class
@@ -150,17 +150,6 @@ specifier|final
 class|class
 name|CombinedHostsFileWriter
 block|{
-DECL|field|MAPPER
-specifier|private
-specifier|static
-specifier|final
-name|ObjectMapper
-name|MAPPER
-init|=
-operator|new
-name|ObjectMapper
-argument_list|()
-decl_stmt|;
 DECL|method|CombinedHostsFileWriter ()
 specifier|private
 name|CombinedHostsFileWriter
@@ -187,11 +176,12 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|StringBuilder
-name|configs
+specifier|final
+name|ObjectMapper
+name|objectMapper
 init|=
 operator|new
-name|StringBuilder
+name|ObjectMapper
 argument_list|()
 decl_stmt|;
 try|try
@@ -212,35 +202,13 @@ literal|"UTF-8"
 argument_list|)
 init|)
 block|{
-for|for
-control|(
-name|DatanodeAdminProperties
-name|datanodeAdminProperties
-range|:
-name|allDNs
-control|)
-block|{
-name|configs
+name|objectMapper
 operator|.
-name|append
+name|writeValue
 argument_list|(
-name|MAPPER
-operator|.
-name|writeValueAsString
-argument_list|(
-name|datanodeAdminProperties
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
 name|output
-operator|.
-name|write
-argument_list|(
-name|configs
-operator|.
-name|toString
-argument_list|()
+argument_list|,
+name|allDNs
 argument_list|)
 expr_stmt|;
 block|}

@@ -264,16 +264,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Set
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -1126,10 +1116,8 @@ operator|new
 name|HostProperties
 argument_list|()
 decl_stmt|;
-name|Set
-argument_list|<
 name|DatanodeAdminProperties
-argument_list|>
+index|[]
 name|all
 init|=
 name|CombinedHostsFileReader
