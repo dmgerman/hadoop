@@ -8865,6 +8865,46 @@ name|getContainer
 argument_list|()
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getOzoneStateMachineState ()
+specifier|public
+name|DatanodeStateMachine
+operator|.
+name|DatanodeStates
+name|getOzoneStateMachineState
+parameter_list|()
+block|{
+if|if
+condition|(
+name|this
+operator|.
+name|datanodeStateMachine
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+name|this
+operator|.
+name|datanodeStateMachine
+operator|.
+name|getContext
+argument_list|()
+operator|.
+name|getState
+argument_list|()
+return|;
+block|}
+comment|// if the state machine doesn't exist then DN initialization is in progress
+return|return
+name|DatanodeStateMachine
+operator|.
+name|DatanodeStates
+operator|.
+name|INIT
+return|;
+block|}
 comment|/**    * After the block pool has contacted the NN, registers that block pool    * with the secret manager, updating it with the secrets provided by the NN.    * @throws IOException on error    */
 DECL|method|registerBlockPoolWithSecretManager ( DatanodeRegistration bpRegistration, String blockPoolId)
 specifier|private
