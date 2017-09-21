@@ -663,39 +663,6 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|// for testing
-DECL|method|addAppSchedulable (FSAppAttempt appSched)
-name|void
-name|addAppSchedulable
-parameter_list|(
-name|FSAppAttempt
-name|appSched
-parameter_list|)
-block|{
-name|writeLock
-operator|.
-name|lock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
-name|runnableApps
-operator|.
-name|add
-argument_list|(
-name|appSched
-argument_list|)
-expr_stmt|;
-block|}
-finally|finally
-block|{
-name|writeLock
-operator|.
-name|unlock
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 comment|/**    * Removes the given app from this queue.    * @return whether or not the app was runnable    */
 DECL|method|removeApp (FSAppAttempt app)
 name|boolean
