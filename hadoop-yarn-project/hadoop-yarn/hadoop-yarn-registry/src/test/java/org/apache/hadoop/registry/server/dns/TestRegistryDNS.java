@@ -523,7 +523,9 @@ literal|"  \"description\" : \"Slider Application Master\",\n"
 operator|+
 literal|"  \"external\" : [ {\n"
 operator|+
-literal|"    \"api\" : \"classpath:org.apache.slider.appmaster.ipc\",\n"
+literal|"    \"api\" : \"classpath:org.apache.hadoop.yarn.service.appmaster.ipc"
+operator|+
+literal|"\",\n"
 operator|+
 literal|"    \"addressType\" : \"host/port\",\n"
 operator|+
@@ -553,7 +555,9 @@ literal|"    } ]\n"
 operator|+
 literal|"  }, {\n"
 operator|+
-literal|"    \"api\" : \"classpath:org.apache.slider.management\",\n"
+literal|"    \"api\" : \"classpath:org.apache.hadoop.yarn.service.management\""
+operator|+
+literal|",\n"
 operator|+
 literal|"    \"addressType\" : \"uri\",\n"
 operator|+
@@ -569,7 +573,9 @@ literal|"  } ],\n"
 operator|+
 literal|"  \"internal\" : [ {\n"
 operator|+
-literal|"    \"api\" : \"classpath:org.apache.slider.agents.secure\",\n"
+literal|"    \"api\" : \"classpath:org.apache.hadoop.yarn.service.agents.secure"
+operator|+
+literal|"\",\n"
 operator|+
 literal|"    \"addressType\" : \"uri\",\n"
 operator|+
@@ -583,7 +589,9 @@ literal|"    } ]\n"
 operator|+
 literal|"  }, {\n"
 operator|+
-literal|"    \"api\" : \"classpath:org.apache.slider.agents.oneway\",\n"
+literal|"    \"api\" : \"classpath:org.apache.hadoop.yarn.service.agents.oneway"
+operator|+
+literal|"\",\n"
 operator|+
 literal|"    \"addressType\" : \"uri\",\n"
 operator|+

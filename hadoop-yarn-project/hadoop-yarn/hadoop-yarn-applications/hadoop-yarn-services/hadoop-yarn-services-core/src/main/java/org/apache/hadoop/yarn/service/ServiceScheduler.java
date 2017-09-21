@@ -2548,26 +2548,7 @@ name|serviceRecord
 operator|.
 name|description
 operator|=
-literal|"Yarn Service Master"
-expr_stmt|;
-name|serviceRecord
-operator|.
-name|addExternalEndpoint
-argument_list|(
-name|RegistryTypeUtils
-operator|.
-name|ipcEndpoint
-argument_list|(
-literal|"classpath:org.apache.hadoop.yarn.service.appmaster.ipc"
-argument_list|,
-name|context
-operator|.
-name|clientAMService
-operator|.
-name|getBindAddress
-argument_list|()
-argument_list|)
-argument_list|)
+literal|"YarnServiceMaster"
 expr_stmt|;
 comment|// set any provided attributes
 name|setUserProvidedServiceRecordAttributes

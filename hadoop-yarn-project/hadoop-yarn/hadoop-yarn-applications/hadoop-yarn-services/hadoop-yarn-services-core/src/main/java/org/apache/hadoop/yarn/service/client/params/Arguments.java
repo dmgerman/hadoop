@@ -332,6 +332,12 @@ name|ARG_QUEUE
 init|=
 literal|"--queue"
 decl_stmt|;
+DECL|field|ARG_SHORT_QUEUE
+name|String
+name|ARG_SHORT_QUEUE
+init|=
+literal|"-q"
+decl_stmt|;
 DECL|field|ARG_LIFETIME
 name|String
 name|ARG_LIFETIME

@@ -94,6 +94,8 @@ name|names
 operator|=
 block|{
 name|ARG_QUEUE
+block|,
+name|ARG_SHORT_QUEUE
 block|}
 argument_list|,
 name|description

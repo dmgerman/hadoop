@@ -81,26 +81,6 @@ import|;
 end_import
 
 begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|registry
-operator|.
-name|client
-operator|.
-name|types
-operator|.
-name|AddressTypes
-operator|.
-name|*
-import|;
-end_import
-
-begin_import
 import|import
 name|org
 operator|.
@@ -231,6 +211,26 @@ operator|.
 name|util
 operator|.
 name|Map
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|registry
+operator|.
+name|client
+operator|.
+name|types
+operator|.
+name|AddressTypes
+operator|.
+name|*
 import|;
 end_import
 

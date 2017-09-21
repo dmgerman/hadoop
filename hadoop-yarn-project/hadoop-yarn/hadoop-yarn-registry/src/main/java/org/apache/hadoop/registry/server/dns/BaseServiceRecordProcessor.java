@@ -327,14 +327,14 @@ argument_list|(
 literal|"/users/(\\w*)/?"
 argument_list|)
 decl_stmt|;
-DECL|field|SLIDER_API_PREFIX
+DECL|field|YARN_SERVICE_API_PREFIX
 specifier|private
 specifier|static
 specifier|final
 name|String
-name|SLIDER_API_PREFIX
+name|YARN_SERVICE_API_PREFIX
 init|=
-literal|"classpath:org.apache.slider."
+literal|"classpath:org.apache.hadoop.yarn.service."
 decl_stmt|;
 DECL|field|HTTP_API_TYPE
 specifier|private
@@ -1540,7 +1540,7 @@ name|api
 operator|.
 name|startsWith
 argument_list|(
-name|SLIDER_API_PREFIX
+name|YARN_SERVICE_API_PREFIX
 argument_list|)
 condition|)
 block|{
@@ -1550,7 +1550,7 @@ name|api
 operator|.
 name|substring
 argument_list|(
-name|SLIDER_API_PREFIX
+name|YARN_SERVICE_API_PREFIX
 operator|.
 name|length
 argument_list|()
