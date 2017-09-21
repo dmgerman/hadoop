@@ -3632,7 +3632,7 @@ name|start
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|QuotaCounts
@@ -3701,7 +3701,7 @@ operator|+
 operator|(
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|start
