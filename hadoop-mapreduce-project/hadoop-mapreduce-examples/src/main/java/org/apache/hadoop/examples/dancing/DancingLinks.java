@@ -32,9 +32,13 @@ begin_import
 import|import
 name|org
 operator|.
-name|slf4j
+name|apache
 operator|.
-name|Logger
+name|commons
+operator|.
+name|logging
+operator|.
+name|Log
 import|;
 end_import
 
@@ -42,9 +46,13 @@ begin_import
 import|import
 name|org
 operator|.
-name|slf4j
+name|apache
 operator|.
-name|LoggerFactory
+name|commons
+operator|.
+name|logging
+operator|.
+name|LogFactory
 import|;
 end_import
 
@@ -65,16 +73,19 @@ DECL|field|LOG
 specifier|private
 specifier|static
 specifier|final
-name|Logger
+name|Log
 name|LOG
 init|=
-name|LoggerFactory
+name|LogFactory
 operator|.
-name|getLogger
+name|getLog
 argument_list|(
 name|DancingLinks
 operator|.
 name|class
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 decl_stmt|;
 comment|/**    * A cell in the table with up/down and left/right links that form doubly    * linked lists in both directions. It also includes a link to the column    * head.    */
