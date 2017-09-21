@@ -401,6 +401,12 @@ parameter_list|)
 throws|throws
 name|ResourceHandlerException
 function_decl|;
+comment|/**    * Returns CGroup Mount Path.    * @return parameter value as read from the parameter file    */
+DECL|method|getCGroupMountPath ()
+name|String
+name|getCGroupMountPath
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

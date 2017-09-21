@@ -2793,6 +2793,18 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|Override
+DECL|method|getCGroupMountPath ()
+specifier|public
+name|String
+name|getCGroupMountPath
+parameter_list|()
+block|{
+return|return
+name|cGroupMountPath
+return|;
+block|}
 block|}
 end_class
 
