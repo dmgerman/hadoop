@@ -351,15 +351,6 @@ operator|new
 name|RpcServerFactoryPBImpl
 argument_list|()
 decl_stmt|;
-DECL|field|localConf
-specifier|private
-name|Configuration
-name|localConf
-init|=
-operator|new
-name|Configuration
-argument_list|()
-decl_stmt|;
 DECL|field|serviceCache
 specifier|private
 name|ConcurrentMap
@@ -554,7 +545,7 @@ try|try
 block|{
 name|pbServiceImplClazz
 operator|=
-name|localConf
+name|conf
 operator|.
 name|getClassByName
 argument_list|(
@@ -754,7 +745,7 @@ try|try
 block|{
 name|protoClazz
 operator|=
-name|localConf
+name|conf
 operator|.
 name|getClassByName
 argument_list|(
