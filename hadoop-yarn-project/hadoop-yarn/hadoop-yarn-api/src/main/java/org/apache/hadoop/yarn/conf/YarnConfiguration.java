@@ -5550,6 +5550,72 @@ name|DEFAULT_NM_DOCKER_ALLOW_PRIVILEGED_CONTAINERS
 init|=
 literal|false
 decl_stmt|;
+comment|/** enable user remapping. */
+DECL|field|NM_DOCKER_ENABLE_USER_REMAPPING
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_DOCKER_ENABLE_USER_REMAPPING
+init|=
+name|DOCKER_CONTAINER_RUNTIME_PREFIX
+operator|+
+literal|"enable-userremapping.allowed"
+decl_stmt|;
+comment|/** Set enable user remapping as false by default. */
+DECL|field|DEFAULT_NM_DOCKER_ENABLE_USER_REMAPPING
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_NM_DOCKER_ENABLE_USER_REMAPPING
+init|=
+literal|false
+decl_stmt|;
+comment|/** lower limit for acceptable uids of user remapped user. */
+DECL|field|NM_DOCKER_USER_REMAPPING_UID_THRESHOLD
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_DOCKER_USER_REMAPPING_UID_THRESHOLD
+init|=
+name|DOCKER_CONTAINER_RUNTIME_PREFIX
+operator|+
+literal|"userremapping-uid-threshold"
+decl_stmt|;
+comment|/** Set user remapping lower uid limit to 1 by default. */
+DECL|field|DEFAULT_NM_DOCKER_USER_REMAPPING_UID_THRESHOLD
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_NM_DOCKER_USER_REMAPPING_UID_THRESHOLD
+init|=
+literal|1
+decl_stmt|;
+comment|/** lower limit for acceptable gids of user remapped user. */
+DECL|field|NM_DOCKER_USER_REMAPPING_GID_THRESHOLD
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_DOCKER_USER_REMAPPING_GID_THRESHOLD
+init|=
+name|DOCKER_CONTAINER_RUNTIME_PREFIX
+operator|+
+literal|"userremapping-gid-threshold"
+decl_stmt|;
+comment|/** Set user remapping lower gid limit to 1 by default. */
+DECL|field|DEFAULT_NM_DOCKER_USER_REMAPPING_GID_THRESHOLD
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_NM_DOCKER_USER_REMAPPING_GID_THRESHOLD
+init|=
+literal|1
+decl_stmt|;
 comment|/** ACL list for users allowed to run privileged containers. */
 DECL|field|NM_DOCKER_PRIVILEGED_CONTAINERS_ACL
 specifier|public
