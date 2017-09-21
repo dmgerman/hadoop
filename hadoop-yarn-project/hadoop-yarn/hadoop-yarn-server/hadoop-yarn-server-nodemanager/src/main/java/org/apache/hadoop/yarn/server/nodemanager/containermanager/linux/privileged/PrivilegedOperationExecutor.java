@@ -901,7 +901,7 @@ literal|null
 argument_list|,
 name|grabOutput
 argument_list|,
-literal|true
+literal|false
 argument_list|)
 return|;
 block|}
