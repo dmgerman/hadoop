@@ -4693,6 +4693,24 @@ init|=
 literal|0
 decl_stmt|;
 comment|//no throttling
+DECL|field|DFS_QJM_OPERATIONS_TIMEOUT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_QJM_OPERATIONS_TIMEOUT
+init|=
+literal|"dfs.qjm.operations.timeout"
+decl_stmt|;
+DECL|field|DFS_QJM_OPERATIONS_TIMEOUT_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DFS_QJM_OPERATIONS_TIMEOUT_DEFAULT
+init|=
+literal|60000
+decl_stmt|;
 comment|// Datanode File IO Stats
 DECL|field|DFS_DATANODE_ENABLE_FILEIO_FAULT_INJECTION_KEY
 specifier|public
