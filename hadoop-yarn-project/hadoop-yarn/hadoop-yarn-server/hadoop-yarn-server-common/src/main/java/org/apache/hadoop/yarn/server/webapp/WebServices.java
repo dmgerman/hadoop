@@ -1381,6 +1381,13 @@ condition|)
 block|{
 if|if
 condition|(
+name|appReport
+operator|.
+name|getQueue
+argument_list|()
+operator|==
+literal|null
+operator|||
 operator|!
 name|appReport
 operator|.
