@@ -2484,7 +2484,7 @@ return|;
 block|}
 comment|/**    * Given a list of keys in the order of preference, returns a value    * for the key in the given order from the configuration.    * @param defaultValue default value to return, when key was not found    * @param keySuffix suffix to add to the key, if it is not null    * @param conf Configuration    * @param keys list of keys in the order of preference    * @return value of the key or default if a key was not found in configuration    */
 DECL|method|getConfValue (String defaultValue, String keySuffix, Configuration conf, String... keys)
-specifier|private
+specifier|public
 specifier|static
 name|String
 name|getConfValue
