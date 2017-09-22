@@ -214,6 +214,20 @@ name|NetUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * OfflineImageViewerPB to dump the contents of an Hadoop image file to XML or  * the console. Main entry point into utility, either via the command line or  * programmatically.  */
 end_comment
@@ -775,11 +789,16 @@ init|)
 block|{
 switch|switch
 condition|(
+name|StringUtils
+operator|.
+name|toUpperCase
+argument_list|(
 name|processor
+argument_list|)
 condition|)
 block|{
 case|case
-literal|"FileDistribution"
+literal|"FILEDISTRIBUTION"
 case|:
 name|long
 name|maxSize
@@ -875,7 +894,7 @@ argument_list|)
 expr_stmt|;
 break|break;
 case|case
-literal|"ReverseXML"
+literal|"REVERSEXML"
 case|:
 try|try
 block|{
@@ -928,7 +947,7 @@ expr_stmt|;
 block|}
 break|break;
 case|case
-literal|"Web"
+literal|"WEB"
 case|:
 name|String
 name|addr
@@ -969,7 +988,7 @@ expr_stmt|;
 block|}
 break|break;
 case|case
-literal|"Delimited"
+literal|"DELIMITED"
 case|:
 try|try
 init|(
