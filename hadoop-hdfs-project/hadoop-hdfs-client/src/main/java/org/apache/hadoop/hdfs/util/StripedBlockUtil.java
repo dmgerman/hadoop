@@ -2691,6 +2691,7 @@ comment|/**    * Cell is the unit of encoding used in {@link DFSStripedOutputStr
 annotation|@
 name|VisibleForTesting
 DECL|class|StripingCell
+specifier|public
 specifier|static
 class|class
 name|StripingCell
