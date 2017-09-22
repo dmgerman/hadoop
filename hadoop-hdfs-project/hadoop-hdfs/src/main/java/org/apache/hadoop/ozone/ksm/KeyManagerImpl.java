@@ -725,7 +725,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|error
+name|debug
 argument_list|(
 literal|"volume not found: {}"
 argument_list|,
@@ -761,7 +761,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|error
+name|debug
 argument_list|(
 literal|"bucket not found: {}/{} "
 argument_list|,
@@ -1044,6 +1044,16 @@ name|IOException
 name|ex
 parameter_list|)
 block|{
+if|if
+condition|(
+operator|!
+operator|(
+name|ex
+operator|instanceof
+name|KSMException
+operator|)
+condition|)
+block|{
 name|LOG
 operator|.
 name|error
@@ -1059,6 +1069,7 @@ argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;
+block|}
 throw|throw
 operator|new
 name|KSMException
@@ -1177,7 +1188,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|error
+name|debug
 argument_list|(
 literal|"Key: {} not found"
 argument_list|,

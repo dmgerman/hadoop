@@ -429,7 +429,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|error
+name|debug
 argument_list|(
 literal|"Too many volumes for user:{}"
 argument_list|,
@@ -564,6 +564,13 @@ expr_stmt|;
 block|}
 else|else
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"volume:{} not found for user:{}"
+argument_list|)
+expr_stmt|;
 throw|throw
 operator|new
 name|KSMException
@@ -698,7 +705,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|error
+name|debug
 argument_list|(
 literal|"volume:{} already exists"
 argument_list|,
@@ -771,7 +778,7 @@ argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"created volume:{} user:{}"
 argument_list|,
@@ -793,11 +800,21 @@ name|IOException
 name|ex
 parameter_list|)
 block|{
+if|if
+condition|(
+operator|!
+operator|(
+name|ex
+operator|instanceof
+name|KSMException
+operator|)
+condition|)
+block|{
 name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Volume creation failed for user:{} volname:{}"
+literal|"Volume creation failed for user:{} volume:{}"
 argument_list|,
 name|args
 operator|.
@@ -812,6 +829,7 @@ argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;
+block|}
 throw|throw
 name|ex
 throw|;
@@ -898,6 +916,17 @@ operator|==
 literal|null
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Changing volume ownership failed for user:{} volume:{}"
+argument_list|,
+name|owner
+argument_list|,
+name|volume
+argument_list|)
+expr_stmt|;
 throw|throw
 operator|new
 name|KSMException
@@ -1053,6 +1082,16 @@ name|IOException
 name|ex
 parameter_list|)
 block|{
+if|if
+condition|(
+operator|!
+operator|(
+name|ex
+operator|instanceof
+name|KSMException
+operator|)
+condition|)
+block|{
 name|LOG
 operator|.
 name|error
@@ -1066,6 +1105,7 @@ argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;
+block|}
 throw|throw
 name|ex
 throw|;
@@ -1143,6 +1183,15 @@ operator|==
 literal|null
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"volume:{} does not exist"
+argument_list|,
+name|volume
+argument_list|)
+expr_stmt|;
 throw|throw
 operator|new
 name|KSMException
@@ -1263,6 +1312,16 @@ name|IOException
 name|ex
 parameter_list|)
 block|{
+if|if
+condition|(
+operator|!
+operator|(
+name|ex
+operator|instanceof
+name|KSMException
+operator|)
+condition|)
+block|{
 name|LOG
 operator|.
 name|error
@@ -1276,6 +1335,7 @@ argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;
+block|}
 throw|throw
 name|ex
 throw|;
@@ -1350,6 +1410,15 @@ operator|==
 literal|null
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"volume:{} does not exist"
+argument_list|,
+name|volume
+argument_list|)
+expr_stmt|;
 throw|throw
 operator|new
 name|KSMException
@@ -1405,9 +1474,19 @@ name|IOException
 name|ex
 parameter_list|)
 block|{
+if|if
+condition|(
+operator|!
+operator|(
+name|ex
+operator|instanceof
+name|KSMException
+operator|)
+condition|)
+block|{
 name|LOG
 operator|.
-name|error
+name|warn
 argument_list|(
 literal|"Info volume failed for volume:{}"
 argument_list|,
@@ -1416,6 +1495,7 @@ argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;
+block|}
 throw|throw
 name|ex
 throw|;
@@ -1499,6 +1579,15 @@ operator|==
 literal|null
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"volume:{} does not exist"
+argument_list|,
+name|volume
+argument_list|)
+expr_stmt|;
 throw|throw
 operator|new
 name|KSMException
@@ -1520,6 +1609,15 @@ name|volume
 argument_list|)
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"volume:{} is not empty"
+argument_list|,
+name|volume
+argument_list|)
+expr_stmt|;
 throw|throw
 operator|new
 name|KSMException
@@ -1590,6 +1688,16 @@ name|IOException
 name|ex
 parameter_list|)
 block|{
+if|if
+condition|(
+operator|!
+operator|(
+name|ex
+operator|instanceof
+name|KSMException
+operator|)
+condition|)
+block|{
 name|LOG
 operator|.
 name|error
@@ -1601,6 +1709,7 @@ argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;
+block|}
 throw|throw
 name|ex
 throw|;
@@ -1685,6 +1794,15 @@ operator|==
 literal|null
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"volume:{} does not exist"
+argument_list|,
+name|volume
+argument_list|)
+expr_stmt|;
 throw|throw
 operator|new
 name|KSMException
@@ -1748,6 +1866,16 @@ name|IOException
 name|ex
 parameter_list|)
 block|{
+if|if
+condition|(
+operator|!
+operator|(
+name|ex
+operator|instanceof
+name|KSMException
+operator|)
+condition|)
+block|{
 name|LOG
 operator|.
 name|error
@@ -1769,6 +1897,7 @@ argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;
+block|}
 throw|throw
 name|ex
 throw|;
