@@ -54,6 +54,16 @@ name|SchedConfUpdateInfo
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
 begin_comment
 comment|/**  * Interface for allowing changing scheduler configurations.  */
 end_comment
@@ -102,6 +112,14 @@ name|isValid
 parameter_list|)
 throws|throws
 name|Exception
+function_decl|;
+comment|/**    * Closes the configuration provider, releasing any required resources.    * @throws IOException on failure to close    */
+DECL|method|close ()
+name|void
+name|close
+parameter_list|()
+throws|throws
+name|IOException
 function_decl|;
 block|}
 end_interface

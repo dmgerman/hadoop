@@ -378,6 +378,11 @@ literal|"keyUpdate2"
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|confStore
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Test
@@ -487,6 +492,11 @@ argument_list|(
 literal|"key"
 argument_list|)
 argument_list|)
+expr_stmt|;
+name|confStore
+operator|.
+name|close
+argument_list|()
 expr_stmt|;
 block|}
 block|}

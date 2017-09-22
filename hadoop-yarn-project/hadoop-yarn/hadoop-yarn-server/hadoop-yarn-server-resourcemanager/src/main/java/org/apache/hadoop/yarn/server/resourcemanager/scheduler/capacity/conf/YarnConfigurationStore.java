@@ -312,6 +312,15 @@ parameter_list|)
 throws|throws
 name|Exception
 function_decl|;
+comment|/**    * Closes the configuration store, releasing any required resources.    * @throws IOException on failure to close    */
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+throws|throws
+name|IOException
+block|{}
 comment|/**    * Logs the configuration change to backing store.    * @param logMutation configuration change to be persisted in write ahead log    * @throws IOException if logging fails    */
 DECL|method|logMutation (LogMutation logMutation)
 specifier|public
