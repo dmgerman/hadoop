@@ -464,6 +464,20 @@ name|LogFactory
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_class
 DECL|class|SleepJob
 specifier|public
@@ -1270,9 +1284,9 @@ comment|//over a period of time.
 name|long
 name|start
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|long
@@ -1333,9 +1347,9 @@ argument_list|)
 expr_stmt|;
 name|slept
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|monotonicNow
 argument_list|()
 operator|-
 name|start
