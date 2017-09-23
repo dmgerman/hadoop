@@ -80,6 +80,20 @@ begin_import
 import|import
 name|com
 operator|.
+name|fasterxml
+operator|.
+name|jackson
+operator|.
+name|databind
+operator|.
+name|ObjectWriter
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
 name|google
 operator|.
 name|common
@@ -384,6 +398,21 @@ specifier|private
 specifier|final
 name|Timer
 name|timer
+decl_stmt|;
+comment|/**    * ObjectWriter to convert JSON reports to String.    */
+DECL|field|WRITER
+specifier|private
+specifier|static
+specifier|final
+name|ObjectWriter
+name|WRITER
+init|=
+operator|new
+name|ObjectMapper
+argument_list|()
+operator|.
+name|writer
+argument_list|()
 decl_stmt|;
 comment|/**    * Number of disks to include in JSON report per operation. We will return    * disks with the highest latency.    */
 DECL|field|MAX_DISKS_TO_REPORT
@@ -1184,13 +1213,6 @@ name|String
 name|getSlowDiskReportAsJsonString
 parameter_list|()
 block|{
-name|ObjectMapper
-name|objectMapper
-init|=
-operator|new
-name|ObjectMapper
-argument_list|()
-decl_stmt|;
 try|try
 block|{
 if|if
@@ -1206,7 +1228,7 @@ literal|null
 return|;
 block|}
 return|return
-name|objectMapper
+name|WRITER
 operator|.
 name|writeValueAsString
 argument_list|(
