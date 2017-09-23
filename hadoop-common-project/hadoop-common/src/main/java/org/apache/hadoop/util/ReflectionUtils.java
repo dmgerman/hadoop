@@ -1145,7 +1145,7 @@ name|now
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 if|if
@@ -1268,7 +1268,7 @@ name|now
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 if|if
