@@ -372,6 +372,22 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|shortcircuit
+operator|.
+name|DfsClientShmManager
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google

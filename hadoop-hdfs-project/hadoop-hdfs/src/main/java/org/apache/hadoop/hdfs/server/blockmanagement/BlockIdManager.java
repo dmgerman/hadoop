@@ -134,6 +134,42 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|FSNamesystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|FSEditLog
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -161,7 +197,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * BlockIdManager allocates the generation stamps and the block ID. The  * {@see FSNamesystem} is responsible for persisting the allocations in the  * {@see EditLog}.  */
+comment|/**  * BlockIdManager allocates the generation stamps and the block ID. The  * {@link FSNamesystem} is responsible for persisting the allocations in the  * {@link FSEditLog}.  */
 end_comment
 
 begin_class
