@@ -259,7 +259,7 @@ expr_stmt|;
 block|}
 DECL|method|startService (String[] args, DatagramSocket registrationSocket)
 specifier|static
-name|void
+name|Nfs3
 name|startService
 parameter_list|(
 name|String
@@ -328,6 +328,26 @@ name|startServiceInternal
 argument_list|(
 literal|true
 argument_list|)
+expr_stmt|;
+return|return
+name|nfsServer
+return|;
+block|}
+DECL|method|stop ()
+specifier|public
+name|void
+name|stop
+parameter_list|()
+block|{
+name|super
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+name|mountd
+operator|.
+name|stop
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|main (String[] args)

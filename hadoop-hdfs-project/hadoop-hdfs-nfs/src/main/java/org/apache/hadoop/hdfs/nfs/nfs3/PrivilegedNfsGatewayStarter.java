@@ -184,6 +184,13 @@ name|registrationSocket
 init|=
 literal|null
 decl_stmt|;
+DECL|field|nfs3Server
+specifier|private
+name|Nfs3
+name|nfs3Server
+init|=
+literal|null
+decl_stmt|;
 annotation|@
 name|Override
 DECL|method|init (DaemonContext context)
@@ -331,6 +338,8 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|nfs3Server
+operator|=
 name|Nfs3
 operator|.
 name|startService
@@ -351,7 +360,19 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-comment|// Nothing to do.
+if|if
+condition|(
+name|nfs3Server
+operator|!=
+literal|null
+condition|)
+block|{
+name|nfs3Server
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
