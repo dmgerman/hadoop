@@ -654,6 +654,17 @@ decl_stmt|;
 annotation|@
 name|Metric
 argument_list|(
+literal|"Journal transactions batched in sync"
+argument_list|)
+DECL|field|numTransactionsBatchedInSync
+specifier|final
+name|MutableQuantiles
+index|[]
+name|numTransactionsBatchedInSync
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
 literal|"Number of blockReports from individual storages"
 argument_list|)
 DECL|field|storageBlockReport
@@ -839,6 +850,14 @@ index|[
 name|len
 index|]
 expr_stmt|;
+name|numTransactionsBatchedInSync
+operator|=
+operator|new
+name|MutableQuantiles
+index|[
+name|len
+index|]
+expr_stmt|;
 name|storageBlockReportQuantiles
 operator|=
 operator|new
@@ -922,6 +941,30 @@ argument_list|,
 literal|"ops"
 argument_list|,
 literal|"latency"
+argument_list|,
+name|interval
+argument_list|)
+expr_stmt|;
+name|numTransactionsBatchedInSync
+index|[
+name|i
+index|]
+operator|=
+name|registry
+operator|.
+name|newQuantiles
+argument_list|(
+literal|"numTransactionsBatchedInSync"
+operator|+
+name|interval
+operator|+
+literal|"s"
+argument_list|,
+literal|"Number of Transactions batched in sync"
+argument_list|,
+literal|"ops"
+argument_list|,
+literal|"count"
 argument_list|,
 name|interval
 argument_list|)
@@ -1511,6 +1554,22 @@ argument_list|(
 name|count
 argument_list|)
 expr_stmt|;
+for|for
+control|(
+name|MutableQuantiles
+name|q
+range|:
+name|numTransactionsBatchedInSync
+control|)
+block|{
+name|q
+operator|.
+name|add
+argument_list|(
+name|count
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|incSuccessfulReReplications ()
 specifier|public
