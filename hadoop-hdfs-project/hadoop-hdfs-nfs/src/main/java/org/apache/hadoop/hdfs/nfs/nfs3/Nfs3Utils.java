@@ -537,7 +537,7 @@ name|iug
 argument_list|)
 return|;
 block|}
-comment|/**    * HDFS directory size is always zero. Try to return something meaningful    * here. Assume each child take 32bytes.    */
+comment|/**    * HDFS directory size is always zero. Try to return something meaningful    * here. Assume each child take 32bytes.    * @param childNum number of children of the directory    * @return total size of the directory    */
 DECL|method|getDirSize (int childNum)
 specifier|public
 specifier|static
@@ -727,7 +727,7 @@ name|postOpDirAttr
 argument_list|)
 return|;
 block|}
-comment|/**    * Send a write response to the netty network socket channel    */
+comment|/**    * Send a write response to the netty network socket channel    * @param channel channel to which the buffer needs to be written    * @param out xdr object to be written to the channel    * @param xid transaction identifier    */
 DECL|method|writeChannel (Channel channel, XDR out, int xid)
 specifier|public
 specifier|static
