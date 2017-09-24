@@ -114,6 +114,20 @@ name|commons
 operator|.
 name|cli
 operator|.
+name|HelpFormatter
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|cli
+operator|.
 name|ParseException
 import|;
 end_import
@@ -683,7 +697,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This is the CLI that can be use to convert a levelDB into a sqlite DB file.  *  * NOTE: user should use this CLI in an offline fashion. Namely, this should not  * be used to convert a levelDB that is currently being used by Ozone. Instead,  * this should be used to debug and diagnosis closed levelDB instances.  *  */
+comment|/**  * This is the CLI that can be use to convert an ozone metadata DB into  * a sqlite DB file.  *  * NOTE: user should use this CLI in an offline fashion. Namely, this should not  * be used to convert a DB that is currently being used by Ozone. Instead,  * this should be used to debug and diagnosis closed DB instances.  *  */
 end_comment
 
 begin_class
@@ -1122,13 +1136,45 @@ name|Options
 argument_list|()
 decl_stmt|;
 name|Option
+name|helpOpt
+init|=
+name|OptionBuilder
+operator|.
+name|hasArg
+argument_list|(
+literal|false
+argument_list|)
+operator|.
+name|withLongOpt
+argument_list|(
+literal|"help"
+argument_list|)
+operator|.
+name|withDescription
+argument_list|(
+literal|"display help message"
+argument_list|)
+operator|.
+name|create
+argument_list|(
+literal|"h"
+argument_list|)
+decl_stmt|;
+name|allOptions
+operator|.
+name|addOption
+argument_list|(
+name|helpOpt
+argument_list|)
+expr_stmt|;
+name|Option
 name|dbPathOption
 init|=
 name|OptionBuilder
 operator|.
 name|withArgName
 argument_list|(
-literal|"levelDB path"
+literal|"DB path"
 argument_list|)
 operator|.
 name|withLongOpt
@@ -1143,7 +1189,7 @@ argument_list|)
 operator|.
 name|withDescription
 argument_list|(
-literal|"specify levelDB path"
+literal|"specify DB path"
 argument_list|)
 operator|.
 name|create
@@ -1180,7 +1226,7 @@ argument_list|)
 operator|.
 name|withDescription
 argument_list|(
-literal|"specify output path"
+literal|"specify output DB file path"
 argument_list|)
 operator|.
 name|create
@@ -1198,6 +1244,37 @@ expr_stmt|;
 return|return
 name|allOptions
 return|;
+block|}
+DECL|method|displayHelp ()
+specifier|public
+name|void
+name|displayHelp
+parameter_list|()
+block|{
+name|HelpFormatter
+name|helpFormatter
+init|=
+operator|new
+name|HelpFormatter
+argument_list|()
+decl_stmt|;
+name|Options
+name|allOpts
+init|=
+name|getOptions
+argument_list|()
+decl_stmt|;
+name|helpFormatter
+operator|.
+name|printHelp
+argument_list|(
+literal|"hdfs oz_debug -p<DB path>"
+operator|+
+literal|" -o<Output DB file path>"
+argument_list|,
+name|allOpts
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -1223,6 +1300,23 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
+name|commandLine
+operator|.
+name|hasOption
+argument_list|(
+literal|"help"
+argument_list|)
+condition|)
+block|{
+name|displayHelp
+argument_list|()
+expr_stmt|;
+return|return
+literal|0
+return|;
+block|}
+if|if
+condition|(
 operator|!
 name|commandLine
 operator|.
@@ -1240,12 +1334,8 @@ literal|"o"
 argument_list|)
 condition|)
 block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Require dbPath option(-p) AND outPath option (-o)"
-argument_list|)
+name|displayHelp
+argument_list|()
 expr_stmt|;
 return|return
 operator|-
@@ -1266,7 +1356,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"levelDB path {}"
+literal|"DB path {}"
 argument_list|,
 name|value
 argument_list|)
@@ -1384,6 +1474,29 @@ argument_list|(
 literal|"Error processing output path {}"
 argument_list|,
 name|outPath
+argument_list|)
+expr_stmt|;
+return|return
+operator|-
+literal|1
+return|;
+block|}
+if|if
+condition|(
+name|outPath
+operator|.
+name|toFile
+argument_list|()
+operator|.
+name|isDirectory
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"The db output path should be a file instead of a directory"
 argument_list|)
 expr_stmt|;
 return|return
@@ -3345,6 +3458,24 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Command execution failed"
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
+block|}
 name|res
 operator|=
 literal|1
