@@ -2528,7 +2528,7 @@ name|startTime
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|bufferBuilder
@@ -2561,7 +2561,7 @@ name|add
 argument_list|(
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|startTime
@@ -2620,7 +2620,7 @@ name|startTime
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 name|boolean
@@ -2669,7 +2669,7 @@ name|add
 argument_list|(
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|startTime
