@@ -7085,6 +7085,24 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|zone
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Unable to remove record because zone is null: {}"
+argument_list|,
+name|record
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 name|zone
 operator|.
 name|removeRecord

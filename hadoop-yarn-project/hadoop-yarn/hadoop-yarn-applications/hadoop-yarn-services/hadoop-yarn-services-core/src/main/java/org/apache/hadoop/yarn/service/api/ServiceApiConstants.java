@@ -170,6 +170,25 @@ argument_list|(
 literal|"CONTAINER_ID"
 argument_list|)
 decl_stmt|;
+comment|// Templates for component instance host/IP
+DECL|field|COMPONENT_HOST
+name|String
+name|COMPONENT_HOST
+init|=
+name|$
+argument_list|(
+literal|"%s_HOST"
+argument_list|)
+decl_stmt|;
+DECL|field|COMPONENT_IP
+name|String
+name|COMPONENT_IP
+init|=
+name|$
+argument_list|(
+literal|"%s_IP"
+argument_list|)
+decl_stmt|;
 comment|// Constants for default cluster ZK
 DECL|field|CLUSTER_ZK_QUORUM
 name|String
