@@ -55,6 +55,9 @@ block|,
 DECL|enumConstant|RESUME_CONTAINER
 name|RESUME_CONTAINER
 block|,
+DECL|enumConstant|UPDATE_CONTAINER_TOKEN
+name|UPDATE_CONTAINER_TOKEN
+block|,
 comment|// DownloadManager
 DECL|enumConstant|CONTAINER_INITED
 name|CONTAINER_INITED
@@ -86,6 +89,10 @@ name|CONTAINER_PAUSED
 block|,
 DECL|enumConstant|CONTAINER_RESUMED
 name|CONTAINER_RESUMED
+block|,
+comment|// Producer: ContainerScheduler
+DECL|enumConstant|CONTAINER_TOKEN_UPDATED
+name|CONTAINER_TOKEN_UPDATED
 block|}
 end_enum
 

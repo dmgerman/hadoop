@@ -62,6 +62,28 @@ name|Container
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|container
+operator|.
+name|UpdateContainerTokenEvent
+import|;
+end_import
+
 begin_comment
 comment|/**  * Update Event consumed by the {@link ContainerScheduler}.  */
 end_comment
@@ -74,50 +96,36 @@ name|UpdateContainerSchedulerEvent
 extends|extends
 name|ContainerSchedulerEvent
 block|{
-DECL|field|updatedToken
+DECL|field|containerEvent
 specifier|private
+specifier|final
+name|UpdateContainerTokenEvent
+name|containerEvent
+decl_stmt|;
+DECL|field|originalToken
+specifier|private
+specifier|final
 name|ContainerTokenIdentifier
-name|updatedToken
+name|originalToken
 decl_stmt|;
-DECL|field|isResourceChange
-specifier|private
-name|boolean
-name|isResourceChange
-decl_stmt|;
-DECL|field|isExecTypeUpdate
-specifier|private
-name|boolean
-name|isExecTypeUpdate
-decl_stmt|;
-DECL|field|isIncrease
-specifier|private
-name|boolean
-name|isIncrease
-decl_stmt|;
-comment|/**    * Create instance of Event.    *    * @param originalContainer Original Container.    * @param updatedToken Updated Container Token.    * @param isResourceChange is this a Resource Change.    * @param isExecTypeUpdate is this an ExecTypeUpdate.    * @param isIncrease is this a Container Increase.    */
-DECL|method|UpdateContainerSchedulerEvent (Container originalContainer, ContainerTokenIdentifier updatedToken, boolean isResourceChange, boolean isExecTypeUpdate, boolean isIncrease)
+comment|/**    * Create instance of Event.    *    * @param container Container.    * @param origToken The Original Container Token.    * @param event The Container Event.    */
+DECL|method|UpdateContainerSchedulerEvent (Container container, ContainerTokenIdentifier origToken, UpdateContainerTokenEvent event)
 specifier|public
 name|UpdateContainerSchedulerEvent
 parameter_list|(
 name|Container
-name|originalContainer
+name|container
 parameter_list|,
 name|ContainerTokenIdentifier
-name|updatedToken
+name|origToken
 parameter_list|,
-name|boolean
-name|isResourceChange
-parameter_list|,
-name|boolean
-name|isExecTypeUpdate
-parameter_list|,
-name|boolean
-name|isIncrease
+name|UpdateContainerTokenEvent
+name|event
 parameter_list|)
 block|{
 name|super
 argument_list|(
-name|originalContainer
+name|container
 argument_list|,
 name|ContainerSchedulerEventType
 operator|.
@@ -126,28 +134,29 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|updatedToken
+name|containerEvent
 operator|=
-name|updatedToken
+name|event
 expr_stmt|;
 name|this
 operator|.
-name|isResourceChange
+name|originalToken
 operator|=
-name|isResourceChange
+name|origToken
 expr_stmt|;
+block|}
+comment|/**    * Original Token before update.    *    * @return Container Token.    */
+DECL|method|getOriginalToken ()
+specifier|public
+name|ContainerTokenIdentifier
+name|getOriginalToken
+parameter_list|()
+block|{
+return|return
 name|this
 operator|.
-name|isExecTypeUpdate
-operator|=
-name|isExecTypeUpdate
-expr_stmt|;
-name|this
-operator|.
-name|isIncrease
-operator|=
-name|isIncrease
-expr_stmt|;
+name|originalToken
+return|;
 block|}
 comment|/**    * Update Container Token.    *    * @return Container Token.    */
 DECL|method|getUpdatedToken ()
@@ -157,7 +166,10 @@ name|getUpdatedToken
 parameter_list|()
 block|{
 return|return
-name|updatedToken
+name|containerEvent
+operator|.
+name|getUpdatedToken
+argument_list|()
 return|;
 block|}
 comment|/**    * isResourceChange.    * @return isResourceChange.    */
@@ -168,7 +180,10 @@ name|isResourceChange
 parameter_list|()
 block|{
 return|return
+name|containerEvent
+operator|.
 name|isResourceChange
+argument_list|()
 return|;
 block|}
 comment|/**    * isExecTypeUpdate.    * @return isExecTypeUpdate.    */
@@ -179,7 +194,10 @@ name|isExecTypeUpdate
 parameter_list|()
 block|{
 return|return
+name|containerEvent
+operator|.
 name|isExecTypeUpdate
+argument_list|()
 return|;
 block|}
 comment|/**    * isIncrease.    * @return isIncrease.    */
@@ -190,7 +208,10 @@ name|isIncrease
 parameter_list|()
 block|{
 return|return
+name|containerEvent
+operator|.
 name|isIncrease
+argument_list|()
 return|;
 block|}
 block|}
