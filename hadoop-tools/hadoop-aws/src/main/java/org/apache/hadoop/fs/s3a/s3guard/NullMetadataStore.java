@@ -82,6 +82,26 @@ name|Collection
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|HashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
 begin_comment
 comment|/**  * A no-op implementation of MetadataStore.  Clients that use this  * implementation should behave the same as they would without any  * MetadataStore.  */
 end_comment
@@ -320,6 +340,74 @@ return|return
 literal|"NullMetadataStore"
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getDiagnostics ()
+specifier|public
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|getDiagnostics
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|map
+init|=
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
+decl_stmt|;
+name|map
+operator|.
+name|put
+argument_list|(
+literal|"name"
+argument_list|,
+literal|"Null Metadata Store"
+argument_list|)
+expr_stmt|;
+name|map
+operator|.
+name|put
+argument_list|(
+literal|"description"
+argument_list|,
+literal|"This is not a real metadata store"
+argument_list|)
+expr_stmt|;
+return|return
+name|map
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|updateParameters (Map<String, String> parameters)
+specifier|public
+name|void
+name|updateParameters
+parameter_list|(
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|parameters
+parameter_list|)
+throws|throws
+name|IOException
+block|{   }
 block|}
 end_class
 

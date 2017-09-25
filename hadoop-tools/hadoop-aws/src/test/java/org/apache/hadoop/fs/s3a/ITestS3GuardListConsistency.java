@@ -2292,6 +2292,15 @@ name|recursive
 condition|)
 block|{
 comment|// in this case only the top level files are listed
+name|verifyFileIsListed
+argument_list|(
+name|listedFiles
+argument_list|,
+name|baseTestDir
+argument_list|,
+name|fileNames
+argument_list|)
+expr_stmt|;
 name|assertEquals
 argument_list|(
 literal|"Unexpected number of files returned by listFiles() call"
@@ -2306,30 +2315,9 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|verifyFileIsListed
-argument_list|(
-name|listedFiles
-argument_list|,
-name|baseTestDir
-argument_list|,
-name|fileNames
-argument_list|)
-expr_stmt|;
 block|}
 else|else
 block|{
-name|assertEquals
-argument_list|(
-literal|"Unexpected number of files returned by listFiles() call"
-argument_list|,
-name|filesAndEmptyDirectories
-argument_list|,
-name|listedFiles
-operator|.
-name|size
-argument_list|()
-argument_list|)
-expr_stmt|;
 for|for
 control|(
 name|Path
@@ -2348,6 +2336,18 @@ name|fileNames
 argument_list|)
 expr_stmt|;
 block|}
+name|assertEquals
+argument_list|(
+literal|"Unexpected number of files returned by listFiles() call"
+argument_list|,
+name|filesAndEmptyDirectories
+argument_list|,
+name|listedFiles
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 DECL|method|verifyFileIsListed (Collection<Path> listedFiles, Path currentDir, Collection<String> fileNames)

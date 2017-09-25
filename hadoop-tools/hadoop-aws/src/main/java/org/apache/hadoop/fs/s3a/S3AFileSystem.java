@@ -2117,6 +2117,25 @@ argument_list|,
 name|DEFAULT_METADATASTORE_AUTHORITATIVE
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|hasMetadataStore
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Using metadata store {}, authoritative={}"
+argument_list|,
+name|getMetadataStore
+argument_list|()
+argument_list|,
+name|allowAuthoritative
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -4554,6 +4573,7 @@ comment|/**    * Get the metadata store.    * This will always be non-null, but 
 annotation|@
 name|VisibleForTesting
 DECL|method|getMetadataStore ()
+specifier|public
 name|MetadataStore
 name|getMetadataStore
 parameter_list|()
@@ -10450,6 +10470,13 @@ argument_list|(
 literal|"}"
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|instrumentation
+operator|!=
+literal|null
+condition|)
+block|{
 name|sb
 operator|.
 name|append
@@ -10478,6 +10505,7 @@ argument_list|(
 literal|"}"
 argument_list|)
 expr_stmt|;
+block|}
 name|sb
 operator|.
 name|append

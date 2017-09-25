@@ -52,6 +52,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -323,6 +333,35 @@ throws|throws
 name|IOException
 throws|,
 name|UnsupportedOperationException
+function_decl|;
+comment|/**    * Get any diagnostics information from a store, as a list of (key, value)    * tuples for display. Arbitrary values; no guarantee of stability.    * These are for debugging only.    * @return a map of strings.    * @throws IOException if there is an error    */
+DECL|method|getDiagnostics ()
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|getDiagnostics
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Tune/update parameters for an existing table.    * @param parameters map of params to change.    * @throws IOException if there is an error    */
+DECL|method|updateParameters (Map<String, String> parameters)
+name|void
+name|updateParameters
+parameter_list|(
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|parameters
+parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 block|}
 end_interface

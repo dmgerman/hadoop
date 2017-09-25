@@ -26,6 +26,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|FileNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -532,6 +542,18 @@ return|;
 block|}
 catch|catch
 parameter_list|(
+name|FileNotFoundException
+name|e
+parameter_list|)
+block|{
+comment|// Don't log this exception as it means the table doesn't exist yet;
+comment|// rely on callers to catch and treat specially
+throw|throw
+name|e
+throw|;
+block|}
+catch|catch
+parameter_list|(
 name|RuntimeException
 decl||
 name|IOException
@@ -593,7 +615,6 @@ block|}
 block|}
 block|}
 DECL|method|getMetadataStoreClass ( Configuration conf)
-specifier|private
 specifier|static
 name|Class
 argument_list|<
@@ -620,7 +641,46 @@ operator|.
 name|class
 return|;
 block|}
-return|return
+if|if
+condition|(
+name|conf
+operator|.
+name|get
+argument_list|(
+name|S3_METADATA_STORE_IMPL
+argument_list|)
+operator|!=
+literal|null
+operator|&&
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Metastore option source {}"
+argument_list|,
+name|conf
+operator|.
+name|getPropertySources
+argument_list|(
+name|S3_METADATA_STORE_IMPL
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|MetadataStore
+argument_list|>
+name|aClass
+init|=
 name|conf
 operator|.
 name|getClass
@@ -635,6 +695,9 @@ name|MetadataStore
 operator|.
 name|class
 argument_list|)
+decl_stmt|;
+return|return
+name|aClass
 return|;
 block|}
 comment|/**    * Helper function which puts a given S3AFileStatus into the MetadataStore and    * returns the same S3AFileStatus. Instrumentation monitors the put operation.    * @param ms MetadataStore to {@code put()} into.    * @param status status to store    * @param instrumentation instrumentation of the s3a file system    * @return The same status as passed in    * @throws IOException if metadata store update failed    */
