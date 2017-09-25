@@ -2508,8 +2508,6 @@ control|)
 block|{
 name|addVolume
 argument_list|(
-name|dataLocations
-argument_list|,
 name|storage
 operator|.
 name|getStorageDir
@@ -2956,17 +2954,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|addVolume (Collection<StorageLocation> dataLocations, Storage.StorageDirectory sd)
+DECL|method|addVolume (Storage.StorageDirectory sd)
 specifier|private
 name|void
 name|addVolume
 parameter_list|(
-name|Collection
-argument_list|<
-name|StorageLocation
-argument_list|>
-name|dataLocations
-parameter_list|,
 name|Storage
 operator|.
 name|StorageDirectory
