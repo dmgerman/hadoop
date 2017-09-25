@@ -589,7 +589,7 @@ name|keyRootName
 init|=
 name|OzoneConsts
 operator|.
-name|KSM_VOLUME_PREFIX
+name|KSM_KEY_PREFIX
 operator|+
 name|invocation
 operator|.
@@ -601,7 +601,7 @@ index|]
 operator|+
 name|OzoneConsts
 operator|.
-name|KSM_BUCKET_PREFIX
+name|KSM_KEY_PREFIX
 operator|+
 name|invocation
 operator|.

@@ -736,6 +736,73 @@ argument_list|,
 literal|100
 argument_list|)
 expr_stmt|;
+comment|// Test create a bucket with invalid bucket name,
+comment|// not use Rule here because the test method is static.
+try|try
+block|{
+name|String
+name|invalidBucketName
+init|=
+literal|"#"
+operator|+
+name|OzoneUtils
+operator|.
+name|getRequestID
+argument_list|()
+operator|.
+name|toLowerCase
+argument_list|()
+decl_stmt|;
+name|vol
+operator|.
+name|createBucket
+argument_list|(
+name|invalidBucketName
+argument_list|,
+name|acls
+argument_list|,
+name|StorageType
+operator|.
+name|DEFAULT
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"Except the bucket creation to be failed because the"
+operator|+
+literal|" bucket name starts with an invalid char #"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|assertTrue
+argument_list|(
+name|e
+operator|instanceof
+name|OzoneRestClientException
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|e
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Bucket or Volume name"
+operator|+
+literal|" has an unsupported character : #"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Test
