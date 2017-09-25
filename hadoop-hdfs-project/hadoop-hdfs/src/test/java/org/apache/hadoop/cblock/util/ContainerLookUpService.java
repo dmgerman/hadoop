@@ -86,7 +86,9 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
+name|concurrent
+operator|.
+name|ConcurrentHashMap
 import|;
 end_import
 
@@ -103,7 +105,7 @@ name|ContainerLookUpService
 block|{
 specifier|private
 specifier|static
-name|HashMap
+name|ConcurrentHashMap
 argument_list|<
 name|String
 argument_list|,
@@ -113,7 +115,7 @@ DECL|field|containers
 name|containers
 init|=
 operator|new
-name|HashMap
+name|ConcurrentHashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;

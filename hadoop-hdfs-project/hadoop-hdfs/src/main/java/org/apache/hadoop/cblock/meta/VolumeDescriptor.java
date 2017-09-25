@@ -148,6 +148,18 @@ name|Map
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ConcurrentHashMap
+import|;
+end_import
+
 begin_comment
 comment|/**  * The internal representation maintained by CBlock server as the info for  * a volume. Contains the list of containers belonging to this volume.  *  * Many methods of this class is made such that the volume information (  * including container list) can be easily transformed into a Json string  * that can be stored/parsed from a persistent store for cblock server  * persistence.  *  * This class is still work-in-progress.  */
 end_comment
@@ -181,7 +193,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|containerMap
 specifier|private
-name|HashMap
+name|ConcurrentHashMap
 argument_list|<
 name|String
 argument_list|,
@@ -228,19 +240,16 @@ specifier|public
 name|VolumeDescriptor
 parameter_list|()
 block|{
-name|containerMap
-operator|=
-operator|new
-name|HashMap
-argument_list|<>
-argument_list|()
-expr_stmt|;
-name|containerIdOrdered
-operator|=
-operator|new
-name|ArrayList
-argument_list|<>
-argument_list|()
+name|this
+argument_list|(
+literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|VolumeDescriptor (String userName, String volumeName, long volumeSize, int blockSize)
@@ -265,7 +274,7 @@ operator|.
 name|containerMap
 operator|=
 operator|new
-name|HashMap
+name|ConcurrentHashMap
 argument_list|<>
 argument_list|()
 expr_stmt|;
