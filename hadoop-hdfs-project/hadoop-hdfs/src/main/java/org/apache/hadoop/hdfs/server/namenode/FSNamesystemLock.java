@@ -1002,6 +1002,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Unlocks FSNameSystem write lock. This internally calls {@link    * FSNamesystemLock#writeUnlock(String, boolean)}    */
 DECL|method|writeUnlock ()
 specifier|public
 name|void
@@ -1011,9 +1012,12 @@ block|{
 name|writeUnlock
 argument_list|(
 name|OP_NAME_OTHER
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Unlocks FSNameSystem write lock. This internally calls {@link    * FSNamesystemLock#writeUnlock(String, boolean)}    *    * @param opName Operation name.    */
 DECL|method|writeUnlock (String opName)
 specifier|public
 name|void
@@ -1023,10 +1027,34 @@ name|String
 name|opName
 parameter_list|)
 block|{
+name|writeUnlock
+argument_list|(
+name|opName
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Unlocks FSNameSystem write lock.    *    * @param opName Operation name    * @param suppressWriteLockReport When false, event of write lock being held    * for long time will be logged in logs and metrics.    */
+DECL|method|writeUnlock (String opName, boolean suppressWriteLockReport)
+specifier|public
+name|void
+name|writeUnlock
+parameter_list|(
+name|String
+name|opName
+parameter_list|,
+name|boolean
+name|suppressWriteLockReport
+parameter_list|)
+block|{
 specifier|final
 name|boolean
 name|needReport
 init|=
+operator|!
+name|suppressWriteLockReport
+operator|&&
 name|coarseLock
 operator|.
 name|getWriteHoldCount
