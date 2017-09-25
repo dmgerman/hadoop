@@ -704,6 +704,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|io
+operator|.
+name|FilenameUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|classification
@@ -10545,6 +10559,11 @@ name|confInclude
 init|=
 literal|null
 decl_stmt|;
+name|String
+name|confTag
+init|=
+literal|null
+decl_stmt|;
 name|boolean
 name|confFinal
 init|=
@@ -10621,6 +10640,10 @@ expr_stmt|;
 name|confFinal
 operator|=
 literal|false
+expr_stmt|;
+name|confTag
+operator|=
+literal|null
 expr_stmt|;
 name|confSource
 operator|.
@@ -10778,8 +10801,11 @@ name|propertyAttr
 argument_list|)
 condition|)
 block|{
-comment|//Read tags and put them in propertyTagsMap
-name|readTagFromConfig
+name|confTag
+operator|=
+name|StringInterner
+operator|.
+name|weakIntern
 argument_list|(
 name|reader
 operator|.
@@ -10787,12 +10813,6 @@ name|getAttributeValue
 argument_list|(
 name|i
 argument_list|)
-argument_list|,
-name|confName
-argument_list|,
-name|confValue
-argument_list|,
-name|confSource
 argument_list|)
 expr_stmt|;
 block|}
@@ -11230,19 +11250,16 @@ operator|>
 literal|0
 condition|)
 block|{
-comment|//Read tags and put them in propertyTagsMap
-name|readTagFromConfig
+name|confTag
+operator|=
+name|StringInterner
+operator|.
+name|weakIntern
 argument_list|(
 name|token
 operator|.
 name|toString
 argument_list|()
-argument_list|,
-name|confName
-argument_list|,
-name|confValue
-argument_list|,
-name|confSource
 argument_list|)
 expr_stmt|;
 block|}
@@ -11309,6 +11326,26 @@ argument_list|(
 name|name
 argument_list|)
 expr_stmt|;
+comment|//Read tags and put them in propertyTagsMap
+if|if
+condition|(
+name|confTag
+operator|!=
+literal|null
+condition|)
+block|{
+name|readTagFromConfig
+argument_list|(
+name|confTag
+argument_list|,
+name|confName
+argument_list|,
+name|confValue
+argument_list|,
+name|confSource
+argument_list|)
+expr_stmt|;
+block|}
 name|DeprecatedKeyInfo
 name|keyInfo
 init|=
@@ -11564,7 +11601,12 @@ name|getPropertyTag
 argument_list|(
 name|tagStr
 argument_list|,
+name|FilenameUtils
+operator|.
+name|getName
+argument_list|(
 name|source
+argument_list|)
 operator|.
 name|split
 argument_list|(
@@ -11575,6 +11617,26 @@ literal|0
 index|]
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|tag1
+operator|!=
+literal|null
+condition|)
+block|{
+comment|//Handle property with no/null value
+if|if
+condition|(
+name|confValue
+operator|==
+literal|null
+condition|)
+block|{
+name|confValue
+operator|=
+literal|""
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|propertyTagsMap
@@ -11630,9 +11692,10 @@ expr_stmt|;
 block|}
 block|}
 block|}
+block|}
 else|else
 block|{
-comment|//If no source is set try to find tag in CorePropertyTag
+comment|// If no source is set try to find tag in CorePropertyTag
 if|if
 condition|(
 name|propertyTagsMap
@@ -11705,12 +11768,11 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|IllegalArgumentException
-name|iae
+name|Exception
+name|ex
 parameter_list|)
 block|{
-comment|//Log the invalid tag and continue to parse rest of the
-comment|// properties.
+comment|// Log the invalid tag and continue to parse rest of the properties.
 name|LOG
 operator|.
 name|info
@@ -11724,8 +11786,20 @@ operator|+
 literal|"property:"
 operator|+
 name|confName
+operator|+
+literal|" Source:"
+operator|+
+name|Arrays
+operator|.
+name|toString
+argument_list|(
+name|confSource
+operator|.
+name|toArray
+argument_list|()
+argument_list|)
 argument_list|,
-name|iae
+name|ex
 argument_list|)
 expr_stmt|;
 block|}
