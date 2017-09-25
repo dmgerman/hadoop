@@ -882,23 +882,6 @@ name|serviceStop
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|setHeartbeatInterval (int interval)
-specifier|public
-name|void
-name|setHeartbeatInterval
-parameter_list|(
-name|int
-name|interval
-parameter_list|)
-block|{
-name|heartbeatIntervalMs
-operator|.
-name|set
-argument_list|(
-name|interval
-argument_list|)
-expr_stmt|;
-block|}
 DECL|method|getMatchingRequests ( Priority priority, String resourceName, Resource capability)
 specifier|public
 name|List
