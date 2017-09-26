@@ -148,20 +148,6 @@ name|List
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|atomic
-operator|.
-name|AtomicInteger
-import|;
-end_import
-
 begin_comment
 comment|/**  * This class is the one that directly talks to SCM server.  *  * NOTE : this is only a mock class, only to allow testing volume  * creation without actually creating containers. In real world, need to be  * replaced with actual container look up calls.  *  */
 end_comment
@@ -177,14 +163,11 @@ block|{
 DECL|field|currentContainerId
 specifier|private
 specifier|static
-name|AtomicInteger
+name|long
 name|currentContainerId
 init|=
-operator|new
-name|AtomicInteger
-argument_list|(
-literal|0
-argument_list|)
+operator|-
+literal|1
 decl_stmt|;
 comment|/**    * Ask SCM to get a exclusive container.    *    * @return A container descriptor object to locate this container    * @throws Exception    */
 annotation|@
@@ -200,14 +183,10 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|int
-name|contId
-init|=
 name|currentContainerId
-operator|.
-name|getAndIncrement
-argument_list|()
-decl_stmt|;
+operator|+=
+literal|1
+expr_stmt|;
 name|ContainerLookUpService
 operator|.
 name|addContainer
@@ -216,7 +195,7 @@ name|Long
 operator|.
 name|toString
 argument_list|(
-name|contId
+name|currentContainerId
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -229,7 +208,7 @@ name|Long
 operator|.
 name|toString
 argument_list|(
-name|contId
+name|currentContainerId
 argument_list|)
 argument_list|)
 operator|.
@@ -420,14 +399,10 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|int
-name|contId
-init|=
 name|currentContainerId
-operator|.
-name|getAndIncrement
-argument_list|()
-decl_stmt|;
+operator|+=
+literal|1
+expr_stmt|;
 name|ContainerLookUpService
 operator|.
 name|addContainer
@@ -436,7 +411,7 @@ name|Long
 operator|.
 name|toString
 argument_list|(
-name|contId
+name|currentContainerId
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -449,7 +424,7 @@ name|Long
 operator|.
 name|toString
 argument_list|(
-name|contId
+name|currentContainerId
 argument_list|)
 argument_list|)
 operator|.

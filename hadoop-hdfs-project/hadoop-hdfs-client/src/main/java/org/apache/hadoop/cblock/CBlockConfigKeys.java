@@ -478,44 +478,6 @@ literal|64
 operator|*
 literal|1024
 decl_stmt|;
-comment|/**    * Cblock CLI configs.    */
-DECL|field|DFS_CBLOCK_MANAGER_POOL_SIZE
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DFS_CBLOCK_MANAGER_POOL_SIZE
-init|=
-literal|"dfs.cblock.manager.pool.size"
-decl_stmt|;
-DECL|field|DFS_CBLOCK_MANAGER_POOL_SIZE_DEFAULT
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|DFS_CBLOCK_MANAGER_POOL_SIZE_DEFAULT
-init|=
-literal|16
-decl_stmt|;
-comment|/**    * currently the largest supported volume is about 8TB, which might take    *> 20 seconds to finish creating containers. thus set timeout to 30 sec.    */
-DECL|field|DFS_CBLOCK_RPC_TIMEOUT_SECONDS
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DFS_CBLOCK_RPC_TIMEOUT_SECONDS
-init|=
-literal|"dfs.cblock.rpc.timeout.seconds"
-decl_stmt|;
-DECL|field|DFS_CBLOCK_RPC_TIMEOUT_SECONDS_DEFAULT
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|DFS_CBLOCK_RPC_TIMEOUT_SECONDS_DEFAULT
-init|=
-literal|300
-decl_stmt|;
 DECL|method|CBlockConfigKeys ()
 specifier|private
 name|CBlockConfigKeys
