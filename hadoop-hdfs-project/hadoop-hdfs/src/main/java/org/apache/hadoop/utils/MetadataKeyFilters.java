@@ -78,6 +78,26 @@ index|[]
 name|nextKey
 parameter_list|)
 function_decl|;
+DECL|method|getKeysScannedNum ()
+specifier|default
+name|int
+name|getKeysScannedNum
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
+DECL|method|getKeysHintedNum ()
+specifier|default
+name|int
+name|getKeysHintedNum
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
 block|}
 comment|/**    * Utility class to filter key by a string prefix. This filter    * assumes keys can be parsed to a string.    */
 DECL|class|KeyPrefixFilter
@@ -95,6 +115,20 @@ name|keyPrefix
 init|=
 literal|null
 decl_stmt|;
+DECL|field|keysScanned
+specifier|private
+name|int
+name|keysScanned
+init|=
+literal|0
+decl_stmt|;
+DECL|field|keysHinted
+specifier|private
+name|int
+name|keysHinted
+init|=
+literal|0
+decl_stmt|;
 DECL|method|KeyPrefixFilter (String keyPrefix)
 specifier|public
 name|KeyPrefixFilter
@@ -110,9 +144,9 @@ operator|=
 name|keyPrefix
 expr_stmt|;
 block|}
-DECL|method|filterKey (byte[] preKey, byte[] currentKey, byte[] nextKey)
 annotation|@
 name|Override
+DECL|method|filterKey (byte[] preKey, byte[] currentKey, byte[] nextKey)
 specifier|public
 name|boolean
 name|filterKey
@@ -130,6 +164,9 @@ index|[]
 name|nextKey
 parameter_list|)
 block|{
+name|keysScanned
+operator|++
+expr_stmt|;
 if|if
 condition|(
 name|Strings
@@ -146,7 +183,8 @@ return|;
 block|}
 else|else
 block|{
-return|return
+if|if
+condition|(
 name|currentKey
 operator|!=
 literal|null
@@ -162,8 +200,43 @@ name|startsWith
 argument_list|(
 name|keyPrefix
 argument_list|)
+condition|)
+block|{
+name|keysHinted
+operator|++
+expr_stmt|;
+return|return
+literal|true
 return|;
 block|}
+return|return
+literal|false
+return|;
+block|}
+block|}
+annotation|@
+name|Override
+DECL|method|getKeysScannedNum ()
+specifier|public
+name|int
+name|getKeysScannedNum
+parameter_list|()
+block|{
+return|return
+name|keysScanned
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getKeysHintedNum ()
+specifier|public
+name|int
+name|getKeysHintedNum
+parameter_list|()
+block|{
+return|return
+name|keysHinted
+return|;
 block|}
 block|}
 block|}
