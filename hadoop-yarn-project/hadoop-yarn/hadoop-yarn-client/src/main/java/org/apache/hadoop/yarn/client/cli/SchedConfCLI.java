@@ -166,7 +166,7 @@ name|classification
 operator|.
 name|InterfaceStability
 operator|.
-name|Evolving
+name|Unstable
 import|;
 end_import
 
@@ -374,7 +374,7 @@ begin_class
 annotation|@
 name|Public
 annotation|@
-name|Evolving
+name|Unstable
 DECL|class|SchedConfCLI
 specifier|public
 class|class
@@ -858,7 +858,7 @@ argument_list|)
 operator|.
 name|path
 argument_list|(
-literal|"sched-conf"
+literal|"scheduler-conf"
 argument_list|)
 operator|.
 name|accept
@@ -1068,7 +1068,7 @@ name|args
 operator|.
 name|split
 argument_list|(
-literal|","
+literal|";"
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -1225,19 +1225,19 @@ parameter_list|)
 block|{
 name|String
 index|[]
-name|queueArgs
+name|args
 init|=
 name|arg
 operator|.
 name|split
 argument_list|(
-literal|","
+literal|":"
 argument_list|)
 decl_stmt|;
 name|String
 name|queuePath
 init|=
-name|queueArgs
+name|args
 index|[
 literal|0
 index|]
@@ -1255,12 +1255,35 @@ name|HashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|args
+operator|.
+name|length
+operator|>
+literal|1
+condition|)
+block|{
+name|String
+index|[]
+name|queueArgs
+init|=
+name|args
+index|[
+literal|1
+index|]
+operator|.
+name|split
+argument_list|(
+literal|","
+argument_list|)
+decl_stmt|;
 for|for
 control|(
 name|int
 name|i
 init|=
-literal|1
+literal|0
 init|;
 name|i
 operator|<
@@ -1282,6 +1305,7 @@ name|i
 index|]
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 return|return
 operator|new
@@ -1442,17 +1466,43 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"yarn schedconf [-add queueAddPath1,confKey1=confVal1,"
+literal|"yarn schedulerconf [-add "
 operator|+
-literal|"confKey2=confVal2;queueAddPath2,confKey3=confVal3] "
+literal|"\"queueAddPath1:confKey1=confVal1,confKey2=confVal2;"
 operator|+
-literal|"[-remove queueRemovePath1,queueRemovePath2] "
+literal|"queueAddPath2:confKey3=confVal3\"] "
 operator|+
-literal|"[-update queueUpdatePath1,confKey1=confVal1] "
+literal|"[-remove \"queueRemovePath1;queueRemovePath2\"] "
+operator|+
+literal|"[-update \"queueUpdatePath1:confKey1=confVal1\"] "
 operator|+
 literal|"[-global globalConfKey1=globalConfVal1,"
 operator|+
-literal|"globalConfKey2=globalConfVal2]"
+literal|"globalConfKey2=globalConfVal2]\n"
+operator|+
+literal|"Example (adding queues): yarn schedulerconf -add "
+operator|+
+literal|"\"root.a.a1:capacity=100,maximum-capacity=100;root.a.a2:capacity=0,"
+operator|+
+literal|"maximum-capacity=0\"\n"
+operator|+
+literal|"Example (removing queues): yarn schedulerconf -remove \"root.a.a1;"
+operator|+
+literal|"root.a.a2\"\n"
+operator|+
+literal|"Example (updating queues): yarn schedulerconf -update \"root.a.a1"
+operator|+
+literal|":capacity=25,maximum-capacity=25;root.a.a2:capacity=75,"
+operator|+
+literal|"maximum-capacity=75\"\n"
+operator|+
+literal|"Example (global scheduler update): yarn schedulerconf "
+operator|+
+literal|"-global yarn.scheduler.capacity.maximum-applications=10000\n"
+operator|+
+literal|"Note: This is an alpha feature, the syntax/options are subject to "
+operator|+
+literal|"change, please run at your own risk."
 argument_list|)
 expr_stmt|;
 block|}

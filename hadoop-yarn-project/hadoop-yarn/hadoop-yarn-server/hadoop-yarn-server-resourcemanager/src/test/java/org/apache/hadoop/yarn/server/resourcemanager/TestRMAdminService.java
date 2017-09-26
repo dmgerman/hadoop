@@ -1661,13 +1661,13 @@ name|configuration
 operator|.
 name|set
 argument_list|(
-name|CapacitySchedulerConfiguration
+name|YarnConfiguration
 operator|.
-name|CS_CONF_PROVIDER
+name|SCHEDULER_CONFIGURATION_STORE_CLASS
 argument_list|,
-name|CapacitySchedulerConfiguration
+name|YarnConfiguration
 operator|.
-name|STORE_CS_CONF_PROVIDER
+name|MEMORY_CONFIGURATION_STORE
 argument_list|)
 expr_stmt|;
 try|try

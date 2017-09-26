@@ -2871,13 +2871,13 @@ name|configuration
 operator|.
 name|get
 argument_list|(
-name|CapacitySchedulerConfiguration
+name|YarnConfiguration
 operator|.
-name|CS_CONF_PROVIDER
+name|SCHEDULER_CONFIGURATION_STORE_CLASS
 argument_list|,
-name|CapacitySchedulerConfiguration
+name|YarnConfiguration
 operator|.
-name|DEFAULT_CS_CONF_PROVIDER
+name|DEFAULT_CONFIGURATION_STORE
 argument_list|)
 decl_stmt|;
 switch|switch
@@ -2886,9 +2886,9 @@ name|confProviderStr
 condition|)
 block|{
 case|case
-name|CapacitySchedulerConfiguration
+name|YarnConfiguration
 operator|.
-name|FILE_CS_CONF_PROVIDER
+name|FILE_CONFIGURATION_STORE
 case|:
 name|this
 operator|.
@@ -2902,9 +2902,19 @@ argument_list|)
 expr_stmt|;
 break|break;
 case|case
-name|CapacitySchedulerConfiguration
+name|YarnConfiguration
 operator|.
-name|STORE_CS_CONF_PROVIDER
+name|MEMORY_CONFIGURATION_STORE
+case|:
+case|case
+name|YarnConfiguration
+operator|.
+name|LEVELDB_CONFIGURATION_STORE
+case|:
+case|case
+name|YarnConfiguration
+operator|.
+name|ZK_CONFIGURATION_STORE
 case|:
 name|this
 operator|.
@@ -2922,7 +2932,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Invalid CS configuration provider: "
+literal|"Invalid configuration store class: "
 operator|+
 name|confProviderStr
 argument_list|)

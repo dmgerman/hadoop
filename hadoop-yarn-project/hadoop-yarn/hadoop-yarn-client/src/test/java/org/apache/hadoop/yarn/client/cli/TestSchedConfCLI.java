@@ -273,7 +273,7 @@ index|[]
 block|{
 literal|"-add"
 block|,
-literal|"root.a,=confVal"
+literal|"root.a:=confVal"
 block|}
 argument_list|)
 decl_stmt|;
@@ -313,7 +313,7 @@ index|[]
 block|{
 literal|"-update"
 block|,
-literal|"root.a,=confVal"
+literal|"root.a:=confVal"
 block|}
 argument_list|)
 expr_stmt|;
@@ -353,7 +353,7 @@ index|[]
 block|{
 literal|"-add"
 block|,
-literal|"root.a,confKey=confVal=conf"
+literal|"root.a:confKey=confVal=conf"
 block|}
 argument_list|)
 expr_stmt|;
@@ -393,7 +393,7 @@ index|[]
 block|{
 literal|"-update"
 block|,
-literal|"root.a,confKey=confVal=c"
+literal|"root.a:confKey=confVal=c"
 block|}
 argument_list|)
 expr_stmt|;
@@ -446,9 +446,7 @@ name|cli
 operator|.
 name|addQueues
 argument_list|(
-literal|"root.a,a1=aVal1,a2=aVal2,"
-operator|+
-literal|"a3="
+literal|"root.a:a1=aVal1,a2=aVal2,a3="
 argument_list|,
 name|schedUpdateInfo
 argument_list|)
@@ -543,7 +541,7 @@ name|cli
 operator|.
 name|addQueues
 argument_list|(
-literal|"root.b,b1=bVal1;root.c,c1=cVal1"
+literal|"root.b:b1=bVal1;root.c:c1=cVal1"
 argument_list|,
 name|schedUpdateInfo
 argument_list|)
@@ -702,7 +700,7 @@ name|cli
 operator|.
 name|removeQueues
 argument_list|(
-literal|"root.a,root.b,root.c.c1"
+literal|"root.a;root.b;root.c.c1"
 argument_list|,
 name|schedUpdateInfo
 argument_list|)
@@ -789,9 +787,7 @@ name|cli
 operator|.
 name|updateQueues
 argument_list|(
-literal|"root.a,a1=aVal1,a2=aVal2,"
-operator|+
-literal|"a3="
+literal|"root.a:a1=aVal1,a2=aVal2,a3="
 argument_list|,
 name|schedUpdateInfo
 argument_list|)
@@ -886,7 +882,7 @@ name|cli
 operator|.
 name|updateQueues
 argument_list|(
-literal|"root.b,b1=bVal1;root.c,c1=cVal1"
+literal|"root.b:b1=bVal1;root.c:c1=cVal1"
 argument_list|,
 name|schedUpdateInfo
 argument_list|)

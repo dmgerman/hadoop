@@ -16332,7 +16332,7 @@ name|PUT
 annotation|@
 name|Path
 argument_list|(
-literal|"/sched-conf"
+literal|"/scheduler-conf"
 argument_list|)
 annotation|@
 name|Produces

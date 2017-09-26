@@ -120,7 +120,7 @@ name|XmlRootElement
 argument_list|(
 name|name
 operator|=
-literal|"schedConf"
+literal|"sched-conf"
 argument_list|)
 annotation|@
 name|XmlAccessorType

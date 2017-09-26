@@ -444,7 +444,7 @@ name|SCHEDULER_CONFIGURATION_STORE_CLASS
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DEFAULT_CONFIGURATION_STORE
+name|MEMORY_CONFIGURATION_STORE
 argument_list|)
 decl_stmt|;
 switch|switch

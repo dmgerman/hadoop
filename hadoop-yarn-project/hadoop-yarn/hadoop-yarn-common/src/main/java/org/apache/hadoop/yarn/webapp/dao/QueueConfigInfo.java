@@ -120,7 +120,7 @@ name|XmlElement
 argument_list|(
 name|name
 operator|=
-literal|"queueName"
+literal|"queue-name"
 argument_list|)
 DECL|field|queue
 specifier|private
