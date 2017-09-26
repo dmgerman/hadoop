@@ -1184,7 +1184,7 @@ name|dnID
 operator|.
 name|setContainerPort
 argument_list|(
-name|ScmConfigKeys
+name|OzoneConfigKeys
 operator|.
 name|DFS_CONTAINER_IPC_PORT_DEFAULT
 argument_list|)

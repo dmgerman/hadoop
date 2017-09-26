@@ -2437,11 +2437,11 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-name|ScmConfigKeys
+name|OzoneConfigKeys
 operator|.
 name|DFS_CONTAINER_IPC_PORT
 argument_list|,
-name|ScmConfigKeys
+name|OzoneConfigKeys
 operator|.
 name|DFS_CONTAINER_IPC_PORT_DEFAULT
 argument_list|)
