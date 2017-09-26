@@ -198,6 +198,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ha
+operator|.
+name|HAServiceProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|UserGroupInformation
@@ -995,6 +1009,31 @@ argument_list|,
 name|NOOP
 argument_list|)
 decl_stmt|;
+comment|// When failing over, if using configuration store, don't validate queue
+comment|// hierarchy since queues can be removed without being STOPPED.
+if|if
+condition|(
+operator|!
+name|csContext
+operator|.
+name|isConfigurationMutable
+argument_list|()
+operator|||
+name|csContext
+operator|.
+name|getRMContext
+argument_list|()
+operator|.
+name|getHAServiceState
+argument_list|()
+operator|!=
+name|HAServiceProtocol
+operator|.
+name|HAServiceState
+operator|.
+name|STANDBY
+condition|)
+block|{
 comment|// Ensure queue hiearchy in the new XML file is proper.
 name|validateQueueHierarchy
 argument_list|(
@@ -1003,6 +1042,7 @@ argument_list|,
 name|newQueues
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Add new queues and delete OldQeueus only after validation.
 name|updateQueues
 argument_list|(
