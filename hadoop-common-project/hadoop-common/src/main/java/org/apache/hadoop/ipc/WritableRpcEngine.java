@@ -1225,7 +1225,7 @@ name|startTime
 operator|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 block|}
@@ -1328,7 +1328,7 @@ name|callTime
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 operator|-
 name|startTime
