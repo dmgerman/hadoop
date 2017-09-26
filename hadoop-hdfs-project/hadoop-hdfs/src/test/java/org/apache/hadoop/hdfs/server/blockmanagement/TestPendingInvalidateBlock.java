@@ -1137,8 +1137,6 @@ name|dnprops
 index|[
 name|i
 index|]
-argument_list|,
-literal|true
 argument_list|)
 expr_stmt|;
 block|}
