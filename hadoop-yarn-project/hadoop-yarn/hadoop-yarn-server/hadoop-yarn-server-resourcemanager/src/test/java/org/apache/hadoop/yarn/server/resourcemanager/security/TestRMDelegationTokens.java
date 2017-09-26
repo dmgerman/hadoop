@@ -298,7 +298,7 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|MockRMMemoryStateStore
+name|MockMemoryRMStateStore
 import|;
 end_import
 
@@ -637,7 +637,7 @@ name|MemoryRMStateStore
 name|memStore
 init|=
 operator|new
-name|MockRMMemoryStateStore
+name|MockMemoryRMStateStore
 argument_list|()
 decl_stmt|;
 name|memStore
@@ -909,7 +909,7 @@ name|MemoryRMStateStore
 name|memStore
 init|=
 operator|new
-name|MockRMMemoryStateStore
+name|MockMemoryRMStateStore
 argument_list|()
 decl_stmt|;
 name|memStore

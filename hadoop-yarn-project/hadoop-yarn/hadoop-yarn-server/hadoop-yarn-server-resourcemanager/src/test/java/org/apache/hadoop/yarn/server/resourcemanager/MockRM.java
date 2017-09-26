@@ -1910,11 +1910,11 @@ name|class
 argument_list|)
 condition|)
 block|{
-name|MockRMMemoryStateStore
+name|MockMemoryRMStateStore
 name|mockStateStore
 init|=
 operator|new
-name|MockRMMemoryStateStore
+name|MockMemoryRMStateStore
 argument_list|()
 decl_stmt|;
 name|mockStateStore

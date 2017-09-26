@@ -8499,15 +8499,8 @@ expr_stmt|;
 comment|// set the memory free
 name|app
 operator|.
-name|submissionContext
-operator|.
-name|getAMContainerSpec
+name|clearUnusedFields
 argument_list|()
-operator|.
-name|setTokensConf
-argument_list|(
-literal|null
-argument_list|)
 expr_stmt|;
 block|}
 empty_stmt|;
@@ -11222,6 +11215,32 @@ operator|.
 name|applicationPriority
 operator|=
 name|applicationPriority
+expr_stmt|;
+block|}
+comment|/**      * Clear Unused fields to free memory.      * @param app      */
+DECL|method|clearUnusedFields ()
+specifier|private
+name|void
+name|clearUnusedFields
+parameter_list|()
+block|{
+name|this
+operator|.
+name|submissionContext
+operator|.
+name|setAMContainerSpec
+argument_list|(
+literal|null
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|submissionContext
+operator|.
+name|setLogAggregationContext
+argument_list|(
+literal|null
+argument_list|)
 expr_stmt|;
 block|}
 block|}

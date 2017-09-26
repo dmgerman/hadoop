@@ -2490,7 +2490,7 @@ name|MemoryRMStateStore
 name|memStore
 init|=
 operator|new
-name|MockRMMemoryStateStore
+name|MockMemoryRMStateStore
 argument_list|()
 block|{
 name|int
@@ -2705,7 +2705,7 @@ name|MemoryRMStateStore
 name|memStore
 init|=
 operator|new
-name|MockRMMemoryStateStore
+name|MockMemoryRMStateStore
 argument_list|()
 block|{
 annotation|@
