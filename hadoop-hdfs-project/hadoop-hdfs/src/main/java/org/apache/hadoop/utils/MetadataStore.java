@@ -200,7 +200,7 @@ name|IOException
 throws|,
 name|IllegalArgumentException
 function_decl|;
-comment|/**    * This method is very similar with    * {@link #getRangeKVs(byte[], int, MetadataKeyFilter...)}, the only    * different is this method is supposed to return a sequential range    * of elements based on the filters. While iterating the elements,    * if it met any entry that cannot pass the filter, the iterator will stop    * from this point without looking for next match. If no filter is given,    * this method behaves just like    * {@link #getRangeKVs(byte[], int, MetadataKeyFilter...)}.    *    * @param startKey a start key.    * @param count max number of entries to return.    * @param filters customized one or more {@link MetadataKeyFilter}.    * @return a list of entries found in the database.    * @throws IOException    * @throws IllegalArgumentException    */
+comment|/**    * This method is very similar to {@link #getRangeKVs}, the only    * different is this method is supposed to return a sequential range    * of elements based on the filters. While iterating the elements,    * if it met any entry that cannot pass the filter, the iterator will stop    * from this point without looking for next match. If no filter is given,    * this method behaves just like {@link #getRangeKVs}.    *    * @param startKey a start key.    * @param count max number of entries to return.    * @param filters customized one or more {@link MetadataKeyFilter}.    * @return a list of entries found in the database.    * @throws IOException    * @throws IllegalArgumentException    */
 DECL|method|getSequentialRangeKVs (byte[] startKey, int count, MetadataKeyFilter... filters)
 name|List
 argument_list|<

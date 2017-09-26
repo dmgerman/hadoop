@@ -210,7 +210,7 @@ name|obj
 argument_list|)
 return|;
 block|}
-comment|/**    * Deserialize a list of elements from a given string,    * each element in the list is in the given type.    *    * @param str json string.    * @param elementType element type.    * @return    * @throws IOException    */
+comment|/**    * Deserialize a list of elements from a given string,    * each element in the list is in the given type.    *    * @param str json string.    * @param elementType element type.    * @return List of elements of type elementType    * @throws IOException    */
 DECL|method|toJsonList (String str, Class<?> elementType)
 specifier|public
 specifier|static
