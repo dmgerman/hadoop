@@ -543,6 +543,24 @@ name|port
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
+DECL|method|testListKeyOnEmptyBucket ()
+specifier|public
+name|void
+name|testListKeyOnEmptyBucket
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|super
+operator|.
+name|testListKeyOnEmptyBucket
+argument_list|(
+name|port
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 
