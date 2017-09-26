@@ -3694,7 +3694,7 @@ name|MR_AM_STAGING_DIR_ERASURECODING_ENABLED
 init|=
 name|MR_AM_STAGING_DIR
 operator|+
-literal|"erasurecoding.enabled"
+literal|".erasurecoding.enabled"
 decl_stmt|;
 DECL|field|DEFAULT_MR_AM_STAGING_ERASURECODING_ENABLED
 name|boolean
