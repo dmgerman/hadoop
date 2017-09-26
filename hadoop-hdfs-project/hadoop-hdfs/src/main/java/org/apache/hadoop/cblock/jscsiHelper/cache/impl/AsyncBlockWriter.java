@@ -598,6 +598,19 @@ name|getBlockID
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|String
+name|traceID
+init|=
+name|parentCache
+operator|.
+name|getTraceID
+argument_list|(
+name|block
+operator|.
+name|getBlockID
+argument_list|()
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|parentCache
@@ -799,15 +812,7 @@ operator|.
 name|array
 argument_list|()
 argument_list|,
-name|parentCache
-operator|.
-name|getTraceID
-argument_list|(
-name|block
-operator|.
-name|getBlockID
-argument_list|()
-argument_list|)
+name|traceID
 argument_list|)
 expr_stmt|;
 name|long
@@ -903,12 +908,16 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Direct I/O writing of block:{} to container {} failed"
+literal|"Direct I/O writing of block:{} traceID:{} to "
+operator|+
+literal|"container {} failed"
 argument_list|,
 name|block
 operator|.
 name|getBlockID
 argument_list|()
+argument_list|,
+name|traceID
 argument_list|,
 name|containerName
 argument_list|,
