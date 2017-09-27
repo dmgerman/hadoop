@@ -869,13 +869,9 @@ init|=
 literal|null
 decl_stmt|;
 DECL|field|timeouts
-specifier|protected
+specifier|private
 name|AppTimeoutsInfo
 name|timeouts
-init|=
-operator|new
-name|AppTimeoutsInfo
-argument_list|()
 decl_stmt|;
 DECL|method|AppInfo ()
 specifier|public
@@ -1684,6 +1680,20 @@ operator|.
 name|getNodeLabelExpression
 argument_list|()
 expr_stmt|;
+comment|/*        * When the deSelects parameter contains "amNodeLabelExpression", objects        * pertaining to the amNodeLabelExpression are not returned. By default,        * this is not skipped. (YARN-6871)        */
+if|if
+condition|(
+operator|!
+name|deSelects
+operator|.
+name|contains
+argument_list|(
+name|DeSelectType
+operator|.
+name|AM_NODE_LABEL_EXPRESSION
+argument_list|)
+condition|)
+block|{
 name|amNodeLabelExpression
 operator|=
 operator|(
@@ -1705,7 +1715,83 @@ operator|.
 name|getNodeLabelExpression
 argument_list|()
 expr_stmt|;
+block|}
+comment|/*        * When the deSelects parameter contains "appNodeLabelExpression", objects        * pertaining to the appNodeLabelExpression are not returned. By default,        * this is not skipped. (YARN-6871)        */
+if|if
+condition|(
+operator|!
+name|deSelects
+operator|.
+name|contains
+argument_list|(
+name|DeSelectType
+operator|.
+name|APP_NODE_LABEL_EXPRESSION
+argument_list|)
+condition|)
+block|{
+name|appNodeLabelExpression
+operator|=
+name|app
+operator|.
+name|getApplicationSubmissionContext
+argument_list|()
+operator|.
+name|getNodeLabelExpression
+argument_list|()
+expr_stmt|;
+block|}
+comment|/*        * When the deSelects parameter contains "amNodeLabelExpression", objects        * pertaining to the amNodeLabelExpression are not returned. By default,        * this is not skipped. (YARN-6871)        */
+if|if
+condition|(
+operator|!
+name|deSelects
+operator|.
+name|contains
+argument_list|(
+name|DeSelectType
+operator|.
+name|AM_NODE_LABEL_EXPRESSION
+argument_list|)
+condition|)
+block|{
+name|amNodeLabelExpression
+operator|=
+operator|(
+name|unmanagedApplication
+operator|)
+condition|?
+literal|null
+else|:
+name|app
+operator|.
+name|getAMResourceRequests
+argument_list|()
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|getNodeLabelExpression
+argument_list|()
+expr_stmt|;
+block|}
+comment|/*        * When the deSelects parameter contains "resourceInfo", ResourceInfo        * objects are not returned. Default behavior is no skipping. (YARN-6871)        */
 comment|// Setting partition based resource usage of application
+if|if
+condition|(
+operator|!
+name|deSelects
+operator|.
+name|contains
+argument_list|(
+name|DeSelectType
+operator|.
+name|RESOURCE_INFO
+argument_list|)
+condition|)
+block|{
 name|ResourceScheduler
 name|scheduler
 init|=
@@ -1776,6 +1862,21 @@ literal|null
 expr_stmt|;
 block|}
 block|}
+block|}
+comment|/*        * When the deSelects parameter contains "appTimeouts", objects pertaining        * to app timeouts are not returned. By default, this is not skipped.        * (YARN-6871)        */
+if|if
+condition|(
+operator|!
+name|deSelects
+operator|.
+name|contains
+argument_list|(
+name|DeSelectType
+operator|.
+name|TIMEOUTS
+argument_list|)
+condition|)
+block|{
 name|Map
 argument_list|<
 name|ApplicationTimeoutType
@@ -1797,8 +1898,8 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-comment|// If application is not set timeout, lifetime should be sent as default
-comment|// with expiryTime=UNLIMITED and remainingTime=-1
+comment|// If application is not set timeout, lifetime should be sent
+comment|// as default with expiryTime=UNLIMITED and remainingTime=-1
 name|AppTimeoutInfo
 name|timeoutInfo
 init|=
@@ -1814,6 +1915,12 @@ name|ApplicationTimeoutType
 operator|.
 name|LIFETIME
 argument_list|)
+expr_stmt|;
+name|timeouts
+operator|=
+operator|new
+name|AppTimeoutsInfo
+argument_list|()
 expr_stmt|;
 name|timeouts
 operator|.
@@ -1935,6 +2042,7 @@ argument_list|(
 name|timeout
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}
