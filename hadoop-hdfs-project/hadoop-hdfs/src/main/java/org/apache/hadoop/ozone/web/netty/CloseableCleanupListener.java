@@ -116,7 +116,7 @@ parameter_list|)
 block|{
 name|IOUtils
 operator|.
-name|cleanup
+name|cleanupWithLogger
 argument_list|(
 literal|null
 argument_list|,
