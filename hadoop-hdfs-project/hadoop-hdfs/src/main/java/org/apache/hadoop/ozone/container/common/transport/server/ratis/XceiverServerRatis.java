@@ -651,7 +651,7 @@ name|get
 argument_list|(
 name|OzoneConfigKeys
 operator|.
-name|OZONE_CONTAINER_METADATA_DIRS
+name|OZONE_METADATA_DIRS
 argument_list|)
 expr_stmt|;
 name|Preconditions
@@ -660,7 +660,7 @@ name|checkNotNull
 argument_list|(
 name|storageDir
 argument_list|,
-literal|"ozone.container.metadata.dirs "
+literal|"ozone.metadata.dirs "
 operator|+
 literal|"cannot be null, Please check your configs."
 argument_list|)

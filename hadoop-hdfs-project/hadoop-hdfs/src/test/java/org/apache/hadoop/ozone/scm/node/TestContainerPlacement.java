@@ -684,7 +684,7 @@ name|set
 argument_list|(
 name|OzoneConfigKeys
 operator|.
-name|OZONE_CONTAINER_METADATA_DIRS
+name|OZONE_METADATA_DIRS
 argument_list|,
 name|testDir
 operator|.

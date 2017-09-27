@@ -587,6 +587,15 @@ name|OZONE_SCM_DATANODE_ID
 init|=
 literal|"ozone.scm.datanode.id"
 decl_stmt|;
+DECL|field|OZONE_SCM_DATANODE_ID_PATH_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_SCM_DATANODE_ID_PATH_DEFAULT
+init|=
+literal|"datanode.id"
+decl_stmt|;
 DECL|field|OZONE_SCM_DB_CACHE_SIZE_MB
 specifier|public
 specifier|static

@@ -776,7 +776,7 @@ name|get
 argument_list|(
 name|OzoneConfigKeys
 operator|.
-name|OZONE_CONTAINER_METADATA_DIRS
+name|OZONE_METADATA_DIRS
 argument_list|)
 operator|+
 literal|"-dn-"
@@ -801,7 +801,7 @@ name|dnConf
 argument_list|,
 name|OzoneConfigKeys
 operator|.
-name|OZONE_CONTAINER_METADATA_DIRS
+name|OZONE_METADATA_DIRS
 argument_list|,
 name|containerMetaDirs
 argument_list|)
@@ -2405,7 +2405,7 @@ name|set
 argument_list|(
 name|OzoneConfigKeys
 operator|.
-name|OZONE_CONTAINER_METADATA_DIRS
+name|OZONE_METADATA_DIRS
 argument_list|,
 name|scmMetadataDir
 operator|.
@@ -2466,7 +2466,7 @@ name|set
 argument_list|(
 name|OzoneConfigKeys
 operator|.
-name|OZONE_CONTAINER_METADATA_DIRS
+name|OZONE_METADATA_DIRS
 argument_list|,
 name|scmPath
 operator|.

@@ -278,14 +278,14 @@ name|OZONE_TRACE_ENABLED_DEFAULT
 init|=
 literal|false
 decl_stmt|;
-DECL|field|OZONE_CONTAINER_METADATA_DIRS
+DECL|field|OZONE_METADATA_DIRS
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|OZONE_CONTAINER_METADATA_DIRS
+name|OZONE_METADATA_DIRS
 init|=
-literal|"ozone.container.metadata.dirs"
+literal|"ozone.metadata.dirs"
 decl_stmt|;
 DECL|field|OZONE_METADATA_STORE_IMPL
 specifier|public
