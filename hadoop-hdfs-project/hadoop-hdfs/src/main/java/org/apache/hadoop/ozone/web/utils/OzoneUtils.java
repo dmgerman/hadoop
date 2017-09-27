@@ -1142,12 +1142,9 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|Strings
-operator|.
-name|isNullOrEmpty
-argument_list|(
 name|dataNodeIDPath
-argument_list|)
+operator|==
+literal|null
 condition|)
 block|{
 name|String
