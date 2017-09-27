@@ -1190,9 +1190,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Key: {} not found"
+literal|"volume:{} bucket:{} Key:{} not found"
 argument_list|,
-name|keyKey
+name|volumeName
+argument_list|,
+name|bucketName
+argument_list|,
+name|keyName
 argument_list|)
 expr_stmt|;
 throw|throw

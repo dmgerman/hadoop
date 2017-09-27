@@ -64,6 +64,35 @@ name|OZONE_USER_DIR
 init|=
 literal|"/user"
 decl_stmt|;
+comment|/** Local buffer directory. */
+DECL|field|BUFFER_DIR_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|BUFFER_DIR_KEY
+init|=
+literal|"fs.ozone.buffer.dir"
+decl_stmt|;
+comment|/** Temporary directory. */
+DECL|field|BUFFER_TMP_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|BUFFER_TMP_KEY
+init|=
+literal|"hadoop.tmp.dir"
+decl_stmt|;
+DECL|field|OZONE_URI_DELIMITER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_URI_DELIMITER
+init|=
+literal|"/"
+decl_stmt|;
 DECL|method|Constants ()
 specifier|private
 name|Constants
