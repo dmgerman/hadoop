@@ -460,7 +460,7 @@ argument_list|()
 operator|.
 name|__
 argument_list|(
-literal|"Invalid log start value: "
+literal|"Invalid log end value: "
 operator|+
 name|$
 argument_list|(
