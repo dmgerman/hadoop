@@ -134,6 +134,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|URL
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|client
 operator|.
 name|api
@@ -213,15 +231,15 @@ name|name
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    *<p>    * The method to claim a resource with the<code>SharedCacheManager.</code>    * The client uses a checksum to identify the resource and an    * {@link ApplicationId} to identify which application will be using the    * resource.    *</p>    *    *<p>    * The<code>SharedCacheManager</code> responds with whether or not the    * resource exists in the cache. If the resource exists, a<code>Path</code>    * to the resource in the shared cache is returned. If the resource does not    * exist, null is returned instead.    *</p>    *    *<p>    * Once a path has been returned for a resource, that path is safe to use for    * the lifetime of the application that corresponds to the provided    * ApplicationId.    *</p>    *    *<p>    * Additionally, a name for the resource should be specified. A fragment will    * be added to the path with the desired name if the desired name is different    * than the name of the provided path from the shared cache. This ensures that    * if the returned path is used to create a LocalResource, then the symlink    * created during YARN localization will match the name specified.    *</p>    *    * @param applicationId ApplicationId of the application using the resource    * @param resourceKey the key (i.e. checksum) that identifies the resource    * @param resourceName the desired name of the resource    * @return Path to the resource, or null if it does not exist    */
+comment|/**    *<p>    * The method to claim a resource with the<code>SharedCacheManager.</code>    * The client uses a checksum to identify the resource and an    * {@link ApplicationId} to identify which application will be using the    * resource.    *</p>    *    *<p>    * The<code>SharedCacheManager</code> responds with whether or not the    * resource exists in the cache. If the resource exists, a<code>URL</code> to    * the resource in the shared cache is returned. If the resource does not    * exist, null is returned instead.    *</p>    *    *<p>    * Once a URL has been returned for a resource, that URL is safe to use for    * the lifetime of the application that corresponds to the provided    * ApplicationId.    *</p>    *    * @param applicationId ApplicationId of the application using the resource    * @param resourceKey the key (i.e. checksum) that identifies the resource    * @return URL to the resource, or null if it does not exist    */
 annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|use (ApplicationId applicationId, String resourceKey, String resourceName)
+DECL|method|use (ApplicationId applicationId, String resourceKey)
 specifier|public
 specifier|abstract
-name|Path
+name|URL
 name|use
 parameter_list|(
 name|ApplicationId
@@ -229,9 +247,6 @@ name|applicationId
 parameter_list|,
 name|String
 name|resourceKey
-parameter_list|,
-name|String
-name|resourceName
 parameter_list|)
 throws|throws
 name|YarnException

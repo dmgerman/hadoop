@@ -44,26 +44,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|net
-operator|.
-name|URI
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|URISyntaxException
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -277,6 +257,24 @@ operator|.
 name|records
 operator|.
 name|ApplicationId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|URL
 import|;
 end_import
 
@@ -700,9 +698,9 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|use (ApplicationId applicationId, String resourceKey, String resourceName)
+DECL|method|use (ApplicationId applicationId, String resourceKey)
 specifier|public
-name|Path
+name|URL
 name|use
 parameter_list|(
 name|ApplicationId
@@ -710,9 +708,6 @@ name|applicationId
 parameter_list|,
 name|String
 name|resourceKey
-parameter_list|,
-name|String
-name|resourceName
 parameter_list|)
 throws|throws
 name|YarnException
@@ -813,96 +808,27 @@ operator|!=
 literal|null
 condition|)
 block|{
-if|if
-condition|(
-name|resourcePath
+name|URL
+name|pathURL
+init|=
+name|URL
 operator|.
-name|getName
-argument_list|()
-operator|.
-name|equals
+name|fromPath
 argument_list|(
-name|resourceName
-argument_list|)
-condition|)
-block|{
-comment|// The preferred name is the same as the name of the item in the cache,
-comment|// so we skip generating the fragment to save space in the MRconfig.
-return|return
 name|resourcePath
+argument_list|)
+decl_stmt|;
+return|return
+name|pathURL
 return|;
 block|}
 else|else
 block|{
-comment|// We are using the shared cache, and a preferred name has been
-comment|// specified that is different than the name of the resource in the
-comment|// shared cache. We need to set the fragment portion of the URI to
-comment|// preserve the desired name.
-name|URI
-name|pathURI
-init|=
-name|resourcePath
-operator|.
-name|toUri
-argument_list|()
-decl_stmt|;
-try|try
-block|{
-comment|// We assume that there is no existing fragment in the URI since the
-comment|// shared cache manager does not use fragments.
-name|pathURI
-operator|=
-operator|new
-name|URI
-argument_list|(
-name|pathURI
-operator|.
-name|getScheme
-argument_list|()
-argument_list|,
-name|pathURI
-operator|.
-name|getSchemeSpecificPart
-argument_list|()
-argument_list|,
-name|resourceName
-argument_list|)
-expr_stmt|;
-name|resourcePath
-operator|=
-operator|new
-name|Path
-argument_list|(
-name|pathURI
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|URISyntaxException
-name|e
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|YarnException
-argument_list|(
-literal|"Could not create a new URI due to syntax errors: "
-operator|+
-name|pathURI
-operator|.
-name|toString
-argument_list|()
-argument_list|,
-name|e
-argument_list|)
-throw|;
-block|}
-block|}
-block|}
+comment|// The resource was not in the cache.
 return|return
-name|resourcePath
+literal|null
 return|;
+block|}
 block|}
 annotation|@
 name|Override
