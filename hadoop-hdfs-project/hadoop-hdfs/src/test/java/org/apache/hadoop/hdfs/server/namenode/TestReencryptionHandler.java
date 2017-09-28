@@ -749,7 +749,7 @@ argument_list|()
 expr_stmt|;
 name|assertTrue
 argument_list|(
-literal|"should have throttled for at least 4 second"
+literal|"should have throttled for at least 8 second"
 argument_list|,
 name|sw
 operator|.
@@ -765,7 +765,7 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-literal|"should have throttled for at most 6 second"
+literal|"should have throttled for at most 12 second"
 argument_list|,
 name|sw
 operator|.
@@ -1319,6 +1319,22 @@ operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Throttle completed, consumed {}"
+argument_list|,
+name|sw
+operator|.
+name|now
+argument_list|(
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|assertTrue
 argument_list|(
 literal|"should have throttled for at least 3 second"
@@ -1331,7 +1347,7 @@ name|TimeUnit
 operator|.
 name|MILLISECONDS
 argument_list|)
-operator|>
+operator|>=
 literal|3000
 argument_list|)
 expr_stmt|;

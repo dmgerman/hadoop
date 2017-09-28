@@ -140,18 +140,6 @@ name|util
 operator|.
 name|concurrent
 operator|.
-name|TimeUnit
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
 name|TimeoutException
 import|;
 end_import
@@ -1015,21 +1003,6 @@ argument_list|,
 literal|5
 argument_list|)
 expr_stmt|;
-name|conf
-operator|.
-name|setTimeDuration
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_REENCRYPT_SLEEP_INTERVAL_KEY
-argument_list|,
-literal|1
-argument_list|,
-name|TimeUnit
-operator|.
-name|SECONDS
-argument_list|)
-expr_stmt|;
 name|cluster
 operator|=
 operator|new
@@ -1051,6 +1024,11 @@ expr_stmt|;
 name|cluster
 operator|.
 name|waitActive
+argument_list|()
+expr_stmt|;
+name|cluster
+operator|.
+name|waitClusterUp
 argument_list|()
 expr_stmt|;
 name|fs
@@ -8481,6 +8459,11 @@ operator|.
 name|waitActive
 argument_list|()
 expr_stmt|;
+name|cluster
+operator|.
+name|waitClusterUp
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|waitForReencryptedZones (final int expected)
 specifier|private
@@ -9802,6 +9785,12 @@ expr_stmt|;
 name|getEzManager
 argument_list|()
 operator|.
+name|pauseReencryptUpdaterForTesting
+argument_list|()
+expr_stmt|;
+name|getEzManager
+argument_list|()
+operator|.
 name|resumeReencryptForTesting
 argument_list|()
 expr_stmt|;
@@ -9843,12 +9832,6 @@ literal|100
 argument_list|,
 literal|10000
 argument_list|)
-expr_stmt|;
-name|getEzManager
-argument_list|()
-operator|.
-name|pauseReencryptUpdaterForTesting
-argument_list|()
 expr_stmt|;
 name|dfsAdmin
 operator|.
@@ -10371,7 +10354,7 @@ argument_list|()
 expr_stmt|;
 name|cluster
 operator|.
-name|waitActive
+name|waitClusterUp
 argument_list|()
 expr_stmt|;
 comment|// test re-encrypt should fail
@@ -10786,6 +10769,14 @@ name|SafeModeAction
 operator|.
 name|SAFEMODE_LEAVE
 argument_list|)
+expr_stmt|;
+comment|// trigger the background thread to run, without having to
+comment|// wait for DFS_NAMENODE_REENCRYPT_SLEEP_INTERVAL_KEY
+name|getHandler
+argument_list|()
+operator|.
+name|notifyNewSubmission
+argument_list|()
 expr_stmt|;
 name|waitForReencryptedFiles
 argument_list|(
