@@ -24,12 +24,22 @@ name|container
 package|;
 end_package
 
+begin_comment
+comment|/**  * States used by the container state machine.  */
+end_comment
+
 begin_enum
 DECL|enum|ContainerState
 specifier|public
 enum|enum
 name|ContainerState
 block|{
+comment|// NOTE: In case of future additions / deletions / modifications to this
+comment|//       enum, please ensure that the following are also correspondingly
+comment|//       updated:
+comment|//       1. ContainerImpl::getContainerSubState().
+comment|//       2. the doc in the ContainerSubState class.
+comment|//       3. the doc in the yarn_protos.proto file.
 DECL|enumConstant|NEW
 DECL|enumConstant|LOCALIZING
 DECL|enumConstant|LOCALIZATION_FAILED

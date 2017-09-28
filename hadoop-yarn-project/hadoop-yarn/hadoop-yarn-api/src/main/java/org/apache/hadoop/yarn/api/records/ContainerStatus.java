@@ -528,6 +528,47 @@ literal|"subclass must implement this method"
 argument_list|)
 throw|;
 block|}
+comment|/**    * Add Extra state information of the container (SCHEDULED, LOCALIZING etc.).    * @param subState Extra State Information.    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setContainerSubState (ContainerSubState subState)
+specifier|public
+name|void
+name|setContainerSubState
+parameter_list|(
+name|ContainerSubState
+name|subState
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"subclass must implement this method"
+argument_list|)
+throw|;
+block|}
+comment|/**    * Get Extra state information of the container (SCHEDULED, LOCALIZING etc.).    * @return Extra State information.    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|getContainerSubState ()
+specifier|public
+name|ContainerSubState
+name|getContainerSubState
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"subclass must implement this method"
+argument_list|)
+throw|;
+block|}
 block|}
 end_class
 

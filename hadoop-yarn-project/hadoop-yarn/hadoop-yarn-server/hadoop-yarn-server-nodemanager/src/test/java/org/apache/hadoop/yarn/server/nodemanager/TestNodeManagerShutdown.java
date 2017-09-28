@@ -1886,10 +1886,6 @@ argument_list|(
 name|ContainerState
 operator|.
 name|RUNNING
-argument_list|,
-name|ContainerState
-operator|.
-name|SCHEDULED
 argument_list|)
 operator|.
 name|contains

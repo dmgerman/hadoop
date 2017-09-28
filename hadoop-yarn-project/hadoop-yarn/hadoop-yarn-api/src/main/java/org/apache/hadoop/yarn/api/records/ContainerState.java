@@ -47,20 +47,6 @@ operator|.
 name|classification
 operator|.
 name|InterfaceStability
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceStability
 operator|.
 name|Stable
 import|;
@@ -91,19 +77,6 @@ block|,
 comment|/** Completed container */
 DECL|enumConstant|COMPLETE
 name|COMPLETE
-block|,
-comment|/** Scheduled (awaiting resources) at the NM. */
-DECL|enumConstant|InterfaceStability.Unstable
-annotation|@
-name|InterfaceStability
-operator|.
-name|Unstable
-DECL|enumConstant|SCHEDULED
-name|SCHEDULED
-block|,
-comment|/** Paused at the NM. */
-DECL|enumConstant|PAUSED
-name|PAUSED
 block|}
 end_enum
 
