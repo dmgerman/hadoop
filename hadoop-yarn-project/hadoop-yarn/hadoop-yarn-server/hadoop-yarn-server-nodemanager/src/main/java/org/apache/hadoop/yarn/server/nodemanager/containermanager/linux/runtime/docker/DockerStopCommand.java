@@ -66,6 +66,8 @@ name|super
 operator|.
 name|addCommandArguments
 argument_list|(
+literal|"name"
+argument_list|,
 name|containerName
 argument_list|)
 expr_stmt|;
@@ -83,8 +85,8 @@ name|super
 operator|.
 name|addCommandArguments
 argument_list|(
-literal|"--time="
-operator|+
+literal|"time"
+argument_list|,
 name|Integer
 operator|.
 name|toString

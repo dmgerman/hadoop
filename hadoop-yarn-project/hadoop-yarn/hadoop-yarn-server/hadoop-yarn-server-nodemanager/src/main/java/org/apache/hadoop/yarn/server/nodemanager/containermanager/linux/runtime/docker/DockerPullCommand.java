@@ -66,6 +66,8 @@ name|super
 operator|.
 name|addCommandArguments
 argument_list|(
+literal|"image"
+argument_list|,
 name|imageName
 argument_list|)
 expr_stmt|;

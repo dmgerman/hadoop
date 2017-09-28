@@ -930,7 +930,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|1
+literal|3
 argument_list|,
 name|dockerCommands
 operator|.
@@ -940,7 +940,31 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"rm "
+literal|"[docker-command-execution]"
+argument_list|,
+name|dockerCommands
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"  docker-command=rm"
+argument_list|,
+name|dockerCommands
+operator|.
+name|get
+argument_list|(
+literal|1
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"  name="
 operator|+
 name|MOCK_CONTAINER_ID
 argument_list|,
@@ -948,7 +972,7 @@ name|dockerCommands
 operator|.
 name|get
 argument_list|(
-literal|0
+literal|2
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1054,7 +1078,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|1
+literal|3
 argument_list|,
 name|dockerCommands
 operator|.
@@ -1064,7 +1088,31 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"stop "
+literal|"[docker-command-execution]"
+argument_list|,
+name|dockerCommands
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"  docker-command=stop"
+argument_list|,
+name|dockerCommands
+operator|.
+name|get
+argument_list|(
+literal|1
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"  name="
 operator|+
 name|MOCK_CONTAINER_ID
 argument_list|,
@@ -1072,7 +1120,7 @@ name|dockerCommands
 operator|.
 name|get
 argument_list|(
-literal|0
+literal|2
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1181,7 +1229,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|1
+literal|4
 argument_list|,
 name|dockerCommands
 operator|.
@@ -1191,7 +1239,43 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"inspect --format='{{.State.Status}}' "
+literal|"[docker-command-execution]"
+argument_list|,
+name|dockerCommands
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"  docker-command=inspect"
+argument_list|,
+name|dockerCommands
+operator|.
+name|get
+argument_list|(
+literal|1
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"  format={{.State.Status}}"
+argument_list|,
+name|dockerCommands
+operator|.
+name|get
+argument_list|(
+literal|2
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"  name="
 operator|+
 name|MOCK_CONTAINER_ID
 argument_list|,
@@ -1199,7 +1283,7 @@ name|dockerCommands
 operator|.
 name|get
 argument_list|(
-literal|0
+literal|3
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1305,7 +1389,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|1
+literal|3
 argument_list|,
 name|dockerCommands
 operator|.
@@ -1315,7 +1399,31 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"pull "
+literal|"[docker-command-execution]"
+argument_list|,
+name|dockerCommands
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"  docker-command=pull"
+argument_list|,
+name|dockerCommands
+operator|.
+name|get
+argument_list|(
+literal|1
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"  image="
 operator|+
 name|MOCK_IMAGE_NAME
 argument_list|,
@@ -1323,7 +1431,7 @@ name|dockerCommands
 operator|.
 name|get
 argument_list|(
-literal|0
+literal|2
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1429,7 +1537,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|1
+literal|3
 argument_list|,
 name|dockerCommands
 operator|.
@@ -1439,7 +1547,31 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"load --i="
+literal|"[docker-command-execution]"
+argument_list|,
+name|dockerCommands
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"  docker-command=load"
+argument_list|,
+name|dockerCommands
+operator|.
+name|get
+argument_list|(
+literal|1
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"  image="
 operator|+
 name|MOCK_LOCAL_IMAGE_NAME
 argument_list|,
@@ -1447,7 +1579,7 @@ name|dockerCommands
 operator|.
 name|get
 argument_list|(
-literal|0
+literal|2
 argument_list|)
 argument_list|)
 expr_stmt|;

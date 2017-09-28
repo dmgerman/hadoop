@@ -2550,13 +2550,11 @@ condition|)
 block|{
 name|runCommand
 operator|.
-name|addMountLocation
+name|addReadOnlyMountLocation
 argument_list|(
 name|cgroupsRootDirectory
 argument_list|,
 name|cgroupsRootDirectory
-operator|+
-literal|":ro"
 argument_list|,
 literal|false
 argument_list|)
@@ -2723,13 +2721,11 @@ index|]
 decl_stmt|;
 name|runCommand
 operator|.
-name|addMountLocation
+name|addReadOnlyMountLocation
 argument_list|(
 name|src
 argument_list|,
 name|dst
-operator|+
-literal|":ro"
 argument_list|,
 literal|true
 argument_list|)
@@ -2935,9 +2931,6 @@ argument_list|(
 literal|"Docker command used: "
 operator|+
 name|runCommand
-operator|.
-name|getCommandWithArguments
-argument_list|()
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -3689,9 +3682,6 @@ argument_list|(
 literal|"Launching container with cmd: "
 operator|+
 name|runCommand
-operator|.
-name|getCommandWithArguments
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

@@ -389,9 +389,6 @@ argument_list|(
 literal|"Running docker command: "
 operator|+
 name|dockerCommand
-operator|.
-name|getCommandWithArguments
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

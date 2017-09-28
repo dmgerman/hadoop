@@ -62,8 +62,8 @@ name|super
 operator|.
 name|addCommandArguments
 argument_list|(
-literal|"--i="
-operator|+
+literal|"image"
+argument_list|,
 name|localImageFile
 argument_list|)
 expr_stmt|;
