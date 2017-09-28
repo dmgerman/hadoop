@@ -60,7 +60,7 @@ specifier|public
 class|class
 name|ITestNativeAzureFSAuthWithBlobSpecificKeys
 extends|extends
-name|ITestNativeAzureFileSystemAuthorizationWithOwner
+name|TestNativeAzureFileSystemAuthorization
 block|{
 annotation|@
 name|Override

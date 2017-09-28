@@ -70,7 +70,7 @@ specifier|public
 class|class
 name|ITestNativeAzureFSAuthorizationCaching
 extends|extends
-name|ITestNativeAzureFileSystemAuthorizationWithOwner
+name|TestNativeAzureFileSystemAuthorization
 block|{
 DECL|field|DUMMY_TTL_VALUE
 specifier|private
