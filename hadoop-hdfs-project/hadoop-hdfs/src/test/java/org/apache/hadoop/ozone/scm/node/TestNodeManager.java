@@ -3850,7 +3850,7 @@ name|containsString
 argument_list|(
 literal|"Still in chill "
 operator|+
-literal|"mode. Waiting on nodes to report in."
+literal|"mode, waiting on nodes to report in."
 argument_list|)
 argument_list|)
 expr_stmt|;

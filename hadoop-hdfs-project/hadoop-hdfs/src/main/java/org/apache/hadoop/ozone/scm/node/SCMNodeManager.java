@@ -1613,7 +1613,7 @@ block|}
 else|else
 block|{
 return|return
-literal|"Still in chill mode. Waiting on nodes to report in."
+literal|"Still in chill mode, waiting on nodes to report in."
 operator|+
 name|getNodeStatus
 argument_list|()
@@ -1627,20 +1627,27 @@ name|String
 name|getNodeStatus
 parameter_list|()
 block|{
-specifier|final
-name|String
-name|chillModeStatus
-init|=
-literal|" %d of out of total "
-operator|+
-literal|"%d nodes have reported in."
-decl_stmt|;
 return|return
+name|isOutOfNodeChillMode
+argument_list|()
+condition|?
 name|String
 operator|.
 name|format
 argument_list|(
-name|chillModeStatus
+literal|" %d nodes have reported in."
+argument_list|,
+name|totalNodes
+operator|.
+name|get
+argument_list|()
+argument_list|)
+else|:
+name|String
+operator|.
+name|format
+argument_list|(
+literal|" %d nodes reported, minimal %d nodes required."
 argument_list|,
 name|totalNodes
 operator|.
