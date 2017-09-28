@@ -2597,7 +2597,9 @@ name|OzoneClientUtils
 operator|.
 name|newHttpClient
 argument_list|(
-literal|null
+operator|new
+name|OzoneConfiguration
+argument_list|()
 argument_list|)
 return|;
 block|}
