@@ -124,11 +124,11 @@ begin_import
 import|import static
 name|org
 operator|.
-name|junit
+name|mockito
 operator|.
-name|Assert
+name|Mockito
 operator|.
-name|fail
+name|mock
 import|;
 end_import
 
@@ -140,7 +140,31 @@ name|mockito
 operator|.
 name|Mockito
 operator|.
-name|*
+name|timeout
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|verify
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|when
 import|;
 end_import
 
@@ -162,6 +186,8 @@ specifier|public
 name|void
 name|testRMStarts
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|Configuration
 name|conf
@@ -204,8 +230,6 @@ operator|new
 name|MockRM
 argument_list|()
 decl_stmt|;
-try|try
-block|{
 name|rm
 operator|.
 name|init
@@ -213,25 +237,6 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|e
-parameter_list|)
-block|{
-name|fail
-argument_list|(
-literal|"ResourceManager does not start when "
-operator|+
-name|YarnConfiguration
-operator|.
-name|RM_SCHEDULER_ENABLE_MONITORS
-operator|+
-literal|" is set to true"
-argument_list|)
-expr_stmt|;
-block|}
 name|SchedulingEditPolicy
 name|mPolicy
 init|=
@@ -269,8 +274,6 @@ argument_list|,
 name|mPolicy
 argument_list|)
 decl_stmt|;
-try|try
-block|{
 name|monitor
 operator|.
 name|serviceInit
@@ -283,34 +286,19 @@ operator|.
 name|serviceStart
 argument_list|()
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|e
-parameter_list|)
-block|{
-name|fail
-argument_list|(
-literal|"SchedulingMonitor failes to start."
-argument_list|)
-expr_stmt|;
-block|}
 name|verify
 argument_list|(
 name|mPolicy
 argument_list|,
-name|times
+name|timeout
 argument_list|(
-literal|1
+literal|10000
 argument_list|)
 argument_list|)
 operator|.
 name|editSchedule
 argument_list|()
 expr_stmt|;
-try|try
-block|{
 name|monitor
 operator|.
 name|close
@@ -321,19 +309,6 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|e
-parameter_list|)
-block|{
-name|fail
-argument_list|(
-literal|"Failed to close."
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 block|}
 end_class
