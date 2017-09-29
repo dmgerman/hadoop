@@ -680,6 +680,54 @@ name|StringUtils
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|launcher
+operator|.
+name|ContainerLaunch
+operator|.
+name|CONTAINER_PRE_LAUNCH_STDERR
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|launcher
+operator|.
+name|ContainerLaunch
+operator|.
+name|CONTAINER_PRE_LAUNCH_STDOUT
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class is abstraction of the mechanism used to launch a container on the  * underlying OS.  All executor implementations must extend ContainerExecutor.  */
 end_comment
@@ -1380,6 +1428,31 @@ operator|.
 name|create
 argument_list|()
 decl_stmt|;
+comment|// Add "set -o pipefail -e" to validate launch_container script.
+name|sb
+operator|.
+name|setExitOnFailure
+argument_list|()
+expr_stmt|;
+comment|//Redirect stdout and stderr for launch_container script
+name|sb
+operator|.
+name|stdout
+argument_list|(
+name|logDir
+argument_list|,
+name|CONTAINER_PRE_LAUNCH_STDOUT
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|stderr
+argument_list|(
+name|logDir
+argument_list|,
+name|CONTAINER_PRE_LAUNCH_STDERR
+argument_list|)
+expr_stmt|;
 name|Set
 argument_list|<
 name|String
@@ -1429,12 +1502,6 @@ name|param
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Add "set -o pipefail -e" to validate launch_container script.
-name|sb
-operator|.
-name|setExitOnFailure
-argument_list|()
-expr_stmt|;
 if|if
 condition|(
 name|environment
@@ -1442,6 +1509,13 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|sb
+operator|.
+name|echo
+argument_list|(
+literal|"Setting up env variables"
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|Map
@@ -1517,6 +1591,13 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|sb
+operator|.
+name|echo
+argument_list|(
+literal|"Setting up job resources"
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|Map
@@ -1656,6 +1737,13 @@ condition|)
 block|{
 name|sb
 operator|.
+name|echo
+argument_list|(
+literal|"Copying debugging information"
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
 name|copyDebugInformation
 argument_list|(
 operator|new
@@ -1687,6 +1775,13 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+name|sb
+operator|.
+name|echo
+argument_list|(
+literal|"Launching container"
+argument_list|)
+expr_stmt|;
 name|sb
 operator|.
 name|command

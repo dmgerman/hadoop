@@ -2852,22 +2852,7 @@ literal|"\n"
 argument_list|)
 expr_stmt|;
 block|}
-name|builder
-operator|.
-name|append
-argument_list|(
-literal|"Stack trace: "
-operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
-name|e
-argument_list|)
-operator|+
-literal|"\n"
-argument_list|)
-expr_stmt|;
+comment|//Skip stack trace
 name|String
 name|output
 init|=
