@@ -1965,11 +1965,11 @@ block|}
 block|}
 annotation|@
 name|Private
-DECL|method|listContainerLogs (ContainerLogsRequest options)
+DECL|method|listContainerLogs ( ContainerLogsRequest options)
 specifier|public
 name|Set
 argument_list|<
-name|String
+name|ContainerLogFileInfo
 argument_list|>
 name|listContainerLogs
 parameter_list|(
@@ -1987,14 +1987,14 @@ name|containersLogMeta
 decl_stmt|;
 name|Set
 argument_list|<
-name|String
+name|ContainerLogFileInfo
 argument_list|>
 name|logTypes
 init|=
 operator|new
 name|HashSet
 argument_list|<
-name|String
+name|ContainerLogFileInfo
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -2067,9 +2067,6 @@ operator|.
 name|add
 argument_list|(
 name|fileInfo
-operator|.
-name|getFileName
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
