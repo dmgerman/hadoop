@@ -190,6 +190,8 @@ name|StoragePolicySatisfier
 operator|.
 name|class
 argument_list|)
+argument_list|,
+literal|100
 argument_list|)
 expr_stmt|;
 name|StoragePolicySatisfier

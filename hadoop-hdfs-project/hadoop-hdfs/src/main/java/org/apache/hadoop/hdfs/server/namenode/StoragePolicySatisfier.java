@@ -579,6 +579,18 @@ name|isRunning
 init|=
 literal|false
 decl_stmt|;
+DECL|field|spsWorkMultiplier
+specifier|private
+name|int
+name|spsWorkMultiplier
+decl_stmt|;
+DECL|field|blockCount
+specifier|private
+name|long
+name|blockCount
+init|=
+literal|0L
+decl_stmt|;
 comment|/**    * Represents the collective analysis status for all blocks.    */
 DECL|enum|BlocksMovingAnalysisStatus
 specifier|private
@@ -647,6 +659,19 @@ argument_list|(
 name|namesystem
 argument_list|,
 name|this
+argument_list|,
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_STORAGE_POLICY_SATISFIER_QUEUE_LIMIT_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_STORAGE_POLICY_SATISFIER_QUEUE_LIMIT_DEFAULT
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|this
@@ -691,6 +716,17 @@ argument_list|,
 name|storageMovementNeeded
 argument_list|,
 name|this
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|spsWorkMultiplier
+operator|=
+name|DFSUtil
+operator|.
+name|getSPSWorkMultiplier
+argument_list|(
+name|conf
 argument_list|)
 expr_stmt|;
 block|}
@@ -771,7 +807,7 @@ argument_list|()
 expr_stmt|;
 name|storageMovementNeeded
 operator|.
-name|start
+name|init
 argument_list|()
 expr_stmt|;
 name|storagePolicySatisfierThread
@@ -828,7 +864,7 @@ return|return;
 block|}
 name|storageMovementNeeded
 operator|.
-name|stop
+name|close
 argument_list|()
 expr_stmt|;
 name|storagePolicySatisfierThread
@@ -1173,8 +1209,41 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|// TODO: We can think to make this as configurable later, how frequently
-comment|// we want to check block movements.
+name|int
+name|numLiveDn
+init|=
+name|namesystem
+operator|.
+name|getFSDirectory
+argument_list|()
+operator|.
+name|getBlockManager
+argument_list|()
+operator|.
+name|getDatanodeManager
+argument_list|()
+operator|.
+name|getNumLiveDataNodes
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|storageMovementNeeded
+operator|.
+name|size
+argument_list|()
+operator|==
+literal|0
+operator|||
+name|blockCount
+operator|>
+operator|(
+name|numLiveDn
+operator|*
+name|spsWorkMultiplier
+operator|)
+condition|)
+block|{
 name|Thread
 operator|.
 name|sleep
@@ -1182,6 +1251,11 @@ argument_list|(
 literal|3000
 argument_list|)
 expr_stmt|;
+name|blockCount
+operator|=
+literal|0L
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -1712,6 +1786,37 @@ name|blockMovingInfos
 argument_list|,
 name|coordinatorNode
 argument_list|)
+expr_stmt|;
+name|int
+name|count
+init|=
+literal|0
+decl_stmt|;
+for|for
+control|(
+name|BlockMovingInfo
+name|blkMovingInfo
+range|:
+name|blockMovingInfos
+control|)
+block|{
+name|count
+operator|=
+name|count
+operator|+
+name|blkMovingInfo
+operator|.
+name|getSources
+argument_list|()
+operator|.
+name|length
+expr_stmt|;
+block|}
+name|blockCount
+operator|=
+name|blockCount
+operator|+
+name|count
 expr_stmt|;
 return|return
 name|status
@@ -3848,7 +3953,7 @@ name|Long
 name|inodeId
 parameter_list|)
 block|{
-comment|//For file rootId and trackId is same
+comment|//For file startId and trackId is same
 name|storageMovementNeeded
 operator|.
 name|add
@@ -3925,22 +4030,22 @@ specifier|static
 class|class
 name|ItemInfo
 block|{
-DECL|field|rootId
+DECL|field|startId
 specifier|private
 name|long
-name|rootId
+name|startId
 decl_stmt|;
 DECL|field|trackId
 specifier|private
 name|long
 name|trackId
 decl_stmt|;
-DECL|method|ItemInfo (long rootId, long trackId)
+DECL|method|ItemInfo (long startId, long trackId)
 specifier|public
 name|ItemInfo
 parameter_list|(
 name|long
-name|rootId
+name|startId
 parameter_list|,
 name|long
 name|trackId
@@ -3948,9 +4053,9 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|rootId
+name|startId
 operator|=
-name|rootId
+name|startId
 expr_stmt|;
 name|this
 operator|.
@@ -3959,15 +4064,15 @@ operator|=
 name|trackId
 expr_stmt|;
 block|}
-comment|/**      * Return the root of the current track Id.      */
-DECL|method|getRootId ()
+comment|/**      * Return the start inode id of the current track Id.      */
+DECL|method|getStartId ()
 specifier|public
 name|long
-name|getRootId
+name|getStartId
 parameter_list|()
 block|{
 return|return
-name|rootId
+name|startId
 return|;
 block|}
 comment|/**      * Return the File inode Id for which needs to satisfy the policy.      */
@@ -3990,7 +4095,7 @@ parameter_list|()
 block|{
 return|return
 operator|(
-name|rootId
+name|startId
 operator|!=
 name|trackId
 operator|)

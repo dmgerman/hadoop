@@ -425,7 +425,7 @@ name|AttemptedItemInfo
 argument_list|(
 name|itemInfo
 operator|.
-name|getRootId
+name|getStartId
 argument_list|()
 argument_list|,
 name|itemInfo
@@ -883,7 +883,7 @@ name|ItemInfo
 argument_list|(
 name|itemInfo
 operator|.
-name|getRootId
+name|getStartId
 argument_list|()
 argument_list|,
 name|blockCollectionID
@@ -1092,7 +1092,7 @@ operator|)
 condition|?
 name|attemptedItemInfo
 operator|.
-name|getRootId
+name|getStartId
 argument_list|()
 else|:
 name|trackId
@@ -1205,7 +1205,7 @@ name|ItemInfo
 argument_list|(
 name|attemptedItemInfo
 operator|.
-name|getRootId
+name|getStartId
 argument_list|()
 argument_list|,
 name|trackId

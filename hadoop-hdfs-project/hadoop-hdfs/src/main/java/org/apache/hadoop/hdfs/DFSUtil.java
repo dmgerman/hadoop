@@ -6484,6 +6484,60 @@ return|return
 name|blocksReplWorkMultiplier
 return|;
 block|}
+comment|/**    * Get DFS_SPS_WORK_MULTIPLIER_PER_ITERATION from    * configuration.    *    * @param conf Configuration    * @return Value of DFS_SPS_WORK_MULTIPLIER_PER_ITERATION    */
+DECL|method|getSPSWorkMultiplier (Configuration conf)
+specifier|public
+specifier|static
+name|int
+name|getSPSWorkMultiplier
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|int
+name|spsWorkMultiplier
+init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_SPS_WORK_MULTIPLIER_PER_ITERATION
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_SPS_WORK_MULTIPLIER_PER_ITERATION_DEFAULT
+argument_list|)
+decl_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+operator|(
+name|spsWorkMultiplier
+operator|>
+literal|0
+operator|)
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_SPS_WORK_MULTIPLIER_PER_ITERATION
+operator|+
+literal|" = '"
+operator|+
+name|spsWorkMultiplier
+operator|+
+literal|"' is invalid. "
+operator|+
+literal|"It should be a positive, non-zero integer value."
+argument_list|)
+expr_stmt|;
+return|return
+name|spsWorkMultiplier
+return|;
+block|}
 comment|/**    * Get SPNEGO keytab Key from configuration    *     * @param conf Configuration    * @param defaultKey default key to be used for config lookup    * @return DFS_WEB_AUTHENTICATION_KERBEROS_KEYTAB_KEY if the key is not empty    *         else return defaultKey    */
 DECL|method|getSpnegoKeytabKey (Configuration conf, String defaultKey)
 specifier|public
