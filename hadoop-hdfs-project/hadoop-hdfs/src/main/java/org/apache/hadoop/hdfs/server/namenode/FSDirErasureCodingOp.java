@@ -1417,6 +1417,7 @@ argument_list|(
 name|ecXAttr
 argument_list|)
 expr_stmt|;
+return|return
 name|FSDirXAttrOp
 operator|.
 name|unprotectedRemoveXAttrs
@@ -1427,9 +1428,6 @@ name|srcIIP
 argument_list|,
 name|xattrs
 argument_list|)
-expr_stmt|;
-return|return
-name|xattrs
 return|;
 block|}
 comment|/**    * Get the erasure coding policy information for specified path.    *    * @param fsn namespace    * @param src path    * @return {@link ErasureCodingPolicy}    * @throws IOException    * @throws FileNotFoundException if the path does not exist.    * @throws AccessControlException if no read access    */

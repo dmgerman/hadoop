@@ -1136,6 +1136,7 @@ name|iip
 argument_list|)
 return|;
 block|}
+comment|/**    * Remove xattrs from the inode, and return the<em>removed</em> xattrs.    * @return the<em>removed</em> xattrs.    */
 DECL|method|unprotectedRemoveXAttrs ( FSDirectory fsd, final INodesInPath iip, final List<XAttr> toRemove)
 specifier|static
 name|List
