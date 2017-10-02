@@ -314,11 +314,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|junit
 operator|.
-name|log4j
-operator|.
-name|Level
+name|Test
 import|;
 end_import
 
@@ -326,9 +324,11 @@ begin_import
 import|import
 name|org
 operator|.
-name|junit
+name|slf4j
 operator|.
-name|Test
+name|event
+operator|.
+name|Level
 import|;
 end_import
 
@@ -366,7 +366,7 @@ name|LOG
 argument_list|,
 name|Level
 operator|.
-name|ALL
+name|TRACE
 argument_list|)
 expr_stmt|;
 name|GenericTestUtils
@@ -377,7 +377,7 @@ name|LOG
 argument_list|,
 name|Level
 operator|.
-name|ALL
+name|TRACE
 argument_list|)
 expr_stmt|;
 block|}

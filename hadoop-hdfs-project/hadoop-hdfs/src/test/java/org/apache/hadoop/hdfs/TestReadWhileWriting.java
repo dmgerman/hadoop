@@ -212,18 +212,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
-operator|.
-name|log4j
-operator|.
-name|Level
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|junit
 operator|.
 name|Assert
@@ -237,6 +225,18 @@ operator|.
 name|junit
 operator|.
 name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|event
+operator|.
+name|Level
 import|;
 end_import
 
@@ -261,7 +261,7 @@ name|LOG
 parameter_list|,
 name|Level
 operator|.
-name|ALL
+name|TRACE
 parameter_list|)
 constructor_decl|;
 name|GenericTestUtils
@@ -274,7 +274,7 @@ name|LOG
 parameter_list|,
 name|Level
 operator|.
-name|ALL
+name|TRACE
 parameter_list|)
 constructor_decl|;
 block|}
