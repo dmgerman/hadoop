@@ -1476,7 +1476,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
-comment|// delete the _temporary folder and create a _done file in the o/p
+comment|// delete the _temporary folder and create a _SUCCESS file in the o/p
 comment|// folder
 try|try
 block|{
@@ -1520,6 +1520,7 @@ block|}
 block|}
 comment|// True if the job requires output.dir marked on successful job.
 comment|// Note that by default it is set to true.
+comment|// Create a _SUCCESS file in the o/p folder.
 if|if
 condition|(
 name|context
