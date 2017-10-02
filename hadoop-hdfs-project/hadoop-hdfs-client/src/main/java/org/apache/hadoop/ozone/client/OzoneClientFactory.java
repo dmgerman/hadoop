@@ -332,6 +332,8 @@ return|return
 operator|new
 name|OzoneClient
 argument_list|(
+name|configuration
+argument_list|,
 name|proxy
 argument_list|)
 return|;

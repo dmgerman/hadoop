@@ -26,6 +26,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|client
@@ -81,11 +95,14 @@ specifier|final
 name|ObjectStore
 name|objectStore
 decl_stmt|;
-comment|/**    * Creates a new OzoneClient object, generally constructed    * using {@link OzoneClientFactory}.    * @param proxy    */
-DECL|method|OzoneClient (ClientProtocol proxy)
+comment|/**    * Creates a new OzoneClient object, generally constructed    * using {@link OzoneClientFactory}.    * @param conf Configuration object    * @param proxy ClientProtocol proxy instance    */
+DECL|method|OzoneClient (Configuration conf, ClientProtocol proxy)
 specifier|public
 name|OzoneClient
 parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
 name|ClientProtocol
 name|proxy
 parameter_list|)
@@ -103,6 +120,8 @@ operator|=
 operator|new
 name|ObjectStore
 argument_list|(
+name|conf
+argument_list|,
 name|this
 operator|.
 name|proxy

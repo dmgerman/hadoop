@@ -1879,6 +1879,32 @@ argument_list|)
 return|;
 block|}
 block|}
+comment|/**    * Returns the cache value to be used for list calls.    * @param conf Configuration object    * @return list cache size    */
+DECL|method|getListCacheSize (Configuration conf)
+specifier|public
+specifier|static
+name|int
+name|getListCacheSize
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|OzoneConfigKeys
+operator|.
+name|OZONE_CLIENT_LIST_CACHE_SIZE
+argument_list|,
+name|OzoneConfigKeys
+operator|.
+name|OZONE_CLIENT_LIST_CACHE_SIZE_DEFAULT
+argument_list|)
+return|;
+block|}
 comment|/**    * Retrieve the port number, trying the supplied config keys in order.    * Each config value may be absent, or if present in the format    * host:port (the :port part is optional).    *    * @param conf Conf    * @param keys a list of configuration key names.    *    * @return first port number component found from the given keys, or absent.    * @throws IllegalArgumentException if any values are not in the 'host'    *             or host:port format.    */
 DECL|method|getPortNumberFromConfigKeys ( Configuration conf, String... keys)
 specifier|public

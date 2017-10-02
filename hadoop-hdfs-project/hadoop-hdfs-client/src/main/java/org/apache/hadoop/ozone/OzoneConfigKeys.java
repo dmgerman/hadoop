@@ -450,6 +450,25 @@ name|OZONE_CLIENT_CONNECTION_TIMEOUT_MS_DEFAULT
 init|=
 literal|5000
 decl_stmt|;
+comment|/**    * Configuration property to configure the cache size of client list calls.    */
+DECL|field|OZONE_CLIENT_LIST_CACHE_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_CLIENT_LIST_CACHE_SIZE
+init|=
+literal|"ozone.client.list.cache"
+decl_stmt|;
+DECL|field|OZONE_CLIENT_LIST_CACHE_SIZE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|OZONE_CLIENT_LIST_CACHE_SIZE_DEFAULT
+init|=
+literal|1000
+decl_stmt|;
 comment|/**    * Configuration properties for Ozone Block Deleting Service.    */
 DECL|field|OZONE_BLOCK_DELETING_SERVICE_INTERVAL_MS
 specifier|public

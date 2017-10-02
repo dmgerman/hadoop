@@ -196,16 +196,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Iterator
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -309,23 +299,9 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Returns the List of Volumes owned by current user.    * @param volumePrefix Volume prefix to match    * @return {@link OzoneVolume} Iterator    * @throws IOException    */
-DECL|method|listVolumes (String volumePrefix)
-name|Iterator
-argument_list|<
-name|OzoneVolume
-argument_list|>
-name|listVolumes
-parameter_list|(
-name|String
-name|volumePrefix
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-comment|/**    * Returns the List of Volumes owned by the specific user.    * @param volumePrefix Volume prefix to match    * @param user User Name    * @return  {@link OzoneVolume} Iterator    * @throws IOException    */
-DECL|method|listVolumes (String volumePrefix, String user)
-name|Iterator
+comment|/**    * Lists all volumes in the cluster that matches the volumePrefix,    * size of the returned list depends on maxListResult. If volume prefix    * is null, returns all the volumes. The caller has to make multiple calls    * to read all volumes.    *    * @param volumePrefix Volume prefix to match    * @param prevVolume Starting point of the list, this volume is excluded    * @param maxListResult Max number of volumes to return.    * @return {@code List<OzoneVolume>}    * @throws IOException    */
+DECL|method|listVolumes (String volumePrefix, String prevVolume, int maxListResult)
+name|List
 argument_list|<
 name|OzoneVolume
 argument_list|>
@@ -335,7 +311,33 @@ name|String
 name|volumePrefix
 parameter_list|,
 name|String
+name|prevVolume
+parameter_list|,
+name|int
+name|maxListResult
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Lists all volumes in the cluster that are owned by the specified    * user and matches the volumePrefix, size of the returned list depends on    * maxListResult. If the user is null, return volumes owned by current user.    * If volume prefix is null, returns all the volumes. The caller has to make    * multiple calls to read all volumes.    *    * @param user User Name    * @param volumePrefix Volume prefix to match    * @param prevVolume Starting point of the list, this volume is excluded    * @param maxListResult Max number of volumes to return.    * @return {@code List<OzoneVolume>}    * @throws IOException    */
+DECL|method|listVolumes (String user, String volumePrefix, String prevVolume, int maxListResult)
+name|List
+argument_list|<
+name|OzoneVolume
+argument_list|>
+name|listVolumes
+parameter_list|(
+name|String
 name|user
+parameter_list|,
+name|String
+name|volumePrefix
+parameter_list|,
+name|String
+name|prevVolume
+parameter_list|,
+name|int
+name|maxListResult
 parameter_list|)
 throws|throws
 name|IOException
@@ -487,9 +489,9 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Returns the List of Buckets in the Volume.    * @param volumeName Name of the Volume    * @param bucketPrefix Bucket prefix to match    * @return {@link OzoneBucket} Iterator    * @throws IOException    */
-DECL|method|listBuckets (String volumeName, String bucketPrefix)
-name|Iterator
+comment|/**    * Returns the List of Buckets in the Volume that matches the bucketPrefix,    * size of the returned list depends on maxListResult. The caller has to make    * multiple calls to read all volumes.    * @param volumeName Name of the Volume    * @param bucketPrefix Bucket prefix to match    * @param prevBucket Starting point of the list, this bucket is excluded    * @param maxListResult Max number of buckets to return.    * @return {@code List<OzoneBucket>}    * @throws IOException    */
+DECL|method|listBuckets (String volumeName, String bucketPrefix, String prevBucket, int maxListResult)
+name|List
 argument_list|<
 name|OzoneBucket
 argument_list|>
@@ -500,6 +502,12 @@ name|volumeName
 parameter_list|,
 name|String
 name|bucketPrefix
+parameter_list|,
+name|String
+name|prevBucket
+parameter_list|,
+name|int
+name|maxListResult
 parameter_list|)
 throws|throws
 name|IOException
@@ -558,9 +566,9 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Returns list of {@link OzoneKey} in {Volume/Bucket}.    * @param volumeName Name of the Volume    * @param bucketName Name of the Bucket    * @return {@link OzoneKey} Iterator    * @throws IOException    */
-DECL|method|listKeys (String volumeName, String bucketName, String keyPrefix)
-name|Iterator
+comment|/**    * Returns list of Keys in {Volume/Bucket} that matches the keyPrefix,    * size of the returned list depends on maxListResult. The caller has    * to make multiple calls to read all keys.    * @param volumeName Name of the Volume    * @param bucketName Name of the Bucket    * @param keyPrefix Bucket prefix to match    * @param prevKey Starting point of the list, this key is excluded    * @param maxListResult Max number of buckets to return.    * @return {@code List<OzoneKey>}    * @throws IOException    */
+DECL|method|listKeys (String volumeName, String bucketName, String keyPrefix, String prevKey, int maxListResult)
+name|List
 argument_list|<
 name|OzoneKey
 argument_list|>
@@ -574,6 +582,12 @@ name|bucketName
 parameter_list|,
 name|String
 name|keyPrefix
+parameter_list|,
+name|String
+name|prevKey
+parameter_list|,
+name|int
+name|maxListResult
 parameter_list|)
 throws|throws
 name|IOException

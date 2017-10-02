@@ -226,16 +226,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Iterator
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -442,9 +432,9 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|listVolumes (String volumePrefix)
+DECL|method|listVolumes (String volumePrefix, String prevKey, int maxListResult)
 specifier|public
-name|Iterator
+name|List
 argument_list|<
 name|OzoneVolume
 argument_list|>
@@ -452,6 +442,12 @@ name|listVolumes
 parameter_list|(
 name|String
 name|volumePrefix
+parameter_list|,
+name|String
+name|prevKey
+parameter_list|,
+name|int
+name|maxListResult
 parameter_list|)
 throws|throws
 name|IOException
@@ -466,19 +462,25 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|listVolumes (String volumePrefix, String user)
+DECL|method|listVolumes (String user, String volumePrefix, String prevKey, int maxListResult)
 specifier|public
-name|Iterator
+name|List
 argument_list|<
 name|OzoneVolume
 argument_list|>
 name|listVolumes
 parameter_list|(
 name|String
+name|user
+parameter_list|,
+name|String
 name|volumePrefix
 parameter_list|,
 name|String
-name|user
+name|prevKey
+parameter_list|,
+name|int
+name|maxListResult
 parameter_list|)
 throws|throws
 name|IOException
@@ -730,9 +732,9 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|listBuckets ( String volumeName, String bucketPrefix)
+DECL|method|listBuckets (String volumeName, String bucketPrefix, String prevBucket, int maxListResult)
 specifier|public
-name|Iterator
+name|List
 argument_list|<
 name|OzoneBucket
 argument_list|>
@@ -743,6 +745,12 @@ name|volumeName
 parameter_list|,
 name|String
 name|bucketPrefix
+parameter_list|,
+name|String
+name|prevBucket
+parameter_list|,
+name|int
+name|maxListResult
 parameter_list|)
 throws|throws
 name|IOException
@@ -841,9 +849,9 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|listKeys ( String volumeName, String bucketName, String keyPrefix)
+DECL|method|listKeys (String volumeName, String bucketName, String keyPrefix, String prevKey, int maxListResult)
 specifier|public
-name|Iterator
+name|List
 argument_list|<
 name|OzoneKey
 argument_list|>
@@ -857,6 +865,12 @@ name|bucketName
 parameter_list|,
 name|String
 name|keyPrefix
+parameter_list|,
+name|String
+name|prevKey
+parameter_list|,
+name|int
+name|maxListResult
 parameter_list|)
 throws|throws
 name|IOException
