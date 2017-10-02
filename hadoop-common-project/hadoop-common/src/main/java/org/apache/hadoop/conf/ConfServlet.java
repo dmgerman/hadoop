@@ -306,7 +306,7 @@ block|}
 name|String
 name|format
 init|=
-name|parseAccecptHeader
+name|parseAcceptHeader
 argument_list|(
 name|request
 argument_list|)
@@ -431,10 +431,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|parseAccecptHeader (HttpServletRequest request)
+DECL|method|parseAcceptHeader (HttpServletRequest request)
 specifier|static
 name|String
-name|parseAccecptHeader
+name|parseAcceptHeader
 parameter_list|(
 name|HttpServletRequest
 name|request

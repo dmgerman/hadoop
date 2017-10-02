@@ -658,7 +658,7 @@ name|contenTypeActual
 argument_list|,
 name|ConfServlet
 operator|.
-name|parseAccecptHeader
+name|parseAcceptHeader
 argument_list|(
 name|request
 argument_list|)
