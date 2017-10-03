@@ -1992,6 +1992,8 @@ operator|(
 operator|new
 name|FileNotFoundException
 argument_list|(
+literal|"File/Directory does not exist: "
+operator|+
 name|failedAt
 operator|.
 name|toString
