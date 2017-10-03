@@ -214,34 +214,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|fs
@@ -738,6 +710,26 @@ name|ThreadFactoryBuilder
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/**  * Runs the container task locally in a thread.  * Since all (sub)tasks share the same local directory, they must be executed  * sequentially in order to avoid creating/deleting the same files/dirs.  */
 end_comment
@@ -769,12 +761,12 @@ DECL|field|LOG
 specifier|private
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|LocalContainerLauncher
 operator|.
@@ -2095,7 +2087,7 @@ comment|// we're pretty much hosed, so do what YarnChild main() does
 comment|// (i.e., exit clumsily--but can never happen, so no worries!)
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 literal|"oopsie...  this can never happen: "
 operator|+
@@ -2586,7 +2578,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 literal|"FSError from child"
 argument_list|,
@@ -2714,7 +2706,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 literal|"Error running local (uberized) 'child' : "
 operator|+

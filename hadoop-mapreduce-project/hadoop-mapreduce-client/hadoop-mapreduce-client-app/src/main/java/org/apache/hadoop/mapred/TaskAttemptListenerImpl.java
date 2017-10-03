@@ -96,34 +96,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|conf
@@ -630,6 +602,26 @@ name|YarnRuntimeException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class is responsible for talking to the task umblical.  * It also converts all the old data structures  * to yarn data structures.  *   * This class HAS to be in this package to access package private   * methods/classes.  */
 end_comment
@@ -672,12 +664,12 @@ DECL|field|LOG
 specifier|private
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|TaskAttemptListenerImpl
 operator|.
@@ -1599,7 +1591,7 @@ block|{
 comment|// This happens only in Child and in the Task.
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 literal|"Task: "
 operator|+
@@ -1689,7 +1681,7 @@ block|{
 comment|// This happens only in Child.
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 literal|"Task: "
 operator|+

@@ -88,34 +88,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|fs
@@ -600,6 +572,26 @@ name|ConverterUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/**  * The main() for MapReduce task processes.  */
 end_comment
@@ -613,12 +605,12 @@ DECL|field|LOG
 specifier|private
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|YarnChild
 operator|.
@@ -839,31 +831,14 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Executing with tokens:"
-argument_list|)
-expr_stmt|;
-for|for
-control|(
-name|Token
-argument_list|<
-name|?
-argument_list|>
-name|token
-range|:
+literal|"Executing with tokens: {}"
+argument_list|,
 name|credentials
 operator|.
 name|getAllTokens
 argument_list|()
-control|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-name|token
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Create TaskUmbilicalProtocol as actual task owner.
 name|UserGroupInformation
 name|taskOwner
@@ -1015,7 +990,6 @@ name|myTask
 init|=
 literal|null
 decl_stmt|;
-empty_stmt|;
 comment|// poll for new task
 for|for
 control|(
@@ -1272,7 +1246,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 literal|"FSError from child"
 argument_list|,
@@ -1462,7 +1436,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 literal|"Error running child : "
 operator|+
@@ -2163,7 +2137,7 @@ finally|finally
 block|{
 name|IOUtils
 operator|.
-name|cleanup
+name|cleanupWithLogger
 argument_list|(
 name|LOG
 argument_list|,
