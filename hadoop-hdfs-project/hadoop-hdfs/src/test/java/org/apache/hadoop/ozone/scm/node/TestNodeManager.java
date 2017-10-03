@@ -3904,7 +3904,7 @@ name|CoreMatchers
 operator|.
 name|containsString
 argument_list|(
-literal|"Manual chill mode is set to false."
+literal|"Out of chill mode."
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3949,7 +3949,9 @@ name|CoreMatchers
 operator|.
 name|containsString
 argument_list|(
-literal|"Manual chill mode is set to true."
+literal|"Out of startup chill mode,"
+operator|+
+literal|" but in manual chill mode."
 argument_list|)
 argument_list|)
 expr_stmt|;
