@@ -638,7 +638,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 import|;
 end_import
 
@@ -11956,15 +11956,15 @@ end_function
 begin_function
 annotation|@
 name|Override
-DECL|method|addErasureCodingPolicies ( ErasureCodingPolicy[] arg0)
+DECL|method|addErasureCodingPolicies ( ErasureCodingPolicy[] policies)
 specifier|public
-name|AddECPolicyResponse
+name|AddErasureCodingPolicyResponse
 index|[]
 name|addErasureCodingPolicies
 parameter_list|(
 name|ErasureCodingPolicy
 index|[]
-name|arg0
+name|policies
 parameter_list|)
 throws|throws
 name|IOException
