@@ -183,7 +183,7 @@ specifier|final
 name|String
 name|OZONE_KSM_DB_CACHE_SIZE_MB
 init|=
-literal|"ozone.ksm.leveldb.cache.size.mb"
+literal|"ozone.ksm.db.cache.size.mb"
 decl_stmt|;
 DECL|field|OZONE_KSM_DB_CACHE_SIZE_DEFAULT
 specifier|public

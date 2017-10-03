@@ -297,11 +297,11 @@ name|getInt
 argument_list|(
 name|OzoneConfigKeys
 operator|.
-name|OZONE_KEY_CACHE
+name|OZONE_CONTAINER_CACHE_SIZE
 argument_list|,
 name|OzoneConfigKeys
 operator|.
-name|OZONE_KEY_CACHE_DEFAULT
+name|OZONE_CONTAINER_CACHE_DEFAULT
 argument_list|)
 decl_stmt|;
 name|cache

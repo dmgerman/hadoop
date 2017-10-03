@@ -129,7 +129,7 @@ specifier|final
 name|String
 name|DFS_CBLOCK_SERVICERPC_HANDLER_COUNT_KEY
 init|=
-literal|"dfs.storage.service.handler.count"
+literal|"dfs.cblock.service.handler.count"
 decl_stmt|;
 DECL|field|DFS_CBLOCK_SERVICERPC_HANDLER_COUNT_DEFAULT
 specifier|public
@@ -222,7 +222,7 @@ specifier|final
 name|String
 name|DFS_CBLOCK_CACHE_QUEUE_SIZE_KB
 init|=
-literal|"dfs.cblock.cache.cache.size.in.kb"
+literal|"dfs.cblock.cache.queue.size.in.kb"
 decl_stmt|;
 DECL|field|DFS_CBLOCK_CACHE_QUEUE_SIZE_KB_DEFAULT
 specifier|public
@@ -427,7 +427,7 @@ specifier|final
 name|String
 name|DFS_CBLOCK_CONTAINER_SIZE_GB_KEY
 init|=
-literal|"dfs.cblock.container.size"
+literal|"dfs.cblock.container.size.gb"
 decl_stmt|;
 DECL|field|DFS_CBLOCK_CONTAINER_SIZE_GB_DEFAULT
 specifier|public
