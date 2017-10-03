@@ -156,6 +156,64 @@ return|return
 name|remoteNode
 return|;
 block|}
+comment|/**    * Create new Instance.    * @param nodeId NodeId.    * @param httpAddress Http address.    * @param rackName Rack Name.    * @return RemoteNode instance.    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|newInstance (NodeId nodeId, String httpAddress, String rackName)
+specifier|public
+specifier|static
+name|RemoteNode
+name|newInstance
+parameter_list|(
+name|NodeId
+name|nodeId
+parameter_list|,
+name|String
+name|httpAddress
+parameter_list|,
+name|String
+name|rackName
+parameter_list|)
+block|{
+name|RemoteNode
+name|remoteNode
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|RemoteNode
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|remoteNode
+operator|.
+name|setNodeId
+argument_list|(
+name|nodeId
+argument_list|)
+expr_stmt|;
+name|remoteNode
+operator|.
+name|setHttpAddress
+argument_list|(
+name|httpAddress
+argument_list|)
+expr_stmt|;
+name|remoteNode
+operator|.
+name|setRackName
+argument_list|(
+name|rackName
+argument_list|)
+expr_stmt|;
+return|return
+name|remoteNode
+return|;
+block|}
 comment|/**    * Get {@link NodeId}.    * @return NodeId.    */
 annotation|@
 name|Private
@@ -210,6 +268,33 @@ name|String
 name|httpAddress
 parameter_list|)
 function_decl|;
+comment|/**    * Get Rack Name.    * @return Rack Name.    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|getRackName ()
+specifier|public
+specifier|abstract
+name|String
+name|getRackName
+parameter_list|()
+function_decl|;
+comment|/**    * Set Rack Name.    * @param rackName Rack Name.    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setRackName (String rackName)
+specifier|public
+specifier|abstract
+name|void
+name|setRackName
+parameter_list|(
+name|String
+name|rackName
+parameter_list|)
+function_decl|;
 comment|/**    * Use the underlying {@link NodeId} comparator.    * @param other RemoteNode.    * @return Comparison.    */
 annotation|@
 name|Override
@@ -251,6 +336,13 @@ operator|+
 literal|"nodeId="
 operator|+
 name|getNodeId
+argument_list|()
+operator|+
+literal|", "
+operator|+
+literal|"rackName="
+operator|+
+name|getRackName
 argument_list|()
 operator|+
 literal|", "

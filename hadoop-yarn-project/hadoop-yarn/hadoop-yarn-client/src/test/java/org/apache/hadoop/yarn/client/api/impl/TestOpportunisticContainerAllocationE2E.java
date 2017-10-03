@@ -983,10 +983,10 @@ comment|/**  * Class that tests the allocation of OPPORTUNISTIC containers throu
 end_comment
 
 begin_class
-DECL|class|TestOpportunisticContainerAllocation
+DECL|class|TestOpportunisticContainerAllocationE2E
 specifier|public
 class|class
-name|TestOpportunisticContainerAllocation
+name|TestOpportunisticContainerAllocationE2E
 block|{
 DECL|field|conf
 specifier|private

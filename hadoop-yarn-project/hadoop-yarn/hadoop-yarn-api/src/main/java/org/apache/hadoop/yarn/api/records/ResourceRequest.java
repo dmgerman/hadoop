@@ -784,6 +784,38 @@ return|return
 name|this
 return|;
 block|}
+comment|/**      * Set the<code>executionTypeRequest</code> of the request with 'ensure      * execution type' flag set to true.      * @see ResourceRequest#setExecutionTypeRequest(      * ExecutionTypeRequest)      * @param executionType<code>executionType</code> of the request.      * @return {@link ResourceRequestBuilder}      */
+annotation|@
+name|Public
+annotation|@
+name|Evolving
+DECL|method|executionType (ExecutionType executionType)
+specifier|public
+name|ResourceRequestBuilder
+name|executionType
+parameter_list|(
+name|ExecutionType
+name|executionType
+parameter_list|)
+block|{
+name|resourceRequest
+operator|.
+name|setExecutionTypeRequest
+argument_list|(
+name|ExecutionTypeRequest
+operator|.
+name|newInstance
+argument_list|(
+name|executionType
+argument_list|,
+literal|true
+argument_list|)
+argument_list|)
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 comment|/**      * Set the<code>allocationRequestId</code> of the request.      * @see ResourceRequest#setAllocationRequestId(long)      * @param allocationRequestId      *<code>allocationRequestId</code> of the request      * @return {@link ResourceRequestBuilder}      */
 annotation|@
 name|Public
