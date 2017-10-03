@@ -26,34 +26,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|net
@@ -416,6 +388,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|net
@@ -770,12 +762,12 @@ DECL|field|LOG
 specifier|private
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|OpportunisticContainerAllocator
 operator|.
@@ -1111,40 +1103,32 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Opportunistic allocation requested for ["
+literal|"Opportunistic allocation requested for [priority={}, "
 operator|+
-literal|"priority="
+literal|"allocationRequestId={}, num_containers={}, capability={}] "
 operator|+
+literal|"allocated = {}"
+argument_list|,
 name|anyAsk
 operator|.
 name|getPriority
 argument_list|()
-operator|+
-literal|", allocationRequestId="
-operator|+
+argument_list|,
 name|anyAsk
 operator|.
 name|getAllocationRequestId
 argument_list|()
-operator|+
-literal|", num_containers="
-operator|+
+argument_list|,
 name|anyAsk
 operator|.
 name|getNumContainers
 argument_list|()
-operator|+
-literal|", capability="
-operator|+
+argument_list|,
 name|anyAsk
 operator|.
 name|getCapability
 argument_list|()
-operator|+
-literal|"]"
-operator|+
-literal|" allocated = "
-operator|+
+argument_list|,
 name|containers
 operator|.
 name|keySet
@@ -1306,17 +1290,11 @@ name|warn
 argument_list|(
 literal|"No nodes available for allocating opportunistic containers. ["
 operator|+
-literal|"allNodes="
-operator|+
+literal|"allNodes={}, blacklist={}]"
+argument_list|,
 name|allNodes
-operator|+
-literal|", "
-operator|+
-literal|"blacklist="
-operator|+
+argument_list|,
 name|blacklist
-operator|+
-literal|"]"
 argument_list|)
 expr_stmt|;
 return|return;
@@ -1443,14 +1421,12 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Allocated ["
-operator|+
+literal|"Allocated [{}] as opportunistic."
+argument_list|,
 name|container
 operator|.
 name|getId
 argument_list|()
-operator|+
-literal|"] as opportunistic."
 argument_list|)
 expr_stmt|;
 block|}
@@ -1458,11 +1434,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Allocated "
-operator|+
+literal|"Allocated {} opportunistic containers."
+argument_list|,
 name|numAllocated
-operator|+
-literal|" opportunistic containers."
 argument_list|)
 expr_stmt|;
 block|}

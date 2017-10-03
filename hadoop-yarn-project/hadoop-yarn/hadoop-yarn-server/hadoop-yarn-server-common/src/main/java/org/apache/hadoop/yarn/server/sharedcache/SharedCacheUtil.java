@@ -26,34 +26,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -124,6 +96,26 @@ name|YarnConfiguration
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/**  * A utility class that contains helper methods for dealing with the internal  * shared cache structure.  */
 end_comment
@@ -142,12 +134,12 @@ DECL|field|LOG
 specifier|private
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|SharedCacheUtil
 operator|.
@@ -195,14 +187,12 @@ name|warn
 argument_list|(
 literal|"Specified cache depth was less than or equal to zero."
 operator|+
-literal|" Using default value instead. Default: "
-operator|+
+literal|" Using default value instead. Default: {}, Specified: {}"
+argument_list|,
 name|YarnConfiguration
 operator|.
 name|DEFAULT_SHARED_CACHE_NESTED_LEVEL
-operator|+
-literal|", Specified: "
-operator|+
+argument_list|,
 name|cacheDepth
 argument_list|)
 expr_stmt|;
