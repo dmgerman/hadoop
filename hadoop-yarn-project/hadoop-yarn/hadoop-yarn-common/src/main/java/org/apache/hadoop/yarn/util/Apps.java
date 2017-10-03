@@ -253,7 +253,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Yarn internal application-related utilities  */
+comment|/**  * YARN internal application-related utilities  */
 end_comment
 
 begin_class

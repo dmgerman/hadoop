@@ -1052,7 +1052,7 @@ name|Token
 name|amRmToken
 parameter_list|)
 function_decl|;
-comment|/**    * Get the AMRM token of the application.    *<p>    * The AMRM token is required for AM to RM scheduling operations. For     * managed Application Masters Yarn takes care of injecting it. For unmanaged    * Applications Masters, the token must be obtained via this method and set    * in the {@link org.apache.hadoop.security.UserGroupInformation} of the    * current user.    *<p>    * The AMRM token will be returned only if all the following conditions are    * met:    *<ul>    *<li>the requester is the owner of the ApplicationMaster</li>    *<li>the application master is an unmanaged ApplicationMaster</li>    *<li>the application master is in ACCEPTED state</li>    *</ul>    * Else this method returns NULL.    *     * @return the AM to RM token if available.    */
+comment|/**    * Get the AMRM token of the application.    *<p>    * The AMRM token is required for AM to RM scheduling operations. For     * managed Application Masters YARN takes care of injecting it. For unmanaged    * Applications Masters, the token must be obtained via this method and set    * in the {@link org.apache.hadoop.security.UserGroupInformation} of the    * current user.    *<p>    * The AMRM token will be returned only if all the following conditions are    * met:    *<ul>    *<li>the requester is the owner of the ApplicationMaster</li>    *<li>the application master is an unmanaged ApplicationMaster</li>    *<li>the application master is in ACCEPTED state</li>    *</ul>    * Else this method returns NULL.    *     * @return the AM to RM token if available.    */
 annotation|@
 name|Public
 annotation|@

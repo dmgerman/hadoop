@@ -145,7 +145,7 @@ literal|"yarn"
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get the Yarn version.    * @return the Yarn version string, eg. "0.6.3-dev"    */
+comment|/**    * Get the YARN version.    * @return the YARN version string, eg. "0.6.3-dev"    */
 DECL|method|getVersion ()
 specifier|public
 specifier|static
@@ -190,7 +190,7 @@ name|_getBranch
 argument_list|()
 return|;
 block|}
-comment|/**    * The date that Yarn was compiled.    * @return the compilation date in unix date format    */
+comment|/**    * The date that YARN was compiled.    * @return the compilation date in unix date format    */
 DECL|method|getDate ()
 specifier|public
 specifier|static
@@ -220,7 +220,7 @@ name|_getUser
 argument_list|()
 return|;
 block|}
-comment|/**    * Get the subversion URL for the root Yarn directory.    */
+comment|/**    * Get the subversion URL for the root YARN directory.    */
 DECL|method|getUrl ()
 specifier|public
 specifier|static
@@ -235,7 +235,7 @@ name|_getUrl
 argument_list|()
 return|;
 block|}
-comment|/**    * Get the checksum of the source files from which Yarn was    * built.    **/
+comment|/**    * Get the checksum of the source files from which YARN was    * built.    **/
 DECL|method|getSrcChecksum ()
 specifier|public
 specifier|static
@@ -292,7 +292,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"Yarn "
+literal|"YARN "
 operator|+
 name|getVersion
 argument_list|()

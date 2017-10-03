@@ -771,7 +771,7 @@ name|getHttpAddress
 argument_list|()
 return|;
 block|}
-comment|/**    * Get the name of the node for scheduling matching decisions.    *<p>    * Typically this is the 'hostname' reported by the node, but it could be    * configured to be 'hostname:port' reported by the node via the    * {@link YarnConfiguration#RM_SCHEDULER_INCLUDE_PORT_IN_NODE_NAME} constant.    * The main usecase of this is Yarn minicluster to be able to differentiate    * node manager instances by their port number.    * @return Name of the node for scheduling matching decisions.    */
+comment|/**    * Get the name of the node for scheduling matching decisions.    *<p>    * Typically this is the 'hostname' reported by the node, but it could be    * configured to be 'hostname:port' reported by the node via the    * {@link YarnConfiguration#RM_SCHEDULER_INCLUDE_PORT_IN_NODE_NAME} constant.    * The main usecase of this is YARN minicluster to be able to differentiate    * node manager instances by their port number.    * @return Name of the node for scheduling matching decisions.    */
 DECL|method|getNodeName ()
 specifier|public
 name|String

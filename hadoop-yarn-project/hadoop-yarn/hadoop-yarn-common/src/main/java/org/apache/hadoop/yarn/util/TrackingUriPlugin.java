@@ -99,7 +99,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Plugin to derive a tracking URL from a Yarn Application ID  *  */
+comment|/**  * Plugin to derive a tracking URL from a YARN Application ID  *  */
 end_comment
 
 begin_class

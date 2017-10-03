@@ -2653,7 +2653,7 @@ literal|0
 argument_list|)
 decl_stmt|;
 comment|// True if the Mock RM is running, false otherwise.
-comment|// This property allows us to write tests for specific scenario as Yarn RM
+comment|// This property allows us to write tests for specific scenario as YARN RM
 comment|// down e.g. network issue, failover.
 DECL|field|isRunning
 specifier|private

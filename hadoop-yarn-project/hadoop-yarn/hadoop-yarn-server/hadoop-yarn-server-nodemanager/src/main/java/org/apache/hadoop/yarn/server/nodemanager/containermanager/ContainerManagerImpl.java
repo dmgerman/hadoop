@@ -10433,7 +10433,7 @@ name|newInstance
 argument_list|()
 return|;
 block|}
-comment|/**    * ReInitialize a container using a new Launch Context. If the    * retryFailureContext is not provided, The container is    * terminated on Failure.    *    * NOTE: Auto-Commit is true by default. This also means that the rollback    *       context is purged as soon as the command to start the new process    *       is sent. (The Container moves to RUNNING state)    *    * @param containerId Container Id.    * @param autoCommit Auto Commit flag.    * @param reInitLaunchContext Target Launch Context.    * @throws YarnException Yarn Exception.    */
+comment|/**    * ReInitialize a container using a new Launch Context. If the    * retryFailureContext is not provided, The container is    * terminated on Failure.    *    * NOTE: Auto-Commit is true by default. This also means that the rollback    *       context is purged as soon as the command to start the new process    *       is sent. (The Container moves to RUNNING state)    *    * @param containerId Container Id.    * @param autoCommit Auto Commit flag.    * @param reInitLaunchContext Target Launch Context.    * @throws YarnException YARN Exception.    */
 DECL|method|reInitializeContainer (ContainerId containerId, ContainerLaunchContext reInitLaunchContext, boolean autoCommit)
 specifier|public
 name|void
@@ -10548,7 +10548,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Rollback the last reInitialization, if possible.    * @param containerId Container ID.    * @return Rollback Response.    * @throws YarnException Yarn Exception.    */
+comment|/**    * Rollback the last reInitialization, if possible.    * @param containerId Container ID.    * @return Rollback Response.    * @throws YarnException YARN Exception.    */
 annotation|@
 name|Override
 DECL|method|rollbackLastReInitialization (ContainerId containerId)
@@ -10625,7 +10625,7 @@ name|newInstance
 argument_list|()
 return|;
 block|}
-comment|/**    * Commit last reInitialization after which no rollback will be possible.    * @param containerId Container ID.    * @return Commit Response.    * @throws YarnException Yarn Exception.    */
+comment|/**    * Commit last reInitialization after which no rollback will be possible.    * @param containerId Container ID.    * @return Commit Response.    * @throws YarnException YARN Exception.    */
 annotation|@
 name|Override
 DECL|method|commitLastReInitialization (ContainerId containerId)

@@ -51,7 +51,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Driver for Yarn tests.  *  */
+comment|/**  * Driver for YARN tests.  *  */
 end_comment
 
 begin_class

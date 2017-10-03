@@ -1997,7 +1997,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Yarn Router forwards every getNewApplication requests to any RM. During    * this operation there will be no communication with the State Store. The    * Router will forward the requests to any SubCluster. The Router will retry    * to submit the request on #numSubmitRetries different SubClusters. The    * SubClusters are randomly chosen from the active ones.    *    * Possible failures and behaviors:    *    * Client: identical behavior as {@code ClientRMService}.    *    * Router: the Client will timeout and resubmit.    *    * ResourceManager: the Router will timeout and contacts another RM.    *    * StateStore: not in the execution.    */
+comment|/**    * YARN Router forwards every getNewApplication requests to any RM. During    * this operation there will be no communication with the State Store. The    * Router will forward the requests to any SubCluster. The Router will retry    * to submit the request on #numSubmitRetries different SubClusters. The    * SubClusters are randomly chosen from the active ones.    *    * Possible failures and behaviors:    *    * Client: identical behavior as {@code ClientRMService}.    *    * Router: the Client will timeout and resubmit.    *    * ResourceManager: the Router will timeout and contacts another RM.    *    * StateStore: not in the execution.    */
 annotation|@
 name|Override
 DECL|method|getNewApplication ( GetNewApplicationRequest request)
@@ -2616,7 +2616,7 @@ name|errMsg
 argument_list|)
 throw|;
 block|}
-comment|/**    * The Yarn Router will forward to the respective Yarn RM in which the AM is    * running.    *    * Possible failures and behaviors:    *    * Client: identical behavior as {@code ClientRMService}.    *    * Router: the Client will timeout and resubmit the request.    *    * ResourceManager: the Router will timeout and the call will fail.    *    * State Store: the Router will timeout and it will retry depending on the    * FederationFacade settings - if the failure happened before the select    * operation.    */
+comment|/**    * The YARN Router will forward to the respective YARN RM in which the AM is    * running.    *    * Possible failures and behaviors:    *    * Client: identical behavior as {@code ClientRMService}.    *    * Router: the Client will timeout and resubmit the request.    *    * ResourceManager: the Router will timeout and the call will fail.    *    * State Store: the Router will timeout and it will retry depending on the    * FederationFacade settings - if the failure happened before the select    * operation.    */
 annotation|@
 name|Override
 DECL|method|forceKillApplication ( KillApplicationRequest request)
@@ -2841,7 +2841,7 @@ return|return
 name|response
 return|;
 block|}
-comment|/**    * The Yarn Router will forward to the respective Yarn RM in which the AM is    * running.    *    * Possible failure:    *    * Client: identical behavior as {@code ClientRMService}.    *    * Router: the Client will timeout and resubmit the request.    *    * ResourceManager: the Router will timeout and the call will fail.    *    * State Store: the Router will timeout and it will retry depending on the    * FederationFacade settings - if the failure happened before the select    * operation.    */
+comment|/**    * The YARN Router will forward to the respective YARN RM in which the AM is    * running.    *    * Possible failure:    *    * Client: identical behavior as {@code ClientRMService}.    *    * Router: the Client will timeout and resubmit the request.    *    * ResourceManager: the Router will timeout and the call will fail.    *    * State Store: the Router will timeout and it will retry depending on the    * FederationFacade settings - if the failure happened before the select    * operation.    */
 annotation|@
 name|Override
 DECL|method|getApplicationReport ( GetApplicationReportRequest request)

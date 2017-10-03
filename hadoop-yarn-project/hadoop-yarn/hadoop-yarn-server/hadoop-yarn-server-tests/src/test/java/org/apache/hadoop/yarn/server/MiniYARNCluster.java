@@ -1353,7 +1353,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>  * Embedded Yarn minicluster for testcases that need to interact with a cluster.  *</p>  *<p>  * In a real cluster, resource request matching is done using the hostname, and  * by default Yarn minicluster works in the exact same way as a real cluster.  *</p>  *<p>  * If a testcase needs to use multiple nodes and exercise resource request  * matching to a specific node, then the property   * {@value org.apache.hadoop.yarn.conf.YarnConfiguration#RM_SCHEDULER_INCLUDE_PORT_IN_NODE_NAME}  * should be set<code>true</code> in the configuration used to initialize  * the minicluster.  *</p>  * With this property set to<code>true</code>, the matching will be done using  * the<code>hostname:port</code> of the namenodes. In such case, the AM must  * do resource request using<code>hostname:port</code> as the location.  */
+comment|/**  *<p>  * Embedded YARN minicluster for testcases that need to interact with a cluster.  *</p>  *<p>  * In a real cluster, resource request matching is done using the hostname, and  * by default YARN minicluster works in the exact same way as a real cluster.  *</p>  *<p>  * If a testcase needs to use multiple nodes and exercise resource request  * matching to a specific node, then the property   * {@value org.apache.hadoop.yarn.conf.YarnConfiguration#RM_SCHEDULER_INCLUDE_PORT_IN_NODE_NAME}  * should be set<code>true</code> in the configuration used to initialize  * the minicluster.  *</p>  * With this property set to<code>true</code>, the matching will be done using  * the<code>hostname:port</code> of the namenodes. In such case, the AM must  * do resource request using<code>hostname:port</code> as the location.  */
 end_comment
 
 begin_class

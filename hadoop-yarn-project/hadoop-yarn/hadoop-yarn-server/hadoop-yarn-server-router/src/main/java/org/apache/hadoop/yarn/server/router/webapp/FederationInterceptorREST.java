@@ -1850,7 +1850,7 @@ return|return
 name|interceptor
 return|;
 block|}
-comment|/**    * Yarn Router forwards every getNewApplication requests to any RM. During    * this operation there will be no communication with the State Store. The    * Router will forward the requests to any SubCluster. The Router will retry    * to submit the request on #numSubmitRetries different SubClusters. The    * SubClusters are randomly chosen from the active ones.    *<p>    * Possible failures and behaviors:    *<p>    * Client: identical behavior as {@code RMWebServices}.    *<p>    * Router: the Client will timeout and resubmit.    *<p>    * ResourceManager: the Router will timeout and contacts another RM.    *<p>    * StateStore: not in the execution.    */
+comment|/**    * YARN Router forwards every getNewApplication requests to any RM. During    * this operation there will be no communication with the State Store. The    * Router will forward the requests to any SubCluster. The Router will retry    * to submit the request on #numSubmitRetries different SubClusters. The    * SubClusters are randomly chosen from the active ones.    *<p>    * Possible failures and behaviors:    *<p>    * Client: identical behavior as {@code RMWebServices}.    *<p>    * Router: the Client will timeout and resubmit.    *<p>    * ResourceManager: the Router will timeout and contacts another RM.    *<p>    * StateStore: not in the execution.    */
 annotation|@
 name|Override
 DECL|method|createNewApplication (HttpServletRequest hsr)
@@ -2818,7 +2818,7 @@ name|build
 argument_list|()
 return|;
 block|}
-comment|/**    * The Yarn Router will forward to the respective Yarn RM in which the AM is    * running.    *<p>    * Possible failure:    *<p>    * Client: identical behavior as {@code RMWebServices}.    *<p>    * Router: the Client will timeout and resubmit the request.    *<p>    * ResourceManager: the Router will timeout and the call will fail.    *<p>    * State Store: the Router will timeout and it will retry depending on the    * FederationFacade settings - if the failure happened before the select    * operation.    */
+comment|/**    * The YARN Router will forward to the respective YARN RM in which the AM is    * running.    *<p>    * Possible failure:    *<p>    * Client: identical behavior as {@code RMWebServices}.    *<p>    * Router: the Client will timeout and resubmit the request.    *<p>    * ResourceManager: the Router will timeout and the call will fail.    *<p>    * State Store: the Router will timeout and it will retry depending on the    * FederationFacade settings - if the failure happened before the select    * operation.    */
 annotation|@
 name|Override
 DECL|method|getApp (HttpServletRequest hsr, String appId, Set<String> unselectedFields)
@@ -2984,7 +2984,7 @@ return|return
 name|response
 return|;
 block|}
-comment|/**    * The Yarn Router will forward to the respective Yarn RM in which the AM is    * running.    *<p>    * Possible failures and behaviors:    *<p>    * Client: identical behavior as {@code RMWebServices}.    *<p>    * Router: the Client will timeout and resubmit the request.    *<p>    * ResourceManager: the Router will timeout and the call will fail.    *<p>    * State Store: the Router will timeout and it will retry depending on the    * FederationFacade settings - if the failure happened before the select    * operation.    */
+comment|/**    * The YARN Router will forward to the respective YARN RM in which the AM is    * running.    *<p>    * Possible failures and behaviors:    *<p>    * Client: identical behavior as {@code RMWebServices}.    *<p>    * Router: the Client will timeout and resubmit the request.    *<p>    * ResourceManager: the Router will timeout and the call will fail.    *<p>    * State Store: the Router will timeout and it will retry depending on the    * FederationFacade settings - if the failure happened before the select    * operation.    */
 annotation|@
 name|Override
 DECL|method|updateAppState (AppState targetState, HttpServletRequest hsr, String appId)
@@ -3175,7 +3175,7 @@ return|return
 name|response
 return|;
 block|}
-comment|/**    * The Yarn Router will forward the request to all the Yarn RMs in parallel,    * after that it will group all the ApplicationReports by the ApplicationId.    *<p>    * Possible failure:    *<p>    * Client: identical behavior as {@code RMWebServices}.    *<p>    * Router: the Client will timeout and resubmit the request.    *<p>    * ResourceManager: the Router calls each Yarn RM in parallel by using one    * thread for each Yarn RM. In case a Yarn RM fails, a single call will    * timeout. However the Router will merge the ApplicationReports it got, and    * provides a partial list to the client.    *<p>    * State Store: the Router will timeout and it will retry depending on the    * FederationFacade settings - if the failure happened before the select    * operation.    */
+comment|/**    * The YARN Router will forward the request to all the YARN RMs in parallel,    * after that it will group all the ApplicationReports by the ApplicationId.    *<p>    * Possible failure:    *<p>    * Client: identical behavior as {@code RMWebServices}.    *<p>    * Router: the Client will timeout and resubmit the request.    *<p>    * ResourceManager: the Router calls each YARN RM in parallel by using one    * thread for each YARN RM. In case a YARN RM fails, a single call will    * timeout. However the Router will merge the ApplicationReports it got, and    * provides a partial list to the client.    *<p>    * State Store: the Router will timeout and it will retry depending on the    * FederationFacade settings - if the failure happened before the select    * operation.    */
 annotation|@
 name|Override
 DECL|method|getApps (HttpServletRequest hsr, String stateQuery, Set<String> statesQuery, String finalStatusQuery, String userQuery, String queueQuery, String count, String startedBegin, String startedEnd, String finishBegin, String finishEnd, Set<String> applicationTypes, Set<String> applicationTags, Set<String> unselectedFields)
@@ -3544,7 +3544,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|// Merge all the application reports got from all the available Yarn RMs
+comment|// Merge all the application reports got from all the available YARN RMs
 return|return
 name|RouterWebServiceUtil
 operator|.
@@ -3559,7 +3559,7 @@ name|returnPartialReport
 argument_list|)
 return|;
 block|}
-comment|/**    * The Yarn Router will forward to the request to all the SubClusters to find    * where the node is running.    *<p>    * Possible failure:    *<p>    * Client: identical behavior as {@code RMWebServices}.    *<p>    * Router: the Client will timeout and resubmit the request.    *<p>    * ResourceManager: the Router will timeout and the call will fail.    *<p>    * State Store: the Router will timeout and it will retry depending on the    * FederationFacade settings - if the failure happened before the select    * operation.    */
+comment|/**    * The YARN Router will forward to the request to all the SubClusters to find    * where the node is running.    *<p>    * Possible failure:    *<p>    * Client: identical behavior as {@code RMWebServices}.    *<p>    * Router: the Client will timeout and resubmit the request.    *<p>    * ResourceManager: the Router will timeout and the call will fail.    *<p>    * State Store: the Router will timeout and it will retry depending on the    * FederationFacade settings - if the failure happened before the select    * operation.    */
 annotation|@
 name|Override
 DECL|method|getNode (String nodeId)
@@ -3859,7 +3859,7 @@ return|return
 name|nodeInfo
 return|;
 block|}
-comment|/**    * The Yarn Router will forward the request to all the Yarn RMs in parallel,    * after that it will remove all the duplicated NodeInfo by using the NodeId.    *<p>    * Possible failure:    *<p>    * Client: identical behavior as {@code RMWebServices}.    *<p>    * Router: the Client will timeout and resubmit the request.    *<p>    * ResourceManager: the Router calls each Yarn RM in parallel by using one    * thread for each Yarn RM. In case a Yarn RM fails, a single call will    * timeout. However the Router will use the NodesInfo it got, and provides a    * partial list to the client.    *<p>    * State Store: the Router will timeout and it will retry depending on the    * FederationFacade settings - if the failure happened before the select    * operation.    */
+comment|/**    * The YARN Router will forward the request to all the YARN RMs in parallel,    * after that it will remove all the duplicated NodeInfo by using the NodeId.    *<p>    * Possible failure:    *<p>    * Client: identical behavior as {@code RMWebServices}.    *<p>    * Router: the Client will timeout and resubmit the request.    *<p>    * ResourceManager: the Router calls each YARN RM in parallel by using one    * thread for each YARN RM. In case a YARN RM fails, a single call will    * timeout. However the Router will use the NodesInfo it got, and provides a    * partial list to the client.    *<p>    * State Store: the Router will timeout and it will retry depending on the    * FederationFacade settings - if the failure happened before the select    * operation.    */
 annotation|@
 name|Override
 DECL|method|getNodes (String states)
@@ -4111,7 +4111,7 @@ expr_stmt|;
 block|}
 block|}
 comment|// Delete duplicate from all the node reports got from all the available
-comment|// Yarn RMs. Nodes can be moved from one subclusters to another. In this
+comment|// YARN RMs. Nodes can be moved from one subclusters to another. In this
 comment|// operation they result LOST/RUNNING in the previous SubCluster and
 comment|// NEW/RUNNING in the new one.
 return|return

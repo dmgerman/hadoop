@@ -51,7 +51,7 @@ import|;
 end_import
 
 begin_comment
-comment|/** Base Yarn Exception.  *  * NOTE: All derivatives of this exception, which may be thrown by a remote  * service, must include a String only constructor for the exception to be  * unwrapped on the client.  */
+comment|/** Base YARN Exception.  *  * NOTE: All derivatives of this exception, which may be thrown by a remote  * service, must include a String only constructor for the exception to be  * unwrapped on the client.  */
 end_comment
 
 begin_class

@@ -670,7 +670,7 @@ return|return
 name|conf
 return|;
 block|}
-comment|/**    * Create configuration where the cgroups are premounted.    * @param myHierarchy Yarn cgroup    * @return configuration object    */
+comment|/**    * Create configuration where the cgroups are premounted.    * @param myHierarchy YARN cgroup    * @return configuration object    */
 DECL|method|createNoMountConfiguration (String myHierarchy)
 specifier|private
 name|Configuration
@@ -1926,7 +1926,7 @@ argument_list|,
 literal|"cpu"
 argument_list|)
 decl_stmt|;
-comment|// Initialize Yarn classes
+comment|// Initialize YARN classes
 name|Configuration
 name|confNoMount
 init|=
@@ -2726,7 +2726,7 @@ name|mkdirs
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Initialize Yarn classes
+comment|// Initialize YARN classes
 name|Configuration
 name|confMount
 init|=

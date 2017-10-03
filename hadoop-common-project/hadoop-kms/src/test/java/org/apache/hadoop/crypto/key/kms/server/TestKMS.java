@@ -13906,7 +13906,7 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
-comment|// Running as a service (e.g. Yarn in practice).
+comment|// Running as a service (e.g. YARN in practice).
 name|runServer
 argument_list|(
 literal|null
@@ -14009,7 +14009,7 @@ name|getPort
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// Job 1 (e.g. Yarn log aggregation job), with user DT.
+comment|// Job 1 (e.g. YARN log aggregation job), with user DT.
 specifier|final
 name|Collection
 argument_list|<
@@ -14301,7 +14301,7 @@ name|isEmpty
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// job 2 (e.g. Another Yarn log aggregation job, with user DT.
+comment|// job 2 (e.g. Another YARN log aggregation job, with user DT.
 name|doAs
 argument_list|(
 literal|"client"

@@ -117,7 +117,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class is intended to be installed by calling   * {@link Thread#setDefaultUncaughtExceptionHandler(UncaughtExceptionHandler)}  * In the main entry point.  It is intended to try and cleanly shut down  * programs using the Yarn Event framework.  *   * Note: Right now it only will shut down the program if a Error is caught, but  * not any other exception.  Anything else is just logged.  */
+comment|/**  * This class is intended to be installed by calling   * {@link Thread#setDefaultUncaughtExceptionHandler(UncaughtExceptionHandler)}  * In the main entry point.  It is intended to try and cleanly shut down  * programs using the YARN Event framework.  *   * Note: Right now it only will shut down the program if a Error is caught, but  * not any other exception.  Anything else is just logged.  */
 end_comment
 
 begin_class

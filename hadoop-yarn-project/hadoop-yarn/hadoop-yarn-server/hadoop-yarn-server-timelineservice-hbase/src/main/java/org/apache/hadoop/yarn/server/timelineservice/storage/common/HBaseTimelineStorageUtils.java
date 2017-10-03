@@ -1087,7 +1087,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    * @param conf Yarn configuration. Used to see if there is an explicit config    *          pointing to the HBase config file to read. It should not be null    *          or a NullPointerException will be thrown.    * @return a configuration with the HBase configuration from the classpath,    *         optionally overwritten by the timeline service configuration URL if    *         specified.    * @throws MalformedURLException if a timeline service HBase configuration URL    *           is specified but is a malformed URL.    */
+comment|/**    * @param conf YARN configuration. Used to see if there is an explicit config    *          pointing to the HBase config file to read. It should not be null    *          or a NullPointerException will be thrown.    * @return a configuration with the HBase configuration from the classpath,    *         optionally overwritten by the timeline service configuration URL if    *         specified.    * @throws MalformedURLException if a timeline service HBase configuration URL    *           is specified but is a malformed URL.    */
 DECL|method|getTimelineServiceHBaseConf (Configuration conf)
 specifier|public
 specifier|static

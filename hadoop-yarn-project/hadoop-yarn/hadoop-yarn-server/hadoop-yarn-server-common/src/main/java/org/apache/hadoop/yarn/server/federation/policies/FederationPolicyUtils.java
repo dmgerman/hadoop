@@ -423,7 +423,7 @@ return|return
 name|federationPolicyManager
 return|;
 block|}
-comment|/**    * Get Federation policy configuration from state store, using default queue    * and configuration as fallback.    *    * @param queue the queue of the application    * @param conf the Yarn configuration    * @param federationFacade state store facade    * @return SubClusterPolicyConfiguration recreated    */
+comment|/**    * Get Federation policy configuration from state store, using default queue    * and configuration as fallback.    *    * @param queue the queue of the application    * @param conf the YARN configuration    * @param federationFacade state store facade    * @return SubClusterPolicyConfiguration recreated    */
 DECL|method|loadPolicyConfiguration ( String queue, Configuration conf, FederationStateStoreFacade federationFacade)
 specifier|public
 specifier|static
@@ -630,7 +630,7 @@ return|return
 name|configuration
 return|;
 block|}
-comment|/**    * Get AMRMProxy policy from state store, using default queue and    * configuration as fallback.    *    * @param queue the queue of the application    * @param oldPolicy the previous policy instance (can be null)    * @param conf the Yarn configuration    * @param federationFacade state store facade    * @param homeSubClusterId home sub-cluster id    * @return FederationAMRMProxyPolicy recreated    * @throws FederationPolicyInitializationException if fails    */
+comment|/**    * Get AMRMProxy policy from state store, using default queue and    * configuration as fallback.    *    * @param queue the queue of the application    * @param oldPolicy the previous policy instance (can be null)    * @param conf the YARN configuration    * @param federationFacade state store facade    * @param homeSubClusterId home sub-cluster id    * @return FederationAMRMProxyPolicy recreated    * @throws FederationPolicyInitializationException if fails    */
 DECL|method|loadAMRMPolicy (String queue, FederationAMRMProxyPolicy oldPolicy, Configuration conf, FederationStateStoreFacade federationFacade, SubClusterId homeSubClusterId)
 specifier|public
 specifier|static

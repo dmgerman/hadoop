@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_comment
-comment|/**  * Basic services for the YARN registry  *<ul>  *<li>  *     The {@link org.apache.hadoop.registry.server.services.RegistryAdminService}  *     extends the shared Yarn Registry client with registry setup and  *     (potentially asynchronous) administrative actions.  *</li>  *<li>  *     The {@link org.apache.hadoop.registry.server.services.MicroZookeeperService}  *     is a transient Zookeeper instance bound to the YARN service lifecycle.  *     It is suitable for testing.  *</li>  *<li>  *     The {@link org.apache.hadoop.registry.server.services.AddingCompositeService}  *     extends the standard YARN composite service by making its add and remove  *     methods public. It is a utility service used in parts of the codebase  *</li>  *</ul>  */
+comment|/**  * Basic services for the YARN registry  *<ul>  *<li>  *     The {@link org.apache.hadoop.registry.server.services.RegistryAdminService}  *     extends the shared YARN Registry client with registry setup and  *     (potentially asynchronous) administrative actions.  *</li>  *<li>  *     The {@link org.apache.hadoop.registry.server.services.MicroZookeeperService}  *     is a transient Zookeeper instance bound to the YARN service lifecycle.  *     It is suitable for testing.  *</li>  *<li>  *     The {@link org.apache.hadoop.registry.server.services.AddingCompositeService}  *     extends the standard YARN composite service by making its add and remove  *     methods public. It is a utility service used in parts of the codebase  *</li>  *</ul>  */
 end_comment
 
 begin_package
