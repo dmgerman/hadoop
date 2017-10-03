@@ -729,8 +729,6 @@ argument_list|,
 name|len
 argument_list|)
 decl_stmt|;
-try|try
-block|{
 return|return
 operator|new
 name|LocatedFileStatus
@@ -772,21 +770,6 @@ comment|/* Path path                */
 name|blocks
 argument_list|)
 return|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|RuntimeException
-argument_list|(
-name|e
-argument_list|)
-throw|;
-block|}
 block|}
 DECL|method|genBlocks (Random r, int nblocks, int blocksize, long len)
 name|BlockLocation
