@@ -1279,6 +1279,28 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|useWhitelistEnv (Map<String, String> env)
+specifier|public
+name|boolean
+name|useWhitelistEnv
+parameter_list|(
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|env
+parameter_list|)
+block|{
+comment|// Avoid propagating nodemanager environment variables into the container
+comment|// so those variables can be picked up from the Docker image instead.
+return|return
+literal|false
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|prepareContainer (ContainerRuntimeContext ctx)
 specifier|public
 name|void
