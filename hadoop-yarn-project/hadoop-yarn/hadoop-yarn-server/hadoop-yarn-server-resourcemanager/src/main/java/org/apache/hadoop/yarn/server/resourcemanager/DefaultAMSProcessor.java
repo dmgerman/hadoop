@@ -1404,6 +1404,18 @@ argument_list|(
 name|transferredContainers
 argument_list|)
 expr_stmt|;
+comment|// Clear the node set remembered by the secret manager. Necessary
+comment|// for UAM restart because we use the same attemptId.
+name|rmContext
+operator|.
+name|getNMTokenSecretManager
+argument_list|()
+operator|.
+name|clearNodeSetForAttempt
+argument_list|(
+name|applicationAttemptId
+argument_list|)
+expr_stmt|;
 name|List
 argument_list|<
 name|NMToken

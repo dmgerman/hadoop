@@ -2912,9 +2912,19 @@ name|RMAppAttemptState
 operator|.
 name|RUNNING
 argument_list|,
+name|EnumSet
+operator|.
+name|of
+argument_list|(
 name|RMAppAttemptEventType
 operator|.
 name|LAUNCHED
+argument_list|,
+comment|// Valid only for UAM restart
+name|RMAppAttemptEventType
+operator|.
+name|REGISTERED
+argument_list|)
 argument_list|)
 operator|.
 name|addTransition
@@ -6781,14 +6791,6 @@ operator|.
 name|submissionContext
 operator|.
 name|getKeepContainersAcrossApplicationAttempts
-argument_list|()
-operator|&&
-operator|!
-name|appAttempt
-operator|.
-name|submissionContext
-operator|.
-name|getUnmanagedAM
 argument_list|()
 operator|&&
 name|rmApp

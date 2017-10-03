@@ -1268,7 +1268,7 @@ name|boolean
 name|getKeepContainersAcrossApplicationAttempts
 parameter_list|()
 function_decl|;
-comment|/**    * Set the flag which indicates whether to keep containers across application    * attempts.    *<p>    * If the flag is true, running containers will not be killed when application    * attempt fails and these containers will be retrieved by the new application    * attempt on registration via    * {@link ApplicationMasterProtocol#registerApplicationMaster(RegisterApplicationMasterRequest)}.    *</p>    *     * @param keepContainers    *          the flag which indicates whether to keep containers across    *          application attempts.    */
+comment|/**    * Set the flag which indicates whether to keep containers across application    * attempts.    *<p>    * For managed AM, if the flag is true, running containers will not be killed    * when application attempt fails and these containers will be retrieved by    * the new application attempt on registration via    * {@link ApplicationMasterProtocol#registerApplicationMaster(RegisterApplicationMasterRequest)}.    *</p>    *<p>    * For unmanaged AM, if the flag is true, RM allows re-register and returns    * the running containers in the same attempt back to the UAM for HA.    *</p>    *    * @param keepContainers the flag which indicates whether to keep containers    *          across application attempts.    */
 annotation|@
 name|Public
 annotation|@
