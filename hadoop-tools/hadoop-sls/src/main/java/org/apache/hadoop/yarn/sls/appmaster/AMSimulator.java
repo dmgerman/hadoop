@@ -833,12 +833,12 @@ name|AllocateResponse
 argument_list|>
 name|responseQueue
 decl_stmt|;
-DECL|field|RESPONSE_ID
-specifier|protected
+DECL|field|responseId
+specifier|private
 name|int
-name|RESPONSE_ID
+name|responseId
 init|=
-literal|1
+literal|0
 decl_stmt|;
 comment|// user name
 DECL|field|user
@@ -1682,7 +1682,7 @@ name|allocateRequest
 operator|.
 name|setResponseId
 argument_list|(
-name|RESPONSE_ID
+name|responseId
 operator|++
 argument_list|)
 expr_stmt|;
