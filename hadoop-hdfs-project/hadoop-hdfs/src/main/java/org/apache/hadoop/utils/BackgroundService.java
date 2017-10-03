@@ -460,7 +460,7 @@ parameter_list|()
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Running background service : {}"
 argument_list|,
@@ -487,7 +487,7 @@ return|return;
 block|}
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Number of background tasks to execute : {}"
 argument_list|,

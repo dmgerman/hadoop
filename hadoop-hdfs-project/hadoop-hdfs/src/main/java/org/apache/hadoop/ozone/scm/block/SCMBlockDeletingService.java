@@ -505,7 +505,7 @@ comment|// Scan SCM DB in HB interval and collect a throttled list of
 comment|// to delete blocks.
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Running DeletedBlockTransactionScanner"
 argument_list|)
@@ -575,7 +575,7 @@ name|info
 argument_list|(
 literal|"Added delete block command for datanode {} in the queue,"
 operator|+
-literal|" number delete block transactions: {}, TxID list: {}"
+literal|" number of delete block transactions: {}, TxID list: {}"
 argument_list|,
 name|datanodeID
 argument_list|,
@@ -647,7 +647,7 @@ argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Scanned deleted blocks log and got {} delTX to process"
 argument_list|,
@@ -862,7 +862,7 @@ expr_stmt|;
 block|}
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Transaction added: {}<- TX({})"
 argument_list|,

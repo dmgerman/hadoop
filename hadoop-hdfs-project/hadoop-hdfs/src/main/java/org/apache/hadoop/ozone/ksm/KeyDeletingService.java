@@ -576,7 +576,7 @@ else|else
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"No pending deletion key found in KSM"
 argument_list|)
