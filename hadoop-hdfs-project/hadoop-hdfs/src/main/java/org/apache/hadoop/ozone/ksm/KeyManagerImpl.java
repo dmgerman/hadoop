@@ -701,7 +701,7 @@ name|keyKey
 init|=
 name|metadataManager
 operator|.
-name|getDBKeyForKey
+name|getDBKeyBytes
 argument_list|(
 name|volumeName
 argument_list|,
@@ -1159,7 +1159,7 @@ name|keyKey
 init|=
 name|metadataManager
 operator|.
-name|getDBKeyForKey
+name|getDBKeyBytes
 argument_list|(
 name|volumeName
 argument_list|,
@@ -1337,7 +1337,7 @@ name|objectKey
 init|=
 name|metadataManager
 operator|.
-name|getDBKeyForKey
+name|getDBKeyBytes
 argument_list|(
 name|volumeName
 argument_list|,

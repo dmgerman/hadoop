@@ -844,10 +844,11 @@ name|bucketKeyString
 argument_list|)
 return|;
 block|}
-DECL|method|getBucketKeyPrefix (String volume, String bucket)
+comment|/**    * @param volume    * @param bucket    * @return    */
+DECL|method|getBucketWithDBPrefix (String volume, String bucket)
 specifier|private
 name|String
-name|getBucketKeyPrefix
+name|getBucketWithDBPrefix
 parameter_list|(
 name|String
 name|volume
@@ -910,10 +911,10 @@ name|toString
 argument_list|()
 return|;
 block|}
-DECL|method|getKeyKeyPrefix (String volume, String bucket, String key)
+DECL|method|getKeyWithDBPrefix (String volume, String bucket, String key)
 specifier|private
 name|String
-name|getKeyKeyPrefix
+name|getKeyWithDBPrefix
 parameter_list|(
 name|String
 name|volume
@@ -961,11 +962,11 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getDBKeyForKey (String volume, String bucket, String key)
+DECL|method|getDBKeyBytes (String volume, String bucket, String key)
 specifier|public
 name|byte
 index|[]
-name|getDBKeyForKey
+name|getDBKeyBytes
 parameter_list|(
 name|String
 name|volume
@@ -977,33 +978,19 @@ name|String
 name|key
 parameter_list|)
 block|{
-name|String
-name|keyKeyString
-init|=
-name|OzoneConsts
-operator|.
-name|KSM_KEY_PREFIX
-operator|+
-name|volume
-operator|+
-name|OzoneConsts
-operator|.
-name|KSM_KEY_PREFIX
-operator|+
-name|bucket
-operator|+
-name|OzoneConsts
-operator|.
-name|KSM_KEY_PREFIX
-operator|+
-name|key
-decl_stmt|;
 return|return
 name|DFSUtil
 operator|.
 name|string2Bytes
 argument_list|(
-name|keyKeyString
+name|getKeyWithDBPrefix
+argument_list|(
+name|volume
+argument_list|,
+name|bucket
+argument_list|,
+name|key
+argument_list|)
 argument_list|)
 return|;
 block|}
@@ -1268,21 +1255,14 @@ block|{
 name|String
 name|keyRootName
 init|=
-name|OzoneConsts
-operator|.
-name|KSM_KEY_PREFIX
-operator|+
+name|getKeyWithDBPrefix
+argument_list|(
 name|volume
-operator|+
-name|OzoneConsts
-operator|.
-name|KSM_KEY_PREFIX
-operator|+
+argument_list|,
 name|bucket
-operator|+
-name|OzoneConsts
-operator|.
-name|KSM_KEY_PREFIX
+argument_list|,
+literal|null
+argument_list|)
 decl_stmt|;
 name|byte
 index|[]
@@ -1466,7 +1446,7 @@ block|{
 name|String
 name|bucketNamePrefix
 init|=
-name|getBucketKeyPrefix
+name|getBucketWithDBPrefix
 argument_list|(
 name|volumeName
 argument_list|,
@@ -1745,7 +1725,7 @@ init|=
 operator|new
 name|KeyPrefixFilter
 argument_list|(
-name|getKeyKeyPrefix
+name|getKeyWithDBPrefix
 argument_list|(
 name|volumeName
 argument_list|,
@@ -1789,7 +1769,7 @@ name|store
 operator|.
 name|getRangeKVs
 argument_list|(
-name|getDBKeyForKey
+name|getDBKeyBytes
 argument_list|(
 name|volumeName
 argument_list|,

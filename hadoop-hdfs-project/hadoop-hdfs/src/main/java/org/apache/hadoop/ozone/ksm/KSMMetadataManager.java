@@ -294,10 +294,10 @@ name|bucket
 parameter_list|)
 function_decl|;
 comment|/**    * Given a volume, bucket and a key, return the corresponding DB key.    * @param volume - volume name    * @param bucket - bucket name    * @param key - key name    * @return bytes of DB key.    */
-DECL|method|getDBKeyForKey (String volume, String bucket, String key)
+DECL|method|getDBKeyBytes (String volume, String bucket, String key)
 name|byte
 index|[]
-name|getDBKeyForKey
+name|getDBKeyBytes
 parameter_list|(
 name|String
 name|volume
