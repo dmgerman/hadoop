@@ -250,7 +250,10 @@ name|HAS_CRYPT
 block|,
 DECL|enumConstant|HAS_EC
 name|HAS_EC
-block|;   }
+block|,
+DECL|enumConstant|SNAPSHOT_ENABLED
+name|SNAPSHOT_ENABLED
+block|}
 DECL|field|flags
 specifier|private
 specifier|final
@@ -925,6 +928,24 @@ parameter_list|()
 block|{
 return|return
 name|storagePolicy
+return|;
+block|}
+comment|/**    * Check if directory is Snapshot enabled or not.    *    * @return true if directory is snapshot enabled    */
+DECL|method|isSnapshotEnabled ()
+specifier|public
+name|boolean
+name|isSnapshotEnabled
+parameter_list|()
+block|{
+return|return
+name|flags
+operator|.
+name|contains
+argument_list|(
+name|Flags
+operator|.
+name|SNAPSHOT_ENABLED
+argument_list|)
 return|;
 block|}
 annotation|@

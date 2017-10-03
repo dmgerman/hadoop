@@ -310,8 +310,10 @@ name|HAS_CRYPT
 block|,
 DECL|enumConstant|HAS_EC
 name|HAS_EC
-block|,   }
-empty_stmt|;
+block|,
+DECL|enumConstant|SNAPSHOT_ENABLED
+name|SNAPSHOT_ENABLED
+block|}
 DECL|field|NONE
 specifier|private
 specifier|static
@@ -1109,6 +1111,24 @@ name|HAS_EC
 argument_list|)
 return|;
 block|}
+comment|/**    * Check if directory is Snapshot enabled or not.    *    * @return true if directory is snapshot enabled    */
+DECL|method|isSnapshotEnabled ()
+specifier|public
+name|boolean
+name|isSnapshotEnabled
+parameter_list|()
+block|{
+return|return
+name|attr
+operator|.
+name|contains
+argument_list|(
+name|AttrFlags
+operator|.
+name|SNAPSHOT_ENABLED
+argument_list|)
+return|;
+block|}
 comment|/**    * Get the owner of the file.    * @return owner of the file. The string could be empty if there is no    *         notion of owner of a file in a filesystem or if it could not     *         be determined (rare).    */
 DECL|method|getOwner ()
 specifier|public
@@ -1234,6 +1254,44 @@ literal|""
 else|:
 name|group
 expr_stmt|;
+block|}
+comment|/**    * Sets Snapshot enabled flag.    *    * @param isSnapShotEnabled When true, SNAPSHOT_ENABLED flag is set    */
+DECL|method|setSnapShotEnabledFlag (boolean isSnapShotEnabled)
+specifier|public
+name|void
+name|setSnapShotEnabledFlag
+parameter_list|(
+name|boolean
+name|isSnapShotEnabled
+parameter_list|)
+block|{
+if|if
+condition|(
+name|isSnapShotEnabled
+condition|)
+block|{
+name|attr
+operator|.
+name|add
+argument_list|(
+name|AttrFlags
+operator|.
+name|SNAPSHOT_ENABLED
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|attr
+operator|.
+name|remove
+argument_list|(
+name|AttrFlags
+operator|.
+name|SNAPSHOT_ENABLED
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * @return The contents of the symbolic link.    */
 DECL|method|getSymlink ()
