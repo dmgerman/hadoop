@@ -258,39 +258,6 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|conf
-operator|.
-name|get
-argument_list|(
-name|CommonConfigurationKeys
-operator|.
-name|IO_SERIALIZATIONS_KEY
-argument_list|)
-operator|.
-name|equals
-argument_list|(
-literal|""
-argument_list|)
-condition|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Serialization for various data types may not be available. Please configure "
-operator|+
-name|CommonConfigurationKeys
-operator|.
-name|IO_SERIALIZATIONS_KEY
-operator|+
-literal|" properly to have serialization support (it is currently not set)."
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
 for|for
 control|(
 name|String
@@ -339,7 +306,6 @@ argument_list|,
 name|serializerName
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 annotation|@

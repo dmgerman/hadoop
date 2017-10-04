@@ -238,6 +238,41 @@ name|conf
 argument_list|)
 decl_stmt|;
 block|}
+comment|/**    * Test the case when {@code IO_SERIALIZATIONS_KEY}    * is not set at all, because something unset this key.    * This shouldn't result in any error, the defaults present    * in construction should be used in this case.    */
+annotation|@
+name|Test
+DECL|method|testSerializationKeyIsUnset ()
+specifier|public
+name|void
+name|testSerializationKeyIsUnset
+parameter_list|()
+block|{
+name|Configuration
+name|conf
+init|=
+operator|new
+name|Configuration
+argument_list|()
+decl_stmt|;
+name|conf
+operator|.
+name|unset
+argument_list|(
+name|CommonConfigurationKeys
+operator|.
+name|IO_SERIALIZATIONS_KEY
+argument_list|)
+expr_stmt|;
+name|SerializationFactory
+name|factory
+init|=
+operator|new
+name|SerializationFactory
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+block|}
 annotation|@
 name|Test
 DECL|method|testSerializationKeyIsInvalid ()
