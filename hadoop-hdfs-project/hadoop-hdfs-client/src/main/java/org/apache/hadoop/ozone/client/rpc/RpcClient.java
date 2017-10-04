@@ -532,6 +532,24 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|OzoneProtos
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|protocolPB
 operator|.
 name|KSMPBHelper
@@ -2712,7 +2730,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|createKey ( String volumeName, String bucketName, String keyName, long size)
+DECL|method|createKey ( String volumeName, String bucketName, String keyName, long size, OzoneProtos.ReplicationType type, OzoneProtos.ReplicationFactor factor)
 specifier|public
 name|OzoneOutputStream
 name|createKey
@@ -2728,6 +2746,16 @@ name|keyName
 parameter_list|,
 name|long
 name|size
+parameter_list|,
+name|OzoneProtos
+operator|.
+name|ReplicationType
+name|type
+parameter_list|,
+name|OzoneProtos
+operator|.
+name|ReplicationFactor
+name|factor
 parameter_list|)
 throws|throws
 name|IOException
@@ -2770,6 +2798,16 @@ operator|.
 name|setDataSize
 argument_list|(
 name|size
+argument_list|)
+operator|.
+name|setType
+argument_list|(
+name|type
+argument_list|)
+operator|.
+name|setFactor
+argument_list|(
+name|factor
 argument_list|)
 operator|.
 name|build

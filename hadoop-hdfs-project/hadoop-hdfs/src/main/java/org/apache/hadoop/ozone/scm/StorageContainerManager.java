@@ -3252,6 +3252,21 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|//TODO : FIX ME : Pass the owner argument to this function.
+comment|// This causes a lot of test change and cblock change to filing
+comment|// another JIRA to fix it.
+specifier|final
+name|OzoneProtos
+operator|.
+name|Owner
+name|owner
+init|=
+name|OzoneProtos
+operator|.
+name|Owner
+operator|.
+name|OZONE
+decl_stmt|;
 name|checkAdminAccess
 argument_list|()
 expr_stmt|;
@@ -3265,6 +3280,8 @@ argument_list|,
 name|replicationFactor
 argument_list|,
 name|containerName
+argument_list|,
+name|owner
 argument_list|)
 operator|.
 name|getPipeline
@@ -4199,17 +4216,26 @@ return|return
 name|locatedBlocks
 return|;
 block|}
-comment|/**    * Asks SCM where a block should be allocated. SCM responds with the set    * of datanodes and leader that should be used creating this block.    *    * @param size - size of the block.    * @return - allocated block accessing info (key, pipeline and leader).    * @throws IOException    */
+comment|/**    * Asks SCM where a block should be allocated. SCM responds with the set of    * datanodes that should be used creating this block.    *    * @param size - size of the block.    * @param type - Replication type.    * @param factor    * @return allocated block accessing info (key, pipeline).    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|allocateBlock (final long size)
+DECL|method|allocateBlock (long size, OzoneProtos.ReplicationType type, OzoneProtos.ReplicationFactor factor)
 specifier|public
 name|AllocatedBlock
 name|allocateBlock
 parameter_list|(
-specifier|final
 name|long
 name|size
+parameter_list|,
+name|OzoneProtos
+operator|.
+name|ReplicationType
+name|type
+parameter_list|,
+name|OzoneProtos
+operator|.
+name|ReplicationFactor
+name|factor
 parameter_list|)
 throws|throws
 name|IOException
@@ -4220,6 +4246,10 @@ operator|.
 name|allocateBlock
 argument_list|(
 name|size
+argument_list|,
+name|type
+argument_list|,
+name|factor
 argument_list|)
 return|;
 block|}

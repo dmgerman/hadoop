@@ -376,6 +376,24 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|OzoneProtos
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -641,13 +659,23 @@ block|}
 comment|/**    * Asks SCM where a block should be allocated. SCM responds with the    * set of datanodes that should be used creating this block.    * @param size - size of the block.    * @return allocated block accessing info (key, pipeline).    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|allocateBlock (long size)
+DECL|method|allocateBlock (long size, OzoneProtos.ReplicationType type, OzoneProtos.ReplicationFactor factor)
 specifier|public
 name|AllocatedBlock
 name|allocateBlock
 parameter_list|(
 name|long
 name|size
+parameter_list|,
+name|OzoneProtos
+operator|.
+name|ReplicationType
+name|type
+parameter_list|,
+name|OzoneProtos
+operator|.
+name|ReplicationFactor
+name|factor
 parameter_list|)
 throws|throws
 name|IOException
@@ -674,6 +702,16 @@ operator|.
 name|setSize
 argument_list|(
 name|size
+argument_list|)
+operator|.
+name|setType
+argument_list|(
+name|type
+argument_list|)
+operator|.
+name|setFactor
+argument_list|(
+name|factor
 argument_list|)
 operator|.
 name|build

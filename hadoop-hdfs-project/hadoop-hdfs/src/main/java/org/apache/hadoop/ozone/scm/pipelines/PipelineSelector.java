@@ -390,7 +390,7 @@ specifier|final
 name|long
 name|containerSize
 decl_stmt|;
-comment|/**    * Constructs a pipeline Selector.    * @param nodeManager - node manager    * @param conf - Ozone Config    */
+comment|/**    * Constructs a pipeline Selector.    *    * @param nodeManager - node manager    * @param conf - Ozone Config    */
 DECL|method|PipelineSelector (NodeManager nodeManager, Configuration conf)
 specifier|public
 name|PipelineSelector
@@ -480,6 +480,104 @@ argument_list|,
 name|containerSize
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Translates a list of nodes, ordered such that the first is the leader, into    * a corresponding {@link Pipeline} object.    *    * @param nodes - list of datanodes on which we will allocate the container.    * The first of the list will be the leader node.    * @return pipeline corresponding to nodes    */
+DECL|method|newPipelineFromNodes (final List<DatanodeID> nodes)
+specifier|public
+specifier|static
+name|Pipeline
+name|newPipelineFromNodes
+parameter_list|(
+specifier|final
+name|List
+argument_list|<
+name|DatanodeID
+argument_list|>
+name|nodes
+parameter_list|)
+block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|nodes
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|nodes
+operator|.
+name|size
+argument_list|()
+operator|>
+literal|0
+argument_list|)
+expr_stmt|;
+name|String
+name|leaderId
+init|=
+name|nodes
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|getDatanodeUuid
+argument_list|()
+decl_stmt|;
+name|Pipeline
+name|pipeline
+init|=
+operator|new
+name|Pipeline
+argument_list|(
+name|leaderId
+argument_list|)
+decl_stmt|;
+for|for
+control|(
+name|DatanodeID
+name|node
+range|:
+name|nodes
+control|)
+block|{
+name|pipeline
+operator|.
+name|addMember
+argument_list|(
+name|node
+argument_list|)
+expr_stmt|;
+block|}
+comment|// A Standalone pipeline is always open, no action from the client
+comment|// is needed to make it open.
+name|pipeline
+operator|.
+name|setType
+argument_list|(
+name|ReplicationType
+operator|.
+name|STAND_ALONE
+argument_list|)
+expr_stmt|;
+name|pipeline
+operator|.
+name|setLifeCycleState
+argument_list|(
+name|OzoneProtos
+operator|.
+name|LifeCycleState
+operator|.
+name|OPEN
+argument_list|)
+expr_stmt|;
+return|return
+name|pipeline
+return|;
 block|}
 comment|/**    * Create pluggable container placement policy implementation instance.    *    * @param nodeManager - SCM node manager.    * @param conf - configuration.    * @return SCM container placement policy implementation instance.    */
 annotation|@
@@ -627,7 +725,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Return the pipeline manager from the replication type.    * @param replicationType - Replication Type Enum.    * @return pipeline Manager.    * @throws IllegalArgumentException    */
+comment|/**    * Return the pipeline manager from the replication type.    *    * @param replicationType - Replication Type Enum.    * @return pipeline Manager.    * @throws IllegalArgumentException If an pipeline type gets added    * and this function is not modified we will throw.    */
 DECL|method|getPipelineManager (ReplicationType replicationType)
 specifier|private
 name|PipelineManager
@@ -687,7 +785,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * This function is called by the Container Manager while allocating a new    * container. The client specifies what kind of replication pipeline is needed    * and based on the replication type in the request appropriate Interface is    * invoked.    *    */
+comment|/**    * This function is called by the Container Manager while allocating a new    * container. The client specifies what kind of replication pipeline is needed    * and based on the replication type in the request appropriate Interface is    * invoked.    */
 DECL|method|getReplicationPipeline (ReplicationType replicationType, OzoneProtos.ReplicationFactor replicationFactor, String containerName)
 specifier|public
 name|Pipeline

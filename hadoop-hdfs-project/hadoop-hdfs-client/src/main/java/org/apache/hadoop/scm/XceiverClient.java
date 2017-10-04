@@ -244,6 +244,24 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|OzoneProtos
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -285,6 +303,16 @@ operator|.
 name|concurrent
 operator|.
 name|TimeUnit
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
 import|;
 end_import
 
@@ -790,6 +818,48 @@ name|sendCommandAsync
 argument_list|(
 name|request
 argument_list|)
+return|;
+block|}
+comment|/**    * Create a pipeline.    *    * @param pipelineID - Name of the pipeline.    * @param datanodes - Datanodes    */
+annotation|@
+name|Override
+DECL|method|createPipeline (String pipelineID, List<DatanodeID> datanodes)
+specifier|public
+name|void
+name|createPipeline
+parameter_list|(
+name|String
+name|pipelineID
+parameter_list|,
+name|List
+argument_list|<
+name|DatanodeID
+argument_list|>
+name|datanodes
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// For stand alone pipeline, there is no notion called setup pipeline.
+return|return;
+block|}
+comment|/**    * Returns pipeline Type.    *    * @return - Stand Alone as the type.    */
+annotation|@
+name|Override
+DECL|method|getPipelineType ()
+specifier|public
+name|OzoneProtos
+operator|.
+name|ReplicationType
+name|getPipelineType
+parameter_list|()
+block|{
+return|return
+name|OzoneProtos
+operator|.
+name|ReplicationType
+operator|.
+name|STAND_ALONE
 return|;
 block|}
 block|}

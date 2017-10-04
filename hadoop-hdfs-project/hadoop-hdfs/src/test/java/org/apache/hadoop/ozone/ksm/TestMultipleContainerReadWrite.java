@@ -465,7 +465,7 @@ name|setLong
 argument_list|(
 name|OzoneConfigKeys
 operator|.
-name|OZONE_SCM_BLOCK_SIZE_KEY
+name|OZONE_SCM_BLOCK_SIZE_IN_MB
 argument_list|,
 literal|100
 argument_list|)

@@ -28,6 +28,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|OzoneProtos
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|scm
 operator|.
 name|container
@@ -102,13 +120,23 @@ name|BlockManager
 extends|extends
 name|Closeable
 block|{
-comment|/**    *  Allocates a new block for a given size.    * @param size - size of the block to be allocated    * @return - the allocated pipeline and key for the block    * @throws IOException    */
-DECL|method|allocateBlock (long size)
+comment|/**    * Allocates a new block for a given size.    * @param size - Block Size    * @param type Replication Type    * @param factor - Replication Factor    * @return AllocatedBlock    * @throws IOException    */
+DECL|method|allocateBlock (long size, OzoneProtos.ReplicationType type, OzoneProtos.ReplicationFactor factor)
 name|AllocatedBlock
 name|allocateBlock
 parameter_list|(
 name|long
 name|size
+parameter_list|,
+name|OzoneProtos
+operator|.
+name|ReplicationType
+name|type
+parameter_list|,
+name|OzoneProtos
+operator|.
+name|ReplicationFactor
+name|factor
 parameter_list|)
 throws|throws
 name|IOException

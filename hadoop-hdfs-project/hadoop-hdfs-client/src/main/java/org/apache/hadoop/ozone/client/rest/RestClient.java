@@ -212,6 +212,24 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|OzoneProtos
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -763,9 +781,10 @@ literal|"Not yet implemented."
 argument_list|)
 throw|;
 block|}
+comment|/**    * Writes a key in an existing bucket.    *    * @param volumeName Name of the Volume    * @param bucketName Name of the Bucket    * @param keyName Name of the Key    * @param size Size of the data    * @param type    * @param factor @return {@link OzoneOutputStream}    */
 annotation|@
 name|Override
-DECL|method|createKey ( String volumeName, String bucketName, String keyName, long size)
+DECL|method|createKey (String volumeName, String bucketName, String keyName, long size, OzoneProtos.ReplicationType type, OzoneProtos.ReplicationFactor factor)
 specifier|public
 name|OzoneOutputStream
 name|createKey
@@ -781,6 +800,16 @@ name|keyName
 parameter_list|,
 name|long
 name|size
+parameter_list|,
+name|OzoneProtos
+operator|.
+name|ReplicationType
+name|type
+parameter_list|,
+name|OzoneProtos
+operator|.
+name|ReplicationFactor
+name|factor
 parameter_list|)
 throws|throws
 name|IOException

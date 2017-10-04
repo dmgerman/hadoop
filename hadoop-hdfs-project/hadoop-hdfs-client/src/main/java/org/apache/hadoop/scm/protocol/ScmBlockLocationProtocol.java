@@ -100,6 +100,46 @@ name|AllocatedBlock
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|OzoneProtos
+operator|.
+name|ReplicationType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|OzoneProtos
+operator|.
+name|ReplicationFactor
+import|;
+end_import
+
 begin_comment
 comment|/**  * ScmBlockLocationProtocol is used by an HDFS node to find the set of nodes  * to read/write a block.  */
 end_comment
@@ -128,22 +168,28 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Asks SCM where a block should be allocated. SCM responds with the    * set of datanodes that should be used creating this block.    * @param size - size of the block.    * @return allocated block accessing info (key, pipeline).    * @throws IOException    */
-DECL|method|allocateBlock (long size)
+DECL|method|allocateBlock (long size, ReplicationType type, ReplicationFactor factor)
 name|AllocatedBlock
 name|allocateBlock
 parameter_list|(
 name|long
 name|size
+parameter_list|,
+name|ReplicationType
+name|type
+parameter_list|,
+name|ReplicationFactor
+name|factor
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Delete blocks for a set of object keys.    *    * @param keyBlocksInfoList Map of object key and its blocks.    * @return list of block deletion results.    * @throws IOException if there is any failure.    *    */
-DECL|method|deleteKeyBlocks ( List<BlockGroup> keyBlocksInfoList)
+comment|/**    * Delete blocks for a set of object keys.    *    * @param keyBlocksInfoList Map of object key and its blocks.    * @return list of block deletion results.    * @throws IOException if there is any failure.    */
 name|List
 argument_list|<
 name|DeleteBlockGroupResult
 argument_list|>
+DECL|method|deleteKeyBlocks (List<BlockGroup> keyBlocksInfoList)
 name|deleteKeyBlocks
 parameter_list|(
 name|List

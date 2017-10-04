@@ -1272,7 +1272,7 @@ init|=
 literal|0
 decl_stmt|;
 name|String
-name|containerKey
+name|blockID
 decl_stmt|;
 name|ChunkGroupOutputStream
 name|groupOutputStream
@@ -1292,7 +1292,7 @@ name|getKeyLocationList
 argument_list|()
 control|)
 block|{
-name|containerKey
+name|blockID
 operator|=
 name|subKeyInfo
 operator|.
@@ -1351,7 +1351,25 @@ condition|)
 block|{
 try|try
 block|{
-comment|// Block manager sets the container creation stage begin.
+name|storageContainerLocationClient
+operator|.
+name|notifyObjectCreationStage
+argument_list|(
+name|NotifyObjectCreationStageRequestProto
+operator|.
+name|Type
+operator|.
+name|container
+argument_list|,
+name|containerName
+argument_list|,
+name|NotifyObjectCreationStageRequestProto
+operator|.
+name|Stage
+operator|.
+name|begin
+argument_list|)
+expr_stmt|;
 name|ContainerProtocolCalls
 operator|.
 name|createContainer
@@ -1436,7 +1454,7 @@ name|groupOutputStream
 operator|.
 name|addStream
 argument_list|(
-name|containerKey
+name|blockID
 argument_list|,
 name|keyInfo
 operator|.

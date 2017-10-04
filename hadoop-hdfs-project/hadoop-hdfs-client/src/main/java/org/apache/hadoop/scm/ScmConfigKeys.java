@@ -657,7 +657,7 @@ specifier|final
 name|int
 name|OZONE_SCM_CONTAINER_PROVISION_BATCH_SIZE_DEFAULT
 init|=
-literal|5
+literal|20
 decl_stmt|;
 DECL|field|OZONE_SCM_CONTAINER_DELETION_CHOOSING_POLICY
 specifier|public

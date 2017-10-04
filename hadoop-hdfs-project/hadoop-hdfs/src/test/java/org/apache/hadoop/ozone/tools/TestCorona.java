@@ -399,7 +399,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|100
+literal|99
 argument_list|,
 name|corona
 operator|.

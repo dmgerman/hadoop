@@ -607,6 +607,16 @@ name|request
 operator|.
 name|getSize
 argument_list|()
+argument_list|,
+name|request
+operator|.
+name|getType
+argument_list|()
+argument_list|,
+name|request
+operator|.
+name|getFactor
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if

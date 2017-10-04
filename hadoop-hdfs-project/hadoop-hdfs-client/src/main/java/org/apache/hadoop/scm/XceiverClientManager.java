@@ -260,6 +260,28 @@ name|SCM_CONTAINER_CLIENT_MAX_SIZE_DEFAULT
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|OzoneProtos
+operator|.
+name|ReplicationType
+operator|.
+name|RATIS
+import|;
+end_import
+
 begin_comment
 comment|/**  * XceiverClientManager is responsible for the lifecycle of XceiverClient  * instances.  Callers use this class to acquire an XceiverClient instance  * connected to the desired container pipeline.  When done, the caller also uses  * this class to release the previously acquired XceiverClient instance.  *  *  * This class caches connection to container for reuse purpose, such that  * accessing same container frequently will be through the same connection  * without reestablishing connection. But the connection will be closed if  * not being used for a period of time.  */
 end_comment
@@ -607,7 +629,12 @@ block|{
 name|XceiverClientSpi
 name|client
 init|=
-name|useRatis
+name|pipeline
+operator|.
+name|getType
+argument_list|()
+operator|==
+name|RATIS
 condition|?
 name|XceiverClientRatis
 operator|.

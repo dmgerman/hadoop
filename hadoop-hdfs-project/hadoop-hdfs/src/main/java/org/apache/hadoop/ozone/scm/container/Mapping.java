@@ -151,8 +151,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Allocates a new container for a given keyName and replication factor.    *    * @param containerName - Name.    * @param replicationFactor - replication factor of the container.    * @return - Container Info.    * @throws IOException    */
-DECL|method|allocateContainer (OzoneProtos.ReplicationType type, OzoneProtos.ReplicationFactor replicationFactor, String containerName)
+comment|/**    * Allocates a new container for a given keyName and replication factor.    *    * @param replicationFactor - replication factor of the container.    * @param containerName - Name.    * @param owner    * @return - Container Info.    * @throws IOException    */
+DECL|method|allocateContainer (OzoneProtos.ReplicationType type, OzoneProtos.ReplicationFactor replicationFactor, String containerName, OzoneProtos.Owner owner)
 name|ContainerInfo
 name|allocateContainer
 parameter_list|(
@@ -168,6 +168,11 @@ name|replicationFactor
 parameter_list|,
 name|String
 name|containerName
+parameter_list|,
+name|OzoneProtos
+operator|.
+name|Owner
+name|owner
 parameter_list|)
 throws|throws
 name|IOException
@@ -211,6 +216,12 @@ name|event
 parameter_list|)
 throws|throws
 name|IOException
+function_decl|;
+comment|/**    * Returns the container State Manager.    * @return ContainerStateManager    */
+DECL|method|getStateManager ()
+name|ContainerStateManager
+name|getStateManager
+parameter_list|()
 function_decl|;
 block|}
 end_interface

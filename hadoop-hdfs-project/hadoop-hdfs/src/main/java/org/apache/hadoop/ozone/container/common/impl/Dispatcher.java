@@ -664,6 +664,26 @@ name|ContainerCommandRequestProto
 name|msg
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Command {}, trace ID: {} "
+argument_list|,
+name|msg
+operator|.
+name|getCmdType
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|msg
+operator|.
+name|getTraceID
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|long
 name|startNanos
 init|=

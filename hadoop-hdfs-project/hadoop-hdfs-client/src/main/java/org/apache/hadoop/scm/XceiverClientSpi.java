@@ -82,6 +82,40 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|DatanodeID
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|OzoneProtos
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|scm
 operator|.
 name|container
@@ -111,6 +145,16 @@ operator|.
 name|io
 operator|.
 name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
 import|;
 end_import
 
@@ -320,14 +364,14 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Sends a given command to server gets a waitable future back.    * @param request Request    * @return Response to the command    * @throws IOException    */
-DECL|method|sendCommandAsync ( ContainerCommandRequestProto request)
+comment|/**    * Sends a given command to server gets a waitable future back.    *    * @param request Request    * @return Response to the command    * @throws IOException    */
 specifier|public
 specifier|abstract
 name|CompletableFuture
 argument_list|<
 name|ContainerCommandResponseProto
 argument_list|>
+DECL|method|sendCommandAsync (ContainerCommandRequestProto request)
 name|sendCommandAsync
 parameter_list|(
 name|ContainerCommandRequestProto
@@ -339,6 +383,35 @@ throws|,
 name|ExecutionException
 throws|,
 name|InterruptedException
+function_decl|;
+comment|/**    * Create a pipeline.    *    * @param pipelineID - Name of the pipeline.    * @param datanodes - Datanodes    */
+DECL|method|createPipeline (String pipelineID, List<DatanodeID> datanodes)
+specifier|public
+specifier|abstract
+name|void
+name|createPipeline
+parameter_list|(
+name|String
+name|pipelineID
+parameter_list|,
+name|List
+argument_list|<
+name|DatanodeID
+argument_list|>
+name|datanodes
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Returns pipeline Type.    *    * @return - {Stand_Alone, Ratis or Chained}    */
+DECL|method|getPipelineType ()
+specifier|public
+specifier|abstract
+name|OzoneProtos
+operator|.
+name|ReplicationType
+name|getPipelineType
+parameter_list|()
 function_decl|;
 block|}
 end_class

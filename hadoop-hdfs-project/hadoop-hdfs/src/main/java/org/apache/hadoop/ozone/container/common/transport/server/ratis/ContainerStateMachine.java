@@ -443,6 +443,8 @@ name|raftStorage
 argument_list|)
 expr_stmt|;
 comment|//  TODO handle snapshots
+comment|// TODO: Add a flag that tells you that initialize has been called.
+comment|// Check with Ratis if this feature is done in Ratis.
 block|}
 annotation|@
 name|Override

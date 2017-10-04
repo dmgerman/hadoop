@@ -130,6 +130,24 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|OzoneProtos
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -569,7 +587,7 @@ name|newVersioning
 expr_stmt|;
 block|}
 comment|/**    * Creates a new key in the bucket.    * @param key Name of the key to be created.    * @param size Size of the data the key will point to.    * @return OzoneOutputStream to which the data has to be written.    * @throws IOException    */
-DECL|method|createKey (String key, long size)
+DECL|method|createKey (String key, long size, OzoneProtos .ReplicationType type, OzoneProtos.ReplicationFactor factor)
 specifier|public
 name|OzoneOutputStream
 name|createKey
@@ -579,6 +597,16 @@ name|key
 parameter_list|,
 name|long
 name|size
+parameter_list|,
+name|OzoneProtos
+operator|.
+name|ReplicationType
+name|type
+parameter_list|,
+name|OzoneProtos
+operator|.
+name|ReplicationFactor
+name|factor
 parameter_list|)
 throws|throws
 name|IOException
@@ -611,6 +639,10 @@ argument_list|,
 name|key
 argument_list|,
 name|size
+argument_list|,
+name|type
+argument_list|,
+name|factor
 argument_list|)
 return|;
 block|}
