@@ -86,7 +86,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ozone
+name|conf
 operator|.
 name|OzoneConfiguration
 import|;
