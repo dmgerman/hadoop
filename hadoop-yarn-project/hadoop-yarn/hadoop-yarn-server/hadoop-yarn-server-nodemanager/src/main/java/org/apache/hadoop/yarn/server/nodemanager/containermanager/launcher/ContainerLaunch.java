@@ -4626,6 +4626,78 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+else|else
+block|{
+comment|// Normally this means that the process was notified about
+comment|// deactivateContainer above and did not start.
+comment|// Since we already set the state to RUNNING or REINITIALIZING
+comment|// we have to send a killed event to continue.
+if|if
+condition|(
+operator|!
+name|completed
+operator|.
+name|get
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Container clean up before pid file created "
+operator|+
+name|containerIdStr
+argument_list|)
+expr_stmt|;
+name|dispatcher
+operator|.
+name|getEventHandler
+argument_list|()
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|ContainerExitEvent
+argument_list|(
+name|container
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|,
+name|ContainerEventType
+operator|.
+name|CONTAINER_KILLED_ON_REQUEST
+argument_list|,
+name|Shell
+operator|.
+name|WINDOWS
+condition|?
+name|ExitCode
+operator|.
+name|FORCE_KILLED
+operator|.
+name|getExitCode
+argument_list|()
+else|:
+name|ExitCode
+operator|.
+name|TERMINATED
+operator|.
+name|getExitCode
+argument_list|()
+argument_list|,
+literal|"Container terminated before pid file created."
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// There is a possibility that the launch grabbed the file name before
+comment|// the deactivateContainer above but it was slow enough to avoid
+comment|// getContainerPid.
+comment|// Increasing YarnConfiguration.NM_PROCESS_KILL_WAIT_MS
+comment|// reduces the likelihood of this race condition and process leak.
+block|}
+block|}
 block|}
 catch|catch
 parameter_list|(

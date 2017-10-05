@@ -6488,7 +6488,7 @@ specifier|final
 name|long
 name|DEFAULT_NM_PROCESS_KILL_WAIT_MS
 init|=
-literal|2000
+literal|5000
 decl_stmt|;
 comment|/** Max time to wait to establish a connection to RM */
 DECL|field|RESOURCEMANAGER_CONNECT_MAX_WAIT_MS

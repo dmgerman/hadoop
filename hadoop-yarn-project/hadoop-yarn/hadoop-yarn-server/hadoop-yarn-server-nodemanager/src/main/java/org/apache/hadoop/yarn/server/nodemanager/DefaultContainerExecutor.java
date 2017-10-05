@@ -1541,7 +1541,7 @@ literal|"Container "
 operator|+
 name|containerIdStr
 operator|+
-literal|" was marked as inactive. Returning terminated error"
+literal|" pid file not set. Returning terminated error"
 argument_list|)
 expr_stmt|;
 return|return
