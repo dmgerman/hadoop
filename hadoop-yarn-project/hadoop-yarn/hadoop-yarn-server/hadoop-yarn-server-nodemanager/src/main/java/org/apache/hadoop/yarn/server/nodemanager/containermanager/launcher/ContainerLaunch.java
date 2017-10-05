@@ -4205,7 +4205,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"<name>mapreduce.reduce.e nv</name>\n"
+literal|"<name>mapreduce.reduce.env</name>\n"
 argument_list|)
 operator|.
 name|append
