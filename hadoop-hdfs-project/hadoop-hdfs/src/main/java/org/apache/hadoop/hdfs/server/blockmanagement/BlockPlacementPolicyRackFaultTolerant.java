@@ -199,6 +199,7 @@ name|totalNumOfReplicas
 block|}
 return|;
 block|}
+comment|// If more racks than replicas, put one replica per rack.
 if|if
 condition|(
 name|totalNumOfReplicas
@@ -217,6 +218,8 @@ literal|1
 block|}
 return|;
 block|}
+comment|// If more replicas than racks, evenly spread the replicas.
+comment|// This calculation rounds up.
 name|int
 name|maxNodesPerRack
 init|=
@@ -508,7 +511,11 @@ name|excess
 operator|)
 argument_list|)
 expr_stmt|;
-comment|// Fill each rack exactly (maxNodesPerRack-1) replicas.
+try|try
+block|{
+comment|// Try to spread the replicas as evenly as possible across racks.
+comment|// This is done by first placing with (maxNodesPerRack-1), then spreading
+comment|// the remainder by calling again with maxNodesPerRack.
 name|writer
 operator|=
 name|chooseOnce
@@ -537,6 +544,7 @@ argument_list|,
 name|storageTypes
 argument_list|)
 expr_stmt|;
+comment|// Exclude the chosen nodes
 for|for
 control|(
 name|DatanodeStorageInfo
@@ -556,7 +564,24 @@ name|excludedNodes
 argument_list|)
 expr_stmt|;
 block|}
-comment|// For some racks, place one more replica to each one of them.
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Chosen nodes: {}"
+argument_list|,
+name|results
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Excluded nodes: {}"
+argument_list|,
+name|excludedNodes
+argument_list|)
+expr_stmt|;
 name|numOfReplicas
 operator|=
 name|totalReplicaExpected
@@ -585,6 +610,107 @@ argument_list|,
 name|storageTypes
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|NotEnoughReplicasException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Only able to place {} of {} (maxNodesPerRack={}) nodes "
+operator|+
+literal|"evenly across racks, falling back to uneven placement."
+argument_list|,
+name|results
+operator|.
+name|size
+argument_list|()
+argument_list|,
+name|numOfReplicas
+argument_list|,
+name|maxNodesPerRack
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Caught exception was:"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+comment|// Exclude the chosen nodes
+for|for
+control|(
+name|DatanodeStorageInfo
+name|resultStorage
+range|:
+name|results
+control|)
+block|{
+name|addToExcludedNodes
+argument_list|(
+name|resultStorage
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
+argument_list|,
+name|excludedNodes
+argument_list|)
+expr_stmt|;
+block|}
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Chosen nodes: {}"
+argument_list|,
+name|results
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Excluded nodes: {}"
+argument_list|,
+name|excludedNodes
+argument_list|)
+expr_stmt|;
+name|numOfReplicas
+operator|=
+name|totalReplicaExpected
+operator|-
+name|results
+operator|.
+name|size
+argument_list|()
+expr_stmt|;
+name|chooseOnce
+argument_list|(
+name|numOfReplicas
+argument_list|,
+name|writer
+argument_list|,
+name|excludedNodes
+argument_list|,
+name|blocksize
+argument_list|,
+name|totalReplicaExpected
+argument_list|,
+name|results
+argument_list|,
+name|avoidStaleNodes
+argument_list|,
+name|storageTypes
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|writer
 return|;
