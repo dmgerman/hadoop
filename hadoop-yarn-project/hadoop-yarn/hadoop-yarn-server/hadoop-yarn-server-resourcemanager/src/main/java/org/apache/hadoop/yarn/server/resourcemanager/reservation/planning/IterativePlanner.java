@@ -494,6 +494,35 @@ comment|// Current stage
 name|ReservationRequest
 name|currentReservationStage
 decl_stmt|;
+comment|// initialize periodicity
+name|long
+name|period
+init|=
+literal|0
+decl_stmt|;
+if|if
+condition|(
+name|reservation
+operator|.
+name|getRecurrenceExpression
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+name|period
+operator|=
+name|Long
+operator|.
+name|parseLong
+argument_list|(
+name|reservation
+operator|.
+name|getRecurrenceExpression
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|// Iterate the stages in reverse order
 while|while
 condition|(
@@ -568,6 +597,8 @@ argument_list|,
 name|stageArrival
 argument_list|,
 name|stageDeadline
+argument_list|,
+name|period
 argument_list|,
 name|user
 argument_list|,
@@ -959,7 +990,11 @@ argument_list|,
 name|oldRes
 operator|.
 name|getResourcesOverTime
-argument_list|()
+argument_list|(
+name|jobArrival
+argument_list|,
+name|jobDeadline
+argument_list|)
 argument_list|,
 name|RLEOperator
 operator|.
@@ -1306,7 +1341,7 @@ argument_list|)
 return|;
 block|}
 comment|// Call algStageAllocator
-DECL|method|computeStageAllocation ( Plan plan, ReservationRequest rr, long stageArrivalTime, long stageDeadline, String user, ReservationId oldId)
+DECL|method|computeStageAllocation (Plan plan, ReservationRequest rr, long stageArrivalTime, long stageDeadline, long period, String user, ReservationId oldId)
 specifier|protected
 name|Map
 argument_list|<
@@ -1327,6 +1362,9 @@ name|stageArrivalTime
 parameter_list|,
 name|long
 name|stageDeadline
+parameter_list|,
+name|long
+name|period
 parameter_list|,
 name|String
 name|user
@@ -1353,6 +1391,8 @@ argument_list|,
 name|stageArrivalTime
 argument_list|,
 name|stageDeadline
+argument_list|,
+name|period
 argument_list|,
 name|user
 argument_list|,

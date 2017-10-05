@@ -234,7 +234,7 @@ name|StageAllocator
 block|{
 annotation|@
 name|Override
-DECL|method|computeStageAllocation (Plan plan, RLESparseResourceAllocation planLoads, RLESparseResourceAllocation planModifications, ReservationRequest rr, long stageEarliestStart, long stageDeadline, String user, ReservationId oldId)
+DECL|method|computeStageAllocation (Plan plan, RLESparseResourceAllocation planLoads, RLESparseResourceAllocation planModifications, ReservationRequest rr, long stageEarliestStart, long stageDeadline, long period, String user, ReservationId oldId)
 specifier|public
 name|Map
 argument_list|<
@@ -261,6 +261,9 @@ name|stageEarliestStart
 parameter_list|,
 name|long
 name|stageDeadline
+parameter_list|,
+name|long
+name|period
 parameter_list|,
 name|String
 name|user
@@ -389,7 +392,7 @@ name|stageEarliestStart
 argument_list|,
 name|stageDeadline
 argument_list|,
-literal|0
+name|period
 argument_list|)
 decl_stmt|;
 name|netAvailable

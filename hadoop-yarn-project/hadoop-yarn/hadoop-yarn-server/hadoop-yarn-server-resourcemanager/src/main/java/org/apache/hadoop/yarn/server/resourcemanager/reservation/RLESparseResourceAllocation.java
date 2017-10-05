@@ -1977,6 +1977,17 @@ operator|==
 literal|null
 operator|)
 operator|||
+operator|(
+name|out
+operator|.
+name|lastEntry
+argument_list|()
+operator|.
+name|getValue
+argument_list|()
+operator|!=
+literal|null
+operator|&&
 operator|!
 name|Resources
 operator|.
@@ -1992,6 +2003,7 @@ argument_list|()
 argument_list|,
 name|outRes
 argument_list|)
+operator|)
 condition|)
 block|{
 name|out
@@ -2193,7 +2205,17 @@ name|PlanningException
 argument_list|(
 literal|"RLESparseResourceAllocation: merge failed as the "
 operator|+
-literal|"resulting RLESparseResourceAllocation would be negative"
+literal|"resulting RLESparseResourceAllocation would "
+operator|+
+literal|"be negative, when testing: ("
+operator|+
+name|eB
+operator|+
+literal|")> ("
+operator|+
+name|eA
+operator|+
+literal|")"
 argument_list|)
 throw|;
 block|}

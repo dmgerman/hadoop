@@ -4059,6 +4059,43 @@ literal|")"
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
+name|period
+operator|<
+operator|(
+name|end
+operator|-
+name|start
+operator|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|PlanningException
+argument_list|(
+literal|"Invalid input: (end - start) = ("
+operator|+
+name|end
+operator|+
+literal|" - "
+operator|+
+name|start
+operator|+
+literal|") = "
+operator|+
+operator|(
+name|end
+operator|-
+name|start
+operator|)
+operator|+
+literal|"> period = "
+operator|+
+name|period
+argument_list|)
+throw|;
+block|}
 comment|// find the minimum resources available among all the instances that fit
 comment|// in the LCM
 name|long

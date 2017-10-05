@@ -82,6 +82,28 @@ name|reservation
 operator|.
 name|exceptions
 operator|.
+name|ContractValidationException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|reservation
+operator|.
+name|exceptions
+operator|.
 name|PlanningException
 import|;
 end_import
@@ -200,11 +222,11 @@ literal|60
 operator|*
 literal|1000
 decl_stmt|;
-DECL|field|TWODAYPERIOD
+DECL|field|TWOHOURPERIOD
 specifier|final
 specifier|static
 name|String
-name|TWODAYPERIOD
+name|TWOHOURPERIOD
 init|=
 literal|"7200000"
 decl_stmt|;
@@ -225,7 +247,7 @@ name|name
 operator|=
 literal|"Duration {0}, height {1},"
 operator|+
-literal|" submission {2}, periodic {3})"
+literal|" numSubmission {2}, periodic {3})"
 argument_list|)
 DECL|method|data ()
 specifier|public
@@ -268,7 +290,7 @@ literal|0.25
 block|,
 literal|1
 block|,
-name|TWODAYPERIOD
+name|TWOHOURPERIOD
 block|,
 literal|null
 block|}
@@ -305,7 +327,7 @@ literal|0.74
 block|,
 literal|1
 block|,
-name|TWODAYPERIOD
+name|TWOHOURPERIOD
 block|,
 literal|null
 block|}
@@ -344,7 +366,7 @@ literal|0.76
 block|,
 literal|1
 block|,
-name|TWODAYPERIOD
+name|TWOHOURPERIOD
 block|,
 name|PlanningQuotaException
 operator|.
@@ -387,7 +409,7 @@ literal|1.1
 block|,
 literal|1
 block|,
-name|TWODAYPERIOD
+name|TWOHOURPERIOD
 block|,
 name|PlanningQuotaException
 operator|.
@@ -429,7 +451,7 @@ literal|0.25
 block|,
 literal|3
 block|,
-name|TWODAYPERIOD
+name|TWOHOURPERIOD
 block|,
 literal|null
 block|}
@@ -468,7 +490,7 @@ literal|0.25
 block|,
 literal|4
 block|,
-name|TWODAYPERIOD
+name|TWOHOURPERIOD
 block|,
 name|PlanningQuotaException
 operator|.
@@ -506,6 +528,8 @@ operator|.
 name|class
 block|}
 block|,
+comment|// NOTE: we generally don't accept periodicity< duration but the test
+comment|// generator will "wrap" this correctly
 block|{
 literal|25
 operator|*
@@ -515,7 +539,7 @@ literal|0.25
 block|,
 literal|1
 block|,
-name|TWODAYPERIOD
+name|TWOHOURPERIOD
 block|,
 name|PlanningQuotaException
 operator|.
@@ -555,6 +579,8 @@ operator|.
 name|class
 block|}
 block|,
+comment|// NOTE: we generally don't accept periodicity< duration but the test
+comment|// generator will "wrap" this correctly
 block|{
 literal|25
 operator|*
@@ -564,7 +590,7 @@ literal|0.05
 block|,
 literal|5
 block|,
-name|TWODAYPERIOD
+name|TWOHOURPERIOD
 block|,
 name|PlanningQuotaException
 operator|.
@@ -611,7 +637,7 @@ literal|0.26
 block|,
 literal|1
 block|,
-name|TWODAYPERIOD
+name|TWOHOURPERIOD
 block|,
 name|PlanningQuotaException
 operator|.
@@ -662,7 +688,7 @@ literal|0.51
 block|,
 literal|1
 block|,
-name|TWODAYPERIOD
+name|TWOHOURPERIOD
 block|,
 name|PlanningQuotaException
 operator|.

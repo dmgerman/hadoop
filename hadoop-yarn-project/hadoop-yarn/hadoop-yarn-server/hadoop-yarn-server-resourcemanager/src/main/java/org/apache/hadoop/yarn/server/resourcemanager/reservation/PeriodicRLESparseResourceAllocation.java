@@ -886,6 +886,7 @@ name|previous
 else|:
 literal|0
 expr_stmt|;
+comment|//make sure to go one past end, to catch end times extending past period
 for|for
 control|(
 name|long
@@ -895,6 +896,8 @@ literal|0
 init|;
 name|i
 operator|<=
+literal|1
+operator|+
 operator|(
 name|end
 operator|-
