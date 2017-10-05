@@ -2012,7 +2012,7 @@ argument_list|)
 expr_stmt|;
 comment|// At the time of writing this code it takes 2 requests/responses to
 comment|// check existence, which seems excessive, plus initial request for
-comment|// container check.
+comment|// container check, plus 2 ancestor checks only in the secure case.
 name|logOpResponseCount
 argument_list|(
 literal|"Checking file existence for non-existent file"
@@ -2028,7 +2028,7 @@ name|base
 argument_list|,
 literal|1
 argument_list|,
-literal|3
+literal|5
 argument_list|)
 expr_stmt|;
 comment|// Create an empty file
@@ -2075,7 +2075,7 @@ name|base
 argument_list|,
 literal|1
 argument_list|,
-literal|2
+literal|4
 argument_list|)
 expr_stmt|;
 comment|// Delete the file

@@ -2315,9 +2315,9 @@ name|expectedNumberOfInvocations
 init|=
 name|isAuthorizationCachingEnabled
 condition|?
-literal|1
-else|:
 literal|2
+else|:
+literal|3
 decl_stmt|;
 name|Mockito
 operator|.
