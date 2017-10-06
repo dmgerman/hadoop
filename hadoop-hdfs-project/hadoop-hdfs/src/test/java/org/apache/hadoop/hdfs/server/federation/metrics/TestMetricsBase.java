@@ -503,6 +503,9 @@ operator|.
 name|metrics
 argument_list|()
 operator|.
+name|http
+argument_list|()
+operator|.
 name|build
 argument_list|()
 expr_stmt|;

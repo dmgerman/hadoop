@@ -242,6 +242,12 @@ name|String
 name|getBlockPoolId
 parameter_list|()
 function_decl|;
+comment|/**    * Get the current state of the router.    *    * @return String label for the current router state.    */
+DECL|method|getRouterStatus ()
+name|String
+name|getRouterStatus
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

@@ -508,6 +508,12 @@ specifier|private
 name|InetSocketAddress
 name|adminAddress
 decl_stmt|;
+comment|/** HTTP interface and web application. */
+DECL|field|httpServer
+specifier|private
+name|RouterHttpServer
+name|httpServer
+decl_stmt|;
 comment|/** Interface with the State Store. */
 DECL|field|stateStore
 specifier|private
@@ -776,6 +782,38 @@ argument_list|(
 name|this
 operator|.
 name|adminServer
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_ROUTER_HTTP_ENABLE
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_ROUTER_HTTP_ENABLE_DEFAULT
+argument_list|)
+condition|)
+block|{
+comment|// Create HTTP server
+name|this
+operator|.
+name|httpServer
+operator|=
+name|createHttpServer
+argument_list|()
+expr_stmt|;
+name|addService
+argument_list|(
+name|this
+operator|.
+name|httpServer
 argument_list|)
 expr_stmt|;
 block|}
@@ -1336,6 +1374,49 @@ parameter_list|()
 block|{
 return|return
 name|adminAddress
+return|;
+block|}
+comment|/////////////////////////////////////////////////////////
+comment|// HTTP server
+comment|/////////////////////////////////////////////////////////
+comment|/**    * Create an HTTP server for this Router.    *    * @return HTTP server for this Router.    */
+DECL|method|createHttpServer ()
+specifier|protected
+name|RouterHttpServer
+name|createHttpServer
+parameter_list|()
+block|{
+return|return
+operator|new
+name|RouterHttpServer
+argument_list|(
+name|this
+argument_list|)
+return|;
+block|}
+comment|/**    * Get the current HTTP socket address for the router.    *    * @return InetSocketAddress HTTP address.    */
+DECL|method|getHttpServerAddress ()
+specifier|public
+name|InetSocketAddress
+name|getHttpServerAddress
+parameter_list|()
+block|{
+if|if
+condition|(
+name|httpServer
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+name|httpServer
+operator|.
+name|getHttpAddress
+argument_list|()
+return|;
+block|}
+return|return
+literal|null
 return|;
 block|}
 comment|/////////////////////////////////////////////////////////
