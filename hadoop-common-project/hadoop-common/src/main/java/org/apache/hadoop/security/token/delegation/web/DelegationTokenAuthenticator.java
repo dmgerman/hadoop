@@ -476,6 +476,15 @@ name|RENEWER_PARAM
 init|=
 literal|"renewer"
 decl_stmt|;
+DECL|field|SERVICE_PARAM
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SERVICE_PARAM
+init|=
+literal|"service"
+decl_stmt|;
 DECL|field|DELEGATION_TOKEN_JSON
 specifier|public
 specifier|static
