@@ -928,6 +928,17 @@ name|ResourceProfilesManager
 name|mgr
 parameter_list|)
 function_decl|;
+DECL|method|getAppProxyUrl (Configuration conf, ApplicationId applicationId)
+name|String
+name|getAppProxyUrl
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|ApplicationId
+name|applicationId
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

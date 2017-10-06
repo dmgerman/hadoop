@@ -5772,7 +5772,7 @@ decl_stmt|;
 name|String
 name|proxyHostAndPort
 init|=
-name|WebAppUtils
+name|rmContext
 operator|.
 name|getProxyHostAndPort
 argument_list|(
