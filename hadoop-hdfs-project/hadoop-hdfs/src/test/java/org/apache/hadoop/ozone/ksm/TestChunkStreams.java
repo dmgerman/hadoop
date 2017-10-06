@@ -126,16 +126,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|InputStream
 import|;
 end_import
@@ -501,16 +491,9 @@ name|exception
 operator|.
 name|expect
 argument_list|(
-name|IOException
+name|Exception
 operator|.
 name|class
-argument_list|)
-expr_stmt|;
-name|exception
-operator|.
-name|expectMessage
-argument_list|(
-literal|"Can not write 500 bytes with only 400 byte space"
 argument_list|)
 expr_stmt|;
 name|groupOutputStream

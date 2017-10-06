@@ -282,6 +282,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Ignore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Rule
 import|;
 end_import
@@ -467,7 +477,7 @@ name|OzoneConfigKeys
 operator|.
 name|OZONE_SCM_BLOCK_SIZE_IN_MB
 argument_list|,
-literal|100
+literal|1
 argument_list|)
 expr_stmt|;
 name|conf
@@ -727,7 +737,14 @@ name|RandomStringUtils
 operator|.
 name|randomAscii
 argument_list|(
-literal|500
+literal|3
+operator|*
+operator|(
+name|int
+operator|)
+name|OzoneConsts
+operator|.
+name|MB
 argument_list|)
 decl_stmt|;
 name|KeyArgs
@@ -749,7 +766,14 @@ name|keyArgs
 operator|.
 name|setSize
 argument_list|(
-literal|500
+literal|3
+operator|*
+operator|(
+name|int
+operator|)
+name|OzoneConsts
+operator|.
+name|MB
 argument_list|)
 expr_stmt|;
 try|try
@@ -840,7 +864,7 @@ name|assertCounter
 argument_list|(
 literal|"numWriteChunk"
 argument_list|,
-literal|5L
+literal|3L
 argument_list|,
 name|containerMetrics
 argument_list|)
@@ -849,12 +873,17 @@ name|assertCounter
 argument_list|(
 literal|"numReadChunk"
 argument_list|,
-literal|5L
+literal|3L
 argument_list|,
 name|containerMetrics
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Disable this test, because this tests assumes writing beyond a specific
+comment|// size is not allowed. Which is not true for now. Keeping this test in case
+comment|// we add this restrict in the future.
+annotation|@
+name|Ignore
 annotation|@
 name|Test
 DECL|method|testErrorWrite ()

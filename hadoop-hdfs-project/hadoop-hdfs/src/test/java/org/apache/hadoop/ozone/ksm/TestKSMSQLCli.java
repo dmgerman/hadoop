@@ -1616,6 +1616,7 @@ name|HashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
+comment|// no data written, data size will be 0
 name|expectedMap2
 operator|.
 name|put
@@ -1630,12 +1631,7 @@ name|volumeName0
 argument_list|,
 name|bucketName0
 argument_list|,
-name|Integer
-operator|.
-name|toString
-argument_list|(
-literal|100
-argument_list|)
+literal|"0"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1653,12 +1649,7 @@ name|volumeName1
 argument_list|,
 name|bucketName1
 argument_list|,
-name|Integer
-operator|.
-name|toString
-argument_list|(
-literal|200
-argument_list|)
+literal|"0"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1676,12 +1667,7 @@ name|volumeName0
 argument_list|,
 name|bucketName2
 argument_list|,
-name|Integer
-operator|.
-name|toString
-argument_list|(
-literal|300
-argument_list|)
+literal|"0"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1699,12 +1685,7 @@ name|volumeName0
 argument_list|,
 name|bucketName2
 argument_list|,
-name|Integer
-operator|.
-name|toString
-argument_list|(
-literal|400
-argument_list|)
+literal|"0"
 argument_list|)
 argument_list|)
 expr_stmt|;

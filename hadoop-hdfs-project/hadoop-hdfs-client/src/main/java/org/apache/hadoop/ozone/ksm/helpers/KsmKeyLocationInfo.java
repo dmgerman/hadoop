@@ -73,7 +73,6 @@ decl_stmt|;
 comment|// the id of this subkey in all the subkeys.
 DECL|field|index
 specifier|private
-specifier|final
 name|int
 name|index
 decl_stmt|;
@@ -188,6 +187,20 @@ block|{
 return|return
 name|index
 return|;
+block|}
+DECL|method|setIndex (int idx)
+specifier|public
+name|void
+name|setIndex
+parameter_list|(
+name|int
+name|idx
+parameter_list|)
+block|{
+name|index
+operator|=
+name|idx
+expr_stmt|;
 block|}
 DECL|method|getLength ()
 specifier|public

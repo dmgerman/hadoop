@@ -91,7 +91,6 @@ name|keyName
 decl_stmt|;
 DECL|field|dataSize
 specifier|private
-specifier|final
 name|long
 name|dataSize
 decl_stmt|;
@@ -226,6 +225,20 @@ block|{
 return|return
 name|dataSize
 return|;
+block|}
+DECL|method|setDataSize (long size)
+specifier|public
+name|void
+name|setDataSize
+parameter_list|(
+name|long
+name|size
+parameter_list|)
+block|{
+name|dataSize
+operator|=
+name|size
+expr_stmt|;
 block|}
 comment|/**    * Builder class of KsmKeyArgs.    */
 DECL|class|Builder

@@ -1240,7 +1240,7 @@ argument_list|(
 name|mockKm
 argument_list|)
 operator|.
-name|allocateKey
+name|openKey
 argument_list|(
 literal|null
 argument_list|)
@@ -1382,7 +1382,7 @@ argument_list|(
 name|mockKm
 argument_list|)
 operator|.
-name|allocateKey
+name|openKey
 argument_list|(
 literal|null
 argument_list|)
@@ -1770,7 +1770,7 @@ try|try
 block|{
 name|ksmManager
 operator|.
-name|allocateKey
+name|openKey
 argument_list|(
 literal|null
 argument_list|)

@@ -437,6 +437,24 @@ name|DELETING_KEY_PREFIX
 init|=
 literal|"#deleting#"
 decl_stmt|;
+DECL|field|OPEN_KEY_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OPEN_KEY_PREFIX
+init|=
+literal|"#open#"
+decl_stmt|;
+DECL|field|OPEN_KEY_ID_DELIMINATOR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OPEN_KEY_ID_DELIMINATOR
+init|=
+literal|"#"
+decl_stmt|;
 comment|/**    * KSM LevelDB prefixes.    *    * KSM DB stores metadata as KV pairs with certain prefixes,    * prefix is used to improve the performance to get related    * metadata.    *    * KSM DB Schema:    *  ----------------------------------------------------------    *  |  KEY                                     |     VALUE   |    *  ----------------------------------------------------------    *  | $userName                                |  VolumeList |    *  ----------------------------------------------------------    *  | /#volumeName                             |  VolumeInfo |    *  ----------------------------------------------------------    *  | /#volumeName/#bucketName                 |  BucketInfo |    *  ----------------------------------------------------------    *  | /volumeName/bucketName/keyName           |  KeyInfo    |    *  ----------------------------------------------------------    *  | #deleting#/volumeName/bucketName/keyName |  KeyInfo    |    *  ----------------------------------------------------------    */
 DECL|field|KSM_VOLUME_PREFIX
 specifier|public

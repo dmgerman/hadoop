@@ -320,6 +320,34 @@ index|[]
 name|keyName
 parameter_list|)
 function_decl|;
+comment|/**    * Returns the DB key name of a open key in KSM metadata store.    * Should be #open# prefix followed by actual key name.    * @param keyName - key name    * @param id - the id for this open    * @return bytes of DB key.    */
+DECL|method|getOpenKeyNameBytes (String keyName, int id)
+name|byte
+index|[]
+name|getOpenKeyNameBytes
+parameter_list|(
+name|String
+name|keyName
+parameter_list|,
+name|int
+name|id
+parameter_list|)
+function_decl|;
+comment|/**    * Returns the full name of a key given volume name, bucket name and key name.    * Generally done by padding certain delimiters.    *    * @param volumeName - volume name    * @param bucketName - bucket name    * @param keyName - key name    * @return the full key name.    */
+DECL|method|getKeyWithDBPrefix (String volumeName, String bucketName, String keyName)
+name|String
+name|getKeyWithDBPrefix
+parameter_list|(
+name|String
+name|volumeName
+parameter_list|,
+name|String
+name|bucketName
+parameter_list|,
+name|String
+name|keyName
+parameter_list|)
+function_decl|;
 comment|/**    * Given a volume, check if it is empty,    * i.e there are no buckets inside it.    * @param volume - Volume name    */
 DECL|method|isVolumeEmpty (String volume)
 name|boolean

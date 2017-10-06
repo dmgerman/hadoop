@@ -106,7 +106,43 @@ name|ksm
 operator|.
 name|helpers
 operator|.
+name|KsmKeyLocationInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|ksm
+operator|.
+name|helpers
+operator|.
 name|KsmVolumeArgs
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|ksm
+operator|.
+name|helpers
+operator|.
+name|OpenKeySession
 import|;
 end_import
 
@@ -314,13 +350,41 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Allocate a block to a container, the block is returned to the client.    *    * @param args the args of the key.    * @return KsmKeyInfo isntacne that client uses to talk to container.    * @throws IOException    */
-DECL|method|allocateKey (KsmKeyArgs args)
-name|KsmKeyInfo
-name|allocateKey
+comment|/**    * Open the given key and return an open key session.    *    * @param args the args of the key.    * @return OpenKeySession instance that client uses to talk to container.    * @throws IOException    */
+DECL|method|openKey (KsmKeyArgs args)
+name|OpenKeySession
+name|openKey
 parameter_list|(
 name|KsmKeyArgs
 name|args
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Commit a key. This will make the change from the client visible. The client    * is identified by the clientID.    *    * @param args the key to commit    * @param clientID the client identification    * @throws IOException    */
+DECL|method|commitKey (KsmKeyArgs args, int clientID)
+name|void
+name|commitKey
+parameter_list|(
+name|KsmKeyArgs
+name|args
+parameter_list|,
+name|int
+name|clientID
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Allocate a new block, it is assumed that the client is having an open key    * session going on. This block will be appended to this open key session.    *    * @param args the key to append    * @param clientID the client identification    * @return an allocated block    * @throws IOException    */
+DECL|method|allocateBlock (KsmKeyArgs args, int clientID)
+name|KsmKeyLocationInfo
+name|allocateBlock
+parameter_list|(
+name|KsmKeyArgs
+name|args
+parameter_list|,
+name|int
+name|clientID
 parameter_list|)
 throws|throws
 name|IOException

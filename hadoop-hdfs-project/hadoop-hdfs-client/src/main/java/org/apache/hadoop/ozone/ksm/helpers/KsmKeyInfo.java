@@ -94,7 +94,6 @@ name|keyName
 decl_stmt|;
 DECL|field|dataSize
 specifier|private
-specifier|final
 name|long
 name|dataSize
 decl_stmt|;
@@ -230,6 +229,22 @@ return|return
 name|dataSize
 return|;
 block|}
+DECL|method|setDataSize (long size)
+specifier|public
+name|void
+name|setDataSize
+parameter_list|(
+name|long
+name|size
+parameter_list|)
+block|{
+name|this
+operator|.
+name|dataSize
+operator|=
+name|size
+expr_stmt|;
+block|}
 DECL|method|getKeyLocationList ()
 specifier|public
 name|List
@@ -242,6 +257,23 @@ block|{
 return|return
 name|keyLocationList
 return|;
+block|}
+DECL|method|appendKeyLocation (KsmKeyLocationInfo newLocation)
+specifier|public
+name|void
+name|appendKeyLocation
+parameter_list|(
+name|KsmKeyLocationInfo
+name|newLocation
+parameter_list|)
+block|{
+name|keyLocationList
+operator|.
+name|add
+argument_list|(
+name|newLocation
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|getCreationTime ()
 specifier|public

@@ -72,6 +72,42 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|ksm
+operator|.
+name|helpers
+operator|.
+name|KsmKeyLocationInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|ksm
+operator|.
+name|helpers
+operator|.
+name|OpenKeySession
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -114,10 +150,38 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Given the args of a key to put, return a pipeline for the key. Writes    * the key to pipeline mapping to meta data.    *    * Note that this call only allocate a block for key, and adds the    * corresponding entry to metadata. The block will be returned to client side    * handler DistributedStorageHandler. Which will make another call to    * datanode to create container (if needed) and writes the key.    *    * In case that the container creation or key write failed on    * DistributedStorageHandler, this key's metadata will still stay in KSM.    *    * @param args the args of the key provided by client.    * @return a KsmKeyInfo instance client uses to talk to container.    * @throws Exception    */
-DECL|method|allocateKey (KsmKeyArgs args)
-name|KsmKeyInfo
-name|allocateKey
+comment|/**    * After calling commit, the key will be made visible. There can be multiple    * open key writes in parallel (identified by client id). The most recently    * committed one will be the one visible.    *    * @param args the key to commit.    * @param clientID the client that is committing.    * @throws IOException    */
+DECL|method|commitKey (KsmKeyArgs args, int clientID)
+name|void
+name|commitKey
+parameter_list|(
+name|KsmKeyArgs
+name|args
+parameter_list|,
+name|int
+name|clientID
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * A client calls this on an open key, to request to allocate a new block,    * and appended to the tail of current block list of the open client.    *    * @param args the key to append    * @param clientID the client requesting block.    * @return the reference to the new block.    * @throws IOException    */
+DECL|method|allocateBlock (KsmKeyArgs args, int clientID)
+name|KsmKeyLocationInfo
+name|allocateBlock
+parameter_list|(
+name|KsmKeyArgs
+name|args
+parameter_list|,
+name|int
+name|clientID
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Given the args of a key to put, write an open key entry to meta data.    *    * In case that the container creation or key write failed on    * DistributedStorageHandler, this key's metadata will still stay in KSM.    * TODO garbage collect the open keys that never get closed    *    * @param args the args of the key provided by client.    * @return a OpenKeySession instance client uses to talk to container.    * @throws Exception    */
+DECL|method|openKey (KsmKeyArgs args)
+name|OpenKeySession
+name|openKey
 parameter_list|(
 name|KsmKeyArgs
 name|args
