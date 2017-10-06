@@ -1554,6 +1554,9 @@ name|getMaxResources
 argument_list|(
 literal|"root.queueA"
 argument_list|)
+operator|.
+name|getResource
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1573,6 +1576,9 @@ name|getMaxResources
 argument_list|(
 literal|"root.queueB"
 argument_list|)
+operator|.
+name|getResource
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1581,9 +1587,9 @@ name|Resources
 operator|.
 name|createResource
 argument_list|(
-literal|5120
+literal|4096
 argument_list|,
-literal|0
+literal|100
 argument_list|)
 argument_list|,
 name|queueConf
@@ -1592,6 +1598,9 @@ name|getMaxResources
 argument_list|(
 literal|"root.queueC"
 argument_list|)
+operator|.
+name|getResource
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1611,6 +1620,9 @@ name|getMaxResources
 argument_list|(
 literal|"root.queueD"
 argument_list|)
+operator|.
+name|getResource
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1630,6 +1642,9 @@ name|getMaxResources
 argument_list|(
 literal|"root.queueE"
 argument_list|)
+operator|.
+name|getResource
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1649,6 +1664,9 @@ name|getMaxResources
 argument_list|(
 literal|"root.queueF"
 argument_list|)
+operator|.
+name|getResource
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1668,6 +1686,9 @@ name|getMaxResources
 argument_list|(
 literal|"root.queueG"
 argument_list|)
+operator|.
+name|getResource
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1687,6 +1708,9 @@ name|getMaxResources
 argument_list|(
 literal|"root.queueG.queueH"
 argument_list|)
+operator|.
+name|getResource
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1908,6 +1932,9 @@ name|getMaxChildResources
 argument_list|(
 literal|"root.queueF"
 argument_list|)
+operator|.
+name|getResource
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1927,6 +1954,9 @@ name|getMaxChildResources
 argument_list|(
 literal|"root.queueG"
 argument_list|)
+operator|.
+name|getResource
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertNull

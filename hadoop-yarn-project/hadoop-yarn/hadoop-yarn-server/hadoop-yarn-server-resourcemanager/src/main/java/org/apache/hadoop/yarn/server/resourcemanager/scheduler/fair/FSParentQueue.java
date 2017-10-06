@@ -858,7 +858,8 @@ name|componentwiseMin
 argument_list|(
 name|demand
 argument_list|,
-name|maxShare
+name|getMaxShare
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -893,7 +894,8 @@ name|demand
 operator|+
 literal|"; the max is "
 operator|+
-name|maxShare
+name|getMaxShare
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1393,7 +1395,8 @@ argument_list|()
 operator|+
 literal|", MaxShare: "
 operator|+
-name|maxShare
+name|getMaxShare
+argument_list|()
 operator|+
 literal|", MinShare: "
 operator|+

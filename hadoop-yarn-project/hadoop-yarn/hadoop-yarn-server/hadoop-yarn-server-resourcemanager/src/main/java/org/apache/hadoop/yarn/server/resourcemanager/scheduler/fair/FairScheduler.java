@@ -7649,7 +7649,7 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-name|Resource
+name|ConfigurableResource
 name|max
 init|=
 name|queue

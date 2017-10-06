@@ -282,24 +282,6 @@ name|Set
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|Resource
-import|;
-end_import
-
 begin_comment
 comment|/**  * Maintains a list of queues as well as scheduling parameters for each queue,  * such as guaranteed share allocations, from the fair scheduler config file.  */
 end_comment
@@ -1289,7 +1271,7 @@ condition|)
 block|{
 comment|// For ad hoc queues, set their max reource allocations based on
 comment|// their parents' default child settings.
-name|Resource
+name|ConfigurableResource
 name|maxChild
 init|=
 name|parent

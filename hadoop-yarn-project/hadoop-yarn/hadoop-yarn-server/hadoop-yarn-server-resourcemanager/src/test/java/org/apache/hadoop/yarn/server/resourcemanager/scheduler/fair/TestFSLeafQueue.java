@@ -614,7 +614,11 @@ name|schedulable
 operator|.
 name|setMaxShare
 argument_list|(
+operator|new
+name|ConfigurableResource
+argument_list|(
 name|maxResource
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertEquals

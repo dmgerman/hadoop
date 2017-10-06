@@ -1500,7 +1500,8 @@ name|componentwiseMin
 argument_list|(
 name|tmpDemand
 argument_list|,
-name|maxShare
+name|getMaxShare
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
@@ -1526,7 +1527,8 @@ name|demand
 operator|+
 literal|"; the max is "
 operator|+
-name|maxShare
+name|getMaxShare
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -2539,7 +2541,8 @@ argument_list|()
 operator|+
 literal|", MaxShare: "
 operator|+
-name|maxShare
+name|getMaxShare
+argument_list|()
 operator|+
 literal|", MinShare: "
 operator|+

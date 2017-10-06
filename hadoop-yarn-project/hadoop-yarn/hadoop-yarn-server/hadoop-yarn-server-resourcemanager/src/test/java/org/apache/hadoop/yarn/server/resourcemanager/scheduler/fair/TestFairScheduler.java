@@ -29489,6 +29489,9 @@ name|queue2
 operator|.
 name|setMaxShare
 argument_list|(
+operator|new
+name|ConfigurableResource
+argument_list|(
 name|Resource
 operator|.
 name|newInstance
@@ -29496,6 +29499,7 @@ argument_list|(
 literal|1024
 argument_list|,
 literal|1
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -33276,6 +33280,15 @@ operator|*
 literal|8
 argument_list|)
 decl_stmt|;
+name|ConfigurableResource
+name|maxResourceConf
+init|=
+operator|new
+name|ConfigurableResource
+argument_list|(
+name|maxResource
+argument_list|)
+decl_stmt|;
 name|FSAppAttempt
 name|app1
 init|=
@@ -33363,7 +33376,7 @@ name|aQueue
 operator|.
 name|setMaxShare
 argument_list|(
-name|maxResource
+name|maxResourceConf
 argument_list|)
 expr_stmt|;
 name|aQueue
@@ -33392,7 +33405,7 @@ name|bQueue
 operator|.
 name|setMaxShare
 argument_list|(
-name|maxResource
+name|maxResourceConf
 argument_list|)
 expr_stmt|;
 name|bQueue
@@ -33408,7 +33421,7 @@ name|queue1
 operator|.
 name|setMaxShare
 argument_list|(
-name|maxResource
+name|maxResourceConf
 argument_list|)
 expr_stmt|;
 name|queue1
@@ -33643,7 +33656,11 @@ name|child1
 operator|.
 name|setMaxShare
 argument_list|(
+operator|new
+name|ConfigurableResource
+argument_list|(
 name|resource
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|FSAppAttempt
@@ -33773,7 +33790,11 @@ name|parent
 operator|.
 name|setMaxShare
 argument_list|(
+operator|new
+name|ConfigurableResource
+argument_list|(
 name|resource
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|parent

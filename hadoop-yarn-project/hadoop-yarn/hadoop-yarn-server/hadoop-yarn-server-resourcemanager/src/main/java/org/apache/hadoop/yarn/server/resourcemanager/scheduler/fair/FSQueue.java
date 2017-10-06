@@ -595,8 +595,8 @@ name|Resource
 name|minShare
 decl_stmt|;
 DECL|field|maxShare
-specifier|protected
-name|Resource
+specifier|private
+name|ConfigurableResource
 name|maxShare
 decl_stmt|;
 DECL|field|maxRunningApps
@@ -605,8 +605,8 @@ name|int
 name|maxRunningApps
 decl_stmt|;
 DECL|field|maxChildQueueResource
-specifier|protected
-name|Resource
+specifier|private
+name|ConfigurableResource
 name|maxChildQueueResource
 decl_stmt|;
 comment|// maxAMShare is a value between 0 and 1.
@@ -750,6 +750,7 @@ block|}
 comment|/**    * Initialize a queue by setting its queue-specific properties and its    * metrics. This method is invoked when creating a new queue or reloading    * the allocation file.    * This method does not set policies for queues when reloading the allocation    * file since we need to either set all new policies or nothing, which is    * handled by method {@link #verifyAndSetPolicyFromConf}.    *    * @param recursive whether child queues should be reinitialized recursively    */
 DECL|method|reinit (boolean recursive)
 specifier|public
+specifier|final
 name|void
 name|reinit
 parameter_list|(
@@ -923,12 +924,12 @@ return|return
 name|minShare
 return|;
 block|}
-DECL|method|setMaxShare (Resource maxShare)
+DECL|method|setMaxShare (ConfigurableResource maxShare)
 specifier|public
 name|void
 name|setMaxShare
 parameter_list|(
-name|Resource
+name|ConfigurableResource
 name|maxShare
 parameter_list|)
 block|{
@@ -938,6 +939,79 @@ name|maxShare
 operator|=
 name|maxShare
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getMaxShare ()
+specifier|public
+name|Resource
+name|getMaxShare
+parameter_list|()
+block|{
+name|Resource
+name|maxResource
+init|=
+name|maxShare
+operator|.
+name|getResource
+argument_list|(
+name|scheduler
+operator|.
+name|getClusterResource
+argument_list|()
+argument_list|)
+decl_stmt|;
+comment|// Max resource should be greater than or equal to min resource
+name|Resource
+name|result
+init|=
+name|Resources
+operator|.
+name|componentwiseMax
+argument_list|(
+name|maxResource
+argument_list|,
+name|minShare
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|Resources
+operator|.
+name|equals
+argument_list|(
+name|maxResource
+argument_list|,
+name|result
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Queue %s has max resources %s less than "
+operator|+
+literal|"min resources %s"
+argument_list|,
+name|getName
+argument_list|()
+argument_list|,
+name|maxResource
+argument_list|,
+name|minShare
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|result
+return|;
 block|}
 DECL|method|getReservedResource ()
 specifier|public
@@ -969,24 +1043,12 @@ return|return
 name|reservedResource
 return|;
 block|}
-annotation|@
-name|Override
-DECL|method|getMaxShare ()
-specifier|public
-name|Resource
-name|getMaxShare
-parameter_list|()
-block|{
-return|return
-name|maxShare
-return|;
-block|}
-DECL|method|setMaxChildQueueResource (Resource maxChildShare)
+DECL|method|setMaxChildQueueResource (ConfigurableResource maxChildShare)
 specifier|public
 name|void
 name|setMaxChildQueueResource
 parameter_list|(
-name|Resource
+name|ConfigurableResource
 name|maxChildShare
 parameter_list|)
 block|{
@@ -999,7 +1061,7 @@ expr_stmt|;
 block|}
 DECL|method|getMaxChildQueueResource ()
 specifier|public
-name|Resource
+name|ConfigurableResource
 name|getMaxChildQueueResource
 parameter_list|()
 block|{
@@ -2020,7 +2082,8 @@ argument_list|(
 name|getResourceUsage
 argument_list|()
 argument_list|,
-name|maxShare
+name|getMaxShare
+argument_list|()
 argument_list|)
 condition|)
 block|{
