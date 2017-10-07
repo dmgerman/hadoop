@@ -529,9 +529,15 @@ operator|=
 name|getNextListOfVolumes
 argument_list|(
 name|currentValue
+operator|!=
+literal|null
+condition|?
+name|currentValue
 operator|.
 name|getName
 argument_list|()
+else|:
+literal|null
 argument_list|)
 operator|.
 name|iterator
