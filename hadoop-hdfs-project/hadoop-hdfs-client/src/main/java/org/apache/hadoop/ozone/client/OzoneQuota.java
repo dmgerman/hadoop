@@ -92,6 +92,7 @@ comment|/** Quota Units.*/
 DECL|enum|Units
 DECL|enumConstant|UNDEFINED
 DECL|enumConstant|BYTES
+DECL|enumConstant|KB
 DECL|enumConstant|MB
 DECL|enumConstant|GB
 DECL|enumConstant|TB
@@ -102,6 +103,8 @@ block|{
 name|UNDEFINED
 block|,
 name|BYTES
+block|,
+name|KB
 block|,
 name|MB
 block|,
