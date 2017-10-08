@@ -1009,6 +1009,17 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"restarting datanode:{} keepPort:{}"
+argument_list|,
+name|i
+argument_list|,
+name|keepPort
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|keepPort

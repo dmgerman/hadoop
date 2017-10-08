@@ -897,12 +897,6 @@ operator|.
 name|newXceiverServerRatis
 argument_list|(
 name|datanodeID
-operator|.
-name|getDatanodeUuid
-argument_list|()
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|ozoneConfig
 argument_list|,

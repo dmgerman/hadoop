@@ -1158,7 +1158,7 @@ name|type
 argument_list|,
 name|replicationFactor
 argument_list|,
-name|info
+name|blockInfo
 operator|.
 name|getState
 argument_list|()

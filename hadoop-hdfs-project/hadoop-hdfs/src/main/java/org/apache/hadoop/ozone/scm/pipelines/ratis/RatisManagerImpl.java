@@ -44,6 +44,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|protocol
@@ -143,6 +157,20 @@ operator|.
 name|pipelines
 operator|.
 name|PipelineSelector
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|scm
+operator|.
+name|XceiverClientRatis
 import|;
 end_import
 
@@ -383,8 +411,14 @@ name|PREFIX
 init|=
 literal|"Ratis-"
 decl_stmt|;
+DECL|field|conf
+specifier|private
+specifier|final
+name|Configuration
+name|conf
+decl_stmt|;
 comment|/**    * Constructs a Ratis Pipeline Manager.    *    * @param nodeManager    */
-DECL|method|RatisManagerImpl (NodeManager nodeManager, ContainerPlacementPolicy placementPolicy, long size)
+DECL|method|RatisManagerImpl (NodeManager nodeManager, ContainerPlacementPolicy placementPolicy, long size, Configuration conf)
 specifier|public
 name|RatisManagerImpl
 parameter_list|(
@@ -396,6 +430,9 @@ name|placementPolicy
 parameter_list|,
 name|long
 name|size
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 name|this
@@ -438,6 +475,12 @@ argument_list|(
 literal|0
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|conf
+operator|=
+name|conf
+expr_stmt|;
 block|}
 comment|/**    * This function is called by the Container Manager while allocation a new    * container. The client specifies what kind of replication pipeline is needed    * and based on the replication type in the request appropriate Interface is    * invoked.    *    * @param containerName Name of the container    * @param replicationFactor - Replication Factor    * @return a Pipeline.    *<p>    * TODO: Evaulate if we really need this lock. Right now favoring safety over    * speed.    */
 annotation|@
@@ -456,6 +499,8 @@ operator|.
 name|ReplicationFactor
 name|replicationFactor
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 comment|/**      * In the ratis world, we have a very simple policy.      *      * 1. Try to create a pipeline if there are enough free nodes.      *      * 2. This allows all nodes to part of a pipeline quickly.      *      * 3. if there are not enough free nodes, return pipelines in a      * round-robin fashion.      *      * TODO: Might have to come up with a better algorithm than this.      * Create a new placement policy that returns pipelines in round robin      * fashion.      */
 name|Pipeline
@@ -507,8 +552,41 @@ argument_list|(
 name|newNodes
 argument_list|,
 name|containerName
+argument_list|,
+name|replicationFactor
 argument_list|)
 expr_stmt|;
+try|try
+init|(
+name|XceiverClientRatis
+name|client
+init|=
+name|XceiverClientRatis
+operator|.
+name|newXceiverClientRatis
+argument_list|(
+name|pipeline
+argument_list|,
+name|conf
+argument_list|)
+init|)
+block|{
+name|client
+operator|.
+name|createPipeline
+argument_list|(
+name|pipeline
+operator|.
+name|getPipelineName
+argument_list|()
+argument_list|,
+name|pipeline
+operator|.
+name|getMachines
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 else|else
 block|{
@@ -642,7 +720,7 @@ name|pipeline
 return|;
 block|}
 comment|/**    * Allocate a new Ratis pipeline from the existing nodes.    *    * @param nodes - list of Nodes.    * @param containerName - container Name    * @return - Pipeline.    */
-DECL|method|allocateRatisPipeline (List<DatanodeID> nodes, String containerName)
+DECL|method|allocateRatisPipeline (List<DatanodeID> nodes, String containerName, OzoneProtos.ReplicationFactor factor)
 name|Pipeline
 name|allocateRatisPipeline
 parameter_list|(
@@ -654,6 +732,11 @@ name|nodes
 parameter_list|,
 name|String
 name|containerName
+parameter_list|,
+name|OzoneProtos
+operator|.
+name|ReplicationFactor
+name|factor
 parameter_list|)
 block|{
 name|Preconditions
@@ -718,6 +801,13 @@ operator|.
 name|setLifeCycleState
 argument_list|(
 name|ALLOCATED
+argument_list|)
+expr_stmt|;
+name|pipeline
+operator|.
+name|setFactor
+argument_list|(
+name|factor
 argument_list|)
 expr_stmt|;
 name|pipeline
@@ -838,6 +928,13 @@ range|:
 name|datanodes
 control|)
 block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|datanode
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 operator|!
@@ -850,6 +947,15 @@ argument_list|)
 condition|)
 block|{
 name|newNodesList
+operator|.
+name|add
+argument_list|(
+name|datanode
+argument_list|)
+expr_stmt|;
+comment|// once a datanode has been added to a pipeline, exclude it from
+comment|// further allocations
+name|ratisMembers
 operator|.
 name|add
 argument_list|(

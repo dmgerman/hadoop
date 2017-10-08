@@ -209,6 +209,15 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
+name|containerName
+operator|=
+name|container
+operator|.
+name|getContainerName
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
 name|stateEnterTime
 operator|=
 name|container

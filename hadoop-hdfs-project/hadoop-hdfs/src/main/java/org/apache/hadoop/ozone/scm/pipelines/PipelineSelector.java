@@ -478,6 +478,8 @@ argument_list|,
 name|placementPolicy
 argument_list|,
 name|containerSize
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 block|}

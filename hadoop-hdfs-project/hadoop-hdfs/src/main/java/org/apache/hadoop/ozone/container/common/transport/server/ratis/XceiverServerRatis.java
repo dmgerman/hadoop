@@ -76,6 +76,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|DatanodeID
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ozone
 operator|.
 name|OzoneConfigKeys
@@ -204,9 +220,7 @@ name|apache
 operator|.
 name|ratis
 operator|.
-name|protocol
-operator|.
-name|RaftPeerId
+name|RatisHelper
 import|;
 end_import
 
@@ -396,11 +410,11 @@ specifier|final
 name|RaftServer
 name|server
 decl_stmt|;
-DECL|method|XceiverServerRatis ( String id, int port, String storageDir, ContainerDispatcher dispatcher, RpcType rpcType)
+DECL|method|XceiverServerRatis (DatanodeID id, int port, String storageDir, ContainerDispatcher dispatcher, RpcType rpcType)
 specifier|private
 name|XceiverServerRatis
 parameter_list|(
-name|String
+name|DatanodeID
 name|id
 parameter_list|,
 name|int
@@ -444,9 +458,9 @@ argument_list|()
 operator|.
 name|setServerId
 argument_list|(
-name|RaftPeerId
+name|RatisHelper
 operator|.
-name|valueOf
+name|toRaftPeerId
 argument_list|(
 name|id
 argument_list|)
@@ -577,13 +591,13 @@ return|return
 name|properties
 return|;
 block|}
-DECL|method|newXceiverServerRatis (String datanodeID, Configuration ozoneConf, ContainerDispatcher dispatcher)
+DECL|method|newXceiverServerRatis (DatanodeID datanodeID, Configuration ozoneConf, ContainerDispatcher dispatcher)
 specifier|public
 specifier|static
 name|XceiverServerRatis
 name|newXceiverServerRatis
 parameter_list|(
-name|String
+name|DatanodeID
 name|datanodeID
 parameter_list|,
 name|Configuration
@@ -796,6 +810,9 @@ operator|.
 name|separator
 operator|+
 name|datanodeID
+operator|.
+name|getDatanodeUuid
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -820,6 +837,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+name|datanodeID
+operator|.
+name|setRatisPort
+argument_list|(
+name|localPort
+argument_list|)
+expr_stmt|;
 return|return
 operator|new
 name|XceiverServerRatis

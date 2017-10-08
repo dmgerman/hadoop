@@ -522,6 +522,17 @@ operator|::
 operator|new
 argument_list|)
 decl_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"initializing pipeline:{} with nodes:{}"
+argument_list|,
+name|clusterId
+argument_list|,
+name|newPeers
+argument_list|)
+expr_stmt|;
 name|reinitialize
 argument_list|(
 name|datanodes
