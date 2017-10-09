@@ -521,7 +521,6 @@ name|ecPolicy
 decl_stmt|;
 DECL|field|decoder
 specifier|private
-specifier|final
 name|RawErasureDecoder
 name|decoder
 decl_stmt|;
@@ -985,11 +984,23 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|decoder
+operator|!=
+literal|null
+condition|)
+block|{
 name|decoder
 operator|.
 name|release
 argument_list|()
 expr_stmt|;
+name|decoder
+operator|=
+literal|null
+expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * Extend the super method with the logic of switching between cells.    * When reaching the end of a cell, proceed to the next cell and read it    * with the next blockReader.    */
