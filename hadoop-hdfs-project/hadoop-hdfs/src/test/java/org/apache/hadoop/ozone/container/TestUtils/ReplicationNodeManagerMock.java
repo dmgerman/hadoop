@@ -314,23 +314,6 @@ return|return
 literal|0
 return|;
 block|}
-comment|/**    * Reports if we have exited out of chill mode by discovering enough nodes.    *    * @return True if we are out of Node layer chill mode, false otherwise.    */
-annotation|@
-name|Override
-DECL|method|isOutOfNodeChillMode ()
-specifier|public
-name|boolean
-name|isOutOfNodeChillMode
-parameter_list|()
-block|{
-return|return
-operator|!
-name|nodeStateMap
-operator|.
-name|isEmpty
-argument_list|()
-return|;
-block|}
 comment|/**    * Returns a chill mode status string.    *    * @return String    */
 annotation|@
 name|Override
@@ -342,19 +325,6 @@ parameter_list|()
 block|{
 return|return
 literal|null
-return|;
-block|}
-comment|/**    * Returns the status of manual chill mode flag.    *    * @return true if forceEnterChillMode has been called, false if    * forceExitChillMode or status is not set. eg. clearChillModeFlag.    */
-annotation|@
-name|Override
-DECL|method|isInManualChillMode ()
-specifier|public
-name|boolean
-name|isInManualChillMode
-parameter_list|()
-block|{
-return|return
-literal|false
 return|;
 block|}
 comment|/**    * Get the number of data nodes that in all states.    *    * @return A state to number of nodes that in this state mapping    */
@@ -457,24 +427,41 @@ name|void
 name|forceExitChillMode
 parameter_list|()
 block|{    }
-comment|/**    * Forcefully enters chill mode, even if all minimum node conditions are met.    */
+comment|/**    * Puts the node manager into manual chill mode.    */
 annotation|@
 name|Override
-DECL|method|forceEnterChillMode ()
+DECL|method|enterChillMode ()
 specifier|public
 name|void
-name|forceEnterChillMode
+name|enterChillMode
 parameter_list|()
 block|{    }
-comment|/**    * Clears the manual chill mode flag.    */
+comment|/**    * Brings node manager out of manual chill mode.    */
 annotation|@
 name|Override
-DECL|method|clearChillModeFlag ()
+DECL|method|exitChillMode ()
 specifier|public
 name|void
-name|clearChillModeFlag
+name|exitChillMode
 parameter_list|()
 block|{    }
+comment|/**    * Returns true if node manager is out of chill mode, else false.    * @return true if out of chill mode, else false    */
+annotation|@
+name|Override
+DECL|method|isOutOfChillMode ()
+specifier|public
+name|boolean
+name|isOutOfChillMode
+parameter_list|()
+block|{
+return|return
+operator|!
+name|nodeStateMap
+operator|.
+name|isEmpty
+argument_list|()
+return|;
+block|}
 comment|/**    * Returns the aggregated node stats.    *    * @return the aggregated node stats.    */
 annotation|@
 name|Override

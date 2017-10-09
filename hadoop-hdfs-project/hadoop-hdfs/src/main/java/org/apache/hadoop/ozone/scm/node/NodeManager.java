@@ -259,16 +259,16 @@ name|void
 name|forceExitChillMode
 parameter_list|()
 function_decl|;
-comment|/**    * Forcefully enters chill mode, even if all minimum node conditions are met.    */
-DECL|method|forceEnterChillMode ()
+comment|/**    * Puts the node manager into manual chill mode.    */
+DECL|method|enterChillMode ()
 name|void
-name|forceEnterChillMode
+name|enterChillMode
 parameter_list|()
 function_decl|;
-comment|/**    * Clears the manual chill mode flag.    */
-DECL|method|clearChillModeFlag ()
+comment|/**    * Brings node manager out of manual chill mode.    */
+DECL|method|exitChillMode ()
 name|void
-name|clearChillModeFlag
+name|exitChillMode
 parameter_list|()
 function_decl|;
 comment|/**    * Returns the aggregated node stats.    * @return the aggregated node stats.    */

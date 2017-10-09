@@ -796,7 +796,7 @@ literal|"Node manager should be in chill mode"
 argument_list|,
 name|nodeManager
 operator|.
-name|isOutOfNodeChillMode
+name|isOutOfChillMode
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -897,7 +897,7 @@ literal|"scheduled heartbeats and transitioned out of chill mode."
 argument_list|,
 name|nodeManager
 operator|.
-name|isOutOfNodeChillMode
+name|isOutOfChillMode
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -956,7 +956,7 @@ literal|" chill mode."
 argument_list|,
 name|nodeManager
 operator|.
-name|isOutOfNodeChillMode
+name|isOutOfChillMode
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1037,7 +1037,7 @@ literal|"been in chillmode."
 argument_list|,
 name|nodeManager
 operator|.
-name|isOutOfNodeChillMode
+name|isOutOfChillMode
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1139,7 +1139,7 @@ literal|"manager."
 argument_list|,
 name|nodeManager
 operator|.
-name|isOutOfNodeChillMode
+name|isOutOfChillMode
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3859,18 +3859,8 @@ name|assertFalse
 argument_list|(
 name|nodeManager
 operator|.
-name|isOutOfNodeChillMode
+name|isOutOfChillMode
 argument_list|()
-argument_list|)
-expr_stmt|;
-name|assertFalse
-argument_list|(
-operator|(
-name|nodeManager
-operator|.
-name|isInManualChillMode
-argument_list|()
-operator|)
 argument_list|)
 expr_stmt|;
 comment|// Force exit chill mode.
@@ -3883,7 +3873,7 @@ name|assertTrue
 argument_list|(
 name|nodeManager
 operator|.
-name|isOutOfNodeChillMode
+name|isOutOfChillMode
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3908,27 +3898,17 @@ literal|"Out of chill mode."
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|assertFalse
-argument_list|(
-operator|(
-name|nodeManager
-operator|.
-name|isInManualChillMode
-argument_list|()
-operator|)
-argument_list|)
-expr_stmt|;
 comment|// Enter back to into chill mode.
 name|nodeManager
 operator|.
-name|forceEnterChillMode
+name|enterChillMode
 argument_list|()
 expr_stmt|;
 name|assertFalse
 argument_list|(
 name|nodeManager
 operator|.
-name|isOutOfNodeChillMode
+name|isOutOfChillMode
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3953,16 +3933,6 @@ literal|"Out of startup chill mode,"
 operator|+
 literal|" but in manual chill mode."
 argument_list|)
-argument_list|)
-expr_stmt|;
-name|assertTrue
-argument_list|(
-operator|(
-name|nodeManager
-operator|.
-name|isInManualChillMode
-argument_list|()
-operator|)
 argument_list|)
 expr_stmt|;
 comment|// Assert that node manager force enter cannot be overridden by nodes HBs.
@@ -4012,22 +3982,22 @@ name|assertFalse
 argument_list|(
 name|nodeManager
 operator|.
-name|isOutOfNodeChillMode
+name|isOutOfChillMode
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Make sure that once we clear the manual chill mode flag, we fall back
+comment|// Make sure that once we exit out of manual chill mode, we fall back
 comment|// to the number of nodes to get out chill mode.
 name|nodeManager
 operator|.
-name|clearChillModeFlag
+name|exitChillMode
 argument_list|()
 expr_stmt|;
 name|assertTrue
 argument_list|(
 name|nodeManager
 operator|.
-name|isOutOfNodeChillMode
+name|isOutOfChillMode
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4050,14 +4020,6 @@ name|containsString
 argument_list|(
 literal|"Out of chill mode."
 argument_list|)
-argument_list|)
-expr_stmt|;
-name|assertFalse
-argument_list|(
-name|nodeManager
-operator|.
-name|isInManualChillMode
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

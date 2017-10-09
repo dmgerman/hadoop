@@ -1598,7 +1598,7 @@ operator|.
 name|getScmNodeManager
 argument_list|()
 operator|.
-name|isOutOfNodeChillMode
+name|isOutOfChillMode
 argument_list|()
 condition|)
 block|{

@@ -1247,7 +1247,7 @@ condition|(
 operator|!
 name|nodeManager
 operator|.
-name|isOutOfNodeChillMode
+name|isOutOfChillMode
 argument_list|()
 condition|)
 block|{
@@ -1773,7 +1773,7 @@ condition|(
 operator|!
 name|nodeManager
 operator|.
-name|isOutOfNodeChillMode
+name|isOutOfChillMode
 argument_list|()
 condition|)
 block|{

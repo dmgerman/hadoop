@@ -64,22 +64,16 @@ name|int
 name|getMinimumChillModeNodes
 parameter_list|()
 function_decl|;
-comment|/**    * Reports if we have exited out of chill mode by discovering enough nodes.    *    * @return True if we are out of Node layer chill mode, false otherwise.    */
-DECL|method|isOutOfNodeChillMode ()
-name|boolean
-name|isOutOfNodeChillMode
-parameter_list|()
-function_decl|;
 comment|/**    * Returns a chill mode status string.    * @return String    */
 DECL|method|getChillModeStatus ()
 name|String
 name|getChillModeStatus
 parameter_list|()
 function_decl|;
-comment|/**    * Returns the status of manual chill mode flag.    * @return true if forceEnterChillMode has been called,    * false if forceExitChillMode or status is not set. eg. clearChillModeFlag.    */
-DECL|method|isInManualChillMode ()
+comment|/**    * Returns true if node manager is out of chill mode, else false.    * @return true if out of chill mode, else false    */
+DECL|method|isOutOfChillMode ()
 name|boolean
-name|isInManualChillMode
+name|isOutOfChillMode
 parameter_list|()
 function_decl|;
 comment|/**    * Get the number of data nodes that in all states.    *    * @return A state to number of nodes that in this state mapping    */

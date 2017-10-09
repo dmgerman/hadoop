@@ -1517,55 +1517,6 @@ operator|=
 name|count
 expr_stmt|;
 block|}
-comment|/**    * Reports if we have exited out of chill mode.    *    * @return true if we are out of chill mode.    */
-annotation|@
-name|Override
-DECL|method|isOutOfNodeChillMode ()
-specifier|public
-name|boolean
-name|isOutOfNodeChillMode
-parameter_list|()
-block|{
-return|return
-operator|!
-name|inStartupChillMode
-operator|.
-name|get
-argument_list|()
-operator|&&
-operator|!
-name|inManualChillMode
-operator|.
-name|get
-argument_list|()
-return|;
-block|}
-comment|/**    * Clears the manual chill mode.    */
-annotation|@
-name|Override
-DECL|method|clearChillModeFlag ()
-specifier|public
-name|void
-name|clearChillModeFlag
-parameter_list|()
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Clearing manual chill mode flag."
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|inManualChillMode
-operator|.
-name|getAndSet
-argument_list|(
-literal|false
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**    * Returns chill mode Status string.    * @return String    */
 annotation|@
 name|Override
@@ -1586,55 +1537,6 @@ block|{
 return|return
 literal|"Still in chill mode, waiting on nodes to report in."
 operator|+
-name|getNodeStatus
-argument_list|()
-return|;
-block|}
-if|if
-condition|(
-name|inManualChillMode
-operator|.
-name|get
-argument_list|()
-condition|)
-block|{
-return|return
-literal|"Out of startup chill mode, but in manual chill mode."
-operator|+
-name|getNodeStatus
-argument_list|()
-return|;
-block|}
-return|return
-literal|"Out of chill mode."
-operator|+
-name|getNodeStatus
-argument_list|()
-return|;
-block|}
-comment|/**    * Returns a node status string.    * @return - String    */
-DECL|method|getNodeStatus ()
-specifier|private
-name|String
-name|getNodeStatus
-parameter_list|()
-block|{
-return|return
-name|isOutOfNodeChillMode
-argument_list|()
-condition|?
-name|String
-operator|.
-name|format
-argument_list|(
-literal|" %d nodes have reported in."
-argument_list|,
-name|totalNodes
-operator|.
-name|get
-argument_list|()
-argument_list|)
-else|:
 name|String
 operator|.
 name|format
@@ -1651,20 +1553,44 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns the status of Manual chill Mode flag.    *    * @return true if forceEnterChillMode has been called, false if    * forceExitChillMode or status is not set. eg. clearChillModeFlag.    */
-annotation|@
-name|Override
-DECL|method|isInManualChillMode ()
-specifier|public
-name|boolean
-name|isInManualChillMode
-parameter_list|()
-block|{
-return|return
+if|if
+condition|(
 name|inManualChillMode
 operator|.
 name|get
 argument_list|()
+condition|)
+block|{
+return|return
+literal|"Out of startup chill mode, but in manual chill mode."
+operator|+
+name|String
+operator|.
+name|format
+argument_list|(
+literal|" %d nodes have reported in."
+argument_list|,
+name|totalNodes
+operator|.
+name|get
+argument_list|()
+argument_list|)
+return|;
+block|}
+return|return
+literal|"Out of chill mode."
+operator|+
+name|String
+operator|.
+name|format
+argument_list|(
+literal|" %d nodes have reported in."
+argument_list|,
+name|totalNodes
+operator|.
+name|get
+argument_list|()
+argument_list|)
 return|;
 block|}
 comment|/**    * Forcefully exits the chill mode even if we have not met the minimum    * criteria of exiting the chill mode. This will exit from both startup    * and manual chill mode.    */
@@ -1693,7 +1619,7 @@ argument_list|)
 expr_stmt|;
 name|inStartupChillMode
 operator|.
-name|getAndSet
+name|set
 argument_list|(
 literal|false
 argument_list|)
@@ -1716,20 +1642,20 @@ argument_list|)
 expr_stmt|;
 name|inManualChillMode
 operator|.
-name|getAndSet
+name|set
 argument_list|(
 literal|false
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Forcefully enters chill mode, even if all chill mode conditions are met.    */
+comment|/**    * Puts the node manager into manual chill mode.    */
 annotation|@
 name|Override
-DECL|method|forceEnterChillMode ()
+DECL|method|enterChillMode ()
 specifier|public
 name|void
-name|forceEnterChillMode
+name|enterChillMode
 parameter_list|()
 block|{
 name|LOG
@@ -1741,11 +1667,59 @@ argument_list|)
 expr_stmt|;
 name|inManualChillMode
 operator|.
-name|getAndSet
+name|set
 argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Brings node manager out of manual chill mode.    */
+annotation|@
+name|Override
+DECL|method|exitChillMode ()
+specifier|public
+name|void
+name|exitChillMode
+parameter_list|()
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Leaving manual chill mode."
+argument_list|)
+expr_stmt|;
+name|inManualChillMode
+operator|.
+name|set
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Returns true if node manager is out of chill mode, else false.    * @return true if out of chill mode, else false    */
+annotation|@
+name|Override
+DECL|method|isOutOfChillMode ()
+specifier|public
+name|boolean
+name|isOutOfChillMode
+parameter_list|()
+block|{
+return|return
+operator|!
+operator|(
+name|inStartupChillMode
+operator|.
+name|get
+argument_list|()
+operator|||
+name|inManualChillMode
+operator|.
+name|get
+argument_list|()
+operator|)
+return|;
 block|}
 comment|/**    * Returns the Number of Datanodes by State they are in.    *    * @return int -- count    */
 annotation|@

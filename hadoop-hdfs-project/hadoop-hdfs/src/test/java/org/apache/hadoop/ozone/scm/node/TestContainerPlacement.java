@@ -582,7 +582,7 @@ literal|"Node manager should be in chill mode"
 argument_list|,
 name|nodeManager
 operator|.
-name|isOutOfNodeChillMode
+name|isOutOfChillMode
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -946,7 +946,7 @@ name|assertTrue
 argument_list|(
 name|nodeManager
 operator|.
-name|isOutOfNodeChillMode
+name|isOutOfChillMode
 argument_list|()
 argument_list|)
 expr_stmt|;
