@@ -1831,7 +1831,7 @@ name|rangeResult
 operator|=
 name|store
 operator|.
-name|getRangeKVs
+name|getSequentialRangeKVs
 argument_list|(
 name|getDBKeyBytes
 argument_list|(
@@ -1864,7 +1864,7 @@ name|rangeResult
 operator|=
 name|store
 operator|.
-name|getRangeKVs
+name|getSequentialRangeKVs
 argument_list|(
 literal|null
 argument_list|,
@@ -2300,7 +2300,7 @@ name|rangeKVs
 init|=
 name|store
 operator|.
-name|getRangeKVs
+name|getSequentialRangeKVs
 argument_list|(
 literal|null
 argument_list|,
@@ -2424,7 +2424,7 @@ name|rangeResult
 init|=
 name|store
 operator|.
-name|getRangeKVs
+name|getSequentialRangeKVs
 argument_list|(
 literal|null
 argument_list|,

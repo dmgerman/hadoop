@@ -881,7 +881,7 @@ name|range
 init|=
 name|containerStore
 operator|.
-name|getRangeKVs
+name|getSequentialRangeKVs
 argument_list|(
 name|startKey
 argument_list|,

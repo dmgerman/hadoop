@@ -964,7 +964,7 @@ name|toDeleteBlocks
 init|=
 name|meta
 operator|.
-name|getRangeKVs
+name|getSequentialRangeKVs
 argument_list|(
 literal|null
 argument_list|,

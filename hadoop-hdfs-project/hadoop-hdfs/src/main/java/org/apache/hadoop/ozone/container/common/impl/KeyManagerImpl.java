@@ -1004,7 +1004,7 @@ name|range
 init|=
 name|db
 operator|.
-name|getRangeKVs
+name|getSequentialRangeKVs
 argument_list|(
 name|startKeyInBytes
 argument_list|,
