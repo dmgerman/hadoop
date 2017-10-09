@@ -448,6 +448,15 @@ argument_list|(
 literal|"fs.s3a."
 argument_list|)
 expr_stmt|;
+comment|//ftp properties are in a different subtree.
+comment|// - org.apache.hadoop.fs.ftp.FTPFileSystem.
+name|xmlPrefixToSkipCompare
+operator|.
+name|add
+argument_list|(
+literal|"fs.ftp.impl"
+argument_list|)
+expr_stmt|;
 comment|// WASB properties are in a different subtree.
 comment|// - org.apache.hadoop.fs.azure.NativeAzureFileSystem
 name|xmlPrefixToSkipCompare
