@@ -1784,9 +1784,9 @@ decl_stmt|;
 name|PartitionResourcesInfo
 name|resourceUsages
 init|=
-name|lqinfo
+name|userInfo
 operator|.
-name|getResources
+name|getResourceUsageInfo
 argument_list|()
 operator|.
 name|getPartitionResourceUsageInfo
