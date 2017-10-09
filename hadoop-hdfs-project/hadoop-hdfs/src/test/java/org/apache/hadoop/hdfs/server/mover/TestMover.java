@@ -852,7 +852,7 @@ name|server
 operator|.
 name|datanode
 operator|.
-name|DataNodeTestUtils
+name|InternalDataNodeTestUtils
 import|;
 end_import
 
@@ -5595,7 +5595,7 @@ argument_list|,
 name|dn
 argument_list|)
 expr_stmt|;
-name|DataNodeTestUtils
+name|InternalDataNodeTestUtils
 operator|.
 name|mockDatanodeBlkPinning
 argument_list|(
@@ -6564,7 +6564,7 @@ argument_list|,
 name|datanodeInfo
 argument_list|)
 expr_stmt|;
-name|DataNodeTestUtils
+name|InternalDataNodeTestUtils
 operator|.
 name|mockDatanodeBlkPinning
 argument_list|(

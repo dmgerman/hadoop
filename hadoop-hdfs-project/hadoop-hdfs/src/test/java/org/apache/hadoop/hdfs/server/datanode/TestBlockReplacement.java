@@ -1685,7 +1685,7 @@ operator|+
 name|dn
 argument_list|)
 expr_stmt|;
-name|DataNodeTestUtils
+name|InternalDataNodeTestUtils
 operator|.
 name|mockDatanodeBlkPinning
 argument_list|(
