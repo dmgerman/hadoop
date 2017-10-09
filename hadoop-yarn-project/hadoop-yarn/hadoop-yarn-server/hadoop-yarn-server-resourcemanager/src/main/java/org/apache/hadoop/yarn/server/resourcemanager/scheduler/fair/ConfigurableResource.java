@@ -147,7 +147,7 @@ operator|=
 name|resource
 expr_stmt|;
 block|}
-comment|/**    * Get resource by multiplying the cluster resource and the percentage of    * each resource respectively. Return the absolute resource if either    * {@code percentages} or {@code clusterResource) is null.    *    * @param clusterResource the cluster resource    * @return resource    */
+comment|/**    * Get resource by multiplying the cluster resource and the percentage of    * each resource respectively. Return the absolute resource if either    * {@code percentages} or {@code clusterResource} is null.    *    * @param clusterResource the cluster resource    * @return resource    */
 DECL|method|getResource (Resource clusterResource)
 specifier|public
 name|Resource
