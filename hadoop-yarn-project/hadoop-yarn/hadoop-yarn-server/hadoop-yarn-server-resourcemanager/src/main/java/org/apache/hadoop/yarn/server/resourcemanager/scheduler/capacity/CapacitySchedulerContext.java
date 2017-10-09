@@ -427,6 +427,12 @@ name|Priority
 name|getMaxClusterLevelAppPriority
 parameter_list|()
 function_decl|;
+comment|/**    * Returns if configuration is mutable.    * @return if configuration is mutable    */
+DECL|method|isConfigurationMutable ()
+name|boolean
+name|isConfigurationMutable
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

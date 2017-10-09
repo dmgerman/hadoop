@@ -39,7 +39,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This exception is thrown by ResourceManager if it's loading an incompatible  * version of state from state store on recovery.  */
+comment|/**  * This exception is thrown by ResourceManager if it's loading an incompatible  * version of storage on recovery.  */
 end_comment
 
 begin_class

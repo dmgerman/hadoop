@@ -2632,7 +2632,7 @@ name|this
 operator|.
 name|zkManager
 operator|=
-name|createAndStartZKManager
+name|getAndStartZKManager
 argument_list|(
 name|conf
 argument_list|)
@@ -2661,11 +2661,12 @@ return|return
 name|elector
 return|;
 block|}
-comment|/**    * Create and ZooKeeper Curator manager.    * @param config Configuration for the ZooKeeper curator.    * @return New ZooKeeper Curator manager.    * @throws IOException If it cannot create the manager.    */
-DECL|method|createAndStartZKManager (Configuration config)
+comment|/**    * Get ZooKeeper Curator manager, creating and starting if not exists.    * @param config Configuration for the ZooKeeper curator.    * @return ZooKeeper Curator manager.    * @throws IOException If it cannot create the manager.    */
+DECL|method|getAndStartZKManager (Configuration config)
 specifier|public
+specifier|synchronized
 name|ZKCuratorManager
-name|createAndStartZKManager
+name|getAndStartZKManager
 parameter_list|(
 name|Configuration
 name|config
@@ -2673,6 +2674,19 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|this
+operator|.
+name|zkManager
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+name|zkManager
+return|;
+block|}
 name|ZKCuratorManager
 name|manager
 init|=
@@ -2796,20 +2810,13 @@ argument_list|(
 name|authInfos
 argument_list|)
 expr_stmt|;
-return|return
-name|manager
-return|;
-block|}
-comment|/**    * Get the ZooKeeper Curator manager.    * @return ZooKeeper Curator manager.    */
-DECL|method|getZKManager ()
-specifier|public
-name|ZKCuratorManager
-name|getZKManager
-parameter_list|()
-block|{
-return|return
 name|this
 operator|.
+name|zkManager
+operator|=
+name|manager
+expr_stmt|;
+return|return
 name|zkManager
 return|;
 block|}
