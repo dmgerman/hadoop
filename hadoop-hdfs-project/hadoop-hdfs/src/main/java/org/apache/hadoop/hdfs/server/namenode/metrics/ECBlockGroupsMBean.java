@@ -80,6 +80,12 @@ name|long
 name|getPendingDeletionECBlocks
 parameter_list|()
 function_decl|;
+comment|/**    * Return total number of erasure coded block groups.    */
+DECL|method|getTotalECBlockGroups ()
+name|long
+name|getTotalECBlockGroups
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

@@ -22733,6 +22733,31 @@ return|;
 block|}
 annotation|@
 name|Override
+comment|// ReplicatedBlocksMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"TotalReplicatedBlocks"
+block|,
+literal|"Total number of replicated blocks"
+block|}
+argument_list|)
+DECL|method|getTotalReplicatedBlocks ()
+specifier|public
+name|long
+name|getTotalReplicatedBlocks
+parameter_list|()
+block|{
+return|return
+name|blockManager
+operator|.
+name|getTotalReplicatedBlocks
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 comment|// ECBlockGroupsMBean
 annotation|@
 name|Metric
@@ -22863,6 +22888,31 @@ return|return
 name|blockManager
 operator|.
 name|getPendingDeletionECBlocks
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+comment|// ECBlockGroupsMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"TotalECBlockGroups"
+block|,
+literal|"Total number of erasure coded block groups"
+block|}
+argument_list|)
+DECL|method|getTotalECBlockGroups ()
+specifier|public
+name|long
+name|getTotalECBlockGroups
+parameter_list|()
+block|{
+return|return
+name|blockManager
+operator|.
+name|getTotalECBlockGroups
 argument_list|()
 return|;
 block|}

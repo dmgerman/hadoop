@@ -86,6 +86,12 @@ name|long
 name|getPendingDeletionReplicatedBlocks
 parameter_list|()
 function_decl|;
+comment|/**    * Return total number of replicated blocks.    */
+DECL|method|getTotalReplicatedBlocks ()
+name|long
+name|getTotalReplicatedBlocks
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

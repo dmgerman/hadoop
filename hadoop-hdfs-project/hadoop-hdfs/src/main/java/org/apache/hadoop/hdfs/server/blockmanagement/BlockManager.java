@@ -1926,6 +1926,20 @@ argument_list|()
 return|;
 block|}
 comment|/** Used by metrics. */
+DECL|method|getTotalReplicatedBlocks ()
+specifier|public
+name|long
+name|getTotalReplicatedBlocks
+parameter_list|()
+block|{
+return|return
+name|blocksMap
+operator|.
+name|getReplicatedBlocks
+argument_list|()
+return|;
+block|}
+comment|/** Used by metrics. */
 DECL|method|getLowRedundancyECBlockGroups ()
 specifier|public
 name|long
@@ -1978,6 +1992,20 @@ return|return
 name|invalidateBlocks
 operator|.
 name|getECBlocks
+argument_list|()
+return|;
+block|}
+comment|/** Used by metrics. */
+DECL|method|getTotalECBlockGroups ()
+specifier|public
+name|long
+name|getTotalECBlockGroups
+parameter_list|()
+block|{
+return|return
+name|blocksMap
+operator|.
+name|getECBlockGroups
 argument_list|()
 return|;
 block|}
