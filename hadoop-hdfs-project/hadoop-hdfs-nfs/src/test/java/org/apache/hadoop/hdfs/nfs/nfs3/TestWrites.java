@@ -4261,6 +4261,16 @@ argument_list|,
 name|config
 argument_list|)
 expr_stmt|;
+name|int
+name|namenodeId
+init|=
+name|Nfs3Utils
+operator|.
+name|getNamenodeId
+argument_list|(
+name|config
+argument_list|)
+decl_stmt|;
 comment|// Use emphral port in case tests are running in parallel
 name|config
 operator|.
@@ -4327,6 +4337,8 @@ name|status
 operator|.
 name|getFileId
 argument_list|()
+argument_list|,
+name|namenodeId
 argument_list|)
 decl_stmt|;
 comment|// Create file1
@@ -5027,6 +5039,16 @@ argument_list|,
 name|config
 argument_list|)
 decl_stmt|;
+name|int
+name|namenodeId
+init|=
+name|Nfs3Utils
+operator|.
+name|getNamenodeId
+argument_list|(
+name|config
+argument_list|)
+decl_stmt|;
 name|HdfsFileStatus
 name|status
 init|=
@@ -5047,6 +5069,8 @@ name|status
 operator|.
 name|getFileId
 argument_list|()
+argument_list|,
+name|namenodeId
 argument_list|)
 decl_stmt|;
 name|CREATE3Request
@@ -5571,6 +5595,16 @@ argument_list|,
 name|config
 argument_list|)
 decl_stmt|;
+name|int
+name|namenodeId
+init|=
+name|Nfs3Utils
+operator|.
+name|getNamenodeId
+argument_list|(
+name|config
+argument_list|)
+decl_stmt|;
 name|HdfsFileStatus
 name|status
 init|=
@@ -5591,6 +5625,8 @@ name|status
 operator|.
 name|getFileId
 argument_list|()
+argument_list|,
+name|namenodeId
 argument_list|)
 decl_stmt|;
 name|CREATE3Request

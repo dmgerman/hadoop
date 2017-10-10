@@ -2144,7 +2144,7 @@ operator|.
 name|getHandle
 argument_list|()
 operator|.
-name|getFileId
+name|dumpFileHandle
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4931,14 +4931,14 @@ name|COMMIT_WAIT
 return|;
 block|}
 comment|/**    * Check stream status to decide if it should be closed    * @return true, remove stream; false, keep stream    */
-DECL|method|streamCleanup (long fileId, long streamTimeout)
+DECL|method|streamCleanup (FileHandle handle, long streamTimeout)
 specifier|public
 specifier|synchronized
 name|boolean
 name|streamCleanup
 parameter_list|(
-name|long
-name|fileId
+name|FileHandle
+name|handle
 parameter_list|,
 name|long
 name|streamTimeout
@@ -4993,7 +4993,10 @@ name|debug
 argument_list|(
 literal|"stream can be closed for fileId: "
 operator|+
-name|fileId
+name|handle
+operator|.
+name|dumpFileHandle
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -5980,11 +5983,11 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"do write, fileId: "
+literal|"do write, fileHandle "
 operator|+
 name|handle
 operator|.
-name|getFileId
+name|dumpFileHandle
 argument_list|()
 operator|+
 literal|" offset: "
@@ -6129,7 +6132,7 @@ literal|"After writing "
 operator|+
 name|handle
 operator|.
-name|getFileId
+name|dumpFileHandle
 argument_list|()
 operator|+
 literal|" at offset "
@@ -6390,11 +6393,11 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Error writing to fileId "
+literal|"Error writing to fileHandle "
 operator|+
 name|handle
 operator|.
-name|getFileId
+name|dumpFileHandle
 argument_list|()
 operator|+
 literal|" at offset "

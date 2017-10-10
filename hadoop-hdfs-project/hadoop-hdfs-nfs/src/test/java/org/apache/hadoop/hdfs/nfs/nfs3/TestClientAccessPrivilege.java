@@ -677,6 +677,16 @@ operator|.
 name|getFileId
 argument_list|()
 decl_stmt|;
+name|int
+name|namenodeId
+init|=
+name|Nfs3Utils
+operator|.
+name|getNamenodeId
+argument_list|(
+name|config
+argument_list|)
+decl_stmt|;
 name|XDR
 name|xdr_req
 init|=
@@ -691,6 +701,8 @@ operator|new
 name|FileHandle
 argument_list|(
 name|dirId
+argument_list|,
+name|namenodeId
 argument_list|)
 decl_stmt|;
 name|handle

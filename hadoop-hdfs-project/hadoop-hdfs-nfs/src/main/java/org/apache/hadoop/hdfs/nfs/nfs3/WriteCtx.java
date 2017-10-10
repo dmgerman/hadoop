@@ -1154,11 +1154,11 @@ name|toString
 parameter_list|()
 block|{
 return|return
-literal|"Id:"
+literal|"FileHandle:"
 operator|+
 name|handle
 operator|.
-name|getFileId
+name|dumpFileHandle
 argument_list|()
 operator|+
 literal|" offset:"

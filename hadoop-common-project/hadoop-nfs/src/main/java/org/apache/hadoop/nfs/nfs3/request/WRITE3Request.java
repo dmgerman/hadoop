@@ -414,11 +414,11 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"fileId: %d offset: %d count: %d stableHow: %s"
+literal|"fileHandle: %s offset: %d count: %d stableHow: %s"
 argument_list|,
 name|handle
 operator|.
-name|getFileId
+name|dumpFileHandle
 argument_list|()
 argument_list|,
 name|offset

@@ -833,9 +833,6 @@ operator|.
 name|streamCleanup
 argument_list|(
 name|handle
-operator|.
-name|getFileId
-argument_list|()
 argument_list|,
 name|streamTimeout
 argument_list|)
@@ -873,9 +870,6 @@ operator|.
 name|streamCleanup
 argument_list|(
 name|handle
-operator|.
-name|getFileId
-argument_list|()
 argument_list|,
 name|streamTimeout
 argument_list|)
@@ -904,7 +898,7 @@ literal|"After remove stream "
 operator|+
 name|handle
 operator|.
-name|getFileId
+name|dumpFileHandle
 argument_list|()
 operator|+
 literal|", the stream number:"

@@ -888,11 +888,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"No opened stream for fileId: "
+literal|"No opened stream for fileHandle: "
 operator|+
 name|fileHandle
 operator|.
-name|getFileId
+name|dumpFileHandle
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1193,11 +1193,11 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't close stream for fileId: "
+literal|"Can't close stream for fileHandle: "
 operator|+
 name|handle
 operator|.
-name|getFileId
+name|dumpFileHandle
 argument_list|()
 argument_list|,
 name|e
@@ -1285,7 +1285,7 @@ literal|"Opened stream for appending file: "
 operator|+
 name|fileHandle
 operator|.
-name|getFileId
+name|dumpFileHandle
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1363,7 +1363,7 @@ literal|"No opened stream for fileId: "
 operator|+
 name|fileHandle
 operator|.
-name|getFileId
+name|dumpFileHandle
 argument_list|()
 operator|+
 literal|" commitOffset="
@@ -1491,7 +1491,7 @@ return|return
 name|status
 return|;
 block|}
-DECL|method|handleCommit (DFSClient dfsClient, FileHandle fileHandle, long commitOffset, Channel channel, int xid, Nfs3FileAttributes preOpAttr)
+DECL|method|handleCommit (DFSClient dfsClient, FileHandle fileHandle, long commitOffset, Channel channel, int xid, Nfs3FileAttributes preOpAttr, int namenodeId)
 name|void
 name|handleCommit
 parameter_list|(
@@ -1512,6 +1512,9 @@ name|xid
 parameter_list|,
 name|Nfs3FileAttributes
 name|preOpAttr
+parameter_list|,
+name|int
+name|namenodeId
 parameter_list|)
 block|{
 name|long
@@ -1550,7 +1553,7 @@ literal|"No opened stream for fileId: "
 operator|+
 name|fileHandle
 operator|.
-name|getFileId
+name|dumpFileHandle
 argument_list|()
 operator|+
 literal|" commitOffset="
@@ -1693,6 +1696,8 @@ name|preOpAttr
 operator|.
 name|getFileId
 argument_list|()
+argument_list|,
+name|namenodeId
 argument_list|)
 argument_list|,
 name|iug
@@ -1881,7 +1886,7 @@ return|return
 name|attr
 return|;
 block|}
-DECL|method|getFileAttr (DFSClient client, FileHandle dirHandle, String fileName)
+DECL|method|getFileAttr (DFSClient client, FileHandle dirHandle, String fileName, int namenodeId)
 name|Nfs3FileAttributes
 name|getFileAttr
 parameter_list|(
@@ -1893,6 +1898,9 @@ name|dirHandle
 parameter_list|,
 name|String
 name|fileName
+parameter_list|,
+name|int
+name|namenodeId
 parameter_list|)
 throws|throws
 name|IOException
@@ -1962,6 +1970,8 @@ name|attr
 operator|.
 name|getFileId
 argument_list|()
+argument_list|,
+name|namenodeId
 argument_list|)
 argument_list|)
 decl_stmt|;
