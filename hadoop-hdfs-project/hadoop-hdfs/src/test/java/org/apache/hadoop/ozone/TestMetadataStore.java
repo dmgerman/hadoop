@@ -2448,23 +2448,22 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-comment|// If startKey is invalid, throws an invalid key exception.
-name|expectedException
+comment|// If startKey is invalid, the returned list should be empty.
+name|List
+argument_list|<
+name|Map
 operator|.
-name|expect
-argument_list|(
-name|IOException
-operator|.
-name|class
-argument_list|)
-expr_stmt|;
-name|expectedException
-operator|.
-name|expectMessage
-argument_list|(
-literal|"Invalid start key"
-argument_list|)
-expr_stmt|;
+name|Entry
+argument_list|<
+name|byte
+index|[]
+argument_list|,
+name|byte
+index|[]
+argument_list|>
+argument_list|>
+name|kvs
+init|=
 name|store
 operator|.
 name|getRangeKVs
@@ -2475,6 +2474,18 @@ literal|"unknownKey"
 argument_list|)
 argument_list|,
 name|MAX_GETRANGE_LENGTH
+argument_list|)
+decl_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|kvs
+operator|.
+name|size
+argument_list|()
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 block|}

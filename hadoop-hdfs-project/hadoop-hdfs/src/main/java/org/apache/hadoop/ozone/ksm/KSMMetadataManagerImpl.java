@@ -1589,6 +1589,15 @@ argument_list|,
 name|filter
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|rangeResult
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
 comment|//Remove start key from result.
 name|rangeResult
 operator|.
@@ -1597,6 +1606,7 @@ argument_list|(
 literal|0
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 else|else
 block|{
@@ -1849,6 +1859,15 @@ argument_list|,
 name|filter
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|rangeResult
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
 comment|//Remove start key from result.
 name|rangeResult
 operator|.
@@ -1857,6 +1876,7 @@ argument_list|(
 literal|0
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 else|else
 block|{

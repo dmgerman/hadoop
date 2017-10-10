@@ -932,13 +932,10 @@ operator|==
 literal|null
 condition|)
 block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Invalid start key, not found in current db"
-argument_list|)
-throw|;
+comment|// Key not found, return empty list
+return|return
+name|result
+return|;
 block|}
 name|it
 operator|.

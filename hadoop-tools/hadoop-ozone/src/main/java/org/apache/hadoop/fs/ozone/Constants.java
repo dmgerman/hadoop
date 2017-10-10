@@ -35,7 +35,7 @@ specifier|final
 name|String
 name|OZONE_URI_SCHEME
 init|=
-literal|"ozfs"
+literal|"o3"
 decl_stmt|;
 DECL|field|OZONE_DEFAULT_USER
 specifier|public
@@ -92,6 +92,16 @@ name|String
 name|OZONE_URI_DELIMITER
 init|=
 literal|"/"
+decl_stmt|;
+comment|/** Page size for Ozone listing operation. */
+DECL|field|LISTING_PAGE_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|LISTING_PAGE_SIZE
+init|=
+literal|1024
 decl_stmt|;
 DECL|method|Constants ()
 specifier|private
