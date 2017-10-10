@@ -106,7 +106,7 @@ name|impl
 operator|.
 name|pb
 operator|.
-name|ResourcePBImpl
+name|ProtoUtils
 import|;
 end_import
 
@@ -142,7 +142,7 @@ name|proto
 operator|.
 name|YarnServiceProtos
 operator|.
-name|GetResourceProfileResponseProtoOrBuilder
+name|GetResourceProfileResponseProto
 import|;
 end_import
 
@@ -160,7 +160,7 @@ name|proto
 operator|.
 name|YarnServiceProtos
 operator|.
-name|GetResourceProfileResponseProto
+name|GetResourceProfileResponseProtoOrBuilder
 import|;
 end_import
 
@@ -438,38 +438,13 @@ name|Resource
 name|res
 parameter_list|)
 block|{
-name|ResourcePBImpl
-name|r
-init|=
-operator|new
-name|ResourcePBImpl
-argument_list|()
-decl_stmt|;
-name|r
-operator|.
-name|setMemorySize
-argument_list|(
-name|res
-operator|.
-name|getMemorySize
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|r
-operator|.
-name|setVirtualCores
-argument_list|(
-name|res
-operator|.
-name|getVirtualCores
-argument_list|()
-argument_list|)
-expr_stmt|;
 return|return
-name|r
+name|ProtoUtils
 operator|.
-name|getProto
-argument_list|()
+name|convertToProtoFormat
+argument_list|(
+name|res
+argument_list|)
 return|;
 block|}
 DECL|method|maybeInitBuilder ()
