@@ -541,6 +541,10 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
+literal|null
+operator|==
+name|profileName
+operator|||
 name|profileName
 operator|.
 name|isEmpty
@@ -622,7 +626,7 @@ name|entry
 operator|.
 name|getValue
 argument_list|()
-operator|>=
+operator|>
 literal|0
 condition|)
 block|{

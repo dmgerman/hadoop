@@ -2801,6 +2801,16 @@ name|getExecutionTypeRequest
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|request
+operator|.
+name|setProfileCapability
+argument_list|(
+name|r
+operator|.
+name|getProfileCapability
+argument_list|()
+argument_list|)
+expr_stmt|;
 return|return
 name|request
 return|;

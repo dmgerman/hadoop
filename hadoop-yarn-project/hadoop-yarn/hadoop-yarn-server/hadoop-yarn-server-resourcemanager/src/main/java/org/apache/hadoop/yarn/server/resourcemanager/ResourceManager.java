@@ -2134,6 +2134,25 @@ name|rmDispatcher
 return|;
 block|}
 annotation|@
+name|VisibleForTesting
+DECL|method|createResourceProfileManager ()
+specifier|protected
+name|ResourceProfilesManager
+name|createResourceProfileManager
+parameter_list|()
+block|{
+name|ResourceProfilesManager
+name|resourceProfilesManager
+init|=
+operator|new
+name|ResourceProfilesManagerImpl
+argument_list|()
+decl_stmt|;
+return|return
+name|resourceProfilesManager
+return|;
+block|}
+annotation|@
 name|Override
 DECL|method|serviceInit (Configuration conf)
 specifier|protected
@@ -2171,8 +2190,7 @@ comment|// add resource profiles here because it's used by AbstractYarnScheduler
 name|ResourceProfilesManager
 name|resourceProfilesManager
 init|=
-operator|new
-name|ResourceProfilesManagerImpl
+name|createResourceProfileManager
 argument_list|()
 decl_stmt|;
 name|resourceProfilesManager
