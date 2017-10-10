@@ -584,7 +584,11 @@ operator|.
 name|poll
 argument_list|()
 decl_stmt|;
-if|if
+comment|// a semaphore permit has been acquired, so an element MUST be extracted
+comment|// or the semaphore and queued elements will go out of sync.  loop to
+comment|// avoid race condition if elements are added behind the current position,
+comment|// awakening other threads that poll the elements ahead of our position.
+while|while
 condition|(
 name|e
 operator|==
@@ -627,14 +631,6 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|// guaranteed to find an element if caller acquired permit.
-assert|assert
-name|e
-operator|!=
-literal|null
-operator|:
-literal|"consumer didn't acquire semaphore!"
-assert|;
 return|return
 name|e
 return|;
