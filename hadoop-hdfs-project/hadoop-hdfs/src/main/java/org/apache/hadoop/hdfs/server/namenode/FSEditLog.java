@@ -1728,7 +1728,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * State machine for edit log.    *     * In a non-HA setup:    *     * The log starts in UNINITIALIZED state upon construction. Once it's    * initialized, it is usually in IN_SEGMENT state, indicating that edits may    * be written. In the middle of a roll, or while saving the namespace, it    * briefly enters the BETWEEN_LOG_SEGMENTS state, indicating that the previous    * segment has been closed, but the new one has not yet been opened.    *     * In an HA setup:    *     * The log starts in UNINITIALIZED state upon construction. Once it's    * initialized, it sits in the OPEN_FOR_READING state the entire time that the    * NN is in standby. Upon the NN transition to active, the log will be CLOSED,    * and then move to being BETWEEN_LOG_SEGMENTS, much as if the NN had just    * started up, and then will move to IN_SEGMENT so it can begin writing to the    * log. The log states will then revert to behaving as they do in a non-HA    * setup.    */
+comment|/**    * State machine for edit log.    *     * In a non-HA setup:    *     * The log starts in UNITIALIZED state upon construction. Once it's    * initialized, it is usually in IN_SEGMENT state, indicating that edits may    * be written. In the middle of a roll, or while saving the namespace, it    * briefly enters the BETWEEN_LOG_SEGMENTS state, indicating that the previous    * segment has been closed, but the new one has not yet been opened.    *     * In an HA setup:    *     * The log starts in UNINITIALIZED state upon construction. Once it's    * initialized, it sits in the OPEN_FOR_READING state the entire time that the    * NN is in standby. Upon the NN transition to active, the log will be CLOSED,    * and then move to being BETWEEN_LOG_SEGMENTS, much as if the NN had just    * started up, and then will move to IN_SEGMENT so it can begin writing to the    * log. The log states will then revert to behaving as they do in a non-HA    * setup.    */
 DECL|enum|State
 specifier|private
 enum|enum
@@ -8512,21 +8512,6 @@ comment|// Therefore NPE can happen even if there is a null check before.
 block|}
 return|return
 name|count
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|toString ()
-specifier|public
-name|String
-name|toString
-parameter_list|()
-block|{
-return|return
-name|super
-operator|.
-name|toString
-argument_list|()
 return|;
 block|}
 block|}

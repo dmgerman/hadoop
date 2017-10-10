@@ -669,12 +669,6 @@ specifier|final
 name|TestType
 name|clusterType
 decl_stmt|;
-DECL|field|useAsyncEditLogging
-specifier|private
-specifier|final
-name|boolean
-name|useAsyncEditLogging
-decl_stmt|;
 DECL|field|conf
 specifier|private
 name|Configuration
@@ -718,7 +712,7 @@ DECL|enumConstant|QJM_HA
 name|QJM_HA
 block|;   }
 empty_stmt|;
-comment|/**    * Run this suite of tests for {QJM-based, file-based HA} x {async    * edit logging enabled, disabled}.    */
+comment|/**    * Run this suite of tests both for QJM-based HA and for file-based    * HA.    */
 annotation|@
 name|Parameters
 DECL|method|data ()
@@ -746,54 +740,23 @@ block|{
 name|TestType
 operator|.
 name|SHARED_DIR_HA
-block|,
-name|Boolean
-operator|.
-name|FALSE
-block|}
-block|,
-block|{
-name|TestType
-operator|.
-name|SHARED_DIR_HA
-block|,
-name|Boolean
-operator|.
-name|TRUE
 block|}
 block|,
 block|{
 name|TestType
 operator|.
 name|QJM_HA
-block|,
-name|Boolean
-operator|.
-name|FALSE
 block|}
-block|,
-block|{
-name|TestType
-operator|.
-name|QJM_HA
-block|,
-name|Boolean
-operator|.
-name|TRUE
 block|}
-block|,     }
 argument_list|)
 return|;
 block|}
-DECL|method|TestFailureToReadEdits (TestType clusterType, Boolean useAsyncEditLogging)
+DECL|method|TestFailureToReadEdits (TestType clusterType)
 specifier|public
 name|TestFailureToReadEdits
 parameter_list|(
 name|TestType
 name|clusterType
-parameter_list|,
-name|Boolean
-name|useAsyncEditLogging
 parameter_list|)
 block|{
 name|this
@@ -801,12 +764,6 @@ operator|.
 name|clusterType
 operator|=
 name|clusterType
-expr_stmt|;
-name|this
-operator|.
-name|useAsyncEditLogging
-operator|=
-name|useAsyncEditLogging
 expr_stmt|;
 block|}
 annotation|@
@@ -867,17 +824,6 @@ operator|.
 name|DFS_HA_TAILEDITS_PERIOD_KEY
 argument_list|,
 literal|1
-argument_list|)
-expr_stmt|;
-name|conf
-operator|.
-name|setBoolean
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_EDITS_ASYNC_LOGGING
-argument_list|,
-name|useAsyncEditLogging
 argument_list|)
 expr_stmt|;
 name|HAUtil

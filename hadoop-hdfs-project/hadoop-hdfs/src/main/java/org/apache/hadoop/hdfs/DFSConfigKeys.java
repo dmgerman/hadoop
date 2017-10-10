@@ -2140,7 +2140,7 @@ specifier|final
 name|boolean
 name|DFS_NAMENODE_EDITS_ASYNC_LOGGING_DEFAULT
 init|=
-literal|true
+literal|false
 decl_stmt|;
 DECL|field|DFS_LIST_LIMIT
 specifier|public
