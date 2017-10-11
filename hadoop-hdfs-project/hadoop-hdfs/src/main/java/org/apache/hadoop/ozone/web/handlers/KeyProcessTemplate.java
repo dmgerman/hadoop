@@ -709,7 +709,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|debug
+name|error
 argument_list|(
 literal|"Invalid bucket in key call. ex:{}"
 argument_list|,
@@ -733,6 +733,15 @@ name|IOException
 name|fsExp
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"IOException. ex : {}"
+argument_list|,
+name|fsExp
+argument_list|)
+expr_stmt|;
 comment|// Map KEY_NOT_FOUND to INVALID_KEY
 if|if
 condition|(
@@ -771,15 +780,6 @@ throw|;
 block|}
 comment|// TODO : Handle errors from the FileSystem , let us map to server error
 comment|// for now.
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"IOException. ex : {}"
-argument_list|,
-name|fsExp
-argument_list|)
-expr_stmt|;
 throw|throw
 name|ErrorTable
 operator|.
@@ -803,7 +803,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|debug
+name|error
 argument_list|(
 literal|"NoSuchAlgorithmException. Probably indicates an unusual java "
 operator|+

@@ -623,7 +623,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|debug
+name|error
 argument_list|(
 literal|"illegal argument. {}"
 argument_list|,
@@ -703,6 +703,15 @@ parameter_list|)
 throws|throws
 name|OzoneException
 block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"IOException: {}"
+argument_list|,
+name|fsExp
+argument_list|)
+expr_stmt|;
 name|OzoneException
 name|exp
 init|=
@@ -876,15 +885,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"IOException: {}"
-argument_list|,
-name|exp
-argument_list|)
-expr_stmt|;
 throw|throw
 name|exp
 throw|;

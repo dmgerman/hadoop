@@ -775,7 +775,12 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Unexpected Storage Container Exception"
+literal|"Unexpected Storage Container Exception: "
+operator|+
+name|e
+operator|.
+name|toString
+argument_list|()
 argument_list|,
 name|e
 argument_list|)
@@ -988,7 +993,12 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Unexpected Storage Container Exception"
+literal|"Unexpected Storage Container Exception: "
+operator|+
+name|e
+operator|.
+name|toString
+argument_list|()
 argument_list|,
 name|e
 argument_list|)

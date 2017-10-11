@@ -642,7 +642,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|debug
+name|error
 argument_list|(
 literal|"Invalid bucket. ex:{}"
 argument_list|,
@@ -855,7 +855,7 @@ name|OzoneException
 block|{
 name|LOG
 operator|.
-name|debug
+name|error
 argument_list|(
 literal|"IOException: {}"
 argument_list|,

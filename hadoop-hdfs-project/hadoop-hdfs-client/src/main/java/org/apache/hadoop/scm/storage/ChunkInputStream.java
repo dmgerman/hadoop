@@ -724,7 +724,12 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Unexpected OzoneException"
+literal|"Unexpected OzoneException: "
+operator|+
+name|e
+operator|.
+name|toString
+argument_list|()
 argument_list|,
 name|e
 argument_list|)

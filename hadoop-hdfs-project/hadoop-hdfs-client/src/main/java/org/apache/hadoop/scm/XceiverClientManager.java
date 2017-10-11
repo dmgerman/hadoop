@@ -676,7 +676,12 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Exception getting XceiverClient."
+literal|"Exception getting XceiverClient: "
+operator|+
+name|e
+operator|.
+name|toString
+argument_list|()
 argument_list|,
 name|e
 argument_list|)
