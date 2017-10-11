@@ -238,6 +238,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|NoSuchElementException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Iterator
 import|;
 end_import
@@ -700,6 +710,11 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
+name|String
+name|port
+decl_stmt|;
+try|try
+block|{
 name|Iterator
 argument_list|<
 name|String
@@ -722,14 +737,32 @@ name|next
 argument_list|()
 expr_stmt|;
 comment|// ignore the bind host
-name|String
 name|port
-init|=
+operator|=
 name|it
 operator|.
 name|next
 argument_list|()
-decl_stmt|;
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|NoSuchElementException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"MapReduce JobHistory WebApp Address"
+operator|+
+literal|" does not contain a valid host:port authority: "
+operator|+
+name|addr
+argument_list|)
+throw|;
+block|}
 comment|// Use hs address to figure out the host for webapp
 name|addr
 operator|=
