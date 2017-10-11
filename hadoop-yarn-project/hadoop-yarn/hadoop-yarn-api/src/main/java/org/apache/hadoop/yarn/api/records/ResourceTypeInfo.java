@@ -390,20 +390,29 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"<name="
-argument_list|)
-operator|.
-name|append
-argument_list|(
 name|this
 operator|.
 name|getName
 argument_list|()
 argument_list|)
+expr_stmt|;
+if|if
+condition|(
+operator|!
+name|this
+operator|.
+name|getDefaultUnit
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|sb
 operator|.
 name|append
 argument_list|(
-literal|" default-unit="
+literal|" (unit="
 argument_list|)
 operator|.
 name|append
@@ -416,17 +425,10 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|" type="
-operator|+
-name|getResourceType
-argument_list|()
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|">"
+literal|")"
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|sb
 operator|.
