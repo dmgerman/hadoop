@@ -2466,6 +2466,69 @@ name|file
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Execute a {@link FileSystem#rename(Path, Path)}, and verify that the    * outcome was as expected. There is no preflight checking of arguments;    * everything is left to the rename() command.    * @param fs filesystem    * @param source source path    * @param dest destination path    * @param expectedResult expected return code    * @throws IOException on any IO failure.    */
+DECL|method|assertRenameOutcome (FileSystem fs, Path source, Path dest, boolean expectedResult)
+specifier|public
+specifier|static
+name|void
+name|assertRenameOutcome
+parameter_list|(
+name|FileSystem
+name|fs
+parameter_list|,
+name|Path
+name|source
+parameter_list|,
+name|Path
+name|dest
+parameter_list|,
+name|boolean
+name|expectedResult
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|boolean
+name|result
+init|=
+name|fs
+operator|.
+name|rename
+argument_list|(
+name|source
+argument_list|,
+name|dest
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|expectedResult
+operator|!=
+name|result
+condition|)
+block|{
+name|fail
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Expected rename(%s, %s) to return %b,"
+operator|+
+literal|" but result was %b"
+argument_list|,
+name|source
+argument_list|,
+name|dest
+argument_list|,
+name|expectedResult
+argument_list|,
+name|result
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Read in "length" bytes, convert to an ascii string.    * @param fs filesystem    * @param path path to read    * @param length #of bytes to read.    * @return the bytes read and converted to a string    * @throws IOException IO problems    */
 DECL|method|readBytesToString (FileSystem fs, Path path, int length)
 specifier|public
