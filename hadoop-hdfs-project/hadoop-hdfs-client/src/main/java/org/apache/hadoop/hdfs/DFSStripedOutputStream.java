@@ -1297,8 +1297,6 @@ parameter_list|(
 name|int
 name|numParityBlocks
 parameter_list|)
-throws|throws
-name|InterruptedException
 block|{
 if|if
 condition|(
@@ -1941,8 +1939,6 @@ argument_list|(
 name|numAllBlocks
 argument_list|)
 expr_stmt|;
-try|try
-block|{
 name|cellBuffers
 operator|=
 operator|new
@@ -1951,24 +1947,6 @@ argument_list|(
 name|numParityBlocks
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|ie
-parameter_list|)
-block|{
-throw|throw
-name|DFSUtilClient
-operator|.
-name|toInterruptedIOException
-argument_list|(
-literal|"Failed to create cell buffers"
-argument_list|,
-name|ie
-argument_list|)
-throw|;
-block|}
 name|streamers
 operator|=
 operator|new
