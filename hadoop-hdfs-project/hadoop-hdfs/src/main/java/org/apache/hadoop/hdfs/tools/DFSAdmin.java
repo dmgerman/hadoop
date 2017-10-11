@@ -4359,7 +4359,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"Allowing snaphot on "
+literal|"Allowing snapshot on "
 operator|+
 name|argv
 index|[
@@ -4453,7 +4453,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"Disallowing snaphot on "
+literal|"Disallowing snapshot on "
 operator|+
 name|argv
 index|[

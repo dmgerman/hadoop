@@ -462,7 +462,9 @@ literal|"-allowSnapshot /sub1"
 argument_list|,
 literal|0
 argument_list|,
-literal|"Allowing snaphot on /sub1 succeeded"
+literal|"Allowing snapshot "
+operator|+
+literal|"on /sub1 succeeded"
 argument_list|,
 name|conf
 argument_list|)
@@ -485,7 +487,9 @@ literal|"-allowSnapshot /sub2"
 argument_list|,
 literal|0
 argument_list|,
-literal|"Allowing snaphot on /sub2 succeeded"
+literal|"Allowing snapshot "
+operator|+
+literal|"on /sub2 succeeded"
 argument_list|,
 name|conf
 argument_list|)
@@ -974,7 +978,7 @@ literal|"-disallowSnapshot /sub1"
 argument_list|,
 literal|0
 argument_list|,
-literal|"Disallowing snaphot on /sub1 succeeded"
+literal|"Disallowing snapshot on /sub1 succeeded"
 argument_list|,
 name|conf
 argument_list|)
@@ -988,7 +992,7 @@ literal|"-disallowSnapshot /sub1"
 argument_list|,
 literal|0
 argument_list|,
-literal|"Disallowing snaphot on /sub1 succeeded"
+literal|"Disallowing snapshot on /sub1 succeeded"
 argument_list|,
 name|conf
 argument_list|)
@@ -1056,7 +1060,7 @@ name|path
 argument_list|,
 literal|0
 argument_list|,
-literal|"Allowing snaphot on "
+literal|"Allowing snapshot on "
 operator|+
 name|path
 operator|+
@@ -1237,7 +1241,7 @@ name|path
 argument_list|,
 literal|0
 argument_list|,
-literal|"Disallowing snaphot on "
+literal|"Disallowing snapshot on "
 operator|+
 name|path
 operator|+
@@ -1324,7 +1328,7 @@ name|snapDirPath
 argument_list|,
 literal|0
 argument_list|,
-literal|"Allowing snaphot on "
+literal|"Allowing snapshot on "
 operator|+
 name|snapDirPath
 operator|+
@@ -1642,7 +1646,7 @@ name|snapDir
 argument_list|,
 literal|0
 argument_list|,
-literal|"Disallowing snaphot on "
+literal|"Disallowing snapshot on "
 operator|+
 name|snapDirPath
 operator|+
