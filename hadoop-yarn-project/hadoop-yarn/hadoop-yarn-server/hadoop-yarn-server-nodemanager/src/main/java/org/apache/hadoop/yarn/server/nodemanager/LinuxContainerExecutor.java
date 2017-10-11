@@ -52,6 +52,30 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|linux
+operator|.
+name|resources
+operator|.
+name|ResourceHandlerChain
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -1587,11 +1611,14 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|init ()
+DECL|method|init (Context nmContext)
 specifier|public
 name|void
 name|init
-parameter_list|()
+parameter_list|(
+name|Context
+name|nmContext
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -1686,6 +1713,8 @@ operator|.
 name|getConfiguredResourceHandlerChain
 argument_list|(
 name|conf
+argument_list|,
+name|nmContext
 argument_list|)
 expr_stmt|;
 if|if
@@ -4411,6 +4440,18 @@ name|e
 argument_list|)
 throw|;
 block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getResourceHandler ()
+specifier|public
+name|ResourceHandler
+name|getResourceHandler
+parameter_list|()
+block|{
+return|return
+name|resourceHandlerChain
+return|;
 block|}
 block|}
 end_class

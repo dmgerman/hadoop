@@ -2852,7 +2852,14 @@ block|{
 name|mockExec
 operator|.
 name|init
-argument_list|()
+argument_list|(
+name|mock
+argument_list|(
+name|Context
+operator|.
+name|class
+argument_list|)
+argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(

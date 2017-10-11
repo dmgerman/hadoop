@@ -274,6 +274,28 @@ name|server
 operator|.
 name|nodemanager
 operator|.
+name|containermanager
+operator|.
+name|resourceplugin
+operator|.
+name|ResourcePluginManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
 name|recovery
 operator|.
 name|NMStateStoreService
@@ -574,6 +596,11 @@ function_decl|;
 DECL|method|getContainerStateTransitionListener ()
 name|ContainerStateTransitionListener
 name|getContainerStateTransitionListener
+parameter_list|()
+function_decl|;
+DECL|method|getResourcePluginManager ()
+name|ResourcePluginManager
+name|getResourcePluginManager
 parameter_list|()
 function_decl|;
 block|}

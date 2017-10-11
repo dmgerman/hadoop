@@ -194,6 +194,12 @@ argument_list|(
 literal|"--run-docker"
 argument_list|)
 block|,
+DECL|enumConstant|GPU
+name|GPU
+argument_list|(
+literal|"--module-gpu"
+argument_list|)
+block|,
 DECL|enumConstant|LIST_AS_USER
 name|LIST_AS_USER
 argument_list|(

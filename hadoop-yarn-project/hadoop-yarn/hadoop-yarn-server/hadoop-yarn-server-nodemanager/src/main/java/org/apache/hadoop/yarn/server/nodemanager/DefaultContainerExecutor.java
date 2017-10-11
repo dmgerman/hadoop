@@ -843,11 +843,14 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|init ()
+DECL|method|init (Context nmContext)
 specifier|public
 name|void
 name|init
-parameter_list|()
+parameter_list|(
+name|Context
+name|nmContext
+parameter_list|)
 throws|throws
 name|IOException
 block|{

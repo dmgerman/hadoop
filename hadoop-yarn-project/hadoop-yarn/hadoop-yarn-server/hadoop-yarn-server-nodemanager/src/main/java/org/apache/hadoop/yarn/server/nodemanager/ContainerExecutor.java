@@ -891,13 +891,16 @@ return|return
 name|conf
 return|;
 block|}
-comment|/**    * Run the executor initialization steps.    * Verify that the necessary configs and permissions are in place.    *    * @throws IOException if initialization fails    */
-DECL|method|init ()
+comment|/**    * Run the executor initialization steps.    * Verify that the necessary configs and permissions are in place.    *    * @param nmContext Context of NM    * @throws IOException if initialization fails    */
+DECL|method|init (Context nmContext)
 specifier|public
 specifier|abstract
 name|void
 name|init
-parameter_list|()
+parameter_list|(
+name|Context
+name|nmContext
+parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
