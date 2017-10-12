@@ -882,7 +882,7 @@ argument_list|()
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|trace
 argument_list|(
 literal|"Ozone URI for ozfs initialization is "
 operator|+

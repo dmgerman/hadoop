@@ -2852,6 +2852,14 @@ name|getKeyName
 argument_list|()
 argument_list|)
 operator|.
+name|setDataSize
+argument_list|(
+name|keyArgs
+operator|.
+name|getDataSize
+argument_list|()
+argument_list|)
+operator|.
 name|build
 argument_list|()
 decl_stmt|;
