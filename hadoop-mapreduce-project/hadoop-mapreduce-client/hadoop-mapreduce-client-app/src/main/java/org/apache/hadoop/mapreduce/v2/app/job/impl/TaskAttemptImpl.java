@@ -60,6 +60,26 @@ name|java
 operator|.
 name|net
 operator|.
+name|URI
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|URISyntaxException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
 name|UnknownHostException
 import|;
 end_import
@@ -4561,8 +4581,8 @@ return|return
 name|vcores
 return|;
 block|}
-comment|/**    * Create a {@link LocalResource} record with all the given parameters.    */
-DECL|method|createLocalResource (FileSystem fc, Path file, LocalResourceType type, LocalResourceVisibility visibility)
+comment|/**    * Create a {@link LocalResource} record with all the given parameters.    * The NM that hosts AM container will upload resources to shared cache.    * Thus there is no need to ask task container's NM to upload the    * resources to shared cache. Set the shared cache upload policy to    * false.    */
+DECL|method|createLocalResource (FileSystem fc, Path file, String fileSymlink, LocalResourceType type, LocalResourceVisibility visibility)
 specifier|private
 specifier|static
 name|LocalResource
@@ -4573,6 +4593,9 @@ name|fc
 parameter_list|,
 name|Path
 name|file
+parameter_list|,
+name|String
+name|fileSymlink
 parameter_list|,
 name|LocalResourceType
 name|type
@@ -4593,13 +4616,11 @@ argument_list|(
 name|file
 argument_list|)
 decl_stmt|;
-name|URL
-name|resourceURL
+comment|// We need to be careful when converting from path to URL to add a fragment
+comment|// so that the symlink name when localized will be correct.
+name|Path
+name|qualifiedPath
 init|=
-name|URL
-operator|.
-name|fromPath
-argument_list|(
 name|fc
 operator|.
 name|resolvePath
@@ -4609,6 +4630,89 @@ operator|.
 name|getPath
 argument_list|()
 argument_list|)
+decl_stmt|;
+name|URI
+name|uriWithFragment
+init|=
+literal|null
+decl_stmt|;
+name|boolean
+name|useFragment
+init|=
+name|fileSymlink
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|fileSymlink
+operator|.
+name|equals
+argument_list|(
+literal|""
+argument_list|)
+decl_stmt|;
+try|try
+block|{
+if|if
+condition|(
+name|useFragment
+condition|)
+block|{
+name|uriWithFragment
+operator|=
+operator|new
+name|URI
+argument_list|(
+name|qualifiedPath
+operator|.
+name|toUri
+argument_list|()
+operator|+
+literal|"#"
+operator|+
+name|fileSymlink
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|uriWithFragment
+operator|=
+name|qualifiedPath
+operator|.
+name|toUri
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|URISyntaxException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Error parsing local resource path."
+operator|+
+literal|" Path was not able to be converted to a URI: "
+operator|+
+name|qualifiedPath
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
+name|URL
+name|resourceURL
+init|=
+name|URL
+operator|.
+name|fromURI
+argument_list|(
+name|uriWithFragment
 argument_list|)
 decl_stmt|;
 name|long
@@ -4641,6 +4745,8 @@ argument_list|,
 name|resourceSize
 argument_list|,
 name|resourceModificationTime
+argument_list|,
+literal|false
 argument_list|)
 return|;
 block|}
@@ -5180,6 +5286,34 @@ name|getWorkingDirectory
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|LocalResourceVisibility
+name|jobJarViz
+init|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|MRJobConfig
+operator|.
+name|JOBJAR_VISIBILITY
+argument_list|,
+name|MRJobConfig
+operator|.
+name|JOBJAR_VISIBILITY_DEFAULT
+argument_list|)
+condition|?
+name|LocalResourceVisibility
+operator|.
+name|PUBLIC
+else|:
+name|LocalResourceVisibility
+operator|.
+name|APPLICATION
+decl_stmt|;
+comment|// We hard code the job.jar localized symlink in the container directory.
+comment|// This is because the mapreduce app expects the job.jar to be named
+comment|// accordingly. Additionally we set the shared cache upload policy to
+comment|// false. Resources are uploaded by the AM if necessary.
 name|LocalResource
 name|rc
 init|=
@@ -5189,13 +5323,15 @@ name|jobJarFs
 argument_list|,
 name|remoteJobJar
 argument_list|,
+name|MRJobConfig
+operator|.
+name|JOB_JAR
+argument_list|,
 name|LocalResourceType
 operator|.
 name|PATTERN
 argument_list|,
-name|LocalResourceVisibility
-operator|.
-name|APPLICATION
+name|jobJarViz
 argument_list|)
 decl_stmt|;
 name|String
@@ -5354,6 +5490,9 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
+comment|// There is no point to ask task container's NM to upload the resource
+comment|// to shared cache (job conf is not shared). Therefore, createLocalResource
+comment|// will set the shared cache upload policy to false
 name|localResources
 operator|.
 name|put
@@ -5367,6 +5506,8 @@ argument_list|(
 name|remoteFS
 argument_list|,
 name|remoteJobConfPath
+argument_list|,
+literal|null
 argument_list|,
 name|LocalResourceType
 operator|.

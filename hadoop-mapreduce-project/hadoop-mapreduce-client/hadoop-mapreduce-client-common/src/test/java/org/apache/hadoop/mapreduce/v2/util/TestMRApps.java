@@ -2138,7 +2138,7 @@ operator|.
 name|$$
 argument_list|()
 argument_list|,
-literal|"job.jar/job.jar"
+literal|"job.jar/*"
 argument_list|,
 literal|"job.jar/classes/"
 argument_list|,
@@ -2278,7 +2278,7 @@ name|Arrays
 operator|.
 name|asList
 argument_list|(
-literal|"job.jar/job.jar"
+literal|"job.jar/*"
 argument_list|,
 literal|"job.jar/classes/"
 argument_list|,
@@ -2470,7 +2470,7 @@ operator|.
 name|$$
 argument_list|()
 argument_list|,
-literal|"job.jar/job.jar"
+literal|"job.jar/*"
 argument_list|,
 literal|"job.jar/classes/"
 argument_list|,
@@ -2668,7 +2668,7 @@ name|Arrays
 operator|.
 name|asList
 argument_list|(
-literal|"job.jar/job.jar"
+literal|"job.jar/*"
 argument_list|,
 literal|"job.jar/classes/"
 argument_list|,

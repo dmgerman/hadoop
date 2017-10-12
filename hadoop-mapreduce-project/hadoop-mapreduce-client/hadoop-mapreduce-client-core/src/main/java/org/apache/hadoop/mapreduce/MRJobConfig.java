@@ -750,6 +750,80 @@ name|CACHE_ARCHIVES_VISIBILITIES
 init|=
 literal|"mapreduce.job.cache.archives.visibilities"
 decl_stmt|;
+comment|/**    * This parameter controls the visibility of the localized job jar on the node    * manager. If set to true, the visibility will be set to    * LocalResourceVisibility.PUBLIC. If set to false, the visibility will be set    * to LocalResourceVisibility.APPLICATION. This is a generated parameter and    * should not be set manually via config files.    */
+DECL|field|JOBJAR_VISIBILITY
+name|String
+name|JOBJAR_VISIBILITY
+init|=
+literal|"mapreduce.job.jobjar.visibility"
+decl_stmt|;
+DECL|field|JOBJAR_VISIBILITY_DEFAULT
+name|boolean
+name|JOBJAR_VISIBILITY_DEFAULT
+init|=
+literal|false
+decl_stmt|;
+comment|/**    * This is a generated parameter and should not be set manually via config    * files.    */
+DECL|field|JOBJAR_SHARED_CACHE_UPLOAD_POLICY
+name|String
+name|JOBJAR_SHARED_CACHE_UPLOAD_POLICY
+init|=
+literal|"mapreduce.job.jobjar.sharedcache.uploadpolicy"
+decl_stmt|;
+DECL|field|JOBJAR_SHARED_CACHE_UPLOAD_POLICY_DEFAULT
+name|boolean
+name|JOBJAR_SHARED_CACHE_UPLOAD_POLICY_DEFAULT
+init|=
+literal|false
+decl_stmt|;
+comment|/**    * This is a generated parameter and should not be set manually via config    * files.    */
+DECL|field|CACHE_FILES_SHARED_CACHE_UPLOAD_POLICIES
+name|String
+name|CACHE_FILES_SHARED_CACHE_UPLOAD_POLICIES
+init|=
+literal|"mapreduce.job.cache.files.sharedcache.uploadpolicies"
+decl_stmt|;
+comment|/**    * This is a generated parameter and should not be set manually via config    * files.    */
+DECL|field|CACHE_ARCHIVES_SHARED_CACHE_UPLOAD_POLICIES
+name|String
+name|CACHE_ARCHIVES_SHARED_CACHE_UPLOAD_POLICIES
+init|=
+literal|"mapreduce.job.cache.archives.sharedcache.uploadpolicies"
+decl_stmt|;
+comment|/**    * A comma delimited list of file resources that are needed for this MapReduce    * job. These resources, if the files resource type is enabled, should either    * use the shared cache or be added to the shared cache. This parameter can be    * modified programmatically using the MapReduce Job api.    */
+DECL|field|FILES_FOR_SHARED_CACHE
+name|String
+name|FILES_FOR_SHARED_CACHE
+init|=
+literal|"mapreduce.job.cache.sharedcache.files"
+decl_stmt|;
+comment|/**    * A comma delimited list of libjar resources that are needed for this    * MapReduce job. These resources, if the libjars resource type is enabled,    * should either use the shared cache or be added to the shared cache. These    * resources will also be added to the classpath of all tasks for this    * MapReduce job. This parameter can be modified programmatically using the    * MapReduce Job api.    */
+DECL|field|FILES_FOR_CLASSPATH_AND_SHARED_CACHE
+name|String
+name|FILES_FOR_CLASSPATH_AND_SHARED_CACHE
+init|=
+literal|"mapreduce.job.cache.sharedcache.files.addtoclasspath"
+decl_stmt|;
+comment|/**    * A comma delimited list of archive resources that are needed for this    * MapReduce job. These resources, if the archives resource type is enabled,    * should either use the shared cache or be added to the shared cache. This    * parameter can be modified programmatically using the MapReduce Job api.    */
+DECL|field|ARCHIVES_FOR_SHARED_CACHE
+name|String
+name|ARCHIVES_FOR_SHARED_CACHE
+init|=
+literal|"mapreduce.job.cache.sharedcache.archives"
+decl_stmt|;
+comment|/**    * A comma delimited list of resource categories that are enabled for the    * shared cache. If a category is enabled, resources in that category will be    * uploaded to the shared cache. The valid categories are: jobjar, libjars,    * files, archives. If "disabled" is specified then all categories are    * disabled. If "enabled" is specified then all categories are enabled.    */
+DECL|field|SHARED_CACHE_MODE
+name|String
+name|SHARED_CACHE_MODE
+init|=
+literal|"mapreduce.job.sharedcache.mode"
+decl_stmt|;
+DECL|field|SHARED_CACHE_MODE_DEFAULT
+name|String
+name|SHARED_CACHE_MODE_DEFAULT
+init|=
+literal|"disabled"
+decl_stmt|;
 comment|/**    * @deprecated Symlinks are always on and cannot be disabled.    */
 annotation|@
 name|Deprecated
