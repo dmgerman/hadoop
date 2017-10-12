@@ -56,8 +56,20 @@ specifier|final
 name|long
 name|dataSize
 decl_stmt|;
+comment|/**    * Creation time of the key.    */
+DECL|field|creationTime
+specifier|private
+name|long
+name|creationTime
+decl_stmt|;
+comment|/**    * Modification time of the key.    */
+DECL|field|modificationTime
+specifier|private
+name|long
+name|modificationTime
+decl_stmt|;
 comment|/**    * Constructs OzoneKey from KsmKeyInfo.    *    */
-DECL|method|OzoneKey (String volumeName, String bucketName, String keyName, long size)
+DECL|method|OzoneKey (String volumeName, String bucketName, String keyName, long size, long creationTime, long modificationTime)
 specifier|public
 name|OzoneKey
 parameter_list|(
@@ -72,6 +84,12 @@ name|keyName
 parameter_list|,
 name|long
 name|size
+parameter_list|,
+name|long
+name|creationTime
+parameter_list|,
+name|long
+name|modificationTime
 parameter_list|)
 block|{
 name|this
@@ -97,6 +115,18 @@ operator|.
 name|dataSize
 operator|=
 name|size
+expr_stmt|;
+name|this
+operator|.
+name|creationTime
+operator|=
+name|creationTime
+expr_stmt|;
+name|this
+operator|.
+name|modificationTime
+operator|=
+name|modificationTime
 expr_stmt|;
 block|}
 comment|/**    * Returns Volume Name associated with the Key.    *    * @return volumeName    */
@@ -141,6 +171,28 @@ parameter_list|()
 block|{
 return|return
 name|dataSize
+return|;
+block|}
+comment|/**    * Returns the creation time of the key.    *    * @return creation time    */
+DECL|method|getCreationTime ()
+specifier|public
+name|long
+name|getCreationTime
+parameter_list|()
+block|{
+return|return
+name|creationTime
+return|;
+block|}
+comment|/**    * Returns the modification time of the key.    *    * @return modification time    */
+DECL|method|getModificationTime ()
+specifier|public
+name|long
+name|getModificationTime
+parameter_list|()
+block|{
+return|return
+name|modificationTime
 return|;
 block|}
 block|}

@@ -160,6 +160,12 @@ specifier|private
 name|long
 name|quotaInBytes
 decl_stmt|;
+comment|/**    * Creation time of the volume.    */
+DECL|field|creationTime
+specifier|private
+name|long
+name|creationTime
+decl_stmt|;
 comment|/**    * Volume ACLs.    */
 DECL|field|acls
 specifier|private
@@ -174,8 +180,8 @@ specifier|private
 name|int
 name|listCacheSize
 decl_stmt|;
-comment|/**    * Constructs OzoneVolume instance.    * @param conf Configuration object.    * @param proxy ClientProtocol proxy.    * @param name Name of the volume.    * @param admin Volume admin.    * @param owner Volume owner.    * @param quotaInBytes Volume quota in bytes.    * @param acls ACLs associated with the volume.    */
-DECL|method|OzoneVolume (Configuration conf, ClientProtocol proxy, String name, String admin, String owner, long quotaInBytes, List<OzoneAcl> acls)
+comment|/**    * Constructs OzoneVolume instance.    * @param conf Configuration object.    * @param proxy ClientProtocol proxy.    * @param name Name of the volume.    * @param admin Volume admin.    * @param owner Volume owner.    * @param quotaInBytes Volume quota in bytes.    * @param creationTime creation time of the volume    * @param acls ACLs associated with the volume.    */
+DECL|method|OzoneVolume (Configuration conf, ClientProtocol proxy, String name, String admin, String owner, long quotaInBytes, long creationTime, List<OzoneAcl> acls)
 specifier|public
 name|OzoneVolume
 parameter_list|(
@@ -196,6 +202,9 @@ name|owner
 parameter_list|,
 name|long
 name|quotaInBytes
+parameter_list|,
+name|long
+name|creationTime
 parameter_list|,
 name|List
 argument_list|<
@@ -233,6 +242,12 @@ operator|.
 name|quotaInBytes
 operator|=
 name|quotaInBytes
+expr_stmt|;
+name|this
+operator|.
+name|creationTime
+operator|=
+name|creationTime
 expr_stmt|;
 name|this
 operator|.
@@ -294,6 +309,17 @@ parameter_list|()
 block|{
 return|return
 name|quotaInBytes
+return|;
+block|}
+comment|/**    * Returns creation time of the volume.    *    * @return creation time.    */
+DECL|method|getCreationTime ()
+specifier|public
+name|long
+name|getCreationTime
+parameter_list|()
+block|{
+return|return
+name|creationTime
 return|;
 block|}
 comment|/**    * Returns OzoneAcl list associated with the Volume.    *    * @return aclMap    */

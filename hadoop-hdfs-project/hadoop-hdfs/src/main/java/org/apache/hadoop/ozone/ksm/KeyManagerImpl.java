@@ -1945,6 +1945,16 @@ name|getDataSize
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|keyInfo
+operator|.
+name|setModificationTime
+argument_list|(
+name|Time
+operator|.
+name|now
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|BatchOperation
 name|batch
 init|=

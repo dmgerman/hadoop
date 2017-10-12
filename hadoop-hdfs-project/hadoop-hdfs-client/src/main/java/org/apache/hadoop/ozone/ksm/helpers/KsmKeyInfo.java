@@ -113,7 +113,6 @@ name|creationTime
 decl_stmt|;
 DECL|field|modificationTime
 specifier|private
-specifier|final
 name|long
 name|modificationTime
 decl_stmt|;
@@ -294,6 +293,22 @@ block|{
 return|return
 name|modificationTime
 return|;
+block|}
+DECL|method|setModificationTime (long modificationTime)
+specifier|public
+name|void
+name|setModificationTime
+parameter_list|(
+name|long
+name|modificationTime
+parameter_list|)
+block|{
+name|this
+operator|.
+name|modificationTime
+operator|=
+name|modificationTime
+expr_stmt|;
 block|}
 comment|/**    * Builder of KsmKeyInfo.    */
 DECL|class|Builder

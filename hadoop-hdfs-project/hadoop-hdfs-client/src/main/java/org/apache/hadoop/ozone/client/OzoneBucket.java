@@ -244,8 +244,14 @@ specifier|private
 name|int
 name|listCacheSize
 decl_stmt|;
-comment|/**    * Constructs OzoneBucket instance.    * @param conf Configuration object.    * @param proxy ClientProtocol proxy.    * @param volumeName Name of the volume the bucket belongs to.    * @param bucketName Name of the bucket.    * @param acls ACLs associated with the bucket.    * @param storageType StorageType of the bucket.    * @param versioning versioning status of the bucket.    */
-DECL|method|OzoneBucket (Configuration conf, ClientProtocol proxy, String volumeName, String bucketName, List<OzoneAcl> acls, StorageType storageType, Boolean versioning)
+comment|/**    * Creation time of the bucket.    */
+DECL|field|creationTime
+specifier|private
+name|long
+name|creationTime
+decl_stmt|;
+comment|/**    * Constructs OzoneBucket instance.    * @param conf Configuration object.    * @param proxy ClientProtocol proxy.    * @param volumeName Name of the volume the bucket belongs to.    * @param bucketName Name of the bucket.    * @param acls ACLs associated with the bucket.    * @param storageType StorageType of the bucket.    * @param versioning versioning status of the bucket.    * @param creationTime creation time of the bucket.    */
+DECL|method|OzoneBucket (Configuration conf, ClientProtocol proxy, String volumeName, String bucketName, List<OzoneAcl> acls, StorageType storageType, Boolean versioning, long creationTime)
 specifier|public
 name|OzoneBucket
 parameter_list|(
@@ -272,6 +278,9 @@ name|storageType
 parameter_list|,
 name|Boolean
 name|versioning
+parameter_list|,
+name|long
+name|creationTime
 parameter_list|)
 block|{
 name|this
@@ -320,6 +329,12 @@ name|getListCacheSize
 argument_list|(
 name|conf
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|creationTime
+operator|=
+name|creationTime
 expr_stmt|;
 block|}
 comment|/**    * Returns Volume Name.    *    * @return volumeName    */
@@ -378,6 +393,17 @@ parameter_list|()
 block|{
 return|return
 name|versioning
+return|;
+block|}
+comment|/**    * Returns creation time of the Bucket.    *    * @return creation time of the bucket    */
+DECL|method|getCreationTime ()
+specifier|public
+name|long
+name|getCreationTime
+parameter_list|()
+block|{
+return|return
+name|creationTime
 return|;
 block|}
 comment|/**    * Adds ACLs to the Bucket.    * @param addAcls ACLs to be added    * @throws IOException    */
