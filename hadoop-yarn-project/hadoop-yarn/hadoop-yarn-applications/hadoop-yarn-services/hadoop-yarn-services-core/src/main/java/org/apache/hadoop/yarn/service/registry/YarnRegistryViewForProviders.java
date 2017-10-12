@@ -310,11 +310,11 @@ specifier|final
 name|String
 name|user
 decl_stmt|;
-DECL|field|sliderServiceClass
+DECL|field|serviceClass
 specifier|private
 specifier|final
 name|String
-name|sliderServiceClass
+name|serviceClass
 decl_stmt|;
 DECL|field|instanceName
 specifier|private
@@ -328,13 +328,13 @@ specifier|private
 name|ServiceRecord
 name|selfRegistration
 decl_stmt|;
-comment|/**    * Path where record was registered    * Null until the service is registered    */
+comment|/**    * Path where record was registered.    * Null until the service is registered    */
 DECL|field|selfRegistrationPath
 specifier|private
 name|String
 name|selfRegistrationPath
 decl_stmt|;
-DECL|method|YarnRegistryViewForProviders (RegistryOperations registryOperations, String user, String sliderServiceClass, String instanceName, ApplicationAttemptId applicationAttemptId)
+DECL|method|YarnRegistryViewForProviders (RegistryOperations registryOperations, String user, String serviceClass, String instanceName, ApplicationAttemptId applicationAttemptId)
 specifier|public
 name|YarnRegistryViewForProviders
 parameter_list|(
@@ -345,7 +345,7 @@ name|String
 name|user
 parameter_list|,
 name|String
-name|sliderServiceClass
+name|serviceClass
 parameter_list|,
 name|String
 name|instanceName
@@ -384,7 +384,7 @@ name|SliderUtils
 operator|.
 name|isSet
 argument_list|(
-name|sliderServiceClass
+name|serviceClass
 argument_list|)
 argument_list|,
 literal|"unset service class"
@@ -429,9 +429,9 @@ name|user
 expr_stmt|;
 name|this
 operator|.
-name|sliderServiceClass
+name|serviceClass
 operator|=
-name|sliderServiceClass
+name|serviceClass
 expr_stmt|;
 name|this
 operator|.
@@ -525,7 +525,7 @@ name|selfRegistrationPath
 argument_list|)
 return|;
 block|}
-comment|/**    * Add a component under the slider name/entry    * @param componentName component name    * @param record record to put    * @throws IOException    */
+comment|/**    * Add a component under the slider name/entry.    * @param componentName component name    * @param record record to put    * @throws IOException    */
 DECL|method|putComponent (String componentName, ServiceRecord record)
 specifier|public
 name|void
@@ -542,7 +542,7 @@ name|IOException
 block|{
 name|putComponent
 argument_list|(
-name|sliderServiceClass
+name|serviceClass
 argument_list|,
 name|instanceName
 argument_list|,
@@ -552,7 +552,7 @@ name|record
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Add a component     * @param serviceClass service class to use under ~user    * @param componentName component name    * @param record record to put    * @throws IOException    */
+comment|/**    * Add a component.    * @param serviceClass service class to use under ~user    * @param componentName component name    * @param record record to put    * @throws IOException    */
 DECL|method|putComponent (String serviceClass, String serviceName, String componentName, ServiceRecord record)
 specifier|public
 name|void
@@ -617,7 +617,88 @@ name|OVERWRITE
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Add a service under a path, optionally purging any history    * @param username user    * @param serviceClass service class to use under ~user    * @param serviceName name of the service    * @param record service record    * @param deleteTreeFirst perform recursive delete of the path first.    * @return the path the service was created at    * @throws IOException    */
+comment|/**    * Get a component.    * @param componentName component name    * @return the service record    * @throws IOException    */
+DECL|method|getComponent (String componentName)
+specifier|public
+name|ServiceRecord
+name|getComponent
+parameter_list|(
+name|String
+name|componentName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|String
+name|path
+init|=
+name|RegistryUtils
+operator|.
+name|componentPath
+argument_list|(
+name|user
+argument_list|,
+name|serviceClass
+argument_list|,
+name|instanceName
+argument_list|,
+name|componentName
+argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Resolving path {}"
+argument_list|,
+name|path
+argument_list|)
+expr_stmt|;
+return|return
+name|registryOperations
+operator|.
+name|resolve
+argument_list|(
+name|path
+argument_list|)
+return|;
+block|}
+comment|/**    * List components.    * @return a list of components    * @throws IOException    */
+DECL|method|listComponents ()
+specifier|public
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|listComponents
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|String
+name|path
+init|=
+name|RegistryUtils
+operator|.
+name|componentListPath
+argument_list|(
+name|user
+argument_list|,
+name|serviceClass
+argument_list|,
+name|instanceName
+argument_list|)
+decl_stmt|;
+return|return
+name|registryOperations
+operator|.
+name|list
+argument_list|(
+name|path
+argument_list|)
+return|;
+block|}
+comment|/**    * Add a service under a path, optionally purging any history.    * @param username user    * @param serviceClass service class to use under ~user    * @param serviceName name of the service    * @param record service record    * @param deleteTreeFirst perform recursive delete of the path first.    * @return the path the service was created at    * @throws IOException    */
 DECL|method|putService (String username, String serviceClass, String serviceName, ServiceRecord record, boolean deleteTreeFirst)
 specifier|public
 name|String
@@ -701,7 +782,7 @@ return|return
 name|path
 return|;
 block|}
-comment|/**    * Add a service under a path for the current user    * @param record service record    * @param deleteTreeFirst perform recursive delete of the path first    * @return the path the service was created at    * @throws IOException    */
+comment|/**    * Add a service under a path for the current user.    * @param record service record    * @param deleteTreeFirst perform recursive delete of the path first    * @return the path the service was created at    * @throws IOException    */
 DECL|method|registerSelf ( ServiceRecord record, boolean deleteTreeFirst)
 specifier|public
 name|String
@@ -722,7 +803,7 @@ name|putService
 argument_list|(
 name|user
 argument_list|,
-name|sliderServiceClass
+name|serviceClass
 argument_list|,
 name|instanceName
 argument_list|,
@@ -740,7 +821,7 @@ return|return
 name|selfRegistrationPath
 return|;
 block|}
-comment|/**    * Delete a component    * @param containerId component name    * @throws IOException    */
+comment|/**    * Delete a component.    * @param containerId component name    * @throws IOException    */
 DECL|method|deleteComponent (ComponentInstanceId instanceId, String containerId)
 specifier|public
 name|void
@@ -764,7 +845,7 @@ name|componentPath
 argument_list|(
 name|user
 argument_list|,
-name|sliderServiceClass
+name|serviceClass
 argument_list|,
 name|instanceName
 argument_list|,
