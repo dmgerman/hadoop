@@ -1156,7 +1156,7 @@ name|status
 argument_list|(
 name|Status
 operator|.
-name|NO_CONTENT
+name|OK
 argument_list|)
 operator|.
 name|build
@@ -1184,7 +1184,7 @@ literal|"Service "
 operator|+
 name|appName
 operator|+
-literal|" not found "
+literal|" is not found in YARN: "
 operator|+
 name|e
 operator|.
@@ -1199,7 +1199,7 @@ name|status
 argument_list|(
 name|Status
 operator|.
-name|NOT_FOUND
+name|BAD_REQUEST
 argument_list|)
 operator|.
 name|entity
@@ -1932,6 +1932,34 @@ name|build
 argument_list|()
 return|;
 block|}
+block|}
+comment|/**    * Used by negative test case.    *    * @param mockServerClient - A mocked version of ServiceClient    */
+DECL|method|setServiceClient (ServiceClient mockServerClient)
+specifier|public
+specifier|static
+name|void
+name|setServiceClient
+parameter_list|(
+name|ServiceClient
+name|mockServerClient
+parameter_list|)
+block|{
+name|SERVICE_CLIENT
+operator|=
+name|mockServerClient
+expr_stmt|;
+name|SERVICE_CLIENT
+operator|.
+name|init
+argument_list|(
+name|YARN_CONFIG
+argument_list|)
+expr_stmt|;
+name|SERVICE_CLIENT
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 end_class
