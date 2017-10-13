@@ -812,6 +812,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Properties
 import|;
 end_import
@@ -1162,6 +1172,13 @@ specifier|private
 name|Name
 name|bindHost
 decl_stmt|;
+DECL|field|channelsInitialized
+specifier|private
+name|boolean
+name|channelsInitialized
+init|=
+literal|false
+decl_stmt|;
 comment|/**    * Construct the service.    *    * @param name service name    */
 DECL|method|RegistryDNS (String name)
 specifier|public
@@ -1225,13 +1242,10 @@ block|}
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Initializes the registry.    *    * @param conf the hadoop configuration    * @throws Exception if there are tcp/udp issues    */
-annotation|@
-name|Override
-DECL|method|serviceInit (Configuration conf)
-specifier|protected
+DECL|method|initializeChannels (Configuration conf)
+specifier|public
 name|void
-name|serviceInit
+name|initializeChannels
 parameter_list|(
 name|Configuration
 name|conf
@@ -1239,27 +1253,27 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|super
-operator|.
-name|serviceInit
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-comment|// create the zone.  for now create a "dummy" SOA record
-try|try
+if|if
+condition|(
+name|channelsInitialized
+condition|)
 block|{
-name|setDomainName
-argument_list|(
-name|conf
-argument_list|)
+return|return;
+block|}
+name|channelsInitialized
+operator|=
+literal|true
 expr_stmt|;
 name|int
 name|port
 init|=
-name|initializeZones
-argument_list|(
 name|conf
+operator|.
+name|getInt
+argument_list|(
+name|KEY_DNS_PORT
+argument_list|,
+name|DEFAULT_DNS_PORT
 argument_list|)
 decl_stmt|;
 name|InetAddress
@@ -1297,6 +1311,17 @@ name|bindAddress
 argument_list|)
 expr_stmt|;
 block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Opening TCP and UDP channels on {} port {}"
+argument_list|,
+name|addr
+argument_list|,
+name|port
+argument_list|)
+expr_stmt|;
 name|addNIOUDP
 argument_list|(
 name|addr
@@ -1309,6 +1334,46 @@ argument_list|(
 name|addr
 argument_list|,
 name|port
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Initializes the registry.    *    * @param conf the hadoop configuration    * @throws Exception if there are tcp/udp issues    */
+annotation|@
+name|Override
+DECL|method|serviceInit (Configuration conf)
+specifier|protected
+name|void
+name|serviceInit
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+name|super
+operator|.
+name|serviceInit
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+comment|// create the zone.  for now create a "dummy" SOA record
+try|try
+block|{
+name|setDomainName
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|initializeZones
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|initializeChannels
+argument_list|(
+name|conf
 argument_list|)
 expr_stmt|;
 block|}
@@ -1334,7 +1399,7 @@ block|}
 block|}
 comment|/**    * Initializes the registry based on available parameters in the hadoop    * configuration.    *    * @param conf the hadoop configuration    * @return the listener port    * @throws IOException    */
 DECL|method|initializeZones (Configuration conf)
-name|int
+name|void
 name|initializeZones
 parameter_list|(
 name|Configuration
@@ -1343,18 +1408,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|int
-name|port
-init|=
-name|conf
-operator|.
-name|getInt
-argument_list|(
-name|KEY_DNS_PORT
-argument_list|,
-name|DEFAULT_DNS_PORT
-argument_list|)
-decl_stmt|;
 name|ttl
 operator|=
 name|conf
@@ -1419,9 +1472,75 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-return|return
-name|port
-return|;
+name|StringBuilder
+name|builder
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+name|builder
+operator|.
+name|append
+argument_list|(
+literal|"DNS zones: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
+argument_list|)
+expr_stmt|;
+for|for
+control|(
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|Name
+argument_list|,
+name|Zone
+argument_list|>
+name|entry
+range|:
+name|zones
+operator|.
+name|entrySet
+argument_list|()
+control|)
+block|{
+name|builder
+operator|.
+name|append
+argument_list|(
+name|System
+operator|.
+name|lineSeparator
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|entry
+operator|.
+name|getValue
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|builder
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Signs zone records if necessary (DNSSEC enabled).  Zones may not have    * their NS and SOA records signed if they were initialized from master files.    */
 DECL|method|signZones ()
@@ -6563,7 +6682,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Yarn Resgistry record {} does not contain {} attribute "
+literal|"Yarn Registry record {} does not contain {} attribute "
 argument_list|,
 name|record
 operator|.
