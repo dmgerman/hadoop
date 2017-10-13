@@ -10317,7 +10317,7 @@ argument_list|()
 argument_list|,
 name|ioe
 operator|.
-name|getLocalizedMessage
+name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -12009,6 +12009,18 @@ argument_list|,
 name|t
 operator|.
 name|getMessage
+argument_list|()
+operator|!=
+literal|null
+condition|?
+name|t
+operator|.
+name|getMessage
+argument_list|()
+else|:
+name|t
+operator|.
+name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;

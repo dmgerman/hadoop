@@ -47,11 +47,6 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
-DECL|field|errMsg
-specifier|final
-name|String
-name|errMsg
-decl_stmt|;
 DECL|method|IpcException (final String err)
 specifier|public
 name|IpcException
@@ -61,9 +56,10 @@ name|String
 name|err
 parameter_list|)
 block|{
-name|errMsg
-operator|=
+name|super
+argument_list|(
 name|err
+argument_list|)
 expr_stmt|;
 block|}
 block|}
