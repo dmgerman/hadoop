@@ -406,7 +406,7 @@ name|server
 operator|.
 name|protocol
 operator|.
-name|BlocksStorageMovementResult
+name|BlocksStorageMoveAttemptFinished
 import|;
 end_import
 
@@ -1071,10 +1071,10 @@ operator|.
 name|EMPTY_REPORT
 argument_list|,
 operator|new
-name|BlocksStorageMovementResult
-index|[
-literal|0
-index|]
+name|BlocksStorageMoveAttemptFinished
+argument_list|(
+literal|null
+argument_list|)
 argument_list|)
 operator|.
 name|getCommands

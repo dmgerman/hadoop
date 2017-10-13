@@ -1128,11 +1128,11 @@ argument_list|)
 argument_list|,
 name|PBHelper
 operator|.
-name|convertBlksMovResults
+name|convertBlksMovReport
 argument_list|(
 name|request
 operator|.
-name|getBlksMovementResultsList
+name|getStorageMoveAttemptFinishedBlks
 argument_list|()
 argument_list|)
 argument_list|)

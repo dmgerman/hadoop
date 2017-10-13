@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.namenode
+DECL|package|org.apache.hadoop.hdfs.server.protocol
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|namenode
+name|protocol
 package|;
 end_package
 
@@ -26,7 +26,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|List
+name|Arrays
 import|;
 end_import
 
@@ -40,88 +40,54 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
-operator|.
 name|protocol
 operator|.
-name|BlockStorageMovementCommand
-operator|.
-name|BlockMovingInfo
+name|Block
 import|;
 end_import
 
 begin_comment
-comment|/**  * This class represents a batch of blocks under one trackId which needs to move  * its storage locations to satisfy the storage policy.  */
+comment|/**  * This class represents, the blocks for which storage movements has done by  * datanodes. The movementFinishedBlocks array contains all the blocks that are  * attempted to do the movement and it could be finished with either success or  * failure.  */
 end_comment
 
 begin_class
-DECL|class|BlockStorageMovementInfosBatch
+DECL|class|BlocksStorageMoveAttemptFinished
 specifier|public
 class|class
-name|BlockStorageMovementInfosBatch
+name|BlocksStorageMoveAttemptFinished
 block|{
-DECL|field|trackID
+DECL|field|movementFinishedBlocks
 specifier|private
-name|long
-name|trackID
+specifier|final
+name|Block
+index|[]
+name|movementFinishedBlocks
 decl_stmt|;
-DECL|field|blockMovingInfos
-specifier|private
-name|List
-argument_list|<
-name|BlockMovingInfo
-argument_list|>
-name|blockMovingInfos
-decl_stmt|;
-comment|/**    * Constructor to create the block storage movement infos batch.    *    * @param trackID    *          - unique identifier which will be used for tracking the given set    *          of blocks movement.    * @param blockMovingInfos    *          - list of block to storage infos.    */
-DECL|method|BlockStorageMovementInfosBatch (long trackID, List<BlockMovingInfo> blockMovingInfos)
+DECL|method|BlocksStorageMoveAttemptFinished (Block[] moveAttemptFinishedBlocks)
 specifier|public
-name|BlockStorageMovementInfosBatch
+name|BlocksStorageMoveAttemptFinished
 parameter_list|(
-name|long
-name|trackID
-parameter_list|,
-name|List
-argument_list|<
-name|BlockMovingInfo
-argument_list|>
-name|blockMovingInfos
+name|Block
+index|[]
+name|moveAttemptFinishedBlocks
 parameter_list|)
 block|{
 name|this
 operator|.
-name|trackID
+name|movementFinishedBlocks
 operator|=
-name|trackID
-expr_stmt|;
-name|this
-operator|.
-name|blockMovingInfos
-operator|=
-name|blockMovingInfos
+name|moveAttemptFinishedBlocks
 expr_stmt|;
 block|}
-DECL|method|getTrackID ()
+DECL|method|getBlocks ()
 specifier|public
-name|long
-name|getTrackID
+name|Block
+index|[]
+name|getBlocks
 parameter_list|()
 block|{
 return|return
-name|trackID
-return|;
-block|}
-DECL|method|getBlockMovingInfo ()
-specifier|public
-name|List
-argument_list|<
-name|BlockMovingInfo
-argument_list|>
-name|getBlockMovingInfo
-parameter_list|()
-block|{
-return|return
-name|blockMovingInfos
+name|movementFinishedBlocks
 return|;
 block|}
 annotation|@
@@ -139,27 +105,22 @@ argument_list|()
 operator|.
 name|append
 argument_list|(
-literal|"BlockStorageMovementInfosBatch(\n  "
+literal|"BlocksStorageMovementFinished(\n  "
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"TrackID: "
+literal|"  blockID: "
 argument_list|)
 operator|.
 name|append
 argument_list|(
-name|trackID
-argument_list|)
+name|Arrays
 operator|.
-name|append
+name|toString
 argument_list|(
-literal|"  BlockMovingInfos: "
+name|movementFinishedBlocks
 argument_list|)
-operator|.
-name|append
-argument_list|(
-name|blockMovingInfos
 argument_list|)
 operator|.
 name|append

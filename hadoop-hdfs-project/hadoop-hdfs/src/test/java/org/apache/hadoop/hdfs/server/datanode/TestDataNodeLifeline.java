@@ -460,7 +460,7 @@ name|server
 operator|.
 name|protocol
 operator|.
-name|BlocksStorageMovementResult
+name|BlocksStorageMoveAttemptFinished
 import|;
 end_import
 
@@ -1196,10 +1196,9 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|BlocksStorageMovementResult
-index|[]
+name|BlocksStorageMoveAttemptFinished
 operator|.
-expr|class
+name|class
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1493,10 +1492,9 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|BlocksStorageMovementResult
-index|[]
+name|BlocksStorageMoveAttemptFinished
 operator|.
-expr|class
+name|class
 argument_list|)
 argument_list|)
 expr_stmt|;

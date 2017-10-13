@@ -66,16 +66,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Set
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|concurrent
 operator|.
 name|CompletionService
@@ -144,13 +134,29 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|Block
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|datanode
 operator|.
 name|StoragePolicySatisfyWorker
 operator|.
-name|BlockMovementResult
+name|BlockMovementAttemptFinished
 import|;
 end_import
 
@@ -235,7 +241,7 @@ specifier|private
 specifier|final
 name|CompletionService
 argument_list|<
-name|BlockMovementResult
+name|BlockMovementAttemptFinished
 argument_list|>
 name|moverCompletionService
 decl_stmt|;
@@ -245,19 +251,19 @@ specifier|final
 name|BlocksMovementsStatusHandler
 name|blksMovementsStatusHandler
 decl_stmt|;
-comment|// Keeps the information - trackID vs its list of blocks
+comment|// Keeps the information - block vs its list of future move tasks
 DECL|field|moverTaskFutures
 specifier|private
 specifier|final
 name|Map
 argument_list|<
-name|Long
+name|Block
 argument_list|,
 name|List
 argument_list|<
 name|Future
 argument_list|<
-name|BlockMovementResult
+name|BlockMovementAttemptFinished
 argument_list|>
 argument_list|>
 argument_list|>
@@ -268,11 +274,11 @@ specifier|private
 specifier|final
 name|Map
 argument_list|<
-name|Long
+name|Block
 argument_list|,
 name|List
 argument_list|<
-name|BlockMovementResult
+name|BlockMovementAttemptFinished
 argument_list|>
 argument_list|>
 name|movementResults
@@ -286,13 +292,13 @@ init|=
 literal|true
 decl_stmt|;
 comment|/**    * BlockStorageMovementTracker constructor.    *    * @param moverCompletionService    *          completion service.    * @param handler    *          blocks movements status handler    */
-DECL|method|BlockStorageMovementTracker ( CompletionService<BlockMovementResult> moverCompletionService, BlocksMovementsStatusHandler handler)
+DECL|method|BlockStorageMovementTracker ( CompletionService<BlockMovementAttemptFinished> moverCompletionService, BlocksMovementsStatusHandler handler)
 specifier|public
 name|BlockStorageMovementTracker
 parameter_list|(
 name|CompletionService
 argument_list|<
-name|BlockMovementResult
+name|BlockMovementAttemptFinished
 argument_list|>
 name|moverCompletionService
 parameter_list|,
@@ -392,7 +398,7 @@ try|try
 block|{
 name|Future
 argument_list|<
-name|BlockMovementResult
+name|BlockMovementAttemptFinished
 argument_list|>
 name|future
 init|=
@@ -408,7 +414,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|BlockMovementResult
+name|BlockMovementAttemptFinished
 name|result
 init|=
 name|future
@@ -425,19 +431,19 @@ argument_list|,
 name|result
 argument_list|)
 expr_stmt|;
-name|long
-name|trackId
+name|Block
+name|block
 init|=
 name|result
 operator|.
-name|getTrackId
+name|getBlock
 argument_list|()
 decl_stmt|;
 name|List
 argument_list|<
 name|Future
 argument_list|<
-name|BlockMovementResult
+name|BlockMovementAttemptFinished
 argument_list|>
 argument_list|>
 name|blocksMoving
@@ -446,7 +452,7 @@ name|moverTaskFutures
 operator|.
 name|get
 argument_list|(
-name|trackId
+name|block
 argument_list|)
 decl_stmt|;
 if|if
@@ -460,9 +466,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Future task doesn't exist for trackId "
-operator|+
-name|trackId
+literal|"Future task doesn't exist for block : {} "
+argument_list|,
+name|block
 argument_list|)
 expr_stmt|;
 continue|continue;
@@ -476,11 +482,11 @@ argument_list|)
 expr_stmt|;
 name|List
 argument_list|<
-name|BlockMovementResult
+name|BlockMovementAttemptFinished
 argument_list|>
 name|resultPerTrackIdList
 init|=
-name|addMovementResultToTrackIdList
+name|addMovementResultToBlockIdList
 argument_list|(
 name|result
 argument_list|)
@@ -497,7 +503,7 @@ name|moverTaskFutures
 operator|.
 name|get
 argument_list|(
-name|trackId
+name|block
 argument_list|)
 operator|==
 literal|null
@@ -512,7 +518,7 @@ name|moverTaskFutures
 operator|.
 name|remove
 argument_list|(
-name|trackId
+name|block
 argument_list|)
 expr_stmt|;
 block|}
@@ -534,7 +540,7 @@ name|movementResults
 operator|.
 name|remove
 argument_list|(
-name|trackId
+name|block
 argument_list|)
 expr_stmt|;
 block|}
@@ -583,54 +589,54 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|addMovementResultToTrackIdList ( BlockMovementResult result)
+DECL|method|addMovementResultToBlockIdList ( BlockMovementAttemptFinished result)
 specifier|private
 name|List
 argument_list|<
-name|BlockMovementResult
+name|BlockMovementAttemptFinished
 argument_list|>
-name|addMovementResultToTrackIdList
+name|addMovementResultToBlockIdList
 parameter_list|(
-name|BlockMovementResult
+name|BlockMovementAttemptFinished
 name|result
 parameter_list|)
 block|{
-name|long
-name|trackId
+name|Block
+name|block
 init|=
 name|result
 operator|.
-name|getTrackId
+name|getBlock
 argument_list|()
 decl_stmt|;
 name|List
 argument_list|<
-name|BlockMovementResult
+name|BlockMovementAttemptFinished
 argument_list|>
-name|perTrackIdList
+name|perBlockIdList
 decl_stmt|;
 synchronized|synchronized
 init|(
 name|movementResults
 init|)
 block|{
-name|perTrackIdList
+name|perBlockIdList
 operator|=
 name|movementResults
 operator|.
 name|get
 argument_list|(
-name|trackId
+name|block
 argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|perTrackIdList
+name|perBlockIdList
 operator|==
 literal|null
 condition|)
 block|{
-name|perTrackIdList
+name|perBlockIdList
 operator|=
 operator|new
 name|ArrayList
@@ -641,13 +647,13 @@ name|movementResults
 operator|.
 name|put
 argument_list|(
-name|trackId
+name|block
 argument_list|,
-name|perTrackIdList
+name|perBlockIdList
 argument_list|)
 expr_stmt|;
 block|}
-name|perTrackIdList
+name|perBlockIdList
 operator|.
 name|add
 argument_list|(
@@ -656,20 +662,20 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|perTrackIdList
+name|perBlockIdList
 return|;
 block|}
-comment|/**    * Add future task to the tracking list to check the completion status of the    * block movement.    *    * @param trackID    *          tracking Id    * @param futureTask    *          future task used for moving the respective block    */
-DECL|method|addBlock (long trackID, Future<BlockMovementResult> futureTask)
+comment|/**    * Add future task to the tracking list to check the completion status of the    * block movement.    *    * @param blockID    *          block identifier    * @param futureTask    *          future task used for moving the respective block    */
+DECL|method|addBlock (Block block, Future<BlockMovementAttemptFinished> futureTask)
 name|void
 name|addBlock
 parameter_list|(
-name|long
-name|trackID
+name|Block
+name|block
 parameter_list|,
 name|Future
 argument_list|<
-name|BlockMovementResult
+name|BlockMovementAttemptFinished
 argument_list|>
 name|futureTask
 parameter_list|)
@@ -683,7 +689,7 @@ name|List
 argument_list|<
 name|Future
 argument_list|<
-name|BlockMovementResult
+name|BlockMovementAttemptFinished
 argument_list|>
 argument_list|>
 name|futures
@@ -692,12 +698,7 @@ name|moverTaskFutures
 operator|.
 name|get
 argument_list|(
-name|Long
-operator|.
-name|valueOf
-argument_list|(
-name|trackID
-argument_list|)
+name|block
 argument_list|)
 decl_stmt|;
 comment|// null for the first task
@@ -719,7 +720,7 @@ name|moverTaskFutures
 operator|.
 name|put
 argument_list|(
-name|trackID
+name|block
 argument_list|,
 name|futures
 argument_list|)
@@ -767,28 +768,6 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
-block|}
-block|}
-comment|/**    * @return the list of trackIds which are still waiting to complete all the    *         scheduled blocks movements.    */
-DECL|method|getInProgressTrackIds ()
-name|Set
-argument_list|<
-name|Long
-argument_list|>
-name|getInProgressTrackIds
-parameter_list|()
-block|{
-synchronized|synchronized
-init|(
-name|moverTaskFutures
-init|)
-block|{
-return|return
-name|moverTaskFutures
-operator|.
-name|keySet
-argument_list|()
-return|;
 block|}
 block|}
 comment|/**    * Sets running flag to false and clear the pending movement result queues.    */

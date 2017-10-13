@@ -2140,7 +2140,7 @@ name|server
 operator|.
 name|protocol
 operator|.
-name|BlocksStorageMovementResult
+name|BlocksStorageMoveAttemptFinished
 import|;
 end_import
 
@@ -9237,7 +9237,7 @@ block|}
 annotation|@
 name|Override
 comment|// DatanodeProtocol
-DECL|method|sendHeartbeat (DatanodeRegistration nodeReg, StorageReport[] report, long dnCacheCapacity, long dnCacheUsed, int xmitsInProgress, int xceiverCount, int failedVolumes, VolumeFailureSummary volumeFailureSummary, boolean requestFullBlockReportLease, @Nonnull SlowPeerReports slowPeers, @Nonnull SlowDiskReports slowDisks, BlocksStorageMovementResult[] blkMovementStatus)
+DECL|method|sendHeartbeat (DatanodeRegistration nodeReg, StorageReport[] report, long dnCacheCapacity, long dnCacheUsed, int xmitsInProgress, int xceiverCount, int failedVolumes, VolumeFailureSummary volumeFailureSummary, boolean requestFullBlockReportLease, @Nonnull SlowPeerReports slowPeers, @Nonnull SlowDiskReports slowDisks, BlocksStorageMoveAttemptFinished storageMovementFinishedBlks)
 specifier|public
 name|HeartbeatResponse
 name|sendHeartbeat
@@ -9280,9 +9280,8 @@ name|Nonnull
 name|SlowDiskReports
 name|slowDisks
 parameter_list|,
-name|BlocksStorageMovementResult
-index|[]
-name|blkMovementStatus
+name|BlocksStorageMoveAttemptFinished
+name|storageMovementFinishedBlks
 parameter_list|)
 throws|throws
 name|IOException
@@ -9322,7 +9321,7 @@ name|slowPeers
 argument_list|,
 name|slowDisks
 argument_list|,
-name|blkMovementStatus
+name|storageMovementFinishedBlks
 argument_list|)
 return|;
 block|}

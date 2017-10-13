@@ -3874,7 +3874,7 @@ name|server
 operator|.
 name|protocol
 operator|.
-name|BlocksStorageMovementResult
+name|BlocksStorageMoveAttemptFinished
 import|;
 end_import
 
@@ -20076,7 +20076,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * The given node has reported in.  This method should:    * 1) Record the heartbeat, so the datanode isn't timed out    * 2) Adjust usage stats for future block allocation    *    * If a substantial amount of time passed since the last datanode    * heartbeat then request an immediate block report.    *    * @return an array of datanode commands    * @throws IOException    */
-DECL|method|handleHeartbeat (DatanodeRegistration nodeReg, StorageReport[] reports, long cacheCapacity, long cacheUsed, int xceiverCount, int xmitsInProgress, int failedVolumes, VolumeFailureSummary volumeFailureSummary, boolean requestFullBlockReportLease, @Nonnull SlowPeerReports slowPeers, @Nonnull SlowDiskReports slowDisks, BlocksStorageMovementResult[] blksMovementResults)
+DECL|method|handleHeartbeat (DatanodeRegistration nodeReg, StorageReport[] reports, long cacheCapacity, long cacheUsed, int xceiverCount, int xmitsInProgress, int failedVolumes, VolumeFailureSummary volumeFailureSummary, boolean requestFullBlockReportLease, @Nonnull SlowPeerReports slowPeers, @Nonnull SlowDiskReports slowDisks, BlocksStorageMoveAttemptFinished blksMovementsFinished)
 name|HeartbeatResponse
 name|handleHeartbeat
 parameter_list|(
@@ -20118,9 +20118,8 @@ name|Nonnull
 name|SlowDiskReports
 name|slowDisks
 parameter_list|,
-name|BlocksStorageMovementResult
-index|[]
-name|blksMovementResults
+name|BlocksStorageMoveAttemptFinished
+name|blksMovementsFinished
 parameter_list|)
 throws|throws
 name|IOException
@@ -20234,9 +20233,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Storage policy satisfier is not running. So, ignoring block "
+literal|"Storage policy satisfier is not running. So, ignoring storage"
 operator|+
-literal|"storage movement results sent by co-ordinator datanode"
+literal|"  movement attempt finished block info sent by DN"
 argument_list|)
 expr_stmt|;
 block|}
@@ -20245,9 +20244,9 @@ else|else
 block|{
 name|sps
 operator|.
-name|handleBlocksStorageMovementResults
+name|handleStorageMovementAttemptFinishedBlks
 argument_list|(
-name|blksMovementResults
+name|blksMovementsFinished
 argument_list|)
 expr_stmt|;
 block|}

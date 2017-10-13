@@ -532,7 +532,7 @@ name|server
 operator|.
 name|protocol
 operator|.
-name|BlocksStorageMovementResult
+name|BlocksStorageMoveAttemptFinished
 import|;
 end_import
 
@@ -1193,7 +1193,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|sendHeartbeat (DatanodeRegistration registration, StorageReport[] reports, long cacheCapacity, long cacheUsed, int xmitsInProgress, int xceiverCount, int failedVolumes, VolumeFailureSummary volumeFailureSummary, boolean requestFullBlockReportLease, @Nonnull SlowPeerReports slowPeers, @Nonnull SlowDiskReports slowDisks, BlocksStorageMovementResult[] blksMovementResults)
+DECL|method|sendHeartbeat (DatanodeRegistration registration, StorageReport[] reports, long cacheCapacity, long cacheUsed, int xmitsInProgress, int xceiverCount, int failedVolumes, VolumeFailureSummary volumeFailureSummary, boolean requestFullBlockReportLease, @Nonnull SlowPeerReports slowPeers, @Nonnull SlowDiskReports slowDisks, BlocksStorageMoveAttemptFinished storageMovementFinishedBlks)
 specifier|public
 name|HeartbeatResponse
 name|sendHeartbeat
@@ -1236,9 +1236,8 @@ name|Nonnull
 name|SlowDiskReports
 name|slowDisks
 parameter_list|,
-name|BlocksStorageMovementResult
-index|[]
-name|blksMovementResults
+name|BlocksStorageMoveAttemptFinished
+name|storageMovementFinishedBlks
 parameter_list|)
 throws|throws
 name|IOException
@@ -1388,18 +1387,33 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Adding blocks movement results to the heart beat request.
+if|if
+condition|(
+name|storageMovementFinishedBlks
+operator|!=
+literal|null
+operator|&&
+name|storageMovementFinishedBlks
+operator|.
+name|getBlocks
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
 name|builder
 operator|.
-name|addAllBlksMovementResults
+name|setStorageMoveAttemptFinishedBlks
 argument_list|(
 name|PBHelper
 operator|.
-name|convertBlksMovResults
+name|convertBlksMovReport
 argument_list|(
-name|blksMovementResults
+name|storageMovementFinishedBlks
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 name|HeartbeatResponseProto
 name|resp
 decl_stmt|;

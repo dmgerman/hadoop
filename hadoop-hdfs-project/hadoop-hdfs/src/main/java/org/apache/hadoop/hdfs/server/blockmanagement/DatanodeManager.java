@@ -364,24 +364,6 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|BlockStorageMovementInfosBatch
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
 name|CachedBlock
 import|;
 end_import
@@ -497,6 +479,26 @@ operator|.
 name|BlockRecoveryCommand
 operator|.
 name|RecoveringStripedBlock
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|BlockStorageMovementCommand
+operator|.
+name|BlockMovingInfo
 import|;
 end_import
 
@@ -992,6 +994,12 @@ specifier|private
 specifier|final
 name|long
 name|timeBetweenResendingCachingDirectivesMs
+decl_stmt|;
+DECL|field|blocksToMoveShareEqualRatio
+specifier|private
+specifier|final
+name|boolean
+name|blocksToMoveShareEqualRatio
 decl_stmt|;
 DECL|method|DatanodeManager (final BlockManager blockManager, final Namesystem namesystem, final Configuration conf)
 name|DatanodeManager
@@ -1701,6 +1709,23 @@ argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_BLOCKS_PER_POSTPONEDBLOCKS_RESCAN_KEY_DEFAULT
+argument_list|)
+expr_stmt|;
+comment|// SPS configuration to decide blocks to move can share equal ratio of
+comment|// maxtransfers with pending replica and erasure-coded reconstruction tasks
+name|blocksToMoveShareEqualRatio
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_STORAGE_POLICY_SATISFIER_SHARE_EQUAL_REPLICA_MAX_STREAMS_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_STORAGE_POLICY_SATISFIER_SHARE_EQUAL_REPLICA_MAX_STREAMS_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
@@ -4798,13 +4823,14 @@ comment|// Node is in the include list
 comment|// Sets dropSPSWork flag to true, to ensure that
 comment|// DNA_DROP_SPS_WORK_COMMAND will send to datanode via next heartbeat
 comment|// response immediately after the node registration. This is
-comment|// to avoid a situation, where multiple trackId responses coming from
-comment|// different co-odinator datanodes. After SPS monitor time out, it
-comment|// will retry the files which were scheduled to the disconnected(for
-comment|// long time more than heartbeat expiry) DN, by finding new
-comment|// co-ordinator datanode. Now, if the expired datanode reconnects back
-comment|// after SPS reschedules, it leads to get different movement results
-comment|// from reconnected and new DN co-ordinators.
+comment|// to avoid a situation, where multiple block attempt finished
+comment|// responses coming from different datanodes. After SPS monitor time
+comment|// out, it will retry the files which were scheduled to the
+comment|// disconnected(for long time more than heartbeat expiry) DN, by
+comment|// finding new datanode. Now, if the expired datanode reconnects back
+comment|// after SPS reschedules, it leads to get different movement attempt
+comment|// finished report from reconnected and newly datanode which is
+comment|// attempting the block movement.
 name|nodeS
 operator|.
 name|setDropSPSWork
@@ -7217,7 +7243,8 @@ argument_list|()
 decl_stmt|;
 comment|// Allocate _approximately_ maxTransfers pending tasks to DataNode.
 comment|// NN chooses pending tasks based on the ratio between the lengths of
-comment|// replication and erasure-coded block queues.
+comment|// replication, erasure-coded block queues and block storage movement
+comment|// queues.
 name|int
 name|totalReplicateBlocks
 init|=
@@ -7235,6 +7262,14 @@ name|getNumberOfBlocksToBeErasureCoded
 argument_list|()
 decl_stmt|;
 name|int
+name|totalBlocksToMove
+init|=
+name|nodeinfo
+operator|.
+name|getNumberOfBlocksToMoveStorages
+argument_list|()
+decl_stmt|;
+name|int
 name|totalBlocks
 init|=
 name|totalReplicateBlocks
@@ -7246,11 +7281,45 @@ condition|(
 name|totalBlocks
 operator|>
 literal|0
+operator|||
+name|totalBlocksToMove
+operator|>
+literal|0
 condition|)
 block|{
 name|int
 name|numReplicationTasks
 init|=
+literal|0
+decl_stmt|;
+name|int
+name|numECTasks
+init|=
+literal|0
+decl_stmt|;
+name|int
+name|numBlocksToMoveTasks
+init|=
+literal|0
+decl_stmt|;
+comment|// Check blocksToMoveShareEqualRatio configuration is true/false. If true,
+comment|// then equally sharing the max transfer. Otherwise gives high priority to
+comment|// the pending_replica/erasure-coded tasks and only the delta streams will
+comment|// be used for blocks to move tasks.
+if|if
+condition|(
+name|blocksToMoveShareEqualRatio
+condition|)
+block|{
+comment|// add blocksToMove count to total blocks so that will get equal share
+name|totalBlocks
+operator|=
+name|totalBlocks
+operator|+
+name|totalBlocksToMove
+expr_stmt|;
+name|numReplicationTasks
+operator|=
 operator|(
 name|int
 operator|)
@@ -7269,10 +7338,9 @@ argument_list|)
 operator|/
 name|totalBlocks
 argument_list|)
-decl_stmt|;
-name|int
+expr_stmt|;
 name|numECTasks
-init|=
+operator|=
 operator|(
 name|int
 operator|)
@@ -7291,7 +7359,109 @@ argument_list|)
 operator|/
 name|totalBlocks
 argument_list|)
+expr_stmt|;
+name|numBlocksToMoveTasks
+operator|=
+operator|(
+name|int
+operator|)
+name|Math
+operator|.
+name|ceil
+argument_list|(
+call|(
+name|double
+call|)
+argument_list|(
+name|totalBlocksToMove
+operator|*
+name|maxTransfers
+argument_list|)
+operator|/
+name|totalBlocks
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// Calculate the replica and ec tasks, then pick blocksToMove if there
+comment|// is any streams available.
+name|numReplicationTasks
+operator|=
+operator|(
+name|int
+operator|)
+name|Math
+operator|.
+name|ceil
+argument_list|(
+call|(
+name|double
+call|)
+argument_list|(
+name|totalReplicateBlocks
+operator|*
+name|maxTransfers
+argument_list|)
+operator|/
+name|totalBlocks
+argument_list|)
+expr_stmt|;
+name|numECTasks
+operator|=
+operator|(
+name|int
+operator|)
+name|Math
+operator|.
+name|ceil
+argument_list|(
+call|(
+name|double
+call|)
+argument_list|(
+name|totalECBlocks
+operator|*
+name|maxTransfers
+argument_list|)
+operator|/
+name|totalBlocks
+argument_list|)
+expr_stmt|;
+name|int
+name|numTasks
+init|=
+name|numReplicationTasks
+operator|+
+name|numECTasks
 decl_stmt|;
+if|if
+condition|(
+name|numTasks
+operator|<
+name|maxTransfers
+condition|)
+block|{
+name|int
+name|remainingMaxTransfers
+init|=
+name|maxTransfers
+operator|-
+name|numTasks
+decl_stmt|;
+name|numBlocksToMoveTasks
+operator|=
+name|Math
+operator|.
+name|min
+argument_list|(
+name|totalBlocksToMove
+argument_list|,
+name|remainingMaxTransfers
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 if|if
 condition|(
 name|LOG
@@ -7311,6 +7481,10 @@ operator|+
 literal|" erasure-coded tasks: "
 operator|+
 name|numECTasks
+operator|+
+literal|" blocks to move tasks: "
+operator|+
+name|numBlocksToMoveTasks
 argument_list|)
 expr_stmt|;
 block|}
@@ -7399,6 +7573,79 @@ name|pendingECList
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+comment|// check pending block storage movement tasks
+if|if
+condition|(
+name|nodeinfo
+operator|.
+name|shouldDropSPSWork
+argument_list|()
+condition|)
+block|{
+name|cmds
+operator|.
+name|add
+argument_list|(
+name|DropSPSWorkCommand
+operator|.
+name|DNA_DROP_SPS_WORK_COMMAND
+argument_list|)
+expr_stmt|;
+comment|// Set back to false to indicate that the new value has been sent to the
+comment|// datanode.
+name|nodeinfo
+operator|.
+name|setDropSPSWork
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// Get pending block storage movement tasks
+name|BlockMovingInfo
+index|[]
+name|blkStorageMovementInfos
+init|=
+name|nodeinfo
+operator|.
+name|getBlocksToMoveStorages
+argument_list|(
+name|numBlocksToMoveTasks
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|blkStorageMovementInfos
+operator|!=
+literal|null
+condition|)
+block|{
+name|cmds
+operator|.
+name|add
+argument_list|(
+operator|new
+name|BlockStorageMovementCommand
+argument_list|(
+name|DatanodeProtocol
+operator|.
+name|DNA_BLOCK_STORAGE_MOVEMENT
+argument_list|,
+name|blockPoolId
+argument_list|,
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|blkStorageMovementInfos
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 comment|// check block invalidation
@@ -7631,75 +7878,6 @@ name|slowDisks
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-if|if
-condition|(
-name|nodeinfo
-operator|.
-name|shouldDropSPSWork
-argument_list|()
-condition|)
-block|{
-name|cmds
-operator|.
-name|add
-argument_list|(
-name|DropSPSWorkCommand
-operator|.
-name|DNA_DROP_SPS_WORK_COMMAND
-argument_list|)
-expr_stmt|;
-comment|// Set back to false to indicate that the new value has been sent to the
-comment|// datanode.
-name|nodeinfo
-operator|.
-name|setDropSPSWork
-argument_list|(
-literal|false
-argument_list|)
-expr_stmt|;
-block|}
-comment|// check pending block storage movement tasks
-name|BlockStorageMovementInfosBatch
-name|blkStorageMovementInfosBatch
-init|=
-name|nodeinfo
-operator|.
-name|getBlocksToMoveStorages
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|blkStorageMovementInfosBatch
-operator|!=
-literal|null
-condition|)
-block|{
-name|cmds
-operator|.
-name|add
-argument_list|(
-operator|new
-name|BlockStorageMovementCommand
-argument_list|(
-name|DatanodeProtocol
-operator|.
-name|DNA_BLOCK_STORAGE_MOVEMENT
-argument_list|,
-name|blkStorageMovementInfosBatch
-operator|.
-name|getTrackID
-argument_list|()
-argument_list|,
-name|blockPoolId
-argument_list|,
-name|blkStorageMovementInfosBatch
-operator|.
-name|getBlockMovingInfo
-argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
 block|}
 if|if
 condition|(

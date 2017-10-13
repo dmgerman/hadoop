@@ -3257,11 +3257,6 @@ name|processBlockMovingTasks
 argument_list|(
 name|blkSPSCmd
 operator|.
-name|getTrackID
-argument_list|()
-argument_list|,
-name|blkSPSCmd
-operator|.
 name|getBlockPoolId
 argument_list|()
 argument_list|,

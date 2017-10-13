@@ -26,16 +26,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Arrays
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Collection
 import|;
 end_import
@@ -87,7 +77,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A BlockStorageMovementCommand is an instruction to a DataNode to move the  * given set of blocks to specified target DataNodes to fulfill the block  * storage policy.  *  * Upon receiving this command, this DataNode coordinates all the block movement  * by passing the details to  * {@link org.apache.hadoop.hdfs.server.datanode.StoragePolicySatisfyWorker}  * service. After the block movement this DataNode sends response back to the  * NameNode about the movement status.  *  * The coordinator datanode will use 'trackId' identifier to coordinate the  * block movement of the given set of blocks. TrackId is a unique identifier  * that represents a group of blocks. Namenode will generate this unique value  * and send it to the coordinator datanode along with the  * BlockStorageMovementCommand. Datanode will monitor the completion of the  * block movements that grouped under this trackId and notifies Namenode about  * the completion status.  */
+comment|/**  * A BlockStorageMovementCommand is an instruction to a DataNode to move the  * given set of blocks to specified target DataNodes to fulfill the block  * storage policy.  *  * Upon receiving this command, this DataNode pass the array of block movement  * details to  * {@link org.apache.hadoop.hdfs.server.datanode.StoragePolicySatisfyWorker}  * service. Later, StoragePolicySatisfyWorker will schedule block movement tasks  * for these blocks and monitors the completion of each task. After the block  * movement attempt is finished(with success or failure) this DataNode will send  * response back to NameNode about the block movement attempt finished details.  */
 end_comment
 
 begin_class
@@ -98,12 +88,6 @@ name|BlockStorageMovementCommand
 extends|extends
 name|DatanodeCommand
 block|{
-DECL|field|trackID
-specifier|private
-specifier|final
-name|long
-name|trackID
-decl_stmt|;
 DECL|field|blockPoolId
 specifier|private
 specifier|final
@@ -119,16 +103,13 @@ name|BlockMovingInfo
 argument_list|>
 name|blockMovingTasks
 decl_stmt|;
-comment|/**    * Block storage movement command constructor.    *    * @param action    *          protocol specific action    * @param trackID    *          unique identifier to monitor the given set of block movements    * @param blockPoolId    *          block pool ID    * @param blockMovingInfos    *          block to storage info that will be used for movement    */
-DECL|method|BlockStorageMovementCommand (int action, long trackID, String blockPoolId, Collection<BlockMovingInfo> blockMovingInfos)
+comment|/**    * Block storage movement command constructor.    *    * @param action    *          protocol specific action    * @param blockMovingInfos    *          block to storage info that will be used for movement    */
+DECL|method|BlockStorageMovementCommand (int action, String blockPoolId, Collection<BlockMovingInfo> blockMovingInfos)
 specifier|public
 name|BlockStorageMovementCommand
 parameter_list|(
 name|int
 name|action
-parameter_list|,
-name|long
-name|trackID
 parameter_list|,
 name|String
 name|blockPoolId
@@ -147,12 +128,6 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|trackID
-operator|=
-name|trackID
-expr_stmt|;
-name|this
-operator|.
 name|blockPoolId
 operator|=
 name|blockPoolId
@@ -163,17 +138,6 @@ name|blockMovingTasks
 operator|=
 name|blockMovingInfos
 expr_stmt|;
-block|}
-comment|/**    * Returns trackID, which will be used to monitor the block movement assigned    * to this coordinator datanode.    */
-DECL|method|getTrackID ()
-specifier|public
-name|long
-name|getTrackID
-parameter_list|()
-block|{
-return|return
-name|trackID
-return|;
 block|}
 comment|/**    * Returns block pool ID.    */
 DECL|method|getBlockPoolId ()
@@ -212,32 +176,28 @@ specifier|private
 name|Block
 name|blk
 decl_stmt|;
-DECL|field|sourceNodes
+DECL|field|sourceNode
 specifier|private
 name|DatanodeInfo
-index|[]
-name|sourceNodes
+name|sourceNode
 decl_stmt|;
-DECL|field|targetNodes
+DECL|field|targetNode
 specifier|private
 name|DatanodeInfo
-index|[]
-name|targetNodes
+name|targetNode
 decl_stmt|;
-DECL|field|sourceStorageTypes
+DECL|field|sourceStorageType
 specifier|private
 name|StorageType
-index|[]
-name|sourceStorageTypes
+name|sourceStorageType
 decl_stmt|;
-DECL|field|targetStorageTypes
+DECL|field|targetStorageType
 specifier|private
 name|StorageType
-index|[]
-name|targetStorageTypes
+name|targetStorageType
 decl_stmt|;
-comment|/**      * Block to storage info constructor.      *      * @param block      *          block      * @param sourceDnInfos      *          node that can be the sources of a block move      * @param targetDnInfos      *          target datanode info      * @param srcStorageTypes      *          type of source storage media      * @param targetStorageTypes      *          type of destin storage media      */
-DECL|method|BlockMovingInfo (Block block, DatanodeInfo[] sourceDnInfos, DatanodeInfo[] targetDnInfos, StorageType[] srcStorageTypes, StorageType[] targetStorageTypes)
+comment|/**      * Block to storage info constructor.      *      * @param block      *          block info      * @param sourceDnInfo      *          node that can be the source of a block move      * @param srcStorageType      *          type of source storage media      */
+DECL|method|BlockMovingInfo (Block block, DatanodeInfo sourceDnInfo, DatanodeInfo targetDnInfo, StorageType srcStorageType, StorageType targetStorageType)
 specifier|public
 name|BlockMovingInfo
 parameter_list|(
@@ -245,20 +205,16 @@ name|Block
 name|block
 parameter_list|,
 name|DatanodeInfo
-index|[]
-name|sourceDnInfos
+name|sourceDnInfo
 parameter_list|,
 name|DatanodeInfo
-index|[]
-name|targetDnInfos
+name|targetDnInfo
 parameter_list|,
 name|StorageType
-index|[]
-name|srcStorageTypes
+name|srcStorageType
 parameter_list|,
 name|StorageType
-index|[]
-name|targetStorageTypes
+name|targetStorageType
 parameter_list|)
 block|{
 name|this
@@ -269,27 +225,27 @@ name|block
 expr_stmt|;
 name|this
 operator|.
-name|sourceNodes
+name|sourceNode
 operator|=
-name|sourceDnInfos
+name|sourceDnInfo
 expr_stmt|;
 name|this
 operator|.
-name|targetNodes
+name|targetNode
 operator|=
-name|targetDnInfos
+name|targetDnInfo
 expr_stmt|;
 name|this
 operator|.
-name|sourceStorageTypes
+name|sourceStorageType
 operator|=
-name|srcStorageTypes
+name|srcStorageType
 expr_stmt|;
 name|this
 operator|.
-name|targetStorageTypes
+name|targetStorageType
 operator|=
-name|targetStorageTypes
+name|targetStorageType
 expr_stmt|;
 block|}
 DECL|method|addBlock (Block block)
@@ -315,53 +271,47 @@ name|getBlock
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|blk
 return|;
 block|}
-DECL|method|getSources ()
+DECL|method|getSource ()
 specifier|public
 name|DatanodeInfo
-index|[]
-name|getSources
+name|getSource
 parameter_list|()
 block|{
 return|return
-name|sourceNodes
+name|sourceNode
 return|;
 block|}
-DECL|method|getTargets ()
+DECL|method|getTarget ()
 specifier|public
 name|DatanodeInfo
-index|[]
-name|getTargets
+name|getTarget
 parameter_list|()
 block|{
 return|return
-name|targetNodes
+name|targetNode
 return|;
 block|}
-DECL|method|getTargetStorageTypes ()
+DECL|method|getTargetStorageType ()
 specifier|public
 name|StorageType
-index|[]
-name|getTargetStorageTypes
+name|getTargetStorageType
 parameter_list|()
 block|{
 return|return
-name|targetStorageTypes
+name|targetStorageType
 return|;
 block|}
-DECL|method|getSourceStorageTypes ()
+DECL|method|getSourceStorageType ()
 specifier|public
 name|StorageType
-index|[]
-name|getSourceStorageTypes
+name|getSourceStorageType
 parameter_list|()
 block|{
 return|return
-name|sourceStorageTypes
+name|sourceStorageType
 return|;
 block|}
 annotation|@
@@ -399,12 +349,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|Arrays
-operator|.
-name|asList
-argument_list|(
-name|sourceNodes
-argument_list|)
+name|sourceNode
 argument_list|)
 operator|.
 name|append
@@ -414,12 +359,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|Arrays
-operator|.
-name|asList
-argument_list|(
-name|targetNodes
-argument_list|)
+name|targetNode
 argument_list|)
 operator|.
 name|append
@@ -429,32 +369,22 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|" sourceStorageTypes: "
+literal|" sourceStorageType: "
 argument_list|)
 operator|.
 name|append
 argument_list|(
-name|Arrays
-operator|.
-name|toString
-argument_list|(
-name|sourceStorageTypes
-argument_list|)
+name|sourceStorageType
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|" targetStorageTypes: "
+literal|" targetStorageType: "
 argument_list|)
 operator|.
 name|append
 argument_list|(
-name|Arrays
-operator|.
-name|toString
-argument_list|(
-name|targetStorageTypes
-argument_list|)
+name|targetStorageType
 argument_list|)
 operator|.
 name|append

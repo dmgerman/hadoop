@@ -72,16 +72,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Iterator
 import|;
 end_import
@@ -98,23 +88,37 @@ end_import
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|util
+name|apache
 operator|.
-name|Map
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|Block
 import|;
 end_import
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|util
+name|apache
 operator|.
-name|Map
+name|hadoop
 operator|.
-name|Entry
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|StoragePolicySatisfier
+operator|.
+name|AttemptedItemInfo
 import|;
 end_import
 
@@ -135,44 +139,6 @@ operator|.
 name|StoragePolicySatisfier
 operator|.
 name|ItemInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|protocol
-operator|.
-name|BlocksStorageMovementResult
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|protocol
-operator|.
-name|BlocksStorageMovementResult
-operator|.
-name|Status
 import|;
 end_import
 
@@ -225,7 +191,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A monitor class for checking whether block storage movements finished or not.  * If block storage movement results from datanode indicates about the movement  * success, then it will just remove the entries from tracking. If it reports  * failure, then it will add back to needed block storage movements list. If it  * reports in_progress, that means the blocks movement is in progress and the  * coordinator is still tracking the movement. If no DN reports about movement  * for longer time, then such items will be retries automatically after timeout.  * The default timeout would be 30mins.  */
+comment|/**  * A monitor class for checking whether block storage movements attempt  * completed or not. If this receives block storage movement attempt  * status(either success or failure) from DN then it will just remove the  * entries from tracking. If there is no DN reports about movement attempt  * finished for a longer time period, then such items will retries automatically  * after timeout. The default timeout would be 5 minutes.  */
 end_comment
 
 begin_class
@@ -254,22 +220,20 @@ comment|/**    * A map holds the items which are already taken for blocks moveme
 DECL|field|storageMovementAttemptedItems
 specifier|private
 specifier|final
-name|Map
+name|List
 argument_list|<
-name|Long
-argument_list|,
 name|AttemptedItemInfo
 argument_list|>
 name|storageMovementAttemptedItems
 decl_stmt|;
-DECL|field|storageMovementAttemptedResults
+DECL|field|movementFinishedBlocks
 specifier|private
 specifier|final
 name|List
 argument_list|<
-name|BlocksStorageMovementResult
+name|Block
 argument_list|>
-name|storageMovementAttemptedResults
+name|movementFinishedBlocks
 decl_stmt|;
 DECL|field|monitorRunning
 specifier|private
@@ -286,14 +250,8 @@ name|timerThread
 init|=
 literal|null
 decl_stmt|;
-DECL|field|sps
-specifier|private
-specifier|final
-name|StoragePolicySatisfier
-name|sps
-decl_stmt|;
 comment|//
-comment|// It might take anywhere between 20 to 60 minutes before
+comment|// It might take anywhere between 5 to 10 minutes before
 comment|// a request is timed out.
 comment|//
 DECL|field|selfRetryTimeout
@@ -301,14 +259,14 @@ specifier|private
 name|long
 name|selfRetryTimeout
 init|=
-literal|20
+literal|5
 operator|*
 literal|60
 operator|*
 literal|1000
 decl_stmt|;
 comment|//
-comment|// It might take anywhere between 5 to 10 minutes before
+comment|// It might take anywhere between 1 to 2 minutes before
 comment|// a request is timed out.
 comment|//
 DECL|field|minCheckTimeout
@@ -316,7 +274,7 @@ specifier|private
 name|long
 name|minCheckTimeout
 init|=
-literal|5
+literal|1
 operator|*
 literal|60
 operator|*
@@ -328,7 +286,7 @@ specifier|private
 name|BlockStorageMovementNeeded
 name|blockStorageMovementNeeded
 decl_stmt|;
-DECL|method|BlockStorageMovementAttemptedItems (long recheckTimeout, long selfRetryTimeout, BlockStorageMovementNeeded unsatisfiedStorageMovementFiles, StoragePolicySatisfier sps)
+DECL|method|BlockStorageMovementAttemptedItems (long recheckTimeout, long selfRetryTimeout, BlockStorageMovementNeeded unsatisfiedStorageMovementFiles)
 specifier|public
 name|BlockStorageMovementAttemptedItems
 parameter_list|(
@@ -340,9 +298,6 @@ name|selfRetryTimeout
 parameter_list|,
 name|BlockStorageMovementNeeded
 name|unsatisfiedStorageMovementFiles
-parameter_list|,
-name|StoragePolicySatisfier
-name|sps
 parameter_list|)
 block|{
 if|if
@@ -381,35 +336,26 @@ expr_stmt|;
 name|storageMovementAttemptedItems
 operator|=
 operator|new
-name|HashMap
+name|ArrayList
 argument_list|<>
 argument_list|()
 expr_stmt|;
-name|storageMovementAttemptedResults
+name|movementFinishedBlocks
 operator|=
 operator|new
 name|ArrayList
 argument_list|<>
 argument_list|()
 expr_stmt|;
-name|this
-operator|.
-name|sps
-operator|=
-name|sps
-expr_stmt|;
 block|}
-comment|/**    * Add item to block storage movement attempted items map which holds the    * tracking/blockCollection id versus time stamp.    *    * @param itemInfo    *          - tracking info    * @param allBlockLocsAttemptedToSatisfy    *          - failed to find matching target nodes to satisfy storage type    *          for all the block locations of the given blockCollectionID    */
-DECL|method|add (ItemInfo itemInfo, boolean allBlockLocsAttemptedToSatisfy)
+comment|/**    * Add item to block storage movement attempted items map which holds the    * tracking/blockCollection id versus time stamp.    *    * @param itemInfo    *          - tracking info    */
+DECL|method|add (AttemptedItemInfo itemInfo)
 specifier|public
 name|void
 name|add
 parameter_list|(
-name|ItemInfo
+name|AttemptedItemInfo
 name|itemInfo
-parameter_list|,
-name|boolean
-name|allBlockLocsAttemptedToSatisfy
 parameter_list|)
 block|{
 synchronized|synchronized
@@ -417,56 +363,29 @@ init|(
 name|storageMovementAttemptedItems
 init|)
 block|{
-name|AttemptedItemInfo
-name|attemptedItemInfo
-init|=
-operator|new
-name|AttemptedItemInfo
-argument_list|(
-name|itemInfo
-operator|.
-name|getStartId
-argument_list|()
-argument_list|,
-name|itemInfo
-operator|.
-name|getTrackId
-argument_list|()
-argument_list|,
-name|monotonicNow
-argument_list|()
-argument_list|,
-name|allBlockLocsAttemptedToSatisfy
-argument_list|)
-decl_stmt|;
 name|storageMovementAttemptedItems
 operator|.
-name|put
+name|add
 argument_list|(
 name|itemInfo
-operator|.
-name|getTrackId
-argument_list|()
-argument_list|,
-name|attemptedItemInfo
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Add the trackIDBlocksStorageMovementResults to    * storageMovementAttemptedResults.    *    * @param blksMovementResults    */
-DECL|method|addResults (BlocksStorageMovementResult[] blksMovementResults)
+comment|/**    * Add the storage movement attempt finished blocks to    * storageMovementFinishedBlocks.    *    * @param moveAttemptFinishedBlks    *          storage movement attempt finished blocks    */
+DECL|method|addReportedMovedBlocks (Block[] moveAttemptFinishedBlks)
 specifier|public
 name|void
-name|addResults
+name|addReportedMovedBlocks
 parameter_list|(
-name|BlocksStorageMovementResult
+name|Block
 index|[]
-name|blksMovementResults
+name|moveAttemptFinishedBlks
 parameter_list|)
 block|{
 if|if
 condition|(
-name|blksMovementResults
+name|moveAttemptFinishedBlks
 operator|.
 name|length
 operator|==
@@ -477,10 +396,10 @@ return|return;
 block|}
 synchronized|synchronized
 init|(
-name|storageMovementAttemptedResults
+name|movementFinishedBlocks
 init|)
 block|{
-name|storageMovementAttemptedResults
+name|movementFinishedBlocks
 operator|.
 name|addAll
 argument_list|(
@@ -488,7 +407,7 @@ name|Arrays
 operator|.
 name|asList
 argument_list|(
-name|blksMovementResults
+name|moveAttemptFinishedBlks
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -512,7 +431,7 @@ operator|new
 name|Daemon
 argument_list|(
 operator|new
-name|BlocksStorageMovementAttemptResultMonitor
+name|BlocksStorageMovementAttemptMonitor
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -520,7 +439,7 @@ name|timerThread
 operator|.
 name|setName
 argument_list|(
-literal|"BlocksStorageMovementAttemptResultMonitor"
+literal|"BlocksStorageMovementAttemptMonitor"
 argument_list|)
 expr_stmt|;
 name|timerThread
@@ -602,108 +521,11 @@ name|ie
 parameter_list|)
 block|{     }
 block|}
-comment|/**    * This class contains information of an attempted trackID. Information such    * as, (a)last attempted or reported time stamp, (b)whether all the blocks in    * the trackID were attempted and blocks movement has been scheduled to    * satisfy storage policy. This is used by    * {@link BlockStorageMovementAttemptedItems#storageMovementAttemptedItems}.    */
-DECL|class|AttemptedItemInfo
-specifier|private
-specifier|final
-specifier|static
-class|class
-name|AttemptedItemInfo
-extends|extends
-name|ItemInfo
-block|{
-DECL|field|lastAttemptedOrReportedTime
-specifier|private
-name|long
-name|lastAttemptedOrReportedTime
-decl_stmt|;
-DECL|field|allBlockLocsAttemptedToSatisfy
-specifier|private
-specifier|final
-name|boolean
-name|allBlockLocsAttemptedToSatisfy
-decl_stmt|;
-comment|/**      * AttemptedItemInfo constructor.      *      * @param rootId      *          rootId for trackId      * @param trackId      *          trackId for file.      * @param lastAttemptedOrReportedTime      *          last attempted or reported time      * @param allBlockLocsAttemptedToSatisfy      *          whether all the blocks in the trackID were attempted and blocks      *          movement has been scheduled to satisfy storage policy      */
-DECL|method|AttemptedItemInfo (long rootId, long trackId, long lastAttemptedOrReportedTime, boolean allBlockLocsAttemptedToSatisfy)
-specifier|private
-name|AttemptedItemInfo
-parameter_list|(
-name|long
-name|rootId
-parameter_list|,
-name|long
-name|trackId
-parameter_list|,
-name|long
-name|lastAttemptedOrReportedTime
-parameter_list|,
-name|boolean
-name|allBlockLocsAttemptedToSatisfy
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|rootId
-argument_list|,
-name|trackId
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|lastAttemptedOrReportedTime
-operator|=
-name|lastAttemptedOrReportedTime
-expr_stmt|;
-name|this
-operator|.
-name|allBlockLocsAttemptedToSatisfy
-operator|=
-name|allBlockLocsAttemptedToSatisfy
-expr_stmt|;
-block|}
-comment|/**      * @return last attempted or reported time stamp.      */
-DECL|method|getLastAttemptedOrReportedTime ()
-specifier|private
-name|long
-name|getLastAttemptedOrReportedTime
-parameter_list|()
-block|{
-return|return
-name|lastAttemptedOrReportedTime
-return|;
-block|}
-comment|/**      * @return true/false. True value represents that, all the block locations      *         under the trackID has found matching target nodes to satisfy      *         storage policy. False value represents that, trackID needed      *         retries to satisfy the storage policy for some of the block      *         locations.      */
-DECL|method|isAllBlockLocsAttemptedToSatisfy ()
-specifier|private
-name|boolean
-name|isAllBlockLocsAttemptedToSatisfy
-parameter_list|()
-block|{
-return|return
-name|allBlockLocsAttemptedToSatisfy
-return|;
-block|}
-comment|/**      * Update lastAttemptedOrReportedTime, so that the expiration time will be      * postponed to future.      */
-DECL|method|touchLastReportedTimeStamp ()
-specifier|private
-name|void
-name|touchLastReportedTimeStamp
-parameter_list|()
-block|{
-name|this
-operator|.
-name|lastAttemptedOrReportedTime
-operator|=
-name|monotonicNow
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-comment|/**    * A monitor class for checking block storage movement result and long waiting    * items periodically.    */
-DECL|class|BlocksStorageMovementAttemptResultMonitor
+comment|/**    * A monitor class for checking block storage movement attempt status and long    * waiting items periodically.    */
+DECL|class|BlocksStorageMovementAttemptMonitor
 specifier|private
 class|class
-name|BlocksStorageMovementAttemptResultMonitor
+name|BlocksStorageMovementAttemptMonitor
 implements|implements
 name|Runnable
 block|{
@@ -722,7 +544,7 @@ condition|)
 block|{
 try|try
 block|{
-name|blockStorageMovementResultCheck
+name|blockStorageMovementReportedItemsCheck
 argument_list|()
 expr_stmt|;
 name|blocksStorageMovementUnReportedItemsCheck
@@ -746,7 +568,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"BlocksStorageMovementAttemptResultMonitor thread "
+literal|"BlocksStorageMovementAttemptMonitor thread "
 operator|+
 literal|"is interrupted."
 argument_list|,
@@ -764,7 +586,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"BlocksStorageMovementAttemptResultMonitor thread "
+literal|"BlocksStorageMovementAttemptMonitor thread "
 operator|+
 literal|"received exception and exiting."
 argument_list|,
@@ -789,19 +611,11 @@ init|)
 block|{
 name|Iterator
 argument_list|<
-name|Entry
-argument_list|<
-name|Long
-argument_list|,
 name|AttemptedItemInfo
-argument_list|>
 argument_list|>
 name|iter
 init|=
 name|storageMovementAttemptedItems
-operator|.
-name|entrySet
-argument_list|()
 operator|.
 name|iterator
 argument_list|()
@@ -820,25 +634,12 @@ name|hasNext
 argument_list|()
 condition|)
 block|{
-name|Entry
-argument_list|<
-name|Long
-argument_list|,
 name|AttemptedItemInfo
-argument_list|>
-name|entry
+name|itemInfo
 init|=
 name|iter
 operator|.
 name|next
-argument_list|()
-decl_stmt|;
-name|AttemptedItemInfo
-name|itemInfo
-init|=
-name|entry
-operator|.
-name|getValue
 argument_list|()
 decl_stmt|;
 if|if
@@ -856,24 +657,15 @@ block|{
 name|Long
 name|blockCollectionID
 init|=
-name|entry
+name|itemInfo
 operator|.
-name|getKey
+name|getTrackId
 argument_list|()
 decl_stmt|;
 synchronized|synchronized
 init|(
-name|storageMovementAttemptedResults
+name|movementFinishedBlocks
 init|)
-block|{
-if|if
-condition|(
-operator|!
-name|isExistInResult
-argument_list|(
-name|blockCollectionID
-argument_list|)
-condition|)
 block|{
 name|ItemInfo
 name|candidate
@@ -913,132 +705,47 @@ name|blockCollectionID
 argument_list|)
 expr_stmt|;
 block|}
-else|else
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Blocks storage movement results for the"
-operator|+
-literal|" tracking id : "
-operator|+
-name|blockCollectionID
-operator|+
-literal|" is reported from one of the co-ordinating datanode."
-operator|+
-literal|" So, the result will be processed soon."
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 block|}
-block|}
-block|}
-block|}
-DECL|method|isExistInResult (Long blockCollectionID)
-specifier|private
-name|boolean
-name|isExistInResult
-parameter_list|(
-name|Long
-name|blockCollectionID
-parameter_list|)
-block|{
-name|Iterator
-argument_list|<
-name|BlocksStorageMovementResult
-argument_list|>
-name|iter
-init|=
-name|storageMovementAttemptedResults
-operator|.
-name|iterator
-argument_list|()
-decl_stmt|;
-while|while
-condition|(
-name|iter
-operator|.
-name|hasNext
-argument_list|()
-condition|)
-block|{
-name|BlocksStorageMovementResult
-name|storageMovementAttemptedResult
-init|=
-name|iter
-operator|.
-name|next
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|storageMovementAttemptedResult
-operator|.
-name|getTrackId
-argument_list|()
-operator|==
-name|blockCollectionID
-condition|)
-block|{
-return|return
-literal|true
-return|;
-block|}
-block|}
-return|return
-literal|false
-return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|blockStorageMovementResultCheck ()
+DECL|method|blockStorageMovementReportedItemsCheck ()
 name|void
-name|blockStorageMovementResultCheck
+name|blockStorageMovementReportedItemsCheck
 parameter_list|()
 throws|throws
 name|IOException
 block|{
 synchronized|synchronized
 init|(
-name|storageMovementAttemptedResults
+name|movementFinishedBlocks
 init|)
 block|{
 name|Iterator
 argument_list|<
-name|BlocksStorageMovementResult
+name|Block
 argument_list|>
-name|resultsIter
+name|finishedBlksIter
 init|=
-name|storageMovementAttemptedResults
+name|movementFinishedBlocks
 operator|.
 name|iterator
 argument_list|()
 decl_stmt|;
 while|while
 condition|(
-name|resultsIter
+name|finishedBlksIter
 operator|.
 name|hasNext
 argument_list|()
 condition|)
 block|{
-name|boolean
-name|isInprogress
+name|Block
+name|blk
 init|=
-literal|false
-decl_stmt|;
-comment|// TrackID need to be retried in the following cases:
-comment|// 1) All or few scheduled block(s) movement has been failed.
-comment|// 2) All the scheduled block(s) movement has been succeeded but there
-comment|// are unscheduled block(s) movement in this trackID. Say, some of
-comment|// the blocks in the trackID couldn't finding any matching target node
-comment|// for scheduling block movement in previous SPS iteration.
-name|BlocksStorageMovementResult
-name|storageMovementAttemptedResult
-init|=
-name|resultsIter
+name|finishedBlksIter
 operator|.
 name|next
 argument_list|()
@@ -1048,292 +755,86 @@ init|(
 name|storageMovementAttemptedItems
 init|)
 block|{
-name|Status
-name|status
+name|Iterator
+argument_list|<
+name|AttemptedItemInfo
+argument_list|>
+name|iterator
 init|=
-name|storageMovementAttemptedResult
+name|storageMovementAttemptedItems
 operator|.
-name|getStatus
+name|iterator
 argument_list|()
 decl_stmt|;
-name|long
-name|trackId
-init|=
-name|storageMovementAttemptedResult
+while|while
+condition|(
+name|iterator
 operator|.
-name|getTrackId
+name|hasNext
 argument_list|()
-decl_stmt|;
+condition|)
+block|{
 name|AttemptedItemInfo
 name|attemptedItemInfo
 init|=
-name|storageMovementAttemptedItems
+name|iterator
 operator|.
-name|get
-argument_list|(
-name|trackId
-argument_list|)
+name|next
+argument_list|()
 decl_stmt|;
-comment|// itemInfo is null means no root for trackId, using trackId only as
-comment|// root and handling it in
-comment|// blockStorageMovementNeeded#removeIteamTrackInfo() for cleaning
-comment|// the xAttr
-name|ItemInfo
-name|itemInfo
-init|=
-operator|new
-name|ItemInfo
-argument_list|(
-operator|(
-name|attemptedItemInfo
-operator|!=
-literal|null
-operator|)
-condition|?
 name|attemptedItemInfo
 operator|.
-name|getStartId
+name|getBlocks
 argument_list|()
-else|:
-name|trackId
-argument_list|,
-name|trackId
-argument_list|)
-decl_stmt|;
-switch|switch
-condition|(
-name|status
-condition|)
-block|{
-case|case
-name|FAILURE
-case|:
-if|if
-condition|(
-name|attemptedItemInfo
-operator|!=
-literal|null
-condition|)
-block|{
-name|blockStorageMovementNeeded
-operator|.
-name|add
-argument_list|(
-name|itemInfo
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Blocks storage movement results for the tracking id:"
-operator|+
-literal|"{} is reported from co-ordinating datanode, but result"
-operator|+
-literal|" status is FAILURE. So, added for retry"
-argument_list|,
-name|trackId
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Blocks storage movement is FAILURE for the track"
-operator|+
-literal|" id {}. But the trackID doesn't exists in"
-operator|+
-literal|" storageMovementAttemptedItems list."
-argument_list|,
-name|trackId
-argument_list|)
-expr_stmt|;
-name|blockStorageMovementNeeded
-operator|.
-name|removeItemTrackInfo
-argument_list|(
-name|itemInfo
-argument_list|)
-expr_stmt|;
-block|}
-break|break;
-case|case
-name|SUCCESS
-case|:
-comment|// ItemInfo could be null. One case is, before the blocks movements
-comment|// result arrives the attempted trackID became timed out and then
-comment|// removed the trackID from the storageMovementAttemptedItems list.
-comment|// TODO: Need to ensure that trackID is added to the
-comment|// 'blockStorageMovementNeeded' queue for retries to handle the
-comment|// following condition. If all the block locations under the trackID
-comment|// are attempted and failed to find matching target nodes to satisfy
-comment|// storage policy in previous SPS iteration.
-name|String
-name|msg
-init|=
-literal|"Blocks storage movement is SUCCESS for the track id: "
-operator|+
-name|trackId
-operator|+
-literal|" reported from co-ordinating datanode."
-decl_stmt|;
-if|if
-condition|(
-name|attemptedItemInfo
-operator|!=
-literal|null
-condition|)
-block|{
-if|if
-condition|(
-operator|!
-name|attemptedItemInfo
-operator|.
-name|isAllBlockLocsAttemptedToSatisfy
-argument_list|()
-condition|)
-block|{
-name|blockStorageMovementNeeded
-operator|.
-name|add
-argument_list|(
-operator|new
-name|ItemInfo
-argument_list|(
-name|attemptedItemInfo
-operator|.
-name|getStartId
-argument_list|()
-argument_list|,
-name|trackId
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"{} But adding trackID back to retry queue as some of"
-operator|+
-literal|" the blocks couldn't find matching target nodes in"
-operator|+
-literal|" previous SPS iteration."
-argument_list|,
-name|msg
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-name|msg
-argument_list|)
-expr_stmt|;
-name|blockStorageMovementNeeded
-operator|.
-name|removeItemTrackInfo
-argument_list|(
-name|itemInfo
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-else|else
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"{} But the trackID doesn't exists in "
-operator|+
-literal|"storageMovementAttemptedItems list"
-argument_list|,
-name|msg
-argument_list|)
-expr_stmt|;
-name|blockStorageMovementNeeded
-operator|.
-name|removeItemTrackInfo
-argument_list|(
-name|itemInfo
-argument_list|)
-expr_stmt|;
-block|}
-break|break;
-case|case
-name|IN_PROGRESS
-case|:
-name|isInprogress
-operator|=
-literal|true
-expr_stmt|;
-name|attemptedItemInfo
-operator|=
-name|storageMovementAttemptedItems
-operator|.
-name|get
-argument_list|(
-name|storageMovementAttemptedResult
-operator|.
-name|getTrackId
-argument_list|()
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|attemptedItemInfo
-operator|!=
-literal|null
-condition|)
-block|{
-comment|// update the attempted expiration time to next cycle.
-name|attemptedItemInfo
-operator|.
-name|touchLastReportedTimeStamp
-argument_list|()
-expr_stmt|;
-block|}
-break|break;
-default|default:
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Unknown status: {}"
-argument_list|,
-name|status
-argument_list|)
-expr_stmt|;
-break|break;
-block|}
-comment|// Remove trackID from the attempted list if the attempt has been
-comment|// completed(success or failure), if any.
-if|if
-condition|(
-operator|!
-name|isInprogress
-condition|)
-block|{
-name|storageMovementAttemptedItems
 operator|.
 name|remove
 argument_list|(
-name|storageMovementAttemptedResult
+name|blk
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|attemptedItemInfo
+operator|.
+name|getBlocks
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+comment|// TODO: try add this at front of the Queue, so that this element
+comment|// gets the chance first and can be cleaned from queue quickly as
+comment|// all movements already done.
+name|blockStorageMovementNeeded
+operator|.
+name|add
+argument_list|(
+operator|new
+name|ItemInfo
+argument_list|(
+name|attemptedItemInfo
+operator|.
+name|getStartId
+argument_list|()
+argument_list|,
+name|attemptedItemInfo
 operator|.
 name|getTrackId
 argument_list|()
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|iterator
+operator|.
+name|remove
+argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|// Remove trackID from results as processed above.
-name|resultsIter
+block|}
+comment|// Remove attempted blocks from movementFinishedBlocks list.
+name|finishedBlksIter
 operator|.
 name|remove
 argument_list|()
@@ -1343,14 +844,14 @@ block|}
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|resultsCount ()
+DECL|method|getMovementFinishedBlocksCount ()
 specifier|public
 name|int
-name|resultsCount
+name|getMovementFinishedBlocksCount
 parameter_list|()
 block|{
 return|return
-name|storageMovementAttemptedResults
+name|movementFinishedBlocks
 operator|.
 name|size
 argument_list|()
@@ -1377,7 +878,7 @@ name|void
 name|clearQueues
 parameter_list|()
 block|{
-name|storageMovementAttemptedResults
+name|movementFinishedBlocks
 operator|.
 name|clear
 argument_list|()
