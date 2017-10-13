@@ -192,11 +192,9 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|resourcemanager
+name|utils
 operator|.
-name|resource
-operator|.
-name|ResourceType
+name|BuilderUtils
 import|;
 end_import
 
@@ -210,11 +208,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
+name|util
 operator|.
-name|utils
+name|resource
 operator|.
-name|BuilderUtils
+name|ResourceUtils
 import|;
 end_import
 
@@ -1373,6 +1371,14 @@ parameter_list|)
 throws|throws
 name|AllocationConfigurationException
 block|{
+name|int
+name|numberOfKnownResourceTypes
+init|=
+name|ResourceUtils
+operator|.
+name|getNumberOfKnownResourceTypes
+argument_list|()
+decl_stmt|;
 name|double
 index|[]
 name|resourcePercentage
@@ -1380,12 +1386,7 @@ init|=
 operator|new
 name|double
 index|[
-name|ResourceType
-operator|.
-name|values
-argument_list|()
-operator|.
-name|length
+name|numberOfKnownResourceTypes
 index|]
 decl_stmt|;
 name|String
@@ -1430,12 +1431,7 @@ literal|0
 init|;
 name|i
 operator|<
-name|ResourceType
-operator|.
-name|values
-argument_list|()
-operator|.
-name|length
+name|numberOfKnownResourceTypes
 condition|;
 name|i
 operator|++
