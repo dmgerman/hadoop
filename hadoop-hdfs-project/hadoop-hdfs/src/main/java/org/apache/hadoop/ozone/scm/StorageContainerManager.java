@@ -438,7 +438,27 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|ContainerReportsProto
+name|ContainerReportsRequestProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
+name|ContainerReportsResponseProto
 import|;
 end_import
 
@@ -3759,6 +3779,8 @@ argument_list|(
 name|datanodeID
 argument_list|,
 name|nodeReport
+argument_list|,
+name|reportState
 argument_list|)
 decl_stmt|;
 name|List
@@ -3844,40 +3866,24 @@ block|}
 comment|/**    * Send a container report.    *    * @param reports -- Container report    * @return HeartbeatRespose.nullcommand.    * @throws IOException    */
 annotation|@
 name|Override
+DECL|method|sendContainerReport ( ContainerReportsRequestProto reports)
 specifier|public
-name|SCMHeartbeatResponseProto
-DECL|method|sendContainerReport (ContainerReportsProto reports)
+name|ContainerReportsResponseProto
 name|sendContainerReport
 parameter_list|(
-name|ContainerReportsProto
+name|ContainerReportsRequestProto
 name|reports
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// TODO : fix this in the server side code changes for handling this request
-comment|// correctly.
-name|List
-argument_list|<
-name|SCMCommandResponseProto
-argument_list|>
-name|cmdResponses
-init|=
-operator|new
-name|LinkedList
-argument_list|<>
-argument_list|()
-decl_stmt|;
+comment|// TODO: handle the container reports either here or add container report
+comment|// handler.
 return|return
-name|SCMHeartbeatResponseProto
+name|ContainerReportsResponseProto
 operator|.
 name|newBuilder
 argument_list|()
-operator|.
-name|addAllCommands
-argument_list|(
-name|cmdResponses
-argument_list|)
 operator|.
 name|build
 argument_list|()

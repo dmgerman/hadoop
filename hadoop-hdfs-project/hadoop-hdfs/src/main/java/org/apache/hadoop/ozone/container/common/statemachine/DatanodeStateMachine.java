@@ -714,6 +714,16 @@ argument_list|)
 expr_stmt|;
 name|context
 operator|.
+name|setContainerReportState
+argument_list|(
+name|container
+operator|.
+name|getContainerReportState
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|context
+operator|.
 name|execute
 argument_list|(
 name|executorService

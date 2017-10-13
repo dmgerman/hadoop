@@ -162,6 +162,26 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
+name|ReportState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
 name|SCMNodeReport
 import|;
 end_import
@@ -663,6 +683,33 @@ specifier|private
 name|File
 name|testDir
 decl_stmt|;
+DECL|field|reportState
+specifier|private
+name|ReportState
+name|reportState
+init|=
+name|ReportState
+operator|.
+name|newBuilder
+argument_list|()
+operator|.
+name|setState
+argument_list|(
+name|ReportState
+operator|.
+name|states
+operator|.
+name|noContainerReports
+argument_list|)
+operator|.
+name|setCount
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|build
+argument_list|()
+decl_stmt|;
 annotation|@
 name|Rule
 DECL|field|thrown
@@ -867,6 +914,8 @@ argument_list|(
 name|datanodeID
 argument_list|,
 literal|null
+argument_list|,
+name|reportState
 argument_list|)
 expr_stmt|;
 block|}
@@ -1009,6 +1058,8 @@ name|nodeManager
 argument_list|)
 argument_list|,
 literal|null
+argument_list|,
+name|reportState
 argument_list|)
 expr_stmt|;
 name|GenericTestUtils
@@ -1110,6 +1161,8 @@ argument_list|(
 name|datanodeID
 argument_list|,
 literal|null
+argument_list|,
+name|reportState
 argument_list|)
 expr_stmt|;
 block|}
@@ -1208,6 +1261,8 @@ argument_list|(
 name|datanodeID
 argument_list|,
 literal|null
+argument_list|,
+name|reportState
 argument_list|)
 expr_stmt|;
 comment|// Let us just wait for 2 seconds to prove that HBs are not processed.
@@ -1300,6 +1355,8 @@ argument_list|(
 name|datanodeID
 argument_list|,
 literal|null
+argument_list|,
+name|reportState
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -1396,6 +1453,8 @@ argument_list|(
 name|datanodeID
 argument_list|,
 literal|null
+argument_list|,
+name|reportState
 argument_list|)
 decl_stmt|;
 return|return
@@ -1522,6 +1581,8 @@ argument_list|(
 name|datanodeID
 argument_list|,
 literal|null
+argument_list|,
+name|reportState
 argument_list|)
 expr_stmt|;
 block|}
@@ -1825,6 +1886,8 @@ argument_list|(
 name|staleNode
 argument_list|,
 literal|null
+argument_list|,
+name|reportState
 argument_list|)
 expr_stmt|;
 comment|// Heartbeat all other nodes.
@@ -1843,6 +1906,8 @@ argument_list|(
 name|dn
 argument_list|,
 literal|null
+argument_list|,
+name|reportState
 argument_list|)
 expr_stmt|;
 block|}
@@ -1871,6 +1936,8 @@ argument_list|(
 name|dn
 argument_list|,
 literal|null
+argument_list|,
+name|reportState
 argument_list|)
 expr_stmt|;
 block|}
@@ -1967,6 +2034,8 @@ argument_list|(
 name|dn
 argument_list|,
 literal|null
+argument_list|,
+name|reportState
 argument_list|)
 expr_stmt|;
 block|}
@@ -2129,6 +2198,8 @@ argument_list|(
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+name|reportState
 argument_list|)
 expr_stmt|;
 name|logCapturer
@@ -2270,6 +2341,8 @@ argument_list|(
 name|healthyNode
 argument_list|,
 literal|null
+argument_list|,
+name|reportState
 argument_list|)
 expr_stmt|;
 name|nodeManager
@@ -2279,6 +2352,8 @@ argument_list|(
 name|staleNode
 argument_list|,
 literal|null
+argument_list|,
+name|reportState
 argument_list|)
 expr_stmt|;
 name|nodeManager
@@ -2288,6 +2363,8 @@ argument_list|(
 name|deadNode
 argument_list|,
 literal|null
+argument_list|,
+name|reportState
 argument_list|)
 expr_stmt|;
 comment|// Sleep so that heartbeat processing thread gets to run.
@@ -2367,6 +2444,8 @@ argument_list|(
 name|healthyNode
 argument_list|,
 literal|null
+argument_list|,
+name|reportState
 argument_list|)
 expr_stmt|;
 name|nodeManager
@@ -2376,6 +2455,8 @@ argument_list|(
 name|staleNode
 argument_list|,
 literal|null
+argument_list|,
+name|reportState
 argument_list|)
 expr_stmt|;
 name|nodeManager
@@ -2385,6 +2466,8 @@ argument_list|(
 name|deadNode
 argument_list|,
 literal|null
+argument_list|,
+name|reportState
 argument_list|)
 expr_stmt|;
 name|Thread
@@ -2401,6 +2484,8 @@ argument_list|(
 name|healthyNode
 argument_list|,
 literal|null
+argument_list|,
+name|reportState
 argument_list|)
 expr_stmt|;
 name|Thread
@@ -2492,6 +2577,8 @@ argument_list|(
 name|healthyNode
 argument_list|,
 literal|null
+argument_list|,
+name|reportState
 argument_list|)
 expr_stmt|;
 name|nodeManager
@@ -2501,6 +2588,8 @@ argument_list|(
 name|staleNode
 argument_list|,
 literal|null
+argument_list|,
+name|reportState
 argument_list|)
 expr_stmt|;
 name|Thread
@@ -2517,6 +2606,8 @@ argument_list|(
 name|healthyNode
 argument_list|,
 literal|null
+argument_list|,
+name|reportState
 argument_list|)
 expr_stmt|;
 name|Thread
@@ -2719,6 +2810,8 @@ argument_list|(
 name|healthyNode
 argument_list|,
 literal|null
+argument_list|,
+name|reportState
 argument_list|)
 expr_stmt|;
 name|nodeManager
@@ -2728,6 +2821,8 @@ argument_list|(
 name|staleNode
 argument_list|,
 literal|null
+argument_list|,
+name|reportState
 argument_list|)
 expr_stmt|;
 name|nodeManager
@@ -2737,6 +2832,8 @@ argument_list|(
 name|deadNode
 argument_list|,
 literal|null
+argument_list|,
+name|reportState
 argument_list|)
 expr_stmt|;
 name|Thread
@@ -2822,6 +2919,8 @@ argument_list|(
 name|dn
 argument_list|,
 literal|null
+argument_list|,
+name|reportState
 argument_list|)
 expr_stmt|;
 block|}
@@ -3151,6 +3250,8 @@ argument_list|(
 name|dn
 argument_list|,
 literal|null
+argument_list|,
+name|reportState
 argument_list|)
 expr_stmt|;
 block|}
@@ -3828,6 +3929,8 @@ argument_list|(
 name|datanodeID
 argument_list|,
 literal|null
+argument_list|,
+name|reportState
 argument_list|)
 expr_stmt|;
 name|String
@@ -3968,6 +4071,8 @@ argument_list|(
 name|datanode
 argument_list|,
 literal|null
+argument_list|,
+name|reportState
 argument_list|)
 expr_stmt|;
 block|}
@@ -4186,6 +4291,8 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
+argument_list|,
+name|reportState
 argument_list|)
 expr_stmt|;
 block|}
@@ -4489,6 +4596,8 @@ name|nrb
 operator|.
 name|build
 argument_list|()
+argument_list|,
+name|reportState
 argument_list|)
 expr_stmt|;
 name|Thread
@@ -5016,6 +5125,8 @@ name|nrb
 operator|.
 name|build
 argument_list|()
+argument_list|,
+name|reportState
 argument_list|)
 expr_stmt|;
 comment|// Wait up to 5 seconds so that the dead node becomes healthy

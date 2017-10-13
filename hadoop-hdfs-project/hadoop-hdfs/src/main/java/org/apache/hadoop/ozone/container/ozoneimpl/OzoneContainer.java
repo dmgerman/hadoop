@@ -378,6 +378,46 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
+name|ContainerReportsRequestProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
+name|ReportState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
 name|SCMNodeReport
 import|;
 end_import
@@ -774,6 +814,8 @@ operator|.
 name|ozoneConfig
 argument_list|,
 name|locations
+argument_list|,
+name|datanodeID
 argument_list|)
 expr_stmt|;
 name|this
@@ -1186,6 +1228,25 @@ name|RATIS
 argument_list|)
 return|;
 block|}
+comment|/**    * Returns container report.    * @return - container report.    * @throws IOException    */
+DECL|method|getContainerReport ()
+specifier|public
+name|ContainerReportsRequestProto
+name|getContainerReport
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|this
+operator|.
+name|manager
+operator|.
+name|getContainerReport
+argument_list|()
+return|;
+block|}
+comment|// TODO: remove getContainerReports
 comment|/**    * Returns the list of closed containers.    * @return - List of closed containers.    * @throws IOException    */
 DECL|method|getContainerReports ()
 specifier|public
@@ -1219,6 +1280,22 @@ return|return
 name|this
 operator|.
 name|manager
+return|;
+block|}
+comment|/**    * Get the container report state to send via HB to SCM.    * @return the container report state.    */
+DECL|method|getContainerReportState ()
+specifier|public
+name|ReportState
+name|getContainerReportState
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|manager
+operator|.
+name|getContainerReportState
+argument_list|()
 return|;
 block|}
 block|}

@@ -172,7 +172,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|ContainerReportsProto
+name|ContainerReportsRequestProto
 import|;
 end_import
 
@@ -934,7 +934,7 @@ decl_stmt|;
 comment|// Only single datanode reporting that "SingleNodeContainer" exists.
 name|List
 argument_list|<
-name|ContainerReportsProto
+name|ContainerReportsRequestProto
 argument_list|>
 name|clist
 init|=
@@ -989,7 +989,7 @@ argument_list|)
 expr_stmt|;
 for|for
 control|(
-name|ContainerReportsProto
+name|ContainerReportsRequestProto
 name|reportsProto
 range|:
 name|clist
@@ -1136,7 +1136,7 @@ argument_list|)
 decl_stmt|;
 name|List
 argument_list|<
-name|ContainerReportsProto
+name|ContainerReportsRequestProto
 argument_list|>
 name|clist
 init|=
@@ -1190,7 +1190,7 @@ argument_list|)
 expr_stmt|;
 for|for
 control|(
-name|ContainerReportsProto
+name|ContainerReportsRequestProto
 name|reportsProto
 range|:
 name|clist
@@ -1225,7 +1225,7 @@ argument_list|)
 expr_stmt|;
 for|for
 control|(
-name|ContainerReportsProto
+name|ContainerReportsRequestProto
 name|reportsProto
 range|:
 name|clist
@@ -1482,7 +1482,7 @@ comment|// Assert that we are able to send a container report to this new
 comment|// pool and datanode.
 name|List
 argument_list|<
-name|ContainerReportsProto
+name|ContainerReportsRequestProto
 argument_list|>
 name|clist
 init|=

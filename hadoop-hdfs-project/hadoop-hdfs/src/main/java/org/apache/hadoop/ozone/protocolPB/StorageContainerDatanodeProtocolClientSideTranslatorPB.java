@@ -132,7 +132,27 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|ContainerReportsProto
+name|ContainerReportsResponseProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
+name|ContainerReportsRequestProto
 import|;
 end_import
 
@@ -673,19 +693,19 @@ block|}
 comment|/**    * Send a container report.    *    * @param reports -- Container report    * @return HeartbeatRespose.nullcommand.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|sendContainerReport ( ContainerReportsProto reports)
+DECL|method|sendContainerReport ( ContainerReportsRequestProto reports)
 specifier|public
-name|SCMHeartbeatResponseProto
+name|ContainerReportsResponseProto
 name|sendContainerReport
 parameter_list|(
-name|ContainerReportsProto
+name|ContainerReportsRequestProto
 name|reports
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 specifier|final
-name|SCMHeartbeatResponseProto
+name|ContainerReportsResponseProto
 name|resp
 decl_stmt|;
 try|try

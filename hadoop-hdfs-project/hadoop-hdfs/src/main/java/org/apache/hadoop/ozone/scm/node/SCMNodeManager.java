@@ -264,6 +264,26 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
+name|ReportState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
 name|SCMRegisteredCmdResponseProto
 operator|.
 name|ErrorCode
@@ -3144,10 +3164,10 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Send heartbeat to indicate the datanode is alive and doing well.    *    * @param datanodeID - Datanode ID.    * @param nodeReport - node report.    * @return SCMheartbeat response.    * @throws IOException    */
+comment|/**    * Send heartbeat to indicate the datanode is alive and doing well.    *    * @param datanodeID - Datanode ID.    * @param nodeReport - node report.    * @param containerReportState - container report state.    * @return SCMheartbeat response.    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|sendHeartbeat (DatanodeID datanodeID, SCMNodeReport nodeReport)
+DECL|method|sendHeartbeat (DatanodeID datanodeID, SCMNodeReport nodeReport, ReportState containerReportState)
 specifier|public
 name|List
 argument_list|<
@@ -3160,6 +3180,9 @@ name|datanodeID
 parameter_list|,
 name|SCMNodeReport
 name|nodeReport
+parameter_list|,
+name|ReportState
+name|containerReportState
 parameter_list|)
 block|{
 comment|// Checking for NULL to make sure that we don't get
@@ -3191,6 +3214,11 @@ operator|.
 name|setNodeReport
 argument_list|(
 name|nodeReport
+argument_list|)
+operator|.
+name|setContainerReportState
+argument_list|(
+name|containerReportState
 argument_list|)
 operator|.
 name|build

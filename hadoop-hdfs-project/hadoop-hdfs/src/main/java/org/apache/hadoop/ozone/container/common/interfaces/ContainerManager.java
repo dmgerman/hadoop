@@ -74,6 +74,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|DatanodeID
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|datanode
@@ -95,6 +111,46 @@ operator|.
 name|util
 operator|.
 name|RwLock
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
+name|ReportState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
+name|ContainerReportsRequestProto
 import|;
 end_import
 
@@ -228,8 +284,8 @@ name|ContainerManager
 extends|extends
 name|RwLock
 block|{
-comment|/**    * Init call that sets up a container Manager.    *    * @param config        - Configuration.    * @param containerDirs - List of Metadata Container locations.    * @throws StorageContainerException    */
-DECL|method|init (Configuration config, List<StorageLocation> containerDirs)
+comment|/**    * Init call that sets up a container Manager.    *    * @param config        - Configuration.    * @param containerDirs - List of Metadata Container locations.    * @param datanodeID - Datanode ID    * @throws StorageContainerException    */
+DECL|method|init (Configuration config, List<StorageLocation> containerDirs, DatanodeID datanodeID)
 name|void
 name|init
 parameter_list|(
@@ -241,6 +297,9 @@ argument_list|<
 name|StorageLocation
 argument_list|>
 name|containerDirs
+parameter_list|,
+name|DatanodeID
+name|datanodeID
 parameter_list|)
 throws|throws
 name|IOException
@@ -414,6 +473,14 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Gets container report.    * @return container report.    * @throws IOException    */
+DECL|method|getContainerReport ()
+name|ContainerReportsRequestProto
+name|getContainerReport
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Gets container reports.    * @return List of all closed containers.    * @throws IOException    */
 DECL|method|getContainerReports ()
 name|List
@@ -448,6 +515,96 @@ parameter_list|,
 name|String
 name|containerId
 parameter_list|)
+function_decl|;
+comment|/**    * Increase the read count of the container.    * @param containerName - Name of the container.    */
+DECL|method|incrReadCount (String containerName)
+name|void
+name|incrReadCount
+parameter_list|(
+name|String
+name|containerName
+parameter_list|)
+function_decl|;
+comment|/**    * Increse the read counter for bytes read from the container.    * @param containerName - Name of the container.    * @param readBytes - bytes read from the container.    */
+DECL|method|incrReadBytes (String containerName, long readBytes)
+name|void
+name|incrReadBytes
+parameter_list|(
+name|String
+name|containerName
+parameter_list|,
+name|long
+name|readBytes
+parameter_list|)
+function_decl|;
+comment|/**    * Increase the write count of the container.    * @param containerName - Name of the container.    */
+DECL|method|incrWriteCount (String containerName)
+name|void
+name|incrWriteCount
+parameter_list|(
+name|String
+name|containerName
+parameter_list|)
+function_decl|;
+comment|/**    * Increase the write counter for bytes write into the container.    * @param containerName - Name of the container.    * @param writeBytes - bytes write into the container.    */
+DECL|method|incrWriteBytes (String containerName, long writeBytes)
+name|void
+name|incrWriteBytes
+parameter_list|(
+name|String
+name|containerName
+parameter_list|,
+name|long
+name|writeBytes
+parameter_list|)
+function_decl|;
+comment|/**    * Increase the bytes used by the container.    * @param containerName - Name of the container.    * @param used - additional bytes used by the container.    * @return the current bytes used.    */
+DECL|method|incrBytesUsed (String containerName, long used)
+name|long
+name|incrBytesUsed
+parameter_list|(
+name|String
+name|containerName
+parameter_list|,
+name|long
+name|used
+parameter_list|)
+function_decl|;
+comment|/**    * Decrease the bytes used by the container.    * @param containerName - Name of the container.    * @param used - additional bytes reclaimed by the container.    * @return the current bytes used.    */
+DECL|method|decrBytesUsed (String containerName, long used)
+name|long
+name|decrBytesUsed
+parameter_list|(
+name|String
+name|containerName
+parameter_list|,
+name|long
+name|used
+parameter_list|)
+function_decl|;
+comment|/**    * Get the bytes used by the container.    * @param containerName - Name of the container.    * @return the current bytes used by the container.    */
+DECL|method|getBytesUsed (String containerName)
+name|long
+name|getBytesUsed
+parameter_list|(
+name|String
+name|containerName
+parameter_list|)
+function_decl|;
+comment|/**    * Get the number of keys in the container.    * @param containerName - Name of the container.    * @return the current key count.    */
+DECL|method|getNumKeys (String containerName)
+name|long
+name|getNumKeys
+parameter_list|(
+name|String
+name|containerName
+parameter_list|)
+function_decl|;
+comment|/**    * Get the container report state to send via HB to SCM.    * @return container report state.    */
+DECL|method|getContainerReportState ()
+name|ReportState
+name|getContainerReportState
+parameter_list|()
 function_decl|;
 block|}
 end_interface

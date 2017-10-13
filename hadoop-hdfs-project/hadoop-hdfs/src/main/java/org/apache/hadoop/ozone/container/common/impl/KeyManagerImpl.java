@@ -502,14 +502,19 @@ argument_list|,
 literal|"Pipeline cannot be null"
 argument_list|)
 expr_stmt|;
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
+name|String
+name|containerName
+init|=
 name|pipeline
 operator|.
 name|getContainerName
 argument_list|()
+decl_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|containerName
 argument_list|,
 literal|"Container name cannot be null"
 argument_list|)
@@ -521,10 +526,7 @@ name|containerManager
 operator|.
 name|readContainer
 argument_list|(
-name|pipeline
-operator|.
-name|getContainerName
-argument_list|()
+name|containerName
 argument_list|)
 decl_stmt|;
 name|MetadataStore
@@ -766,14 +768,19 @@ argument_list|,
 literal|"Pipeline cannot be null"
 argument_list|)
 expr_stmt|;
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
+name|String
+name|containerName
+init|=
 name|pipeline
 operator|.
 name|getContainerName
 argument_list|()
+decl_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|containerName
 argument_list|,
 literal|"Container name cannot be null"
 argument_list|)
@@ -785,10 +792,7 @@ name|containerManager
 operator|.
 name|readContainer
 argument_list|(
-name|pipeline
-operator|.
-name|getContainerName
-argument_list|()
+name|containerName
 argument_list|)
 decl_stmt|;
 name|MetadataStore

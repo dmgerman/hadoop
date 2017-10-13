@@ -112,7 +112,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|ContainerReportsProto
+name|ContainerReportsRequestProto
 import|;
 end_import
 
@@ -1245,12 +1245,12 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Adds a container report to appropriate inProgress Pool.    * @param containerReport  -- Container report for a specific container from    * a datanode.    */
-DECL|method|handleContainerReport (ContainerReportsProto containerReport)
+DECL|method|handleContainerReport ( ContainerReportsRequestProto containerReport)
 specifier|public
 name|void
 name|handleContainerReport
 parameter_list|(
-name|ContainerReportsProto
+name|ContainerReportsRequestProto
 name|containerReport
 parameter_list|)
 block|{

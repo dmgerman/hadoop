@@ -64,7 +64,27 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|ContainerReportsProto
+name|ContainerReportsRequestProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|StorageContainerDatanodeProtocolProtos
+operator|.
+name|ContainerReportsResponseProto
 import|;
 end_import
 
@@ -295,12 +315,12 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Send a container report.    * @param reports -- Container report    * @return HeartbeatRespose.nullcommand.    * @throws IOException    */
-DECL|method|sendContainerReport (ContainerReportsProto reports)
-name|SCMHeartbeatResponseProto
+comment|/**    * Send a container report.    * @param reports -- Container report.    * @return container reports response.    * @throws IOException    */
+DECL|method|sendContainerReport ( ContainerReportsRequestProto reports)
+name|ContainerReportsResponseProto
 name|sendContainerReport
 parameter_list|(
-name|ContainerReportsProto
+name|ContainerReportsRequestProto
 name|reports
 parameter_list|)
 throws|throws

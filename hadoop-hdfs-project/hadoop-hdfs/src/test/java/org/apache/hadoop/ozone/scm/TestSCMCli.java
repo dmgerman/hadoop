@@ -1121,6 +1121,8 @@ operator|new
 name|ContainerData
 argument_list|(
 name|containerName
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 name|containerManager
@@ -1384,6 +1386,8 @@ operator|new
 name|ContainerData
 argument_list|(
 name|containerName
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 name|containerManager
@@ -1692,6 +1696,8 @@ operator|new
 name|ContainerData
 argument_list|(
 name|cname
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 name|containerManager
@@ -1840,6 +1846,8 @@ operator|new
 name|ContainerData
 argument_list|(
 name|cname
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 name|containerManager
@@ -1999,6 +2007,8 @@ operator|new
 name|ContainerData
 argument_list|(
 name|cname
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 name|data
@@ -2488,6 +2498,8 @@ operator|new
 name|ContainerData
 argument_list|(
 name|containerName
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 name|containerManager

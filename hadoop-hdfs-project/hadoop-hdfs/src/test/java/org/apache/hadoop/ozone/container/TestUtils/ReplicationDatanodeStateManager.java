@@ -88,7 +88,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|ContainerReportsProto
+name|ContainerReportsRequestProto
 import|;
 end_import
 
@@ -240,11 +240,11 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Get Container Report as if it is from a datanode in the cluster.    * @param containerName - Container Name.    * @param poolName - Pool Name.    * @param dataNodeCount - Datanode Count.    * @return List of Container Reports.    */
-DECL|method|getContainerReport (String containerName, String poolName, int dataNodeCount)
+DECL|method|getContainerReport ( String containerName, String poolName, int dataNodeCount)
 specifier|public
 name|List
 argument_list|<
-name|ContainerReportsProto
+name|ContainerReportsRequestProto
 argument_list|>
 name|getContainerReport
 parameter_list|(
@@ -260,7 +260,7 @@ parameter_list|)
 block|{
 name|List
 argument_list|<
-name|ContainerReportsProto
+name|ContainerReportsRequestProto
 argument_list|>
 name|containerList
 init|=
@@ -394,10 +394,10 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|ContainerReportsProto
+name|ContainerReportsRequestProto
 name|containerReport
 init|=
-name|ContainerReportsProto
+name|ContainerReportsRequestProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -417,7 +417,7 @@ argument_list|)
 operator|.
 name|setType
 argument_list|(
-name|ContainerReportsProto
+name|ContainerReportsRequestProto
 operator|.
 name|reportType
 operator|.

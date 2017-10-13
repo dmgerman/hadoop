@@ -565,6 +565,33 @@ operator|=
 name|chunks
 expr_stmt|;
 block|}
+comment|/**    * Get the total size of chunks allocated for the key.    * @return total size of the key.    */
+DECL|method|getSize ()
+specifier|public
+name|long
+name|getSize
+parameter_list|()
+block|{
+return|return
+name|chunks
+operator|.
+name|parallelStream
+argument_list|()
+operator|.
+name|mapToLong
+argument_list|(
+name|e
+lambda|->
+name|e
+operator|.
+name|getLen
+argument_list|()
+argument_list|)
+operator|.
+name|sum
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

@@ -140,7 +140,7 @@ name|proto
 operator|.
 name|StorageContainerDatanodeProtocolProtos
 operator|.
-name|ContainerReportsProto
+name|ContainerReportsRequestProto
 import|;
 end_import
 
@@ -1019,12 +1019,12 @@ name|currentState
 return|;
 block|}
 comment|/**    * Queues a container Report for handling. This is done in a worker thread    * since decoding a container report might be compute intensive . We don't    * want to block since we have asked for bunch of container reports    * from a set of datanodes.    *    * @param containerReport - ContainerReport    */
-DECL|method|handleContainerReport (ContainerReportsProto containerReport)
+DECL|method|handleContainerReport ( ContainerReportsRequestProto containerReport)
 specifier|public
 name|void
 name|handleContainerReport
 parameter_list|(
-name|ContainerReportsProto
+name|ContainerReportsRequestProto
 name|containerReport
 parameter_list|)
 block|{
@@ -1039,12 +1039,12 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|processContainerReport (ContainerReportsProto reports)
+DECL|method|processContainerReport ( ContainerReportsRequestProto reports)
 specifier|private
 name|Runnable
 name|processContainerReport
 parameter_list|(
-name|ContainerReportsProto
+name|ContainerReportsRequestProto
 name|reports
 parameter_list|)
 block|{
