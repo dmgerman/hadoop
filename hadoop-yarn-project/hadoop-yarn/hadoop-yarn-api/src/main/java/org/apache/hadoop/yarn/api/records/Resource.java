@@ -1549,6 +1549,44 @@ operator|)
 name|result
 return|;
 block|}
+comment|/**    * Convert long to int for a resource value safely. This method assumes    * resource value is positive.    *    * @param value long resource value    * @return int resource value    */
+DECL|method|castToIntSafely (long value)
+specifier|protected
+specifier|static
+name|int
+name|castToIntSafely
+parameter_list|(
+name|long
+name|value
+parameter_list|)
+block|{
+if|if
+condition|(
+name|value
+operator|>
+name|Integer
+operator|.
+name|MAX_VALUE
+condition|)
+block|{
+return|return
+name|Integer
+operator|.
+name|MAX_VALUE
+return|;
+block|}
+return|return
+name|Long
+operator|.
+name|valueOf
+argument_list|(
+name|value
+argument_list|)
+operator|.
+name|intValue
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

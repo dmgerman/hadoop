@@ -494,13 +494,13 @@ name|getMemory
 parameter_list|()
 block|{
 return|return
-operator|(
-name|int
-operator|)
+name|castToIntSafely
+argument_list|(
 name|this
 operator|.
 name|getMemorySize
 argument_list|()
+argument_list|)
 return|;
 block|}
 annotation|@
@@ -621,9 +621,8 @@ parameter_list|()
 block|{
 comment|// vcores should always be present
 return|return
-operator|(
-name|int
-operator|)
+name|castToIntSafely
+argument_list|(
 name|resources
 index|[
 name|VCORES_INDEX
@@ -631,6 +630,7 @@ index|]
 operator|.
 name|getValue
 argument_list|()
+argument_list|)
 return|;
 block|}
 annotation|@
