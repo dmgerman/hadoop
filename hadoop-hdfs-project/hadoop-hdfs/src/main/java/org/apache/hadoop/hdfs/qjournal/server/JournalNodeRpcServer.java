@@ -783,13 +783,16 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|isFormatted (String journalId)
+DECL|method|isFormatted (String journalId, String nameServiceId)
 specifier|public
 name|boolean
 name|isFormatted
 parameter_list|(
 name|String
 name|journalId
+parameter_list|,
+name|String
+name|nameServiceId
 parameter_list|)
 throws|throws
 name|IOException
@@ -800,6 +803,8 @@ operator|.
 name|getOrCreateJournal
 argument_list|(
 name|journalId
+argument_list|,
+name|nameServiceId
 argument_list|)
 operator|.
 name|isFormatted
@@ -813,13 +818,16 @@ literal|"deprecation"
 argument_list|)
 annotation|@
 name|Override
-DECL|method|getJournalState (String journalId)
+DECL|method|getJournalState (String journalId, String nameServiceId)
 specifier|public
 name|GetJournalStateResponseProto
 name|getJournalState
 parameter_list|(
 name|String
 name|journalId
+parameter_list|,
+name|String
+name|nameServiceId
 parameter_list|)
 throws|throws
 name|IOException
@@ -832,6 +840,8 @@ operator|.
 name|getOrCreateJournal
 argument_list|(
 name|journalId
+argument_list|,
+name|nameServiceId
 argument_list|)
 operator|.
 name|getLastPromisedEpoch
@@ -873,13 +883,16 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|newEpoch (String journalId, NamespaceInfo nsInfo, long epoch)
+DECL|method|newEpoch (String journalId, String nameServiceId, NamespaceInfo nsInfo, long epoch)
 specifier|public
 name|NewEpochResponseProto
 name|newEpoch
 parameter_list|(
 name|String
 name|journalId
+parameter_list|,
+name|String
+name|nameServiceId
 parameter_list|,
 name|NamespaceInfo
 name|nsInfo
@@ -896,6 +909,8 @@ operator|.
 name|getOrCreateJournal
 argument_list|(
 name|journalId
+argument_list|,
+name|nameServiceId
 argument_list|)
 operator|.
 name|newEpoch
@@ -908,13 +923,16 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|format (String journalId, NamespaceInfo nsInfo)
+DECL|method|format (String journalId, String nameServiceId, NamespaceInfo nsInfo)
 specifier|public
 name|void
 name|format
 parameter_list|(
 name|String
 name|journalId
+parameter_list|,
+name|String
+name|nameServiceId
 parameter_list|,
 name|NamespaceInfo
 name|nsInfo
@@ -927,6 +945,8 @@ operator|.
 name|getOrCreateJournal
 argument_list|(
 name|journalId
+argument_list|,
+name|nameServiceId
 argument_list|)
 operator|.
 name|format
@@ -969,6 +989,11 @@ name|reqInfo
 operator|.
 name|getJournalId
 argument_list|()
+argument_list|,
+name|reqInfo
+operator|.
+name|getNameServiceId
+argument_list|()
 argument_list|)
 operator|.
 name|journal
@@ -1006,6 +1031,11 @@ name|reqInfo
 operator|.
 name|getJournalId
 argument_list|()
+argument_list|,
+name|reqInfo
+operator|.
+name|getNameServiceId
+argument_list|()
 argument_list|)
 operator|.
 name|heartbeat
@@ -1040,6 +1070,11 @@ argument_list|(
 name|reqInfo
 operator|.
 name|getJournalId
+argument_list|()
+argument_list|,
+name|reqInfo
+operator|.
+name|getNameServiceId
 argument_list|()
 argument_list|)
 operator|.
@@ -1080,6 +1115,11 @@ name|reqInfo
 operator|.
 name|getJournalId
 argument_list|()
+argument_list|,
+name|reqInfo
+operator|.
+name|getNameServiceId
+argument_list|()
 argument_list|)
 operator|.
 name|finalizeLogSegment
@@ -1116,6 +1156,11 @@ name|reqInfo
 operator|.
 name|getJournalId
 argument_list|()
+argument_list|,
+name|reqInfo
+operator|.
+name|getNameServiceId
+argument_list|()
 argument_list|)
 operator|.
 name|purgeLogsOlderThan
@@ -1133,13 +1178,16 @@ literal|"deprecation"
 argument_list|)
 annotation|@
 name|Override
-DECL|method|getEditLogManifest (String jid, long sinceTxId, boolean inProgressOk)
+DECL|method|getEditLogManifest ( String jid, String nameServiceId, long sinceTxId, boolean inProgressOk)
 specifier|public
 name|GetEditLogManifestResponseProto
 name|getEditLogManifest
 parameter_list|(
 name|String
 name|jid
+parameter_list|,
+name|String
+name|nameServiceId
 parameter_list|,
 name|long
 name|sinceTxId
@@ -1158,6 +1206,8 @@ operator|.
 name|getOrCreateJournal
 argument_list|(
 name|jid
+argument_list|,
+name|nameServiceId
 argument_list|)
 operator|.
 name|getEditLogManifest
@@ -1231,6 +1281,11 @@ name|reqInfo
 operator|.
 name|getJournalId
 argument_list|()
+argument_list|,
+name|reqInfo
+operator|.
+name|getNameServiceId
+argument_list|()
 argument_list|)
 operator|.
 name|prepareRecovery
@@ -1267,6 +1322,11 @@ argument_list|(
 name|reqInfo
 operator|.
 name|getJournalId
+argument_list|()
+argument_list|,
+name|reqInfo
+operator|.
+name|getNameServiceId
 argument_list|()
 argument_list|)
 operator|.
@@ -1329,13 +1389,16 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|doFinalize (String journalId)
+DECL|method|doFinalize (String journalId, String nameServiceId)
 specifier|public
 name|void
 name|doFinalize
 parameter_list|(
 name|String
 name|journalId
+parameter_list|,
+name|String
+name|nameServiceId
 parameter_list|)
 throws|throws
 name|IOException
@@ -1345,18 +1408,23 @@ operator|.
 name|doFinalize
 argument_list|(
 name|journalId
+argument_list|,
+name|nameServiceId
 argument_list|)
 expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|canRollBack (String journalId, StorageInfo storage, StorageInfo prevStorage, int targetLayoutVersion)
+DECL|method|canRollBack (String journalId, String nameServiceId, StorageInfo storage, StorageInfo prevStorage, int targetLayoutVersion)
 specifier|public
 name|Boolean
 name|canRollBack
 parameter_list|(
 name|String
 name|journalId
+parameter_list|,
+name|String
+name|nameServiceId
 parameter_list|,
 name|StorageInfo
 name|storage
@@ -1382,18 +1450,23 @@ argument_list|,
 name|prevStorage
 argument_list|,
 name|targetLayoutVersion
+argument_list|,
+name|nameServiceId
 argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|doRollback (String journalId)
+DECL|method|doRollback (String journalId, String nameServiceId)
 specifier|public
 name|void
 name|doRollback
 parameter_list|(
 name|String
 name|journalId
+parameter_list|,
+name|String
+name|nameServiceId
 parameter_list|)
 throws|throws
 name|IOException
@@ -1403,18 +1476,23 @@ operator|.
 name|doRollback
 argument_list|(
 name|journalId
+argument_list|,
+name|nameServiceId
 argument_list|)
 expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|discardSegments (String journalId, long startTxId)
+DECL|method|discardSegments (String journalId, String nameServiceId, long startTxId)
 specifier|public
 name|void
 name|discardSegments
 parameter_list|(
 name|String
 name|journalId
+parameter_list|,
+name|String
+name|nameServiceId
 parameter_list|,
 name|long
 name|startTxId
@@ -1429,18 +1507,23 @@ argument_list|(
 name|journalId
 argument_list|,
 name|startTxId
+argument_list|,
+name|nameServiceId
 argument_list|)
 expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getJournalCTime (String journalId)
+DECL|method|getJournalCTime (String journalId, String nameServiceId)
 specifier|public
 name|Long
 name|getJournalCTime
 parameter_list|(
 name|String
 name|journalId
+parameter_list|,
+name|String
+name|nameServiceId
 parameter_list|)
 throws|throws
 name|IOException
@@ -1451,6 +1534,8 @@ operator|.
 name|getJournalCTime
 argument_list|(
 name|journalId
+argument_list|,
+name|nameServiceId
 argument_list|)
 return|;
 block|}

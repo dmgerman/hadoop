@@ -961,6 +961,16 @@ name|lastJournalTimestamp
 init|=
 literal|0
 decl_stmt|;
+comment|// This variable tracks, have we tried to start journalsyncer
+comment|// with nameServiceId. This will help not to start the journalsyncer
+comment|// on each rpc call, if it has failed to start
+DECL|field|triedJournalSyncerStartedwithnsId
+specifier|private
+name|boolean
+name|triedJournalSyncerStartedwithnsId
+init|=
+literal|false
+decl_stmt|;
 comment|/**    * Time threshold for sync calls, beyond which a warning should be logged to the console.    */
 DECL|field|WARN_SYNC_MILLIS_THRESHOLD
 specifier|private
@@ -1057,6 +1067,32 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+DECL|method|setTriedJournalSyncerStartedwithnsId (boolean started)
+specifier|public
+name|void
+name|setTriedJournalSyncerStartedwithnsId
+parameter_list|(
+name|boolean
+name|started
+parameter_list|)
+block|{
+name|this
+operator|.
+name|triedJournalSyncerStartedwithnsId
+operator|=
+name|started
+expr_stmt|;
+block|}
+DECL|method|getTriedJournalSyncerStartedwithnsId ()
+specifier|public
+name|boolean
+name|getTriedJournalSyncerStartedwithnsId
+parameter_list|()
+block|{
+return|return
+name|triedJournalSyncerStartedwithnsId
+return|;
 block|}
 comment|/**    * Reload any data that may have been cached. This is necessary    * when we first load the Journal, but also after any formatting    * operation, since the cached data is no longer relevant.    */
 DECL|method|refreshCachedData ()
@@ -2938,7 +2974,7 @@ throw|;
 block|}
 block|}
 block|}
-comment|/**    * @see QJournalProtocol#getEditLogManifest(String, long, boolean)    */
+comment|/**    * @see QJournalProtocol#getEditLogManifest(String, String, long, boolean)    */
 DECL|method|getEditLogManifest (long sinceTxId, boolean inProgressOk)
 specifier|public
 name|RemoteEditLogManifest

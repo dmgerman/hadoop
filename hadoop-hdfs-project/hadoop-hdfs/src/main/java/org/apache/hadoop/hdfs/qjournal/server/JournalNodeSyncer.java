@@ -488,6 +488,11 @@ specifier|final
 name|String
 name|jid
 decl_stmt|;
+DECL|field|nameServiceId
+specifier|private
+name|String
+name|nameServiceId
+decl_stmt|;
 DECL|field|jidProto
 specifier|private
 specifier|final
@@ -569,7 +574,12 @@ specifier|final
 name|JournalMetrics
 name|metrics
 decl_stmt|;
-DECL|method|JournalNodeSyncer (JournalNode jouranlNode, Journal journal, String jid, Configuration conf)
+DECL|field|journalSyncerStarted
+specifier|private
+name|boolean
+name|journalSyncerStarted
+decl_stmt|;
+DECL|method|JournalNodeSyncer (JournalNode jouranlNode, Journal journal, String jid, Configuration conf, String nameServiceId)
 name|JournalNodeSyncer
 parameter_list|(
 name|JournalNode
@@ -583,6 +593,9 @@ name|jid
 parameter_list|,
 name|Configuration
 name|conf
+parameter_list|,
+name|String
+name|nameServiceId
 parameter_list|)
 block|{
 name|this
@@ -602,6 +615,12 @@ operator|.
 name|jid
 operator|=
 name|jid
+expr_stmt|;
+name|this
+operator|.
+name|nameServiceId
+operator|=
+name|nameServiceId
 expr_stmt|;
 name|this
 operator|.
@@ -673,6 +692,10 @@ operator|.
 name|getMetrics
 argument_list|()
 expr_stmt|;
+name|journalSyncerStarted
+operator|=
+literal|false
+expr_stmt|;
 block|}
 DECL|method|stopSync ()
 name|void
@@ -725,11 +748,44 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|start ()
+DECL|method|start (String nsId)
 specifier|public
 name|void
 name|start
-parameter_list|()
+parameter_list|(
+name|String
+name|nsId
+parameter_list|)
+block|{
+if|if
+condition|(
+name|nsId
+operator|!=
+literal|null
+condition|)
+block|{
+name|this
+operator|.
+name|nameServiceId
+operator|=
+name|nsId
+expr_stmt|;
+name|journal
+operator|.
+name|setTriedJournalSyncerStartedwithnsId
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+operator|!
+name|journalSyncerStarted
+operator|&&
+name|getOtherJournalNodeProxies
+argument_list|()
+condition|)
 block|{
 name|LOG
 operator|.
@@ -740,28 +796,24 @@ operator|+
 name|jid
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|getOtherJournalNodeProxies
-argument_list|()
-condition|)
-block|{
 name|startSyncJournalsDaemon
 argument_list|()
 expr_stmt|;
-block|}
-else|else
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Failed to start SyncJournal daemon for journal "
-operator|+
-name|jid
-argument_list|)
+name|journalSyncerStarted
+operator|=
+literal|true
 expr_stmt|;
 block|}
+block|}
+DECL|method|isJournalSyncerStarted ()
+specifier|public
+name|boolean
+name|isJournalSyncerStarted
+parameter_list|()
+block|{
+return|return
+name|journalSyncerStarted
+return|;
 block|}
 DECL|method|createEditsSyncDir ()
 specifier|private

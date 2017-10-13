@@ -1062,6 +1062,8 @@ name|RequestInfo
 argument_list|(
 name|JID
 argument_list|,
+literal|null
+argument_list|,
 literal|1
 argument_list|,
 literal|2
@@ -1104,6 +1106,8 @@ operator|new
 name|RequestInfo
 argument_list|(
 name|JID
+argument_list|,
+literal|null
 argument_list|,
 literal|1
 argument_list|,
@@ -1331,6 +1335,8 @@ operator|new
 name|RequestInfo
 argument_list|(
 name|JID
+argument_list|,
+literal|null
 argument_list|,
 literal|12345L
 argument_list|,
@@ -2354,6 +2360,8 @@ operator|new
 name|RequestInfo
 argument_list|(
 name|JID
+argument_list|,
+literal|null
 argument_list|,
 literal|1
 argument_list|,

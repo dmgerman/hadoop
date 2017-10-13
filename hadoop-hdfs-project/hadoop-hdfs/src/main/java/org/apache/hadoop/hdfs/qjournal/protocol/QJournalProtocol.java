@@ -327,37 +327,43 @@ init|=
 literal|1L
 decl_stmt|;
 comment|/**    * @return true if the given journal has been formatted and    * contains valid data.    */
-DECL|method|isFormatted (String journalId)
-specifier|public
+DECL|method|isFormatted (String journalId, String nameServiceId)
 name|boolean
 name|isFormatted
 parameter_list|(
 name|String
 name|journalId
+parameter_list|,
+name|String
+name|nameServiceId
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Get the current state of the journal, including the most recent    * epoch number and the HTTP port.    */
-DECL|method|getJournalState (String journalId)
-specifier|public
+DECL|method|getJournalState (String journalId, String nameServiceId)
 name|GetJournalStateResponseProto
 name|getJournalState
 parameter_list|(
 name|String
 name|journalId
+parameter_list|,
+name|String
+name|nameServiceId
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Format the underlying storage for the given namespace.    */
-DECL|method|format (String journalId, NamespaceInfo nsInfo)
-specifier|public
+DECL|method|format (String journalId, String nameServiceId, NamespaceInfo nsInfo)
 name|void
 name|format
 parameter_list|(
 name|String
 name|journalId
+parameter_list|,
+name|String
+name|nameServiceId
 parameter_list|,
 name|NamespaceInfo
 name|nsInfo
@@ -366,13 +372,15 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Begin a new epoch. See the HDFS-3077 design doc for details.    */
-DECL|method|newEpoch (String journalId, NamespaceInfo nsInfo, long epoch)
-specifier|public
+DECL|method|newEpoch (String journalId, String nameServiceId, NamespaceInfo nsInfo, long epoch)
 name|NewEpochResponseProto
 name|newEpoch
 parameter_list|(
 name|String
 name|journalId
+parameter_list|,
+name|String
+name|nameServiceId
 parameter_list|,
 name|NamespaceInfo
 name|nsInfo
@@ -472,13 +480,15 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * @param jid the journal from which to enumerate edits    * @param sinceTxId the first transaction which the client cares about    * @param inProgressOk whether or not to check the in-progress edit log     *        segment           * @return a list of edit log segments since the given transaction ID.    */
-DECL|method|getEditLogManifest (String jid, long sinceTxId, boolean inProgressOk)
-specifier|public
+DECL|method|getEditLogManifest (String jid, String nameServiceId, long sinceTxId, boolean inProgressOk)
 name|GetEditLogManifestResponseProto
 name|getEditLogManifest
 parameter_list|(
 name|String
 name|jid
+parameter_list|,
+name|String
+name|nameServiceId
 parameter_list|,
 name|long
 name|sinceTxId
@@ -523,7 +533,6 @@ throws|throws
 name|IOException
 function_decl|;
 DECL|method|doPreUpgrade (String journalId)
-specifier|public
 name|void
 name|doPreUpgrade
 parameter_list|(
@@ -547,24 +556,28 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-DECL|method|doFinalize (String journalId)
-specifier|public
+DECL|method|doFinalize (String journalId, String nameServiceid)
 name|void
 name|doFinalize
 parameter_list|(
 name|String
 name|journalId
+parameter_list|,
+name|String
+name|nameServiceid
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-DECL|method|canRollBack (String journalId, StorageInfo storage, StorageInfo prevStorage, int targetLayoutVersion)
-specifier|public
+DECL|method|canRollBack (String journalId, String nameServiceid, StorageInfo storage, StorageInfo prevStorage, int targetLayoutVersion)
 name|Boolean
 name|canRollBack
 parameter_list|(
 name|String
 name|journalId
+parameter_list|,
+name|String
+name|nameServiceid
 parameter_list|,
 name|StorageInfo
 name|storage
@@ -578,13 +591,15 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-DECL|method|doRollback (String journalId)
-specifier|public
+DECL|method|doRollback (String journalId, String nameServiceid)
 name|void
 name|doRollback
 parameter_list|(
 name|String
 name|journalId
+parameter_list|,
+name|String
+name|nameServiceid
 parameter_list|)
 throws|throws
 name|IOException
@@ -592,13 +607,15 @@ function_decl|;
 comment|/**    * Discard journal segments whose first TxId is greater than or equal to the    * given txid.    */
 annotation|@
 name|Idempotent
-DECL|method|discardSegments (String journalId, long startTxId)
-specifier|public
+DECL|method|discardSegments (String journalId, String nameServiceId, long startTxId)
 name|void
 name|discardSegments
 parameter_list|(
 name|String
 name|journalId
+parameter_list|,
+name|String
+name|nameServiceId
 parameter_list|,
 name|long
 name|startTxId
@@ -606,13 +623,15 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-DECL|method|getJournalCTime (String journalId)
-specifier|public
+DECL|method|getJournalCTime (String journalId, String nameServiceId)
 name|Long
 name|getJournalCTime
 parameter_list|(
 name|String
 name|journalId
+parameter_list|,
+name|String
+name|nameServiceId
 parameter_list|)
 throws|throws
 name|IOException

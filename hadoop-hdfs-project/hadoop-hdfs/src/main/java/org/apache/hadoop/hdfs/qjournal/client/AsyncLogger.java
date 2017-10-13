@@ -253,7 +253,7 @@ DECL|interface|Factory
 interface|interface
 name|Factory
 block|{
-DECL|method|createLogger (Configuration conf, NamespaceInfo nsInfo, String journalId, InetSocketAddress addr)
+DECL|method|createLogger (Configuration conf, NamespaceInfo nsInfo, String journalId, String nameServiceId, InetSocketAddress addr)
 name|AsyncLogger
 name|createLogger
 parameter_list|(
@@ -265,6 +265,9 @@ name|nsInfo
 parameter_list|,
 name|String
 name|journalId
+parameter_list|,
+name|String
+name|nameServiceId
 parameter_list|,
 name|InetSocketAddress
 name|addr

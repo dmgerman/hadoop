@@ -4324,6 +4324,9 @@ parameter_list|,
 name|String
 name|journalId
 parameter_list|,
+name|String
+name|nameServiceId
+parameter_list|,
 name|InetSocketAddress
 name|addr
 parameter_list|)
@@ -4339,6 +4342,8 @@ argument_list|,
 name|nsInfo
 argument_list|,
 name|journalId
+argument_list|,
+name|nameServiceId
 argument_list|,
 name|addr
 argument_list|)

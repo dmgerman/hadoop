@@ -84,12 +84,21 @@ specifier|final
 name|long
 name|committedTxId
 decl_stmt|;
-DECL|method|RequestInfo (String jid, long epoch, long ipcSerialNumber, long committedTxId)
+DECL|field|nameServiceId
+specifier|private
+specifier|final
+name|String
+name|nameServiceId
+decl_stmt|;
+DECL|method|RequestInfo (String jid, String nameServiceId, long epoch, long ipcSerialNumber, long committedTxId)
 specifier|public
 name|RequestInfo
 parameter_list|(
 name|String
 name|jid
+parameter_list|,
+name|String
+name|nameServiceId
 parameter_list|,
 name|long
 name|epoch
@@ -109,6 +118,12 @@ name|jid
 expr_stmt|;
 name|this
 operator|.
+name|nameServiceId
+operator|=
+name|nameServiceId
+expr_stmt|;
+name|this
+operator|.
 name|epoch
 operator|=
 name|epoch
@@ -125,6 +140,16 @@ name|committedTxId
 operator|=
 name|committedTxId
 expr_stmt|;
+block|}
+DECL|method|getNameServiceId ()
+specifier|public
+name|String
+name|getNameServiceId
+parameter_list|()
+block|{
+return|return
+name|nameServiceId
+return|;
 block|}
 DECL|method|getEpoch ()
 specifier|public
