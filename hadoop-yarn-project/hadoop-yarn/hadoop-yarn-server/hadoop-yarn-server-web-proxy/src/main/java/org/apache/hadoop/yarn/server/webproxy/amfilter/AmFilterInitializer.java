@@ -445,6 +445,34 @@ name|params
 argument_list|)
 expr_stmt|;
 comment|// Handle RM HA urls
+comment|// Include yarn-site.xml in the classpath
+name|YarnConfiguration
+name|yarnConf
+init|=
+operator|new
+name|YarnConfiguration
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+name|Collection
+argument_list|<
+name|String
+argument_list|>
+name|rmIds
+init|=
+name|getRmIds
+argument_list|(
+name|yarnConf
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|rmIds
+operator|!=
+literal|null
+condition|)
+block|{
 name|List
 argument_list|<
 name|String
@@ -456,25 +484,12 @@ name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
-comment|// Include yarn-site.xml in the classpath
-name|YarnConfiguration
-name|yarnConf
-init|=
-operator|new
-name|YarnConfiguration
-argument_list|(
-name|conf
-argument_list|)
-decl_stmt|;
 for|for
 control|(
 name|String
 name|rmId
 range|:
-name|getRmIds
-argument_list|(
-name|yarnConf
-argument_list|)
+name|rmIds
 control|)
 block|{
 name|String
@@ -495,6 +510,15 @@ name|url
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+operator|!
+name|urls
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
 name|params
 operator|.
 name|put
@@ -511,6 +535,8 @@ name|urls
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+block|}
 block|}
 DECL|method|getRmIds (Configuration conf)
 specifier|private

@@ -320,7 +320,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|3
+literal|2
 argument_list|,
 name|con
 operator|.
@@ -364,7 +364,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|""
+literal|null
 argument_list|,
 name|con
 operator|.
@@ -428,7 +428,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|3
+literal|2
 argument_list|,
 name|con
 operator|.
@@ -472,7 +472,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|""
+literal|null
 argument_list|,
 name|con
 operator|.
