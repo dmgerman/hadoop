@@ -511,7 +511,7 @@ specifier|final
 name|int
 name|timeout
 init|=
-literal|300000
+literal|90000
 decl_stmt|;
 comment|/**    * Setup environment for every test case.    * @throws IOException    */
 DECL|method|clusterSetUp ()
