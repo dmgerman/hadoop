@@ -4869,7 +4869,8 @@ name|inode
 init|=
 name|theInternalDir
 operator|.
-name|children
+name|getChildren
+argument_list|()
 operator|.
 name|get
 argument_list|(
@@ -4910,8 +4911,9 @@ decl_stmt|;
 if|if
 condition|(
 name|inode
-operator|instanceof
-name|INodeLink
+operator|.
+name|isLink
+argument_list|()
 condition|)
 block|{
 name|INodeLink
@@ -5135,7 +5137,8 @@ name|FileStatus
 index|[
 name|theInternalDir
 operator|.
-name|children
+name|getChildren
+argument_list|()
 operator|.
 name|size
 argument_list|()
@@ -5161,7 +5164,8 @@ name|iEntry
 range|:
 name|theInternalDir
 operator|.
-name|children
+name|getChildren
+argument_list|()
 operator|.
 name|entrySet
 argument_list|()
@@ -5181,8 +5185,9 @@ decl_stmt|;
 if|if
 condition|(
 name|inode
-operator|instanceof
-name|INodeLink
+operator|.
+name|isLink
+argument_list|()
 condition|)
 block|{
 name|INodeLink
@@ -5343,6 +5348,7 @@ condition|(
 name|theInternalDir
 operator|.
 name|isRoot
+argument_list|()
 operator|&&
 name|dir
 operator|==

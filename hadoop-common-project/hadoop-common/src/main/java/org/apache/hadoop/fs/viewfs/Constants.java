@@ -90,19 +90,20 @@ name|CONFIG_VIEWFS_DEFAULT_MOUNT_TABLE
 decl_stmt|;
 comment|/**    * Config variable for specifying a simple link    */
 DECL|field|CONFIG_VIEWFS_LINK
-specifier|public
-specifier|static
-specifier|final
 name|String
 name|CONFIG_VIEWFS_LINK
 init|=
 literal|"link"
 decl_stmt|;
+comment|/**    * Config variable for specifying a fallback for link mount points.    */
+DECL|field|CONFIG_VIEWFS_LINK_FALLBACK
+name|String
+name|CONFIG_VIEWFS_LINK_FALLBACK
+init|=
+literal|"linkFallback"
+decl_stmt|;
 comment|/**    * Config variable for specifying a merge link    */
 DECL|field|CONFIG_VIEWFS_LINK_MERGE
-specifier|public
-specifier|static
-specifier|final
 name|String
 name|CONFIG_VIEWFS_LINK_MERGE
 init|=
@@ -117,18 +118,12 @@ literal|"linkNfly"
 decl_stmt|;
 comment|/**    * Config variable for specifying a merge of the root of the mount-table    *  with the root of another file system.     */
 DECL|field|CONFIG_VIEWFS_LINK_MERGE_SLASH
-specifier|public
-specifier|static
-specifier|final
 name|String
 name|CONFIG_VIEWFS_LINK_MERGE_SLASH
 init|=
 literal|"linkMergeSlash"
 decl_stmt|;
 DECL|field|PERMISSION_555
-specifier|static
-specifier|public
-specifier|final
 name|FsPermission
 name|PERMISSION_555
 init|=

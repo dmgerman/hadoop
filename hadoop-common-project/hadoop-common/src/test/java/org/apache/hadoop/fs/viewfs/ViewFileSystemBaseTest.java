@@ -6173,11 +6173,13 @@ block|{
 name|String
 name|msg
 init|=
+literal|" Use "
+operator|+
 name|Constants
 operator|.
 name|CONFIG_VIEWFS_LINK_MERGE_SLASH
 operator|+
-literal|" is not supported yet."
+literal|" instead"
 decl_stmt|;
 name|assertThat
 argument_list|(
