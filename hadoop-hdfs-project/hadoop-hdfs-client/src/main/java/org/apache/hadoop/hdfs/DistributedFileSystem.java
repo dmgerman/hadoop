@@ -13613,12 +13613,12 @@ name|Path
 argument_list|(
 name|ezTrashRoot
 argument_list|,
-name|System
+name|dfs
 operator|.
-name|getProperty
-argument_list|(
-literal|"user.name"
-argument_list|)
+name|ugi
+operator|.
+name|getShortUserName
+argument_list|()
 argument_list|)
 decl_stmt|;
 try|try

@@ -1504,15 +1504,6 @@ argument_list|(
 name|clientConf
 argument_list|)
 expr_stmt|;
-name|System
-operator|.
-name|setProperty
-argument_list|(
-literal|"user.name"
-argument_list|,
-name|HDFS_USER_NAME
-argument_list|)
-expr_stmt|;
 block|}
 annotation|@
 name|AfterClass
