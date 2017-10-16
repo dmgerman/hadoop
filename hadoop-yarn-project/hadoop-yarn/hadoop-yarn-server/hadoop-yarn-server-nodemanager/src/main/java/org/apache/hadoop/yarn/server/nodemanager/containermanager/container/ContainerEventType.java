@@ -93,6 +93,9 @@ block|,
 comment|// Producer: ContainerScheduler
 DECL|enumConstant|CONTAINER_TOKEN_UPDATED
 name|CONTAINER_TOKEN_UPDATED
+block|,
+DECL|enumConstant|RECOVER_PAUSED_CONTAINER
+name|RECOVER_PAUSED_CONTAINER
 block|}
 end_enum
 

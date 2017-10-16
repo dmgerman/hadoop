@@ -162,24 +162,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|Resource
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|proto
 operator|.
 name|YarnProtos
@@ -257,6 +239,22 @@ operator|.
 name|YarnServerNodemanagerRecoveryProtos
 operator|.
 name|LogDeleterProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|security
+operator|.
+name|ContainerTokenIdentifier
 import|;
 end_import
 
@@ -480,19 +478,16 @@ name|IOException
 block|{   }
 annotation|@
 name|Override
-DECL|method|storeContainerResourceChanged (ContainerId containerId, int version, Resource capability)
+DECL|method|storeContainerUpdateToken (ContainerId containerId, ContainerTokenIdentifier containerTokenIdentifier)
 specifier|public
 name|void
-name|storeContainerResourceChanged
+name|storeContainerUpdateToken
 parameter_list|(
 name|ContainerId
 name|containerId
 parameter_list|,
-name|int
-name|version
-parameter_list|,
-name|Resource
-name|capability
+name|ContainerTokenIdentifier
+name|containerTokenIdentifier
 parameter_list|)
 throws|throws
 name|IOException

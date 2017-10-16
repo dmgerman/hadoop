@@ -382,6 +382,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|security
+operator|.
+name|ContainerTokenIdentifier
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|api
@@ -1629,21 +1645,18 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Record that a container resource has been changed    * @param containerId the container ID    * @param containerVersion the container version    * @param capability the container resource capability    * @throws IOException    */
-DECL|method|storeContainerResourceChanged (ContainerId containerId, int containerVersion, Resource capability)
+comment|/**    * Record that a container has been updated    * @param containerId the container ID    * @param containerTokenIdentifier container token identifier    * @throws IOException    */
+DECL|method|storeContainerUpdateToken (ContainerId containerId, ContainerTokenIdentifier containerTokenIdentifier)
 specifier|public
 specifier|abstract
 name|void
-name|storeContainerResourceChanged
+name|storeContainerUpdateToken
 parameter_list|(
 name|ContainerId
 name|containerId
 parameter_list|,
-name|int
-name|containerVersion
-parameter_list|,
-name|Resource
-name|capability
+name|ContainerTokenIdentifier
+name|containerTokenIdentifier
 parameter_list|)
 throws|throws
 name|IOException

@@ -912,8 +912,6 @@ break|break;
 case|case
 name|RECOVER_PAUSED_CONTAINER
 case|:
-comment|// Recovery for paused containers is not supported, thus here
-comment|// we locate any paused containers, and terminate them.
 name|app
 operator|=
 name|context

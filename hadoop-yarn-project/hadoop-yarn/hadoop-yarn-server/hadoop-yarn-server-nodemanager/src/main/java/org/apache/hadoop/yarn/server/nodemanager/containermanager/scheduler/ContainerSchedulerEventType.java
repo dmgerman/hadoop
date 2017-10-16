@@ -49,6 +49,9 @@ name|SHED_QUEUED_CONTAINERS
 block|,
 DECL|enumConstant|CONTAINER_PAUSED
 name|CONTAINER_PAUSED
+block|,
+DECL|enumConstant|RECOVERY_COMPLETED
+name|RECOVERY_COMPLETED
 block|}
 end_enum
 

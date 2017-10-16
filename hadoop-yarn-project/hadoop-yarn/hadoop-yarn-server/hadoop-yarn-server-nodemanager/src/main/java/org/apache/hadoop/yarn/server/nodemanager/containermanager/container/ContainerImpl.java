@@ -2729,6 +2729,25 @@ name|SCHEDULED
 argument_list|,
 name|ContainerState
 operator|.
+name|PAUSED
+argument_list|,
+name|ContainerEventType
+operator|.
+name|RECOVER_PAUSED_CONTAINER
+argument_list|,
+operator|new
+name|RecoveredContainerTransition
+argument_list|()
+argument_list|)
+operator|.
+name|addTransition
+argument_list|(
+name|ContainerState
+operator|.
+name|SCHEDULED
+argument_list|,
+name|ContainerState
+operator|.
 name|EXITED_WITH_FAILURE
 argument_list|,
 name|ContainerEventType
@@ -5495,6 +5514,23 @@ operator|.
 name|RECOVER_CONTAINER
 expr_stmt|;
 block|}
+elseif|else
+if|if
+condition|(
+name|recoveredStatus
+operator|==
+name|RecoveredContainerStatus
+operator|.
+name|PAUSED
+condition|)
+block|{
+name|launcherEvent
+operator|=
+name|ContainersLauncherEventType
+operator|.
+name|RECOVER_PAUSED_CONTAINER
+expr_stmt|;
+block|}
 name|containerLaunchStartTime
 operator|=
 name|clock
@@ -5541,9 +5577,6 @@ operator|.
 name|PAUSED
 condition|)
 block|{
-comment|// Recovery is not supported for paused container so we raise the
-comment|// launch event which will proceed to kill the paused container instead
-comment|// of raising the schedule event.
 name|ContainersLauncherEventType
 name|launcherEvent
 decl_stmt|;
@@ -6031,14 +6064,6 @@ name|getUpdatedToken
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|updateEvent
-operator|.
-name|isResourceChange
-argument_list|()
-condition|)
-block|{
 try|try
 block|{
 comment|// Persist change in the state store.
@@ -6049,7 +6074,7 @@ operator|.
 name|getNMStateStore
 argument_list|()
 operator|.
-name|storeContainerResourceChanged
+name|storeContainerUpdateToken
 argument_list|(
 name|container
 operator|.
@@ -6058,14 +6083,6 @@ argument_list|,
 name|container
 operator|.
 name|getContainerTokenIdentifier
-argument_list|()
-operator|.
-name|getVersion
-argument_list|()
-argument_list|,
-name|container
-operator|.
-name|getResource
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6086,12 +6103,11 @@ name|container
 operator|.
 name|containerId
 operator|+
-literal|"] resource change.."
+literal|"] update.."
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}
@@ -6218,6 +6234,24 @@ return|return
 name|ContainerState
 operator|.
 name|DONE
+return|;
+block|}
+elseif|else
+if|if
+condition|(
+name|container
+operator|.
+name|recoveredStatus
+operator|==
+name|RecoveredContainerStatus
+operator|.
+name|QUEUED
+condition|)
+block|{
+return|return
+name|ContainerState
+operator|.
+name|SCHEDULED
 return|;
 block|}
 elseif|else
@@ -7839,6 +7873,46 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+block|}
+comment|/**    * Transition from SCHEDULED state to PAUSED state on recovery    */
+DECL|class|RecoveredContainerTransition
+specifier|static
+class|class
+name|RecoveredContainerTransition
+extends|extends
+name|ContainerTransition
+block|{
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+annotation|@
+name|Override
+DECL|method|transition (ContainerImpl container, ContainerEvent event)
+specifier|public
+name|void
+name|transition
+parameter_list|(
+name|ContainerImpl
+name|container
+parameter_list|,
+name|ContainerEvent
+name|event
+parameter_list|)
+block|{
+name|container
+operator|.
+name|sendContainerMonitorStartEvent
+argument_list|()
+expr_stmt|;
+name|container
+operator|.
+name|wasLaunched
+operator|=
+literal|true
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Transition from RUNNING or KILLING state to    * EXITED_WITH_SUCCESS state upon EXITED_WITH_SUCCESS message.    */
