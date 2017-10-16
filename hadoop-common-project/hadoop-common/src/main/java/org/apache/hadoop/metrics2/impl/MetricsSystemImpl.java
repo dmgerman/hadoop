@@ -999,6 +999,28 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|isMonitoring ()
+name|boolean
+name|isMonitoring
+parameter_list|()
+block|{
+return|return
+name|monitoring
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getRefCount ()
+name|int
+name|getRefCount
+parameter_list|()
+block|{
+return|return
+name|refCount
+return|;
+block|}
 comment|/**    * Initialized the metrics system with a prefix.    * @param prefix  the system will look for configs with the prefix    * @return the metrics system object itself    */
 annotation|@
 name|Override
@@ -1012,6 +1034,9 @@ name|String
 name|prefix
 parameter_list|)
 block|{
+operator|++
+name|refCount
+expr_stmt|;
 if|if
 condition|(
 name|monitoring
@@ -1048,9 +1073,6 @@ name|prefix
 argument_list|,
 literal|"prefix"
 argument_list|)
-expr_stmt|;
-operator|++
-name|refCount
 expr_stmt|;
 if|if
 condition|(
