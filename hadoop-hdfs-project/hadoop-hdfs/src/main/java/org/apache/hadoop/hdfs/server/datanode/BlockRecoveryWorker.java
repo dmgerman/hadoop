@@ -1189,35 +1189,26 @@ operator|.
 name|getBlockId
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
 name|LOG
 operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
+name|info
 argument_list|(
-literal|"block="
+literal|"BlockRecoveryWorker: block={} (length={}),"
 operator|+
+literal|" isTruncateRecovery={}, syncList={}"
+argument_list|,
 name|block
-operator|+
-literal|", (length="
-operator|+
+argument_list|,
 name|block
 operator|.
 name|getNumBytes
 argument_list|()
-operator|+
-literal|"), syncList="
-operator|+
+argument_list|,
+name|isTruncateRecovery
+argument_list|,
 name|syncList
 argument_list|)
 expr_stmt|;
-block|}
 comment|// syncList.isEmpty() means that all data-nodes do not have the block
 comment|// or their replicas have 0 length.
 comment|// The block can be deleted.
@@ -1705,6 +1696,36 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"BlockRecoveryWorker: block={} (length={}), bestState={},"
+operator|+
+literal|" newBlock={} (length={}), participatingList={}"
+argument_list|,
+name|block
+argument_list|,
+name|block
+operator|.
+name|getNumBytes
+argument_list|()
+argument_list|,
+name|bestState
+operator|.
+name|name
+argument_list|()
+argument_list|,
+name|newBlock
+argument_list|,
+name|newBlock
+operator|.
+name|getNumBytes
+argument_list|()
+argument_list|,
+name|participatingList
+argument_list|)
+expr_stmt|;
 name|List
 argument_list|<
 name|DatanodeID
@@ -3080,6 +3101,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+literal|"BlockRecoveryWorker: "
+operator|+
 name|who
 operator|+
 literal|" calls recoverBlock("
