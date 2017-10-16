@@ -1364,7 +1364,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_HEARTBEAT_RECHECK_INTERVAL_KEY
 argument_list|,
-literal|1
+literal|3000
 argument_list|)
 expr_stmt|;
 name|conf
