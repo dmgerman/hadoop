@@ -521,7 +521,7 @@ throw|;
 block|}
 block|}
 DECL|method|configureFairScheduler (YarnConfiguration conf)
-specifier|private
+specifier|protected
 name|void
 name|configureFairScheduler
 parameter_list|(
