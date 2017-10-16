@@ -578,6 +578,18 @@ name|org
 operator|.
 name|slf4j
 operator|.
+name|event
+operator|.
+name|Level
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
 name|Logger
 import|;
 end_import
@@ -10712,15 +10724,20 @@ operator|.
 name|stopReloader
 argument_list|()
 expr_stmt|;
-comment|// test ACL reloading
-name|Thread
+name|GenericTestUtils
 operator|.
-name|sleep
+name|setLogLevel
 argument_list|(
-literal|10
+name|KMSConfiguration
+operator|.
+name|LOG
+argument_list|,
+name|Level
+operator|.
+name|TRACE
 argument_list|)
 expr_stmt|;
-comment|// to ensure the ACLs file modifiedTime is newer
+comment|// test ACL reloading
 name|conf
 operator|.
 name|set
@@ -10760,12 +10777,13 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
-name|Thread
+name|KMSWebApp
 operator|.
-name|sleep
-argument_list|(
-literal|1000
-argument_list|)
+name|getACLs
+argument_list|()
+operator|.
+name|forceNextReloadForTesting
+argument_list|()
 expr_stmt|;
 name|KMSWebApp
 operator|.

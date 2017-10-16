@@ -66,6 +66,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -108,6 +128,21 @@ specifier|public
 class|class
 name|KMSConfiguration
 block|{
+DECL|field|LOG
+specifier|static
+specifier|final
+name|Logger
+name|LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|KMSConfiguration
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 DECL|field|KMS_CONFIG_DIR
 specifier|public
 specifier|static
@@ -661,6 +696,27 @@ argument_list|,
 name|KMS_ACLS_XML
 argument_list|)
 decl_stmt|;
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Checking file {}, modification time is {}, last reload time is"
+operator|+
+literal|" {}"
+argument_list|,
+name|f
+operator|.
+name|getPath
+argument_list|()
+argument_list|,
+name|f
+operator|.
+name|lastModified
+argument_list|()
+argument_list|,
+name|time
+argument_list|)
+expr_stmt|;
 comment|// at least 100ms newer than time, we do this to ensure the file
 comment|// has been properly closed/flushed
 name|newer

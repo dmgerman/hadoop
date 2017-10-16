@@ -1890,6 +1890,18 @@ argument_list|)
 operator|)
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|forceNextReloadForTesting ()
+name|void
+name|forceNextReloadForTesting
+parameter_list|()
+block|{
+name|lastReload
+operator|=
+literal|0
+expr_stmt|;
+block|}
 block|}
 end_class
 
