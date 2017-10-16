@@ -756,6 +756,15 @@ name|void
 name|closeWriter
 parameter_list|()
 block|{
+if|if
+condition|(
+name|this
+operator|.
+name|writer
+operator|!=
+literal|null
+condition|)
+block|{
 name|this
 operator|.
 name|writer
@@ -769,6 +778,7 @@ name|writer
 operator|=
 literal|null
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -851,6 +861,10 @@ name|increcleanupOldLogTimes
 argument_list|()
 expr_stmt|;
 block|}
+comment|// close the writer before the file is renamed or deleted
+name|closeWriter
+argument_list|()
+expr_stmt|;
 specifier|final
 name|Path
 name|renamedPath
