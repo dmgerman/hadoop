@@ -3557,7 +3557,7 @@ expr_stmt|;
 name|Resource
 name|queuePartitionResource
 init|=
-name|getEffectiveCapacityUp
+name|getEffectiveCapacity
 argument_list|(
 name|nodePartition
 argument_list|)
@@ -3644,7 +3644,7 @@ comment|/*        * For non-labeled partition, get the max value from resources 
 name|Resource
 name|queuePartitionResource
 init|=
-name|getEffectiveCapacityUp
+name|getEffectiveCapacity
 argument_list|(
 name|nodePartition
 argument_list|)

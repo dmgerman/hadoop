@@ -126,6 +126,26 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
+name|QueueResourceQuotas
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
 name|ResourceUsage
 import|;
 end_import
@@ -513,13 +533,16 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|populateQueueCapacities (QueueCapacities qCapacities)
+DECL|method|populateQueueCapacities (QueueCapacities qCapacities, QueueResourceQuotas qResQuotas)
 specifier|protected
 name|void
 name|populateQueueCapacities
 parameter_list|(
 name|QueueCapacities
 name|qCapacities
+parameter_list|,
+name|QueueResourceQuotas
+name|qResQuotas
 parameter_list|)
 block|{
 name|capacities
@@ -528,6 +551,8 @@ operator|new
 name|QueueCapacitiesInfo
 argument_list|(
 name|qCapacities
+argument_list|,
+name|qResQuotas
 argument_list|)
 expr_stmt|;
 block|}

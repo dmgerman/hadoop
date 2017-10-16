@@ -90,20 +90,6 @@ end_import
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -577,6 +563,20 @@ operator|.
 name|placement
 operator|.
 name|CandidateNodeSet
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
 import|;
 end_import
 
@@ -1101,14 +1101,6 @@ comment|/**    * Get effective capacity of queue. If min/max resource is configu
 DECL|method|getEffectiveCapacity (String label)
 name|Resource
 name|getEffectiveCapacity
-parameter_list|(
-name|String
-name|label
-parameter_list|)
-function_decl|;
-DECL|method|getEffectiveCapacityUp (String label)
-name|Resource
-name|getEffectiveCapacityUp
 parameter_list|(
 name|String
 name|label

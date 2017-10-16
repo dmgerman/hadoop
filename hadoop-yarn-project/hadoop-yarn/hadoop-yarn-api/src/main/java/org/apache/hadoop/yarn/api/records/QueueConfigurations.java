@@ -307,6 +307,114 @@ name|float
 name|maxAMPercentage
 parameter_list|)
 function_decl|;
+comment|/**    * Get the effective minimum capacity of queue (from absolute resource).    *    * @return minimum resource capability    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getEffectiveMinCapacity ()
+specifier|public
+specifier|abstract
+name|Resource
+name|getEffectiveMinCapacity
+parameter_list|()
+function_decl|;
+comment|/**    * Set the effective minimum capacity of queue (from absolute resource).    *    * @param capacity    *          minimum resource capability    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setEffectiveMinCapacity (Resource capacity)
+specifier|public
+specifier|abstract
+name|void
+name|setEffectiveMinCapacity
+parameter_list|(
+name|Resource
+name|capacity
+parameter_list|)
+function_decl|;
+comment|/**    * Get the effective maximum capacity of queue (from absolute resource).    *    * @return maximum resource capability    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getEffectiveMaxCapacity ()
+specifier|public
+specifier|abstract
+name|Resource
+name|getEffectiveMaxCapacity
+parameter_list|()
+function_decl|;
+comment|/**    * Set the effective maximum capacity of queue (from absolute resource).    *    * @param capacity    *          maximum resource capability    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setEffectiveMaxCapacity (Resource capacity)
+specifier|public
+specifier|abstract
+name|void
+name|setEffectiveMaxCapacity
+parameter_list|(
+name|Resource
+name|capacity
+parameter_list|)
+function_decl|;
+comment|/**    * Get the configured minimum capacity of queue (from absolute resource).    *    * @return minimum resource capability    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getConfiguredMinCapacity ()
+specifier|public
+specifier|abstract
+name|Resource
+name|getConfiguredMinCapacity
+parameter_list|()
+function_decl|;
+comment|/**    * Set the configured minimum capacity of queue (from absolute resource).    *    * @param configuredMinResource    *          minimum resource capability    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|setConfiguredMinCapacity (Resource configuredMinResource)
+specifier|public
+specifier|abstract
+name|void
+name|setConfiguredMinCapacity
+parameter_list|(
+name|Resource
+name|configuredMinResource
+parameter_list|)
+function_decl|;
+comment|/**    * Get the configured maximum capacity of queue (from absolute resource).    *    * @return maximum resource capability    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getConfiguredMaxCapacity ()
+specifier|public
+specifier|abstract
+name|Resource
+name|getConfiguredMaxCapacity
+parameter_list|()
+function_decl|;
+comment|/**    * Set the configured maximum capacity of queue (from absolute resource).    *    * @param configuredMaxResource    *          maximum resource capability    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|setConfiguredMaxCapacity (Resource configuredMaxResource)
+specifier|public
+specifier|abstract
+name|void
+name|setConfiguredMaxCapacity
+parameter_list|(
+name|Resource
+name|configuredMaxResource
+parameter_list|)
+function_decl|;
 block|}
 end_class
 

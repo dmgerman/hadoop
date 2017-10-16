@@ -2802,7 +2802,7 @@ name|queueCapacity
 init|=
 name|lQueue
 operator|.
-name|getEffectiveCapacityUp
+name|getEffectiveCapacity
 argument_list|(
 name|nodePartition
 argument_list|)

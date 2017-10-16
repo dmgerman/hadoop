@@ -1184,8 +1184,16 @@ name|__
 argument_list|(
 literal|"Used Capacity:"
 argument_list|,
-name|percent
+name|appendPercent
 argument_list|(
+name|resourceUsages
+operator|.
+name|getUsed
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|,
 name|capacities
 operator|.
 name|getUsedCapacity
@@ -1199,8 +1207,60 @@ name|__
 argument_list|(
 literal|"Configured Capacity:"
 argument_list|,
-name|percent
+name|capacities
+operator|.
+name|getConfiguredMinResource
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+operator|.
+name|__
 argument_list|(
+literal|"Configured Max Capacity:"
+argument_list|,
+name|capacities
+operator|.
+name|getConfiguredMaxResource
+argument_list|()
+operator|.
+name|getResource
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|Resources
+operator|.
+name|none
+argument_list|()
+argument_list|)
+condition|?
+literal|"unlimited"
+else|:
+name|capacities
+operator|.
+name|getConfiguredMaxResource
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+operator|.
+name|__
+argument_list|(
+literal|"Effective Capacity:"
+argument_list|,
+name|appendPercent
+argument_list|(
+name|capacities
+operator|.
+name|getEffectiveMinResource
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|,
 name|capacities
 operator|.
 name|getCapacity
@@ -1212,10 +1272,18 @@ argument_list|)
 operator|.
 name|__
 argument_list|(
-literal|"Configured Max Capacity:"
+literal|"Effective Max Capacity:"
 argument_list|,
-name|percent
+name|appendPercent
 argument_list|(
+name|capacities
+operator|.
+name|getEffectiveMaxResource
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|,
 name|capacities
 operator|.
 name|getMaxCapacity
@@ -4557,6 +4625,35 @@ return|return
 name|QueuesBlock
 operator|.
 name|class
+return|;
+block|}
+DECL|method|appendPercent (String message, float f)
+specifier|static
+name|String
+name|appendPercent
+parameter_list|(
+name|String
+name|message
+parameter_list|,
+name|float
+name|f
+parameter_list|)
+block|{
+return|return
+name|message
+operator|+
+literal|" ("
+operator|+
+name|StringUtils
+operator|.
+name|formatPercent
+argument_list|(
+name|f
+argument_list|,
+literal|1
+argument_list|)
+operator|+
+literal|")"
 return|;
 block|}
 DECL|method|percent (float f)
