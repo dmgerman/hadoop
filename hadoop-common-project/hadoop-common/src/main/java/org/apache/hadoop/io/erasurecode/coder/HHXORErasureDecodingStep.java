@@ -24,6 +24,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|nio
 operator|.
 name|ByteBuffer
@@ -292,6 +302,8 @@ name|ECChunk
 index|[]
 name|outputChunks
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 if|if
 condition|(
@@ -347,6 +359,8 @@ name|ByteBuffer
 index|[]
 name|outputs
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 specifier|final
 name|int
@@ -653,6 +667,8 @@ parameter_list|,
 name|boolean
 name|isDirect
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 specifier|final
 name|int
@@ -1746,6 +1762,8 @@ parameter_list|,
 name|int
 name|bufSize
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 specifier|final
 name|int

@@ -2167,6 +2167,8 @@ name|ByteBuffer
 index|[]
 name|buffers
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 specifier|final
 name|ByteBuffer

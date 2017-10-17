@@ -26,6 +26,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|nio
 operator|.
 name|ByteBuffer
@@ -306,6 +316,8 @@ parameter_list|,
 name|RawErasureEncoder
 name|encoder
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|ByteBuffer
 index|[]

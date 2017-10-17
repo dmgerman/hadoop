@@ -621,6 +621,31 @@ name|testCodingDoMixAndTwice
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
+DECL|method|testAfterRelease63 ()
+specifier|public
+name|void
+name|testAfterRelease63
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|prepare
+argument_list|(
+literal|6
+argument_list|,
+literal|3
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+name|testAfterRelease
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 end_class
 

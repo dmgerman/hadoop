@@ -168,6 +168,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|nio
 operator|.
 name|ByteBuffer
@@ -356,6 +366,8 @@ DECL|method|decode ()
 name|void
 name|decode
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|finalizeDecodeInputs
 argument_list|()

@@ -70,6 +70,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|nio
 operator|.
 name|ByteBuffer
@@ -131,6 +141,7 @@ annotation|@
 name|Override
 DECL|method|performEncodeImpl ( ByteBuffer[] inputs, int[] inputOffsets, int dataLen, ByteBuffer[] outputs, int[] outputOffsets)
 specifier|protected
+specifier|synchronized
 name|void
 name|performEncodeImpl
 parameter_list|(
@@ -153,6 +164,8 @@ name|int
 index|[]
 name|outputOffsets
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|encodeImpl
 argument_list|(
@@ -172,6 +185,7 @@ annotation|@
 name|Override
 DECL|method|release ()
 specifier|public
+specifier|synchronized
 name|void
 name|release
 parameter_list|()
@@ -230,6 +244,8 @@ name|int
 index|[]
 name|outputOffsets
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 DECL|method|destroyImpl ()
 specifier|private

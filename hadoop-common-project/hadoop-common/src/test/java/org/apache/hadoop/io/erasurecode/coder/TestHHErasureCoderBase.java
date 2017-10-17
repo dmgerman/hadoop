@@ -52,6 +52,28 @@ name|ECChunk
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
 begin_comment
 comment|/**  * Erasure coder test base with utilities for hitchhiker.  */
 end_comment
@@ -272,6 +294,8 @@ expr_stmt|;
 block|}
 block|}
 comment|// Given the input chunks and output chunk buffers, just call it !
+try|try
+block|{
 name|codingStep
 operator|.
 name|performCoding
@@ -281,6 +305,24 @@ argument_list|,
 name|outputChunks
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|fail
+argument_list|(
+literal|"Unexpected IOException: "
+operator|+
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 name|codingStep
 operator|.

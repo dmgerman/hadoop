@@ -70,6 +70,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|nio
 operator|.
 name|ByteBuffer
@@ -130,6 +140,8 @@ name|ByteBuffer
 index|[]
 name|outputs
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|ByteBufferDecodingState
 name|decodingState
@@ -306,8 +318,10 @@ parameter_list|(
 name|ByteBufferDecodingState
 name|decodingState
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
-comment|/**    * Decode with inputs and erasedIndexes, generates outputs. More see above.    *    * @param inputs input buffers to read data from    * @param erasedIndexes indexes of erased units in the inputs array    * @param outputs output buffers to put decoded data into according to    *                erasedIndexes, ready for read after the call    */
+comment|/**    * Decode with inputs and erasedIndexes, generates outputs. More see above.    *    * @param inputs input buffers to read data from    * @param erasedIndexes indexes of erased units in the inputs array    * @param outputs output buffers to put decoded data into according to    *                erasedIndexes, ready for read after the call    * @throws IOException if the decoder is closed.    */
 DECL|method|decode (byte[][] inputs, int[] erasedIndexes, byte[][] outputs)
 specifier|public
 name|void
@@ -327,6 +341,8 @@ index|[]
 index|[]
 name|outputs
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|ByteArrayDecodingState
 name|decodingState
@@ -360,7 +376,7 @@ name|decodingState
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Perform the real decoding using bytes array, supporting offsets and    * lengths.    * @param decodingState the decoding state    */
+comment|/**    * Perform the real decoding using bytes array, supporting offsets and    * lengths.    * @param decodingState the decoding state    * @throws IOException if the decoder is closed.    */
 DECL|method|doDecode (ByteArrayDecodingState decodingState)
 specifier|protected
 specifier|abstract
@@ -370,8 +386,10 @@ parameter_list|(
 name|ByteArrayDecodingState
 name|decodingState
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
-comment|/**    * Decode with inputs and erasedIndexes, generates outputs. More see above.    *    * Note, for both input and output ECChunks, no mixing of on-heap buffers and    * direct buffers are allowed.    *    * @param inputs input buffers to read data from    * @param erasedIndexes indexes of erased units in the inputs array    * @param outputs output buffers to put decoded data into according to    *                erasedIndexes, ready for read after the call    */
+comment|/**    * Decode with inputs and erasedIndexes, generates outputs. More see above.    *    * Note, for both input and output ECChunks, no mixing of on-heap buffers and    * direct buffers are allowed.    *    * @param inputs input buffers to read data from    * @param erasedIndexes indexes of erased units in the inputs array    * @param outputs output buffers to put decoded data into according to    *                erasedIndexes, ready for read after the call    * @throws IOException if the decoder is closed    */
 DECL|method|decode (ECChunk[] inputs, int[] erasedIndexes, ECChunk[] outputs)
 specifier|public
 name|void
@@ -389,6 +407,8 @@ name|ECChunk
 index|[]
 name|outputs
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|ByteBuffer
 index|[]

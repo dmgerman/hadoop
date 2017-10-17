@@ -3486,6 +3486,8 @@ argument_list|,
 name|coderOptions
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|encoder
 operator|.
 name|encode
@@ -3495,6 +3497,26 @@ argument_list|,
 name|expectedParityBytes
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|Assert
+operator|.
+name|fail
+argument_list|(
+literal|"Unexpected IOException: "
+operator|+
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 for|for
 control|(
 name|int

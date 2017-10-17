@@ -86,6 +86,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|nio
 operator|.
 name|ByteBuffer
@@ -201,6 +211,8 @@ name|ByteBuffer
 index|[]
 name|outputs
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 comment|// Make copies avoiding affecting original ones;
 name|ByteBuffer
@@ -288,6 +300,8 @@ index|[]
 index|[]
 name|outputs
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 comment|// Make copies avoiding affecting original ones;
 name|byte

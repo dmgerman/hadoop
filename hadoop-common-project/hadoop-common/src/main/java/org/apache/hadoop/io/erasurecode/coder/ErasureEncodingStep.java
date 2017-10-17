@@ -84,6 +84,16 @@ name|RawErasureEncoder
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
 begin_comment
 comment|/**  * Erasure encoding step, a wrapper of all the necessary information to perform  * an encoding step involved in the whole process of encoding a block group.  */
 end_comment
@@ -168,6 +178,8 @@ name|ECChunk
 index|[]
 name|outputChunks
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|rawEncoder
 operator|.

@@ -721,12 +721,14 @@ name|int
 name|index
 parameter_list|)
 function_decl|;
-comment|/*    * Decode to get the missing data.    */
+comment|/**    * Decode to get the missing data.    * @throws IOException if the decoder is closed.    */
 DECL|method|decode ()
 specifier|abstract
 name|void
 name|decode
 parameter_list|()
+throws|throws
+name|IOException
 function_decl|;
 comment|/*    * Default close do nothing.    */
 DECL|method|close ()
@@ -2025,6 +2027,8 @@ parameter_list|(
 name|boolean
 name|fillBuffer
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 comment|// Step 1: prepare indices and output buffers for missing data units
 name|int

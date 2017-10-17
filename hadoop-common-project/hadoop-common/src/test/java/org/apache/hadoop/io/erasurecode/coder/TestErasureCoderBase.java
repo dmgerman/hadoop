@@ -104,11 +104,33 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|lang
 operator|.
 name|reflect
 operator|.
 name|Constructor
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
 import|;
 end_import
 
@@ -314,11 +336,31 @@ argument_list|(
 name|blockGroup
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|performCodingStep
 argument_list|(
 name|codingStep
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|fail
+argument_list|(
+literal|"Should not expect IOException: "
+operator|+
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|// Erase specified sources but return copies of them for later comparing
 name|TestBlock
 index|[]
@@ -354,11 +396,31 @@ argument_list|(
 name|blockGroup
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|performCodingStep
 argument_list|(
 name|codingStep
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|fail
+argument_list|(
+literal|"Should not expect IOException: "
+operator|+
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|// Compare
 name|compareAndVerify
 argument_list|(
@@ -380,6 +442,8 @@ parameter_list|(
 name|ErasureCodingStep
 name|codingStep
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 comment|// Pretend that we're opening these input blocks and output blocks.
 name|ECBlock

@@ -70,6 +70,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|nio
 operator|.
 name|ByteBuffer
@@ -112,7 +122,7 @@ operator|=
 name|coderOptions
 expr_stmt|;
 block|}
-comment|/**    * Encode with inputs and generates outputs.    *    * Note, for both inputs and outputs, no mixing of on-heap buffers and direct    * buffers are allowed.    *    * If the coder option ALLOW_CHANGE_INPUTS is set true (false by default), the    * content of input buffers may change after the call, subject to concrete    * implementation. Anyway the positions of input buffers will move forward.    *    * @param inputs input buffers to read data from. The buffers' remaining will    *               be 0 after encoding    * @param outputs output buffers to put the encoded data into, ready to read    *                after the call    */
+comment|/**    * Encode with inputs and generates outputs.    *    * Note, for both inputs and outputs, no mixing of on-heap buffers and direct    * buffers are allowed.    *    * If the coder option ALLOW_CHANGE_INPUTS is set true (false by default), the    * content of input buffers may change after the call, subject to concrete    * implementation. Anyway the positions of input buffers will move forward.    *    * @param inputs input buffers to read data from. The buffers' remaining will    *               be 0 after encoding    * @param outputs output buffers to put the encoded data into, ready to read    *                after the call    * @throws IOException if the encoder is closed.    */
 DECL|method|encode (ByteBuffer[] inputs, ByteBuffer[] outputs)
 specifier|public
 name|void
@@ -126,6 +136,8 @@ name|ByteBuffer
 index|[]
 name|outputs
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|ByteBufferEncodingState
 name|bbeState
@@ -300,6 +312,8 @@ parameter_list|(
 name|ByteBufferEncodingState
 name|encodingState
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 comment|/**    * Encode with inputs and generates outputs. More see above.    *    * @param inputs input buffers to read data from    * @param outputs output buffers to put the encoded data into, read to read    *                after the call    */
 DECL|method|encode (byte[][] inputs, byte[][] outputs)
@@ -317,6 +331,8 @@ index|[]
 index|[]
 name|outputs
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|ByteArrayEncodingState
 name|baeState
@@ -363,8 +379,10 @@ parameter_list|(
 name|ByteArrayEncodingState
 name|encodingState
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
-comment|/**    * Encode with inputs and generates outputs. More see above.    *    * @param inputs input buffers to read data from    * @param outputs output buffers to put the encoded data into, read to read    *                after the call    */
+comment|/**    * Encode with inputs and generates outputs. More see above.    *    * @param inputs input buffers to read data from    * @param outputs output buffers to put the encoded data into, read to read    *                after the call    * @throws IOException if the encoder is closed.    */
 DECL|method|encode (ECChunk[] inputs, ECChunk[] outputs)
 specifier|public
 name|void
@@ -378,6 +396,8 @@ name|ECChunk
 index|[]
 name|outputs
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|ByteBuffer
 index|[]

@@ -66,6 +66,16 @@ name|ECChunk
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
 begin_comment
 comment|/**  * Erasure coding step that's involved in encoding/decoding of a block group.  */
 end_comment
@@ -107,6 +117,8 @@ name|ECChunk
 index|[]
 name|outputChunks
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 comment|/**    * Notify erasure coder that all the chunks of input blocks are processed so    * the coder can be able to update internal states, considering next step.    */
 DECL|method|finish ()

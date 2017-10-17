@@ -70,6 +70,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|nio
 operator|.
 name|ByteBuffer
@@ -129,8 +139,9 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|performDecodeImpl (ByteBuffer[] inputs, int[] inputOffsets, int dataLen, int[] erased, ByteBuffer[] outputs, int[] outputOffsets)
+DECL|method|performDecodeImpl ( ByteBuffer[] inputs, int[] inputOffsets, int dataLen, int[] erased, ByteBuffer[] outputs, int[] outputOffsets)
 specifier|protected
+specifier|synchronized
 name|void
 name|performDecodeImpl
 parameter_list|(
@@ -157,6 +168,8 @@ name|int
 index|[]
 name|outputOffsets
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|decodeImpl
 argument_list|(
@@ -178,6 +191,7 @@ annotation|@
 name|Override
 DECL|method|release ()
 specifier|public
+specifier|synchronized
 name|void
 name|release
 parameter_list|()
@@ -199,6 +213,7 @@ name|int
 name|numParityUnits
 parameter_list|)
 function_decl|;
+comment|/**    * Native implementation of decoding.    * @throws IOException if the decoder is closed.    */
 DECL|method|decodeImpl ( ByteBuffer[] inputs, int[] inputOffsets, int dataLen, int[] erased, ByteBuffer[] outputs, int[] outputOffsets)
 specifier|private
 specifier|native
@@ -228,6 +243,8 @@ name|int
 index|[]
 name|outputOffsets
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 DECL|method|destroyImpl ()
 specifier|private

@@ -460,6 +460,8 @@ parameter_list|(
 name|int
 name|toReconstructLen
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|ByteBuffer
 index|[]

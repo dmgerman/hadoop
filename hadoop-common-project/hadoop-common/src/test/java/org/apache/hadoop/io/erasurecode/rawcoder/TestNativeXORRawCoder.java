@@ -56,6 +56,16 @@ name|Before
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/**  * Test NativeXOR encoding and decoding.  */
 end_comment
@@ -106,6 +116,31 @@ name|setAllowDump
 argument_list|(
 literal|true
 argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testAfterRelease63 ()
+specifier|public
+name|void
+name|testAfterRelease63
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|prepare
+argument_list|(
+literal|6
+argument_list|,
+literal|3
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+name|testAfterRelease
+argument_list|()
 expr_stmt|;
 block|}
 block|}

@@ -24,6 +24,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|nio
 operator|.
 name|ByteBuffer
@@ -218,6 +228,8 @@ name|ECChunk
 index|[]
 name|outputChunks
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|ByteBuffer
 index|[]
@@ -262,6 +274,8 @@ name|ByteBuffer
 index|[]
 name|outputs
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 specifier|final
 name|int
@@ -482,6 +496,8 @@ index|[]
 index|[]
 name|outputs
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 specifier|final
 name|int
