@@ -745,6 +745,17 @@ operator|new
 name|ElasticByteBufferPool
 argument_list|()
 decl_stmt|;
+comment|/**    * OutputStream level last exception, will be used to indicate the fatal    * exception of this stream, i.e., being aborted.    */
+DECL|field|exceptionLastSeen
+specifier|private
+specifier|final
+name|ExceptionLastSeen
+name|exceptionLastSeen
+init|=
+operator|new
+name|ExceptionLastSeen
+argument_list|()
+decl_stmt|;
 DECL|class|MultipleBlockingQueue
 specifier|static
 class|class
@@ -5066,18 +5077,7 @@ condition|)
 block|{
 return|return;
 block|}
-for|for
-control|(
-name|StripedDataStreamer
-name|streamer
-range|:
-name|streamers
-control|)
-block|{
-name|streamer
-operator|.
-name|getLastException
-argument_list|()
+name|exceptionLastSeen
 operator|.
 name|set
 argument_list|(
@@ -5102,7 +5102,6 @@ literal|" seconds expired."
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 try|try
 block|{
 name|closeThreads
@@ -5886,6 +5885,29 @@ name|isClosed
 argument_list|()
 condition|)
 block|{
+name|exceptionLastSeen
+operator|.
+name|check
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+comment|// Writing to at least {dataUnits} replicas can be considered as success,
+comment|// and the rest of data can be recovered.
+specifier|final
+name|int
+name|minReplication
+init|=
+name|ecPolicy
+operator|.
+name|getNumDataUnits
+argument_list|()
+decl_stmt|;
+name|int
+name|goodStreamers
+init|=
+literal|0
+decl_stmt|;
 specifier|final
 name|MultipleIOException
 operator|.
@@ -5900,31 +5922,13 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
-name|streamers
-operator|.
-name|size
-argument_list|()
-condition|;
-name|i
-operator|++
-control|)
-block|{
 specifier|final
 name|StripedDataStreamer
 name|si
-init|=
-name|getStripedDataStreamer
-argument_list|(
-name|i
-argument_list|)
-decl_stmt|;
+range|:
+name|streamers
+control|)
+block|{
 try|try
 block|{
 name|si
@@ -5936,6 +5940,9 @@ name|check
 argument_list|(
 literal|true
 argument_list|)
+expr_stmt|;
+name|goodStreamers
+operator|++
 expr_stmt|;
 block|}
 catch|catch
@@ -5953,6 +5960,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+if|if
+condition|(
+name|goodStreamers
+operator|<
+name|minReplication
+condition|)
+block|{
 specifier|final
 name|IOException
 name|ioe
@@ -5972,6 +5986,7 @@ block|{
 throw|throw
 name|ioe
 throw|;
+block|}
 block|}
 return|return;
 block|}
@@ -6075,9 +6090,10 @@ block|}
 finally|finally
 block|{
 comment|// Failures may happen when flushing data/parity data out. Exceptions
-comment|// may be thrown if more than 3 streamers fail, or updatePipeline RPC
-comment|// fails. Streamers may keep waiting for the new block/GS information.
-comment|// Thus need to force closing these threads.
+comment|// may be thrown if the number of failed streamers is more than the
+comment|// number of parity blocks, or updatePipeline RPC fails. Streamers may
+comment|// keep waiting for the new block/GS information. Thus need to force
+comment|// closing these threads.
 name|closeThreads
 argument_list|(
 literal|true
