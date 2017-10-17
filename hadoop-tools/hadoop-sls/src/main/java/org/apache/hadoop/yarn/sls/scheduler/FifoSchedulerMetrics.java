@@ -127,18 +127,18 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|trackQueue (String queueName)
-specifier|public
+DECL|method|registerQueueMetrics (String queueName)
+specifier|protected
 name|void
-name|trackQueue
+name|registerQueueMetrics
 parameter_list|(
 name|String
 name|queueName
 parameter_list|)
 block|{
-name|trackedQueues
+name|super
 operator|.
-name|add
+name|registerQueueMetrics
 argument_list|(
 name|queueName
 argument_list|)

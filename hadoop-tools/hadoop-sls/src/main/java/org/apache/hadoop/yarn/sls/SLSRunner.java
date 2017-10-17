@@ -4611,6 +4611,16 @@ argument_list|,
 name|appNum
 argument_list|)
 expr_stmt|;
+name|wrapper
+operator|.
+name|getSchedulerMetrics
+argument_list|()
+operator|.
+name|trackQueue
+argument_list|(
+name|queueName
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|runNewAM (String jobType, String user, String jobQueue, String oldJobId, long jobStartTimeMS, long jobFinishTimeMS, List<ContainerSimulator> containerList, ReservationSubmissionRequest rr, Resource amContainerResource)
 specifier|private

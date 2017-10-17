@@ -73,25 +73,6 @@ name|super
 argument_list|()
 expr_stmt|;
 block|}
-annotation|@
-name|Override
-DECL|method|trackQueue (String queueName)
-specifier|public
-name|void
-name|trackQueue
-parameter_list|(
-name|String
-name|queueName
-parameter_list|)
-block|{
-name|trackedQueues
-operator|.
-name|add
-argument_list|(
-name|queueName
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 end_class
 
