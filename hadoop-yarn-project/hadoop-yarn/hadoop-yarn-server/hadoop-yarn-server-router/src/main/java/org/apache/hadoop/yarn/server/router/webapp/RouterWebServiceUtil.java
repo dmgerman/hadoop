@@ -2363,7 +2363,7 @@ operator|.
 name|getTotalVirtualCores
 argument_list|()
 operator|+
-name|metrics
+name|metricsResponse
 operator|.
 name|getTotalVirtualCores
 argument_list|()
@@ -2378,7 +2378,7 @@ operator|.
 name|getTotalNodes
 argument_list|()
 operator|+
-name|metrics
+name|metricsResponse
 operator|.
 name|getTotalNodes
 argument_list|()
@@ -2393,7 +2393,7 @@ operator|.
 name|getLostNodes
 argument_list|()
 operator|+
-name|metrics
+name|metricsResponse
 operator|.
 name|getLostNodes
 argument_list|()
@@ -2408,7 +2408,7 @@ operator|.
 name|getUnhealthyNodes
 argument_list|()
 operator|+
-name|metrics
+name|metricsResponse
 operator|.
 name|getUnhealthyNodes
 argument_list|()
@@ -2423,7 +2423,7 @@ operator|.
 name|getDecommissioningNodes
 argument_list|()
 operator|+
-name|metrics
+name|metricsResponse
 operator|.
 name|getDecommissioningNodes
 argument_list|()
@@ -2438,7 +2438,7 @@ operator|.
 name|getDecommissionedNodes
 argument_list|()
 operator|+
-name|metrics
+name|metricsResponse
 operator|.
 name|getDecommissionedNodes
 argument_list|()
@@ -2453,7 +2453,7 @@ operator|.
 name|getRebootedNodes
 argument_list|()
 operator|+
-name|metrics
+name|metricsResponse
 operator|.
 name|getRebootedNodes
 argument_list|()
@@ -2468,7 +2468,7 @@ operator|.
 name|getActiveNodes
 argument_list|()
 operator|+
-name|metrics
+name|metricsResponse
 operator|.
 name|getActiveNodes
 argument_list|()
@@ -2483,7 +2483,7 @@ operator|.
 name|getShutdownNodes
 argument_list|()
 operator|+
-name|metrics
+name|metricsResponse
 operator|.
 name|getShutdownNodes
 argument_list|()
