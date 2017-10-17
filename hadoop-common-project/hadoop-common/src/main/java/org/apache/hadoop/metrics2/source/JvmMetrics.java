@@ -373,6 +373,30 @@ return|return
 name|impl
 return|;
 block|}
+DECL|method|shutdown ()
+specifier|synchronized
+name|void
+name|shutdown
+parameter_list|()
+block|{
+name|DefaultMetricsSystem
+operator|.
+name|instance
+argument_list|()
+operator|.
+name|unregisterSource
+argument_list|(
+name|JvmMetrics
+operator|.
+name|name
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|impl
+operator|=
+literal|null
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|VisibleForTesting
@@ -512,6 +536,8 @@ index|[]
 argument_list|>
 argument_list|()
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
 DECL|method|JvmMetrics (String processName, String sessionId)
 name|JvmMetrics
 parameter_list|(
@@ -649,6 +675,22 @@ argument_list|,
 name|sessionId
 argument_list|)
 return|;
+block|}
+comment|/**    * Shutdown the JvmMetrics singleton. This is not necessary if the JVM itself    * is shutdown, but may be necessary for scenarios where JvmMetrics instance    * needs to be re-created while the JVM is still around. One such scenario    * is unit-testing.    */
+DECL|method|shutdownSingleton ()
+specifier|public
+specifier|static
+name|void
+name|shutdownSingleton
+parameter_list|()
+block|{
+name|Singleton
+operator|.
+name|INSTANCE
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Override

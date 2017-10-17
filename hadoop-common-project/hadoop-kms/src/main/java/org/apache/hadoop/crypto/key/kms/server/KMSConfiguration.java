@@ -349,6 +349,39 @@ name|CONFIG_PREFIX
 operator|+
 literal|"audit.aggregation.window.ms"
 decl_stmt|;
+comment|// Process name shown in metrics
+DECL|field|METRICS_PROCESS_NAME_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|METRICS_PROCESS_NAME_KEY
+init|=
+name|CONFIG_PREFIX
+operator|+
+literal|"metrics.process.name"
+decl_stmt|;
+DECL|field|METRICS_PROCESS_NAME_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|METRICS_PROCESS_NAME_DEFAULT
+init|=
+literal|"KMS"
+decl_stmt|;
+comment|// Session id for metrics
+DECL|field|METRICS_SESSION_ID_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|METRICS_SESSION_ID_KEY
+init|=
+name|CONFIG_PREFIX
+operator|+
+literal|"metrics.session.id"
+decl_stmt|;
 comment|// KMS Audit logger classes to use
 DECL|field|KMS_AUDIT_LOGGER_KEY
 specifier|public
