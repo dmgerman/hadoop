@@ -255,10 +255,10 @@ name|state
 init|=
 literal|null
 decl_stmt|;
-DECL|field|componentName
+DECL|field|componentInstanceName
 specifier|private
 name|String
-name|componentName
+name|componentInstanceName
 init|=
 literal|null
 decl_stmt|;
@@ -717,7 +717,7 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|componentName
+name|componentInstanceName
 operator|=
 name|componentName
 expr_stmt|;
@@ -741,14 +741,14 @@ name|JsonProperty
 argument_list|(
 literal|"component_name"
 argument_list|)
-DECL|method|getComponentName ()
+DECL|method|getComponentInstanceName ()
 specifier|public
 name|String
-name|getComponentName
+name|getComponentInstanceName
 parameter_list|()
 block|{
 return|return
-name|componentName
+name|componentInstanceName
 return|;
 block|}
 annotation|@
@@ -758,20 +758,20 @@ name|name
 operator|=
 literal|"component_name"
 argument_list|)
-DECL|method|setComponentName (String componentName)
+DECL|method|setComponentInstanceName (String componentInstanceName)
 specifier|public
 name|void
-name|setComponentName
+name|setComponentInstanceName
 parameter_list|(
 name|String
-name|componentName
+name|componentInstanceName
 parameter_list|)
 block|{
 name|this
 operator|.
-name|componentName
+name|componentInstanceName
 operator|=
-name|componentName
+name|componentInstanceName
 expr_stmt|;
 block|}
 comment|/**    * Resource used for this container.    **/
@@ -1191,14 +1191,14 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"    componentName: "
+literal|"    componentInstanceName: "
 argument_list|)
 operator|.
 name|append
 argument_list|(
 name|toIndentedString
 argument_list|(
-name|componentName
+name|componentInstanceName
 argument_list|)
 argument_list|)
 operator|.

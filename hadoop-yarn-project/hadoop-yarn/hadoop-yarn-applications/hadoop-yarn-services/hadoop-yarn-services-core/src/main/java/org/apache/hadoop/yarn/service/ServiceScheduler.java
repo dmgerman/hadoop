@@ -4062,6 +4062,17 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Failed to start "
+operator|+
+name|containerId
+argument_list|,
+name|t
+argument_list|)
+expr_stmt|;
 name|amRMClient
 operator|.
 name|releaseAssignedContainer

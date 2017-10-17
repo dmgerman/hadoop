@@ -62,10 +62,6 @@ name|InterfaceStability
 import|;
 end_import
 
-begin_comment
-comment|/**  * The current state of an service.  **/
-end_comment
-
 begin_enum
 annotation|@
 name|InterfaceAudience
@@ -80,43 +76,19 @@ name|ApiModel
 argument_list|(
 name|description
 operator|=
-literal|"The current state of an service."
+literal|"The current state of a component."
 argument_list|)
-annotation|@
-name|javax
-operator|.
-name|annotation
-operator|.
-name|Generated
-argument_list|(
-name|value
-operator|=
-literal|"class io.swagger.codegen.languages.JavaClientCodegen"
-argument_list|,
-name|date
-operator|=
-literal|"2016-06-02T08:15:05.615-07:00"
-argument_list|)
-DECL|enum|ServiceState
+DECL|enum|ComponentState
 specifier|public
 enum|enum
-name|ServiceState
+name|ComponentState
 block|{
-DECL|enumConstant|ACCEPTED
-DECL|enumConstant|STARTED
+DECL|enumConstant|FLEXING
 DECL|enumConstant|STABLE
-DECL|enumConstant|STOPPED
-DECL|enumConstant|FAILED
-name|ACCEPTED
-block|,
-name|STARTED
+name|FLEXING
 block|,
 name|STABLE
-block|,
-name|STOPPED
-block|,
-name|FAILED
-block|; }
+block|}
 end_enum
 
 end_unit

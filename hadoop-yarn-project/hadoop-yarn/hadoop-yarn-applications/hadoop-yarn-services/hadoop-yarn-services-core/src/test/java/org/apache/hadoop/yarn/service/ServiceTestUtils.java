@@ -708,7 +708,8 @@ name|exampleApp
 return|;
 block|}
 DECL|method|createComponent (String name)
-specifier|protected
+specifier|public
+specifier|static
 name|Component
 name|createComponent
 parameter_list|(
@@ -729,6 +730,7 @@ return|;
 block|}
 DECL|method|createComponent (String name, long numContainers, String command)
 specifier|protected
+specifier|static
 name|Component
 name|createComponent
 parameter_list|(

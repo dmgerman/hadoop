@@ -956,6 +956,24 @@ operator|new
 name|ContainerStartedTransition
 argument_list|()
 argument_list|)
+operator|.
+name|addTransition
+argument_list|(
+name|INIT
+argument_list|,
+name|INIT
+argument_list|,
+name|STOP
+argument_list|,
+comment|// container failed before launching, nothing to cleanup from registry
+comment|// This could happen if NMClient#startContainerAsync failed, container
+comment|// will be completed, but COMP_INSTANCE is still at INIT.
+operator|new
+name|ContainerStoppedTransition
+argument_list|(
+literal|true
+argument_list|)
+argument_list|)
 comment|//From Running
 operator|.
 name|addTransition
@@ -1336,7 +1354,7 @@ argument_list|)
 expr_stmt|;
 name|container
 operator|.
-name|setComponentName
+name|setComponentInstanceName
 argument_list|(
 name|compInstance
 operator|.
@@ -1502,6 +1520,39 @@ name|ContainerStoppedTransition
 extends|extends
 name|BaseTransition
 block|{
+comment|// whether the container failed before launched by AM or not.
+DECL|field|failedBeforeLaunching
+name|boolean
+name|failedBeforeLaunching
+init|=
+literal|false
+decl_stmt|;
+DECL|method|ContainerStoppedTransition (boolean failedBeforeLaunching)
+specifier|public
+name|ContainerStoppedTransition
+parameter_list|(
+name|boolean
+name|failedBeforeLaunching
+parameter_list|)
+block|{
+name|this
+operator|.
+name|failedBeforeLaunching
+operator|=
+name|failedBeforeLaunching
+expr_stmt|;
+block|}
+DECL|method|ContainerStoppedTransition ()
+specifier|public
+name|ContainerStoppedTransition
+parameter_list|()
+block|{
+name|this
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|transition (ComponentInstance compInstance, ComponentInstanceEvent event)
@@ -1697,7 +1748,15 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
+if|if
+condition|(
+operator|!
+name|failedBeforeLaunching
+condition|)
+block|{
 comment|// clean up registry
+comment|// If the container failed before launching, no need to cleanup registry,
+comment|// because it was not registered before.
 comment|// hdfs dir content will be overwritten when a new container gets started,
 comment|// so no need remove.
 name|compInstance
@@ -1711,20 +1770,6 @@ argument_list|(
 name|compInstance
 operator|::
 name|cleanupRegistry
-argument_list|)
-expr_stmt|;
-comment|// remove the failed ContainerId -> CompInstance mapping
-name|comp
-operator|.
-name|getScheduler
-argument_list|()
-operator|.
-name|removeLiveCompInstance
-argument_list|(
-name|event
-operator|.
-name|getContainerId
-argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
@@ -1772,6 +1817,21 @@ argument_list|(
 name|ContainerState
 operator|.
 name|STOPPED
+argument_list|)
+expr_stmt|;
+block|}
+comment|// remove the failed ContainerId -> CompInstance mapping
+name|comp
+operator|.
+name|getScheduler
+argument_list|()
+operator|.
+name|removeLiveCompInstance
+argument_list|(
+name|event
+operator|.
+name|getContainerId
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if

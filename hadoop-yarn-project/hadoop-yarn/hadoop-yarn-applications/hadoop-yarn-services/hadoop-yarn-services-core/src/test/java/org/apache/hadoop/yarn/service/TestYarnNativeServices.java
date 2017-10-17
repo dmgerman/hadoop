@@ -1100,7 +1100,7 @@ argument_list|(
 name|index
 argument_list|)
 operator|.
-name|getComponentName
+name|getComponentInstanceName
 argument_list|()
 decl_stmt|;
 name|String
@@ -1348,7 +1348,7 @@ name|add
 argument_list|(
 name|container
 operator|.
-name|getComponentName
+name|getComponentInstanceName
 argument_list|()
 argument_list|)
 expr_stmt|;
