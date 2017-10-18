@@ -22,6 +22,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|Closeable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -76,6 +86,8 @@ name|K
 parameter_list|,
 name|V
 parameter_list|>
+extends|extends
+name|Closeable
 block|{
 comment|/**     * Reads the next key/value pair from the input for processing.    *    * @param key the key to read data into    * @param value the value to read data into    * @return true iff a key/value was read, false if at EOF    */
 DECL|method|next (K key, V value)
@@ -112,6 +124,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**     * Close this {@link InputSplit} to future operations.    *     * @throws IOException    */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
