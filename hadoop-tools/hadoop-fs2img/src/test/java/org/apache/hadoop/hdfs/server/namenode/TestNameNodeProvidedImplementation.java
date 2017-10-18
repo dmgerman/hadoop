@@ -3430,14 +3430,19 @@ name|getDatanodeUuid
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|//stop the 2nd provided datanode
+comment|// stop the 2nd provided datanode
+name|MiniDFSCluster
+operator|.
+name|DataNodeProperties
+name|providedDNProperties2
+init|=
 name|cluster
 operator|.
 name|stopDataNode
 argument_list|(
-literal|1
+literal|0
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 comment|// make NameNode detect that datanode is down
 name|BlockManagerTestUtil
 operator|.
