@@ -166,6 +166,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|utils
 operator|.
 name|BackgroundService
@@ -501,6 +515,19 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|int
+name|dnTxCount
+init|=
+literal|0
+decl_stmt|;
+name|long
+name|startTime
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+decl_stmt|;
 comment|// Scan SCM DB in HB interval and collect a throttled list of
 comment|// to delete blocks.
 name|LOG
@@ -529,15 +556,16 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
+for|for
+control|(
+name|DatanodeID
+name|datanodeID
+range|:
 name|transactions
 operator|.
 name|getDatanodes
 argument_list|()
-operator|.
-name|forEach
-argument_list|(
-name|datanodeID
-lambda|->
+control|)
 block|{
 name|List
 argument_list|<
@@ -552,6 +580,13 @@ argument_list|(
 name|datanodeID
 argument_list|)
 decl_stmt|;
+name|dnTxCount
+operator|+=
+name|dnTXs
+operator|.
+name|size
+argument_list|()
+expr_stmt|;
 comment|// TODO commandQueue needs a cap.
 comment|// We should stop caching new commands if num of un-processed
 comment|// command is bigger than a limit, e.g 50. In case datanode goes
@@ -571,7 +606,7 @@ argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Added delete block command for datanode {} in the queue,"
 operator|+
@@ -600,6 +635,38 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+if|if
+condition|(
+name|dnTxCount
+operator|>
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Totally added {} delete blocks command for"
+operator|+
+literal|" {} datanodes, task elapsed time: {}ms"
+argument_list|,
+name|dnTxCount
+argument_list|,
+name|transactions
+operator|.
+name|getDatanodes
+argument_list|()
+operator|.
+name|size
+argument_list|()
+argument_list|,
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+operator|-
+name|startTime
 argument_list|)
 expr_stmt|;
 block|}
