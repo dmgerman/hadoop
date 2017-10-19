@@ -768,7 +768,7 @@ operator|.
 name|getRemainingTime
 argument_list|()
 operator|+
-literal|5
+literal|1000
 decl_stmt|;
 try|try
 block|{
@@ -1155,7 +1155,7 @@ operator|.
 name|getRemainingTime
 argument_list|()
 operator|+
-literal|5
+literal|1000
 decl_stmt|;
 try|try
 block|{
@@ -1762,7 +1762,7 @@ operator|.
 name|getRemainingTime
 argument_list|()
 operator|+
-literal|10
+literal|1000
 decl_stmt|;
 try|try
 block|{
@@ -2151,7 +2151,7 @@ operator|.
 name|getRemainingTime
 argument_list|()
 operator|+
-literal|5
+literal|1000
 decl_stmt|;
 try|try
 block|{
