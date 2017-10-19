@@ -1053,27 +1053,6 @@ name|CONFIG_PREFIX
 init|=
 literal|"hadoop.security.kms.client."
 decl_stmt|;
-comment|/* It's possible to specify a timeout, in seconds, in the config file */
-DECL|field|TIMEOUT_ATTR
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|TIMEOUT_ATTR
-init|=
-name|CONFIG_PREFIX
-operator|+
-literal|"timeout"
-decl_stmt|;
-DECL|field|DEFAULT_TIMEOUT
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|DEFAULT_TIMEOUT
-init|=
-literal|60
-decl_stmt|;
 comment|/* Number of times to retry authentication in the event of auth failure    * (normally happens due to stale authToken)     */
 DECL|field|AUTH_RETRY
 specifier|public
@@ -2212,9 +2191,13 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-name|TIMEOUT_ATTR
+name|CommonConfigurationKeysPublic
+operator|.
+name|KMS_CLIENT_TIMEOUT_SECONDS
 argument_list|,
-name|DEFAULT_TIMEOUT
+name|CommonConfigurationKeysPublic
+operator|.
+name|KMS_CLIENT_TIMEOUT_DEFAULT
 argument_list|)
 decl_stmt|;
 name|authRetry

@@ -1504,6 +1504,25 @@ init|=
 literal|43200000
 decl_stmt|;
 comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
+DECL|field|KMS_CLIENT_TIMEOUT_SECONDS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KMS_CLIENT_TIMEOUT_SECONDS
+init|=
+literal|"hadoop.security.kms.client.timeout"
+decl_stmt|;
+DECL|field|KMS_CLIENT_TIMEOUT_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|KMS_CLIENT_TIMEOUT_DEFAULT
+init|=
+literal|60
+decl_stmt|;
+comment|/**    * @see    *<a href="{@docRoot}/../hadoop-project-dist/hadoop-common/core-default.xml">    * core-default.xml</a>    */
 comment|/** Default value is the number of providers specified. */
 DECL|field|KMS_CLIENT_FAILOVER_MAX_RETRIES_KEY
 specifier|public
