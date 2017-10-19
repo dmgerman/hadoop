@@ -18496,6 +18496,11 @@ literal|"Got incremental block report from unregistered or dead node"
 argument_list|)
 throw|;
 block|}
+name|boolean
+name|successful
+init|=
+literal|false
+decl_stmt|;
 try|try
 block|{
 name|processIncrementalBlockReport
@@ -18505,12 +18510,18 @@ argument_list|,
 name|srdb
 argument_list|)
 expr_stmt|;
+name|successful
+operator|=
+literal|true
+expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|ex
-parameter_list|)
+finally|finally
+block|{
+if|if
+condition|(
+operator|!
+name|successful
+condition|)
 block|{
 name|node
 operator|.
@@ -18519,9 +18530,7 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-throw|throw
-name|ex
-throw|;
+block|}
 block|}
 block|}
 DECL|method|processIncrementalBlockReport (final DatanodeDescriptor node, final StorageReceivedDeletedBlocks srdb)
