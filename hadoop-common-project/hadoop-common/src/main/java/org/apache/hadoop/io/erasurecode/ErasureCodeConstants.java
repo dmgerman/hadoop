@@ -190,6 +190,17 @@ argument_list|,
 literal|2
 argument_list|)
 decl_stmt|;
+DECL|field|MAX_POLICY_ID
+specifier|public
+specifier|static
+specifier|final
+name|byte
+name|MAX_POLICY_ID
+init|=
+name|Byte
+operator|.
+name|MAX_VALUE
+decl_stmt|;
 DECL|field|USER_DEFINED_POLICY_START_ID
 specifier|public
 specifier|static
