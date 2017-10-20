@@ -5762,7 +5762,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Downloading public rsrc:"
+literal|"Downloading public resource: "
 operator|+
 name|key
 argument_list|)
@@ -6090,10 +6090,62 @@ block|}
 block|}
 else|else
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Skip downloading resource: "
+operator|+
+name|key
+operator|+
+literal|" since it's in"
+operator|+
+literal|" state: "
+operator|+
+name|rsrc
+operator|.
+name|getState
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|rsrc
 operator|.
 name|unlock
 argument_list|()
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Skip downloading resource: "
+operator|+
+name|key
+operator|+
+literal|" since it is locked"
+operator|+
+literal|" by other threads"
+argument_list|)
 expr_stmt|;
 block|}
 block|}
