@@ -2080,6 +2080,13 @@ operator|.
 name|hasWriteLock
 argument_list|()
 assert|;
+assert|assert
+operator|!
+name|fsd
+operator|.
+name|hasWriteLock
+argument_list|()
+assert|;
 if|if
 condition|(
 name|batch
@@ -2115,13 +2122,32 @@ name|getInodeId
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
+comment|// no dir lock, so inode could be removed. no-op if so.
+if|if
+condition|(
 name|inode
+operator|==
+literal|null
+condition|)
+block|{
+name|NameNode
+operator|.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Cannot find inode {}, skip saving xattr for"
+operator|+
+literal|" re-encryption"
+argument_list|,
+name|entry
+operator|.
+name|getInodeId
+argument_list|()
 argument_list|)
 expr_stmt|;
+continue|continue;
+block|}
 name|fsd
 operator|.
 name|getEditLog
