@@ -158,6 +158,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|AddErasureCodingPolicyResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|DatanodeInfo
 import|;
 end_import
@@ -357,6 +373,22 @@ operator|.
 name|erasurecode
 operator|.
 name|CodecUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|erasurecode
+operator|.
+name|ECSchema
 import|;
 end_import
 
@@ -716,6 +748,25 @@ name|ALL
 argument_list|)
 expr_stmt|;
 block|}
+DECL|field|cellSize
+specifier|private
+specifier|final
+name|int
+name|cellSize
+init|=
+literal|64
+operator|*
+literal|1024
+decl_stmt|;
+comment|//64k
+DECL|field|stripesPerBlock
+specifier|private
+specifier|final
+name|int
+name|stripesPerBlock
+init|=
+literal|4
+decl_stmt|;
 DECL|field|ecPolicy
 specifier|private
 name|ErasureCodingPolicy
@@ -730,19 +781,6 @@ DECL|field|parityBlocks
 specifier|private
 name|int
 name|parityBlocks
-decl_stmt|;
-DECL|field|cellSize
-specifier|private
-name|int
-name|cellSize
-decl_stmt|;
-DECL|field|stripesPerBlock
-specifier|private
-specifier|final
-name|int
-name|stripesPerBlock
-init|=
-literal|4
 decl_stmt|;
 DECL|field|blockSize
 specifier|private
@@ -769,16 +807,19 @@ name|DFS_BYTES_PER_CHECKSUM_DEFAULT
 operator|+
 literal|1
 decl_stmt|;
-DECL|method|getEcPolicy ()
+DECL|method|getEcSchema ()
 specifier|public
-name|ErasureCodingPolicy
-name|getEcPolicy
+name|ECSchema
+name|getEcSchema
 parameter_list|()
 block|{
 return|return
 name|StripedFileTestUtil
 operator|.
 name|getDefaultECPolicy
+argument_list|()
+operator|.
+name|getSchema
 argument_list|()
 return|;
 block|}
@@ -793,8 +834,14 @@ parameter_list|()
 block|{
 name|ecPolicy
 operator|=
-name|getEcPolicy
+operator|new
+name|ErasureCodingPolicy
+argument_list|(
+name|getEcSchema
 argument_list|()
+argument_list|,
+name|cellSize
+argument_list|)
 expr_stmt|;
 name|dataBlocks
 operator|=
@@ -808,13 +855,6 @@ operator|=
 name|ecPolicy
 operator|.
 name|getNumParityUnits
-argument_list|()
-expr_stmt|;
-name|cellSize
-operator|=
-name|ecPolicy
-operator|.
-name|getCellSize
 argument_list|()
 expr_stmt|;
 name|blockSize
@@ -1709,6 +1749,42 @@ operator|.
 name|getFileSystem
 argument_list|()
 expr_stmt|;
+name|AddErasureCodingPolicyResponse
+index|[]
+name|res
+init|=
+name|dfs
+operator|.
+name|addErasureCodingPolicies
+argument_list|(
+operator|new
+name|ErasureCodingPolicy
+index|[]
+block|{
+name|ecPolicy
+block|}
+argument_list|)
+decl_stmt|;
+name|ecPolicy
+operator|=
+name|res
+index|[
+literal|0
+index|]
+operator|.
+name|getPolicy
+argument_list|()
+expr_stmt|;
+name|dfs
+operator|.
+name|enableErasureCodingPolicy
+argument_list|(
+name|ecPolicy
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|DFSTestUtil
 operator|.
 name|enableAllECPolicies
@@ -1823,7 +1899,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|240000
+literal|300000
 argument_list|)
 DECL|method|testMultipleDatanodeFailure56 ()
 specifier|public
@@ -1898,17 +1974,16 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+comment|// Make sure killPos is greater than the length of one stripe
 specifier|final
 name|int
 name|length
 init|=
 name|dataBlocks
 operator|*
-operator|(
-name|blockSize
-operator|-
 name|cellSize
-operator|)
+operator|*
+literal|3
 decl_stmt|;
 specifier|final
 name|HdfsConfiguration
@@ -2140,7 +2215,7 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|"Mismatches number of live Dns "
+literal|"Mismatches number of live Dns"
 argument_list|,
 name|numDatanodes
 argument_list|,
@@ -2183,8 +2258,7 @@ name|dataBlocks
 operator|+
 literal|" required nodes for "
 operator|+
-name|getEcPolicy
-argument_list|()
+name|ecPolicy
 operator|.
 name|getName
 argument_list|()
@@ -2751,7 +2825,7 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|"Mismatches number of live Dns "
+literal|"Mismatches number of live Dns"
 argument_list|,
 name|numDatanodes
 argument_list|,
@@ -4439,14 +4513,6 @@ init|=
 name|getBase
 argument_list|()
 decl_stmt|;
-comment|// TODO: Fix and re-enable these flaky tests. See HDFS-12417.
-name|assumeTrue
-argument_list|(
-literal|"Test has been temporarily disabled. See HDFS-12417."
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
 name|assumeTrue
 argument_list|(
 name|base
