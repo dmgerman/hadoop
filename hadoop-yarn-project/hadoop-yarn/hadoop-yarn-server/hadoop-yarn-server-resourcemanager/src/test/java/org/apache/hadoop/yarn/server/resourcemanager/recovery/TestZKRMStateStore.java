@@ -1285,6 +1285,8 @@ operator|+
 name|VERSION_NODE
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getCurrentVersion ()
 specifier|public
 name|Version
@@ -1535,6 +1537,8 @@ name|conf
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getRMStateStore ()
 specifier|public
 name|RMStateStore
@@ -1649,6 +1653,8 @@ name|getCurrentVersion
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|appExists (RMApp app)
 specifier|public
 name|boolean
@@ -1711,6 +1717,8 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|attemptExists (RMAppAttempt attempt)
 specifier|public
 name|boolean
@@ -1991,6 +1999,8 @@ specifier|private
 name|boolean
 name|appsavefailedEvnt
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|handle (Event event)
 specifier|public
 name|void
