@@ -1034,15 +1034,6 @@ name|RuntimeException
 name|rte
 parameter_list|)
 block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"The failover controller encounters runtime error: "
-operator|+
-name|rte
-argument_list|)
-expr_stmt|;
 throw|throw
 operator|(
 name|Exception
@@ -1064,11 +1055,7 @@ index|[]
 name|args
 parameter_list|)
 throws|throws
-name|HadoopIllegalArgumentException
-throws|,
-name|IOException
-throws|,
-name|InterruptedException
+name|Exception
 block|{
 try|try
 block|{
@@ -1101,12 +1088,16 @@ operator|+
 literal|" and ensure that "
 operator|+
 literal|"ZooKeeper is running."
+argument_list|,
+name|ke
 argument_list|)
 expr_stmt|;
 return|return
 name|ERR_CODE_NO_ZK
 return|;
 block|}
+try|try
+block|{
 if|if
 condition|(
 name|args
@@ -1226,6 +1217,26 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"The failover controller encounters runtime error"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+throw|throw
+name|e
+throw|;
+block|}
 if|if
 condition|(
 operator|!
@@ -1285,6 +1296,8 @@ return|return
 name|ERR_CODE_NO_FENCER
 return|;
 block|}
+try|try
+block|{
 name|initRPC
 argument_list|()
 expr_stmt|;
@@ -1294,11 +1307,28 @@ expr_stmt|;
 name|startRPC
 argument_list|()
 expr_stmt|;
-try|try
-block|{
 name|mainLoop
 argument_list|()
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"The failover controller encounters runtime error: "
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+throw|throw
+name|e
+throw|;
 block|}
 finally|finally
 block|{

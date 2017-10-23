@@ -1217,8 +1217,8 @@ name|LOG
 operator|.
 name|fatal
 argument_list|(
-literal|"Got a fatal error, exiting now"
-argument_list|,
+literal|"DFSZKFailOverController exiting due to earlier exception "
+operator|+
 name|t
 argument_list|)
 expr_stmt|;
