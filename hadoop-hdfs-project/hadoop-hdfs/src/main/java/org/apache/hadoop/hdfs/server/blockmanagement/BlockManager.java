@@ -4395,32 +4395,39 @@ operator|)
 operator|+
 literal|" (replicas:"
 operator|+
-literal|" l: "
+literal|" live: "
 operator|+
 name|numReplicas
 operator|.
 name|liveReplicas
 argument_list|()
 operator|+
-literal|" d: "
+literal|" decommissioning and decommissioned: "
 operator|+
 name|numReplicas
 operator|.
 name|decommissionedAndDecommissioning
 argument_list|()
 operator|+
-literal|" c: "
+literal|" corrupt: "
 operator|+
 name|numReplicas
 operator|.
 name|corruptReplicas
 argument_list|()
 operator|+
-literal|" e: "
+literal|" in excess: "
 operator|+
 name|numReplicas
 operator|.
 name|excessReplicas
+argument_list|()
+operator|+
+literal|" maintenance mode: "
+operator|+
+name|numReplicas
+operator|.
+name|maintenanceReplicas
 argument_list|()
 operator|+
 literal|") "
@@ -4502,6 +4509,25 @@ block|{
 name|state
 operator|=
 literal|"(decommissioned)"
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|node
+operator|.
+name|isMaintenance
+argument_list|()
+operator|||
+name|node
+operator|.
+name|isInMaintenance
+argument_list|()
+condition|)
+block|{
+name|state
+operator|=
+literal|"(maintenance)"
 expr_stmt|;
 block|}
 if|if
