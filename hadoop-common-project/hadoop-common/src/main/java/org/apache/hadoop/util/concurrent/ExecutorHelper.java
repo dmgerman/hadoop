@@ -137,7 +137,8 @@ expr_stmt|;
 block|}
 comment|//For additional information, see: https://docs.oracle
 comment|// .com/javase/7/docs/api/java/util/concurrent/ThreadPoolExecutor
-comment|// .html#afterExecute(java.lang.Runnable,%20java.lang.Throwable) .
+comment|// .html#afterExecute(java.lang.Runnable,%20java.lang.Throwable)
+comment|// Handle JDK-8071638
 if|if
 condition|(
 name|t
@@ -150,6 +151,19 @@ name|Future
 argument_list|<
 name|?
 argument_list|>
+operator|&&
+operator|(
+operator|(
+name|Future
+argument_list|<
+name|?
+argument_list|>
+operator|)
+name|r
+operator|)
+operator|.
+name|isDone
+argument_list|()
 condition|)
 block|{
 try|try
