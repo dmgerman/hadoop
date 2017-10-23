@@ -224,34 +224,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -400,6 +372,26 @@ name|Time
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/**  * LeaseManager does the lease housekeeping for writing on files.     * This class also provides useful static methods for lease recovery.  *   * Lease Recovery Algorithm  * 1) Namenode retrieves lease information  * 2) For each file f in the lease, consider the last block b of f  * 2.1) Get the datanodes which contains b  * 2.2) Assign one of the datanodes as the primary datanode p   * 2.3) p obtains a new generation stamp from the namenode  * 2.4) p gets the block info from each datanode  * 2.5) p computes the minimum block length  * 2.6) p updates the datanodes, which have a valid generation stamp,  *      with the new generation stamp and the minimum block length   * 2.7) p acknowledges the namenode the update results   * 2.8) Namenode updates the BlockInfo  * 2.9) Namenode removes f from the lease  *      and removes the lease once all files have been removed  * 2.10) Namenode commit changes to edit log  */
 end_comment
@@ -418,16 +410,19 @@ DECL|field|LOG
 specifier|public
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|LeaseManager
 operator|.
 name|class
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 decl_stmt|;
 DECL|field|fsnamesystem
@@ -774,14 +769,12 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"The file "
-operator|+
+literal|"The file {} is not under construction but has lease."
+argument_list|,
 name|cons
 operator|.
 name|getFullPathName
 argument_list|()
-operator|+
-literal|" is not under construction but has lease."
 argument_list|)
 expr_stmt|;
 continue|continue;
@@ -829,8 +822,8 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Number of blocks under construction: "
-operator|+
+literal|"Number of blocks under construction: {}"
+argument_list|,
 name|numUCBlocks
 argument_list|)
 expr_stmt|;
@@ -1325,23 +1318,19 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Took "
-operator|+
+literal|"Took {} ms to collect {} open files with leases {}"
+argument_list|,
 operator|(
 name|endTimeMs
 operator|-
 name|startTimeMs
 operator|)
-operator|+
-literal|" ms to collect "
-operator|+
+argument_list|,
 name|iipSet
 operator|.
 name|size
 argument_list|()
-operator|+
-literal|" open files with leases"
-operator|+
+argument_list|,
 operator|(
 operator|(
 name|ancestorDir
@@ -1501,14 +1490,12 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"The file "
-operator|+
+literal|"The file {} is not under construction but has lease."
+argument_list|,
 name|inodeFile
 operator|.
 name|getFullPathName
 argument_list|()
-operator|+
-literal|" is not under construction but has lease."
 argument_list|)
 expr_stmt|;
 continue|continue;
@@ -1789,30 +1776,17 @@ name|inodeId
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"inode "
-operator|+
+literal|"inode {} not found in lease.files (={})"
+argument_list|,
 name|inodeId
-operator|+
-literal|" not found in lease.files (="
-operator|+
+argument_list|,
 name|lease
-operator|+
-literal|")"
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 if|if
 condition|(
@@ -1847,9 +1821,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
+literal|"{} not found in sortedLeases"
+argument_list|,
 name|lease
-operator|+
-literal|" not found in sortedLeases"
 argument_list|)
 expr_stmt|;
 block|}
@@ -1900,12 +1874,10 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Removing non-existent lease! holder="
-operator|+
+literal|"Removing non-existent lease! holder={} src={}"
+argument_list|,
 name|holder
-operator|+
-literal|" src="
-operator|+
+argument_list|,
 name|src
 operator|.
 name|getFullPathName
@@ -2410,26 +2382,17 @@ name|InterruptedException
 name|ie
 parameter_list|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
+literal|"{} is interrupted"
+argument_list|,
 name|name
-operator|+
-literal|" is interrupted"
 argument_list|,
 name|ie
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 catch|catch
 parameter_list|(
@@ -2511,9 +2474,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+literal|"{} has expired hard limit"
+argument_list|,
 name|leaseToCheck
-operator|+
-literal|" has expired hard limit"
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -2700,15 +2663,13 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Cannot release the path "
+literal|"Cannot release the path {} in the lease {}. It will be "
 operator|+
+literal|"retried."
+argument_list|,
 name|p
-operator|+
-literal|" in the lease "
-operator|+
+argument_list|,
 name|leaseToCheck
-operator|+
-literal|". It will be retried."
 argument_list|,
 name|e
 argument_list|)
@@ -2732,13 +2693,11 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Lease recovery for inode "
+literal|"Lease recovery for inode {} is complete. File closed"
 operator|+
+literal|"."
+argument_list|,
 name|id
-operator|+
-literal|" is complete. "
-operator|+
-literal|"File closed."
 argument_list|)
 expr_stmt|;
 block|}
@@ -2748,12 +2707,10 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Started block recovery "
-operator|+
+literal|"Started block recovery {} lease {}"
+argument_list|,
 name|p
-operator|+
-literal|" lease "
-operator|+
+argument_list|,
 name|leaseToCheck
 argument_list|)
 expr_stmt|;
@@ -2785,12 +2742,10 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Removing lease with an invalid path: "
-operator|+
+literal|"Removing lease with an invalid path: {},{}"
+argument_list|,
 name|p
-operator|+
-literal|","
-operator|+
+argument_list|,
 name|leaseToCheck
 argument_list|,
 name|e
@@ -2816,14 +2771,12 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Breaking out of checkLeases after "
-operator|+
+literal|"Breaking out of checkLeases after {} ms."
+argument_list|,
 name|fsnamesystem
 operator|.
 name|getMaxLockHoldToReleaseLeaseMs
 argument_list|()
-operator|+
-literal|"ms."
 argument_list|)
 expr_stmt|;
 break|break;

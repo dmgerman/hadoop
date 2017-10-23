@@ -490,9 +490,15 @@ name|InterDatanodeProtocol
 operator|.
 name|LOG
 parameter_list|,
+name|org
+operator|.
+name|slf4j
+operator|.
+name|event
+operator|.
 name|Level
 operator|.
-name|ALL
+name|TRACE
 parameter_list|)
 constructor_decl|;
 block|}
