@@ -2580,6 +2580,62 @@ operator|instanceof
 name|ConnectException
 condition|)
 block|{
+comment|// Check if client was trying to connect to an unspecified IPv4 address
+comment|// (0.0.0.0) or IPv6 address(0:0:0:0:0:0:0:0 or ::)
+if|if
+condition|(
+operator|(
+name|destHost
+operator|!=
+literal|null
+operator|&&
+operator|(
+name|destHost
+operator|.
+name|equals
+argument_list|(
+literal|"0.0.0.0"
+argument_list|)
+operator|||
+name|destHost
+operator|.
+name|equals
+argument_list|(
+literal|"0:0:0:0:0:0:0:0"
+argument_list|)
+operator|||
+name|destHost
+operator|.
+name|equals
+argument_list|(
+literal|"::"
+argument_list|)
+operator|)
+operator|)
+operator|||
+name|destPort
+operator|==
+literal|0
+condition|)
+block|{
+return|return
+name|wrapWithMessage
+argument_list|(
+name|exception
+argument_list|,
+literal|"Your endpoint configuration"
+operator|+
+literal|" is wrong;"
+operator|+
+name|see
+argument_list|(
+literal|"UnsetHostnameOrPort"
+argument_list|)
+argument_list|)
+return|;
+block|}
+else|else
+block|{
 comment|// connection refused; include the host:port in the error
 return|return
 name|wrapWithMessage
@@ -2610,6 +2666,7 @@ literal|"ConnectionRefused"
 argument_list|)
 argument_list|)
 return|;
+block|}
 block|}
 elseif|else
 if|if
