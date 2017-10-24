@@ -46,16 +46,6 @@ name|ServiceRuntimeInfo
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-import|;
-end_import
-
 begin_comment
 comment|/**  *  * This is the JMX management interface for scm information.  */
 end_comment
@@ -72,17 +62,6 @@ name|SCMMXBean
 extends|extends
 name|ServiceRuntimeInfo
 block|{
-comment|/**    * Get the number of data nodes that in all states.    *    * @return A state to number of nodes that in this state mapping    */
-DECL|method|getNodeCount ()
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|Integer
-argument_list|>
-name|getNodeCount
-parameter_list|()
-function_decl|;
 comment|/**    * Get the SCM RPC server port that used to listen to datanode requests.    * @return SCM datanode RPC server port    */
 DECL|method|getDatanodeRpcPort ()
 name|String
