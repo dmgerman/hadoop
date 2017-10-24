@@ -435,16 +435,6 @@ name|TOPMETRICS_METRICS_SOURCE_NAME
 init|=
 literal|"NNTopUserOpCounts"
 decl_stmt|;
-comment|/**    * In addition to counts of different RPC calls, NNTop also reports top    * users listing large directories (measured by the number of files involved    * in listing operations from the user). This is important because the CPU    * and GC overhead of a listing operation grows linearly with the number of    * files involved. This category in NNTop is {@link #FILES_IN_GETLISTING}.    */
-DECL|field|FILES_IN_GETLISTING
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|FILES_IN_GETLISTING
-init|=
-literal|"filesInGetListing"
-decl_stmt|;
 DECL|field|isMetricsSourceEnabled
 specifier|private
 specifier|final
@@ -729,34 +719,10 @@ argument_list|(
 name|userName
 argument_list|,
 name|cmd
-argument_list|,
-literal|1
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|reportFilesInGetListing (String userName, int numFiles)
-specifier|public
-name|void
-name|reportFilesInGetListing
-parameter_list|(
-name|String
-name|userName
-parameter_list|,
-name|int
-name|numFiles
-parameter_list|)
-block|{
-name|report
-argument_list|(
-name|userName
-argument_list|,
-name|FILES_IN_GETLISTING
-argument_list|,
-name|numFiles
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|report (String userName, String cmd, int delta)
+DECL|method|report (String userName, String cmd)
 specifier|public
 name|void
 name|report
@@ -766,9 +732,6 @@ name|userName
 parameter_list|,
 name|String
 name|cmd
-parameter_list|,
-name|int
-name|delta
 parameter_list|)
 block|{
 name|long
@@ -786,12 +749,10 @@ argument_list|,
 name|userName
 argument_list|,
 name|cmd
-argument_list|,
-name|delta
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|report (long currTime, String userName, String cmd, int delta)
+DECL|method|report (long currTime, String userName, String cmd)
 specifier|public
 name|void
 name|report
@@ -804,9 +765,6 @@ name|userName
 parameter_list|,
 name|String
 name|cmd
-parameter_list|,
-name|int
-name|delta
 parameter_list|)
 block|{
 name|LOG
@@ -850,22 +808,9 @@ name|cmd
 argument_list|,
 name|userName
 argument_list|,
-name|delta
+literal|1
 argument_list|)
 expr_stmt|;
-comment|// Increase the number of all RPC calls by the user, unless the report
-comment|// is for the number of files in a listing operation.
-if|if
-condition|(
-operator|!
-name|cmd
-operator|.
-name|equals
-argument_list|(
-name|FILES_IN_GETLISTING
-argument_list|)
-condition|)
-block|{
 name|rollingWindowManager
 operator|.
 name|recordMetric
@@ -878,10 +823,9 @@ name|ALL_CMDS
 argument_list|,
 name|userName
 argument_list|,
-name|delta
+literal|1
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 comment|/**    * Flatten out the top window metrics into    * {@link org.apache.hadoop.metrics2.MetricsRecord}s for consumption by    * external metrics systems. Each metrics record added corresponds to the    * reporting period a.k.a window length of the configured rolling windows.    */
