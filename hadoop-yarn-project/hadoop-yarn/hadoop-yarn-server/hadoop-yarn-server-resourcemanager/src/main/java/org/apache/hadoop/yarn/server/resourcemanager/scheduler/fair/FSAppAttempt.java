@@ -3219,6 +3219,47 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|// If not running unmanaged, the first container we recover is always
+comment|// the AM. Set the amResource for this app and update the leaf queue's AM
+comment|// usage
+if|if
+condition|(
+operator|!
+name|isAmRunning
+argument_list|()
+operator|&&
+operator|!
+name|getUnmanagedAM
+argument_list|()
+condition|)
+block|{
+name|Resource
+name|resource
+init|=
+name|rmContainer
+operator|.
+name|getAllocatedResource
+argument_list|()
+decl_stmt|;
+name|setAMResource
+argument_list|(
+name|resource
+argument_list|)
+expr_stmt|;
+name|getQueue
+argument_list|()
+operator|.
+name|addAMResourceUsage
+argument_list|(
+name|resource
+argument_list|)
+expr_stmt|;
+name|setAmRunning
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 finally|finally
 block|{
