@@ -590,7 +590,7 @@ argument_list|()
 expr_stmt|;
 comment|// Add 20 entries.
 comment|// {a0 : a-value0} to {a9 : a-value9}
-comment|// {b0 : a-value0} to {b0 : b-value9}
+comment|// {b0 : b-value0} to {b9 : b-value9}
 for|for
 control|(
 name|int
@@ -1571,6 +1571,33 @@ operator|.
 name|getValue
 argument_list|()
 argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Empty list if startKey doesn't exist.
+name|result
+operator|=
+name|store
+operator|.
+name|getRangeKVs
+argument_list|(
+name|getBytes
+argument_list|(
+literal|"a12"
+argument_list|)
+argument_list|,
+literal|5
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|0
+argument_list|,
+name|result
+operator|.
+name|size
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Returns max available entries after a valid startKey.
