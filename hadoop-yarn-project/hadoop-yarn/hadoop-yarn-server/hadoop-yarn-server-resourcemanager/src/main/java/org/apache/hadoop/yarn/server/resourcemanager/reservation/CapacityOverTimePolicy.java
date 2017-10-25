@@ -243,9 +243,6 @@ specifier|private
 name|float
 name|maxAvg
 decl_stmt|;
-comment|// For now this is CapacityScheduler specific, but given a hierarchy in the
-comment|// configuration structure of the schedulers (e.g., SchedulerConfiguration)
-comment|// it should be easy to remove this limitation
 annotation|@
 name|Override
 DECL|method|init (String reservationQueuePath, ReservationSchedulerConfiguration conf)
