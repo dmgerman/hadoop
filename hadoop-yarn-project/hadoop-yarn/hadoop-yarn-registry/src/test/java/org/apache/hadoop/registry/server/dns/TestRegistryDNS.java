@@ -1858,11 +1858,11 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|"No answer should be returned"
+literal|"Missing record should be: "
 argument_list|,
 name|Rcode
 operator|.
-name|NOTAUTH
+name|NXDOMAIN
 argument_list|,
 name|response
 operator|.
@@ -3517,6 +3517,50 @@ name|registryDNS
 operator|.
 name|getZoneCount
 argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testExampleDotCom ()
+specifier|public
+name|void
+name|testExampleDotCom
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|Name
+name|name
+init|=
+name|Name
+operator|.
+name|fromString
+argument_list|(
+literal|"example.com."
+argument_list|)
+decl_stmt|;
+name|Record
+index|[]
+name|records
+init|=
+name|getRegistryDNS
+argument_list|()
+operator|.
+name|getRecords
+argument_list|(
+name|name
+argument_list|,
+name|Type
+operator|.
+name|SOA
+argument_list|)
+decl_stmt|;
+name|assertNotNull
+argument_list|(
+literal|"example.com exists:"
+argument_list|,
+name|records
 argument_list|)
 expr_stmt|;
 block|}
