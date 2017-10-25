@@ -1468,13 +1468,8 @@ argument_list|,
 name|port
 argument_list|)
 expr_stmt|;
-name|addNIOTCP
-argument_list|(
-name|addr
-argument_list|,
-name|port
-argument_list|)
-expr_stmt|;
+comment|//TODO Fix dns lookup over TCP
+comment|//    addNIOTCP(addr, port);
 block|}
 comment|/**    * Initialize registryDNS to use /etc/resolv.conf values    * as default resolvers.    */
 DECL|method|updateDNSServer (Configuration conf)
@@ -3775,6 +3770,18 @@ argument_list|(
 name|in
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"received TCP query {}"
+argument_list|,
+name|query
+operator|.
+name|getQuestion
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|response
 operator|=
 name|generateReply
@@ -4484,7 +4491,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"{}:  received query {}"
+literal|"{}: received UDP query {}"
 argument_list|,
 name|remoteAddress
 argument_list|,
@@ -4546,7 +4553,7 @@ argument_list|()
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"{}:  sending response"
 argument_list|,
