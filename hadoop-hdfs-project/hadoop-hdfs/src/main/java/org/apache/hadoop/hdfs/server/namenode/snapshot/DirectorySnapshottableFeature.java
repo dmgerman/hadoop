@@ -1377,14 +1377,18 @@ name|counts
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Compute the difference between two snapshots (or a snapshot and the current    * directory) of the directory.    *    * @param from The name of the start point of the comparison. Null indicating    *          the current tree.    * @param to The name of the end point. Null indicating the current tree.    * @return The difference between the start/end points.    * @throws SnapshotException If there is no snapshot matching the starting    *           point, or if endSnapshotName is not null but cannot be identified    *           as a previous snapshot.    */
-DECL|method|computeDiff (final INodeDirectory snapshotRoot, final String from, final String to)
+comment|/**    * Compute the difference between two snapshots (or a snapshot and the current    * directory) of the directory. The diff calculation can be scoped to either    * the snapshot root or any descendant directory under the snapshot root.    *    * @param snapshotRootDir the snapshot root directory    * @param snapshotDiffScopeDir the descendant directory under snapshot root    *          to scope the diff calculation to.    * @param from The name of the start point of the comparison. Null indicating    *          the current tree.    * @param to The name of the end point. Null indicating the current tree.    * @return The difference between the start/end points.    * @throws SnapshotException If there is no snapshot matching the starting    *           point, or if endSnapshotName is not null but cannot be identified    *           as a previous snapshot.    */
+DECL|method|computeDiff (final INodeDirectory snapshotRootDir, final INodeDirectory snapshotDiffScopeDir, final String from, final String to)
 name|SnapshotDiffInfo
 name|computeDiff
 parameter_list|(
 specifier|final
 name|INodeDirectory
-name|snapshotRoot
+name|snapshotRootDir
+parameter_list|,
+specifier|final
+name|INodeDirectory
+name|snapshotDiffScopeDir
 parameter_list|,
 specifier|final
 name|String
@@ -1397,12 +1401,24 @@ parameter_list|)
 throws|throws
 name|SnapshotException
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|snapshotDiffScopeDir
+operator|.
+name|isDescendantOfSnapshotRoot
+argument_list|(
+name|snapshotRootDir
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|Snapshot
 name|fromSnapshot
 init|=
 name|getSnapshotByName
 argument_list|(
-name|snapshotRoot
+name|snapshotRootDir
 argument_list|,
 name|from
 argument_list|)
@@ -1412,7 +1428,7 @@ name|toSnapshot
 init|=
 name|getSnapshotByName
 argument_list|(
-name|snapshotRoot
+name|snapshotRootDir
 argument_list|,
 name|to
 argument_list|)
@@ -1438,25 +1454,27 @@ init|=
 operator|new
 name|SnapshotDiffInfo
 argument_list|(
-name|snapshotRoot
+name|snapshotRootDir
+argument_list|,
+name|snapshotDiffScopeDir
 argument_list|,
 name|fromSnapshot
 argument_list|,
 name|toSnapshot
 argument_list|)
 decl_stmt|;
+comment|// The snapshot diff scope dir is passed in as the snapshot dir
+comment|// so that the file paths in the diff report are relative to the
+comment|// snapshot scope dir.
 name|computeDiffRecursively
 argument_list|(
-name|snapshotRoot
+name|snapshotDiffScopeDir
 argument_list|,
-name|snapshotRoot
+name|snapshotDiffScopeDir
 argument_list|,
 operator|new
 name|ArrayList
-argument_list|<
-name|byte
-index|[]
-argument_list|>
+argument_list|<>
 argument_list|()
 argument_list|,
 name|diffs
@@ -1551,15 +1569,15 @@ return|return
 name|s
 return|;
 block|}
-comment|/**    * Recursively compute the difference between snapshots under a given    * directory/file.    * @param snapshotRoot The directory where snapshots were taken.    * @param node The directory/file under which the diff is computed.    * @param parentPath Relative path (corresponding to the snapshot root) of    *                   the node's parent.    * @param diffReport data structure used to store the diff.    */
-DECL|method|computeDiffRecursively (final INodeDirectory snapshotRoot, INode node, List<byte[]> parentPath, SnapshotDiffInfo diffReport)
+comment|/**    * Recursively compute the difference between snapshots under a given    * directory/file.    * @param snapshotDir The directory where snapshots were taken. Can be a    *                    snapshot root directory or any descendant directory    *                    under snapshot root directory.    * @param node The directory/file under which the diff is computed.    * @param parentPath Relative path (corresponding to the snapshot root) of    *                   the node's parent.    * @param diffReport data structure used to store the diff.    */
+DECL|method|computeDiffRecursively (final INodeDirectory snapshotDir, INode node, List<byte[]> parentPath, SnapshotDiffInfo diffReport)
 specifier|private
 name|void
 name|computeDiffRecursively
 parameter_list|(
 specifier|final
 name|INodeDirectory
-name|snapshotRoot
+name|snapshotDir
 parameter_list|,
 name|INode
 name|node
@@ -1775,7 +1793,7 @@ name|renameTargetPath
 init|=
 name|findRenameTargetPath
 argument_list|(
-name|snapshotRoot
+name|snapshotDir
 argument_list|,
 operator|(
 name|WithName
@@ -1835,7 +1853,7 @@ argument_list|)
 expr_stmt|;
 name|computeDiffRecursively
 argument_list|(
-name|snapshotRoot
+name|snapshotDir
 argument_list|,
 name|child
 argument_list|,

@@ -28,16 +28,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Comparator
 import|;
 end_import
@@ -623,6 +613,13 @@ specifier|final
 name|INodeDirectory
 name|snapshotRoot
 decl_stmt|;
+comment|/**    *  The scope directory under which snapshot diff is calculated.    */
+DECL|field|snapshotDiffScopeDir
+specifier|private
+specifier|final
+name|INodeDirectory
+name|snapshotDiffScopeDir
+decl_stmt|;
 comment|/** The starting point of the difference */
 DECL|field|from
 specifier|private
@@ -705,11 +702,14 @@ name|RenameEntry
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|SnapshotDiffInfo (INodeDirectory snapshotRoot, Snapshot start, Snapshot end)
+DECL|method|SnapshotDiffInfo (INodeDirectory snapshotRootDir, INodeDirectory snapshotDiffScopeDir, Snapshot start, Snapshot end)
 name|SnapshotDiffInfo
 parameter_list|(
 name|INodeDirectory
-name|snapshotRoot
+name|snapshotRootDir
+parameter_list|,
+name|INodeDirectory
+name|snapshotDiffScopeDir
 parameter_list|,
 name|Snapshot
 name|start
@@ -722,17 +722,30 @@ name|Preconditions
 operator|.
 name|checkArgument
 argument_list|(
-name|snapshotRoot
+name|snapshotRootDir
 operator|.
 name|isSnapshottable
 argument_list|()
+operator|&&
+name|snapshotDiffScopeDir
+operator|.
+name|isDescendantOfSnapshotRoot
+argument_list|(
+name|snapshotRootDir
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|this
 operator|.
 name|snapshotRoot
 operator|=
-name|snapshotRoot
+name|snapshotRootDir
+expr_stmt|;
+name|this
+operator|.
+name|snapshotDiffScopeDir
+operator|=
+name|snapshotDiffScopeDir
 expr_stmt|;
 name|this
 operator|.

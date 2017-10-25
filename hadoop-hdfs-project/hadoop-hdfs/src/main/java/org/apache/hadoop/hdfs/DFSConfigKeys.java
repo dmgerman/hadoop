@@ -2436,6 +2436,24 @@ name|DFS_NAMENODE_SNAPSHOT_SKIP_CAPTURE_ACCESSTIME_ONLY_CHANGE_DEFAULT
 init|=
 literal|false
 decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|String
+DECL|field|DFS_NAMENODE_SNAPSHOT_DIFF_ALLOW_SNAP_ROOT_DESCENDANT
+name|DFS_NAMENODE_SNAPSHOT_DIFF_ALLOW_SNAP_ROOT_DESCENDANT
+init|=
+literal|"dfs.namenode.snapshotdiff.allow.snap-root-descendant"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+DECL|field|DFS_NAMENODE_SNAPSHOT_DIFF_ALLOW_SNAP_ROOT_DESCENDANT_DEFAULT
+name|DFS_NAMENODE_SNAPSHOT_DIFF_ALLOW_SNAP_ROOT_DESCENDANT_DEFAULT
+init|=
+literal|true
+decl_stmt|;
 comment|// Whether to enable datanode's stale state detection and usage for reads
 DECL|field|DFS_NAMENODE_AVOID_STALE_DATANODE_FOR_READ_KEY
 specifier|public
