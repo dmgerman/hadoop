@@ -18,20 +18,6 @@ end_package
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Optional
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -84,15 +70,32 @@ name|Map
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Optional
+import|;
+end_import
+
 begin_class
 annotation|@
 name|InterfaceAudience
 operator|.
-name|Public
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"HDFS"
+block|,
+literal|"Management Tools"
+block|}
+argument_list|)
 annotation|@
 name|InterfaceStability
 operator|.
-name|Stable
+name|Unstable
 DECL|class|ReconfigurationTaskStatus
 specifier|public
 class|class
