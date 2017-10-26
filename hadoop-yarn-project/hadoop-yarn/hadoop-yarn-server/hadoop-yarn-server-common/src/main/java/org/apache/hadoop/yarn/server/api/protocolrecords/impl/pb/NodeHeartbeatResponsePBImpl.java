@@ -1271,6 +1271,9 @@ name|entry
 operator|.
 name|getValue
 argument_list|()
+operator|.
+name|duplicate
+argument_list|()
 argument_list|)
 argument_list|)
 argument_list|)
