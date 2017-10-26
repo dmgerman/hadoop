@@ -201,6 +201,12 @@ name|Resource
 name|getMaximumAllocation
 parameter_list|()
 function_decl|;
+comment|/**    * Returns the maximum periodicity allowed in a recurrence expression    * for reservations of a particular plan. This value must be divisible by    * the recurrence expression of a newly submitted reservation. Otherwise, the    * reservation submission will fail.    *    * @return the maximum periodicity allowed in a recurrence expression for    * reservations of a particular plan.    */
+DECL|method|getMaximumPeriodicity ()
+name|long
+name|getMaximumPeriodicity
+parameter_list|()
+function_decl|;
 comment|/**    * Return the name of the queue in the {@link ResourceScheduler} corresponding    * to this plan    *     * @return the name of the queue in the {@link ResourceScheduler}    *         corresponding to this plan    */
 DECL|method|getQueueName ()
 specifier|public

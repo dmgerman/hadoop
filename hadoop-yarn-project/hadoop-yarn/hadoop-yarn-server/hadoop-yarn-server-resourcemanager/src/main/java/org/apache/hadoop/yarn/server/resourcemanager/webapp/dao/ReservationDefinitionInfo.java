@@ -182,6 +182,18 @@ specifier|private
 name|int
 name|priority
 decl_stmt|;
+annotation|@
+name|XmlElement
+argument_list|(
+name|name
+operator|=
+literal|"recurrence-expression"
+argument_list|)
+DECL|field|recurrenceExpression
+specifier|private
+name|String
+name|recurrenceExpression
+decl_stmt|;
 DECL|method|ReservationDefinitionInfo ()
 specifier|public
 name|ReservationDefinitionInfo
@@ -226,6 +238,13 @@ operator|.
 name|getReservationRequests
 argument_list|()
 argument_list|)
+expr_stmt|;
+name|recurrenceExpression
+operator|=
+name|definition
+operator|.
+name|getRecurrenceExpression
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|getArrival ()
@@ -356,6 +375,32 @@ operator|.
 name|priority
 operator|=
 name|priority
+expr_stmt|;
+block|}
+DECL|method|getRecurrenceExpression ()
+specifier|public
+name|String
+name|getRecurrenceExpression
+parameter_list|()
+block|{
+return|return
+name|recurrenceExpression
+return|;
+block|}
+DECL|method|setRecurrenceExpression (String recurrenceExpression)
+specifier|public
+name|void
+name|setRecurrenceExpression
+parameter_list|(
+name|String
+name|recurrenceExpression
+parameter_list|)
+block|{
+name|this
+operator|.
+name|recurrenceExpression
+operator|=
+name|recurrenceExpression
 expr_stmt|;
 block|}
 block|}

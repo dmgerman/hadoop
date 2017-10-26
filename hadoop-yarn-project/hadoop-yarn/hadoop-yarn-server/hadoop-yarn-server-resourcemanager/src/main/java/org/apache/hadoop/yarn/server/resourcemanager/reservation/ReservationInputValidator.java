@@ -1022,6 +1022,49 @@ name|message
 argument_list|)
 throw|;
 block|}
+comment|// verify maximum period is divisible by recurrence expression.
+if|if
+condition|(
+name|recurrence
+operator|>
+literal|0
+operator|&&
+name|plan
+operator|.
+name|getMaximumPeriodicity
+argument_list|()
+operator|%
+name|recurrence
+operator|!=
+literal|0
+condition|)
+block|{
+name|message
+operator|=
+literal|"The maximum periodicity: "
+operator|+
+name|plan
+operator|.
+name|getMaximumPeriodicity
+argument_list|()
+operator|+
+literal|" must be divisible by the recurrence expression provided: "
+operator|+
+name|recurrence
+operator|+
+literal|". Please try again with a recurrence expression"
+operator|+
+literal|" that satisfies this requirement."
+expr_stmt|;
+throw|throw
+name|RPCUtil
+operator|.
+name|getRemoteException
+argument_list|(
+name|message
+argument_list|)
+throw|;
+block|}
 block|}
 catch|catch
 parameter_list|(

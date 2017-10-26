@@ -692,6 +692,12 @@ specifier|final
 name|Clock
 name|clock
 decl_stmt|;
+DECL|field|maxPeriodicity
+specifier|private
+specifier|final
+name|long
+name|maxPeriodicity
+decl_stmt|;
 DECL|field|totalCapacity
 specifier|private
 name|Resource
@@ -770,7 +776,7 @@ name|rmContext
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|InMemoryPlan (QueueMetrics queueMetrics, SharingPolicy policy, ReservationAgent agent, Resource totalCapacity, long step, ResourceCalculator resCalc, Resource minAlloc, Resource maxAlloc, String queueName, Planner replanner, boolean getMoveOnExpiry, long maxPeriodicty, RMContext rmContext)
+DECL|method|InMemoryPlan (QueueMetrics queueMetrics, SharingPolicy policy, ReservationAgent agent, Resource totalCapacity, long step, ResourceCalculator resCalc, Resource minAlloc, Resource maxAlloc, String queueName, Planner replanner, boolean getMoveOnExpiry, long maxPeriodicity, RMContext rmContext)
 specifier|public
 name|InMemoryPlan
 parameter_list|(
@@ -808,7 +814,7 @@ name|boolean
 name|getMoveOnExpiry
 parameter_list|,
 name|long
-name|maxPeriodicty
+name|maxPeriodicity
 parameter_list|,
 name|RMContext
 name|rmContext
@@ -838,7 +844,7 @@ name|replanner
 argument_list|,
 name|getMoveOnExpiry
 argument_list|,
-name|maxPeriodicty
+name|maxPeriodicity
 argument_list|,
 name|rmContext
 argument_list|,
@@ -960,6 +966,12 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
+name|maxPeriodicity
+operator|=
+name|maxPeriodicty
+expr_stmt|;
+name|this
+operator|.
 name|periodicRle
 operator|=
 operator|new
@@ -967,7 +979,9 @@ name|PeriodicRLESparseResourceAllocation
 argument_list|(
 name|resCalc
 argument_list|,
-name|maxPeriodicty
+name|this
+operator|.
+name|maxPeriodicity
 argument_list|)
 expr_stmt|;
 name|this
@@ -3624,35 +3638,94 @@ operator|>
 literal|0
 condition|)
 block|{
+comment|// The shift is used to remove the wrap around for the
+comment|// reservation interval. The wrap around will still
+comment|// exist for the search interval.
 name|long
-name|t
+name|shift
 init|=
-name|endTime
+name|reservation
+operator|.
+name|getStartTime
+argument_list|()
 operator|%
 name|period
 decl_stmt|;
-comment|// check for both contained and wrap-around reservations
+comment|// This is the duration of the reservation since
+comment|// duration< period.
+name|long
+name|periodicReservationEnd
+init|=
+operator|(
+name|reservation
+operator|.
+name|getEndTime
+argument_list|()
+operator|-
+name|shift
+operator|)
+operator|%
+name|period
+decl_stmt|;
+name|long
+name|periodicSearchStart
+init|=
+operator|(
+name|startTime
+operator|-
+name|shift
+operator|)
+operator|%
+name|period
+decl_stmt|;
+name|long
+name|periodicSearchEnd
+init|=
+operator|(
+name|endTime
+operator|-
+name|shift
+operator|)
+operator|%
+name|period
+decl_stmt|;
+name|long
+name|searchDuration
+init|=
+name|endTime
+operator|-
+name|startTime
+decl_stmt|;
+comment|// 1. If the searchDuration is greater than the period, then
+comment|// the reservation is within the interval. This will allow
+comment|// us to ignore cases where search end> search start>
+comment|// reservation end.
+comment|// 2/3. If the search end is less than the reservation end, or if
+comment|// the search start is less than the reservation end, then the
+comment|// reservation will be in the reservation since
+comment|// periodic reservation start is always zero. Note that neither
+comment|// of those values will ever be negative.
+comment|// 4. If the search end is less than the search start, then
+comment|// there is a wrap around, and both values are implicitly
+comment|// greater than the reservation end because of condition 2/3,
+comment|// so the reservation is within the search interval.
 if|if
 condition|(
-operator|(
-name|t
-operator|-
-name|startTime
-operator|)
-operator|*
-operator|(
-name|t
-operator|-
-name|endTime
-operator|)
-operator|*
-operator|(
-name|startTime
-operator|-
-name|endTime
-operator|)
-operator|>=
-literal|0
+name|searchDuration
+operator|>
+name|period
+operator|||
+name|periodicSearchEnd
+operator|<
+name|periodicReservationEnd
+operator|||
+name|periodicSearchStart
+argument_list|<
+name|periodicReservationEnd
+operator|||
+name|periodicSearchStart
+argument_list|>
+name|periodicSearchEnd
 condition|)
 block|{
 name|flattenedReservations
@@ -4048,7 +4121,7 @@ name|period
 operator|+
 literal|") must be"
 operator|+
-literal|"an exact divider of the system maxPeriod ("
+literal|" an exact divider of the system maxPeriod ("
 operator|+
 name|periodicRle
 operator|.
@@ -4380,6 +4453,20 @@ name|clone
 argument_list|(
 name|maxAlloc
 argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getMaximumPeriodicity ()
+specifier|public
+name|long
+name|getMaximumPeriodicity
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|maxPeriodicity
 return|;
 block|}
 DECL|method|toCumulativeString ()
