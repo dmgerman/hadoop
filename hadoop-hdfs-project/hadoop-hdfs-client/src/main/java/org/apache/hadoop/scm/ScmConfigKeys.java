@@ -668,6 +668,24 @@ name|OZONE_SCM_CONTAINER_DELETION_CHOOSING_POLICY
 init|=
 literal|"ozone.scm.container.deletion-choosing.policy"
 decl_stmt|;
+DECL|field|OZONE_SCM_CONTAINER_CREATION_LEASE_TIMEOUT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_SCM_CONTAINER_CREATION_LEASE_TIMEOUT
+init|=
+literal|"ozone.scm.container.creation.lease.timeout"
+decl_stmt|;
+DECL|field|OZONE_SCM_CONTAINER_CREATION_LEASE_TIMEOUT_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|OZONE_SCM_CONTAINER_CREATION_LEASE_TIMEOUT_DEFAULT
+init|=
+literal|60000
+decl_stmt|;
 comment|/**    * Don't start processing a pool if we have not had a minimum number of    * seconds from the last processing.    */
 specifier|public
 specifier|static

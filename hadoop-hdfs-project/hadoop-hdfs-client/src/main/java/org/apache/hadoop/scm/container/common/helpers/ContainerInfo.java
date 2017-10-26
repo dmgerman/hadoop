@@ -671,11 +671,6 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|state
-argument_list|)
-operator|.
-name|append
-argument_list|(
 name|pipeline
 operator|.
 name|getContainerName

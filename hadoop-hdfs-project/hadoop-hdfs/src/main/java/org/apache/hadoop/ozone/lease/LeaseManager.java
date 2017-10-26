@@ -169,7 +169,7 @@ specifier|private
 name|boolean
 name|isRunning
 decl_stmt|;
-comment|/**    * Creates an instance of lease manager.    *    * @param defaultTimeout    *        Default timeout value to be used for lease creation.    */
+comment|/**    * Creates an instance of lease manager.    *    * @param defaultTimeout    *        Default timeout in milliseconds to be used for lease creation.    */
 DECL|method|LeaseManager (long defaultTimeout)
 specifier|public
 name|LeaseManager

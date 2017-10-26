@@ -404,7 +404,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|99
+literal|100
 argument_list|,
 name|corona
 operator|.
