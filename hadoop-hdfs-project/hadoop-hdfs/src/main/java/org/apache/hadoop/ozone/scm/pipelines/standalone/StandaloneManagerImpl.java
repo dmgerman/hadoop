@@ -361,6 +361,13 @@ argument_list|(
 name|pipelineName
 argument_list|)
 expr_stmt|;
+name|pipeline
+operator|.
+name|setFactor
+argument_list|(
+name|replicationFactor
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info

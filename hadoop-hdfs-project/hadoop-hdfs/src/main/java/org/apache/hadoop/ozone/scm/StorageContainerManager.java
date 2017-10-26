@@ -2716,7 +2716,7 @@ DECL|method|listContainer (String startName, String prefixName, int count)
 specifier|public
 name|List
 argument_list|<
-name|Pipeline
+name|ContainerInfo
 argument_list|>
 name|listContainer
 parameter_list|(
@@ -4283,6 +4283,19 @@ name|getNodeCount
 argument_list|(
 name|nodestate
 argument_list|)
+return|;
+block|}
+comment|/**    * Returns SCM container manager.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getScmContainerManager ()
+specifier|public
+name|Mapping
+name|getScmContainerManager
+parameter_list|()
+block|{
+return|return
+name|scmContainerManager
 return|;
 block|}
 comment|/**    * Returns node manager.    * @return - Node Manager    */

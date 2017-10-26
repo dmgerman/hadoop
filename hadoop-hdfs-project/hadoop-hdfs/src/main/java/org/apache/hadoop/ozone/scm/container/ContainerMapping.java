@@ -336,26 +336,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|scm
-operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
-operator|.
-name|Pipeline
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|utils
 operator|.
 name|MetadataKeyFilters
@@ -739,7 +719,8 @@ name|ContainerStateManager
 argument_list|(
 name|conf
 argument_list|,
-operator|+
+name|this
+argument_list|,
 name|this
 operator|.
 name|cacheSize
@@ -896,7 +877,7 @@ DECL|method|listContainer (String startName, String prefixName, int count)
 specifier|public
 name|List
 argument_list|<
-name|Pipeline
+name|ContainerInfo
 argument_list|>
 name|listContainer
 parameter_list|(
@@ -914,9 +895,9 @@ name|IOException
 block|{
 name|List
 argument_list|<
-name|Pipeline
+name|ContainerInfo
 argument_list|>
-name|pipelineList
+name|containerList
 init|=
 operator|new
 name|ArrayList
@@ -999,7 +980,6 @@ name|prefixFilter
 argument_list|)
 decl_stmt|;
 comment|// Transform the values into the pipelines.
-comment|// TODO: return list of ContainerInfo instead of pipelines.
 comment|// TODO: filter by container state
 for|for
 control|(
@@ -1047,14 +1027,11 @@ argument_list|(
 name|containerInfo
 argument_list|)
 expr_stmt|;
-name|pipelineList
+name|containerList
 operator|.
 name|add
 argument_list|(
 name|containerInfo
-operator|.
-name|getPipeline
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1068,7 +1045,7 @@ argument_list|()
 expr_stmt|;
 block|}
 return|return
-name|pipelineList
+name|containerList
 return|;
 block|}
 comment|/**    * Allocates a new container.    *    * @param replicationFactor - replication factor of the container.    * @param containerName - Name of the container.    * @param owner    * @return - Pipeline that makes up this container.    * @throws IOException - Exception    */

@@ -158,6 +158,26 @@ name|common
 operator|.
 name|helpers
 operator|.
+name|ContainerInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|scm
+operator|.
+name|container
+operator|.
+name|common
+operator|.
+name|helpers
+operator|.
 name|Pipeline
 import|;
 end_import
@@ -492,6 +512,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// TODO : Container Client State needs to be updated.
+comment|// TODO : Return ContainerInfo instead of Pipeline
 name|createContainer
 argument_list|(
 name|containerId
@@ -822,6 +843,7 @@ name|pipeline
 argument_list|)
 expr_stmt|;
 block|}
+comment|// TODO : Return ContainerInfo instead of Pipeline
 comment|// connect to pipeline leader and allocate container on leader datanode.
 name|client
 operator|=
@@ -1068,7 +1090,7 @@ DECL|method|listContainer (String startName, String prefixName, int count)
 specifier|public
 name|List
 argument_list|<
-name|Pipeline
+name|ContainerInfo
 argument_list|>
 name|listContainer
 parameter_list|(
