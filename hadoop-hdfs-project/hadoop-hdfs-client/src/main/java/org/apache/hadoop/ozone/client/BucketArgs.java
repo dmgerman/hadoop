@@ -77,10 +77,10 @@ argument_list|>
 name|acls
 decl_stmt|;
 comment|/**    * Bucket Version flag.    */
-DECL|field|isVersionEnabled
+DECL|field|versioning
 specifier|private
 name|Boolean
-name|isVersionEnabled
+name|versioning
 decl_stmt|;
 comment|/**    * Type of storage to be used for this bucket.    * [RAM_DISK, SSD, DISK, ARCHIVE]    */
 DECL|field|storageType
@@ -88,13 +88,13 @@ specifier|private
 name|StorageType
 name|storageType
 decl_stmt|;
-comment|/**    * Private constructor, constructed via builder.    * @param isVersionEnabled Bucket version flag.    * @param storageType Storage type to be used.    * @param acls list of ACLs.    */
-DECL|method|BucketArgs (Boolean isVersionEnabled, StorageType storageType, List<OzoneAcl> acls)
+comment|/**    * Private constructor, constructed via builder.    * @param versioning Bucket version flag.    * @param storageType Storage type to be used.    * @param acls list of ACLs.    */
+DECL|method|BucketArgs (Boolean versioning, StorageType storageType, List<OzoneAcl> acls)
 specifier|private
 name|BucketArgs
 parameter_list|(
 name|Boolean
-name|isVersionEnabled
+name|versioning
 parameter_list|,
 name|StorageType
 name|storageType
@@ -114,9 +114,9 @@ name|acls
 expr_stmt|;
 name|this
 operator|.
-name|isVersionEnabled
+name|versioning
 operator|=
-name|isVersionEnabled
+name|versioning
 expr_stmt|;
 name|this
 operator|.
@@ -126,14 +126,14 @@ name|storageType
 expr_stmt|;
 block|}
 comment|/**    * Returns true if bucket version is enabled, else false.    * @return isVersionEnabled    */
-DECL|method|isVersionEnabled ()
+DECL|method|getVersioning ()
 specifier|public
 name|Boolean
-name|isVersionEnabled
+name|getVersioning
 parameter_list|()
 block|{
 return|return
-name|isVersionEnabled
+name|versioning
 return|;
 block|}
 comment|/**    * Returns the type of storage to be used.    * @return StorageType    */
@@ -186,10 +186,10 @@ specifier|static
 class|class
 name|Builder
 block|{
-DECL|field|isVersionEnabled
+DECL|field|versioning
 specifier|private
 name|Boolean
-name|isVersionEnabled
+name|versioning
 decl_stmt|;
 DECL|field|storageType
 specifier|private
@@ -204,12 +204,12 @@ name|OzoneAcl
 argument_list|>
 name|acls
 decl_stmt|;
-DECL|method|setIsVersionEnabled (Boolean versionFlag)
+DECL|method|setVersioning (Boolean versionFlag)
 specifier|public
 name|BucketArgs
 operator|.
 name|Builder
-name|setIsVersionEnabled
+name|setVersioning
 parameter_list|(
 name|Boolean
 name|versionFlag
@@ -217,7 +217,7 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|isVersionEnabled
+name|versioning
 operator|=
 name|versionFlag
 expr_stmt|;
@@ -281,7 +281,7 @@ return|return
 operator|new
 name|BucketArgs
 argument_list|(
-name|isVersionEnabled
+name|versioning
 argument_list|,
 name|storageType
 argument_list|,

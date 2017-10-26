@@ -140,6 +140,38 @@ name|ozone
 operator|.
 name|client
 operator|.
+name|ReplicationFactor
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|client
+operator|.
+name|ReplicationType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|client
+operator|.
 name|VolumeArgs
 import|;
 end_import
@@ -177,24 +209,6 @@ operator|.
 name|io
 operator|.
 name|OzoneOutputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|OzoneProtos
 import|;
 end_import
 
@@ -531,7 +545,7 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Writes a key in an existing bucket.    * @param volumeName Name of the Volume    * @param bucketName Name of the Bucket    * @param keyName Name of the Key    * @param size Size of the data    * @return {@link OzoneOutputStream}    *    */
-DECL|method|createKey (String volumeName, String bucketName, String keyName, long size, OzoneProtos.ReplicationType type, OzoneProtos.ReplicationFactor factor)
+DECL|method|createKey (String volumeName, String bucketName, String keyName, long size, ReplicationType type, ReplicationFactor factor)
 name|OzoneOutputStream
 name|createKey
 parameter_list|(
@@ -547,13 +561,9 @@ parameter_list|,
 name|long
 name|size
 parameter_list|,
-name|OzoneProtos
-operator|.
 name|ReplicationType
 name|type
 parameter_list|,
-name|OzoneProtos
-operator|.
 name|ReplicationFactor
 name|factor
 parameter_list|)
