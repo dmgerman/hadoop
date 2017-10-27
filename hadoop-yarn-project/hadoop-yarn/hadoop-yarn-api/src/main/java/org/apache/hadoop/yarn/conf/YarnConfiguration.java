@@ -2485,6 +2485,27 @@ name|DEFAULT_ZK_APPID_NODE_SPLIT_INDEX
 init|=
 literal|0
 decl_stmt|;
+comment|/** Index at which the RM Delegation Token ids will be split so that the    * delegation token znodes stored in the zookeeper RM state store will be    * stored as two different znodes (parent-child). **/
+DECL|field|ZK_DELEGATION_TOKEN_NODE_SPLIT_INDEX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ZK_DELEGATION_TOKEN_NODE_SPLIT_INDEX
+init|=
+name|RM_ZK_PREFIX
+operator|+
+literal|"delegation-token-node.split-index"
+decl_stmt|;
+DECL|field|DEFAULT_ZK_DELEGATION_TOKEN_NODE_SPLIT_INDEX
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_ZK_DELEGATION_TOKEN_NODE_SPLIT_INDEX
+init|=
+literal|0
+decl_stmt|;
 DECL|field|RM_ZK_ACL
 specifier|public
 specifier|static

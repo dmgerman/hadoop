@@ -935,6 +935,15 @@ name|RM_DT_SECRET_MANAGER_ROOT
 init|=
 literal|"RMDTSecretManagerRoot"
 decl_stmt|;
+DECL|field|RM_DELEGATION_TOKENS_ROOT_ZNODE_NAME
+specifier|protected
+specifier|static
+specifier|final
+name|String
+name|RM_DELEGATION_TOKENS_ROOT_ZNODE_NAME
+init|=
+literal|"RMDelegationTokensRoot"
+decl_stmt|;
 DECL|field|DELEGATION_KEY_PREFIX
 specifier|protected
 specifier|static
