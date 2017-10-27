@@ -8956,6 +8956,25 @@ operator|.
 name|readLock
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|checkAndGetApplicationLifetime (String queueName, long lifetime)
+specifier|public
+name|long
+name|checkAndGetApplicationLifetime
+parameter_list|(
+name|String
+name|queueName
+parameter_list|,
+name|long
+name|lifetime
+parameter_list|)
+block|{
+comment|// Lifetime is the application lifetime by default.
+return|return
+name|lifetime
+return|;
+block|}
 block|}
 end_class
 
