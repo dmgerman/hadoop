@@ -82,6 +82,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|metrics2
+operator|.
+name|lib
+operator|.
+name|DefaultMetricsSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|service
 operator|.
 name|CompositeService
@@ -426,6 +442,15 @@ name|SHUTDOWN_HOOK_PRIORITY
 init|=
 literal|30
 decl_stmt|;
+DECL|field|METRICS_NAME
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|METRICS_NAME
+init|=
+literal|"Router"
+decl_stmt|;
 DECL|method|Router ()
 specifier|public
 name|Router
@@ -518,6 +543,14 @@ name|conf
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// Metrics
+name|DefaultMetricsSystem
+operator|.
+name|initialize
+argument_list|(
+name|METRICS_NAME
+argument_list|)
+expr_stmt|;
 name|super
 operator|.
 name|serviceInit
@@ -605,6 +638,11 @@ block|}
 name|super
 operator|.
 name|serviceStop
+argument_list|()
+expr_stmt|;
+name|DefaultMetricsSystem
+operator|.
+name|shutdown
 argument_list|()
 expr_stmt|;
 block|}

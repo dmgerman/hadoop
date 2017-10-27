@@ -23,6 +23,34 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|javax
+operator|.
+name|servlet
+operator|.
+name|http
+operator|.
+name|HttpServletResponse
+operator|.
+name|SC_NO_CONTENT
+import|;
+end_import
+
+begin_import
+import|import static
+name|javax
+operator|.
+name|servlet
+operator|.
+name|http
+operator|.
+name|HttpServletResponse
+operator|.
+name|SC_OK
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -113,6 +141,20 @@ operator|.
 name|http
 operator|.
 name|HttpServletRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|ws
+operator|.
+name|rs
+operator|.
+name|core
+operator|.
+name|HttpHeaders
 import|;
 end_import
 
@@ -404,6 +446,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|sun
@@ -498,26 +560,6 @@ name|MultivaluedMapImpl
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|slf4j
-operator|.
-name|Logger
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|slf4j
-operator|.
-name|LoggerFactory
-import|;
-end_import
-
 begin_comment
 comment|/**  * The Router webservice util class.  */
 end_comment
@@ -572,7 +614,7 @@ name|RouterWebServiceUtil
 parameter_list|()
 block|{   }
 comment|/**    * Creates and performs a REST call to a specific WebService.    *    * @param webApp the address of the remote webap    * @param hsr the servlet request    * @param returnType the return type of the REST call    * @param<T> Type of return object.    * @param method the HTTP method of the REST call    * @param targetPath additional path to add to the webapp address    * @param formParam the form parameters as input for a specific REST call    * @param additionalParam the query parameters as input for a specific REST    *          call in case the call has no servlet request    * @return the retrieved entity from the REST call    */
-DECL|method|genericForward (String webApp, HttpServletRequest hsr, final Class<T> returnType, HTTPMethods method, String targetPath, Object formParam, Map<String, String[]> additionalParam)
+DECL|method|genericForward ( final String webApp, final HttpServletRequest hsr, final Class<T> returnType, final HTTPMethods method, final String targetPath, final Object formParam, final Map<String, String[]> additionalParam)
 specifier|protected
 specifier|static
 parameter_list|<
@@ -581,9 +623,11 @@ parameter_list|>
 name|T
 name|genericForward
 parameter_list|(
+specifier|final
 name|String
 name|webApp
 parameter_list|,
+specifier|final
 name|HttpServletRequest
 name|hsr
 parameter_list|,
@@ -594,15 +638,19 @@ name|T
 argument_list|>
 name|returnType
 parameter_list|,
+specifier|final
 name|HTTPMethods
 name|method
 parameter_list|,
+specifier|final
 name|String
 name|targetPath
 parameter_list|,
+specifier|final
 name|Object
 name|formParam
 parameter_list|,
+specifier|final
 name|Map
 argument_list|<
 name|String
@@ -763,6 +811,13 @@ argument_list|,
 name|paramMap
 argument_list|,
 name|formParam
+argument_list|,
+name|getMediaTypeFromHttpServletRequest
+argument_list|(
+name|hsr
+argument_list|,
+name|returnType
+argument_list|)
 argument_list|)
 decl_stmt|;
 if|if
@@ -797,7 +852,7 @@ operator|.
 name|getStatus
 argument_list|()
 operator|==
-literal|200
+name|SC_OK
 condition|)
 block|{
 return|return
@@ -808,6 +863,49 @@ argument_list|(
 name|returnType
 argument_list|)
 return|;
+block|}
+if|if
+condition|(
+name|response
+operator|.
+name|getStatus
+argument_list|()
+operator|==
+name|SC_NO_CONTENT
+condition|)
+block|{
+try|try
+block|{
+return|return
+name|returnType
+operator|.
+name|getConstructor
+argument_list|()
+operator|.
+name|newInstance
+argument_list|()
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|RuntimeException
+decl||
+name|ReflectiveOperationException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Cannot create empty entity for {}"
+argument_list|,
+name|returnType
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 name|RouterWebServiceUtil
 operator|.
@@ -846,7 +944,7 @@ return|;
 block|}
 block|}
 comment|/**    * Performs an invocation of a REST call on a remote RMWebService.    *    * @param additionalParam    */
-DECL|method|invokeRMWebService (String webApp, String path, HTTPMethods method, String additionalPath, Map<String, String[]> queryParams, Object formParam)
+DECL|method|invokeRMWebService (String webApp, String path, HTTPMethods method, String additionalPath, Map<String, String[]> queryParams, Object formParam, String mediaType)
 specifier|private
 specifier|static
 name|ClientResponse
@@ -875,6 +973,9 @@ name|queryParams
 parameter_list|,
 name|Object
 name|formParam
+parameter_list|,
+name|String
+name|mediaType
 parameter_list|)
 block|{
 name|Client
@@ -1018,8 +1119,6 @@ name|paramMap
 argument_list|)
 expr_stmt|;
 block|}
-comment|// I can forward the call in JSON or XML since the Router will convert it
-comment|// again in Object before send it back to the client
 name|Builder
 name|builder
 init|=
@@ -1040,9 +1139,7 @@ name|entity
 argument_list|(
 name|formParam
 argument_list|,
-name|MediaType
-operator|.
-name|APPLICATION_XML
+name|mediaType
 argument_list|)
 expr_stmt|;
 name|builder
@@ -1051,9 +1148,7 @@ name|builder
 operator|.
 name|accept
 argument_list|(
-name|MediaType
-operator|.
-name|APPLICATION_XML
+name|mediaType
 argument_list|)
 expr_stmt|;
 block|}
@@ -1065,9 +1160,7 @@ name|webResource
 operator|.
 name|accept
 argument_list|(
-name|MediaType
-operator|.
-name|APPLICATION_XML
+name|mediaType
 argument_list|)
 expr_stmt|;
 block|}
@@ -2489,6 +2582,98 @@ name|getShutdownNodes
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Extract from HttpServletRequest the MediaType in output.    */
+DECL|method|getMediaTypeFromHttpServletRequest ( HttpServletRequest request, final Class<T> returnType)
+specifier|protected
+specifier|static
+parameter_list|<
+name|T
+parameter_list|>
+name|String
+name|getMediaTypeFromHttpServletRequest
+parameter_list|(
+name|HttpServletRequest
+name|request
+parameter_list|,
+specifier|final
+name|Class
+argument_list|<
+name|T
+argument_list|>
+name|returnType
+parameter_list|)
+block|{
+if|if
+condition|(
+name|request
+operator|==
+literal|null
+condition|)
+block|{
+comment|// By default we return XML for REST call without HttpServletRequest
+return|return
+name|MediaType
+operator|.
+name|APPLICATION_XML
+return|;
+block|}
+comment|// TODO
+if|if
+condition|(
+operator|!
+name|returnType
+operator|.
+name|equals
+argument_list|(
+name|Response
+operator|.
+name|class
+argument_list|)
+condition|)
+block|{
+return|return
+name|MediaType
+operator|.
+name|APPLICATION_XML
+return|;
+block|}
+name|String
+name|header
+init|=
+name|request
+operator|.
+name|getHeader
+argument_list|(
+name|HttpHeaders
+operator|.
+name|ACCEPT
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|header
+operator|==
+literal|null
+operator|||
+name|header
+operator|.
+name|equals
+argument_list|(
+literal|"*"
+argument_list|)
+condition|)
+block|{
+comment|// By default we return JSON
+return|return
+name|MediaType
+operator|.
+name|APPLICATION_JSON
+return|;
+block|}
+return|return
+name|header
+return|;
 block|}
 block|}
 end_class

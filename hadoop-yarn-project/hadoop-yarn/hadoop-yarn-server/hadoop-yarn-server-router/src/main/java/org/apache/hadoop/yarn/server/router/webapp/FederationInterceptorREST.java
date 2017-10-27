@@ -36,6 +36,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|security
+operator|.
+name|Principal
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -112,6 +122,18 @@ name|util
 operator|.
 name|concurrent
 operator|.
+name|CompletionService
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
 name|ExecutorCompletionService
 import|;
 end_import
@@ -160,7 +182,33 @@ name|servlet
 operator|.
 name|http
 operator|.
+name|HttpServletRequestWrapper
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|servlet
+operator|.
+name|http
+operator|.
 name|HttpServletResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|ws
+operator|.
+name|rs
+operator|.
+name|core
+operator|.
+name|HttpHeaders
 import|;
 end_import
 
@@ -411,6 +459,26 @@ operator|.
 name|exceptions
 operator|.
 name|FederationPolicyInitializationException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|federation
+operator|.
+name|resolver
+operator|.
+name|SubClusterResolver
 import|;
 end_import
 
@@ -1370,12 +1438,7 @@ name|rand
 operator|=
 operator|new
 name|Random
-argument_list|(
-name|System
-operator|.
-name|currentTimeMillis
 argument_list|()
-argument_list|)
 expr_stmt|;
 specifier|final
 name|Configuration
@@ -1388,6 +1451,16 @@ argument_list|()
 decl_stmt|;
 try|try
 block|{
+name|SubClusterResolver
+name|subClusterResolver
+init|=
+name|this
+operator|.
+name|federationFacade
+operator|.
+name|getSubClusterResolver
+argument_list|()
+decl_stmt|;
 name|policyFacade
 operator|=
 operator|new
@@ -1397,12 +1470,7 @@ name|conf
 argument_list|,
 name|federationFacade
 argument_list|,
-name|this
-operator|.
-name|federationFacade
-operator|.
-name|getSubClusterResolver
-argument_list|()
+name|subClusterResolver
 argument_list|,
 literal|null
 argument_list|)
@@ -1414,16 +1482,13 @@ name|FederationPolicyInitializationException
 name|e
 parameter_list|)
 block|{
-name|LOG
-operator|.
-name|error
+throw|throw
+operator|new
+name|YarnRuntimeException
 argument_list|(
 name|e
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
-expr_stmt|;
+throw|;
 block|}
 name|numSubmitRetries
 operator|=
@@ -1444,11 +1509,7 @@ name|interceptors
 operator|=
 operator|new
 name|HashMap
-argument_list|<
-name|SubClusterId
-argument_list|,
-name|DefaultRequestInterceptorREST
-argument_list|>
+argument_list|<>
 argument_list|()
 expr_stmt|;
 name|routerMetrics
@@ -1644,11 +1705,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"The interceptor for SubCluster "
-operator|+
+literal|"The interceptor for SubCluster {} does not exist in the cache."
+argument_list|,
 name|subClusterId
-operator|+
-literal|" does not exist in the cache."
 argument_list|)
 expr_stmt|;
 return|return
@@ -1784,6 +1843,8 @@ name|interceptorInstance
 operator|.
 name|setWebAppAddress
 argument_list|(
+literal|"http://"
+operator|+
 name|webAppAddress
 argument_list|)
 expr_stmt|;
@@ -2009,12 +2070,10 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"getNewApplication try #"
-operator|+
+literal|"getNewApplication try #{} on SubCluster {}"
+argument_list|,
 name|i
-operator|+
-literal|" on SubCluster "
-operator|+
+argument_list|,
 name|subClusterId
 argument_list|)
 expr_stmt|;
@@ -2063,8 +2122,8 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unable to create a new ApplicationId in SubCluster "
-operator|+
+literal|"Unable to create a new ApplicationId in SubCluster {}"
+argument_list|,
 name|subClusterId
 operator|.
 name|getId
@@ -2085,7 +2144,9 @@ operator|.
 name|getStatus
 argument_list|()
 operator|==
-literal|200
+name|HttpServletResponse
+operator|.
+name|SC_OK
 condition|)
 block|{
 name|long
@@ -2384,16 +2445,12 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"submitApplication appId"
-operator|+
+literal|"submitApplication appId {} try #{} on SubCluster {}"
+argument_list|,
 name|applicationId
-operator|+
-literal|" try #"
-operator|+
+argument_list|,
 name|i
-operator|+
-literal|" on SubCluster "
-operator|+
+argument_list|,
 name|subClusterId
 argument_list|)
 expr_stmt|;
@@ -2565,12 +2622,10 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Application "
-operator|+
+literal|"Application {} already submitted on SubCluster {}"
+argument_list|,
 name|applicationId
-operator|+
-literal|" already submitted on SubCluster "
-operator|+
+argument_list|,
 name|subClusterId
 argument_list|)
 expr_stmt|;
@@ -2688,12 +2743,10 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unable to submit the application "
-operator|+
+literal|"Unable to submit the application {} to SubCluster {}"
+argument_list|,
 name|applicationId
-operator|+
-literal|"to SubCluster "
-operator|+
+argument_list|,
 name|subClusterId
 operator|.
 name|getId
@@ -2714,26 +2767,24 @@ operator|.
 name|getStatus
 argument_list|()
 operator|==
-literal|202
+name|HttpServletResponse
+operator|.
+name|SC_ACCEPTED
 condition|)
 block|{
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Application "
-operator|+
+literal|"Application {} with appId {} submitted on {}"
+argument_list|,
 name|context
 operator|.
 name|getApplicationName
 argument_list|()
-operator|+
-literal|" with appId "
-operator|+
+argument_list|,
 name|applicationId
-operator|+
-literal|" submitted on "
-operator|+
+argument_list|,
 name|subClusterId
 argument_list|)
 expr_stmt|;
@@ -2941,8 +2992,8 @@ return|return
 literal|null
 return|;
 block|}
-name|AppInfo
-name|response
+name|DefaultRequestInterceptorREST
+name|interceptor
 init|=
 name|getOrCreateInterceptorForSubCluster
 argument_list|(
@@ -2953,6 +3004,11 @@ operator|.
 name|getRMWebServiceAddress
 argument_list|()
 argument_list|)
+decl_stmt|;
+name|AppInfo
+name|response
+init|=
+name|interceptor
 operator|.
 name|getApp
 argument_list|(
@@ -3291,7 +3347,7 @@ literal|null
 return|;
 block|}
 comment|// Send the requests in parallel
-name|ExecutorCompletionService
+name|CompletionService
 argument_list|<
 name|AppsInfo
 argument_list|>
@@ -3299,9 +3355,7 @@ name|compSvc
 init|=
 operator|new
 name|ExecutorCompletionService
-argument_list|<
-name|AppsInfo
-argument_list|>
+argument_list|<>
 argument_list|(
 name|this
 operator|.
@@ -3320,6 +3374,17 @@ name|values
 argument_list|()
 control|)
 block|{
+comment|// HttpServletRequest does not work with ExecutorCompletionService.
+comment|// Create a duplicate hsr.
+specifier|final
+name|HttpServletRequest
+name|hsrCopy
+init|=
+name|clone
+argument_list|(
+name|hsr
+argument_list|)
+decl_stmt|;
 name|compSvc
 operator|.
 name|submit
@@ -3350,7 +3415,7 @@ argument_list|()
 argument_list|,
 name|info
 operator|.
-name|getClientRMServiceAddress
+name|getRMWebServiceAddress
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -3361,7 +3426,7 @@ name|interceptor
 operator|.
 name|getApps
 argument_list|(
-name|hsr
+name|hsrCopy
 argument_list|,
 name|stateQuery
 argument_list|,
@@ -3406,14 +3471,12 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Subcluster "
-operator|+
+literal|"Subcluster {} failed to return appReport."
+argument_list|,
 name|info
 operator|.
 name|getSubClusterId
 argument_list|()
-operator|+
-literal|" failed to return appReport."
 argument_list|)
 expr_stmt|;
 return|return
@@ -3439,9 +3502,6 @@ init|;
 name|i
 operator|<
 name|subClustersActive
-operator|.
-name|values
-argument_list|()
 operator|.
 name|size
 argument_list|()
@@ -3522,7 +3582,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to get application report "
+literal|"Failed to get application report"
 argument_list|,
 name|e
 argument_list|)
@@ -3557,6 +3617,130 @@ argument_list|()
 argument_list|,
 name|returnPartialReport
 argument_list|)
+return|;
+block|}
+comment|/**    * Get a copy of a HTTP request. This is for thread safety.    * @param hsr HTTP servlet request to copy.    * @return Copy of the HTTP request.    */
+DECL|method|clone (final HttpServletRequest hsr)
+specifier|private
+name|HttpServletRequestWrapper
+name|clone
+parameter_list|(
+specifier|final
+name|HttpServletRequest
+name|hsr
+parameter_list|)
+block|{
+if|if
+condition|(
+name|hsr
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+return|return
+operator|new
+name|HttpServletRequestWrapper
+argument_list|(
+name|hsr
+argument_list|)
+block|{
+specifier|public
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+index|[]
+argument_list|>
+name|getParameterMap
+parameter_list|()
+block|{
+return|return
+name|hsr
+operator|.
+name|getParameterMap
+argument_list|()
+return|;
+block|}
+specifier|public
+name|String
+name|getPathInfo
+parameter_list|()
+block|{
+return|return
+name|hsr
+operator|.
+name|getPathInfo
+argument_list|()
+return|;
+block|}
+specifier|public
+name|String
+name|getRemoteUser
+parameter_list|()
+block|{
+return|return
+name|hsr
+operator|.
+name|getRemoteUser
+argument_list|()
+return|;
+block|}
+specifier|public
+name|Principal
+name|getUserPrincipal
+parameter_list|()
+block|{
+return|return
+name|hsr
+operator|.
+name|getUserPrincipal
+argument_list|()
+return|;
+block|}
+specifier|public
+name|String
+name|getHeader
+parameter_list|(
+name|String
+name|value
+parameter_list|)
+block|{
+comment|// we override only Accept
+if|if
+condition|(
+name|value
+operator|.
+name|equals
+argument_list|(
+name|HttpHeaders
+operator|.
+name|ACCEPT
+argument_list|)
+condition|)
+block|{
+return|return
+name|RouterWebServiceUtil
+operator|.
+name|getMediaTypeFromHttpServletRequest
+argument_list|(
+name|hsr
+argument_list|,
+name|AppsInfo
+operator|.
+name|class
+argument_list|)
+return|;
+block|}
+return|return
+literal|null
+return|;
+block|}
+block|}
 return|;
 block|}
 comment|/**    * The YARN Router will forward to the request to all the SubClusters to find    * where the node is running.    *<p>    * Possible failure:    *<p>    * Client: identical behavior as {@code RMWebServices}.    *<p>    * Router: the Client will timeout and resubmit the request.    *<p>    * ResourceManager: the Router will timeout and the call will fail.    *<p>    * State Store: the Router will timeout and it will retry depending on the    * FederationFacade settings - if the failure happened before the select    * operation.    */
@@ -3629,7 +3813,7 @@ argument_list|)
 throw|;
 block|}
 comment|// Send the requests in parallel
-name|ExecutorCompletionService
+name|CompletionService
 argument_list|<
 name|NodeInfo
 argument_list|>
@@ -3688,7 +3872,7 @@ argument_list|()
 argument_list|,
 name|info
 operator|.
-name|getClientRMServiceAddress
+name|getRMWebServiceAddress
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -3718,14 +3902,12 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Subcluster "
-operator|+
+literal|"Subcluster {} failed to return nodeInfo."
+argument_list|,
 name|info
 operator|.
 name|getSubClusterId
 argument_list|()
-operator|+
-literal|" failed to return nodeInfo."
 argument_list|)
 expr_stmt|;
 return|return
@@ -3753,9 +3935,6 @@ init|;
 name|i
 operator|<
 name|subClustersActive
-operator|.
-name|values
-argument_list|()
 operator|.
 name|size
 argument_list|()
@@ -3910,6 +4089,8 @@ name|LOG
 operator|.
 name|error
 argument_list|(
+literal|"Cannot get nodes: {}"
+argument_list|,
 name|e
 operator|.
 name|getMessage
@@ -3923,7 +4104,7 @@ argument_list|()
 return|;
 block|}
 comment|// Send the requests in parallel
-name|ExecutorCompletionService
+name|CompletionService
 argument_list|<
 name|NodesInfo
 argument_list|>
@@ -3982,7 +4163,7 @@ argument_list|()
 argument_list|,
 name|info
 operator|.
-name|getClientRMServiceAddress
+name|getRMWebServiceAddress
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -4012,14 +4193,12 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Subcluster "
-operator|+
+literal|"Subcluster {} failed to return nodesInfo."
+argument_list|,
 name|info
 operator|.
 name|getSubClusterId
 argument_list|()
-operator|+
-literal|" failed to return nodesInfo."
 argument_list|)
 expr_stmt|;
 return|return
@@ -4042,9 +4221,6 @@ init|;
 name|i
 operator|<
 name|subClustersActive
-operator|.
-name|values
-argument_list|()
 operator|.
 name|size
 argument_list|()
@@ -4184,7 +4360,7 @@ name|metrics
 return|;
 block|}
 comment|// Send the requests in parallel
-name|ExecutorCompletionService
+name|CompletionService
 argument_list|<
 name|ClusterMetricsInfo
 argument_list|>
@@ -4243,7 +4419,7 @@ argument_list|()
 argument_list|,
 name|info
 operator|.
-name|getClientRMServiceAddress
+name|getRMWebServiceAddress
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -4271,14 +4447,12 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Subcluster "
-operator|+
+literal|"Subcluster {} failed to return Cluster Metrics."
+argument_list|,
 name|info
 operator|.
 name|getSubClusterId
 argument_list|()
-operator|+
-literal|" failed to return Cluster Metrics."
 argument_list|)
 expr_stmt|;
 return|return
@@ -4301,9 +4475,6 @@ init|;
 name|i
 operator|<
 name|subClustersActive
-operator|.
-name|values
-argument_list|()
 operator|.
 name|size
 argument_list|()
