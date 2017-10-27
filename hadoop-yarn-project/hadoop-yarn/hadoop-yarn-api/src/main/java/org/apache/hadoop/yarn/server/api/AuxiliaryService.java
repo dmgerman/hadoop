@@ -182,6 +182,11 @@ name|recoveryPath
 init|=
 literal|null
 decl_stmt|;
+DECL|field|auxiliaryLocalPathHandler
+specifier|private
+name|AuxiliaryLocalPathHandler
+name|auxiliaryLocalPathHandler
+decl_stmt|;
 DECL|method|AuxiliaryService (String name)
 specifier|protected
 name|AuxiliaryService
@@ -272,6 +277,36 @@ operator|.
 name|recoveryPath
 operator|=
 name|recoveryPath
+expr_stmt|;
+block|}
+comment|/**    * Method that gets the local dirs path handler for this Auxiliary Service.    *    * @return auxiliaryPathHandler object that is used to read from and write to    * valid local Dirs.    */
+DECL|method|getAuxiliaryLocalPathHandler ()
+specifier|public
+name|AuxiliaryLocalPathHandler
+name|getAuxiliaryLocalPathHandler
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|auxiliaryLocalPathHandler
+return|;
+block|}
+comment|/**    * Method that sets the local dirs path handler for this Auxiliary Service.    *    * @param auxiliaryLocalPathHandler the pathHandler for this auxiliary service    */
+DECL|method|setAuxiliaryLocalPathHandler ( AuxiliaryLocalPathHandler auxiliaryLocalPathHandler)
+specifier|public
+name|void
+name|setAuxiliaryLocalPathHandler
+parameter_list|(
+name|AuxiliaryLocalPathHandler
+name|auxiliaryLocalPathHandler
+parameter_list|)
+block|{
+name|this
+operator|.
+name|auxiliaryLocalPathHandler
+operator|=
+name|auxiliaryLocalPathHandler
 expr_stmt|;
 block|}
 block|}

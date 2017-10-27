@@ -312,6 +312,24 @@ name|server
 operator|.
 name|api
 operator|.
+name|AuxiliaryLocalPathHandler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
 name|AuxiliaryService
 import|;
 end_import
@@ -427,6 +445,12 @@ name|ByteBuffer
 argument_list|>
 name|serviceMetaData
 decl_stmt|;
+DECL|field|auxiliaryLocalPathHandler
+specifier|private
+specifier|final
+name|AuxiliaryLocalPathHandler
+name|auxiliaryLocalPathHandler
+decl_stmt|;
 DECL|field|p
 specifier|private
 specifier|final
@@ -440,10 +464,13 @@ argument_list|(
 literal|"^[A-Za-z_]+[A-Za-z0-9_]*$"
 argument_list|)
 decl_stmt|;
-DECL|method|AuxServices ()
+DECL|method|AuxServices (AuxiliaryLocalPathHandler auxiliaryLocalPathHandler)
 specifier|public
 name|AuxServices
-parameter_list|()
+parameter_list|(
+name|AuxiliaryLocalPathHandler
+name|auxiliaryLocalPathHandler
+parameter_list|)
 block|{
 name|super
 argument_list|(
@@ -486,6 +513,12 @@ name|ByteBuffer
 argument_list|>
 argument_list|()
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|auxiliaryLocalPathHandler
+operator|=
+name|auxiliaryLocalPathHandler
 expr_stmt|;
 comment|// Obtain services from configuration in init()
 block|}
@@ -988,6 +1021,13 @@ literal|"the name in the config."
 argument_list|)
 expr_stmt|;
 block|}
+name|s
+operator|.
+name|setAuxiliaryLocalPathHandler
+argument_list|(
+name|auxiliaryLocalPathHandler
+argument_list|)
+expr_stmt|;
 name|addService
 argument_list|(
 name|sName
