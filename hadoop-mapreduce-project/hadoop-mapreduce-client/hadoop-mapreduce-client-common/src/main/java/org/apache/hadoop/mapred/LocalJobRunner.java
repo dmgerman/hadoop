@@ -212,34 +212,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -732,6 +704,26 @@ name|HadoopExecutors
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/** Implements MapReduce locally, in-process, for debugging. */
 end_comment
@@ -756,12 +748,12 @@ DECL|field|LOG
 specifier|public
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|LocalJobRunner
 operator|.
@@ -3343,6 +3335,9 @@ operator|.
 name|warn
 argument_list|(
 name|id
+operator|.
+name|toString
+argument_list|()
 argument_list|,
 name|t
 argument_list|)
@@ -3941,7 +3936,7 @@ name|IOException
 block|{
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 literal|"FSError: "
 operator|+
@@ -3971,7 +3966,7 @@ name|IOException
 block|{
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 literal|"shuffleError: "
 operator|+
@@ -4000,7 +3995,7 @@ name|IOException
 block|{
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 literal|"Fatal: "
 operator|+
