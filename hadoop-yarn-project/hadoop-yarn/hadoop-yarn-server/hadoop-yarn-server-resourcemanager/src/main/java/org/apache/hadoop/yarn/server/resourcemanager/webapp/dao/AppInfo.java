@@ -1890,6 +1890,12 @@ operator|.
 name|getApplicationTimeouts
 argument_list|()
 decl_stmt|;
+name|timeouts
+operator|=
+operator|new
+name|AppTimeoutsInfo
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|applicationTimeouts
@@ -1915,12 +1921,6 @@ name|ApplicationTimeoutType
 operator|.
 name|LIFETIME
 argument_list|)
-expr_stmt|;
-name|timeouts
-operator|=
-operator|new
-name|AppTimeoutsInfo
-argument_list|()
 expr_stmt|;
 name|timeouts
 operator|.
@@ -1976,9 +1976,6 @@ init|=
 name|entry
 operator|.
 name|getValue
-argument_list|()
-operator|.
-name|longValue
 argument_list|()
 decl_stmt|;
 name|timeout
