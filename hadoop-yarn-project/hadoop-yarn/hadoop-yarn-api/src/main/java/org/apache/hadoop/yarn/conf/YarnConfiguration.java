@@ -3570,6 +3570,35 @@ name|DEFAULT_RM_RESOURCE_PROFILES_SOURCE_FILE
 init|=
 literal|"resource-profiles.json"
 decl_stmt|;
+comment|/**    * Enable/disable loading resource-types.xml at client side.    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|field|YARN_CLIENT_LOAD_RESOURCETYPES_FROM_SERVER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|YARN_CLIENT_LOAD_RESOURCETYPES_FROM_SERVER
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"client.load.resource-types.from-server"
+decl_stmt|;
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|field|DEFAULT_YARN_CLIENT_LOAD_RESOURCETYPES_FROM_SERVER
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_YARN_CLIENT_LOAD_RESOURCETYPES_FROM_SERVER
+init|=
+literal|false
+decl_stmt|;
 comment|/**    * Timeout in seconds for YARN node graceful decommission.    * This is the maximal time to wait for running containers and applications    * to complete before transition a DECOMMISSIONING node into DECOMMISSIONED.    */
 DECL|field|RM_NODE_GRACEFUL_DECOMMISSION_TIMEOUT
 specifier|public

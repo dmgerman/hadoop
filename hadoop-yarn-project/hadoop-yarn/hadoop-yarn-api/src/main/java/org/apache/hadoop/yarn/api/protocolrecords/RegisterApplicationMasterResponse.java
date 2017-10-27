@@ -222,6 +222,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ResourceTypeInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|proto
 operator|.
 name|YarnServiceProtos
@@ -578,6 +596,7 @@ argument_list|>
 name|types
 parameter_list|)
 function_decl|;
+comment|/**    * Get list of supported resource profiles from RM.    *    * @return a map of resource profiles and its capabilities.    */
 annotation|@
 name|Public
 annotation|@
@@ -594,6 +613,7 @@ argument_list|>
 name|getResourceProfiles
 parameter_list|()
 function_decl|;
+comment|/**    * Set supported resource profiles for RM.    *    * @param profiles    *          a map of resource profiles with its capabilities.    */
 annotation|@
 name|Private
 annotation|@
@@ -611,6 +631,39 @@ argument_list|,
 name|Resource
 argument_list|>
 name|profiles
+parameter_list|)
+function_decl|;
+comment|/**    * Get available resource types supported by RM.    *    * @return a Map of RM settings    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getResourceTypes ()
+specifier|public
+specifier|abstract
+name|List
+argument_list|<
+name|ResourceTypeInfo
+argument_list|>
+name|getResourceTypes
+parameter_list|()
+function_decl|;
+comment|/**    * Set the resource types used by RM.    *    * @param types    *          a set of the resource types supported by RM.    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setResourceTypes (List<ResourceTypeInfo> types)
+specifier|public
+specifier|abstract
+name|void
+name|setResourceTypes
+parameter_list|(
+name|List
+argument_list|<
+name|ResourceTypeInfo
+argument_list|>
+name|types
 parameter_list|)
 function_decl|;
 block|}
