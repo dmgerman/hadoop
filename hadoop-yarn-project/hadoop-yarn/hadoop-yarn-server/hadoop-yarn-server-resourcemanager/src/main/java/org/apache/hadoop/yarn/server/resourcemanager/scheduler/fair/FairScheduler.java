@@ -2449,13 +2449,6 @@ name|FSAppAttempt
 name|app
 parameter_list|)
 block|{
-try|try
-block|{
-name|readLock
-operator|.
-name|lock
-argument_list|()
-expr_stmt|;
 name|double
 name|weight
 init|=
@@ -2465,6 +2458,13 @@ if|if
 condition|(
 name|sizeBasedWeight
 condition|)
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
 block|{
 comment|// Set weight based on current memory demand
 name|weight
@@ -2490,6 +2490,15 @@ literal|2
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 return|return
 operator|(
 name|float
@@ -2504,15 +2513,6 @@ operator|.
 name|getPriority
 argument_list|()
 return|;
-block|}
-finally|finally
-block|{
-name|readLock
-operator|.
-name|unlock
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|getIncrementResourceCapability ()
 specifier|public
