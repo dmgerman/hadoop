@@ -387,6 +387,21 @@ argument_list|,
 literal|0f
 argument_list|)
 expr_stmt|;
+comment|// This effectively disables the update thread since we call update
+comment|// explicitly on the main thread
+name|conf
+operator|.
+name|setLong
+argument_list|(
+name|FairSchedulerConfiguration
+operator|.
+name|UPDATE_INTERVAL_MS
+argument_list|,
+name|Long
+operator|.
+name|MAX_VALUE
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|After
@@ -607,11 +622,13 @@ name|preemptionThread
 operator|.
 name|totalAppsAdded
 argument_list|()
-operator|>
+operator|>=
 name|preemptionThread
 operator|.
 name|uniqueAppsAdded
 argument_list|()
+operator|*
+literal|2
 condition|)
 block|{
 break|break;
@@ -624,19 +641,23 @@ literal|10
 argument_list|)
 expr_stmt|;
 block|}
-name|assertTrue
+name|assertEquals
 argument_list|(
-literal|"Each app is marked as starved exactly once"
+literal|"Each app should be marked as starved once"
+operator|+
+literal|" at each scheduler update above"
 argument_list|,
 name|preemptionThread
 operator|.
 name|totalAppsAdded
 argument_list|()
-operator|>
+argument_list|,
 name|preemptionThread
 operator|.
 name|uniqueAppsAdded
 argument_list|()
+operator|*
+literal|2
 argument_list|)
 expr_stmt|;
 block|}
