@@ -126,6 +126,24 @@ name|server
 operator|.
 name|nodemanager
 operator|.
+name|Context
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
 name|containermanager
 operator|.
 name|linux
@@ -750,13 +768,16 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|initialize (Configuration conf)
+DECL|method|initialize (Configuration conf, Context nmContext)
 specifier|public
 name|void
 name|initialize
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|,
+name|Context
+name|nmContext
 parameter_list|)
 throws|throws
 name|ContainerExecutionException
@@ -794,6 +815,8 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+name|nmContext
 argument_list|)
 expr_stmt|;
 block|}

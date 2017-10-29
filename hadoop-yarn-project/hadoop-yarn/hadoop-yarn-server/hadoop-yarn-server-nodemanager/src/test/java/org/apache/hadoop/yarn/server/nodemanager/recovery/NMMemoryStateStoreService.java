@@ -396,6 +396,28 @@ name|containermanager
 operator|.
 name|container
 operator|.
+name|Container
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|container
+operator|.
 name|ResourceMappings
 import|;
 end_import
@@ -2781,13 +2803,13 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|storeAssignedResources (ContainerId containerId, String resourceType, List<Serializable> assignedResources)
+DECL|method|storeAssignedResources (Container container, String resourceType, List<Serializable> assignedResources)
 specifier|public
 name|void
 name|storeAssignedResources
 parameter_list|(
-name|ContainerId
-name|containerId
+name|Container
+name|container
 parameter_list|,
 name|String
 name|resourceType
@@ -2823,7 +2845,10 @@ name|containerStates
 operator|.
 name|get
 argument_list|(
-name|containerId
+name|container
+operator|.
+name|getContainerId
+argument_list|()
 argument_list|)
 operator|.
 name|getResourceMappings
@@ -2834,6 +2859,16 @@ argument_list|(
 name|resourceType
 argument_list|,
 name|ar
+argument_list|)
+expr_stmt|;
+comment|// update container resource mapping.
+name|updateContainerResourceMapping
+argument_list|(
+name|container
+argument_list|,
+name|resourceType
+argument_list|,
+name|assignedResources
 argument_list|)
 expr_stmt|;
 block|}

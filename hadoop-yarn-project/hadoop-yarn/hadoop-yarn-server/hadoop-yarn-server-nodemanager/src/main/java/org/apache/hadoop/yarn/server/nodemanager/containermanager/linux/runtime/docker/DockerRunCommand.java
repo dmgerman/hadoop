@@ -329,6 +329,28 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|setVolumeDriver (String volumeDriver)
+specifier|public
+name|DockerRunCommand
+name|setVolumeDriver
+parameter_list|(
+name|String
+name|volumeDriver
+parameter_list|)
+block|{
+name|super
+operator|.
+name|addCommandArguments
+argument_list|(
+literal|"volume-driver"
+argument_list|,
+name|volumeDriver
+argument_list|)
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|setCGroupParent (String parentPath)
 specifier|public
 name|DockerRunCommand

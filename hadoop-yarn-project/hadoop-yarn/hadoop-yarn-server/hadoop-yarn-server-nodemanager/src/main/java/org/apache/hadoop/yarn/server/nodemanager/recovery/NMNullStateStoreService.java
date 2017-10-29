@@ -278,6 +278,28 @@ name|MasterKey
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|container
+operator|.
+name|Container
+import|;
+end_import
+
 begin_comment
 comment|// The state store to use when state isn't being stored
 end_comment
@@ -995,13 +1017,13 @@ name|IOException
 block|{   }
 annotation|@
 name|Override
-DECL|method|storeAssignedResources (ContainerId containerId, String resourceType, List<Serializable> assignedResources)
+DECL|method|storeAssignedResources (Container container, String resourceType, List<Serializable> assignedResources)
 specifier|public
 name|void
 name|storeAssignedResources
 parameter_list|(
-name|ContainerId
-name|containerId
+name|Container
+name|container
 parameter_list|,
 name|String
 name|resourceType

@@ -426,6 +426,28 @@ name|containermanager
 operator|.
 name|container
 operator|.
+name|Container
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|container
+operator|.
 name|ResourceMappings
 import|;
 end_import
@@ -2130,15 +2152,15 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Store the assigned resources to a container.    *    * @param containerId Container Id    * @param resourceType Resource Type    * @param assignedResources Assigned resources    * @throws IOException if fails    */
-DECL|method|storeAssignedResources (ContainerId containerId, String resourceType, List<Serializable> assignedResources)
+comment|/**    * Store the assigned resources to a container.    *    * @param container NMContainer    * @param resourceType Resource Type    * @param assignedResources Assigned resources    * @throws IOException if fails    */
+DECL|method|storeAssignedResources (Container container, String resourceType, List<Serializable> assignedResources)
 specifier|public
 specifier|abstract
 name|void
 name|storeAssignedResources
 parameter_list|(
-name|ContainerId
-name|containerId
+name|Container
+name|container
 parameter_list|,
 name|String
 name|resourceType
@@ -2182,6 +2204,56 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+DECL|method|updateContainerResourceMapping (Container container, String resourceType, List<Serializable> assignedResources)
+specifier|protected
+name|void
+name|updateContainerResourceMapping
+parameter_list|(
+name|Container
+name|container
+parameter_list|,
+name|String
+name|resourceType
+parameter_list|,
+name|List
+argument_list|<
+name|Serializable
+argument_list|>
+name|assignedResources
+parameter_list|)
+block|{
+comment|// Update Container#getResourceMapping.
+name|ResourceMappings
+operator|.
+name|AssignedResources
+name|newAssigned
+init|=
+operator|new
+name|ResourceMappings
+operator|.
+name|AssignedResources
+argument_list|()
+decl_stmt|;
+name|newAssigned
+operator|.
+name|updateAssignedResources
+argument_list|(
+name|assignedResources
+argument_list|)
+expr_stmt|;
+name|container
+operator|.
+name|getResourceMappings
+argument_list|()
+operator|.
+name|addAssignedResources
+argument_list|(
+name|resourceType
+argument_list|,
+name|newAssigned
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

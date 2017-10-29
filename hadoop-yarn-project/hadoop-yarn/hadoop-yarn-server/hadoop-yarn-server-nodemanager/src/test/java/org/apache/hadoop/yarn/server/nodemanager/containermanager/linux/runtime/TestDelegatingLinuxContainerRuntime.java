@@ -262,6 +262,8 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -333,6 +335,8 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -404,6 +408,8 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -475,6 +481,8 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -546,6 +554,8 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -628,6 +638,8 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|ContainerRuntime
@@ -696,6 +708,8 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|ContainerRuntime

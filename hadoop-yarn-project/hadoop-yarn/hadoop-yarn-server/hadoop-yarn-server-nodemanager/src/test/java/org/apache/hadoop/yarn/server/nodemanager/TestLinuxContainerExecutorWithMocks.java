@@ -1247,6 +1247,8 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|mockExec
@@ -2257,6 +2259,8 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|exec
@@ -3646,6 +3650,8 @@ operator|.
 name|initialize
 argument_list|(
 name|conf
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|mockExec

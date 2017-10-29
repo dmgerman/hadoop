@@ -154,6 +154,30 @@ name|ResourceHandlerChain
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|linux
+operator|.
+name|runtime
+operator|.
+name|DockerLinuxContainerRuntime
+import|;
+end_import
+
 begin_comment
 comment|/**  * {@link ResourcePlugin} is an interface for node manager to easier support  * discovery/manage/isolation for new resource types.  *  *<p>  * It has two major part: {@link ResourcePlugin#createResourceHandler(Context,  * CGroupsHandler, PrivilegedOperationExecutor)} and  * {@link ResourcePlugin#getNodeResourceHandlerInstance()}, see javadocs below  * for more details.  *</p>  */
 end_comment
@@ -203,6 +227,12 @@ name|cleanup
 parameter_list|()
 throws|throws
 name|YarnException
+function_decl|;
+comment|/**    * Plugin need to get {@link DockerCommandPlugin}. This will be invoked by    * {@link DockerLinuxContainerRuntime} when execute docker commands such as    * run/stop/pull, etc.    *    * @return DockerCommandPlugin instance. return null if plugin doesn't    *         have requirement to update docker command.    */
+DECL|method|getDockerCommandPluginInstance ()
+name|DockerCommandPlugin
+name|getDockerCommandPluginInstance
+parameter_list|()
 function_decl|;
 block|}
 end_interface

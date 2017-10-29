@@ -158,24 +158,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|ResourceInformation
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|exceptions
 operator|.
 name|ResourceNotFoundException
@@ -238,9 +220,11 @@ name|nodemanager
 operator|.
 name|containermanager
 operator|.
-name|container
+name|linux
 operator|.
-name|ResourceMappings
+name|resources
+operator|.
+name|ResourceHandlerException
 import|;
 end_import
 
@@ -260,11 +244,11 @@ name|nodemanager
 operator|.
 name|containermanager
 operator|.
-name|linux
+name|resourceplugin
 operator|.
-name|resources
+name|gpu
 operator|.
-name|ResourceHandlerException
+name|GpuDevice
 import|;
 end_import
 
@@ -437,7 +421,7 @@ DECL|field|allowedGpuDevices
 specifier|private
 name|Set
 argument_list|<
-name|Integer
+name|GpuDevice
 argument_list|>
 name|allowedGpuDevices
 init|=
@@ -450,7 +434,7 @@ DECL|field|usedDevices
 specifier|private
 name|Map
 argument_list|<
-name|Integer
+name|GpuDevice
 argument_list|,
 name|ContainerId
 argument_list|>
@@ -481,7 +465,7 @@ operator|=
 name|ctx
 expr_stmt|;
 block|}
-comment|/**    * Contains allowed and denied devices with minor number.    * Denied devices will be useful for cgroups devices module to do blacklisting    */
+comment|/**    * Contains allowed and denied devices    * Denied devices will be useful for cgroups devices module to do blacklisting    */
 DECL|class|GpuAllocation
 specifier|static
 class|class
@@ -491,7 +475,7 @@ DECL|field|allowed
 specifier|private
 name|Set
 argument_list|<
-name|Integer
+name|GpuDevice
 argument_list|>
 name|allowed
 init|=
@@ -504,7 +488,7 @@ DECL|field|denied
 specifier|private
 name|Set
 argument_list|<
-name|Integer
+name|GpuDevice
 argument_list|>
 name|denied
 init|=
@@ -513,18 +497,18 @@ operator|.
 name|emptySet
 argument_list|()
 decl_stmt|;
-DECL|method|GpuAllocation (Set<Integer> allowed, Set<Integer> denied)
+DECL|method|GpuAllocation (Set<GpuDevice> allowed, Set<GpuDevice> denied)
 name|GpuAllocation
 parameter_list|(
 name|Set
 argument_list|<
-name|Integer
+name|GpuDevice
 argument_list|>
 name|allowed
 parameter_list|,
 name|Set
 argument_list|<
-name|Integer
+name|GpuDevice
 argument_list|>
 name|denied
 parameter_list|)
@@ -572,7 +556,7 @@ DECL|method|getAllowedGPUs ()
 specifier|public
 name|Set
 argument_list|<
-name|Integer
+name|GpuDevice
 argument_list|>
 name|getAllowedGPUs
 parameter_list|()
@@ -585,7 +569,7 @@ DECL|method|getDeniedGPUs ()
 specifier|public
 name|Set
 argument_list|<
-name|Integer
+name|GpuDevice
 argument_list|>
 name|getDeniedGPUs
 parameter_list|()
@@ -595,22 +579,22 @@ name|denied
 return|;
 block|}
 block|}
-comment|/**    * Add GPU to allowed list    * @param minorNumber minor number of the GPU device.    */
-DECL|method|addGpu (int minorNumber)
+comment|/**    * Add GPU to allowed list    * @param gpuDevice gpu device    */
+DECL|method|addGpu (GpuDevice gpuDevice)
 specifier|public
 specifier|synchronized
 name|void
 name|addGpu
 parameter_list|(
-name|int
-name|minorNumber
+name|GpuDevice
+name|gpuDevice
 parameter_list|)
 block|{
 name|allowedGpuDevices
 operator|.
 name|add
 argument_list|(
-name|minorNumber
+name|gpuDevice
 argument_list|)
 expr_stmt|;
 block|}
@@ -707,7 +691,7 @@ block|}
 for|for
 control|(
 name|Serializable
-name|deviceId
+name|gpuDeviceSerializable
 range|:
 name|c
 operator|.
@@ -724,9 +708,9 @@ if|if
 condition|(
 operator|!
 operator|(
-name|deviceId
+name|gpuDeviceSerializable
 operator|instanceof
-name|String
+name|GpuDevice
 operator|)
 condition|)
 block|{
@@ -736,46 +720,18 @@ name|ResourceHandlerException
 argument_list|(
 literal|"Trying to recover device id, however it"
 operator|+
-literal|" is not String, this shouldn't happen"
+literal|" is not GpuDevice, this shouldn't happen"
 argument_list|)
 throw|;
 block|}
-name|int
-name|devId
-decl_stmt|;
-try|try
-block|{
-name|devId
-operator|=
-name|Integer
-operator|.
-name|parseInt
-argument_list|(
+name|GpuDevice
+name|gpuDevice
+init|=
 operator|(
-name|String
+name|GpuDevice
 operator|)
-name|deviceId
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|NumberFormatException
-name|e
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|ResourceHandlerException
-argument_list|(
-literal|"Failed to recover device id because"
-operator|+
-literal|"it is not a valid integer, devId:"
-operator|+
-name|deviceId
-argument_list|)
-throw|;
-block|}
+name|gpuDeviceSerializable
+decl_stmt|;
 comment|// Make sure it is in allowed GPU device.
 if|if
 condition|(
@@ -784,7 +740,7 @@ name|allowedGpuDevices
 operator|.
 name|contains
 argument_list|(
-name|devId
+name|gpuDevice
 argument_list|)
 condition|)
 block|{
@@ -792,9 +748,9 @@ throw|throw
 operator|new
 name|ResourceHandlerException
 argument_list|(
-literal|"Try to recover device id = "
+literal|"Try to recover device = "
 operator|+
-name|devId
+name|gpuDevice
 operator|+
 literal|" however it is not in allowed device list:"
 operator|+
@@ -816,7 +772,7 @@ name|usedDevices
 operator|.
 name|containsKey
 argument_list|(
-name|devId
+name|gpuDevice
 argument_list|)
 condition|)
 block|{
@@ -826,7 +782,7 @@ name|ResourceHandlerException
 argument_list|(
 literal|"Try to recover device id = "
 operator|+
-name|devId
+name|gpuDevice
 operator|+
 literal|" however it is already assigned to container="
 operator|+
@@ -834,7 +790,7 @@ name|usedDevices
 operator|.
 name|get
 argument_list|(
-name|devId
+name|gpuDevice
 argument_list|)
 operator|+
 literal|", please double check what happened."
@@ -845,15 +801,17 @@ name|usedDevices
 operator|.
 name|put
 argument_list|(
-name|devId
+name|gpuDevice
 argument_list|,
 name|containerId
 argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Get number of requested GPUs from resource.    * @param requestedResource requested resource    * @return #gpus.    */
 DECL|method|getRequestedGpus (Resource requestedResource)
-specifier|private
+specifier|public
+specifier|static
 name|int
 name|getRequestedGpus
 parameter_list|(
@@ -891,7 +849,7 @@ literal|0
 return|;
 block|}
 block|}
-comment|/**    * Assign GPU to requestor    * @param container container to allocate    * @return List of denied Gpus with minor numbers    * @throws ResourceHandlerException When failed to    */
+comment|/**    * Assign GPU to requestor    * @param container container to allocate    * @return allocation results.    * @throws ResourceHandlerException When failed to assign GPUs.    */
 DECL|method|assignGpus (Container container)
 specifier|public
 specifier|synchronized
@@ -959,19 +917,19 @@ throw|;
 block|}
 name|Set
 argument_list|<
-name|Integer
+name|GpuDevice
 argument_list|>
 name|assignedGpus
 init|=
 operator|new
-name|HashSet
+name|TreeSet
 argument_list|<>
 argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|int
-name|deviceNum
+name|GpuDevice
+name|gpu
 range|:
 name|allowedGpuDevices
 control|)
@@ -983,7 +941,7 @@ name|usedDevices
 operator|.
 name|containsKey
 argument_list|(
-name|deviceNum
+name|gpu
 argument_list|)
 condition|)
 block|{
@@ -991,7 +949,7 @@ name|usedDevices
 operator|.
 name|put
 argument_list|(
-name|deviceNum
+name|gpu
 argument_list|,
 name|containerId
 argument_list|)
@@ -1000,7 +958,7 @@ name|assignedGpus
 operator|.
 name|add
 argument_list|(
-name|deviceNum
+name|gpu
 argument_list|)
 expr_stmt|;
 if|if
@@ -1027,71 +985,8 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-name|List
-argument_list|<
-name|Serializable
-argument_list|>
-name|allocatedDevices
-init|=
-operator|new
-name|ArrayList
-argument_list|<>
-argument_list|()
-decl_stmt|;
-for|for
-control|(
-name|int
-name|gpu
-range|:
-name|assignedGpus
-control|)
-block|{
-name|allocatedDevices
-operator|.
-name|add
-argument_list|(
-name|String
-operator|.
-name|valueOf
-argument_list|(
-name|gpu
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
 try|try
 block|{
-comment|// Update Container#getResourceMapping.
-name|ResourceMappings
-operator|.
-name|AssignedResources
-name|assignedResources
-init|=
-operator|new
-name|ResourceMappings
-operator|.
-name|AssignedResources
-argument_list|()
-decl_stmt|;
-name|assignedResources
-operator|.
-name|updateAssignedResources
-argument_list|(
-name|allocatedDevices
-argument_list|)
-expr_stmt|;
-name|container
-operator|.
-name|getResourceMappings
-argument_list|()
-operator|.
-name|addAssignedResources
-argument_list|(
-name|GPU_URI
-argument_list|,
-name|assignedResources
-argument_list|)
-expr_stmt|;
 comment|// Update state store.
 name|nmContext
 operator|.
@@ -1100,11 +995,16 @@ argument_list|()
 operator|.
 name|storeAssignedResources
 argument_list|(
-name|containerId
+name|container
 argument_list|,
 name|GPU_URI
 argument_list|,
-name|allocatedDevices
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|(
+name|assignedGpus
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1172,7 +1072,7 @@ name|Map
 operator|.
 name|Entry
 argument_list|<
-name|Integer
+name|GpuDevice
 argument_list|,
 name|ContainerId
 argument_list|>
@@ -1226,7 +1126,7 @@ specifier|public
 specifier|synchronized
 name|Map
 argument_list|<
-name|Integer
+name|GpuDevice
 argument_list|,
 name|ContainerId
 argument_list|>

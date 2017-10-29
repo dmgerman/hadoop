@@ -240,7 +240,7 @@ argument_list|)
 expr_stmt|;
 name|List
 argument_list|<
-name|Integer
+name|GpuDevice
 argument_list|>
 name|usableGpus
 init|=
@@ -249,7 +249,7 @@ operator|.
 name|getInstance
 argument_list|()
 operator|.
-name|getMinorNumbersOfGpusUsableByYarn
+name|getGpusUsableByYarn
 argument_list|()
 decl_stmt|;
 if|if
@@ -264,15 +264,28 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
+name|String
+name|message
+init|=
+literal|"GPU is enabled, but couldn't find any usable GPUs on the "
+operator|+
+literal|"NodeManager."
+decl_stmt|;
 name|LOG
 operator|.
-name|info
+name|error
 argument_list|(
-literal|"Didn't find any usable GPUs on the NodeManager."
+name|message
 argument_list|)
 expr_stmt|;
 comment|// No gpu can be used by YARN.
-return|return;
+throw|throw
+operator|new
+name|YarnException
+argument_list|(
+name|message
+argument_list|)
+throw|;
 block|}
 name|long
 name|nUsableGpus
