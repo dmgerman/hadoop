@@ -276,6 +276,37 @@ operator|.
 name|MAPRED_JOB_REDUCE_MEMORY_MB_PROPERTY
 argument_list|)
 expr_stmt|;
+comment|// Resource type related properties are only prefixes,
+comment|// they need to be postfixed with the resource name
+comment|// in order to take effect.
+comment|// There is nothing to be added to mapred-default.xml
+name|configurationPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|MRJobConfig
+operator|.
+name|MR_AM_RESOURCE_PREFIX
+argument_list|)
+expr_stmt|;
+name|configurationPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|MRJobConfig
+operator|.
+name|MAP_RESOURCE_TYPE_PREFIX
+argument_list|)
+expr_stmt|;
+name|configurationPropsToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|MRJobConfig
+operator|.
+name|REDUCE_RESOURCE_TYPE_PREFIX
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

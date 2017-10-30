@@ -1230,6 +1230,7 @@ name|MAP_INPUT_START
 init|=
 literal|"mapreduce.map.input.start"
 decl_stmt|;
+comment|/**    * Configuration key for specifying memory requirement for the mapper.    * Kept for backward-compatibility, mapreduce.map.resource.memory    * is the new preferred way to specify this.    */
 DECL|field|MAP_MEMORY_MB
 specifier|public
 specifier|static
@@ -1248,6 +1249,7 @@ name|DEFAULT_MAP_MEMORY_MB
 init|=
 literal|1024
 decl_stmt|;
+comment|/**    * Configuration key for specifying CPU requirement for the mapper.    * Kept for backward-compatibility, mapreduce.map.resource.vcores    * is the new preferred way to specify this.    */
 DECL|field|MAP_CPU_VCORES
 specifier|public
 specifier|static
@@ -1265,6 +1267,46 @@ name|int
 name|DEFAULT_MAP_CPU_VCORES
 init|=
 literal|1
+decl_stmt|;
+comment|/**    * Custom resource names required by the mapper should be    * appended to this prefix, the value's format is {amount}[ ][{unit}].    * If no unit is defined, the default unit will be used.    * Standard resource names: memory (default unit: Mi), vcores    */
+DECL|field|MAP_RESOURCE_TYPE_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MAP_RESOURCE_TYPE_PREFIX
+init|=
+literal|"mapreduce.map.resource."
+decl_stmt|;
+comment|/**    * Resource type name for CPU vcores.    */
+DECL|field|RESOURCE_TYPE_NAME_VCORE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RESOURCE_TYPE_NAME_VCORE
+init|=
+literal|"vcores"
+decl_stmt|;
+comment|/**    * Resource type name for memory.    */
+DECL|field|RESOURCE_TYPE_NAME_MEMORY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RESOURCE_TYPE_NAME_MEMORY
+init|=
+literal|"memory"
+decl_stmt|;
+comment|/**    * Alternative resource type name for memory.    */
+DECL|field|RESOURCE_TYPE_ALTERNATIVE_NAME_MEMORY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RESOURCE_TYPE_ALTERNATIVE_NAME_MEMORY
+init|=
+literal|"memory-mb"
 decl_stmt|;
 DECL|field|MAP_ENV
 specifier|public
@@ -1467,6 +1509,7 @@ name|REDUCE_MARKRESET_BUFFER_SIZE
 init|=
 literal|"mapreduce.reduce.markreset.buffer.size"
 decl_stmt|;
+comment|/**    * Configuration key for specifying memory requirement for the reducer.    * Kept for backward-compatibility, mapreduce.reduce.resource.memory    * is the new preferred way to specify this.    */
 DECL|field|REDUCE_MEMORY_MB
 specifier|public
 specifier|static
@@ -1485,6 +1528,7 @@ name|DEFAULT_REDUCE_MEMORY_MB
 init|=
 literal|1024
 decl_stmt|;
+comment|/**    * Configuration key for specifying CPU requirement for the reducer.    * Kept for backward-compatibility, mapreduce.reduce.resource.vcores    * is the new preferred way to specify this.    */
 DECL|field|REDUCE_CPU_VCORES
 specifier|public
 specifier|static
@@ -1502,6 +1546,16 @@ name|int
 name|DEFAULT_REDUCE_CPU_VCORES
 init|=
 literal|1
+decl_stmt|;
+comment|/**    * Resource names required by the reducer should be    * appended to this prefix, the value's format is {amount}[ ][{unit}].    * If no unit is defined, the default unit will be used.    * Standard resource names: memory (default unit: Mi), vcores    */
+DECL|field|REDUCE_RESOURCE_TYPE_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|REDUCE_RESOURCE_TYPE_PREFIX
+init|=
+literal|"mapreduce.reduce.resource."
 decl_stmt|;
 DECL|field|REDUCE_MEMORY_TOTAL_BYTES
 specifier|public
@@ -2275,7 +2329,7 @@ name|DEFAULT_MR_AM_STAGING_DIR
 init|=
 literal|"/tmp/hadoop-yarn/staging"
 decl_stmt|;
-comment|/** The amount of memory the MR app master needs.*/
+comment|/** The amount of memory the MR app master needs.    * Kept for backward-compatibility, yarn.app.mapreduce.am.resource.memory is    * the new preferred way to specify this    */
 DECL|field|MR_AM_VMEM_MB
 specifier|public
 specifier|static
@@ -2316,6 +2370,18 @@ name|int
 name|DEFAULT_MR_AM_CPU_VCORES
 init|=
 literal|1
+decl_stmt|;
+comment|/**    * Resource names required by the MR AM should be    * appended to this prefix, the value's format is {amount}[ ][{unit}].    * If no unit is defined, the default unit will be used    * Standard resource names: memory (default unit: Mi), vcores    */
+DECL|field|MR_AM_RESOURCE_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_AM_RESOURCE_PREFIX
+init|=
+name|MR_AM_PREFIX
+operator|+
+literal|"resource."
 decl_stmt|;
 comment|/** Command line arguments passed to the MR app master.*/
 DECL|field|MR_AM_COMMAND_OPTS
