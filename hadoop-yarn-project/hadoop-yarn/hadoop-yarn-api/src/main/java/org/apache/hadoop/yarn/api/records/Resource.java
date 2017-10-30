@@ -1537,7 +1537,7 @@ name|prime
 init|=
 literal|47
 decl_stmt|;
-name|long
+name|int
 name|result
 init|=
 literal|0
@@ -1563,9 +1563,6 @@ argument_list|()
 expr_stmt|;
 block|}
 return|return
-operator|(
-name|int
-operator|)
 name|result
 return|;
 block|}
