@@ -2388,7 +2388,7 @@ name|key
 init|=
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_EDITS_DIR_KEY
+name|DFS_NAMENODE_SHARED_EDITS_DIR_KEY
 decl_stmt|;
 name|conf
 operator|.
