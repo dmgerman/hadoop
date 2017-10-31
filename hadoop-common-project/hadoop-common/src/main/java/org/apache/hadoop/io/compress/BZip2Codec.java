@@ -597,115 +597,6 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
-comment|//find the position of first BZip2 start up marker
-operator|(
-operator|(
-name|Seekable
-operator|)
-name|seekableIn
-operator|)
-operator|.
-name|seek
-argument_list|(
-literal|0
-argument_list|)
-expr_stmt|;
-comment|// BZip2 start of block markers are of 6 bytes.  But the very first block
-comment|// also has "BZh9", making it 10 bytes.  This is the common case.  But at
-comment|// time stream might start without a leading BZ.
-specifier|final
-name|long
-name|FIRST_BZIP2_BLOCK_MARKER_POSITION
-init|=
-name|CBZip2InputStream
-operator|.
-name|numberOfBytesTillNextMarker
-argument_list|(
-name|seekableIn
-argument_list|)
-decl_stmt|;
-name|long
-name|adjStart
-init|=
-literal|0L
-decl_stmt|;
-if|if
-condition|(
-name|start
-operator|!=
-literal|0
-condition|)
-block|{
-comment|// Other than the first of file, the marker size is 6 bytes.
-name|adjStart
-operator|=
-name|Math
-operator|.
-name|max
-argument_list|(
-literal|0L
-argument_list|,
-name|start
-operator|-
-operator|(
-name|FIRST_BZIP2_BLOCK_MARKER_POSITION
-operator|-
-operator|(
-name|HEADER_LEN
-operator|+
-name|SUB_HEADER_LEN
-operator|)
-operator|)
-argument_list|)
-expr_stmt|;
-block|}
-operator|(
-operator|(
-name|Seekable
-operator|)
-name|seekableIn
-operator|)
-operator|.
-name|seek
-argument_list|(
-name|adjStart
-argument_list|)
-expr_stmt|;
-name|SplitCompressionInputStream
-name|in
-init|=
-operator|new
-name|BZip2CompressionInputStream
-argument_list|(
-name|seekableIn
-argument_list|,
-name|adjStart
-argument_list|,
-name|end
-argument_list|,
-name|readMode
-argument_list|)
-decl_stmt|;
-comment|// The following if clause handles the following case:
-comment|// Assume the following scenario in BZip2 compressed stream where
-comment|// . represent compressed data.
-comment|// .....[48 bit Block].....[48 bit   Block].....[48 bit Block]...
-comment|// ........................[47 bits][1 bit].....[48 bit Block]...
-comment|// ................................^[Assume a Byte alignment here]
-comment|// ........................................^^[current position of stream]
-comment|// .....................^^[We go back 10 Bytes in stream and find a Block marker]
-comment|// ........................................^^[We align at wrong position!]
-comment|// ...........................................................^^[While this pos is correct]
-if|if
-condition|(
-name|in
-operator|.
-name|getPos
-argument_list|()
-operator|<
-name|start
-condition|)
-block|{
 operator|(
 operator|(
 name|Seekable
@@ -718,23 +609,18 @@ argument_list|(
 name|start
 argument_list|)
 expr_stmt|;
-name|in
-operator|=
-operator|new
-name|BZip2CompressionInputStream
-argument_list|(
-name|seekableIn
-argument_list|,
-name|start
-argument_list|,
-name|end
-argument_list|,
-name|readMode
-argument_list|)
-expr_stmt|;
-block|}
 return|return
-name|in
+operator|new
+name|BZip2CompressionInputStream
+argument_list|(
+name|seekableIn
+argument_list|,
+name|start
+argument_list|,
+name|end
+argument_list|,
+name|readMode
+argument_list|)
 return|;
 block|}
 comment|/**    * Get the type of {@link Decompressor} needed by this {@link CompressionCodec}.    *    * @return the type of decompressor needed by this codec.    */

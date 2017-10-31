@@ -73,7 +73,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * An input stream that decompresses from the BZip2 format (without the file  * header chars) to be read as any other stream.  *  *<p>  * The decompression requires large amounts of memory. Thus you should call the  * {@link #close() close()} method as soon as possible, to force  *<tt>CBZip2InputStream</tt> to release the allocated memory. See  * {@link CBZip2OutputStream CBZip2OutputStream} for information about memory  * usage.  *</p>  *  *<p>  *<tt>CBZip2InputStream</tt> reads bytes from the compressed source stream via  * the single byte {@link java.io.InputStream#read() read()} method exclusively.  * Thus you should consider to use a buffered source stream.  *</p>  *  *<p>  * This Ant code was enhanced so that it can de-compress blocks of bzip2 data.  * Current position in the stream is an important statistic for Hadoop. For  * example in LineRecordReader, we solely depend on the current position in the  * stream to know about the progess. The notion of position becomes complicated  * for compressed files. The Hadoop splitting is done in terms of compressed  * file. But a compressed file deflates to a large amount of data. So we have  * handled this problem in the following way.  *  * On object creation time, we find the next block start delimiter. Once such a  * marker is found, the stream stops there (we discard any read compressed data  * in this process) and the position is updated (i.e. the caller of this class  * will find out the stream location). At this point we are ready for actual  * reading (i.e. decompression) of data.  *  * The subsequent read calls give out data. The position is updated when the  * caller of this class has read off the current block + 1 bytes. In between the  * block reading, position is not updated. (We can only update the postion on  * block boundaries).  *</p>  *  *<p>  * Instances of this class are not threadsafe.  *</p>  */
+comment|/**  * An input stream that decompresses from the BZip2 format (without the file  * header chars) to be read as any other stream.  *  *<p>  * The decompression requires large amounts of memory. Thus you should call the  * {@link #close() close()} method as soon as possible, to force  *<tt>CBZip2InputStream</tt> to release the allocated memory. See  * {@link CBZip2OutputStream CBZip2OutputStream} for information about memory  * usage.  *</p>  *  *<p>  *<tt>CBZip2InputStream</tt> reads bytes from the compressed source stream via  * the single byte {@link java.io.InputStream#read() read()} method exclusively.  * Thus you should consider to use a buffered source stream.  *</p>  *  *<p>  * This Ant code was enhanced so that it can de-compress blocks of bzip2 data.  * Current position in the stream is an important statistic for Hadoop. For  * example in LineRecordReader, we solely depend on the current position in the  * stream to know about the progress. The notion of position becomes complicated  * for compressed files. The Hadoop splitting is done in terms of compressed  * file. But a compressed file deflates to a large amount of data. So we have  * handled this problem in the following way.  *  * On object creation time, we find the next block start delimiter. Once such a  * marker is found, the stream stops there (we discard any read compressed data  * in this process) and the position is reported as the beginning of the block  * start delimiter. At this point we are ready for actual reading  * (i.e. decompression) of data.  *  * The subsequent read calls give out data. The position is updated when the  * caller of this class has read off the current block + 1 bytes. In between the  * block reading, position is not updated. (We can only update the position on  * block boundaries).  *</p>  *  *<p>  * Instances of this class are not threadsafe.  *</p>  */
 end_comment
 
 begin_class
@@ -440,7 +440,7 @@ return|return
 name|read
 return|;
 block|}
-comment|/**   * This method tries to find the marker (passed to it as the first parameter)   * in the stream.  It can find bit patterns of length<= 63 bits.  Specifically   * this method is used in CBZip2InputStream to find the end of block (EOB)   * delimiter in the stream, starting from the current position of the stream.   * If marker is found, the stream position will be right after marker at the   * end of this call.   *   * @param marker  The bit pattern to be found in the stream   * @param markerBitLength  No of bits in the marker   *   * @throws IOException   * @throws IllegalArgumentException  if marketBitLength is greater than 63   */
+comment|/**   * This method tries to find the marker (passed to it as the first parameter)   * in the stream.  It can find bit patterns of length<= 63 bits.  Specifically   * this method is used in CBZip2InputStream to find the end of block (EOB)   * delimiter in the stream, starting from the current position of the stream.   * If marker is found, the stream position will be at the byte containing   * the starting bit of the marker.   *   * @param marker  The bit pattern to be found in the stream   * @param markerBitLength  No of bits in the marker   * @return true if the marker was found otherwise false   *   * @throws IOException   * @throws IllegalArgumentException  if marketBitLength is greater than 63   */
 DECL|method|skipToNextMarker (long marker, int markerBitLength)
 specifier|public
 name|boolean
@@ -497,6 +497,14 @@ operator|-
 literal|1
 condition|)
 block|{
+name|this
+operator|.
+name|reportedBytesReadFromCompressedStream
+operator|=
+name|this
+operator|.
+name|bytesReadFromCompressedStream
+expr_stmt|;
 return|return
 literal|false
 return|;
@@ -513,6 +521,32 @@ operator|==
 name|marker
 condition|)
 block|{
+comment|// Report the byte position where the marker starts
+name|long
+name|markerBytesRead
+init|=
+operator|(
+name|markerBitLength
+operator|+
+name|this
+operator|.
+name|bsLive
+operator|+
+literal|7
+operator|)
+operator|/
+literal|8
+decl_stmt|;
+name|this
+operator|.
+name|reportedBytesReadFromCompressedStream
+operator|=
+name|this
+operator|.
+name|bytesReadFromCompressedStream
+operator|-
+name|markerBytesRead
+expr_stmt|;
 return|return
 literal|true
 return|;
@@ -568,9 +602,19 @@ name|oneBit
 expr_stmt|;
 block|}
 else|else
+block|{
+name|this
+operator|.
+name|reportedBytesReadFromCompressedStream
+operator|=
+name|this
+operator|.
+name|bytesReadFromCompressedStream
+expr_stmt|;
 return|return
 literal|false
 return|;
+block|}
 block|}
 block|}
 block|}
@@ -580,6 +624,14 @@ name|IOException
 name|ex
 parameter_list|)
 block|{
+name|this
+operator|.
+name|reportedBytesReadFromCompressedStream
+operator|=
+name|this
+operator|.
+name|bytesReadFromCompressedStream
+expr_stmt|;
 return|return
 literal|false
 return|;
@@ -832,14 +884,6 @@ name|BLOCK_DELIMITER
 argument_list|,
 name|DELIMITER_BIT_LENGTH
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|reportedBytesReadFromCompressedStream
-operator|=
-name|this
-operator|.
-name|bytesReadFromCompressedStream
 expr_stmt|;
 if|if
 condition|(
@@ -1237,15 +1281,6 @@ name|BLOCK_DELIMITER
 argument_list|,
 name|DELIMITER_BIT_LENGTH
 argument_list|)
-expr_stmt|;
-comment|//Exactly when we are about to start a new block, we advertise the stream position.
-name|this
-operator|.
-name|reportedBytesReadFromCompressedStream
-operator|=
-name|this
-operator|.
-name|bytesReadFromCompressedStream
 expr_stmt|;
 name|changeStateToProcessABlock
 argument_list|()
