@@ -203,6 +203,20 @@ name|SUPPORTS_POSITIONED_READABLE
 init|=
 literal|"supports-positioned-readable"
 decl_stmt|;
+comment|/**    * Indicates that FS exposes durable references to files.    */
+DECL|field|SUPPORTS_FILE_REFERENCE
+name|String
+name|SUPPORTS_FILE_REFERENCE
+init|=
+literal|"supports-file-reference"
+decl_stmt|;
+comment|/**    * Indicates that FS supports content checks on open.    */
+DECL|field|SUPPORTS_CONTENT_CHECK
+name|String
+name|SUPPORTS_CONTENT_CHECK
+init|=
+literal|"supports-content-check"
+decl_stmt|;
 comment|/**    * Maximum path length    * {@value}    */
 DECL|field|MAX_PATH_
 name|String

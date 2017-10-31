@@ -54,6 +54,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|Options
+operator|.
+name|HandleOpt
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|IOUtils
@@ -2859,6 +2875,51 @@ argument_list|,
 name|bufferSize
 argument_list|)
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|createPathHandle (FileStatus stat, HandleOpt... opts)
+specifier|protected
+name|PathHandle
+name|createPathHandle
+parameter_list|(
+name|FileStatus
+name|stat
+parameter_list|,
+name|HandleOpt
+modifier|...
+name|opts
+parameter_list|)
+block|{
+comment|// har consistency managed through metadata cache
+comment|// could extend HarMetaData to track more explicitly
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|open (PathHandle fd, int bufferSize)
+specifier|public
+name|FSDataInputStream
+name|open
+parameter_list|(
+name|PathHandle
+name|fd
+parameter_list|,
+name|int
+name|bufferSize
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
 block|}
 comment|/**    * Used for delegation token related functionality. Must delegate to    * underlying file system.    */
 annotation|@

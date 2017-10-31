@@ -1195,7 +1195,9 @@ specifier|static
 name|String
 name|DOT_RESERVED_STRING
 init|=
-literal|".reserved"
+name|HdfsConstants
+operator|.
+name|DOT_RESERVED_STRING
 decl_stmt|;
 DECL|field|DOT_RESERVED_PATH_PREFIX
 specifier|public
@@ -1204,11 +1206,9 @@ specifier|static
 name|String
 name|DOT_RESERVED_PATH_PREFIX
 init|=
-name|Path
+name|HdfsConstants
 operator|.
-name|SEPARATOR
-operator|+
-name|DOT_RESERVED_STRING
+name|DOT_RESERVED_PATH_PREFIX
 decl_stmt|;
 DECL|field|DOT_RESERVED
 specifier|public
@@ -1256,7 +1256,9 @@ specifier|static
 name|String
 name|DOT_INODES_STRING
 init|=
-literal|".inodes"
+name|HdfsConstants
+operator|.
+name|DOT_INODES_STRING
 decl_stmt|;
 DECL|field|DOT_INODES
 specifier|public
