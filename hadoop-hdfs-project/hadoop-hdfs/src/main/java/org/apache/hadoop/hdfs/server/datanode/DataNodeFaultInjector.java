@@ -264,6 +264,15 @@ parameter_list|()
 throws|throws
 name|FileNotFoundException
 block|{   }
+comment|/**    * Used as a hook to inject failure in erasure coding reconstruction    * process.    */
+DECL|method|stripedBlockReconstruction ()
+specifier|public
+name|void
+name|stripedBlockReconstruction
+parameter_list|()
+throws|throws
+name|IOException
+block|{}
 block|}
 end_class
 
