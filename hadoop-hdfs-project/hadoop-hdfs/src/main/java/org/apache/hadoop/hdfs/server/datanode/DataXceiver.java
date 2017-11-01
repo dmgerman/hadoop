@@ -2690,6 +2690,17 @@ name|getMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Request short-circuit read file descriptor"
+operator|+
+literal|" failed with unknown error."
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 block|}
 name|bld
 operator|.

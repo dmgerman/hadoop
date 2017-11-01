@@ -3021,6 +3021,12 @@ name|resp
 operator|.
 name|getMessage
 argument_list|()
+operator|+
+literal|". Disabling short-circuit read for DataNode "
+operator|+
+name|datanode
+operator|+
+literal|" temporarily."
 argument_list|)
 expr_stmt|;
 name|clientContext
