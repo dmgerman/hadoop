@@ -22401,7 +22401,6 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Get the total number of objects in the system.     */
 annotation|@
 name|Override
 comment|// FSNamesystemMBean
