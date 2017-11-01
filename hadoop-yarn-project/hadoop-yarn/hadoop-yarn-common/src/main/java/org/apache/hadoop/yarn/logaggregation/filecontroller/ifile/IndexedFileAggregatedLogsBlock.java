@@ -1591,7 +1591,7 @@ while|while
 condition|(
 name|totalSkipped
 operator|<
-name|start
+name|startIndex
 condition|)
 block|{
 name|long
@@ -1601,7 +1601,7 @@ name|in
 operator|.
 name|skip
 argument_list|(
-name|start
+name|startIndex
 operator|-
 name|totalSkipped
 argument_list|)
