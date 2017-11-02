@@ -13336,7 +13336,7 @@ operator|.
 name|getMaximumApplicationLifetime
 argument_list|()
 decl_stmt|;
-comment|// check only for maximum, that's enough because default cann't
+comment|// check only for maximum, that's enough because default can't
 comment|// exceed maximum
 if|if
 condition|(

@@ -6780,10 +6780,9 @@ name|long
 name|lifetime
 parameter_list|)
 block|{
-comment|// -1 indicates, lifetime is not configured.
+comment|// Lifetime is the application lifetime by default.
 return|return
-operator|-
-literal|1
+name|lifetime
 return|;
 block|}
 annotation|@
