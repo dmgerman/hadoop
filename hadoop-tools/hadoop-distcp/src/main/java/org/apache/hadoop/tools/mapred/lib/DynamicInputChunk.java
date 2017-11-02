@@ -346,7 +346,7 @@ name|NONE
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Method to write records into a chunk.    * @param key Key from the listing file.    * @param value Corresponding value from the listing file.    * @throws IOException Exception onf failure to write to the file.    */
+comment|/**    * Method to write records into a chunk.    * @param key Key from the listing file.    * @param value Corresponding value from the listing file.    * @throws IOException Exception on failure to write to the file.    */
 DECL|method|write (Text key, CopyListingFileStatus value)
 specifier|public
 name|void
