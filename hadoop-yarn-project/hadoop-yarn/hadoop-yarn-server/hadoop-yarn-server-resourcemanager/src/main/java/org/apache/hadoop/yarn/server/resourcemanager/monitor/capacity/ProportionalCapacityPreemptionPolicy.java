@@ -765,6 +765,12 @@ specifier|private
 name|IntraQueuePreemptionOrderPolicy
 name|intraQueuePreemptionOrderPolicy
 decl_stmt|;
+comment|// Current configuration
+DECL|field|csConfig
+specifier|private
+name|CapacitySchedulerConfiguration
+name|csConfig
+decl_stmt|;
 comment|// Pointer to other RM components
 DECL|field|rmContext
 specifier|private
@@ -848,18 +854,13 @@ argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
+DECL|field|candidatesSelectionPolicies
 specifier|private
 name|List
 argument_list|<
 name|PreemptionCandidatesSelector
 argument_list|>
-DECL|field|candidatesSelectionPolicies
 name|candidatesSelectionPolicies
-init|=
-operator|new
-name|ArrayList
-argument_list|<>
-argument_list|()
 decl_stmt|;
 DECL|field|allPartitions
 specifier|private
@@ -1073,17 +1074,53 @@ name|CapacityScheduler
 operator|)
 name|sched
 expr_stmt|;
+name|rc
+operator|=
+name|scheduler
+operator|.
+name|getResourceCalculator
+argument_list|()
+expr_stmt|;
+name|nlm
+operator|=
+name|scheduler
+operator|.
+name|getRMContext
+argument_list|()
+operator|.
+name|getNodeLabelManager
+argument_list|()
+expr_stmt|;
+name|updateConfigIfNeeded
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|updateConfigIfNeeded ()
+specifier|private
+name|void
+name|updateConfigIfNeeded
+parameter_list|()
+block|{
 name|CapacitySchedulerConfiguration
-name|csConfig
+name|config
 init|=
 name|scheduler
 operator|.
 name|getConfiguration
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|config
+operator|==
+name|csConfig
+condition|)
+block|{
+return|return;
+block|}
 name|maxIgnoredOverCapacity
 operator|=
-name|csConfig
+name|config
 operator|.
 name|getDouble
 argument_list|(
@@ -1098,7 +1135,7 @@ argument_list|)
 expr_stmt|;
 name|naturalTerminationFactor
 operator|=
-name|csConfig
+name|config
 operator|.
 name|getDouble
 argument_list|(
@@ -1113,7 +1150,7 @@ argument_list|)
 expr_stmt|;
 name|maxWaitTime
 operator|=
-name|csConfig
+name|config
 operator|.
 name|getLong
 argument_list|(
@@ -1128,7 +1165,7 @@ argument_list|)
 expr_stmt|;
 name|monitoringInterval
 operator|=
-name|csConfig
+name|config
 operator|.
 name|getLong
 argument_list|(
@@ -1143,7 +1180,7 @@ argument_list|)
 expr_stmt|;
 name|percentageClusterPreemptionAllowed
 operator|=
-name|csConfig
+name|config
 operator|.
 name|getFloat
 argument_list|(
@@ -1158,7 +1195,7 @@ argument_list|)
 expr_stmt|;
 name|observeOnly
 operator|=
-name|csConfig
+name|config
 operator|.
 name|getBoolean
 argument_list|(
@@ -1173,13 +1210,13 @@ argument_list|)
 expr_stmt|;
 name|lazyPreempionEnabled
 operator|=
-name|csConfig
+name|config
 operator|.
 name|getBoolean
 argument_list|(
 name|CapacitySchedulerConfiguration
 operator|.
-name|LAZY_PREEMPTION_ENALBED
+name|LAZY_PREEMPTION_ENABLED
 argument_list|,
 name|CapacitySchedulerConfiguration
 operator|.
@@ -1188,7 +1225,7 @@ argument_list|)
 expr_stmt|;
 name|maxAllowableLimitForIntraQueuePreemption
 operator|=
-name|csConfig
+name|config
 operator|.
 name|getFloat
 argument_list|(
@@ -1203,7 +1240,7 @@ argument_list|)
 expr_stmt|;
 name|minimumThresholdForIntraQueuePreemption
 operator|=
-name|csConfig
+name|config
 operator|.
 name|getFloat
 argument_list|(
@@ -1222,7 +1259,7 @@ name|IntraQueuePreemptionOrderPolicy
 operator|.
 name|valueOf
 argument_list|(
-name|csConfig
+name|config
 operator|.
 name|get
 argument_list|(
@@ -1239,28 +1276,18 @@ name|toUpperCase
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|rc
+name|candidatesSelectionPolicies
 operator|=
-name|scheduler
-operator|.
-name|getResourceCalculator
-argument_list|()
-expr_stmt|;
-name|nlm
-operator|=
-name|scheduler
-operator|.
-name|getRMContext
-argument_list|()
-operator|.
-name|getNodeLabelManager
+operator|new
+name|ArrayList
+argument_list|<>
 argument_list|()
 expr_stmt|;
 comment|// Do we need white queue-priority preemption policy?
 name|boolean
 name|isQueuePriorityPreemptionEnabled
 init|=
-name|csConfig
+name|config
 operator|.
 name|getPUOrderingPolicyUnderUtilizedPreemptionEnabled
 argument_list|()
@@ -1286,7 +1313,7 @@ comment|// Do we need to specially consider reserved containers?
 name|boolean
 name|selectCandidatesForResevedContainers
 init|=
-name|csConfig
+name|config
 operator|.
 name|getBoolean
 argument_list|(
@@ -1319,7 +1346,7 @@ block|}
 name|boolean
 name|additionalPreemptionBasedOnReservedResource
 init|=
-name|csConfig
+name|config
 operator|.
 name|getBoolean
 argument_list|(
@@ -1350,7 +1377,7 @@ comment|// Do we need to specially consider intra queue
 name|boolean
 name|isIntraQueuePreemptionEnabled
 init|=
-name|csConfig
+name|config
 operator|.
 name|getBoolean
 argument_list|(
@@ -1380,6 +1407,101 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Capacity Scheduler configuration changed, updated preemption "
+operator|+
+literal|"properties to:\n"
+operator|+
+literal|"max_ignored_over_capacity = "
+operator|+
+name|maxIgnoredOverCapacity
+operator|+
+literal|"\n"
+operator|+
+literal|"natural_termination_factor = "
+operator|+
+name|naturalTerminationFactor
+operator|+
+literal|"\n"
+operator|+
+literal|"max_wait_before_kill = "
+operator|+
+name|maxWaitTime
+operator|+
+literal|"\n"
+operator|+
+literal|"monitoring_interval = "
+operator|+
+name|monitoringInterval
+operator|+
+literal|"\n"
+operator|+
+literal|"total_preemption_per_round = "
+operator|+
+name|percentageClusterPreemptionAllowed
+operator|+
+literal|"\n"
+operator|+
+literal|"observe_only = "
+operator|+
+name|observeOnly
+operator|+
+literal|"\n"
+operator|+
+literal|"lazy-preemption-enabled = "
+operator|+
+name|lazyPreempionEnabled
+operator|+
+literal|"\n"
+operator|+
+literal|"intra-queue-preemption.enabled = "
+operator|+
+name|isIntraQueuePreemptionEnabled
+operator|+
+literal|"\n"
+operator|+
+literal|"intra-queue-preemption.max-allowable-limit = "
+operator|+
+name|maxAllowableLimitForIntraQueuePreemption
+operator|+
+literal|"\n"
+operator|+
+literal|"intra-queue-preemption.minimum-threshold = "
+operator|+
+name|minimumThresholdForIntraQueuePreemption
+operator|+
+literal|"\n"
+operator|+
+literal|"intra-queue-preemption.preemption-order-policy = "
+operator|+
+name|intraQueuePreemptionOrderPolicy
+operator|+
+literal|"\n"
+operator|+
+literal|"priority-utilization.underutilized-preemption.enabled = "
+operator|+
+name|isQueuePriorityPreemptionEnabled
+operator|+
+literal|"\n"
+operator|+
+literal|"select_based_on_reserved_containers = "
+operator|+
+name|selectCandidatesForResevedContainers
+operator|+
+literal|"\n"
+operator|+
+literal|"additional_res_balance_based_on_reserved_containers = "
+operator|+
+name|additionalPreemptionBasedOnReservedResource
+argument_list|)
+expr_stmt|;
+name|csConfig
+operator|=
+name|config
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -1402,6 +1524,9 @@ name|void
 name|editSchedule
 parameter_list|()
 block|{
+name|updateConfigIfNeeded
+argument_list|()
+expr_stmt|;
 name|long
 name|startTs
 init|=

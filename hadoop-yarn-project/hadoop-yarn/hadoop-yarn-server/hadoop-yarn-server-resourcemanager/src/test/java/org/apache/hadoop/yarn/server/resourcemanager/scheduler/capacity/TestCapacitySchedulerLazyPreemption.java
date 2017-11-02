@@ -489,7 +489,7 @@ name|setBoolean
 argument_list|(
 name|CapacitySchedulerConfiguration
 operator|.
-name|LAZY_PREEMPTION_ENALBED
+name|LAZY_PREEMPTION_ENABLED
 argument_list|,
 literal|true
 argument_list|)
