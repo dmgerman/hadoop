@@ -2423,6 +2423,16 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|dirsHandler
+operator|=
+operator|new
+name|LocalDirsHandlerService
+argument_list|(
+name|metrics
+argument_list|)
+expr_stmt|;
 name|boolean
 name|isDistSchedulingEnabled
 init|=
@@ -2537,14 +2547,6 @@ operator|new
 name|AsyncDispatcher
 argument_list|(
 literal|"NM Event dispatcher"
-argument_list|)
-expr_stmt|;
-name|dirsHandler
-operator|=
-operator|new
-name|LocalDirsHandlerService
-argument_list|(
-name|metrics
 argument_list|)
 expr_stmt|;
 name|nodeHealthChecker
