@@ -184,34 +184,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|classification
@@ -728,6 +700,26 @@ name|StringUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/**  * Base class for tasks.  */
 end_comment
@@ -760,12 +752,12 @@ DECL|field|LOG
 specifier|private
 specifier|static
 specifier|final
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|Task
 operator|.
@@ -1718,7 +1710,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 name|logMsg
 argument_list|)
@@ -1785,7 +1777,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 literal|"Failed to contact the tasktracker"
 argument_list|,
@@ -3886,7 +3878,7 @@ argument_list|)
 decl_stmt|;
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 name|errMsg
 argument_list|)
@@ -3911,7 +3903,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 literal|"Failed to update failure diagnosis"
 argument_list|,
@@ -3921,7 +3913,7 @@ expr_stmt|;
 block|}
 name|LOG
 operator|.
-name|fatal
+name|error
 argument_list|(
 literal|"Killing "
 operator|+
