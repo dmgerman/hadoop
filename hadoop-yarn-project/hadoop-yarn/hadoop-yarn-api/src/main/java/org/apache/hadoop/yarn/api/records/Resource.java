@@ -1072,7 +1072,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|throwExceptionWhenArrayOutOfBound (int index)
-specifier|private
+specifier|protected
 name|void
 name|throwExceptionWhenArrayOutOfBound
 parameter_list|(

@@ -1675,6 +1675,13 @@ name|initializedResources
 operator|=
 literal|true
 expr_stmt|;
+name|numKnownResourceTypes
+operator|=
+name|resourceTypes
+operator|.
+name|size
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|updateKnownResources ()
 specifier|private
