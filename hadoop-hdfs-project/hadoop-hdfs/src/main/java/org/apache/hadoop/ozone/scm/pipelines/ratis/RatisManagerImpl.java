@@ -306,28 +306,6 @@ name|OzoneProtos
 operator|.
 name|LifeCycleState
 operator|.
-name|ALLOCATED
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|OzoneProtos
-operator|.
-name|LifeCycleState
-operator|.
 name|OPEN
 import|;
 end_import
@@ -590,11 +568,37 @@ block|}
 block|}
 else|else
 block|{
+name|Pipeline
+name|openPipeline
+init|=
+name|findOpenPipeline
+argument_list|(
+name|replicationFactor
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|openPipeline
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// if an open pipeline is found use the same machines
 name|pipeline
 operator|=
-name|findOpenPipeline
+name|allocateRatisPipeline
+argument_list|(
+name|openPipeline
+operator|.
+name|getMachines
 argument_list|()
+argument_list|,
+name|containerName
+argument_list|,
+name|replicationFactor
+argument_list|)
 expr_stmt|;
+block|}
 block|}
 if|if
 condition|(
@@ -618,10 +622,15 @@ name|pipeline
 return|;
 block|}
 comment|/**    * Find a pipeline that is operational.    *    * @return - Pipeline or null    */
-DECL|method|findOpenPipeline ()
+DECL|method|findOpenPipeline (OzoneProtos.ReplicationFactor factor)
 name|Pipeline
 name|findOpenPipeline
-parameter_list|()
+parameter_list|(
+name|OzoneProtos
+operator|.
+name|ReplicationFactor
+name|factor
+parameter_list|)
 block|{
 name|Pipeline
 name|pipeline
@@ -700,12 +709,23 @@ decl_stmt|;
 comment|// if we find an operational pipeline just return that.
 if|if
 condition|(
+operator|(
 name|temp
 operator|.
 name|getLifeCycleState
 argument_list|()
 operator|==
 name|OPEN
+operator|)
+operator|&&
+operator|(
+name|temp
+operator|.
+name|getFactor
+argument_list|()
+operator|==
+name|factor
+operator|)
 condition|)
 block|{
 name|pipeline
@@ -800,7 +820,7 @@ name|pipeline
 operator|.
 name|setLifeCycleState
 argument_list|(
-name|ALLOCATED
+name|OPEN
 argument_list|)
 expr_stmt|;
 name|pipeline
@@ -953,15 +973,6 @@ argument_list|(
 name|datanode
 argument_list|)
 expr_stmt|;
-comment|// once a datanode has been added to a pipeline, exclude it from
-comment|// further allocations
-name|ratisMembers
-operator|.
-name|add
-argument_list|(
-name|datanode
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|newNodesList
@@ -972,6 +983,15 @@ operator|==
 name|count
 condition|)
 block|{
+comment|// once a datanode has been added to a pipeline, exclude it from
+comment|// further allocations
+name|ratisMembers
+operator|.
+name|addAll
+argument_list|(
+name|newNodesList
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info

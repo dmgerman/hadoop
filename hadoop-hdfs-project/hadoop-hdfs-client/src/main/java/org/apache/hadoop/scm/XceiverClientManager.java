@@ -772,6 +772,7 @@ name|getType
 parameter_list|()
 block|{
 comment|// TODO : Fix me and make Ratis default before release.
+comment|// TODO: Remove this as replication factor and type are pipeline properties
 if|if
 condition|(
 name|isUseRatis

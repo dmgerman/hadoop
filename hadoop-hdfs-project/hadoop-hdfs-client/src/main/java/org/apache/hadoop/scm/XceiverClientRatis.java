@@ -192,6 +192,20 @@ name|ratis
 operator|.
 name|protocol
 operator|.
+name|RaftGroup
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|ratis
+operator|.
+name|protocol
+operator|.
 name|RaftPeer
 import|;
 end_import
@@ -300,16 +314,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Collection
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -359,18 +363,6 @@ operator|.
 name|atomic
 operator|.
 name|AtomicReference
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|stream
-operator|.
-name|Collectors
 import|;
 end_import
 
@@ -519,31 +511,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-specifier|final
-name|List
-argument_list|<
-name|RaftPeer
-argument_list|>
-name|newPeers
+name|RaftGroup
+name|group
 init|=
-name|datanodes
-operator|.
-name|stream
-argument_list|()
-operator|.
-name|map
-argument_list|(
 name|RatisHelper
-operator|::
-name|toRaftPeer
-argument_list|)
 operator|.
-name|collect
+name|newRaftGroup
 argument_list|(
-name|Collectors
-operator|.
-name|toList
-argument_list|()
+name|datanodes
 argument_list|)
 decl_stmt|;
 name|LOG
@@ -554,14 +529,17 @@ literal|"initializing pipeline:{} with nodes:{}"
 argument_list|,
 name|clusterId
 argument_list|,
-name|newPeers
+name|group
+operator|.
+name|getPeers
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|reinitialize
 argument_list|(
 name|datanodes
 argument_list|,
-name|newPeers
+name|group
 argument_list|)
 expr_stmt|;
 block|}
@@ -584,7 +562,7 @@ operator|.
 name|RATIS
 return|;
 block|}
-DECL|method|reinitialize ( List<DatanodeID> datanodes, Collection<RaftPeer> newPeers)
+DECL|method|reinitialize ( List<DatanodeID> datanodes, RaftGroup group)
 specifier|private
 name|void
 name|reinitialize
@@ -595,11 +573,8 @@ name|DatanodeID
 argument_list|>
 name|datanodes
 parameter_list|,
-name|Collection
-argument_list|<
-name|RaftPeer
-argument_list|>
-name|newPeers
+name|RaftGroup
+name|group
 parameter_list|)
 throws|throws
 name|IOException
@@ -633,7 +608,7 @@ name|reinitialize
 argument_list|(
 name|d
 argument_list|,
-name|newPeers
+name|group
 argument_list|)
 expr_stmt|;
 block|}
@@ -685,8 +660,8 @@ name|exception
 throw|;
 block|}
 block|}
-comment|/**    * Adds a new peers to the Ratis Ring.    * @param datanode - new datanode    * @param newPeers - Raft machines    * @throws IOException - on Failure.    */
-DECL|method|reinitialize (DatanodeID datanode, Collection<RaftPeer> newPeers)
+comment|/**    * Adds a new peers to the Ratis Ring.    * @param datanode - new datanode    * @param group - Raft group    * @throws IOException - on Failure.    */
+DECL|method|reinitialize (DatanodeID datanode, RaftGroup group)
 specifier|private
 name|void
 name|reinitialize
@@ -694,11 +669,8 @@ parameter_list|(
 name|DatanodeID
 name|datanode
 parameter_list|,
-name|Collection
-argument_list|<
-name|RaftPeer
-argument_list|>
-name|newPeers
+name|RaftGroup
+name|group
 parameter_list|)
 throws|throws
 name|IOException
@@ -733,12 +705,7 @@ name|client
 operator|.
 name|reinitialize
 argument_list|(
-name|RatisHelper
-operator|.
-name|newRaftGroup
-argument_list|(
-name|newPeers
-argument_list|)
+name|group
 argument_list|,
 name|p
 operator|.

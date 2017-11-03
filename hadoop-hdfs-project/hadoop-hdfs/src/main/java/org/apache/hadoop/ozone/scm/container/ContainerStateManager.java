@@ -1798,14 +1798,14 @@ if|if
 condition|(
 name|info
 operator|.
-name|getAllocated
-argument_list|()
-operator|+
+name|canAllocate
+argument_list|(
 name|size
-operator|<=
+argument_list|,
 name|this
 operator|.
 name|containerSize
+argument_list|)
 condition|)
 block|{
 name|queue
@@ -1845,6 +1845,18 @@ return|;
 block|}
 else|else
 block|{
+if|if
+condition|(
+name|info
+operator|.
+name|getState
+argument_list|()
+operator|!=
+name|LifeCycleState
+operator|.
+name|CLOSED
+condition|)
+block|{
 comment|// We should close this container.
 name|LOG
 operator|.
@@ -1858,6 +1870,15 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|info
+operator|.
+name|setState
+argument_list|(
+name|LifeCycleState
+operator|.
+name|CLOSED
+argument_list|)
+expr_stmt|;
 name|containerCloseQueue
 operator|.
 name|add
@@ -1866,6 +1887,8 @@ name|info
 argument_list|)
 expr_stmt|;
 comment|//TODO: Next JIRA will handle these containers to close.
+comment|//TODO: move container to right queue
+block|}
 block|}
 block|}
 block|}

@@ -353,39 +353,39 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setType (ReplicationType type)
+DECL|method|setType (ReplicationType replicationType)
 specifier|public
 name|Builder
 name|setType
 parameter_list|(
 name|ReplicationType
-name|type
+name|replicationType
 parameter_list|)
 block|{
 name|this
 operator|.
 name|type
 operator|=
-name|type
+name|replicationType
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
-DECL|method|setFactor (ReplicationFactor factor)
+DECL|method|setFactor (ReplicationFactor replicationFactor)
 specifier|public
 name|Builder
 name|setFactor
 parameter_list|(
 name|ReplicationFactor
-name|factor
+name|replicationFactor
 parameter_list|)
 block|{
 name|this
 operator|.
 name|factor
 operator|=
-name|factor
+name|replicationFactor
 expr_stmt|;
 return|return
 name|this
