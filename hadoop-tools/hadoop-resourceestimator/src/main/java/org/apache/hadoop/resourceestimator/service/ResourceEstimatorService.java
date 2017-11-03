@@ -547,25 +547,25 @@ argument_list|)
 decl_stmt|;
 DECL|field|skylineStore
 specifier|private
-specifier|static
+specifier|final
 name|SkylineStore
 name|skylineStore
 decl_stmt|;
 DECL|field|solver
 specifier|private
-specifier|static
+specifier|final
 name|Solver
 name|solver
 decl_stmt|;
 DECL|field|logParser
 specifier|private
-specifier|static
+specifier|final
 name|LogParser
 name|logParser
 decl_stmt|;
 DECL|field|logParserUtil
 specifier|private
-specifier|static
+specifier|final
 name|LogParserUtil
 name|logParserUtil
 init|=
@@ -575,25 +575,25 @@ argument_list|()
 decl_stmt|;
 DECL|field|config
 specifier|private
-specifier|static
+specifier|final
 name|Configuration
 name|config
 decl_stmt|;
 DECL|field|gson
 specifier|private
-specifier|static
+specifier|final
 name|Gson
 name|gson
 decl_stmt|;
 DECL|field|rleType
 specifier|private
-specifier|static
+specifier|final
 name|Type
 name|rleType
 decl_stmt|;
 DECL|field|skylineStoreType
 specifier|private
-specifier|static
+specifier|final
 name|Type
 name|skylineStoreType
 decl_stmt|;
@@ -603,13 +603,6 @@ name|ResourceEstimatorService
 parameter_list|()
 throws|throws
 name|ResourceEstimatorException
-block|{
-if|if
-condition|(
-name|skylineStore
-operator|==
-literal|null
-condition|)
 block|{
 try|try
 block|{
@@ -790,7 +783,7 @@ argument_list|<
 name|RLESparseResourceAllocation
 argument_list|>
 argument_list|()
-block|{       }
+block|{     }
 operator|.
 name|getType
 argument_list|()
@@ -811,12 +804,11 @@ argument_list|>
 argument_list|>
 argument_list|>
 argument_list|()
-block|{           }
+block|{         }
 operator|.
 name|getType
 argument_list|()
 expr_stmt|;
-block|}
 block|}
 comment|/**    * Parse the log file. See also {@link LogParser#parseStream(InputStream)}.    *    * @param logFile file/directory of the log to be parsed.    * @throws IOException                if fails to parse the log.    * @throws SkylineStoreException      if fails to addHistory to    *                                    {@link SkylineStore}.    * @throws ResourceEstimatorException if the {@link LogParser}    *     is not initialized.    */
 DECL|method|parseFile ( @athParamR) String logFile)
@@ -1070,25 +1062,6 @@ name|debug
 argument_list|(
 literal|"Query the skyline store for recurrenceId: {}."
 operator|+
-name|recurrenceId
-argument_list|)
-expr_stmt|;
-name|recurrenceId
-operator|=
-operator|new
-name|RecurrenceId
-argument_list|(
-literal|"*"
-argument_list|,
-literal|"*"
-argument_list|)
-expr_stmt|;
-name|jobHistory
-operator|=
-name|skylineStore
-operator|.
-name|getHistory
-argument_list|(
 name|recurrenceId
 argument_list|)
 expr_stmt|;
