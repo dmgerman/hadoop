@@ -2367,9 +2367,6 @@ name|processFile
 argument_list|(
 name|fullPath
 argument_list|,
-operator|(
-name|HdfsLocatedFileStatus
-operator|)
 name|status
 argument_list|,
 name|result
@@ -2400,7 +2397,7 @@ block|}
 block|}
 block|}
 comment|/** @return true if it is necessary to run another round of migration */
-DECL|method|processFile (String fullPath, HdfsLocatedFileStatus status, Result result)
+DECL|method|processFile (String fullPath, HdfsFileStatus status, Result result)
 specifier|private
 name|void
 name|processFile
@@ -2408,7 +2405,7 @@ parameter_list|(
 name|String
 name|fullPath
 parameter_list|,
-name|HdfsLocatedFileStatus
+name|HdfsFileStatus
 name|status
 parameter_list|,
 name|Result
@@ -2524,7 +2521,7 @@ name|locatedBlocks
 init|=
 name|status
 operator|.
-name|getBlockLocations
+name|getLocatedBlocks
 argument_list|()
 decl_stmt|;
 specifier|final

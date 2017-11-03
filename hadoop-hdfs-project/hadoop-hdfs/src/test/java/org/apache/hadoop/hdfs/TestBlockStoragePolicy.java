@@ -7941,12 +7941,12 @@ return|return
 name|types
 return|;
 block|}
-DECL|method|checkLocatedBlocks (HdfsLocatedFileStatus status, int blockNum, int replicaNum, StorageType... types)
+DECL|method|checkLocatedBlocks (HdfsFileStatus status, int blockNum, int replicaNum, StorageType... types)
 specifier|private
 name|void
 name|checkLocatedBlocks
 parameter_list|(
-name|HdfsLocatedFileStatus
+name|HdfsFileStatus
 name|status
 parameter_list|,
 name|int
@@ -7985,7 +7985,7 @@ name|lbs
 init|=
 name|status
 operator|.
-name|getBlockLocations
+name|getLocatedBlocks
 argument_list|()
 decl_stmt|;
 name|Assert
@@ -8230,12 +8230,9 @@ argument_list|,
 name|policyId
 argument_list|)
 expr_stmt|;
-name|HdfsLocatedFileStatus
+name|HdfsFileStatus
 name|fooStatus
 init|=
-operator|(
-name|HdfsLocatedFileStatus
-operator|)
 name|status
 index|[
 literal|0
@@ -8331,9 +8328,6 @@ argument_list|)
 expr_stmt|;
 name|fooStatus
 operator|=
-operator|(
-name|HdfsLocatedFileStatus
-operator|)
 name|status
 index|[
 literal|0
@@ -8452,9 +8446,6 @@ argument_list|)
 expr_stmt|;
 name|fooStatus
 operator|=
-operator|(
-name|HdfsLocatedFileStatus
-operator|)
 name|status
 index|[
 literal|0
