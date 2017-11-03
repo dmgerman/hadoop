@@ -862,6 +862,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|ErasureCodingPolicyInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|ExtendedBlock
 import|;
 end_import
@@ -11491,7 +11507,7 @@ annotation|@
 name|Override
 DECL|method|getErasureCodingPolicies ()
 specifier|public
-name|ErasureCodingPolicy
+name|ErasureCodingPolicyInfo
 index|[]
 name|getErasureCodingPolicies
 parameter_list|()

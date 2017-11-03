@@ -34,20 +34,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceStability
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -84,11 +70,7 @@ begin_enum
 annotation|@
 name|InterfaceAudience
 operator|.
-name|Public
-annotation|@
-name|InterfaceStability
-operator|.
-name|Evolving
+name|Private
 DECL|enum|ErasureCodingPolicyState
 specifier|public
 enum|enum

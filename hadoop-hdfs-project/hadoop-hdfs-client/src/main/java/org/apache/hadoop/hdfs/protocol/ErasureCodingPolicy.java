@@ -86,20 +86,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
-operator|.
-name|InterfaceStability
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|io
 operator|.
 name|erasurecode
@@ -135,18 +121,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A policy about how to write/read/code an erasure coding file.  */
+comment|/**  * A policy about how to write/read/code an erasure coding file.  *<p>  * Note this class should be lightweight and immutable, because it's cached  * by {@link SystemErasureCodingPolicies}, to be returned as a part of  * {@link HdfsFileStatus}.  */
 end_comment
 
 begin_class
 annotation|@
 name|InterfaceAudience
 operator|.
-name|Public
-annotation|@
-name|InterfaceStability
-operator|.
-name|Evolving
+name|Private
 DECL|class|ErasureCodingPolicy
 specifier|public
 specifier|final
@@ -166,6 +148,7 @@ literal|0x0079fe4e
 decl_stmt|;
 DECL|field|name
 specifier|private
+specifier|final
 name|String
 name|name
 decl_stmt|;
@@ -183,15 +166,11 @@ name|cellSize
 decl_stmt|;
 DECL|field|id
 specifier|private
+specifier|final
 name|byte
 name|id
 decl_stmt|;
-DECL|field|state
-specifier|private
-name|ErasureCodingPolicyState
-name|state
-decl_stmt|;
-DECL|method|ErasureCodingPolicy (String name, ECSchema schema, int cellSize, byte id, ErasureCodingPolicyState state)
+DECL|method|ErasureCodingPolicy (String name, ECSchema schema, int cellSize, byte id)
 specifier|public
 name|ErasureCodingPolicy
 parameter_list|(
@@ -206,9 +185,6 @@ name|cellSize
 parameter_list|,
 name|byte
 name|id
-parameter_list|,
-name|ErasureCodingPolicyState
-name|state
 parameter_list|)
 block|{
 name|Preconditions
@@ -273,45 +249,6 @@ name|id
 operator|=
 name|id
 expr_stmt|;
-name|this
-operator|.
-name|state
-operator|=
-name|state
-expr_stmt|;
-block|}
-DECL|method|ErasureCodingPolicy (String name, ECSchema schema, int cellSize, byte id)
-specifier|public
-name|ErasureCodingPolicy
-parameter_list|(
-name|String
-name|name
-parameter_list|,
-name|ECSchema
-name|schema
-parameter_list|,
-name|int
-name|cellSize
-parameter_list|,
-name|byte
-name|id
-parameter_list|)
-block|{
-name|this
-argument_list|(
-name|name
-argument_list|,
-name|schema
-argument_list|,
-name|cellSize
-argument_list|,
-name|id
-argument_list|,
-name|ErasureCodingPolicyState
-operator|.
-name|DISABLED
-argument_list|)
-expr_stmt|;
 block|}
 DECL|method|ErasureCodingPolicy (ECSchema schema, int cellSize, byte id)
 specifier|public
@@ -341,10 +278,6 @@ argument_list|,
 name|cellSize
 argument_list|,
 name|id
-argument_list|,
-name|ErasureCodingPolicyState
-operator|.
-name|DISABLED
 argument_list|)
 expr_stmt|;
 block|}
@@ -377,10 +310,6 @@ name|byte
 operator|)
 operator|-
 literal|1
-argument_list|,
-name|ErasureCodingPolicyState
-operator|.
-name|DISABLED
 argument_list|)
 expr_stmt|;
 block|}
@@ -470,22 +399,6 @@ return|return
 name|name
 return|;
 block|}
-DECL|method|setName (String name)
-specifier|public
-name|void
-name|setName
-parameter_list|(
-name|String
-name|name
-parameter_list|)
-block|{
-name|this
-operator|.
-name|name
-operator|=
-name|name
-expr_stmt|;
-block|}
 DECL|method|getSchema ()
 specifier|public
 name|ECSchema
@@ -555,22 +468,6 @@ return|return
 name|id
 return|;
 block|}
-DECL|method|setId (byte id)
-specifier|public
-name|void
-name|setId
-parameter_list|(
-name|byte
-name|id
-parameter_list|)
-block|{
-name|this
-operator|.
-name|id
-operator|=
-name|id
-expr_stmt|;
-block|}
 DECL|method|isReplicationPolicy ()
 specifier|public
 name|boolean
@@ -587,32 +484,6 @@ name|REPLICATION_POLICY_ID
 operator|)
 return|;
 block|}
-DECL|method|getState ()
-specifier|public
-name|ErasureCodingPolicyState
-name|getState
-parameter_list|()
-block|{
-return|return
-name|state
-return|;
-block|}
-DECL|method|setState (ErasureCodingPolicyState state)
-specifier|public
-name|void
-name|setState
-parameter_list|(
-name|ErasureCodingPolicyState
-name|state
-parameter_list|)
-block|{
-name|this
-operator|.
-name|state
-operator|=
-name|state
-expr_stmt|;
-block|}
 DECL|method|isSystemPolicy ()
 specifier|public
 name|boolean
@@ -628,60 +499,6 @@ operator|<
 name|ErasureCodeConstants
 operator|.
 name|USER_DEFINED_POLICY_START_ID
-operator|)
-return|;
-block|}
-DECL|method|isEnabled ()
-specifier|public
-name|boolean
-name|isEnabled
-parameter_list|()
-block|{
-return|return
-operator|(
-name|this
-operator|.
-name|state
-operator|==
-name|ErasureCodingPolicyState
-operator|.
-name|ENABLED
-operator|)
-return|;
-block|}
-DECL|method|isDisabled ()
-specifier|public
-name|boolean
-name|isDisabled
-parameter_list|()
-block|{
-return|return
-operator|(
-name|this
-operator|.
-name|state
-operator|==
-name|ErasureCodingPolicyState
-operator|.
-name|DISABLED
-operator|)
-return|;
-block|}
-DECL|method|isRemoved ()
-specifier|public
-name|boolean
-name|isRemoved
-parameter_list|()
-block|{
-return|return
-operator|(
-name|this
-operator|.
-name|state
-operator|==
-name|ErasureCodingPolicyState
-operator|.
-name|REMOVED
 operator|)
 return|;
 block|}
@@ -782,15 +599,6 @@ operator|.
 name|id
 argument_list|)
 operator|.
-name|append
-argument_list|(
-name|state
-argument_list|,
-name|rhs
-operator|.
-name|state
-argument_list|)
-operator|.
 name|isEquals
 argument_list|()
 return|;
@@ -832,11 +640,6 @@ argument_list|(
 name|id
 argument_list|)
 operator|.
-name|append
-argument_list|(
-name|state
-argument_list|)
-operator|.
 name|toHashCode
 argument_list|()
 return|;
@@ -876,15 +679,6 @@ operator|+
 literal|"Id="
 operator|+
 name|id
-operator|+
-literal|", "
-operator|+
-literal|"State="
-operator|+
-name|state
-operator|.
-name|toString
-argument_list|()
 operator|+
 literal|"]"
 return|;

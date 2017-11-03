@@ -2252,7 +2252,7 @@ comment|/**    * Get the erasure coding policies loaded in Namenode, excluding R
 annotation|@
 name|Idempotent
 DECL|method|getErasureCodingPolicies ()
-name|ErasureCodingPolicy
+name|ErasureCodingPolicyInfo
 index|[]
 name|getErasureCodingPolicies
 parameter_list|()

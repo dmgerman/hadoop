@@ -252,7 +252,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|ErasureCodingPolicy
+name|ErasureCodingPolicyInfo
 import|;
 end_import
 
@@ -2509,7 +2509,7 @@ argument_list|)
 decl_stmt|;
 name|List
 argument_list|<
-name|ErasureCodingPolicy
+name|ErasureCodingPolicyInfo
 argument_list|>
 name|ecPolicies
 init|=
@@ -2547,7 +2547,7 @@ name|add
 argument_list|(
 name|PBHelperClient
 operator|.
-name|convertErasureCodingPolicy
+name|convertErasureCodingPolicyInfo
 argument_list|(
 name|s
 operator|.
@@ -3641,7 +3641,7 @@ operator|.
 name|getSourceNamesystem
 argument_list|()
 decl_stmt|;
-name|ErasureCodingPolicy
+name|ErasureCodingPolicyInfo
 index|[]
 name|ecPolicies
 init|=
@@ -3668,7 +3668,7 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|ErasureCodingPolicy
+name|ErasureCodingPolicyInfo
 name|p
 range|:
 name|ecPolicies

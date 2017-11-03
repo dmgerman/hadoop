@@ -658,6 +658,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|ErasureCodingPolicyInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|ExtendedBlock
 import|;
 end_import
@@ -11933,7 +11949,7 @@ annotation|@
 name|Override
 DECL|method|getErasureCodingPolicies ()
 specifier|public
-name|ErasureCodingPolicy
+name|ErasureCodingPolicyInfo
 index|[]
 name|getErasureCodingPolicies
 parameter_list|()
@@ -11954,12 +11970,12 @@ argument_list|,
 name|VOID_GET_EC_POLICIES_REQUEST
 argument_list|)
 decl_stmt|;
-name|ErasureCodingPolicy
+name|ErasureCodingPolicyInfo
 index|[]
 name|ecPolicies
 init|=
 operator|new
-name|ErasureCodingPolicy
+name|ErasureCodingPolicyInfo
 index|[
 name|response
 operator|.
@@ -11975,7 +11991,7 @@ decl_stmt|;
 for|for
 control|(
 name|ErasureCodingPolicyProto
-name|ecPolicyProto
+name|proto
 range|:
 name|response
 operator|.
@@ -11991,9 +12007,9 @@ index|]
 operator|=
 name|PBHelperClient
 operator|.
-name|convertErasureCodingPolicy
+name|convertErasureCodingPolicyInfo
 argument_list|(
-name|ecPolicyProto
+name|proto
 argument_list|)
 expr_stmt|;
 block|}

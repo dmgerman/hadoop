@@ -158,6 +158,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|ErasureCodingPolicyInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|namenode
@@ -1625,10 +1641,10 @@ name|iip
 argument_list|)
 return|;
 block|}
-comment|/**    * Get available erasure coding polices.    *    * @param fsn namespace    * @return {@link ErasureCodingPolicy} array    */
-DECL|method|getErasureCodingPolicies (final FSNamesystem fsn)
+comment|/**    * Get available erasure coding polices.    *    * @param fsn namespace    * @return {@link ErasureCodingPolicyInfo} array    */
+DECL|method|getErasureCodingPolicies ( final FSNamesystem fsn)
 specifier|static
-name|ErasureCodingPolicy
+name|ErasureCodingPolicyInfo
 index|[]
 name|getErasureCodingPolicies
 parameter_list|(

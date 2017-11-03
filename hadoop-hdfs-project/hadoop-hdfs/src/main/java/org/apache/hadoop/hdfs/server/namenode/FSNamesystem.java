@@ -1196,6 +1196,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|ErasureCodingPolicyInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|ReplicatedBlockStats
 import|;
 end_import
@@ -34950,9 +34966,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Get available erasure coding polices    */
+comment|/**    * Get all erasure coding polices.    */
 DECL|method|getErasureCodingPolicies ()
-name|ErasureCodingPolicy
+name|ErasureCodingPolicyInfo
 index|[]
 name|getErasureCodingPolicies
 parameter_list|()
@@ -34990,7 +35006,7 @@ name|READ
 argument_list|)
 expr_stmt|;
 specifier|final
-name|ErasureCodingPolicy
+name|ErasureCodingPolicyInfo
 index|[]
 name|ret
 init|=

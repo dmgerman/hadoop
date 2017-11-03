@@ -5571,10 +5571,12 @@ name|ErasureCodingPolicyState
 operator|.
 name|DISABLED
 argument_list|,
-name|ecPolicy
+name|DFSTestUtil
 operator|.
-name|getState
-argument_list|()
+name|getECPolicyState
+argument_list|(
+name|ecPolicy
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Test enable/disable/remove user customized erasure coding policy
@@ -5641,15 +5643,6 @@ name|targetPolicy
 operator|.
 name|getName
 argument_list|()
-argument_list|)
-expr_stmt|;
-name|targetPolicy
-operator|.
-name|setState
-argument_list|(
-name|ErasureCodingPolicyState
-operator|.
-name|ENABLED
 argument_list|)
 expr_stmt|;
 comment|// Create file, using the new policy
@@ -5795,10 +5788,12 @@ name|ErasureCodingPolicyState
 operator|.
 name|ENABLED
 argument_list|,
-name|ecPolicy
+name|DFSTestUtil
 operator|.
-name|getState
-argument_list|()
+name|getECPolicyState
+argument_list|(
+name|ecPolicy
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Read file regardless of the erasure coding policy state
@@ -5820,15 +5815,6 @@ name|ecPolicy
 operator|.
 name|getName
 argument_list|()
-argument_list|)
-expr_stmt|;
-name|targetPolicy
-operator|.
-name|setState
-argument_list|(
-name|ErasureCodingPolicyState
-operator|.
-name|DISABLED
 argument_list|)
 expr_stmt|;
 comment|// Save namespace and restart NameNode
@@ -5897,10 +5883,12 @@ name|ErasureCodingPolicyState
 operator|.
 name|DISABLED
 argument_list|,
-name|ecPolicy
+name|DFSTestUtil
 operator|.
-name|getState
-argument_list|()
+name|getECPolicyState
+argument_list|(
+name|ecPolicy
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Read file regardless of the erasure coding policy state
@@ -5953,13 +5941,14 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
-name|targetPolicy
+name|fs
 operator|.
-name|setState
+name|removeErasureCodingPolicy
 argument_list|(
-name|ErasureCodingPolicyState
+name|ecPolicy
 operator|.
-name|REMOVED
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Save namespace and restart NameNode
@@ -6030,10 +6019,12 @@ name|ErasureCodingPolicyState
 operator|.
 name|REMOVED
 argument_list|,
-name|ecPolicy
+name|DFSTestUtil
 operator|.
-name|getState
-argument_list|()
+name|getECPolicyState
+argument_list|(
+name|ecPolicy
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Read file regardless of the erasure coding policy state

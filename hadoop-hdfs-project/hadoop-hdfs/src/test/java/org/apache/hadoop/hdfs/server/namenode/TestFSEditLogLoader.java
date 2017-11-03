@@ -4647,10 +4647,12 @@ name|ErasureCodingPolicyState
 operator|.
 name|DISABLED
 argument_list|,
-name|ecPolicy
+name|DFSTestUtil
 operator|.
-name|getState
-argument_list|()
+name|getECPolicyState
+argument_list|(
+name|ecPolicy
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// 2. enable policy
@@ -4695,10 +4697,12 @@ name|ErasureCodingPolicyState
 operator|.
 name|ENABLED
 argument_list|,
-name|ecPolicy
+name|DFSTestUtil
 operator|.
-name|getState
-argument_list|()
+name|getECPolicyState
+argument_list|(
+name|ecPolicy
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// create a new file, use the policy
@@ -4819,10 +4823,12 @@ name|ErasureCodingPolicyState
 operator|.
 name|DISABLED
 argument_list|,
-name|ecPolicy
+name|DFSTestUtil
 operator|.
-name|getState
-argument_list|()
+name|getECPolicyState
+argument_list|(
+name|ecPolicy
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// read file
@@ -4877,10 +4883,12 @@ name|ErasureCodingPolicyState
 operator|.
 name|REMOVED
 argument_list|,
-name|ecPolicy
+name|DFSTestUtil
 operator|.
-name|getState
-argument_list|()
+name|getECPolicyState
+argument_list|(
+name|ecPolicy
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// read file

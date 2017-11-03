@@ -398,6 +398,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|ErasureCodingPolicyInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|HdfsConstants
 import|;
 end_import
@@ -1453,7 +1469,7 @@ block|}
 comment|/**    * Get the Erasure coding policies supported.    *    * @throws IOException    */
 DECL|method|getErasureCodingPolicies ()
 specifier|public
-name|ErasureCodingPolicy
+name|ErasureCodingPolicyInfo
 index|[]
 name|getErasureCodingPolicies
 parameter_list|()
