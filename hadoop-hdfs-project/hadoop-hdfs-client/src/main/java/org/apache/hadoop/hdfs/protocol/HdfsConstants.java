@@ -494,6 +494,28 @@ name|SAFEMODE_GET
 block|,
 name|SAFEMODE_FORCE_EXIT
 block|}
+comment|/**    * Storage policy satisfy path status.    */
+DECL|enum|StoragePolicySatisfyPathStatus
+specifier|public
+enum|enum
+name|StoragePolicySatisfyPathStatus
+block|{
+comment|/**      * Scheduled but not yet processed. This will come only in case of      * directory. Directory will be added first in "pendingWorkForDirectory"      * queue and then later it is processed recursively.      */
+DECL|enumConstant|PENDING
+name|PENDING
+block|,
+comment|/**      * Satisfying the storage policy for path.      */
+DECL|enumConstant|IN_PROGRESS
+name|IN_PROGRESS
+block|,
+comment|/**      * Storage policy satisfied for the path.      */
+DECL|enumConstant|SUCCESS
+name|SUCCESS
+block|,
+comment|/**      * Status not available.      */
+DECL|enumConstant|NOT_AVAILABLE
+name|NOT_AVAILABLE
+block|}
 DECL|enum|RollingUpgradeAction
 specifier|public
 enum|enum

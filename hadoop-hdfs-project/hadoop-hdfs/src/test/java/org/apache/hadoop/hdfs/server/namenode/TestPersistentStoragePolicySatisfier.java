@@ -2031,13 +2031,6 @@ argument_list|(
 name|childDir
 argument_list|)
 expr_stmt|;
-name|fs
-operator|.
-name|satisfyStoragePolicy
-argument_list|(
-name|parentDir
-argument_list|)
-expr_stmt|;
 name|DFSTestUtil
 operator|.
 name|waitExpectedStorageType
@@ -2056,6 +2049,13 @@ name|cluster
 operator|.
 name|getFileSystem
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|fs
+operator|.
+name|satisfyStoragePolicy
+argument_list|(
+name|parentDir
 argument_list|)
 expr_stmt|;
 name|DFSTestUtil

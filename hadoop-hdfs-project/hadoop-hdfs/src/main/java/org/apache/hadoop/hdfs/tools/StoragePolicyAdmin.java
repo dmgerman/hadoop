@@ -160,6 +160,24 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|HdfsConstants
+operator|.
+name|StoragePolicySatisfyPathStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|HdfsFileStatus
 import|;
 end_import
@@ -1406,7 +1424,7 @@ operator|+
 name|getName
 argument_list|()
 operator|+
-literal|" -path<path>]\n"
+literal|" [-w] -path<path>]\n"
 return|;
 block|}
 annotation|@
@@ -1434,6 +1452,27 @@ argument_list|,
 literal|"The path of the file/directory to satisfy"
 operator|+
 literal|" storage policy"
+argument_list|)
+expr_stmt|;
+name|listing
+operator|.
+name|addRow
+argument_list|(
+literal|"-w"
+argument_list|,
+literal|"It requests that the command wait till all the files satisfy"
+operator|+
+literal|" the policy in given path. This will print the current"
+operator|+
+literal|"status of the path in each 10 sec and status are:\n"
+operator|+
+literal|"PENDING : Path is in queue and not processed for satisfying"
+operator|+
+literal|" the policy.\nIN_PROGRESS : Satisfying the storage policy for"
+operator|+
+literal|" path.\nSUCCESS : Storage policy satisfied for the path.\n"
+operator|+
+literal|"NOT_AVAILABLE : Status not available."
 argument_list|)
 expr_stmt|;
 return|return
@@ -1544,6 +1583,31 @@ operator|+
 name|path
 argument_list|)
 expr_stmt|;
+name|boolean
+name|waitOpt
+init|=
+name|StringUtils
+operator|.
+name|popOption
+argument_list|(
+literal|"-w"
+argument_list|,
+name|args
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|waitOpt
+condition|)
+block|{
+name|waitForSatisfyPolicy
+argument_list|(
+name|dfs
+argument_list|,
+name|path
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -1572,6 +1636,106 @@ block|}
 return|return
 literal|0
 return|;
+block|}
+DECL|method|waitForSatisfyPolicy (DistributedFileSystem dfs, String path)
+specifier|private
+name|void
+name|waitForSatisfyPolicy
+parameter_list|(
+name|DistributedFileSystem
+name|dfs
+parameter_list|,
+name|String
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Waiting for satisfy the policy ..."
+argument_list|)
+expr_stmt|;
+while|while
+condition|(
+literal|true
+condition|)
+block|{
+name|StoragePolicySatisfyPathStatus
+name|status
+init|=
+name|dfs
+operator|.
+name|getClient
+argument_list|()
+operator|.
+name|checkStoragePolicySatisfyPathStatus
+argument_list|(
+name|path
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|StoragePolicySatisfyPathStatus
+operator|.
+name|SUCCESS
+operator|.
+name|equals
+argument_list|(
+name|status
+argument_list|)
+condition|)
+block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+name|status
+argument_list|)
+expr_stmt|;
+break|break;
+block|}
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+name|status
+argument_list|)
+expr_stmt|;
+try|try
+block|{
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|10000
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{         }
+block|}
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|" done"
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 comment|/** Command to check storage policy satisfier status. */
