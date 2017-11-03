@@ -412,6 +412,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|Block
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|ExtendedBlock
 import|;
 end_import
@@ -464,7 +480,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|FileRegionProvider
+name|Storage
 import|;
 end_import
 
@@ -482,7 +498,9 @@ name|server
 operator|.
 name|common
 operator|.
-name|Storage
+name|blockaliasmap
+operator|.
+name|BlockAliasMap
 import|;
 end_import
 
@@ -1251,16 +1269,17 @@ name|numBlocks
 expr_stmt|;
 block|}
 block|}
-comment|/**    * A simple FileRegion provider for tests.    */
-DECL|class|TestFileRegionProvider
+comment|/**    * A simple FileRegion BlockAliasMap for tests.    */
+DECL|class|TestFileRegionBlockAliasMap
 specifier|public
 specifier|static
 class|class
-name|TestFileRegionProvider
+name|TestFileRegionBlockAliasMap
 extends|extends
-name|FileRegionProvider
-implements|implements
-name|Configurable
+name|BlockAliasMap
+argument_list|<
+name|FileRegion
+argument_list|>
 block|{
 DECL|field|conf
 specifier|private
@@ -1285,8 +1304,8 @@ name|FileRegion
 argument_list|>
 name|suppliedIterator
 decl_stmt|;
-DECL|method|TestFileRegionProvider ()
-name|TestFileRegionProvider
+DECL|method|TestFileRegionBlockAliasMap ()
+name|TestFileRegionBlockAliasMap
 parameter_list|()
 block|{
 name|this
@@ -1299,8 +1318,8 @@ name|NUM_PROVIDED_BLKS
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|TestFileRegionProvider (Iterator<FileRegion> iterator, int minId, int numBlocks)
-name|TestFileRegionProvider
+DECL|method|TestFileRegionBlockAliasMap (Iterator<FileRegion> iterator, int minId, int numBlocks)
+name|TestFileRegionBlockAliasMap
 parameter_list|(
 name|Iterator
 argument_list|<
@@ -1336,7 +1355,41 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|iterator ()
+DECL|method|getReader (Reader.Options opts)
+specifier|public
+name|Reader
+argument_list|<
+name|FileRegion
+argument_list|>
+name|getReader
+parameter_list|(
+name|Reader
+operator|.
+name|Options
+name|opts
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|BlockAliasMap
+operator|.
+name|Reader
+argument_list|<
+name|FileRegion
+argument_list|>
+name|reader
+init|=
+operator|new
+name|BlockAliasMap
+operator|.
+name|Reader
+argument_list|<
+name|FileRegion
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
 specifier|public
 name|Iterator
 argument_list|<
@@ -1373,32 +1426,56 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|setConf (Configuration conf)
 specifier|public
 name|void
-name|setConf
+name|close
+parameter_list|()
+throws|throws
+name|IOException
+block|{              }
+annotation|@
+name|Override
+specifier|public
+name|FileRegion
+name|resolve
 parameter_list|(
-name|Configuration
-name|conf
+name|Block
+name|ident
 parameter_list|)
+throws|throws
+name|IOException
 block|{
-name|this
-operator|.
-name|conf
-operator|=
-name|conf
-expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
+block|}
+decl_stmt|;
+return|return
+name|reader
+return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getConf ()
+DECL|method|getWriter (Writer.Options opts)
 specifier|public
-name|Configuration
-name|getConf
-parameter_list|()
+name|Writer
+argument_list|<
+name|FileRegion
+argument_list|>
+name|getWriter
+parameter_list|(
+name|Writer
+operator|.
+name|Options
+name|opts
+parameter_list|)
+throws|throws
+name|IOException
 block|{
+comment|// not implemented
 return|return
-name|conf
+literal|null
 return|;
 block|}
 annotation|@
@@ -1408,8 +1485,10 @@ specifier|public
 name|void
 name|refresh
 parameter_list|()
+throws|throws
+name|IOException
 block|{
-comment|//do nothing!
+comment|// do nothing!
 block|}
 DECL|method|setMinBlkId (int minId)
 specifier|public
@@ -2300,19 +2379,21 @@ argument_list|(
 name|shortCircuitRegistry
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
 name|conf
 operator|.
 name|setClass
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_PROVIDER_CLASS
+name|DFS_PROVIDED_ALIASMAP_CLASS
 argument_list|,
-name|TestFileRegionProvider
+name|TestFileRegionBlockAliasMap
 operator|.
 name|class
 argument_list|,
-name|FileRegionProvider
+name|BlockAliasMap
 operator|.
 name|class
 argument_list|)
@@ -3182,15 +3263,15 @@ argument_list|(
 name|i
 argument_list|)
 decl_stmt|;
-name|TestFileRegionProvider
-name|provider
+name|TestFileRegionBlockAliasMap
+name|testBlockFormat
 init|=
 operator|(
-name|TestFileRegionProvider
+name|TestFileRegionBlockAliasMap
 operator|)
 name|vol
 operator|.
-name|getFileRegionProvider
+name|getBlockFormat
 argument_list|(
 name|BLOCK_POOL_IDS
 index|[
@@ -3199,7 +3280,7 @@ index|]
 argument_list|)
 decl_stmt|;
 comment|//equivalent to two new blocks appearing
-name|provider
+name|testBlockFormat
 operator|.
 name|setBlockCount
 argument_list|(
@@ -3209,7 +3290,7 @@ literal|2
 argument_list|)
 expr_stmt|;
 comment|//equivalent to deleting the first block
-name|provider
+name|testBlockFormat
 operator|.
 name|setMinBlkId
 argument_list|(
@@ -3372,7 +3453,7 @@ name|CHOSEN_BP_ID
 index|]
 argument_list|,
 operator|new
-name|TestFileRegionProvider
+name|TestFileRegionBlockAliasMap
 argument_list|(
 name|fileRegionIterator
 argument_list|,

@@ -184,7 +184,9 @@ name|server
 operator|.
 name|common
 operator|.
-name|BlockFormat
+name|blockaliasmap
+operator|.
+name|BlockAliasMap
 import|;
 end_import
 
@@ -630,7 +632,7 @@ argument_list|)
 operator|.
 name|asSubclass
 argument_list|(
-name|BlockFormat
+name|BlockAliasMap
 operator|.
 name|class
 argument_list|)

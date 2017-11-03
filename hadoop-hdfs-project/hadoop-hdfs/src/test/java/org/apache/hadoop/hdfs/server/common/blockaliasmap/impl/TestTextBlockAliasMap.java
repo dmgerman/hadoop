@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.common
+DECL|package|org.apache.hadoop.hdfs.server.common.blockaliasmap.impl
 package|package
 name|org
 operator|.
@@ -17,6 +17,10 @@ operator|.
 name|server
 operator|.
 name|common
+operator|.
+name|blockaliasmap
+operator|.
+name|impl
 package|;
 end_package
 
@@ -116,9 +120,31 @@ name|server
 operator|.
 name|common
 operator|.
-name|TextFileRegionFormat
+name|blockaliasmap
+operator|.
+name|impl
+operator|.
+name|TextFileRegionAliasMap
 operator|.
 name|*
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|FileRegion
 import|;
 end_import
 
@@ -193,10 +219,10 @@ comment|/**  * Test for the text based block format for provided block maps.  */
 end_comment
 
 begin_class
-DECL|class|TestTextBlockFormat
+DECL|class|TestTextBlockAliasMap
 specifier|public
 class|class
-name|TestTextBlockFormat
+name|TestTextBlockAliasMap
 block|{
 DECL|field|OUTFILE
 specifier|static
@@ -235,11 +261,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|TextFileRegionFormat
+name|TextFileRegionAliasMap
 name|mFmt
 init|=
 operator|new
-name|TextFileRegionFormat
+name|TextFileRegionAliasMap
 argument_list|()
 block|{
 annotation|@
@@ -354,7 +380,7 @@ name|Path
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_PROVIDED_BLOCK_MAP_PATH_DEFAULT
+name|DFS_PROVIDED_ALIASMAP_TEXT_PATH_DEFAULT
 argument_list|)
 decl_stmt|;
 name|assertEquals

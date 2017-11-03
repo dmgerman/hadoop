@@ -106,7 +106,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|BlockFormat
+name|FileRegion
 import|;
 end_import
 
@@ -124,7 +124,9 @@ name|server
 operator|.
 name|common
 operator|.
-name|FileRegion
+name|blockaliasmap
+operator|.
+name|BlockAliasMap
 import|;
 end_import
 
@@ -390,7 +392,7 @@ name|id
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|toINode (UGIResolver ugi, BlockResolver blk, BlockFormat.Writer<FileRegion> out, String blockPoolID)
+DECL|method|toINode (UGIResolver ugi, BlockResolver blk, BlockAliasMap.Writer<FileRegion> out, String blockPoolID)
 specifier|public
 name|INode
 name|toINode
@@ -401,7 +403,7 @@ parameter_list|,
 name|BlockResolver
 name|blk
 parameter_list|,
-name|BlockFormat
+name|BlockAliasMap
 operator|.
 name|Writer
 argument_list|<
@@ -571,7 +573,7 @@ operator|)
 argument_list|)
 return|;
 block|}
-DECL|method|writeBlock (long blockId, long offset, long length, long genStamp, String blockPoolID, BlockFormat.Writer<FileRegion> out)
+DECL|method|writeBlock (long blockId, long offset, long length, long genStamp, String blockPoolID, BlockAliasMap.Writer<FileRegion> out)
 name|void
 name|writeBlock
 parameter_list|(
@@ -590,7 +592,7 @@ parameter_list|,
 name|String
 name|blockPoolID
 parameter_list|,
-name|BlockFormat
+name|BlockAliasMap
 operator|.
 name|Writer
 argument_list|<
@@ -632,7 +634,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|toFile (UGIResolver ugi, BlockResolver blk, BlockFormat.Writer<FileRegion> out, String blockPoolID)
+DECL|method|toFile (UGIResolver ugi, BlockResolver blk, BlockAliasMap.Writer<FileRegion> out, String blockPoolID)
 name|INode
 name|toFile
 parameter_list|(
@@ -642,7 +644,7 @@ parameter_list|,
 name|BlockResolver
 name|blk
 parameter_list|,
-name|BlockFormat
+name|BlockAliasMap
 operator|.
 name|Writer
 argument_list|<

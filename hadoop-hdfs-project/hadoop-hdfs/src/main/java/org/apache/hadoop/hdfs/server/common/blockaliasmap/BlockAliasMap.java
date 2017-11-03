@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.common
+DECL|package|org.apache.hadoop.hdfs.server.common.blockaliasmap
 package|package
 name|org
 operator|.
@@ -17,6 +17,8 @@ operator|.
 name|server
 operator|.
 name|common
+operator|.
+name|blockaliasmap
 package|;
 end_package
 
@@ -56,16 +58,34 @@ name|Block
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|BlockAlias
+import|;
+end_import
+
 begin_comment
 comment|/**  * An abstract class used to read and write block maps for provided blocks.  */
 end_comment
 
 begin_class
-DECL|class|BlockFormat
+DECL|class|BlockAliasMap
 specifier|public
 specifier|abstract
 class|class
-name|BlockFormat
+name|BlockAliasMap
 parameter_list|<
 name|T
 extends|extends
@@ -98,6 +118,7 @@ specifier|public
 interface|interface
 name|Options
 block|{ }
+comment|/**      * @param ident block to resolve      * @return BlockAlias correspoding to the provided block.      * @throws IOException      */
 DECL|method|resolve (Block ident)
 specifier|public
 specifier|abstract
@@ -111,7 +132,7 @@ throws|throws
 name|IOException
 function_decl|;
 block|}
-comment|/**    * Returns the reader for the provided block map.    * @param opts reader options    * @return {@link Reader} to the block map.    * @throws IOException    */
+comment|/**    * Returns a reader to the alias map.    * @param opts reader options    * @return {@link Reader} to the alias map.    * @throws IOException    */
 DECL|method|getReader (Reader.Options opts)
 specifier|public
 specifier|abstract
@@ -163,7 +184,7 @@ throws|throws
 name|IOException
 function_decl|;
 block|}
-comment|/**    * Returns the writer for the provided block map.    * @param opts writer options.    * @return {@link Writer} to the block map.    * @throws IOException    */
+comment|/**    * Returns the writer for the alias map.    * @param opts writer options.    * @return {@link Writer} to the alias map.    * @throws IOException    */
 DECL|method|getWriter (Writer.Options opts)
 specifier|public
 specifier|abstract
@@ -181,7 +202,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Refresh based on the underlying block map.    * @throws IOException    */
+comment|/**    * Refresh the alias map.    * @throws IOException    */
 DECL|method|refresh ()
 specifier|public
 specifier|abstract

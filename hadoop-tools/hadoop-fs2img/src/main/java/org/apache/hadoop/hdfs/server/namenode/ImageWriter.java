@@ -320,7 +320,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|BlockFormat
+name|FileRegion
 import|;
 end_import
 
@@ -338,7 +338,9 @@ name|server
 operator|.
 name|common
 operator|.
-name|FileRegion
+name|blockaliasmap
+operator|.
+name|BlockAliasMap
 import|;
 end_import
 
@@ -797,7 +799,7 @@ decl_stmt|;
 DECL|field|blocks
 specifier|private
 specifier|final
-name|BlockFormat
+name|BlockAliasMap
 operator|.
 name|Writer
 argument_list|<
@@ -1248,7 +1250,7 @@ name|opts
 operator|.
 name|ugis
 expr_stmt|;
-name|BlockFormat
+name|BlockAliasMap
 argument_list|<
 name|FileRegion
 argument_list|>
@@ -1266,7 +1268,7 @@ name|newInstance
 argument_list|(
 name|opts
 operator|.
-name|blockFormatClass
+name|aliasMap
 argument_list|,
 name|opts
 operator|.
@@ -3156,7 +3158,7 @@ name|ugisClass
 decl_stmt|;
 DECL|field|blocks
 specifier|private
-name|BlockFormat
+name|BlockAliasMap
 argument_list|<
 name|FileRegion
 argument_list|>
@@ -3167,15 +3169,15 @@ name|SuppressWarnings
 argument_list|(
 literal|"rawtypes"
 argument_list|)
-DECL|field|blockFormatClass
+DECL|field|aliasMap
 specifier|private
 name|Class
 argument_list|<
 name|?
 extends|extends
-name|BlockFormat
+name|BlockAliasMap
 argument_list|>
-name|blockFormatClass
+name|aliasMap
 decl_stmt|;
 DECL|field|blockIds
 specifier|private
@@ -3224,7 +3226,6 @@ name|conf
 operator|=
 name|conf
 expr_stmt|;
-comment|//long lastTxn = conf.getLong(LAST_TXN, 0L);
 name|String
 name|def
 init|=
@@ -3321,7 +3322,7 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
-name|blockFormatClass
+name|aliasMap
 operator|=
 name|conf
 operator|.
@@ -3329,13 +3330,13 @@ name|getClass
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_PROVIDER_BLK_FORMAT_CLASS
+name|DFS_PROVIDED_ALIASMAP_CLASS
 argument_list|,
-name|NullBlockFormat
+name|NullBlockAliasMap
 operator|.
 name|class
 argument_list|,
-name|BlockFormat
+name|BlockAliasMap
 operator|.
 name|class
 argument_list|)
@@ -3546,12 +3547,12 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|blocks (BlockFormat<FileRegion> blocks)
+DECL|method|blocks (BlockAliasMap<FileRegion> blocks)
 specifier|public
 name|Options
 name|blocks
 parameter_list|(
-name|BlockFormat
+name|BlockAliasMap
 argument_list|<
 name|FileRegion
 argument_list|>
@@ -3573,7 +3574,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"rawtypes"
 argument_list|)
-DECL|method|blocks (Class<? extends BlockFormat> blocksClass)
+DECL|method|blocks (Class<? extends BlockAliasMap> blocksClass)
 specifier|public
 name|Options
 name|blocks
@@ -3582,14 +3583,14 @@ name|Class
 argument_list|<
 name|?
 extends|extends
-name|BlockFormat
+name|BlockAliasMap
 argument_list|>
 name|blocksClass
 parameter_list|)
 block|{
 name|this
 operator|.
-name|blockFormatClass
+name|aliasMap
 operator|=
 name|blocksClass
 expr_stmt|;

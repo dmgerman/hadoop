@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.common
+DECL|package|org.apache.hadoop.hdfs.server.common.blockaliasmap.impl
 package|package
 name|org
 operator|.
@@ -17,6 +17,10 @@ operator|.
 name|server
 operator|.
 name|common
+operator|.
+name|blockaliasmap
+operator|.
+name|impl
 package|;
 end_package
 
@@ -268,6 +272,44 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|FileRegion
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|blockaliasmap
+operator|.
+name|BlockAliasMap
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|MultipleIOException
@@ -345,12 +387,12 @@ comment|/**  * This class is used for block maps stored as text files,  * with a
 end_comment
 
 begin_class
-DECL|class|TextFileRegionFormat
+DECL|class|TextFileRegionAliasMap
 specifier|public
 class|class
-name|TextFileRegionFormat
+name|TextFileRegionAliasMap
 extends|extends
-name|BlockFormat
+name|BlockAliasMap
 argument_list|<
 name|FileRegion
 argument_list|>
@@ -393,7 +435,7 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|TextFileRegionFormat
+name|TextFileRegionAliasMap
 operator|.
 name|class
 argument_list|)
@@ -902,7 +944,7 @@ name|delim
 argument_list|)
 return|;
 block|}
-comment|/**    * Class specifying reader options for the {@link TextFileRegionFormat}.    */
+comment|/**    * Class specifying reader options for the {@link TextFileRegionAliasMap}.    */
 DECL|class|ReaderOptions
 specifier|public
 specifier|static
@@ -927,7 +969,7 @@ name|delim
 init|=
 name|DFSConfigKeys
 operator|.
-name|DFS_PROVIDED_BLOCK_MAP_DELIMITER_DEFAULT
+name|DFS_PROVIDED_ALIASMAP_TEXT_DELIMITER_DEFAULT
 decl_stmt|;
 DECL|field|file
 specifier|private
@@ -942,7 +984,7 @@ name|File
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_PROVIDED_BLOCK_MAP_PATH_DEFAULT
+name|DFS_PROVIDED_ALIASMAP_TEXT_PATH_DEFAULT
 argument_list|)
 operator|.
 name|toURI
@@ -978,11 +1020,11 @@ name|get
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_PROVIDED_BLOCK_MAP_READ_PATH
+name|DFS_PROVIDED_ALIASMAP_TEXT_READ_PATH
 argument_list|,
 name|DFSConfigKeys
 operator|.
-name|DFS_PROVIDED_BLOCK_MAP_PATH_DEFAULT
+name|DFS_PROVIDED_ALIASMAP_TEXT_PATH_DEFAULT
 argument_list|)
 decl_stmt|;
 name|file
@@ -1001,18 +1043,18 @@ name|get
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_PROVIDED_BLOCK_MAP_DELIMITER
+name|DFS_PROVIDED_ALIASMAP_TEXT_DELIMITER
 argument_list|,
 name|DFSConfigKeys
 operator|.
-name|DFS_PROVIDED_BLOCK_MAP_DELIMITER_DEFAULT
+name|DFS_PROVIDED_ALIASMAP_TEXT_DELIMITER_DEFAULT
 argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"TextFileRegionFormat: read path "
+literal|"TextFileRegionAliasMap: read path "
 operator|+
 name|tmpfile
 operator|.
@@ -1076,7 +1118,7 @@ name|this
 return|;
 block|}
 block|}
-comment|/**    * Class specifying writer options for the {@link TextFileRegionFormat}.    */
+comment|/**    * Class specifying writer options for the {@link TextFileRegionAliasMap}.    */
 DECL|class|WriterOptions
 specifier|public
 specifier|static
@@ -1111,9 +1153,10 @@ name|Path
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_PROVIDED_BLOCK_MAP_PATH_DEFAULT
+name|DFS_PROVIDED_ALIASMAP_TEXT_PATH_DEFAULT
 argument_list|)
 decl_stmt|;
+empty_stmt|;
 DECL|field|delim
 specifier|private
 name|String
@@ -1121,7 +1164,7 @@ name|delim
 init|=
 name|DFSConfigKeys
 operator|.
-name|DFS_PROVIDED_BLOCK_MAP_DELIMITER_DEFAULT
+name|DFS_PROVIDED_ALIASMAP_TEXT_DELIMITER_DEFAULT
 decl_stmt|;
 annotation|@
 name|Override
@@ -1149,7 +1192,7 @@ name|get
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_PROVIDED_BLOCK_MAP_WRITE_PATH
+name|DFS_PROVIDED_ALIASMAP_TEXT_WRITE_PATH
 argument_list|,
 name|file
 operator|.
@@ -1173,7 +1216,7 @@ name|get
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_PROVIDED_BLOCK_MAP_CODEC
+name|DFS_PROVIDED_ALIASMAP_TEXT_CODEC
 argument_list|)
 expr_stmt|;
 name|delim
@@ -1184,11 +1227,11 @@ name|get
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_PROVIDED_BLOCK_MAP_DELIMITER
+name|DFS_PROVIDED_ALIASMAP_TEXT_DELIMITER
 argument_list|,
 name|DFSConfigKeys
 operator|.
-name|DFS_PROVIDED_BLOCK_MAP_DELIMITER_DEFAULT
+name|DFS_PROVIDED_ALIASMAP_TEXT_DELIMITER_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
