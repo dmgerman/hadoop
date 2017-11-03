@@ -8733,9 +8733,11 @@ expr_stmt|;
 name|String
 name|regex
 init|=
-literal|"Block=[0-9]+\\tNode=.*\\tStorageID=.*StorageState.*"
+literal|"Block=blk_[0-9]+_[0-9]+\\tSize=.*\\tNode=.*"
 operator|+
-literal|"TotalReplicas=.*Reason=GENSTAMP_MISMATCH"
+literal|"\\tStorageID=.*\\tStorageState.*"
+operator|+
+literal|"\\tTotalReplicas=.*\\tReason=GENSTAMP_MISMATCH"
 decl_stmt|;
 name|assertTrue
 argument_list|(

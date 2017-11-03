@@ -4095,7 +4095,14 @@ literal|"Block="
 operator|+
 name|block
 operator|.
-name|getBlockId
+name|toString
+argument_list|()
+operator|+
+literal|"\tSize="
+operator|+
+name|block
+operator|.
+name|getNumBytes
 argument_list|()
 operator|+
 literal|"\tNode="
