@@ -171,18 +171,18 @@ literal|"CONTAINER_ID"
 argument_list|)
 decl_stmt|;
 comment|// Templates for component instance host/IP
-DECL|field|COMPONENT_HOST
+DECL|field|COMPONENT_INSTANCE_HOST
 name|String
-name|COMPONENT_HOST
+name|COMPONENT_INSTANCE_HOST
 init|=
 name|$
 argument_list|(
 literal|"%s_HOST"
 argument_list|)
 decl_stmt|;
-DECL|field|COMPONENT_IP
+DECL|field|COMPONENT_INSTANCE_IP
 name|String
-name|COMPONENT_IP
+name|COMPONENT_INSTANCE_IP
 init|=
 name|$
 argument_list|(

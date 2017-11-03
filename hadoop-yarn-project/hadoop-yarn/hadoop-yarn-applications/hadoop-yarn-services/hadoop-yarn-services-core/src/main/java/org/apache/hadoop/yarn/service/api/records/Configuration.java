@@ -1133,12 +1133,12 @@ name|mergeMapsIgnoreDuplicateKeys
 argument_list|(
 name|thisFile
 operator|.
-name|getProps
+name|getProperties
 argument_list|()
 argument_list|,
 name|thatFile
 operator|.
-name|getProps
+name|getProperties
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -1150,7 +1150,7 @@ argument_list|)
 expr_stmt|;
 name|serviceTimelinePublisher
 operator|.
-name|componentInstanceUpdated
+name|componentInstanceIPHostUpdated
 argument_list|(
 name|container
 argument_list|)

@@ -290,7 +290,7 @@ name|type
 init|=
 literal|null
 decl_stmt|;
-DECL|field|props
+DECL|field|properties
 specifier|private
 name|Map
 argument_list|<
@@ -298,7 +298,7 @@ name|String
 argument_list|,
 name|String
 argument_list|>
-name|props
+name|properties
 init|=
 operator|new
 name|HashMap
@@ -378,10 +378,10 @@ operator|=
 name|type
 expr_stmt|;
 block|}
-DECL|method|props (Map<String, String> props)
+DECL|method|properties (Map<String, String> properties)
 specifier|public
 name|ReadinessCheck
-name|props
+name|properties
 parameter_list|(
 name|Map
 argument_list|<
@@ -389,14 +389,14 @@ name|String
 argument_list|,
 name|String
 argument_list|>
-name|props
+name|properties
 parameter_list|)
 block|{
 name|this
 operator|.
-name|props
+name|properties
 operator|=
-name|props
+name|properties
 expr_stmt|;
 return|return
 name|this
@@ -416,7 +416,7 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|props
+name|properties
 operator|.
 name|put
 argument_list|(
@@ -429,7 +429,7 @@ return|return
 name|this
 return|;
 block|}
-comment|/**    * A blob of key value pairs that will be used to configure the check.    * @return props    **/
+comment|/**    * A blob of key value pairs that will be used to configure the check.    * @return properties    **/
 annotation|@
 name|ApiModelProperty
 argument_list|(
@@ -441,7 +441,7 @@ name|value
 operator|=
 literal|"A blob of key value pairs that will be used to configure the check."
 argument_list|)
-DECL|method|getProps ()
+DECL|method|getProperties ()
 specifier|public
 name|Map
 argument_list|<
@@ -449,17 +449,17 @@ name|String
 argument_list|,
 name|String
 argument_list|>
-name|getProps
+name|getProperties
 parameter_list|()
 block|{
 return|return
-name|props
+name|properties
 return|;
 block|}
-DECL|method|setProps (Map<String, String> props)
+DECL|method|setProperties (Map<String, String> properties)
 specifier|public
 name|void
-name|setProps
+name|setProperties
 parameter_list|(
 name|Map
 argument_list|<
@@ -467,14 +467,14 @@ name|String
 argument_list|,
 name|String
 argument_list|>
-name|props
+name|properties
 parameter_list|)
 block|{
 name|this
 operator|.
-name|props
+name|properties
 operator|=
-name|props
+name|properties
 expr_stmt|;
 block|}
 comment|/**    * Artifact of the pluggable readiness check helper container (optional). If    * specified, this helper container typically hosts the http uri and    * encapsulates the complex scripts required to perform actual container    * readiness check. At the end it is expected to respond a 204 No content just    * like the simplified use case. This pluggable framework benefits service    * owners who can run services without any packaging modifications. Note,    * artifacts of type docker only is supported for now.    **/
@@ -612,11 +612,11 @@ name|equals
 argument_list|(
 name|this
 operator|.
-name|props
+name|properties
 argument_list|,
 name|readinessCheck
 operator|.
-name|props
+name|properties
 argument_list|)
 operator|&&
 name|Objects
@@ -648,7 +648,7 @@ name|hash
 argument_list|(
 name|type
 argument_list|,
-name|props
+name|properties
 argument_list|,
 name|artifact
 argument_list|)
@@ -700,14 +700,14 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"    props: "
+literal|"    properties: "
 argument_list|)
 operator|.
 name|append
 argument_list|(
 name|toIndentedString
 argument_list|(
-name|props
+name|properties
 argument_list|)
 argument_list|)
 operator|.

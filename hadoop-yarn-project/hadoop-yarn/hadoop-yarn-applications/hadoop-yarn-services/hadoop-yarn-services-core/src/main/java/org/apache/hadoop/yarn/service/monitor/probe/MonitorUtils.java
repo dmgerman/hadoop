@@ -301,7 +301,7 @@ name|create
 argument_list|(
 name|readinessCheck
 operator|.
-name|getProps
+name|getProperties
 argument_list|()
 argument_list|)
 return|;
@@ -315,7 +315,7 @@ name|create
 argument_list|(
 name|readinessCheck
 operator|.
-name|getProps
+name|getProperties
 argument_list|()
 argument_list|)
 return|;

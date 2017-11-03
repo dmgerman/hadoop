@@ -1071,6 +1071,8 @@ operator|.
 name|of
 argument_list|(
 name|FLEXING
+argument_list|,
+name|STABLE
 argument_list|)
 argument_list|,
 name|FLEX
@@ -1698,12 +1700,10 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// sort in Most recent -> oldest order, destroy most recent ones.
-name|Collections
+name|list
 operator|.
 name|sort
 argument_list|(
-name|list
-argument_list|,
 name|Collections
 operator|.
 name|reverseOrder
@@ -1756,24 +1756,6 @@ name|remove
 argument_list|(
 name|instance
 argument_list|)
-expr_stmt|;
-name|component
-operator|.
-name|componentMetrics
-operator|.
-name|containersFailed
-operator|.
-name|incr
-argument_list|()
-expr_stmt|;
-name|component
-operator|.
-name|componentMetrics
-operator|.
-name|containersRunning
-operator|.
-name|decr
-argument_list|()
 expr_stmt|;
 comment|// decrement id counter
 name|component
@@ -2149,11 +2131,6 @@ name|START
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|component
-operator|.
-name|incRunningContainers
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 DECL|class|ContainerStartedTransition
@@ -2208,11 +2185,6 @@ argument_list|,
 name|START
 argument_list|)
 argument_list|)
-expr_stmt|;
-name|component
-operator|.
-name|incRunningContainers
-argument_list|()
 expr_stmt|;
 return|return
 name|checkIfStable
@@ -2894,10 +2866,6 @@ operator|.
 name|incr
 argument_list|()
 expr_stmt|;
-comment|// dec running container
-name|decRunningContainers
-argument_list|()
-expr_stmt|;
 if|if
 condition|(
 name|Apps
@@ -3228,7 +3196,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-name|COMPONENT_IP
+name|COMPONENT_INSTANCE_IP
 argument_list|,
 name|instance
 operator|.
@@ -3250,7 +3218,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-name|COMPONENT_HOST
+name|COMPONENT_INSTANCE_HOST
 argument_list|,
 name|instance
 operator|.
@@ -3271,7 +3239,7 @@ name|tokens
 return|;
 block|}
 DECL|method|incRunningContainers ()
-specifier|private
+specifier|public
 name|void
 name|incRunningContainers
 parameter_list|()
@@ -3294,6 +3262,30 @@ name|incr
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|decRunningContainers ()
+specifier|public
+name|void
+name|decRunningContainers
+parameter_list|()
+block|{
+name|componentMetrics
+operator|.
+name|containersRunning
+operator|.
+name|decr
+argument_list|()
+expr_stmt|;
+name|scheduler
+operator|.
+name|getServiceMetrics
+argument_list|()
+operator|.
+name|containersRunning
+operator|.
+name|decr
+argument_list|()
+expr_stmt|;
+block|}
 DECL|method|incContainersReady ()
 specifier|public
 name|void
@@ -3301,6 +3293,16 @@ name|incContainersReady
 parameter_list|()
 block|{
 name|componentMetrics
+operator|.
+name|containersReady
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+name|scheduler
+operator|.
+name|getServiceMetrics
+argument_list|()
 operator|.
 name|containersReady
 operator|.
@@ -3321,26 +3323,12 @@ operator|.
 name|decr
 argument_list|()
 expr_stmt|;
-block|}
-DECL|method|decRunningContainers ()
-specifier|private
-name|void
-name|decRunningContainers
-parameter_list|()
-block|{
-name|componentMetrics
-operator|.
-name|containersRunning
-operator|.
-name|decr
-argument_list|()
-expr_stmt|;
 name|scheduler
 operator|.
 name|getServiceMetrics
 argument_list|()
 operator|.
-name|containersRunning
+name|containersReady
 operator|.
 name|decr
 argument_list|()

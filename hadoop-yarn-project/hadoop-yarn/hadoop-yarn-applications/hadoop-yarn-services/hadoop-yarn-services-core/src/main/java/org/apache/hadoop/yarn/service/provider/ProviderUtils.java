@@ -1589,8 +1589,8 @@ block|}
 block|}
 else|else
 block|{
-comment|// non-template
-name|resolveNonTemplateConfigsAndSaveOnHdfs
+comment|// If src_file is not specified
+name|resolvePropsInConfigFileAndSaveOnHdfs
 argument_list|(
 name|fs
 argument_list|,
@@ -1725,11 +1725,11 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|resolveNonTemplateConfigsAndSaveOnHdfs (SliderFileSystem fs, Map<String, String> tokensForSubstitution, ComponentInstance instance, ConfigFile configFile, String fileName, Path remoteFile)
+DECL|method|resolvePropsInConfigFileAndSaveOnHdfs (SliderFileSystem fs, Map<String, String> tokensForSubstitution, ComponentInstance instance, ConfigFile configFile, String fileName, Path remoteFile)
 specifier|private
 specifier|static
 name|void
-name|resolveNonTemplateConfigsAndSaveOnHdfs
+name|resolvePropsInConfigFileAndSaveOnHdfs
 parameter_list|(
 name|SliderFileSystem
 name|fs
@@ -1762,7 +1762,7 @@ name|substituteMapWithTokens
 argument_list|(
 name|configFile
 operator|.
-name|getProps
+name|getProperties
 argument_list|()
 argument_list|,
 name|tokensForSubstitution
@@ -1779,7 +1779,7 @@ name|fileName
 argument_list|,
 name|configFile
 operator|.
-name|getProps
+name|getProperties
 argument_list|()
 operator|.
 name|entrySet
@@ -2033,7 +2033,7 @@ name|entry
 range|:
 name|configFile
 operator|.
-name|getProps
+name|getProperties
 argument_list|()
 operator|.
 name|entrySet

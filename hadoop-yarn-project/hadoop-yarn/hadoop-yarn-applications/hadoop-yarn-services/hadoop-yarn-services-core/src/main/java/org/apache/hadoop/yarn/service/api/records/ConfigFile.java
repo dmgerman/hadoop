@@ -275,7 +275,7 @@ init|=
 operator|-
 literal|7009402089417704612L
 decl_stmt|;
-comment|/**    * Config Type.  XML, JSON, YAML, TEMPLATE, ENV and HADOOP_XML are supported.    **/
+comment|/**    * Config Type.  XML, JSON, YAML, TEMPLATE and HADOOP_XML are supported.    **/
 annotation|@
 name|XmlType
 argument_list|(
@@ -317,14 +317,8 @@ argument_list|)
 block|,
 name|TEMPLATE
 argument_list|(
-DECL|enumConstant|ENV
 DECL|enumConstant|HADOOP_XML
 literal|"TEMPLATE"
-argument_list|)
-block|,
-name|ENV
-argument_list|(
-literal|"ENV"
 argument_list|)
 block|,
 name|HADOOP_XML
@@ -387,7 +381,7 @@ name|srcFile
 init|=
 literal|null
 decl_stmt|;
-DECL|field|props
+DECL|field|properties
 specifier|private
 name|Map
 argument_list|<
@@ -395,7 +389,7 @@ name|String
 argument_list|,
 name|String
 argument_list|>
-name|props
+name|properties
 init|=
 operator|new
 name|HashMap
@@ -449,7 +443,7 @@ if|if
 condition|(
 name|this
 operator|.
-name|getProps
+name|getProperties
 argument_list|()
 operator|!=
 literal|null
@@ -457,7 +451,7 @@ operator|&&
 operator|!
 name|this
 operator|.
-name|getProps
+name|getProperties
 argument_list|()
 operator|.
 name|isEmpty
@@ -466,14 +460,14 @@ condition|)
 block|{
 name|copy
 operator|.
-name|getProps
+name|getProperties
 argument_list|()
 operator|.
 name|putAll
 argument_list|(
 name|this
 operator|.
-name|getProps
+name|getProperties
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -687,10 +681,10 @@ name|srcFile
 expr_stmt|;
 block|}
 comment|/**    A blob of key value pairs that will be dumped in the dest_file in the format    as specified in type. If src_file is specified, src_file content are dumped    in the dest_file and these properties will overwrite, if any, existing    properties in src_file or be added as new properties in src_file.    **/
-DECL|method|props (Map<String, String> props)
+DECL|method|properties (Map<String, String> properties)
 specifier|public
 name|ConfigFile
-name|props
+name|properties
 parameter_list|(
 name|Map
 argument_list|<
@@ -698,14 +692,14 @@ name|String
 argument_list|,
 name|String
 argument_list|>
-name|props
+name|properties
 parameter_list|)
 block|{
 name|this
 operator|.
-name|props
+name|properties
 operator|=
-name|props
+name|properties
 expr_stmt|;
 return|return
 name|this
@@ -729,9 +723,9 @@ argument_list|)
 annotation|@
 name|JsonProperty
 argument_list|(
-literal|"props"
+literal|"properties"
 argument_list|)
-DECL|method|getProps ()
+DECL|method|getProperties ()
 specifier|public
 name|Map
 argument_list|<
@@ -739,17 +733,17 @@ name|String
 argument_list|,
 name|String
 argument_list|>
-name|getProps
+name|getProperties
 parameter_list|()
 block|{
 return|return
-name|props
+name|properties
 return|;
 block|}
-DECL|method|setProps (Map<String, String> props)
+DECL|method|setProperties (Map<String, String> properties)
 specifier|public
 name|void
-name|setProps
+name|setProperties
 parameter_list|(
 name|Map
 argument_list|<
@@ -757,14 +751,14 @@ name|String
 argument_list|,
 name|String
 argument_list|>
-name|props
+name|properties
 parameter_list|)
 block|{
 name|this
 operator|.
-name|props
+name|properties
 operator|=
-name|props
+name|properties
 expr_stmt|;
 block|}
 DECL|method|getLong (String name, long defaultValue)
@@ -793,7 +787,7 @@ block|}
 name|String
 name|value
 init|=
-name|props
+name|properties
 operator|.
 name|get
 argument_list|(
@@ -840,7 +834,7 @@ name|Boolean
 operator|.
 name|valueOf
 argument_list|(
-name|props
+name|properties
 operator|.
 name|get
 argument_list|(
@@ -965,7 +959,7 @@ name|destFile
 argument_list|,
 name|srcFile
 argument_list|,
-name|props
+name|properties
 argument_list|)
 return|;
 block|}
@@ -1055,14 +1049,14 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"    props: "
+literal|"    properties: "
 argument_list|)
 operator|.
 name|append
 argument_list|(
 name|toIndentedString
 argument_list|(
-name|props
+name|properties
 argument_list|)
 argument_list|)
 operator|.

@@ -146,6 +146,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|text
+operator|.
+name|MessageFormat
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|HashSet
@@ -169,6 +179,26 @@ operator|.
 name|util
 operator|.
 name|Set
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|service
+operator|.
+name|conf
+operator|.
+name|YarnServiceConstants
+operator|.
+name|CONTENT
 import|;
 end_import
 
@@ -373,7 +403,10 @@ name|TypeEnum
 operator|.
 name|TEMPLATE
 argument_list|)
-operator|&&
+condition|)
+block|{
+if|if
+condition|(
 name|StringUtils
 operator|.
 name|isEmpty
@@ -383,21 +416,46 @@ operator|.
 name|getSrcFile
 argument_list|()
 argument_list|)
+operator|&&
+operator|!
+name|file
+operator|.
+name|getProperties
+argument_list|()
+operator|.
+name|containsKey
+argument_list|(
+name|CONTENT
+argument_list|)
 condition|)
 block|{
 throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"Src_file is empty for "
+name|MessageFormat
+operator|.
+name|format
+argument_list|(
+literal|"For {0} "
 operator|+
+literal|"format, either src_file must be specified in ConfigFile,"
+operator|+
+literal|" or the \"{1}\" key must be specified in "
+operator|+
+literal|"the 'properties' field of ConfigFile. "
+argument_list|,
 name|ConfigFile
 operator|.
 name|TypeEnum
 operator|.
 name|TEMPLATE
+argument_list|,
+name|CONTENT
+argument_list|)
 argument_list|)
 throw|;
+block|}
 block|}
 if|if
 condition|(

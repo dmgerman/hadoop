@@ -745,7 +745,7 @@ operator|.
 name|PROPERTIES
 argument_list|)
 operator|.
-name|props
+name|properties
 argument_list|(
 name|props
 argument_list|)
@@ -773,7 +773,7 @@ operator|.
 name|XML
 argument_list|)
 operator|.
-name|props
+name|properties
 argument_list|(
 name|Collections
 operator|.
@@ -941,7 +941,7 @@ operator|.
 name|PROPERTIES
 argument_list|)
 operator|.
-name|props
+name|properties
 argument_list|(
 name|props
 argument_list|)
@@ -969,7 +969,7 @@ operator|.
 name|XML
 argument_list|)
 operator|.
-name|props
+name|properties
 argument_list|(
 name|Collections
 operator|.

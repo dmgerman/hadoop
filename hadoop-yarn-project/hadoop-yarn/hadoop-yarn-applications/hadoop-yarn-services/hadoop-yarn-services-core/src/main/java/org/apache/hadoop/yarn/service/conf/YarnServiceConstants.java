@@ -178,6 +178,12 @@ name|ERR_FILE
 init|=
 literal|"stderr.txt"
 decl_stmt|;
+DECL|field|CONTENT
+name|String
+name|CONTENT
+init|=
+literal|"content"
+decl_stmt|;
 block|}
 end_interface
 

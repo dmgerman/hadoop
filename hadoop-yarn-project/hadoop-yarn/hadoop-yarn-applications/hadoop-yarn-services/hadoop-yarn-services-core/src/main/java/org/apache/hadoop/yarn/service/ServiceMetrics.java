@@ -186,16 +186,6 @@ decl_stmt|;
 annotation|@
 name|Metric
 argument_list|(
-literal|"anti-affinity containers pending"
-argument_list|)
-DECL|field|pendingAAContainers
-specifier|public
-name|MutableGaugeInt
-name|pendingAAContainers
-decl_stmt|;
-annotation|@
-name|Metric
-argument_list|(
 literal|"containers running"
 argument_list|)
 DECL|field|containersRunning
@@ -414,13 +404,6 @@ operator|+
 literal|"containersRequested="
 operator|+
 name|containersRequested
-operator|.
-name|value
-argument_list|()
-operator|+
-literal|", pendingAAContainers="
-operator|+
-name|pendingAAContainers
 operator|.
 name|value
 argument_list|()
