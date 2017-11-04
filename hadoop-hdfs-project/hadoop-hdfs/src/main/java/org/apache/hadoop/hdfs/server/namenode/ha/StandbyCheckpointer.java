@@ -2085,6 +2085,13 @@ name|lastCheckpointTime
 operator|=
 name|now
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Checkpoint finished successfully."
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 catch|catch
