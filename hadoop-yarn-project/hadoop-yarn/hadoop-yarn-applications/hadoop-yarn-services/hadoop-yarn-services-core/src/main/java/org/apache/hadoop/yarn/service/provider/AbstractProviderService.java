@@ -172,7 +172,7 @@ name|service
 operator|.
 name|utils
 operator|.
-name|SliderUtils
+name|ServiceUtils
 import|;
 end_import
 
@@ -535,7 +535,7 @@ name|launcher
 operator|.
 name|putEnv
 argument_list|(
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|buildEnvMap
 argument_list|(

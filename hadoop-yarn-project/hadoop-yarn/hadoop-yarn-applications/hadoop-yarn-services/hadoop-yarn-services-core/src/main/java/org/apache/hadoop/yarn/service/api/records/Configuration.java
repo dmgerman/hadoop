@@ -130,7 +130,7 @@ name|service
 operator|.
 name|utils
 operator|.
-name|SliderUtils
+name|ServiceUtils
 import|;
 end_import
 
@@ -1025,7 +1025,7 @@ name|Configuration
 name|that
 parameter_list|)
 block|{
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|mergeMapsIgnoreDuplicateKeys
 argument_list|(
@@ -1039,7 +1039,7 @@ name|getProperties
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|mergeMapsIgnoreDuplicateKeys
 argument_list|(
@@ -1127,7 +1127,7 @@ name|getDestFile
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|mergeMapsIgnoreDuplicateKeys
 argument_list|(

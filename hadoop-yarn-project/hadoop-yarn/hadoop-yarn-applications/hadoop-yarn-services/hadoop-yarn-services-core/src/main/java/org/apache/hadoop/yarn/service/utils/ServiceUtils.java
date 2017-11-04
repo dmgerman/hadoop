@@ -489,11 +489,11 @@ comment|/**  * These are slider-specific Util methods  */
 end_comment
 
 begin_class
-DECL|class|SliderUtils
+DECL|class|ServiceUtils
 specifier|public
 specifier|final
 class|class
-name|SliderUtils
+name|ServiceUtils
 block|{
 DECL|field|log
 specifier|private
@@ -506,14 +506,14 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|method|SliderUtils ()
+DECL|method|ServiceUtils ()
 specifier|private
-name|SliderUtils
+name|ServiceUtils
 parameter_list|()
 block|{   }
 comment|/**    * Implementation of set-ness, groovy definition of true/false for a string    * @param s string    * @return true iff the string is neither null nor empty    */
@@ -593,7 +593,7 @@ block|{
 name|File
 name|localFile
 init|=
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|findContainingJar
 argument_list|(
@@ -1884,7 +1884,7 @@ name|SliderException
 block|{
 name|log
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Loading all dependencies from {}"
 argument_list|,
@@ -1893,7 +1893,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|isSet
 argument_list|(
@@ -2031,52 +2031,6 @@ block|}
 block|}
 return|;
 block|}
-comment|/**    * Submit the AM tar.gz containing all dependencies and map it    * @param providerResources provider map to build up    * @param sliderFileSystem remote fs    */
-DECL|method|putAmTarGzipAndUpdate ( Map<String, LocalResource> providerResources, SliderFileSystem sliderFileSystem )
-specifier|public
-specifier|static
-name|void
-name|putAmTarGzipAndUpdate
-parameter_list|(
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|LocalResource
-argument_list|>
-name|providerResources
-parameter_list|,
-name|SliderFileSystem
-name|sliderFileSystem
-parameter_list|)
-throws|throws
-name|IOException
-throws|,
-name|SliderException
-block|{
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"Loading all dependencies from {}{}"
-argument_list|,
-name|YarnServiceConstants
-operator|.
-name|DEPENDENCY_TAR_GZ_FILE_NAME
-argument_list|,
-name|YarnServiceConstants
-operator|.
-name|DEPENDENCY_TAR_GZ_FILE_EXT
-argument_list|)
-expr_stmt|;
-name|sliderFileSystem
-operator|.
-name|submitTarGzipAndUpdate
-argument_list|(
-name|providerResources
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**    * Create a file:// path from a local file    * @param file file to point the path    * @return a new Path    */
 DECL|method|createLocalPath (File file)
 specifier|public
@@ -2198,18 +2152,6 @@ argument_list|(
 name|YarnServiceConstants
 operator|.
 name|DEPENDENCY_LOCALIZED_DIR_LINK
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|log
-operator|.
-name|info
-argument_list|(
-literal|"For faster submission of apps, upload dependencies using cmd "
-operator|+
-literal|"enableFastLaunch"
 argument_list|)
 expr_stmt|;
 block|}

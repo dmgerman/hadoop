@@ -102,7 +102,7 @@ name|service
 operator|.
 name|utils
 operator|.
-name|SliderUtils
+name|ServiceUtils
 import|;
 end_import
 
@@ -447,7 +447,7 @@ name|containerStatus
 operator|==
 literal|null
 operator|||
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|isEmpty
 argument_list|(

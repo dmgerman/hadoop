@@ -438,7 +438,7 @@ name|service
 operator|.
 name|utils
 operator|.
-name|SliderUtils
+name|ServiceUtils
 import|;
 end_import
 
@@ -634,7 +634,7 @@ name|SliderException
 block|{
 try|try
 block|{
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|putJar
 argument_list|(
@@ -712,7 +712,7 @@ name|SliderException
 block|{
 if|if
 condition|(
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|isSet
 argument_list|(
@@ -755,7 +755,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|putAllJars
 argument_list|(
@@ -982,7 +982,7 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|isUnset
 argument_list|(

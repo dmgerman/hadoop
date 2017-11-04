@@ -878,7 +878,7 @@ name|service
 operator|.
 name|utils
 operator|.
-name|SliderUtils
+name|ServiceUtils
 import|;
 end_import
 
@@ -998,67 +998,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Collections
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|EnumSet
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|HashMap
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|HashSet
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Set
+name|*
 import|;
 end_import
 
@@ -1148,7 +1088,7 @@ name|service
 operator|.
 name|utils
 operator|.
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|*
 import|;
@@ -1597,7 +1537,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Loading service definition from: "
+literal|"Loading service definition from local FS: "
 operator|+
 name|filePath
 argument_list|)
@@ -3495,7 +3435,7 @@ decl_stmt|;
 comment|// though if neither is set: trouble
 if|if
 condition|(
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|isUnset
 argument_list|(
@@ -3631,7 +3571,7 @@ name|Collections
 operator|.
 name|singleton
 argument_list|(
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|createNameTag
 argument_list|(
@@ -4584,7 +4524,7 @@ argument_list|()
 decl_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"AM launch command: {}"
 argument_list|,
@@ -4735,7 +4675,7 @@ argument_list|()
 decl_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Run as user "
 operator|+
@@ -4756,7 +4696,7 @@ expr_stmt|;
 block|}
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"AM env: \n{}"
 argument_list|,
@@ -4842,7 +4782,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Loading lib tar from "
 operator|+
@@ -4859,13 +4799,11 @@ operator|+
 name|dependencyLibTarGzip
 argument_list|)
 expr_stmt|;
-name|SliderUtils
+name|fs
 operator|.
-name|putAmTarGzipAndUpdate
+name|submitTarGzipAndUpdate
 argument_list|(
 name|localResources
-argument_list|,
-name|fs
 argument_list|)
 expr_stmt|;
 block|}
@@ -4875,11 +4813,22 @@ name|String
 index|[]
 name|libs
 init|=
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|getLibDirs
 argument_list|()
 decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Uploading all dependency jars to HDFS. For faster submission of"
+operator|+
+literal|" apps, pre-upload dependency jars to HDFS "
+operator|+
+literal|"using command: yarn app -enableFastLaunch"
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|String
@@ -5166,11 +5115,30 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// write app definition on to hdfs
-name|createDirAndPersistApp
+name|Path
+name|appJson
+init|=
+name|persistAppDef
 argument_list|(
 name|appDir
 argument_list|,
 name|service
+argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Persisted service "
+operator|+
+name|service
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|" at "
+operator|+
+name|appJson
 argument_list|)
 expr_stmt|;
 return|return
@@ -5301,17 +5269,36 @@ argument_list|,
 name|appDirPermission
 argument_list|)
 expr_stmt|;
+name|Path
+name|appJson
+init|=
 name|persistAppDef
 argument_list|(
 name|appDir
 argument_list|,
 name|service
 argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Persisted service "
+operator|+
+name|service
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|" at "
+operator|+
+name|appJson
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|persistAppDef (Path appDir, Service service)
 specifier|private
-name|void
+name|Path
 name|persistAppDef
 parameter_list|(
 name|Path
@@ -5355,22 +5342,9 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Persisted service "
-operator|+
-name|service
-operator|.
-name|getName
-argument_list|()
-operator|+
-literal|" at "
-operator|+
+return|return
 name|appJson
-argument_list|)
-expr_stmt|;
+return|;
 block|}
 DECL|method|addKeytabResourceIfSecure (SliderFileSystem fileSystem, Map<String, LocalResource> localResource, Configuration conf, String serviceName)
 specifier|private
@@ -6194,7 +6168,7 @@ name|String
 index|[]
 name|libDirs
 init|=
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|getLibDirs
 argument_list|()

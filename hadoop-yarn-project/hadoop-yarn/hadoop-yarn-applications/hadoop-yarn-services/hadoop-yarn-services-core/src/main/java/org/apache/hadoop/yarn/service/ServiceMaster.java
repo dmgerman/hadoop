@@ -358,7 +358,7 @@ name|service
 operator|.
 name|utils
 operator|.
-name|SliderUtils
+name|ServiceUtils
 import|;
 end_import
 
@@ -762,7 +762,7 @@ name|ContainerId
 operator|.
 name|fromString
 argument_list|(
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|mandatoryEnvVariable
 argument_list|(

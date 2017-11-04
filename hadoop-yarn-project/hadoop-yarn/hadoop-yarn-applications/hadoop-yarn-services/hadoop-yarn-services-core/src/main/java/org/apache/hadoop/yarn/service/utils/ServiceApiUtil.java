@@ -2213,7 +2213,7 @@ decl_stmt|;
 if|if
 condition|(
 operator|!
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|isEmpty
 argument_list|(

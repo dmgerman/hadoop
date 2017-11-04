@@ -504,7 +504,7 @@ block|}
 else|else
 block|{
 return|return
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|getOpenPort
 argument_list|()
@@ -564,7 +564,7 @@ argument_list|()
 decl_stmt|;
 name|found
 operator|=
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|isPortAvailable
 argument_list|(

@@ -64,7 +64,7 @@ name|service
 operator|.
 name|utils
 operator|.
-name|SliderUtils
+name|ServiceUtils
 import|;
 end_import
 
@@ -266,7 +266,7 @@ name|build
 parameter_list|()
 block|{
 return|return
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|join
 argument_list|(

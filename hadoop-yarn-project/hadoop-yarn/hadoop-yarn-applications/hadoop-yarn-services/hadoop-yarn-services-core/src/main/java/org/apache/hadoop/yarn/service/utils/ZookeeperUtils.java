@@ -141,7 +141,7 @@ decl_stmt|;
 name|String
 name|quorum
 init|=
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|join
 argument_list|(
@@ -533,7 +533,7 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|join
 argument_list|(

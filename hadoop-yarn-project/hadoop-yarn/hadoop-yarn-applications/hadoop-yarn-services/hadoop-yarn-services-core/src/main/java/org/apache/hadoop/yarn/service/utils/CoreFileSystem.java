@@ -1677,7 +1677,7 @@ block|{
 name|File
 name|localFile
 init|=
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|findContainingJarOrFail
 argument_list|(

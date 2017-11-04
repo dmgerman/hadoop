@@ -208,7 +208,7 @@ name|service
 operator|.
 name|utils
 operator|.
-name|SliderUtils
+name|ServiceUtils
 import|;
 end_import
 
@@ -380,7 +380,7 @@ name|Preconditions
 operator|.
 name|checkArgument
 argument_list|(
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|isSet
 argument_list|(
@@ -394,7 +394,7 @@ name|Preconditions
 operator|.
 name|checkArgument
 argument_list|(
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|isSet
 argument_list|(

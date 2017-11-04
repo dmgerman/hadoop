@@ -78,7 +78,7 @@ name|service
 operator|.
 name|utils
 operator|.
-name|SliderUtils
+name|ServiceUtils
 import|;
 end_import
 
@@ -166,7 +166,7 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|isSet
 argument_list|(

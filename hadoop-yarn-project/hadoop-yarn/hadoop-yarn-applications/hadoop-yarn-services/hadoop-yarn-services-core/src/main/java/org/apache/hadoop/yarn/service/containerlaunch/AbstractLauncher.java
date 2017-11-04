@@ -200,7 +200,7 @@ name|service
 operator|.
 name|utils
 operator|.
-name|SliderUtils
+name|ServiceUtils
 import|;
 end_import
 
@@ -667,7 +667,7 @@ block|{
 name|String
 name|cmdStr
 init|=
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|join
 argument_list|(
@@ -1126,7 +1126,7 @@ name|key
 operator|+
 literal|"="
 operator|+
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|stringify
 argument_list|(

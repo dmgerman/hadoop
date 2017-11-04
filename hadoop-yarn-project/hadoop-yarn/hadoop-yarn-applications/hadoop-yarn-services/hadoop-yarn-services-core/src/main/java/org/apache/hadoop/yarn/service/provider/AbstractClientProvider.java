@@ -116,7 +116,7 @@ name|service
 operator|.
 name|utils
 operator|.
-name|SliderUtils
+name|ServiceUtils
 import|;
 end_import
 
@@ -250,7 +250,7 @@ name|tags
 operator|.
 name|add
 argument_list|(
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|createNameTag
 argument_list|(
@@ -269,7 +269,7 @@ name|tags
 operator|.
 name|add
 argument_list|(
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|createVersionTag
 argument_list|(
@@ -289,7 +289,7 @@ name|tags
 operator|.
 name|add
 argument_list|(
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|createDescriptionTag
 argument_list|(

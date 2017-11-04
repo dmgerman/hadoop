@@ -470,7 +470,7 @@ name|service
 operator|.
 name|utils
 operator|.
-name|SliderUtils
+name|ServiceUtils
 import|;
 end_import
 
@@ -3020,7 +3020,7 @@ return|return;
 block|}
 if|if
 condition|(
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|isEmpty
 argument_list|(
@@ -3030,7 +3030,7 @@ name|getIPs
 argument_list|()
 argument_list|)
 operator|||
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|isUnset
 argument_list|(

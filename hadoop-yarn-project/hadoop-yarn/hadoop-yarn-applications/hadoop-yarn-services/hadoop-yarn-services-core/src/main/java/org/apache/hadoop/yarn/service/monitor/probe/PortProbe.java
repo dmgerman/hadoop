@@ -70,7 +70,7 @@ name|service
 operator|.
 name|utils
 operator|.
-name|SliderUtils
+name|ServiceUtils
 import|;
 end_import
 
@@ -315,7 +315,7 @@ argument_list|()
 operator|==
 literal|null
 operator|||
-name|SliderUtils
+name|ServiceUtils
 operator|.
 name|isEmpty
 argument_list|(
