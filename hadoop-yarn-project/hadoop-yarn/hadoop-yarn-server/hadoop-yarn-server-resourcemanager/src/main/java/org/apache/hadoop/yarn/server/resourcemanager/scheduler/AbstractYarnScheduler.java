@@ -3361,6 +3361,16 @@ name|getExecutionType
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|container
+operator|.
+name|setAllocationRequestId
+argument_list|(
+name|status
+operator|.
+name|getAllocationRequestId
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|ApplicationAttemptId
 name|attemptId
 init|=

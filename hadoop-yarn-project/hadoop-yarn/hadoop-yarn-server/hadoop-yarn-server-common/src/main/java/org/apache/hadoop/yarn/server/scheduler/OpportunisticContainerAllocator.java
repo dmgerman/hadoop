@@ -2705,6 +2705,11 @@ argument_list|,
 name|ExecutionType
 operator|.
 name|OPPORTUNISTIC
+argument_list|,
+name|schedulerKey
+operator|.
+name|getAllocationRequestId
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|byte

@@ -972,6 +972,16 @@ return|return
 name|fs
 return|;
 block|}
+DECL|method|getYarnCluster ()
+specifier|protected
+name|MiniYARNCluster
+name|getYarnCluster
+parameter_list|()
+block|{
+return|return
+name|yarnCluster
+return|;
+block|}
 DECL|method|setupInternal (int numNodeManager)
 specifier|protected
 name|void
@@ -990,8 +1000,13 @@ argument_list|(
 literal|"Starting up YARN cluster"
 argument_list|)
 expr_stmt|;
-comment|//    Logger rootLogger = LogManager.getRootLogger();
-comment|//    rootLogger.setLevel(Level.DEBUG);
+if|if
+condition|(
+name|conf
+operator|==
+literal|null
+condition|)
+block|{
 name|setConf
 argument_list|(
 operator|new
@@ -999,6 +1014,7 @@ name|YarnConfiguration
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|conf
 operator|.
 name|setInt

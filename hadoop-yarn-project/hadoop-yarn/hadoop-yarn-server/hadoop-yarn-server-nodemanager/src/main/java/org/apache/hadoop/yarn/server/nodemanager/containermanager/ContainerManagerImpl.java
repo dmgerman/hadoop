@@ -4150,8 +4150,6 @@ argument_list|()
 decl_stmt|;
 name|ContainerTokenIdentifier
 name|token
-init|=
-literal|null
 decl_stmt|;
 if|if
 condition|(
@@ -4249,6 +4247,11 @@ argument_list|,
 name|originalToken
 operator|.
 name|getExecutionType
+argument_list|()
+argument_list|,
+name|originalToken
+operator|.
+name|getAllocationRequestId
 argument_list|()
 argument_list|)
 expr_stmt|;
