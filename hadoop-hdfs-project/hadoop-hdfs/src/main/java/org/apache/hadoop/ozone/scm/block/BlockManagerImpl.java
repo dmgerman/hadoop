@@ -292,26 +292,6 @@ name|common
 operator|.
 name|helpers
 operator|.
-name|BlockContainerInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|scm
-operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
-operator|.
 name|ContainerInfo
 import|;
 end_import
@@ -1278,10 +1258,8 @@ expr_stmt|;
 try|try
 block|{
 comment|/*                Here is the high level logic.                 1. First we check if there are containers in ALLOCATED state,                that is                 SCM has allocated them in the SCM namespace but the                 corresponding                 container has not been created in the Datanode yet. If we                 have any                 in that state, we will return that to the client, which allows                 client to finish creating those containers. This is a sort of                  greedy                  algorithm, our primary purpose is to get as many containers as                  possible.                  2. If there are no allocated containers -- Then we find a Open                 container that matches that pattern.                  3. If both of them fail, the we will pre-allocate a bunch of                 conatainers in SCM and try again.                 TODO : Support random picking of two containers from the list.                 So we                can use different kind of policies.       */
-name|BlockContainerInfo
+name|ContainerInfo
 name|containerInfo
-init|=
-literal|null
 decl_stmt|;
 comment|// Look for ALLOCATED container that matches all other parameters.
 name|containerInfo
@@ -1495,12 +1473,12 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * newBlock - returns a new block assigned to a container.    *    * @param containerInfo - Container Info.    * @param state - Current state of the container.    * @return AllocatedBlock    */
-DECL|method|newBlock ( BlockContainerInfo containerInfo, OzoneProtos.LifeCycleState state)
+DECL|method|newBlock ( ContainerInfo containerInfo, OzoneProtos.LifeCycleState state)
 specifier|private
 name|AllocatedBlock
 name|newBlock
 parameter_list|(
-name|BlockContainerInfo
+name|ContainerInfo
 name|containerInfo
 parameter_list|,
 name|OzoneProtos

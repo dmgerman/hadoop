@@ -4165,8 +4165,32 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|// TODO: handle the container reports either here or add container report
-comment|// handler.
+comment|// should we process container reports async?
+name|scmContainerManager
+operator|.
+name|processContainerReports
+argument_list|(
+name|DatanodeID
+operator|.
+name|getFromProtoBuf
+argument_list|(
+name|reports
+operator|.
+name|getDatanodeID
+argument_list|()
+argument_list|)
+argument_list|,
+name|reports
+operator|.
+name|getType
+argument_list|()
+argument_list|,
+name|reports
+operator|.
+name|getReportsList
+argument_list|()
+argument_list|)
+expr_stmt|;
 return|return
 name|ContainerReportsResponseProto
 operator|.
