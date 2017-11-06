@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.web.exceptions
+DECL|package|org.apache.hadoop.ozone.client.rest
 package|package
 name|org
 operator|.
@@ -14,9 +14,9 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|web
+name|client
 operator|.
-name|exceptions
+name|rest
 package|;
 end_package
 
