@@ -80,9 +80,7 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|fair
-operator|.
-name|FairSchedulerConfiguration
+name|AbstractYarnScheduler
 import|;
 end_import
 
@@ -865,28 +863,6 @@ operator|.
 name|rmnode
 operator|.
 name|RMNode
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
-name|capacity
-operator|.
-name|CapacityScheduler
 import|;
 end_import
 
@@ -1754,22 +1730,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|conf
-operator|.
-name|set
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|RM_SCHEDULER
-argument_list|,
-name|CapacityScheduler
-operator|.
-name|class
-operator|.
-name|getCanonicalName
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|MockRM
 name|rm
 init|=
@@ -1816,18 +1776,18 @@ argument_list|()
 decl_stmt|;
 comment|// Call getNewContainerId to increase container Id so that the AM container
 comment|// Id doesn't equal to one.
-name|CapacityScheduler
-name|cs
+name|AbstractYarnScheduler
+name|scheduler
 init|=
 operator|(
-name|CapacityScheduler
+name|AbstractYarnScheduler
 operator|)
 name|rm
 operator|.
 name|getResourceScheduler
 argument_list|()
 decl_stmt|;
-name|cs
+name|scheduler
 operator|.
 name|getApplicationAttempt
 argument_list|(
