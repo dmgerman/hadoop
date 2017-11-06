@@ -2045,6 +2045,8 @@ operator|.
 name|getNonDfsUsed
 argument_list|()
 expr_stmt|;
+comment|// for PROVIDED storages, do not call updateStorage() unless
+comment|// DatanodeStorageInfo already exists!
 if|if
 condition|(
 name|StorageType
@@ -2061,6 +2063,21 @@ operator|.
 name|getStorageType
 argument_list|()
 argument_list|)
+operator|&&
+name|storageMap
+operator|.
+name|get
+argument_list|(
+name|report
+operator|.
+name|getStorage
+argument_list|()
+operator|.
+name|getStorageID
+argument_list|()
+argument_list|)
+operator|==
+literal|null
 condition|)
 block|{
 continue|continue;
