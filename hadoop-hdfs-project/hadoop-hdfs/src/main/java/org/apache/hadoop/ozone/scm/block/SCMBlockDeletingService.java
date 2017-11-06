@@ -28,9 +28,9 @@ name|google
 operator|.
 name|common
 operator|.
-name|collect
+name|annotations
 operator|.
-name|Lists
+name|VisibleForTesting
 import|;
 end_import
 
@@ -42,9 +42,23 @@ name|google
 operator|.
 name|common
 operator|.
-name|collect
+name|base
 operator|.
-name|Maps
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
 import|;
 end_import
 
@@ -79,6 +93,26 @@ operator|.
 name|commands
 operator|.
 name|DeleteBlocksCommand
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|OzoneProtos
+operator|.
+name|NodeState
 import|;
 end_import
 
@@ -135,26 +169,6 @@ operator|.
 name|node
 operator|.
 name|NodeManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|scm
-operator|.
-name|container
-operator|.
-name|common
-operator|.
-name|helpers
-operator|.
-name|ContainerInfo
 import|;
 end_import
 
@@ -251,12 +265,34 @@ import|;
 end_import
 
 begin_import
-import|import
-name|java
+import|import static
+name|org
 operator|.
-name|io
+name|apache
 operator|.
-name|IOException
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConfigKeys
+operator|.
+name|OZONE_BLOCK_DELETING_CONTAINER_LIMIT_PER_INTERVAL
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConfigKeys
+operator|.
+name|OZONE_BLOCK_DELETING_CONTAINER_LIMIT_PER_INTERVAL_DEFAULT
 import|;
 end_import
 
@@ -264,9 +300,9 @@ begin_import
 import|import
 name|java
 operator|.
-name|util
+name|io
 operator|.
-name|Collections
+name|IOException
 import|;
 end_import
 
@@ -286,41 +322,9 @@ name|java
 operator|.
 name|util
 operator|.
-name|Map
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Set
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|concurrent
 operator|.
 name|TimeUnit
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|stream
-operator|.
-name|Collectors
 import|;
 end_import
 
@@ -337,7 +341,6 @@ extends|extends
 name|BackgroundService
 block|{
 DECL|field|LOG
-specifier|private
 specifier|static
 specifier|final
 name|Logger
@@ -380,28 +383,23 @@ specifier|final
 name|NodeManager
 name|nodeManager
 decl_stmt|;
-comment|// Default container size is 5G and block size is 256MB, a full container
-comment|// at most contains 20 blocks. At most each TX contains 20 blocks.
-comment|// When SCM sends block deletion TXs to datanode, each command we allow
-comment|// at most 50 containers so that will limit number of to be deleted blocks
-comment|// less than 1000.
-comment|// TODO - a better throttle algorithm
-comment|// Note, this is not an accurate limit of blocks. When we scan
-comment|// the log, worst case we may get 50 TX for 50 different datanodes,
-comment|// that will cause the deletion message sent by SCM extremely small.
-comment|// As a result, the deletion will be slow. An improvement is to scan
-comment|// log multiple times until we get enough TXs for each datanode, or
-comment|// the entire log is scanned.
-DECL|field|BLOCK_DELETE_TX_PER_REQUEST_LIMIT
+comment|// Block delete limit size is dynamically calculated based on container
+comment|// delete limit size (ozone.block.deleting.container.limit.per.interval)
+comment|// that configured for datanode. To ensure DN not wait for
+comment|// delete commands, we use this value multiply by a factor 2 as the final
+comment|// limit TX size for each node.
+comment|// Currently we implement a throttle algorithm that throttling delete blocks
+comment|// for each datanode. Each node is limited by the calculation size. Firstly
+comment|// current node info is fetched from nodemanager, then scan entire delLog
+comment|// from the beginning to end. If one node reaches maximum value, its records
+comment|// will be skipped. If not, keep scanning until it reaches maximum value.
+comment|// Once all node are full, the scan behavior will stop.
+DECL|field|blockDeleteLimitSize
 specifier|private
-specifier|static
-specifier|final
 name|int
-name|BLOCK_DELETE_TX_PER_REQUEST_LIMIT
-init|=
-literal|50
+name|blockDeleteLimitSize
 decl_stmt|;
-DECL|method|SCMBlockDeletingService (DeletedBlockLog deletedBlockLog, Mapping mapper, NodeManager nodeManager, int interval, long serviceTimeout)
+DECL|method|SCMBlockDeletingService (DeletedBlockLog deletedBlockLog, Mapping mapper, NodeManager nodeManager, int interval, long serviceTimeout, Configuration conf)
 specifier|public
 name|SCMBlockDeletingService
 parameter_list|(
@@ -419,6 +417,9 @@ name|interval
 parameter_list|,
 name|long
 name|serviceTimeout
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 name|super
@@ -453,6 +454,41 @@ operator|.
 name|nodeManager
 operator|=
 name|nodeManager
+expr_stmt|;
+name|int
+name|containerLimit
+init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|OZONE_BLOCK_DELETING_CONTAINER_LIMIT_PER_INTERVAL
+argument_list|,
+name|OZONE_BLOCK_DELETING_CONTAINER_LIMIT_PER_INTERVAL_DEFAULT
+argument_list|)
+decl_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|containerLimit
+operator|>
+literal|0
+argument_list|,
+literal|"Container limit size should be "
+operator|+
+literal|"positive."
+argument_list|)
+expr_stmt|;
+comment|// Use container limit value multiply by a factor 2 to ensure DN
+comment|// not wait for orders.
+name|this
+operator|.
+name|blockDeleteLimitSize
+operator|=
+name|containerLimit
+operator|*
+literal|2
 expr_stmt|;
 block|}
 annotation|@
@@ -540,9 +576,88 @@ expr_stmt|;
 name|DatanodeDeletedBlockTransactions
 name|transactions
 init|=
-name|getToDeleteContainerBlocks
-argument_list|()
+literal|null
 decl_stmt|;
+name|List
+argument_list|<
+name|DatanodeID
+argument_list|>
+name|datanodes
+init|=
+name|nodeManager
+operator|.
+name|getNodes
+argument_list|(
+name|NodeState
+operator|.
+name|HEALTHY
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|datanodes
+operator|!=
+literal|null
+condition|)
+block|{
+name|transactions
+operator|=
+operator|new
+name|DatanodeDeletedBlockTransactions
+argument_list|(
+name|mappingService
+argument_list|,
+name|blockDeleteLimitSize
+argument_list|,
+name|datanodes
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+try|try
+block|{
+name|deletedBlockLog
+operator|.
+name|getTransactions
+argument_list|(
+name|transactions
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+comment|// We may tolerant a number of failures for sometime
+comment|// but if it continues to fail, at some point we need to raise
+comment|// an exception and probably fail the SCM ? At present, it simply
+comment|// continues to retry the scanning.
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Failed to get block deletion transactions from delTX log"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Scanned deleted blocks log and got {} delTX to process."
+argument_list|,
+name|transactions
+operator|.
+name|getTXNum
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|transactions
@@ -580,6 +695,19 @@ argument_list|(
 name|datanodeID
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|dnTXs
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|dnTXs
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
 name|dnTxCount
 operator|+=
 name|dnTXs
@@ -636,6 +764,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
 if|if
 condition|(
 name|dnTxCount
@@ -677,409 +806,22 @@ name|newResult
 argument_list|()
 return|;
 block|}
-comment|// Scan deleteBlocks.db to get a number of to-delete blocks.
-comment|// this is going to be properly throttled.
-DECL|method|getToDeleteContainerBlocks ()
-specifier|private
-name|DatanodeDeletedBlockTransactions
-name|getToDeleteContainerBlocks
-parameter_list|()
-block|{
-name|DatanodeDeletedBlockTransactions
-name|dnTXs
-init|=
-operator|new
-name|DatanodeDeletedBlockTransactions
-argument_list|()
-decl_stmt|;
-name|List
-argument_list|<
-name|DeletedBlocksTransaction
-argument_list|>
-name|txs
-init|=
-literal|null
-decl_stmt|;
-try|try
-block|{
-comment|// Get a limited number of TXs to send via HB at a time.
-name|txs
-operator|=
-name|deletedBlockLog
-operator|.
-name|getTransactions
-argument_list|(
-name|BLOCK_DELETE_TX_PER_REQUEST_LIMIT
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Scanned deleted blocks log and got {} delTX to process"
-argument_list|,
-name|txs
-operator|.
-name|size
-argument_list|()
-argument_list|)
-expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-comment|// We may tolerant a number of failures for sometime
-comment|// but if it continues to fail, at some point we need to raise
-comment|// an exception and probably fail the SCM ? At present, it simply
-comment|// continues to retry the scanning.
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Failed to get block deletion transactions from delTX log"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
-if|if
-condition|(
-name|txs
-operator|!=
-literal|null
-condition|)
-block|{
-for|for
-control|(
-name|DeletedBlocksTransaction
-name|tx
-range|:
-name|txs
-control|)
-block|{
-try|try
-block|{
-name|ContainerInfo
-name|info
-init|=
-name|mappingService
-operator|.
-name|getContainer
-argument_list|(
-name|tx
-operator|.
-name|getContainerName
-argument_list|()
-argument_list|)
-decl_stmt|;
-comment|// Find out the datanode where this TX is supposed to send to.
-name|info
-operator|.
-name|getPipeline
-argument_list|()
-operator|.
-name|getMachines
-argument_list|()
-operator|.
-name|forEach
-argument_list|(
-name|entry
-lambda|->
-name|dnTXs
-operator|.
-name|addTransaction
-argument_list|(
-name|entry
-argument_list|,
-name|tx
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Container {} not found, continue to process next"
-argument_list|,
-name|tx
-operator|.
-name|getContainerName
-argument_list|()
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-block|}
-return|return
-name|dnTXs
-return|;
-block|}
-block|}
-comment|/**    * A wrapper class to hold info about datanode and all deleted block    * transactions that will be sent to this datanode.    */
-DECL|class|DatanodeDeletedBlockTransactions
-specifier|private
-specifier|static
-class|class
-name|DatanodeDeletedBlockTransactions
-block|{
-comment|// A list of TXs mapped to a certain datanode ID.
-DECL|field|transactions
-specifier|private
-specifier|final
-name|Map
-argument_list|<
-name|DatanodeID
-argument_list|,
-name|List
-argument_list|<
-name|DeletedBlocksTransaction
-argument_list|>
-argument_list|>
-name|transactions
-decl_stmt|;
-DECL|method|DatanodeDeletedBlockTransactions ()
-name|DatanodeDeletedBlockTransactions
-parameter_list|()
-block|{
-name|this
-operator|.
-name|transactions
-operator|=
-name|Maps
-operator|.
-name|newHashMap
-argument_list|()
-expr_stmt|;
-block|}
-DECL|method|addTransaction (DatanodeID dnID, DeletedBlocksTransaction tx)
+annotation|@
+name|VisibleForTesting
+DECL|method|setBlockDeleteTXNum (int numTXs)
+specifier|public
 name|void
-name|addTransaction
+name|setBlockDeleteTXNum
 parameter_list|(
-name|DatanodeID
-name|dnID
-parameter_list|,
-name|DeletedBlocksTransaction
-name|tx
+name|int
+name|numTXs
 parameter_list|)
 block|{
-if|if
-condition|(
-name|transactions
-operator|.
-name|containsKey
-argument_list|(
-name|dnID
-argument_list|)
-condition|)
-block|{
-name|transactions
-operator|.
-name|get
-argument_list|(
-name|dnID
-argument_list|)
-operator|.
-name|add
-argument_list|(
-name|tx
-argument_list|)
+name|blockDeleteLimitSize
+operator|=
+name|numTXs
 expr_stmt|;
-block|}
-else|else
-block|{
-name|List
-argument_list|<
-name|DeletedBlocksTransaction
-argument_list|>
-name|first
-init|=
-name|Lists
-operator|.
-name|newArrayList
-argument_list|()
-decl_stmt|;
-name|first
-operator|.
-name|add
-argument_list|(
-name|tx
-argument_list|)
-expr_stmt|;
-name|transactions
-operator|.
-name|put
-argument_list|(
-name|dnID
-argument_list|,
-name|first
-argument_list|)
-expr_stmt|;
-block|}
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Transaction added: {}<- TX({})"
-argument_list|,
-name|dnID
-argument_list|,
-name|tx
-operator|.
-name|getTxID
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|getDatanodes ()
-name|Set
-argument_list|<
-name|DatanodeID
-argument_list|>
-name|getDatanodes
-parameter_list|()
-block|{
-return|return
-name|transactions
-operator|.
-name|keySet
-argument_list|()
-return|;
-block|}
-DECL|method|isEmpty ()
-name|boolean
-name|isEmpty
-parameter_list|()
-block|{
-return|return
-name|transactions
-operator|.
-name|isEmpty
-argument_list|()
-return|;
-block|}
-DECL|method|hasTransactions (DatanodeID dnID)
-name|boolean
-name|hasTransactions
-parameter_list|(
-name|DatanodeID
-name|dnID
-parameter_list|)
-block|{
-return|return
-name|transactions
-operator|.
-name|containsKey
-argument_list|(
-name|dnID
-argument_list|)
-operator|&&
-operator|!
-name|transactions
-operator|.
-name|get
-argument_list|(
-name|dnID
-argument_list|)
-operator|.
-name|isEmpty
-argument_list|()
-return|;
-block|}
-DECL|method|getDatanodeTransactions (DatanodeID dnID)
-name|List
-argument_list|<
-name|DeletedBlocksTransaction
-argument_list|>
-name|getDatanodeTransactions
-parameter_list|(
-name|DatanodeID
-name|dnID
-parameter_list|)
-block|{
-return|return
-name|transactions
-operator|.
-name|get
-argument_list|(
-name|dnID
-argument_list|)
-return|;
-block|}
-DECL|method|getTransactionIDList (DatanodeID dnID)
-name|List
-argument_list|<
-name|String
-argument_list|>
-name|getTransactionIDList
-parameter_list|(
-name|DatanodeID
-name|dnID
-parameter_list|)
-block|{
-if|if
-condition|(
-name|hasTransactions
-argument_list|(
-name|dnID
-argument_list|)
-condition|)
-block|{
-return|return
-name|transactions
-operator|.
-name|get
-argument_list|(
-name|dnID
-argument_list|)
-operator|.
-name|stream
-argument_list|()
-operator|.
-name|map
-argument_list|(
-name|DeletedBlocksTransaction
-operator|::
-name|getTxID
-argument_list|)
-operator|.
-name|map
-argument_list|(
-name|String
-operator|::
-name|valueOf
-argument_list|)
-operator|.
-name|collect
-argument_list|(
-name|Collectors
-operator|.
-name|toList
-argument_list|()
-argument_list|)
-return|;
-block|}
-else|else
-block|{
-return|return
-name|Collections
-operator|.
-name|emptyList
-argument_list|()
-return|;
-block|}
-block|}
 block|}
 block|}
 end_class

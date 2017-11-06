@@ -1012,7 +1012,7 @@ operator|++
 expr_stmt|;
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Transited Block {} to DELETING state in container {}"
 argument_list|,
@@ -1051,7 +1051,7 @@ else|else
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Block {} not found or already under deletion in"
 operator|+

@@ -106,6 +106,17 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Scan entire log once and returns TXs to DatanodeDeletedBlockTransactions.    * Once DatanodeDeletedBlockTransactions is full, the scan behavior will    * stop.    * @param transactions a list of TXs will be set into.    * @throws IOException    */
+DECL|method|getTransactions (DatanodeDeletedBlockTransactions transactions)
+name|void
+name|getTransactions
+parameter_list|(
+name|DatanodeDeletedBlockTransactions
+name|transactions
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Return all failed transactions in the log. A transaction is considered    * to be failed if it has been sent more than MAX_RETRY limit and its    * count is reset to -1.    *    * @return a list of failed deleted block transactions.    * @throws IOException    */
 DECL|method|getFailedTransactions ()
 name|List

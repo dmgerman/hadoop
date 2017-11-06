@@ -188,6 +188,12 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * @return the block deleting service executed in SCM.    */
+DECL|method|getSCMBlockDeletingService ()
+name|SCMBlockDeletingService
+name|getSCMBlockDeletingService
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

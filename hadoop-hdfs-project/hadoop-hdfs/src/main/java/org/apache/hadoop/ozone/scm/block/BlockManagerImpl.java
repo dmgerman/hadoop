@@ -1015,6 +1015,8 @@ argument_list|,
 name|svcInterval
 argument_list|,
 name|serviceTimeout
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 block|}
@@ -2233,6 +2235,20 @@ comment|// sense.
 comment|// We have to get open containers by Replication Type and Replication
 comment|// factor. Hence returning 0 for now.
 comment|// containers.get(OzoneProtos.LifeCycleState.OPEN).size();
+block|}
+annotation|@
+name|Override
+DECL|method|getSCMBlockDeletingService ()
+specifier|public
+name|SCMBlockDeletingService
+name|getSCMBlockDeletingService
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|blockDeletingService
+return|;
 block|}
 block|}
 end_class

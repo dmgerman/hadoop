@@ -4258,7 +4258,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Purging TXID={} from block deletion log"
 argument_list|,
