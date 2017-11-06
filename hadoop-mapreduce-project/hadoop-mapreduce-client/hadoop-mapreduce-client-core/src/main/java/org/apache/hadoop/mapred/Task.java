@@ -5389,6 +5389,24 @@ argument_list|(
 name|umbilical
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Final Counters for "
+operator|+
+name|taskId
+operator|+
+literal|": "
+operator|+
+name|getCounters
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|/**      *   File System Counters      *           FILE: Number of bytes read=0      *           FILE: Number of bytes written=146972      *           ...      *   Map-Reduce Framework      *           Map output records=6      *           Map output records=6      *           ...      */
 block|}
 comment|/**    * Checks if this task has anything to commit, depending on the    * type of task, as well as on whether the {@link OutputCommitter}    * has anything to commit.    *     * @return true if the task has to commit    * @throws IOException    */
 DECL|method|isCommitRequired ()
