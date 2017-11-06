@@ -1379,6 +1379,17 @@ literal|"yarn."
 operator|+
 literal|"webapp.ui2.war-file-path"
 decl_stmt|;
+DECL|field|YARN_API_SERVICES_ENABLE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|YARN_API_SERVICES_ENABLE
+init|=
+literal|"yarn."
+operator|+
+literal|"webapp.api-service.enable"
+decl_stmt|;
 DECL|field|RM_RESOURCE_TRACKER_ADDRESS
 specifier|public
 specifier|static

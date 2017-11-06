@@ -16478,301 +16478,805 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -appId<Application ID>         Specify Application Id to be operated"
+literal|" -appId<Application ID>                  Specify Application Id to be"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -appStates<States>             Works with -list to filter applications"
+literal|"                                          operated"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 based on input comma-separated list of"
+literal|" -appStates<States>                      Works with -list to filter"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 application states. The valid application"
+literal|"                                          applications based on input"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 state can be one of the following:"
+literal|"                                          comma-separated list of"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 ALL,NEW,NEW_SAVING,SUBMITTED,ACCEPTED,RUN"
+literal|"                                          application states. The valid"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 NING,FINISHED,FAILED,KILLED"
+literal|"                                          application state can be one of"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -appTags<Tags>                 Works with -list to filter applications"
+literal|"                                          the following:"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 based on input comma-separated list of"
+literal|"                                          ALL,NEW,NEW_SAVING,SUBMITTED,ACC"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 application tags."
+literal|"                                          EPTED,RUNNING,FINISHED,FAILED,KI"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -appTypes<Types>               Works with -list to filter applications"
+literal|"                                          LLED"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 based on input comma-separated list of"
+literal|" -appTags<Tags>                          Works with -list to filter"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 application types."
+literal|"                                          applications based on input"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -changeQueue<Queue Name>       Moves application to a new queue."
+literal|"                                          comma-separated list of"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 ApplicationId can be passed using 'appId'"
+literal|"                                          application tags."
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 option. 'movetoqueue' command is"
+literal|" -appTypes<Types>                        Works with -list to filter"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 deprecated, this new command"
+literal|"                                          applications based on input"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 'changeQueue' performs same"
+literal|"                                          comma-separated list of"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 functionality."
+literal|"                                          application types."
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -help                           Displays help for all commands."
+literal|" -changeQueue<Queue Name>                Moves application to a new"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -kill<Application ID>          Kills the application. Set of"
+literal|"                                          queue. ApplicationId can be"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 applications can be provided separated"
+literal|"                                          passed using 'appId' option."
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 with space"
+literal|"                                          'movetoqueue' command is"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -list                           List applications. Supports optional use"
+literal|"                                          deprecated, this new command"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 of -appTypes to filter applications based"
+literal|"                                          'changeQueue' performs same"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 on application type, -appStates to filter"
+literal|"                                          functionality."
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 applications based on application state"
+literal|" -component<Component Name><Count>      Works with -flex option to"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 and -appTags to filter applications based"
+literal|"                                          change the number of"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 on application tag."
+literal|"                                          components/containers running"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -movetoqueue<Application ID>   Moves the application to a different"
+literal|"                                          for an application /"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 queue. Deprecated command. Use"
+literal|"                                          long-running service. Supports"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 'changeQueue' instead."
+literal|"                                          absolute or relative changes,"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -queue<Queue Name>             Works with the movetoqueue command to"
+literal|"                                          such as +1, 2, or -3."
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 specify which queue to move an"
+literal|" -destroy<Application Name>              Destroys a saved application"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 application to."
+literal|"                                          specification and removes all"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -status<Application ID>        Prints the status of the application."
+literal|"                                          application data permanently."
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -updateLifetime<Timeout>       update timeout of an application from"
+literal|"                                          Supports -appTypes option to"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 NOW. ApplicationId can be passed using"
+literal|"                                          specify which client"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 'appId' option. Timeout value is in"
+literal|"                                          implementation to use."
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 seconds."
+literal|" -enableFastLaunch                        Uploads AM dependencies to HDFS"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -updatePriority<Priority>      update priority of an application."
+literal|"                                          to make future launches faster."
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 ApplicationId can be passed using 'appId'"
+literal|"                                          Supports -appTypes option to"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"                                 option."
+literal|"                                          specify which client"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          implementation to use."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|" -flex<Application Name or ID>           Changes number of running"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          containers for a component of an"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          application / long-running"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          service. Requires -component"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          option. If name is provided,"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          appType must be provided unless"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          it is the default yarn-service."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          If ID is provided, the appType"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          will be looked up. Supports"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          -appTypes option to specify"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          which client implementation to"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          use."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|" -help                                    Displays help for all commands."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|" -kill<Application ID>                   Kills the application. Set of"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          applications can be provided"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          separated with space"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|" -launch<Application Name><File Name>   Launches application from"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          specification file (saves"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          specification and starts"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          application). Options"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          -updateLifetime and -changeQueue"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          can be specified to alter the"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          values provided in the file."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          Supports -appTypes option to"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          specify which client"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          implementation to use."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|" -list                                    List applications. Supports"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          optional use of -appTypes to"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          filter applications based on"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          application type, -appStates to"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          filter applications based on"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          application state and -appTags"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          to filter applications based on"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          application tag."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|" -movetoqueue<Application ID>            Moves the application to a"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          different queue. Deprecated"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          command. Use 'changeQueue'"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          instead."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|" -queue<Queue Name>                      Works with the movetoqueue"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          command to specify which queue"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          to move an application to."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|" -save<Application Name><File Name>     Saves specification file for an"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          application. Options"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          -updateLifetime and -changeQueue"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          can be specified to alter the"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          values provided in the file."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          Supports -appTypes option to"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          specify which client"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          implementation to use."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|" -start<Application Name>                Starts a previously saved"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          application. Supports -appTypes"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          option to specify which client"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          implementation to use."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|" -status<Application ID>                 Prints the status of the"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          application."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|" -stop<Application Name or ID>           Stops application gracefully"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          (may be started again later). If"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          name is provided, appType must"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          be provided unless it is the"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          default yarn-service. If ID is"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          provided, the appType will be"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          looked up. Supports -appTypes"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          option to specify which client"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          implementation to use."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|" -updateLifetime<Timeout>                update timeout of an application"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          from NOW. ApplicationId can be"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          passed using 'appId' option."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          Timeout value is in seconds."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|" -updatePriority<Priority>               update priority of an"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          application. ApplicationId can"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          be passed using 'appId' option."
 argument_list|)
 expr_stmt|;
 name|pw

@@ -195,6 +195,50 @@ return|return
 name|operations
 return|;
 block|}
+DECL|method|createClient (String name, Configuration conf)
+specifier|public
+specifier|static
+name|RegistryOperationsClient
+name|createClient
+parameter_list|(
+name|String
+name|name
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|conf
+operator|!=
+literal|null
+argument_list|,
+literal|"Null configuration"
+argument_list|)
+expr_stmt|;
+name|RegistryOperationsClient
+name|operations
+init|=
+operator|new
+name|RegistryOperationsClient
+argument_list|(
+name|name
+argument_list|)
+decl_stmt|;
+name|operations
+operator|.
+name|init
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+return|return
+name|operations
+return|;
+block|}
 comment|/**    * Create and initialize an anonymous read/write registry operations instance.    * In a secure cluster, this instance will only have read access to the    * registry.    * @param conf configuration    * @return an anonymous registry operations instance    *    * @throws ServiceStateException on any failure to initialize    */
 DECL|method|createAnonymousInstance (Configuration conf)
 specifier|public

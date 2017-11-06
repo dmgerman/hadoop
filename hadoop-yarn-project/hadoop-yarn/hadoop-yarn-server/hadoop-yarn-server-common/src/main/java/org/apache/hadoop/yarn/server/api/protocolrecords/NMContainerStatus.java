@@ -231,10 +231,13 @@ argument_list|,
 name|ExecutionType
 operator|.
 name|GUARANTEED
+argument_list|,
+operator|-
+literal|1
 argument_list|)
 return|;
 block|}
-DECL|method|newInstance (ContainerId containerId, int version, ContainerState containerState, Resource allocatedResource, String diagnostics, int containerExitStatus, Priority priority, long creationTime, String nodeLabelExpression, ExecutionType executionType)
+DECL|method|newInstance (ContainerId containerId, int version, ContainerState containerState, Resource allocatedResource, String diagnostics, int containerExitStatus, Priority priority, long creationTime, String nodeLabelExpression, ExecutionType executionType, long allocationRequestId)
 specifier|public
 specifier|static
 name|NMContainerStatus
@@ -269,6 +272,9 @@ name|nodeLabelExpression
 parameter_list|,
 name|ExecutionType
 name|executionType
+parameter_list|,
+name|long
+name|allocationRequestId
 parameter_list|)
 block|{
 name|NMContainerStatus
@@ -351,6 +357,13 @@ operator|.
 name|setExecutionType
 argument_list|(
 name|executionType
+argument_list|)
+expr_stmt|;
+name|status
+operator|.
+name|setAllocationRequestId
+argument_list|(
+name|allocationRequestId
 argument_list|)
 expr_stmt|;
 return|return
@@ -498,6 +511,25 @@ name|setNodeLabelExpression
 parameter_list|(
 name|String
 name|nodeLabelExpression
+parameter_list|)
+function_decl|;
+comment|/**    * @return the<em>ID</em> corresponding to the original allocation request.    */
+DECL|method|getAllocationRequestId ()
+specifier|public
+specifier|abstract
+name|long
+name|getAllocationRequestId
+parameter_list|()
+function_decl|;
+comment|/**    * Set the<em>ID</em> corresponding to the original allocation request.    *    * @param allocationRequestId the<em>ID</em> corresponding to the original    *                            allocation request.    */
+DECL|method|setAllocationRequestId (long allocationRequestId)
+specifier|public
+specifier|abstract
+name|void
+name|setAllocationRequestId
+parameter_list|(
+name|long
+name|allocationRequestId
 parameter_list|)
 function_decl|;
 DECL|method|getVersion ()

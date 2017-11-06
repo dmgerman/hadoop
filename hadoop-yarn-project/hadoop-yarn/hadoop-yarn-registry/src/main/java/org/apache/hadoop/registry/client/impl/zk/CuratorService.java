@@ -180,6 +180,60 @@ name|apache
 operator|.
 name|curator
 operator|.
+name|framework
+operator|.
+name|recipes
+operator|.
+name|cache
+operator|.
+name|TreeCache
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|curator
+operator|.
+name|framework
+operator|.
+name|recipes
+operator|.
+name|cache
+operator|.
+name|TreeCacheEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|curator
+operator|.
+name|framework
+operator|.
+name|recipes
+operator|.
+name|cache
+operator|.
+name|TreeCacheListener
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|curator
+operator|.
 name|retry
 operator|.
 name|BoundedExponentialBackoffRetry
@@ -292,34 +346,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|service
-operator|.
-name|CompositeService
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|service
-operator|.
-name|ServiceStateException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|registry
 operator|.
 name|client
@@ -417,6 +443,34 @@ operator|.
 name|exceptions
 operator|.
 name|RegistryIOException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|service
+operator|.
+name|CompositeService
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|service
+operator|.
+name|ServiceStateException
 import|;
 end_import
 
@@ -564,13 +618,13 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * the Curator binding    */
+comment|/**    * the Curator binding.    */
 DECL|field|curator
 specifier|private
 name|CuratorFramework
 name|curator
 decl_stmt|;
-comment|/**    * Path to the registry root    */
+comment|/**    * Path to the registry root.    */
 DECL|field|registryRoot
 specifier|private
 name|String
@@ -583,19 +637,19 @@ specifier|final
 name|RegistryBindingSource
 name|bindingSource
 decl_stmt|;
-comment|/**    * Security service    */
+comment|/**    * Security service.    */
 DECL|field|registrySecurity
 specifier|private
 name|RegistrySecurity
 name|registrySecurity
 decl_stmt|;
-comment|/**    * the connection binding text for messages    */
+comment|/**    * the connection binding text for messages.    */
 DECL|field|connectionDescription
 specifier|private
 name|String
 name|connectionDescription
 decl_stmt|;
-comment|/**    * Security connection diagnostics    */
+comment|/**    * Security connection diagnostics.    */
 DECL|field|securityConnectionDiagnostics
 specifier|private
 name|String
@@ -609,7 +663,13 @@ specifier|private
 name|EnsembleProvider
 name|ensembleProvider
 decl_stmt|;
-comment|/**    * Construct the service.    * @param name service name    * @param bindingSource source of binding information.    * If null: use this instance    */
+comment|/**    * Registry tree cache.    */
+DECL|field|treeCache
+specifier|private
+name|TreeCache
+name|treeCache
+decl_stmt|;
+comment|/**    * Construct the service.    *    * @param name          service name    * @param bindingSource source of binding information.    *                      If null: use this instance    */
 DECL|method|CuratorService (String name, RegistryBindingSource bindingSource)
 specifier|public
 name|CuratorService
@@ -650,7 +710,7 @@ name|this
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Create an instance using this service as the binding source (i.e. read    * configuration options from the registry)    * @param name service name    */
+comment|/**    * Create an instance using this service as the binding source (i.e. read    * configuration options from the registry).    *    * @param name service name    */
 DECL|method|CuratorService (String name)
 specifier|public
 name|CuratorService
@@ -667,7 +727,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Init the service.    * This is where the security bindings are set up    * @param conf configuration of the service    * @throws Exception    */
+comment|/**    * Init the service.    * This is where the security bindings are set up.    *    * @param conf configuration of the service    * @throws Exception    */
 annotation|@
 name|Override
 DECL|method|serviceInit (Configuration conf)
@@ -732,7 +792,7 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Start the service.    * This is where the curator instance is started.    * @throws Exception    */
+comment|/**    * Start the service.    * This is where the curator instance is started.    *    * @throws Exception    */
 annotation|@
 name|Override
 DECL|method|serviceStart ()
@@ -756,7 +816,7 @@ name|createCurator
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Close the ZK connection if it is open    */
+comment|/**    * Close the ZK connection if it is open.    */
 annotation|@
 name|Override
 DECL|method|serviceStop ()
@@ -774,13 +834,26 @@ argument_list|(
 name|curator
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|treeCache
+operator|!=
+literal|null
+condition|)
+block|{
+name|treeCache
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
 name|super
 operator|.
 name|serviceStop
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Internal check that a service is in the live state    * @throws ServiceStateException if not    */
+comment|/**    * Internal check that a service is in the live state.    *    * @throws ServiceStateException if not    */
 DECL|method|checkServiceLive ()
 specifier|private
 name|void
@@ -817,7 +890,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Flag to indicate whether or not the registry is secure.    * Valid once the service is inited.    * @return service security policy    */
+comment|/**    * Flag to indicate whether or not the registry is secure.    * Valid once the service is inited.    *    * @return service security policy    */
 DECL|method|isSecure ()
 specifier|public
 name|boolean
@@ -831,7 +904,7 @@ name|isSecureRegistry
 argument_list|()
 return|;
 block|}
-comment|/**    * Get the registry security helper    * @return the registry security helper    */
+comment|/**    * Get the registry security helper.    *    * @return the registry security helper    */
 DECL|method|getRegistrySecurity ()
 specifier|protected
 name|RegistrySecurity
@@ -842,7 +915,7 @@ return|return
 name|registrySecurity
 return|;
 block|}
-comment|/**    * Build the security diagnostics string    * @return a string for diagnostics    */
+comment|/**    * Build the security diagnostics string.    *    * @return a string for diagnostics    */
 DECL|method|buildSecurityDiagnostics ()
 specifier|protected
 name|String
@@ -895,7 +968,7 @@ argument_list|()
 return|;
 block|}
 block|}
-comment|/**    * Create a new curator instance off the root path; using configuration    * options provided in the service configuration to set timeouts and    * retry policy.    * @return the newly created creator    */
+comment|/**    * Create a new curator instance off the root path; using configuration    * options provided in the service configuration to set timeouts and    * retry policy.    *    * @return the newly created creator    */
 DECL|method|createCurator ()
 specifier|private
 name|CuratorFramework
@@ -973,24 +1046,15 @@ argument_list|,
 name|DEFAULT_ZK_RETRY_CEILING
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
 name|LOG
 operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
+name|info
 argument_list|(
 literal|"Creating CuratorService with connection {}"
 argument_list|,
 name|connectionDescription
 argument_list|)
 expr_stmt|;
-block|}
 name|CuratorFramework
 name|framework
 decl_stmt|;
@@ -1094,7 +1158,7 @@ name|bindingDiagnosticDetails
 argument_list|()
 return|;
 block|}
-comment|/**    * Get the binding diagnostics    * @return a diagnostics string valid after the service is started.    */
+comment|/**    * Get the binding diagnostics.    *    * @return a diagnostics string valid after the service is started.    */
 DECL|method|bindingDiagnosticDetails ()
 specifier|public
 name|String
@@ -1119,7 +1183,7 @@ operator|+
 name|securityConnectionDiagnostics
 return|;
 block|}
-comment|/**    * Create a full path from the registry root and the supplied subdir    * @param path path of operation    * @return an absolute path    * @throws IllegalArgumentException if the path is invalide    */
+comment|/**    * Create a full path from the registry root and the supplied subdir.    *    * @param path path of operation    * @return an absolute path    * @throws IllegalArgumentException if the path is invalide    */
 DECL|method|createFullPath (String path)
 specifier|protected
 name|String
@@ -1142,7 +1206,7 @@ name|path
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the registry binding source ... this can be used to    * create new ensemble providers    * @return the registry binding source in use    */
+comment|/**    * Get the registry binding source ... this can be used to    * create new ensemble providers    *    * @return the registry binding source in use    */
 DECL|method|getBindingSource ()
 specifier|public
 name|RegistryBindingSource
@@ -1153,7 +1217,7 @@ return|return
 name|bindingSource
 return|;
 block|}
-comment|/**    * Create the ensemble provider for this registry, by invoking    * {@link RegistryBindingSource#supplyBindingInformation()} on    * the provider stored in {@link #bindingSource}    * Sets {@link #ensembleProvider} to that value;    * sets {@link #connectionDescription} to the binding info    * for use in toString and logging;    *    */
+comment|/**    * Create the ensemble provider for this registry, by invoking    * {@link RegistryBindingSource#supplyBindingInformation()} on    * the provider stored in {@link #bindingSource}.    * Sets {@link #ensembleProvider} to that value;    * sets {@link #connectionDescription} to the binding info    * for use in toString and logging;    */
 DECL|method|createEnsembleProvider ()
 specifier|protected
 name|void
@@ -1185,7 +1249,7 @@ operator|.
 name|ensembleProvider
 expr_stmt|;
 block|}
-comment|/**    * Supply the binding information.    * This implementation returns a fixed ensemble bonded to    * the quorum supplied by {@link #buildConnectionString()}    * @return the binding information    */
+comment|/**    * Supply the binding information.    * This implementation returns a fixed ensemble bonded to    * the quorum supplied by {@link #buildConnectionString()}.    *    * @return the binding information    */
 annotation|@
 name|Override
 DECL|method|supplyBindingInformation ()
@@ -1231,7 +1295,7 @@ return|return
 name|binding
 return|;
 block|}
-comment|/**    * Override point: get the connection string used to connect to    * the ZK service    * @return a registry quorum    */
+comment|/**    * Override point: get the connection string used to connect to    * the ZK service.    *    * @return a registry quorum    */
 DECL|method|buildConnectionString ()
 specifier|protected
 name|String
@@ -1250,7 +1314,7 @@ name|DEFAULT_REGISTRY_ZK_QUORUM
 argument_list|)
 return|;
 block|}
-comment|/**    * Create an IOE when an operation fails    * @param path path of operation    * @param operation operation attempted    * @param exception caught the exception caught    * @return an IOE to throw that contains the path and operation details.    */
+comment|/**    * Create an IOE when an operation fails.    *    * @param path      path of operation    * @param operation operation attempted    * @param exception caught the exception caught    * @return an IOE to throw that contains the path and operation details.    */
 DECL|method|operationFailure (String path, String operation, Exception exception)
 specifier|protected
 name|IOException
@@ -1279,7 +1343,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/**    * Create an IOE when an operation fails    * @param path path of operation    * @param operation operation attempted    * @param exception caught the exception caught    * @return an IOE to throw that contains the path and operation details.    */
+comment|/**    * Create an IOE when an operation fails.    *    * @param path      path of operation    * @param operation operation attempted    * @param exception caught the exception caught    * @return an IOE to throw that contains the path and operation details.    */
 DECL|method|operationFailure (String path, String operation, Exception exception, List<ACL> acls)
 specifier|protected
 name|IOException
@@ -1560,7 +1624,7 @@ return|return
 name|ioe
 return|;
 block|}
-comment|/**    * Create a path if it does not exist.    * The check is poll + create; there's a risk that another process    * may create the same path before the create() operation is executed/    * propagated to the ZK node polled.    *    * @param path path to create    * @param acl ACL for path -used when creating a new entry    * @param createParents flag to trigger parent creation    * @return true iff the path was created    * @throws IOException    */
+comment|/**    * Create a path if it does not exist.    * The check is poll + create; there's a risk that another process    * may create the same path before the create() operation is executed/    * propagated to the ZK node polled.    *    * @param path          path to create    * @param acl           ACL for path -used when creating a new entry    * @param createParents flag to trigger parent creation    * @return true iff the path was created    * @throws IOException    */
 annotation|@
 name|VisibleForTesting
 DECL|method|maybeCreate (String path, CreateMode mode, List<ACL> acl, boolean createParents)
@@ -1599,7 +1663,7 @@ name|acl
 argument_list|)
 return|;
 block|}
-comment|/**    * Stat the file    * @param path path of operation    * @return a curator stat entry    * @throws IOException on a failure    * @throws PathNotFoundException if the path was not found    */
+comment|/**    * Stat the file.    *    * @param path path of operation    * @return a curator stat entry    * @throws IOException           on a failure    * @throws PathNotFoundException if the path was not found    */
 DECL|method|zkStat (String path)
 specifier|public
 name|Stat
@@ -1694,7 +1758,7 @@ return|return
 name|stat
 return|;
 block|}
-comment|/**    * Get the ACLs of a path    * @param path path of operation    * @return a possibly empty list of ACLs    * @throws IOException    */
+comment|/**    * Get the ACLs of a path.    *    * @param path path of operation    * @return a possibly empty list of ACLs    * @throws IOException    */
 DECL|method|zkGetACLS (String path)
 specifier|public
 name|List
@@ -1795,7 +1859,7 @@ return|return
 name|acls
 return|;
 block|}
-comment|/**    * Probe for a path existing    * @param path path of operation    * @return true if the path was visible from the ZK server    * queried.    * @throws IOException on any exception other than    * {@link PathNotFoundException}    */
+comment|/**    * Probe for a path existing.    *    * @param path path of operation    * @return true if the path was visible from the ZK server    * queried.    * @throws IOException on any exception other than    *                     {@link PathNotFoundException}    */
 DECL|method|zkPathExists (String path)
 specifier|public
 name|boolean
@@ -1844,7 +1908,7 @@ name|e
 throw|;
 block|}
 block|}
-comment|/**    * Verify a path exists    * @param path path of operation    * @throws PathNotFoundException if the path is absent    * @throws IOException    */
+comment|/**    * Verify a path exists.    *    * @param path path of operation    * @throws PathNotFoundException if the path is absent    * @throws IOException    */
 DECL|method|zkPathMustExist (String path)
 specifier|public
 name|String
@@ -1865,7 +1929,7 @@ return|return
 name|path
 return|;
 block|}
-comment|/**    * Create a directory. It is not an error if it already exists    * @param path path to create    * @param mode mode for path    * @param createParents flag to trigger parent creation    * @param acls ACL for path    * @throws IOException any problem    */
+comment|/**    * Create a directory. It is not an error if it already exists.    *    * @param path          path to create    * @param mode          mode for path    * @param createParents flag to trigger parent creation    * @param acls          ACL for path    * @throws IOException any problem    */
 DECL|method|zkMkPath (String path, CreateMode mode, boolean createParents, List<ACL> acls)
 specifier|public
 name|boolean
@@ -2052,7 +2116,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Recursively make a path    * @param path path to create    * @param acl ACL for path    * @throws IOException any problem    */
+comment|/**    * Recursively make a path.    *    * @param path path to create    * @param acl  ACL for path    * @throws IOException any problem    */
 DECL|method|zkMkParentPath (String path, List<ACL> acl)
 specifier|public
 name|void
@@ -2090,7 +2154,7 @@ name|acl
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create a path with given data. byte[0] is used for a path    * without data    * @param path path of operation    * @param data initial data    * @param acls    * @throws IOException    */
+comment|/**    * Create a path with given data. byte[0] is used for a path    * without data.    *    * @param path path of operation    * @param data initial data    * @param acls    * @throws IOException    */
 DECL|method|zkCreate (String path, CreateMode mode, byte[] data, List<ACL> acls)
 specifier|public
 name|void
@@ -2212,7 +2276,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Update the data for a path    * @param path path of operation    * @param data new data    * @throws IOException    */
+comment|/**    * Update the data for a path.    *    * @param path path of operation    * @param data new data    * @throws IOException    */
 DECL|method|zkUpdate (String path, byte[] data)
 specifier|public
 name|void
@@ -2304,7 +2368,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Create or update an entry    * @param path path    * @param data data    * @param acl ACL for path -used when creating a new entry    * @param overwrite enable overwrite    * @throws IOException    * @return true if the entry was created, false if it was simply updated.    */
+comment|/**    * Create or update an entry.    *    * @param path      path    * @param data      data    * @param acl       ACL for path -used when creating a new entry    * @param overwrite enable overwrite    * @return true if the entry was created, false if it was simply updated.    * @throws IOException    */
 DECL|method|zkSet (String path, CreateMode mode, byte[] data, List<ACL> acl, boolean overwrite)
 specifier|public
 name|boolean
@@ -2400,7 +2464,7 @@ throw|;
 block|}
 block|}
 block|}
-comment|/**    * Delete a directory/directory tree.    * It is not an error to delete a path that does not exist    * @param path path of operation    * @param recursive flag to trigger recursive deletion    * @param backgroundCallback callback; this being set converts the operation    * into an async/background operation.    * task    * @throws IOException on problems other than no-such-path    */
+comment|/**    * Delete a directory/directory tree.    * It is not an error to delete a path that does not exist.    *    * @param path               path of operation    * @param recursive          flag to trigger recursive deletion    * @param backgroundCallback callback; this being set converts the operation    *                           into an async/background operation.    *                           task    * @throws IOException on problems other than no-such-path    */
 DECL|method|zkDelete (String path, boolean recursive, BackgroundCallback backgroundCallback)
 specifier|public
 name|void
@@ -2519,7 +2583,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * List all children of a path    * @param path path of operation    * @return a possibly empty list of children    * @throws IOException    */
+comment|/**    * List all children of a path.    *    * @param path path of operation    * @return a possibly empty list of children    * @throws IOException    */
 DECL|method|zkList (String path)
 specifier|public
 name|List
@@ -2608,7 +2672,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Read data on a path    * @param path path of operation    * @return the data    * @throws IOException read failure    */
+comment|/**    * Read data on a path.    *    * @param path path of operation    * @return the data    * @throws IOException read failure    */
 DECL|method|zkRead (String path)
 specifier|public
 name|byte
@@ -2682,7 +2746,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Return a path dumper instance which can do a full dump    * of the registry tree in its<code>toString()</code>    * operation    * @return a class to dump the registry    * @param verbose verbose flag - includes more details (such as ACLs)    */
+comment|/**    * Return a path dumper instance which can do a full dump    * of the registry tree in its<code>toString()</code>    * operation.    *    * @param verbose verbose flag - includes more details (such as ACLs)    * @return a class to dump the registry    */
 DECL|method|dumpPath (boolean verbose)
 specifier|public
 name|ZKPathDumper
@@ -2704,7 +2768,7 @@ name|verbose
 argument_list|)
 return|;
 block|}
-comment|/**    * Add a new write access entry for all future write operations.    * @param id ID to use    * @param pass password    * @throws IOException on any failure to build the digest    */
+comment|/**    * Add a new write access entry for all future write operations.    *    * @param id   ID to use    * @param pass password    * @throws IOException on any failure to build the digest    */
 DECL|method|addWriteAccessor (String id, String pass)
 specifier|public
 name|boolean
@@ -2761,7 +2825,7 @@ name|digestACL
 argument_list|)
 return|;
 block|}
-comment|/**    * Clear all write accessors    */
+comment|/**    * Clear all write accessors.    */
 DECL|method|clearWriteAccessors ()
 specifier|public
 name|void
@@ -2775,7 +2839,7 @@ name|resetDigestACLs
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Diagnostics method to dump a registry robustly.    * Any exception raised is swallowed    * @param verbose verbose path dump    * @return the registry tree    */
+comment|/**    * Diagnostics method to dump a registry robustly.    * Any exception raised is swallowed.    *    * @param verbose verbose path dump    * @return the registry tree    */
 DECL|method|dumpRegistryRobustly (boolean verbose)
 specifier|protected
 name|String
@@ -2822,6 +2886,229 @@ block|}
 return|return
 literal|""
 return|;
+block|}
+comment|/**    * Registers a listener to path related events.    *    * @param listener the listener.    * @return a handle allowing for the management of the listener.    * @throws Exception if registration fails due to error.    */
+DECL|method|registerPathListener (final PathListener listener)
+specifier|public
+name|ListenerHandle
+name|registerPathListener
+parameter_list|(
+specifier|final
+name|PathListener
+name|listener
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+specifier|final
+name|TreeCacheListener
+name|pathChildrenCacheListener
+init|=
+operator|new
+name|TreeCacheListener
+argument_list|()
+block|{
+specifier|public
+name|void
+name|childEvent
+parameter_list|(
+name|CuratorFramework
+name|curatorFramework
+parameter_list|,
+name|TreeCacheEvent
+name|event
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+name|String
+name|path
+init|=
+literal|null
+decl_stmt|;
+if|if
+condition|(
+name|event
+operator|!=
+literal|null
+operator|&&
+name|event
+operator|.
+name|getData
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+name|path
+operator|=
+name|event
+operator|.
+name|getData
+argument_list|()
+operator|.
+name|getPath
+argument_list|()
+expr_stmt|;
+block|}
+assert|assert
+name|event
+operator|!=
+literal|null
+assert|;
+switch|switch
+condition|(
+name|event
+operator|.
+name|getType
+argument_list|()
+condition|)
+block|{
+case|case
+name|NODE_ADDED
+case|:
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Informing listener of added node {}"
+argument_list|,
+name|path
+argument_list|)
+expr_stmt|;
+name|listener
+operator|.
+name|nodeAdded
+argument_list|(
+name|path
+argument_list|)
+expr_stmt|;
+break|break;
+case|case
+name|NODE_REMOVED
+case|:
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Informing listener of removed node {}"
+argument_list|,
+name|path
+argument_list|)
+expr_stmt|;
+name|listener
+operator|.
+name|nodeRemoved
+argument_list|(
+name|path
+argument_list|)
+expr_stmt|;
+break|break;
+case|case
+name|NODE_UPDATED
+case|:
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Informing listener of updated node {}"
+argument_list|,
+name|path
+argument_list|)
+expr_stmt|;
+name|listener
+operator|.
+name|nodeAdded
+argument_list|(
+name|path
+argument_list|)
+expr_stmt|;
+break|break;
+default|default:
+comment|// do nothing
+break|break;
+block|}
+block|}
+block|}
+decl_stmt|;
+name|treeCache
+operator|.
+name|getListenable
+argument_list|()
+operator|.
+name|addListener
+argument_list|(
+name|pathChildrenCacheListener
+argument_list|)
+expr_stmt|;
+return|return
+operator|new
+name|ListenerHandle
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|void
+name|remove
+parameter_list|()
+block|{
+name|treeCache
+operator|.
+name|getListenable
+argument_list|()
+operator|.
+name|removeListener
+argument_list|(
+name|pathChildrenCacheListener
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+return|;
+block|}
+comment|// TODO: should caches be stopped and then restarted if need be?
+comment|/**    * Create the tree cache that monitors the registry for node addition, update,    * and deletion.    *    * @throws Exception if any issue arises during monitoring.    */
+DECL|method|monitorRegistryEntries ()
+specifier|public
+name|void
+name|monitorRegistryEntries
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|String
+name|registryPath
+init|=
+name|getConfig
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|RegistryConstants
+operator|.
+name|KEY_REGISTRY_ZK_ROOT
+argument_list|,
+name|RegistryConstants
+operator|.
+name|DEFAULT_ZK_REGISTRY_ROOT
+argument_list|)
+decl_stmt|;
+name|treeCache
+operator|=
+operator|new
+name|TreeCache
+argument_list|(
+name|curator
+argument_list|,
+name|registryPath
+argument_list|)
+expr_stmt|;
+name|treeCache
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 end_class

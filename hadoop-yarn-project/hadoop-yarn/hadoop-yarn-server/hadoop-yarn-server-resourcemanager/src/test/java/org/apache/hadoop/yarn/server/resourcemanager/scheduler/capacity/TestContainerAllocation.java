@@ -2161,6 +2161,9 @@ name|containerType
 parameter_list|,
 name|ExecutionType
 name|executionType
+parameter_list|,
+name|long
+name|allocationRequestId
 parameter_list|)
 block|{
 name|numRetries
@@ -2192,6 +2195,8 @@ argument_list|,
 name|containerType
 argument_list|,
 name|executionType
+argument_list|,
+name|allocationRequestId
 argument_list|)
 return|;
 block|}

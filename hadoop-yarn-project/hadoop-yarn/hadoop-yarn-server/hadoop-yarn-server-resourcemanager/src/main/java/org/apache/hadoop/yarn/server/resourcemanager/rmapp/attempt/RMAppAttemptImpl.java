@@ -1534,6 +1534,22 @@ name|yarn
 operator|.
 name|util
 operator|.
+name|Apps
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
 name|BoundedAppender
 import|;
 end_import
@@ -8028,102 +8044,6 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|shouldCountTowardsNodeBlacklisting (int exitStatus)
-specifier|private
-specifier|static
-name|boolean
-name|shouldCountTowardsNodeBlacklisting
-parameter_list|(
-name|int
-name|exitStatus
-parameter_list|)
-block|{
-switch|switch
-condition|(
-name|exitStatus
-condition|)
-block|{
-case|case
-name|ContainerExitStatus
-operator|.
-name|PREEMPTED
-case|:
-case|case
-name|ContainerExitStatus
-operator|.
-name|KILLED_BY_RESOURCEMANAGER
-case|:
-case|case
-name|ContainerExitStatus
-operator|.
-name|KILLED_BY_APPMASTER
-case|:
-case|case
-name|ContainerExitStatus
-operator|.
-name|KILLED_AFTER_APP_COMPLETION
-case|:
-case|case
-name|ContainerExitStatus
-operator|.
-name|ABORTED
-case|:
-comment|// Neither the app's fault nor the system's fault. This happens by design,
-comment|// so no need for skipping nodes
-return|return
-literal|false
-return|;
-case|case
-name|ContainerExitStatus
-operator|.
-name|DISKS_FAILED
-case|:
-comment|// This container is marked with this exit-status means that the node is
-comment|// already marked as unhealthy given that most of the disks failed. So, no
-comment|// need for any explicit skipping of nodes.
-return|return
-literal|false
-return|;
-case|case
-name|ContainerExitStatus
-operator|.
-name|KILLED_EXCEEDED_VMEM
-case|:
-case|case
-name|ContainerExitStatus
-operator|.
-name|KILLED_EXCEEDED_PMEM
-case|:
-comment|// No point in skipping the node as it's not the system's fault
-return|return
-literal|false
-return|;
-case|case
-name|ContainerExitStatus
-operator|.
-name|SUCCESS
-case|:
-return|return
-literal|false
-return|;
-case|case
-name|ContainerExitStatus
-operator|.
-name|INVALID
-case|:
-comment|// Ideally, this shouldn't be considered for skipping a node. But in
-comment|// reality, it seems like there are cases where we are not setting
-comment|// exit-code correctly and so it's better to be conservative. See
-comment|// YARN-4284.
-return|return
-literal|true
-return|;
-default|default:
-return|return
-literal|true
-return|;
-block|}
-block|}
 DECL|class|UnmanagedAMAttemptSavedTransition
 specifier|private
 specifier|static
@@ -9679,6 +9599,8 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
+name|Apps
+operator|.
 name|shouldCountTowardsNodeBlacklisting
 argument_list|(
 name|exitStatus

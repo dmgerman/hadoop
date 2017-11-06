@@ -23,16 +23,23 @@ package|;
 end_package
 
 begin_comment
-comment|/**  * YARN specific attributes in the registry  */
+comment|/**  * YARN specific attributes in the registry.  */
 end_comment
 
 begin_class
 DECL|class|YarnRegistryAttributes
 specifier|public
+specifier|final
 class|class
 name|YarnRegistryAttributes
 block|{
-comment|/**    * ID. For containers: container ID. For application instances, application ID.    */
+comment|/**    * Hidden constructor.    */
+DECL|method|YarnRegistryAttributes ()
+specifier|private
+name|YarnRegistryAttributes
+parameter_list|()
+block|{   }
+comment|/**    * ID. For containers: container ID. For application instances,    * application ID.    */
 DECL|field|YARN_ID
 specifier|public
 specifier|static
@@ -50,6 +57,33 @@ name|String
 name|YARN_PERSISTENCE
 init|=
 literal|"yarn:persistence"
+decl_stmt|;
+DECL|field|YARN_PATH
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|YARN_PATH
+init|=
+literal|"yarn:path"
+decl_stmt|;
+DECL|field|YARN_HOSTNAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|YARN_HOSTNAME
+init|=
+literal|"yarn:hostname"
+decl_stmt|;
+DECL|field|YARN_IP
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|YARN_IP
+init|=
+literal|"yarn:ip"
 decl_stmt|;
 block|}
 end_class

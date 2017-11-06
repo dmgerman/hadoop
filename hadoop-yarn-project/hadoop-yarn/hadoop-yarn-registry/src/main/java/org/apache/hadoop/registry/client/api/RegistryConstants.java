@@ -82,7 +82,16 @@ name|REGISTRY_PREFIX
 operator|+
 literal|"zk."
 decl_stmt|;
-comment|/**    * flag to indicate whether or not the registry should    * be enabled in the RM: {@value}    */
+comment|/**    * Prefix for dns-specific options: {@value}    *<p>    * For clients using other protocols, these options are not supported.    */
+DECL|field|DNS_PREFIX
+name|String
+name|DNS_PREFIX
+init|=
+name|REGISTRY_PREFIX
+operator|+
+literal|"dns."
+decl_stmt|;
+comment|/**    * flag to indicate whether or not the registry should    * be enabled in the RM: {@value}.    */
 DECL|field|KEY_REGISTRY_ENABLED
 name|String
 name|KEY_REGISTRY_ENABLED
@@ -91,12 +100,182 @@ name|REGISTRY_PREFIX
 operator|+
 literal|"rm.enabled"
 decl_stmt|;
-comment|/**    * Defaut value for enabling the registry in the RM: {@value}    */
+comment|/**    * Defaut value for enabling the registry in the RM: {@value}.    */
 DECL|field|DEFAULT_REGISTRY_ENABLED
 name|boolean
 name|DEFAULT_REGISTRY_ENABLED
 init|=
 literal|false
+decl_stmt|;
+comment|/**    * flag to indicate whether or not the registry should    * be enabled in the RM: {@value}.    */
+DECL|field|KEY_DNS_ENABLED
+name|String
+name|KEY_DNS_ENABLED
+init|=
+name|DNS_PREFIX
+operator|+
+literal|"enabled"
+decl_stmt|;
+comment|/**    * Defaut value for enabling the DNS in the Registry: {@value}.    */
+DECL|field|DEFAULT_DNS_ENABLED
+name|boolean
+name|DEFAULT_DNS_ENABLED
+init|=
+literal|false
+decl_stmt|;
+comment|/**    * DNS domain name key.    */
+DECL|field|KEY_DNS_DOMAIN
+name|String
+name|KEY_DNS_DOMAIN
+init|=
+name|DNS_PREFIX
+operator|+
+literal|"domain-name"
+decl_stmt|;
+comment|/**    * Max length of a label (node delimited by a dot in the FQDN).    */
+DECL|field|MAX_FQDN_LABEL_LENGTH
+name|int
+name|MAX_FQDN_LABEL_LENGTH
+init|=
+literal|63
+decl_stmt|;
+comment|/**    * DNS bind address.    */
+DECL|field|KEY_DNS_BIND_ADDRESS
+name|String
+name|KEY_DNS_BIND_ADDRESS
+init|=
+name|DNS_PREFIX
+operator|+
+literal|"bind-address"
+decl_stmt|;
+comment|/**    * DNS port number key.    */
+DECL|field|KEY_DNS_PORT
+name|String
+name|KEY_DNS_PORT
+init|=
+name|DNS_PREFIX
+operator|+
+literal|"bind-port"
+decl_stmt|;
+comment|/**    * Default DNS port number.    */
+DECL|field|DEFAULT_DNS_PORT
+name|int
+name|DEFAULT_DNS_PORT
+init|=
+literal|5353
+decl_stmt|;
+comment|/**    * DNSSEC Enabled?    */
+DECL|field|KEY_DNSSEC_ENABLED
+name|String
+name|KEY_DNSSEC_ENABLED
+init|=
+name|DNS_PREFIX
+operator|+
+literal|"dnssec.enabled"
+decl_stmt|;
+comment|/**    * DNSSEC Enabled?    */
+DECL|field|KEY_DNSSEC_PUBLIC_KEY
+name|String
+name|KEY_DNSSEC_PUBLIC_KEY
+init|=
+name|DNS_PREFIX
+operator|+
+literal|"public-key"
+decl_stmt|;
+comment|/**    * DNSSEC private key file.    */
+DECL|field|KEY_DNSSEC_PRIVATE_KEY_FILE
+name|String
+name|KEY_DNSSEC_PRIVATE_KEY_FILE
+init|=
+name|DNS_PREFIX
+operator|+
+literal|"private-key-file"
+decl_stmt|;
+comment|/**    * Default DNSSEC private key file path.    */
+DECL|field|DEFAULT_DNSSEC_PRIVATE_KEY_FILE
+name|String
+name|DEFAULT_DNSSEC_PRIVATE_KEY_FILE
+init|=
+literal|"/etc/hadoop/conf/registryDNS.private"
+decl_stmt|;
+comment|/**    * Zone subnet.    */
+DECL|field|KEY_DNS_ZONE_SUBNET
+name|String
+name|KEY_DNS_ZONE_SUBNET
+init|=
+name|DNS_PREFIX
+operator|+
+literal|"zone-subnet"
+decl_stmt|;
+comment|/**    * Zone subnet mask.    */
+DECL|field|KEY_DNS_ZONE_MASK
+name|String
+name|KEY_DNS_ZONE_MASK
+init|=
+name|DNS_PREFIX
+operator|+
+literal|"zone-mask"
+decl_stmt|;
+comment|/**    * Zone subnet IP min.    */
+DECL|field|KEY_DNS_ZONE_IP_MIN
+name|String
+name|KEY_DNS_ZONE_IP_MIN
+init|=
+name|DNS_PREFIX
+operator|+
+literal|"zone-ip-min"
+decl_stmt|;
+comment|/**    * Zone subnet IP max.    */
+DECL|field|KEY_DNS_ZONE_IP_MAX
+name|String
+name|KEY_DNS_ZONE_IP_MAX
+init|=
+name|DNS_PREFIX
+operator|+
+literal|"zone-ip-max"
+decl_stmt|;
+comment|/**    * DNS Record TTL.    */
+DECL|field|KEY_DNS_TTL
+name|String
+name|KEY_DNS_TTL
+init|=
+name|DNS_PREFIX
+operator|+
+literal|"dns-ttl"
+decl_stmt|;
+comment|/**    * DNS Record TTL.    */
+DECL|field|KEY_DNS_ZONES_DIR
+name|String
+name|KEY_DNS_ZONES_DIR
+init|=
+name|DNS_PREFIX
+operator|+
+literal|"zones-dir"
+decl_stmt|;
+comment|/**    * Split Reverse Zone.    * It may be necessary to spit large reverse zone subnets    * into multiple zones to handle existing hosts collocated    * with containers.    */
+DECL|field|KEY_DNS_SPLIT_REVERSE_ZONE
+name|String
+name|KEY_DNS_SPLIT_REVERSE_ZONE
+init|=
+name|DNS_PREFIX
+operator|+
+literal|"split-reverse-zone"
+decl_stmt|;
+comment|/**    * Default value for splitting the reverse zone.    */
+DECL|field|DEFAULT_DNS_SPLIT_REVERSE_ZONE
+name|boolean
+name|DEFAULT_DNS_SPLIT_REVERSE_ZONE
+init|=
+literal|false
+decl_stmt|;
+comment|/**    * Split Reverse Zone IP Range.    * How many IPs should be part of each reverse zone split    */
+DECL|field|KEY_DNS_SPLIT_REVERSE_ZONE_RANGE
+name|String
+name|KEY_DNS_SPLIT_REVERSE_ZONE_RANGE
+init|=
+name|DNS_PREFIX
+operator|+
+literal|"split-reverse-zone-range"
 decl_stmt|;
 comment|/**    * Key to set if the registry is secure: {@value}.    * Turning it on changes the permissions policy from "open access"    * to restrictions on kerberos with the option of    * a user adding one or more auth key pairs down their    * own tree.    */
 DECL|field|KEY_REGISTRY_SECURE
@@ -114,7 +293,7 @@ name|DEFAULT_REGISTRY_SECURE
 init|=
 literal|false
 decl_stmt|;
-comment|/**    * Root path in the ZK tree for the registry: {@value}    */
+comment|/**    * Root path in the ZK tree for the registry: {@value}.    */
 DECL|field|KEY_REGISTRY_ZK_ROOT
 name|String
 name|KEY_REGISTRY_ZK_ROOT
@@ -123,7 +302,7 @@ name|ZK_PREFIX
 operator|+
 literal|"root"
 decl_stmt|;
-comment|/**    * Default root of the yarn registry: {@value}    */
+comment|/**    * Default root of the yarn registry: {@value}.    */
 DECL|field|DEFAULT_ZK_REGISTRY_ROOT
 name|String
 name|DEFAULT_ZK_REGISTRY_ROOT
@@ -139,7 +318,7 @@ name|REGISTRY_PREFIX
 operator|+
 literal|"client.auth"
 decl_stmt|;
-comment|/**    * Registry client uses Kerberos: authentication is automatic from    * logged in user    */
+comment|/**    * Registry client uses Kerberos: authentication is automatic from    * logged in user.    */
 DECL|field|REGISTRY_CLIENT_AUTH_KERBEROS
 name|String
 name|REGISTRY_CLIENT_AUTH_KERBEROS
@@ -153,14 +332,14 @@ name|REGISTRY_CLIENT_AUTH_DIGEST
 init|=
 literal|"digest"
 decl_stmt|;
-comment|/**    * No authentication; client is anonymous    */
+comment|/**    * No authentication; client is anonymous.    */
 DECL|field|REGISTRY_CLIENT_AUTH_ANONYMOUS
 name|String
 name|REGISTRY_CLIENT_AUTH_ANONYMOUS
 init|=
 literal|""
 decl_stmt|;
-comment|/**    * Registry client authentication ID    *<p>    * This is only used in secure clusters with    * {@link #KEY_REGISTRY_CLIENT_AUTH} set to    * {@link #REGISTRY_CLIENT_AUTH_DIGEST}    *    */
+comment|/**    * Registry client authentication ID.    *<p>    * This is only used in secure clusters with    * {@link #KEY_REGISTRY_CLIENT_AUTH} set to    * {@link #REGISTRY_CLIENT_AUTH_DIGEST}    *    */
 DECL|field|KEY_REGISTRY_CLIENT_AUTHENTICATION_ID
 name|String
 name|KEY_REGISTRY_CLIENT_AUTHENTICATION_ID
@@ -178,7 +357,7 @@ name|KEY_REGISTRY_CLIENT_AUTH
 operator|+
 literal|".password"
 decl_stmt|;
-comment|/**    * List of hostname:port pairs defining the    * zookeeper quorum binding for the registry {@value}    */
+comment|/**    * List of hostname:port pairs defining the    * zookeeper quorum binding for the registry {@value}.    */
 DECL|field|KEY_REGISTRY_ZK_QUORUM
 name|String
 name|KEY_REGISTRY_ZK_QUORUM
@@ -187,14 +366,14 @@ name|ZK_PREFIX
 operator|+
 literal|"quorum"
 decl_stmt|;
-comment|/**    * The default zookeeper quorum binding for the registry: {@value}    */
+comment|/**    * The default zookeeper quorum binding for the registry: {@value}.    */
 DECL|field|DEFAULT_REGISTRY_ZK_QUORUM
 name|String
 name|DEFAULT_REGISTRY_ZK_QUORUM
 init|=
 literal|"localhost:2181"
 decl_stmt|;
-comment|/**    * Zookeeper session timeout in milliseconds: {@value}    */
+comment|/**    * Zookeeper session timeout in milliseconds: {@value}.    */
 DECL|field|KEY_REGISTRY_ZK_SESSION_TIMEOUT
 name|String
 name|KEY_REGISTRY_ZK_SESSION_TIMEOUT
@@ -324,7 +503,7 @@ name|REGISTRY_PREFIX
 operator|+
 literal|"jaas.context"
 decl_stmt|;
-comment|/**    * default client-side registry JAAS context: {@value}    */
+comment|/**    * default client-side registry JAAS context: {@value}.    */
 DECL|field|DEFAULT_REGISTRY_CLIENT_JAAS_CONTEXT
 name|String
 name|DEFAULT_REGISTRY_CLIENT_JAAS_CONTEXT

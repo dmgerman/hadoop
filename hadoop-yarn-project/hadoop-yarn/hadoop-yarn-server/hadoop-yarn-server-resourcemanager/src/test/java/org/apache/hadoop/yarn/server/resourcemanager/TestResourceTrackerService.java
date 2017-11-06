@@ -13943,6 +13943,9 @@ argument_list|,
 name|ExecutionType
 operator|.
 name|OPPORTUNISTIC
+argument_list|,
+operator|-
+literal|1
 argument_list|)
 decl_stmt|;
 name|NMContainerStatus
@@ -13989,6 +13992,9 @@ argument_list|,
 name|ExecutionType
 operator|.
 name|OPPORTUNISTIC
+argument_list|,
+operator|-
+literal|1
 argument_list|)
 decl_stmt|;
 name|NMContainerStatus
@@ -14035,6 +14041,9 @@ argument_list|,
 name|ExecutionType
 operator|.
 name|GUARANTEED
+argument_list|,
+operator|-
+literal|1
 argument_list|)
 decl_stmt|;
 name|req
