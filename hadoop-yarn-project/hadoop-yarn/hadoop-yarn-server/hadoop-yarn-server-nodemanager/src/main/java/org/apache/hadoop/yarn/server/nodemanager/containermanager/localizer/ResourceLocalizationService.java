@@ -7543,7 +7543,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Localizer failed"
+literal|"Localizer failed for "
+operator|+
+name|localizerId
 argument_list|,
 name|exception
 argument_list|)
