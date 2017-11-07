@@ -45,7 +45,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Interface to query streams for supported capabilities.  */
+comment|/**  * Interface to query streams for supported capabilities.  *  * Capability strings must be in lower case.  *  * Constant strings are chosen over enums in order to allow other file systems  * to define their own capabilities.  */
 end_comment
 
 begin_interface
@@ -62,25 +62,60 @@ specifier|public
 interface|interface
 name|StreamCapabilities
 block|{
+comment|/**    * Stream hflush capability implemented by {@link Syncable#hflush()}.    */
+DECL|field|HFLUSH
+name|String
+name|HFLUSH
+init|=
+literal|"hflush"
+decl_stmt|;
+comment|/**    * Stream hsync capability implemented by {@link Syncable#hsync()}.    */
+DECL|field|HSYNC
+name|String
+name|HSYNC
+init|=
+literal|"hsync"
+decl_stmt|;
+comment|/**    * Stream setReadahead capability implemented by    * {@link CanSetReadahead#setReadahead(Long)}.    */
+DECL|field|READAHEAD
+name|String
+name|READAHEAD
+init|=
+literal|"in:readahead"
+decl_stmt|;
+comment|/**    * Stream setDropBehind capability implemented by    * {@link CanSetDropBehind#setDropBehind(Boolean)}.    */
+DECL|field|DROPBEHIND
+name|String
+name|DROPBEHIND
+init|=
+literal|"dropbehind"
+decl_stmt|;
+comment|/**    * Stream unbuffer capability implemented by {@link CanUnbuffer#unbuffer()}.    */
+DECL|field|UNBUFFER
+name|String
+name|UNBUFFER
+init|=
+literal|"in:unbuffer"
+decl_stmt|;
 comment|/**    * Capabilities that a stream can support and be queried for.    */
+annotation|@
+name|Deprecated
 DECL|enum|StreamCapability
 enum|enum
 name|StreamCapability
 block|{
-comment|/**      * Stream hflush capability to flush out the data in client's buffer.      * Streams with this capability implement {@link Syncable} and support      * {@link Syncable#hflush()}.      */
 DECL|enumConstant|HFLUSH
 name|HFLUSH
-argument_list|(
-literal|"hflush"
-argument_list|)
-block|,
-comment|/**      * Stream hsync capability to flush out the data in client's buffer and      * the disk device. Streams with this capability implement {@link Syncable}      * and support {@link Syncable#hsync()}.      */
+parameter_list|(
+name|StreamCapabilities
+operator|.
+name|HFLUSH
+parameter_list|)
+operator|,
 DECL|enumConstant|HSYNC
-name|HSYNC
-argument_list|(
-literal|"hsync"
-argument_list|)
-block|;
+constructor|HSYNC(StreamCapabilities.HSYNC
+block|)
+enum|;
 DECL|field|capability
 specifier|private
 specifier|final
@@ -113,7 +148,13 @@ name|capability
 return|;
 block|}
 block|}
+end_interface
+
+begin_comment
 comment|/**    * Query the stream for a specific capability.    *    * @param capability string to query the stream support for.    * @return True if the stream supports capability.    */
+end_comment
+
+begin_function_decl
 DECL|method|hasCapability (String capability)
 name|boolean
 name|hasCapability
@@ -122,8 +163,8 @@ name|String
 name|capability
 parameter_list|)
 function_decl|;
-block|}
-end_interface
+end_function_decl
 
+unit|}
 end_unit
 

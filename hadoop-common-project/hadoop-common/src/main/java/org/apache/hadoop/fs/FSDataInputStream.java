@@ -177,6 +177,8 @@ implements|,
 name|HasEnhancedByteBufferAccess
 implements|,
 name|CanUnbuffer
+implements|,
+name|StreamCapabilities
 block|{
 comment|/**    * Map ByteBuffers that we have handed out to readers to ByteBufferPool     * objects    */
 specifier|private
@@ -865,45 +867,49 @@ name|void
 name|unbuffer
 parameter_list|()
 block|{
-try|try
-block|{
-operator|(
-operator|(
-name|CanUnbuffer
-operator|)
-name|in
-operator|)
+name|StreamCapabilitiesPolicy
 operator|.
 name|unbuffer
-argument_list|()
+argument_list|(
+name|in
+argument_list|)
 expr_stmt|;
 block|}
-catch|catch
+annotation|@
+name|Override
+DECL|method|hasCapability (String capability)
+specifier|public
+name|boolean
+name|hasCapability
 parameter_list|(
-name|ClassCastException
-name|e
+name|String
+name|capability
 parameter_list|)
 block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|(
-literal|"this stream "
-operator|+
+if|if
+condition|(
 name|in
+operator|instanceof
+name|StreamCapabilities
+condition|)
+block|{
+return|return
+operator|(
+operator|(
+name|StreamCapabilities
+operator|)
+name|in
+operator|)
 operator|.
-name|getClass
-argument_list|()
-operator|.
-name|getName
-argument_list|()
-operator|+
-literal|" does not "
-operator|+
-literal|"support unbuffering."
+name|hasCapability
+argument_list|(
+name|capability
 argument_list|)
-throw|;
+return|;
 block|}
+return|return
+literal|false
+return|;
 block|}
 comment|/**    * String value. Includes the string value of the inner stream    * @return the stream    */
 annotation|@
