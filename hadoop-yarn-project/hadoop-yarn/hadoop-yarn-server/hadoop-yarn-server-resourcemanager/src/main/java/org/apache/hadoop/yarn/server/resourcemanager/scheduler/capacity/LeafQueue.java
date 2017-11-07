@@ -9623,6 +9623,22 @@ name|absoluteCapacity
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|setMaxApplicationsPerUser (int maxApplicationsPerUser)
+specifier|public
+name|void
+name|setMaxApplicationsPerUser
+parameter_list|(
+name|int
+name|maxApplicationsPerUser
+parameter_list|)
+block|{
+name|this
+operator|.
+name|maxApplicationsPerUser
+operator|=
+name|maxApplicationsPerUser
+expr_stmt|;
+block|}
 DECL|method|setMaxApplications (int maxApplications)
 specifier|public
 name|void

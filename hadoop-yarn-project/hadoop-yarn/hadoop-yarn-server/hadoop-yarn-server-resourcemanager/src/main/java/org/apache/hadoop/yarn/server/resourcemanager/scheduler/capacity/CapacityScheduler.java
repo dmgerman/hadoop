@@ -10213,7 +10213,7 @@ operator|!
 operator|(
 name|q
 operator|instanceof
-name|ReservationQueue
+name|AutoCreatedLeafQueue
 operator|)
 condition|)
 block|{
@@ -10227,15 +10227,15 @@ literal|"to remove ("
 operator|+
 name|queueName
 operator|+
-literal|") is not a ReservationQueue"
+literal|") is not a AutoCreatedLeafQueue"
 argument_list|)
 throw|;
 block|}
-name|ReservationQueue
+name|AutoCreatedLeafQueue
 name|disposableLeafQueue
 init|=
 operator|(
-name|ReservationQueue
+name|AutoCreatedLeafQueue
 operator|)
 name|q
 decl_stmt|;
@@ -10284,7 +10284,7 @@ throw|;
 block|}
 operator|(
 operator|(
-name|PlanQueue
+name|AbstractManagedParentQueue
 operator|)
 name|disposableLeafQueue
 operator|.
@@ -10310,7 +10310,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Removal of ReservationQueue "
+literal|"Removal of AutoCreatedLeafQueue "
 operator|+
 name|queueName
 operator|+
@@ -10353,7 +10353,7 @@ operator|!
 operator|(
 name|queue
 operator|instanceof
-name|ReservationQueue
+name|AutoCreatedLeafQueue
 operator|)
 condition|)
 block|{
@@ -10368,15 +10368,15 @@ operator|.
 name|getQueueName
 argument_list|()
 operator|+
-literal|" is not a ReservationQueue"
+literal|" is not a AutoCreatedLeafQueue"
 argument_list|)
 throw|;
 block|}
-name|ReservationQueue
+name|AutoCreatedLeafQueue
 name|newQueue
 init|=
 operator|(
-name|ReservationQueue
+name|AutoCreatedLeafQueue
 operator|)
 name|queue
 decl_stmt|;
@@ -10391,12 +10391,20 @@ literal|null
 operator|||
 operator|!
 operator|(
+name|AbstractManagedParentQueue
+operator|.
+name|class
+operator|.
+name|isAssignableFrom
+argument_list|(
 name|newQueue
 operator|.
 name|getParent
 argument_list|()
-operator|instanceof
-name|PlanQueue
+operator|.
+name|getClass
+argument_list|()
+argument_list|)
 operator|)
 condition|)
 block|{
@@ -10411,15 +10419,17 @@ operator|.
 name|getQueueName
 argument_list|()
 operator|+
-literal|" is not properly set (should be set and be a PlanQueue)"
+literal|" is not properly set"
+operator|+
+literal|" (should be set and be a PlanQueue or ManagedParentQueue)"
 argument_list|)
 throw|;
 block|}
-name|PlanQueue
+name|AbstractManagedParentQueue
 name|parentPlan
 init|=
 operator|(
-name|PlanQueue
+name|AbstractManagedParentQueue
 operator|)
 name|newQueue
 operator|.
@@ -10456,7 +10466,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Creation of ReservationQueue "
+literal|"Creation of AutoCreatedLeafQueue "
 operator|+
 name|newQueue
 operator|+
@@ -10525,7 +10535,7 @@ operator|!
 operator|(
 name|queue
 operator|instanceof
-name|ReservationQueue
+name|AutoCreatedLeafQueue
 operator|)
 condition|)
 block|{
@@ -10539,17 +10549,29 @@ literal|" modified dynamically since queue "
 operator|+
 name|inQueue
 operator|+
-literal|" is not a ReservationQueue"
+literal|" is not a AutoCreatedLeafQueue"
 argument_list|)
 throw|;
 block|}
 if|if
 condition|(
+name|parent
+operator|==
+literal|null
+operator|||
 operator|!
 operator|(
+name|AbstractManagedParentQueue
+operator|.
+name|class
+operator|.
+name|isAssignableFrom
+argument_list|(
 name|parent
-operator|instanceof
-name|PlanQueue
+operator|.
+name|getClass
+argument_list|()
+argument_list|)
 operator|)
 condition|)
 block|{
@@ -10557,31 +10579,26 @@ throw|throw
 operator|new
 name|SchedulerDynamicEditException
 argument_list|(
-literal|"The parent of ReservationQueue "
+literal|"The parent of AutoCreatedLeafQueue "
 operator|+
 name|inQueue
 operator|+
-literal|" must be an PlanQueue"
+literal|" must be a PlanQueue/ManagedParentQueue"
 argument_list|)
 throw|;
 block|}
-name|ReservationQueue
+name|AutoCreatedLeafQueue
 name|newQueue
 init|=
 operator|(
-name|ReservationQueue
+name|AutoCreatedLeafQueue
 operator|)
 name|queue
 decl_stmt|;
 name|float
 name|sumChilds
 init|=
-operator|(
-operator|(
-name|PlanQueue
-operator|)
 name|parent
-operator|)
 operator|.
 name|sumOfChildCapacities
 argument_list|()
@@ -10671,7 +10688,9 @@ throw|throw
 operator|new
 name|SchedulerDynamicEditException
 argument_list|(
-literal|"Sum of child queues would exceed 100% for PlanQueue: "
+literal|"Sum of child queues should exceed 100% for auto creating parent "
+operator|+
+literal|"queue : "
 operator|+
 name|parent
 operator|.
@@ -10684,7 +10703,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Set entitlement for ReservationQueue "
+literal|"Set entitlement for AutoCreatedLeafQueue "
 operator|+
 name|inQueue
 operator|+

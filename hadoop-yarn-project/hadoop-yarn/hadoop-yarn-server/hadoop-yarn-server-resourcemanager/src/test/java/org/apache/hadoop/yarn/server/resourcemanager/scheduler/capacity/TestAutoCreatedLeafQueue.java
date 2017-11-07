@@ -244,17 +244,23 @@ name|Test
 import|;
 end_import
 
+begin_comment
+comment|/**  * Test class for dynamic auto created leaf queues.  * @see AutoCreatedLeafQueue  */
+end_comment
+
 begin_class
-DECL|class|TestReservationQueue
+DECL|class|TestAutoCreatedLeafQueue
 specifier|public
 class|class
-name|TestReservationQueue
+name|TestAutoCreatedLeafQueue
 block|{
 DECL|field|csConf
+specifier|private
 name|CapacitySchedulerConfiguration
 name|csConf
 decl_stmt|;
 DECL|field|csContext
+specifier|private
 name|CapacitySchedulerContext
 name|csContext
 decl_stmt|;
@@ -284,9 +290,10 @@ operator|new
 name|DefaultResourceCalculator
 argument_list|()
 decl_stmt|;
-DECL|field|reservationQueue
-name|ReservationQueue
-name|reservationQueue
+DECL|field|autoCreatedLeafQueue
+specifier|private
+name|AutoCreatedLeafQueue
+name|autoCreatedLeafQueue
 decl_stmt|;
 annotation|@
 name|Before
@@ -465,10 +472,10 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
-name|reservationQueue
+name|autoCreatedLeafQueue
 operator|=
 operator|new
-name|ReservationQueue
+name|AutoCreatedLeafQueue
 argument_list|(
 name|csContext
 argument_list|,
@@ -478,10 +485,10 @@ name|pq
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|validateReservationQueue (double capacity)
+DECL|method|validateAutoCreatedLeafQueue (double capacity)
 specifier|private
 name|void
-name|validateReservationQueue
+name|validateAutoCreatedLeafQueue
 parameter_list|(
 name|double
 name|capacity
@@ -491,12 +498,12 @@ name|assertTrue
 argument_list|(
 literal|" actual capacity: "
 operator|+
-name|reservationQueue
+name|autoCreatedLeafQueue
 operator|.
 name|getCapacity
 argument_list|()
 argument_list|,
-name|reservationQueue
+name|autoCreatedLeafQueue
 operator|.
 name|getCapacity
 argument_list|()
@@ -510,7 +517,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|reservationQueue
+name|autoCreatedLeafQueue
 operator|.
 name|maxApplications
 argument_list|,
@@ -519,7 +526,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|reservationQueue
+name|autoCreatedLeafQueue
 operator|.
 name|maxApplicationsPerUser
 argument_list|,
@@ -538,19 +545,19 @@ throws|throws
 name|Exception
 block|{
 comment|// verify that setting, adding, subtracting capacity works
-name|reservationQueue
+name|autoCreatedLeafQueue
 operator|.
 name|setCapacity
 argument_list|(
 literal|1.0F
 argument_list|)
 expr_stmt|;
-name|validateReservationQueue
+name|validateAutoCreatedLeafQueue
 argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
-name|reservationQueue
+name|autoCreatedLeafQueue
 operator|.
 name|setEntitlement
 argument_list|(
@@ -563,12 +570,12 @@ literal|1f
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|validateReservationQueue
+name|validateAutoCreatedLeafQueue
 argument_list|(
 literal|0.9
 argument_list|)
 expr_stmt|;
-name|reservationQueue
+name|autoCreatedLeafQueue
 operator|.
 name|setEntitlement
 argument_list|(
@@ -581,12 +588,12 @@ literal|1f
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|validateReservationQueue
+name|validateAutoCreatedLeafQueue
 argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
-name|reservationQueue
+name|autoCreatedLeafQueue
 operator|.
 name|setEntitlement
 argument_list|(
@@ -599,14 +606,14 @@ literal|1f
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|validateReservationQueue
+name|validateAutoCreatedLeafQueue
 argument_list|(
 literal|0
 argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|reservationQueue
+name|autoCreatedLeafQueue
 operator|.
 name|setEntitlement
 argument_list|(
@@ -630,7 +637,7 @@ name|iae
 parameter_list|)
 block|{
 comment|// expected
-name|validateReservationQueue
+name|validateAutoCreatedLeafQueue
 argument_list|(
 literal|1
 argument_list|)
@@ -638,7 +645,7 @@ expr_stmt|;
 block|}
 try|try
 block|{
-name|reservationQueue
+name|autoCreatedLeafQueue
 operator|.
 name|setEntitlement
 argument_list|(
@@ -663,7 +670,7 @@ name|iae
 parameter_list|)
 block|{
 comment|// expected
-name|validateReservationQueue
+name|validateAutoCreatedLeafQueue
 argument_list|(
 literal|1
 argument_list|)

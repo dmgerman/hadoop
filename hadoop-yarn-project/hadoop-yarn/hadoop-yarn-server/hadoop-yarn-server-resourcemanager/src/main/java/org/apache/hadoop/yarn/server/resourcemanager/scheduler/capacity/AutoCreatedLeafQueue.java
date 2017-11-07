@@ -1,6 +1,6 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *  *     http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
+comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *<p>  * http://www.apache.org/licenses/LICENSE-2.0  *<p>  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
 end_comment
 
 begin_package
@@ -26,16 +26,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -49,26 +39,6 @@ operator|.
 name|records
 operator|.
 name|Resource
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|reservation
-operator|.
-name|ReservationSystem
 import|;
 end_import
 
@@ -134,15 +104,25 @@ name|LoggerFactory
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
 begin_comment
-comment|/**  * This represents a dynamic {@link LeafQueue} managed by the  * {@link ReservationSystem}  *  */
+comment|/**  * Leaf queues which are auto created by an underkying implementation of  * AbstractManagedParentQueue. Eg: PlanQueue for reservations or  * ManagedParentQueue for auto created dynamic queues  */
 end_comment
 
 begin_class
-DECL|class|ReservationQueue
+DECL|class|AutoCreatedLeafQueue
 specifier|public
 class|class
-name|ReservationQueue
+name|AutoCreatedLeafQueue
 extends|extends
 name|LeafQueue
 block|{
@@ -157,19 +137,19 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|ReservationQueue
+name|AutoCreatedLeafQueue
 operator|.
 name|class
 argument_list|)
 decl_stmt|;
 DECL|field|parent
 specifier|private
-name|PlanQueue
+name|AbstractManagedParentQueue
 name|parent
 decl_stmt|;
-DECL|method|ReservationQueue (CapacitySchedulerContext cs, String queueName, PlanQueue parent)
+DECL|method|AutoCreatedLeafQueue (CapacitySchedulerContext cs, String queueName, AbstractManagedParentQueue parent)
 specifier|public
-name|ReservationQueue
+name|AutoCreatedLeafQueue
 parameter_list|(
 name|CapacitySchedulerContext
 name|cs
@@ -177,7 +157,7 @@ parameter_list|,
 name|String
 name|queueName
 parameter_list|,
-name|PlanQueue
+name|AbstractManagedParentQueue
 name|parent
 parameter_list|)
 throws|throws
@@ -194,12 +174,11 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
-comment|// the following parameters are common to all reservation in the plan
-name|updateQuotas
+name|updateApplicationAndUserLimits
 argument_list|(
 name|parent
 operator|.
-name|getUserLimitForReservation
+name|getUserLimitForAutoCreatedQueues
 argument_list|()
 argument_list|,
 name|parent
@@ -209,12 +188,12 @@ argument_list|()
 argument_list|,
 name|parent
 operator|.
-name|getMaxApplicationsForReservations
+name|getMaxApplicationsForAutoCreatedQueues
 argument_list|()
 argument_list|,
 name|parent
 operator|.
-name|getMaxApplicationsPerUserForReservation
+name|getMaxApplicationsPerUserForAutoCreatedQueues
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -248,47 +227,11 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
-comment|// Sanity check
-if|if
-condition|(
-operator|!
-operator|(
-name|newlyParsedQueue
-operator|instanceof
-name|ReservationQueue
-operator|)
-operator|||
-operator|!
-name|newlyParsedQueue
-operator|.
-name|getQueuePath
-argument_list|()
-operator|.
-name|equals
+name|validate
 argument_list|(
-name|getQueuePath
-argument_list|()
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Trying to reinitialize "
-operator|+
-name|getQueuePath
-argument_list|()
-operator|+
-literal|" from "
-operator|+
 name|newlyParsedQueue
-operator|.
-name|getQueuePath
-argument_list|()
 argument_list|)
-throw|;
-block|}
+expr_stmt|;
 name|super
 operator|.
 name|reinitialize
@@ -313,11 +256,11 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
-name|updateQuotas
+name|updateApplicationAndUserLimits
 argument_list|(
 name|parent
 operator|.
-name|getUserLimitForReservation
+name|getUserLimitForAutoCreatedQueues
 argument_list|()
 argument_list|,
 name|parent
@@ -327,12 +270,12 @@ argument_list|()
 argument_list|,
 name|parent
 operator|.
-name|getMaxApplicationsForReservations
+name|getMaxApplicationsForAutoCreatedQueues
 argument_list|()
 argument_list|,
 name|parent
 operator|.
-name|getMaxApplicationsPerUserForReservation
+name|getMaxApplicationsPerUserForAutoCreatedQueues
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -346,7 +289,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * This methods to change capacity for a queue and adjusts its    * absoluteCapacity    *     * @param entitlement the new entitlement for the queue (capacity,    *          maxCapacity, etc..)    * @throws SchedulerDynamicEditException    */
+comment|/**    * This methods to change capacity for a queue and adjusts its    * absoluteCapacity.    *    * @param entitlement the new entitlement for the queue (capacity,    *                    maxCapacity)    * @throws SchedulerDynamicEditException    */
 DECL|method|setEntitlement (QueueEntitlement entitlement)
 specifier|public
 name|void
@@ -411,8 +354,6 @@ name|getCapacity
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// note: we currently set maxCapacity to capacity
-comment|// this might be revised later
 name|setMaxCapacity
 argument_list|(
 name|entitlement
@@ -456,43 +397,58 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|updateQuotas (int userLimit, float userLimitFactor, int maxAppsForReservation, int maxAppsPerUserForReservation)
+DECL|method|validate (final CSQueue newlyParsedQueue)
 specifier|private
 name|void
-name|updateQuotas
+name|validate
 parameter_list|(
-name|int
-name|userLimit
-parameter_list|,
-name|float
-name|userLimitFactor
-parameter_list|,
-name|int
-name|maxAppsForReservation
-parameter_list|,
-name|int
-name|maxAppsPerUserForReservation
+specifier|final
+name|CSQueue
+name|newlyParsedQueue
 parameter_list|)
+throws|throws
+name|IOException
 block|{
-name|setUserLimit
+if|if
+condition|(
+operator|!
+operator|(
+name|newlyParsedQueue
+operator|instanceof
+name|AutoCreatedLeafQueue
+operator|)
+operator|||
+operator|!
+name|newlyParsedQueue
+operator|.
+name|getQueuePath
+argument_list|()
+operator|.
+name|equals
 argument_list|(
-name|userLimit
+name|getQueuePath
+argument_list|()
 argument_list|)
-expr_stmt|;
-name|setUserLimitFactor
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
 argument_list|(
-name|userLimitFactor
+literal|"Error trying to reinitialize "
+operator|+
+name|getQueuePath
+argument_list|()
+operator|+
+literal|" from "
+operator|+
+name|newlyParsedQueue
+operator|.
+name|getQueuePath
+argument_list|()
 argument_list|)
-expr_stmt|;
-name|setMaxApplications
-argument_list|(
-name|maxAppsForReservation
-argument_list|)
-expr_stmt|;
-name|maxApplicationsPerUser
-operator|=
-name|maxAppsPerUserForReservation
-expr_stmt|;
+throw|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -521,6 +477,45 @@ name|parent
 operator|.
 name|getQueueCapacities
 argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|updateApplicationAndUserLimits (int userLimit, float userLimitFactor, int maxAppsForAutoCreatedQueues, int maxAppsPerUserForAutoCreatedQueues)
+specifier|private
+name|void
+name|updateApplicationAndUserLimits
+parameter_list|(
+name|int
+name|userLimit
+parameter_list|,
+name|float
+name|userLimitFactor
+parameter_list|,
+name|int
+name|maxAppsForAutoCreatedQueues
+parameter_list|,
+name|int
+name|maxAppsPerUserForAutoCreatedQueues
+parameter_list|)
+block|{
+name|setUserLimit
+argument_list|(
+name|userLimit
+argument_list|)
+expr_stmt|;
+name|setUserLimitFactor
+argument_list|(
+name|userLimitFactor
+argument_list|)
+expr_stmt|;
+name|setMaxApplications
+argument_list|(
+name|maxAppsForAutoCreatedQueues
+argument_list|)
+expr_stmt|;
+name|setMaxApplicationsPerUser
+argument_list|(
+name|maxAppsPerUserForAutoCreatedQueues
 argument_list|)
 expr_stmt|;
 block|}

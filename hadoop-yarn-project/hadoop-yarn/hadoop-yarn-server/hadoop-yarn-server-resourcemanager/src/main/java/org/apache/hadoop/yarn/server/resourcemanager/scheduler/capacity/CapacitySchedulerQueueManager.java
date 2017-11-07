@@ -1280,11 +1280,11 @@ name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
-name|ReservationQueue
+name|AutoCreatedLeafQueue
 name|resQueue
 init|=
 operator|new
-name|ReservationQueue
+name|AutoCreatedLeafQueue
 argument_list|(
 name|csContext
 argument_list|,
@@ -1600,7 +1600,7 @@ operator|.
 name|getValue
 argument_list|()
 operator|instanceof
-name|ReservationQueue
+name|AutoCreatedLeafQueue
 operator|)
 condition|)
 block|{
