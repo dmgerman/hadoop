@@ -491,6 +491,23 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{}
+annotation|@
+name|Ignore
+argument_list|(
+literal|"ByteArrayInputStream does not support unbuffer"
+argument_list|)
+annotation|@
+name|Override
+annotation|@
+name|Test
+DECL|method|testUnbuffer ()
+specifier|public
+name|void
+name|testUnbuffer
+parameter_list|()
+throws|throws
+name|Exception
+block|{}
 block|}
 end_class
 

@@ -152,6 +152,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|CanUnbuffer
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|HasEnhancedByteBufferAccess
 import|;
 end_import
@@ -209,6 +223,20 @@ operator|.
 name|fs
 operator|.
 name|Seekable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|StreamCapabilities
 import|;
 end_import
 
@@ -788,7 +816,6 @@ block|}
 block|}
 block|}
 DECL|class|FakeInputStream
-specifier|public
 specifier|static
 class|class
 name|FakeInputStream
@@ -808,6 +835,10 @@ implements|,
 name|CanSetReadahead
 implements|,
 name|HasEnhancedByteBufferAccess
+implements|,
+name|CanUnbuffer
+implements|,
+name|StreamCapabilities
 block|{
 DECL|field|oneByteBuf
 specifier|private
@@ -850,7 +881,6 @@ init|=
 literal|false
 decl_stmt|;
 DECL|method|FakeInputStream (DataInputBuffer in)
-specifier|public
 name|FakeInputStream
 parameter_list|(
 name|DataInputBuffer
@@ -1714,6 +1744,57 @@ name|IOException
 throws|,
 name|UnsupportedOperationException
 block|{     }
+annotation|@
+name|Override
+DECL|method|unbuffer ()
+specifier|public
+name|void
+name|unbuffer
+parameter_list|()
+block|{     }
+annotation|@
+name|Override
+DECL|method|hasCapability (String capability)
+specifier|public
+name|boolean
+name|hasCapability
+parameter_list|(
+name|String
+name|capability
+parameter_list|)
+block|{
+switch|switch
+condition|(
+name|capability
+operator|.
+name|toLowerCase
+argument_list|()
+condition|)
+block|{
+case|case
+name|StreamCapabilities
+operator|.
+name|READAHEAD
+case|:
+case|case
+name|StreamCapabilities
+operator|.
+name|DROPBEHIND
+case|:
+case|case
+name|StreamCapabilities
+operator|.
+name|UNBUFFER
+case|:
+return|return
+literal|true
+return|;
+default|default:
+return|return
+literal|false
+return|;
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|getFileDescriptor ()
