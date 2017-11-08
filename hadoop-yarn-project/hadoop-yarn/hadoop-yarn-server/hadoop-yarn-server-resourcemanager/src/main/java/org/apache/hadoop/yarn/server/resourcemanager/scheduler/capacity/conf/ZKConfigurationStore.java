@@ -499,7 +499,7 @@ operator|.
 name|getResourceManager
 argument_list|()
 operator|.
-name|getAndStartZKManager
+name|createAndStartZKManager
 argument_list|(
 name|conf
 argument_list|)
