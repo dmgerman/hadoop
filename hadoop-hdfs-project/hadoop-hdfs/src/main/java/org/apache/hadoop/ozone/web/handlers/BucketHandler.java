@@ -760,7 +760,7 @@ block|{
 case|case
 name|Header
 operator|.
-name|OZONE_LIST_QUERY_KEY
+name|OZONE_INFO_QUERY_KEY
 case|:
 name|ListArgs
 name|listArgs
@@ -786,7 +786,7 @@ return|;
 case|case
 name|Header
 operator|.
-name|OZONE_LIST_QUERY_BUCKET
+name|OZONE_INFO_QUERY_BUCKET
 case|:
 return|return
 name|getBucketInfoResponse

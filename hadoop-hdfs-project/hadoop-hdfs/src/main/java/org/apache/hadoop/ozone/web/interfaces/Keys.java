@@ -562,7 +562,7 @@ literal|"header"
 argument_list|)
 block|}
 argument_list|)
-DECL|method|getKey (@athParamR) String volume, @PathParam(R) String bucket, @PathParam(R) String keys, @QueryParam(Header.OZONE_LIST_QUERY_TAG) String info, @Context Request req, @Context UriInfo uriInfo, @Context HttpHeaders headers)
+DECL|method|getKey (@athParamR) String volume, @PathParam(R) String bucket, @PathParam(R) String keys, @QueryParam(Header.OZONE_INFO_QUERY_TAG) String info, @Context Request req, @Context UriInfo uriInfo, @Context HttpHeaders headers)
 name|Response
 name|getKey
 parameter_list|(
@@ -595,7 +595,7 @@ name|QueryParam
 argument_list|(
 name|Header
 operator|.
-name|OZONE_LIST_QUERY_TAG
+name|OZONE_INFO_QUERY_TAG
 argument_list|)
 name|String
 name|info

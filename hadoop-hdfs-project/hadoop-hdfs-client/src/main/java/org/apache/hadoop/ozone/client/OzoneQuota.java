@@ -85,7 +85,7 @@ name|unit
 decl_stmt|;
 DECL|field|size
 specifier|private
-name|int
+name|long
 name|size
 decl_stmt|;
 comment|/** Quota Units.*/
@@ -112,10 +112,10 @@ name|GB
 block|,
 name|TB
 block|}
-comment|/**    * Returns size.    *    * @return int    */
+comment|/**    * Returns size.    *    * @return long    */
 DECL|method|getSize ()
 specifier|public
-name|int
+name|long
 name|getSize
 parameter_list|()
 block|{
@@ -155,12 +155,12 @@ operator|.
 name|UNDEFINED
 expr_stmt|;
 block|}
-comment|/**    * Constructor for Ozone Quota.    *    * @param size - Integer Size    * @param unit MB, GB  or TB    */
-DECL|method|OzoneQuota (int size, Units unit)
+comment|/**    * Constructor for Ozone Quota.    *    * @param size Long Size    * @param unit MB, GB  or TB    */
+DECL|method|OzoneQuota (long size, Units unit)
 specifier|public
 name|OzoneQuota
 parameter_list|(
-name|int
+name|long
 name|size
 parameter_list|,
 name|Units
@@ -681,6 +681,22 @@ name|size
 argument_list|,
 name|unit
 argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|size
+operator|+
+literal|" "
+operator|+
+name|unit
 return|;
 block|}
 block|}

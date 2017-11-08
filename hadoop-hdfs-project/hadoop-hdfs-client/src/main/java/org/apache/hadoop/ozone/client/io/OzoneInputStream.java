@@ -71,15 +71,15 @@ block|{
 DECL|field|inputStream
 specifier|private
 specifier|final
-name|ChunkGroupInputStream
+name|InputStream
 name|inputStream
 decl_stmt|;
 comment|/**    * Constructs OzoneInputStream with ChunkInputStream.    *    * @param inputStream    */
-DECL|method|OzoneInputStream (ChunkGroupInputStream inputStream)
+DECL|method|OzoneInputStream (InputStream inputStream)
 specifier|public
 name|OzoneInputStream
 parameter_list|(
-name|ChunkGroupInputStream
+name|InputStream
 name|inputStream
 parameter_list|)
 block|{

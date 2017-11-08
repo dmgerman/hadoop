@@ -413,7 +413,7 @@ name|equals
 argument_list|(
 name|Header
 operator|.
-name|OZONE_LIST_QUERY_KEY
+name|OZONE_INFO_QUERY_KEY
 argument_list|)
 condition|)
 block|{

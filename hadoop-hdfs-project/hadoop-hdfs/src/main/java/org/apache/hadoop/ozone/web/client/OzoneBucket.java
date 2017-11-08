@@ -2827,11 +2827,11 @@ name|setParameter
 argument_list|(
 name|Header
 operator|.
-name|OZONE_LIST_QUERY_TAG
+name|OZONE_INFO_QUERY_TAG
 argument_list|,
 name|Header
 operator|.
-name|OZONE_LIST_QUERY_KEY
+name|OZONE_INFO_QUERY_KEY
 argument_list|)
 operator|.
 name|build

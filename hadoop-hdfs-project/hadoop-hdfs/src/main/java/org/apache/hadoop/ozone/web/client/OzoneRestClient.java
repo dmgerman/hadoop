@@ -941,11 +941,11 @@ name|setParameter
 argument_list|(
 name|Header
 operator|.
-name|OZONE_LIST_QUERY_TAG
+name|OZONE_INFO_QUERY_TAG
 argument_list|,
 name|Header
 operator|.
-name|OZONE_LIST_QUERY_VOLUME
+name|OZONE_INFO_QUERY_VOLUME
 argument_list|)
 operator|.
 name|build

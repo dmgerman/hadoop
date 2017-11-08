@@ -1014,7 +1014,7 @@ block|{
 case|case
 name|Header
 operator|.
-name|OZONE_LIST_QUERY_BUCKET
+name|OZONE_INFO_QUERY_BUCKET
 case|:
 name|MDC
 operator|.
@@ -1040,7 +1040,7 @@ return|;
 case|case
 name|Header
 operator|.
-name|OZONE_LIST_QUERY_VOLUME
+name|OZONE_INFO_QUERY_VOLUME
 case|:
 name|MDC
 operator|.

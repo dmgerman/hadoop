@@ -55,15 +55,15 @@ block|{
 DECL|field|outputStream
 specifier|private
 specifier|final
-name|ChunkGroupOutputStream
+name|OutputStream
 name|outputStream
 decl_stmt|;
 comment|/**    * Constructs OzoneOutputStream with ChunkGroupOutputStream.    *    * @param outputStream    */
-DECL|method|OzoneOutputStream (ChunkGroupOutputStream outputStream)
+DECL|method|OzoneOutputStream (OutputStream outputStream)
 specifier|public
 name|OzoneOutputStream
 parameter_list|(
-name|ChunkGroupOutputStream
+name|OutputStream
 name|outputStream
 parameter_list|)
 block|{
