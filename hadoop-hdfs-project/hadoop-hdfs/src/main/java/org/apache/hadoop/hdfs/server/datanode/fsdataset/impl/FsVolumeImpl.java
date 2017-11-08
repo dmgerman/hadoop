@@ -448,20 +448,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|util
-operator|.
-name|AutoCloseableLock
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|hdfs
 operator|.
 name|DFSConfigKeys
@@ -2174,17 +2160,9 @@ name|boolean
 name|blockFileDeleted
 parameter_list|)
 block|{
-try|try
-init|(
-name|AutoCloseableLock
-name|lock
-init|=
-name|dataset
-operator|.
-name|acquireDatasetLock
-argument_list|()
-init|)
-block|{
+comment|// BlockPoolSlice map is thread safe, and update the space used or
+comment|// number of blocks are atomic operations, so it doesn't require to
+comment|// hold the dataset lock.
 name|BlockPoolSlice
 name|bp
 init|=
@@ -2222,7 +2200,6 @@ expr_stmt|;
 block|}
 block|}
 block|}
-block|}
 DECL|method|incDfsUsedAndNumBlocks (String bpid, long value)
 name|void
 name|incDfsUsedAndNumBlocks
@@ -2233,17 +2210,6 @@ parameter_list|,
 name|long
 name|value
 parameter_list|)
-block|{
-try|try
-init|(
-name|AutoCloseableLock
-name|lock
-init|=
-name|dataset
-operator|.
-name|acquireDatasetLock
-argument_list|()
-init|)
 block|{
 name|BlockPoolSlice
 name|bp
@@ -2276,7 +2242,6 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-block|}
 DECL|method|incDfsUsed (String bpid, long value)
 name|void
 name|incDfsUsed
@@ -2287,17 +2252,6 @@ parameter_list|,
 name|long
 name|value
 parameter_list|)
-block|{
-try|try
-init|(
-name|AutoCloseableLock
-name|lock
-init|=
-name|dataset
-operator|.
-name|acquireDatasetLock
-argument_list|()
-init|)
 block|{
 name|BlockPoolSlice
 name|bp
@@ -2325,7 +2279,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getDfsUsed ()
@@ -2341,17 +2294,6 @@ name|dfsUsed
 init|=
 literal|0
 decl_stmt|;
-try|try
-init|(
-name|AutoCloseableLock
-name|lock
-init|=
-name|dataset
-operator|.
-name|acquireDatasetLock
-argument_list|()
-init|)
-block|{
 for|for
 control|(
 name|BlockPoolSlice
@@ -2370,7 +2312,6 @@ operator|.
 name|getDfsUsed
 argument_list|()
 expr_stmt|;
-block|}
 block|}
 return|return
 name|dfsUsed

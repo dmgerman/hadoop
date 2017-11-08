@@ -1655,11 +1655,8 @@ name|StorageReport
 argument_list|>
 name|reports
 decl_stmt|;
-synchronized|synchronized
-init|(
-name|statsLock
-init|)
-block|{
+comment|// Volumes are the references from a copy-on-write snapshot, so the
+comment|// access on the volume metrics doesn't require an additional lock.
 name|List
 argument_list|<
 name|FsVolumeImpl
@@ -1758,7 +1755,6 @@ name|e
 parameter_list|)
 block|{
 continue|continue;
-block|}
 block|}
 block|}
 return|return
@@ -2136,17 +2132,6 @@ specifier|private
 specifier|final
 name|int
 name|smallBufferSize
-decl_stmt|;
-comment|// Used for synchronizing access to usage stats
-DECL|field|statsLock
-specifier|private
-specifier|final
-name|Object
-name|statsLock
-init|=
-operator|new
-name|Object
-argument_list|()
 decl_stmt|;
 DECL|field|localFS
 specifier|final
@@ -3873,18 +3858,12 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-synchronized|synchronized
-init|(
-name|statsLock
-init|)
-block|{
 return|return
 name|volumes
 operator|.
 name|getDfsUsed
 argument_list|()
 return|;
-block|}
 block|}
 comment|/**    * Return the total space used by dfs datanode    */
 annotation|@
@@ -3901,11 +3880,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-synchronized|synchronized
-init|(
-name|statsLock
-init|)
-block|{
 return|return
 name|volumes
 operator|.
@@ -3914,7 +3888,6 @@ argument_list|(
 name|bpid
 argument_list|)
 return|;
-block|}
 block|}
 comment|/**    * Return true - if there are still valid volumes on the DataNode.     */
 annotation|@
@@ -3945,18 +3918,12 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-synchronized|synchronized
-init|(
-name|statsLock
-init|)
-block|{
 return|return
 name|volumes
 operator|.
 name|getCapacity
 argument_list|()
 return|;
-block|}
 block|}
 comment|/**    * Return how many bytes can still be stored in the FSDataset    */
 annotation|@
@@ -3970,18 +3937,12 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-synchronized|synchronized
-init|(
-name|statsLock
-init|)
-block|{
 return|return
 name|volumes
 operator|.
 name|getRemaining
 argument_list|()
 return|;
-block|}
 block|}
 comment|/**    * Return the number of failed volumes in the FSDataset.    */
 annotation|@
