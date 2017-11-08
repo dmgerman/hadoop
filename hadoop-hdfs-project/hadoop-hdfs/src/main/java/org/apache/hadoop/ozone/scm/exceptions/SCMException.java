@@ -214,6 +214,9 @@ name|IO_EXCEPTION
 block|,
 DECL|enumConstant|UNEXPECTED_CONTAINER_STATE
 name|UNEXPECTED_CONTAINER_STATE
+block|,
+DECL|enumConstant|SCM_NOT_INITIALIZED
+name|SCM_NOT_INITIALIZED
 block|}
 block|}
 end_class
