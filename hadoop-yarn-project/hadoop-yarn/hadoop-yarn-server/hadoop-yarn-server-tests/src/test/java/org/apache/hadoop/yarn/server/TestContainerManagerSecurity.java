@@ -112,6 +112,32 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeoutException
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Supplier
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -209,6 +235,20 @@ operator|.
 name|SecretManager
 operator|.
 name|InvalidToken
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|GenericTestUtils
 import|;
 end_import
 
@@ -441,6 +481,24 @@ operator|.
 name|records
 operator|.
 name|ContainerState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ContainerStatus
 import|;
 end_import
 
@@ -2649,6 +2707,10 @@ parameter_list|(
 name|ContainerId
 name|containerId
 parameter_list|)
+throws|throws
+name|TimeoutException
+throws|,
+name|InterruptedException
 block|{
 name|Context
 name|nmContext
@@ -2671,25 +2733,8 @@ operator|*
 literal|60
 decl_stmt|;
 comment|// Max time for container token to expire.
-name|Assert
-operator|.
-name|assertNotNull
-argument_list|(
-name|nmContext
-operator|.
-name|getContainers
-argument_list|()
-operator|.
-name|containsKey
-argument_list|(
-name|containerId
-argument_list|)
-argument_list|)
-expr_stmt|;
-comment|// Get the container first, as it may be removed from the Context
-comment|// by asynchronous calls.
-comment|// This was leading to a flakey test as otherwise the container could
-comment|// be removed and end up null.
+comment|// If the container is null, then it has already completed and been removed
+comment|// from the Context by asynchronous calls.
 name|Container
 name|waitContainer
 init|=
@@ -2703,30 +2748,11 @@ argument_list|(
 name|containerId
 argument_list|)
 decl_stmt|;
-while|while
+if|if
 condition|(
-operator|(
-name|interval
-operator|--
-operator|>
-literal|0
-operator|)
-operator|&&
-operator|!
 name|waitContainer
-operator|.
-name|cloneAndGetContainerStatus
-argument_list|()
-operator|.
-name|getState
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|ContainerState
-operator|.
-name|COMPLETE
-argument_list|)
+operator|!=
+literal|null
 condition|)
 block|{
 try|try
@@ -2739,23 +2765,88 @@ literal|"Waiting for "
 operator|+
 name|containerId
 operator|+
-literal|" to complete."
+literal|" to get to state "
+operator|+
+name|ContainerState
+operator|.
+name|COMPLETE
 argument_list|)
 expr_stmt|;
-name|Thread
+name|GenericTestUtils
 operator|.
-name|sleep
+name|waitFor
 argument_list|(
-literal|1000
+operator|new
+name|Supplier
+argument_list|<
+name|Boolean
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|Boolean
+name|get
+parameter_list|()
+block|{
+return|return
+name|ContainerState
+operator|.
+name|COMPLETE
+operator|.
+name|equals
+argument_list|(
+name|waitContainer
+operator|.
+name|cloneAndGetContainerStatus
+argument_list|()
+operator|.
+name|getState
+argument_list|()
+argument_list|)
+return|;
+block|}
+block|}
+argument_list|,
+literal|10
+argument_list|,
+name|interval
 argument_list|)
 expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|InterruptedException
-name|e
+name|TimeoutException
+name|te
 parameter_list|)
-block|{       }
+block|{
+name|fail
+argument_list|(
+literal|"Was waiting for "
+operator|+
+name|containerId
+operator|+
+literal|" to get to state "
+operator|+
+name|ContainerState
+operator|.
+name|COMPLETE
+operator|+
+literal|" but was in state "
+operator|+
+name|waitContainer
+operator|.
+name|cloneAndGetContainerStatus
+argument_list|()
+operator|.
+name|getState
+argument_list|()
+operator|+
+literal|" after the timeout"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|// Normally, Containers will be removed from NM context after they are
 comment|// explicitly acked by RM. Now, manually remove it for testing.
