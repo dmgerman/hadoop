@@ -327,9 +327,9 @@ name|notes
 operator|=
 literal|"If the "
 operator|+
-literal|"object already exists this call will overwrite or add with new version "
+literal|"object already exists this call will overwrite or add with new version"
 operator|+
-literal|"number if the bucket versioning is turned on."
+literal|" number if the bucket versioning is turned on."
 argument_list|)
 annotation|@
 name|ApiImplicitParams

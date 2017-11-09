@@ -244,29 +244,29 @@ return|return
 name|remaining
 return|;
 block|}
-comment|/**    * Set the capacity, used and remaining space on a datanode.    *    * @param capacity in bytes    * @param used in bytes    * @param remaining in bytes    */
+comment|/**    * Set the capacity, used and remaining space on a datanode.    *    * @param newCapacity in bytes    * @param newUsed in bytes    * @param newRemaining in bytes    */
 annotation|@
 name|VisibleForTesting
-DECL|method|set (long capacity, long used, long remaining)
+DECL|method|set (long newCapacity, long newUsed, long newRemaining)
 specifier|public
 name|void
 name|set
 parameter_list|(
 name|long
-name|capacity
+name|newCapacity
 parameter_list|,
 name|long
-name|used
+name|newUsed
 parameter_list|,
 name|long
-name|remaining
+name|newRemaining
 parameter_list|)
 block|{
 name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|capacity
+name|newCapacity
 argument_list|,
 literal|"Capacity cannot be null"
 argument_list|)
@@ -275,7 +275,7 @@ name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|used
+name|newUsed
 argument_list|,
 literal|"used cannot be null"
 argument_list|)
@@ -284,7 +284,7 @@ name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|remaining
+name|newRemaining
 argument_list|,
 literal|"remaining cannot be null"
 argument_list|)
@@ -293,7 +293,7 @@ name|Preconditions
 operator|.
 name|checkArgument
 argument_list|(
-name|capacity
+name|newCapacity
 operator|>=
 literal|0
 argument_list|,
@@ -306,7 +306,7 @@ name|Preconditions
 operator|.
 name|checkArgument
 argument_list|(
-name|used
+name|newUsed
 operator|>=
 literal|0
 argument_list|,
@@ -319,7 +319,7 @@ name|Preconditions
 operator|.
 name|checkArgument
 argument_list|(
-name|remaining
+name|newRemaining
 operator|>=
 literal|0
 argument_list|,
@@ -335,7 +335,7 @@ operator|=
 operator|new
 name|LongMetric
 argument_list|(
-name|capacity
+name|newCapacity
 argument_list|)
 expr_stmt|;
 name|this
@@ -345,7 +345,7 @@ operator|=
 operator|new
 name|LongMetric
 argument_list|(
-name|used
+name|newUsed
 argument_list|)
 expr_stmt|;
 name|this
@@ -355,7 +355,7 @@ operator|=
 operator|new
 name|LongMetric
 argument_list|(
-name|remaining
+name|newRemaining
 argument_list|)
 expr_stmt|;
 block|}

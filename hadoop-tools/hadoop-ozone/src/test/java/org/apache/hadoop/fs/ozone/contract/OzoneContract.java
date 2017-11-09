@@ -347,7 +347,6 @@ init|=
 literal|"contract/ozone.xml"
 decl_stmt|;
 DECL|method|OzoneContract (Configuration conf)
-specifier|public
 name|OzoneContract
 parameter_list|(
 name|Configuration

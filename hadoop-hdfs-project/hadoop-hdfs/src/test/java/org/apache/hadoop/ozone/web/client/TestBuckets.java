@@ -330,6 +330,10 @@ name|fail
 import|;
 end_import
 
+begin_comment
+comment|/**  * Test Ozone Bucket Lifecycle.  */
+end_comment
+
 begin_class
 DECL|class|TestBuckets
 specifier|public

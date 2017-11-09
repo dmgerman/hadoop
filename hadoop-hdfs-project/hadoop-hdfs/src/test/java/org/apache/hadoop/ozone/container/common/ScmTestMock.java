@@ -746,7 +746,7 @@ specifier|public
 name|StorageContainerDatanodeProtocolProtos
 operator|.
 name|SCMHeartbeatResponseProto
-DECL|method|sendHeartbeat (DatanodeID datanodeID, SCMNodeReport nodeReport, ReportState reportState)
+DECL|method|sendHeartbeat (DatanodeID datanodeID, SCMNodeReport nodeReport, ReportState scmReportState)
 name|sendHeartbeat
 parameter_list|(
 name|DatanodeID
@@ -756,7 +756,7 @@ name|SCMNodeReport
 name|nodeReport
 parameter_list|,
 name|ReportState
-name|reportState
+name|scmReportState
 parameter_list|)
 throws|throws
 name|IOException
@@ -775,7 +775,7 @@ name|this
 operator|.
 name|reportState
 operator|=
-name|reportState
+name|scmReportState
 expr_stmt|;
 name|sleepIfNeeded
 argument_list|()

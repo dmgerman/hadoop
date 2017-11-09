@@ -104,6 +104,10 @@ name|assertEquals
 import|;
 end_import
 
+begin_comment
+comment|/**  * Test Ozone Volume info structure.  */
+end_comment
+
 begin_class
 DECL|class|TestVolumeStructs
 specifier|public

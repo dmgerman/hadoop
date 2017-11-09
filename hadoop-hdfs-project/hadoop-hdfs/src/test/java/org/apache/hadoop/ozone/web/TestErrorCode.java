@@ -96,6 +96,10 @@ name|getRequestID
 import|;
 end_import
 
+begin_comment
+comment|/**  * Test Ozone Error Codes.  */
+end_comment
+
 begin_class
 DECL|class|TestErrorCode
 specifier|public

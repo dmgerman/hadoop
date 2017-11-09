@@ -925,20 +925,20 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setPipeline (Pipeline pipeline)
+DECL|method|setPipeline (Pipeline containerPipeline)
 specifier|public
 name|Builder
 name|setPipeline
 parameter_list|(
 name|Pipeline
-name|pipeline
+name|containerPipeline
 parameter_list|)
 block|{
 name|this
 operator|.
 name|pipeline
 operator|=
-name|pipeline
+name|containerPipeline
 expr_stmt|;
 return|return
 name|this
@@ -1001,26 +1001,26 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setStateEnterTime (long stateEnterTime)
+DECL|method|setStateEnterTime (long time)
 specifier|public
 name|Builder
 name|setStateEnterTime
 parameter_list|(
 name|long
-name|stateEnterTime
+name|time
 parameter_list|)
 block|{
 name|this
 operator|.
 name|stateEnterTime
 operator|=
-name|stateEnterTime
+name|time
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
-DECL|method|setOwner (OzoneProtos.Owner owner)
+DECL|method|setOwner (OzoneProtos.Owner containerOwner)
 specifier|public
 name|Builder
 name|setOwner
@@ -1028,33 +1028,33 @@ parameter_list|(
 name|OzoneProtos
 operator|.
 name|Owner
-name|owner
+name|containerOwner
 parameter_list|)
 block|{
 name|this
 operator|.
 name|owner
 operator|=
-name|owner
+name|containerOwner
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
-DECL|method|setContainerName (String containerName)
+DECL|method|setContainerName (String container)
 specifier|public
 name|Builder
 name|setContainerName
 parameter_list|(
 name|String
-name|containerName
+name|container
 parameter_list|)
 block|{
 name|this
 operator|.
 name|containerName
 operator|=
-name|containerName
+name|container
 expr_stmt|;
 return|return
 name|this

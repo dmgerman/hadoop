@@ -558,82 +558,82 @@ return|return
 name|this
 return|;
 block|}
-comment|/**      * Add the OzoneContainer.      *      * @param container - ozone container.      * @return Builder      */
-DECL|method|setContainer (OzoneContainer container)
+comment|/**      * Add the OzoneContainer.      *      * @param ozoneContainer - ozone container.      * @return Builder      */
+DECL|method|setContainer (OzoneContainer ozoneContainer)
 specifier|public
 name|Builder
 name|setContainer
 parameter_list|(
 name|OzoneContainer
-name|container
+name|ozoneContainer
 parameter_list|)
 block|{
 name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|container
+name|ozoneContainer
 argument_list|)
 expr_stmt|;
 name|this
 operator|.
 name|container
 operator|=
-name|container
+name|ozoneContainer
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
-comment|/**      * Set the Connection Manager.      *      * @param connectionManager      * @return this      */
-DECL|method|setConnectionManager (SCMConnectionManager connectionManager)
+comment|/**      * Set the Connection Manager.      *      * @param scmConnectionManager      * @return this      */
+DECL|method|setConnectionManager (SCMConnectionManager scmConnectionManager)
 specifier|public
 name|Builder
 name|setConnectionManager
 parameter_list|(
 name|SCMConnectionManager
-name|connectionManager
+name|scmConnectionManager
 parameter_list|)
 block|{
 name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|connectionManager
+name|scmConnectionManager
 argument_list|)
 expr_stmt|;
 name|this
 operator|.
 name|connectionManager
 operator|=
-name|connectionManager
+name|scmConnectionManager
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
-comment|/**      * Sets the Context.      *      * @param context - StateContext      * @return this      */
-DECL|method|setContext (StateContext context)
+comment|/**      * Sets the Context.      *      * @param stateContext - StateContext      * @return this      */
+DECL|method|setContext (StateContext stateContext)
 specifier|public
 name|Builder
 name|setContext
 parameter_list|(
 name|StateContext
-name|context
+name|stateContext
 parameter_list|)
 block|{
 name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|context
+name|stateContext
 argument_list|)
 expr_stmt|;
 name|this
 operator|.
 name|context
 operator|=
-name|context
+name|stateContext
 expr_stmt|;
 return|return
 name|this

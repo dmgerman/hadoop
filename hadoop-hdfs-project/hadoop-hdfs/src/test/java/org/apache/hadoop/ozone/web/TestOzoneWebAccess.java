@@ -350,6 +350,10 @@ name|assertEquals
 import|;
 end_import
 
+begin_comment
+comment|/**  * Test Ozone Access through REST protocol.  */
+end_comment
+
 begin_class
 DECL|class|TestOzoneWebAccess
 specifier|public

@@ -1484,68 +1484,68 @@ return|return
 name|cacheSize
 return|;
 block|}
-comment|/**      * Sets the Config to be used by this cache.      *      * @param configuration - Config      * @return Builder      */
-DECL|method|setConfiguration (Configuration configuration)
+comment|/**      * Sets the Config to be used by this cache.      *      * @param conf - Config      * @return Builder      */
+DECL|method|setConfiguration (Configuration conf)
 specifier|public
 name|Builder
 name|setConfiguration
 parameter_list|(
 name|Configuration
-name|configuration
+name|conf
 parameter_list|)
 block|{
 name|this
 operator|.
 name|configuration
 operator|=
-name|configuration
+name|conf
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
-comment|/**      * Sets the user name who is the owner of this volume.      *      * @param userName - name of the owner, please note this is not the current      * user name.      * @return - Builder      */
-DECL|method|setUserName (String userName)
+comment|/**      * Sets the user name who is the owner of this volume.      *      * @param user - name of the owner, please note this is not the current      * user name.      * @return - Builder      */
+DECL|method|setUserName (String user)
 specifier|public
 name|Builder
 name|setUserName
 parameter_list|(
 name|String
-name|userName
+name|user
 parameter_list|)
 block|{
 name|this
 operator|.
 name|userName
 operator|=
-name|userName
+name|user
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
-comment|/**      * Sets the VolumeName.      *      * @param volumeName - Name of the volume      * @return Builder      */
-DECL|method|setVolumeName (String volumeName)
+comment|/**      * Sets the VolumeName.      *      * @param volume - Name of the volume      * @return Builder      */
+DECL|method|setVolumeName (String volume)
 specifier|public
 name|Builder
 name|setVolumeName
 parameter_list|(
 name|String
-name|volumeName
+name|volume
 parameter_list|)
 block|{
 name|this
 operator|.
 name|volumeName
 operator|=
-name|volumeName
+name|volume
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
-comment|/**      * Sets the Pipelines that form this volume.      *      * @param pipelines - list of pipelines      * @return Builder      */
-DECL|method|setPipelines (List<Pipeline> pipelines)
+comment|/**      * Sets the Pipelines that form this volume.      *      * @param pipelineList - list of pipelines      * @return Builder      */
+DECL|method|setPipelines (List<Pipeline> pipelineList)
 specifier|public
 name|Builder
 name|setPipelines
@@ -1554,94 +1554,94 @@ name|List
 argument_list|<
 name|Pipeline
 argument_list|>
-name|pipelines
+name|pipelineList
 parameter_list|)
 block|{
 name|this
 operator|.
 name|pipelines
 operator|=
-name|pipelines
+name|pipelineList
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
-comment|/**      * Sets the Client Manager that manages the communication with containers.      *      * @param clientManager - clientManager.      * @return - Builder      */
-DECL|method|setClientManager (XceiverClientManager clientManager)
+comment|/**      * Sets the Client Manager that manages the communication with containers.      *      * @param xceiverClientManager - clientManager.      * @return - Builder      */
+DECL|method|setClientManager (XceiverClientManager xceiverClientManager)
 specifier|public
 name|Builder
 name|setClientManager
 parameter_list|(
 name|XceiverClientManager
-name|clientManager
+name|xceiverClientManager
 parameter_list|)
 block|{
 name|this
 operator|.
 name|clientManager
 operator|=
-name|clientManager
+name|xceiverClientManager
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
-comment|/**      * Sets the block size -- Typical sizes are 4KB, 8KB etc.      *      * @param blockSize - BlockSize.      * @return - Builder      */
-DECL|method|setBlockSize (int blockSize)
+comment|/**      * Sets the block size -- Typical sizes are 4KB, 8KB etc.      *      * @param size - BlockSize.      * @return - Builder      */
+DECL|method|setBlockSize (int size)
 specifier|public
 name|Builder
 name|setBlockSize
 parameter_list|(
 name|int
-name|blockSize
+name|size
 parameter_list|)
 block|{
 name|this
 operator|.
 name|blockSize
 operator|=
-name|blockSize
+name|size
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
-comment|/**      * Sets the volumeSize.      *      * @param volumeSize - VolumeSize      * @return - Builder      */
-DECL|method|setVolumeSize (long volumeSize)
+comment|/**      * Sets the volumeSize.      *      * @param size - VolumeSize      * @return - Builder      */
+DECL|method|setVolumeSize (long size)
 specifier|public
 name|Builder
 name|setVolumeSize
 parameter_list|(
 name|long
-name|volumeSize
+name|size
 parameter_list|)
 block|{
 name|this
 operator|.
 name|volumeSize
 operator|=
-name|volumeSize
+name|size
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
-comment|/**      * Set flusher.      * @param flusher - cache Flusher      * @return Builder.      */
-DECL|method|setFlusher (ContainerCacheFlusher flusher)
+comment|/**      * Set flusher.      * @param containerCacheFlusher - cache Flusher      * @return Builder.      */
+DECL|method|setFlusher (ContainerCacheFlusher containerCacheFlusher)
 specifier|public
 name|Builder
 name|setFlusher
 parameter_list|(
 name|ContainerCacheFlusher
-name|flusher
+name|containerCacheFlusher
 parameter_list|)
 block|{
 name|this
 operator|.
 name|flusher
 operator|=
-name|flusher
+name|containerCacheFlusher
 expr_stmt|;
 return|return
 name|this

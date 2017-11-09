@@ -114,6 +114,10 @@ name|fail
 import|;
 end_import
 
+begin_comment
+comment|/**  * Test Ozone Volume Quota.  */
+end_comment
+
 begin_class
 DECL|class|TestQuota
 specifier|public

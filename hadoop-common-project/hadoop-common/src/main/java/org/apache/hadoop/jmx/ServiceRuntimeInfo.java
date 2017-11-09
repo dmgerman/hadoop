@@ -32,13 +32,13 @@ name|String
 name|getVersion
 parameter_list|()
 function_decl|;
-comment|/**    * Get the version of software running on the Namenode    *    * @return a string representing the version    */
+comment|/**    * Get the version of software running on the Namenode.    *    * @return a string representing the version    */
 DECL|method|getSoftwareVersion ()
 name|String
 name|getSoftwareVersion
 parameter_list|()
 function_decl|;
-comment|/**    * Get the compilation information which contains date, user and branch    *    * @return the compilation information, as a JSON string.    */
+comment|/**    * Get the compilation information which contains date, user and branch.    *    * @return the compilation information, as a JSON string.    */
 DECL|method|getCompileInfo ()
 name|String
 name|getCompileInfo

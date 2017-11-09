@@ -1279,14 +1279,14 @@ operator|.
 name|SHUTDOWN
 return|;
 block|}
-comment|/**    * Create a command handler thread.    *    * @param conf    */
-DECL|method|initCommandHandlerThread (Configuration conf)
+comment|/**    * Create a command handler thread.    *    * @param config    */
+DECL|method|initCommandHandlerThread (Configuration config)
 specifier|private
 name|void
 name|initCommandHandlerThread
 parameter_list|(
 name|Configuration
-name|conf
+name|config
 parameter_list|)
 block|{
 comment|/**      * Task that periodically checks if we have any outstanding commands.      * It is assumed that commands can be processed slowly and in order.      * This assumption might change in future. Right now due to this assumption      * we have single command  queue process thread.      */

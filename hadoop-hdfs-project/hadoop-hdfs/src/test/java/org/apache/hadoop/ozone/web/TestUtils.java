@@ -122,6 +122,10 @@ name|fail
 import|;
 end_import
 
+begin_comment
+comment|/**  * Test Ozone Utility operations like verifying resource name.  */
+end_comment
+
 begin_class
 DECL|class|TestUtils
 specifier|public

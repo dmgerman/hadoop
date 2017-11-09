@@ -778,6 +778,10 @@ name|fail
 import|;
 end_import
 
+begin_comment
+comment|/**  * Test Ozone Key Lifecycle.  */
+end_comment
+
 begin_class
 DECL|class|TestKeys
 specifier|public

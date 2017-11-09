@@ -159,61 +159,61 @@ operator|.
 name|value
 return|;
 block|}
-comment|/**    * Sets the value of this metric.    *    * @param value - value of the metric.    */
+comment|/**    * Sets the value of this metric.    *    * @param setValue - value of the metric.    */
 annotation|@
 name|Override
-DECL|method|set (Long value)
+DECL|method|set (Long setValue)
 specifier|public
 name|void
 name|set
 parameter_list|(
 name|Long
-name|value
+name|setValue
 parameter_list|)
 block|{
 name|this
 operator|.
 name|value
 operator|=
-name|value
+name|setValue
 expr_stmt|;
 block|}
-comment|/**    * Adds a value of to the base.    *    * @param value - value    */
+comment|/**    * Adds a value of to the base.    *    * @param addValue - value    */
 annotation|@
 name|Override
-DECL|method|add (Long value)
+DECL|method|add (Long addValue)
 specifier|public
 name|void
 name|add
 parameter_list|(
 name|Long
-name|value
+name|addValue
 parameter_list|)
 block|{
 name|this
 operator|.
 name|value
 operator|+=
-name|value
+name|addValue
 expr_stmt|;
 block|}
-comment|/**    * subtract a value.    *    * @param value value    */
+comment|/**    * subtract a value.    *    * @param subValue value    */
 annotation|@
 name|Override
-DECL|method|subtract (Long value)
+DECL|method|subtract (Long subValue)
 specifier|public
 name|void
 name|subtract
 parameter_list|(
 name|Long
-name|value
+name|subValue
 parameter_list|)
 block|{
 name|this
 operator|.
 name|value
 operator|-=
-name|value
+name|subValue
 expr_stmt|;
 block|}
 comment|/**    * Compares this object with the specified object for order.  Returns a    * negative integer, zero, or a positive integer as this object is less    * than, equal to, or greater than the specified object.    *    * @param o the object to be compared.    * @return a negative integer, zero, or a positive integer as this object is    * less than, equal to, or greater than the specified object.    * @throws NullPointerException if the specified object is null    * @throws ClassCastException   if the specified object's type prevents it    *                              from being compared to this object.    */

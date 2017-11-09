@@ -25,6 +25,7 @@ end_comment
 begin_class
 DECL|class|Constants
 specifier|public
+specifier|final
 class|class
 name|Constants
 block|{
