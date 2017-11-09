@@ -3080,7 +3080,7 @@ literal|"Failed to choose from local rack (location = "
 operator|+
 name|localRack
 operator|+
-literal|"); the second replica is not found, retry choosing ramdomly"
+literal|"); the second replica is not found, retry choosing randomly"
 argument_list|,
 name|e
 argument_list|)
@@ -3201,7 +3201,7 @@ literal|"Failed to choose from the next rack (location = "
 operator|+
 name|nextRack
 operator|+
-literal|"), retry choosing ramdomly"
+literal|"), retry choosing randomly"
 argument_list|,
 name|e
 argument_list|)
