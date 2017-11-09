@@ -9469,6 +9469,25 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|VisibleForTesting
+annotation|@
+name|Override
+DECL|method|killContainer (RMContainer container)
+specifier|public
+name|void
+name|killContainer
+parameter_list|(
+name|RMContainer
+name|container
+parameter_list|)
+block|{
+name|markContainerForKillable
+argument_list|(
+name|container
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|markContainerForKillable ( RMContainer killableContainer)
 specifier|public
 name|void

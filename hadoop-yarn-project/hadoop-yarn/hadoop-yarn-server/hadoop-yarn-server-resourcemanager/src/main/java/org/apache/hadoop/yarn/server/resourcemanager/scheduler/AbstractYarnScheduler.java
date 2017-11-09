@@ -6811,6 +6811,19 @@ operator|-
 literal|1
 return|;
 block|}
+comment|/**    * Kill a RMContainer. This is meant to be called in tests only to simulate    * AM container failures.    * @param container the container to kill    */
+annotation|@
+name|VisibleForTesting
+DECL|method|killContainer (RMContainer container)
+specifier|public
+specifier|abstract
+name|void
+name|killContainer
+parameter_list|(
+name|RMContainer
+name|container
+parameter_list|)
+function_decl|;
 comment|/**    * Update internal state of the scheduler.  This can be useful for scheduler    * implementations that maintain some state that needs to be periodically    * updated; for example, metrics or queue resources.  It will be called by the    * {@link UpdateThread} every {@link #updateInterval}.  By default, it will    * not run; subclasses should set {@link #updateInterval} to a    * positive value during {@link #serviceInit(Configuration)} if they want to    * enable the thread.    */
 annotation|@
 name|VisibleForTesting

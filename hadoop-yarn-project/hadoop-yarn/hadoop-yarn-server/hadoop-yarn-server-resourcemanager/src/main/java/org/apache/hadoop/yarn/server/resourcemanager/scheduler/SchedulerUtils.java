@@ -726,6 +726,33 @@ name|diagnostics
 argument_list|)
 return|;
 block|}
+comment|/**    * Utility to create a {@link ContainerStatus} for killed containers.    * @param containerId {@link ContainerId} of the killed container.    * @param diagnostics diagnostic message    * @return<code>ContainerStatus</code> for a killed container    */
+DECL|method|createKilledContainerStatus ( ContainerId containerId, String diagnostics)
+specifier|public
+specifier|static
+name|ContainerStatus
+name|createKilledContainerStatus
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|String
+name|diagnostics
+parameter_list|)
+block|{
+return|return
+name|createAbnormalContainerStatus
+argument_list|(
+name|containerId
+argument_list|,
+name|ContainerExitStatus
+operator|.
+name|KILLED_BY_RESOURCEMANAGER
+argument_list|,
+name|diagnostics
+argument_list|)
+return|;
+block|}
 comment|/**    * Utility to create a {@link ContainerStatus} during exceptional    * circumstances.    *    * @param containerId {@link ContainerId} of returned/released/lost container.    * @param diagnostics diagnostic message    * @return<code>ContainerStatus</code> for an returned/released/lost    *         container    */
 DECL|method|createPreemptedContainerStatus ( ContainerId containerId, String diagnostics)
 specifier|public

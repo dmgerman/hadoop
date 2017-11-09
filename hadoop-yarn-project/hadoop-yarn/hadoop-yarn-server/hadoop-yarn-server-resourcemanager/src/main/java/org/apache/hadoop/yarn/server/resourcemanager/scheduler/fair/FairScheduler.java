@@ -4329,6 +4329,55 @@ argument_list|)
 return|;
 block|}
 annotation|@
+name|VisibleForTesting
+annotation|@
+name|Override
+DECL|method|killContainer (RMContainer container)
+specifier|public
+name|void
+name|killContainer
+parameter_list|(
+name|RMContainer
+name|container
+parameter_list|)
+block|{
+name|ContainerStatus
+name|status
+init|=
+name|SchedulerUtils
+operator|.
+name|createKilledContainerStatus
+argument_list|(
+name|container
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|,
+literal|"Killed by RM to simulate an AM container failure"
+argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Killing container "
+operator|+
+name|container
+argument_list|)
+expr_stmt|;
+name|completedContainer
+argument_list|(
+name|container
+argument_list|,
+name|status
+argument_list|,
+name|RMContainerEventType
+operator|.
+name|KILL
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
 name|Override
 DECL|method|allocate (ApplicationAttemptId appAttemptId, List<ResourceRequest> ask, List<ContainerId> release, List<String> blacklistAdditions, List<String> blacklistRemovals, ContainerUpdates updateRequests)
 specifier|public
