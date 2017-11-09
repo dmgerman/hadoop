@@ -393,6 +393,8 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+literal|0
+argument_list|,
 name|cluster
 operator|.
 name|getKeySpaceManager
@@ -403,8 +405,6 @@ argument_list|()
 operator|.
 name|getNumVolumeCreateFails
 argument_list|()
-argument_list|,
-literal|0
 argument_list|)
 expr_stmt|;
 block|}
@@ -430,6 +430,8 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+literal|0
+argument_list|,
 name|cluster
 operator|.
 name|getKeySpaceManager
@@ -440,8 +442,6 @@ argument_list|()
 operator|.
 name|getNumVolumeCreateFails
 argument_list|()
-argument_list|,
-literal|0
 argument_list|)
 expr_stmt|;
 block|}
@@ -467,6 +467,8 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+literal|0
+argument_list|,
 name|cluster
 operator|.
 name|getKeySpaceManager
@@ -477,8 +479,6 @@ argument_list|()
 operator|.
 name|getNumVolumeCreateFails
 argument_list|()
-argument_list|,
-literal|0
 argument_list|)
 expr_stmt|;
 block|}
@@ -504,6 +504,8 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+literal|0
+argument_list|,
 name|cluster
 operator|.
 name|getKeySpaceManager
@@ -514,8 +516,6 @@ argument_list|()
 operator|.
 name|getNumVolumeCreateFails
 argument_list|()
-argument_list|,
-literal|0
 argument_list|)
 expr_stmt|;
 block|}
@@ -541,6 +541,8 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+literal|0
+argument_list|,
 name|cluster
 operator|.
 name|getKeySpaceManager
@@ -551,8 +553,6 @@ argument_list|()
 operator|.
 name|getNumVolumeCreateFails
 argument_list|()
-argument_list|,
-literal|0
 argument_list|)
 expr_stmt|;
 block|}
@@ -578,6 +578,8 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+literal|0
+argument_list|,
 name|cluster
 operator|.
 name|getKeySpaceManager
@@ -588,8 +590,6 @@ argument_list|()
 operator|.
 name|getNumVolumeCreateFails
 argument_list|()
-argument_list|,
-literal|0
 argument_list|)
 expr_stmt|;
 block|}

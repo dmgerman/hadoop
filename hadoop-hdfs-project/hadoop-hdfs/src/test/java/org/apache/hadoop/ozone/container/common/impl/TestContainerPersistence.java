@@ -4836,6 +4836,8 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+literal|"shire_new"
+argument_list|,
 name|actualNewData
 operator|.
 name|getAllMetadata
@@ -4845,14 +4847,14 @@ name|get
 argument_list|(
 literal|"VOLUME"
 argument_list|)
-argument_list|,
-literal|"shire_new"
 argument_list|)
 expr_stmt|;
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+literal|"bilbo_new"
+argument_list|,
 name|actualNewData
 operator|.
 name|getAllMetadata
@@ -4862,8 +4864,6 @@ name|get
 argument_list|(
 literal|"owner"
 argument_list|)
-argument_list|,
-literal|"bilbo_new"
 argument_list|)
 expr_stmt|;
 comment|// Verify container data on disk
@@ -4948,6 +4948,8 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+literal|"shire_new"
+argument_list|,
 name|actualContainerData
 operator|.
 name|getAllMetadata
@@ -4957,14 +4959,14 @@ name|get
 argument_list|(
 literal|"VOLUME"
 argument_list|)
-argument_list|,
-literal|"shire_new"
 argument_list|)
 expr_stmt|;
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+literal|"bilbo_new"
+argument_list|,
 name|actualContainerData
 operator|.
 name|getAllMetadata
@@ -4974,8 +4976,6 @@ name|get
 argument_list|(
 literal|"owner"
 argument_list|)
-argument_list|,
-literal|"bilbo_new"
 argument_list|)
 expr_stmt|;
 block|}
@@ -5095,6 +5095,8 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+literal|"shire_new_1"
+argument_list|,
 name|actualNewData
 operator|.
 name|getAllMetadata
@@ -5104,14 +5106,14 @@ name|get
 argument_list|(
 literal|"VOLUME"
 argument_list|)
-argument_list|,
-literal|"shire_new_1"
 argument_list|)
 expr_stmt|;
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+literal|"bilbo_new_1"
+argument_list|,
 name|actualNewData
 operator|.
 name|getAllMetadata
@@ -5121,8 +5123,6 @@ name|get
 argument_list|(
 literal|"owner"
 argument_list|)
-argument_list|,
-literal|"bilbo_new_1"
 argument_list|)
 expr_stmt|;
 comment|// Update a non-existing container
