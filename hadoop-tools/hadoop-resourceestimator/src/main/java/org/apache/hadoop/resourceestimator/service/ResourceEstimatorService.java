@@ -158,6 +158,22 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|sun
+operator|.
+name|jersey
+operator|.
+name|spi
+operator|.
+name|resource
+operator|.
+name|Singleton
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -500,26 +516,14 @@ name|TypeToken
 import|;
 end_import
 
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|inject
-operator|.
-name|Singleton
-import|;
-end_import
-
 begin_comment
 comment|/**  * Resource Estimator Service which provides a set of REST APIs for users to  * use the estimation service.  */
 end_comment
 
 begin_class
-DECL|class|ResourceEstimatorService
 annotation|@
 name|Singleton
+DECL|class|ResourceEstimatorService
 annotation|@
 name|Path
 argument_list|(
