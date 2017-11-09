@@ -1061,6 +1061,29 @@ name|LAYOUT_VERSION
 argument_list|)
 throw|;
 block|}
+comment|// set the cluster id, if given
+if|if
+condition|(
+name|opts
+operator|.
+name|clusterID
+operator|.
+name|length
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+name|info
+operator|.
+name|setClusterID
+argument_list|(
+name|opts
+operator|.
+name|clusterID
+argument_list|)
+expr_stmt|;
+block|}
 name|stor
 operator|.
 name|format
@@ -1104,7 +1127,6 @@ expr_stmt|;
 block|}
 else|else
 block|{
-comment|// XXX necessary? writing a NNStorage now...
 name|outdir
 operator|=
 literal|null
@@ -3198,6 +3220,11 @@ name|FileRegion
 argument_list|>
 name|blocks
 decl_stmt|;
+DECL|field|clusterID
+specifier|private
+name|String
+name|clusterID
+decl_stmt|;
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -3391,6 +3418,10 @@ name|BlockResolver
 operator|.
 name|class
 argument_list|)
+expr_stmt|;
+name|clusterID
+operator|=
+literal|""
 expr_stmt|;
 block|}
 annotation|@
@@ -3627,6 +3658,25 @@ operator|.
 name|aliasMap
 operator|=
 name|blocksClass
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|clusterID (String clusterID)
+specifier|public
+name|Options
+name|clusterID
+parameter_list|(
+name|String
+name|clusterID
+parameter_list|)
+block|{
+name|this
+operator|.
+name|clusterID
+operator|=
+name|clusterID
 expr_stmt|;
 return|return
 name|this
