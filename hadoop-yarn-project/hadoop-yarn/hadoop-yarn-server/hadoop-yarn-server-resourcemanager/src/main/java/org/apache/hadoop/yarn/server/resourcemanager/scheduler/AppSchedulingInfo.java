@@ -446,7 +446,29 @@ name|scheduler
 operator|.
 name|placement
 operator|.
-name|LocalitySchedulingPlacementSet
+name|AppPlacementAllocator
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|placement
+operator|.
+name|LocalityAppPlacementAllocator
 import|;
 end_import
 
@@ -469,28 +491,6 @@ operator|.
 name|placement
 operator|.
 name|ResourceRequestUpdateResult
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
-name|placement
-operator|.
-name|SchedulingPlacementSet
 import|;
 end_import
 
@@ -675,18 +675,19 @@ name|ConcurrentSkipListSet
 argument_list|<>
 argument_list|()
 decl_stmt|;
+specifier|private
 specifier|final
 name|Map
 argument_list|<
 name|SchedulerRequestKey
 argument_list|,
-name|SchedulingPlacementSet
+name|AppPlacementAllocator
 argument_list|<
 name|SchedulerNode
 argument_list|>
 argument_list|>
-DECL|field|schedulerKeyToPlacementSets
-name|schedulerKeyToPlacementSets
+DECL|field|schedulerKeyToAppPlacementAllocator
+name|schedulerKeyToAppPlacementAllocator
 init|=
 operator|new
 name|ConcurrentHashMap
@@ -934,7 +935,7 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
-name|schedulerKeyToPlacementSets
+name|schedulerKeyToAppPlacementAllocator
 operator|.
 name|clear
 argument_list|()
@@ -1088,10 +1089,10 @@ name|request
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Update scheduling placement set
+comment|// Update AppPlacementAllocator by dedup requests.
 name|offswitchResourcesUpdated
 operator|=
-name|addToPlacementSets
+name|addRequestToAppPlacement
 argument_list|(
 name|recoverPreemptedRequestForAContainer
 argument_list|,
@@ -1113,16 +1114,16 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|removePlacementSets (SchedulerRequestKey schedulerRequestKey)
+DECL|method|removeAppPlacement (SchedulerRequestKey schedulerRequestKey)
 specifier|public
 name|void
-name|removePlacementSets
+name|removeAppPlacement
 parameter_list|(
 name|SchedulerRequestKey
 name|schedulerRequestKey
 parameter_list|)
 block|{
-name|schedulerKeyToPlacementSets
+name|schedulerKeyToAppPlacementAllocator
 operator|.
 name|remove
 argument_list|(
@@ -1130,9 +1131,9 @@ name|schedulerRequestKey
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addToPlacementSets ( boolean recoverPreemptedRequestForAContainer, Map<SchedulerRequestKey, Map<String, ResourceRequest>> dedupRequests)
+DECL|method|addRequestToAppPlacement ( boolean recoverPreemptedRequestForAContainer, Map<SchedulerRequestKey, Map<String, ResourceRequest>> dedupRequests)
 name|boolean
-name|addToPlacementSets
+name|addRequestToAppPlacement
 parameter_list|(
 name|boolean
 name|recoverPreemptedRequestForAContainer
@@ -1190,7 +1191,7 @@ decl_stmt|;
 if|if
 condition|(
 operator|!
-name|schedulerKeyToPlacementSets
+name|schedulerKeyToAppPlacementAllocator
 operator|.
 name|containsKey
 argument_list|(
@@ -1198,14 +1199,14 @@ name|schedulerRequestKey
 argument_list|)
 condition|)
 block|{
-name|schedulerKeyToPlacementSets
+name|schedulerKeyToAppPlacementAllocator
 operator|.
 name|put
 argument_list|(
 name|schedulerRequestKey
 argument_list|,
 operator|new
-name|LocalitySchedulingPlacementSet
+name|LocalityAppPlacementAllocator
 argument_list|<>
 argument_list|(
 name|this
@@ -1213,11 +1214,11 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Update placement set
+comment|// Update AppPlacementAllocator
 name|ResourceRequestUpdateResult
 name|pendingAmountChanges
 init|=
-name|schedulerKeyToPlacementSets
+name|schedulerKeyToAppPlacementAllocator
 operator|.
 name|get
 argument_list|(
@@ -1332,7 +1333,7 @@ argument_list|(
 name|schedulerKey
 argument_list|)
 expr_stmt|;
-name|schedulerKeyToPlacementSets
+name|schedulerKeyToAppPlacementAllocator
 operator|.
 name|remove
 argument_list|(
@@ -1787,10 +1788,10 @@ argument_list|()
 expr_stmt|;
 for|for
 control|(
-name|SchedulingPlacementSet
-name|ps
+name|AppPlacementAllocator
+name|ap
 range|:
-name|schedulerKeyToPlacementSets
+name|schedulerKeyToAppPlacementAllocator
 operator|.
 name|values
 argument_list|()
@@ -1800,7 +1801,7 @@ name|ret
 operator|.
 name|addAll
 argument_list|(
-name|ps
+name|ap
 operator|.
 name|getResourceRequests
 argument_list|()
@@ -1907,10 +1908,10 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
-name|SchedulingPlacementSet
-name|ps
+name|AppPlacementAllocator
+name|ap
 init|=
-name|schedulerKeyToPlacementSets
+name|schedulerKeyToAppPlacementAllocator
 operator|.
 name|get
 argument_list|(
@@ -1919,7 +1920,7 @@ argument_list|)
 decl_stmt|;
 return|return
 operator|(
-name|ps
+name|ap
 operator|==
 literal|null
 operator|)
@@ -1928,7 +1929,7 @@ name|PendingAsk
 operator|.
 name|ZERO
 else|:
-name|ps
+name|ap
 operator|.
 name|getPendingAsk
 argument_list|(
@@ -2044,7 +2045,7 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|schedulerKeyToPlacementSets
+name|schedulerKeyToAppPlacementAllocator
 operator|.
 name|get
 argument_list|(
@@ -2131,10 +2132,10 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|SchedulingPlacementSet
-name|ps
+name|AppPlacementAllocator
+name|ap
 range|:
-name|schedulerKeyToPlacementSets
+name|schedulerKeyToAppPlacementAllocator
 operator|.
 name|values
 argument_list|()
@@ -2143,7 +2144,7 @@ block|{
 name|PendingAsk
 name|ask
 init|=
-name|ps
+name|ap
 operator|.
 name|getPendingAsk
 argument_list|(
@@ -2166,7 +2167,7 @@ name|oldMetrics
 operator|.
 name|decrPendingResources
 argument_list|(
-name|ps
+name|ap
 operator|.
 name|getPrimaryRequestedNodePartition
 argument_list|()
@@ -2188,7 +2189,7 @@ name|newMetrics
 operator|.
 name|incrPendingResources
 argument_list|(
-name|ps
+name|ap
 operator|.
 name|getPrimaryRequestedNodePartition
 argument_list|()
@@ -2229,7 +2230,7 @@ name|queue
 operator|.
 name|decPendingResource
 argument_list|(
-name|ps
+name|ap
 operator|.
 name|getPrimaryRequestedNodePartition
 argument_list|()
@@ -2241,7 +2242,7 @@ name|newQueue
 operator|.
 name|incPendingResource
 argument_list|(
-name|ps
+name|ap
 operator|.
 name|getPrimaryRequestedNodePartition
 argument_list|()
@@ -2334,10 +2335,10 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|SchedulingPlacementSet
-name|ps
+name|AppPlacementAllocator
+name|ap
 range|:
-name|schedulerKeyToPlacementSets
+name|schedulerKeyToAppPlacementAllocator
 operator|.
 name|values
 argument_list|()
@@ -2346,7 +2347,7 @@ block|{
 name|PendingAsk
 name|ask
 init|=
-name|ps
+name|ap
 operator|.
 name|getPendingAsk
 argument_list|(
@@ -2369,7 +2370,7 @@ name|metrics
 operator|.
 name|decrPendingResources
 argument_list|(
-name|ps
+name|ap
 operator|.
 name|getPrimaryRequestedNodePartition
 argument_list|()
@@ -2392,7 +2393,7 @@ name|queue
 operator|.
 name|decPendingResource
 argument_list|(
-name|ps
+name|ap
 operator|.
 name|getPrimaryRequestedNodePartition
 argument_list|()
@@ -2675,10 +2676,10 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
-name|SchedulingPlacementSet
-name|ps
+name|AppPlacementAllocator
+name|ap
 init|=
-name|schedulerKeyToPlacementSets
+name|schedulerKeyToAppPlacementAllocator
 operator|.
 name|get
 argument_list|(
@@ -2689,7 +2690,7 @@ if|if
 condition|(
 literal|null
 operator|==
-name|ps
+name|ap
 condition|)
 block|{
 return|return
@@ -2697,7 +2698,7 @@ literal|false
 return|;
 block|}
 return|return
-name|ps
+name|ap
 operator|.
 name|canAllocate
 argument_list|(
@@ -2849,20 +2850,19 @@ name|type
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Get placement-set by specified schedulerKey
-comment|// Now simply return all node of the input clusterPlacementSet
-DECL|method|getSchedulingPlacementSet ( SchedulerRequestKey schedulerkey)
+comment|// Get AppPlacementAllocator by specified schedulerKey
+DECL|method|getAppPlacementAllocator ( SchedulerRequestKey schedulerkey)
 specifier|public
 parameter_list|<
 name|N
 extends|extends
 name|SchedulerNode
 parameter_list|>
-name|SchedulingPlacementSet
+name|AppPlacementAllocator
 argument_list|<
 name|N
 argument_list|>
-name|getSchedulingPlacementSet
+name|getAppPlacementAllocator
 parameter_list|(
 name|SchedulerRequestKey
 name|schedulerkey
@@ -2870,12 +2870,12 @@ parameter_list|)
 block|{
 return|return
 operator|(
-name|SchedulingPlacementSet
+name|AppPlacementAllocator
 argument_list|<
 name|N
 argument_list|>
 operator|)
-name|schedulerKeyToPlacementSets
+name|schedulerKeyToAppPlacementAllocator
 operator|.
 name|get
 argument_list|(
@@ -2905,10 +2905,10 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
-name|SchedulingPlacementSet
-name|ps
+name|AppPlacementAllocator
+name|ap
 init|=
-name|schedulerKeyToPlacementSets
+name|schedulerKeyToAppPlacementAllocator
 operator|.
 name|get
 argument_list|(
@@ -2917,12 +2917,12 @@ argument_list|)
 decl_stmt|;
 return|return
 operator|(
-name|ps
+name|ap
 operator|==
 literal|null
 operator|)
 operator|||
-name|ps
+name|ap
 operator|.
 name|canDelayTo
 argument_list|(
@@ -2965,10 +2965,10 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
-name|SchedulingPlacementSet
-name|ps
+name|AppPlacementAllocator
+name|ap
 init|=
-name|schedulerKeyToPlacementSets
+name|schedulerKeyToAppPlacementAllocator
 operator|.
 name|get
 argument_list|(
@@ -2977,12 +2977,12 @@ argument_list|)
 decl_stmt|;
 return|return
 operator|(
-name|ps
+name|ap
 operator|!=
 literal|null
 operator|)
 operator|&&
-name|ps
+name|ap
 operator|.
 name|acceptNodePartition
 argument_list|(

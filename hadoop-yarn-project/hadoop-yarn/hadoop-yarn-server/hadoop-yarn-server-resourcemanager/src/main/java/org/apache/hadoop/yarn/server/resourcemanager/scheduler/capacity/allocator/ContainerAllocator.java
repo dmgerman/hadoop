@@ -96,26 +96,6 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|rmcontainer
-operator|.
-name|RMContainerState
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|scheduler
 operator|.
 name|activities
@@ -254,7 +234,7 @@ name|scheduler
 operator|.
 name|placement
 operator|.
-name|PlacementSet
+name|CandidateNodeSet
 import|;
 end_import
 
@@ -273,24 +253,6 @@ operator|.
 name|resource
 operator|.
 name|ResourceCalculator
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|resource
-operator|.
-name|Resources
 import|;
 end_import
 
@@ -376,7 +338,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|assignContainers (Resource clusterResource, PlacementSet<FiCaSchedulerNode> ps, SchedulingMode schedulingMode, ResourceLimits resourceLimits, RMContainer reservedContainer)
+DECL|method|assignContainers (Resource clusterResource, CandidateNodeSet<FiCaSchedulerNode> candidates, SchedulingMode schedulingMode, ResourceLimits resourceLimits, RMContainer reservedContainer)
 specifier|public
 name|CSAssignment
 name|assignContainers
@@ -384,11 +346,11 @@ parameter_list|(
 name|Resource
 name|clusterResource
 parameter_list|,
-name|PlacementSet
+name|CandidateNodeSet
 argument_list|<
 name|FiCaSchedulerNode
 argument_list|>
-name|ps
+name|candidates
 parameter_list|,
 name|SchedulingMode
 name|schedulingMode
@@ -407,7 +369,7 @@ name|assignContainers
 argument_list|(
 name|clusterResource
 argument_list|,
-name|ps
+name|candidates
 argument_list|,
 name|schedulingMode
 argument_list|,

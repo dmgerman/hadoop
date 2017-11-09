@@ -2094,7 +2094,7 @@ name|scheduler
 operator|.
 name|placement
 operator|.
-name|SimplePlacementSet
+name|SimpleCandidateNodeSet
 import|;
 end_import
 
@@ -27386,7 +27386,7 @@ operator|.
 name|allocateContainersToNode
 argument_list|(
 operator|new
-name|SimplePlacementSet
+name|SimpleCandidateNodeSet
 argument_list|<>
 argument_list|(
 name|node

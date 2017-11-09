@@ -322,18 +322,22 @@ name|ReentrantReadWriteLock
 import|;
 end_import
 
+begin_comment
+comment|/**  * This is an implementation of the {@link AppPlacementAllocator} that takes  * into account locality preferences (node, rack, any) when allocating  * containers.  */
+end_comment
+
 begin_class
-DECL|class|LocalitySchedulingPlacementSet
+DECL|class|LocalityAppPlacementAllocator
 specifier|public
 class|class
-name|LocalitySchedulingPlacementSet
+name|LocalityAppPlacementAllocator
 parameter_list|<
 name|N
 extends|extends
 name|SchedulerNode
 parameter_list|>
 implements|implements
-name|SchedulingPlacementSet
+name|AppPlacementAllocator
 argument_list|<
 name|N
 argument_list|>
@@ -349,7 +353,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|LocalitySchedulingPlacementSet
+name|LocalityAppPlacementAllocator
 operator|.
 name|class
 argument_list|)
@@ -401,9 +405,9 @@ operator|.
 name|WriteLock
 name|writeLock
 decl_stmt|;
-DECL|method|LocalitySchedulingPlacementSet (AppSchedulingInfo info)
+DECL|method|LocalityAppPlacementAllocator (AppSchedulingInfo info)
 specifier|public
-name|LocalitySchedulingPlacementSet
+name|LocalityAppPlacementAllocator
 parameter_list|(
 name|AppSchedulingInfo
 name|info
@@ -444,7 +448,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|getPreferredNodeIterator ( PlacementSet<N> clusterPlacementSet)
+DECL|method|getPreferredNodeIterator ( CandidateNodeSet<N> candidateNodeSet)
 specifier|public
 name|Iterator
 argument_list|<
@@ -452,23 +456,24 @@ name|N
 argument_list|>
 name|getPreferredNodeIterator
 parameter_list|(
-name|PlacementSet
+name|CandidateNodeSet
 argument_list|<
 name|N
 argument_list|>
-name|clusterPlacementSet
+name|candidateNodeSet
 parameter_list|)
 block|{
-comment|// Now only handle the case that single node in placementSet
-comment|// TODO, Add support to multi-hosts inside placement-set which is passed in.
+comment|// Now only handle the case that single node in the candidateNodeSet
+comment|// TODO, Add support to multi-hosts inside candidateNodeSet which is passed
+comment|// in.
 name|N
 name|singleNode
 init|=
-name|PlacementSetUtils
+name|CandidateNodeSetUtils
 operator|.
 name|getSingleNode
 argument_list|(
-name|clusterPlacementSet
+name|candidateNodeSet
 argument_list|)
 decl_stmt|;
 if|if
@@ -1093,7 +1098,7 @@ condition|)
 block|{
 name|appSchedulingInfo
 operator|.
-name|removePlacementSets
+name|removeAppPlacement
 argument_list|(
 name|schedulerRequestKey
 argument_list|)

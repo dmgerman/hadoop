@@ -298,22 +298,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
-operator|.
-name|InvalidResourceRequestException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|security
 operator|.
 name|PrivilegedEntity
@@ -476,26 +460,6 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|SchedContainerChangeRequest
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
 name|common
 operator|.
 name|ResourceCommitRequest
@@ -568,29 +532,7 @@ name|scheduler
 operator|.
 name|placement
 operator|.
-name|PlacementSet
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
-name|placement
-operator|.
-name|SimplePlacementSet
+name|CandidateNodeSet
 import|;
 end_import
 
@@ -786,8 +728,8 @@ name|String
 name|queue
 parameter_list|)
 function_decl|;
-comment|/**    * Assign containers to applications in the queue or it's children (if any).    * @param clusterResource the resource of the cluster.    * @param ps {@link PlacementSet} of nodes which resources are available    * @param resourceLimits how much overall resource of this queue can use.     * @param schedulingMode Type of exclusive check when assign container on a     * NodeManager, see {@link SchedulingMode}.    * @return the assignment    */
-DECL|method|assignContainers (Resource clusterResource, PlacementSet<FiCaSchedulerNode> ps, ResourceLimits resourceLimits, SchedulingMode schedulingMode)
+comment|/**    * Assign containers to applications in the queue or it's children (if any).    * @param clusterResource the resource of the cluster.    * @param candidates {@link CandidateNodeSet} the nodes that are considered    *                   for the current placement.    * @param resourceLimits how much overall resource of this queue can use.     * @param schedulingMode Type of exclusive check when assign container on a     * NodeManager, see {@link SchedulingMode}.    * @return the assignment    */
+DECL|method|assignContainers (Resource clusterResource, CandidateNodeSet<FiCaSchedulerNode> candidates, ResourceLimits resourceLimits, SchedulingMode schedulingMode)
 specifier|public
 name|CSAssignment
 name|assignContainers
@@ -795,11 +737,11 @@ parameter_list|(
 name|Resource
 name|clusterResource
 parameter_list|,
-name|PlacementSet
+name|CandidateNodeSet
 argument_list|<
 name|FiCaSchedulerNode
 argument_list|>
-name|ps
+name|candidates
 parameter_list|,
 name|ResourceLimits
 name|resourceLimits

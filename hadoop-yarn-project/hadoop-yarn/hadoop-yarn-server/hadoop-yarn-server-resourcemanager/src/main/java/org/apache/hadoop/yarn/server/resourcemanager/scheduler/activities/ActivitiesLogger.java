@@ -207,7 +207,7 @@ comment|/**  * Utility for logging scheduler activities  */
 end_comment
 
 begin_comment
-comment|// FIXME: make sure PlacementSet works with this class
+comment|// FIXME: make sure CandidateNodeSet works with this class
 end_comment
 
 begin_class

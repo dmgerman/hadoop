@@ -312,7 +312,7 @@ name|scheduler
 operator|.
 name|placement
 operator|.
-name|SchedulingPlacementSet
+name|AppPlacementAllocator
 import|;
 end_import
 
@@ -927,7 +927,7 @@ argument_list|)
 expr_stmt|;
 name|appSchedulingInfo
 operator|.
-name|addToPlacementSets
+name|addRequestToAppPlacement
 argument_list|(
 literal|false
 argument_list|,
@@ -951,22 +951,22 @@ name|SchedulerRequestKey
 name|schedulerKey
 parameter_list|)
 block|{
-name|SchedulingPlacementSet
+name|AppPlacementAllocator
 argument_list|<
 name|SchedulerNode
 argument_list|>
-name|schedulingPlacementSet
+name|appPlacementAllocator
 init|=
 name|appSchedulingInfo
 operator|.
-name|getSchedulingPlacementSet
+name|getAppPlacementAllocator
 argument_list|(
 name|schedulerKey
 argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|schedulingPlacementSet
+name|appPlacementAllocator
 operator|!=
 literal|null
 condition|)
@@ -979,7 +979,7 @@ name|ResourceRequest
 argument_list|>
 name|resourceRequests
 init|=
-name|schedulingPlacementSet
+name|appPlacementAllocator
 operator|.
 name|getResourceRequests
 argument_list|()
@@ -1771,7 +1771,7 @@ argument_list|)
 expr_stmt|;
 name|appSchedulingInfo
 operator|.
-name|addToPlacementSets
+name|addRequestToAppPlacement
 argument_list|(
 literal|true
 argument_list|,

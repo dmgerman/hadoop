@@ -4842,7 +4842,7 @@ name|expectedPartition
 argument_list|,
 name|info
 operator|.
-name|getSchedulingPlacementSet
+name|getAppPlacementAllocator
 argument_list|(
 name|key
 argument_list|)

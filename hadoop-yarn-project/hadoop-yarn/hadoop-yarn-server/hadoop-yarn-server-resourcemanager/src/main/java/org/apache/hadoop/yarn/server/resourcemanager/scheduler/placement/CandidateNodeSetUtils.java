@@ -44,14 +44,24 @@ name|SchedulerNode
 import|;
 end_import
 
+begin_comment
+comment|/**  * Utility methods for {@link CandidateNodeSet}.  */
+end_comment
+
 begin_class
-DECL|class|PlacementSetUtils
+DECL|class|CandidateNodeSetUtils
 specifier|public
+specifier|final
 class|class
-name|PlacementSetUtils
+name|CandidateNodeSetUtils
 block|{
-comment|/*    * If the {@link PlacementSet} only has one entry, return it. otherwise    * return null    */
-DECL|method|getSingleNode (PlacementSet<N> ps)
+DECL|method|CandidateNodeSetUtils ()
+specifier|private
+name|CandidateNodeSetUtils
+parameter_list|()
+block|{   }
+comment|/*    * If the {@link CandidateNodeSet} only has one entry, return it. Otherwise,    * return null.    */
+DECL|method|getSingleNode ( CandidateNodeSet<N> candidates)
 specifier|public
 specifier|static
 parameter_list|<
@@ -62,11 +72,11 @@ parameter_list|>
 name|N
 name|getSingleNode
 parameter_list|(
-name|PlacementSet
+name|CandidateNodeSet
 argument_list|<
 name|N
 argument_list|>
-name|ps
+name|candidates
 parameter_list|)
 block|{
 name|N
@@ -78,7 +88,7 @@ if|if
 condition|(
 literal|1
 operator|==
-name|ps
+name|candidates
 operator|.
 name|getAllNodes
 argument_list|()
@@ -89,7 +99,7 @@ condition|)
 block|{
 name|node
 operator|=
-name|ps
+name|candidates
 operator|.
 name|getAllNodes
 argument_list|()

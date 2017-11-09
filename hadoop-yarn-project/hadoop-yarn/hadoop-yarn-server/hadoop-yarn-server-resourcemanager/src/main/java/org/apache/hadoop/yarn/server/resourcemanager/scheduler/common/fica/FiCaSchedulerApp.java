@@ -1094,7 +1094,7 @@ name|scheduler
 operator|.
 name|placement
 operator|.
-name|PlacementSet
+name|AppPlacementAllocator
 import|;
 end_import
 
@@ -1116,7 +1116,7 @@ name|scheduler
 operator|.
 name|placement
 operator|.
-name|SchedulingPlacementSet
+name|CandidateNodeSet
 import|;
 end_import
 
@@ -1832,7 +1832,7 @@ return|return
 literal|null
 return|;
 block|}
-name|SchedulingPlacementSet
+name|AppPlacementAllocator
 argument_list|<
 name|FiCaSchedulerNode
 argument_list|>
@@ -1840,7 +1840,7 @@ name|ps
 init|=
 name|appSchedulingInfo
 operator|.
-name|getSchedulingPlacementSet
+name|getAppPlacementAllocator
 argument_list|(
 name|schedulerKey
 argument_list|)
@@ -1858,7 +1858,7 @@ name|warn
 argument_list|(
 literal|"Failed to get "
 operator|+
-name|SchedulingPlacementSet
+name|AppPlacementAllocator
 operator|.
 name|class
 operator|.
@@ -3614,7 +3614,7 @@ name|getSchedulerKeys
 argument_list|()
 control|)
 block|{
-name|SchedulingPlacementSet
+name|AppPlacementAllocator
 argument_list|<
 name|FiCaSchedulerNode
 argument_list|>
@@ -3622,7 +3622,7 @@ name|ps
 init|=
 name|appSchedulingInfo
 operator|.
-name|getSchedulingPlacementSet
+name|getAppPlacementAllocator
 argument_list|(
 name|schedulerKey
 argument_list|)
@@ -4557,7 +4557,7 @@ operator|)
 name|queue
 return|;
 block|}
-DECL|method|assignContainers (Resource clusterResource, PlacementSet<FiCaSchedulerNode> ps, ResourceLimits currentResourceLimits, SchedulingMode schedulingMode, RMContainer reservedContainer)
+DECL|method|assignContainers (Resource clusterResource, CandidateNodeSet<FiCaSchedulerNode> ps, ResourceLimits currentResourceLimits, SchedulingMode schedulingMode, RMContainer reservedContainer)
 specifier|public
 name|CSAssignment
 name|assignContainers
@@ -4565,7 +4565,7 @@ parameter_list|(
 name|Resource
 name|clusterResource
 parameter_list|,
-name|PlacementSet
+name|CandidateNodeSet
 argument_list|<
 name|FiCaSchedulerNode
 argument_list|>
@@ -5243,13 +5243,13 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|getSchedulingPlacementSet ( SchedulerRequestKey schedulerRequestKey)
+DECL|method|getAppPlacementAllocator ( SchedulerRequestKey schedulerRequestKey)
 specifier|public
-name|SchedulingPlacementSet
+name|AppPlacementAllocator
 argument_list|<
 name|FiCaSchedulerNode
 argument_list|>
-name|getSchedulingPlacementSet
+name|getAppPlacementAllocator
 parameter_list|(
 name|SchedulerRequestKey
 name|schedulerRequestKey
@@ -5258,7 +5258,7 @@ block|{
 return|return
 name|super
 operator|.
-name|getSchedulingPlacementSet
+name|getAppPlacementAllocator
 argument_list|(
 name|schedulerRequestKey
 argument_list|)

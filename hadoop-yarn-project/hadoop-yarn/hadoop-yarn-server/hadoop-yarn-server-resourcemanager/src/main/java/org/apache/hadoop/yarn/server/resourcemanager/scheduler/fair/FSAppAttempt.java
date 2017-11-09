@@ -4796,7 +4796,7 @@ condition|)
 block|{
 if|if
 condition|(
-name|getSchedulingPlacementSet
+name|getAppPlacementAllocator
 argument_list|(
 name|schedulerKey
 argument_list|)

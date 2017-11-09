@@ -736,7 +736,7 @@ name|scheduler
 operator|.
 name|placement
 operator|.
-name|PlacementSet
+name|CandidateNodeSet
 import|;
 end_import
 
@@ -844,16 +844,16 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|allocateContainersToNode ( PlacementSet<FiCaSchedulerNode> ps, boolean withNodeHeartbeat)
+DECL|method|allocateContainersToNode ( CandidateNodeSet<FiCaSchedulerNode> candidates, boolean withNodeHeartbeat)
 specifier|public
 name|CSAssignment
 name|allocateContainersToNode
 parameter_list|(
-name|PlacementSet
+name|CandidateNodeSet
 argument_list|<
 name|FiCaSchedulerNode
 argument_list|>
-name|ps
+name|candidates
 parameter_list|,
 name|boolean
 name|withNodeHeartbeat
@@ -888,7 +888,7 @@ name|super
 operator|.
 name|allocateContainersToNode
 argument_list|(
-name|ps
+name|candidates
 argument_list|,
 name|withNodeHeartbeat
 argument_list|)

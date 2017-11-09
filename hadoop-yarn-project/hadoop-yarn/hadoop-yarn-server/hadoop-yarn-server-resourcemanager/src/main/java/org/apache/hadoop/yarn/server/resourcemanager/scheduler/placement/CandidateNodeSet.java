@@ -96,22 +96,12 @@ name|java
 operator|.
 name|util
 operator|.
-name|Iterator
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Map
 import|;
 end_import
 
 begin_comment
-comment|/**  *<p>  * PlacementSet is the central place that decide the order of node to fit  * asks by application.  *</p>  *  *<p>  * Also, PlacementSet can cache results (for example, ordered list) for  * better performance.  *</p>  *  *<p>  * PlacementSet can depend on one or more other PlacementSets.  *</p>  */
+comment|/**  * A group of nodes which can be allocated by scheduler.  *  * It will have following part:  *  * 1) A map of nodes which can be schedule-able.  * 2) Version of the node set, version should be updated if any node added or  *    removed from the node set. This will be used by  *    {@link AppPlacementAllocator} or other class to check if it's required to  *    invalidate local caches, etc.  * 3) Node partition of the candidate set.  */
 end_comment
 
 begin_interface
@@ -123,17 +113,17 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Unstable
-DECL|interface|PlacementSet
+DECL|interface|CandidateNodeSet
 specifier|public
 interface|interface
-name|PlacementSet
+name|CandidateNodeSet
 parameter_list|<
 name|N
 extends|extends
 name|SchedulerNode
 parameter_list|>
 block|{
-comment|/**    * Get all nodes for this PlacementSet    * @return all nodes for this PlacementSet    */
+comment|/**    * Get all nodes for this CandidateNodeSet    * @return all nodes for this CandidateNodeSet    */
 DECL|method|getAllNodes ()
 name|Map
 argument_list|<
@@ -144,13 +134,13 @@ argument_list|>
 name|getAllNodes
 parameter_list|()
 function_decl|;
-comment|/**    * Version of the PlacementSet, can help other PlacementSet with dependencies    * deciding if update is required    * @return version    */
+comment|/**    * Version of the CandidateNodeSet, can help {@link AppPlacementAllocator} to    * decide if update is required    * @return version    */
 DECL|method|getVersion ()
 name|long
 name|getVersion
 parameter_list|()
 function_decl|;
-comment|/**    * Partition of the PlacementSet.    * @return node partition    */
+comment|/**    * Node partition of the node set.    * @return node partition    */
 DECL|method|getPartition ()
 name|String
 name|getPartition

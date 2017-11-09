@@ -185,33 +185,33 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>  * Comparing to {@link PlacementSet}, this also maintains  * pending ResourceRequests:  * - When new ResourceRequest(s) added to scheduler, or,  * - Or new container allocated, scheduler can notify corresponding  * PlacementSet.  *</p>  *  *<p>  * Different set of resource requests (E.g., resource requests with the  * same schedulerKey) can have one instance of PlacementSet, each PlacementSet  * can have different ways to order nodes depends on requests.  *</p>  */
+comment|/**  *<p>  * This class has the following functionality:  * 1) Keeps track of pending resource requests when following events happen:  * - New ResourceRequests are added to scheduler.  * - New containers get allocated.  *  * 2) Determines the order that the nodes given in the {@link CandidateNodeSet}  * will be used for allocating containers.  *</p>  *  *<p>  * And different set of resource requests (E.g., resource requests with the  * same schedulerKey) can have one instance of AppPlacementAllocator, each  * AppPlacementAllocator can have different ways to order nodes depends on  * requests.  *</p>  */
 end_comment
 
 begin_interface
-DECL|interface|SchedulingPlacementSet
+DECL|interface|AppPlacementAllocator
 specifier|public
 interface|interface
-name|SchedulingPlacementSet
+name|AppPlacementAllocator
 parameter_list|<
 name|N
 extends|extends
 name|SchedulerNode
 parameter_list|>
 block|{
-comment|/**    * Get iterator of preferred node depends on requirement and/or availability    * @param clusterPlacementSet input cluster PlacementSet    * @return iterator of preferred node    */
-DECL|method|getPreferredNodeIterator (PlacementSet<N> clusterPlacementSet)
+comment|/**    * Get iterator of preferred node depends on requirement and/or availability    * @param candidateNodeSet input CandidateNodeSet    * @return iterator of preferred node    */
+DECL|method|getPreferredNodeIterator (CandidateNodeSet<N> candidateNodeSet)
 name|Iterator
 argument_list|<
 name|N
 argument_list|>
 name|getPreferredNodeIterator
 parameter_list|(
-name|PlacementSet
+name|CandidateNodeSet
 argument_list|<
 name|N
 argument_list|>
-name|clusterPlacementSet
+name|candidateNodeSet
 parameter_list|)
 function_decl|;
 comment|/**    * Replace existing ResourceRequest by the new requests    *    * @param requests new ResourceRequests    * @param recoverPreemptedRequestForAContainer if we're recovering resource    * requests for preempted container    * @return true if total pending resource changed    */
@@ -297,7 +297,7 @@ name|SchedulerNode
 name|node
 parameter_list|)
 function_decl|;
-comment|/**    * Can delay to give locality?    * TODO (wangda): This should be moved out of SchedulingPlacementSet    * and should belong to specific delay scheduling policy impl.    *    * @param resourceName resourceName    * @return can/cannot    */
+comment|/**    * Can delay to give locality?    * TODO: This should be moved out of AppPlacementAllocator    * and should belong to specific delay scheduling policy impl.    * See YARN-7457 for more details.    *    * @param resourceName resourceName    * @return can/cannot    */
 DECL|method|canDelayTo (String resourceName)
 name|boolean
 name|canDelayTo
@@ -306,7 +306,7 @@ name|String
 name|resourceName
 parameter_list|)
 function_decl|;
-comment|/**    * Does this {@link SchedulingPlacementSet} accept resources on nodePartition?    *    * @param nodePartition nodePartition    * @param schedulingMode schedulingMode    * @return accepted/not    */
+comment|/**    * Does this {@link AppPlacementAllocator} accept resources on nodePartition?    *    * @param nodePartition nodePartition    * @param schedulingMode schedulingMode    * @return accepted/not    */
 DECL|method|acceptNodePartition (String nodePartition, SchedulingMode schedulingMode)
 name|boolean
 name|acceptNodePartition
@@ -324,7 +324,7 @@ name|String
 name|getPrimaryRequestedNodePartition
 parameter_list|()
 function_decl|;
-comment|/**    * @return number of unique location asks with #pending greater than 0,    * (like /rack1, host1, etc.).    *    * TODO (wangda): This should be moved out of SchedulingPlacementSet    * and should belong to specific delay scheduling policy impl.    */
+comment|/**    * @return number of unique location asks with #pending greater than 0,    * (like /rack1, host1, etc.).    *    * TODO: This should be moved out of AppPlacementAllocator    * and should belong to specific delay scheduling policy impl.    * See YARN-7457 for more details.    */
 DECL|method|getUniqueLocationAsks ()
 name|int
 name|getUniqueLocationAsks

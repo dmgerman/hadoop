@@ -804,7 +804,7 @@ name|scheduler
 operator|.
 name|placement
 operator|.
-name|SimplePlacementSet
+name|SimpleCandidateNodeSet
 import|;
 end_import
 
@@ -4396,7 +4396,7 @@ argument_list|(
 name|clusterResource
 argument_list|,
 operator|new
-name|SimplePlacementSet
+name|SimpleCandidateNodeSet
 argument_list|<>
 argument_list|(
 name|node

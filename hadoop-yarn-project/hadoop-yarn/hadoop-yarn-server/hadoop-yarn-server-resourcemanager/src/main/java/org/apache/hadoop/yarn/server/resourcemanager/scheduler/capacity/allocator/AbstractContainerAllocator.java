@@ -68,24 +68,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|Container
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|Resource
 import|;
 end_import
@@ -366,7 +348,7 @@ name|scheduler
 operator|.
 name|placement
 operator|.
-name|PlacementSet
+name|CandidateNodeSet
 import|;
 end_import
 
@@ -1077,8 +1059,8 @@ return|return
 name|assignment
 return|;
 block|}
-comment|/**    * allocate needs to handle following stuffs:    *    *<ul>    *<li>Select request: Select a request to allocate. E.g. select a resource    * request based on requirement/priority/locality.</li>    *<li>Check if a given resource can be allocated based on resource    * availability</li>    *<li>Do allocation: this will decide/create allocated/reserved    * container, this will also update metrics</li>    *</ul>    *    * @param clusterResource clusterResource    * @param ps PlacementSet    * @param schedulingMode scheduling mode (exclusive or nonexclusive)    * @param resourceLimits resourceLimits    * @param reservedContainer reservedContainer    * @return CSAssignemnt proposal    */
-DECL|method|assignContainers (Resource clusterResource, PlacementSet<FiCaSchedulerNode> ps, SchedulingMode schedulingMode, ResourceLimits resourceLimits, RMContainer reservedContainer)
+comment|/**    * allocate needs to handle following stuffs:    *    *<ul>    *<li>Select request: Select a request to allocate. E.g. select a resource    * request based on requirement/priority/locality.</li>    *<li>Check if a given resource can be allocated based on resource    * availability</li>    *<li>Do allocation: this will decide/create allocated/reserved    * container, this will also update metrics</li>    *</ul>    *    * @param clusterResource clusterResource    * @param candidates CandidateNodeSet    * @param schedulingMode scheduling mode (exclusive or nonexclusive)    * @param resourceLimits resourceLimits    * @param reservedContainer reservedContainer    * @return CSAssignemnt proposal    */
+DECL|method|assignContainers (Resource clusterResource, CandidateNodeSet<FiCaSchedulerNode> candidates, SchedulingMode schedulingMode, ResourceLimits resourceLimits, RMContainer reservedContainer)
 specifier|public
 specifier|abstract
 name|CSAssignment
@@ -1087,11 +1069,11 @@ parameter_list|(
 name|Resource
 name|clusterResource
 parameter_list|,
-name|PlacementSet
+name|CandidateNodeSet
 argument_list|<
 name|FiCaSchedulerNode
 argument_list|>
-name|ps
+name|candidates
 parameter_list|,
 name|SchedulingMode
 name|schedulingMode

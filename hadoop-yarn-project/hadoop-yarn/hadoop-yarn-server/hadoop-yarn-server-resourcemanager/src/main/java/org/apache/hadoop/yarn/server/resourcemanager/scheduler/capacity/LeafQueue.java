@@ -926,7 +926,7 @@ name|scheduler
 operator|.
 name|placement
 operator|.
-name|PlacementSet
+name|CandidateNodeSet
 import|;
 end_import
 
@@ -948,7 +948,7 @@ name|scheduler
 operator|.
 name|placement
 operator|.
-name|PlacementSetUtils
+name|CandidateNodeSetUtils
 import|;
 end_import
 
@@ -4940,7 +4940,7 @@ name|guaranteedCapacity
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|allocateFromReservedContainer ( Resource clusterResource, PlacementSet<FiCaSchedulerNode> ps, ResourceLimits currentResourceLimits, SchedulingMode schedulingMode)
+DECL|method|allocateFromReservedContainer (Resource clusterResource, CandidateNodeSet<FiCaSchedulerNode> candidates, ResourceLimits currentResourceLimits, SchedulingMode schedulingMode)
 specifier|private
 name|CSAssignment
 name|allocateFromReservedContainer
@@ -4948,11 +4948,11 @@ parameter_list|(
 name|Resource
 name|clusterResource
 parameter_list|,
-name|PlacementSet
+name|CandidateNodeSet
 argument_list|<
 name|FiCaSchedulerNode
 argument_list|>
-name|ps
+name|candidates
 parameter_list|,
 name|ResourceLimits
 name|currentResourceLimits
@@ -4964,11 +4964,11 @@ block|{
 name|FiCaSchedulerNode
 name|node
 init|=
-name|PlacementSetUtils
+name|CandidateNodeSetUtils
 operator|.
 name|getSingleNode
 argument_list|(
-name|ps
+name|candidates
 argument_list|)
 decl_stmt|;
 if|if
@@ -5048,7 +5048,7 @@ name|assignContainers
 argument_list|(
 name|clusterResource
 argument_list|,
-name|ps
+name|candidates
 argument_list|,
 name|currentResourceLimits
 argument_list|,
@@ -5068,7 +5068,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|assignContainers (Resource clusterResource, PlacementSet<FiCaSchedulerNode> ps, ResourceLimits currentResourceLimits, SchedulingMode schedulingMode)
+DECL|method|assignContainers (Resource clusterResource, CandidateNodeSet<FiCaSchedulerNode> candidates, ResourceLimits currentResourceLimits, SchedulingMode schedulingMode)
 specifier|public
 name|CSAssignment
 name|assignContainers
@@ -5076,11 +5076,11 @@ parameter_list|(
 name|Resource
 name|clusterResource
 parameter_list|,
-name|PlacementSet
+name|CandidateNodeSet
 argument_list|<
 name|FiCaSchedulerNode
 argument_list|>
-name|ps
+name|candidates
 parameter_list|,
 name|ResourceLimits
 name|currentResourceLimits
@@ -5099,11 +5099,11 @@ expr_stmt|;
 name|FiCaSchedulerNode
 name|node
 init|=
-name|PlacementSetUtils
+name|CandidateNodeSetUtils
 operator|.
 name|getSingleNode
 argument_list|(
-name|ps
+name|candidates
 argument_list|)
 decl_stmt|;
 if|if
@@ -5120,7 +5120,7 @@ name|debug
 argument_list|(
 literal|"assignContainers: partition="
 operator|+
-name|ps
+name|candidates
 operator|.
 name|getPartition
 argument_list|()
@@ -5138,7 +5138,7 @@ name|setPreemptionAllowed
 argument_list|(
 name|currentResourceLimits
 argument_list|,
-name|ps
+name|candidates
 operator|.
 name|getPartition
 argument_list|()
@@ -5152,7 +5152,7 @@ name|allocateFromReservedContainer
 argument_list|(
 name|clusterResource
 argument_list|,
-name|ps
+name|candidates
 argument_list|,
 name|currentResourceLimits
 argument_list|,
@@ -5182,7 +5182,7 @@ operator|&&
 operator|!
 name|accessibleToPartition
 argument_list|(
-name|ps
+name|candidates
 operator|.
 name|getPartition
 argument_list|()
@@ -5216,7 +5216,7 @@ name|ActivityDiagnosticConstant
 operator|.
 name|NOT_ABLE_TO_ACCESS_PARTITION
 operator|+
-name|ps
+name|candidates
 operator|.
 name|getPartition
 argument_list|()
@@ -5235,7 +5235,7 @@ condition|(
 operator|!
 name|hasPendingResourceRequest
 argument_list|(
-name|ps
+name|candidates
 operator|.
 name|getPartition
 argument_list|()
@@ -5272,7 +5272,7 @@ argument_list|()
 operator|+
 literal|" node-partition="
 operator|+
-name|ps
+name|candidates
 operator|.
 name|getPartition
 argument_list|()
@@ -5542,7 +5542,7 @@ name|application
 argument_list|,
 name|clusterResource
 argument_list|,
-name|ps
+name|candidates
 operator|.
 name|getPartition
 argument_list|()
@@ -5716,7 +5716,7 @@ name|assignContainers
 argument_list|(
 name|clusterResource
 argument_list|,
-name|ps
+name|candidates
 argument_list|,
 name|currentResourceLimits
 argument_list|,

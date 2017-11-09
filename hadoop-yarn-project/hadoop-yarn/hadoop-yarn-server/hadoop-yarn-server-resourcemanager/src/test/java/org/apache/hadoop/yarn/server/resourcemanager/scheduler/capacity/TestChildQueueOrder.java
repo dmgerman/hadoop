@@ -620,7 +620,7 @@ name|scheduler
 operator|.
 name|placement
 operator|.
-name|PlacementSet
+name|CandidateNodeSet
 import|;
 end_import
 
@@ -1310,7 +1310,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|PlacementSet
+name|CandidateNodeSet
 operator|.
 name|class
 argument_list|)
@@ -1387,7 +1387,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|PlacementSet
+name|CandidateNodeSet
 operator|.
 name|class
 argument_list|)
@@ -3526,7 +3526,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|PlacementSet
+name|CandidateNodeSet
 operator|.
 name|class
 argument_list|)
@@ -3562,7 +3562,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|PlacementSet
+name|CandidateNodeSet
 operator|.
 name|class
 argument_list|)

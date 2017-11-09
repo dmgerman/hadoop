@@ -338,6 +338,28 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|placement
+operator|.
+name|AppPlacementAllocator
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|scheduler
 operator|.
 name|SchedulerRequestKey
@@ -564,7 +586,7 @@ name|scheduler
 operator|.
 name|placement
 operator|.
-name|PlacementSet
+name|CandidateNodeSet
 import|;
 end_import
 
@@ -586,29 +608,7 @@ name|scheduler
 operator|.
 name|placement
 operator|.
-name|PlacementSetUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
-name|placement
-operator|.
-name|SchedulingPlacementSet
+name|CandidateNodeSetUtils
 import|;
 end_import
 
@@ -831,20 +831,20 @@ name|required
 argument_list|)
 return|;
 block|}
-comment|/*    * Pre-check if we can allocate a pending resource request    * (given schedulerKey) to a given PlacementSet.    * We will consider stuffs like exclusivity, pending resource, node partition,    * headroom, etc.    */
-DECL|method|preCheckForPlacementSet (Resource clusterResource, PlacementSet<FiCaSchedulerNode> ps, SchedulingMode schedulingMode, ResourceLimits resourceLimits, SchedulerRequestKey schedulerKey)
+comment|/*    * Pre-check if we can allocate a pending resource request    * (given schedulerKey) to a given CandidateNodeSet.    * We will consider stuffs like exclusivity, pending resource, node partition,    * headroom, etc.    */
+DECL|method|preCheckForNodeCandidateSet ( Resource clusterResource, CandidateNodeSet<FiCaSchedulerNode> candidates, SchedulingMode schedulingMode, ResourceLimits resourceLimits, SchedulerRequestKey schedulerKey)
 specifier|private
 name|ContainerAllocation
-name|preCheckForPlacementSet
+name|preCheckForNodeCandidateSet
 parameter_list|(
 name|Resource
 name|clusterResource
 parameter_list|,
-name|PlacementSet
+name|CandidateNodeSet
 argument_list|<
 name|FiCaSchedulerNode
 argument_list|>
-name|ps
+name|candidates
 parameter_list|,
 name|SchedulingMode
 name|schedulingMode
@@ -867,11 +867,11 @@ decl_stmt|;
 name|FiCaSchedulerNode
 name|node
 init|=
-name|PlacementSetUtils
+name|CandidateNodeSetUtils
 operator|.
 name|getSingleNode
 argument_list|(
-name|ps
+name|candidates
 argument_list|)
 decl_stmt|;
 name|PendingAsk
@@ -1166,7 +1166,7 @@ name|resourceLimits
 argument_list|,
 name|required
 argument_list|,
-name|ps
+name|candidates
 operator|.
 name|getPartition
 argument_list|()
@@ -1240,7 +1240,7 @@ name|NO_LABEL
 argument_list|,
 name|appInfo
 operator|.
-name|getSchedulingPlacementSet
+name|getAppPlacementAllocator
 argument_list|(
 name|schedulerKey
 argument_list|)
@@ -1562,7 +1562,7 @@ name|max
 argument_list|(
 name|application
 operator|.
-name|getSchedulingPlacementSet
+name|getAppPlacementAllocator
 argument_list|(
 name|schedulerKey
 argument_list|)
@@ -3900,7 +3900,7 @@ return|return
 name|allocationResult
 return|;
 block|}
-DECL|method|allocate (Resource clusterResource, PlacementSet<FiCaSchedulerNode> ps, SchedulingMode schedulingMode, ResourceLimits resourceLimits, SchedulerRequestKey schedulerKey, RMContainer reservedContainer)
+DECL|method|allocate (Resource clusterResource, CandidateNodeSet<FiCaSchedulerNode> candidates, SchedulingMode schedulingMode, ResourceLimits resourceLimits, SchedulerRequestKey schedulerKey, RMContainer reservedContainer)
 specifier|private
 name|ContainerAllocation
 name|allocate
@@ -3908,11 +3908,11 @@ parameter_list|(
 name|Resource
 name|clusterResource
 parameter_list|,
-name|PlacementSet
+name|CandidateNodeSet
 argument_list|<
 name|FiCaSchedulerNode
 argument_list|>
-name|ps
+name|candidates
 parameter_list|,
 name|SchedulingMode
 name|schedulingMode
@@ -3941,11 +3941,11 @@ condition|)
 block|{
 name|result
 operator|=
-name|preCheckForPlacementSet
+name|preCheckForNodeCandidateSet
 argument_list|(
 name|clusterResource
 argument_list|,
-name|ps
+name|candidates
 argument_list|,
 name|schedulingMode
 argument_list|,
@@ -3997,7 +3997,7 @@ argument_list|)
 return|;
 block|}
 block|}
-name|SchedulingPlacementSet
+name|AppPlacementAllocator
 argument_list|<
 name|FiCaSchedulerNode
 argument_list|>
@@ -4008,7 +4008,7 @@ operator|.
 name|getAppSchedulingInfo
 argument_list|()
 operator|.
-name|getSchedulingPlacementSet
+name|getAppPlacementAllocator
 argument_list|(
 name|schedulerKey
 argument_list|)
@@ -4029,7 +4029,7 @@ name|schedulingPS
 operator|.
 name|getPreferredNodeIterator
 argument_list|(
-name|ps
+name|candidates
 argument_list|)
 decl_stmt|;
 while|while
@@ -4106,7 +4106,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|assignContainers (Resource clusterResource, PlacementSet<FiCaSchedulerNode> ps, SchedulingMode schedulingMode, ResourceLimits resourceLimits, RMContainer reservedContainer)
+DECL|method|assignContainers (Resource clusterResource, CandidateNodeSet<FiCaSchedulerNode> candidates, SchedulingMode schedulingMode, ResourceLimits resourceLimits, RMContainer reservedContainer)
 specifier|public
 name|CSAssignment
 name|assignContainers
@@ -4114,11 +4114,11 @@ parameter_list|(
 name|Resource
 name|clusterResource
 parameter_list|,
-name|PlacementSet
+name|CandidateNodeSet
 argument_list|<
 name|FiCaSchedulerNode
 argument_list|>
-name|ps
+name|candidates
 parameter_list|,
 name|SchedulingMode
 name|schedulingMode
@@ -4133,11 +4133,11 @@ block|{
 name|FiCaSchedulerNode
 name|node
 init|=
-name|PlacementSetUtils
+name|CandidateNodeSetUtils
 operator|.
 name|getSingleNode
 argument_list|(
-name|ps
+name|candidates
 argument_list|)
 decl_stmt|;
 if|if
@@ -4157,7 +4157,7 @@ name|hasPendingResourceRequest
 argument_list|(
 name|rc
 argument_list|,
-name|ps
+name|candidates
 operator|.
 name|getPartition
 argument_list|()
@@ -4196,7 +4196,7 @@ argument_list|()
 operator|+
 literal|" node-label="
 operator|+
-name|ps
+name|candidates
 operator|.
 name|getPartition
 argument_list|()
@@ -4250,7 +4250,7 @@ name|allocate
 argument_list|(
 name|clusterResource
 argument_list|,
-name|ps
+name|candidates
 argument_list|,
 name|schedulingMode
 argument_list|,
@@ -4332,7 +4332,7 @@ name|allocate
 argument_list|(
 name|clusterResource
 argument_list|,
-name|ps
+name|candidates
 argument_list|,
 name|schedulingMode
 argument_list|,

@@ -848,7 +848,7 @@ name|scheduler
 operator|.
 name|placement
 operator|.
-name|PlacementSet
+name|CandidateNodeSet
 import|;
 end_import
 
@@ -870,7 +870,7 @@ name|scheduler
 operator|.
 name|placement
 operator|.
-name|PlacementSetUtils
+name|CandidateNodeSetUtils
 import|;
 end_import
 
@@ -2789,7 +2789,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|assignContainers (Resource clusterResource, PlacementSet<FiCaSchedulerNode> ps, ResourceLimits resourceLimits, SchedulingMode schedulingMode)
+DECL|method|assignContainers (Resource clusterResource, CandidateNodeSet<FiCaSchedulerNode> candidates, ResourceLimits resourceLimits, SchedulingMode schedulingMode)
 specifier|public
 name|CSAssignment
 name|assignContainers
@@ -2797,11 +2797,11 @@ parameter_list|(
 name|Resource
 name|clusterResource
 parameter_list|,
-name|PlacementSet
+name|CandidateNodeSet
 argument_list|<
 name|FiCaSchedulerNode
 argument_list|>
-name|ps
+name|candidates
 parameter_list|,
 name|ResourceLimits
 name|resourceLimits
@@ -2813,11 +2813,11 @@ block|{
 name|FiCaSchedulerNode
 name|node
 init|=
-name|PlacementSetUtils
+name|CandidateNodeSetUtils
 operator|.
 name|getSingleNode
 argument_list|(
-name|ps
+name|candidates
 argument_list|)
 decl_stmt|;
 comment|// if our queue cannot access this node, just return
@@ -2832,7 +2832,7 @@ operator|&&
 operator|!
 name|accessibleToPartition
 argument_list|(
-name|ps
+name|candidates
 operator|.
 name|getPartition
 argument_list|()
@@ -2858,7 +2858,7 @@ argument_list|()
 operator|+
 literal|", because it is not able to access partition="
 operator|+
-name|ps
+name|candidates
 operator|.
 name|getPartition
 argument_list|()
@@ -2927,7 +2927,7 @@ name|super
 operator|.
 name|hasPendingResourceRequest
 argument_list|(
-name|ps
+name|candidates
 operator|.
 name|getPartition
 argument_list|()
@@ -2964,7 +2964,7 @@ argument_list|()
 operator|+
 literal|" node-partition="
 operator|+
-name|ps
+name|candidates
 operator|.
 name|getPartition
 argument_list|()
@@ -3080,7 +3080,7 @@ name|canAssignToThisQueue
 argument_list|(
 name|clusterResource
 argument_list|,
-name|ps
+name|candidates
 operator|.
 name|getPartition
 argument_list|()
@@ -3160,7 +3160,7 @@ name|assignContainersToChildQueues
 argument_list|(
 name|clusterResource
 argument_list|,
-name|ps
+name|candidates
 argument_list|,
 name|resourceLimits
 argument_list|,
@@ -3848,7 +3848,7 @@ name|partition
 argument_list|)
 return|;
 block|}
-DECL|method|assignContainersToChildQueues (Resource cluster, PlacementSet<FiCaSchedulerNode> ps, ResourceLimits limits, SchedulingMode schedulingMode)
+DECL|method|assignContainersToChildQueues (Resource cluster, CandidateNodeSet<FiCaSchedulerNode> candidates, ResourceLimits limits, SchedulingMode schedulingMode)
 specifier|private
 name|CSAssignment
 name|assignContainersToChildQueues
@@ -3856,11 +3856,11 @@ parameter_list|(
 name|Resource
 name|cluster
 parameter_list|,
-name|PlacementSet
+name|CandidateNodeSet
 argument_list|<
 name|FiCaSchedulerNode
 argument_list|>
-name|ps
+name|candidates
 parameter_list|,
 name|ResourceLimits
 name|limits
@@ -3898,7 +3898,7 @@ name|iter
 init|=
 name|sortAndGetChildrenAllocationIterator
 argument_list|(
-name|ps
+name|candidates
 operator|.
 name|getPartition
 argument_list|()
@@ -3956,7 +3956,7 @@ name|cluster
 argument_list|,
 name|parentLimits
 argument_list|,
-name|ps
+name|candidates
 operator|.
 name|getPartition
 argument_list|()
@@ -3971,7 +3971,7 @@ name|assignContainers
 argument_list|(
 name|cluster
 argument_list|,
-name|ps
+name|candidates
 argument_list|,
 name|childLimits
 argument_list|,

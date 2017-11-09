@@ -96,30 +96,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
-name|common
-operator|.
-name|fica
-operator|.
-name|FiCaSchedulerNode
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|util
@@ -134,36 +110,26 @@ name|java
 operator|.
 name|util
 operator|.
-name|Iterator
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Map
 import|;
 end_import
 
 begin_comment
-comment|/**  * A simple PlacementSet which keeps an unordered map  */
+comment|/**  * A simple CandidateNodeSet which keeps an unordered map  */
 end_comment
 
 begin_class
-DECL|class|SimplePlacementSet
+DECL|class|SimpleCandidateNodeSet
 specifier|public
 class|class
-name|SimplePlacementSet
+name|SimpleCandidateNodeSet
 parameter_list|<
 name|N
 extends|extends
 name|SchedulerNode
 parameter_list|>
 implements|implements
-name|PlacementSet
+name|CandidateNodeSet
 argument_list|<
 name|N
 argument_list|>
@@ -183,9 +149,9 @@ specifier|private
 name|String
 name|partition
 decl_stmt|;
-DECL|method|SimplePlacementSet (N node)
+DECL|method|SimpleCandidateNodeSet (N node)
 specifier|public
-name|SimplePlacementSet
+name|SimpleCandidateNodeSet
 parameter_list|(
 name|N
 name|node
@@ -198,7 +164,7 @@ operator|!=
 name|node
 condition|)
 block|{
-comment|// Only one node in the initial PlacementSet
+comment|// Only one node in the initial CandidateNodeSet
 name|this
 operator|.
 name|map
@@ -246,9 +212,9 @@ name|DEFAULT_NODE_LABEL_PARTITION
 expr_stmt|;
 block|}
 block|}
-DECL|method|SimplePlacementSet (Map<NodeId, N> map, String partition)
+DECL|method|SimpleCandidateNodeSet (Map<NodeId, N> map, String partition)
 specifier|public
-name|SimplePlacementSet
+name|SimpleCandidateNodeSet
 parameter_list|(
 name|Map
 argument_list|<

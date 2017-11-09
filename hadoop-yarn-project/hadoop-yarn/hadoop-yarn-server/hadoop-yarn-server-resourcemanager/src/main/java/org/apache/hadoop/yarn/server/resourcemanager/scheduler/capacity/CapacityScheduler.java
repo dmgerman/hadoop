@@ -2118,7 +2118,7 @@ name|scheduler
 operator|.
 name|placement
 operator|.
-name|PlacementSet
+name|CandidateNodeSet
 import|;
 end_import
 
@@ -2140,7 +2140,7 @@ name|scheduler
 operator|.
 name|placement
 operator|.
-name|PlacementSetUtils
+name|CandidateNodeSetUtils
 import|;
 end_import
 
@@ -2162,7 +2162,7 @@ name|scheduler
 operator|.
 name|placement
 operator|.
-name|SimplePlacementSet
+name|SimpleCandidateNodeSet
 import|;
 end_import
 
@@ -6941,7 +6941,7 @@ name|maxAssignPerHeartbeat
 operator|)
 return|;
 block|}
-comment|/**    * We need to make sure when doing allocation, Node should be existed    * And we will construct a {@link PlacementSet} before proceeding    */
+comment|/**    * We need to make sure when doing allocation, Node should be existed    * And we will construct a {@link CandidateNodeSet} before proceeding    */
 DECL|method|allocateContainersToNode (NodeId nodeId, boolean withNodeHeartbeat)
 specifier|private
 name|void
@@ -6979,14 +6979,14 @@ name|assignedContainers
 init|=
 literal|0
 decl_stmt|;
-name|PlacementSet
+name|CandidateNodeSet
 argument_list|<
 name|FiCaSchedulerNode
 argument_list|>
-name|ps
+name|candidates
 init|=
 operator|new
-name|SimplePlacementSet
+name|SimpleCandidateNodeSet
 argument_list|<>
 argument_list|(
 name|node
@@ -6997,7 +6997,7 @@ name|assignment
 init|=
 name|allocateContainersToNode
 argument_list|(
-name|ps
+name|candidates
 argument_list|,
 name|withNodeHeartbeat
 argument_list|)
@@ -7074,7 +7074,7 @@ name|assignment
 operator|=
 name|allocateContainersToNode
 argument_list|(
-name|ps
+name|candidates
 argument_list|,
 literal|true
 argument_list|)
@@ -7165,16 +7165,16 @@ block|}
 block|}
 block|}
 comment|/*    * Logics of allocate container on a single node (Old behavior)    */
-DECL|method|allocateContainerOnSingleNode (PlacementSet<FiCaSchedulerNode> ps, FiCaSchedulerNode node, boolean withNodeHeartbeat)
+DECL|method|allocateContainerOnSingleNode ( CandidateNodeSet<FiCaSchedulerNode> candidates, FiCaSchedulerNode node, boolean withNodeHeartbeat)
 specifier|private
 name|CSAssignment
 name|allocateContainerOnSingleNode
 parameter_list|(
-name|PlacementSet
+name|CandidateNodeSet
 argument_list|<
 name|FiCaSchedulerNode
 argument_list|>
-name|ps
+name|candidates
 parameter_list|,
 name|FiCaSchedulerNode
 name|node
@@ -7283,7 +7283,7 @@ argument_list|(
 name|getClusterResource
 argument_list|()
 argument_list|,
-name|ps
+name|candidates
 argument_list|,
 comment|// TODO, now we only consider limits for parent for non-labeled
 comment|// resources, should consider labeled resources as well.
@@ -7602,22 +7602,22 @@ block|}
 return|return
 name|allocateOrReserveNewContainers
 argument_list|(
-name|ps
+name|candidates
 argument_list|,
 name|withNodeHeartbeat
 argument_list|)
 return|;
 block|}
-DECL|method|allocateOrReserveNewContainers ( PlacementSet<FiCaSchedulerNode> ps, boolean withNodeHeartbeat)
+DECL|method|allocateOrReserveNewContainers ( CandidateNodeSet<FiCaSchedulerNode> candidates, boolean withNodeHeartbeat)
 specifier|private
 name|CSAssignment
 name|allocateOrReserveNewContainers
 parameter_list|(
-name|PlacementSet
+name|CandidateNodeSet
 argument_list|<
 name|FiCaSchedulerNode
 argument_list|>
-name|ps
+name|candidates
 parameter_list|,
 name|boolean
 name|withNodeHeartbeat
@@ -7634,7 +7634,7 @@ argument_list|(
 name|getClusterResource
 argument_list|()
 argument_list|,
-name|ps
+name|candidates
 argument_list|,
 operator|new
 name|ResourceLimits
@@ -7643,7 +7643,7 @@ name|labelManager
 operator|.
 name|getResourceByLabel
 argument_list|(
-name|ps
+name|candidates
 operator|.
 name|getPartition
 argument_list|()
@@ -7707,11 +7707,11 @@ name|updateSchedulerHealth
 argument_list|(
 name|lastNodeUpdateTime
 argument_list|,
-name|PlacementSetUtils
+name|CandidateNodeSetUtils
 operator|.
 name|getSingleNode
 argument_list|(
-name|ps
+name|candidates
 argument_list|)
 operator|.
 name|getNodeID
@@ -7732,7 +7732,7 @@ name|StringUtils
 operator|.
 name|equals
 argument_list|(
-name|ps
+name|candidates
 operator|.
 name|getPartition
 argument_list|()
@@ -7759,7 +7759,7 @@ argument_list|()
 operator|.
 name|isExclusiveNodeLabel
 argument_list|(
-name|ps
+name|candidates
 operator|.
 name|getPartition
 argument_list|()
@@ -7783,7 +7783,7 @@ name|warn
 argument_list|(
 literal|"Exception when trying to get exclusivity of node label="
 operator|+
-name|ps
+name|candidates
 operator|.
 name|getPartition
 argument_list|()
@@ -7806,7 +7806,7 @@ argument_list|(
 name|getClusterResource
 argument_list|()
 argument_list|,
-name|ps
+name|candidates
 argument_list|,
 comment|// TODO, now we only consider limits for parent for non-labeled
 comment|// resources, should consider labeled resources as well.
@@ -7853,16 +7853,16 @@ name|assignment
 return|;
 block|}
 comment|/*    * New behavior, allocate containers considering multiple nodes    */
-DECL|method|allocateContainersOnMultiNodes ( PlacementSet<FiCaSchedulerNode> ps)
+DECL|method|allocateContainersOnMultiNodes ( CandidateNodeSet<FiCaSchedulerNode> candidates)
 specifier|private
 name|CSAssignment
 name|allocateContainersOnMultiNodes
 parameter_list|(
-name|PlacementSet
+name|CandidateNodeSet
 argument_list|<
 name|FiCaSchedulerNode
 argument_list|>
-name|ps
+name|candidates
 parameter_list|)
 block|{
 comment|// When this time look at multiple nodes, try schedule if the
@@ -7877,7 +7877,7 @@ argument_list|()
 operator|.
 name|getUsedCapacity
 argument_list|(
-name|ps
+name|candidates
 operator|.
 name|getPartition
 argument_list|()
@@ -7893,7 +7893,7 @@ name|CapacitySchedulerConfiguration
 operator|.
 name|ROOT
 argument_list|,
-name|ps
+name|candidates
 operator|.
 name|getPartition
 argument_list|()
@@ -7930,7 +7930,7 @@ block|}
 return|return
 name|allocateOrReserveNewContainers
 argument_list|(
-name|ps
+name|candidates
 argument_list|,
 literal|false
 argument_list|)
@@ -7938,15 +7938,15 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|allocateContainersToNode (PlacementSet<FiCaSchedulerNode> ps, boolean withNodeHeartbeat)
+DECL|method|allocateContainersToNode ( CandidateNodeSet<FiCaSchedulerNode> candidates, boolean withNodeHeartbeat)
 name|CSAssignment
 name|allocateContainersToNode
 parameter_list|(
-name|PlacementSet
+name|CandidateNodeSet
 argument_list|<
 name|FiCaSchedulerNode
 argument_list|>
-name|ps
+name|candidates
 parameter_list|,
 name|boolean
 name|withNodeHeartbeat
@@ -7975,11 +7975,11 @@ comment|// driven by node heartbeat works.
 name|FiCaSchedulerNode
 name|node
 init|=
-name|PlacementSetUtils
+name|CandidateNodeSetUtils
 operator|.
 name|getSingleNode
 argument_list|(
-name|ps
+name|candidates
 argument_list|)
 decl_stmt|;
 comment|// We have two different logics to handle allocation on single node / multi
@@ -7994,7 +7994,7 @@ block|{
 return|return
 name|allocateContainerOnSingleNode
 argument_list|(
-name|ps
+name|candidates
 argument_list|,
 name|node
 argument_list|,
@@ -8007,7 +8007,7 @@ block|{
 return|return
 name|allocateContainersOnMultiNodes
 argument_list|(
-name|ps
+name|candidates
 argument_list|)
 return|;
 block|}
