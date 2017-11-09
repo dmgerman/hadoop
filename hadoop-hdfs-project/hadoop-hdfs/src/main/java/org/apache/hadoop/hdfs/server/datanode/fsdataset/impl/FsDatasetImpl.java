@@ -8222,6 +8222,40 @@ name|rbw
 return|;
 block|}
 block|}
+DECL|method|isReplicaProvided (ReplicaInfo replicaInfo)
+specifier|private
+name|boolean
+name|isReplicaProvided
+parameter_list|(
+name|ReplicaInfo
+name|replicaInfo
+parameter_list|)
+block|{
+if|if
+condition|(
+name|replicaInfo
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+return|return
+name|replicaInfo
+operator|.
+name|getVolume
+argument_list|()
+operator|.
+name|getStorageType
+argument_list|()
+operator|==
+name|StorageType
+operator|.
+name|PROVIDED
+return|;
+block|}
 annotation|@
 name|Override
 comment|// FsDatasetSpi
@@ -8336,9 +8370,10 @@ name|ReplicaState
 operator|.
 name|RBW
 expr_stmt|;
-comment|/*            * If the current block is old, reject.            * else If transfer request, then accept it.            * else if state is not RBW/Temporary, then reject            */
+comment|/*            * If the current block is not PROVIDED and old, reject.            * else If transfer request, then accept it.            * else if state is not RBW/Temporary, then reject            * If current block is PROVIDED, ignore the replica.            */
 if|if
 condition|(
+operator|(
 operator|(
 name|currentReplicaInfo
 operator|.
@@ -8358,6 +8393,13 @@ operator|&&
 operator|!
 name|isInPipeline
 operator|)
+operator|)
+operator|&&
+operator|!
+name|isReplicaProvided
+argument_list|(
+name|currentReplicaInfo
+argument_list|)
 condition|)
 block|{
 throw|throw
@@ -8442,6 +8484,27 @@ literal|" miniseconds."
 argument_list|)
 throw|;
 block|}
+comment|// if lastFoundReplicaInfo is PROVIDED and FINALIZED,
+comment|// stopWriter isn't required.
+if|if
+condition|(
+name|isReplicaProvided
+argument_list|(
+name|lastFoundReplicaInfo
+argument_list|)
+operator|&&
+name|lastFoundReplicaInfo
+operator|.
+name|getState
+argument_list|()
+operator|==
+name|ReplicaState
+operator|.
+name|FINALIZED
+condition|)
+block|{
+continue|continue;
+block|}
 comment|// Stop the previous writer
 operator|(
 operator|(
@@ -8466,6 +8529,12 @@ condition|(
 name|lastFoundReplicaInfo
 operator|!=
 literal|null
+operator|&&
+operator|!
+name|isReplicaProvided
+argument_list|(
+name|lastFoundReplicaInfo
+argument_list|)
 condition|)
 block|{
 comment|// Old blockfile should be deleted synchronously as it might collide

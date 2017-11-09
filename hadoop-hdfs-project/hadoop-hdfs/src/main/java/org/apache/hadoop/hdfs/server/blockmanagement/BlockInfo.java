@@ -684,6 +684,11 @@ init|=
 name|getCapacity
 argument_list|()
 decl_stmt|;
+name|DatanodeStorageInfo
+name|providedStorageInfo
+init|=
+literal|null
+decl_stmt|;
 for|for
 control|(
 name|int
@@ -742,9 +747,12 @@ operator|!=
 literal|null
 condition|)
 block|{
-return|return
+comment|// do not return here as we have to check the other
+comment|// DatanodeStorageInfos for this block which could be local
+name|providedStorageInfo
+operator|=
 name|cur
-return|;
+expr_stmt|;
 block|}
 block|}
 elseif|else
@@ -765,7 +773,7 @@ block|}
 block|}
 block|}
 return|return
-literal|null
+name|providedStorageInfo
 return|;
 block|}
 comment|/**    * Find specified DatanodeStorageInfo.    * @return index or -1 if not found.    */
