@@ -1052,6 +1052,9 @@ operator|.
 name|setNodeHttpAddress
 argument_list|(
 name|nodeHttpAddress
+operator|.
+name|intern
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
