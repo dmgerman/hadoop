@@ -517,11 +517,16 @@ name|init
 argument_list|(
 literal|"/rack1/node1"
 argument_list|,
+name|Resources
+operator|.
+name|createResource
+argument_list|(
 name|GB
 operator|*
 literal|10
 argument_list|,
 literal|10
+argument_list|)
 argument_list|,
 literal|0
 argument_list|,
