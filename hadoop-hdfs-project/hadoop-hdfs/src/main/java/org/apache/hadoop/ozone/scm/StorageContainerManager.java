@@ -1957,26 +1957,23 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|String
-name|clusterId
-init|=
-name|scmStorage
-operator|.
-name|getClusterID
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
-name|clusterId
-operator|==
-literal|null
+name|scmStorage
+operator|.
+name|getState
+argument_list|()
+operator|!=
+name|StorageState
+operator|.
+name|INITIALIZED
 condition|)
 block|{
 throw|throw
 operator|new
 name|SCMException
 argument_list|(
-literal|"clusterId not found"
+literal|"SCM not initialized."
 argument_list|,
 name|ResultCodes
 operator|.
