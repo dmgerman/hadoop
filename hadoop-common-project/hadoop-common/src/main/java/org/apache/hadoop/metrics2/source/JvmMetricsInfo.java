@@ -211,6 +211,12 @@ name|GcTotalExtraSleepTime
 argument_list|(
 literal|"Total GC extra sleep time in milliseconds"
 argument_list|)
+block|,
+DECL|enumConstant|GcTimePercentage
+name|GcTimePercentage
+argument_list|(
+literal|"Percentage of time the JVM was paused in GC"
+argument_list|)
 block|;
 DECL|field|desc
 specifier|private
