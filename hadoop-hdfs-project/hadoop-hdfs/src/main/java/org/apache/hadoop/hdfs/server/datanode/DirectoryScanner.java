@@ -2416,6 +2416,26 @@ name|i
 operator|++
 control|)
 block|{
+if|if
+condition|(
+name|volumes
+operator|.
+name|get
+argument_list|(
+name|i
+argument_list|)
+operator|.
+name|getStorageType
+argument_list|()
+operator|==
+name|StorageType
+operator|.
+name|PROVIDED
+condition|)
+block|{
+comment|// Disable scanning PROVIDED volumes to keep overhead low
+continue|continue;
+block|}
 name|ReportCompiler
 name|reportCompiler
 init|=
