@@ -231,10 +231,10 @@ decl_stmt|;
 DECL|field|cluster
 specifier|private
 specifier|final
-name|MiniOzoneCluster
+name|MiniOzoneClassicCluster
 name|cluster
 decl_stmt|;
-comment|/**      * Create a {@link MiniOzoneCluster} for testing by setting      *   OZONE_ENABLED = true,      *   RATIS_ENABLED = true, and      *   OZONE_HANDLER_TYPE_KEY = "distributed".      */
+comment|/**      * Create a {@link MiniOzoneClassicCluster} for testing by setting      *   OZONE_ENABLED = true,      *   RATIS_ENABLED = true, and      *   OZONE_HANDLER_TYPE_KEY = "distributed".      */
 DECL|method|RatisTestSuite (final Class<?> clazz)
 specifier|public
 name|RatisTestSuite
@@ -280,7 +280,7 @@ return|;
 block|}
 DECL|method|getCluster ()
 specifier|public
-name|MiniOzoneCluster
+name|MiniOzoneClassicCluster
 name|getCluster
 parameter_list|()
 block|{
@@ -443,7 +443,7 @@ expr_stmt|;
 block|}
 DECL|method|newMiniOzoneCluster ( int numDatanodes, OzoneConfiguration conf)
 specifier|static
-name|MiniOzoneCluster
+name|MiniOzoneClassicCluster
 name|newMiniOzoneCluster
 parameter_list|(
 name|int
@@ -456,11 +456,11 @@ throws|throws
 name|IOException
 block|{
 specifier|final
-name|MiniOzoneCluster
+name|MiniOzoneClassicCluster
 name|cluster
 init|=
 operator|new
-name|MiniOzoneCluster
+name|MiniOzoneClassicCluster
 operator|.
 name|Builder
 argument_list|(
@@ -482,10 +482,6 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-comment|//    cluster.getRatisManager().createPipeline("ratis0",
-comment|//        cluster.getDataNodes().stream()
-comment|//            .map(DataNode::getDatanodeId)
-comment|//            .collect(Collectors.toList()));
 return|return
 name|cluster
 return|;

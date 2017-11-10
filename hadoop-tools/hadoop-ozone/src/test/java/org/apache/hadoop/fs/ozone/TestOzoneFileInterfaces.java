@@ -162,7 +162,7 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|MiniOzoneCluster
+name|MiniOzoneClassicCluster
 import|;
 end_import
 
@@ -379,7 +379,7 @@ block|{
 DECL|field|cluster
 specifier|private
 specifier|static
-name|MiniOzoneCluster
+name|MiniOzoneClassicCluster
 name|cluster
 init|=
 literal|null
@@ -419,7 +419,7 @@ decl_stmt|;
 name|cluster
 operator|=
 operator|new
-name|MiniOzoneCluster
+name|MiniOzoneClassicCluster
 operator|.
 name|Builder
 argument_list|(

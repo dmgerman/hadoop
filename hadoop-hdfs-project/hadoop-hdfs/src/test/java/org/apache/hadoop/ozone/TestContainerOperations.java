@@ -364,7 +364,7 @@ expr_stmt|;
 name|cluster
 operator|=
 operator|new
-name|MiniOzoneCluster
+name|MiniOzoneClassicCluster
 operator|.
 name|Builder
 argument_list|(

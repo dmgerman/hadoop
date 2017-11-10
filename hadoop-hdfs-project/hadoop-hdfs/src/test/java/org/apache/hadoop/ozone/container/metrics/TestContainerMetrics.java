@@ -655,6 +655,8 @@ operator|.
 name|getCreateContainerRequest
 argument_list|(
 name|containerName
+argument_list|,
+name|pipeline
 argument_list|)
 decl_stmt|;
 name|ContainerCommandResponseProto

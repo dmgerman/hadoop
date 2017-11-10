@@ -64,6 +64,20 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|MiniOzoneClassicCluster
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|MiniOzoneCluster
 import|;
 end_import
@@ -363,7 +377,7 @@ block|{
 name|cluster
 operator|=
 operator|new
-name|MiniOzoneCluster
+name|MiniOzoneClassicCluster
 operator|.
 name|Builder
 argument_list|(
@@ -585,7 +599,7 @@ expr_stmt|;
 name|cluster
 operator|=
 operator|new
-name|MiniOzoneCluster
+name|MiniOzoneClassicCluster
 operator|.
 name|Builder
 argument_list|(
@@ -1152,7 +1166,7 @@ expr_stmt|;
 name|cluster
 operator|=
 operator|new
-name|MiniOzoneCluster
+name|MiniOzoneClassicCluster
 operator|.
 name|Builder
 argument_list|(
@@ -1433,7 +1447,7 @@ expr_stmt|;
 name|cluster
 operator|=
 operator|new
-name|MiniOzoneCluster
+name|MiniOzoneClassicCluster
 operator|.
 name|Builder
 argument_list|(
@@ -1958,7 +1972,7 @@ expr_stmt|;
 name|cluster
 operator|=
 operator|new
-name|MiniOzoneCluster
+name|MiniOzoneClassicCluster
 operator|.
 name|Builder
 argument_list|(
@@ -2591,7 +2605,7 @@ expr_stmt|;
 name|cluster
 operator|=
 operator|new
-name|MiniOzoneCluster
+name|MiniOzoneClassicCluster
 operator|.
 name|Builder
 argument_list|(
@@ -2690,7 +2704,7 @@ expr_stmt|;
 name|cluster
 operator|=
 operator|new
-name|MiniOzoneCluster
+name|MiniOzoneClassicCluster
 operator|.
 name|Builder
 argument_list|(
@@ -2863,6 +2877,11 @@ operator|.
 name|getCreateContainerRequest
 argument_list|(
 name|containerName
+argument_list|,
+name|client
+operator|.
+name|getPipeline
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|ContainerProtos

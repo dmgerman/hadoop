@@ -313,6 +313,13 @@ argument_list|(
 literal|false
 argument_list|)
 expr_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|pipeline
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|pipeline
@@ -570,6 +577,25 @@ operator|new
 name|IllegalArgumentException
 argument_list|(
 literal|"Invalid trace ID"
+argument_list|)
+throw|;
+block|}
+comment|// Setting the datanode ID in the commands, so that we can distinguish
+comment|// commands when the cluster simulator is running.
+if|if
+condition|(
+operator|!
+name|request
+operator|.
+name|hasDatanodeID
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Invalid Datanode ID"
 argument_list|)
 throw|;
 block|}

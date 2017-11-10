@@ -415,7 +415,7 @@ block|{
 DECL|field|cluster
 specifier|private
 specifier|static
-name|MiniOzoneCluster
+name|MiniOzoneClassicCluster
 name|cluster
 decl_stmt|;
 DECL|field|conf
@@ -575,7 +575,7 @@ decl_stmt|;
 name|cluster
 operator|=
 operator|new
-name|MiniOzoneCluster
+name|MiniOzoneClassicCluster
 operator|.
 name|Builder
 argument_list|(

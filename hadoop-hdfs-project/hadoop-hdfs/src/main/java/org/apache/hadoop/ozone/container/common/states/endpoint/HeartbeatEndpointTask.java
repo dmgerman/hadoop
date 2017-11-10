@@ -490,6 +490,8 @@ decl_stmt|;
 name|processResponse
 argument_list|(
 name|reponse
+argument_list|,
+name|datanodeID
 argument_list|)
 expr_stmt|;
 name|rpcEndpoint
@@ -552,13 +554,17 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Add this command to command processing Queue.    *    * @param response - SCMHeartbeat response.    */
-DECL|method|processResponse (SCMHeartbeatResponseProto response)
+DECL|method|processResponse (SCMHeartbeatResponseProto response, final DatanodeID datanodeID)
 specifier|private
 name|void
 name|processResponse
 parameter_list|(
 name|SCMHeartbeatResponseProto
 name|response
+parameter_list|,
+specifier|final
+name|DatanodeID
+name|datanodeID
 parameter_list|)
 block|{
 for|for
@@ -572,6 +578,30 @@ name|getCommandsList
 argument_list|()
 control|)
 block|{
+comment|// Verify the response is indeed for this datanode.
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|commandResponseProto
+operator|.
+name|getDatanodeUUID
+argument_list|()
+operator|.
+name|equalsIgnoreCase
+argument_list|(
+name|datanodeID
+operator|.
+name|getDatanodeUuid
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+argument_list|,
+literal|"Unexpected datanode ID in the response."
+argument_list|)
+expr_stmt|;
 switch|switch
 condition|(
 name|commandResponseProto

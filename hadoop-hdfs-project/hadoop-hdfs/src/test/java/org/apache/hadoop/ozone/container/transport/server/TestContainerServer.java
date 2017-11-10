@@ -694,6 +694,13 @@ operator|.
 name|getCreateContainerRequest
 argument_list|(
 name|containerName
+argument_list|,
+name|ContainerTestHelper
+operator|.
+name|createSingleNodePipeline
+argument_list|(
+name|containerName
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|channel
@@ -1287,6 +1294,8 @@ operator|.
 name|getCreateContainerRequest
 argument_list|(
 name|containerName
+argument_list|,
+name|pipeline
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -1477,6 +1486,8 @@ operator|.
 name|getCreateContainerRequest
 argument_list|(
 name|containerName
+argument_list|,
+name|pipeline
 argument_list|)
 decl_stmt|;
 name|ContainerCommandResponseProto

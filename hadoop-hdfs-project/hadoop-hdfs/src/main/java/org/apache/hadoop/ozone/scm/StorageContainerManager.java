@@ -1957,23 +1957,26 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
+name|String
+name|clusterId
+init|=
 name|scmStorage
 operator|.
-name|getState
+name|getClusterID
 argument_list|()
-operator|!=
-name|StorageState
-operator|.
-name|INITIALIZED
+decl_stmt|;
+if|if
+condition|(
+name|clusterId
+operator|==
+literal|null
 condition|)
 block|{
 throw|throw
 operator|new
 name|SCMException
 argument_list|(
-literal|"SCM not initialized."
+literal|"clusterId not found"
 argument_list|,
 name|ResultCodes
 operator|.
@@ -3186,13 +3189,17 @@ block|}
 comment|/**    * Returns a SCMCommandRepose from the SCM Command.    * @param cmd - Cmd    * @return SCMCommandResponseProto    * @throws InvalidProtocolBufferException    */
 annotation|@
 name|VisibleForTesting
-DECL|method|getCommandResponse (SCMCommand cmd)
+DECL|method|getCommandResponse (SCMCommand cmd, final String datanodID)
 specifier|public
 name|SCMCommandResponseProto
 name|getCommandResponse
 parameter_list|(
 name|SCMCommand
 name|cmd
+parameter_list|,
+specifier|final
+name|String
+name|datanodID
 parameter_list|)
 throws|throws
 name|IOException
@@ -3214,6 +3221,11 @@ name|SCMCommandResponseProto
 operator|.
 name|newBuilder
 argument_list|()
+operator|.
+name|setDatanodeUUID
+argument_list|(
+name|datanodID
+argument_list|)
 decl_stmt|;
 switch|switch
 condition|(
@@ -4722,6 +4734,14 @@ argument_list|(
 name|getCommandResponse
 argument_list|(
 name|cmd
+argument_list|,
+name|datanodeID
+operator|.
+name|getDatanodeUuid
+argument_list|()
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;

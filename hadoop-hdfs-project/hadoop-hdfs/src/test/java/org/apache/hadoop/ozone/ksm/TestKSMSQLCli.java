@@ -46,7 +46,7 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|MiniOzoneCluster
+name|MiniOzoneClassicCluster
 import|;
 end_import
 
@@ -489,7 +489,7 @@ name|TestKSMSQLCli
 block|{
 DECL|field|cluster
 specifier|private
-name|MiniOzoneCluster
+name|MiniOzoneClassicCluster
 name|cluster
 init|=
 literal|null
@@ -682,7 +682,7 @@ expr_stmt|;
 name|cluster
 operator|=
 operator|new
-name|MiniOzoneCluster
+name|MiniOzoneClassicCluster
 operator|.
 name|Builder
 argument_list|(

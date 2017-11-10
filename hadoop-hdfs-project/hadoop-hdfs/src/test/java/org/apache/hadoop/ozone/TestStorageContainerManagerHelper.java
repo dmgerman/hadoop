@@ -507,7 +507,7 @@ block|{
 DECL|field|cluster
 specifier|private
 specifier|final
-name|MiniOzoneCluster
+name|MiniOzoneClassicCluster
 name|cluster
 decl_stmt|;
 DECL|field|conf
@@ -522,11 +522,11 @@ specifier|final
 name|StorageHandler
 name|storageHandler
 decl_stmt|;
-DECL|method|TestStorageContainerManagerHelper (MiniOzoneCluster cluster, Configuration conf)
+DECL|method|TestStorageContainerManagerHelper (MiniOzoneClassicCluster cluster, Configuration conf)
 specifier|public
 name|TestStorageContainerManagerHelper
 parameter_list|(
-name|MiniOzoneCluster
+name|MiniOzoneClassicCluster
 name|cluster
 parameter_list|,
 name|Configuration

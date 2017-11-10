@@ -202,7 +202,7 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|MiniOzoneCluster
+name|MiniOzoneClassicCluster
 import|;
 end_import
 
@@ -805,7 +805,7 @@ decl_stmt|;
 DECL|field|ozoneCluster
 specifier|private
 specifier|static
-name|MiniOzoneCluster
+name|MiniOzoneClassicCluster
 name|ozoneCluster
 init|=
 literal|null
@@ -892,7 +892,7 @@ expr_stmt|;
 name|ozoneCluster
 operator|=
 operator|new
-name|MiniOzoneCluster
+name|MiniOzoneClassicCluster
 operator|.
 name|Builder
 argument_list|(
@@ -1752,13 +1752,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|restartDatanode ( MiniOzoneCluster cluster, int datanodeIdx, OzoneRestClient client)
+DECL|method|restartDatanode ( MiniOzoneClassicCluster cluster, int datanodeIdx, OzoneRestClient client)
 specifier|private
 specifier|static
 name|void
 name|restartDatanode
 parameter_list|(
-name|MiniOzoneCluster
+name|MiniOzoneClassicCluster
 name|cluster
 parameter_list|,
 name|int
@@ -1871,7 +1871,7 @@ name|ozoneCluster
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|runTestPutAndGetKeyWithDnRestart ( PutHelper helper, MiniOzoneCluster cluster)
+DECL|method|runTestPutAndGetKeyWithDnRestart ( PutHelper helper, MiniOzoneClassicCluster cluster)
 specifier|static
 name|void
 name|runTestPutAndGetKeyWithDnRestart
@@ -1879,7 +1879,7 @@ parameter_list|(
 name|PutHelper
 name|helper
 parameter_list|,
-name|MiniOzoneCluster
+name|MiniOzoneClassicCluster
 name|cluster
 parameter_list|)
 throws|throws
