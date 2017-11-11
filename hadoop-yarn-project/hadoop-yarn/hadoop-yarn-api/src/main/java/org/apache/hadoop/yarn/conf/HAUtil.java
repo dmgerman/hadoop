@@ -44,34 +44,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|HadoopIllegalArgumentException
@@ -150,6 +122,26 @@ name|VisibleForTesting
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_class
 annotation|@
 name|InterfaceAudience
@@ -163,12 +155,12 @@ block|{
 DECL|field|LOG
 specifier|private
 specifier|static
-name|Log
+name|Logger
 name|LOG
 init|=
-name|LogFactory
+name|LoggerFactory
 operator|.
-name|getLog
+name|getLogger
 argument_list|(
 name|HAUtil
 operator|.
@@ -1308,16 +1300,16 @@ name|LOG
 operator|.
 name|trace
 argument_list|(
-literal|"getConfValueForRMInstance: prefix = "
+literal|"getConfValueForRMInstance: prefix = {};"
 operator|+
+literal|" confKey being looked up = {};"
+operator|+
+literal|" value being set to = {}"
+argument_list|,
 name|prefix
-operator|+
-literal|"; confKey being looked up = "
-operator|+
+argument_list|,
 name|confKey
-operator|+
-literal|"; value being set to = "
-operator|+
+argument_list|,
 name|retVal
 argument_list|)
 expr_stmt|;
