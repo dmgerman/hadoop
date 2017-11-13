@@ -4336,6 +4336,16 @@ argument_list|)
 decl_stmt|;
 name|newIoe
 operator|.
+name|initCause
+argument_list|(
+name|ioe
+operator|.
+name|getCause
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|newIoe
+operator|.
 name|setStackTrace
 argument_list|(
 name|ioe
