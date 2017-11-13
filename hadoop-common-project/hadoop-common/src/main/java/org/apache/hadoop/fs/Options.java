@@ -1393,7 +1393,7 @@ specifier|protected
 name|HandleOpt
 parameter_list|()
 block|{     }
-comment|/**      * Utility function for mapping      * {@link FileSystem#getPathHandle(FileStatus, HandleOpt[])} to a      * fixed set of handle options.      * @param fs Target filesystem      * @param opt Options to bind in partially evaluated function      * @return Function reference with options fixed      */
+comment|/**      * Utility function for mapping {@link FileSystem#getPathHandle} to a      * fixed set of handle options.      * @param fs Target filesystem      * @param opt Options to bind in partially evaluated function      * @return Function reference with options fixed      */
 DECL|method|resolve ( FileSystem fs, HandleOpt... opt)
 specifier|public
 specifier|static

@@ -3079,7 +3079,7 @@ name|UnsupportedOperationException
 argument_list|()
 throw|;
 block|}
-comment|/**    * Create a durable, serializable handle to the referent of the given    * entity.    * @param stat Referent in the target FileSystem    * @param opt If absent, assume {@link HandleOpt#path()}.    * @throws IllegalArgumentException If the FileStatus does not belong to    *         this FileSystem    * @throws UnsupportedOperationException If    *         {@link #createPathHandle(FileStatus, HandleOpt[])}    *         not overridden by subclass.    * @throws UnsupportedOperationException If this FileSystem cannot enforce    *         the specified constraints.    */
+comment|/**    * Create a durable, serializable handle to the referent of the given    * entity.    * @param stat Referent in the target FileSystem    * @param opt If absent, assume {@link HandleOpt#path()}.    * @throws IllegalArgumentException If the FileStatus does not belong to    *         this FileSystem    * @throws UnsupportedOperationException If {@link #createPathHandle}    *         not overridden by subclass.    * @throws UnsupportedOperationException If this FileSystem cannot enforce    *         the specified constraints.    */
 DECL|method|getPathHandle (FileStatus stat, HandleOpt... opt)
 specifier|public
 specifier|final
