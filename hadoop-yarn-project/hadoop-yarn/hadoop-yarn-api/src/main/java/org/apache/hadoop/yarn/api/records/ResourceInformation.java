@@ -249,7 +249,7 @@ return|return
 name|name
 return|;
 block|}
-comment|/**    * Set the name for the resource.    *    * @param rName name for the resource    */
+comment|/**    * Set the name for the resource.    *    * A valid resource name must begin with a letter and contain only letters,    * numbers, and any of: '.', '_', or '-'. A valid resource name may also be    * optionally preceded by a name space followed by a slash. A valid name space    * consists of period-separated groups of letters, numbers, and dashes."    *    * @param rName name for the resource    */
 DECL|method|setName (String rName)
 specifier|public
 name|void

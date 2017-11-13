@@ -460,6 +460,22 @@ argument_list|(
 literal|"^([0-9]+) ?([a-zA-Z]*)$"
 argument_list|)
 decl_stmt|;
+DECL|field|RESOURCE_NAME_PATTERN
+specifier|private
+specifier|static
+specifier|final
+name|Pattern
+name|RESOURCE_NAME_PATTERN
+init|=
+name|Pattern
+operator|.
+name|compile
+argument_list|(
+literal|"^(((\\p{Alnum}([\\p{Alnum}-]*\\p{Alnum})?\\.)*"
+operator|+
+literal|"\\p{Alnum}([\\p{Alnum}-]*\\p{Alnum})?)/)?\\p{Alpha}([\\w.-]*)$"
+argument_list|)
+decl_stmt|;
 DECL|field|initializedResources
 specifier|private
 specifier|static
@@ -1350,6 +1366,69 @@ block|}
 block|}
 annotation|@
 name|VisibleForTesting
+DECL|method|validateNameOfResourceNameAndThrowException (String resourceName)
+specifier|static
+name|void
+name|validateNameOfResourceNameAndThrowException
+parameter_list|(
+name|String
+name|resourceName
+parameter_list|)
+throws|throws
+name|YarnRuntimeException
+block|{
+name|Matcher
+name|matcher
+init|=
+name|RESOURCE_NAME_PATTERN
+operator|.
+name|matcher
+argument_list|(
+name|resourceName
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|matcher
+operator|.
+name|matches
+argument_list|()
+condition|)
+block|{
+name|String
+name|message
+init|=
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"'%s' is not a valid resource name. A valid resource name must"
+operator|+
+literal|" begin with a letter and contain only letters, numbers, "
+operator|+
+literal|"and any of: '.', '_', or '-'. A valid resource name may also"
+operator|+
+literal|" be optionally preceded by a name space followed by a slash."
+operator|+
+literal|" A valid name space consists of period-separated groups of"
+operator|+
+literal|" letters, numbers, and dashes."
+argument_list|,
+name|resourceName
+argument_list|)
+decl_stmt|;
+throw|throw
+operator|new
+name|YarnRuntimeException
+argument_list|(
+name|message
+argument_list|)
+throw|;
+block|}
+block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|initializeResourcesMap (Configuration conf)
 specifier|static
 name|void
@@ -1599,6 +1678,24 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|// Validate names of resource information map.
+for|for
+control|(
+name|String
+name|name
+range|:
+name|resourceInformationMap
+operator|.
+name|keySet
+argument_list|()
+control|)
+block|{
+name|validateNameOfResourceNameAndThrowException
+argument_list|(
+name|name
+argument_list|)
+expr_stmt|;
 block|}
 name|checkMandatoryResources
 argument_list|(
