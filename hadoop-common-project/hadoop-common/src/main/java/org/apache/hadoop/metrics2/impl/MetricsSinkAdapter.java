@@ -331,13 +331,13 @@ name|inError
 init|=
 literal|false
 decl_stmt|;
-DECL|field|period
+DECL|field|periodMs
 DECL|field|firstRetryDelay
 DECL|field|retryCount
 specifier|private
 specifier|final
 name|int
-name|period
+name|periodMs
 decl_stmt|,
 name|firstRetryDelay
 decl_stmt|,
@@ -385,7 +385,7 @@ specifier|final
 name|MutableGaugeInt
 name|qsize
 decl_stmt|;
-DECL|method|MetricsSinkAdapter (String name, String description, MetricsSink sink, String context, MetricsFilter sourceFilter, MetricsFilter recordFilter, MetricsFilter metricFilter, int period, int queueCapacity, int retryDelay, float retryBackoff, int retryCount)
+DECL|method|MetricsSinkAdapter (String name, String description, MetricsSink sink, String context, MetricsFilter sourceFilter, MetricsFilter recordFilter, MetricsFilter metricFilter, int periodMs, int queueCapacity, int retryDelay, float retryBackoff, int retryCount)
 name|MetricsSinkAdapter
 parameter_list|(
 name|String
@@ -410,7 +410,7 @@ name|MetricsFilter
 name|metricFilter
 parameter_list|,
 name|int
-name|period
+name|periodMs
 parameter_list|,
 name|int
 name|queueCapacity
@@ -479,13 +479,13 @@ name|metricFilter
 expr_stmt|;
 name|this
 operator|.
-name|period
+name|periodMs
 operator|=
 name|checkArg
 argument_list|(
-name|period
+name|periodMs
 argument_list|,
-name|period
+name|periodMs
 operator|>
 literal|0
 argument_list|,
@@ -651,7 +651,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|putMetrics (MetricsBuffer buffer, long logicalTime)
+DECL|method|putMetrics (MetricsBuffer buffer, long logicalTimeMs)
 name|boolean
 name|putMetrics
 parameter_list|(
@@ -659,14 +659,14 @@ name|MetricsBuffer
 name|buffer
 parameter_list|,
 name|long
-name|logicalTime
+name|logicalTimeMs
 parameter_list|)
 block|{
 if|if
 condition|(
-name|logicalTime
+name|logicalTimeMs
 operator|%
-name|period
+name|periodMs
 operator|==
 literal|0
 condition|)
@@ -677,7 +677,7 @@ name|debug
 argument_list|(
 literal|"enqueue, logicalTime="
 operator|+
-name|logicalTime
+name|logicalTimeMs
 argument_list|)
 expr_stmt|;
 if|if
