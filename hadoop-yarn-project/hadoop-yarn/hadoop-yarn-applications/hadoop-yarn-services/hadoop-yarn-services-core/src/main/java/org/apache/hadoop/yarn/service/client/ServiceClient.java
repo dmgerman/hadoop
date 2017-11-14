@@ -6301,7 +6301,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|getAppId (String serviceName)
-specifier|private
+specifier|public
 specifier|synchronized
 name|ApplicationId
 name|getAppId
