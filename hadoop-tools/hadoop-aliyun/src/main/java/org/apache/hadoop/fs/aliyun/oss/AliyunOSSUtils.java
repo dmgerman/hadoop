@@ -609,6 +609,42 @@ name|key
 return|;
 block|}
 block|}
+comment|/**    * Check if OSS object represents a directory.    *    * @param name object key    * @param size object content length    * @return true if object represents a directory    */
+DECL|method|objectRepresentsDirectory (final String name, final long size)
+specifier|public
+specifier|static
+name|boolean
+name|objectRepresentsDirectory
+parameter_list|(
+specifier|final
+name|String
+name|name
+parameter_list|,
+specifier|final
+name|long
+name|size
+parameter_list|)
+block|{
+return|return
+name|StringUtils
+operator|.
+name|isNotEmpty
+argument_list|(
+name|name
+argument_list|)
+operator|&&
+name|name
+operator|.
+name|endsWith
+argument_list|(
+literal|"/"
+argument_list|)
+operator|&&
+name|size
+operator|==
+literal|0L
+return|;
+block|}
 block|}
 end_class
 
