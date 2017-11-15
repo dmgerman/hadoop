@@ -465,6 +465,8 @@ argument_list|,
 literal|0L
 argument_list|,
 name|blocks
+argument_list|,
+literal|0
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -575,6 +577,8 @@ argument_list|,
 literal|0L
 argument_list|,
 name|blocks
+argument_list|,
+literal|0
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -680,6 +684,8 @@ argument_list|,
 literal|0L
 argument_list|,
 name|blocks
+argument_list|,
+literal|0
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -808,6 +814,8 @@ argument_list|,
 literal|0L
 argument_list|,
 name|blocks
+argument_list|,
+literal|0
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -950,6 +958,8 @@ argument_list|,
 literal|0L
 argument_list|,
 name|blocks
+argument_list|,
+literal|0
 argument_list|)
 argument_list|)
 expr_stmt|;

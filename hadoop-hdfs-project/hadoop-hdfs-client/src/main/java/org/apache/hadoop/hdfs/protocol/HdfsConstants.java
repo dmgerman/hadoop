@@ -512,6 +512,10 @@ comment|/**      * Storage policy satisfied for the path.      */
 DECL|enumConstant|SUCCESS
 name|SUCCESS
 block|,
+comment|/**      * Few blocks failed to move and the path is still not      * fully satisfied the storage policy.      */
+DECL|enumConstant|FAILURE
+name|FAILURE
+block|,
 comment|/**      * Status not available.      */
 DECL|enumConstant|NOT_AVAILABLE
 name|NOT_AVAILABLE

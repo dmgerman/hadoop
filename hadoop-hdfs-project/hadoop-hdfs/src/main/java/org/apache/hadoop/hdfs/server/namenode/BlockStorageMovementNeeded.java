@@ -719,7 +719,7 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Decrease the pending child count for directory once one file blocks moved    * successfully. Remove the SPS xAttr if pending child count is zero.    */
-DECL|method|removeItemTrackInfo (ItemInfo trackInfo)
+DECL|method|removeItemTrackInfo (ItemInfo trackInfo, boolean isSuccess)
 specifier|public
 specifier|synchronized
 name|void
@@ -727,6 +727,9 @@ name|removeItemTrackInfo
 parameter_list|(
 name|ItemInfo
 name|trackInfo
+parameter_list|,
+name|boolean
+name|isSuccess
 parameter_list|)
 throws|throws
 name|IOException
@@ -779,9 +782,11 @@ argument_list|(
 name|startId
 argument_list|)
 expr_stmt|;
-name|markSuccess
+name|updateStatus
 argument_list|(
 name|startId
+argument_list|,
+name|isSuccess
 argument_list|)
 expr_stmt|;
 block|}
@@ -833,12 +838,32 @@ argument_list|(
 name|startId
 argument_list|)
 expr_stmt|;
-name|markSuccess
+name|pendingWork
+operator|.
+name|setFailure
+argument_list|(
+operator|!
+name|isSuccess
+argument_list|)
+expr_stmt|;
+name|updateStatus
 argument_list|(
 name|startId
+argument_list|,
+name|pendingWork
+operator|.
+name|isPolicySatisfied
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|pendingWork
+operator|.
+name|setFailure
+argument_list|(
+name|isSuccess
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 block|}
@@ -858,12 +883,14 @@ argument_list|,
 name|XATTR_SATISFY_STORAGE_POLICY
 argument_list|)
 expr_stmt|;
-name|markSuccess
+name|updateStatus
 argument_list|(
 name|trackInfo
 operator|.
 name|getStartId
 argument_list|()
+argument_list|,
+name|isSuccess
 argument_list|)
 expr_stmt|;
 block|}
@@ -938,13 +965,16 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Mark inode status as SUCCESS in map.    */
-DECL|method|markSuccess (long startId)
+DECL|method|updateStatus (long startId, boolean isSuccess)
 specifier|private
 name|void
-name|markSuccess
+name|updateStatus
 parameter_list|(
 name|long
 name|startId
+parameter_list|,
+name|boolean
+name|isSuccess
 parameter_list|)
 block|{
 name|StoragePolicySatisfyPathStatusInfo
@@ -980,11 +1010,25 @@ name|spsStatusInfo
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|isSuccess
+condition|)
+block|{
 name|spsStatusInfo
 operator|.
 name|setSuccess
 argument_list|()
 expr_stmt|;
+block|}
+else|else
+block|{
+name|spsStatusInfo
+operator|.
+name|setFailure
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Clean all the movements in spsDirsToBeTraveresed/storageMovementNeeded    * and notify to clean up required resources.    * @throws IOException    */
 DECL|method|clearQueuesWithNotification ()
@@ -1377,12 +1421,14 @@ name|getId
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|markSuccess
+name|updateStatus
 argument_list|(
 name|startInode
 operator|.
 name|getId
 argument_list|()
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -1836,6 +1882,13 @@ name|fullyScanned
 init|=
 literal|false
 decl_stmt|;
+DECL|field|success
+specifier|private
+name|boolean
+name|success
+init|=
+literal|true
+decl_stmt|;
 comment|/**      * Increment the pending work count for directory.      */
 DECL|method|addPendingWorkCount (int count)
 specifier|public
@@ -1903,6 +1956,38 @@ operator|.
 name|fullyScanned
 operator|=
 literal|true
+expr_stmt|;
+block|}
+comment|/**      * Return true if all the files block movement is success, otherwise false.      */
+DECL|method|isPolicySatisfied ()
+specifier|public
+name|boolean
+name|isPolicySatisfied
+parameter_list|()
+block|{
+return|return
+name|success
+return|;
+block|}
+comment|/**      * Set directory SPS status failed.      */
+DECL|method|setFailure (boolean failure)
+specifier|public
+name|void
+name|setFailure
+parameter_list|(
+name|boolean
+name|failure
+parameter_list|)
+block|{
+name|this
+operator|.
+name|success
+operator|=
+name|this
+operator|.
+name|success
+operator|||
+name|failure
 expr_stmt|;
 block|}
 block|}
@@ -2071,6 +2156,30 @@ name|monotonicNow
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|setFailure ()
+specifier|private
+name|void
+name|setFailure
+parameter_list|()
+block|{
+name|this
+operator|.
+name|status
+operator|=
+name|StoragePolicySatisfyPathStatus
+operator|.
+name|FAILURE
+expr_stmt|;
+name|this
+operator|.
+name|lastStatusUpdateTime
+operator|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+expr_stmt|;
+block|}
 DECL|method|getStatus ()
 specifier|private
 name|StoragePolicySatisfyPathStatus
@@ -2089,11 +2198,19 @@ name|canRemove
 parameter_list|()
 block|{
 return|return
+operator|(
 name|StoragePolicySatisfyPathStatus
 operator|.
 name|SUCCESS
 operator|==
 name|status
+operator|||
+name|StoragePolicySatisfyPathStatus
+operator|.
+name|FAILURE
+operator|==
+name|status
+operator|)
 operator|&&
 operator|(
 name|Time

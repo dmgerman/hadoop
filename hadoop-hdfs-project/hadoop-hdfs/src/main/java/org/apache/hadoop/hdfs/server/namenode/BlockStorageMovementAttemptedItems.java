@@ -679,6 +679,13 @@ name|getStartId
 argument_list|()
 argument_list|,
 name|blockCollectionID
+argument_list|,
+name|itemInfo
+operator|.
+name|getRetryCount
+argument_list|()
+operator|+
+literal|1
 argument_list|)
 decl_stmt|;
 name|blockStorageMovementNeeded
@@ -822,6 +829,13 @@ name|attemptedItemInfo
 operator|.
 name|getTrackId
 argument_list|()
+argument_list|,
+name|attemptedItemInfo
+operator|.
+name|getRetryCount
+argument_list|()
+operator|+
+literal|1
 argument_list|)
 argument_list|)
 expr_stmt|;

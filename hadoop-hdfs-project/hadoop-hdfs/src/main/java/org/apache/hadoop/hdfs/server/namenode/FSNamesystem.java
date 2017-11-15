@@ -37314,6 +37314,15 @@ argument_list|(
 name|id
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|inode
+operator|==
+literal|null
+condition|)
+block|{
+return|return;
+block|}
 specifier|final
 name|XAttrFeature
 name|xaf

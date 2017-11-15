@@ -1468,9 +1468,15 @@ literal|"status of the path in each 10 sec and status are:\n"
 operator|+
 literal|"PENDING : Path is in queue and not processed for satisfying"
 operator|+
-literal|" the policy.\nIN_PROGRESS : Satisfying the storage policy for"
+literal|" the policy.\n"
 operator|+
-literal|" path.\nSUCCESS : Storage policy satisfied for the path.\n"
+literal|"IN_PROGRESS : Satisfying the storage policy for"
+operator|+
+literal|" path.\n"
+operator|+
+literal|"SUCCESS : Storage policy satisfied for the path.\n"
+operator|+
+literal|"FAILURE : Few blocks failed to move.\n"
 operator|+
 literal|"NOT_AVAILABLE : Status not available."
 argument_list|)
@@ -1660,9 +1666,14 @@ argument_list|(
 literal|"Waiting for satisfy the policy ..."
 argument_list|)
 expr_stmt|;
+name|boolean
+name|running
+init|=
+literal|true
+decl_stmt|;
 while|while
 condition|(
-literal|true
+name|running
 condition|)
 block|{
 name|StoragePolicySatisfyPathStatus
@@ -1678,18 +1689,20 @@ argument_list|(
 name|path
 argument_list|)
 decl_stmt|;
-if|if
+switch|switch
 condition|(
-name|StoragePolicySatisfyPathStatus
-operator|.
-name|SUCCESS
-operator|.
-name|equals
-argument_list|(
 name|status
-argument_list|)
 condition|)
 block|{
+case|case
+name|SUCCESS
+case|:
+case|case
+name|FAILURE
+case|:
+case|case
+name|NOT_AVAILABLE
+case|:
 name|System
 operator|.
 name|out
@@ -1698,18 +1711,45 @@ name|println
 argument_list|(
 name|status
 argument_list|)
+expr_stmt|;
+name|running
+operator|=
+literal|false
+expr_stmt|;
+break|break;
+case|case
+name|PENDING
+case|:
+case|case
+name|IN_PROGRESS
+case|:
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+name|status
+argument_list|)
+expr_stmt|;
+default|default:
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Unexpected storage policy satisfyer status,"
+operator|+
+literal|" Exiting"
+argument_list|)
+expr_stmt|;
+name|running
+operator|=
+literal|false
 expr_stmt|;
 break|break;
 block|}
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-name|status
-argument_list|)
-expr_stmt|;
 try|try
 block|{
 name|Thread

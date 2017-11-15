@@ -635,6 +635,11 @@ name|blockCount
 init|=
 literal|0L
 decl_stmt|;
+DECL|field|blockMovementMaxRetry
+specifier|private
+name|int
+name|blockMovementMaxRetry
+decl_stmt|;
 comment|/**    * Represents the collective analysis status for all blocks.    */
 DECL|class|BlocksMovingAnalysis
 specifier|private
@@ -820,6 +825,23 @@ operator|.
 name|getSPSWorkMultiplier
 argument_list|(
 name|conf
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|blockMovementMaxRetry
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_STORAGE_POLICY_SATISFIER_MAX_RETRY_ATTEMPTS_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_STORAGE_POLICY_SATISFIER_MAX_RETRY_ATTEMPTS_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
@@ -1148,6 +1170,45 @@ operator|!=
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|itemInfo
+operator|.
+name|getRetryCount
+argument_list|()
+operator|>=
+name|blockMovementMaxRetry
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Failed to satisfy the policy after "
+operator|+
+name|blockMovementMaxRetry
+operator|+
+literal|" retries. Removing inode "
+operator|+
+name|itemInfo
+operator|.
+name|getTrackId
+argument_list|()
+operator|+
+literal|" from the queue"
+argument_list|)
+expr_stmt|;
+name|storageMovementNeeded
+operator|.
+name|removeItemTrackInfo
+argument_list|(
+name|itemInfo
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+continue|continue;
+block|}
 name|long
 name|trackId
 init|=
@@ -1195,6 +1256,8 @@ operator|.
 name|removeItemTrackInfo
 argument_list|(
 name|itemInfo
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -1265,6 +1328,11 @@ argument_list|,
 name|status
 operator|.
 name|assignedBlocks
+argument_list|,
+name|itemInfo
+operator|.
+name|getRetryCount
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1294,6 +1362,11 @@ literal|" found its eligible targets."
 argument_list|)
 expr_stmt|;
 block|}
+name|itemInfo
+operator|.
+name|retryCount
+operator|++
+expr_stmt|;
 name|this
 operator|.
 name|storageMovementNeeded
@@ -1361,6 +1434,8 @@ operator|.
 name|removeItemTrackInfo
 argument_list|(
 name|itemInfo
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 break|break;
@@ -3888,6 +3963,11 @@ specifier|private
 name|long
 name|trackId
 decl_stmt|;
+DECL|field|retryCount
+specifier|private
+name|int
+name|retryCount
+decl_stmt|;
 DECL|method|ItemInfo (long startId, long trackId)
 specifier|public
 name|ItemInfo
@@ -3910,6 +3990,46 @@ operator|.
 name|trackId
 operator|=
 name|trackId
+expr_stmt|;
+comment|//set 0 when item is getting added first time in queue.
+name|this
+operator|.
+name|retryCount
+operator|=
+literal|0
+expr_stmt|;
+block|}
+DECL|method|ItemInfo (long startId, long trackId, int retryCount)
+specifier|public
+name|ItemInfo
+parameter_list|(
+name|long
+name|startId
+parameter_list|,
+name|long
+name|trackId
+parameter_list|,
+name|int
+name|retryCount
+parameter_list|)
+block|{
+name|this
+operator|.
+name|startId
+operator|=
+name|startId
+expr_stmt|;
+name|this
+operator|.
+name|trackId
+operator|=
+name|trackId
+expr_stmt|;
+name|this
+operator|.
+name|retryCount
+operator|=
+name|retryCount
 expr_stmt|;
 block|}
 comment|/**      * Return the start inode id of the current track Id.      */
@@ -3949,6 +4069,17 @@ name|trackId
 operator|)
 return|;
 block|}
+comment|/**      * Get the attempted retry count of the block for satisfy the policy.      */
+DECL|method|getRetryCount ()
+specifier|public
+name|int
+name|getRetryCount
+parameter_list|()
+block|{
+return|return
+name|retryCount
+return|;
+block|}
 block|}
 comment|/**    * This class contains information of an attempted blocks and its last    * attempted or reported time stamp. This is used by    * {@link BlockStorageMovementAttemptedItems#storageMovementAttemptedItems}.    */
 DECL|class|AttemptedItemInfo
@@ -3974,7 +4105,7 @@ argument_list|>
 name|blocks
 decl_stmt|;
 comment|/**      * AttemptedItemInfo constructor.      *      * @param rootId      *          rootId for trackId      * @param trackId      *          trackId for file.      * @param lastAttemptedOrReportedTime      *          last attempted or reported time      */
-DECL|method|AttemptedItemInfo (long rootId, long trackId, long lastAttemptedOrReportedTime, List<Block> blocks)
+DECL|method|AttemptedItemInfo (long rootId, long trackId, long lastAttemptedOrReportedTime, List<Block> blocks, int retryCount)
 name|AttemptedItemInfo
 parameter_list|(
 name|long
@@ -3991,6 +4122,9 @@ argument_list|<
 name|Block
 argument_list|>
 name|blocks
+parameter_list|,
+name|int
+name|retryCount
 parameter_list|)
 block|{
 name|super
@@ -3998,6 +4132,8 @@ argument_list|(
 name|rootId
 argument_list|,
 name|trackId
+argument_list|,
+name|retryCount
 argument_list|)
 expr_stmt|;
 name|this

@@ -995,11 +995,11 @@ specifier|final
 name|long
 name|timeBetweenResendingCachingDirectivesMs
 decl_stmt|;
-DECL|field|blocksToMoveShareEqualRatio
+DECL|field|blocksToMoveLowPriority
 specifier|private
 specifier|final
 name|boolean
-name|blocksToMoveShareEqualRatio
+name|blocksToMoveLowPriority
 decl_stmt|;
 DECL|method|DatanodeManager (final BlockManager blockManager, final Namesystem namesystem, final Configuration conf)
 name|DatanodeManager
@@ -1713,7 +1713,7 @@ argument_list|)
 expr_stmt|;
 comment|// SPS configuration to decide blocks to move can share equal ratio of
 comment|// maxtransfers with pending replica and erasure-coded reconstruction tasks
-name|blocksToMoveShareEqualRatio
+name|blocksToMoveLowPriority
 operator|=
 name|conf
 operator|.
@@ -1721,11 +1721,11 @@ name|getBoolean
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_STORAGE_POLICY_SATISFIER_SHARE_EQUAL_REPLICA_MAX_STREAMS_KEY
+name|DFS_STORAGE_POLICY_SATISFIER_LOW_MAX_STREAMS_PREFERENCE_KEY
 argument_list|,
 name|DFSConfigKeys
 operator|.
-name|DFS_STORAGE_POLICY_SATISFIER_SHARE_EQUAL_REPLICA_MAX_STREAMS_DEFAULT
+name|DFS_STORAGE_POLICY_SATISFIER_LOW_MAX_STREAMS_PREFERENCE_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
@@ -7302,13 +7302,14 @@ name|numBlocksToMoveTasks
 init|=
 literal|0
 decl_stmt|;
-comment|// Check blocksToMoveShareEqualRatio configuration is true/false. If true,
+comment|// Check blocksToMoveLowPriority configuration is true/false. If false,
 comment|// then equally sharing the max transfer. Otherwise gives high priority to
 comment|// the pending_replica/erasure-coded tasks and only the delta streams will
 comment|// be used for blocks to move tasks.
 if|if
 condition|(
-name|blocksToMoveShareEqualRatio
+operator|!
+name|blocksToMoveLowPriority
 condition|)
 block|{
 comment|// add blocksToMove count to total blocks so that will get equal share
