@@ -644,7 +644,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Invalid bucket. ex:{}"
+literal|"Invalid bucket."
 argument_list|,
 name|argEx
 argument_list|)
@@ -857,7 +857,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"IOException: {}"
+literal|"IOException:"
 argument_list|,
 name|fsExp
 argument_list|)

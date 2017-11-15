@@ -625,7 +625,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"illegal argument. {}"
+literal|"Illegal argument."
 argument_list|,
 name|ex
 argument_list|)
@@ -707,7 +707,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"IOException: {}"
+literal|"IOException:"
 argument_list|,
 name|fsExp
 argument_list|)
@@ -923,7 +923,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Malformed Quota: {}"
+literal|"Malformed Quota."
 argument_list|,
 name|ex
 argument_list|)
@@ -1201,7 +1201,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"unable to get the volume list for the user. Ex: {}"
+literal|"unable to get the volume list for the user."
 argument_list|,
 name|ex
 argument_list|)
@@ -1322,8 +1322,6 @@ operator|.
 name|debug
 argument_list|(
 literal|"unable to get the bucket list for the specified volume."
-operator|+
-literal|" Ex: {}"
 argument_list|,
 name|ex
 argument_list|)

@@ -711,7 +711,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Invalid bucket in key call. ex:{}"
+literal|"Invalid bucket in key call."
 argument_list|,
 name|argExp
 argument_list|)
@@ -737,7 +737,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"IOException. ex : {}"
+literal|"IOException:"
 argument_list|,
 name|fsExp
 argument_list|)
@@ -807,7 +807,7 @@ name|error
 argument_list|(
 literal|"NoSuchAlgorithmException. Probably indicates an unusual java "
 operator|+
-literal|"installation.  ex : {}"
+literal|"installation."
 argument_list|,
 name|algoEx
 argument_list|)
