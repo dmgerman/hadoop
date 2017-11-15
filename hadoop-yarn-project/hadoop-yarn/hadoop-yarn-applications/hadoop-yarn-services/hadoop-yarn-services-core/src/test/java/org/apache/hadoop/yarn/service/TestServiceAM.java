@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.service.monitor
+DECL|package|org.apache.hadoop.yarn.service
 package|package
 name|org
 operator|.
@@ -15,8 +15,6 @@ operator|.
 name|yarn
 operator|.
 name|service
-operator|.
-name|monitor
 package|;
 end_package
 
@@ -94,38 +92,6 @@ name|yarn
 operator|.
 name|service
 operator|.
-name|MockServiceAM
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|service
-operator|.
-name|ServiceTestUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|service
-operator|.
 name|api
 operator|.
 name|records
@@ -146,11 +112,11 @@ name|yarn
 operator|.
 name|service
 operator|.
-name|api
+name|component
 operator|.
-name|records
+name|instance
 operator|.
-name|Component
+name|ComponentInstance
 import|;
 end_import
 
@@ -166,9 +132,11 @@ name|yarn
 operator|.
 name|service
 operator|.
-name|conf
+name|component
 operator|.
-name|YarnServiceConf
+name|instance
+operator|.
+name|ComponentInstanceState
 import|;
 end_import
 
@@ -238,7 +206,9 @@ name|java
 operator|.
 name|util
 operator|.
-name|Collections
+name|concurrent
+operator|.
+name|TimeoutException
 import|;
 end_import
 
@@ -263,10 +233,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|TestServiceMonitor
+DECL|class|TestServiceAM
 specifier|public
 class|class
-name|TestServiceMonitor
+name|TestServiceAM
 extends|extends
 name|ServiceTestUtils
 block|{
@@ -331,17 +301,6 @@ name|mkdirs
 argument_list|()
 expr_stmt|;
 block|}
-name|conf
-operator|.
-name|setLong
-argument_list|(
-name|YarnServiceConf
-operator|.
-name|READINESS_CHECK_INTERVAL
-argument_list|,
-literal|2
-argument_list|)
-expr_stmt|;
 name|zkCluster
 operator|=
 operator|new
@@ -421,20 +380,23 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|// Create compa with 1 container
-comment|// Create compb with 1 container
-comment|// Verify compb dependency satisfied
-comment|// Increase compa to 2 containers
-comment|// Verify compb dependency becomes unsatisfied.
+comment|// Race condition YARN-7486
+comment|// 1. Allocate 1 container to compa and wait it to be started
+comment|// 2. Fail this container, and in the meanwhile allocate the 2nd container.
+comment|// 3. The 2nd container should not be assigned to compa-0 instance, because
+comment|//   the compa-0 instance is not stopped yet.
+comment|// 4. check compa still has the instance in the pending list.
 annotation|@
 name|Test
-DECL|method|testComponentDependency ()
+DECL|method|testContainerCompleted ()
 specifier|public
 name|void
-name|testComponentDependency
+name|testContainerCompleted
 parameter_list|()
 throws|throws
-name|Exception
+name|TimeoutException
+throws|,
+name|InterruptedException
 block|{
 name|ApplicationId
 name|applicationId
@@ -469,7 +431,7 @@ name|exampleApp
 operator|.
 name|setName
 argument_list|(
-literal|"testComponentDependency"
+literal|"testContainerCompleted"
 argument_list|)
 expr_stmt|;
 name|exampleApp
@@ -482,40 +444,8 @@ literal|"compa"
 argument_list|,
 literal|1
 argument_list|,
-literal|"sleep 1000"
+literal|"pwd"
 argument_list|)
-argument_list|)
-expr_stmt|;
-name|Component
-name|compb
-init|=
-name|createComponent
-argument_list|(
-literal|"compb"
-argument_list|,
-literal|1
-argument_list|,
-literal|"sleep 1000"
-argument_list|)
-decl_stmt|;
-comment|// Let compb depends on compa;
-name|compb
-operator|.
-name|setDependencies
-argument_list|(
-name|Collections
-operator|.
-name|singletonList
-argument_list|(
-literal|"compa"
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|exampleApp
-operator|.
-name|addComponent
-argument_list|(
-name|compb
 argument_list|)
 expr_stmt|;
 name|MockServiceAM
@@ -539,39 +469,19 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-comment|// compa ready
-name|Assert
-operator|.
-name|assertTrue
-argument_list|(
+name|ComponentInstance
+name|compa0
+init|=
 name|am
 operator|.
-name|getComponent
+name|getCompInstance
 argument_list|(
 literal|"compa"
+argument_list|,
+literal|"compa-0"
 argument_list|)
-operator|.
-name|areDependenciesReady
-argument_list|()
-argument_list|)
-expr_stmt|;
-comment|//compb not ready
-name|Assert
-operator|.
-name|assertFalse
-argument_list|(
-name|am
-operator|.
-name|getComponent
-argument_list|(
-literal|"compb"
-argument_list|)
-operator|.
-name|areDependenciesReady
-argument_list|()
-argument_list|)
-expr_stmt|;
-comment|// feed 1 container to compa,
+decl_stmt|;
+comment|// allocate a container
 name|am
 operator|.
 name|feedContainerToComp
@@ -583,15 +493,41 @@ argument_list|,
 literal|"compa"
 argument_list|)
 expr_stmt|;
-comment|// waiting for compb's dependencies are satisfied
 name|am
 operator|.
-name|waitForDependenciesSatisfied
+name|waitForCompInstanceState
 argument_list|(
-literal|"compb"
+name|compa0
+argument_list|,
+name|ComponentInstanceState
+operator|.
+name|STARTED
 argument_list|)
 expr_stmt|;
-comment|// feed 1 container to compb
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Fail the container 1"
+argument_list|)
+expr_stmt|;
+comment|// fail the container
+name|am
+operator|.
+name|feedFailedContainerToComp
+argument_list|(
+name|exampleApp
+argument_list|,
+literal|1
+argument_list|,
+literal|"compa"
+argument_list|)
+expr_stmt|;
+comment|// allocate the second container immediately, this container will not be
+comment|// assigned to comp instance
+comment|// because the instance is not yet added to the pending list.
 name|am
 operator|.
 name|feedContainerToComp
@@ -600,40 +536,38 @@ name|exampleApp
 argument_list|,
 literal|2
 argument_list|,
-literal|"compb"
+literal|"compa"
 argument_list|)
 expr_stmt|;
 name|am
 operator|.
-name|flexComponent
+name|waitForCompInstanceState
 argument_list|(
-literal|"compa"
+name|compa0
 argument_list|,
-literal|2
-argument_list|)
-expr_stmt|;
-name|am
+name|ComponentInstanceState
 operator|.
-name|waitForNumDesiredContainers
-argument_list|(
-literal|"compa"
-argument_list|,
-literal|2
+name|INIT
 argument_list|)
 expr_stmt|;
-comment|// compb dependencies not satisfied again.
+comment|// still 1 pending instance
 name|Assert
 operator|.
-name|assertFalse
+name|assertEquals
 argument_list|(
+literal|1
+argument_list|,
 name|am
 operator|.
 name|getComponent
 argument_list|(
-literal|"compb"
+literal|"compa"
 argument_list|)
 operator|.
-name|areDependenciesReady
+name|getPendingInstances
+argument_list|()
+operator|.
+name|size
 argument_list|()
 argument_list|)
 expr_stmt|;

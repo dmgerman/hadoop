@@ -74,6 +74,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Container
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|service
 operator|.
 name|api
@@ -426,7 +444,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-DECL|method|buildContainerLaunchContext (AbstractLauncher launcher, Service service, ComponentInstance instance, SliderFileSystem fileSystem, Configuration yarnConf)
+DECL|method|buildContainerLaunchContext (AbstractLauncher launcher, Service service, ComponentInstance instance, SliderFileSystem fileSystem, Configuration yarnConf, Container container)
 specifier|public
 name|void
 name|buildContainerLaunchContext
@@ -445,6 +463,9 @@ name|fileSystem
 parameter_list|,
 name|Configuration
 name|yarnConf
+parameter_list|,
+name|Container
+name|container
 parameter_list|)
 throws|throws
 name|IOException
@@ -521,6 +542,8 @@ operator|.
 name|initCompTokensForSubstitute
 argument_list|(
 name|instance
+argument_list|,
+name|container
 argument_list|)
 decl_stmt|;
 name|tokensForSubstitution

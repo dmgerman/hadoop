@@ -610,6 +610,10 @@ name|hdfsCluster
 init|=
 literal|null
 decl_stmt|;
+DECL|field|zkCluster
+name|TestingCluster
+name|zkCluster
+decl_stmt|;
 DECL|field|fs
 specifier|private
 name|FileSystem
@@ -1184,9 +1188,6 @@ literal|false
 argument_list|)
 expr_stmt|;
 comment|// setup zk cluster
-name|TestingCluster
-name|zkCluster
-decl_stmt|;
 name|zkCluster
 operator|=
 operator|new
@@ -1575,6 +1576,19 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
+block|}
+if|if
+condition|(
+name|zkCluster
+operator|!=
+literal|null
+condition|)
+block|{
+name|zkCluster
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
 block|}
 if|if
 condition|(

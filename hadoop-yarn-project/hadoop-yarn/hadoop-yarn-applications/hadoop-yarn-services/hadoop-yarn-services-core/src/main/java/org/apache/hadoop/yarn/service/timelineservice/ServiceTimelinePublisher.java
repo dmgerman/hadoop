@@ -62,6 +62,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ContainerId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|FinalApplicationStatus
 import|;
 end_import
@@ -1087,13 +1105,13 @@ name|entity
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|componentInstanceFinished (ComponentInstance instance, int exitCode, String diagnostics)
+DECL|method|componentInstanceFinished (ContainerId containerId, int exitCode, String diagnostics)
 specifier|public
 name|void
 name|componentInstanceFinished
 parameter_list|(
-name|ComponentInstance
-name|instance
+name|ContainerId
+name|containerId
 parameter_list|,
 name|int
 name|exitCode
@@ -1107,13 +1125,7 @@ name|entity
 init|=
 name|createComponentInstanceEntity
 argument_list|(
-name|instance
-operator|.
-name|getContainer
-argument_list|()
-operator|.
-name|getId
-argument_list|()
+name|containerId
 operator|.
 name|toString
 argument_list|()

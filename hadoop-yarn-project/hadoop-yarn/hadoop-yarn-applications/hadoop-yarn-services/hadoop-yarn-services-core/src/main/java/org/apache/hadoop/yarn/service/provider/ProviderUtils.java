@@ -122,6 +122,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|Container
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|LocalResource
 import|;
 end_import
@@ -2309,7 +2327,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Get initial component token map to be substituted into config values.    * @return tokens to replace    */
-DECL|method|initCompTokensForSubstitute ( ComponentInstance instance)
+DECL|method|initCompTokensForSubstitute ( ComponentInstance instance, Container container)
 specifier|public
 specifier|static
 name|Map
@@ -2322,6 +2340,9 @@ name|initCompTokensForSubstitute
 parameter_list|(
 name|ComponentInstance
 name|instance
+parameter_list|,
+name|Container
+name|container
 parameter_list|)
 block|{
 name|Map
@@ -2388,10 +2409,7 @@ name|put
 argument_list|(
 name|CONTAINER_ID
 argument_list|,
-name|instance
-operator|.
-name|getContainer
-argument_list|()
+name|container
 operator|.
 name|getId
 argument_list|()

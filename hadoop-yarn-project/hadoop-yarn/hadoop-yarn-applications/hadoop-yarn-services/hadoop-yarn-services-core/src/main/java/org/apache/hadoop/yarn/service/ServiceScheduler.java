@@ -1350,10 +1350,6 @@ specifier|private
 name|AsyncDispatcher
 name|dispatcher
 decl_stmt|;
-DECL|field|compInstanceDispatcher
-name|AsyncDispatcher
-name|compInstanceDispatcher
-decl_stmt|;
 DECL|field|yarnRegistryOperations
 specifier|private
 name|YarnRegistryViewForProviders
@@ -1449,7 +1445,7 @@ argument_list|,
 name|registryClient
 argument_list|)
 expr_stmt|;
-comment|// register metrics
+comment|// register metrics,
 name|serviceMetrics
 operator|=
 name|ServiceMetrics
@@ -1532,24 +1528,6 @@ argument_list|)
 expr_stmt|;
 name|dispatcher
 operator|.
-name|setDrainEventsOnStop
-argument_list|()
-expr_stmt|;
-name|addIfService
-argument_list|(
-name|dispatcher
-argument_list|)
-expr_stmt|;
-name|compInstanceDispatcher
-operator|=
-operator|new
-name|AsyncDispatcher
-argument_list|(
-literal|"CompInstance dispatcher"
-argument_list|)
-expr_stmt|;
-name|compInstanceDispatcher
-operator|.
 name|register
 argument_list|(
 name|ComponentInstanceEventType
@@ -1561,9 +1539,14 @@ name|ComponentInstanceEventHandler
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|dispatcher
+operator|.
+name|setDrainEventsOnStop
+argument_list|()
+expr_stmt|;
 name|addIfService
 argument_list|(
-name|compInstanceDispatcher
+name|dispatcher
 argument_list|)
 expr_stmt|;
 name|containerLaunchService
@@ -2094,7 +2077,7 @@ name|List
 argument_list|<
 name|Container
 argument_list|>
-name|recoveredContainers
+name|containersFromPrevAttempt
 init|=
 name|response
 operator|.
@@ -2107,7 +2090,7 @@ name|info
 argument_list|(
 literal|"Received {} containers from previous attempt."
 argument_list|,
-name|recoveredContainers
+name|containersFromPrevAttempt
 operator|.
 name|size
 argument_list|()
@@ -2239,14 +2222,14 @@ control|(
 name|Container
 name|container
 range|:
-name|recoveredContainers
+name|containersFromPrevAttempt
 control|)
 block|{
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Handling container {} from previous attempt"
+literal|"Handling {} from previous attempt"
 argument_list|,
 name|container
 operator|.
@@ -3382,6 +3365,8 @@ argument_list|(
 name|event
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|Collection
 argument_list|<
 name|AMRMClient
@@ -3404,7 +3389,14 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"[COMPONENT {}]: {} outstanding container requests."
+literal|"[COMPONENT {}]: remove {} outstanding container requests "
+operator|+
+literal|"for allocateId "
+operator|+
+name|container
+operator|.
+name|getAllocationRequestId
+argument_list|()
 argument_list|,
 name|comp
 operator|.
@@ -3429,18 +3421,6 @@ name|hasNext
 argument_list|()
 condition|)
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"[COMPONENT {}]: removing one container request."
-argument_list|,
-name|comp
-operator|.
-name|getName
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|AMRMClient
 operator|.
 name|ContainerRequest
@@ -3459,6 +3439,25 @@ operator|.
 name|removeContainerRequest
 argument_list|(
 name|request
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+comment|//TODO Due to YARN-7490, exception may be thrown, catch and ignore for
+comment|//now.
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Exception when removing the matching requests. "
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 block|}
@@ -3871,6 +3870,11 @@ name|setInstance
 argument_list|(
 name|instance
 argument_list|)
+operator|.
+name|setContainerId
+argument_list|(
+name|containerId
+argument_list|)
 decl_stmt|;
 name|dispatcher
 operator|.
@@ -4129,16 +4133,6 @@ argument_list|(
 name|containerId
 argument_list|)
 expr_stmt|;
-block|}
-DECL|method|getCompInstanceDispatcher ()
-specifier|public
-name|AsyncDispatcher
-name|getCompInstanceDispatcher
-parameter_list|()
-block|{
-return|return
-name|compInstanceDispatcher
-return|;
 block|}
 DECL|method|getYarnRegistryOperations ()
 specifier|public
