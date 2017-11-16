@@ -965,6 +965,30 @@ argument_list|,
 literal|"\"lowWatermark\" must be> 0 and<= 1"
 argument_list|)
 expr_stmt|;
+specifier|final
+name|int
+name|watermarkValue
+init|=
+call|(
+name|int
+call|)
+argument_list|(
+name|numValues
+operator|*
+name|lowWatermark
+argument_list|)
+decl_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|watermarkValue
+operator|>
+literal|0
+argument_list|,
+literal|"(int) (\"numValues\" * \"lowWatermark\") must be> 0"
+argument_list|)
+expr_stmt|;
 name|Preconditions
 operator|.
 name|checkArgument
@@ -1113,14 +1137,7 @@ name|keyName
 argument_list|,
 name|keyQueue
 argument_list|,
-call|(
-name|int
-call|)
-argument_list|(
-name|lowWatermark
-operator|*
-name|numValues
-argument_list|)
+name|watermarkValue
 argument_list|)
 expr_stmt|;
 return|return
