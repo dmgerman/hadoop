@@ -30,6 +30,18 @@ end_import
 
 begin_import
 import|import
+name|javax
+operator|.
+name|security
+operator|.
+name|sasl
+operator|.
+name|SaslException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -193,6 +205,13 @@ name|failsTenTimesThenSucceeds
 parameter_list|()
 throws|throws
 name|UnreliableException
+function_decl|;
+DECL|method|failsWithSASLExceptionTenTimes ()
+name|void
+name|failsWithSASLExceptionTenTimes
+parameter_list|()
+throws|throws
+name|SaslException
 function_decl|;
 DECL|method|succeedsOnceThenFailsReturningString ()
 specifier|public
