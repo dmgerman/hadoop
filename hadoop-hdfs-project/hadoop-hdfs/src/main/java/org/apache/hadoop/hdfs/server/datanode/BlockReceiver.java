@@ -2466,6 +2466,13 @@ literal|"ns, volume="
 operator|+
 name|getVolumeBaseUri
 argument_list|()
+operator|+
+literal|", blockId="
+operator|+
+name|replicaInfo
+operator|.
+name|getBlockId
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -3135,6 +3142,13 @@ name|toString
 argument_list|(
 name|downstreamDNs
 argument_list|)
+operator|+
+literal|", blockId="
+operator|+
+name|replicaInfo
+operator|.
+name|getBlockId
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -3689,6 +3703,13 @@ operator|+
 literal|"volume="
 operator|+
 name|getVolumeBaseUri
+argument_list|()
+operator|+
+literal|", blockId="
+operator|+
+name|replicaInfo
+operator|.
+name|getBlockId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4409,6 +4430,13 @@ operator|+
 literal|"ms), volume="
 operator|+
 name|getVolumeBaseUri
+argument_list|()
+operator|+
+literal|", blockId="
+operator|+
+name|replicaInfo
+operator|.
+name|getBlockId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -7447,6 +7475,22 @@ operator|+
 literal|", replyAck="
 operator|+
 name|replyAck
+operator|+
+literal|", downstream DNs="
+operator|+
+name|Arrays
+operator|.
+name|toString
+argument_list|(
+name|downstreamDNs
+argument_list|)
+operator|+
+literal|", blockId="
+operator|+
+name|replicaInfo
+operator|.
+name|getBlockId
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
