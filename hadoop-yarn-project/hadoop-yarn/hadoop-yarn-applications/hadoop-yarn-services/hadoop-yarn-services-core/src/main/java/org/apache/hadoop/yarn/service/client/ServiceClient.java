@@ -3911,7 +3911,7 @@ name|cmdStr
 init|=
 name|buildCommandLine
 argument_list|(
-name|serviceName
+name|app
 argument_list|,
 name|conf
 argument_list|,
@@ -4380,13 +4380,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|buildCommandLine (String serviceName, Configuration conf, Path appRootDir, boolean hasSliderAMLog4j)
+DECL|method|buildCommandLine (Service app, Configuration conf, Path appRootDir, boolean hasSliderAMLog4j)
 specifier|private
 name|String
 name|buildCommandLine
 parameter_list|(
-name|String
-name|serviceName
+name|Service
+name|app
 parameter_list|,
 name|Configuration
 name|conf
@@ -4415,8 +4415,29 @@ operator|.
 name|headless
 argument_list|()
 expr_stmt|;
-comment|//TODO CLI.setJVMHeap
-comment|//TODO CLI.addJVMOPTS
+name|CLI
+operator|.
+name|setJVMOpts
+argument_list|(
+name|YarnServiceConf
+operator|.
+name|get
+argument_list|(
+name|YarnServiceConf
+operator|.
+name|JVM_OPTS
+argument_list|,
+literal|null
+argument_list|,
+name|app
+operator|.
+name|getConfiguration
+argument_list|()
+argument_list|,
+name|conf
+argument_list|)
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|hasSliderAMLog4j
@@ -4471,7 +4492,10 @@ name|Path
 argument_list|(
 name|appRootDir
 argument_list|,
-name|serviceName
+name|app
+operator|.
+name|getName
+argument_list|()
 operator|+
 literal|".json"
 argument_list|)

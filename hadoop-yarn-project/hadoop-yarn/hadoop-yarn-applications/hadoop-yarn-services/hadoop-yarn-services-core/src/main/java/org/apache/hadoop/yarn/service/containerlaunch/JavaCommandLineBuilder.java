@@ -154,14 +154,14 @@ operator|+
 literal|"/bin/java"
 return|;
 block|}
-comment|/**    * Set the size of the heap if a non-empty heap is passed in.     * @param heap empty string or something like "128M" ,"1G" etc. The value is    * trimmed.    */
-DECL|method|setJVMHeap (String heap)
+comment|/**    * Set JVM opts.    * @param jvmOpts JVM opts    */
+DECL|method|setJVMOpts (String jvmOpts)
 specifier|public
 name|void
-name|setJVMHeap
+name|setJVMOpts
 parameter_list|(
 name|String
-name|heap
+name|jvmOpts
 parameter_list|)
 block|{
 if|if
@@ -170,18 +170,13 @@ name|ServiceUtils
 operator|.
 name|isSet
 argument_list|(
-name|heap
+name|jvmOpts
 argument_list|)
 condition|)
 block|{
 name|add
 argument_list|(
-literal|"-Xmx"
-operator|+
-name|heap
-operator|.
-name|trim
-argument_list|()
+name|jvmOpts
 argument_list|)
 expr_stmt|;
 block|}

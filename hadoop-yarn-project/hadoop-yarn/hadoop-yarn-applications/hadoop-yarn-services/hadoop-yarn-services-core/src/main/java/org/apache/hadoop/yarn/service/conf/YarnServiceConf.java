@@ -281,6 +281,16 @@ init|=
 literal|30
 decl_stmt|;
 comment|// seconds
+comment|/**    * JVM opts.    */
+DECL|field|JVM_OPTS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|JVM_OPTS
+init|=
+literal|"yarn.service.am.java.opts"
+decl_stmt|;
 comment|/**    * Get long value for the property. First get from the userConf, if not    * present, get from systemConf.    *    * @param name name of the property    * @param defaultValue default value of the property, if it is not defined in    *                     userConf and systemConf.    * @param userConf Configuration provided by client in the JSON definition    * @param systemConf The YarnConfiguration in the system.    * @return long value for the property    */
 DECL|method|getLong (String name, long defaultValue, Configuration userConf, org.apache.hadoop.conf.Configuration systemConf)
 specifier|public
