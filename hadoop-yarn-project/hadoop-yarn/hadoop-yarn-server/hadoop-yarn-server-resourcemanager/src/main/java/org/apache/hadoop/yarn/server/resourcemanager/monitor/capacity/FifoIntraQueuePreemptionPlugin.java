@@ -1114,6 +1114,40 @@ name|getAMUsed
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|context
+operator|.
+name|getIntraQueuePreemptionOrderPolicy
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|IntraQueuePreemptionOrderPolicy
+operator|.
+name|USERLIMIT_FIRST
+argument_list|)
+condition|)
+block|{
+name|Resources
+operator|.
+name|subtractFromNonNegative
+argument_list|(
+name|preemtableFromApp
+argument_list|,
+name|tmpApp
+operator|.
+name|getFiCaSchedulerApp
+argument_list|()
+operator|.
+name|getCSLeafQueue
+argument_list|()
+operator|.
+name|getMinimumAllocation
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|// Calculate toBePreempted from apps as follows:
 comment|// app.preemptable = min(max(app.used - app.selected - app.ideal, 0),
 comment|// intra_q_preemptable)

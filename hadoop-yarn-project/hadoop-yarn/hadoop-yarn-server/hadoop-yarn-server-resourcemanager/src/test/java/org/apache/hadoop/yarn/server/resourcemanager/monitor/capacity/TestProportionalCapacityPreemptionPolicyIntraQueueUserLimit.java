@@ -2072,6 +2072,116 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
+DECL|method|testSimpleIntraQueuePreemptionOneUserUnderOneUserAtOneUserAbove ()
+specifier|public
+name|void
+name|testSimpleIntraQueuePreemptionOneUserUnderOneUserAtOneUserAbove
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|conf
+operator|.
+name|setFloat
+argument_list|(
+name|CapacitySchedulerConfiguration
+operator|.
+name|INTRAQUEUE_PREEMPTION_MAX_ALLOWABLE_LIMIT
+argument_list|,
+operator|(
+name|float
+operator|)
+literal|0.5
+argument_list|)
+expr_stmt|;
+name|String
+name|labelsConfig
+init|=
+literal|"=100,true;"
+decl_stmt|;
+name|String
+name|nodesConfig
+init|=
+comment|// n1 has no label
+literal|"n1= res=100"
+decl_stmt|;
+name|String
+name|queuesConfig
+init|=
+comment|// guaranteed,max,used,pending,reserved
+literal|"root(=[100 100 100 1 0]);"
+operator|+
+comment|// root
+literal|"-a(=[100 100 100 1 0])"
+decl_stmt|;
+comment|// a
+name|String
+name|appsConfig
+init|=
+comment|// queueName\t(priority,resource,host,expression,#repeat,reserved,pending)
+literal|"a\t"
+comment|// app1 in a
+operator|+
+literal|"(1,1,n1,,65,false,0,user1);"
+operator|+
+literal|"a\t"
+comment|// app2 in a
+operator|+
+literal|"(1,1,n1,,35,false,0,user2);"
+operator|+
+literal|"a\t"
+comment|// app3 in a
+operator|+
+literal|"(1,1,n1,,0,false,1,user3)"
+decl_stmt|;
+name|buildEnv
+argument_list|(
+name|labelsConfig
+argument_list|,
+name|nodesConfig
+argument_list|,
+name|queuesConfig
+argument_list|,
+name|appsConfig
+argument_list|)
+expr_stmt|;
+name|policy
+operator|.
+name|editSchedule
+argument_list|()
+expr_stmt|;
+comment|// app2 is right at its user limit and app1 needs one resource. Should
+comment|// preempt 1 container.
+name|verify
+argument_list|(
+name|mDisp
+argument_list|,
+name|times
+argument_list|(
+literal|1
+argument_list|)
+argument_list|)
+operator|.
+name|handle
+argument_list|(
+name|argThat
+argument_list|(
+operator|new
+name|TestProportionalCapacityPreemptionPolicy
+operator|.
+name|IsPreemptionRequestFor
+argument_list|(
+name|getAppAttemptId
+argument_list|(
+literal|1
+argument_list|)
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 
