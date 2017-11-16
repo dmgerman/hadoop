@@ -779,6 +779,21 @@ name|getStatsMap
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getProvidedCapacity ()
+specifier|public
+name|long
+name|getProvidedCapacity
+parameter_list|()
+block|{
+return|return
+name|blockManager
+operator|.
+name|getProvidedCapacity
+argument_list|()
+return|;
+block|}
 DECL|method|register (final DatanodeDescriptor d)
 specifier|synchronized
 name|void
@@ -974,10 +989,12 @@ argument_list|(
 name|node
 argument_list|)
 expr_stmt|;
-name|node
+name|blockManager
 operator|.
 name|updateHeartbeat
 argument_list|(
+name|node
+argument_list|,
 name|reports
 argument_list|,
 name|cacheCapacity

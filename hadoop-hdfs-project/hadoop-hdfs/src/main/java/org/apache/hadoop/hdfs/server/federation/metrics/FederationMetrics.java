@@ -1942,6 +1942,23 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getProvidedSpace ()
+specifier|public
+name|long
+name|getProvidedSpace
+parameter_list|()
+block|{
+return|return
+name|getNameserviceAggregatedLong
+argument_list|(
+name|MembershipStats
+operator|::
+name|getProvidedSpace
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getUsedCapacity ()
 specifier|public
 name|long

@@ -58,6 +58,20 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|StorageType
+import|;
+end_import
+
 begin_comment
 comment|/**  * Statistics per StorageType.  *  */
 end_comment
@@ -117,6 +131,11 @@ name|int
 name|nodesInService
 init|=
 literal|0
+decl_stmt|;
+DECL|field|storageType
+specifier|private
+name|StorageType
+name|storageType
 decl_stmt|;
 annotation|@
 name|ConstructorProperties
@@ -201,6 +220,27 @@ name|long
 name|getCapacityTotal
 parameter_list|()
 block|{
+comment|// for PROVIDED storage, avoid counting the same storage
+comment|// across multiple datanodes
+if|if
+condition|(
+name|storageType
+operator|==
+name|StorageType
+operator|.
+name|PROVIDED
+operator|&&
+name|nodesInService
+operator|>
+literal|0
+condition|)
+block|{
+return|return
+name|capacityTotal
+operator|/
+name|nodesInService
+return|;
+block|}
 return|return
 name|capacityTotal
 return|;
@@ -211,6 +251,27 @@ name|long
 name|getCapacityUsed
 parameter_list|()
 block|{
+comment|// for PROVIDED storage, avoid counting the same storage
+comment|// across multiple datanodes
+if|if
+condition|(
+name|storageType
+operator|==
+name|StorageType
+operator|.
+name|PROVIDED
+operator|&&
+name|nodesInService
+operator|>
+literal|0
+condition|)
+block|{
+return|return
+name|capacityUsed
+operator|/
+name|nodesInService
+return|;
+block|}
 return|return
 name|capacityUsed
 return|;
@@ -221,6 +282,27 @@ name|long
 name|getCapacityNonDfsUsed
 parameter_list|()
 block|{
+comment|// for PROVIDED storage, avoid counting the same storage
+comment|// across multiple datanodes
+if|if
+condition|(
+name|storageType
+operator|==
+name|StorageType
+operator|.
+name|PROVIDED
+operator|&&
+name|nodesInService
+operator|>
+literal|0
+condition|)
+block|{
+return|return
+name|capacityNonDfsUsed
+operator|/
+name|nodesInService
+return|;
+block|}
 return|return
 name|capacityNonDfsUsed
 return|;
@@ -231,6 +313,27 @@ name|long
 name|getCapacityRemaining
 parameter_list|()
 block|{
+comment|// for PROVIDED storage, avoid counting the same storage
+comment|// across multiple datanodes
+if|if
+condition|(
+name|storageType
+operator|==
+name|StorageType
+operator|.
+name|PROVIDED
+operator|&&
+name|nodesInService
+operator|>
+literal|0
+condition|)
+block|{
+return|return
+name|capacityRemaining
+operator|/
+name|nodesInService
+return|;
+block|}
 return|return
 name|capacityRemaining
 return|;
@@ -241,6 +344,27 @@ name|long
 name|getBlockPoolUsed
 parameter_list|()
 block|{
+comment|// for PROVIDED storage, avoid counting the same storage
+comment|// across multiple datanodes
+if|if
+condition|(
+name|storageType
+operator|==
+name|StorageType
+operator|.
+name|PROVIDED
+operator|&&
+name|nodesInService
+operator|>
+literal|0
+condition|)
+block|{
+return|return
+name|blockPoolUsed
+operator|/
+name|nodesInService
+return|;
+block|}
 return|return
 name|blockPoolUsed
 return|;
@@ -255,10 +379,20 @@ return|return
 name|nodesInService
 return|;
 block|}
-DECL|method|StorageTypeStats ()
+DECL|method|StorageTypeStats (StorageType storageType)
 name|StorageTypeStats
-parameter_list|()
-block|{}
+parameter_list|(
+name|StorageType
+name|storageType
+parameter_list|)
+block|{
+name|this
+operator|.
+name|storageType
+operator|=
+name|storageType
+expr_stmt|;
+block|}
 DECL|method|StorageTypeStats (StorageTypeStats other)
 name|StorageTypeStats
 parameter_list|(
@@ -316,6 +450,14 @@ name|DatanodeDescriptor
 name|node
 parameter_list|)
 block|{
+assert|assert
+name|storageType
+operator|==
+name|info
+operator|.
+name|getStorageType
+argument_list|()
+assert|;
 name|capacityUsed
 operator|+=
 name|info
@@ -406,6 +548,14 @@ name|DatanodeDescriptor
 name|node
 parameter_list|)
 block|{
+assert|assert
+name|storageType
+operator|==
+name|info
+operator|.
+name|getStorageType
+argument_list|()
+assert|;
 name|capacityUsed
 operator|-=
 name|info

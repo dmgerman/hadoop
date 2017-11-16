@@ -2160,15 +2160,6 @@ name|DFS_NAMENODE_PROVIDED_ENABLED_DEFAULT
 init|=
 literal|false
 decl_stmt|;
-DECL|field|DFS_PROVIDER_DF_CLASS
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DFS_PROVIDER_DF_CLASS
-init|=
-literal|"dfs.provided.df.class"
-decl_stmt|;
 DECL|field|DFS_PROVIDER_STORAGEUUID
 specifier|public
 specifier|static

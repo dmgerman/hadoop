@@ -104,6 +104,12 @@ name|long
 name|getRemainingCapacity
 parameter_list|()
 function_decl|;
+comment|/**    * Get the total remote storage capacity mounted in the federated cluster.    * @return Remote capacity of the federated cluster.    */
+DECL|method|getProvidedSpace ()
+name|long
+name|getProvidedSpace
+parameter_list|()
+function_decl|;
 comment|/**    * Get the number of nameservices in the federation.    * @return Number of nameservices in the federation.    */
 DECL|method|getNumNameservices ()
 name|int

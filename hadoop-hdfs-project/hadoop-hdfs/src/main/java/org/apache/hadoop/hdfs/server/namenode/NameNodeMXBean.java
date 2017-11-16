@@ -127,6 +127,13 @@ name|long
 name|getTotal
 parameter_list|()
 function_decl|;
+comment|/**    * Gets capacity of the provided storage mounted, in bytes.    *    * @return the total raw bytes present in the provided storage.    */
+DECL|method|getProvidedCapacity ()
+specifier|public
+name|long
+name|getProvidedCapacity
+parameter_list|()
+function_decl|;
 comment|/**    * Gets the safemode status    *     * @return the safemode status    *     */
 DECL|method|getSafemode ()
 specifier|public

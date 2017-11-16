@@ -1029,6 +1029,22 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getProvidedCapacity ()
+specifier|public
+name|long
+name|getProvidedCapacity
+parameter_list|()
+block|{
+return|return
+name|getFederationMetrics
+argument_list|()
+operator|.
+name|getProvidedSpace
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getSafemode ()
 specifier|public
 name|String
@@ -2123,6 +2139,19 @@ return|return
 name|this
 operator|.
 name|getUsed
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getProvidedCapacityTotal ()
+specifier|public
+name|long
+name|getProvidedCapacityTotal
+parameter_list|()
+block|{
+return|return
+name|getProvidedCapacity
 argument_list|()
 return|;
 block|}

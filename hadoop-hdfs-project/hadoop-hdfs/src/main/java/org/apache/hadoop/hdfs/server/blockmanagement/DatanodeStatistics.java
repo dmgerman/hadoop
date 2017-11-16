@@ -187,6 +187,13 @@ argument_list|>
 name|getStorageTypeStats
 parameter_list|()
 function_decl|;
+comment|/** @return the provided capacity */
+DECL|method|getProvidedCapacity ()
+specifier|public
+name|long
+name|getProvidedCapacity
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

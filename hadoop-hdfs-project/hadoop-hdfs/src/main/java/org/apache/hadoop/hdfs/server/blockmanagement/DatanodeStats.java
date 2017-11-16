@@ -850,7 +850,9 @@ name|storageTypeStats
 operator|=
 operator|new
 name|StorageTypeStats
-argument_list|()
+argument_list|(
+name|storageType
+argument_list|)
 expr_stmt|;
 name|storageTypeStatsMap
 operator|.
@@ -908,7 +910,12 @@ name|storageTypeStats
 operator|=
 operator|new
 name|StorageTypeStats
+argument_list|(
+name|info
+operator|.
+name|getStorageType
 argument_list|()
+argument_list|)
 expr_stmt|;
 name|storageTypeStatsMap
 operator|.
