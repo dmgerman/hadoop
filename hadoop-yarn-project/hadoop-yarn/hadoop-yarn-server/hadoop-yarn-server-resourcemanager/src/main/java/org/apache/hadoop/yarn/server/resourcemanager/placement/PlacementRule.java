@@ -127,11 +127,11 @@ throws|throws
 name|YarnException
 block|{   }
 comment|/**    * Get queue for a given application    *     * @param asc application submission context    * @param user userName    *     * @throws YarnException    *           if any error happens    *     * @return<p>    *         non-null value means it is determined    *</p>    *<p>    *         null value means it is undetermined, so next {@link PlacementRule}    *         in the {@link PlacementManager} will take care    *</p>    */
-DECL|method|getQueueForApp (ApplicationSubmissionContext asc, String user)
+DECL|method|getPlacementForApp ( ApplicationSubmissionContext asc, String user)
 specifier|public
 specifier|abstract
-name|String
-name|getQueueForApp
+name|ApplicationPlacementContext
+name|getPlacementForApp
 parameter_list|(
 name|ApplicationSubmissionContext
 name|asc

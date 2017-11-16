@@ -2440,31 +2440,6 @@ operator|!
 name|isRecovery
 condition|)
 block|{
-comment|// Do queue mapping
-if|if
-condition|(
-name|rmContext
-operator|.
-name|getQueuePlacementManager
-argument_list|()
-operator|!=
-literal|null
-condition|)
-block|{
-comment|// We only do queue mapping when it's a new application
-name|rmContext
-operator|.
-name|getQueuePlacementManager
-argument_list|()
-operator|.
-name|placeApplication
-argument_list|(
-name|submissionContext
-argument_list|,
-name|user
-argument_list|)
-expr_stmt|;
-block|}
 comment|// fail the submission if configured application timeout value is invalid
 name|RMServerUtils
 operator|.

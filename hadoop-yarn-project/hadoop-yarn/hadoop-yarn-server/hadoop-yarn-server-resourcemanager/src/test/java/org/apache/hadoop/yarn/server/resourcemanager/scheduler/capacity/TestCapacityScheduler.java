@@ -1338,6 +1338,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|placement
+operator|.
+name|UserGroupMappingPlacementRule
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|rmapp
 operator|.
 name|RMApp
@@ -6710,7 +6730,6 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|checkQueueCapacity (CSQueue q, float expectedCapacity, float expectedAbsCapacity, float expectedMaxCapacity, float expectedAbsMaxCapacity)
-specifier|private
 name|void
 name|checkQueueCapacity
 parameter_list|(
@@ -6794,7 +6813,6 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|findQueue (CSQueue root, String queuePath)
-specifier|private
 name|CSQueue
 name|findQueue
 parameter_list|(
