@@ -124,20 +124,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|LocatedFileStatus
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|Path
 import|;
 end_import
@@ -173,7 +159,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * HDFS metadata for an entity in the filesystem.  */
+comment|/** Interface that represents the over the wire information for a file.  */
 end_comment
 
 begin_class
@@ -187,11 +173,10 @@ operator|.
 name|Evolving
 DECL|class|HdfsFileStatus
 specifier|public
-specifier|final
 class|class
 name|HdfsFileStatus
 extends|extends
-name|LocatedFileStatus
+name|FileStatus
 block|{
 DECL|field|serialVersionUID
 specifier|private
@@ -247,13 +232,6 @@ specifier|final
 name|byte
 name|storagePolicy
 decl_stmt|;
-comment|// BlockLocations[] is the user-facing type
-DECL|field|hdfsloc
-specifier|private
-specifier|transient
-name|LocatedBlocks
-name|hdfsloc
-decl_stmt|;
 DECL|field|EMPTY_NAME
 specifier|public
 specifier|static
@@ -268,7 +246,7 @@ index|[
 literal|0
 index|]
 decl_stmt|;
-comment|/** Set of features potentially active on an instance. */
+comment|/**    * Set of features potentially active on an instance.    */
 DECL|enum|Flags
 specifier|public
 enum|enum
@@ -296,8 +274,8 @@ argument_list|>
 name|flags
 decl_stmt|;
 comment|/**    * Constructor.    * @param length the number of bytes the file has    * @param isdir if the path is a directory    * @param replication the replication factor    * @param blocksize the block size    * @param mtime modification time    * @param atime access time    * @param permission permission    * @param owner the owner of the path    * @param group the group of the path    * @param symlink symlink target encoded in java UTF8 or null    * @param path the local name in java UTF8 encoding the same as that in-memory    * @param fileId the file id    * @param childrenNum the number of children. Used by directory.    * @param feInfo the file's encryption info    * @param storagePolicy ID which specifies storage policy    * @param ecPolicy the erasure coding policy    */
-DECL|method|HdfsFileStatus (long length, boolean isdir, int replication, long blocksize, long mtime, long atime, FsPermission permission, EnumSet<Flags> flags, String owner, String group, byte[] symlink, byte[] path, long fileId, int childrenNum, FileEncryptionInfo feInfo, byte storagePolicy, ErasureCodingPolicy ecPolicy, LocatedBlocks hdfsloc)
-specifier|private
+DECL|method|HdfsFileStatus (long length, boolean isdir, int replication, long blocksize, long mtime, long atime, FsPermission permission, EnumSet<Flags> flags, String owner, String group, byte[] symlink, byte[] path, long fileId, int childrenNum, FileEncryptionInfo feInfo, byte storagePolicy, ErasureCodingPolicy ecPolicy)
+specifier|protected
 name|HdfsFileStatus
 parameter_list|(
 name|long
@@ -355,9 +333,6 @@ name|storagePolicy
 parameter_list|,
 name|ErasureCodingPolicy
 name|ecPolicy
-parameter_list|,
-name|LocatedBlocks
-name|hdfsloc
 parameter_list|)
 block|{
 name|super
@@ -421,8 +396,6 @@ name|Flags
 operator|.
 name|HAS_EC
 argument_list|)
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 name|this
@@ -472,12 +445,6 @@ operator|.
 name|ecPolicy
 operator|=
 name|ecPolicy
-expr_stmt|;
-name|this
-operator|.
-name|hdfsloc
-operator|=
-name|hdfsloc
 expr_stmt|;
 block|}
 comment|/**    * Set redundant flags for compatibility with existing applications.    */
@@ -720,6 +687,7 @@ block|}
 comment|/**    * Check if the local name is empty.    * @return true if the name is empty    */
 DECL|method|isEmptyLocalName ()
 specifier|public
+specifier|final
 name|boolean
 name|isEmptyLocalName
 parameter_list|()
@@ -735,6 +703,7 @@ block|}
 comment|/**    * Get the string representation of the local name.    * @return the local name in string    */
 DECL|method|getLocalName ()
 specifier|public
+specifier|final
 name|String
 name|getLocalName
 parameter_list|()
@@ -751,6 +720,7 @@ block|}
 comment|/**    * Get the Java UTF8 representation of the local name.    * @return the local name in java UTF8    */
 DECL|method|getLocalNameInBytes ()
 specifier|public
+specifier|final
 name|byte
 index|[]
 name|getLocalNameInBytes
@@ -761,11 +731,13 @@ name|uPath
 return|;
 block|}
 comment|/**    * Get the string representation of the full path name.    * @param parent the parent path    * @return the full path in string    */
-DECL|method|getFullName (String parent)
+DECL|method|getFullName (final String parent)
 specifier|public
+specifier|final
 name|String
 name|getFullName
 parameter_list|(
+specifier|final
 name|String
 name|parent
 parameter_list|)
@@ -828,11 +800,13 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Get the full path.    * @param parent the parent path    * @return the full path    */
-DECL|method|getFullPath (Path parent)
+DECL|method|getFullPath (final Path parent)
 specifier|public
+specifier|final
 name|Path
 name|getFullPath
 parameter_list|(
+specifier|final
 name|Path
 name|parent
 parameter_list|)
@@ -927,6 +901,7 @@ block|}
 comment|/**    * Opaque referant for the symlink, to be resolved at the client.    */
 DECL|method|getSymlinkInBytes ()
 specifier|public
+specifier|final
 name|byte
 index|[]
 name|getSymlinkInBytes
@@ -938,6 +913,7 @@ return|;
 block|}
 DECL|method|getFileId ()
 specifier|public
+specifier|final
 name|long
 name|getFileId
 parameter_list|()
@@ -948,6 +924,7 @@ return|;
 block|}
 DECL|method|getFileEncryptionInfo ()
 specifier|public
+specifier|final
 name|FileEncryptionInfo
 name|getFileEncryptionInfo
 parameter_list|()
@@ -969,6 +946,7 @@ return|;
 block|}
 DECL|method|getChildrenNum ()
 specifier|public
+specifier|final
 name|int
 name|getChildrenNum
 parameter_list|()
@@ -980,6 +958,7 @@ block|}
 comment|/** @return the storage policy id */
 DECL|method|getStoragePolicy ()
 specifier|public
+specifier|final
 name|byte
 name|getStoragePolicy
 parameter_list|()
@@ -1004,16 +983,6 @@ name|Flags
 operator|.
 name|SNAPSHOT_ENABLED
 argument_list|)
-return|;
-block|}
-DECL|method|getLocatedBlocks ()
-specifier|public
-name|LocatedBlocks
-name|getLocatedBlocks
-parameter_list|()
-block|{
-return|return
-name|hdfsloc
 return|;
 block|}
 annotation|@
@@ -1056,6 +1025,7 @@ block|}
 comment|/**    * Resolve the short name of the Path given the URI, parent provided. This    * FileStatus reference will not contain a valid Path until it is resolved    * by this method.    * @param defaultUri FileSystem to fully qualify HDFS path.    * @param parent Parent path of this element.    * @return Reference to this instance.    */
 DECL|method|makeQualified (URI defaultUri, Path parent)
 specifier|public
+specifier|final
 name|FileStatus
 name|makeQualified
 parameter_list|(
@@ -1086,41 +1056,6 @@ return|return
 name|this
 return|;
 comment|// API compatibility
-block|}
-comment|/**    * This function is used to transform the underlying HDFS LocatedBlocks to    * BlockLocations. This method must be invoked before    * {@link #getBlockLocations()}.    *    * The returned BlockLocation will have different formats for replicated    * and erasure coded file.    * Please refer to    * {@link org.apache.hadoop.fs.FileSystem#getFileBlockLocations    * (FileStatus, long, long)}    * for examples.    */
-DECL|method|makeQualifiedLocated (URI defaultUri, Path path)
-specifier|public
-name|LocatedFileStatus
-name|makeQualifiedLocated
-parameter_list|(
-name|URI
-name|defaultUri
-parameter_list|,
-name|Path
-name|path
-parameter_list|)
-block|{
-name|makeQualified
-argument_list|(
-name|defaultUri
-argument_list|,
-name|path
-argument_list|)
-expr_stmt|;
-name|setBlockLocations
-argument_list|(
-name|DFSUtilClient
-operator|.
-name|locatedBlocks2Locations
-argument_list|(
-name|getLocatedBlocks
-argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
-return|return
-name|this
-return|;
 block|}
 comment|/**    * Builder class for HdfsFileStatus instances. Note default values for    * parameters.    */
 annotation|@
@@ -1270,13 +1205,6 @@ DECL|field|ecPolicy
 specifier|private
 name|ErasureCodingPolicy
 name|ecPolicy
-init|=
-literal|null
-decl_stmt|;
-DECL|field|locations
-specifier|private
-name|LocatedBlocks
-name|locations
 init|=
 literal|null
 decl_stmt|;
@@ -1655,26 +1583,6 @@ return|return
 name|this
 return|;
 block|}
-comment|/**      * Set the block locations for this entity (default = null).      * @param locations HDFS locations      *                  (see {@link #makeQualifiedLocated(URI, Path)})      * @return This Builder instance      */
-DECL|method|locations (LocatedBlocks locations)
-specifier|public
-name|Builder
-name|locations
-parameter_list|(
-name|LocatedBlocks
-name|locations
-parameter_list|)
-block|{
-name|this
-operator|.
-name|locations
-operator|=
-name|locations
-expr_stmt|;
-return|return
-name|this
-return|;
-block|}
 comment|/**      * @return An {@link HdfsFileStatus} instance from these parameters.      */
 DECL|method|build ()
 specifier|public
@@ -1719,8 +1627,6 @@ argument_list|,
 name|storagePolicy
 argument_list|,
 name|ecPolicy
-argument_list|,
-name|locations
 argument_list|)
 return|;
 block|}

@@ -444,24 +444,6 @@ return|return
 name|locations
 return|;
 block|}
-comment|/**    * Hook for subclasses to lazily set block locations. The {@link #locations}    * field should be null before this is called.    * @param locations Block locations for this instance.    */
-DECL|method|setBlockLocations (BlockLocation[] locations)
-specifier|protected
-name|void
-name|setBlockLocations
-parameter_list|(
-name|BlockLocation
-index|[]
-name|locations
-parameter_list|)
-block|{
-name|this
-operator|.
-name|locations
-operator|=
-name|locations
-expr_stmt|;
-block|}
 comment|/**    * Compare this FileStatus to another FileStatus    * @param   o the FileStatus to be compared.    * @return  a negative integer, zero, or a positive integer as this object    *   is less than, equal to, or greater than the specified object.    */
 annotation|@
 name|Override
