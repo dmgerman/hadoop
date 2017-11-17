@@ -5985,7 +5985,7 @@ specifier|final
 name|boolean
 name|DEFAULT_NM_DOCKER_ENABLE_USER_REMAPPING
 init|=
-literal|false
+literal|true
 decl_stmt|;
 comment|/** lower limit for acceptable uids of user remapped user. */
 DECL|field|NM_DOCKER_USER_REMAPPING_UID_THRESHOLD
