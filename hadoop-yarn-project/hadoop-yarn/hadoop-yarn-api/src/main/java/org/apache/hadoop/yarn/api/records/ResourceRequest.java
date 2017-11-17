@@ -1736,17 +1736,11 @@ condition|(
 operator|!
 name|execTypeRequest
 operator|.
-name|getExecutionType
-argument_list|()
-operator|.
 name|equals
 argument_list|(
 name|other
 operator|.
 name|getExecutionTypeRequest
-argument_list|()
-operator|.
-name|getExecutionType
 argument_list|()
 argument_list|)
 condition|)
