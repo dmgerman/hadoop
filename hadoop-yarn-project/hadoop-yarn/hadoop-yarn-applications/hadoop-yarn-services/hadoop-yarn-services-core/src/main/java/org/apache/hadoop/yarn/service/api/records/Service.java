@@ -126,6 +126,34 @@ name|bind
 operator|.
 name|annotation
 operator|.
+name|XmlAccessType
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|xml
+operator|.
+name|bind
+operator|.
+name|annotation
+operator|.
+name|XmlAccessorType
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|xml
+operator|.
+name|bind
+operator|.
+name|annotation
+operator|.
 name|XmlElement
 import|;
 end_import
@@ -242,6 +270,13 @@ argument_list|)
 annotation|@
 name|XmlRootElement
 annotation|@
+name|XmlAccessorType
+argument_list|(
+name|XmlAccessType
+operator|.
+name|FIELD
+argument_list|)
+annotation|@
 name|JsonInclude
 argument_list|(
 name|JsonInclude
@@ -312,6 +347,18 @@ name|resource
 init|=
 literal|null
 decl_stmt|;
+annotation|@
+name|JsonProperty
+argument_list|(
+literal|"launch_time"
+argument_list|)
+annotation|@
+name|XmlElement
+argument_list|(
+name|name
+operator|=
+literal|"launch_time"
+argument_list|)
 DECL|field|launchTime
 specifier|private
 name|Date
@@ -319,6 +366,18 @@ name|launchTime
 init|=
 literal|null
 decl_stmt|;
+annotation|@
+name|JsonProperty
+argument_list|(
+literal|"number_of_running_containers"
+argument_list|)
+annotation|@
+name|XmlElement
+argument_list|(
+name|name
+operator|=
+literal|"number_of_running_containers"
+argument_list|)
 DECL|field|numberOfRunningContainers
 specifier|private
 name|Long
@@ -333,6 +392,18 @@ name|lifetime
 init|=
 literal|null
 decl_stmt|;
+annotation|@
+name|JsonProperty
+argument_list|(
+literal|"placement_policy"
+argument_list|)
+annotation|@
+name|XmlElement
+argument_list|(
+name|name
+operator|=
+literal|"placement_policy"
+argument_list|)
 DECL|field|placementPolicy
 specifier|private
 name|PlacementPolicy
@@ -686,11 +757,6 @@ name|value
 operator|=
 literal|"The time when the service was created, e.g. 2016-03-16T01:01:49.000Z."
 argument_list|)
-annotation|@
-name|JsonProperty
-argument_list|(
-literal|"launch_time"
-argument_list|)
 DECL|method|getLaunchTime ()
 specifier|public
 name|Date
@@ -713,13 +779,6 @@ name|clone
 argument_list|()
 return|;
 block|}
-annotation|@
-name|XmlElement
-argument_list|(
-name|name
-operator|=
-literal|"launch_time"
-argument_list|)
 DECL|method|setLaunchTime (Date launchTime)
 specifier|public
 name|void
@@ -779,11 +838,6 @@ name|value
 operator|=
 literal|"In get response this provides the total number of running containers for this service (across all components) at the time of request. Note, a subsequent request can return a different number as and when more containers get allocated until it reaches the total number of containers or if a flex request has been made between the two requests."
 argument_list|)
-annotation|@
-name|JsonProperty
-argument_list|(
-literal|"number_of_running_containers"
-argument_list|)
 DECL|method|getNumberOfRunningContainers ()
 specifier|public
 name|Long
@@ -794,13 +848,6 @@ return|return
 name|numberOfRunningContainers
 return|;
 block|}
-annotation|@
-name|XmlElement
-argument_list|(
-name|name
-operator|=
-literal|"number_of_running_containers"
-argument_list|)
 DECL|method|setNumberOfRunningContainers (Long numberOfRunningContainers)
 specifier|public
 name|void
@@ -910,11 +957,6 @@ name|value
 operator|=
 literal|"Advanced scheduling and placement policies (optional). If not specified, it defaults to the default placement policy of the service owner. The design of placement policies are in the works. It is not very clear at this point, how policies in conjunction with labels be exposed to service owners. This is a placeholder for now. The advanced structure of this attribute will be determined by YARN-4902."
 argument_list|)
-annotation|@
-name|JsonProperty
-argument_list|(
-literal|"placement_policy"
-argument_list|)
 DECL|method|getPlacementPolicy ()
 specifier|public
 name|PlacementPolicy
@@ -925,13 +967,6 @@ return|return
 name|placementPolicy
 return|;
 block|}
-annotation|@
-name|XmlElement
-argument_list|(
-name|name
-operator|=
-literal|"placement_policy"
-argument_list|)
 DECL|method|setPlacementPolicy (PlacementPolicy placementPolicy)
 specifier|public
 name|void

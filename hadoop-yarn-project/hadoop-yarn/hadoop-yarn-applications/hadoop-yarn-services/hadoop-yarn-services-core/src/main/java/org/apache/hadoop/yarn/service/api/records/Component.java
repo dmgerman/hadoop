@@ -106,6 +106,34 @@ name|bind
 operator|.
 name|annotation
 operator|.
+name|XmlAccessType
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|xml
+operator|.
+name|bind
+operator|.
+name|annotation
+operator|.
+name|XmlAccessorType
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|xml
+operator|.
+name|bind
+operator|.
+name|annotation
+operator|.
 name|XmlElement
 import|;
 end_import
@@ -218,6 +246,13 @@ argument_list|)
 annotation|@
 name|XmlRootElement
 annotation|@
+name|XmlAccessorType
+argument_list|(
+name|XmlAccessType
+operator|.
+name|FIELD
+argument_list|)
+annotation|@
 name|JsonInclude
 argument_list|(
 name|JsonInclude
@@ -243,6 +278,11 @@ init|=
 operator|-
 literal|8430058381509087805L
 decl_stmt|;
+annotation|@
+name|JsonProperty
+argument_list|(
+literal|"name"
+argument_list|)
 DECL|field|name
 specifier|private
 name|String
@@ -250,6 +290,11 @@ name|name
 init|=
 literal|null
 decl_stmt|;
+annotation|@
+name|JsonProperty
+argument_list|(
+literal|"dependencies"
+argument_list|)
 DECL|field|dependencies
 specifier|private
 name|List
@@ -265,6 +310,18 @@ name|String
 argument_list|>
 argument_list|()
 decl_stmt|;
+annotation|@
+name|JsonProperty
+argument_list|(
+literal|"readiness_check"
+argument_list|)
+annotation|@
+name|XmlElement
+argument_list|(
+name|name
+operator|=
+literal|"readiness_check"
+argument_list|)
 DECL|field|readinessCheck
 specifier|private
 name|ReadinessCheck
@@ -272,6 +329,11 @@ name|readinessCheck
 init|=
 literal|null
 decl_stmt|;
+annotation|@
+name|JsonProperty
+argument_list|(
+literal|"artifact"
+argument_list|)
 DECL|field|artifact
 specifier|private
 name|Artifact
@@ -279,6 +341,18 @@ name|artifact
 init|=
 literal|null
 decl_stmt|;
+annotation|@
+name|JsonProperty
+argument_list|(
+literal|"launch_command"
+argument_list|)
+annotation|@
+name|XmlElement
+argument_list|(
+name|name
+operator|=
+literal|"launch_command"
+argument_list|)
 DECL|field|launchCommand
 specifier|private
 name|String
@@ -286,6 +360,11 @@ name|launchCommand
 init|=
 literal|null
 decl_stmt|;
+annotation|@
+name|JsonProperty
+argument_list|(
+literal|"resource"
+argument_list|)
 DECL|field|resource
 specifier|private
 name|Resource
@@ -293,6 +372,18 @@ name|resource
 init|=
 literal|null
 decl_stmt|;
+annotation|@
+name|JsonProperty
+argument_list|(
+literal|"number_of_containers"
+argument_list|)
+annotation|@
+name|XmlElement
+argument_list|(
+name|name
+operator|=
+literal|"number_of_containers"
+argument_list|)
 DECL|field|numberOfContainers
 specifier|private
 name|Long
@@ -300,6 +391,18 @@ name|numberOfContainers
 init|=
 literal|null
 decl_stmt|;
+annotation|@
+name|JsonProperty
+argument_list|(
+literal|"run_privileged_container"
+argument_list|)
+annotation|@
+name|XmlElement
+argument_list|(
+name|name
+operator|=
+literal|"run_privileged_container"
+argument_list|)
 DECL|field|runPrivilegedContainer
 specifier|private
 name|Boolean
@@ -307,6 +410,18 @@ name|runPrivilegedContainer
 init|=
 literal|false
 decl_stmt|;
+annotation|@
+name|JsonProperty
+argument_list|(
+literal|"placement_policy"
+argument_list|)
+annotation|@
+name|XmlElement
+argument_list|(
+name|name
+operator|=
+literal|"placement_policy"
+argument_list|)
 DECL|field|placementPolicy
 specifier|private
 name|PlacementPolicy
@@ -314,6 +429,11 @@ name|placementPolicy
 init|=
 literal|null
 decl_stmt|;
+annotation|@
+name|JsonProperty
+argument_list|(
+literal|"state"
+argument_list|)
 DECL|field|state
 specifier|private
 name|ComponentState
@@ -323,6 +443,11 @@ name|ComponentState
 operator|.
 name|FLEXING
 decl_stmt|;
+annotation|@
+name|JsonProperty
+argument_list|(
+literal|"configuration"
+argument_list|)
 DECL|field|configuration
 specifier|private
 name|Configuration
@@ -332,6 +457,11 @@ operator|new
 name|Configuration
 argument_list|()
 decl_stmt|;
+annotation|@
+name|JsonProperty
+argument_list|(
+literal|"quicklinks"
+argument_list|)
 DECL|field|quicklinks
 specifier|private
 name|List
@@ -347,6 +477,11 @@ name|String
 argument_list|>
 argument_list|()
 decl_stmt|;
+annotation|@
+name|JsonProperty
+argument_list|(
+literal|"containers"
+argument_list|)
 DECL|field|containers
 specifier|private
 name|List
@@ -401,11 +536,6 @@ argument_list|,
 name|value
 operator|=
 literal|"Name of the service component (mandatory)."
-argument_list|)
-annotation|@
-name|JsonProperty
-argument_list|(
-literal|"name"
 argument_list|)
 DECL|method|getName ()
 specifier|public
@@ -466,11 +596,6 @@ argument_list|,
 name|value
 operator|=
 literal|"An array of service components which should be in READY state (as defined by readiness check), before this component can be started. The dependencies across all components of an service should be represented as a DAG."
-argument_list|)
-annotation|@
-name|JsonProperty
-argument_list|(
-literal|"dependencies"
 argument_list|)
 DECL|method|getDependencies ()
 specifier|public
@@ -535,11 +660,6 @@ name|value
 operator|=
 literal|"Readiness check for this component."
 argument_list|)
-annotation|@
-name|JsonProperty
-argument_list|(
-literal|"readiness_check"
-argument_list|)
 DECL|method|getReadinessCheck ()
 specifier|public
 name|ReadinessCheck
@@ -550,13 +670,6 @@ return|return
 name|readinessCheck
 return|;
 block|}
-annotation|@
-name|XmlElement
-argument_list|(
-name|name
-operator|=
-literal|"readiness_check"
-argument_list|)
 DECL|method|setReadinessCheck (ReadinessCheck readinessCheck)
 specifier|public
 name|void
@@ -603,11 +716,6 @@ argument_list|,
 name|value
 operator|=
 literal|"Artifact of the component (optional). If not specified, the service level global artifact takes effect."
-argument_list|)
-annotation|@
-name|JsonProperty
-argument_list|(
-literal|"artifact"
 argument_list|)
 DECL|method|getArtifact ()
 specifier|public
@@ -666,11 +774,6 @@ name|value
 operator|=
 literal|"The custom launch command of this component (optional). When specified at the component level, it overrides the value specified at the global level (if any)."
 argument_list|)
-annotation|@
-name|JsonProperty
-argument_list|(
-literal|"launch_command"
-argument_list|)
 DECL|method|getLaunchCommand ()
 specifier|public
 name|String
@@ -681,13 +784,6 @@ return|return
 name|launchCommand
 return|;
 block|}
-annotation|@
-name|XmlElement
-argument_list|(
-name|name
-operator|=
-literal|"launch_command"
-argument_list|)
 DECL|method|setLaunchCommand (String launchCommand)
 specifier|public
 name|void
@@ -734,11 +830,6 @@ argument_list|,
 name|value
 operator|=
 literal|"Resource of this component (optional). If not specified, the service level global resource takes effect."
-argument_list|)
-annotation|@
-name|JsonProperty
-argument_list|(
-literal|"resource"
 argument_list|)
 DECL|method|getResource ()
 specifier|public
@@ -797,11 +888,6 @@ name|value
 operator|=
 literal|"Number of containers for this component (optional). If not specified, the service level global number_of_containers takes effect."
 argument_list|)
-annotation|@
-name|JsonProperty
-argument_list|(
-literal|"number_of_containers"
-argument_list|)
 DECL|method|getNumberOfContainers ()
 specifier|public
 name|Long
@@ -812,13 +898,6 @@ return|return
 name|numberOfContainers
 return|;
 block|}
-annotation|@
-name|XmlElement
-argument_list|(
-name|name
-operator|=
-literal|"number_of_containers"
-argument_list|)
 DECL|method|setNumberOfContainers (Long numberOfContainers)
 specifier|public
 name|void
@@ -845,11 +924,6 @@ argument_list|,
 name|value
 operator|=
 literal|"Containers of a started component. Specifying a value for this attribute for the POST payload raises a validation error. This blob is available only in the GET response of a started service."
-argument_list|)
-annotation|@
-name|JsonProperty
-argument_list|(
-literal|"containers"
 argument_list|)
 DECL|method|getContainers ()
 specifier|public
@@ -989,11 +1063,6 @@ name|value
 operator|=
 literal|"Run all containers of this component in privileged mode (YARN-4262)."
 argument_list|)
-annotation|@
-name|JsonProperty
-argument_list|(
-literal|"run_privileged_container"
-argument_list|)
 DECL|method|getRunPrivilegedContainer ()
 specifier|public
 name|Boolean
@@ -1004,13 +1073,6 @@ return|return
 name|runPrivilegedContainer
 return|;
 block|}
-annotation|@
-name|XmlElement
-argument_list|(
-name|name
-operator|=
-literal|"run_privileged_container"
-argument_list|)
 DECL|method|setRunPrivilegedContainer (Boolean runPrivilegedContainer)
 specifier|public
 name|void
@@ -1058,11 +1120,6 @@ name|value
 operator|=
 literal|"Advanced scheduling and placement policies for all containers of this component (optional). If not specified, the service level placement_policy takes effect. Refer to the description at the global level for more details."
 argument_list|)
-annotation|@
-name|JsonProperty
-argument_list|(
-literal|"placement_policy"
-argument_list|)
 DECL|method|getPlacementPolicy ()
 specifier|public
 name|PlacementPolicy
@@ -1073,13 +1130,6 @@ return|return
 name|placementPolicy
 return|;
 block|}
-annotation|@
-name|XmlElement
-argument_list|(
-name|name
-operator|=
-literal|"placement_policy"
-argument_list|)
 DECL|method|setPlacementPolicy (PlacementPolicy placementPolicy)
 specifier|public
 name|void
@@ -1126,11 +1176,6 @@ argument_list|,
 name|value
 operator|=
 literal|"Config properties for this component."
-argument_list|)
-annotation|@
-name|JsonProperty
-argument_list|(
-literal|"configuration"
 argument_list|)
 DECL|method|getConfiguration ()
 specifier|public
@@ -1191,11 +1236,6 @@ argument_list|,
 name|value
 operator|=
 literal|"A list of quicklink keys defined at the service level, and to be resolved by this component."
-argument_list|)
-annotation|@
-name|JsonProperty
-argument_list|(
-literal|"quicklinks"
 argument_list|)
 DECL|method|getQuicklinks ()
 specifier|public
@@ -1258,11 +1298,6 @@ argument_list|,
 name|value
 operator|=
 literal|"State of the component."
-argument_list|)
-annotation|@
-name|JsonProperty
-argument_list|(
-literal|"state"
 argument_list|)
 DECL|method|getState ()
 specifier|public

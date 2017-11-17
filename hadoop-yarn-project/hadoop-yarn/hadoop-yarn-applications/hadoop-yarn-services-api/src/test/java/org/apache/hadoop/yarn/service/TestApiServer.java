@@ -419,14 +419,14 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|"The path has /ws/v1 annotation"
+literal|"The path has /v1 annotation"
 argument_list|,
 name|path
 operator|.
 name|value
 argument_list|()
 argument_list|,
-literal|"/ws/v1"
+literal|"/v1"
 argument_list|)
 expr_stmt|;
 block|}

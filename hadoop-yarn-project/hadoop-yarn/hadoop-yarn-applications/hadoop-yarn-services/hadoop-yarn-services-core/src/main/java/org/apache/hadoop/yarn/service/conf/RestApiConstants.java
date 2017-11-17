@@ -31,7 +31,7 @@ DECL|field|CONTEXT_ROOT
 name|String
 name|CONTEXT_ROOT
 init|=
-literal|"/ws/v1"
+literal|"/v1"
 decl_stmt|;
 DECL|field|VERSION
 name|String
