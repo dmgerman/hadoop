@@ -169,6 +169,11 @@ argument_list|(
 name|allocationTags
 argument_list|)
 operator|.
+name|resourceSizing
+argument_list|(
+name|resourceSizing
+argument_list|)
+operator|.
 name|placementConstraintExpression
 argument_list|(
 name|placementConstraintExpression
