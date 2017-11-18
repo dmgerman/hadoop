@@ -3673,22 +3673,6 @@ name|loadLocalizationState
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|this
-operator|.
-name|amrmProxyEnabled
-condition|)
-block|{
-name|this
-operator|.
-name|getAMRMProxyService
-argument_list|()
-operator|.
-name|recover
-argument_list|()
-expr_stmt|;
-block|}
 name|RecoveredApplicationsState
 name|appsState
 init|=
@@ -3768,6 +3752,23 @@ name|recoverContainer
 argument_list|(
 name|rcs
 argument_list|)
+expr_stmt|;
+block|}
+comment|// Recovery AMRMProxy state after apps and containers are recovered
+if|if
+condition|(
+name|this
+operator|.
+name|amrmProxyEnabled
+condition|)
+block|{
+name|this
+operator|.
+name|getAMRMProxyService
+argument_list|()
+operator|.
+name|recover
+argument_list|()
 expr_stmt|;
 block|}
 comment|//Dispatching the RECOVERY_COMPLETED event through the dispatcher

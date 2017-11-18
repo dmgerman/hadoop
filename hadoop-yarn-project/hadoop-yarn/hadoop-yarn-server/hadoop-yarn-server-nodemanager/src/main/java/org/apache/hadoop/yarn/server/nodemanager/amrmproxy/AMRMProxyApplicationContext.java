@@ -44,6 +44,38 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|registry
+operator|.
+name|client
+operator|.
+name|api
+operator|.
+name|RegistryOperations
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|Credentials
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|token
@@ -154,6 +186,18 @@ comment|/**    * Gets the NMContext object.    * @return the NMContext.    */
 DECL|method|getNMCotext ()
 name|Context
 name|getNMCotext
+parameter_list|()
+function_decl|;
+comment|/**    * Gets the credentials of this application.    *    * @return the credentials.    */
+DECL|method|getCredentials ()
+name|Credentials
+name|getCredentials
+parameter_list|()
+function_decl|;
+comment|/**    * Gets the registry client.    *    * @return the registry.    */
+DECL|method|getRegistryClient ()
+name|RegistryOperations
+name|getRegistryClient
 parameter_list|()
 function_decl|;
 block|}

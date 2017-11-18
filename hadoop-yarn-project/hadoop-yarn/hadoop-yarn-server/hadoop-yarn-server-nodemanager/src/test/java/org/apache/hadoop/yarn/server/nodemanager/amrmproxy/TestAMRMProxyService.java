@@ -2207,6 +2207,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|false
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|RequestInterceptorChainWrapper
@@ -2671,33 +2673,40 @@ name|getAMRMToken
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// The way the mock resource manager is setup, it will return the containers
-comment|// that were released in the response. This is done because the UAMs run
-comment|// asynchronously and we need to if all the resource managers received the
-comment|// release it. The containers sent by the mock resource managers will be
+comment|// We need to make sure all the resource managers received the
+comment|// release list. The containers sent by the mock resource managers will be
 comment|// aggregated and returned back to us and we can assert if all the release
 comment|// lists reached the sub-clusters
 name|List
 argument_list|<
-name|Container
+name|ContainerId
 argument_list|>
 name|containersForReleasedContainerIds
 init|=
 operator|new
 name|ArrayList
-argument_list|<
-name|Container
-argument_list|>
+argument_list|<>
 argument_list|()
+decl_stmt|;
+name|List
+argument_list|<
+name|ContainerId
+argument_list|>
+name|newlyFinished
+init|=
+name|getCompletedContainerIds
+argument_list|(
+name|allocateResponse
+operator|.
+name|getCompletedContainersStatuses
+argument_list|()
+argument_list|)
 decl_stmt|;
 name|containersForReleasedContainerIds
 operator|.
 name|addAll
 argument_list|(
-name|allocateResponse
-operator|.
-name|getAllocatedContainers
-argument_list|()
+name|newlyFinished
 argument_list|)
 expr_stmt|;
 comment|// Send max 10 heart beats to receive all the containers. If not, we will
@@ -2760,14 +2769,21 @@ name|getAMRMToken
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|newlyFinished
+operator|=
+name|getCompletedContainerIds
+argument_list|(
+name|allocateResponse
+operator|.
+name|getCompletedContainersStatuses
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|containersForReleasedContainerIds
 operator|.
 name|addAll
 argument_list|(
-name|allocateResponse
-operator|.
-name|getAllocatedContainers
-argument_list|()
+name|newlyFinished
 argument_list|)
 expr_stmt|;
 name|LOG

@@ -275,6 +275,36 @@ specifier|private
 name|MockResourceManagerFacade
 name|mockRm
 decl_stmt|;
+DECL|method|TestableFederationInterceptor ()
+specifier|public
+name|TestableFederationInterceptor
+parameter_list|()
+block|{   }
+DECL|method|TestableFederationInterceptor (MockResourceManagerFacade homeRM, ConcurrentHashMap<String, MockResourceManagerFacade> secondaries)
+specifier|public
+name|TestableFederationInterceptor
+parameter_list|(
+name|MockResourceManagerFacade
+name|homeRM
+parameter_list|,
+name|ConcurrentHashMap
+argument_list|<
+name|String
+argument_list|,
+name|MockResourceManagerFacade
+argument_list|>
+name|secondaries
+parameter_list|)
+block|{
+name|mockRm
+operator|=
+name|homeRM
+expr_stmt|;
+name|secondaryResourceManagers
+operator|=
+name|secondaries
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|createUnmanagedAMPoolManager ( ExecutorService threadPool)
@@ -383,7 +413,7 @@ name|this
 operator|.
 name|secondaryResourceManagers
 operator|.
-name|contains
+name|containsKey
 argument_list|(
 name|subClusterId
 argument_list|)
@@ -484,6 +514,31 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+DECL|method|getHomeRM ()
+specifier|protected
+name|MockResourceManagerFacade
+name|getHomeRM
+parameter_list|()
+block|{
+return|return
+name|mockRm
+return|;
+block|}
+specifier|protected
+name|ConcurrentHashMap
+argument_list|<
+name|String
+argument_list|,
+name|MockResourceManagerFacade
+argument_list|>
+DECL|method|getSecondaryRMs ()
+name|getSecondaryRMs
+parameter_list|()
+block|{
+return|return
+name|secondaryResourceManagers
+return|;
+block|}
 comment|/**    * Extends the UnmanagedAMPoolManager and overrides methods to provide a    * testable implementation of UnmanagedAMPoolManager.    */
 DECL|class|TestableUnmanagedAMPoolManager
 specifier|protected
@@ -508,7 +563,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|createUAM (Configuration conf, ApplicationId appId, String queueName, String submitter, String appNameSuffix)
+DECL|method|createUAM (Configuration conf, ApplicationId appId, String queueName, String submitter, String appNameSuffix, boolean keepContainersAcrossApplicationAttempts)
 specifier|public
 name|UnmanagedApplicationManager
 name|createUAM
@@ -527,6 +582,9 @@ name|submitter
 parameter_list|,
 name|String
 name|appNameSuffix
+parameter_list|,
+name|boolean
+name|keepContainersAcrossApplicationAttempts
 parameter_list|)
 block|{
 return|return
@@ -542,6 +600,8 @@ argument_list|,
 name|submitter
 argument_list|,
 name|appNameSuffix
+argument_list|,
+name|keepContainersAcrossApplicationAttempts
 argument_list|)
 return|;
 block|}
@@ -554,7 +614,7 @@ name|TestableUnmanagedApplicationManager
 extends|extends
 name|UnmanagedApplicationManager
 block|{
-DECL|method|TestableUnmanagedApplicationManager (Configuration conf, ApplicationId appId, String queueName, String submitter, String appNameSuffix)
+DECL|method|TestableUnmanagedApplicationManager (Configuration conf, ApplicationId appId, String queueName, String submitter, String appNameSuffix, boolean keepContainersAcrossApplicationAttempts)
 specifier|public
 name|TestableUnmanagedApplicationManager
 parameter_list|(
@@ -572,6 +632,9 @@ name|submitter
 parameter_list|,
 name|String
 name|appNameSuffix
+parameter_list|,
+name|boolean
+name|keepContainersAcrossApplicationAttempts
 parameter_list|)
 block|{
 name|super
@@ -585,6 +648,8 @@ argument_list|,
 name|submitter
 argument_list|,
 name|appNameSuffix
+argument_list|,
+name|keepContainersAcrossApplicationAttempts
 argument_list|)
 expr_stmt|;
 block|}

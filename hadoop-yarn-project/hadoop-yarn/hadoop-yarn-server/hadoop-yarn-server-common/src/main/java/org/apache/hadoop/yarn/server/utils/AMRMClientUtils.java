@@ -296,7 +296,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationAttemptId
+name|ApplicationId
 import|;
 end_import
 
@@ -459,15 +459,15 @@ specifier|private
 name|AMRMClientUtils
 parameter_list|()
 block|{   }
-comment|/**    * Handle ApplicationNotRegistered exception and re-register.    *    * @param attemptId app attemptId    * @param rmProxy RM proxy instance    * @param registerRequest the AM re-register request    * @throws YarnException if re-register fails    */
-DECL|method|handleNotRegisteredExceptionAndReRegister ( ApplicationAttemptId attemptId, ApplicationMasterProtocol rmProxy, RegisterApplicationMasterRequest registerRequest)
+comment|/**    * Handle ApplicationNotRegistered exception and re-register.    *    * @param appId application Id    * @param rmProxy RM proxy instance    * @param registerRequest the AM re-register request    * @throws YarnException if re-register fails    */
+DECL|method|handleNotRegisteredExceptionAndReRegister ( ApplicationId appId, ApplicationMasterProtocol rmProxy, RegisterApplicationMasterRequest registerRequest)
 specifier|public
 specifier|static
 name|void
 name|handleNotRegisteredExceptionAndReRegister
 parameter_list|(
-name|ApplicationAttemptId
-name|attemptId
+name|ApplicationId
+name|appId
 parameter_list|,
 name|ApplicationMasterProtocol
 name|rmProxy
@@ -486,7 +486,7 @@ literal|"App attempt {} not registered, most likely due to RM failover. "
 operator|+
 literal|" Trying to re-register."
 argument_list|,
-name|attemptId
+name|appId
 argument_list|)
 expr_stmt|;
 try|try
@@ -551,8 +551,8 @@ throw|;
 block|}
 block|}
 block|}
-comment|/**    * Helper method for client calling ApplicationMasterProtocol.allocate that    * handles re-register if RM fails over.    *    * @param request allocate request    * @param rmProxy RM proxy    * @param registerRequest the register request for re-register    * @param attemptId application attempt id    * @return allocate response    * @throws YarnException if RM call fails    * @throws IOException if RM call fails    */
-DECL|method|allocateWithReRegister (AllocateRequest request, ApplicationMasterProtocol rmProxy, RegisterApplicationMasterRequest registerRequest, ApplicationAttemptId attemptId)
+comment|/**    * Helper method for client calling ApplicationMasterProtocol.allocate that    * handles re-register if RM fails over.    *    * @param request allocate request    * @param rmProxy RM proxy    * @param registerRequest the register request for re-register    * @param appId application id    * @return allocate response    * @throws YarnException if RM call fails    * @throws IOException if RM call fails    */
+DECL|method|allocateWithReRegister (AllocateRequest request, ApplicationMasterProtocol rmProxy, RegisterApplicationMasterRequest registerRequest, ApplicationId appId)
 specifier|public
 specifier|static
 name|AllocateResponse
@@ -567,8 +567,8 @@ parameter_list|,
 name|RegisterApplicationMasterRequest
 name|registerRequest
 parameter_list|,
-name|ApplicationAttemptId
-name|attemptId
+name|ApplicationId
+name|appId
 parameter_list|)
 throws|throws
 name|YarnException
@@ -594,7 +594,7 @@ parameter_list|)
 block|{
 name|handleNotRegisteredExceptionAndReRegister
 argument_list|(
-name|attemptId
+name|appId
 argument_list|,
 name|rmProxy
 argument_list|,
@@ -619,13 +619,13 @@ name|rmProxy
 argument_list|,
 name|registerRequest
 argument_list|,
-name|attemptId
+name|appId
 argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Helper method for client calling    * ApplicationMasterProtocol.finishApplicationMaster that handles re-register    * if RM fails over.    *    * @param request finishApplicationMaster request    * @param rmProxy RM proxy    * @param registerRequest the register request for re-register    * @param attemptId application attempt id    * @return finishApplicationMaster response    * @throws YarnException if RM call fails    * @throws IOException if RM call fails    */
-DECL|method|finishAMWithReRegister ( FinishApplicationMasterRequest request, ApplicationMasterProtocol rmProxy, RegisterApplicationMasterRequest registerRequest, ApplicationAttemptId attemptId)
+comment|/**    * Helper method for client calling    * ApplicationMasterProtocol.finishApplicationMaster that handles re-register    * if RM fails over.    *    * @param request finishApplicationMaster request    * @param rmProxy RM proxy    * @param registerRequest the register request for re-register    * @param appId application id    * @return finishApplicationMaster response    * @throws YarnException if RM call fails    * @throws IOException if RM call fails    */
+DECL|method|finishAMWithReRegister ( FinishApplicationMasterRequest request, ApplicationMasterProtocol rmProxy, RegisterApplicationMasterRequest registerRequest, ApplicationId appId)
 specifier|public
 specifier|static
 name|FinishApplicationMasterResponse
@@ -640,8 +640,8 @@ parameter_list|,
 name|RegisterApplicationMasterRequest
 name|registerRequest
 parameter_list|,
-name|ApplicationAttemptId
-name|attemptId
+name|ApplicationId
+name|appId
 parameter_list|)
 throws|throws
 name|YarnException
@@ -667,7 +667,7 @@ parameter_list|)
 block|{
 name|handleNotRegisteredExceptionAndReRegister
 argument_list|(
-name|attemptId
+name|appId
 argument_list|,
 name|rmProxy
 argument_list|,
@@ -684,7 +684,7 @@ name|rmProxy
 argument_list|,
 name|registerRequest
 argument_list|,
-name|attemptId
+name|appId
 argument_list|)
 return|;
 block|}

@@ -200,6 +200,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|Token
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|service
 operator|.
 name|AbstractService
@@ -398,7 +414,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationAttemptId
+name|ApplicationId
 import|;
 end_import
 
@@ -416,7 +432,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationId
+name|ApplicationSubmissionContext
 import|;
 end_import
 
@@ -433,6 +449,22 @@ operator|.
 name|exceptions
 operator|.
 name|YarnException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|security
+operator|.
+name|AMRMTokenIdentifier
 import|;
 end_import
 
@@ -547,15 +579,15 @@ name|UnmanagedApplicationManager
 argument_list|>
 name|unmanagedAppMasterMap
 decl_stmt|;
-DECL|field|attemptIdMap
+DECL|field|appIdMap
 specifier|private
 name|Map
 argument_list|<
 name|String
 argument_list|,
-name|ApplicationAttemptId
+name|ApplicationId
 argument_list|>
-name|attemptIdMap
+name|appIdMap
 decl_stmt|;
 DECL|field|threadpool
 specifier|private
@@ -627,7 +659,7 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|attemptIdMap
+name|appIdMap
 operator|=
 operator|new
 name|ConcurrentHashMap
@@ -750,7 +782,7 @@ name|uamId
 operator|+
 literal|" for application "
 operator|+
-name|attemptIdMap
+name|appIdMap
 operator|.
 name|get
 argument_list|(
@@ -850,7 +882,7 @@ block|}
 block|}
 name|this
 operator|.
-name|attemptIdMap
+name|appIdMap
 operator|.
 name|clear
 argument_list|()
@@ -861,8 +893,8 @@ name|serviceStop
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Create a new UAM and register the application, without specifying uamId and    * appId. We will ask for an appId from RM and use it as the uamId.    *    * @param registerRequest RegisterApplicationMasterRequest    * @param conf configuration for this UAM    * @param queueName queue of the application    * @param submitter submitter name of the UAM    * @param appNameSuffix application name suffix for the UAM    * @return uamId for the UAM    * @throws YarnException if registerApplicationMaster fails    * @throws IOException if registerApplicationMaster fails    */
-DECL|method|createAndRegisterNewUAM ( RegisterApplicationMasterRequest registerRequest, Configuration conf, String queueName, String submitter, String appNameSuffix)
+comment|/**    * Create a new UAM and register the application, without specifying uamId and    * appId. We will ask for an appId from RM and use it as the uamId.    *    * @param registerRequest RegisterApplicationMasterRequest    * @param conf configuration for this UAM    * @param queueName queue of the application    * @param submitter submitter name of the UAM    * @param appNameSuffix application name suffix for the UAM    * @param keepContainersAcrossApplicationAttempts keep container flag for UAM    *          recovery.    * @see ApplicationSubmissionContext    *          #setKeepContainersAcrossApplicationAttempts(boolean)    * @return uamId for the UAM    * @throws YarnException if registerApplicationMaster fails    * @throws IOException if registerApplicationMaster fails    */
+DECL|method|createAndRegisterNewUAM ( RegisterApplicationMasterRequest registerRequest, Configuration conf, String queueName, String submitter, String appNameSuffix, boolean keepContainersAcrossApplicationAttempts)
 specifier|public
 name|String
 name|createAndRegisterNewUAM
@@ -881,6 +913,9 @@ name|submitter
 parameter_list|,
 name|String
 name|appNameSuffix
+parameter_list|,
+name|boolean
+name|keepContainersAcrossApplicationAttempts
 parameter_list|)
 throws|throws
 name|YarnException
@@ -977,14 +1012,13 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-name|createAndRegisterNewUAM
+comment|// Launch the UAM in RM
+name|launchUAM
 argument_list|(
 name|appId
 operator|.
 name|toString
 argument_list|()
-argument_list|,
-name|registerRequest
 argument_list|,
 name|conf
 argument_list|,
@@ -995,8 +1029,22 @@ argument_list|,
 name|submitter
 argument_list|,
 name|appNameSuffix
+argument_list|,
+name|keepContainersAcrossApplicationAttempts
 argument_list|)
 expr_stmt|;
+comment|// Register the UAM application
+name|registerApplicationMaster
+argument_list|(
+name|appId
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|registerRequest
+argument_list|)
+expr_stmt|;
+comment|// Returns the appId as uamId
 return|return
 name|appId
 operator|.
@@ -1004,17 +1052,17 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    * Create a new UAM and register the application, using the provided uamId and    * appId.    *    * @param uamId identifier for the UAM    * @param registerRequest RegisterApplicationMasterRequest    * @param conf configuration for this UAM    * @param appId application id for the UAM    * @param queueName queue of the application    * @param submitter submitter name of the UAM    * @param appNameSuffix application name suffix for the UAM    * @return RegisterApplicationMasterResponse    * @throws YarnException if registerApplicationMaster fails    * @throws IOException if registerApplicationMaster fails    */
-DECL|method|createAndRegisterNewUAM (String uamId, RegisterApplicationMasterRequest registerRequest, Configuration conf, ApplicationId appId, String queueName, String submitter, String appNameSuffix)
+comment|/**    * Launch a new UAM, using the provided uamId and appId.    *    * @param uamId uam Id    * @param conf configuration for this UAM    * @param appId application id for the UAM    * @param queueName queue of the application    * @param submitter submitter name of the UAM    * @param appNameSuffix application name suffix for the UAM    * @param keepContainersAcrossApplicationAttempts keep container flag for UAM    *          recovery.    * @see ApplicationSubmissionContext    *          #setKeepContainersAcrossApplicationAttempts(boolean)    * @return UAM token    * @throws YarnException if fails    * @throws IOException if fails    */
+DECL|method|launchUAM (String uamId, Configuration conf, ApplicationId appId, String queueName, String submitter, String appNameSuffix, boolean keepContainersAcrossApplicationAttempts)
 specifier|public
-name|RegisterApplicationMasterResponse
-name|createAndRegisterNewUAM
+name|Token
+argument_list|<
+name|AMRMTokenIdentifier
+argument_list|>
+name|launchUAM
 parameter_list|(
 name|String
 name|uamId
-parameter_list|,
-name|RegisterApplicationMasterRequest
-name|registerRequest
 parameter_list|,
 name|Configuration
 name|conf
@@ -1030,6 +1078,9 @@ name|submitter
 parameter_list|,
 name|String
 name|appNameSuffix
+parameter_list|,
+name|boolean
+name|keepContainersAcrossApplicationAttempts
 parameter_list|)
 throws|throws
 name|YarnException
@@ -1074,6 +1125,8 @@ argument_list|,
 name|submitter
 argument_list|,
 name|appNameSuffix
+argument_list|,
+name|keepContainersAcrossApplicationAttempts
 argument_list|)
 decl_stmt|;
 comment|// Put the UAM into map first before initializing it to avoid additional UAM
@@ -1089,8 +1142,11 @@ argument_list|,
 name|uam
 argument_list|)
 expr_stmt|;
-name|RegisterApplicationMasterResponse
-name|response
+name|Token
+argument_list|<
+name|AMRMTokenIdentifier
+argument_list|>
+name|amrmToken
 init|=
 literal|null
 decl_stmt|;
@@ -1100,20 +1156,168 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Creating and registering UAM id {} for application {}"
+literal|"Launching UAM id {} for application {}"
 argument_list|,
 name|uamId
 argument_list|,
 name|appId
 argument_list|)
 expr_stmt|;
-name|response
+name|amrmToken
 operator|=
 name|uam
 operator|.
-name|createAndRegisterApplicationMaster
+name|launchUAM
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+comment|// Add the map earlier and remove here if register failed because we want
+comment|// to make sure there is only one uam instance per uamId at any given time
+name|this
+operator|.
+name|unmanagedAppMasterMap
+operator|.
+name|remove
 argument_list|(
-name|registerRequest
+name|uamId
+argument_list|)
+expr_stmt|;
+throw|throw
+name|e
+throw|;
+block|}
+name|this
+operator|.
+name|appIdMap
+operator|.
+name|put
+argument_list|(
+name|uamId
+argument_list|,
+name|uam
+operator|.
+name|getAppId
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|amrmToken
+return|;
+block|}
+comment|/**    * Re-attach to an existing UAM, using the provided uamIdentifier.    *    * @param uamId uam Id    * @param conf configuration for this UAM    * @param appId application id for the UAM    * @param queueName queue of the application    * @param submitter submitter name of the UAM    * @param appNameSuffix application name suffix for the UAM    * @param uamToken UAM token    * @throws YarnException if fails    * @throws IOException if fails    */
+DECL|method|reAttachUAM (String uamId, Configuration conf, ApplicationId appId, String queueName, String submitter, String appNameSuffix, Token<AMRMTokenIdentifier> uamToken)
+specifier|public
+name|void
+name|reAttachUAM
+parameter_list|(
+name|String
+name|uamId
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|,
+name|ApplicationId
+name|appId
+parameter_list|,
+name|String
+name|queueName
+parameter_list|,
+name|String
+name|submitter
+parameter_list|,
+name|String
+name|appNameSuffix
+parameter_list|,
+name|Token
+argument_list|<
+name|AMRMTokenIdentifier
+argument_list|>
+name|uamToken
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+block|{
+if|if
+condition|(
+name|this
+operator|.
+name|unmanagedAppMasterMap
+operator|.
+name|containsKey
+argument_list|(
+name|uamId
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|YarnException
+argument_list|(
+literal|"UAM "
+operator|+
+name|uamId
+operator|+
+literal|" already exists"
+argument_list|)
+throw|;
+block|}
+name|UnmanagedApplicationManager
+name|uam
+init|=
+name|createUAM
+argument_list|(
+name|conf
+argument_list|,
+name|appId
+argument_list|,
+name|queueName
+argument_list|,
+name|submitter
+argument_list|,
+name|appNameSuffix
+argument_list|,
+literal|true
+argument_list|)
+decl_stmt|;
+comment|// Put the UAM into map first before initializing it to avoid additional UAM
+comment|// for the same uamId being created concurrently
+name|this
+operator|.
+name|unmanagedAppMasterMap
+operator|.
+name|put
+argument_list|(
+name|uamId
+argument_list|,
+name|uam
+argument_list|)
+expr_stmt|;
+try|try
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Reattaching UAM id {} for application {}"
+argument_list|,
+name|uamId
+argument_list|,
+name|appId
+argument_list|)
+expr_stmt|;
+name|uam
+operator|.
+name|reAttachUAM
+argument_list|(
+name|uamToken
 argument_list|)
 expr_stmt|;
 block|}
@@ -1140,7 +1344,7 @@ throw|;
 block|}
 name|this
 operator|.
-name|attemptIdMap
+name|appIdMap
 operator|.
 name|put
 argument_list|(
@@ -1148,18 +1352,15 @@ name|uamId
 argument_list|,
 name|uam
 operator|.
-name|getAttemptId
+name|getAppId
 argument_list|()
 argument_list|)
 expr_stmt|;
-return|return
-name|response
-return|;
 block|}
-comment|/**    * Creates the UAM instance. Pull out to make unit test easy.    *    * @param conf Configuration    * @param appId application id    * @param queueName queue of the application    * @param submitter submitter name of the application    * @param appNameSuffix application name suffix    * @return the UAM instance    */
+comment|/**    * Creates the UAM instance. Pull out to make unit test easy.    *    * @param conf Configuration    * @param appId application id    * @param queueName queue of the application    * @param submitter submitter name of the application    * @param appNameSuffix application name suffix    * @param keepContainersAcrossApplicationAttempts keep container flag for UAM    * @return the UAM instance    */
 annotation|@
 name|VisibleForTesting
-DECL|method|createUAM (Configuration conf, ApplicationId appId, String queueName, String submitter, String appNameSuffix)
+DECL|method|createUAM (Configuration conf, ApplicationId appId, String queueName, String submitter, String appNameSuffix, boolean keepContainersAcrossApplicationAttempts)
 specifier|protected
 name|UnmanagedApplicationManager
 name|createUAM
@@ -1178,6 +1379,9 @@ name|submitter
 parameter_list|,
 name|String
 name|appNameSuffix
+parameter_list|,
+name|boolean
+name|keepContainersAcrossApplicationAttempts
 parameter_list|)
 block|{
 return|return
@@ -1193,10 +1397,88 @@ argument_list|,
 name|submitter
 argument_list|,
 name|appNameSuffix
+argument_list|,
+name|keepContainersAcrossApplicationAttempts
 argument_list|)
 return|;
 block|}
-comment|/**    * AllocateAsync to an UAM.    *    * @param uamId identifier for the UAM    * @param request AllocateRequest    * @param callback callback for response    * @throws YarnException if allocate fails    * @throws IOException if allocate fails    */
+comment|/**    * Register application master for the UAM.    *    * @param uamId uam Id    * @param registerRequest RegisterApplicationMasterRequest    * @return register response    * @throws YarnException if register fails    * @throws IOException if register fails    */
+DECL|method|registerApplicationMaster ( String uamId, RegisterApplicationMasterRequest registerRequest)
+specifier|public
+name|RegisterApplicationMasterResponse
+name|registerApplicationMaster
+parameter_list|(
+name|String
+name|uamId
+parameter_list|,
+name|RegisterApplicationMasterRequest
+name|registerRequest
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+block|{
+if|if
+condition|(
+operator|!
+name|this
+operator|.
+name|unmanagedAppMasterMap
+operator|.
+name|containsKey
+argument_list|(
+name|uamId
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|YarnException
+argument_list|(
+literal|"UAM "
+operator|+
+name|uamId
+operator|+
+literal|" does not exist"
+argument_list|)
+throw|;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Registering UAM id {} for application {}"
+argument_list|,
+name|uamId
+argument_list|,
+name|this
+operator|.
+name|appIdMap
+operator|.
+name|get
+argument_list|(
+name|uamId
+argument_list|)
+argument_list|)
+expr_stmt|;
+return|return
+name|this
+operator|.
+name|unmanagedAppMasterMap
+operator|.
+name|get
+argument_list|(
+name|uamId
+argument_list|)
+operator|.
+name|registerApplicationMaster
+argument_list|(
+name|registerRequest
+argument_list|)
+return|;
+block|}
+comment|/**    * AllocateAsync to an UAM.    *    * @param uamId uam Id    * @param request AllocateRequest    * @param callback callback for response    * @throws YarnException if allocate fails    * @throws IOException if allocate fails    */
 DECL|method|allocateAsync (String uamId, AllocateRequest request, AsyncCallback<AllocateResponse> callback)
 specifier|public
 name|void
@@ -1261,7 +1543,7 @@ name|callback
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Finish an UAM/application.    *    * @param uamId identifier for the UAM    * @param request FinishApplicationMasterRequest    * @return FinishApplicationMasterResponse    * @throws YarnException if finishApplicationMaster call fails    * @throws IOException if finishApplicationMaster call fails    */
+comment|/**    * Finish an UAM/application.    *    * @param uamId uam Id    * @param request FinishApplicationMasterRequest    * @return FinishApplicationMasterResponse    * @throws YarnException if finishApplicationMaster call fails    * @throws IOException if finishApplicationMaster call fails    */
 DECL|method|finishApplicationMaster (String uamId, FinishApplicationMasterRequest request)
 specifier|public
 name|FinishApplicationMasterResponse
@@ -1307,9 +1589,18 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Finishing application for UAM id {} "
+literal|"Finishing UAM id {} for application {}"
 argument_list|,
 name|uamId
+argument_list|,
+name|this
+operator|.
+name|appIdMap
+operator|.
+name|get
+argument_list|(
+name|uamId
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|FinishApplicationMasterResponse
@@ -1349,7 +1640,7 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|attemptIdMap
+name|appIdMap
 operator|.
 name|remove
 argument_list|(
@@ -1398,7 +1689,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Return whether an UAM exists.    *    * @param uamId identifier for the UAM    * @return UAM exists or not    */
+comment|/**    * Return whether an UAM exists.    *    * @param uamId uam Id    * @return UAM exists or not    */
 DECL|method|hasUAMId (String uamId)
 specifier|public
 name|boolean

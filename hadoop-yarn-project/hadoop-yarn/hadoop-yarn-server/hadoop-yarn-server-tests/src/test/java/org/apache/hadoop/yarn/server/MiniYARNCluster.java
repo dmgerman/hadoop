@@ -236,6 +236,20 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|Credentials
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|token
 operator|.
 name|Token
@@ -5270,7 +5284,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|initializePipeline (ApplicationAttemptId applicationAttemptId, String user, Token<AMRMTokenIdentifier> amrmToken, Token<AMRMTokenIdentifier> localToken, Map<String, byte[]> recoveredDataMap, boolean isRecovery)
+DECL|method|initializePipeline (ApplicationAttemptId applicationAttemptId, String user, Token<AMRMTokenIdentifier> amrmToken, Token<AMRMTokenIdentifier> localToken, Map<String, byte[]> recoveredDataMap, boolean isRecovery, Credentials credentials)
 specifier|protected
 name|void
 name|initializePipeline
@@ -5304,6 +5318,9 @@ name|recoveredDataMap
 parameter_list|,
 name|boolean
 name|isRecovery
+parameter_list|,
+name|Credentials
+name|credentials
 parameter_list|)
 block|{
 name|super
@@ -5321,6 +5338,8 @@ argument_list|,
 name|recoveredDataMap
 argument_list|,
 name|isRecovery
+argument_list|,
+name|credentials
 argument_list|)
 expr_stmt|;
 name|RequestInterceptor

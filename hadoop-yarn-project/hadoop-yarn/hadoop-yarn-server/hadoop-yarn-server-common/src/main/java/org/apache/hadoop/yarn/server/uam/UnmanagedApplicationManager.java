@@ -524,7 +524,43 @@ name|api
 operator|.
 name|records
 operator|.
+name|Container
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ContainerLaunchContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NMToken
 import|;
 end_import
 
@@ -894,11 +930,6 @@ specifier|private
 name|ApplicationId
 name|applicationId
 decl_stmt|;
-DECL|field|attemptId
-specifier|private
-name|ApplicationAttemptId
-name|attemptId
-decl_stmt|;
 DECL|field|submitter
 specifier|private
 name|String
@@ -949,7 +980,19 @@ specifier|private
 name|RecordFactory
 name|recordFactory
 decl_stmt|;
-DECL|method|UnmanagedApplicationManager (Configuration conf, ApplicationId appId, String queueName, String submitter, String appNameSuffix)
+DECL|field|keepContainersAcrossApplicationAttempts
+specifier|private
+name|boolean
+name|keepContainersAcrossApplicationAttempts
+decl_stmt|;
+comment|/*    * This flag is used as an indication that this method launchUAM/reAttachUAM    * is called (and perhaps blocked in initializeUnmanagedAM below due to RM    * connection/failover issue and not finished yet). Set the flag before    * calling the blocking call to RM.    */
+DECL|field|connectionInitiated
+specifier|private
+name|boolean
+name|connectionInitiated
+decl_stmt|;
+comment|/**    * Constructor.    *    * @param conf configuration    * @param appId application Id to use for this UAM    * @param queueName the queue of the UAM    * @param submitter user name of the app    * @param appNameSuffix the app name suffix to use    * @param keepContainersAcrossApplicationAttempts keep container flag for UAM    *          recovery. See {@link ApplicationSubmissionContext    *          #setKeepContainersAcrossApplicationAttempts(boolean)}    */
+DECL|method|UnmanagedApplicationManager (Configuration conf, ApplicationId appId, String queueName, String submitter, String appNameSuffix, boolean keepContainersAcrossApplicationAttempts)
 specifier|public
 name|UnmanagedApplicationManager
 parameter_list|(
@@ -967,6 +1010,9 @@ name|submitter
 parameter_list|,
 name|String
 name|appNameSuffix
+parameter_list|,
+name|boolean
+name|keepContainersAcrossApplicationAttempts
 parameter_list|)
 block|{
 name|Preconditions
@@ -1051,6 +1097,12 @@ literal|null
 expr_stmt|;
 name|this
 operator|.
+name|connectionInitiated
+operator|=
+literal|false
+expr_stmt|;
+name|this
+operator|.
 name|registerRequest
 operator|=
 literal|null
@@ -1083,33 +1135,39 @@ operator|.
 name|DEFAULT_YARN_CLIENT_APPLICATION_CLIENT_PROTOCOL_POLL_INTERVAL_MS
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|keepContainersAcrossApplicationAttempts
+operator|=
+name|keepContainersAcrossApplicationAttempts
+expr_stmt|;
 block|}
-comment|/**    * Registers this {@link UnmanagedApplicationManager} with the resource    * manager.    *    * @param request the register request    * @return the register response    * @throws YarnException if register fails    * @throws IOException if register fails    */
-DECL|method|createAndRegisterApplicationMaster ( RegisterApplicationMasterRequest request)
+comment|/**    * Launch a new UAM in the resource manager.    *    * @return identifier uam identifier    * @throws YarnException if fails    * @throws IOException if fails    */
+DECL|method|launchUAM ()
 specifier|public
-name|RegisterApplicationMasterResponse
-name|createAndRegisterApplicationMaster
-parameter_list|(
-name|RegisterApplicationMasterRequest
-name|request
-parameter_list|)
+name|Token
+argument_list|<
+name|AMRMTokenIdentifier
+argument_list|>
+name|launchUAM
+parameter_list|()
 throws|throws
 name|YarnException
 throws|,
 name|IOException
 block|{
-comment|// This need to be done first in this method, because it is used as an
-comment|// indication that this method is called (and perhaps blocked due to RM
-comment|// connection and not finished yet)
 name|this
 operator|.
-name|registerRequest
+name|connectionInitiated
 operator|=
-name|request
+literal|true
 expr_stmt|;
-comment|// attemptId will be available after this call
-name|UnmanagedAMIdentifier
-name|identifier
+comment|// Blocking call to RM
+name|Token
+argument_list|<
+name|AMRMTokenIdentifier
+argument_list|>
+name|amrmToken
 init|=
 name|initializeUnmanagedAM
 argument_list|(
@@ -1118,7 +1176,59 @@ operator|.
 name|applicationId
 argument_list|)
 decl_stmt|;
-try|try
+comment|// Creates the UAM connection
+name|createUAMProxy
+argument_list|(
+name|amrmToken
+argument_list|)
+expr_stmt|;
+return|return
+name|amrmToken
+return|;
+block|}
+comment|/**    * Re-attach to an existing UAM in the resource manager.    *    * @param amrmToken the UAM token    * @throws IOException if re-attach fails    * @throws YarnException if re-attach fails    */
+DECL|method|reAttachUAM (Token<AMRMTokenIdentifier> amrmToken)
+specifier|public
+name|void
+name|reAttachUAM
+parameter_list|(
+name|Token
+argument_list|<
+name|AMRMTokenIdentifier
+argument_list|>
+name|amrmToken
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|YarnException
+block|{
+name|this
+operator|.
+name|connectionInitiated
+operator|=
+literal|true
+expr_stmt|;
+comment|// Creates the UAM connection
+name|createUAMProxy
+argument_list|(
+name|amrmToken
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|createUAMProxy (Token<AMRMTokenIdentifier> amrmToken)
+specifier|protected
+name|void
+name|createUAMProxy
+parameter_list|(
+name|Token
+argument_list|<
+name|AMRMTokenIdentifier
+argument_list|>
+name|amrmToken
+parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|this
 operator|.
@@ -1128,10 +1238,9 @@ name|UserGroupInformation
 operator|.
 name|createProxyUser
 argument_list|(
-name|identifier
+name|this
 operator|.
-name|getAttemptId
-argument_list|()
+name|applicationId
 operator|.
 name|toString
 argument_list|()
@@ -1142,30 +1251,6 @@ name|getCurrentUser
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Exception while trying to get current user"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-throw|throw
-operator|new
-name|YarnRuntimeException
-argument_list|(
-name|e
-argument_list|)
-throw|;
-block|}
 name|this
 operator|.
 name|rmProxy
@@ -1184,12 +1269,33 @@ name|this
 operator|.
 name|userUgi
 argument_list|,
-name|identifier
-operator|.
-name|getToken
-argument_list|()
+name|amrmToken
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Registers this {@link UnmanagedApplicationManager} with the resource    * manager.    *    * @param request RegisterApplicationMasterRequest    * @return register response    * @throws YarnException if register fails    * @throws IOException if register fails    */
+DECL|method|registerApplicationMaster ( RegisterApplicationMasterRequest request)
+specifier|public
+name|RegisterApplicationMasterResponse
+name|registerApplicationMaster
+parameter_list|(
+name|RegisterApplicationMasterRequest
+name|request
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+block|{
+comment|// Save the register request for re-register later
+name|this
+operator|.
+name|registerRequest
+operator|=
+name|request
+expr_stmt|;
+comment|// Since we have setKeepContainersAcrossApplicationAttempts = true for UAM.
+comment|// We do not expect application already registered exception here
 name|LOG
 operator|.
 name|info
@@ -1198,7 +1304,7 @@ literal|"Registering the Unmanaged application master {}"
 argument_list|,
 name|this
 operator|.
-name|attemptId
+name|applicationId
 argument_list|)
 expr_stmt|;
 name|RegisterApplicationMasterResponse
@@ -1215,6 +1321,54 @@ operator|.
 name|registerRequest
 argument_list|)
 decl_stmt|;
+for|for
+control|(
+name|Container
+name|container
+range|:
+name|response
+operator|.
+name|getContainersFromPreviousAttempts
+argument_list|()
+control|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"RegisterUAM returned existing running container "
+operator|+
+name|container
+operator|.
+name|getId
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+for|for
+control|(
+name|NMToken
+name|nmToken
+range|:
+name|response
+operator|.
+name|getNMTokensFromPreviousAttempts
+argument_list|()
+control|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"RegisterUAM returned existing NM token for node "
+operator|+
+name|nmToken
+operator|.
+name|getNodeId
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|// Only when register succeed that we start the heartbeat thread
 name|this
 operator|.
@@ -1287,12 +1441,10 @@ if|if
 condition|(
 name|this
 operator|.
-name|registerRequest
-operator|!=
-literal|null
+name|connectionInitiated
 condition|)
 block|{
-comment|// This is possible if the async registerApplicationMaster is still
+comment|// This is possible if the async launchUAM is still
 comment|// blocked and retrying. Return a dummy response in this case.
 name|LOG
 operator|.
@@ -1300,7 +1452,7 @@ name|warn
 argument_list|(
 literal|"Unmanaged AM still not successfully launched/registered yet."
 operator|+
-literal|" Stopping the UAM client thread anyways."
+literal|" Stopping the UAM heartbeat thread anyways."
 argument_list|)
 expr_stmt|;
 return|return
@@ -1342,7 +1494,7 @@ name|registerRequest
 argument_list|,
 name|this
 operator|.
-name|attemptId
+name|applicationId
 argument_list|)
 return|;
 block|}
@@ -1366,10 +1518,7 @@ name|newInstance
 argument_list|(
 name|this
 operator|.
-name|attemptId
-operator|.
-name|getApplicationId
-argument_list|()
+name|applicationId
 argument_list|)
 decl_stmt|;
 name|this
@@ -1480,8 +1629,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Two possible cases why the UAM is not successfully registered yet:
-comment|// 1. registerApplicationMaster is not called at all. Should throw here.
-comment|// 2. registerApplicationMaster is called but hasn't successfully returned.
+comment|// 1. launchUAM is not called at all. Should throw here.
+comment|// 2. launchUAM is called but hasn't successfully returned.
 comment|//
 comment|// In case 2, we have already save the allocate request above, so if the
 comment|// registration succeed later, no request is lost.
@@ -1498,9 +1647,7 @@ if|if
 condition|(
 name|this
 operator|.
-name|registerRequest
-operator|!=
-literal|null
+name|connectionInitiated
 condition|)
 block|{
 name|LOG
@@ -1519,23 +1666,23 @@ throw|throw
 operator|new
 name|YarnException
 argument_list|(
-literal|"AllocateAsync should not be called before createAndRegister"
+literal|"AllocateAsync should not be called before launchUAM"
 argument_list|)
 throw|;
 block|}
 block|}
 block|}
-comment|/**    * Returns the application attempt id of the UAM.    *    * @return attempt id of the UAM    */
-DECL|method|getAttemptId ()
+comment|/**    * Returns the application id of the UAM.    *    * @return application id of the UAM    */
+DECL|method|getAppId ()
 specifier|public
-name|ApplicationAttemptId
-name|getAttemptId
+name|ApplicationId
+name|getAppId
 parameter_list|()
 block|{
 return|return
 name|this
 operator|.
-name|attemptId
+name|applicationId
 return|;
 block|}
 comment|/**    * Returns RM proxy for the specified protocol type. Unit test cases can    * override this method and return mock proxy instances.    *    * @param protocol protocal of the proxy    * @param config configuration    * @param user ugi for the proxy connection    * @param token token for the connection    * @param<T> type of the proxy    * @return the proxy instance    * @throws IOException if fails to create the proxy    */
@@ -1583,10 +1730,13 @@ name|token
 argument_list|)
 return|;
 block|}
-comment|/**    * Launch and initialize an unmanaged AM. First, it creates a new application    * on the RM and negotiates a new attempt id. Then it waits for the RM    * application attempt state to reach YarnApplicationAttemptState.LAUNCHED    * after which it returns the AM-RM token and the attemptId.    *    * @param appId application id    * @return the UAM identifier    * @throws IOException if initialize fails    * @throws YarnException if initialize fails    */
-DECL|method|initializeUnmanagedAM (ApplicationId appId)
+comment|/**    * Launch and initialize an unmanaged AM. First, it creates a new application    * on the RM and negotiates a new attempt id. Then it waits for the RM    * application attempt state to reach YarnApplicationAttemptState.LAUNCHED    * after which it returns the AM-RM token.    *    * @param appId application id    * @return the UAM token    * @throws IOException if initialize fails    * @throws YarnException if initialize fails    */
+DECL|method|initializeUnmanagedAM ( ApplicationId appId)
 specifier|protected
-name|UnmanagedAMIdentifier
+name|Token
+argument_list|<
+name|AMRMTokenIdentifier
+argument_list|>
 name|initializeUnmanagedAM
 parameter_list|(
 name|ApplicationId
@@ -1637,9 +1787,6 @@ name|appId
 argument_list|)
 expr_stmt|;
 comment|// Monitor the application attempt to wait for launch state
-name|ApplicationAttemptReport
-name|attemptReport
-init|=
 name|monitorCurrentAppAttempt
 argument_list|(
 name|appId
@@ -1673,18 +1820,9 @@ name|YarnApplicationAttemptState
 operator|.
 name|LAUNCHED
 argument_list|)
-decl_stmt|;
-name|this
-operator|.
-name|attemptId
-operator|=
-name|attemptReport
-operator|.
-name|getApplicationAttemptId
-argument_list|()
 expr_stmt|;
 return|return
-name|getUAMIdentifier
+name|getUAMToken
 argument_list|()
 return|;
 block|}
@@ -1854,6 +1992,15 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
+name|context
+operator|.
+name|setKeepContainersAcrossApplicationAttempts
+argument_list|(
+name|this
+operator|.
+name|keepContainersAcrossApplicationAttempts
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -1965,11 +2112,15 @@ literal|"Received non-accepted application state: "
 operator|+
 name|state
 operator|+
-literal|". Application "
+literal|" for "
 operator|+
 name|appId
 operator|+
-literal|" not the first attempt?"
+literal|". This is likely because this is not the first "
+operator|+
+literal|"app attempt in home sub-cluster, and AMRMProxy HA "
+operator|+
+literal|"(yarn.nodemanager.amrmproxy.ha.enable) is not enabled."
 argument_list|)
 throw|;
 block|}
@@ -2140,11 +2291,14 @@ throw|;
 block|}
 block|}
 block|}
-comment|/**    * Gets the identifier of the unmanaged AM.    *    * @return the identifier of the unmanaged AM.    * @throws IOException if getApplicationReport fails    * @throws YarnException if getApplicationReport fails    */
-DECL|method|getUAMIdentifier ()
+comment|/**    * Gets the amrmToken of the unmanaged AM.    *    * @return the amrmToken of the unmanaged AM.    * @throws IOException if getApplicationReport fails    * @throws YarnException if getApplicationReport fails    */
+DECL|method|getUAMToken ()
 specifier|protected
-name|UnmanagedAMIdentifier
-name|getUAMIdentifier
+name|Token
+argument_list|<
+name|AMRMTokenIdentifier
+argument_list|>
+name|getUAMToken
 parameter_list|()
 throws|throws
 name|IOException
@@ -2178,10 +2332,7 @@ name|getApplicationReport
 argument_list|(
 name|this
 operator|.
-name|attemptId
-operator|.
-name|getApplicationId
-argument_list|()
+name|applicationId
 argument_list|)
 operator|.
 name|getAMRMToken
@@ -2219,23 +2370,12 @@ literal|"AMRMToken not found in the application report for application: {}"
 argument_list|,
 name|this
 operator|.
-name|attemptId
-operator|.
-name|getApplicationId
-argument_list|()
+name|applicationId
 argument_list|)
 expr_stmt|;
 block|}
 return|return
-operator|new
-name|UnmanagedAMIdentifier
-argument_list|(
-name|this
-operator|.
-name|attemptId
-argument_list|,
 name|token
-argument_list|)
 return|;
 block|}
 DECL|method|getApplicationReport (ApplicationId appId)
@@ -2285,81 +2425,6 @@ operator|.
 name|getApplicationReport
 argument_list|()
 return|;
-block|}
-comment|/**    * Data structure that encapsulates the application attempt identifier and the    * AMRMTokenIdentifier. Make it public because clients with HA need it.    */
-DECL|class|UnmanagedAMIdentifier
-specifier|public
-specifier|static
-class|class
-name|UnmanagedAMIdentifier
-block|{
-DECL|field|attemptId
-specifier|private
-name|ApplicationAttemptId
-name|attemptId
-decl_stmt|;
-DECL|field|token
-specifier|private
-name|Token
-argument_list|<
-name|AMRMTokenIdentifier
-argument_list|>
-name|token
-decl_stmt|;
-DECL|method|UnmanagedAMIdentifier (ApplicationAttemptId attemptId, Token<AMRMTokenIdentifier> token)
-specifier|public
-name|UnmanagedAMIdentifier
-parameter_list|(
-name|ApplicationAttemptId
-name|attemptId
-parameter_list|,
-name|Token
-argument_list|<
-name|AMRMTokenIdentifier
-argument_list|>
-name|token
-parameter_list|)
-block|{
-name|this
-operator|.
-name|attemptId
-operator|=
-name|attemptId
-expr_stmt|;
-name|this
-operator|.
-name|token
-operator|=
-name|token
-expr_stmt|;
-block|}
-DECL|method|getAttemptId ()
-specifier|public
-name|ApplicationAttemptId
-name|getAttemptId
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|attemptId
-return|;
-block|}
-DECL|method|getToken ()
-specifier|public
-name|Token
-argument_list|<
-name|AMRMTokenIdentifier
-argument_list|>
-name|getToken
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|token
-return|;
-block|}
 block|}
 comment|/**    * Data structure that encapsulates AllocateRequest and AsyncCallback    * instance.    */
 DECL|class|AsyncAllocateRequestInfo
@@ -2656,7 +2721,7 @@ name|rmProxy
 argument_list|,
 name|registerRequest
 argument_list|,
-name|attemptId
+name|applicationId
 argument_list|)
 decl_stmt|;
 if|if
@@ -2817,7 +2882,7 @@ name|warn
 argument_list|(
 literal|"IO Error occurred while processing heart beat for "
 operator|+
-name|attemptId
+name|applicationId
 argument_list|,
 name|ex
 argument_list|)
@@ -2835,7 +2900,7 @@ name|warn
 argument_list|(
 literal|"Error occurred while processing heart beat for "
 operator|+
-name|attemptId
+name|applicationId
 argument_list|,
 name|ex
 argument_list|)
@@ -2850,7 +2915,7 @@ literal|"UnmanagedApplicationManager has been stopped for {}. "
 operator|+
 literal|"AMRequestHandlerThread thread is exiting"
 argument_list|,
-name|attemptId
+name|applicationId
 argument_list|)
 expr_stmt|;
 block|}
@@ -2881,14 +2946,14 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Heartbeat thread {} for application attempt {} crashed!"
+literal|"Heartbeat thread {} for application {} crashed!"
 argument_list|,
 name|t
 operator|.
 name|getName
 argument_list|()
 argument_list|,
-name|attemptId
+name|applicationId
 argument_list|,
 name|e
 argument_list|)
