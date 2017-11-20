@@ -202,6 +202,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -594,7 +608,6 @@ name|fsdir
 decl_stmt|;
 DECL|field|captureOpenFiles
 specifier|private
-specifier|final
 name|boolean
 name|captureOpenFiles
 decl_stmt|;
@@ -745,6 +758,23 @@ literal|", snapshotDiffAllowSnapRootDescendant: "
 operator|+
 name|snapshotDiffAllowSnapRootDescendant
 argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setCaptureOpenFiles (boolean captureOpenFiles)
+name|void
+name|setCaptureOpenFiles
+parameter_list|(
+name|boolean
+name|captureOpenFiles
+parameter_list|)
+block|{
+name|this
+operator|.
+name|captureOpenFiles
+operator|=
+name|captureOpenFiles
 expr_stmt|;
 block|}
 comment|/**    * @return skipCaptureAccessTimeOnlyChange    */
