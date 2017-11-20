@@ -2661,13 +2661,21 @@ return|;
 block|}
 comment|// Common part of check container allocation regardless if it is a
 comment|// increase container or regular container
+if|if
+condition|(
+operator|!
 name|commonCheckContainerAllocation
 argument_list|(
 name|allocation
 argument_list|,
 name|schedulerContainer
 argument_list|)
-expr_stmt|;
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
 block|}
 else|else
 block|{
