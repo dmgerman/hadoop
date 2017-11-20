@@ -1193,7 +1193,7 @@ return|return
 name|conf
 return|;
 block|}
-comment|/**    * A garbage mkdir op which is used for testing    * {@link EditLogFileInputStream#scanEditLog(File)}    */
+comment|/**    * A garbage mkdir op which is used for testing    * {@link EditLogFileInputStream#scanEditLog(File, long, boolean)}    */
 DECL|class|GarbageMkdirOp
 specifier|public
 specifier|static
@@ -5826,7 +5826,7 @@ specifier|final
 name|int
 name|logindex
 decl_stmt|;
-comment|/**      * Construct the failure specification.       * @param roll number to fail after. e.g. 1 to fail after the first roll      * @param loginfo index of journal to fail.       */
+comment|/**      * Construct the failure specification.       * @param roll number to fail after. e.g. 1 to fail after the first roll      * @param logindex index of journal to fail.      */
 DECL|method|AbortSpec (int roll, int logindex)
 name|AbortSpec
 parameter_list|(
