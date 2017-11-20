@@ -380,6 +380,22 @@ name|ozone
 operator|.
 name|scm
 operator|.
+name|StorageContainerManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|scm
+operator|.
 name|VersionInfo
 import|;
 end_import
@@ -870,7 +886,6 @@ name|totalNodes
 decl_stmt|;
 DECL|field|staleNodeIntervalMs
 specifier|private
-specifier|final
 name|long
 name|staleNodeIntervalMs
 decl_stmt|;
@@ -969,8 +984,14 @@ specifier|final
 name|SCMNodePoolManager
 name|nodePoolManager
 decl_stmt|;
+DECL|field|scmManager
+specifier|private
+specifier|final
+name|StorageContainerManager
+name|scmManager
+decl_stmt|;
 comment|/**    * Constructs SCM machine Manager.    */
-DECL|method|SCMNodeManager (OzoneConfiguration conf, String clusterID)
+DECL|method|SCMNodeManager (OzoneConfiguration conf, String clusterID, StorageContainerManager scmManager)
 specifier|public
 name|SCMNodeManager
 parameter_list|(
@@ -979,6 +1000,9 @@ name|conf
 parameter_list|,
 name|String
 name|clusterID
+parameter_list|,
+name|StorageContainerManager
+name|scmManager
 parameter_list|)
 throws|throws
 name|IOException
@@ -1220,6 +1244,12 @@ name|SCMNodePoolManager
 argument_list|(
 name|conf
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|scmManager
+operator|=
+name|scmManager
 expr_stmt|;
 block|}
 DECL|method|registerMXBean ()
@@ -2289,6 +2319,25 @@ operator|.
 name|incrementAndGet
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|scmManager
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// remove stale node's container report
+name|scmManager
+operator|.
+name|removeContainerReport
+argument_list|(
+name|entry
+operator|.
+name|getKey
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Moves a Stale node to a dead node state.    *    * @param entry - Map Entry    */
 DECL|method|moveStaleNodeToDead (Map.Entry<String, Long> entry)
@@ -3518,6 +3567,24 @@ name|id
 argument_list|,
 name|command
 argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setStaleNodeIntervalMs (long interval)
+specifier|public
+name|void
+name|setStaleNodeIntervalMs
+parameter_list|(
+name|long
+name|interval
+parameter_list|)
+block|{
+name|this
+operator|.
+name|staleNodeIntervalMs
+operator|=
+name|interval
 expr_stmt|;
 block|}
 block|}

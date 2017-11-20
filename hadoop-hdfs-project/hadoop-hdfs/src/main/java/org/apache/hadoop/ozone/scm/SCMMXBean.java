@@ -20,6 +20,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -72,6 +82,17 @@ comment|/**    * Get the SCM RPC server port that used to listen to client reque
 DECL|method|getClientRpcPort ()
 name|String
 name|getClientRpcPort
+parameter_list|()
+function_decl|;
+comment|/**    * Get container report info that includes container IO stats of nodes.    * @return The datanodeUUid to report json string mapping    */
+DECL|method|getContainerReport ()
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|getContainerReport
 parameter_list|()
 function_decl|;
 block|}
