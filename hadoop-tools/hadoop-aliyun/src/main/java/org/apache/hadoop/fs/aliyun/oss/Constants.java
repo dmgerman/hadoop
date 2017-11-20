@@ -20,6 +20,22 @@ name|oss
 package|;
 end_package
 
+begin_import
+import|import
+name|com
+operator|.
+name|aliyun
+operator|.
+name|oss
+operator|.
+name|common
+operator|.
+name|utils
+operator|.
+name|VersionInfoUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * ALL configuration constants for OSS filesystem.  */
 end_comment
@@ -36,6 +52,28 @@ specifier|private
 name|Constants
 parameter_list|()
 block|{   }
+comment|// User agent
+DECL|field|USER_AGENT_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|USER_AGENT_PREFIX
+init|=
+literal|"fs.oss.user.agent.prefix"
+decl_stmt|;
+DECL|field|USER_AGENT_PREFIX_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|USER_AGENT_PREFIX_DEFAULT
+init|=
+name|VersionInfoUtils
+operator|.
+name|getDefaultUserAgent
+argument_list|()
+decl_stmt|;
 comment|// Class of credential provider
 DECL|field|ALIYUN_OSS_CREDENTIALS_PROVIDER_KEY
 specifier|public
