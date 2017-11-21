@@ -170,13 +170,13 @@ name|STORAGE_DIR
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|setScmUuid (String scmUuid)
+DECL|method|setScmId (String scmId)
 specifier|public
 name|void
-name|setScmUuid
+name|setScmId
 parameter_list|(
 name|String
-name|scmUuid
+name|scmId
 parameter_list|)
 throws|throws
 name|IOException
@@ -208,16 +208,16 @@ name|setProperty
 argument_list|(
 name|SCM_ID
 argument_list|,
-name|scmUuid
+name|scmId
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 comment|/**    * Retrieves the SCM ID from the version file.    * @return SCM_ID    */
-DECL|method|getscmUuid ()
+DECL|method|getScmId ()
 specifier|public
 name|String
-name|getscmUuid
+name|getScmId
 parameter_list|()
 block|{
 return|return
@@ -239,19 +239,19 @@ name|getNodeProperties
 parameter_list|()
 block|{
 name|String
-name|scmUuid
+name|scmId
 init|=
-name|getscmUuid
+name|getScmId
 argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|scmUuid
+name|scmId
 operator|==
 literal|null
 condition|)
 block|{
-name|scmUuid
+name|scmId
 operator|=
 name|UUID
 operator|.
@@ -275,7 +275,7 @@ name|setProperty
 argument_list|(
 name|SCM_ID
 argument_list|,
-name|scmUuid
+name|scmId
 argument_list|)
 expr_stmt|;
 return|return

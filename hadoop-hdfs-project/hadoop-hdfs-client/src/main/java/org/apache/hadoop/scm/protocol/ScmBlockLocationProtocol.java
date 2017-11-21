@@ -140,6 +140,20 @@ name|ReplicationFactor
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|scm
+operator|.
+name|ScmInfo
+import|;
+end_import
+
 begin_comment
 comment|/**  * ScmBlockLocationProtocol is used by an HDFS node to find the set of nodes  * to read/write a block.  */
 end_comment
@@ -198,6 +212,14 @@ name|BlockGroup
 argument_list|>
 name|keyBlocksInfoList
 parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Gets the Clusterid and SCM Id from SCM.    */
+DECL|method|getScmInfo ()
+name|ScmInfo
+name|getScmInfo
+parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
