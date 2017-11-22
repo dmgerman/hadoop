@@ -3867,18 +3867,27 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+synchronized|synchronized
+init|(
+name|filesBeingWritten
+init|)
+block|{
+name|putFileBeingWritten
+argument_list|(
+name|inodeId
+argument_list|,
+name|out
+argument_list|)
+expr_stmt|;
 name|getLeaseRenewer
 argument_list|()
 operator|.
 name|put
 argument_list|(
-name|inodeId
-argument_list|,
-name|out
-argument_list|,
 name|this
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/** Stop renewal of lease for the file. */
 DECL|method|endFileLease (final long inodeId)
@@ -3890,16 +3899,35 @@ name|long
 name|inodeId
 parameter_list|)
 block|{
+synchronized|synchronized
+init|(
+name|filesBeingWritten
+init|)
+block|{
+name|removeFileBeingWritten
+argument_list|(
+name|inodeId
+argument_list|)
+expr_stmt|;
+comment|// remove client from renewer if no files are open
+if|if
+condition|(
+name|filesBeingWritten
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
 name|getLeaseRenewer
 argument_list|()
 operator|.
-name|closeFile
+name|closeClient
 argument_list|(
-name|inodeId
-argument_list|,
 name|this
 argument_list|)
 expr_stmt|;
+block|}
+block|}
 block|}
 comment|/** Put a file. Only called from LeaseRenewer, where proper locking is    *  enforced to consistently update its local dfsclients array and    *  client's filesBeingWritten map.    */
 DECL|method|putFileBeingWritten (final long inodeId, final DFSOutputStream out)
@@ -4328,6 +4356,7 @@ condition|(
 name|clientRunning
 condition|)
 block|{
+comment|// lease renewal stops when all files are closed
 name|closeAllFilesBeingWritten
 argument_list|(
 literal|false
@@ -4336,14 +4365,6 @@ expr_stmt|;
 name|clientRunning
 operator|=
 literal|false
-expr_stmt|;
-name|getLeaseRenewer
-argument_list|()
-operator|.
-name|closeClient
-argument_list|(
-name|this
-argument_list|)
 expr_stmt|;
 comment|// close connections to the namenode
 name|closeConnectionToNamenode

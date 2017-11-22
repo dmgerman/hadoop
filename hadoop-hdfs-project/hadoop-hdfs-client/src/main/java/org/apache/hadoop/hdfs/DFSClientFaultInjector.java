@@ -188,6 +188,12 @@ name|void
 name|sleepBeforeHedgedGet
 parameter_list|()
 block|{}
+DECL|method|delayWhenRenewLeaseTimeout ()
+specifier|public
+name|void
+name|delayWhenRenewLeaseTimeout
+parameter_list|()
+block|{}
 block|}
 end_class
 
