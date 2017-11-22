@@ -94,6 +94,22 @@ name|fs
 operator|.
 name|s3a
 operator|.
+name|S3ATestConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
 name|S3ATestUtils
 import|;
 end_import
@@ -117,7 +133,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * S3A contract tests covering getFileStatus.  */
+comment|/**  * S3A contract tests covering getFileStatus.  * Some of the tests can take too long when the fault injection rate is high,  * so the test timeout is extended.  */
 end_comment
 
 begin_class
@@ -217,6 +233,19 @@ argument_list|)
 expr_stmt|;
 return|return
 name|conf
+return|;
+block|}
+comment|/**    * {@inheritDoc}    * @return S3A test timeout.    */
+DECL|method|getTestTimeoutMillis ()
+specifier|protected
+name|int
+name|getTestTimeoutMillis
+parameter_list|()
+block|{
+return|return
+name|S3ATestConstants
+operator|.
+name|S3A_TEST_TIMEOUT
 return|;
 block|}
 block|}

@@ -360,6 +360,24 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|s3a
+operator|.
+name|commit
+operator|.
+name|CommitConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|shell
 operator|.
 name|CommandFormat
@@ -4433,6 +4451,15 @@ name|ENCRYPTION_FLAG
 init|=
 literal|"encryption"
 decl_stmt|;
+DECL|field|MAGIC_FLAG
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MAGIC_FLAG
+init|=
+literal|"magic"
+decl_stmt|;
 DECL|field|PURPOSE
 specifier|public
 specifier|static
@@ -4471,6 +4498,30 @@ literal|" - Require S3Guard\n"
 operator|+
 literal|"  -"
 operator|+
+name|UNGUARDED_FLAG
+operator|+
+literal|" - Require S3Guard to be disabled\n"
+operator|+
+literal|"  -"
+operator|+
+name|AUTH_FLAG
+operator|+
+literal|" - Require the S3Guard mode to be \"authoritative\"\n"
+operator|+
+literal|"  -"
+operator|+
+name|NONAUTH_FLAG
+operator|+
+literal|" - Require the S3Guard mode to be \"non-authoritative\"\n"
+operator|+
+literal|"  -"
+operator|+
+name|MAGIC_FLAG
+operator|+
+literal|" - Require the S3 filesystem to be support the \"magic\" committer\n"
+operator|+
+literal|"  -"
+operator|+
 name|ENCRYPTION_FLAG
 operator|+
 literal|" -require {none, sse-s3, sse-kms} - Require encryption policy"
@@ -4493,6 +4544,8 @@ argument_list|,
 name|AUTH_FLAG
 argument_list|,
 name|NONAUTH_FLAG
+argument_list|,
+name|MAGIC_FLAG
 argument_list|)
 expr_stmt|;
 name|CommandFormat
@@ -4736,6 +4789,31 @@ name|fsUri
 argument_list|)
 expr_stmt|;
 block|}
+name|boolean
+name|magic
+init|=
+name|fs
+operator|.
+name|hasCapability
+argument_list|(
+name|CommitConstants
+operator|.
+name|STORE_CAPABILITY_MAGIC_COMMITTER
+argument_list|)
+decl_stmt|;
+name|println
+argument_list|(
+name|out
+argument_list|,
+literal|"The \"magic\" committer %s supported"
+argument_list|,
+name|magic
+condition|?
+literal|"is"
+else|:
+literal|"is not"
+argument_list|)
+expr_stmt|;
 name|println
 argument_list|(
 name|out
@@ -4897,6 +4975,28 @@ name|fsUri
 argument_list|)
 throw|;
 block|}
+block|}
+if|if
+condition|(
+name|commands
+operator|.
+name|getOpt
+argument_list|(
+name|MAGIC_FLAG
+argument_list|)
+operator|&&
+operator|!
+name|magic
+condition|)
+block|{
+throw|throw
+name|badState
+argument_list|(
+literal|"The magic committer is not enabled for %s"
+argument_list|,
+name|fsUri
+argument_list|)
+throw|;
 block|}
 name|String
 name|desiredEncryption

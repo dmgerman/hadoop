@@ -48,7 +48,6 @@ name|String
 name|serverSideEncryptionKey
 decl_stmt|;
 DECL|method|S3ObjectAttributes ( String bucket, String key, S3AEncryptionMethods serverSideEncryptionAlgorithm, String serverSideEncryptionKey)
-specifier|public
 name|S3ObjectAttributes
 parameter_list|(
 name|String
@@ -90,7 +89,6 @@ name|serverSideEncryptionKey
 expr_stmt|;
 block|}
 DECL|method|getBucket ()
-specifier|public
 name|String
 name|getBucket
 parameter_list|()
@@ -100,7 +98,6 @@ name|bucket
 return|;
 block|}
 DECL|method|getKey ()
-specifier|public
 name|String
 name|getKey
 parameter_list|()
@@ -110,7 +107,6 @@ name|key
 return|;
 block|}
 DECL|method|getServerSideEncryptionAlgorithm ()
-specifier|public
 name|S3AEncryptionMethods
 name|getServerSideEncryptionAlgorithm
 parameter_list|()
@@ -120,7 +116,6 @@ name|serverSideEncryptionAlgorithm
 return|;
 block|}
 DECL|method|getServerSideEncryptionKey ()
-specifier|public
 name|String
 name|getServerSideEncryptionKey
 parameter_list|()

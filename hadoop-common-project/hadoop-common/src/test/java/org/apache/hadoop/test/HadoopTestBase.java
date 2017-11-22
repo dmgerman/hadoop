@@ -22,7 +22,49 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|BeforeClass
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Rule
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|rules
+operator|.
+name|TestName
 import|;
 end_import
 
@@ -39,7 +81,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A base class for JUnit4 tests that sets a default timeout for all tests  * that subclass this test  */
+comment|/**  * A base class for JUnit4 tests that sets a default timeout for all tests  * that subclass this test.  *  * Threads are named to the method being executed, for ease of diagnostics  * in logs and thread dumps.  */
 end_comment
 
 begin_class
@@ -48,8 +90,10 @@ specifier|public
 specifier|abstract
 class|class
 name|HadoopTestBase
+extends|extends
+name|Assert
 block|{
-comment|/**    * System property name to set the test timeout: {@value}    */
+comment|/**    * System property name to set the test timeout: {@value}.    */
 DECL|field|PROPERTY_TEST_DEFAULT_TIMEOUT
 specifier|public
 specifier|static
@@ -59,7 +103,7 @@ name|PROPERTY_TEST_DEFAULT_TIMEOUT
 init|=
 literal|"test.default.timeout"
 decl_stmt|;
-comment|/**    * The default timeout (in milliseconds) if the system property    * {@link #PROPERTY_TEST_DEFAULT_TIMEOUT}    * is not set: {@value}    */
+comment|/**    * The default timeout (in milliseconds) if the system property    * {@link #PROPERTY_TEST_DEFAULT_TIMEOUT}    * is not set: {@value}.    */
 DECL|field|TEST_DEFAULT_TIMEOUT_VALUE
 specifier|public
 specifier|static
@@ -69,7 +113,7 @@ name|TEST_DEFAULT_TIMEOUT_VALUE
 init|=
 literal|100000
 decl_stmt|;
-comment|/**    * The JUnit rule that sets the default timeout for tests    */
+comment|/**    * The JUnit rule that sets the default timeout for tests.    */
 annotation|@
 name|Rule
 DECL|field|defaultTimeout
@@ -139,6 +183,76 @@ argument_list|(
 name|millis
 argument_list|)
 return|;
+block|}
+comment|/**    * The method name.    */
+annotation|@
+name|Rule
+DECL|field|methodName
+specifier|public
+name|TestName
+name|methodName
+init|=
+operator|new
+name|TestName
+argument_list|()
+decl_stmt|;
+comment|/**    * Get the method name; defaults to the value of {@link #methodName}.    * Subclasses may wish to override it, which will tune the thread naming.    * @return the name of the method.    */
+DECL|method|getMethodName ()
+specifier|protected
+name|String
+name|getMethodName
+parameter_list|()
+block|{
+return|return
+name|methodName
+operator|.
+name|getMethodName
+argument_list|()
+return|;
+block|}
+comment|/**    * Static initializer names this thread "JUnit".    */
+annotation|@
+name|BeforeClass
+DECL|method|nameTestThread ()
+specifier|public
+specifier|static
+name|void
+name|nameTestThread
+parameter_list|()
+block|{
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|setName
+argument_list|(
+literal|"JUnit"
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Before each method, the thread is renamed to match the method name.    */
+annotation|@
+name|Before
+DECL|method|nameThreadToMethod ()
+specifier|public
+name|void
+name|nameThreadToMethod
+parameter_list|()
+block|{
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|setName
+argument_list|(
+literal|"JUnit-"
+operator|+
+name|getMethodName
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

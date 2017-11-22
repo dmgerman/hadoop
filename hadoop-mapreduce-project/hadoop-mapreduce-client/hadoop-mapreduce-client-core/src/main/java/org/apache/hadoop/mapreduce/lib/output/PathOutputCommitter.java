@@ -273,7 +273,29 @@ name|context
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get the directory that the task should write results into.    * Warning: there's no guarantee that this work path is on the same    * FS as the final output, or that it's visible across machines.    * @return the work directory    * @throws IOException IO problem    */
+comment|/**    * Get the final directory where work will be placed once the job    * is committed. This may be null, in which case, there is no output    * path to write data to.    * @return the path where final output of the job should be placed.    */
+DECL|method|getOutputPath ()
+specifier|public
+specifier|abstract
+name|Path
+name|getOutputPath
+parameter_list|()
+function_decl|;
+comment|/**    * Predicate: is there an output path?    * @return true if we have an output path set, else false.    */
+DECL|method|hasOutputPath ()
+specifier|public
+name|boolean
+name|hasOutputPath
+parameter_list|()
+block|{
+return|return
+name|getOutputPath
+argument_list|()
+operator|!=
+literal|null
+return|;
+block|}
+comment|/**    * Get the directory that the task should write results into.    * Warning: there's no guarantee that this work path is on the same    * FS as the final output, or that it's visible across machines.    * May be null.    * @return the work directory    * @throws IOException IO problem    */
 DECL|method|getWorkPath ()
 specifier|public
 specifier|abstract

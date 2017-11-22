@@ -154,6 +154,20 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicInteger
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|amazonaws
@@ -676,6 +690,38 @@ name|fs
 operator|.
 name|s3a
 operator|.
+name|Invoker
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|Retries
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
 name|S3AFileSystem
 import|;
 end_import
@@ -693,6 +739,38 @@ operator|.
 name|s3a
 operator|.
 name|S3AInstrumentation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3ARetryPolicy
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3AUtils
 import|;
 end_import
 
@@ -1043,6 +1121,58 @@ operator|.
 name|S3GuardInstrumentation
 name|instrumentation
 decl_stmt|;
+comment|/** Owner FS: only valid if configured with an owner FS. */
+DECL|field|owner
+specifier|private
+name|S3AFileSystem
+name|owner
+decl_stmt|;
+comment|/** Invoker for IO. Until configured properly, use try-once. */
+DECL|field|invoker
+specifier|private
+name|Invoker
+name|invoker
+init|=
+operator|new
+name|Invoker
+argument_list|(
+name|RetryPolicies
+operator|.
+name|TRY_ONCE_THEN_FAIL
+argument_list|,
+name|Invoker
+operator|.
+name|NO_OP
+argument_list|)
+decl_stmt|;
+comment|/** Data access can have its own policies. */
+DECL|field|dataAccess
+specifier|private
+name|Invoker
+name|dataAccess
+decl_stmt|;
+comment|/**    * Total limit on the number of throttle events after which    * we stop warning in the log. Keeps the noise down.    */
+DECL|field|THROTTLE_EVENT_LOG_LIMIT
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|THROTTLE_EVENT_LOG_LIMIT
+init|=
+literal|100
+decl_stmt|;
+comment|/**    * Count of the total number of throttle events; used to crank back logging.    */
+DECL|field|throttleEventCount
+specifier|private
+name|AtomicInteger
+name|throttleEventCount
+init|=
+operator|new
+name|AtomicInteger
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
 comment|/**    * A utility function to create DynamoDB instance.    * @param conf the file system configuration    * @param s3Region region of the associated S3 bucket (if any).    * @return DynamoDB instance.    * @throws IOException I/O error.    */
 DECL|method|createDynamoDB (Configuration conf, String s3Region)
 specifier|private
@@ -1127,6 +1257,10 @@ return|;
 block|}
 annotation|@
 name|Override
+annotation|@
+name|Retries
+operator|.
+name|OnceRaw
 DECL|method|initialize (FileSystem fs)
 specifier|public
 name|void
@@ -1149,18 +1283,16 @@ argument_list|,
 literal|"DynamoDBMetadataStore only supports S3A filesystem."
 argument_list|)
 expr_stmt|;
-specifier|final
-name|S3AFileSystem
-name|s3afs
-init|=
+name|owner
+operator|=
 operator|(
 name|S3AFileSystem
 operator|)
 name|fs
-decl_stmt|;
+expr_stmt|;
 name|instrumentation
 operator|=
-name|s3afs
+name|owner
 operator|.
 name|getInstrumentation
 argument_list|()
@@ -1172,18 +1304,22 @@ specifier|final
 name|String
 name|bucket
 init|=
-name|s3afs
+name|owner
 operator|.
 name|getBucket
 argument_list|()
 decl_stmt|;
-name|String
-name|confRegion
-init|=
-name|s3afs
+name|conf
+operator|=
+name|owner
 operator|.
 name|getConf
 argument_list|()
+expr_stmt|;
+name|String
+name|confRegion
+init|=
+name|conf
 operator|.
 name|getTrimmed
 argument_list|(
@@ -1219,7 +1355,7 @@ else|else
 block|{
 name|region
 operator|=
-name|s3afs
+name|owner
 operator|.
 name|getBucketLocation
 argument_list|()
@@ -1236,16 +1372,9 @@ expr_stmt|;
 block|}
 name|username
 operator|=
-name|s3afs
+name|owner
 operator|.
 name|getUsername
-argument_list|()
-expr_stmt|;
-name|conf
-operator|=
-name|s3afs
-operator|.
-name|getConf
 argument_list|()
 expr_stmt|;
 name|dynamoDB
@@ -1269,9 +1398,26 @@ argument_list|,
 name|bucket
 argument_list|)
 expr_stmt|;
-name|setMaxRetries
+name|initDataAccessRetries
 argument_list|(
 name|conf
+argument_list|)
+expr_stmt|;
+comment|// set up a full retry policy
+name|invoker
+operator|=
+operator|new
+name|Invoker
+argument_list|(
+operator|new
+name|S3ARetryPolicy
+argument_list|(
+name|conf
+argument_list|)
+argument_list|,
+name|this
+operator|::
+name|retryEvent
 argument_list|)
 expr_stmt|;
 name|initTable
@@ -1286,6 +1432,10 @@ block|}
 comment|/**    * Performs one-time initialization of the metadata store via configuration.    *    * This initialization depends on the configuration object to get AWS    * credentials, DynamoDBFactory implementation class, DynamoDB endpoints,    * DynamoDB table names etc. After initialization, this metadata store does    * not explicitly relate to any S3 bucket, which be nonexistent.    *    * This is used to operate the metadata store directly beyond the scope of the    * S3AFileSystem integration, e.g. command line tools.    * Generally, callers should use {@link #initialize(FileSystem)}    * with an initialized {@code S3AFileSystem} instance.    *    * Without a filesystem to act as a reference point, the configuration itself    * must declare the table name and region in the    * {@link Constants#S3GUARD_DDB_TABLE_NAME_KEY} and    * {@link Constants#S3GUARD_DDB_REGION_KEY} respectively.    *    * @see #initialize(FileSystem)    * @throws IOException if there is an error    * @throws IllegalArgumentException if the configuration is incomplete    */
 annotation|@
 name|Override
+annotation|@
+name|Retries
+operator|.
+name|OnceRaw
 DECL|method|initialize (Configuration config)
 specifier|public
 name|void
@@ -1369,7 +1519,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 expr_stmt|;
-name|setMaxRetries
+name|initDataAccessRetries
 argument_list|(
 name|conf
 argument_list|)
@@ -1378,11 +1528,11 @@ name|initTable
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Set retry policy. This is driven by the value of    * {@link Constants#S3GUARD_DDB_MAX_RETRIES} with an exponential backoff    * between each attempt of {@link #MIN_RETRY_SLEEP_MSEC} milliseconds.    * @param config    */
-DECL|method|setMaxRetries (Configuration config)
+comment|/**    * Set retry policy. This is driven by the value of    * {@link Constants#S3GUARD_DDB_MAX_RETRIES} with an exponential backoff    * between each attempt of {@link #MIN_RETRY_SLEEP_MSEC} milliseconds.    * @param config configuration for data access    */
+DECL|method|initDataAccessRetries (Configuration config)
 specifier|private
 name|void
-name|setMaxRetries
+name|initDataAccessRetries
 parameter_list|(
 name|Configuration
 name|config
@@ -1415,9 +1565,25 @@ operator|.
 name|MILLISECONDS
 argument_list|)
 expr_stmt|;
+name|dataAccess
+operator|=
+operator|new
+name|Invoker
+argument_list|(
+name|dataAccessRetryPolicy
+argument_list|,
+name|this
+operator|::
+name|retryEvent
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
+annotation|@
+name|Retries
+operator|.
+name|RetryTranslated
 DECL|method|delete (Path path)
 specifier|public
 name|void
@@ -1439,6 +1605,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+annotation|@
+name|Retries
+operator|.
+name|RetryTranslated
 DECL|method|forgetMetadata (Path path)
 specifier|public
 name|void
@@ -1459,11 +1629,16 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Inner delete option, action based on the {@code tombstone} flag.    * No tombstone: delete the entry. Tombstone: create a tombstone entry.    * There is no check as to whether the entry exists in the table first.    * @param path path to delete    * @param tombstone flag to create a tombstone marker    * @throws IOException I/O error.    */
-DECL|method|innerDelete (Path path, boolean tombstone)
+annotation|@
+name|Retries
+operator|.
+name|RetryTranslated
+DECL|method|innerDelete (final Path path, boolean tombstone)
 specifier|private
 name|void
 name|innerDelete
 parameter_list|(
+specifier|final
 name|Path
 name|path
 parameter_list|,
@@ -1473,8 +1648,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|path
-operator|=
 name|checkPath
 argument_list|(
 name|path
@@ -1511,8 +1684,15 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
-try|try
-block|{
+comment|// the policy on whether repeating delete operations is based
+comment|// on that of S3A itself
+name|boolean
+name|idempotent
+init|=
+name|S3AFileSystem
+operator|.
+name|DELETE_CONSIDERED_IDEMPOTENT
+decl_stmt|;
 if|if
 condition|(
 name|tombstone
@@ -1533,48 +1713,71 @@ name|path
 argument_list|)
 argument_list|)
 decl_stmt|;
+name|invoker
+operator|.
+name|retry
+argument_list|(
+literal|"Put tombstone"
+argument_list|,
+name|path
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|idempotent
+argument_list|,
+parameter_list|()
+lambda|->
 name|table
 operator|.
 name|putItem
 argument_list|(
 name|item
 argument_list|)
+argument_list|)
 expr_stmt|;
 block|}
 else|else
 block|{
+name|PrimaryKey
+name|key
+init|=
+name|pathToKey
+argument_list|(
+name|path
+argument_list|)
+decl_stmt|;
+name|invoker
+operator|.
+name|retry
+argument_list|(
+literal|"Delete key"
+argument_list|,
+name|path
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|idempotent
+argument_list|,
+parameter_list|()
+lambda|->
 name|table
 operator|.
 name|deleteItem
 argument_list|(
-name|pathToKey
-argument_list|(
-name|path
+name|key
 argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-catch|catch
-parameter_list|(
-name|AmazonClientException
-name|e
-parameter_list|)
-block|{
-throw|throw
-name|translateException
-argument_list|(
-literal|"delete"
-argument_list|,
-name|path
-argument_list|,
-name|e
-argument_list|)
-throw|;
-block|}
-block|}
 annotation|@
 name|Override
+annotation|@
+name|Retries
+operator|.
+name|RetryTranslated
 DECL|method|deleteSubtree (Path path)
 specifier|public
 name|void
@@ -1586,8 +1789,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|path
-operator|=
 name|checkPath
 argument_list|(
 name|path
@@ -1673,6 +1874,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Retries
+operator|.
+name|OnceRaw
 DECL|method|getConsistentItem (PrimaryKey key)
 specifier|private
 name|Item
@@ -1712,6 +1917,10 @@ return|;
 block|}
 annotation|@
 name|Override
+annotation|@
+name|Retries
+operator|.
+name|OnceTranslated
 DECL|method|get (Path path)
 specifier|public
 name|PathMetadata
@@ -1734,6 +1943,10 @@ return|;
 block|}
 annotation|@
 name|Override
+annotation|@
+name|Retries
+operator|.
+name|OnceTranslated
 DECL|method|get (Path path, boolean wantEmptyDirectoryFlag)
 specifier|public
 name|PathMetadata
@@ -1748,8 +1961,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|path
-operator|=
 name|checkPath
 argument_list|(
 name|path
@@ -1768,7 +1979,47 @@ argument_list|,
 name|path
 argument_list|)
 expr_stmt|;
-try|try
+return|return
+name|Invoker
+operator|.
+name|once
+argument_list|(
+literal|"get"
+argument_list|,
+name|path
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+parameter_list|()
+lambda|->
+name|innerGet
+argument_list|(
+name|path
+argument_list|,
+name|wantEmptyDirectoryFlag
+argument_list|)
+argument_list|)
+return|;
+block|}
+comment|/**    * Inner get operation, as invoked in the retry logic.    * @param path the path to get    * @param wantEmptyDirectoryFlag Set to true to give a hint to the    *   MetadataStore that it should try to compute the empty directory flag.    * @return metadata for {@code path}, {@code null} if not found    * @throws IOException IO problem    * @throws AmazonClientException dynamo DB level problem    */
+annotation|@
+name|Retries
+operator|.
+name|OnceRaw
+DECL|method|innerGet (Path path, boolean wantEmptyDirectoryFlag)
+specifier|private
+name|PathMetadata
+name|innerGet
+parameter_list|(
+name|Path
+name|path
+parameter_list|,
+name|boolean
+name|wantEmptyDirectoryFlag
+parameter_list|)
+throws|throws
+name|IOException
 block|{
 specifier|final
 name|PathMetadata
@@ -1946,24 +2197,6 @@ return|return
 name|meta
 return|;
 block|}
-catch|catch
-parameter_list|(
-name|AmazonClientException
-name|e
-parameter_list|)
-block|{
-throw|throw
-name|translateException
-argument_list|(
-literal|"get"
-argument_list|,
-name|path
-argument_list|,
-name|e
-argument_list|)
-throw|;
-block|}
-block|}
 comment|/**    * Make a FileStatus object for a directory at given path.  The FileStatus    * only contains what S3A needs, and omits mod time since S3A uses its own    * implementation which returns current system time.    * @param owner  username of owner    * @param path   path to dir    * @return new FileStatus    */
 DECL|method|makeDirStatus (String owner, Path path)
 specifier|private
@@ -2005,19 +2238,22 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|listChildren (Path path)
+annotation|@
+name|Retries
+operator|.
+name|OnceTranslated
+DECL|method|listChildren (final Path path)
 specifier|public
 name|DirListingMetadata
 name|listChildren
 parameter_list|(
+specifier|final
 name|Path
 name|path
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|path
-operator|=
 name|checkPath
 argument_list|(
 name|path
@@ -2037,7 +2273,20 @@ name|path
 argument_list|)
 expr_stmt|;
 comment|// find the children in the table
-try|try
+return|return
+name|Invoker
+operator|.
+name|once
+argument_list|(
+literal|"listChildren"
+argument_list|,
+name|path
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+parameter_list|()
+lambda|->
 block|{
 specifier|final
 name|QuerySpec
@@ -2156,26 +2405,10 @@ literal|false
 argument_list|)
 return|;
 block|}
-catch|catch
-parameter_list|(
-name|AmazonClientException
-name|e
-parameter_list|)
-block|{
-comment|// failure, including the path not being present
-throw|throw
-name|translateException
-argument_list|(
-literal|"listChildren"
-argument_list|,
-name|path
-argument_list|,
-name|e
 argument_list|)
-throw|;
+return|;
 block|}
-block|}
-comment|// build the list of all parent entries.
+comment|/**    * build the list of all parent entries.    * @param pathsToCreate paths to create    * @return the full ancestry paths    */
 DECL|method|completeAncestry ( Collection<PathMetadata> pathsToCreate)
 name|Collection
 argument_list|<
@@ -2335,6 +2568,10 @@ return|;
 block|}
 annotation|@
 name|Override
+annotation|@
+name|Retries
+operator|.
+name|OnceTranslated
 DECL|method|move (Collection<Path> pathsToDelete, Collection<PathMetadata> pathsToCreate)
 specifier|public
 name|void
@@ -2477,8 +2714,16 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-try|try
-block|{
+name|Invoker
+operator|.
+name|once
+argument_list|(
+literal|"move"
+argument_list|,
+name|tableName
+argument_list|,
+parameter_list|()
+lambda|->
 name|processBatchWriteRequest
 argument_list|(
 literal|null
@@ -2488,30 +2733,17 @@ argument_list|(
 name|newItems
 argument_list|)
 argument_list|)
+argument_list|)
 expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|AmazonClientException
-name|e
-parameter_list|)
-block|{
-throw|throw
-name|translateException
+comment|/**    * Helper method to issue a batch write request to DynamoDB.    *    * The retry logic here is limited to repeating the write operations    * until all items have been written; there is no other attempt    * at recovery/retry. Throttling is handled internally.    * @param keysToDelete primary keys to be deleted; can be null    * @param itemsToPut new items to be put; can be null    */
+annotation|@
+name|Retries
+operator|.
+name|OnceRaw
 argument_list|(
-literal|"move"
-argument_list|,
-operator|(
-name|String
-operator|)
-literal|null
-argument_list|,
-name|e
+literal|"Outstanding batch items are updated with backoff"
 argument_list|)
-throw|;
-block|}
-block|}
-comment|/**    * Helper method to issue a batch write request to DynamoDB.    *    * Callers of this method should catch the {@link AmazonClientException} and    * translate it for better error report and easier debugging.    * @param keysToDelete primary keys to be deleted; can be null    * @param itemsToPut new items to be put; can be null    */
 DECL|method|processBatchWriteRequest (PrimaryKey[] keysToDelete, Item[] itemsToPut)
 specifier|private
 name|void
@@ -2737,12 +2969,11 @@ literal|0
 decl_stmt|;
 while|while
 condition|(
+operator|!
 name|unprocessed
 operator|.
-name|size
+name|isEmpty
 argument_list|()
-operator|>
-literal|0
 condition|)
 block|{
 name|retryBackoff
@@ -2859,6 +3090,41 @@ block|}
 block|}
 catch|catch
 parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|(
+name|IOException
+operator|)
+operator|new
+name|InterruptedIOException
+argument_list|(
+name|e
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+operator|.
+name|initCause
+argument_list|(
+name|e
+argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+throw|throw
+name|e
+throw|;
+block|}
+catch|catch
+parameter_list|(
 name|Exception
 name|e
 parameter_list|)
@@ -2876,6 +3142,10 @@ block|}
 block|}
 annotation|@
 name|Override
+annotation|@
+name|Retries
+operator|.
+name|OnceRaw
 DECL|method|put (PathMetadata meta)
 specifier|public
 name|void
@@ -2934,6 +3204,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+annotation|@
+name|Retries
+operator|.
+name|OnceRaw
 DECL|method|put (Collection<PathMetadata> metas)
 specifier|public
 name|void
@@ -2974,6 +3248,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Helper method to get full path of ancestors that are nonexistent in table.    */
+annotation|@
+name|Retries
+operator|.
+name|OnceRaw
 DECL|method|fullPathsToPut (PathMetadata meta)
 specifier|private
 name|Collection
@@ -3211,8 +3489,16 @@ name|f
 argument_list|)
 return|;
 block|}
+comment|/**    * {@inheritDoc}.    * There is retry around building the list of paths to update, but    * the call to {@link #processBatchWriteRequest(PrimaryKey[], Item[])}    * is only tried once.    * @param meta Directory listing metadata.    * @throws IOException    */
 annotation|@
 name|Override
+annotation|@
+name|Retries
+operator|.
+name|OnceTranslated
+argument_list|(
+literal|"retry(listFullPaths); once(batchWrite)"
+argument_list|)
 DECL|method|put (DirListingMetadata meta)
 specifier|public
 name|void
@@ -3238,6 +3524,14 @@ name|meta
 argument_list|)
 expr_stmt|;
 comment|// directory path
+name|Path
+name|path
+init|=
+name|meta
+operator|.
+name|getPath
+argument_list|()
+decl_stmt|;
 name|PathMetadata
 name|p
 init|=
@@ -3246,10 +3540,7 @@ name|PathMetadata
 argument_list|(
 name|makeDirStatus
 argument_list|(
-name|meta
-operator|.
-name|getPath
-argument_list|()
+name|path
 argument_list|,
 name|username
 argument_list|)
@@ -3270,9 +3561,25 @@ name|PathMetadata
 argument_list|>
 name|metasToPut
 init|=
+name|invoker
+operator|.
+name|retry
+argument_list|(
+literal|"paths to put"
+argument_list|,
+name|path
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+literal|true
+argument_list|,
+parameter_list|()
+lambda|->
 name|fullPathsToPut
 argument_list|(
 name|p
+argument_list|)
 argument_list|)
 decl_stmt|;
 comment|// next add all children of the directory
@@ -3286,8 +3593,19 @@ name|getListing
 argument_list|()
 argument_list|)
 expr_stmt|;
-try|try
-block|{
+name|Invoker
+operator|.
+name|once
+argument_list|(
+literal|"put"
+argument_list|,
+name|path
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+parameter_list|()
+lambda|->
 name|processBatchWriteRequest
 argument_list|(
 literal|null
@@ -3297,28 +3615,8 @@ argument_list|(
 name|metasToPut
 argument_list|)
 argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|AmazonClientException
-name|e
-parameter_list|)
-block|{
-throw|throw
-name|translateException
-argument_list|(
-literal|"put"
-argument_list|,
-operator|(
-name|String
-operator|)
-literal|null
-argument_list|,
-name|e
 argument_list|)
-throw|;
-block|}
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -3371,6 +3669,10 @@ block|}
 block|}
 annotation|@
 name|Override
+annotation|@
+name|Retries
+operator|.
+name|OnceTranslated
 DECL|method|destroy ()
 specifier|public
 name|void
@@ -3502,16 +3804,17 @@ name|translateException
 argument_list|(
 literal|"destroy"
 argument_list|,
-operator|(
-name|String
-operator|)
-literal|null
+name|tableName
 argument_list|,
 name|e
 argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|Retries
+operator|.
+name|OnceRaw
 DECL|method|expiredFiles (long modTime)
 specifier|private
 name|ItemCollection
@@ -3565,6 +3868,13 @@ return|;
 block|}
 annotation|@
 name|Override
+annotation|@
+name|Retries
+operator|.
+name|OnceRaw
+argument_list|(
+literal|"once(batchWrite)"
+argument_list|)
 DECL|method|prune (long modTime)
 specifier|public
 name|void
@@ -3780,6 +4090,10 @@ block|}
 comment|/**    * Create a table if it does not exist and wait for it to become active.    *    * If a table with the intended name already exists, then it uses that table.    * Otherwise, it will automatically create the table if the config    * {@link org.apache.hadoop.fs.s3a.Constants#S3GUARD_DDB_TABLE_CREATE_KEY} is    * enabled. The DynamoDB table creation API is asynchronous.  This method wait    * for the table to become active after sending the creation request, so    * overall, this method is synchronous, and the table is guaranteed to exist    * after this method returns successfully.    *    * @throws IOException if table does not exist and auto-creation is disabled;    * or table is being deleted, or any other I/O exception occurred.    */
 annotation|@
 name|VisibleForTesting
+annotation|@
+name|Retries
+operator|.
+name|OnceRaw
 DECL|method|initTable ()
 name|void
 name|initTable
@@ -4049,17 +4363,18 @@ name|translateException
 argument_list|(
 literal|"initTable"
 argument_list|,
-operator|(
-name|String
-operator|)
-literal|null
+name|tableName
 argument_list|,
 name|e
 argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Get the version mark item in the existing DynamoDB table.    *    * As the version marker item may be created by another concurrent thread or    * process, we retry a limited times before we fail to get it.    */
+comment|/**    * Get the version mark item in the existing DynamoDB table.    *    * As the version marker item may be created by another concurrent thread or    * process, we sleep and retry a limited times before we fail to get it.    * This does not include handling any failure other than "item not found",    * so this method is tagged as "OnceRaw"    */
+annotation|@
+name|Retries
+operator|.
+name|OnceRaw
 DECL|method|getVersionMarkerItem ()
 specifier|private
 name|Item
@@ -4281,7 +4596,11 @@ throw|;
 block|}
 block|}
 block|}
-comment|/**    * Wait for table being active.    * @param t table to block on.    * @throws IOException IO problems    * @throws InterruptedIOException if the wait was interrupted    */
+comment|/**    * Wait for table being active.    * @param t table to block on.    * @throws IOException IO problems    * @throws InterruptedIOException if the wait was interrupted    * @throws IllegalArgumentException if an exception was raised in the waiter    */
+annotation|@
+name|Retries
+operator|.
+name|OnceRaw
 DECL|method|waitForTableActive (Table t)
 specifier|private
 name|void
@@ -4291,7 +4610,7 @@ name|Table
 name|t
 parameter_list|)
 throws|throws
-name|IOException
+name|InterruptedIOException
 block|{
 try|try
 block|{
@@ -4330,7 +4649,7 @@ argument_list|()
 expr_stmt|;
 throw|throw
 operator|(
-name|IOException
+name|InterruptedIOException
 operator|)
 operator|new
 name|InterruptedIOException
@@ -4352,6 +4671,10 @@ throw|;
 block|}
 block|}
 comment|/**    * Create a table, wait for it to become active, then add the version    * marker.    * @param capacity capacity to provision    * @throws IOException on any failure.    * @throws InterruptedIOException if the wait was interrupted    */
+annotation|@
+name|Retries
+operator|.
+name|OnceRaw
 DECL|method|createTable (ProvisionedThroughput capacity)
 specifier|private
 name|void
@@ -4467,6 +4790,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * PUT a single item to the table.    * @param item item to put    * @return the outcome.    */
+annotation|@
+name|Retries
+operator|.
+name|OnceRaw
 DECL|method|putItem (Item item)
 name|PutItemOutcome
 name|putItem
@@ -4493,7 +4820,11 @@ name|item
 argument_list|)
 return|;
 block|}
-comment|/**    * Provision the table with given read and write capacity units.    */
+comment|/**    * Provision the table with given read and write capacity units.    * Call will fail if the table is busy, or the new values match the current    * ones.    * @param readCapacity read units    * @param writeCapacity write units    * @throws IOException on a failure    */
+annotation|@
+name|Retries
+operator|.
+name|RetryTranslated
 DECL|method|provisionTable (Long readCapacity, Long writeCapacity)
 name|void
 name|provisionTable
@@ -4525,7 +4856,18 @@ argument_list|(
 name|writeCapacity
 argument_list|)
 decl_stmt|;
-try|try
+name|invoker
+operator|.
+name|retry
+argument_list|(
+literal|"ProvisionTable"
+argument_list|,
+name|tableName
+argument_list|,
+literal|true
+argument_list|,
+parameter_list|()
+lambda|->
 block|{
 specifier|final
 name|ProvisionedThroughputDescription
@@ -4565,26 +4907,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|AmazonClientException
-name|e
-parameter_list|)
-block|{
-throw|throw
-name|translateException
-argument_list|(
-literal|"provisionTable"
-argument_list|,
-operator|(
-name|String
-operator|)
-literal|null
-argument_list|,
-name|e
 argument_list|)
-throw|;
-block|}
+expr_stmt|;
 block|}
 DECL|method|getTable ()
 name|Table
@@ -4615,7 +4939,7 @@ return|return
 name|dynamoDB
 return|;
 block|}
-comment|/**    * Validates a path object; it must be absolute, and contain a host    * (bucket) component.    */
+comment|/**    * Validates a path object; it must be absolute, have an s3a:/// scheme    * and contain a host (bucket) component.    * @param path path to check    * @return the path passed in    */
 DECL|method|checkPath (Path path)
 specifier|private
 name|Path
@@ -4763,6 +5087,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+annotation|@
+name|Retries
+operator|.
+name|OnceRaw
 DECL|method|getDiagnostics ()
 specifier|public
 name|Map
@@ -4990,6 +5318,10 @@ return|return
 name|map
 return|;
 block|}
+annotation|@
+name|Retries
+operator|.
+name|OnceRaw
 DECL|method|getTableDescription (boolean forceUpdate)
 specifier|private
 name|TableDescription
@@ -5030,6 +5362,10 @@ return|;
 block|}
 annotation|@
 name|Override
+annotation|@
+name|Retries
+operator|.
+name|OnceRaw
 DECL|method|updateParameters (Map<String, String> parameters)
 specifier|public
 name|void
@@ -5235,6 +5571,185 @@ block|{
 return|return
 name|defVal
 return|;
+block|}
+block|}
+comment|/**    * Callback from {@link Invoker} when an operation is retried.    * @param text text of the operation    * @param ex exception    * @param attempts number of attempts    * @param idempotent is the method idempotent    */
+DECL|method|retryEvent ( String text, IOException ex, int attempts, boolean idempotent)
+name|void
+name|retryEvent
+parameter_list|(
+name|String
+name|text
+parameter_list|,
+name|IOException
+name|ex
+parameter_list|,
+name|int
+name|attempts
+parameter_list|,
+name|boolean
+name|idempotent
+parameter_list|)
+block|{
+if|if
+condition|(
+name|S3AUtils
+operator|.
+name|isThrottleException
+argument_list|(
+name|ex
+argument_list|)
+condition|)
+block|{
+comment|// throttled
+if|if
+condition|(
+name|instrumentation
+operator|!=
+literal|null
+condition|)
+block|{
+name|instrumentation
+operator|.
+name|throttled
+argument_list|()
+expr_stmt|;
+block|}
+name|int
+name|eventCount
+init|=
+name|throttleEventCount
+operator|.
+name|addAndGet
+argument_list|(
+literal|1
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|attempts
+operator|==
+literal|1
+operator|&&
+name|eventCount
+operator|<
+name|THROTTLE_EVENT_LOG_LIMIT
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"DynamoDB IO limits reached in {};"
+operator|+
+literal|" consider increasing capacity: {}"
+argument_list|,
+name|text
+argument_list|,
+name|ex
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Throttled"
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// user has been warned already, log at debug only.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"DynamoDB IO limits reached in {};"
+operator|+
+literal|" consider increasing capacity: {}"
+argument_list|,
+name|text
+argument_list|,
+name|ex
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+elseif|else
+if|if
+condition|(
+name|attempts
+operator|==
+literal|1
+condition|)
+block|{
+comment|// not throttled. Log on the first attempt only
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Retrying {}: {}"
+argument_list|,
+name|text
+argument_list|,
+name|ex
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Retrying {}"
+argument_list|,
+name|text
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|instrumentation
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// note a retry
+name|instrumentation
+operator|.
+name|retrying
+argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|owner
+operator|!=
+literal|null
+condition|)
+block|{
+name|owner
+operator|.
+name|metastoreOperationRetried
+argument_list|(
+name|ex
+argument_list|,
+name|attempts
+argument_list|,
+name|idempotent
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 block|}

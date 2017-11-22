@@ -32,6 +32,16 @@ begin_import
 import|import
 name|com
 operator|.
+name|amazonaws
+operator|.
+name|SdkBaseException
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
 name|google
 operator|.
 name|common
@@ -70,14 +80,14 @@ specifier|final
 name|String
 name|operation
 decl_stmt|;
-DECL|method|AWSClientIOException (String operation, AmazonClientException cause)
+DECL|method|AWSClientIOException (String operation, SdkBaseException cause)
 specifier|public
 name|AWSClientIOException
 parameter_list|(
 name|String
 name|operation
 parameter_list|,
-name|AmazonClientException
+name|SdkBaseException
 name|cause
 parameter_list|)
 block|{

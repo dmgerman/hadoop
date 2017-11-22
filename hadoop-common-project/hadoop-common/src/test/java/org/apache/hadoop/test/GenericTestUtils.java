@@ -1457,18 +1457,45 @@ name|E_UNEXPECTED_EXCEPTION
 init|=
 literal|"but got unexpected exception"
 decl_stmt|;
-comment|/**    * Assert that an exception's<code>toString()</code> value    * contained the expected text.    * @param string expected string    * @param t thrown exception    * @throws AssertionError if the expected string is not found    */
-DECL|method|assertExceptionContains (String string, Throwable t)
+comment|/**    * Assert that an exception's<code>toString()</code> value    * contained the expected text.    * @param expectedText expected string    * @param t thrown exception    * @throws AssertionError if the expected string is not found    */
+DECL|method|assertExceptionContains (String expectedText, Throwable t)
 specifier|public
 specifier|static
 name|void
 name|assertExceptionContains
 parameter_list|(
 name|String
-name|string
+name|expectedText
 parameter_list|,
 name|Throwable
 name|t
+parameter_list|)
+block|{
+name|assertExceptionContains
+argument_list|(
+name|expectedText
+argument_list|,
+name|t
+argument_list|,
+literal|""
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Assert that an exception's<code>toString()</code> value    * contained the expected text.    * @param expectedText expected string    * @param t thrown exception    * @param message any extra text for the string    * @throws AssertionError if the expected string is not found    */
+DECL|method|assertExceptionContains (String expectedText, Throwable t, String message)
+specifier|public
+specifier|static
+name|void
+name|assertExceptionContains
+parameter_list|(
+name|String
+name|expectedText
+parameter_list|,
+name|Throwable
+name|t
+parameter_list|,
+name|String
+name|message
 parameter_list|)
 block|{
 name|Assert
@@ -1507,34 +1534,67 @@ throw|;
 block|}
 if|if
 condition|(
+name|expectedText
+operator|!=
+literal|null
+operator|&&
 operator|!
 name|msg
 operator|.
 name|contains
 argument_list|(
-name|string
+name|expectedText
 argument_list|)
 condition|)
 block|{
+name|String
+name|prefix
+init|=
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|lang
+operator|.
+name|StringUtils
+operator|.
+name|isEmpty
+argument_list|(
+name|message
+argument_list|)
+condition|?
+literal|""
+else|:
+operator|(
+name|message
+operator|+
+literal|": "
+operator|)
+decl_stmt|;
 throw|throw
 operator|new
 name|AssertionError
 argument_list|(
-literal|"Expected to find '"
-operator|+
-name|string
-operator|+
-literal|"' "
-operator|+
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"%s Expected to find '%s' %s: %s"
+argument_list|,
+name|prefix
+argument_list|,
+name|expectedText
+argument_list|,
 name|E_UNEXPECTED_EXCEPTION
-operator|+
-literal|":"
-operator|+
+argument_list|,
 name|StringUtils
 operator|.
 name|stringifyException
 argument_list|(
 name|t
+argument_list|)
 argument_list|)
 argument_list|,
 name|t

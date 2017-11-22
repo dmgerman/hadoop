@@ -234,6 +234,22 @@ name|fs
 operator|.
 name|s3a
 operator|.
+name|Retries
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
 name|S3AFileStatus
 import|;
 end_import
@@ -449,6 +465,10 @@ parameter_list|()
 block|{ }
 comment|/* Utility functions. */
 comment|/**    * Create a new instance of the configured MetadataStore.    * The returned MetadataStore will have been initialized via    * {@link MetadataStore#initialize(FileSystem)} by this function before    * returning it.  Callers must clean up by calling    * {@link MetadataStore#close()} when done using the MetadataStore.    *    * @param fs  FileSystem whose Configuration specifies which    *            implementation to use.    * @return Reference to new MetadataStore.    * @throws IOException if the metadata store cannot be instantiated    */
+annotation|@
+name|Retries
+operator|.
+name|OnceTranslated
 DECL|method|getMetadataStore (FileSystem fs)
 specifier|public
 specifier|static

@@ -296,6 +296,22 @@ return|return
 name|value
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|name
+operator|+
+literal|" = "
+operator|+
+name|value
+return|;
+block|}
 block|}
 DECL|field|name
 specifier|private

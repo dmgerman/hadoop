@@ -286,6 +286,14 @@ argument_list|,
 literal|"Number of requests for object metadata"
 argument_list|)
 block|,
+DECL|enumConstant|OBJECT_MULTIPART_UPLOAD_INITIATED
+name|OBJECT_MULTIPART_UPLOAD_INITIATED
+argument_list|(
+literal|"object_multipart_initiated"
+argument_list|,
+literal|"Object multipart upload initiated"
+argument_list|)
+block|,
 DECL|enumConstant|OBJECT_MULTIPART_UPLOAD_ABORTED
 name|OBJECT_MULTIPART_UPLOAD_ABORTED
 argument_list|(
@@ -542,13 +550,110 @@ argument_list|,
 literal|"Total queue duration of all block uploads"
 argument_list|)
 block|,
-comment|// S3Guard stats
+comment|// S3guard committer stats
+DECL|enumConstant|COMMITTER_COMMITS_CREATED
+name|COMMITTER_COMMITS_CREATED
+argument_list|(
+literal|"committer_commits_created"
+argument_list|,
+literal|"Number of files to commit created"
+argument_list|)
+block|,
+DECL|enumConstant|COMMITTER_COMMITS_COMPLETED
+name|COMMITTER_COMMITS_COMPLETED
+argument_list|(
+literal|"committer_commits_completed"
+argument_list|,
+literal|"Number of files committed"
+argument_list|)
+block|,
+DECL|enumConstant|COMMITTER_JOBS_SUCCEEDED
+name|COMMITTER_JOBS_SUCCEEDED
+argument_list|(
+literal|"committer_jobs_completed"
+argument_list|,
+literal|"Number of successful jobs"
+argument_list|)
+block|,
+DECL|enumConstant|COMMITTER_JOBS_FAILED
+name|COMMITTER_JOBS_FAILED
+argument_list|(
+literal|"committer_jobs_failed"
+argument_list|,
+literal|"Number of failed jobs"
+argument_list|)
+block|,
+DECL|enumConstant|COMMITTER_TASKS_SUCCEEDED
+name|COMMITTER_TASKS_SUCCEEDED
+argument_list|(
+literal|"committer_tasks_completed"
+argument_list|,
+literal|"Number of successful tasks"
+argument_list|)
+block|,
+DECL|enumConstant|COMMITTER_TASKS_FAILED
+name|COMMITTER_TASKS_FAILED
+argument_list|(
+literal|"committer_tasks_failed"
+argument_list|,
+literal|"Number of failed tasks"
+argument_list|)
+block|,
+DECL|enumConstant|COMMITTER_BYTES_COMMITTED
+name|COMMITTER_BYTES_COMMITTED
+argument_list|(
+literal|"committer_bytes_committed"
+argument_list|,
+literal|"Amount of data committed"
+argument_list|)
+block|,
+DECL|enumConstant|COMMITTER_BYTES_UPLOADED
+name|COMMITTER_BYTES_UPLOADED
+argument_list|(
+literal|"committer_bytes_uploaded"
+argument_list|,
+literal|"Number of bytes uploaded duing commit operations"
+argument_list|)
+block|,
+DECL|enumConstant|COMMITTER_COMMITS_FAILED
+name|COMMITTER_COMMITS_FAILED
+argument_list|(
+literal|"committer_commits_failed"
+argument_list|,
+literal|"Number of commits failed"
+argument_list|)
+block|,
+DECL|enumConstant|COMMITTER_COMMITS_ABORTED
+name|COMMITTER_COMMITS_ABORTED
+argument_list|(
+literal|"committer_commits_aborted"
+argument_list|,
+literal|"Number of commits aborted"
+argument_list|)
+block|,
+DECL|enumConstant|COMMITTER_COMMITS_REVERTED
+name|COMMITTER_COMMITS_REVERTED
+argument_list|(
+literal|"committer_commits_reverted"
+argument_list|,
+literal|"Number of commits reverted"
+argument_list|)
+block|,
+DECL|enumConstant|COMMITTER_MAGIC_FILES_CREATED
+name|COMMITTER_MAGIC_FILES_CREATED
+argument_list|(
+literal|"committer_magic_files_created"
+argument_list|,
+literal|"Number of files created under 'magic' paths"
+argument_list|)
+block|,
+comment|// S3guard stats
 DECL|enumConstant|S3GUARD_METADATASTORE_PUT_PATH_REQUEST
 name|S3GUARD_METADATASTORE_PUT_PATH_REQUEST
 argument_list|(
 literal|"s3guard_metadatastore_put_path_request"
 argument_list|,
-literal|"s3guard metadata store put one metadata path request"
+literal|"S3Guard metadata store put one metadata path request"
 argument_list|)
 block|,
 DECL|enumConstant|S3GUARD_METADATASTORE_PUT_PATH_LATENCY
@@ -556,7 +661,7 @@ name|S3GUARD_METADATASTORE_PUT_PATH_LATENCY
 argument_list|(
 literal|"s3guard_metadatastore_put_path_latency"
 argument_list|,
-literal|"s3guard metadata store put one metadata path lantency"
+literal|"S3Guard metadata store put one metadata path latency"
 argument_list|)
 block|,
 DECL|enumConstant|S3GUARD_METADATASTORE_INITIALIZATION
@@ -564,7 +669,39 @@ name|S3GUARD_METADATASTORE_INITIALIZATION
 argument_list|(
 literal|"s3guard_metadatastore_initialization"
 argument_list|,
-literal|"s3guard metadata store initialization times"
+literal|"S3Guard metadata store initialization times"
+argument_list|)
+block|,
+DECL|enumConstant|S3GUARD_METADATASTORE_RETRY
+name|S3GUARD_METADATASTORE_RETRY
+argument_list|(
+literal|"s3guard_metadatastore_retry"
+argument_list|,
+literal|"S3Guard metadata store retry events"
+argument_list|)
+block|,
+DECL|enumConstant|S3GUARD_METADATASTORE_THROTTLED
+name|S3GUARD_METADATASTORE_THROTTLED
+argument_list|(
+literal|"s3guard_metadatastore_throttled"
+argument_list|,
+literal|"S3Guard metadata store throttled events"
+argument_list|)
+block|,
+DECL|enumConstant|S3GUARD_METADATASTORE_THROTTLE_RATE
+name|S3GUARD_METADATASTORE_THROTTLE_RATE
+argument_list|(
+literal|"s3guard_metadatastore_throttle_rate"
+argument_list|,
+literal|"S3Guard metadata store throttle rate"
+argument_list|)
+block|,
+DECL|enumConstant|STORE_IO_THROTTLED
+name|STORE_IO_THROTTLED
+argument_list|(
+literal|"store_io_throttled"
+argument_list|,
+literal|"Requests throttled and retried"
 argument_list|)
 block|;
 DECL|field|SYMBOL_MAP

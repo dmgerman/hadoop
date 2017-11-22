@@ -1067,6 +1067,11 @@ name|hasMetadataStore
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|skipDuringFaultInjection
+argument_list|(
+name|fs
+argument_list|)
+expr_stmt|;
 name|Path
 name|srcBaseDir
 init|=

@@ -64,9 +64,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|concurrent
-operator|.
-name|Callable
+name|Locale
 import|;
 end_import
 
@@ -102,7 +100,9 @@ name|util
 operator|.
 name|concurrent
 operator|.
-name|TimeUnit
+name|atomic
+operator|.
+name|AtomicBoolean
 import|;
 end_import
 
@@ -116,7 +116,7 @@ name|concurrent
 operator|.
 name|atomic
 operator|.
-name|AtomicBoolean
+name|AtomicInteger
 import|;
 end_import
 
@@ -163,22 +163,6 @@ operator|.
 name|event
 operator|.
 name|ProgressListener
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|amazonaws
-operator|.
-name|services
-operator|.
-name|s3
-operator|.
-name|model
-operator|.
-name|CompleteMultipartUploadResult
 import|;
 end_import
 
@@ -380,11 +364,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
+name|fs
 operator|.
-name|retry
-operator|.
-name|RetryPolicies
+name|StreamCapabilities
 import|;
 end_import
 
@@ -396,11 +378,31 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
+name|fs
 operator|.
-name|retry
+name|s3a
 operator|.
-name|RetryPolicy
+name|commit
+operator|.
+name|CommitConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|commit
+operator|.
+name|PutTracker
 import|;
 end_import
 
@@ -472,6 +474,8 @@ class|class
 name|S3ABlockOutputStream
 extends|extends
 name|OutputStream
+implements|implements
+name|StreamCapabilities
 block|{
 DECL|field|LOG
 specifier|private
@@ -528,26 +532,6 @@ specifier|private
 specifier|final
 name|ListeningExecutorService
 name|executorService
-decl_stmt|;
-comment|/**    * Retry policy for multipart commits; not all AWS SDK versions retry that.    */
-DECL|field|retryPolicy
-specifier|private
-specifier|final
-name|RetryPolicy
-name|retryPolicy
-init|=
-name|RetryPolicies
-operator|.
-name|retryUpToMaximumCountWithProportionalSleep
-argument_list|(
-literal|5
-argument_list|,
-literal|2000
-argument_list|,
-name|TimeUnit
-operator|.
-name|MILLISECONDS
-argument_list|)
 decl_stmt|;
 comment|/**    * Factory for blocks.    */
 DECL|field|blockFactory
@@ -620,13 +604,18 @@ comment|/**    * Write operation helper; encapsulation of the filesystem operati
 DECL|field|writeOperationHelper
 specifier|private
 specifier|final
-name|S3AFileSystem
-operator|.
 name|WriteOperationHelper
 name|writeOperationHelper
 decl_stmt|;
-comment|/**    * An S3A output stream which uploads partitions in a separate pool of    * threads; different {@link S3ADataBlocks.BlockFactory}    * instances can control where data is buffered.    *    * @param fs S3AFilesystem    * @param key S3 object to work on.    * @param executorService the executor service to use to schedule work    * @param progress report progress in order to prevent timeouts. If    * this object implements {@code ProgressListener} then it will be    * directly wired up to the AWS client, so receive detailed progress    * information.    * @param blockSize size of a single block.    * @param blockFactory factory for creating stream destinations    * @param statistics stats for this stream    * @param writeOperationHelper state of the write operation.    * @throws IOException on any problem    */
-DECL|method|S3ABlockOutputStream (S3AFileSystem fs, String key, ExecutorService executorService, Progressable progress, long blockSize, S3ADataBlocks.BlockFactory blockFactory, S3AInstrumentation.OutputStreamStatistics statistics, S3AFileSystem.WriteOperationHelper writeOperationHelper)
+comment|/**    * Track multipart put operation.    */
+DECL|field|putTracker
+specifier|private
+specifier|final
+name|PutTracker
+name|putTracker
+decl_stmt|;
+comment|/**    * An S3A output stream which uploads partitions in a separate pool of    * threads; different {@link S3ADataBlocks.BlockFactory}    * instances can control where data is buffered.    *    * @param fs S3AFilesystem    * @param key S3 object to work on.    * @param executorService the executor service to use to schedule work    * @param progress report progress in order to prevent timeouts. If    * this object implements {@code ProgressListener} then it will be    * directly wired up to the AWS client, so receive detailed progress    * information.    * @param blockSize size of a single block.    * @param blockFactory factory for creating stream destinations    * @param statistics stats for this stream    * @param writeOperationHelper state of the write operation.    * @param putTracker put tracking for commit support    * @throws IOException on any problem    */
+DECL|method|S3ABlockOutputStream (S3AFileSystem fs, String key, ExecutorService executorService, Progressable progress, long blockSize, S3ADataBlocks.BlockFactory blockFactory, S3AInstrumentation.OutputStreamStatistics statistics, WriteOperationHelper writeOperationHelper, PutTracker putTracker)
 name|S3ABlockOutputStream
 parameter_list|(
 name|S3AFileSystem
@@ -654,10 +643,11 @@ operator|.
 name|OutputStreamStatistics
 name|statistics
 parameter_list|,
-name|S3AFileSystem
-operator|.
 name|WriteOperationHelper
 name|writeOperationHelper
+parameter_list|,
+name|PutTracker
+name|putTracker
 parameter_list|)
 throws|throws
 name|IOException
@@ -700,6 +690,12 @@ operator|.
 name|writeOperationHelper
 operator|=
 name|writeOperationHelper
+expr_stmt|;
+name|this
+operator|.
+name|putTracker
+operator|=
+name|putTracker
 expr_stmt|;
 name|Preconditions
 operator|.
@@ -767,11 +763,30 @@ literal|"Initialized S3ABlockOutputStream for {}"
 operator|+
 literal|" output to {}"
 argument_list|,
-name|writeOperationHelper
+name|key
 argument_list|,
 name|activeBlock
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|putTracker
+operator|.
+name|initialize
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Put tracker requests multipart upload"
+argument_list|)
+expr_stmt|;
+name|initMultipartUpload
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Demand create a destination block.    * @return the active block; null if there isn't one.    * @throws IOException on any failure to create    */
 DECL|method|createBlockIfNeeded ()
@@ -1158,27 +1173,9 @@ argument_list|,
 name|blockCount
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|multiPartUpload
-operator|==
-literal|null
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Initiating Multipart upload"
-argument_list|)
-expr_stmt|;
-name|multiPartUpload
-operator|=
-operator|new
-name|MultiPartUpload
+name|initMultipartUpload
 argument_list|()
 expr_stmt|;
-block|}
 try|try
 block|{
 name|multiPartUpload
@@ -1203,6 +1200,39 @@ block|{
 comment|// set the block to null, so the next write will create a new block.
 name|clearActiveBlock
 argument_list|()
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Init multipart upload. Assumption: this is called from    * a synchronized block.    * Note that this makes a blocking HTTPS request to the far end, so    * can take time and potentially fail.    * @throws IOException failure to initialize the upload    */
+DECL|method|initMultipartUpload ()
+specifier|private
+name|void
+name|initMultipartUpload
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|multiPartUpload
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Initiating Multipart upload"
+argument_list|)
+expr_stmt|;
+name|multiPartUpload
+operator|=
+operator|new
+name|MultiPartUpload
+argument_list|(
+name|key
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -1295,20 +1325,34 @@ operator|=
 name|putObject
 argument_list|()
 expr_stmt|;
+name|bytesSubmitted
+operator|=
+name|bytes
+expr_stmt|;
 block|}
 block|}
 else|else
 block|{
-comment|// there has already been at least one block scheduled for upload;
-comment|// put up the current then wait
+comment|// there's an MPU in progress';
+comment|// IF there is more data to upload, or no data has yet been uploaded,
+comment|// PUT the final block
 if|if
 condition|(
 name|hasBlock
 operator|&&
+operator|(
 name|block
 operator|.
 name|hasData
 argument_list|()
+operator|||
+name|multiPartUpload
+operator|.
+name|getPartsSubmitted
+argument_list|()
+operator|==
+literal|0
+operator|)
 condition|)
 block|{
 comment|//send last part
@@ -1329,7 +1373,28 @@ operator|.
 name|waitForAllPartUploads
 argument_list|()
 decl_stmt|;
+name|bytes
+operator|=
+name|bytesSubmitted
+expr_stmt|;
 comment|// then complete the operation
+if|if
+condition|(
+name|putTracker
+operator|.
+name|aboutToComplete
+argument_list|(
+name|multiPartUpload
+operator|.
+name|getUploadId
+argument_list|()
+argument_list|,
+name|partETags
+argument_list|,
+name|bytes
+argument_list|)
+condition|)
+block|{
 name|multiPartUpload
 operator|.
 name|complete
@@ -1337,16 +1402,45 @@ argument_list|(
 name|partETags
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"File {} will be visible when the job is committed"
+argument_list|,
+name|key
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+if|if
+condition|(
+operator|!
+name|putTracker
+operator|.
+name|outputImmediatelyVisible
+argument_list|()
+condition|)
+block|{
+comment|// track the number of bytes uploaded as commit operations.
+name|statistics
+operator|.
+name|commitUploaded
+argument_list|(
 name|bytes
-operator|=
-name|bytesSubmitted
+argument_list|)
 expr_stmt|;
 block|}
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Upload complete for {}"
+literal|"Upload complete to {} by {}"
+argument_list|,
+name|key
 argument_list|,
 name|writeOperationHelper
 argument_list|)
@@ -1400,7 +1494,7 @@ name|clearActiveBlock
 argument_list|()
 expr_stmt|;
 block|}
-comment|// All end of write operations, including deleting fake parent directories
+comment|// Note end of write. This does not change the state of the remote FS.
 name|writeOperationHelper
 operator|.
 name|writeSuccessful
@@ -1466,8 +1560,10 @@ argument_list|()
 condition|?
 name|writeOperationHelper
 operator|.
-name|newPutRequest
+name|createPutObjectRequest
 argument_list|(
+name|key
+argument_list|,
 name|uploadData
 operator|.
 name|getFile
@@ -1476,8 +1572,10 @@ argument_list|)
 else|:
 name|writeOperationHelper
 operator|.
-name|newPutRequest
+name|createPutObjectRequest
 argument_list|(
+name|key
+argument_list|,
 name|uploadData
 operator|.
 name|getUploadStream
@@ -1529,38 +1627,21 @@ name|executorService
 operator|.
 name|submit
 argument_list|(
-operator|new
-name|Callable
-argument_list|<
-name|PutObjectResult
-argument_list|>
-argument_list|()
-block|{
-annotation|@
-name|Override
-specifier|public
-name|PutObjectResult
-name|call
 parameter_list|()
-throws|throws
-name|Exception
+lambda|->
 block|{
-name|PutObjectResult
-name|result
-decl_stmt|;
 try|try
 block|{
 comment|// the putObject call automatically closes the input
 comment|// stream afterwards.
-name|result
-operator|=
+return|return
 name|writeOperationHelper
 operator|.
 name|putObject
 argument_list|(
 name|putObjectRequest
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 finally|finally
 block|{
@@ -1573,10 +1654,6 @@ argument_list|,
 name|block
 argument_list|)
 expr_stmt|;
-block|}
-return|return
-name|result
-return|;
 block|}
 block|}
 argument_list|)
@@ -1761,6 +1838,59 @@ return|return
 name|statistics
 return|;
 block|}
+comment|/**    * Return the stream capabilities.    * This stream always returns false when queried about hflush and hsync.    * If asked about {@link CommitConstants#STREAM_CAPABILITY_MAGIC_OUTPUT}    * it will return true iff this is an active "magic" output stream.    * @param capability string to query the stream support for.    * @return true if the capability is supported by this instance.    */
+annotation|@
+name|Override
+DECL|method|hasCapability (String capability)
+specifier|public
+name|boolean
+name|hasCapability
+parameter_list|(
+name|String
+name|capability
+parameter_list|)
+block|{
+switch|switch
+condition|(
+name|capability
+operator|.
+name|toLowerCase
+argument_list|(
+name|Locale
+operator|.
+name|ENGLISH
+argument_list|)
+condition|)
+block|{
+comment|// does the output stream have delayed visibility
+case|case
+name|CommitConstants
+operator|.
+name|STREAM_CAPABILITY_MAGIC_OUTPUT
+case|:
+return|return
+operator|!
+name|putTracker
+operator|.
+name|outputImmediatelyVisible
+argument_list|()
+return|;
+comment|// The flush/sync options are absolutely not supported
+case|case
+literal|"hflush"
+case|:
+case|case
+literal|"hsync"
+case|:
+return|return
+literal|false
+return|;
+default|default:
+return|return
+literal|false
+return|;
+block|}
+block|}
 comment|/**    * Multiple partition upload.    */
 DECL|class|MultiPartUpload
 specifier|private
@@ -1785,9 +1915,27 @@ argument_list|>
 argument_list|>
 name|partETagsFutures
 decl_stmt|;
-DECL|method|MultiPartUpload ()
+DECL|field|partsSubmitted
+specifier|private
+name|int
+name|partsSubmitted
+decl_stmt|;
+DECL|field|partsUploaded
+specifier|private
+name|int
+name|partsUploaded
+decl_stmt|;
+DECL|field|bytesSubmitted
+specifier|private
+name|long
+name|bytesSubmitted
+decl_stmt|;
+DECL|method|MultiPartUpload (String key)
 name|MultiPartUpload
-parameter_list|()
+parameter_list|(
+name|String
+name|key
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -1798,7 +1946,9 @@ operator|=
 name|writeOperationHelper
 operator|.
 name|initiateMultiPartUpload
-argument_list|()
+argument_list|(
+name|key
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -1825,6 +1975,50 @@ name|uploadId
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**      * Get a count of parts submitted.      * @return the number of parts submitted; will always be>= the      * value of {@link #getPartsUploaded()}      */
+DECL|method|getPartsSubmitted ()
+specifier|public
+name|int
+name|getPartsSubmitted
+parameter_list|()
+block|{
+return|return
+name|partsSubmitted
+return|;
+block|}
+comment|/**      * Count of parts actually uploaded.      * @return the count of successfully completed part uploads.      */
+DECL|method|getPartsUploaded ()
+specifier|public
+name|int
+name|getPartsUploaded
+parameter_list|()
+block|{
+return|return
+name|partsUploaded
+return|;
+block|}
+comment|/**      * Get the upload ID; will be null after construction completes.      * @return the upload ID      */
+DECL|method|getUploadId ()
+specifier|public
+name|String
+name|getUploadId
+parameter_list|()
+block|{
+return|return
+name|uploadId
+return|;
+block|}
+comment|/**      * Get the count of bytes submitted.      * @return the current upload size.      */
+DECL|method|getBytesSubmitted ()
+specifier|public
+name|long
+name|getBytesSubmitted
+parameter_list|()
+block|{
+return|return
+name|bytesSubmitted
+return|;
+block|}
 comment|/**      * Upload a block of data.      * This will take the block      * @param block block to upload      * @throws IOException upload failure      */
 DECL|method|uploadBlockAsync (final S3ADataBlocks.DataBlock block)
 specifier|private
@@ -1844,10 +2038,24 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Queueing upload of {}"
+literal|"Queueing upload of {} for upload {}"
 argument_list|,
 name|block
+argument_list|,
+name|uploadId
 argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|uploadId
+argument_list|,
+literal|"Null uploadId"
+argument_list|)
+expr_stmt|;
+name|partsSubmitted
+operator|++
 expr_stmt|;
 specifier|final
 name|int
@@ -1858,6 +2066,10 @@ operator|.
 name|dataSize
 argument_list|()
 decl_stmt|;
+name|bytesSubmitted
+operator|+=
+name|size
+expr_stmt|;
 specifier|final
 name|S3ADataBlocks
 operator|.
@@ -1888,6 +2100,8 @@ name|writeOperationHelper
 operator|.
 name|newUploadPartRequest
 argument_list|(
+name|key
+argument_list|,
 name|uploadId
 argument_list|,
 name|currentPartNumber
@@ -1903,6 +2117,8 @@ name|uploadData
 operator|.
 name|getFile
 argument_list|()
+argument_list|,
+literal|0L
 argument_list|)
 decl_stmt|;
 name|long
@@ -1951,23 +2167,13 @@ name|executorService
 operator|.
 name|submit
 argument_list|(
-operator|new
-name|Callable
-argument_list|<
-name|PartETag
-argument_list|>
-argument_list|()
-block|{
-annotation|@
-name|Override
-specifier|public
-name|PartETag
-name|call
 parameter_list|()
-throws|throws
-name|Exception
+lambda|->
 block|{
 comment|// this is the queued upload operation
+comment|// do the upload
+try|try
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1979,15 +2185,10 @@ argument_list|,
 name|uploadId
 argument_list|)
 expr_stmt|;
-comment|// do the upload
 name|PartETag
 name|partETag
-decl_stmt|;
-try|try
-block|{
-name|partETag
-operator|=
-name|fs
+init|=
+name|writeOperationHelper
 operator|.
 name|uploadPart
 argument_list|(
@@ -1996,7 +2197,7 @@ argument_list|)
 operator|.
 name|getPartETag
 argument_list|()
-expr_stmt|;
+decl_stmt|;
 name|LOG
 operator|.
 name|debug
@@ -2020,6 +2221,12 @@ argument_list|,
 name|statistics
 argument_list|)
 expr_stmt|;
+name|partsUploaded
+operator|++
+expr_stmt|;
+return|return
+name|partETag
+return|;
 block|}
 finally|finally
 block|{
@@ -2033,10 +2240,6 @@ argument_list|,
 name|block
 argument_list|)
 expr_stmt|;
-block|}
-return|return
-name|partETag
-return|;
 block|}
 block|}
 argument_list|)
@@ -2184,7 +2387,7 @@ block|}
 comment|/**      * This completes a multipart upload.      * Sometimes it fails; here retries are handled to avoid losing all data      * on a transient failure.      * @param partETags list of partial uploads      * @throws IOException on any problem      */
 DECL|method|complete (List<PartETag> partETags)
 specifier|private
-name|CompleteMultipartUploadResult
+name|void
 name|complete
 parameter_list|(
 name|List
@@ -2196,99 +2399,46 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|int
-name|retryCount
+name|AtomicInteger
+name|errorCount
 init|=
-literal|0
-decl_stmt|;
-name|AmazonClientException
-name|lastException
-decl_stmt|;
-name|String
-name|operation
-init|=
-name|String
-operator|.
-name|format
+operator|new
+name|AtomicInteger
 argument_list|(
-literal|"Completing multi-part upload for key '%s',"
-operator|+
-literal|" id '%s' with %s partitions "
-argument_list|,
+literal|0
+argument_list|)
+decl_stmt|;
+try|try
+block|{
+name|writeOperationHelper
+operator|.
+name|completeMPUwithRetries
+argument_list|(
 name|key
 argument_list|,
 name|uploadId
 argument_list|,
 name|partETags
-operator|.
-name|size
-argument_list|()
-argument_list|)
-decl_stmt|;
-do|do
-block|{
-try|try
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-name|operation
-argument_list|)
-expr_stmt|;
-return|return
-name|writeOperationHelper
-operator|.
-name|completeMultipartUpload
-argument_list|(
-name|uploadId
 argument_list|,
-name|partETags
+name|bytesSubmitted
+argument_list|,
+name|errorCount
 argument_list|)
-return|;
-block|}
-catch|catch
-parameter_list|(
-name|AmazonClientException
-name|e
-parameter_list|)
-block|{
-name|lastException
-operator|=
-name|e
 expr_stmt|;
+block|}
+finally|finally
+block|{
 name|statistics
 operator|.
 name|exceptionInMultipartComplete
+argument_list|(
+name|errorCount
+operator|.
+name|get
 argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
-block|}
-do|while
-condition|(
-name|shouldRetry
-argument_list|(
-name|operation
-argument_list|,
-name|lastException
-argument_list|,
-name|retryCount
-operator|++
-argument_list|)
-condition|)
-do|;
-comment|// this point is only reached if the operation failed more than
-comment|// the allowed retry count
-throw|throw
-name|translateException
-argument_list|(
-name|operation
-argument_list|,
-name|key
-argument_list|,
-name|lastException
-argument_list|)
-throw|;
 block|}
 comment|/**      * Abort a multi-part upload. Retries are attempted on failures.      * IOExceptions are caught; this is expected to be run as a cleanup process.      */
 DECL|method|abort ()
@@ -2312,195 +2462,52 @@ argument_list|(
 name|OBJECT_MULTIPART_UPLOAD_ABORTED
 argument_list|)
 expr_stmt|;
-name|String
-name|operation
-init|=
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"Aborting multi-part upload for '%s', id '%s"
-argument_list|,
-name|writeOperationHelper
-argument_list|,
-name|uploadId
-argument_list|)
-decl_stmt|;
-do|do
-block|{
 try|try
 block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-name|operation
-argument_list|)
-expr_stmt|;
 name|writeOperationHelper
 operator|.
 name|abortMultipartUpload
 argument_list|(
+name|key
+argument_list|,
 name|uploadId
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
-catch|catch
+argument_list|,
 parameter_list|(
-name|AmazonClientException
+name|text
+parameter_list|,
 name|e
+parameter_list|,
+name|r
+parameter_list|,
+name|i
 parameter_list|)
-block|{
-name|lastException
-operator|=
-name|e
-expr_stmt|;
+lambda|->
 name|statistics
 operator|.
 name|exceptionInMultipartAbort
 argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
-block|}
-do|while
-condition|(
-name|shouldRetry
-argument_list|(
-name|operation
-argument_list|,
-name|lastException
-argument_list|,
-name|retryCount
-operator|++
-argument_list|)
-condition|)
-do|;
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
 comment|// this point is only reached if the operation failed more than
 comment|// the allowed retry count
 name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unable to abort multipart upload, you may need to purge  "
+literal|"Unable to abort multipart upload,"
 operator|+
-literal|"uploaded parts"
-argument_list|,
-name|lastException
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**      * Predicate to determine whether a failed operation should      * be attempted again.      * If a retry is advised, the exception is automatically logged and      * the filesystem statistic {@link Statistic#IGNORED_ERRORS} incremented.      * The method then sleeps for the sleep time suggested by the sleep policy;      * if the sleep is interrupted then {@code Thread.interrupted()} is set      * to indicate the thread was interrupted; then false is returned.      *      * @param operation operation for log message      * @param e exception raised.      * @param retryCount  number of retries already attempted      * @return true if another attempt should be made      */
-DECL|method|shouldRetry (String operation, AmazonClientException e, int retryCount)
-specifier|private
-name|boolean
-name|shouldRetry
-parameter_list|(
-name|String
-name|operation
-parameter_list|,
-name|AmazonClientException
-name|e
-parameter_list|,
-name|int
-name|retryCount
-parameter_list|)
-block|{
-try|try
-block|{
-name|RetryPolicy
-operator|.
-name|RetryAction
-name|retryAction
-init|=
-name|retryPolicy
-operator|.
-name|shouldRetry
-argument_list|(
-name|e
-argument_list|,
-name|retryCount
-argument_list|,
-literal|0
-argument_list|,
-literal|true
-argument_list|)
-decl_stmt|;
-name|boolean
-name|retry
-init|=
-name|retryAction
-operator|==
-name|RetryPolicy
-operator|.
-name|RetryAction
-operator|.
-name|RETRY
-decl_stmt|;
-if|if
-condition|(
-name|retry
-condition|)
-block|{
-name|fs
-operator|.
-name|incrementStatistic
-argument_list|(
-name|IGNORED_ERRORS
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Retrying {} after exception "
-argument_list|,
-name|operation
+literal|" you may need to purge uploaded parts"
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-name|Thread
-operator|.
-name|sleep
-argument_list|(
-name|retryAction
-operator|.
-name|delayMillis
-argument_list|)
-expr_stmt|;
-block|}
-return|return
-name|retry
-return|;
-block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|ex
-parameter_list|)
-block|{
-name|Thread
-operator|.
-name|currentThread
-argument_list|()
-operator|.
-name|interrupt
-argument_list|()
-expr_stmt|;
-return|return
-literal|false
-return|;
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|ignored
-parameter_list|)
-block|{
-return|return
-literal|false
-return|;
 block|}
 block|}
 block|}
@@ -2726,7 +2733,6 @@ name|Progressable
 name|progress
 decl_stmt|;
 DECL|method|ProgressableListener (Progressable progress)
-specifier|public
 name|ProgressableListener
 parameter_list|(
 name|Progressable

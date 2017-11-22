@@ -24,16 +24,6 @@ name|com
 operator|.
 name|amazonaws
 operator|.
-name|AmazonClientException
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|amazonaws
-operator|.
 name|services
 operator|.
 name|s3
@@ -55,6 +45,22 @@ operator|.
 name|model
 operator|.
 name|GetObjectRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|amazonaws
+operator|.
+name|services
+operator|.
+name|s3
+operator|.
+name|model
+operator|.
+name|S3Object
 import|;
 end_import
 
@@ -258,24 +264,6 @@ name|isNotEmpty
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|s3a
-operator|.
-name|S3AUtils
-operator|.
-name|*
-import|;
-end_import
-
 begin_comment
 comment|/**  * The input stream for an S3A object.  *  * As this stream seeks withing an object, it may close then re-open the stream.  * When this happens, any updated stream data may be retrieved, and, given  * the consistency model of Amazon S3, outdated data may in fact be picked up.  *  * As a result, the outcome of reading from a stream of an object which is  * actively manipulated during the read process is "undefined".  *  * The class is marked as private as code should not be creating instances  * themselves. Any extra feature (e.g instrumentation) should be considered  * unstable.  *  * Because it prints some of the state of the instrumentation,  * the output of {@link #toString()} must also be considered unstable.  */
 end_comment
@@ -403,6 +391,12 @@ name|Constants
 operator|.
 name|DEFAULT_READAHEAD_RANGE
 decl_stmt|;
+DECL|field|invoker
+specifier|private
+specifier|final
+name|Invoker
+name|invoker
+decl_stmt|;
 comment|/**    * This is the actual position within the object, used by    * lazy seek to decide whether to seek on the next read or not.    */
 DECL|field|nextReadPos
 specifier|private
@@ -421,7 +415,8 @@ specifier|private
 name|long
 name|contentRangeStart
 decl_stmt|;
-DECL|method|S3AInputStream (S3ObjectAttributes s3Attributes, long contentLength, AmazonS3 client, FileSystem.Statistics stats, S3AInstrumentation instrumentation, long readahead, S3AInputPolicy inputPolicy)
+comment|/**    * Create the stream.    * This does not attempt to open it; that is only done on the first    * actual read() operation.    * @param s3Attributes object attributes from a HEAD request    * @param contentLength length of content    * @param client S3 client to use    * @param stats statistics to update    * @param instrumentation instrumentation to update    * @param readahead readahead bytes    * @param inputPolicy IO policy    * @param invoker preconfigured invoker    */
+DECL|method|S3AInputStream (S3ObjectAttributes s3Attributes, long contentLength, AmazonS3 client, FileSystem.Statistics stats, S3AInstrumentation instrumentation, long readahead, S3AInputPolicy inputPolicy, Invoker invoker)
 specifier|public
 name|S3AInputStream
 parameter_list|(
@@ -447,6 +442,9 @@ name|readahead
 parameter_list|,
 name|S3AInputPolicy
 name|inputPolicy
+parameter_list|,
+name|Invoker
+name|invoker
 parameter_list|)
 block|{
 name|Preconditions
@@ -580,6 +578,12 @@ argument_list|(
 name|readahead
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|invoker
+operator|=
+name|invoker
+expr_stmt|;
 block|}
 comment|/**    * Opens up the stream at specified target position and for given length.    *    * @param reason reason for reopen    * @param targetPos target position    * @param length length requested    * @throws IOException on any failure to open the object    */
 DECL|method|reopen (String reason, long targetPos, long length)
@@ -659,13 +663,14 @@ argument_list|,
 name|nextReadPos
 argument_list|)
 expr_stmt|;
+name|long
+name|opencount
+init|=
 name|streamStatistics
 operator|.
 name|streamOpened
 argument_list|()
-expr_stmt|;
-try|try
-block|{
+decl_stmt|;
 name|GetObjectRequest
 name|request
 init|=
@@ -717,14 +722,56 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-name|wrappedStream
-operator|=
+name|String
+name|text
+init|=
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Failed to %s %s at %d"
+argument_list|,
+operator|(
+name|opencount
+operator|==
+literal|0
+condition|?
+literal|"open"
+else|:
+literal|"re-open"
+operator|)
+argument_list|,
+name|uri
+argument_list|,
+name|targetPos
+argument_list|)
+decl_stmt|;
+name|S3Object
+name|object
+init|=
+name|invoker
+operator|.
+name|retry
+argument_list|(
+name|text
+argument_list|,
+name|uri
+argument_list|,
+literal|true
+argument_list|,
+parameter_list|()
+lambda|->
 name|client
 operator|.
 name|getObject
 argument_list|(
 name|request
 argument_list|)
+argument_list|)
+decl_stmt|;
+name|wrappedStream
+operator|=
+name|object
 operator|.
 name|getObjectContent
 argument_list|()
@@ -751,26 +798,6 @@ operator|+
 literal|") "
 operator|+
 name|uri
-argument_list|)
-throw|;
-block|}
-block|}
-catch|catch
-parameter_list|(
-name|AmazonClientException
-name|e
-parameter_list|)
-block|{
-throw|throw
-name|translateException
-argument_list|(
-literal|"Reopen at position "
-operator|+
-name|targetPos
-argument_list|,
-name|uri
-argument_list|,
-name|e
 argument_list|)
 throw|;
 block|}

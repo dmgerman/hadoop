@@ -70,6 +70,16 @@ specifier|private
 name|Constants
 parameter_list|()
 block|{   }
+comment|/**    * default hadoop temp dir on local system: {@value}.    */
+DECL|field|HADOOP_TMP_DIR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_TMP_DIR
+init|=
+literal|"hadoop.tmp.dir"
+decl_stmt|;
 comment|/** The minimum multipart size which S3 supports. */
 DECL|field|MULTIPART_MIN_SIZE
 specifier|public
@@ -953,20 +963,6 @@ name|MAX_MULTIPART_COUNT
 init|=
 literal|10000
 decl_stmt|;
-comment|/**    * Classname of the S3A-specific output committer factory. This    * is what must be declared when attempting to use    */
-annotation|@
-name|InterfaceStability
-operator|.
-name|Unstable
-DECL|field|S3A_OUTPUT_COMMITTER_FACTORY
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|S3A_OUTPUT_COMMITTER_FACTORY
-init|=
-literal|"org.apache.hadoop.fs.s3a.commit.S3AOutputCommitterFactory"
-decl_stmt|;
 comment|/* Constants. */
 DECL|field|S3_METADATA_STORE_IMPL
 specifier|public
@@ -1133,20 +1129,6 @@ name|S3GUARD_DDB_BACKGROUND_SLEEP_MSEC_DEFAULT
 init|=
 literal|25
 decl_stmt|;
-comment|/**    * V1 committer.    */
-annotation|@
-name|InterfaceStability
-operator|.
-name|Unstable
-DECL|field|S3A_OUTPUT_COMMITTER_MRV1
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|S3A_OUTPUT_COMMITTER_MRV1
-init|=
-literal|"org.apache.hadoop.fs.s3a.commit.S3OutputCommitterMRv1"
-decl_stmt|;
 comment|/**    * The default "Null" metadata store: {@value}.    */
 annotation|@
 name|InterfaceStability
@@ -1255,6 +1237,112 @@ name|int
 name|DEFAULT_LIST_VERSION
 init|=
 literal|2
+decl_stmt|;
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|field|FAIL_INJECT_THROTTLE_PROBABILITY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FAIL_INJECT_THROTTLE_PROBABILITY
+init|=
+literal|"fs.s3a.failinject.throttle.probability"
+decl_stmt|;
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|field|FAIL_INJECT_CLIENT_FACTORY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FAIL_INJECT_CLIENT_FACTORY
+init|=
+literal|"org.apache.hadoop.fs.s3a.InconsistentS3ClientFactory"
+decl_stmt|;
+comment|/**    * Number of times to retry any repeatable S3 client request on failure,    * excluding throttling requests: {@value}.    */
+DECL|field|RETRY_LIMIT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RETRY_LIMIT
+init|=
+literal|"fs.s3a.retry.limit"
+decl_stmt|;
+comment|/**    * Default retry limit: {@value}.    */
+DECL|field|RETRY_LIMIT_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|RETRY_LIMIT_DEFAULT
+init|=
+name|DEFAULT_MAX_ERROR_RETRIES
+decl_stmt|;
+comment|/**    * Interval between retry attempts.: {@value}.    */
+DECL|field|RETRY_INTERVAL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RETRY_INTERVAL
+init|=
+literal|"fs.s3a.retry.interval"
+decl_stmt|;
+comment|/**    * Default retry interval: {@value}.    */
+DECL|field|RETRY_INTERVAL_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RETRY_INTERVAL_DEFAULT
+init|=
+literal|"500ms"
+decl_stmt|;
+comment|/**    * Number of times to retry any throttled request: {@value}.    */
+DECL|field|RETRY_THROTTLE_LIMIT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RETRY_THROTTLE_LIMIT
+init|=
+literal|"fs.s3a.retry.throttle.limit"
+decl_stmt|;
+comment|/**    * Default throttled retry limit: {@value}.    */
+DECL|field|RETRY_THROTTLE_LIMIT_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|RETRY_THROTTLE_LIMIT_DEFAULT
+init|=
+name|DEFAULT_MAX_ERROR_RETRIES
+decl_stmt|;
+comment|/**    * Interval between retry attempts on throttled requests: {@value}.    */
+DECL|field|RETRY_THROTTLE_INTERVAL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RETRY_THROTTLE_INTERVAL
+init|=
+literal|"fs.s3a.retry.throttle.interval"
+decl_stmt|;
+comment|/**    * Default throttled retry interval: {@value}.    */
+DECL|field|RETRY_THROTTLE_INTERVAL_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RETRY_THROTTLE_INTERVAL_DEFAULT
+init|=
+literal|"500ms"
 decl_stmt|;
 block|}
 end_class

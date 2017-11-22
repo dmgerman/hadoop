@@ -296,6 +296,13 @@ name|CONFIGURATION_TEST_ENDPOINT
 init|=
 literal|"test.fs.s3a.endpoint"
 decl_stmt|;
+comment|/**    * Property to set to disable caching.    */
+DECL|field|FS_S3A_IMPL_DISABLE_CACHE
+name|String
+name|FS_S3A_IMPL_DISABLE_CACHE
+init|=
+literal|"fs.s3a.impl.disable.cache"
+decl_stmt|;
 block|}
 end_interface
 

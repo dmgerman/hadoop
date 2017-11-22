@@ -556,10 +556,23 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{      }
+annotation|@
+name|Override
+DECL|method|getOutputPath ()
+specifier|public
+name|Path
+name|getOutputPath
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
 block|}
-comment|/**    * Stub task context.    */
+block|}
+comment|/**    * Stub task context.    * The {@link #getConfiguration()} method returns the configuration supplied    * in the constructor; while {@link #setOutputCommitter(OutputCommitter)}    * sets the committer returned in {@link #getOutputCommitter()}.    * Otherwise, the methods are all no-ops.    */
 DECL|class|TaskContext
 specifier|public
+specifier|static
 class|class
 name|TaskContext
 implements|implements
@@ -574,6 +587,40 @@ argument_list|,
 name|String
 argument_list|>
 block|{
+DECL|field|configuration
+specifier|private
+specifier|final
+name|Configuration
+name|configuration
+decl_stmt|;
+DECL|method|TaskContext ()
+specifier|public
+name|TaskContext
+parameter_list|()
+block|{
+name|this
+argument_list|(
+operator|new
+name|Configuration
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|TaskContext (Configuration conf)
+specifier|public
+name|TaskContext
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|this
+operator|.
+name|configuration
+operator|=
+name|conf
+expr_stmt|;
+block|}
 DECL|field|outputCommitter
 specifier|private
 name|OutputCommitter
@@ -765,7 +812,7 @@ name|getConfiguration
 parameter_list|()
 block|{
 return|return
-literal|null
+name|configuration
 return|;
 block|}
 annotation|@

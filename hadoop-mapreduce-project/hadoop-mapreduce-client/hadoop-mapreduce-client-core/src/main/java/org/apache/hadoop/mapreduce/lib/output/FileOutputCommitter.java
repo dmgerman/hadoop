@@ -668,8 +668,10 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * @return the path where final output of the job should be placed.  This    * could also be considered the committed application attempt path.    */
+annotation|@
+name|Override
 DECL|method|getOutputPath ()
-specifier|private
+specifier|public
 name|Path
 name|getOutputPath
 parameter_list|()
@@ -678,21 +680,6 @@ return|return
 name|this
 operator|.
 name|outputPath
-return|;
-block|}
-comment|/**    * @return true if we have an output path set, else false.    */
-DECL|method|hasOutputPath ()
-specifier|private
-name|boolean
-name|hasOutputPath
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|outputPath
-operator|!=
-literal|null
 return|;
 block|}
 comment|/**    * @return the path where the output of pending job attempts are    * stored.    */

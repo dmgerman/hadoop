@@ -166,7 +166,7 @@ name|fs
 operator|.
 name|s3a
 operator|.
-name|Listing
+name|S3AUtils
 operator|.
 name|ACCEPT_ALL
 import|;

@@ -1106,22 +1106,26 @@ argument_list|()
 expr_stmt|;
 comment|// We remove from provided list the file status listed by S3 so that
 comment|// this does not return duplicate items.
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Removing the status from provided file status {}"
-argument_list|,
-name|status
-argument_list|)
-expr_stmt|;
+if|if
+condition|(
 name|providedStatus
 operator|.
 name|remove
 argument_list|(
 name|status
 argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Removed the status from provided file status {}"
+argument_list|,
+name|status
+argument_list|)
 expr_stmt|;
+block|}
 block|}
 else|else
 block|{
@@ -1599,7 +1603,7 @@ specifier|private
 name|int
 name|maxKeys
 decl_stmt|;
-comment|/**      * Constructor -calls `listObjects()` on the request to populate the      * initial set of results/fail if there was a problem talking to the bucket.      * @param listPath path of the listing      * @param request initial request to make      * */
+comment|/**      * Constructor -calls `listObjects()` on the request to populate the      * initial set of results/fail if there was a problem talking to the bucket.      * @param listPath path of the listing      * @param request initial request to make      * @throws IOException if listObjects raises one.      */
 DECL|method|ObjectListingIterator ( Path listPath, S3ListRequest request)
 name|ObjectListingIterator
 parameter_list|(
@@ -1609,6 +1613,8 @@ parameter_list|,
 name|S3ListRequest
 name|request
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|this
 operator|.
@@ -1666,6 +1672,10 @@ block|}
 comment|/**      * Ask for the next listing.      * For the first invocation, this returns the initial set, with no      * remote IO. For later requests, S3 will be queried, hence the calls      * may block or fail.      * @return the next object listing.      * @throws IOException if a query made of S3 fails.      * @throws NoSuchElementException if there is no more data to list.      */
 annotation|@
 name|Override
+annotation|@
+name|Retries
+operator|.
+name|RetryTranslated
 DECL|method|next ()
 specifier|public
 name|S3ListResult
@@ -2427,44 +2437,6 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * A Path filter which accepts all filenames.    */
-DECL|field|ACCEPT_ALL
-specifier|static
-specifier|final
-name|PathFilter
-name|ACCEPT_ALL
-init|=
-operator|new
-name|PathFilter
-argument_list|()
-block|{
-annotation|@
-name|Override
-specifier|public
-name|boolean
-name|accept
-parameter_list|(
-name|Path
-name|file
-parameter_list|)
-block|{
-return|return
-literal|true
-return|;
-block|}
-annotation|@
-name|Override
-specifier|public
-name|String
-name|toString
-parameter_list|()
-block|{
-return|return
-literal|"ACCEPT_ALL"
-return|;
-block|}
-block|}
-decl_stmt|;
 block|}
 end_class
 

@@ -112,6 +112,22 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|S3ATestUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|FixMethodOrder
@@ -445,6 +461,11 @@ specifier|private
 name|int
 name|partitionSize
 decl_stmt|;
+DECL|field|filesize
+specifier|private
+name|long
+name|filesize
+decl_stmt|;
 annotation|@
 name|Override
 DECL|method|setup ()
@@ -460,21 +481,16 @@ operator|.
 name|setup
 argument_list|()
 expr_stmt|;
-specifier|final
-name|Path
-name|testPath
-init|=
-name|getTestPath
-argument_list|()
-decl_stmt|;
 name|scaleTestDir
 operator|=
 operator|new
 name|Path
 argument_list|(
-name|testPath
+name|getTestPath
+argument_list|()
 argument_list|,
-literal|"scale"
+name|getTestSuiteName
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|hugefile
@@ -497,6 +513,30 @@ argument_list|,
 literal|"hugefileRenamed"
 argument_list|)
 expr_stmt|;
+name|filesize
+operator|=
+name|getTestPropertyBytes
+argument_list|(
+name|getConf
+argument_list|()
+argument_list|,
+name|KEY_HUGE_FILESIZE
+argument_list|,
+name|DEFAULT_HUGE_FILESIZE
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Get the name of this test suite, which is used in path generation.    * Base implementation uses {@link #getBlockOutputBufferName()} for this.    * @return the name of the suite.    */
+DECL|method|getTestSuiteName ()
+specifier|public
+name|String
+name|getTestSuiteName
+parameter_list|()
+block|{
+return|return
+name|getBlockOutputBufferName
+argument_list|()
+return|;
 block|}
 comment|/**    * Note that this can get called before test setup.    * @return the configuration to use.    */
 annotation|@
@@ -595,6 +635,13 @@ name|getBlockOutputBufferName
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|S3ATestUtils
+operator|.
+name|disableFilesystemCaching
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 return|return
 name|conf
 return|;
@@ -628,19 +675,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 name|long
-name|filesize
-init|=
-name|getTestPropertyBytes
-argument_list|(
-name|getConf
-argument_list|()
-argument_list|,
-name|KEY_HUGE_FILESIZE
-argument_list|,
-name|DEFAULT_HUGE_FILESIZE
-argument_list|)
-decl_stmt|;
-name|long
 name|filesizeMB
 init|=
 name|filesize
@@ -651,13 +685,19 @@ comment|// clean up from any previous attempts
 name|deleteHugeFile
 argument_list|()
 expr_stmt|;
+name|Path
+name|fileToCreate
+init|=
+name|getPathOfFileToCreate
+argument_list|()
+decl_stmt|;
 name|describe
 argument_list|(
 literal|"Creating file %s of size %d MB"
 operator|+
 literal|" with partition size %d buffered by %s"
 argument_list|,
-name|hugefile
+name|fileToCreate
 argument_list|,
 name|filesizeMB
 argument_list|,
@@ -885,7 +925,7 @@ name|fs
 operator|.
 name|create
 argument_list|(
-name|hugefile
+name|fileToCreate
 argument_list|,
 literal|true
 argument_list|,
@@ -1196,71 +1236,19 @@ name|putRequestsActive
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|ContractTestUtils
-operator|.
-name|assertPathExists
-argument_list|(
-name|fs
-argument_list|,
-literal|"Huge file"
-argument_list|,
-name|hugefile
-argument_list|)
-expr_stmt|;
-name|FileStatus
-name|status
-init|=
-name|fs
-operator|.
-name|getFileStatus
-argument_list|(
-name|hugefile
-argument_list|)
-decl_stmt|;
-name|ContractTestUtils
-operator|.
-name|assertIsFile
-argument_list|(
-name|hugefile
-argument_list|,
-name|status
-argument_list|)
-expr_stmt|;
-name|assertEquals
-argument_list|(
-literal|"File size in "
-operator|+
-name|status
-argument_list|,
-name|filesize
-argument_list|,
-name|status
-operator|.
-name|getLen
-argument_list|()
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|progress
-operator|!=
-literal|null
-condition|)
-block|{
 name|progress
 operator|.
 name|verifyNoFailures
 argument_list|(
 literal|"Put file "
 operator|+
-name|hugefile
+name|fileToCreate
 operator|+
 literal|" of size "
 operator|+
 name|filesize
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|streamStatistics
@@ -1283,6 +1271,85 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|/**    * Get the path of the file which is to created. This is normally    * {@link #hugefile}    * @return the path to use when creating the file.    */
+DECL|method|getPathOfFileToCreate ()
+specifier|protected
+name|Path
+name|getPathOfFileToCreate
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|hugefile
+return|;
+block|}
+DECL|method|getScaleTestDir ()
+specifier|protected
+name|Path
+name|getScaleTestDir
+parameter_list|()
+block|{
+return|return
+name|scaleTestDir
+return|;
+block|}
+DECL|method|getHugefile ()
+specifier|protected
+name|Path
+name|getHugefile
+parameter_list|()
+block|{
+return|return
+name|hugefile
+return|;
+block|}
+DECL|method|setHugefile (Path hugefile)
+specifier|public
+name|void
+name|setHugefile
+parameter_list|(
+name|Path
+name|hugefile
+parameter_list|)
+block|{
+name|this
+operator|.
+name|hugefile
+operator|=
+name|hugefile
+expr_stmt|;
+block|}
+DECL|method|getHugefileRenamed ()
+specifier|protected
+name|Path
+name|getHugefileRenamed
+parameter_list|()
+block|{
+return|return
+name|hugefileRenamed
+return|;
+block|}
+DECL|method|getUploadBlockSize ()
+specifier|protected
+name|int
+name|getUploadBlockSize
+parameter_list|()
+block|{
+return|return
+name|uploadBlockSize
+return|;
+block|}
+DECL|method|getPartitionSize ()
+specifier|protected
+name|int
+name|getPartitionSize
+parameter_list|()
+block|{
+return|return
+name|partitionSize
+return|;
 block|}
 comment|/**    * Progress callback from AWS. Likely to come in on a different thread.    */
 DECL|class|ProgressCallback
@@ -1557,10 +1624,31 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Assume that the huge file exists; skip the test if it does not.    * @throws IOException IO failure    */
 DECL|method|assumeHugeFileExists ()
 name|void
 name|assumeHugeFileExists
 parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|assumeFileExists
+argument_list|(
+name|this
+operator|.
+name|hugefile
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Assume a specific file exists.    * @param file file to look for    * @throws IOException IO problem    */
+DECL|method|assumeFileExists (Path file)
+specifier|private
+name|void
+name|assumeFileExists
+parameter_list|(
+name|Path
+name|file
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -1578,7 +1666,7 @@ name|fs
 argument_list|,
 literal|"huge file not created"
 argument_list|,
-name|hugefile
+name|file
 argument_list|)
 expr_stmt|;
 name|FileStatus
@@ -1588,14 +1676,14 @@ name|fs
 operator|.
 name|getFileStatus
 argument_list|(
-name|hugefile
+name|file
 argument_list|)
 decl_stmt|;
 name|ContractTestUtils
 operator|.
 name|assertIsFile
 argument_list|(
-name|hugefile
+name|file
 argument_list|,
 name|status
 argument_list|)
@@ -1604,7 +1692,7 @@ name|assertTrue
 argument_list|(
 literal|"File "
 operator|+
-name|hugefile
+name|file
 operator|+
 literal|" is empty"
 argument_list|,
@@ -1634,6 +1722,69 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * This is the set of actions to perform when verifying the file actually    * was created. With the s3guard committer, the file doesn't come into    * existence; a different set of assertions must be checked.    */
+annotation|@
+name|Test
+DECL|method|test_030_postCreationAssertions ()
+specifier|public
+name|void
+name|test_030_postCreationAssertions
+parameter_list|()
+throws|throws
+name|Throwable
+block|{
+name|S3AFileSystem
+name|fs
+init|=
+name|getFileSystem
+argument_list|()
+decl_stmt|;
+name|ContractTestUtils
+operator|.
+name|assertPathExists
+argument_list|(
+name|fs
+argument_list|,
+literal|"Huge file"
+argument_list|,
+name|hugefile
+argument_list|)
+expr_stmt|;
+name|FileStatus
+name|status
+init|=
+name|fs
+operator|.
+name|getFileStatus
+argument_list|(
+name|hugefile
+argument_list|)
+decl_stmt|;
+name|ContractTestUtils
+operator|.
+name|assertIsFile
+argument_list|(
+name|hugefile
+argument_list|,
+name|status
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"File size in "
+operator|+
+name|status
+argument_list|,
+name|filesize
+argument_list|,
+name|status
+operator|.
+name|getLen
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Read in the file using Positioned read(offset) calls.    * @throws Throwable failure    */
 annotation|@
 name|Test
 DECL|method|test_040_PositionedReadHugeFile ()
@@ -1716,7 +1867,7 @@ name|hugefile
 argument_list|)
 decl_stmt|;
 name|long
-name|filesize
+name|size
 init|=
 name|status
 operator|.
@@ -1747,7 +1898,7 @@ decl_stmt|;
 name|long
 name|eof
 init|=
-name|filesize
+name|size
 operator|-
 literal|1
 decl_stmt|;
@@ -1886,7 +2037,7 @@ name|Math
 operator|.
 name|max
 argument_list|(
-name|filesize
+name|size
 operator|/
 name|_1MB
 argument_list|,
@@ -1900,7 +2051,7 @@ name|timer
 operator|.
 name|end
 argument_list|(
-literal|"time to performed positioned reads of %s of %d MB "
+literal|"time to perform positioned reads of %s of %d MB "
 argument_list|,
 name|filetype
 argument_list|,
@@ -1925,6 +2076,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Read in the entire file using read() calls.    * @throws Throwable failure    */
 annotation|@
 name|Test
 DECL|method|test_050_readHugeFile ()
@@ -1962,7 +2114,7 @@ name|hugefile
 argument_list|)
 decl_stmt|;
 name|long
-name|filesize
+name|size
 init|=
 name|status
 operator|.
@@ -1972,7 +2124,7 @@ decl_stmt|;
 name|long
 name|blocks
 init|=
-name|filesize
+name|size
 operator|/
 name|uploadBlockSize
 decl_stmt|;
@@ -2052,7 +2204,7 @@ name|Math
 operator|.
 name|max
 argument_list|(
-name|filesize
+name|size
 operator|/
 name|_1MB
 argument_list|,
@@ -2089,7 +2241,7 @@ name|bandwidth
 argument_list|(
 name|timer
 argument_list|,
-name|filesize
+name|size
 argument_list|)
 expr_stmt|;
 name|logFSState
@@ -2135,7 +2287,7 @@ name|hugefile
 argument_list|)
 decl_stmt|;
 name|long
-name|filesize
+name|size
 init|=
 name|status
 operator|.
@@ -2178,7 +2330,7 @@ name|Math
 operator|.
 name|max
 argument_list|(
-name|filesize
+name|size
 operator|/
 name|_1MB
 argument_list|,
@@ -2215,7 +2367,7 @@ name|bandwidth
 argument_list|(
 name|timer
 argument_list|,
-name|filesize
+name|size
 argument_list|)
 expr_stmt|;
 name|logFSState
@@ -2233,7 +2385,7 @@ argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(
-name|filesize
+name|size
 argument_list|,
 name|destFileStatus
 operator|.
@@ -2290,42 +2442,26 @@ name|bandwidth
 argument_list|(
 name|timer2
 argument_list|,
-name|filesize
+name|size
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Cleanup: delete the files.    */
 annotation|@
 name|Test
-DECL|method|test_999_DeleteHugeFiles ()
+DECL|method|test_800_DeleteHugeFiles ()
 specifier|public
 name|void
-name|test_999_DeleteHugeFiles
+name|test_800_DeleteHugeFiles
 parameter_list|()
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
 name|deleteHugeFile
 argument_list|()
 expr_stmt|;
-name|ContractTestUtils
-operator|.
-name|NanoTimer
-name|timer2
-init|=
-operator|new
-name|ContractTestUtils
-operator|.
-name|NanoTimer
-argument_list|()
-decl_stmt|;
-name|S3AFileSystem
-name|fs
-init|=
-name|getFileSystem
-argument_list|()
-decl_stmt|;
-name|fs
-operator|.
 name|delete
 argument_list|(
 name|hugefileRenamed
@@ -2333,27 +2469,75 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|timer2
-operator|.
-name|end
-argument_list|(
-literal|"time to delete %s"
-argument_list|,
-name|hugefileRenamed
-argument_list|)
-expr_stmt|;
+block|}
+finally|finally
+block|{
 name|ContractTestUtils
 operator|.
 name|rm
 argument_list|(
-name|fs
+name|getFileSystem
+argument_list|()
 argument_list|,
 name|getTestPath
 argument_list|()
 argument_list|,
 literal|true
 argument_list|,
-literal|true
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * After all the work, dump the statistics.    */
+annotation|@
+name|Test
+DECL|method|test_900_dumpStats ()
+specifier|public
+name|void
+name|test_900_dumpStats
+parameter_list|()
+block|{
+name|StringBuilder
+name|sb
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+name|getFileSystem
+argument_list|()
+operator|.
+name|getStorageStatistics
+argument_list|()
+operator|.
+name|forEach
+argument_list|(
+name|kv
+lambda|->
+name|sb
+operator|.
+name|append
+argument_list|(
+name|kv
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"\n"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Statistics\n{}"
+argument_list|,
+name|sb
 argument_list|)
 expr_stmt|;
 block|}
@@ -2365,17 +2549,44 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|delete
+argument_list|(
+name|hugefile
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Delete any file, time how long it took.    * @param path path to delete    * @param recursive recursive flag    */
+DECL|method|delete (Path path, boolean recursive)
+specifier|protected
+name|void
+name|delete
+parameter_list|(
+name|Path
+name|path
+parameter_list|,
+name|boolean
+name|recursive
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 name|describe
 argument_list|(
 literal|"Deleting %s"
 argument_list|,
-name|hugefile
+name|path
 argument_list|)
 expr_stmt|;
+name|ContractTestUtils
+operator|.
 name|NanoTimer
 name|timer
 init|=
 operator|new
+name|ContractTestUtils
+operator|.
 name|NanoTimer
 argument_list|()
 decl_stmt|;
@@ -2384,9 +2595,9 @@ argument_list|()
 operator|.
 name|delete
 argument_list|(
-name|hugefile
+name|path
 argument_list|,
-literal|false
+name|recursive
 argument_list|)
 expr_stmt|;
 name|timer
@@ -2395,7 +2606,7 @@ name|end
 argument_list|(
 literal|"time to delete %s"
 argument_list|,
-name|hugefile
+name|path
 argument_list|)
 expr_stmt|;
 block|}

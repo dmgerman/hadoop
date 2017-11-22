@@ -1255,7 +1255,7 @@ expr_stmt|;
 block|}
 specifier|public
 specifier|synchronized
-DECL|method|getOutputCommitter (TaskAttemptContext context )
+DECL|method|getOutputCommitter (TaskAttemptContext context)
 name|OutputCommitter
 name|getOutputCommitter
 parameter_list|(
@@ -1282,8 +1282,19 @@ argument_list|)
 decl_stmt|;
 name|committer
 operator|=
-operator|new
-name|FileOutputCommitter
+name|PathOutputCommitterFactory
+operator|.
+name|getCommitterFactory
+argument_list|(
+name|output
+argument_list|,
+name|context
+operator|.
+name|getConfiguration
+argument_list|()
+argument_list|)
+operator|.
+name|createOutputCommitter
 argument_list|(
 name|output
 argument_list|,

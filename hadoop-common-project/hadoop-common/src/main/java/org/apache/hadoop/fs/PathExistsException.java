@@ -54,7 +54,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|PathExistsException (String path, String error)
-specifier|protected
+specifier|public
 name|PathExistsException
 parameter_list|(
 name|String

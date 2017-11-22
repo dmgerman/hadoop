@@ -1177,7 +1177,7 @@ name|size
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * InputStream backed by the internal byte array      *      * @return      */
+comment|/**      * InputStream backed by the internal byte array.      *      * @return      */
 DECL|method|getInputStream ()
 name|ByteArrayInputStream
 name|getInputStream

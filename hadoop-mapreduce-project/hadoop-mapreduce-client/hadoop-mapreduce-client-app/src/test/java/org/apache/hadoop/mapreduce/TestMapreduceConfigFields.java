@@ -150,6 +150,24 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
+name|lib
+operator|.
+name|output
+operator|.
+name|PathOutputCommitterFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
 name|v2
 operator|.
 name|jobhistory
@@ -185,11 +203,7 @@ parameter_list|()
 block|{
 name|xmlFilename
 operator|=
-operator|new
-name|String
-argument_list|(
 literal|"mapred-default.xml"
-argument_list|)
 expr_stmt|;
 name|configurationClasses
 operator|=
@@ -236,6 +250,10 @@ block|,
 name|FileOutputCommitter
 operator|.
 name|class
+block|,
+name|PathOutputCommitterFactory
+operator|.
+name|class
 block|}
 expr_stmt|;
 comment|// Initialize used variables
@@ -243,9 +261,7 @@ name|configurationPropsToSkipCompare
 operator|=
 operator|new
 name|HashSet
-argument_list|<
-name|String
-argument_list|>
+argument_list|<>
 argument_list|()
 expr_stmt|;
 comment|// Set error modes
@@ -305,6 +321,23 @@ argument_list|(
 name|MRJobConfig
 operator|.
 name|REDUCE_RESOURCE_TYPE_PREFIX
+argument_list|)
+expr_stmt|;
+comment|// PathOutputCommitterFactory values
+name|xmlPrefixToSkipCompare
+operator|=
+operator|new
+name|HashSet
+argument_list|<>
+argument_list|()
+expr_stmt|;
+name|xmlPrefixToSkipCompare
+operator|.
+name|add
+argument_list|(
+name|PathOutputCommitterFactory
+operator|.
+name|COMMITTER_FACTORY_SCHEME
 argument_list|)
 expr_stmt|;
 block|}

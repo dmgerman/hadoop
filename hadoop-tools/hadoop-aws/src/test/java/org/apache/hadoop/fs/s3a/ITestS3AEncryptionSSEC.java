@@ -898,12 +898,12 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|AWSS3IOException
+name|AWSBadRequestException
 name|ex
 init|=
 name|intercept
 argument_list|(
-name|AWSS3IOException
+name|AWSBadRequestException
 operator|.
 name|class
 argument_list|,
@@ -922,13 +922,6 @@ expr_stmt|;
 block|}
 argument_list|)
 decl_stmt|;
-name|assertStatusCode
-argument_list|(
-name|ex
-argument_list|,
-literal|400
-argument_list|)
-expr_stmt|;
 block|}
 comment|/**    * Much like the above list encrypted directory test, you cannot get the    * metadata of an object without the correct encryption key.    * @throws Exception    */
 annotation|@
@@ -1100,12 +1093,9 @@ argument_list|(
 name|pathAB
 argument_list|)
 expr_stmt|;
-name|AWSS3IOException
-name|ex
-init|=
 name|intercept
 argument_list|(
-name|AWSS3IOException
+name|AWSBadRequestException
 operator|.
 name|class
 argument_list|,
@@ -1120,13 +1110,6 @@ name|pathABC
 argument_list|)
 expr_stmt|;
 block|}
-argument_list|)
-decl_stmt|;
-name|assertStatusCode
-argument_list|(
-name|ex
-argument_list|,
-literal|400
 argument_list|)
 expr_stmt|;
 block|}

@@ -671,8 +671,10 @@ name|s3
 init|=
 name|fs
 operator|.
-name|getAmazonS3Client
-argument_list|()
+name|getAmazonS3ClientForTesting
+argument_list|(
+literal|"test endpoint"
+argument_list|)
 decl_stmt|;
 name|String
 name|endPointRegion
@@ -2280,8 +2282,10 @@ name|s3
 init|=
 name|fs
 operator|.
-name|getAmazonS3Client
-argument_list|()
+name|getAmazonS3ClientForTesting
+argument_list|(
+literal|"configuration"
+argument_list|)
 decl_stmt|;
 name|assertNotNull
 argument_list|(
@@ -2431,8 +2435,10 @@ name|s3
 init|=
 name|fs
 operator|.
-name|getAmazonS3Client
-argument_list|()
+name|getAmazonS3ClientForTesting
+argument_list|(
+literal|"User Agent"
+argument_list|)
 decl_stmt|;
 name|assertNotNull
 argument_list|(
@@ -2515,8 +2521,10 @@ name|s3
 init|=
 name|fs
 operator|.
-name|getAmazonS3Client
-argument_list|()
+name|getAmazonS3ClientForTesting
+argument_list|(
+literal|"User agent"
+argument_list|)
 decl_stmt|;
 name|assertNotNull
 argument_list|(
