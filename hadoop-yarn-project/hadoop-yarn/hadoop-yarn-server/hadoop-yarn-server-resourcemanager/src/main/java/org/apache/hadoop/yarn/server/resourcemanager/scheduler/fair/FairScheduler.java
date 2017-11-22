@@ -1734,12 +1734,6 @@ name|long
 name|rackLocalityDelayMs
 decl_stmt|;
 comment|// Delay for rack locality
-DECL|field|eventLog
-specifier|private
-name|FairSchedulerEventLog
-name|eventLog
-decl_stmt|;
-comment|// Machine-readable event log
 DECL|field|assignMultiple
 specifier|protected
 name|boolean
@@ -2536,16 +2530,6 @@ parameter_list|()
 block|{
 return|return
 name|continuousSchedulingSleepMs
-return|;
-block|}
-DECL|method|getEventLog ()
-specifier|public
-name|FairSchedulerEventLog
-name|getEventLog
-parameter_list|()
-block|{
-return|return
-name|eventLog
 return|;
 block|}
 comment|/**    * Add a new application to the scheduler, with a given id, queue name, and    * user. This will accept a new app even if the user or queue is above    * configured limits, but the app will not be marked as runnable.    */
@@ -4712,18 +4696,6 @@ operator|.
 name|getTime
 argument_list|()
 decl_stmt|;
-name|eventLog
-operator|.
-name|log
-argument_list|(
-literal|"HEARTBEAT"
-argument_list|,
-name|nm
-operator|.
-name|getHostName
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|super
 operator|.
 name|nodeUpdate
@@ -6639,23 +6611,6 @@ operator|new
 name|ConcurrentHashMap
 argument_list|<>
 argument_list|()
-expr_stmt|;
-name|this
-operator|.
-name|eventLog
-operator|=
-operator|new
-name|FairSchedulerEventLog
-argument_list|()
-expr_stmt|;
-name|eventLog
-operator|.
-name|init
-argument_list|(
-name|this
-operator|.
-name|conf
-argument_list|)
 expr_stmt|;
 name|allocConf
 operator|=
