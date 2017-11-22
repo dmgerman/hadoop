@@ -238,7 +238,17 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Assert
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 
@@ -262,27 +272,31 @@ name|junit
 operator|.
 name|Assert
 operator|.
+name|assertNotNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
 name|assertTrue
 import|;
 end_import
 
 begin_import
-import|import
+import|import static
 name|org
 operator|.
 name|junit
 operator|.
-name|Before
-import|;
-end_import
-
-begin_import
-import|import
-name|org
+name|Assume
 operator|.
-name|junit
-operator|.
-name|Test
+name|assumeTrue
 import|;
 end_import
 
@@ -617,8 +631,6 @@ name|toUri
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertNotNull
 argument_list|(
 name|firstCacheFile
@@ -628,8 +640,6 @@ argument_list|,
 name|firstStatus
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertNotNull
 argument_list|(
 name|secondCacheFile
@@ -639,11 +649,9 @@ argument_list|,
 name|secondStatus
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
-literal|"Missing/extra entries found in the stas cache"
+literal|"Missing/extra entries found in the stats cache"
 argument_list|,
 literal|2
 argument_list|,
@@ -668,8 +676,6 @@ operator|.
 name|getModificationTime
 argument_list|()
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|expected
@@ -743,11 +749,9 @@ name|toUri
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
-literal|"Missing/extra entries found in the stas cache"
+literal|"Missing/extra entries found in the stats cache"
 argument_list|,
 literal|1
 argument_list|,
@@ -757,8 +761,6 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertNotNull
 argument_list|(
 name|TEST_VISIBILITY_CHILD_DIR
@@ -780,8 +782,6 @@ name|getModificationTime
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|"Incorrect timestamp for "
@@ -920,6 +920,28 @@ name|job
 operator|.
 name|getConfiguration
 argument_list|()
+expr_stmt|;
+comment|// skip test if scratch dir is not PUBLIC
+name|assumeTrue
+argument_list|(
+name|TEST_VISIBILITY_PARENT_DIR
+operator|+
+literal|" is not public"
+argument_list|,
+name|ClientDistributedCacheManager
+operator|.
+name|isPublic
+argument_list|(
+name|jobConf
+argument_list|,
+name|TEST_VISIBILITY_PARENT_DIR
+operator|.
+name|toUri
+argument_list|()
+argument_list|,
+name|statCache
+argument_list|)
+argument_list|)
 expr_stmt|;
 name|ClientDistributedCacheManager
 operator|.
