@@ -1120,7 +1120,7 @@ condition|)
 block|{
 name|rb
 operator|.
-name|addCounter
+name|addGauge
 argument_list|(
 name|GcTimePercentage
 argument_list|,

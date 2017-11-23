@@ -692,7 +692,7 @@ argument_list|(
 name|rb
 argument_list|)
 operator|.
-name|addCounter
+name|addGauge
 argument_list|(
 name|eq
 argument_list|(
