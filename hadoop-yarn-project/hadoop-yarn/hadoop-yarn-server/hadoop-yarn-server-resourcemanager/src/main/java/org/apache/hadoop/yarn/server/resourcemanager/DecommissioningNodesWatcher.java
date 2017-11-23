@@ -406,19 +406,6 @@ specifier|final
 name|RMContext
 name|rmContext
 decl_stmt|;
-comment|// Default timeout value in mills.
-comment|// Negative value indicates no timeout. 0 means immediate.
-DECL|field|defaultTimeoutMs
-specifier|private
-name|long
-name|defaultTimeoutMs
-init|=
-literal|1000L
-operator|*
-name|YarnConfiguration
-operator|.
-name|DEFAULT_RM_NODE_GRACEFUL_DECOMMISSION_TIMEOUT
-decl_stmt|;
 comment|// Once a RMNode is observed in DECOMMISSIONING state,
 comment|// All its ContainerStatus update are tracked inside DecomNodeContext.
 DECL|class|DecommissioningNodeContext
@@ -482,12 +469,15 @@ specifier|private
 name|long
 name|lastUpdateTime
 decl_stmt|;
-DECL|method|DecommissioningNodeContext (NodeId nodeId)
+DECL|method|DecommissioningNodeContext (NodeId nodeId, int timeoutSec)
 specifier|public
 name|DecommissioningNodeContext
 parameter_list|(
 name|NodeId
 name|nodeId
+parameter_list|,
+name|int
+name|timeoutSec
 parameter_list|)
 block|{
 name|this
@@ -520,14 +510,16 @@ name|this
 operator|.
 name|timeoutMs
 operator|=
-name|defaultTimeoutMs
+literal|1000L
+operator|*
+name|timeoutSec
 expr_stmt|;
 block|}
-DECL|method|updateTimeout (Integer timeoutSec)
+DECL|method|updateTimeout (int timeoutSec)
 name|void
 name|updateTimeout
 parameter_list|(
-name|Integer
+name|int
 name|timeoutSec
 parameter_list|)
 block|{
@@ -535,19 +527,9 @@ name|this
 operator|.
 name|timeoutMs
 operator|=
-operator|(
-name|timeoutSec
-operator|==
-literal|null
-operator|)
-condition|?
-name|defaultTimeoutMs
-else|:
-operator|(
 literal|1000L
 operator|*
 name|timeoutSec
-operator|)
 expr_stmt|;
 block|}
 block|}
@@ -619,11 +601,6 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
-name|readDecommissioningTimeout
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 name|int
 name|v
 init|=
@@ -795,6 +772,11 @@ argument_list|(
 name|rmNode
 operator|.
 name|getNodeID
+argument_list|()
+argument_list|,
+name|rmNode
+operator|.
+name|getDecommissioningTimeout
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2176,93 +2158,6 @@ name|sb
 operator|.
 name|toString
 argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-comment|// Read possible new DECOMMISSIONING_TIMEOUT_KEY from yarn-site.xml.
-comment|// This enables DecommissioningNodesWatcher to pick up new value
-comment|// without ResourceManager restart.
-DECL|method|readDecommissioningTimeout (Configuration conf)
-specifier|private
-name|void
-name|readDecommissioningTimeout
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
-block|{
-try|try
-block|{
-if|if
-condition|(
-name|conf
-operator|==
-literal|null
-condition|)
-block|{
-name|conf
-operator|=
-operator|new
-name|YarnConfiguration
-argument_list|()
-expr_stmt|;
-block|}
-name|int
-name|v
-init|=
-name|conf
-operator|.
-name|getInt
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|RM_NODE_GRACEFUL_DECOMMISSION_TIMEOUT
-argument_list|,
-name|YarnConfiguration
-operator|.
-name|DEFAULT_RM_NODE_GRACEFUL_DECOMMISSION_TIMEOUT
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|defaultTimeoutMs
-operator|!=
-literal|1000L
-operator|*
-name|v
-condition|)
-block|{
-name|defaultTimeoutMs
-operator|=
-literal|1000L
-operator|*
-name|v
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Use new decommissioningTimeoutMs: "
-operator|+
-name|defaultTimeoutMs
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-catch|catch
-parameter_list|(
-name|Exception
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Error readDecommissioningTimeout "
-argument_list|,
-name|e
 argument_list|)
 expr_stmt|;
 block|}

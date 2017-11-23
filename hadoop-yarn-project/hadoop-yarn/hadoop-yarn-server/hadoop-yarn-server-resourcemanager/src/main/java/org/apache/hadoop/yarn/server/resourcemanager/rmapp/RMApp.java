@@ -28,16 +28,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Collection
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -281,6 +271,24 @@ operator|.
 name|records
 operator|.
 name|NodeId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeUpdateType
 import|;
 end_import
 
@@ -558,14 +566,16 @@ name|boolean
 name|allowAccess
 parameter_list|)
 function_decl|;
-comment|/**    * To receive the collection of all {@link RMNode}s whose updates have been    * received by the RMApp. Updates can be node becoming lost or becoming    * healthy etc. The method clears the information from the {@link RMApp}. So    * each call to this method gives the delta from the previous call.    * @param updatedNodes Collection into which the updates are transferred    * @return the number of nodes added to the {@link Collection}    */
-DECL|method|pullRMNodeUpdates (Collection<RMNode> updatedNodes)
+comment|/**    * To receive the collection of all {@link RMNode}s whose updates have been    * received by the RMApp. Updates can be node becoming lost or becoming    * healthy etc. The method clears the information from the {@link RMApp}. So    * each call to this method gives the delta from the previous call.    * @param updatedNodes Map into which the updates are transferred, with each    * node updates as the key, and the {@link NodeUpdateType} for that update    * as the corresponding value.    * @return the number of nodes added to the {@link Map}    */
+DECL|method|pullRMNodeUpdates (Map<RMNode, NodeUpdateType> updatedNodes)
 name|int
 name|pullRMNodeUpdates
 parameter_list|(
-name|Collection
+name|Map
 argument_list|<
 name|RMNode
+argument_list|,
+name|NodeUpdateType
 argument_list|>
 name|updatedNodes
 parameter_list|)

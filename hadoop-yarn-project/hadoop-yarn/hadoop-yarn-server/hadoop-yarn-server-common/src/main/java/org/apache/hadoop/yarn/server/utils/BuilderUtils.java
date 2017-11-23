@@ -620,6 +620,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|NodeUpdateType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|PreemptionMessage
 import|;
 end_import
@@ -1519,10 +1537,14 @@ argument_list|,
 name|lastHealthReportTime
 argument_list|,
 literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
-DECL|method|newNodeReport (NodeId nodeId, NodeState nodeState, String httpAddress, String rackName, Resource used, Resource capability, int numContainers, String healthReport, long lastHealthReportTime, Set<String> nodeLabels)
+DECL|method|newNodeReport (NodeId nodeId, NodeState nodeState, String httpAddress, String rackName, Resource used, Resource capability, int numContainers, String healthReport, long lastHealthReportTime, Set<String> nodeLabels, Integer decommissioningTimeout, NodeUpdateType nodeUpdateType)
 specifier|public
 specifier|static
 name|NodeReport
@@ -1560,6 +1582,12 @@ argument_list|<
 name|String
 argument_list|>
 name|nodeLabels
+parameter_list|,
+name|Integer
+name|decommissioningTimeout
+parameter_list|,
+name|NodeUpdateType
+name|nodeUpdateType
 parameter_list|)
 block|{
 return|return
@@ -1588,10 +1616,14 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+name|decommissioningTimeout
+argument_list|,
+name|nodeUpdateType
 argument_list|)
 return|;
 block|}
-DECL|method|newNodeReport (NodeId nodeId, NodeState nodeState, String httpAddress, String rackName, Resource used, Resource capability, int numContainers, String healthReport, long lastHealthReportTime, Set<String> nodeLabels, ResourceUtilization containersUtilization, ResourceUtilization nodeUtilization)
+DECL|method|newNodeReport (NodeId nodeId, NodeState nodeState, String httpAddress, String rackName, Resource used, Resource capability, int numContainers, String healthReport, long lastHealthReportTime, Set<String> nodeLabels, ResourceUtilization containersUtilization, ResourceUtilization nodeUtilization, Integer decommissioningTimeout, NodeUpdateType nodeUpdateType)
 specifier|public
 specifier|static
 name|NodeReport
@@ -1635,6 +1667,12 @@ name|containersUtilization
 parameter_list|,
 name|ResourceUtilization
 name|nodeUtilization
+parameter_list|,
+name|Integer
+name|decommissioningTimeout
+parameter_list|,
+name|NodeUpdateType
+name|nodeUpdateType
 parameter_list|)
 block|{
 name|NodeReport
@@ -1731,6 +1769,20 @@ operator|.
 name|setNodeUtilization
 argument_list|(
 name|nodeUtilization
+argument_list|)
+expr_stmt|;
+name|nodeReport
+operator|.
+name|setDecommissioningTimeout
+argument_list|(
+name|decommissioningTimeout
+argument_list|)
+expr_stmt|;
+name|nodeReport
+operator|.
+name|setNodeUpdateType
+argument_list|(
+name|nodeUpdateType
 argument_list|)
 expr_stmt|;
 return|return

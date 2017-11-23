@@ -28,16 +28,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Collection
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Collections
 import|;
 end_import
@@ -269,6 +259,24 @@ operator|.
 name|records
 operator|.
 name|NodeId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeUpdateType
 import|;
 end_import
 
@@ -1247,14 +1255,16 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|pullRMNodeUpdates (Collection<RMNode> updatedNodes)
+DECL|method|pullRMNodeUpdates (Map<RMNode, NodeUpdateType> updatedNodes)
 specifier|public
 name|int
 name|pullRMNodeUpdates
 parameter_list|(
-name|Collection
+name|Map
 argument_list|<
 name|RMNode
+argument_list|,
+name|NodeUpdateType
 argument_list|>
 name|updatedNodes
 parameter_list|)

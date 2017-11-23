@@ -445,7 +445,7 @@ name|long
 name|timeStamp
 parameter_list|)
 function_decl|;
-comment|/*    * Optional decommissioning timeout in second    * (null indicates default timeout).    * @return the decommissioning timeout in second.    */
+comment|/*    * Optional decommissioning timeout in second    * (null indicates absent timeout).    * @return the decommissioning timeout in second.    */
 DECL|method|getDecommissioningTimeout ()
 name|Integer
 name|getDecommissioningTimeout

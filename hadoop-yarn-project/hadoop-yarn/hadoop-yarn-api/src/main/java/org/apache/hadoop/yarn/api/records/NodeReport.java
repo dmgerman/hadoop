@@ -201,6 +201,10 @@ argument_list|,
 name|lastHealthReportTime
 argument_list|,
 literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
@@ -208,7 +212,7 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance (NodeId nodeId, NodeState nodeState, String httpAddress, String rackName, Resource used, Resource capability, int numContainers, String healthReport, long lastHealthReportTime, Set<String> nodeLabels)
+DECL|method|newInstance (NodeId nodeId, NodeState nodeState, String httpAddress, String rackName, Resource used, Resource capability, int numContainers, String healthReport, long lastHealthReportTime, Set<String> nodeLabels, Integer decommissioningTimeout, NodeUpdateType nodeUpdateType)
 specifier|public
 specifier|static
 name|NodeReport
@@ -246,6 +250,12 @@ argument_list|<
 name|String
 argument_list|>
 name|nodeLabels
+parameter_list|,
+name|Integer
+name|decommissioningTimeout
+parameter_list|,
+name|NodeUpdateType
+name|nodeUpdateType
 parameter_list|)
 block|{
 name|NodeReport
@@ -328,6 +338,20 @@ operator|.
 name|setNodeLabels
 argument_list|(
 name|nodeLabels
+argument_list|)
+expr_stmt|;
+name|nodeReport
+operator|.
+name|setDecommissioningTimeout
+argument_list|(
+name|decommissioningTimeout
+argument_list|)
+expr_stmt|;
+name|nodeReport
+operator|.
+name|setNodeUpdateType
+argument_list|(
+name|nodeUpdateType
 argument_list|)
 expr_stmt|;
 return|return
@@ -568,7 +592,7 @@ name|long
 name|lastHealthReport
 parameter_list|)
 function_decl|;
-comment|/**    * Get labels of this node    * @return labels of this node    */
+comment|/**    * Get labels of this node.    * @return labels of this node.    */
 annotation|@
 name|Public
 annotation|@
@@ -600,7 +624,7 @@ argument_list|>
 name|nodeLabels
 parameter_list|)
 function_decl|;
-comment|/**    * Get containers aggregated resource utilization in a node    * @return containers resource utilization    */
+comment|/**    * Get containers aggregated resource utilization in a node.    * @return containers resource utilization.    */
 annotation|@
 name|Public
 annotation|@
@@ -640,7 +664,7 @@ literal|"subclass must implement this method"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Get node resource utilization    * @return node resource utilization    */
+comment|/**    * Get node resource utilization.    * @return node resource utilization.    */
 annotation|@
 name|Public
 annotation|@
@@ -666,6 +690,50 @@ name|ResourceUtilization
 name|nodeUtilization
 parameter_list|)
 function_decl|;
+comment|/**    * Optional decommissioning timeout in seconds (null indicates absent    * timeout).    * @return the decommissioning timeout in second.    */
+DECL|method|getDecommissioningTimeout ()
+specifier|public
+name|Integer
+name|getDecommissioningTimeout
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+comment|/**    * Set the decommissioning timeout in seconds (null indicates absent timeout).    * */
+DECL|method|setDecommissioningTimeout (Integer decommissioningTimeout)
+specifier|public
+name|void
+name|setDecommissioningTimeout
+parameter_list|(
+name|Integer
+name|decommissioningTimeout
+parameter_list|)
+block|{}
+comment|/**    * Optional node update type (null indicates absent update type).    * @return the node update.    */
+DECL|method|getNodeUpdateType ()
+specifier|public
+name|NodeUpdateType
+name|getNodeUpdateType
+parameter_list|()
+block|{
+return|return
+name|NodeUpdateType
+operator|.
+name|NODE_UNUSABLE
+return|;
+block|}
+comment|/**    * Set the node update type (null indicates absent node update type).    * */
+DECL|method|setNodeUpdateType (NodeUpdateType nodeUpdateType)
+specifier|public
+name|void
+name|setNodeUpdateType
+parameter_list|(
+name|NodeUpdateType
+name|nodeUpdateType
+parameter_list|)
+block|{}
 block|}
 end_class
 

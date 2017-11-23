@@ -6204,6 +6204,31 @@ name|decommissioningTimeout
 operator|=
 name|timeout
 expr_stmt|;
+comment|// Notify NodesListManager to notify all RMApp so that each
+comment|// Application Master could take any required actions.
+name|rmNode
+operator|.
+name|context
+operator|.
+name|getDispatcher
+argument_list|()
+operator|.
+name|getEventHandler
+argument_list|()
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|NodesListManagerEvent
+argument_list|(
+name|NodesListManagerEventType
+operator|.
+name|NODE_DECOMMISSIONING
+argument_list|,
+name|rmNode
+argument_list|)
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|rmNode

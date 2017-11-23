@@ -7287,6 +7287,13 @@ name|rmNode
 operator|.
 name|getNodeUtilization
 argument_list|()
+argument_list|,
+name|rmNode
+operator|.
+name|getDecommissioningTimeout
+argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 return|return

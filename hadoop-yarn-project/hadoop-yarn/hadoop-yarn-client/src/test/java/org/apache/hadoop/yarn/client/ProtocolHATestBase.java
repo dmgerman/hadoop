@@ -3733,7 +3733,7 @@ name|ApplicationId
 operator|.
 name|newInstance
 argument_list|(
-literal|1000l
+literal|1000L
 argument_list|,
 literal|1
 argument_list|)
@@ -3782,9 +3782,9 @@ literal|"fake an application report"
 argument_list|,
 literal|""
 argument_list|,
-literal|1000l
+literal|1000L
 argument_list|,
-literal|1200l
+literal|1200L
 argument_list|,
 name|FinalApplicationStatus
 operator|.
@@ -3850,7 +3850,7 @@ name|ApplicationId
 operator|.
 name|newInstance
 argument_list|(
-literal|1000l
+literal|1000L
 argument_list|,
 literal|1
 argument_list|)
@@ -3953,9 +3953,7 @@ literal|4
 argument_list|,
 literal|null
 argument_list|,
-literal|1000l
-argument_list|,
-literal|null
+literal|1000L
 argument_list|)
 decl_stmt|;
 name|List
@@ -4118,9 +4116,9 @@ argument_list|,
 name|createFakeContainerId
 argument_list|()
 argument_list|,
-literal|1000l
+literal|1000L
 argument_list|,
-literal|1200l
+literal|1200L
 argument_list|)
 return|;
 block|}
@@ -4185,9 +4183,9 @@ argument_list|)
 argument_list|,
 literal|null
 argument_list|,
-literal|1000l
+literal|1000L
 argument_list|,
-literal|1200l
+literal|1200L
 argument_list|,
 literal|""
 argument_list|,

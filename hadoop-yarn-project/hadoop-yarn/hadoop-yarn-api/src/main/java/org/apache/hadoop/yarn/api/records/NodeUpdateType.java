@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager
+DECL|package|org.apache.hadoop.yarn.api.records
 package|package
 name|org
 operator|.
@@ -14,17 +14,21 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
+name|api
 operator|.
-name|resourcemanager
+name|records
 package|;
 end_package
 
+begin_comment
+comment|/**  *<p>Taxonomy of the<code>NodeState</code> that a  *<code>Node</code> might transition into.</p>  * */
+end_comment
+
 begin_enum
-DECL|enum|NodesListManagerEventType
+DECL|enum|NodeUpdateType
 specifier|public
 enum|enum
-name|NodesListManagerEventType
+name|NodeUpdateType
 block|{
 DECL|enumConstant|NODE_USABLE
 name|NODE_USABLE
