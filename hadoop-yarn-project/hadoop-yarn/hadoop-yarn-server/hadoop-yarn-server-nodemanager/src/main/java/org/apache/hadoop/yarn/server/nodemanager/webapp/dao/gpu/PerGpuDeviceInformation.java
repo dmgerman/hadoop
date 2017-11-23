@@ -526,7 +526,7 @@ name|XmlElement
 argument_list|(
 name|name
 operator|=
-literal|"bar1_memory_usage"
+literal|"fb_memory_usage"
 argument_list|)
 DECL|method|getGpuMemoryUsage ()
 specifier|public

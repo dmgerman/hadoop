@@ -178,6 +178,28 @@ name|DockerLinuxContainerRuntime
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|webapp
+operator|.
+name|dao
+operator|.
+name|NMResourceInfo
+import|;
+end_import
+
 begin_comment
 comment|/**  * {@link ResourcePlugin} is an interface for node manager to easier support  * discovery/manage/isolation for new resource types.  *  *<p>  * It has two major part: {@link ResourcePlugin#createResourceHandler(Context,  * CGroupsHandler, PrivilegedOperationExecutor)} and  * {@link ResourcePlugin#getNodeResourceHandlerInstance()}, see javadocs below  * for more details.  *</p>  */
 end_comment
@@ -233,6 +255,14 @@ DECL|method|getDockerCommandPluginInstance ()
 name|DockerCommandPlugin
 name|getDockerCommandPluginInstance
 parameter_list|()
+function_decl|;
+comment|/**    * Get resource information from this plugin.    *    * @return NMResourceInfo, an example is    * {@link org.apache.hadoop.yarn.server.nodemanager.webapp.dao.gpu.GpuDeviceInformation}    *    * @throws YarnException when any issue occurs    */
+DECL|method|getNMResourceInfo ()
+name|NMResourceInfo
+name|getNMResourceInfo
+parameter_list|()
+throws|throws
+name|YarnException
 function_decl|;
 block|}
 end_interface

@@ -911,8 +911,6 @@ return|return
 literal|null
 return|;
 block|}
-annotation|@
-name|VisibleForTesting
 DECL|method|getGpuAllocator ()
 specifier|public
 name|GpuResourceAllocator

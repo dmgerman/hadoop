@@ -208,7 +208,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|16384
+literal|12193
 argument_list|,
 name|gpu1
 operator|.

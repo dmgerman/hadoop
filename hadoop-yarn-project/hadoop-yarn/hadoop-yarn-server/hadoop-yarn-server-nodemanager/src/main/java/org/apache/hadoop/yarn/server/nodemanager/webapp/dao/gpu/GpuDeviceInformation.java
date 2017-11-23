@@ -79,7 +79,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * All GPU Device Information in the system.  */
+comment|/**  * All GPU Device Information in the system, fetched from nvidia-smi.  */
 end_comment
 
 begin_class

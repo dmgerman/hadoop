@@ -2495,7 +2495,7 @@ operator|.
 name|getGpuAllocator
 argument_list|()
 operator|.
-name|getDeviceAllocationMapping
+name|getDeviceAllocationMappingCopy
 argument_list|()
 decl_stmt|;
 name|Assert
@@ -2709,7 +2709,7 @@ operator|.
 name|getGpuAllocator
 argument_list|()
 operator|.
-name|getDeviceAllocationMapping
+name|getDeviceAllocationMappingCopy
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -2912,7 +2912,7 @@ operator|.
 name|getGpuAllocator
 argument_list|()
 operator|.
-name|getDeviceAllocationMapping
+name|getDeviceAllocationMappingCopy
 argument_list|()
 expr_stmt|;
 name|Assert
