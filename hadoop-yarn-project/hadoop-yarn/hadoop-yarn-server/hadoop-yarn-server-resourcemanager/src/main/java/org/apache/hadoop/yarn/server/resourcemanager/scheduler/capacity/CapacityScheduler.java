@@ -3680,6 +3680,8 @@ parameter_list|(
 name|CapacityScheduler
 name|cs
 parameter_list|)
+throws|throws
+name|InterruptedException
 block|{
 comment|// First randomize the start point
 name|int
@@ -3765,8 +3767,6 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-try|try
-block|{
 name|Thread
 operator|.
 name|sleep
@@ -3777,13 +3777,6 @@ name|getAsyncScheduleInterval
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|e
-parameter_list|)
-block|{}
 block|}
 DECL|class|AsyncScheduleThread
 specifier|static
@@ -3839,7 +3832,14 @@ parameter_list|()
 block|{
 while|while
 condition|(
-literal|true
+operator|!
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|isInterrupted
+argument_list|()
 condition|)
 block|{
 try|try
@@ -3850,14 +3850,6 @@ operator|!
 name|runSchedules
 operator|.
 name|get
-argument_list|()
-operator|||
-name|Thread
-operator|.
-name|currentThread
-argument_list|()
-operator|.
-name|isInterrupted
 argument_list|()
 condition|)
 block|{
@@ -3906,9 +3898,29 @@ name|InterruptedException
 name|ie
 parameter_list|)
 block|{
-comment|// Do nothing
+comment|// keep interrupt signal
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
 block|}
 block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"AsyncScheduleThread["
+operator|+
+name|getName
+argument_list|()
+operator|+
+literal|"] exited!"
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|beginSchedule ()
 specifier|public
@@ -4071,8 +4083,23 @@ argument_list|(
 name|e
 argument_list|)
 expr_stmt|;
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
 block|}
 block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"ResourceCommitterService exited!"
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|addNewCommitRequest ( ResourceCommitRequest<FiCaSchedulerApp, FiCaSchedulerNode> proposal)
 specifier|public
