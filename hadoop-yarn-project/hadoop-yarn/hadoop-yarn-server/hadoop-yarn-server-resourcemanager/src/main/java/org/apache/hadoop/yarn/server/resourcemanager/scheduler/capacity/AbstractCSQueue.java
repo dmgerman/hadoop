@@ -4727,11 +4727,6 @@ name|none
 argument_list|()
 argument_list|)
 argument_list|,
-name|Resources
-operator|.
-name|none
-argument_list|()
-argument_list|,
 name|nodeLabel
 argument_list|,
 name|this
@@ -4815,11 +4810,6 @@ operator|.
 name|none
 argument_list|()
 argument_list|)
-argument_list|,
-name|Resources
-operator|.
-name|none
-argument_list|()
 argument_list|,
 name|nodeLabel
 argument_list|,

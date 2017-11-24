@@ -808,7 +808,7 @@ block|}
 block|}
 block|}
 comment|/**    * Update partitioned resource usage, if nodePartition == null, will update    * used resource for all partitions of this queue.    */
-DECL|method|updateUsedCapacity (final ResourceCalculator rc, final Resource totalPartitionResource, Resource clusterResource, String nodePartition, AbstractCSQueue childQueue)
+DECL|method|updateUsedCapacity (final ResourceCalculator rc, final Resource totalPartitionResource, String nodePartition, AbstractCSQueue childQueue)
 specifier|public
 specifier|static
 name|void
@@ -821,9 +821,6 @@ parameter_list|,
 specifier|final
 name|Resource
 name|totalPartitionResource
-parameter_list|,
-name|Resource
-name|clusterResource
 parameter_list|,
 name|String
 name|nodePartition
@@ -1312,8 +1309,6 @@ argument_list|,
 name|cluster
 argument_list|)
 argument_list|,
-name|cluster
-argument_list|,
 name|partition
 argument_list|,
 name|childQueue
@@ -1335,8 +1330,6 @@ name|nodePartition
 argument_list|,
 name|cluster
 argument_list|)
-argument_list|,
-name|cluster
 argument_list|,
 name|nodePartition
 argument_list|,

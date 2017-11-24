@@ -4103,6 +4103,8 @@ comment|// Get child's max resource
 name|Resource
 name|childConfiguredMaxResource
 init|=
+name|child
+operator|.
 name|getEffectiveMaxCapacityDown
 argument_list|(
 name|nodePartition
