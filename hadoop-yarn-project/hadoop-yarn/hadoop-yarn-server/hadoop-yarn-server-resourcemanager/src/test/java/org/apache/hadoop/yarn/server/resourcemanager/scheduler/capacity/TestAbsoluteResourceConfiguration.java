@@ -158,24 +158,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|resource
-operator|.
-name|Resources
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|junit
 operator|.
 name|Assert
@@ -1488,7 +1470,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-comment|/**      * Queue structure is as follows. root / | \ a b c / \ | a1 a2 b1      *      * Test below cases 1) Configure percentage based capacity and absolute      * resource together. 2) As per above tree structure, ensure all values      * could be retrieved. 3) Validate whether min resource cannot be more than      * max resources. 4) Validate whether max resource of queue cannot be more      * than its parent max resource.      */
+comment|/**      * Queue structure is as follows.      *    root      *   / | \      *   a b c      *   / \ |      *  a1 a2 b1      *      * Test below cases 1) Configure percentage based capacity and absolute      * resource together. 2) As per above tree structure, ensure all values      * could be retrieved. 3) Validate whether min resource cannot be more than      * max resources. 4) Validate whether max resource of queue cannot be more      * than its parent max resource.      */
 comment|// create conf with basic queue configuration.
 name|CapacitySchedulerConfiguration
 name|csConf
@@ -1565,8 +1547,7 @@ operator|.
 name|getResourceScheduler
 argument_list|()
 decl_stmt|;
-comment|// 1. Create a new config with capcity and min/max together. Ensure an
-comment|// exception is thrown.
+comment|// 1. Create a new config with min/max.
 name|CapacitySchedulerConfiguration
 name|csConf1
 init|=
@@ -1594,11 +1575,6 @@ name|getRMContext
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|fail
-argument_list|()
-expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -1608,26 +1584,8 @@ parameter_list|)
 block|{
 name|Assert
 operator|.
-name|assertTrue
-argument_list|(
-name|e
-operator|instanceof
-name|IOException
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|"Failed to re-init queues : Queue 'queueA' should use either"
-operator|+
-literal|" percentage based capacity configuration or absolute resource."
-argument_list|,
-name|e
-operator|.
-name|getMessage
+name|fail
 argument_list|()
-argument_list|)
 expr_stmt|;
 block|}
 name|rm
@@ -2127,7 +2085,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-comment|/**      * Queue structure is as follows. root / | \ a b c / \ | a1 a2 b1      *      * Test below cases: 1) Parent and its child queues must use either      * percentage based or absolute resource configuration. 2) Parent's min      * resource must be more than sum of child's min resource.      */
+comment|/**      * Queue structure is as follows.      *   root      *  / | \      *  a b c      * / \ |      * a1 a2 b1      *      * Test below cases: 1) Parent and its child queues must use either      * percentage based or absolute resource configuration. 2) Parent's min      * resource must be more than sum of child's min resource.      */
 comment|// create conf with basic queue configuration.
 name|CapacitySchedulerConfiguration
 name|csConf
@@ -2220,49 +2178,6 @@ argument_list|(
 name|QUEUEC_FULL
 argument_list|,
 literal|25f
-argument_list|)
-expr_stmt|;
-comment|// Also unset resource based config.
-name|csConf
-operator|.
-name|setMinimumResourceRequirement
-argument_list|(
-literal|""
-argument_list|,
-name|QUEUEA_FULL
-argument_list|,
-name|Resources
-operator|.
-name|none
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|csConf
-operator|.
-name|setMinimumResourceRequirement
-argument_list|(
-literal|""
-argument_list|,
-name|QUEUEB_FULL
-argument_list|,
-name|Resources
-operator|.
-name|none
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|csConf
-operator|.
-name|setMinimumResourceRequirement
-argument_list|(
-literal|""
-argument_list|,
-name|QUEUEC_FULL
-argument_list|,
-name|Resources
-operator|.
-name|none
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Get queue object to verify min/max resource configuration.
