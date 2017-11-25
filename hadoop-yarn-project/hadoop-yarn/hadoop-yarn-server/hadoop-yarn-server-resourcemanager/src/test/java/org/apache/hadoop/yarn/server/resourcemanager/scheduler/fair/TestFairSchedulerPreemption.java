@@ -1272,13 +1272,16 @@ name|queue2
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|verifyPreemption (int numStarvedAppContainers)
+DECL|method|verifyPreemption (int numStarvedAppContainers, int numGreedyAppContainers)
 specifier|private
 name|void
 name|verifyPreemption
 parameter_list|(
 name|int
 name|numStarvedAppContainers
+parameter_list|,
+name|int
+name|numGreedyAppContainers
 parameter_list|)
 throws|throws
 name|InterruptedException
@@ -1309,9 +1312,7 @@ operator|.
 name|size
 argument_list|()
 operator|==
-literal|2
-operator|*
-name|numStarvedAppContainers
+name|numGreedyAppContainers
 condition|)
 block|{
 break|break;
@@ -1329,9 +1330,7 @@ name|assertEquals
 argument_list|(
 literal|"Incorrect # of containers on the greedy app"
 argument_list|,
-literal|2
-operator|*
-name|numStarvedAppContainers
+name|numGreedyAppContainers
 argument_list|,
 name|greedyApp
 operator|.
@@ -1350,9 +1349,7 @@ literal|"Incorrect # of preempted containers in QueueMetrics"
 argument_list|,
 literal|8
 operator|-
-literal|2
-operator|*
-name|numStarvedAppContainers
+name|numGreedyAppContainers
 argument_list|,
 name|greedyApp
 operator|.
@@ -1597,6 +1594,8 @@ block|{
 name|verifyPreemption
 argument_list|(
 literal|2
+argument_list|,
+literal|4
 argument_list|)
 expr_stmt|;
 block|}
@@ -1627,6 +1626,8 @@ expr_stmt|;
 name|verifyPreemption
 argument_list|(
 literal|2
+argument_list|,
+literal|4
 argument_list|)
 expr_stmt|;
 block|}
@@ -1650,6 +1651,8 @@ expr_stmt|;
 name|verifyPreemption
 argument_list|(
 literal|2
+argument_list|,
+literal|4
 argument_list|)
 expr_stmt|;
 block|}
@@ -1784,6 +1787,8 @@ expr_stmt|;
 name|verifyPreemption
 argument_list|(
 literal|2
+argument_list|,
+literal|4
 argument_list|)
 expr_stmt|;
 name|ArrayList
@@ -1855,6 +1860,80 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+DECL|method|testAppNotPreemptedBelowFairShare ()
+specifier|public
+name|void
+name|testAppNotPreemptedBelowFairShare
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|takeAllResources
+argument_list|(
+literal|"root.preemptable.child-1"
+argument_list|)
+expr_stmt|;
+name|tryPreemptMoreThanFairShare
+argument_list|(
+literal|"root.preemptable.child-2"
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|tryPreemptMoreThanFairShare (String queueName)
+specifier|private
+name|void
+name|tryPreemptMoreThanFairShare
+parameter_list|(
+name|String
+name|queueName
+parameter_list|)
+throws|throws
+name|InterruptedException
+block|{
+name|ApplicationAttemptId
+name|appAttemptId
+init|=
+name|createSchedulingRequest
+argument_list|(
+literal|3
+operator|*
+name|GB
+argument_list|,
+literal|3
+argument_list|,
+name|queueName
+argument_list|,
+literal|"default"
+argument_list|,
+name|NODE_CAPACITY_MULTIPLE
+operator|*
+name|rmNodes
+operator|.
+name|size
+argument_list|()
+operator|/
+literal|2
+argument_list|)
+decl_stmt|;
+name|starvingApp
+operator|=
+name|scheduler
+operator|.
+name|getSchedulerApp
+argument_list|(
+name|appAttemptId
+argument_list|)
+expr_stmt|;
+name|verifyPreemption
+argument_list|(
+literal|1
+argument_list|,
+literal|5
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
 DECL|method|testPreemptionBetweenSiblingQueuesWithParentAtFairShare ()
 specifier|public
 name|void
@@ -1887,6 +1966,8 @@ expr_stmt|;
 name|verifyPreemption
 argument_list|(
 literal|2
+argument_list|,
+literal|4
 argument_list|)
 expr_stmt|;
 comment|// Submit a job to the child's sibling to force preemption from the child
@@ -1898,6 +1979,8 @@ expr_stmt|;
 name|verifyPreemption
 argument_list|(
 literal|1
+argument_list|,
+literal|2
 argument_list|)
 expr_stmt|;
 block|}

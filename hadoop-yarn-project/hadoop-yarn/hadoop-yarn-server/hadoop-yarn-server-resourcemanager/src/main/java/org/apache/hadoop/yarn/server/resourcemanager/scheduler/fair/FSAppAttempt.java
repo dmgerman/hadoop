@@ -2947,12 +2947,15 @@ name|preemptionContainerIds
 return|;
 block|}
 block|}
-DECL|method|canContainerBePreempted (RMContainer container)
+DECL|method|canContainerBePreempted (RMContainer container, Resource alreadyConsideringForPreemption)
 name|boolean
 name|canContainerBePreempted
 parameter_list|(
 name|RMContainer
 name|container
+parameter_list|,
+name|Resource
+name|alreadyConsideringForPreemption
 parameter_list|)
 block|{
 if|if
@@ -3034,6 +3037,42 @@ comment|// after preempting this container
 name|Resource
 name|usageAfterPreemption
 init|=
+name|getUsageAfterPreemptingContainer
+argument_list|(
+name|container
+operator|.
+name|getAllocatedResource
+argument_list|()
+argument_list|,
+name|alreadyConsideringForPreemption
+argument_list|)
+decl_stmt|;
+return|return
+operator|!
+name|isUsageBelowShare
+argument_list|(
+name|usageAfterPreemption
+argument_list|,
+name|getFairShare
+argument_list|()
+argument_list|)
+return|;
+block|}
+DECL|method|getUsageAfterPreemptingContainer (Resource containerResources, Resource alreadyConsideringForPreemption)
+specifier|private
+name|Resource
+name|getUsageAfterPreemptingContainer
+parameter_list|(
+name|Resource
+name|containerResources
+parameter_list|,
+name|Resource
+name|alreadyConsideringForPreemption
+parameter_list|)
+block|{
+name|Resource
+name|usageAfterPreemption
+init|=
 name|Resources
 operator|.
 name|clone
@@ -3058,28 +3097,28 @@ name|resourcesToBePreempted
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Subtract this container's allocation to compute usage after preemption
+comment|// Subtract resources of this container and other containers of this app
+comment|// that the FSPreemptionThread is already considering for preemption.
 name|Resources
 operator|.
 name|subtractFrom
 argument_list|(
 name|usageAfterPreemption
 argument_list|,
-name|container
-operator|.
-name|getAllocatedResource
-argument_list|()
+name|containerResources
 argument_list|)
 expr_stmt|;
-return|return
-operator|!
-name|isUsageBelowShare
+name|Resources
+operator|.
+name|subtractFrom
 argument_list|(
 name|usageAfterPreemption
 argument_list|,
-name|getFairShare
-argument_list|()
+name|alreadyConsideringForPreemption
 argument_list|)
+expr_stmt|;
+return|return
+name|usageAfterPreemption
 return|;
 block|}
 comment|/**    * Create and return a container object reflecting an allocation for the    * given application on the given node with the given capability and    * priority.    *    * @param node Node    * @param capability Capability    * @param schedulerKey Scheduler Key    * @return Container    */
