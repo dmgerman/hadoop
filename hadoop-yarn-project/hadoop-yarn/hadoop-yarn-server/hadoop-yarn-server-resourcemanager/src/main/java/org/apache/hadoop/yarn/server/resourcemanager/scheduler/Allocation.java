@@ -224,6 +224,15 @@ name|Container
 argument_list|>
 name|demotedContainers
 decl_stmt|;
+DECL|field|previousAttemptContainers
+specifier|private
+specifier|final
+name|List
+argument_list|<
+name|Container
+argument_list|>
+name|previousAttemptContainers
+decl_stmt|;
 DECL|field|resourceLimit
 specifier|private
 name|Resource
@@ -336,6 +345,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -410,10 +421,12 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|Allocation (List<Container> containers, Resource resourceLimit, Set<ContainerId> strictContainers, Set<ContainerId> fungibleContainers, List<ResourceRequest> fungibleResources, List<NMToken> nmTokens, List<Container> increasedContainers, List<Container> decreasedContainer, List<Container> promotedContainers, List<Container> demotedContainer)
+DECL|method|Allocation (List<Container> containers, Resource resourceLimit, Set<ContainerId> strictContainers, Set<ContainerId> fungibleContainers, List<ResourceRequest> fungibleResources, List<NMToken> nmTokens, List<Container> increasedContainers, List<Container> decreasedContainer, List<Container> promotedContainers, List<Container> demotedContainer, List<Container> previousAttemptContainers)
 specifier|public
 name|Allocation
 parameter_list|(
@@ -473,6 +486,12 @@ argument_list|<
 name|Container
 argument_list|>
 name|demotedContainer
+parameter_list|,
+name|List
+argument_list|<
+name|Container
+argument_list|>
+name|previousAttemptContainers
 parameter_list|)
 block|{
 name|this
@@ -534,6 +553,12 @@ operator|.
 name|demotedContainers
 operator|=
 name|demotedContainer
+expr_stmt|;
+name|this
+operator|.
+name|previousAttemptContainers
+operator|=
+name|previousAttemptContainers
 expr_stmt|;
 block|}
 DECL|method|getContainers ()
@@ -661,6 +686,19 @@ parameter_list|()
 block|{
 return|return
 name|demotedContainers
+return|;
+block|}
+DECL|method|getPreviousAttemptContainers ()
+specifier|public
+name|List
+argument_list|<
+name|Container
+argument_list|>
+name|getPreviousAttemptContainers
+parameter_list|()
+block|{
+return|return
+name|previousAttemptContainers
 return|;
 block|}
 annotation|@

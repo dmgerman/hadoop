@@ -3935,6 +3935,15 @@ name|List
 argument_list|<
 name|Container
 argument_list|>
+name|previousAttemptContainers
+init|=
+name|pullPreviousAttemptContainers
+argument_list|()
+decl_stmt|;
+name|List
+argument_list|<
+name|Container
+argument_list|>
 name|newlyAllocatedContainers
 init|=
 name|pullNewlyAllocatedContainers
@@ -4024,6 +4033,8 @@ argument_list|,
 name|newlyPromotedContainers
 argument_list|,
 name|newlyDemotedContainers
+argument_list|,
+name|previousAttemptContainers
 argument_list|)
 return|;
 block|}

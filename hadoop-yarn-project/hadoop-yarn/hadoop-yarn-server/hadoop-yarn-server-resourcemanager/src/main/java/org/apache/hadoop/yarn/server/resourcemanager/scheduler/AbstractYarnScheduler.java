@@ -1882,7 +1882,7 @@ operator|.
 name|getCurrentAppAttempt
 argument_list|()
 operator|.
-name|getLiveContainers
+name|pullContainersToTransfer
 argument_list|()
 decl_stmt|;
 name|ContainerId

@@ -1266,6 +1266,39 @@ argument_list|>
 name|updateErrors
 parameter_list|)
 block|{   }
+comment|/**    * Get the list of running containers as viewed by    *<code>ResourceManager</code> from previous application attempts which    * have not been reported to the Application Master yet.    *<br/>    * These containers were recovered by the RM after the application master    * had already registered. This may happen after RM restart when some NMs get    * delayed in connecting to the RM and reporting the active containers.    * Since they were not reported in the registration    * response, they are reported in the response to the AM heartbeat.    *    * @return the list of running containers as viewed by    *<code>ResourceManager</code> from previous application attempts.    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getContainersFromPreviousAttempts ()
+specifier|public
+specifier|abstract
+name|List
+argument_list|<
+name|Container
+argument_list|>
+name|getContainersFromPreviousAttempts
+parameter_list|()
+function_decl|;
+comment|/**    * Set the list of running containers as viewed by    *<code>ResourceManager</code> from previous application attempts which have    * not been reported to the Application Master yet.    *<br/>    * These containers were recovered by the RM after the application master    * had already registered. This may happen after RM restart when some NMs get    * delayed in connecting to the RM and reporting the active containers.    * Since they were not reported in the registration    * response, they are reported in the response to the AM heartbeat.    *    * @param containersFromPreviousAttempt    *          the list of running containers as viewed by    *<code>ResourceManager</code> from previous application attempts.    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setContainersFromPreviousAttempts ( List<Container> containersFromPreviousAttempt)
+specifier|public
+specifier|abstract
+name|void
+name|setContainersFromPreviousAttempts
+parameter_list|(
+name|List
+argument_list|<
+name|Container
+argument_list|>
+name|containersFromPreviousAttempt
+parameter_list|)
+function_decl|;
 annotation|@
 name|Private
 annotation|@
@@ -1689,6 +1722,34 @@ operator|.
 name|setUpdateErrors
 argument_list|(
 name|updateErrors
+argument_list|)
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+comment|/**      * Set the<code>containersFromPreviousAttempt</code> of the response.      * @see AllocateResponse#setContainersFromPreviousAttempts(List)      * @param containersFromPreviousAttempt      *<code>containersFromPreviousAttempt</code> of the response      * @return {@link AllocateResponseBuilder}      */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|containersFromPreviousAttempt ( List<Container> containersFromPreviousAttempt)
+specifier|public
+name|AllocateResponseBuilder
+name|containersFromPreviousAttempt
+parameter_list|(
+name|List
+argument_list|<
+name|Container
+argument_list|>
+name|containersFromPreviousAttempt
+parameter_list|)
+block|{
+name|allocateResponse
+operator|.
+name|setContainersFromPreviousAttempts
+argument_list|(
+name|containersFromPreviousAttempt
 argument_list|)
 expr_stmt|;
 return|return

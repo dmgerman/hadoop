@@ -4666,6 +4666,11 @@ name|application
 operator|.
 name|pullNewlyDemotedContainers
 argument_list|()
+argument_list|,
+name|application
+operator|.
+name|pullPreviousAttemptContainers
+argument_list|()
 argument_list|)
 return|;
 block|}

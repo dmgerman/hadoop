@@ -2287,6 +2287,16 @@ name|getApplicationPriority
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|response
+operator|.
+name|setContainersFromPreviousAttempts
+argument_list|(
+name|allocation
+operator|.
+name|getPreviousAttemptContainers
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|handleNodeUpdates (RMApp app, AllocateResponse allocateResponse)
 specifier|private
