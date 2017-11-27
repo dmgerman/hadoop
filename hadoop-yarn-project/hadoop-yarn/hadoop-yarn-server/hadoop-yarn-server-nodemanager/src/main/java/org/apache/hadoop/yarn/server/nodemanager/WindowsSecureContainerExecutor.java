@@ -3632,6 +3632,11 @@ argument_list|,
 name|nmAddr
 argument_list|,
 name|localDirs
+argument_list|,
+name|super
+operator|.
+name|getConf
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|String

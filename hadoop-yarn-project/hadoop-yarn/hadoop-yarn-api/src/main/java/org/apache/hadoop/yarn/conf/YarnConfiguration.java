@@ -5844,6 +5844,27 @@ name|NM_CONTAINER_LOCALIZER_JAVA_OPTS_DEFAULT
 init|=
 literal|"-Xmx256m"
 decl_stmt|;
+comment|/** The log level of container localizer process. */
+DECL|field|NM_CONTAINER_LOCALIZER_LOG_LEVEL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_CONTAINER_LOCALIZER_LOG_LEVEL
+init|=
+name|NM_PREFIX
+operator|+
+literal|"container-localizer.log.level"
+decl_stmt|;
+DECL|field|NM_CONTAINER_LOCALIZER_LOG_LEVEL_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_CONTAINER_LOCALIZER_LOG_LEVEL_DEFAULT
+init|=
+literal|"INFO"
+decl_stmt|;
 comment|/** Prefix for runtime configuration constants. */
 DECL|field|LINUX_CONTAINER_RUNTIME_PREFIX
 specifier|public
