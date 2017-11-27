@@ -1575,7 +1575,7 @@ name|relative
 return|;
 block|}
 block|}
-comment|/**    * Returns the final S3 location for a relative path as a Hadoop {@link Path}.    * This is a final method that calls {@link #getFinalKey(String, JobContext)}    * to determine the final location.    *    * @param relative the path of a file relative to the task attempt path    * @param context the JobContext or TaskAttemptContext for this job    * @return the S3 Path where the file will be uploaded    */
+comment|/**    * Returns the final S3 location for a relative path as a Hadoop {@link Path}.    * This is a final method that calls {@link #getFinalKey(String, JobContext)}    * to determine the final location.    *    * @param relative the path of a file relative to the task attempt path    * @param context the JobContext or TaskAttemptContext for this job    * @return the S3 Path where the file will be uploaded    * @throws IOException IO problem    */
 DECL|method|getFinalPath (String relative, JobContext context)
 specifier|protected
 specifier|final

@@ -1779,7 +1779,7 @@ name|suppressExceptions
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Abort all pending uploads to the destination directory during    * job cleanup operations.    * @param suppressExceptions should exceptions be suppressed    */
+comment|/**    * Abort all pending uploads to the destination directory during    * job cleanup operations.    * @param suppressExceptions should exceptions be suppressed    * @throws IOException IO problem    */
 DECL|method|abortPendingUploadsInCleanup ( boolean suppressExceptions)
 specifier|protected
 name|void

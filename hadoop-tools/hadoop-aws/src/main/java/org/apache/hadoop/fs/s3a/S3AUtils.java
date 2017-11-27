@@ -3641,7 +3641,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Map an operation to every {@link LocatedFileStatus} in a remote    * iterator, returning a list of the results.    * @param iterator iterator from a list    * @param eval closure to evaluate    * @throws IOException anything in the closure, or iteration logic.    */
+comment|/**    * Map an operation to every {@link LocatedFileStatus} in a remote    * iterator, returning a list of the results.    * @param<T> return type of map    * @param iterator iterator from a list    * @param eval closure to evaluate    * @return the list of mapped results.    * @throws IOException anything in the closure, or iteration logic.    */
 DECL|method|mapLocatedFiles ( RemoteIterator<LocatedFileStatus> iterator, LocatedFileStatusMap<T> eval)
 specifier|public
 specifier|static
@@ -3706,7 +3706,7 @@ return|return
 name|results
 return|;
 block|}
-comment|/**    * Map an operation to every {@link LocatedFileStatus} in a remote    * iterator, returning a list of the all results which were not empty.    * @param iterator iterator from a list    * @param eval closure to evaluate    * @throws IOException anything in the closure, or iteration logic.    */
+comment|/**    * Map an operation to every {@link LocatedFileStatus} in a remote    * iterator, returning a list of the all results which were not empty.    * @param<T> return type of map    * @param iterator iterator from a list    * @param eval closure to evaluate    * @return the flattened list of mapped results.    * @throws IOException anything in the closure, or iteration logic.    */
 DECL|method|flatmapLocatedFiles ( RemoteIterator<LocatedFileStatus> iterator, LocatedFileStatusMap<Optional<T>> eval)
 specifier|public
 specifier|static

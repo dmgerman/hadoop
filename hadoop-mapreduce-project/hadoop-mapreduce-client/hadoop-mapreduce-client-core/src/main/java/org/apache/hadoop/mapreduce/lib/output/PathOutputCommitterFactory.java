@@ -163,7 +163,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A factory for committers implementing the {@link PathOutputCommitter}  * methods, and so can be used from {@link FileOutputFormat}.  * The base implementation returns {@link FileOutputCommitter} instances.  *  * Algorithm:  *<ol>  *<ul>If an explicit committer factory is named, it is used.</ul>  *<ul>The output path is examined.  *   If is non null and there is an explicit schema for that filesystem,  *   its factory is instantiated.</ul>  *<ul>Otherwise, an instance of {@link FileOutputCommitter} is  *   created.</ul>  *</ol>  *  * In {@link FileOutputFormat}, the created factory has its method  * {@link #createOutputCommitter(Path, TaskAttemptContext)} with a task  * attempt context and a possibly null path.  *  */
+comment|/**  * A factory for committers implementing the {@link PathOutputCommitter}  * methods, and so can be used from {@link FileOutputFormat}.  * The base implementation returns {@link FileOutputCommitter} instances.  *  * Algorithm:  *<ol>  *<li>If an explicit committer factory is named, it is used.</li>  *<li>The output path is examined.  *   If is non null and there is an explicit schema for that filesystem,  *   its factory is instantiated.</li>  *<li>Otherwise, an instance of {@link FileOutputCommitter} is  *   created.</li>  *</ol>  *  * In {@link FileOutputFormat}, the created factory has its method  * {@link #createOutputCommitter(Path, TaskAttemptContext)} with a task  * attempt context and a possibly null path.  *  */
 end_comment
 
 begin_class
@@ -541,7 +541,7 @@ name|conf
 argument_list|)
 return|;
 block|}
-comment|/**    * Create the committer factory for a task attempt& destination, then    * create the committer from it.    * @param outputPath the task's output path, or or null if no output path    * has been defined.    * @param context the task attempt context    * @return the committer to use    * @throws IOException problems instantiating the committer    */
+comment|/**    * Create the committer factory for a task attempt and destination, then    * create the committer from it.    * @param outputPath the task's output path, or or null if no output path    * has been defined.    * @param context the task attempt context    * @return the committer to use    * @throws IOException problems instantiating the committer    */
 DECL|method|createCommitter (Path outputPath, TaskAttemptContext context)
 specifier|public
 specifier|static

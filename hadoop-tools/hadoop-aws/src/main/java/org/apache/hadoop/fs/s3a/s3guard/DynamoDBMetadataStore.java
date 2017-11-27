@@ -3489,7 +3489,7 @@ name|f
 argument_list|)
 return|;
 block|}
-comment|/**    * {@inheritDoc}.    * There is retry around building the list of paths to update, but    * the call to {@link #processBatchWriteRequest(PrimaryKey[], Item[])}    * is only tried once.    * @param meta Directory listing metadata.    * @throws IOException    */
+comment|/**    * {@inheritDoc}.    * There is retry around building the list of paths to update, but    * the call to {@link #processBatchWriteRequest(PrimaryKey[], Item[])}    * is only tried once.    * @param meta Directory listing metadata.    * @throws IOException IO problem    */
 annotation|@
 name|Override
 annotation|@

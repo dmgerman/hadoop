@@ -2275,7 +2275,7 @@ name|success
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * A holder for a possible IOException; the call {@link #maybeRethrow()}    * will throw any exception passed into the constructor, and be a no-op    * if none was.    *    * Why isn't a Java 8 optional used here? The main benefit would be that    * {@link #maybeRethrow()} could be done as a map(), but because Java doesn't    * allow checked exceptions in a map, the following code is invalid    *<pre>    *   exception.map((e) -> {throw e;}    *</pre>    * As a result, the code to work with exceptions would be almost as convoluted    * as the original.    */
+comment|/**    * A holder for a possible IOException; the call {@link #maybeRethrow()}    * will throw any exception passed into the constructor, and be a no-op    * if none was.    *    * Why isn't a Java 8 optional used here? The main benefit would be that    * {@link #maybeRethrow()} could be done as a map(), but because Java doesn't    * allow checked exceptions in a map, the following code is invalid    *<pre>    *   exception.map((e) -&gt; {throw e;}    *</pre>    * As a result, the code to work with exceptions would be almost as convoluted    * as the original.    */
 DECL|class|MaybeIOE
 specifier|public
 specifier|static
