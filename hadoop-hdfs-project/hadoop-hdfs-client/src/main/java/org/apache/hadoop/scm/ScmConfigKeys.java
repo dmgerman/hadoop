@@ -145,7 +145,7 @@ name|OZONE_SCM_CHUNK_SIZE_KEY
 init|=
 literal|"ozone.scm.chunk.size"
 decl_stmt|;
-comment|// 1 MB by default
+comment|// 16 MB by default
 DECL|field|OZONE_SCM_CHUNK_SIZE_DEFAULT
 specifier|public
 specifier|static
@@ -153,7 +153,7 @@ specifier|final
 name|int
 name|OZONE_SCM_CHUNK_SIZE_DEFAULT
 init|=
-literal|1
+literal|16
 operator|*
 literal|1024
 operator|*
@@ -166,7 +166,29 @@ specifier|final
 name|int
 name|OZONE_SCM_CHUNK_MAX_SIZE
 init|=
-literal|1
+literal|32
+operator|*
+literal|1024
+operator|*
+literal|1024
+decl_stmt|;
+DECL|field|OZONE_SCM_RATIS_SEGMENT_SIZE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|OZONE_SCM_RATIS_SEGMENT_SIZE_KEY
+init|=
+literal|"ozone.scm.ratis.segment.size"
+decl_stmt|;
+DECL|field|OZONE_SCM_RATIS_SEGMENT_SIZE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|OZONE_SCM_RATIS_SEGMENT_SIZE_DEFAULT
+init|=
+literal|128
 operator|*
 literal|1024
 operator|*

@@ -772,12 +772,13 @@ name|CloseContainer
 operator|)
 condition|)
 block|{
-return|return
+name|resp
+operator|=
 name|containerProcessHandler
 argument_list|(
 name|msg
 argument_list|)
-return|;
+expr_stmt|;
 block|}
 if|if
 condition|(
