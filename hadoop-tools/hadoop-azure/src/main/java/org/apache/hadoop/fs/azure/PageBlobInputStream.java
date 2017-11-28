@@ -1443,6 +1443,12 @@ name|pagesToSkipOver
 init|=
 name|Math
 operator|.
+name|max
+argument_list|(
+literal|0
+argument_list|,
+name|Math
+operator|.
 name|min
 argument_list|(
 name|n
@@ -1452,6 +1458,7 @@ argument_list|,
 name|numberOfPagesRemaining
 operator|-
 literal|1
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|numberOfPagesRemaining
