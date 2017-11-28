@@ -2125,7 +2125,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * This test creates 1000 containers and reads them back 5 containers at a    * time and verifies that we did get back all containers.    *    * @throws IOException    */
+comment|/**    * This test creates 50 containers and reads them back 5 containers at a    * time and verifies that we did get back all containers.    *    * @throws IOException    */
 annotation|@
 name|Test
 DECL|method|testListContainer ()
@@ -2140,7 +2140,7 @@ specifier|final
 name|int
 name|count
 init|=
-literal|1000
+literal|50
 decl_stmt|;
 specifier|final
 name|int
