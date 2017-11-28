@@ -1064,13 +1064,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setConfiguredMinCapacity (Resource configuredMinResource)
+DECL|method|setConfiguredMinCapacity (Resource minResource)
 specifier|public
 name|void
 name|setConfiguredMinCapacity
 parameter_list|(
 name|Resource
-name|configuredMinResource
+name|minResource
 parameter_list|)
 block|{
 name|maybeInitBuilder
@@ -1078,7 +1078,7 @@ argument_list|()
 expr_stmt|;
 if|if
 condition|(
-name|configuredMinResource
+name|minResource
 operator|==
 literal|null
 condition|)
@@ -1093,7 +1093,7 @@ name|this
 operator|.
 name|configuredMinResource
 operator|=
-name|configuredMinResource
+name|minResource
 expr_stmt|;
 block|}
 annotation|@
@@ -1161,13 +1161,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setConfiguredMaxCapacity (Resource configuredMaxResource)
+DECL|method|setConfiguredMaxCapacity (Resource maxResource)
 specifier|public
 name|void
 name|setConfiguredMaxCapacity
 parameter_list|(
 name|Resource
-name|configuredMaxResource
+name|maxResource
 parameter_list|)
 block|{
 name|maybeInitBuilder
@@ -1190,7 +1190,7 @@ name|this
 operator|.
 name|configuredMaxResource
 operator|=
-name|configuredMaxResource
+name|maxResource
 expr_stmt|;
 block|}
 block|}

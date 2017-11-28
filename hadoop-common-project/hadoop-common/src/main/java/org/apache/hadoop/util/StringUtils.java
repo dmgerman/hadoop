@@ -4882,6 +4882,7 @@ control|)
 block|{
 if|if
 condition|(
+operator|!
 name|Character
 operator|.
 name|isLetter
@@ -4893,8 +4894,6 @@ argument_list|(
 name|i
 argument_list|)
 argument_list|)
-operator|==
-literal|false
 condition|)
 block|{
 return|return

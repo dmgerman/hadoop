@@ -254,6 +254,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ResourceInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|conf
 operator|.
 name|YarnConfiguration
@@ -1642,7 +1660,7 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
-comment|/** Configuring absolute min/max resources in a queue **/
+comment|/** Configuring absolute min/max resources in a queue. **/
 annotation|@
 name|Private
 DECL|field|MINIMUM_RESOURCE
@@ -1697,6 +1715,7 @@ argument_list|(
 name|PATTERN_FOR_ABSOLUTE_RESOURCE
 argument_list|)
 decl_stmt|;
+comment|/**    * Different resource types supported.    */
 DECL|enum|AbsoluteResourceType
 specifier|public
 enum|enum
@@ -7863,7 +7882,7 @@ name|Resource
 operator|.
 name|newInstance
 argument_list|(
-literal|0l
+literal|0L
 argument_list|,
 literal|0
 argument_list|)
@@ -7993,7 +8012,7 @@ operator|.
 name|getMemorySize
 argument_list|()
 operator|==
-literal|0l
+literal|0L
 condition|)
 block|{
 return|return
@@ -8189,6 +8208,36 @@ argument_list|)
 expr_stmt|;
 break|break;
 default|default :
+name|resource
+operator|.
+name|setResourceInformation
+argument_list|(
+name|splits
+index|[
+literal|0
+index|]
+operator|.
+name|trim
+argument_list|()
+argument_list|,
+name|ResourceInformation
+operator|.
+name|newInstance
+argument_list|(
+name|splits
+index|[
+literal|0
+index|]
+operator|.
+name|trim
+argument_list|()
+argument_list|,
+name|units
+argument_list|,
+name|resourceValue
+argument_list|)
+argument_list|)
+expr_stmt|;
 break|break;
 block|}
 block|}

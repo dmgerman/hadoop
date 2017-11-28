@@ -1090,14 +1090,14 @@ name|QueueResourceQuotas
 name|getQueueResourceQuotas
 parameter_list|()
 function_decl|;
-comment|/**    * Get CapacityConfigType as PERCENTAGE or ABSOLUTE_RESOURCE    * @return CapacityConfigType    */
+comment|/**    * Get CapacityConfigType as PERCENTAGE or ABSOLUTE_RESOURCE.    * @return CapacityConfigType    */
 DECL|method|getCapacityConfigType ()
 specifier|public
 name|CapacityConfigType
 name|getCapacityConfigType
 parameter_list|()
 function_decl|;
-comment|/**    * Get effective capacity of queue. If min/max resource is configured,    * preference will be given to absolute configuration over normal capacity.    * Also round down the result to normalizeDown.    *    * @param label    *          partition    * @return effective queue capacity    */
+comment|/**    * Get effective capacity of queue. If min/max resource is configured,    * preference will be given to absolute configuration over normal capacity.    *    * @param label    *          partition    * @return effective queue capacity    */
 DECL|method|getEffectiveCapacity (String label)
 name|Resource
 name|getEffectiveCapacity
@@ -1106,6 +1106,7 @@ name|String
 name|label
 parameter_list|)
 function_decl|;
+comment|/**    * Get effective capacity of queue. If min/max resource is configured,    * preference will be given to absolute configuration over normal capacity.    * Also round down the result to normalizeDown.    *    * @param label    *          partition    * @param factor    *          factor to normalize down     * @return effective queue capacity    */
 DECL|method|getEffectiveCapacityDown (String label, Resource factor)
 name|Resource
 name|getEffectiveCapacityDown
@@ -1117,7 +1118,7 @@ name|Resource
 name|factor
 parameter_list|)
 function_decl|;
-comment|/**    * Get effective max capacity of queue. If min/max resource is configured,    * preference will be given to absolute configuration over normal capacity.    * Also round down the result to normalizeDown.    *    * @param label    *          partition    * @return effective max queue capacity    */
+comment|/**    * Get effective max capacity of queue. If min/max resource is configured,    * preference will be given to absolute configuration over normal capacity.    *    * @param label    *          partition    * @return effective max queue capacity    */
 DECL|method|getEffectiveMaxCapacity (String label)
 name|Resource
 name|getEffectiveMaxCapacity
@@ -1126,6 +1127,7 @@ name|String
 name|label
 parameter_list|)
 function_decl|;
+comment|/**    * Get effective max capacity of queue. If min/max resource is configured,    * preference will be given to absolute configuration over normal capacity.    * Also round down the result to normalizeDown.    *    * @param label    *          partition    * @param factor    *          factor to normalize down     * @return effective max queue capacity    */
 DECL|method|getEffectiveMaxCapacityDown (String label, Resource factor)
 name|Resource
 name|getEffectiveMaxCapacityDown

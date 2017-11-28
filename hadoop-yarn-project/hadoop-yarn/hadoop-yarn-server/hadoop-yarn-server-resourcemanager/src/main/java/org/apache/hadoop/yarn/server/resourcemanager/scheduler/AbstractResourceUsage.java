@@ -274,7 +274,7 @@ name|noLabelUsages
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Usage enum here to make implement cleaner
+comment|/**    * Use enum here to make implementation more cleaner and readable.    * Indicates array index for each resource usage type.    */
 DECL|enum|ResourceType
 specifier|public
 enum|enum
@@ -368,6 +368,7 @@ name|value
 expr_stmt|;
 block|}
 block|}
+comment|/**    * UsageByLabel stores resource array for all resource usage types.    */
 DECL|class|UsageByLabel
 specifier|public
 specifier|static

@@ -411,7 +411,7 @@ name|Resource
 name|stepFactor
 parameter_list|)
 function_decl|;
-comment|/**    * Multiply resource<code>r</code> by factor<code>by</code>     * and normalize up using step-factor<code>stepFactor</code>.    *     * @param r resource to be multiplied    * @param by multiplier array for all resource types    * @param stepFactor factor by which to normalize up     * @return resulting normalized resource    */
+comment|/**    * Multiply resource<code>r</code> by factor<code>by</code>    * and normalize up using step-factor<code>stepFactor</code>.    *    * @param r resource to be multiplied    * @param by multiplier array for all resource types    * @param stepFactor factor by which to normalize up    * @return resulting normalized resource    */
 DECL|method|multiplyAndNormalizeUp ( Resource r, double[] by, Resource stepFactor)
 specifier|public
 specifier|abstract
