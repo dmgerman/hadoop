@@ -459,7 +459,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Get the folder path for the record class' data.    *    * @param cls Data record class.    * @return Path of the folder containing the record class' data files.    */
+comment|/**    * Get the folder path for the record class' data.    *    * @param clazz Data record class.    * @return Path of the folder containing the record class' data files.    */
 DECL|method|getPathForClass (Class<? extends BaseRecord> clazz)
 specifier|private
 name|Path

@@ -1509,7 +1509,7 @@ return|return
 name|response
 return|;
 block|}
-comment|/**    * Picks the most recent entry in the subset that is most agreeable on the    * specified field. 1) If a majority of the collection has the same value for    * the field, the first sorted entry within the subset the matches the    * majority value 2) Otherwise the first sorted entry in the set of all    * entries    *    * @param entries - Collection of state store record objects of the same type    * @param fieldName - Field name for the value to compare    * @return record that is most representative of the field name    */
+comment|/**    * Picks the most recent entry in the subset that is most agreeable on the    * specified field. 1) If a majority of the collection has the same value for    * the field, the first sorted entry within the subset the matches the    * majority value 2) Otherwise the first sorted entry in the set of all    * entries    *    * @param records - Collection of state store record objects of the same type    * @return record that is most representative of the field name    */
 DECL|method|getRepresentativeQuorum ( Collection<MembershipState> records)
 specifier|private
 name|MembershipState

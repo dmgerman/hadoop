@@ -1037,7 +1037,7 @@ operator|.
 name|rpcServer
 return|;
 block|}
-comment|/**    * Set the current RPC socket for the router.    *    * @param rpcAddress RPC address.    */
+comment|/**    * Set the current RPC socket for the router.    *    * @param address RPC address.    */
 DECL|method|setRpcServerAddress (InetSocketAddress address)
 specifier|protected
 name|void
@@ -1148,7 +1148,7 @@ name|this
 argument_list|)
 return|;
 block|}
-comment|/**    * Set the current Admin socket for the router.    *    * @param adminAddress Admin RPC address.    */
+comment|/**    * Set the current Admin socket for the router.    *    * @param address Admin RPC address.    */
 DECL|method|setAdminServerAddress (InetSocketAddress address)
 specifier|protected
 name|void
@@ -1678,7 +1678,7 @@ operator|.
 name|routerId
 return|;
 block|}
-comment|/**    * Sets a unique ID for this router.    *    * @param router Identifier of the Router.    */
+comment|/**    * Sets a unique ID for this router.    *    * @param id Identifier of the Router.    */
 DECL|method|setRouterId (String id)
 specifier|public
 name|void

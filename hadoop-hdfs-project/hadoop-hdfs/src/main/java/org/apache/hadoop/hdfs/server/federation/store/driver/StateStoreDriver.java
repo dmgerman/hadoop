@@ -435,7 +435,7 @@ name|boolean
 name|initDriver
 parameter_list|()
 function_decl|;
-comment|/**    * Initialize storage for a single record class.    *    * @param name String reference of the record class to initialize, used to    *             construct paths and file names for the record. Determined by    *             configuration settings for the specific driver.    * @param clazz Record type corresponding to the provided name.    * @return True if successful, false otherwise.    */
+comment|/**    * Initialize storage for a single record class.    *    * @param className String reference of the record class to initialize,    *                  used to construct paths and file names for the record.    *                  Determined by configuration settings for the specific    *                  driver.    * @param clazz Record type corresponding to the provided name.    * @return True if successful, false otherwise.    */
 DECL|method|initRecordStorage ( String className, Class<T> clazz)
 specifier|public
 specifier|abstract

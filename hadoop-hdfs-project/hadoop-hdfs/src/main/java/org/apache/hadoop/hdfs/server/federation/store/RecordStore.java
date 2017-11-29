@@ -248,7 +248,7 @@ operator|.
 name|driver
 return|;
 block|}
-comment|/**    * Build a state store API implementation interface.    *    * @param interfaceClass The specific interface implementation to create    * @param driver The {@link StateStoreDriver} implementation in use.    * @return An initialized instance of the specified state store API    *         implementation.    */
+comment|/**    * Build a state store API implementation interface.    *    * @param clazz The specific interface implementation to create    * @param driver The {@link StateStoreDriver} implementation in use.    * @return An initialized instance of the specified state store API    *         implementation.    */
 DECL|method|newInstance ( final Class<T> clazz, final StateStoreDriver driver)
 specifier|public
 specifier|static

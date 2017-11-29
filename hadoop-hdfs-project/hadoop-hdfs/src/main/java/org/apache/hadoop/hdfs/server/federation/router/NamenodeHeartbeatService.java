@@ -446,7 +446,7 @@ specifier|private
 name|String
 name|webAddress
 decl_stmt|;
-comment|/**    * Create a new Namenode status updater.    * @param resolver Namenode resolver service to handle NN registration.    * @param nameserviceId Identifier of the nameservice.    * @param namenodeId Identifier of the namenode in HA.    */
+comment|/**    * Create a new Namenode status updater.    * @param resolver Namenode resolver service to handle NN registration.    * @param nsId Identifier of the nameservice.    * @param nnId Identifier of the namenode in HA.    */
 DECL|method|NamenodeHeartbeatService ( ActiveNamenodeResolver resolver, String nsId, String nnId)
 specifier|public
 name|NamenodeHeartbeatService
@@ -1493,7 +1493,7 @@ name|serviceAddress
 return|;
 block|}
 block|}
-comment|/**    * Get the parameters for a Namenode from JMX and add them to the report.    * @param webAddress Web interface of the Namenode to monitor.    * @param report Namenode status report to update with JMX data.    */
+comment|/**    * Get the parameters for a Namenode from JMX and add them to the report.    * @param address Web interface of the Namenode to monitor.    * @param report Namenode status report to update with JMX data.    */
 DECL|method|updateJMXParameters ( String address, NamenodeStatusReport report)
 specifier|private
 name|void

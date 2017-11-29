@@ -154,7 +154,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Register a namenode in the State Store.    *    * @param report Namenode status report.    * @return True if the node was registered and successfully committed to the    *         data store.    * @throws IOException Throws exception if the namenode could not be    *           registered.    */
+comment|/**    * Register a namenode in the State Store.    *    * @param report Namenode status report.    * @return True if the node was registered and successfully committed to the    *         data store.    * @throws IOException Throws exception if the namenode could not be    *         registered.    */
 DECL|method|registerNamenode (NamenodeStatusReport report)
 name|boolean
 name|registerNamenode
@@ -165,7 +165,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get a list of all namespaces that are registered and active in the    * federation.    *    * @return List of name spaces in the federation    * @throws Throws exception if the namespace list is not available.    */
+comment|/**    * Get a list of all namespaces that are registered and active in the    * federation.    *    * @return List of name spaces in the federation    * @throws IOException Throws exception if the namespace list is not    *         available.    */
 DECL|method|getNamespaces ()
 name|Set
 argument_list|<
@@ -176,7 +176,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Assign a unique identifier for the parent router service.    * Required to report the status to the namenode resolver.    *    * @param router Unique string identifier for the router.    */
+comment|/**    * Assign a unique identifier for the parent router service.    * Required to report the status to the namenode resolver.    *    * @param routerId Unique string identifier for the router.    */
 DECL|method|setRouterId (String routerId)
 name|void
 name|setRouterId

@@ -8962,7 +8962,7 @@ end_return
 
 begin_comment
 unit|}
-comment|/**    * Aggregate content summaries for each subcluster.    *    * @param results Collection of individual summaries.    * @return Aggregated content summary.    */
+comment|/**    * Aggregate content summaries for each subcluster.    *    * @param summaries Collection of individual summaries.    * @return Aggregated content summary.    */
 end_comment
 
 begin_function
@@ -12502,7 +12502,7 @@ block|}
 end_function
 
 begin_comment
-comment|/**    * Create a new file status for a mount point.    *    * @param name Name of the mount point.    * @param childrenNum Number of children.    * @param dates Map with the dates.    * @return New HDFS file status representing a mount point.    */
+comment|/**    * Create a new file status for a mount point.    *    * @param name Name of the mount point.    * @param childrenNum Number of children.    * @param date Map with the dates.    * @return New HDFS file status representing a mount point.    */
 end_comment
 
 begin_function

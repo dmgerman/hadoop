@@ -1576,7 +1576,7 @@ name|getNamespaceInfo
 argument_list|()
 return|;
 block|}
-comment|/**    * Picks the most relevant record registration that matches the query. Return    * registrations matching the query in this preference: 1) Most recently    * updated ACTIVE registration 2) Most recently updated STANDBY registration    * (if showStandby) 3) Most recently updated UNAVAILABLE registration (if    * showUnavailable). EXPIRED registrations are ignored.    *    * @param query The select query for NN registrations.    * @param excludes List of NNs to exclude from matching results.    * @param addUnavailable include UNAVAILABLE registrations.    * @param addExpired include EXPIRED registrations.    * @return List of memberships or null if no registrations that    *         both match the query AND the selected states.    * @throws IOException    */
+comment|/**    * Picks the most relevant record registration that matches the query. Return    * registrations matching the query in this preference: 1) Most recently    * updated ACTIVE registration 2) Most recently updated STANDBY registration    * (if showStandby) 3) Most recently updated UNAVAILABLE registration (if    * showUnavailable). EXPIRED registrations are ignored.    *    * @param request The select query for NN registrations.    * @param addUnavailable include UNAVAILABLE registrations.    * @param addExpired include EXPIRED registrations.    * @return List of memberships or null if no registrations that    *         both match the query AND the selected states.    * @throws IOException    */
 DECL|method|getRecentRegistrationForQuery ( GetNamenodeRegistrationsRequest request, boolean addUnavailable, boolean addExpired)
 specifier|private
 name|List

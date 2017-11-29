@@ -826,7 +826,7 @@ return|return
 name|conn
 return|;
 block|}
-comment|/**    * Add a connection to the current pool. It uses a Copy-On-Write approach.    *    * @param conns New connections to add to the pool.    */
+comment|/**    * Add a connection to the current pool. It uses a Copy-On-Write approach.    *    * @param conn New connection to add to the pool.    */
 DECL|method|addConnection (ConnectionContext conn)
 specifier|public
 specifier|synchronized

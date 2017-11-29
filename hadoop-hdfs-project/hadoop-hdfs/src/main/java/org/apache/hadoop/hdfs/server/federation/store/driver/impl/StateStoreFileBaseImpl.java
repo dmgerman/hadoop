@@ -757,7 +757,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Read all lines from a file and deserialize into the desired record type.    *    * @param reader Open handle for the file.    * @param recordClass Record class to create.    * @param includeDates True if dateModified/dateCreated are serialized.    * @return List of records.    * @throws IOException    */
+comment|/**    * Read all lines from a file and deserialize into the desired record type.    *    * @param reader Open handle for the file.    * @param clazz Record class to create.    * @param includeDates True if dateModified/dateCreated are serialized.    * @return List of records.    * @throws IOException    */
 DECL|method|getAllFile ( BufferedReader reader, Class<T> clazz, boolean includeDates)
 specifier|private
 parameter_list|<
@@ -1068,7 +1068,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Overwrite the existing data with a new data set.    *    * @param list List of records to write.    * @param writer BufferedWriter stream to write to.    * @return If the records were succesfully written.    */
+comment|/**    * Overwrite the existing data with a new data set.    *    * @param records List of records to write.    * @param writer BufferedWriter stream to write to.    * @return If the records were succesfully written.    */
 DECL|method|writeAllFile ( Collection<T> records, BufferedWriter writer)
 specifier|private
 parameter_list|<

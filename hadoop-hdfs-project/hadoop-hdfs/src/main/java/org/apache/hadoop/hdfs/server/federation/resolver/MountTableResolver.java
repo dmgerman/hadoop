@@ -1043,7 +1043,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Invalidates all cache entries below this path. It requires the write lock.    *    * @param src Source path.    */
+comment|/**    * Invalidates all cache entries below this path. It requires the write lock.    *    * @param path Source path.    */
 DECL|method|invalidateLocationCache (final String path)
 specifier|private
 name|void
@@ -1999,7 +1999,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Build a location for this result beneath the discovered mount point.    *    * @param result Tree node search result.    * @return PathLocation containing the namespace, local path.    */
+comment|/**    * Build a location for this result beneath the discovered mount point.    *    * @param path Path to build for.    * @param entry Mount table entry.    * @return PathLocation containing the namespace, local path.    */
 DECL|method|buildLocation ( final String path, final MountTable entry)
 specifier|private
 specifier|static

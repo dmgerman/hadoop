@@ -771,7 +771,7 @@ name|clazz
 argument_list|)
 return|;
 block|}
-comment|/**    * Creates an instance of an ActiveNamenodeResolver from the configuration.    *    * @param conf Configuration that defines the namenode resolver class.    * @param obj Context object passed to class constructor.    * @return New active namenode resolver.    */
+comment|/**    * Creates an instance of an ActiveNamenodeResolver from the configuration.    *    * @param conf Configuration that defines the namenode resolver class.    * @param stateStore State store passed to class constructor.    * @return New active namenode resolver.    */
 DECL|method|newActiveNamenodeResolver ( Configuration conf, StateStoreService stateStore)
 specifier|public
 specifier|static
