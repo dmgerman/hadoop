@@ -1220,6 +1220,14 @@ name|__
 argument_list|(
 literal|"Configured Max Capacity:"
 argument_list|,
+operator|(
+name|capacities
+operator|.
+name|getConfiguredMaxResource
+argument_list|()
+operator|==
+literal|null
+operator|||
 name|capacities
 operator|.
 name|getConfiguredMaxResource
@@ -1235,6 +1243,7 @@ operator|.
 name|none
 argument_list|()
 argument_list|)
+operator|)
 condition|?
 literal|"unlimited"
 else|:
