@@ -80,11 +80,17 @@ specifier|final
 name|BlockInfo
 name|block
 decl_stmt|;
-DECL|field|bc
+DECL|field|srcPath
 specifier|private
 specifier|final
-name|BlockCollection
-name|bc
+name|String
+name|srcPath
+decl_stmt|;
+DECL|field|storagePolicyID
+specifier|private
+specifier|final
+name|byte
+name|storagePolicyID
 decl_stmt|;
 comment|/**    * An erasure coding reconstruction task has multiple source nodes.    * A replication task only has 1 source node, stored on top of the array    */
 DECL|field|srcNodes
@@ -180,9 +186,21 @@ name|block
 expr_stmt|;
 name|this
 operator|.
-name|bc
+name|srcPath
 operator|=
 name|bc
+operator|.
+name|getName
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|storagePolicyID
+operator|=
+name|bc
+operator|.
+name|getStoragePolicyID
+argument_list|()
 expr_stmt|;
 name|this
 operator|.
@@ -307,13 +325,24 @@ return|return
 name|srcNodes
 return|;
 block|}
-DECL|method|getBc ()
-name|BlockCollection
-name|getBc
+DECL|method|getSrcPath ()
+specifier|public
+name|String
+name|getSrcPath
 parameter_list|()
 block|{
 return|return
-name|bc
+name|srcPath
+return|;
+block|}
+DECL|method|getStoragePolicyID ()
+specifier|public
+name|byte
+name|getStoragePolicyID
+parameter_list|()
+block|{
+return|return
+name|storagePolicyID
 return|;
 block|}
 DECL|method|getLiveReplicaStorages ()

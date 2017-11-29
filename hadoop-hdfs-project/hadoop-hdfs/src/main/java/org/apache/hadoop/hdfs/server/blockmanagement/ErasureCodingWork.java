@@ -281,10 +281,7 @@ name|blockplacement
 operator|.
 name|chooseTarget
 argument_list|(
-name|getBc
-argument_list|()
-operator|.
-name|getName
+name|getSrcPath
 argument_list|()
 argument_list|,
 name|getAdditionalReplRequired
@@ -313,9 +310,6 @@ name|storagePolicySuite
 operator|.
 name|getPolicy
 argument_list|(
-name|getBc
-argument_list|()
-operator|.
 name|getStoragePolicyID
 argument_list|()
 argument_list|)

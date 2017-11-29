@@ -9073,8 +9073,6 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// choose replication targets: NOT HOLDING THE GLOBAL LOCK
-comment|// It is costly to extract the filename for which chooseTargets is called,
-comment|// so for now we pass in the block collection itself.
 specifier|final
 name|BlockPlacementPolicy
 name|placementPolicy
