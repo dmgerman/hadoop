@@ -389,6 +389,18 @@ argument_list|(
 literal|null
 argument_list|)
 decl_stmt|;
+DECL|method|resetHostIds ()
+specifier|public
+specifier|static
+name|void
+name|resetHostIds
+parameter_list|()
+block|{
+name|NODE_ID
+operator|=
+literal|0
+expr_stmt|;
+block|}
 DECL|method|newNodes (int racks, int nodesPerRack, Resource perNode)
 specifier|public
 specifier|static
