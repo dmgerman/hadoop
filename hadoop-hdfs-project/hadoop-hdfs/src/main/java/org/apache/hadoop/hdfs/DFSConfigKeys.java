@@ -2454,6 +2454,24 @@ name|DFS_NAMENODE_SNAPSHOT_DIFF_ALLOW_SNAP_ROOT_DESCENDANT_DEFAULT
 init|=
 literal|true
 decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|String
+DECL|field|DFS_NAMENODE_SNAPSHOT_DIFF_LISTING_LIMIT
+name|DFS_NAMENODE_SNAPSHOT_DIFF_LISTING_LIMIT
+init|=
+literal|"dfs.namenode.snapshotdiff.listing.limit"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|int
+DECL|field|DFS_NAMENODE_SNAPSHOT_DIFF_LISTING_LIMIT_DEFAULT
+name|DFS_NAMENODE_SNAPSHOT_DIFF_LISTING_LIMIT_DEFAULT
+init|=
+literal|1000
+decl_stmt|;
 comment|// Whether to enable datanode's stale state detection and usage for reads
 DECL|field|DFS_NAMENODE_AVOID_STALE_DATANODE_FOR_READ_KEY
 specifier|public

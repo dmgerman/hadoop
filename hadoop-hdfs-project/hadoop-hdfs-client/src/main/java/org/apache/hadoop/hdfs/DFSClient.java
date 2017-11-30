@@ -1776,22 +1776,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|SnapshotDiffReport
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|SnapshottableDirectoryStatus
 import|;
 end_import
@@ -1825,6 +1809,22 @@ operator|.
 name|protocol
 operator|.
 name|ZoneReencryptionStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|SnapshotDiffReportListing
 import|;
 end_import
 
@@ -10257,11 +10257,11 @@ argument_list|()
 throw|;
 block|}
 block|}
-comment|/**    * Get the difference between two snapshots, or between a snapshot and the    * current tree of a directory.    * @see ClientProtocol#getSnapshotDiffReport(String, String, String)    */
-DECL|method|getSnapshotDiffReport (String snapshotDir, String fromSnapshot, String toSnapshot)
+comment|/**    * Get the difference between two snapshots, or between a snapshot and the    * current tree of a directory.    * @see ClientProtocol#getSnapshotDiffReportListing    */
+DECL|method|getSnapshotDiffReportListing ( String snapshotDir, String fromSnapshot, String toSnapshot, byte[] startPath, int index)
 specifier|public
-name|SnapshotDiffReport
-name|getSnapshotDiffReport
+name|SnapshotDiffReportListing
+name|getSnapshotDiffReportListing
 parameter_list|(
 name|String
 name|snapshotDir
@@ -10271,6 +10271,13 @@ name|fromSnapshot
 parameter_list|,
 name|String
 name|toSnapshot
+parameter_list|,
+name|byte
+index|[]
+name|startPath
+parameter_list|,
+name|int
+name|index
 parameter_list|)
 throws|throws
 name|IOException
@@ -10294,13 +10301,17 @@ block|{
 return|return
 name|namenode
 operator|.
-name|getSnapshotDiffReport
+name|getSnapshotDiffReportListing
 argument_list|(
 name|snapshotDir
 argument_list|,
 name|fromSnapshot
 argument_list|,
 name|toSnapshot
+argument_list|,
+name|startPath
+argument_list|,
+name|index
 argument_list|)
 return|;
 block|}
