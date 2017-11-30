@@ -44,6 +44,26 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Iterator
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Optional
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -92,6 +112,33 @@ extends|extends
 name|BlockAlias
 parameter_list|>
 block|{
+comment|/**    * ImmutableIterator is an Iterator that does not support the remove    * operation. This could inherit {@link java.util.Enumeration} but Iterator    * is supported by more APIs and Enumeration's javadoc even suggests using    * Iterator instead.    */
+DECL|class|ImmutableIterator
+specifier|public
+specifier|abstract
+class|class
+name|ImmutableIterator
+implements|implements
+name|Iterator
+argument_list|<
+name|T
+argument_list|>
+block|{
+DECL|method|remove ()
+specifier|public
+name|void
+name|remove
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Remove is not supported for provided storage"
+argument_list|)
+throw|;
+block|}
+block|}
 comment|/**    * An abstract class that is used to read {@link BlockAlias}es    * for provided blocks.    */
 DECL|class|Reader
 specifier|public
@@ -122,7 +169,10 @@ comment|/**      * @param ident block to resolve      * @return BlockAlias corre
 DECL|method|resolve (Block ident)
 specifier|public
 specifier|abstract
+name|Optional
+argument_list|<
 name|U
+argument_list|>
 name|resolve
 parameter_list|(
 name|Block
@@ -208,6 +258,15 @@ specifier|public
 specifier|abstract
 name|void
 name|refresh
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+DECL|method|close ()
+specifier|public
+specifier|abstract
+name|void
+name|close
 parameter_list|()
 throws|throws
 name|IOException

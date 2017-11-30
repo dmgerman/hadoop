@@ -52,6 +52,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Optional
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -217,7 +227,10 @@ block|}
 annotation|@
 name|Override
 specifier|public
+name|Optional
+argument_list|<
 name|FileRegion
+argument_list|>
 name|resolve
 parameter_list|(
 name|Block
@@ -240,9 +253,6 @@ name|Override
 DECL|method|getWriter (Writer.Options opts)
 specifier|public
 name|Writer
-argument_list|<
-name|FileRegion
-argument_list|>
 name|getWriter
 parameter_list|(
 name|Writer
@@ -301,6 +311,16 @@ name|IOException
 block|{
 comment|// do nothing
 block|}
+annotation|@
+name|Override
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+throws|throws
+name|IOException
+block|{    }
 block|}
 end_class
 

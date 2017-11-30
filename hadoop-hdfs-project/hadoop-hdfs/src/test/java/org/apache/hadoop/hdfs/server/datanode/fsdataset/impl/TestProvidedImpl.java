@@ -298,6 +298,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Optional
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Set
 import|;
 end_import
@@ -1452,7 +1462,10 @@ block|{              }
 annotation|@
 name|Override
 specifier|public
+name|Optional
+argument_list|<
 name|FileRegion
+argument_list|>
 name|resolve
 parameter_list|(
 name|Block
@@ -1505,6 +1518,18 @@ throws|throws
 name|IOException
 block|{
 comment|// do nothing!
+block|}
+annotation|@
+name|Override
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// do nothing
 block|}
 block|}
 DECL|method|createLocalStorageDirectory ( File root, Configuration conf)
