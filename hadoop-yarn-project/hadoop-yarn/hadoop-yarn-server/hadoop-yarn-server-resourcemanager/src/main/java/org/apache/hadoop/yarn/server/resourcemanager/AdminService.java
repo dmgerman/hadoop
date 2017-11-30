@@ -2594,6 +2594,49 @@ argument_list|)
 throw|;
 block|}
 block|}
+DECL|method|loadNewConfiguration ()
+specifier|protected
+name|Configuration
+name|loadNewConfiguration
+parameter_list|()
+throws|throws
+name|IOException
+throws|,
+name|YarnException
+block|{
+comment|// Retrieve yarn-site.xml in order to refresh scheduling monitor properties.
+name|Configuration
+name|conf
+init|=
+name|getConfiguration
+argument_list|(
+operator|new
+name|Configuration
+argument_list|(
+literal|false
+argument_list|)
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|YARN_SITE_CONFIGURATION_FILE
+argument_list|)
+decl_stmt|;
+comment|// The reason we call Configuration#size() is because when getConfiguration
+comment|// been called, it invokes Configuration#addResouce, which invokes
+comment|// Configuration#reloadConfiguration which triggers the reload process in a
+comment|// lazy way, the properties will only be reload when it's needed rather than
+comment|// reload it right after getConfiguration been called. So here we call
+comment|// Configuration#size() to force the Configuration#getProps been called to
+comment|// reload all the properties.
+name|conf
+operator|.
+name|size
+argument_list|()
+expr_stmt|;
+return|return
+name|conf
+return|;
+block|}
 annotation|@
 name|Private
 DECL|method|refreshQueues ()
@@ -2606,6 +2649,12 @@ name|IOException
 throws|,
 name|YarnException
 block|{
+name|Configuration
+name|conf
+init|=
+name|loadNewConfiguration
+argument_list|()
+decl_stmt|;
 name|rm
 operator|.
 name|getRMContext
@@ -2616,8 +2665,7 @@ argument_list|()
 operator|.
 name|reinitialize
 argument_list|(
-name|getConfig
-argument_list|()
+name|conf
 argument_list|,
 name|this
 operator|.
@@ -2650,8 +2698,7 @@ name|rSystem
 operator|.
 name|reinitialize
 argument_list|(
-name|getConfig
-argument_list|()
+name|conf
 argument_list|,
 name|rm
 operator|.

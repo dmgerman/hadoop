@@ -148,22 +148,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
-operator|.
-name|YarnRuntimeException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -307,6 +291,16 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Initializing SchedulingMonitor="
+operator|+
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|scheduleEditPolicy
 operator|.
 name|init
@@ -348,6 +342,16 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Starting SchedulingMonitor="
+operator|+
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
 assert|assert
 operator|!
 name|stopped
