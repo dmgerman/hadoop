@@ -458,6 +458,10 @@ name|symlink
 argument_list|,
 name|path
 argument_list|,
+name|FileStatus
+operator|.
+name|attributes
+argument_list|(
 operator|(
 name|flags
 operator|&
@@ -493,12 +497,7 @@ name|HAS_EC_VALUE
 operator|)
 operator|!=
 literal|0
-argument_list|)
-decl_stmt|;
-name|fileStatus
-operator|.
-name|setSnapShotEnabledFlag
-argument_list|(
+argument_list|,
 operator|(
 name|flags
 operator|&
@@ -511,7 +510,8 @@ operator|)
 operator|!=
 literal|0
 argument_list|)
-expr_stmt|;
+argument_list|)
+decl_stmt|;
 return|return
 name|fileStatus
 return|;

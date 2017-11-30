@@ -20,64 +20,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|URI
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|EnumSet
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceStability
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -100,7 +42,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|LocatedFileStatus
+name|FileStatus
 import|;
 end_import
 
@@ -148,37 +90,40 @@ name|DFSUtilClient
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
 begin_comment
-comment|/**  * HDFS metadata for an entity in the filesystem with locations. Note that  * symlinks and directories are returned as {@link HdfsLocatedFileStatus} for  * backwards compatibility.  */
+comment|/**  * HDFS metadata for an entity in the filesystem without locations. Note that  * symlinks and directories are returned as {@link HdfsLocatedFileStatus} for  * backwards compatibility.  */
 end_comment
 
 begin_class
-annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
-annotation|@
-name|InterfaceStability
-operator|.
-name|Evolving
-DECL|class|HdfsLocatedFileStatus
+DECL|class|HdfsNamedFileStatus
 specifier|public
 class|class
-name|HdfsLocatedFileStatus
+name|HdfsNamedFileStatus
 extends|extends
-name|LocatedFileStatus
+name|FileStatus
 implements|implements
 name|HdfsFileStatus
 block|{
-DECL|field|serialVersionUID
-specifier|private
-specifier|static
-specifier|final
-name|long
-name|serialVersionUID
-init|=
-literal|0x126eb82a
-decl_stmt|;
 comment|// local name of the inode that's encoded in java UTF8
 DECL|field|uPath
 specifier|private
@@ -224,16 +169,9 @@ specifier|final
 name|byte
 name|storagePolicy
 decl_stmt|;
-comment|// BlockLocations[] is the user-facing type
-DECL|field|hdfsloc
-specifier|private
-specifier|transient
-name|LocatedBlocks
-name|hdfsloc
-decl_stmt|;
-comment|/**    * Constructor.    * @param length the number of bytes the file has    * @param isdir if the path is a directory    * @param replication the replication factor    * @param blocksize the block size    * @param mtime modification time    * @param atime access time    * @param permission permission    * @param owner the owner of the path    * @param group the group of the path    * @param symlink symlink target encoded in java UTF8 or null    * @param path the local name in java UTF8 encoding the same as that in-memory    * @param fileId the file id    * @param childrenNum the number of children. Used by directory.    * @param feInfo the file's encryption info    * @param storagePolicy ID which specifies storage policy    * @param ecPolicy the erasure coding policy    * @param hdfsloc block locations    */
-DECL|method|HdfsLocatedFileStatus (long length, boolean isdir, int replication, long blocksize, long mtime, long atime, FsPermission permission, EnumSet<Flags> flags, String owner, String group, byte[] symlink, byte[] path, long fileId, int childrenNum, FileEncryptionInfo feInfo, byte storagePolicy, ErasureCodingPolicy ecPolicy, LocatedBlocks hdfsloc)
-name|HdfsLocatedFileStatus
+comment|/**    * Constructor.    * @param length the number of bytes the file has    * @param isdir if the path is a directory    * @param replication the replication factor    * @param blocksize the block size    * @param mtime modification time    * @param atime access time    * @param permission permission    * @param owner the owner of the path    * @param group the group of the path    * @param symlink symlink target encoded in java UTF8 or null    * @param path the local name in java UTF8 encoding the same as that in-memory    * @param fileId the file id    * @param childrenNum the number of children. Used by directory.    * @param feInfo the file's encryption info    * @param storagePolicy ID which specifies storage policy    * @param ecPolicy the erasure coding policy    */
+DECL|method|HdfsNamedFileStatus (long length, boolean isdir, int replication, long blocksize, long mtime, long atime, FsPermission permission, Set<Flags> flags, String owner, String group, byte[] symlink, byte[] path, long fileId, int childrenNum, FileEncryptionInfo feInfo, byte storagePolicy, ErasureCodingPolicy ecPolicy)
+name|HdfsNamedFileStatus
 parameter_list|(
 name|long
 name|length
@@ -256,7 +194,7 @@ parameter_list|,
 name|FsPermission
 name|permission
 parameter_list|,
-name|EnumSet
+name|Set
 argument_list|<
 name|Flags
 argument_list|>
@@ -290,9 +228,6 @@ name|storagePolicy
 parameter_list|,
 name|ErasureCodingPolicy
 name|ecPolicy
-parameter_list|,
-name|LocatedBlocks
-name|hdfsloc
 parameter_list|)
 block|{
 name|super
@@ -338,8 +273,6 @@ name|convert
 argument_list|(
 name|flags
 argument_list|)
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 name|this
@@ -384,16 +317,9 @@ name|ecPolicy
 operator|=
 name|ecPolicy
 expr_stmt|;
-name|this
-operator|.
-name|hdfsloc
-operator|=
-name|hdfsloc
-expr_stmt|;
 block|}
 annotation|@
 name|Override
-comment|// visibility
 DECL|method|setOwner (String owner)
 specifier|public
 name|void
@@ -413,7 +339,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-comment|// visibility
 DECL|method|setGroup (String group)
 specifier|public
 name|void
@@ -490,7 +415,6 @@ throw|;
 block|}
 annotation|@
 name|Override
-comment|// visibility
 DECL|method|setPermission (FsPermission permission)
 specifier|public
 name|void
@@ -508,7 +432,7 @@ name|permission
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get the Java UTF8 representation of the local name.    * @return the local name in java UTF8    */
+comment|/**    * Get the Java UTF8 representation of the local name.    *    * @return the local name in java UTF8    */
 annotation|@
 name|Override
 DECL|method|getLocalNameInBytes ()
@@ -584,7 +508,7 @@ return|return
 name|feInfo
 return|;
 block|}
-comment|/**    * Get the erasure coding policy if it's set.    * @return the erasure coding policy    */
+comment|/**    * Get the erasure coding policy if it's set.    *    * @return the erasure coding policy    */
 annotation|@
 name|Override
 DECL|method|getErasureCodingPolicy ()
@@ -657,52 +581,6 @@ name|super
 operator|.
 name|hashCode
 argument_list|()
-return|;
-block|}
-comment|/**    * Get block locations for this entity, in HDFS format.    * See {@link #makeQualifiedLocated(URI, Path)}.    * See {@link DFSUtilClient#locatedBlocks2Locations(LocatedBlocks)}.    * @return block locations    */
-DECL|method|getLocatedBlocks ()
-specifier|public
-name|LocatedBlocks
-name|getLocatedBlocks
-parameter_list|()
-block|{
-return|return
-name|hdfsloc
-return|;
-block|}
-comment|/**    * This function is used to transform the underlying HDFS LocatedBlocks to    * BlockLocations. This method must be invoked before    * {@link #getBlockLocations()}.    *    * The returned BlockLocation will have different formats for replicated    * and erasure coded file.    * Please refer to    * {@link org.apache.hadoop.fs.FileSystem#getFileBlockLocations    * (FileStatus, long, long)}    * for examples.    */
-DECL|method|makeQualifiedLocated (URI defaultUri, Path path)
-specifier|public
-name|LocatedFileStatus
-name|makeQualifiedLocated
-parameter_list|(
-name|URI
-name|defaultUri
-parameter_list|,
-name|Path
-name|path
-parameter_list|)
-block|{
-name|makeQualified
-argument_list|(
-name|defaultUri
-argument_list|,
-name|path
-argument_list|)
-expr_stmt|;
-name|setBlockLocations
-argument_list|(
-name|DFSUtilClient
-operator|.
-name|locatedBlocks2Locations
-argument_list|(
-name|getLocatedBlocks
-argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
-return|return
-name|this
 return|;
 block|}
 block|}

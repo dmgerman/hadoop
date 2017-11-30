@@ -7985,7 +7985,7 @@ name|lbs
 init|=
 name|status
 operator|.
-name|getBlockLocations
+name|getLocatedBlocks
 argument_list|()
 decl_stmt|;
 name|Assert

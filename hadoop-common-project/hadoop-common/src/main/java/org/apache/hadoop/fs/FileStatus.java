@@ -297,25 +297,31 @@ name|AttrFlags
 argument_list|>
 name|attr
 decl_stmt|;
+comment|/**    * Flags for entity attributes.    */
 DECL|enum|AttrFlags
-specifier|private
+specifier|public
 enum|enum
 name|AttrFlags
 block|{
+comment|/** ACL information available for this entity. */
 DECL|enumConstant|HAS_ACL
 name|HAS_ACL
 block|,
+comment|/** Entity is encrypted. */
 DECL|enumConstant|HAS_CRYPT
 name|HAS_CRYPT
 block|,
+comment|/** Entity is stored erasure-coded. */
 DECL|enumConstant|HAS_EC
 name|HAS_EC
 block|,
+comment|/** Snapshot capability enabled. */
 DECL|enumConstant|SNAPSHOT_ENABLED
 name|SNAPSHOT_ENABLED
-block|}
+block|,   }
+comment|/**    * Shared, empty set of attributes (a common case for FileStatus).    */
 DECL|field|NONE
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|Set
@@ -332,14 +338,15 @@ operator|>
 name|emptySet
 argument_list|()
 decl_stmt|;
-DECL|method|flags (boolean acl, boolean crypt, boolean ec)
-specifier|private
+comment|/**    * Convert boolean attributes to a set of flags.    * @param acl   See {@link AttrFlags#HAS_ACL}.    * @param crypt See {@link AttrFlags#HAS_CRYPT}.    * @param ec    See {@link AttrFlags#HAS_EC}.    * @param sn    See {@link AttrFlags#SNAPSHOT_ENABLED}.    * @return converted set of flags.    */
+DECL|method|attributes (boolean acl, boolean crypt, boolean ec, boolean sn)
+specifier|public
 specifier|static
 name|Set
 argument_list|<
 name|AttrFlags
 argument_list|>
-name|flags
+name|attributes
 parameter_list|(
 name|boolean
 name|acl
@@ -349,6 +356,9 @@ name|crypt
 parameter_list|,
 name|boolean
 name|ec
+parameter_list|,
+name|boolean
+name|sn
 parameter_list|)
 block|{
 if|if
@@ -360,6 +370,8 @@ operator|||
 name|crypt
 operator|||
 name|ec
+operator|||
+name|sn
 operator|)
 condition|)
 block|{
@@ -424,6 +436,21 @@ argument_list|(
 name|AttrFlags
 operator|.
 name|HAS_EC
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|sn
+condition|)
+block|{
+name|ret
+operator|.
+name|add
+argument_list|(
+name|AttrFlags
+operator|.
+name|SNAPSHOT_ENABLED
 argument_list|)
 expr_stmt|;
 block|}
@@ -688,6 +715,87 @@ name|isErasureCoded
 parameter_list|)
 block|{
 name|this
+argument_list|(
+name|length
+argument_list|,
+name|isdir
+argument_list|,
+name|block_replication
+argument_list|,
+name|blocksize
+argument_list|,
+name|modification_time
+argument_list|,
+name|access_time
+argument_list|,
+name|permission
+argument_list|,
+name|owner
+argument_list|,
+name|group
+argument_list|,
+name|symlink
+argument_list|,
+name|path
+argument_list|,
+name|attributes
+argument_list|(
+name|hasAcl
+argument_list|,
+name|isEncrypted
+argument_list|,
+name|isErasureCoded
+argument_list|,
+literal|false
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|FileStatus (long length, boolean isdir, int block_replication, long blocksize, long modification_time, long access_time, FsPermission permission, String owner, String group, Path symlink, Path path, Set<AttrFlags> attr)
+specifier|public
+name|FileStatus
+parameter_list|(
+name|long
+name|length
+parameter_list|,
+name|boolean
+name|isdir
+parameter_list|,
+name|int
+name|block_replication
+parameter_list|,
+name|long
+name|blocksize
+parameter_list|,
+name|long
+name|modification_time
+parameter_list|,
+name|long
+name|access_time
+parameter_list|,
+name|FsPermission
+name|permission
+parameter_list|,
+name|String
+name|owner
+parameter_list|,
+name|String
+name|group
+parameter_list|,
+name|Path
+name|symlink
+parameter_list|,
+name|Path
+name|path
+parameter_list|,
+name|Set
+argument_list|<
+name|AttrFlags
+argument_list|>
+name|attr
+parameter_list|)
+block|{
+name|this
 operator|.
 name|length
 operator|=
@@ -826,16 +934,11 @@ name|path
 operator|=
 name|path
 expr_stmt|;
+name|this
+operator|.
 name|attr
 operator|=
-name|flags
-argument_list|(
-name|hasAcl
-argument_list|,
-name|isEncrypted
-argument_list|,
-name|isErasureCoded
-argument_list|)
+name|attr
 expr_stmt|;
 comment|// The variables isdir and symlink indicate the type:
 comment|// 1. isdir implies directory, in which case symlink must be null.
@@ -1254,44 +1357,6 @@ literal|""
 else|:
 name|group
 expr_stmt|;
-block|}
-comment|/**    * Sets Snapshot enabled flag.    *    * @param isSnapShotEnabled When true, SNAPSHOT_ENABLED flag is set    */
-DECL|method|setSnapShotEnabledFlag (boolean isSnapShotEnabled)
-specifier|public
-name|void
-name|setSnapShotEnabledFlag
-parameter_list|(
-name|boolean
-name|isSnapShotEnabled
-parameter_list|)
-block|{
-if|if
-condition|(
-name|isSnapShotEnabled
-condition|)
-block|{
-name|attr
-operator|.
-name|add
-argument_list|(
-name|AttrFlags
-operator|.
-name|SNAPSHOT_ENABLED
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|attr
-operator|.
-name|remove
-argument_list|(
-name|AttrFlags
-operator|.
-name|SNAPSHOT_ENABLED
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 comment|/**    * @return The contents of the symbolic link.    */
 DECL|method|getSymlink ()
@@ -1863,7 +1928,7 @@ argument_list|)
 expr_stmt|;
 name|attr
 operator|=
-name|flags
+name|attributes
 argument_list|(
 name|other
 operator|.
@@ -1878,6 +1943,11 @@ argument_list|,
 name|other
 operator|.
 name|isErasureCoded
+argument_list|()
+argument_list|,
+name|other
+operator|.
+name|isSnapshotEnabled
 argument_list|()
 argument_list|)
 expr_stmt|;

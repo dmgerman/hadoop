@@ -2141,7 +2141,7 @@ name|lb
 range|:
 name|fileStatus
 operator|.
-name|getBlockLocations
+name|getLocatedBlocks
 argument_list|()
 operator|.
 name|getLocatedBlocks

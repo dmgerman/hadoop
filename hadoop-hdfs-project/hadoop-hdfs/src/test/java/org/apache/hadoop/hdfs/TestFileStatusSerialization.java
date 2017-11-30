@@ -778,6 +778,9 @@ argument_list|)
 expr_stmt|;
 name|checkFields
 argument_list|(
+operator|(
+name|FileStatus
+operator|)
 name|stat
 argument_list|,
 name|fstat
@@ -937,6 +940,9 @@ argument_list|)
 expr_stmt|;
 name|checkFields
 argument_list|(
+operator|(
+name|FileStatus
+operator|)
 name|hs
 argument_list|,
 name|deser
@@ -1241,6 +1247,9 @@ expr_stmt|;
 name|FileStatus
 name|hstat
 init|=
+operator|(
+name|FileStatus
+operator|)
 name|PBHelperClient
 operator|.
 name|convert
@@ -1251,6 +1260,9 @@ decl_stmt|;
 name|FileStatus
 name|hstat2
 init|=
+operator|(
+name|FileStatus
+operator|)
 name|PBHelperClient
 operator|.
 name|convert
