@@ -1461,21 +1461,6 @@ name|bpid
 argument_list|)
 condition|)
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Adding ScanInfo for blkid "
-operator|+
-name|region
-operator|.
-name|getBlock
-argument_list|()
-operator|.
-name|getBlockId
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|report
 operator|.
 name|add
@@ -1490,10 +1475,6 @@ argument_list|()
 operator|.
 name|getBlockId
 argument_list|()
-argument_list|,
-literal|null
-argument_list|,
-literal|null
 argument_list|,
 name|providedVolume
 argument_list|,

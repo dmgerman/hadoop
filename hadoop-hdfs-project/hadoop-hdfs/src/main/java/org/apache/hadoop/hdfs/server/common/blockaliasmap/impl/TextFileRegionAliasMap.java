@@ -2350,7 +2350,16 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-comment|//nothing to do;
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Refresh not supported by "
+operator|+
+name|getClass
+argument_list|()
+argument_list|)
+throw|;
 block|}
 block|}
 end_class

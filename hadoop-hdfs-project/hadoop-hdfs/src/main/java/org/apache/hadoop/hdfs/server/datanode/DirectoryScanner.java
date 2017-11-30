@@ -2323,8 +2323,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Get the lists of blocks on the disks in the dataset, sorted by blockId.    * The returned map contains one entry per blockpool, keyed by the blockpool    * ID.    *    * @return a map of sorted arrays of block information    */
+annotation|@
+name|VisibleForTesting
 DECL|method|getDiskReport ()
-specifier|private
+specifier|public
 name|Map
 argument_list|<
 name|String
