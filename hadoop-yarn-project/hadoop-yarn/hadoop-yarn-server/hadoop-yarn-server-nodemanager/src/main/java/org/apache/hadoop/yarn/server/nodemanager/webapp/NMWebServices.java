@@ -3400,15 +3400,11 @@ return|;
 block|}
 block|}
 block|}
-throw|throw
+return|return
 operator|new
-name|YarnException
-argument_list|(
-literal|"Could not get detailed resource information for given resource-name="
-operator|+
-name|resourceName
-argument_list|)
-throw|;
+name|NMResourceInfo
+argument_list|()
+return|;
 block|}
 DECL|method|parseLongParam (String bytes)
 specifier|private
