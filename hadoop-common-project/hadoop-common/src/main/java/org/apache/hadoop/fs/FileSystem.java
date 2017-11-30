@@ -3058,6 +3058,35 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+comment|/**    * Open an FSDataInputStream matching the PathHandle instance. The    * implementation may encode metadata in PathHandle to address the    * resource directly and verify that the resource referenced    * satisfies constraints specified at its construciton.    * @param fd PathHandle object returned by the FS authority.    * @throws IOException IO failure    * @throws UnsupportedOperationException If {@link #open(PathHandle, int)}    *                                       not overridden by subclass    */
+DECL|method|open (PathHandle fd)
+specifier|public
+name|FSDataInputStream
+name|open
+parameter_list|(
+name|PathHandle
+name|fd
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|open
+argument_list|(
+name|fd
+argument_list|,
+name|getConf
+argument_list|()
+operator|.
+name|getInt
+argument_list|(
+name|IO_FILE_BUFFER_SIZE_KEY
+argument_list|,
+name|IO_FILE_BUFFER_SIZE_DEFAULT
+argument_list|)
+argument_list|)
+return|;
+block|}
 comment|/**    * Open an FSDataInputStream matching the PathHandle instance. The    * implementation may encode metadata in PathHandle to address the    * resource directly and verify that the resource referenced    * satisfies constraints specified at its construciton.    * @param fd PathHandle object returned by the FS authority.    * @param bufferSize the size of the buffer to use    * @throws IOException IO failure    * @throws UnsupportedOperationException If not overridden by subclass    */
 DECL|method|open (PathHandle fd, int bufferSize)
 specifier|public

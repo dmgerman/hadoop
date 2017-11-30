@@ -492,6 +492,15 @@ name|Path
 name|f
 parameter_list|)
 function_decl|;
+DECL|method|open (PathHandle f)
+specifier|public
+name|FSDataInputStream
+name|open
+parameter_list|(
+name|PathHandle
+name|f
+parameter_list|)
+function_decl|;
 DECL|method|create (Path f)
 specifier|public
 name|FSDataOutputStream
