@@ -988,7 +988,7 @@ name|printHelp
 argument_list|(
 name|CMD_WIDTH
 argument_list|,
-literal|"hdfs scm<commands> [<options>]"
+literal|"hdfs scmcli<commands> [<options>]"
 argument_list|,
 literal|"where<commands> can be one of the following"
 argument_list|,
