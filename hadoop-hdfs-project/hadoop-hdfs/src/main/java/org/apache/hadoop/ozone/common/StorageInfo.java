@@ -126,7 +126,11 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|OzoneConsts
+name|protocol
+operator|.
+name|proto
+operator|.
+name|OzoneProtos
 operator|.
 name|NodeType
 import|;

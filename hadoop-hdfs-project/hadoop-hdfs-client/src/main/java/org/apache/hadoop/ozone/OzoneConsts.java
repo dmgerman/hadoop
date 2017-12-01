@@ -546,21 +546,6 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
-comment|/**    * Type of the node.    */
-DECL|enum|NodeType
-specifier|public
-enum|enum
-name|NodeType
-block|{
-DECL|enumConstant|KSM
-name|KSM
-block|,
-DECL|enumConstant|SCM
-name|SCM
-block|,
-DECL|enumConstant|DATANODE
-name|DATANODE
-block|}
 DECL|method|OzoneConsts ()
 specifier|private
 name|OzoneConsts
