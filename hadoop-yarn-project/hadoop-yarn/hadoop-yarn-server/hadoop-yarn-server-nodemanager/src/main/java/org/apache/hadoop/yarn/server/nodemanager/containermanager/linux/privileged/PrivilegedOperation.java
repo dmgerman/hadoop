@@ -200,6 +200,12 @@ argument_list|(
 literal|"--module-gpu"
 argument_list|)
 block|,
+DECL|enumConstant|FPGA
+name|FPGA
+argument_list|(
+literal|"--module-fpga"
+argument_list|)
+block|,
 DECL|enumConstant|LIST_AS_USER
 name|LIST_AS_USER
 argument_list|(

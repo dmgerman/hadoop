@@ -165,6 +165,15 @@ name|GPU_URI
 init|=
 literal|"yarn.io/gpu"
 decl_stmt|;
+DECL|field|FPGA_URI
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FPGA_URI
+init|=
+literal|"yarn.io/fpga"
+decl_stmt|;
 DECL|field|MEMORY_MB
 specifier|public
 specifier|static
@@ -209,6 +218,20 @@ argument_list|(
 name|GPU_URI
 argument_list|)
 decl_stmt|;
+DECL|field|FPGAS
+specifier|public
+specifier|static
+specifier|final
+name|ResourceInformation
+name|FPGAS
+init|=
+name|ResourceInformation
+operator|.
+name|newInstance
+argument_list|(
+name|FPGA_URI
+argument_list|)
+decl_stmt|;
 DECL|field|MANDATORY_RESOURCES
 specifier|public
 specifier|static
@@ -236,6 +259,10 @@ argument_list|,
 name|GPU_URI
 argument_list|,
 name|GPUS
+argument_list|,
+name|FPGA_URI
+argument_list|,
+name|FPGAS
 argument_list|)
 decl_stmt|;
 comment|/**    * Get the name for the resource.    *    * @return resource name    */
