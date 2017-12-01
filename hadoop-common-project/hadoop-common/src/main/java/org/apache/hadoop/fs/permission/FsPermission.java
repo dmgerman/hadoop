@@ -430,6 +430,28 @@ name|mode
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Construct by the given mode.    *    * octal mask is applied.    *    *<pre>    *              before mask     after mask    file type   sticky bit    *    *    octal     100644            644         file          no    *    decimal    33188            420    *    *    octal     101644           1644         file          yes    *    decimal    33700           1420    *    *    octal      40644            644         directory     no    *    decimal    16804            420    *    *    octal      41644           1644         directory     yes    *    decimal    17316           1420    *</pre>    *    * 100644 becomes 644 while 644 remains as 644    *    * @param mode Mode is supposed to come from the result of native stat() call.    *             It contains complete permission information: rwxrwxrwx, sticky    *             bit, whether it is a directory or a file, etc. Upon applying    *             mask, only permission and sticky bit info will be kept because    *             they are the only parts to be used for now.    * @see #FsPermission(short mode)    */
+DECL|method|FsPermission (int mode)
+specifier|public
+name|FsPermission
+parameter_list|(
+name|int
+name|mode
+parameter_list|)
+block|{
+name|this
+argument_list|(
+call|(
+name|short
+call|)
+argument_list|(
+name|mode
+operator|&
+literal|01777
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Copy constructor    *     * @param other other permission    */
 DECL|method|FsPermission (FsPermission other)
 specifier|public

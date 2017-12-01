@@ -1730,6 +1730,132 @@ literal|"octal or symbolic"
 argument_list|)
 return|;
 block|}
+comment|/**    *  test FsPermission(int) constructor.    */
+annotation|@
+name|Test
+DECL|method|testIntPermission ()
+specifier|public
+name|void
+name|testIntPermission
+parameter_list|()
+block|{
+comment|// Octal           Decimals        Masked OCT      Masked DEC
+comment|// 100644          33188           644             420
+comment|// 101644          33700           1644            932
+comment|// 40644           16804           644             420
+comment|// 41644           17316           1644            932
+comment|// 644             420             644             420
+comment|// 1644            932             1644            932
+name|int
+index|[]
+index|[]
+name|permission_mask_maps
+init|=
+block|{
+comment|// Octal                 Decimal    Unix Symbolic
+block|{
+literal|0100644
+block|,
+literal|0644
+block|,
+literal|0
+block|}
+block|,
+comment|// 33188    -rw-r--
+block|{
+literal|0101644
+block|,
+literal|01644
+block|,
+literal|1
+block|}
+block|,
+comment|// 33700    -rw-r-t
+block|{
+literal|040644
+block|,
+literal|0644
+block|,
+literal|0
+block|}
+block|,
+comment|// 16804    drw-r--
+block|{
+literal|041644
+block|,
+literal|01644
+block|,
+literal|1
+block|}
+comment|// 17316    drw-r-t
+block|}
+decl_stmt|;
+for|for
+control|(
+name|int
+index|[]
+name|permission_mask_map
+range|:
+name|permission_mask_maps
+control|)
+block|{
+name|int
+name|original_permission_value
+init|=
+name|permission_mask_map
+index|[
+literal|0
+index|]
+decl_stmt|;
+name|int
+name|masked_permission_value
+init|=
+name|permission_mask_map
+index|[
+literal|1
+index|]
+decl_stmt|;
+name|boolean
+name|hasStickyBit
+init|=
+name|permission_mask_map
+index|[
+literal|2
+index|]
+operator|==
+literal|1
+decl_stmt|;
+name|FsPermission
+name|fsPermission
+init|=
+operator|new
+name|FsPermission
+argument_list|(
+name|original_permission_value
+argument_list|)
+decl_stmt|;
+name|assertEquals
+argument_list|(
+name|masked_permission_value
+argument_list|,
+name|fsPermission
+operator|.
+name|toShort
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|hasStickyBit
+argument_list|,
+name|fsPermission
+operator|.
+name|getStickyBit
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|// Symbolic umask list is generated in linux shell using by the command:
 comment|// umask 0; umask<octal number>; umask -S
 DECL|field|SYMBOLIC
