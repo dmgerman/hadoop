@@ -2691,6 +2691,44 @@ argument_list|,
 name|committedTxnId
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|endTxId
+operator|<
+name|remoteLog
+operator|.
+name|getStartTxId
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Found endTxId ("
+operator|+
+name|endTxId
+operator|+
+literal|") that is less than "
+operator|+
+literal|"the startTxId ("
+operator|+
+name|remoteLog
+operator|.
+name|getStartTxId
+argument_list|()
+operator|+
+literal|") - setting it to startTxId."
+argument_list|)
+expr_stmt|;
+name|endTxId
+operator|=
+name|remoteLog
+operator|.
+name|getStartTxId
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 name|EditLogInputStream
 name|elis
