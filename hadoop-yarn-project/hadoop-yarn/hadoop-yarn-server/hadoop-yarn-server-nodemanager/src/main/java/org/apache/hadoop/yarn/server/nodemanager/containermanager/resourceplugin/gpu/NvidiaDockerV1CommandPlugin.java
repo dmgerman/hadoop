@@ -1680,7 +1680,7 @@ name|DockerVolumeCommand
 argument_list|(
 name|DockerVolumeCommand
 operator|.
-name|VOLUME_CREATE_COMMAND
+name|VOLUME_CREATE_SUB_COMMAND
 argument_list|)
 decl_stmt|;
 name|command
