@@ -74,6 +74,20 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicReference
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|junit
@@ -1132,7 +1146,12 @@ operator|.
 name|getID
 argument_list|()
 argument_list|,
+operator|new
+name|AtomicReference
+argument_list|<>
+argument_list|(
 name|taskAttemptStatus
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;

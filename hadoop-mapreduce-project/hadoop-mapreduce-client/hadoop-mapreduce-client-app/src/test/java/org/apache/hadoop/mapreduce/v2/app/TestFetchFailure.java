@@ -64,6 +64,20 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicReference
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -3112,7 +3126,12 @@ operator|.
 name|getID
 argument_list|()
 argument_list|,
+operator|new
+name|AtomicReference
+argument_list|<>
+argument_list|(
 name|status
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|app

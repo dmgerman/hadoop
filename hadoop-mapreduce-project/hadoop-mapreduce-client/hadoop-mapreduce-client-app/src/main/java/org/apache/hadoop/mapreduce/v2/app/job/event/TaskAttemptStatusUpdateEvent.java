@@ -36,6 +36,20 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicReference
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -116,20 +130,26 @@ name|TaskAttemptStatusUpdateEvent
 extends|extends
 name|TaskAttemptEvent
 block|{
-DECL|field|reportedTaskAttemptStatus
+DECL|field|taskAttemptStatusRef
 specifier|private
+name|AtomicReference
+argument_list|<
 name|TaskAttemptStatus
-name|reportedTaskAttemptStatus
+argument_list|>
+name|taskAttemptStatusRef
 decl_stmt|;
-DECL|method|TaskAttemptStatusUpdateEvent (TaskAttemptId id, TaskAttemptStatus taskAttemptStatus)
+DECL|method|TaskAttemptStatusUpdateEvent (TaskAttemptId id, AtomicReference<TaskAttemptStatus> taskAttemptStatusRef)
 specifier|public
 name|TaskAttemptStatusUpdateEvent
 parameter_list|(
 name|TaskAttemptId
 name|id
 parameter_list|,
+name|AtomicReference
+argument_list|<
 name|TaskAttemptStatus
-name|taskAttemptStatus
+argument_list|>
+name|taskAttemptStatusRef
 parameter_list|)
 block|{
 name|super
@@ -143,19 +163,22 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|reportedTaskAttemptStatus
+name|taskAttemptStatusRef
 operator|=
-name|taskAttemptStatus
+name|taskAttemptStatusRef
 expr_stmt|;
 block|}
-DECL|method|getReportedTaskAttemptStatus ()
+DECL|method|getTaskAttemptStatusRef ()
 specifier|public
+name|AtomicReference
+argument_list|<
 name|TaskAttemptStatus
-name|getReportedTaskAttemptStatus
+argument_list|>
+name|getTaskAttemptStatusRef
 parameter_list|()
 block|{
 return|return
-name|reportedTaskAttemptStatus
+name|taskAttemptStatusRef
 return|;
 block|}
 comment|/**    * The internal TaskAttemptStatus object corresponding to remote Task status.    *     */
