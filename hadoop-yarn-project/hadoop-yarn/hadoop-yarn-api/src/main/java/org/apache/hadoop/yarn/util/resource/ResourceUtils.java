@@ -1778,13 +1778,7 @@ name|getResourceTypesArray
 parameter_list|()
 block|{
 name|initializeResourceTypesIfNeeded
-argument_list|(
-literal|null
-argument_list|,
-name|YarnConfiguration
-operator|.
-name|RESOURCE_TYPES_CONFIGURATION_FILE
-argument_list|)
+argument_list|()
 expr_stmt|;
 return|return
 name|resourceTypesArray
@@ -1805,13 +1799,7 @@ literal|0
 condition|)
 block|{
 name|initializeResourceTypesIfNeeded
-argument_list|(
-literal|null
-argument_list|,
-name|YarnConfiguration
-operator|.
-name|RESOURCE_TYPES_CONFIGURATION_FILE
-argument_list|)
+argument_list|()
 expr_stmt|;
 block|}
 return|return
@@ -1843,6 +1831,23 @@ operator|.
 name|RESOURCE_TYPES_CONFIGURATION_FILE
 argument_list|)
 return|;
+block|}
+DECL|method|initializeResourceTypesIfNeeded ()
+specifier|private
+specifier|static
+name|void
+name|initializeResourceTypesIfNeeded
+parameter_list|()
+block|{
+name|initializeResourceTypesIfNeeded
+argument_list|(
+literal|null
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|RESOURCE_TYPES_CONFIGURATION_FILE
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|initializeResourceTypesIfNeeded (Configuration conf, String resourceFile)
 specifier|private
@@ -3348,6 +3353,9 @@ argument_list|>
 name|res
 parameter_list|)
 block|{
+name|initializeResourceTypesIfNeeded
+argument_list|()
+expr_stmt|;
 name|ResourceInformation
 index|[]
 name|info
