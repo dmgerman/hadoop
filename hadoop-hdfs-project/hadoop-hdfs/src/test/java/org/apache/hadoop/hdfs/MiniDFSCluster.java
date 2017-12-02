@@ -13809,6 +13809,47 @@ name|nnIndex
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Sets the timeout for re-issuing a block recovery.    */
+DECL|method|setBlockRecoveryTimeout (long timeout)
+specifier|public
+name|void
+name|setBlockRecoveryTimeout
+parameter_list|(
+name|long
+name|timeout
+parameter_list|)
+block|{
+for|for
+control|(
+name|int
+name|nnIndex
+init|=
+literal|0
+init|;
+name|nnIndex
+operator|<
+name|getNumNameNodes
+argument_list|()
+condition|;
+name|nnIndex
+operator|++
+control|)
+block|{
+name|getNamesystem
+argument_list|(
+name|nnIndex
+argument_list|)
+operator|.
+name|getBlockManager
+argument_list|()
+operator|.
+name|setBlockRecoveryTimeout
+argument_list|(
+name|timeout
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 DECL|method|setupDatanodeAddress (Configuration conf, boolean setupHostsFile, boolean checkDataNodeAddrConfig)
 specifier|protected
 name|void

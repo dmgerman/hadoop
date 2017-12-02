@@ -17405,7 +17405,19 @@ return|return
 literal|true
 return|;
 block|}
-comment|// start recovery of the last block for this file
+comment|// Start recovery of the last block for this file
+comment|// Only do so if there is no ongoing recovery for this block,
+comment|// or the previous recovery for this block timed out.
+if|if
+condition|(
+name|blockManager
+operator|.
+name|addBlockRecoveryAttempt
+argument_list|(
+name|lastBlock
+argument_list|)
+condition|)
+block|{
 name|long
 name|blockRecoveryId
 init|=
@@ -17419,19 +17431,6 @@ name|lastBlock
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|lease
-operator|=
-name|reassignLease
-argument_list|(
-name|lease
-argument_list|,
-name|src
-argument_list|,
-name|recoveryLeaseHolder
-argument_list|,
-name|pendingFile
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|copyOnTruncate
@@ -17470,13 +17469,6 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|leaseManager
-operator|.
-name|renewLease
-argument_list|(
-name|lease
-argument_list|)
-expr_stmt|;
 comment|// Cannot close file right now, since the last block requires recovery.
 comment|// This may potentially cause infinite loop in lease recovery
 comment|// if there are no valid replicas on data-nodes.
@@ -17503,6 +17495,27 @@ operator|+
 literal|" for block "
 operator|+
 name|lastBlock
+argument_list|)
+expr_stmt|;
+block|}
+name|lease
+operator|=
+name|reassignLease
+argument_list|(
+name|lease
+argument_list|,
+name|src
+argument_list|,
+name|recoveryLeaseHolder
+argument_list|,
+name|pendingFile
+argument_list|)
+expr_stmt|;
+name|leaseManager
+operator|.
+name|renewLease
+argument_list|(
+name|lease
 argument_list|)
 expr_stmt|;
 break|break;
@@ -18724,6 +18737,13 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+name|blockManager
+operator|.
+name|successfulBlockRecovery
+argument_list|(
+name|storedBlock
+argument_list|)
+expr_stmt|;
 block|}
 finally|finally
 block|{
