@@ -2304,6 +2304,15 @@ name|DFS_PROVIDED_ALIASMAP_TEXT_WRITE_PATH
 init|=
 literal|"dfs.provided.aliasmap.text.write.path"
 decl_stmt|;
+DECL|field|DFS_PROVIDED_ALIASMAP_LEVELDB_PATH
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_PROVIDED_ALIASMAP_LEVELDB_PATH
+init|=
+literal|"dfs.provided.aliasmap.leveldb.read.path"
+decl_stmt|;
 DECL|field|DFS_LIST_LIMIT
 specifier|public
 specifier|static
