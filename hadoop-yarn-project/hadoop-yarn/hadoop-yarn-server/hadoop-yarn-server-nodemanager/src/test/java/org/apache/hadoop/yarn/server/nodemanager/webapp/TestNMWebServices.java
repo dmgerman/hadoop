@@ -3832,7 +3832,7 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Access resource-2 should fail (null NMResourceInfo returned).
+comment|// Access resource-2 should fail (empty NMResourceInfo returned).
 name|JSONObject
 name|json
 init|=
@@ -3845,12 +3845,19 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|assertIncludesException
+name|Assert
+operator|.
+name|assertEquals
 argument_list|(
+literal|0
+argument_list|,
 name|json
+operator|.
+name|length
+argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Access resource-3 should fail (unkown plugin)
+comment|// Access resource-3 should fail (unknown plugin)
 name|response
 operator|=
 name|r
@@ -3926,9 +3933,16 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
-name|assertIncludesException
+name|Assert
+operator|.
+name|assertEquals
 argument_list|(
+literal|0
+argument_list|,
 name|json
+operator|.
+name|length
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Access resource-1 should success
@@ -4531,28 +4545,6 @@ argument_list|)
 operator|.
 name|length
 argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|assertIncludesException (JSONObject json)
-specifier|private
-name|void
-name|assertIncludesException
-parameter_list|(
-name|JSONObject
-name|json
-parameter_list|)
-block|{
-name|Assert
-operator|.
-name|assertTrue
-argument_list|(
-name|json
-operator|.
-name|has
-argument_list|(
-literal|"RemoteException"
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
