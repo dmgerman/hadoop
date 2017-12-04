@@ -7391,7 +7391,7 @@ block|{
 name|KeyProvider
 name|keyProvider
 init|=
-name|DFSUtilClient
+name|HdfsKMSUtil
 operator|.
 name|createKeyProvider
 argument_list|(
