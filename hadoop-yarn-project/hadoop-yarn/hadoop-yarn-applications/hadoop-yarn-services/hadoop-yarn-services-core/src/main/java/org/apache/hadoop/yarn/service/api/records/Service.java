@@ -462,6 +462,27 @@ name|queue
 init|=
 literal|null
 decl_stmt|;
+annotation|@
+name|JsonProperty
+argument_list|(
+literal|"kerberos_principal"
+argument_list|)
+annotation|@
+name|XmlElement
+argument_list|(
+name|name
+operator|=
+literal|"kerberos_principal"
+argument_list|)
+DECL|field|kerberosPrincipal
+specifier|private
+name|KerberosPrincipal
+name|kerberosPrincipal
+init|=
+operator|new
+name|KerberosPrincipal
+argument_list|()
+decl_stmt|;
 comment|/**    * A unique service name.    **/
 DECL|method|name (String name)
 specifier|public
@@ -1373,6 +1394,59 @@ operator|=
 name|queue
 expr_stmt|;
 block|}
+DECL|method|kerberosPrincipal (KerberosPrincipal kerberosPrincipal)
+specifier|public
+name|Service
+name|kerberosPrincipal
+parameter_list|(
+name|KerberosPrincipal
+name|kerberosPrincipal
+parameter_list|)
+block|{
+name|this
+operator|.
+name|kerberosPrincipal
+operator|=
+name|kerberosPrincipal
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+comment|/**    * The Kerberos Principal of the service.    * @return kerberosPrincipal    **/
+annotation|@
+name|ApiModelProperty
+argument_list|(
+name|value
+operator|=
+literal|"The Kerberos Principal of the service"
+argument_list|)
+DECL|method|getKerberosPrincipal ()
+specifier|public
+name|KerberosPrincipal
+name|getKerberosPrincipal
+parameter_list|()
+block|{
+return|return
+name|kerberosPrincipal
+return|;
+block|}
+DECL|method|setKerberosPrincipal (KerberosPrincipal kerberosPrincipal)
+specifier|public
+name|void
+name|setKerberosPrincipal
+parameter_list|(
+name|KerberosPrincipal
+name|kerberosPrincipal
+parameter_list|)
+block|{
+name|this
+operator|.
+name|kerberosPrincipal
+operator|=
+name|kerberosPrincipal
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|equals (java.lang.Object o)
@@ -1732,6 +1806,26 @@ argument_list|(
 name|toIndentedString
 argument_list|(
 name|queue
+argument_list|)
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"\n"
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"    kerberosPrincipal: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|toIndentedString
+argument_list|(
+name|kerberosPrincipal
 argument_list|)
 argument_list|)
 operator|.

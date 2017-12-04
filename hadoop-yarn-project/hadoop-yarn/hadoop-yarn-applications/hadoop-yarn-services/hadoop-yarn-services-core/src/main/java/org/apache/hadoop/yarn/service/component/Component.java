@@ -994,6 +994,8 @@ argument_list|(
 name|STABLE
 argument_list|,
 name|FLEXING
+argument_list|,
+name|INIT
 argument_list|)
 argument_list|,
 name|FLEX

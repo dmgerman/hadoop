@@ -709,6 +709,14 @@ operator|=
 name|this
 expr_stmt|;
 block|}
+name|registrySecurity
+operator|=
+operator|new
+name|RegistrySecurity
+argument_list|(
+literal|"registry security"
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Create an instance using this service as the binding source (i.e. read    * configuration options from the registry).    *    * @param name service name    */
 DECL|method|CuratorService (String name)
@@ -752,15 +760,7 @@ argument_list|,
 name|DEFAULT_ZK_REGISTRY_ROOT
 argument_list|)
 expr_stmt|;
-comment|// create and add the registy service
-name|registrySecurity
-operator|=
-operator|new
-name|RegistrySecurity
-argument_list|(
-literal|"registry security"
-argument_list|)
-expr_stmt|;
+comment|// add the registy service
 name|addService
 argument_list|(
 name|registrySecurity
@@ -789,6 +789,28 @@ operator|.
 name|serviceInit
 argument_list|(
 name|conf
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|setKerberosPrincipalAndKeytab (String principal, String keytab)
+specifier|public
+name|void
+name|setKerberosPrincipalAndKeytab
+parameter_list|(
+name|String
+name|principal
+parameter_list|,
+name|String
+name|keytab
+parameter_list|)
+block|{
+name|registrySecurity
+operator|.
+name|setKerberosPrincipalAndKeytab
+argument_list|(
+name|principal
+argument_list|,
+name|keytab
 argument_list|)
 expr_stmt|;
 block|}

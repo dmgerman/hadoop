@@ -1217,6 +1217,15 @@ name|Exception
 name|e
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Fail to stop service:"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 name|ServiceStatus
 name|serviceStatus
 init|=

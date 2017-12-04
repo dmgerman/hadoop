@@ -193,44 +193,6 @@ name|YARN_SERVICE_BASE_PATH
 init|=
 literal|"yarn.service.base.path"
 decl_stmt|;
-comment|//TODO rename
-comment|/** Declare that a keytab must be provided */
-DECL|field|KEY_AM_LOGIN_KEYTAB_REQUIRED
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|KEY_AM_LOGIN_KEYTAB_REQUIRED
-init|=
-literal|"slider.am.login.keytab.required"
-decl_stmt|;
-DECL|field|KEY_AM_LOGIN_KEYTAB_NAME
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|KEY_AM_LOGIN_KEYTAB_NAME
-init|=
-literal|"slider.am.login.keytab.name"
-decl_stmt|;
-DECL|field|KEY_HDFS_KEYTAB_DIR
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|KEY_HDFS_KEYTAB_DIR
-init|=
-literal|"slider.hdfs.keytab.dir"
-decl_stmt|;
-DECL|field|KEY_AM_KEYTAB_LOCAL_PATH
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|KEY_AM_KEYTAB_LOCAL_PATH
-init|=
-literal|"slider.am.keytab.local.path"
-decl_stmt|;
 comment|/**    * maximum number of failed containers (in a single component)    * before the app exits    */
 DECL|field|CONTAINER_FAILURE_THRESHOLD
 specifier|public

@@ -116,9 +116,9 @@ name|registry
 operator|.
 name|server
 operator|.
-name|integration
+name|services
 operator|.
-name|RMRegistryOperationsService
+name|RegistryAdminService
 import|;
 end_import
 
@@ -172,10 +172,6 @@ name|URISyntaxException
 import|;
 end_import
 
-begin_comment
-comment|/**  * Abstract registry tests .. inits the field {@link #registry}  * before the test with an instance of {@link RMRegistryOperationsService};  * and {@link #operations} with the same instance cast purely  * to the type {@link RegistryOperations}.  *  */
-end_comment
-
 begin_class
 DECL|class|AbstractRegistryTest
 specifier|public
@@ -202,7 +198,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|registry
 specifier|protected
-name|RMRegistryOperationsService
+name|RegistryAdminService
 name|registry
 decl_stmt|;
 DECL|field|operations
@@ -223,7 +219,7 @@ block|{
 name|registry
 operator|=
 operator|new
-name|RMRegistryOperationsService
+name|RegistryAdminService
 argument_list|(
 literal|"yarnRegistry"
 argument_list|)

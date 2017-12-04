@@ -44,20 +44,6 @@ name|hadoop
 operator|.
 name|security
 operator|.
-name|Credentials
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
 name|UserGroupInformation
 import|;
 end_import
@@ -144,9 +130,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|util
+name|service
 operator|.
-name|Records
+name|ServiceContext
 import|;
 end_import
 
@@ -182,7 +168,7 @@ name|service
 operator|.
 name|utils
 operator|.
-name|CoreFileSystem
+name|ServiceUtils
 import|;
 end_import
 
@@ -196,11 +182,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|service
+name|util
 operator|.
-name|utils
-operator|.
-name|ServiceUtils
+name|Records
 import|;
 end_import
 
@@ -353,13 +337,6 @@ name|CLASSPATH
 init|=
 literal|"CLASSPATH"
 decl_stmt|;
-comment|/**    * Filesystem to use for the launch    */
-DECL|field|coreFileSystem
-specifier|protected
-specifier|final
-name|CoreFileSystem
-name|coreFileSystem
-decl_stmt|;
 comment|/**    * Env vars; set up at final launch stage    */
 DECL|field|envVars
 specifier|protected
@@ -456,13 +433,6 @@ name|HashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
-comment|// security
-DECL|field|credentials
-specifier|protected
-specifier|final
-name|Credentials
-name|credentials
-decl_stmt|;
 DECL|field|yarnDockerMode
 specifier|protected
 name|boolean
@@ -492,37 +462,24 @@ specifier|protected
 name|String
 name|runPrivilegedContainer
 decl_stmt|;
-comment|/**    * Create instance.    * @param coreFileSystem filesystem    * @param credentials initial set of credentials -null is permitted    */
-DECL|method|AbstractLauncher ( CoreFileSystem coreFileSystem, Credentials credentials)
+DECL|field|context
+specifier|private
+name|ServiceContext
+name|context
+decl_stmt|;
+DECL|method|AbstractLauncher (ServiceContext context)
 specifier|public
 name|AbstractLauncher
 parameter_list|(
-name|CoreFileSystem
-name|coreFileSystem
-parameter_list|,
-name|Credentials
-name|credentials
+name|ServiceContext
+name|context
 parameter_list|)
 block|{
 name|this
 operator|.
-name|coreFileSystem
+name|context
 operator|=
-name|coreFileSystem
-expr_stmt|;
-name|this
-operator|.
-name|credentials
-operator|=
-name|credentials
-operator|!=
-literal|null
-condition|?
-name|credentials
-else|:
-operator|new
-name|Credentials
-argument_list|()
+name|context
 expr_stmt|;
 block|}
 DECL|method|setYarnDockerMode (boolean yarnDockerMode)
@@ -626,17 +583,6 @@ argument_list|,
 name|mountPath
 argument_list|)
 expr_stmt|;
-block|}
-comment|/**    * Accessor to the credentials    * @return the credentials associated with this launcher    */
-DECL|method|getCredentials ()
-specifier|public
-name|Credentials
-name|getCredentials
-parameter_list|()
-block|{
-return|return
-name|credentials
-return|;
 block|}
 DECL|method|addCommand (String cmd)
 specifier|public
@@ -831,30 +777,28 @@ name|localResources
 argument_list|)
 expr_stmt|;
 comment|//tokens
-name|log
+if|if
+condition|(
+name|context
 operator|.
-name|debug
-argument_list|(
-literal|"{} tokens"
-argument_list|,
-name|credentials
-operator|.
-name|numberOfTokens
-argument_list|()
-argument_list|)
-expr_stmt|;
+name|tokens
+operator|!=
+literal|null
+condition|)
+block|{
 name|containerLaunchContext
 operator|.
 name|setTokens
 argument_list|(
-name|CredentialUtils
+name|context
 operator|.
-name|marshallCredentials
-argument_list|(
-name|credentials
-argument_list|)
+name|tokens
+operator|.
+name|duplicate
+argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|yarnDockerMode

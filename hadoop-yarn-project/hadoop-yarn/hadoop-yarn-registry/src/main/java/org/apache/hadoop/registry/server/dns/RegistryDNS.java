@@ -2411,6 +2411,16 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|reverseLookupZoneName
+operator|==
+literal|null
+condition|)
+block|{
+comment|// reverse lookup disabled
+return|return;
+block|}
 name|Zone
 name|reverseLookupZone
 init|=
