@@ -265,6 +265,33 @@ name|int
 name|queueWaitTime
 parameter_list|)
 function_decl|;
+comment|/**    * Gets the capacity of the opportunistic containers queue on the node.    *    * @return queue capacity.    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|getOpportQueueCapacity ()
+specifier|public
+specifier|abstract
+name|int
+name|getOpportQueueCapacity
+parameter_list|()
+function_decl|;
+comment|/**    * Sets the capacity of the opportunistic containers queue on the node.    *    * @param queueCapacity queue capacity.    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setOpportQueueCapacity (int queueCapacity)
+specifier|public
+specifier|abstract
+name|void
+name|setOpportQueueCapacity
+parameter_list|(
+name|int
+name|queueCapacity
+parameter_list|)
+function_decl|;
 block|}
 end_class
 

@@ -545,6 +545,7 @@ specifier|final
 name|Context
 name|context
 decl_stmt|;
+comment|// Capacity of the queue for opportunistic Containers.
 DECL|field|maxOppQueueLength
 specifier|private
 specifier|final
@@ -1298,6 +1299,19 @@ name|size
 argument_list|()
 return|;
 block|}
+comment|/**    * Return the capacity of the queue for opportunistic containers    * on this node.    * @return queue capacity.    */
+DECL|method|getOpportunisticQueueCapacity ()
+specifier|public
+name|int
+name|getOpportunisticQueueCapacity
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|maxOppQueueLength
+return|;
+block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getNumQueuedGuaranteedContainers ()
@@ -1426,6 +1440,16 @@ argument_list|(
 name|metrics
 operator|.
 name|getRunningOpportunisticContainers
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|opportunisticContainersStatus
+operator|.
+name|setOpportQueueCapacity
+argument_list|(
+name|getOpportunisticQueueCapacity
 argument_list|()
 argument_list|)
 expr_stmt|;
