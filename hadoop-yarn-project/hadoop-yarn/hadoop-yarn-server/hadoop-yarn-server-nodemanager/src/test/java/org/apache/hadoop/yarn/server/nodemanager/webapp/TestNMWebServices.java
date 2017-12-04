@@ -6179,6 +6179,15 @@ name|element
 argument_list|,
 literal|"nodeManagerVersion"
 argument_list|)
+argument_list|,
+name|WebServicesTestUtils
+operator|.
+name|getXmlString
+argument_list|(
+name|element
+argument_list|,
+literal|"resourceTypes"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -6222,7 +6231,7 @@ name|assertEquals
 argument_list|(
 literal|"incorrect number of elements"
 argument_list|,
-literal|17
+literal|18
 argument_list|,
 name|info
 operator|.
@@ -6343,10 +6352,17 @@ name|getString
 argument_list|(
 literal|"nodeManagerVersion"
 argument_list|)
+argument_list|,
+name|info
+operator|.
+name|getString
+argument_list|(
+literal|"resourceTypes"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|verifyNodeInfoGeneric (String id, String healthReport, long totalVmemAllocatedContainersMB, long totalPmemAllocatedContainersMB, long totalVCoresAllocatedContainers, boolean vmemCheckEnabled, boolean pmemCheckEnabled, long lastNodeUpdateTime, Boolean nodeHealthy, String nodeHostName, String hadoopVersionBuiltOn, String hadoopBuildVersion, String hadoopVersion, String resourceManagerVersionBuiltOn, String resourceManagerBuildVersion, String resourceManagerVersion)
+DECL|method|verifyNodeInfoGeneric (String id, String healthReport, long totalVmemAllocatedContainersMB, long totalPmemAllocatedContainersMB, long totalVCoresAllocatedContainers, boolean vmemCheckEnabled, boolean pmemCheckEnabled, long lastNodeUpdateTime, Boolean nodeHealthy, String nodeHostName, String hadoopVersionBuiltOn, String hadoopBuildVersion, String hadoopVersion, String resourceManagerVersionBuiltOn, String resourceManagerBuildVersion, String resourceManagerVersion, String resourceTypes)
 specifier|public
 name|void
 name|verifyNodeInfoGeneric
@@ -6398,6 +6414,9 @@ name|resourceManagerBuildVersion
 parameter_list|,
 name|String
 name|resourceManagerVersion
+parameter_list|,
+name|String
+name|resourceTypes
 parameter_list|)
 block|{
 name|WebServicesTestUtils
@@ -6582,6 +6601,13 @@ name|getVersion
 argument_list|()
 argument_list|,
 name|resourceManagerVersion
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"memory-mb (unit=Mi), vcores"
+argument_list|,
+name|resourceTypes
 argument_list|)
 expr_stmt|;
 block|}

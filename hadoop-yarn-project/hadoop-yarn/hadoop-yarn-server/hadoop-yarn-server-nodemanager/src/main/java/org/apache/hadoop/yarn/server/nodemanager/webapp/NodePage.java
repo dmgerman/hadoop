@@ -448,6 +448,16 @@ argument_list|)
 operator|.
 name|__
 argument_list|(
+literal|"Resource types"
+argument_list|,
+name|info
+operator|.
+name|getResourceTypes
+argument_list|()
+argument_list|)
+operator|.
+name|__
+argument_list|(
 literal|"NodeHealthyStatus"
 argument_list|,
 name|info
