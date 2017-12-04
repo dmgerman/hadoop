@@ -72,6 +72,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -330,6 +344,26 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|readFieldsInOldFormat (DataInput in)
+specifier|public
+specifier|synchronized
+name|void
+name|readFieldsInOldFormat
+parameter_list|(
+name|DataInput
+name|in
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|super
+operator|.
+name|readFields
+argument_list|(
+name|in
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|setBuilderFields ()
 specifier|private
 name|void
@@ -555,6 +589,28 @@ argument_list|(
 operator|(
 name|DataOutputStream
 operator|)
+name|out
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|writeInOldFormat (DataOutput out)
+specifier|public
+specifier|synchronized
+name|void
+name|writeInOldFormat
+parameter_list|(
+name|DataOutput
+name|out
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|super
+operator|.
+name|write
+argument_list|(
 name|out
 argument_list|)
 expr_stmt|;

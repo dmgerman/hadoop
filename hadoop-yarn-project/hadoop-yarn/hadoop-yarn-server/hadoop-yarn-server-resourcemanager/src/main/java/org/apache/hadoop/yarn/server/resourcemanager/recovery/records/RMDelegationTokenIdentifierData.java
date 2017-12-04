@@ -268,6 +268,43 @@ name|getRenewDate
 argument_list|()
 return|;
 block|}
+DECL|method|setIdentifier (YARNDelegationTokenIdentifier identifier)
+specifier|public
+name|void
+name|setIdentifier
+parameter_list|(
+name|YARNDelegationTokenIdentifier
+name|identifier
+parameter_list|)
+block|{
+name|builder
+operator|.
+name|setTokenIdentifier
+argument_list|(
+name|identifier
+operator|.
+name|getProto
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|setRenewDate (long renewDate)
+specifier|public
+name|void
+name|setRenewDate
+parameter_list|(
+name|long
+name|renewDate
+parameter_list|)
+block|{
+name|builder
+operator|.
+name|setRenewDate
+argument_list|(
+name|renewDate
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

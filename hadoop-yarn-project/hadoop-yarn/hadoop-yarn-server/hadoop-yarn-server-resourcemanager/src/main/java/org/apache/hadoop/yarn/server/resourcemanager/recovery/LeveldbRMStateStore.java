@@ -2632,9 +2632,7 @@ block|{
 name|RMDelegationTokenIdentifierData
 name|tokenData
 init|=
-operator|new
-name|RMDelegationTokenIdentifierData
-argument_list|()
+literal|null
 decl_stmt|;
 name|DataInputStream
 name|in
@@ -2652,8 +2650,10 @@ decl_stmt|;
 try|try
 block|{
 name|tokenData
+operator|=
+name|RMStateStoreUtils
 operator|.
-name|readFields
+name|readRMDelegationTokenIdentifierData
 argument_list|(
 name|in
 argument_list|)
