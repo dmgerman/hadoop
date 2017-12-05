@@ -434,6 +434,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|placement
+operator|.
+name|ApplicationPlacementContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|rmapp
 operator|.
 name|attempt
@@ -762,6 +782,12 @@ comment|/**    * To verify whether app has reached in its completing/completed s
 DECL|method|isAppInCompletedStates ()
 name|boolean
 name|isAppInCompletedStates
+parameter_list|()
+function_decl|;
+comment|/**    * Get the application -> queue placement context    * @return ApplicationPlacementContext    */
+DECL|method|getApplicationPlacementContext ()
+name|ApplicationPlacementContext
+name|getApplicationPlacementContext
 parameter_list|()
 function_decl|;
 block|}

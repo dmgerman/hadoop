@@ -342,11 +342,20 @@ block|{
 name|String
 name|msg
 init|=
-literal|"Failed to get where to place application="
+literal|"Failed to place application "
 operator|+
 name|asc
 operator|.
 name|getApplicationId
+argument_list|()
+operator|+
+literal|" to queue and specified "
+operator|+
+literal|"queue is invalid : "
+operator|+
+name|asc
+operator|.
+name|getQueue
 argument_list|()
 decl_stmt|;
 name|LOG
