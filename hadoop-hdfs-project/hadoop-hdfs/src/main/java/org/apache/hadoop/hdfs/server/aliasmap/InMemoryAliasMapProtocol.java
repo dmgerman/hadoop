@@ -288,6 +288,14 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Get the associated block pool id.    * @return the block pool id associated with the Namenode running    * the in-memory alias map.    */
+DECL|method|getBlockPoolId ()
+name|String
+name|getBlockPoolId
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

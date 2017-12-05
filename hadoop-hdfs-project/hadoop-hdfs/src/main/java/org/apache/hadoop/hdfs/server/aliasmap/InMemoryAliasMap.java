@@ -773,8 +773,6 @@ argument_list|(
 name|block
 argument_list|,
 name|providedStorageLocation
-argument_list|,
-literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -955,6 +953,18 @@ argument_list|,
 name|providedStorageLocationDbFormat
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getBlockPoolId ()
+specifier|public
+name|String
+name|getBlockPoolId
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
 block|}
 DECL|method|close ()
 specifier|public

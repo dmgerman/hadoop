@@ -167,7 +167,7 @@ argument_list|>
 block|{
 annotation|@
 name|Override
-DECL|method|getReader (Reader.Options opts)
+DECL|method|getReader (Reader.Options opts, String blockPoolID)
 specifier|public
 name|Reader
 argument_list|<
@@ -179,6 +179,9 @@ name|Reader
 operator|.
 name|Options
 name|opts
+parameter_list|,
+name|String
+name|blockPoolID
 parameter_list|)
 throws|throws
 name|IOException
@@ -286,7 +289,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getWriter (Writer.Options opts)
+DECL|method|getWriter (Writer.Options opts, String blockPoolID)
 specifier|public
 name|Writer
 name|getWriter
@@ -295,6 +298,9 @@ name|Writer
 operator|.
 name|Options
 name|opts
+parameter_list|,
+name|String
+name|blockPoolID
 parameter_list|)
 throws|throws
 name|IOException

@@ -4137,6 +4137,11 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+name|startAliasMapServerIfNecessary
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|rpcServer
 operator|=
 name|createRpcServer
@@ -4216,11 +4221,6 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|startAliasMapServerIfNecessary
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 block|}
 DECL|method|startAliasMapServerIfNecessary (Configuration conf)
 specifier|private
@@ -4270,6 +4270,11 @@ argument_list|(
 name|InMemoryAliasMap
 operator|::
 name|init
+argument_list|,
+name|namesystem
+operator|.
+name|getBlockPoolId
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|levelDBAliasMapServer

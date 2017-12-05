@@ -428,7 +428,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getReader (Reader.Options opts)
+DECL|method|getReader (Reader.Options opts, String blockPoolID)
 specifier|public
 name|Reader
 argument_list|<
@@ -440,6 +440,9 @@ name|Reader
 operator|.
 name|Options
 name|opts
+parameter_list|,
+name|String
+name|blockPoolID
 parameter_list|)
 throws|throws
 name|IOException
@@ -502,13 +505,15 @@ operator|.
 name|levelDBPath
 argument_list|,
 literal|false
+argument_list|,
+name|blockPoolID
 argument_list|)
 argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getWriter (Writer.Options opts)
+DECL|method|getWriter (Writer.Options opts, String blockPoolID)
 specifier|public
 name|Writer
 argument_list|<
@@ -520,6 +525,9 @@ name|Writer
 operator|.
 name|Options
 name|opts
+parameter_list|,
+name|String
+name|blockPoolID
 parameter_list|)
 throws|throws
 name|IOException
@@ -582,11 +590,13 @@ operator|.
 name|levelDBPath
 argument_list|,
 literal|true
+argument_list|,
+name|blockPoolID
 argument_list|)
 argument_list|)
 return|;
 block|}
-DECL|method|createDB (String levelDBPath, boolean createIfMissing)
+DECL|method|createDB (String levelDBPath, boolean createIfMissing, String blockPoolID)
 specifier|private
 specifier|static
 name|DB
@@ -597,6 +607,9 @@ name|levelDBPath
 parameter_list|,
 name|boolean
 name|createIfMissing
+parameter_list|,
+name|String
+name|blockPoolID
 parameter_list|)
 throws|throws
 name|IOException
@@ -657,16 +670,44 @@ argument_list|(
 name|createIfMissing
 argument_list|)
 expr_stmt|;
-return|return
-name|factory
-operator|.
-name|open
+name|File
+name|dbFile
+decl_stmt|;
+if|if
+condition|(
+name|blockPoolID
+operator|!=
+literal|null
+condition|)
+block|{
+name|dbFile
+operator|=
+operator|new
+name|File
 argument_list|(
+name|levelDBPath
+argument_list|,
+name|blockPoolID
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|dbFile
+operator|=
 operator|new
 name|File
 argument_list|(
 name|levelDBPath
 argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|factory
+operator|.
+name|open
+argument_list|(
+name|dbFile
 argument_list|,
 name|options
 argument_list|)

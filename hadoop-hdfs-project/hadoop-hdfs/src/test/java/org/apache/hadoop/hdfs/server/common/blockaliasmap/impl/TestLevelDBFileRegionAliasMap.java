@@ -168,6 +168,15 @@ specifier|public
 class|class
 name|TestLevelDBFileRegionAliasMap
 block|{
+DECL|field|BPID
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|BPID
+init|=
+literal|"BPID-0"
+decl_stmt|;
 comment|/**    * A basic test to verify that we can write data and read it back again.    * @throws Exception    */
 annotation|@
 name|Test
@@ -233,6 +242,8 @@ operator|.
 name|getWriter
 argument_list|(
 name|opts
+argument_list|,
+name|BPID
 argument_list|)
 decl_stmt|;
 name|FileRegion
@@ -281,6 +292,8 @@ operator|.
 name|getReader
 argument_list|(
 name|opts
+argument_list|,
+name|BPID
 argument_list|)
 decl_stmt|;
 name|FileRegion
@@ -631,6 +644,8 @@ operator|.
 name|getWriter
 argument_list|(
 name|opts
+argument_list|,
+name|BPID
 argument_list|)
 decl_stmt|;
 for|for
@@ -667,6 +682,8 @@ operator|.
 name|getReader
 argument_list|(
 name|opts
+argument_list|,
+name|BPID
 argument_list|)
 decl_stmt|;
 name|Iterator

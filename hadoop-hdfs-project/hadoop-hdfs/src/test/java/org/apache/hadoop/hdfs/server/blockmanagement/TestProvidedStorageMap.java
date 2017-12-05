@@ -274,6 +274,11 @@ specifier|private
 name|String
 name|providedStorageID
 decl_stmt|;
+DECL|field|blockPoolID
+specifier|private
+name|String
+name|blockPoolID
+decl_stmt|;
 annotation|@
 name|Before
 DECL|method|setup ()
@@ -335,6 +340,10 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
+name|blockPoolID
+operator|=
+literal|"BP-12344-10.1.1.2-12344"
+expr_stmt|;
 name|bm
 operator|=
 name|mock
@@ -342,6 +351,19 @@ argument_list|(
 name|BlockManager
 operator|.
 name|class
+argument_list|)
+expr_stmt|;
+name|when
+argument_list|(
+name|bm
+operator|.
+name|getBlockPoolId
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|blockPoolID
 argument_list|)
 expr_stmt|;
 name|nameSystemLock

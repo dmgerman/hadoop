@@ -201,7 +201,7 @@ specifier|public
 interface|interface
 name|Options
 block|{ }
-comment|/**      * @param ident block to resolve      * @return BlockAlias correspoding to the provided block.      * @throws IOException      */
+comment|/**      * @param ident block to resolve      * @return BlockAlias corresponding to the provided block.      * @throws IOException      */
 DECL|method|resolve (Block ident)
 specifier|public
 specifier|abstract
@@ -218,8 +218,8 @@ throws|throws
 name|IOException
 function_decl|;
 block|}
-comment|/**    * Returns a reader to the alias map.    * @param opts reader options    * @return {@link Reader} to the alias map.    * @throws IOException    */
-DECL|method|getReader (Reader.Options opts)
+comment|/**    * Returns a reader to the alias map.    * @param opts reader options    * @param blockPoolID block pool id to use    * @return {@link Reader} to the alias map. If a Reader for the blockPoolID    * cannot be created, this will return null.    * @throws IOException    */
+DECL|method|getReader (Reader.Options opts, String blockPoolID)
 specifier|public
 specifier|abstract
 name|Reader
@@ -232,6 +232,9 @@ name|Reader
 operator|.
 name|Options
 name|opts
+parameter_list|,
+name|String
+name|blockPoolID
 parameter_list|)
 throws|throws
 name|IOException
@@ -270,8 +273,8 @@ throws|throws
 name|IOException
 function_decl|;
 block|}
-comment|/**    * Returns the writer for the alias map.    * @param opts writer options.    * @return {@link Writer} to the alias map.    * @throws IOException    */
-DECL|method|getWriter (Writer.Options opts)
+comment|/**    * Returns the writer for the alias map.    * @param opts writer options.    * @param blockPoolID block pool id to use    * @return {@link Writer} to the alias map.    * @throws IOException    */
+DECL|method|getWriter (Writer.Options opts, String blockPoolID)
 specifier|public
 specifier|abstract
 name|Writer
@@ -284,6 +287,9 @@ name|Writer
 operator|.
 name|Options
 name|opts
+parameter_list|,
+name|String
+name|blockPoolID
 parameter_list|)
 throws|throws
 name|IOException

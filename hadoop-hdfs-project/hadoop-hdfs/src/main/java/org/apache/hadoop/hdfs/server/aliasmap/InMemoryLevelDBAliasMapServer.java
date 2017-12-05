@@ -392,7 +392,12 @@ specifier|private
 name|InMemoryAliasMap
 name|aliasMap
 decl_stmt|;
-DECL|method|InMemoryLevelDBAliasMapServer ( CheckedFunction<Configuration, InMemoryAliasMap> initFun)
+DECL|field|blockPoolId
+specifier|private
+name|String
+name|blockPoolId
+decl_stmt|;
+DECL|method|InMemoryLevelDBAliasMapServer ( CheckedFunction<Configuration, InMemoryAliasMap> initFun, String blockPoolId)
 specifier|public
 name|InMemoryLevelDBAliasMapServer
 parameter_list|(
@@ -403,6 +408,9 @@ argument_list|,
 name|InMemoryAliasMap
 argument_list|>
 name|initFun
+parameter_list|,
+name|String
+name|blockPoolId
 parameter_list|)
 block|{
 name|this
@@ -410,6 +418,12 @@ operator|.
 name|initFun
 operator|=
 name|initFun
+expr_stmt|;
+name|this
+operator|.
+name|blockPoolId
+operator|=
+name|blockPoolId
 expr_stmt|;
 block|}
 DECL|method|start ()
@@ -568,7 +582,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Starting InMemoryLevelDBAliasMapServer on "
+literal|"Starting InMemoryLevelDBAliasMapServer on {}"
 argument_list|,
 name|rpcAddress
 argument_list|)
@@ -664,6 +678,18 @@ argument_list|,
 name|providedStorageLocation
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getBlockPoolId ()
+specifier|public
+name|String
+name|getBlockPoolId
+parameter_list|()
+block|{
+return|return
+name|blockPoolId
+return|;
 block|}
 annotation|@
 name|Override

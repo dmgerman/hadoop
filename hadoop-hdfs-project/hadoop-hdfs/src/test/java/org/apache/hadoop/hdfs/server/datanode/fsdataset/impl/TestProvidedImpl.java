@@ -1239,11 +1239,6 @@ argument_list|,
 literal|0
 argument_list|,
 name|BLK_LEN
-argument_list|,
-name|BLOCK_POOL_IDS
-index|[
-name|CHOSEN_BP_ID
-index|]
 argument_list|)
 expr_stmt|;
 name|currentCount
@@ -1381,7 +1376,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getReader (Reader.Options opts)
+DECL|method|getReader (Reader.Options opts, String blockPoolId)
 specifier|public
 name|Reader
 argument_list|<
@@ -1393,10 +1388,31 @@ name|Reader
 operator|.
 name|Options
 name|opts
+parameter_list|,
+name|String
+name|blockPoolId
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+operator|!
+name|blockPoolId
+operator|.
+name|equals
+argument_list|(
+name|BLOCK_POOL_IDS
+index|[
+name|CHOSEN_BP_ID
+index|]
+argument_list|)
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
 name|BlockAliasMap
 operator|.
 name|Reader
@@ -1486,7 +1502,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getWriter (Writer.Options opts)
+DECL|method|getWriter (Writer.Options opts, String blockPoolId)
 specifier|public
 name|Writer
 argument_list|<
@@ -1498,6 +1514,9 @@ name|Writer
 operator|.
 name|Options
 name|opts
+parameter_list|,
+name|String
+name|blockPoolId
 parameter_list|)
 throws|throws
 name|IOException

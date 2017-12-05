@@ -282,6 +282,18 @@ name|mock
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|when
+import|;
+end_import
+
 begin_comment
 comment|/**  * Tests the in-memory alias map with a mock level-db implementation.  */
 end_comment
@@ -317,6 +329,14 @@ specifier|private
 name|InMemoryAliasMap
 name|aliasMapMock
 decl_stmt|;
+DECL|field|bpid
+specifier|private
+specifier|final
+name|String
+name|bpid
+init|=
+literal|"BPID-0"
+decl_stmt|;
 annotation|@
 name|Before
 DECL|method|setUp ()
@@ -336,6 +356,19 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
+name|when
+argument_list|(
+name|aliasMapMock
+operator|.
+name|getBlockPoolId
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|bpid
+argument_list|)
+expr_stmt|;
 name|levelDBAliasMapServer
 operator|=
 operator|new
@@ -344,6 +377,8 @@ argument_list|(
 name|config
 lambda|->
 name|aliasMapMock
+argument_list|,
+name|bpid
 argument_list|)
 expr_stmt|;
 name|conf
@@ -391,6 +426,18 @@ name|getAbsolutePath
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|levelDBAliasMapServer
+operator|.
+name|setConf
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|levelDBAliasMapServer
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
 name|inMemoryLevelDBAliasMapClient
 operator|=
 operator|new
@@ -403,18 +450,6 @@ name|setConf
 argument_list|(
 name|conf
 argument_list|)
-expr_stmt|;
-name|levelDBAliasMapServer
-operator|.
-name|setConf
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-name|levelDBAliasMapServer
-operator|.
-name|start
-argument_list|()
 expr_stmt|;
 block|}
 annotation|@
@@ -508,6 +543,8 @@ operator|.
 name|getReader
 argument_list|(
 literal|null
+argument_list|,
+name|bpid
 argument_list|)
 operator|.
 name|resolve
@@ -532,6 +569,8 @@ operator|.
 name|getReader
 argument_list|(
 literal|null
+argument_list|,
+name|bpid
 argument_list|)
 operator|.
 name|resolve
@@ -633,6 +672,8 @@ operator|.
 name|getWriter
 argument_list|(
 literal|null
+argument_list|,
+name|bpid
 argument_list|)
 operator|.
 name|store
@@ -663,6 +704,8 @@ operator|.
 name|getWriter
 argument_list|(
 literal|null
+argument_list|,
+name|bpid
 argument_list|)
 operator|.
 name|store

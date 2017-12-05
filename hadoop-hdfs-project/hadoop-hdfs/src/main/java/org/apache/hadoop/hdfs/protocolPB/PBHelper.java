@@ -7851,8 +7851,6 @@ argument_list|(
 name|block
 argument_list|,
 name|providedStorageLocation
-argument_list|,
-literal|null
 argument_list|)
 return|;
 block|}
