@@ -633,7 +633,7 @@ specifier|final
 name|boolean
 name|DEFAULT_NM_LOG_CONTAINER_DEBUG_INFO
 init|=
-literal|false
+literal|true
 decl_stmt|;
 comment|////////////////////////////////
 comment|// IPC Configs
