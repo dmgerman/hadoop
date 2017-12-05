@@ -1724,12 +1724,12 @@ if|if
 condition|(
 name|application
 operator|.
-name|getResourceRequests
+name|getAppPlacementAllocator
 argument_list|(
 name|schedulerKey
 argument_list|)
 operator|.
-name|size
+name|getUniqueLocationAsks
 argument_list|()
 operator|==
 literal|1

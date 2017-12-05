@@ -11881,6 +11881,9 @@ name|requests
 init|=
 name|rmContainer
 operator|.
+name|getContainerRequest
+argument_list|()
+operator|.
 name|getResourceRequests
 argument_list|()
 decl_stmt|;

@@ -612,6 +612,28 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|common
+operator|.
+name|ContainerRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|scheduler
 operator|.
 name|SchedulerRequestKey
@@ -1499,13 +1521,10 @@ specifier|private
 name|boolean
 name|isAMContainer
 decl_stmt|;
-DECL|field|resourceRequests
+DECL|field|containerRequestForRecovery
 specifier|private
-name|List
-argument_list|<
-name|ResourceRequest
-argument_list|>
-name|resourceRequests
+name|ContainerRequest
+name|containerRequestForRecovery
 decl_stmt|;
 comment|// Only used for container resource increase and decrease. This is the
 comment|// resource to rollback to should container resource increase token expires.
@@ -1843,12 +1862,6 @@ operator|.
 name|isAMContainer
 operator|=
 literal|false
-expr_stmt|;
-name|this
-operator|.
-name|resourceRequests
-operator|=
-literal|null
 expr_stmt|;
 name|this
 operator|.
@@ -2459,13 +2472,10 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getResourceRequests ()
+DECL|method|getContainerRequest ()
 specifier|public
-name|List
-argument_list|<
-name|ResourceRequest
-argument_list|>
-name|getResourceRequests
+name|ContainerRequest
+name|getContainerRequest
 parameter_list|()
 block|{
 try|try
@@ -2476,7 +2486,7 @@ name|lock
 argument_list|()
 expr_stmt|;
 return|return
-name|resourceRequests
+name|containerRequestForRecovery
 return|;
 block|}
 finally|finally
@@ -2488,30 +2498,27 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|setResourceRequests (List<ResourceRequest> requests)
+DECL|method|setContainerRequest (ContainerRequest request)
 specifier|public
 name|void
-name|setResourceRequests
+name|setContainerRequest
 parameter_list|(
-name|List
-argument_list|<
-name|ResourceRequest
-argument_list|>
-name|requests
+name|ContainerRequest
+name|request
 parameter_list|)
-block|{
-try|try
 block|{
 name|writeLock
 operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|this
 operator|.
-name|resourceRequests
+name|containerRequestForRecovery
 operator|=
-name|requests
+name|request
 expr_stmt|;
 block|}
 finally|finally
@@ -3165,7 +3172,7 @@ comment|// Clear ResourceRequest stored in RMContainer, we don't need to remembe
 comment|// this anymore.
 name|container
 operator|.
-name|setResourceRequests
+name|setContainerRequest
 argument_list|(
 literal|null
 argument_list|)

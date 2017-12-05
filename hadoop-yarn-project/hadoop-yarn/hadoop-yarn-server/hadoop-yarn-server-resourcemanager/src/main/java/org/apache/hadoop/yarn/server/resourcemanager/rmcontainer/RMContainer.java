@@ -240,6 +240,28 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|common
+operator|.
+name|ContainerRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|scheduler
 operator|.
 name|SchedulerRequestKey
@@ -374,12 +396,9 @@ name|boolean
 name|isAMContainer
 parameter_list|()
 function_decl|;
-DECL|method|getResourceRequests ()
-name|List
-argument_list|<
-name|ResourceRequest
-argument_list|>
-name|getResourceRequests
+DECL|method|getContainerRequest ()
+name|ContainerRequest
+name|getContainerRequest
 parameter_list|()
 function_decl|;
 DECL|method|getNodeHttpAddress ()

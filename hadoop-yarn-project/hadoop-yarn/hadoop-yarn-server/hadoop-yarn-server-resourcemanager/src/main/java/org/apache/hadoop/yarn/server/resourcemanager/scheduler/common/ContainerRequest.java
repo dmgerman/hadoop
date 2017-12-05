@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager.scheduler.placement
+DECL|package|org.apache.hadoop.yarn.server.resourcemanager.scheduler.common
 package|package
 name|org
 operator|.
@@ -20,7 +20,7 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|placement
+name|common
 package|;
 end_package
 
@@ -42,70 +42,63 @@ name|ResourceRequest
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
 begin_comment
-comment|/**  * Result of ResourceRequest update  */
+comment|/**  * ContainerRequest is a class to capture resource requests associated with a  * Container, this will be used by scheduler to recover resource requests if the  * container preempted or cancelled before AM acquire the container.  *  * It should include deducted resource requests when the container allocated.  *  * Lifecycle of the ContainerRequest is:  *  *<pre>  * 1) It is instantiated when container created.  * 2) It will be set to ContainerImpl by scheduler.  * 3) When container preempted or cancelled because of whatever reason before  *    container acquired by AM. ContainerRequest will be added back to pending  *    request pool.  * 4) It will be cleared from ContainerImpl if the container already acquired by  *    AM.  *</pre>  */
 end_comment
 
 begin_class
-DECL|class|ResourceRequestUpdateResult
+DECL|class|ContainerRequest
 specifier|public
 class|class
-name|ResourceRequestUpdateResult
+name|ContainerRequest
 block|{
-DECL|field|lastAnyResourceRequest
+DECL|field|requests
 specifier|private
-specifier|final
+name|List
+argument_list|<
 name|ResourceRequest
-name|lastAnyResourceRequest
+argument_list|>
+name|requests
 decl_stmt|;
-DECL|field|newResourceRequest
-specifier|private
-specifier|final
-name|ResourceRequest
-name|newResourceRequest
-decl_stmt|;
-DECL|method|ResourceRequestUpdateResult (ResourceRequest lastAnyResourceRequest, ResourceRequest newResourceRequest)
+DECL|method|ContainerRequest (List<ResourceRequest> requests)
 specifier|public
-name|ResourceRequestUpdateResult
+name|ContainerRequest
 parameter_list|(
+name|List
+argument_list|<
 name|ResourceRequest
-name|lastAnyResourceRequest
-parameter_list|,
-name|ResourceRequest
-name|newResourceRequest
+argument_list|>
+name|requests
 parameter_list|)
 block|{
 name|this
 operator|.
-name|lastAnyResourceRequest
+name|requests
 operator|=
-name|lastAnyResourceRequest
-expr_stmt|;
-name|this
-operator|.
-name|newResourceRequest
-operator|=
-name|newResourceRequest
+name|requests
 expr_stmt|;
 block|}
-DECL|method|getLastAnyResourceRequest ()
+DECL|method|getResourceRequests ()
 specifier|public
+name|List
+argument_list|<
 name|ResourceRequest
-name|getLastAnyResourceRequest
+argument_list|>
+name|getResourceRequests
 parameter_list|()
 block|{
 return|return
-name|lastAnyResourceRequest
-return|;
-block|}
-DECL|method|getNewResourceRequest ()
-specifier|public
-name|ResourceRequest
-name|getNewResourceRequest
-parameter_list|()
-block|{
-return|return
-name|newResourceRequest
+name|requests
 return|;
 block|}
 block|}

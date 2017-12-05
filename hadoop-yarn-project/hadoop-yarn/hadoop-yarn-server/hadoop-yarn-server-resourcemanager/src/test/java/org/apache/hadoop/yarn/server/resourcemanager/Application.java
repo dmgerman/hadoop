@@ -2903,7 +2903,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"updateResourceRequests:"
+literal|"updatePendingAsk:"
 operator|+
 literal|" application="
 operator|+
@@ -2988,7 +2988,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"updateResourceRequests:"
+literal|"updatePendingAsk:"
 operator|+
 literal|" application="
 operator|+
@@ -3059,7 +3059,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"updateResourceRequests:"
+literal|"updatePendingAsk:"
 operator|+
 literal|" application="
 operator|+

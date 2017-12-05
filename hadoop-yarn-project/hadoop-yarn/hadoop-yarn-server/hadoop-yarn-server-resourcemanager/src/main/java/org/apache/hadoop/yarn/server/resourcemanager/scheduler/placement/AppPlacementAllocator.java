@@ -122,6 +122,28 @@ name|scheduler
 operator|.
 name|common
 operator|.
+name|ContainerRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|common
+operator|.
 name|PendingAsk
 import|;
 end_import
@@ -214,10 +236,10 @@ argument_list|>
 name|candidateNodeSet
 parameter_list|)
 function_decl|;
-comment|/**    * Replace existing ResourceRequest by the new requests    *    * @param requests new ResourceRequests    * @param recoverPreemptedRequestForAContainer if we're recovering resource    * requests for preempted container    * @return true if total pending resource changed    */
-DECL|method|updateResourceRequests ( Collection<ResourceRequest> requests, boolean recoverPreemptedRequestForAContainer)
-name|ResourceRequestUpdateResult
-name|updateResourceRequests
+comment|/**    * Replace existing pending asks by the new requests    *    * @param requests new asks    * @param recoverPreemptedRequestForAContainer if we're recovering resource    * requests for preempted container    * @return true if total pending resource changed    */
+DECL|method|updatePendingAsk ( Collection<ResourceRequest> requests, boolean recoverPreemptedRequestForAContainer)
+name|PendingAskUpdateResult
+name|updatePendingAsk
 parameter_list|(
 name|Collection
 argument_list|<
@@ -258,12 +280,9 @@ name|String
 name|resourceName
 parameter_list|)
 function_decl|;
-comment|/**    * Notify container allocated.    * @param schedulerKey SchedulerRequestKey for this ResourceRequest    * @param type Type of the allocation    * @param node Which node this container allocated on    * @return list of ResourceRequests deducted    */
+comment|/**    * Notify container allocated.    * @param schedulerKey SchedulerRequestKey for this ResourceRequest    * @param type Type of the allocation    * @param node Which node this container allocated on    * @return ContainerRequest which include resource requests associated with    *         the container. This will be used by scheduler to recover requests.    *         Please refer to {@link ContainerRequest} for more details.    */
 DECL|method|allocate (SchedulerRequestKey schedulerKey, NodeType type, SchedulerNode node)
-name|List
-argument_list|<
-name|ResourceRequest
-argument_list|>
+name|ContainerRequest
 name|allocate
 parameter_list|(
 name|SchedulerRequestKey
@@ -275,15 +294,6 @@ parameter_list|,
 name|SchedulerNode
 name|node
 parameter_list|)
-function_decl|;
-comment|/**    * Returns list of accepted resourceNames.    * @return Iterator of accepted resourceNames    */
-DECL|method|getAcceptedResouceNames ()
-name|Iterator
-argument_list|<
-name|String
-argument_list|>
-name|getAcceptedResouceNames
-parameter_list|()
 function_decl|;
 comment|/**    * We can still have pending requirement for a given NodeType and node    * @param type Locality Type    * @param node which node we will allocate on    * @return true if we has pending requirement    */
 DECL|method|canAllocate (NodeType type, SchedulerNode node)

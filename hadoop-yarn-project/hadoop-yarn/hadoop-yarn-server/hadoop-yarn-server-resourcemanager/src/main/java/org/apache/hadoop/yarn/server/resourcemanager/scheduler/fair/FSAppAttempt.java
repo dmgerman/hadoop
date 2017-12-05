@@ -632,6 +632,28 @@ name|scheduler
 operator|.
 name|common
 operator|.
+name|ContainerRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|common
+operator|.
 name|PendingAsk
 import|;
 end_import
@@ -2513,11 +2535,8 @@ name|rmContainer
 argument_list|)
 expr_stmt|;
 comment|// Update consumption and track allocations
-name|List
-argument_list|<
-name|ResourceRequest
-argument_list|>
-name|resourceRequestList
+name|ContainerRequest
+name|containerRequest
 init|=
 name|appSchedulingInfo
 operator|.
@@ -2563,9 +2582,9 @@ operator|)
 name|rmContainer
 operator|)
 operator|.
-name|setResourceRequests
+name|setContainerRequest
 argument_list|(
-name|resourceRequestList
+name|containerRequest
 argument_list|)
 expr_stmt|;
 comment|// Inform the container

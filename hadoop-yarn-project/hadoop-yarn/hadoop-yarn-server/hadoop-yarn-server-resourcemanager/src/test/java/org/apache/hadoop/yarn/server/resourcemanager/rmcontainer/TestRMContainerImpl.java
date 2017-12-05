@@ -2377,7 +2377,7 @@ argument_list|(
 name|containerId2
 argument_list|)
 operator|.
-name|getResourceRequests
+name|getContainerRequest
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2430,7 +2430,7 @@ argument_list|(
 name|containerId2
 argument_list|)
 operator|.
-name|getResourceRequests
+name|getContainerRequest
 argument_list|()
 argument_list|)
 expr_stmt|;
