@@ -4915,15 +4915,6 @@ name|cleanupWithLogger
 argument_list|(
 name|LOG
 argument_list|,
-name|scmBlockManager
-argument_list|)
-expr_stmt|;
-name|IOUtils
-operator|.
-name|cleanupWithLogger
-argument_list|(
-name|LOG
-argument_list|,
 name|scmNodeManager
 argument_list|)
 expr_stmt|;
