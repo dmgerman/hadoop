@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.fs.s3a
+DECL|package|org.apache.hadoop.util
 package|package
 name|org
 operator|.
@@ -12,9 +12,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
-operator|.
-name|s3a
+name|util
 package|;
 end_package
 
@@ -189,7 +187,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This ExecutorService blocks the submission of new tasks when its queue is  * already full by using a semaphore. Task submissions require permits, task  * completions release permits.  *<p>  * This is a refactoring of {@link BlockingThreadPoolExecutorService}; that code  * contains the thread pool logic, whereas this isolates the semaphore  * and submit logic for use with other thread pools and delegation models.  * In particular, it<i>permits multiple per stream executors to share a  * single per-FS-instance executor; the latter to throttle overall  * load from the the FS, the others to limit the amount of load which  * a single output stream can generate.</i>  *<p>  * This is inspired by<a href="https://github.com/apache/incubator-s4/blob/master/subprojects/s4-comm/src/main/java/org/apache/s4/comm/staging/BlockingThreadPoolExecutorService.java">  * this s4 threadpool</a>  */
+comment|/**  * This ExecutorService blocks the submission of new tasks when its queue is  * already full by using a semaphore. Task submissions require permits, task  * completions release permits.  *<p>  * This is a refactoring of {@link BlockingThreadPoolExecutorService}; that code  * contains the thread pool logic, whereas this isolates the semaphore  * and submit logic for use with other thread pools and delegation models.  *<p>  * This is inspired by<a href="https://github.com/apache/incubator-s4/blob/master/subprojects/s4-comm/src/main/java/org/apache/s4/comm/staging/BlockingThreadPoolExecutorService.java">  * this s4 threadpool</a>  */
 end_comment
 
 begin_class
@@ -203,6 +201,7 @@ name|InterfaceAudience
 operator|.
 name|Private
 DECL|class|SemaphoredDelegatingExecutor
+specifier|public
 class|class
 name|SemaphoredDelegatingExecutor
 extends|extends
@@ -227,7 +226,8 @@ name|int
 name|permitCount
 decl_stmt|;
 comment|/**    * Instantiate.    * @param executorDelegatee Executor to delegate to    * @param permitCount number of permits into the queue permitted    * @param fair should the semaphore be "fair"    */
-DECL|method|SemaphoredDelegatingExecutor (ListeningExecutorService executorDelegatee, int permitCount, boolean fair)
+DECL|method|SemaphoredDelegatingExecutor ( ListeningExecutorService executorDelegatee, int permitCount, boolean fair)
+specifier|public
 name|SemaphoredDelegatingExecutor
 parameter_list|(
 name|ListeningExecutorService
@@ -791,7 +791,6 @@ name|Runnable
 name|delegatee
 decl_stmt|;
 DECL|method|RunnableWithPermitRelease (Runnable delegatee)
-specifier|public
 name|RunnableWithPermitRelease
 parameter_list|(
 name|Runnable
@@ -853,7 +852,6 @@ argument_list|>
 name|delegatee
 decl_stmt|;
 DECL|method|CallableWithPermitRelease (Callable<T> delegatee)
-specifier|public
 name|CallableWithPermitRelease
 parameter_list|(
 name|Callable
