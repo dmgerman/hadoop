@@ -3945,6 +3945,18 @@ name|getStorageInfos
 argument_list|()
 control|)
 block|{
+if|if
+condition|(
+name|storage
+operator|.
+name|getStorageType
+argument_list|()
+operator|!=
+name|StorageType
+operator|.
+name|PROVIDED
+condition|)
+block|{
 name|storage
 operator|.
 name|setBlockReportCount
@@ -3952,6 +3964,7 @@ argument_list|(
 literal|0
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|heartbeatedSinceRegistration
 operator|=

@@ -4110,6 +4110,12 @@ literal|0
 argument_list|)
 argument_list|)
 decl_stmt|;
+name|DatanodeStorageInfo
+name|providedDNInfo
+init|=
+name|getProvidedDatanodeStorageInfo
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|numFiles
@@ -4295,6 +4301,18 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
+comment|// BR count for the provided ProvidedDatanodeStorageInfo should reset to
+comment|// 0, when all DNs with PROVIDED storage fail.
+name|assertEquals
+argument_list|(
+literal|0
+argument_list|,
+name|providedDNInfo
+operator|.
+name|getBlockReportCount
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|//restart the provided datanode
 name|cluster
 operator|.
@@ -4309,6 +4327,16 @@ name|cluster
 operator|.
 name|waitActive
 argument_list|()
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|1
+argument_list|,
+name|providedDNInfo
+operator|.
+name|getBlockReportCount
+argument_list|()
+argument_list|)
 expr_stmt|;
 comment|//should find the block on the 1st provided datanode now
 name|dnInfos
@@ -4437,6 +4465,20 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
+name|DatanodeStorageInfo
+name|providedDNInfo
+init|=
+name|getProvidedDatanodeStorageInfo
+argument_list|()
+decl_stmt|;
+name|int
+name|initialBRCount
+init|=
+name|providedDNInfo
+operator|.
+name|getBlockReportCount
+argument_list|()
+decl_stmt|;
 for|for
 control|(
 name|int
@@ -4496,6 +4538,21 @@ argument_list|(
 literal|1000
 argument_list|)
 expr_stmt|;
+comment|// the report count should just continue to increase.
+name|assertEquals
+argument_list|(
+name|initialBRCount
+operator|+
+name|i
+operator|+
+literal|1
+argument_list|,
+name|providedDNInfo
+operator|.
+name|getBlockReportCount
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|verifyFileLocation
 argument_list|(
 name|i
@@ -4504,6 +4561,33 @@ literal|2
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+DECL|method|getProvidedDatanodeStorageInfo ()
+specifier|private
+name|DatanodeStorageInfo
+name|getProvidedDatanodeStorageInfo
+parameter_list|()
+block|{
+name|ProvidedStorageMap
+name|providedStorageMap
+init|=
+name|cluster
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getBlockManager
+argument_list|()
+operator|.
+name|getProvidedStorageMap
+argument_list|()
+decl_stmt|;
+return|return
+name|providedStorageMap
+operator|.
+name|getProvidedStorageInfo
+argument_list|()
+return|;
 block|}
 annotation|@
 name|Test

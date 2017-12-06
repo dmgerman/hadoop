@@ -23112,6 +23112,18 @@ name|blockRecoveryTimeout
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getProvidedStorageMap ()
+specifier|public
+name|ProvidedStorageMap
+name|getProvidedStorageMap
+parameter_list|()
+block|{
+return|return
+name|providedStorageMap
+return|;
+block|}
 block|}
 end_class
 
