@@ -78,6 +78,20 @@ name|hadoop
 operator|.
 name|scm
 operator|.
+name|ScmInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|scm
+operator|.
 name|container
 operator|.
 name|common
@@ -277,6 +291,14 @@ parameter_list|(
 name|String
 name|containerName
 parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Returns information about SCM.    *    * @return {@link ScmInfo}    * @throws IOException    */
+DECL|method|getScmInfo ()
+name|ScmInfo
+name|getScmInfo
+parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
