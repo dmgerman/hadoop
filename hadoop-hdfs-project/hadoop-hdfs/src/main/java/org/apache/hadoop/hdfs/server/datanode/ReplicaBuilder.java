@@ -76,6 +76,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|PathHandle
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|server
@@ -260,6 +274,11 @@ specifier|private
 name|FileSystem
 name|remoteFS
 decl_stmt|;
+DECL|field|pathHandle
+specifier|private
+name|PathHandle
+name|pathHandle
+decl_stmt|;
 DECL|field|pathSuffix
 specifier|private
 name|String
@@ -316,6 +335,10 @@ operator|.
 name|state
 operator|=
 name|state
+expr_stmt|;
+name|pathHandle
+operator|=
+literal|null
 expr_stmt|;
 block|}
 DECL|method|setState (ReplicaState state)
@@ -657,6 +680,25 @@ operator|.
 name|pathPrefix
 operator|=
 name|prefix
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|setPathHandle (PathHandle pathHandle)
+specifier|public
+name|ReplicaBuilder
+name|setPathHandle
+parameter_list|(
+name|PathHandle
+name|pathHandle
+parameter_list|)
+block|{
+name|this
+operator|.
+name|pathHandle
+operator|=
+name|pathHandle
 expr_stmt|;
 return|return
 name|this
@@ -1398,6 +1440,8 @@ name|length
 argument_list|,
 name|genStamp
 argument_list|,
+name|pathHandle
+argument_list|,
 name|volume
 argument_list|,
 name|conf
@@ -1424,6 +1468,8 @@ argument_list|,
 name|length
 argument_list|,
 name|genStamp
+argument_list|,
+name|pathHandle
 argument_list|,
 name|volume
 argument_list|,

@@ -32,6 +32,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|ByteBuffer
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -97,6 +107,34 @@ operator|.
 name|fs
 operator|.
 name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|PathHandle
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|RawPathHandle
 import|;
 end_import
 
@@ -196,7 +234,7 @@ name|FinalizedProvidedReplica
 extends|extends
 name|ProvidedReplica
 block|{
-DECL|method|FinalizedProvidedReplica (long blockId, URI fileURI, long fileOffset, long blockLen, long genStamp, FsVolumeSpi volume, Configuration conf, FileSystem remoteFS)
+DECL|method|FinalizedProvidedReplica (long blockId, URI fileURI, long fileOffset, long blockLen, long genStamp, PathHandle pathHandle, FsVolumeSpi volume, Configuration conf, FileSystem remoteFS)
 specifier|public
 name|FinalizedProvidedReplica
 parameter_list|(
@@ -214,6 +252,9 @@ name|blockLen
 parameter_list|,
 name|long
 name|genStamp
+parameter_list|,
+name|PathHandle
+name|pathHandle
 parameter_list|,
 name|FsVolumeSpi
 name|volume
@@ -236,6 +277,8 @@ argument_list|,
 name|blockLen
 argument_list|,
 name|genStamp
+argument_list|,
+name|pathHandle
 argument_list|,
 name|volume
 argument_list|,
@@ -307,6 +350,23 @@ operator|.
 name|getGenerationStamp
 argument_list|()
 argument_list|,
+operator|new
+name|RawPathHandle
+argument_list|(
+name|ByteBuffer
+operator|.
+name|wrap
+argument_list|(
+name|fileRegion
+operator|.
+name|getProvidedStorageLocation
+argument_list|()
+operator|.
+name|getNonce
+argument_list|()
+argument_list|)
+argument_list|)
+argument_list|,
 name|volume
 argument_list|,
 name|conf
@@ -315,7 +375,7 @@ name|remoteFS
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|FinalizedProvidedReplica (long blockId, Path pathPrefix, String pathSuffix, long fileOffset, long blockLen, long genStamp, FsVolumeSpi volume, Configuration conf, FileSystem remoteFS)
+DECL|method|FinalizedProvidedReplica (long blockId, Path pathPrefix, String pathSuffix, long fileOffset, long blockLen, long genStamp, PathHandle pathHandle, FsVolumeSpi volume, Configuration conf, FileSystem remoteFS)
 specifier|public
 name|FinalizedProvidedReplica
 parameter_list|(
@@ -336,6 +396,9 @@ name|blockLen
 parameter_list|,
 name|long
 name|genStamp
+parameter_list|,
+name|PathHandle
+name|pathHandle
 parameter_list|,
 name|FsVolumeSpi
 name|volume
@@ -360,6 +423,8 @@ argument_list|,
 name|blockLen
 argument_list|,
 name|genStamp
+argument_list|,
+name|pathHandle
 argument_list|,
 name|volume
 argument_list|,

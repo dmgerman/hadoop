@@ -299,6 +299,8 @@ argument_list|,
 name|id
 argument_list|,
 name|i
+argument_list|,
+name|fs
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -373,6 +375,8 @@ name|getParentId
 argument_list|()
 argument_list|,
 name|this
+argument_list|,
+name|fs
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -412,6 +416,8 @@ operator|-
 literal|1L
 argument_list|,
 name|this
+argument_list|,
+name|fs
 argument_list|)
 argument_list|)
 expr_stmt|;

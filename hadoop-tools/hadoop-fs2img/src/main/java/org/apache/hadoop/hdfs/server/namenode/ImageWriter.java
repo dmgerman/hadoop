@@ -1594,8 +1594,6 @@ argument_list|,
 name|blockIds
 argument_list|,
 name|blocks
-argument_list|,
-name|blockPoolID
 argument_list|)
 decl_stmt|;
 name|writeInode

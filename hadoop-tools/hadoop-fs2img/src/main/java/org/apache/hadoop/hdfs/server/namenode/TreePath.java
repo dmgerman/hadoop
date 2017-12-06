@@ -92,6 +92,48 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|FileSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|Options
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|PathHandle
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|protocol
@@ -236,6 +278,22 @@ name|hdfs
 operator|.
 name|DFSUtil
 operator|.
+name|LOG
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSUtil
+operator|.
 name|string2Bytes
 import|;
 end_import
@@ -326,7 +384,13 @@ operator|.
 name|TreeIterator
 name|i
 decl_stmt|;
-DECL|method|TreePath (FileStatus stat, long parentId, TreeWalk.TreeIterator i)
+DECL|field|fs
+specifier|private
+specifier|final
+name|FileSystem
+name|fs
+decl_stmt|;
+DECL|method|TreePath (FileStatus stat, long parentId, TreeWalk.TreeIterator i, FileSystem fs)
 specifier|protected
 name|TreePath
 parameter_list|(
@@ -340,6 +404,9 @@ name|TreeWalk
 operator|.
 name|TreeIterator
 name|i
+parameter_list|,
+name|FileSystem
+name|fs
 parameter_list|)
 block|{
 name|this
@@ -359,6 +426,12 @@ operator|.
 name|parentId
 operator|=
 name|parentId
+expr_stmt|;
+name|this
+operator|.
+name|fs
+operator|=
+name|fs
 expr_stmt|;
 block|}
 DECL|method|getFileStatus ()
@@ -428,7 +501,7 @@ name|id
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|toINode (UGIResolver ugi, BlockResolver blk, BlockAliasMap.Writer<FileRegion> out, String blockPoolID)
+DECL|method|toINode (UGIResolver ugi, BlockResolver blk, BlockAliasMap.Writer<FileRegion> out)
 specifier|public
 name|INode
 name|toINode
@@ -446,9 +519,6 @@ argument_list|<
 name|FileRegion
 argument_list|>
 name|out
-parameter_list|,
-name|String
-name|blockPoolID
 parameter_list|)
 throws|throws
 name|IOException
@@ -469,8 +539,6 @@ argument_list|,
 name|blk
 argument_list|,
 name|out
-argument_list|,
-name|blockPoolID
 argument_list|)
 return|;
 block|}
@@ -609,7 +677,7 @@ operator|)
 argument_list|)
 return|;
 block|}
-DECL|method|writeBlock (long blockId, long offset, long length, long genStamp, String blockPoolID, BlockAliasMap.Writer<FileRegion> out)
+DECL|method|writeBlock (long blockId, long offset, long length, long genStamp, PathHandle pathHandle, BlockAliasMap.Writer<FileRegion> out)
 name|void
 name|writeBlock
 parameter_list|(
@@ -625,8 +693,8 @@ parameter_list|,
 name|long
 name|genStamp
 parameter_list|,
-name|String
-name|blockPoolID
+name|PathHandle
+name|pathHandle
 parameter_list|,
 name|BlockAliasMap
 operator|.
@@ -664,11 +732,28 @@ argument_list|,
 name|length
 argument_list|,
 name|genStamp
+argument_list|,
+operator|(
+name|pathHandle
+operator|!=
+literal|null
+condition|?
+name|pathHandle
+operator|.
+name|toByteArray
+argument_list|()
+else|:
+operator|new
+name|byte
+index|[
+literal|0
+index|]
+operator|)
 argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|toFile (UGIResolver ugi, BlockResolver blk, BlockAliasMap.Writer<FileRegion> out, String blockPoolID)
+DECL|method|toFile (UGIResolver ugi, BlockResolver blk, BlockAliasMap.Writer<FileRegion> out)
 name|INode
 name|toFile
 parameter_list|(
@@ -685,9 +770,6 @@ argument_list|<
 name|FileRegion
 argument_list|>
 name|out
-parameter_list|,
-name|String
-name|blockPoolID
 parameter_list|)
 throws|throws
 name|IOException
@@ -783,6 +865,58 @@ operator|.
 name|PROVIDED_STORAGE_POLICY_ID
 argument_list|)
 decl_stmt|;
+comment|// pathhandle allows match as long as the file matches exactly.
+name|PathHandle
+name|pathHandle
+init|=
+literal|null
+decl_stmt|;
+if|if
+condition|(
+name|fs
+operator|!=
+literal|null
+condition|)
+block|{
+try|try
+block|{
+name|pathHandle
+operator|=
+name|fs
+operator|.
+name|getPathHandle
+argument_list|(
+name|s
+argument_list|,
+name|Options
+operator|.
+name|HandleOpt
+operator|.
+name|exact
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|UnsupportedOperationException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Exact path handle not supported by filesystem "
+operator|+
+name|fs
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|//TODO: storage policy should be configurable per path; use BlockResolver
 name|long
 name|off
@@ -828,7 +962,7 @@ operator|.
 name|getGenStamp
 argument_list|()
 argument_list|,
-name|blockPoolID
+name|pathHandle
 argument_list|,
 name|out
 argument_list|)

@@ -206,6 +206,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|PathHandle
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|server
@@ -338,6 +352,38 @@ name|LoggerFactory
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|IO_FILE_BUFFER_SIZE_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|IO_FILE_BUFFER_SIZE_KEY
+import|;
+end_import
+
 begin_comment
 comment|/**  * This abstract class is used as a base class for provided replicas.  */
 end_comment
@@ -414,13 +460,18 @@ specifier|private
 name|Configuration
 name|conf
 decl_stmt|;
+DECL|field|pathHandle
+specifier|private
+name|PathHandle
+name|pathHandle
+decl_stmt|;
 DECL|field|remoteFS
 specifier|private
 name|FileSystem
 name|remoteFS
 decl_stmt|;
 comment|/**    * Constructor.    *    * @param blockId block id    * @param fileURI remote URI this block is to be read from    * @param fileOffset the offset in the remote URI    * @param blockLen the length of the block    * @param genStamp the generation stamp of the block    * @param volume the volume this block belongs to    * @param conf the configuration    * @param remoteFS reference to the remote filesystem to use for this replica.    */
-DECL|method|ProvidedReplica (long blockId, URI fileURI, long fileOffset, long blockLen, long genStamp, FsVolumeSpi volume, Configuration conf, FileSystem remoteFS)
+DECL|method|ProvidedReplica (long blockId, URI fileURI, long fileOffset, long blockLen, long genStamp, PathHandle pathHandle, FsVolumeSpi volume, Configuration conf, FileSystem remoteFS)
 specifier|public
 name|ProvidedReplica
 parameter_list|(
@@ -438,6 +489,9 @@ name|blockLen
 parameter_list|,
 name|long
 name|genStamp
+parameter_list|,
+name|PathHandle
+name|pathHandle
 parameter_list|,
 name|FsVolumeSpi
 name|volume
@@ -477,6 +531,12 @@ operator|.
 name|conf
 operator|=
 name|conf
+expr_stmt|;
+name|this
+operator|.
+name|pathHandle
+operator|=
+name|pathHandle
 expr_stmt|;
 if|if
 condition|(
@@ -546,7 +606,7 @@ block|}
 block|}
 block|}
 comment|/**    * Constructor.    *    * @param blockId block id    * @param pathPrefix A prefix of the {@link Path} associated with this replica    *          on the remote {@link FileSystem}.    * @param pathSuffix A suffix of the {@link Path} associated with this replica    *          on the remote {@link FileSystem}. Resolving the {@code pathSuffix}    *          against the {@code pathPrefix} should provide the exact    *          {@link Path} of the data associated with this replica on the    *          remote {@link FileSystem}.    * @param fileOffset the offset in the remote URI    * @param blockLen the length of the block    * @param genStamp the generation stamp of the block    * @param volume the volume this block belongs to    * @param conf the configuration    * @param remoteFS reference to the remote filesystem to use for this replica.    */
-DECL|method|ProvidedReplica (long blockId, Path pathPrefix, String pathSuffix, long fileOffset, long blockLen, long genStamp, FsVolumeSpi volume, Configuration conf, FileSystem remoteFS)
+DECL|method|ProvidedReplica (long blockId, Path pathPrefix, String pathSuffix, long fileOffset, long blockLen, long genStamp, PathHandle pathHandle, FsVolumeSpi volume, Configuration conf, FileSystem remoteFS)
 specifier|public
 name|ProvidedReplica
 parameter_list|(
@@ -567,6 +627,9 @@ name|blockLen
 parameter_list|,
 name|long
 name|genStamp
+parameter_list|,
+name|PathHandle
+name|pathHandle
 parameter_list|,
 name|FsVolumeSpi
 name|volume
@@ -618,6 +681,12 @@ operator|.
 name|conf
 operator|=
 name|conf
+expr_stmt|;
+name|this
+operator|.
+name|pathHandle
+operator|=
+name|pathHandle
 expr_stmt|;
 if|if
 condition|(
@@ -733,6 +802,14 @@ operator|=
 name|r
 operator|.
 name|remoteFS
+expr_stmt|;
+name|this
+operator|.
+name|pathHandle
+operator|=
+name|r
+operator|.
+name|pathHandle
 expr_stmt|;
 name|this
 operator|.
@@ -862,7 +939,39 @@ condition|)
 block|{
 name|FSDataInputStream
 name|ins
-init|=
+decl_stmt|;
+try|try
+block|{
+if|if
+condition|(
+name|pathHandle
+operator|!=
+literal|null
+condition|)
+block|{
+name|ins
+operator|=
+name|remoteFS
+operator|.
+name|open
+argument_list|(
+name|pathHandle
+argument_list|,
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|IO_FILE_BUFFER_SIZE_KEY
+argument_list|,
+name|IO_FILE_BUFFER_SIZE_DEFAULT
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|ins
+operator|=
 name|remoteFS
 operator|.
 name|open
@@ -874,7 +983,25 @@ name|getRemoteURI
 argument_list|()
 argument_list|)
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|UnsupportedOperationException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"PathHandle specified, but unsuported"
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
 name|ins
 operator|.
 name|seek
@@ -1414,6 +1541,24 @@ argument_list|(
 literal|"ProvidedReplica does not yet support copy data"
 argument_list|)
 throw|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setPathHandle (PathHandle pathHandle)
+specifier|public
+name|void
+name|setPathHandle
+parameter_list|(
+name|PathHandle
+name|pathHandle
+parameter_list|)
+block|{
+name|this
+operator|.
+name|pathHandle
+operator|=
+name|pathHandle
+expr_stmt|;
 block|}
 block|}
 end_class

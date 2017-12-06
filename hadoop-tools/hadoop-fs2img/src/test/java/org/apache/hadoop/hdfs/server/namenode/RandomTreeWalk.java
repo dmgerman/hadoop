@@ -609,6 +609,8 @@ name|getId
 argument_list|()
 argument_list|,
 name|walk
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1064,6 +1066,8 @@ operator|-
 literal|1
 argument_list|,
 name|this
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1094,6 +1098,8 @@ name|getParentId
 argument_list|()
 argument_list|,
 name|this
+argument_list|,
+literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
