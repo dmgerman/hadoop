@@ -2058,7 +2058,7 @@ expr_stmt|;
 name|String
 name|expectedOut
 init|=
-literal|"usage: hdfs scm<commands> [<options>]\n"
+literal|"usage: hdfs scmcli<commands> [<options>]\n"
 operator|+
 literal|"where<commands> can be one of the following\n"
 operator|+
@@ -3017,7 +3017,7 @@ expr_stmt|;
 name|String
 name|expected
 init|=
-literal|"usage: hdfs scm<commands> [<options>]\n"
+literal|"usage: hdfs scmcli<commands> [<options>]\n"
 operator|+
 literal|"where<commands> can be one of the following\n"
 operator|+
