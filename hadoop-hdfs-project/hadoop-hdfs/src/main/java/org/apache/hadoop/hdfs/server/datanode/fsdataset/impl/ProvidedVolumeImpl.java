@@ -1440,9 +1440,9 @@ expr_stmt|;
 block|}
 else|else
 block|{
-throw|throw
-operator|new
-name|IOException
+name|LOG
+operator|.
+name|warn
 argument_list|(
 literal|"A block with id "
 operator|+
@@ -1451,9 +1451,9 @@ operator|.
 name|getBlockId
 argument_list|()
 operator|+
-literal|" already exists in the volumeMap"
+literal|" exists locally. Skipping PROVIDED replica"
 argument_list|)
-throw|;
+expr_stmt|;
 block|}
 block|}
 block|}
