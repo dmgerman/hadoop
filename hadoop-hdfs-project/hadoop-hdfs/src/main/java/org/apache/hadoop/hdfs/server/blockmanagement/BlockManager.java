@@ -7146,8 +7146,6 @@ name|blockTokens
 argument_list|)
 expr_stmt|;
 block|}
-else|else
-block|{
 name|b
 operator|.
 name|setBlockToken
@@ -7188,7 +7186,6 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 DECL|method|addKeyUpdateCommand (final List<DatanodeCommand> cmds, final DatanodeDescriptor nodeinfo)

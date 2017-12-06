@@ -797,6 +797,10 @@ literal|"\n  isLastBlockComplete="
 operator|+
 name|isLastBlockComplete
 operator|+
+literal|"\n  ecPolicy="
+operator|+
+name|ecPolicy
+operator|+
 literal|"}"
 return|;
 block|}
