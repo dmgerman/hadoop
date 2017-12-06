@@ -406,7 +406,7 @@ return|return
 name|tableInit
 argument_list|()
 operator|.
-comment|// containerid, containerid, log-url
+comment|// containerid, executiontype, containerid, log-url
 name|append
 argument_list|(
 literal|", aoColumns:["
@@ -420,7 +420,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|", null, {bSearchable:false}]} "
+literal|", null, null, {bSearchable:false}]} "
 argument_list|)
 operator|.
 name|toString
@@ -564,6 +564,17 @@ argument_list|()
 operator|.
 name|__
 argument_list|(
+literal|"ExecutionType"
+argument_list|)
+operator|.
+name|__
+argument_list|()
+operator|.
+name|td
+argument_list|()
+operator|.
+name|__
+argument_list|(
 literal|"ContainerState"
 argument_list|)
 operator|.
@@ -650,6 +661,20 @@ argument_list|,
 name|info
 operator|.
 name|getId
+argument_list|()
+argument_list|)
+operator|.
+name|__
+argument_list|()
+operator|.
+name|td
+argument_list|()
+operator|.
+name|__
+argument_list|(
+name|info
+operator|.
+name|getExecutionType
 argument_list|()
 argument_list|)
 operator|.
