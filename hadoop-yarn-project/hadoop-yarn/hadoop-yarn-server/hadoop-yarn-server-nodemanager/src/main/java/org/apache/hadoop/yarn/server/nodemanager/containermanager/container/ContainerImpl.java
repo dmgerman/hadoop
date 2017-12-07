@@ -8104,7 +8104,7 @@ name|exitEvent
 operator|.
 name|getDiagnosticInfo
 argument_list|()
-argument_list|,
+operator|+
 literal|"\n"
 argument_list|)
 expr_stmt|;
@@ -8257,7 +8257,7 @@ name|exitEvent
 operator|.
 name|getDiagnosticInfo
 argument_list|()
-argument_list|,
+operator|+
 literal|"\n"
 argument_list|)
 expr_stmt|;
@@ -8972,7 +8972,7 @@ name|rsrcFailedEvent
 operator|.
 name|getDiagnosticMessage
 argument_list|()
-argument_list|,
+operator|+
 literal|"\n"
 argument_list|)
 expr_stmt|;
@@ -9058,7 +9058,7 @@ name|killEvent
 operator|.
 name|getDiagnostic
 argument_list|()
-argument_list|,
+operator|+
 literal|"\n"
 argument_list|)
 expr_stmt|;
@@ -9207,7 +9207,7 @@ name|killEvent
 operator|.
 name|getDiagnostic
 argument_list|()
-argument_list|,
+operator|+
 literal|"\n"
 argument_list|)
 expr_stmt|;
@@ -9361,7 +9361,7 @@ name|exitEvent
 operator|.
 name|getDiagnosticInfo
 argument_list|()
-argument_list|,
+operator|+
 literal|"\n"
 argument_list|)
 expr_stmt|;
@@ -9584,7 +9584,7 @@ name|killEvent
 operator|.
 name|getDiagnostic
 argument_list|()
-argument_list|,
+operator|+
 literal|"\n"
 argument_list|)
 expr_stmt|;
@@ -10102,7 +10102,7 @@ name|updateEvent
 operator|.
 name|getDiagnosticsUpdate
 argument_list|()
-argument_list|,
+operator|+
 literal|"\n"
 argument_list|)
 expr_stmt|;
@@ -10178,7 +10178,7 @@ name|pauseEvent
 operator|.
 name|getDiagnostic
 argument_list|()
-argument_list|,
+operator|+
 literal|"\n"
 argument_list|)
 expr_stmt|;
@@ -10310,7 +10310,7 @@ name|resumeEvent
 operator|.
 name|getDiagnostic
 argument_list|()
-argument_list|,
+operator|+
 literal|"\n"
 argument_list|)
 expr_stmt|;
