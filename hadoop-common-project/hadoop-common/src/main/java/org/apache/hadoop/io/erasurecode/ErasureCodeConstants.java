@@ -223,7 +223,7 @@ init|=
 operator|(
 name|byte
 operator|)
-literal|63
+literal|0
 decl_stmt|;
 DECL|field|REPLICATION_POLICY_NAME
 specifier|public

@@ -3225,6 +3225,10 @@ argument_list|,
 name|addCloseOp
 operator|.
 name|storagePolicyId
+argument_list|,
+name|addCloseOp
+operator|.
+name|erasureCodingPolicyId
 argument_list|)
 expr_stmt|;
 assert|assert

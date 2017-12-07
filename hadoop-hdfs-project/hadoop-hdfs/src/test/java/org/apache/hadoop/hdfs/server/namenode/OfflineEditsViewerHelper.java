@@ -538,6 +538,12 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+specifier|final
+name|int
+name|numDataNodes
+init|=
+literal|9
+decl_stmt|;
 name|cluster
 operator|=
 operator|new
@@ -551,6 +557,11 @@ operator|.
 name|manageNameDfsDirs
 argument_list|(
 literal|false
+argument_list|)
+operator|.
+name|numDataNodes
+argument_list|(
+name|numDataNodes
 argument_list|)
 operator|.
 name|build

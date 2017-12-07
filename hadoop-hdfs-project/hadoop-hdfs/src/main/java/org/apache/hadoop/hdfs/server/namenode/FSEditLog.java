@@ -4076,6 +4076,14 @@ operator|.
 name|getLocalStoragePolicyID
 argument_list|()
 argument_list|)
+operator|.
+name|setErasureCodingPolicyId
+argument_list|(
+name|newNode
+operator|.
+name|getErasureCodingPolicyID
+argument_list|()
+argument_list|)
 decl_stmt|;
 name|AclFeature
 name|f

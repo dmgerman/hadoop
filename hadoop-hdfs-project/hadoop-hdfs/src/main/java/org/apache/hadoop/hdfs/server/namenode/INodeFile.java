@@ -598,6 +598,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|erasurecode
+operator|.
+name|ErasureCodeConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|StringUtils
@@ -1136,19 +1152,25 @@ name|Preconditions
 operator|.
 name|checkArgument
 argument_list|(
-name|replication
-operator|!=
-literal|null
-operator|&&
 name|erasureCodingPolicyID
 operator|==
 literal|null
+operator|||
+name|erasureCodingPolicyID
+operator|==
+name|ErasureCodeConstants
+operator|.
+name|REPLICATION_POLICY_ID
 argument_list|)
 expr_stmt|;
 name|Preconditions
 operator|.
 name|checkArgument
 argument_list|(
+name|replication
+operator|!=
+literal|null
+operator|&&
 name|replication
 operator|>=
 literal|0
@@ -2912,7 +2934,7 @@ name|storagePolicyId
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * @return The ID of the erasure coding policy on the file. -1 represents no    *          EC policy.    */
+comment|/**    * @return The ID of the erasure coding policy on the file.    */
 annotation|@
 name|VisibleForTesting
 annotation|@
@@ -2939,8 +2961,9 @@ argument_list|)
 return|;
 block|}
 return|return
-operator|-
-literal|1
+name|ErasureCodeConstants
+operator|.
+name|REPLICATION_POLICY_ID
 return|;
 block|}
 comment|/**    * @return true if the file is in the striping layout.    */
