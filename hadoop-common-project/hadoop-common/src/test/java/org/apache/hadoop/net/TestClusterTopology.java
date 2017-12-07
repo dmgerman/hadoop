@@ -640,12 +640,38 @@ argument_list|(
 name|node4
 argument_list|)
 expr_stmt|;
+comment|// Number of test runs
+name|int
+name|numTestRuns
+init|=
+literal|3
+decl_stmt|;
+name|int
+name|chiSquareTestRejectedCounter
+init|=
+literal|0
+decl_stmt|;
 comment|// Number of iterations to do the test
 name|int
 name|numIterations
 init|=
 literal|100
 decl_stmt|;
+for|for
+control|(
+name|int
+name|testRun
+init|=
+literal|0
+init|;
+name|testRun
+operator|<
+name|numTestRuns
+condition|;
+operator|++
+name|testRun
+control|)
+block|{
 comment|// Pick random nodes
 name|HashMap
 argument_list|<
@@ -744,7 +770,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Check with 99% confidence (alpha=0.01 as confidence = (100 * (1 - alpha)
+comment|// Check with 99% confidence alpha=0.01 as confidence = 100 * (1 - alpha)
 name|ChiSquareTest
 name|chiSquareTest
 init|=
@@ -833,17 +859,35 @@ argument_list|,
 literal|0.01
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|chiSquareTestRejected
+condition|)
+block|{
+operator|++
+name|chiSquareTestRejectedCounter
+expr_stmt|;
+block|}
+block|}
 comment|// Check that they have the proper distribution
 name|assertFalse
 argument_list|(
-literal|"Not choosing nodes randomly"
+literal|"Random not choosing nodes with proper distribution"
 argument_list|,
-name|chiSquareTestRejected
+name|chiSquareTestRejectedCounter
+operator|==
+literal|3
 argument_list|)
 expr_stmt|;
 comment|// Pick random nodes excluding the 2 nodes in /d1/r3
+name|HashMap
+argument_list|<
+name|String
+argument_list|,
+name|Integer
+argument_list|>
 name|histogram
-operator|=
+init|=
 operator|new
 name|HashMap
 argument_list|<
@@ -852,7 +896,7 @@ argument_list|,
 name|Integer
 argument_list|>
 argument_list|()
-expr_stmt|;
+decl_stmt|;
 for|for
 control|(
 name|int
