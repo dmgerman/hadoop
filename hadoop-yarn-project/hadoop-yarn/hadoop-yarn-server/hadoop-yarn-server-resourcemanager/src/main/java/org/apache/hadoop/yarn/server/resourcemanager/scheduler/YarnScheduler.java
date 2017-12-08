@@ -902,6 +902,8 @@ name|newQueue
 parameter_list|)
 throws|throws
 name|YarnException
+throws|,
+name|IOException
 function_decl|;
 comment|/**    * This method increase the entitlement for current queue (must respect    * invariants, e.g., no overcommit of parents, non negative, etc.).    * Entitlement is a general term for weights in FairScheduler, capacity for    * the CapacityScheduler, etc.    *    * @param queue the queue for which we change entitlement    * @param entitlement the new entitlement for the queue (capacity,    *              maxCapacity, etc..)    * @throws YarnException    */
 DECL|method|setEntitlement (String queue, QueueEntitlement entitlement)

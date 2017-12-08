@@ -83,6 +83,10 @@ block|,
 comment|// Cancel a killable container
 DECL|enumConstant|MARK_CONTAINER_FOR_NONKILLABLE
 name|MARK_CONTAINER_FOR_NONKILLABLE
+block|,
+comment|//Queue Management Change
+DECL|enumConstant|MANAGE_QUEUE
+name|MANAGE_QUEUE
 block|}
 end_enum
 

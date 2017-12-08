@@ -245,14 +245,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Test class for dynamic auto created leaf queues.  * @see AutoCreatedLeafQueue  */
+comment|/**  * Test class for dynamic auto created leaf queues.  * @see ReservationQueue  */
 end_comment
 
 begin_class
-DECL|class|TestAutoCreatedLeafQueue
+DECL|class|TestReservationQueue
 specifier|public
 class|class
-name|TestAutoCreatedLeafQueue
+name|TestReservationQueue
 block|{
 DECL|field|csConf
 specifier|private
@@ -292,7 +292,7 @@ argument_list|()
 decl_stmt|;
 DECL|field|autoCreatedLeafQueue
 specifier|private
-name|AutoCreatedLeafQueue
+name|ReservationQueue
 name|autoCreatedLeafQueue
 decl_stmt|;
 annotation|@
@@ -475,7 +475,7 @@ decl_stmt|;
 name|autoCreatedLeafQueue
 operator|=
 operator|new
-name|AutoCreatedLeafQueue
+name|ReservationQueue
 argument_list|(
 name|csContext
 argument_list|,

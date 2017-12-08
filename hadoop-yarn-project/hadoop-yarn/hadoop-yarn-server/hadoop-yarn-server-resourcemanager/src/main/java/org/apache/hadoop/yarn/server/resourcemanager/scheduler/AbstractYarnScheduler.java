@@ -2822,6 +2822,8 @@ name|newQueue
 parameter_list|)
 throws|throws
 name|YarnException
+throws|,
+name|IOException
 block|{
 throw|throw
 operator|new

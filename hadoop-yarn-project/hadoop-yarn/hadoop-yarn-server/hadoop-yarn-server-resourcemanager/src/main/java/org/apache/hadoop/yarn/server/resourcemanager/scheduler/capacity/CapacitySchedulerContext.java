@@ -304,6 +304,22 @@ name|yarn
 operator|.
 name|util
 operator|.
+name|Clock
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
 name|resource
 operator|.
 name|ResourceCalculator
@@ -431,6 +447,12 @@ comment|/**    * Returns if configuration is mutable.    * @return if configurat
 DECL|method|isConfigurationMutable ()
 name|boolean
 name|isConfigurationMutable
+parameter_list|()
+function_decl|;
+comment|/**    * Get clock from scheduler    * @return Clock    */
+DECL|method|getClock ()
+name|Clock
+name|getClock
 parameter_list|()
 function_decl|;
 block|}

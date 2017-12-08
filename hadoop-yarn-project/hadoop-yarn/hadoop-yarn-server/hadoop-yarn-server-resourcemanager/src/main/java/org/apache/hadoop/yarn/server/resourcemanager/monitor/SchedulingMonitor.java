@@ -422,7 +422,7 @@ operator|.
 name|scheduleAtFixedRate
 argument_list|(
 operator|new
-name|PreemptionChecker
+name|PolicyInvoker
 argument_list|()
 argument_list|,
 literal|0
@@ -499,10 +499,10 @@ name|editSchedule
 argument_list|()
 expr_stmt|;
 block|}
-DECL|class|PreemptionChecker
+DECL|class|PolicyInvoker
 specifier|private
 class|class
-name|PreemptionChecker
+name|PolicyInvoker
 implements|implements
 name|Runnable
 block|{

@@ -547,7 +547,7 @@ decl_stmt|;
 comment|//set default queue capacity to zero
 operator|(
 operator|(
-name|AutoCreatedLeafQueue
+name|ReservationQueue
 operator|)
 name|cs
 operator|.
@@ -573,11 +573,11 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Test add one reservation dynamically and manually modify capacity
-name|AutoCreatedLeafQueue
+name|ReservationQueue
 name|a1
 init|=
 operator|new
-name|AutoCreatedLeafQueue
+name|ReservationQueue
 argument_list|(
 name|cs
 argument_list|,
@@ -618,11 +618,11 @@ argument_list|)
 expr_stmt|;
 comment|// Test add another reservation queue and use setEntitlement to modify
 comment|// capacity
-name|AutoCreatedLeafQueue
+name|ReservationQueue
 name|a2
 init|=
 operator|new
-name|AutoCreatedLeafQueue
+name|ReservationQueue
 argument_list|(
 name|cs
 argument_list|,
@@ -750,11 +750,11 @@ decl_stmt|;
 try|try
 block|{
 comment|// Test invalid addition (adding non-zero size queue)
-name|AutoCreatedLeafQueue
+name|ReservationQueue
 name|a1
 init|=
 operator|new
-name|AutoCreatedLeafQueue
+name|ReservationQueue
 argument_list|(
 name|cs
 argument_list|,
@@ -806,11 +806,11 @@ block|{
 comment|// expected
 block|}
 comment|// Test add one reservation dynamically and manually modify capacity
-name|AutoCreatedLeafQueue
+name|ReservationQueue
 name|a1
 init|=
 operator|new
-name|AutoCreatedLeafQueue
+name|ReservationQueue
 argument_list|(
 name|cs
 argument_list|,
@@ -837,7 +837,7 @@ expr_stmt|;
 comment|//set default queue capacity to zero
 operator|(
 operator|(
-name|AutoCreatedLeafQueue
+name|ReservationQueue
 operator|)
 name|cs
 operator|.
@@ -879,11 +879,11 @@ argument_list|)
 expr_stmt|;
 comment|// Test add another reservation queue and use setEntitlement to modify
 comment|// capacity
-name|AutoCreatedLeafQueue
+name|ReservationQueue
 name|a2
 init|=
 operator|new
-name|AutoCreatedLeafQueue
+name|ReservationQueue
 argument_list|(
 name|cs
 argument_list|,
@@ -998,11 +998,11 @@ name|getResourceScheduler
 argument_list|()
 decl_stmt|;
 comment|// Test add one reservation dynamically and manually modify capacity
-name|AutoCreatedLeafQueue
+name|ReservationQueue
 name|a1
 init|=
 operator|new
-name|AutoCreatedLeafQueue
+name|ReservationQueue
 argument_list|(
 name|cs
 argument_list|,
@@ -1397,11 +1397,11 @@ name|ReservationConstants
 operator|.
 name|DEFAULT_QUEUE_SUFFIX
 decl_stmt|;
-name|AutoCreatedLeafQueue
+name|ReservationQueue
 name|defQ
 init|=
 operator|new
-name|AutoCreatedLeafQueue
+name|ReservationQueue
 argument_list|(
 name|scheduler
 argument_list|,

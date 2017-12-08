@@ -1290,11 +1290,11 @@ name|ArrayList
 argument_list|<>
 argument_list|()
 decl_stmt|;
-name|AutoCreatedLeafQueue
+name|ReservationQueue
 name|resQueue
 init|=
 operator|new
-name|AutoCreatedLeafQueue
+name|ReservationQueue
 argument_list|(
 name|csContext
 argument_list|,
@@ -1661,12 +1661,20 @@ if|if
 condition|(
 operator|!
 operator|(
+name|AbstractAutoCreatedLeafQueue
+operator|.
+name|class
+operator|.
+name|isAssignableFrom
+argument_list|(
 name|e
 operator|.
 name|getValue
 argument_list|()
-operator|instanceof
-name|AutoCreatedLeafQueue
+operator|.
+name|getClass
+argument_list|()
+argument_list|)
 operator|)
 condition|)
 block|{
@@ -2118,7 +2126,6 @@ operator|.
 name|getValue
 argument_list|()
 decl_stmt|;
-comment|//TODO - Handle case when auto create is disabled on parent queues
 if|if
 condition|(
 operator|!

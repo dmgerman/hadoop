@@ -178,10 +178,12 @@ end_import
 
 begin_class
 DECL|class|CSQueueUtils
+specifier|public
 class|class
 name|CSQueueUtils
 block|{
 DECL|field|EPSILON
+specifier|public
 specifier|final
 specifier|static
 name|float
@@ -537,9 +539,7 @@ name|queueCapacities
 operator|.
 name|setCapacity
 argument_list|(
-name|CommonNodeLabelsManager
-operator|.
-name|NO_LABEL
+name|label
 argument_list|,
 name|csConf
 operator|.
@@ -555,9 +555,7 @@ name|queueCapacities
 operator|.
 name|setMaximumCapacity
 argument_list|(
-name|CommonNodeLabelsManager
-operator|.
-name|NO_LABEL
+name|label
 argument_list|,
 name|csConf
 operator|.
@@ -573,9 +571,7 @@ name|queueCapacities
 operator|.
 name|setMaxAMResourcePercentage
 argument_list|(
-name|CommonNodeLabelsManager
-operator|.
-name|NO_LABEL
+name|label
 argument_list|,
 name|csConf
 operator|.
@@ -859,6 +855,75 @@ argument_list|(
 name|nodePartition
 argument_list|)
 decl_stmt|;
+comment|//TODO : Modify below code to support Absolute Resource configurations
+comment|// (YARN-5881) for AutoCreatedLeafQueue
+if|if
+condition|(
+name|Float
+operator|.
+name|compare
+argument_list|(
+name|queueCapacities
+operator|.
+name|getAbsoluteCapacity
+argument_list|(
+name|nodePartition
+argument_list|)
+argument_list|,
+literal|0f
+argument_list|)
+operator|==
+literal|0
+operator|&&
+name|childQueue
+operator|instanceof
+name|AutoCreatedLeafQueue
+condition|)
+block|{
+comment|//If absolute capacity is 0 for a leaf queue (could be a managed leaf
+comment|// queue, then use the leaf queue's template capacity to compute
+comment|// guaranteed resource for used capacity)
+comment|// queueGuaranteed = totalPartitionedResource *
+comment|// absolute_capacity(partition)
+name|ManagedParentQueue
+name|parentQueue
+init|=
+operator|(
+name|ManagedParentQueue
+operator|)
+name|childQueue
+operator|.
+name|getParent
+argument_list|()
+decl_stmt|;
+name|QueueCapacities
+name|leafQueueTemplateCapacities
+init|=
+name|parentQueue
+operator|.
+name|getLeafQueueTemplate
+argument_list|()
+operator|.
+name|getQueueCapacities
+argument_list|()
+decl_stmt|;
+name|queueGuranteedResource
+operator|=
+name|Resources
+operator|.
+name|multiply
+argument_list|(
+name|totalPartitionResource
+argument_list|,
+name|leafQueueTemplateCapacities
+operator|.
+name|getAbsoluteCapacity
+argument_list|(
+name|nodePartition
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 comment|// make queueGuranteed>= minimum_allocation to avoid divided by 0.
 name|queueGuranteedResource
 operator|=
