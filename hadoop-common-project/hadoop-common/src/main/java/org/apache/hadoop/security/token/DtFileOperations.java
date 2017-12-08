@@ -482,12 +482,20 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// default to oldest supported format for compatibility
+name|Credentials
+operator|.
+name|SerializedFormat
+name|credsFormat
+init|=
+name|Credentials
+operator|.
+name|SerializedFormat
+operator|.
+name|WRITABLE
+decl_stmt|;
 if|if
 condition|(
-name|format
-operator|==
-literal|null
-operator|||
 name|format
 operator|.
 name|equals
@@ -496,6 +504,15 @@ name|FORMAT_PB
 argument_list|)
 condition|)
 block|{
+name|credsFormat
+operator|=
+name|Credentials
+operator|.
+name|SerializedFormat
+operator|.
+name|PROTOBUF
+expr_stmt|;
+block|}
 name|creds
 operator|.
 name|writeTokenStorageFile
@@ -506,20 +523,10 @@ name|f
 argument_list|)
 argument_list|,
 name|conf
+argument_list|,
+name|credsFormat
 argument_list|)
 expr_stmt|;
-block|}
-else|else
-block|{
-comment|// if (format != null&& format.equals(FORMAT_JAVA)) {
-name|creds
-operator|.
-name|writeLegacyTokenStorageLocalFile
-argument_list|(
-name|f
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 comment|/** Print out a Credentials file from the local filesystem.    *  @param tokenFile a local File object.    *  @param alias print only tokens matching alias (null matches all).    *  @param conf Configuration object passed along.    *  @param out print to this stream.    *  @throws IOException    */
 DECL|method|printTokenFile ( File tokenFile, Text alias, Configuration conf, PrintStream out)
