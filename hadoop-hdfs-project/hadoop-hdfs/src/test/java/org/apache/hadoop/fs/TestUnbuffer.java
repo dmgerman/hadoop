@@ -714,7 +714,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Test unbuffer method which throws an Exception with class name included.    */
+comment|/**    * Test that a InputStream should throw an exception when not implementing    * CanUnbuffer    *    * This should throw an exception when the stream claims to have the    * unbuffer capability, but actually does not implement CanUnbuffer.    */
 annotation|@
 name|Test
 DECL|method|testUnbufferException ()
@@ -723,27 +723,46 @@ name|void
 name|testUnbufferException
 parameter_list|()
 block|{
+specifier|abstract
+class|class
+name|BuggyStream
+extends|extends
 name|FSInputStream
-name|in
+implements|implements
+name|StreamCapabilities
+block|{     }
+name|BuggyStream
+name|bs
 init|=
 name|Mockito
 operator|.
 name|mock
 argument_list|(
-name|FSInputStream
+name|BuggyStream
 operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|FSDataInputStream
-name|fs
-init|=
-operator|new
-name|FSDataInputStream
+name|Mockito
+operator|.
+name|when
 argument_list|(
-name|in
+name|bs
+operator|.
+name|hasCapability
+argument_list|(
+name|Mockito
+operator|.
+name|anyString
+argument_list|()
 argument_list|)
-decl_stmt|;
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 name|exception
 operator|.
 name|expect
@@ -757,19 +776,20 @@ name|exception
 operator|.
 name|expectMessage
 argument_list|(
-literal|"this stream "
-operator|+
-name|in
+name|StreamCapabilitiesPolicy
 operator|.
-name|getClass
-argument_list|()
-operator|.
-name|getName
-argument_list|()
-operator|+
-literal|" does not support unbuffering"
+name|CAN_UNBUFFER_NOT_IMPLEMENTED_MESSAGE
 argument_list|)
 expr_stmt|;
+name|FSDataInputStream
+name|fs
+init|=
+operator|new
+name|FSDataInputStream
+argument_list|(
+name|bs
+argument_list|)
+decl_stmt|;
 name|fs
 operator|.
 name|unbuffer

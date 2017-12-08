@@ -54,6 +54,26 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|slf4j
+operator|.
+name|LoggerFactory
+import|;
+end_import
+
 begin_comment
 comment|/**  * Static methods to implement policies for {@link StreamCapabilities}.  */
 end_comment
@@ -72,6 +92,30 @@ specifier|public
 class|class
 name|StreamCapabilitiesPolicy
 block|{
+DECL|field|CAN_UNBUFFER_NOT_IMPLEMENTED_MESSAGE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CAN_UNBUFFER_NOT_IMPLEMENTED_MESSAGE
+init|=
+literal|"claims unbuffer capabilty but does not implement CanUnbuffer"
+decl_stmt|;
+DECL|field|LOG
+specifier|static
+specifier|final
+name|Logger
+name|LOG
+init|=
+name|LoggerFactory
+operator|.
+name|getLogger
+argument_list|(
+name|StreamCapabilitiesPolicy
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 comment|/**    * Implement the policy for {@link CanUnbuffer#unbuffer()}.    *    * @param in the input stream    */
 DECL|method|unbuffer (InputStream in)
 specifier|public
@@ -117,6 +161,28 @@ name|unbuffer
 argument_list|()
 expr_stmt|;
 block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|in
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|":"
+operator|+
+literal|" does not implement StreamCapabilities"
+operator|+
+literal|" and the unbuffer capability"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -128,8 +194,6 @@ throw|throw
 operator|new
 name|UnsupportedOperationException
 argument_list|(
-literal|"this stream "
-operator|+
 name|in
 operator|.
 name|getClass
@@ -138,7 +202,9 @@ operator|.
 name|getName
 argument_list|()
 operator|+
-literal|" claims to unbuffer but forgets to implement CanUnbuffer"
+literal|": "
+operator|+
+name|CAN_UNBUFFER_NOT_IMPLEMENTED_MESSAGE
 argument_list|)
 throw|;
 block|}
