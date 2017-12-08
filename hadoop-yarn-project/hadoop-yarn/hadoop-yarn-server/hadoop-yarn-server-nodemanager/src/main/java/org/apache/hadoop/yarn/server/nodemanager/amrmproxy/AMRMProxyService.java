@@ -1142,7 +1142,6 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-comment|// Both second app attempt and NM restart within Federation need registry
 if|if
 condition|(
 name|conf
@@ -1156,19 +1155,6 @@ argument_list|,
 name|YarnConfiguration
 operator|.
 name|DEFAULT_AMRM_PROXY_HA_ENABLED
-argument_list|)
-operator|||
-name|conf
-operator|.
-name|getBoolean
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|NM_RECOVERY_ENABLED
-argument_list|,
-name|YarnConfiguration
-operator|.
-name|DEFAULT_NM_RECOVERY_ENABLED
 argument_list|)
 condition|)
 block|{
