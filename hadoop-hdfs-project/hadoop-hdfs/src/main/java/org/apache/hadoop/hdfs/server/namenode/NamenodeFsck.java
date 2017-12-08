@@ -7460,11 +7460,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_REPLICATION_MIN_KEY
-operator|+
-literal|":\t"
+literal|"MINIMAL BLOCK REPLICATION:\t"
 argument_list|)
 operator|.
 name|append

@@ -6771,7 +6771,7 @@ name|outStr
 operator|.
 name|contains
 argument_list|(
-literal|"dfs.namenode.replication.min:\t2"
+literal|"MINIMAL BLOCK REPLICATION:\t2"
 argument_list|)
 argument_list|)
 expr_stmt|;
