@@ -6192,6 +6192,45 @@ literal|null
 argument_list|)
 decl_stmt|;
 comment|// Deduct resources that we can release
+name|User
+name|user
+init|=
+name|getUser
+argument_list|(
+name|username
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|user
+operator|==
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"User "
+operator|+
+name|username
+operator|+
+literal|" has been removed!"
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+literal|false
+return|;
+block|}
 name|Resource
 name|usedResource
 init|=
@@ -6199,10 +6238,7 @@ name|Resources
 operator|.
 name|clone
 argument_list|(
-name|getUser
-argument_list|(
-name|username
-argument_list|)
+name|user
 operator|.
 name|getUsed
 argument_list|(
@@ -7054,6 +7090,40 @@ argument_list|(
 name|user
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|queueUser
+operator|==
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"User "
+operator|+
+name|user
+operator|+
+literal|" has been removed!"
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|Resources
+operator|.
+name|none
+argument_list|()
+return|;
+block|}
 comment|// Compute user limit respect requested labels,
 comment|// TODO, need consider headroom respect labels also
 if|if
@@ -7357,6 +7427,37 @@ argument_list|(
 name|userName
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|user
+operator|==
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"User "
+operator|+
+name|userName
+operator|+
+literal|" has been removed!"
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+literal|false
+return|;
+block|}
 name|currentResourceLimits
 operator|.
 name|setAmountNeededUnreserve

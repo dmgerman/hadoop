@@ -7493,6 +7493,24 @@ name|getContainerId
 argument_list|()
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|reservedApplication
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Trying to schedule for a finished app, please double check."
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
 comment|// Try to fulfill the reservation
 name|LOG
 operator|.

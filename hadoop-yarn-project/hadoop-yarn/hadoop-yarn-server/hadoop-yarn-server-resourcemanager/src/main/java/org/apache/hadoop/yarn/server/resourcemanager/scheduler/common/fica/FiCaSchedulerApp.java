@@ -2335,6 +2335,22 @@ operator|!=
 literal|null
 condition|)
 block|{
+comment|// adding NP check as this proposal could not be allocated from reserved
+comment|// container in async-scheduling mode
+if|if
+condition|(
+name|allocation
+operator|.
+name|getAllocateFromReservedContainer
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
 name|RMContainer
 name|fromReservedContainer
 init|=
