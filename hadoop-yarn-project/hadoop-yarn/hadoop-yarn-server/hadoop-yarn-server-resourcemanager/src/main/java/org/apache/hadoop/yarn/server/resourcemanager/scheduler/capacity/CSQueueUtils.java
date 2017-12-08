@@ -312,60 +312,9 @@ name|getExistingNodeLabels
 argument_list|()
 control|)
 block|{
-name|float
-name|capacity
-init|=
-name|queueCapacities
-operator|.
-name|getCapacity
-argument_list|(
-name|label
-argument_list|)
-decl_stmt|;
-name|float
-name|maximumCapacity
-init|=
-name|queueCapacities
-operator|.
-name|getMaximumCapacity
-argument_list|(
-name|label
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|capacity
-operator|>
-name|maximumCapacity
-condition|)
-block|{
-throw|throw
-operator|new
-name|IllegalArgumentException
-argument_list|(
-literal|"Illegal queue capacity setting, "
-operator|+
-literal|"(capacity="
-operator|+
-name|capacity
-operator|+
-literal|")> (maximum-capacity="
-operator|+
-name|maximumCapacity
-operator|+
-literal|"). When label=["
-operator|+
-name|label
-operator|+
-literal|"]"
-argument_list|)
-throw|;
-block|}
-comment|// Actually, this may not needed since we have verified capacity<=
-comment|// maximumCapacity. And the way we compute absolute capacity (abs(x) =
-comment|// cap(x) * cap(x.parent) * ...) is a monotone increasing function. But
-comment|// just keep it here to make sure our compute abs capacity method works
-comment|// correctly.
+comment|// The only thing we should care about is absolute capacity<=
+comment|// absolute max capacity otherwise the absolute max capacity is
+comment|// no longer an absolute maximum.
 name|float
 name|absCapacity
 init|=
