@@ -250,6 +250,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|constraint
+operator|.
+name|AllocationTagsManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|placement
 operator|.
 name|PlacementManager
@@ -937,6 +957,19 @@ name|conf
 parameter_list|,
 name|ApplicationId
 name|applicationId
+parameter_list|)
+function_decl|;
+DECL|method|getAllocationTagsManager ()
+name|AllocationTagsManager
+name|getAllocationTagsManager
+parameter_list|()
+function_decl|;
+DECL|method|setAllocationTagsManager (AllocationTagsManager allocationTagsManager)
+name|void
+name|setAllocationTagsManager
+parameter_list|(
+name|AllocationTagsManager
+name|allocationTagsManager
 parameter_list|)
 function_decl|;
 block|}
