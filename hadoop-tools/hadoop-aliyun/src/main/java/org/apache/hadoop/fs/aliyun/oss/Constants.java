@@ -232,7 +232,7 @@ specifier|final
 name|int
 name|MAX_ERROR_RETRIES_DEFAULT
 init|=
-literal|20
+literal|10
 decl_stmt|;
 comment|// Time until we give up trying to establish a connection to oss
 DECL|field|ESTABLISH_TIMEOUT_KEY
