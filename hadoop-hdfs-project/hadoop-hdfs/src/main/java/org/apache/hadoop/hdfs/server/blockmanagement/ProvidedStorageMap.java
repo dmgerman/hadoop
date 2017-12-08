@@ -1119,11 +1119,7 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|providedEnabled
-operator|&&
-name|storageId
-operator|.
-name|equals
+name|isProvidedStorage
 argument_list|(
 name|storage
 operator|.
@@ -1178,6 +1174,40 @@ argument_list|(
 name|storage
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|isProvidedStorage (String dnStorageId)
+specifier|private
+name|boolean
+name|isProvidedStorage
+parameter_list|(
+name|String
+name|dnStorageId
+parameter_list|)
+block|{
+return|return
+name|providedEnabled
+operator|&&
+name|storageId
+operator|.
+name|equals
+argument_list|(
+name|dnStorageId
+argument_list|)
+return|;
+block|}
+comment|/**    * Choose a datanode that reported a volume of {@link StorageType} PROVIDED.    *    * @return the {@link DatanodeDescriptor} corresponding to a datanode that    *         reported a volume with {@link StorageType} PROVIDED. If multiple    *         datanodes report a PROVIDED volume, one is chosen uniformly at    *         random.    */
+DECL|method|chooseProvidedDatanode ()
+specifier|public
+name|DatanodeDescriptor
+name|chooseProvidedDatanode
+parameter_list|()
+block|{
+return|return
+name|providedDescriptor
+operator|.
+name|chooseRandom
+argument_list|()
+return|;
 block|}
 comment|/**    * Builder used for creating {@link LocatedBlocks} when a block is provided.    */
 DECL|class|ProvidedBlocksBuilder
