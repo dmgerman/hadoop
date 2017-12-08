@@ -1007,6 +1007,19 @@ return|return
 name|maxEffectiveCapacity
 return|;
 block|}
+DECL|method|isLeafQueue ()
+specifier|public
+name|boolean
+name|isLeafQueue
+parameter_list|()
+block|{
+return|return
+name|getQueues
+argument_list|()
+operator|==
+literal|null
+return|;
+block|}
 block|}
 end_class
 
