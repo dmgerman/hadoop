@@ -2793,10 +2793,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testEffectiveResourceAfterIncreasinClusterResource ()
+DECL|method|testEffectiveResourceAfterIncreasingClusterResource ()
 specifier|public
 name|void
-name|testEffectiveResourceAfterIncreasinClusterResource
+name|testEffectiveResourceAfterIncreasingClusterResource
 parameter_list|()
 throws|throws
 name|Exception
