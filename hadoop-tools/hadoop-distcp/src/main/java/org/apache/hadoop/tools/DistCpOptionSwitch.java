@@ -146,7 +146,7 @@ literal|false
 argument_list|,
 literal|"Delete from target, "
 operator|+
-literal|"files missing in source"
+literal|"files missing in source. Delete is applicable only with update or overwrite options"
 argument_list|)
 argument_list|)
 block|,
