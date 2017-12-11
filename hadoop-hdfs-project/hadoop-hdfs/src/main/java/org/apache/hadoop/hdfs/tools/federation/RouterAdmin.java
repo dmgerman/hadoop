@@ -626,7 +626,7 @@ literal|"Federation Admin Tools:\n"
 operator|+
 literal|"\t[-add<source><nameservice><destination> "
 operator|+
-literal|"[-readonly] [-order HASH|LOCAL|RANDOM|HASH_ALL]]\n"
+literal|"[-readonly]\n"
 operator|+
 literal|"\t[-rm<source>]\n"
 operator|+

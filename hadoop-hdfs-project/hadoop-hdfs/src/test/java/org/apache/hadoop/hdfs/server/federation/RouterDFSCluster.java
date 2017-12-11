@@ -4245,11 +4245,7 @@ name|void
 name|waitNamenodeRegistration
 parameter_list|()
 throws|throws
-name|InterruptedException
-throws|,
-name|IllegalStateException
-throws|,
-name|IOException
+name|Exception
 block|{
 for|for
 control|(
@@ -4322,9 +4318,7 @@ name|String
 name|nnId
 parameter_list|)
 throws|throws
-name|InterruptedException
-throws|,
-name|IOException
+name|Exception
 block|{
 name|LOG
 operator|.
