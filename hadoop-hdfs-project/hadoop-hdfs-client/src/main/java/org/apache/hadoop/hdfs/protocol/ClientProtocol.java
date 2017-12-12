@@ -1457,6 +1457,22 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Get the file info for a specific file or directory with    * {@link LocatedBlocks}.    * @param src The string representation of the path to the file    * @param needBlockToken Generate block tokens for {@link LocatedBlocks}    * @return object containing information regarding the file    *         or null if file not found    * @throws org.apache.hadoop.security.AccessControlException permission denied    * @throws java.io.FileNotFoundException file<code>src</code> is not found    * @throws IOException If an I/O error occurred    */
+annotation|@
+name|Idempotent
+DECL|method|getLocatedFileInfo (String src, boolean needBlockToken)
+name|HdfsLocatedFileStatus
+name|getLocatedFileInfo
+parameter_list|(
+name|String
+name|src
+parameter_list|,
+name|boolean
+name|needBlockToken
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Get {@link ContentSummary} rooted at the specified directory.    * @param path The string representation of the path    *    * @throws org.apache.hadoop.security.AccessControlException permission denied    * @throws java.io.FileNotFoundException file<code>path</code> is not found    * @throws org.apache.hadoop.fs.UnresolvedLinkException if<code>path</code>    *           contains a symlink.    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent

@@ -590,7 +590,7 @@ name|length
 argument_list|)
 return|;
 block|}
-DECL|method|getFileInfo (NameNode namenode, String src, boolean resolveLink)
+DECL|method|getFileInfo (NameNode namenode, String src, boolean resolveLink, boolean needLocation, boolean needBlockToken)
 specifier|public
 specifier|static
 name|HdfsFileStatus
@@ -604,6 +604,12 @@ name|src
 parameter_list|,
 name|boolean
 name|resolveLink
+parameter_list|,
+name|boolean
+name|needLocation
+parameter_list|,
+name|boolean
+name|needBlockToken
 parameter_list|)
 throws|throws
 name|AccessControlException
@@ -640,6 +646,10 @@ argument_list|,
 name|src
 argument_list|,
 name|resolveLink
+argument_list|,
+name|needLocation
+argument_list|,
+name|needBlockToken
 argument_list|)
 return|;
 block|}

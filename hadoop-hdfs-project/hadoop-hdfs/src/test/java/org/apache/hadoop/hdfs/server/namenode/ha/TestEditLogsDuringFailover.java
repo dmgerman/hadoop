@@ -286,24 +286,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|NameNodeAdapter
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|io
 operator|.
 name|IOUtils
@@ -321,6 +303,26 @@ operator|.
 name|test
 operator|.
 name|GenericTestUtils
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|NameNodeAdapter
+operator|.
+name|getFileInfo
 import|;
 end_import
 
@@ -676,8 +678,6 @@ comment|// either replay starting in the middle of the segment (not allowed)
 comment|// or double-replay the edits (incorrect).
 name|assertNull
 argument_list|(
-name|NameNodeAdapter
-operator|.
 name|getFileInfo
 argument_list|(
 name|cluster
@@ -690,6 +690,10 @@ argument_list|,
 literal|"/test"
 argument_list|,
 literal|true
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -740,8 +744,6 @@ comment|// NN1 should have both the edits that came before its restart, and the 
 comment|// came after its restart.
 name|assertNotNull
 argument_list|(
-name|NameNodeAdapter
-operator|.
 name|getFileInfo
 argument_list|(
 name|cluster
@@ -754,13 +756,15 @@ argument_list|,
 literal|"/test"
 argument_list|,
 literal|true
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertNotNull
 argument_list|(
-name|NameNodeAdapter
-operator|.
 name|getFileInfo
 argument_list|(
 name|cluster
@@ -773,6 +777,10 @@ argument_list|,
 literal|"/test2"
 argument_list|,
 literal|true
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;

@@ -928,6 +928,10 @@ name|i
 argument_list|)
 argument_list|,
 literal|false
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 operator|.
 name|isDirectory
@@ -1022,6 +1026,10 @@ name|getDirPath
 argument_list|(
 name|i
 argument_list|)
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|,
 literal|false
 argument_list|)

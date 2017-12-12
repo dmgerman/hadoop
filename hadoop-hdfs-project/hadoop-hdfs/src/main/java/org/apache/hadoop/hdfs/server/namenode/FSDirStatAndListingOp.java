@@ -660,8 +660,8 @@ name|isSuperUser
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the file info for a specific file.    *    * @param srcArg The string representation of the path to the file    * @param resolveLink whether to throw UnresolvedLinkException    *        if src refers to a symlink    *    * @return object containing information regarding the file    *         or null if file not found    */
-DECL|method|getFileInfo ( FSDirectory fsd, String srcArg, boolean resolveLink)
+comment|/**    * Get the file info for a specific file.    *    * @param srcArg The string representation of the path to the file    * @param resolveLink whether to throw UnresolvedLinkException    *        if src refers to a symlink    *    * @param needLocation Include {@link LocatedBlocks} in result.    * @param needBlockToken Include block tokens in {@link LocatedBlocks}.    * @return object containing information regarding the file    *         or null if file not found    */
+DECL|method|getFileInfo (FSDirectory fsd, String srcArg, boolean resolveLink, boolean needLocation, boolean needBlockToken)
 specifier|static
 name|HdfsFileStatus
 name|getFileInfo
@@ -674,6 +674,12 @@ name|srcArg
 parameter_list|,
 name|boolean
 name|resolveLink
+parameter_list|,
+name|boolean
+name|needLocation
+parameter_list|,
+name|boolean
+name|needBlockToken
 parameter_list|)
 throws|throws
 name|IOException
@@ -763,6 +769,10 @@ argument_list|(
 name|fsd
 argument_list|,
 name|iip
+argument_list|,
+name|needLocation
+argument_list|,
+name|needBlockToken
 argument_list|)
 return|;
 block|}
@@ -1362,6 +1372,8 @@ argument_list|,
 name|parentStoragePolicy
 argument_list|,
 name|needLocation
+argument_list|,
+literal|false
 argument_list|)
 block|}
 argument_list|,
@@ -1524,6 +1536,8 @@ argument_list|,
 name|childStoragePolicy
 argument_list|,
 name|needLocation
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|listingCnt
@@ -1864,6 +1878,8 @@ operator|.
 name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 argument_list|,
 literal|false
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -1908,8 +1924,8 @@ literal|0
 argument_list|)
 return|;
 block|}
-comment|/** Get the file info for a specific file.    * @param fsd FSDirectory    * @param iip The path to the file, the file is included    * @param includeStoragePolicy whether to include storage policy    * @return object containing information regarding the file    *         or null if file not found    */
-DECL|method|getFileInfo (FSDirectory fsd, INodesInPath iip, boolean includeStoragePolicy)
+comment|/** Get the file info for a specific file.    * @param fsd FSDirectory    * @param iip The path to the file, the file is included    * @param includeStoragePolicy whether to include storage policy    * @param needLocation Include {@link LocatedBlocks} in response    * @param needBlockToken Generate block tokens for {@link LocatedBlocks}    * @return object containing information regarding the file    *         or null if file not found    */
+DECL|method|getFileInfo (FSDirectory fsd, INodesInPath iip, boolean includeStoragePolicy, boolean needLocation, boolean needBlockToken)
 specifier|static
 name|HdfsFileStatus
 name|getFileInfo
@@ -1922,6 +1938,12 @@ name|iip
 parameter_list|,
 name|boolean
 name|includeStoragePolicy
+parameter_list|,
+name|boolean
+name|needLocation
+parameter_list|,
+name|boolean
+name|needBlockToken
 parameter_list|)
 throws|throws
 name|IOException
@@ -1986,7 +2008,9 @@ literal|null
 argument_list|,
 name|policy
 argument_list|,
-literal|false
+name|needLocation
+argument_list|,
+name|needBlockToken
 argument_list|)
 return|;
 block|}
@@ -1999,7 +2023,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|getFileInfo (FSDirectory fsd, INodesInPath iip)
+DECL|method|getFileInfo (FSDirectory fsd, INodesInPath iip, boolean needLocation, boolean needBlockToken)
 specifier|static
 name|HdfsFileStatus
 name|getFileInfo
@@ -2009,6 +2033,12 @@ name|fsd
 parameter_list|,
 name|INodesInPath
 name|iip
+parameter_list|,
+name|boolean
+name|needLocation
+parameter_list|,
+name|boolean
+name|needBlockToken
 parameter_list|)
 throws|throws
 name|IOException
@@ -2085,6 +2115,10 @@ argument_list|,
 name|iip
 argument_list|,
 literal|true
+argument_list|,
+name|needLocation
+argument_list|,
+name|needBlockToken
 argument_list|)
 expr_stmt|;
 block|}
@@ -2130,11 +2164,13 @@ operator|.
 name|BLOCK_STORAGE_POLICY_ID_UNSPECIFIED
 argument_list|,
 literal|false
+argument_list|,
+literal|false
 argument_list|)
 return|;
 block|}
-comment|/**    * create a hdfs file status from an iip.    *    * @param fsd FSDirectory    * @param iip The INodesInPath containing the INodeFile and its ancestors.    * @param child for a directory listing of the iip, else null    * @param storagePolicy for the path or closest ancestor    * @param needLocation if block locations need to be included or not    * @return a file status    * @throws java.io.IOException if any error occurs    */
-DECL|method|createFileStatus ( FSDirectory fsd, INodesInPath iip, INode child, byte storagePolicy, boolean needLocation)
+comment|/**    * create a hdfs file status from an iip.    *    * @param fsd FSDirectory    * @param iip The INodesInPath containing the INodeFile and its ancestors.    * @param child for a directory listing of the iip, else null    * @param storagePolicy for the path or closest ancestor    * @param needLocation if block locations need to be included or not    * @param needBlockToken    * @return a file status    * @throws java.io.IOException if any error occurs    */
+DECL|method|createFileStatus ( FSDirectory fsd, INodesInPath iip, INode child, byte storagePolicy, boolean needLocation, boolean needBlockToken)
 specifier|private
 specifier|static
 name|HdfsFileStatus
@@ -2154,6 +2190,9 @@ name|storagePolicy
 parameter_list|,
 name|boolean
 name|needLocation
+parameter_list|,
+name|boolean
+name|needBlockToken
 parameter_list|)
 throws|throws
 name|IOException
@@ -2416,7 +2455,7 @@ literal|0L
 argument_list|,
 name|size
 argument_list|,
-literal|false
+name|needBlockToken
 argument_list|,
 name|inSnapshot
 argument_list|,

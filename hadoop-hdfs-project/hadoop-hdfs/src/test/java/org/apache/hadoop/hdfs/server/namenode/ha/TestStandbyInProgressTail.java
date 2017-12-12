@@ -246,6 +246,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|test
+operator|.
+name|GenericTestUtils
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|server
@@ -253,20 +267,8 @@ operator|.
 name|namenode
 operator|.
 name|NameNodeAdapter
-import|;
-end_import
-
-begin_import
-import|import
-name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|test
-operator|.
-name|GenericTestUtils
+name|getFileInfo
 import|;
 end_import
 
@@ -704,8 +706,6 @@ expr_stmt|;
 comment|// StandbyNameNode should not finish tailing in-progress logs
 name|assertNull
 argument_list|(
-name|NameNodeAdapter
-operator|.
 name|getFileInfo
 argument_list|(
 name|cluster
@@ -718,6 +718,10 @@ argument_list|,
 literal|"/test"
 argument_list|,
 literal|true
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -764,8 +768,6 @@ comment|// either replay starting in the middle of the segment (not allowed)
 comment|// or double-replay the edits (incorrect).
 name|assertNull
 argument_list|(
-name|NameNodeAdapter
-operator|.
 name|getFileInfo
 argument_list|(
 name|cluster
@@ -778,6 +780,10 @@ argument_list|,
 literal|"/test"
 argument_list|,
 literal|true
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -828,8 +834,6 @@ comment|// NN1 should have both the edits that came before its restart,
 comment|// and the edits that came after its restart.
 name|assertNotNull
 argument_list|(
-name|NameNodeAdapter
-operator|.
 name|getFileInfo
 argument_list|(
 name|cluster
@@ -842,13 +846,15 @@ argument_list|,
 literal|"/test"
 argument_list|,
 literal|true
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertNotNull
 argument_list|(
-name|NameNodeAdapter
-operator|.
 name|getFileInfo
 argument_list|(
 name|cluster
@@ -861,6 +867,10 @@ argument_list|,
 literal|"/test2"
 argument_list|,
 literal|true
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1014,8 +1024,6 @@ comment|// After waiting for 5 seconds, StandbyNameNode should finish tailing
 comment|// in-progress logs
 name|assertNotNull
 argument_list|(
-name|NameNodeAdapter
-operator|.
 name|getFileInfo
 argument_list|(
 name|cluster
@@ -1028,6 +1036,10 @@ argument_list|,
 literal|"/test"
 argument_list|,
 literal|true
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1070,8 +1082,6 @@ expr_stmt|;
 comment|// Because we're using in-progress tailer, this should not be null
 name|assertNotNull
 argument_list|(
-name|NameNodeAdapter
-operator|.
 name|getFileInfo
 argument_list|(
 name|cluster
@@ -1084,6 +1094,10 @@ argument_list|,
 literal|"/test"
 argument_list|,
 literal|true
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1134,8 +1148,6 @@ comment|// NN1 should have both the edits that came before its restart,
 comment|// and the edits that came after its restart.
 name|assertNotNull
 argument_list|(
-name|NameNodeAdapter
-operator|.
 name|getFileInfo
 argument_list|(
 name|cluster
@@ -1148,13 +1160,15 @@ argument_list|,
 literal|"/test"
 argument_list|,
 literal|true
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertNotNull
 argument_list|(
-name|NameNodeAdapter
-operator|.
 name|getFileInfo
 argument_list|(
 name|cluster
@@ -1167,6 +1181,10 @@ argument_list|,
 literal|"/test2"
 argument_list|,
 literal|true
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1259,8 +1277,6 @@ expr_stmt|;
 comment|// StandbyNameNode should tail the in-progress edit
 name|assertNotNull
 argument_list|(
-name|NameNodeAdapter
-operator|.
 name|getFileInfo
 argument_list|(
 name|nn1
@@ -1268,6 +1284,10 @@ argument_list|,
 literal|"/test"
 argument_list|,
 literal|true
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1310,8 +1330,6 @@ expr_stmt|;
 comment|// StandbyNameNode shouldn't tail the edit since we do not call the method
 name|assertNull
 argument_list|(
-name|NameNodeAdapter
-operator|.
 name|getFileInfo
 argument_list|(
 name|nn1
@@ -1319,6 +1337,10 @@ argument_list|,
 literal|"/test2"
 argument_list|,
 literal|true
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1364,8 +1386,6 @@ expr_stmt|;
 comment|// StandbyNameNode should tail the finalized edit and the new in-progress
 name|assertNotNull
 argument_list|(
-name|NameNodeAdapter
-operator|.
 name|getFileInfo
 argument_list|(
 name|nn1
@@ -1373,13 +1393,15 @@ argument_list|,
 literal|"/test"
 argument_list|,
 literal|true
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertNotNull
 argument_list|(
-name|NameNodeAdapter
-operator|.
 name|getFileInfo
 argument_list|(
 name|nn1
@@ -1387,13 +1409,15 @@ argument_list|,
 literal|"/test2"
 argument_list|,
 literal|true
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertNotNull
 argument_list|(
-name|NameNodeAdapter
-operator|.
 name|getFileInfo
 argument_list|(
 name|nn1
@@ -1401,6 +1425,10 @@ argument_list|,
 literal|"/test3"
 argument_list|,
 literal|true
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1543,8 +1571,6 @@ argument_list|)
 expr_stmt|;
 name|assertNull
 argument_list|(
-name|NameNodeAdapter
-operator|.
 name|getFileInfo
 argument_list|(
 name|nn1
@@ -1552,13 +1578,15 @@ argument_list|,
 literal|"/test"
 argument_list|,
 literal|true
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertNull
 argument_list|(
-name|NameNodeAdapter
-operator|.
 name|getFileInfo
 argument_list|(
 name|nn1
@@ -1566,13 +1594,15 @@ argument_list|,
 literal|"/test2"
 argument_list|,
 literal|true
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertNull
 argument_list|(
-name|NameNodeAdapter
-operator|.
 name|getFileInfo
 argument_list|(
 name|nn1
@@ -1580,6 +1610,10 @@ argument_list|,
 literal|"/test3"
 argument_list|,
 literal|true
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1597,8 +1631,6 @@ expr_stmt|;
 comment|// StandbyNameNode shoudl tail the finalized edit and the new in-progress
 name|assertNotNull
 argument_list|(
-name|NameNodeAdapter
-operator|.
 name|getFileInfo
 argument_list|(
 name|nn1
@@ -1606,13 +1638,15 @@ argument_list|,
 literal|"/test"
 argument_list|,
 literal|true
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertNotNull
 argument_list|(
-name|NameNodeAdapter
-operator|.
 name|getFileInfo
 argument_list|(
 name|nn1
@@ -1620,13 +1654,15 @@ argument_list|,
 literal|"/test2"
 argument_list|,
 literal|true
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertNotNull
 argument_list|(
-name|NameNodeAdapter
-operator|.
 name|getFileInfo
 argument_list|(
 name|nn1
@@ -1634,6 +1670,10 @@ argument_list|,
 literal|"/test3"
 argument_list|,
 literal|true
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1757,8 +1797,6 @@ argument_list|()
 expr_stmt|;
 name|assertNotNull
 argument_list|(
-name|NameNodeAdapter
-operator|.
 name|getFileInfo
 argument_list|(
 name|nn1
@@ -1766,13 +1804,15 @@ argument_list|,
 literal|"/test"
 argument_list|,
 literal|true
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertNotNull
 argument_list|(
-name|NameNodeAdapter
-operator|.
 name|getFileInfo
 argument_list|(
 name|nn1
@@ -1780,6 +1820,10 @@ argument_list|,
 literal|"/test2"
 argument_list|,
 literal|true
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1824,8 +1868,6 @@ expr_stmt|;
 comment|// StandbyNameNode shoudl tail the finalized edit and the new in-progress
 name|assertNotNull
 argument_list|(
-name|NameNodeAdapter
-operator|.
 name|getFileInfo
 argument_list|(
 name|nn1
@@ -1833,13 +1875,15 @@ argument_list|,
 literal|"/test"
 argument_list|,
 literal|true
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertNotNull
 argument_list|(
-name|NameNodeAdapter
-operator|.
 name|getFileInfo
 argument_list|(
 name|nn1
@@ -1847,13 +1891,15 @@ argument_list|,
 literal|"/test2"
 argument_list|,
 literal|true
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertNotNull
 argument_list|(
-name|NameNodeAdapter
-operator|.
 name|getFileInfo
 argument_list|(
 name|nn1
@@ -1861,6 +1907,10 @@ argument_list|,
 literal|"/test3"
 argument_list|,
 literal|true
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1973,8 +2023,6 @@ argument_list|()
 expr_stmt|;
 name|assertNotNull
 argument_list|(
-name|NameNodeAdapter
-operator|.
 name|getFileInfo
 argument_list|(
 name|nn1
@@ -1982,6 +2030,10 @@ argument_list|,
 literal|"/test"
 argument_list|,
 literal|true
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;

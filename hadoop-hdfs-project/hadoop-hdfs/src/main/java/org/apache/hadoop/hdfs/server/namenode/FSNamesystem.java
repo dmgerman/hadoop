@@ -16074,8 +16074,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Get the file info for a specific file.    *    * @param src The string representation of the path to the file    * @param resolveLink whether to throw UnresolvedLinkException    *        if src refers to a symlink    *    * @throws AccessControlException if access is denied    * @throws UnresolvedLinkException if a symlink is encountered.    *    * @return object containing information regarding the file    *         or null if file not found    * @throws StandbyException    */
-DECL|method|getFileInfo (final String src, boolean resolveLink)
+comment|/**    * Get the file info for a specific file.    *    * @param src The string representation of the path to the file    * @param resolveLink whether to throw UnresolvedLinkException    *        if src refers to a symlink    *    * @param needLocation Include {@link LocatedBlocks} in result.    * @param needBlockToken Include block tokens in {@link LocatedBlocks}    * @throws AccessControlException if access is denied    * @throws UnresolvedLinkException if a symlink is encountered.    *    * @return object containing information regarding the file    *         or null if file not found    * @throws StandbyException    */
+DECL|method|getFileInfo (final String src, boolean resolveLink, boolean needLocation, boolean needBlockToken)
 name|HdfsFileStatus
 name|getFileInfo
 parameter_list|(
@@ -16085,14 +16085,27 @@ name|src
 parameter_list|,
 name|boolean
 name|resolveLink
+parameter_list|,
+name|boolean
+name|needLocation
+parameter_list|,
+name|boolean
+name|needBlockToken
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// if the client requests block tokens, then it can read data blocks
+comment|// and should appear in the audit log as if getBlockLocations had been
+comment|// called
 specifier|final
 name|String
 name|operationName
 init|=
+name|needBlockToken
+condition|?
+literal|"open"
+else|:
 literal|"getfileinfo"
 decl_stmt|;
 name|checkOperation
@@ -16130,6 +16143,10 @@ argument_list|,
 name|src
 argument_list|,
 name|resolveLink
+argument_list|,
+name|needLocation
+argument_list|,
+name|needBlockToken
 argument_list|)
 expr_stmt|;
 block|}
@@ -29403,6 +29420,10 @@ operator|.
 name|path
 argument_list|,
 literal|true
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 operator|!=
 literal|null

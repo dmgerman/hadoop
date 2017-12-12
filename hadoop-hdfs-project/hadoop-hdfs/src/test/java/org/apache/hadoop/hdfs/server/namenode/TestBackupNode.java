@@ -1738,6 +1738,10 @@ argument_list|(
 literal|"/edit-while-bn-down"
 argument_list|,
 literal|false
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1959,6 +1963,10 @@ operator|.
 name|getFileInfo
 argument_list|(
 name|src
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|,
 literal|false
 argument_list|)
@@ -2860,6 +2868,10 @@ argument_list|()
 operator|.
 name|getPath
 argument_list|()
+argument_list|,
+literal|false
+argument_list|,
+literal|false
 argument_list|,
 literal|false
 argument_list|)
