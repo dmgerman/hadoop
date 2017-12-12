@@ -262,6 +262,28 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Returns a list of all still open key info. Which contains the info about    * the key name and all its associated block IDs. A pending open key has    * prefix #open# in KSM DB.    *    * @return a list of {@link BlockGroup} representing keys and blocks.    * @throws IOException    */
+DECL|method|getExpiredOpenKeys ()
+name|List
+argument_list|<
+name|BlockGroup
+argument_list|>
+name|getExpiredOpenKeys
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Deletes a expired open key by its name. Called when a hanging key has been    * lingering for too long. Once called, the open key entries gets removed    * from KSM mdata data.    *    * @param objectKeyName object key name with #open# prefix.    * @throws IOException if specified key doesn't exist or other I/O errors.    */
+DECL|method|deleteExpiredOpenKey (String objectKeyName)
+name|void
+name|deleteExpiredOpenKey
+parameter_list|(
+name|String
+name|objectKeyName
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

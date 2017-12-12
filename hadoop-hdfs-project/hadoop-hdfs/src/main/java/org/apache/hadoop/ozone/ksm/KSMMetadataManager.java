@@ -459,6 +459,17 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Returns a list of all still open key info. Which contains the info about    * the key name and all its associated block IDs. A pending open key has    * prefix #open# in KSM DB.    *    * @return a list of {@link BlockGroup} representing keys and blocks.    * @throws IOException    */
+DECL|method|getExpiredOpenKeys ()
+name|List
+argument_list|<
+name|BlockGroup
+argument_list|>
+name|getExpiredOpenKeys
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

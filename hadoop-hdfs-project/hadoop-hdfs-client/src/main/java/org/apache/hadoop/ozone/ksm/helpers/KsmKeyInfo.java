@@ -42,6 +42,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|util
@@ -256,6 +270,22 @@ block|{
 return|return
 name|keyLocationList
 return|;
+block|}
+DECL|method|updateModifcationTime ()
+specifier|public
+name|void
+name|updateModifcationTime
+parameter_list|()
+block|{
+name|this
+operator|.
+name|modificationTime
+operator|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|appendKeyLocation (KsmKeyLocationInfo newLocation)
 specifier|public
