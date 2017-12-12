@@ -85,6 +85,15 @@ name|YARN_IP
 init|=
 literal|"yarn:ip"
 decl_stmt|;
+DECL|field|YARN_COMPONENT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|YARN_COMPONENT
+init|=
+literal|"yarn:component"
+decl_stmt|;
 block|}
 end_class
 

@@ -46,6 +46,15 @@ specifier|public
 class|class
 name|YarnServiceConf
 block|{
+DECL|field|YARN_SERVICE_PREFIX
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|YARN_SERVICE_PREFIX
+init|=
+literal|"yarn.service."
+decl_stmt|;
 comment|// Retry settings for the ServiceClient to talk to Service AppMaster
 DECL|field|CLIENT_AM_RETRY_MAX_WAIT_MS
 specifier|public
@@ -252,6 +261,27 @@ name|String
 name|JVM_OPTS
 init|=
 literal|"yarn.service.am.java.opts"
+decl_stmt|;
+comment|/**    * How long to wait until a container is considered dead.    */
+DECL|field|CONTAINER_RECOVERY_TIMEOUT_MS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CONTAINER_RECOVERY_TIMEOUT_MS
+init|=
+name|YARN_SERVICE_PREFIX
+operator|+
+literal|"container-recovery.timeout.ms"
+decl_stmt|;
+DECL|field|DEFAULT_CONTAINER_RECOVERY_TIMEOUT_MS
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_CONTAINER_RECOVERY_TIMEOUT_MS
+init|=
+literal|120000
 decl_stmt|;
 comment|/**    * Get long value for the property. First get from the userConf, if not    * present, get from systemConf.    *    * @param name name of the property    * @param defaultValue default value of the property, if it is not defined in    *                     userConf and systemConf.    * @param userConf Configuration provided by client in the JSON definition    * @param systemConf The YarnConfiguration in the system.    * @return long value for the property    */
 DECL|method|getLong (String name, long defaultValue, Configuration userConf, org.apache.hadoop.conf.Configuration systemConf)

@@ -1558,6 +1558,19 @@ name|Throwable
 name|e
 parameter_list|)
 function_decl|;
+comment|/**      * Called when the ResourceManager responds to a heartbeat with containers      * from previous attempt.      */
+DECL|method|onContainersReceivedFromPreviousAttempts ( List<Container> containers)
+specifier|public
+name|void
+name|onContainersReceivedFromPreviousAttempts
+parameter_list|(
+name|List
+argument_list|<
+name|Container
+argument_list|>
+name|containers
+parameter_list|)
+block|{     }
 block|}
 comment|/**    * @deprecated Use {@link AMRMClientAsync.AbstractCallbackHandler} instead.    */
 annotation|@
@@ -1621,6 +1634,17 @@ name|onError
 parameter_list|(
 name|Throwable
 name|e
+parameter_list|)
+function_decl|;
+DECL|method|onContainersReceivedFromPreviousAttempts (List<Container> containers)
+name|void
+name|onContainersReceivedFromPreviousAttempts
+parameter_list|(
+name|List
+argument_list|<
+name|Container
+argument_list|>
+name|containers
 parameter_list|)
 function_decl|;
 block|}

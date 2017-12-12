@@ -1018,6 +1018,20 @@ operator|new
 name|ContainerRecoveredTransition
 argument_list|()
 argument_list|)
+comment|// container recovered in AM heartbeat
+operator|.
+name|addTransition
+argument_list|(
+name|FLEXING
+argument_list|,
+name|FLEXING
+argument_list|,
+name|CONTAINER_RECOVERED
+argument_list|,
+operator|new
+name|ContainerRecoveredTransition
+argument_list|()
+argument_list|)
 comment|// container allocated by RM
 operator|.
 name|addTransition
@@ -2312,6 +2326,23 @@ name|FLEXING
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+DECL|method|removePendingInstance (ComponentInstance instance)
+specifier|public
+name|void
+name|removePendingInstance
+parameter_list|(
+name|ComponentInstance
+name|instance
+parameter_list|)
+block|{
+name|pendingInstances
+operator|.
+name|remove
+argument_list|(
+name|instance
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|reInsertPendingInstance (ComponentInstance instance)
 specifier|public
