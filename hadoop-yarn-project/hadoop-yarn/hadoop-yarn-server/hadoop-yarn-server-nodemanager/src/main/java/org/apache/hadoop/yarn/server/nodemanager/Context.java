@@ -296,6 +296,26 @@ name|server
 operator|.
 name|nodemanager
 operator|.
+name|metrics
+operator|.
+name|NodeManagerMetrics
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
 name|recovery
 operator|.
 name|NMStateStoreService
@@ -601,6 +621,11 @@ function_decl|;
 DECL|method|getResourcePluginManager ()
 name|ResourcePluginManager
 name|getResourcePluginManager
+parameter_list|()
+function_decl|;
+DECL|method|getNodeManagerMetrics ()
+name|NodeManagerMetrics
+name|getNodeManagerMetrics
 parameter_list|()
 function_decl|;
 block|}

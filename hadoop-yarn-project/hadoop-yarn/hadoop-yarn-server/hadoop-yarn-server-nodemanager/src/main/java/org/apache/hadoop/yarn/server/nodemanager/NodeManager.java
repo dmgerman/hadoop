@@ -1630,7 +1630,9 @@ block|{
 return|return
 operator|new
 name|NodeResourceMonitorImpl
-argument_list|()
+argument_list|(
+name|context
+argument_list|)
 return|;
 block|}
 DECL|method|createContainerManager (Context context, ContainerExecutor exec, DeletionService del, NodeStatusUpdater nodeStatusUpdater, ApplicationACLsManager aclsManager, LocalDirsHandlerService dirsHandler)
@@ -1804,6 +1806,13 @@ argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
+name|nmContext
+operator|.
+name|setNodeManagerMetrics
+argument_list|(
+name|metrics
+argument_list|)
+expr_stmt|;
 name|DefaultContainerStateListener
 name|defaultListener
 init|=
@@ -3374,6 +3383,13 @@ name|conf
 init|=
 literal|null
 decl_stmt|;
+DECL|field|metrics
+specifier|private
+name|NodeManagerMetrics
+name|metrics
+init|=
+literal|null
+decl_stmt|;
 DECL|field|applications
 specifier|protected
 specifier|final
@@ -4309,6 +4325,35 @@ block|{
 return|return
 name|resourcePluginManager
 return|;
+block|}
+comment|/**      * Returns the {@link NodeManagerMetrics} instance of this node.      * This might return a null if the instance was not set to the context.      * @return node manager metrics.      */
+annotation|@
+name|Override
+DECL|method|getNodeManagerMetrics ()
+specifier|public
+name|NodeManagerMetrics
+name|getNodeManagerMetrics
+parameter_list|()
+block|{
+return|return
+name|metrics
+return|;
+block|}
+DECL|method|setNodeManagerMetrics (NodeManagerMetrics nmMetrics)
+specifier|public
+name|void
+name|setNodeManagerMetrics
+parameter_list|(
+name|NodeManagerMetrics
+name|nmMetrics
+parameter_list|)
+block|{
+name|this
+operator|.
+name|metrics
+operator|=
+name|nmMetrics
+expr_stmt|;
 block|}
 DECL|method|setResourcePluginManager ( ResourcePluginManager resourcePluginManager)
 specifier|public
