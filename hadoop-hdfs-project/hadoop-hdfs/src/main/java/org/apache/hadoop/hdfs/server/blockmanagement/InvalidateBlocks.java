@@ -1608,7 +1608,10 @@ name|size
 argument_list|()
 operator|>
 literal|0
-operator|&&
+condition|)
+block|{
+if|if
+condition|(
 name|getBlockSetsSize
 argument_list|(
 name|dn
@@ -1630,6 +1633,7 @@ argument_list|(
 name|toInvalidate
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|toInvalidate
 return|;
