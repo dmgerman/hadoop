@@ -1838,16 +1838,6 @@ name|containerIdStr
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|DataOutputStream
-name|containerScriptOutStream
-init|=
-literal|null
-decl_stmt|;
-name|DataOutputStream
-name|tokensOutStream
-init|=
-literal|null
-decl_stmt|;
 comment|// Select the working directory for the container
 name|Path
 name|containerWorkDir
@@ -1982,9 +1972,6 @@ argument_list|)
 argument_list|)
 throw|;
 block|}
-try|try
-block|{
-comment|// /////////// Write out the container-script in the nmPrivate space.
 name|List
 argument_list|<
 name|Path
@@ -2062,24 +2049,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-name|containerScriptOutStream
-operator|=
-name|lfs
-operator|.
-name|create
-argument_list|(
-name|nmPrivateContainerScriptPath
-argument_list|,
-name|EnumSet
-operator|.
-name|of
-argument_list|(
-name|CREATE
-argument_list|,
-name|OVERWRITE
-argument_list|)
-argument_list|)
-expr_stmt|;
 comment|// Set the token location too.
 name|environment
 operator|.
@@ -2104,6 +2073,29 @@ name|getPath
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// /////////// Write out the container-script in the nmPrivate space.
+try|try
+init|(
+name|DataOutputStream
+name|containerScriptOutStream
+init|=
+name|lfs
+operator|.
+name|create
+argument_list|(
+name|nmPrivateContainerScriptPath
+argument_list|,
+name|EnumSet
+operator|.
+name|of
+argument_list|(
+name|CREATE
+argument_list|,
+name|OVERWRITE
+argument_list|)
+argument_list|)
+init|)
+block|{
 comment|// Sanitize the container's environment
 name|sanitizeEnv
 argument_list|(
@@ -2159,10 +2151,14 @@ argument_list|,
 name|user
 argument_list|)
 expr_stmt|;
+block|}
 comment|// /////////// End of writing out container-script
 comment|// /////////// Write out the container-tokens in the nmPrivate space.
+try|try
+init|(
+name|DataOutputStream
 name|tokensOutStream
-operator|=
+init|=
 name|lfs
 operator|.
 name|create
@@ -2178,7 +2174,8 @@ argument_list|,
 name|OVERWRITE
 argument_list|)
 argument_list|)
-expr_stmt|;
+init|)
+block|{
 name|Credentials
 name|creds
 init|=
@@ -2194,22 +2191,8 @@ argument_list|(
 name|tokensOutStream
 argument_list|)
 expr_stmt|;
+block|}
 comment|// /////////// End of writing out container-tokens
-block|}
-finally|finally
-block|{
-name|IOUtils
-operator|.
-name|cleanupWithLogger
-argument_list|(
-name|LOG
-argument_list|,
-name|containerScriptOutStream
-argument_list|,
-name|tokensOutStream
-argument_list|)
-expr_stmt|;
-block|}
 name|ret
 operator|=
 name|launchContainer
