@@ -1074,6 +1074,17 @@ name|YarnConfiguration
 operator|.
 name|DEFAULT_QUEUE_NAME
 argument_list|)
+comment|//queueName will be same as mapped queue name in case of recovery
+operator|||
+name|queueName
+operator|.
+name|equals
+argument_list|(
+name|mappedQueue
+operator|.
+name|getQueue
+argument_list|()
+argument_list|)
 operator|||
 name|overrideWithQueueMappings
 condition|)

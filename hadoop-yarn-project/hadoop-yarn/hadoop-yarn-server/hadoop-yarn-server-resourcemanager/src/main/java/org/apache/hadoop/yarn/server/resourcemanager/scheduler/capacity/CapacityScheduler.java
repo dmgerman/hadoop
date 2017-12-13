@@ -4548,7 +4548,7 @@ name|queueName
 argument_list|)
 return|;
 block|}
-DECL|method|addApplicationOnRecovery ( ApplicationId applicationId, String queueName, String user, Priority priority)
+DECL|method|addApplicationOnRecovery (ApplicationId applicationId, String queueName, String user, Priority priority, ApplicationPlacementContext placementContext)
 specifier|private
 name|void
 name|addApplicationOnRecovery
@@ -4564,6 +4564,9 @@ name|user
 parameter_list|,
 name|Priority
 name|priority
+parameter_list|,
+name|ApplicationPlacementContext
+name|placementContext
 parameter_list|)
 block|{
 try|try
@@ -4573,12 +4576,21 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
+comment|//check if the queue needs to be auto-created during recovery
 name|CSQueue
 name|queue
 init|=
-name|getQueue
+name|getOrCreateQueueFromPlacementContext
 argument_list|(
+name|applicationId
+argument_list|,
+name|user
+argument_list|,
 name|queueName
+argument_list|,
+name|placementContext
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 if|if
@@ -4623,7 +4635,9 @@ name|RMAppEventType
 operator|.
 name|KILL
 argument_list|,
-literal|"Application killed on recovery as it was submitted to queue "
+literal|"Application killed on recovery as it"
+operator|+
+literal|" was submitted to queue "
 operator|+
 name|queueName
 operator|+
@@ -4642,7 +4656,9 @@ literal|"Queue named "
 operator|+
 name|queueName
 operator|+
-literal|" missing during application recovery."
+literal|" missing "
+operator|+
+literal|"during application recovery."
 operator|+
 literal|" Queue removal during recovery is not presently "
 operator|+
@@ -4713,7 +4729,9 @@ name|RMAppEventType
 operator|.
 name|KILL
 argument_list|,
-literal|"Application killed on recovery as it was submitted to queue "
+literal|"Application killed on recovery as it was "
+operator|+
+literal|"submitted to queue "
 operator|+
 name|queueName
 operator|+
@@ -4865,6 +4883,231 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+DECL|method|getOrCreateQueueFromPlacementContext (ApplicationId applicationId, String user, String queueName, ApplicationPlacementContext placementContext, boolean isRecovery)
+specifier|private
+name|CSQueue
+name|getOrCreateQueueFromPlacementContext
+parameter_list|(
+name|ApplicationId
+name|applicationId
+parameter_list|,
+name|String
+name|user
+parameter_list|,
+name|String
+name|queueName
+parameter_list|,
+name|ApplicationPlacementContext
+name|placementContext
+parameter_list|,
+name|boolean
+name|isRecovery
+parameter_list|)
+block|{
+name|CSQueue
+name|queue
+init|=
+name|getQueue
+argument_list|(
+name|queueName
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|queue
+operator|==
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+name|placementContext
+operator|!=
+literal|null
+operator|&&
+name|placementContext
+operator|.
+name|hasParentQueue
+argument_list|()
+condition|)
+block|{
+try|try
+block|{
+return|return
+name|autoCreateLeafQueue
+argument_list|(
+name|placementContext
+argument_list|)
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|YarnException
+decl||
+name|IOException
+name|e
+parameter_list|)
+block|{
+if|if
+condition|(
+name|isRecovery
+condition|)
+block|{
+if|if
+condition|(
+operator|!
+name|YarnConfiguration
+operator|.
+name|shouldRMFailFast
+argument_list|(
+name|getConfig
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Could not auto-create leaf queue "
+operator|+
+name|queueName
+operator|+
+literal|" due to : "
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|rmContext
+operator|.
+name|getDispatcher
+argument_list|()
+operator|.
+name|getEventHandler
+argument_list|()
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|RMAppEvent
+argument_list|(
+name|applicationId
+argument_list|,
+name|RMAppEventType
+operator|.
+name|KILL
+argument_list|,
+literal|"Application killed on recovery"
+operator|+
+literal|" as it was submitted to queue "
+operator|+
+name|queueName
+operator|+
+literal|" which could not be auto-created"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|String
+name|queueErrorMsg
+init|=
+literal|"Queue named "
+operator|+
+name|queueName
+operator|+
+literal|" could not be "
+operator|+
+literal|"auto-created during application recovery."
+decl_stmt|;
+name|LOG
+operator|.
+name|fatal
+argument_list|(
+name|queueErrorMsg
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|QueueInvalidException
+argument_list|(
+name|queueErrorMsg
+argument_list|)
+throw|;
+block|}
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Could not auto-create leaf queue due to : "
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+specifier|final
+name|String
+name|message
+init|=
+literal|"Application "
+operator|+
+name|applicationId
+operator|+
+literal|" submission by user : "
+operator|+
+name|user
+operator|+
+literal|" to  queue : "
+operator|+
+name|queueName
+operator|+
+literal|" failed : "
+operator|+
+name|e
+operator|.
+name|getMessage
+argument_list|()
+decl_stmt|;
+name|this
+operator|.
+name|rmContext
+operator|.
+name|getDispatcher
+argument_list|()
+operator|.
+name|getEventHandler
+argument_list|()
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|RMAppEvent
+argument_list|(
+name|applicationId
+argument_list|,
+name|RMAppEventType
+operator|.
+name|APP_REJECTED
+argument_list|,
+name|message
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+block|}
+return|return
+name|queue
+return|;
+block|}
 DECL|method|addApplication (ApplicationId applicationId, String queueName, String user, Priority priority, ApplicationPlacementContext placementContext)
 specifier|private
 name|void
@@ -4935,104 +5178,23 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
-comment|// Sanity checks.
+comment|//Could be a potential auto-created leaf queue
 name|CSQueue
 name|queue
 init|=
-name|getQueue
+name|getOrCreateQueueFromPlacementContext
 argument_list|(
-name|queueName
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|queue
-operator|==
-literal|null
-operator|&&
-name|placementContext
-operator|!=
-literal|null
-condition|)
-block|{
-comment|//Could be a potential auto-created leaf queue
-try|try
-block|{
-name|queue
-operator|=
-name|autoCreateLeafQueue
-argument_list|(
-name|placementContext
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|YarnException
-decl||
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Could not auto-create leaf queue due to : "
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-specifier|final
-name|String
-name|message
-init|=
-literal|"Application "
-operator|+
 name|applicationId
-operator|+
-literal|" submission by user : "
-operator|+
+argument_list|,
 name|user
-operator|+
-literal|" to  queue : "
-operator|+
+argument_list|,
 name|queueName
-operator|+
-literal|" failed : "
-operator|+
-name|e
-operator|.
-name|getMessage
-argument_list|()
+argument_list|,
+name|placementContext
+argument_list|,
+literal|false
+argument_list|)
 decl_stmt|;
-name|this
-operator|.
-name|rmContext
-operator|.
-name|getDispatcher
-argument_list|()
-operator|.
-name|getEventHandler
-argument_list|()
-operator|.
-name|handle
-argument_list|(
-operator|new
-name|RMAppEvent
-argument_list|(
-name|applicationId
-argument_list|,
-name|RMAppEventType
-operator|.
-name|APP_REJECTED
-argument_list|,
-name|message
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 if|if
 condition|(
 name|queue
@@ -8526,6 +8688,11 @@ name|appAddedEvent
 operator|.
 name|getApplicatonPriority
 argument_list|()
+argument_list|,
+name|appAddedEvent
+operator|.
+name|getPlacementContext
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -10848,7 +11015,7 @@ argument_list|)
 throw|;
 block|}
 name|AbstractManagedParentQueue
-name|parentPlan
+name|parent
 init|=
 operator|(
 name|AbstractManagedParentQueue
@@ -10866,7 +11033,7 @@ operator|.
 name|getQueueName
 argument_list|()
 decl_stmt|;
-name|parentPlan
+name|parent
 operator|.
 name|addChildQueue
 argument_list|(

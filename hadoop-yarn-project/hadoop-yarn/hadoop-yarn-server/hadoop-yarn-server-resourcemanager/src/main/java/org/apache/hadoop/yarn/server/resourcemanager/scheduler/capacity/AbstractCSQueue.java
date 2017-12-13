@@ -1300,7 +1300,10 @@ argument_list|()
 argument_list|,
 name|parent
 argument_list|,
-name|configuration
+name|cs
+operator|.
+name|getConfiguration
+argument_list|()
 operator|.
 name|getEnableUserMetrics
 argument_list|()

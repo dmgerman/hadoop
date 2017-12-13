@@ -2479,16 +2479,8 @@ name|placementContext
 init|=
 literal|null
 decl_stmt|;
-comment|// We only do queue mapping when it's a new application
-if|if
-condition|(
-operator|!
-name|isRecovery
-condition|)
-block|{
 try|try
 block|{
-comment|// Do queue mapping
 name|placementContext
 operator|=
 name|placeApplication
@@ -2498,13 +2490,6 @@ argument_list|,
 name|submissionContext
 argument_list|,
 name|user
-argument_list|)
-expr_stmt|;
-name|replaceQueueFromPlacementContext
-argument_list|(
-name|placementContext
-argument_list|,
-name|submissionContext
 argument_list|)
 expr_stmt|;
 block|}
@@ -2546,6 +2531,20 @@ throw|throw
 name|e
 throw|;
 block|}
+comment|// We only replace the queue when it's a new application
+if|if
+condition|(
+operator|!
+name|isRecovery
+condition|)
+block|{
+name|replaceQueueFromPlacementContext
+argument_list|(
+name|placementContext
+argument_list|,
+name|submissionContext
+argument_list|)
+expr_stmt|;
 comment|// fail the submission if configured application timeout value is invalid
 name|RMServerUtils
 operator|.
