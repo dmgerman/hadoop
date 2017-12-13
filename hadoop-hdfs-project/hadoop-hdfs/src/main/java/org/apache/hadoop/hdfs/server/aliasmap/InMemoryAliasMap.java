@@ -423,6 +423,11 @@ specifier|private
 name|Configuration
 name|conf
 decl_stmt|;
+DECL|field|blockPoolID
+specifier|private
+name|String
+name|blockPoolID
+decl_stmt|;
 annotation|@
 name|Override
 DECL|method|setConf (Configuration conf)
@@ -490,7 +495,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-DECL|method|init (Configuration conf)
+DECL|method|init (Configuration conf, String blockPoolID)
 specifier|public
 specifier|static
 annotation|@
@@ -500,6 +505,9 @@ name|init
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|,
+name|String
+name|blockPoolID
 parameter_list|)
 throws|throws
 name|IOException
@@ -540,18 +548,41 @@ name|directory
 argument_list|)
 expr_stmt|;
 name|File
-name|path
-init|=
+name|levelDBpath
+decl_stmt|;
+if|if
+condition|(
+name|blockPoolID
+operator|!=
+literal|null
+condition|)
+block|{
+name|levelDBpath
+operator|=
+operator|new
+name|File
+argument_list|(
+name|directory
+argument_list|,
+name|blockPoolID
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|levelDBpath
+operator|=
 operator|new
 name|File
 argument_list|(
 name|directory
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
 if|if
 condition|(
 operator|!
-name|path
+name|levelDBpath
 operator|.
 name|exists
 argument_list|()
@@ -582,7 +613,7 @@ name|factory
 operator|.
 name|open
 argument_list|(
-name|path
+name|levelDBpath
 argument_list|,
 name|options
 argument_list|)
@@ -594,6 +625,8 @@ operator|new
 name|InMemoryAliasMap
 argument_list|(
 name|levelDb
+argument_list|,
+name|blockPoolID
 argument_list|)
 decl_stmt|;
 name|aliasMap
@@ -609,11 +642,14 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|InMemoryAliasMap (DB levelDb)
+DECL|method|InMemoryAliasMap (DB levelDb, String blockPoolID)
 name|InMemoryAliasMap
 parameter_list|(
 name|DB
 name|levelDb
+parameter_list|,
+name|String
+name|blockPoolID
 parameter_list|)
 block|{
 name|this
@@ -621,6 +657,12 @@ operator|.
 name|levelDb
 operator|=
 name|levelDb
+expr_stmt|;
+name|this
+operator|.
+name|blockPoolID
+operator|=
+name|blockPoolID
 expr_stmt|;
 block|}
 annotation|@
@@ -639,14 +681,16 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-return|return
-name|withIterator
-argument_list|(
-parameter_list|(
+try|try
+init|(
 name|DBIterator
 name|iterator
-parameter_list|)
-lambda|->
+init|=
+name|levelDb
+operator|.
+name|iterator
+argument_list|()
+init|)
 block|{
 name|Integer
 name|batchSize
@@ -833,8 +877,6 @@ argument_list|)
 return|;
 block|}
 block|}
-argument_list|)
-return|;
 block|}
 DECL|method|read (@onnull Block block)
 specifier|public
@@ -963,7 +1005,7 @@ name|getBlockPoolId
 parameter_list|()
 block|{
 return|return
-literal|null
+name|blockPoolID
 return|;
 block|}
 DECL|method|close ()
@@ -1144,62 +1186,30 @@ name|toByteArray
 argument_list|()
 return|;
 block|}
-DECL|method|withIterator ( CheckedFunction<DBIterator, IterationResult> func)
-specifier|private
-name|IterationResult
-name|withIterator
-parameter_list|(
-name|CheckedFunction
-argument_list|<
-name|DBIterator
-argument_list|,
-name|IterationResult
-argument_list|>
-name|func
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-try|try
-init|(
-name|DBIterator
-name|iterator
-init|=
-name|levelDb
-operator|.
-name|iterator
-argument_list|()
-init|)
-block|{
-return|return
-name|func
-operator|.
-name|apply
-argument_list|(
-name|iterator
-argument_list|)
-return|;
-block|}
-block|}
-comment|/**    * CheckedFunction is akin to {@link java.util.function.Function} but    * specifies an IOException.    * @param<T> Argument type.    * @param<R> Return type.    */
+comment|/**    * CheckedFunction is akin to {@link java.util.function.Function} but    * specifies an IOException.    * @param<T1> First argument type.    * @param<T2> Second argument type.    * @param<R> Return type.    */
 annotation|@
 name|FunctionalInterface
-DECL|interface|CheckedFunction
+DECL|interface|CheckedFunction2
 specifier|public
 interface|interface
-name|CheckedFunction
+name|CheckedFunction2
 parameter_list|<
-name|T
+name|T1
+parameter_list|,
+name|T2
 parameter_list|,
 name|R
 parameter_list|>
 block|{
-DECL|method|apply (T t)
+DECL|method|apply (T1 t1, T2 t2)
 name|R
 name|apply
 parameter_list|(
-name|T
-name|t
+name|T1
+name|t1
+parameter_list|,
+name|T2
+name|t2
 parameter_list|)
 throws|throws
 name|IOException

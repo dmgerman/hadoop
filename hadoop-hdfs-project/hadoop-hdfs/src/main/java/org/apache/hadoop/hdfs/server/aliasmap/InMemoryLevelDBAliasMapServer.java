@@ -320,7 +320,7 @@ name|aliasmap
 operator|.
 name|InMemoryAliasMap
 operator|.
-name|CheckedFunction
+name|CheckedFunction2
 import|;
 end_import
 
@@ -364,15 +364,17 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|initFun
 specifier|private
 specifier|final
-name|CheckedFunction
+name|CheckedFunction2
 argument_list|<
 name|Configuration
 argument_list|,
+name|String
+argument_list|,
 name|InMemoryAliasMap
 argument_list|>
+DECL|field|initFun
 name|initFun
 decl_stmt|;
 DECL|field|aliasMapServer
@@ -397,13 +399,15 @@ specifier|private
 name|String
 name|blockPoolId
 decl_stmt|;
-DECL|method|InMemoryLevelDBAliasMapServer ( CheckedFunction<Configuration, InMemoryAliasMap> initFun, String blockPoolId)
+DECL|method|InMemoryLevelDBAliasMapServer ( CheckedFunction2<Configuration, String, InMemoryAliasMap> initFun, String blockPoolId)
 specifier|public
 name|InMemoryLevelDBAliasMapServer
 parameter_list|(
-name|CheckedFunction
+name|CheckedFunction2
 argument_list|<
 name|Configuration
+argument_list|,
+name|String
 argument_list|,
 name|InMemoryAliasMap
 argument_list|>
@@ -719,6 +723,8 @@ operator|.
 name|apply
 argument_list|(
 name|conf
+argument_list|,
+name|blockPoolId
 argument_list|)
 expr_stmt|;
 block|}

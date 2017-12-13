@@ -246,6 +246,14 @@ specifier|private
 name|File
 name|tempDirectory
 decl_stmt|;
+DECL|field|bpid
+specifier|private
+specifier|static
+name|String
+name|bpid
+init|=
+literal|"bpid-0"
+decl_stmt|;
 annotation|@
 name|Before
 DECL|method|setUp ()
@@ -263,8 +271,9 @@ operator|new
 name|Configuration
 argument_list|()
 decl_stmt|;
-name|tempDirectory
-operator|=
+name|File
+name|temp
+init|=
 name|Files
 operator|.
 name|createTempDirectory
@@ -273,6 +282,21 @@ literal|"seagull"
 argument_list|)
 operator|.
 name|toFile
+argument_list|()
+decl_stmt|;
+name|tempDirectory
+operator|=
+operator|new
+name|File
+argument_list|(
+name|temp
+argument_list|,
+name|bpid
+argument_list|)
+expr_stmt|;
+name|tempDirectory
+operator|.
+name|mkdirs
 argument_list|()
 expr_stmt|;
 name|conf
@@ -283,7 +307,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_PROVIDED_ALIASMAP_INMEMORY_LEVELDB_DIR
 argument_list|,
-name|tempDirectory
+name|temp
 operator|.
 name|getAbsolutePath
 argument_list|()
@@ -296,6 +320,8 @@ operator|.
 name|init
 argument_list|(
 name|conf
+argument_list|,
+name|bpid
 argument_list|)
 expr_stmt|;
 block|}

@@ -374,7 +374,11 @@ operator|=
 operator|new
 name|InMemoryLevelDBAliasMapServer
 argument_list|(
+parameter_list|(
 name|config
+parameter_list|,
+name|blockPoolID
+parameter_list|)
 lambda|->
 name|aliasMapMock
 argument_list|,

@@ -141,6 +141,8 @@ operator|.
 name|init
 argument_list|(
 name|conf
+argument_list|,
+literal|"bpid"
 argument_list|)
 argument_list|)
 operator|.
