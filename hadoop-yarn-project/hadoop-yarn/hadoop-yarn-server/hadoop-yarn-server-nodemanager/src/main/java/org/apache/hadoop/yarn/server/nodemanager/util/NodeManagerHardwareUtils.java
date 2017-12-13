@@ -749,10 +749,12 @@ else|else
 block|{
 name|cores
 operator|=
-operator|(
-name|int
-operator|)
+name|Math
+operator|.
+name|round
+argument_list|(
 name|tmp
+argument_list|)
 expr_stmt|;
 block|}
 block|}

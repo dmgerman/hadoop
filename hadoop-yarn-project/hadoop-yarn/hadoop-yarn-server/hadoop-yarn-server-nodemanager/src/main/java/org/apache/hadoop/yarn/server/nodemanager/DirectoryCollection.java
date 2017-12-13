@@ -2600,10 +2600,12 @@ condition|)
 block|{
 name|goodDirsDiskUtilizationPercentage
 operator|=
-operator|(
-name|int
-operator|)
+name|Math
+operator|.
+name|toIntExact
+argument_list|(
 name|tmp
+argument_list|)
 expr_stmt|;
 block|}
 block|}

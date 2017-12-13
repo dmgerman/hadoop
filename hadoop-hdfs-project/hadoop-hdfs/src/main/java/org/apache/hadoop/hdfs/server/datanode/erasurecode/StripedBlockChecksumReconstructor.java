@@ -488,10 +488,12 @@ block|{
 name|int
 name|remainingLen
 init|=
-operator|(
-name|int
-operator|)
+name|Math
+operator|.
+name|toIntExact
+argument_list|(
 name|requestedLen
+argument_list|)
 decl_stmt|;
 name|outputData
 operator|=
