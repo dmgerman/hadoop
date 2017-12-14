@@ -234,7 +234,7 @@ literal|"Router metrics"
 argument_list|,
 name|context
 operator|=
-literal|"router"
+literal|"dfs"
 argument_list|)
 DECL|class|StateStoreMetrics
 specifier|public

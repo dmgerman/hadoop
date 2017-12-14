@@ -220,7 +220,7 @@ literal|"Router RPC Activity"
 argument_list|,
 name|context
 operator|=
-literal|"router"
+literal|"dfs"
 argument_list|)
 DECL|class|FederationRPCMetrics
 specifier|public
