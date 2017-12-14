@@ -770,6 +770,17 @@ operator|!=
 literal|null
 condition|)
 block|{
+comment|// preserve the token service sent by the RM when adding the token
+comment|// to ensure we replace the previous token setup by the RM.
+comment|// Afterwards we can update the service address for the RPC layer.
+comment|// Same as YarnServerSecurityUtils.updateAMRMToken()
+name|user
+operator|.
+name|addToken
+argument_list|(
+name|token
+argument_list|)
+expr_stmt|;
 name|token
 operator|.
 name|setService
@@ -780,13 +791,6 @@ name|getAMRMTokenService
 argument_list|(
 name|configuration
 argument_list|)
-argument_list|)
-expr_stmt|;
-name|user
-operator|.
-name|addToken
-argument_list|(
-name|token
 argument_list|)
 expr_stmt|;
 name|setAuthModeInConf
