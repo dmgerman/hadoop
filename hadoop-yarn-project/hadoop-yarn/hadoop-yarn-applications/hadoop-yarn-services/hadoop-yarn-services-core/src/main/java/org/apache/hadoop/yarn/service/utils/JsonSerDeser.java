@@ -342,6 +342,11 @@ name|ObjectMapper
 name|mapper
 decl_stmt|;
 comment|/**    * Create an instance bound to a specific type    * @param classType class type    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|JsonSerDeser (Class<T> classType)
 specifier|public
 name|JsonSerDeser
@@ -376,6 +381,32 @@ operator|.
 name|Feature
 operator|.
 name|FAIL_ON_UNKNOWN_PROPERTIES
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+name|mapper
+operator|.
+name|configure
+argument_list|(
+name|SerializationConfig
+operator|.
+name|Feature
+operator|.
+name|WRITE_NULL_MAP_VALUES
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+name|mapper
+operator|.
+name|configure
+argument_list|(
+name|SerializationConfig
+operator|.
+name|Feature
+operator|.
+name|WRITE_NULL_PROPERTIES
 argument_list|,
 literal|false
 argument_list|)

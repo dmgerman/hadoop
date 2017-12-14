@@ -66,7 +66,7 @@ name|jackson
 operator|.
 name|annotation
 operator|.
-name|JsonIgnore
+name|JsonIgnoreProperties
 import|;
 end_import
 
@@ -374,11 +374,16 @@ name|memory
 expr_stmt|;
 block|}
 annotation|@
-name|JsonIgnore
-DECL|method|getMemoryMB ()
+name|JsonIgnoreProperties
+argument_list|(
+name|ignoreUnknown
+operator|=
+literal|true
+argument_list|)
+DECL|method|calcMemoryMB ()
 specifier|public
 name|long
-name|getMemoryMB
+name|calcMemoryMB
 parameter_list|()
 block|{
 if|if

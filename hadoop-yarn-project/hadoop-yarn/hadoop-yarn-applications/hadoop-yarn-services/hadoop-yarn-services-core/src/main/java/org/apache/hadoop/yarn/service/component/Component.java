@@ -2562,7 +2562,7 @@ operator|.
 name|getResource
 argument_list|()
 operator|.
-name|getMemoryMB
+name|calcMemoryMB
 argument_list|()
 argument_list|,
 name|componentSpec
