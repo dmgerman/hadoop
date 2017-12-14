@@ -42,7 +42,15 @@ specifier|final
 name|KsmKeyInfo
 name|keyInfo
 decl_stmt|;
-DECL|method|OpenKeySession (int id, KsmKeyInfo info)
+comment|// the version of the key when it is being opened in this session.
+comment|// a block that has a create version equals to open version means it will
+comment|// be committed only when this open session is closed.
+DECL|field|openVersion
+specifier|private
+name|long
+name|openVersion
+decl_stmt|;
+DECL|method|OpenKeySession (int id, KsmKeyInfo info, long version)
 specifier|public
 name|OpenKeySession
 parameter_list|(
@@ -51,6 +59,9 @@ name|id
 parameter_list|,
 name|KsmKeyInfo
 name|info
+parameter_list|,
+name|long
+name|version
 parameter_list|)
 block|{
 name|this
@@ -65,6 +76,24 @@ name|keyInfo
 operator|=
 name|info
 expr_stmt|;
+name|this
+operator|.
+name|openVersion
+operator|=
+name|version
+expr_stmt|;
+block|}
+DECL|method|getOpenVersion ()
+specifier|public
+name|long
+name|getOpenVersion
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|openVersion
+return|;
 block|}
 DECL|method|getKeyInfo ()
 specifier|public

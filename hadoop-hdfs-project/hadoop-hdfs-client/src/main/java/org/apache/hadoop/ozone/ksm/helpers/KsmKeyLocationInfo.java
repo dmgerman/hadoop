@@ -71,11 +71,6 @@ name|boolean
 name|shouldCreateContainer
 decl_stmt|;
 comment|// the id of this subkey in all the subkeys.
-DECL|field|index
-specifier|private
-name|int
-name|index
-decl_stmt|;
 DECL|field|length
 specifier|private
 specifier|final
@@ -88,7 +83,13 @@ specifier|final
 name|long
 name|offset
 decl_stmt|;
-DECL|method|KsmKeyLocationInfo (String containerName, String blockID, boolean shouldCreateContainer, int index, long length, long offset)
+comment|// the version number indicating when this block was added
+DECL|field|createVersion
+specifier|private
+name|long
+name|createVersion
+decl_stmt|;
+DECL|method|KsmKeyLocationInfo (String containerName, String blockID, boolean shouldCreateContainer, long length, long offset)
 specifier|private
 name|KsmKeyLocationInfo
 parameter_list|(
@@ -100,9 +101,6 @@ name|blockID
 parameter_list|,
 name|boolean
 name|shouldCreateContainer
-parameter_list|,
-name|int
-name|index
 parameter_list|,
 name|long
 name|length
@@ -131,12 +129,6 @@ name|shouldCreateContainer
 expr_stmt|;
 name|this
 operator|.
-name|index
-operator|=
-name|index
-expr_stmt|;
-name|this
-operator|.
 name|length
 operator|=
 name|length
@@ -147,6 +139,30 @@ name|offset
 operator|=
 name|offset
 expr_stmt|;
+block|}
+DECL|method|setCreateVersion (long version)
+specifier|public
+name|void
+name|setCreateVersion
+parameter_list|(
+name|long
+name|version
+parameter_list|)
+block|{
+name|createVersion
+operator|=
+name|version
+expr_stmt|;
+block|}
+DECL|method|getCreateVersion ()
+specifier|public
+name|long
+name|getCreateVersion
+parameter_list|()
+block|{
+return|return
+name|createVersion
+return|;
 block|}
 DECL|method|getContainerName ()
 specifier|public
@@ -177,30 +193,6 @@ block|{
 return|return
 name|shouldCreateContainer
 return|;
-block|}
-DECL|method|getIndex ()
-specifier|public
-name|int
-name|getIndex
-parameter_list|()
-block|{
-return|return
-name|index
-return|;
-block|}
-DECL|method|setIndex (int idx)
-specifier|public
-name|void
-name|setIndex
-parameter_list|(
-name|int
-name|idx
-parameter_list|)
-block|{
-name|index
-operator|=
-name|idx
-expr_stmt|;
 block|}
 DECL|method|getLength ()
 specifier|public
@@ -243,12 +235,6 @@ DECL|field|shouldCreateContainer
 specifier|private
 name|boolean
 name|shouldCreateContainer
-decl_stmt|;
-comment|// the id of this subkey in all the subkeys.
-DECL|field|index
-specifier|private
-name|int
-name|index
 decl_stmt|;
 DECL|field|length
 specifier|private
@@ -317,25 +303,6 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setIndex (int id)
-specifier|public
-name|Builder
-name|setIndex
-parameter_list|(
-name|int
-name|id
-parameter_list|)
-block|{
-name|this
-operator|.
-name|index
-operator|=
-name|id
-expr_stmt|;
-return|return
-name|this
-return|;
-block|}
 DECL|method|setLength (long len)
 specifier|public
 name|Builder
@@ -390,8 +357,6 @@ name|blockID
 argument_list|,
 name|shouldCreateContainer
 argument_list|,
-name|index
-argument_list|,
 name|length
 argument_list|,
 name|offset
@@ -426,11 +391,6 @@ argument_list|(
 name|shouldCreateContainer
 argument_list|)
 operator|.
-name|setIndex
-argument_list|(
-name|index
-argument_list|)
-operator|.
 name|setLength
 argument_list|(
 name|length
@@ -439,6 +399,11 @@ operator|.
 name|setOffset
 argument_list|(
 name|offset
+argument_list|)
+operator|.
+name|setCreateVersion
+argument_list|(
+name|createVersion
 argument_list|)
 operator|.
 name|build
@@ -455,7 +420,9 @@ name|KeyLocation
 name|keyLocation
 parameter_list|)
 block|{
-return|return
+name|KsmKeyLocationInfo
+name|info
+init|=
 operator|new
 name|KsmKeyLocationInfo
 argument_list|(
@@ -476,11 +443,6 @@ argument_list|()
 argument_list|,
 name|keyLocation
 operator|.
-name|getIndex
-argument_list|()
-argument_list|,
-name|keyLocation
-operator|.
 name|getLength
 argument_list|()
 argument_list|,
@@ -489,6 +451,19 @@ operator|.
 name|getOffset
 argument_list|()
 argument_list|)
+decl_stmt|;
+name|info
+operator|.
+name|setCreateVersion
+argument_list|(
+name|keyLocation
+operator|.
+name|getCreateVersion
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|info
 return|;
 block|}
 block|}

@@ -196,6 +196,24 @@ name|ksm
 operator|.
 name|helpers
 operator|.
+name|KsmKeyLocationInfoGroup
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|ksm
+operator|.
+name|helpers
+operator|.
 name|OpenKeySession
 import|;
 end_import
@@ -347,6 +365,16 @@ operator|.
 name|util
 operator|.
 name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Collections
 import|;
 end_import
 
@@ -1259,25 +1287,21 @@ argument_list|(
 literal|0
 argument_list|)
 operator|.
-name|setIndex
-argument_list|(
-name|keyInfo
-operator|.
-name|getKeyLocationList
-argument_list|()
-operator|.
-name|size
-argument_list|()
-argument_list|)
-operator|.
 name|build
 argument_list|()
 decl_stmt|;
+comment|// current version not committed, so new blocks coming now are added to
+comment|// the same version
 name|keyInfo
 operator|.
-name|appendKeyLocation
+name|appendNewBlocks
+argument_list|(
+name|Collections
+operator|.
+name|singletonList
 argument_list|(
 name|info
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|keyInfo
@@ -1480,11 +1504,6 @@ comment|// SCM looks at the requested, if it 0, no block will be allocated at
 comment|// the point, if client needs more blocks, client can always call
 comment|// allocateBlock. But if requested size is not 0, KSM will preallocate
 comment|// some blocks and piggyback to client, to save RPC calls.
-name|int
-name|idx
-init|=
-literal|0
-decl_stmt|;
 while|while
 condition|(
 name|requestedSize
@@ -1554,12 +1573,6 @@ name|getCreateContainer
 argument_list|()
 argument_list|)
 operator|.
-name|setIndex
-argument_list|(
-name|idx
-operator|++
-argument_list|)
-operator|.
 name|setLength
 argument_list|(
 name|allocateSize
@@ -1585,14 +1598,6 @@ operator|-=
 name|allocateSize
 expr_stmt|;
 block|}
-name|long
-name|currentTime
-init|=
-name|Time
-operator|.
-name|now
-argument_list|()
-decl_stmt|;
 comment|// NOTE size of a key is not a hard limit on anything, it is a value that
 comment|// client should expect, in terms of current size of key. If client sets a
 comment|// value, then this value is used, otherwise, we allocate a single block
@@ -1614,9 +1619,98 @@ argument_list|()
 else|:
 name|scmBlockSize
 decl_stmt|;
+name|byte
+index|[]
+name|keyKey
+init|=
+name|metadataManager
+operator|.
+name|getDBKeyBytes
+argument_list|(
+name|volumeName
+argument_list|,
+name|bucketName
+argument_list|,
+name|keyName
+argument_list|)
+decl_stmt|;
+name|byte
+index|[]
+name|value
+init|=
+name|metadataManager
+operator|.
+name|get
+argument_list|(
+name|keyKey
+argument_list|)
+decl_stmt|;
 name|KsmKeyInfo
 name|keyInfo
+decl_stmt|;
+name|long
+name|openVersion
+decl_stmt|;
+if|if
+condition|(
+name|value
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// the key already exist, the new blocks will be added as new version
+name|keyInfo
+operator|=
+name|KsmKeyInfo
+operator|.
+name|getFromProtobuf
+argument_list|(
+name|KeyInfo
+operator|.
+name|parseFrom
+argument_list|(
+name|value
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// when locations.size = 0, the new version will have identical blocks
+comment|// as its previous version
+name|openVersion
+operator|=
+name|keyInfo
+operator|.
+name|addNewVersion
+argument_list|(
+name|locations
+argument_list|)
+expr_stmt|;
+name|keyInfo
+operator|.
+name|setDataSize
+argument_list|(
+name|size
+operator|+
+name|keyInfo
+operator|.
+name|getDataSize
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// the key does not exist, create a new object, the new blocks are the
+comment|// version 0
+name|long
+name|currentTime
 init|=
+name|Time
+operator|.
+name|now
+argument_list|()
+decl_stmt|;
+name|keyInfo
+operator|=
 operator|new
 name|KsmKeyInfo
 operator|.
@@ -1649,7 +1743,18 @@ argument_list|)
 operator|.
 name|setKsmKeyLocationInfos
 argument_list|(
+name|Collections
+operator|.
+name|singletonList
+argument_list|(
+operator|new
+name|KsmKeyLocationInfoGroup
+argument_list|(
+literal|0
+argument_list|,
 name|locations
+argument_list|)
+argument_list|)
 argument_list|)
 operator|.
 name|setCreationTime
@@ -1669,7 +1774,12 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
-decl_stmt|;
+expr_stmt|;
+name|openVersion
+operator|=
+literal|0
+expr_stmt|;
+block|}
 comment|// Generate a random ID which is not already in meta db.
 name|int
 name|id
@@ -1782,6 +1892,8 @@ argument_list|(
 name|id
 argument_list|,
 name|keyInfo
+argument_list|,
+name|openVersion
 argument_list|)
 return|;
 block|}

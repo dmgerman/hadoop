@@ -4015,7 +4015,10 @@ name|locations
 init|=
 name|keyInfo
 operator|.
-name|getKeyLocationList
+name|getLatestVersionLocations
+argument_list|()
+operator|.
+name|getLocationList
 argument_list|()
 decl_stmt|;
 for|for

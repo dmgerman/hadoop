@@ -2129,6 +2129,16 @@ argument_list|)
 expr_stmt|;
 name|resp
 operator|.
+name|setOpenVersion
+argument_list|(
+name|openKey
+operator|.
+name|getOpenVersion
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|resp
+operator|.
 name|setStatus
 argument_list|(
 name|Status

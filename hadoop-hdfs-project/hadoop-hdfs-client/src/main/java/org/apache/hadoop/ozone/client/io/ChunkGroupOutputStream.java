@@ -80,6 +80,24 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|ksm
+operator|.
+name|helpers
+operator|.
+name|KsmKeyLocationInfoGroup
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|protocol
 operator|.
 name|proto
@@ -386,6 +404,16 @@ name|ArrayList
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
 begin_comment
 comment|/**  * Maintaining a list of ChunkInputStream. Write based on offset.  *  * Note that this may write to multiple containers in one write call. In case  * that first container succeeded but later ones failed, the succeeded writes  * are not rolled back.  *  * TODO : currently not support multi-thread access.  */
 end_comment
@@ -551,6 +579,21 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getStreamEntries ()
+specifier|public
+name|List
+argument_list|<
+name|ChunkOutputStreamEntry
+argument_list|>
+name|getStreamEntries
+parameter_list|()
+block|{
+return|return
+name|streamEntries
+return|;
+block|}
 DECL|method|ChunkGroupOutputStream ( OpenKeySession handler, XceiverClientManager xceiverClientManager, StorageContainerLocationProtocolClientSideTranslatorPB scmClient, KeySpaceManagerProtocolClientSideTranslatorPB ksmClient, int chunkSize, String requestId, ReplicationFactor factor, ReplicationType type)
 specifier|public
 name|ChunkGroupOutputStream
@@ -713,43 +756,59 @@ literal|"Expecting open key with one block, but got"
 operator|+
 name|info
 operator|.
-name|getKeyLocationList
+name|getKeyLocationVersions
 argument_list|()
 operator|.
 name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * When a key is opened, it is possible that there are some blocks already    * allocated to it for this open session. In this case, to make use of these    * blocks, we need to add these blocks to stream entries. But, a key's version    * also includes blocks from previous versions, we need to avoid adding these    * old blocks to stream entries, because these old blocks should not be picked    * for write. To do this, the following method checks that, only those    * blocks created in this particular open version are added to stream entries.    *    * @param version the set of blocks that are pre-allocated.    * @param openVersion the version corresponding to the pre-allocation.    * @throws IOException    */
+DECL|method|addPreallocateBlocks (KsmKeyLocationInfoGroup version, long openVersion)
+specifier|public
+name|void
+name|addPreallocateBlocks
+parameter_list|(
+name|KsmKeyLocationInfoGroup
+name|version
+parameter_list|,
+name|long
+name|openVersion
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 comment|// server may return any number of blocks, (0 to any)
-name|int
-name|idx
-init|=
-literal|0
-decl_stmt|;
+comment|// only the blocks allocated in this open session (block createVersion
+comment|// equals to open session version)
 for|for
 control|(
 name|KsmKeyLocationInfo
 name|subKeyInfo
 range|:
-name|info
+name|version
 operator|.
-name|getKeyLocationList
+name|getLocationList
 argument_list|()
 control|)
 block|{
+if|if
+condition|(
 name|subKeyInfo
 operator|.
-name|setIndex
-argument_list|(
-name|idx
-operator|++
-argument_list|)
-expr_stmt|;
+name|getCreateVersion
+argument_list|()
+operator|==
+name|openVersion
+condition|)
+block|{
 name|checkKeyLocationInfo
 argument_list|(
 name|subKeyInfo
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|checkKeyLocationInfo (KsmKeyLocationInfo subKeyInfo)
@@ -1296,13 +1355,6 @@ argument_list|,
 name|openID
 argument_list|)
 decl_stmt|;
-name|subKeyInfo
-operator|.
-name|setIndex
-argument_list|(
-name|index
-argument_list|)
-expr_stmt|;
 name|checkKeyLocationInfo
 argument_list|(
 name|subKeyInfo

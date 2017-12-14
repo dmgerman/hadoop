@@ -2811,7 +2811,10 @@ name|info
 range|:
 name|keyInfo
 operator|.
-name|getKeyLocationList
+name|getLatestVersionLocations
+argument_list|()
+operator|.
+name|getLocationList
 argument_list|()
 control|)
 block|{

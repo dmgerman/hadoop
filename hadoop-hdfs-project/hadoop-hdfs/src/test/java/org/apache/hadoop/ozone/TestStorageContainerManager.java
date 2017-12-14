@@ -1965,7 +1965,10 @@ operator|.
 name|getValue
 argument_list|()
 operator|.
-name|getKeyLocationList
+name|getLatestVersionLocations
+argument_list|()
+operator|.
+name|getLocationList
 argument_list|()
 operator|.
 name|forEach
@@ -2006,7 +2009,7 @@ name|totalCreatedBlocks
 operator|+=
 name|info
 operator|.
-name|getKeyLocationList
+name|getKeyLocationVersions
 argument_list|()
 operator|.
 name|size
@@ -2075,7 +2078,10 @@ name|list
 init|=
 name|info
 operator|.
-name|getKeyLocationList
+name|getLatestVersionLocations
+argument_list|()
+operator|.
+name|getLocationList
 argument_list|()
 decl_stmt|;
 name|list
