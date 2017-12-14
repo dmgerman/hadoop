@@ -135,7 +135,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * There are four types of extended attributes<XAttr> defined by the  * following namespaces:  *<br>  * USER - extended user attributes: these can be assigned to files and  * directories to store arbitrary additional information. The access  * permissions for user attributes are defined by the file permission  * bits. For sticky directories, only the owner and privileged user can   * write attributes.  *<br>  * TRUSTED - trusted extended attributes: these are visible/accessible  * only to/by the super user.  *<br>  * SECURITY - extended security attributes: these are used by the HDFS  * core for security purposes and are not available through admin/user  * API.  *<br>  * SYSTEM - extended system attributes: these are used by the HDFS  * core and are not available through admin/user API.  *<br>  * RAW - extended system attributes: these are used for internal system  *   attributes that sometimes need to be exposed. Like SYSTEM namespace  *   attributes they are not visible to the user except when getXAttr/getXAttrs  *   is called on a file or directory in the /.reserved/raw HDFS directory  *   hierarchy. These attributes can only be accessed by the superuser.  *</br>  */
+comment|/**  * There are four types of extended attributes<XAttr> defined by the  * following namespaces:  *<br>  * USER - extended user attributes: these can be assigned to files and  * directories to store arbitrary additional information. The access  * permissions for user attributes are defined by the file permission  * bits. For sticky directories, only the owner and privileged user can   * write attributes.  *<br>  * TRUSTED - trusted extended attributes: these are visible/accessible  * only to/by the super user.  *<br>  * SECURITY - extended security attributes: these are used by the HDFS  * core for security purposes and are not available through admin/user  * API.  *<br>  * SYSTEM - extended system attributes: these are used by the HDFS  * core and are not available through admin/user API.  *<br>  * RAW - extended system attributes: these are used for internal system  *   attributes that sometimes need to be exposed. Like SYSTEM namespace  *   attributes they are not visible to the user except when getXAttr/getXAttrs  *   is called on a file or directory in the /.reserved/raw HDFS directory  *   hierarchy. These attributes can only be accessed by the user who have  *   read access.  *</br>  */
 end_comment
 
 begin_class
@@ -219,8 +219,6 @@ operator|.
 name|RAW
 operator|&&
 name|isRawPath
-operator|&&
-name|isSuperUser
 condition|)
 block|{
 return|return;
@@ -470,8 +468,6 @@ operator|.
 name|NameSpace
 operator|.
 name|RAW
-operator|&&
-name|isSuperUser
 operator|&&
 name|isRawPath
 condition|)

@@ -1740,10 +1740,10 @@ name|timeout
 operator|=
 literal|120000
 argument_list|)
-DECL|method|testAdminAccessOnly ()
+DECL|method|testUserReadAccessOnly ()
 specifier|public
 name|void
-name|testAdminAccessOnly
+name|testUserReadAccessOnly
 parameter_list|()
 throws|throws
 name|Exception
@@ -1927,7 +1927,7 @@ block|}
 block|}
 argument_list|)
 expr_stmt|;
-comment|/* Test failure of getFileStatus in reserved/raw as non admin */
+comment|/* Test success of getFileStatus in reserved/raw as non admin since      * read is allowed. */
 specifier|final
 name|Path
 name|ezRawEncFile
@@ -1993,8 +1993,6 @@ operator|.
 name|getFileSystem
 argument_list|()
 decl_stmt|;
-try|try
-block|{
 name|fs
 operator|.
 name|getFileStatus
@@ -2002,26 +2000,6 @@ argument_list|(
 name|ezRawEncFile
 argument_list|)
 expr_stmt|;
-name|fail
-argument_list|(
-literal|"access to /.reserved/raw is superuser-only operation"
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|AccessControlException
-name|e
-parameter_list|)
-block|{
-name|assertExceptionContains
-argument_list|(
-literal|"Superuser privilege is required"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
 return|return
 literal|null
 return|;
@@ -2029,7 +2007,7 @@ block|}
 block|}
 argument_list|)
 expr_stmt|;
-comment|/* Test failure of listStatus in reserved/raw as non admin */
+comment|/* Test success of listStatus in reserved/raw as non admin since read is      * allowed. */
 name|user
 operator|.
 name|doAs
@@ -2059,8 +2037,6 @@ operator|.
 name|getFileSystem
 argument_list|()
 decl_stmt|;
-try|try
-block|{
 name|fs
 operator|.
 name|listStatus
@@ -2068,26 +2044,6 @@ argument_list|(
 name|ezRawEncFile
 argument_list|)
 expr_stmt|;
-name|fail
-argument_list|(
-literal|"access to /.reserved/raw is superuser-only operation"
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|AccessControlException
-name|e
-parameter_list|)
-block|{
-name|assertExceptionContains
-argument_list|(
-literal|"Superuser privilege is required"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
 return|return
 literal|null
 return|;
