@@ -1573,7 +1573,8 @@ name|append
 argument_list|(
 literal|"path="
 operator|+
-name|path
+name|getPath
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|sb
@@ -1582,7 +1583,8 @@ name|append
 argument_list|(
 literal|"; isDirectory="
 operator|+
-name|isdir
+name|isDirectory
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
@@ -1598,7 +1600,8 @@ name|append
 argument_list|(
 literal|"; length="
 operator|+
-name|length
+name|getLen
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|sb
@@ -1607,7 +1610,8 @@ name|append
 argument_list|(
 literal|"; replication="
 operator|+
-name|block_replication
+name|getReplication
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|sb
@@ -1616,7 +1620,8 @@ name|append
 argument_list|(
 literal|"; blocksize="
 operator|+
-name|blocksize
+name|getBlockSize
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1626,7 +1631,8 @@ name|append
 argument_list|(
 literal|"; modification_time="
 operator|+
-name|modification_time
+name|getModificationTime
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|sb
@@ -1635,7 +1641,8 @@ name|append
 argument_list|(
 literal|"; access_time="
 operator|+
-name|access_time
+name|getAccessTime
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|sb
@@ -1644,7 +1651,8 @@ name|append
 argument_list|(
 literal|"; owner="
 operator|+
-name|owner
+name|getOwner
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|sb
@@ -1653,7 +1661,8 @@ name|append
 argument_list|(
 literal|"; group="
 operator|+
-name|group
+name|getGroup
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|sb
@@ -1662,7 +1671,8 @@ name|append
 argument_list|(
 literal|"; permission="
 operator|+
-name|permission
+name|getPermission
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|sb
