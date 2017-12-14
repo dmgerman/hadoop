@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.util
+DECL|package|org.apache.hadoop.fs.s3a
 package|package
 name|org
 operator|.
@@ -12,7 +12,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|util
+name|fs
+operator|.
+name|s3a
 package|;
 end_package
 
@@ -162,7 +164,6 @@ name|InterfaceAudience
 operator|.
 name|Private
 DECL|class|BlockingThreadPoolExecutorService
-specifier|public
 specifier|final
 class|class
 name|BlockingThreadPoolExecutorService
@@ -323,7 +324,6 @@ return|;
 block|}
 comment|/**    * Get a named {@link ThreadFactory} that just builds daemon threads.    *    * @param prefix name prefix for all threads created from the factory    * @return a thread factory that creates named, daemon threads with    * the supplied exception handler and normal priority    */
 DECL|method|newDaemonThreadFactory (final String prefix)
-specifier|public
 specifier|static
 name|ThreadFactory
 name|newDaemonThreadFactory
