@@ -304,6 +304,7 @@ end_comment
 
 begin_class
 DECL|class|FSPermissionChecker
+specifier|public
 class|class
 name|FSPermissionChecker
 implements|implements
@@ -574,6 +575,7 @@ name|INodeAttributeProvider
 name|attributeProvider
 decl_stmt|;
 DECL|method|FSPermissionChecker (String fsOwner, String supergroup, UserGroupInformation callerUgi, INodeAttributeProvider attributeProvider)
+specifier|protected
 name|FSPermissionChecker
 parameter_list|(
 name|String
