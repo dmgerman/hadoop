@@ -1741,7 +1741,7 @@ name|b
 argument_list|)
 return|;
 block|}
-comment|//merge
+comment|// merge
 name|e
 operator|.
 name|addAllChildren
@@ -1863,7 +1863,6 @@ name|dirs
 argument_list|)
 expr_stmt|;
 block|}
-comment|// from FSImageFormatProtobuf... why not just read position from the stream?
 DECL|method|getOndiskSize (com.google.protobuf.GeneratedMessage s)
 specifier|private
 specifier|static
@@ -1950,7 +1949,7 @@ expr_stmt|;
 comment|// close side files
 name|IOUtils
 operator|.
-name|cleanup
+name|cleanupWithLogger
 argument_list|(
 literal|null
 argument_list|,
@@ -2095,7 +2094,6 @@ operator|==
 name|outdir
 condition|)
 block|{
-comment|//LOG.warn("Not writing MD5");
 return|return;
 block|}
 name|MD5Hash
@@ -2485,7 +2483,6 @@ throws|throws
 name|IOException
 block|{
 comment|// No header, so dirs can be written/compressed independently
-comment|//INodeDirectorySection.Builder b = INodeDirectorySection.newBuilder();
 name|OutputStream
 name|sec
 init|=

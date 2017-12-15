@@ -6245,7 +6245,6 @@ argument_list|,
 name|blk
 argument_list|)
 decl_stmt|;
-comment|//TODO use locatedBlocks builder??
 return|return
 name|newLocatedStripedBlock
 argument_list|(
@@ -12097,8 +12096,8 @@ throw|;
 block|}
 comment|// To minimize startup time, we discard any second (or later) block reports
 comment|// that we receive while still in startup phase.
-comment|// !#! Register DN with provided storage, not with storage owned by DN
-comment|// !#! DN should still have a ref to the DNStorageInfo
+comment|// Register DN with provided storage, not with storage owned by DN
+comment|// DN should still have a ref to the DNStorageInfo.
 name|DatanodeStorageInfo
 name|storageInfo
 init|=

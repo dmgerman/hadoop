@@ -9425,7 +9425,7 @@ name|bpid
 argument_list|)
 control|)
 block|{
-comment|//skip blocks in PROVIDED storage
+comment|// skip PROVIDED replicas.
 if|if
 condition|(
 name|b
@@ -11762,7 +11762,7 @@ operator|==
 literal|null
 condition|)
 block|{
-comment|//replica exists on provided store but not in memory
+comment|// replica exists on provided store but not in memory
 name|ReplicaInfo
 name|diskBlockInfo
 init|=
@@ -11816,7 +11816,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
-comment|//replica exists in memory but not in the provided store
+comment|// replica exists in memory but not in the provided store
 name|volumeMap
 operator|.
 name|remove

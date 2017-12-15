@@ -1398,7 +1398,6 @@ name|ScanInfo
 name|info
 parameter_list|)
 block|{
-comment|//local scanning cannot find any provided blocks.
 if|if
 condition|(
 name|info

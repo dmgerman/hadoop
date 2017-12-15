@@ -2055,7 +2055,7 @@ condition|)
 block|{
 return|return;
 block|}
-comment|//no upgrades for storage directories that are PROVIDED
+comment|// no upgrades for storage directories that are PROVIDED
 if|if
 condition|(
 name|bpSd
@@ -2971,15 +2971,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"doFinalize: "
-operator|+
-name|dnCurDir
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|dnCurDir

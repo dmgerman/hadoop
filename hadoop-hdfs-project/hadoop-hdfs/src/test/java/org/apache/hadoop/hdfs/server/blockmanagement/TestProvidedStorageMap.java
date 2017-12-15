@@ -431,13 +431,13 @@ operator|.
 name|getProvidedStorageInfo
 argument_list|()
 decl_stmt|;
-comment|//the provided storage cannot be null
+comment|// the provided storage cannot be null
 name|assertNotNull
 argument_list|(
 name|providedMapStorage
 argument_list|)
 expr_stmt|;
-comment|//create a datanode
+comment|// create a datanode
 name|DatanodeDescriptor
 name|dn1
 init|=
@@ -446,7 +446,7 @@ argument_list|(
 literal|5000
 argument_list|)
 decl_stmt|;
-comment|//associate two storages to the datanode
+comment|// associate two storages to the datanode
 name|DatanodeStorage
 name|dn1ProvidedStorage
 init|=
@@ -540,7 +540,7 @@ operator|==
 literal|null
 argument_list|)
 expr_stmt|;
-comment|//add the disk storage to the datanode.
+comment|// add the disk storage to the datanode.
 name|DatanodeStorageInfo
 name|dnsDisk
 init|=
@@ -575,7 +575,7 @@ name|dn1DiskStorage
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|//create a 2nd datanode
+comment|// create a 2nd datanode
 name|DatanodeDescriptor
 name|dn2
 init|=
@@ -584,7 +584,7 @@ argument_list|(
 literal|5010
 argument_list|)
 decl_stmt|;
-comment|//associate a provided storage with the datanode
+comment|// associate a provided storage with the datanode
 name|DatanodeStorage
 name|dn2ProvidedStorage
 init|=

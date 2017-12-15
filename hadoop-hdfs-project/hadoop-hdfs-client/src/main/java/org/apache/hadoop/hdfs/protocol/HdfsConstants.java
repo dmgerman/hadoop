@@ -246,7 +246,6 @@ name|COLD_STORAGE_POLICY_NAME
 init|=
 literal|"COLD"
 decl_stmt|;
-comment|// branch HDFS-9806 XXX temporary until HDFS-7076
 DECL|field|PROVIDED_STORAGE_POLICY_ID
 specifier|public
 specifier|static

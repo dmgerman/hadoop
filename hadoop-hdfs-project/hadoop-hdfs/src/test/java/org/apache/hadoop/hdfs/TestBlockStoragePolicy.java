@@ -1059,7 +1059,9 @@ literal|"BlockStoragePolicy{PROVIDED:"
 operator|+
 name|PROVIDED
 operator|+
-literal|", storageTypes=[PROVIDED, DISK], creationFallbacks=[PROVIDED, DISK], "
+literal|", storageTypes=[PROVIDED, DISK], "
+operator|+
+literal|"creationFallbacks=[PROVIDED, DISK], "
 operator|+
 literal|"replicationFallbacks=[PROVIDED, DISK]}"
 argument_list|)

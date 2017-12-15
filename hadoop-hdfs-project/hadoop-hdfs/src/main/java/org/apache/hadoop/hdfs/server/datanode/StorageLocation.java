@@ -637,12 +637,12 @@ operator|.
 name|PROVIDED
 condition|)
 block|{
-comment|//only one of these is PROVIDED; so it cannot be a match!
+comment|// only one PROVIDED storage directory can exist; so this cannot match!
 return|return
 literal|false
 return|;
 block|}
-comment|//both storage directories are local
+comment|// both storage directories are local
 return|return
 name|this
 operator|.
@@ -1089,7 +1089,22 @@ operator|.
 name|PROVIDED
 condition|)
 block|{
-comment|//skip creation if the storage type is PROVIDED
+comment|// skip creation if the storage type is PROVIDED
+name|Storage
+operator|.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Skipping creating directory for block pool "
+operator|+
+name|blockPoolID
+operator|+
+literal|" for PROVIDED storage location "
+operator|+
+name|this
+argument_list|)
+expr_stmt|;
 return|return;
 block|}
 name|LocalFileSystem
@@ -1202,8 +1217,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|//we assume provided storage locations are always healthy,
-comment|//and check only for local storages.
+comment|// assume provided storage locations are always healthy,
+comment|// and check only for local storages.
 if|if
 condition|(
 name|storageType

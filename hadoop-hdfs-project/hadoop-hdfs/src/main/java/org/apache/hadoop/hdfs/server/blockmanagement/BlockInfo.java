@@ -731,7 +731,7 @@ operator|.
 name|PROVIDED
 condition|)
 block|{
-comment|//if block resides on provided storage, only match the storage ids
+comment|// if block resides on provided storage, only match the storage ids
 if|if
 condition|(
 name|dn

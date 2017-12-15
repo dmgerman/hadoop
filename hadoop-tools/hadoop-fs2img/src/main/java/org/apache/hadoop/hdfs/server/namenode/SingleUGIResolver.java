@@ -369,7 +369,7 @@ name|String
 name|name
 parameter_list|)
 block|{
-comment|//do nothing
+comment|// do nothing
 block|}
 annotation|@
 name|Override
@@ -382,7 +382,7 @@ name|String
 name|name
 parameter_list|)
 block|{
-comment|//do nothing
+comment|// do nothing
 block|}
 block|}
 end_class

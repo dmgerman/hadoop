@@ -779,7 +779,12 @@ throw|throw
 operator|new
 name|UnsupportedOperationException
 argument_list|(
-literal|"Internal error"
+literal|"Unknown option: "
+operator|+
+name|o
+operator|.
+name|getOpt
+argument_list|()
 argument_list|)
 throw|;
 block|}

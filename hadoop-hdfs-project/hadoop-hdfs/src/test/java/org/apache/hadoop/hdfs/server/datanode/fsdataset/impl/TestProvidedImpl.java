@@ -128,26 +128,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|FileNotFoundException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|FileOutputStream
 import|;
 end_import
@@ -209,40 +189,6 @@ operator|.
 name|net
 operator|.
 name|URISyntaxException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|nio
-operator|.
-name|ByteBuffer
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|nio
-operator|.
-name|channels
-operator|.
-name|Channels
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|nio
-operator|.
-name|channels
-operator|.
-name|ReadableByteChannel
 import|;
 end_import
 
@@ -798,6 +744,24 @@ name|server
 operator|.
 name|datanode
 operator|.
+name|TestProvidedReplicaImpl
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
 name|fsdataset
 operator|.
 name|FsDatasetSpi
@@ -999,7 +963,7 @@ name|NUM_LOCAL_INIT_VOLUMES
 init|=
 literal|1
 decl_stmt|;
-comment|//only support one provided volume for now.
+comment|// only support one provided volume for now.
 DECL|field|NUM_PROVIDED_INIT_VOLUMES
 specifier|private
 specifier|static
@@ -1393,7 +1357,7 @@ name|void
 name|remove
 parameter_list|()
 block|{
-comment|//do nothing.
+comment|// do nothing.
 block|}
 DECL|method|resetMinBlockId (int minId)
 specifier|public
@@ -2139,192 +2103,6 @@ literal|0
 return|;
 block|}
 block|}
-DECL|method|compareBlkFile (InputStream ins, String filepath)
-specifier|private
-name|void
-name|compareBlkFile
-parameter_list|(
-name|InputStream
-name|ins
-parameter_list|,
-name|String
-name|filepath
-parameter_list|)
-throws|throws
-name|FileNotFoundException
-throws|,
-name|IOException
-block|{
-try|try
-init|(
-name|ReadableByteChannel
-name|i
-init|=
-name|Channels
-operator|.
-name|newChannel
-argument_list|(
-operator|new
-name|FileInputStream
-argument_list|(
-operator|new
-name|File
-argument_list|(
-name|filepath
-argument_list|)
-argument_list|)
-argument_list|)
-init|)
-block|{
-try|try
-init|(
-name|ReadableByteChannel
-name|j
-init|=
-name|Channels
-operator|.
-name|newChannel
-argument_list|(
-name|ins
-argument_list|)
-init|)
-block|{
-name|ByteBuffer
-name|ib
-init|=
-name|ByteBuffer
-operator|.
-name|allocate
-argument_list|(
-literal|4096
-argument_list|)
-decl_stmt|;
-name|ByteBuffer
-name|jb
-init|=
-name|ByteBuffer
-operator|.
-name|allocate
-argument_list|(
-literal|4096
-argument_list|)
-decl_stmt|;
-while|while
-condition|(
-literal|true
-condition|)
-block|{
-name|int
-name|il
-init|=
-name|i
-operator|.
-name|read
-argument_list|(
-name|ib
-argument_list|)
-decl_stmt|;
-name|int
-name|jl
-init|=
-name|j
-operator|.
-name|read
-argument_list|(
-name|jb
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|il
-operator|<
-literal|0
-operator|||
-name|jl
-operator|<
-literal|0
-condition|)
-block|{
-name|assertEquals
-argument_list|(
-name|il
-argument_list|,
-name|jl
-argument_list|)
-expr_stmt|;
-break|break;
-block|}
-name|ib
-operator|.
-name|flip
-argument_list|()
-expr_stmt|;
-name|jb
-operator|.
-name|flip
-argument_list|()
-expr_stmt|;
-name|int
-name|cmp
-init|=
-name|Math
-operator|.
-name|min
-argument_list|(
-name|ib
-operator|.
-name|remaining
-argument_list|()
-argument_list|,
-name|jb
-operator|.
-name|remaining
-argument_list|()
-argument_list|)
-decl_stmt|;
-for|for
-control|(
-name|int
-name|k
-init|=
-literal|0
-init|;
-name|k
-operator|<
-name|cmp
-condition|;
-operator|++
-name|k
-control|)
-block|{
-name|assertEquals
-argument_list|(
-name|ib
-operator|.
-name|get
-argument_list|()
-argument_list|,
-name|jb
-operator|.
-name|get
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-name|ib
-operator|.
-name|compact
-argument_list|()
-expr_stmt|;
-name|jb
-operator|.
-name|compact
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-block|}
-block|}
 annotation|@
 name|Before
 DECL|method|setUp ()
@@ -2656,7 +2434,7 @@ name|i
 operator|++
 control|)
 block|{
-comment|//check basic information about provided volume
+comment|// check basic information about provided volume
 name|assertEquals
 argument_list|(
 name|DFSConfigKeys
@@ -2709,7 +2487,7 @@ name|CHOSEN_BP_ID
 index|]
 argument_list|)
 decl_stmt|;
-comment|//check the df stats of the volume
+comment|// check the df stats of the volume
 name|assertEquals
 argument_list|(
 name|spaceUsed
@@ -2775,7 +2553,7 @@ index|]
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|//should not be triggered
+comment|// should not be triggered
 name|assertTrue
 argument_list|(
 literal|false
@@ -2896,7 +2674,7 @@ operator|!=
 name|CHOSEN_BP_ID
 condition|)
 block|{
-comment|//this block pool should not have any blocks
+comment|// this block pool should not have any blocks
 name|assertEquals
 argument_list|(
 literal|null
@@ -3004,11 +2782,21 @@ operator|)
 name|id
 argument_list|)
 decl_stmt|;
-name|compareBlkFile
+name|TestProvidedReplicaImpl
+operator|.
+name|verifyReplicaContents
 argument_list|(
+operator|new
+name|File
+argument_list|(
+name|filepath
+argument_list|)
+argument_list|,
 name|ins
 argument_list|,
-name|filepath
+literal|0
+argument_list|,
+name|BLK_LEN
 argument_list|)
 expr_stmt|;
 block|}
@@ -3128,7 +2916,7 @@ operator|<
 name|NUM_PROVIDED_BLKS
 argument_list|)
 expr_stmt|;
-comment|//all block ids must be unique!
+comment|// all block ids must be unique!
 name|assertTrue
 argument_list|(
 operator|!
@@ -3189,7 +2977,7 @@ operator|.
 name|getBlockId
 argument_list|()
 decl_stmt|;
-comment|//the block should have already appeared in the first scan.
+comment|// the block should have already appeared in the first scan.
 name|assertTrue
 argument_list|(
 name|blockIdsUsed
@@ -3208,7 +2996,7 @@ name|blkId
 argument_list|)
 expr_stmt|;
 block|}
-comment|//none of the blocks should remain in blockIdsUsed
+comment|// none of the blocks should remain in blockIdsUsed
 name|assertEquals
 argument_list|(
 literal|0
@@ -3219,7 +3007,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|//the other block pool should not contain any blocks!
+comment|// the other block pool should not contain any blocks!
 name|BlockIterator
 name|nonProvidedBpIter
 init|=
@@ -3398,8 +3186,8 @@ name|minId
 init|=
 literal|0
 decl_stmt|;
-comment|//use a path which has the same prefix as providedBasePath
-comment|//all these blocks can belong to the provided volume
+comment|// use a path which has the same prefix as providedBasePath
+comment|// all these blocks can belong to the provided volume
 name|int
 name|blocksFound
 init|=
@@ -3451,8 +3239,8 @@ argument_list|,
 name|blocksFound
 argument_list|)
 expr_stmt|;
-comment|//use a path that is entirely different from the providedBasePath
-comment|//none of these blocks can belong to the volume
+comment|// use a path that is entirely different from the providedBasePath
+comment|// none of these blocks can belong to the volume
 name|blocksFound
 operator|=
 name|getBlocksInProvidedVolumes

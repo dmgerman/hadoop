@@ -1809,7 +1809,7 @@ operator|==
 literal|null
 condition|)
 block|{
-comment|//if the directory is null, there is nothing to do.
+comment|// if the directory is null, there is nothing to do.
 return|return;
 block|}
 if|if
@@ -2292,7 +2292,7 @@ operator|.
 name|PROVIDED
 condition|)
 block|{
-comment|//currently we assume that PROVIDED storages are always NORMAL
+comment|// currently we assume that PROVIDED storages are always NORMAL
 return|return
 name|StorageState
 operator|.
@@ -2858,7 +2858,7 @@ operator|==
 literal|null
 condition|)
 block|{
-comment|//at this point, we do not support recovery on PROVIDED storages
+comment|// at this point, we do not support recovery on PROVIDED storages
 return|return;
 block|}
 name|String

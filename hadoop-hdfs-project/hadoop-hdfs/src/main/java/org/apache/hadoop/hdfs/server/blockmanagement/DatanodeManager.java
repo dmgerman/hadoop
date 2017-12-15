@@ -2503,7 +2503,7 @@ name|activeLen
 argument_list|)
 expr_stmt|;
 block|}
-comment|//move PROVIDED storage to the end to prefer local replicas.
+comment|// move PROVIDED storage to the end to prefer local replicas.
 name|lb
 operator|.
 name|moveProvidedToEnd

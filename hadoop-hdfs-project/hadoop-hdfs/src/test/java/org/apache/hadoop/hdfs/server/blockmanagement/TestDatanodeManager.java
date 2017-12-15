@@ -1960,7 +1960,7 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Test with different sorting functions but include datanodes    * with provided storage    * @throws IOException    * @throws URISyntaxException    */
+comment|/**    * Test with different sorting functions but include datanodes.    * with provided storage    * @throws IOException    * @throws URISyntaxException    */
 annotation|@
 name|Test
 DECL|method|testWithProvidedTypes ()

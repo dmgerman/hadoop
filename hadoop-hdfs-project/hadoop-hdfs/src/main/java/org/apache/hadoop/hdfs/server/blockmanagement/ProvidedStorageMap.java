@@ -1645,6 +1645,7 @@ name|DatanodeDescriptor
 name|client
 parameter_list|)
 block|{
+comment|// TODO choose provided locations close to the client.
 return|return
 operator|new
 name|LocatedBlocks
@@ -1811,7 +1812,6 @@ argument_list|(
 name|dn
 argument_list|)
 expr_stmt|;
-comment|// TODO: maintain separate RPC ident per dn
 return|return
 name|storageMap
 operator|.
@@ -2671,7 +2671,7 @@ name|int
 name|getNumberOfBlocks
 parameter_list|()
 block|{
-comment|// VERIFY: only printed for debugging
+comment|// is ignored for ProvidedBlockList.
 return|return
 operator|-
 literal|1

@@ -912,11 +912,15 @@ name|*
 import|;
 end_import
 
+begin_comment
+comment|/**  * Integration tests for the Provided implementation.  */
+end_comment
+
 begin_class
-DECL|class|TestNameNodeProvidedImplementation
+DECL|class|ITestProvidedImplementation
 specifier|public
 class|class
-name|TestNameNodeProvidedImplementation
+name|ITestProvidedImplementation
 block|{
 DECL|field|name
 annotation|@
@@ -940,12 +944,13 @@ name|LoggerFactory
 operator|.
 name|getLogger
 argument_list|(
-name|TestNameNodeProvidedImplementation
+name|ITestProvidedImplementation
 operator|.
 name|class
 argument_list|)
 decl_stmt|;
 DECL|field|r
+specifier|private
 specifier|final
 name|Random
 name|r
@@ -955,6 +960,7 @@ name|Random
 argument_list|()
 decl_stmt|;
 DECL|field|fBASE
+specifier|private
 specifier|final
 name|File
 name|fBASE
@@ -968,10 +974,11 @@ name|getBaseDirectory
 argument_list|()
 argument_list|)
 decl_stmt|;
-DECL|field|BASE
+DECL|field|pBASE
+specifier|private
 specifier|final
 name|Path
-name|BASE
+name|pBASE
 init|=
 operator|new
 name|Path
@@ -985,43 +992,47 @@ name|toString
 argument_list|()
 argument_list|)
 decl_stmt|;
-DECL|field|NAMEPATH
+DECL|field|providedPath
+specifier|private
 specifier|final
 name|Path
-name|NAMEPATH
+name|providedPath
 init|=
 operator|new
 name|Path
 argument_list|(
-name|BASE
+name|pBASE
 argument_list|,
 literal|"providedDir"
 argument_list|)
 decl_stmt|;
-DECL|field|NNDIRPATH
+DECL|field|nnDirPath
+specifier|private
 specifier|final
 name|Path
-name|NNDIRPATH
+name|nnDirPath
 init|=
 operator|new
 name|Path
 argument_list|(
-name|BASE
+name|pBASE
 argument_list|,
 literal|"nnDir"
 argument_list|)
 decl_stmt|;
-DECL|field|SINGLEUSER
+DECL|field|singleUser
+specifier|private
 specifier|final
 name|String
-name|SINGLEUSER
+name|singleUser
 init|=
 literal|"usr1"
 decl_stmt|;
-DECL|field|SINGLEGROUP
+DECL|field|singleGroup
+specifier|private
 specifier|final
 name|String
-name|SINGLEGROUP
+name|singleGroup
 init|=
 literal|"grp1"
 decl_stmt|;
@@ -1073,10 +1084,12 @@ init|=
 literal|"BP-1234-10.1.1.1-1224"
 decl_stmt|;
 DECL|field|conf
+specifier|private
 name|Configuration
 name|conf
 decl_stmt|;
 DECL|field|cluster
+specifier|private
 name|MiniDFSCluster
 name|cluster
 decl_stmt|;
@@ -1161,7 +1174,7 @@ name|SingleUGIResolver
 operator|.
 name|USER
 argument_list|,
-name|SINGLEUSER
+name|singleUser
 argument_list|)
 expr_stmt|;
 name|conf
@@ -1172,7 +1185,7 @@ name|SingleUGIResolver
 operator|.
 name|GROUP
 argument_list|,
-name|SINGLEGROUP
+name|singleGroup
 argument_list|)
 expr_stmt|;
 name|conf
@@ -1224,7 +1237,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_PROVIDED_ALIASMAP_TEXT_WRITE_DIR
 argument_list|,
-name|NNDIRPATH
+name|nnDirPath
 operator|.
 name|toString
 argument_list|()
@@ -1241,7 +1254,7 @@ argument_list|,
 operator|new
 name|Path
 argument_list|(
-name|NNDIRPATH
+name|nnDirPath
 argument_list|,
 name|fileNameFromBlockPoolID
 argument_list|(
@@ -1275,7 +1288,7 @@ argument_list|,
 operator|new
 name|File
 argument_list|(
-name|NAMEPATH
+name|providedPath
 operator|.
 name|toUri
 argument_list|()
@@ -1291,7 +1304,7 @@ init|=
 operator|new
 name|File
 argument_list|(
-name|NAMEPATH
+name|providedPath
 operator|.
 name|toUri
 argument_list|()
@@ -1327,7 +1340,7 @@ init|=
 operator|new
 name|File
 argument_list|(
-name|NNDIRPATH
+name|nnDirPath
 operator|.
 name|toUri
 argument_list|()
@@ -1348,7 +1361,7 @@ name|mkdirs
 argument_list|()
 expr_stmt|;
 block|}
-comment|// create 10 random files under BASE
+comment|// create 10 random files under pBASE
 for|for
 control|(
 name|int
@@ -1373,7 +1386,7 @@ argument_list|(
 operator|new
 name|Path
 argument_list|(
-name|NAMEPATH
+name|providedPath
 argument_list|,
 name|filePrefix
 operator|+
@@ -1926,9 +1939,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"NAMEPATH: "
+literal|"providedPath: "
 operator|+
-name|NAMEPATH
+name|providedPath
 argument_list|)
 expr_stmt|;
 name|createImage
@@ -1939,7 +1952,7 @@ argument_list|(
 name|seed
 argument_list|)
 argument_list|,
-name|NNDIRPATH
+name|nnDirPath
 argument_list|,
 name|FixedBlockResolver
 operator|.
@@ -1948,7 +1961,7 @@ argument_list|)
 expr_stmt|;
 name|startCluster
 argument_list|(
-name|NNDIRPATH
+name|nnDirPath
 argument_list|,
 literal|0
 argument_list|,
@@ -2089,7 +2102,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|SINGLEUSER
+name|singleUser
 argument_list|,
 name|hs
 operator|.
@@ -2099,7 +2112,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|SINGLEGROUP
+name|singleGroup
 argument_list|,
 name|hs
 operator|.
@@ -2174,12 +2187,12 @@ argument_list|(
 operator|new
 name|FSTreeWalk
 argument_list|(
-name|NAMEPATH
+name|providedPath
 argument_list|,
 name|conf
 argument_list|)
 argument_list|,
-name|NNDIRPATH
+name|nnDirPath
 argument_list|,
 name|FixedBlockResolver
 operator|.
@@ -2193,7 +2206,7 @@ literal|10
 decl_stmt|;
 name|startCluster
 argument_list|(
-name|NNDIRPATH
+name|nnDirPath
 argument_list|,
 name|numDatanodes
 argument_list|,
@@ -2699,12 +2712,12 @@ argument_list|(
 operator|new
 name|FSTreeWalk
 argument_list|(
-name|NAMEPATH
+name|providedPath
 argument_list|,
 name|conf
 argument_list|)
 argument_list|,
-name|NNDIRPATH
+name|nnDirPath
 argument_list|,
 name|FixedBlockMultiReplicaResolver
 operator|.
@@ -2714,7 +2727,7 @@ expr_stmt|;
 comment|// make the last Datanode with only DISK
 name|startCluster
 argument_list|(
-name|NNDIRPATH
+name|nnDirPath
 argument_list|,
 literal|3
 argument_list|,
@@ -2784,7 +2797,7 @@ range|:
 operator|new
 name|FSTreeWalk
 argument_list|(
-name|NAMEPATH
+name|providedPath
 argument_list|,
 name|conf
 argument_list|)
@@ -2803,7 +2816,7 @@ name|hp
 init|=
 name|removePrefix
 argument_list|(
-name|NAMEPATH
+name|providedPath
 argument_list|,
 name|rs
 operator|.
@@ -2815,7 +2828,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"hp "
+literal|"path: "
 operator|+
 name|hp
 operator|.
@@ -2826,32 +2839,6 @@ name|getPath
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|//skip HDFS specific files, which may have been created later on.
-if|if
-condition|(
-name|hp
-operator|.
-name|toString
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-literal|"in_use.lock"
-argument_list|)
-operator|||
-name|hp
-operator|.
-name|toString
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-literal|"current"
-argument_list|)
-condition|)
-block|{
-continue|continue;
-block|}
 name|e
 operator|.
 name|accept
@@ -3142,7 +3129,7 @@ range|:
 operator|new
 name|FSTreeWalk
 argument_list|(
-name|NAMEPATH
+name|providedPath
 argument_list|,
 name|conf
 argument_list|)
@@ -3161,7 +3148,7 @@ name|hp
 init|=
 name|removePrefix
 argument_list|(
-name|NAMEPATH
+name|providedPath
 argument_list|,
 name|rs
 operator|.
@@ -3173,7 +3160,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"hp "
+literal|"path: "
 operator|+
 name|hp
 operator|.
@@ -3184,32 +3171,6 @@ name|getPath
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|//skip HDFS specific files, which may have been created later on.
-if|if
-condition|(
-name|hp
-operator|.
-name|toString
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-literal|"in_use.lock"
-argument_list|)
-operator|||
-name|hp
-operator|.
-name|toString
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-literal|"current"
-argument_list|)
-condition|)
-block|{
-continue|continue;
-block|}
 name|e
 operator|.
 name|accept
@@ -3535,7 +3496,7 @@ operator|.
 name|getFileSystem
 argument_list|()
 decl_stmt|;
-comment|//create a sample file that is not provided
+comment|// create a file that is not provided
 name|DFSTestUtil
 operator|.
 name|createFile
@@ -3593,7 +3554,7 @@ block|{
 comment|// start a cluster with 2 datanodes without any provided storage
 name|startCluster
 argument_list|(
-name|NNDIRPATH
+name|nnDirPath
 argument_list|,
 literal|2
 argument_list|,
@@ -3853,12 +3814,12 @@ argument_list|(
 operator|new
 name|FSTreeWalk
 argument_list|(
-name|NAMEPATH
+name|providedPath
 argument_list|,
 name|conf
 argument_list|)
 argument_list|,
-name|NNDIRPATH
+name|nnDirPath
 argument_list|,
 name|FixedBlockResolver
 operator|.
@@ -3868,7 +3829,7 @@ expr_stmt|;
 comment|// 10 Datanodes with both DISK and PROVIDED storage
 name|startCluster
 argument_list|(
-name|NNDIRPATH
+name|nnDirPath
 argument_list|,
 literal|10
 argument_list|,
@@ -4110,12 +4071,12 @@ argument_list|(
 operator|new
 name|FSTreeWalk
 argument_list|(
-name|NAMEPATH
+name|providedPath
 argument_list|,
 name|conf
 argument_list|)
 argument_list|,
-name|NNDIRPATH
+name|nnDirPath
 argument_list|,
 name|FixedBlockResolver
 operator|.
@@ -4124,7 +4085,7 @@ argument_list|)
 expr_stmt|;
 name|startCluster
 argument_list|(
-name|NNDIRPATH
+name|nnDirPath
 argument_list|,
 literal|3
 argument_list|,
@@ -4262,7 +4223,7 @@ argument_list|,
 literal|2
 argument_list|)
 decl_stmt|;
-comment|//the location should be one of the provided DNs available
+comment|// the location should be one of the provided DNs available
 name|assertTrue
 argument_list|(
 name|dnInfos
@@ -4298,7 +4259,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|//stop the 1st provided datanode
+comment|// stop the 1st provided datanode
 name|MiniDFSCluster
 operator|.
 name|DataNodeProperties
@@ -4311,7 +4272,7 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
-comment|//make NameNode detect that datanode is down
+comment|// make NameNode detect that datanode is down
 name|BlockManagerTestUtil
 operator|.
 name|noticeDeadDatanode
@@ -4330,7 +4291,7 @@ name|getXferAddr
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|//should find the block on the 2nd provided datanode
+comment|// should find the block on the 2nd provided datanode
 name|dnInfos
 operator|=
 name|getAndCheckBlockLocations
@@ -4419,7 +4380,7 @@ name|getBlockReportCount
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|//restart the provided datanode
+comment|// restart the provided datanode
 name|cluster
 operator|.
 name|restartDataNode
@@ -4444,7 +4405,7 @@ name|getBlockReportCount
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|//should find the block on the 1st provided datanode now
+comment|// should find the block on the 1st provided datanode now
 name|dnInfos
 operator|=
 name|getAndCheckBlockLocations
@@ -4460,7 +4421,7 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
-comment|//not comparing UUIDs as the datanode can now have a different one.
+comment|// not comparing UUIDs as the datanode can now have a different one.
 name|assertEquals
 argument_list|(
 name|providedDatanode1
@@ -4502,12 +4463,12 @@ argument_list|(
 operator|new
 name|FSTreeWalk
 argument_list|(
-name|NAMEPATH
+name|providedPath
 argument_list|,
 name|conf
 argument_list|)
 argument_list|,
-name|NNDIRPATH
+name|nnDirPath
 argument_list|,
 name|FixedBlockResolver
 operator|.
@@ -4517,7 +4478,7 @@ expr_stmt|;
 comment|// 3 Datanodes, 2 PROVIDED and other DISK
 name|startCluster
 argument_list|(
-name|NNDIRPATH
+name|nnDirPath
 argument_list|,
 literal|3
 argument_list|,
@@ -4715,12 +4676,12 @@ argument_list|(
 operator|new
 name|FSTreeWalk
 argument_list|(
-name|NAMEPATH
+name|providedPath
 argument_list|,
 name|conf
 argument_list|)
 argument_list|,
-name|NNDIRPATH
+name|nnDirPath
 argument_list|,
 name|FixedBlockResolver
 operator|.
@@ -4730,7 +4691,7 @@ expr_stmt|;
 comment|// 3 Datanodes, 2 PROVIDED and other DISK
 name|startCluster
 argument_list|(
-name|NNDIRPATH
+name|nnDirPath
 argument_list|,
 literal|3
 argument_list|,
@@ -4869,7 +4830,7 @@ argument_list|(
 operator|new
 name|Path
 argument_list|(
-name|NAMEPATH
+name|providedPath
 argument_list|,
 name|filename
 argument_list|)
@@ -4967,12 +4928,12 @@ argument_list|(
 operator|new
 name|FSTreeWalk
 argument_list|(
-name|NAMEPATH
+name|providedPath
 argument_list|,
 name|conf
 argument_list|)
 argument_list|,
-name|NNDIRPATH
+name|nnDirPath
 argument_list|,
 name|FixedBlockResolver
 operator|.
@@ -4988,7 +4949,7 @@ expr_stmt|;
 comment|// 2 Datanodes, 1 PROVIDED and other DISK
 name|startCluster
 argument_list|(
-name|NNDIRPATH
+name|nnDirPath
 argument_list|,
 literal|2
 argument_list|,
@@ -5073,12 +5034,12 @@ argument_list|(
 operator|new
 name|FSTreeWalk
 argument_list|(
-name|NAMEPATH
+name|providedPath
 argument_list|,
 name|conf
 argument_list|)
 argument_list|,
-name|NNDIRPATH
+name|nnDirPath
 argument_list|,
 name|FixedBlockResolver
 operator|.
@@ -5088,7 +5049,7 @@ expr_stmt|;
 comment|// start with 4 PROVIDED location
 name|startCluster
 argument_list|(
-name|NNDIRPATH
+name|nnDirPath
 argument_list|,
 literal|4
 argument_list|,
@@ -5270,12 +5231,12 @@ argument_list|(
 operator|new
 name|FSTreeWalk
 argument_list|(
-name|NAMEPATH
+name|providedPath
 argument_list|,
 name|conf
 argument_list|)
 argument_list|,
-name|NNDIRPATH
+name|nnDirPath
 argument_list|,
 name|FixedBlockResolver
 operator|.
@@ -5285,7 +5246,7 @@ expr_stmt|;
 comment|// start with 4 PROVIDED location
 name|startCluster
 argument_list|(
-name|NNDIRPATH
+name|nnDirPath
 argument_list|,
 literal|4
 argument_list|,
@@ -5488,12 +5449,12 @@ argument_list|(
 operator|new
 name|FSTreeWalk
 argument_list|(
-name|NAMEPATH
+name|providedPath
 argument_list|,
 name|conf
 argument_list|)
 argument_list|,
-name|NNDIRPATH
+name|nnDirPath
 argument_list|,
 name|FixedBlockResolver
 operator|.
@@ -5515,7 +5476,7 @@ comment|// start cluster with two datanodes,
 comment|// each with 1 PROVIDED volume and other DISK volume
 name|startCluster
 argument_list|(
-name|NNDIRPATH
+name|nnDirPath
 argument_list|,
 literal|2
 argument_list|,
@@ -5745,12 +5706,12 @@ argument_list|(
 operator|new
 name|FSTreeWalk
 argument_list|(
-name|NAMEPATH
+name|providedPath
 argument_list|,
 name|conf
 argument_list|)
 argument_list|,
-name|NNDIRPATH
+name|nnDirPath
 argument_list|,
 name|FixedBlockResolver
 operator|.
@@ -5759,7 +5720,7 @@ argument_list|)
 expr_stmt|;
 name|startCluster
 argument_list|(
-name|NNDIRPATH
+name|nnDirPath
 argument_list|,
 literal|3
 argument_list|,
@@ -6097,12 +6058,12 @@ argument_list|(
 operator|new
 name|FSTreeWalk
 argument_list|(
-name|NAMEPATH
+name|providedPath
 argument_list|,
 name|conf
 argument_list|)
 argument_list|,
-name|NNDIRPATH
+name|nnDirPath
 argument_list|,
 name|FixedBlockResolver
 operator|.
@@ -6167,7 +6128,7 @@ argument_list|)
 expr_stmt|;
 name|startCluster
 argument_list|(
-name|NNDIRPATH
+name|nnDirPath
 argument_list|,
 name|racks
 operator|.

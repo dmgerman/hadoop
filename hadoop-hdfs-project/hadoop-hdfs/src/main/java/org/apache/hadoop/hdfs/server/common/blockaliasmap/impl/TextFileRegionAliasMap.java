@@ -2600,7 +2600,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-comment|//nothing to do;
+comment|// nothing to do;
 block|}
 annotation|@
 name|VisibleForTesting

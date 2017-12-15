@@ -781,7 +781,6 @@ init|=
 name|getFileStatus
 argument_list|()
 decl_stmt|;
-comment|// TODO should this store resolver's user/group?
 name|ugi
 operator|.
 name|addUser
@@ -917,7 +916,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|//TODO: storage policy should be configurable per path; use BlockResolver
+comment|// TODO: storage policy should be configurable per path; use BlockResolver
 name|long
 name|off
 init|=

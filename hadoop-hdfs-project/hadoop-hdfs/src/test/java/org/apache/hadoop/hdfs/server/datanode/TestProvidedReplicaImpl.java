@@ -291,7 +291,7 @@ name|FILE_NAME
 init|=
 literal|"provided-test"
 decl_stmt|;
-comment|//length of the file that is associated with the provided blocks.
+comment|// length of the file that is associated with the provided blocks.
 DECL|field|FILE_LEN
 specifier|private
 specifier|static
@@ -309,7 +309,7 @@ literal|64
 operator|*
 literal|1024
 decl_stmt|;
-comment|//length of each provided block.
+comment|// length of each provided block.
 DECL|field|BLK_LEN
 specifier|private
 specifier|static
@@ -387,7 +387,6 @@ name|getAbsolutePath
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|//FILE_LEN is length in bytes.
 name|byte
 index|[]
 name|bytes
@@ -620,7 +619,8 @@ expr_stmt|;
 block|}
 comment|/**    * Checks if {@code ins} matches the provided file from offset    * {@code fileOffset} for length {@ dataLength}.    * @param file the local file    * @param ins input stream to compare against    * @param fileOffset offset    * @param dataLength length    * @throws IOException    */
 DECL|method|verifyReplicaContents (File file, InputStream ins, long fileOffset, long dataLength)
-specifier|private
+specifier|public
+specifier|static
 name|void
 name|verifyReplicaContents
 parameter_list|(
@@ -872,7 +872,7 @@ argument_list|(
 name|i
 argument_list|)
 decl_stmt|;
-comment|//block data should exist!
+comment|// block data should exist!
 name|assertTrue
 argument_list|(
 name|replica
@@ -928,7 +928,7 @@ operator|.
 name|delete
 argument_list|()
 expr_stmt|;
-comment|//the block data should no longer be found!
+comment|// the block data should no longer be found!
 for|for
 control|(
 name|int

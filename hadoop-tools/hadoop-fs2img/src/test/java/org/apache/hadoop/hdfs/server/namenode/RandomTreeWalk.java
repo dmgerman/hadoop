@@ -24,16 +24,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|ArrayList
@@ -219,7 +209,6 @@ name|Long
 argument_list|>
 name|mSeed
 decl_stmt|;
-comment|//private final AtomicLong blockIds = new AtomicLong(1L<< 30);
 DECL|method|RandomTreeWalk (long seed)
 name|RandomTreeWalk
 parameter_list|(
@@ -279,7 +268,7 @@ name|seed
 argument_list|,
 name|children
 argument_list|,
-literal|0.15f
+name|depth
 argument_list|)
 expr_stmt|;
 block|}

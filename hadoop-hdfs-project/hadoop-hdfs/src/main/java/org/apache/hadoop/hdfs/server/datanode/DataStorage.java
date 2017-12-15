@@ -945,8 +945,8 @@ operator|.
 name|PROVIDED
 condition|)
 block|{
-comment|// We only support one provided storage per datanode for now.
-comment|// TODO support multiple provided storage ids per datanode.
+comment|// Only one provided storage id is supported.
+comment|// TODO support multiple provided storage ids
 name|sd
 operator|.
 name|setStorageUuid

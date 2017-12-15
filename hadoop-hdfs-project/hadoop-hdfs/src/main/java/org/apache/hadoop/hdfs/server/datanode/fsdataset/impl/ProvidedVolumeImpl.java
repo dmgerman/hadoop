@@ -1499,7 +1499,7 @@ name|BlockListAsLongs
 name|blocksListsAsLongs
 parameter_list|)
 block|{
-comment|//nothing to do!
+comment|// nothing to do!
 block|}
 DECL|method|compileReport (LinkedList<ScanInfo> report, ReportCompiler reportCompiler)
 specifier|public
@@ -1661,7 +1661,7 @@ specifier|private
 name|ProvidedVolumeDF
 name|df
 decl_stmt|;
-comment|//the remote FileSystem to which this ProvidedVolume points to.
+comment|// the remote FileSystem to which this ProvidedVolume points to.
 DECL|field|remoteFS
 specifier|private
 name|FileSystem
@@ -2155,9 +2155,9 @@ specifier|private
 name|boolean
 name|atEnd
 decl_stmt|;
-comment|//The id of the last block read when the state of the iterator is saved.
-comment|//This implementation assumes that provided blocks are returned
-comment|//in sorted order of the block ids.
+comment|// The id of the last block read when the state of the iterator is saved.
+comment|// This implementation assumes that provided blocks are returned
+comment|// in sorted order of the block ids.
 annotation|@
 name|JsonProperty
 DECL|field|lastBlockId
@@ -2254,7 +2254,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-comment|//No action needed
+name|blockAliasMap
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -2473,8 +2477,8 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-comment|//We do not persist the state of this iterator anywhere, locally.
-comment|//We just re-scan provided volumes as necessary.
+comment|// We do not persist the state of this iterator locally.
+comment|// We just re-scan provided volumes as necessary.
 name|state
 operator|.
 name|lastSavedMs
@@ -2496,7 +2500,7 @@ name|long
 name|maxStalenessMs
 parameter_list|)
 block|{
-comment|//do not use max staleness
+comment|// do not use max staleness
 block|}
 annotation|@
 name|Override
@@ -2546,7 +2550,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-comment|//on load, we just rewind the iterator for provided volumes.
+comment|// on load, we just rewind the iterator for provided volumes.
 name|rewind
 argument_list|()
 expr_stmt|;
@@ -3142,7 +3146,6 @@ operator|+
 name|bpid
 argument_list|)
 expr_stmt|;
-comment|//get the report from the appropriate block pool.
 if|if
 condition|(
 name|bpSlices
