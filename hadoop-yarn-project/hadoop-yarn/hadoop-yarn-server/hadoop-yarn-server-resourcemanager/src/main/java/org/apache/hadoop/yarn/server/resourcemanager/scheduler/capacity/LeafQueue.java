@@ -2141,6 +2141,28 @@ literal|"(parentAbsoluteMaxCapacity * maximumCapacity) / 100 otherwise ]"
 operator|+
 literal|"\n"
 operator|+
+literal|"effectiveMinResource="
+operator|+
+name|getEffectiveCapacity
+argument_list|(
+name|CommonNodeLabelsManager
+operator|.
+name|NO_LABEL
+argument_list|)
+operator|+
+literal|"\n"
+operator|+
+literal|" , effectiveMaxResource="
+operator|+
+name|getEffectiveMaxCapacity
+argument_list|(
+name|CommonNodeLabelsManager
+operator|.
+name|NO_LABEL
+argument_list|)
+operator|+
+literal|"\n"
+operator|+
 literal|"userLimit = "
 operator|+
 name|usersManager
@@ -2879,6 +2901,26 @@ literal|"numContainers="
 operator|+
 name|getNumContainers
 argument_list|()
+operator|+
+literal|", "
+operator|+
+literal|"effectiveMinResource="
+operator|+
+name|getEffectiveCapacity
+argument_list|(
+name|CommonNodeLabelsManager
+operator|.
+name|NO_LABEL
+argument_list|)
+operator|+
+literal|" , effectiveMaxResource="
+operator|+
+name|getEffectiveMaxCapacity
+argument_list|(
+name|CommonNodeLabelsManager
+operator|.
+name|NO_LABEL
+argument_list|)
 return|;
 block|}
 finally|finally
