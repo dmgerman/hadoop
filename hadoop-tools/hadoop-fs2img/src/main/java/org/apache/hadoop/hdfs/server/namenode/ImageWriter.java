@@ -1441,7 +1441,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|Throwable
+name|IOException
 name|e
 parameter_list|)
 block|{
@@ -1457,11 +1457,7 @@ name|dirsTmpStream
 argument_list|)
 expr_stmt|;
 throw|throw
-operator|new
-name|IOException
-argument_list|(
 name|e
-argument_list|)
 throw|;
 block|}
 try|try
