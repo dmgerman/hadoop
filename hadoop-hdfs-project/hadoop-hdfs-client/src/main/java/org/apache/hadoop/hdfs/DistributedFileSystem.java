@@ -410,6 +410,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|InvalidPathHandleException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|PathHandle
 import|;
 end_import
@@ -2307,7 +2321,7 @@ name|absF
 argument_list|)
 return|;
 block|}
-comment|/**    * Opens an FSDataInputStream with the indicated file ID extracted from    * the {@link PathHandle}.    * @param fd Reference to entity in this FileSystem.    * @param bufferSize the size of the buffer to be used.    */
+comment|/**    * Opens an FSDataInputStream with the indicated file ID extracted from    * the {@link PathHandle}.    * @param fd Reference to entity in this FileSystem.    * @param bufferSize the size of the buffer to be used.    * @throws InvalidPathHandleException If PathHandle constraints do not hold    * @throws IOException On I/O errors    */
 annotation|@
 name|Override
 DECL|method|open (PathHandle fd, int bufferSize)

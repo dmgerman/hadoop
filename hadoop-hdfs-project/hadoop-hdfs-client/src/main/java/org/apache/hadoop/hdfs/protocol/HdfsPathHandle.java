@@ -86,6 +86,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|InvalidPathHandleException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|PathHandle
 import|;
 end_import
@@ -314,7 +328,7 @@ name|HdfsLocatedFileStatus
 name|stat
 parameter_list|)
 throws|throws
-name|IOException
+name|InvalidPathHandleException
 block|{
 if|if
 condition|(
@@ -332,7 +346,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|InvalidPathHandleException
 argument_list|(
 literal|"Content changed"
 argument_list|)
@@ -354,7 +368,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|InvalidPathHandleException
 argument_list|(
 literal|"Wrong file"
 argument_list|)
