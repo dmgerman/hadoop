@@ -1228,7 +1228,7 @@ name|BLOCKPOOL
 init|=
 literal|"BP-TEST"
 decl_stmt|;
-DECL|method|createStorageDirectory (File root)
+DECL|method|createStorageDirectory (File root, Configuration conf)
 specifier|private
 specifier|static
 name|Storage
@@ -1238,6 +1238,9 @@ name|createStorageDirectory
 parameter_list|(
 name|File
 name|root
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 throws|throws
 name|SecurityException
@@ -1275,6 +1278,8 @@ argument_list|(
 name|sd
 argument_list|,
 literal|false
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 return|return
@@ -1400,6 +1405,8 @@ argument_list|(
 name|createStorageDirectory
 argument_list|(
 name|loc
+argument_list|,
+name|conf
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1857,6 +1864,8 @@ name|File
 argument_list|(
 name|path
 argument_list|)
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 name|DataStorage
@@ -2664,6 +2673,8 @@ name|File
 argument_list|(
 name|newVolumePath
 argument_list|)
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 name|DataStorage
@@ -2912,6 +2923,8 @@ init|=
 name|createStorageDirectory
 argument_list|(
 name|badDir
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 name|sd
@@ -3871,6 +3884,8 @@ name|File
 argument_list|(
 name|path
 argument_list|)
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 name|DataStorage

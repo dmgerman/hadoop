@@ -1614,7 +1614,7 @@ comment|//<----13---><-------17------><----13-----><------17------->
 literal|"    SSD_QUOTA     REM_SSD_QUOTA    DISK_QUOTA    REM_DISK_QUOTA "
 operator|+
 comment|//<----13---><-------17------>
-literal|"ARCHIVE_QUOTA REM_ARCHIVE_QUOTA "
+literal|"ARCHIVE_QUOTA REM_ARCHIVE_QUOTA PROVIDED_QUOTA REM_PROVIDED_QUOTA "
 operator|+
 literal|"PATHNAME"
 decl_stmt|;
@@ -1897,6 +1897,8 @@ operator|+
 literal|"   DISK_QUOTA    REM_DISK_QUOTA "
 operator|+
 literal|"ARCHIVE_QUOTA REM_ARCHIVE_QUOTA "
+operator|+
+literal|"PROVIDED_QUOTA REM_PROVIDED_QUOTA "
 operator|+
 literal|"PATHNAME"
 decl_stmt|;

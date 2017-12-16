@@ -1431,6 +1431,16 @@ argument_list|)
 expr_stmt|;
 name|stats
 operator|.
+name|setProvidedSpace
+argument_list|(
+name|report
+operator|.
+name|getProvidedSpace
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|stats
+operator|.
 name|setNumOfDecommissioningDatanodes
 argument_list|(
 name|report

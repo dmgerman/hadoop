@@ -85,6 +85,13 @@ name|long
 name|getCapacityUsed
 parameter_list|()
 function_decl|;
+comment|/**    * Total PROVIDED storage capacity.    * @return -  total PROVIDED storage capacity in bytes    */
+DECL|method|getProvidedCapacityTotal ()
+specifier|public
+name|long
+name|getProvidedCapacityTotal
+parameter_list|()
+function_decl|;
 comment|/**    * Total number of files and directories    * @return -  num of files and directories    */
 DECL|method|getFilesTotal ()
 specifier|public

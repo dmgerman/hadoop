@@ -130,6 +130,12 @@ name|ARCHIVE
 argument_list|(
 literal|false
 argument_list|)
+block|,
+DECL|enumConstant|PROVIDED
+name|PROVIDED
+argument_list|(
+literal|false
+argument_list|)
 block|;
 DECL|field|isTransient
 specifier|private

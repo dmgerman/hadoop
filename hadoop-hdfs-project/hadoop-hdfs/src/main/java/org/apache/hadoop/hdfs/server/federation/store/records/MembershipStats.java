@@ -153,6 +153,23 @@ name|long
 name|getAvailableSpace
 parameter_list|()
 function_decl|;
+DECL|method|setProvidedSpace (long capacity)
+specifier|public
+specifier|abstract
+name|void
+name|setProvidedSpace
+parameter_list|(
+name|long
+name|capacity
+parameter_list|)
+function_decl|;
+DECL|method|getProvidedSpace ()
+specifier|public
+specifier|abstract
+name|long
+name|getProvidedSpace
+parameter_list|()
+function_decl|;
 DECL|method|setNumOfFiles (long files)
 specifier|public
 specifier|abstract

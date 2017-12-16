@@ -228,6 +228,24 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|common
+operator|.
+name|FileRegion
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|datanode
 operator|.
 name|DirectoryScanner
@@ -534,12 +552,18 @@ specifier|final
 name|FsVolumeSpi
 name|volume
 decl_stmt|;
+DECL|field|fileRegion
+specifier|private
+specifier|final
+name|FileRegion
+name|fileRegion
+decl_stmt|;
 comment|/**      * Get the file's length in async block scan      */
-DECL|field|blockFileLength
+DECL|field|blockLength
 specifier|private
 specifier|final
 name|long
-name|blockFileLength
+name|blockLength
 decl_stmt|;
 DECL|field|CONDENSED_PATH_REGEX
 specifier|private
@@ -731,7 +755,7 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|blockFileLength
+name|blockLength
 operator|=
 operator|(
 name|blockFile
@@ -802,6 +826,67 @@ name|volume
 operator|=
 name|vol
 expr_stmt|;
+name|this
+operator|.
+name|fileRegion
+operator|=
+literal|null
+expr_stmt|;
+block|}
+comment|/**      * Create a ScanInfo object for a block. This constructor will examine      * the block data and meta-data files.      *      * @param blockId the block ID      * @param vol the volume that contains the block      * @param fileRegion the file region (for provided blocks)      * @param length the length of the block data      */
+DECL|method|ScanInfo (long blockId, FsVolumeSpi vol, FileRegion fileRegion, long length)
+specifier|public
+name|ScanInfo
+parameter_list|(
+name|long
+name|blockId
+parameter_list|,
+name|FsVolumeSpi
+name|vol
+parameter_list|,
+name|FileRegion
+name|fileRegion
+parameter_list|,
+name|long
+name|length
+parameter_list|)
+block|{
+name|this
+operator|.
+name|blockId
+operator|=
+name|blockId
+expr_stmt|;
+name|this
+operator|.
+name|blockLength
+operator|=
+name|length
+expr_stmt|;
+name|this
+operator|.
+name|volume
+operator|=
+name|vol
+expr_stmt|;
+name|this
+operator|.
+name|fileRegion
+operator|=
+name|fileRegion
+expr_stmt|;
+name|this
+operator|.
+name|blockSuffix
+operator|=
+literal|null
+expr_stmt|;
+name|this
+operator|.
+name|metaSuffix
+operator|=
+literal|null
+expr_stmt|;
 block|}
 comment|/**      * Returns the block data file.      *      * @return the block data file      */
 DECL|method|getBlockFile ()
@@ -839,14 +924,14 @@ argument_list|)
 return|;
 block|}
 comment|/**      * Return the length of the data block. The length returned is the length      * cached when this object was created.      *      * @return the length of the data block      */
-DECL|method|getBlockFileLength ()
+DECL|method|getBlockLength ()
 specifier|public
 name|long
-name|getBlockFileLength
+name|getBlockLength
 parameter_list|()
 block|{
 return|return
-name|blockFileLength
+name|blockLength
 return|;
 block|}
 comment|/**      * Returns the block meta data file or null if there isn't one.      *      * @return the block meta data file      */
@@ -1088,6 +1173,16 @@ else|:
 name|HdfsConstants
 operator|.
 name|GRANDFATHER_GENERATION_STAMP
+return|;
+block|}
+DECL|method|getFileRegion ()
+specifier|public
+name|FileRegion
+name|getFileRegion
+parameter_list|()
+block|{
+return|return
+name|fileRegion
 return|;
 block|}
 block|}

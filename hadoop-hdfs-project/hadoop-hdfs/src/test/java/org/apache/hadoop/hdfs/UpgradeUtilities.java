@@ -2105,6 +2105,13 @@ name|getVersionFile
 argument_list|()
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|properties
+operator|!=
+literal|null
+condition|)
+block|{
 name|properties
 operator|.
 name|setProperty
@@ -2129,6 +2136,7 @@ argument_list|,
 name|properties
 argument_list|)
 expr_stmt|;
+block|}
 name|retVal
 index|[
 name|i
@@ -2418,7 +2426,7 @@ name|versionFiles
 return|;
 block|}
 comment|/**    * Create a<code>version</code> file for datanode inside the specified parent    * directory.  If such a file already exists, it will be overwritten.    * The given version string will be written to the file as the layout    * version. None of the parameters may be null.    *    * @param parent directory where namenode VERSION file is stored    * @param version StorageInfo to create VERSION file from    * @param bpid Block pool Id    */
-DECL|method|createDataNodeVersionFile (File[] parent, StorageInfo version, String bpid)
+DECL|method|createDataNodeVersionFile (File[] parent, StorageInfo version, String bpid, Configuration conf)
 specifier|public
 specifier|static
 name|void
@@ -2433,6 +2441,9 @@ name|version
 parameter_list|,
 name|String
 name|bpid
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 throws|throws
 name|IOException
@@ -2446,11 +2457,13 @@ argument_list|,
 name|bpid
 argument_list|,
 name|bpid
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Create a<code>version</code> file for datanode inside the specified parent    * directory.  If such a file already exists, it will be overwritten.    * The given version string will be written to the file as the layout    * version. None of the parameters may be null.    *    * @param parent directory where namenode VERSION file is stored    * @param version StorageInfo to create VERSION file from    * @param bpid Block pool Id    * @param bpidToWrite Block pool Id to write into the version file    */
-DECL|method|createDataNodeVersionFile (File[] parent, StorageInfo version, String bpid, String bpidToWrite)
+DECL|method|createDataNodeVersionFile (File[] parent, StorageInfo version, String bpid, String bpidToWrite, Configuration conf)
 specifier|public
 specifier|static
 name|void
@@ -2468,6 +2481,9 @@ name|bpid
 parameter_list|,
 name|String
 name|bpidToWrite
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 throws|throws
 name|IOException
@@ -2553,6 +2569,8 @@ argument_list|(
 name|sd
 argument_list|,
 literal|false
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 name|storage

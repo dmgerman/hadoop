@@ -780,6 +780,38 @@ return|return
 name|state
 return|;
 block|}
+DECL|method|setClusterID (String clusterID)
+specifier|public
+name|void
+name|setClusterID
+parameter_list|(
+name|String
+name|clusterID
+parameter_list|)
+block|{
+name|this
+operator|.
+name|clusterID
+operator|=
+name|clusterID
+expr_stmt|;
+block|}
+DECL|method|setBlockPoolID (String blockPoolID)
+specifier|public
+name|void
+name|setBlockPoolID
+parameter_list|(
+name|String
+name|blockPoolID
+parameter_list|)
+block|{
+name|this
+operator|.
+name|blockPoolID
+operator|=
+name|blockPoolID
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|toString ()

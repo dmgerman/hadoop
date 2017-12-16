@@ -249,6 +249,14 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
+DECL|field|providedSpace
+specifier|private
+name|long
+name|providedSpace
+init|=
+operator|-
+literal|1
+decl_stmt|;
 comment|/** If the fields are valid. */
 DECL|field|registrationValid
 specifier|private
@@ -728,7 +736,7 @@ name|deadDecomDatanodes
 return|;
 block|}
 comment|/**    * Set the filesystem information.    *    * @param available Available capacity.    * @param total Total capacity.    * @param numFiles Number of files.    * @param numBlocks Total number of blocks.    * @param numBlocksMissing Number of missing blocks.    * @param numBlocksPendingReplication Number of blocks pending replication.    * @param numBlocksUnderReplicated Number of blocks under replication.    * @param numBlocksPendingDeletion Number of blocks pending deletion.    */
-DECL|method|setNamesystemInfo (long available, long total, long numFiles, long numBlocks, long numBlocksMissing, long numBlocksPendingReplication, long numBlocksUnderReplicated, long numBlocksPendingDeletion)
+DECL|method|setNamesystemInfo (long available, long total, long numFiles, long numBlocks, long numBlocksMissing, long numBlocksPendingReplication, long numBlocksUnderReplicated, long numBlocksPendingDeletion, long providedSpace)
 specifier|public
 name|void
 name|setNamesystemInfo
@@ -756,6 +764,9 @@ name|numBlocksUnderReplicated
 parameter_list|,
 name|long
 name|numBlocksPendingDeletion
+parameter_list|,
+name|long
+name|providedSpace
 parameter_list|)
 block|{
 name|this
@@ -812,6 +823,12 @@ name|statsValid
 operator|=
 literal|true
 expr_stmt|;
+name|this
+operator|.
+name|providedSpace
+operator|=
+name|providedSpace
+expr_stmt|;
 block|}
 comment|/**    * Get the number of blocks.    *    * @return The number of blocks.    */
 DECL|method|getNumBlocks ()
@@ -863,6 +880,19 @@ return|return
 name|this
 operator|.
 name|availableSpace
+return|;
+block|}
+comment|/**    * Get the space occupied by provided storage.    *    * @return the provided capacity.    */
+DECL|method|getProvidedSpace ()
+specifier|public
+name|long
+name|getProvidedSpace
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|providedSpace
 return|;
 block|}
 comment|/**    * Get the number of missing blocks.    *    * @return Number of missing blocks.    */

@@ -1692,6 +1692,13 @@ name|getLong
 argument_list|(
 literal|"PendingDeletionBlocks"
 argument_list|)
+argument_list|,
+name|jsonObject
+operator|.
+name|getLong
+argument_list|(
+literal|"ProvidedCapacityTotal"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
