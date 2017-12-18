@@ -1313,6 +1313,14 @@ name|ExecutionType
 operator|.
 name|GUARANTEED
 decl_stmt|;
+comment|// Whether to auto promote opportunistic containers
+DECL|field|autoPromoteContainers
+specifier|private
+name|boolean
+name|autoPromoteContainers
+init|=
+literal|false
+decl_stmt|;
 comment|// log4j.properties file
 comment|// if available, add to local resources and set into classpath
 DECL|field|log4jPropFile
@@ -1922,6 +1930,19 @@ argument_list|,
 literal|true
 argument_list|,
 literal|"No. of containers on which the shell command needs to be executed"
+argument_list|)
+expr_stmt|;
+name|opts
+operator|.
+name|addOption
+argument_list|(
+literal|"promote_opportunistic_after_start"
+argument_list|,
+literal|false
+argument_list|,
+literal|"Flag to indicate whether to automatically promote opportunistic"
+operator|+
+literal|" containers to guaranteed."
 argument_list|)
 expr_stmt|;
 name|opts
@@ -2757,6 +2778,21 @@ name|valueOf
 argument_list|(
 name|containerTypeStr
 argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|cliParser
+operator|.
+name|hasOption
+argument_list|(
+literal|"promote_opportunistic_after_start"
+argument_list|)
+condition|)
+block|{
+name|autoPromoteContainers
+operator|=
+literal|true
 expr_stmt|;
 block|}
 name|containerMemory
@@ -4387,6 +4423,19 @@ name|valueOf
 argument_list|(
 name|containerType
 argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|autoPromoteContainers
+condition|)
+block|{
+name|vargs
+operator|.
+name|add
+argument_list|(
+literal|"--promote_opportunistic_after_start"
 argument_list|)
 expr_stmt|;
 block|}
