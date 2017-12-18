@@ -2234,7 +2234,7 @@ literal|0
 index|]
 return|;
 block|}
-comment|/**    * Extract unit and actual value from resource value.    * @param resourceValue Value of the resource    * @return Array containing unit and value. [0]=unit, [1]=value    * @throws IllegalArgumentExcpetion if units contain non alpha characters    */
+comment|/**    * Extract unit and actual value from resource value.    * @param resourceValue Value of the resource    * @return Array containing unit and value. [0]=unit, [1]=value    * @throws IllegalArgumentException if units contain non alpha characters    */
 DECL|method|parseResourceValue (String resourceValue)
 specifier|public
 specifier|static

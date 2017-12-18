@@ -223,7 +223,7 @@ argument_list|>
 name|localizedResources
 parameter_list|)
 function_decl|;
-comment|/**    * The vendor plugin configure an IP file to a device    * @param ipPath The absolute path of the IP file    * @param majorMinorNumber The device in format<major:minor>    * @return configure device ok or not    * */
+comment|/**    * The vendor plugin configure an IP file to a device    * @param ipPath The absolute path of the IP file    * @param majorMinorNumber The device in format&lt;major:minor&gt;    * @return configure device ok or not    * */
 DECL|method|configureIP (String ipPath, String majorMinorNumber)
 name|boolean
 name|configureIP

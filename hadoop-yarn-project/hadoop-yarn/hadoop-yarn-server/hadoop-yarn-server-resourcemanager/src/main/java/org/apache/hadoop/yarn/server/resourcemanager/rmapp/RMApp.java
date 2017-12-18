@@ -784,7 +784,7 @@ name|boolean
 name|isAppInCompletedStates
 parameter_list|()
 function_decl|;
-comment|/**    * Get the application -> queue placement context    * @return ApplicationPlacementContext    */
+comment|/**    * Get the application -&gt; queue placement context    * @return ApplicationPlacementContext    */
 DECL|method|getApplicationPlacementContext ()
 name|ApplicationPlacementContext
 name|getApplicationPlacementContext

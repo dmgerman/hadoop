@@ -1266,7 +1266,7 @@ argument_list|>
 name|updateErrors
 parameter_list|)
 block|{   }
-comment|/**    * Get the list of running containers as viewed by    *<code>ResourceManager</code> from previous application attempts which    * have not been reported to the Application Master yet.    *<br/>    * These containers were recovered by the RM after the application master    * had already registered. This may happen after RM restart when some NMs get    * delayed in connecting to the RM and reporting the active containers.    * Since they were not reported in the registration    * response, they are reported in the response to the AM heartbeat.    *    * @return the list of running containers as viewed by    *<code>ResourceManager</code> from previous application attempts.    */
+comment|/**    * Get the list of running containers as viewed by    *<code>ResourceManager</code> from previous application attempts which    * have not been reported to the Application Master yet.    *<br>    * These containers were recovered by the RM after the application master    * had already registered. This may happen after RM restart when some NMs get    * delayed in connecting to the RM and reporting the active containers.    * Since they were not reported in the registration    * response, they are reported in the response to the AM heartbeat.    *    * @return the list of running containers as viewed by    *<code>ResourceManager</code> from previous application attempts.    */
 annotation|@
 name|Public
 annotation|@
@@ -1281,7 +1281,7 @@ argument_list|>
 name|getContainersFromPreviousAttempts
 parameter_list|()
 function_decl|;
-comment|/**    * Set the list of running containers as viewed by    *<code>ResourceManager</code> from previous application attempts which have    * not been reported to the Application Master yet.    *<br/>    * These containers were recovered by the RM after the application master    * had already registered. This may happen after RM restart when some NMs get    * delayed in connecting to the RM and reporting the active containers.    * Since they were not reported in the registration    * response, they are reported in the response to the AM heartbeat.    *    * @param containersFromPreviousAttempt    *          the list of running containers as viewed by    *<code>ResourceManager</code> from previous application attempts.    */
+comment|/**    * Set the list of running containers as viewed by    *<code>ResourceManager</code> from previous application attempts which have    * not been reported to the Application Master yet.    *<br>    * These containers were recovered by the RM after the application master    * had already registered. This may happen after RM restart when some NMs get    * delayed in connecting to the RM and reporting the active containers.    * Since they were not reported in the registration    * response, they are reported in the response to the AM heartbeat.    *    * @param containersFromPreviousAttempt    *          the list of running containers as viewed by    *<code>ResourceManager</code> from previous application attempts.    */
 annotation|@
 name|Private
 annotation|@
