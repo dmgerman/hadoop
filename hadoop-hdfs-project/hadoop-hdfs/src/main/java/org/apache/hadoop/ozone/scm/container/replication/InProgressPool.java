@@ -517,14 +517,14 @@ name|containerProcessedCount
 decl_stmt|;
 DECL|field|maxWaitTime
 specifier|private
-name|int
+name|long
 name|maxWaitTime
 decl_stmt|;
-comment|/**    * Constructs an pool that is being processed.    *    * @param maxWaitTime - Maximum wait time in milliseconds.    * @param pool - Pool that we are working against    * @param nodeManager - Nodemanager    * @param poolManager - pool manager    * @param commandQueue - Command queue    * @param executorService - Shared Executor service.    */
-DECL|method|InProgressPool (int maxWaitTime, PeriodicPool pool, NodeManager nodeManager, NodePoolManager poolManager, CommandQueue commandQueue, ExecutorService executorService)
+comment|/**    * Constructs an pool that is being processed.    *  @param maxWaitTime - Maximum wait time in milliseconds.    * @param pool - Pool that we are working against    * @param nodeManager - Nodemanager    * @param poolManager - pool manager    * @param commandQueue - Command queue    * @param executorService - Shared Executor service.    */
+DECL|method|InProgressPool (long maxWaitTime, PeriodicPool pool, NodeManager nodeManager, NodePoolManager poolManager, CommandQueue commandQueue, ExecutorService executorService)
 name|InProgressPool
 parameter_list|(
-name|int
+name|long
 name|maxWaitTime
 parameter_list|,
 name|PeriodicPool

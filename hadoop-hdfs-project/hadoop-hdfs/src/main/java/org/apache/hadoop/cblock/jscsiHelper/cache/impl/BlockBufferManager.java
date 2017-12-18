@@ -154,7 +154,7 @@ name|cblock
 operator|.
 name|CBlockConfigKeys
 operator|.
-name|DFS_CBLOCK_BLOCK_BUFFER_FLUSH_INTERVAL_SECONDS
+name|DFS_CBLOCK_BLOCK_BUFFER_FLUSH_INTERVAL
 import|;
 end_import
 
@@ -170,7 +170,7 @@ name|cblock
 operator|.
 name|CBlockConfigKeys
 operator|.
-name|DFS_CBLOCK_BLOCK_BUFFER_FLUSH_INTERVAL_SECONDS_DEFAULT
+name|DFS_CBLOCK_BLOCK_BUFFER_FLUSH_INTERVAL_DEFAULT
 import|;
 end_import
 
@@ -218,7 +218,7 @@ name|cblock
 operator|.
 name|CBlockConfigKeys
 operator|.
-name|DFS_CBLOCK_CACHE_KEEP_ALIVE_SECONDS
+name|DFS_CBLOCK_CACHE_KEEP_ALIVE
 import|;
 end_import
 
@@ -234,7 +234,7 @@ name|cblock
 operator|.
 name|CBlockConfigKeys
 operator|.
-name|DFS_CBLOCK_CACHE_KEEP_ALIVE_SECONDS_DEFAULT
+name|DFS_CBLOCK_CACHE_KEEP_ALIVE_DEFAULT
 import|;
 end_import
 
@@ -338,7 +338,7 @@ decl_stmt|;
 DECL|field|intervalSeconds
 specifier|private
 specifier|final
-name|int
+name|long
 name|intervalSeconds
 decl_stmt|;
 DECL|field|acquireQueue
@@ -396,11 +396,15 @@ name|intervalSeconds
 operator|=
 name|config
 operator|.
-name|getInt
+name|getTimeDuration
 argument_list|(
-name|DFS_CBLOCK_BLOCK_BUFFER_FLUSH_INTERVAL_SECONDS
+name|DFS_CBLOCK_BLOCK_BUFFER_FLUSH_INTERVAL
 argument_list|,
-name|DFS_CBLOCK_BLOCK_BUFFER_FLUSH_INTERVAL_SECONDS_DEFAULT
+name|DFS_CBLOCK_BLOCK_BUFFER_FLUSH_INTERVAL_DEFAULT
+argument_list|,
+name|TimeUnit
+operator|.
+name|SECONDS
 argument_list|)
 expr_stmt|;
 name|long
@@ -408,11 +412,15 @@ name|keepAlive
 init|=
 name|config
 operator|.
-name|getLong
+name|getTimeDuration
 argument_list|(
-name|DFS_CBLOCK_CACHE_KEEP_ALIVE_SECONDS
+name|DFS_CBLOCK_CACHE_KEEP_ALIVE
 argument_list|,
-name|DFS_CBLOCK_CACHE_KEEP_ALIVE_SECONDS_DEFAULT
+name|DFS_CBLOCK_CACHE_KEEP_ALIVE_DEFAULT
+argument_list|,
+name|TimeUnit
+operator|.
+name|SECONDS
 argument_list|)
 decl_stmt|;
 name|this

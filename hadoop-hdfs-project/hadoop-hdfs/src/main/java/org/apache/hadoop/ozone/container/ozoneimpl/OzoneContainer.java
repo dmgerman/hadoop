@@ -562,7 +562,7 @@ name|ozone
 operator|.
 name|OzoneConfigKeys
 operator|.
-name|OZONE_BLOCK_DELETING_SERVICE_INTERVAL_MS
+name|OZONE_BLOCK_DELETING_SERVICE_INTERVAL
 import|;
 end_import
 
@@ -578,7 +578,7 @@ name|ozone
 operator|.
 name|OzoneConfigKeys
 operator|.
-name|OZONE_BLOCK_DELETING_SERVICE_INTERVAL_MS_DEFAULT
+name|OZONE_BLOCK_DELETING_SERVICE_INTERVAL_DEFAULT
 import|;
 end_import
 
@@ -858,16 +858,20 @@ operator|.
 name|keyManager
 argument_list|)
 expr_stmt|;
-name|int
+name|long
 name|svcInterval
 init|=
 name|ozoneConfig
 operator|.
-name|getInt
+name|getTimeDuration
 argument_list|(
-name|OZONE_BLOCK_DELETING_SERVICE_INTERVAL_MS
+name|OZONE_BLOCK_DELETING_SERVICE_INTERVAL
 argument_list|,
-name|OZONE_BLOCK_DELETING_SERVICE_INTERVAL_MS_DEFAULT
+name|OZONE_BLOCK_DELETING_SERVICE_INTERVAL_DEFAULT
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
 argument_list|)
 decl_stmt|;
 name|long

@@ -399,7 +399,7 @@ specifier|private
 name|int
 name|blockDeleteLimitSize
 decl_stmt|;
-DECL|method|SCMBlockDeletingService (DeletedBlockLog deletedBlockLog, Mapping mapper, NodeManager nodeManager, int interval, long serviceTimeout, Configuration conf)
+DECL|method|SCMBlockDeletingService (DeletedBlockLog deletedBlockLog, Mapping mapper, NodeManager nodeManager, long interval, long serviceTimeout, Configuration conf)
 specifier|public
 name|SCMBlockDeletingService
 parameter_list|(
@@ -412,7 +412,7 @@ parameter_list|,
 name|NodeManager
 name|nodeManager
 parameter_list|,
-name|int
+name|long
 name|interval
 parameter_list|,
 name|long

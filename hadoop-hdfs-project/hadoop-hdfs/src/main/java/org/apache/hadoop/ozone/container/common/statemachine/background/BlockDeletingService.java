@@ -551,14 +551,14 @@ name|BLOCK_DELETING_SERVICE_CORE_POOL_SIZE
 init|=
 literal|10
 decl_stmt|;
-DECL|method|BlockDeletingService (ContainerManager containerManager, int serviceInterval, long serviceTimeout, Configuration conf)
+DECL|method|BlockDeletingService (ContainerManager containerManager, long serviceInterval, long serviceTimeout, Configuration conf)
 specifier|public
 name|BlockDeletingService
 parameter_list|(
 name|ContainerManager
 name|containerManager
 parameter_list|,
-name|int
+name|long
 name|serviceInterval
 parameter_list|,
 name|long

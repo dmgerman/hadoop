@@ -562,6 +562,18 @@ name|util
 operator|.
 name|concurrent
 operator|.
+name|TimeUnit
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
 name|TimeoutException
 import|;
 end_import
@@ -578,7 +590,7 @@ name|ozone
 operator|.
 name|OzoneConfigKeys
 operator|.
-name|OZONE_BLOCK_DELETING_SERVICE_INTERVAL_MS
+name|OZONE_BLOCK_DELETING_SERVICE_INTERVAL
 import|;
 end_import
 
@@ -1524,11 +1536,15 @@ argument_list|()
 decl_stmt|;
 name|conf
 operator|.
-name|setInt
+name|setTimeDuration
 argument_list|(
-name|OZONE_BLOCK_DELETING_SERVICE_INTERVAL_MS
+name|OZONE_BLOCK_DELETING_SERVICE_INTERVAL
 argument_list|,
 literal|500
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
 argument_list|)
 expr_stmt|;
 name|conf

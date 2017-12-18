@@ -165,6 +165,18 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+import|;
+end_import
+
+begin_import
 import|import static
 name|java
 operator|.
@@ -256,7 +268,7 @@ name|scm
 operator|.
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_DEADNODE_INTERVAL_MS
+name|OZONE_SCM_DEADNODE_INTERVAL
 import|;
 end_import
 
@@ -272,7 +284,7 @@ name|scm
 operator|.
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_HEARTBEAT_INTERVAL_SECONDS
+name|OZONE_SCM_HEARTBEAT_INTERVAL
 import|;
 end_import
 
@@ -288,7 +300,7 @@ name|scm
 operator|.
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_HEARTBEAT_PROCESS_INTERVAL_MS
+name|OZONE_SCM_HEARTBEAT_PROCESS_INTERVAL
 import|;
 end_import
 
@@ -304,7 +316,7 @@ name|scm
 operator|.
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_STALENODE_INTERVAL_MS
+name|OZONE_SCM_STALENODE_INTERVAL
 import|;
 end_import
 
@@ -373,18 +385,22 @@ literal|100
 decl_stmt|;
 name|conf
 operator|.
-name|setInt
+name|setTimeDuration
 argument_list|(
-name|OZONE_SCM_HEARTBEAT_PROCESS_INTERVAL_MS
+name|OZONE_SCM_HEARTBEAT_PROCESS_INTERVAL
 argument_list|,
 name|interval
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
 argument_list|)
 expr_stmt|;
 name|conf
 operator|.
 name|setTimeDuration
 argument_list|(
-name|OZONE_SCM_HEARTBEAT_INTERVAL_SECONDS
+name|OZONE_SCM_HEARTBEAT_INTERVAL
 argument_list|,
 literal|1
 argument_list|,
@@ -393,24 +409,24 @@ argument_list|)
 expr_stmt|;
 name|conf
 operator|.
-name|setInt
+name|setTimeDuration
 argument_list|(
-name|OZONE_SCM_STALENODE_INTERVAL_MS
+name|OZONE_SCM_STALENODE_INTERVAL
 argument_list|,
 literal|3
-operator|*
-literal|1000
+argument_list|,
+name|SECONDS
 argument_list|)
 expr_stmt|;
 name|conf
 operator|.
-name|setInt
+name|setTimeDuration
 argument_list|(
-name|OZONE_SCM_DEADNODE_INTERVAL_MS
+name|OZONE_SCM_DEADNODE_INTERVAL
 argument_list|,
 literal|6
-operator|*
-literal|1000
+argument_list|,
+name|SECONDS
 argument_list|)
 expr_stmt|;
 name|cluster

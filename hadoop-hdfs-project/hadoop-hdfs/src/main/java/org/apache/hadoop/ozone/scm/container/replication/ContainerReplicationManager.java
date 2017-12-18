@@ -406,7 +406,7 @@ name|scm
 operator|.
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_CONTAINER_REPORTS_WAIT_TIMEOUT_SECONDS
+name|OZONE_SCM_CONTAINER_REPORTS_WAIT_TIMEOUT
 import|;
 end_import
 
@@ -438,7 +438,7 @@ name|scm
 operator|.
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_CONTAINER_REPORT_PROCESSING_INTERVAL_SECONDS
+name|OZONE_SCM_CONTAINER_REPORT_PROCESSING_INTERVAL
 import|;
 end_import
 
@@ -541,7 +541,7 @@ decl_stmt|;
 DECL|field|containerProcessingLag
 specifier|private
 specifier|final
-name|int
+name|long
 name|containerProcessingLag
 decl_stmt|;
 DECL|field|runnable
@@ -559,7 +559,7 @@ decl_stmt|;
 DECL|field|maxPoolWait
 specifier|private
 specifier|final
-name|int
+name|long
 name|maxPoolWait
 decl_stmt|;
 DECL|field|poolProcessCount
@@ -638,11 +638,15 @@ name|containerProcessingLag
 operator|=
 name|conf
 operator|.
-name|getInt
+name|getTimeDuration
 argument_list|(
-name|OZONE_SCM_CONTAINER_REPORT_PROCESSING_INTERVAL_SECONDS
+name|OZONE_SCM_CONTAINER_REPORT_PROCESSING_INTERVAL
 argument_list|,
 name|OZONE_SCM_CONTAINER_REPORT_PROCESSING_INTERVAL_DEFAULT
+argument_list|,
+name|TimeUnit
+operator|.
+name|SECONDS
 argument_list|)
 operator|*
 literal|1000
@@ -665,14 +669,16 @@ name|maxPoolWait
 operator|=
 name|conf
 operator|.
-name|getInt
+name|getTimeDuration
 argument_list|(
-name|OZONE_SCM_CONTAINER_REPORTS_WAIT_TIMEOUT_SECONDS
+name|OZONE_SCM_CONTAINER_REPORTS_WAIT_TIMEOUT
 argument_list|,
 name|OZONE_SCM_CONTAINER_REPORTS_WAIT_TIMEOUT_DEFAULT
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
 argument_list|)
-operator|*
-literal|1000
 expr_stmt|;
 name|this
 operator|.

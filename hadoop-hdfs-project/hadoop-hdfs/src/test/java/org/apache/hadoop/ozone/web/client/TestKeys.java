@@ -731,6 +731,18 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -852,13 +864,17 @@ decl_stmt|;
 comment|// Set short block deleting service interval to speed up deletions.
 name|conf
 operator|.
-name|setInt
+name|setTimeDuration
 argument_list|(
 name|OzoneConfigKeys
 operator|.
-name|OZONE_BLOCK_DELETING_SERVICE_INTERVAL_MS
+name|OZONE_BLOCK_DELETING_SERVICE_INTERVAL
 argument_list|,
 literal|1000
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
 argument_list|)
 expr_stmt|;
 name|path

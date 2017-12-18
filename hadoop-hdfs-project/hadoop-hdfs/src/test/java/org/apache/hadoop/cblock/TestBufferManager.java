@@ -31,6 +31,20 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+operator|.
+name|SECONDS
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -390,7 +404,7 @@ name|cblock
 operator|.
 name|CBlockConfigKeys
 operator|.
-name|DFS_CBLOCK_BLOCK_BUFFER_FLUSH_INTERVAL_SECONDS
+name|DFS_CBLOCK_BLOCK_BUFFER_FLUSH_INTERVAL
 import|;
 end_import
 
@@ -1362,11 +1376,13 @@ argument_list|)
 expr_stmt|;
 name|flushTestConfig
 operator|.
-name|setInt
+name|setTimeDuration
 argument_list|(
-name|DFS_CBLOCK_BLOCK_BUFFER_FLUSH_INTERVAL_SECONDS
+name|DFS_CBLOCK_BLOCK_BUFFER_FLUSH_INTERVAL
 argument_list|,
 literal|5
+argument_list|,
+name|SECONDS
 argument_list|)
 expr_stmt|;
 name|String
@@ -1984,11 +2000,13 @@ argument_list|)
 expr_stmt|;
 name|flushTestConfig
 operator|.
-name|setInt
+name|setTimeDuration
 argument_list|(
-name|DFS_CBLOCK_BLOCK_BUFFER_FLUSH_INTERVAL_SECONDS
+name|DFS_CBLOCK_BLOCK_BUFFER_FLUSH_INTERVAL
 argument_list|,
 literal|120
+argument_list|,
+name|SECONDS
 argument_list|)
 expr_stmt|;
 name|String
@@ -2334,11 +2352,13 @@ argument_list|)
 expr_stmt|;
 name|flushTestConfig
 operator|.
-name|setInt
+name|setTimeDuration
 argument_list|(
-name|DFS_CBLOCK_BLOCK_BUFFER_FLUSH_INTERVAL_SECONDS
+name|DFS_CBLOCK_BLOCK_BUFFER_FLUSH_INTERVAL
 argument_list|,
 literal|5
+argument_list|,
+name|SECONDS
 argument_list|)
 expr_stmt|;
 name|String

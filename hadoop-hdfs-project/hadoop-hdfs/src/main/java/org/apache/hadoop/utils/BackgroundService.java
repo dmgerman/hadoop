@@ -267,7 +267,7 @@ decl_stmt|;
 DECL|field|interval
 specifier|private
 specifier|final
-name|int
+name|long
 name|interval
 decl_stmt|;
 DECL|field|serviceTimeout
@@ -282,14 +282,14 @@ specifier|final
 name|TimeUnit
 name|unit
 decl_stmt|;
-DECL|method|BackgroundService (String serviceName, int interval, TimeUnit unit, int threadPoolSize, long serviceTimeout)
+DECL|method|BackgroundService (String serviceName, long interval, TimeUnit unit, int threadPoolSize, long serviceTimeout)
 specifier|public
 name|BackgroundService
 parameter_list|(
 name|String
 name|serviceName
 parameter_list|,
-name|int
+name|long
 name|interval
 parameter_list|,
 name|TimeUnit

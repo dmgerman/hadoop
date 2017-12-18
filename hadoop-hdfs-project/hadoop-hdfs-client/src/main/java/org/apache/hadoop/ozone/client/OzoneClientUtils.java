@@ -546,7 +546,7 @@ name|scm
 operator|.
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_DEADNODE_INTERVAL_MS
+name|OZONE_SCM_DEADNODE_INTERVAL
 import|;
 end_import
 
@@ -562,7 +562,7 @@ name|scm
 operator|.
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_HEARTBEAT_INTERVAL_SECONDS
+name|OZONE_SCM_HEARTBEAT_INTERVAL
 import|;
 end_import
 
@@ -610,7 +610,7 @@ name|scm
 operator|.
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_HEARTBEAT_PROCESS_INTERVAL_MS
+name|OZONE_SCM_HEARTBEAT_PROCESS_INTERVAL
 import|;
 end_import
 
@@ -674,7 +674,7 @@ name|scm
 operator|.
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_STALENODE_INTERVAL_MS
+name|OZONE_SCM_STALENODE_INTERVAL
 import|;
 end_import
 
@@ -2263,13 +2263,17 @@ block|{
 return|return
 name|conf
 operator|.
-name|getLong
+name|getTimeDuration
 argument_list|(
-name|OZONE_SCM_HEARTBEAT_PROCESS_INTERVAL_MS
+name|OZONE_SCM_HEARTBEAT_PROCESS_INTERVAL
 argument_list|,
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_HEARTBEAT_PROCESS_INTERVAL_MS_DEFAULT
+name|OZONE_SCM_HEARTBEAT_PROCESS_INTERVAL_DEFAULT
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
 argument_list|)
 return|;
 block|}
@@ -2289,11 +2293,11 @@ name|conf
 operator|.
 name|getTimeDuration
 argument_list|(
-name|OZONE_SCM_HEARTBEAT_INTERVAL_SECONDS
+name|OZONE_SCM_HEARTBEAT_INTERVAL
 argument_list|,
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_HEARBEAT_INTERVAL_SECONDS_DEFAULT
+name|OZONE_SCM_HEARBEAT_INTERVAL_DEFAULT
 argument_list|,
 name|TimeUnit
 operator|.
@@ -2313,15 +2317,19 @@ name|conf
 parameter_list|)
 block|{
 name|long
-name|staleNodeIntevalMs
+name|staleNodeIntervalMs
 init|=
 name|conf
 operator|.
-name|getLong
+name|getTimeDuration
 argument_list|(
-name|OZONE_SCM_STALENODE_INTERVAL_MS
+name|OZONE_SCM_STALENODE_INTERVAL
 argument_list|,
 name|OZONE_SCM_STALENODE_INTERVAL_DEFAULT
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
 argument_list|)
 decl_stmt|;
 name|long
@@ -2351,7 +2359,7 @@ try|try
 block|{
 name|sanitizeUserArgs
 argument_list|(
-name|staleNodeIntevalMs
+name|staleNodeIntervalMs
 argument_list|,
 name|heartbeatThreadFrequencyMs
 argument_list|,
@@ -2371,11 +2379,11 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Stale Node Interval MS is cannot be honored due to "
+literal|"Stale Node Interval is cannot be honored due to "
 operator|+
 literal|"mis-configured {}. ex:  {}"
 argument_list|,
-name|OZONE_SCM_HEARTBEAT_PROCESS_INTERVAL_MS
+name|OZONE_SCM_HEARTBEAT_PROCESS_INTERVAL
 argument_list|,
 name|ex
 argument_list|)
@@ -2390,7 +2398,7 @@ try|try
 block|{
 name|sanitizeUserArgs
 argument_list|(
-name|staleNodeIntevalMs
+name|staleNodeIntervalMs
 argument_list|,
 name|heartbeatIntervalMs
 argument_list|,
@@ -2414,7 +2422,7 @@ literal|"Stale Node Interval MS is cannot be honored due to "
 operator|+
 literal|"mis-configured {}. ex:  {}"
 argument_list|,
-name|OZONE_SCM_HEARTBEAT_INTERVAL_SECONDS
+name|OZONE_SCM_HEARTBEAT_INTERVAL
 argument_list|,
 name|ex
 argument_list|)
@@ -2424,7 +2432,7 @@ name|ex
 throw|;
 block|}
 return|return
-name|staleNodeIntevalMs
+name|staleNodeIntervalMs
 return|;
 block|}
 comment|/**    * Gets the interval for dead node flagging. This has to be a value that is    * greater than stale node value,  and by transitive relation we also know    * that this value is greater than heartbeat interval and heartbeatProcess    * Interval.    *    * @param conf - Configuration.    * @return - the interval for dead node flagging.    */
@@ -2451,11 +2459,15 @@ name|deadNodeIntervalMs
 init|=
 name|conf
 operator|.
-name|getLong
+name|getTimeDuration
 argument_list|(
-name|OZONE_SCM_DEADNODE_INTERVAL_MS
+name|OZONE_SCM_DEADNODE_INTERVAL
 argument_list|,
 name|OZONE_SCM_DEADNODE_INTERVAL_DEFAULT
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
 argument_list|)
 decl_stmt|;
 try|try
@@ -2488,7 +2500,7 @@ literal|"Dead Node Interval MS is cannot be honored due to "
 operator|+
 literal|"mis-configured {}. ex:  {}"
 argument_list|,
-name|OZONE_SCM_STALENODE_INTERVAL_MS
+name|OZONE_SCM_STALENODE_INTERVAL
 argument_list|,
 name|ex
 argument_list|)
@@ -2754,19 +2766,19 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
-name|int
+name|long
 name|socketTimeout
 init|=
 name|OzoneConfigKeys
 operator|.
-name|OZONE_CLIENT_SOCKET_TIMEOUT_MS_DEFAULT
+name|OZONE_CLIENT_SOCKET_TIMEOUT_DEFAULT
 decl_stmt|;
-name|int
+name|long
 name|connectionTimeout
 init|=
 name|OzoneConfigKeys
 operator|.
-name|OZONE_CLIENT_CONNECTION_TIMEOUT_MS_DEFAULT
+name|OZONE_CLIENT_CONNECTION_TIMEOUT_DEFAULT
 decl_stmt|;
 if|if
 condition|(
@@ -2779,30 +2791,38 @@ name|socketTimeout
 operator|=
 name|conf
 operator|.
-name|getInt
+name|getTimeDuration
 argument_list|(
 name|OzoneConfigKeys
 operator|.
-name|OZONE_CLIENT_SOCKET_TIMEOUT_MS
+name|OZONE_CLIENT_SOCKET_TIMEOUT
 argument_list|,
 name|OzoneConfigKeys
 operator|.
-name|OZONE_CLIENT_SOCKET_TIMEOUT_MS_DEFAULT
+name|OZONE_CLIENT_SOCKET_TIMEOUT_DEFAULT
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
 argument_list|)
 expr_stmt|;
 name|connectionTimeout
 operator|=
 name|conf
 operator|.
-name|getInt
+name|getTimeDuration
 argument_list|(
 name|OzoneConfigKeys
 operator|.
-name|OZONE_CLIENT_CONNECTION_TIMEOUT_MS
+name|OZONE_CLIENT_CONNECTION_TIMEOUT
 argument_list|,
 name|OzoneConfigKeys
 operator|.
-name|OZONE_CLIENT_CONNECTION_TIMEOUT_MS_DEFAULT
+name|OZONE_CLIENT_CONNECTION_TIMEOUT_DEFAULT
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
 argument_list|)
 expr_stmt|;
 block|}
@@ -2823,12 +2843,22 @@ argument_list|()
 operator|.
 name|setSocketTimeout
 argument_list|(
+name|Math
+operator|.
+name|toIntExact
+argument_list|(
 name|socketTimeout
+argument_list|)
 argument_list|)
 operator|.
 name|setConnectTimeout
 argument_list|(
+name|Math
+operator|.
+name|toIntExact
+argument_list|(
 name|connectionTimeout
+argument_list|)
 argument_list|)
 operator|.
 name|build

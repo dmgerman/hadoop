@@ -460,7 +460,7 @@ name|scm
 operator|.
 name|ScmConfigKeys
 operator|.
-name|OZONE_SCM_CONTAINER_REPORTS_WAIT_TIMEOUT_SECONDS
+name|OZONE_SCM_CONTAINER_REPORTS_WAIT_TIMEOUT
 import|;
 end_import
 
@@ -808,11 +808,15 @@ argument_list|()
 decl_stmt|;
 name|config
 operator|.
-name|setInt
+name|setTimeDuration
 argument_list|(
-name|OZONE_SCM_CONTAINER_REPORTS_WAIT_TIMEOUT_SECONDS
+name|OZONE_SCM_CONTAINER_REPORTS_WAIT_TIMEOUT
 argument_list|,
 literal|1
+argument_list|,
+name|TimeUnit
+operator|.
+name|SECONDS
 argument_list|)
 expr_stmt|;
 name|replicationManager

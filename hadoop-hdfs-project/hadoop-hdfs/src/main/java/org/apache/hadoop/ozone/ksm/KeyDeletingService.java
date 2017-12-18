@@ -310,7 +310,7 @@ specifier|final
 name|int
 name|keyLimitPerTask
 decl_stmt|;
-DECL|method|KeyDeletingService (ScmBlockLocationProtocol scmClient, KeyManager manager, int serviceInterval, long serviceTimeout, Configuration conf)
+DECL|method|KeyDeletingService (ScmBlockLocationProtocol scmClient, KeyManager manager, long serviceInterval, long serviceTimeout, Configuration conf)
 specifier|public
 name|KeyDeletingService
 parameter_list|(
@@ -320,7 +320,7 @@ parameter_list|,
 name|KeyManager
 name|manager
 parameter_list|,
-name|int
+name|long
 name|serviceInterval
 parameter_list|,
 name|long

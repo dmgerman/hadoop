@@ -616,7 +616,7 @@ name|cblock
 operator|.
 name|CBlockConfigKeys
 operator|.
-name|DFS_CBLOCK_CACHE_KEEP_ALIVE_SECONDS
+name|DFS_CBLOCK_CACHE_KEEP_ALIVE
 import|;
 end_import
 
@@ -632,7 +632,7 @@ name|cblock
 operator|.
 name|CBlockConfigKeys
 operator|.
-name|DFS_CBLOCK_CACHE_KEEP_ALIVE_SECONDS_DEFAULT
+name|DFS_CBLOCK_CACHE_KEEP_ALIVE_DEFAULT
 import|;
 end_import
 
@@ -955,11 +955,15 @@ name|keepAlive
 init|=
 name|config
 operator|.
-name|getLong
+name|getTimeDuration
 argument_list|(
-name|DFS_CBLOCK_CACHE_KEEP_ALIVE_SECONDS
+name|DFS_CBLOCK_CACHE_KEEP_ALIVE
 argument_list|,
-name|DFS_CBLOCK_CACHE_KEEP_ALIVE_SECONDS_DEFAULT
+name|DFS_CBLOCK_CACHE_KEEP_ALIVE_DEFAULT
+argument_list|,
+name|TimeUnit
+operator|.
+name|SECONDS
 argument_list|)
 decl_stmt|;
 name|int

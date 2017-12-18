@@ -646,11 +646,15 @@ argument_list|()
 expr_stmt|;
 name|conf
 operator|.
-name|setInt
+name|setTimeDuration
 argument_list|(
 name|OZONE_SCM_HEARTBEAT_RPC_TIMEOUT
 argument_list|,
 literal|500
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
 argument_list|)
 expr_stmt|;
 name|conf
