@@ -393,6 +393,11 @@ specifier|private
 name|Configuration
 name|conf
 decl_stmt|;
+DECL|field|writeHelper
+specifier|private
+name|WriteOperationHelper
+name|writeHelper
+decl_stmt|;
 DECL|method|MockS3AFileSystem (S3AFileSystem mock, Pair<StagingTestBase.ClientResults, StagingTestBase.ClientErrors> outcome)
 specifier|public
 name|MockS3AFileSystem
@@ -588,6 +593,28 @@ name|conf
 operator|=
 name|originalConf
 expr_stmt|;
+name|writeHelper
+operator|=
+operator|new
+name|WriteOperationHelper
+argument_list|(
+name|this
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getWriteOperationHelper ()
+specifier|public
+name|WriteOperationHelper
+name|getWriteOperationHelper
+parameter_list|()
+block|{
+return|return
+name|writeHelper
+return|;
 block|}
 annotation|@
 name|Override

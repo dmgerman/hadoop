@@ -614,6 +614,16 @@ name|KRB5_CCNAME
 init|=
 literal|"KRB5CCNAME"
 decl_stmt|;
+comment|/**    * Location of main kerberos configuration file as passed down via an    * environment variable.    */
+DECL|field|KRB5_CONFIG
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KRB5_CONFIG
+init|=
+literal|"KRB5_CONFIG"
+decl_stmt|;
 DECL|field|JAVA_SECURITY_KRB5_CONF
 specifier|public
 specifier|static
@@ -1772,6 +1782,8 @@ name|HADOOP_JAAS_DEBUG
 block|,
 name|KRB5_CCNAME
 block|,
+name|KRB5_CONFIG
+block|,
 name|HADOOP_USER_NAME
 block|,
 name|HADOOP_PROXY_USER
@@ -2678,7 +2690,7 @@ name|System
 operator|.
 name|getenv
 argument_list|(
-name|KRB5_CCNAME
+name|KRB5_CONFIG
 argument_list|)
 decl_stmt|;
 if|if
@@ -2692,7 +2704,7 @@ name|println
 argument_list|(
 literal|"Setting kerberos path from environment variable %s: \"%s\""
 argument_list|,
-name|KRB5_CCNAME
+name|KRB5_CONFIG
 argument_list|,
 name|krb5name
 argument_list|)
@@ -2714,9 +2726,9 @@ literal|"Warning - both %s and %s were set - %s takes priority"
 argument_list|,
 name|JAVA_SECURITY_KRB5_CONF
 argument_list|,
-name|KRB5_CCNAME
+name|KRB5_CONFIG
 argument_list|,
-name|KRB5_CCNAME
+name|KRB5_CONFIG
 argument_list|)
 expr_stmt|;
 block|}
@@ -4054,6 +4066,8 @@ control|)
 block|{
 name|println
 argument_list|(
+literal|"%s"
+argument_list|,
 name|line
 argument_list|)
 expr_stmt|;

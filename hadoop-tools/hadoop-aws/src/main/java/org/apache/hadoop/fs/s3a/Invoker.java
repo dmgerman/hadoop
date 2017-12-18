@@ -50,6 +50,16 @@ end_import
 
 begin_import
 import|import
+name|javax
+operator|.
+name|annotation
+operator|.
+name|Nullable
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|amazonaws
@@ -526,7 +536,7 @@ annotation|@
 name|Retries
 operator|.
 name|RetryTranslated
-DECL|method|retry (String action, String path, boolean idempotent, Operation<T> operation)
+DECL|method|retry (String action, @Nullable String path, boolean idempotent, Operation<T> operation)
 specifier|public
 parameter_list|<
 name|T
@@ -537,6 +547,8 @@ parameter_list|(
 name|String
 name|action
 parameter_list|,
+annotation|@
+name|Nullable
 name|String
 name|path
 parameter_list|,
@@ -572,7 +584,7 @@ annotation|@
 name|Retries
 operator|.
 name|RetryTranslated
-DECL|method|retry ( String action, String path, boolean idempotent, Retried retrying, Operation<T> operation)
+DECL|method|retry ( String action, @Nullable String path, boolean idempotent, Retried retrying, Operation<T> operation)
 specifier|public
 parameter_list|<
 name|T
@@ -583,6 +595,8 @@ parameter_list|(
 name|String
 name|action
 parameter_list|,
+annotation|@
+name|Nullable
 name|String
 name|path
 parameter_list|,
@@ -1081,7 +1095,7 @@ return|;
 block|}
 block|}
 comment|/**    * Take an action and path and produce a string for logging.    * @param action action    * @param path path (may be null or empty)    * @return string for logs    */
-DECL|method|toDescription (String action, String path)
+DECL|method|toDescription (String action, @Nullable String path)
 specifier|private
 specifier|static
 name|String
@@ -1090,6 +1104,8 @@ parameter_list|(
 name|String
 name|action
 parameter_list|,
+annotation|@
+name|Nullable
 name|String
 name|path
 parameter_list|)
