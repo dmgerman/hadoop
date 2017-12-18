@@ -152,7 +152,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Random
+name|StringTokenizer
 import|;
 end_import
 
@@ -162,7 +162,9 @@ name|java
 operator|.
 name|util
 operator|.
-name|StringTokenizer
+name|concurrent
+operator|.
+name|ThreadLocalRandom
 import|;
 end_import
 
@@ -3360,7 +3362,7 @@ name|IOStatMapper
 block|{
 DECL|field|rnd
 specifier|private
-name|Random
+name|ThreadLocalRandom
 name|rnd
 decl_stmt|;
 DECL|field|fileSize
@@ -3411,8 +3413,9 @@ parameter_list|()
 block|{
 name|rnd
 operator|=
-operator|new
-name|Random
+name|ThreadLocalRandom
+operator|.
+name|current
 argument_list|()
 expr_stmt|;
 block|}
@@ -3652,14 +3655,9 @@ condition|)
 return|return
 name|rnd
 operator|.
-name|nextInt
-argument_list|(
-call|(
-name|int
-call|)
+name|nextLong
 argument_list|(
 name|fileSize
-argument_list|)
 argument_list|)
 return|;
 if|if
