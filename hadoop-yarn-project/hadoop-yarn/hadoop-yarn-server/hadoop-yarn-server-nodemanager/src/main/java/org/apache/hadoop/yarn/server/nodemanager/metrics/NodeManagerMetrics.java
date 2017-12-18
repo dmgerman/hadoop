@@ -1114,7 +1114,7 @@ argument_list|()
 expr_stmt|;
 name|availableGB
 operator|.
-name|incr
+name|set
 argument_list|(
 operator|(
 name|int
