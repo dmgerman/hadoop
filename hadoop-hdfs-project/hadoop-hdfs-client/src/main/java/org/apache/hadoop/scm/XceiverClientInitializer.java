@@ -158,6 +158,18 @@ name|Pipeline
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|Semaphore
+import|;
+end_import
+
 begin_comment
 comment|/**  * Setup the netty pipeline.  */
 end_comment
@@ -179,13 +191,22 @@ specifier|final
 name|Pipeline
 name|pipeline
 decl_stmt|;
+DECL|field|semaphore
+specifier|private
+specifier|final
+name|Semaphore
+name|semaphore
+decl_stmt|;
 comment|/**    * Constructs an Initializer for the client pipeline.    * @param pipeline  - Pipeline.    */
-DECL|method|XceiverClientInitializer (Pipeline pipeline)
+DECL|method|XceiverClientInitializer (Pipeline pipeline, Semaphore semaphore)
 specifier|public
 name|XceiverClientInitializer
 parameter_list|(
 name|Pipeline
 name|pipeline
+parameter_list|,
+name|Semaphore
+name|semaphore
 parameter_list|)
 block|{
 name|this
@@ -193,6 +214,12 @@ operator|.
 name|pipeline
 operator|=
 name|pipeline
+expr_stmt|;
+name|this
+operator|.
+name|semaphore
+operator|=
+name|semaphore
 expr_stmt|;
 block|}
 comment|/**    * This method will be called once when the Channel is registered. After    * the method returns this instance will be removed from the    * ChannelPipeline of the Channel.    *    * @param ch   Channel which was registered.    * @throws Exception is thrown if an error occurs. In that case the    *                   Channel will be closed.    */
@@ -270,6 +297,10 @@ argument_list|(
 name|this
 operator|.
 name|pipeline
+argument_list|,
+name|this
+operator|.
+name|semaphore
 argument_list|)
 argument_list|)
 expr_stmt|;

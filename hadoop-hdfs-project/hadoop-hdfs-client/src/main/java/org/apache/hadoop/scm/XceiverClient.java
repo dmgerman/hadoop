@@ -210,6 +210,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ozone
+operator|.
+name|client
+operator|.
+name|OzoneClientUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|scm
 operator|.
 name|container
@@ -304,6 +320,18 @@ name|List
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|Semaphore
+import|;
+end_import
+
 begin_comment
 comment|/**  * A Client for the storageContainer protocol.  */
 end_comment
@@ -358,6 +386,12 @@ specifier|private
 name|EventLoopGroup
 name|group
 decl_stmt|;
+DECL|field|semaphore
+specifier|private
+specifier|final
+name|Semaphore
+name|semaphore
+decl_stmt|;
 comment|/**    * Constructs a client that can communicate with the Container framework on    * data nodes.    *    * @param pipeline - Pipeline that defines the machines.    * @param config -- Ozone Config    */
 DECL|method|XceiverClient (Pipeline pipeline, Configuration config)
 specifier|public
@@ -398,6 +432,21 @@ operator|.
 name|config
 operator|=
 name|config
+expr_stmt|;
+name|this
+operator|.
+name|semaphore
+operator|=
+operator|new
+name|Semaphore
+argument_list|(
+name|OzoneClientUtils
+operator|.
+name|getMaxOutstandingRequests
+argument_list|(
+name|config
+argument_list|)
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@
@@ -475,6 +524,8 @@ argument_list|(
 name|this
 operator|.
 name|pipeline
+argument_list|,
+name|semaphore
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -680,13 +731,47 @@ name|InterruptedException
 name|e
 parameter_list|)
 block|{
+comment|/**        * In case the netty channel handler throws an exception,        * the exception thrown will be wrapped within {@link ExecutionException}.        * Unwarpping here so that original exception gets passed        * to to the client.        */
+if|if
+condition|(
+name|e
+operator|instanceof
+name|ExecutionException
+condition|)
+block|{
+name|Throwable
+name|cause
+init|=
+name|e
+operator|.
+name|getCause
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|cause
+operator|instanceof
+name|IOException
+condition|)
+block|{
+throw|throw
+operator|(
+name|IOException
+operator|)
+name|cause
+throw|;
+block|}
+block|}
 throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Unexpected exception during execution"
-argument_list|,
+literal|"Unexpected exception during execution:"
+operator|+
 name|e
+operator|.
+name|getMessage
+argument_list|()
 argument_list|)
 throw|;
 block|}

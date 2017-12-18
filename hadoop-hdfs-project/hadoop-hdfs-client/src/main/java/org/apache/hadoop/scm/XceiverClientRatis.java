@@ -114,6 +114,22 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|client
+operator|.
+name|OzoneClientUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|protocol
 operator|.
 name|proto
@@ -424,6 +440,17 @@ operator|.
 name|DFS_CONTAINER_RATIS_RPC_TYPE_DEFAULT
 argument_list|)
 decl_stmt|;
+specifier|final
+name|int
+name|maxOutstandingRequests
+init|=
+name|OzoneClientUtils
+operator|.
+name|getMaxOutstandingRequests
+argument_list|(
+name|ozoneConf
+argument_list|)
+decl_stmt|;
 return|return
 operator|new
 name|XceiverClientRatis
@@ -436,6 +463,8 @@ name|valueOfIgnoreCase
 argument_list|(
 name|rpcType
 argument_list|)
+argument_list|,
+name|maxOutstandingRequests
 argument_list|)
 return|;
 block|}
@@ -465,8 +494,14 @@ name|AtomicReference
 argument_list|<>
 argument_list|()
 decl_stmt|;
+DECL|field|maxOutstandingRequests
+specifier|private
+specifier|final
+name|int
+name|maxOutstandingRequests
+decl_stmt|;
 comment|/** Constructs a client. */
-DECL|method|XceiverClientRatis (Pipeline pipeline, RpcType rpcType)
+DECL|method|XceiverClientRatis (Pipeline pipeline, RpcType rpcType, int maxOutStandingChunks)
 specifier|private
 name|XceiverClientRatis
 parameter_list|(
@@ -475,6 +510,9 @@ name|pipeline
 parameter_list|,
 name|RpcType
 name|rpcType
+parameter_list|,
+name|int
+name|maxOutStandingChunks
 parameter_list|)
 block|{
 name|super
@@ -491,6 +529,12 @@ operator|.
 name|rpcType
 operator|=
 name|rpcType
+expr_stmt|;
+name|this
+operator|.
+name|maxOutstandingRequests
+operator|=
+name|maxOutStandingChunks
 expr_stmt|;
 block|}
 comment|/**    *  {@inheritDoc}    */
@@ -797,6 +841,9 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// TODO : XceiverClient ratis should pass the config value of
+comment|// maxOutstandingRequests so as to set the upper bound on max no of async
+comment|// requests to be handled by raft client
 if|if
 condition|(
 operator|!

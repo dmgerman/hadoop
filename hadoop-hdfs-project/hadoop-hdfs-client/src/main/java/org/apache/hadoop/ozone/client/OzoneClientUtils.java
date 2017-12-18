@@ -3328,6 +3328,32 @@ name|getEpochSecond
 argument_list|()
 return|;
 block|}
+comment|/**    * Returns the maximum no of outstanding async requests to be handled by    * Standalone and Ratis client.    */
+DECL|method|getMaxOutstandingRequests (Configuration config)
+specifier|public
+specifier|static
+name|int
+name|getMaxOutstandingRequests
+parameter_list|(
+name|Configuration
+name|config
+parameter_list|)
+block|{
+return|return
+name|config
+operator|.
+name|getInt
+argument_list|(
+name|ScmConfigKeys
+operator|.
+name|SCM_CONTAINER_CLIENT_MAX_OUTSTANDING_REQUESTS
+argument_list|,
+name|ScmConfigKeys
+operator|.
+name|SCM_CONTAINER_CLIENT_MAX_OUTSTANDING_REQUESTS_DEFAULT
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 
