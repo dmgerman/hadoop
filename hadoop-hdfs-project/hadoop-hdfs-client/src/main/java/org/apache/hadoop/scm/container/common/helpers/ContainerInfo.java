@@ -432,6 +432,22 @@ return|return
 name|allocatedBytes
 return|;
 block|}
+DECL|method|setAllocatedBytes (long allocatedBytes)
+specifier|public
+name|void
+name|setAllocatedBytes
+parameter_list|(
+name|long
+name|allocatedBytes
+parameter_list|)
+block|{
+name|this
+operator|.
+name|allocatedBytes
+operator|=
+name|allocatedBytes
+expr_stmt|;
+block|}
 DECL|method|getUsedBytes ()
 specifier|public
 name|long

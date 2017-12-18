@@ -326,6 +326,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashMap
 import|;
 end_import
@@ -1037,6 +1047,48 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+comment|/**    * Return the info of all the containers kept by the in-memory mapping.    *    * @return the list of all container info.    */
+DECL|method|getAllContainers ()
+name|List
+argument_list|<
+name|ContainerInfo
+argument_list|>
+name|getAllContainers
+parameter_list|()
+block|{
+name|List
+argument_list|<
+name|ContainerInfo
+argument_list|>
+name|list
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+decl_stmt|;
+name|containers
+operator|.
+name|forEach
+argument_list|(
+parameter_list|(
+name|key
+parameter_list|,
+name|value
+parameter_list|)
+lambda|->
+name|list
+operator|.
+name|addAll
+argument_list|(
+name|value
+argument_list|)
+argument_list|)
+expr_stmt|;
+return|return
+name|list
+return|;
 block|}
 comment|// 1. Client -> SCM: Begin_create
 comment|// 2. Client -> Datanode: create
