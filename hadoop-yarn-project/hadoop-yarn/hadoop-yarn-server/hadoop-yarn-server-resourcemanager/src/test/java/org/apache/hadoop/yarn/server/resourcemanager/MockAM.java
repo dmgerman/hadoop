@@ -1152,7 +1152,8 @@ name|numContainers
 argument_list|,
 name|labelExpression
 argument_list|,
-literal|0L
+operator|-
+literal|1
 argument_list|)
 decl_stmt|;
 return|return
