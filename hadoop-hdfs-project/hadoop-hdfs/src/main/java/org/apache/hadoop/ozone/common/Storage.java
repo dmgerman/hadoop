@@ -450,7 +450,7 @@ literal|"Storage directory "
 operator|+
 name|storageDir
 operator|+
-literal|"already initialized."
+literal|" already initialized."
 argument_list|)
 throw|;
 block|}

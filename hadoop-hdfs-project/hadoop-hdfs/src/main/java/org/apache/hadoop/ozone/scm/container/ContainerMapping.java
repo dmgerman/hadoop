@@ -730,7 +730,7 @@ name|metaDir
 init|=
 name|OzoneUtils
 operator|.
-name|getScmMetadirPath
+name|getOzoneMetaDirPath
 argument_list|(
 name|conf
 argument_list|)

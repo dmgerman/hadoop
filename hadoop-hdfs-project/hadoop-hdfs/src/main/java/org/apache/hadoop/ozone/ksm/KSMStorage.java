@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ozone.scm
+DECL|package|org.apache.hadoop.ozone.ksm
 package|package
 name|org
 operator|.
@@ -14,7 +14,7 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
-name|scm
+name|ksm
 package|;
 end_package
 
@@ -78,6 +78,22 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|scm
+operator|.
+name|SCMStorage
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|web
 operator|.
 name|utils
@@ -117,14 +133,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * SCMStorage is responsible for management of the StorageDirectories used by  * the SCM.  */
+comment|/**  * KSMStorage is responsible for management of the StorageDirectories used by  * the KSM.  */
 end_comment
 
 begin_class
-DECL|class|SCMStorage
+DECL|class|KSMStorage
 specifier|public
 class|class
-name|SCMStorage
+name|KSMStorage
 extends|extends
 name|Storage
 block|{
@@ -135,21 +151,21 @@ specifier|final
 name|String
 name|STORAGE_DIR
 init|=
-literal|"scm"
+literal|"ksm"
 decl_stmt|;
-DECL|field|SCM_ID
+DECL|field|KSM_ID
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|SCM_ID
+name|KSM_ID
 init|=
-literal|"scmUuid"
+literal|"ksmUuid"
 decl_stmt|;
-comment|/**    * Construct SCMStorage.    * @throws IOException if any directories are inaccessible.    */
-DECL|method|SCMStorage (OzoneConfiguration conf)
+comment|/**    * Construct KSMStorage.    * @throws IOException if any directories are inaccessible.    */
+DECL|method|KSMStorage (OzoneConfiguration conf)
 specifier|public
-name|SCMStorage
+name|KSMStorage
 parameter_list|(
 name|OzoneConfiguration
 name|conf
@@ -161,7 +177,7 @@ name|super
 argument_list|(
 name|NodeType
 operator|.
-name|SCM
+name|KSM
 argument_list|,
 name|OzoneUtils
 operator|.
@@ -199,7 +215,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"SCM is already initialized."
+literal|"KSM is already initialized."
 argument_list|)
 throw|;
 block|}
@@ -210,9 +226,54 @@ argument_list|()
 operator|.
 name|setProperty
 argument_list|(
+name|SCMStorage
+operator|.
 name|SCM_ID
 argument_list|,
 name|scmId
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+DECL|method|setKsmId (String ksmId)
+specifier|public
+name|void
+name|setKsmId
+parameter_list|(
+name|String
+name|ksmId
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|getState
+argument_list|()
+operator|==
+name|StorageState
+operator|.
+name|INITIALIZED
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"KSM is already initialized."
+argument_list|)
+throw|;
+block|}
+else|else
+block|{
+name|getStorageInfo
+argument_list|()
+operator|.
+name|setProperty
+argument_list|(
+name|KSM_ID
+argument_list|,
+name|ksmId
 argument_list|)
 expr_stmt|;
 block|}
@@ -230,7 +291,26 @@ argument_list|()
 operator|.
 name|getProperty
 argument_list|(
+name|SCMStorage
+operator|.
 name|SCM_ID
+argument_list|)
+return|;
+block|}
+comment|/**    * Retrieves the KSM ID from the version file.    * @return KSM_ID    */
+DECL|method|getKsmId ()
+specifier|public
+name|String
+name|getKsmId
+parameter_list|()
+block|{
+return|return
+name|getStorageInfo
+argument_list|()
+operator|.
+name|getProperty
+argument_list|(
+name|KSM_ID
 argument_list|)
 return|;
 block|}
@@ -243,19 +323,19 @@ name|getNodeProperties
 parameter_list|()
 block|{
 name|String
-name|scmId
+name|ksmId
 init|=
-name|getScmId
+name|getKsmId
 argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|scmId
+name|ksmId
 operator|==
 literal|null
 condition|)
 block|{
-name|scmId
+name|ksmId
 operator|=
 name|UUID
 operator|.
@@ -267,23 +347,23 @@ argument_list|()
 expr_stmt|;
 block|}
 name|Properties
-name|scmProperties
+name|ksmProperties
 init|=
 operator|new
 name|Properties
 argument_list|()
 decl_stmt|;
-name|scmProperties
+name|ksmProperties
 operator|.
 name|setProperty
 argument_list|(
-name|SCM_ID
+name|KSM_ID
 argument_list|,
-name|scmId
+name|ksmId
 argument_list|)
 expr_stmt|;
 return|return
-name|scmProperties
+name|ksmProperties
 return|;
 block|}
 block|}

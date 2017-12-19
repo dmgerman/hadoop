@@ -1050,11 +1050,11 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Checks and creates Ozone Metadir Path if it does not exist.    *    * @param conf - Configuration    *    * @return File MetaDir    */
-DECL|method|getScmMetadirPath (Configuration conf)
+DECL|method|getOzoneMetaDirPath (Configuration conf)
 specifier|public
 specifier|static
 name|File
-name|getScmMetadirPath
+name|getOzoneMetaDirPath
 parameter_list|(
 name|Configuration
 name|conf
