@@ -911,7 +911,7 @@ condition|)
 block|{
 name|System
 operator|.
-name|err
+name|out
 operator|.
 name|println
 argument_list|(
@@ -949,7 +949,7 @@ condition|)
 block|{
 name|System
 operator|.
-name|err
+name|out
 operator|.
 name|println
 argument_list|(
