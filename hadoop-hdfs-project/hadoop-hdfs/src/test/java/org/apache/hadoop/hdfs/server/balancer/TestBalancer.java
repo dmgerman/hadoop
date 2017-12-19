@@ -13223,7 +13223,7 @@ expr_stmt|;
 name|int
 name|numDNs
 init|=
-literal|40
+literal|20
 decl_stmt|;
 name|long
 index|[]
