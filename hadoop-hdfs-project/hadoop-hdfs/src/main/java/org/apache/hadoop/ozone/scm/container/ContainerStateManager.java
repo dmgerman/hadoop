@@ -1104,11 +1104,13 @@ comment|//                                      V
 comment|//                                  DELETING----------------->[DELETED]
 comment|//                                           (CLEANUP)
 comment|// SCM Open/Close State Machine
-comment|// States: OPEN------------------>PENDING_CLOSE---------->[CLOSE]
+comment|// States: OPEN------------------>PENDING_CLOSE---------->[CLOSED]
 comment|// Events:        (FULL_CONTAINER)               (CLOSE)
 comment|// Delete State Machine
 comment|// States: OPEN------------------>DELETING------------------>[DELETED]
 comment|// Events:         (DELETE)                  (CLEANUP)
+comment|// Should we allow DELETING of OPEN containers? we can always have
+comment|// OPEN--------->PENDING_CLOSE----->CLOSE---->DELETING---->[DELETED]
 DECL|method|initializeStateMachine ()
 specifier|private
 name|void
@@ -1156,6 +1158,23 @@ argument_list|(
 name|LifeCycleState
 operator|.
 name|OPEN
+argument_list|,
+name|LifeCycleState
+operator|.
+name|PENDING_CLOSE
+argument_list|,
+name|LifeCycleEvent
+operator|.
+name|FULL_CONTAINER
+argument_list|)
+expr_stmt|;
+name|stateMachine
+operator|.
+name|addTransition
+argument_list|(
+name|LifeCycleState
+operator|.
+name|PENDING_CLOSE
 argument_list|,
 name|LifeCycleState
 operator|.

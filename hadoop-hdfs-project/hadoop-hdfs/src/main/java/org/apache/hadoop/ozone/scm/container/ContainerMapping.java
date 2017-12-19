@@ -574,6 +574,28 @@ name|CONTAINER_DB
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|scm
+operator|.
+name|exceptions
+operator|.
+name|SCMException
+operator|.
+name|ResultCodes
+operator|.
+name|FAILED_TO_CHANGE_CONTAINER_STATE
+import|;
+end_import
+
 begin_comment
 comment|/**  * Mapping class contains the mapping from a name to a pipeline mapping. This  * is used by SCM when  * allocating new locations and when looking up a key.  */
 end_comment
@@ -1568,17 +1590,14 @@ argument_list|(
 name|containerInfo
 argument_list|)
 expr_stmt|;
-if|if
+switch|switch
 condition|(
 name|event
-operator|==
-name|OzoneProtos
-operator|.
-name|LifeCycleEvent
-operator|.
-name|BEGIN_CREATE
 condition|)
 block|{
+case|case
+name|BEGIN_CREATE
+case|:
 comment|// Acquire lease on container
 name|Lease
 argument_list|<
@@ -1618,19 +1637,10 @@ return|;
 block|}
 argument_list|)
 expr_stmt|;
-block|}
-elseif|else
-if|if
-condition|(
-name|event
-operator|==
-name|OzoneProtos
-operator|.
-name|LifeCycleEvent
-operator|.
+break|break;
+case|case
 name|COMPLETE_CREATE
-condition|)
-block|{
+case|:
 comment|// Release the lease on container
 name|containerLeaseManager
 operator|.
@@ -1639,7 +1649,45 @@ argument_list|(
 name|containerInfo
 argument_list|)
 expr_stmt|;
+break|break;
+case|case
+name|TIMEOUT
+case|:
+break|break;
+case|case
+name|CLEANUP
+case|:
+break|break;
+case|case
+name|FULL_CONTAINER
+case|:
+break|break;
+case|case
+name|CLOSE
+case|:
+break|break;
+case|case
+name|UPDATE
+case|:
+break|break;
+case|case
+name|DELETE
+case|:
+break|break;
+default|default:
+throw|throw
+operator|new
+name|SCMException
+argument_list|(
+literal|"Unsupported container LifeCycleEvent."
+argument_list|,
+name|FAILED_TO_CHANGE_CONTAINER_STATE
+argument_list|)
+throw|;
 block|}
+comment|// If the below updateContainerState call fails, we should revert the
+comment|// changes made in switch case.
+comment|// Like releasing the lease in case of BEGIN_CREATE.
 name|ContainerInfo
 name|updatedContainer
 init|=
@@ -1984,11 +2032,11 @@ comment|// For now, we are just updating the container state to CLOSED.
 comment|// Close container implementation can decide on how to maintain
 comment|// list of containers to be closed, this is the place where we
 comment|// have to add the containers to that list.
-name|ContainerInfo
-name|updatedContainer
-init|=
-name|containerStateManager
+name|OzoneProtos
 operator|.
+name|LifeCycleState
+name|state
+init|=
 name|updateContainerState
 argument_list|(
 name|ContainerInfo
@@ -1997,26 +2045,26 @@ name|fromProtobuf
 argument_list|(
 name|newContainerInfo
 argument_list|)
+operator|.
+name|getContainerName
+argument_list|()
 argument_list|,
 name|OzoneProtos
 operator|.
 name|LifeCycleEvent
 operator|.
-name|CLOSE
+name|FULL_CONTAINER
 argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|updatedContainer
-operator|.
-name|getState
-argument_list|()
+name|state
 operator|!=
 name|OzoneProtos
 operator|.
 name|LifeCycleState
 operator|.
-name|CLOSED
+name|PENDING_CLOSE
 condition|)
 block|{
 name|LOG
@@ -2034,10 +2082,7 @@ operator|.
 name|getContainerName
 argument_list|()
 argument_list|,
-name|updatedContainer
-operator|.
-name|getState
-argument_list|()
+name|state
 argument_list|)
 expr_stmt|;
 block|}
