@@ -2087,7 +2087,6 @@ name|getComponents
 argument_list|()
 control|)
 block|{
-comment|// only handle mem now.
 name|long
 name|mem
 init|=
@@ -2125,15 +2124,68 @@ operator|.
 name|getName
 argument_list|()
 operator|+
-literal|" memory size ("
+literal|": specified memory size ("
 operator|+
 name|mem
 operator|+
-literal|") is larger than configured max container memory size ("
+literal|") is larger than configured max container memory "
+operator|+
+literal|"size ("
 operator|+
 name|maxResource
 operator|.
 name|getMemorySize
+argument_list|()
+operator|+
+literal|")"
+argument_list|)
+throw|;
+block|}
+name|int
+name|cpu
+init|=
+name|component
+operator|.
+name|getResource
+argument_list|()
+operator|.
+name|getCpus
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|cpu
+operator|>
+name|maxResource
+operator|.
+name|getVirtualCores
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|YarnException
+argument_list|(
+literal|"Component "
+operator|+
+name|component
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|": specified number of "
+operator|+
+literal|"virtual core ("
+operator|+
+name|cpu
+operator|+
+literal|") is larger than configured max "
+operator|+
+literal|"virtual core size ("
+operator|+
+name|maxResource
+operator|.
+name|getVirtualCores
 argument_list|()
 operator|+
 literal|")"

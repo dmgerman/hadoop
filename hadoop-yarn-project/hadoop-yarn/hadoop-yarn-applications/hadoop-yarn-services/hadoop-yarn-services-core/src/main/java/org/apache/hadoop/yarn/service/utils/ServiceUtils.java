@@ -1986,6 +1986,26 @@ range|:
 name|listOfJars
 control|)
 block|{
+if|if
+condition|(
+operator|!
+name|jarFile
+operator|.
+name|exists
+argument_list|()
+condition|)
+block|{
+name|log
+operator|.
+name|debug
+argument_list|(
+literal|"File does not exist, skipping: "
+operator|+
+name|jarFile
+argument_list|)
+expr_stmt|;
+continue|continue;
+block|}
 name|LocalResource
 name|res
 init|=
