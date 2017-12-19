@@ -1328,7 +1328,7 @@ name|set
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|TIMELINE_SERVICE_BIND_HOST
+name|TIMELINE_SERVICE_READER_BIND_HOST
 argument_list|,
 literal|"localhost"
 argument_list|)

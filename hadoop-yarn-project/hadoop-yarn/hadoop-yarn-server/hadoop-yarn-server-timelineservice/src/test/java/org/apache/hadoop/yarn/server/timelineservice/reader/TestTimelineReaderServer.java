@@ -214,7 +214,7 @@ name|set
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|TIMELINE_SERVICE_WEBAPP_ADDRESS
+name|TIMELINE_SERVICE_READER_WEBAPP_ADDRESS
 argument_list|,
 literal|"localhost:0"
 argument_list|)
@@ -368,7 +368,7 @@ name|set
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|TIMELINE_SERVICE_WEBAPP_ADDRESS
+name|TIMELINE_SERVICE_READER_WEBAPP_ADDRESS
 argument_list|,
 literal|"localhost:0"
 argument_list|)
@@ -456,7 +456,7 @@ name|set
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|TIMELINE_SERVICE_WEBAPP_ADDRESS
+name|TIMELINE_SERVICE_READER_WEBAPP_ADDRESS
 argument_list|,
 literal|"localhost:0"
 argument_list|)
