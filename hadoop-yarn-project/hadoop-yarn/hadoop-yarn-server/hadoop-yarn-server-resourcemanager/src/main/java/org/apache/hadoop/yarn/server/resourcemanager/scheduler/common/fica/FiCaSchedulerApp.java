@@ -2541,7 +2541,7 @@ return|return
 literal|true
 return|;
 block|}
-DECL|method|accept (Resource cluster, ResourceCommitRequest<FiCaSchedulerApp, FiCaSchedulerNode> request)
+DECL|method|accept (Resource cluster, ResourceCommitRequest<FiCaSchedulerApp, FiCaSchedulerNode> request, boolean checkPending)
 specifier|public
 name|boolean
 name|accept
@@ -2556,6 +2556,9 @@ argument_list|,
 name|FiCaSchedulerNode
 argument_list|>
 name|request
+parameter_list|,
+name|boolean
+name|checkPending
 parameter_list|)
 block|{
 name|ContainerRequest
@@ -2648,6 +2651,8 @@ expr_stmt|;
 comment|// Check pending resource request
 if|if
 condition|(
+name|checkPending
+operator|&&
 operator|!
 name|appSchedulingInfo
 operator|.
@@ -2929,7 +2934,7 @@ return|return
 name|accepted
 return|;
 block|}
-DECL|method|apply (Resource cluster, ResourceCommitRequest<FiCaSchedulerApp, FiCaSchedulerNode> request)
+DECL|method|apply (Resource cluster, ResourceCommitRequest<FiCaSchedulerApp, FiCaSchedulerNode> request, boolean updatePending)
 specifier|public
 name|void
 name|apply
@@ -2944,6 +2949,9 @@ argument_list|,
 name|FiCaSchedulerNode
 argument_list|>
 name|request
+parameter_list|,
+name|boolean
+name|updatePending
 parameter_list|)
 block|{
 name|boolean
@@ -3132,6 +3140,11 @@ name|rmContainer
 argument_list|)
 expr_stmt|;
 comment|// Deduct pending resource requests
+if|if
+condition|(
+name|updatePending
+condition|)
+block|{
 name|ContainerRequest
 name|containerRequest
 init|=
@@ -3175,6 +3188,7 @@ argument_list|(
 name|containerRequest
 argument_list|)
 expr_stmt|;
+block|}
 name|attemptResourceUsage
 operator|.
 name|incUsed

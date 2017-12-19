@@ -116,6 +116,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|SchedulingRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -198,6 +216,21 @@ name|getNodeIds
 parameter_list|(
 name|String
 name|resourceName
+parameter_list|)
+function_decl|;
+comment|/**    * Attempts to allocate a SchedulerRequest on a Node.    * NOTE: This ignores the numAllocations in the resource sizing and tries    *       to allocate a SINGLE container only.    * @param appAttempt ApplicationAttempt.    * @param schedulingRequest SchedulingRequest.    * @param schedulerNode SchedulerNode.    * @return true if proposal was accepted.    */
+DECL|method|attemptAllocationOnNode (SchedulerApplicationAttempt appAttempt, SchedulingRequest schedulingRequest, SchedulerNode schedulerNode)
+name|boolean
+name|attemptAllocationOnNode
+parameter_list|(
+name|SchedulerApplicationAttempt
+name|appAttempt
+parameter_list|,
+name|SchedulingRequest
+name|schedulingRequest
+parameter_list|,
+name|SchedulerNode
+name|schedulerNode
 parameter_list|)
 function_decl|;
 block|}
