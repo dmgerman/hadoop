@@ -2473,6 +2473,16 @@ specifier|public
 name|long
 name|bytesDiscardedInAbort
 decl_stmt|;
+DECL|field|policySetCount
+specifier|public
+name|long
+name|policySetCount
+decl_stmt|;
+DECL|field|inputPolicy
+specifier|public
+name|long
+name|inputPolicy
+decl_stmt|;
 DECL|method|InputStreamStatistics ()
 specifier|private
 name|InputStreamStatistics
@@ -2695,6 +2705,24 @@ name|mergeInputStreamStatistics
 argument_list|(
 name|this
 argument_list|)
+expr_stmt|;
+block|}
+comment|/**      * The input policy has been switched.      * @param updatedPolicy enum value of new policy.      */
+DECL|method|inputPolicySet (int updatedPolicy)
+specifier|public
+name|void
+name|inputPolicySet
+parameter_list|(
+name|int
+name|updatedPolicy
+parameter_list|)
+block|{
+name|policySetCount
+operator|++
+expr_stmt|;
+name|inputPolicy
+operator|=
+name|updatedPolicy
 expr_stmt|;
 block|}
 comment|/**      * String operator describes all the current statistics.      *<b>Important: there are no guarantees as to the stability      * of this value.</b>      * @return the current values of the stream statistics.      */
@@ -2924,6 +2952,30 @@ operator|.
 name|append
 argument_list|(
 name|bytesDiscardedInAbort
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|", InputPolicy="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|inputPolicy
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|", InputPolicySetCount="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|policySetCount
 argument_list|)
 expr_stmt|;
 name|sb

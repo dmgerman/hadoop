@@ -378,7 +378,6 @@ name|serverSideEncryptionKey
 decl_stmt|;
 DECL|field|inputPolicy
 specifier|private
-specifier|final
 name|S3AInputPolicy
 name|inputPolicy
 decl_stmt|;
@@ -567,11 +566,10 @@ operator|.
 name|getServerSideEncryptionKey
 argument_list|()
 expr_stmt|;
-name|this
-operator|.
+name|setInputPolicy
+argument_list|(
 name|inputPolicy
-operator|=
-name|inputPolicy
+argument_list|)
 expr_stmt|;
 name|setReadahead
 argument_list|(
@@ -583,6 +581,33 @@ operator|.
 name|invoker
 operator|=
 name|invoker
+expr_stmt|;
+block|}
+comment|/**    * Set/update the input policy of the stream.    * This updates the stream statistics.    * @param inputPolicy new input policy.    */
+DECL|method|setInputPolicy (S3AInputPolicy inputPolicy)
+specifier|private
+name|void
+name|setInputPolicy
+parameter_list|(
+name|S3AInputPolicy
+name|inputPolicy
+parameter_list|)
+block|{
+name|this
+operator|.
+name|inputPolicy
+operator|=
+name|inputPolicy
+expr_stmt|;
+name|streamStatistics
+operator|.
+name|inputPolicySet
+argument_list|(
+name|inputPolicy
+operator|.
+name|ordinal
+argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Opens up the stream at specified target position and for given length.    *    * @param reason reason for reopen    * @param targetPos target position    * @param length length requested    * @throws IOException on any failure to open the object    */
@@ -646,7 +671,7 @@ name|debug
 argument_list|(
 literal|"reopen({}) for {} range[{}-{}], length={},"
 operator|+
-literal|" streamPosition={}, nextReadPosition={}"
+literal|" streamPosition={}, nextReadPosition={}, policy={}"
 argument_list|,
 name|uri
 argument_list|,
@@ -661,6 +686,8 @@ argument_list|,
 name|pos
 argument_list|,
 name|nextReadPos
+argument_list|,
+name|inputPolicy
 argument_list|)
 expr_stmt|;
 name|long
@@ -1118,6 +1145,35 @@ argument_list|(
 name|diff
 argument_list|)
 expr_stmt|;
+comment|// if the stream is in "Normal" mode, switch to random IO at this
+comment|// point, as it is indicative of columnar format IO
+if|if
+condition|(
+name|inputPolicy
+operator|.
+name|equals
+argument_list|(
+name|S3AInputPolicy
+operator|.
+name|Normal
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Switching to Random IO seek policy"
+argument_list|)
+expr_stmt|;
+name|setInputPolicy
+argument_list|(
+name|S3AInputPolicy
+operator|.
+name|Random
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 else|else
 block|{
@@ -1679,6 +1735,17 @@ operator|.
 name|contentRangeFinish
 argument_list|,
 literal|false
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Statistics of stream {}\n{}"
+argument_list|,
+name|key
+argument_list|,
+name|streamStatistics
 argument_list|)
 expr_stmt|;
 comment|// this is actually a no-op
@@ -2563,6 +2630,8 @@ break|break;
 case|case
 name|Normal
 case|:
+comment|// normal is considered sequential until a backwards seek switches
+comment|// it to 'Random'
 default|default:
 name|rangeLimit
 operator|=
