@@ -4,7 +4,7 @@ comment|/*  * *  *  Licensed to the Apache Software Foundation (ASF) under one  
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager.constraint
+DECL|package|org.apache.hadoop.yarn.server.resourcemanager.scheduler.constraint
 package|package
 name|org
 operator|.
@@ -18,29 +18,63 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|scheduler
+operator|.
 name|constraint
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
+name|YarnException
+import|;
+end_import
+
 begin_comment
-comment|/**  * Predefined namespaces for tags  *  * Same as namespace  of resource types. Namespaces of placement tags are start  * with alphabets and ended with "/"  */
+comment|/**  * Exception when invalid parameter specified to do placement tags related  * queries.  */
 end_comment
 
 begin_class
-DECL|class|AllocationTagsNamespaces
+DECL|class|InvalidAllocationTagsQueryException
 specifier|public
 class|class
-name|AllocationTagsNamespaces
+name|InvalidAllocationTagsQueryException
+extends|extends
+name|YarnException
 block|{
-DECL|field|APP_ID
-specifier|public
+DECL|field|serialVersionUID
+specifier|private
 specifier|static
 specifier|final
-name|String
-name|APP_ID
+name|long
+name|serialVersionUID
 init|=
-literal|"yarn_app_id/"
+literal|12312831974894L
 decl_stmt|;
+DECL|method|InvalidAllocationTagsQueryException (String msg)
+specifier|public
+name|InvalidAllocationTagsQueryException
+parameter_list|(
+name|String
+name|msg
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|msg
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

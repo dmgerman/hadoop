@@ -517,6 +517,30 @@ name|r
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"ResourceSizingPBImpl{"
+operator|+
+literal|"numAllocations="
+operator|+
+name|getNumAllocations
+argument_list|()
+operator|+
+literal|", resources="
+operator|+
+name|getResources
+argument_list|()
+operator|+
+literal|'}'
+return|;
+block|}
 block|}
 end_class
 

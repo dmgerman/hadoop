@@ -1400,6 +1400,45 @@ return|return
 literal|false
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"SchedulingRequestPBImpl{"
+operator|+
+literal|"priority="
+operator|+
+name|getPriority
+argument_list|()
+operator|+
+literal|", allocationReqId="
+operator|+
+name|getAllocationRequestId
+argument_list|()
+operator|+
+literal|", executionType="
+operator|+
+name|getExecutionType
+argument_list|()
+operator|+
+literal|", allocationTags="
+operator|+
+name|getAllocationTags
+argument_list|()
+operator|+
+literal|", resourceSizing="
+operator|+
+name|getResourceSizing
+argument_list|()
+operator|+
+literal|'}'
+return|;
+block|}
 block|}
 end_class
 

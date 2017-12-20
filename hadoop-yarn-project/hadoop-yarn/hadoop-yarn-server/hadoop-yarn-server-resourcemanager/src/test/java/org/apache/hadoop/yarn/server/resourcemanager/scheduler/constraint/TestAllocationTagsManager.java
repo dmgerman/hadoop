@@ -4,7 +4,7 @@ comment|/*  * *  *  Licensed to the Apache Software Foundation (ASF) under one  
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager.constraint
+DECL|package|org.apache.hadoop.yarn.server.resourcemanager.scheduler.constraint
 package|package
 name|org
 operator|.
@@ -17,6 +17,8 @@ operator|.
 name|server
 operator|.
 name|resourcemanager
+operator|.
+name|scheduler
 operator|.
 name|constraint
 package|;

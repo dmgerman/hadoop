@@ -36,6 +36,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -277,6 +287,24 @@ operator|.
 name|records
 operator|.
 name|Priority
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|RejectedSchedulingRequest
 import|;
 end_import
 
@@ -1299,6 +1327,43 @@ argument_list|>
 name|containersFromPreviousAttempt
 parameter_list|)
 function_decl|;
+comment|/**    * Get a list of all SchedulingRequests that the RM has rejected between    * this allocate call and the previous one.    * @return List of RejectedSchedulingRequests.    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getRejectedSchedulingRequests ()
+specifier|public
+name|List
+argument_list|<
+name|RejectedSchedulingRequest
+argument_list|>
+name|getRejectedSchedulingRequests
+parameter_list|()
+block|{
+return|return
+name|Collections
+operator|.
+name|EMPTY_LIST
+return|;
+block|}
+comment|/**    * Add a list of rejected SchedulingRequests to the AllocateResponse.    * @param rejectedRequests List of Rejected Scheduling Requests.    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setRejectedSchedulingRequests ( List<RejectedSchedulingRequest> rejectedRequests)
+specifier|public
+name|void
+name|setRejectedSchedulingRequests
+parameter_list|(
+name|List
+argument_list|<
+name|RejectedSchedulingRequest
+argument_list|>
+name|rejectedRequests
+parameter_list|)
+block|{   }
 annotation|@
 name|Private
 annotation|@
