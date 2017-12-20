@@ -2260,7 +2260,9 @@ name|MessageFormat
 operator|.
 name|format
 argument_list|(
-literal|"[COMPONENT {}]: component count goes to negative ({}{} = {}), reset it to 0."
+literal|"[COMPONENT {0}]: component count goes to negative ({1}{2} = {3}),"
+operator|+
+literal|" ignore and reset it to 0."
 argument_list|,
 name|component
 operator|.
@@ -6087,22 +6089,31 @@ return|return
 name|newTimeout
 return|;
 block|}
-DECL|method|convertState (FinalApplicationStatus status)
+DECL|method|convertState (YarnApplicationState state)
 specifier|public
 name|ServiceState
 name|convertState
 parameter_list|(
-name|FinalApplicationStatus
-name|status
+name|YarnApplicationState
+name|state
 parameter_list|)
 block|{
 switch|switch
 condition|(
-name|status
+name|state
 condition|)
 block|{
 case|case
-name|UNDEFINED
+name|NEW
+case|:
+case|case
+name|NEW_SAVING
+case|:
+case|case
+name|SUBMITTED
+case|:
+case|case
+name|ACCEPTED
 case|:
 return|return
 name|ServiceState
@@ -6110,7 +6121,15 @@ operator|.
 name|ACCEPTED
 return|;
 case|case
-name|FAILED
+name|RUNNING
+case|:
+return|return
+name|ServiceState
+operator|.
+name|STARTED
+return|;
+case|case
+name|FINISHED
 case|:
 case|case
 name|KILLED
@@ -6118,25 +6137,23 @@ case|:
 return|return
 name|ServiceState
 operator|.
-name|FAILED
+name|STOPPED
 return|;
 case|case
-name|ENDED
-case|:
-case|case
-name|SUCCEEDED
+name|FAILED
 case|:
 return|return
 name|ServiceState
 operator|.
-name|STOPPED
+name|FAILED
 return|;
-block|}
+default|default:
 return|return
 name|ServiceState
 operator|.
 name|ACCEPTED
 return|;
+block|}
 block|}
 DECL|method|getStatusString (String appId)
 specifier|public
@@ -6296,7 +6313,7 @@ name|convertState
 argument_list|(
 name|appReport
 operator|.
-name|getFinalApplicationStatus
+name|getYarnApplicationState
 argument_list|()
 argument_list|)
 argument_list|)
