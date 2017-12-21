@@ -1680,6 +1680,14 @@ argument_list|(
 literal|false
 argument_list|)
 decl_stmt|;
+DECL|field|isClosed
+specifier|private
+specifier|volatile
+name|boolean
+name|isClosed
+init|=
+literal|false
+decl_stmt|;
 DECL|field|metadataStore
 specifier|private
 name|MetadataStore
@@ -3378,6 +3386,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNotClosed
+argument_list|()
+expr_stmt|;
 name|LOG
 operator|.
 name|debug
@@ -3501,6 +3512,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkNotClosed
+argument_list|()
+expr_stmt|;
 specifier|final
 name|Path
 name|path
@@ -3943,7 +3957,7 @@ argument_list|,
 name|dst
 argument_list|)
 expr_stmt|;
-name|incrementStatistic
+name|entryPoint
 argument_list|(
 name|INVOCATION_RENAME
 argument_list|)
@@ -5021,6 +5035,27 @@ expr_stmt|;
 name|metadataStore
 operator|=
 name|ms
+expr_stmt|;
+block|}
+comment|/**    * Entry point to an operation.    * Increments the statistic; verifies the FS is active.    * @param operation The operation to increment    * @throws IOException if the    */
+DECL|method|entryPoint (Statistic operation)
+specifier|protected
+name|void
+name|entryPoint
+parameter_list|(
+name|Statistic
+name|operation
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|checkNotClosed
+argument_list|()
+expr_stmt|;
+name|incrementStatistic
+argument_list|(
+name|operation
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Increment a statistic by 1.    * @param statistic The operation to increment    */
@@ -6671,6 +6706,9 @@ name|IOException
 block|{
 try|try
 block|{
+name|checkNotClosed
+argument_list|()
+expr_stmt|;
 return|return
 name|innerDelete
 argument_list|(
@@ -7336,7 +7374,7 @@ argument_list|,
 name|path
 argument_list|)
 expr_stmt|;
-name|incrementStatistic
+name|entryPoint
 argument_list|(
 name|INVOCATION_LIST_STATUS
 argument_list|)
@@ -7835,7 +7873,7 @@ argument_list|,
 name|f
 argument_list|)
 expr_stmt|;
-name|incrementStatistic
+name|entryPoint
 argument_list|(
 name|INVOCATION_MKDIRS
 argument_list|)
@@ -8111,7 +8149,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|incrementStatistic
+name|entryPoint
 argument_list|(
 name|INVOCATION_GET_FILE_STATUS
 argument_list|)
@@ -9201,7 +9239,7 @@ name|FileAlreadyExistsException
 throws|,
 name|AmazonClientException
 block|{
-name|incrementStatistic
+name|entryPoint
 argument_list|(
 name|INVOCATION_COPY_FROM_LOCAL_FILE
 argument_list|)
@@ -9624,6 +9662,19 @@ block|{
 comment|// already closed
 return|return;
 block|}
+name|isClosed
+operator|=
+literal|true
+expr_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Filesystem {} is closed"
+argument_list|,
+name|uri
+argument_list|)
+expr_stmt|;
 try|try
 block|{
 name|super
@@ -9681,6 +9732,33 @@ name|instrumentation
 operator|=
 literal|null
 expr_stmt|;
+block|}
+block|}
+comment|/**    * Verify that the input stream is open. Non blocking; this gives    * the last state of the volatile {@link #closed} field.    * @throws IOException if the connection is closed.    */
+DECL|method|checkNotClosed ()
+specifier|private
+name|void
+name|checkNotClosed
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|isClosed
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|uri
+operator|+
+literal|": "
+operator|+
+name|E_FS_CLOSED
+argument_list|)
+throw|;
 block|}
 block|}
 comment|/**    * Override getCanonicalServiceName because we don't support token in S3A.    */
@@ -11499,7 +11577,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|incrementStatistic
+name|entryPoint
 argument_list|(
 name|INVOCATION_GLOB_STATUS
 argument_list|)
@@ -11531,7 +11609,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|incrementStatistic
+name|entryPoint
 argument_list|(
 name|INVOCATION_GLOB_STATUS
 argument_list|)
@@ -11561,7 +11639,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|incrementStatistic
+name|entryPoint
 argument_list|(
 name|INVOCATION_EXISTS
 argument_list|)
@@ -11594,7 +11672,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|incrementStatistic
+name|entryPoint
 argument_list|(
 name|INVOCATION_IS_DIRECTORY
 argument_list|)
@@ -11627,7 +11705,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|incrementStatistic
+name|entryPoint
 argument_list|(
 name|INVOCATION_IS_FILE
 argument_list|)
@@ -11737,7 +11815,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|incrementStatistic
+name|entryPoint
 argument_list|(
 name|INVOCATION_LIST_FILES
 argument_list|)
@@ -12082,7 +12160,7 @@ name|FileNotFoundException
 throws|,
 name|IOException
 block|{
-name|incrementStatistic
+name|entryPoint
 argument_list|(
 name|INVOCATION_LIST_LOCATED_STATUS
 argument_list|)

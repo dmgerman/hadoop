@@ -691,6 +691,15 @@ name|ENDPOINT_KEY
 init|=
 literal|"Endpoint"
 decl_stmt|;
+comment|/** Filesystem is closed; kept here to keep the errors close. */
+DECL|field|E_FS_CLOSED
+specifier|static
+specifier|final
+name|String
+name|E_FS_CLOSED
+init|=
+literal|"FileSystem is closed!"
+decl_stmt|;
 comment|/**    * Core property for provider path. Duplicated here for consistent    * code across Hadoop version: {@value}.    */
 DECL|field|CREDENTIAL_PROVIDER_PATH
 specifier|static
