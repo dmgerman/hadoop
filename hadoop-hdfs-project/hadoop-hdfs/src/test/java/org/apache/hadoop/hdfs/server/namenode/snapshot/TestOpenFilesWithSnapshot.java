@@ -549,7 +549,7 @@ argument_list|)
 operator|.
 name|numDataNodes
 argument_list|(
-literal|3
+name|REPLICATION
 argument_list|)
 operator|.
 name|build
@@ -1570,17 +1570,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|conf
-operator|.
-name|setBoolean
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_SNAPSHOT_CAPTURE_OPENFILES
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
 comment|// Construct the directory tree
 specifier|final
 name|Path
@@ -4463,17 +4452,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|conf
-operator|.
-name|setBoolean
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_SNAPSHOT_CAPTURE_OPENFILES
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
 comment|// Construct the directory tree
 specifier|final
 name|Path
