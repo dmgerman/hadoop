@@ -1240,7 +1240,7 @@ name|log
 operator|.
 name|info
 argument_list|(
-literal|"Deletting {}"
+literal|"Deleting {}"
 argument_list|,
 name|path
 argument_list|)

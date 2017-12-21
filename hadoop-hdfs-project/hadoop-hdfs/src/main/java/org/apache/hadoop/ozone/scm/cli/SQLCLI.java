@@ -612,7 +612,7 @@ name|ozone
 operator|.
 name|OzoneConsts
 operator|.
-name|CONTAINER_DB
+name|CONTAINER_DB_SUFFIX
 import|;
 end_import
 
@@ -1573,9 +1573,9 @@ operator|.
 name|toString
 argument_list|()
 operator|.
-name|equals
+name|endsWith
 argument_list|(
-name|CONTAINER_DB
+name|CONTAINER_DB_SUFFIX
 argument_list|)
 condition|)
 block|{

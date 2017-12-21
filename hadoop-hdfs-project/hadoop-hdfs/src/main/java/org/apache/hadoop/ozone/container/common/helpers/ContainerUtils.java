@@ -1065,8 +1065,26 @@ argument_list|)
 throw|;
 block|}
 block|}
+DECL|method|getContainerDbFileName (String containerName)
+specifier|public
+specifier|static
+name|String
+name|getContainerDbFileName
+parameter_list|(
+name|String
+name|containerName
+parameter_list|)
+block|{
+return|return
+name|containerName
+operator|+
+name|OzoneConsts
+operator|.
+name|DN_CONTAINER_DB
+return|;
+block|}
 comment|/**    * creates a Metadata DB for the specified container.    *    * @param containerPath - Container Path.    * @throws IOException    */
-DECL|method|createMetadata (Path containerPath, Configuration conf)
+DECL|method|createMetadata (Path containerPath, String containerName, Configuration conf)
 specifier|public
 specifier|static
 name|Path
@@ -1074,6 +1092,9 @@ name|createMetadata
 parameter_list|(
 name|Path
 name|containerPath
+parameter_list|,
+name|String
+name|containerName
 parameter_list|,
 name|Configuration
 name|conf
@@ -1169,9 +1190,10 @@ name|metadataPath
 operator|.
 name|resolve
 argument_list|(
-name|OzoneConsts
-operator|.
-name|CONTAINER_DB
+name|getContainerDbFileName
+argument_list|(
+name|containerName
+argument_list|)
 argument_list|)
 operator|.
 name|toFile

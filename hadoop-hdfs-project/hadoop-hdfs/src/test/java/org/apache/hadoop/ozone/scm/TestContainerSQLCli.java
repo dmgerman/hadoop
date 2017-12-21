@@ -504,7 +504,7 @@ name|ozone
 operator|.
 name|OzoneConsts
 operator|.
-name|CONTAINER_DB
+name|SCM_CONTAINER_DB
 import|;
 end_import
 
@@ -1538,7 +1538,7 @@ name|dbRootPath
 operator|+
 literal|"/"
 operator|+
-name|CONTAINER_DB
+name|SCM_CONTAINER_DB
 decl_stmt|;
 name|String
 index|[]

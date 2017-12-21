@@ -570,7 +570,7 @@ name|ozone
 operator|.
 name|OzoneConsts
 operator|.
-name|CONTAINER_DB
+name|SCM_CONTAINER_DB
 import|;
 end_import
 
@@ -744,7 +744,7 @@ name|File
 argument_list|(
 name|metaDir
 argument_list|,
-name|CONTAINER_DB
+name|SCM_CONTAINER_DB
 argument_list|)
 decl_stmt|;
 name|containerStore
