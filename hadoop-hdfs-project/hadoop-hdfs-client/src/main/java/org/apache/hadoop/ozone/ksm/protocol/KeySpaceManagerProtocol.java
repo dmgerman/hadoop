@@ -156,6 +156,24 @@ name|hadoop
 operator|.
 name|ozone
 operator|.
+name|ksm
+operator|.
+name|helpers
+operator|.
+name|ServiceInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
 name|protocol
 operator|.
 name|proto
@@ -471,6 +489,17 @@ parameter_list|,
 name|int
 name|maxKeys
 parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Returns list of Ozone services with its configuration details.    *    * @return list of Ozone services    * @throws IOException    */
+DECL|method|getServiceList ()
+name|List
+argument_list|<
+name|ServiceInfo
+argument_list|>
+name|getServiceList
+parameter_list|()
 throws|throws
 name|IOException
 function_decl|;

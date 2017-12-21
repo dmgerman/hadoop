@@ -305,6 +305,13 @@ name|Metric
 name|MutableCounterLong
 name|numAllocateBlockCalls
 decl_stmt|;
+DECL|field|numGetServiceLists
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numGetServiceLists
+decl_stmt|;
 comment|// Failure Metrics
 DECL|field|numVolumeCreateFails
 specifier|private
@@ -424,6 +431,13 @@ annotation|@
 name|Metric
 name|MutableCounterLong
 name|numBlockAllocateCallFails
+decl_stmt|;
+DECL|field|numGetServiceListFails
+specifier|private
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|numGetServiceListFails
 decl_stmt|;
 DECL|method|KSMMetrics ()
 specifier|public
@@ -659,6 +673,18 @@ name|incr
 argument_list|()
 expr_stmt|;
 name|numVolumeLists
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incNumGetServiceLists ()
+specifier|public
+name|void
+name|incNumGetServiceLists
+parameter_list|()
+block|{
+name|numGetServiceLists
 operator|.
 name|incr
 argument_list|()
@@ -948,6 +974,18 @@ name|incr
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|incNumGetServiceListFails ()
+specifier|public
+name|void
+name|incNumGetServiceListFails
+parameter_list|()
+block|{
+name|numGetServiceListFails
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getNumVolumeCreates ()
@@ -1123,6 +1161,21 @@ parameter_list|()
 block|{
 return|return
 name|numKeyLists
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumGetServiceLists ()
+specifier|public
+name|long
+name|getNumGetServiceLists
+parameter_list|()
+block|{
+return|return
+name|numGetServiceLists
 operator|.
 name|value
 argument_list|()
@@ -1453,6 +1506,21 @@ parameter_list|()
 block|{
 return|return
 name|numBlockAllocateCallFails
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNumGetServiceListFails ()
+specifier|public
+name|long
+name|getNumGetServiceListFails
+parameter_list|()
+block|{
+return|return
+name|numGetServiceListFails
 operator|.
 name|value
 argument_list|()
