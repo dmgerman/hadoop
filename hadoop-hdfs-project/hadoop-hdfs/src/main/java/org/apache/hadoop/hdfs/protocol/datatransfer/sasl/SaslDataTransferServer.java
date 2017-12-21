@@ -629,7 +629,7 @@ operator|=
 name|dnConf
 expr_stmt|;
 block|}
-comment|/**    * Receives SASL negotiation from a peer on behalf of a server.    *    * @param peer connection peer    * @param underlyingOut connection output stream    * @param underlyingIn connection input stream    * @param int xferPort data transfer port of DataNode accepting connection    * @param datanodeId ID of DataNode accepting connection    * @return new pair of streams, wrapped after SASL negotiation    * @throws IOException for any error    */
+comment|/**    * Receives SASL negotiation from a peer on behalf of a server.    *    * @param peer connection peer    * @param underlyingOut connection output stream    * @param underlyingIn connection input stream    * @param xferPort data transfer port of DataNode accepting connection    * @param datanodeId ID of DataNode accepting connection    * @return new pair of streams, wrapped after SASL negotiation    * @throws IOException for any error    */
 DECL|method|receive (Peer peer, OutputStream underlyingOut, InputStream underlyingIn, int xferPort, DatanodeID datanodeId)
 specifier|public
 name|IOStreamPair
