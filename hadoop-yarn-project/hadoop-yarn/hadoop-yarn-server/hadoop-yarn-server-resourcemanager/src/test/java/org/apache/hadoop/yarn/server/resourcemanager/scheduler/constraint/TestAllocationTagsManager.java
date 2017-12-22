@@ -26,15 +26,11 @@ end_package
 
 begin_import
 import|import
-name|com
+name|java
 operator|.
-name|google
+name|util
 operator|.
-name|common
-operator|.
-name|collect
-operator|.
-name|ImmutableSet
+name|List
 import|;
 end_import
 
@@ -53,6 +49,98 @@ operator|.
 name|records
 operator|.
 name|NodeId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Resource
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|MockNodes
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|MockRM
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|RMContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|rmnode
+operator|.
+name|RMNode
 import|;
 end_import
 
@@ -94,7 +182,31 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
+name|ImmutableSet
 import|;
 end_import
 
@@ -108,6 +220,95 @@ specifier|public
 class|class
 name|TestAllocationTagsManager
 block|{
+DECL|field|rmContext
+specifier|private
+name|RMContext
+name|rmContext
+decl_stmt|;
+annotation|@
+name|Before
+DECL|method|setup ()
+specifier|public
+name|void
+name|setup
+parameter_list|()
+block|{
+name|MockRM
+name|rm
+init|=
+operator|new
+name|MockRM
+argument_list|()
+decl_stmt|;
+name|rm
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+name|MockNodes
+operator|.
+name|resetHostIds
+argument_list|()
+expr_stmt|;
+name|List
+argument_list|<
+name|RMNode
+argument_list|>
+name|rmNodes
+init|=
+name|MockNodes
+operator|.
+name|newNodes
+argument_list|(
+literal|2
+argument_list|,
+literal|4
+argument_list|,
+name|Resource
+operator|.
+name|newInstance
+argument_list|(
+literal|4096
+argument_list|,
+literal|4
+argument_list|)
+argument_list|)
+decl_stmt|;
+for|for
+control|(
+name|RMNode
+name|rmNode
+range|:
+name|rmNodes
+control|)
+block|{
+name|rm
+operator|.
+name|getRMContext
+argument_list|()
+operator|.
+name|getRMNodes
+argument_list|()
+operator|.
+name|putIfAbsent
+argument_list|(
+name|rmNode
+operator|.
+name|getNodeID
+argument_list|()
+argument_list|,
+name|rmNode
+argument_list|)
+expr_stmt|;
+block|}
+name|rmContext
+operator|=
+name|rm
+operator|.
+name|getRMContext
+argument_list|()
+expr_stmt|;
+block|}
 annotation|@
 name|Test
 DECL|method|testAllocationTagsManagerSimpleCases ()
@@ -123,9 +324,11 @@ name|atm
 init|=
 operator|new
 name|AllocationTagsManager
-argument_list|()
+argument_list|(
+name|rmContext
+argument_list|)
 decl_stmt|;
-comment|/**      * Construct test case:      * Node1:      *    container_1_1 (mapper/reducer/app_1)      *    container_1_3 (service/app_1)      *      * Node2:      *    container_1_2 (mapper/reducer/app_1)      *    container_1_4 (reducer/app_1)      *    container_2_1 (service/app_2)      */
+comment|/**      * Construct test case:      * Node1 (rack0):      *    container_1_1 (mapper/reducer/app_1)      *    container_1_3 (service/app_1)      *      * Node2 (rack0):      *    container_1_2 (mapper/reducer/app_1)      *    container_1_4 (reducer/app_1)      *    container_2_1 (service/app_2)      */
 comment|// 3 Containers from app1
 name|atm
 operator|.
@@ -135,7 +338,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node1:1234"
+literal|"host1:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -172,7 +375,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -209,7 +412,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node1:1234"
+literal|"host1:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -244,7 +447,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -280,7 +483,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -307,7 +510,7 @@ literal|"service"
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Get Cardinality of app1 on node1, with tag "mapper"
+comment|// Get Node Cardinality of app1 on node1, with tag "mapper"
 name|Assert
 operator|.
 name|assertEquals
@@ -322,7 +525,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node1:1234"
+literal|"host1:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -345,7 +548,31 @@ name|max
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Get Cardinality of app1 on node2, with tag "mapper/reducer", op=min
+comment|// Get Rack Cardinality of app1 on rack0, with tag "mapper"
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|2
+argument_list|,
+name|atm
+operator|.
+name|getRackCardinality
+argument_list|(
+literal|"rack0"
+argument_list|,
+name|TestUtils
+operator|.
+name|getMockApplicationId
+argument_list|(
+literal|1
+argument_list|)
+argument_list|,
+literal|"mapper"
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Get Node Cardinality of app1 on node2, with tag "mapper/reducer", op=min
 name|Assert
 operator|.
 name|assertEquals
@@ -360,7 +587,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -385,7 +612,7 @@ name|min
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Get Cardinality of app1 on node2, with tag "mapper/reducer", op=max
+comment|// Get Node Cardinality of app1 on node2, with tag "mapper/reducer", op=max
 name|Assert
 operator|.
 name|assertEquals
@@ -400,7 +627,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -425,7 +652,7 @@ name|max
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Get Cardinality of app1 on node2, with tag "mapper/reducer", op=sum
+comment|// Get Node Cardinality of app1 on node2, with tag "mapper/reducer", op=sum
 name|Assert
 operator|.
 name|assertEquals
@@ -440,7 +667,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -465,7 +692,7 @@ name|sum
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Get Cardinality by passing single tag.
+comment|// Get Node Cardinality by passing single tag.
 name|Assert
 operator|.
 name|assertEquals
@@ -480,7 +707,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -508,7 +735,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -522,7 +749,8 @@ literal|"reducer"
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Get Cardinality of app1 on node2, with tag "no_existed/reducer", op=min
+comment|// Get Node Cardinality of app1 on node2, with tag "no_existed/reducer",
+comment|// op=min
 name|Assert
 operator|.
 name|assertEquals
@@ -537,7 +765,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -562,7 +790,7 @@ name|min
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Get Cardinality of app1 on node2, with tag "<applicationId>", op=max
+comment|// Get Node Cardinality of app1 on node2, with tag "<applicationId>", op=max
 comment|// (Expect this returns #containers from app1 on node2)
 name|Assert
 operator|.
@@ -578,7 +806,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -613,7 +841,7 @@ name|max
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Get Cardinality of app1 on node2, with empty tag set, op=max
+comment|// Get Node Cardinality of app1 on node2, with empty tag set, op=max
 name|Assert
 operator|.
 name|assertEquals
@@ -628,7 +856,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -649,7 +877,7 @@ name|max
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Get Cardinality of all apps on node2, with empty tag set, op=sum
+comment|// Get Node Cardinality of all apps on node2, with empty tag set, op=sum
 name|Assert
 operator|.
 name|assertEquals
@@ -664,7 +892,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 literal|null
@@ -680,7 +908,7 @@ name|sum
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Get Cardinality of app_1 on node2, with empty tag set, op=sum
+comment|// Get Node Cardinality of app_1 on node2, with empty tag set, op=sum
 name|Assert
 operator|.
 name|assertEquals
@@ -695,7 +923,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -716,7 +944,7 @@ name|sum
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Get Cardinality of app_1 on node2, with empty tag set, op=sum
+comment|// Get Node Cardinality of app_1 on node2, with empty tag set, op=sum
 name|Assert
 operator|.
 name|assertEquals
@@ -731,7 +959,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -761,7 +989,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node1:1234"
+literal|"host1:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -798,7 +1026,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -835,7 +1063,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node1:1234"
+literal|"host1:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -870,7 +1098,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -905,7 +1133,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -948,7 +1176,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node1:1234"
+literal|"host1:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -971,7 +1199,7 @@ name|max
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Get Cardinality of app1 on node2, with tag "mapper/reducer", op=min
+comment|// Get Node Cardinality of app1 on node2, with tag "mapper/reducer", op=min
 name|Assert
 operator|.
 name|assertEquals
@@ -986,7 +1214,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -1011,7 +1239,7 @@ name|min
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Get Cardinality of app1 on node2, with tag "mapper/reducer", op=max
+comment|// Get Node Cardinality of app1 on node2, with tag "mapper/reducer", op=max
 name|Assert
 operator|.
 name|assertEquals
@@ -1026,7 +1254,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -1051,7 +1279,7 @@ name|max
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Get Cardinality of app1 on node2, with tag "mapper/reducer", op=sum
+comment|// Get Node Cardinality of app1 on node2, with tag "mapper/reducer", op=sum
 name|Assert
 operator|.
 name|assertEquals
@@ -1066,7 +1294,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -1091,7 +1319,7 @@ name|sum
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Get Cardinality of app1 on node2, with tag "<applicationId>", op=max
+comment|// Get Node Cardinality of app1 on node2, with tag "<applicationId>", op=max
 comment|// (Expect this returns #containers from app1 on node2)
 name|Assert
 operator|.
@@ -1107,7 +1335,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -1152,7 +1380,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -1174,7 +1402,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Get Cardinality of app1 on node2, with empty tag set, op=max
+comment|// Get Node Cardinality of app1 on node2, with empty tag set, op=max
 name|Assert
 operator|.
 name|assertEquals
@@ -1189,7 +1417,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -1210,7 +1438,7 @@ name|max
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Get Cardinality of all apps on node2, with empty tag set, op=sum
+comment|// Get Node Cardinality of all apps on node2, with empty tag set, op=sum
 name|Assert
 operator|.
 name|assertEquals
@@ -1225,7 +1453,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 literal|null
@@ -1241,7 +1469,7 @@ name|sum
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Get Cardinality of app_1 on node2, with empty tag set, op=sum
+comment|// Get Node Cardinality of app_1 on node2, with empty tag set, op=sum
 name|Assert
 operator|.
 name|assertEquals
@@ -1256,7 +1484,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -1277,7 +1505,7 @@ name|sum
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Get Cardinality of app_1 on node2, with empty tag set, op=sum
+comment|// Get Node Cardinality of app_2 on node2, with empty tag set, op=sum
 name|Assert
 operator|.
 name|assertEquals
@@ -1292,7 +1520,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -1316,23 +1544,25 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testAllocationTagsManagerMemoryAfterCleanup ()
+DECL|method|testAllocationTagsManagerRackMapping ()
 specifier|public
 name|void
-name|testAllocationTagsManagerMemoryAfterCleanup
+name|testAllocationTagsManagerRackMapping
 parameter_list|()
 throws|throws
 name|InvalidAllocationTagsQueryException
 block|{
-comment|/**      * Make sure YARN cleans up all memory once container/app finishes.      */
 name|AllocationTagsManager
 name|atm
 init|=
 operator|new
 name|AllocationTagsManager
-argument_list|()
+argument_list|(
+name|rmContext
+argument_list|)
 decl_stmt|;
-comment|// Add a bunch of containers
+comment|/**      * Construct Rack test case:      * Node1 (rack0):      *    container_1_1 (mapper/reducer/app_1)      *    container_1_4 (reducer/app_2)      *      * Node2 (rack0):      *    container_1_2 (mapper/reducer/app_2)      *    container_1_3 (service/app_1)      *      * Node5 (rack1):      *    container_2_1 (service/app_2)      */
+comment|// 3 Containers from app1
 name|atm
 operator|.
 name|addContainer
@@ -1341,7 +1571,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node1:1234"
+literal|"host1:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -1378,7 +1608,364 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
+argument_list|)
+argument_list|,
+name|TestUtils
+operator|.
+name|getMockApplicationId
+argument_list|(
+literal|2
+argument_list|)
+argument_list|,
+name|TestUtils
+operator|.
+name|getMockContainerId
+argument_list|(
+literal|2
+argument_list|,
+literal|2
+argument_list|)
+argument_list|,
+name|ImmutableSet
+operator|.
+name|of
+argument_list|(
+literal|"mapper"
+argument_list|,
+literal|"reducer"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|atm
+operator|.
+name|addContainer
+argument_list|(
+name|NodeId
+operator|.
+name|fromString
+argument_list|(
+literal|"host1:123"
+argument_list|)
+argument_list|,
+name|TestUtils
+operator|.
+name|getMockApplicationId
+argument_list|(
+literal|2
+argument_list|)
+argument_list|,
+name|TestUtils
+operator|.
+name|getMockContainerId
+argument_list|(
+literal|2
+argument_list|,
+literal|4
+argument_list|)
+argument_list|,
+name|ImmutableSet
+operator|.
+name|of
+argument_list|(
+literal|"reducer"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|atm
+operator|.
+name|addContainer
+argument_list|(
+name|NodeId
+operator|.
+name|fromString
+argument_list|(
+literal|"host2:123"
+argument_list|)
+argument_list|,
+name|TestUtils
+operator|.
+name|getMockApplicationId
+argument_list|(
+literal|1
+argument_list|)
+argument_list|,
+name|TestUtils
+operator|.
+name|getMockContainerId
+argument_list|(
+literal|1
+argument_list|,
+literal|3
+argument_list|)
+argument_list|,
+name|ImmutableSet
+operator|.
+name|of
+argument_list|(
+literal|"service"
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// 1 Container from app2
+name|atm
+operator|.
+name|addContainer
+argument_list|(
+name|NodeId
+operator|.
+name|fromString
+argument_list|(
+literal|"host2:123"
+argument_list|)
+argument_list|,
+name|TestUtils
+operator|.
+name|getMockApplicationId
+argument_list|(
+literal|2
+argument_list|)
+argument_list|,
+name|TestUtils
+operator|.
+name|getMockContainerId
+argument_list|(
+literal|2
+argument_list|,
+literal|3
+argument_list|)
+argument_list|,
+name|ImmutableSet
+operator|.
+name|of
+argument_list|(
+literal|"service"
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Get Rack Cardinality of app1 on rack0, with tag "mapper"
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|1
+argument_list|,
+name|atm
+operator|.
+name|getRackCardinality
+argument_list|(
+literal|"rack0"
+argument_list|,
+name|TestUtils
+operator|.
+name|getMockApplicationId
+argument_list|(
+literal|1
+argument_list|)
+argument_list|,
+literal|"mapper"
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Get Rack Cardinality of app2 on rack0, with tag "reducer"
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|2
+argument_list|,
+name|atm
+operator|.
+name|getRackCardinality
+argument_list|(
+literal|"rack0"
+argument_list|,
+name|TestUtils
+operator|.
+name|getMockApplicationId
+argument_list|(
+literal|2
+argument_list|)
+argument_list|,
+literal|"reducer"
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Get Rack Cardinality of all apps on rack0, with tag "reducer"
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|3
+argument_list|,
+name|atm
+operator|.
+name|getRackCardinality
+argument_list|(
+literal|"rack0"
+argument_list|,
+literal|null
+argument_list|,
+literal|"reducer"
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Get Rack Cardinality of app_1 on rack0, with empty tag set, op=max
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|2
+argument_list|,
+name|atm
+operator|.
+name|getRackCardinalityByOp
+argument_list|(
+literal|"rack0"
+argument_list|,
+name|TestUtils
+operator|.
+name|getMockApplicationId
+argument_list|(
+literal|1
+argument_list|)
+argument_list|,
+name|ImmutableSet
+operator|.
+name|of
+argument_list|()
+argument_list|,
+name|Long
+operator|::
+name|max
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Get Rack Cardinality of app_1 on rack0, with empty tag set, op=min
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|1
+argument_list|,
+name|atm
+operator|.
+name|getRackCardinalityByOp
+argument_list|(
+literal|"rack0"
+argument_list|,
+name|TestUtils
+operator|.
+name|getMockApplicationId
+argument_list|(
+literal|1
+argument_list|)
+argument_list|,
+name|ImmutableSet
+operator|.
+name|of
+argument_list|()
+argument_list|,
+name|Long
+operator|::
+name|min
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Get Rack Cardinality of all apps on rack0, with empty tag set, op=min
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|3
+argument_list|,
+name|atm
+operator|.
+name|getRackCardinalityByOp
+argument_list|(
+literal|"rack0"
+argument_list|,
+literal|null
+argument_list|,
+name|ImmutableSet
+operator|.
+name|of
+argument_list|()
+argument_list|,
+name|Long
+operator|::
+name|max
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testAllocationTagsManagerMemoryAfterCleanup ()
+specifier|public
+name|void
+name|testAllocationTagsManagerMemoryAfterCleanup
+parameter_list|()
+throws|throws
+name|InvalidAllocationTagsQueryException
+block|{
+comment|/**      * Make sure YARN cleans up all memory once container/app finishes.      */
+name|AllocationTagsManager
+name|atm
+init|=
+operator|new
+name|AllocationTagsManager
+argument_list|(
+name|rmContext
+argument_list|)
+decl_stmt|;
+comment|// Add a bunch of containers
+name|atm
+operator|.
+name|addContainer
+argument_list|(
+name|NodeId
+operator|.
+name|fromString
+argument_list|(
+literal|"host1:123"
+argument_list|)
+argument_list|,
+name|TestUtils
+operator|.
+name|getMockApplicationId
+argument_list|(
+literal|1
+argument_list|)
+argument_list|,
+name|TestUtils
+operator|.
+name|getMockContainerId
+argument_list|(
+literal|1
+argument_list|,
+literal|1
+argument_list|)
+argument_list|,
+name|ImmutableSet
+operator|.
+name|of
+argument_list|(
+literal|"mapper"
+argument_list|,
+literal|"reducer"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|atm
+operator|.
+name|addContainer
+argument_list|(
+name|NodeId
+operator|.
+name|fromString
+argument_list|(
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -1415,7 +2002,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node1:1234"
+literal|"host1:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -1450,7 +2037,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -1485,7 +2072,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -1521,7 +2108,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node1:1234"
+literal|"host1:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -1558,7 +2145,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -1595,7 +2182,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node1:1234"
+literal|"host1:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -1630,7 +2217,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -1665,7 +2252,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -1701,10 +2288,10 @@ literal|0
 argument_list|,
 name|atm
 operator|.
-name|getGlobalMapping
+name|getGlobalNodeMapping
 argument_list|()
 operator|.
-name|getNodeToTagsWithCount
+name|getTypeToTagsWithCount
 argument_list|()
 operator|.
 name|size
@@ -1719,7 +2306,40 @@ literal|0
 argument_list|,
 name|atm
 operator|.
-name|getPerAppMappings
+name|getPerAppNodeMappings
+argument_list|()
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|0
+argument_list|,
+name|atm
+operator|.
+name|getGlobalRackMapping
+argument_list|()
+operator|.
+name|getTypeToTagsWithCount
+argument_list|()
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|0
+argument_list|,
+name|atm
+operator|.
+name|getPerAppRackMappings
 argument_list|()
 operator|.
 name|size
@@ -1743,7 +2363,9 @@ name|atm
 init|=
 operator|new
 name|AllocationTagsManager
-argument_list|()
+argument_list|(
+name|rmContext
+argument_list|)
 decl_stmt|;
 comment|// Add a bunch of containers
 name|atm
@@ -1754,7 +2376,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node1:1234"
+literal|"host1:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -1791,7 +2413,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -1828,7 +2450,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node1:1234"
+literal|"host1:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -1863,7 +2485,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -1898,7 +2520,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
@@ -1994,7 +2616,7 @@ name|NodeId
 operator|.
 name|fromString
 argument_list|(
-literal|"node2:1234"
+literal|"host2:123"
 argument_list|)
 argument_list|,
 name|TestUtils
