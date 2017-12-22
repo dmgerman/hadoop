@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.namenode
+DECL|package|org.apache.hadoop.hdfs.server.namenode.sps
 package|package
 name|org
 operator|.
@@ -17,6 +17,8 @@ operator|.
 name|server
 operator|.
 name|namenode
+operator|.
+name|sps
 package|;
 end_package
 
@@ -116,6 +118,8 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|sps
+operator|.
 name|StoragePolicySatisfier
 operator|.
 name|AttemptedItemInfo
@@ -135,6 +139,8 @@ operator|.
 name|server
 operator|.
 name|namenode
+operator|.
+name|sps
 operator|.
 name|StoragePolicySatisfier
 operator|.

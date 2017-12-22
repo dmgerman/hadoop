@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.namenode
+DECL|package|org.apache.hadoop.hdfs.server.namenode.sps
 package|package
 name|org
 operator|.
@@ -17,6 +17,8 @@ operator|.
 name|server
 operator|.
 name|namenode
+operator|.
+name|sps
 package|;
 end_package
 
@@ -446,6 +448,60 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|namenode
+operator|.
+name|ErasureCodingPolicyManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|INode
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|Namesystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|protocol
 operator|.
 name|BlockStorageMovementCommand
@@ -640,6 +696,26 @@ specifier|private
 name|int
 name|blockMovementMaxRetry
 decl_stmt|;
+DECL|field|ctxt
+specifier|private
+specifier|final
+name|Context
+name|ctxt
+decl_stmt|;
+comment|/**    * An interface for analyzing and assigning the block storage movements to    * worker nodes.    */
+comment|// TODO: Now, added one API which is required for sps package. Will refine
+comment|// this interface via HDFS-12911.
+DECL|interface|Context
+specifier|public
+interface|interface
+name|Context
+block|{
+DECL|method|getNumLiveDataNodes ()
+name|int
+name|getNumLiveDataNodes
+parameter_list|()
+function_decl|;
+block|}
 comment|/**    * Represents the collective analysis status for all blocks.    */
 DECL|class|BlocksMovingAnalysis
 specifier|private
@@ -727,7 +803,7 @@ name|blockMovingInfo
 expr_stmt|;
 block|}
 block|}
-DECL|method|StoragePolicySatisfier (final Namesystem namesystem, final BlockManager blkManager, Configuration conf)
+DECL|method|StoragePolicySatisfier (final Namesystem namesystem, final BlockManager blkManager, Configuration conf, Context ctxt)
 specifier|public
 name|StoragePolicySatisfier
 parameter_list|(
@@ -741,6 +817,9 @@ name|blkManager
 parameter_list|,
 name|Configuration
 name|conf
+parameter_list|,
+name|Context
+name|ctxt
 parameter_list|)
 block|{
 name|this
@@ -843,6 +922,12 @@ name|DFSConfigKeys
 operator|.
 name|DFS_STORAGE_POLICY_SATISFIER_MAX_RETRY_ATTEMPTS_DEFAULT
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|ctxt
+operator|=
+name|ctxt
 expr_stmt|;
 block|}
 comment|/**    * Start storage policy satisfier demon thread. Also start block storage    * movements monitor for retry the attempts if needed.    */
@@ -1446,16 +1531,7 @@ block|}
 name|int
 name|numLiveDn
 init|=
-name|namesystem
-operator|.
-name|getFSDirectory
-argument_list|()
-operator|.
-name|getBlockManager
-argument_list|()
-operator|.
-name|getDatanodeManager
-argument_list|()
+name|ctxt
 operator|.
 name|getNumLiveDataNodes
 argument_list|()
@@ -3801,6 +3877,7 @@ block|}
 block|}
 comment|/**    * Receives set of storage movement attempt finished blocks report.    *    * @param moveAttemptFinishedBlks    *          set of storage movement attempt finished blocks.    */
 DECL|method|handleStorageMovementAttemptFinishedBlks ( BlocksStorageMoveAttemptFinished moveAttemptFinishedBlks)
+specifier|public
 name|void
 name|handleStorageMovementAttemptFinishedBlks
 parameter_list|(
