@@ -13156,6 +13156,11 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
+comment|// HADOOP-15086 - file rename must ensure that the destination does
+comment|// not exist.  The fix is targeted to this call only to avoid
+comment|// regressions.  Other call sites are attempting to rename temporary
+comment|// files, redo a failed rename operation, or rename a directory
+comment|// recursively; for these cases the destination may exist.
 name|store
 operator|.
 name|rename
@@ -13163,6 +13168,12 @@ argument_list|(
 name|srcKey
 argument_list|,
 name|dstKey
+argument_list|,
+literal|false
+argument_list|,
+literal|null
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -13187,7 +13198,10 @@ condition|(
 name|innerException
 operator|instanceof
 name|StorageException
-operator|&&
+condition|)
+block|{
+if|if
+condition|(
 name|NativeAzureFileSystemHelper
 operator|.
 name|isFileNotFoundException
@@ -13211,6 +13225,33 @@ expr_stmt|;
 return|return
 literal|false
 return|;
+block|}
+if|if
+condition|(
+name|NativeAzureFileSystemHelper
+operator|.
+name|isBlobAlreadyExistsConflict
+argument_list|(
+operator|(
+name|StorageException
+operator|)
+name|innerException
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Destination BlobAlreadyExists. Failing rename"
+argument_list|,
+name|src
+argument_list|)
+expr_stmt|;
+return|return
+literal|false
+return|;
+block|}
 block|}
 throw|throw
 name|ex

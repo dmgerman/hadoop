@@ -1928,7 +1928,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|startCopyFromBlob (CloudBlobWrapper sourceBlob, BlobRequestOptions options, OperationContext opContext)
+DECL|method|startCopyFromBlob (CloudBlobWrapper sourceBlob, BlobRequestOptions options, OperationContext opContext, boolean overwriteDestination)
 specifier|public
 name|void
 name|startCopyFromBlob
@@ -1941,12 +1941,27 @@ name|options
 parameter_list|,
 name|OperationContext
 name|opContext
+parameter_list|,
+name|boolean
+name|overwriteDestination
 parameter_list|)
 throws|throws
 name|StorageException
 throws|,
 name|URISyntaxException
 block|{
+name|AccessCondition
+name|dstAccessCondition
+init|=
+name|overwriteDestination
+condition|?
+literal|null
+else|:
+name|AccessCondition
+operator|.
+name|generateIfNotExistsCondition
+argument_list|()
+decl_stmt|;
 name|getBlob
 argument_list|()
 operator|.
@@ -1962,7 +1977,7 @@ argument_list|()
 argument_list|,
 literal|null
 argument_list|,
-literal|null
+name|dstAccessCondition
 argument_list|,
 name|options
 argument_list|,

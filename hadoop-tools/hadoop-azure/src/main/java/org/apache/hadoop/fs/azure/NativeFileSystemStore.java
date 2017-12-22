@@ -393,6 +393,28 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+DECL|method|rename (String srcKey, String dstKey, boolean acquireLease, SelfRenewingLease existingLease, boolean overwriteDestination)
+name|void
+name|rename
+parameter_list|(
+name|String
+name|srcKey
+parameter_list|,
+name|String
+name|dstKey
+parameter_list|,
+name|boolean
+name|acquireLease
+parameter_list|,
+name|SelfRenewingLease
+name|existingLease
+parameter_list|,
+name|boolean
+name|overwriteDestination
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Delete all keys with the given prefix. Used for testing.    *    * @param prefix prefix of objects to be deleted.    * @throws IOException Exception encountered while deleting keys.    */
 annotation|@
 name|VisibleForTesting

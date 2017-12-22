@@ -693,7 +693,7 @@ name|metadata
 parameter_list|)
 function_decl|;
 comment|/**      * Copies an existing blob's contents, properties, and metadata to this instance of the<code>CloudBlob</code>      * class, using the specified operation context.      *      * @param sourceBlob      *            A<code>CloudBlob</code> object that represents the source blob to copy.      * @param options      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying      *<code>null</code> will use the default request options from the associated service client (      *            {@link CloudBlobClient}).      * @param opContext      *            An {@link OperationContext} object that represents the context for the current operation. This object      *            is used to track requests to the storage service, and to provide additional runtime information about      *            the operation.      *      * @throws StorageException      *             If a storage service error occurred.      * @throws URISyntaxException      *      */
-DECL|method|startCopyFromBlob (CloudBlobWrapper sourceBlob, BlobRequestOptions options, OperationContext opContext)
+DECL|method|startCopyFromBlob (CloudBlobWrapper sourceBlob, BlobRequestOptions options, OperationContext opContext, boolean overwriteDestination)
 specifier|public
 specifier|abstract
 name|void
@@ -707,6 +707,9 @@ name|options
 parameter_list|,
 name|OperationContext
 name|opContext
+parameter_list|,
+name|boolean
+name|overwriteDestination
 parameter_list|)
 throws|throws
 name|StorageException
