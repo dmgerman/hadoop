@@ -1559,9 +1559,9 @@ specifier|private
 name|SchedulerRequestKey
 name|allocatedSchedulerKey
 decl_stmt|;
-comment|// TODO, set it when container allocated by scheduler (From SchedulingRequest)
 DECL|field|allocationTags
 specifier|private
+specifier|volatile
 name|Set
 argument_list|<
 name|String
@@ -2834,6 +2834,25 @@ block|{
 return|return
 name|allocationTags
 return|;
+block|}
+DECL|method|setAllocationTags (Set<String> tags)
+specifier|public
+name|void
+name|setAllocationTags
+parameter_list|(
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|tags
+parameter_list|)
+block|{
+name|this
+operator|.
+name|allocationTags
+operator|=
+name|tags
+expr_stmt|;
 block|}
 DECL|class|BaseTransition
 specifier|private
