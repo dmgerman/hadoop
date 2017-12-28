@@ -118,6 +118,58 @@ name|scheduler
 operator|.
 name|constraint
 operator|.
+name|algorithm
+operator|.
+name|iterators
+operator|.
+name|PopularTagsIterator
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|constraint
+operator|.
+name|algorithm
+operator|.
+name|iterators
+operator|.
+name|SerialIterator
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|constraint
+operator|.
 name|api
 operator|.
 name|ConstraintPlacementAlgorithmInput
@@ -170,6 +222,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Iterator
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Map
 import|;
 end_import
@@ -190,10 +252,16 @@ end_comment
 
 begin_class
 DECL|class|BatchedRequests
+specifier|public
 class|class
 name|BatchedRequests
 implements|implements
 name|ConstraintPlacementAlgorithmInput
+implements|,
+name|Iterable
+argument_list|<
+name|SchedulingRequest
+argument_list|>
 block|{
 comment|// PlacementAlgorithmOutput attempt - the number of times the requests in this
 comment|// batch has been placed but was rejected by the scheduler.
@@ -237,9 +305,30 @@ name|HashMap
 argument_list|<>
 argument_list|()
 decl_stmt|;
-DECL|method|BatchedRequests (ApplicationId applicationId, Collection<SchedulingRequest> requests, int attempt)
+DECL|field|iteratorType
+specifier|private
+name|IteratorType
+name|iteratorType
+decl_stmt|;
+comment|/**    * Iterator Type.    */
+DECL|enum|IteratorType
+specifier|public
+enum|enum
+name|IteratorType
+block|{
+DECL|enumConstant|SERIAL
+name|SERIAL
+block|,
+DECL|enumConstant|POPULAR_TAGS
+name|POPULAR_TAGS
+block|}
+DECL|method|BatchedRequests (IteratorType type, ApplicationId applicationId, Collection<SchedulingRequest> requests, int attempt)
+specifier|public
 name|BatchedRequests
 parameter_list|(
+name|IteratorType
+name|type
+parameter_list|,
 name|ApplicationId
 name|applicationId
 parameter_list|,
@@ -253,6 +342,12 @@ name|int
 name|attempt
 parameter_list|)
 block|{
+name|this
+operator|.
+name|iteratorType
+operator|=
+name|type
+expr_stmt|;
 name|this
 operator|.
 name|applicationId
@@ -272,8 +367,54 @@ operator|=
 name|attempt
 expr_stmt|;
 block|}
+comment|/**    * Exposes SchedulingRequest Iterator interface which can be used    * to traverse requests using different heuristics i.e. Tag Popularity    * @return SchedulingRequest Iterator.    */
+annotation|@
+name|Override
+DECL|method|iterator ()
+specifier|public
+name|Iterator
+argument_list|<
+name|SchedulingRequest
+argument_list|>
+name|iterator
+parameter_list|()
+block|{
+switch|switch
+condition|(
+name|this
+operator|.
+name|iteratorType
+condition|)
+block|{
+case|case
+name|SERIAL
+case|:
+return|return
+operator|new
+name|SerialIterator
+argument_list|(
+name|requests
+argument_list|)
+return|;
+case|case
+name|POPULAR_TAGS
+case|:
+return|return
+operator|new
+name|PopularTagsIterator
+argument_list|(
+name|requests
+argument_list|)
+return|;
+default|default:
+return|return
+literal|null
+return|;
+block|}
+block|}
 comment|/**    * Get Application Id.    * @return Application Id.    */
 DECL|method|getApplicationId ()
+specifier|public
 name|ApplicationId
 name|getApplicationId
 parameter_list|()
@@ -300,6 +441,7 @@ return|;
 block|}
 comment|/**    * Add a Scheduling request to the batch.    * @param req Scheduling Request.    */
 DECL|method|addToBatch (SchedulingRequest req)
+specifier|public
 name|void
 name|addToBatch
 parameter_list|(
@@ -316,6 +458,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|addToBlacklist (Set<String> tags, SchedulerNode node)
+specifier|public
 name|void
 name|addToBlacklist
 parameter_list|(
@@ -376,6 +519,7 @@ block|}
 block|}
 comment|/**    * Get placement attempt.    * @return PlacementAlgorithmOutput placement Attempt.    */
 DECL|method|getPlacementAttempt ()
+specifier|public
 name|int
 name|getPlacementAttempt
 parameter_list|()
@@ -386,6 +530,7 @@ return|;
 block|}
 comment|/**    * Get any blacklisted nodes associated with tag.    * @param tag Tag.    * @return Set of blacklisted Nodes.    */
 DECL|method|getBlacklist (String tag)
+specifier|public
 name|Set
 argument_list|<
 name|NodeId

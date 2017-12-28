@@ -2909,7 +2909,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|schedulingRequest ( int priority, long allocReqId, int cores, int mem, String... tags)
-specifier|private
+specifier|protected
 specifier|static
 name|SchedulingRequest
 name|schedulingRequest
@@ -2951,7 +2951,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|schedulingRequest ( int priority, long allocReqId, int cores, int mem, ExecutionType execType, String... tags)
-specifier|private
+specifier|protected
 specifier|static
 name|SchedulingRequest
 name|schedulingRequest

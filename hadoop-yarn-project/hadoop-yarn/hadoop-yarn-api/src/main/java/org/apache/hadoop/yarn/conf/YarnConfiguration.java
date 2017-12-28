@@ -2069,6 +2069,18 @@ name|RM_PREFIX
 operator|+
 literal|"placement-constraints.algorithm.class"
 decl_stmt|;
+comment|/** Used for BasicPlacementAlgorithm - default SERIAL. **/
+DECL|field|RM_PLACEMENT_CONSTRAINTS_ALGORITHM_ITERATOR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_PLACEMENT_CONSTRAINTS_ALGORITHM_ITERATOR
+init|=
+name|RM_PREFIX
+operator|+
+literal|"placement-constraints.algorithm.iterator"
+decl_stmt|;
 DECL|field|RM_PLACEMENT_CONSTRAINTS_ENABLED
 specifier|public
 specifier|static
