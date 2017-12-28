@@ -3424,6 +3424,8 @@ operator|-
 name|scheduledSize
 condition|)
 block|{
+name|BlockPlacementPolicy
+operator|.
 name|LOG
 operator|.
 name|debug
