@@ -514,7 +514,7 @@ name|containerId
 argument_list|,
 name|ContainerEventType
 operator|.
-name|RECOVER_PAUSED_CONTAINER
+name|CONTAINER_LAUNCHED
 argument_list|)
 argument_list|)
 expr_stmt|;
