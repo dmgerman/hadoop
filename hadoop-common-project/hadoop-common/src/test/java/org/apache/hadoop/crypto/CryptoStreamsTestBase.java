@@ -358,7 +358,7 @@ name|CryptoCodec
 name|codec
 decl_stmt|;
 DECL|field|key
-specifier|private
+specifier|protected
 specifier|static
 specifier|final
 name|byte
@@ -400,7 +400,7 @@ literal|0x16
 block|}
 decl_stmt|;
 DECL|field|iv
-specifier|private
+specifier|protected
 specifier|static
 specifier|final
 name|byte
