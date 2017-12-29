@@ -2351,7 +2351,9 @@ literal|",containerID="
 operator|+
 name|cId
 operator|+
-literal|"\\] is running beyond virtual memory limits. Current usage: "
+literal|"\\] is running "
+operator|+
+literal|"[0-9]+B beyond the 'VIRTUAL' memory limit. Current usage: "
 operator|+
 literal|"[0-9.]+ ?[KMGTPE]?B of [0-9.]+ ?[KMGTPE]?B physical memory used; "
 operator|+

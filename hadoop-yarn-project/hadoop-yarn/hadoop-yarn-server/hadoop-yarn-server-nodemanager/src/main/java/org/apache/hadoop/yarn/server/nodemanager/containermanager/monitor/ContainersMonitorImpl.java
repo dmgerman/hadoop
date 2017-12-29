@@ -2840,6 +2840,16 @@ name|vmemLimit
 argument_list|)
 condition|)
 block|{
+comment|// The current usage (age=0) is always higher than the aged usage. We
+comment|// do not show the aged size in the message, base the delta on the
+comment|// current usage
+name|long
+name|delta
+init|=
+name|currentVmemUsage
+operator|-
+name|vmemLimit
+decl_stmt|;
 comment|// Container (the root process) is still alive and overflowing
 comment|// memory.
 comment|// Dump the process-tree and then clean it up.
@@ -2865,6 +2875,8 @@ argument_list|,
 name|containerId
 argument_list|,
 name|pTree
+argument_list|,
+name|delta
 argument_list|)
 expr_stmt|;
 name|isMemoryOverLimit
@@ -2899,6 +2911,16 @@ name|pmemLimit
 argument_list|)
 condition|)
 block|{
+comment|// The current usage (age=0) is always higher than the aged usage. We
+comment|// do not show the aged size in the message, base the delta on the
+comment|// current usage
+name|long
+name|delta
+init|=
+name|currentPmemUsage
+operator|-
+name|pmemLimit
+decl_stmt|;
 comment|// Container (the root process) is still alive and overflowing
 comment|// memory.
 comment|// Dump the process-tree and then clean it up.
@@ -2924,6 +2946,8 @@ argument_list|,
 name|containerId
 argument_list|,
 name|pTree
+argument_list|,
+name|delta
 argument_list|)
 expr_stmt|;
 name|isMemoryOverLimit
@@ -3092,7 +3116,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**      * Format string when memory limit has been exceeded.      * @param memTypeExceeded type of memory      * @param usageString general memory usage information string      * @param pId process id      * @param containerId container id      * @param pTree process tree to dump full resource utilization graph      * @return formatted resource usage information      */
-DECL|method|formatErrorMessage (String memTypeExceeded, String usageString, String pId, ContainerId containerId, ResourceCalculatorProcessTree pTree)
+DECL|method|formatErrorMessage (String memTypeExceeded, String usageString, String pId, ContainerId containerId, ResourceCalculatorProcessTree pTree, long delta)
 specifier|private
 name|String
 name|formatErrorMessage
@@ -3111,6 +3135,9 @@ name|containerId
 parameter_list|,
 name|ResourceCalculatorProcessTree
 name|pTree
+parameter_list|,
+name|long
+name|delta
 parameter_list|)
 block|{
 return|return
@@ -3120,11 +3147,13 @@ name|format
 argument_list|(
 literal|"Container [pid=%s,containerID=%s] is "
 operator|+
-literal|"running beyond %s memory limits. "
+literal|"running %dB beyond the '%S' memory limit. "
 argument_list|,
 name|pId
 argument_list|,
 name|containerId
+argument_list|,
+name|delta
 argument_list|,
 name|memTypeExceeded
 argument_list|)
