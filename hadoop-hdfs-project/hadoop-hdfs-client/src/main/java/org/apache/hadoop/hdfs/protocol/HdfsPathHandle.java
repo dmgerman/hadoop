@@ -332,6 +332,21 @@ name|InvalidPathHandleException
 block|{
 if|if
 condition|(
+literal|null
+operator|==
+name|stat
+condition|)
+block|{
+throw|throw
+operator|new
+name|InvalidPathHandleException
+argument_list|(
+literal|"Could not resolve handle"
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
 name|mtime
 operator|!=
 literal|null
