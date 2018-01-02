@@ -509,7 +509,7 @@ name|long
 name|allocatedOpportunisticMB
 decl_stmt|;
 DECL|method|NodeManagerMetrics (JvmMetrics jvmMetrics)
-specifier|public
+specifier|private
 name|NodeManagerMetrics
 parameter_list|(
 name|JvmMetrics
@@ -541,6 +541,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|create (MetricsSystem ms)
+specifier|private
 specifier|static
 name|NodeManagerMetrics
 name|create
@@ -554,13 +555,11 @@ name|jm
 init|=
 name|JvmMetrics
 operator|.
-name|create
+name|initSingleton
 argument_list|(
 literal|"NodeManager"
 argument_list|,
 literal|null
-argument_list|,
-name|ms
 argument_list|)
 decl_stmt|;
 return|return

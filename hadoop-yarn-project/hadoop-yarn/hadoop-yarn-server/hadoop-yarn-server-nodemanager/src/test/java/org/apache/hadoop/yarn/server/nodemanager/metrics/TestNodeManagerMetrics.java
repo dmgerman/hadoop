@@ -53,6 +53,22 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|metrics2
+operator|.
+name|source
+operator|.
+name|JvmMetrics
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -108,7 +124,27 @@ name|org
 operator|.
 name|junit
 operator|.
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Before
 import|;
 end_import
 
@@ -137,12 +173,17 @@ init|=
 literal|1024
 decl_stmt|;
 comment|// MiB
-DECL|method|testNames ()
+DECL|field|metrics
+specifier|private
+name|NodeManagerMetrics
+name|metrics
+decl_stmt|;
 annotation|@
-name|Test
+name|Before
+DECL|method|setup ()
 specifier|public
 name|void
-name|testNames
+name|setup
 parameter_list|()
 block|{
 name|DefaultMetricsSystem
@@ -152,14 +193,73 @@ argument_list|(
 literal|"NodeManager"
 argument_list|)
 expr_stmt|;
-name|NodeManagerMetrics
 name|metrics
-init|=
+operator|=
 name|NodeManagerMetrics
 operator|.
 name|create
 argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|After
+DECL|method|tearDown ()
+specifier|public
+name|void
+name|tearDown
+parameter_list|()
+block|{
+name|DefaultMetricsSystem
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testReferenceOfSingletonJvmMetrics ()
+specifier|public
+name|void
+name|testReferenceOfSingletonJvmMetrics
+parameter_list|()
+block|{
+name|JvmMetrics
+name|jvmMetrics
+init|=
+name|JvmMetrics
+operator|.
+name|initSingleton
+argument_list|(
+literal|"NodeManagerModule"
+argument_list|,
+literal|null
+argument_list|)
 decl_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"NodeManagerMetrics should reference the singleton"
+operator|+
+literal|" JvmMetrics instance"
+argument_list|,
+name|jvmMetrics
+argument_list|,
+name|metrics
+operator|.
+name|getJvmMetrics
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|testNames ()
+annotation|@
+name|Test
+specifier|public
+name|void
+name|testNames
+parameter_list|()
+block|{
 name|Resource
 name|total
 init|=
