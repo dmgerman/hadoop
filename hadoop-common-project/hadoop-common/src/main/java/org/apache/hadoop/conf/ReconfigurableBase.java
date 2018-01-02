@@ -1054,7 +1054,7 @@ name|property
 argument_list|)
 return|;
 block|}
-comment|/**    * Change a configuration property.    *    * Subclasses must override this. This method applies the change to    * all internal data structures derived from the configuration property    * that is being changed. If this object owns other Reconfigurable objects    * reconfigureProperty should be called recursively to make sure that    * to make sure that the configuration of these objects is updated.    *    * @param property Name of the property that is being reconfigured.    * @param newVal Proposed new value of the property.    * @return Effective new value of the property. This may be different from    *         newVal.    *    * @throws ReconfigurationException if there was an error applying newVal.    */
+comment|/**    * Change a configuration property.    *    * Subclasses must override this. This method applies the change to    * all internal data structures derived from the configuration property    * that is being changed. If this object owns other Reconfigurable objects    * reconfigureProperty should be called recursively to make sure that    * the configuration of these objects are updated.    *    * @param property Name of the property that is being reconfigured.    * @param newVal Proposed new value of the property.    * @return Effective new value of the property. This may be different from    *         newVal.    *    * @throws ReconfigurationException if there was an error applying newVal.    */
 DECL|method|reconfigurePropertyImpl ( String property, String newVal)
 specifier|protected
 specifier|abstract
