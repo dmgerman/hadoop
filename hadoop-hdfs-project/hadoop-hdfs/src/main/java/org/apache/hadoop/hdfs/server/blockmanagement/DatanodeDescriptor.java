@@ -462,6 +462,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|util
+operator|.
+name|LightWeightLinkedSet
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|IntrusiveCollection
@@ -3675,27 +3691,46 @@ specifier|private
 name|int
 name|underReplicatedBlocks
 decl_stmt|;
+DECL|field|underReplicatedBlocksInOpenFiles
+specifier|private
+name|int
+name|underReplicatedBlocksInOpenFiles
+decl_stmt|;
 DECL|field|outOfServiceOnlyReplicas
 specifier|private
 name|int
 name|outOfServiceOnlyReplicas
 decl_stmt|;
-DECL|field|underReplicatedInOpenFiles
+DECL|field|underReplicatedOpenFiles
 specifier|private
-name|int
-name|underReplicatedInOpenFiles
+name|LightWeightHashSet
+argument_list|<
+name|Long
+argument_list|>
+name|underReplicatedOpenFiles
+init|=
+operator|new
+name|LightWeightLinkedSet
+argument_list|<>
+argument_list|()
 decl_stmt|;
 DECL|field|startTime
 specifier|private
 name|long
 name|startTime
 decl_stmt|;
-DECL|method|set (int underRepInOpenFiles, int underRepBlocks, int outOfServiceOnlyRep)
+DECL|method|set (int lowRedundancyBlocksInOpenFiles, LightWeightHashSet<Long> underRepInOpenFiles, int underRepBlocks, int outOfServiceOnlyRep)
 specifier|synchronized
 name|void
 name|set
 parameter_list|(
 name|int
+name|lowRedundancyBlocksInOpenFiles
+parameter_list|,
+name|LightWeightHashSet
+argument_list|<
+name|Long
+argument_list|>
 name|underRepInOpenFiles
 parameter_list|,
 name|int
@@ -3718,13 +3753,17 @@ condition|)
 block|{
 return|return;
 block|}
-name|underReplicatedInOpenFiles
+name|underReplicatedOpenFiles
 operator|=
 name|underRepInOpenFiles
 expr_stmt|;
 name|underReplicatedBlocks
 operator|=
 name|underRepBlocks
+expr_stmt|;
+name|underReplicatedBlocksInOpenFiles
+operator|=
+name|lowRedundancyBlocksInOpenFiles
 expr_stmt|;
 name|outOfServiceOnlyReplicas
 operator|=
@@ -3809,7 +3848,40 @@ literal|0
 return|;
 block|}
 return|return
-name|underReplicatedInOpenFiles
+name|underReplicatedBlocksInOpenFiles
+return|;
+block|}
+comment|/** @return the collection of under-replicated blocks in open files */
+DECL|method|getOpenFiles ()
+specifier|public
+specifier|synchronized
+name|LightWeightHashSet
+argument_list|<
+name|Long
+argument_list|>
+name|getOpenFiles
+parameter_list|()
+block|{
+if|if
+condition|(
+operator|!
+name|isDecommissionInProgress
+argument_list|()
+operator|&&
+operator|!
+name|isEnteringMaintenance
+argument_list|()
+condition|)
+block|{
+return|return
+operator|new
+name|LightWeightLinkedSet
+argument_list|<>
+argument_list|()
+return|;
+block|}
+return|return
+name|underReplicatedOpenFiles
 return|;
 block|}
 comment|/** Set start time */
@@ -3869,7 +3941,7 @@ name|startTime
 return|;
 block|}
 block|}
-comment|// End of class DecommissioningStatus
+comment|// End of class LeavingServiceStatus
 comment|/**    * Set the flag to indicate if this datanode is disallowed from communicating    * with the namenode.    */
 DECL|method|setDisallowed (boolean flag)
 specifier|public

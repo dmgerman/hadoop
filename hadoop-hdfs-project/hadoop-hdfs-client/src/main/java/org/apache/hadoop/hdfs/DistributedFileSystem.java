@@ -1100,6 +1100,24 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|OpenFilesIterator
+operator|.
+name|OpenFilesType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|ZoneReencryptionStatus
 import|;
 end_import
@@ -14816,6 +14834,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Returns a RemoteIterator which can be used to list all open files    * currently managed by the NameNode. For large numbers of open files,    * iterator will fetch the list in batches of configured size.    *<p/>    * Since the list is fetched in batches, it does not represent a    * consistent snapshot of the all open files.    *<p/>    * This method can only be called by HDFS superusers.    */
+annotation|@
+name|Deprecated
 DECL|method|listOpenFiles ()
 specifier|public
 name|RemoteIterator
@@ -14832,6 +14852,32 @@ name|dfs
 operator|.
 name|listOpenFiles
 argument_list|()
+return|;
+block|}
+DECL|method|listOpenFiles ( EnumSet<OpenFilesType> openFilesTypes)
+specifier|public
+name|RemoteIterator
+argument_list|<
+name|OpenFileEntry
+argument_list|>
+name|listOpenFiles
+parameter_list|(
+name|EnumSet
+argument_list|<
+name|OpenFilesType
+argument_list|>
+name|openFilesTypes
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|dfs
+operator|.
+name|listOpenFiles
+argument_list|(
+name|openFilesTypes
+argument_list|)
 return|;
 block|}
 comment|/**    * Create a {@link HdfsDataOutputStreamBuilder} to append a file on DFS.    *    * @param path file path.    * @return A {@link HdfsDataOutputStreamBuilder} for appending a file.    */

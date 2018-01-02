@@ -144,6 +144,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|EnumSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashMap
 import|;
 end_import
@@ -611,6 +621,24 @@ operator|.
 name|NameNodeProxiesClient
 operator|.
 name|ProxyAndInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|OpenFilesIterator
+operator|.
+name|OpenFilesType
 import|;
 end_import
 
@@ -2699,7 +2727,7 @@ literal|"\t[-metasave filename]\n"
 operator|+
 literal|"\t[-triggerBlockReport [-incremental]<datanode_host:ipc_port>]\n"
 operator|+
-literal|"\t[-listOpenFiles]\n"
+literal|"\t[-listOpenFiles [-blockingDecommission]]\n"
 operator|+
 literal|"\t[-help [cmd]]\n"
 decl_stmt|;
@@ -5164,15 +5192,109 @@ return|return
 name|exitCode
 return|;
 block|}
-comment|/**    * Command to list all the open files currently managed by NameNode.    * Usage: hdfs dfsadmin -listOpenFiles    *    * @throws IOException    */
-DECL|method|listOpenFiles ()
+comment|/**    * Command to list all the open files currently managed by NameNode.    * Usage: hdfs dfsadmin -listOpenFiles    *    * @throws IOException    * @param argv    */
+DECL|method|listOpenFiles (String[] argv)
 specifier|public
 name|int
 name|listOpenFiles
-parameter_list|()
+parameter_list|(
+name|String
+index|[]
+name|argv
+parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|List
+argument_list|<
+name|OpenFilesType
+argument_list|>
+name|types
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|argv
+operator|!=
+literal|null
+condition|)
+block|{
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|args
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|(
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|argv
+argument_list|)
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|StringUtils
+operator|.
+name|popOption
+argument_list|(
+literal|"-blockingDecommission"
+argument_list|,
+name|args
+argument_list|)
+condition|)
+block|{
+name|types
+operator|.
+name|add
+argument_list|(
+name|OpenFilesType
+operator|.
+name|BLOCKING_DECOMMISSION
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+if|if
+condition|(
+name|types
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|types
+operator|.
+name|add
+argument_list|(
+name|OpenFilesType
+operator|.
+name|ALL_OPEN_FILES
+argument_list|)
+expr_stmt|;
+block|}
+name|EnumSet
+argument_list|<
+name|OpenFilesType
+argument_list|>
+name|openFilesTypes
+init|=
+name|EnumSet
+operator|.
+name|copyOf
+argument_list|(
+name|types
+argument_list|)
+decl_stmt|;
 name|DistributedFileSystem
 name|dfs
 init|=
@@ -5266,6 +5388,8 @@ name|get
 argument_list|(
 name|dfsConf
 argument_list|)
+argument_list|,
+name|openFilesTypes
 argument_list|)
 expr_stmt|;
 block|}
@@ -5276,7 +5400,9 @@ operator|=
 name|dfs
 operator|.
 name|listOpenFiles
-argument_list|()
+argument_list|(
+name|openFilesTypes
+argument_list|)
 expr_stmt|;
 block|}
 name|printOpenFiles
@@ -6176,11 +6302,15 @@ decl_stmt|;
 name|String
 name|listOpenFiles
 init|=
-literal|"-listOpenFiles\n"
+literal|"-listOpenFiles [-blockingDecommission]\n"
 operator|+
 literal|"\tList all open files currently managed by the NameNode along\n"
 operator|+
 literal|"\twith client name and client machine accessing them.\n"
+operator|+
+literal|"\tIf 'blockingDecommission' option is specified, it will list the\n"
+operator|+
+literal|"\topen files only that are blocking the ongoing Decommission."
 decl_stmt|;
 name|String
 name|help
@@ -10738,7 +10868,9 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Usage: hdfs dfsadmin [-listOpenFiles]"
+literal|"Usage: hdfs dfsadmin"
+operator|+
+literal|" [-listOpenFiles [-blockingDecommission]]"
 argument_list|)
 expr_stmt|;
 block|}
@@ -11637,11 +11769,21 @@ condition|)
 block|{
 if|if
 condition|(
+operator|(
 name|argv
 operator|.
 name|length
 operator|!=
 literal|1
+operator|)
+operator|&&
+operator|(
+name|argv
+operator|.
+name|length
+operator|!=
+literal|2
+operator|)
 condition|)
 block|{
 name|printUsage
@@ -12385,7 +12527,9 @@ block|{
 name|exitCode
 operator|=
 name|listOpenFiles
-argument_list|()
+argument_list|(
+name|argv
+argument_list|)
 expr_stmt|;
 block|}
 elseif|else

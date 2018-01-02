@@ -382,6 +382,24 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|OpenFilesIterator
+operator|.
+name|OpenFilesType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|security
 operator|.
 name|token
@@ -2358,6 +2376,8 @@ function_decl|;
 comment|/**    * List open files in the system in batches. INode id is the cursor and the    * open files returned in a batch will have their INode ids greater than    * the cursor INode id. Open files can only be requested by super user and    * the the list across batches are not atomic.    *    * @param prevId the cursor INode id.    * @throws IOException    */
 annotation|@
 name|Idempotent
+annotation|@
+name|Deprecated
 DECL|method|listOpenFiles (long prevId)
 name|BatchedEntries
 argument_list|<
@@ -2367,6 +2387,28 @@ name|listOpenFiles
 parameter_list|(
 name|long
 name|prevId
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * List open files in the system in batches. INode id is the cursor and the    * open files returned in a batch will have their INode ids greater than    * the cursor INode id. Open files can only be requested by super user and    * the the list across batches are not atomic.    *    * @param prevId the cursor INode id.    * @param openFilesTypes types to filter the open files    * @throws IOException    */
+annotation|@
+name|Idempotent
+DECL|method|listOpenFiles (long prevId, EnumSet<OpenFilesType> openFilesTypes)
+name|BatchedEntries
+argument_list|<
+name|OpenFileEntry
+argument_list|>
+name|listOpenFiles
+parameter_list|(
+name|long
+name|prevId
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|OpenFilesType
+argument_list|>
+name|openFilesTypes
 parameter_list|)
 throws|throws
 name|IOException

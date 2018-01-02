@@ -843,6 +843,34 @@ name|MAX_VALUE
 argument_list|)
 return|;
 block|}
+comment|/**    * Check the redundancy of blocks and trigger replication if needed.    * @param blockManager    */
+DECL|method|checkRedundancy (final BlockManager blockManager)
+specifier|public
+specifier|static
+name|void
+name|checkRedundancy
+parameter_list|(
+specifier|final
+name|BlockManager
+name|blockManager
+parameter_list|)
+block|{
+name|blockManager
+operator|.
+name|computeDatanodeWork
+argument_list|()
+expr_stmt|;
+name|blockManager
+operator|.
+name|processPendingReconstructions
+argument_list|()
+expr_stmt|;
+name|blockManager
+operator|.
+name|rescanPostponedMisreplicatedBlocks
+argument_list|()
+expr_stmt|;
+block|}
 comment|/**    * Compute all the replication and invalidation work for the    * given BlockManager.    *     * This differs from the above functions in that it computes    * replication work for all DNs rather than a particular subset,    * regardless of invalidation/replication limit configurations.    *     * NB: you may want to set    * {@link DFSConfigKeys#DFS_NAMENODE_REPLICATION_MAX_STREAMS_KEY} to    * a high value to ensure that all work is calculated.    */
 DECL|method|computeAllPendingWork (BlockManager bm)
 specifier|public

@@ -11293,7 +11293,6 @@ return|;
 block|}
 comment|/**    * If there were any reconstruction requests that timed out, reap them    * and put them back into the neededReconstruction queue    */
 DECL|method|processPendingReconstructions ()
-specifier|private
 name|void
 name|processPendingReconstructions
 parameter_list|()

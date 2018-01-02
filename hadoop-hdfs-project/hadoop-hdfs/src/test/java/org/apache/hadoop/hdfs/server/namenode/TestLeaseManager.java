@@ -1329,6 +1329,8 @@ argument_list|)
 expr_stmt|;
 name|verifyINodeLeaseCounts
 argument_list|(
+name|fsNamesystem
+argument_list|,
 name|lm
 argument_list|,
 name|rootInodeDirectory
@@ -1401,6 +1403,8 @@ expr_stmt|;
 block|}
 name|verifyINodeLeaseCounts
 argument_list|(
+name|fsNamesystem
+argument_list|,
 name|lm
 argument_list|,
 name|rootInodeDirectory
@@ -1439,6 +1443,8 @@ expr_stmt|;
 block|}
 name|verifyINodeLeaseCounts
 argument_list|(
+name|fsNamesystem
+argument_list|,
 name|lm
 argument_list|,
 name|rootInodeDirectory
@@ -1569,6 +1575,8 @@ literal|0
 decl_stmt|;
 name|testInodeWithLeasesAtScaleImpl
 argument_list|(
+name|fsNamesystem
+argument_list|,
 name|lm
 argument_list|,
 name|fsDirectory
@@ -1610,6 +1618,8 @@ literal|2
 expr_stmt|;
 name|testInodeWithLeasesAtScaleImpl
 argument_list|(
+name|fsNamesystem
+argument_list|,
 name|lm
 argument_list|,
 name|fsDirectory
@@ -1632,6 +1642,8 @@ literal|1
 expr_stmt|;
 name|testInodeWithLeasesAtScaleImpl
 argument_list|(
+name|fsNamesystem
+argument_list|,
 name|lm
 argument_list|,
 name|fsDirectory
@@ -1652,6 +1664,8 @@ name|INODE_FILTER_WORKER_TASK_MIN
 expr_stmt|;
 name|testInodeWithLeasesAtScaleImpl
 argument_list|(
+name|fsNamesystem
+argument_list|,
 name|lm
 argument_list|,
 name|fsDirectory
@@ -1674,6 +1688,8 @@ literal|1
 expr_stmt|;
 name|testInodeWithLeasesAtScaleImpl
 argument_list|(
+name|fsNamesystem
+argument_list|,
 name|lm
 argument_list|,
 name|fsDirectory
@@ -1691,6 +1707,8 @@ literal|1279
 expr_stmt|;
 name|testInodeWithLeasesAtScaleImpl
 argument_list|(
+name|fsNamesystem
+argument_list|,
 name|lm
 argument_list|,
 name|fsDirectory
@@ -1701,11 +1719,14 @@ name|scale
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testInodeWithLeasesAtScaleImpl (final LeaseManager leaseManager, final FSDirectory fsDirectory, INodeDirectory ancestorDirectory, int scale)
+DECL|method|testInodeWithLeasesAtScaleImpl (FSNamesystem fsNamesystem, final LeaseManager leaseManager, final FSDirectory fsDirectory, INodeDirectory ancestorDirectory, int scale)
 specifier|private
 name|void
 name|testInodeWithLeasesAtScaleImpl
 parameter_list|(
+name|FSNamesystem
+name|fsNamesystem
+parameter_list|,
 specifier|final
 name|LeaseManager
 name|leaseManager
@@ -1725,6 +1746,8 @@ name|IOException
 block|{
 name|verifyINodeLeaseCounts
 argument_list|(
+name|fsNamesystem
+argument_list|,
 name|leaseManager
 argument_list|,
 name|ancestorDirectory
@@ -1835,6 +1858,8 @@ expr_stmt|;
 block|}
 name|verifyINodeLeaseCounts
 argument_list|(
+name|fsNamesystem
+argument_list|,
 name|leaseManager
 argument_list|,
 name|ancestorDirectory
@@ -1862,6 +1887,8 @@ argument_list|()
 expr_stmt|;
 name|verifyINodeLeaseCounts
 argument_list|(
+name|fsNamesystem
+argument_list|,
 name|leaseManager
 argument_list|,
 name|ancestorDirectory
@@ -2543,12 +2570,14 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|verifyINodeLeaseCounts (final LeaseManager leaseManager, INodeDirectory ancestorDirectory, int iNodeIdWithLeaseCount, int iNodeWithLeaseCount, int iNodeUnderAncestorLeaseCount)
+DECL|method|verifyINodeLeaseCounts (FSNamesystem fsNamesystem, LeaseManager leaseManager, INodeDirectory ancestorDirectory, int iNodeIdWithLeaseCount, int iNodeWithLeaseCount, int iNodeUnderAncestorLeaseCount)
 specifier|private
 name|void
 name|verifyINodeLeaseCounts
 parameter_list|(
-specifier|final
+name|FSNamesystem
+name|fsNamesystem
+parameter_list|,
 name|LeaseManager
 name|leaseManager
 parameter_list|,
@@ -2621,6 +2650,34 @@ argument_list|)
 operator|.
 name|size
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|0
+argument_list|,
+operator|(
+name|fsNamesystem
+operator|.
+name|getFilesBlockingDecom
+argument_list|(
+literal|0
+argument_list|)
+operator|==
+literal|null
+condition|?
+literal|0
+else|:
+name|fsNamesystem
+operator|.
+name|getFilesBlockingDecom
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|size
+argument_list|()
+operator|)
 argument_list|)
 expr_stmt|;
 block|}
