@@ -136,6 +136,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|eclipse
+operator|.
+name|jetty
+operator|.
+name|webapp
+operator|.
+name|WebAppContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -149,6 +163,18 @@ operator|.
 name|slf4j
 operator|.
 name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|servlet
+operator|.
+name|http
+operator|.
+name|HttpServlet
 import|;
 end_import
 
@@ -390,6 +416,53 @@ name|build
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+comment|/**    * Add a servlet to OzoneHttpServer.    * @param servletName The name of the servlet    * @param pathSpec The path spec for the servlet    * @param clazz The servlet class    */
+DECL|method|addServlet (String servletName, String pathSpec, Class<? extends HttpServlet> clazz)
+specifier|protected
+name|void
+name|addServlet
+parameter_list|(
+name|String
+name|servletName
+parameter_list|,
+name|String
+name|pathSpec
+parameter_list|,
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|HttpServlet
+argument_list|>
+name|clazz
+parameter_list|)
+block|{
+name|httpServer
+operator|.
+name|addServlet
+argument_list|(
+name|servletName
+argument_list|,
+name|pathSpec
+argument_list|,
+name|clazz
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Returns the WebAppContext associated with this HttpServer.    * @return WebAppContext    */
+DECL|method|getWebAppContext ()
+specifier|protected
+name|WebAppContext
+name|getWebAppContext
+parameter_list|()
+block|{
+return|return
+name|httpServer
+operator|.
+name|getWebAppContext
+argument_list|()
+return|;
 block|}
 DECL|method|getBindAddress (String bindHostKey, String addressKey, String bindHostDefault, int bindPortdefault)
 specifier|protected

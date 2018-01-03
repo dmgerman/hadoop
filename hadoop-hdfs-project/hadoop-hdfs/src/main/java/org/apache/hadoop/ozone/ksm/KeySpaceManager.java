@@ -1335,6 +1335,8 @@ operator|new
 name|KeySpaceManagerHttpServer
 argument_list|(
 name|configuration
+argument_list|,
+name|this
 argument_list|)
 expr_stmt|;
 block|}
@@ -3427,6 +3429,18 @@ name|ksmRpcAddress
 operator|.
 name|getPort
 argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getHttpServer ()
+specifier|public
+name|KeySpaceManagerHttpServer
+name|getHttpServer
+parameter_list|()
+block|{
+return|return
+name|httpServer
 return|;
 block|}
 annotation|@

@@ -662,6 +662,8 @@ operator|new
 name|KeySpaceManagerHttpServer
 argument_list|(
 name|conf
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|server

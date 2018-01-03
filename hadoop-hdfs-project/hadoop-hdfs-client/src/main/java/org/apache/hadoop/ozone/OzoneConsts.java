@@ -568,6 +568,17 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
+comment|// The ServiceListJSONServlet context attribute where KeySpaceManager
+comment|// instance gets stored.
+DECL|field|KSM_CONTEXT_ATTRIBUTE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|KSM_CONTEXT_ATTRIBUTE
+init|=
+literal|"ozone.ksm"
+decl_stmt|;
 DECL|method|OzoneConsts ()
 specifier|private
 name|OzoneConsts
