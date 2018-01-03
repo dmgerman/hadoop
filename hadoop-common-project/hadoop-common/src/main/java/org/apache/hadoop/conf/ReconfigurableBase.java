@@ -904,7 +904,7 @@ name|e
 parameter_list|)
 block|{     }
 block|}
-comment|/**    * {@inheritDoc}    *    * This method makes the change to this objects {@link Configuration}    * and calls reconfigurePropertyImpl to update internal data structures.    * This method cannot be overridden, subclasses should instead override    * reconfigureProperty.    */
+comment|/**    * {@inheritDoc}    *    * This method makes the change to this objects {@link Configuration}    * and calls reconfigurePropertyImpl to update internal data structures.    * This method cannot be overridden, subclasses should instead override    * reconfigurePropertyImpl.    */
 annotation|@
 name|Override
 DECL|method|reconfigureProperty (String property, String newVal)
