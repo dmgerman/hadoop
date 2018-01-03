@@ -1310,7 +1310,7 @@ name|OzoneProtos
 operator|.
 name|LifeCycleEvent
 operator|.
-name|BEGIN_CREATE
+name|CREATE
 argument_list|)
 expr_stmt|;
 return|return
@@ -1430,7 +1430,7 @@ name|OzoneProtos
 operator|.
 name|LifeCycleEvent
 operator|.
-name|BEGIN_CREATE
+name|CREATE
 argument_list|)
 expr_stmt|;
 return|return

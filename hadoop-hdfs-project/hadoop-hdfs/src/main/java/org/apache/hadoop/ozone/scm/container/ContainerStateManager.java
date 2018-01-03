@@ -1090,27 +1090,7 @@ return|return
 name|list
 return|;
 block|}
-comment|// 1. Client -> SCM: Begin_create
-comment|// 2. Client -> Datanode: create
-comment|// 3. Client -> SCM: complete    {SCM:Creating ->OK}
-comment|// 3. Client -> SCM: complete    {SCM:DELETING -> INVALID}
-comment|// 4. Client->Datanode: write data.
-comment|// Client-driven Create State Machine
-comment|// States:<ALLOCATED>------------->CREATING----------------->[OPEN]
-comment|// Events:            (BEGIN_CREATE)    |    (COMPLETE_CREATE)
-comment|//                                      |
-comment|//                                      |(TIMEOUT)
-comment|//                                      V
-comment|//                                  DELETING----------------->[DELETED]
-comment|//                                           (CLEANUP)
-comment|// SCM Open/Close State Machine
-comment|// States: OPEN------------------>PENDING_CLOSE---------->[CLOSED]
-comment|// Events:        (FULL_CONTAINER)               (CLOSE)
-comment|// Delete State Machine
-comment|// States: OPEN------------------>DELETING------------------>[DELETED]
-comment|// Events:         (DELETE)                  (CLEANUP)
-comment|// Should we allow DELETING of OPEN containers? we can always have
-comment|// OPEN--------->PENDING_CLOSE----->CLOSE---->DELETING---->[DELETED]
+comment|/*    *    * Event and State Transition Mapping:    *    * State: ALLOCATED ---------------> CREATING    * Event:                CREATE    *    * State: CREATING  ---------------> OPEN    * Event:               CREATED    *    * State: OPEN      ---------------> CLOSING    * Event:               FINALIZE    *    * State: CLOSING   ---------------> CLOSED    * Event:                CLOSE    *    * State: CLOSED   ----------------> DELETING    * Event:                DELETE    *    * State: DELETING ----------------> DELETED    * Event:               CLEANUP    *    * State: CREATING  ---------------> DELETING    * Event:               TIMEOUT    *    *    * Container State Flow:    *    * [ALLOCATED]------->[CREATING]--------->[OPEN]---------->[CLOSING]------->[CLOSED]    *            (CREATE)     |    (CREATED)       (FINALIZE)          (CLOSE)    |    *                         |                                                   |    *                         |                                                   |    *                         |(TIMEOUT)                                  (DELETE)|    *                         |                                                   |    *                         +------------------> [DELETING]<-------------------+    *                                                   |    *                                                   |    *                                          (CLEANUP)|    *                                                   |    *                                               [DELETED]    */
 DECL|method|initializeStateMachine ()
 specifier|private
 name|void
@@ -1131,7 +1111,7 @@ name|CREATING
 argument_list|,
 name|LifeCycleEvent
 operator|.
-name|BEGIN_CREATE
+name|CREATE
 argument_list|)
 expr_stmt|;
 name|stateMachine
@@ -1148,7 +1128,7 @@ name|OPEN
 argument_list|,
 name|LifeCycleEvent
 operator|.
-name|COMPLETE_CREATE
+name|CREATED
 argument_list|)
 expr_stmt|;
 name|stateMachine
@@ -1161,11 +1141,11 @@ name|OPEN
 argument_list|,
 name|LifeCycleState
 operator|.
-name|PENDING_CLOSE
+name|CLOSING
 argument_list|,
 name|LifeCycleEvent
 operator|.
-name|FULL_CONTAINER
+name|FINALIZE
 argument_list|)
 expr_stmt|;
 name|stateMachine
@@ -1174,7 +1154,7 @@ name|addTransition
 argument_list|(
 name|LifeCycleState
 operator|.
-name|PENDING_CLOSE
+name|CLOSING
 argument_list|,
 name|LifeCycleState
 operator|.
@@ -1191,7 +1171,7 @@ name|addTransition
 argument_list|(
 name|LifeCycleState
 operator|.
-name|OPEN
+name|CLOSED
 argument_list|,
 name|LifeCycleState
 operator|.
@@ -1200,6 +1180,23 @@ argument_list|,
 name|LifeCycleEvent
 operator|.
 name|DELETE
+argument_list|)
+expr_stmt|;
+name|stateMachine
+operator|.
+name|addTransition
+argument_list|(
+name|LifeCycleState
+operator|.
+name|CREATING
+argument_list|,
+name|LifeCycleState
+operator|.
+name|DELETING
+argument_list|,
+name|LifeCycleEvent
+operator|.
+name|TIMEOUT
 argument_list|)
 expr_stmt|;
 name|stateMachine
@@ -1217,24 +1214,6 @@ argument_list|,
 name|LifeCycleEvent
 operator|.
 name|CLEANUP
-argument_list|)
-expr_stmt|;
-comment|// Creating timeout -> Deleting
-name|stateMachine
-operator|.
-name|addTransition
-argument_list|(
-name|LifeCycleState
-operator|.
-name|CREATING
-argument_list|,
-name|LifeCycleState
-operator|.
-name|DELETING
-argument_list|,
-name|LifeCycleEvent
-operator|.
-name|TIMEOUT
 argument_list|)
 expr_stmt|;
 block|}

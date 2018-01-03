@@ -1596,7 +1596,7 @@ name|event
 condition|)
 block|{
 case|case
-name|BEGIN_CREATE
+name|CREATE
 case|:
 comment|// Acquire lease on container
 name|Lease
@@ -1639,7 +1639,7 @@ argument_list|)
 expr_stmt|;
 break|break;
 case|case
-name|COMPLETE_CREATE
+name|CREATED
 case|:
 comment|// Release the lease on container
 name|containerLeaseManager
@@ -1651,15 +1651,7 @@ argument_list|)
 expr_stmt|;
 break|break;
 case|case
-name|TIMEOUT
-case|:
-break|break;
-case|case
-name|CLEANUP
-case|:
-break|break;
-case|case
-name|FULL_CONTAINER
+name|FINALIZE
 case|:
 break|break;
 case|case
@@ -1672,6 +1664,14 @@ case|:
 break|break;
 case|case
 name|DELETE
+case|:
+break|break;
+case|case
+name|TIMEOUT
+case|:
+break|break;
+case|case
+name|CLEANUP
 case|:
 break|break;
 default|default:
@@ -2053,7 +2053,7 @@ name|OzoneProtos
 operator|.
 name|LifeCycleEvent
 operator|.
-name|FULL_CONTAINER
+name|FINALIZE
 argument_list|)
 decl_stmt|;
 if|if
@@ -2064,7 +2064,7 @@ name|OzoneProtos
 operator|.
 name|LifeCycleState
 operator|.
-name|PENDING_CLOSE
+name|CLOSING
 condition|)
 block|{
 name|LOG

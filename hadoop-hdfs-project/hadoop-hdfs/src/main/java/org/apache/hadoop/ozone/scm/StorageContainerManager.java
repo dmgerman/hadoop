@@ -4192,7 +4192,7 @@ name|OzoneProtos
 operator|.
 name|LifeCycleEvent
 operator|.
-name|BEGIN_CREATE
+name|CREATE
 argument_list|)
 expr_stmt|;
 block|}
@@ -4208,7 +4208,7 @@ name|OzoneProtos
 operator|.
 name|LifeCycleEvent
 operator|.
-name|COMPLETE_CREATE
+name|CREATED
 argument_list|)
 expr_stmt|;
 block|}

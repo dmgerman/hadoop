@@ -1133,7 +1133,7 @@ name|OzoneProtos
 operator|.
 name|LifeCycleEvent
 operator|.
-name|BEGIN_CREATE
+name|CREATE
 argument_list|)
 expr_stmt|;
 name|Thread
@@ -1242,7 +1242,7 @@ name|OzoneProtos
 operator|.
 name|LifeCycleEvent
 operator|.
-name|COMPLETE_CREATE
+name|CREATED
 argument_list|)
 expr_stmt|;
 block|}
@@ -1433,8 +1433,6 @@ name|testContainerCloseWithContainerReport
 parameter_list|()
 throws|throws
 name|IOException
-throws|,
-name|InterruptedException
 block|{
 name|String
 name|containerName
@@ -1634,7 +1632,7 @@ name|OzoneProtos
 operator|.
 name|LifeCycleState
 operator|.
-name|PENDING_CLOSE
+name|CLOSING
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -1707,7 +1705,7 @@ name|OzoneProtos
 operator|.
 name|LifeCycleEvent
 operator|.
-name|FULL_CONTAINER
+name|FINALIZE
 argument_list|)
 expr_stmt|;
 name|List
@@ -1743,7 +1741,7 @@ name|OzoneProtos
 operator|.
 name|LifeCycleState
 operator|.
-name|PENDING_CLOSE
+name|CLOSING
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -1920,7 +1918,7 @@ name|OzoneProtos
 operator|.
 name|LifeCycleEvent
 operator|.
-name|BEGIN_CREATE
+name|CREATE
 argument_list|)
 expr_stmt|;
 name|mapping
@@ -1936,7 +1934,7 @@ name|OzoneProtos
 operator|.
 name|LifeCycleEvent
 operator|.
-name|COMPLETE_CREATE
+name|CREATED
 argument_list|)
 expr_stmt|;
 block|}
