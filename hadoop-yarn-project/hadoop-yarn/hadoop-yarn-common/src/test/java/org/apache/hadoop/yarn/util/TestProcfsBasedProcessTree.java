@@ -786,11 +786,6 @@ name|timeout
 operator|=
 literal|30000
 argument_list|)
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|testProcessTree ()
 specifier|public
 name|void
@@ -1058,9 +1053,6 @@ argument_list|(
 literal|"ProcessTree: "
 operator|+
 name|p
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|File
@@ -1114,9 +1106,6 @@ argument_list|(
 literal|"ProcessTree: "
 operator|+
 name|p
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Verify the orphaned pid is In process tree
@@ -2303,11 +2292,6 @@ argument_list|(
 name|timeout
 operator|=
 literal|30000
-argument_list|)
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
 argument_list|)
 DECL|method|testCpuAndMemoryForProcessTree ()
 specifier|public
@@ -4953,40 +4937,22 @@ argument_list|,
 name|pid
 argument_list|)
 decl_stmt|;
-name|pidDir
+name|FileUtils
 operator|.
-name|mkdir
-argument_list|()
-expr_stmt|;
-if|if
-condition|(
-operator|!
-name|pidDir
-operator|.
-name|exists
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
+name|forceMkdir
 argument_list|(
-literal|"couldn't make process directory under "
-operator|+
-literal|"fake procfs"
+name|pidDir
 argument_list|)
-throw|;
-block|}
-else|else
-block|{
+expr_stmt|;
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"created pid dir"
+literal|"created pid dir: "
+operator|+
+name|pidDir
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 comment|/**    * Write stat files under the specified pid directories with data setup in the    * corresponding ProcessStatInfo objects    *    * @param procfsRootDir    *          root directory of procfs file system    * @param pids    *          the PID directories under which to create the stat file    * @param procs    *          corresponding ProcessStatInfo objects whose data should be written    *          to the stat files.    * @throws IOException    *           if stat files could not be written    */
