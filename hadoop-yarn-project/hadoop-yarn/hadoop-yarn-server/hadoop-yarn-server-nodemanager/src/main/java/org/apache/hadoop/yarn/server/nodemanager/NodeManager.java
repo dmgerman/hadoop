@@ -2847,6 +2847,13 @@ argument_list|(
 name|nodeStatusUpdater
 argument_list|)
 expr_stmt|;
+name|nmStore
+operator|.
+name|setNodeStatusUpdater
+argument_list|(
+name|nodeStatusUpdater
+argument_list|)
+expr_stmt|;
 name|super
 operator|.
 name|serviceInit
