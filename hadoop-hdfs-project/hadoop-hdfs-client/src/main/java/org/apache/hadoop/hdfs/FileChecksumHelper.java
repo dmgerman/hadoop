@@ -286,6 +286,24 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|datatransfer
+operator|.
+name|InvalidEncryptionKeyException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|proto
 operator|.
 name|DataTransferProtos
@@ -1327,7 +1345,7 @@ block|}
 block|}
 block|}
 comment|/**      * Return true when sounds good to continue or retry, false when severe      * condition or totally failed.      */
-DECL|method|checksumBlock ( LocatedBlock locatedBlock)
+DECL|method|checksumBlock (LocatedBlock locatedBlock)
 specifier|private
 name|boolean
 name|checksumBlock
@@ -1335,8 +1353,6 @@ parameter_list|(
 name|LocatedBlock
 name|locatedBlock
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|ExtendedBlock
 name|block
@@ -1505,6 +1521,65 @@ name|setRefetchBlocks
 argument_list|(
 literal|true
 argument_list|)
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|InvalidEncryptionKeyException
+name|iee
+parameter_list|)
+block|{
+if|if
+condition|(
+name|blockIdx
+operator|>
+name|getLastRetriedIndex
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Got invalid encryption key error in response to "
+operator|+
+literal|"OP_BLOCK_CHECKSUM for file {} for block {} from "
+operator|+
+literal|"datanode {}. Will retry "
+operator|+
+literal|"the block once."
+argument_list|,
+name|getSrc
+argument_list|()
+argument_list|,
+name|block
+argument_list|,
+name|datanodes
+index|[
+name|j
+index|]
+argument_list|)
+expr_stmt|;
+name|setLastRetriedIndex
+argument_list|(
+name|blockIdx
+argument_list|)
+expr_stmt|;
+name|done
+operator|=
+literal|true
+expr_stmt|;
+comment|// actually it's not done; but we'll retry
+name|blockIdx
+operator|--
+expr_stmt|;
+comment|// repeat at i-th block
+name|getClient
+argument_list|()
+operator|.
+name|clearDataEncryptionKey
+argument_list|()
 expr_stmt|;
 block|}
 block|}
