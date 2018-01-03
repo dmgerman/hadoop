@@ -42,7 +42,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|LinkedList
+name|ArrayDeque
 import|;
 end_import
 
@@ -52,7 +52,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Queue
+name|Deque
 import|;
 end_import
 
@@ -115,7 +115,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A simple log4j-appender for container's logs.  *   */
+comment|/**  * A simple log4j-appender for container's logs.  */
 end_comment
 
 begin_class
@@ -142,26 +142,23 @@ specifier|private
 name|String
 name|containerLogFile
 decl_stmt|;
-comment|//so that log4j can configure it from the configuration(log4j.properties).
 DECL|field|maxEvents
 specifier|private
 name|int
 name|maxEvents
 decl_stmt|;
-DECL|field|tail
+DECL|field|eventBuffer
 specifier|private
-name|Queue
+name|Deque
 argument_list|<
 name|LoggingEvent
 argument_list|>
-name|tail
-init|=
-literal|null
+name|eventBuffer
 decl_stmt|;
-DECL|field|closing
+DECL|field|closed
 specifier|private
 name|boolean
-name|closing
+name|closed
 init|=
 literal|false
 decl_stmt|;
@@ -169,14 +166,10 @@ annotation|@
 name|Override
 DECL|method|activateOptions ()
 specifier|public
+specifier|synchronized
 name|void
 name|activateOptions
 parameter_list|()
-block|{
-synchronized|synchronized
-init|(
-name|this
-init|)
 block|{
 if|if
 condition|(
@@ -185,13 +178,13 @@ operator|>
 literal|0
 condition|)
 block|{
-name|tail
+name|this
+operator|.
+name|eventBuffer
 operator|=
 operator|new
-name|LinkedList
-argument_list|<
-name|LoggingEvent
-argument_list|>
+name|ArrayDeque
+argument_list|<>
 argument_list|()
 expr_stmt|;
 block|}
@@ -222,11 +215,11 @@ name|activateOptions
 argument_list|()
 expr_stmt|;
 block|}
-block|}
 annotation|@
 name|Override
 DECL|method|append (LoggingEvent event)
 specifier|public
+specifier|synchronized
 name|void
 name|append
 parameter_list|(
@@ -234,25 +227,45 @@ name|LoggingEvent
 name|event
 parameter_list|)
 block|{
-synchronized|synchronized
-init|(
-name|this
-init|)
-block|{
 if|if
 condition|(
-name|closing
+name|closed
 condition|)
 block|{
-comment|// When closing drop any new/transitive CLA appending
 return|return;
 block|}
 if|if
 condition|(
-name|tail
-operator|==
+name|eventBuffer
+operator|!=
 literal|null
 condition|)
+block|{
+if|if
+condition|(
+name|eventBuffer
+operator|.
+name|size
+argument_list|()
+operator|==
+name|maxEvents
+condition|)
+block|{
+name|eventBuffer
+operator|.
+name|removeFirst
+argument_list|()
+expr_stmt|;
+block|}
+name|eventBuffer
+operator|.
+name|addLast
+argument_list|(
+name|event
+argument_list|)
+expr_stmt|;
+block|}
+else|else
 block|{
 name|super
 operator|.
@@ -261,33 +274,6 @@ argument_list|(
 name|event
 argument_list|)
 expr_stmt|;
-block|}
-else|else
-block|{
-if|if
-condition|(
-name|tail
-operator|.
-name|size
-argument_list|()
-operator|>=
-name|maxEvents
-condition|)
-block|{
-name|tail
-operator|.
-name|remove
-argument_list|()
-expr_stmt|;
-block|}
-name|tail
-operator|.
-name|add
-argument_list|(
-name|event
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 block|}
 annotation|@
@@ -321,13 +307,19 @@ name|void
 name|close
 parameter_list|()
 block|{
-name|closing
+if|if
+condition|(
+operator|!
+name|closed
+condition|)
+block|{
+name|closed
 operator|=
 literal|true
 expr_stmt|;
 if|if
 condition|(
-name|tail
+name|eventBuffer
 operator|!=
 literal|null
 condition|)
@@ -337,7 +329,7 @@ control|(
 name|LoggingEvent
 name|event
 range|:
-name|tail
+name|eventBuffer
 control|)
 block|{
 name|super
@@ -348,12 +340,18 @@ name|event
 argument_list|)
 expr_stmt|;
 block|}
+comment|// let garbage collection do its work
+name|eventBuffer
+operator|=
+literal|null
+expr_stmt|;
 block|}
 name|super
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Getter/Setter methods for log4j.    */
 DECL|method|getContainerLogDir ()
@@ -414,7 +412,7 @@ DECL|field|EVENT_SIZE
 specifier|private
 specifier|static
 specifier|final
-name|int
+name|long
 name|EVENT_SIZE
 init|=
 literal|100
@@ -431,6 +429,7 @@ operator|*
 name|EVENT_SIZE
 return|;
 block|}
+comment|/**    *  Setter so that log4j can configure it from the    *  configuration(log4j.properties).    */
 DECL|method|setTotalLogFileSize (long logSize)
 specifier|public
 name|void
@@ -442,12 +441,14 @@ parameter_list|)
 block|{
 name|maxEvents
 operator|=
-operator|(
+call|(
 name|int
-operator|)
+call|)
+argument_list|(
 name|logSize
 operator|/
 name|EVENT_SIZE
+argument_list|)
 expr_stmt|;
 block|}
 block|}
