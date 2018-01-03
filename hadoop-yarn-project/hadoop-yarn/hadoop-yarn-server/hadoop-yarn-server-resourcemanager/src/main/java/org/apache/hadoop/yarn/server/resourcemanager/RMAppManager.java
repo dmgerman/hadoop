@@ -2590,6 +2590,14 @@ argument_list|(
 name|user
 argument_list|)
 decl_stmt|;
+comment|// Application priority needed to be validated only while submitting. During
+comment|// recovery, validated priority could be recovered from submission context.
+if|if
+condition|(
+operator|!
+name|isRecovery
+condition|)
+block|{
 name|Priority
 name|appPriority
 init|=
@@ -2619,6 +2627,7 @@ argument_list|(
 name|appPriority
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Since FairScheduler queue mapping is done inside scheduler,
 comment|// if FairScheduler is used and the queue doesn't exist, we should not
 comment|// fail here because queue will be created inside FS. Ideally, FS queue
