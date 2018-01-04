@@ -1447,6 +1447,54 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/* test basic report with negative top limit */
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
+DECL|method|testReportWithNegativeTopLimit ()
+specifier|public
+name|void
+name|testReportWithNegativeTopLimit
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+specifier|final
+name|String
+name|cmdLine
+init|=
+literal|"hdfs diskbalancer -report -top -32"
+decl_stmt|;
+name|thrown
+operator|.
+name|expect
+argument_list|(
+name|java
+operator|.
+name|lang
+operator|.
+name|IllegalArgumentException
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+name|thrown
+operator|.
+name|expectMessage
+argument_list|(
+literal|"Top limit input should be a positive numeric value"
+argument_list|)
+expr_stmt|;
+name|runCommand
+argument_list|(
+name|cmdLine
+argument_list|)
+expr_stmt|;
+block|}
 comment|/* test less than 64 DataNode(s) as total, e.g., -report -top 32 */
 annotation|@
 name|Test

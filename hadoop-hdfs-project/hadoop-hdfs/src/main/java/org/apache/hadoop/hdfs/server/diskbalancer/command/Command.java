@@ -2230,6 +2230,8 @@ specifier|final
 name|StrBuilder
 name|result
 parameter_list|)
+throws|throws
+name|IllegalArgumentException
 block|{
 name|String
 name|outputLine
@@ -2347,6 +2349,21 @@ operator|=
 name|getDefaultTop
 argument_list|()
 expr_stmt|;
+block|}
+if|if
+condition|(
+name|nodes
+operator|<=
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Top limit input should be a positive numeric value"
+argument_list|)
+throw|;
 block|}
 block|}
 return|return

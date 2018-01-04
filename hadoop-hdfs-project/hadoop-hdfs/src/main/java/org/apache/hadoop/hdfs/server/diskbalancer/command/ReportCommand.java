@@ -503,6 +503,8 @@ specifier|final
 name|String
 name|nodeFormat
 parameter_list|)
+throws|throws
+name|IllegalArgumentException
 block|{
 name|Collections
 operator|.
