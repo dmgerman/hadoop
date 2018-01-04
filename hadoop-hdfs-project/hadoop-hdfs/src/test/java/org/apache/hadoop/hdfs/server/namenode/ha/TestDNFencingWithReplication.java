@@ -370,8 +370,13 @@ specifier|final
 name|Path
 name|path
 decl_stmt|;
-DECL|method|ReplicationToggler (TestContext ctx, FileSystem fs, Path p)
-specifier|public
+DECL|field|cluster
+specifier|private
+specifier|final
+name|MiniDFSCluster
+name|cluster
+decl_stmt|;
+DECL|method|ReplicationToggler (TestContext ctx, FileSystem fs, Path p, MiniDFSCluster cluster)
 name|ReplicationToggler
 parameter_list|(
 name|TestContext
@@ -382,6 +387,9 @@ name|fs
 parameter_list|,
 name|Path
 name|p
+parameter_list|,
+name|MiniDFSCluster
+name|cluster
 parameter_list|)
 block|{
 name|super
@@ -400,6 +408,12 @@ operator|.
 name|path
 operator|=
 name|p
+expr_stmt|;
+name|this
+operator|.
+name|cluster
+operator|=
+name|cluster
 expr_stmt|;
 block|}
 annotation|@
@@ -481,6 +495,11 @@ parameter_list|()
 block|{
 try|try
 block|{
+name|cluster
+operator|.
+name|waitActive
+argument_list|()
+expr_stmt|;
 name|BlockLocation
 index|[]
 name|blocks
@@ -558,9 +577,7 @@ literal|"Timed out waiting for "
 operator|+
 name|replicas
 operator|+
-literal|" replicas "
-operator|+
-literal|"on path "
+literal|" replicas on path "
 operator|+
 name|path
 argument_list|)
@@ -744,6 +761,8 @@ argument_list|,
 name|fs
 argument_list|,
 name|p
+argument_list|,
+name|cluster
 argument_list|)
 argument_list|)
 expr_stmt|;
