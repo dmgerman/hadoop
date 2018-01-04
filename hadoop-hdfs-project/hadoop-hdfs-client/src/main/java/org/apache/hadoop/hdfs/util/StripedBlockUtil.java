@@ -1816,6 +1816,17 @@ name|blockGroup
 operator|.
 name|getBlockSize
 argument_list|()
+argument_list|,
+literal|"start=%s end=%s blockSize=%s"
+argument_list|,
+name|rangeStartInBlockGroup
+argument_list|,
+name|rangeEndInBlockGroup
+argument_list|,
+name|blockGroup
+operator|.
+name|getBlockSize
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|long
@@ -2703,32 +2714,37 @@ name|ecPolicy
 decl_stmt|;
 comment|/** Logical order in a block group, used when doing I/O to a block group. */
 DECL|field|idxInBlkGroup
+specifier|private
 specifier|final
-name|int
+name|long
 name|idxInBlkGroup
 decl_stmt|;
 DECL|field|idxInInternalBlk
+specifier|private
 specifier|final
-name|int
+name|long
 name|idxInInternalBlk
 decl_stmt|;
 DECL|field|idxInStripe
+specifier|private
 specifier|final
 name|int
 name|idxInStripe
 decl_stmt|;
 comment|/**      * When a logical byte range is mapped to a set of cells, it might      * partially overlap with the first and last cells. This field and the      * {@link #size} variable represent the start offset and size of the      * overlap.      */
 DECL|field|offset
+specifier|private
 specifier|final
-name|int
+name|long
 name|offset
 decl_stmt|;
 DECL|field|size
+specifier|private
 specifier|final
 name|int
 name|size
 decl_stmt|;
-DECL|method|StripingCell (ErasureCodingPolicy ecPolicy, int cellSize, int idxInBlkGroup, int offset)
+DECL|method|StripingCell (ErasureCodingPolicy ecPolicy, int cellSize, long idxInBlkGroup, long offset)
 name|StripingCell
 parameter_list|(
 name|ErasureCodingPolicy
@@ -2737,10 +2753,10 @@ parameter_list|,
 name|int
 name|cellSize
 parameter_list|,
-name|int
+name|long
 name|idxInBlkGroup
 parameter_list|,
-name|int
+name|long
 name|offset
 parameter_list|)
 block|{
@@ -2771,6 +2787,10 @@ name|this
 operator|.
 name|idxInStripe
 operator|=
+call|(
+name|int
+call|)
+argument_list|(
 name|idxInBlkGroup
 operator|-
 name|this
@@ -2781,6 +2801,7 @@ name|ecPolicy
 operator|.
 name|getNumDataUnits
 argument_list|()
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -2794,6 +2815,44 @@ name|size
 operator|=
 name|cellSize
 expr_stmt|;
+block|}
+DECL|method|getIdxInStripe ()
+name|int
+name|getIdxInStripe
+parameter_list|()
+block|{
+return|return
+name|idxInStripe
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"StripingCell(idxInBlkGroup=%d, "
+operator|+
+literal|"idxInInternalBlk=%d, idxInStrip=%d, offset=%d, size=%d)"
+argument_list|,
+name|idxInBlkGroup
+argument_list|,
+name|idxInInternalBlk
+argument_list|,
+name|idxInStripe
+argument_list|,
+name|offset
+argument_list|,
+name|size
+argument_list|)
+return|;
 block|}
 block|}
 comment|/**    * Given a requested byte range on a striped block group, an AlignedStripe    * represents an inclusive {@link VerticalRange} that is aligned with both    * the byte range and boundaries of all internal blocks. As illustrated in    * the diagram, any given byte range on a block group leads to 1~5    * AlignedStripe's.    *    * |<-------- Striped Block Group -------->|    * blk_0   blk_1   blk_2      blk_3   blk_4    *                 +----+  |  +----+  +----+    *                 |full|  |  |    |  |    |<- AlignedStripe0:    *         +----+  |~~~~|  |  |~~~~|  |~~~~|      1st cell is partial    *         |part|  |    |  |  |    |  |    |<- AlignedStripe1: byte range    * +----+  +----+  +----+  |  |~~~~|  |~~~~|      doesn't start at 1st block    * |full|  |full|  |full|  |  |    |  |    |    * |cell|  |cell|  |cell|  |  |    |  |    |<- AlignedStripe2 (full stripe)    * |    |  |    |  |    |  |  |    |  |    |    * +----+  +----+  +----+  |  |~~~~|  |~~~~|    * |full|  |part|          |  |    |  |    |<- AlignedStripe3: byte range    * |~~~~|  +----+          |  |~~~~|  |~~~~|      doesn't end at last block    * |    |                  |  |    |  |    |<- AlignedStripe4:    * +----+                  |  +----+  +----+      last cell is partial    *                         |    *<---- data blocks ----> |<--- parity --->    *    * An AlignedStripe is the basic unit of reading from a striped block group,    * because within the AlignedStripe, all internal blocks can be processed in    * a uniform manner.    *    * The coverage of an AlignedStripe on an internal block is represented as a    * {@link StripingChunk}.    *    * To simplify the logic of reading a logical byte range from a block group,    * a StripingChunk is either completely in the requested byte range or    * completely outside the requested byte range.    */
@@ -2855,6 +2914,12 @@ operator|&&
 name|length
 operator|>=
 literal|0
+argument_list|,
+literal|"OffsetInBlock(%s) and length(%s) must be non-negative"
+argument_list|,
+name|offsetInBlock
+argument_list|,
+name|length
 argument_list|)
 expr_stmt|;
 name|this
@@ -2931,7 +2996,7 @@ name|toString
 parameter_list|()
 block|{
 return|return
-literal|"Offset="
+literal|"AlignedStripe(Offset="
 operator|+
 name|range
 operator|.
@@ -2950,6 +3015,8 @@ operator|+
 literal|", missingChunksNum="
 operator|+
 name|missingChunksNum
+operator|+
+literal|")"
 return|;
 block|}
 block|}
@@ -2994,6 +3061,12 @@ operator|&&
 name|length
 operator|>=
 literal|0
+argument_list|,
+literal|"OffsetInBlock(%s) and length(%s) must be non-negative"
+argument_list|,
+name|offsetInBlock
+argument_list|,
+name|length
 argument_list|)
 expr_stmt|;
 name|this
@@ -3029,6 +3102,31 @@ operator|<
 name|offsetInBlock
 operator|+
 name|spanInBlock
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"VerticalRange(offsetInBlock=%d, spanInBlock=%d)"
+argument_list|,
+name|this
+operator|.
+name|offsetInBlock
+argument_list|,
+name|this
+operator|.
+name|spanInBlock
+argument_list|)
 return|;
 block|}
 block|}
@@ -3644,6 +3742,12 @@ operator|&&
 name|length
 operator|>=
 literal|0
+argument_list|,
+literal|"Offset(%s) and length(%s) must be non-negative"
+argument_list|,
+name|offsetInBlock
+argument_list|,
+name|length
 argument_list|)
 expr_stmt|;
 name|this
@@ -3688,6 +3792,27 @@ parameter_list|()
 block|{
 return|return
 name|length
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"StripeRange(offsetInBlock=%d, length=%d)"
+argument_list|,
+name|offsetInBlock
+argument_list|,
+name|length
+argument_list|)
 return|;
 block|}
 block|}
