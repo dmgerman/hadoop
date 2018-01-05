@@ -1525,6 +1525,43 @@ argument_list|>
 name|applicationTimeouts
 parameter_list|)
 function_decl|;
+comment|/**    * Get application scheduling environment variables stored as a key value    * pair map for application.    *    * @return placement envs for application.    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getApplicationSchedulingPropertiesMap ()
+specifier|public
+specifier|abstract
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|getApplicationSchedulingPropertiesMap
+parameter_list|()
+function_decl|;
+comment|/**    * Set the scheduling envs for the application.    *    * @param schedulingEnvMap    *          A map of env's for the application scheduling preferences.    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|setApplicationSchedulingPropertiesMap ( Map<String, String> schedulingEnvMap)
+specifier|public
+specifier|abstract
+name|void
+name|setApplicationSchedulingPropertiesMap
+parameter_list|(
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|schedulingEnvMap
+parameter_list|)
+function_decl|;
 block|}
 end_class
 

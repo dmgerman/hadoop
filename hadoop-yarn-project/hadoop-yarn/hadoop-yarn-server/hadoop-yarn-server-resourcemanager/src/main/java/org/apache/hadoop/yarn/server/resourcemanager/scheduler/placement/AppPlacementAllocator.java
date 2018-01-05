@@ -58,6 +58,26 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
+name|AppSchedulingInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
 name|NodeType
 import|;
 end_import
@@ -345,6 +365,15 @@ DECL|method|showRequests ()
 name|void
 name|showRequests
 parameter_list|()
+function_decl|;
+comment|/**    * Set app scheduling info.    *    * @param appSchedulingInfo    *          app info object.    */
+DECL|method|setAppSchedulingInfo (AppSchedulingInfo appSchedulingInfo)
+name|void
+name|setAppSchedulingInfo
+parameter_list|(
+name|AppSchedulingInfo
+name|appSchedulingInfo
+parameter_list|)
 function_decl|;
 block|}
 end_interface

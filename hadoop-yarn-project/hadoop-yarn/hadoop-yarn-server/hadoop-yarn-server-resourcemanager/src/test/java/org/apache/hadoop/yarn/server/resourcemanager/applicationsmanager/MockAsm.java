@@ -1404,6 +1404,27 @@ literal|"Not supported yet."
 argument_list|)
 throw|;
 block|}
+annotation|@
+name|Override
+DECL|method|getApplicationSchedulingEnvs ()
+specifier|public
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|getApplicationSchedulingEnvs
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
 block|}
 DECL|method|newApplication (int i)
 specifier|public

@@ -790,6 +790,17 @@ name|ApplicationPlacementContext
 name|getApplicationPlacementContext
 parameter_list|()
 function_decl|;
+comment|/**    * Get the application scheduling environment variables.    * @return Map of envs related to application scheduling preferences.    */
+DECL|method|getApplicationSchedulingEnvs ()
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|getApplicationSchedulingEnvs
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

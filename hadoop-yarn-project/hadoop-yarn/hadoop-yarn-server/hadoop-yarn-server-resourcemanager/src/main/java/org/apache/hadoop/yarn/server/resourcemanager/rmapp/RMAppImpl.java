@@ -1856,6 +1856,21 @@ name|String
 argument_list|>
 name|applicationTags
 decl_stmt|;
+DECL|field|applicationSchedulingEnvs
+specifier|private
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|applicationSchedulingEnvs
+init|=
+operator|new
+name|HashMap
+argument_list|<>
+argument_list|()
+decl_stmt|;
 DECL|field|attemptFailuresValidityInterval
 specifier|private
 specifier|final
@@ -3839,6 +3854,42 @@ operator|.
 name|placementContext
 operator|=
 name|placementContext
+expr_stmt|;
+comment|// If applications are not explicitly specifying envs, try to pull from
+comment|// AM container environment lists.
+if|if
+condition|(
+name|submissionContext
+operator|.
+name|getAMContainerSpec
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+name|applicationSchedulingEnvs
+operator|.
+name|putAll
+argument_list|(
+name|submissionContext
+operator|.
+name|getAMContainerSpec
+argument_list|()
+operator|.
+name|getEnvironment
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+name|applicationSchedulingEnvs
+operator|.
+name|putAll
+argument_list|(
+name|submissionContext
+operator|.
+name|getApplicationSchedulingPropertiesMap
+argument_list|()
+argument_list|)
 expr_stmt|;
 name|long
 name|localLogAggregationStatusTimeout
@@ -11201,7 +11252,7 @@ operator|=
 name|applicationPriority
 expr_stmt|;
 block|}
-comment|/**      * Clear Unused fields to free memory.      * @param app      */
+comment|/**      * Clear Unused fields to free memory.      */
 DECL|method|clearUnusedFields ()
 specifier|private
 name|void
@@ -11226,6 +11277,25 @@ argument_list|(
 literal|null
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getApplicationSchedulingEnvs ()
+specifier|public
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|getApplicationSchedulingEnvs
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|applicationSchedulingEnvs
+return|;
 block|}
 block|}
 end_class
