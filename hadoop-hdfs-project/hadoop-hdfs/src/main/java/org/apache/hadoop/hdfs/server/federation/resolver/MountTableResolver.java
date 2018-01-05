@@ -1345,7 +1345,28 @@ name|entry
 argument_list|)
 condition|)
 block|{
-comment|// Entry has changed
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Entry has changed from \"{}\" to \"{}\""
+argument_list|,
+name|existingEntry
+argument_list|,
+name|entry
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|tree
+operator|.
+name|put
+argument_list|(
+name|srcPath
+argument_list|,
+name|entry
+argument_list|)
+expr_stmt|;
 name|invalidateLocationCache
 argument_list|(
 name|srcPath
