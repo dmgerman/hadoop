@@ -7387,6 +7387,13 @@ operator|.
 name|drainEventsImplicitly
 argument_list|()
 expr_stmt|;
+name|nm
+operator|.
+name|nodeHeartbeat
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 name|MockAM
 name|am
 init|=
@@ -7510,6 +7517,13 @@ name|rm
 operator|.
 name|drainEventsImplicitly
 argument_list|()
+expr_stmt|;
+name|nm
+operator|.
+name|nodeHeartbeat
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 name|MockAM
 name|am
