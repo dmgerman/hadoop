@@ -123,12 +123,17 @@ operator|new
 name|ResourceInfo
 argument_list|()
 decl_stmt|;
+DECL|field|userAmLimit
+specifier|private
+name|ResourceInfo
+name|userAmLimit
+decl_stmt|;
 DECL|method|PartitionResourcesInfo ()
 specifier|public
 name|PartitionResourcesInfo
 parameter_list|()
 block|{   }
-DECL|method|PartitionResourcesInfo (String partitionName, ResourceInfo used, ResourceInfo reserved, ResourceInfo pending, ResourceInfo amResourceUsed, ResourceInfo amResourceLimit)
+DECL|method|PartitionResourcesInfo (String partitionName, ResourceInfo used, ResourceInfo reserved, ResourceInfo pending, ResourceInfo amResourceUsed, ResourceInfo amResourceLimit, ResourceInfo perUserAmResourceLimit)
 specifier|public
 name|PartitionResourcesInfo
 parameter_list|(
@@ -149,6 +154,9 @@ name|amResourceUsed
 parameter_list|,
 name|ResourceInfo
 name|amResourceLimit
+parameter_list|,
+name|ResourceInfo
+name|perUserAmResourceLimit
 parameter_list|)
 block|{
 name|super
@@ -189,6 +197,12 @@ operator|.
 name|amLimit
 operator|=
 name|amResourceLimit
+expr_stmt|;
+name|this
+operator|.
+name|userAmLimit
+operator|=
+name|perUserAmResourceLimit
 expr_stmt|;
 block|}
 DECL|method|getPartitionName ()
@@ -345,6 +359,34 @@ operator|.
 name|amLimit
 operator|=
 name|amLimit
+expr_stmt|;
+block|}
+comment|/**    * @return the userAmLimit    */
+DECL|method|getUserAmLimit ()
+specifier|public
+name|ResourceInfo
+name|getUserAmLimit
+parameter_list|()
+block|{
+return|return
+name|userAmLimit
+return|;
+block|}
+comment|/**    * @param userAmLimit the userAmLimit to set    */
+DECL|method|setUserAmLimit (ResourceInfo userAmLimit)
+specifier|public
+name|void
+name|setUserAmLimit
+parameter_list|(
+name|ResourceInfo
+name|userAmLimit
+parameter_list|)
+block|{
+name|this
+operator|.
+name|userAmLimit
+operator|=
+name|userAmLimit
 expr_stmt|;
 block|}
 block|}
