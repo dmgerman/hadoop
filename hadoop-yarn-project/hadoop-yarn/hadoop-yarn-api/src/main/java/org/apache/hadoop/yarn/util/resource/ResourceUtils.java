@@ -447,7 +447,7 @@ name|getName
 argument_list|()
 decl_stmt|;
 DECL|field|RESOURCE_REQUEST_VALUE_PATTERN
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|Pattern
