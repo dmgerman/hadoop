@@ -13011,6 +13011,11 @@ name|getId
 argument_list|()
 argument_list|,
 name|openFilesTypes
+argument_list|,
+name|req
+operator|.
+name|getPath
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|ListOpenFilesResponseProto

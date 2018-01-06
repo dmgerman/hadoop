@@ -14854,7 +14854,7 @@ name|listOpenFiles
 argument_list|()
 return|;
 block|}
-DECL|method|listOpenFiles ( EnumSet<OpenFilesType> openFilesTypes)
+DECL|method|listOpenFiles ( EnumSet<OpenFilesType> openFilesTypes, String path)
 specifier|public
 name|RemoteIterator
 argument_list|<
@@ -14867,6 +14867,9 @@ argument_list|<
 name|OpenFilesType
 argument_list|>
 name|openFilesTypes
+parameter_list|,
+name|String
+name|path
 parameter_list|)
 throws|throws
 name|IOException
@@ -14877,6 +14880,8 @@ operator|.
 name|listOpenFiles
 argument_list|(
 name|openFilesTypes
+argument_list|,
+name|path
 argument_list|)
 return|;
 block|}

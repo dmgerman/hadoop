@@ -353,6 +353,22 @@ operator|.
 name|protocol
 operator|.
 name|OpenFilesIterator
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|OpenFilesIterator
 operator|.
 name|OpenFilesType
 import|;
@@ -742,6 +758,10 @@ name|OpenFilesType
 operator|.
 name|ALL_OPEN_FILES
 argument_list|)
+argument_list|,
+name|OpenFilesIterator
+operator|.
+name|FILTER_PATH_DEFAULT
 argument_list|)
 decl_stmt|;
 name|assertTrue
@@ -776,6 +796,10 @@ name|OpenFilesType
 operator|.
 name|BLOCKING_DECOMMISSION
 argument_list|)
+argument_list|,
+name|OpenFilesIterator
+operator|.
+name|FILTER_PATH_DEFAULT
 argument_list|)
 decl_stmt|;
 name|assertTrue
@@ -910,7 +934,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|verifyOpenFiles (Map<Path, FSDataOutputStream> openFiles, EnumSet<OpenFilesType> openFilesTypes)
+DECL|method|verifyOpenFiles (Map<Path, FSDataOutputStream> openFiles, EnumSet<OpenFilesType> openFilesTypes, String path)
 specifier|private
 name|void
 name|verifyOpenFiles
@@ -928,6 +952,9 @@ argument_list|<
 name|OpenFilesType
 argument_list|>
 name|openFilesTypes
+parameter_list|,
+name|String
+name|path
 parameter_list|)
 throws|throws
 name|IOException
@@ -977,6 +1004,8 @@ argument_list|(
 literal|0
 argument_list|,
 name|openFilesTypes
+argument_list|,
+name|path
 argument_list|)
 expr_stmt|;
 block|}
@@ -994,6 +1023,8 @@ name|getId
 argument_list|()
 argument_list|,
 name|openFilesTypes
+argument_list|,
+name|path
 argument_list|)
 expr_stmt|;
 block|}
@@ -1127,6 +1158,10 @@ name|OpenFilesType
 operator|.
 name|ALL_OPEN_FILES
 argument_list|)
+argument_list|,
+name|OpenFilesIterator
+operator|.
+name|FILTER_PATH_DEFAULT
 argument_list|)
 expr_stmt|;
 name|verifyOpenFiles
@@ -1144,6 +1179,10 @@ name|OpenFilesType
 operator|.
 name|BLOCKING_DECOMMISSION
 argument_list|)
+argument_list|,
+name|OpenFilesIterator
+operator|.
+name|FILTER_PATH_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}

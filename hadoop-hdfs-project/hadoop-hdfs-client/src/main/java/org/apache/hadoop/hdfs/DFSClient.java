@@ -14564,10 +14564,48 @@ name|OpenFilesType
 operator|.
 name|ALL_OPEN_FILES
 argument_list|)
+argument_list|,
+name|OpenFilesIterator
+operator|.
+name|FILTER_PATH_DEFAULT
 argument_list|)
 return|;
 block|}
-comment|/**    * Get a remote iterator to the open files list by type, managed by NameNode.    *    * @param openFilesTypes    * @throws IOException    */
+comment|/**    * Get a remote iterator to the open files list by path,    * managed by NameNode.    *    * @param path    * @throws IOException    */
+DECL|method|listOpenFiles (String path)
+specifier|public
+name|RemoteIterator
+argument_list|<
+name|OpenFileEntry
+argument_list|>
+name|listOpenFiles
+parameter_list|(
+name|String
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|checkOpen
+argument_list|()
+expr_stmt|;
+return|return
+name|listOpenFiles
+argument_list|(
+name|EnumSet
+operator|.
+name|of
+argument_list|(
+name|OpenFilesType
+operator|.
+name|ALL_OPEN_FILES
+argument_list|)
+argument_list|,
+name|path
+argument_list|)
+return|;
+block|}
+comment|/**    * Get a remote iterator to the open files list by type,    * managed by NameNode.    *    * @param openFilesTypes    * @throws IOException    */
 DECL|method|listOpenFiles ( EnumSet<OpenFilesType> openFilesTypes)
 specifier|public
 name|RemoteIterator
@@ -14589,6 +14627,41 @@ name|checkOpen
 argument_list|()
 expr_stmt|;
 return|return
+name|listOpenFiles
+argument_list|(
+name|openFilesTypes
+argument_list|,
+name|OpenFilesIterator
+operator|.
+name|FILTER_PATH_DEFAULT
+argument_list|)
+return|;
+block|}
+comment|/**    * Get a remote iterator to the open files list by type and path,    * managed by NameNode.    *    * @param openFilesTypes    * @param path    * @throws IOException    */
+DECL|method|listOpenFiles ( EnumSet<OpenFilesType> openFilesTypes, String path)
+specifier|public
+name|RemoteIterator
+argument_list|<
+name|OpenFileEntry
+argument_list|>
+name|listOpenFiles
+parameter_list|(
+name|EnumSet
+argument_list|<
+name|OpenFilesType
+argument_list|>
+name|openFilesTypes
+parameter_list|,
+name|String
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|checkOpen
+argument_list|()
+expr_stmt|;
+return|return
 operator|new
 name|OpenFilesIterator
 argument_list|(
@@ -14597,6 +14670,8 @@ argument_list|,
 name|tracer
 argument_list|,
 name|openFilesTypes
+argument_list|,
+name|path
 argument_list|)
 return|;
 block|}

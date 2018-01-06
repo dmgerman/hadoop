@@ -2391,10 +2391,10 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * List open files in the system in batches. INode id is the cursor and the    * open files returned in a batch will have their INode ids greater than    * the cursor INode id. Open files can only be requested by super user and    * the the list across batches are not atomic.    *    * @param prevId the cursor INode id.    * @param openFilesTypes types to filter the open files    * @throws IOException    */
+comment|/**    * List open files in the system in batches. INode id is the cursor and the    * open files returned in a batch will have their INode ids greater than    * the cursor INode id. Open files can only be requested by super user and    * the the list across batches are not atomic.    *    * @param prevId the cursor INode id.    * @param openFilesTypes types to filter the open files.    * @param path path to filter the open files.    * @throws IOException    */
 annotation|@
 name|Idempotent
-DECL|method|listOpenFiles (long prevId, EnumSet<OpenFilesType> openFilesTypes)
+DECL|method|listOpenFiles (long prevId, EnumSet<OpenFilesType> openFilesTypes, String path)
 name|BatchedEntries
 argument_list|<
 name|OpenFileEntry
@@ -2409,6 +2409,9 @@ argument_list|<
 name|OpenFilesType
 argument_list|>
 name|openFilesTypes
+parameter_list|,
+name|String
+name|path
 parameter_list|)
 throws|throws
 name|IOException

@@ -2727,7 +2727,7 @@ literal|"\t[-metasave filename]\n"
 operator|+
 literal|"\t[-triggerBlockReport [-incremental]<datanode_host:ipc_port>]\n"
 operator|+
-literal|"\t[-listOpenFiles [-blockingDecommission]]\n"
+literal|"\t[-listOpenFiles [-blockingDecommission] [-path<path>]]\n"
 operator|+
 literal|"\t[-help [cmd]]\n"
 decl_stmt|;
@@ -5205,6 +5205,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|String
+name|path
+init|=
+literal|null
+decl_stmt|;
 name|List
 argument_list|<
 name|OpenFilesType
@@ -5263,6 +5268,17 @@ name|BLOCKING_DECOMMISSION
 argument_list|)
 expr_stmt|;
 block|}
+name|path
+operator|=
+name|StringUtils
+operator|.
+name|popOptionWithArgument
+argument_list|(
+literal|"-path"
+argument_list|,
+name|args
+argument_list|)
+expr_stmt|;
 block|}
 if|if
 condition|(
@@ -5280,6 +5296,47 @@ name|OpenFilesType
 operator|.
 name|ALL_OPEN_FILES
 argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|path
+operator|!=
+literal|null
+condition|)
+block|{
+name|path
+operator|=
+name|path
+operator|.
+name|trim
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+name|path
+operator|.
+name|length
+argument_list|()
+operator|==
+literal|0
+condition|)
+block|{
+name|path
+operator|=
+name|OpenFilesIterator
+operator|.
+name|FILTER_PATH_DEFAULT
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+name|path
+operator|=
+name|OpenFilesIterator
+operator|.
+name|FILTER_PATH_DEFAULT
 expr_stmt|;
 block|}
 name|EnumSet
@@ -5390,6 +5447,8 @@ name|dfsConf
 argument_list|)
 argument_list|,
 name|openFilesTypes
+argument_list|,
+name|path
 argument_list|)
 expr_stmt|;
 block|}
@@ -5402,6 +5461,8 @@ operator|.
 name|listOpenFiles
 argument_list|(
 name|openFilesTypes
+argument_list|,
+name|path
 argument_list|)
 expr_stmt|;
 block|}
@@ -10870,7 +10931,7 @@ name|println
 argument_list|(
 literal|"Usage: hdfs dfsadmin"
 operator|+
-literal|" [-listOpenFiles [-blockingDecommission]]"
+literal|" [-listOpenFiles [-blockingDecommission] [-path<path>]]"
 argument_list|)
 expr_stmt|;
 block|}
@@ -11773,16 +11834,8 @@ operator|(
 name|argv
 operator|.
 name|length
-operator|!=
-literal|1
-operator|)
-operator|&&
-operator|(
-name|argv
-operator|.
-name|length
-operator|!=
-literal|2
+operator|>
+literal|4
 operator|)
 condition|)
 block|{

@@ -1431,6 +1431,22 @@ operator|.
 name|protocol
 operator|.
 name|OpenFilesIterator
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|OpenFilesIterator
 operator|.
 name|OpenFilesType
 import|;
@@ -8397,13 +8413,17 @@ name|OpenFilesType
 operator|.
 name|ALL_OPEN_FILES
 argument_list|)
+argument_list|,
+name|OpenFilesIterator
+operator|.
+name|FILTER_PATH_DEFAULT
 argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
 comment|// ClientProtocol
-DECL|method|listOpenFiles (long prevId, EnumSet<OpenFilesType> openFilesTypes)
+DECL|method|listOpenFiles (long prevId, EnumSet<OpenFilesType> openFilesTypes, String path)
 specifier|public
 name|BatchedEntries
 argument_list|<
@@ -8419,6 +8439,9 @@ argument_list|<
 name|OpenFilesType
 argument_list|>
 name|openFilesTypes
+parameter_list|,
+name|String
+name|path
 parameter_list|)
 throws|throws
 name|IOException
@@ -8434,6 +8457,8 @@ argument_list|(
 name|prevId
 argument_list|,
 name|openFilesTypes
+argument_list|,
+name|path
 argument_list|)
 return|;
 block|}

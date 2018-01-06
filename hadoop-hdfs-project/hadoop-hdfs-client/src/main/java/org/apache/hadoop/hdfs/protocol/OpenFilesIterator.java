@@ -133,6 +133,16 @@ argument_list|,
 name|OpenFileEntry
 argument_list|>
 block|{
+comment|/** No path to be filtered by default. */
+DECL|field|FILTER_PATH_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FILTER_PATH_DEFAULT
+init|=
+literal|"/"
+decl_stmt|;
 comment|/**    * Open file types to filter the results.    */
 DECL|enum|OpenFilesType
 specifier|public
@@ -249,7 +259,13 @@ name|OpenFilesType
 argument_list|>
 name|types
 decl_stmt|;
-DECL|method|OpenFilesIterator (ClientProtocol namenode, Tracer tracer, EnumSet<OpenFilesType> types)
+comment|/** List files filtered by given path. */
+DECL|field|path
+specifier|private
+name|String
+name|path
+decl_stmt|;
+DECL|method|OpenFilesIterator (ClientProtocol namenode, Tracer tracer, EnumSet<OpenFilesType> types, String path)
 specifier|public
 name|OpenFilesIterator
 parameter_list|(
@@ -264,6 +280,9 @@ argument_list|<
 name|OpenFilesType
 argument_list|>
 name|types
+parameter_list|,
+name|String
+name|path
 parameter_list|)
 block|{
 name|super
@@ -290,6 +309,12 @@ operator|.
 name|types
 operator|=
 name|types
+expr_stmt|;
+name|this
+operator|.
+name|path
+operator|=
+name|path
 expr_stmt|;
 block|}
 annotation|@
@@ -329,6 +354,8 @@ argument_list|(
 name|prevId
 argument_list|,
 name|types
+argument_list|,
+name|path
 argument_list|)
 return|;
 block|}

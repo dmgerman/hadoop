@@ -10442,8 +10442,8 @@ name|out
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * List open files in the system in batches. prevId is the cursor INode id and    * the open files returned in a batch will have their INode ids greater than    * this cursor. Open files can only be requested by super user and the the    * list across batches does not represent a consistent view of all open files.    * TODO: HDFS-12969 - to report open files by type.    *    * @param prevId the cursor INode id.    * @param openFilesTypes    * @throws IOException    */
-DECL|method|listOpenFiles (long prevId, EnumSet<OpenFilesType> openFilesTypes)
+comment|/**    * List open files in the system in batches. prevId is the cursor INode id and    * the open files returned in a batch will have their INode ids greater than    * this cursor. Open files can only be requested by super user and the the    * list across batches does not represent a consistent view of all open files.    * TODO: HDFS-12969 - to report open files by type.    *    * @param prevId the cursor INode id.    * @param openFilesTypes types to filter the open files.    * @param path path to filter the open files.    * @throws IOException    */
+DECL|method|listOpenFiles (long prevId, EnumSet<OpenFilesType> openFilesTypes, String path)
 name|BatchedListEntries
 argument_list|<
 name|OpenFileEntry
@@ -10458,6 +10458,9 @@ argument_list|<
 name|OpenFilesType
 argument_list|>
 name|openFilesTypes
+parameter_list|,
+name|String
+name|path
 parameter_list|)
 throws|throws
 name|IOException
@@ -10515,6 +10518,8 @@ operator|.
 name|getUnderConstructionFiles
 argument_list|(
 name|prevId
+argument_list|,
+name|path
 argument_list|)
 expr_stmt|;
 block|}
@@ -10537,6 +10542,8 @@ operator|=
 name|getFilesBlockingDecom
 argument_list|(
 name|prevId
+argument_list|,
+name|path
 argument_list|)
 expr_stmt|;
 block|}
@@ -10594,7 +10601,7 @@ return|return
 name|batchedListEntries
 return|;
 block|}
-DECL|method|getFilesBlockingDecom (long prevId)
+DECL|method|getFilesBlockingDecom (long prevId, String path)
 specifier|public
 name|BatchedListEntries
 argument_list|<
@@ -10604,6 +10611,9 @@ name|getFilesBlockingDecom
 parameter_list|(
 name|long
 name|prevId
+parameter_list|,
+name|String
+name|path
 parameter_list|)
 block|{
 assert|assert
@@ -10719,6 +10729,39 @@ operator|.
 name|asFile
 argument_list|()
 decl_stmt|;
+name|String
+name|fullPathName
+init|=
+name|inodeFile
+operator|.
+name|getFullPathName
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|lang
+operator|.
+name|StringUtils
+operator|.
+name|isEmpty
+argument_list|(
+name|path
+argument_list|)
+operator|||
+name|fullPathName
+operator|.
+name|startsWith
+argument_list|(
+name|path
+argument_list|)
+condition|)
+block|{
 name|openFileEntries
 operator|.
 name|add
@@ -10754,6 +10797,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|openFileIds
