@@ -107,7 +107,6 @@ DECL|enumConstant|STARTED
 DECL|enumConstant|STABLE
 DECL|enumConstant|STOPPED
 DECL|enumConstant|FAILED
-DECL|enumConstant|FLEX
 name|ACCEPTED
 block|,
 name|STARTED
@@ -117,8 +116,6 @@ block|,
 name|STOPPED
 block|,
 name|FAILED
-block|,
-name|FLEX
 block|; }
 end_enum
 

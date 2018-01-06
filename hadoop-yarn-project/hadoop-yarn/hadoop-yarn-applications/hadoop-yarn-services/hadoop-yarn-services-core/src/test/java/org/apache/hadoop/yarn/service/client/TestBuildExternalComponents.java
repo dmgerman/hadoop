@@ -384,7 +384,7 @@ name|createAppAdminClient
 argument_list|(
 name|AppAdminClient
 operator|.
-name|UNIT_TEST_TYPE
+name|DEFAULT_TYPE
 argument_list|,
 name|conf
 argument_list|)
