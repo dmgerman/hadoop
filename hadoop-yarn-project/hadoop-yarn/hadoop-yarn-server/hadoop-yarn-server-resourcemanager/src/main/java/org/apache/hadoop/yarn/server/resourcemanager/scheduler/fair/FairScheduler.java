@@ -3808,9 +3808,7 @@ literal|"Container "
 operator|+
 name|container
 operator|+
-literal|" of"
-operator|+
-literal|" finished application "
+literal|" of finished application "
 operator|+
 name|appId
 operator|+
@@ -3822,17 +3820,24 @@ expr_stmt|;
 return|return;
 block|}
 comment|// Get the node on which the container was allocated
+name|NodeId
+name|nodeID
+init|=
+name|container
+operator|.
+name|getNodeId
+argument_list|()
+decl_stmt|;
 name|FSSchedulerNode
 name|node
 init|=
 name|getFSSchedulerNode
 argument_list|(
-name|container
-operator|.
-name|getNodeId
-argument_list|()
+name|nodeID
 argument_list|)
 decl_stmt|;
+comment|// node could be null if the thread was waiting for the lock and the node
+comment|// was removed in another thread
 if|if
 condition|(
 name|rmContainer
@@ -3843,6 +3848,13 @@ operator|==
 name|RMContainerState
 operator|.
 name|RESERVED
+condition|)
+block|{
+if|if
+condition|(
+name|node
+operator|!=
+literal|null
 condition|)
 block|{
 name|application
@@ -3858,6 +3870,26 @@ name|node
 argument_list|)
 expr_stmt|;
 block|}
+elseif|else
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Skipping unreserve on removed node: "
+operator|+
+name|nodeID
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 else|else
 block|{
 name|application
@@ -3871,6 +3903,13 @@ argument_list|,
 name|event
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|node
+operator|!=
+literal|null
+condition|)
+block|{
 name|node
 operator|.
 name|releaseContainer
@@ -3883,6 +3922,26 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Skipping container release on removed node: "
+operator|+
+name|nodeID
+argument_list|)
+expr_stmt|;
+block|}
 name|updateRootQueueMetrics
 argument_list|()
 expr_stmt|;
@@ -3915,7 +3974,15 @@ argument_list|()
 operator|+
 literal|" on node: "
 operator|+
+operator|(
 name|node
+operator|==
+literal|null
+condition|?
+name|nodeID
+else|:
+name|node
+operator|)
 operator|+
 literal|" with event: "
 operator|+
