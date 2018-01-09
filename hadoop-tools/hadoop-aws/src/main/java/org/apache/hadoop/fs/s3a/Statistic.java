@@ -146,6 +146,36 @@ argument_list|,
 literal|"Calls of copyFromLocalFile()"
 argument_list|)
 block|,
+DECL|enumConstant|INVOCATION_CREATE
+name|INVOCATION_CREATE
+argument_list|(
+name|CommonStatisticNames
+operator|.
+name|OP_CREATE
+argument_list|,
+literal|"Calls of create()"
+argument_list|)
+block|,
+DECL|enumConstant|INVOCATION_CREATE_NON_RECURSIVE
+name|INVOCATION_CREATE_NON_RECURSIVE
+argument_list|(
+name|CommonStatisticNames
+operator|.
+name|OP_CREATE_NON_RECURSIVE
+argument_list|,
+literal|"Calls of createNonRecursive()"
+argument_list|)
+block|,
+DECL|enumConstant|INVOCATION_DELETE
+name|INVOCATION_DELETE
+argument_list|(
+name|CommonStatisticNames
+operator|.
+name|OP_DELETE
+argument_list|,
+literal|"Calls of delete()"
+argument_list|)
+block|,
 DECL|enumConstant|INVOCATION_EXISTS
 name|INVOCATION_EXISTS
 argument_list|(
@@ -234,6 +264,16 @@ operator|.
 name|OP_MKDIRS
 argument_list|,
 literal|"Calls of mkdirs()"
+argument_list|)
+block|,
+DECL|enumConstant|INVOCATION_OPEN
+name|INVOCATION_OPEN
+argument_list|(
+name|CommonStatisticNames
+operator|.
+name|OP_OPEN
+argument_list|,
+literal|"Calls of open()"
 argument_list|)
 block|,
 DECL|enumConstant|INVOCATION_RENAME
