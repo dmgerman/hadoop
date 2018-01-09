@@ -2788,7 +2788,7 @@ operator|.
 name|getSchedulerNode
 argument_list|()
 operator|+
-literal|" is already reserved by another container"
+literal|" is already reserved by another container="
 operator|+
 name|schedulerContainer
 operator|.
@@ -2796,9 +2796,6 @@ name|getSchedulerNode
 argument_list|()
 operator|.
 name|getReservedContainer
-argument_list|()
-operator|.
-name|getContainerId
 argument_list|()
 argument_list|)
 expr_stmt|;
