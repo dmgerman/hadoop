@@ -30,6 +30,26 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|scm
 operator|.
 name|container
@@ -92,8 +112,8 @@ specifier|public
 interface|interface
 name|ChunkManager
 block|{
-comment|/**    * writes a given chunk.    * @param pipeline - Name and the set of machines that make this container.    * @param keyName - Name of the Key.    * @param info - ChunkInfo.    * @throws StorageContainerException    */
-DECL|method|writeChunk (Pipeline pipeline, String keyName, ChunkInfo info, byte[] data)
+comment|/**    * writes a given chunk.    * @param pipeline - Name and the set of machines that make this container.    * @param keyName - Name of the Key.    * @param info - ChunkInfo.    * @param stage - Chunk Stage write.    * @throws StorageContainerException    */
+DECL|method|writeChunk (Pipeline pipeline, String keyName, ChunkInfo info, byte[] data, ContainerProtos.Stage stage)
 name|void
 name|writeChunk
 parameter_list|(
@@ -109,6 +129,11 @@ parameter_list|,
 name|byte
 index|[]
 name|data
+parameter_list|,
+name|ContainerProtos
+operator|.
+name|Stage
+name|stage
 parameter_list|)
 throws|throws
 name|StorageContainerException

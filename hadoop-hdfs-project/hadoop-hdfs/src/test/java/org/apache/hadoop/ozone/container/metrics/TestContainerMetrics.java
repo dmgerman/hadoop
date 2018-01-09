@@ -566,6 +566,17 @@ index|[]
 operator|.
 expr|class
 argument_list|)
+argument_list|,
+name|Mockito
+operator|.
+name|any
+argument_list|(
+name|ContainerProtos
+operator|.
+name|Stage
+operator|.
+name|class
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|Mockito

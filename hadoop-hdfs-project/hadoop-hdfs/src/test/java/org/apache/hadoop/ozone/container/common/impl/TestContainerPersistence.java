@@ -750,6 +750,30 @@ begin_import
 import|import static
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|ozone
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|ContainerProtos
+operator|.
+name|Stage
+operator|.
+name|COMBINED
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -2496,6 +2520,8 @@ argument_list|,
 name|info
 argument_list|,
 name|data
+argument_list|,
+name|COMBINED
 argument_list|)
 expr_stmt|;
 return|return
@@ -2712,6 +2738,8 @@ argument_list|,
 name|info
 argument_list|,
 name|data
+argument_list|,
+name|COMBINED
 argument_list|)
 expr_stmt|;
 name|String
@@ -3128,6 +3156,8 @@ argument_list|,
 name|info
 argument_list|,
 name|data
+argument_list|,
+name|COMBINED
 argument_list|)
 expr_stmt|;
 name|byte
@@ -3348,6 +3378,8 @@ argument_list|,
 name|info
 argument_list|,
 name|data
+argument_list|,
+name|COMBINED
 argument_list|)
 expr_stmt|;
 try|try
@@ -3363,6 +3395,8 @@ argument_list|,
 name|info
 argument_list|,
 name|data
+argument_list|,
+name|COMBINED
 argument_list|)
 expr_stmt|;
 block|}
@@ -3411,6 +3445,8 @@ argument_list|,
 name|info
 argument_list|,
 name|data
+argument_list|,
+name|COMBINED
 argument_list|)
 expr_stmt|;
 name|long
@@ -3631,6 +3667,8 @@ argument_list|,
 name|info
 argument_list|,
 name|data
+argument_list|,
+name|COMBINED
 argument_list|)
 expr_stmt|;
 block|}
@@ -3840,6 +3878,8 @@ argument_list|,
 name|info
 argument_list|,
 name|data
+argument_list|,
+name|COMBINED
 argument_list|)
 expr_stmt|;
 name|chunkManager
@@ -4170,6 +4210,8 @@ argument_list|,
 name|info
 argument_list|,
 name|data
+argument_list|,
+name|COMBINED
 argument_list|)
 expr_stmt|;
 name|totalSize
