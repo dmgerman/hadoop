@@ -3229,6 +3229,10 @@ argument_list|,
 name|RMAppAttemptEventType
 operator|.
 name|FAIL
+argument_list|,
+name|RMAppAttemptEventType
+operator|.
+name|ATTEMPT_ADDED
 argument_list|)
 argument_list|)
 comment|// Transitions from FAILED State
@@ -5254,7 +5258,16 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-comment|/* TODO fail the application on the failed transition */
+name|onInvalidTranstion
+argument_list|(
+name|event
+operator|.
+name|getType
+argument_list|()
+argument_list|,
+name|oldState
+argument_list|)
+expr_stmt|;
 block|}
 comment|// Log at INFO if we're not recovering or not in a terminal state.
 comment|// Log at DEBUG otherwise.
@@ -10880,6 +10893,20 @@ name|Collections
 operator|.
 name|EMPTY_SET
 return|;
+block|}
+DECL|method|onInvalidTranstion (RMAppAttemptEventType rmAppAttemptEventType, RMAppAttemptState state)
+specifier|protected
+name|void
+name|onInvalidTranstion
+parameter_list|(
+name|RMAppAttemptEventType
+name|rmAppAttemptEventType
+parameter_list|,
+name|RMAppAttemptState
+name|state
+parameter_list|)
+block|{
+comment|/* TODO fail the application on the failed transition */
 block|}
 block|}
 end_class
