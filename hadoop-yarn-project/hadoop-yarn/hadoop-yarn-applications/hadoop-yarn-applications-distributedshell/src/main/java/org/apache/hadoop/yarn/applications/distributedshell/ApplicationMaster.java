@@ -8509,13 +8509,6 @@ argument_list|,
 name|containerVirtualCores
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|resourceProfiles
-operator|==
-literal|null
-condition|)
-block|{
 name|containerMemory
 operator|=
 name|containerMemory
@@ -8585,7 +8578,6 @@ name|getValue
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 name|String
 name|profileName
