@@ -230,6 +230,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|client
+operator|.
+name|HdfsClientConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|DatanodeID
@@ -3031,7 +3047,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|60000
+literal|120000
 argument_list|)
 DECL|method|testNNSendsErasureCodingTasks ()
 specifier|public
@@ -3107,6 +3123,21 @@ operator|.
 name|DFS_DN_EC_RECONSTRUCTION_THREADS_KEY
 argument_list|,
 literal|2
+argument_list|)
+expr_stmt|;
+comment|// Set shorter socket timeout, to allow the recovery task to be reschedule,
+comment|// if it is connecting to a dead DataNode.
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|HdfsClientConfigKeys
+operator|.
+name|DFS_CLIENT_SOCKET_TIMEOUT_KEY
+argument_list|,
+literal|5
+operator|*
+literal|1000
 argument_list|)
 expr_stmt|;
 name|cluster
