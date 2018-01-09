@@ -3329,6 +3329,10 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|NODE_UPDATE
+argument_list|,
+name|RMAppEventType
+operator|.
+name|START
 argument_list|)
 argument_list|)
 operator|.
@@ -5589,7 +5593,16 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-comment|/* TODO fail the application on the failed transition */
+name|onInvalidStateTransition
+argument_list|(
+name|event
+operator|.
+name|getType
+argument_list|()
+argument_list|,
+name|oldState
+argument_list|)
+expr_stmt|;
 block|}
 comment|// Log at INFO if we're not recovering or not in a terminal state.
 comment|// Log at DEBUG otherwise.
@@ -11296,6 +11309,21 @@ name|this
 operator|.
 name|applicationSchedulingEnvs
 return|;
+block|}
+comment|/**      * catch the InvalidStateTransition.      * @param state      * @param rmAppEventType      */
+DECL|method|onInvalidStateTransition (RMAppEventType rmAppEventType, RMAppState state)
+specifier|protected
+name|void
+name|onInvalidStateTransition
+parameter_list|(
+name|RMAppEventType
+name|rmAppEventType
+parameter_list|,
+name|RMAppState
+name|state
+parameter_list|)
+block|{
+comment|/* TODO fail the application on the failed transition */
 block|}
 block|}
 end_class
