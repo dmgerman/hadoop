@@ -603,6 +603,68 @@ name|userName
 argument_list|)
 return|;
 block|}
+comment|/**    * Check if the executor had a timeout and logs the event.    * @param executor to check    * @param user user to log    * @return true if timeout has occurred    */
+DECL|method|handleExecutorTimeout ( ShellCommandExecutor executor, String user)
+specifier|private
+name|boolean
+name|handleExecutorTimeout
+parameter_list|(
+name|ShellCommandExecutor
+name|executor
+parameter_list|,
+name|String
+name|user
+parameter_list|)
+block|{
+comment|// If its a shell executor timeout, indicate so in the message
+comment|// but treat the result as empty instead of throwing it up,
+comment|// similar to how partial resolution failures are handled above
+if|if
+condition|(
+name|executor
+operator|.
+name|isTimedOut
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Unable to return groups for user '{}' as shell group lookup "
+operator|+
+literal|"command '{}' ran longer than the configured timeout limit of "
+operator|+
+literal|"{} seconds."
+argument_list|,
+name|user
+argument_list|,
+name|Joiner
+operator|.
+name|on
+argument_list|(
+literal|' '
+argument_list|)
+operator|.
+name|join
+argument_list|(
+name|executor
+operator|.
+name|getExecString
+argument_list|()
+argument_list|)
+argument_list|,
+name|timeout
+argument_list|)
+expr_stmt|;
+return|return
+literal|true
+return|;
+block|}
+return|return
+literal|false
+return|;
+block|}
 comment|/**    * Get the current user's group list from Unix by running the command 'groups'    * NOTE. For non-existing user it will return EMPTY list.    *    * @param user get groups for this user    * @return the groups list that the<code>user</code> belongs to. The primary    *         group is returned first.    * @throws IOException if encounter any error when running the command    */
 DECL|method|getUnixGroups (String user)
 specifier|private
@@ -656,6 +718,22 @@ name|ExitCodeException
 name|e
 parameter_list|)
 block|{
+if|if
+condition|(
+name|handleExecutorTimeout
+argument_list|(
+name|executor
+argument_list|,
+name|user
+argument_list|)
+condition|)
+block|{
+return|return
+name|EMPTY_GROUPS
+return|;
+block|}
+else|else
+block|{
 try|try
 block|{
 name|groups
@@ -698,53 +776,23 @@ name|EMPTY_GROUPS
 return|;
 block|}
 block|}
+block|}
 catch|catch
 parameter_list|(
 name|IOException
 name|ioe
 parameter_list|)
 block|{
-comment|// If its a shell executor timeout, indicate so in the message
-comment|// but treat the result as empty instead of throwing it up,
-comment|// similar to how partial resolution failures are handled above
 if|if
 condition|(
-name|executor
-operator|.
-name|isTimedOut
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|warn
+name|handleExecutorTimeout
 argument_list|(
-literal|"Unable to return groups for user '{}' as shell group lookup "
-operator|+
-literal|"command '{}' ran longer than the configured timeout limit of "
-operator|+
-literal|"{} seconds."
+name|executor
 argument_list|,
 name|user
-argument_list|,
-name|Joiner
-operator|.
-name|on
-argument_list|(
-literal|' '
 argument_list|)
-operator|.
-name|join
-argument_list|(
-name|executor
-operator|.
-name|getExecString
-argument_list|()
-argument_list|)
-argument_list|,
-name|timeout
-argument_list|)
-expr_stmt|;
+condition|)
+block|{
 return|return
 name|EMPTY_GROUPS
 return|;
