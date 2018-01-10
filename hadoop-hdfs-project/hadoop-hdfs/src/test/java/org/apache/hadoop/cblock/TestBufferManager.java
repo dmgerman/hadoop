@@ -681,6 +681,8 @@ name|getFactor
 argument_list|()
 argument_list|,
 name|containerName
+argument_list|,
+literal|"CBLOCK"
 argument_list|)
 decl_stmt|;
 name|XceiverClientSpi

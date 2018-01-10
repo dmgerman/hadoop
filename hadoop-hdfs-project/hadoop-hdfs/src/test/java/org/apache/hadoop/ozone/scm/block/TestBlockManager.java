@@ -419,6 +419,14 @@ operator|.
 name|ReplicationType
 name|type
 decl_stmt|;
+DECL|field|containerOwner
+specifier|private
+specifier|static
+name|String
+name|containerOwner
+init|=
+literal|"OZONE"
+decl_stmt|;
 annotation|@
 name|Rule
 DECL|field|thrown
@@ -671,6 +679,8 @@ argument_list|,
 name|type
 argument_list|,
 name|factor
+argument_list|,
+name|containerOwner
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -703,6 +713,8 @@ argument_list|,
 name|type
 argument_list|,
 name|factor
+argument_list|,
+name|containerOwner
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -772,6 +784,8 @@ argument_list|,
 name|type
 argument_list|,
 name|factor
+argument_list|,
+name|containerOwner
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -900,6 +914,8 @@ argument_list|,
 name|type
 argument_list|,
 name|factor
+argument_list|,
+name|containerOwner
 argument_list|)
 decl_stmt|;
 block|}
@@ -972,6 +988,8 @@ argument_list|,
 name|type
 argument_list|,
 name|factor
+argument_list|,
+name|containerOwner
 argument_list|)
 expr_stmt|;
 block|}

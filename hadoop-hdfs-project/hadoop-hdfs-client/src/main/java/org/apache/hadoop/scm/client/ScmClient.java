@@ -157,12 +157,15 @@ interface|interface
 name|ScmClient
 block|{
 comment|/**    * Creates a Container on SCM and returns the pipeline.    * @param containerId - String container ID    * @return Pipeline    * @throws IOException    */
-DECL|method|createContainer (String containerId)
+DECL|method|createContainer (String containerId, String owner)
 name|Pipeline
 name|createContainer
 parameter_list|(
 name|String
 name|containerId
+parameter_list|,
+name|String
+name|owner
 parameter_list|)
 throws|throws
 name|IOException
@@ -246,7 +249,7 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Creates a Container on SCM and returns the pipeline.    * @param type - Replication Type.    * @param replicationFactor - Replication Factor    * @param containerId - Container ID    * @return Pipeline    * @throws IOException - in case of error.    */
-DECL|method|createContainer (OzoneProtos.ReplicationType type, OzoneProtos.ReplicationFactor replicationFactor, String containerId)
+DECL|method|createContainer (OzoneProtos.ReplicationType type, OzoneProtos.ReplicationFactor replicationFactor, String containerId, String owner)
 name|Pipeline
 name|createContainer
 parameter_list|(
@@ -262,6 +265,9 @@ name|replicationFactor
 parameter_list|,
 name|String
 name|containerId
+parameter_list|,
+name|String
+name|owner
 parameter_list|)
 throws|throws
 name|IOException

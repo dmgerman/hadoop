@@ -580,7 +580,7 @@ block|}
 comment|/**    * Asks SCM where a container should be allocated. SCM responds with the set    * of datanodes that should be used creating this container. Ozone/SCM only    * supports replication factor of either 1 or 3.    * @param type - Replication Type    * @param factor - Replication Count    * @param containerName - Name    * @return    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|allocateContainer (OzoneProtos.ReplicationType type, OzoneProtos.ReplicationFactor factor, String containerName)
+DECL|method|allocateContainer (OzoneProtos.ReplicationType type, OzoneProtos.ReplicationFactor factor, String containerName, String owner)
 specifier|public
 name|Pipeline
 name|allocateContainer
@@ -597,6 +597,9 @@ name|factor
 parameter_list|,
 name|String
 name|containerName
+parameter_list|,
+name|String
+name|owner
 parameter_list|)
 throws|throws
 name|IOException
@@ -646,6 +649,11 @@ operator|.
 name|setReplicationType
 argument_list|(
 name|type
+argument_list|)
+operator|.
+name|setOwner
+argument_list|(
+name|owner
 argument_list|)
 operator|.
 name|build

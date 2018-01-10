@@ -188,26 +188,6 @@ name|proto
 operator|.
 name|OzoneProtos
 operator|.
-name|Owner
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|OzoneProtos
-operator|.
 name|ReplicationFactor
 import|;
 end_import
@@ -1160,7 +1140,7 @@ block|}
 comment|/**    * Allocates a new container.    *    * @param replicationFactor - replication factor of the container.    * @param containerName - Name of the container.    * @param owner    * @return - Pipeline that makes up this container.    * @throws IOException - Exception    */
 annotation|@
 name|Override
-DECL|method|allocateContainer ( ReplicationType type, ReplicationFactor replicationFactor, final String containerName, Owner owner)
+DECL|method|allocateContainer ( ReplicationType type, ReplicationFactor replicationFactor, final String containerName, String owner)
 specifier|public
 name|ContainerInfo
 name|allocateContainer
@@ -1175,7 +1155,7 @@ specifier|final
 name|String
 name|containerName
 parameter_list|,
-name|Owner
+name|String
 name|owner
 parameter_list|)
 throws|throws

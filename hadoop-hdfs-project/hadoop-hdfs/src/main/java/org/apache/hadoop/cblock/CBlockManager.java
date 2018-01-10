@@ -579,6 +579,16 @@ import|;
 end_import
 
 begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|UUID
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -891,6 +901,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// Fix the cBlockManagerId generattion code here. Should support
+comment|// cBlockManager --init command which will generate a cBlockManagerId and
+comment|// persist it locally.
 name|storageManager
 operator|=
 operator|new
@@ -899,6 +912,8 @@ argument_list|(
 name|storageClient
 argument_list|,
 name|conf
+argument_list|,
+literal|"CBLOCK"
 argument_list|)
 expr_stmt|;
 name|dbPath

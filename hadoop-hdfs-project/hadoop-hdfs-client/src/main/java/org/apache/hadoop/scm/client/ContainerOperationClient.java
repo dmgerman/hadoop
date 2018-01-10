@@ -422,13 +422,16 @@ block|}
 comment|/**    * @inheritDoc    */
 annotation|@
 name|Override
-DECL|method|createContainer (String containerId)
+DECL|method|createContainer (String containerId, String owner)
 specifier|public
 name|Pipeline
 name|createContainer
 parameter_list|(
 name|String
 name|containerId
+parameter_list|,
+name|String
+name|owner
 parameter_list|)
 throws|throws
 name|IOException
@@ -458,6 +461,8 @@ name|getFactor
 argument_list|()
 argument_list|,
 name|containerId
+argument_list|,
+name|owner
 argument_list|)
 decl_stmt|;
 name|client
@@ -770,7 +775,7 @@ block|}
 comment|/**    * @inheritDoc    */
 annotation|@
 name|Override
-DECL|method|createContainer (OzoneProtos.ReplicationType type, OzoneProtos.ReplicationFactor factor, String containerId)
+DECL|method|createContainer (OzoneProtos.ReplicationType type, OzoneProtos.ReplicationFactor factor, String containerId, String owner)
 specifier|public
 name|Pipeline
 name|createContainer
@@ -787,6 +792,9 @@ name|factor
 parameter_list|,
 name|String
 name|containerId
+parameter_list|,
+name|String
+name|owner
 parameter_list|)
 throws|throws
 name|IOException
@@ -811,6 +819,8 @@ argument_list|,
 name|factor
 argument_list|,
 name|containerId
+argument_list|,
+name|owner
 argument_list|)
 decl_stmt|;
 name|client

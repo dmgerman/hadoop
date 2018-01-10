@@ -330,6 +330,14 @@ name|StorageContainerLocationProtocolClientSideTranslatorPB
 DECL|field|storageContainerLocationClient
 name|storageContainerLocationClient
 decl_stmt|;
+DECL|field|containerOwner
+specifier|private
+specifier|static
+name|String
+name|containerOwner
+init|=
+literal|"OZONE"
+decl_stmt|;
 annotation|@
 name|Rule
 DECL|field|exception
@@ -469,6 +477,8 @@ name|getFactor
 argument_list|()
 argument_list|,
 name|containerName1
+argument_list|,
+name|containerOwner
 argument_list|)
 decl_stmt|;
 name|XceiverClientSpi
@@ -538,6 +548,8 @@ name|getFactor
 argument_list|()
 argument_list|,
 name|containerName2
+argument_list|,
+name|containerOwner
 argument_list|)
 decl_stmt|;
 name|XceiverClientSpi
@@ -736,6 +748,8 @@ operator|.
 name|ONE
 argument_list|,
 name|containerName1
+argument_list|,
+name|containerOwner
 argument_list|)
 decl_stmt|;
 name|XceiverClientSpi
@@ -806,6 +820,8 @@ operator|.
 name|ONE
 argument_list|,
 name|containerName2
+argument_list|,
+name|containerOwner
 argument_list|)
 decl_stmt|;
 name|XceiverClientSpi
@@ -1016,6 +1032,8 @@ name|getFactor
 argument_list|()
 argument_list|,
 name|containerName1
+argument_list|,
+name|containerOwner
 argument_list|)
 decl_stmt|;
 name|XceiverClientSpi
@@ -1104,6 +1122,8 @@ name|getFactor
 argument_list|()
 argument_list|,
 name|containerName2
+argument_list|,
+name|containerOwner
 argument_list|)
 decl_stmt|;
 name|XceiverClientSpi

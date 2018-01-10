@@ -258,6 +258,14 @@ specifier|static
 name|XceiverClientManager
 name|xceiverClientManager
 decl_stmt|;
+DECL|field|containerOwner
+specifier|private
+specifier|static
+name|String
+name|containerOwner
+init|=
+literal|"OZONE"
+decl_stmt|;
 annotation|@
 name|Rule
 DECL|field|thrown
@@ -418,6 +426,8 @@ name|getFactor
 argument_list|()
 argument_list|,
 literal|"container0"
+argument_list|,
+name|containerOwner
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -472,6 +482,8 @@ name|getFactor
 argument_list|()
 argument_list|,
 literal|null
+argument_list|,
+name|containerOwner
 argument_list|)
 expr_stmt|;
 block|}
@@ -526,6 +538,8 @@ name|getFactor
 argument_list|()
 argument_list|,
 name|containerName
+argument_list|,
+name|containerOwner
 argument_list|)
 expr_stmt|;
 name|storageContainerLocationClient
@@ -543,6 +557,8 @@ name|getFactor
 argument_list|()
 argument_list|,
 name|containerName
+argument_list|,
+name|containerOwner
 argument_list|)
 expr_stmt|;
 block|}

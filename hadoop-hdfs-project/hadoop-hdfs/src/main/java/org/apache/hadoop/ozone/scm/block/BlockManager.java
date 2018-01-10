@@ -121,7 +121,7 @@ extends|extends
 name|Closeable
 block|{
 comment|/**    * Allocates a new block for a given size.    * @param size - Block Size    * @param type Replication Type    * @param factor - Replication Factor    * @return AllocatedBlock    * @throws IOException    */
-DECL|method|allocateBlock (long size, OzoneProtos.ReplicationType type, OzoneProtos.ReplicationFactor factor)
+DECL|method|allocateBlock (long size, OzoneProtos.ReplicationType type, OzoneProtos.ReplicationFactor factor, String owner)
 name|AllocatedBlock
 name|allocateBlock
 parameter_list|(
@@ -137,6 +137,9 @@ name|OzoneProtos
 operator|.
 name|ReplicationFactor
 name|factor
+parameter_list|,
+name|String
+name|owner
 parameter_list|)
 throws|throws
 name|IOException

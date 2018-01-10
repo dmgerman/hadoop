@@ -4525,7 +4525,7 @@ block|}
 comment|/**    * Asks SCM where a container should be allocated. SCM responds with the set    * of datanodes that should be used creating this container.    *    * @param containerName - Name of the container.    * @param replicationFactor - replication factor.    * @return pipeline    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|allocateContainer (OzoneProtos.ReplicationType replicationType, OzoneProtos.ReplicationFactor replicationFactor, String containerName)
+DECL|method|allocateContainer (OzoneProtos.ReplicationType replicationType, OzoneProtos.ReplicationFactor replicationFactor, String containerName, String owner)
 specifier|public
 name|Pipeline
 name|allocateContainer
@@ -4542,25 +4542,13 @@ name|replicationFactor
 parameter_list|,
 name|String
 name|containerName
+parameter_list|,
+name|String
+name|owner
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|//TODO : FIX ME : Pass the owner argument to this function.
-comment|// This causes a lot of test change and cblock change to filing
-comment|// another JIRA to fix it.
-specifier|final
-name|OzoneProtos
-operator|.
-name|Owner
-name|owner
-init|=
-name|OzoneProtos
-operator|.
-name|Owner
-operator|.
-name|OZONE
-decl_stmt|;
 name|checkAdminAccess
 argument_list|()
 expr_stmt|;
@@ -5660,7 +5648,7 @@ block|}
 comment|/**    * Asks SCM where a block should be allocated. SCM responds with the set of    * datanodes that should be used creating this block.    *    * @param size - size of the block.    * @param type - Replication type.    * @param factor    * @return allocated block accessing info (key, pipeline).    * @throws IOException    */
 annotation|@
 name|Override
-DECL|method|allocateBlock (long size, OzoneProtos.ReplicationType type, OzoneProtos.ReplicationFactor factor)
+DECL|method|allocateBlock (long size, OzoneProtos.ReplicationType type, OzoneProtos.ReplicationFactor factor, String owner)
 specifier|public
 name|AllocatedBlock
 name|allocateBlock
@@ -5677,6 +5665,9 @@ name|OzoneProtos
 operator|.
 name|ReplicationFactor
 name|factor
+parameter_list|,
+name|String
+name|owner
 parameter_list|)
 throws|throws
 name|IOException
@@ -5691,6 +5682,8 @@ argument_list|,
 name|type
 argument_list|,
 name|factor
+argument_list|,
+name|owner
 argument_list|)
 return|;
 block|}

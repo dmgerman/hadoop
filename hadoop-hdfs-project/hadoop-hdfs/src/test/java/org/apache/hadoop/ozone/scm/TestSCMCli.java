@@ -578,6 +578,14 @@ specifier|static
 name|XceiverClientManager
 name|xceiverClientManager
 decl_stmt|;
+DECL|field|containerOwner
+specifier|private
+specifier|static
+name|String
+name|containerOwner
+init|=
+literal|"OZONE"
+decl_stmt|;
 annotation|@
 name|Rule
 DECL|field|globalTimeout
@@ -1043,6 +1051,8 @@ operator|.
 name|ONE
 argument_list|,
 name|containerName
+argument_list|,
+name|containerOwner
 argument_list|)
 expr_stmt|;
 name|ContainerData
@@ -1295,6 +1305,8 @@ operator|.
 name|ONE
 argument_list|,
 name|containerName
+argument_list|,
+name|containerOwner
 argument_list|)
 expr_stmt|;
 name|containerOperationClient
@@ -1376,6 +1388,8 @@ operator|.
 name|ONE
 argument_list|,
 name|containerName
+argument_list|,
+name|containerOwner
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1574,6 +1588,8 @@ operator|.
 name|ONE
 argument_list|,
 name|cname
+argument_list|,
+name|containerOwner
 argument_list|)
 decl_stmt|;
 name|ContainerData
@@ -1723,6 +1739,8 @@ operator|.
 name|ONE
 argument_list|,
 name|cname
+argument_list|,
+name|containerOwner
 argument_list|)
 expr_stmt|;
 name|data
@@ -2143,6 +2161,8 @@ operator|.
 name|ONE
 argument_list|,
 name|containerName
+argument_list|,
+name|containerOwner
 argument_list|)
 expr_stmt|;
 block|}

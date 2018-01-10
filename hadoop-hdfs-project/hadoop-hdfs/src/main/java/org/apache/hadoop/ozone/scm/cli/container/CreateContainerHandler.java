@@ -192,6 +192,15 @@ name|OPT_CONTAINER_NAME
 init|=
 literal|"c"
 decl_stmt|;
+DECL|field|containerOwner
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|containerOwner
+init|=
+literal|"OZONE"
+decl_stmt|;
 comment|// TODO Support an optional -p<pipelineID> option to create
 comment|// container on given datanodes.
 DECL|method|CreateContainerHandler (ScmClient scmClient)
@@ -301,6 +310,8 @@ operator|.
 name|createContainer
 argument_list|(
 name|containerName
+argument_list|,
+name|containerOwner
 argument_list|)
 expr_stmt|;
 name|logOut

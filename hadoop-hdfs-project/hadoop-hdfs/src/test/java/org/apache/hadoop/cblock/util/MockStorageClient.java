@@ -225,13 +225,16 @@ decl_stmt|;
 comment|/**    * Ask SCM to get a exclusive container.    *    * @return A container descriptor object to locate this container    * @throws Exception    */
 annotation|@
 name|Override
-DECL|method|createContainer (String containerId)
+DECL|method|createContainer (String containerId, String owner)
 specifier|public
 name|Pipeline
 name|createContainer
 parameter_list|(
 name|String
 name|containerId
+parameter_list|,
+name|String
+name|owner
 parameter_list|)
 throws|throws
 name|IOException
@@ -479,7 +482,7 @@ comment|// 5GB
 block|}
 annotation|@
 name|Override
-DECL|method|createContainer (OzoneProtos.ReplicationType type, OzoneProtos.ReplicationFactor replicationFactor, String containerId)
+DECL|method|createContainer (OzoneProtos.ReplicationType type, OzoneProtos.ReplicationFactor replicationFactor, String containerId, String owner)
 specifier|public
 name|Pipeline
 name|createContainer
@@ -496,6 +499,9 @@ name|replicationFactor
 parameter_list|,
 name|String
 name|containerId
+parameter_list|,
+name|String
+name|owner
 parameter_list|)
 throws|throws
 name|IOException

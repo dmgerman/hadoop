@@ -182,7 +182,7 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Asks SCM where a block should be allocated. SCM responds with the    * set of datanodes that should be used creating this block.    * @param size - size of the block.    * @return allocated block accessing info (key, pipeline).    * @throws IOException    */
-DECL|method|allocateBlock (long size, ReplicationType type, ReplicationFactor factor)
+DECL|method|allocateBlock (long size, ReplicationType type, ReplicationFactor factor, String owner)
 name|AllocatedBlock
 name|allocateBlock
 parameter_list|(
@@ -194,6 +194,9 @@ name|type
 parameter_list|,
 name|ReplicationFactor
 name|factor
+parameter_list|,
+name|String
+name|owner
 parameter_list|)
 throws|throws
 name|IOException

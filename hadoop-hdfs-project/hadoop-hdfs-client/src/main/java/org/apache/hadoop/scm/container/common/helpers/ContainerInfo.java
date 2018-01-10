@@ -158,9 +158,7 @@ name|stateEnterTime
 decl_stmt|;
 DECL|field|owner
 specifier|private
-name|OzoneProtos
-operator|.
-name|Owner
+name|String
 name|owner
 decl_stmt|;
 DECL|field|containerName
@@ -168,7 +166,7 @@ specifier|private
 name|String
 name|containerName
 decl_stmt|;
-DECL|method|ContainerInfo ( final String containerName, OzoneProtos.LifeCycleState state, Pipeline pipeline, long allocatedBytes, long usedBytes, long numberOfKeys, long stateEnterTime, OzoneProtos.Owner owner)
+DECL|method|ContainerInfo ( final String containerName, OzoneProtos.LifeCycleState state, Pipeline pipeline, long allocatedBytes, long usedBytes, long numberOfKeys, long stateEnterTime, String owner)
 name|ContainerInfo
 parameter_list|(
 specifier|final
@@ -195,9 +193,7 @@ parameter_list|,
 name|long
 name|stateEnterTime
 parameter_list|,
-name|OzoneProtos
-operator|.
-name|Owner
+name|String
 name|owner
 parameter_list|)
 block|{
@@ -598,9 +594,7 @@ return|;
 block|}
 DECL|method|getOwner ()
 specifier|public
-name|OzoneProtos
-operator|.
-name|Owner
+name|String
 name|getOwner
 parameter_list|()
 block|{
@@ -608,14 +602,12 @@ return|return
 name|owner
 return|;
 block|}
-DECL|method|setOwner (OzoneProtos.Owner owner)
+DECL|method|setOwner (String owner)
 specifier|public
 name|void
 name|setOwner
 parameter_list|(
-name|OzoneProtos
-operator|.
-name|Owner
+name|String
 name|owner
 parameter_list|)
 block|{
@@ -894,9 +886,7 @@ name|stateEnterTime
 decl_stmt|;
 DECL|field|owner
 specifier|private
-name|OzoneProtos
-operator|.
-name|Owner
+name|String
 name|owner
 decl_stmt|;
 DECL|field|containerName
@@ -1020,14 +1010,12 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setOwner (OzoneProtos.Owner containerOwner)
+DECL|method|setOwner (String containerOwner)
 specifier|public
 name|Builder
 name|setOwner
 parameter_list|(
-name|OzoneProtos
-operator|.
-name|Owner
+name|String
 name|containerOwner
 parameter_list|)
 block|{

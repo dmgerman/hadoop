@@ -1438,6 +1438,11 @@ argument_list|,
 name|metadataManager
 argument_list|,
 name|configuration
+argument_list|,
+name|ksmStorage
+operator|.
+name|getKsmId
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|httpServer

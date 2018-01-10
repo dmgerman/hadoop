@@ -516,26 +516,6 @@ name|proto
 operator|.
 name|OzoneProtos
 operator|.
-name|Owner
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|OzoneProtos
-operator|.
 name|LifeCycleEvent
 import|;
 end_import
@@ -811,9 +791,6 @@ name|HashMap
 argument_list|<>
 argument_list|()
 expr_stmt|;
-name|initializeContainerMaps
-argument_list|()
-expr_stmt|;
 name|loadExistingContainers
 argument_list|(
 name|containerMapping
@@ -828,11 +805,14 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Creates containers maps of following types.    *<p>    * OZONE  of type {Ratis, StandAlone, Chained} for each of these {ALLOCATED,    * CREATING, OPEN, CLOSED, DELETING, DELETED}  container states    *<p>    * CBLOCK of type {Ratis, StandAlone, Chained} for each of these {ALLOCATED,    * CREATING, OPEN, CLOSED, DELETING, DELETED}  container states    *<p>    * Commented out for now: HDFS of type {Ratis, StandAlone, Chained} for each    * of these {ALLOCATED, CREATING, OPEN, CLOSED, DELETING, DELETED}  container    * states    */
-DECL|method|initializeContainerMaps ()
+DECL|method|initializeContainerMaps (String owner)
 specifier|private
 name|void
 name|initializeContainerMaps
-parameter_list|()
+parameter_list|(
+name|String
+name|owner
+parameter_list|)
 block|{
 comment|// Called only from Ctor path, hence no lock is held.
 name|Preconditions
@@ -842,21 +822,6 @@ argument_list|(
 name|containers
 argument_list|)
 expr_stmt|;
-for|for
-control|(
-name|OzoneProtos
-operator|.
-name|Owner
-name|owner
-range|:
-name|OzoneProtos
-operator|.
-name|Owner
-operator|.
-name|values
-argument_list|()
-control|)
-block|{
 for|for
 control|(
 name|ReplicationType
@@ -929,7 +894,6 @@ block|}
 block|}
 block|}
 block|}
-block|}
 comment|/**    * Load containers from the container store into the containerMaps.    *    * @param containerMapping -- Mapping object containing container store.    */
 DECL|method|loadExistingContainers (Mapping containerMapping)
 specifier|private
@@ -942,6 +906,17 @@ parameter_list|)
 block|{
 try|try
 block|{
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|ownerList
+init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|()
+decl_stmt|;
 name|List
 argument_list|<
 name|ContainerInfo
@@ -969,16 +944,50 @@ range|:
 name|containerList
 control|)
 block|{
+name|String
+name|owner
+init|=
+name|container
+operator|.
+name|getOwner
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|ownerList
+operator|.
+name|isEmpty
+argument_list|()
+operator|||
+operator|!
+name|ownerList
+operator|.
+name|contains
+argument_list|(
+name|owner
+argument_list|)
+condition|)
+block|{
+name|ownerList
+operator|.
+name|add
+argument_list|(
+name|owner
+argument_list|)
+expr_stmt|;
+name|initializeContainerMaps
+argument_list|(
+name|owner
+argument_list|)
+expr_stmt|;
+block|}
 name|ContainerKey
 name|key
 init|=
 operator|new
 name|ContainerKey
 argument_list|(
-name|container
-operator|.
-name|getOwner
-argument_list|()
+name|owner
 argument_list|,
 name|container
 operator|.
@@ -1218,7 +1227,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * allocates a new container based on the type, replication etc.    *    * @param selector -- Pipeline selector class.    * @param type -- Replication type.    * @param replicationFactor - Replication replicationFactor.    * @param containerName - Container Name.    * @return Container Info.    * @throws IOException    */
-DECL|method|allocateContainer (PipelineSelector selector, OzoneProtos .ReplicationType type, OzoneProtos.ReplicationFactor replicationFactor, final String containerName, OzoneProtos.Owner owner)
+DECL|method|allocateContainer (PipelineSelector selector, OzoneProtos .ReplicationType type, OzoneProtos.ReplicationFactor replicationFactor, final String containerName, String owner)
 specifier|public
 name|ContainerInfo
 name|allocateContainer
@@ -1240,9 +1249,7 @@ specifier|final
 name|String
 name|containerName
 parameter_list|,
-name|OzoneProtos
-operator|.
-name|Owner
+name|String
 name|owner
 parameter_list|)
 throws|throws
@@ -1371,13 +1378,28 @@ argument_list|(
 name|key
 argument_list|)
 decl_stmt|;
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
+if|if
+condition|(
 name|queue
+operator|==
+literal|null
+condition|)
+block|{
+name|initializeContainerMaps
+argument_list|(
+name|owner
 argument_list|)
 expr_stmt|;
+name|queue
+operator|=
+name|containers
+operator|.
+name|get
+argument_list|(
+name|key
+argument_list|)
+expr_stmt|;
+block|}
 name|queue
 operator|.
 name|add
@@ -1746,7 +1768,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Return a container matching the attributes specified.    *    * @param size - Space needed in the Container.    * @param owner - Owner of the container {OZONE, CBLOCK}    * @param type - Replication Type {StandAlone, Ratis}    * @param factor - Replication Factor {ONE, THREE}    * @param state - State of the Container-- {Open, Allocated etc.}    * @return ContainerInfo    */
-DECL|method|getMatchingContainer (final long size, Owner owner, ReplicationType type, ReplicationFactor factor, LifeCycleState state)
+DECL|method|getMatchingContainer (final long size, String owner, ReplicationType type, ReplicationFactor factor, LifeCycleState state)
 specifier|public
 name|ContainerInfo
 name|getMatchingContainer
@@ -1755,7 +1777,7 @@ specifier|final
 name|long
 name|size
 parameter_list|,
-name|Owner
+name|String
 name|owner
 parameter_list|,
 name|ReplicationType
@@ -1806,6 +1828,28 @@ argument_list|(
 name|key
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|queue
+operator|==
+literal|null
+condition|)
+block|{
+name|initializeContainerMaps
+argument_list|(
+name|owner
+argument_list|)
+expr_stmt|;
+name|queue
+operator|=
+name|containers
+operator|.
+name|get
+argument_list|(
+name|key
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|queue
@@ -1915,7 +1959,7 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|getMatchingContainers (Owner owner, ReplicationType type, ReplicationFactor factor, LifeCycleState state)
+DECL|method|getMatchingContainers (String owner, ReplicationType type, ReplicationFactor factor, LifeCycleState state)
 specifier|public
 name|List
 argument_list|<
@@ -1923,7 +1967,7 @@ name|ContainerInfo
 argument_list|>
 name|getMatchingContainers
 parameter_list|(
-name|Owner
+name|String
 name|owner
 parameter_list|,
 name|ReplicationType
@@ -1961,6 +2005,24 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+if|if
+condition|(
+name|containers
+operator|.
+name|get
+argument_list|(
+name|key
+argument_list|)
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+else|else
+block|{
 return|return
 name|Arrays
 operator|.
@@ -1987,6 +2049,7 @@ index|]
 argument_list|)
 argument_list|)
 return|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -2053,9 +2116,7 @@ decl_stmt|;
 DECL|field|owner
 specifier|private
 specifier|final
-name|OzoneProtos
-operator|.
-name|Owner
+name|String
 name|owner
 decl_stmt|;
 DECL|field|replicationFactor
@@ -2065,10 +2126,10 @@ name|ReplicationFactor
 name|replicationFactor
 decl_stmt|;
 comment|/**      * Constructs a Container Key.      *      * @param owner - Container Owners      * @param type - Replication Type.      * @param factor - Replication Factors      * @param state - LifeCycle State      */
-DECL|method|ContainerKey (Owner owner, ReplicationType type, ReplicationFactor factor, LifeCycleState state)
+DECL|method|ContainerKey (String owner, ReplicationType type, ReplicationFactor factor, LifeCycleState state)
 name|ContainerKey
 parameter_list|(
-name|Owner
+name|String
 name|owner
 parameter_list|,
 name|ReplicationType

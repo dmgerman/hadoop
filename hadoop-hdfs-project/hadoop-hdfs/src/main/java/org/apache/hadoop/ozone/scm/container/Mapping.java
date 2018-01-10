@@ -186,7 +186,7 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Allocates a new container for a given keyName and replication factor.    *    * @param replicationFactor - replication factor of the container.    * @param containerName - Name.    * @param owner    * @return - Container Info.    * @throws IOException    */
-DECL|method|allocateContainer (OzoneProtos.ReplicationType type, OzoneProtos.ReplicationFactor replicationFactor, String containerName, OzoneProtos.Owner owner)
+DECL|method|allocateContainer (OzoneProtos.ReplicationType type, OzoneProtos.ReplicationFactor replicationFactor, String containerName, String owner)
 name|ContainerInfo
 name|allocateContainer
 parameter_list|(
@@ -203,9 +203,7 @@ parameter_list|,
 name|String
 name|containerName
 parameter_list|,
-name|OzoneProtos
-operator|.
-name|Owner
+name|String
 name|owner
 parameter_list|)
 throws|throws

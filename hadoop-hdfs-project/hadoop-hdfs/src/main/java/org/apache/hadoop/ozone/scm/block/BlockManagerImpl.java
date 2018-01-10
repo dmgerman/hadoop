@@ -126,26 +126,6 @@ name|proto
 operator|.
 name|OzoneProtos
 operator|.
-name|Owner
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ozone
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|OzoneProtos
-operator|.
 name|ReplicationFactor
 import|;
 end_import
@@ -701,16 +681,6 @@ decl_stmt|;
 comment|// TODO : FIX ME : Hard coding the owner.
 comment|// Currently only user of the block service is Ozone, CBlock manages blocks
 comment|// by itself and does not rely on the Block service offered by SCM.
-DECL|field|owner
-specifier|private
-specifier|final
-name|Owner
-name|owner
-init|=
-name|Owner
-operator|.
-name|OZONE
-decl_stmt|;
 DECL|field|nodeManager
 specifier|private
 specifier|final
@@ -1044,7 +1014,7 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Pre allocate specified count of containers for block creation.    *    * @param count - Number of containers to allocate.    * @param type - Type of containers    * @param factor - how many copies needed for this container.    * @throws IOException    */
-DECL|method|preAllocateContainers (int count, ReplicationType type, ReplicationFactor factor)
+DECL|method|preAllocateContainers (int count, ReplicationType type, ReplicationFactor factor, String owner)
 specifier|private
 name|void
 name|preAllocateContainers
@@ -1057,6 +1027,9 @@ name|type
 parameter_list|,
 name|ReplicationFactor
 name|factor
+parameter_list|,
+name|String
+name|owner
 parameter_list|)
 throws|throws
 name|IOException
@@ -1165,7 +1138,7 @@ block|}
 comment|/**    * Allocates a block in a container and returns that info.    *    * @param size - Block Size    * @param type Replication Type    * @param factor - Replication Factor    * @return Allocated block    * @throws IOException on failure.    */
 annotation|@
 name|Override
-DECL|method|allocateBlock ( final long size, ReplicationType type, ReplicationFactor factor)
+DECL|method|allocateBlock (final long size, ReplicationType type, ReplicationFactor factor, String owner)
 specifier|public
 name|AllocatedBlock
 name|allocateBlock
@@ -1179,6 +1152,9 @@ name|type
 parameter_list|,
 name|ReplicationFactor
 name|factor
+parameter_list|,
+name|String
+name|owner
 parameter_list|)
 throws|throws
 name|IOException
@@ -1383,6 +1359,8 @@ argument_list|,
 name|type
 argument_list|,
 name|factor
+argument_list|,
+name|owner
 argument_list|)
 expr_stmt|;
 comment|// Since we just allocated a set of containers this should work

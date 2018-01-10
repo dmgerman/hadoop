@@ -406,6 +406,12 @@ name|MAX_QUEUE_CAPACITY
 init|=
 literal|1024
 decl_stmt|;
+DECL|field|cblockId
+specifier|private
+specifier|final
+name|String
+name|cblockId
+decl_stmt|;
 comment|/**    * We will NOT have the situation where same kv pair getting    * processed, but it is possible to have multiple kv pair being    * processed at same time.    *    * So using just ConcurrentHashMap should be sufficient    *    * Again since currently same user accessing from multiple places    * is not allowed, no need to consider concurrency of volume map    * within one user    */
 specifier|private
 name|ConcurrentHashMap
@@ -429,7 +435,7 @@ specifier|private
 name|long
 name|containerSizeB
 decl_stmt|;
-DECL|method|StorageManager (ScmClient storageClient, OzoneConfiguration ozoneConfig)
+DECL|method|StorageManager (ScmClient storageClient, OzoneConfiguration ozoneConfig, String cblockId)
 specifier|public
 name|StorageManager
 parameter_list|(
@@ -438,6 +444,9 @@ name|storageClient
 parameter_list|,
 name|OzoneConfiguration
 name|ozoneConfig
+parameter_list|,
+name|String
+name|cblockId
 parameter_list|)
 throws|throws
 name|IOException
@@ -484,6 +493,12 @@ name|CBlockConfigKeys
 operator|.
 name|DFS_CBLOCK_MANAGER_POOL_SIZE_DEFAULT
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|cblockId
+operator|=
+name|cblockId
 expr_stmt|;
 block|}
 comment|/**    * This call will put the volume into in-memory map.    *    * more specifically, make the volume discoverable on jSCSI server    * and keep it's reference in-memory for look up.    * @param userName the user name of the volume.    * @param volumeName the name of the volume,    * @param volume a {@link VolumeDescriptor} object encapsulating the    *               information about the volume.    */
@@ -852,6 +867,8 @@ argument_list|()
 argument_list|,
 name|containerIdx
 argument_list|)
+argument_list|,
+name|cblockId
 argument_list|)
 decl_stmt|;
 name|container

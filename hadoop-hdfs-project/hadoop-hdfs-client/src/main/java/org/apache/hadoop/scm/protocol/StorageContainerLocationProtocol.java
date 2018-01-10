@@ -151,7 +151,7 @@ interface|interface
 name|StorageContainerLocationProtocol
 block|{
 comment|/**    * Asks SCM where a container should be allocated. SCM responds with the    * set of datanodes that should be used creating this container.    *    */
-DECL|method|allocateContainer (OzoneProtos.ReplicationType replicationType, OzoneProtos.ReplicationFactor factor, String containerName)
+DECL|method|allocateContainer (OzoneProtos.ReplicationType replicationType, OzoneProtos.ReplicationFactor factor, String containerName, String owner)
 name|Pipeline
 name|allocateContainer
 parameter_list|(
@@ -167,6 +167,9 @@ name|factor
 parameter_list|,
 name|String
 name|containerName
+parameter_list|,
+name|String
+name|owner
 parameter_list|)
 throws|throws
 name|IOException

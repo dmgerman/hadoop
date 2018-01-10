@@ -719,7 +719,13 @@ specifier|final
 name|Random
 name|random
 decl_stmt|;
-DECL|method|KeyManagerImpl (ScmBlockLocationProtocol scmBlockClient, KSMMetadataManager metadataManager, OzoneConfiguration conf)
+DECL|field|ksmId
+specifier|private
+specifier|final
+name|String
+name|ksmId
+decl_stmt|;
+DECL|method|KeyManagerImpl (ScmBlockLocationProtocol scmBlockClient, KSMMetadataManager metadataManager, OzoneConfiguration conf, String ksmId)
 specifier|public
 name|KeyManagerImpl
 parameter_list|(
@@ -731,6 +737,9 @@ name|metadataManager
 parameter_list|,
 name|OzoneConfiguration
 name|conf
+parameter_list|,
+name|String
+name|ksmId
 parameter_list|)
 block|{
 name|this
@@ -867,6 +876,12 @@ operator|=
 operator|new
 name|Random
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|ksmId
+operator|=
+name|ksmId
 expr_stmt|;
 block|}
 annotation|@
@@ -1228,6 +1243,8 @@ argument_list|,
 name|type
 argument_list|,
 name|factor
+argument_list|,
+name|ksmId
 argument_list|)
 decl_stmt|;
 name|KsmKeyInfo
@@ -1539,6 +1556,8 @@ argument_list|,
 name|type
 argument_list|,
 name|factor
+argument_list|,
+name|ksmId
 argument_list|)
 decl_stmt|;
 name|KsmKeyLocationInfo

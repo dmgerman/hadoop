@@ -649,6 +649,11 @@ name|request
 operator|.
 name|getFactor
 argument_list|()
+argument_list|,
+name|request
+operator|.
+name|getOwner
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if

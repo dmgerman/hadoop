@@ -402,6 +402,14 @@ specifier|static
 name|XceiverClientManager
 name|xceiverClientManager
 decl_stmt|;
+DECL|field|containerOwner
+specifier|private
+specifier|static
+name|String
+name|containerOwner
+init|=
+literal|"OZONE"
+decl_stmt|;
 annotation|@
 name|BeforeClass
 DECL|method|init ()
@@ -584,6 +592,8 @@ operator|.
 name|ONE
 argument_list|,
 name|containerName
+argument_list|,
+name|containerOwner
 argument_list|)
 decl_stmt|;
 name|XceiverClientSpi
@@ -717,6 +727,8 @@ operator|.
 name|ONE
 argument_list|,
 name|containerName
+argument_list|,
+name|containerOwner
 argument_list|)
 decl_stmt|;
 name|XceiverClientSpi
@@ -831,6 +843,8 @@ operator|.
 name|ONE
 argument_list|,
 name|containerName
+argument_list|,
+name|containerOwner
 argument_list|)
 decl_stmt|;
 name|XceiverClientSpi
