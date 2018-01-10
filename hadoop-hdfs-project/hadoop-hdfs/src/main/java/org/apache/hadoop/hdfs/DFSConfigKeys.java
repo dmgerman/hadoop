@@ -7944,6 +7944,31 @@ argument_list|(
 literal|5
 argument_list|)
 decl_stmt|;
+comment|// HDFS Router-based federation mount table entries
+comment|/** Maximum number of cache entries to have. */
+DECL|field|FEDERATION_MOUNT_TABLE_MAX_CACHE_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FEDERATION_MOUNT_TABLE_MAX_CACHE_SIZE
+init|=
+name|DFSConfigKeys
+operator|.
+name|FEDERATION_ROUTER_PREFIX
+operator|+
+literal|"mount-table.max-cache-size"
+decl_stmt|;
+comment|/** Remove cache entries if we have more than 10k. */
+DECL|field|FEDERATION_MOUNT_TABLE_MAX_CACHE_SIZE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|FEDERATION_MOUNT_TABLE_MAX_CACHE_SIZE_DEFAULT
+init|=
+literal|10000
+decl_stmt|;
 comment|// HDFS Router-based federation admin
 DECL|field|DFS_ROUTER_ADMIN_HANDLER_COUNT_KEY
 specifier|public
