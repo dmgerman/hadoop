@@ -2245,7 +2245,7 @@ init|=
 name|getClusterResource
 argument_list|()
 decl_stmt|;
-name|LOG
+name|STATE_DUMP_LOG
 operator|.
 name|debug
 argument_list|(
@@ -2395,7 +2395,7 @@ block|}
 comment|// Log debug information
 if|if
 condition|(
-name|LOG
+name|STATE_DUMP_LOG
 operator|.
 name|isDebugEnabled
 argument_list|()
