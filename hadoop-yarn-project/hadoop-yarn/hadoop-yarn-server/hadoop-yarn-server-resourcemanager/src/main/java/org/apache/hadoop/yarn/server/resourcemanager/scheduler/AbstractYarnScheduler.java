@@ -1601,6 +1601,10 @@ DECL|field|schedulingMonitorManager
 specifier|protected
 name|SchedulingMonitorManager
 name|schedulingMonitorManager
+init|=
+operator|new
+name|SchedulingMonitorManager
+argument_list|()
 decl_stmt|;
 comment|/**    * Construct the service.    *    * @param name service name    */
 DECL|method|AbstractYarnScheduler (String name)
@@ -1847,19 +1851,11 @@ name|THREAD_JOIN_TIMEOUT_MS
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|schedulingMonitorManager
-operator|!=
-literal|null
-condition|)
-block|{
 name|schedulingMonitorManager
 operator|.
 name|stop
 argument_list|()
 expr_stmt|;
-block|}
 name|super
 operator|.
 name|serviceStop
