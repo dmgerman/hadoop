@@ -380,6 +380,20 @@ name|LoggerFactory
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * Router that provides a unified view of multiple federated HDFS clusters. It  * has two main roles: (1) federated interface and (2) NameNode heartbeat.  *<p>  * For the federated interface, the Router receives a client request, checks the  * State Store for the correct subcluster, and forwards the request to the  * active Namenode of that subcluster. The reply from the Namenode then flows in  * the opposite direction. The Routers are stateless and can be behind a load  * balancer. HDFS clients connect to the router using the same interfaces as are  * used to communicate with a namenode, namely the ClientProtocol RPC interface  * and the WebHdfs HTTP interface exposed by the router. {@link RouterRpcServer}  * {@link RouterHttpServer}  *<p>  * For NameNode heartbeat, the Router periodically checks the state of a  * NameNode (usually on the same server) and reports their high availability  * (HA) state and load/space status to the State Store. Note that this is an  * optional role as a Router can be independent of any subcluster.  * {@link StateStoreService} {@link NamenodeHeartbeatService}  */
 end_comment
@@ -494,6 +508,18 @@ DECL|field|pauseMonitor
 specifier|private
 name|JvmPauseMonitor
 name|pauseMonitor
+decl_stmt|;
+comment|/** Quota usage update service. */
+DECL|field|quotaUpdateService
+specifier|private
+name|RouterQuotaUpdateService
+name|quotaUpdateService
+decl_stmt|;
+comment|/** Quota cache manager. */
+DECL|field|quotaManager
+specifier|private
+name|RouterQuotaManager
+name|quotaManager
 decl_stmt|;
 comment|/////////////////////////////////////////////////////////
 comment|// Constructor
@@ -855,6 +881,49 @@ operator|.
 name|init
 argument_list|(
 name|conf
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Initial quota relevant service
+if|if
+condition|(
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_ROUTER_QUOTA_ENABLE
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_ROUTER_QUOTA_ENABLED_DEFAULT
+argument_list|)
+condition|)
+block|{
+name|this
+operator|.
+name|quotaManager
+operator|=
+operator|new
+name|RouterQuotaManager
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|quotaUpdateService
+operator|=
+operator|new
+name|RouterQuotaUpdateService
+argument_list|(
+name|this
+argument_list|)
+expr_stmt|;
+name|addService
+argument_list|(
+name|this
+operator|.
+name|quotaUpdateService
 argument_list|)
 expr_stmt|;
 block|}
@@ -1736,6 +1805,48 @@ name|routerId
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|/**    * If the quota system is enabled in Router.    */
+DECL|method|isQuotaEnabled ()
+specifier|public
+name|boolean
+name|isQuotaEnabled
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|quotaManager
+operator|!=
+literal|null
+return|;
+block|}
+comment|/**    * Get route quota manager.    * @return RouterQuotaManager Quota manager.    */
+DECL|method|getQuotaManager ()
+specifier|public
+name|RouterQuotaManager
+name|getQuotaManager
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|quotaManager
+return|;
+block|}
+comment|/**    * Get quota cache update service.    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getQuotaCacheUpdateService ()
+name|RouterQuotaUpdateService
+name|getQuotaCacheUpdateService
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|quotaUpdateService
+return|;
 block|}
 block|}
 end_class

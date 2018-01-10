@@ -112,6 +112,13 @@ name|enableMetrics
 init|=
 literal|false
 decl_stmt|;
+DECL|field|enableQuota
+specifier|private
+name|boolean
+name|enableQuota
+init|=
+literal|false
+decl_stmt|;
 DECL|method|RouterConfigBuilder (Configuration configuration)
 specifier|public
 name|RouterConfigBuilder
@@ -328,6 +335,25 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|quota (boolean enable)
+specifier|public
+name|RouterConfigBuilder
+name|quota
+parameter_list|(
+name|boolean
+name|enable
+parameter_list|)
+block|{
+name|this
+operator|.
+name|enableQuota
+operator|=
+name|enable
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|rpc ()
 specifier|public
 name|RouterConfigBuilder
@@ -413,6 +439,21 @@ return|return
 name|this
 operator|.
 name|metrics
+argument_list|(
+literal|true
+argument_list|)
+return|;
+block|}
+DECL|method|quota ()
+specifier|public
+name|RouterConfigBuilder
+name|quota
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|quota
 argument_list|(
 literal|true
 argument_list|)
@@ -513,6 +554,19 @@ argument_list|,
 name|this
 operator|.
 name|enableMetrics
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_ROUTER_QUOTA_ENABLE
+argument_list|,
+name|this
+operator|.
+name|enableQuota
 argument_list|)
 expr_stmt|;
 return|return

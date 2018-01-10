@@ -162,6 +162,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|HdfsConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|federation
@@ -211,6 +227,26 @@ operator|.
 name|router
 operator|.
 name|RouterPermissionChecker
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|federation
+operator|.
+name|router
+operator|.
+name|RouterQuotaUsage
 import|;
 end_import
 
@@ -711,6 +747,50 @@ name|MOUNT_TABLE_PERMISSION_DEFAULT
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// Set quota for mount table
+name|RouterQuotaUsage
+name|quota
+init|=
+operator|new
+name|RouterQuotaUsage
+operator|.
+name|Builder
+argument_list|()
+operator|.
+name|fileAndDirectoryCount
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|quota
+argument_list|(
+name|HdfsConstants
+operator|.
+name|QUOTA_DONT_SET
+argument_list|)
+operator|.
+name|spaceConsumed
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|spaceQuota
+argument_list|(
+name|HdfsConstants
+operator|.
+name|QUOTA_DONT_SET
+argument_list|)
+operator|.
+name|build
+argument_list|()
+decl_stmt|;
+name|record
+operator|.
+name|setQuota
+argument_list|(
+name|quota
+argument_list|)
+expr_stmt|;
 comment|// Validate
 name|record
 operator|.
@@ -872,6 +952,25 @@ name|setMode
 parameter_list|(
 name|FsPermission
 name|mode
+parameter_list|)
+function_decl|;
+comment|/**    * Get quota of this mount table entry.    *    * @return RouterQuotaUsage quota usage    */
+DECL|method|getQuota ()
+specifier|public
+specifier|abstract
+name|RouterQuotaUsage
+name|getQuota
+parameter_list|()
+function_decl|;
+comment|/**    * Set quota for this mount table entry.    *    * @param quota QuotaUsage for mount table entry    */
+DECL|method|setQuota (RouterQuotaUsage quota)
+specifier|public
+specifier|abstract
+name|void
+name|setQuota
+parameter_list|(
+name|RouterQuotaUsage
+name|quota
 parameter_list|)
 function_decl|;
 comment|/**    * Get the default location.    * @return The default location.    */

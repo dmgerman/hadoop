@@ -141,6 +141,7 @@ block|}
 block|}
 comment|/**    * Is quota violated?    * The quota is violated if quota is set and usage> quota.     */
 DECL|method|isViolated (final long quota, final long usage)
+specifier|public
 specifier|static
 name|boolean
 name|isViolated

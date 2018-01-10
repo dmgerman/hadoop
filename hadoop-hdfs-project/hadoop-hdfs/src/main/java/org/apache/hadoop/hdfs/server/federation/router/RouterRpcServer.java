@@ -1852,6 +1852,13 @@ name|ThreadLocal
 argument_list|<>
 argument_list|()
 decl_stmt|;
+comment|/** Router Quota calls. */
+DECL|field|quotaCall
+specifier|private
+specifier|final
+name|Quota
+name|quotaCall
+decl_stmt|;
 comment|/**    * Construct a router RPC server.    *    * @param configuration HDFS Configuration.    * @param nnResolver The NN resolver instance to determine active NNs in HA.    * @param fileResolver File resolver to resolve file paths to subclusters.    * @throws IOException If the RPC server could not be created.    */
 DECL|method|RouterRpcServer (Configuration configuration, Router router, ActiveNamenodeResolver nnResolver, FileSubclusterResolver fileResolver)
 specifier|public
@@ -2293,6 +2300,21 @@ operator|.
 name|rpcMonitor
 argument_list|)
 expr_stmt|;
+comment|// Initialize modules
+name|this
+operator|.
+name|quotaCall
+operator|=
+operator|new
+name|Quota
+argument_list|(
+name|this
+operator|.
+name|router
+argument_list|,
+name|this
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -2562,7 +2584,7 @@ block|}
 block|}
 comment|/**    * Check if the Router is in safe mode. We should only see READ, WRITE, and    * UNCHECKED. This function should be called by all ClientProtocol functions.    *    * @param op Category of the operation to check.    * @throws StandbyException If the Router is in safe mode and cannot serve    *                          client requests.    */
 DECL|method|checkOperation (OperationCategory op)
-specifier|private
+specifier|protected
 name|void
 name|checkOperation
 parameter_list|(
@@ -11889,91 +11911,26 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|checkOperation
-argument_list|(
-name|OperationCategory
+name|this
 operator|.
-name|WRITE
-argument_list|)
-expr_stmt|;
-comment|// TODO assign global replicas instead of applying them to each folder
-specifier|final
-name|List
-argument_list|<
-name|RemoteLocation
-argument_list|>
-name|locations
-init|=
-name|getLocationsForPath
+name|quotaCall
+operator|.
+name|setQuota
 argument_list|(
 name|path
 argument_list|,
-literal|true
-argument_list|)
-decl_stmt|;
-name|RemoteMethod
-name|method
-init|=
-operator|new
-name|RemoteMethod
-argument_list|(
-literal|"setQuota"
-argument_list|,
-operator|new
-name|Class
-argument_list|<
-name|?
-argument_list|>
-index|[]
-block|{
-name|String
-operator|.
-name|class
-operator|,
-name|Long
-operator|.
-name|class
-operator|,
-name|Long
-operator|.
-name|class
-operator|,
-name|StorageType
-operator|.
-name|class
-block|}
-operator|,
-operator|new
-name|RemoteParam
-argument_list|()
-operator|,
 name|namespaceQuota
-operator|,
+argument_list|,
 name|storagespaceQuota
-operator|,
+argument_list|,
 name|type
-block|)
-function|;
-end_function
-
-begin_expr_stmt
-name|rpcClient
-operator|.
-name|invokeConcurrent
-argument_list|(
-name|locations
-argument_list|,
-name|method
-argument_list|,
-literal|false
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
-end_expr_stmt
+block|}
+end_function
 
 begin_function
-unit|}    @
+annotation|@
 name|Override
 comment|// ClientProtocol
 DECL|method|getQuotaUsage (String path)
@@ -11992,12 +11949,17 @@ argument_list|(
 name|OperationCategory
 operator|.
 name|READ
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 return|return
-literal|null
+name|this
+operator|.
+name|quotaCall
+operator|.
+name|getQuotaUsage
+argument_list|(
+name|path
+argument_list|)
 return|;
 block|}
 end_function
@@ -12669,7 +12631,7 @@ end_comment
 
 begin_function
 DECL|method|getLocationsForPath ( String path, boolean failIfLocked)
-specifier|private
+specifier|protected
 name|List
 argument_list|<
 name|RemoteLocation
@@ -12772,6 +12734,51 @@ operator|+
 literal|" is in a read only mount point"
 argument_list|)
 throw|;
+block|}
+comment|// Check quota
+if|if
+condition|(
+name|this
+operator|.
+name|router
+operator|.
+name|isQuotaEnabled
+argument_list|()
+condition|)
+block|{
+name|RouterQuotaUsage
+name|quotaUsage
+init|=
+name|this
+operator|.
+name|router
+operator|.
+name|getQuotaManager
+argument_list|()
+operator|.
+name|getQuotaUsage
+argument_list|(
+name|path
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|quotaUsage
+operator|!=
+literal|null
+condition|)
+block|{
+name|quotaUsage
+operator|.
+name|verifyNamespaceQuota
+argument_list|()
+expr_stmt|;
+name|quotaUsage
+operator|.
+name|verifyStoragespaceQuota
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 return|return
@@ -13183,6 +13190,25 @@ name|UserGroupInformation
 operator|.
 name|getCurrentUser
 argument_list|()
+return|;
+block|}
+end_function
+
+begin_comment
+comment|/**    * Get quota module implement.    */
+end_comment
+
+begin_function
+DECL|method|getQuotaModule ()
+specifier|public
+name|Quota
+name|getQuotaModule
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|quotaCall
 return|;
 block|}
 end_function
