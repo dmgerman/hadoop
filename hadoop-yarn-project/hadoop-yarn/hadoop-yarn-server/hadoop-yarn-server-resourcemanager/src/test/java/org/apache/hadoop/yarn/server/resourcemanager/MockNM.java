@@ -552,10 +552,10 @@ specifier|private
 name|NodeId
 name|nodeId
 decl_stmt|;
-DECL|field|capatibility
+DECL|field|capability
 specifier|private
 name|Resource
-name|capatibility
+name|capability
 decl_stmt|;
 DECL|field|resourceTracker
 specifier|private
@@ -735,7 +735,7 @@ name|version
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|MockNM (String nodeIdStr, Resource capatibility, ResourceTrackerService resourceTracker)
+DECL|method|MockNM (String nodeIdStr, Resource capability, ResourceTrackerService resourceTracker)
 specifier|public
 name|MockNM
 parameter_list|(
@@ -743,7 +743,7 @@ name|String
 name|nodeIdStr
 parameter_list|,
 name|Resource
-name|capatibility
+name|capability
 parameter_list|,
 name|ResourceTrackerService
 name|resourceTracker
@@ -753,7 +753,7 @@ name|this
 argument_list|(
 name|nodeIdStr
 argument_list|,
-name|capatibility
+name|capability
 argument_list|,
 name|resourceTracker
 argument_list|,
@@ -764,7 +764,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|MockNM (String nodeIdStr, Resource capatibility, ResourceTrackerService resourceTracker, String version)
+DECL|method|MockNM (String nodeIdStr, Resource capability, ResourceTrackerService resourceTracker, String version)
 specifier|public
 name|MockNM
 parameter_list|(
@@ -772,7 +772,7 @@ name|String
 name|nodeIdStr
 parameter_list|,
 name|Resource
-name|capatibility
+name|capability
 parameter_list|,
 name|ResourceTrackerService
 name|resourceTracker
@@ -783,9 +783,9 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|capatibility
+name|capability
 operator|=
-name|capatibility
+name|capability
 expr_stmt|;
 name|this
 operator|.
@@ -1187,7 +1187,7 @@ name|req
 operator|.
 name|setResource
 argument_list|(
-name|capatibility
+name|capability
 argument_list|)
 expr_stmt|;
 name|req
@@ -1254,7 +1254,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|capatibility
+name|capability
 operator|=
 name|Resources
 operator|.
@@ -1414,7 +1414,7 @@ literal|"Success"
 argument_list|,
 literal|0
 argument_list|,
-name|capatibility
+name|capability
 argument_list|)
 decl_stmt|;
 name|ArrayList
@@ -1948,7 +1948,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|capatibility
+name|capability
 operator|=
 name|Resources
 operator|.
@@ -1969,7 +1969,7 @@ name|getMemory
 parameter_list|()
 block|{
 return|return
-name|capatibility
+name|capability
 operator|.
 name|getMemorySize
 argument_list|()
@@ -1982,20 +1982,20 @@ name|getvCores
 parameter_list|()
 block|{
 return|return
-name|capatibility
+name|capability
 operator|.
 name|getVirtualCores
 argument_list|()
 return|;
 block|}
-DECL|method|getCapatibility ()
+DECL|method|getCapability ()
 specifier|public
 name|Resource
-name|getCapatibility
+name|getCapability
 parameter_list|()
 block|{
 return|return
-name|capatibility
+name|capability
 return|;
 block|}
 DECL|method|getVersion ()

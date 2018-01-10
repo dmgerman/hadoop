@@ -5831,7 +5831,7 @@ return|return
 name|nm
 return|;
 block|}
-DECL|method|registerNode (String nodeIdStr, Resource nodeCapatibility)
+DECL|method|registerNode (String nodeIdStr, Resource nodeCapability)
 specifier|public
 name|MockNM
 name|registerNode
@@ -5840,7 +5840,7 @@ name|String
 name|nodeIdStr
 parameter_list|,
 name|Resource
-name|nodeCapatibility
+name|nodeCapability
 parameter_list|)
 throws|throws
 name|Exception
@@ -5853,7 +5853,7 @@ name|MockNM
 argument_list|(
 name|nodeIdStr
 argument_list|,
-name|nodeCapatibility
+name|nodeCapability
 argument_list|,
 name|getResourceTrackerService
 argument_list|()
