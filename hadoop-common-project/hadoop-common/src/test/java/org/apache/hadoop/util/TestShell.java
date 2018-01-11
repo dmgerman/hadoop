@@ -2514,6 +2514,25 @@ name|waitFor
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
+DECL|method|testIsJavaVersionAtLeast ()
+specifier|public
+name|void
+name|testIsJavaVersionAtLeast
+parameter_list|()
+block|{
+name|assertTrue
+argument_list|(
+name|Shell
+operator|.
+name|isJavaVersionAtLeast
+argument_list|(
+literal|8
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 
