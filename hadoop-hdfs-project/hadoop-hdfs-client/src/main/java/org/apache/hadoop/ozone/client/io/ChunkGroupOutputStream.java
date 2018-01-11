@@ -50,6 +50,34 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|primitives
+operator|.
+name|Ints
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|lang
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -67,6 +95,20 @@ operator|.
 name|ContainerProtos
 operator|.
 name|Result
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConsts
 import|;
 end_import
 
@@ -414,6 +456,22 @@ name|List
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConfigKeys
+operator|.
+name|OZONE_OUTPUT_STREAM_BUFFER_SIZE_DEFAULT
+import|;
+end_import
+
 begin_comment
 comment|/**  * Maintaining a list of ChunkInputStream. Write based on offset.  *  * Note that this may write to multiple containers in one write call. In case  * that first container succeeded but later ones failed, the succeeded writes  * are not rolled back.  *  * TODO : currently not support multi-thread access.  */
 end_comment
@@ -504,6 +562,12 @@ specifier|final
 name|String
 name|requestID
 decl_stmt|;
+DECL|field|streamBufferSize
+specifier|private
+specifier|final
+name|long
+name|streamBufferSize
+decl_stmt|;
 comment|/**    * A constructor for testing purpose only.    */
 annotation|@
 name|VisibleForTesting
@@ -547,6 +611,14 @@ expr_stmt|;
 name|requestID
 operator|=
 literal|null
+expr_stmt|;
+name|streamBufferSize
+operator|=
+name|OZONE_OUTPUT_STREAM_BUFFER_SIZE_DEFAULT
+operator|*
+name|OzoneConsts
+operator|.
+name|MB
 expr_stmt|;
 block|}
 comment|/**    * For testing purpose only. Not building output stream from blocks, but    * taking from externally.    *    * @param outputStream    * @param length    */
@@ -594,8 +666,8 @@ return|return
 name|streamEntries
 return|;
 block|}
-DECL|method|ChunkGroupOutputStream ( OpenKeySession handler, XceiverClientManager xceiverClientManager, StorageContainerLocationProtocolClientSideTranslatorPB scmClient, KeySpaceManagerProtocolClientSideTranslatorPB ksmClient, int chunkSize, String requestId, ReplicationFactor factor, ReplicationType type)
-specifier|public
+comment|/**    * Chunkoutput stream, making this package visible since this can be    * created only via builder.    * @param handler  - Open Key state.    * @param xceiverClientManager - Communication Manager.    * @param scmClient - SCM protocol Client.    * @param ksmClient - KSM Protocol client    * @param chunkSize - Chunk Size - I/O    * @param requestId - Seed for trace ID generation.    * @param factor - Replication factor    * @param type - Replication Type - RATIS/Standalone etc.    * @param maxBufferSize - Maximum stream buffer Size.    * @throws IOException - Throws this exception if there is an error.    */
+DECL|method|ChunkGroupOutputStream ( OpenKeySession handler, XceiverClientManager xceiverClientManager, StorageContainerLocationProtocolClientSideTranslatorPB scmClient, KeySpaceManagerProtocolClientSideTranslatorPB ksmClient, int chunkSize, String requestId, ReplicationFactor factor, ReplicationType type, long maxBufferSize)
 name|ChunkGroupOutputStream
 parameter_list|(
 name|OpenKeySession
@@ -621,6 +693,9 @@ name|factor
 parameter_list|,
 name|ReplicationType
 name|type
+parameter_list|,
+name|long
+name|maxBufferSize
 parameter_list|)
 throws|throws
 name|IOException
@@ -762,6 +837,12 @@ operator|.
 name|size
 argument_list|()
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|streamBufferSize
+operator|=
+name|maxBufferSize
 expr_stmt|;
 block|}
 comment|/**    * When a key is opened, it is possible that there are some blocks already    * allocated to it for this open session. In this case, to make use of these    * blocks, we need to add these blocks to stream entries. But, a key's version    * also includes blocks from previous versions, we need to avoid adding these    * old blocks to stream entries, because these old blocks should not be picked    * for write. To do this, the following method checks that, only those    * blocks created in this particular open version are added to stream entries.    *    * @param version the set of blocks that are pre-allocated.    * @param openVersion the version corresponding to the pre-allocation.    * @throws IOException    */
@@ -975,6 +1056,10 @@ name|subKeyInfo
 operator|.
 name|getLength
 argument_list|()
+argument_list|,
+name|this
+operator|.
+name|streamBufferSize
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1516,6 +1601,11 @@ specifier|private
 name|ReplicationFactor
 name|factor
 decl_stmt|;
+DECL|field|streamBufferSize
+specifier|private
+name|long
+name|streamBufferSize
+decl_stmt|;
 DECL|method|setHandler (OpenKeySession handler)
 specifier|public
 name|Builder
@@ -1668,6 +1758,25 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|setStreamBufferSize (long blockSize)
+specifier|public
+name|Builder
+name|setStreamBufferSize
+parameter_list|(
+name|long
+name|blockSize
+parameter_list|)
+block|{
+name|this
+operator|.
+name|streamBufferSize
+operator|=
+name|blockSize
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|build ()
 specifier|public
 name|ChunkGroupOutputStream
@@ -1676,6 +1785,68 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|openHandler
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|xceiverManager
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|scmClient
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkNotNull
+argument_list|(
+name|ksmClient
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|chunkSize
+operator|>
+literal|0
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|StringUtils
+operator|.
+name|isNotEmpty
+argument_list|(
+name|requestID
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|streamBufferSize
+operator|>
+literal|0
+operator|&&
+name|streamBufferSize
+operator|>
+name|chunkSize
+argument_list|)
+expr_stmt|;
 return|return
 operator|new
 name|ChunkGroupOutputStream
@@ -1695,6 +1866,8 @@ argument_list|,
 name|factor
 argument_list|,
 name|type
+argument_list|,
+name|streamBufferSize
 argument_list|)
 return|;
 block|}
@@ -1761,7 +1934,13 @@ specifier|private
 name|long
 name|currentPosition
 decl_stmt|;
-DECL|method|ChunkOutputStreamEntry (String containerKey, String key, XceiverClientManager xceiverClientManager, XceiverClientSpi xceiverClient, String requestId, int chunkSize, long length)
+DECL|field|streamBufferSize
+specifier|private
+name|long
+name|streamBufferSize
+decl_stmt|;
+comment|// Max block size.
+DECL|method|ChunkOutputStreamEntry (String containerKey, String key, XceiverClientManager xceiverClientManager, XceiverClientSpi xceiverClient, String requestId, int chunkSize, long length, long streamBufferSize)
 name|ChunkOutputStreamEntry
 parameter_list|(
 name|String
@@ -1784,6 +1963,9 @@ name|chunkSize
 parameter_list|,
 name|long
 name|length
+parameter_list|,
+name|long
+name|streamBufferSize
 parameter_list|)
 block|{
 name|this
@@ -1839,6 +2021,12 @@ operator|.
 name|currentPosition
 operator|=
 literal|0
+expr_stmt|;
+name|this
+operator|.
+name|streamBufferSize
+operator|=
+name|streamBufferSize
 expr_stmt|;
 block|}
 comment|/**      * For testing purpose, taking a some random created stream instance.      * @param  outputStream a existing writable output stream      * @param  length the length of data to write to the stream      */
@@ -1907,6 +2095,16 @@ name|currentPosition
 operator|=
 literal|0
 expr_stmt|;
+name|this
+operator|.
+name|streamBufferSize
+operator|=
+name|OZONE_OUTPUT_STREAM_BUFFER_SIZE_DEFAULT
+operator|*
+name|OzoneConsts
+operator|.
+name|MB
+expr_stmt|;
 block|}
 DECL|method|getLength ()
 name|long
@@ -1962,6 +2160,13 @@ argument_list|,
 name|requestId
 argument_list|,
 name|chunkSize
+argument_list|,
+name|Ints
+operator|.
+name|checkedCast
+argument_list|(
+name|streamBufferSize
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

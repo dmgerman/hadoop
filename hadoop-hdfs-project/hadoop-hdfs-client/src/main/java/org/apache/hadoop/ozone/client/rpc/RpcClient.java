@@ -772,6 +772,38 @@ name|Collectors
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConfigKeys
+operator|.
+name|OZONE_OUTPUT_STREAM_BUFFER_SIZE_IN_MB
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConfigKeys
+operator|.
+name|OZONE_OUTPUT_STREAM_BUFFER_SIZE_DEFAULT
+import|;
+end_import
+
 begin_comment
 comment|/**  * Ozone RPC Client Implementation, it connects to KSM, SCM and DataNode  * to execute client calls. This uses RPC protocol for communication  * with the servers.  */
 end_comment
@@ -851,6 +883,12 @@ name|OzoneAcl
 operator|.
 name|OzoneACLRights
 name|groupRights
+decl_stmt|;
+DECL|field|streamBufferSize
+specifier|private
+specifier|final
+name|long
+name|streamBufferSize
 decl_stmt|;
 comment|/**     * Creates RpcClient instance with the given configuration.     * @param conf     * @throws IOException     */
 DECL|method|RpcClient (Configuration conf)
@@ -1143,6 +1181,22 @@ operator|=
 name|configuredChunkSize
 expr_stmt|;
 block|}
+comment|// streamBufferSize by default is set equal to default scm block size.
+name|streamBufferSize
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|OZONE_OUTPUT_STREAM_BUFFER_SIZE_IN_MB
+argument_list|,
+name|OZONE_OUTPUT_STREAM_BUFFER_SIZE_DEFAULT
+argument_list|)
+operator|*
+name|OzoneConsts
+operator|.
+name|MB
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -2981,6 +3035,11 @@ operator|.
 name|getValue
 argument_list|()
 argument_list|)
+argument_list|)
+operator|.
+name|setStreamBufferSize
+argument_list|(
+name|streamBufferSize
 argument_list|)
 operator|.
 name|build

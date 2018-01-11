@@ -8037,13 +8037,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Thread
-operator|.
-name|sleep
-argument_list|(
-literal|2000
-argument_list|)
-expr_stmt|;
+comment|//Thread.sleep(2000);
 name|openKeys
 operator|=
 name|cluster

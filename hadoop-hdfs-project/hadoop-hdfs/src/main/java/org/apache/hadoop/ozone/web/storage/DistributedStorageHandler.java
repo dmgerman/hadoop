@@ -754,6 +754,38 @@ name|List
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConfigKeys
+operator|.
+name|OZONE_OUTPUT_STREAM_BUFFER_SIZE_IN_MB
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ozone
+operator|.
+name|OzoneConfigKeys
+operator|.
+name|OZONE_OUTPUT_STREAM_BUFFER_SIZE_DEFAULT
+import|;
+end_import
+
 begin_comment
 comment|/**  * A {@link StorageHandler} implementation that distributes object storage  * across the nodes of an HDFS cluster.  */
 end_comment
@@ -843,6 +875,12 @@ name|OzoneProtos
 operator|.
 name|ReplicationFactor
 name|factor
+decl_stmt|;
+DECL|field|streamBufferSize
+specifier|private
+specifier|final
+name|long
+name|streamBufferSize
 decl_stmt|;
 comment|/**    * Creates a new DistributedStorageHandler.    *    * @param conf configuration    * @param storageContainerLocation StorageContainerLocationProtocol proxy    * @param keySpaceManagerClient KeySpaceManager proxy    */
 DECL|method|DistributedStorageHandler (OzoneConfiguration conf, StorageContainerLocationProtocolClientSideTranslatorPB storageContainerLocation, KeySpaceManagerProtocolClientSideTranslatorPB keySpaceManagerClient)
@@ -1017,6 +1055,22 @@ operator|.
 name|OZONE_SCM_CHUNK_MAX_SIZE
 expr_stmt|;
 block|}
+comment|// streamBufferSize by default is set to default scm block size.
+name|streamBufferSize
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|OZONE_OUTPUT_STREAM_BUFFER_SIZE_IN_MB
+argument_list|,
+name|OZONE_OUTPUT_STREAM_BUFFER_SIZE_DEFAULT
+argument_list|)
+operator|*
+name|OzoneConsts
+operator|.
+name|MB
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -2678,6 +2732,11 @@ name|xceiverClientManager
 operator|.
 name|getFactor
 argument_list|()
+argument_list|)
+operator|.
+name|setStreamBufferSize
+argument_list|(
+name|streamBufferSize
 argument_list|)
 operator|.
 name|build
