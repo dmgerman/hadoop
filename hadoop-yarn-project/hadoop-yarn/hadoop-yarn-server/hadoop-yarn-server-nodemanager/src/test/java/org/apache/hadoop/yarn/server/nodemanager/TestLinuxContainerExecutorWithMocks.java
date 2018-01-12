@@ -1925,7 +1925,7 @@ operator|.
 name|size
 argument_list|()
 argument_list|,
-literal|24
+literal|25
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1997,6 +1997,20 @@ argument_list|(
 literal|4
 argument_list|)
 argument_list|,
+literal|"12345"
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|result
+operator|.
+name|get
+argument_list|(
+literal|5
+argument_list|)
+argument_list|,
 literal|"/bin/nmPrivateCTokensPath"
 argument_list|)
 expr_stmt|;
@@ -2008,7 +2022,7 @@ name|result
 operator|.
 name|get
 argument_list|(
-literal|8
+literal|9
 argument_list|)
 argument_list|,
 literal|"-classpath"
@@ -2022,7 +2036,7 @@ name|result
 operator|.
 name|get
 argument_list|(
-literal|11
+literal|12
 argument_list|)
 argument_list|,
 literal|"-Xmx256m"
@@ -2036,7 +2050,7 @@ name|result
 operator|.
 name|get
 argument_list|(
-literal|12
+literal|13
 argument_list|)
 argument_list|,
 literal|"-Dlog4j.configuration=container-log4j.properties"
@@ -2050,7 +2064,7 @@ name|result
 operator|.
 name|get
 argument_list|(
-literal|13
+literal|14
 argument_list|)
 argument_list|,
 literal|"-Dyarn.app.container.log.dir=${yarn.log.dir}/userlogs/application_0/12345"
@@ -2064,7 +2078,7 @@ name|result
 operator|.
 name|get
 argument_list|(
-literal|14
+literal|15
 argument_list|)
 argument_list|,
 literal|"-Dyarn.app.container.log.filesize=0"
@@ -2078,7 +2092,7 @@ name|result
 operator|.
 name|get
 argument_list|(
-literal|15
+literal|16
 argument_list|)
 argument_list|,
 literal|"-Dhadoop.root.logger=INFO,CLA"
@@ -2092,7 +2106,7 @@ name|result
 operator|.
 name|get
 argument_list|(
-literal|16
+literal|17
 argument_list|)
 argument_list|,
 literal|"-Dhadoop.root.logfile=container-localizer-syslog"
@@ -2106,7 +2120,7 @@ name|result
 operator|.
 name|get
 argument_list|(
-literal|17
+literal|18
 argument_list|)
 argument_list|,
 literal|"org.apache.hadoop.yarn.server.nodemanager.containermanager.localizer.ContainerLocalizer"
@@ -2120,7 +2134,7 @@ name|result
 operator|.
 name|get
 argument_list|(
-literal|18
+literal|19
 argument_list|)
 argument_list|,
 literal|"test"
@@ -2134,7 +2148,7 @@ name|result
 operator|.
 name|get
 argument_list|(
-literal|19
+literal|20
 argument_list|)
 argument_list|,
 literal|"application_0"
@@ -2148,7 +2162,7 @@ name|result
 operator|.
 name|get
 argument_list|(
-literal|20
+literal|21
 argument_list|)
 argument_list|,
 literal|"12345"
@@ -2162,7 +2176,7 @@ name|result
 operator|.
 name|get
 argument_list|(
-literal|21
+literal|22
 argument_list|)
 argument_list|,
 literal|"localhost"
@@ -2176,7 +2190,7 @@ name|result
 operator|.
 name|get
 argument_list|(
-literal|22
+literal|23
 argument_list|)
 argument_list|,
 literal|"8040"

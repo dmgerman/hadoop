@@ -2070,6 +2070,8 @@ argument_list|)
 argument_list|,
 name|appId
 argument_list|,
+name|locId
+argument_list|,
 name|nmPrivateContainerTokensPath
 operator|.
 name|toUri
