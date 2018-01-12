@@ -5258,6 +5258,8 @@ argument_list|(
 name|response
 argument_list|,
 name|name
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 name|response
@@ -5345,7 +5347,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Lookup record from upstream DNS servers.    */
-DECL|method|remoteLookup (Message response, Name name)
+DECL|method|remoteLookup (Message response, Name name, int iterations)
 specifier|private
 name|byte
 name|remoteLookup
@@ -5355,6 +5357,9 @@ name|response
 parameter_list|,
 name|Name
 name|name
+parameter_list|,
+name|int
+name|iterations
 parameter_list|)
 block|{
 comment|// Forward lookup to primary DNS servers
@@ -5418,6 +5423,51 @@ operator|.
 name|ANSWER
 argument_list|)
 expr_stmt|;
+block|}
+if|if
+condition|(
+name|r
+operator|.
+name|getType
+argument_list|()
+operator|==
+name|Type
+operator|.
+name|CNAME
+condition|)
+block|{
+name|Name
+name|cname
+init|=
+operator|(
+operator|(
+name|CNAMERecord
+operator|)
+name|r
+operator|)
+operator|.
+name|getAlias
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|iterations
+operator|<
+literal|6
+condition|)
+block|{
+name|remoteLookup
+argument_list|(
+name|response
+argument_list|,
+name|cname
+argument_list|,
+name|iterations
+operator|+
+literal|1
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 block|}
