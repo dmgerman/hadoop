@@ -1137,6 +1137,38 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Closes the streams ignoring {@link Throwable}.    * Must only be called in cleaning up from exception handlers.    *    * @param streams the Streams to close    */
+DECL|method|closeStreams (java.io.Closeable... streams)
+specifier|public
+specifier|static
+name|void
+name|closeStreams
+parameter_list|(
+name|java
+operator|.
+name|io
+operator|.
+name|Closeable
+modifier|...
+name|streams
+parameter_list|)
+block|{
+if|if
+condition|(
+name|streams
+operator|!=
+literal|null
+condition|)
+block|{
+name|cleanupWithLogger
+argument_list|(
+literal|null
+argument_list|,
+name|streams
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Closes the socket ignoring {@link IOException}    *    * @param sock the Socket to close    */
 DECL|method|closeSocket (Socket sock)
 specifier|public
