@@ -692,13 +692,22 @@ name|void
 name|intializePriorityDigraph
 parameter_list|()
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Initializing priority preemption directed graph:"
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Make sure we iterate all leaf queue combinations
 for|for
 control|(
@@ -891,7 +900,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"- Added priority ordering edge: "
 operator|+
@@ -933,7 +942,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"- Added priority ordering edge: "
 operator|+
