@@ -6189,6 +6189,28 @@ name|DEFAULT_NM_DOCKER_DEFAULT_CONTAINER_NETWORK
 init|=
 literal|"host"
 decl_stmt|;
+comment|/**    * Whether or not users are allowed to request that Docker containers honor    * the debug deletion delay. This is useful for troubleshooting Docker    * container related launch failures.    */
+DECL|field|NM_DOCKER_ALLOW_DELAYED_REMOVAL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_DOCKER_ALLOW_DELAYED_REMOVAL
+init|=
+name|DOCKER_CONTAINER_RUNTIME_PREFIX
+operator|+
+literal|"delayed-removal.allowed"
+decl_stmt|;
+comment|/**    * The default value on whether or not a user can request that Docker    * containers honor the debug deletion delay.    */
+DECL|field|DEFAULT_NM_DOCKER_ALLOW_DELAYED_REMOVAL
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_NM_DOCKER_ALLOW_DELAYED_REMOVAL
+init|=
+literal|false
+decl_stmt|;
 comment|/** The mode in which the Java Container Sandbox should run detailed by    *  the JavaSandboxLinuxContainerRuntime. */
 DECL|field|YARN_CONTAINER_SANDBOX
 specifier|public

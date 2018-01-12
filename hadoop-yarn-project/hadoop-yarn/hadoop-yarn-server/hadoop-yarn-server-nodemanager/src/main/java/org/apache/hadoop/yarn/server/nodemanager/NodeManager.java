@@ -2588,6 +2588,18 @@ argument_list|(
 name|exec
 argument_list|)
 expr_stmt|;
+operator|(
+operator|(
+name|NMContext
+operator|)
+name|context
+operator|)
+operator|.
+name|setDeletionService
+argument_list|(
+name|del
+argument_list|)
+expr_stmt|;
 name|nodeLabelsProvider
 operator|=
 name|createNodeLabelsProvider
@@ -3597,6 +3609,11 @@ specifier|final
 name|boolean
 name|isDistSchedulingEnabled
 decl_stmt|;
+DECL|field|deletionService
+specifier|private
+name|DeletionService
+name|deletionService
+decl_stmt|;
 DECL|field|containerAllocator
 specifier|private
 name|OpportunisticContainerAllocator
@@ -4376,6 +4393,36 @@ operator|.
 name|resourcePluginManager
 operator|=
 name|resourcePluginManager
+expr_stmt|;
+block|}
+comment|/**      * Return the NM's {@link DeletionService}.      *      * @return the NM's {@link DeletionService}.      */
+DECL|method|getDeletionService ()
+specifier|public
+name|DeletionService
+name|getDeletionService
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|deletionService
+return|;
+block|}
+comment|/**      * Set the NM's {@link DeletionService}.      *      * @param deletionService the {@link DeletionService} to add to the Context.      */
+DECL|method|setDeletionService (DeletionService deletionService)
+specifier|public
+name|void
+name|setDeletionService
+parameter_list|(
+name|DeletionService
+name|deletionService
+parameter_list|)
+block|{
+name|this
+operator|.
+name|deletionService
+operator|=
+name|deletionService
 expr_stmt|;
 block|}
 block|}

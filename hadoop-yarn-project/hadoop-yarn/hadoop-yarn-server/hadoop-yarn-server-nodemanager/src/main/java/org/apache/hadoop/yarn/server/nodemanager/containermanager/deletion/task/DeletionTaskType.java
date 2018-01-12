@@ -37,7 +37,10 @@ enum|enum
 name|DeletionTaskType
 block|{
 DECL|enumConstant|FILE
+DECL|enumConstant|DOCKER_CONTAINER
 name|FILE
+block|,
+name|DOCKER_CONTAINER
 block|}
 end_enum
 

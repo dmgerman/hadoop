@@ -548,6 +548,26 @@ name|nodemanager
 operator|.
 name|executor
 operator|.
+name|ContainerReapContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|executor
+operator|.
 name|ContainerSignalContext
 import|;
 end_import
@@ -976,6 +996,19 @@ name|boolean
 name|signalContainer
 parameter_list|(
 name|ContainerSignalContext
+name|ctx
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Perform the steps necessary to reap the container.    *    * @param ctx Encapsulates information necessary for reaping containers.    * @return returns true if the operation succeeded.    * @throws IOException if reaping the container fails.    */
+DECL|method|reapContainer (ContainerReapContext ctx)
+specifier|public
+specifier|abstract
+name|boolean
+name|reapContainer
+parameter_list|(
+name|ContainerReapContext
 name|ctx
 parameter_list|)
 throws|throws

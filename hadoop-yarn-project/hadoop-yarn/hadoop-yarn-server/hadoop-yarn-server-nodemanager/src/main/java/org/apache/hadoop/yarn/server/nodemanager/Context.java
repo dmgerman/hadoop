@@ -628,6 +628,12 @@ name|NodeManagerMetrics
 name|getNodeManagerMetrics
 parameter_list|()
 function_decl|;
+comment|/**    * Get the {@code DeletionService} associated with the NM.    *    * @return the NM {@code DeletionService}.    */
+DECL|method|getDeletionService ()
+name|DeletionService
+name|getDeletionService
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
