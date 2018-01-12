@@ -2073,16 +2073,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|String
-name|msg
-init|=
-name|diagnostics
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|"Navigate to the failed component for more details."
-decl_stmt|;
 name|amRMClient
 operator|.
 name|unregisterApplicationMaster
@@ -2091,7 +2081,10 @@ name|FinalApplicationStatus
 operator|.
 name|ENDED
 argument_list|,
-name|msg
+name|diagnostics
+operator|.
+name|toString
+argument_list|()
 argument_list|,
 literal|""
 argument_list|)
@@ -2100,21 +2093,19 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Service "
+literal|"Service {} unregistered with RM, with attemptId = {} "
 operator|+
+literal|", diagnostics = {} "
+argument_list|,
 name|app
 operator|.
 name|getName
 argument_list|()
-operator|+
-literal|" unregistered with RM, with attemptId = "
-operator|+
+argument_list|,
 name|context
 operator|.
 name|attemptId
-operator|+
-literal|", diagnostics = "
-operator|+
+argument_list|,
 name|diagnostics
 argument_list|)
 expr_stmt|;

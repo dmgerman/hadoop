@@ -82,6 +82,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|service
 operator|.
 name|AbstractService
@@ -769,7 +783,29 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Stop the service."
+literal|"Stop the service by {}"
+argument_list|,
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|context
+operator|.
+name|scheduler
+operator|.
+name|getDiagnostics
+argument_list|()
+operator|.
+name|append
+argument_list|(
+literal|"Stopped by user "
+operator|+
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Stop the service in 2 seconds delay to make sure this rpc call is completed.
