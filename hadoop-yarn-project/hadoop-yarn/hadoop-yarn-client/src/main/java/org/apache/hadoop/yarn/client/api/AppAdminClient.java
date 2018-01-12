@@ -543,19 +543,19 @@ name|IOException
 throws|,
 name|YarnException
 function_decl|;
-comment|/**    *<p>    * Get detailed status string for a YARN application.    *</p>    *    * @param applicationId application id    * @return status string    * @throws IOException IOException    * @throws YarnException exception in client or server    */
+comment|/**    *<p>    * Get detailed app specific status string for a YARN application.    *</p>    *    * @param appIdOrName appId or appName    * @return status string    * @throws IOException IOException    * @throws YarnException exception in client or server    */
 annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|getStatusString (String applicationId)
+DECL|method|getStatusString (String appIdOrName)
 specifier|public
 specifier|abstract
 name|String
 name|getStatusString
 parameter_list|(
 name|String
-name|applicationId
+name|appIdOrName
 parameter_list|)
 throws|throws
 name|IOException

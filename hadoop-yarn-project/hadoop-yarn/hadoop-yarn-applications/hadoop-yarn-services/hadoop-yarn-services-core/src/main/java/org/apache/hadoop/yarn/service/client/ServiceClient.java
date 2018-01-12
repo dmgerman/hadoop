@@ -6155,10 +6155,65 @@ name|ACCEPTED
 return|;
 block|}
 block|}
-DECL|method|getStatusString (String appId)
+annotation|@
+name|Override
+DECL|method|getStatusString (String appIdOrName)
 specifier|public
 name|String
 name|getStatusString
+parameter_list|(
+name|String
+name|appIdOrName
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|YarnException
+block|{
+try|try
+block|{
+comment|// try parsing appIdOrName, if it succeeds, it means it's appId
+name|ApplicationId
+operator|.
+name|fromString
+argument_list|(
+name|appIdOrName
+argument_list|)
+expr_stmt|;
+return|return
+name|getStatusByAppId
+argument_list|(
+name|appIdOrName
+argument_list|)
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalArgumentException
+name|e
+parameter_list|)
+block|{
+comment|// not appId format, it could be appName.
+name|Service
+name|status
+init|=
+name|getStatus
+argument_list|(
+name|appIdOrName
+argument_list|)
+decl_stmt|;
+return|return
+name|status
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
+block|}
+DECL|method|getStatusByAppId (String appId)
+specifier|private
+name|String
+name|getStatusByAppId
 parameter_list|(
 name|String
 name|appId

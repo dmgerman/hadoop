@@ -1094,7 +1094,17 @@ name|STATUS_CMD
 argument_list|,
 literal|true
 argument_list|,
-literal|"Prints the status of the application."
+literal|"Prints the status of the application. If app ID is"
+operator|+
+literal|" provided, it prints the generic YARN application status."
+operator|+
+literal|" If name is provided, it prints the application specific"
+operator|+
+literal|" status based on app's own implementation, and -appTypes"
+operator|+
+literal|" option must be specified unless it is the default"
+operator|+
+literal|" yarn-service type."
 argument_list|)
 expr_stmt|;
 name|opts
@@ -1429,7 +1439,7 @@ argument_list|)
 operator|.
 name|setArgName
 argument_list|(
-literal|"Application ID"
+literal|"Application Name or ID"
 argument_list|)
 expr_stmt|;
 name|opts
@@ -2093,6 +2103,8 @@ argument_list|,
 name|opts
 argument_list|,
 name|STATUS_CMD
+argument_list|,
+name|APP_TYPE_CMD
 argument_list|)
 condition|)
 block|{
@@ -2124,83 +2136,31 @@ name|APP
 argument_list|)
 condition|)
 block|{
-name|ApplicationReport
-name|report
+name|String
+name|appIdOrName
 init|=
-name|printApplicationReport
-argument_list|(
 name|cliParser
 operator|.
 name|getOptionValue
 argument_list|(
 name|STATUS_CMD
 argument_list|)
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|report
-operator|==
-literal|null
-condition|)
-block|{
-name|exitCode
-operator|=
-operator|-
-literal|1
-expr_stmt|;
-block|}
-else|else
-block|{
-name|exitCode
-operator|=
-literal|0
-expr_stmt|;
-name|String
-name|appType
-init|=
-name|report
-operator|.
-name|getApplicationType
-argument_list|()
 decl_stmt|;
 try|try
 block|{
-name|AppAdminClient
-name|client
-init|=
-name|AppAdminClient
+comment|// try parsing appIdOrName, if it succeeds, it means it's appId
+name|ApplicationId
 operator|.
-name|createAppAdminClient
+name|fromString
 argument_list|(
-name|appType
-argument_list|,
-name|getConf
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|sysout
-operator|.
-name|println
-argument_list|(
-literal|"Detailed Application Status :"
+name|appIdOrName
 argument_list|)
 expr_stmt|;
-name|sysout
-operator|.
-name|println
+name|exitCode
+operator|=
+name|printApplicationReport
 argument_list|(
-name|client
-operator|.
-name|getStatusString
-argument_list|(
-name|cliParser
-operator|.
-name|getOptionValue
-argument_list|(
-name|STATUS_CMD
-argument_list|)
-argument_list|)
+name|appIdOrName
 argument_list|)
 expr_stmt|;
 block|}
@@ -2210,7 +2170,67 @@ name|IllegalArgumentException
 name|e
 parameter_list|)
 block|{
-comment|// app type does not have app admin client implementation
+comment|// not appId format, it could be appName.
+comment|// Print app specific report, if app-type is not provided,
+comment|// assume it is yarn-service type.
+name|AppAdminClient
+name|client
+init|=
+name|AppAdminClient
+operator|.
+name|createAppAdminClient
+argument_list|(
+name|getSingleAppTypeFromCLI
+argument_list|(
+name|cliParser
+argument_list|)
+argument_list|,
+name|getConf
+argument_list|()
+argument_list|)
+decl_stmt|;
+try|try
+block|{
+name|sysout
+operator|.
+name|println
+argument_list|(
+name|client
+operator|.
+name|getStatusString
+argument_list|(
+name|appIdOrName
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|exitCode
+operator|=
+literal|0
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|ApplicationNotFoundException
+name|exception
+parameter_list|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Application with name '"
+operator|+
+name|appIdOrName
+operator|+
+literal|"' doesn't exist in RM or Timeline Server."
+argument_list|)
+expr_stmt|;
+return|return
+operator|-
+literal|1
+return|;
 block|}
 block|}
 block|}
@@ -5563,7 +5583,7 @@ block|}
 comment|/**    * Prints the application report for an application id.    *     * @param applicationId    * @return ApplicationReport    * @throws YarnException    */
 DECL|method|printApplicationReport (String applicationId)
 specifier|private
-name|ApplicationReport
+name|int
 name|printApplicationReport
 parameter_list|(
 name|String
@@ -5614,7 +5634,8 @@ literal|"' doesn't exist in RM or Timeline Server."
 argument_list|)
 expr_stmt|;
 return|return
-literal|null
+operator|-
+literal|1
 return|;
 block|}
 comment|// Use PrintWriter.println, which uses correct platform line ending.
@@ -6110,7 +6131,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 return|return
-literal|null
+operator|-
+literal|1
 return|;
 block|}
 name|appReportStr
@@ -6131,7 +6153,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 return|return
-name|appReport
+literal|0
 return|;
 block|}
 DECL|method|printResourceUsage (PrintWriter appReportStr, ApplicationResourceUsageReport usageReport)
