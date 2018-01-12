@@ -3663,6 +3663,11 @@ name|container
 operator|.
 name|getAllocationRequestId
 argument_list|()
+argument_list|,
+name|rmContainer
+operator|.
+name|getAllocationTags
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;

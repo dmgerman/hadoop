@@ -2925,6 +2925,43 @@ operator|.
 name|getContainerReport
 argument_list|()
 decl_stmt|;
+comment|// Set the allocation tags from the
+name|container
+operator|.
+name|setAllocationTags
+argument_list|(
+name|report
+operator|.
+name|getAllocationTags
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Notify AllocationTagsManager
+name|container
+operator|.
+name|rmContext
+operator|.
+name|getAllocationTagsManager
+argument_list|()
+operator|.
+name|addContainer
+argument_list|(
+name|container
+operator|.
+name|getNodeId
+argument_list|()
+argument_list|,
+name|container
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|,
+name|container
+operator|.
+name|getAllocationTags
+argument_list|()
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|report
@@ -3179,7 +3216,7 @@ name|RMContainerEvent
 name|event
 parameter_list|)
 block|{
-comment|// Notify placementManager
+comment|// Notify AllocationTagsManager
 name|container
 operator|.
 name|rmContext

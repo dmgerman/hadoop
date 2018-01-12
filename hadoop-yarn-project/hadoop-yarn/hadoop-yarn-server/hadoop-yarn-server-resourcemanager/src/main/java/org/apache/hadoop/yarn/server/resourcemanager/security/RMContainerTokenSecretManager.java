@@ -28,6 +28,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Timer
 import|;
 end_import
@@ -39,6 +49,20 @@ operator|.
 name|util
 operator|.
 name|TimerTask
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
 import|;
 end_import
 
@@ -836,7 +860,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Helper function for creating ContainerTokens.    *    * @param containerId Container Id    * @param containerVersion Container Version    * @param nodeId Node Id    * @param appSubmitter App Submitter    * @param capability Capability    * @param priority Priority    * @param createTime Create Time    * @return the container-token    */
+annotation|@
+name|VisibleForTesting
 DECL|method|createContainerToken (ContainerId containerId, int containerVersion, NodeId nodeId, String appSubmitter, Resource capability, Priority priority, long createTime)
 specifier|public
 name|Token
@@ -895,11 +920,13 @@ name|GUARANTEED
 argument_list|,
 operator|-
 literal|1
+argument_list|,
+literal|null
 argument_list|)
 return|;
 block|}
 comment|/**    * Helper function for creating ContainerTokens.    *    * @param containerId Container Id    * @param containerVersion Container version    * @param nodeId Node Id    * @param appSubmitter App Submitter    * @param capability Capability    * @param priority Priority    * @param createTime Create Time    * @param logAggregationContext Log Aggregation Context    * @param nodeLabelExpression Node Label Expression    * @param containerType Container Type    * @param execType Execution Type    * @param allocationRequestId allocationRequestId    * @return the container-token    */
-DECL|method|createContainerToken (ContainerId containerId, int containerVersion, NodeId nodeId, String appSubmitter, Resource capability, Priority priority, long createTime, LogAggregationContext logAggregationContext, String nodeLabelExpression, ContainerType containerType, ExecutionType execType, long allocationRequestId)
+DECL|method|createContainerToken (ContainerId containerId, int containerVersion, NodeId nodeId, String appSubmitter, Resource capability, Priority priority, long createTime, LogAggregationContext logAggregationContext, String nodeLabelExpression, ContainerType containerType, ExecutionType execType, long allocationRequestId, Set<String> allocationTags)
 specifier|public
 name|Token
 name|createContainerToken
@@ -939,6 +966,12 @@ name|execType
 parameter_list|,
 name|long
 name|allocationRequestId
+parameter_list|,
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|allocationTags
 parameter_list|)
 block|{
 name|byte
@@ -1016,6 +1049,8 @@ argument_list|,
 name|execType
 argument_list|,
 name|allocationRequestId
+argument_list|,
+name|allocationTags
 argument_list|)
 expr_stmt|;
 name|password
