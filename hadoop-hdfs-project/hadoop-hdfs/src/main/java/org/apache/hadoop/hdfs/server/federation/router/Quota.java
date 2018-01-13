@@ -479,7 +479,7 @@ name|Map
 argument_list|<
 name|RemoteLocation
 argument_list|,
-name|Object
+name|QuotaUsage
 argument_list|>
 name|results
 init|=
@@ -494,6 +494,10 @@ argument_list|,
 literal|true
 argument_list|,
 literal|false
+argument_list|,
+name|QuotaUsage
+operator|.
+name|class
 argument_list|)
 decl_stmt|;
 end_decl_stmt
@@ -716,7 +720,7 @@ comment|/**    * Aggregate quota that queried from sub-clusters.    * @param res
 end_comment
 
 begin_function
-DECL|method|aggregateQuota (Map<RemoteLocation, Object> results)
+DECL|method|aggregateQuota (Map<RemoteLocation, QuotaUsage> results)
 specifier|private
 name|QuotaUsage
 name|aggregateQuota
@@ -725,7 +729,7 @@ name|Map
 argument_list|<
 name|RemoteLocation
 argument_list|,
-name|Object
+name|QuotaUsage
 argument_list|>
 name|results
 parameter_list|)
@@ -753,7 +757,7 @@ name|Entry
 argument_list|<
 name|RemoteLocation
 argument_list|,
-name|Object
+name|QuotaUsage
 argument_list|>
 name|entry
 range|:
@@ -774,9 +778,6 @@ decl_stmt|;
 name|QuotaUsage
 name|usage
 init|=
-operator|(
-name|QuotaUsage
-operator|)
 name|entry
 operator|.
 name|getValue

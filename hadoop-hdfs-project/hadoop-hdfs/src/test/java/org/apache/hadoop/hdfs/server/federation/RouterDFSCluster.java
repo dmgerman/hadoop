@@ -1134,6 +1134,14 @@ specifier|private
 name|boolean
 name|highAvailability
 decl_stmt|;
+comment|/** Number of datanodes per nameservice. */
+DECL|field|numDatanodesPerNameservice
+specifier|private
+name|int
+name|numDatanodesPerNameservice
+init|=
+literal|2
+decl_stmt|;
 comment|/** Mini cluster. */
 DECL|field|cluster
 specifier|private
@@ -2241,7 +2249,7 @@ name|DEFAULT_CACHE_INTERVAL_MS
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|RouterDFSCluster (boolean ha, int numNameservices, int numNamnodes)
+DECL|method|RouterDFSCluster (boolean ha, int numNameservices, int numNamenodes)
 specifier|public
 name|RouterDFSCluster
 parameter_list|(
@@ -2252,7 +2260,7 @@ name|int
 name|numNameservices
 parameter_list|,
 name|int
-name|numNamnodes
+name|numNamenodes
 parameter_list|)
 block|{
 name|this
@@ -2261,7 +2269,7 @@ name|ha
 argument_list|,
 name|numNameservices
 argument_list|,
-name|numNamnodes
+name|numNamenodes
 argument_list|,
 name|DEFAULT_HEARTBEAT_INTERVAL_MS
 argument_list|,
@@ -3082,6 +3090,22 @@ block|}
 block|}
 block|}
 block|}
+DECL|method|setNumDatanodesPerNameservice (int num)
+specifier|public
+name|void
+name|setNumDatanodesPerNameservice
+parameter_list|(
+name|int
+name|num
+parameter_list|)
+block|{
+name|this
+operator|.
+name|numDatanodesPerNameservice
+operator|=
+name|num
+expr_stmt|;
+block|}
 DECL|method|getNameservicesKey ()
 specifier|public
 name|String
@@ -3781,7 +3805,7 @@ operator|.
 name|size
 argument_list|()
 operator|*
-literal|2
+name|numDatanodesPerNameservice
 argument_list|)
 operator|.
 name|nnTopology
