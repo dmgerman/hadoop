@@ -526,6 +526,20 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|Tool
 import|;
 end_import
@@ -2322,7 +2336,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"%-25s %-25s %-25s %-25s %-25s"
+literal|"%-25s %-25s %-25s %-25s %-25s %-25s"
 argument_list|,
 literal|"Source"
 argument_list|,
@@ -2333,6 +2347,8 @@ argument_list|,
 literal|"Group"
 argument_list|,
 literal|"Mode"
+argument_list|,
+literal|"Quota/Usage"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2431,7 +2447,7 @@ name|System
 operator|.
 name|out
 operator|.
-name|println
+name|print
 argument_list|(
 name|String
 operator|.
@@ -2452,6 +2468,25 @@ argument_list|,
 name|entry
 operator|.
 name|getMode
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|" %-25s"
+argument_list|,
+name|entry
+operator|.
+name|getQuota
 argument_list|()
 argument_list|)
 argument_list|)
@@ -2580,9 +2615,11 @@ try|try
 block|{
 name|ssQuota
 operator|=
-name|Long
+name|StringUtils
 operator|.
-name|parseLong
+name|TraditionalBinaryPrefix
+operator|.
+name|string2long
 argument_list|(
 name|parameters
 index|[
@@ -2818,7 +2855,9 @@ condition|)
 block|{
 name|nsCount
 operator|=
-literal|0
+name|RouterQuotaUsage
+operator|.
+name|QUOTA_USAGE_COUNT_DEFAULT
 expr_stmt|;
 block|}
 if|if
@@ -2832,7 +2871,9 @@ condition|)
 block|{
 name|ssCount
 operator|=
-literal|0
+name|RouterQuotaUsage
+operator|.
+name|QUOTA_USAGE_COUNT_DEFAULT
 expr_stmt|;
 block|}
 name|RouterQuotaUsage
