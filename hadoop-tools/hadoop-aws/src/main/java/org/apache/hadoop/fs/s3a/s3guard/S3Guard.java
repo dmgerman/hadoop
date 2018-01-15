@@ -1073,7 +1073,13 @@ name|NullMetadataStore
 operator|)
 return|;
 block|}
-comment|/**    * Update MetadataStore to reflect creation of the given  directories.    *    * If an IOException is raised while trying to update the entry, this    * operation catches the exception and returns.    * @param ms    MetadataStore to update.    * @param dirs  null, or an ordered list of directories from leaf to root.    *              E.g. if /a/ exists, and  mkdirs(/a/b/c/d) is called, this    *              list will contain [/a/b/c/d, /a/b/c, /a/b].   /a/b/c/d is    *              an empty, dir, and the other dirs only contain their child    *              dir.    * @param owner Hadoop user name.    * @param authoritative Whether to mark new directories as authoritative.    */
+comment|/**    * Update MetadataStore to reflect creation of the given  directories.    *    * If an IOException is raised while trying to update the entry, this    * operation catches the exception, swallows it and returns.    *    * @deprecated this is no longer called by {@code S3AFilesystem.innerMkDirs}.    * See: HADOOP-15079 (January 2018).    * It is currently retained because of its discussion in the method on    * atomicity and in case we need to reinstate it or adapt the current    * process of directory marker creation.    * But it is not being tested and so may age with time...consider    * deleting it in future if it's clear there's no need for it.    * @param ms    MetadataStore to update.    * @param dirs  null, or an ordered list of directories from leaf to root.    *              E.g. if /a/ exists, and  mkdirs(/a/b/c/d) is called, this    *              list will contain [/a/b/c/d, /a/b/c, /a/b].   /a/b/c/d is    *              an empty, dir, and the other dirs only contain their child    *              dir.    * @param owner Hadoop user name.    * @param authoritative Whether to mark new directories as authoritative.    */
+annotation|@
+name|Deprecated
+annotation|@
+name|Retries
+operator|.
+name|OnceExceptionsSwallowed
 DECL|method|makeDirsOrdered (MetadataStore ms, List<Path> dirs, String owner, boolean authoritative)
 specifier|public
 specifier|static

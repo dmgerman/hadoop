@@ -744,18 +744,6 @@ begin_import
 import|import
 name|com
 operator|.
-name|amazonaws
-operator|.
-name|event
-operator|.
-name|ProgressEvent
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
 name|google
 operator|.
 name|common
@@ -3945,7 +3933,11 @@ literal|false
 return|;
 block|}
 block|}
-comment|/**    * The inner rename operation. See {@link #rename(Path, Path)} for    * the description of the operation.    * This operation throws an exception on any failure which needs to be    * reported and downgraded to a failure. That is: if a rename    * @param source path to be renamed    * @param dest new path after rename    * @throws RenameFailedException if some criteria for a state changing    * rename was not met. This means work didn't happen; it's not something    * which is reported upstream to the FileSystem APIs, for which the semantics    * of "false" are pretty vague.    * @throws FileNotFoundException there's no source file.    * @throws IOException on IO failure.    * @throws AmazonClientException on failures inside the AWS SDK    */
+comment|/**    * The inner rename operation. See {@link #rename(Path, Path)} for    * the description of the operation.    * This operation throws an exception on any failure which needs to be    * reported and downgraded to a failure.    * Retries: retry translated, assuming all operations it is called do    * so. For safely, consider catch and handle AmazonClientException    * because this is such a complex method there's a risk it could surface.    * @param source path to be renamed    * @param dest new path after rename    * @throws RenameFailedException if some criteria for a state changing    * rename was not met. This means work didn't happen; it's not something    * which is reported upstream to the FileSystem APIs, for which the semantics    * of "false" are pretty vague.    * @throws FileNotFoundException there's no source file.    * @throws IOException on IO failure.    * @throws AmazonClientException on failures inside the AWS SDK    */
+annotation|@
+name|Retries
+operator|.
+name|RetryMixed
 DECL|method|innerRename (Path source, Path dest)
 specifier|private
 name|boolean
@@ -4401,26 +4393,11 @@ block|{
 name|String
 name|newDstKey
 init|=
-name|dstKey
-decl_stmt|;
-if|if
-condition|(
-operator|!
-name|newDstKey
-operator|.
-name|endsWith
+name|maybeAddTrailingSlash
 argument_list|(
-literal|"/"
+name|dstKey
 argument_list|)
-condition|)
-block|{
-name|newDstKey
-operator|=
-name|newDstKey
-operator|+
-literal|"/"
-expr_stmt|;
-block|}
+decl_stmt|;
 name|String
 name|filename
 init|=
@@ -4546,42 +4523,20 @@ name|dst
 argument_list|)
 expr_stmt|;
 comment|// This is a directory to directory copy
-if|if
-condition|(
-operator|!
-name|dstKey
-operator|.
-name|endsWith
-argument_list|(
-literal|"/"
-argument_list|)
-condition|)
-block|{
 name|dstKey
 operator|=
-name|dstKey
-operator|+
-literal|"/"
-expr_stmt|;
-block|}
-if|if
-condition|(
-operator|!
-name|srcKey
-operator|.
-name|endsWith
+name|maybeAddTrailingSlash
 argument_list|(
-literal|"/"
+name|dstKey
 argument_list|)
-condition|)
-block|{
+expr_stmt|;
 name|srcKey
 operator|=
+name|maybeAddTrailingSlash
+argument_list|(
 name|srcKey
-operator|+
-literal|"/"
+argument_list|)
 expr_stmt|;
-block|}
 comment|//Verify dest is not a child of the source directory
 if|if
 condition|(
@@ -4967,17 +4922,28 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
+operator|!
 name|src
 operator|.
 name|getParent
 argument_list|()
-operator|!=
+operator|.
+name|equals
+argument_list|(
 name|dst
 operator|.
 name|getParent
 argument_list|()
+argument_list|)
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"source& dest parents are different; fix up dir markers"
+argument_list|)
+expr_stmt|;
 name|deleteUnnecessaryFakeDirectories
 argument_list|(
 name|dst
@@ -5662,7 +5628,7 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Delete an object. This is the low-level internal call which    *<i>does not</i> update the metastore.    * Increments the {@code OBJECT_DELETE_REQUESTS} and write    * operation statistics.    *    * Retry policy: retry untranslated; delete considered idempotent.    * @param key key to blob to delete.    * @throws AmazonClientException problems working with S3    * @throws InvalidRequestException if the request was rejected due to    * a mistaken attempt to delete the root directory.    */
+comment|/**    * Delete an object. This is the low-level internal call which    *<i>does not</i> update the metastore.    * Increments the {@code OBJECT_DELETE_REQUESTS} and write    * operation statistics.    * This call does<i>not</i> create any mock parent entries.    *    * Retry policy: retry untranslated; delete considered idempotent.    * @param key key to blob to delete.    * @throws AmazonClientException problems working with S3    * @throws InvalidRequestException if the request was rejected due to    * a mistaken attempt to delete the root directory.    */
 annotation|@
 name|VisibleForTesting
 annotation|@
@@ -6204,6 +6170,9 @@ annotation|@
 name|Retries
 operator|.
 name|OnceRaw
+argument_list|(
+literal|"For PUT; post-PUT actions are RetriesExceptionsSwallowed"
+argument_list|)
 DECL|method|putObjectDirect (PutObjectRequest putObjectRequest)
 name|PutObjectResult
 name|putObjectDirect
@@ -6751,7 +6720,9 @@ argument_list|(
 name|INVOCATION_DELETE
 argument_list|)
 expr_stmt|;
-return|return
+name|boolean
+name|outcome
+init|=
 name|innerDelete
 argument_list|(
 name|innerGetFileStatus
@@ -6763,6 +6734,20 @@ argument_list|)
 argument_list|,
 name|recursive
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|outcome
+condition|)
+block|{
+name|maybeCreateFakeParentDirectory
+argument_list|(
+name|f
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|outcome
 return|;
 block|}
 catch|catch
@@ -6807,7 +6792,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Delete an object. See {@link #delete(Path, boolean)}.    *    * @param status fileStatus object    * @param recursive if path is a directory and set to    * true, the directory is deleted else throws an exception. In    * case of a file the recursive can be set to either true or false.    * @return true, except in the corner cases of root directory deletion    * @throws IOException due to inability to delete a directory or file.    * @throws AmazonClientException on failures inside the AWS SDK    */
+comment|/**    * Delete an object. See {@link #delete(Path, boolean)}.    * This call does not create any fake parent directory; that is    * left to the caller.    * @param status fileStatus object    * @param recursive if path is a directory and set to    * true, the directory is deleted else throws an exception. In    * case of a file the recursive can be set to either true or false.    * @return true, except in the corner cases of root directory deletion    * @throws IOException due to inability to delete a directory or file.    * @throws AmazonClientException on failures inside the AWS SDK    */
 annotation|@
 name|Retries
 operator|.
@@ -7169,11 +7154,6 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-name|maybeCreateFakeParentDirectory
-argument_list|(
-name|f
-argument_list|)
-expr_stmt|;
 return|return
 literal|true
 return|;
@@ -8104,39 +8084,11 @@ argument_list|(
 name|f
 argument_list|)
 decl_stmt|;
+comment|// this will create the marker file, delete the parent entries
+comment|// and update S3Guard
 name|createFakeDirectory
 argument_list|(
 name|key
-argument_list|)
-expr_stmt|;
-name|S3Guard
-operator|.
-name|makeDirsOrdered
-argument_list|(
-name|metadataStore
-argument_list|,
-name|metadataStoreDirs
-argument_list|,
-name|username
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
-comment|// this is complicated because getParent(a/b/c/) returns a/b/c, but
-comment|// we want a/b. See HADOOP-14428 for more details.
-name|deleteUnnecessaryFakeDirectories
-argument_list|(
-operator|new
-name|Path
-argument_list|(
-name|f
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-operator|.
-name|getParent
-argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
@@ -9495,6 +9447,9 @@ annotation|@
 name|Retries
 operator|.
 name|OnceRaw
+argument_list|(
+literal|"For PUT; post-PUT actions are RetriesExceptionsSwallowed"
+argument_list|)
 DECL|method|executePut (PutObjectRequest putObjectRequest, Progressable progress)
 name|UploadResult
 name|executePut
@@ -9817,7 +9772,11 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Copy a single object in the bucket via a COPY operation.    * @param srcKey source object path    * @param dstKey destination object path    * @param size object size    * @throws AmazonClientException on failures inside the AWS SDK    * @throws InterruptedIOException the operation was interrupted    * @throws IOException Other IO problems    */
+comment|/**    * Copy a single object in the bucket via a COPY operation.    * There's no update of metadata, directory markers, etc.    * Callers must implement.    * @param srcKey source object path    * @param dstKey destination object path    * @param size object size    * @throws AmazonClientException on failures inside the AWS SDK    * @throws InterruptedIOException the operation was interrupted    * @throws IOException Other IO problems    */
+annotation|@
+name|Retries
+operator|.
+name|RetryMixed
 DECL|method|copyFile (String srcKey, String dstKey, long size)
 specifier|private
 name|void
@@ -9836,8 +9795,6 @@ throws|throws
 name|IOException
 throws|,
 name|InterruptedIOException
-throws|,
-name|AmazonClientException
 block|{
 name|LOG
 operator|.
@@ -9850,7 +9807,48 @@ argument_list|,
 name|dstKey
 argument_list|)
 expr_stmt|;
-try|try
+name|ProgressListener
+name|progressListener
+init|=
+name|progressEvent
+lambda|->
+block|{
+switch|switch
+condition|(
+name|progressEvent
+operator|.
+name|getEventType
+argument_list|()
+condition|)
+block|{
+case|case
+name|TRANSFER_PART_COMPLETED_EVENT
+case|:
+name|incrementWriteOperations
+argument_list|()
+expr_stmt|;
+break|break;
+default|default:
+break|break;
+block|}
+block|}
+decl_stmt|;
+name|once
+argument_list|(
+literal|"copyFile("
+operator|+
+name|srcKey
+operator|+
+literal|", "
+operator|+
+name|dstKey
+operator|+
+literal|")"
+argument_list|,
+name|srcKey
+argument_list|,
+parameter_list|()
+lambda|->
 block|{
 name|ObjectMetadata
 name|srcom
@@ -9907,42 +9905,6 @@ argument_list|(
 name|dstom
 argument_list|)
 expr_stmt|;
-name|ProgressListener
-name|progressListener
-init|=
-operator|new
-name|ProgressListener
-argument_list|()
-block|{
-specifier|public
-name|void
-name|progressChanged
-parameter_list|(
-name|ProgressEvent
-name|progressEvent
-parameter_list|)
-block|{
-switch|switch
-condition|(
-name|progressEvent
-operator|.
-name|getEventType
-argument_list|()
-condition|)
-block|{
-case|case
-name|TRANSFER_PART_COMPLETED_EVENT
-case|:
-name|incrementWriteOperations
-argument_list|()
-expr_stmt|;
-break|break;
-default|default:
-break|break;
-block|}
-block|}
-block|}
-decl_stmt|;
 name|Copy
 name|copy
 init|=
@@ -10003,31 +9965,8 @@ argument_list|)
 throw|;
 block|}
 block|}
-catch|catch
-parameter_list|(
-name|AmazonClientException
-name|e
-parameter_list|)
-block|{
-throw|throw
-name|translateException
-argument_list|(
-literal|"copyFile("
-operator|+
-name|srcKey
-operator|+
-literal|", "
-operator|+
-name|dstKey
-operator|+
-literal|")"
-argument_list|,
-name|srcKey
-argument_list|,
-name|e
 argument_list|)
-throw|;
-block|}
+expr_stmt|;
 block|}
 DECL|method|setOptionalMultipartUploadRequestParameters ( InitiateMultipartUploadRequest req)
 specifier|protected
@@ -10356,7 +10295,7 @@ return|return
 name|customerKey
 return|;
 block|}
-comment|/**    * Perform post-write actions.    * This operation MUST be called after any PUT/multipart PUT completes    * successfully.    * This includes    *<ol>    *<li>Calling {@link #deleteUnnecessaryFakeDirectories(Path)}</li>    *<li>Updating any metadata store with details on the newly created    *   object.</li>    *</ol>    * @param key key written to    * @param length  total length of file written    */
+comment|/**    * Perform post-write actions.    * Calls {@link #deleteUnnecessaryFakeDirectories(Path)} and then    * {@link S3Guard#addAncestors(MetadataStore, Path, String)}}.    * This operation MUST be called after any PUT/multipart PUT completes    * successfully.    *    * The operations actions include    *<ol>    *<li>Calling {@link #deleteUnnecessaryFakeDirectories(Path)}</li>    *<li>Updating any metadata store with details on the newly created    *   object.</li>    *</ol>    * @param key key written to    * @param length  total length of file written    */
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -10364,10 +10303,7 @@ name|Private
 annotation|@
 name|Retries
 operator|.
-name|RetryTranslated
-argument_list|(
-literal|"Exceptions are swallowed"
-argument_list|)
+name|RetryExceptionsSwallowed
 DECL|method|finishedWrite (String key, long length)
 name|void
 name|finishedWrite
@@ -10398,14 +10334,6 @@ argument_list|(
 name|key
 argument_list|)
 decl_stmt|;
-name|deleteUnnecessaryFakeDirectories
-argument_list|(
-name|p
-operator|.
-name|getParent
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|Preconditions
 operator|.
 name|checkArgument
@@ -10415,6 +10343,14 @@ operator|>=
 literal|0
 argument_list|,
 literal|"content length is negative"
+argument_list|)
+expr_stmt|;
+name|deleteUnnecessaryFakeDirectories
+argument_list|(
+name|p
+operator|.
+name|getParent
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// See note about failure semantics in S3Guard documentation
@@ -10504,10 +10440,7 @@ comment|/**    * Delete mock parent directories which are no longer needed.    *
 annotation|@
 name|Retries
 operator|.
-name|RetryRaw
-argument_list|(
-literal|"Exceptions are swallowed"
-argument_list|)
+name|RetryExceptionsSwallowed
 DECL|method|deleteUnnecessaryFakeDirectories (Path path)
 specifier|private
 name|void
@@ -11762,6 +11695,12 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Get the etag of a object at the path via HEAD request and return it    * as a checksum object. This has the whatever guarantees about equivalence    * the S3 implementation offers.    *<ol>    *<li>If a tag has not changed, consider the object unchanged.</li>    *<li>Two tags being different does not imply the data is different.</li>    *</ol>    * Different S3 implementations may offer different guarantees.    * @param f The file path    * @param length The length of the file range for checksum calculation    * @return The EtagChecksum or null if checksums are not supported.    * @throws IOException IO failure    * @see<a href="http://docs.aws.amazon.com/AmazonS3/latest/API/RESTCommonResponseHeaders.html">Common Response Headers</a>    */
+annotation|@
+name|Override
+annotation|@
+name|Retries
+operator|.
+name|RetryTranslated
 DECL|method|getFileChecksum (Path f, final long length)
 specifier|public
 name|EtagChecksum
@@ -11853,6 +11792,10 @@ block|}
 comment|/**    * {@inheritDoc}.    *    * This implementation is optimized for S3, which can do a bulk listing    * off all entries under a path in one single operation. Thus there is    * no need to recursively walk the directory tree.    *    * Instead a {@link ListObjectsRequest} is created requesting a (windowed)    * listing of all entries under the given path. This is used to construct    * an {@code ObjectListingIterator} instance, iteratively returning the    * sequence of lists of elements under the path. This is then iterated    * over in a {@code FileStatusListingIterator}, which generates    * {@link S3AFileStatus} instances, one per listing entry.    * These are then translated into {@link LocatedFileStatus} instances.    *    * This is essentially a nested and wrapped set of iterators, with some    * generator classes; an architecture which may become less convoluted    * using lambda-expressions.    * @param f a path    * @param recursive if the subdirectories need to be traversed recursively    *    * @return an iterator that traverses statuses of the files/directories    *         in the given path    * @throws FileNotFoundException if {@code path} does not exist    * @throws IOException if any I/O error occurred    */
 annotation|@
 name|Override
+annotation|@
+name|Retries
+operator|.
+name|OnceTranslated
 DECL|method|listFiles (Path f, boolean recursive)
 specifier|public
 name|RemoteIterator
@@ -11892,6 +11835,10 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Retries
+operator|.
+name|OnceTranslated
 DECL|method|listFilesAndEmptyDirectories (Path f, boolean recursive)
 specifier|public
 name|RemoteIterator
@@ -11924,6 +11871,10 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Retries
+operator|.
+name|OnceTranslated
 DECL|method|innerListFiles (Path f, boolean recursive, Listing.FileStatusAcceptor acceptor)
 specifier|private
 name|RemoteIterator
@@ -12270,6 +12221,9 @@ annotation|@
 name|Retries
 operator|.
 name|OnceTranslated
+argument_list|(
+literal|"s3guard not retrying"
+argument_list|)
 DECL|method|listLocatedStatus (final Path f, final PathFilter filter)
 specifier|public
 name|RemoteIterator
@@ -12315,7 +12269,18 @@ argument_list|,
 name|filter
 argument_list|)
 expr_stmt|;
-try|try
+return|return
+name|once
+argument_list|(
+literal|"listLocatedStatus"
+argument_list|,
+name|path
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+parameter_list|()
+lambda|->
 block|{
 comment|// lookup dir triggers existence check
 specifier|final
@@ -12475,23 +12440,8 @@ argument_list|)
 return|;
 block|}
 block|}
-catch|catch
-parameter_list|(
-name|AmazonClientException
-name|e
-parameter_list|)
-block|{
-throw|throw
-name|translateException
-argument_list|(
-literal|"listLocatedStatus"
-argument_list|,
-name|path
-argument_list|,
-name|e
 argument_list|)
-throw|;
-block|}
+return|;
 block|}
 comment|/**    * Build a {@link LocatedFileStatus} from a {@link FileStatus} instance.    * @param status file status    * @return a located status with block locations set up from this FS.    * @throws IOException IO Problems.    */
 DECL|method|toLocatedFileStatus (FileStatus status)
@@ -12532,6 +12482,14 @@ argument_list|)
 return|;
 block|}
 comment|/**    * List any pending multipart uploads whose keys begin with prefix, using    * an iterator that can handle an unlimited number of entries.    * See {@link #listMultipartUploads(String)} for a non-iterator version of    * this.    *    * @param prefix optional key prefix to search    * @return Iterator over multipart uploads.    * @throws IOException on failure    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|Retries
+operator|.
+name|RetryTranslated
 DECL|method|listUploads (@ullable String prefix)
 specifier|public
 name|MultipartUtils

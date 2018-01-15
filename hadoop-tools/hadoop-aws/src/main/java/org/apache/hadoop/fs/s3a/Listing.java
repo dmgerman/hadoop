@@ -440,6 +440,10 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Create a FileStatus iterator against a path, with a given    * list object request.    * @param listPath path of the listing    * @param request initial request to make    * @param filter the filter on which paths to accept    * @param acceptor the class/predicate to decide which entries to accept    * in the listing based on the full file status.    * @param providedStatus the provided list of file status, which may contain    *                       items that are not listed from source.    * @return the iterator    * @throws IOException IO Problems    */
+annotation|@
+name|Retries
+operator|.
+name|RetryRaw
 DECL|method|createFileStatusListingIterator ( Path listPath, S3ListRequest request, PathFilter filter, Listing.FileStatusAcceptor acceptor, RemoteIterator<FileStatus> providedStatus)
 name|FileStatusListingIterator
 name|createFileStatusListingIterator
@@ -894,6 +898,10 @@ argument_list|>
 name|providedStatusIterator
 decl_stmt|;
 comment|/**      * Create an iterator over file status entries.      * @param source the listing iterator from a listObjects call.      * @param filter the filter on which paths to accept      * @param acceptor the class/predicate to decide which entries to accept      * in the listing based on the full file status.      * @param providedStatus the provided list of file status, which may contain      *                       items that are not listed from source.      * @throws IOException IO Problems      */
+annotation|@
+name|Retries
+operator|.
+name|RetryTranslated
 DECL|method|FileStatusListingIterator (ObjectListingIterator source, PathFilter filter, FileStatusAcceptor acceptor, RemoteIterator<FileStatus> providedStatus)
 name|FileStatusListingIterator
 parameter_list|(
@@ -1006,6 +1014,10 @@ block|}
 comment|/**      * Report whether or not there is new data available.      * If there is data in the local filtered list, return true.      * Else: request more data util that condition is met, or there      * is no more remote listing data.      * Lastly, return true if the {@code providedStatusIterator}      * has left items.      * @return true if a call to {@link #next()} will succeed.      * @throws IOException      */
 annotation|@
 name|Override
+annotation|@
+name|Retries
+operator|.
+name|RetryTranslated
 DECL|method|hasNext ()
 specifier|public
 name|boolean
@@ -1024,6 +1036,10 @@ name|hasNext
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Retries
+operator|.
+name|RetryTranslated
 DECL|method|sourceHasNext ()
 specifier|private
 name|boolean
@@ -1079,6 +1095,10 @@ block|}
 block|}
 annotation|@
 name|Override
+annotation|@
+name|Retries
+operator|.
+name|RetryTranslated
 DECL|method|next ()
 specifier|public
 name|FileStatus
@@ -1168,6 +1188,10 @@ name|status
 return|;
 block|}
 comment|/**      * Try to retrieve another batch.      * Note that for the initial batch,      * {@link ObjectListingIterator} does not generate a request;      * it simply returns the initial set.      *      * @return true if a new batch was created.      * @throws IOException IO problems      */
+annotation|@
+name|Retries
+operator|.
+name|RetryTranslated
 DECL|method|requestNextBatch ()
 specifier|private
 name|boolean
@@ -1604,6 +1628,10 @@ name|int
 name|maxKeys
 decl_stmt|;
 comment|/**      * Constructor -calls `listObjects()` on the request to populate the      * initial set of results/fail if there was a problem talking to the bucket.      * @param listPath path of the listing      * @param request initial request to make      * @throws IOException if listObjects raises one.      */
+annotation|@
+name|Retries
+operator|.
+name|RetryRaw
 DECL|method|ObjectListingIterator ( Path listPath, S3ListRequest request)
 name|ObjectListingIterator
 parameter_list|(

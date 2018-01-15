@@ -238,6 +238,52 @@ default|default
 literal|""
 function_decl|;
 block|}
+comment|/**    * Retried, Exceptions are swallowed.    */
+annotation|@
+name|Documented
+annotation|@
+name|Retention
+argument_list|(
+name|RetentionPolicy
+operator|.
+name|SOURCE
+argument_list|)
+DECL|annotation|RetryExceptionsSwallowed
+specifier|public
+annotation_defn|@interface
+name|RetryExceptionsSwallowed
+block|{
+DECL|method|value ()
+name|String
+name|value
+parameter_list|()
+default|default
+literal|""
+function_decl|;
+block|}
+comment|/**    * One attempt, Exceptions are swallowed.    */
+annotation|@
+name|Documented
+annotation|@
+name|Retention
+argument_list|(
+name|RetentionPolicy
+operator|.
+name|SOURCE
+argument_list|)
+DECL|annotation|OnceExceptionsSwallowed
+specifier|public
+annotation_defn|@interface
+name|OnceExceptionsSwallowed
+block|{
+DECL|method|value ()
+name|String
+name|value
+parameter_list|()
+default|default
+literal|""
+function_decl|;
+block|}
 block|}
 end_class
 
