@@ -456,7 +456,7 @@ specifier|final
 name|Invoker
 name|invoker
 decl_stmt|;
-comment|/**    * Constructor.    * @param owner owner FS creating the helper    *    */
+comment|/**    * Constructor.    * @param owner owner FS creating the helper    * @param conf Configuration object    *    */
 DECL|method|WriteOperationHelper (S3AFileSystem owner, Configuration conf)
 specifier|protected
 name|WriteOperationHelper
