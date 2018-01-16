@@ -455,7 +455,7 @@ name|DEFAULT_TIMELINE_SERVICE_VERSION
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns whether the timeline service v.1.5 is enabled via configuration.    *    * @param conf the configuration    * @return whether the timeline service v.1.5 is enabled. V.1.5 refers to a    * version equal to 1.5.    */
+comment|/**    * Returns whether the timeline service v.1.5 is enabled by default via    * configuration.    *    * @param conf the configuration    * @return whether the timeline service v.1.5 is enabled. V.1.5 refers to a    * version equal to 1.5.    */
 DECL|method|timelineServiceV1_5Enabled (Configuration conf)
 specifier|public
 specifier|static
