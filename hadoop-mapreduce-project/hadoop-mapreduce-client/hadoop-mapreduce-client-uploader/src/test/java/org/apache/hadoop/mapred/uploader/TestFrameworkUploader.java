@@ -549,9 +549,21 @@ literal|"-target"
 block|,
 literal|"D"
 block|,
-literal|"-replication"
+literal|"-initialReplication"
 block|,
 literal|"100"
+block|,
+literal|"-acceptableReplication"
+block|,
+literal|"120"
+block|,
+literal|"-finalReplication"
+block|,
+literal|"140"
+block|,
+literal|"-timeout"
+block|,
+literal|"10"
 block|}
 decl_stmt|;
 name|FrameworkUploader
@@ -636,13 +648,52 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"Replication mismatch"
+literal|"Initial replication mismatch"
 argument_list|,
 literal|100
 argument_list|,
 name|uploader
 operator|.
-name|replication
+name|initialReplication
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"Acceptable replication mismatch"
+argument_list|,
+literal|120
+argument_list|,
+name|uploader
+operator|.
+name|acceptableReplication
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"Final replication mismatch"
+argument_list|,
+literal|140
+argument_list|,
+name|uploader
+operator|.
+name|finalReplication
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"Timeout mismatch"
+argument_list|,
+literal|10
+argument_list|,
+name|uploader
+operator|.
+name|timeout
 argument_list|)
 expr_stmt|;
 block|}
@@ -1038,6 +1089,8 @@ throws|throws
 name|IOException
 throws|,
 name|UploaderException
+throws|,
+name|InterruptedException
 block|{
 name|String
 index|[]
@@ -1351,6 +1404,8 @@ throws|throws
 name|IOException
 throws|,
 name|UploaderException
+throws|,
+name|InterruptedException
 block|{
 specifier|final
 name|String
