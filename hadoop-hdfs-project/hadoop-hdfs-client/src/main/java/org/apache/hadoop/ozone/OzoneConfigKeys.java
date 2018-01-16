@@ -418,24 +418,6 @@ name|OZONE_SCM_BLOCK_SIZE_DEFAULT
 init|=
 literal|256
 decl_stmt|;
-DECL|field|OZONE_OUTPUT_STREAM_BUFFER_SIZE_IN_MB
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|OZONE_OUTPUT_STREAM_BUFFER_SIZE_IN_MB
-init|=
-literal|"ozone.output.stream.buffer.size.in.mb"
-decl_stmt|;
-DECL|field|OZONE_OUTPUT_STREAM_BUFFER_SIZE_DEFAULT
-specifier|public
-specifier|static
-specifier|final
-name|long
-name|OZONE_OUTPUT_STREAM_BUFFER_SIZE_DEFAULT
-init|=
-literal|256
-decl_stmt|;
 comment|/**    * Ozone administrator users delimited by comma.    * If not set, only the user who launches an ozone service will be the    * admin user. This property must be set if ozone services are started by    * different users. Otherwise the RPC layer will reject calls from    * other servers which are started by users not in the list.    * */
 DECL|field|OZONE_ADMINISTRATORS
 specifier|public

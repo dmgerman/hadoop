@@ -454,30 +454,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|CompletableFuture
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|ExecutionException
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -852,13 +828,10 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Calls the container protocol to write a chunk.    *    * @param xceiverClient client to perform call    * @param chunk information about chunk to write    * @param key the key name    * @param data the data of the chunk to write    * @param traceID container protocol call args    * @throws IOException if there is an I/O error while performing the call    */
-DECL|method|writeChunk ( XceiverClientSpi xceiverClient, ChunkInfo chunk, String key, ByteString data, String traceID)
+DECL|method|writeChunk (XceiverClientSpi xceiverClient, ChunkInfo chunk, String key, ByteString data, String traceID)
 specifier|public
 specifier|static
-name|CompletableFuture
-argument_list|<
-name|ContainerCommandResponseProto
-argument_list|>
+name|void
 name|writeChunk
 parameter_list|(
 name|XceiverClientSpi
@@ -878,10 +851,6 @@ name|traceID
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|ExecutionException
-throws|,
-name|InterruptedException
 block|{
 name|WriteChunkRequestProto
 operator|.
@@ -966,14 +935,21 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-return|return
+name|ContainerCommandResponseProto
+name|response
+init|=
 name|xceiverClient
 operator|.
-name|sendCommandAsync
+name|sendCommand
 argument_list|(
 name|request
 argument_list|)
-return|;
+decl_stmt|;
+name|validateContainerResponse
+argument_list|(
+name|response
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Allows writing a small file using single RPC. This takes the container    * name, key name and data to write sends all that data to the container using    * a single RPC. This API is designed to be used for files which are smaller    * than 1 MB.    *    * @param client - client that communicates with the container.    * @param containerName - Name of the container    * @param key - Name of the Key    * @param data - Data to be written into the container.    * @param traceID - Trace ID for logging purpose.    * @throws IOException    */
 DECL|method|writeSmallFile (XceiverClientSpi client, String containerName, String key, byte[] data, String traceID)
