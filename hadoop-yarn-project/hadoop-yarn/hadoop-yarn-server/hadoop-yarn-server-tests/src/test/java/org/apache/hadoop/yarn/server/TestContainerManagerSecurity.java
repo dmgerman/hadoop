@@ -124,20 +124,6 @@ end_import
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Supplier
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -189,20 +175,6 @@ operator|.
 name|minikdc
 operator|.
 name|KerberosSecurityTestcase
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|net
-operator|.
-name|NetUtils
 import|;
 end_import
 
@@ -481,24 +453,6 @@ operator|.
 name|records
 operator|.
 name|ContainerState
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|ContainerStatus
 import|;
 end_import
 
@@ -2708,8 +2662,6 @@ name|ContainerId
 name|containerId
 parameter_list|)
 throws|throws
-name|TimeoutException
-throws|,
 name|InterruptedException
 block|{
 name|Context
@@ -2725,14 +2677,17 @@ operator|.
 name|getNMContext
 argument_list|()
 decl_stmt|;
+comment|// Max time for container token to expire.
+specifier|final
 name|int
-name|interval
+name|timeout
 init|=
 literal|4
 operator|*
 literal|60
+operator|*
+literal|1000
 decl_stmt|;
-comment|// Max time for container token to expire.
 comment|// If the container is null, then it has already completed and been removed
 comment|// from the Context by asynchronous calls.
 name|Container
@@ -2776,21 +2731,8 @@ name|GenericTestUtils
 operator|.
 name|waitFor
 argument_list|(
-operator|new
-name|Supplier
-argument_list|<
-name|Boolean
-argument_list|>
-argument_list|()
-block|{
-annotation|@
-name|Override
-specifier|public
-name|Boolean
-name|get
 parameter_list|()
-block|{
-return|return
+lambda|->
 name|ContainerState
 operator|.
 name|COMPLETE
@@ -2805,13 +2747,10 @@ operator|.
 name|getState
 argument_list|()
 argument_list|)
-return|;
-block|}
-block|}
 argument_list|,
-literal|10
+literal|500
 argument_list|,
-name|interval
+name|timeout
 argument_list|)
 expr_stmt|;
 block|}
@@ -2821,6 +2760,15 @@ name|TimeoutException
 name|te
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"TimeoutException"
+argument_list|,
+name|te
+argument_list|)
+expr_stmt|;
 name|fail
 argument_list|(
 literal|"Was waiting for "
