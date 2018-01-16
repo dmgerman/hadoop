@@ -248,6 +248,8 @@ implements|implements
 name|MetricsSource
 block|{
 annotation|@
+name|Deprecated
+annotation|@
 name|Metric
 argument_list|(
 literal|"Duration for a continuous scheduling run"
@@ -469,6 +471,8 @@ name|all
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Deprecated
 DECL|method|addContinuousSchedulingRunDuration (long value)
 specifier|public
 name|void

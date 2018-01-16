@@ -524,7 +524,9 @@ name|DEFAULT_LOCALITY_THRESHOLD_RACK
 init|=
 name|DEFAULT_LOCALITY_THRESHOLD
 decl_stmt|;
-comment|/** Delay for node locality. */
+comment|/**    * Delay for node locality.    * @deprecated Continuous scheduling is known to cause locking issue inside    * Only used when {@link #CONTINUOUS_SCHEDULING_ENABLED} is enabled    */
+annotation|@
+name|Deprecated
 DECL|field|LOCALITY_DELAY_NODE_MS
 specifier|protected
 specifier|static
@@ -536,6 +538,8 @@ name|CONF_PREFIX
 operator|+
 literal|"locality-delay-node-ms"
 decl_stmt|;
+annotation|@
+name|Deprecated
 DECL|field|DEFAULT_LOCALITY_DELAY_NODE_MS
 specifier|protected
 specifier|static
@@ -546,7 +550,9 @@ init|=
 operator|-
 literal|1L
 decl_stmt|;
-comment|/** Delay for rack locality. */
+comment|/**    * Delay for rack locality.    * @deprecated Continuous scheduling is known to cause locking issue inside    * Only used when {@link #CONTINUOUS_SCHEDULING_ENABLED} is enabled    */
+annotation|@
+name|Deprecated
 DECL|field|LOCALITY_DELAY_RACK_MS
 specifier|protected
 specifier|static
@@ -558,6 +564,8 @@ name|CONF_PREFIX
 operator|+
 literal|"locality-delay-rack-ms"
 decl_stmt|;
+annotation|@
+name|Deprecated
 DECL|field|DEFAULT_LOCALITY_DELAY_RACK_MS
 specifier|protected
 specifier|static
@@ -568,7 +576,9 @@ init|=
 operator|-
 literal|1L
 decl_stmt|;
-comment|/** Enable continuous scheduling or not. */
+comment|/**    * Enable continuous scheduling or not.    * @deprecated Continuous scheduling is known to cause locking issue inside    * the scheduler in larger cluster, more than 100 nodes, use    * {@link #ASSIGN_MULTIPLE} to improve  container allocation ramp up.    */
+annotation|@
+name|Deprecated
 DECL|field|CONTINUOUS_SCHEDULING_ENABLED
 specifier|protected
 specifier|static
@@ -580,6 +590,8 @@ name|CONF_PREFIX
 operator|+
 literal|"continuous-scheduling-enabled"
 decl_stmt|;
+annotation|@
+name|Deprecated
 DECL|field|DEFAULT_CONTINUOUS_SCHEDULING_ENABLED
 specifier|protected
 specifier|static
@@ -589,7 +601,9 @@ name|DEFAULT_CONTINUOUS_SCHEDULING_ENABLED
 init|=
 literal|false
 decl_stmt|;
-comment|/** Sleep time of each pass in continuous scheduling (5ms in default) */
+comment|/**    * Sleep time of each pass in continuous scheduling (5ms in default).    * @deprecated Continuous scheduling is known to cause locking issue inside    * Only used when {@link #CONTINUOUS_SCHEDULING_ENABLED} is enabled    */
+annotation|@
+name|Deprecated
 DECL|field|CONTINUOUS_SCHEDULING_SLEEP_MS
 specifier|protected
 specifier|static
@@ -601,6 +615,8 @@ name|CONF_PREFIX
 operator|+
 literal|"continuous-scheduling-sleep-ms"
 decl_stmt|;
+annotation|@
+name|Deprecated
 DECL|field|DEFAULT_CONTINUOUS_SCHEDULING_SLEEP_MS
 specifier|protected
 specifier|static
@@ -1449,6 +1465,9 @@ name|DEFAULT_LOCALITY_THRESHOLD_RACK
 argument_list|)
 return|;
 block|}
+comment|/**    * Whether continuous scheduling is turned on.    * @deprecated use {@link #ASSIGN_MULTIPLE} to improve container allocation    * ramp up.    * @return whether continuous scheduling is enabled    */
+annotation|@
+name|Deprecated
 DECL|method|isContinuousSchedulingEnabled ()
 specifier|public
 name|boolean
@@ -1464,6 +1483,9 @@ name|DEFAULT_CONTINUOUS_SCHEDULING_ENABLED
 argument_list|)
 return|;
 block|}
+comment|/**    * The sleep time of the continuous scheduler thread.    * @deprecated linked to {@link #CONTINUOUS_SCHEDULING_ENABLED} deprecation    * @return sleep time in ms    */
+annotation|@
+name|Deprecated
 DECL|method|getContinuousSchedulingSleepMs ()
 specifier|public
 name|int
@@ -1479,6 +1501,9 @@ name|DEFAULT_CONTINUOUS_SCHEDULING_SLEEP_MS
 argument_list|)
 return|;
 block|}
+comment|/**    * Delay in milliseconds for locality fallback node to rack.    * @deprecated linked to {@link #CONTINUOUS_SCHEDULING_ENABLED} deprecation    * @return delay in ms    */
+annotation|@
+name|Deprecated
 DECL|method|getLocalityDelayNodeMs ()
 specifier|public
 name|long
@@ -1494,6 +1519,9 @@ name|DEFAULT_LOCALITY_DELAY_NODE_MS
 argument_list|)
 return|;
 block|}
+comment|/**    * Delay in milliseconds for locality fallback rack to other.    * @deprecated linked to {@link #CONTINUOUS_SCHEDULING_ENABLED} deprecation    * @return delay in ms    */
+annotation|@
+name|Deprecated
 DECL|method|getLocalityDelayRackMs ()
 specifier|public
 name|long

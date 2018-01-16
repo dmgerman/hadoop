@@ -4407,6 +4407,11 @@ return|return
 literal|false
 return|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|assignContainer (FSSchedulerNode node, boolean reserved)
 specifier|private
 name|Resource

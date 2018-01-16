@@ -611,6 +611,8 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|Deprecated
 DECL|class|TestContinuousScheduling
 specifier|public
 class|class
@@ -631,6 +633,11 @@ name|delayThresholdTimeMs
 init|=
 literal|1000
 decl_stmt|;
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 annotation|@
 name|Override
 DECL|method|createConfiguration ()
@@ -684,6 +691,11 @@ return|return
 name|conf
 return|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 annotation|@
 name|Before
 DECL|method|setup ()
@@ -1402,6 +1414,11 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+annotation|@
 name|Test
 DECL|method|testWithNodeRemoved ()
 specifier|public
@@ -1666,6 +1683,11 @@ expr_stmt|;
 block|}
 block|}
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+annotation|@
 name|Test
 DECL|method|testInterruptedException ()
 specifier|public
@@ -1901,6 +1923,11 @@ expr_stmt|;
 block|}
 block|}
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+annotation|@
 name|Test
 DECL|method|testSchedulerThreadLifeCycle ()
 specifier|public
@@ -1971,6 +1998,11 @@ name|numRetries
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 annotation|@
 name|Test
 DECL|method|TestNodeAvailableResourceComparatorTransitivity ()
@@ -2442,6 +2474,11 @@ name|initSchedulerTime
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|triggerSchedulingAttempt ()
 specifier|private
 name|void

@@ -1653,6 +1653,8 @@ init|=
 name|UPDATE_DEBUG_FREQUENCY
 decl_stmt|;
 annotation|@
+name|Deprecated
+annotation|@
 name|VisibleForTesting
 DECL|field|schedulingThread
 name|Thread
@@ -1685,12 +1687,16 @@ name|sizeBasedWeight
 decl_stmt|;
 comment|// Give larger weights to larger jobs
 comment|// Continuous Scheduling enabled or not
+annotation|@
+name|Deprecated
 DECL|field|continuousSchedulingEnabled
 specifier|protected
 name|boolean
 name|continuousSchedulingEnabled
 decl_stmt|;
 comment|// Sleep time for each pass in continuous scheduling
+annotation|@
+name|Deprecated
 DECL|field|continuousSchedulingSleepMs
 specifier|protected
 specifier|volatile
@@ -1722,12 +1728,16 @@ name|double
 name|rackLocalityThreshold
 decl_stmt|;
 comment|// Cluster threshold for rack locality
+annotation|@
+name|Deprecated
 DECL|field|nodeLocalityDelayMs
 specifier|protected
 name|long
 name|nodeLocalityDelayMs
 decl_stmt|;
 comment|// Delay for node locality
+annotation|@
+name|Deprecated
 DECL|field|rackLocalityDelayMs
 specifier|protected
 name|long
@@ -2143,6 +2153,8 @@ name|queueMgr
 return|;
 block|}
 comment|/**    * Thread which attempts scheduling resources continuously,    * asynchronous to the node heartbeats.    */
+annotation|@
+name|Deprecated
 DECL|class|ContinuousSchedulingThread
 specifier|private
 class|class
@@ -2492,6 +2504,9 @@ return|return
 name|rackLocalityThreshold
 return|;
 block|}
+comment|/**    * Delay in milliseconds for locality fallback node to rack.    * @deprecated linked to {@link #isContinuousSchedulingEnabled} deprecation    * @return delay in ms    */
+annotation|@
+name|Deprecated
 DECL|method|getNodeLocalityDelayMs ()
 specifier|public
 name|long
@@ -2502,6 +2517,9 @@ return|return
 name|nodeLocalityDelayMs
 return|;
 block|}
+comment|/**    * Delay in milliseconds for locality fallback rack to other.    * @deprecated linked to {@link #isContinuousSchedulingEnabled} deprecation    * @return delay in ms    */
+annotation|@
+name|Deprecated
 DECL|method|getRackLocalityDelayMs ()
 specifier|public
 name|long
@@ -2512,6 +2530,9 @@ return|return
 name|rackLocalityDelayMs
 return|;
 block|}
+comment|/**    * Whether continuous scheduling is turned on.    * @deprecated Continuous scheduling should not be turned ON. It is    * deprecated because it can cause scheduler slowness due to locking issues.    * Schedulers should use assignmultiple as a replacement.    * @return whether continuous scheduling is enabled    */
+annotation|@
+name|Deprecated
 DECL|method|isContinuousSchedulingEnabled ()
 specifier|public
 name|boolean
@@ -2522,6 +2543,9 @@ return|return
 name|continuousSchedulingEnabled
 return|;
 block|}
+comment|/**    * The sleep time of the continuous scheduler thread.    * @deprecated linked to {@link #isContinuousSchedulingEnabled} deprecation    * @return sleep time in ms    */
+annotation|@
+name|Deprecated
 DECL|method|getContinuousSchedulingSleepMs ()
 specifier|public
 name|int
@@ -4819,6 +4843,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Deprecated
 DECL|method|continuousSchedulingAttempt ()
 name|void
 name|continuousSchedulingAttempt
@@ -6431,6 +6457,11 @@ operator|=
 name|rmContext
 expr_stmt|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|initScheduler (Configuration conf)
 specifier|private
 name|void
@@ -6723,6 +6754,18 @@ condition|(
 name|continuousSchedulingEnabled
 condition|)
 block|{
+comment|// Contiuous scheduling is deprecated log it on startup
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Continuous scheduling is turned ON. It is deprecated "
+operator|+
+literal|"because it can cause scheduler slowness due to locking issues. "
+operator|+
+literal|"Schedulers should use assignmultiple as a replacement."
+argument_list|)
+expr_stmt|;
 comment|// start continuous scheduling thread
 name|schedulingThread
 operator|=
@@ -7005,6 +7048,11 @@ name|serviceStart
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 annotation|@
 name|Override
 DECL|method|serviceStop ()

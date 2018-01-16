@@ -339,6 +339,11 @@ specifier|final
 name|Lock
 name|schedulerReadLock
 decl_stmt|;
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|method|FSPreemptionThread (FairScheduler scheduler)
 name|FSPreemptionThread
 parameter_list|(
