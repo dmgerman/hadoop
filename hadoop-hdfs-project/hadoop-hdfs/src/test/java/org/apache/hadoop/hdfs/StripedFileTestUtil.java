@@ -2414,11 +2414,6 @@ operator|.
 name|MAX_VALUE
 argument_list|)
 decl_stmt|;
-name|int
-name|expectedNumGroup
-init|=
-literal|0
-decl_stmt|;
 if|if
 condition|(
 name|length
@@ -2426,8 +2421,9 @@ operator|>
 literal|0
 condition|)
 block|{
+name|int
 name|expectedNumGroup
-operator|=
+init|=
 operator|(
 name|length
 operator|-
@@ -2437,8 +2433,7 @@ operator|/
 name|blkGroupSize
 operator|+
 literal|1
-expr_stmt|;
-block|}
+decl_stmt|;
 name|assertEquals
 argument_list|(
 name|expectedNumGroup
@@ -2452,6 +2447,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 specifier|final
 name|ErasureCodingPolicy
 name|ecPolicy
