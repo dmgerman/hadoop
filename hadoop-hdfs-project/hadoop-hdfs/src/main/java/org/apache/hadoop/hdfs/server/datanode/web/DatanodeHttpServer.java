@@ -704,6 +704,22 @@ name|DFS_DATANODE_HTTP_ADDRESS_KEY
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_HTTP_INTERNAL_PROXY_PORT
+import|;
+end_import
+
 begin_class
 DECL|class|DatanodeHttpServer
 specifier|public
@@ -851,6 +867,18 @@ argument_list|,
 literal|10
 argument_list|)
 expr_stmt|;
+name|int
+name|proxyPort
+init|=
+name|confForInfoServer
+operator|.
+name|getInt
+argument_list|(
+name|DFS_DATANODE_HTTP_INTERNAL_PROXY_PORT
+argument_list|,
+literal|0
+argument_list|)
+decl_stmt|;
 name|HttpServer2
 operator|.
 name|Builder
@@ -902,7 +930,9 @@ name|URI
 operator|.
 name|create
 argument_list|(
-literal|"http://localhost:0"
+literal|"http://localhost:"
+operator|+
+name|proxyPort
 argument_list|)
 argument_list|)
 operator|.

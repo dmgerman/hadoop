@@ -4215,6 +4215,15 @@ literal|"0.0.0.0:"
 operator|+
 name|DFS_DATANODE_HTTP_DEFAULT_PORT
 decl_stmt|;
+DECL|field|DFS_DATANODE_HTTP_INTERNAL_PROXY_PORT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_DATANODE_HTTP_INTERNAL_PROXY_PORT
+init|=
+literal|"dfs.datanode.http.internal-proxy.port"
+decl_stmt|;
 DECL|field|DFS_DATANODE_MAX_RECEIVER_THREADS_KEY
 specifier|public
 specifier|static
