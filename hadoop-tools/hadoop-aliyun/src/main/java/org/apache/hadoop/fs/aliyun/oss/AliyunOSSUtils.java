@@ -170,6 +170,65 @@ specifier|private
 name|AliyunOSSUtils
 parameter_list|()
 block|{   }
+DECL|method|intPositiveOption ( Configuration conf, String key, int defVal)
+specifier|public
+specifier|static
+name|int
+name|intPositiveOption
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|String
+name|key
+parameter_list|,
+name|int
+name|defVal
+parameter_list|)
+block|{
+name|int
+name|v
+init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|key
+argument_list|,
+name|defVal
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|v
+operator|<=
+literal|0
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|key
+operator|+
+literal|" is configured to "
+operator|+
+name|v
+operator|+
+literal|", will use default value: "
+operator|+
+name|defVal
+argument_list|)
+expr_stmt|;
+name|v
+operator|=
+name|defVal
+expr_stmt|;
+block|}
+return|return
+name|v
+return|;
+block|}
 comment|/**    * Used to get password from configuration.    *    * @param conf configuration that contains password information    * @param key the key of the password    * @return the value for the key    * @throws IOException if failed to get password from configuration    */
 DECL|method|getValueWithKey (Configuration conf, String key)
 specifier|public
