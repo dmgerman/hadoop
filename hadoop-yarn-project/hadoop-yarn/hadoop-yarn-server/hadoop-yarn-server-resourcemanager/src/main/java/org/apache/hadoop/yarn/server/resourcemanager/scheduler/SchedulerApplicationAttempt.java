@@ -3671,6 +3671,16 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|container
+operator|.
+name|setAllocationTags
+argument_list|(
+name|rmContainer
+operator|.
+name|getAllocationTags
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|updateNMToken
 argument_list|(
 name|container

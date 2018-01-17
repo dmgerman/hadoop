@@ -58,6 +58,26 @@ name|java
 operator|.
 name|util
 operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|concurrent
 operator|.
 name|atomic
@@ -332,7 +352,43 @@ name|api
 operator|.
 name|records
 operator|.
+name|RejectedSchedulingRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Resource
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|SchedulingRequest
 import|;
 end_import
 
@@ -369,6 +425,24 @@ operator|.
 name|records
 operator|.
 name|UpdatedContainer
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|resource
+operator|.
+name|PlacementConstraint
 import|;
 end_import
 
@@ -978,6 +1052,23 @@ name|Resource
 name|capability
 parameter_list|)
 function_decl|;
+comment|/**    * Add a Collection of SchedulingRequests. The AMRMClient will ensure that    * all requests in the same batch are sent in the same allocate call.    * @param schedulingRequests Collection of Scheduling Requests.    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|addSchedulingRequests ( Collection<SchedulingRequest> schedulingRequests)
+specifier|public
+name|void
+name|addSchedulingRequests
+parameter_list|(
+name|Collection
+argument_list|<
+name|SchedulingRequest
+argument_list|>
+name|schedulingRequests
+parameter_list|)
+block|{    }
 comment|/**    * Returns all matching ContainerRequests that match the given Priority,    * ResourceName, ExecutionType and Capability.    *    * NOTE: This matches only requests that were made by the client WITHOUT the    * allocationRequestId specified.    *    * @param priority Priority.    * @param resourceName Location.    * @param executionType ExecutionType.    * @param capability Capability.    * @return All matching ContainerRequests    */
 DECL|method|getMatchingRequests ( Priority priority, String resourceName, ExecutionType executionType, Resource capability)
 specifier|public
@@ -1063,6 +1154,49 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
+comment|/**    * Register the application master. This must be called before any    * other interaction    * @param appHostName Name of the host on which master is running    * @param appHostPort Port master is listening on    * @param appTrackingUrl URL at which the master info can be seen    * @param placementConstraints Placement Constraints mappings.    * @return<code>RegisterApplicationMasterResponse</code>    * @throws YarnException    * @throws IOException    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|registerApplicationMaster ( String appHostName, int appHostPort, String appTrackingUrl, Map<Set<String>, PlacementConstraint> placementConstraints)
+specifier|public
+name|RegisterApplicationMasterResponse
+name|registerApplicationMaster
+parameter_list|(
+name|String
+name|appHostName
+parameter_list|,
+name|int
+name|appHostPort
+parameter_list|,
+name|String
+name|appTrackingUrl
+parameter_list|,
+name|Map
+argument_list|<
+name|Set
+argument_list|<
+name|String
+argument_list|>
+argument_list|,
+name|PlacementConstraint
+argument_list|>
+name|placementConstraints
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+block|{
+throw|throw
+operator|new
+name|YarnException
+argument_list|(
+literal|"Not supported"
+argument_list|)
+throw|;
+block|}
 comment|/**    * Unregister the application master. This must be called in the end.    * @param appStatus Success/Failure status of the master    * @param appMessage Diagnostics message on failure    * @param appTrackingUrl New URL to get master info    * @throws YarnException    * @throws IOException    */
 DECL|method|unregisterApplicationMaster ( FinalApplicationStatus appStatus, String appMessage, String appTrackingUrl)
 specifier|public
@@ -1569,6 +1703,23 @@ argument_list|<
 name|Container
 argument_list|>
 name|containers
+parameter_list|)
+block|{     }
+comment|/**      * Called when the RM has rejected Scheduling Requests.      * @param rejectedSchedulingRequests Rejected Scheduling Requests.      */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|onRequestsRejected ( List<RejectedSchedulingRequest> rejectedSchedulingRequests)
+specifier|public
+name|void
+name|onRequestsRejected
+parameter_list|(
+name|List
+argument_list|<
+name|RejectedSchedulingRequest
+argument_list|>
+name|rejectedSchedulingRequests
 parameter_list|)
 block|{     }
 block|}

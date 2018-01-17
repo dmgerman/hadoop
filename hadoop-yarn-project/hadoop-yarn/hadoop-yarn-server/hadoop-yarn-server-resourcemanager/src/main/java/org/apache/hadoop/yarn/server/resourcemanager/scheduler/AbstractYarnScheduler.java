@@ -3486,6 +3486,16 @@ name|getAllocationRequestId
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|container
+operator|.
+name|setAllocationTags
+argument_list|(
+name|status
+operator|.
+name|getAllocationTags
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|ApplicationAttemptId
 name|attemptId
 init|=
