@@ -224,6 +224,24 @@ name|fs
 operator|.
 name|s3a
 operator|.
+name|Constants
+operator|.
+name|AWS_CREDENTIALS_PROVIDER
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
 name|S3AUtils
 operator|.
 name|createAWSCredentialProviderSet
@@ -311,6 +329,14 @@ init|=
 name|getConf
 argument_list|()
 decl_stmt|;
+comment|// use the default credential provider chain
+name|conf
+operator|.
+name|unset
+argument_list|(
+name|AWS_CREDENTIALS_PROVIDER
+argument_list|)
+expr_stmt|;
 specifier|final
 name|AWSCredentialsProvider
 name|credentials

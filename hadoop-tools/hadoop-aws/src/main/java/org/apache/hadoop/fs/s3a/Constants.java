@@ -144,6 +144,86 @@ name|SESSION_TOKEN
 init|=
 literal|"fs.s3a.session.token"
 decl_stmt|;
+comment|/**    * AWS Role to request.    */
+DECL|field|ASSUMED_ROLE_ARN
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ASSUMED_ROLE_ARN
+init|=
+literal|"fs.s3a.assumed.role.arn"
+decl_stmt|;
+comment|/**    * Session name for the assumed role, must be valid characters according    * to the AWS APIs.    * If not set, one is generated from the current Hadoop/Kerberos username.    */
+DECL|field|ASSUMED_ROLE_SESSION_NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ASSUMED_ROLE_SESSION_NAME
+init|=
+literal|"fs.s3a.assumed.role.session.name"
+decl_stmt|;
+comment|/**    * Duration of assumed roles before a refresh is attempted.    */
+DECL|field|ASSUMED_ROLE_SESSION_DURATION
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ASSUMED_ROLE_SESSION_DURATION
+init|=
+literal|"fs.s3a.assumed.role.session.duration"
+decl_stmt|;
+comment|/** Simple Token Service Endpoint. If unset, uses the default endpoint. */
+DECL|field|ASSUMED_ROLE_STS_ENDPOINT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ASSUMED_ROLE_STS_ENDPOINT
+init|=
+literal|"fs.s3a.assumed.role.sts.endpoint"
+decl_stmt|;
+DECL|field|ASSUMED_ROLE_SESSION_DURATION_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ASSUMED_ROLE_SESSION_DURATION_DEFAULT
+init|=
+literal|"30m"
+decl_stmt|;
+comment|/** list of providers to authenticate for the assumed role. */
+DECL|field|ASSUMED_ROLE_CREDENTIALS_PROVIDER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ASSUMED_ROLE_CREDENTIALS_PROVIDER
+init|=
+literal|"fs.s3a.assumed.role.credentials.provider"
+decl_stmt|;
+comment|/** JSON policy containing more restrictions to apply to the role. */
+DECL|field|ASSUMED_ROLE_POLICY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ASSUMED_ROLE_POLICY
+init|=
+literal|"fs.s3a.assumed.role.policy"
+decl_stmt|;
+DECL|field|ASSUMED_ROLE_CREDENTIALS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ASSUMED_ROLE_CREDENTIALS_DEFAULT
+init|=
+name|SimpleAWSCredentialsProvider
+operator|.
+name|NAME
+decl_stmt|;
 comment|// number of simultaneous connections to s3
 DECL|field|MAXIMUM_CONNECTIONS
 specifier|public

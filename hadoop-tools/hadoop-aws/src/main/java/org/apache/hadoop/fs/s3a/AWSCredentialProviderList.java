@@ -124,6 +124,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|IOUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -137,6 +151,16 @@ operator|.
 name|slf4j
 operator|.
 name|LoggerFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|Closeable
 import|;
 end_import
 
@@ -170,6 +194,18 @@ name|List
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|stream
+operator|.
+name|Collectors
+import|;
+end_import
+
 begin_comment
 comment|/**  * A list of providers.  *  * This is similar to the AWS SDK {@code AWSCredentialsProviderChain},  * except that:  *<ol>  *<li>Allows extra providers to be added dynamically.</li>  *<li>If any provider in the chain throws an exception other than  *   an {@link AmazonClientException}, that is rethrown, rather than  *   swallowed.</li>  *<li>Has some more diagnostics.</li>  *<li>On failure, the last AmazonClientException raised is rethrown.</li>  *<li>Special handling of {@link AnonymousAWSCredentials}.</li>  *</ol>  */
 end_comment
@@ -189,6 +225,8 @@ class|class
 name|AWSCredentialProviderList
 implements|implements
 name|AWSCredentialsProvider
+implements|,
+name|AutoCloseable
 block|{
 DECL|field|LOG
 specifier|private
@@ -288,34 +326,6 @@ argument_list|(
 name|p
 argument_list|)
 expr_stmt|;
-block|}
-comment|/**    * Reuse the last provider?    * @param reuseLastProvider flag to indicate the last provider should    * be re-used    */
-DECL|method|setReuseLastProvider (boolean reuseLastProvider)
-specifier|public
-name|void
-name|setReuseLastProvider
-parameter_list|(
-name|boolean
-name|reuseLastProvider
-parameter_list|)
-block|{
-name|this
-operator|.
-name|reuseLastProvider
-operator|=
-name|reuseLastProvider
-expr_stmt|;
-block|}
-comment|/**    * query the {@link #reuseLastProvider} flag.    * @return the current flag state.    */
-DECL|method|isReuseLastProvider ()
-specifier|public
-name|boolean
-name|isReuseLastProvider
-parameter_list|()
-block|{
-return|return
-name|reuseLastProvider
-return|;
 block|}
 comment|/**    * Refresh all child entries.    */
 annotation|@
@@ -543,32 +553,16 @@ name|String
 name|listProviderNames
 parameter_list|()
 block|{
-name|StringBuilder
-name|sb
-init|=
-operator|new
-name|StringBuilder
-argument_list|(
+return|return
 name|providers
 operator|.
-name|size
+name|stream
 argument_list|()
-operator|*
-literal|32
-argument_list|)
-decl_stmt|;
-for|for
-control|(
-name|AWSCredentialsProvider
-name|provider
-range|:
-name|providers
-control|)
-block|{
-name|sb
 operator|.
-name|append
+name|map
 argument_list|(
+name|provider
+lambda|->
 name|provider
 operator|.
 name|getClass
@@ -576,21 +570,17 @@ argument_list|()
 operator|.
 name|getSimpleName
 argument_list|()
-argument_list|)
-expr_stmt|;
-name|sb
-operator|.
-name|append
-argument_list|(
+operator|+
 literal|' '
 argument_list|)
-expr_stmt|;
-block|}
-return|return
-name|sb
 operator|.
-name|toString
+name|collect
+argument_list|(
+name|Collectors
+operator|.
+name|joining
 argument_list|()
+argument_list|)
 return|;
 block|}
 comment|/**    * The string value is this class name and the string values of nested    * providers.    * @return a string value for debugging.    */
@@ -614,6 +604,43 @@ argument_list|,
 literal|" "
 argument_list|)
 return|;
+block|}
+comment|/**    * Close routine will close all providers in the list which implement    * {@code Closeable}.    * This matters because some providers start a background thread to    * refresh their secrets.    */
+annotation|@
+name|Override
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+block|{
+for|for
+control|(
+name|AWSCredentialsProvider
+name|p
+range|:
+name|providers
+control|)
+block|{
+if|if
+condition|(
+name|p
+operator|instanceof
+name|Closeable
+condition|)
+block|{
+name|IOUtils
+operator|.
+name|closeStream
+argument_list|(
+operator|(
+name|Closeable
+operator|)
+name|p
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 block|}
 end_class

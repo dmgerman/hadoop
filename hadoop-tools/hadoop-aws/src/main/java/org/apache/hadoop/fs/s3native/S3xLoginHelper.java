@@ -368,7 +368,7 @@ else|:
 literal|"(null URI)"
 return|;
 block|}
-comment|/**    * Extract the login details from a URI, logging a warning if    * the URI contains these.    * @param name URI of the filesystem    * @return a login tuple, possibly empty.    */
+comment|/**    * Extract the login details from a URI, logging a warning if    * the URI contains these.    * @param name URI of the filesystem, can be null    * @return a login tuple, possibly empty.    */
 DECL|method|extractLoginDetailsWithWarnings (URI name)
 specifier|public
 specifier|static
@@ -407,7 +407,7 @@ return|return
 name|login
 return|;
 block|}
-comment|/**    * Extract the login details from a URI.    * @param name URI of the filesystem    * @return a login tuple, possibly empty.    */
+comment|/**    * Extract the login details from a URI.    * @param name URI of the filesystem, may be null    * @return a login tuple, possibly empty.    */
 DECL|method|extractLoginDetails (URI name)
 specifier|public
 specifier|static

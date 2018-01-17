@@ -967,6 +967,33 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
+DECL|method|testS3AToStringUnitialized ()
+specifier|public
+name|void
+name|testS3AToStringUnitialized
+parameter_list|()
+throws|throws
+name|Throwable
+block|{
+try|try
+init|(
+name|S3AFileSystem
+name|fs
+init|=
+operator|new
+name|S3AFileSystem
+argument_list|()
+init|)
+block|{
+name|fs
+operator|.
+name|toString
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 block|}
 end_class
 

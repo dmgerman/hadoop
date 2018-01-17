@@ -2887,6 +2887,7 @@ decl_stmt|;
 comment|/**    * Skip a test if the FS isn't marked as supporting magic commits.    * @param fs filesystem    */
 DECL|method|assumeMagicCommitEnabled (S3AFileSystem fs)
 specifier|public
+specifier|static
 name|void
 name|assumeMagicCommitEnabled
 parameter_list|(
@@ -2910,6 +2911,34 @@ name|STORE_CAPABILITY_MAGIC_COMMITTER
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Probe for the configuration containing a specific credential provider.    * If the list is empty, there will be no match, even if the named provider    * is on the default list.    *    * @param conf configuration    * @param providerClassname provider class    * @return true if the configuration contains that classname.    */
+DECL|method|authenticationContains (Configuration conf, String providerClassname)
+specifier|public
+specifier|static
+name|boolean
+name|authenticationContains
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|String
+name|providerClassname
+parameter_list|)
+block|{
+return|return
+name|conf
+operator|.
+name|getTrimmedStringCollection
+argument_list|(
+name|AWS_CREDENTIALS_PROVIDER
+argument_list|)
+operator|.
+name|contains
+argument_list|(
+name|providerClassname
+argument_list|)
+return|;
 block|}
 block|}
 end_class

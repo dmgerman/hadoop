@@ -8921,7 +8921,7 @@ name|translateException
 argument_list|(
 literal|"getFileStatus"
 argument_list|,
-name|key
+name|path
 argument_list|,
 name|e
 argument_list|)
@@ -8939,7 +8939,7 @@ name|translateException
 argument_list|(
 literal|"getFileStatus"
 argument_list|,
-name|key
+name|path
 argument_list|,
 name|e
 argument_list|)
@@ -11368,6 +11368,13 @@ argument_list|(
 name|useListV1
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|committerIntegration
+operator|!=
+literal|null
+condition|)
+block|{
 name|sb
 operator|.
 name|append
@@ -11381,6 +11388,7 @@ name|isMagicCommitEnabled
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|sb
 operator|.
 name|append

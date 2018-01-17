@@ -42,20 +42,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|FileStatus
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|Path
 import|;
 end_import
@@ -71,6 +57,20 @@ operator|.
 name|io
 operator|.
 name|IOUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|LambdaTestUtils
 import|;
 end_import
 
@@ -205,6 +205,24 @@ operator|.
 name|file
 operator|.
 name|AccessDeniedException
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
+name|Constants
+operator|.
+name|AWS_CREDENTIALS_PROVIDER
 import|;
 end_import
 
@@ -697,7 +715,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Set up some invalid credentials, verify login is rejected.    * @throws Throwable    */
+comment|/**    * Set up some invalid credentials, verify login is rejected.    */
 annotation|@
 name|Test
 DECL|method|testInvalidCredentialsFail ()
@@ -715,6 +733,14 @@ operator|new
 name|Configuration
 argument_list|()
 decl_stmt|;
+comment|// use the default credential provider chain
+name|conf
+operator|.
+name|unset
+argument_list|(
+name|AWS_CREDENTIALS_PROVIDER
+argument_list|)
+expr_stmt|;
 name|String
 name|fsname
 init|=
@@ -774,7 +800,16 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-try|try
+name|LambdaTestUtils
+operator|.
+name|intercept
+argument_list|(
+name|AccessDeniedException
+operator|.
+name|class
+argument_list|,
+parameter_list|()
+lambda|->
 block|{
 name|fs
 operator|=
@@ -785,9 +820,7 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|FileStatus
-name|status
-init|=
+return|return
 name|fs
 operator|.
 name|getFileStatus
@@ -798,23 +831,10 @@ argument_list|(
 literal|"/"
 argument_list|)
 argument_list|)
-decl_stmt|;
-name|fail
-argument_list|(
-literal|"Expected an AccessDeniedException, got "
-operator|+
-name|status
+return|;
+block|}
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|AccessDeniedException
-name|e
-parameter_list|)
-block|{
-comment|// expected
-block|}
 block|}
 DECL|method|createUriWithEmbeddedSecrets (URI original, String accessKey, String secretKey)
 specifier|private
