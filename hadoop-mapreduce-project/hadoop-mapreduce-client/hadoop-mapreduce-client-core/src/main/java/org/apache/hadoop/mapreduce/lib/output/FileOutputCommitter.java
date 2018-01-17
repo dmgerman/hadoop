@@ -438,6 +438,30 @@ name|FILEOUTPUTCOMMITTER_FAILURE_ATTEMPTS_DEFAULT
 init|=
 literal|1
 decl_stmt|;
+comment|// Whether tasks should delete their task temporary directories. This is
+comment|// purely an optimization for filesystems without O(1) recursive delete, as
+comment|// commitJob will recursively delete the entire job temporary directory.
+comment|// HDFS has O(1) recursive delete, so this parameter is left false by default.
+comment|// Users of object stores, for example, may want to set this to true. Note:
+comment|// this is only used if mapreduce.fileoutputcommitter.algorithm.version=2
+DECL|field|FILEOUTPUTCOMMITTER_TASK_CLEANUP_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FILEOUTPUTCOMMITTER_TASK_CLEANUP_ENABLED
+init|=
+literal|"mapreduce.fileoutputcommitter.task.cleanup.enabled"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+DECL|field|FILEOUTPUTCOMMITTER_TASK_CLEANUP_ENABLED_DEFAULT
+name|FILEOUTPUTCOMMITTER_TASK_CLEANUP_ENABLED_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 DECL|field|outputPath
 specifier|private
 name|Path
@@ -2287,6 +2311,61 @@ operator|+
 name|outputPath
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|context
+operator|.
+name|getConfiguration
+argument_list|()
+operator|.
+name|getBoolean
+argument_list|(
+name|FILEOUTPUTCOMMITTER_TASK_CLEANUP_ENABLED
+argument_list|,
+name|FILEOUTPUTCOMMITTER_TASK_CLEANUP_ENABLED_DEFAULT
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Deleting the temporary directory of '%s': '%s'"
+argument_list|,
+name|attemptId
+argument_list|,
+name|taskAttemptPath
+argument_list|)
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+operator|!
+name|fs
+operator|.
+name|delete
+argument_list|(
+name|taskAttemptPath
+argument_list|,
+literal|true
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Could not delete "
+operator|+
+name|taskAttemptPath
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 block|}
 else|else

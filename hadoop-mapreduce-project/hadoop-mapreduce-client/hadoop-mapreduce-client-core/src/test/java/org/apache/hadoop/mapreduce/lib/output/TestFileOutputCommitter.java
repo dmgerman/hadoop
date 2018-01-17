@@ -1729,13 +1729,16 @@ name|indexFileFound
 operator|)
 assert|;
 block|}
-DECL|method|testCommitterInternal (int version)
+DECL|method|testCommitterInternal (int version, boolean taskCleanup)
 specifier|private
 name|void
 name|testCommitterInternal
 parameter_list|(
 name|int
 name|version
+parameter_list|,
+name|boolean
+name|taskCleanup
 parameter_list|)
 throws|throws
 name|Exception
@@ -1785,6 +1788,17 @@ operator|.
 name|FILEOUTPUTCOMMITTER_ALGORITHM_VERSION
 argument_list|,
 name|version
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|FileOutputCommitter
+operator|.
+name|FILEOUTPUTCOMMITTER_TASK_CLEANUP_ENABLED
+argument_list|,
+name|taskCleanup
 argument_list|)
 expr_stmt|;
 name|JobContext
@@ -1863,6 +1877,67 @@ argument_list|,
 name|tContext
 argument_list|)
 expr_stmt|;
+comment|// check task and job temp directories exist
+name|File
+name|jobOutputDir
+init|=
+operator|new
+name|File
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+name|outDir
+argument_list|,
+name|FileOutputCommitter
+operator|.
+name|PENDING_DIR_NAME
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|File
+name|taskOutputDir
+init|=
+operator|new
+name|File
+argument_list|(
+name|Path
+operator|.
+name|getPathWithoutSchemeAndAuthority
+argument_list|(
+name|committer
+operator|.
+name|getWorkPath
+argument_list|()
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|assertTrue
+argument_list|(
+literal|"job temp dir does not exist"
+argument_list|,
+name|jobOutputDir
+operator|.
+name|exists
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"task temp dir does not exist"
+argument_list|,
+name|taskOutputDir
+operator|.
+name|exists
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// do commit
 name|committer
 operator|.
@@ -1871,11 +1946,78 @@ argument_list|(
 name|tContext
 argument_list|)
 expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"job temp dir does not exist"
+argument_list|,
+name|jobOutputDir
+operator|.
+name|exists
+argument_list|()
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|version
+operator|==
+literal|1
+operator|||
+name|taskCleanup
+condition|)
+block|{
+comment|// Task temp dir gets renamed in v1 and deleted if taskCleanup is
+comment|// enabled in v2
+name|assertFalse
+argument_list|(
+literal|"task temp dir still exists"
+argument_list|,
+name|taskOutputDir
+operator|.
+name|exists
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// By default, in v2 the task temp dir is only deleted during commitJob
+name|assertTrue
+argument_list|(
+literal|"task temp dir does not exist"
+argument_list|,
+name|taskOutputDir
+operator|.
+name|exists
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Entire job temp directory gets deleted, including task temp dir
 name|committer
 operator|.
 name|commitJob
 argument_list|(
 name|jContext
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
+literal|"job temp dir still exists"
+argument_list|,
+name|jobOutputDir
+operator|.
+name|exists
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
+literal|"task temp dir still exists"
+argument_list|,
+name|taskOutputDir
+operator|.
+name|exists
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// validate output
@@ -1912,6 +2054,8 @@ block|{
 name|testCommitterInternal
 argument_list|(
 literal|1
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -1928,6 +2072,26 @@ block|{
 name|testCommitterInternal
 argument_list|(
 literal|2
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testCommitterV2TaskCleanupEnabled ()
+specifier|public
+name|void
+name|testCommitterV2TaskCleanupEnabled
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|testCommitterInternal
+argument_list|(
+literal|2
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
