@@ -343,18 +343,6 @@ import|;
 end_import
 
 begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|stream
-operator|.
-name|Collectors
-import|;
-end_import
-
-begin_import
 import|import static
 name|org
 operator|.
@@ -2884,7 +2872,7 @@ expr_stmt|;
 block|}
 comment|/**    * Date format used for mapping upload initiation time to human string.    */
 DECL|field|LISTING_FORMAT
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|DateFormat
@@ -2896,77 +2884,6 @@ argument_list|(
 literal|"yyyy-MM-dd HH:mm:ss"
 argument_list|)
 decl_stmt|;
-comment|/**    * Get a list of all pending uploads under a prefix, one which can be printed.    * @param prefix prefix to look under    * @return possibly empty list    * @throws IOException IO failure.    */
-DECL|method|listMultipartUploads (S3AFileSystem fs, String prefix)
-specifier|public
-specifier|static
-name|List
-argument_list|<
-name|String
-argument_list|>
-name|listMultipartUploads
-parameter_list|(
-name|S3AFileSystem
-name|fs
-parameter_list|,
-name|String
-name|prefix
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-name|fs
-operator|.
-name|listMultipartUploads
-argument_list|(
-name|prefix
-argument_list|)
-operator|.
-name|stream
-argument_list|()
-operator|.
-name|map
-argument_list|(
-name|upload
-lambda|->
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"Upload to %s with ID %s; initiated %s"
-argument_list|,
-name|upload
-operator|.
-name|getKey
-argument_list|()
-argument_list|,
-name|upload
-operator|.
-name|getUploadId
-argument_list|()
-argument_list|,
-name|LISTING_FORMAT
-operator|.
-name|format
-argument_list|(
-name|upload
-operator|.
-name|getInitiated
-argument_list|()
-argument_list|)
-argument_list|)
-argument_list|)
-operator|.
-name|collect
-argument_list|(
-name|Collectors
-operator|.
-name|toList
-argument_list|()
-argument_list|)
-return|;
-block|}
 comment|/**    * Skip a test if the FS isn't marked as supporting magic commits.    * @param fs filesystem    */
 DECL|method|assumeMagicCommitEnabled (S3AFileSystem fs)
 specifier|public

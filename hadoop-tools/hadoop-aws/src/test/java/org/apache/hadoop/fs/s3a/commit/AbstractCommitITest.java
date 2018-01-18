@@ -402,6 +402,24 @@ name|fs
 operator|.
 name|s3a
 operator|.
+name|MultipartTestUtils
+operator|.
+name|listMultipartUploads
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|s3a
+operator|.
 name|S3ATestUtils
 operator|.
 name|*
@@ -995,7 +1013,7 @@ name|writeOps
 init|=
 name|fs
 operator|.
-name|createWriteOperationHelper
+name|getWriteOperationHelper
 argument_list|()
 decl_stmt|;
 name|int

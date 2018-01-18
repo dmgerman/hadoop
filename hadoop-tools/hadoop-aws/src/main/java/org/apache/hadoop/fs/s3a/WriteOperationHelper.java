@@ -288,6 +288,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -443,12 +457,15 @@ name|Invoker
 name|invoker
 decl_stmt|;
 comment|/**    * Constructor.    * @param owner owner FS creating the helper    * @param conf Configuration object    *    */
-DECL|method|WriteOperationHelper (S3AFileSystem owner)
+DECL|method|WriteOperationHelper (S3AFileSystem owner, Configuration conf)
 specifier|protected
 name|WriteOperationHelper
 parameter_list|(
 name|S3AFileSystem
 name|owner
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 name|this
@@ -467,10 +484,7 @@ argument_list|(
 operator|new
 name|S3ARetryPolicy
 argument_list|(
-name|owner
-operator|.
-name|getConf
-argument_list|()
+name|conf
 argument_list|)
 argument_list|,
 name|this

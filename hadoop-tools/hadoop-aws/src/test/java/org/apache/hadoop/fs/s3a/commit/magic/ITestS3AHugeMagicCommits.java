@@ -318,11 +318,9 @@ name|fs
 operator|.
 name|s3a
 operator|.
-name|commit
+name|MultipartTestUtils
 operator|.
-name|CommitConstants
-operator|.
-name|*
+name|listMultipartUploads
 import|;
 end_import
 
@@ -338,7 +336,9 @@ name|fs
 operator|.
 name|s3a
 operator|.
-name|S3ATestUtils
+name|commit
+operator|.
+name|CommitConstants
 operator|.
 name|*
 import|;
