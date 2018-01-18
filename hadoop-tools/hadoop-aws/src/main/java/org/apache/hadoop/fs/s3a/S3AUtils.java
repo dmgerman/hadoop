@@ -410,16 +410,6 @@ end_import
 
 begin_import
 import|import
-name|javax
-operator|.
-name|annotation
-operator|.
-name|Nullable
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -810,14 +800,12 @@ name|SuppressWarnings
 argument_list|(
 literal|"ThrowableInstanceNeverThrown"
 argument_list|)
-DECL|method|translateException (@ullable String operation, String path, SdkBaseException exception)
+DECL|method|translateException (String operation, String path, SdkBaseException exception)
 specifier|public
 specifier|static
 name|IOException
 name|translateException
 parameter_list|(
-annotation|@
-name|Nullable
 name|String
 name|operation
 parameter_list|,

@@ -284,16 +284,6 @@ end_import
 
 begin_import
 import|import
-name|javax
-operator|.
-name|annotation
-operator|.
-name|Nullable
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|amazonaws
@@ -1729,11 +1719,6 @@ specifier|private
 name|int
 name|blockOutputActiveBlocks
 decl_stmt|;
-DECL|field|writeHelper
-specifier|private
-name|WriteOperationHelper
-name|writeHelper
-decl_stmt|;
 DECL|field|useListV1
 specifier|private
 name|boolean
@@ -1952,17 +1937,6 @@ argument_list|()
 argument_list|)
 argument_list|,
 name|onRetry
-argument_list|)
-expr_stmt|;
-name|writeHelper
-operator|=
-operator|new
-name|WriteOperationHelper
-argument_list|(
-name|this
-argument_list|,
-name|getConf
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|maxKeys
@@ -3680,7 +3654,7 @@ argument_list|(
 name|statistics
 argument_list|)
 argument_list|,
-name|getWriteOperationHelper
+name|createWriteOperationHelper
 argument_list|()
 argument_list|,
 name|putTracker
@@ -3690,19 +3664,23 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/**    * Get a {@code WriteOperationHelper} instance.    *    * This class permits other low-level operations against the store.    * It is unstable and    * only intended for code with intimate knowledge of the object store.    * If using this, be prepared for changes even on minor point releases.    * @return a new helper.    */
+comment|/**    * Create a new {@code WriteOperationHelper} instance.    *    * This class permits other low-level operations against the store.    * It is unstable and    * only intended for code with intimate knowledge of the object store.    * If using this, be prepared for changes even on minor point releases.    * @return a new helper.    */
 annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|method|getWriteOperationHelper ()
+DECL|method|createWriteOperationHelper ()
 specifier|public
 name|WriteOperationHelper
-name|getWriteOperationHelper
+name|createWriteOperationHelper
 parameter_list|()
 block|{
 return|return
-name|writeHelper
+operator|new
+name|WriteOperationHelper
+argument_list|(
+name|this
+argument_list|)
 return|;
 block|}
 comment|/**    * {@inheritDoc}    * @throws FileNotFoundException if the parent directory is not present -or    * is not a directory.    */
@@ -12489,48 +12467,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/**    * List any pending multipart uploads whose keys begin with prefix, using    * an iterator that can handle an unlimited number of entries.    * See {@link #listMultipartUploads(String)} for a non-iterator version of    * this.    *    * @param prefix optional key prefix to search    * @return Iterator over multipart uploads.    * @throws IOException on failure    */
-annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
-annotation|@
-name|Retries
-operator|.
-name|RetryTranslated
-DECL|method|listUploads (@ullable String prefix)
-specifier|public
-name|MultipartUtils
-operator|.
-name|UploadIterator
-name|listUploads
-parameter_list|(
-annotation|@
-name|Nullable
-name|String
-name|prefix
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-name|MultipartUtils
-operator|.
-name|listMultipartUploads
-argument_list|(
-name|s3
-argument_list|,
-name|invoker
-argument_list|,
-name|bucket
-argument_list|,
-name|maxKeys
-argument_list|,
-name|prefix
-argument_list|)
-return|;
-block|}
-comment|/**    * Listing all multipart uploads; limited to the first few hundred.    * See {@link #listUploads(String)} for an iterator-based version that does    * not limit the number of entries returned.    * Retry policy: retry, translated.    * @return a listing of multipart uploads.    * @param prefix prefix to scan for, "" for none    * @throws IOException IO failure, including any uprated AmazonClientException    */
+comment|/**    * Listing all multipart uploads; limited to the first few hundred.    * Retry policy: retry, translated.    * @return a listing of multipart uploads.    * @param prefix prefix to scan for, "" for none    * @throws IOException IO failure, including any uprated AmazonClientException    */
 annotation|@
 name|InterfaceAudience
 operator|.

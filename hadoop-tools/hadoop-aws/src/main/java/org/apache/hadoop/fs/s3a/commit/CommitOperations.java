@@ -612,7 +612,7 @@ name|writeOperations
 operator|=
 name|fs
 operator|.
-name|getWriteOperationHelper
+name|createWriteOperationHelper
 argument_list|()
 expr_stmt|;
 block|}

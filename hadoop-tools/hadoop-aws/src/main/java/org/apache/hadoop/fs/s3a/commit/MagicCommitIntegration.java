@@ -339,7 +339,7 @@ name|pendingsetPath
 argument_list|,
 name|owner
 operator|.
-name|getWriteOperationHelper
+name|createWriteOperationHelper
 argument_list|()
 argument_list|)
 expr_stmt|;
