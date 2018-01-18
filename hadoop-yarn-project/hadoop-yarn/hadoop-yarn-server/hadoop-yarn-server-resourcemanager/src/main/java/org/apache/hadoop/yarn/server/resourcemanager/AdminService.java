@@ -2619,6 +2619,10 @@ argument_list|,
 name|YarnConfiguration
 operator|.
 name|YARN_SITE_CONFIGURATION_FILE
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|RESOURCE_TYPES_CONFIGURATION_FILE
 argument_list|)
 decl_stmt|;
 comment|// The reason we call Configuration#size() is because when getConfiguration
