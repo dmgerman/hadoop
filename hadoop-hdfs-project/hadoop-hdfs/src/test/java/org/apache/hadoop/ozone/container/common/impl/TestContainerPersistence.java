@@ -3412,12 +3412,15 @@ name|assertTrue
 argument_list|(
 name|ex
 operator|.
+name|getCause
+argument_list|()
+operator|.
 name|getMessage
 argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"Rejecting write chunk request. OverWrite flag required."
+literal|"Rejecting write chunk request. OverWrite flag required"
 argument_list|)
 argument_list|)
 expr_stmt|;
