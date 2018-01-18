@@ -1347,6 +1347,8 @@ argument_list|(
 name|r1
 argument_list|)
 argument_list|,
+literal|null
+argument_list|,
 name|Collections
 operator|.
 expr|<

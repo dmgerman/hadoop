@@ -26,11 +26,15 @@ end_package
 
 begin_import
 import|import
-name|java
+name|com
 operator|.
-name|util
+name|google
 operator|.
-name|List
+name|common
+operator|.
+name|collect
+operator|.
+name|ImmutableSet
 import|;
 end_import
 
@@ -67,6 +71,24 @@ operator|.
 name|records
 operator|.
 name|Resource
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|resource
+operator|.
+name|PlacementConstraints
 import|;
 end_import
 
@@ -198,15 +220,11 @@ end_import
 
 begin_import
 import|import
-name|com
+name|java
 operator|.
-name|google
+name|util
 operator|.
-name|common
-operator|.
-name|collect
-operator|.
-name|ImmutableSet
+name|List
 import|;
 end_import
 
@@ -781,24 +799,7 @@ argument_list|(
 literal|1
 argument_list|)
 argument_list|,
-name|ImmutableSet
-operator|.
-name|of
-argument_list|(
-name|AllocationTagsNamespaces
-operator|.
-name|APP_ID
-operator|+
-name|TestUtils
-operator|.
-name|getMockApplicationId
-argument_list|(
-literal|1
-argument_list|)
-operator|.
-name|toString
-argument_list|()
-argument_list|)
+literal|null
 argument_list|,
 name|Long
 operator|::
@@ -807,6 +808,39 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Get Node Cardinality of app1 on node2, with empty tag set, op=max
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|2
+argument_list|,
+name|atm
+operator|.
+name|getNodeCardinalityByOp
+argument_list|(
+name|NodeId
+operator|.
+name|fromString
+argument_list|(
+literal|"host2:123"
+argument_list|)
+argument_list|,
+name|TestUtils
+operator|.
+name|getMockApplicationId
+argument_list|(
+literal|1
+argument_list|)
+argument_list|,
+literal|null
+argument_list|,
+name|Long
+operator|::
+name|max
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Get Cardinality of app1 on node2, with empty tag set, op=max
 name|Assert
 operator|.
 name|assertEquals
@@ -847,7 +881,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|7
+literal|4
 argument_list|,
 name|atm
 operator|.
@@ -878,7 +912,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|5
+literal|3
 argument_list|,
 name|atm
 operator|.
@@ -914,7 +948,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|2
+literal|1
 argument_list|,
 name|atm
 operator|.
@@ -1710,7 +1744,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|2
+literal|1
 argument_list|,
 name|atm
 operator|.

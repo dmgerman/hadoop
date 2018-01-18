@@ -52,6 +52,42 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|SchedulingRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|RMContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -212,16 +248,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Map
 import|;
 end_import
@@ -230,10 +256,11 @@ begin_comment
 comment|/**  *<p>  * This class has the following functionality:  * 1) Keeps track of pending resource requests when following events happen:  * - New ResourceRequests are added to scheduler.  * - New containers get allocated.  *  * 2) Determines the order that the nodes given in the {@link CandidateNodeSet}  * will be used for allocating containers.  *</p>  *  *<p>  * And different set of resource requests (E.g., resource requests with the  * same schedulerKey) can have one instance of AppPlacementAllocator, each  * AppPlacementAllocator can have different ways to order nodes depends on  * requests.  *</p>  */
 end_comment
 
-begin_interface
-DECL|interface|AppPlacementAllocator
+begin_class
+DECL|class|AppPlacementAllocator
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|AppPlacementAllocator
 parameter_list|<
 name|N
@@ -241,8 +268,25 @@ extends|extends
 name|SchedulerNode
 parameter_list|>
 block|{
+DECL|field|appSchedulingInfo
+specifier|protected
+name|AppSchedulingInfo
+name|appSchedulingInfo
+decl_stmt|;
+DECL|field|schedulerRequestKey
+specifier|protected
+name|SchedulerRequestKey
+name|schedulerRequestKey
+decl_stmt|;
+DECL|field|rmContext
+specifier|protected
+name|RMContext
+name|rmContext
+decl_stmt|;
 comment|/**    * Get iterator of preferred node depends on requirement and/or availability    * @param candidateNodeSet input CandidateNodeSet    * @return iterator of preferred node    */
-DECL|method|getPreferredNodeIterator (CandidateNodeSet<N> candidateNodeSet)
+DECL|method|getPreferredNodeIterator ( CandidateNodeSet<N> candidateNodeSet)
+specifier|public
+specifier|abstract
 name|Iterator
 argument_list|<
 name|N
@@ -258,6 +302,8 @@ parameter_list|)
 function_decl|;
 comment|/**    * Replace existing pending asks by the new requests    *    * @param requests new asks    * @param recoverPreemptedRequestForAContainer if we're recovering resource    * requests for preempted container    * @return true if total pending resource changed    */
 DECL|method|updatePendingAsk ( Collection<ResourceRequest> requests, boolean recoverPreemptedRequestForAContainer)
+specifier|public
+specifier|abstract
 name|PendingAskUpdateResult
 name|updatePendingAsk
 parameter_list|(
@@ -271,8 +317,27 @@ name|boolean
 name|recoverPreemptedRequestForAContainer
 parameter_list|)
 function_decl|;
+comment|/**    * Replace existing pending asks by the new SchedulingRequest    *    * @param schedulerRequestKey                  scheduler request key    * @param schedulingRequest                    new asks    * @param recoverPreemptedRequestForAContainer if we're recovering resource    *                                             requests for preempted container    * @return true if total pending resource changed    */
+DECL|method|updatePendingAsk ( SchedulerRequestKey schedulerRequestKey, SchedulingRequest schedulingRequest, boolean recoverPreemptedRequestForAContainer)
+specifier|public
+specifier|abstract
+name|PendingAskUpdateResult
+name|updatePendingAsk
+parameter_list|(
+name|SchedulerRequestKey
+name|schedulerRequestKey
+parameter_list|,
+name|SchedulingRequest
+name|schedulingRequest
+parameter_list|,
+name|boolean
+name|recoverPreemptedRequestForAContainer
+parameter_list|)
+function_decl|;
 comment|/**    * Get pending ResourceRequests by given schedulerRequestKey    * @return Map of resourceName to ResourceRequest    */
 DECL|method|getResourceRequests ()
+specifier|public
+specifier|abstract
 name|Map
 argument_list|<
 name|String
@@ -284,6 +349,8 @@ parameter_list|()
 function_decl|;
 comment|/**    * Get pending ask for given resourceName. If there's no such pendingAsk,    * returns {@link PendingAsk#ZERO}    *    * @param resourceName resourceName    * @return PendingAsk    */
 DECL|method|getPendingAsk (String resourceName)
+specifier|public
+specifier|abstract
 name|PendingAsk
 name|getPendingAsk
 parameter_list|(
@@ -293,6 +360,8 @@ parameter_list|)
 function_decl|;
 comment|/**    * Get #pending-allocations for given resourceName. If there's no such    * pendingAsk, returns 0    *    * @param resourceName resourceName    * @return #pending-allocations    */
 DECL|method|getOutstandingAsksCount (String resourceName)
+specifier|public
+specifier|abstract
 name|int
 name|getOutstandingAsksCount
 parameter_list|(
@@ -302,6 +371,8 @@ parameter_list|)
 function_decl|;
 comment|/**    * Notify container allocated.    * @param schedulerKey SchedulerRequestKey for this ResourceRequest    * @param type Type of the allocation    * @param node Which node this container allocated on    * @return ContainerRequest which include resource requests associated with    *         the container. This will be used by scheduler to recover requests.    *         Please refer to {@link ContainerRequest} for more details.    */
 DECL|method|allocate (SchedulerRequestKey schedulerKey, NodeType type, SchedulerNode node)
+specifier|public
+specifier|abstract
 name|ContainerRequest
 name|allocate
 parameter_list|(
@@ -317,6 +388,8 @@ parameter_list|)
 function_decl|;
 comment|/**    * We can still have pending requirement for a given NodeType and node    * @param type Locality Type    * @param node which node we will allocate on    * @return true if we has pending requirement    */
 DECL|method|canAllocate (NodeType type, SchedulerNode node)
+specifier|public
+specifier|abstract
 name|boolean
 name|canAllocate
 parameter_list|(
@@ -329,6 +402,8 @@ parameter_list|)
 function_decl|;
 comment|/**    * Can delay to give locality?    * TODO: This should be moved out of AppPlacementAllocator    * and should belong to specific delay scheduling policy impl.    * See YARN-7457 for more details.    *    * @param resourceName resourceName    * @return can/cannot    */
 DECL|method|canDelayTo (String resourceName)
+specifier|public
+specifier|abstract
 name|boolean
 name|canDelayTo
 parameter_list|(
@@ -336,13 +411,15 @@ name|String
 name|resourceName
 parameter_list|)
 function_decl|;
-comment|/**    * Does this {@link AppPlacementAllocator} accept resources on nodePartition?    *    * @param nodePartition nodePartition    * @param schedulingMode schedulingMode    * @return accepted/not    */
-DECL|method|acceptNodePartition (String nodePartition, SchedulingMode schedulingMode)
+comment|/**    * Does this {@link AppPlacementAllocator} accept resources on given node?    *    * @param schedulerNode schedulerNode    * @param schedulingMode schedulingMode    * @return accepted/not    */
+DECL|method|precheckNode (SchedulerNode schedulerNode, SchedulingMode schedulingMode)
+specifier|public
+specifier|abstract
 name|boolean
-name|acceptNodePartition
+name|precheckNode
 parameter_list|(
-name|String
-name|nodePartition
+name|SchedulerNode
+name|schedulerNode
 parameter_list|,
 name|SchedulingMode
 name|schedulingMode
@@ -350,33 +427,65 @@ parameter_list|)
 function_decl|;
 comment|/**    * It is possible that one request can accept multiple node partition,    * So this method returns primary node partition for pending resource /    * headroom calculation.    *    * @return primary requested node partition    */
 DECL|method|getPrimaryRequestedNodePartition ()
+specifier|public
+specifier|abstract
 name|String
 name|getPrimaryRequestedNodePartition
 parameter_list|()
 function_decl|;
 comment|/**    * @return number of unique location asks with #pending greater than 0,    * (like /rack1, host1, etc.).    *    * TODO: This should be moved out of AppPlacementAllocator    * and should belong to specific delay scheduling policy impl.    * See YARN-7457 for more details.    */
 DECL|method|getUniqueLocationAsks ()
+specifier|public
+specifier|abstract
 name|int
 name|getUniqueLocationAsks
 parameter_list|()
 function_decl|;
 comment|/**    * Print human-readable requests to LOG debug.    */
 DECL|method|showRequests ()
+specifier|public
+specifier|abstract
 name|void
 name|showRequests
 parameter_list|()
 function_decl|;
-comment|/**    * Set app scheduling info.    *    * @param appSchedulingInfo    *          app info object.    */
-DECL|method|setAppSchedulingInfo (AppSchedulingInfo appSchedulingInfo)
+comment|/**    * Initialize this allocator, this will be called by Factory automatically    *    * @param appSchedulingInfo appSchedulingInfo    * @param schedulerRequestKey schedulerRequestKey    * @param rmContext rmContext    */
+DECL|method|initialize (AppSchedulingInfo appSchedulingInfo, SchedulerRequestKey schedulerRequestKey, RMContext rmContext)
+specifier|public
 name|void
-name|setAppSchedulingInfo
+name|initialize
 parameter_list|(
 name|AppSchedulingInfo
 name|appSchedulingInfo
+parameter_list|,
+name|SchedulerRequestKey
+name|schedulerRequestKey
+parameter_list|,
+name|RMContext
+name|rmContext
 parameter_list|)
-function_decl|;
+block|{
+name|this
+operator|.
+name|appSchedulingInfo
+operator|=
+name|appSchedulingInfo
+expr_stmt|;
+name|this
+operator|.
+name|rmContext
+operator|=
+name|rmContext
+expr_stmt|;
+name|this
+operator|.
+name|schedulerRequestKey
+operator|=
+name|schedulerRequestKey
+expr_stmt|;
 block|}
-end_interface
+block|}
+end_class
 
 end_unit
 

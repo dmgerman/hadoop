@@ -8695,6 +8695,8 @@ name|attemptId
 argument_list|,
 name|asks
 argument_list|,
+literal|null
+argument_list|,
 operator|new
 name|ArrayList
 argument_list|<
@@ -14249,6 +14251,8 @@ name|id11
 argument_list|,
 name|ask1
 argument_list|,
+literal|null
+argument_list|,
 operator|new
 name|ArrayList
 argument_list|<
@@ -14379,6 +14383,8 @@ name|id21
 argument_list|,
 name|ask2
 argument_list|,
+literal|null
+argument_list|,
 operator|new
 name|ArrayList
 argument_list|<
@@ -14504,6 +14510,8 @@ argument_list|(
 name|id22
 argument_list|,
 name|ask3
+argument_list|,
+literal|null
 argument_list|,
 operator|new
 name|ArrayList
@@ -17197,6 +17205,8 @@ name|ArrayList
 argument_list|<>
 argument_list|()
 argument_list|,
+literal|null
+argument_list|,
 name|Arrays
 operator|.
 name|asList
@@ -17801,6 +17811,8 @@ argument_list|(
 name|attemptId
 argument_list|,
 name|asks
+argument_list|,
+literal|null
 argument_list|,
 operator|new
 name|ArrayList
@@ -20608,6 +20620,8 @@ argument_list|(
 name|attId1
 argument_list|,
 name|update
+argument_list|,
+literal|null
 argument_list|,
 operator|new
 name|ArrayList
@@ -28370,6 +28384,8 @@ name|id11
 argument_list|,
 name|ask1
 argument_list|,
+literal|null
+argument_list|,
 operator|new
 name|ArrayList
 argument_list|<
@@ -28773,6 +28789,8 @@ operator|>
 name|emptyList
 argument_list|()
 argument_list|,
+literal|null
+argument_list|,
 name|Collections
 operator|.
 expr|<
@@ -28816,6 +28834,8 @@ name|ResourceRequest
 operator|>
 name|emptyList
 argument_list|()
+argument_list|,
+literal|null
 argument_list|,
 name|Collections
 operator|.
@@ -28888,6 +28908,8 @@ name|appAttemptId
 argument_list|,
 name|update
 argument_list|,
+literal|null
+argument_list|,
 name|Collections
 operator|.
 expr|<
@@ -28953,6 +28975,8 @@ argument_list|(
 name|appAttemptId
 argument_list|,
 name|update
+argument_list|,
+literal|null
 argument_list|,
 name|Collections
 operator|.
@@ -34427,6 +34451,8 @@ argument_list|(
 name|appAttemptId
 argument_list|,
 name|ask1
+argument_list|,
+literal|null
 argument_list|,
 operator|new
 name|ArrayList

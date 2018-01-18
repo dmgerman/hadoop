@@ -1328,16 +1328,23 @@ parameter_list|)
 throws|throws
 name|YarnException
 block|{
+comment|// Copy the scheduling request since we will clear it later after sending
+comment|// to dispatcher
 name|List
 argument_list|<
 name|SchedulingRequest
 argument_list|>
 name|schedulingRequests
 init|=
+operator|new
+name|ArrayList
+argument_list|<>
+argument_list|(
 name|request
 operator|.
 name|getSchedulingRequests
 argument_list|()
+argument_list|)
 decl_stmt|;
 name|dispatchRequestsForPlacement
 argument_list|(
@@ -1354,6 +1361,18 @@ expr_stmt|;
 name|schedulePlacedRequests
 argument_list|(
 name|appAttemptId
+argument_list|)
+expr_stmt|;
+comment|// Remove SchedulingRequest from AllocateRequest to avoid SchedulingRequest
+comment|// added to scheduler.
+name|request
+operator|.
+name|setSchedulingRequests
+argument_list|(
+name|Collections
+operator|.
+name|emptyList
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|nextAMSProcessor

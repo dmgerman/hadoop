@@ -2037,6 +2037,17 @@ argument_list|(
 name|config
 argument_list|)
 decl_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|CapacitySchedulerConfiguration
+operator|.
+name|SCHEDULING_REQUEST_ALLOWED
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 comment|// Define top-level queues
 name|conf
 operator|.

@@ -44,6 +44,24 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|SchedulingRequest
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|util
@@ -70,6 +88,11 @@ name|ResourceRequest
 argument_list|>
 name|requests
 decl_stmt|;
+DECL|field|schedulingRequest
+specifier|private
+name|SchedulingRequest
+name|schedulingRequest
+decl_stmt|;
 DECL|method|ContainerRequest (List<ResourceRequest> requests)
 specifier|public
 name|ContainerRequest
@@ -87,6 +110,31 @@ name|requests
 operator|=
 name|requests
 expr_stmt|;
+name|schedulingRequest
+operator|=
+literal|null
+expr_stmt|;
+block|}
+DECL|method|ContainerRequest (SchedulingRequest schedulingRequest)
+specifier|public
+name|ContainerRequest
+parameter_list|(
+name|SchedulingRequest
+name|schedulingRequest
+parameter_list|)
+block|{
+name|this
+operator|.
+name|schedulingRequest
+operator|=
+name|schedulingRequest
+expr_stmt|;
+name|this
+operator|.
+name|requests
+operator|=
+literal|null
+expr_stmt|;
 block|}
 DECL|method|getResourceRequests ()
 specifier|public
@@ -99,6 +147,16 @@ parameter_list|()
 block|{
 return|return
 name|requests
+return|;
+block|}
+DECL|method|getSchedulingRequest ()
+specifier|public
+name|SchedulingRequest
+name|getSchedulingRequest
+parameter_list|()
+block|{
+return|return
+name|schedulingRequest
 return|;
 block|}
 block|}

@@ -1017,7 +1017,7 @@ name|SCHEDULE_ASYNCHRONOUSLY_PREFIX
 operator|+
 literal|".scheduling-interval-ms"
 argument_list|,
-literal|100
+literal|0
 argument_list|)
 expr_stmt|;
 specifier|final

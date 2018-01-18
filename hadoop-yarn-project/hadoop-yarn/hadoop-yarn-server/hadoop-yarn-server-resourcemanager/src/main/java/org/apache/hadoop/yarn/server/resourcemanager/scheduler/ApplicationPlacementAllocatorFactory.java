@@ -82,6 +82,24 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|RMContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|scheduler
 operator|.
 name|common
@@ -112,6 +130,24 @@ name|AppPlacementAllocator
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|scheduler
+operator|.
+name|SchedulerRequestKey
+import|;
+end_import
+
 begin_comment
 comment|/**  * Factory class to build various application placement policies.  */
 end_comment
@@ -121,13 +157,13 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|class|ApplicationPlacementFactory
+DECL|class|ApplicationPlacementAllocatorFactory
 specifier|public
 class|class
-name|ApplicationPlacementFactory
+name|ApplicationPlacementAllocatorFactory
 block|{
 comment|/**    * Get AppPlacementAllocator related to the placement type requested.    *    * @param appPlacementAllocatorName    *          allocator class name.    * @return Specific AppPlacementAllocator instance based on type    */
-DECL|method|getAppPlacementAllocator ( String appPlacementAllocatorName)
+DECL|method|getAppPlacementAllocator ( String appPlacementAllocatorName, AppSchedulingInfo appSchedulingInfo, SchedulerRequestKey schedulerRequestKey, RMContext rmContext)
 specifier|public
 specifier|static
 name|AppPlacementAllocator
@@ -138,6 +174,15 @@ name|getAppPlacementAllocator
 parameter_list|(
 name|String
 name|appPlacementAllocatorName
+parameter_list|,
+name|AppSchedulingInfo
+name|appSchedulingInfo
+parameter_list|,
+name|SchedulerRequestKey
+name|schedulerRequestKey
+parameter_list|,
+name|RMContext
+name|rmContext
 parameter_list|)
 block|{
 name|Class
@@ -234,6 +279,17 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
+name|placementAllocatorInstance
+operator|.
+name|initialize
+argument_list|(
+name|appSchedulingInfo
+argument_list|,
+name|schedulerRequestKey
+argument_list|,
+name|rmContext
+argument_list|)
+expr_stmt|;
 return|return
 name|placementAllocatorInstance
 return|;

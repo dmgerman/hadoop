@@ -2099,7 +2099,7 @@ specifier|final
 name|boolean
 name|DEFAULT_RM_PLACEMENT_CONSTRAINTS_ENABLED
 init|=
-literal|true
+literal|false
 decl_stmt|;
 DECL|field|RM_PLACEMENT_CONSTRAINTS_RETRY_ATTEMPTS
 specifier|public

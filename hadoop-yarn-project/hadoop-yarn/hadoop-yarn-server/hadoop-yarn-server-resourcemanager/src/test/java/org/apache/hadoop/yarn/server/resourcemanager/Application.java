@@ -2320,6 +2320,8 @@ argument_list|(
 name|ask
 argument_list|)
 argument_list|,
+literal|null
+argument_list|,
 operator|new
 name|ArrayList
 argument_list|<
@@ -2903,7 +2905,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"updatePendingAsk:"
+literal|"updateResourceDemands:"
 operator|+
 literal|" application="
 operator|+
@@ -2988,7 +2990,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"updatePendingAsk:"
+literal|"updateResourceDemands:"
 operator|+
 literal|" application="
 operator|+
@@ -3059,7 +3061,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"updatePendingAsk:"
+literal|"updateResourceDemands:"
 operator|+
 literal|" application="
 operator|+

@@ -6298,6 +6298,8 @@ name|appAttempt
 operator|.
 name|amReqs
 argument_list|,
+literal|null
+argument_list|,
 name|EMPTY_CONTAINER_RELEASE_LIST
 argument_list|,
 name|amBlacklist
@@ -6410,6 +6412,8 @@ operator|.
 name|applicationAttemptId
 argument_list|,
 name|EMPTY_CONTAINER_REQUEST_LIST
+argument_list|,
+literal|null
 argument_list|,
 name|EMPTY_CONTAINER_RELEASE_LIST
 argument_list|,

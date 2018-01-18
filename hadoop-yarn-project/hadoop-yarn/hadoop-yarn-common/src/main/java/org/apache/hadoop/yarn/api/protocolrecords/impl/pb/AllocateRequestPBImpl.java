@@ -1080,6 +1080,11 @@ operator|==
 literal|null
 condition|)
 block|{
+name|builder
+operator|.
+name|clearSchedulingRequests
+argument_list|()
+expr_stmt|;
 return|return;
 block|}
 name|initSchedulingRequests

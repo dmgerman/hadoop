@@ -551,7 +551,7 @@ if|if
 condition|(
 name|PlacementConstraintsUtil
 operator|.
-name|canSatisfyConstraints
+name|canSatisfySingleConstraint
 argument_list|(
 name|appId
 argument_list|,

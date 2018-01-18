@@ -534,6 +534,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ResourceSizing
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|SchedulingRequest
 import|;
 end_import
@@ -5797,10 +5815,10 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Normalize a list of resource requests.    *    * @param asks resource requests    */
-DECL|method|normalizeRequests (List<ResourceRequest> asks)
+DECL|method|normalizeResourceRequests (List<ResourceRequest> asks)
 specifier|protected
 name|void
-name|normalizeRequests
+name|normalizeResourceRequests
 parameter_list|(
 name|List
 argument_list|<

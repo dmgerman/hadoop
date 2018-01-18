@@ -977,7 +977,7 @@ name|assertFalse
 argument_list|(
 name|PlacementConstraintsUtil
 operator|.
-name|canSatisfyConstraints
+name|canSatisfySingleConstraint
 argument_list|(
 name|appId1
 argument_list|,
@@ -997,7 +997,7 @@ name|assertFalse
 argument_list|(
 name|PlacementConstraintsUtil
 operator|.
-name|canSatisfyConstraints
+name|canSatisfySingleConstraint
 argument_list|(
 name|appId1
 argument_list|,
@@ -1195,7 +1195,7 @@ name|assertTrue
 argument_list|(
 name|PlacementConstraintsUtil
 operator|.
-name|canSatisfyConstraints
+name|canSatisfySingleConstraint
 argument_list|(
 name|appId1
 argument_list|,
@@ -1216,7 +1216,7 @@ name|assertFalse
 argument_list|(
 name|PlacementConstraintsUtil
 operator|.
-name|canSatisfyConstraints
+name|canSatisfySingleConstraint
 argument_list|(
 name|appId1
 argument_list|,
@@ -1236,7 +1236,7 @@ name|assertFalse
 argument_list|(
 name|PlacementConstraintsUtil
 operator|.
-name|canSatisfyConstraints
+name|canSatisfySingleConstraint
 argument_list|(
 name|appId1
 argument_list|,
@@ -1256,7 +1256,7 @@ name|assertFalse
 argument_list|(
 name|PlacementConstraintsUtil
 operator|.
-name|canSatisfyConstraints
+name|canSatisfySingleConstraint
 argument_list|(
 name|appId1
 argument_list|,
@@ -1490,7 +1490,7 @@ name|assertTrue
 argument_list|(
 name|PlacementConstraintsUtil
 operator|.
-name|canSatisfyConstraints
+name|canSatisfySingleConstraint
 argument_list|(
 name|appId1
 argument_list|,
@@ -1510,7 +1510,7 @@ name|assertTrue
 argument_list|(
 name|PlacementConstraintsUtil
 operator|.
-name|canSatisfyConstraints
+name|canSatisfySingleConstraint
 argument_list|(
 name|appId1
 argument_list|,
@@ -1531,7 +1531,7 @@ name|assertFalse
 argument_list|(
 name|PlacementConstraintsUtil
 operator|.
-name|canSatisfyConstraints
+name|canSatisfySingleConstraint
 argument_list|(
 name|appId1
 argument_list|,
@@ -1551,7 +1551,7 @@ name|assertFalse
 argument_list|(
 name|PlacementConstraintsUtil
 operator|.
-name|canSatisfyConstraints
+name|canSatisfySingleConstraint
 argument_list|(
 name|appId1
 argument_list|,
@@ -1785,7 +1785,7 @@ name|assertFalse
 argument_list|(
 name|PlacementConstraintsUtil
 operator|.
-name|canSatisfyConstraints
+name|canSatisfySingleConstraint
 argument_list|(
 name|appId1
 argument_list|,
@@ -1806,7 +1806,7 @@ name|assertTrue
 argument_list|(
 name|PlacementConstraintsUtil
 operator|.
-name|canSatisfyConstraints
+name|canSatisfySingleConstraint
 argument_list|(
 name|appId1
 argument_list|,
@@ -1826,7 +1826,7 @@ name|assertTrue
 argument_list|(
 name|PlacementConstraintsUtil
 operator|.
-name|canSatisfyConstraints
+name|canSatisfySingleConstraint
 argument_list|(
 name|appId1
 argument_list|,
@@ -1846,7 +1846,7 @@ name|assertTrue
 argument_list|(
 name|PlacementConstraintsUtil
 operator|.
-name|canSatisfyConstraints
+name|canSatisfySingleConstraint
 argument_list|(
 name|appId1
 argument_list|,
@@ -2080,7 +2080,7 @@ name|assertFalse
 argument_list|(
 name|PlacementConstraintsUtil
 operator|.
-name|canSatisfyConstraints
+name|canSatisfySingleConstraint
 argument_list|(
 name|appId1
 argument_list|,
@@ -2100,7 +2100,7 @@ name|assertFalse
 argument_list|(
 name|PlacementConstraintsUtil
 operator|.
-name|canSatisfyConstraints
+name|canSatisfySingleConstraint
 argument_list|(
 name|appId1
 argument_list|,
@@ -2121,7 +2121,7 @@ name|assertTrue
 argument_list|(
 name|PlacementConstraintsUtil
 operator|.
-name|canSatisfyConstraints
+name|canSatisfySingleConstraint
 argument_list|(
 name|appId1
 argument_list|,
@@ -2141,7 +2141,7 @@ name|assertTrue
 argument_list|(
 name|PlacementConstraintsUtil
 operator|.
-name|canSatisfyConstraints
+name|canSatisfySingleConstraint
 argument_list|(
 name|appId1
 argument_list|,
