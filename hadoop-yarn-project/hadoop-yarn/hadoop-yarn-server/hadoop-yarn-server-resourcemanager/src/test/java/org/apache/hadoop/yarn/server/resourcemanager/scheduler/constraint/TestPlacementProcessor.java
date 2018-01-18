@@ -1329,7 +1329,7 @@ name|MockNM
 argument_list|(
 literal|"h1:1234"
 argument_list|,
-literal|4096
+literal|8192
 argument_list|,
 name|rm
 operator|.
@@ -1357,7 +1357,7 @@ name|MockNM
 argument_list|(
 literal|"h2:1234"
 argument_list|,
-literal|4096
+literal|8192
 argument_list|,
 name|rm
 operator|.
@@ -1385,7 +1385,7 @@ name|MockNM
 argument_list|(
 literal|"h3:1234"
 argument_list|,
-literal|4096
+literal|8192
 argument_list|,
 name|rm
 operator|.
@@ -1413,7 +1413,7 @@ name|MockNM
 argument_list|(
 literal|"h4:1234"
 argument_list|,
-literal|4096
+literal|8192
 argument_list|,
 name|rm
 operator|.
@@ -1510,7 +1510,7 @@ name|NODE
 argument_list|,
 literal|0
 argument_list|,
-literal|4
+literal|3
 argument_list|,
 name|allocationTag
 argument_list|(
@@ -1789,7 +1789,7 @@ name|MockNM
 argument_list|(
 literal|"h1:1234"
 argument_list|,
-literal|4096
+literal|8192
 argument_list|,
 name|rm
 operator|.
@@ -1817,7 +1817,7 @@ name|MockNM
 argument_list|(
 literal|"h2:1234"
 argument_list|,
-literal|4096
+literal|8192
 argument_list|,
 name|rm
 operator|.
@@ -1845,7 +1845,7 @@ name|MockNM
 argument_list|(
 literal|"h3:1234"
 argument_list|,
-literal|4096
+literal|8192
 argument_list|,
 name|rm
 operator|.
@@ -1873,7 +1873,7 @@ name|MockNM
 argument_list|(
 literal|"h4:1234"
 argument_list|,
-literal|4096
+literal|8192
 argument_list|,
 name|rm
 operator|.
@@ -2427,7 +2427,7 @@ name|NODE
 argument_list|,
 literal|0
 argument_list|,
-literal|2
+literal|1
 argument_list|,
 name|allocationTag
 argument_list|(
@@ -4349,6 +4349,11 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|int
+name|attemptCount
+init|=
+literal|10
+decl_stmt|;
 while|while
 condition|(
 name|allocatedContainers
@@ -4357,6 +4362,10 @@ name|size
 argument_list|()
 operator|<
 name|containerNum
+operator|&&
+name|attemptCount
+operator|>
+literal|0
 condition|)
 block|{
 for|for
@@ -4414,6 +4423,9 @@ operator|.
 name|getAllocatedContainers
 argument_list|()
 argument_list|)
+expr_stmt|;
+name|attemptCount
+operator|--
 expr_stmt|;
 block|}
 block|}

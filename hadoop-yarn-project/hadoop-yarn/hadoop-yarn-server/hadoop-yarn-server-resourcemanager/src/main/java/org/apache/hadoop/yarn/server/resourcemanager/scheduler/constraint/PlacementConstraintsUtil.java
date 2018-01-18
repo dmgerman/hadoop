@@ -598,19 +598,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// Make sure Anti-affinity satisfies hard upper limit
-name|maxScopeCardinality
-operator|=
-name|desiredMaxCardinality
-operator|==
-literal|0
-condition|?
-name|maxScopeCardinality
-operator|-
-literal|1
-else|:
-name|maxScopeCardinality
-expr_stmt|;
 return|return
 operator|(
 name|desiredMinCardinality
@@ -630,7 +617,7 @@ operator|.
 name|MAX_VALUE
 operator|||
 name|maxScopeCardinality
-operator|<
+operator|<=
 name|desiredMaxCardinality
 operator|)
 return|;

@@ -1430,7 +1430,7 @@ operator|.
 name|getMaxCardinality
 argument_list|()
 operator|!=
-literal|1
+literal|0
 condition|)
 block|{
 name|throwExceptionWithMetaInfo

@@ -554,6 +554,17 @@ name|EMPTY_SET
 argument_list|)
 return|;
 block|}
+comment|/**    * Get Iterator type.    * @return Iterator type.    */
+DECL|method|getIteratorType ()
+specifier|public
+name|IteratorType
+name|getIteratorType
+parameter_list|()
+block|{
+return|return
+name|iteratorType
+return|;
+block|}
 block|}
 end_class
 
