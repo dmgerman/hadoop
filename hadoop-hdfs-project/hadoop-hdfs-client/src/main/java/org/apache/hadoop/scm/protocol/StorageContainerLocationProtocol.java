@@ -64,7 +64,7 @@ name|proto
 operator|.
 name|StorageContainerLocationProtocolProtos
 operator|.
-name|NotifyObjectCreationStageRequestProto
+name|ObjectStageChangeRequestProto
 import|;
 end_import
 
@@ -242,12 +242,12 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Notify from client when begin or finish creating objects like pipeline    * or containers on datanodes.    * Container will be in Operational state after that.    * @param type object type    * @param name object name    * @param stage creation stage    */
-DECL|method|notifyObjectCreationStage ( NotifyObjectCreationStageRequestProto.Type type, String name, NotifyObjectCreationStageRequestProto.Stage stage)
+comment|/**    * Notify from client when begin or finish creating objects like pipeline    * or containers on datanodes.    * Container will be in Operational state after that.    * @param type object type    * @param name object name    * @param op operation type (e.g., create, close, delete)    * @param stage creation stage    */
+DECL|method|notifyObjectStageChange ( ObjectStageChangeRequestProto.Type type, String name, ObjectStageChangeRequestProto.Op op, ObjectStageChangeRequestProto.Stage stage)
 name|void
-name|notifyObjectCreationStage
+name|notifyObjectStageChange
 parameter_list|(
-name|NotifyObjectCreationStageRequestProto
+name|ObjectStageChangeRequestProto
 operator|.
 name|Type
 name|type
@@ -255,7 +255,12 @@ parameter_list|,
 name|String
 name|name
 parameter_list|,
-name|NotifyObjectCreationStageRequestProto
+name|ObjectStageChangeRequestProto
+operator|.
+name|Op
+name|op
+parameter_list|,
+name|ObjectStageChangeRequestProto
 operator|.
 name|Stage
 name|stage
@@ -282,17 +287,6 @@ name|OzoneProtos
 operator|.
 name|NodePool
 name|nodePool
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-comment|/**    * Clsoe a container.    *    * @param containerName the name of the container to close.    * @throws IOException    */
-DECL|method|closeContainer (String containerName)
-name|void
-name|closeContainer
-parameter_list|(
-name|String
-name|containerName
 parameter_list|)
 throws|throws
 name|IOException

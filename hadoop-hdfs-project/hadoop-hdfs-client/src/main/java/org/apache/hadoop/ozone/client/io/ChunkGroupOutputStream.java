@@ -234,7 +234,7 @@ name|proto
 operator|.
 name|StorageContainerLocationProtocolProtos
 operator|.
-name|NotifyObjectCreationStageRequestProto
+name|ObjectStageChangeRequestProto
 import|;
 end_import
 
@@ -880,9 +880,9 @@ argument_list|)
 expr_stmt|;
 name|scmClient
 operator|.
-name|notifyObjectCreationStage
+name|notifyObjectStageChange
 argument_list|(
-name|NotifyObjectCreationStageRequestProto
+name|ObjectStageChangeRequestProto
 operator|.
 name|Type
 operator|.
@@ -890,7 +890,13 @@ name|container
 argument_list|,
 name|containerName
 argument_list|,
-name|NotifyObjectCreationStageRequestProto
+name|ObjectStageChangeRequestProto
+operator|.
+name|Op
+operator|.
+name|create
+argument_list|,
+name|ObjectStageChangeRequestProto
 operator|.
 name|Stage
 operator|.

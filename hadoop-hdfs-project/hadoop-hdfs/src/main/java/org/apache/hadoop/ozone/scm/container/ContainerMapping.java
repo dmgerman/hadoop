@@ -1390,83 +1390,6 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Override
-DECL|method|closeContainer (String containerName)
-specifier|public
-name|void
-name|closeContainer
-parameter_list|(
-name|String
-name|containerName
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|lock
-operator|.
-name|lock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
-name|OzoneProtos
-operator|.
-name|LifeCycleState
-name|newState
-init|=
-name|updateContainerState
-argument_list|(
-name|containerName
-argument_list|,
-name|OzoneProtos
-operator|.
-name|LifeCycleEvent
-operator|.
-name|CLOSE
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|newState
-operator|!=
-name|OzoneProtos
-operator|.
-name|LifeCycleState
-operator|.
-name|CLOSED
-condition|)
-block|{
-throw|throw
-operator|new
-name|SCMException
-argument_list|(
-literal|"Failed to close container "
-operator|+
-name|containerName
-operator|+
-literal|", reason : container in state "
-operator|+
-name|newState
-argument_list|,
-name|SCMException
-operator|.
-name|ResultCodes
-operator|.
-name|UNEXPECTED_CONTAINER_STATE
-argument_list|)
-throw|;
-block|}
-block|}
-finally|finally
-block|{
-name|lock
-operator|.
-name|unlock
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 comment|/** {@inheritDoc} Used by client to update container state on SCM. */
 annotation|@
 name|Override
@@ -1633,6 +1556,10 @@ break|break;
 case|case
 name|FINALIZE
 case|:
+comment|// TODO: we don't need a lease manager here for closing as the
+comment|// container report will include the container state after HDFS-13008
+comment|// If a client failed to update the container close state, DN container
+comment|// report from 3 DNs will be used to close the container eventually.
 break|break;
 case|case
 name|CLOSE
