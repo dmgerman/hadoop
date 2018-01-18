@@ -694,6 +694,8 @@ argument_list|(
 name|NODE
 argument_list|,
 literal|3
+argument_list|,
+literal|"spark"
 argument_list|)
 argument_list|,
 name|targetCardinality

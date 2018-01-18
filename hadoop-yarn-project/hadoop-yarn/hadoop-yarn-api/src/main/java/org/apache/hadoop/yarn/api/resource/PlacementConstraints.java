@@ -330,8 +330,8 @@ name|targetExpressions
 argument_list|)
 return|;
 block|}
-comment|/**    * Creates a constraint that restricts the number of allocations within a    * given scope (e.g., node or rack).    *    * For example, {@code cardinality(NODE, 3, 10)}, restricts the number of    * allocations per node to be no less than 3 and no more than 10.    *    * @param scope the scope of the constraint    * @param minCardinality determines the minimum number of allocations within    *          the scope    * @param maxCardinality determines the maximum number of allocations within    *          the scope    * @return the resulting placement constraint    */
-DECL|method|cardinality (String scope, int minCardinality, int maxCardinality)
+comment|/**    * Creates a constraint that restricts the number of allocations within a    * given scope (e.g., node or rack).    *    * For example, {@code cardinality(NODE, 3, 10)}, restricts the number of    * allocations per node to be no less than 3 and no more than 10.    *    * @param scope the scope of the constraint    * @param minCardinality determines the minimum number of allocations within    *          the scope    * @param maxCardinality determines the maximum number of allocations within    *          the scope    * @param allocationTags the constraint targets allocations with these tags    * @return the resulting placement constraint    */
+DECL|method|cardinality (String scope, int minCardinality, int maxCardinality, String... allocationTags)
 specifier|public
 specifier|static
 name|AbstractConstraint
@@ -345,6 +345,10 @@ name|minCardinality
 parameter_list|,
 name|int
 name|maxCardinality
+parameter_list|,
+name|String
+modifier|...
+name|allocationTags
 parameter_list|)
 block|{
 return|return
@@ -359,13 +363,15 @@ name|maxCardinality
 argument_list|,
 name|PlacementTargets
 operator|.
-name|self
-argument_list|()
+name|allocationTag
+argument_list|(
+name|allocationTags
+argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Similar to {@link #cardinality(String, int, int)}, but determines only the    * minimum cardinality (the maximum cardinality is unbound).    *    * @param scope the scope of the constraint    * @param minCardinality determines the minimum number of allocations within    *          the scope    * @return the resulting placement constraint    */
-DECL|method|minCardinality (String scope, int minCardinality)
+comment|/**    * Similar to {@link #cardinality(String, int, int, String...)}, but    * determines only the minimum cardinality (the maximum cardinality is    * unbound).    *    * @param scope the scope of the constraint    * @param minCardinality determines the minimum number of allocations within    *          the scope    * @param allocationTags the constraint targets allocations with these tags    * @return the resulting placement constraint    */
+DECL|method|minCardinality (String scope, int minCardinality, String... allocationTags)
 specifier|public
 specifier|static
 name|AbstractConstraint
@@ -376,6 +382,10 @@ name|scope
 parameter_list|,
 name|int
 name|minCardinality
+parameter_list|,
+name|String
+modifier|...
+name|allocationTags
 parameter_list|)
 block|{
 return|return
@@ -388,11 +398,13 @@ argument_list|,
 name|Integer
 operator|.
 name|MAX_VALUE
+argument_list|,
+name|allocationTags
 argument_list|)
 return|;
 block|}
-comment|/**    * Similar to {@link #cardinality(String, int, int)}, but determines only the    * maximum cardinality (the minimum can be as low as 0).    *    * @param scope the scope of the constraint    * @param maxCardinality determines the maximum number of allocations within    *          the scope    * @return the resulting placement constraint    */
-DECL|method|maxCardinality (String scope, int maxCardinality)
+comment|/**    * Similar to {@link #cardinality(String, int, int, String...)}, but    * determines only the maximum cardinality (the minimum can be as low as 0).    *    * @param scope the scope of the constraint    * @param maxCardinality determines the maximum number of allocations within    *          the scope    * @param allocationTags the constraint targets allocations with these tags    * @return the resulting placement constraint    */
+DECL|method|maxCardinality (String scope, int maxCardinality, String... allocationTags)
 specifier|public
 specifier|static
 name|AbstractConstraint
@@ -403,6 +415,10 @@ name|scope
 parameter_list|,
 name|int
 name|maxCardinality
+parameter_list|,
+name|String
+modifier|...
+name|allocationTags
 parameter_list|)
 block|{
 return|return
@@ -413,6 +429,8 @@ argument_list|,
 literal|0
 argument_list|,
 name|maxCardinality
+argument_list|,
+name|allocationTags
 argument_list|)
 return|;
 block|}
@@ -511,24 +529,6 @@ argument_list|,
 literal|null
 argument_list|,
 name|allocationTags
-argument_list|)
-return|;
-block|}
-comment|/**      * The default target expression that uses as target the allocation that      * specifies the constraint.      *      * @return the self-target      */
-DECL|method|self ()
-specifier|public
-specifier|static
-name|TargetExpression
-name|self
-parameter_list|()
-block|{
-return|return
-operator|new
-name|TargetExpression
-argument_list|(
-name|TargetType
-operator|.
-name|SELF
 argument_list|)
 return|;
 block|}

@@ -762,12 +762,9 @@ name|TargetType
 block|{
 DECL|enumConstant|NODE_ATTRIBUTE
 DECL|enumConstant|ALLOCATION_TAG
-DECL|enumConstant|SELF
 name|NODE_ATTRIBUTE
 block|,
 name|ALLOCATION_TAG
-block|,
-name|SELF
 block|}
 DECL|field|targetType
 specifier|private
@@ -1394,7 +1391,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Class that represents a cardinality constraint. Such a constraint the    * number of allocations within a given scope to some minimum and maximum    * values.    *    * It is a specialized version of the {@link SingleConstraint}, where the    * target is self (i.e., the allocation to which the constraint is attached).    */
+comment|/**    * Class that represents a cardinality constraint. Such a constraint allows    * the number of allocations with a specific set of tags and within a given    * scope to be between some minimum and maximum values.    *    * It is a specialized version of the {@link SingleConstraint}, where the    * target is a set of allocation tags.    */
 DECL|class|CardinalityConstraint
 specifier|public
 specifier|static
@@ -1418,7 +1415,15 @@ specifier|private
 name|int
 name|maxCardinality
 decl_stmt|;
-DECL|method|CardinalityConstraint (String scope, int minCardinality, int maxCardinality)
+DECL|field|allocationTags
+specifier|private
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|allocationTags
+decl_stmt|;
+DECL|method|CardinalityConstraint (String scope, int minCardinality, int maxCardinality, Set<String> allocationTags)
 specifier|public
 name|CardinalityConstraint
 parameter_list|(
@@ -1430,6 +1435,12 @@ name|minCardinality
 parameter_list|,
 name|int
 name|maxCardinality
+parameter_list|,
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|allocationTags
 parameter_list|)
 block|{
 name|this
@@ -1449,6 +1460,12 @@ operator|.
 name|maxCardinality
 operator|=
 name|maxCardinality
+expr_stmt|;
+name|this
+operator|.
+name|allocationTags
+operator|=
+name|allocationTags
 expr_stmt|;
 block|}
 comment|/**      * Get the scope of the constraint.      *      * @return the scope of the constraint      */
@@ -1482,6 +1499,20 @@ parameter_list|()
 block|{
 return|return
 name|maxCardinality
+return|;
+block|}
+comment|/**      * Get the allocation tags of the constraint.      *      * @return the allocation tags of the constraint      */
+DECL|method|getAllocationTags ()
+specifier|public
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getAllocationTags
+parameter_list|()
+block|{
+return|return
+name|allocationTags
 return|;
 block|}
 annotation|@
@@ -1585,11 +1616,13 @@ return|return
 literal|false
 return|;
 block|}
-return|return
+if|if
+condition|(
 name|scope
 operator|!=
 literal|null
 condition|?
+operator|!
 name|scope
 operator|.
 name|equals
@@ -1602,6 +1635,31 @@ else|:
 name|that
 operator|.
 name|scope
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+return|return
+name|allocationTags
+operator|!=
+literal|null
+condition|?
+name|allocationTags
+operator|.
+name|equals
+argument_list|(
+name|that
+operator|.
+name|allocationTags
+argument_list|)
+else|:
+name|that
+operator|.
+name|allocationTags
 operator|==
 literal|null
 return|;
@@ -1643,6 +1701,25 @@ operator|*
 name|result
 operator|+
 name|maxCardinality
+expr_stmt|;
+name|result
+operator|=
+literal|31
+operator|*
+name|result
+operator|+
+operator|(
+name|allocationTags
+operator|!=
+literal|null
+condition|?
+name|allocationTags
+operator|.
+name|hashCode
+argument_list|()
+else|:
+literal|0
+operator|)
 expr_stmt|;
 return|return
 name|result
