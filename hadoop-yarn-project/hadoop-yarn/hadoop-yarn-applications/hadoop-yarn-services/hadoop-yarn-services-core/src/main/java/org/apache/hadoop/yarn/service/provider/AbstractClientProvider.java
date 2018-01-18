@@ -498,7 +498,14 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"Src_file does not exist for config file: "
+literal|"Specified src_file does not exist on "
+operator|+
+name|fs
+operator|.
+name|getScheme
+argument_list|()
+operator|+
+literal|": "
 operator|+
 name|file
 operator|.

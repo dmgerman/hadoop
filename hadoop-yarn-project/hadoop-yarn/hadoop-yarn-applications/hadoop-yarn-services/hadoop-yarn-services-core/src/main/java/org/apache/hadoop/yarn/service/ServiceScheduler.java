@@ -2865,7 +2865,7 @@ name|SERVICE_ZK_PATH
 argument_list|,
 name|ServiceRegistryUtils
 operator|.
-name|mkClusterPath
+name|mkServiceHomePath
 argument_list|(
 name|user
 argument_list|,

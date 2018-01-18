@@ -3266,6 +3266,11 @@ argument_list|(
 name|serviceName
 argument_list|)
 expr_stmt|;
+name|boolean
+name|destroySucceed
+init|=
+literal|true
+decl_stmt|;
 if|if
 condition|(
 name|fileSystem
@@ -3331,6 +3336,26 @@ argument_list|)
 throw|;
 block|}
 block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Service '"
+operator|+
+name|serviceName
+operator|+
+literal|"' doesn't exist at hdfs path: "
+operator|+
+name|appDir
+argument_list|)
+expr_stmt|;
+name|destroySucceed
+operator|=
+literal|false
+expr_stmt|;
+block|}
 try|try
 block|{
 name|deleteZKNode
@@ -3369,6 +3394,17 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
+if|if
+condition|(
+name|getRegistryClient
+argument_list|()
+operator|.
+name|exists
+argument_list|(
+name|registryPath
+argument_list|)
+condition|)
+block|{
 name|getRegistryClient
 argument_list|()
 operator|.
@@ -3379,6 +3415,27 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Service '"
+operator|+
+name|serviceName
+operator|+
+literal|"' doesn't exist at ZK registry path: "
+operator|+
+name|registryPath
+argument_list|)
+expr_stmt|;
+name|destroySucceed
+operator|=
+literal|false
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -3398,11 +3455,16 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|destroySucceed
+condition|)
+block|{
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Destroyed cluster {}"
+literal|"Successfully destroyed service {}"
 argument_list|,
 name|serviceName
 argument_list|)
@@ -3410,6 +3472,25 @@ expr_stmt|;
 return|return
 name|EXIT_SUCCESS
 return|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Error on destroy '"
+operator|+
+name|serviceName
+operator|+
+literal|"': not found."
+argument_list|)
+expr_stmt|;
+return|return
+operator|-
+literal|1
+return|;
+block|}
 block|}
 DECL|method|getRegistryClient ()
 specifier|private
@@ -3461,7 +3542,7 @@ return|;
 block|}
 DECL|method|deleteZKNode (String clusterName)
 specifier|private
-name|void
+name|boolean
 name|deleteZKNode
 parameter_list|(
 name|String
@@ -3489,7 +3570,7 @@ name|zkPath
 init|=
 name|ServiceRegistryUtils
 operator|.
-name|mkClusterPath
+name|mkServiceHomePath
 argument_list|(
 name|user
 argument_list|,
@@ -3533,6 +3614,28 @@ operator|+
 name|zkPath
 argument_list|)
 expr_stmt|;
+return|return
+literal|true
+return|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Service '"
+operator|+
+name|clusterName
+operator|+
+literal|"' doesn't exist at ZK path: "
+operator|+
+name|zkPath
+argument_list|)
+expr_stmt|;
+return|return
+literal|false
+return|;
 block|}
 block|}
 DECL|method|getCuratorClient ()
@@ -6203,10 +6306,14 @@ name|appIdOrName
 argument_list|)
 decl_stmt|;
 return|return
-name|status
+name|ServiceApiUtil
 operator|.
-name|toString
-argument_list|()
+name|jsonSerDeser
+operator|.
+name|toJson
+argument_list|(
+name|status
+argument_list|)
 return|;
 block|}
 block|}

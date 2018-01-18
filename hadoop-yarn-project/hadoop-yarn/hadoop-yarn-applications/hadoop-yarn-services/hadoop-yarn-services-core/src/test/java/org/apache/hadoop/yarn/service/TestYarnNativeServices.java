@@ -769,7 +769,13 @@ argument_list|(
 literal|"Destroy the service"
 argument_list|)
 expr_stmt|;
-comment|//destroy the service and check the app dir is deleted from fs.
+comment|// destroy the service and check the app dir is deleted from fs.
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|0
+argument_list|,
 name|client
 operator|.
 name|actionDestroy
@@ -778,6 +784,7 @@ name|exampleApp
 operator|.
 name|getName
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// check the service dir on hdfs (in this case, local fs) are deleted.
@@ -791,6 +798,25 @@ operator|.
 name|exists
 argument_list|(
 name|appDir
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// check that destroying again does not succeed
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+operator|-
+literal|1
+argument_list|,
+name|client
+operator|.
+name|actionDestroy
+argument_list|(
+name|exampleApp
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;

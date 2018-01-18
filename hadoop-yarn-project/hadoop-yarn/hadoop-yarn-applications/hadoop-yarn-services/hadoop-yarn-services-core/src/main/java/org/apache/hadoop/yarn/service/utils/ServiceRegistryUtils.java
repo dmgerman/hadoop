@@ -62,62 +62,14 @@ specifier|public
 class|class
 name|ServiceRegistryUtils
 block|{
-comment|/**    * Base path for services    */
-DECL|field|ZK_SERVICES
+DECL|field|SVC_USERS
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|ZK_SERVICES
+name|SVC_USERS
 init|=
-literal|"services"
-decl_stmt|;
-comment|/**    * Base path for all Slider references    */
-DECL|field|ZK_SLIDER
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|ZK_SLIDER
-init|=
-literal|"slider"
-decl_stmt|;
-DECL|field|ZK_USERS
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|ZK_USERS
-init|=
-literal|"users"
-decl_stmt|;
-DECL|field|SVC_SLIDER
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|SVC_SLIDER
-init|=
-literal|"/"
-operator|+
-name|ZK_SERVICES
-operator|+
-literal|"/"
-operator|+
-name|ZK_SLIDER
-decl_stmt|;
-DECL|field|SVC_SLIDER_USERS
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|SVC_SLIDER_USERS
-init|=
-name|SVC_SLIDER
-operator|+
-literal|"/"
-operator|+
-name|ZK_USERS
+literal|"/services/yarn/users"
 decl_stmt|;
 comment|/**    * Get the registry path for an instance under the user's home node    * @param instanceName application instance    * @return a path to the registry location for this application instance.    */
 DECL|method|registryPathForInstance (String instanceName)
@@ -148,44 +100,44 @@ name|instanceName
 argument_list|)
 return|;
 block|}
-comment|/**  * Build the path to a cluster; exists once the cluster has come up.  * Even before that, a ZK watcher could wait for it.  * @param username user  * @param clustername name of the cluster  * @return a strin  */
-DECL|method|mkClusterPath (String username, String clustername)
+comment|/**  * Build the path to a service folder  * @param username user name  * @param serviceName service name  * @return the home path to the service  */
+DECL|method|mkServiceHomePath (String username, String serviceName)
 specifier|public
 specifier|static
 name|String
-name|mkClusterPath
+name|mkServiceHomePath
 parameter_list|(
 name|String
 name|username
 parameter_list|,
 name|String
-name|clustername
+name|serviceName
 parameter_list|)
 block|{
 return|return
-name|mkSliderUserPath
+name|mkUserHomePath
 argument_list|(
 name|username
 argument_list|)
 operator|+
 literal|"/"
 operator|+
-name|clustername
+name|serviceName
 return|;
 block|}
-comment|/**  * Build the path to a cluster; exists once the cluster has come up.  * Even before that, a ZK watcher could wait for it.  * @param username user  * @return a string  */
-DECL|method|mkSliderUserPath (String username)
+comment|/**    * Build the path to a user home folder;    */
+DECL|method|mkUserHomePath (String username)
 specifier|public
 specifier|static
 name|String
-name|mkSliderUserPath
+name|mkUserHomePath
 parameter_list|(
 name|String
 name|username
 parameter_list|)
 block|{
 return|return
-name|SVC_SLIDER_USERS
+name|SVC_USERS
 operator|+
 literal|"/"
 operator|+
