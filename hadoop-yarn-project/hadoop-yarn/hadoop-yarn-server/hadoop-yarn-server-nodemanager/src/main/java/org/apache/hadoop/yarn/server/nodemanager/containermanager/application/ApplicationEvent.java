@@ -89,6 +89,11 @@ block|{
 name|super
 argument_list|(
 name|appEventType
+argument_list|,
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|this

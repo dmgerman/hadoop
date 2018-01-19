@@ -2105,6 +2105,8 @@ name|wa
 operator|.
 name|app
 argument_list|)
+argument_list|,
+literal|"timestamp"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2535,6 +2537,8 @@ name|wa
 operator|.
 name|app
 argument_list|)
+argument_list|,
+literal|"timestamp"
 argument_list|)
 argument_list|)
 expr_stmt|;
