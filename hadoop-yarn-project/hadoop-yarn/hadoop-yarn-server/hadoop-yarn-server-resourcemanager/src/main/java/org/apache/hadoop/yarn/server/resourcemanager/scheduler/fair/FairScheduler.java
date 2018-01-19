@@ -2923,6 +2923,38 @@ block|}
 block|}
 else|else
 block|{
+comment|// During tests we do not always have an application object, handle
+comment|// it here but we probably should fix the tests
+if|if
+condition|(
+name|rmApp
+operator|!=
+literal|null
+operator|&&
+name|rmApp
+operator|.
+name|getApplicationSubmissionContext
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// Before we send out the event that the app is accepted is
+comment|// to set the queue in the submissionContext (needed on restore etc)
+name|rmApp
+operator|.
+name|getApplicationSubmissionContext
+argument_list|()
+operator|.
+name|setQueue
+argument_list|(
+name|queue
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|rmContext
 operator|.
 name|getDispatcher
