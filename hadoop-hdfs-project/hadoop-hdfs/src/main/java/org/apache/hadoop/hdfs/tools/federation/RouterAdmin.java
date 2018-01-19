@@ -698,7 +698,9 @@ literal|"\t[-rm<source>]\n"
 operator|+
 literal|"\t[-ls<path>]\n"
 operator|+
-literal|"\t[-setQuota<path> -ns<nsQuota> -ss<ssQuota>]\n"
+literal|"\t[-setQuota<path> -nsQuota<nsQuota> -ssQuota "
+operator|+
+literal|"<quota in bytes or quota size string>]\n"
 operator|+
 literal|"\t[-clrQuota<path>\n"
 decl_stmt|;
