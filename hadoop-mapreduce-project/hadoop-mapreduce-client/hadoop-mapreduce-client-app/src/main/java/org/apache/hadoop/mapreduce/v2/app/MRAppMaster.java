@@ -26,6 +26,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|FileNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -433,6 +443,22 @@ operator|.
 name|mapreduce
 operator|.
 name|JobContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|JobStatus
+operator|.
+name|State
 import|;
 end_import
 
@@ -6756,6 +6782,9 @@ expr_stmt|;
 name|processRecovery
 argument_list|()
 expr_stmt|;
+name|cleanUpPreviousJobOutput
+argument_list|()
+expr_stmt|;
 comment|// Current an AMInfo for the current AM generation.
 name|AMInfo
 name|amInfo
@@ -7514,6 +7543,97 @@ block|}
 return|return
 literal|true
 return|;
+block|}
+DECL|method|cleanUpPreviousJobOutput ()
+specifier|private
+name|void
+name|cleanUpPreviousJobOutput
+parameter_list|()
+block|{
+comment|// recovered application masters should not remove data from previous job
+if|if
+condition|(
+operator|!
+name|recovered
+argument_list|()
+condition|)
+block|{
+name|JobContext
+name|jobContext
+init|=
+name|getJobContextFromConf
+argument_list|(
+name|getConfig
+argument_list|()
+argument_list|)
+decl_stmt|;
+try|try
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Starting to clean up previous job's temporary files"
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|committer
+operator|.
+name|abortJob
+argument_list|(
+name|jobContext
+argument_list|,
+name|State
+operator|.
+name|FAILED
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Finished cleaning up previous job temporary files"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Previous job temporary files do not exist, "
+operator|+
+literal|"no clean up was necessary."
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+comment|// the clean up of a previous attempt is not critical to the success
+comment|// of this job - only logging the error
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Error while trying to clean up previous job's temporary "
+operator|+
+literal|"files"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 DECL|method|getPreviousJobHistoryStream ( Configuration conf, ApplicationAttemptId appAttemptId)
 specifier|private
