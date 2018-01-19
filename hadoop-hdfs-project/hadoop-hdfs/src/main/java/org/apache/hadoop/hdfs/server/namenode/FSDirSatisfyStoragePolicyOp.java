@@ -182,26 +182,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|snapshot
-operator|.
-name|Snapshot
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -502,54 +482,15 @@ argument_list|()
 operator|.
 name|numBlocks
 argument_list|()
-operator|!=
+operator|==
 literal|0
 condition|)
 block|{
-comment|// Adding directly in the storageMovementNeeded queue, So it can
-comment|// get more priority compare to directory.
-name|fsd
-operator|.
-name|getBlockManager
-argument_list|()
-operator|.
-name|getStoragePolicySatisfier
-argument_list|()
-operator|.
-name|satisfyStoragePolicy
-argument_list|(
-name|inode
-operator|.
-name|getId
-argument_list|()
-argument_list|)
-expr_stmt|;
 return|return
-literal|true
+literal|false
 return|;
 block|}
-elseif|else
-if|if
-condition|(
-name|inode
-operator|.
-name|isDirectory
-argument_list|()
-operator|&&
-name|inode
-operator|.
-name|asDirectory
-argument_list|()
-operator|.
-name|getChildrenNum
-argument_list|(
-name|Snapshot
-operator|.
-name|CURRENT_STATE_ID
-argument_list|)
-operator|>
-literal|0
-condition|)
+else|else
 block|{
 comment|// Adding directory in the pending queue, so FileInodeIdCollector process
 comment|// directory child in batch and recursively
@@ -558,10 +499,7 @@ operator|.
 name|getBlockManager
 argument_list|()
 operator|.
-name|getStoragePolicySatisfier
-argument_list|()
-operator|.
-name|addInodeToPendingDirQueue
+name|addSPSPathId
 argument_list|(
 name|inode
 operator|.
@@ -573,9 +511,6 @@ return|return
 literal|true
 return|;
 block|}
-return|return
-literal|false
-return|;
 block|}
 DECL|method|inodeHasSatisfyXAttr (INode inode)
 specifier|private

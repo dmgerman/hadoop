@@ -1120,7 +1120,7 @@ name|namenode
 operator|.
 name|sps
 operator|.
-name|Context
+name|SPSPathIds
 import|;
 end_import
 
@@ -1140,7 +1140,7 @@ name|namenode
 operator|.
 name|sps
 operator|.
-name|IntraSPSNameNodeContext
+name|SPSService
 import|;
 end_import
 
@@ -2432,12 +2432,11 @@ specifier|private
 name|boolean
 name|spsEnabled
 decl_stmt|;
-DECL|field|spsctxt
+DECL|field|spsPaths
 specifier|private
-name|Context
-name|spsctxt
-init|=
-literal|null
+specifier|final
+name|SPSPathIds
+name|spsPaths
 decl_stmt|;
 comment|/** Minimum live replicas needed for the datanode to be transitioned    * from ENTERING_MAINTENANCE to IN_MAINTENANCE.    */
 DECL|field|minReplicationToBeInMaintenance
@@ -2665,25 +2664,19 @@ operator|.
 name|DFS_STORAGE_POLICY_SATISFIER_ENABLED_DEFAULT
 argument_list|)
 expr_stmt|;
-name|spsctxt
-operator|=
-operator|new
-name|IntraSPSNameNodeContext
-argument_list|(
-name|namesystem
-argument_list|,
-name|this
-argument_list|,
-name|conf
-argument_list|)
-expr_stmt|;
 name|sps
 operator|=
 operator|new
 name|StoragePolicySatisfier
 argument_list|(
-name|spsctxt
+name|conf
 argument_list|)
+expr_stmt|;
+name|spsPaths
+operator|=
+operator|new
+name|SPSPathIds
+argument_list|()
 expr_stmt|;
 name|blockTokenSecretManager
 operator|=
@@ -23566,17 +23559,11 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
-comment|// TODO: FSDirectory will get removed via HDFS-12911 modularization work
 name|sps
 operator|.
 name|start
 argument_list|(
 literal|false
-argument_list|,
-name|namesystem
-operator|.
-name|getFSDirectory
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -23685,17 +23672,11 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
-comment|// TODO: FSDirectory will get removed via HDFS-12911 modularization work
 name|sps
 operator|.
 name|start
 argument_list|(
 literal|true
-argument_list|,
-name|namesystem
-operator|.
-name|getFSDirectory
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -23791,6 +23772,93 @@ name|checkStoragePolicySatisfyPathStatus
 argument_list|(
 name|path
 argument_list|)
+return|;
+block|}
+comment|/**    * @return SPS service instance.    */
+DECL|method|getSPSService ()
+specifier|public
+name|SPSService
+name|getSPSService
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|sps
+return|;
+block|}
+comment|/**    * @return the next SPS path id, on which path users has invoked to satisfy    *         storages.    */
+DECL|method|getNextSPSPathId ()
+specifier|public
+name|Long
+name|getNextSPSPathId
+parameter_list|()
+block|{
+return|return
+name|spsPaths
+operator|.
+name|pollNext
+argument_list|()
+return|;
+block|}
+comment|/**    * Removes the SPS path id from the list of sps paths.    */
+DECL|method|removeSPSPathId (long trackId)
+specifier|public
+name|void
+name|removeSPSPathId
+parameter_list|(
+name|long
+name|trackId
+parameter_list|)
+block|{
+name|spsPaths
+operator|.
+name|remove
+argument_list|(
+name|trackId
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Clean up all sps path ids.    */
+DECL|method|removeAllSPSPathIds ()
+specifier|public
+name|void
+name|removeAllSPSPathIds
+parameter_list|()
+block|{
+name|spsPaths
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Adds the sps path to SPSPathIds list.    */
+DECL|method|addSPSPathId (long id)
+specifier|public
+name|void
+name|addSPSPathId
+parameter_list|(
+name|long
+name|id
+parameter_list|)
+block|{
+name|spsPaths
+operator|.
+name|add
+argument_list|(
+name|id
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * @return true if sps enabled.    */
+DECL|method|isSPSEnabled ()
+specifier|public
+name|boolean
+name|isSPSEnabled
+parameter_list|()
+block|{
+return|return
+name|spsEnabled
 return|;
 block|}
 block|}

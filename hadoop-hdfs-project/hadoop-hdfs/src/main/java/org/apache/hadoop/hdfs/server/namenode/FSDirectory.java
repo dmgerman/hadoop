@@ -6498,6 +6498,17 @@ argument_list|,
 name|xaf
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|namesystem
+operator|.
+name|getBlockManager
+argument_list|()
+operator|.
+name|isSPSEnabled
+argument_list|()
+condition|)
+block|{
 name|addStoragePolicySatisfier
 argument_list|(
 operator|(
@@ -6508,6 +6519,7 @@ argument_list|,
 name|xaf
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}
@@ -6528,11 +6540,6 @@ condition|(
 name|xaf
 operator|==
 literal|null
-operator|||
-name|inode
-operator|.
-name|isDirectory
-argument_list|()
 condition|)
 block|{
 return|return;

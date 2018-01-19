@@ -140,6 +140,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|StorageType
@@ -434,24 +448,6 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|namenode
-operator|.
-name|FSDirectory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
 name|protocol
 operator|.
 name|BlockStorageMovementCommand
@@ -579,7 +575,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Setting storagePolicy on a file after the file write will only update the new  * storage policy type in Namespace, but physical block storage movement will  * not happen until user runs "Mover Tool" explicitly for such files. The  * StoragePolicySatisfier Daemon thread implemented for addressing the case  * where users may want to physically move the blocks by HDFS itself instead of  * running mover tool explicitly. Just calling client API to  * satisfyStoragePolicy on a file/dir will automatically trigger to move its  * physical storage locations as expected in asynchronous manner. Here Namenode  * will pick the file blocks which are expecting to change its storages, then it  * will build the mapping of source block location and expected storage type and  * location to move. After that this class will also prepare commands to send to  * Datanode for processing the physical block movements.  */
+comment|/**  * Setting storagePolicy on a file after the file write will only update the new  * storage policy type in Namespace, but physical block storage movement will  * not happen until user runs "Mover Tool" explicitly for such files. The  * StoragePolicySatisfier Daemon thread implemented for addressing the case  * where users may want to physically move the blocks by a dedidated daemon (can  * run inside Namenode or stand alone) instead of running mover tool explicitly.  * Just calling client API to satisfyStoragePolicy on a file/dir will  * automatically trigger to move its physical storage locations as expected in  * asynchronous manner. Here SPS will pick the file blocks which are expecting  * to change its storages, then it will build the mapping of source block  * location and expected storage type and location to move. After that this  * class will also prepare requests to send to Datanode for processing the  * physical block movements.  */
 end_comment
 
 begin_class
@@ -592,6 +588,8 @@ specifier|public
 class|class
 name|StoragePolicySatisfier
 implements|implements
+name|SPSService
+implements|,
 name|Runnable
 block|{
 DECL|field|LOG
@@ -617,13 +615,11 @@ name|storagePolicySatisfierThread
 decl_stmt|;
 DECL|field|storageMovementNeeded
 specifier|private
-specifier|final
 name|BlockStorageMovementNeeded
 name|storageMovementNeeded
 decl_stmt|;
 DECL|field|storageMovementsMonitor
 specifier|private
-specifier|final
 name|BlockStorageMovementAttemptedItems
 name|storageMovementsMonitor
 decl_stmt|;
@@ -654,10 +650,34 @@ name|blockMovementMaxRetry
 decl_stmt|;
 DECL|field|ctxt
 specifier|private
-specifier|final
 name|Context
 name|ctxt
 decl_stmt|;
+DECL|field|blockMoveTaskHandler
+specifier|private
+name|BlockMoveTaskHandler
+name|blockMoveTaskHandler
+decl_stmt|;
+DECL|field|conf
+specifier|private
+name|Configuration
+name|conf
+decl_stmt|;
+DECL|method|StoragePolicySatisfier (Configuration conf)
+specifier|public
+name|StoragePolicySatisfier
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|this
+operator|.
+name|conf
+operator|=
+name|conf
+expr_stmt|;
+block|}
 comment|/**    * Represents the collective analysis status for all blocks.    */
 DECL|class|BlocksMovingAnalysis
 specifier|private
@@ -749,19 +769,29 @@ name|blockMovingInfo
 expr_stmt|;
 block|}
 block|}
-DECL|method|StoragePolicySatisfier (Context ctxt)
+DECL|method|init (final Context context, final FileIdCollector fileIDCollector, final BlockMoveTaskHandler blockMovementTaskHandler)
 specifier|public
-name|StoragePolicySatisfier
+name|void
+name|init
 parameter_list|(
+specifier|final
 name|Context
-name|ctxt
+name|context
+parameter_list|,
+specifier|final
+name|FileIdCollector
+name|fileIDCollector
+parameter_list|,
+specifier|final
+name|BlockMoveTaskHandler
+name|blockMovementTaskHandler
 parameter_list|)
 block|{
 name|this
 operator|.
 name|ctxt
 operator|=
-name|ctxt
+name|context
 expr_stmt|;
 name|this
 operator|.
@@ -770,7 +800,9 @@ operator|=
 operator|new
 name|BlockStorageMovementNeeded
 argument_list|(
-name|ctxt
+name|context
+argument_list|,
+name|fileIDCollector
 argument_list|)
 expr_stmt|;
 name|this
@@ -780,10 +812,16 @@ operator|=
 operator|new
 name|BlockStorageMovementAttemptedItems
 argument_list|(
-name|ctxt
+name|this
 argument_list|,
 name|storageMovementNeeded
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|blockMoveTaskHandler
+operator|=
+name|blockMovementTaskHandler
 expr_stmt|;
 name|this
 operator|.
@@ -793,8 +831,6 @@ name|DFSUtil
 operator|.
 name|getSPSWorkMultiplier
 argument_list|(
-name|ctxt
-operator|.
 name|getConf
 argument_list|()
 argument_list|)
@@ -803,8 +839,6 @@ name|this
 operator|.
 name|blockMovementMaxRetry
 operator|=
-name|ctxt
-operator|.
 name|getConf
 argument_list|()
 operator|.
@@ -820,8 +854,10 @@ name|DFS_STORAGE_POLICY_SATISFIER_MAX_RETRY_ATTEMPTS_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Start storage policy satisfier demon thread. Also start block storage    * movements monitor for retry the attempts if needed.    *    * // TODO: FSDirectory will get removed via HDFS-12911 modularization work.    */
-DECL|method|start (boolean reconfigStart, FSDirectory fsd)
+comment|/**    * Start storage policy satisfier demon thread. Also start block storage    * movements monitor for retry the attempts if needed.    */
+annotation|@
+name|Override
+DECL|method|start (boolean reconfigStart)
 specifier|public
 specifier|synchronized
 name|void
@@ -829,23 +865,11 @@ name|start
 parameter_list|(
 name|boolean
 name|reconfigStart
-parameter_list|,
-name|FSDirectory
-name|fsd
 parameter_list|)
 block|{
 name|isRunning
 operator|=
 literal|true
-expr_stmt|;
-name|ctxt
-operator|.
-name|setSPSRunning
-argument_list|(
-name|this
-operator|::
-name|isRunning
-argument_list|)
 expr_stmt|;
 if|if
 condition|(
@@ -909,13 +933,6 @@ comment|// be stopped in all datanodes.
 name|addDropSPSWorkCommandsToAllDNs
 argument_list|()
 expr_stmt|;
-name|storageMovementNeeded
-operator|.
-name|init
-argument_list|(
-name|fsd
-argument_list|)
-expr_stmt|;
 name|storagePolicySatisfierThread
 operator|=
 operator|new
@@ -943,8 +960,16 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|storageMovementNeeded
+operator|.
+name|activate
+argument_list|()
+expr_stmt|;
 block|}
-comment|/**    * Disables storage policy satisfier by stopping its services.    *    * @param forceStop    *          true represents that it should stop SPS service by clearing all    *          pending SPS work    */
+annotation|@
+name|Override
 DECL|method|disable (boolean forceStop)
 specifier|public
 specifier|synchronized
@@ -1010,7 +1035,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Timed wait to stop storage policy satisfier daemon threads.    */
+annotation|@
+name|Override
 DECL|method|stopGracefully ()
 specifier|public
 specifier|synchronized
@@ -1029,6 +1055,15 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|this
+operator|.
+name|storageMovementsMonitor
+operator|!=
+literal|null
+condition|)
+block|{
 name|this
 operator|.
 name|storageMovementsMonitor
@@ -1036,6 +1071,7 @@ operator|.
 name|stopGracefully
 argument_list|()
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|storagePolicySatisfierThread
@@ -1062,7 +1098,8 @@ name|ie
 parameter_list|)
 block|{     }
 block|}
-comment|/**    * Check whether StoragePolicySatisfier is running.    * @return true if running    */
+annotation|@
+name|Override
 DECL|method|isRunning ()
 specifier|public
 name|boolean
@@ -1150,7 +1187,7 @@ literal|" retries. Removing inode "
 operator|+
 name|itemInfo
 operator|.
-name|getTrackId
+name|getFileId
 argument_list|()
 operator|+
 literal|" from the queue"
@@ -1172,7 +1209,7 @@ name|trackId
 init|=
 name|itemInfo
 operator|.
-name|getTrackId
+name|getFileId
 argument_list|()
 decl_stmt|;
 name|BlocksMovingAnalysis
@@ -1313,7 +1350,7 @@ argument_list|()
 argument_list|,
 name|itemInfo
 operator|.
-name|getTrackId
+name|getFileId
 argument_list|()
 argument_list|,
 name|monotonicNow
@@ -1358,8 +1395,8 @@ expr_stmt|;
 block|}
 name|itemInfo
 operator|.
-name|retryCount
-operator|++
+name|increRetryCount
+argument_list|()
 expr_stmt|;
 name|this
 operator|.
@@ -2031,11 +2068,13 @@ block|{
 comment|// Check for at least one block storage movement has been chosen
 try|try
 block|{
-name|ctxt
+name|blockMoveTaskHandler
 operator|.
-name|assignBlockMoveTaskToTargetNode
+name|submitMoveTask
 argument_list|(
 name|blkMovingInfo
+argument_list|,
+name|storageMovementsMonitor
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -2804,7 +2843,6 @@ operator|.
 name|dn
 argument_list|)
 expr_stmt|;
-comment|// TODO: We can increment scheduled block count for this node?
 block|}
 else|else
 block|{
@@ -3875,7 +3913,7 @@ return|return;
 block|}
 name|storageMovementsMonitor
 operator|.
-name|addReportedMovedBlocks
+name|notifyMovementTriedBlocks
 argument_list|(
 name|moveAttemptFinishedBlks
 operator|.
@@ -3887,7 +3925,7 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getAttemptedItemsMonitor ()
-name|BlockStorageMovementAttemptedItems
+name|BlockMovementListener
 name|getAttemptedItemsMonitor
 parameter_list|()
 block|{
@@ -3962,23 +4000,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|addInodeToPendingDirQueue (long id)
-specifier|public
-name|void
-name|addInodeToPendingDirQueue
-parameter_list|(
-name|long
-name|id
-parameter_list|)
-block|{
-name|storageMovementNeeded
-operator|.
-name|addToPendingDirQueue
-argument_list|(
-name|id
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**    * Clear queues for given track id.    */
 DECL|method|clearQueue (long trackId)
 specifier|public
@@ -3996,141 +4017,6 @@ argument_list|(
 name|trackId
 argument_list|)
 expr_stmt|;
-block|}
-comment|/**    * ItemInfo is a file info object for which need to satisfy the    * policy.    */
-DECL|class|ItemInfo
-specifier|public
-specifier|static
-class|class
-name|ItemInfo
-block|{
-DECL|field|startId
-specifier|private
-name|long
-name|startId
-decl_stmt|;
-DECL|field|trackId
-specifier|private
-name|long
-name|trackId
-decl_stmt|;
-DECL|field|retryCount
-specifier|private
-name|int
-name|retryCount
-decl_stmt|;
-DECL|method|ItemInfo (long startId, long trackId)
-specifier|public
-name|ItemInfo
-parameter_list|(
-name|long
-name|startId
-parameter_list|,
-name|long
-name|trackId
-parameter_list|)
-block|{
-name|this
-operator|.
-name|startId
-operator|=
-name|startId
-expr_stmt|;
-name|this
-operator|.
-name|trackId
-operator|=
-name|trackId
-expr_stmt|;
-comment|//set 0 when item is getting added first time in queue.
-name|this
-operator|.
-name|retryCount
-operator|=
-literal|0
-expr_stmt|;
-block|}
-DECL|method|ItemInfo (long startId, long trackId, int retryCount)
-specifier|public
-name|ItemInfo
-parameter_list|(
-name|long
-name|startId
-parameter_list|,
-name|long
-name|trackId
-parameter_list|,
-name|int
-name|retryCount
-parameter_list|)
-block|{
-name|this
-operator|.
-name|startId
-operator|=
-name|startId
-expr_stmt|;
-name|this
-operator|.
-name|trackId
-operator|=
-name|trackId
-expr_stmt|;
-name|this
-operator|.
-name|retryCount
-operator|=
-name|retryCount
-expr_stmt|;
-block|}
-comment|/**      * Return the start inode id of the current track Id.      */
-DECL|method|getStartId ()
-specifier|public
-name|long
-name|getStartId
-parameter_list|()
-block|{
-return|return
-name|startId
-return|;
-block|}
-comment|/**      * Return the File inode Id for which needs to satisfy the policy.      */
-DECL|method|getTrackId ()
-specifier|public
-name|long
-name|getTrackId
-parameter_list|()
-block|{
-return|return
-name|trackId
-return|;
-block|}
-comment|/**      * Returns true if the tracking path is a directory, false otherwise.      */
-DECL|method|isDir ()
-specifier|public
-name|boolean
-name|isDir
-parameter_list|()
-block|{
-return|return
-operator|(
-name|startId
-operator|!=
-name|trackId
-operator|)
-return|;
-block|}
-comment|/**      * Get the attempted retry count of the block for satisfy the policy.      */
-DECL|method|getRetryCount ()
-specifier|public
-name|int
-name|getRetryCount
-parameter_list|()
-block|{
-return|return
-name|retryCount
-return|;
-block|}
 block|}
 comment|/**    * This class contains information of an attempted blocks and its last    * attempted or reported time stamp. This is used by    * {@link BlockStorageMovementAttemptedItems#storageMovementAttemptedItems}.    */
 DECL|class|AttemptedItemInfo
@@ -4262,6 +4148,97 @@ argument_list|(
 name|path
 argument_list|)
 argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|addFileIdToProcess (ItemInfo trackInfo)
+specifier|public
+name|void
+name|addFileIdToProcess
+parameter_list|(
+name|ItemInfo
+name|trackInfo
+parameter_list|)
+block|{
+name|storageMovementNeeded
+operator|.
+name|add
+argument_list|(
+name|trackInfo
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|addAllFileIdsToProcess (long startId, List<ItemInfo> itemInfoList, boolean scanCompleted)
+specifier|public
+name|void
+name|addAllFileIdsToProcess
+parameter_list|(
+name|long
+name|startId
+parameter_list|,
+name|List
+argument_list|<
+name|ItemInfo
+argument_list|>
+name|itemInfoList
+parameter_list|,
+name|boolean
+name|scanCompleted
+parameter_list|)
+block|{
+name|getStorageMovementQueue
+argument_list|()
+operator|.
+name|addAll
+argument_list|(
+name|startId
+argument_list|,
+name|itemInfoList
+argument_list|,
+name|scanCompleted
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|processingQueueSize ()
+specifier|public
+name|int
+name|processingQueueSize
+parameter_list|()
+block|{
+return|return
+name|storageMovementNeeded
+operator|.
+name|size
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getConf ()
+specifier|public
+name|Configuration
+name|getConf
+parameter_list|()
+block|{
+return|return
+name|conf
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getStorageMovementQueue ()
+specifier|public
+name|BlockStorageMovementNeeded
+name|getStorageMovementQueue
+parameter_list|()
+block|{
+return|return
+name|storageMovementNeeded
 return|;
 block|}
 block|}

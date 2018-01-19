@@ -34,18 +34,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|function
-operator|.
-name|Supplier
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -69,20 +57,6 @@ operator|.
 name|classification
 operator|.
 name|InterfaceStability
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|conf
-operator|.
-name|Configuration
 import|;
 end_import
 
@@ -202,26 +176,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|protocol
-operator|.
-name|BlockStorageMovementCommand
-operator|.
-name|BlockMovingInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|net
 operator|.
 name|NetworkTopology
@@ -260,29 +214,11 @@ specifier|public
 interface|interface
 name|Context
 block|{
-comment|/**    * Returns configuration object.    */
-DECL|method|getConf ()
-name|Configuration
-name|getConf
-parameter_list|()
-function_decl|;
 comment|/**    * Returns true if the SPS is running, false otherwise.    */
 DECL|method|isRunning ()
 name|boolean
 name|isRunning
 parameter_list|()
-function_decl|;
-comment|/**    * Update the SPS running status.    *    * @param isSpsRunning    *          true represents running, false otherwise    */
-DECL|method|setSPSRunning (Supplier<Boolean> isSpsRunning)
-name|void
-name|setSPSRunning
-parameter_list|(
-name|Supplier
-argument_list|<
-name|Boolean
-argument_list|>
-name|isSpsRunning
-parameter_list|)
 function_decl|;
 comment|/**    * Returns true if the Namenode in safe mode, false otherwise.    */
 DECL|method|isInSafeMode ()
@@ -387,17 +323,6 @@ name|long
 name|inodeID
 parameter_list|)
 function_decl|;
-comment|/**    * Assign the given block movement task to the target node present in    * {@link BlockMovingInfo}.    *    * @param blkMovingInfo    *          block to storage info    * @throws IOException    */
-DECL|method|assignBlockMoveTaskToTargetNode (BlockMovingInfo blkMovingInfo)
-name|void
-name|assignBlockMoveTaskToTargetNode
-parameter_list|(
-name|BlockMovingInfo
-name|blkMovingInfo
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
 comment|/**    * Checks whether the given datanode has sufficient space to occupy the given    * blockSize data.    *    * @param dn    *          datanode info    * @param type    *          storage type    * @param blockSize    *          blockSize to be scheduled    * @return true if the given datanode has sufficient space to occupy blockSize    *         data, false otherwise.    */
 DECL|method|verifyTargetDatanodeHasSpaceForScheduling (DatanodeInfo dn, StorageType type, long blockSize)
 name|boolean
@@ -412,6 +337,27 @@ parameter_list|,
 name|long
 name|blockSize
 parameter_list|)
+function_decl|;
+comment|/**    * @return next SPS path id to process.    */
+DECL|method|getNextSPSPathId ()
+name|Long
+name|getNextSPSPathId
+parameter_list|()
+function_decl|;
+comment|/**    * Removes the SPS path id.    */
+DECL|method|removeSPSPathId (long pathId)
+name|void
+name|removeSPSPathId
+parameter_list|(
+name|long
+name|pathId
+parameter_list|)
+function_decl|;
+comment|/**    * Removes all SPS path ids.    */
+DECL|method|removeAllSPSPathIds ()
+name|void
+name|removeAllSPSPathIds
+parameter_list|()
 function_decl|;
 block|}
 end_interface

@@ -3100,20 +3100,30 @@ literal|"expectedAttemptedItemsCount={} actualAttemptedItemsCount={}"
 argument_list|,
 name|expectedBlkMovAttemptedCount
 argument_list|,
+operator|(
+operator|(
+name|BlockStorageMovementAttemptedItems
+operator|)
 name|sps
 operator|.
 name|getAttemptedItemsMonitor
 argument_list|()
+operator|)
 operator|.
 name|getAttemptedItemsCount
 argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
+operator|(
+operator|(
+name|BlockStorageMovementAttemptedItems
+operator|)
 name|sps
 operator|.
 name|getAttemptedItemsMonitor
 argument_list|()
+operator|)
 operator|.
 name|getAttemptedItemsCount
 argument_list|()
@@ -3395,7 +3405,7 @@ expr_stmt|;
 block|}
 comment|// Check whether the block movement attempt report has been arrived at the
 comment|// Namenode(SPS).
-DECL|method|waitForBlocksMovementAttemptReport (MiniDFSCluster cluster, long expectedMovementFinishedBlocksCount, int timeout)
+DECL|method|waitForBlocksMovementAttemptReport (MiniDFSCluster cluster, long expectedMoveFinishedBlks, int timeout)
 specifier|private
 name|void
 name|waitForBlocksMovementAttemptReport
@@ -3404,7 +3414,7 @@ name|MiniDFSCluster
 name|cluster
 parameter_list|,
 name|long
-name|expectedMovementFinishedBlocksCount
+name|expectedMoveFinishedBlks
 parameter_list|,
 name|int
 name|timeout
@@ -3467,27 +3477,37 @@ name|info
 argument_list|(
 literal|"MovementFinishedBlocks: expectedCount={} actualCount={}"
 argument_list|,
-name|expectedMovementFinishedBlocksCount
+name|expectedMoveFinishedBlks
 argument_list|,
+operator|(
+operator|(
+name|BlockStorageMovementAttemptedItems
+operator|)
 name|sps
 operator|.
 name|getAttemptedItemsMonitor
 argument_list|()
+operator|)
 operator|.
 name|getMovementFinishedBlocksCount
 argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
+operator|(
+operator|(
+name|BlockStorageMovementAttemptedItems
+operator|)
 name|sps
 operator|.
 name|getAttemptedItemsMonitor
 argument_list|()
+operator|)
 operator|.
 name|getMovementFinishedBlocksCount
 argument_list|()
 operator|>=
-name|expectedMovementFinishedBlocksCount
+name|expectedMoveFinishedBlks
 return|;
 block|}
 block|}
