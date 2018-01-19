@@ -988,12 +988,18 @@ name|ioe
 parameter_list|)
 block|{
 throw|throw
-operator|new
-name|IOException
+name|IOUtils
+operator|.
+name|wrapException
 argument_list|(
-literal|"Exception reading "
-operator|+
 name|filename
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+literal|"Credentials"
+operator|+
+literal|".readTokenStorageFile"
 argument_list|,
 name|ioe
 argument_list|)
