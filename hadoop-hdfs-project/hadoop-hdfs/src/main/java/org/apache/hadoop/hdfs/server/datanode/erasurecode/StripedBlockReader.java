@@ -600,6 +600,11 @@ return|return
 literal|null
 return|;
 block|}
+name|Peer
+name|peer
+init|=
+literal|null
+decl_stmt|;
 try|try
 block|{
 name|InetSocketAddress
@@ -647,9 +652,8 @@ index|]
 argument_list|)
 decl_stmt|;
 comment|/*          * This can be further improved if the replica is local, then we can          * read directly from DN and need to check the replica is FINALIZED          * state, notice we should not use short-circuit local read which          * requires config for domain-socket in UNIX or legacy config in          * Windows. The network distance value isn't used for this scenario.          *          * TODO: add proper tracer          */
-name|Peer
 name|peer
-init|=
+operator|=
 name|newConnectedPeer
 argument_list|(
 name|block
@@ -660,7 +664,7 @@ name|blockToken
 argument_list|,
 name|source
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 name|peer
@@ -736,6 +740,13 @@ argument_list|,
 name|source
 argument_list|,
 name|e
+argument_list|)
+expr_stmt|;
+name|IOUtils
+operator|.
+name|closeStream
+argument_list|(
+name|peer
 argument_list|)
 expr_stmt|;
 return|return
