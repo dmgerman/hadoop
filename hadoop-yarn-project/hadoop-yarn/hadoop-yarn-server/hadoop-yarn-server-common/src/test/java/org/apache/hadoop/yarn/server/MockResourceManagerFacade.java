@@ -2570,6 +2570,46 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|NodesToAttributesMappingRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|NodesToAttributesMappingResponse
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -2640,6 +2680,7 @@ name|HashSet
 argument_list|<>
 argument_list|()
 decl_stmt|;
+DECL|field|applicationContainerIdMap
 specifier|private
 name|HashMap
 argument_list|<
@@ -2650,12 +2691,18 @@ argument_list|<
 name|ContainerId
 argument_list|>
 argument_list|>
-DECL|field|applicationContainerIdMap
 name|applicationContainerIdMap
 init|=
 operator|new
 name|HashMap
-argument_list|<>
+argument_list|<
+name|ApplicationAttemptId
+argument_list|,
+name|List
+argument_list|<
+name|ContainerId
+argument_list|>
+argument_list|>
 argument_list|()
 decl_stmt|;
 DECL|field|containerIndex
@@ -2692,7 +2739,7 @@ literal|0
 argument_list|)
 decl_stmt|;
 comment|// True if the Mock RM is running, false otherwise.
-comment|// This property allows us to write tests for specific scenario as YARN RM
+comment|// This property allows us to write tests for specific scenario as Yarn RM
 comment|// down e.g. network issue, failover.
 DECL|field|isRunning
 specifier|private
@@ -4234,13 +4281,6 @@ name|appId
 argument_list|)
 throw|;
 block|}
-name|keepContainerOnUams
-operator|.
-name|remove
-argument_list|(
-name|appId
-argument_list|)
-expr_stmt|;
 block|}
 name|LOG
 operator|.
@@ -5431,6 +5471,25 @@ name|GetAllResourceTypeInfoResponse
 name|getResourceTypeInfo
 parameter_list|(
 name|GetAllResourceTypeInfoRequest
+name|request
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|mapAttributesToNodes (NodesToAttributesMappingRequest request)
+specifier|public
+name|NodesToAttributesMappingResponse
+name|mapAttributesToNodes
+parameter_list|(
+name|NodesToAttributesMappingRequest
 name|request
 parameter_list|)
 throws|throws
