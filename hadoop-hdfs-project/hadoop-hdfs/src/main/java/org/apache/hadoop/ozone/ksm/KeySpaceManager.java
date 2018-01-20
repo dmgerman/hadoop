@@ -1648,6 +1648,18 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
+DECL|method|getKeyManager ()
+specifier|public
+name|KeyManager
+name|getKeyManager
+parameter_list|()
+block|{
+return|return
+name|keyManager
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getScmInfo ()
 specifier|public
 name|ScmInfo

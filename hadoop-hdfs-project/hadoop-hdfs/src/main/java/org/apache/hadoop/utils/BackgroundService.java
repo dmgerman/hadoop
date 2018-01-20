@@ -282,6 +282,12 @@ specifier|final
 name|TimeUnit
 name|unit
 decl_stmt|;
+DECL|field|service
+specifier|private
+specifier|final
+name|PeriodicalTask
+name|service
+decl_stmt|;
 DECL|method|BackgroundService (String serviceName, long interval, TimeUnit unit, int threadPoolSize, long serviceTimeout)
 specifier|public
 name|BackgroundService
@@ -384,6 +390,12 @@ argument_list|,
 name|threadFactory
 argument_list|)
 expr_stmt|;
+name|service
+operator|=
+operator|new
+name|PeriodicalTask
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|getExecutorService ()
 specifier|protected
@@ -412,6 +424,20 @@ name|activeCount
 argument_list|()
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|triggerBackgroundTaskForTesting ()
+specifier|public
+name|void
+name|triggerBackgroundTaskForTesting
+parameter_list|()
+block|{
+name|service
+operator|.
+name|run
+argument_list|()
+expr_stmt|;
+block|}
 comment|// start service
 DECL|method|start ()
 specifier|public
@@ -423,9 +449,7 @@ name|exec
 operator|.
 name|scheduleWithFixedDelay
 argument_list|(
-operator|new
-name|PeriodicalTask
-argument_list|()
+name|service
 argument_list|,
 literal|0
 argument_list|,
@@ -454,6 +478,7 @@ annotation|@
 name|Override
 DECL|method|run ()
 specifier|public
+specifier|synchronized
 name|void
 name|run
 parameter_list|()
