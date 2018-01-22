@@ -1121,14 +1121,12 @@ argument_list|(
 name|ns
 argument_list|,
 name|numLevels
-argument_list|)
-expr_stmt|;
-name|metricsProxy
-operator|.
-name|setDelegate
-argument_list|(
+argument_list|,
 name|this
 argument_list|)
+expr_stmt|;
+name|recomputeScheduleCache
+argument_list|()
 expr_stmt|;
 block|}
 comment|// Load configs
@@ -3146,7 +3144,7 @@ specifier|private
 name|ObjectName
 name|decayRpcSchedulerInfoBeanName
 decl_stmt|;
-DECL|method|MetricsProxy (String namespace, int numLevels)
+DECL|method|MetricsProxy (String namespace, int numLevels, DecayRpcScheduler drs)
 specifier|private
 name|MetricsProxy
 parameter_list|(
@@ -3155,6 +3153,9 @@ name|namespace
 parameter_list|,
 name|int
 name|numLevels
+parameter_list|,
+name|DecayRpcScheduler
+name|drs
 parameter_list|)
 block|{
 name|averageResponseTimeDefault
@@ -3172,6 +3173,11 @@ name|long
 index|[
 name|numLevels
 index|]
+expr_stmt|;
+name|setDelegate
+argument_list|(
+name|drs
+argument_list|)
 expr_stmt|;
 name|decayRpcSchedulerInfoBeanName
 operator|=
@@ -3194,7 +3200,7 @@ name|namespace
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getInstance (String namespace, int numLevels)
+DECL|method|getInstance (String namespace, int numLevels, DecayRpcScheduler drs)
 specifier|public
 specifier|static
 specifier|synchronized
@@ -3206,6 +3212,9 @@ name|namespace
 parameter_list|,
 name|int
 name|numLevels
+parameter_list|,
+name|DecayRpcScheduler
+name|drs
 parameter_list|)
 block|{
 name|MetricsProxy
@@ -3234,6 +3243,8 @@ argument_list|(
 name|namespace
 argument_list|,
 name|numLevels
+argument_list|,
+name|drs
 argument_list|)
 expr_stmt|;
 name|INSTANCES
@@ -3243,6 +3254,28 @@ argument_list|(
 name|namespace
 argument_list|,
 name|mp
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|drs
+operator|!=
+name|mp
+operator|.
+name|delegate
+operator|.
+name|get
+argument_list|()
+condition|)
+block|{
+comment|// in case of delegate is reclaimed, we should set it again
+name|mp
+operator|.
+name|setDelegate
+argument_list|(
+name|drs
 argument_list|)
 expr_stmt|;
 block|}
