@@ -571,14 +571,11 @@ if|if
 condition|(
 name|PlacementConstraintsUtil
 operator|.
-name|canSatisfySingleConstraint
+name|canSatisfyConstraints
 argument_list|(
 name|appId
 argument_list|,
 name|schedulingRequest
-operator|.
-name|getAllocationTags
-argument_list|()
 argument_list|,
 name|schedulerNode
 argument_list|,
