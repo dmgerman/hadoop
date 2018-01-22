@@ -6271,6 +6271,28 @@ name|DEFAULT_NM_DOCKER_DEFAULT_CONTAINER_NETWORK
 init|=
 literal|"host"
 decl_stmt|;
+comment|/** Allow host pid namespace for containers. Use with care. */
+DECL|field|NM_DOCKER_ALLOW_HOST_PID_NAMESPACE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_DOCKER_ALLOW_HOST_PID_NAMESPACE
+init|=
+name|DOCKER_CONTAINER_RUNTIME_PREFIX
+operator|+
+literal|"host-pid-namespace.allowed"
+decl_stmt|;
+comment|/** Host pid namespace for containers is disabled by default. */
+DECL|field|DEFAULT_NM_DOCKER_ALLOW_HOST_PID_NAMESPACE
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_NM_DOCKER_ALLOW_HOST_PID_NAMESPACE
+init|=
+literal|false
+decl_stmt|;
 comment|/**    * Whether or not users are allowed to request that Docker containers honor    * the debug deletion delay. This is useful for troubleshooting Docker    * container related launch failures.    */
 DECL|field|NM_DOCKER_ALLOW_DELAYED_REMOVAL
 specifier|public

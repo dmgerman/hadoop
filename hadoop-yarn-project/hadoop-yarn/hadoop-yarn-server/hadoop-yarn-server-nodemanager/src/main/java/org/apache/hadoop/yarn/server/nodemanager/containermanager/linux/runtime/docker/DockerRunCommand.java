@@ -215,6 +215,28 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|setPidNamespace (String type)
+specifier|public
+name|DockerRunCommand
+name|setPidNamespace
+parameter_list|(
+name|String
+name|type
+parameter_list|)
+block|{
+name|super
+operator|.
+name|addCommandArguments
+argument_list|(
+literal|"pid"
+argument_list|,
+name|type
+argument_list|)
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|addMountLocation (String sourcePath, String destinationPath, boolean createSource)
 specifier|public
 name|DockerRunCommand
