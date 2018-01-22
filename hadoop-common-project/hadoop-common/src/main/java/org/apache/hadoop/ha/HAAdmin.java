@@ -2897,7 +2897,7 @@ literal|0
 return|;
 block|}
 DECL|class|UsageInfo
-specifier|protected
+specifier|public
 specifier|static
 class|class
 name|UsageInfo
