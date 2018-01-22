@@ -329,7 +329,7 @@ name|getName
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|/** Increment request grant-able by the RM scheduler.    * These properties are looked up in the yarn-site.xml.    * Kept for backward-compatibility - the new preferred way to configure the    * increment is the yarn.resource-types.{RESOURCE_NAME}.increment-allocation    * property, specifically: yarn.resource-types.memory-mb.increment-allocation    * for memory and yarn.resource-types.vcores.increment-allocation for CPU */
+comment|/**    * Resource Increment request grant-able by the FairScheduler.    * This property is looked up in the yarn-site.xml.    * @deprecated The preferred way to configure the increment is by using the    * yarn.resource-types.{RESOURCE_NAME}.increment-allocation property,    * for memory: yarn.resource-types.memory-mb.increment-allocation    */
 annotation|@
 name|Deprecated
 DECL|field|RM_SCHEDULER_INCREMENT_ALLOCATION_MB
@@ -345,6 +345,8 @@ name|YARN_PREFIX
 operator|+
 literal|"scheduler.increment-allocation-mb"
 decl_stmt|;
+annotation|@
+name|Deprecated
 DECL|field|DEFAULT_RM_SCHEDULER_INCREMENT_ALLOCATION_MB
 specifier|public
 specifier|static
@@ -354,6 +356,7 @@ name|DEFAULT_RM_SCHEDULER_INCREMENT_ALLOCATION_MB
 init|=
 literal|1024
 decl_stmt|;
+comment|/**    * Resource Increment request grant-able by the FairScheduler.    * This property is looked up in the yarn-site.xml.    * @deprecated The preferred way to configure the increment is by using the    * yarn.resource-types.{RESOURCE_NAME}.increment-allocation property,    * for CPU: yarn.resource-types.vcores.increment-allocation    */
 annotation|@
 name|Deprecated
 DECL|field|RM_SCHEDULER_INCREMENT_ALLOCATION_VCORES
@@ -369,6 +372,8 @@ name|YARN_PREFIX
 operator|+
 literal|"scheduler.increment-allocation-vcores"
 decl_stmt|;
+annotation|@
+name|Deprecated
 DECL|field|DEFAULT_RM_SCHEDULER_INCREMENT_ALLOCATION_VCORES
 specifier|public
 specifier|static

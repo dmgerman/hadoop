@@ -7259,9 +7259,9 @@ expr_stmt|;
 comment|// Asked for less than increment allocation.
 name|assertEquals
 argument_list|(
-name|FairSchedulerConfiguration
+name|YarnConfiguration
 operator|.
-name|DEFAULT_RM_SCHEDULER_INCREMENT_ALLOCATION_MB
+name|DEFAULT_RM_SCHEDULER_MINIMUM_ALLOCATION_MB
 argument_list|,
 name|scheduler
 operator|.
@@ -14154,9 +14154,9 @@ expr_stmt|;
 name|int
 name|minReqSize
 init|=
-name|FairSchedulerConfiguration
+name|YarnConfiguration
 operator|.
-name|DEFAULT_RM_SCHEDULER_INCREMENT_ALLOCATION_MB
+name|DEFAULT_RM_SCHEDULER_MINIMUM_ALLOCATION_MB
 decl_stmt|;
 comment|// First ask, queue1 requests 1 large (minReqSize * 2).
 name|ApplicationAttemptId
