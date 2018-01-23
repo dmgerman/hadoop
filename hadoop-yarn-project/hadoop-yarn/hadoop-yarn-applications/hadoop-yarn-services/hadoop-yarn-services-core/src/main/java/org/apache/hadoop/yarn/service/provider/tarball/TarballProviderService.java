@@ -242,9 +242,6 @@ argument_list|(
 literal|"Package doesn't exist as a resource: "
 operator|+
 name|artifact
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -255,9 +252,6 @@ argument_list|(
 literal|"Adding resource {}"
 argument_list|,
 name|artifact
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|LocalResourceType

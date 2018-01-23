@@ -283,6 +283,18 @@ name|DEFAULT_CONTAINER_RECOVERY_TIMEOUT_MS
 init|=
 literal|120000
 decl_stmt|;
+comment|/**    * The dependency tarball file location.    */
+DECL|field|DEPENDENCY_TARBALL_PATH
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEPENDENCY_TARBALL_PATH
+init|=
+name|YARN_SERVICE_PREFIX
+operator|+
+literal|"framework.path"
+decl_stmt|;
 comment|/**    * Get long value for the property. First get from the userConf, if not    * present, get from systemConf.    *    * @param name name of the property    * @param defaultValue default value of the property, if it is not defined in    *                     userConf and systemConf.    * @param userConf Configuration provided by client in the JSON definition    * @param systemConf The YarnConfiguration in the system.    * @return long value for the property    */
 DECL|method|getLong (String name, long defaultValue, Configuration userConf, org.apache.hadoop.conf.Configuration systemConf)
 specifier|public

@@ -527,17 +527,20 @@ name|IOException
 throws|,
 name|YarnException
 function_decl|;
-comment|/**    *<p>    * Upload AM dependencies to HDFS. This makes future application launches    * faster since the dependencies do not have to be uploaded on each launch.    *</p>    *    * @return exit code    * @throws IOException IOException    * @throws YarnException exception in client or server    */
+comment|/**    *<p>    * Upload AM dependencies to HDFS. This makes future application launches    * faster since the dependencies do not have to be uploaded on each launch.    *</p>    *    * @param destinationFolder    *          an optional HDFS folder where dependency tarball will be uploaded    * @return exit code    * @throws IOException    *           IOException    * @throws YarnException    *           exception in client or server    */
 annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|method|enableFastLaunch ()
+DECL|method|enableFastLaunch (String destinationFolder)
 specifier|public
 specifier|abstract
 name|int
 name|enableFastLaunch
-parameter_list|()
+parameter_list|(
+name|String
+name|destinationFolder
+parameter_list|)
 throws|throws
 name|IOException
 throws|,

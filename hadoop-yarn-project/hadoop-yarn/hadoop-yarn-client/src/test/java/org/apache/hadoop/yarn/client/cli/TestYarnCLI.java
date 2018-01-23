@@ -16755,7 +16755,7 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|" -enableFastLaunch                        Uploads AM dependencies to HDFS"
+literal|" -enableFastLaunch<Destination Folder>   Uploads AM dependencies to HDFS"
 argument_list|)
 expr_stmt|;
 name|pw
@@ -16784,6 +16784,27 @@ operator|.
 name|println
 argument_list|(
 literal|"                                          implementation to use."
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          Optionally a destination folder"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          for the tarball can be"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"                                          specified."
 argument_list|)
 expr_stmt|;
 name|pw

@@ -1623,13 +1623,15 @@ name|addOption
 argument_list|(
 name|ENABLE_FAST_LAUNCH
 argument_list|,
-literal|false
+literal|true
 argument_list|,
 literal|"Uploads AM dependencies "
 operator|+
-literal|"to HDFS to make future launches faster.  Supports -appTypes option"
+literal|"to HDFS to make future launches faster. Supports -appTypes option "
 operator|+
-literal|" to specify which client implementation to use."
+literal|"to specify which client implementation to use. Optionally a "
+operator|+
+literal|"destination folder for the tarball can be specified."
 argument_list|)
 expr_stmt|;
 name|opts
@@ -1750,6 +1752,30 @@ operator|.
 name|setArgs
 argument_list|(
 literal|2
+argument_list|)
+expr_stmt|;
+name|opts
+operator|.
+name|getOption
+argument_list|(
+name|ENABLE_FAST_LAUNCH
+argument_list|)
+operator|.
+name|setOptionalArg
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|opts
+operator|.
+name|getOption
+argument_list|(
+name|ENABLE_FAST_LAUNCH
+argument_list|)
+operator|.
+name|setArgName
+argument_list|(
+literal|"Destination Folder"
 argument_list|)
 expr_stmt|;
 block|}
@@ -3675,6 +3701,16 @@ argument_list|(
 name|cliParser
 argument_list|)
 decl_stmt|;
+name|String
+name|uploadDestinationFolder
+init|=
+name|cliParser
+operator|.
+name|getOptionValue
+argument_list|(
+name|ENABLE_FAST_LAUNCH
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|hasAnyOtherCLIOptions
@@ -3712,7 +3748,9 @@ argument_list|()
 argument_list|)
 operator|.
 name|enableFastLaunch
-argument_list|()
+argument_list|(
+name|uploadDestinationFolder
+argument_list|)
 return|;
 block|}
 elseif|else

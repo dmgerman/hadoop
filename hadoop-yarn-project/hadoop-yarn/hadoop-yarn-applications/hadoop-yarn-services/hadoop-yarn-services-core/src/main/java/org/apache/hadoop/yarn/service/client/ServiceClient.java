@@ -456,6 +456,24 @@ name|yarn
 operator|.
 name|client
 operator|.
+name|cli
+operator|.
+name|ApplicationCLI
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|client
+operator|.
 name|util
 operator|.
 name|YarnClientUtils
@@ -5037,19 +5055,9 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|debug
+name|info
 argument_list|(
 literal|"Loading lib tar from "
-operator|+
-name|fs
-operator|.
-name|getFileSystem
-argument_list|()
-operator|.
-name|getScheme
-argument_list|()
-operator|+
-literal|":/"
 operator|+
 name|dependencyLibTarGzip
 argument_list|)
@@ -5064,6 +5072,27 @@ expr_stmt|;
 block|}
 else|else
 block|{
+if|if
+condition|(
+name|dependencyLibTarGzip
+operator|!=
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Property {} has a value {}, but is not a valid file"
+argument_list|,
+name|YarnServiceConf
+operator|.
+name|DEPENDENCY_TARBALL_PATH
+argument_list|,
+name|dependencyLibTarGzip
+argument_list|)
+expr_stmt|;
+block|}
 name|String
 index|[]
 name|libs
@@ -5079,9 +5108,19 @@ name|info
 argument_list|(
 literal|"Uploading all dependency jars to HDFS. For faster submission of"
 operator|+
-literal|" apps, pre-upload dependency jars to HDFS "
+literal|" apps, set config property {} to the dependency tarball location."
 operator|+
-literal|"using command: yarn app -enableFastLaunch"
+literal|" Dependency tarball can be uploaded to any HDFS path directly"
+operator|+
+literal|" or by using command: yarn app -{} [<Destination Folder>]"
+argument_list|,
+name|YarnServiceConf
+operator|.
+name|DEPENDENCY_TARBALL_PATH
+argument_list|,
+name|ApplicationCLI
+operator|.
+name|ENABLE_FAST_LAUNCH
 argument_list|)
 expr_stmt|;
 for|for
@@ -6621,11 +6660,14 @@ operator|.
 name|yarnClient
 return|;
 block|}
-DECL|method|enableFastLaunch ()
+DECL|method|enableFastLaunch (String destinationFolder)
 specifier|public
 name|int
 name|enableFastLaunch
-parameter_list|()
+parameter_list|(
+name|String
+name|destinationFolder
+parameter_list|)
 throws|throws
 name|IOException
 throws|,
@@ -6634,15 +6676,20 @@ block|{
 return|return
 name|actionDependency
 argument_list|(
+name|destinationFolder
+argument_list|,
 literal|true
 argument_list|)
 return|;
 block|}
-DECL|method|actionDependency (boolean overwrite)
+DECL|method|actionDependency (String destinationFolder, boolean overwrite)
 specifier|public
 name|int
 name|actionDependency
 parameter_list|(
+name|String
+name|destinationFolder
+parameter_list|,
 name|boolean
 name|overwrite
 parameter_list|)
@@ -6668,13 +6715,46 @@ argument_list|,
 name|currentUser
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|destinationFolder
+operator|==
+literal|null
+condition|)
+block|{
+name|destinationFolder
+operator|=
+name|String
+operator|.
+name|format
+argument_list|(
+name|YarnServiceConstants
+operator|.
+name|DEPENDENCY_DIR
+argument_list|,
+name|VersionInfo
+operator|.
+name|getVersion
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|Path
 name|dependencyLibTarGzip
 init|=
-name|fs
+operator|new
+name|Path
+argument_list|(
+name|destinationFolder
+argument_list|,
+name|YarnServiceConstants
 operator|.
-name|getDependencyTarGzip
-argument_list|()
+name|DEPENDENCY_TAR_GZ_FILE_NAME
+operator|+
+name|YarnServiceConstants
+operator|.
+name|DEPENDENCY_TAR_GZ_FILE_EXT
+argument_list|)
 decl_stmt|;
 comment|// Check if dependency has already been uploaded, in which case log
 comment|// appropriately and exit success (unless overwrite has been requested)
@@ -6788,6 +6868,21 @@ name|YarnServiceConstants
 operator|.
 name|DEPENDENCY_DIR_PERMISSIONS
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"To let apps use this tarball, in yarn-site set config property "
+operator|+
+literal|"{} to {}"
+argument_list|,
+name|YarnServiceConf
+operator|.
+name|DEPENDENCY_TARBALL_PATH
+argument_list|,
+name|dependencyLibTarGzip
 argument_list|)
 expr_stmt|;
 return|return
