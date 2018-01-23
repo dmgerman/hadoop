@@ -138,12 +138,15 @@ name|isRunning
 parameter_list|()
 function_decl|;
 comment|/**    * Adds the Item information(file id etc) to processing queue.    *    * @param itemInfo    */
-DECL|method|addFileIdToProcess (ItemInfo itemInfo)
+DECL|method|addFileIdToProcess (ItemInfo itemInfo, boolean scanCompleted)
 name|void
 name|addFileIdToProcess
 parameter_list|(
 name|ItemInfo
 name|itemInfo
+parameter_list|,
+name|boolean
+name|scanCompleted
 parameter_list|)
 function_decl|;
 comment|/**    * Adds all the Item information(file id etc) to processing queue.    *    * @param startId    *          - directory/file id, on which SPS was called.    * @param itemInfoList    *          - list of item infos    * @param scanCompleted    *          - whether the scanning of directory fully done with itemInfoList    */
@@ -175,6 +178,15 @@ DECL|method|getConf ()
 name|Configuration
 name|getConf
 parameter_list|()
+function_decl|;
+comment|/**    * Marks the scanning of directory if finished.    *    * @param inodeId    *          - directory inode id.    */
+DECL|method|markScanCompletedForPath (Long inodeId)
+name|void
+name|markScanCompletedForPath
+parameter_list|(
+name|Long
+name|inodeId
+parameter_list|)
 function_decl|;
 block|}
 end_interface

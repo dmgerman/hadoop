@@ -2597,7 +2597,6 @@ operator|.
 name|storageType
 argument_list|)
 expr_stmt|;
-comment|// TODO: We can increment scheduled block count for this node?
 block|}
 block|}
 comment|// To avoid choosing this excludeNodes as targets later
@@ -4152,13 +4151,16 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|addFileIdToProcess (ItemInfo trackInfo)
+DECL|method|addFileIdToProcess (ItemInfo trackInfo, boolean scanCompleted)
 specifier|public
 name|void
 name|addFileIdToProcess
 parameter_list|(
 name|ItemInfo
 name|trackInfo
+parameter_list|,
+name|boolean
+name|scanCompleted
 parameter_list|)
 block|{
 name|storageMovementNeeded
@@ -4240,6 +4242,26 @@ block|{
 return|return
 name|storageMovementNeeded
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|markScanCompletedForPath (Long inodeId)
+specifier|public
+name|void
+name|markScanCompletedForPath
+parameter_list|(
+name|Long
+name|inodeId
+parameter_list|)
+block|{
+name|getStorageMovementQueue
+argument_list|()
+operator|.
+name|markScanCompletedForDir
+argument_list|(
+name|inodeId
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

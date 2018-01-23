@@ -60,6 +60,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|DFSConfigKeys
@@ -141,6 +155,10 @@ comment|/**  * A specific implementation for scanning the directory with Namenod
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|IntraSPSNameNodeFileIdCollector
 specifier|public
 class|class
@@ -582,12 +600,12 @@ block|{
 name|readLock
 argument_list|()
 expr_stmt|;
-comment|// NOTE: this lock will not be held until full directory scanning. It is
+comment|// NOTE: this lock will not be held for full directory scanning. It is
 comment|// basically a sliced locking. Once it collects a batch size( at max the
 comment|// size of maxQueueLimitToScan (default 1000)) file ids, then it will
 comment|// unlock and submits the current batch to SPSService. Once
 comment|// service.processingQueueSize() shows empty slots, then lock will be
-comment|// resumed and scan also will be resumed. This logic was re-used from
+comment|// re-acquired and scan will be resumed. This logic was re-used from
 comment|// EDEK feature.
 try|try
 block|{

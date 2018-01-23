@@ -359,6 +359,15 @@ name|void
 name|removeAllSPSPathIds
 parameter_list|()
 function_decl|;
+comment|/**    * Gets the file path for a given inode id.    *    * @param inodeId    *          - path inode id.    */
+DECL|method|getFilePath (Long inodeId)
+name|String
+name|getFilePath
+parameter_list|(
+name|Long
+name|inodeId
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 
