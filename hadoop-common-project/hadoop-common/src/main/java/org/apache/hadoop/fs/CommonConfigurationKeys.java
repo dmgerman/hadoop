@@ -694,6 +694,15 @@ name|SECURITY_QJOURNAL_SERVICE_PROTOCOL_ACL
 init|=
 literal|"security.qjournal.service.protocol.acl"
 decl_stmt|;
+DECL|field|SECURITY_INTERQJOURNAL_SERVICE_PROTOCOL_ACL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SECURITY_INTERQJOURNAL_SERVICE_PROTOCOL_ACL
+init|=
+literal|"security.interqjournal.service.protocol.acl"
+decl_stmt|;
 DECL|field|HADOOP_SECURITY_TOKEN_SERVICE_USE_IP
 specifier|public
 specifier|static
