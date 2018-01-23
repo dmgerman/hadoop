@@ -32,6 +32,18 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|protobuf
+operator|.
+name|InvalidProtocolBufferException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -364,6 +376,18 @@ name|util
 operator|.
 name|concurrent
 operator|.
+name|CompletionException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
 name|ExecutionException
 import|;
 end_import
@@ -500,7 +524,7 @@ specifier|final
 name|int
 name|maxOutstandingRequests
 decl_stmt|;
-comment|/** Constructs a client. */
+comment|/**    * Constructs a client.    */
 DECL|method|XceiverClientRatis (Pipeline pipeline, RpcType rpcType, int maxOutStandingChunks)
 specifier|private
 name|XceiverClientRatis
@@ -537,7 +561,7 @@ operator|=
 name|maxOutStandingChunks
 expr_stmt|;
 block|}
-comment|/**    *  {@inheritDoc}    */
+comment|/**    * {@inheritDoc}    */
 DECL|method|createPipeline (String clusterId, List<DatanodeID> datanodes)
 specifier|public
 name|void
@@ -587,7 +611,7 @@ name|group
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Returns Ratis as pipeline Type.    * @return - Ratis    */
+comment|/**    * Returns Ratis as pipeline Type.    *    * @return - Ratis    */
 annotation|@
 name|Override
 DECL|method|getPipelineType ()
@@ -606,7 +630,7 @@ operator|.
 name|RATIS
 return|;
 block|}
-DECL|method|reinitialize ( List<DatanodeID> datanodes, RaftGroup group)
+DECL|method|reinitialize (List<DatanodeID> datanodes, RaftGroup group)
 specifier|private
 name|void
 name|reinitialize
@@ -704,7 +728,7 @@ name|exception
 throw|;
 block|}
 block|}
-comment|/**    * Adds a new peers to the Ratis Ring.    * @param datanode - new datanode    * @param group - Raft group    * @throws IOException - on Failure.    */
+comment|/**    * Adds a new peers to the Ratis Ring.    *    * @param datanode - new datanode    * @param group    - Raft group    * @throws IOException - on Failure.    */
 DECL|method|reinitialize (DatanodeID datanode, RaftGroup group)
 specifier|private
 name|void
@@ -1105,6 +1129,76 @@ return|return
 name|reply
 return|;
 block|}
+DECL|method|sendRequestAsync ( ContainerCommandRequestProto request)
+specifier|private
+name|CompletableFuture
+argument_list|<
+name|RaftClientReply
+argument_list|>
+name|sendRequestAsync
+parameter_list|(
+name|ContainerCommandRequestProto
+name|request
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|boolean
+name|isReadOnlyRequest
+init|=
+name|isReadOnly
+argument_list|(
+name|request
+argument_list|)
+decl_stmt|;
+name|ByteString
+name|byteString
+init|=
+name|ShadedProtoUtil
+operator|.
+name|asShadedByteString
+argument_list|(
+name|request
+operator|.
+name|toByteArray
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"sendCommandAsync {} {}"
+argument_list|,
+name|isReadOnlyRequest
+argument_list|,
+name|request
+argument_list|)
+expr_stmt|;
+return|return
+name|isReadOnlyRequest
+condition|?
+name|getClient
+argument_list|()
+operator|.
+name|sendReadOnlyAsync
+argument_list|(
+parameter_list|()
+lambda|->
+name|byteString
+argument_list|)
+else|:
+name|getClient
+argument_list|()
+operator|.
+name|sendAsync
+argument_list|(
+parameter_list|()
+lambda|->
+name|byteString
+argument_list|)
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|sendCommand ( ContainerCommandRequestProto request)
@@ -1178,16 +1272,80 @@ name|ExecutionException
 throws|,
 name|InterruptedException
 block|{
+return|return
+name|sendRequestAsync
+argument_list|(
+name|request
+argument_list|)
+operator|.
+name|whenComplete
+argument_list|(
+parameter_list|(
+name|reply
+parameter_list|,
+name|e
+parameter_list|)
+lambda|->
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"received reply {} for request: {} exception: {}"
+argument_list|,
+name|request
+argument_list|,
+name|reply
+argument_list|,
+name|e
+argument_list|)
+argument_list|)
+operator|.
+name|thenApply
+argument_list|(
+name|reply
+lambda|->
+block|{
+lambda|try
+block|{
+return|return
+name|ContainerCommandResponseProto
+operator|.
+name|parseFrom
+argument_list|(
+name|ShadedProtoUtil
+operator|.
+name|asByteString
+argument_list|(
+name|reply
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|getContent
+argument_list|()
+argument_list|)
+argument_list|)
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|InvalidProtocolBufferException
+name|e
+parameter_list|)
+block|{
 throw|throw
 operator|new
-name|IOException
+name|CompletionException
 argument_list|(
-literal|"Not implemented"
+name|e
 argument_list|)
 throw|;
 block|}
 block|}
+block|)
+class|;
 end_class
 
+unit|} }
 end_unit
 
