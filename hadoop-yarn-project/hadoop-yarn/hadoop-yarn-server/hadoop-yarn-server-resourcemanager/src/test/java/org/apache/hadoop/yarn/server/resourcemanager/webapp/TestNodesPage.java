@@ -254,6 +254,7 @@ decl_stmt|;
 comment|// Number of Actual Table Headers for NodesPage.NodesBlock might change in
 comment|// future. In that case this value should be adjusted to the new value.
 DECL|field|numberOfThInMetricsTable
+specifier|private
 specifier|final
 name|int
 name|numberOfThInMetricsTable
@@ -261,11 +262,12 @@ init|=
 literal|23
 decl_stmt|;
 DECL|field|numberOfActualTableHeaders
+specifier|private
 specifier|final
 name|int
 name|numberOfActualTableHeaders
 init|=
-literal|13
+literal|14
 decl_stmt|;
 DECL|field|numberOfThForOpportunisticContainers
 specifier|private

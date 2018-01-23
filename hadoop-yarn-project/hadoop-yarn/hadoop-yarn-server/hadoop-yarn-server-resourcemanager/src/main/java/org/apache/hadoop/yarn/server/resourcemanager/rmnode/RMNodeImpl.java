@@ -7836,6 +7836,32 @@ return|return
 name|decommissioningTimeout
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getAllocationTagsWithCount ()
+specifier|public
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Long
+argument_list|>
+name|getAllocationTagsWithCount
+parameter_list|()
+block|{
+return|return
+name|context
+operator|.
+name|getAllocationTagsManager
+argument_list|()
+operator|.
+name|getAllocationTagsWithCount
+argument_list|(
+name|getNodeID
+argument_list|()
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 

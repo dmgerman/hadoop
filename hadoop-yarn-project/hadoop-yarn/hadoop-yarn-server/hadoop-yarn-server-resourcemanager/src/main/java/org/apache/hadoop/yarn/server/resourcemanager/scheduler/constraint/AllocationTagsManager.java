@@ -2083,6 +2083,33 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Returns a map whose key is the allocation tag and value is the    * count of allocations with this tag.    *    * @param nodeId    * @return allocation tag to count mapping    */
+DECL|method|getAllocationTagsWithCount (NodeId nodeId)
+specifier|public
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Long
+argument_list|>
+name|getAllocationTagsWithCount
+parameter_list|(
+name|NodeId
+name|nodeId
+parameter_list|)
+block|{
+return|return
+name|globalNodeMapping
+operator|.
+name|getTypeToTagsWithCount
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|nodeId
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 

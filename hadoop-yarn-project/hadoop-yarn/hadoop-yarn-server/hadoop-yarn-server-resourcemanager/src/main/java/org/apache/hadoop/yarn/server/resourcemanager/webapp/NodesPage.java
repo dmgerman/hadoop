@@ -672,6 +672,13 @@ argument_list|)
 operator|.
 name|th
 argument_list|(
+literal|".allocationTags"
+argument_list|,
+literal|"Allocation Tags"
+argument_list|)
+operator|.
+name|th
+argument_list|(
 literal|".mem"
 argument_list|,
 literal|"Mem Used"
@@ -708,6 +715,13 @@ argument_list|(
 literal|".containers"
 argument_list|,
 literal|"Running Containers (G)"
+argument_list|)
+operator|.
+name|th
+argument_list|(
+literal|".allocationTags"
+argument_list|,
+literal|"Allocation Tags"
 argument_list|)
 operator|.
 name|th
@@ -1263,6 +1277,19 @@ operator|.
 name|getNumContainers
 argument_list|()
 argument_list|)
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"\",\""
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|info
+operator|.
+name|getAllocationTagsSummary
+argument_list|()
 argument_list|)
 operator|.
 name|append

@@ -38,6 +38,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Set
 import|;
 end_import
@@ -440,6 +450,17 @@ comment|/*    * Optional decommissioning timeout in second    * (null indicates 
 DECL|method|getDecommissioningTimeout ()
 name|Integer
 name|getDecommissioningTimeout
+parameter_list|()
+function_decl|;
+comment|/**    * Get the allocation tags and their counts associated with this node.    * @return a map of each allocation tag and its count.    */
+DECL|method|getAllocationTagsWithCount ()
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Long
+argument_list|>
+name|getAllocationTagsWithCount
 parameter_list|()
 function_decl|;
 block|}
