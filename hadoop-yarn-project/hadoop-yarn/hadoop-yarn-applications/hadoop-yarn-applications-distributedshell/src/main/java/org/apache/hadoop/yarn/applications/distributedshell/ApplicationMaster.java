@@ -7861,7 +7861,7 @@ name|Exception
 block|{
 name|timelineV2Client
 operator|.
-name|putEntities
+name|putEntitiesAsync
 argument_list|(
 name|entity
 argument_list|)
@@ -8122,7 +8122,7 @@ name|Exception
 block|{
 name|timelineV2Client
 operator|.
-name|putEntities
+name|putEntitiesAsync
 argument_list|(
 name|entity
 argument_list|)
