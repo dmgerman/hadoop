@@ -1735,9 +1735,9 @@ name|targetExpression
 operator|.
 name|getTargetKey
 argument_list|()
-operator|==
+operator|!=
 literal|null
-operator|||
+operator|&&
 operator|!
 name|targetExpression
 operator|.
@@ -1760,7 +1760,11 @@ name|APPLICATION_LABEL_INTRA_APPLICATION
 operator|+
 literal|"]. Please make changes to placement constraints "
 operator|+
-literal|"accordingly."
+literal|"accordingly. If this is null, it will be set to "
+operator|+
+name|APPLICATION_LABEL_INTRA_APPLICATION
+operator|+
+literal|" by default."
 argument_list|)
 expr_stmt|;
 block|}
